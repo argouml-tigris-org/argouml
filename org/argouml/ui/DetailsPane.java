@@ -239,6 +239,29 @@ implements ChangeListener, MouseListener {
     }
   }
 
+    public void addNavigationListener(NavigationListener navListener) {
+        Iterator iter = _tabPanels.iterator();
+        Object panel;
+        while(iter.hasNext()) {
+            panel = iter.next();
+            if(panel instanceof TabProps) {
+                ((TabProps) panel).addNavigationListener(navListener);
+            }
+        }
+    }
+    
+    public void removeNavigationListener(NavigationListener navListener) {
+        Iterator iter = _tabPanels.iterator();
+        Object panel;
+        while(iter.hasNext()) {
+            panel = iter.next();
+            if(panel instanceof TabProps) {
+                ((TabProps) panel).removeNavigationListener(navListener);
+            }
+        }
+    }
+
+
   ////////////////////////////////////////////////////////////////
   // event handlers
 

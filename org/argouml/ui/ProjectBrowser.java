@@ -46,7 +46,7 @@ import org.argouml.uml.diagram.ui.UMLDiagram;
 /** The main window of the Argo/UML application. */
 
 public class ProjectBrowser extends JFrame
-implements IStatusBar {
+implements IStatusBar, NavigationListener {
   ////////////////////////////////////////////////////////////////
   // constants
 
@@ -179,7 +179,9 @@ implements IStatusBar {
     sb.incProgress(5);
     _toDoPane = new ToDoPane();
     _multiPane = new MultiEditorPane(sb);
+    _multiPane.addNavigationListener(this);
     _detailsPane = new DetailsPane(sb);
+    _detailsPane.addNavigationListener(this);
     setAppName(appName);
     if (TheInstance == null) TheInstance = this;
     //setName(title);
@@ -579,6 +581,19 @@ implements IStatusBar {
   ////////////////////////////////////////////////////////////////
   // IStatusBar
   public void showStatus(String s) { _statusBar.showStatus(s); }
+
+    /**    Called by a user interface element when a request to
+     *    navigate to a model element has been received.
+     */
+    public void navigateTo(Object element) {
+        setTarget(element);
+    }
+
+    /**   Called by a user interface element when a request to
+     *   open a model element in a new window has been recieved.
+     */
+    public void open(Object element) {
+    }
 
 
 } /* end class ProjectBrowser */

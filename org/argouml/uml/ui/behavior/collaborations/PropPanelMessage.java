@@ -29,138 +29,52 @@
 // $Id$
 
 package org.argouml.uml.ui.behavior.collaborations;
-
-import java.awt.*;
-import java.awt.event.*;
-import java.util.*;
-import java.beans.*;
-import javax.swing.*;
-import javax.swing.event.*;
-import javax.swing.tree.*;
-import javax.swing.text.*;
-import javax.swing.border.*;
-import javax.swing.table.*;
-import javax.swing.plaf.metal.MetalLookAndFeel;
-
 import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.foundation.data_types.*;
 import ru.novosoft.uml.model_management.*;
 import ru.novosoft.uml.behavior.collaborations.*;
-import ru.novosoft.uml.behavior.common_behavior.*;
-
-import org.argouml.ui.*;
+import javax.swing.*;
 import org.argouml.uml.ui.*;
-
-/** User interface panel shown at the bottom of the screen that allows
- *  the user to edit the properties of the selected UML model element.
- *  Needs-More-Work: cut and paste base class code from
- *  PropPanelClass. */
+import java.awt.*;
+import java.util.*;
 
 public class PropPanelMessage extends PropPanel {
 
   ////////////////////////////////////////////////////////////////
   // constants
-
-  ////////////////////////////////////////////////////////////////
-  // instance vars
-  JLabel _actionLabel = new JLabel("Action: ");
-  SpacerPanel _spacer = new SpacerPanel();
-  SpacerPanel _placeHolder = new SpacerPanel();
-
-  JTextField _actionField = new JTextField();
+  
 
   ////////////////////////////////////////////////////////////////
   // contructors
   public PropPanelMessage() {
-    super("Message Properties");
-    GridBagLayout gb = (GridBagLayout) getLayout();
-    GridBagConstraints c = new GridBagConstraints();
-    c.fill = GridBagConstraints.BOTH;
-    c.weightx = 0.0;
-    c.ipadx = 0; c.ipady = 0;
+    super("Message Properties",2);
+    
+    Class mclass = MMessage.class;
 
-    // add all widgets and labels
-    c.gridx = 0;
-    c.gridwidth = 1;
-    c.gridy = 1;
-    c.weightx = 0.0;
-    gb.setConstraints(_actionLabel, c);
-    add(_actionLabel);
+    addCaption(new JLabel("Name:"),0,0,0);
+    addField(new UMLTextField(this,new UMLTextProperty(mclass,"name","getName","setName")),0,0,0);
 
-    c.weightx = 1.0;
-    c.gridx = 1;
-    c.gridy = 1;
-    _actionField.setMinimumSize(new Dimension(120, 20));
-    gb.setConstraints(_actionField, c);
-    add(_actionField);
-    _actionField.getDocument().addDocumentListener(this);
-    _actionField.setFont(_stereoField.getFont());
+    addCaption(new JLabel("Stereotype:"),1,0,0);
+    JComboBox stereotypeBox = new UMLStereotypeComboBox(this);
+    addField(stereotypeBox,1,0,0);
 
-    c.gridx = 2;
-    c.gridwidth = 1;
-    c.weightx = 0;
-    c.gridy = 0;
-    gb.setConstraints(_spacer, c);
-    add(_spacer);
+    addCaption(new JLabel("Namespace:"),2,0,1);
+    JList namespaceList = new UMLList(new UMLNamespaceListModel(this),true);
+    namespaceList.setBackground(getBackground());
+    namespaceList.setForeground(Color.blue);
+    addField(namespaceList,2,0,0);
+        
+    
+    addCaption(new JLabel("Predecessor:"),0,1,0);
+    addField(new JComboBox(),0,1,0);
+    
+    addCaption(new JLabel("Activator:"),1,1,0);
+    addField(new JComboBox(),1,1,0);
+    
+    addCaption(new JLabel("Action:"),2,1,1);
+    addField(new JComboBox(),2,1,0);
 
-    c.gridx = 3;
-    c.gridwidth = 3;
-    c.gridheight = 5;
-    c.weightx = 1;
-    c.gridy = 1;
-    gb.setConstraints(_placeHolder, c);
-    add(_placeHolder);
-
-    // register interest in change events from all widgets
   }
-
-  ////////////////////////////////////////////////////////////////
-  // accessors
-
-  /** Set the values to be shown in all widgets based on model */
-  protected void setTargetInternal(Object t) {
-    super.setTargetInternal(t);
-    MMessage mes = (MMessage) t;
-	String ua = null;
-	if (mes.getAction() != null && mes.getAction().getScript() != null 
-		&&  mes.getAction().getScript().getBody() != null) {
-		ua = (((MAction)mes.getAction()).getScript()).getBody();
-	}
-    //MUninterpretedAction uaNew = new MUninterpretedAction(ua);
-    if (ua != null)
-		_actionField.setText(ua.trim());
-	else
-		_actionField.setText("(none)");
-
-    validate();
-  }
-
-  ////////////////////////////////////////////////////////////////
-  // event handlers
-
-    public void focusLost(FocusEvent e){
-	super.focusLost(e);
-	if (e.getComponent() == _actionField)
-	    setTargetActionString(_actionField.getText().trim());
-    }
-
-  protected void setTargetActionString(String s) {
-    if (_target == null) return;
-	if (_inChange) return;
-	
-	MAction action = new MActionImpl();
-	action.setScript(new MActionExpression("Java",s));
-	action.setNamespace(ProjectBrowser.TheInstance.getProject().getModel());
-	((MMessage)_target).setAction(action); 
-    /*try {
-      ((MUninterpretedAction)((MMessage)_target).getAction()).setBody(s);
-    }
-    catch (PropertyVetoException pve) { }*/
-  }
-
 
 
 } /* end class PropPanelMessage */
-
-
-    

@@ -30,100 +30,52 @@
 package org.argouml.uml.ui.foundation.core;
 
 import java.awt.*;
-import java.awt.event.*;
-import java.util.*;
-import java.beans.*;
 import javax.swing.*;
-import javax.swing.event.*;
-import javax.swing.tree.*;
-import javax.swing.text.*;
-import javax.swing.border.*;
-import javax.swing.plaf.metal.MetalLookAndFeel;
-
 import ru.novosoft.uml.foundation.core.*;
-import ru.novosoft.uml.foundation.data_types.*;
-import ru.novosoft.uml.model_management.*;
-
 import org.argouml.uml.ui.*;
 
-/** User interface panel shown at the bottom of the screen that allows
- *  the user to edit the properties of the selected UML model
- *  element. */
 
 public class PropPanelComponent extends PropPanel {
 
   ////////////////////////////////////////////////////////////////
-  // constants
-  // needs-more-work 
-
-  ////////////////////////////////////////////////////////////////
-  // instance vars
-  public JLabel _deploymentLocationLabel = new JLabel("Deployment-Location: ");
-  public static JTextField _deploymentLocationField = new JTextField();
-
-
-  // declare and initialize all widgets
-  ////////////////////////////////////////////////////////////////
   // contructors
   public PropPanelComponent() {
-    super("Component Properties");
-    _deploymentLocationField.setEditable(false);
-    GridBagLayout gb = (GridBagLayout) getLayout();
-    GridBagConstraints c = new GridBagConstraints();
-    c.fill = GridBagConstraints.BOTH;
-    c.weightx = 0.0;
-    c.ipadx = 0; c.ipady = 0;
+    super("Component Properties",2);
 
+    Class mclass = MComponent.class;
+    
+    addCaption(new JLabel("Name:"),0,0,0);
+    addField(new UMLTextField(this,new UMLTextProperty(mclass,"name","getName","setName")),0,0,0);
 
-    c.gridx = 0;
-    c.gridwidth = 1;
-    c.gridy = 1;
-    c.weightx = 0.0;
-    gb.setConstraints(_deploymentLocationLabel, c);
-    add(_deploymentLocationLabel);
-        
-    c.weightx = 1.0;
-    c.gridx = 1;
-    c.gridy = 1;
-    _deploymentLocationField.setMinimumSize(new Dimension(120, 20));
-    gb.setConstraints(_deploymentLocationField, c);
-    add(_deploymentLocationField);
-    _deploymentLocationField.getDocument().addDocumentListener(this);
-    _deploymentLocationField.setFont(_stereoField.getFont());
+    addCaption(new JLabel("Extends:"),1,0,0);
 
+    JList extendsList = new UMLList(new UMLGeneralizationListModel(this,"generalization",true),true);
+    extendsList.setBackground(getBackground());
+    extendsList.setForeground(Color.blue);
+    addField(extendsList,1,0,0);
+    
+    addCaption(new JLabel("Modifiers:"),2,0,0);
+    JPanel modifiersPanel = new JPanel(new GridLayout(0,3));
+    modifiersPanel.add(new UMLCheckBox("abstract",this,new UMLReflectionBooleanProperty("isAbstract",mclass,"isAbstract","setAbstract")));
+    modifiersPanel.add(new UMLCheckBox("final",this,new UMLReflectionBooleanProperty("isLeaf",mclass,"isLeaf","setLeaf")));
+    modifiersPanel.add(new UMLCheckBox("root",this,new UMLReflectionBooleanProperty("isRoot",mclass,"isRoot","setRoot")));
+    addField(modifiersPanel,2,0,0);
+
+    addCaption(new JLabel("Namespace:"),3,0,1);
+    JList namespaceList = new UMLList(new UMLNamespaceListModel(this),true);
+    namespaceList.setBackground(getBackground());
+    namespaceList.setForeground(Color.blue);
+    addField(namespaceList,3,0,0);
+    
+    addCaption(new JLabel("Derived:"),0,1,1);
+    JList derivedList = new UMLList(new UMLSpecializationListModel(this,null,true),true);
+    derivedList.setForeground(Color.blue);    
+    derivedList.setVisibleRowCount(1);
+    addField(new JScrollPane(derivedList),0,1,1);
+    
   }
 
-  ////////////////////////////////////////////////////////////////
-  // accessors
 
-  /** Set the values to be shown in all widgets based on model */
-  protected void setTargetInternal(Object t) {
-    super.setTargetInternal(t);
-    MComponent co = (MComponent) t;
-    Collection nodes = co.getDeploymentLocations();  
-    MNode node = null;
-    if ((co.getDeploymentLocations() != null) && (nodes.size()>0)) {
-      Iterator it = nodes.iterator();
-      while (it.hasNext()) {
-        node = (MNode) it.next();
-      }
-      _deploymentLocationField.setText(node.getName());
-    }
-    else {
-      _deploymentLocationField.setText(null);
-    }
-
-    validate();
-  }
-  
- 
-
-  ////////////////////////////////////////////////////////////////
-  // event handlers
-
-
-  static final long serialVersionUID = 4536645723645617622L;
-  
 } /* end class PropPanelComponent */
 
 

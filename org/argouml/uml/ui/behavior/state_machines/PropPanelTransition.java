@@ -31,167 +31,132 @@
 package org.argouml.uml.ui.behavior.state_machines;
 
 import java.awt.*;
-import java.awt.event.*;
-import java.util.*;
-import java.beans.*;
 import javax.swing.*;
-import javax.swing.event.*;
-import javax.swing.tree.*;
-import javax.swing.text.*;
-import javax.swing.border.*;
-
 import ru.novosoft.uml.foundation.core.*;
-import ru.novosoft.uml.foundation.data_types.*;
-import ru.novosoft.uml.model_management.*;
+import org.argouml.uml.ui.*;
+import java.util.*;
 import ru.novosoft.uml.behavior.state_machines.*;
+import ru.novosoft.uml.foundation.data_types.*;
 import ru.novosoft.uml.behavior.common_behavior.*;
 
-import org.argouml.uml.diagram.ui.*;
-import org.argouml.uml.generator.*;
-
-/** User interface panel shown at the bottom of the screen that allows
- *  the user to edit the properties of the selected UML model
- *  element. */
-
-public class PropPanelTransition extends PropPanelTwoEnds {
-
-  ////////////////////////////////////////////////////////////////
-  // constants
-  // needs-more-work 
-
-  ////////////////////////////////////////////////////////////////
-  // instance vars
-  JLabel _triggerLabel = new JLabel("Trigger: ");
-  JTextField _triggerField = new JTextField();
-  JLabel _guardLabel = new JLabel("Guard: ");
-  JTextField _guardField = new JTextField();
-  JLabel _effectLabel = new JLabel("Effect: ");
-  JTextField _effectField = new JTextField();
-
-  // declare and initialize all widgets
+public class PropPanelTransition extends PropPanel {
 
   ////////////////////////////////////////////////////////////////
   // contructors
-  public PropPanelTransition() {
-    super("Transition Properties");
-    GridBagLayout gb = (GridBagLayout) getLayout();
-    GridBagConstraints c = new GridBagConstraints();
-    c.fill = GridBagConstraints.BOTH;
-    c.weightx = 0.0;
-    c.ipadx = 0; c.ipady = 0;
+    public PropPanelTransition() {
+        super("Transition Properties",2);
 
+        Class mclass = MTransition.class;
+    
+        addCaption(new JLabel("Name:"),0,0,0);
+        addField(new UMLTextField(this,new UMLTextProperty(mclass,"name","getName","setName")),0,0,0);
 
-    c.gridx = 0;
-    c.gridwidth = 1;
-    c.gridy = 1;
-    gb.setConstraints(_triggerLabel, c);
-    add(_triggerLabel);
+        addCaption(new JLabel("Stereotype:"),1,0,0);
+        addField(new UMLStereotypeComboBox(this),1,0,0);
 
-    c.gridy = 2;
-    gb.setConstraints(_guardLabel, c);
-    add(_guardLabel);
+        addCaption(new JLabel("State Machine:"),2,0,0);
+        addLinkField(new UMLList(new UMLReflectionListModel(this,"statemachine",false,"getStateMachine",null,null,null),true),2,0,0);
+        
+        addCaption(new JLabel("Namespace:"),3,0,1);
+        addLinkField(new UMLList(new UMLNamespaceListModel(this),true),3,0,0);
+    
+        addCaption(new JLabel("Trigger:"),0,1,0);
+        UMLModelElementListModel trigModel = new UMLReflectionListModel(this,"trigger",true,"getTrigger",null,null,"deleteTrigger");
+        trigModel.setUpperBound(1);
+        addLinkField(new UMLList(trigModel,true),0,1,0);
+        
+        addCaption(new JLabel("Guard:"),1,1,0);
+        UMLModelElementListModel guardModel = new UMLReflectionListModel(this,"guard",true,"getGuard",null,"addGuard","deleteGuard");
+        guardModel.setUpperBound(1);
+        addLinkField(new UMLList(guardModel,true),1,1,0);
 
-    c.gridy = 3;
-    gb.setConstraints(_effectLabel, c);
-    add(_effectLabel);
-
-    _triggerField.setMinimumSize(new Dimension(120, 20));
-    c.weightx = 1.0;
-    c.gridx = 1;
-    c.gridy = 1;
-    gb.setConstraints(_triggerField, c);
-    add(_triggerField);
-
-    c.gridy = 2;
-    gb.setConstraints(_guardField, c);
-    add(_guardField);
-
-    c.gridy = 3;
-    gb.setConstraints(_effectField, c);
-    add(_effectField);
-
-    // _triggerField.getDocument().addDocumentListener(this);
-    _triggerField.addFocusListener(this);
-    _triggerField.addKeyListener(this);
-    _triggerField.setFont(_stereoField.getFont());
-    _guardField.getDocument().addDocumentListener(this);
-    _guardField.setFont(_stereoField.getFont());
-    _effectField.getDocument().addDocumentListener(this);
-    _effectField.setFont(_stereoField.getFont());
-
+        addCaption(new JLabel("Effect:"),2,1,1);
+        UMLModelElementListModel effectModel = new UMLReflectionListModel(this,"effect",true,"getEffect",null,"addEffect","deleteEffect");
+        effectModel.setUpperBound(1);
+        addLinkField(new UMLList(effectModel,true),2,1,0);
+    
   }
 
-  ////////////////////////////////////////////////////////////////
-  // accessors
-
-  /** Set the values to be shown in all widgets based on model */
-  protected void setTargetInternal(Object t) {
-    super.setTargetInternal(t);
-    MTransition tt = (MTransition) t;
-    _triggerField.setText(GeneratorDisplay.Generate(tt.getTrigger()));
-    _guardField.setText(GeneratorDisplay.Generate(tt.getGuard()));
-    _effectField.setText(GeneratorDisplay.Generate(tt.getEffect()));
-  }
-
-  public String getSourceLabel() {
-    if (!(_target instanceof MTransition)) return "non MTransition";
-    return "Source:";
-  }
-  public String getSourceValue() {
-    if (!(_target instanceof MTransition)) return "non MTransition";
-    MTransition g = (MTransition) _target;
-    MStateVertex src = g.getSource();
-    if (src == null) return "null";
-    return src.getName();
-  }
-  public String getDestLabel() {
-    if (!(_target instanceof MTransition)) return "non MTransition";
-    return "Target:";
-  }
-  public String getDestValue() {
-    if (!(_target instanceof MTransition)) return "non MTransition";
-    MTransition g = (MTransition) _target;
-    MStateVertex tar = g.getTarget();
-    if (tar == null) return "null";
-    return tar.getName();
-  }
-  
-
-  public void setTargetTrigger() {
-    if (_inChange) return;
-    MTransition t = (MTransition) _target;
-    String newText = _triggerField.getText();
-    //System.out.println("setTargetTrigger: " + newText);
-	t.setTrigger(ParserDisplay.SINGLETON.parseEvent(newText));
-  }
-
-  public void setTargetGuard() {
-    if (_inChange) return;
-    MTransition t = (MTransition) _target;
-    String newText = _guardField.getText();
-    //System.out.println("setTargetGuard: " + newText);
-	t.setGuard(ParserDisplay.SINGLETON.parseGuard(newText));
-  }
-
-  public void setTargetEffect() {
-    if (_inChange) return;
-    MTransition t = (MTransition) _target;
-    String newText = _effectField.getText();
-    //System.out.println("setTargetEffect: " + newText);
-	t.setEffect(ParserDisplay.SINGLETON.parseAction(newText));
-  }
-
-  ////////////////////////////////////////////////////////////////
-  // event handlers
-
-
-    /** focus listener implementation, overrides from PropPanel */
-
-    public void focusLost(FocusEvent e){
-	super.focusLost(e);
-	if (e.getComponent() == _triggerField)
-	    setTargetTrigger();
+    public MStateMachine getStateMachine() {
+        MStateMachine machine = null;
+        Object target = getTarget();
+        if(target instanceof MTransition) {
+            machine = ((MTransition) target).getStateMachine();
+        }
+        return machine;
+    }
+    
+    
+    public MEvent getTrigger() {
+        MEvent trigger = null;
+        Object target = getTarget();
+        if(target instanceof MTransition) {
+            trigger= ((MTransition) target).getTrigger();
+        }
+        return trigger;
+    }
+    
+    
+    public void deleteTrigger(Integer index) {
+        Object target = getTarget();
+        if(target instanceof MTransition) {
+            ((MTransition) target).setTrigger(null);
+        }
     }
 
+    
+    public MGuard getGuard() {
+        MGuard guard = null;
+        Object target = getTarget();
+        if(target instanceof MTransition) {
+            guard = ((MTransition) target).getGuard();
+        }
+        return guard;
+    }
+    
+    public MGuard addGuard(Integer index) {
+        MGuard guard = null;
+        Object target = getTarget();
+        if(target instanceof MTransition) {
+            guard = new MGuardImpl();
+            ((MTransition) target).setGuard(guard);
+        }
+        return guard;
+    }
+    
+    public void deleteGuard(Integer index) {
+        Object target = getTarget();
+        if(target instanceof MTransition) {
+            ((MTransition) target).setGuard(null);
+        }
+    }
 
-} /* end class PropPanelState */
+    public MAction getEffect() {
+        MAction effect = null;
+        Object target = getTarget();
+        if(target instanceof MTransition) {
+            effect = ((MTransition) target).getEffect();
+        }
+        return effect;
+    }
+    
+    public MAction addEffect(Integer index) {
+        MAction effect = null;
+        Object target = getTarget();
+        if(target instanceof MTransition) {
+            effect = new MActionImpl();
+            ((MTransition) target).setEffect(effect);
+        }
+        return effect;
+    }
+    
+    public void deleteEffect(Integer index) {
+        Object target = getTarget();
+        if(target instanceof MTransition) {
+            ((MTransition) target).setEffect(null);
+        }
+    }
+    
+    
+} /* end class PropPanelTransition */
+

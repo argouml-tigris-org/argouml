@@ -30,96 +30,45 @@
 
 package org.argouml.uml.ui.behavior.common_behavior;
 
-import java.awt.*;
-import java.awt.event.*;
-import java.util.*;
-import java.beans.*;
-import javax.swing.*;
-import javax.swing.event.*;
-import javax.swing.tree.*;
-import javax.swing.text.*;
-import javax.swing.border.*;
 
+import java.awt.*;
+import javax.swing.*;
 import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.foundation.data_types.*;
-import ru.novosoft.uml.model_management.*;
+import org.argouml.uml.ui.*;
 import ru.novosoft.uml.behavior.common_behavior.*;
 
-import org.argouml.uml.diagram.ui.*;
 
-/** User interface panel shown at the bottom of the screen that allows
- *  the user to edit the properties of the selected UML model
- *  element. */
+public class PropPanelLink extends PropPanel {
 
-public class PropPanelLink extends PropPanelTwoEnds {
-
-  ////////////////////////////////////////////////////////////////
-  // constants
-  // needs-more-work 
-
-  ////////////////////////////////////////////////////////////////
-  // instance vars
-  JLabel _nmwLabel = new JLabel("Needs-more-work PropPanelLink");
-
-  // declare and initialize all widgets
 
   ////////////////////////////////////////////////////////////////
   // contructors
   public PropPanelLink() {
-    super("Link");
-    GridBagLayout gb = (GridBagLayout) getLayout();
-    GridBagConstraints c = new GridBagConstraints();
-    c.fill = GridBagConstraints.BOTH;
-    c.weightx = 0.0;
-    c.ipadx = 0; c.ipady = 0;
+    super("Link Properties",2);
 
+    Class mclass = MLink.class;
+    addCaption(new JLabel("Name:"),0,0,0);
+    addField(new UMLTextField(this,new UMLTextProperty(mclass,"name","getName","setName")),0,0,0);
 
-    c.gridx = 0;
-    c.gridwidth = 1;
-    c.gridy = 1;
-    gb.setConstraints(_nmwLabel, c);
-    add(_nmwLabel);
+    
+    addCaption(new JLabel("Stereotype:"),1,0,0);
+    JComboBox stereotypeBox = new UMLStereotypeComboBox(this);
+    addField(stereotypeBox,1,0,0);
+    
 
-    // add all widgets and labels
-
-    // register interest in change events from all widgets
+    addCaption(new JLabel("Namespace:"),2,0,1);
+    JList namespaceList = new UMLList(new UMLNamespaceListModel(this),true);
+    namespaceList.setBackground(getBackground());
+    namespaceList.setForeground(Color.blue);
+    addField(namespaceList,5,0,0);
+    
+    addCaption(new JLabel("Link Ends:"),0,1,1);
   }
 
-  ////////////////////////////////////////////////////////////////
-  // accessors
+  
+  
+} /* end class PropPanelLink */
 
-  /** Set the values to be shown in all widgets based on model */
-  protected void setTargetInternal(Object t) {
-    super.setTargetInternal(t);
-    MLink tt = (MLink) t;
-    // set the values to be shown in all widgets based on model
-  }
 
-  public String getSourceLabel() {
-    if (!(_target instanceof MLink)) return "non Link";
-    return "Instance:";
-  }
-  public String getSourceValue() {
-    if (!(_target instanceof MLink)) return "non Link";
-    MLink a = (MLink) _target;
-    MLinkEnd ae = (MLinkEnd) ((Object[])(a.getConnections()).toArray())[0];
-    if (ae == null) return "null Link End";
-    MInstance inst = ae.getInstance();
-    if (inst == null) return "null Instance";
-    return inst.getName();
-  }
-  public String getDestLabel() {
-    if (!(_target instanceof MLink)) return "non Link";
-    return "Instance:";
-  }
-  public String getDestValue() {
-    if (!(_target instanceof MLink)) return "non Link";
-    MLink a = (MLink) _target;
-    MLinkEnd ae = (MLinkEnd)((Object[])(a.getConnections()).toArray())[1];
-    if (ae == null) return "null Link End";
-    MInstance inst = ae.getInstance();
-    if (inst == null) return "null Instance";
-    return inst.getName();
-  }
 
-} /* end class PropPanelState */

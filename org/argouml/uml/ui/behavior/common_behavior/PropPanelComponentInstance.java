@@ -29,137 +29,46 @@
 package org.argouml.uml.ui.behavior.common_behavior;
 
 import java.awt.*;
-import java.awt.event.*;
-import java.util.*;
-import java.beans.*;
 import javax.swing.*;
-import javax.swing.event.*;
-import javax.swing.tree.*;
-import javax.swing.text.*;
-import javax.swing.border.*;
-import javax.swing.plaf.metal.MetalLookAndFeel;
-
 import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.foundation.data_types.*;
-import ru.novosoft.uml.behavior.common_behavior.*;
-import ru.novosoft.uml.model_management.*;
-
-import org.tigris.gef.base.*;
-import org.tigris.gef.graph.*;
-
-import org.argouml.ui.*;
 import org.argouml.uml.ui.*;
-import org.argouml.uml.generator.*;
-import org.argouml.uml.diagram.deployment.*;
+import ru.novosoft.uml.behavior.common_behavior.*;
 
-/** User interface panel shown at the bottom of the screen that allows
- *  the user to edit the properties of the selected UML model
- *  element. */
 
-public class PropPanelComponentInstance extends PropPanel  {
+public class PropPanelComponentInstance extends PropPanel {
 
-  ////////////////////////////////////////////////////////////////
-  // constants
-  // needs-more-work 
 
-  ////////////////////////////////////////////////////////////////
-  // instance vars
-  JLabel _baseLabel = new JLabel("Base : "); 
-  JTextField _baseField = new JTextField(); 
-  public JLabel _deploymentLocationLabel = new JLabel("Node-Instance: ");
-  public static JTextField _deploymentLocationField = new JTextField();
-
-  // declare and initialize all widgets
   ////////////////////////////////////////////////////////////////
   // contructors
   public PropPanelComponentInstance() {
-    super("ComponentInstance Properties");
-    _deploymentLocationField.setEditable(false);
-    GridBagLayout gb = (GridBagLayout) getLayout();
-    GridBagConstraints c = new GridBagConstraints();
-    c.fill = GridBagConstraints.BOTH;
-    c.weightx = 0.0;
-    c.ipadx = 0; c.ipady = 0;
+    super("ComponentInstance Properties",2);
 
-
-    c.gridx = 0;
-    c.gridwidth = 1;
-    c.gridy = 1; 
-    c.weightx = 0.0; 
-    gb.setConstraints(_baseLabel, c); 
-    add(_baseLabel); 
-    c.gridy = 2;
-    gb.setConstraints(_deploymentLocationLabel, c);
-    add(_deploymentLocationLabel);
-        
-    c.weightx = 1.0; 
-    c.gridx = 1; 
-    c.gridy = 1; 
-    _baseField.setMinimumSize(new Dimension(120, 20)); 
-    gb.setConstraints(_baseField, c); 
-    add(_baseField); 
-    _baseField.addKeyListener(this); 
-    _baseField.addFocusListener(this); 
-  }
-
-  ////////////////////////////////////////////////////////////////
-  // accessors
-
-  /** Set the values to be shown in all widgets based on model */
-  protected void setTargetInternal(Object t) {
-    super.setTargetInternal(t);
-    MComponentInstance coi = (MComponentInstance) t;
-    if (coi.getNodeInstance() != null) {
-      MNodeInstance node = (MNodeInstance) coi.getNodeInstance();
-      _deploymentLocationField.setText(node.getName());
-    }
-    else {
-      _deploymentLocationField.setText(null);
-    }
-
-    // construct bases string (comma separated)
-    String baseStr = "";
-    Collection col = coi.getClassifiers(); 
-    if (col != null && col.size() > 0){
-	Iterator it = col.iterator();
-	baseStr = ((MClassifier)it.next()).getName(); 
-	while (it.hasNext()) { 
-	    baseStr += ", "+((MClassifier)it.next()).getName(); 
-	} 
-	_baseField.setText(baseStr);
-    } 
-      
-    else { 
-	_baseField.setText(null); 
-    } 
+    Class mclass = MComponentInstance.class;
     
-    validate();
+    addCaption(new JLabel("Name:"),0,0,0);
+    addField(new UMLTextField(this,new UMLTextProperty(mclass,"name","getName","setName")),0,0,0);
+
+    
+    addCaption(new JLabel("Stereotype:"),1,0,0);
+    JComboBox stereotypeBox = new UMLStereotypeComboBox(this);
+    addField(stereotypeBox,1,0,0);
+    
+
+    addCaption(new JLabel("Namespace:"),2,0,1);
+    JList namespaceList = new UMLList(new UMLNamespaceListModel(this),true);
+    namespaceList.setBackground(getBackground());
+    namespaceList.setForeground(Color.blue);
+    addField(namespaceList,5,0,0);
+    
+    addCaption(new JLabel("Arguments:"),0,1,0);
+    addCaption(new JLabel("Receives:"),1,1,0);
+    addCaption(new JLabel("Sends:"),2,1,0);
+    addCaption(new JLabel("Classifiers:"),3,1,0);
+    addCaption(new JLabel("Links:"),4,1,1);
   }
+
   
-  public void setTargetBase() {  
-    if (_target == null) return;  
-    if (_inChange) return; 
-  
-    MComponentInstance coi = (MComponentInstance) _target; 
-
-    //little hack: use ParserDisplay instead...
-
-    String toBeParsed = coi.getName() + ":" + _baseField.getText();
-    ParserDisplay.SINGLETON.parseComponentInstance(coi, toBeParsed); 
-
-  }  
- 
-
-  ////////////////////////////////////////////////////////////////
-  // event handlers
-
-    public void focusLost(FocusEvent e){
-	super.focusLost(e);
-	if (e.getComponent() == _baseField)
-	    setTargetBase();
-    }
-
-  static final long serialVersionUID = 4536645723645617622L;
   
 } /* end class PropPanelComponentInstance */
 

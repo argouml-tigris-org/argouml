@@ -23,61 +23,82 @@
 
 package org.argouml.uml.ui.foundation.core;
 
-import java.awt.*;
-import java.awt.event.*;
-import java.util.*;
-import java.beans.*;
-import javax.swing.*;
-import javax.swing.event.*;
-import javax.swing.tree.*;
-import javax.swing.text.*;
-
 import ru.novosoft.uml.foundation.core.*;
-import ru.novosoft.uml.foundation.data_types.*;
-import ru.novosoft.uml.foundation.extension_mechanisms.*;
-import ru.novosoft.uml.model_management.*;
+import javax.swing.*;
+import org.argouml.uml.ui.*;
+import java.awt.*;
+import java.util.*;
 
-import org.argouml.uml.diagram.ui.*;
-
-public class PropPanelDependency extends PropPanelTwoEnds {
+public class PropPanelDependency extends PropPanel {
 
   ////////////////////////////////////////////////////////////////
   // constructors
 
-  public PropPanelDependency() {
-    super("Dependency");
+    public PropPanelDependency() {
+        super("Dependency",2);
 
-  }
+        Class mclass = MDependency.class;
+
+        addCaption(new JLabel("Name:"),0,0,0);
+        addField(new UMLTextField(this,new UMLTextProperty(mclass,"name","getName","setName")),0,0,0);
 
 
-  public String getSourceLabel() {
-    if (!(_target instanceof MDependency)) return "non dep";
-    return "Supplier:";
-  }
-  public String getSourceValue() {
-    if (!(_target instanceof MDependency)) return "non dep";
-    MDependency d = (MDependency) _target;
-    Vector suppliers = new Vector(d.getSuppliers());
-    if (suppliers == null) return "null suppliers";
-    if (suppliers.size() == 0) return "no suppliers";
-    MModelElement sup = (MModelElement) suppliers.elementAt(0);
-    if (sup == null) return "null";
-    return sup.getName();
-  }
-  public String getDestLabel() {
-    if (!(_target instanceof MDependency)) return "non dep";
-    return "Client:";
-  }
-  public String getDestValue() {
-    if (!(_target instanceof MDependency)) return "non dep";
-    MDependency d = (MDependency) _target;
-    Vector clients = new Vector(d.getClients());
-    if (clients == null) return "null clients";
-    if (clients.size() == 0) return "no clients";
-    MModelElement tar = (MModelElement) clients.elementAt(0);
-    if (tar == null) return "null";
-    return tar.getName();
-  }
+        addCaption(new JLabel("Stereotype:"),1,0,0);
+        JComboBox stereotypeBox = new UMLStereotypeComboBox(this);
+        addField(stereotypeBox,1,0,0);
+
+
+        addCaption(new JLabel("Namespace:"),2,0,1);
+        JList namespaceList = new UMLList(new UMLNamespaceListModel(this),true);
+        namespaceList.setBackground(getBackground());
+        namespaceList.setForeground(Color.blue);
+        addField(namespaceList,2,0,0);
+
+        addCaption(new JLabel("Suppliers:"),0,1,0.5);
+        JList suppliersList = new UMLList(new UMLReflectionListModel(this,"supplier",true,"getSuppliers","setSuppliers",null,null),true);
+        suppliersList.setForeground(Color.blue);
+        suppliersList.setVisibleRowCount(1);
+        addField(new JScrollPane(suppliersList),1,1,0.5);
+
+        addCaption(new JLabel("Clients:"),1,1,0.5);
+        JList clientsList = new UMLList(new UMLReflectionListModel(this,"client",true,"getClients","setClients",null,null),true);
+        clientsList.setForeground(Color.blue);
+        clientsList.setVisibleRowCount(1);
+        addField(new JScrollPane(clientsList),1,1,0.5);
+    }
+
+    public Collection getSuppliers() {
+        Collection suppliers = null;
+        Object target = getTarget();
+        if(target instanceof MDependency) {
+            suppliers = ((MDependency) target).getSuppliers();
+        }
+        return suppliers;
+    }
+    
+    public void setSuppliers(Collection suppliers) {
+        Object target = getTarget();
+        if(target instanceof MDependency) {
+            ((MDependency) target).setSuppliers(suppliers);
+        }
+    }
+    
+    public Collection getClients() {
+        Collection suppliers = null;
+        Object target = getTarget();
+        if(target instanceof MDependency) {
+            suppliers = ((MDependency) target).getClients();
+        }
+        return suppliers;
+    }
+    
+    public void setClients(Collection suppliers) {
+        Object target = getTarget();
+        if(target instanceof MDependency) {
+            ((MDependency) target).setClients(suppliers);
+        }
+    }
+    
   
-
 } /* end class PropPanelDependency */
+
