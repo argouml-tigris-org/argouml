@@ -40,7 +40,8 @@ public class UMLFeatureOwnerComboBoxModel extends UMLComboBoxModel2 {
      */
     public UMLFeatureOwnerComboBoxModel() {
         super("owner", false);
-        UmlModelEventPump.getPump().addClassModelEventListener(this, (Class)ModelFacade.NAMESPACE, "ownedElement");
+        UmlModelEventPump.getPump().addClassModelEventListener(this, 
+                (Class) ModelFacade.NAMESPACE, "ownedElement");
     }
 
     /**
@@ -54,7 +55,8 @@ public class UMLFeatureOwnerComboBoxModel extends UMLComboBoxModel2 {
      * @see org.argouml.uml.ui.UMLComboBoxModel2#buildModelList()
      */
     protected void buildModelList() {
-        setElements(ModelManagementHelper.getHelper().getAllModelElementsOfKind((Class)ModelFacade.CLASSIFIER));
+        setElements(ModelManagementHelper.getHelper()
+                .getAllModelElementsOfKind((Class) ModelFacade.CLASSIFIER));
     }
 
     /**

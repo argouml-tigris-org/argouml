@@ -63,7 +63,9 @@ public class UMLDiagramNameDocument extends UMLPlainTextDocument {
     protected String getProperty() {
         Object target = ProjectManager.getManager().getCurrentProject()
                 .getActiveDiagram();
-        if (target instanceof ArgoDiagram) { return ((ArgoDiagram) target).getName(); }
+        if (target instanceof ArgoDiagram) { 
+            return ((ArgoDiagram) target).getName(); 
+        }
         return "";
     }
 

@@ -33,7 +33,8 @@ import org.argouml.uml.ui.UMLMultiplicityComboBoxModel;
  * @author jaap.branderhorst@xs4all.nl	
  * @since Jan 6, 2003
  */
-public class UMLStructuralFeatureMultiplicityComboBoxModel extends UMLMultiplicityComboBoxModel {
+public class UMLStructuralFeatureMultiplicityComboBoxModel 
+    extends UMLMultiplicityComboBoxModel {
 
     /**
      * Constructor for UMLStructuralFeatureMultiplicityComboBoxModel.
@@ -46,7 +47,8 @@ public class UMLStructuralFeatureMultiplicityComboBoxModel extends UMLMultiplici
      * @see org.argouml.uml.ui.UMLComboBoxModel2#getSelectedModelElement()
      */
     protected Object getSelectedModelElement() {
-        if (getTarget() != null && (org.argouml.model.ModelFacade.isAStructuralFeature(getTarget()))) 
+        if (getTarget() != null 
+                && (ModelFacade.isAStructuralFeature(getTarget()))) 
             return ModelFacade.getMultiplicity(getTarget());
         return null;
     }

@@ -48,7 +48,8 @@ public class UMLGeneralizationPowertypeComboBoxModel
      */
     public UMLGeneralizationPowertypeComboBoxModel() {
         super("powertype", true);
-        UmlModelEventPump.getPump().addClassModelEventListener(this, (Class)ModelFacade.NAMESPACE, "ownedElement");
+        UmlModelEventPump.getPump().addClassModelEventListener(this, 
+                (Class) ModelFacade.NAMESPACE, "ownedElement");
     }
 
     /**
@@ -70,9 +71,13 @@ public class UMLGeneralizationPowertypeComboBoxModel
         Iterator it = p.getUserDefinedModels().iterator();
         while (it.hasNext()) {
 	    Object model = /*(MModel)*/ it.next();
-	    elements.addAll(ModelManagementHelper.getHelper().getAllModelElementsOfKind(model, (Class)ModelFacade.CLASSIFIER));
+	    elements.addAll(ModelManagementHelper.getHelper()
+                .getAllModelElementsOfKind(model, 
+                        (Class) ModelFacade.CLASSIFIER));
         }
-        elements.addAll(ModelManagementHelper.getHelper().getAllModelElementsOfKind(p.getDefaultModel(), (Class)ModelFacade.CLASSIFIER));
+        elements.addAll(ModelManagementHelper.getHelper()
+                .getAllModelElementsOfKind(p.getDefaultModel(), 
+                        (Class) ModelFacade.CLASSIFIER));
         setElements(elements);
     }
 
