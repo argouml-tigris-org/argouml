@@ -61,31 +61,43 @@ public abstract class PropPanelState extends PropPanelStateVertex {
     public PropPanelState(String name,ImageIcon icon, int columns) {
 	super(name, icon, columns);
 
-        UMLModelElementListModel entryModel=new UMLReflectionListModel(this, "entry",true,"getEntryAction",null, "addEntryAction","deleteEntryAction");
+        UMLModelElementListModel entryModel=new UMLReflectionListModel(this, "entry",true,
+                                                "getEntryAction",null, "addEntryAction",
+                                                "deleteEntryAction");
 	entryModel.setUpperBound(1);
 	entryList = new UMLList(entryModel,true);
 	entryList.setForeground(Color.blue);
 	entryList.setVisibleRowCount(1);
 	entryList.setFont(smallFont);
-        entryScroll = new JScrollPane(entryList,JScrollPane.VERTICAL_SCROLLBAR_NEVER,JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        entryScroll = new JScrollPane(entryList,JScrollPane.VERTICAL_SCROLLBAR_NEVER,
+                                      JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 
-	UMLModelElementListModel exitModel=new UMLReflectionListModel(this,"exit",true,"getExitAction",null,"addExitAction","deleteExitAction");
+	UMLModelElementListModel exitModel=new UMLReflectionListModel(this,"exit",true,
+                                           "getExitAction",null,"addExitAction",
+                                           "deleteExitAction");
 	exitModel.setUpperBound(1);
 	exitList = new UMLList(exitModel,true);
 	exitList.setForeground(Color.blue);
 	exitList.setVisibleRowCount(1);
 	exitList.setFont(smallFont);
-        exitScroll = new JScrollPane(exitList,JScrollPane.VERTICAL_SCROLLBAR_NEVER,JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        exitScroll = new JScrollPane(exitList,JScrollPane.VERTICAL_SCROLLBAR_NEVER,
+                                     JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 
-	UMLModelElementListModel doModel=new UMLReflectionListModel(this,"doActivity",true,"getDoActivity",null,"addDoActivity","deleteExitAction");
+	UMLModelElementListModel doModel=new UMLReflectionListModel(this,"doActivity",true,
+                                         "getDoActivity",null,"addDoActivity",
+                                         "deleteExitAction");
 	doModel.setUpperBound(1);
 	doList = new UMLList(doModel,true);
 	doList.setForeground(Color.blue);
 	doList.setVisibleRowCount(1);
 	doList.setFont(smallFont);
-        doScroll = new JScrollPane(doList,JScrollPane.VERTICAL_SCROLLBAR_NEVER,JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        doScroll = new JScrollPane(doList,JScrollPane.VERTICAL_SCROLLBAR_NEVER,
+                                   JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 
-	UMLModelElementListModel internalTransitionsModel=new UMLReflectionListModel(this,"internalTransitions",true,"getInternalTransitions",null,"addInternalTransition",null);
+	UMLModelElementListModel internalTransitionsModel=new UMLReflectionListModel(this,
+                                                          "internalTransitions",true,
+                                                          "getInternalTransitions",null,
+                                                          "addInternalTransition",null);
 	internalTransitionsList = new UMLList(internalTransitionsModel,true);
 	internalTransitionsList.setForeground(Color.blue);
 	internalTransitionsList.setFont(smallFont);
