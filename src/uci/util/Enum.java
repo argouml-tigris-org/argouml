@@ -55,6 +55,11 @@ public class Enum implements Enumeration, java.io.Serializable {
     enum(e);
     findNextElement();
   }
+  public Enum(Enumeration e, Functor f) {
+    map(f);
+    enum(e);
+    findNextElement();
+  }
 
   ////////////////////////////////////////////////////////////////
   // accessors and modifiers

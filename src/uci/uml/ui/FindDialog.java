@@ -393,7 +393,13 @@ implements ActionListener, MouseListener {
     if (t instanceof TabSpawnable) {
       ((TabSpawnable)t).spawn();
       _resultTabs.removeElementAt(tab);
-      _location.removeItem(((TabSpawnable)t).getTitle());
+      try {
+	_location.removeItem("In Tab:" + ((TabSpawnable)t).getTitle());
+	// needs-more-work: two tabs with the same name?
+      }
+      catch (IllegalArgumentException ex) {
+	System.out.println("problem removing tab in FindDialog.java");
+      }
     }
   }
 

@@ -139,6 +139,11 @@ implements Runnable, MouseListener, ActionListener, ListSelectionListener {
     _relatedLabel.setText("Related Elements: ");
   }
 
+  public TabSpawnable spawn() {
+    TabResults newPanel = (TabResults) super.spawn();
+    newPanel.setResults(_results, _diagrams);
+    return newPanel;
+  }
   ////////////////////////////////////////////////////////////////
   // ActionListener implementation
 

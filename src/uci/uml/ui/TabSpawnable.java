@@ -75,12 +75,12 @@ public class TabSpawnable extends JPanel implements Cloneable {
   ////////////////////////////////////////////////////////////////
   // actions
 
-  public void spawn() {
+  public TabSpawnable spawn() {
     JFrame f = new JFrame();
     f.getContentPane().setLayout(new BorderLayout());
     f.setTitle(_title);
     TabSpawnable newPanel = (TabSpawnable) clone();
-    if (newPanel == null) return; //failed to clone
+    if (newPanel == null) return null; //failed to clone
     newPanel.setTitle(_title);
     if (newPanel instanceof TabToDoTarget) {
       TabToDoTarget me = (TabToDoTarget) this;
@@ -105,6 +105,8 @@ public class TabSpawnable extends JPanel implements Cloneable {
 
     if (_tear && (getParent() instanceof JTabbedPane))
       ((JTabbedPane)getParent()).remove(this);
+
+    return newPanel;
   }
 
 } /* end class TabSpawnable */

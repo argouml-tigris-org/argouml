@@ -52,6 +52,7 @@ CLASSES = \
 	EmailExpertDialog.class \
 	EmptyProject.class \
 	FindDialog.class \
+	ChildGenRelated.class \
 	GoalsDialog.class \
 	JasonsTheme.class \
 	JasonsBigTheme.class \

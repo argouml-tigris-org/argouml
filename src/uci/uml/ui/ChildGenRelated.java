@@ -52,7 +52,8 @@ public class ChildGenRelated implements ChildGenerator {
 
     if (o instanceof Package) {
       Vector ownedElements = ((Package)o).getOwnedElement();
-      if (ownedElements != null) return ownedElements.elements();
+      if (ownedElements != null)
+	return new Enum(ownedElements.elements(), EOElement.SINGLETON);
     }
 
     if (o instanceof Classifier) {
@@ -143,3 +144,11 @@ public class ChildGenRelated implements ChildGenerator {
   }
 } /* end class ChildGenRelated */
 
+
+class EOElement implements Functor {
+  public static EOElement SINGLETON = new EOElement();
+  public Object apply(Object x) {
+    if (!(x instanceof ElementOwnership)) return x;
+    return ((ElementOwnership)x).getModelElement();
+  }
+} /* end class EOElement */
