@@ -78,8 +78,8 @@ public class PropPanelClass extends PropPanelClassifier {
 
     addSeperator();
 
-    addField(Argo.localize("UMLMenu", "label.clientdependency"), getClientDependencyScroll());
-    addField(Argo.localize("UMLMenu", "label.supplierdependency"), getSupplierDependencyScroll());
+    addField(Argo.localize("UMLMenu", "label.client-dependencies"), getClientDependencyScroll());
+    addField(Argo.localize("UMLMenu", "label.supplier-dependencies"), getSupplierDependencyScroll());
     addField(Argo.localize("UMLMenu", "label.generalizations"), getGeneralizationScroll());
     addField(Argo.localize("UMLMenu", "label.specializations"), getSpecializationScroll());
 

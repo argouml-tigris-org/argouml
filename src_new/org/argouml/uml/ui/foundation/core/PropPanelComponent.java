@@ -66,8 +66,8 @@ public class PropPanelComponent extends PropPanelClassifier {
 
     addSeperator();
 
-    addField(Argo.localize("UMLMenu", "label.clientdependency"), getClientDependencyScroll());
-    addField(Argo.localize("UMLMenu", "label.supplierdependency"), getSupplierDependencyScroll());
+    addField(Argo.localize("UMLMenu", "label.client-dependencies"), getClientDependencyScroll());
+    addField(Argo.localize("UMLMenu", "label.supplier-dependencies"), getSupplierDependencyScroll());
 
     new PropPanelButton(this,buttonPanel,_navUpIcon, Argo.localize("UMLMenu", "button.go-up"),"navigateUp",null);
     new PropPanelButton(this,buttonPanel,_deleteIcon, Argo.localize("UMLMenu", "button.delete-class"),"removeElement",null);
