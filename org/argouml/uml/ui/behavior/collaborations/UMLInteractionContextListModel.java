@@ -53,8 +53,8 @@ public class UMLInteractionContextListModel
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(Object)
      */
     protected boolean isValidElement(Object/*MBase*/ elem) {
-        return org.argouml.model.ModelFacade.isACollaboration(elem) && 
-            ModelFacade.getInteractions(elem).contains(getTarget());
+        return org.argouml.model.ModelFacade.isACollaboration(elem)  
+            && ModelFacade.getInteractions(elem).contains(getTarget());
     }
 
 }

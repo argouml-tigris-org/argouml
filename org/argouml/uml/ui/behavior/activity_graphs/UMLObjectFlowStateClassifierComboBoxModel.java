@@ -48,17 +48,16 @@ public class UMLObjectFlowStateClassifierComboBoxModel
     public UMLObjectFlowStateClassifierComboBoxModel() {
         super("classifier", false);
         UmlModelEventPump.getPump().addClassModelEventListener(this, 
-                (Class)ModelFacade.CLASSIFIER, "type");
+                (Class) ModelFacade.CLASSIFIER, "type");
     }
     
     /**
      * @see org.argouml.uml.ui.UMLComboBoxModel2#isValidElement(Object)
      */
     protected boolean isValidElement(Object o) {
-        return ModelFacade.isAClassifier(o) 
-        //&& CoreHelper.getHelper().isValidNamespace(
+        return ModelFacade.isAClassifier(o); 
+        // && CoreHelper.getHelper().isValidNamespace(
         //      /*(MModelElement)*/ getTarget(), /*(MNamespace)*/ o)
-        ;
     }
     
     /**  

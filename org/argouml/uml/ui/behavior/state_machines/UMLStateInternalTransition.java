@@ -51,7 +51,8 @@ public class UMLStateInternalTransition extends UMLModelElementListModel2 {
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(Object)
      */
     protected boolean isValidElement(Object/*MBase*/ element) {
-        return ModelFacade.getInternalTransitions(getTarget()).contains(element);
+        return ModelFacade.getInternalTransitions(getTarget())
+            .contains(element);
     }
 
 }

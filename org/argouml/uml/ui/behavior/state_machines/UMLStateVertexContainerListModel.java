@@ -31,7 +31,8 @@ import org.argouml.uml.ui.UMLModelElementListModel2;
  * @since Dec 15, 2002
  * @author jaap.branderhorst@xs4all.nl
  */
-public class UMLStateVertexContainerListModel extends UMLModelElementListModel2 {
+public class UMLStateVertexContainerListModel extends UMLModelElementListModel2 
+{
 
     /**
      * Constructor for UMLStateVertexIncomingListModel.

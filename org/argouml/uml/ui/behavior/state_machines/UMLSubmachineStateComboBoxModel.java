@@ -45,7 +45,9 @@ public class UMLSubmachineStateComboBoxModel extends UMLComboBoxModel2 {
      * @see org.argouml.uml.ui.UMLComboBoxModel2#isValidElement(Object)
      */
     protected boolean isValidElement(Object element) {
-        return (org.argouml.model.ModelFacade.isAStateMachine(element) && element != StateMachinesHelper.getHelper().getStateMachine(getTarget()));
+        return (org.argouml.model.ModelFacade.isAStateMachine(element) 
+            && element != StateMachinesHelper.getHelper()
+                .getStateMachine(getTarget()));
     }
 
     /**
@@ -53,7 +55,8 @@ public class UMLSubmachineStateComboBoxModel extends UMLComboBoxModel2 {
      */
     protected void buildModelList() {
         removeAllElements();
-        setElements(StateMachinesHelper.getHelper().getAllPossibleStatemachines(getTarget()));
+        setElements(StateMachinesHelper.getHelper()
+                .getAllPossibleStatemachines(getTarget()));
     }
 
     /**

@@ -54,7 +54,8 @@ public class UMLCollaborationConstrainingElementListModel
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(Object)
      */
     protected boolean isValidElement(Object/*MBase*/ elem) {
-        return (ModelFacade.getConstrainingElements(getTarget()).contains(elem));
+        return (ModelFacade.getConstrainingElements(getTarget())
+                .contains(elem));
     }
 
 }

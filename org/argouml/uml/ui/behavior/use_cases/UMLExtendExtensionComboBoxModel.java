@@ -51,7 +51,8 @@ public class UMLExtendExtensionComboBoxModel extends UMLComboBoxModel2 {
         Object extend = /*(MExtend)*/ getTarget();
         if (extend == null) return;
         Object ns = ModelFacade.getNamespace(extend);
-        addAll(ModelManagementHelper.getHelper().getAllModelElementsOfKind(ns, (Class)ModelFacade.USE_CASE));
+        addAll(ModelManagementHelper.getHelper().getAllModelElementsOfKind(
+                ns, (Class) ModelFacade.USE_CASE));
         if (ModelFacade.getBase(extend) != null) {
             removeElement(ModelFacade.getBase(extend));
         }
@@ -81,14 +82,16 @@ public class UMLExtendExtensionComboBoxModel extends UMLComboBoxModel2 {
      */
     public void targetRemoved(TargetEvent e) {
         // if (e.getNewTarget() != getTarget())
-            UmlModelEventPump.getPump().removeClassModelEventListener(this, (Class)ModelFacade.NAMESPACE, "ownedElement");
+            UmlModelEventPump.getPump().removeClassModelEventListener(this, 
+                    (Class) ModelFacade.NAMESPACE, "ownedElement");
         super.targetRemoved(e);
     }
     /**
      * @see org.argouml.ui.targetmanager.TargetListener#targetSet(org.argouml.ui.targetmanager.TargetEvent)
      */
     public void targetSet(TargetEvent e) {
-        UmlModelEventPump.getPump().addClassModelEventListener(this, (Class)ModelFacade.NAMESPACE, "ownedElement");
+        UmlModelEventPump.getPump().addClassModelEventListener(this, 
+                (Class) ModelFacade.NAMESPACE, "ownedElement");
         super.targetSet(e);
     }
 }

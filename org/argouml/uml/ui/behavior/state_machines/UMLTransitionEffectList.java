@@ -40,7 +40,7 @@ public class UMLTransitionEffectList extends UMLMutableLinkedList {
 
     /**
      * Constructor for UMLTransitionTriggerList.
-     * @param dataModel
+     * @param dataModel the model
      */
     public UMLTransitionEffectList(
         UMLModelElementListModel2 dataModel) {

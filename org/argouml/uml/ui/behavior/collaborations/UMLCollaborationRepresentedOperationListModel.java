@@ -60,8 +60,8 @@ public class UMLCollaborationRepresentedOperationListModel
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(Object)
      */
     protected boolean isValidElement(Object/*MBase*/ elem) {
-        return org.argouml.model.ModelFacade.isAOperation(elem) && 
-            ModelFacade.getRepresentedOperation(getTarget()) == elem;
+        return org.argouml.model.ModelFacade.isAOperation(elem)  
+            && ModelFacade.getRepresentedOperation(getTarget()) == elem;
     }
 
 }

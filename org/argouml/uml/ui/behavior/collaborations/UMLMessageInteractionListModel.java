@@ -55,7 +55,8 @@ public class UMLMessageInteractionListModel extends UMLModelElementListModel2 {
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(Object)
      */
     protected boolean isValidElement(Object/*MBase*/ element) {
-        return org.argouml.model.ModelFacade.isAInteraction(element) && ModelFacade.getInteraction(getTarget()) == element;
+        return org.argouml.model.ModelFacade.isAInteraction(element) 
+            && ModelFacade.getInteraction(getTarget()) == element;
     }
 
 }

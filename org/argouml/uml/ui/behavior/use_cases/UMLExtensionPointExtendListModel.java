@@ -52,7 +52,8 @@ public class UMLExtensionPointExtendListModel
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(Object)
      */
     protected boolean isValidElement(Object/*MBase*/ o) {
-        return org.argouml.model.ModelFacade.isAExtend(o) && ModelFacade.getExtends(getTarget()).contains(o);
+        return org.argouml.model.ModelFacade.isAExtend(o) 
+            && ModelFacade.getExtends(getTarget()).contains(o);
     }
 
 }

@@ -42,9 +42,11 @@ public class UMLIncludeBaseComboBoxModel extends UMLComboBoxModel2 {
      * Constructor for UMLIncludeBaseComboBoxModel.
      */
     public UMLIncludeBaseComboBoxModel() {
-        // there is a bug in NSUML so this model listens for addition modelevents
+        // there is a bug in NSUML so this model 
+        // listens for addition modelevents
         super("addition", false);
-        UmlModelEventPump.getPump().addClassModelEventListener(this, (Class)ModelFacade.NAMESPACE, "ownedElement");
+        UmlModelEventPump.getPump().addClassModelEventListener(this, 
+                (Class) ModelFacade.NAMESPACE, "ownedElement");
     }
 
     /**
@@ -55,7 +57,8 @@ public class UMLIncludeBaseComboBoxModel extends UMLComboBoxModel2 {
         if (inc == null) return;
         List list = new ArrayList();
         Object ns = ModelFacade.getNamespace(inc);
-        list.addAll(ModelManagementHelper.getHelper().getAllModelElementsOfKind(ns, (Class)ModelFacade.USE_CASE));
+        list.addAll(ModelManagementHelper.getHelper()
+                .getAllModelElementsOfKind(ns, (Class) ModelFacade.USE_CASE));
         list.remove(ModelFacade.getAddition(inc));
         addAll(list);
     }
@@ -74,7 +77,9 @@ public class UMLIncludeBaseComboBoxModel extends UMLComboBoxModel2 {
      * @see org.argouml.uml.ui.UMLComboBoxModel2#isValidElement(Object)
      */
     protected boolean isValidElement(Object element) {
-        return ModelFacade.isAUseCase(element) && ModelFacade.getNamespace(element) == ModelFacade.getNamespace(getTarget());
+        return ModelFacade.isAUseCase(element) 
+            && ModelFacade.getNamespace(element) 
+                == ModelFacade.getNamespace(getTarget());
     }
 
 }

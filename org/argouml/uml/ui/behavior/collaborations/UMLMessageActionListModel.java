@@ -54,8 +54,8 @@ public class UMLMessageActionListModel extends UMLModelElementListModel2 {
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(Object)
      */
     protected boolean isValidElement(Object/*MBase*/ elem) {        
-        return ModelFacade.isAAction(elem) && 
-            ModelFacade.getAction(getTarget()) == elem;
+        return ModelFacade.isAAction(elem)  
+            && ModelFacade.getAction(getTarget()) == elem;
     }
 
 }

@@ -56,7 +56,8 @@ public class UMLReceptionSpecificationDocument extends UMLPlainTextDocument {
      */
     protected String getProperty() {
         if (ModelFacade.isAReception(getTarget())) { return ModelFacade
-                .getSpecification(getTarget()); }
+                .getSpecification(getTarget()); 
+        }
         return null;
     }
 

@@ -42,12 +42,19 @@ import org.argouml.uml.ui.UMLMutableLinkedList;
 import org.argouml.uml.ui.foundation.core.PropPanelModelElement;
 import org.argouml.util.ConfigLoader;
 
+/**
+ * The properties panel for a Transition.
+ *
+ */
 public class PropPanelTransition extends PropPanelModelElement {
 
-    protected static Logger cat = Logger.getLogger(PropPanelTransition.class);
+    private static final Logger LOG = 
+        Logger.getLogger(PropPanelTransition.class);
 
-    ////////////////////////////////////////////////////////////////
-    // contructors
+    /**
+     * The constructor.
+     * 
+     */
     public PropPanelTransition() {
         super("Transition", ConfigLoader.getTabPropsOrientation());
 
@@ -70,11 +77,13 @@ public class PropPanelTransition extends PropPanelModelElement {
 
         addSeperator();
 
-        JList sourceList = new UMLLinkedList(new UMLTransitionSourceListModel());
+        JList sourceList = 
+            new UMLLinkedList(new UMLTransitionSourceListModel());
         sourceList.setVisibleRowCount(1);
         addField(Translator.localize("UMLMenu", "label.source"),
                 new JScrollPane(sourceList));
-        JList targetList = new UMLLinkedList(new UMLTransitionTargetListModel());
+        JList targetList = 
+            new UMLLinkedList(new UMLTransitionTargetListModel());
         targetList.setVisibleRowCount(1);
         addField(Translator.localize("UMLMenu", "label.target"),
                 new JScrollPane(targetList));

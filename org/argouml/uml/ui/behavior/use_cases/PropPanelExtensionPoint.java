@@ -74,8 +74,8 @@ public class PropPanelExtensionPoint extends PropPanelModelElement {
 
         addField(Translator.localize("UMLMenu", "label.name"),
                 getNameTextField());
-        //        addField(Translator.localize("UMLMenu", "label.stereotype"),
-        //            new UMLComboBoxNavigator(this, Translator.localize("UMLMenu",
+        //      addField(Translator.localize("UMLMenu", "label.stereotype"),
+        //        new UMLComboBoxNavigator(this, Translator.localize("UMLMenu",
         // "tooltip.nav-stereo"), getStereotypeBox()));
         addField(Translator.localize("UMLMenu", "label.stereotype"),
                 getStereotypeBox());
@@ -124,7 +124,9 @@ public class PropPanelExtensionPoint extends PropPanelModelElement {
 
         // Only works for extension points
 
-        if (!(org.argouml.model.ModelFacade.isAExtensionPoint(target))) { return; }
+        if (!(org.argouml.model.ModelFacade.isAExtensionPoint(target))) { 
+            return; 
+        }
 
         // Get the owning use case and navigate to it if it exists.
 

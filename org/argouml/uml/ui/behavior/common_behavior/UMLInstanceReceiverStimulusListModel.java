@@ -34,7 +34,8 @@ import org.argouml.uml.ui.UMLModelElementListModel2;
  * @author mkl
  *
  */
-public class UMLInstanceReceiverStimulusListModel extends UMLModelElementListModel2 {
+public class UMLInstanceReceiverStimulusListModel 
+    extends UMLModelElementListModel2 {
 
     /**
      * Constructor.

@@ -52,8 +52,8 @@ public class UMLClassifierRoleBaseListModel extends UMLModelElementListModel2 {
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(Object)
      */
     protected boolean isValidElement(Object/*MBase*/ elem) {
-        return ModelFacade.isAClassifier(elem) &&
-             ModelFacade.getBases(getTarget()).contains(elem);
+        return ModelFacade.isAClassifier(elem) 
+            && ModelFacade.getBases(getTarget()).contains(elem);
     }
 
 }
