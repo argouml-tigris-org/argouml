@@ -27,6 +27,7 @@ package org.argouml.cognitive;
 import junit.framework.TestCase;
 
 import org.argouml.application.security.ArgoSecurityManager;
+import org.argouml.model.uml.UmlFactory;
 import org.argouml.model.uml.foundation.core.CoreFactory;
 import org.argouml.uml.diagram.activity.ui.FigActionState;
 import org.argouml.uml.diagram.activity.ui.UMLActivityDiagram;
@@ -59,6 +60,7 @@ import org.argouml.uml.diagram.use_case.ui.UMLUseCaseDiagram;
 import ru.novosoft.uml.foundation.core.MClass;
 
 public class TestItemUID extends TestCase {
+    
 	public TestItemUID(String name) {
 		super(name);
 	}
@@ -213,11 +215,12 @@ public class TestItemUID extends TestCase {
 			(uid == null && uid2 == null)
 				|| (uid != null && uid2 != null && uid.equals(uid2)));
 	}
-	/* (non-Javadoc)
-	     * @see junit.framework.TestCase#setUp()
-	     */
-	protected void setUp() throws Exception {
-		super.setUp();
-		ArgoSecurityManager.getInstance().setAllowExit(true);
-	}
+	
+    
+    protected void setUp() throws Exception {
+        super.setUp();
+        ArgoSecurityManager.getInstance().setAllowExit(true);
+        UmlFactory.getFactory().setGuiEnabled(false);
+    }
+
 }

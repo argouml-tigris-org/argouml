@@ -64,6 +64,7 @@ public class TestUMLModelElementStereotypeComboBoxModel extends TestCase {
     protected void setUp() throws Exception {
         super.setUp();
         ArgoSecurityManager.getInstance().setAllowExit(true);
+        UmlFactory.getFactory().setGuiEnabled(false);
         Project p = ProjectManager.getManager().getCurrentProject();
         model = new UMLModelElementStereotypeComboBoxModel();
         elem = CoreFactory.getFactory().createClass();
@@ -85,6 +86,7 @@ public class TestUMLModelElementStereotypeComboBoxModel extends TestCase {
     protected void tearDown() throws Exception {
         super.tearDown();
         UmlFactory.getFactory().delete(elem);
+        UmlFactory.getFactory().setGuiEnabled(false);   
         MFactoryImpl.setEventPolicy(oldEventPolicy);
         model = null;
     }

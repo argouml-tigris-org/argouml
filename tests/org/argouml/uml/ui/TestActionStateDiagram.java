@@ -75,7 +75,7 @@ public class TestActionStateDiagram extends AbstractTestActionAddDiagram {
      */
     protected void setUp() {
         super.setUp();
-        ProjectBrowser.TheInstance.setTarget(new MClassifierImpl());
+        ProjectBrowser.getInstance().setTarget(new MClassifierImpl());
     }
 
 }

@@ -50,6 +50,7 @@ package org.argouml.model.uml.behavioralelements.usecases;
 import junit.framework.TestCase;
 
 import org.argouml.application.security.ArgoSecurityManager;
+import org.argouml.model.uml.UmlFactory;
 import org.argouml.util.CheckUMLModelHelper;
 
 import ru.novosoft.uml.behavior.use_cases.MExtend;
@@ -134,6 +135,7 @@ public class TestUseCasesFactory extends TestCase {
     
     protected void setUp() {
         ArgoSecurityManager.getInstance().setAllowExit(true);
+        UmlFactory.getFactory().setGuiEnabled(false);
     }
        
 }

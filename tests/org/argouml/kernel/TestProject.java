@@ -25,6 +25,7 @@
 package org.argouml.kernel;
 
 import org.argouml.application.security.ArgoSecurityManager;
+import org.argouml.model.uml.UmlFactory;
 
 import junit.framework.TestCase;
 
@@ -55,8 +56,10 @@ public class TestProject extends TestCase {
      */
     protected void setUp() throws Exception {
         super.setUp();
-        ProjectManager.getManager().setCurrentProject(null);
+        UmlFactory.getFactory().setGuiEnabled(false);
         ArgoSecurityManager.getInstance().setAllowExit(true);
+        ProjectManager.getManager().setCurrentProject(null);
+        
     }
 
     /**

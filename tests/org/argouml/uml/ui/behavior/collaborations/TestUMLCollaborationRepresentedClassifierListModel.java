@@ -59,6 +59,7 @@ public class TestUMLCollaborationRepresentedClassifierListModel
      */
     protected void setUp() throws Exception {
         super.setUp();
+        UmlFactory.getFactory().setGuiEnabled(false);
         ArgoSecurityManager.getInstance().setAllowExit(true);
         elem = CollaborationsFactory.getFactory().createCollaboration();
         oldEventPolicy = MFactoryImpl.getEventPolicy();

@@ -28,17 +28,18 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 
+import junit.framework.TestCase;
+
 import org.argouml.application.security.ArgoSecurityManager;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
+import org.argouml.model.uml.UmlFactory;
 import org.argouml.model.uml.foundation.core.CoreFactory;
 import org.argouml.ui.ProjectBrowser;
 
 import ru.novosoft.uml.foundation.core.MClass;
 import ru.novosoft.uml.foundation.core.MOperation;
 import ru.novosoft.uml.foundation.core.MParameter;
-
-import junit.framework.TestCase;
 
 /**
  * Testclass for the XMIReader. Placeholder for all saving/loading tests
@@ -58,7 +59,8 @@ public class TestXMIReader extends TestCase {
     
     protected void setUp() {
         
-           ArgoSecurityManager.getInstance().setAllowExit(true); 
+           ArgoSecurityManager.getInstance().setAllowExit(true);
+        UmlFactory.getFactory().setGuiEnabled(false); 
        }
 
     /**
@@ -67,10 +69,7 @@ public class TestXMIReader extends TestCase {
      * our dear friends of NSUML. However you can use it to test things quite
      * easily :)
      */
-    public void testReadReturnParameter() {
-        // next statement needed since setActiveDiagram is still on the 
-        // projectbrowser instead of the project
-        new ProjectBrowser();
+    public void testReadReturnParameter() {        
         // next statement should be in a ArgoTestCase or something, is allmost 
         // allways needed
         ArgoSecurityManager.getInstance().setAllowExit(true);

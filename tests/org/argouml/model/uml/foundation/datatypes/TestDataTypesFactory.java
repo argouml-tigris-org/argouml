@@ -44,12 +44,13 @@
 
 package org.argouml.model.uml.foundation.datatypes;
 
-import junit.framework.*;
+import java.util.LinkedList;
 
-import java.util.*;
+import junit.framework.TestCase;
 
 import org.argouml.application.security.ArgoSecurityManager;
-import org.argouml.util.*;
+import org.argouml.model.uml.UmlFactory;
+import org.argouml.util.CheckUMLModelHelper;
 
 public class TestDataTypesFactory extends TestCase {
 
@@ -155,6 +156,7 @@ public class TestDataTypesFactory extends TestCase {
 	protected void setUp() throws Exception {
 		super.setUp();
 		ArgoSecurityManager.getInstance().setAllowExit(true);
+        UmlFactory.getFactory().setGuiEnabled(false);
 	}
 
 }

@@ -122,6 +122,7 @@ public class TestUmlModelEventPump extends TestCase {
         super.setUp(); 
         ArgoSecurityManager.getInstance().setAllowExit(true);
         MFactoryImpl.setEventPolicy(MFactoryImpl.EVENT_POLICY_IMMEDIATE);
+        UmlFactory.getFactory().setGuiEnabled(false);
         elem = CoreFactory.getFactory().createClass();
         ProjectManager.getManager().getCurrentProject().getRoot().addOwnedElement(elem);
         listener = new MockModelEventListener();

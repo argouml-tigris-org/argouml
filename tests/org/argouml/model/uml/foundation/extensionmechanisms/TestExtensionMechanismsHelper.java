@@ -27,6 +27,7 @@ package org.argouml.model.uml.foundation.extensionmechanisms;
 import java.util.Collection;
 
 import org.argouml.application.security.ArgoSecurityManager;
+import org.argouml.model.uml.UmlFactory;
 import org.argouml.model.uml.foundation.core.CoreFactory;
 import org.argouml.util.CheckUMLModelHelper;
 
@@ -79,6 +80,7 @@ public class TestExtensionMechanismsHelper extends TestCase {
     protected void setUp() throws Exception {
         super.setUp();
         ArgoSecurityManager.getInstance().setAllowExit(true);
+        UmlFactory.getFactory().setGuiEnabled(false);
     }
     
 
