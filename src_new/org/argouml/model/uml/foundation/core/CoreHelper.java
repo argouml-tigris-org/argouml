@@ -518,7 +518,7 @@ public class CoreHelper {
 			if (o instanceof MAbstraction) {
 				MAbstraction abstraction = (MAbstraction)o;
 				MStereotype stereo = abstraction.getStereotype();
-				if (stereo != null && stereo.getBaseClass().equals("Abstraction") && stereo.getName().equals("realize")) {					
+				if (stereo != null && stereo.getBaseClass()!=null && stereo.getName() != null && stereo.getBaseClass().equals("Abstraction") && stereo.getName().equals("realize")) {					
 					Iterator it2 = abstraction.getSuppliers().iterator();
 					while (it2.hasNext()) {
 						Object o2 = it2.next();
