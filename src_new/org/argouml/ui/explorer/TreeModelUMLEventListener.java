@@ -32,11 +32,23 @@ package org.argouml.ui.explorer;
  */
 public interface TreeModelUMLEventListener {
     
+    /**
+     * @param node the modelelement that is changed
+     */
     public void modelElementChanged(Object node);
     
+    /**
+     * @param node the modelelement that is added
+     */
     public void modelElementAdded(Object node);
     
+    /**
+     * @param node the modelelement that is removed
+     */
     public void modelElementRemoved(Object node);
     
+    /**
+     * the structure of the model is changed
+     */
     public void structureChanged();
 }

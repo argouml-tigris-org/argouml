@@ -80,7 +80,8 @@ public class ExplorerTree
     private boolean updatingSelection;
     
     /**
-     * prevents target event cycles between this and the Targetmanager for tree selection events
+     * prevents target event cycles between this and the Targetmanager 
+     * for tree selection events
      */
     private boolean updatingSelectionViaTreeSelection;
     
@@ -115,7 +116,7 @@ public class ExplorerTree
      */
     class NavigatorMouseListener extends MouseAdapter {
         
-        JTree mLTree;
+        private JTree mLTree;
         
         public NavigatorMouseListener(JTree newtree) {
             super();
@@ -174,6 +175,9 @@ public class ExplorerTree
      * override default JTree implementation to display the
      * appropriate text for any object that will be displayed in
      * the Nav pane.
+     *
+     * @see javax.swing.JTree#convertValueToText(java.lang.Object, 
+     * boolean, boolean, boolean, int, boolean)
      */
     public String convertValueToText(Object value,
 				     boolean selected,
@@ -340,10 +344,13 @@ public class ExplorerTree
                 TreePath[] addedOrRemovedPaths = e.getPaths();                
                 TreePath[] selectedPaths = getSelectionPaths();
                 List elementsAsList = new ArrayList();                
-                for (int i = 0; selectedPaths != null && i < selectedPaths.length; i++) {
-                    Object element = ((DefaultMutableTreeNode)selectedPaths[i].getLastPathComponent()).getUserObject();
+                for (int i = 0; 
+                    selectedPaths != null && i < selectedPaths.length; i++) {
+                    Object element = ((DefaultMutableTreeNode) selectedPaths[i]
+                                   .getLastPathComponent()).getUserObject();
                     elementsAsList.add(element);
-//                  // scan the visible rows for duplicates of this elem and select them
+//                  // scan the visible rows for duplicates of 
+                    // this elem and select them
                     int rows = getRowCount();
                     for (int row = 0; row < rows; row++) {
                         Object rowItem =
@@ -363,8 +370,9 @@ public class ExplorerTree
                 boolean callSetTarget = true;
                 List addedElements = new ArrayList();
                 for (int i = 0; i < addedOrRemovedPaths.length; i++) {
-                    Object element = ((DefaultMutableTreeNode) addedOrRemovedPaths[i]
-                            .getLastPathComponent()).getUserObject();
+                    Object element = ((DefaultMutableTreeNode) 
+                            addedOrRemovedPaths[i].getLastPathComponent())
+                            .getUserObject();
                     if (!e.isAddedPath(i)) {
                         callSetTarget = false;
                         break;
@@ -373,14 +381,18 @@ public class ExplorerTree
                     }
                 }
                 
-                if (callSetTarget && addedElements.size() == elementsAsList.size() && elementsAsList.containsAll(addedElements)) {              
+                if (callSetTarget && addedElements.size() 
+                        == elementsAsList.size() 
+                        && elementsAsList.containsAll(addedElements)) {
                     TargetManager.getInstance().setTargets(elementsAsList);
                 } else {
-                    // we must call the correct method on targetmanager for each added or removed target
+                    // we must call the correct method on targetmanager 
+                    // for each added or removed target
                     List removedTargets = new ArrayList();
                     List addedTargets = new ArrayList();
                     for (int i = 0; i < addedOrRemovedPaths.length; i++) {
-                        Object element = ((DefaultMutableTreeNode) addedOrRemovedPaths[i]
+                        Object element = ((DefaultMutableTreeNode) 
+                                addedOrRemovedPaths[i]
                              .getLastPathComponent()).getUserObject();
                         if (e.isAddedPath(i)) {
                             addedTargets.add(element);
@@ -388,7 +400,8 @@ public class ExplorerTree
                             removedTargets.add(element);
                         }
                     }
-                    // we can't remove the targets one by one, we have to do it in one go.
+                    // we can't remove the targets one by one, we have to 
+                    // do it in one go.
                     if (!removedTargets.isEmpty()) {
                         Iterator it = removedTargets.iterator();
                         while (it.hasNext()) {
@@ -443,8 +456,9 @@ public class ExplorerTree
                     target = target instanceof Fig ? ((Fig) target).getOwner()
                             : target;
                     for (int j = 0; j < rows; j++) {
-                        Object rowItem = ((DefaultMutableTreeNode) getPathForRow(
-                                j).getLastPathComponent()).getUserObject();
+                        Object rowItem = ((DefaultMutableTreeNode) 
+                            getPathForRow(j).getLastPathComponent())
+                            .getUserObject();
                         if (rowItem == target) {
                             addSelectionRow(j);
                         }
@@ -475,8 +489,9 @@ public class ExplorerTree
                     target = target instanceof Fig ? ((Fig) target).getOwner()
                             : target;
                     for (int j = 0; j < rows; j++) {
-                        Object rowItem = ((DefaultMutableTreeNode) getPathForRow(
-                                j).getLastPathComponent()).getUserObject();
+                        Object rowItem = ((DefaultMutableTreeNode) 
+                            getPathForRow(j).getLastPathComponent())
+                                .getUserObject();
                         if (rowItem == target) {
                             removeSelectionRow(j);
                         }

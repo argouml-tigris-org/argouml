@@ -57,13 +57,13 @@ public class DnDExplorerTree
     extends ExplorerTree 
     implements DragGestureListener, DragSourceListener {
     
-    private static Logger _cat = Logger.getLogger(DnDExplorerTree.class);
+    private static final Logger LOG = Logger.getLogger(DnDExplorerTree.class);
     
     /** the selected node */
-    protected TreePath _selectedTreePath;
+    private TreePath selectedTreePath;
     
     /** dnd source */
-    private DragSource _dragSource;
+    private DragSource dragSource;
     
     /** Creates a new instance of DnDArgoJTree */
     public DnDExplorerTree() {
@@ -72,10 +72,10 @@ public class DnDExplorerTree
         
         this.addTreeSelectionListener(new DnDTreeSelectionListener());
         
-        _dragSource = DragSource.getDefaultDragSource();
+        dragSource = DragSource.getDefaultDragSource();
         
         DragGestureRecognizer dgr =
-	    _dragSource
+	    dragSource
 	        .createDefaultDragGestureRecognizer(
 		    this,
 		    DnDConstants.ACTION_COPY_OR_MOVE, //specifies valid actions
@@ -92,13 +92,15 @@ public class DnDExplorerTree
     
     /**
      * recognises the start of the drag
+     *
+     * @see java.awt.dnd.DragGestureListener#dragGestureRecognized(java.awt.dnd.DragGestureEvent)
      */
     public void dragGestureRecognized(DragGestureEvent dragGestureEvent) {
         
         //Get the selected node from the JTree
-        _selectedTreePath = getSelectionPath();
-        if (_selectedTreePath == null) return;
-        Object dragNode = ((DefaultMutableTreeNode) _selectedTreePath
+        selectedTreePath = getSelectionPath();
+        if (selectedTreePath == null) return;
+        Object dragNode = ((DefaultMutableTreeNode) selectedTreePath
                                 .getLastPathComponent()).getUserObject();
         if (dragNode != null) {
             
@@ -112,7 +114,7 @@ public class DnDExplorerTree
                 cursor = DragSource.DefaultMoveDrop;
             
             //begin the drag
-            _dragSource.startDrag(dragGestureEvent, cursor, transferable, this);
+            dragSource.startDrag(dragGestureEvent, cursor, transferable, this);
         }
     }
     
@@ -122,11 +124,11 @@ public class DnDExplorerTree
     class ArgoDropTargetListener implements DropTargetListener {
         
         public void dragEnter(DropTargetDragEvent dropTargetDragEvent) {
-            _cat.debug("dragEnter");
+            LOG.debug("dragEnter");
 	}
         
         public void dragExit(DropTargetEvent dropTargetEvent) {
-            _cat.debug("dragExit");
+            LOG.debug("dragExit");
             //dropTargetEvent.getDropTargetContext().getComponent()
             //        .setCursor(Cursor.getDefaultCursor());
         }
@@ -145,7 +147,7 @@ public class DnDExplorerTree
             // if destination path is okay accept drop...
             // can't drag to a descendant
             // there will be other rules.
-            if (!_selectedTreePath.isDescendant(destinationPath)) {
+            if (!selectedTreePath.isDescendant(destinationPath)) {
                 dropTargetDragEvent
 		    .acceptDrag(DnDConstants.ACTION_COPY_OR_MOVE);
             }
@@ -161,14 +163,14 @@ public class DnDExplorerTree
          */
         public void drop(java.awt.dnd.DropTargetDropEvent dropTargetDropEvent) {
             
-            _cat.debug("dropping ... ");
+            LOG.debug("dropping ... ");
             try {
                 Transferable tr = dropTargetDropEvent.getTransferable();
                 
                 //flavor not supported, reject drop
                 if (!tr.isDataFlavorSupported( 
 			     TransferableModelElement.ELEM_FLAVOR)) {
-                    _cat.debug("! isDataFlavorSupported");
+                    LOG.debug("! isDataFlavorSupported");
                     dropTargetDropEvent.rejectDrop();
                 }
                 
@@ -176,14 +178,14 @@ public class DnDExplorerTree
                 Object modelElement =
 		    tr.getTransferData(TransferableModelElement.ELEM_FLAVOR );
                 
-                _cat.debug("transfer data = " + modelElement);
+                LOG.debug("transfer data = " + modelElement);
                 
                 //get new parent node
                 Point loc = dropTargetDropEvent.getLocation();
                 TreePath destinationPath = getPathForLocation(loc.x, loc.y);
                 
                 final String msg = isValidDropTarget(destinationPath, 
-                                                     _selectedTreePath);
+                                                     selectedTreePath);
                 if (msg != null) {
                     dropTargetDropEvent.rejectDrop();
                     
@@ -208,7 +210,7 @@ public class DnDExplorerTree
                 
                 //get old parent node
                 Object oldParentME =
-		    ((DefaultMutableTreeNode) _selectedTreePath.getParentPath()
+		    ((DefaultMutableTreeNode) selectedTreePath.getParentPath()
 		             .getLastPathComponent()).getUserObject();
                 
                 int action = dropTargetDropEvent.getDropAction();
@@ -217,7 +219,7 @@ public class DnDExplorerTree
                 
                 try {
                     if (moveAction) {
-                        _cat.debug("move " + modelElement);
+                        LOG.debug("move " + modelElement);
                         ModelFacade.setNamespace(modelElement,
                                                  destinationModelElement);
                     }
@@ -230,22 +232,22 @@ public class DnDExplorerTree
 			    .acceptDrop(DnDConstants.ACTION_MOVE);
                 }
                 catch (java.lang.IllegalStateException ils) {
-                    _cat.debug("drop IllegalStateException");
+                    LOG.debug("drop IllegalStateException");
                     dropTargetDropEvent.rejectDrop();
                 }
                 
                 dropTargetDropEvent.getDropTargetContext().dropComplete(true);
             }
             catch (IOException io) {
-                _cat.debug("drop IOException");
+                LOG.debug("drop IOException");
                 dropTargetDropEvent.rejectDrop();
             }
             catch (UnsupportedFlavorException ufe) {
-                _cat.debug("drop UnsupportedFlavorException");
+                LOG.debug("drop UnsupportedFlavorException");
                 dropTargetDropEvent.rejectDrop();
             }
             catch (Exception e) {
-                _cat.debug("drop Exception");
+                LOG.debug("drop Exception");
                 dropTargetDropEvent.rejectDrop();
             }
         }
@@ -285,19 +287,39 @@ public class DnDExplorerTree
         
     }
     
-    /** DragSourceListener empty implementation - not used */
+    /** 
+     * DragSourceListener empty implementation - not used
+     * 
+     * @see java.awt.dnd.DragSourceListener#dragDropEnd(java.awt.dnd.DragSourceDropEvent)
+     */
     public void dragDropEnd(DragSourceDropEvent dragSourceDropEvent) { }
     
-    /** DragSourceListener empty implementation - not used */
+    /** 
+     * DragSourceListener empty implementation - not used
+     * 
+     * @see java.awt.dnd.DragSourceListener#dragEnter(java.awt.dnd.DragSourceDragEvent)
+     */
     public void dragEnter(DragSourceDragEvent dragSourceDragEvent) { }
     
-    /** DragSourceListener empty implementation - not used */
+    /** 
+     * DragSourceListener empty implementation - not used
+     * 
+     * @see java.awt.dnd.DragSourceListener#dragExit(java.awt.dnd.DragSourceEvent)
+     */
     public void dragExit(DragSourceEvent dragSourceEvent) { }
     
-    /** DragSourceListener empty implementation - not used */
+    /** 
+     * DragSourceListener empty implementation - not used
+     * 
+     * @see java.awt.dnd.DragSourceListener#dragOver(java.awt.dnd.DragSourceDragEvent)
+     */
     public void dragOver(DragSourceDragEvent dragSourceDragEvent) { }
     
-    /** DragSourceListener empty implementation - not used */
+    /** 
+     * DragSourceListener empty implementation - not used
+     * 
+     * @see java.awt.dnd.DragSourceListener#dropActionChanged(java.awt.dnd.DragSourceDragEvent)
+     */
     public void dropActionChanged(DragSourceDragEvent dragSourceDragEvent) { }
     
     /**
@@ -307,27 +329,27 @@ public class DnDExplorerTree
         
         public void valueChanged(TreeSelectionEvent treeSelectionEvent) {
             
-            _selectedTreePath = treeSelectionEvent.getNewLeadSelectionPath();
+            selectedTreePath = treeSelectionEvent.getNewLeadSelectionPath();
         }
         
     }
 }
 
 /**
- * Encaosulates a UML Model element for data transfer.
+ * Encapsulates a UML Model element for data transfer.
  */
 class TransferableModelElement implements Transferable {
     
     public static final DataFlavor ELEM_FLAVOR =
 	new DataFlavor(Object.class, "UML Model Element");
     
-    static DataFlavor flavors[] = {ELEM_FLAVOR };
+    private static DataFlavor flavors[] = {ELEM_FLAVOR };
     
-    Object _modelElement;
+    private Object theModelElement;
     
     public TransferableModelElement(Object modelElement) {
         
-        _modelElement = modelElement;
+        theModelElement = modelElement;
     }
     
     public Object getTransferData(java.awt.datatransfer.DataFlavor dataFlavor)
@@ -336,7 +358,7 @@ class TransferableModelElement implements Transferable {
     {
         
         if (dataFlavor.match(ELEM_FLAVOR)) {
-            return _modelElement;
+            return theModelElement;
         }
         else throw new UnsupportedFlavorException(dataFlavor);
     }
