@@ -31,6 +31,7 @@ import java.util.Set;
 import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.critics.Critic;
 import org.argouml.model.Model;
+import org.argouml.uml.cognitive.UMLDecision;
 
 /**
  * Critic to detect whether a class implements unneedded realizations through
@@ -45,7 +46,7 @@ public class CrAlreadyRealizes extends CrUML {
      */
     public CrAlreadyRealizes() {
         setupHeadAndDesc();
-	addSupportedDecision(CrUML.DEC_INHERITANCE);
+	addSupportedDecision(UMLDecision.INHERITANCE);
 	setKnowledgeTypes(Critic.KT_SEMANTICS, Critic.KT_PRESENTATION);
 	addTrigger("genealization"); //TODO: typo?
 	addTrigger("realization");

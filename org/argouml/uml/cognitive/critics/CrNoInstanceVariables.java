@@ -33,6 +33,7 @@ import org.argouml.cognitive.ToDoItem;
 import org.argouml.cognitive.critics.Critic;
 import org.argouml.cognitive.ui.Wizard;
 import org.argouml.model.Model;
+import org.argouml.uml.cognitive.UMLDecision;
 
 /**
  * A critic to detect if a class has instance variables.
@@ -49,7 +50,7 @@ public class CrNoInstanceVariables extends CrUML {
      */
     public CrNoInstanceVariables() {
         setupHeadAndDesc();
-	addSupportedDecision(CrUML.DEC_STORAGE);
+	addSupportedDecision(UMLDecision.STORAGE);
 	setKnowledgeTypes(Critic.KT_COMPLETENESS);
 	addTrigger("structuralFeature");
     }

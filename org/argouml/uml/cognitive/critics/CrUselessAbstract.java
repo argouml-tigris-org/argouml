@@ -34,6 +34,7 @@ import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.Goal;
 import org.argouml.cognitive.ListSet;
 import org.argouml.model.Model;
+import org.argouml.uml.cognitive.UMLDecision;
 import org.tigris.gef.util.ChildGenerator;
 import org.tigris.gef.util.EnumerationEmpty;
 
@@ -48,7 +49,7 @@ public class CrUselessAbstract extends CrUML {
      */
     public CrUselessAbstract() {
         setupHeadAndDesc();
-	addSupportedDecision(CrUML.DEC_INHERITANCE);
+	addSupportedDecision(UMLDecision.INHERITANCE);
 	addSupportedGoal(Goal.getUnspecifiedGoal());
 	addTrigger("specialization");
 	addTrigger("isAbstract");

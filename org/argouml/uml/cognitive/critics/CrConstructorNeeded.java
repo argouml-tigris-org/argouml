@@ -32,6 +32,7 @@ import org.argouml.cognitive.ToDoItem;
 import org.argouml.cognitive.critics.Critic;
 import org.argouml.cognitive.ui.Wizard;
 import org.argouml.model.Model;
+import org.argouml.uml.cognitive.UMLDecision;
 
 /**
  * A critic to detect when a class requires a constructor.<p>
@@ -59,7 +60,7 @@ public class CrConstructorNeeded extends CrUML {
      */
     public CrConstructorNeeded() {
         setupHeadAndDesc();
-        addSupportedDecision(CrUML.DEC_STORAGE);
+        addSupportedDecision(UMLDecision.STORAGE);
         addKnowledgeType(Critic.KT_CORRECTNESS);
 
         // These may not actually make any difference at present (the code

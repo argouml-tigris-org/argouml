@@ -29,9 +29,10 @@ import java.util.Iterator;
 
 import org.apache.log4j.Logger;
 import org.argouml.cognitive.Designer;
-import org.argouml.cognitive.ToDoItem;
 import org.argouml.cognitive.ListSet;
+import org.argouml.cognitive.ToDoItem;
 import org.argouml.model.Model;
+import org.argouml.uml.cognitive.UMLDecision;
 import org.argouml.uml.cognitive.UMLToDoItem;
 
 /**
@@ -51,7 +52,7 @@ public class CrMultipleInitialStates extends CrUML {
      */
     public CrMultipleInitialStates() {
         setupHeadAndDesc();
-        addSupportedDecision(CrUML.DEC_STATE_MACHINES);
+        addSupportedDecision(UMLDecision.STATE_MACHINES);
         addTrigger("parent");
         addTrigger("kind");
     }

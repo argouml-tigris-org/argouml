@@ -27,6 +27,7 @@ package org.argouml.uml.cognitive.critics;
 
 import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.critics.Critic;
+import org.argouml.uml.cognitive.UMLDecision;
 import org.tigris.gef.presentation.FigEdge;
 
 /** A critic to detect when an edge is very short in order to suggest to
@@ -46,9 +47,9 @@ public class CrZeroLengthEdge extends CrUML {
     public CrZeroLengthEdge() {
 	// TODO: {name} is not expanded for diagram objects
         setupHeadAndDesc();
-	addSupportedDecision(CrUML.DEC_RELATIONSHIPS);
-	addSupportedDecision(CrUML.DEC_INHERITANCE);
-	addSupportedDecision(CrUML.DEC_STATE_MACHINES);
+	addSupportedDecision(UMLDecision.RELATIONSHIPS);
+	addSupportedDecision(UMLDecision.INHERITANCE);
+	addSupportedDecision(UMLDecision.STATE_MACHINES);
 	setKnowledgeTypes(Critic.KT_PRESENTATION);
     }
 

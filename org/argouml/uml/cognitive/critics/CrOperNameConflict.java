@@ -32,6 +32,7 @@ import javax.swing.Icon;
 import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.critics.Critic;
 import org.argouml.model.Model;
+import org.argouml.uml.cognitive.UMLDecision;
 
 /**
  * A critic to detect when a class has operations with two matching
@@ -68,8 +69,8 @@ public class CrOperNameConflict extends CrUML {
      */
     public CrOperNameConflict() {
         setupHeadAndDesc();
-        addSupportedDecision(CrUML.DEC_METHODS);
-        addSupportedDecision(CrUML.DEC_NAMING);
+        addSupportedDecision(UMLDecision.METHODS);
+        addSupportedDecision(UMLDecision.NAMING);
 
         setKnowledgeTypes(Critic.KT_SYNTAX);
 

@@ -26,6 +26,7 @@ package org.argouml.uml.cognitive.critics;
 
 import org.argouml.cognitive.Designer;
 import org.argouml.model.Model;
+import org.argouml.uml.cognitive.UMLDecision;
 
 /**
  * UML 1.5 Well-formedness rule [4] for Transition.
@@ -39,7 +40,7 @@ public class CrJoinIncomingTransition extends CrUML {
      */
     public CrJoinIncomingTransition() {
         setupHeadAndDesc();
-        addSupportedDecision(CrUML.DEC_STATE_MACHINES);
+        addSupportedDecision(UMLDecision.STATE_MACHINES);
         addTrigger("incoming");
     }
 

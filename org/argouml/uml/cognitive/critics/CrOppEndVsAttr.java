@@ -31,6 +31,7 @@ import java.util.Vector;
 import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.critics.Critic;
 import org.argouml.model.Model;
+import org.argouml.uml.cognitive.UMLDecision;
 
 /**
  * Well-formedness rule [2] for MClassifier. See page 29 of UML 1.1
@@ -47,9 +48,9 @@ public class CrOppEndVsAttr extends CrUML {
      */
     public CrOppEndVsAttr() {
         setupHeadAndDesc();
-        addSupportedDecision(CrUML.DEC_INHERITANCE);
-        addSupportedDecision(CrUML.DEC_RELATIONSHIPS);
-        addSupportedDecision(CrUML.DEC_NAMING);
+        addSupportedDecision(UMLDecision.INHERITANCE);
+        addSupportedDecision(UMLDecision.RELATIONSHIPS);
+        addSupportedDecision(UMLDecision.NAMING);
         setKnowledgeTypes(Critic.KT_SYNTAX);
         addTrigger("associationEnd");
         addTrigger("structuralFeature");

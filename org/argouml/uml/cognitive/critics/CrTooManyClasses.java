@@ -25,6 +25,7 @@
 package org.argouml.uml.cognitive.critics;
 
 import org.argouml.cognitive.Designer;
+import org.argouml.uml.cognitive.UMLDecision;
 import org.argouml.uml.diagram.static_structure.ui.UMLClassDiagram;
 
 /** 
@@ -42,7 +43,7 @@ public class CrTooManyClasses extends AbstractCrTooMany {
     public CrTooManyClasses() {
 	// TODO: <ocl>self.name</ocl> is not expanded for diagram objects
         setupHeadAndDesc();
-	addSupportedDecision(CrUML.DEC_CLASS_SELECTION);
+	addSupportedDecision(UMLDecision.CLASS_SELECTION);
 	setThreshold(20);
     }
 

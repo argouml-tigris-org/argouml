@@ -29,6 +29,7 @@ import java.util.Collection;
 import org.apache.log4j.Logger;
 import org.argouml.cognitive.Designer;
 import org.argouml.model.Model;
+import org.argouml.uml.cognitive.UMLDecision;
 
 
 /**
@@ -52,7 +53,7 @@ public class CrEmptyPackage extends CrUML {
      */
     public CrEmptyPackage() {
         setupHeadAndDesc();
-	addSupportedDecision(CrUML.DEC_MODULARITY);
+	addSupportedDecision(UMLDecision.MODULARITY);
 	addTrigger("ownedElement");
     }
 

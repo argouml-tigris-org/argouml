@@ -24,10 +24,11 @@
 
 package org.argouml.uml.cognitive.critics;
 
+import java.util.Collection;
+
 import org.argouml.cognitive.Designer;
 import org.argouml.model.Model;
-
-import java.util.Collection;
+import org.argouml.uml.cognitive.UMLDecision;
 
 /**
  * UML 1.5 Well-formedness rule [2] for Pseudostates.
@@ -41,7 +42,7 @@ public class CrInvalidHistory extends CrUML {
      */
     public CrInvalidHistory() {
         setupHeadAndDesc();
-        addSupportedDecision(CrUML.DEC_STATE_MACHINES);
+        addSupportedDecision(UMLDecision.STATE_MACHINES);
         addTrigger("outgoing");
     }
 

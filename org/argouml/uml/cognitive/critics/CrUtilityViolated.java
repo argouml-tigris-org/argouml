@@ -30,6 +30,7 @@ import java.util.Iterator;
 
 import org.argouml.cognitive.Designer;
 import org.argouml.model.Model;
+import org.argouml.uml.cognitive.UMLDecision;
 
 /**
  * A critic to detect when a class can never have instances (of
@@ -46,9 +47,9 @@ public class CrUtilityViolated extends CrUML {
      */
     public CrUtilityViolated() {
         setupHeadAndDesc();
-        addSupportedDecision(CrUML.DEC_STORAGE);
-        addSupportedDecision(CrUML.DEC_STEREOTYPES);
-        addSupportedDecision(CrUML.DEC_CLASS_SELECTION);
+        addSupportedDecision(UMLDecision.STORAGE);
+        addSupportedDecision(UMLDecision.STEREOTYPES);
+        addSupportedDecision(UMLDecision.CLASS_SELECTION);
         addTrigger("stereotype");
         addTrigger("behavioralFeature");
     }

@@ -28,6 +28,7 @@ import javax.swing.Icon;
 
 import org.argouml.cognitive.Designer;
 import org.argouml.model.Model;
+import org.argouml.uml.cognitive.UMLDecision;
 
 /**
  * A critic to detect whether a model element name is legally formed.
@@ -41,7 +42,7 @@ public class CrIllegalName extends CrUML {
      */
     public CrIllegalName() {
         setupHeadAndDesc();
-	addSupportedDecision(CrUML.DEC_NAMING);
+	addSupportedDecision(UMLDecision.NAMING);
 	addTrigger("name");
     }
 

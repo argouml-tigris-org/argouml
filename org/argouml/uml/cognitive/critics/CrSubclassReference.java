@@ -31,11 +31,12 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.argouml.cognitive.Designer;
-import org.argouml.cognitive.ToDoItem;
 import org.argouml.cognitive.ListSet;
+import org.argouml.cognitive.ToDoItem;
 import org.argouml.cognitive.critics.Critic;
 import org.argouml.model.Model;
 import org.argouml.uml.GenDescendantClasses;
+import org.argouml.uml.cognitive.UMLDecision;
 import org.argouml.uml.cognitive.UMLToDoItem;
 
 /**
@@ -51,8 +52,8 @@ public class CrSubclassReference extends CrUML {
      */
     public CrSubclassReference() {
         setupHeadAndDesc();
-	addSupportedDecision(CrUML.DEC_RELATIONSHIPS);
-	addSupportedDecision(CrUML.DEC_PLANNED_EXTENSIONS);
+	addSupportedDecision(UMLDecision.RELATIONSHIPS);
+	addSupportedDecision(UMLDecision.PLANNED_EXTENSIONS);
 	setKnowledgeTypes(Critic.KT_SEMANTICS);
 	addTrigger("specialization");
 	addTrigger("associationEnd");

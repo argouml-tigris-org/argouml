@@ -29,6 +29,7 @@ import java.util.Collection;
 import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.critics.Critic;
 import org.argouml.model.Model;
+import org.argouml.uml.cognitive.UMLDecision;
 
 /**
  * A critic to detect when a state has no outgoing transitions.
@@ -42,7 +43,7 @@ public class CrNoTransitions extends CrUML {
      */
     public CrNoTransitions() {
         setupHeadAndDesc();
-	addSupportedDecision(CrUML.DEC_STATE_MACHINES);
+	addSupportedDecision(UMLDecision.STATE_MACHINES);
 	setKnowledgeTypes(Critic.KT_COMPLETENESS);
 	addTrigger("incoming");
 	addTrigger("outgoing");

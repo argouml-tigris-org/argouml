@@ -30,6 +30,7 @@ import java.util.Iterator;
 import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.critics.Critic;
 import org.argouml.model.Model;
+import org.argouml.uml.cognitive.UMLDecision;
 
 /**
  * A critic to check that no end of a 3-way (or more) association is an
@@ -63,7 +64,7 @@ public class CrNWayAgg extends CrUML {
      */
     public CrNWayAgg() {
         setupHeadAndDesc();
-        addSupportedDecision(CrUML.DEC_CONTAINMENT);
+        addSupportedDecision(UMLDecision.CONTAINMENT);
         setKnowledgeTypes(Critic.KT_SEMANTICS);
 
         // These may not actually make any difference at present (the code

@@ -29,6 +29,7 @@ import java.util.Iterator;
 
 import org.argouml.cognitive.Designer;
 import org.argouml.model.Model;
+import org.argouml.uml.cognitive.UMLDecision;
 
 /**
  * A critic to detect whether the Compositestate attached to a
@@ -44,7 +45,7 @@ public class CrNoInitialState extends CrUML {
      */
     public CrNoInitialState() {
         setupHeadAndDesc();
-	addSupportedDecision(CrUML.DEC_STATE_MACHINES);
+	addSupportedDecision(UMLDecision.STATE_MACHINES);
 	addTrigger("substate");
     }
 

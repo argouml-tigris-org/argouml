@@ -24,15 +24,16 @@
 
 package org.argouml.uml.cognitive.critics;
 
-import org.apache.log4j.Logger;
-import org.argouml.cognitive.Designer;
-import org.argouml.cognitive.ToDoItem;
-import org.argouml.cognitive.ListSet;
-import org.argouml.model.Model;
-import org.argouml.uml.cognitive.UMLToDoItem;
-
 import java.util.Collection;
 import java.util.Iterator;
+
+import org.apache.log4j.Logger;
+import org.argouml.cognitive.Designer;
+import org.argouml.cognitive.ListSet;
+import org.argouml.cognitive.ToDoItem;
+import org.argouml.model.Model;
+import org.argouml.uml.cognitive.UMLDecision;
+import org.argouml.uml.cognitive.UMLToDoItem;
 
 /**
  * UML 1.5 Well-formedness rule [3] for Composite States.
@@ -49,7 +50,7 @@ public class CrMultipleShallowHistoryStates extends CrUML {
      */
     public CrMultipleShallowHistoryStates() {
         setupHeadAndDesc();
-        addSupportedDecision(CrUML.DEC_STATE_MACHINES);
+        addSupportedDecision(UMLDecision.STATE_MACHINES);
         addTrigger("parent");
         addTrigger("kind");
     }

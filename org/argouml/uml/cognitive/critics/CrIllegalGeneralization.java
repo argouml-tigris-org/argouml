@@ -26,6 +26,7 @@ package org.argouml.uml.cognitive.critics;
 
 import org.argouml.cognitive.Designer;
 import org.argouml.model.Model;
+import org.argouml.uml.cognitive.UMLDecision;
 
 /**
  * Well-formedness rule [1] for MGeneralization. See page 32 of UML 1.1
@@ -42,7 +43,7 @@ public class CrIllegalGeneralization extends CrUML {
      */
     public CrIllegalGeneralization() {
         setupHeadAndDesc();
-	addSupportedDecision(CrUML.DEC_INHERITANCE);
+	addSupportedDecision(UMLDecision.INHERITANCE);
 	addTrigger("supertype");
 	addTrigger("subtype");
     }

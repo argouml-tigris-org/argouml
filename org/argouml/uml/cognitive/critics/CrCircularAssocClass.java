@@ -30,6 +30,7 @@ import java.util.Iterator;
 import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.critics.Critic;
 import org.argouml.model.Model;
+import org.argouml.uml.cognitive.UMLDecision;
 
 /**
  * Critic to check that an association class does not take part in further
@@ -45,7 +46,7 @@ public class CrCircularAssocClass extends CrUML {
      */
     public CrCircularAssocClass() {
         setupHeadAndDesc();
-        addSupportedDecision(CrUML.DEC_RELATIONSHIPS);
+        addSupportedDecision(UMLDecision.RELATIONSHIPS);
         setKnowledgeTypes(Critic.KT_SEMANTICS);
     }
 

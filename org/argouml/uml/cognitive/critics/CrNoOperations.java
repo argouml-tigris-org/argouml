@@ -33,6 +33,7 @@ import org.argouml.cognitive.ToDoItem;
 import org.argouml.cognitive.critics.Critic;
 import org.argouml.cognitive.ui.Wizard;
 import org.argouml.model.Model;
+import org.argouml.uml.cognitive.UMLDecision;
 
 /**
  * A critic to detect when a class or interface or its base class doesn't
@@ -45,7 +46,7 @@ public class CrNoOperations extends CrUML {
      */
     public CrNoOperations() {
 	setupHeadAndDesc();
-	addSupportedDecision(CrUML.DEC_BEHAVIOR);
+	addSupportedDecision(UMLDecision.BEHAVIOR);
 	setKnowledgeTypes(Critic.KT_COMPLETENESS);
 	addTrigger("behavioralFeature");
     }
