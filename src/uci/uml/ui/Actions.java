@@ -80,7 +80,8 @@ public class Actions {
   //public static UMLAction AddToProj = new ActionAddToProj();
   public static UMLAction Print = new ActionPrint();
   public static UMLAction SaveGIF = new ActionSaveGIF();
-  public static UMLAction SavePS = new ActionSavePS();
+//   public static UMLAction SavePS = new ActionSavePS();
+  public static UMLAction SaveGraphics = new ActionSaveGraphics();
   public static UMLAction Exit = new ActionExit();
 
   public static UMLAction Undo = new ActionUndo();
@@ -705,15 +706,13 @@ class ActionSaveGIF extends UMLAction {
   }
 } /* end class ActionSaveGIF */
 
+/** Wraps a CmdSaveGIF or CmdSave(E)PS to allow selection of an output file. */
 
-
-/** Wraps a CmdSavePS to allow selection of an output file. */
-
-class ActionSavePS extends UMLAction {
+class ActionSaveGraphics extends UMLAction {
   public static final String separator = "/";
 
-  public ActionSavePS() {
-    super( "Save PS...", NO_ICON);
+  public ActionSaveGraphics() {
+    super( "Save Graphics...", NO_ICON);
   }
 
 
@@ -722,7 +721,6 @@ class ActionSavePS extends UMLAction {
   }
 
   public boolean trySave( boolean overwrite ) {
-    CmdSavePS cmd = new CmdSavePS();
     Object target = ProjectBrowser.TheInstance.getTarget();
     if( target instanceof Diagram ) {
       String defaultName = ((Diagram)target).getName();
@@ -750,11 +748,14 @@ class ActionSavePS extends UMLAction {
 
 	if( chooser == null ) chooser = new JFileChooser();
 
-	chooser.setDialogTitle( "Save Diagram as PS: " + defaultName );
-	FileFilter filter = FileFilters.PSFilter;
-	chooser.addChoosableFileFilter( filter );
-	chooser.setFileFilter( filter );
-	File def = new File(  defaultName + ".ps" ); // is .ps preferred?
+	chooser.setDialogTitle( "Save Diagram as Graphics: " + defaultName );
+	chooser.addChoosableFileFilter( FileFilters.GIFFilter );
+	chooser.addChoosableFileFilter( FileFilters.PSFilter );
+	chooser.addChoosableFileFilter( FileFilters.EPSFilter );
+	// concerning the following lines: is .GIF preferred?
+	chooser.setFileFilter( FileFilters.GIFFilter );
+	File def = new File(  defaultName + "."
+			      + FileFilters.GIFFilter._suffix );
 	chooser.setSelectedFile( def );
 
 	int retval = chooser.showSaveDialog( pb );
@@ -763,6 +764,21 @@ class ActionSavePS extends UMLAction {
 	  if( theFile != null ) {
 	    String path = theFile.getParent();
 	    String name = theFile.getName();
+	    String extension=SuffixFilter.getExtension(name);
+
+	    CmdSaveGraphics cmd=null;
+	    if (FileFilters.PSFilter._suffix.equals(extension)) 
+		cmd = new CmdSavePS();
+	    else if (FileFilters.EPSFilter._suffix.equals(extension)) 
+		cmd = new CmdSaveEPS();
+	    else if (FileFilters.GIFFilter._suffix.equals(extension)) 
+		cmd = new CmdSaveGIF();
+	    else {
+		pb.showStatus("Unknown graphics file type withextension "
+			      +extension);
+		return false;
+	    }
+
 	    if( !path.endsWith( separator ) ) path += separator;
 	    pb.showStatus( "Writing " + path + name + "..." );
 	    if( theFile.exists() && !overwrite ) {
@@ -774,7 +790,7 @@ class ActionSavePS extends UMLAction {
 	      if (response == JOptionPane.NO_OPTION) return false;
 	    }
 	    FileOutputStream fo = new FileOutputStream( theFile );
-	    cmd.setStream( fo );
+	    cmd.setStream(fo);
 	    cmd.doIt();
 	    fo.close();
 	    pb.showStatus( "Wrote " + path + name );
@@ -795,7 +811,7 @@ class ActionSavePS extends UMLAction {
 
     return false;
   }
-} /* end class ActionSavePS */
+} /* end class ActionSaveGraphics */
 
 
 
@@ -1034,7 +1050,9 @@ class ActionNavBack extends UMLAction {
     Project p = ProjectBrowser.TheInstance.getProject();
     if (!(super.shouldBeEnabled() && p != null)) return false;
     NavigatorPane np = ProjectBrowser.TheInstance.getNavPane();
-    return np.canNavBack();
+	if ((np == null)) return false;
+	boolean b = np.canNavBack();
+    return b;
   }
   public void actionPerformed(ActionEvent ae) {
     NavigatorPane np = ProjectBrowser.TheInstance.getNavPane();
@@ -1789,6 +1807,7 @@ class ToDoItemAction extends UMLAction {
   }
 
   public void updateEnabled(Object target) {
+	  if (target == null) return;
     _target = target;
     setEnabled(shouldBeEnabled(target));
   }

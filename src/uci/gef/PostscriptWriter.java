@@ -1,16 +1,14 @@
-// this code is taken from JHotDraw, package CH.ifa.draw.util
-
-
 package uci.gef;
 
 import java.io.*;
-import com.sun.java.util.collections.Hashtable;
+import java.util.Hashtable;
 import java.awt.*;
 import java.awt.image.*;
 
 public class PostscriptWriter extends Graphics {
 
   private PrintWriter p;
+  private boolean autoClose=false;
   private static final String ellipseDef =
                   "%%BeginProcSet: ellipse 1.0 0 \n"
 		+ "/ellipsedict 8 dict def \n"
@@ -26,7 +24,7 @@ public class PostscriptWriter extends Graphics {
 		+ "x y translate \n"
 		+ "xrad yrad scale \n"
 		+ "0 0 1 0 360 arc \n"
-		+ "savematrix setmatrix end } def "
+		+ "savematrix setmatrix end } def \n"
                 + "%%EndProcSet: ellipse 1.0 0 \n";
   private static final String reencodeDef =
                   "%%BeginProcSet: reencode 1.0 0 \n"
@@ -75,33 +73,51 @@ public class PostscriptWriter extends Graphics {
 		+ " /eth /ntilde /ograve /oacute /ocircumflex /otilde /odieresis /divide /oslash /ugrave \n"
 		+ " /uacute /ucircumflex /udieresis /yacute /thorn /ydieresis] def \n";
 
-  private Color fColor = Color.black;
-  private Font fFont = new Font("Helvativa",Font.PLAIN,12);
+  private Color fColor = null;
+  private Font fFont = null;
   private Rectangle clip;
+  private Hashtable fontmap = new Hashtable();
+  private Hashtable colormap = new Hashtable();
 
   public PostscriptWriter(String filename) throws IOException {
-        FileOutputStream stream = new FileOutputStream(filename);
-        p = new PrintWriter(stream);
-	p.println("%!PS-Adobe-2.0");
-	p.print(reencodeDef);
-	p.print(ellipseDef);
-	p.println("%%EndProlog");
-	p.println("%%BeginSetup");
-	p.print(isolatin1encoding);
-	p.println("%%EndSetup");
-	p.println("1 setlinewidth");
+      this(filename,null);
+  }
+
+  public PostscriptWriter(String filename,
+			  Rectangle boundingBox) throws IOException {
+      this(new FileOutputStream(filename),boundingBox);
+      autoClose = true;
   }
 
   public PostscriptWriter(OutputStream stream) throws IOException {
-        p = new PrintWriter(stream);
-	p.println("%!PS-Adobe-2.0");
-	p.print(reencodeDef);
-	p.print(ellipseDef);
-	p.println("%%EndProlog");
-	p.println("%%BeginSetup");
-	p.print(isolatin1encoding);
-	p.println("%%EndSetup");
-	p.println("1 setlinewidth");
+      this(stream,null);
+  }
+  public PostscriptWriter(OutputStream stream,
+			  Rectangle bb) throws IOException {
+      fontmap.put("Dialog","Helvetica");
+      fontmap.put("SansSerif","Helvetica");
+      fontmap.put("DialogInput","Monospaced");
+      p = new PrintWriter(stream);
+      if (bb==null) {
+        p.println("%!PS-Adobe-3.0");
+      } else {
+	p.println("%!PS-Adobe-3.0 EPSF-3.0");
+        p.println("%%BoundingBox: "
+		  +bb.x+" "+bb.y+" "+
+		  (bb.x+bb.width)+" "+(bb.y+bb.height));
+      }
+      p.print(reencodeDef);
+      p.print(ellipseDef);
+      p.println("%%EndProlog");
+      p.println("%%BeginSetup");
+      p.print(isolatin1encoding);
+      p.println("%%EndSetup");
+      p.println("1 setlinewidth");
+      setFont(new Font("Helvetica",Font.PLAIN,12));
+      setColor(Color.black);
+      if (bb!=null) {
+	translate(0,bb.height+2*bb.y);
+      }
   }
 
   public Graphics create() { return this; }
@@ -116,18 +132,31 @@ public class PostscriptWriter extends Graphics {
   public void dispose() {
       	p.println("showpage");
 	p.println("%%Trailer");
-      	p.close();
+	if (autoClose)
+	    p.close();
+	else
+	    p.flush();
+  }
+
+  public void setColorConversion(Color source, Color target) {
+    colormap.put(source,target);
   }
 
   public Color getColor() { return fColor; }
 
   public void setColor(Color c) {
-        fColor = c;
-        final float maxColor = 255;
-        p.print(((float)c.getRed()) / maxColor + " ");
-        p.print(((float)c.getGreen()) / maxColor + " ");
-        p.print(((float)c.getBlue()) / maxColor + " ");
-	p.println("setrgbcolor");
+    Color replaceColor=(Color)colormap.get(c);
+    if (replaceColor!=null) {
+      c=replaceColor;
+    }
+    if (c.equals(fColor))
+      return;
+    fColor = c;
+    final float maxColor = 255;
+    p.print(((float)c.getRed()) / maxColor + " ");
+    p.print(((float)c.getGreen()) / maxColor + " ");
+    p.print(((float)c.getBlue()) / maxColor + " ");
+    p.println("setrgbcolor");
   }
 
   public void setPaintMode() {}
@@ -138,10 +167,12 @@ public class PostscriptWriter extends Graphics {
 
 
   public void setFont(Font font) {
-    if (!fFont.equals(font)) {
+    if (!font.equals(fFont)) {
       fFont = font;
       FontMetrics metrics = getFontMetrics();
       String name = font.getName();
+      if (fontmap.containsKey(name))
+	  name = (String)fontmap.get(name);
       if (font.isBold() || font.isItalic()) {
 	name += "-";
 	if (font.isBold())
@@ -179,15 +210,15 @@ public class PostscriptWriter extends Graphics {
     return false;
   }
 
-private void handlesinglepixel(int x, int y, int pixel) {
-        if (((pixel >> 24) & 0xff) == 0) {
+  private void handlesinglepixel(int x, int y, int pixel) {
+    if (((pixel >> 24) & 0xff) == 0) {
 	  // should be transparent, is printed white:
 	  pixel = 0xffffff;
         }
         p.print(Integer.toHexString((pixel >> 20) & 0x0f)
 	       +Integer.toHexString((pixel >> 12) & 0x0f)
 	       +Integer.toHexString((pixel >> 4)  & 0x0f));
- }
+  }
 
   public boolean drawImage(Image img,
                                    int x,
@@ -442,17 +473,16 @@ private void handlesinglepixel(int x, int y, int pixel) {
       p.println("(" + buf.toString() + ") show");
   }
 
-
-    // if you want to compile this with jdk1.1, you have to comment out this method.
-    // if you want to compile this with jdk1.2, you MUST NOT comment out this method.
-    // Did sun make a good job implementing jdk1.2? :-(((
-    public void drawString(java.text.AttributedCharacterIterator aci, int i1, int i2) {}
-
   public void comment(String cmt) {
       p.println("% " + cmt);
   }
 
-  public void drawString(java.text.CharacterIterator aci, int i1, int
-i2) {}
 
+  // For Java 1.2 uncomment the following lines:
+  //
+  public void drawString(java.text.AttributedCharacterIterator iterator,
+     int i, int j)
+   {
+     throw new RuntimeException("Not supported.");
+   }
 }

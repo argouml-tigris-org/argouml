@@ -33,6 +33,7 @@ SOURCES= \
 	CmdSavePGML.java \
 	CmdSaveGIF.java \
 	CmdSavePS.java \
+	CmdSaveEPS.java \
 	PostscriptWriter.java \
 	CmdScroll.java \
 	CmdSelectAll.java \

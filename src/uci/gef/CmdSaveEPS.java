@@ -21,44 +21,41 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
+// File: CmdSaveEPS.java
+// Classes: CmdSaveEPS
+// Original Author: wienberg@informatik.uni-hamburg.de
 
-package uci.uml.ui;
+package uci.gef;
 
-//import java.io.File;
-//import javax.swing.*;
-//import javax.swing.preview.*;
-//import javax.swing.filechooser.*;
+import com.sun.java.util.collections.*;
+import java.util.Enumeration;
+import java.io.*;
+import java.awt.Rectangle;
 
-public class FileFilters {
 
-  ////////////////////////////////////////////////////////////////
-  // constants
+/** Cmd to save a diagram as PostScript in a supplied OutputStream. 
+ *  Requires the CH.ifa.draw.util.PostscriptWriter class. Operates on the
+ *  diagram in the current editor.
+ *
+ *  Code loosely adapted from CmdSaveGIF.
+ *
+ *  @author Frank Wienberg, wienberg@informatik.uni-hamburg.de
+ */
 
-  public static final SuffixFilter ArgoFilter = new
-  SuffixFilter("argo", "Argo project file");
+public class CmdSaveEPS extends CmdSaveGraphics {
 
-  public static final SuffixFilter XMIFilter = new
-  SuffixFilter("xmi", "Argo model file");
+  public CmdSaveEPS() {
+    super("Save Encapsulated PostScript...", NO_ICON);
+  }
 
-  public static final SuffixFilter PGMLFilter = new
-  SuffixFilter("pgml", "Argo diagram");
+  protected void saveGraphics(OutputStream s, Editor ce,
+			      Rectangle drawingArea)
+                 throws IOException {
+System.out.println("Writing Encapsulated PostScript...");
+      PostscriptWriter ps = new PostscriptWriter(s, drawingArea);
+      ce.print(ps);
+      ps.dispose();
+System.out.println("Wrote Encapsulated PostScript.");
+  }
 
-  public static final SuffixFilter ConfigFilter = new
-  SuffixFilter("config", "Argo configutation file");
-
-  public static final SuffixFilter HistFilter = new
-  SuffixFilter("hist", "Argo history file");
-
-  public static final SuffixFilter LogFilter = new
-  SuffixFilter("log", "Argo usage log");
-
-  public static final SuffixFilter GIFFilter = new
-  SuffixFilter("gif", "GIF image");
-
-  public static final SuffixFilter PSFilter = new
-  SuffixFilter("ps", "PostScript file");
-
-  public static final SuffixFilter EPSFilter = new
-  SuffixFilter("eps", "Encapsulated PostScript file");
-
-} /* end class FileFilters */
+} /* end class CmdSaveEPS */

@@ -82,14 +82,23 @@ public class UMLAction extends AbstractAction {
     p.needsSave();
   }
 
-  public void updateEnabled(Object target) { setEnabled(shouldBeEnabled()); }
-  public void updateEnabled() { setEnabled(shouldBeEnabled()); }
+  public void updateEnabled(Object target) { 
+	  setEnabled(shouldBeEnabled()); 
+  }
+  
+  public void updateEnabled() {
+	  boolean b = shouldBeEnabled();
+	  // System.out.println("b is "+b + " in " +this);
+	  setEnabled(b);
+  }
 
   /** return true if this action should be available to the user. This
    *  method should examine the ProjectBrowser that owns it.  Sublass
    *  implementations of this method should always call
    *  super.shouldBeEnabled first. */
-  public boolean shouldBeEnabled() { return true; }
+  public boolean shouldBeEnabled() { 
+	  return true; 
+  }
 
 
   protected static String stripJunk(String s) {
