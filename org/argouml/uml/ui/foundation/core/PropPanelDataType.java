@@ -66,8 +66,8 @@ public class PropPanelDataType extends PropPanelClassifier {
         super("DataType", lookupIcon("DataType"), 
                 ConfigLoader.getTabPropsOrientation());
 
-        //addField(Translator.localize("label.name"),
-        //        getNameTextField());
+        addField(Translator.localize("label.name"),
+                getNameTextField());
         addField(Translator.localize("label.stereotype"),
                 getStereotypeBox());
         addField(Translator.localize("label.namespace"),
