@@ -27,13 +27,9 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
 import javax.swing.*;
-import javax.swing.event.*;
 import javax.swing.tree.*;
-import javax.swing.plaf.metal.MetalLookAndFeel;
 
-import ru.novosoft.uml.MElementListener;
 import ru.novosoft.uml.foundation.core.*;
-import ru.novosoft.uml.model_management.*;
 
 import org.tigris.gef.base.*;
 import org.tigris.gef.ui.*;
@@ -149,7 +145,7 @@ public class ProjectBrowser extends JFrame
 
     public ProjectBrowser(String appName, StatusBar sb, int theme) {
         super(appName);
-        setCurrentTheme(theme);
+        LookAndFeelMgr.SINGLETON.setCurrentTheme(theme);
         _menuBar = new GenericArgoMenuBar();
         sb.showStatus("Making Project Browser: Navigator Pane");
         sb.incProgress(5);
@@ -260,19 +256,19 @@ public class ProjectBrowser extends JFrame
     protected Component createPanels() {
         // Set preferred sizes from config file
         _toDoPane.setPreferredSize(new Dimension(
-                                                 Configuration.getInteger(Argo.KEY_SCREEN_SOUTHWEST_WIDTH, DEFAULT_COMPONENTWIDTH),
-                                                 Configuration.getInteger(Argo.KEY_SCREEN_SOUTH_HEIGHT, DEFAULT_COMPONENTHEIGHT)
-                                                 ));
+                                   Configuration.getInteger(Argo.KEY_SCREEN_SOUTHWEST_WIDTH, DEFAULT_COMPONENTWIDTH),
+                                   Configuration.getInteger(Argo.KEY_SCREEN_SOUTH_HEIGHT, DEFAULT_COMPONENTHEIGHT)
+                                   ));
 
         if (_southPane != null) {
             _southPane.setPreferredSize(new Dimension(
-                                                      0, Configuration.getInteger(Argo.KEY_SCREEN_SOUTH_HEIGHT, DEFAULT_COMPONENTHEIGHT)
-                                                      ));
+                                        0, Configuration.getInteger(Argo.KEY_SCREEN_SOUTH_HEIGHT, DEFAULT_COMPONENTHEIGHT)
+                                        ));
         }
 
         _navPane.setPreferredSize(new Dimension(
-                                                Configuration.getInteger(Argo.KEY_SCREEN_WEST_WIDTH, DEFAULT_COMPONENTWIDTH),0
-                                                ));
+                                  Configuration.getInteger(Argo.KEY_SCREEN_WEST_WIDTH, DEFAULT_COMPONENTWIDTH),0
+                                  ));
 
         // The workarea is all the visible space except the menu, toolbar and status bar.
         // Workarea is layed out as a BorderSplitPane where the various components that make
@@ -470,7 +466,6 @@ public class ProjectBrowser extends JFrame
     public ToDoPane getToDoPane() { return _toDoPane; }
     public NavigatorPane getNavPane() { return _navPane; }
     public MultiEditorPane getEditorPane() { return _editorPane; }
-    //public DetailsPane getDetailsPane() { return _southPane; }
 
     /**
      * Find the tabpage with the given label and make it the front tab
@@ -616,107 +611,9 @@ public class ProjectBrowser extends JFrame
         return _history.isNavigateForwardEnabled();
     }
 
-    private static final int ThemeNormal = 1;
-    private static final int ThemeBig = 2;
-    private static final int ThemeHuge = 3;
-
     /**
-     * Detecting the theme from the command line.
+     * Save the positions of the screen spliters in the properties file
      */
-    public static int getThemeFromArg(String arg) {
-        if (arg.equalsIgnoreCase("-big")) {
-            return ThemeBig;
-        } else if (arg.equalsIgnoreCase("-huge")) {
-            return ThemeHuge;
-        }
-        return 0;
-    }
-    public static void printThemeArgs() {
-        System.err.println("  -big            use big fonts");
-        System.err.println("  -huge           use huge fonts");
-    }
-
-    private int currentTheme = -1;
-    
-    private int getCurrentTheme() { return currentTheme; }
-    
-    private void setCurrentTheme(int t) {
-        if (t == 0) {
-            t = Configuration.getInteger(Argo.KEY_SCREEN_THEME, ThemeNormal);
-        }
-
-        if (currentTheme == t)
-            return;
-        currentTheme = t;
-        switch (t) {
-        case ThemeNormal:
-        default:
-            currentTheme = ThemeNormal;
-            MetalLookAndFeel.setCurrentTheme(new org.argouml.ui.JasonsTheme());
-            break;
-
-        case ThemeBig:
-            MetalLookAndFeel.setCurrentTheme(new org.argouml.ui.JasonsBigTheme());
-            break;
-
-        case ThemeHuge:
-            MetalLookAndFeel.setCurrentTheme(new org.argouml.ui.JasonsHugeTheme());
-            break;
-        }
-        try {
-            // when the user wants to force the system into using 
-            // a native LAF do so here
-            if ("true".equals(System.getProperty("force.nativelaf","false")))
-                UIManager.setLookAndFeel(UIManager.
-                                         getSystemLookAndFeelClassName());
-            // ... or stay with Metal for ever
-            else
-                UIManager.setLookAndFeel(new MetalLookAndFeel());
-        }
-        catch (UnsupportedLookAndFeelException e) {
-        }
-        catch (ClassNotFoundException e) {
-            cat.error(e);
-        }
-        catch (InstantiationException e) {
-            cat.error(e);
-        }
-        catch (IllegalAccessException e) {
-            cat.error(e);
-        }
-        SwingUtilities.updateComponentTreeUI(this);
-        pack();
-        Configuration.setInteger(Argo.KEY_SCREEN_THEME, currentTheme);
-    }
-
-    
-    public void setCurrentTheme(String arg) {
-        if ("normal".equals(arg))
-            setCurrentTheme(ThemeNormal);
-        else if ("big".equals(arg))
-            setCurrentTheme(ThemeBig);
-        else if ("huge".equals(arg))
-            setCurrentTheme(ThemeHuge);
-        else {
-            cat.error("ProjectBrowser.setCurrentTheme: "
-                      + "Incorrect theme: " + arg);
-        }
-    }
-    
-    public boolean isCurrentTheme(String arg) {
-        if ("normal".equals(arg))
-            return getCurrentTheme() == ThemeNormal;
-        else if ("big".equals(arg))
-            return getCurrentTheme() == ThemeBig;
-        else if ("huge".equals(arg))
-            return getCurrentTheme() == ThemeHuge;
-        else {
-            cat.error("ProjectBrowser.isCurrentTheme: "
-                      + "Incorrect theme: " + arg);
-            return false;
-        }
-    }
-
     public void saveScreenConfiguration() {
         Configuration.setInteger(Argo.KEY_SCREEN_WEST_WIDTH, _navPane.getWidth());
         Configuration.setInteger(Argo.KEY_SCREEN_SOUTHWEST_WIDTH, _toDoPane.getWidth());

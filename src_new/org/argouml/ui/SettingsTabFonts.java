@@ -22,16 +22,20 @@
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 package org.argouml.ui;
+
 import org.argouml.application.ArgoVersion;
 import org.argouml.application.api.*;
 import org.argouml.application.helpers.*;
 import org.argouml.kernel.*;
 import org.argouml.uml.ui.UMLAction;
+
 import java.awt.*;
 import java.awt.event.*;
 import java.beans.*;
+
 import javax.swing.*;
 import java.util.*;
+
 import org.tigris.gef.util.*;
 
 /* This is copied from SettingsTabPreferences */
@@ -40,15 +44,14 @@ import org.tigris.gef.util.*;
  *  @author Linus Tolke
  *  @since  0.9.7
  */
-public class SettingsTabFonts extends SettingsTabHelper
-implements SettingsTabPanel {
+
+public class SettingsTabFonts extends SettingsTabHelper implements SettingsTabPanel {
 
     ButtonGroup _bg = null;
-
     JRadioButton _normal = null;
     JRadioButton _big = null;
     JRadioButton _huge = null;
-    
+
     public SettingsTabFonts() {
         super();
         setLayout(new BorderLayout());
@@ -89,19 +92,19 @@ implements SettingsTabPanel {
 
 	checkConstraints.gridy = 0;
 	_normal = createRadioButton(_bg, "label.fonts.normal",
-				    pb.isCurrentTheme("normal"));
+				    LookAndFeelMgr.SINGLETON.isCurrentTheme("normal"));
 	top.add(_normal, checkConstraints);
 	top.add(new JLabel(""), labelConstraints);
 	top.add(new JLabel(""), fieldConstraints);
 
 	checkConstraints.gridy = 1;
         _big = createRadioButton(_bg, "label.fonts.big",
-				 pb.isCurrentTheme("big"));
+				 LookAndFeelMgr.SINGLETON.isCurrentTheme("big"));
  	top.add(_big, checkConstraints);
 
 	checkConstraints.gridy = 2;
         _huge = createRadioButton(_bg, "label.fonts.huge",
-				  pb.isCurrentTheme("huge"));
+				  LookAndFeelMgr.SINGLETON.isCurrentTheme("huge"));
  	top.add(_huge, checkConstraints);
 
 	add(top, BorderLayout.NORTH);
@@ -113,25 +116,21 @@ implements SettingsTabPanel {
     public void handleSettingsTabSave() {
 	ProjectBrowser pb = ProjectBrowser.TheInstance;
 	if (_normal.isSelected()) {
-	    pb.setCurrentTheme("normal");
+	    LookAndFeelMgr.SINGLETON.setCurrentTheme("normal");
 	}
 	else if (_big.isSelected()) {
-	    pb.setCurrentTheme("big");
+	    LookAndFeelMgr.SINGLETON.setCurrentTheme("big");
 	}
 	else if (_huge.isSelected()) {
-	    pb.setCurrentTheme("huge");
+	    LookAndFeelMgr.SINGLETON.setCurrentTheme("huge");
 	}
     }
 
-    public void handleSettingsTabCancel() {
-    }
-
+    public void handleSettingsTabCancel() {}
     public String getModuleName() { return "SettingsTabFonts"; }
     public String getModuleDescription() { return "Settings of font"; }
     public String getModuleAuthor() { return "ArgoUML Core"; }
     public String getModuleVersion() { return ArgoVersion.VERSION; }
     public String getModuleKey() { return "module.settings.fonts"; }
-
     public String getTabKey() { return "tab.fonts"; }
 }
-

@@ -22,19 +22,17 @@
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 package org.argouml.application;
+
 import org.argouml.application.api.*;
 
 import java.awt.*;
-import java.awt.event.*;
 import java.util.*;
 import java.net.*;
-import java.beans.*;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import javax.swing.*;
-import javax.swing.plaf.metal.MetalLookAndFeel;
 
 import ru.novosoft.uml.model_management.MModel;
 import ru.novosoft.uml.*;
@@ -47,14 +45,11 @@ import org.argouml.cognitive.*;
 import org.argouml.cognitive.ui.*;
 import org.argouml.i18n.Translator;
 import org.argouml.uml.cognitive.critics.*;
-import org.argouml.xml.argo.ArgoParser;
-import org.argouml.uml.ui.UMLAction;
 import org.argouml.util.*;
 import org.argouml.util.logging.*;
 
 import org.argouml.application.security.ArgoSecurityManager;
 import org.argouml.application.security.ArgoAwtExceptionHandler;
-import org.argouml.application.security.ArgoSecurityException;
 
 import org.apache.log4j.*;
 
@@ -127,7 +122,7 @@ public class Main {
         int themeMemory = 0;
         for (int i=0; i < args.length; i++) {
             if (args[i].startsWith("-")) {
-                if ((themeMemory = ProjectBrowser.getThemeFromArg(args[i])) != 0) {
+                if ((themeMemory = LookAndFeelMgr.SINGLETON.getThemeFromArg(args[i])) != 0) {
                     // Remembered!
                 } else if (args[i].equalsIgnoreCase("-help") ||
                            args[i].equalsIgnoreCase("-h") ||
@@ -135,7 +130,7 @@ public class Main {
                            args[i].equalsIgnoreCase("/?")) {
                     System.err.println("Usage: [options] [project-file]");
                     System.err.println("Options include: ");
-                    ProjectBrowser.printThemeArgs();
+                    LookAndFeelMgr.SINGLETON.printThemeArgs();
                     System.err.println("  -nosplash       don't display Argo/UML logo");
                     System.err.println("  -noedem         don't report usage statistics");
                     System.err.println("  -nopreload      don't preload common classes");
@@ -172,8 +167,7 @@ public class Main {
         if (reloadRecent && projectName == null) {
             // If no project was entered on the command line,
             // try to reload the most recent project if that option is true
-            String s = Configuration.getString(Argo.KEY_MOST_RECENT_PROJECT_FILE,
-            "");
+            String s = Configuration.getString(Argo.KEY_MOST_RECENT_PROJECT_FILE, "");
             if (s != "") {
                 File file = new File(s);
                 if (file.exists()) {
@@ -208,8 +202,18 @@ public class Main {
         //  sets locale for menus
         //
 	st.mark("locales");
+        //String lookAndFeelClassName = LookAndFeelMgr.SINGLETON.determineLookAndFeel();
+        String lookAndFeelClassName;
+        if ("true".equals(System.getProperty("force.nativelaf","false"))) {
+            lookAndFeelClassName = UIManager.getSystemLookAndFeelClassName();
+        }
+        else {
+            lookAndFeelClassName = "javax.swing.plaf.metal.MetalLookAndFeel";
+        }
+
+        String lookAndFeelImagePath = "/org/argouml/Images/plaf/" + lookAndFeelClassName.replace('.', '/') + "/toolbarButtonGraphics/general";
         ResourceLoader.addResourceExtension("gif");
-        ResourceLoader.addResourceLocation("/org/argouml/Images/metalLookAndFeel/toolbarButtonGraphics/general");
+        ResourceLoader.addResourceLocation(lookAndFeelImagePath);
         ResourceLoader.addResourceLocation("/org/argouml/Images");
         ResourceLoader.addResourceLocation("/org/tigris/gef/Images");
 
@@ -256,24 +260,20 @@ public class Main {
 
 	st.mark("make empty project");
 
-        if (urlToOpen == null) p = Project.makeEmptyProject();
+        if (urlToOpen == null) {
+            p = Project.makeEmptyProject();
+        }
         else {
-        	// 2002-07-18
-        	// Jaap Branderhorst
-        	// changed the loading of the projectfiles to solve hanging
-        	// of argouml if a project is corrupted. Issue 913
-        	// try catch block added
-        	try {
+            try {
                 p = Project.loadProject(urlToOpen);
-        	}
+            }
             catch (FileNotFoundException fn) {
                 JOptionPane.showMessageDialog(pb,
-                    "Could not find the project file " + urlToOpen.toString() +
-                        "\n",
-                    "Error",
-                    JOptionPane.ERROR_MESSAGE);
-               Argo.log.error("Could not load most recent project file: " + 
-                    urlToOpen.toString());
+                        "Could not find the project file " + urlToOpen.toString() + "\n",
+                        "Error",
+                        JOptionPane.ERROR_MESSAGE);
+                Argo.log.error("Could not load most recent project file: " + 
+                        urlToOpen.toString());
                 Argo.log.error(fn);
                 Configuration.setString(Argo.KEY_MOST_RECENT_PROJECT_FILE, "");
                 urlToOpen = null;
@@ -281,31 +281,30 @@ public class Main {
             }
             catch (IOException io) {
                 JOptionPane.showMessageDialog(pb,
-                    "Could not load the project " + urlToOpen.toString() + 
-                    "\n" +
-                    "Project file probably corrupted.\n" +
-                    "Please file a bug report at argouml.tigris.org including" +
-                    " the corrupted project file.",
-                    "Error",
-                    JOptionPane.ERROR_MESSAGE);
+                        "Could not load the project " + urlToOpen.toString() + "\n" +
+                        "Project file probably corrupted.\n" +
+                        "Please file a bug report at argouml.tigris.org including" +
+                        " the corrupted project file.",
+                        "Error",
+                        JOptionPane.ERROR_MESSAGE);
                 Argo.log.error("Could not load most recent project file: " + 
-                    urlToOpen.toString());
+                        urlToOpen.toString());
                 Argo.log.error(io);
                 Configuration.setString(Argo.KEY_MOST_RECENT_PROJECT_FILE, "");
                 urlToOpen = null;
                 p = Project.makeEmptyProject();
             }   
-        	catch (Exception ex) {
-        		Argo.log.error("Could not load most recent project file: " + 
-                    urlToOpen.toString());
-        		Argo.log.error(ex);
-        		Configuration.setString(Argo.KEY_MOST_RECENT_PROJECT_FILE, "");
-        		urlToOpen = null;
-        		p = Project.makeEmptyProject();
-        	}
+            catch (Exception ex) {
+                Argo.log.error("Could not load most recent project file: " + 
+                urlToOpen.toString());
+                Argo.log.error(ex);
+                Configuration.setString(Argo.KEY_MOST_RECENT_PROJECT_FILE, "");
+                urlToOpen = null;
+                p = Project.makeEmptyProject();
+            }
         }
 
-	st.mark("set project");
+        st.mark("set project");
 
         // Touch the trash
         Trash.SINGLETON.getSize();
@@ -427,7 +426,6 @@ public class Main {
             Argo.log.info("");
         }
 	st = null;
-
 
         //ToolTipManager.sharedInstance().setInitialDelay(500);
         ToolTipManager.sharedInstance().setDismissDelay(50000000);
