@@ -45,7 +45,7 @@ public class ExplorerTreeNode extends DefaultMutableTreeNode {
     /** 
      * Creates a new instance of ExplorerTreeNode.
      * 
-     * @param userObj the first object to put in the new tree
+     * @param userObj the object in the tree
      * @param m the tree model
      */
     public ExplorerTreeNode(Object userObj, ExplorerTreeModel m) {
