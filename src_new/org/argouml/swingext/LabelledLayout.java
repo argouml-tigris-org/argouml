@@ -8,8 +8,11 @@ import javax.swing.*;
 import java.util.*;
 
 /**
- * Same as the standard java class GridLayout but allows more flexability for sizing of columns
- * and rows.
+ * This layout manager attempts to line up all JLabels in the first column and any component
+ * the JLabel is registered with in a second column next to its label.
+ * The height of each row is the largest minimum height of the 2 components.
+ * The width of the first column is the largest preferred width of the 2 components.
+ * The width of the 2nd column is any left over space.
  *
  * @author Bob Tarling
  */
