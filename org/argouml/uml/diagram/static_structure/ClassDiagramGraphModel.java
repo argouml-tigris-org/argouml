@@ -343,21 +343,22 @@ implements VetoableChangeListener  {
     public Object connect(Object fromPort, Object toPort, java.lang.Class edgeClass) {
         cat.debug("connecting: " + fromPort + " and " + toPort + " with " + edgeClass);
 
+        Object connection = null;
         try {
             if (edgeClass == MPermission.class) {
-                return (connectPermission((MModelElement)fromPort, (MModelElement)toPort));
+                connection = (connectPermission((MModelElement)fromPort, (MModelElement)toPort));
             } else if (edgeClass == MUsage.class) {
-                return (connectUsage((MModelElement)fromPort, (MModelElement)toPort));
+                connection = (connectUsage((MModelElement)fromPort, (MModelElement)toPort));
             } else if (edgeClass == MGeneralization.class) {
-                return (connectGeneralization((MModelElement)fromPort, (MModelElement)toPort));
+                connection = (connectGeneralization((MModelElement)fromPort, (MModelElement)toPort));
             } else if (edgeClass == MAssociation.class) {
-                return (connectAssociation((MModelElement)fromPort, (MModelElement)toPort));
+                connection = (connectAssociation((MModelElement)fromPort, (MModelElement)toPort));
             } else if (edgeClass == MDependency.class) {
-                return (connectDependancy((MModelElement)fromPort, (MModelElement)toPort));
+                connection = (connectDependancy((MModelElement)fromPort, (MModelElement)toPort));
             } else if (edgeClass == MAbstraction.class) {
-                return (connectAbstraction((MClass)fromPort, (MInterface)toPort));
+                connection = (connectAbstraction((MClass)fromPort, (MInterface)toPort));
             } else if (edgeClass == MLink.class) {
-                return (connectLink((MInstance)fromPort, (MInstance)toPort));
+                connection = (connectLink((MInstance)fromPort, (MInstance)toPort));
             }
             // else if (edgeClass == MAbstractionImpl.class) {
             //    return connectAbstractionImpl((MInterface)fromPort, (MClass)toPort);
@@ -365,6 +366,8 @@ implements VetoableChangeListener  {
         } catch (ClassCastException ex) {
             // fail silently
         }
+        if (connection != null) return connection;
+        
         cat.debug("Cannot make a "+ edgeClass.getName() +
                      " between a " + fromPort.getClass().getName() +
                      " and a " + toPort.getClass().getName());
@@ -396,9 +399,6 @@ implements VetoableChangeListener  {
         if (fromPort instanceof MInterface && toPort instanceof MInterface)
             return addEdge(CoreFactory.getFactory().buildGeneralization((MInterface)fromPort, (MInterface)toPort));
         
-        cat.debug("Cannot make a "+ MGeneralization.class.getName() +
-                     " between a " + fromPort.getClass().getName() +
-                     " and a " + toPort.getClass().getName());
         return null;
     }
     
@@ -429,9 +429,6 @@ implements VetoableChangeListener  {
         if (fromPort instanceof MInterface && toPort instanceof MClass)
             return addEdge(UmlFactory.getFactory().getCore().buildAssociation((MInterface)fromPort, true, (MClass)toPort, false));
         
-        cat.debug("Cannot make a "+ MAssociation.class.getName() +
-                     " between a " + fromPort.getClass().getName() +
-                     " and a " + toPort.getClass().getName());
         return null;
     }
     
@@ -458,9 +455,6 @@ implements VetoableChangeListener  {
         if (fromPort instanceof MInterface && toPort instanceof MInterface)
             return addEdge(UmlFactory.getFactory().getCore().buildDependency((MInterface)fromPort, (MInterface)toPort));
         
-        cat.debug("Cannot make a "+ MDependency.class.getName() +
-                     " between a " + fromPort.getClass().getName() +
-                     " and a " + toPort.getClass().getName());
         return null;
     }
 
