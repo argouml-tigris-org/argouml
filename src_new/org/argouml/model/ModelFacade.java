@@ -178,6 +178,8 @@ public class ModelFacade {
     ////////////////////////////////////////////////////////////////
     // constants
 
+	// TODO deprecate all of these constants in favor of a separate declaration
+	
     public static final short ACC_PUBLIC = 1;
     public static final short ACC_PRIVATE = 2;
     public static final short ACC_PROTECTED = 3;
