@@ -123,10 +123,9 @@ implements VetoableChangeListener, DelayedVChangeListener, MouseListener, KeyLis
     if (items != null && items.size() > 0) {
       JMenu critiques = new JMenu("Critiques");
       ToDoItem itemUnderMouse = hitClarifier(me.getX(), me.getY());
-      if (itemUnderMouse != null) {
+      if (itemUnderMouse != null)
 	critiques.add(new ActionGoToCritique(itemUnderMouse));
-	critiques.addSeparator();
-      }
+      critiques.addSeparator();
       int size = items.size();
       for (int i = 0; i < size; i++) {
 	ToDoItem item = (ToDoItem) items.elementAt(i);
@@ -134,7 +133,7 @@ implements VetoableChangeListener, DelayedVChangeListener, MouseListener, KeyLis
 	critiques.add(new ActionGoToCritique(item));
       }
       popUpActions.insertElementAt(critiques, 0);
-    } 
+    }
     popUpActions.addElement(Actions.Properties);
     return popUpActions;
   }

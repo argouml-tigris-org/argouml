@@ -34,7 +34,7 @@ import uci.uml.Foundation.Core.*;
 public class GoClassToAssocdClass implements TreeModelPrereqs {
 
   public String toString() { return "Class->Associated Class"; }
-  
+
   public Object getRoot() {
     System.out.println("getRoot should never be called");
     return null;

@@ -69,25 +69,12 @@ implements TabModelTarget {
     this("Properties", "props.PropPanel");
   }
 
+  /** Preload property panels that are commonly used within the first
+   *  few seconds after the tool is launched. */
   protected void initPanels() {
-    // preload commonly used property panels
-    System.out.println("called init prop panels");
     _panels.put(Diagram.class, new PropPanelDiagram());
-    //_panels.put(Model.class, new PropPanelModel());
     _panels.put(MMClass.class, new PropPanelClass());
     _panels.put(Interface.class, new PropPanelInterface());
-    //_panels.put(Attribute.class, new PropPanelAttribute());
-    //_panels.put(Operation.class, new PropPanelOperation());
-    //_panels.put(Association.class, new PropPanelAssociation());
-    //_panels.put(State.class, new PropPanelState());
-    //_panels.put(Transition.class, new PropPanelTransition());
-    //_panels.put(Pseudostate.class, new PropPanelPseudostate());
-    //_panels.put(UseCase.class, new PropPanelUseCase());
-    //_panels.put(Actor.class, new PropPanelActor());
-    //_panels.put(Instance.class, new PropPanelInstance());
-    //_panels.put(Link.class, new PropPanelLink());
-    //_panels.put(Generalization.class, new PropPanelGeneralization());
-    //_panels.put(Realization.class, new PropPanelRealization());
     uci.uml.Main.addPostLoadAction(new InitPanelsLater(_panels));
   }
 
@@ -170,9 +157,11 @@ implements TabModelTarget {
 class InitPanelsLater implements Runnable {
   Hashtable _panels = null;
   public InitPanelsLater(Hashtable p) { _panels = p; }
+
+  /** Load commonly used property panels, but not those that are
+   *  commonly used within a few seconds of the tool being launched. */ 
   public void run() {
     // preload commonly used property panels
-    System.out.println("called init prop panels later");
     _panels.put(Model.class, new PropPanelModel());
     _panels.put(State.class, new PropPanelState());
     _panels.put(Pseudostate.class, new PropPanelPseudostate());
@@ -187,4 +176,4 @@ class InitPanelsLater implements Runnable {
     _panels.put(Instance.class, new PropPanelInstance());
     _panels.put(Link.class, new PropPanelLink());
   }
-}
+} /* end class InitPanelsLater */

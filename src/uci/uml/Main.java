@@ -221,12 +221,24 @@ public class Main {
     c = uci.gef.ModePlace.class;
     c = uci.gef.ModeModify.class;
     c = uci.gef.SelectionResize.class;
+    c = uci.gef.FigPoly.class;
+    c = uci.gef.PathConvPercentPlusConst.class;
+    c = uci.gef.ArrowHeadNone.class;
+    c = uci.gef.Geometry.class;
+
     c = uci.ui.ColorRenderer.class;
+
     c = uci.util.EnumerationEmpty.class;
     c = uci.util.EnumerationSingle.class;
+
+    c = uci.uml.Foundation.Data_Types.ScopeKind.class;
+    c = uci.uml.Foundation.Data_Types.ChangeableKind.class;
+
     c = uci.uml.visual.FigClass.class;
     c = uci.uml.visual.SelectionNodeClarifiers.class;
+    c = uci.uml.visual.SelectionWButtons.class;
     c = uci.uml.visual.SelectionClass.class;
+    c = uci.uml.visual.ModeCreateEdgeAndNode.class;
     c = uci.uml.visual.FigPackage.class;
     c = uci.uml.visual.FigInterface.class;
 

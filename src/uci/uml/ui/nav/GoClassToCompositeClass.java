@@ -80,9 +80,12 @@ public class GoClassToCompositeClass implements TreeModelPrereqs {
       if (!ae.getAggregation().equals(AggregationKind.COMPOSITE)) continue;
       IAssociation asc = ae.getAssociation();
       Vector allEnds = asc.getConnection();
-      Object assocClass = null;
-      if (ae == allEnds.elementAt(0)) assocClass = allEnds.elementAt(1);
-      if (ae == allEnds.elementAt(1)) assocClass = allEnds.elementAt(0);
+      AssociationEnd otherEnd = null;
+      if (ae == allEnds.elementAt(0))
+	otherEnd = (AssociationEnd) allEnds.elementAt(1);
+      if (ae == allEnds.elementAt(1))
+	otherEnd = (AssociationEnd) allEnds.elementAt(0);
+      Classifier assocClass = otherEnd.getType();
       if (assocClass != null && !res.contains(assocClass))
 	res.addElement(assocClass);
       // needs-more-work: handle n-way Associations

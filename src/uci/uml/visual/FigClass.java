@@ -119,6 +119,16 @@ public class FigClass extends FigNodeModelElement {
     return new SelectionClass(this);
   }
 
+  public Vector getPopUpActions(MouseEvent me) {
+    Vector popUpActions = super.getPopUpActions(me);
+    JMenu addMenu = new JMenu("Add");
+    addMenu.add(Actions.AddAttribute);
+    addMenu.add(Actions.AddOperation);
+    popUpActions.insertElementAt(addMenu,
+				 popUpActions.size() - 1);
+    return popUpActions;
+  }
+
   public void setOwner(Object node) {
     super.setOwner(node);
     Object onlyPort = node; //this kngl should be in the GraphModel

@@ -35,7 +35,7 @@ import uci.uml.Foundation.Data_Types.*;
 public class GoClassToAggrClass implements TreeModelPrereqs {
 
   public String toString() { return "Class->Aggregate Class"; }
-  
+
   public Object getRoot() {
     System.out.println("getRoot should never be called");
     return null;
@@ -79,9 +79,12 @@ public class GoClassToAggrClass implements TreeModelPrereqs {
       if (!ae.getAggregation().equals(AggregationKind.AGG)) continue;
       IAssociation asc = ae.getAssociation();
       Vector allEnds = asc.getConnection();
-      Object assocClass = null;
-      if (ae == allEnds.elementAt(0)) assocClass = allEnds.elementAt(1);
-      if (ae == allEnds.elementAt(1)) assocClass = allEnds.elementAt(0);
+      AssociationEnd otherEnd = null;
+      if (ae == allEnds.elementAt(0))
+	otherEnd = (AssociationEnd) allEnds.elementAt(1);
+      if (ae == allEnds.elementAt(1))
+	otherEnd = (AssociationEnd) allEnds.elementAt(0);
+      Classifier assocClass = otherEnd.getType();
       if (assocClass != null && !res.contains(assocClass))
 	res.addElement(assocClass);
       // needs-more-work: handle n-way Associations
