@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -38,7 +38,9 @@ import org.xml.sax.SAXException;
  */
 public class ArgoParser extends SAXParserBase {
 
-    /** logger */
+    /**
+     * Logger.
+     */
     private static final Logger LOG = Logger.getLogger(ArgoParser.class);
 
     ////////////////////////////////////////////////////////////////
@@ -53,7 +55,7 @@ public class ArgoParser extends SAXParserBase {
 
     /**
      * The constructor.
-     * 
+     *
      */
     public ArgoParser() {
         super();
@@ -65,10 +67,10 @@ public class ArgoParser extends SAXParserBase {
     /**
      * @param theProject the project to populate
      * @param is the inputStream
-     * @param addTheMembers true if the members are to be added
      * @throws SAXException on error when parsing xml
      */
-    public void readProject(Project theProject, InputStream is) throws SAXException {
+    public void readProject(Project theProject, InputStream is)
+    	throws SAXException {
 
         if (is == null) {
             throw new IllegalArgumentException(
@@ -91,7 +93,7 @@ public class ArgoParser extends SAXParserBase {
             throw e;
         }
     }
-    
+
     /**
      * Get the project to which the URL is to be parsed.
      * @return the project
@@ -109,7 +111,8 @@ public class ArgoParser extends SAXParserBase {
     }
 
     /**
-     * @see org.argouml.persistence.SAXParserBase#handleStartElement(org.argouml.xml.XMLElement)
+     * @see org.argouml.persistence.SAXParserBase#handleStartElement(
+     *         org.argouml.persistence.XMLElement)
      */
     public void handleStartElement(XMLElement e) throws SAXException {
         if (DBG) {
@@ -131,7 +134,8 @@ public class ArgoParser extends SAXParserBase {
     }
 
     /**
-     * @see org.argouml.persistence.SAXParserBase#handleEndElement(org.argouml.xml.XMLElement)
+     * @see org.argouml.persistence.SAXParserBase#handleEndElement(
+     *         org.argouml.persistence.XMLElement)
      */
     public void handleEndElement(XMLElement e) throws SAXException {
         if (DBG) {
@@ -162,9 +166,9 @@ public class ArgoParser extends SAXParserBase {
             }
         }
     }
-    
+
     /**
-     * @see org.argouml.persistence.SAXParserBase#isElementOfInterest(java.util.String)
+     * @see org.argouml.persistence.SAXParserBase#isElementOfInterest(String)
      */
     protected boolean isElementOfInterest(String name) {
         return tokens.contains(name);
@@ -229,8 +233,9 @@ public class ArgoParser extends SAXParserBase {
      * @param e the element
      */
     protected void handleHistoryfile(XMLElement e) {
-        if (e.getAttribute("name") == null)
+        if (e.getAttribute("name") == null) {
             return;
+        }
         String historyfile = e.getAttribute("name").trim();
         project.setHistoryFile(historyfile);
     }
