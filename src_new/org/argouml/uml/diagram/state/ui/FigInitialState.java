@@ -62,12 +62,6 @@ public class FigInitialState extends FigStateVertex {
     ////////////////////////////////////////////////////////////////
     // instance variables
 
-    /**
-     * UML does not really use ports, so just define one big one so that users
-     * can drag edges to or from any point in the icon.
-     */
-    private FigCircle bigPort;
-
     private FigCircle head;
 
     ////////////////////////////////////////////////////////////////
@@ -77,12 +71,14 @@ public class FigInitialState extends FigStateVertex {
      * Main constructor
      */
     public FigInitialState() {
-        bigPort = new FigCircle(X, Y, WIDTH, HEIGHT, Color.cyan, Color.cyan);
+        FigCircle bigPort = 
+            new FigCircle(X, Y, WIDTH, HEIGHT, Color.cyan, Color.cyan);
         head = new FigCircle(X, Y, WIDTH, HEIGHT, Color.black, Color.black);
         // add Figs to the FigNode in back-to-front order
         addFig(bigPort);
         addFig(head);
-
+        setBigPort(bigPort);
+        
         setBlinkPorts(false); //make port invisble unless mouse enters
         Rectangle r = getBounds();
     }
@@ -104,7 +100,7 @@ public class FigInitialState extends FigStateVertex {
     public Object clone() {
         FigInitialState figClone = (FigInitialState) super.clone();
         Iterator it = figClone.getFigs(null).iterator();
-        figClone.bigPort = (FigCircle) it.next();
+        setBigPort((FigCircle) it.next());
         figClone.head = (FigCircle) it.next();
         return figClone;
     }
@@ -139,14 +135,6 @@ public class FigInitialState extends FigStateVertex {
             }
         }
         return sel;
-    }
-
-    /**
-     * @see org.tigris.gef.presentation.Fig#setOwner(java.lang.Object)
-     */
-    public void setOwner(Object node) {
-        super.setOwner(node);
-        bindPort(node, bigPort);
     }
 
     /**

@@ -117,7 +117,7 @@ public abstract class FigNodeModelElement
         ArgoNotationEventListener {            
 
     private static final Logger LOG =
-	Logger.getLogger(FigNodeModelElement.class);
+        Logger.getLogger(FigNodeModelElement.class);
 
     ////////////////////////////////////////////////////////////////
     // constants
@@ -196,7 +196,7 @@ public abstract class FigNodeModelElement
     ////////////////////////////////////////////////////////////////
     // instance variables
 
-    private FigRect bigPort;
+    private Fig bigPort;
 
     /**
      * use getNameFig() and setNameFig() to access the Figs.
@@ -1451,14 +1451,14 @@ public abstract class FigNodeModelElement
     /**
      * @param bp The _bigPort to set.
      */
-    protected void setBigPort(FigRect bp) {
+    protected void setBigPort(Fig bp) {
         this.bigPort = bp;
     }
 
     /**
      * @return Returns the _bigPort.
      */
-    protected FigRect getBigPort() {
+    protected Fig getBigPort() {
         return bigPort;
     }
 
