@@ -28,6 +28,7 @@ import java.net.InetAddress;
 import com.sun.java.util.collections.*;
 import ru.novosoft.uml.model_management.*;
 import ru.novosoft.uml.foundation.core.*;
+import ru.novosoft.uml.foundation.extension_mechanisms.*;
 import ru.novosoft.uml.behavior.state_machines.*;
 import ru.novosoft.uml.behavior.collaborations.*;
 import ru.novosoft.uml.behavior.use_cases.*;
@@ -93,6 +94,10 @@ public class UUIDManager {
                 me instanceof MCollaboration ||
 				me instanceof MMessage ||
                 me instanceof MAssociation ||
+                me instanceof MAssociationEnd ||
+                me instanceof MGeneralization ||
+                me instanceof MDependency ||
+                me instanceof MStereotype ||
 				me instanceof MUseCase) {
                 uuid = me.getUUID();
                 if (uuid == null) {

@@ -34,10 +34,11 @@ public class DialogConstraint extends JDialog implements ActionListener{
 
     String resultingExpression = null;
 
-    public DialogConstraint(JFrame parentFrame) {
+    public DialogConstraint(MModelElement me, JFrame parentFrame) {
 	super(parentFrame, true);
 	setTitle("Enter new OCL constraint");
 	_expressionField = new JTextArea(4,20);
+	_expressionField.setText("context " + me.getName());
 	_okButton = new JButton("OK");
 	_okButton.addActionListener(this);
 	_cancelButton = new JButton("Cancel");

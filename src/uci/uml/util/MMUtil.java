@@ -20,6 +20,7 @@ public class MMUtil {
 		STANDARDS = new MModelImpl();
 		MStereotype realization = new MStereotypeImpl();
 		realization.setName("realize");
+		realization.setUUID(UUIDManager.SINGLETON.getNewUUID());
 		STANDARDS.addOwnedElement(realization);
 	}
     
@@ -101,14 +102,23 @@ public class MMUtil {
 	}
 		
 	public MAssociation buildAssociation(MClassifier c1, boolean nav1, MClassifier c2, boolean nav2) {
-		
+		// try to put AssociationEnds into the same namespace as the corresponding 
+		// Classifier. If it has none, use the Classifier (which is a namespace itself)
+		MNamespace ns = c1.getNamespace();
+		if (ns == null) ns = c1;
 		MAssociation asc = new MAssociationImpl();
 		MAssociationEnd ae1 = new MAssociationEndImpl();
 		ae1.setType(c1);
 		ae1.setNavigable(nav1);
+		ae1.setNamespace(ns);
+
+		ns = c2.getNamespace();
+		if (ns == null) ns = c2;
 		MAssociationEnd ae2 = new MAssociationEndImpl();
 		ae2.setType(c2);
 		ae2.setNavigable(nav2);
+		ae2.setNamespace(ns);
+
 		asc.addConnection(ae1);
 		asc.addConnection(ae2);
 
@@ -122,6 +132,8 @@ public class MMUtil {
 		MGeneralization gen = new MGeneralizationImpl();
 		gen.setParent(parent);
 		gen.setChild(child);
+		if (parent.getNamespace() != null) gen.setNamespace(parent.getNamespace());
+		else if (child.getNamespace() != null) gen.setNamespace(child.getNamespace());
 		return gen;
 	}
 
@@ -130,6 +142,8 @@ public class MMUtil {
 		realization.setStereotype((MStereotype)STANDARDS.lookup("realize"));
 		realization.addSupplier(supplier);
 		realization.addClient(client);
+		if (supplier.getNamespace() != null) realization.setNamespace(supplier.getNamespace());
+		else if (client.getNamespace() != null) realization.setNamespace(client.getNamespace());
 		return realization;
 	}
 
@@ -137,6 +151,8 @@ public class MMUtil {
 		MBinding binding = new MBindingImpl();
 		binding.addSupplier(supplier);
 		binding.addClient(client);
+		if (supplier.getNamespace() != null) binding.setNamespace(supplier.getNamespace());
+		else if (client.getNamespace() != null) binding.setNamespace(client.getNamespace());
 		return binding;
 	}
 
@@ -144,6 +160,8 @@ public class MMUtil {
 	    MUsage usage = new MUsageImpl();
 		usage.addSupplier(supplier);
 		usage.addClient(client);
+		if (supplier.getNamespace() != null) usage.setNamespace(supplier.getNamespace());
+		else if (client.getNamespace() != null) usage.setNamespace(client.getNamespace());
 		return usage;
 	}
 

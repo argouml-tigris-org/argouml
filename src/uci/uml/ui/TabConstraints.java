@@ -244,7 +244,7 @@ implements TabModelTarget, DocumentListener, ActionListener,
   public void actionPerformed(ActionEvent ae) {
     Object src = ae.getSource();
     if (src == _addButton) {
-	  DialogConstraint dialog = new DialogConstraint(ProjectBrowser.TheInstance);
+	  DialogConstraint dialog = new DialogConstraint(_target, ProjectBrowser.TheInstance);
 	  dialog.setVisible(true); 
 	  String result = dialog.getResultingExpression();
 	  if (result != null) {
