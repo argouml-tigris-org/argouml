@@ -84,7 +84,7 @@ public class WizStep extends JPanel
     private Object _target;
 
     protected static final void setMnemonic(JButton b, String key) {
-	String m = Translator.localize("Cognitive", key);
+	String m = Translator.localize(key);
 	if (m == null)
 	    return;
 	if (m.length() == 1) {
@@ -97,8 +97,8 @@ public class WizStep extends JPanel
     public WizStep() {
 	setMnemonic(_backButton, "mnemonic.button.back");
 	setMnemonic(_nextButton, "mnemonic.button.next");
-	setMnemonic(_finishButton, "mnemonic.bundle.finish");
-	setMnemonic(_helpButton, "mnemonic.bundle.help");
+	setMnemonic(_finishButton, "mnemonic.button.finish");
+	setMnemonic(_helpButton, "mnemonic.button.help");
 	_buttonPanel.setLayout(new GridLayout(1, 5));
 	_buttonPanel.add(_backButton);
 	_buttonPanel.add(_nextButton);
