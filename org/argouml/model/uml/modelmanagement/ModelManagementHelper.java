@@ -141,7 +141,8 @@ public class ModelManagementHelper {
             return new ArrayList();
         Project p = ProjectManager.getManager().getCurrentProject();
         MNamespace model = p.getRoot();
-        return getAllModelElementsOfKind(model, kind);
+        Collection col = getAllModelElementsOfKind(model, kind);
+        return col;
     }
 
     /**

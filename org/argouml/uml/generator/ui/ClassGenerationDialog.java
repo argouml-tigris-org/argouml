@@ -360,8 +360,12 @@ class TableModelClassChecks extends AbstractTableModel {
     for (int i = 0; i < size; i++) {
       Object cls = _classes.elementAt(i);
       String name = ModelFacade.getName(cls);
-      if (!(name.length() > 0))
-	  continue;
+      // Jaap B. in older versions of argouml (before 0.14alpha1) names were not initialized correctly.
+      // this is a patch for that.
+      if (name == null || name.length() == 0) {
+          ModelFacade.setName(cls, "anon");
+	      // continue;
+      }
 
       for (int j = 0; j < getLanguagesCount(); j++) {
 	  if (isSupposedToBeGeneratedAsLanguage((NotationName)_languages.get(j),cls))
