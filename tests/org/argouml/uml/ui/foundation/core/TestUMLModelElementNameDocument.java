@@ -26,18 +26,52 @@ package org.argouml.uml.ui.foundation.core;
 
 import junit.framework.TestCase;
 
+import org.argouml.model.uml.foundation.core.CoreFactory;
+import org.argouml.model.uml.modelmanagement.ModelManagementFactory;
+import org.argouml.uml.ui.MockUMLUserInterfaceContainer;
+import ru.novosoft.uml.MFactoryImpl;
+import ru.novosoft.uml.foundation.core.MModelElement;
+import ru.novosoft.uml.model_management.MModel;
+
 /**
  * @since Oct 26, 2002
  * @author jaap.branderhorst@xs4all.nl
  */
-public class TestUMLModelElementName extends TestCase {
+public class TestUMLModelElementNameDocument extends TestCase {
+    
+    private MModelElement elem = null;
+    private int oldEventPolicy;
+    private UMLModelElementNameDocument model;
+    private MModel ns;
 
     /**
-     * Constructor for TestUMLModelElementName.
+     * Constructor for TestUMLModelElementNameDocument.
      * @param arg0
      */
-    public TestUMLModelElementName(String arg0) {
+    public TestUMLModelElementNameDocument(String arg0) {
         super(arg0);
+    }
+
+    /**
+     * @see junit.framework.TestCase#setUp()
+     */
+    protected void setUp() throws Exception {
+        super.setUp();
+        ns = ModelManagementFactory.getFactory().createModel();
+        elem = CoreFactory.getFactory().buildClass(ns);
+        oldEventPolicy = MFactoryImpl.getEventPolicy();
+        MFactoryImpl.setEventPolicy(MFactoryImpl.EVENT_POLICY_IMMEDIATE);
+        MockUMLUserInterfaceContainer cont = new MockUMLUserInterfaceContainer();
+        cont.setTarget(elem);
+        model = new UMLModelElementNameDocument(cont);
+        elem.addMElementListener(model);
+    }
+
+    /**
+     * @see junit.framework.TestCase#tearDown()
+     */
+    protected void tearDown() throws Exception {
+        super.tearDown();
     }
 
 }
