@@ -97,6 +97,22 @@ public class ArgoEventPump {
 	        listener.notationChanged(event);
 		break;
 
+	    case ArgoEvent.NOTATION_ADDED:
+	        listener.notationAdded(event);
+		break;
+
+	    case ArgoEvent.NOTATION_REMOVED:
+	        listener.notationRemoved(event);
+		break;
+
+	    case ArgoEvent.NOTATION_PROVIDER_ADDED:
+	        listener.notationProviderAdded(event);
+		break;
+
+	    case ArgoEvent.NOTATION_PROVIDER_REMOVED:
+	        listener.notationProviderRemoved(event);
+		break;
+
 	    default:
 	        Argo.log.error("Invalid event:" + event.getEventType());
 		break;
