@@ -347,21 +347,19 @@ public class ParserDisplay extends Parser {
 
         // We can do nothing if we don't have both the use case and extension
         // point.
-
         if ((useCase == null) || (ep == null)) {
             return;
         }
 
         // Parse the string to creat a new extension point.
-
         Object newEp = parseExtensionPoint(text);
 
         // If we got back null we interpret this as meaning delete the
         // reference to the extension point from the use case, otherwise we set
         // the fields of the extension point to the values in newEp.
-
         if (newEp == null) {
-            ModelFacade.removeExtensionPoint(useCase, ep);
+            ProjectManager.getManager().getCurrentProject().moveToTrash(ep);
+            TargetManager.getInstance().setTarget(useCase);
         } else {
             ModelFacade.setName(ep, ModelFacade.getName(newEp));
             ModelFacade.setLocation(ep, ModelFacade.getLocation(newEp));
@@ -1124,7 +1122,7 @@ public class ParserDisplay extends Parser {
         while (it.hasNext()) {
             Object p = it.next();
             if (ModelFacade.isReturn(p))
-                ModelFacade.removeParameter(op, p);
+                ProjectManager.getManager().getCurrentProject().moveToTrash(p);
         }
         if (param == null) {
             Object model = ProjectManager.getManager().getCurrentProject().getModel();
