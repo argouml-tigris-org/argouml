@@ -49,8 +49,12 @@ public class FigGeneralization extends FigEdgeModelElement {
   ////////////////////////////////////////////////////////////////
   // constructors
 
+  protected ArrowHeadTriangle endArrow;
+
   public FigGeneralization() {
     addPathItem(_stereo, new PathConvPercent(this, 50, 10));
+    endArrow = new ArrowHeadTriangle();
+
     _discriminator.setFont(LABEL_FONT);
     _discriminator.setTextColor(Color.black);
     _discriminator.setTextFilled(false);
@@ -60,7 +64,6 @@ public class FigGeneralization extends FigEdgeModelElement {
     _discriminator.setMultiLine(false);
     _discriminator.setAllowsTab(false);
     addPathItem(_discriminator, new PathConvPercent(this, 40, -10));
-    ArrowHeadTriangle endArrow = new ArrowHeadTriangle();
     endArrow.setFillColor(Color.white);
     setDestArrowHead(endArrow);
     setBetweenNearestPoints(true);
@@ -100,6 +103,10 @@ public class FigGeneralization extends FigEdgeModelElement {
   	_discriminator.setText(disc);
   }
 
+  public void paint(Graphics g) {
+        endArrow.setLineColor(getLineColor());
+        super.paint(g);
+  }
 
 } /* end class FigGeneralization */
 
