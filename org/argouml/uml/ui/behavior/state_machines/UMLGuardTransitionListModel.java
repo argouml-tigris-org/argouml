@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2002 The Regents of the University of California. All
+// Copyright (c) 1996-2003 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -22,7 +22,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// $header$
 package org.argouml.uml.ui.behavior.state_machines;
 
 import org.argouml.model.ModelFacade;
@@ -53,7 +52,7 @@ public class UMLGuardTransitionListModel extends UMLModelElementListModel2 {
     }
 
     /**
-     * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(ru.novosoft.uml.MBase)
+     * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(Object)
      */
     protected boolean isValidElement(Object/*MBase*/ element) {
         return element == ModelFacade.getTransition(getTarget());

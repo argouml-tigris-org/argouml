@@ -52,7 +52,7 @@ public class UMLFeatureOwnerListModel extends UMLModelElementListModel2 {
     }
 
     /**
-     * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(MBase)
+     * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(Object)
      */
     protected boolean isValidElement(Object/*MBase*/ o) {
 	return ModelFacade.getOwner(getTarget()) == o;

@@ -22,7 +22,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// $header$
 package org.argouml.uml.ui.foundation.core;
 
 import java.util.Collection;
@@ -55,7 +54,7 @@ public class UMLModelElementStereotypeComboBoxModel extends UMLComboBoxModel2 {
 
     
     /**
-     * @see org.argouml.uml.ui.UMLComboBoxModel2#isValidElement(ru.novosoft.uml.MBase)
+     * @see org.argouml.uml.ui.UMLComboBoxModel2#isValidElement(Object)
      */
     protected boolean isValidElement(Object o) {
         return org.argouml.model.ModelFacade.isAStereotype(o) 

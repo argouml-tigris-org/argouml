@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2002 The Regents of the University of California. All
+// Copyright (c) 1996-2003 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -24,8 +24,6 @@
 
 // File: SequenceDiagramGraphModel.java
 // Classes: SequenceDiagramGraphModel
-// Original Author: 5eichler@informatik.uni-hamburg.de
-// $Id$
 
 package org.argouml.uml.diagram.sequence;
 
@@ -51,8 +49,10 @@ import org.tigris.gef.base.ModeManager;
 
 /** This class defines a bridge between the UML meta-model
  *  representation of the design and the GraphModel interface used by
- *  GEF.  This class handles only UML Sequence Digrams.  */
-
+ *  GEF.  This class handles only UML Sequence Digrams.
+ *
+ *  @author 5eichler@informatik.uni-hamburg.de
+ */
 public class SequenceDiagramGraphModel
 	extends UMLMutableGraphSupport
 	implements VetoableChangeListener {
@@ -414,7 +414,7 @@ public class SequenceDiagramGraphModel
 
 	/**
 	 * Gets the collaboration that is shown on the sequence diagram
-	 * @return 
+	 * @return the collaboration
 	 */
 	public Object getCollaboration() {
 		return _collaboration;

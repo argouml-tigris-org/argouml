@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2002 The Regents of the University of California. All
+// Copyright (c) 1996-2003 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -61,7 +61,8 @@ public class UMLSearchableComboBox extends UMLEditableComboBox {
      * MModelelement, the name should start with the item (which is a String).
      * Otherwise the text that is shown in the combobox should start with the
      * text. As the element is found, this is made to the selected item.
-     * @see org.argouml.uml.ui.UMLEditableComboBox#doIt(java.lang.Object)
+     *
+     * @see org.argouml.uml.ui.UMLEditableComboBox#doOnEdit(Object)
      */
     protected void doOnEdit(Object item) {
         Object element = search(item);

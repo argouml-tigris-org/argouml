@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2001 The Regents of the University of California. All
+// Copyright (c) 1996-2003 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -74,14 +74,14 @@ public class UMLSpecializationListModel extends UMLBinaryRelationListModel {
     }
 
     /**
-     * @see org.argouml.uml.ui.UMLBinaryRelationListModel#build(MModelElement, MModelElement)
+     * @see org.argouml.uml.ui.UMLBinaryRelationListModel#build(Object,Object)
      */
     protected void build(Object/*MModelElement*/ from, Object/*MModelElement*/ to) {
 	CoreFactory.getFactory().buildGeneralization(to, from);
     }
 
     /**
-     * @see org.argouml.uml.ui.UMLBinaryRelationListModel#connect(MutableGraphModel, MModelElement, MModelElement)
+     * @see org.argouml.uml.ui.UMLBinaryRelationListModel#connect(MutableGraphModel, Object, Object)
      */
     protected void connect(
 			   MutableGraphModel gm,
@@ -120,7 +120,7 @@ public class UMLSpecializationListModel extends UMLBinaryRelationListModel {
     }
 
     /**
-     * @see org.argouml.uml.ui.UMLBinaryRelationListModel#getRelation(MModelElement, MModelElement)
+     * @see org.argouml.uml.ui.UMLBinaryRelationListModel#getRelation(Object,Object)
      */
     protected Object getRelation(Object from, Object to) {
 	return CoreHelper.getHelper().getGeneralization(to, from);
