@@ -61,6 +61,7 @@ import ru.novosoft.uml.foundation.core.MOperation;
 import ru.novosoft.uml.foundation.core.MParameter;
 import ru.novosoft.uml.foundation.data_types.MExpression;
 import ru.novosoft.uml.foundation.data_types.MMultiplicity;
+import ru.novosoft.uml.foundation.data_types.MVisibilityKind;
 import ru.novosoft.uml.foundation.extension_mechanisms.MStereotype;
 import ru.novosoft.uml.foundation.extension_mechanisms.MTaggedValue;
 import ru.novosoft.uml.model_management.MPackage;
@@ -289,6 +290,9 @@ public final class Notation implements PropertyChangeListener {
     protected String generateTransition(NotationName notation, Object/*MTransition*/ m) {
         return getProvider(notation).generateTransition((MTransition)m);
     }
+    protected String generateVisibility(NotationName notation, Object /*MVisibilityKind*/ m) {
+        return getProvider(notation).generateVisibility((MVisibilityKind)m);
+    }
     protected String generateAction(NotationName notation, Object m) {
         return getProvider(notation).generateAction(m);
     }
@@ -413,6 +417,12 @@ public final class Notation implements PropertyChangeListener {
         Object/*MTransition*/ m) {
         return SINGLETON.generateTransition(Notation.getNotation(ctx), m);
     }
+    public static String generateVisibility(
+        NotationContext ctx,
+        Object m) {
+            return SINGLETON.generateVisibility(Notation.getNotation(ctx), m);
+    }
+    
     public static String generateAction(NotationContext ctx, Object m) {
         return SINGLETON.generateAction(Notation.getNotation(ctx), m);
     }
@@ -549,6 +559,8 @@ public final class Notation implements PropertyChangeListener {
             return SINGLETON.generateGuard(nn, o);
         if (org.argouml.model.ModelFacade.isAMessage(o))
             return SINGLETON.generateMessage(nn, o);
+        if (org.argouml.model.ModelFacade.isAVisibilityKind(o))
+            return SINGLETON.generateVisibility(nn, o);
 
         if (org.argouml.model.ModelFacade.isAModelElement(o))
             return SINGLETON.generateName(nn, org.argouml.model.ModelFacade.getName(o));
