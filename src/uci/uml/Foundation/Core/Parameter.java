@@ -48,7 +48,7 @@ public class Parameter extends ModelElementImpl {
   public Classifier _type;
   public Event _parameters;
   //% public ObjectFlowState _availability[];
-  public Vector _availability;
+  public Vector _availability = new Vector();
   public Signal _signal;
   
   public Parameter() { }
@@ -87,7 +87,7 @@ public class Parameter extends ModelElementImpl {
   }
   
   public Vector getAvailability() {
-    return _availability;
+    return (Vector) _availability.clone();
   }
   public void setAvailability(Vector x) {
     _availability = x;

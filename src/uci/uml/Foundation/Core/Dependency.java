@@ -38,11 +38,11 @@ import uci.uml.Foundation.Data_Types.*;
 public class Dependency extends ModelElementImpl {
   public String _description;
   //% public ModelElement _supplier[];
-  public Vector _supplier;
+  public Vector _supplier = new Vector();
   //% public ModelElement _client[];
-  public Vector _client;
+  public Vector _client = new Vector();
   //% public Dependency _subDependency[];
-  public Vector _subDependency;
+  public Vector _subDependency = new Vector();
   public Dependency _owningDependency;
   
   public Dependency() { }
@@ -66,7 +66,7 @@ public class Dependency extends ModelElementImpl {
     _description = x;
   }
 
-  public Vector getSupplier() { return _supplier; }
+  public Vector getSupplier() { return (Vector) _supplier.clone(); }
   public void setSupplier(Vector x) {
     _supplier = x;
   }
@@ -79,7 +79,7 @@ public class Dependency extends ModelElementImpl {
     _supplier.removeElement(x);
   }
 
-  public Vector getClient() { return _client; }
+  public Vector getClient() { return (Vector) _client.clone(); }
   public void setClient(Vector x) {
     _client = x;
   }
@@ -91,7 +91,7 @@ public class Dependency extends ModelElementImpl {
     _client.removeElement(x);
   }
 
-  public Vector getSubDependency() { return _subDependency; }
+  public Vector getSubDependency() { return (Vector) _subDependency.clone(); }
   public void setSubDependency(Vector x) {
     _subDependency = x;
   }

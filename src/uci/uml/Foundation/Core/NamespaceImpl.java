@@ -37,13 +37,13 @@ import uci.uml.Model_Management.*;
 public class NamespaceImpl extends ModelElementImpl implements Namespace {
 
   //% public ElementOwnership _ownedElement[];
-  public Vector _ownedElement;
+  public Vector _ownedElement = new Vector();
   
   public NamespaceImpl() { }
   public NamespaceImpl(Name name) { super(name); }
   public NamespaceImpl(String nameStr) { super(new Name(nameStr)); }
 
-  public Vector getOwnedElement() { return _ownedElement; }
+  public Vector getOwnedElement() { return (Vector) _ownedElement.clone(); }
   public void setOwnedElement(Vector x) throws PropertyVetoException {
     if (_ownedElement == null) _ownedElement = new Vector();
     fireVetoableChange("ownedElement", _ownedElement, x);

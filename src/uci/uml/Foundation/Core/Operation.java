@@ -41,7 +41,7 @@ public class Operation extends BehavioralFeature {
   public boolean _isPolymorphic;
   public CallConcurrencyKind _concurrency;
   //% public Method _method[];
-  public Vector _method;
+  public Vector _method = new Vector();
 
   public Operation() { }
   public Operation(Name name) { super(name); }
@@ -104,7 +104,7 @@ public class Operation extends BehavioralFeature {
     _concurrency = x;
   }
   
-  public Vector getMethod() { return _method; }
+  public Vector getMethod() { return (Vector) _method.clone(); }
   public void setMethod(Vector x) throws PropertyVetoException {
     if (_method == null) _method = new Vector();
     fireVetoableChange("method", _method, x);

@@ -62,7 +62,7 @@ CLASSES2 = \
 	Parameter.class \
 	StructuralFeature.class 
 
-all: $(GEN) $(CLASSES)
+all: $(GEN) $(CLASSES1) $(CLASSES2)
 
 gen: $(GEN)
 

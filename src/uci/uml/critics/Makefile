@@ -47,6 +47,7 @@ CLASSES = \
 	CrIlleagleGeneralization.class \
 	CrInterfaceAllPublic.class \
 	CrInterfaceOperOnly.class \
+	CrMergeClasses.class \
 	CrMissingAttrName.class \
 	CrMissingClassName.class \
 	CrMultiComposite.class \

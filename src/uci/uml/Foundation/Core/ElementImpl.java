@@ -47,12 +47,12 @@ import uci.ui.Highlightable;
 public class ElementImpl implements Element, Highlightable {
   public Name _name = Name.UNSPEC;
   //% public TaggedValue _characteristic[];
-  public Vector _characteristic;
+  public Vector _characteristic = new Vector();
   public Stereotype _classification;
   //% public TaggedValue _taggedValue[];
-  public Vector _taggedValue;
-  public transient Vector _vetoListeners;
-  public transient Vector _propertyListeners;
+  public Vector _taggedValue = new Vector();
+  public transient Vector _vetoListeners = new Vector();
+  public transient Vector _propertyListeners = new Vector();
   public boolean _highlight;
   
   public ElementImpl() { }
@@ -65,7 +65,7 @@ public class ElementImpl implements Element, Highlightable {
     catch (PropertyVetoException ex) { }
   }
 
-  public Vector getCharacteristic() { return _characteristic; }
+  public Vector getCharacteristic() { return (Vector) _characteristic.clone(); }
   public void setCharacteristic(Vector x) throws PropertyVetoException {
     if (_characteristic == null) _characteristic = new Vector();
     fireVetoableChange("characteristic", _characteristic, x);
@@ -94,7 +94,7 @@ public class ElementImpl implements Element, Highlightable {
     _name = x;
   }
 
-  public Vector getTaggedValue() { return _taggedValue; }
+  public Vector getTaggedValue() { return (Vector) _taggedValue.clone(); }
   public void setTaggedValue(Vector x) throws PropertyVetoException {
     if (_taggedValue == null) _taggedValue = new Vector();
     fireVetoableChange("taggedValue", _taggedValue, x);

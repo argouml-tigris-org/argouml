@@ -49,10 +49,10 @@ implements IAssociation {
 
   ////////////////////////////////////////////////////////////////
   // IAssociation implementation
-  public Vector _connection;
-  public Vector _link;
+  public Vector _connection = new Vector();
+  public Vector _link = new Vector();
     
-  public Vector getConnection() { return _connection; }
+  public Vector getConnection() { return (Vector) _connection.clone(); }
   public void setConnection(Vector x) {
     _connection = x;
   }
@@ -66,7 +66,7 @@ implements IAssociation {
   }
  
 
-  public Vector getLink() { return _link; }
+  public Vector getLink() { return (Vector) _link.clone(); }
   public void setLink(Vector x) {
     _link = x;
   }

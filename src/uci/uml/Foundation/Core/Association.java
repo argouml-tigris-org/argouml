@@ -43,10 +43,10 @@ import uci.uml.Behavioral_Elements.Common_Behavior.Link;
 public class Association extends GeneralizableElementImpl
 implements IAssociation {
   //% public AssociationEnd _connection[];
-  public Vector _connection;
+  public Vector _connection = new Vector();
   //nmw: public AssociationRole associationRole[];
   //% public Link _link[];
-  public Vector _link;
+  public Vector _link = new Vector();
     
   public Association() { }
   public Association(Name name) { super(name); }
@@ -87,7 +87,7 @@ implements IAssociation {
     catch (PropertyVetoException pce) { }
   }
 
-  public Vector getConnection() { return _connection; }
+  public Vector getConnection() { return (Vector) _connection.clone(); }
   public void setConnection(Vector x) throws PropertyVetoException {
     if (_connection == null) _connection = new Vector();    
     fireVetoableChange("connection", _connection, x);
@@ -117,7 +117,7 @@ implements IAssociation {
   //-   AssociationRole = x;
   //- }
 
-  public Vector getLink() { return _link; }
+  public Vector getLink() { return (Vector) _link.clone(); }
   public void setLink(Vector x) throws PropertyVetoException {
     if (_link == null) _link = new Vector();
     fireVetoableChange("link", _link, x);

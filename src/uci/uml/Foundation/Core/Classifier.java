@@ -43,17 +43,17 @@ import uci.uml.Behavioral_Elements.State_Machines.*;
 
 public abstract class Classifier extends GeneralizableElementImpl {
   //% public Feature _feature[];
-  public Vector _behavioralFeature;
+  public Vector _behavioralFeature = new Vector();
   //% public StructuralFeature _structuralFeature[];
-  public Vector _structuralFeature;
+  public Vector _structuralFeature = new Vector();
   //% public Classifier _specification[];
-  public Vector _specification;
+  public Vector _specification = new Vector();
   //% public Classifier _realization[];
-  public Vector _realization;
+  public Vector _realization = new Vector();
   //% public AssociationEnd _associationEnd[];
-  public Vector _associationEnd;
+  public Vector _associationEnd = new Vector();
   //% public AssociationEnd _participant[];
-  public Vector _participant;
+  public Vector _participant = new Vector();
 
   public Classifier() { }
   public Classifier(Name name) { super(name); }
@@ -91,7 +91,7 @@ public abstract class Classifier extends GeneralizableElementImpl {
   }
 
   public Vector getStructuralFeature() {
-    return _structuralFeature;
+    return (Vector) _structuralFeature.clone();
   }
   public void setStructuralFeature(Vector x)
   throws PropertyVetoException {
@@ -120,7 +120,7 @@ public abstract class Classifier extends GeneralizableElementImpl {
     _structuralFeature.removeElement(x);
   }
 
-  public Vector getSpecification() { return _specification; }
+  public Vector getSpecification() { return (Vector) _specification.clone(); }
   public void setSpecification(Vector x)
   throws PropertyVetoException {
     if (_specification == null) _specification = new Vector();
@@ -140,7 +140,7 @@ public abstract class Classifier extends GeneralizableElementImpl {
     _specification.removeElement(x);
   }
 
-  public Vector getRealization() { return _realization; }
+  public Vector getRealization() { return (Vector) _realization.clone(); }
   public void setRealization(Vector x)
   throws PropertyVetoException {
     if (_realization == null) _realization = new Vector();
@@ -161,7 +161,7 @@ public abstract class Classifier extends GeneralizableElementImpl {
   }
 
   public Vector getAssociationEnd() {
-    return _associationEnd;
+    return (Vector) _associationEnd.clone();
   }
   public void setAssociationEnd(Vector x)
   throws PropertyVetoException {
@@ -189,7 +189,7 @@ public abstract class Classifier extends GeneralizableElementImpl {
   }
 
   // needs-more-work: what are paricipants?
-  public Vector getParticipant() { return _participant; }
+  public Vector getParticipant() { return (Vector) _participant.clone(); }
   public void setParticipant(Vector x)
   throws PropertyVetoException {
     if (_participant == null) _participant = new Vector();

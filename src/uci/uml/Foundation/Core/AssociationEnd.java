@@ -50,13 +50,13 @@ public class AssociationEnd extends ModelElementImpl {
   public ChangeableKind _changeable = ChangeableKind.NONE;
   public IAssociation _association;
   //% public Attribute _qualifier[];
-  public Vector _qualifier;
+  public Vector _qualifier = new Vector();
   public Classifier _type;
   //% public Classifier _specification[];
-  public Vector _specification;
+  public Vector _specification = new Vector();
   //nmw: public AssociationEndRole _associationEndRole[];
   //% public LinkEnd _linkEnd[];
-  public Vector _linkEnd;
+  public Vector _linkEnd = new Vector();
     
   public AssociationEnd() {}
   public AssociationEnd(Name name) { super(name); }
@@ -121,7 +121,7 @@ public class AssociationEnd extends ModelElementImpl {
     _association = x;
   }
 
-  public Vector getQualifier() { return _qualifier; }
+  public Vector getQualifier() { return (Vector) _qualifier.clone(); }
   public void setQualifier(Vector x) throws PropertyVetoException {
     if (_qualifier == null) _qualifier = new Vector();
     fireVetoableChange("qualifier", _qualifier, x);    
@@ -148,7 +148,7 @@ public class AssociationEnd extends ModelElementImpl {
     if (_type != null) _type.addAssociationEnd(this);
   }
 
-  public Vector getSpecification() { return _specification; }
+  public Vector getSpecification() { return (Vector) _specification.clone(); }
   public void setSpecification(Vector x) throws PropertyVetoException {
     if (_specification == null) _specification = new Vector();
     fireVetoableChange("specification", _specification, x);    
@@ -172,7 +172,7 @@ public class AssociationEnd extends ModelElementImpl {
   //-   associationEndRole = x;
   //- }
   
-  public Vector getLinkEnd() { return _linkEnd; }
+  public Vector getLinkEnd() { return (Vector) _linkEnd.clone(); }
   public void setLinkEnd(Vector x) throws PropertyVetoException {
     if (_linkEnd == null) _linkEnd = new Vector();
     fireVetoableChange("linkEnd", _linkEnd, x);    

@@ -46,29 +46,29 @@ public class ModelElementImpl extends ElementImpl implements ModelElement {
   //- public Namespace _namespace;
   public ElementOwnership _elementOwnership;
   //% public Constraint _constraint[];
-  public Vector _constraint;
+  public Vector _constraint = new Vector();
   //% public Dependency _provision[];
-  public Vector _provision;
+  public Vector _provision = new Vector();
   //% public TaggedValue _taggedValue[];
-  public Vector _taggedValue;
+  public Vector _taggedValue = new Vector();
   //% public Dependency _requirement[];
-  public Vector _requirement;
+  public Vector _requirement = new Vector();
   //    public ViewElement _view[];
   //    public Binding _binding;
   //% public ModelElement _templateParameter[];
-  public Vector _templateParameter;
+  public Vector _templateParameter = new Vector();
   public ModelElement _template;
   //    public Component _implementation[];
   //% public Stereotype _stereotype[] = new Stereotype[MAX_STEREOTYPE];
-  public Vector _stereotype;
+  public Vector _stereotype = new Vector();
   //% public StateMachine _behavior[];
-  public Vector _behavior;
+  public Vector _behavior = new Vector();
   //    public Partition _partition;
   //% public Collaboration _collaboration[];
-  public Vector _collaboration;
+  public Vector _collaboration = new Vector();
   //% public Package _package[];
   //- public Vector _package;
-  public Vector _elementReference;
+  public Vector _elementReference = new Vector();
   
   public ModelElementImpl() { }
   public ModelElementImpl(Name name) { super(name); }
@@ -101,7 +101,7 @@ public class ModelElementImpl extends ElementImpl implements ModelElement {
     }
   }
 
-  public Vector getConstraint() { return _constraint; }
+  public Vector getConstraint() { return (Vector) _constraint.clone(); }
   public void setConstraint(Vector x)
   throws PropertyVetoException {
     if (_constraint == null) _constraint = new Vector();
@@ -127,7 +127,7 @@ public class ModelElementImpl extends ElementImpl implements ModelElement {
     _constraint.removeElement(x);
   }
 
-  public Vector getProvision() { return _provision; }
+  public Vector getProvision() { return (Vector) _provision.clone(); }
   public void setProvision(Vector x)
   throws PropertyVetoException {
     if (_provision == null) _provision = new Vector();
@@ -147,7 +147,7 @@ public class ModelElementImpl extends ElementImpl implements ModelElement {
     _provision.removeElement(x);
   }
 
-  public Vector getRequirement() { return _requirement; }
+  public Vector getRequirement() { return (Vector) _requirement.clone(); }
   public void setRequirement(Vector x)
   throws PropertyVetoException {
     if (_requirement == null) _requirement = new Vector();
@@ -168,7 +168,7 @@ public class ModelElementImpl extends ElementImpl implements ModelElement {
   }
 
   public Vector getTemplateParameter() {
-    return _templateParameter;
+    return (Vector) _templateParameter.clone();
   }
   public void setTemplateParameter(Vector x)
   throws PropertyVetoException {
@@ -207,7 +207,7 @@ public class ModelElementImpl extends ElementImpl implements ModelElement {
   //-   public void removePackage(Package x) {
   //-     _package.removeElement(x);
   //-   }
-  public Vector getElementReference() { return _elementReference; }
+  public Vector getElementReference() { return (Vector) _elementReference.clone(); }
   public void setElementReference(Vector x)
   throws PropertyVetoException {
     if (_elementReference == null) _elementReference = new Vector();
@@ -227,7 +227,7 @@ public class ModelElementImpl extends ElementImpl implements ModelElement {
     _elementReference.removeElement(x);
   }
 
-  public Vector getStereotype() { return _stereotype; }
+  public Vector getStereotype() { return (Vector) _stereotype.clone(); }
   public void setStereotype(Vector x)
   throws PropertyVetoException {
     if (_stereotype == null) _stereotype = new Vector();
@@ -251,7 +251,7 @@ public class ModelElementImpl extends ElementImpl implements ModelElement {
     return _stereotype.contains(x);
   }
   
-  public Vector getBehavior() { return _behavior; }
+  public Vector getBehavior() { return (Vector) _behavior.clone(); }
   public void setBehavior(Vector x)
   throws PropertyVetoException {
     if (_behavior == null) _behavior = new Vector();

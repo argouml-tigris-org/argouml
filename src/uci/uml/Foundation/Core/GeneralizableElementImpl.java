@@ -40,9 +40,9 @@ implements GeneralizableElement {
   public boolean _isLeaf = false;
   public boolean _isAbstract = false;
   //% public Generalization _generalization[];
-  public Vector _generalization;
+  public Vector _generalization = new Vector();
   //% public Generalization _specialization[];
-  public Vector _specialization;
+  public Vector _specialization = new Vector();
 
   public GeneralizableElementImpl() { }
   public GeneralizableElementImpl(Name name) { super(name); }
@@ -69,7 +69,7 @@ implements GeneralizableElement {
   }
   
   public Vector getGeneralization() {
-    return _generalization;
+    return (Vector) _generalization.clone();
   }
   public void setGeneralization(Vector x) throws PropertyVetoException {
     if (_generalization == null) _generalization = new Vector();
@@ -95,7 +95,7 @@ implements GeneralizableElement {
   }
   
   public Vector getSpecialization() {
-    return _specialization;
+    return (Vector) _specialization.clone();
   }
   public void setSpecialization(Vector x) throws PropertyVetoException {
     if (_specialization == null) _specialization = new Vector();

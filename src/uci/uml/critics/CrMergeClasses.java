@@ -65,7 +65,7 @@ public class CrMergeClasses extends CrUML {
     if (!(dm instanceof MMClass)) return NO_PROBLEM;
     MMClass cls = (MMClass) dm;
     Vector ends = cls.getAssociationEnd();
-    if (ends == null || ends.size() > 1) return NO_PROBLEM;
+    if (ends == null || ends.size() != 1) return NO_PROBLEM;
     AssociationEnd myEnd = (AssociationEnd) ends.elementAt(0);
     IAssociation asc = myEnd.getAssociation();
     Vector conns = asc.getConnection();
