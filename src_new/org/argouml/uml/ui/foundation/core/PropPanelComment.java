@@ -26,17 +26,22 @@ package org.argouml.uml.ui.foundation.core;
 
 import javax.swing.JScrollPane;
 
+import org.argouml.i18n.Translator;
 import org.argouml.uml.ui.ActionNavigateContainerElement;
 import org.argouml.uml.ui.ActionRemoveFromModel;
 import org.argouml.uml.ui.PropPanelButton2;
+import org.argouml.uml.ui.UMLLinkedList;
 import org.argouml.uml.ui.UMLPlainTextDocument;
 import org.argouml.uml.ui.UMLTextArea2;
 import org.argouml.uml.ui.foundation.extension_mechanisms.ActionNewStereotype;
 import org.argouml.util.ConfigLoader;
 
 /**
- * Proppanel for comments (notes). In UML 1.3, the text of the comment is kept
- * in the name of the MComment. In UML 1.4 and beyond, the MComment has a "body"
+ * Proppanel for comments (notes). <p>
+ * 
+ * In UML 1.3, the text of the comment is kept
+ * in the name of the MComment. 
+ * In UML 1.4 and beyond, the MComment has a "body"
  * attribute, to contain the comment string.
  */
 public class PropPanelComment extends PropPanelModelElement {
@@ -55,12 +60,21 @@ public class PropPanelComment extends PropPanelModelElement {
          * javax.swing.text.PlainDocument See issue 1812.
          */
         uptd.putProperty("filterNewlines", Boolean.FALSE);
+        
+        addField(Translator.localize("label.stereotype"), 
+                getStereotypeBox());
+        
+        addField(Translator.localize("label.annotated-elements"), 
+            new JScrollPane(new UMLLinkedList(
+                    new UMLCommentAnnotatedElementListModel())));
+        
+        addSeperator();
 
         UMLTextArea2 text = new UMLTextArea2(uptd);
         text.setLineWrap(true);
         text.setRows(5);
         JScrollPane pane = new JScrollPane(text);
-        addField("Text: ", pane);
+        addField(Translator.localize("label.comment.body"), pane);
         
         addButton(new PropPanelButton2(new ActionNavigateContainerElement()));
         addButton(new PropPanelButton2(new ActionNewStereotype(), 
@@ -68,5 +82,4 @@ public class PropPanelComment extends PropPanelModelElement {
         addButton(new PropPanelButton2(new ActionRemoveFromModel(), 
                 lookupIcon("Delete")));;
     }
-
 }
