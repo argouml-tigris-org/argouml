@@ -77,7 +77,7 @@ public class TestStylePanel extends TestCase {
 			    });
         pane.targetSet(e);
         // new target is of type object, refresh should not be called
-        assertTrue(!((MockStylePanel)pane)._refreshCalled);
+        assertTrue(!((MockStylePanel) pane)._refreshCalled);
         target = new UMLClassDiagram();
         e = new TargetEvent(this,
 			    TargetEvent.TARGET_SET,

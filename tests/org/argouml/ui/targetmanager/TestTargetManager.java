@@ -26,7 +26,6 @@ package org.argouml.ui.targetmanager;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 
@@ -347,7 +346,8 @@ public class TestTargetManager extends TestCase {
 	targetAddedObjects = null;
 	TargetManager.getInstance().addTarget(testObject);
 	assertTrue(targetAddedCalled);
-	assertTrue(newList.containsAll(Arrays.asList(targetAddedObjects)) && newList.size() == targetAddedObjects.length);
+	assertTrue(newList.containsAll(Arrays.asList(targetAddedObjects)) 
+            && newList.size() == targetAddedObjects.length);
 	assertTrue(TargetManager.getInstance().getTarget() == testObject);	
 	targetAddedCalled = false;
 	TargetManager.getInstance().addTarget(testObject);

@@ -41,10 +41,10 @@ import org.argouml.uml.diagram.ui.UMLDiagram;
  */
 public class GUITestDetailsPane extends TestCase {
     
-    private DetailsPane _pane;
-    private JPanel _todoPane;
-    private JPanel _propertyPane;
-    private JPanel _docPane;
+    private DetailsPane pane;
+    private JPanel todoPane;
+    private JPanel propertyPane;
+    private JPanel docPane;
 
     /**
      * @param arg0 is the name of the test case.
@@ -65,8 +65,8 @@ public class GUITestDetailsPane extends TestCase {
                 new Object[] {
 		    o,
 		});
-        _pane.targetSet(e);
-        assertEquals(_todoPane, _pane.getTabs().getSelectedComponent());
+        pane.targetSet(e);
+        assertEquals(todoPane, pane.getTabs().getSelectedComponent());
         UMLDiagram diagram = new UMLClassDiagram();        
         e = new TargetEvent(
 			    this,
@@ -77,9 +77,9 @@ public class GUITestDetailsPane extends TestCase {
 			    new Object[] {
 				diagram,
 			    });
-        _pane.getTabs().setSelectedComponent(_todoPane);
-        _pane.targetSet(e);
-        assertEquals(_propertyPane, _pane.getTabs().getSelectedComponent());
+        pane.getTabs().setSelectedComponent(todoPane);
+        pane.targetSet(e);
+        assertEquals(propertyPane, pane.getTabs().getSelectedComponent());
         Object clazz = CoreFactory.getFactory().createClass();
         e = new TargetEvent(this,
 			    TargetEvent.TARGET_SET,
@@ -89,11 +89,11 @@ public class GUITestDetailsPane extends TestCase {
 			    new Object[] {
 				clazz,
 			    });
-        _pane.targetSet(e);
-        assertEquals(_propertyPane, _pane.getTabs().getSelectedComponent());
-        _pane.getTabs().setSelectedComponent(_todoPane);
-        _pane.targetSet(e);
-        assertEquals(_propertyPane, _pane.getTabs().getSelectedComponent());
+        pane.targetSet(e);
+        assertEquals(propertyPane, pane.getTabs().getSelectedComponent());
+        pane.getTabs().setSelectedComponent(todoPane);
+        pane.targetSet(e);
+        assertEquals(propertyPane, pane.getTabs().getSelectedComponent());
         // TODO: at the moment setSelectedComponent doesn't take into account
         // the rather complex tab selection mechanism of DetailsPane. The tab
         // selection mechanism must be refactored.
@@ -113,10 +113,10 @@ public class GUITestDetailsPane extends TestCase {
      */
     protected void setUp() throws Exception {    
         super.setUp();
-        _pane = new DetailsPane("detail", Horizontal.getInstance());
-        _todoPane = _pane.getNamedTab("tab.todo-item"); 
-        _propertyPane = _pane.getNamedTab("tab.properties"); 
-        _docPane = _pane.getNamedTab("docpane.label.documentation");
+        pane = new DetailsPane("detail", Horizontal.getInstance());
+        todoPane = pane.getNamedTab("tab.todo-item"); 
+        propertyPane = pane.getNamedTab("tab.properties"); 
+        docPane = pane.getNamedTab("docpane.label.documentation");
     }
 
     /**
@@ -124,7 +124,7 @@ public class GUITestDetailsPane extends TestCase {
      */
     protected void tearDown() throws Exception {     
         super.tearDown();
-        _pane = null;
+        pane = null;
     }
 
 }

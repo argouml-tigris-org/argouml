@@ -78,31 +78,31 @@ import org.argouml.uml.cognitive.critics.ChildGenUML;
 public class GUITestPropertyPanels extends TestCase {
     
     private static Project p = null;
-    private static String _projectFile;
-    private Object _modelElement;
+    private static String projectFile;
+    private Object modelElement;
     
     /**
      * For an explanation on why this is static @see #setUp
      */
     private static DetailsPane theDetailsPane = null;
-    private JPanel _propertyPane;
+    private JPanel propertyPane;
     
     // we need the translator to work in order to access
     // the property panels. It is also a common source for
     // problems.
     static {
         Translator.init();
-        _projectFile = "../tests/testmodels/GUITestPropertyPanels.zargo";
+        projectFile = "../tests/testmodels/GUITestPropertyPanels.zargo";
     }
     
     
     /**
-     * @param modelElement is the type of object to test
+     * @param me is the type of object to test
      * @param arg0 is the name of the test case
      */
-    public GUITestPropertyPanels(Object modelElement, String arg0) {
+    public GUITestPropertyPanels(Object me, String arg0) {
         super(arg0);
-        _modelElement = modelElement;
+        modelElement = me;
     }
     
     /**
@@ -138,7 +138,7 @@ public class GUITestPropertyPanels extends TestCase {
         
         p = ProjectManager.getManager().makeEmptyProject();
         File testfile =
-	    new File(_projectFile);
+	    new File(projectFile);
         
         ZargoFilePersister persister = new ZargoFilePersister();
         p = persister.loadProject(testfile.toURL());
@@ -202,18 +202,19 @@ public class GUITestPropertyPanels extends TestCase {
 				null,
 			    },
 			    new Object[] {
-				_modelElement,
+				modelElement,
 			    });
         theDetailsPane.targetSet(e);
         
-        _propertyPane = /*TabProps */
+        propertyPane = /*TabProps */
             theDetailsPane.getNamedTab(Translator.localize("tab.properties"));
         
         // currently this is in this try block as it does not work
         // _propertyPanel always has size 0,0
         /*
           try {
-            saveImageAsJPEG((BufferedImage)createImageFromComponent(_propertyPane), 
+            saveImageAsJPEG((BufferedImage)createImageFromComponent(
+                _propertyPane), 
                 1000000, "/Users/mkl/argoimg/"+this.getName() + ".jpg");
         }
         catch (Exception ex) {
@@ -231,7 +232,8 @@ public class GUITestPropertyPanels extends TestCase {
     }
     
     
-    public static void saveImageAsJPEG(BufferedImage bi, float quality, String filename) {
+    public static void saveImageAsJPEG(BufferedImage bi, float quality, 
+            String filename) {
         try {
             ByteArrayOutputStream boutstream = new ByteArrayOutputStream();
             JPEGImageEncoder enc = JPEGCodec.createJPEGEncoder(boutstream);

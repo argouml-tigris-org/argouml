@@ -51,7 +51,7 @@ public class TestTabDiagram extends TestCase {
 
     private static final boolean PERFORMANCE_TEST = false;
 
-    private UMLDiagram _diagram;
+    private UMLDiagram diagram;
 
     /**
      * Constructor for TestTabDiagram.
@@ -67,7 +67,7 @@ public class TestTabDiagram extends TestCase {
      */
     protected void setUp() throws Exception {
         super.setUp();
-        _diagram = new UMLClassDiagram();
+        diagram = new UMLClassDiagram();
     }
 
     /**
@@ -75,7 +75,7 @@ public class TestTabDiagram extends TestCase {
      */
     protected void tearDown() throws Exception {
         super.tearDown();
-        _diagram = null;
+        diagram = null;
 
     }
 
@@ -93,12 +93,12 @@ public class TestTabDiagram extends TestCase {
     public void testSetTargetWithDiagram() {
         try {
             TabDiagram tabDiagram = new TabDiagram();
-            tabDiagram.setTarget(_diagram);
+            tabDiagram.setTarget(diagram);
             assertEquals(
                 tabDiagram.getJGraph().getGraphModel(),
-                _diagram.getGraphModel());
-            assertEquals(tabDiagram.getTarget(), _diagram);
-            assertTrue(tabDiagram.shouldBeEnabled(_diagram));
+                diagram.getGraphModel());
+            assertEquals(tabDiagram.getTarget(), diagram);
+            assertTrue(tabDiagram.shouldBeEnabled(diagram));
         } catch (Exception noHead) {
         }
     }
