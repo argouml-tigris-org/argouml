@@ -24,11 +24,14 @@
 
 
 package org.argouml.application.configuration;
-import org.argouml.application.api.*;
-import java.beans.*;
-import java.io.*;
-import java.net.*;
-import org.apache.log4j.*;
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
+import java.io.File;
+import java.net.URL;
+
+import org.apache.log4j.Logger;
+import org.argouml.application.api.Configuration;
+import org.argouml.application.api.ConfigurationKey;
 
 /**
  *   This class provides a user configuration based upon properties.

@@ -23,7 +23,7 @@
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 package org.argouml.application.api;
-import java.util.*;
+import java.util.EventListener;
 
 /** A tagging interface that all Argo event listener interfaces must extend.
  *

@@ -23,11 +23,18 @@
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 package org.argouml.application.notation;
+import java.util.ArrayList;
+import java.util.ListIterator;
+
+import javax.swing.Icon;
+
 import org.apache.log4j.Logger;
-import org.argouml.application.api.*;
-import org.argouml.application.events.*;
-import java.util.*;
-import javax.swing.*;
+import org.argouml.application.api.NotationName;
+import org.argouml.application.events.ArgoEventPump;
+import org.argouml.application.events.ArgoEventTypes;
+import org.argouml.application.events.ArgoModuleEvent;
+import org.argouml.application.events.ArgoModuleEventListener;
+import org.argouml.application.events.ArgoNotationEvent;
 
 /**
  *   This class provides definition and manipulation of notation names.

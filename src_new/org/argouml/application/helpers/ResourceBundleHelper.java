@@ -23,9 +23,11 @@
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 package org.argouml.application.helpers;
-import org.argouml.application.api.*;
-import java.util.*;
-import org.tigris.gef.util.*;
+import java.util.ListResourceBundle;
+import java.util.Vector;
+
+import org.argouml.application.api.PluggableResourceBundle;
+import org.tigris.gef.util.Localizer;
 
 /** Helper object for Pluggable Resource Bundles
  *

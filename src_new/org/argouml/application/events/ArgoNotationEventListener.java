@@ -23,7 +23,7 @@
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 package org.argouml.application.events;
-import org.argouml.application.api.*;
+import org.argouml.application.api.ArgoEventListener;
 
 /** An interface that objects interested in NotationEvent
  *  notifications must extend.

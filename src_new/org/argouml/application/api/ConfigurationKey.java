@@ -23,7 +23,7 @@
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 package org.argouml.application.api;
-import java.beans.*;
+import java.beans.PropertyChangeEvent;
 
 /**
  *   This class provides definition and manipulation of configuration keys.
