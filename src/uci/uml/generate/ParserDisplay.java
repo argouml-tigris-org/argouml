@@ -186,12 +186,11 @@ public class ParserDisplay extends Parser {
     ProjectBrowser pb = ProjectBrowser.TheInstance;
     Project p = pb.getProject();
     MClassifier rt = p.findType(rtStr);
-	
-	//System.out.println("setting return type: " + rtStr);
-	MParameter param = new MParameterImpl();
-	param.setType(rt);
-	op.setReturnParameter(param);
-    if ((op.getReturnParameter()).getType() != rt) System.out.println("rt not set");
+    
+    //System.out.println("setting return type: " + rtStr);
+    MParameter param = new MParameterImpl();
+    param.setType(rt);
+    MMUtil.SINGLETON.setReturnParameter(op,param);
     return s.substring(firstSpace+1);
   }
 
