@@ -1,6 +1,7 @@
 package org.argouml.uml.diagram.deployment;
 
 import org.apache.log4j.Category;
+import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.UmlFactory;
 import org.argouml.model.uml.behavioralelements.commonbehavior.CommonBehaviorFactory;
 import org.argouml.model.uml.behavioralelements.commonbehavior.CommonBehaviorHelper;
@@ -11,20 +12,16 @@ import org.argouml.uml.diagram.UMLMutableGraphSupport;
 import java.util.*;
 import java.beans.*;
 
-import ru.novosoft.uml.*;
-import ru.novosoft.uml.foundation.core.*;
-import ru.novosoft.uml.foundation.extension_mechanisms.*;
-import ru.novosoft.uml.behavior.use_cases.*;
-import ru.novosoft.uml.behavior.collaborations.*;
-import ru.novosoft.uml.model_management.*;
-import ru.novosoft.uml.behavior.common_behavior.*;
-import ru.novosoft.uml.foundation.data_types.MAggregationKind;
-
 import org.tigris.gef.graph.*;
 import org.tigris.gef.base.Editor;
 import org.tigris.gef.base.Globals;
 import org.tigris.gef.base.Mode;
 import org.tigris.gef.base.ModeManager;
+
+
+import ru.novosoft.uml.foundation.core.*;
+import ru.novosoft.uml.behavior.common_behavior.*;
+import ru.novosoft.uml.model_management.*;
 
 public class DeploymentDiagramGraphModel extends UMLMutableGraphSupport
 implements VetoableChangeListener  {
@@ -36,14 +33,16 @@ implements VetoableChangeListener  {
    *  Also, elements from other models will have their FigNodes add a
    *  line to say what their model is. */
 
-  protected MNamespace _model;
+  protected Object _model;
 
   ////////////////////////////////////////////////////////////////
   // accessors
 
-  public MNamespace getNamespace() { return _model; }
-  public void setNamespace(MNamespace m) {
-    _model = m;
+    /** get the homemodel. */
+  public Object getNamespace() { return _model; }
+    /** set the homemodel. */
+  public void setNamespace(Object namespace) {
+    ModelFacade.setNamespace(_model, namespace);
   }
 
   ////////////////////////////////////////////////////////////////
@@ -53,13 +52,14 @@ implements VetoableChangeListener  {
   /** Return all ports on node or edge */
   public Vector getPorts(Object nodeOrEdge) {
     Vector res = new Vector();  //wasteful!
-    if (nodeOrEdge instanceof MNode) res.addElement(nodeOrEdge);
-    if (nodeOrEdge instanceof MNodeInstance) res.addElement(nodeOrEdge);
-    if (nodeOrEdge instanceof MComponent) res.addElement(nodeOrEdge);    
-    if (nodeOrEdge instanceof MComponentInstance) res.addElement(nodeOrEdge);
-    if (nodeOrEdge instanceof MClass) res.addElement(nodeOrEdge);    
-    if (nodeOrEdge instanceof MInterface) res.addElement(nodeOrEdge);    
-    if (nodeOrEdge instanceof MObject) res.addElement(nodeOrEdge);
+    if (ModelFacade.isANode(nodeOrEdge)) res.addElement(nodeOrEdge);
+    if (ModelFacade.isANodeInstance(nodeOrEdge)) res.addElement(nodeOrEdge);
+    if (ModelFacade.isAComponent(nodeOrEdge)) res.addElement(nodeOrEdge);    
+    if (ModelFacade.isAComponentInstance(nodeOrEdge)) 
+        res.addElement(nodeOrEdge);
+    if (ModelFacade.isAClass(nodeOrEdge)) res.addElement(nodeOrEdge);    
+    if (ModelFacade.isAInterface(nodeOrEdge)) res.addElement(nodeOrEdge);    
+    if (ModelFacade.isAObject(nodeOrEdge)) res.addElement(nodeOrEdge);
     return res;
   }
 
@@ -72,9 +72,8 @@ implements VetoableChangeListener  {
   /** Return all edges going to given port */
   public Vector getInEdges(Object port) {
     Vector res = new Vector(); //wasteful!
-    if (port instanceof MNode) {
-      MNode no = (MNode) port;
-      Collection ends = no.getAssociationEnds();
+    if (ModelFacade.isANode(port)) {
+      Collection ends = ModelFacade.getAssociationEnds(port);
       if (ends == null) return res; // empty Vector
       Iterator iter = ends.iterator();
       while (iter.hasNext()) {
@@ -82,14 +81,13 @@ implements VetoableChangeListener  {
 	    res.add(aec.getAssociation());
       }
     }
-    if (port instanceof MNodeInstance) {
+    if (ModelFacade.isANodeInstance(port)) {
       MNodeInstance noi = (MNodeInstance) port;
       Collection ends = noi.getLinkEnds();
 	    res.addAll(ends);
     }
-    if (port instanceof MComponent) {
-      MComponent co = (MComponent) port;
-      Collection ends = co.getAssociationEnds();
+    if (ModelFacade.isAComponent(port)) {
+      Collection ends = ModelFacade.getAssociationEnds(port);
       if (ends == null) return res; // empty Vector
       Iterator endEnum = ends.iterator();
       while (endEnum.hasNext()) {
@@ -97,14 +95,13 @@ implements VetoableChangeListener  {
 	    res.addElement(aec.getAssociation());
       }
     }
-    if (port instanceof MComponentInstance) {
+    if (ModelFacade.isAComponentInstance(port)) {
       MComponentInstance coi = (MComponentInstance) port;
       Collection ends = coi.getLinkEnds();
 	    res.addAll(ends);
     }
-    if (port instanceof MClass) {
-      MClass cls = (MClass) port;
-      Collection ends = cls.getAssociationEnds();
+    if (ModelFacade.isAClass(port)) {
+      Collection ends = ModelFacade.getAssociationEnds(port);
       if (ends == null) return res; // empty Vector 
       Iterator endEnum = ends.iterator();
       while (endEnum.hasNext()) {
@@ -112,9 +109,8 @@ implements VetoableChangeListener  {
 	res.addElement(ae.getAssociation());
       }
     }
-    if (port instanceof MInterface) {
-      MInterface Intf = (MInterface) port;
-      Collection ends = Intf.getAssociationEnds();
+    if (ModelFacade.isAInterface(port)) {
+      Collection ends = ModelFacade.getAssociationEnds(port);
       if (ends == null) return res; // empty Vector 
       Iterator endEnum = ends.iterator();
       while (endEnum.hasNext()) {
@@ -122,7 +118,7 @@ implements VetoableChangeListener  {
 	    res.addElement(ae.getAssociation());
 	  }
     }
-    if (port instanceof MObject) {
+    if (ModelFacade.isAObject(port)) {
       MInstance clo = (MInstance) port;
       Collection ends = clo.getLinkEnds();
 	    res.addAll(ends);
@@ -140,10 +136,10 @@ implements VetoableChangeListener  {
 
   /** Return one end of an edge */
   public Object getSourcePort(Object edge) {
-    if (edge instanceof MRelationship) {
+    if (ModelFacade.isARelationship(edge)) {
         return CoreHelper.getHelper().getSource((MRelationship)edge);
     } else
-    if (edge instanceof MLink) {
+    if (ModelFacade.isALink(edge)) {
        return CommonBehaviorHelper.getHelper().getSource((MLink)edge);
     }
     
@@ -155,10 +151,10 @@ implements VetoableChangeListener  {
 
   /** Return  the other end of an edge */
   public Object getDestPort(Object edge) {
-    if (edge instanceof MRelationship) {
+    if (ModelFacade.isARelationship(edge)) {
         return CoreHelper.getHelper().getDestination((MRelationship)edge);
     } else
-    if (edge instanceof MLink) {
+    if (ModelFacade.isALink(edge)) {
        return CommonBehaviorHelper.getHelper().getDestination((MLink)edge);
     }
     
@@ -176,10 +172,13 @@ implements VetoableChangeListener  {
   public boolean canAddNode(Object node) {
     if (node == null) return false;
     if (_nodes.contains(node)) return false;
-    return (node instanceof MNode) || (node instanceof MComponent) || 
-           (node instanceof MClass) || (node instanceof MInterface) ||
-	   (node instanceof MObject) ||(node instanceof MNodeInstance) || 
-           (node instanceof MComponentInstance);
+    return (ModelFacade.isANode(node)) || 
+        (ModelFacade.isAComponent(node)) || 
+        (ModelFacade.isAClass(node)) || 
+        (ModelFacade.isAInterface(node)) ||
+        (ModelFacade.isAObject(node)) ||
+        (ModelFacade.isANodeInstance(node)) || 
+        (ModelFacade.isAComponentInstance(node));
   }
 
   /** Return true if the given object is a valid edge in this graph */
@@ -187,11 +186,11 @@ implements VetoableChangeListener  {
     if (edge == null) return false;
 if(_edges.contains(edge)) return false;
     Object end0 = null, end1 = null;
-    if (edge instanceof MRelationship) {
+    if (ModelFacade.isARelationship(edge)) {
         end0 = CoreHelper.getHelper().getSource((MRelationship)edge);
         end1 = CoreHelper.getHelper().getDestination((MRelationship)edge);
     }
-    else if (edge instanceof MLink) {
+    else if (ModelFacade.isALink(edge)) {
       end0 = CommonBehaviorHelper.getHelper().getSource((MLink)edge);
       end1 = CommonBehaviorHelper.getHelper().getDestination((MLink)edge);
     }
@@ -209,9 +208,9 @@ if(_edges.contains(edge)) return false;
     _nodes.addElement(node);
     // TODO: assumes public, user pref for default visibility?
 	//do I have to check the namespace here? (Toby)
-	if (node instanceof MModelElement &&
-		((MModelElement)node).getNamespace() == null) {
-		_model.addOwnedElement((MModelElement) node);
+	if (ModelFacade.isAModelElement(node) &&
+		(ModelFacade.getNamespace(node) == null)) {
+		((MNamespace)_model).addOwnedElement((MModelElement) node);
 	}
     fireNodeAdded(node);
   }
@@ -222,15 +221,15 @@ if(_edges.contains(edge)) return false;
     if (!canAddEdge(edge)) return;
     _edges.addElement(edge);
     // TODO: assumes public
-      if (edge instanceof MModelElement) {
-	_model.addOwnedElement((MModelElement) edge);
+      if (ModelFacade.isAModelElement(edge)) {
+          ((MNamespace)_model).addOwnedElement((MModelElement) edge);
       }
     fireEdgeAdded(edge);
   }
 
   public void addNodeRelatedEdges(Object node) {
-    if ( node instanceof MClassifier ) {
-      Collection ends = ((MClassifier)node).getAssociationEnds();
+    if (ModelFacade.isAClassifier(node) ) {
+      Collection ends = ModelFacade.getAssociationEnds(node);
       Iterator iter = ends.iterator();
       while (iter.hasNext()) {
          MAssociationEnd ae = (MAssociationEnd) iter.next();
@@ -239,7 +238,7 @@ if(_edges.contains(edge)) return false;
            return;
       }
     }
-    if ( node instanceof MInstance ) {
+    if ( ModelFacade.isAInstance(node) ) {
       Collection ends = ((MInstance)node).getLinkEnds();
       Iterator iter = ends.iterator();
       while (iter.hasNext()) {
@@ -249,25 +248,25 @@ if(_edges.contains(edge)) return false;
            return;
       }
     }
-    if ( node instanceof MGeneralizableElement ) {
-      Collection gn = ((MGeneralizableElement)node).getGeneralizations();
-      Iterator iter = gn.iterator();
+    if ( ModelFacade.isAGeneralizableElement(node) ) {
+      Iterator iter = ModelFacade.getGeneralizations(node);
       while (iter.hasNext()) {
-         MGeneralization g = (MGeneralization) iter.next();
+          // g contains a Generalization
+         Object g = iter.next();
          if(canAddEdge(g))
            addEdge(g);
            return;
       }
-      Collection sp = ((MGeneralizableElement)node).getSpecializations();
-      iter = sp.iterator();
+      iter = ModelFacade.getSpecializations(node);
       while (iter.hasNext()) {
-         MGeneralization s = (MGeneralization) iter.next();
+          // s contains a specialization
+         Object s = iter.next();
          if(canAddEdge(s))
            addEdge(s);
            return;
       }
     }
-    if ( node instanceof MModelElement ) {
+    if ( ModelFacade.isAModelElement(node) ) {
       Vector specs = new Vector(((MModelElement)node).getClientDependencies());
       specs.addAll(((MModelElement)node).getSupplierDependencies());
       Iterator iter = specs.iterator();
@@ -288,16 +287,16 @@ if(_edges.contains(edge)) return false;
       MModelElement me = eo.getModelElement();
       if (oldOwned.contains(eo)) {
 	    cat.debug("model removed " + me);
-	    if (me instanceof MNode) removeNode(me);
-	    if (me instanceof MNodeInstance) removeNode(me);
-	    if (me instanceof MComponent) removeNode(me);
-	    if (me instanceof MComponentInstance) removeNode(me);
-	    if (me instanceof MClass) removeNode(me);
-	    if (me instanceof MInterface) removeNode(me);
-	    if (me instanceof MObject) removeNode(me);
-	    if (me instanceof MAssociation) removeEdge(me);
-	    if (me instanceof MDependency) removeEdge(me);
-            if (me instanceof MLink) removeEdge(me);
+	    if (ModelFacade.isANode(me)) removeNode(me);
+	    if (ModelFacade.isANodeInstance(me)) removeNode(me);
+	    if (ModelFacade.isAComponent(me)) removeNode(me);
+	    if (ModelFacade.isAComponentInstance(me)) removeNode(me);
+	    if (ModelFacade.isAClass(me)) removeNode(me);
+	    if (ModelFacade.isAInterface(me)) removeNode(me);
+	    if (ModelFacade.isAObject(me)) removeNode(me);
+	    if (ModelFacade.isAAssociation(me)) removeEdge(me);
+	    if (ModelFacade.isADependency(me)) removeEdge(me);
+        if (ModelFacade.isALink(me)) removeEdge(me);
       }
       else {
 	    cat.debug("model added " + me);
