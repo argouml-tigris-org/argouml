@@ -39,44 +39,61 @@ import org.argouml.uml.diagram.static_structure.ui.UMLClassDiagram;
 import org.argouml.uml.diagram.use_case.ui.UMLUseCaseDiagram;
 import org.tigris.gef.base.Diagram;
 
-
-/** TMResults implements a default table model which is used by
- *  Find and Goto Operations in order to display search results.
- *  It defines a default table model with columns and can 
- *  resolve found objects to strings.
+/** 
+ * TMResults (Table Model Results) implements a default table model 
+ * which is used by Find and Goto Operations in order to display search 
+ * results. It defines a default table model with columns and can 
+ * resolve found objects to strings.
  */
 public class TMResults extends AbstractTableModel {
 
     private static final String BUNDLE = "Label";
-    ////////////////
-    // instance vars
-    Vector _rowObjects;
-    Vector _diagrams;
 
-    ////////////////
-    // constructor
+    private Vector rowObjects;
+    private Vector diagrams;
+
+    /**
+     * The constructor.
+     * 
+     */
     public TMResults() {
     }
 
     ////////////////
     // accessors
-    public void setTarget(Vector results, Vector diagrams) {
-        _rowObjects = results;
-        _diagrams = diagrams;
+    
+    /**
+     * @param results the row objects
+     * @param theDiagrams the diagrams
+     */
+    public void setTarget(Vector results, Vector theDiagrams) {
+        rowObjects = results;
+        diagrams = theDiagrams;
         fireTableStructureChanged();
     }
 
     ////////////////
     // TableModel implementation
+    
+    /**
+     * @see javax.swing.table.TableModel#getColumnCount()
+     */
     public int getColumnCount() {
         return 4;
     }
+    
+    /**
+     * @see javax.swing.table.TableModel#getRowCount()
+     */
     public int getRowCount() {
-        if (_rowObjects == null)
+        if (rowObjects == null)
             return 0;
-        return _rowObjects.size();
+        return rowObjects.size();
     }
 
+    /**
+     * @see javax.swing.table.TableModel#getColumnName(int)
+     */
     public String getColumnName(int c) {
         if (c == 0)
             return "Type";
@@ -89,20 +106,29 @@ public class TMResults extends AbstractTableModel {
         return "XXX";
     }
 
+    /**
+     * @see javax.swing.table.TableModel#getColumnClass(int)
+     */
     public Class getColumnClass(int c) {
         return String.class;
     }
 
+    /**
+     * @see javax.swing.table.TableModel#isCellEditable(int, int)
+     */
     public boolean isCellEditable(int row, int col) {
         return false;
     }
 
+    /**
+     * @see javax.swing.table.TableModel#getValueAt(int, int)
+     */
     public Object getValueAt(int row, int col) {
-        if (row < 0 || row >= _rowObjects.size())
+        if (row < 0 || row >= rowObjects.size())
             return "bad row!";
         if (col < 0 || col >= 4)
             return "bad col!";
-        Object rowObj = _rowObjects.elementAt(row);
+        Object rowObj = rowObjects.elementAt(row);
         if (rowObj instanceof Diagram) {
             Diagram d = (Diagram) rowObj;
             switch (col) {
@@ -137,8 +163,8 @@ public class TMResults extends AbstractTableModel {
         }
         if (ModelFacade.isAModelElement(rowObj)) {
             Diagram d = null;
-            if (_diagrams != null)
-                d = (Diagram) _diagrams.elementAt(row);
+            if (diagrams != null)
+                d = (Diagram) diagrams.elementAt(row);
             switch (col) {
 	    case 0 :
 		return ModelFacade.getUMLClassName(rowObj);
@@ -165,6 +191,9 @@ public class TMResults extends AbstractTableModel {
         return "unknown!";
     }
 
+    /**
+     * @see javax.swing.table.TableModel#setValueAt(java.lang.Object, int, int)
+     */
     public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
     }
 

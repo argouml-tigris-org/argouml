@@ -425,7 +425,7 @@ public class FindDialog extends ArgoDialog
         PredicateFind pred =
             new PredicateFind(eNamePred, pNamePred, dNamePred, typePred);
 
-        ChildGenFind gen = ChildGenFind.SINGLETON;
+        ChildGenFind gen = ChildGenFind.getSingleton();
         ProjectBrowser pb = ProjectBrowser.getInstance();
         Object root = ProjectManager.getManager().getCurrentProject();
 

@@ -39,10 +39,8 @@ import ru.novosoft.uml.model_management.MModel;
 
 /**
  * @author Piotr Kaminski
+ * This file updated by Jim Holt 1/17/00 for nsuml support 
  */
-
-/** This file updated by Jim Holt 1/17/00 for nsuml support **/
-
 public class ProjectMemberModel extends ProjectMember {
 
     private static final Logger LOG =
@@ -51,21 +49,34 @@ public class ProjectMemberModel extends ProjectMember {
     ////////////////////////////////////////////////////////////////
     // constants
 
-    public static final String MEMBER_TYPE = "xmi";
-    public static final String FILE_EXT = "." + MEMBER_TYPE;
+    private static final String MEMBER_TYPE = "xmi";
+    private static final String FILE_EXT = "." + MEMBER_TYPE;
 
     ////////////////////////////////////////////////////////////////
     // instance variables
 
-    private Object _model;
+    private Object model;
 
     ////////////////////////////////////////////////////////////////
     // constructors
 
+    /**
+     * The constructor.
+     * TODO: This constructor is never user. Remove?
+     * 
+     * @param name the name of the model
+     * @param p the project
+     */
     public ProjectMemberModel(String name, Project p) {
         super(name, p);
     }
 
+    /**
+     * The constructor.
+     * 
+     * @param m the model
+     * @param p the project
+     */
     public ProjectMemberModel(Object m, Project p) {
         
         super(p.getBaseName() + FILE_EXT, p);
@@ -79,11 +90,18 @@ public class ProjectMemberModel extends ProjectMember {
     ////////////////////////////////////////////////////////////////
     // accessors
 
+    /**
+     * @return the model
+     */
     public Object getModel() {
-        return _model;
+        return model;
     }
-    protected void setModel(Object model) {
-        _model = /*(MModel)*/model;
+    
+    /**
+     * @param m the model
+     */
+    protected void setModel(Object m) {
+        model = /*(MModel)*/m;
     }
 
     /**
@@ -108,20 +126,9 @@ public class ProjectMemberModel extends ProjectMember {
     public void load() throws java.io.IOException, org.xml.sax.SAXException {
         LOG.info("Reading " + getURL());
         XMIParser.getSingleton().readModels(getProject(), getURL());
-        _model = XMIParser.getSingleton().getCurModel();
+        model = XMIParser.getSingleton().getCurModel();
         getProject().setUUIDRefs(XMIParser.getSingleton().getUUIDRefs());
         LOG.info("Done reading " + getURL());
-    }
-
-    /**
-     * @deprecated since 0.l5.3 since the function in the
-     * interface is deprecated since 0.13.6.
-     * TODO: This is still used in 0.16.
-     */
-    public void save(String path, boolean overwrite, Writer writer)
-        throws Exception {
-
-	save(writer);
     }
 
     /**
@@ -136,7 +143,7 @@ public class ProjectMemberModel extends ProjectMember {
 
         try {
 
-            xmiwriter = new XMIWriter((MModel) _model, writer);
+            xmiwriter = new XMIWriter((MModel) model, writer);
             xmiwriter.gen();
         } catch (Exception ex) {
             logNotContainedElements(xmiwriter);
