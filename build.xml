@@ -249,7 +249,7 @@ Sometimes ant gives out this warnings, but the build is finished without any pro
   <!-- =================================================================== -->
   <target name="run" depends="compile">
     <echo message="--- Executing ArgoUML ---"/>
-    <java classname="uci.uml.Main"
+    <java classname="org.argouml.application.Main"
           fork="yes"
           classpath="${build.dest};${classpath}"/>
   </target>
