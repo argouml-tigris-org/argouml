@@ -350,13 +350,16 @@ implements IStatusBar {
     _navPane.setRoot(_project);
     setTitle(getAppName() + " - " + _project.getName());
     Actions.updateAllEnabled();
+    //Designer.TheDesigner.getToDoList().removeAllElements();
+    Designer.TheDesigner.setCritiquingRoot(_project);
     // update all panes
+    setTarget(_project.getInitialTarget());
   }
   public Project getProject() { return _project; }
 
   public String getAppName() { return _appName; }
   public void setAppName(String n) { _appName = n; }
-  
+
   public void setPerspectives(Vector v) {
     _navPane.setPerspectives(v);
   }

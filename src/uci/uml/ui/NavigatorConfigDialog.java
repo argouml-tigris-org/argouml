@@ -51,7 +51,7 @@ implements ActionListener, ChangeListener, ListSelectionListener, MouseListener 
   ////////////////////////////////////////////////////////////////
   // constants
   public final int WIDTH = 400;
-  public final int HEIGHT = 450;
+  public final int HEIGHT = 600;
 
   ////////////////////////////////////////////////////////////////
   // instance variables
@@ -147,7 +147,7 @@ implements ActionListener, ChangeListener, ListSelectionListener, MouseListener 
     gb.setConstraints(persLabel, c);
     _persPanel.add(persLabel);
 
-    _persList.setPreferredSize(new Dimension(400, 200));
+    _persList.setPreferredSize(new Dimension(400, 120));
 
     c.gridx = 0; c.gridy = 1;
     c.gridwidth = 3;
@@ -208,35 +208,25 @@ implements ActionListener, ChangeListener, ListSelectionListener, MouseListener 
     c.weighty = 1.0;
     c.gridheight = 2;
     
-    _ruleLibList.setPreferredSize(new Dimension(250, 300));
-    _rulesList.setPreferredSize(new Dimension(250, 300));
+    _ruleLibList.setMinimumSize(new Dimension(250, 350));
+    _rulesList.setMinimumSize(new Dimension(250, 350));
     
-    GridBagConstraints c2 = new GridBagConstraints();
-    c2.fill = GridBagConstraints.BOTH;
-    c2.weightx = 1.0;
-    c2.weighty = 0.0;
-    c2.ipadx = 3; c2.ipady = 3;
-    c2.gridx = 0; c2.gridy = 4;
-    c2.gridwidth = 1;
+    c.gridx = 0; c.gridy = 4;
+    c.gridwidth = 1;
     JScrollPane ruleLibScroll =
       new JScrollPane(_ruleLibList,
 		      JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
 		      JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-    gb.setConstraints(ruleLibScroll, c2);
+    gb.setConstraints(ruleLibScroll, c);
     _persPanel.add(ruleLibScroll);
 
-    GridBagConstraints c3 = new GridBagConstraints();
-    c3.fill = GridBagConstraints.BOTH;
-    c3.weightx = 1.0;
-    c3.weighty = 0.0;
-    c3.ipadx = 3; c3.ipady = 3;
-    c3.gridx = 2; c3.gridy = 4;
-    c3.gridwidth = 2;
+    c.gridx = 2; c.gridy = 4;
+    c.gridwidth = 2;
     JScrollPane rulesScroll =
       new JScrollPane(_rulesList,
 		      JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
 		      JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-    gb.setConstraints(rulesScroll, c3);
+    gb.setConstraints(rulesScroll, c);
     _persPanel.add(rulesScroll);
     
     // this is the default anyway

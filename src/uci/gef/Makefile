@@ -23,6 +23,7 @@ GEN =
 
 CLASSES = \
 	ArrowHead.class \
+	ArrowHeadComposite.class \
 	ArrowHeadDiamond.class \
 	ArrowHeadNone.class \
 	ArrowHeadTriangle.class \

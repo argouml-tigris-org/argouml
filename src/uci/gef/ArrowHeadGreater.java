@@ -3,12 +3,10 @@
 // software and its documentation for educational, research and non-profit
 // purposes, without fee, and without a written agreement is hereby granted,
 // provided that the above copyright notice and this paragraph appear in all
-// copies. Permission to incorporate this software into commercial products may
-// be obtained by contacting the University of California. David F. Redmiles
-// Department of Information and Computer Science (ICS) University of
-// California Irvine, California 92697-3425 Phone: 714-824-3823. This software
-// program and documentation are copyrighted by The Regents of the University
-// of California. The software program and documentation are supplied "as is",
+// copies. Permission to incorporate this software into commercial products
+// must be negotiated with University of California. This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied "as is",
 // without any accompanying services from The Regents. The Regents do not
 // warrant that the operation of the program will be uninterrupted or
 // error-free. The end-user understands that the program was developed for
@@ -41,6 +39,8 @@ import java.util.*;
 
 public class ArrowHeadGreater extends ArrowHead {
 
+  public static ArrowHeadGreater TheInstance = new ArrowHeadGreater();
+
   public void paint(Graphics g, Point start, Point end) {
     int    xFrom, xTo, yFrom, yTo;
     double denom, x, y, dx, dy, cos, sin;
@@ -65,24 +65,14 @@ public class ArrowHeadGreater extends ArrowHead {
     int x2  = (int)(x + sin*dy);
     int y2  = (int)(y - sin*dx);
 
-    triangle = new Polygon();
-    triangle.addPoint(xTo, yTo);
-    triangle.addPoint(x1, y1);
-    triangle.addPoint(x2, y2);
+//     triangle = new Polygon();
+//     triangle.addPoint(xTo, yTo);
+//     triangle.addPoint(x1, y1);
+//     triangle.addPoint(x2, y2);
 
     g.setColor(arrowLineColor);
     g.drawLine(x1, y1, xTo, yTo);
     g.drawLine(x2, y2, xTo, yTo);
   }
 
-  private double dist(int x0, int y0, int x1, int y1) {
-    double dx, dy;
-    dx = (double)(x0-x1);
-    dy = (double)(y0-y1);
-    return Math.sqrt(dx*dx+dy*dy);
-  }
-
-  private double dist(double dx, double dy) {
-    return Math.sqrt(dx*dx+dy*dy);
-  }
 }

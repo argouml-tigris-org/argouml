@@ -54,7 +54,7 @@ public class FigTransition extends FigEdgeLine {
   }
 
   public void dispose() {
-    System.out.println("disposing FigTransition");
+    //System.out.println("disposing FigTransition");
     if (!(getOwner() instanceof Element)) return;
     Element elmt = (Element) getOwner();
     Project p = ProjectBrowser.TheInstance.getProject();

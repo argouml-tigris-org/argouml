@@ -36,6 +36,7 @@ CLASSES = \
 	Actions.class \
 	ActionCreatePseudostate.class \
 	AddToDoItemDialog.class \
+	ArgoFileFilter.class \
 	DelayedChangeNotify.class \
 	DelayedVetoableChangeListener.class \
 	DesignIssuesDialog.class \
@@ -44,6 +45,7 @@ CLASSES = \
 	DisplayTextTree.class \
 	DocumentationManager.class \
 	EmailExpertDialog.class \
+	EmptyProject.class \
 	GoAssocToSource.class \
 	GoAssocToTarget.class \
 	GoClassToAggrClass.class \
@@ -82,6 +84,8 @@ CLASSES = \
 	JasonsTheme.class \
 	JasonsBigTheme.class \
 	JasonsHugeTheme.class \
+	JavaDocument.class \
+	JavaEditorKit.class \
 	Menu.class \
 	ModelElementRenderer.class \
 	MultiEditorPane.class \
@@ -114,6 +118,7 @@ CLASSES = \
 	TabDocs.class \
 	TabHash.class \
 	TabHistory.class \
+	TabJavaSrc.class \
 	TabModelTarget.class \
 	TabProps.class \
 	TabSpawnable.class \
@@ -133,6 +138,7 @@ CLASSES = \
 	ToDoPane.class \
 	ToDoPerspective.class \
 	ToDoTreeRenderer.class \
+	Token.class \
 	Trash.class \
 	TreeModelComposite.class \
 	TreeModelPrereqs.class \

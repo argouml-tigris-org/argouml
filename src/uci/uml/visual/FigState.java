@@ -129,7 +129,7 @@ public class FigState extends FigNodeModelElement {
 
 
   public void dispose() {
-    System.out.println("disposing FigState");
+    //System.out.println("disposing FigState");
     State s = (State) getOwner();
     try {
       s.setParent(null);

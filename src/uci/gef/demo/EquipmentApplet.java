@@ -55,7 +55,7 @@ import com.sun.java.swing.*;
  * @see EdgePower
  * @see EdgeData */
 
-public class EquipmentApplet extends Applet {
+public class EquipmentApplet extends JApplet {
 
   ////////////////////////////////////////////////////////////////
   // instance variables

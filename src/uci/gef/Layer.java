@@ -267,6 +267,10 @@ public abstract class Layer implements java.io.Serializable {
     _editors.removeElement(ed);
   }
 
+  public void preSave() { }
+  public void postSave() { }
+  public void postLoad() { }
+
   ////////////////////////////////////////////////////////////////
   // user interface
 

@@ -44,14 +44,4 @@ public class ArrowHeadHalfTriangle extends ArrowHead {
     g.drawPolygon(triangle);
   }
 
-  private double dist(int x0, int y0, int x1, int y1) {
-    double dx, dy;
-    dx = (double)(x0-x1);
-    dy = (double)(y0-y1);
-    return Math.sqrt(dx*dx+dy*dy);
-  }
-
-  private double dist(double dx, double dy) {
-    return Math.sqrt(dx*dx+dy*dy);
-  }
-}
+} /* end class ArrowHeadHalfTriangle */

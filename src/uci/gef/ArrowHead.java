@@ -3,12 +3,10 @@
 // software and its documentation for educational, research and non-profit
 // purposes, without fee, and without a written agreement is hereby granted,
 // provided that the above copyright notice and this paragraph appear in all
-// copies. Permission to incorporate this software into commercial products may
-// be obtained by contacting the University of California. David F. Redmiles
-// Department of Information and Computer Science (ICS) University of
-// California Irvine, California 92697-3425 Phone: 714-824-3823. This software
-// program and documentation are copyrighted by The Regents of the University
-// of California. The software program and documentation are supplied "as is",
+// copies. Permission to incorporate this software into commercial products
+// must be negotiated with University of California. This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied "as is",
 // without any accompanying services from The Regents. The Regents do not
 // warrant that the operation of the program will be uninterrupted or
 // error-free. The end-user understands that the program was developed for
@@ -49,25 +47,35 @@ public abstract class ArrowHead implements java.io.Serializable {
     setLineColor(line);
     setFillColor(fill);
   }
-  
+
   public Color getLineColor() {
     return arrowLineColor;
   }
-  
+
   public void setLineColor(Color newColor) {
     arrowLineColor = newColor;
   }
-  
+
   public Color getFillColor() {
     return arrowFillColor;
   }
-  
+
   public void setFillColor(Color newColor) {
     arrowFillColor = newColor;
   }
-  
+
   public abstract void paint(Graphics g, Point start, Point end);
-  
+
+  public void paintAtHead(Graphics g, Fig path) {
+    paint(g, path.pointAlongPerimeter(5), path.pointAlongPerimeter(0));
+  }
+
+  public void paintAtTail(Graphics g, Fig path) {
+    int len = path.getPerimeterLength();
+    paint(g, path.pointAlongPerimeter(len - 6),
+	  path.pointAlongPerimeter(len - 1));
+  }
+
   /** return the approximate arc length of the path in pixel units */
   public int getLineLength(Point one, Point two) {
     int dxdx = (two.x - one.x) * (two.x - one.x);
@@ -75,7 +83,7 @@ public abstract class ArrowHead implements java.io.Serializable {
     //System.out.println("    ! pall dx, dy = " + dxdx + " , " + dydy);
     return (int) Math.sqrt(dxdx + dydy);
   }
-  
+
   /** return a point that is dist pixels along the path */
   public Point pointAlongLine(Point one, Point two, int dist) {
     int len = getLineLength(one, two);
@@ -85,5 +93,16 @@ public abstract class ArrowHead implements java.io.Serializable {
     return new Point(one.x + ((two.x - one.x) * p) / len,
 		     one.y + ((two.y - one.y) * p) / len);
   }
-  
-}
+
+  public double dist(int x0, int y0, int x1, int y1) {
+    double dx, dy;
+    dx = (double)(x0-x1);
+    dy = (double)(y0-y1);
+    return Math.sqrt(dx*dx+dy*dy);
+  }
+
+  public double dist(double dx, double dy) {
+    return Math.sqrt(dx*dx+dy*dy);
+  }
+
+} /* end class ArrowHead */

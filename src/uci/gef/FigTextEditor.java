@@ -59,7 +59,6 @@ implements PropertyChangeListener, DocumentListener, KeyListener {
    *  FigText. */
   public FigTextEditor(FigText ft, InputEvent ie) {
     _target = ft;
-    System.out.println("making FigTextEditor");
     Editor ce = Globals.curEditor();
     if (!(ce.getAwtComponent() instanceof JComponent)) {
       System.out.println("not a JComponent");
@@ -108,7 +107,6 @@ implements PropertyChangeListener, DocumentListener, KeyListener {
       setSelectionStart(getDocument().getLength());
       setSelectionEnd(getDocument().getLength());
     }
-    System.out.println("made FigTextEditor");
   }
 
   public void propertyChange(PropertyChangeEvent pve) { updateFigText(); }
@@ -124,7 +122,6 @@ implements PropertyChangeListener, DocumentListener, KeyListener {
 
 
   public void endEditing() {
-    System.out.println("endEditing");
     _editing = false;
     _target.startTrans();
     updateFigText();
@@ -149,12 +146,10 @@ implements PropertyChangeListener, DocumentListener, KeyListener {
   public void keyTyped(KeyEvent ke) {
     if (ke.getKeyChar() == KeyEvent.VK_ENTER &&
 	 !_target.getMultiLine()) {
-      System.out.println("got enter typed");
       ke.consume();
     }
     if (ke.getKeyCode() == KeyEvent.VK_TAB) {
       if (!_target.getAllowsTab()) {
-	System.out.println("got tab typed");
 	endEditing();
 	ke.consume();
       }
@@ -168,25 +163,22 @@ implements PropertyChangeListener, DocumentListener, KeyListener {
   public void keyPressed(KeyEvent ke) {
     if (ke.getKeyCode() == KeyEvent.VK_ENTER) {
       if (!_target.getMultiLine()) {
-	System.out.println("got enter");
 	endEditing();
 	ke.consume();
       }
     }
     if (ke.getKeyCode() == KeyEvent.VK_TAB) {
       if (!_target.getAllowsTab()) {
-	System.out.println("got tab");
 	endEditing();
 	ke.consume();
       }
     }
     else if (ke.getKeyCode() == KeyEvent.VK_F2) {
-      System.out.println("got f2");
       endEditing();
       ke.consume();
     }
     else if (ke.getKeyCode() == KeyEvent.VK_ESCAPE) {
-      System.out.println("got escape");
+      // needs-more-work: should revert to orig text, or simply don't commit
       endEditing();
       ke.consume();
     }

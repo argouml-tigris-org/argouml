@@ -179,14 +179,15 @@ implements Serializable, MouseListener, MouseMotionListener, KeyListener {
   }
 
   /** Called before the Editor is saved to a file. */
-  public void preSave() { }
+  public void preSave() { _layerManager.preSave(); }
 
   /** Called after the Editor is saved to a file. */
-  public void postSave() { }
-  
+  public void postSave() { _layerManager.postSave(); }
+
   /** Called after the Editor is loaded from a file. */
   public void postLoad() {
-    if (_redrawer == null) _redrawer = new RedrawManager(this);;
+    if (_redrawer == null) _redrawer = new RedrawManager(this);
+    _layerManager.postLoad();
   }
 
   /** Clone the receiving editor. Called from ActionSpawn. Subclasses
@@ -440,12 +441,21 @@ implements Serializable, MouseListener, MouseMotionListener, KeyListener {
     }
   }
 
+  //protected static Graphics _graphics = null;
   /** Get the graphics context object that this editor should draw on. */
   public Graphics getGraphics() {
+//     if (_graphics != null) {
+//       Rectangle bbox = _awt_component.getBounds();
+//       _graphics.setClip(new Rectangle(0, 0, bbox.width, bbox.height));
+//       return _graphics;
+//     }
     if (_awt_component == null) return null;
 //     if (_awt_component instanceof JGraphInternalPane)
 //       return ((JGraphInternalPane) _awt_component).getGraphicsCounted();
     return _awt_component.getGraphics();
+//     System.out.println("made a graphics bounds =" + _graphics.getClipBounds());
+//     System.out.println("comp bounds=" + _awt_component.getBounds());
+//     return _graphics;
   }
 
   /** Find the AWT Frame that this Editor is being displayed in. This

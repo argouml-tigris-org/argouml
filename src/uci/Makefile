@@ -26,7 +26,7 @@ include Makefile.config
 all: classes
 
 
-classes: gefClasses umlClasses argoumlClasses criticsClasses
+classes: gefClasses umlClasses argoumlClasses criticsClasses swingClasses
 
 gefClasses:
 	@if [ -d gef ] ; \
@@ -85,6 +85,16 @@ criticsClasses:
 	cd .. ; \
 	fi
 
+swingClasses:
+	@if [ -d ../com/sun ] ; \
+	then echo "\n\nCOMPILING SWING MODIFICATIONS ================" ; \
+	cd ../com/sun/java/swing; make classes;  \
+	cd text; make classes; cd .. ; \
+	cd plaf/metal; make classes; cd ../.. ; \
+	cd ../../../../uci ; \
+	fi
+
+
 fresh: gefFresh umlFresh argoumlFresh criticsFresh
 
 
@@ -141,7 +151,7 @@ criticsFresh:
 	cd .. ; \
 	fi
 
-clean: gefClean umlClean argoumlClean criticsClean
+clean: gefClean umlClean argoumlClean criticsClean swingClean
 
 
 gefClean: 
@@ -199,6 +209,14 @@ criticsClean:
 	cd .. ; \
 	fi
 
+swingClean: 
+	@if [ -d ../com/sun ] ; \
+	then echo "\n\nCLEANING SWING MODIFICATIONS ================" ; \
+	cd ../com/sun/java/swing; make clean; \
+	cd text; make clean; cd .. ; \
+	cd plaf/metal; make clean; cd ../.. ; \
+	cd ../../../../uci ; \
+	fi
 
 GEFPACKS = \
 	uci.gef uci.ui uci.util uci.gef.demo uci.gef.event \
@@ -236,7 +254,7 @@ argoumljavadocs:
 	$(JAVADOC) -d umluiapi $(ARGOUMLPACKS)
 
 javadocs:
-	$(JAVADOC) -d api \
+	$(JAVADOC) -J-mx40m -d api \
 	$(GEFPACKS) $(UMLPACKS) $(ARGOUMLPACKS) $(CRITICPACKS)
 
 

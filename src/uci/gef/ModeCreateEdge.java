@@ -97,7 +97,7 @@ public class ModeCreateEdge extends ModeCreate {
     Editor _editor = Globals.curEditor();
     Fig underMouse = _editor.hit(x, y);
     if (underMouse == null) { 
-        System.out.println("bighit");
+      //System.out.println("bighit");
         underMouse = _editor.hit(x-16, y-16, 32, 32); 
     }
     if (underMouse == null) { done(); me.consume(); return; }

@@ -256,11 +256,9 @@ public class Designer implements Poster, Runnable, java.io.Serializable {
   }
   public void setCritiquingInterval(int i) { _critiquingInterval = i; }
 
-   public static void setCritiquingRoot(Object d) {
-     synchronized (_CritiquingRoot) {
-       _CritiquingRoot = d;
-       theDesigner()._toDoList.removeAllElements();
-     }
+   public synchronized static void setCritiquingRoot(Object d) {
+     _CritiquingRoot = d;
+     theDesigner()._toDoList.removeAllElements();
    }
    public static Object getCritiquingRoot() { return _CritiquingRoot; }
 

@@ -190,7 +190,7 @@ implements VetoableChangeListener, DelayedVetoableChangeListener, MouseListener,
   /** needs-more-work: When the user deletes a ModelElement, it is
    *  moved to a special trash container. */
   public void dispose() {
-    System.out.println("disposing FigEdgeModelElement");
+    //System.out.println("disposing FigEdgeModelElement");
     ModelElement me = (ModelElement) getOwner();
     if (me == null) return;
     Project p = ProjectBrowser.TheInstance.getProject();
@@ -198,6 +198,14 @@ implements VetoableChangeListener, DelayedVetoableChangeListener, MouseListener,
     super.dispose();
   }
 
+  public void setOwner(Object own) {
+    Object oldOwner = getOwner();
+    super.setOwner(own);
+    if (oldOwner instanceof ModelElement)
+      ((ModelElement)oldOwner).removeVetoableChangeListener(this);
+    if (own instanceof ModelElement)
+      ((ModelElement)own).addVetoableChangeListener(this);
+  }
 
 
 } /* end class FigEdgeModelElement */

@@ -211,4 +211,19 @@ public class LayerManager implements java.io.Serializable  {
 
   public Editor getEditor() { return _editor; }
 
+  public void preSave() {
+    for (int i = 0; i < _layers.size(); i++)
+      ((Layer) _layers.elementAt(i)).preSave();
+  }
+
+  public void postSave() {
+    for (int i = 0; i < _layers.size(); i++)
+      ((Layer) _layers.elementAt(i)).postSave();
+  }
+
+  public void postLoad() {
+    for (int i = 0; i < _layers.size(); i++)
+      ((Layer) _layers.elementAt(i)).postLoad();
+  }
+
 } /* end class LayerManager */

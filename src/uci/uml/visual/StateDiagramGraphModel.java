@@ -163,7 +163,7 @@ implements MutableGraphModel, VetoableChangeListener {
 
   /** Add the given node to the graph, if valid. */
   public void addNode(Object node) {
-    System.out.println("adding state diagram node: " + node);
+    //System.out.println("adding state diagram node: " + node);
     if (!(node instanceof StateVertex)) {
       System.out.println("internal error: got past canAddNode");
       return;
@@ -189,7 +189,7 @@ implements MutableGraphModel, VetoableChangeListener {
 
   /** Add the given edge to the graph, if valid. */
   public void addEdge(Object edge) {
-    System.out.println("adding state diagram edge!!!!!!");
+    //System.out.println("adding state diagram edge!!!!!!");
     if (!(edge instanceof Transition)) {
       System.out.println("internal error: got past canAddEdge");
       return;
@@ -271,13 +271,13 @@ implements MutableGraphModel, VetoableChangeListener {
       ElementOwnership eo = (ElementOwnership) pce.getNewValue();
       ModelElement me = eo.getModelElement();
       if (oldOwned.contains(eo)) {
-	System.out.println("model removed " + me);
+	//System.out.println("model removed " + me);
 	if (me instanceof State) removeNode(me);
 	if (me instanceof Pseudostate) removeNode(me);
 	if (me instanceof Transition) removeEdge(me);
       }
       else {
-	System.out.println("model added " + me);
+	// System.out.println("model added " + me);
       }
     }
   }

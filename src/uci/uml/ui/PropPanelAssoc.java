@@ -300,7 +300,6 @@ implements DocumentListener, ItemListener, ChangeListener {
   }
 
   public void setAgg() {
-    System.out.println("setagg");
     if (_target == null) return;
     AggregationKind aggA = (AggregationKind) _aggAField.getSelectedItem();
     AggregationKind aggB = (AggregationKind) _aggBField.getSelectedItem();

@@ -206,6 +206,8 @@ implements Runnable, java.io.Serializable {
   private synchronized boolean removeE(ToDoItem item) {
     boolean res = _items.removeElement(item);
     recomputeAllOffenders();
+    recomputeAllKnowledgeTypes();
+    recomputeAllPosters();
     notifyObservers("removeElement", item);
     fireToDoItemRemoved(item);
     return res;
@@ -230,7 +232,15 @@ implements Runnable, java.io.Serializable {
   }
 
   public synchronized void removeAllElements() {
-    _items.removeAllElements();
+    //System.out.println("removing all todo items");
+    Vector oldItems = (Vector) _items.clone();
+    int size = oldItems.size();
+    for (int i = 0; i < size; i++)
+      removeE((ToDoItem)oldItems.elementAt(i));
+
+    recomputeAllOffenders();
+    recomputeAllKnowledgeTypes();
+    recomputeAllPosters();
     notifyObservers("removeAllElements");
     fireToDoListChanged();
   }
@@ -241,11 +251,13 @@ implements Runnable, java.io.Serializable {
     if (off == _RecentOffender) return _RecentOffenderItems;
     _RecentOffender = off;
     _RecentOffenderItems.removeAllElements();
-    int size = _items.size();
-    for (int i = 0; i < size; i++) {
-      ToDoItem item = (ToDoItem) _items.elementAt(i);
-      if (item.getOffenders().contains(off))
-	_RecentOffenderItems.addElement(item);
+    synchronized (_items) {
+      int size = _items.size();
+      for (int i = 0; i < _items.size(); i++) {
+	ToDoItem item = (ToDoItem) _items.elementAt(i);
+	if (item.getOffenders().contains(off))
+	  _RecentOffenderItems.addElement(item);
+      }
     }
     return _RecentOffenderItems;
   }

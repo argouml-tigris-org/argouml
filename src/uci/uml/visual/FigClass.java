@@ -130,8 +130,8 @@ public class FigClass extends FigNodeModelElement  {
 
   protected void textEdited(FigText ft) throws PropertyVetoException {
     super.textEdited(ft);
-    if (ft == _attr) { System.out.println("edited Attr"); }
-    if (ft == _oper) { System.out.println("edited Oper"); }
+    //if (ft == _attr) { System.out.println("edited Attr"); }
+    //if (ft == _oper) { System.out.println("edited Oper"); }
   }
 
   protected void modelChanged() {

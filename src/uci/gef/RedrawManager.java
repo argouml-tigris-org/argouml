@@ -230,8 +230,8 @@ public class RedrawManager implements Runnable {
     if (c == null || !c.isVisible()) return;
     Graphics g = null;
     //synchronized (Toolkit.getDefaultToolkit()) {
-    g = _ed.getGraphics();
-    //}
+      g = _ed.getGraphics();
+      //}
     if (_lockLevel == 0 && g != null)
       synchronized (LOCK) { if (_lockLevel == 0) paint(_ed, g); }
   }

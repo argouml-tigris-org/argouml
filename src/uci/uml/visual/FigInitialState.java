@@ -101,7 +101,7 @@ implements VetoableChangeListener, DelayedVetoableChangeListener {
    *  model changes complete before we update the screen. */
   public void vetoableChange(PropertyChangeEvent pce) {
     // throws PropertyVetoException
-    System.out.println("FigInitialState got a change notification!");
+    //System.out.println("FigInitialState got a change notification!");
     Object src = pce.getSource();
     if (src == getOwner()) {
       DelayedChangeNotify delayedNotify = new DelayedChangeNotify(this, pce);
@@ -113,7 +113,7 @@ implements VetoableChangeListener, DelayedVetoableChangeListener {
    *  its current  state. */
   public void delayedVetoableChange(PropertyChangeEvent pce) {
     // throws PropertyVetoException
-    System.out.println("FigInitialState got a delayed change notification!");
+    //System.out.println("FigInitialState got a delayed change notification!");
     Object src = pce.getSource();
     if (src == getOwner()) {
      // updateText();
@@ -134,7 +134,7 @@ implements VetoableChangeListener, DelayedVetoableChangeListener {
   }
 
   public void dispose() {
-    System.out.println("disposing FigInitialState");
+    //System.out.println("disposing FigInitialState");
     Element elmt = (Element) getOwner();
     if (elmt == null) return;
     Project p = ProjectBrowser.TheInstance.getProject();

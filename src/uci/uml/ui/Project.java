@@ -65,7 +65,7 @@ public class Project implements java.io.Serializable {
     //_models.addElement(new Model("Object Model"));
     //_diagrams.addElement(new LayerDiagram("Untitled Diagram"));
   }
-  
+
   ////////////////////////////////////////////////////////////////
   // accessors
   // needs-more-work 
@@ -95,7 +95,6 @@ public class Project implements java.io.Serializable {
   public void setNeedsSave(boolean ns) { _needsSave = ns; }
   public void needsSave() { setNeedsSave(true); }
 
-  
   public Vector getModels() { return _models; }
   public void addModel(Model m) throws PropertyVetoException {
     getVetoSupport().fireVetoableChange("Models", _models, m);
@@ -114,6 +113,15 @@ public class Project implements java.io.Serializable {
     _needsSave = true;
   }
 
+  public Object getInitialTarget() {
+    if (_diagrams.size() > 0) return _diagrams.elementAt(0);
+    if (_models.size() > 0) return _models.elementAt(0);
+    return null;
+  }
+
+  ////////////////////////////////////////////////////////////////
+  // event handling
+
   public void addVetoableChangeListener(VetoableChangeListener l) {
     getVetoSupport().removeVetoableChangeListener(l);
     getVetoSupport().addVetoableChangeListener(l);
@@ -126,6 +134,24 @@ public class Project implements java.io.Serializable {
   protected VetoableChangeSupport getVetoSupport() {
     if (_vetoSupport == null) _vetoSupport = new VetoableChangeSupport(this);
     return _vetoSupport;
+  }
+
+  public void preSave() {
+    for (int i = 0; i < _diagrams.size(); i++)
+      ((Diagram)_diagrams.elementAt(i)).preSave();
+    // needs-more-work: is preSave needed for models?
+  }
+
+  public void postSave() {
+    for (int i = 0; i < _diagrams.size(); i++)
+      ((Diagram)_diagrams.elementAt(i)).postSave();
+    // needs-more-work: is postSave needed for models?
+  }
+
+  public void postLoad() {
+    for (int i = 0; i < _diagrams.size(); i++)
+      ((Diagram)_diagrams.elementAt(i)).postLoad();
+    // needs-more-work: is postLoad needed for models?
   }
 
   ////////////////////////////////////////////////////////////////

@@ -72,7 +72,7 @@ public class Diagram implements java.io.Serializable {
   protected void initToolBar() {
     _toolBar = new PaletteFig();
   }
-  
+
   ////////////////////////////////////////////////////////////////
   // accessors
 
@@ -103,6 +103,11 @@ public class Diagram implements java.io.Serializable {
 
   ////////////////////////////////////////////////////////////////
   // VetoableChangeSupport
+
+
+  public void preSave() { _lay.preSave(); }
+  public void postSave() { _lay.postSave(); }
+  public void postLoad() { _lay.postLoad(); }
 
   public synchronized void
   addVetoableChangeListener(VetoableChangeListener listener) {

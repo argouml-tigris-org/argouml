@@ -51,8 +51,8 @@ public class ElementImpl implements Element, Highlightable {
   public Stereotype _classification;
   //% public TaggedValue _taggedValue[];
   public Vector _taggedValue = new Vector();
-  public transient Vector _vetoListeners = new Vector();
-  public transient Vector _propertyListeners = new Vector();
+  public transient Vector _vetoListeners;
+  public transient Vector _propertyListeners;
   public boolean _highlight;
 
   public ElementImpl() { }
@@ -124,16 +124,17 @@ public class ElementImpl implements Element, Highlightable {
 
   public synchronized void
   addVetoableChangeListener(VetoableChangeListener listener) {
-    if (_vetoListeners == null)
-      _vetoListeners = new Vector();
+    if (_vetoListeners == null) _vetoListeners = new Vector();
     _vetoListeners.removeElement(listener);
     _vetoListeners.addElement(listener);
+    //System.out.println("add _vetoListeners.size() = " + _vetoListeners.size());
   }
 
   public synchronized void
   removeVetoableChangeListener(VetoableChangeListener listener) {
     if (_vetoListeners == null) return;
     _vetoListeners.removeElement(listener);
+    //System.out.println("rm _vetoListeners.size() = " + _vetoListeners.size());
   }
 
   public void fireVetoableChange(String propertyName,
@@ -160,6 +161,7 @@ public class ElementImpl implements Element, Highlightable {
     uci.argo.kernel.Designer.TheDesigner.critiqueASAP(this);
     if (_vetoListeners == null) return;
     if (oldValue != null && oldValue.equals(newValue)) return;
+    //System.out.println("fire _vetoListeners.size() = " + _vetoListeners.size());
     PropertyChangeEvent evt =
       new PropertyChangeEvent(this,
 			      propertyName, oldValue, newValue);
@@ -194,12 +196,14 @@ public class ElementImpl implements Element, Highlightable {
     if (_propertyListeners == null) _propertyListeners = new Vector();
     _propertyListeners.removeElement(listener);
     _propertyListeners.addElement(listener);
+    //System.out.println("add _propListeners.size() = " + _propertyListeners.size());
   }
 
   public synchronized void
   removePropertyChangeListener(PropertyChangeListener listener) {
     if (_propertyListeners == null) return;
     _propertyListeners.removeElement(listener);
+    //System.out.println("rm _propListeners.size() = " + _propertyListeners.size());
   }
 
   public void firePropertyChange(String propertyName,
@@ -225,6 +229,8 @@ public class ElementImpl implements Element, Highlightable {
     if (oldValue != null && oldValue.equals(newValue)) return;
     PropertyChangeEvent evt =
       new PropertyChangeEvent(this, propertyName, oldValue, newValue);
+    //System.out.println("fire _propertyListeners.size() = " +
+    //_propertyListeners.size());
     for (int i = 0; i < _propertyListeners.size(); i++) {
       PropertyChangeListener target =
 	(PropertyChangeListener) _propertyListeners.elementAt(i);

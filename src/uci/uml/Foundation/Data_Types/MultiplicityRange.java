@@ -32,10 +32,10 @@ package uci.uml.Foundation.Data_Types;
 import java.util.*;
 
 public class MultiplicityRange implements java.io.Serializable {
-  public Integer lower;
-  public Integer upper;
+  public Integer _lower;
+  public Integer _upper;
   //-public Multiplicity m_Multiplicity;
-  
+
   public MultiplicityRange() { }
   public MultiplicityRange(int lower, int upper) {
     this(new Integer(lower), new Integer(upper));
@@ -44,20 +44,33 @@ public class MultiplicityRange implements java.io.Serializable {
     setLower(lower);
     setUpper(upper);
   }
-  
-  public Integer getLower() { return lower; }
+
+  public Integer getLower() { return _lower; }
   public void setLower(Integer x) {
-    lower = x;
+    _lower = x;
   }
-  
-  public Integer getUpper() { return upper; }
+
+  public Integer getUpper() { return _upper; }
   public void setUpper(Integer x) {
-    upper = x;
+    _upper = x;
   }
-  
+
+
+  public boolean equals(Object obj) {
+    if (!(obj instanceof MultiplicityRange)) return false;
+    MultiplicityRange mr = (MultiplicityRange) obj;
+    Integer mrLow = mr.getLower();
+    Integer mrHigh = mr.getUpper();
+    boolean low = (_lower == null && mrLow == null) ||
+      (_lower != null && _lower.equals(mrLow));
+    boolean high = (_upper == null && mrHigh == null) ||
+      (_upper != null && _upper.equals(mrHigh));
+    return low && high;
+  }
+
   //-public Multiplicity m_getMultiplicity() { return m_Multiplicity; }
   //-public void setM_Multiplicity(Multiplicity x) {
   //-  Multiplicity Multiplicity = x;
   //-}
-  
+
 }

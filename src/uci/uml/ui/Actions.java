@@ -145,6 +145,10 @@ public class Actions {
 
 class ActionNew extends UMLAction {
   public ActionNew() { super("New..."); }
+  public void actionPerformed(ActionEvent e) {
+    ProjectBrowser pb = ProjectBrowser.TheInstance;
+    pb.setProject(new EmptyProject());
+  }
 } /* end class ActionNew */
 
 class ActionOpen extends UMLAction {
@@ -165,7 +169,7 @@ class ActionOpen extends UMLAction {
     	FileInputStream fis = new FileInputStream(pathname);
     	ObjectInput s = new ObjectInputStream(fis);
     	Project p = (Project) s.readObject();
-	//ed.postLoad();
+	p.postLoad();
 	if (fis != null) fis.close();
     	pb.showStatus("Read " + pathname);
 	pb.setProject(p);
@@ -221,8 +225,9 @@ class ActionSaveAs extends UMLAction {
 	  pb.showStatus("Writing " + pathname + "...");
 	  FileOutputStream fos = new FileOutputStream(pathname);
 	  ObjectOutput oo = new ObjectOutputStream(fos);
+	  p.preSave();
 	  oo.writeObject(p);
-	  //p.postLoad();
+	  p.postSave();
 	  if (fos != null) fos.close();
 	  pb.showStatus("Wrote " + pathname);
 	  return;
@@ -737,7 +742,6 @@ class ActionAboutArgoUML extends UMLAction {
 class ActionAutoCritique extends UMLAction {
   public ActionAutoCritique() { super("Toggle Auto-Critique"); }
   public void actionPerformed(ActionEvent e) {
-    super.actionPerformed(e);
     Designer d = Designer.TheDesigner;
     boolean b = d.getAutoCritique();
     d.setAutoCritique(!b);

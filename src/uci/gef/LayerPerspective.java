@@ -169,12 +169,12 @@ public class LayerPerspective extends LayerDiagram implements GraphListener {
 	putInPosition(newFigNode);
 	add(newFigNode);
       }
-      else System.out.println("added node de is null");
+      //else System.out.println("added node de is null");
     }
   }
   
   public void edgeAdded(GraphEvent ge) {
-    System.out.println("LayerPerspective got edgeAdded");
+    //System.out.println("LayerPerspective got edgeAdded");
     Object edge = ge.getArg();
     Fig oldDE = presentationFor(edge);
     if (null == oldDE) {
@@ -186,7 +186,7 @@ public class LayerPerspective extends LayerDiagram implements GraphListener {
 	//newFigEdge.reorder(CmdReorder.SEND_TO_BACK, this);
 	newFigEdge.endTrans();
       }
-      else System.out.println("added arc fig is null!!!!!!!!!!!!!!!!");
+      //else System.out.println("added arc fig is null!!!!!!!!!!!!!!!!");
     }
   }
   

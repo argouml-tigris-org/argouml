@@ -690,5 +690,9 @@ public class Fig implements java.io.Serializable, PropertyChangeListener  {
     if (_group != null) _group.propertyChange(pce);
   }
 
+  public void preSave() { }
+  public void postSave() { }
+  public void postLoad() { }
+
 
 } /* end class Fig */

@@ -68,7 +68,7 @@ public class ArgoFileFilter extends FileFilter {
 
 
     public String getDescription() {
-      return "Argo v0.3.1 native file type";
+      return "Argo v0.4 file format";
     }
 
 }

@@ -100,7 +100,7 @@ implements VetoableChangeListener, DelayedVetoableChangeListener {
    *  model changes complete before we update the screen. */
   public void vetoableChange(PropertyChangeEvent pce) {
     // throws PropertyVetoException 
-    System.out.println("FigPackage got a change notification!");
+    //System.out.println("FigPackage got a change notification!");
     Object src = pce.getSource();
     if (src == getOwner()) {
       DelayedChangeNotify delayedNotify = new DelayedChangeNotify(this, pce);
@@ -112,7 +112,7 @@ implements VetoableChangeListener, DelayedVetoableChangeListener {
    *  its current  state. */
   public void delayedVetoableChange(PropertyChangeEvent pce) {
     // throws PropertyVetoException 
-    System.out.println("FigPackage got a delayed change notification!");
+    //System.out.println("FigPackage got a delayed change notification!");
     Object src = pce.getSource();
     if (src == getOwner()) {
       updateText();

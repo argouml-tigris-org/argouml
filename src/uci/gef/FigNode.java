@@ -114,9 +114,9 @@ implements MouseListener, PropertyChangeListener, Serializable {
    *  itself as a listener on the node. */
   public void setOwner(Object node) {
     Object oldOwner = getOwner();
-    if (oldOwner != null && oldOwner instanceof GraphNodeHooks)
+    if (oldOwner instanceof GraphNodeHooks)
       ((GraphNodeHooks)oldOwner).removePropertyChangeListener(this);
-    else if (oldOwner != null && oldOwner instanceof Highlightable)
+    else if (oldOwner instanceof Highlightable)
       ((Highlightable)oldOwner).removePropertyChangeListener(this);
 
     if (node instanceof GraphNodeHooks)
@@ -325,7 +325,7 @@ implements MouseListener, PropertyChangeListener, Serializable {
 
   public void paintClarifiers(Graphics g) {
     int iconX = _x;
-    int iconY = _y - 15;
+    int iconY = _y - 10;
     ToDoList list = Designer.theDesigner().getToDoList();
     Vector items = list.elementsForOffender(getOwner());
     int size = items.size();
@@ -349,15 +349,19 @@ implements MouseListener, PropertyChangeListener, Serializable {
     for (int i = 0; i < size; i++) {
       ToDoItem item = (ToDoItem) items.elementAt(i);
       Icon icon = item.getClarifier();
+      int width = icon.getIconWidth();
+      if (y >= _y - 15 && y <= _y + 10 &&
+	  x >= iconX && x <= iconX + width) return item;
+      iconX += width;
+    }
+    for (int i = 0; i < size; i++) {
+      ToDoItem item = (ToDoItem) items.elementAt(i);
+      Icon icon = item.getClarifier();
       if (icon instanceof Clarifier) {
 	((Clarifier)icon).setFig(this);
 	((Clarifier)icon).setToDoItem(item);
 	if (((Clarifier)icon).hit(x, y)) return item;
       }
-      int width = icon.getIconWidth();
-      if (y >= _y - 20 && y <= _y + 5 &&
-	  x >= iconX && x <= iconX + width) return item;
-      iconX += width;
     }
     return null;
   }
@@ -446,6 +450,10 @@ implements MouseListener, PropertyChangeListener, Serializable {
       fe.computeRoute();
     }
   }
+
+  /** After the file is loaded, re-establish any connections from the
+   * model to the Figs */
+  public void postLoad() { setOwner(getOwner()); }
 
 } /* end class FigNode */
 

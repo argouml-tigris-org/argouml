@@ -97,7 +97,7 @@ public class Main {
     pb.setSize(WIDTH, HEIGHT);
 
     if (splash != null) {
-      splash.getStatusBar().showStatus("Making Mock Project");
+      splash.getStatusBar().showStatus("Making Default Project");
       splash.getStatusBar().showProgress(20);
     }
     EmptyProject empty = new EmptyProject();
@@ -133,14 +133,14 @@ public class Main {
     pb.setVisible(true);
     Object model = empty.getModels().elementAt(0);
     Object diag = empty.getDiagrams().elementAt(0);
-    pb.setTarget(diag);
+    //pb.setTarget(diag);
     pb.getNavPane().setSelection(model, diag);
     if (splash != null) splash.setVisible(false);
 
 
     //should be done in ProjectBrowser.setProject();
-    Designer.theDesigner().spawnCritiquer(pb.getProject());
-    Designer.theDesigner().setChildGenerator(new ChildGenUML());
+    dsgr.spawnCritiquer(pb.getProject());
+    dsgr.setChildGenerator(new ChildGenUML());
     System.out.println("spawned critiquing thread");
 
     // should be in logon wizard?
@@ -204,21 +204,3 @@ class MockProject extends Project {
 
 } /* end class MockProject */
 
-class EmptyProject extends Project {
-
-  public EmptyProject() {
-    super("Untitled");
-    Model m1 = new Model("UntitledPackage");
-    try {
-      addDiagram(makeDiagram(m1));
-      addModel(m1);
-    }
-    catch (PropertyVetoException pve) { }
-  }
-
-  public UMLDiagram makeDiagram(Model m) {
-    return new UMLClassDiagram(m);
-  }
-
-
-} /* end class EmptyProject */

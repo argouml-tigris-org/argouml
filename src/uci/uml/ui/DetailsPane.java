@@ -79,7 +79,7 @@ implements ChangeListener, MouseListener {
     _tabPanels.addElement(new TabToDo());
     _tabPanels.addElement(new TabProps());
     _tabPanels.addElement(new TabDocs());
-    _tabPanels.addElement(new TabSrc());
+    _tabPanels.addElement(new TabJavaSrc());
     _tabPanels.addElement(new TabConstraints());
     _tabPanels.addElement(new TabTaggedValues());
     _tabPanels.addElement(new TabChecklist());

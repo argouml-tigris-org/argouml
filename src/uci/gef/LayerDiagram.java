@@ -249,6 +249,21 @@ public class LayerDiagram extends Layer {
     }
   }
 
-  
+  public void preSave() {
+    for (int i = 0; i < _contents.size(); i++)
+      ((Fig) _contents.elementAt(i)).preSave();
+  }
+
+  public void postSave() {
+    for (int i = 0; i < _contents.size(); i++)
+      ((Fig) _contents.elementAt(i)).postSave();
+  }
+
+  public void postLoad() {
+    for (int i = 0; i < _contents.size(); i++)
+      ((Fig) _contents.elementAt(i)).postLoad();
+  }
+
+
 } /* end class LayerDiagram */
 

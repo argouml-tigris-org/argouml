@@ -81,7 +81,7 @@ implements GraphNodeRenderer, GraphEdgeRenderer {
 
   /** Return a Fig that can be used to represent the given edge */
   public FigEdge getFigEdgeFor(GraphModel gm, Layer lay, Object edge) {
-    System.out.println("making figedge for " + edge);
+    //System.out.println("making figedge for " + edge);
     if (edge instanceof Transition) {
       Transition tr = (Transition) edge;
       FigTransition trFig = new FigTransition(tr);

@@ -95,7 +95,7 @@ public class GeneratorDisplay extends Generator {
     s += generateVisibility(attr);
     s += generateScope(attr);
     s += generateChangability(attr);
-    if (attr.getMultiplicity() != Multiplicity.ONE)
+    if (!Multiplicity.ONE.equals(attr.getMultiplicity()))
       s += generateMultiplicity(attr.getMultiplicity()) + " ";
 
     Classifier type = attr.getType();
@@ -185,8 +185,7 @@ public class GeneratorDisplay extends Generator {
       while (endEnum.hasMoreElements()) {
 	AssociationEnd ae = (AssociationEnd) endEnum.nextElement();
 	IAssociation a = ae.getAssociation();
-	if (ae.getIsNavigable())
-	  s += generateAssociationFrom(a, ae) + ";\n";
+	s += generateAssociationFrom(a, ae);
       }
     }
 
@@ -219,14 +218,14 @@ public class GeneratorDisplay extends Generator {
 
   public String generateAssociationFrom(IAssociation a, AssociationEnd ae) {
     // needs-more-work: does not handle n-ary associations
+    String s = "";
     Vector connections = a.getConnection();
     java.util.Enumeration connEnum = connections.elements();
     while (connEnum.hasMoreElements()) {
       AssociationEnd ae2 = (AssociationEnd) connEnum.nextElement();
-      if (ae2 != ae) return generateAssociationEnd(ae2);
+      if (ae2 != ae) s += generateAssociationEnd(ae2);
     }
-    System.out.println("should never get here?");
-    return generateAssociation(a);
+    return s;
   }
 
   public String generateAssociation(IAssociation a) {
@@ -245,11 +244,12 @@ public class GeneratorDisplay extends Generator {
   }
 
   public String generateAssociationEnd(AssociationEnd ae) {
+    if (!ae.getIsNavigable()) return "";
     String s = "protected ";
     if (ScopeKind.CLASSIFIER.equals(ae.getTargetScope()))
 	s += "static ";
 //     Name n = ae.getName();
-//     if (n != null && n != Name.UNSPEC) s += generateName(n) + " ";
+//     if (n != null && !Name.UNSPEC.equals(n)) s += generateName(n) + " ";
 //     if (ae.getIsNavigable()) s += "navigable ";
 //     if (ae.getIsOrdered()) s += "ordered ";
     Multiplicity m = ae.getMultiplicity();
@@ -275,7 +275,7 @@ public class GeneratorDisplay extends Generator {
       s += "my" + generateClassifierRef(ae.getType());
     }
 
-    return s;
+    return s + ";\n";
   }
 
   public String generateConstraints(ModelElement me) {

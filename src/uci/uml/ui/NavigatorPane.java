@@ -184,7 +184,7 @@ implements ItemListener, TreeSelectionListener {
     //if (tm == _curPerspective) return;
       _curPerspective = tm;
       if (_curPerspective == null) {
-	System.out.println("null perspective!");
+	//System.out.println("null perspective!");
 	_tree.hide();
       }
       else {

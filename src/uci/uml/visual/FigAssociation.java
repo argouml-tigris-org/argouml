@@ -40,6 +40,10 @@ import uci.uml.Foundation.Data_Types.*;
 import uci.uml.generate.*;
 
 public class FigAssociation extends FigEdgeModelElement {
+
+  // needs-more-work: should be part of some preferences object
+  public static boolean SUPPRESS_BIDIRECTIONAL_ARROWS = true;
+
   protected FigText _srcMult, _srcRole;
   protected FigText _destMult, _destRole;
 
@@ -95,7 +99,7 @@ public class FigAssociation extends FigEdgeModelElement {
 
 
   public void dispose() {
-    System.out.println("disposing FigAssociation");
+    //System.out.println("disposing FigAssociation");
     Association asc = (Association) getOwner();
     if (asc == null) return;
     Vector conns = asc.getConnection();
@@ -149,13 +153,34 @@ public class FigAssociation extends FigEdgeModelElement {
     _srcRole.setText(GeneratorDisplay.Generate(ae0.getName()));
     _destRole.setText(GeneratorDisplay.Generate(ae1.getName()));
 
-    setSourceArrowHead(chooseArrowHead(ae0.getAggregation()));
-    setDestArrowHead(chooseArrowHead(ae1.getAggregation()));
+    boolean srcNav = ae0.getIsNavigable();
+    boolean destNav = ae1.getIsNavigable();
+    if (srcNav && destNav && SUPPRESS_BIDIRECTIONAL_ARROWS)
+      srcNav = destNav = false;
+    setSourceArrowHead(chooseArrowHead(ae0.getAggregation(), srcNav));
+    setDestArrowHead(chooseArrowHead(ae1.getAggregation(), destNav));
   }
 
-  protected ArrowHead chooseArrowHead(AggregationKind ak) {
-    ArrowHead res = new ArrowHeadNone();
 
+  static ArrowHead _NAV_AGG =
+  new ArrowHeadComposite(ArrowHeadDiamond.WhiteDiamond,
+			 ArrowHeadGreater.TheInstance);
+
+  static ArrowHead _NAV_COMP =
+  new ArrowHeadComposite(ArrowHeadDiamond.BlackDiamond,
+			 ArrowHeadGreater.TheInstance);
+
+  protected ArrowHead chooseArrowHead(AggregationKind ak, boolean nav) {
+    if (nav) {
+      if (AggregationKind.UNSPEC.equals(ak))
+	return ArrowHeadGreater.TheInstance;
+      if (AggregationKind.NONE.equals(ak))
+	return ArrowHeadGreater.TheInstance;
+      if (AggregationKind.AGG.equals(ak))
+	return _NAV_AGG;
+      if (AggregationKind.COMPOSITE.equals(ak))
+	return _NAV_COMP;
+    }
     if (AggregationKind.UNSPEC.equals(ak))
       return ArrowHeadNone.TheInstance;
     if (AggregationKind.NONE.equals(ak))

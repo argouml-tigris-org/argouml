@@ -69,9 +69,9 @@ implements PropertyChangeListener {
   /** True when the FigEdgde should be drawn highlighted. */
   protected boolean _highlight = false;
   /** The ArrowHead at the start of the line */
-  protected ArrowHead _arrowHeadStart = new ArrowHeadNone();
+  protected ArrowHead _arrowHeadStart = ArrowHeadNone.TheInstance;
   /** The ArrowHead at the end of the line */
-  protected ArrowHead _arrowHeadEnd = new ArrowHeadNone();
+  protected ArrowHead _arrowHeadEnd = ArrowHeadNone.TheInstance;
   /** The items that are accumulated along the path, a vector. */
   protected Vector _pathItems = new Vector();
 
@@ -145,9 +145,9 @@ implements PropertyChangeListener {
   public void setOwner(Object own) {
     Object oldOwner = getOwner();
 
-    if (oldOwner != null && oldOwner instanceof GraphEdgeHooks) 
+    if (oldOwner instanceof GraphEdgeHooks) 
       ((GraphEdgeHooks)oldOwner).removePropertyChangeListener(this);
-    else if (oldOwner != null && oldOwner instanceof Highlightable) 
+    else if (oldOwner instanceof Highlightable) 
       ((Highlightable)oldOwner).removePropertyChangeListener(this);
 
     if (own instanceof GraphEdgeHooks)
@@ -317,9 +317,11 @@ implements PropertyChangeListener {
    *  Determines placement and orientation by using
    *  pointAlongPerimeter(). */
   protected void paintArrowHeads(Graphics g) {
-    _arrowHeadStart.paint(g, pointAlongPerimeter(5), pointAlongPerimeter(0));
-    _arrowHeadEnd.paint(g, pointAlongPerimeter(getPerimeterLength() - 6),
-			pointAlongPerimeter(getPerimeterLength() - 1));
+    _arrowHeadStart.paintAtHead(g, _fig);
+    _arrowHeadEnd.paintAtTail(g, _fig);
+    //     _arrowHeadStart.paint(g, pointAlongPerimeter(5), pointAlongPerimeter(0));
+    //     _arrowHeadEnd.paint(g, pointAlongPerimeter(getPerimeterLength() - 6),
+    // 			pointAlongPerimeter(getPerimeterLength() - 1));
   }
 
 
@@ -362,6 +364,9 @@ implements PropertyChangeListener {
     }
   }
 
+  /** After the file is loaded, re-establish any connections from the
+   * model to the Figs */
+  public void postLoad() { setOwner(getOwner()); }
 
   ////////////////////////////////////////////////////////////////
   // inner classes

@@ -36,15 +36,22 @@ import java.util.*;
 
 public class Name implements java.io.Serializable {
   public static final Name UNSPEC = new Name("");
-  
+
   public String _body;
   //- public Element name;
-    
+
   public Name() { }
   public Name(String str) { _body = str; }
 
   public String getBody() { return _body; }
   public void setBody(String b) { _body = b; }
+
+  public boolean equals(Object obj) {
+    if (!(obj instanceof Name)) return false;
+    Name name2 = (Name) obj;
+    if (getBody() == null && name2.getBody() == null) return true;
+    return getBody().equals(name2.getBody());
+  }
 
   ////////////////////////////////////////////////////////////////
   // debugging
@@ -55,6 +62,5 @@ public class Name implements java.io.Serializable {
     else
       return "Name(null)";
   }
-  
-  
+
 }

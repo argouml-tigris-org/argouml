@@ -257,7 +257,7 @@ implements MutableGraphModel, VetoableChangeListener {
       ElementOwnership eo = (ElementOwnership) pce.getNewValue();
       ModelElement me = eo.getModelElement();
       if (oldOwned.contains(eo)) {
-	System.out.println("model removed " + me);
+	//System.out.println("model removed " + me);
 	if (me instanceof Classifier) removeNode(me);
 	if (me instanceof Association) removeEdge(me);
 	if (me instanceof Dependency) removeEdge(me);
@@ -265,7 +265,7 @@ implements MutableGraphModel, VetoableChangeListener {
 	//if (me instanceof Realization) removeEdge(me);
       }
       else {
-	System.out.println("model added " + me);
+	//System.out.println("model added " + me);
       }
     }
   }

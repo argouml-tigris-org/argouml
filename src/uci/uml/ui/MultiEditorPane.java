@@ -63,7 +63,7 @@ implements ChangeListener, MouseListener {
   public MultiEditorPane() {
     System.out.println("making MultiEditorPane");
     _tabPanels.addElement(new TabDiagram());
-    _tabPanels.addElement(new TabSrc());
+    _tabPanels.addElement(new TabJavaSrc());
     _tabPanels.addElement(new TabTable());
     _tabPanels.addElement(new TabUMLDisplay());
     // debugging: _tabPanels.addElement(new TabHash());

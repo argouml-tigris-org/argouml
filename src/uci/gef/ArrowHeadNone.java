@@ -40,6 +40,7 @@ import java.util.*;
 public class ArrowHeadNone extends ArrowHead {
 
   public static ArrowHeadNone TheInstance = new ArrowHeadNone();
-  
+
   public void paint(Graphics g, Point start, Point end) { }
-}
+
+} /* end class ArrowHeadNone */

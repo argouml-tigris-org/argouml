@@ -64,6 +64,23 @@ public class Multiplicity implements java.io.Serializable {
     _ranges.removeElement(x);
   }
 
+  // needs-more-work: Should allow ranges in any order, need not be
+  // corresponding order. Also, should ((1..5), (5..7)) equal ((1..7))?
+  public boolean equals(Object obj) {
+    if (!(obj instanceof Multiplicity)) return false;
+    Multiplicity m = (Multiplicity) obj;
+    Vector oRanges = m.getRange();
+    int oSize = oRanges.size();
+    int size = _ranges.size();
+    if (oSize != size) return false;
+    for (int i = 0; i < size; i++) {
+      MultiplicityRange myMR = (MultiplicityRange) _ranges.elementAt(i);
+      MultiplicityRange oMR = (MultiplicityRange) oRanges.elementAt(i);
+      if (!myMR.equals(oMR)) return false;
+    }
+    return true;
+  }
+
   ////////////////////////////////////////////////////////////////
   // debugging methods
 
