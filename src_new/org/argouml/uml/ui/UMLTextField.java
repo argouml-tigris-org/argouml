@@ -113,6 +113,11 @@ public class UMLTextField
         addFocusListener(this);
         // update();
     }
+    
+	/**
+	 * Called when an UMLTextField is entered.
+	 * @see org.argouml.uml.ui.UMLUserInterfaceComponent#targetChanged()
+	 */
     public void targetChanged() {
         _property.targetChanged();
         update();
