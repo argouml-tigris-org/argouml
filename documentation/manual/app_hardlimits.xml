@@ -53,8 +53,10 @@ diagrams is limited to 6000 units in height and width.
     <title>Missing functions</title>
 
     <para>
-For the 0.14 release the sequence diagrams are disabled.
-It will be replace by a new and improved version in the upcoming release.
+For the releases 0.14, 0.16 and 0.18 of ArgoUML
+the sequence diagrams are disabled.
+Its implementation
+will be replaces by a new and improved one in the upcoming release.
 In the 0.12 release they were not working and in the 0.10 release
 they did not follow the UML specification correctly.
 </para>

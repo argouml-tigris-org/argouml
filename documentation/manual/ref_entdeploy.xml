@@ -54,7 +54,7 @@ ArgoUML.
 
     <caution><para>Deployment diagrams are not fully developed yet in
       ArgoUML. Some aspects are not fully implemented or may not behave as
-      expected. Notable omissions are the possibility to draw interfaces
+      expected. Notable omissions are the possibility to draw new interfaces
       and proper stereotyping of the various dependency
       relationships.
       <!-- TODO: Interfaces can only be drawn by "Add to diagram". There should
@@ -168,25 +168,23 @@ ArgoUML.
           <listitem><para>Standard tab.</para></listitem>
         </varlistentry>
 
-        <!-- Entry for Style tab -->
+        <!-- Entry for Presentation tab -->
 
         <varlistentry>
-          <term><literal>Style</literal></term>
+          <term><literal>Presentation</literal></term>
 
           <listitem><para>Standard tab. The <literal>Bounds:</literal> field
             defines the bounding box for the node on the diagram.</para>
 
-          <warning><para>Beware that in the 0.14 release of ArgoUML, the
+          <warning><para>Beware that in the 0.18 release of ArgoUML, the
             bounding box just refers to the front face of the cube. This
-            means that the three dimensional top and side may be ignored, for example
+            means that the three dimensional top and side may be ignored, 
+            for example
             when determining the limits of a diagram for saving
             graphics.</para>
             <!-- TODO: see issue ... -->
 
-          <para>Altering the <literal>Shadow</literal> entry has no
-            effect.</para>
-            <!-- TODO: see issue ... Solved in PRE-0.15.2. -->
-            </warning></listitem>
+          </warning></listitem>
         </varlistentry>
 
         <!-- Entry for Source tab -->
@@ -200,17 +198,6 @@ ArgoUML.
             this tab active is probably a mistake.
             <!-- TODO: see issue ... -->
           </para></caution></listitem>
-        </varlistentry>
-
-        <!-- Entry for Constraints tab -->
-
-        <varlistentry>
-          <term><literal>Constraints</literal></term>
-
-          <listitem>
-            <para>&constraintssupport;
-</para>
-          </listitem>
         </varlistentry>
 
         <!-- Entry for Tagged Values tab -->
@@ -276,6 +263,57 @@ ArgoUML.
             structure.</para></listitem>
         </varlistentry>
 
+        <!-- Entry for New Reception button -->
+
+        <varlistentry>
+          <term>
+            <guiicon>
+              <inlinemediaobject>
+                <imageobject>
+                  <imagedata format="GIF" align="center"
+                             fileref="images/icons/reception.gif"/>
+                </imageobject>
+              </inlinemediaobject>
+            </guiicon>
+            <literal>New reception</literal>
+          </term>
+
+          <listitem>
+            <para>This creates a new reception, navigating immediately to
+              the properties tab for that reception.
+            </para>
+          </listitem>
+        </varlistentry>
+
+        <!-- Entry for New stereotype button -->
+
+        <varlistentry>
+          <term><guiicon><inlinemediaobject><imageobject><imagedata
+            format="GIF" align="center"
+            fileref="images/icons/stereotype.gif"/>
+            </imageobject></inlinemediaobject></guiicon> 
+	        <literal>New Stereotype</literal>
+        </term>
+          <listitem>
+            <indexterm>
+              <primary>Add Stereotype</primary>
+            </indexterm>
+            <indexterm>
+              <primary>New Stereotype</primary>
+            </indexterm>
+            <indexterm>
+              <primary>Create New</primary>
+              <secondary>Stereotype</secondary>
+            </indexterm>
+
+            <para>
+			  This creates a new Stereotype (see <xref
+              linkend="s1.ref.stereotype"/>) for the selected node, 
+              navigating immediately to the properties tab
+              for that stereotype.</para>
+		  </listitem>
+        </varlistentry>
+
         <!-- Entry for Delete button -->
 
         <varlistentry>
@@ -316,58 +354,6 @@ ArgoUML.
             convention.</para></note></listitem>
         </varlistentry>
 
-        <!-- Entry for Generalizations -->
-
-        <varlistentry>
-          <term><literal>Generalizations</literal></term>
-
-          <listitem><para>Text area. Lists any node that
-            <emphasis>generalizes</emphasis> this node.</para>
-
-            <!-- TODO: MVW: Version 0.14 of ArgoUML does not seem to support this. 
-            How do I create a dependency between nodes? See issue ... -->
-            
-          <para>&Button1; double click navigates to the generalization and opens
-            its property tab.</para>
-
-          <!--para>&Button2; click yields a drop down menu with the following
-            entries</para>
-
-          <itemizedlist>
-            <listitem><para><literal>Open</literal>. Navigate to the
-              selected generalization.</para></listitem>
-
-            <listitem><para><literal>Add</literal>. Add a new
-              generalization. Note that the new generalization is added to
-              the model, but not the diagram. You will need to find it in
-              the explorer and add it from there.</para>
-
-            <tip><para>It is far easier to add generalizations by drawing
-              them on the relevant diagram in the editing
-              pane.</para></tip></listitem>
-
-            <listitem><para><literal>Delete</literal>. The link from the
-              generalization to the node (<emphasis>but not the
-              generalization itself</emphasis>) is removed.</para>
-
-            <tip><para>This <emphasis>does not</emphasis> remove the
-              generalization from the model or the diagram, leading to
-              potentially very confusing diagrams. It is usually far easier
-              to remove generalizations from the editing
-              pane.</para></tip></listitem>
-
-            <listitem><para><literal>Move Up</literal>. Only available where
-              there are two or more generalizations listed, and the
-              generalization selected is not at the top. It is moved up
-              one.</para></listitem>
-
-            <listitem><para><literal>Move Down</literal>. Only available where
-              there are two or more generalizations listed, and the
-              generalization selected is not at the bottom. It is moved down
-              one.</para></listitem> </itemizedlist-->
-          </listitem>
-        </varlistentry>
-
         <!-- Entry for Stereotype -->
 
         <varlistentry>
@@ -403,6 +389,18 @@ ArgoUML.
                 linkend="s1.ref.stereotype"/>).</para></listitem>
         </varlistentry>
 
+        <!-- Entry for Namespace -->
+
+        <varlistentry>
+          <term><literal>Namespace</literal></term>
+
+          <listitem><para>Drop down selector. 
+            Allows altering the namespace for the
+            node. This is the package hierarchy.</para>
+          </listitem>
+        </varlistentry>
+
+
         <!-- Entry for Modifiers -->
 
         <varlistentry>
@@ -425,13 +423,17 @@ ArgoUML.
           </itemizedlist></listitem>
         </varlistentry>
 
-        <!-- Entry for Namespace -->
+        <!-- Entry for Generalizations -->
 
         <varlistentry>
-          <term><literal>Namespace</literal></term>
+          <term><literal>Generalizations</literal></term>
 
-          <listitem><para>Drop down selector. Allows altering the namespace for the
-            node. This is the package hierarchy.</para>
+          <listitem><para>Text area. Lists any node that
+            <emphasis>generalizes</emphasis> this node.</para>
+
+          <para>&Button1; double click navigates to the generalization and opens
+            its property tab.</para>
+
           </listitem>
         </varlistentry>
 
@@ -443,80 +445,26 @@ ArgoUML.
           <listitem><para>Text box. Lists any specialized node (i.e. for which
             this node is a generalization.</para>
 
-<!-- TODO: MVW: Version 0.14 of ArgoUML does not seem to support this. 
-How do I create a generalisation between nodes? See issue ... -->
-
-<!--          <para>&button1; double click navigates to the generalization and opens
+          <para>&Button1; double click navigates to the specialization and opens
             its property tab.</para>
 
-          <para>&Button2; click yields a drop down menu with five
-            entries</para>
+          </listitem>
+        </varlistentry>
 
-          <itemizedlist>
-            <listitem><para><literal>Open</literal>. Navigate to the
-              selected generalization.</para></listitem>
-
-            <listitem><para><literal>Add</literal>. Add a new
-              generalization. Note that the new generalization is added to
-              the model, but not the diagram.</para>
-
-            <tip><para>It is far easier to add generalizations by drawing
-              them on the relevant diagram in the editing
-              pane.</para></tip></listitem>
-
-            <listitem><para><literal>Delete</literal>. The link from the
-              generalization to the node (<emphasis>but not the
-              generalization itself</emphasis>) is removed.</para>
-
-            <tip><para>This <emphasis>does not</emphasis> remove the
-              generalization from the model or the diagram, leading to
-              potentially very confusing diagrams. It is usually far easier
-              to remove generalizations from the editing
-              pane.</para></tip></listitem>
-
-            <listitem><para><literal>Move Up</literal>. Only available where
-              there are two or more specializations listed, and the
-              specialization selected is not at the top. It is moved up
-              one.</para></listitem>
-
-            <listitem><para><literal>Move Down</literal>. Only available where
-              there are two or more specializations listed, and the
-              specialization selected is not at the bottom. It is moved down
-              one.</para></listitem> </itemizedlist>
-                -->
-                </listitem>
-              </varlistentry>
-
-        <!-- Entry for Components -->
+        <!-- Entry for Residents -->
 
         <varlistentry>
-          <term><literal>Components</literal></term>
+          <term><literal>Residents</literal></term>
 
-          <listitem><para>Text box. Lists any components (see
+          <listitem><para>Text box. Lists any residents (see
             <xref linkend="s1.ref.component"/>) designed to be deployed on
             this type of node.</para>
 
-          <para>&Button1; click navigates to the selected entry,
-            <!-- TODO: Should be a double-click, conform with most others! See
-            issue ... -->
-            &button2; gives a pop up menu with three entries.</para>
-
-          <itemizedlist>
-            <listitem><para><literal>Open</literal>. Navigate to the
-              <!-- TODO: Useless item, remove this! See issue ... -->
-              selected component.</para></listitem>
-
-            <listitem><para><literal>Move Up</literal>. Only available where
-              <!-- TODO: Useless item, remove this! See issue ... -->
-              there are two or more components, and the component selected is
-              not at the top. It is moved up one.</para></listitem>
-
-            <listitem><para><literal>Move Down</literal>. Only available where
-              <!-- TODO: Useless item, remove this! See issue ... -->
-              there are two or more components listed, and the component
-              selected is not at the bottom. It is moved down
-              one.</para></listitem> </itemizedlist></listitem>
+            <para>&Button1; double click navigates to the selected entry.
+            </para>
+          </listitem>
         </varlistentry>
+        
       </variablelist>
     </sect2>
   </sect1>
@@ -577,27 +525,27 @@ How do I create a generalisation between nodes? See issue ... -->
           <listitem><para>Standard tab.</para></listitem>
         </varlistentry>
 
-        <!-- Entry for Style tab -->
+        <!-- Entry for Presentation tab -->
 
         <varlistentry>
-          <term><literal>Style</literal></term>
+          <term><literal>Presentation</literal></term>
 
           <listitem><para>Standard tab. The <literal>Bounds:</literal> field
             defines the bounding box for the node instance on the
             diagram.</para>
 
-          <warning><para>Beware that in the current release of ArgoUML, the
-            bounding box just refers to the front face of the cube. This means
-            that the three dimensional top and side may be ignored, for example
-            when determining the limits of a diagram for saving
-            graphics.
-            <!-- TODO: See Node -->
-            </para>
-
-          <para>Altering the <literal>Shadow</literal> entry has no
-            effect.
-            <!-- TODO: See Node -->
-          </para></warning></listitem>
+          <warning>
+            <para>Beware that in the current release of ArgoUML, the
+              bounding box just refers to the front face of the cube. 
+              This means
+              that the three dimensional top and side may be ignored, 
+              for example
+              when determining the limits of a diagram for saving
+              graphics.
+              <!-- TODO: See Node -->
+              </para>
+            </warning>
+          </listitem>
         </varlistentry>
 
         <!-- Entry for Source tab -->
@@ -613,17 +561,6 @@ How do I create a generalisation between nodes? See issue ... -->
             mistake.
             <!-- TODO: See Node -->
           </para></caution></listitem>
-        </varlistentry>
-
-        <!-- Entry for Constraints tab -->
-
-        <varlistentry>
-          <term><literal>Constraints</literal></term>
-
-          <listitem>
-            <para>&constraintssupport;
-</para>
-          </listitem>
         </varlistentry>
 
         <!-- Entry for Tagged Values tab -->
@@ -671,6 +608,15 @@ How do I create a generalisation between nodes? See issue ... -->
               the <emphasis>documentation tab</emphasis> under
               ArgoUML</para></note></listitem>
         </varlistentry>
+        
+        <!-- Entry for Checklist tab -->
+
+        <varlistentry>
+          <term><literal>Checklist</literal></term>
+
+          <listitem><para>Standard tab for an Instance. </para></listitem>
+        </varlistentry>        
+        
       </variablelist>
     </sect2>
 
@@ -693,6 +639,36 @@ How do I create a generalisation between nodes? See issue ... -->
           <listitem><para>Navigate up through the package
             structure.</para></listitem>
         </varlistentry>
+
+        <!-- Entry for New stereotype button -->
+
+        <varlistentry>
+          <term><guiicon><inlinemediaobject><imageobject><imagedata
+            format="GIF" align="center"
+            fileref="images/icons/stereotype.gif"/>
+            </imageobject></inlinemediaobject></guiicon> 
+	        <literal>New Stereotype</literal>
+        </term>
+          <listitem>
+            <indexterm>
+              <primary>Add Stereotype</primary>
+            </indexterm>
+            <indexterm>
+              <primary>New Stereotype</primary>
+            </indexterm>
+            <indexterm>
+              <primary>Create New</primary>
+              <secondary>Stereotype</secondary>
+            </indexterm>
+
+            <para>
+			  This creates a new Stereotype (see <xref
+              linkend="s1.ref.stereotype"/>) for the selected node instance, 
+              navigating immediately to the properties tab
+              for that stereotype.</para>
+		  </listitem>
+        </varlistentry>
+
 
         <!-- Entry for Delete button -->
 
@@ -736,23 +712,6 @@ How do I create a generalisation between nodes? See issue ... -->
           </listitem>
         </varlistentry>
 
-        <!-- Entry for Classifier -->
-
-        <varlistentry>
-          <term><literal>Classifier</literal></term>
-
-          <listitem><para>Drop down selector. 
-          A Node instance type can be selected here.</para>
-
-          <caution><para>ArgoUML V0.14 
-          lists many more items in the dropdown list 
-          then solely Nodes. Beware to select Nodes only.
-          <!-- TODO: see enhancement issue ... -->
-          <!-- TODO: The dropdown is empty in vPRE-0.15.2. It still was OK in
-          V0.15.1. To be re-checked when V0.15.2. will be released! -->
-          </para></caution></listitem>
-        </varlistentry>
-
         <!-- Entry for Stereotype -->
 
         <varlistentry>
@@ -787,6 +746,56 @@ How do I create a generalisation between nodes? See issue ... -->
             node instance. This is the package hierarchy.</para>
           </listitem>
         </varlistentry>
+
+        <!-- Entry for Stimuli sent -->
+
+        <varlistentry>
+          <term><literal>Stimuli sent</literal></term>
+
+          <listitem><para>(To Be Written).
+            </para>
+          </listitem>
+        </varlistentry>
+        
+        <!-- Entry for Stimuli Received -->
+
+        <varlistentry>
+          <term><literal>Stimuli Received</literal></term>
+
+          <listitem><para>(To Be Written).
+            </para>
+          </listitem>
+        </varlistentry>
+
+        <!-- Entry for Residents -->
+
+        <varlistentry>
+          <term><literal>Residents</literal></term>
+
+          <listitem><para>Text box. Lists any residents (see
+            <xref linkend="s1.ref.component"/>) designed to be deployed on
+            this type of node.</para>
+
+            <para>&Button1; double click navigates to the selected entry.
+            </para>
+          </listitem>
+        </varlistentry>
+        
+        <!-- Entry for Classifiers -->
+
+        <varlistentry>
+          <term><literal>Classifiers</literal></term>
+
+          <listitem><para>Text field. 
+          A Node instance type can be selected here.</para>
+
+          <caution><para>ArgoUML V0.18 
+          lists many more items in the dropdown list 
+          then solely Nodes. Beware to select Nodes only.
+          <!-- TODO: see enhancement issue ... -->
+          </para></caution></listitem>
+        </varlistentry>
+
       </variablelist>
     </sect2>
   </sect1>
@@ -847,10 +856,10 @@ How do I create a generalisation between nodes? See issue ... -->
           <listitem><para>Standard tab.</para></listitem>
         </varlistentry>
 
-        <!-- Entry for Style tab -->
+        <!-- Entry for Presentation tab -->
 
         <varlistentry>
-          <term><literal>Style</literal></term>
+          <term><literal>Presentation</literal></term>
 
           <listitem><para>Standard tab. The <literal>Bounds:</literal> field
             defines the bounding box for the component on the
@@ -868,17 +877,6 @@ How do I create a generalisation between nodes? See issue ... -->
           <caution><para>A component should not generate any code, so
             having this tab active is probably a
             mistake.</para></caution></listitem>
-        </varlistentry>
-
-        <!-- Entry for Constraints tab -->
-
-        <varlistentry>
-          <term><literal>Constraints</literal></term>
-
-          <listitem>
-            <para>&constraintssupport;
-</para>
-          </listitem>
         </varlistentry>
 
         <!-- Entry for Tagged Values tab -->
@@ -947,6 +945,57 @@ How do I create a generalisation between nodes? See issue ... -->
 
           <listitem><para>Navigate up through the package
             structure.</para></listitem>
+        </varlistentry>
+
+        <!-- Entry for New Reception button -->
+
+        <varlistentry>
+          <term>
+            <guiicon>
+              <inlinemediaobject>
+                <imageobject>
+                  <imagedata format="GIF" align="center"
+                             fileref="images/icons/reception.gif"/>
+                </imageobject>
+              </inlinemediaobject>
+            </guiicon>
+            <literal>New reception</literal>
+          </term>
+
+          <listitem>
+            <para>This creates a new reception, navigating immediately to
+              the properties tab for that reception.
+            </para>
+          </listitem>
+        </varlistentry>
+
+        <!-- Entry for New stereotype button -->
+
+        <varlistentry>
+          <term><guiicon><inlinemediaobject><imageobject><imagedata
+            format="GIF" align="center"
+            fileref="images/icons/stereotype.gif"/>
+            </imageobject></inlinemediaobject></guiicon> 
+	        <literal>New Stereotype</literal>
+        </term>
+          <listitem>
+            <indexterm>
+              <primary>Add Stereotype</primary>
+            </indexterm>
+            <indexterm>
+              <primary>New Stereotype</primary>
+            </indexterm>
+            <indexterm>
+              <primary>Create New</primary>
+              <secondary>Stereotype</secondary>
+            </indexterm>
+
+            <para>
+			  This creates a new Stereotype (see <xref
+              linkend="s1.ref.stereotype"/>) for the selected component, 
+              navigating immediately to the properties tab
+              for that stereotype.</para>
+		  </listitem>
         </varlistentry>
 
         <!-- Entry for Delete button -->
@@ -1054,10 +1103,6 @@ How do I create a generalisation between nodes? See issue ... -->
             <listitem><para><literal>Root</literal> indicates the node can
               have no generalization.</para></listitem>
               
-            <listitem><para><literal>Active</literal>.
-            </para></listitem>
-            <!-- TODO: What is the meaning? -->
-            <!-- TODO: Remove this (?). See issue ... -->
           </itemizedlist></listitem>
         </varlistentry>
 
@@ -1153,6 +1198,20 @@ How do I create a generalisation between nodes? See issue ... -->
           </listitem>
         </varlistentry>
 
+        <!-- Entry for Residents -->
+
+        <varlistentry>
+          <term><literal>Residents</literal></term>
+
+          <listitem><para>Text box. Lists any residents (see
+            <xref linkend="s1.ref.component"/>) designed to be deployed on
+            this type of node.</para>
+
+            <para>&Button1; double click navigates to the selected entry.
+            </para>
+          </listitem>
+        </varlistentry>
+
       </variablelist>
     </sect2>
   </sect1>
@@ -1218,10 +1277,10 @@ How do I create a generalisation between nodes? See issue ... -->
           <listitem><para>Standard tab.</para></listitem>
         </varlistentry>
 
-        <!-- Entry for Style tab -->
+        <!-- Entry for Presentation tab -->
 
         <varlistentry>
-          <term><literal>Style</literal></term>
+          <term><literal>Presentation</literal></term>
 
           <listitem><para>Standard tab. The <literal>Bounds:</literal> field
             defines the bounding box for the component on the
@@ -1241,17 +1300,6 @@ How do I create a generalisation between nodes? See issue ... -->
             so having this tab active is probably a
             <!-- TODO: See enhancement issue ... -->
             mistake.</para></caution></listitem>
-        </varlistentry>
-
-        <!-- Entry for Constraints tab -->
-
-        <varlistentry>
-          <term><literal>Constraints</literal></term>
-
-          <listitem>
-            <para>&constraintssupport;
-</para>
-          </listitem>
         </varlistentry>
 
         <!-- Entry for Tagged Values tab -->
@@ -1295,6 +1343,15 @@ How do I create a generalisation between nodes? See issue ... -->
               the <emphasis>documentation tab</emphasis> under
               ArgoUML</para></note></listitem>
         </varlistentry>
+        
+        <!-- Entry for Checklist tab -->
+
+        <varlistentry>
+          <term><literal>Checklist</literal></term>
+
+          <listitem><para>Standard tab for an Instance. </para></listitem>
+        </varlistentry>
+
       </variablelist>
     </sect2>
 
@@ -1316,6 +1373,36 @@ How do I create a generalisation between nodes? See issue ... -->
 
           <listitem><para>Navigate up through the package
             structure.</para></listitem>
+        </varlistentry>
+
+        <!-- Entry for New stereotype button -->
+
+        <varlistentry>
+          <term><guiicon><inlinemediaobject><imageobject><imagedata
+            format="GIF" align="center"
+            fileref="images/icons/stereotype.gif"/>
+            </imageobject></inlinemediaobject></guiicon> 
+	        <literal>New Stereotype</literal>
+        </term>
+          <listitem>
+            <indexterm>
+              <primary>Add Stereotype</primary>
+            </indexterm>
+            <indexterm>
+              <primary>New Stereotype</primary>
+            </indexterm>
+            <indexterm>
+              <primary>Create New</primary>
+              <secondary>Stereotype</secondary>
+            </indexterm>
+
+            <para>
+			  This creates a new Stereotype (see <xref
+              linkend="s1.ref.stereotype"/>) for the selected 
+              component instance, 
+              navigating immediately to the properties tab
+              for that stereotype.</para>
+		  </listitem>
         </varlistentry>
 
         <!-- Entry for Delete button -->
@@ -1364,22 +1451,6 @@ How do I create a generalisation between nodes? See issue ... -->
           </listitem>
         </varlistentry>
 
-        <!-- Entry for Classifier -->
-
-        <varlistentry>
-          <term><literal>Classifier</literal></term>
-
-          <listitem><para>Drop down selector. 
-          A Component instance type can be selected here.</para>
-
-          <caution><para>ArgoUML V0.14 
-          lists many more items in the dropdown list 
-          then solely Components. Beware to select Components only.
-          <!-- TODO: see enhancement issue ... -->
-          <!-- TODO: Broken in vPRE-0.15.2. Check! -->
-          </para></caution></listitem>
-        </varlistentry>
-
         <!-- Entry for Stereotype -->
 
         <varlistentry>
@@ -1415,6 +1486,57 @@ How do I create a generalisation between nodes? See issue ... -->
             component instance. This is the package hierarchy.</para>
           </listitem>
         </varlistentry>
+
+        <!-- Entry for Stimuli sent -->
+
+        <varlistentry>
+          <term><literal>Stimuli sent</literal></term>
+
+          <listitem><para>(To Be Written).
+            </para>
+          </listitem>
+        </varlistentry>
+        
+        <!-- Entry for Stimuli Received -->
+
+        <varlistentry>
+          <term><literal>Stimuli Received</literal></term>
+
+          <listitem><para>(To Be Written).
+            </para>
+          </listitem>
+        </varlistentry>
+
+        <!-- Entry for Residents -->
+
+        <varlistentry>
+          <term><literal>Residents</literal></term>
+
+          <listitem><para>Text box. Lists any residents (see
+            <xref linkend="s1.ref.component"/>) designed to be deployed on
+            this component.</para>
+
+            <para>&Button1; double click navigates to the selected entry.
+            </para>
+          </listitem>
+        </varlistentry>
+        
+        <!-- Entry for Classifiers -->
+
+        <varlistentry>
+          <term><literal>Classifiers</literal></term>
+
+          <listitem><para>Drop down selector. 
+          A Component instance type can be selected here.</para>
+
+          <caution><para>ArgoUML V0.18 
+          lists many more items in the dropdown list 
+          then solely Components. Beware to select Components only.
+          <!-- TODO: see enhancement issue ... -->
+          <!-- TODO: Broken in vPRE-0.15.2. Check! -->
+          </para></caution></listitem>
+        </varlistentry>
+        
       </variablelist>
     </sect2>
   </sect1>
@@ -1440,7 +1562,7 @@ How do I create a generalisation between nodes? See issue ... -->
     <title>Class</title>
 
     <!-- TODO: Classes can only be added  to the diagram 
-    if they already exist in 0.14. 
+    if they already exist in 0.18. 
     See issue ... -->
     <para>A component diagram may show the key internal structure of
       components, including classes within the component. For details see
@@ -1460,13 +1582,13 @@ How do I create a generalisation between nodes? See issue ... -->
     <title>Interface</title>
 
     <!-- TODO: Interfaces can only be added  to the diagram 
-    if they already exist in 0.14. 
+    if they already exist in 0.18. 
     See issue ... -->
     <para>A component or deployment diagram may show components or component
       instances which implement interfaces. For details see
       <xref linkend="s1.ref.interface_class"/>.</para>
 
-    <caution><para>The V0.14 release of ArgoUML uses the same
+    <caution><para>The V0.18 release of ArgoUML uses the same
       representation of an interface as a class diagram. The UML standard
       suggests that an interface on a component or deployment diagram should
       just be shown as a small open circle, connected to the component which
@@ -1475,7 +1597,7 @@ How do I create a generalisation between nodes? See issue ... -->
     </para></caution>
 
     <warning><para>There is no way to show the linking of an interface to a
-      component or component instance in the V0.14 release of
+      component or component instance in the V0.18 release of
       ArgoUML.
       <!-- TODO: See issue ... -->
     </para></warning>
