@@ -319,19 +319,6 @@ A description of all the toolbar entries
       </para>
 
       <itemizedlist>
-        <listitem>
-          <para>
-            <guiicon>
-              <inlinemediaobject>
-                <imageobject>
-                  <imagedata format="GIF" align="center" fileref="images/icons/class_diagram.gif"/>
-                </imageobject>
-              </inlinemediaobject>
-            </guiicon>
-            <literal>New Class Diagram</literal> See for a full description
-            <xref linkend="s2.ref.create.diagram.class_diagram"/>.
-          </para>
-        </listitem>
 
         <listitem>
           <para>
@@ -352,6 +339,48 @@ A description of all the toolbar entries
             <guiicon>
               <inlinemediaobject>
                 <imageobject>
+                  <imagedata format="GIF" align="center" fileref="images/icons/class_diagram.gif"/>
+                </imageobject>
+              </inlinemediaobject>
+            </guiicon>
+            <literal>New Class Diagram</literal> See for a full description
+            <xref linkend="s2.ref.create.diagram.class_diagram"/>.
+          </para>
+        </listitem>
+
+        <listitem>
+          <para>
+            <guiicon>
+              <inlinemediaobject>
+				<imageobject>
+					<imagedata format="GIF" align="center" fileref="images/icons/sequence_diagram.gif"/> 
+                  </imageobject>
+              </inlinemediaobject>
+            </guiicon>
+            <literal>New Sequence Diagram</literal> See for a full description
+            <xref linkend="s2.ref.create.diagram.sequence_diagram"/>.
+          </para>
+        </listitem>
+        
+        <listitem>
+          <para>
+            <guiicon>
+              <inlinemediaobject>
+                <imageobject>
+                  <imagedata format="GIF" align="center" fileref="images/icons/collaboration_diagram.gif"/>
+                </imageobject>
+              </inlinemediaobject>
+            </guiicon>
+            <literal>New Collaboration Diagram</literal> See for a full description
+            <xref linkend="s2.ref.create.diagram.collaboration_diagram"/>.
+          </para>
+        </listitem>
+        
+        <listitem>
+          <para>
+            <guiicon>
+              <inlinemediaobject>
+                <imageobject>
                   <imagedata format="GIF" align="center" fileref="images/icons/state_diagram.gif"/>
                 </imageobject>
               </inlinemediaobject>
@@ -366,40 +395,12 @@ A description of all the toolbar entries
             <guiicon>
               <inlinemediaobject>
                 <imageobject>
-                  <imagedata format="GIF" align="center" fileref="images/icons/class_diagram.gif"/>
-                </imageobject>
-              </inlinemediaobject>
-            </guiicon>
-            <literal>New Class Diagram</literal> See for a full description
-            <xref linkend="s2.ref.create.diagram.class_diagram"/>.
-          </para>
-        </listitem>
-
-        <listitem>
-          <para>
-            <guiicon>
-              <inlinemediaobject>
-                <imageobject>
                   <imagedata format="GIF" align="center" fileref="images/icons/activity_diagram.gif"/>
                 </imageobject>
               </inlinemediaobject>
             </guiicon>
             <literal>New Activity Diagram</literal> See for a full description
             <xref linkend="s2.ref.create.diagram.activity_diagram"/>.
-          </para>
-        </listitem>
-
-        <listitem>
-          <para>
-            <guiicon>
-              <inlinemediaobject>
-                <imageobject>
-                  <imagedata format="GIF" align="center" fileref="images/icons/collaboration_diagram.gif"/>
-                </imageobject>
-              </inlinemediaobject>
-            </guiicon>
-            <literal>New Collaboration Diagram</literal> See for a full description
-            <xref linkend="s2.ref.create.diagram.collaboration_diagram"/>.
           </para>
         </listitem>
 

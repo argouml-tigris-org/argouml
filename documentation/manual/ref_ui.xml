@@ -439,30 +439,6 @@ own chapters.
       </para>
     </sect2>
 
-    <sect2 id="s2.ref.spawn">
-      <title>Looking at Different Diagrams Simultaneously</title>
-
-      <para>&argouml; provides the ability to spawn copies of key windows. This
-        is possible for the editing pane and for the tabs of the details
-        pane. These can then be manipulated as separate windows and placed as
-        desired on the screen.</para>
-
-      <para>This is achieved <!--through use of &button1; double click--> as described
-        in section <xref linkend="s1.ref.edit_mouse"/>.
-        <!-- TODO: Description of details pane removed. To be added again! -->
-        </para>
-
-      <note><para>There is no equivalent function for the explorer or to-do
-        panes.</para></note>
-    </sect2>
-
-    <sect2>
-      <title>Reducing the Number of Panes Visible</title>
-
-      <para>This function is not implemented directly. However you can spawn
-        a pane (see <xref linkend="s2.ref.spawn"/>) and maximize this to be the
-        whole window, which achieves the same thing.</para>
-    </sect2>
   </sect1>
 
   <!-- All about the status bar -->
@@ -470,11 +446,10 @@ own chapters.
   <sect1 id="s1.ref.status">
     <title>The status bar</title>
 
-    <para>The status bar is at the very bottom of the &argouml; window and is
-      used to display short advisory messages. In general such messages are
-      self explanatory. It is also used for debugging messages for the system
-      <!-- TODO: is this still true? -->
-      in development&mdash;these messages can be ignored.</para>
+    <para>The status bar is at the very bottom of the &argouml; window and is 
+      used to display short advisory messages. In general such messages are 
+      self explanatory. It is e.g. used for displaying parsing error messages 
+      in case a text entered on the diagram can not be interpreted.</para>
   </sect1>
 
 </chapter>
