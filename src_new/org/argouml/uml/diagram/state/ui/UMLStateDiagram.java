@@ -110,6 +110,11 @@ public class UMLStateDiagram extends UMLDiagram {
             ModelFacade.TRANSITION,
             "Transition");
 
+    protected static Action _actionJunctionPseudoState =
+        new ActionCreatePseudostate(
+            ModelFacade.JUNCTION_PSEUDOSTATEKIND,
+            "Junction"); 
+    
     ////////////////////////////////////////////////////////////////
     // contructors
 
@@ -252,7 +257,7 @@ public class UMLStateDiagram extends UMLDiagram {
     }
 
     /**
-     * Get the actions from which to create a toolbar or equivilent
+     * Get the actions from which to create a toolbar or equivalent
      * graphic triggers.
      */
     protected Object[] getUmlActions() {
@@ -264,6 +269,7 @@ public class UMLStateDiagram extends UMLDiagram {
 	    null,
 	    _actionStartPseudoState,
 	    _actionFinalPseudoState,
+	    _actionJunctionPseudoState,
 	    _actionBranchPseudoState,
 	    _actionForkPseudoState,
 	    _actionJoinPseudoState,

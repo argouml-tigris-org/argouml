@@ -52,7 +52,8 @@ import org.tigris.gef.presentation.FigNode;
  *  FinalState         ---  FigFinalState
  *  Pseudostate        ---  FigPseudostate
  *    Inititial         ---  FigInitialState
- *    Branch            ---  FigBranchState
+ *    Branch (Choice)   ---  FigBranchState
+ *    Junction          ---  FigJunctionState
  *    Fork              ---  FigForkState
  *    Join              ---  FigJoinState
  *    DeepHistory       ---  FigDeepHistoryState
@@ -94,6 +95,9 @@ public class StateDiagramRenderer
             else if (kind.equals(ModelFacade.BRANCH_PSEUDOSTATEKIND)) {
                 return new FigBranchState(gm, node);
             }
+            else if (kind.equals(ModelFacade.JUNCTION_PSEUDOSTATEKIND)) {
+                return new FigJunctionState(gm, node);
+            } 
             else if (kind.equals(ModelFacade.FORK_PSEUDOSTATEKIND)) {
                 return new FigForkState(gm, node);
             }

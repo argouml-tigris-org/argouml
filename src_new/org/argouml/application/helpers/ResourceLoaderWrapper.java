@@ -66,6 +66,8 @@ public final class ResourceLoaderWrapper {
 	ResourceLoader.lookupIconResource("Join");
     private static ImageIcon branchIcon =
 	ResourceLoader.lookupIconResource("Branch");
+    private static ImageIcon junctionIcon =
+        ResourceLoader.lookupIconResource("Junction"); 
     private static ImageIcon finalStateIcon =
 	ResourceLoader.lookupIconResource("FinalState");
     private static ImageIcon realizeIcon =
@@ -277,6 +279,9 @@ public final class ResourceLoaderWrapper {
 		if (helper.equalsBRANCHKind(kind)) {
 		    icon = branchIcon;
 		}
+		if (helper.equalsJUNCTIONKind(kind)) {
+		    icon = junctionIcon;
+		} 
 		// if (MPseudostateKind.FINAL.equals(kind))
 		// icon = _FinalStateIcon;
 	    }
