@@ -524,11 +524,11 @@ public class GenericArgoMenuBar extends JMenuBar
 	setMnemonic(zoomIn, "Zoom In");
         zoomIn.setAccelerator(ctrlEquals);
 
-        _view.addSeparator();
+        //_view.addSeparator();    //MVW   Issue 2321 and 2322
 
-        JMenu editTabs =
-	    (JMenu) _view.add(new JMenu(menuLocalize("Editor Tabs")));
-	setMnemonic(editTabs, "Editor Tabs");
+        //JMenu editTabs =  //MVW
+	//    (JMenu) _view.add(new JMenu(menuLocalize("Editor Tabs"))); //MVW
+	//setMnemonic(editTabs, "Editor Tabs");  //MVW
         // JMenu detailsTabs = (JMenu) _view.add(new
         // JMenu(menuLocalize("Details Tabs")));
 
@@ -630,8 +630,9 @@ public class GenericArgoMenuBar extends JMenuBar
 
         Runnable initLater = new InitMenusLater(align, distribute,
                                                 reorder, nudge,
-                                                layout,
-                                                editTabs);
+                                                layout
+                                                //,editTabs //MVW  Issue 2321 and 2322
+                                                );  
 
         org.argouml.application.Main.addPostLoadAction(initLater);
 

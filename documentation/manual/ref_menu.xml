@@ -1642,10 +1642,10 @@ saved at all? -->
     <!-- Sub-menu to select editing presentation (largely irrelevant - there
          is only one option now. -->
 
-    <sect2>
-      <title>The Editor Tabs Sub-Menu</title>
 <!-- TODO: This menu should be removed completely ASAP. It has no use. 
 See issue 1788, statement of Bob. See issue 2321 &amp; 2322. -->
+    <!--sect2>
+      <title>The Editor Tabs Sub-Menu</title>
 
       <para>The editing pane is conceived as a multi-mode editor, allowing you
         to edit a UML diagram from a number of perspectives.</para>
@@ -1744,7 +1744,7 @@ the editing pane.</para>
           current version of &argouml; this entry is always grayed out and not
           available.</para></caution></listitem>
       </itemizedlist>
-    </sect2>
+    </sect2-->
 
     <!-- Sub-menu to select which details tab you want. -->
     <!-- is removed -->

@@ -62,7 +62,7 @@ import org.tigris.gef.base.CmdReorder;
  */
 class InitMenusLater implements Runnable {
     JMenu align, distribute, reorder, nudge, setPreferredSize, layout;
-    JMenu editTabs, detailsTabs;
+    JMenu /*editTabs,*/ detailsTabs;  //MVW
 
     /**
      * Constructs this new runnable to initialize the submenus.
@@ -75,13 +75,15 @@ class InitMenusLater implements Runnable {
      */
     public InitMenusLater(JMenu align, JMenu distribute,
 			  JMenu reorder, JMenu nudge,
-			  JMenu layout, JMenu editTabs) {
+			  JMenu layout
+                          //, JMenu editTabs  //MVW  Issue 2321 and 2322
+                          ) {
 	this.align = align;
 	this.distribute = distribute;
 	this.reorder = reorder;
 	this.nudge = nudge;
 	this.layout = layout;
-	this.editTabs = editTabs;
+	//this.editTabs = editTabs;  //MVW
     }
 
     /**
@@ -233,7 +235,7 @@ class InitMenusLater implements Runnable {
         incrLayout.setEnabled(false);
 
 	// ---------------------------------------------- View Menu
-		
+	/*	
         JMenuItem nextEditItem = editTabs.add(Actions.NextEditTab);
 	GenericArgoMenuBar.setMnemonic(nextEditItem, "next editing tab");
         nextEditItem.setAccelerator(F6);
@@ -251,5 +253,6 @@ class InitMenusLater implements Runnable {
 	    editTabs.add(new ActionGoToEdit("action.as-metrics"));
 	GenericArgoMenuBar.setMnemonic(tabe3Item, "as metrics");
         tabe3Item.setAccelerator(altshift3);
+        */ // MVW  Issue 2321 and 2322
     }
 } /* end class InitMenusLater */
