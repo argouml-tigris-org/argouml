@@ -46,12 +46,15 @@ import org.tigris.gef.presentation.*;
 import org.tigris.gef.graph.*;
 
 import org.argouml.application.api.*;
+import org.argouml.kernel.*;
 
 import org.argouml.uml.*;
 import org.argouml.uml.ui.*;
 import org.argouml.uml.generator.*;
 import org.argouml.uml.diagram.ui.*;
 import org.argouml.ui.*;
+
+import org.argouml.uml.diagram.static_structure.ui.*;
 
 /** Class to display graphics for a UML MState in a diagram. */
 
@@ -132,7 +135,111 @@ public class FigPackage extends FigNodeModelElement {
 				}
 		}
     };
-    _body = new FigText(x, y + textH, width, height - textH);
+
+	//
+	// Create a Body that reacts to double-clicks and jumps to a diagram.
+	//
+    _body = new FigText(x, y + textH, width, height - textH) {
+		public void mouseClicked(MouseEvent me) {
+
+			String lsDefaultName = "main";
+
+			if (me.getClickCount() >= 2 )
+				{
+				MPackage lPkg = (MPackage) FigPackage.this.getOwner();
+				if( lPkg != null )
+					{
+					MNamespace	lNS = lPkg;
+
+					ProjectBrowser lPB = ProjectBrowser.TheInstance;
+					Project lP = lPB.getProject();
+
+					Vector diags = lP.getDiagrams();
+					Enumeration diagEnum = diags.elements();
+					UMLDiagram	lFirst =null;
+					while ( diagEnum.hasMoreElements() ) 
+						{
+						UMLDiagram lDiagram = (UMLDiagram) diagEnum.nextElement();
+						MNamespace	lDiagramNS = lDiagram.getNamespace();
+						if ( (lNS == null && lDiagramNS == null)
+							 || (lNS.equals(lDiagramNS)) )
+							{
+							/* save first */
+							if( lFirst == null )
+								{
+								lFirst = lDiagram;
+								}
+
+							if( lDiagram.getName() != null 
+								&& lDiagram.getName().startsWith(lsDefaultName) )
+								{
+								me.consume();
+								super.mouseClicked(me);
+								lPB.getNavPane().addToHistory(lDiagram);
+								lPB.setTarget(lDiagram);
+								lPB.select(lDiagram);
+								return;
+								}
+							}
+						}/*while*/
+
+					/* if we get here then we didnt get the default diagram*/
+					if( lFirst != null )
+						{
+						me.consume();
+						super.mouseClicked(me);
+
+						lPB.getNavPane().addToHistory(lFirst);
+						lPB.setTarget(lFirst);
+						lPB.select(lFirst);
+						return;
+						}
+					else
+						{/* try to create a new class diagram */
+						me.consume();
+						super.mouseClicked(me);
+ 						try
+							{
+                            String nameSpace;
+                            if (lNS != null && lNS.getName() != null) 
+                                nameSpace = lNS.getName();
+                            else
+                                nameSpace = "(anon)";
+                            
+                            String dialogText = 
+                                "Add new class diagram to " + nameSpace +"?"; 
+							int option = JOptionPane.
+							showConfirmDialog(null, 
+                                              dialogText,
+                                              "Add new class diagram?",
+											  JOptionPane.YES_NO_OPTION
+											  );
+							if (option == JOptionPane.YES_OPTION) 
+								{
+								ArgoDiagram lNew = new UMLClassDiagram(lNS);
+								String diagramName = lsDefaultName+"_"+lNew.getName();
+
+								lP.addMember(lNew);
+								
+								lPB.getNavPane().addToHistory(lNew);
+								lPB.setTarget(lNew);
+								lPB.select(lNew);	
+								/* change prefix */
+								lNew.setName(diagramName);
+								}
+							}
+						catch( Exception ex)
+							{}
+
+						return;
+						}/*if new*/
+
+					}/*if package */
+				}/* if doubleclicks */
+			super.mouseClicked(me);
+		}
+	};
+
     _body.setEditable(false);
 
     _name.setBounds(x, y, width - indentX, textH + 2);
@@ -349,7 +456,7 @@ public class FigPackage extends FigNodeModelElement {
         }
     }
     catch (Exception e) {
-      System.out.println("could not set package");
+      System.out.println("could not set package due to:"+e + "' at "+encloser);
     }
   }
 
@@ -537,7 +644,8 @@ public class FigPackage extends FigNodeModelElement {
     return popUpActions;
   }
 
-
+ 
 } /* end class FigPackage */
+
 
 
