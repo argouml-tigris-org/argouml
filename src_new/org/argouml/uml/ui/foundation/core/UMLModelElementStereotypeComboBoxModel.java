@@ -26,12 +26,9 @@ package org.argouml.uml.ui.foundation.core;
 
 import org.argouml.model.uml.UmlModelEventPump;
 import org.argouml.model.uml.foundation.extensionmechanisms.ExtensionMechanismsHelper;
-import org.argouml.model.uml.modelmanagement.ModelManagementHelper;
 import org.argouml.uml.ui.UMLComboBoxModel2;
-import org.argouml.uml.ui.UMLUserInterfaceContainer;
 
 import ru.novosoft.uml.MBase;
-import ru.novosoft.uml.MElementEvent;
 import ru.novosoft.uml.foundation.core.MModelElement;
 import ru.novosoft.uml.foundation.core.MNamespace;
 import ru.novosoft.uml.foundation.extension_mechanisms.MStereotype;
