@@ -154,8 +154,9 @@ public class ModelManagementHelper {
 			if (kind.isAssignableFrom(o.getClass())) {
 				list.add(o);
 			}
-		}
+		}         
 		return list;
+        
 	}
 
 	/**

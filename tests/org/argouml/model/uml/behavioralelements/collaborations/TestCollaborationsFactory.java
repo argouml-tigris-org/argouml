@@ -154,7 +154,11 @@ public class TestCollaborationsFactory extends TestCase {
         System.gc();
         assertNull("ClassifierRole not removed", cr1wr.get());
         assertNull("AssociationRole not removed", rolewr.get());
-        assertNull("Interaction not removed", interwr.get());
+        // Interaction should not be removed when removing classifierrole...
+        // maybe if the last message is removed from the interaction but even
+        // then it's doubtfull since it will probably lead to backward compatibility 
+        // problems in save formats.
+        // assertNull("Interaction not removed", interwr.get());
         assertNull("Message not removed", meswr.get());
         
         

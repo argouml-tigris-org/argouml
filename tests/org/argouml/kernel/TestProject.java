@@ -48,4 +48,19 @@ public class TestProject extends TestCase {
         assertEquals(p.getRoot(), p.getModel());
     }
 
+    /**
+     * @see junit.framework.TestCase#setUp()
+     */
+    protected void setUp() throws Exception {
+        super.setUp();
+        ProjectManager.getManager().setCurrentProject(null);
+    }
+
+    /**
+     * @see junit.framework.TestCase#tearDown()
+     */
+    protected void tearDown() throws Exception {
+        super.tearDown();
+    }
+
 }

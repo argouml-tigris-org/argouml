@@ -23,16 +23,12 @@
 
 package org.argouml.uml.diagram.ui;
 
-import java.util.*;
-import javax.swing.*;
-import javax.swing.event.*;
-import javax.swing.tree.*;
-
-import ru.novosoft.uml.model_management.*;
-import ru.novosoft.uml.foundation.core.*;
+import java.util.Collection;
 
 import org.argouml.application.api.Argo;
-import org.argouml.ui.*;
+import org.argouml.ui.AbstractGoRule;
+
+import ru.novosoft.uml.foundation.core.MNamespace;
 
 public class GoModelToElements extends AbstractGoRule {
 
@@ -40,46 +36,16 @@ public class GoModelToElements extends AbstractGoRule {
     return Argo.localize ("Tree", "misc.namespace.owned-element");
   }
 
-  public Object getRoot() {
-    throw new UnsupportedOperationException("getRoot should never be called");
-  }
-  public void setRoot(Object r) { }
-
-  public Object getChild(Object parent, int index) {
-    if (parent instanceof MNamespace) {
-      return new Vector(((MNamespace)parent).getOwnedElements()).elementAt(index);
-    }
-    throw new UnsupportedOperationException("getChild should never get here");
-  }
-
-
   public Collection getChildren(Object parent) { 
-      throw
-          new UnsupportedOperationException("getChildren should not be called");
+      if (parent instanceof MNamespace) {
+          return ((MNamespace)parent).getOwnedElements();
+      }
+      return null;
   }
 
-  public int getChildCount(Object parent) {
-    if (parent instanceof MNamespace) {
-      Collection oes = ((MNamespace) parent).getOwnedElements();
-      return (oes == null) ? 0 : oes.size();
-    }
-    return 0;
-  }
-
-  public int getIndexOfChild(Object parent, Object child) {
-    if (parent instanceof MNamespace) {
-      Vector oes = new Vector(((MNamespace)parent).getOwnedElements());
-      if (oes.contains(child)) return oes.indexOf(child);
-    }
-    return -1;
-  }
-
+  
   public boolean isLeaf(Object node) {
     return !(node instanceof MNamespace && getChildCount(node) > 0);
   }
-
-  public void valueForPathChanged(TreePath path, Object newValue) { }
-  public void addTreeModelListener(TreeModelListener l) { }
-  public void removeTreeModelListener(TreeModelListener l) { }
 
 }

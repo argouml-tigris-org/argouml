@@ -262,7 +262,7 @@ public class ProjectBrowser
         ArrayList arraylist = Argo.getPlugins(PluggableMenu.class, context);
         ListIterator iterator = arraylist.listIterator();
         while (iterator.hasNext()) {
-            PluggableMenu module = (PluggableMenu) iterator.next();
+            PluggableMenu module = (PluggableMenu)iterator.next();
             menuitem.add(module.getMenuItem(context));
             menuitem.setEnabled(true);
         }
@@ -309,10 +309,10 @@ public class ProjectBrowser
         // in progress) - Bob Tarling
         Iterator it = detailsPanesByCompassPoint.entrySet().iterator();
         while (it.hasNext()) {
-            Map.Entry entry = (Map.Entry) it.next();
+            Map.Entry entry = (Map.Entry)it.next();
             _workarea.add(
-                (DetailsPane) entry.getValue(),
-                (String) entry.getKey());
+                (DetailsPane)entry.getValue(),
+                (String)entry.getKey());
         }
         _workarea.add(_editorPane);
 
@@ -354,29 +354,29 @@ public class ProjectBrowser
                     .getManager()
                     .getCurrentProject()
                     .setCurrentNamespace(
-                    (MNamespace) o);
+                    (MNamespace)o);
             } else if (o instanceof MModelElement) {
-                if (((MModelElement) o).getNamespace() != null) {
+                if (((MModelElement)o).getNamespace() != null) {
                     ProjectManager
                         .getManager()
                         .getCurrentProject()
                         .setCurrentNamespace(
-                        ((MModelElement) o).getNamespace());
+                        ((MModelElement)o).getNamespace());
                 } else
                     ProjectManager
                         .getManager()
                         .getCurrentProject()
                         .setCurrentNamespace(
-                        (MNamespace) ProjectManager
+                        (MNamespace)ProjectManager
                             .getManager()
                             .getCurrentProject()
                             .getRoot());
             }
 
             if (o instanceof ArgoDiagram) {
-                setActiveDiagram((ArgoDiagram) o);
+                setActiveDiagram((ArgoDiagram)o);
                 if (o instanceof UMLDiagram) {
-                    MNamespace m = ((UMLDiagram) o).getNamespace();
+                    MNamespace m = ((UMLDiagram)o).getNamespace();
                     if (m != null)
                         ProjectManager
                             .getManager()
@@ -422,7 +422,7 @@ public class ProjectBrowser
     public void setToDoItem(Object o) {
         Iterator it = detailsPanesByCompassPoint.values().iterator();
         while (it.hasNext()) {
-            DetailsPane detailsPane = (DetailsPane) it.next();
+            DetailsPane detailsPane = (DetailsPane)it.next();
             if (detailsPane.setToDoItem(o))
                 return;
         }
@@ -431,7 +431,7 @@ public class ProjectBrowser
     private void setDetailsTarget(Object o) {
         Iterator it = detailsPanesByCompassPoint.values().iterator();
         while (it.hasNext()) {
-            DetailsPane detailsPane = (DetailsPane) it.next();
+            DetailsPane detailsPane = (DetailsPane)it.next();
             detailsPane.setTarget(o);
         }
     }
@@ -439,7 +439,7 @@ public class ProjectBrowser
     public Object getDetailsTarget() {
         Iterator it = detailsPanesByCompassPoint.values().iterator();
         if (it.hasNext()) {
-            DetailsPane detailsPane = (DetailsPane) it.next();
+            DetailsPane detailsPane = (DetailsPane)it.next();
             return detailsPane.getTarget();
         }
         return null; // TODO Bob Tarling - Should probably throw exception here
@@ -455,7 +455,7 @@ public class ProjectBrowser
         // page contains the properties tab. Bob Tarling 7 Dec 2002
         Iterator it = detailsPanesByCompassPoint.values().iterator();
         while (it.hasNext()) {
-            DetailsPane detailsPane = (DetailsPane) it.next();
+            DetailsPane detailsPane = (DetailsPane)it.next();
             TabProps tabProps = detailsPane.getTabProps();
             if (tabProps != null) {
                 return tabProps;
@@ -484,7 +484,7 @@ public class ProjectBrowser
     public void selectTabNamed(String tabName) {
         Iterator it = detailsPanesByCompassPoint.values().iterator();
         while (it.hasNext()) {
-            DetailsPane detailsPane = (DetailsPane) it.next();
+            DetailsPane detailsPane = (DetailsPane)it.next();
             if (detailsPane.selectTabNamed(tabName))
                 return;
         }
@@ -500,7 +500,7 @@ public class ProjectBrowser
         JPanel panel;
         Iterator it = detailsPanesByCompassPoint.values().iterator();
         while (it.hasNext()) {
-            DetailsPane detailsPane = (DetailsPane) it.next();
+            DetailsPane detailsPane = (DetailsPane)it.next();
             panel = detailsPane.getNamedTab(tabName);
             if (panel != null)
                 return panel;
@@ -528,7 +528,7 @@ public class ProjectBrowser
             ProjectManager.getManager().getCurrentProject().getDiagrams();
         Object target = _editorPane.getTarget();
         if ((target instanceof Diagram)
-            && ((Diagram) target).countContained(dms) == dms.size()) {
+            && ((Diagram)target).countContained(dms) == dms.size()) {
             setTarget(first);
             return;
         }
@@ -536,7 +536,7 @@ public class ProjectBrowser
         Diagram bestDiagram = null;
         int bestNumContained = 0;
         for (int i = 0; i < diagrams.size(); i++) {
-            Diagram d = (Diagram) diagrams.elementAt(i);
+            Diagram d = (Diagram)diagrams.elementAt(i);
             int nc = d.countContained(dms);
             if (nc > bestNumContained) {
                 bestNumContained = nc;
@@ -681,14 +681,15 @@ public class ProjectBrowser
         if (evt
             .getPropertyName()
             .equals(ProjectManager.CURRENT_PROJECT_PROPERTY_NAME)) {
-            Project p = (Project) evt.getNewValue();
-            setTitle(p.getName());
-            Actions.updateAllEnabled();
-            //Designer.TheDesigner.getToDoList().removeAllElements();
-            Designer.TheDesigner.setCritiquingRoot(p);
-            // update all panes
-            setTarget(p.getInitialTarget());
-            return;
+            Project p = (Project)evt.getNewValue();
+            if (p != null) {
+                setTitle(p.getName());
+                Actions.updateAllEnabled();
+                //Designer.TheDesigner.getToDoList().removeAllElements();
+                Designer.TheDesigner.setCritiquingRoot(p);
+                // update all panes
+                setTarget(p.getInitialTarget());
+            }
         }
     }
 

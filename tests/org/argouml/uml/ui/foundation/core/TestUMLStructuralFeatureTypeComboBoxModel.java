@@ -41,7 +41,7 @@ import ru.novosoft.uml.model_management.MModel;
  * @since Nov 2, 2002
  * @author jaap.branderhorst@xs4all.nl
  */
-public class TestUMLAttributeTypeComboBoxModel extends TestCase {
+public class TestUMLStructuralFeatureTypeComboBoxModel extends TestCase {
 
     private int oldEventPolicy;
     private MClassifier[] types;
@@ -49,10 +49,10 @@ public class TestUMLAttributeTypeComboBoxModel extends TestCase {
     private MAttribute elem;
     
     /**
-     * Constructor for TestUMLAttributeTypeComboBoxModel.
+     * Constructor for TestUMLStructuralFeatureTypeComboBoxModel.
      * @param arg0
      */
-    public TestUMLAttributeTypeComboBoxModel(String arg0) {
+    public TestUMLStructuralFeatureTypeComboBoxModel(String arg0) {
         super(arg0);
     }
     

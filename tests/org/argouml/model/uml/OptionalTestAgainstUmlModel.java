@@ -64,6 +64,10 @@ public class OptionalTestAgainstUmlModel extends TestCase {
            IOException,
 	   ParserConfigurationException {
 	DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+    String fileName = System.getProperty("test.model.uml13");
+    if (fileName == null) return;
+    File file = new File(fileName);
+    if (!file.exists()) return;
 	Document doc = builder.parse(new File(System.getProperty("test.model.uml13")));
 	NodeList list = doc.getElementsByTagName("Model:Class");
 

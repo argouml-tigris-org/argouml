@@ -140,6 +140,7 @@ public class TestUmlModelEventPump extends TestCase {
      * modelevent listeners as the object modelevent listeners
      */
     public void testAddLegalListener() {
+        UmlModelEventPump.getPump().cleanUp();
         assertTrue(UmlModelEventPump.getPump().getListenerClassModelEventsMap().isEmpty());
         assertEquals(UmlModelEventPump.getPump().getListenerModelEventsMap().size(), 0);
         UmlModelEventPump.getPump().addClassModelEventListener(listener, elem.getClass(), new String[] {"name"});
