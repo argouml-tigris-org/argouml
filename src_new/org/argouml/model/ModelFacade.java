@@ -506,12 +506,10 @@ public class ModelFacade {
      * @param handle the object that we get the association ends from.
      * @return Iterator with association ends.
      */
-    public static Iterator getAssociationEnds(Object handle) {
+    public static Collection getAssociationEnds(Object handle) {
         if (handle instanceof MClassifier) {
-            Collection endc = ((MClassifier)handle).getAssociationEnds();
-            if (endc == null)
-                return emptyIterator();
-            return endc.iterator();
+            Collection endc = ((MClassifier)handle).getAssociationEnds();            
+            return endc;
         }
 
         //...

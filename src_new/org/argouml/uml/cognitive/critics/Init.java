@@ -346,6 +346,8 @@ public class Init {
 
       Agency.register(crNodesOverlap, diagramCls);
       Agency.register(crZeroLengthEdge, edgeCls);
+      
+      Agency.register(crOppEndConflict, assocEndCls);
 
       // under testing
       // Agency.register(crConsiderFacade, packageCls);
