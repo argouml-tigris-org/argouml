@@ -64,7 +64,8 @@ public class DBWriter
 	}
 
 	String dbURL = "jdbc:mysql://";
-	dbURL += props.getProperty("host") + "/";
+	dbURL += props.getProperty("host") + ":";
+	dbURL += props.getProperty("port") + "/";
 	dbURL += props.getProperty("db");
 	String dbUser = props.getProperty("user");
 	String dbPassword = props.getProperty("password");
@@ -76,15 +77,18 @@ public class DBWriter
 	    if (dbConnectFormat.equals("1")) {
 		Conn = DriverManager.getConnection(dbURL, dbUser, dbPassword);
 	    } else if (dbConnectFormat.equals("2")) {
-		Conn = DriverManager.getConnection(dbURL + "?user=" + dbUser + ";password=" + dbPassword);
+		String connectString = dbURL + "?user=" + dbUser + ";password=" + dbPassword;
+		System.out.println("URL: "+connectString);
+		Conn = DriverManager.getConnection(connectString);
 	    } else if (dbConnectFormat.equals("3")) {
 		Properties connprops = new Properties();
 		connprops.put("user", dbUser);
 		connprops.put("password", dbPassword);
 		Conn = DriverManager.getConnection(dbURL, connprops);
 	    } else if (dbConnectFormat.equals("4")) {
-		Conn = DriverManager.getConnection(dbURL + "?user="
-                                                + dbUser + "&password=" + dbPassword);
+		String connectString = dbURL + "?user=" + dbUser + "&password=" + dbPassword;
+		System.out.println("URL: "+connectString);
+		Conn = DriverManager.getConnection(connectString);
 	    } else {
 		errorMessage("Unknown dbConnectFormat choice:" + dbConnectFormat, null);
 	    }
