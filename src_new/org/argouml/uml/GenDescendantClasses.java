@@ -32,7 +32,9 @@ import org.tigris.gef.util.*;
 
 /** Utility class to generate the subclasses of a class.  It
  *  recursively moves down the class hierarchy.  But it does that in a
- *  safe way that will nothang in case of cyclic inheritance. */
+ *  safe way that will nothang in case of cyclic inheritance. 
+ *  @stereotype singleton
+ */
 
 public class GenDescendantClasses implements ChildGenerator {
   public static GenDescendantClasses SINGLETON = new GenDescendantClasses();

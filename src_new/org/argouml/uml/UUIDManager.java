@@ -36,7 +36,8 @@ import ru.novosoft.uml.behavior.state_machines.*;
 import ru.novosoft.uml.behavior.collaborations.*;
 import ru.novosoft.uml.behavior.use_cases.*;
 
-
+/** @stereotype singleton
+ */
 public class UUIDManager {
     protected static Category cat = Category.getInstance(UUIDManager.class);
 

@@ -58,6 +58,9 @@ import org.argouml.application.notation.NotationProviderFactory;
 import org.argouml.kernel.Project;
 import org.argouml.model.uml.UmlFactory;
 
+/** Class with utility methods. Now mostly outdated.
+ * @stereotype utility
+ */
 public class MMUtil {
 
 	Category cat = Category.getInstance(org.argouml.uml.MMUtil.class);
