@@ -38,13 +38,8 @@ import java.util.Vector;
 import org.argouml.model.ModelFacade;
 
 
-import ru.novosoft.uml.foundation.core.MAttribute;
 import ru.novosoft.uml.foundation.core.MClass;
 import ru.novosoft.uml.foundation.core.MInterface;
-import ru.novosoft.uml.foundation.core.MOperation;
-import ru.novosoft.uml.foundation.core.MFeature;
-import ru.novosoft.uml.foundation.core.MModelElement;
-
 /**
  * This helper class generates CodePiece based code.
  * It needs some work. See issue
@@ -71,23 +66,23 @@ class CodeGenerator {
 	// Features
 	Collection features = mClass.getFeatures();
 	for (Iterator i = features.iterator(); i.hasNext(); ) {
-	    MFeature feature = (MFeature) i.next();
-	    if (org.argouml.model.ModelFacade.isAOperation(feature)) {
-		generateOperation((MOperation) feature, mClass, reader, writer);
+	    Object feature = /*(MFeature)*/ i.next();
+	    if (ModelFacade.isAOperation(feature)) {
+		generateOperation(/*(MOperation)*/ feature, mClass, reader, writer);
 	    }
-	    if (org.argouml.model.ModelFacade.isAAttribute(feature)) {
-		generateAttribute((MAttribute) feature, mClass, reader, writer);
+	    if (ModelFacade.isAAttribute(feature)) {
+		generateAttribute(/*(MAttribute)*/ feature, mClass, reader, writer);
 	    }
 	}
 
 	// Inner classes
 	Collection elements = mClass.getOwnedElements();
 	for (Iterator i = elements.iterator(); i.hasNext(); ) {
-	    MModelElement element = (MModelElement) i.next();
-	    if (org.argouml.model.ModelFacade.isAClass(element)) {
+	    Object element = /*(MModelElement)*/ i.next();
+	    if (ModelFacade.isAClass(element)) {
 		generateClass((MClass) element, reader, writer);
 	    }
-	    else if (org.argouml.model.ModelFacade.isAInterface(element)) {
+	    else if (ModelFacade.isAInterface(element)) {
 		generateInterface((MInterface) element, reader, writer);
 	    }
 	}
@@ -101,41 +96,41 @@ class CodeGenerator {
      * @param mInterface The interface to generate code for.
      * @param writer The writer to write to.
      */
-    public static void generateInterface(MInterface mInterface,
+    public static void generateInterface(Object mInterface,
 					 BufferedReader reader,
 					 BufferedWriter writer)
 	throws Exception
     {
 	InterfaceCodePiece icp =
-	    new InterfaceCodePiece(null, mInterface.getName());
+	    new InterfaceCodePiece(null, ModelFacade.getName(mInterface));
 	Stack parseStateStack = new Stack();
-	parseStateStack.push(new ParseState(mInterface.getNamespace()));
+	parseStateStack.push(new ParseState(ModelFacade.getNamespace(mInterface)));
 	icp.write(reader, writer, parseStateStack);
 
 	writer.write("{\n");
 
 	// Features
-	Collection features = mInterface.getFeatures();
+	Collection features = ModelFacade.getFeatures(mInterface);
 	for (Iterator i = features.iterator(); i.hasNext(); ) {
-	    MFeature feature = (MFeature) i.next();
-	    if (org.argouml.model.ModelFacade.isAOperation(feature)) {
-		generateOperation((MOperation) feature,
+	    Object feature = /*(MFeature)*/ i.next();
+	    if (ModelFacade.isAOperation(feature)) {
+		generateOperation(/*(MOperation)*/ feature,
 				  mInterface, reader, writer);
 	    }
-	    if (org.argouml.model.ModelFacade.isAAttribute(feature)) {
-		generateAttribute((MAttribute) feature,
+	    if (ModelFacade.isAAttribute(feature)) {
+		generateAttribute(/*(MAttribute)*/ feature,
 				  mInterface, reader, writer);
 	    }
 	}
 
 	// Inner classes
-	Collection elements = mInterface.getOwnedElements();
+	Collection elements = ModelFacade.getOwnedElements(mInterface);
 	for (Iterator i = elements.iterator(); i.hasNext(); ) {
-	    MModelElement element = (MModelElement) i.next();
-	    if (org.argouml.model.ModelFacade.isAClass(element)) {
+	    Object element = /*(MModelElement)*/ i.next();
+	    if (ModelFacade.isAClass(element)) {
 		generateClass((MClass) element, reader, writer);
 	    }
-	    else if (org.argouml.model.ModelFacade.isAInterface(element)) {
+	    else if (ModelFacade.isAInterface(element)) {
 		generateInterface((MInterface) element, reader, writer);
 	    }
 	}

@@ -34,8 +34,6 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.util.Stack;
 
-import ru.novosoft.uml.foundation.core.MClass;
-
 /**
    This code piece represents an anonymous class.
 */
@@ -109,7 +107,7 @@ public class AnonymousClassCodePiece extends NamedCodePiece
                       Stack parseStateStack) throws Exception
     {
         ParseState parseState = (ParseState) parseStateStack.peek();
-        MClass mClass = (MClass)
+        Object mClass = /*(MClass)*/
             parseState.newClassifier((new Integer(number)).toString());
 
         if (mClass != null) {

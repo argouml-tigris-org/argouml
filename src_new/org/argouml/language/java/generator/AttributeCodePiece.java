@@ -1,4 +1,3 @@
-
 // $Id$
 // Copyright (c) 1996-2001 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -38,13 +37,10 @@ import java.io.BufferedWriter;
 import java.util.Stack;
 import java.util.Vector;
 import java.util.Iterator;
+import org.argouml.model.ModelFacade;
 
-import ru.novosoft.uml.foundation.core.MFeature;
 import ru.novosoft.uml.foundation.core.MAttribute;
 import ru.novosoft.uml.foundation.core.MAssociationEnd;
-import ru.novosoft.uml.foundation.core.MAssociation;
-
-
 /**
    This code piece represents an attribute. Even though the code can
    handle several attributes in the same statement, the code generated
@@ -154,9 +150,8 @@ public class AttributeCodePiece extends NamedCodePiece
 	    Iterator j;
 	    // now find the matching feature
 	    for (j = features.iterator(); j.hasNext();) {
-		MFeature mFeature = (MFeature) j.next();
-		if (org.argouml.model.ModelFacade.isAAttribute(mFeature)
-		    && mFeature.getName().equals(name)) {
+		Object mFeature = /*(MFeature)*/ j.next();
+		if (ModelFacade.isAAttribute(mFeature) && ModelFacade.getName(mFeature).equals(name)) {
 		    // feature found, so it's an attribute (and no
 		    // association end)
 		    found = true;
@@ -164,8 +159,8 @@ public class AttributeCodePiece extends NamedCodePiece
 		    // deletes feature from current ParseState
 		    parseState.newFeature(mFeature);
 
-		    MAttribute attr = (MAttribute) mFeature;
-		    writer.write(generator().generateCoreAttribute(attr));
+		    Object attr = /*(MAttribute)*/ mFeature;
+		    writer.write(generator().generateCoreAttribute((MAttribute)attr));
 
 		    if ( k < count ) {
 			writer.write("; "); // fixed comma separated attributes
@@ -181,22 +176,20 @@ public class AttributeCodePiece extends NamedCodePiece
 		if (!ends.isEmpty()) {
 		    // now find the first matching association end
 		    for (j = ends.iterator(); j.hasNext(); ) {
-			MAssociationEnd ae = (MAssociationEnd) j.next();
-			MAssociation a = ae.getAssociation();
-			Iterator connEnum = a.getConnections().iterator();
+			Object associationEnd = /*(MAssociationEnd)*/ j.next();
+			Object association = ModelFacade.getAssociation(associationEnd);
+			Iterator connEnum = ModelFacade.getConnections(association).iterator();
 			while (connEnum.hasNext()) {
-			    MAssociationEnd ae2 =
-				(MAssociationEnd) connEnum.next();
-			    if (ae2 != ae
-				&& ae2.isNavigable()
-				&& !ae2.getAssociation().isAbstract()
-				&& generator()
-				   .generateAscEndName(ae2).equals(name))
+			    Object associationEnd2 =
+				/*(MAssociationEnd)*/ connEnum.next();
+			    if (associationEnd2 != associationEnd
+				&& ModelFacade.isNavigable(associationEnd2)
+				&& !ModelFacade.isAbstract(ModelFacade.getAssociation(associationEnd2))
+				&& generator().generateAscEndName((MAssociationEnd)associationEnd2).equals(name))
 			    {
 				// association end found
 				found = true;
-				writer.write(generator()
-					     .generateCoreAssociationEnd(ae2));
+				writer.write(generator().generateCoreAssociationEnd((MAssociationEnd)associationEnd2));
 				break;
 			    }
 			}

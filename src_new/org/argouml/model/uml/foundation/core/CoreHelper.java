@@ -388,9 +388,9 @@ public class CoreHelper {
      * @param cls  the class you want to have the interfaces for
      * @return a collection of the Interfaces
      */
-    public Collection getSpecifications(MClassifier cls) {
+    public Collection getSpecifications(Object classifier) {
         Collection result = new Vector();
-        Collection deps = cls.getClientDependencies();
+        Collection deps = ((MClassifier)classifier).getClientDependencies();
         Iterator depIterator = deps.iterator();
         while (depIterator.hasNext()) {
             Object dep = depIterator.next();

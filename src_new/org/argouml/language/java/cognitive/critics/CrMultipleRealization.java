@@ -36,8 +36,6 @@ import org.argouml.cognitive.Designer;
 import org.argouml.uml.cognitive.critics.CrUML;
 import org.argouml.model.uml.UmlHelper;
 
-import ru.novosoft.uml.foundation.core.MInterface;
-
 // related to issue 570
 
 /** Critic to check whether in java no inerface realizes another interface
@@ -53,7 +51,7 @@ public class CrMultipleRealization extends CrUML {
 
     public boolean predicate2(Object dm, Designer dsgr) {
 	if (!(org.argouml.model.ModelFacade.isAInterface(dm))) return NO_PROBLEM;
-	MInterface inter = (MInterface) dm;
+	Object inter = /*(MInterface)*/ dm;
    
 	Collection realize =
 	    UmlHelper.getHelper().getCore().getSpecifications(inter);

@@ -63,14 +63,10 @@ import ru.novosoft.uml.behavior.use_cases.MExtensionPoint;
 import ru.novosoft.uml.foundation.core.MAssociation;
 import ru.novosoft.uml.foundation.core.MAssociationEnd;
 import ru.novosoft.uml.foundation.core.MAttribute;
-import ru.novosoft.uml.foundation.core.MBehavioralFeature;
 import ru.novosoft.uml.foundation.core.MClass;
 import ru.novosoft.uml.foundation.core.MClassifier;
 import ru.novosoft.uml.foundation.core.MConstraint;
 import ru.novosoft.uml.foundation.core.MFeature;
-import ru.novosoft.uml.foundation.core.MGeneralizableElement;
-import ru.novosoft.uml.foundation.core.MGeneralization;
-import ru.novosoft.uml.foundation.core.MInterface;
 import ru.novosoft.uml.foundation.core.MMethod;
 import ru.novosoft.uml.foundation.core.MModelElement;
 import ru.novosoft.uml.foundation.core.MOperation;
@@ -86,6 +82,7 @@ import ru.novosoft.uml.foundation.data_types.MVisibilityKind;
 import ru.novosoft.uml.foundation.extension_mechanisms.MStereotype;
 import ru.novosoft.uml.foundation.extension_mechanisms.MTaggedValue;
 import ru.novosoft.uml.model_management.MPackage;
+import tudresden.ocl.OclTree;
 
 import tudresden.ocl.parser.node.AConstraintBody;
 
@@ -148,16 +145,16 @@ public class GeneratorJava
      * @return the full path name of the the generated file or
      * 	       null if no file can be generated.
      */
-    public String GenerateFile(Object me, String path) {
-        String name = ModelFacade.getName(me);
+    public String GenerateFile(Object modelElement, String path) {
+        String name = ModelFacade.getName(modelElement);
         if (name == null || name.length() == 0)
             return null;
-        MClassifier cls = (MClassifier) me;
+        Object classifier = /*(MClassifier)*/ modelElement;
         String filename = name + ".java";
         if (!path.endsWith(FILE_SEPARATOR))
             path += FILE_SEPARATOR;
 
-        String packagePath = getPackageName(ModelFacade.getNamespace(cls));
+        String packagePath = getPackageName(ModelFacade.getNamespace(classifier));
 
         int lastIndex = -1;
         do {
@@ -190,7 +187,7 @@ public class GeneratorJava
         _isFileGeneration = true; // used to produce method javadoc
         if (f.exists()) {
             try {
-                update(cls, f);
+                update((MClassifier)classifier, f);
             } catch (Exception exp) {
                 _isInUpdateMode = false;
                 _isFileGeneration = false;
@@ -206,8 +203,8 @@ public class GeneratorJava
         // TODO: package, project basepath, tagged values to configure
         Argo.log.info("Generating (new) " + f.getPath());
         _isFileGeneration = true;
-        String header = SINGLETON.generateHeader(cls, pathname, packagePath);
-        String src = SINGLETON.generate(cls);
+        String header = SINGLETON.generateHeader((MClassifier)classifier, pathname, packagePath);
+        String src = SINGLETON.generate(classifier);
         BufferedWriter fos = null;
         try {
             fos = new BufferedWriter(new FileWriter(f));
@@ -256,7 +253,7 @@ public class GeneratorJava
         if (c != null) {
             // now check packages of all feature types
             for (j = c.iterator(); j.hasNext();) {
-                MFeature mFeature = (MFeature) j.next();
+                Object mFeature = /*(MFeature)*/ j.next();
                 if (ModelFacade.isAAttribute(mFeature)) {
                     if ((ftype =
                             generateImportType(ModelFacade.getType(mFeature),
@@ -297,22 +294,22 @@ public class GeneratorJava
         if (!c.isEmpty()) {
             // check association end types
             for (j = c.iterator(); j.hasNext();) {
-                MAssociationEnd ae = (MAssociationEnd) j.next();
-                MAssociation a = ae.getAssociation();
-                Iterator connEnum = a.getConnections().iterator();
+                Object associationEnd = /*(MAssociationEnd)*/ j.next();
+                Object association = ModelFacade.getAssociation(associationEnd);
+                Iterator connEnum = ModelFacade.getConnections(association).iterator();
                 while (connEnum.hasNext()) {
-                    MAssociationEnd ae2 = (MAssociationEnd) connEnum.next();
-                    if (ae2 != ae
-                        && ae2.isNavigable()
-                        && !ae2.getAssociation().isAbstract()) {
+                    Object associationEnd2 = /*(MAssociationEnd)*/ connEnum.next();
+                    if (associationEnd2 != associationEnd
+                        && ModelFacade.isNavigable(associationEnd2)
+                        && !ModelFacade.isAbstract(ModelFacade.getAssociation(associationEnd2))) {
                         // association end found
-                        MMultiplicity m = ae2.getMultiplicity();
-                        if (!MMultiplicity.M1_1.equals(m)
-                            && !MMultiplicity.M0_1.equals(m)) {
+                        Object multiplicity = ModelFacade.getMultiplicity(associationEnd2);
+                        if (!MMultiplicity.M1_1.equals(multiplicity)
+                            && !MMultiplicity.M0_1.equals(multiplicity)) {
                             importSet.add("java.util.Vector");
                         } else if (
 				   (ftype =
-				    generateImportType(ae2.getType(),
+				    generateImportType(ModelFacade.getType(associationEnd2),
 						       packagePath))
 				   != null) {
                             importSet.add(ftype);
@@ -516,8 +513,8 @@ public class GeneratorJava
         if (ownedElements != null) {
             Iterator ownedEnum = ownedElements.iterator();
             while (ownedEnum.hasNext()) {
-                MModelElement me = (MModelElement) ownedEnum.next();
-                sb.append(generate(me));
+                Object modelElement = /*(MModelElement)*/ ownedEnum.next();
+                sb.append(generate(modelElement));
                 sb.append(LINE_SEPARATOR).append(LINE_SEPARATOR);
             }
         } else {
@@ -876,11 +873,11 @@ public class GeneratorJava
 
                 Iterator strEnum = strs.iterator();
                 while (strEnum.hasNext()) {
-                    MStructuralFeature sf = (MStructuralFeature) strEnum.next();
+                    Object structuralFeature = /*(MStructuralFeature)*/ strEnum.next();
 
-                    sb.append(generate(sf));
+                    sb.append(generate(structuralFeature));
 
-                    tv = generateTaggedValues(sf);
+                    tv = generateTaggedValues((MModelElement)structuralFeature);
                     if (tv != null && tv.length() > 0) {
                         sb.append(INDENT).append(tv);
                     }
@@ -904,12 +901,12 @@ public class GeneratorJava
 
                 Iterator endEnum = ends.iterator();
                 while (endEnum.hasNext()) {
-                    MAssociationEnd ae = (MAssociationEnd) endEnum.next();
-                    MAssociation a = ae.getAssociation();
+                    Object associationEnd = /*(MAssociationEnd)*/ endEnum.next();
+                    Object association = ModelFacade.getAssociation(associationEnd);
 
-                    sb.append(generateAssociationFrom(a, ae));
+                    sb.append(generateAssociationFrom((MAssociation)association, (MAssociationEnd)associationEnd));
 
-                    tv = generateTaggedValues(a);
+                    tv = generateTaggedValues((MAssociation)association);
                     if (tv != null && tv.length() > 0) {
                         sb.append(INDENT).append(tv);
                     }
@@ -919,11 +916,9 @@ public class GeneratorJava
             // Inner classes
             Collection elements = cls.getOwnedElements();
             for (Iterator i = elements.iterator(); i.hasNext(); ) {
-                MModelElement element = (MModelElement) i.next();
-                if (org.argouml.model.ModelFacade.isAClass(element)
-		    || org.argouml.model.ModelFacade.isAInterface(element)) 
-		{
-                    sb.append(generateClassifier((MClass) element));
+                Object element = /*(MModelElement)*/ i.next();
+                if (ModelFacade.isAClass(element) || ModelFacade.isAInterface(element)) {
+                    sb.append(generateClassifier((MClassifier)element));
                 }
             }
 
@@ -948,15 +943,15 @@ public class GeneratorJava
                 Iterator behEnum = behs.iterator();
 
                 while (behEnum.hasNext()) {
-                    MBehavioralFeature bf = (MBehavioralFeature) behEnum.next();
+                    Object behavioralFeature = /*(MBehavioralFeature)*/ behEnum.next();
 
-                    sb.append(generate(bf));
+                    sb.append(generate(behavioralFeature));
 
-                    tv = generateTaggedValues((MModelElement) bf);
+                    tv = generateTaggedValues((MModelElement) behavioralFeature);
 
-                    if ((org.argouml.model.ModelFacade.isAClass(cls))
-                        && (org.argouml.model.ModelFacade.isAOperation(bf))
-                        && (!ModelFacade.isAbstract(bf))) {
+                    if ((ModelFacade.isAClass(cls))
+                            && (ModelFacade.isAOperation(behavioralFeature))
+                            && (!ModelFacade.isAbstract(behavioralFeature))) {
                         if (_lfBeforeCurly)
                             sb.append(LINE_SEPARATOR).append(INDENT);
                         else
@@ -970,7 +965,7 @@ public class GeneratorJava
                         // there is no ReturnType in behavioral feature (nsuml)
                         sb
                             .append(LINE_SEPARATOR)
-                            .append(generateMethodBody((MOperation) bf))
+                            .append(generateMethodBody((MOperation)behavioralFeature))
                             .append(INDENT)
                             .append("}").append(LINE_SEPARATOR);
                     } else {
@@ -1085,7 +1080,7 @@ public class GeneratorJava
 	     *
              * New code:
              */
-            s = generate((MTaggedValue) iter.next());
+            s = generate(/*(MTaggedValue)*/ iter.next());
             // end new code
             if (s != null && s.length() > 0) {
                 if (first) {
@@ -1325,15 +1320,13 @@ public class GeneratorJava
         tudresden.ocl.check.types.ModelFacade mf =
             new org.argouml.ocl.ArgoFacade(me);
         for (Iterator i = cConstraints.iterator(); i.hasNext();) {
-            MConstraint mc = (MConstraint) i.next();
+            Object constraint = /*(MConstraint)*/ i.next();
 
             try {
-                tudresden.ocl.OclTree otParsed =
-                    tudresden.ocl.OclTree.createTree(
-						     mc.getBody().getBody(),
-						     mf);
+                OclTree otParsed =
+                    OclTree.createTree((String)ModelFacade.getBody(ModelFacade.getBody(constraint)), mf);
 
-                TagExtractor te = new TagExtractor(mc.getName());
+                TagExtractor te = new TagExtractor(ModelFacade.getName(constraint));
                 otParsed.apply(te);
 
                 for (Iterator j = te.getTags(); j.hasNext();) {
@@ -1366,10 +1359,10 @@ public class GeneratorJava
         // MConstraint[] csarray = (MConstraint[])cs.toArray();
         // Argo.log.debug("Got " + csarray.size() + " constraints.");
         for (Iterator i = cs.iterator(); i.hasNext();) {
-            MConstraint c = (MConstraint) i.next();
-            String constrStr = generateConstraint(c);
-            java.util.StringTokenizer st =
-                new java.util.StringTokenizer(constrStr, LINE_SEPARATOR + "\r");
+            Object constraint = /*(MConstraint)*/ i.next();
+            String constrStr = generateConstraint((MConstraint)constraint);
+            StringTokenizer st =
+                new StringTokenizer(constrStr, LINE_SEPARATOR + "\r");
             while (st.hasMoreElements()) {
                 String constrLine = st.nextToken();
                 sb.append(INDENT).append("// ").append(constrLine);
@@ -1390,7 +1383,7 @@ public class GeneratorJava
         return sb.toString();
     }
 
-    public String generateAssociationFrom(MAssociation a, MAssociationEnd ae) {
+    public String generateAssociationFrom(MAssociation a, MAssociationEnd associationEnd) {
         // TODO: does not handle n-ary associations
         StringBuffer sb = new StringBuffer(80);
 
@@ -1405,15 +1398,15 @@ public class GeneratorJava
         Collection connections = a.getConnections();
         Iterator connEnum = connections.iterator();
         while (connEnum.hasNext()) {
-            MAssociationEnd ae2 = (MAssociationEnd) connEnum.next();
-            if (ae2 != ae) {
+            Object associationEnd2 = /*(MAssociationEnd)*/ connEnum.next();
+            if (associationEnd2 != associationEnd) {
                 /**
                  * Added generation of doccomment 2001-09-26 STEFFEN ZSCHALER
                  *
                  */
                 sb.append(INDENT);
-		sb.append(generateConstraintEnrichedDocComment(a, ae2));
-                sb.append(generateAssociationEnd(ae2));
+		sb.append(generateConstraintEnrichedDocComment(a, (MAssociationEnd)associationEnd2));
+                sb.append(generateAssociationEnd((MAssociationEnd)associationEnd2));
             }
         }
 
@@ -1498,11 +1491,11 @@ public class GeneratorJava
         Collection classes = new ArrayList();
         Iterator enum = generalizations.iterator();
         while (enum.hasNext()) {
-            MGeneralization g = (MGeneralization) enum.next();
-            MGeneralizableElement ge = g.getParent();
+            Object generalization = /*(MGeneralization)*/ enum.next();
+            Object generalizableElement = ModelFacade.getParent(generalization);
             // assert ge != null
-            if (ge != null)
-                classes.add(ge);
+            if (generalizableElement != null)
+                classes.add(generalizableElement);
         }
         return generateClassList(classes);
     }
@@ -1516,8 +1509,8 @@ public class GeneratorJava
         StringBuffer sb = new StringBuffer(80);
         Iterator clsEnum = realizations.iterator();
         while (clsEnum.hasNext()) {
-            MInterface i = (MInterface) clsEnum.next();
-            sb.append(generateClassifierRef(i));
+            Object inter = /*(MInterface)*/ clsEnum.next();
+            sb.append(generateClassifierRef(inter));
             if (clsEnum.hasNext())
                 sb.append(", ");
         }
@@ -1530,7 +1523,7 @@ public class GeneratorJava
         StringBuffer sb = new StringBuffer(80);
         Iterator clsEnum = classifiers.iterator();
         while (clsEnum.hasNext()) {
-            sb.append(generateClassifierRef((MClassifier) clsEnum.next()));
+            sb.append(generateClassifierRef(/*(MClassifier)*/ clsEnum.next()));
             if (clsEnum.hasNext())
                 sb.append(", ");
         }
