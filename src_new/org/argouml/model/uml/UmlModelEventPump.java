@@ -497,7 +497,33 @@ public final class UmlModelEventPump implements MElementListener {
      * @return Set
      */
     Set getInterestedListeners(Class modelClass) {
-        return (Set)_listenerClassModelEventsMap.get(modelClass);
+        Set returnSet = new HashSet();
+        Set interfaces = getInterfaces(modelClass);
+        Iterator it = interfaces.iterator();
+        while (it.hasNext()) {
+            Set listeners = (Set)_listenerClassModelEventsMap.get(it.next());
+            if (listeners != null) 
+                returnSet.addAll(listeners);
+        }
+        return returnSet;
+    }
+    
+    /**
+     * An utility method to get all interfaces realized by some class, not only
+     * the interfaces directly realized by the class but also all interfaces
+     * realized by the interfaces themselves.
+     * @param modelClass. The class for which we are searching for interfaces
+     * @return Set the set with all interfaces. It is empty if there are no 
+     * interfaces
+     */
+    private Set getInterfaces(Class modelClass) {
+        Set returnSet = new HashSet();
+        Class[] interfaces = modelClass.getInterfaces();
+        for (int i = 0; i < interfaces.length; i++) {
+            returnSet.add(interfaces[i]);
+            returnSet.addAll(getInterfaces(interfaces[i]));
+        }
+        return returnSet;
     }
     
 class ListenerEventName {

@@ -62,13 +62,12 @@ public abstract class AbstractUmlModelFactory {
             ((MBase)o).addMElementListener(UmlModelEventPump.getPump());
             ((MBase)o).addMElementListener(UmlModelListener.getInstance());
             Set couples = UmlModelEventPump.getPump().getInterestedListeners(o.getClass());
-            if (couples != null) {
-                Iterator it = couples.iterator();
-                while (it.hasNext()) {
-                    UmlModelEventPump.ListenerEventName couple = (UmlModelEventPump.ListenerEventName)it.next();
-                    UmlModelEventPump.getPump().addModelEventListener(couple.getListener(), (MBase)o, couple.getEventName());
-                }
+            Iterator it = couples.iterator();
+            while (it.hasNext()) {
+                UmlModelEventPump.ListenerEventName couple = (UmlModelEventPump.ListenerEventName)it.next();
+                UmlModelEventPump.getPump().addModelEventListener(couple.getListener(), (MBase)o, couple.getEventName());
             }
+            
        }
     }
 
