@@ -30,7 +30,7 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.util.Locale;
 import javax.xml.parsers.SAXParserFactory;
-
+import org.argouml.i18n.Translator;
 import org.apache.log4j.Logger;
 
 public class Tools {
@@ -43,27 +43,29 @@ public class Tools {
 
     private static void getComponentVersionInfo(StringBuffer sb, String pn) 
     {
-        sb.append("Package: ");
+        sb.append(Translator.localize("label","label.package")).append(": ");
         sb.append(pn);
         sb.append('\n');
         Package pkg = Package.getPackage(pn);
         if (pkg == null) {
-            sb.append("-- No Versioning Information --\nMaybe you don't use the jar?\n");
+            sb.append(Translator.localize("label", "label.no-version"));
         }
         else {
             String in = pkg.getImplementationTitle();
             if (in != null) {
-                sb.append("Component: ");
+                sb.append(Translator.localize("label","label.component"))
+                  .append(": ");
                 sb.append(in);
             }
             in = pkg.getImplementationVendor();
             if (in != null) {
-                sb.append(", by: ");
+                sb.append(Translator.localize("label","label.by")).append(": ");
                 sb.append(in);
             }
             in = pkg.getImplementationVersion();
             if (in != null) {
-                sb.append(", version: ");
+                sb.append(", ").append(Translator.localize("label","label.version"))
+                  .append(": ");
                 sb.append(in);
                 sb.append('\n');
             }
@@ -84,18 +86,25 @@ public class Tools {
 
             String saxFactory = System.getProperty("javax.xml.parsers.SAXParserFactory");
             if (saxFactory != null) {
-                sb.append("SAX Parser Factory " + saxFactory + " specified using system property\n");
+                Object[] msgArgs = {
+                    saxFactory
+                };
+                sb.append(Translator.messageFormat("label","label.sax-factory1", 
+                                                   msgArgs));
             }
 
             Object saxObject = null;
             try {
                 saxObject = SAXParserFactory.newInstance();
-                sb.append("SAX Parser Factory " +
-                          saxObject.getClass().getName() + " will be used.\n");
+                Object[] msgArgs = {
+                    saxObject.getClass().getName()
+                };
+                sb.append(Translator.messageFormat("label","label.sax-factory2", 
+                                                   msgArgs));
                 sb.append("\n");
             }
             catch (Exception ex) {
-                sb.append("Error determining SAX Parser Factory\n.");
+                sb.append(Translator.localize("label", "label.error-sax-factory"));
             }
 
             for (int i = 0; i < packageList.length; i++) {
@@ -113,16 +122,16 @@ public class Tools {
 
 
             sb.append("\n");
-            sb.append("Operating System is: ");
+            sb.append(Translator.localize("label", "label.os"));
             sb.append(System.getProperty("os.name", "unknown"));
             sb.append('\n');
-            sb.append("Operating System Version: ");
+            sb.append(Translator.localize("label", "label.os-version"));
             sb.append(System.getProperty("os.version", "unknown"));
             sb.append('\n');
-            sb.append("Language: ");
+            sb.append(Translator.localize("label", "label.language"));
             sb.append(Locale.getDefault().getLanguage());
             sb.append('\n');
-            sb.append("Country: ");
+            sb.append(Translator.localize("label", "label.country"));
             sb.append(Locale.getDefault().getCountry());
             sb.append('\n');
             sb.append('\n');
