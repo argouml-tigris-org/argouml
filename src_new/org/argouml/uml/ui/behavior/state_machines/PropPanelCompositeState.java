@@ -31,6 +31,9 @@ import javax.swing.JScrollPane;
 import org.argouml.i18n.Translator;
 import org.tigris.swidgets.Orientation;
 import org.argouml.util.ConfigLoader;
+import org.argouml.ui.targetmanager.TargetEvent;
+import org.argouml.ui.targetmanager.TargetManager;
+import org.argouml.model.ModelFacade;
 
 /**
  * The properties panel for a Composite State.
@@ -68,8 +71,8 @@ public class PropPanelCompositeState extends PropPanelState {
                 getStereotypeBox());
         addField(Translator.localize("label.container"),
                 getContainerScroll());
-        addField(Translator.localize("label.modifiers"),
-                new UMLCompositeStateConcurrentCheckBox());
+        /*addField(Translator.localize("label.modifiers"),
+                new UMLCompositeStateConcurrentCheckBox());*/
         addField(Translator.localize("label.entry"),
                 getEntryScroll());
         addField(Translator.localize("label.exit"),
@@ -99,6 +102,30 @@ public class PropPanelCompositeState extends PropPanelState {
     protected void initialize() {
 	subverticesList = new UMLCompositeStateSubvertexList(
             new UMLCompositeStateSubvertexListModel());
+    }
+
+    /**
+     * @see org.argouml.ui.targetmanager.TargetListener#targetSet(org.argouml.ui.targetmanager.TargetEvent)
+     */
+    public void targetSet(TargetEvent e) {
+        if (e != null) {
+            Object source = e.getSource();
+            if (source != null
+                    && source instanceof TargetManager) {
+                Object target = 
+                    ((TargetManager) e.getSource()).getModelTarget();
+                if (ModelFacade.isAConcurrentRegion(target)) {
+                    getTitleLabel().setText("Concurrent Region");
+                }
+                else if (ModelFacade.isConcurrent(target)) {
+                    getTitleLabel().setText("Concurrent Composite State");
+                }
+                else {
+                    getTitleLabel().setText("Composite State");
+                }
+            }
+        }
+        super.targetSet(e);
     }
 
 } /* end class PropPanelCompositeState */

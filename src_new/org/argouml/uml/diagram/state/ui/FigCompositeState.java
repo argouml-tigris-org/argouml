@@ -27,18 +27,24 @@ package org.argouml.uml.diagram.state.ui;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Rectangle;
+import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyVetoException;
 import java.text.ParseException;
 import java.util.Iterator;
+import java.util.Vector;
 
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.generator.ParserDisplay;
+import org.argouml.uml.diagram.ui.ActionAddConcurrentRegion;
+import org.argouml.model.ModelFacade;
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.FigLine;
 import org.tigris.gef.presentation.FigRRect;
 import org.tigris.gef.presentation.FigRect;
 import org.tigris.gef.presentation.FigText;
+
+import javax.swing.*;
 
 /**
  * Class to display graphics for a UML MCompositeState in a diagram.
@@ -155,7 +161,7 @@ public class FigCompositeState extends FigState {
      *
      * Override setBounds to keep shapes looking right.
      */
-    public void setBounds(int x, int y, int w, int h) {
+    /*public void setBounds(int x, int y, int w, int h) {
         if (getNameFig() == null) {
             return;
 	}
@@ -175,10 +181,115 @@ public class FigCompositeState extends FigState {
         calcBounds(); //_x = x; _y = y; _w = w; _h = h;
         updateEdges();
         firePropChange("bounds", oldBounds, getBounds());
+    }*/
+
+
+
+    /** 
+     * Override setBounds to keep shapes looking right.
+     *  
+     * @see org.tigris.gef.presentation.Fig#setBounds(int, int, int, int)
+     */
+    public void setBounds(int x, int y, int w, int h) {
+        if (getNameFig() == null)
+            return;
+
+        Rectangle oldBounds = getBounds();
+        Dimension nameDim = getNameFig().getMinimumSize();
+        Vector regionsVector = getEnclosedFigs();
+
+
+        /* If it is concurrent and contains concurrent regions,
+        the bottom region has a minimum height*/
+        if (getOwner() != null) {
+            if (ModelFacade.isConcurrent(getOwner())
+                    && !regionsVector.isEmpty()) {
+                FigConcurrentRegion f = 
+                    ((FigConcurrentRegion) regionsVector.lastElement());
+                Rectangle regionBounds = f.getBounds();
+                if ((h - oldBounds.height + regionBounds.height) 
+                        <= (f.getMinimumSize().height)) {
+                    h = oldBounds.height;
+                    y = oldBounds.y;
+                }
+            }
+        }
+
+        getNameFig().setBounds(x + 2, y + 2, w - 4, nameDim.height);
+        divider.setShape(x, y + nameDim.height + 1,
+                          x + w - 1, y + nameDim.height + 1);
+
+        getInternal().setBounds(x + 2, y + nameDim.height + 4,
+                            w - 4, h - nameDim.height - 6);
+
+        getBigPort().setBounds(x, y, w, h);
+        cover.setBounds(x, y, w, h);
+
+        calcBounds(); //_x = x; _y = y; _w = w; _h = h;
+        updateEdges();
+        firePropChange("bounds", oldBounds, getBounds());
+
+        /*If it is concurrent and contains concurrent regions,
+        the regions are resized*/
+        if (getOwner() != null) {
+            if (ModelFacade.isConcurrent(getOwner())
+                    && !regionsVector.isEmpty()) {
+                FigConcurrentRegion f = 
+                    ((FigConcurrentRegion) regionsVector.lastElement());
+                for (int i = 0; i < regionsVector.size() - 1; i++) {
+                    ((FigConcurrentRegion) regionsVector.elementAt(i))
+                        .setBounds(x - oldBounds.x, y - oldBounds.y, 
+                                w - 6, true);
+                }
+                f.setBounds(x - oldBounds.x,
+                        y - oldBounds.y, w - 6, h - oldBounds.height, true);
+            }
+        }
+
     }
+
+    /** 
+     * To resize only when a new concurrent region is added, 
+     * changing the height.
+     * 
+     * @param h the new height
+     */
+    public void setBounds(int h) {
+        if (getNameFig() == null)
+            return;
+        Rectangle oldBounds = getBounds();
+        Dimension nameDim = getNameFig().getMinimumSize();
+        int x = oldBounds.x;
+        int y = oldBounds.y;
+        int w = oldBounds.width;
+
+        getInternal().setBounds(x + 2, y + nameDim.height + 4,
+			    w - 4, h - nameDim.height - 6);
+        getBigPort().setBounds(x, y, w, h);
+        cover.setBounds(x, y, w, h);
+
+        calcBounds(); //_x = x; _y = y; _w = w; _h = h;
+        updateEdges();
+        firePropChange("bounds", oldBounds, getBounds());
+    }
+
+
+
+
 
     ////////////////////////////////////////////////////////////////
     // fig accessors
+
+    /**
+     * @see org.tigris.gef.ui.PopupGenerator#getPopUpActions(java.awt.event.MouseEvent)
+     */
+    public Vector getPopUpActions(MouseEvent me) {
+        Vector compositeStatepopUpActions = super.getPopUpActions(me);
+        compositeStatepopUpActions.add(new JSeparator());
+        compositeStatepopUpActions.addElement(
+                ActionAddConcurrentRegion.getSingleton());
+        return compositeStatepopUpActions;
+    }
 
     /**
      * @see org.tigris.gef.presentation.Fig#setLineColor(java.awt.Color)
