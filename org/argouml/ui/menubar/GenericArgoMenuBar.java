@@ -215,7 +215,8 @@ public class GenericArgoMenuBar extends JMenuBar
         KeyStroke F7 = KeyStroke.getKeyStroke(KeyEvent.VK_F7, 0);
         KeyStroke altF4 = KeyStroke.getKeyStroke(KeyEvent.VK_F4, KeyEvent.ALT_MASK);
 
-        KeyStroke delKey = KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, 0);
+        KeyStroke delKey  = KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, 0);
+        KeyStroke ctrlDel = KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, KeyEvent.CTRL_MASK);
 
         JMenuItem mi;
         // File Menu
@@ -310,6 +311,7 @@ public class GenericArgoMenuBar extends JMenuBar
         
         JMenuItem removeItem = _edit.add(ActionDeleteFromDiagram.SINGLETON);
         setMnemonic(removeItem,"Remove",'R');
+        setAccelerator(removeItem,ctrlDel);
         editToolbar.add(ActionDeleteFromDiagram.SINGLETON);
         
         JMenuItem deleteItem = _edit.add(ActionRemoveFromModel.SINGLETON);
