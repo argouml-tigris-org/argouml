@@ -42,10 +42,26 @@ import org.argouml.uml.ui.*;
 
 
 public class FigAssociation extends FigEdgeModelElement {
+    
+   
 
   // needs-more-work: should be part of some preferences object
   public static boolean SUPPRESS_BIDIRECTIONAL_ARROWS = true;
 
+  /**
+   * Group for the FigTexts concerning the source association end
+   */
+  protected FigTextGroup _srcGroup = new FigTextGroup();
+  /**
+   * Group for the FigTexts concerning the dest association end
+   */
+  protected FigTextGroup _destGroup = new FigTextGroup();
+  /**
+   * Group for the FigTexts concerning the name and stereotype of the 
+   * association itself.
+   */
+  protected FigTextGroup _middleGroup = new FigTextGroup();
+    
   protected FigText _srcMult, _srcRole;
   protected FigText _destMult, _destRole;
   protected FigText _srcOrdering, _destOrdering;
@@ -56,57 +72,69 @@ public class FigAssociation extends FigEdgeModelElement {
   // constructors
 
   public FigAssociation() {
-    addPathItem(_name, new PathConvPercent(this, 50, 10));
-    addPathItem(_stereo, new PathConvPercent(this, 50, 25));
+    // lets use groups to construct the different text sections at the association
+    _middleGroup.addFig(_name);
+    _middleGroup.addFig(_stereo);
+    addPathItem(_middleGroup, new PathConvPercent(this, 50, 10));
     
-    _srcMult = new FigText(10, 30, 90, 20);
+    _srcMult = new FigText(10, 10, 90, 20);
     _srcMult.setFont(LABEL_FONT);
     _srcMult.setTextColor(Color.black);
     _srcMult.setTextFilled(false);
     _srcMult.setFilled(false);
     _srcMult.setLineWidth(0);
-    addPathItem(_srcMult, new PathConvPercentPlusConst(this, 0, 15, 15));
+    _srcMult.setJustification(FigText.JUSTIFY_CENTER);
 
-    _srcRole = new FigText(10, 30, 90, 20);
+    _srcRole = new FigText(10, 10, 90, 20);
     _srcRole.setFont(LABEL_FONT);
     _srcRole.setTextColor(Color.black);
     _srcRole.setTextFilled(false);
     _srcRole.setFilled(false);
     _srcRole.setLineWidth(0);
-    addPathItem(_srcRole, new PathConvPercentPlusConst(this, 0, 35, -15));
+    _srcRole.setJustification(FigText.JUSTIFY_CENTER);
 
-    _destMult = new FigText(10, 30, 90, 20);
-    _destMult.setFont(LABEL_FONT);
-    _destMult.setTextColor(Color.black);
-    _destMult.setTextFilled(false);
-    _destMult.setFilled(false);
-    _destMult.setLineWidth(0);
-    addPathItem(_destMult, new PathConvPercentPlusConst(this, 100, -15, 15));
-
-    _destRole = new FigText(10, 30, 90, 20);
-    _destRole.setFont(LABEL_FONT);
-    _destRole.setTextColor(Color.black);
-    _destRole.setTextFilled(false);
-    _destRole.setFilled(false);
-    _destRole.setLineWidth(0);
-    addPathItem(_destRole, new PathConvPercentPlusConst(this, 100, -35, -15));
-    
-    _srcOrdering = new FigText(10,30,90,20);
+    _srcOrdering = new FigText(10,10,90,20);
     _srcOrdering.setFont(LABEL_FONT);
     _srcOrdering.setTextColor(Color.black);
     _srcOrdering.setTextFilled(false);
     _srcOrdering.setFilled(false);
     _srcOrdering.setLineWidth(0);
-    addPathItem(_srcOrdering, new PathConvPercentPlusConst(this, 0, 35, -30));
+    _srcOrdering.setJustification(FigText.JUSTIFY_CENTER);
 
-    _destOrdering = new FigText(10,30,90,20);
+    _srcGroup.addFig(_srcRole);
+    _srcGroup.addFig(_srcOrdering);
+    _srcGroup.addFig(_srcMult);    
+    addPathItem(_srcGroup, new PathConvPercent(this, 15, 0));
+    
+    _destMult = new FigText(10, 10, 90, 20);
+    _destMult.setFont(LABEL_FONT);
+    _destMult.setTextColor(Color.black);
+    _destMult.setTextFilled(false);
+    _destMult.setFilled(false);
+    _destMult.setLineWidth(0);
+    _destMult.setJustification(FigText.JUSTIFY_CENTER);
+    
+    _destRole = new FigText(0, 0, 90, 20);
+    _destRole.setFont(LABEL_FONT);
+    _destRole.setTextColor(Color.black);
+    _destRole.setTextFilled(false);
+    _destRole.setFilled(false);
+    _destRole.setLineWidth(0);
+    _destRole.setJustification(FigText.JUSTIFY_CENTER);
+    
+    _destOrdering = new FigText(0,0,90,20);
     _destOrdering.setFont(LABEL_FONT);
     _destOrdering.setTextColor(Color.black);
     _destOrdering.setTextFilled(false);
     _destOrdering.setFilled(false);
     _destOrdering.setLineWidth(0);
-    addPathItem(_destOrdering, new PathConvPercentPlusConst(this, 100, -35, -30));
+    _destOrdering.setJustification(FigText.JUSTIFY_CENTER);
 
+    _destGroup.addFig(_destRole);
+    _destGroup.addFig(_destMult);
+    _destGroup.addFig(_destOrdering);
+      addPathItem(_srcGroup, new PathConvPercent(this, 85, 0));
+    
     setBetweenNearestPoints(true);
   }
 
@@ -218,8 +246,13 @@ public class FigAssociation extends FigEdgeModelElement {
     destArrowHead = chooseArrowHead(ae1.getAggregation(), destNav);
     setSourceArrowHead(sourceArrowHead);
     setDestArrowHead(destArrowHead);
+    _srcGroup.calcBounds();
+    _destGroup.calcBounds();
+    _middleGroup.calcBounds();
+    // updatePathFigs();
   }
 
+  
 
   static ArrowHead _NAV_AGGREGATE =
   new ArrowHeadComposite(ArrowHeadDiamond.WhiteDiamond,
@@ -340,13 +373,99 @@ public class FigAssociation extends FigEdgeModelElement {
     }
 
   static final long serialVersionUID = 9100125695919853919L;
-
-    public void paint(Graphics g) {
+  
+     public void paint(Graphics g) {
         sourceArrowHead.setLineColor(getLineColor());
-        destArrowHead.setLineColor(getLineColor());
+        destArrowHead.setLineColor(getLineColor());   
         super.paint(g);
-    }
+     }
 
 } /* end class FigAssociation */
+
+/**
+ * Custom class to group FigTexts in such a way that they don't overlap and that 
+ * the group is shrinked to fit (no whitespace in group).
+ * 
+ * @author jaap.branderhorst@xs4all.nl
+ */
+class FigTextGroup extends FigGroup {
+	 public final static int ROWHEIGHT = 17;
+     protected boolean supressCalcBounds = false;
+
+	/**
+     * Adds a FigText to the list with figs. Makes sure that the figtexts do not overlap.
+	 * @see org.tigris.gef.presentation.FigGroup#addFig(Fig)
+	 */
+	public void addFig(FigText f) {
+		super.addFig(f);
+        updateFigTexts();
+        calcBounds();
+	}
+    
+	/**
+	 * Updates the FigTexts. FigTexts without text (equals "") are not shown. 
+     * The rest of the figtexts are shown non-overlapping. The first figtext 
+     * added (via addFig) is shown at the bottom of the FigTextGroup.
+	 */
+    protected void updateFigTexts() {
+        Iterator it = getFigs().iterator();
+        int height = 0;
+        while (it.hasNext()) {
+            FigText fig = (FigText)it.next();
+            if (fig.getText().equals("")) {
+                fig.setHeight(0);
+            } else {
+                fig.setHeight(ROWHEIGHT);
+            }
+            fig.startTrans();
+            fig.setX(getX());
+            fig.setY(getY()+height);
+            fig.endTrans();
+            height += fig.getHeight();
+        }
+        // calcBounds();
+    }
+            
+
+	/**
+	 * @see org.tigris.gef.presentation.Fig#calcBounds()
+	 */
+	public void calcBounds() {
+        if (!supressCalcBounds) {
+    		super.calcBounds();
+            // get the widest of all textfigs
+            // calculate the total height
+            int maxWidth = 0;
+            int height = 0;
+            for (int i = 0;i < getFigs().size();i++) {
+                FigText fig = (FigText)getFigs().get(i);
+                if (fig.getText().equals("")) {
+                    fig.setBounds(fig.getX(), fig.getY(), fig.getWidth(), 0);
+                } 
+                else {
+                    if (fig.getWidth() > maxWidth) {
+                        maxWidth = fig.getWidth();
+                    }
+                    if (!fig.getText().equals("")) {
+                        fig.setHeight(ROWHEIGHT);
+                    }
+                    height += fig.getHeight();
+                }
+            }        
+            _w = maxWidth;
+            _h = height;
+        }
+	}   
+    
+	/**
+	 * @see org.tigris.gef.presentation.Fig#paint(Graphics)
+	 */
+	public void paint(Graphics g) {
+		super.paint(g);
+        updateFigTexts();
+	}
+
+}
+
 
 
