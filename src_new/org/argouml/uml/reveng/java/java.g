@@ -132,6 +132,9 @@ tokens {
         public static final short ACC_INTERFACE = 0x0200;
         public static final short ACC_ABSTRACT  = 0x0400;                     
 
+	/** Import details level */
+	private int level = 2;
+	
 	// This one is not(!) in the JVM specs, but required
 	public static final short ACC_SYNCHRONIZED  = 0x0800;
 
@@ -165,6 +168,10 @@ tokens {
 
 	void setModeller(Modeller modeller) {
 	    _modeller = modeller;
+	    Object lvl = modeller.getAttribute("level");
+	    if (lvl != null) {
+	      level = ((Integer)lvl).intValue();
+	    }
         }
 	
         // A reference to the last added MOperation (here: method)
@@ -278,6 +285,7 @@ compilationUnit[ Modeller modeller, JavaLexer lexer]
     getModeller().addComponent();
   }
 }
+
 	:	// A compilation unit starts with an optional package definition
 		(	packageDefinition
 		|	/* nothing */
@@ -490,8 +498,8 @@ field
 	:	// method, constructor, or variable declaration
 		mods=modifiers
 		(	ctorHead[mods] compoundStatement // constructor
-			{if (isOutestCompStat) {
-			   getModeller().addBodyToOperation(getMethod(),getBody());
+			{if (isOutestCompStat && level > 0) {
+			   getModeller().addBodyToOperation(getMethod(), level>1?getBody():"");
 			   setMethod(null);
 			   setBody(null);
 			}}
@@ -510,9 +518,9 @@ field
 				  (throwsClause)?
 
 				  (compoundStatement | SEMI)
-				) {if (isOutestCompStat) {
+				) {if (isOutestCompStat && level > 0) {
 				     setMethod(getModeller().addOperation(mods, t, name.getText(), param, getJavadocComment()));
-				     getModeller().addBodyToOperation(getMethod(),getBody());
+				     getModeller().addBodyToOperation(getMethod(), level>1?getBody():"");
 				     setMethod(null);
 				     setBody(null);
 				  }}
@@ -540,7 +548,7 @@ classVariableDeclarator[String javadoc, short modifiers, String varType]
 {String initializer=null; String b=null;}
 	:	(id:IDENT b=declaratorBrackets initializer=varInitializer)
 		{
-		if (!isInCompoundStatement()) {
+		if (!isInCompoundStatement() && level > 0) {
 		getModeller().addAttribute(modifiers, varType+b, id.getText(), initializer, javadoc);
 		}
 		}
@@ -621,7 +629,7 @@ ctorHead[ short mods]
 		// parse the formal parameter declarations.
 		LPAREN param=parameterDeclarationList RPAREN
 
-		{if (isOutestCompStat) {
+		{if (isOutestCompStat && level > 0) {
 		   setMethod(getModeller().addOperation(mods, null, 
 			name.getText(), param, getJavadocComment()));
 		 }}
@@ -690,7 +698,6 @@ compoundStatement
 		   setIsInCompoundStatement(false);}}
 		RCURLY
 	;
-
 
 statement
 	// A list of statements in curly braces -- start a new scope!

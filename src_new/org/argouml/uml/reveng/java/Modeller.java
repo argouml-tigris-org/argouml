@@ -32,6 +32,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.Stack;
 import java.util.Vector;
+import java.util.Hashtable;
 
 import org.apache.log4j.Logger;
 import org.argouml.kernel.ProjectManager;
@@ -86,6 +87,10 @@ public class Modeller
 
     /** the name of the file being parsed */
     private String fileName;
+    
+    /** Arbitrary attributes */
+    private Hashtable attributes = new Hashtable();
+    
     /** Create a new modeller.
      * @param diagram the interface to the diagram to add nodes and edges to
      * @param _import
@@ -113,6 +118,15 @@ public class Modeller
         this.fileName = fileName;
     }
 
+    public Object getAttribute(String key) {
+        return attributes.get(key);
+    }
+    
+    public void setAttribute(String key, Object value) {
+        attributes.put(key, value);
+    }
+    
+    
     /**
      * Get the current diagram.
      *
