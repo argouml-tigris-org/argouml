@@ -221,12 +221,16 @@ class ActionGotoDiagram extends UMLAction {
 class ActionNavBack extends UMLAction {
   public ActionNavBack() { super("Navigate Back"); }
   public boolean shouldBeEnabled() {
-    Project p = ProjectBrowser.TheInstance.getProject();
-    if (!(super.shouldBeEnabled() && p != null)) return false;
-    NavigatorPane np = ProjectBrowser.TheInstance.getNavPane();
+    if (ProjectBrowser.TheInstance != null) {
+        Project p = ProjectBrowser.TheInstance.getProject();
+        if (!(super.shouldBeEnabled() && p != null)) return false;
+        NavigatorPane np = ProjectBrowser.TheInstance.getNavPane();
 	if ((np == null)) return false;
 	boolean b = np.canNavBack();
-    return b;
+        return b;
+    }
+    else 
+        return false;
   }
   public void actionPerformed(ActionEvent ae) {
     NavigatorPane np = ProjectBrowser.TheInstance.getNavPane();
@@ -237,10 +241,13 @@ class ActionNavBack extends UMLAction {
 class ActionNavForw extends UMLAction {
   public ActionNavForw() { super("Navigate Forward"); }
   public boolean shouldBeEnabled() {
-    Project p = ProjectBrowser.TheInstance.getProject();
-    if (!(super.shouldBeEnabled() && p != null)) return false;
-    NavigatorPane np = ProjectBrowser.TheInstance.getNavPane();
-    return np.canNavForw();
+    if (ProjectBrowser.TheInstance != null) {
+        Project p = ProjectBrowser.TheInstance.getProject();
+        if (!(super.shouldBeEnabled() && p != null)) return false;
+        NavigatorPane np = ProjectBrowser.TheInstance.getNavPane();
+        return np.canNavForw();
+    } else
+        return false;
   }
   public void actionPerformed(ActionEvent ae) {
     NavigatorPane np = ProjectBrowser.TheInstance.getNavPane();

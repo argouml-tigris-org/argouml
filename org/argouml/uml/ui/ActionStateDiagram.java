@@ -64,11 +64,14 @@ public class ActionStateDiagram extends ActionAddDiagram {
      */
     public boolean shouldBeEnabled() {
     	ProjectBrowser pb = ProjectBrowser.TheInstance;
-    	Object target = pb.getDetailsTarget();
-    	if (target == null) {
+        if (pb != null) {
+    	   Object target = pb.getDetailsTarget();
+    	   if (target == null) {
     		target = pb.getTarget();
-    	}
-    	return target instanceof MBehavioralFeature || target instanceof MClassifier;
+    	   }
+    	   return target instanceof MBehavioralFeature || target instanceof MClassifier;
+        } else
+            return false;
     }
     
     /**
