@@ -46,7 +46,7 @@ public interface ArgoModule {
 
     /** Define a static log4j category variable for ArgoUML configuration.
      */
-    public final static Category cat = Category.getInstance("org.argouml.application.modules");
+    public final static Logger cat = Logger.getLogger("org.argouml.application.modules");
     // TODO:  JDK 1.2 seems to not return the package name if
     // not running from a jar.
     //

@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
+<!-- $Id$ -->
 <sect1 id="logging">
 <title>Logging</title>
 <para id="comp-logging-purpose">
@@ -35,17 +36,6 @@ TODO: The rest of this section is not gone through to fit the new components.
         the console.
     </para>
  
-    <note>
-        <para>
-            <application>ArgoUML</application> currently uses 
-            log4j version 1.1.3.
-            An update to log4j version 1.2.x is planned for
-            <application>ArgoUML</application> release 0.13.x.
-            Instructions in the following sections deal with
-            log4j version 1.1.3.
-        </para>
-    </note>
-    
     <sect2>
         <title>What to Log</title>
         <para>
@@ -112,7 +102,7 @@ TODO: The rest of this section is not gone through to fit the new components.
             </listitem>
         </itemizedlist>
         For performance reasons, it is advised to do a check before all DEBUG
-        and INFO log4j messages (see <xref linkend="example.log4j.speed.113"/>).
+        and INFO log4j messages (see <xref linkend="example.log4j.speed"/>).
     </sect2>
     
     <sect2>
@@ -132,35 +122,17 @@ TODO: The rest of this section is not gone through to fit the new components.
             To make log entries from within your own classes, you just
             need to follow the three steps below:
             <orderedlist>
-                <listitem>Import the org.apache.log4j.Category package</listitem>
-                <listitem>Get a Category</listitem>
+                <listitem>Import the org.apache.log4j.Logger package</listitem>
+                <listitem>Get a Logger</listitem>
                 <listitem>Start Logging...</listitem>
             </orderedlist>
         </para>
-        <!-- <example>
+        <example>
             <title>For log4j version 1.2.x</title>
             <programlisting>
 import org.apache.log4j.Logger;
 
-Logger _logger = Logger.getLogger(<emphasis>theClass</emphasis>.class.getName());
-
-...
-
-public void anExample() {
-    _logger.debug("This is a debug message.");
-    _logger.info("This is a info message.");
-    _logger.warn("This is a warning.");
-    _logger.error("This is an error.");
-    _logger.fatal("This is fatal. The program stops now working...");
-}
-            </programlisting>
-        </example> -->
-        <example id="example.log4j.general.113">
-            <title>For log4j version 1.1.3</title>
-            <programlisting>
-import org.apache.log4j.Category;
-
-Category _cat = Category.getInstance(<emphasis>theClass</emphasis>.class.getName());
+Logger _cat = Logger.getLogger(<emphasis>theClass</emphasis>.class.getName());
 
 ...
 
@@ -173,12 +145,13 @@ public void anExample() {
 }
             </programlisting>
         </example>
+
         For performance reasons, a check before the actual logging statement 
         saves the overhead of all the concatenations, data conversions and
         temporary objects that would be created otherwise. Even if logging 
         is turned off for DEBUG and/or INFO level.
-        <example id="example.log4j.speed.113">
-            <title>Improving on speed/performance (log4j version 1.1.3)</title>
+        <example id="example.log4j.speed">
+            <title>Improving on speed/performance</title>
             <programlisting>
     if (_cat.isDebugEnabled()) {
         _cat.debug("Entry number: " + i + " is " + String.valueOf(entry[i]));

@@ -65,7 +65,7 @@ implements PropertyChangeListener {
 
   /** Define a static log4j category variable for ArgoUML notation.
    */
-  public final static Category cat = Category.getInstance("org.argouml.application.notation");
+  public final static Logger cat = Logger.getLogger("org.argouml.application.notation");
     // TODO:  JDK 1.2 seems to not return the package name if
     // not running from a jar.
     //
