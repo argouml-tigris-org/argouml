@@ -46,6 +46,12 @@ public class UMLStateVertexIncomingListModel
      * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
      */
     protected void buildModelList() {
+        /* TODO: Why does this not work? It should solve the problem 
+         * that internal transitions are also shown 
+         * in the incoming and outgoing boxes. */
+        /*Collection c = ModelFacade.getIncomings(getTarget());
+        c.removeAll(ModelFacade.getInternalTransitions(getTarget()));
+        setAllElements(c);*/
         setAllElements(ModelFacade.getIncomings(getTarget()));
     }
 
@@ -53,6 +59,10 @@ public class UMLStateVertexIncomingListModel
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(Object)
      */
     protected boolean isValidElement(Object/*MBase*/ element) {
+        /* TODO: Idem.
+        Collection c = ModelFacade.getIncomings(getTarget());
+        c.removeAll(ModelFacade.getInternalTransitions(getTarget()));
+        return c.contains(element);*/
         return ModelFacade.getIncomings(getTarget()).contains(element);
     }
 
