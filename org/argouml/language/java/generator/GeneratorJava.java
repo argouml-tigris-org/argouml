@@ -1584,9 +1584,9 @@ public class GeneratorJava
         if (generalizations == null)
             return "";
         Collection classes = new ArrayList();
-        Iterator enum = generalizations.iterator();
-        while (enum.hasNext()) {
-            Object generalization = /*(MGeneralization)*/ enum.next();
+        Iterator it = generalizations.iterator();
+        while (it.hasNext()) {
+            Object generalization = /*(MGeneralization)*/ it.next();
             Object generalizableElement = ModelFacade.getParent(generalization);
             // assert ge != null
             if (generalizableElement != null)
