@@ -52,7 +52,7 @@ public class CrInvalidJoin extends CrUML {
 	Object k = ModelFacade.getPseudostateKind(dm);
 	if (!ModelFacade.
 	    equalsPseudostateKind(k,
-				  ModelFacade.FORK_PSEUDOSTATEKIND))
+				  ModelFacade.JOIN_PSEUDOSTATEKIND))
 	    return NO_PROBLEM;
 	Collection outgoing = ModelFacade.getOutgoings(dm);
 	Collection incoming = ModelFacade.getIncomings(dm);
