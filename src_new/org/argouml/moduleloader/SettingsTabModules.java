@@ -202,7 +202,7 @@ public class SettingsTabModules extends SettingsTabHelper {
     }
 
     /**
-     * @see SettingsTabPanel#handleSettingsTabRefresh()
+     * @see org.argouml.application.api.SettingsTabPanel#handleSettingsTabRefresh()
      */
     public void handleSettingsTabRefresh() {
         table.setModel(new ModuleTableModel());
@@ -210,7 +210,7 @@ public class SettingsTabModules extends SettingsTabHelper {
     }
 
     /**
-     * @see SettingsTabPanel#handleSettingsTabSave()
+     * @see org.argouml.application.api.SettingsTabPanel#handleSettingsTabSave()
      */
     public void handleSettingsTabSave() {
         if (elements != null) {
@@ -225,7 +225,7 @@ public class SettingsTabModules extends SettingsTabHelper {
     }
 
     /**
-     * @see SettingsTabPanel#handleSettingsTabCancel()
+     * @see org.argouml.application.api.SettingsTabPanel#handleSettingsTabCancel()
      */
     public void handleSettingsTabCancel() {
         // Do nothing!
