@@ -91,7 +91,11 @@ public class DismissToDoItemDialog extends JFrame implements ActionListener {
     _badDecButton.addActionListener(this);
     _explainButton.addActionListener(this);
 
-    _explaination.setText("<Enter Rationale Here>");
+    _explaination.setText("<Enter Rationale Here>\n" +
+                          "WARNING:\n" +
+                          "AT THE MOMENT DISMISSED TODO ITEMS\n" +
+                          "ARE NOT SAVED IN ARGOUML AND ARE LOST\n" +
+                          "AFTER SAVING THE PROJECT.");
     //_explaination.requestFocus();
   }
 

@@ -107,6 +107,11 @@ public class AddToDoItemDialog extends JFrame implements ActionListener {
     buttonInner.add(_cancelButton);
     buttonPanel.add(buttonInner);
 
+    _description.setText("<Enter TODO Item here>\n" +
+                         "WARNING:\n"+
+                         "TODO ITEMS DO NOT GET SAVED\n" +
+                         "IN THE CURRENT VERSION OF ARGOUML\n");
+
     getContentPane().add(top, BorderLayout.NORTH);
     getContentPane().add(new JScrollPane(_description), BorderLayout.CENTER);
     getContentPane().add(buttonPanel, BorderLayout.SOUTH);
