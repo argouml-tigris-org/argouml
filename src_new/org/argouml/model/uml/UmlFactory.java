@@ -458,25 +458,6 @@ public class UmlFactory extends AbstractUmlModelFactory {
     }
     
     /**
-     * Create a new connection model element (a relationship or link)
-     * between any existing node model elements.
-     * 
-     * @return the newly created connection element
-     * @param connectionType is the type of relationship
-     * @param fromElement is an existing model element
-     * @param toElement is another existing model element
-     * @throws IllegalModelElementConnectionException if the connection is bad
-     */
-    public Object buildConnection(Object connectionType, 
-				  Object fromElement, Object toElement)
-        throws IllegalModelElementConnectionException {
-
-        return buildConnection(connectionType,
-			       fromElement, null, toElement, null, null);
-
-    }
-    
-    /**
      * @param connectionType the UML object type of the connection
      * @param fromElement    the UML object for the "from" element
      * @param fromStyle      the aggregationkind for the connection 
@@ -485,6 +466,7 @@ public class UmlFactory extends AbstractUmlModelFactory {
      * @param toStyle        the aggregationkind for the connection 
      *                       in case of an association
      * @param unidirectional for association and associationrole
+     * @param namespace      the namespace to use if it can't be determined
      * @return               the newly build connection (UML object)
      * @throws IllegalModelElementConnectionException if the connection is not 
      *                                                a valid thing to do
@@ -492,7 +474,8 @@ public class UmlFactory extends AbstractUmlModelFactory {
     public Object buildConnection(Object connectionType,
                   Object fromElement, Object fromStyle,
                   Object toElement, Object toStyle,
-                  Object unidirectional)
+                  Object unidirectional,
+                  Object namespace)
         throws IllegalModelElementConnectionException
     {
 
@@ -538,8 +521,10 @@ public class UmlFactory extends AbstractUmlModelFactory {
         } else if (connectionType == ModelFacade.DEPENDENCY) {
             connection = getCore().buildDependency(fromElement, toElement);
         } else if (connectionType == ModelFacade.ABSTRACTION) {
-            connection = getCore().buildRealization((MModelElement) fromElement,
-                (MModelElement) toElement);
+            connection = getCore().buildRealization(
+                fromElement,
+                toElement,
+                namespace);
         } else if (connectionType == ModelFacade.LINK) {
             connection = getCommonBehavior().buildLink(fromElement, toElement);
         } else if (connectionType == ModelFacade.EXTEND) {

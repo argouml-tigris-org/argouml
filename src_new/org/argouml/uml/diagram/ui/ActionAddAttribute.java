@@ -25,7 +25,9 @@
 package org.argouml.uml.diagram.ui;
 
 import java.awt.event.ActionEvent;
+import java.util.Collection;
 
+import org.argouml.kernel.ProjectManager;
 import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.UmlFactory;
 import org.argouml.ui.ProjectBrowser;
@@ -63,7 +65,15 @@ public class ActionAddAttribute extends UMLChangeAction {
 	else
 	    return;
 
-	Object attr = UmlFactory.getFactory().getCore().buildAttribute(cls);
+    Collection propertyChangeListeners = 
+        ProjectManager.getManager().getCurrentProject().findFigsForMember(cls);
+    Object intType = ProjectManager.getManager().getCurrentProject().findType("int");
+    Object model = ProjectManager.getManager().getCurrentProject().getModel();
+	Object attr = UmlFactory.getFactory().getCore().buildAttribute(
+            cls, 
+            model, 
+            intType, 
+            propertyChangeListeners);
 	TargetManager.getInstance().setTarget(attr);
 	super.actionPerformed(ae);
     }

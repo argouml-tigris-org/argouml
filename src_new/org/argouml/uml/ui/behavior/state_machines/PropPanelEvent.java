@@ -24,11 +24,14 @@
 
 package org.argouml.uml.ui.behavior.state_machines;
 
+import java.util.Collection;
+
 import javax.swing.ImageIcon;
 import javax.swing.JList;
 import javax.swing.JScrollPane;
 
 import org.argouml.i18n.Translator;
+import org.argouml.kernel.ProjectManager;
 import org.argouml.model.uml.CoreFactory;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.ActionNavigateContainerElement;
@@ -91,7 +94,10 @@ public abstract class PropPanelEvent extends PropPanelModelElement {
      * Adds a parameter to the event and navigates towards it.
      */
     public void buttonAddParameter() {
-        Object param = CoreFactory.getFactory().buildParameter(getTarget());
+        Object model = ProjectManager.getManager().getCurrentProject().getModel();
+        Object voidType = ProjectManager.getManager().getCurrentProject().findType("void");
+        Collection propertyChangeListeners = ProjectManager.getManager().getCurrentProject().findFigsForMember(getTarget());
+        Object param = CoreFactory.getFactory().buildParameter(getTarget(), model, voidType, propertyChangeListeners);
         TargetManager.getInstance().setTarget(param);
     }
 

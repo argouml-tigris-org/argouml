@@ -25,10 +25,12 @@
 package org.argouml.uml.ui.foundation.core;
 
 import java.awt.event.ActionEvent;
+import java.util.Collection;
 
 import javax.swing.Action;
 
 import org.argouml.i18n.Translator;
+import org.argouml.kernel.ProjectManager;
 import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.CoreFactory;
 import org.argouml.ui.targetmanager.TargetManager;
@@ -60,8 +62,11 @@ class ActionAddParameter extends AbstractActionNewModelElement {
         if (ModelFacade.isAParameter(target)) {
             feature = ModelFacade.getBehavioralFeature(target);
             if (feature != null) {
+                Object model = ProjectManager.getManager().getCurrentProject().getModel();
+                Object voidType = ProjectManager.getManager().getCurrentProject().findType("void");
+                Collection propertyChangeListeners = ProjectManager.getManager().getCurrentProject().findFigsForMember(feature);
                 TargetManager.getInstance().setTarget(
-                        CoreFactory.getFactory().buildParameter(feature));
+                        CoreFactory.getFactory().buildParameter(feature, model, voidType, propertyChangeListeners));
                 super.actionPerformed(e);
             }
         }

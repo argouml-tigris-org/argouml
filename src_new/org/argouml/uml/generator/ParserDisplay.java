@@ -532,8 +532,11 @@ public class ParserDisplay extends Parser {
             s = text.substring(start, end).trim();
             if (s != null && s.length() > 0) {
                 // yes, there are more:
+                Collection propertyChangeListeners = ProjectManager.getManager().getCurrentProject().findFigsForMember(cls);
+                Object model = ProjectManager.getManager().getCurrentProject().getModel();
+                Object voidType = ProjectManager.getManager().getCurrentProject().findType("void");
                 Object newOp = UmlFactory.getFactory().getCore()
-                        .buildOperation(cls);
+                        .buildOperation(cls, model, voidType, propertyChangeListeners);
                 if (newOp != null) {
                     try {
                         parseOperation(s, newOp);
@@ -597,8 +600,10 @@ public class ParserDisplay extends Parser {
             s = text.substring(start, end).trim();
             if (s != null && s.length() > 0) {
                 // yes, there are more:
+                Object model = ProjectManager.getManager().getCurrentProject().getModel();
+                Object intType = ProjectManager.getManager().getCurrentProject().findType("int");
                 Object newAt = UmlFactory.getFactory().getCore()
-                        .buildAttribute();
+                        .buildAttribute(model, intType);
                 if (newAt != null) {
                     try {
                         parseAttribute(s, newAt);
@@ -1070,7 +1075,10 @@ public class ParserDisplay extends Parser {
             }
 
             if (p == null) {
-                p = CoreFactory.getFactory().buildParameter(op);
+                Object model = ProjectManager.getManager().getCurrentProject().getModel();
+                Object voidType = ProjectManager.getManager().getCurrentProject().findType("void");
+                Collection propertyChangeListeners = ProjectManager.getManager().getCurrentProject().findFigsForMember(op);
+                p = CoreFactory.getFactory().buildParameter(op, model, voidType, propertyChangeListeners);
                 // op.addParameter(p);
             }
 
@@ -1119,7 +1127,10 @@ public class ParserDisplay extends Parser {
                 ModelFacade.removeParameter(op, p);
         }
         if (param == null) {
-            param = UmlFactory.getFactory().getCore().buildParameter(op);
+            Object model = ProjectManager.getManager().getCurrentProject().getModel();
+            Object voidType = ProjectManager.getManager().getCurrentProject().findType("void");
+            Collection propertyChangeListeners = ProjectManager.getManager().getCurrentProject().findFigsForMember(op);
+            param = UmlFactory.getFactory().getCore().buildParameter(op, model, voidType, propertyChangeListeners);
         }
         ModelFacade.setType(param, type);
     }
@@ -3335,7 +3346,10 @@ public class ParserDisplay extends Parser {
             // parameters and operations to the figs that represent
             // them
             Object cls = /* (MClassifier) */it.next();
-            Object op = UmlFactory.getFactory().getCore().buildOperation(cls);
+            Collection propertyChangeListeners = ProjectManager.getManager().getCurrentProject().findFigsForMember(cls);
+            Object model = ProjectManager.getManager().getCurrentProject().getModel();
+            Object voidType = ProjectManager.getManager().getCurrentProject().findType("void");
+            Object op = UmlFactory.getFactory().getCore().buildOperation(cls, model, voidType, propertyChangeListeners);
 
             try {
                 parseOperation(expr, op);

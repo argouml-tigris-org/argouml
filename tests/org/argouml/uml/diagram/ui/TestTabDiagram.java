@@ -27,6 +27,7 @@
 
 package org.argouml.uml.diagram.ui;
 
+import java.util.Collection;
 import java.util.Date;
 
 import junit.framework.TestCase;
@@ -147,7 +148,10 @@ public class TestTabDiagram extends TestCase {
                     MFactoryImpl.EVENT_POLICY_IMMEDIATE);
                 // real test
                 long currentTime = (new Date()).getTime();
-                UmlFactory.getFactory().getCore().buildOperation(clazz);
+                Collection propertyChangeListeners = ProjectManager.getManager().getCurrentProject().findFigsForMember(clazz);
+                Object model = ProjectManager.getManager().getCurrentProject().getModel();
+                Object voidType = ProjectManager.getManager().getCurrentProject().findType("void");
+                UmlFactory.getFactory().getCore().buildOperation(clazz, model, voidType, propertyChangeListeners);
                 System.out.println(
                     "Time needed for adding operation: "
                         + ((new Date()).getTime() - currentTime));

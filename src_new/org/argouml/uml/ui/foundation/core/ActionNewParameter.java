@@ -25,7 +25,9 @@
 package org.argouml.uml.ui.foundation.core;
 
 import java.awt.event.ActionEvent;
+import java.util.Collection;
 
+import org.argouml.kernel.ProjectManager;
 import org.argouml.model.uml.CoreFactory;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.AbstractActionNewModelElement;
@@ -57,7 +59,10 @@ public class ActionNewParameter extends AbstractActionNewModelElement {
         super.actionPerformed(e);
         //Object target =  getTarget(); // it is not set anywhere, pity...
         Object target =  TargetManager.getInstance().getModelTarget();
-        Object param = CoreFactory.getFactory().buildParameter(target);
+        Object model = ProjectManager.getManager().getCurrentProject().getModel();
+        Object voidType = ProjectManager.getManager().getCurrentProject().findType("void");
+        Collection propertyChangeListeners = ProjectManager.getManager().getCurrentProject().findFigsForMember(target);
+        Object param = CoreFactory.getFactory().buildParameter(target, model, voidType, propertyChangeListeners);
         TargetManager.getInstance().setTarget(param);
     }
 

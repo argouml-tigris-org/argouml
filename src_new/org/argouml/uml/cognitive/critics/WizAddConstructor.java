@@ -31,6 +31,7 @@ import javax.swing.JPanel;
 
 import org.argouml.cognitive.ui.WizStepTextField;
 import org.argouml.i18n.Translator;
+import org.argouml.kernel.ProjectManager;
 import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.ExtensionMechanismsHelper;
 import org.argouml.model.uml.ModelManagementHelper;
@@ -72,8 +73,11 @@ public class WizAddConstructor extends UMLWizard {
 		newName = step1.getText();
 	    Object me = getModelElement();
 	    savedTargets = TargetManager.getInstance().getTargets();
+        Collection propertyChangeListeners = ProjectManager.getManager().getCurrentProject().findFigsForMember(me);
+        Object model = ProjectManager.getManager().getCurrentProject().getModel();
+        Object voidType = ProjectManager.getManager().getCurrentProject().findType("void");
 	    oper =
-		UmlFactory.getFactory().getCore().buildOperation(me, newName);
+    		UmlFactory.getFactory().getCore().buildOperation(me, model, voidType, newName, propertyChangeListeners);
 	    ModelFacade.setStereotype(oper, getCreateStereotype(oper));
 	    TargetManager.getInstance().setTargets(savedTargets);
 	}

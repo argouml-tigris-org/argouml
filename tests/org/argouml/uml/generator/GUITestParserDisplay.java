@@ -127,33 +127,34 @@ public class GUITestParserDisplay extends TestCase {
         
         MNamespace ns = (MNamespace)
             ProjectManager.getManager().getCurrentProject().getModel();
+        Object intType = ProjectManager.getManager().getCurrentProject().findType("int");
         
-        attr = UmlFactory.getFactory().getCore().buildAttribute();
+        attr = UmlFactory.getFactory().getCore().buildAttribute(ns, intType);
         ModelFacade.setNamespace(attr, ns);
         
         checkName(attr, ATTR01, "name");
         
-        attr = UmlFactory.getFactory().getCore().buildAttribute();
+        attr = UmlFactory.getFactory().getCore().buildAttribute(ns, intType);
         ModelFacade.setNamespace(attr, ns);
         
         checkName(attr, ATTR02, "name");
         
-        attr = UmlFactory.getFactory().getCore().buildAttribute();
+        attr = UmlFactory.getFactory().getCore().buildAttribute(ns, intType);
         ModelFacade.setNamespace(attr, ns);
         
         checkName(attr, ATTR03, "name");
         
-        attr = UmlFactory.getFactory().getCore().buildAttribute();
+        attr = UmlFactory.getFactory().getCore().buildAttribute(ns, intType);
         ModelFacade.setNamespace(attr, ns);
         
         checkName(attr, ATTR04, "name");
         
-        attr = UmlFactory.getFactory().getCore().buildAttribute();
+        attr = UmlFactory.getFactory().getCore().buildAttribute(ns, intType);
         ModelFacade.setNamespace(attr, ns);
         
         checkName(attr, ATTR05, "name");
         
-        attr = UmlFactory.getFactory().getCore().buildAttribute();
+        attr = UmlFactory.getFactory().getCore().buildAttribute(ns, intType);
         ModelFacade.setNamespace(attr, ns);
         
         checkName(attr, ATTR06, "name");
@@ -168,25 +169,26 @@ public class GUITestParserDisplay extends TestCase {
     public void testAttributeType() throws ParseException {
         Object attr;
         
-        MNamespace ns =  (MNamespace)
+        Object ns =
             ProjectManager.getManager().getCurrentProject().getModel();
+        Object intType = ProjectManager.getManager().getCurrentProject().findType("int");
         
-        attr = UmlFactory.getFactory().getCore().buildAttribute();
+        attr = UmlFactory.getFactory().getCore().buildAttribute(ns, intType);
         ModelFacade.setNamespace(attr, ns);
         
         checkType(attr, ATTR03, "void");
         
-        attr = UmlFactory.getFactory().getCore().buildAttribute();
+        attr = UmlFactory.getFactory().getCore().buildAttribute(ns, intType);
         ModelFacade.setNamespace(attr, ns);
         
         checkType(attr, ATTR04, "int");
         
-        attr = UmlFactory.getFactory().getCore().buildAttribute();
+        attr = UmlFactory.getFactory().getCore().buildAttribute(ns, intType);
         ModelFacade.setNamespace(attr, ns);
         
         checkType(attr, ATTR05, "int");
         
-        attr = UmlFactory.getFactory().getCore().buildAttribute();
+        attr = UmlFactory.getFactory().getCore().buildAttribute(ns, intType);
         ModelFacade.setNamespace(attr, ns);
         
         checkType(attr, ATTR06, "int");
@@ -202,40 +204,41 @@ public class GUITestParserDisplay extends TestCase {
         
         MNamespace ns =  (MNamespace)
             ProjectManager.getManager().getCurrentProject().getModel();
+        Object intType = ProjectManager.getManager().getCurrentProject().findType("int");
         
-        attr = UmlFactory.getFactory().getCore().buildAttribute();
+        attr = UmlFactory.getFactory().getCore().buildAttribute(ns, intType);
         ModelFacade.setNamespace(attr, ns);
         
         checkVisibility(attr, ATTR02, "public");
         
-        attr = UmlFactory.getFactory().getCore().buildAttribute();
+        attr = UmlFactory.getFactory().getCore().buildAttribute(ns, intType);
         ModelFacade.setNamespace(attr, ns);
         
         checkVisibility(attr, ATTR03, "private");
         
-        attr = UmlFactory.getFactory().getCore().buildAttribute();
+        attr = UmlFactory.getFactory().getCore().buildAttribute(ns, intType);
         ModelFacade.setNamespace(attr, ns);
         
         checkVisibility(attr, ATTR04, "protected");
         
-        attr = UmlFactory.getFactory().getCore().buildAttribute();
+        attr = UmlFactory.getFactory().getCore().buildAttribute(ns, intType);
         ModelFacade.setNamespace(attr, ns);
         
         checkVisibility(attr, ATTR05, "public");
         checkVisibility(attr, ATTR01, "public");
         
-        attr = UmlFactory.getFactory().getCore().buildAttribute();
+        attr = UmlFactory.getFactory().getCore().buildAttribute(ns, intType);
         ModelFacade.setNamespace(attr, ns);
         
         checkVisibility(attr, ATTR06, "private");
         checkVisibility(attr, ATTR01, "private");
         
-        attr = UmlFactory.getFactory().getCore().buildAttribute();
+        attr = UmlFactory.getFactory().getCore().buildAttribute(ns, intType);
         ModelFacade.setNamespace(attr, ns);
         
         checkVisibility(attr, ATTR08, "public");
         
-        attr = UmlFactory.getFactory().getCore().buildAttribute();
+        attr = UmlFactory.getFactory().getCore().buildAttribute(ns, intType);
         ModelFacade.setNamespace(attr, ns);
         
         checkVisibility(attr, ATTR11, "public");
@@ -260,18 +263,19 @@ public class GUITestParserDisplay extends TestCase {
         
         MNamespace ns =  (MNamespace)
             ProjectManager.getManager().getCurrentProject().getModel();
+        Object intType = ProjectManager.getManager().getCurrentProject().findType("int");
         
-        attr = UmlFactory.getFactory().getCore().buildAttribute();
+        attr = UmlFactory.getFactory().getCore().buildAttribute(ns, intType);
         ModelFacade.setNamespace(attr, ns);
         
         checkProperties(attr, ATTR04, res1);
         
-        attr = UmlFactory.getFactory().getCore().buildAttribute();
+        attr = UmlFactory.getFactory().getCore().buildAttribute(ns, intType);
         ModelFacade.setNamespace(attr, ns);
         
         checkProperties(attr, ATTR05, res2);
         
-        attr = UmlFactory.getFactory().getCore().buildAttribute();
+        attr = UmlFactory.getFactory().getCore().buildAttribute(ns, intType);
         ModelFacade.setNamespace(attr, ns);
         
         checkProperties(attr, ATTR06, res3);
@@ -287,18 +291,19 @@ public class GUITestParserDisplay extends TestCase {
         
         MNamespace ns =  (MNamespace)
             ProjectManager.getManager().getCurrentProject().getModel();
+        Object intType = ProjectManager.getManager().getCurrentProject().findType("int");
         
-        attr = UmlFactory.getFactory().getCore().buildAttribute();
+        attr = UmlFactory.getFactory().getCore().buildAttribute(ns, intType);
         ModelFacade.setNamespace(attr, ns);
         
         checkMultiplicity(attr, ATTR04, new MMultiplicity("1..1"));
         
-        attr = UmlFactory.getFactory().getCore().buildAttribute();
+        attr = UmlFactory.getFactory().getCore().buildAttribute(ns, intType);
         ModelFacade.setNamespace(attr, ns);
         
         checkMultiplicity(attr, ATTR05, new MMultiplicity("1..*"));
         
-        attr = UmlFactory.getFactory().getCore().buildAttribute();
+        attr = UmlFactory.getFactory().getCore().buildAttribute(ns, intType);
         ModelFacade.setNamespace(attr, ns);
         
         checkMultiplicity(attr, ATTR06, new MMultiplicity("*..*"));
@@ -314,8 +319,9 @@ public class GUITestParserDisplay extends TestCase {
         
         MNamespace ns =  (MNamespace)
             ProjectManager.getManager().getCurrentProject().getModel();
+        Object intType = ProjectManager.getManager().getCurrentProject().findType("int");
         
-        attr = UmlFactory.getFactory().getCore().buildAttribute();
+        attr = UmlFactory.getFactory().getCore().buildAttribute(ns, intType);
         ModelFacade.setNamespace(attr, ns);
         
         checkThrows(attr, NATTR01, true, false, false);
@@ -343,40 +349,41 @@ public class GUITestParserDisplay extends TestCase {
         
         MNamespace ns =  (MNamespace)
             ProjectManager.getManager().getCurrentProject().getModel();
+        Object intType = ProjectManager.getManager().getCurrentProject().findType("int");
         
-        attr = UmlFactory.getFactory().getCore().buildAttribute();
+        attr = UmlFactory.getFactory().getCore().buildAttribute(ns, intType);
         ModelFacade.setNamespace(attr, ns);
         
         checkValue(attr, ATTR05, "0");
         checkValue(attr, ATTR01, "0");
         checkValue(attr, ATTR06, "15");
         
-        attr = UmlFactory.getFactory().getCore().buildAttribute();
+        attr = UmlFactory.getFactory().getCore().buildAttribute(ns, intType);
         ModelFacade.setNamespace(attr, ns);
         
         checkValue(attr, ATTR07, "\'val[15] \'");
         
-        attr = UmlFactory.getFactory().getCore().buildAttribute();
+        attr = UmlFactory.getFactory().getCore().buildAttribute(ns, intType);
         ModelFacade.setNamespace(attr, ns);
         
         checkValue(attr, ATTR08, "\"a <<string>>\"");
         
-        attr = UmlFactory.getFactory().getCore().buildAttribute();
+        attr = UmlFactory.getFactory().getCore().buildAttribute(ns, intType);
         ModelFacade.setNamespace(attr, ns);
         
         checkValue(attr, ATTR09, "(a * (b+c) - d)");
         
-        attr = UmlFactory.getFactory().getCore().buildAttribute();
+        attr = UmlFactory.getFactory().getCore().buildAttribute(ns, intType);
         ModelFacade.setNamespace(attr, ns);
         
         checkValue(attr, ATTR10, "2 * (b+c) - 10");
         
-        attr = UmlFactory.getFactory().getCore().buildAttribute();
+        attr = UmlFactory.getFactory().getCore().buildAttribute(ns, intType);
         ModelFacade.setNamespace(attr, ns);
         
         checkValue(attr, ATTR11, "a[15]");
         
-        attr = UmlFactory.getFactory().getCore().buildAttribute();
+        attr = UmlFactory.getFactory().getCore().buildAttribute(ns, intType);
         ModelFacade.setNamespace(attr, ns);
         
         checkValue(attr, ATTR12, "a << 5");
@@ -413,24 +420,25 @@ public class GUITestParserDisplay extends TestCase {
         
         MNamespace ns =  (MNamespace)
             ProjectManager.getManager().getCurrentProject().getModel();
+        Object intType = ProjectManager.getManager().getCurrentProject().findType("int");
         
-        attr = UmlFactory.getFactory().getCore().buildAttribute();
+        attr = UmlFactory.getFactory().getCore().buildAttribute(ns, intType);
         ModelFacade.setNamespace(attr, ns);
         
         softAddStereotype("attrstereo1", attr);
         softAddStereotype("attrstereo2", attr);
         
-        attr = UmlFactory.getFactory().getCore().buildAttribute();
+        attr = UmlFactory.getFactory().getCore().buildAttribute(ns, intType);
         ModelFacade.setNamespace(attr, ns);
         
         checkStereotype(attr, ATTR01, null);
         
-        attr = UmlFactory.getFactory().getCore().buildAttribute();
+        attr = UmlFactory.getFactory().getCore().buildAttribute(ns, intType);
         ModelFacade.setNamespace(attr, ns);
         
         checkStereotype(attr, ATTR10, "attrstereo1");
         
-        attr = UmlFactory.getFactory().getCore().buildAttribute();
+        attr = UmlFactory.getFactory().getCore().buildAttribute(ns, intType);
         ModelFacade.setNamespace(attr, ns);
         
         checkStereotype(attr, ATTR11, "attrstereo2");
@@ -443,21 +451,23 @@ public class GUITestParserDisplay extends TestCase {
      * @throws ParseException if the parsing fails.
      */
     public void testOperationName() throws ParseException {
-        MOperation op;
+        Object op;
         Object cl = UmlFactory.getFactory().getCore().buildClass();
         
         MNamespace ns =  (MNamespace)
             ProjectManager.getManager().getCurrentProject().getModel();
+        Collection propertyChangeListeners = ProjectManager.getManager().getCurrentProject().findFigsForMember(cl);
         
         ModelFacade.setNamespace(cl, ns);
+        Object voidType = ProjectManager.getManager().getCurrentProject().findType("void");
         
-        op = UmlFactory.getFactory().getCore().buildOperation(cl);
+        op = UmlFactory.getFactory().getCore().buildOperation(cl, ns, voidType, propertyChangeListeners);
         checkName(op, OPER01, "name");
         
-        op = UmlFactory.getFactory().getCore().buildOperation(cl);
+        op = UmlFactory.getFactory().getCore().buildOperation(cl, ns, voidType, propertyChangeListeners);
         checkName(op, OPER02, "name");
         
-        op = UmlFactory.getFactory().getCore().buildOperation(cl);
+        op = UmlFactory.getFactory().getCore().buildOperation(cl, ns, voidType, propertyChangeListeners);
         checkName(op, OPER03, "name2");
     }
 
@@ -467,22 +477,24 @@ public class GUITestParserDisplay extends TestCase {
      * @throws ParseException if the parsing fails.
      */
     public void testOperationType() throws ParseException {
-        MOperation op;
+        Object op;
         Object cl = UmlFactory.getFactory().getCore().buildClass();
         
         MNamespace ns =  (MNamespace)
             ProjectManager.getManager().getCurrentProject().getModel();
+        Collection propertyChangeListeners = ProjectManager.getManager().getCurrentProject().findFigsForMember(cl);
         
         ModelFacade.setNamespace(cl, ns);
+        Object voidType = ProjectManager.getManager().getCurrentProject().findType("void");
         
-        op = UmlFactory.getFactory().getCore().buildOperation(cl);
+        op = UmlFactory.getFactory().getCore().buildOperation(cl, ns, voidType, propertyChangeListeners);
         checkType(op, OPER01, "void");
         
-        op = UmlFactory.getFactory().getCore().buildOperation(cl);
+        op = UmlFactory.getFactory().getCore().buildOperation(cl, ns, voidType, propertyChangeListeners);
         checkType(op, OPER02, "int");
         checkType(op, OPER01, "int");
         
-        op = UmlFactory.getFactory().getCore().buildOperation(cl);
+        op = UmlFactory.getFactory().getCore().buildOperation(cl, ns, voidType, propertyChangeListeners);
         checkType(op, OPER03, "String");
     }
 
@@ -492,25 +504,27 @@ public class GUITestParserDisplay extends TestCase {
      * @throws ParseException if the parsing fails.
      */
     public void testOperationVisibility() throws ParseException {
-        MOperation op;
+        Object op;
         Object cl = UmlFactory.getFactory().getCore().buildClass();
         MNamespace ns =  (MNamespace)
             ProjectManager.getManager().getCurrentProject().getModel();
+        Collection propertyChangeListeners = ProjectManager.getManager().getCurrentProject().findFigsForMember(cl);
         
         ModelFacade.setNamespace(cl, ns);
+        Object voidType = ProjectManager.getManager().getCurrentProject().findType("void");
         
-        op = UmlFactory.getFactory().getCore().buildOperation(cl);
+        op = UmlFactory.getFactory().getCore().buildOperation(cl, ns, voidType, propertyChangeListeners);
         checkVisibility(op, OPER01, "public");
         
-        op = UmlFactory.getFactory().getCore().buildOperation(cl);
+        op = UmlFactory.getFactory().getCore().buildOperation(cl, ns, voidType, propertyChangeListeners);
         checkVisibility(op, OPER02, "private");
         
-        op = UmlFactory.getFactory().getCore().buildOperation(cl);
+        op = UmlFactory.getFactory().getCore().buildOperation(cl, ns, voidType, propertyChangeListeners);
         checkVisibility(op, OPER03, "protected");
         checkVisibility(op, OPER01, "protected");
         checkVisibility(op, OPER02, "private");
         
-        op = UmlFactory.getFactory().getCore().buildOperation(cl);
+        op = UmlFactory.getFactory().getCore().buildOperation(cl, ns, voidType, propertyChangeListeners);
         checkVisibility(op, OPER04, "protected");
     }
 
@@ -520,10 +534,12 @@ public class GUITestParserDisplay extends TestCase {
      * @throws ParseException if the parsing fails.
      */
     public void testOperationParameters() throws ParseException {
-        MOperation op;
+        Object op;
         Object cl = UmlFactory.getFactory().getCore().buildClass();
         MNamespace ns =  (MNamespace)
             ProjectManager.getManager().getCurrentProject().getModel();
+        Collection propertyChangeListeners = ProjectManager.getManager().getCurrentProject().findFigsForMember(cl);
+        Object voidType = ProjectManager.getManager().getCurrentProject().findType("void");
         
         ModelFacade.setNamespace(cl, ns);
         
@@ -543,13 +559,13 @@ public class GUITestParserDisplay extends TestCase {
             "\"\"some\"\"" 
         };
         
-        op = UmlFactory.getFactory().getCore().buildOperation(cl);
+        op = UmlFactory.getFactory().getCore().buildOperation(cl, ns, voidType, propertyChangeListeners);
         checkParameters(op, OPER01, res1);
         
-        op = UmlFactory.getFactory().getCore().buildOperation(cl);
+        op = UmlFactory.getFactory().getCore().buildOperation(cl, ns, voidType, propertyChangeListeners);
         checkParameters(op, OPER02, res2);
         
-        op = UmlFactory.getFactory().getCore().buildOperation(cl);
+        op = UmlFactory.getFactory().getCore().buildOperation(cl, ns, voidType, propertyChangeListeners);
         checkParameters(op, OPER03, res3);
         checkParameters(op, OPER01, res1);
         checkParameters(op, OPER02, res2);
@@ -561,10 +577,12 @@ public class GUITestParserDisplay extends TestCase {
      * @throws ParseException if the parsing fails.
      */
     public void testOperationProperties() throws ParseException {
-        MOperation op;
+        Object op;
         Object cl = UmlFactory.getFactory().getCore().buildClass();
         MNamespace ns =  (MNamespace)
             ProjectManager.getManager().getCurrentProject().getModel();
+        Collection propertyChangeListeners = ProjectManager.getManager().getCurrentProject().findFigsForMember(cl);
+        Object voidType = ProjectManager.getManager().getCurrentProject().findType("void");
         
         ModelFacade.setNamespace(cl, ns);
         
@@ -579,13 +597,13 @@ public class GUITestParserDisplay extends TestCase {
             "sequential", null 
         };
         
-        op = UmlFactory.getFactory().getCore().buildOperation(cl);
+        op = UmlFactory.getFactory().getCore().buildOperation(cl, ns, voidType, propertyChangeListeners);
         checkProperties(op, OPER01, res1);
         
-        op = UmlFactory.getFactory().getCore().buildOperation(cl);
+        op = UmlFactory.getFactory().getCore().buildOperation(cl, ns, voidType, propertyChangeListeners);
         checkProperties(op, OPER02, res1);
         
-        op = UmlFactory.getFactory().getCore().buildOperation(cl);
+        op = UmlFactory.getFactory().getCore().buildOperation(cl, ns, voidType, propertyChangeListeners);
         checkProperties(op, OPER03, res1);
     }
 
@@ -595,43 +613,46 @@ public class GUITestParserDisplay extends TestCase {
      * @throws ParseException if the parsing fails.
      */
     public void testOperationStereotype()
-	throws ParseException
-    {
-	MOperation op;
-	Object cl = UmlFactory.getFactory().getCore().buildClass();
-	MNamespace ns =  (MNamespace)
-	    ProjectManager.getManager().getCurrentProject().getModel();
-
-	ModelFacade.setNamespace(cl, ns);
-
-	op = UmlFactory.getFactory().getCore().buildOperation(cl);
-	softAddStereotype("opstereo1", op);
-	softAddStereotype("opstereo2", op);
-
-	op = UmlFactory.getFactory().getCore().buildOperation(cl);
-	checkStereotype(op, OPER01, null);
-
-	op = UmlFactory.getFactory().getCore().buildOperation(cl);
-	checkStereotype(op, OPER02, "opstereo1");
-
-	op = UmlFactory.getFactory().getCore().buildOperation(cl);
-	checkStereotype(op, OPER03, "opstereo2");
-	checkStereotype(op, OPER01, "opstereo2");
-	checkStereotype(op, OPER04, null);
+        	throws ParseException {
+        Object op;
+        Object cl = UmlFactory.getFactory().getCore().buildClass();
+        MNamespace ns =  (MNamespace)
+            ProjectManager.getManager().getCurrentProject().getModel();
+        
+        ModelFacade.setNamespace(cl, ns);
+        Collection propertyChangeListeners = ProjectManager.getManager().getCurrentProject().findFigsForMember(cl);
+        Object voidType = ProjectManager.getManager().getCurrentProject().findType("void");
+        
+        op = UmlFactory.getFactory().getCore().buildOperation(cl, ns, voidType, propertyChangeListeners);
+        softAddStereotype("opstereo1", op);
+        softAddStereotype("opstereo2", op);
+        
+        op = UmlFactory.getFactory().getCore().buildOperation(cl, ns, voidType, propertyChangeListeners);
+        checkStereotype(op, OPER01, null);
+        
+        op = UmlFactory.getFactory().getCore().buildOperation(cl, ns, voidType, propertyChangeListeners);
+        checkStereotype(op, OPER02, "opstereo1");
+        
+        op = UmlFactory.getFactory().getCore().buildOperation(cl, ns, voidType, propertyChangeListeners);
+        checkStereotype(op, OPER03, "opstereo2");
+        checkStereotype(op, OPER01, "opstereo2");
+        checkStereotype(op, OPER04, null);
     }
 
     /**
      * Test the parsing of an operation's parse exceptions.
      */
     public void testOperationParseExceptions() {
-        MOperation op;
+        Object op;
         Object cl = UmlFactory.getFactory().getCore().buildClass();
         MNamespace ns =  (MNamespace)
             ProjectManager.getManager().getCurrentProject().getModel();
         
         ModelFacade.setNamespace(cl, ns);
+        Collection propertyChangeListeners = ProjectManager.getManager().getCurrentProject().findFigsForMember(cl);
+        Object voidType = ProjectManager.getManager().getCurrentProject().findType("void");
         
-        op = UmlFactory.getFactory().getCore().buildOperation(cl);
+        op = UmlFactory.getFactory().getCore().buildOperation(cl, ns, voidType, propertyChangeListeners);
         checkThrows(op, NOPER01, true, false, false);
         checkThrows(op, NOPER02, true, false, false);
         checkThrows(op, NOPER03, true, false, false);
@@ -644,170 +665,168 @@ public class GUITestParserDisplay extends TestCase {
         checkThrows(op, NOPER10, true, false, false);
     }
 
-    private void checkName(Object attr, String text, String name)
+    private void checkName(Object element, String text, String name)
         throws ParseException {
-        ParserDisplay.SINGLETON.parseAttribute(text, attr);
-        assertTrue(text + " gave wrong name: " + ModelFacade.getName(attr),
-            name.equals(ModelFacade.getName(attr)));
-    }
-
-    private void checkName(MOperation op, String text, String name)
-	throws ParseException
-    {
-	ParserDisplay.SINGLETON.parseOperation(text, op);
-	assertTrue(text + " gave wrong name: " + op.getName() + " != " + name,
-		   name.equals(op.getName()));
-    }
-
-    private void checkName(MClassifierRole ro, String text, String name)
-	throws ParseException
-    {
-	ParserDisplay.SINGLETON.parseClassifierRole(ro, text);
-	assertTrue(text + " gave wrong name: " + ro.getName() + " != " + name,
-		   name.equals(ro.getName()));
-    }
-
-    private void checkType(Object attr, String text, String type)
-        throws ParseException {
-        ParserDisplay.SINGLETON.parseAttribute(text, attr);
-        assertTrue(
-        	   text
-        	   + " gave wrong type: "
-        	   + (ModelFacade.getType(attr) == null
-        	      ? "(null)"
-        	      : ModelFacade.getName(ModelFacade.getType(attr))),
-                  ModelFacade.getType(attr) != null
-        	   && type.equals(ModelFacade.getName(ModelFacade
-                       .getType(attr))));
-    }
-
-    private void checkType(MOperation op, String text, String type)
-	throws ParseException
-    {
-	ParserDisplay.SINGLETON.parseOperation(text, op);
-	Collection ret =
-	    UmlHelper.getHelper().getCore().getReturnParameters(op);
-	Iterator it = ret.iterator();
-	assertTrue(
-		   text + " gave extra return value",
-		   !(type == null && it.hasNext()));
-	assertTrue(
-		   text + " lacks return value",
-		   !(type != null && !it.hasNext()));
-	if (it.hasNext()) {
-	    MParameter p = (MParameter) it.next();
-	    assertTrue(
-		       text + " gave wrong return",
-		       (type == null && p.getType() == null)
-		       || (type != null && type.equals(p.getType().getName())));
-	}
-	assertTrue(text + " gave extra return value", !it.hasNext());
-    }
-
-    private void checkParameters(MOperation op, String text, String params[])
-	throws ParseException
-    {
-	int i;
-
-	ParserDisplay.SINGLETON.parseOperation(text, op);
-	Collection prm = op.getParameters();
-	Iterator it = prm.iterator();
-	assertTrue(
-		   text + " lacks parameters",
-		   !(params.length > 0 && !it.hasNext()));
-	for (i = 0; i + 3 < params.length; i += 4) {
-	    MParameter p;
-	    do {
-		assertTrue(text + " lacks parameters", it.hasNext());
-		p = (MParameter) it.next();
-	    } while (p.getKind().equals(MParameterDirectionKind.RETURN));
-	    assertTrue(
-		       text + "gave wrong inout in parameter " + (i / 4),
-		       params[i].equals(p.getKind().getName()));
-	    assertTrue(
-		       text + "gave wrong name in parameter " + (i / 4),
-		       params[i + 1].equals(p.getName()));
-	    assertTrue(
-		       text + "gave wrong type in parameter " + (i / 4),
-		       params[i + 2].equals(p.getType().getName()));
-	    assertTrue(text + "gave wrong default value in parameter " 
-		       + (i / 4),
-		       (params[i + 3] == null && p.getDefaultValue() == null)
-		       || (params[i + 3] != null && p.getDefaultValue() != null)
-		       && params[i + 3].equals(p.getDefaultValue().getBody()));
-	}
-	while (it.hasNext()) {
-	    MParameter p = (MParameter) it.next();
-	    assertTrue(
-		       text + " gave extra parameters",
-		       p.getKind().equals(MParameterDirectionKind.RETURN));
-	}
-    }
-
-    private void checkVisibility(Object attr, String text, String vis)
-        throws ParseException {
-        ParserDisplay.SINGLETON.parseAttribute(text, attr);
-        assertTrue(
-        	   text
-        	   + " gave wrong visibility: "
-        	   + (ModelFacade.getVisibility(attr) == null
-        	      ? "(null)"
-        	      : ModelFacade.getName(ModelFacade.getVisibility(attr))),
-                  ModelFacade.getVisibility(attr) != null
-        	   && vis.equals(ModelFacade.getName(ModelFacade
-                       .getVisibility(attr))));
-    }
-
-    private void checkVisibility(MOperation op, String text, String vis)
-	throws ParseException
-    {
-	ParserDisplay.SINGLETON.parseOperation(text, op);
-	assertTrue(
-		   text
-		   + " gave wrong visibility: "
-		   + (op.getVisibility() == null
-		      ? "(null)"
-		      : op.getVisibility().getName()),
-		   op.getVisibility() != null
-		   && vis.equals(op.getVisibility().getName()));
-    }
-
-    private void checkProperties(
-            Object attr,
-            String text,
-            String props[])
-        throws ParseException {
-        int i;
-        ParserDisplay.SINGLETON.parseAttribute(text, attr);
-        for (i = 0; i + 1 < props.length; i += 2) {
-            if (props[i + 1] == null)
-        	assertTrue(
-        	    "TaggedValue " + props[i] + " exists!",
-        	        ((MAttribute) attr).getTaggedValue(props[i]) == null);
-            else
-        	assertTrue(
-        	    "TaggedValue " + props[i] + " wrong!",
-		    props[i + 1].equals(((MAttribute) attr).getTaggedValue(
-		            props[i])));
+        
+        if (ModelFacade.isAAttribute(element)) {
+            ParserDisplay.SINGLETON.parseAttribute(text, element);
+            assertTrue(text + " gave wrong name: " + ModelFacade.getName(element),
+                name.equals(ModelFacade.getName(element)));
+        } else if (ModelFacade.isAOperation(element)) {
+            ParserDisplay.SINGLETON.parseOperation(text, element);
+            assertTrue(text + " gave wrong name: " + ModelFacade.getName(element) + " != " + name,
+                   name.equals(ModelFacade.getName(element)));
+        } else if (ModelFacade.isAClassifierRole(element)) {
+            ParserDisplay.SINGLETON.parseClassifierRole(element, text);
+            assertTrue(text + " gave wrong name: " + ModelFacade.getName(element) + " != " + name,
+                   name.equals(ModelFacade.getName(element)));
+        } else {
+            fail("Can only check name of a feature or classifier role");
         }
     }
 
-    private void checkProperties(MOperation op, String text, String props[])
+    private void checkType(Object feature, String text, String type)
+        throws ParseException {
+        if (ModelFacade.isAAttribute(feature)) {
+        ParserDisplay.SINGLETON.parseAttribute(text, feature);
+        assertTrue(
+        	   text
+        	   + " gave wrong type: "
+        	   + (ModelFacade.getType(feature) == null
+        	      ? "(null)"
+        	      : ModelFacade.getName(ModelFacade.getType(feature))),
+                  ModelFacade.getType(feature) != null
+        	   && type.equals(ModelFacade.getName(ModelFacade
+                       .getType(feature))));
+        } else if (ModelFacade.isAOperation(feature)) {
+            ParserDisplay.SINGLETON.parseOperation(text, feature);
+            Collection ret =
+                UmlHelper.getHelper().getCore().getReturnParameters(feature);
+            Iterator it = ret.iterator();
+            assertTrue(
+                   text + " gave extra return value",
+                   !(type == null && it.hasNext()));
+            assertTrue(
+                   text + " lacks return value",
+                   !(type != null && !it.hasNext()));
+            if (it.hasNext()) {
+                MParameter p = (MParameter) it.next();
+                assertTrue(
+                       text + " gave wrong return",
+                       (type == null && p.getType() == null)
+                       || (type != null && type.equals(p.getType().getName())));
+            }
+            assertTrue(text + " gave extra return value", !it.hasNext());
+        } else {
+            fail("Can only check type of a feature");
+        }
+    }
+
+
+    private void checkParameters(Object op, String text, String params[])
 	throws ParseException
     {
-	int i;
+        int i;
+        
+        ParserDisplay.SINGLETON.parseOperation(text, op);
+        Collection prm = ModelFacade.getParameters(op);
+        Iterator it = prm.iterator();
+        assertTrue(
+        	   text + " lacks parameters",
+        	   !(params.length > 0 && !it.hasNext()));
+        for (i = 0; i + 3 < params.length; i += 4) {
+            MParameter p;
+            do {
+        	assertTrue(text + " lacks parameters", it.hasNext());
+        	p = (MParameter) it.next();
+            } while (p.getKind().equals(MParameterDirectionKind.RETURN));
+            assertTrue(
+        	       text + "gave wrong inout in parameter " + (i / 4),
+        	       params[i].equals(p.getKind().getName()));
+            assertTrue(
+        	       text + "gave wrong name in parameter " + (i / 4),
+        	       params[i + 1].equals(p.getName()));
+            assertTrue(
+        	       text + "gave wrong type in parameter " + (i / 4),
+        	       params[i + 2].equals(p.getType().getName()));
+            assertTrue(text + "gave wrong default value in parameter " 
+        	       + (i / 4),
+        	       (params[i + 3] == null && p.getDefaultValue() == null)
+        	       || (params[i + 3] != null && p.getDefaultValue() != null)
+        	       && params[i + 3].equals(p.getDefaultValue().getBody()));
+        }
+        while (it.hasNext()) {
+            MParameter p = (MParameter) it.next();
+            assertTrue(
+        	       text + " gave extra parameters",
+        	       p.getKind().equals(MParameterDirectionKind.RETURN));
+        }
+    }
 
-	ParserDisplay.SINGLETON.parseOperation(text, op);
-	for (i = 0; i + 1 < props.length; i += 2) {
-	    if (props[i + 1] == null)
-		assertTrue(
-			   "TaggedValue " + props[i] + " exists!",
-			   op.getTaggedValue(props[i]) == null);
-	    else
-		assertTrue(
-			   "TaggedValue " + props[i] + " wrong!",
-			   props[i + 1].equals(op.getTaggedValue(props[i])));
-	}
+    private void checkVisibility(Object feature, String text, String vis)
+        throws ParseException {
+        if (ModelFacade.isAAttribute(feature)) {
+        ParserDisplay.SINGLETON.parseAttribute(text, feature);
+        assertTrue(
+        	   text
+        	   + " gave wrong visibility: "
+        	   + (ModelFacade.getVisibility(feature) == null
+        	      ? "(null)"
+        	      : ModelFacade.getName(ModelFacade.getVisibility(feature))),
+                  ModelFacade.getVisibility(feature) != null
+        	   && vis.equals(ModelFacade.getName(ModelFacade
+                       .getVisibility(feature))));
+        } else if (ModelFacade.isAOperation(feature)) {
+            ParserDisplay.SINGLETON.parseOperation(text, feature);
+            assertTrue(
+                   text
+                   + " gave wrong visibility: "
+                   + (ModelFacade.getVisibility(feature) == null
+                      ? "(null)"
+                      : ModelFacade.getName(ModelFacade
+                              .getVisibility(feature))),
+                      ModelFacade.getVisibility(feature) != null
+                   && vis.equals(ModelFacade.getName(ModelFacade
+                           .getVisibility(feature))));
+        } else {
+            fail("Can only check visibility of a feature");
+        }
+    }
+
+    private void checkProperties(
+            Object feature,
+            String text,
+            String props[])
+    throws ParseException {
+        if (ModelFacade.isAAttribute(feature)) {
+            int i;
+            ParserDisplay.SINGLETON.parseAttribute(text, feature);
+            for (i = 0; i + 1 < props.length; i += 2) {
+                if (props[i + 1] == null)
+            	assertTrue(
+            	    "TaggedValue " + props[i] + " exists!",
+            	        ((MAttribute) feature).getTaggedValue(props[i]) == null);
+                else
+            	assertTrue(
+            	    "TaggedValue " + props[i] + " wrong!",
+    		    props[i + 1].equals(((MAttribute) feature).getTaggedValue(
+    		            props[i])));
+            }
+        } else if (ModelFacade.isAOperation(feature)){
+            int i;
+
+            ParserDisplay.SINGLETON.parseOperation(text, feature);
+            for (i = 0; i + 1 < props.length; i += 2) {
+                if (props[i + 1] == null)
+                assertTrue(
+                       "TaggedValue " + props[i] + " exists!",
+                       ((MOperation)feature).getTaggedValue(props[i]) == null);
+                else
+                assertTrue(
+                       "TaggedValue " + props[i] + " wrong!",
+                       props[i + 1].equals(((MOperation)feature).getTaggedValue(props[i])));
+            }
+        }
     }
 
     private void checkMultiplicity(
@@ -830,45 +849,33 @@ public class GUITestParserDisplay extends TestCase {
     }
 
     private void checkThrows(
-			     Object attr,
+			     Object element,
 			     String text,
 			     boolean prsEx,
 			     boolean ex2,
 			     boolean ex3) {
-        try {
-            ParserDisplay.SINGLETON.parseAttribute(text, attr);
-            assertTrue("didn't throw for " + text, false);
-        } catch (ParseException pe) {
-            assertTrue(text + " threw ParseException " + pe, prsEx);
+        if (ModelFacade.isAAttribute(element)) {
+            try {
+                ParserDisplay.SINGLETON.parseAttribute(text, element);
+                assertTrue("didn't throw for " + text, false);
+            } catch (ParseException pe) {
+                assertTrue(text + " threw ParseException " + pe, prsEx);
+            }
+        } else if (ModelFacade.isAOperation(element)) {
+            try {
+                ParserDisplay.SINGLETON.parseOperation(text, element);
+                assertTrue("didn't throw for " + text, false);
+            } catch (ParseException pe) {
+                assertTrue(text + " threw ParseException " + pe, prsEx);
+            }
+        } else {
+            try {
+                ParserDisplay.SINGLETON.parseClassifierRole(element, text);
+                assertTrue("didn't throw for " + text, false);
+            } catch (ParseException pe) {
+                assertTrue(text + " threw ParseException " + pe, prsEx);
+            }
         }
-    }
-
-    private void checkThrows(
-			     MOperation op,
-			     String text,
-			     boolean prsEx,
-			     boolean ex2,
-			     boolean ex3) {
-	try {
-	    ParserDisplay.SINGLETON.parseOperation(text, op);
-	    assertTrue("didn't throw for " + text, false);
-	} catch (ParseException pe) {
-	    assertTrue(text + " threw ParseException " + pe, prsEx);
-	}
-    }
-
-    private void checkThrows(
-			     MClassifierRole ro,
-			     String text,
-			     boolean prsEx,
-			     boolean ex2,
-			     boolean ex3) {
-	try {
-	    ParserDisplay.SINGLETON.parseClassifierRole(ro, text);
-	    assertTrue("didn't throw for " + text, false);
-	} catch (ParseException pe) {
-	    assertTrue(text + " threw ParseException " + pe, prsEx);
-	}
     }
 
     private void checkValue(Object attr, String text, String val)
@@ -890,73 +897,73 @@ public class GUITestParserDisplay extends TestCase {
                        .getInitialValue(attr))));
     }
 
-    private void checkStereotype(Object attr, String text, String val) 
+    private void checkStereotype(Object feature, String text, String val) 
         throws ParseException {
-        ParserDisplay.SINGLETON.parseAttribute(text, attr);
-        assertTrue(
-        	   text + " gave wrong stereotype "
-        	   + (ModelFacade.getStereoType(attr) != null
-        	      ? ModelFacade.getName(ModelFacade.getStereoType(attr))
-        	      : "(null)"),
-        	   (val == null && ModelFacade.getStereoType(attr) == null)
-        	   || (val != null
-        	       && ModelFacade.getStereoType(attr) != null
-        	       && val.equals(ModelFacade.getName(ModelFacade
-                           .getStereoType(attr)))));
+        if (ModelFacade.isAAttribute(feature)) {
+            ParserDisplay.SINGLETON.parseAttribute(text, feature);
+            assertTrue(
+            	   text + " gave wrong stereotype "
+            	   + (ModelFacade.getStereoType(feature) != null
+            	      ? ModelFacade.getName(ModelFacade.getStereoType(feature))
+            	      : "(null)"),
+            	   (val == null && ModelFacade.getStereoType(feature) == null)
+            	   || (val != null
+            	       && ModelFacade.getStereoType(feature) != null
+            	       && val.equals(ModelFacade.getName(ModelFacade
+                               .getStereoType(feature)))));
+        } else if (ModelFacade.isAOperation(feature)){
+            ParserDisplay.SINGLETON.parseOperation(text, feature);
+            assertTrue(
+                   text
+                   + " gave wrong stereotype "
+                   + (ModelFacade.getStereoType(feature) != null
+                      ? ModelFacade.getName(ModelFacade
+                              .getStereoType(feature))
+                      : "(null)"),
+                   (val == null && ModelFacade.getStereoType(feature) == null)
+                   || (val != null
+                       && ModelFacade.getStereoType(feature) != null
+                       && val.equals(ModelFacade.getName(ModelFacade
+                               .getStereoType(feature)))));
+        }
     }
 
-    private void checkStereotype(MOperation op, String text, String val)
-	throws ParseException
-    {
-	ParserDisplay.SINGLETON.parseOperation(text, op);
-	assertTrue(
-		   text
-		   + " gave wrong stereotype "
-		   + (op.getStereotype() != null
-		      ? op.getStereotype().getName()
-		      : "(null)"),
-		   (val == null && op.getStereotype() == null)
-		   || (val != null
-		       && op.getStereotype() != null
-		       && val.equals(op.getStereotype().getName())));
-    }
-
-    private void checkBases(MClassifierRole cr, String text, String bases[])
-	throws ParseException
-    {
-	int i;
-	Collection c;
-	Iterator it;
-	MClassifier cls;
-
-	ParserDisplay.SINGLETON.parseClassifierRole(cr, text);
-	c = cr.getBases();
-	it = c.iterator();
-    checkAllValid : 
-	while (it.hasNext()) {
-	    cls = (MClassifier) it.next();
-	    for (i = 0; i < bases.length; i++)
-		if (bases[i].equals(cls.getName()))
-		    continue checkAllValid;
-	    assertTrue(
-		       "Base "
-		       + cls.getName()
-		       + " falsely "
-		       + "generated by "
-		       + text,
-		       false);
-	}
-
-    checkAllExist : 
-	for (i = 0; i < bases.length; i++) {
-	    it = c.iterator();
-	    while (it.hasNext()) {
-		cls = (MClassifier) it.next();
-		if (bases[i].equals(cls.getName()))
-		    continue checkAllExist;
-	    }
-	    assertTrue("Base " + bases[i] + " was not generated by " + text,
-		       false);
-	}
-    }
+//    private void checkBases(MClassifierRole cr, String text, String bases[])
+//	throws ParseException
+//    {
+//	int i;
+//	Collection c;
+//	Iterator it;
+//	MClassifier cls;
+//
+//	ParserDisplay.SINGLETON.parseClassifierRole(cr, text);
+//	c = cr.getBases();
+//	it = c.iterator();
+//    checkAllValid : 
+//	while (it.hasNext()) {
+//	    cls = (MClassifier) it.next();
+//	    for (i = 0; i < bases.length; i++)
+//		if (bases[i].equals(cls.getName()))
+//		    continue checkAllValid;
+//	    assertTrue(
+//		       "Base "
+//		       + cls.getName()
+//		       + " falsely "
+//		       + "generated by "
+//		       + text,
+//		       false);
+//	}
+//
+//    checkAllExist : 
+//	for (i = 0; i < bases.length; i++) {
+//	    it = c.iterator();
+//	    while (it.hasNext()) {
+//		cls = (MClassifier) it.next();
+//		if (bases[i].equals(cls.getName()))
+//		    continue checkAllExist;
+//	    }
+//	    assertTrue("Base " + bases[i] + " was not generated by " + text,
+//		       false);
+//	}
+//    }
 }
