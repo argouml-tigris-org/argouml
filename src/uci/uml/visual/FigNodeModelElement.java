@@ -87,6 +87,7 @@ implements VetoableChangeListener, DelayedVetoableChangeListener, MouseListener,
     //_name.addPropertyChangeListener(this);
   }
 
+  public FigText getNameFig() { return _name; }
 
   public void vetoableChange(PropertyChangeEvent pce) {
     Object src = pce.getSource();

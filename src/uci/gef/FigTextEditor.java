@@ -108,6 +108,7 @@ implements PropertyChangeListener, DocumentListener, KeyListener {
       setSelectionStart(getDocument().getLength());
       setSelectionEnd(getDocument().getLength());
     }
+    System.out.println("made FigTextEditor");
   }
 
   public void propertyChange(PropertyChangeEvent pve) { updateFigText(); }
@@ -123,6 +124,7 @@ implements PropertyChangeListener, DocumentListener, KeyListener {
 
 
   public void endEditing() {
+    System.out.println("endEditing");
     _editing = false;
     _target.startTrans();
     updateFigText();
@@ -136,8 +138,10 @@ implements PropertyChangeListener, DocumentListener, KeyListener {
     //removeFocusListener(this);
     removeKeyListener(this);
     _glass.setVisible(false);
+    Editor ce = Globals.curEditor();
+    ce.setActiveTextEditor(null);
   }
-  
+
   ////////////////////////////////////////////////////////////////
   // event handlers for KeyListener implementaion
 
@@ -145,10 +149,12 @@ implements PropertyChangeListener, DocumentListener, KeyListener {
   public void keyTyped(KeyEvent ke) {
     if (ke.getKeyChar() == KeyEvent.VK_ENTER &&
 	 !_target.getMultiLine()) {
+      System.out.println("got enter typed");
       ke.consume();
     }
     if (ke.getKeyCode() == KeyEvent.VK_TAB) {
       if (!_target.getAllowsTab()) {
+	System.out.println("got tab typed");
 	endEditing();
 	ke.consume();
       }
@@ -162,21 +168,25 @@ implements PropertyChangeListener, DocumentListener, KeyListener {
   public void keyPressed(KeyEvent ke) {
     if (ke.getKeyCode() == KeyEvent.VK_ENTER) {
       if (!_target.getMultiLine()) {
+	System.out.println("got enter");
 	endEditing();
 	ke.consume();
       }
     }
     if (ke.getKeyCode() == KeyEvent.VK_TAB) {
       if (!_target.getAllowsTab()) {
+	System.out.println("got tab");
 	endEditing();
 	ke.consume();
       }
     }
     else if (ke.getKeyCode() == KeyEvent.VK_F2) {
+      System.out.println("got f2");
       endEditing();
       ke.consume();
     }
     else if (ke.getKeyCode() == KeyEvent.VK_ESCAPE) {
+      System.out.println("got escape");
       endEditing();
       ke.consume();
     }

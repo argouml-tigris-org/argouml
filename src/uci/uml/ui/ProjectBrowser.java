@@ -393,6 +393,7 @@ implements IStatusBar {
       ElementOwnership eo = ((ModelElement)o).getElementOwnership();
       if (eo == null) { System.out.println("no path to model"); return; }
       while (!(eo.getNamespace() instanceof Model)) {
+	if (eo.getNamespace() == null) break;
 	eo = eo.getNamespace().getElementOwnership();
       }
       _project.setCurrentModel((Model)eo.getNamespace());

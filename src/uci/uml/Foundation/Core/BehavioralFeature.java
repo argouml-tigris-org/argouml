@@ -55,17 +55,17 @@ public abstract class BehavioralFeature extends Feature {
     if (_parameter == null) _parameter = new Vector();
     fireVetoableChange("parameter", _parameter, x);
     _parameter = x;
-    java.util.Enumeration enum = _parameter.elements();
-    while (enum.hasMoreElements()) {
-      Parameter p = (Parameter) enum.nextElement();
-      p.setNamespace(getNamespace());
-    }
+//     java.util.Enumeration enum = _parameter.elements();
+//     while (enum.hasMoreElements()) {
+//       Parameter p = (Parameter) enum.nextElement();
+//       p.setNamespace(getNamespace());
+//     }
   }
   public void addParameter(Parameter x) throws PropertyVetoException {
     if (_parameter == null) _parameter = new Vector();
     fireVetoableChange("parameter", _parameter, x);
     _parameter.addElement(x);
-    x.setNamespace(getNamespace());
+    //x.setNamespace(getNamespace());
   }
   public void removeParameter(Parameter x) throws PropertyVetoException {
     if (_parameter == null) return;

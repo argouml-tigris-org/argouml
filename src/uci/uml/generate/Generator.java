@@ -39,7 +39,7 @@ import uci.uml.Model_Management.*;
  * "http://www.ccs.neu.edu/research/demeter/"> Demeter project</a>. */
 
 public abstract class Generator {
-  
+
   public String generate(Object o) {
     if (o instanceof Operation)
       return generateOperation((Operation) o);

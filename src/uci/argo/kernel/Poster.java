@@ -32,6 +32,7 @@
 package uci.argo.kernel;
 
 import java.util.*;
+import com.sun.java.swing.*;
 
 import uci.util.*;
 
@@ -71,7 +72,8 @@ public interface Poster {
   /** Customize the description string just before it is displayed. */
   String expand(String desc, Set offs);
 
-  
+  public Icon getClarifier();
+
   ////////////////////////////////////////////////////////////////
   // criticism control
 

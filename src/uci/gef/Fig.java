@@ -256,6 +256,11 @@ public class Fig implements java.io.Serializable, PropertyChangeListener  {
   }
   public int getLineWidth() { return _lineWidth; }
 
+
+  public String getTipString(MouseEvent me) {
+    return toString();
+  }
+
 //   public void assignShadowColor(Color c) { _shadowColor = c; } //?
 //   public void setShadowColor(Color c) { _shadowColor = c; }
 //   public Color getShadowColor() { return _shadowColor; }

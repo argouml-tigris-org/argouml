@@ -36,6 +36,8 @@
 package uci.uml.critics;
 
 import java.util.*;
+import com.sun.java.swing.*;
+
 import uci.argo.kernel.*;
 import uci.util.*;
 import uci.uml.Foundation.Core.*;
@@ -56,8 +58,8 @@ public class CrNoOperations extends CrUML {
        "To fix this, press the FixIt button, or add operations manually "+
        "by clicking on {name} in the navigator pane and "+
        "using the Create menu to make a new operations. ");
-       
-    addSupportedDecision(CrUML.decSTORAGE);
+
+    addSupportedDecision(CrUML.decBEHAVIOR);
   }
 
   public boolean predicate2(Object dm, Designer dsgr) {
@@ -67,17 +69,21 @@ public class CrNoOperations extends CrUML {
     // stereotype <<record>>?
     //needs-more-work: different critic or special message for classes
     //that inherit all ops but define none of their own.
-    
+
     Vector beh = cls.getInheritedBehavioralFeatures();
     if (beh == null) return PROBLEM_FOUND;
-    java.util.Enumeration enum = beh.elements();
-    while (enum.hasMoreElements()) {
-      BehavioralFeature bf = (BehavioralFeature) enum.nextElement();
+    int size = beh.size();
+    for (int i = 0; i < size; i++) {
+      BehavioralFeature bf = (BehavioralFeature) beh.elementAt(i);
       ScopeKind sk = bf.getOwnerScope();
       if (ScopeKind.INSTANCE.equals(sk)) return NO_PROBLEM;
     }
     //needs-more-work?: don't count static or constants?
     return PROBLEM_FOUND;
+  }
+
+  public Icon getClarifier() {
+    return ClOperationCompartment.TheInstance;
   }
 
 } /* end class CrNoOperations */

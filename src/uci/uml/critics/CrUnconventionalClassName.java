@@ -32,6 +32,8 @@
 package uci.uml.critics;
 
 import java.util.*;
+import com.sun.java.swing.*;
+
 import uci.argo.kernel.*;
 import uci.util.*;
 import uci.uml.Foundation.Core.*;
@@ -62,6 +64,10 @@ public class CrUnconventionalClassName extends CrUML {
     char initialChar = nameStr.charAt(0);
     if (!Character.isUpperCase(initialChar)) return PROBLEM_FOUND;
     return NO_PROBLEM;
+  }
+
+  public Icon getClarifier() {
+    return ClClassName.TheInstance;
   }
 
 } /* end class CrUnconventionalClassName */

@@ -57,10 +57,12 @@ CLASSES = \
 	CrNameConflictAC.class \
 	CrNoInstanceVariables.class \
 	CrNoOperations.class \
+	CrNoAssociations.class \
 	CrNoTransitions.class \
 	CrNoIncomingTransitions.class \
 	CrNoOutgoingTransitions.class \
 	CrMultipleInitialStates.class \
+	CrNoInitialState.class \
 	CrNonAggDataType.class \
 	CrOppEndConflict.class \
 	CrOppEndVsAttr.class \
@@ -78,6 +80,9 @@ CLASSES = \
 	CrInterfaceOperOnly.class \
 	CrEmptyPackage.class \
 	CrConflictingComposites.class \
+	ClClassName.class \
+	ClOperationCompartment.class \
+	ClAttributeCompartment.class \
 	Init.class
 
 all: $(GEN) $(CLASSES)

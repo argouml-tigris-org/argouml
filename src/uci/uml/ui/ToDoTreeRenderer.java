@@ -44,12 +44,12 @@ import uci.uml.Model_Management.*;
 public class ToDoTreeRenderer extends BasicTreeCellRenderer {
   ////////////////////////////////////////////////////////////////
   // class variables
-  protected ImageIcon _PostIt0 = loadIconResource("PostIt0");
-  protected ImageIcon _PostIt25 = loadIconResource("PostIt25");
-  protected ImageIcon _PostIt50 = loadIconResource("PostIt50");
-  protected ImageIcon _PostIt75 = loadIconResource("PostIt75");
-  protected ImageIcon _PostIt99 = loadIconResource("PostIt99");
-  protected ImageIcon _MultiPostIt = loadIconResource("MultiPostIt");
+  public ImageIcon _PostIt0 = loadIconResource("PostIt0");
+  public ImageIcon _PostIt25 = loadIconResource("PostIt25");
+  public ImageIcon _PostIt50 = loadIconResource("PostIt50");
+  public ImageIcon _PostIt75 = loadIconResource("PostIt75");
+  public ImageIcon _PostIt99 = loadIconResource("PostIt99");
+  public ImageIcon _MultiPostIt = loadIconResource("MultiPostIt");
   
 
   protected UMLTreeCellRenderer _navRenderer = new UMLTreeCellRenderer();
@@ -130,7 +130,7 @@ public class ToDoTreeRenderer extends BasicTreeCellRenderer {
   protected static String imageName(String name) {
     return "/uci/Images/" + stripJunk(name) + ".gif";
   }
-  
+
   protected static String stripJunk(String s) {
     String res = "";
     int len = s.length();
@@ -140,7 +140,5 @@ public class ToDoTreeRenderer extends BasicTreeCellRenderer {
     }
     return res;
   }
-  
 
-  
 } /* end class ToDoTreeRenderer */

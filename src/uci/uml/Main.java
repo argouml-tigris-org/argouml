@@ -55,9 +55,16 @@ public class Main {
   // main
 
   public static void main(String args[]) {
-    defineMockHistory();
+    //defineMockHistory();
     Vector argv = new Vector();
     for (int i = 0; i < args.length; ++i) argv.addElement(args[i]);
+
+//     try {
+//       UIManager.setLookAndFeel(new JasonsLookAndFeel());
+//     }
+//     catch (Exception ex) {
+//       System.out.println("could not set look and feel!");
+//     }
 
     if (argv.contains("-big")) {
       MetalLookAndFeel.setCurrentTheme(new uci.uml.ui.JasonsBigTheme());
@@ -140,16 +147,18 @@ public class Main {
     dsgr.startConsidering(uci.uml.critics.CrUML.decINHERITANCE);
     dsgr.startConsidering(uci.uml.critics.CrUML.decCONTAINMENT);
 
+    //ToolTipManager.sharedInstance().setInitialDelay(500);
+    ToolTipManager.sharedInstance().setDismissDelay(50000000);
     Designer._userWorking = true;
   }
 
 
-  private static void defineMockHistory() {
-    History h = History.TheHistory;
-    h.addItem("In the beginning there was Argo");
-    h.addItem("And then I wrote a bunch of papers");
-    h.addItem("Now there is ArgoUML!");
-  }
+//   private static void defineMockHistory() {
+//     History h = History.TheHistory;
+//     h.addItem("In the beginning there was Argo");
+//     h.addItem("And then I wrote a bunch of papers");
+//     h.addItem("Now there is ArgoUML!");
+//   }
 
 } /* end Class Main */
 

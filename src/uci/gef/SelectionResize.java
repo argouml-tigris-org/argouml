@@ -101,6 +101,7 @@ public class SelectionResize extends Selection {
     g.fillRect(cx - HAND_SIZE/2, cy + ch - HAND_SIZE/2, HAND_SIZE, HAND_SIZE);
     g.fillRect(cx + cw - HAND_SIZE/2, cy + ch - HAND_SIZE/2,
 	       HAND_SIZE, HAND_SIZE);
+    super.paint(g);
   }
 
   /** Change some attribute of the selected Fig when the user drags one of its

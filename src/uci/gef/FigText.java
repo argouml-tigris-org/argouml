@@ -426,10 +426,15 @@ public class FigText extends Fig implements KeyListener, MouseListener {
     case KeyEvent.VK_SHIFT:
     case KeyEvent.VK_CONTROL:
     case KeyEvent.VK_ALT:
+    case KeyEvent.VK_META:
+    case KeyEvent.VK_HELP:
     case KeyEvent.VK_PAUSE:
     case KeyEvent.VK_DELETE:
       return true;
     }
+    if (ke.isControlDown()) return true;
+    if (ke.isAltDown()) return true;
+    if (ke.isMetaDown()) return true;
     return false;
   }
   ////////////////////////////////////////////////////////////////

@@ -149,20 +149,29 @@ implements Serializable, TreeModel, Cloneable {
     transitionPaths.addSubTreeModel(new GoElementToMachine());
 
     //transitionPaths.addSubTreeModel(new GoMachineToStartState());
-    GoFilteredChildren machineToStartState =
-      new GoFilteredChildren("State Machine->Start States",
+    GoFilteredChildren machineToFinalState =
+      new GoFilteredChildren("State Machine->Final States",
+			     new GoMachineToState(),
+			     PredIsFinalState.TheInstance);
+    GoFilteredChildren machineToInitialState =
+      new GoFilteredChildren("State Machine->Initial States",
 			     new GoMachineToState(),
 			     PredIsStartState.TheInstance);
-    transitionPaths.addSubTreeModel(machineToStartState);
+    transitionPaths.addSubTreeModel(machineToInitialState);
 
-    GoFilteredChildren compositeToStartStates =
-      new GoFilteredChildren("State->Starting Substates",
+    GoFilteredChildren compositeToFinalStates =
+      new GoFilteredChildren("State->Final Substates",
+			     new GoStateToSubstate(),
+			     PredIsFinalState.TheInstance);
+    GoFilteredChildren compositeToInitialStates =
+      new GoFilteredChildren("State->Initial Substates",
 			     new GoStateToSubstate(),
 			     PredIsStartState.TheInstance);
-    transitionPaths.addSubTreeModel(compositeToStartStates);
+    transitionPaths.addSubTreeModel(compositeToInitialStates);
 
-    transitionPaths.addSubTreeModel(new GoStateToOutgoingTrans());
-    transitionPaths.addSubTreeModel(new GoTransToTargetState());
+    transitionPaths.addSubTreeModel(new GoStateToDownstream());
+//     transitionPaths.addSubTreeModel(new GoStateToOutgoingTrans());
+//     transitionPaths.addSubTreeModel(new GoTransToTargetState());
 
     useCaseCentric.addSubTreeModel(new GoProjectModel());
     useCaseCentric.addSubTreeModel(new GoModelToDiagram());
@@ -209,11 +218,15 @@ implements Serializable, TreeModel, Cloneable {
     registerRule(new GoElementToMachine());
     registerRule(new GoMachineToTrans());
     registerRule(new GoMachineToState());
-    registerRule(machineToStartState);
+    registerRule(machineToInitialState);
+    registerRule(machineToFinalState);
     registerRule(new GoStateToSubstate());
-    registerRule(compositeToStartStates);
+    registerRule(compositeToInitialStates);
+    registerRule(compositeToFinalStates);
     registerRule(new GoStateToIncomingTrans());
     registerRule(new GoStateToOutgoingTrans());
+    registerRule(new GoStateToDownstream());
+    registerRule(new GoStateToUpstream());
     registerRule(new GoTransToSourceState());
     registerRule(new GoTransToTargetState());
     registerRule(new GoModelToActor());

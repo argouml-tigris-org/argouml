@@ -211,28 +211,38 @@ implements ActionListener, ChangeListener, ListSelectionListener, MouseListener 
     _ruleLibList.setPreferredSize(new Dimension(250, 300));
     _rulesList.setPreferredSize(new Dimension(250, 300));
     
-    c.gridx = 0; c.gridy = 4;
-    c.gridwidth = 1;
+    GridBagConstraints c2 = new GridBagConstraints();
+    c2.fill = GridBagConstraints.BOTH;
+    c2.weightx = 1.0;
+    c2.weighty = 0.0;
+    c2.ipadx = 3; c2.ipady = 3;
+    c2.gridx = 0; c2.gridy = 4;
+    c2.gridwidth = 1;
     JScrollPane ruleLibScroll =
       new JScrollPane(_ruleLibList,
 		      JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
 		      JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-    gb.setConstraints(ruleLibScroll, c);
+    gb.setConstraints(ruleLibScroll, c2);
     _persPanel.add(ruleLibScroll);
 
-    c.gridx = 2; c.gridy = 4;
-    c.gridwidth = 2;
+    GridBagConstraints c3 = new GridBagConstraints();
+    c3.fill = GridBagConstraints.BOTH;
+    c3.weightx = 1.0;
+    c3.weighty = 0.0;
+    c3.ipadx = 3; c3.ipady = 3;
+    c3.gridx = 2; c3.gridy = 4;
+    c3.gridwidth = 2;
     JScrollPane rulesScroll =
       new JScrollPane(_rulesList,
 		      JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
 		      JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-    gb.setConstraints(rulesScroll, c);
+    gb.setConstraints(rulesScroll, c3);
     _persPanel.add(rulesScroll);
     
     // this is the default anyway
-    _persList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-    _ruleLibList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-    _rulesList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+//     _persList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+//     _ruleLibList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+//     _rulesList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
     _okButton.addActionListener(this);
     _newPersButton.addActionListener(this);

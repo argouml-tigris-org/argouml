@@ -34,6 +34,8 @@
 package uci.uml.critics;
 
 import java.util.*;
+import com.sun.java.swing.*;
+
 import uci.argo.kernel.*;
 import uci.util.*;
 import uci.uml.Foundation.Core.*;
@@ -76,6 +78,10 @@ public class CrNoInstanceVariables extends CrUML {
     }
     //needs-more-work?: don't count static or constants?
     return PROBLEM_FOUND;
+  }
+
+  public Icon getClarifier() {
+    return ClAttributeCompartment.TheInstance;
   }
 
 } /* end class CrNoInstanceVariables */

@@ -109,7 +109,7 @@ public class JGraph extends JPanel implements Cloneable {
     bindKey(new CmdSelectNext(true), KeyEvent.VK_TAB, 0);
     bindKey(new CmdSelectNext(false), KeyEvent.VK_TAB, shift);
 
-    bindKey(new CmdDelete(), KeyEvent.VK_DELETE, 0);
+    bindKey(new CmdDispose(), KeyEvent.VK_DELETE, 0);
 
     bindKey(new CmdGroup(), KeyEvent.VK_G, ctrl);
     bindKey(new CmdUngroup(), KeyEvent.VK_U, ctrl);
@@ -317,4 +317,4 @@ class JGraphInternalPane extends JPanel {
   /** Tell Swing/AWT that JGraph can be tabbed into. */
   public boolean isFocusTraversable() { return true; }  
 
-}
+} /* end class JGraphInternalPane */

@@ -77,6 +77,7 @@ implements TabModelTarget, DocumentListener {
       if (generatedText != null) {
 	_text.setText(generatedText);
 	_shouldBeEnabled = true;
+	_text.setCaretPosition(0);
       }
       else {
 	_text.setEnabled(false);

@@ -153,8 +153,8 @@ public class GeneratorDisplay extends Generator {
     String generatedName = generateName(cls.getName());
     String classifierKeyword;
     if (cls instanceof MMClass) classifierKeyword = "class";
-    else { if (cls instanceof Interface) classifierKeyword = "interface";
-    else classifierKeyword = "class?"; }
+    else if (cls instanceof Interface) classifierKeyword = "interface";
+    else return ""; // actors and use cases
     String s = "";
     s += generateVisibility(cls.getElementOwnership());
     if (cls.getIsAbstract()) s += "abstract ";
@@ -169,7 +169,7 @@ public class GeneratorDisplay extends Generator {
     Vector strs = cls.getStructuralFeature();
     if (strs != null) {
       s += "\n";
-      s += "////////////////////////////////////////////////////////////////\n";
+      //s += "////////////////////////////////////////////////////////////////\n";
       s += "// Attributes\n";
       java.util.Enumeration strEnum = strs.elements();
       while (strEnum.hasMoreElements())
@@ -179,13 +179,14 @@ public class GeneratorDisplay extends Generator {
     Vector ends = cls.getAssociationEnd();
     if (ends != null) {
       s += "\n";
-      s += "////////////////////////////////////////////////////////////////\n";
+      //s += "////////////////////////////////////////////////////////////////\n";
       s += "// Associations\n";
       java.util.Enumeration endEnum = ends.elements();
       while (endEnum.hasMoreElements()) {
 	AssociationEnd ae = (AssociationEnd) endEnum.nextElement();
 	IAssociation a = ae.getAssociation();
-	s += generateAssociationFrom(a, ae) + ";\n";
+	if (ae.getIsNavigable())
+	  s += generateAssociationFrom(a, ae) + ";\n";
       }
     }
 
@@ -194,7 +195,7 @@ public class GeneratorDisplay extends Generator {
     Vector behs = cls.getBehavioralFeature();
     if (behs != null) {
       s += "\n";
-      s += "////////////////////////////////////////////////////////////////\n";
+      //s += "////////////////////////////////////////////////////////////////\n";
       s += "// Operations\n";
       java.util.Enumeration behEnum = behs.elements();
       while (behEnum.hasMoreElements())
@@ -230,29 +231,50 @@ public class GeneratorDisplay extends Generator {
 
   public String generateAssociation(IAssociation a) {
     String s = "";
-    String generatedName = generateName(a.getName());
-    s += "Association " + generatedName + " {\n";
+//     String generatedName = generateName(a.getName());
+//     s += "Association " + generatedName + " {\n";
 
-    java.util.Enumeration endEnum = a.getConnection().elements();
-    while (endEnum.hasMoreElements()) {
-      AssociationEnd ae = (AssociationEnd)endEnum.nextElement();
-      s += generateAssociationEnd(ae);
-      s += ";\n";
-    }
-    s += "}\n";
+//     java.util.Enumeration endEnum = a.getConnection().elements();
+//     while (endEnum.hasMoreElements()) {
+//       AssociationEnd ae = (AssociationEnd)endEnum.nextElement();
+//       s += generateAssociationEnd(ae);
+//       s += ";\n";
+//     }
+//     s += "}\n";
     return s;
   }
 
   public String generateAssociationEnd(AssociationEnd ae) {
-    String s = "";
-    Name n = ae.getName();
-    if (n != null && n != Name.UNSPEC) s += generateName(n) + " ";
-    if (ae.getIsNavigable()) s += "navigable ";
-    if (ae.getIsOrdered()) s += "ordered ";
+    String s = "protected ";
+    if (ScopeKind.CLASSIFIER.equals(ae.getTargetScope()))
+	s += "static ";
+//     Name n = ae.getName();
+//     if (n != null && n != Name.UNSPEC) s += generateName(n) + " ";
+//     if (ae.getIsNavigable()) s += "navigable ";
+//     if (ae.getIsOrdered()) s += "ordered ";
     Multiplicity m = ae.getMultiplicity();
-    if (m != Multiplicity.ONE)
-      s+= generateMultiplicity(m) + " ";
-    s += generateClassifierRef(ae.getType());
+    if (Multiplicity.ONE.equals(m) || Multiplicity.ONE_OR_ZERO.equals(m))
+      s += generateClassifierRef(ae.getType());
+    else
+      s += "Vector "; //generateMultiplicity(m) + " ";
+
+    s += " ";
+    
+    Name n = ae.getName();
+    IAssociation asc = ae.getAssociation();
+    Name ascName = asc.getName();
+    if (n != null && !Name.UNSPEC.equals(n) &&
+	n.getBody() != null && n.getBody().length() > 0) {
+      s += generateName(n);
+    }
+    else if (ascName != null && !Name.UNSPEC.equals(ascName) &&
+	ascName.getBody() != null && ascName.getBody().length() > 0) {
+      s += generateName(ascName);
+    }
+    else {
+      s += "my" + generateClassifierRef(ae.getType());
+    }
+
     return s;
   }
 

@@ -63,6 +63,9 @@ public class CrUML extends Critic {
   public static final Decision decSTORAGE = new
   Decision("Storage", 5);
 
+  public static final Decision decBEHAVIOR = new
+  Decision("Behavior", 5);
+
   public static final Decision decINSTANCIATION = new
   Decision("Instantiation", 5);
 

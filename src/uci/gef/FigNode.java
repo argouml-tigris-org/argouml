@@ -36,10 +36,12 @@ import java.awt.event.*;
 import java.util.*;
 import java.io.Serializable;
 import java.beans.*;
+import com.sun.java.swing.*;
 
 import uci.util.*;
 import uci.ui.*;
 import uci.graph.*;
+import uci.argo.kernel.*;
 
 /** Class to present a node (such as a NetNode) in a diagram. */
 
@@ -124,6 +126,18 @@ implements MouseListener, PropertyChangeListener, Serializable {
 
     super.setOwner(node);
   }
+
+  /** Returns true if any Fig in the group hits the given rect. */
+  public boolean hit(Rectangle r) {
+      int cornersHit = countCornersContained(r.x, r.y, r.width, r.height);
+    if (_filled) return cornersHit > 0;
+    else return cornersHit > 0 && cornersHit < 4;
+  }
+
+  public boolean contains(int x, int y) {
+    return (_x <= x) && (x <= _x + _w) && (_y <= y) && (y <= _y + _h);
+  }
+
 
   ////////////////////////////////////////////////////////////////
   // Editor API
@@ -306,6 +320,52 @@ implements MouseListener, PropertyChangeListener, Serializable {
       g.drawRect(_x - 4, _y - 4, _w + 7, _h + 6);
       g.drawRect(_x - 3, _y - 3, _w + 5, _h + 4);
     }
+    //paintClarifiers(g);
+  }
+
+  public void paintClarifiers(Graphics g) {
+    int iconX = _x;
+    int iconY = _y - 15;
+    ToDoList list = Designer.theDesigner().getToDoList();
+    Vector items = list.elementsForOffender(getOwner());
+    int size = items.size();
+    for (int i = 0; i < size; i++) {
+      ToDoItem item = (ToDoItem) items.elementAt(i);
+      Icon icon = item.getClarifier();
+      if (icon instanceof Clarifier) {
+	((Clarifier)icon).setFig(this);
+	((Clarifier)icon).setToDoItem(item);
+      }
+      icon.paintIcon(null, g, iconX, iconY);
+      iconX += icon.getIconWidth();
+    }
+  }
+
+  public ToDoItem hitClarifier(int x, int y) {
+    int iconX = _x;
+    ToDoList list = Designer.theDesigner().getToDoList();
+    Vector items = list.elementsForOffender(getOwner());
+    int size = items.size();
+    for (int i = 0; i < size; i++) {
+      ToDoItem item = (ToDoItem) items.elementAt(i);
+      Icon icon = item.getClarifier();
+      if (icon instanceof Clarifier) {
+	((Clarifier)icon).setFig(this);
+	((Clarifier)icon).setToDoItem(item);
+	if (((Clarifier)icon).hit(x, y)) return item;
+      }
+      int width = icon.getIconWidth();
+      if (y >= _y - 20 && y <= _y + 5 &&
+	  x >= iconX && x <= iconX + width) return item;
+      iconX += width;
+    }
+    return null;
+  }
+
+  public String getTipString(MouseEvent me) {
+    ToDoItem item = hitClarifier(me.getX(), me.getY());
+    if (item != null) return item.getHeadline();
+    return super.getTipString(me);
   }
 
   ////////////////////////////////////////////////////////////////
@@ -324,7 +384,7 @@ implements MouseListener, PropertyChangeListener, Serializable {
     }
   }
 
-  
+
   /** Make the port Figs visible. Used when blinkingPorts is true. */
   public void showPorts() {
     startTrans();

@@ -40,7 +40,7 @@ import uci.uml.generate.*;
 
 
 public class AssociationEnd extends ModelElementImpl {
-  public boolean _isNavigable;
+  public boolean _isNavigable = true;
   public boolean _isOrdered;
   public AggregationKind _aggregation = AggregationKind.NONE;
   public ScopeKind _targetScope = ScopeKind.INSTANCE;

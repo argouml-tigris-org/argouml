@@ -32,6 +32,8 @@
 package uci.uml.critics;
 
 import java.util.*;
+import com.sun.java.swing.*;
+
 import uci.argo.kernel.*;
 import uci.util.*;
 import uci.uml.Foundation.Core.*;
@@ -174,11 +176,12 @@ public class CrReservedName extends CrUML {
   // constructor
   
   public CrReservedName() {
-    setHeadline("Choose a Non-Reserved Name");
-    sd("The names of model elements must should not conflict with "+
+    setHeadline("Change {name} to a Non-Reserved Word");
+    sd("\"{name}\" is a reserver word or very close to one.  The "+
+       "names of model elements must not conflict with "+
        "reserved words of programming languages or UML.\n\n"+
        "Using legal names is needed to generate compilable code. \n\n"+
-       "To fix this, use the FixIt button, or manually select the "+
+       "To fix this, use the \"Next>\" button, or manually select the "+
        "highlighted element and use the Properties tab to give it "+
        "a different name.");
     addSupportedDecision(CrUML.decNAMING);
@@ -208,6 +211,10 @@ public class CrReservedName extends CrUML {
     }
 
     return NO_PROBLEM;
+  }
+
+  public Icon getClarifier() {
+    return ClClassName.TheInstance;
   }
 
 } /* end class CrReservedName */

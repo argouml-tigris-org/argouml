@@ -88,7 +88,7 @@ public class SelectionReshape extends Selection
       g.drawRect(xs[_selectedHandle] - HAND_SIZE/2 - 2,
 		 ys[_selectedHandle] - HAND_SIZE/2 - 2,
 		 HAND_SIZE + 3, HAND_SIZE + 3);
-
+    super.paint(g);
   }
 
   /** Change some attribute of the selected Fig when the user drags one of its

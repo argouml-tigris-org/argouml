@@ -42,9 +42,10 @@ import uci.uml.Foundation.Core.*;
 public class CrFinalSubclassed extends CrUML {
 
   public CrFinalSubclassed() {
-    setHeadline("This class is subclassed from a class that is marked final");
+    setHeadline("Remove final keyword or remove subclasses");
     sd("In Java, the keyword 'final' indicates that a class is not intended "+
-       "to have subclasses. \n\n"+
+       "to have subclasses.  This class is marked final and has "+
+       "subclasses.\n\n"+
        "A well thought-out class inheritance hierarchy that conveys and "+
        "supports intended extensions is an important part of achieving "+
        "an understandable and maintainable design.\n\n"+
@@ -58,15 +59,10 @@ public class CrFinalSubclassed extends CrUML {
   public boolean predicate2(Object dm, Designer dsgr) {
     if (!(dm instanceof GeneralizableElement)) return NO_PROBLEM;
     GeneralizableElement ge = (GeneralizableElement) dm;
-    Vector bases = ge.getGeneralization();
-    if (bases == null) return NO_PROBLEM;
-    java.util.Enumeration enum = bases.elements();
-    while (enum.hasMoreElements()) {
-      Generalization g = (Generalization) enum.nextElement();
-      GeneralizableElement base = g.getSupertype();
-      if (base.getIsLeaf()) return PROBLEM_FOUND;
-    }
-    return NO_PROBLEM;
+    if (!ge.getIsLeaf()) return NO_PROBLEM;
+    Vector subs = ge.getSpecialization();
+    if (subs == null || subs.size() == 0) return NO_PROBLEM;
+    return PROBLEM_FOUND;
   }
 
 } /* end class CrFinalSubclassed.java */

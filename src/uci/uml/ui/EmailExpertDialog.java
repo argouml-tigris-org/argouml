@@ -113,7 +113,12 @@ public class EmailExpertDialog extends JFrame implements ActionListener {
     _cancelButton.addActionListener(this);
   }
 
-  public void setTarget(Object t) { _target = (ToDoItem) t; }
+  public void setTarget(Object t) {
+    _target = (ToDoItem) t;
+    Poster p = _target.getPoster();
+    _to.setText(p.getExpertEmail());
+    _subject.setText(_target.getHeadline());
+  }
 
   ////////////////////////////////////////////////////////////////
   // event handlers

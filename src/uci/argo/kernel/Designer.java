@@ -33,6 +33,7 @@ package uci.argo.kernel;
 
 import java.util.*;
 import java.awt.*;
+import com.sun.java.swing.*;
 
 import uci.util.*;
 
@@ -300,6 +301,7 @@ public class Designer implements Poster, Runnable, java.io.Serializable {
 
   public String expand(String desc, Set offs) { return desc; }
 
+  public Icon getClarifier() { return null; }
 
   /** Reply this Designer's ToDoList, a list of pending problems and
    *  issues that the designer might be interested in.

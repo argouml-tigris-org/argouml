@@ -34,6 +34,7 @@
 package uci.argo.kernel;
 
 import java.util.*;
+import com.sun.java.swing.*;
 
 import uci.util.*;
 
@@ -79,6 +80,9 @@ public class Critic implements Poster, java.io.Serializable {
 
   /** The moreInfoURL of the ToDoItem produced. */
   private String _moreInfoURL;
+
+  public static Icon DEFAULT_CLARIFIER = loadIconResource("PostIt0");
+  protected Icon _clarifier = DEFAULT_CLARIFIER;
 
   /** The decision category that this critic is relevant to. The idea
    *  of each critic being relevant to exactly one type of decision is
@@ -244,7 +248,12 @@ public class Critic implements Poster, java.io.Serializable {
   
   public String expand(String desc, Set offs) { return desc; }
 
-  ////////////////////////////////////////////////////////////////
+  public Icon getClarifier() {
+    return _clarifier;
+  }
+
+
+    ////////////////////////////////////////////////////////////////
   // criticism control
 
   /** Reply true iff this Critic can execute. This fact is normally
@@ -419,6 +428,35 @@ public class Critic implements Poster, java.io.Serializable {
       getCriticType() + "," +
       getDecisionCategory() + "," +
       getHeadline() + ")";
+  }
+
+  ////////////////////////////////////////////////////////////////
+  // image loading
+  
+    protected static ImageIcon loadIconResource(String name) {
+    String imgName = imageName(name);
+    ImageIcon res = null;
+    try {
+      java.net.URL imgURL = Critic.class.getResource(imgName);
+      return new ImageIcon(imgURL);
+    }
+    catch (Exception ex) {
+      return new ImageIcon(name);
+    }
+  }
+
+  protected static String imageName(String name) {
+    return "/uci/Images/" + stripJunk(name) + ".gif";
+  }
+
+  protected static String stripJunk(String s) {
+    String res = "";
+    int len = s.length();
+    for (int i = 0; i < len; i++) {
+      char c = s.charAt(i);
+      if (Character.isJavaLetterOrDigit(c)) res += c;
+    }
+    return res;
   }
 
 } /* end class Critic */

@@ -32,6 +32,8 @@
 package uci.uml.critics;
 
 import java.util.*;
+import com.sun.java.swing.*;
+
 import uci.argo.kernel.*;
 import uci.util.*;
 import uci.uml.Foundation.Core.*;
@@ -46,9 +48,9 @@ public class CrMissingClassName extends CrUML {
   public CrMissingClassName() {
     setHeadline("Choose a name");
     sd("Every class and interface within a package must have a name. \n\n"+
-       "Clear and unambiguous naming is key to code generation and \n"+
+       "Clear and unambiguous naming is key to code generation and "+
        "the understandability and maintainability of the design. \n\n"+
-       "To fix this, use the FixIt button, or manually select the \n"+
+       "To fix this, use the FixIt button, or manually select the "+
        "class and use the Properties tab to give it a name.");
     addSupportedDecision(CrUML.decNAMING);
   }
@@ -57,8 +59,14 @@ public class CrMissingClassName extends CrUML {
     if (!(dm instanceof Classifier)) return NO_PROBLEM;
     Classifier cls = (Classifier) dm;
     Name myName = cls.getName();
-    if (myName == null || myName.equals(Name.UNSPEC)) return PROBLEM_FOUND;
+    if (myName == null || myName.equals(Name.UNSPEC) ||
+	 myName.getBody() == null || myName.getBody().length() == 0)
+      return PROBLEM_FOUND;
     return NO_PROBLEM;
+  }
+
+  public Icon getClarifier() {
+    return ClClassName.TheInstance;
   }
 
 } /* end class CrMissingClassName.java */

@@ -87,6 +87,7 @@ public class FigUseCase extends FigNodeModelElement {
     _name.setTextFilled(false);
     _name.setFilled(false);
     _name.setLineWidth(0);
+    _name.setMultiLine(true);
 
     // add Figs to the FigNode in back-to-front order
     addFig(_bigPort);

@@ -40,7 +40,7 @@ import uci.uml.Behavioral_Elements.Common_Behavior.*;
 import uci.uml.Behavioral_Elements.State_Machines.*;
 
 public abstract class Feature extends ModelElementImpl {
-  public ScopeKind _ownerScope = ScopeKind.UNSPEC;
+  public ScopeKind _ownerScope = ScopeKind.INSTANCE;
   public VisibilityKind _visibility = VisibilityKind.UNSPEC;
   public Classifier _owner;
   //nmw: public ClassifierRole _classifierRole[];

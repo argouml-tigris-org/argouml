@@ -32,6 +32,8 @@
 package uci.uml.critics;
 
 import java.util.*;
+import com.sun.java.swing.*;
+
 import uci.argo.kernel.*;
 import uci.util.*;
 import uci.uml.Foundation.Core.*;
@@ -44,8 +46,10 @@ import uci.uml.Model_Management.*;
 public class CrDisambigClassName extends CrUML {
 
   public CrDisambigClassName() {
-    setHeadline("Choose unique name");
-    sd("Every class and interface within a package must have a unique name. \n\n"+
+    setHeadline("Choose a Unique Name for {name}");
+    sd("Every class and interface within a package must have a unique "+
+       "name. There are at least two elements in this package named "+
+       "\"{name}\".\n\n"+
        "Clear and unambiguous naming is key to code generation and "+
        "the understandability and maintainability of the design. \n\n"+
        "To fix this, use the FixIt button, or manually select one of the "+
@@ -75,6 +79,10 @@ public class CrDisambigClassName extends CrUML {
       if (meName.getBody().equals(myNameString)) return PROBLEM_FOUND;
     }
     return NO_PROBLEM;
+  }
+
+  public Icon getClarifier() {
+    return ClClassName.TheInstance;
   }
 
 } /* end class CrDisambigClassName.java */

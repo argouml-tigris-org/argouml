@@ -42,19 +42,17 @@ public class CrMergeClasses extends CrUML {
   public CrMergeClasses() {
     setHeadline("Consider Combining Classes");
     String s = "";
-    s += "The highlighted class only participates in one association and that \n";
-    s += "association is one-to-one with another class.  Since instances of these \n";
-    s += "two classes must always be created together and destroyed together, \n";
-    s += "combining these classes might simplify your design without lose of any \n";
-    s += "representation power.  However, you may find the combined class too large \n";
-    s += "and complex, in which case separating them is usually better.\n";
-    s += "\n";
-    s += "Organizing classes to manage complexity of the design is always important, \n";
-    s += "especially when the design is already complex. \n";
-    s += "\n";
-    s += "To fix this, click on the FixIt button, or manually add the attribues and \n";
-    s += "operations of the highlighted class to the other class, then remove the \n";
-    s += "highlighted class from the project. \n";
+    s += "The highlighted class, {name}, only participates in one association and that ";
+    s += "association is one-to-one with another class.  Since instances of these";
+    s += "two classes must always be created together and destroyed together, ";
+    s += "combining these classes might simplify your design without lose of any ";
+    s += "representation power.  However, you may find the combined class too large ";
+    s += "and complex, in which case separating them is usually better.\n\n";
+    s += "Organizing classes to manage complexity of the design is always important, ";
+    s += "especially when the design is already complex. \n\n";
+    s += "To fix this, click on the FixIt button, or manually add the attribues and ";
+    s += "operations of the highlighted class to the other class, then remove the ";
+    s += "highlighted class from the project. ";
 
     setDescription(s);
     addSupportedDecision(CrUML.decCLASS_SELECTION); //?

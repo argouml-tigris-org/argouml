@@ -32,6 +32,8 @@
 package uci.uml.critics;
 
 import java.util.*;
+import com.sun.java.swing.*;
+
 import uci.argo.kernel.*;
 import uci.util.*;
 import uci.uml.Foundation.Core.*;
@@ -63,7 +65,7 @@ public class CrNameConfusion extends CrUML {
     if (offs.size() > 1) return PROBLEM_FOUND;
     return NO_PROBLEM;
   }
-  
+
   public Set computeOffenders(ModelElement dm) {
     Namespace ns = dm.getNamespace();
     Set res = new Set(dm);
@@ -89,7 +91,7 @@ public class CrNameConfusion extends CrUML {
     }
     return res;
   }
-    
+
   public ToDoItem toDoItem(Object dm, Designer dsgr) {
     ModelElement me = (ModelElement) dm;
     Set offs = computeOffenders(me);
@@ -123,7 +125,7 @@ public class CrNameConfusion extends CrUML {
     }
     return count;
   }
-  
+
   public String strip(String s) {
     StringBuffer res = new StringBuffer(s.length());
     int len = s.length();
@@ -134,6 +136,10 @@ public class CrNameConfusion extends CrUML {
     }
     return res.toString();
   }
-  
+
+  public Icon getClarifier() {
+    return ClClassName.TheInstance;
+  }
+
 } /* end class CrNameConfusion.java */
 

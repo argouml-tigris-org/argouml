@@ -61,6 +61,7 @@ public class SelectionMove extends Selection {
     g.fillRect(x + w, y - HAND_SIZE, HAND_SIZE, HAND_SIZE);
     g.fillRect(x - HAND_SIZE, y + h, HAND_SIZE, HAND_SIZE);
     g.fillRect(x + w, y + h, HAND_SIZE, HAND_SIZE);
+    super.paint(g);
   }
 
   /** SelectionMove is used when there are no handles, so dragHandle

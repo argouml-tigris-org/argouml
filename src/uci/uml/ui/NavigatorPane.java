@@ -161,8 +161,8 @@ implements ItemListener, TreeSelectionListener {
     //should register a listener
     if (getSelectedObject() == null) return;
     //System.out.println("single: " + getSelectedObject().toString());
-    ProjectBrowser.TheInstance.setTarget(getSelectedObject());
-    //ProjectBrowser.TheInstance.select(getSelectedObject());
+    //ProjectBrowser.TheInstance.setTarget(getSelectedObject());
+    ProjectBrowser.TheInstance.select(getSelectedObject());
   }
 
   /** called when the user clicks twice on an item in the tree. */ 

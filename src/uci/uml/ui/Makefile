@@ -73,6 +73,8 @@ CLASSES = \
 	GoProjectModel.class \
 	GoStateToIncomingTrans.class \
 	GoStateToOutgoingTrans.class \
+	GoStateToUpstream.class \
+	GoStateToDownstream.class \
 	GoStateToSubstate.class \
 	GoTransToSourceState.class \
 	GoTransToTargetState.class \
@@ -86,6 +88,8 @@ CLASSES = \
 	NavigatorConfigDialog.class \
 	NavPerspective.class \
 	NavigatorPane.class \
+	PredIsFinalState.class \
+	PredIsStartState.class \
 	PriorityNode.class \
 	Project.class \
 	ProjectBrowser.class \

@@ -162,13 +162,11 @@ implements Runnable, java.io.Serializable {
   public Set getKnowledgeTypes() { return _allKnowledgeTypes; }
   public Set getPosters() { return _allPosters; }
 
-  
-  
   private synchronized void addE(ToDoItem item) {
     /* remove any identical items already on the list */
     if (_items.contains(item)) return;
     if (_resolvedItems.contains(item)) {
-      System.out.println("ToDoItem not added because it was resolved");
+      //System.out.println("ToDoItem not added because it was resolved");
       return;
     }
     _items.addElement(item);
@@ -219,13 +217,13 @@ implements Runnable, java.io.Serializable {
   }
 
   public boolean resolve(ToDoItem item) {
-    boolean res = removeE(item);    
+    boolean res = removeE(item);
     fireToDoItemRemoved(item);
     return res;
   }
 
   public boolean explicitlyResolve(ToDoItem item, String reason) {
-    boolean res = resolve(item);    
+    boolean res = resolve(item);
     _resolvedItems.addElement(item);
     History.TheHistory.addItemResolution(item, reason); 
     return res;
@@ -235,6 +233,21 @@ implements Runnable, java.io.Serializable {
     _items.removeAllElements();
     notifyObservers("removeAllElements");
     fireToDoListChanged();
+  }
+
+  protected static Object _RecentOffender = null;
+  protected static Vector _RecentOffenderItems = new Vector();
+  public Vector elementsForOffender(Object off) {
+    if (off == _RecentOffender) return _RecentOffenderItems;
+    _RecentOffender = off;
+    _RecentOffenderItems.removeAllElements();
+    int size = _items.size();
+    for (int i = 0; i < size; i++) {
+      ToDoItem item = (ToDoItem) _items.elementAt(i);
+      if (item.getOffenders().contains(off))
+	_RecentOffenderItems.addElement(item);
+    }
+    return _RecentOffenderItems;
   }
 
   public Enumeration elements() {
@@ -247,13 +260,13 @@ implements Runnable, java.io.Serializable {
 
   protected void recomputeAllOffenders() {
     _allOffenders = new Set(_items.size()*2);
-    Enumeration enum = _items.elements();
-    while (enum.hasMoreElements()) {
-      ToDoItem item = (ToDoItem) enum.nextElement();
+    int size = _items.size();
+    for (int i = 0; i < size; i++) {
+      ToDoItem item = (ToDoItem) _items.elementAt(i);
       _allOffenders.addAllElements(item.getOffenders());
     }
   }
-  
+
   protected void recomputeAllKnowledgeTypes() {
     _allKnowledgeTypes = new Set();
     Enumeration enum = _items.elements();
@@ -265,9 +278,9 @@ implements Runnable, java.io.Serializable {
   
   protected void recomputeAllPosters() {
     _allPosters = new Set();
-    Enumeration enum = _items.elements();
-    while (enum.hasMoreElements()) {
-      ToDoItem item = (ToDoItem) enum.nextElement();
+    int size = _items.size();
+    for (int i = 0; i < size; i++) {
+      ToDoItem item = (ToDoItem) _items.elementAt(i);
       _allPosters.addElement(item.getPoster());
     }
   }
@@ -293,6 +306,7 @@ implements Runnable, java.io.Serializable {
    * @see EventListenerList
    */
   protected void fireToDoListChanged() {
+    _RecentOffender = null;
     // Guaranteed to return a non-null array
     Object[] listeners = _listenerList.getListenerList();
     ToDoListEvent e = null;
@@ -303,11 +317,12 @@ implements Runnable, java.io.Serializable {
 	// Lazily create the event:
 	if (e == null) e = new ToDoListEvent();
 	((ToDoListListener)listeners[i+1]).toDoListChanged(e);
-      }          
+      }
     }
   }
 
   protected void fireToDoItemAdded(ToDoItem item) {
+    _RecentOffender = null;
     // Guaranteed to return a non-null array
     Object[] listeners = _listenerList.getListenerList();
     ToDoListEvent e = null;
@@ -318,11 +333,12 @@ implements Runnable, java.io.Serializable {
 	// Lazily create the event:
 	if (e == null) e = new ToDoListEvent(item);
 	((ToDoListListener)listeners[i+1]).toDoItemAdded(e);
-      }          
+      }
     }
   }
 
   protected void fireToDoItemRemoved(ToDoItem item) {
+    _RecentOffender = null;
     // Guaranteed to return a non-null array
     Object[] listeners = _listenerList.getListenerList();
     ToDoListEvent e = null;
@@ -333,7 +349,7 @@ implements Runnable, java.io.Serializable {
 	// Lazily create the event:
 	if (e == null) e = new ToDoListEvent(item);
 	((ToDoListListener)listeners[i+1]).toDoItemRemoved(e);
-      }          
+      }
     }
   }
 

@@ -833,7 +833,6 @@ class ActionEmailExpert extends ToDoItemAction {
     dialog.setTarget(_target);
     dialog.show();
   }
-  
 } /* end class ActionEmailExpert */
 
 class ActionMoreInfo extends ToDoItemAction {
@@ -842,5 +841,11 @@ class ActionMoreInfo extends ToDoItemAction {
 
 class ActionHush extends ToDoItemAction {
   public ActionHush() { super("Hush Critic"); }
+  public void actionPerformed(ActionEvent e) {
+    if (!(_target instanceof ToDoItem)) return;
+    ToDoItem item = (ToDoItem) _target;
+    Poster p = item.getPoster();
+    p.hush();
+  }
 } /* end class ActionHush */
 

@@ -223,13 +223,13 @@ implements ItemListener, TreeSelectionListener, MouseListener, ToDoListListener 
   public void toDoItemAdded(ToDoListEvent tde) {
     if (_curPerspective instanceof ToDoListListener) 
       ((ToDoListListener)_curPerspective).toDoItemAdded(tde);
-    paintImmediately(getBounds());
+    //paintImmediately(getBounds());
   }
 
   public void toDoItemRemoved(ToDoListEvent tde) {
     if (_curPerspective instanceof ToDoListListener)
       ((ToDoListListener)_curPerspective).toDoItemRemoved(tde);
-    paintImmediately(getBounds());
+    //paintImmediately(getBounds());
   }
 
   public void toDoListChanged(ToDoListEvent tde) { 

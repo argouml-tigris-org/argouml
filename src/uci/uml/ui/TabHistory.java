@@ -135,7 +135,7 @@ implements ListSelectionListener, ListCellRenderer, MouseMotionListener {
     int index = _list.locationToIndex(me.getPoint());
     if (index == -1) return;
     String tip = _list.getModel().getElementAt(index).toString();
-    System.out.println("tip=" + tip);
+    //System.out.println("tip=" + tip);
     _list.setToolTipText(tip);
   }
 
