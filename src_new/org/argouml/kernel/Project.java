@@ -849,12 +849,19 @@ public class Project implements java.io.Serializable, TargetListener {
         Collection allClassifiers =
             ModelManagementHelper.getHelper()
 	        .getAllModelElementsOfKind(ns, (Class)ModelFacade.CLASSIFIER);
-        Iterator it = allClassifiers.iterator();
-        while (it.hasNext()) {
-            Object classifier = it.next();
-            if (ModelFacade.getName(classifier) != null && ModelFacade.getName(classifier).equals(s))
+        
+        Object[] classifiers = allClassifiers.toArray();
+        Object classifier = null;
+        
+        for(int i=0;i<classifiers.length;i++){
+            
+            classifier = classifiers[i];
+            if (ModelFacade.getName(classifier) != null && 
+                ModelFacade.getName(classifier).equals(s)){
                 return classifier;
+            }
         }
+        
         return null;
     }
 
