@@ -77,6 +77,11 @@ public abstract class FigState extends FigStateVertex {
         setOwner(node);
     }
 
+    public void setOwner(Object node) {
+        super.setOwner(node);
+        updateInternal();
+    }
+
     /**
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#modelChanged(ru.novosoft.uml.MElementEvent)
      */
