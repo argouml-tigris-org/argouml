@@ -37,15 +37,28 @@ public class TestCommonBehaviorFactory extends TestCase {
 
     public void testCreates() {
 	String [] objs = {
+	    "Action",
+	    "ActionSequence",
+	    "Argument",
+	    "AttributeLink",
 	    "CallAction",
 	    "ComponentInstance",
+	    "CreateAction",
+	    "DataValue",
+	    "DestroyAction",
 	    "Exception",
+	    "Instance",
 	    "Link",
 	    "LinkEnd",
 	    "NodeInstance",
 	    "Object",
+	    "Reception",
+	    "ReturnAction",
+	    "SendAction",
 	    "Signal",
 	    "Stimulus",
+	    "TerminateAction",
+	    "UninterpretedAction",
 	    null
 	};
 

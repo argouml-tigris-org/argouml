@@ -39,6 +39,11 @@ public class TestActivityGraphsFactory extends TestCase {
 	String [] objs = {
 	    "ActionState",
 	    "ActivityGraph",
+	    "CallState",
+	    "ClassifierInState",
+	    "ObjectFlowState",
+	    "Partition",
+	    "SubactivityState",
 	    null
 	};
 

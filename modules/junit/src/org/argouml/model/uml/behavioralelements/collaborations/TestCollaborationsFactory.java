@@ -39,6 +39,7 @@ public class TestCollaborationsFactory extends TestCase {
 	String [] objs = {
 	    "AssociationEndRole",
 	    "AssociationRole",
+	    "ClassifierRole",
 	    "Collaboration",
 	    "Interaction",
 	    "Message",

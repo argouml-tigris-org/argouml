@@ -37,8 +37,8 @@ public class TestModelManagementFactory extends TestCase {
 
     public void testCreates() {
 	String [] objs = {
-	    "Model",
 	    "ElementImport",
+	    "Model",
 	    "Package",
 	    "Subsystem",
 	    null

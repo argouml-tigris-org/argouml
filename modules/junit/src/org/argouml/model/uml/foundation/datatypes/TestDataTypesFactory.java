@@ -66,5 +66,16 @@ public class TestDataTypesFactory extends TestCase {
 					     DataTypesFactory.getFactory().createMultiplicity(new LinkedList()));
 	CheckUMLModelHelper.createAndRelease(this,
 					     DataTypesFactory.getFactory().createMultiplicity("1..10"));
+        // Do we need to add tests for the following?
+        //
+        // AggregationKind
+        // ChangeableKind
+        // MessageDirectionKind
+        // OrderingKind
+        // ParameterDirectionKind
+        // PseudostateKind
+        // ScopeKind
+        // VisibilityKind
+        //
     }
 }

@@ -38,10 +38,21 @@ public class TestStateMachinesFactory extends TestCase {
     public void testCreates() {
 	String [] objs = {
 	    "CallEvent",
+	    "ChangeEvent",
 	    "CompositeState",
+	    "Event",
+	    "FinalState",
 	    "Guard",
+	    "Pseudostate",
+	    "SignalEvent",
+	    "SimpleState",
 	    "State",
 	    "StateMachine",
+	    "StateVertex",
+	    "StubState",
+	    "SubmachineState",
+	    "SynchState",
+	    "TimeEvent",
 	    "Transition",
 	    null
 	};

@@ -42,6 +42,7 @@ public class TestUseCasesFactory extends TestCase {
 	    "ExtensionPoint",
 	    "Include",
 	    "UseCase",
+	    "UseCaseInstance",
 	    null
 	};
 
