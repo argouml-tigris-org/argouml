@@ -34,6 +34,7 @@ import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.Vector;
 
 import org.argouml.uml.diagram.activity.ui.SelectionActionState;
@@ -85,9 +86,9 @@ public class FigInitialState extends FigStateVertex {
 
     public Object clone() {
 	FigInitialState figClone = (FigInitialState) super.clone();
-	Vector v = figClone.getFigs();
-	figClone._bigPort = (FigCircle) v.elementAt(0);
-	figClone._head = (FigCircle) v.elementAt(1);
+	Iterator it = figClone.getFigs(null).iterator();
+	figClone._bigPort = (FigCircle) it.next();
+	figClone._head = (FigCircle) it.next();
 	return figClone;
     }
 

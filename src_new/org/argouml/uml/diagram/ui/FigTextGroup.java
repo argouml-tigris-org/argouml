@@ -59,7 +59,7 @@ public class FigTextGroup extends FigGroup {
      * added (via addFig) is shown at the bottom of the FigTextGroup.
      */
     protected void updateFigTexts() {
-        Iterator it = getFigs().iterator();
+        Iterator it = getFigs(null).iterator();
         int height = 0;
         while (it.hasNext()) {
             FigText fig = (FigText) it.next();
@@ -89,8 +89,9 @@ public class FigTextGroup extends FigGroup {
             // calculate the total height
             int maxWidth = 0;
             int height = 0;
-            for (int i = 0; i < getFigs().size(); i++) {
-                FigText fig = (FigText) getFigs().get(i);
+            Iterator it = getFigs(null).iterator();
+            while (it.hasNext()) {
+                FigText fig = (FigText) it.next();
                 if (fig.getText().equals("")) {
                     fig.setBounds(fig.getX(), fig.getY(), fig.getWidth(), 0);
                 } 
@@ -113,7 +114,7 @@ public class FigTextGroup extends FigGroup {
      * @see org.tigris.gef.presentation.Fig#delete()
      */
     public void delete() {
-        Iterator it = getFigs().iterator();
+        Iterator it = getFigs(null).iterator();
         while (it.hasNext()) {
             ((Fig) it.next()).delete();
         }
@@ -124,7 +125,7 @@ public class FigTextGroup extends FigGroup {
      * @see org.tigris.gef.presentation.Fig#dispose()
      */
     public void dispose() {
-        Iterator it = getFigs().iterator();
+        Iterator it = getFigs(null).iterator();
         while (it.hasNext()) {
             ((Fig) it.next()).dispose();
         }

@@ -100,13 +100,13 @@ public class FigComponent extends FigNodeModelElement {
 
     public Object clone() {
 	FigComponent figClone = (FigComponent) super.clone();
-	Vector v = figClone.getFigs();
-	figClone._bigPort = (FigRect) v.elementAt(0);
-	figClone._cover = (FigRect) v.elementAt(1);
-	figClone._stereo = (FigText) v.elementAt(2);
-	figClone._name = (FigText) v.elementAt(3);
-	figClone._upperRect = (FigRect) v.elementAt(4);
-	figClone._lowerRect = (FigRect) v.elementAt(5);
+	Iterator it = figClone.getFigs(null).iterator();
+	figClone._bigPort = (FigRect) it.next();
+	figClone._cover = (FigRect) it.next();
+	figClone._stereo = (FigText) it.next();
+	figClone._name = (FigText) it.next();
+	figClone._upperRect = (FigRect) it.next();
+	figClone._lowerRect = (FigRect) it.next();
 
 	return figClone;
     }

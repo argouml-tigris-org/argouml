@@ -565,7 +565,6 @@ public abstract class FigNodeModelElement
     public void delayedVetoableChange(PropertyChangeEvent pce) {
         cat.debug("in delayedVetoableChange");
         Object src = pce.getSource();
-        startTrans();
         // update any text, colors, fonts, etc.
         renderingChanged();
         endTrans();
@@ -588,7 +587,6 @@ public abstract class FigNodeModelElement
             && Boolean.FALSE.equals(pve.getNewValue())) {
             cat.debug("finished editing");
             try {
-                startTrans();
                 //parse the text that was edited
                 textEdited((FigText) src);
                 // resize the FigNode to accomodate the new text
@@ -756,11 +754,12 @@ public abstract class FigNodeModelElement
             return false;
         if (o == getOwner())
             return true;
-        Iterator it = getFigs().iterator();
+        Iterator it = getFigs(null).iterator();
         while (it.hasNext()) {
             Fig fig = (Fig) it.next();
-            if (isPartlyOwner(fig, o))
+            if (isPartlyOwner(fig, o)) {
                 return true;
+            }
         }
         return false;
     }
@@ -771,7 +770,7 @@ public abstract class FigNodeModelElement
         if (o == fig.getOwner())
             return true;
         if (fig instanceof FigGroup) {
-            Iterator it = ((FigGroup) fig).getFigs().iterator();
+            Iterator it = ((FigGroup) fig).getFigs(null).iterator();
             while (it.hasNext()) {
                 Fig fig2 = (Fig) it.next();
                 if (isPartlyOwner(fig2, o))
@@ -797,7 +796,7 @@ public abstract class FigNodeModelElement
                 UmlFactory.getFactory().delete(own);
             }
         }
-        Iterator it = getFigs().iterator();
+        Iterator it = getFigs(null).iterator();
         while (it.hasNext()) {
             ((Fig) it.next()).dispose();
         }
@@ -931,7 +930,7 @@ public abstract class FigNodeModelElement
 				       int w,
 				       int h) {
         int newW = w;
-        int n = fg.getFigs().size() - 1;
+        int n = fg.getFigs(null).size() - 1;
         int newH = checkSize ? Math.max(h, ROWHEIGHT * Math.max(1, n) + 2) : h;
         int step = (n > 0) ? (newH - 1) / n : 0;
         // width step between FigText objects int maxA =
@@ -1030,7 +1029,7 @@ public abstract class FigNodeModelElement
             ArgoEventPump.removeListener(this);
             ArgoEventPump.addListener(this);
         }
-        Iterator it = getFigs().iterator();
+        Iterator it = getFigs(null).iterator();
         while (it.hasNext()) {
             Fig fig = (Fig) it.next();
             if (fig instanceof ArgoEventListener) {

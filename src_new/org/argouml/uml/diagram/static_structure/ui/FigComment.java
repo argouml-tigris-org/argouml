@@ -43,6 +43,7 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyVetoException;
 import java.beans.VetoableChangeListener;
+import java.util.Iterator;
 import java.util.Vector;
 
 import javax.swing.SwingUtilities;
@@ -241,11 +242,11 @@ public class FigComment
      */
     public Object clone() {
         FigComment figClone = (FigComment) super.clone();
-        Vector v = figClone.getFigs();
-        figClone._bigPort = (FigRect) v.elementAt(0);
-        figClone._body = (FigPoly) v.elementAt(1);
-        figClone._urCorner = (FigPoly) v.elementAt(2);
-        figClone._text = (FigText) v.elementAt(3);
+        Iterator it = figClone.getFigs(null).iterator();
+        figClone._bigPort = (FigRect) it.next();
+        figClone._body = (FigPoly) it.next();
+        figClone._urCorner = (FigPoly) it.next();
+        figClone._text = (FigText) it.next();
         return figClone;
     }
 
