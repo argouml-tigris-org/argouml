@@ -1222,6 +1222,7 @@ public class CoreHelper {
         return struc.getOwner().getNamespace().getOwnedElements().contains(
             struc.getType());
     }
+    
     private boolean isValidNamespace(MAssociation assoc, MNamespace ns) {
         Iterator it = assoc.getConnections().iterator();
         List namespaces = new ArrayList();
@@ -1234,12 +1235,15 @@ public class CoreHelper {
             MNamespace ns1 = (MNamespace)it.next();
             if (it.hasNext()) {
                 MNamespace ns2 = (MNamespace)it.next();
+                // TODO: this contains a small error (ns can be part of hierarchy
+                // of namespaces, that's not taken into account)
                 if (ns == getFirstSharedNamespace(ns1, ns2))
                     return true;
             }
         }
         return false;
     }
+    
     private boolean isValidNamespace(
         MGeneralizableElement gen,
         MNamespace ns) {
