@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE book SYSTEM "../docbook-setup/docbookx/docbookx.dtd" [
 <!-- $Id$ -->
 
-<!DOCTYPE book SYSTEM "../docbook-setup/docbookx/docbookx.dtd" [
 <!ENTITY building SYSTEM "building.xml">
 <!ENTITY requirements SYSTEM "require.xml">
 <!ENTITY cvs SYSTEM "cvs.xml">
