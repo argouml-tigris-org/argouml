@@ -85,7 +85,7 @@ public class ActionRevertToSaved extends ActionFileOperations {
                   JOptionPane.YES_NO_OPTION);
 
         if (response == JOptionPane.YES_OPTION) {
-            loadProject(new File(p.getURL().getFile()));
+            loadProject(new File(p.getURL().getFile()), true);
         }
     }
 }

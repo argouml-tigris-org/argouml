@@ -291,7 +291,7 @@ public class Main {
             System.err.println("The file is " + file);
             System.err.println("File.exists = " + file.exists());
             
-            new ActionOpenProject().loadProject(file);
+            new ActionOpenProject().loadProject(file, true);
         }
         p = ProjectManager.getManager().getCurrentProject();
 

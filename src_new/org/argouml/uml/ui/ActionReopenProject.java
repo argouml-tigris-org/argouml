@@ -80,6 +80,6 @@ public class ActionReopenProject extends ActionFileOperations {
         File toOpen = new File(filename);;
         // load of the new project
         // just reuse of the ActionOpen object
-        loadProject(toOpen);
+        loadProject(toOpen, true);
     }
 }

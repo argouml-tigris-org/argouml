@@ -25,7 +25,6 @@
 package org.argouml.uml.ui;
 
 import java.io.File;
-import java.net.URL;
 import java.text.MessageFormat;
 
 import javax.swing.AbstractAction;
@@ -121,8 +120,10 @@ public abstract class ActionFileOperations extends AbstractAction {
      *
      * @param file the file to open.
      * @return true if the file was successfully opened
+     * @param showUI true if an error message may be shown to the user,
+     *               false if run in commandline mode
      */
-    public boolean loadProject(File file) {
+    public boolean loadProject(File file, boolean showUI) {
         LOG.info("Loading project");
         PersistenceManager pm = PersistenceManager.getInstance();
         Project oldProject = ProjectManager.getManager().getCurrentProject();
@@ -141,7 +142,7 @@ public abstract class ActionFileOperations extends AbstractAction {
         Project p = null;
 
         if (!(file.canRead())) {
-            showErrorPane("File not found " + file + ".");
+            reportError("File not found " + file + ".", showUI);
             Designer.enableCritiquing();
             success = false;
         } else {
@@ -160,24 +161,25 @@ public abstract class ActionFileOperations extends AbstractAction {
                     MessageFormat.format(Translator.localize(
                         "label.open-project-status-read"),
                         new Object[] {
-                        file.getName(),
-                    }));
+                            file.getName(),
+                        }));
             } catch (OpenException ex) {
                 LOG.error("Exception while loading project", ex);
                 success = false;
-                showErrorPane(
+                reportError(
                         "Could not load the project "
                         + file.getName()
                         + " due to parser configuration errors.\n"
                         + "Please read the instructions at www.argouml.org "
                         + "on the "
-                        + "requirements of argouml and how to install it.");
+                        + "requirements of argouml and how to install it.",
+                        showUI);
                 p = oldProject;
             } finally {
                 if (!LastLoadInfo.getInstance().getLastLoadStatus()) {
                     p = oldProject;
                     success = false;
-                    showErrorPane(
+                    reportError(
                             "Problem in loading the project "
                             + file.getName()
                             + "\n"
@@ -191,7 +193,8 @@ public abstract class ActionFileOperations extends AbstractAction {
                             + "from before you saved it.\n"
                             + "These things cannot be restored. "
                             + "You can continue working with what "
-                            + "was actually loaded.\n");
+                            + "was actually loaded.\n",
+                            showUI);
                 } else if (oldProject != null) {
                     // if p equals oldProject there was an exception and we do
                     // not have to gc (garbage collect) the old project
@@ -221,12 +224,18 @@ public abstract class ActionFileOperations extends AbstractAction {
      * Open a Message Dialog with an error message.
      *
      * @param message the message to display.
+     * @param showUI true if an error message may be shown to the user,
+     *               false if run in commandline mode
      */
-    private void showErrorPane(String message) {
-        JOptionPane.showMessageDialog(
+    private void reportError(String message, boolean showUI) {
+        if (showUI) {
+            JOptionPane.showMessageDialog(
                       ProjectBrowser.getInstance(),
                       message,
                       "Error",
                       JOptionPane.ERROR_MESSAGE);
+        } else {
+            System.err.print(message);
+        }
     }
 }
