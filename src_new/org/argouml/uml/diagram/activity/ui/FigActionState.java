@@ -262,7 +262,8 @@ public class FigActionState extends FigStateVertex {
      */
     protected void textEdited(FigText ft) throws PropertyVetoException {
         if (ft == getNameFig() && this.getOwner() != null) {
-            ParserDisplay.SINGLETON.parseActionState(ft.getText(), this.getOwner());
+            ParserDisplay.SINGLETON.parseActionState(ft.getText(), 
+                    this.getOwner());
         } else
             super.textEdited(ft);
     }
