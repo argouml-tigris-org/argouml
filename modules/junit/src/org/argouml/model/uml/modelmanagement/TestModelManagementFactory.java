@@ -27,6 +27,13 @@ import junit.framework.*;
 import org.argouml.util.*;
 
 public class TestModelManagementFactory extends TestCase {
+    
+    private static String[] allModelElements = {
+        "ElementImport",
+        "Model",
+        "Package",
+        "Subsystem"
+    };
     public TestModelManagementFactory(String n) { super(n); }
 
     public void testSingleton() {
@@ -47,6 +54,12 @@ public class TestModelManagementFactory extends TestCase {
 	CheckUMLModelHelper.createAndRelease(this, 
 	    ModelManagementFactory.getFactory(),
 	    objs);
+    }
+    
+    public void testDeleteComplete() {
+        CheckUMLModelHelper.deleteComplete(this, 
+        ModelManagementFactory.getFactory(), 
+        allModelElements);
     }
     
 }

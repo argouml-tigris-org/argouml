@@ -27,6 +27,26 @@ import junit.framework.*;
 import org.argouml.util.*;
 
 public class TestStateMachinesFactory extends TestCase {
+    
+    private static String[] allModelElements = {
+        "CallEvent",
+        "ChangeEvent",
+        "CompositeState",
+        "Event",
+        "FinalState",
+        "Guard",
+        "Pseudostate",
+        "SignalEvent",
+        "SimpleState",
+        "State",
+        "StateMachine",
+        "StateVertex",
+        "StubState",
+        "SubmachineState",
+        "SynchState",
+        "TimeEvent",
+        "Transition",
+    }; 
     public TestStateMachinesFactory(String n) { super(n); }
 
     public void testSingleton() {
@@ -63,6 +83,12 @@ public class TestStateMachinesFactory extends TestCase {
 
 	CheckUMLModelHelper.createAndRelease(this, 
 	    StateMachinesFactory.getFactory(), objs);
+    }
+    
+    public void testDeleteComplete() {
+        CheckUMLModelHelper.deleteComplete(this, 
+            StateMachinesFactory.getFactory(), 
+            allModelElements);
     }
     
 }

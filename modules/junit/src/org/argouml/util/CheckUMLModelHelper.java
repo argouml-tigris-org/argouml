@@ -130,5 +130,33 @@ public class CheckUMLModelHelper {
 
 	createAndRelease(tc, f, names, noarguments);
     }
+    
+    public static void deleteComplete(TestCase tc, 
+        AbstractUmlModelFactory f, 
+        String[] names) {
+        Method[] methods = null;
+        try {
+            methods = f.getClass().getMethods();
+        }
+        catch (SecurityException se) {
+            tc.fail("SecurityException while retrieving all methods from " + f.getClass().getName());
+            return;
+        }
+        for(int i = 0 ; i < names.length; i ++) {
+            String methodName = "delete" + names[i];
+            boolean testFailed = true;
+            for (int j = 0; j < methods.length; j++) {
+                Method method = methods[j];
+                if (method.getName().equals(methodName)) {
+                    testFailed = false;
+                    break;
+                }
+            }
+            if (testFailed) {
+                tc.fail("Method "+ methodName + " not found in " + f.getClass().getName());
+            }
+        }
+    }
+                        
 }
 

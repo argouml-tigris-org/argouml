@@ -27,6 +27,16 @@ import junit.framework.*;
 import org.argouml.util.*;
 
 public class TestCollaborationsFactory extends TestCase {
+    
+    private static String[] allModelElements = {
+        "AssociationEndRole",
+        "AssociationRole",
+        "ClassifierRole",
+        "Collaboration",
+        "Interaction",
+        "Message",
+    }; 
+        
     public TestCollaborationsFactory(String n) { super(n); }
 
     public void testSingleton() {
@@ -47,6 +57,12 @@ public class TestCollaborationsFactory extends TestCase {
 	};
 	CheckUMLModelHelper.createAndRelease(this,
 	    CollaborationsFactory.getFactory(), objs);
+    }
+    
+    public void testDeleteComplete() {
+        CheckUMLModelHelper.deleteComplete(this, 
+            CollaborationsFactory.getFactory(), 
+            allModelElements);
     }
     
 }

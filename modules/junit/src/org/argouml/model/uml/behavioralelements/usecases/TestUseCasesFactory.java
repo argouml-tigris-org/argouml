@@ -27,6 +27,15 @@ import junit.framework.*;
 import org.argouml.util.*;
 
 public class TestUseCasesFactory extends TestCase {
+    
+    private static String[] allModelElements = {
+        "Actor",
+        "Extend",
+        "ExtensionPoint",
+        "Include",
+        "UseCase",
+        "UseCaseInstance",
+    }; 
     public TestUseCasesFactory(String n) { super(n); }
 
     public void testSingleton() {
@@ -48,6 +57,12 @@ public class TestUseCasesFactory extends TestCase {
 
 	CheckUMLModelHelper.createAndRelease(this, 
 	    UseCasesFactory.getFactory(), objs);
+    }
+    
+    public void testDeleteComplete() {
+        CheckUMLModelHelper.deleteComplete(this, 
+        UseCasesFactory.getFactory(), 
+        allModelElements);
     }
     
 }

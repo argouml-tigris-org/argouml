@@ -22,11 +22,58 @@
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 package org.argouml.model.uml.foundation.core;
+import java.lang.ref.WeakReference;
+import java.util.ArrayList;
+import java.util.List;
+
 import junit.framework.*;
 
+import org.argouml.model.uml.UmlFactory;
+import org.argouml.model.uml.modelmanagement.ModelManagementFactory;
 import org.argouml.util.*;
 
+import ru.novosoft.uml.foundation.core.MAssociation;
+import ru.novosoft.uml.foundation.core.MClass;
+import ru.novosoft.uml.foundation.core.MDependency;
+import ru.novosoft.uml.model_management.MModel;
+
 public class TestCoreFactory extends TestCase {
+    
+    private static String[] allModelElements = {
+        "Abstraction",
+        "Association",
+        "AssociationClass",
+        "AssociationEnd",
+        "Attribute",
+        "BehavioralFeature",
+        "Binding",
+        "Class",
+        "Classifier",
+        "Comment",
+        "Component",
+        "Constraint",
+        "DataType",
+        "Dependency",
+        "Element",
+        "ElementResidence",
+        "Feature",
+        "Flow",
+        "GeneralizableElement",
+        "Generalization",
+        "Interface",
+        "Method",
+        "ModelElement",
+        "Namespace",
+        "Node",
+        "Operation",
+        "Parameter",
+        "Permission",
+        "PresentationElement",
+        "Relationship",
+        "StructuralFeature",
+        "TemplateParameter",
+        "Usage",
+    }; 
     public TestCoreFactory(String n) { super(n); }
 
     public void testSingleton() {
@@ -84,4 +131,93 @@ public class TestCoreFactory extends TestCase {
 	    objs);
     }
     
+    public void testDeleteComplete() {
+        CheckUMLModelHelper.deleteComplete(this, 
+        CoreFactory.getFactory(), 
+        allModelElements);
+    }
+    
+    public void testDeleteClassifier1() {
+        MModel model = ModelManagementFactory.getFactory().createModel();
+        MClass class1 = CoreFactory.getFactory().buildClass(model);
+        MClass class2 = CoreFactory.getFactory().buildClass(model);
+        MAssociation assoc = CoreFactory.getFactory().buildAssociation(class1, class2);
+        WeakReference class1wr =new WeakReference(class1);
+        WeakReference assocwr = new WeakReference(assoc);
+        UmlFactory.getFactory().delete(class1);
+        class1 = null;
+        assoc = null;
+        System.gc();
+        assertNull("class not removed", class1wr.get());
+        assertNull("binary association not removed", assocwr.get());
+    }
+    
+    public void testDeleteClassifier2() {
+        MModel model = ModelManagementFactory.getFactory().createModel();
+        MClass class1 = CoreFactory.getFactory().buildClass(model);
+        MClass class2 = CoreFactory.getFactory().buildClass(model);
+        MAssociation assoc = CoreFactory.getFactory().buildAssociation(class1, class2);
+        assoc.addConnection(CoreFactory.getFactory().createAssociationEnd());
+        WeakReference class1wr =new WeakReference(class1);
+        WeakReference assocwr = new WeakReference(assoc);
+        UmlFactory.getFactory().delete(class1);
+        class1 = null;
+        assoc = null;
+        System.gc();
+        assertNull("class not removed", class1wr.get());
+        assertNotNull("association removed", assocwr.get());
+    }
+    
+    public void testDeleteModelelement1() {
+        MModel model = ModelManagementFactory.getFactory().createModel();
+        MClass class1 = CoreFactory.getFactory().buildClass(model);
+        MClass class2 = CoreFactory.getFactory().buildClass(model);
+        MDependency dep = CoreFactory.getFactory().buildDependency(class1, class2);
+        WeakReference class1wr =new WeakReference(class1);
+        WeakReference depwr = new WeakReference(dep);
+        UmlFactory.getFactory().delete(class1);
+        class1 = null;
+        dep = null;
+        System.gc();
+        assertNull("class not removed", class1wr.get());
+        assertNull("binary dependency not removed", depwr.get());
+    }
+    
+    public void testDeleteModelelement2() {
+        MModel model = ModelManagementFactory.getFactory().createModel();
+        MClass class1 = CoreFactory.getFactory().buildClass(model);
+        MClass class2 = CoreFactory.getFactory().buildClass(model);
+        MDependency dep = CoreFactory.getFactory().buildDependency(class1, class2);
+        MClass class3 = CoreFactory.getFactory().buildClass(model);
+        dep.addClient(class3);
+        WeakReference class1wr =new WeakReference(class1);
+        WeakReference depwr = new WeakReference(dep);
+        UmlFactory.getFactory().delete(class1);
+        class1 = null;
+        dep = null;
+        System.gc();
+        assertNull("class not removed", class1wr.get());
+        assertNotNull("dependency removed", depwr.get());
+    }
+    
+    public void testDeleteModelelement3() {
+        MModel model = ModelManagementFactory.getFactory().createModel();
+        MClass class1 = CoreFactory.getFactory().buildClass(model);
+        MClass class2 = CoreFactory.getFactory().buildClass(model);
+        MDependency dep = CoreFactory.getFactory().buildDependency(class1, class2);
+        MClass class3 = CoreFactory.getFactory().buildClass(model);
+        dep.addSupplier(class3);
+        WeakReference class1wr =new WeakReference(class1);
+        WeakReference depwr = new WeakReference(dep);
+        UmlFactory.getFactory().delete(class1);
+        class1 = null;
+        dep = null;
+        System.gc();
+        assertNull("class not removed", class1wr.get());
+        assertNotNull("dependency removed", depwr.get());
+    }
+        
+        
+    
 }
+    

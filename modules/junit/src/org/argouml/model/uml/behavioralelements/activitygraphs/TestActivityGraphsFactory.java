@@ -22,11 +22,26 @@
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 package org.argouml.model.uml.behavioralelements.activitygraphs;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import junit.framework.*;
 
 import org.argouml.util.*;
 
 public class TestActivityGraphsFactory extends TestCase {
+    
+    private static String[] allModelElements = {
+        "ActivityGraph",
+        "ActionState",
+        "CallState",
+        "ClassifierInState",
+        "ObjectFlowState",
+        "Partition",
+        "SubactivityState"
+    };   
     public TestActivityGraphsFactory(String n) { super(n); }
 
     public void testSingleton() {
@@ -51,4 +66,12 @@ public class TestActivityGraphsFactory extends TestCase {
 	    ActivityGraphsFactory.getFactory(), objs);
     }
     
+    public void testDeleteComplete() {
+        CheckUMLModelHelper.deleteComplete(this, 
+            ActivityGraphsFactory.getFactory(), 
+            allModelElements);
+    }
+    
+    
+        
 }

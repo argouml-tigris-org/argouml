@@ -27,6 +27,32 @@ import junit.framework.*;
 import org.argouml.util.*;
 
 public class TestCommonBehaviorFactory extends TestCase {
+    
+    private static String[] allModelElements = {
+        "Action",
+        "ActionSequence",
+        "Argument",
+        "AttributeLink",
+        "CallAction",
+        "ComponentInstance",
+        "CreateAction",
+        "DataValue",
+        "DestroyAction",
+        "Exception",
+        "Instance",
+        "Link",
+        "LinkEnd",
+        "LinkObject",
+        "NodeInstance",
+        "Object",
+        "Reception",
+        "ReturnAction",
+        "SendAction",
+        "Signal",
+        "Stimulus",
+        "TerminateAction",
+        "UninterpretedAction",
+    }; 
     public TestCommonBehaviorFactory(String n) { super(n); }
 
     public void testSingleton() {
@@ -64,6 +90,12 @@ public class TestCommonBehaviorFactory extends TestCase {
 
 	CheckUMLModelHelper.createAndRelease(this, 
 	    CommonBehaviorFactory.getFactory(), objs);
+    }
+    
+     public void testDeleteComplete() {
+        CheckUMLModelHelper.deleteComplete(this, 
+            CommonBehaviorFactory.getFactory(), 
+            allModelElements);
     }
     
 }

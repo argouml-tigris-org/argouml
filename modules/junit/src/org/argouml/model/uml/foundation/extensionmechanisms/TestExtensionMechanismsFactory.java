@@ -27,6 +27,11 @@ import junit.framework.*;
 import org.argouml.util.*;
 
 public class TestExtensionMechanismsFactory extends TestCase {
+    
+    private static String[] allModelElements = {
+        "Stereotype",
+        "TaggedValue"
+    }; 
     public TestExtensionMechanismsFactory(String n) { super(n); }
 
     public void testSingleton() {
@@ -45,6 +50,12 @@ public class TestExtensionMechanismsFactory extends TestCase {
 	CheckUMLModelHelper.createAndRelease(this, 
 	    ExtensionMechanismsFactory.getFactory(),
 	    objs);
+    }
+    
+    public void testDeleteComplete() {
+        CheckUMLModelHelper.deleteComplete(this, 
+        ExtensionMechanismsFactory.getFactory(), 
+        allModelElements);
     }
     
 }
