@@ -26,10 +26,12 @@
 package org.argouml.language.ui;
 
 import java.awt.BorderLayout;
+import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 
+import javax.swing.BorderFactory;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -40,6 +42,7 @@ import org.argouml.application.api.Configuration;
 import org.argouml.application.api.Notation;
 import org.argouml.application.api.SettingsTabPanel;
 import org.argouml.application.helpers.SettingsTabHelper;
+import org.argouml.swingext.LabelledLayout;
 
 /** Action object for handling Argo settings
  *
@@ -64,101 +67,60 @@ implements SettingsTabPanel {
     super();
     setLayout(new BorderLayout());
 	JPanel top = new JPanel();
+       
     top.setLayout(new GridBagLayout()); 
 
-	GridBagConstraints checkConstraints = new GridBagConstraints();
-	checkConstraints.anchor = GridBagConstraints.WEST;
-	checkConstraints.gridy = 0;
-	checkConstraints.gridx = 0;
-	checkConstraints.gridwidth = 1;
-	checkConstraints.gridheight = 1;
-	checkConstraints.insets = new Insets(0, 30, 0, 4);
+	GridBagConstraints constraints = new GridBagConstraints();
+	constraints.anchor = GridBagConstraints.WEST;
+    constraints.fill = GridBagConstraints.HORIZONTAL;
+	constraints.gridy = 0;
+	constraints.gridx = 0;
+	constraints.gridwidth = 1;
+	constraints.gridheight = 1;
+    constraints.weightx = 1.0;
+	constraints.insets = new Insets(0, 30, 0, 4);
 
-	GridBagConstraints labelConstraints = new GridBagConstraints();
-	labelConstraints.anchor = GridBagConstraints.EAST;
-	labelConstraints.gridy = 0;
-	labelConstraints.gridx = 0;
-	labelConstraints.gridwidth = 1;
-	labelConstraints.gridheight = 1;
-	labelConstraints.insets = new Insets(2, 10, 2, 4);
+	constraints.gridy = 0;
+    _allowNotations = createCheckBox("label.uml-notation-only");
+	top.add(_allowNotations, constraints);
 
-	GridBagConstraints fieldConstraints = new GridBagConstraints();
-	fieldConstraints.anchor = GridBagConstraints.WEST;
-	fieldConstraints.fill = GridBagConstraints.HORIZONTAL;
-	fieldConstraints.gridy = 0;
-	fieldConstraints.gridx = 1;
-	fieldConstraints.gridwidth = 3;
-	fieldConstraints.gridheight = 1;
-	fieldConstraints.weightx = 1.0;
-	fieldConstraints.insets = new Insets(0, 4, 0, 20);
-
-	checkConstraints.gridy = 0;
-	labelConstraints.gridy = 0;
-	fieldConstraints.gridy = 0;
-        _allowNotations = createCheckBox("label.uml-notation-only");
-	top.add(_allowNotations, checkConstraints);
-	top.add(new JLabel(""), labelConstraints);
-	top.add(new JLabel(""), fieldConstraints);
-
-	checkConstraints.gridy = 1;
-	labelConstraints.gridy = 1;
-	fieldConstraints.gridy = 1;
-        _useGuillemots = createCheckBox("label.use-guillemots");
-	top.add(_useGuillemots, checkConstraints);
+	constraints.gridy = 1;
+    _useGuillemots = createCheckBox("label.use-guillemots");
+	top.add(_useGuillemots, constraints);
     
     // 2002-07-31
     // Jaap Branderhorst
     // from here made visibility etc. configurable
-    top.add(new JLabel(""), labelConstraints);
-    top.add(new JLabel(""), fieldConstraints);
     
-    checkConstraints.gridy = 2;
-    labelConstraints.gridy = 2;
-    fieldConstraints.gridy = 2;
+    constraints.gridy = 2;
     _showVisibility = createCheckBox("label.show-visibility");
-    top.add(_showVisibility, checkConstraints);
-    top.add(new JLabel(""), labelConstraints);
-    top.add(new JLabel(""), fieldConstraints);
+    top.add(_showVisibility, constraints);
     
-    checkConstraints.gridy = 3;
-    labelConstraints.gridy = 3;
-    fieldConstraints.gridy = 3;
+    constraints.gridy = 3;
     _showMultiplicity = createCheckBox("label.show-multiplicity");
-    top.add(_showMultiplicity, checkConstraints);
-    top.add(new JLabel(""), labelConstraints);
-    top.add(new JLabel(""), fieldConstraints);
+    top.add(_showMultiplicity, constraints);
 
-    checkConstraints.gridy = 4;
-    labelConstraints.gridy = 4;
-    fieldConstraints.gridy = 4;
+    constraints.gridy = 4;
     _showInitialValue = createCheckBox("label.show-initialvalue");
-    top.add(_showInitialValue, checkConstraints);
-    top.add(new JLabel(""), labelConstraints);
-    top.add(new JLabel(""), fieldConstraints);
+    top.add(_showInitialValue, constraints);
     
-    checkConstraints.gridy = 5;
-    labelConstraints.gridy = 5;
-    fieldConstraints.gridy = 5;
+    constraints.gridy = 5;
     _showProperties = createCheckBox("label.show-properties");
-    top.add(_showProperties, checkConstraints);
-    top.add(new JLabel(""), labelConstraints);
-    top.add(new JLabel(""), fieldConstraints);
+    top.add(_showProperties, constraints);
 	
-    checkConstraints.gridy = 6;
-    labelConstraints.gridy = 6;
-    fieldConstraints.gridy = 6;
+    constraints.gridy = 6;
     _showStereotypes = createCheckBox("label.show-stereotypes");
-    top.add(_showStereotypes, checkConstraints);
-    top.add(new JLabel(""), labelConstraints);
-    top.add(new JLabel(""), fieldConstraints);
+    top.add(_showStereotypes, constraints);
 
-    checkConstraints.gridy = 7;
-    labelConstraints.gridy = 7;
-    fieldConstraints.gridy = 7;
-    _defaultShadowWidth = createTextField();
-    top.add(_defaultShadowWidth, checkConstraints);
-    top.add(createLabel("label.default-shadow-width"), labelConstraints);
-    top.add(new JLabel(""), fieldConstraints);
+    constraints.gridy = 7;
+    constraints.insets = new Insets(5, 30, 0, 4);
+    JPanel defaultShadowWidthPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 5, 0));
+    JLabel defaultShadowWidthLabel = createLabel("label.default-shadow-width");
+    _defaultShadowWidth = new JTextField(5);
+    defaultShadowWidthLabel.setLabelFor(_defaultShadowWidth);
+    defaultShadowWidthPanel.add(defaultShadowWidthLabel);
+    defaultShadowWidthPanel.add(_defaultShadowWidth);
+    top.add(defaultShadowWidthPanel, constraints);
 	
 	add(top, BorderLayout.NORTH);
     }
