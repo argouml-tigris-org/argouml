@@ -24,7 +24,11 @@
 
 package org.argouml.uml.ui.behavior.activity_graphs;
 
-import org.argouml.uml.ui.behavior.state_machines.PropPanelSimpleState;
+import javax.swing.ImageIcon;
+
+import org.argouml.i18n.Translator;
+import org.argouml.swingext.Orientation;
+import org.argouml.uml.ui.behavior.state_machines.PropPanelState;
 import org.argouml.util.ConfigLoader;
 
 /**
@@ -32,13 +36,45 @@ import org.argouml.util.ConfigLoader;
  * @author mkl
  *  
  */
-public class PropPanelObjectFlowState extends PropPanelSimpleState {
+public class PropPanelObjectFlowState extends PropPanelState {
 
     /**
      * Constructor
      */
     public PropPanelObjectFlowState() {
-        super("ObjectFlowState", _objectFlowStateIcon, ConfigLoader
+        this("ObjectFlowState", objectFlowStateIcon, ConfigLoader
                 .getTabPropsOrientation());    
     }
+    
+    /**
+     * Constructor
+     *
+     * @param name the name of the properties panel, shown at the top
+     * @param icon the icon shown at the top
+     * @param orientation the orientation
+     */
+    public PropPanelObjectFlowState(String name, ImageIcon icon,
+            Orientation orientation) {
+        super(name, _stateIcon, ConfigLoader.getTabPropsOrientation());
+
+        addField(Translator.localize("UMLMenu", "label.name"),
+                getNameTextField());
+        addField(Translator.localize("UMLMenu", "label.stereotype"),
+                getStereotypeBox());
+        addField(Translator.localize("UMLMenu", "label.container"),
+                containerScroll);
+
+        //TODO: Add field for Classifier
+        //TODO: Add field for ClassifierInState
+        //TODO: Add field for State
+        
+        addSeperator();
+
+        addField(Translator.localize("UMLMenu", "label.incoming"),
+                incomingScroll);
+        addField(Translator.localize("UMLMenu", "label.outgoing"),
+                outgoingScroll);
+
+    }
+
 }
