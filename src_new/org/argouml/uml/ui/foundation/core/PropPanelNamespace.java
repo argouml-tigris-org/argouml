@@ -26,6 +26,8 @@
 
 package org.argouml.uml.ui.foundation.core;
 
+import org.argouml.model.uml.foundation.core.CoreFactory;
+import org.argouml.model.uml.modelmanagement.ModelManagementFactory;
 import org.argouml.swingext.Orientation;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.ui.*;
@@ -59,13 +61,9 @@ public abstract class PropPanelNamespace extends PropPanelModelElement {
         Object target = getTarget();
         if(target instanceof MNamespace) {
             MNamespace ns = (MNamespace) target;
-            MModelElement ownedElem = ns.getFactory().createClass();
+            MModelElement ownedElem = CoreFactory.getFactory().buildClass();
             ns.addOwnedElement(ownedElem);
             navigateTo(ownedElem);
-            // 2002-07-15
-            // Jaap Branderhorst
-            // Force an update of the navigation pane to solve issue 323
-            ProjectBrowser.TheInstance.getNavPane().forceUpdate();
         }
     }
 
@@ -73,13 +71,9 @@ public abstract class PropPanelNamespace extends PropPanelModelElement {
         Object target = getTarget();
         if(target instanceof MNamespace) {
             MNamespace ns = (MNamespace) target;
-            MModelElement ownedElem = ns.getFactory().createInterface();
+            MModelElement ownedElem = CoreFactory.getFactory().createInterface();
             ns.addOwnedElement(ownedElem);
             navigateTo(ownedElem);
-            // 2002-07-15
-            // Jaap Branderhorst
-            // Force an update of the navigation pane to solve issue 323
-            ProjectBrowser.TheInstance.getNavPane().forceUpdate();
         }
     }
 
@@ -87,13 +81,9 @@ public abstract class PropPanelNamespace extends PropPanelModelElement {
         Object target = getTarget();
         if(target instanceof MNamespace) {
             MNamespace ns = (MNamespace) target;
-            MModelElement ownedElem = ns.getFactory().createPackage();
+            MModelElement ownedElem = ModelManagementFactory.getFactory().createPackage();
             ns.addOwnedElement(ownedElem);
             navigateTo(ownedElem);
-            // 2002-07-15
-            // Jaap Branderhorst
-            // Force an update of the navigation pane to solve issue 323
-            ProjectBrowser.TheInstance.getNavPane().forceUpdate();
         }
     }
 

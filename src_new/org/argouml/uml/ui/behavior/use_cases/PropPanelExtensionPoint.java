@@ -33,8 +33,10 @@
 package org.argouml.uml.ui.behavior.use_cases;
 
 import org.argouml.application.api.*;
+import org.argouml.swingext.LabelledLayout;
 import org.argouml.uml.ui.*;
 import org.argouml.uml.ui.foundation.core.*;
+import org.argouml.util.ConfigLoader;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -66,7 +68,7 @@ public class PropPanelExtensionPoint extends PropPanelModelElement {
         // representation (we use the same as dependency) and requesting 2
         // columns 
 
-        super("ExtensionPoint", _extensionPointIcon, 2);
+        super("ExtensionPoint", _extensionPointIcon, ConfigLoader.getTabPropsOrientation());
 
         // This will cause the components on this property panel to be notified
         // anytime a stereotype, namespace or use case has its name changed
@@ -82,60 +84,28 @@ public class PropPanelExtensionPoint extends PropPanelModelElement {
         // nameField, stereotypeBox and namespaceScroll are all set up by
         // PropPanelModelElement.
 
-        addCaption(Argo.localize("UMLMenu", "label.name"), 1, 0, 0);
-        addField(nameField, 1, 0, 0);
-
-        addCaption(Argo.localize("UMLMenu", "label.stereotype"), 2, 0, 0);
-        addField(new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-stereo"),stereotypeBox),
-                 2, 0, 0);
-
-        addCaption(Argo.localize("UMLMenu", "label.namespace"), 3, 0, 0);
-        addField(namespaceScroll, 3, 0, 0);
-
+        addField(Argo.localize("UMLMenu", "label.name"), nameField);
+        addField(Argo.localize("UMLMenu", "label.stereotype"), 
+            new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-stereo"),stereotypeBox));
+        addField(Argo.localize("UMLMenu", "label.namespace"), namespaceScroll);
+        
         // Our location (a String). We can pass in the get and set methods from
         // NSUML associated with the NSUML type. Allow the location label to
         // expand vertically so we all float to the top.
 
-        UMLTextField locationField = 
-            new UMLTextField(this,
-                             new UMLTextProperty(MExtensionPoint.class,
-                                                 "location","getLocation",
-                                                 "setLocation"));
-
-        addCaption("Location:", 4, 0, 1);
-        addField(locationField, 4, 0, 0);
-
-        // Second column
-
-        // Link to the base use case with which we are associated.
-
-        UMLComboBoxModel     model = 
-            new UMLComboBoxModel(this, "isAcceptableUseCase",
-                                 "useCase", "getUseCase", "setUseCase",
-                                 true, MUseCase.class, true);
-        UMLComboBox          box   = new UMLComboBox(model);
-        UMLComboBoxNavigator nav   =
-            new UMLComboBoxNavigator(this, "NavUseCase", box);
-
-        addCaption("Owning Use Case:", 0, 1, 0);
-        addField(nav, 0, 1, 0);
-
-        // The extension use cases (via the Extend relationship)
-
-        JList extendList =
-            new UMLList(new UMLExtendListModel(this, null, true),
-                        true);
-
-        extendList.setBackground(getBackground());
-        extendList.setForeground(Color.blue);
-
-        JScrollPane extendScroll =
-            new JScrollPane(extendList,
-                            JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
-                            JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-
-        addCaption("Extending Use Cases:", 2, 1, 1);
-        addField(extendScroll, 2, 1, 1);
+        JTextField locationField = new UMLTextField2(this, new UMLExtensionPointLocationDocument(this));
+        addField(Argo.localize("UMLMenu", "label.location"), locationField);
+        
+        add(LabelledLayout.getSeperator());
+        
+        JList usecaseList = new UMLLinkedList(this, new UMLExtensionPointUseCaseListModel(this));
+        usecaseList.setVisibleRowCount(1);
+        addField(Argo.localize("UMLMenu", "label.usecase"), 
+            new JScrollPane(usecaseList));
+        
+        JList extendList = new UMLLinkedList(this, new UMLExtensionPointExtendListModel(this));
+        addField(Argo.localize("UMLMenu", "label.extend"), 
+            new JScrollPane(extendList));
 
 
         // Add the toolbar. Just the four basic buttons for now. Note that
@@ -202,63 +172,6 @@ public class PropPanelExtensionPoint extends PropPanelModelElement {
     }
 
 
-    /**
-     * <p>Get the use case associated with the extension point.</p>
-     *
-     * @return  The {@link MUseCase} associated with this extension point or
-     *          <code>null</code> if there is none. Returned as type {@link
-     *          MUseCase} to fit in with the type specified for the {@link
-     *          UMLComboBoxModel}.
-     */ 
-
-    public MUseCase getUseCase() {
-        MUseCase useCase   = null;
-        Object   target = getTarget();
-
-        if (target instanceof MExtensionPoint) {
-            useCase = ((MExtensionPoint) target).getUseCase();
-        }
-
-        return useCase;
-    }
-
-
-    /**
-     * <p>Set the use case associated with the extension point.</p>
-     *
-     * @param useCase  The {@link MUseCase} to associate with this extension
-     *              point. Supplied as type {@link MUseCase} to fit in
-     *              with the type specified for the {@link UMLComboBoxModel}.
-     */
-
-    public void setUseCase(MUseCase useCase) {
-        Object target = getTarget();
-
-        if(target instanceof MExtensionPoint) {
-            ((MExtensionPoint) target).setUseCase(useCase);
-        }
-    }
-
-
-    /**
-     * <p>Predicate to test if a model element may appear in the list of
-     *   potential use cases.</p>
-     *
-     * <p><em>Note</em>. We don't try to prevent the user setting up circular
-     *   extend relationships. This may be necessary temporarily, for example
-     *   while reversing a relationship. It is up to a critic to track
-     *   this.</p>
-     *
-     * @param modElem  the {@link MModelElement} to test.
-     *
-     * @return         <code>true</code> if modElem is a use case,
-     *                 <code>false</code> otherwise.
-     */
-
-    public boolean isAcceptableUseCase(MModelElement modElem) {
-
-        return modElem instanceof MUseCase;
-    }
-
+   
 
 } /* end class PropPanelExtend */

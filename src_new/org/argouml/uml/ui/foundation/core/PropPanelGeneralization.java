@@ -34,11 +34,14 @@ import ru.novosoft.uml.foundation.data_types.*;
 import ru.novosoft.uml.foundation.extension_mechanisms.*;
 import ru.novosoft.uml.model_management.*;
 
+import org.apache.log4j.Category;
 import org.argouml.application.api.*;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.ui.*;
 
 public class PropPanelGeneralization extends PropPanelModelElement {
+     protected static Category cat = 
+        Category.getInstance(PropPanelGeneralization.class);
 
   private PropPanelButton _newButton;
 
@@ -73,9 +76,12 @@ public class PropPanelGeneralization extends PropPanelModelElement {
     addLinkField(new JScrollPane(new UMLList(childModel,true),JScrollPane.VERTICAL_SCROLLBAR_NEVER,JScrollPane.HORIZONTAL_SCROLLBAR_NEVER),1,1,0);
 
     addCaption("Powertype:",2,1,1);
+    /*
     UMLComboBoxModel powerModel = new UMLComboBoxModel(this,"isAcceptiblePowertype",
         "powertype","getPowertype","setPowertype",false,MClassifier.class,true);
     addField(new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-class"),new UMLComboBox(powerModel)),2,1,0);
+    */
+    addField(new UMLTypeComboBox(this, "powertype"),2,1,0);
 
     new PropPanelButton(this,buttonPanel,_navUpIcon, Argo.localize("UMLMenu", "button.go-up"),"navigateUp",null);
     new PropPanelButton(this,buttonPanel,_navBackIcon, Argo.localize("UMLMenu", "button.go-back"),"navigateBackAction","isNavigateBackEnabled");
@@ -226,7 +232,7 @@ public class PropPanelGeneralization extends PropPanelModelElement {
             			ProjectBrowser.TheInstance.getNavPane().forceUpdate();
                     }
                     catch(Exception e) {
-                        System.out.println(e.toString() + " in PropPanelGeneralization.newElement");
+                        cat.error(e.toString() + " in PropPanelGeneralization.newElement", e);
                     }
                 }
             }
@@ -275,7 +281,7 @@ public class PropPanelGeneralization extends PropPanelModelElement {
 
     public boolean isAcceptibleChild(MModelElement element) {
         boolean isAcceptible = false;
-	System.out.println("PropPanelGeneralization: testing isAcceptibleChild");
+	cat.debug("PropPanelGeneralization: testing isAcceptibleChild");
         Object target = getTarget();
         if(target instanceof MGeneralization) {
             MGeneralizableElement parent = ((MGeneralization) target).getParent();
@@ -286,7 +292,7 @@ public class PropPanelGeneralization extends PropPanelModelElement {
               isAcceptible = isAcceptible(parent,element);
             }
         }
-	System.out.println("isAcceptible: "+isAcceptible);
+	cat.debug("isAcceptible: "+isAcceptible);
         return isAcceptible;
     }
 
