@@ -2,9 +2,12 @@ ArgoUML-*.tar.gz
 ArgoUML-*.zip
 ArgoUML-*.tgz
 # .classpath and .project are used by Eclipse IDE
+# .checkclipse is used by the CheckClipse plugin to Eclipse
 .classpath
 .project
+.checkclipse
 # CVS should ignore this one also
 argouml.log
 #
 #
+
