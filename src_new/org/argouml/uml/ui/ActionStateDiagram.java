@@ -49,21 +49,21 @@ public class ActionStateDiagram extends ActionAddDiagram {
 
     ////////////////////////////////////////////////////////////////
     // static variables
-    
-    public static ActionStateDiagram SINGLETON = new ActionStateDiagram(); 
+
+    public static ActionStateDiagram SINGLETON = new ActionStateDiagram();
 
 
     ////////////////////////////////////////////////////////////////
     // constructors
 
     private ActionStateDiagram() {
-        super(Translator.localize("CoreMenu", "StateDiagram"));
+        super("StateDiagram");
     }
-    
+
     protected ActionStateDiagram(String name) { super(name); }
 
     /**
-     * Overriden since it should only be possible to add statediagrams and 
+     * Overriden since it should only be possible to add statediagrams and
      * activitydiagrams to classifiers and behavioral features.
      * @see org.argouml.uml.ui.UMLAction#shouldBeEnabled()
      */
@@ -78,7 +78,7 @@ public class ActionStateDiagram extends ActionAddDiagram {
         } else
             return false;
     }
-    
+
     /**
      * @see org.argouml.uml.ui.ActionAddDiagram#createDiagram(MNamespace, Object)
      */

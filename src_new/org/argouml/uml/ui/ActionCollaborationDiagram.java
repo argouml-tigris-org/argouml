@@ -48,10 +48,10 @@ import java.beans.*;
  */
 public class ActionCollaborationDiagram extends ActionAddDiagram {
 
-    public static ActionCollaborationDiagram SINGLETON = new ActionCollaborationDiagram(); 
-    
+    public static ActionCollaborationDiagram SINGLETON = new ActionCollaborationDiagram();
+
     private ActionCollaborationDiagram() {
-        super(Translator.localize("CoreMenu", "CollaborationDiagram"));
+        super("CollaborationDiagram");
     }
 
     /**
@@ -62,14 +62,14 @@ public class ActionCollaborationDiagram extends ActionAddDiagram {
         if (target instanceof MOperation) {
             c = UmlFactory.getFactory().getCollaborations().buildCollaboration(ns);
             c.setRepresentedOperation((MOperation)target);
-        } else 
+        } else
         if (target instanceof MClassifier) {
             c = UmlFactory.getFactory().getCollaborations().buildCollaboration((MClassifier)target);
             c.setRepresentedClassifier((MClassifier)target);
-        } else 
+        } else
         if (target instanceof MModel) {
             c = UmlFactory.getFactory().getCollaborations().buildCollaboration((MModel)target);
-        } else 
+        } else
         if (target instanceof MInteraction) {
             c = ((MInteraction)target).getContext();
         } else
@@ -77,13 +77,13 @@ public class ActionCollaborationDiagram extends ActionAddDiagram {
             Object o = ((UMLCollaborationDiagram)target).getOwner();
             if (o instanceof MCollaboration) { //preventing backward compat problems
                 c = (MCollaboration)o;
-            } 
-        } else 
+            }
+        } else
         if (target instanceof MCollaboration) {
             c = (MCollaboration)target;
         } else {
             c =  UmlFactory.getFactory().getCollaborations().buildCollaboration(ns);
-        }   
+        }
         UMLCollaborationDiagram d  = new UMLCollaborationDiagram(c);
         return d;
     }
