@@ -32,8 +32,6 @@ import ru.novosoft.uml.behavior.common_behavior.MLinkEnd;
 /**
  * Helper class for UML BehavioralElements::CommonBehavior Package.
  *
- * Current implementation is a placeholder.
- * 
  * @since ARGO0.11.2
  * @author Thierry Lach
  * @stereotype singleton
@@ -44,19 +42,19 @@ public class CommonBehaviorHelper {
      */
     private CommonBehaviorHelper() {
     }
-    
+
      /** Singleton instance.
      */
     private static CommonBehaviorHelper SINGLETON =
                    new CommonBehaviorHelper();
 
-    
+
     /** Singleton instance access method.
      */
     public static CommonBehaviorHelper getHelper() {
         return SINGLETON;
     }
-    
+
     /**
      * Returns the source of a link. The source of a binary link is defined as
      * the instance where the first linkend is pointing to via the association
@@ -70,10 +68,10 @@ public class CommonBehaviorHelper {
         MLinkEnd le0 = (MLinkEnd)((Object[]) con.toArray())[0];
         return le0.getInstance();
     }
-    
+
     /**
-     * Returns the destination of a link. The destination of a binary link is 
-     * defined as the instance where the second linkend is pointing to via the 
+     * Returns the destination of a link. The destination of a binary link is
+     * defined as the instance where the second linkend is pointing to via the
      * association instance.
      * @param link
      * @return MInstance
@@ -84,6 +82,6 @@ public class CommonBehaviorHelper {
         MLinkEnd le0 = (MLinkEnd)((Object[]) con.toArray())[1];
         return le0.getInstance();
     }
-    
+
 }
 

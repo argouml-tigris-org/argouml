@@ -3,7 +3,7 @@
 /*
   JavaRE - Code generation and reverse engineering for UML and Java
   Copyright (C) 2000 Marcus Andersson andersson@users.sourceforge.net
-  
+
   This library is free software; you can redistribute it and/or modify
   it under the terms of the GNU Lesser General Public License as
   published by the Free Software Foundation; either version 2.1 of the
@@ -17,17 +17,14 @@
   You should have received a copy of the GNU Lesser General Public
   License along with this library; if not, write to the Free Software
   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307
-  USA 
+  USA
 
 */
 
 package org.argouml.uml.reveng.java;
 
 import org.argouml.model.uml.UmlFactory;
-
-import ru.novosoft.uml.*;
-import ru.novosoft.uml.foundation.core.*;
-import ru.novosoft.uml.model_management.*;
+import org.argouml.model.uml.modelmanagement.ModelManagementHelper;
 
 /**
    This context is an outer class containing inner classes.
@@ -35,10 +32,10 @@ import ru.novosoft.uml.model_management.*;
 class OuterClassifierContext extends Context
 {
     /** The classifier this context represents. */
-    private MClassifier mClassifier;
+    private Object mClassifier;
 
     /** The package this classifier belongs to */
-    private MPackage mPackage;
+    private Object mPackage;
 
     /** This is appended to classname when searching in classpath. */
     private String namePrefix;
@@ -46,17 +43,17 @@ class OuterClassifierContext extends Context
     /** The java style name of the package. */
     private String packageJavaName;
 
-    /** 
+    /**
 	Create a new context from a classifier.
-	
+
 	@param base Based on this context.
 	@param mClassifier The classifier.
 	@param mPackage The package the classifier belongs to.
 	@param namePrefix Inner class prefix, like "OuterClassname$"
     */
     public OuterClassifierContext(Context base,
-				  MClassifier mClassifier,
-				  MPackage mPackage,
+				  Object mClassifier,
+				  Object mPackage,
 				  String namePrefix)
     {
 	super(base);
@@ -66,12 +63,12 @@ class OuterClassifierContext extends Context
 	packageJavaName = getJavaName(mPackage);
     }
 
-    public MInterface getInterface(String name)
+    public Object getInterface(String name)
 	throws ClassifierNotFoundException
     {
         // Search in classifier
-        MInterface mInterface =
-            (MInterface)mClassifier.lookup(name);
+        Object mInterface =
+            ModelManagementHelper.getHelper().lookupNamespaceFor(mClassifier,name);
 
 	if(mInterface == null) {
 	    // Try to find it via the classpath
@@ -79,25 +76,23 @@ class OuterClassifierContext extends Context
 		Class classifier;
 
 		// Special case for model
-		if(mPackage instanceof MModel) {
+		if(ModelManagementHelper.getHelper().isModel(mPackage)) {
 		    classifier = Class.forName(namePrefix + name);
 		}
 		else {
-		    classifier = 
+		    classifier =
 			Class.forName(packageJavaName + "." +
 				      namePrefix + name);
-		}		    
+		}
 		if(classifier.isInterface()) {
-		    mInterface = UmlFactory.getFactory().getCore().createInterface();
-		    mInterface.setName(name);
-		    mInterface.setNamespace(mClassifier);
+		    mInterface = UmlFactory.getFactory().getCore().buildInterface(name,mClassifier);
 		}
 		else {
 		    // Only interfaces will do
 		    throw new Exception();
 		}
 	    }
-	    catch(Throwable e) {		
+	    catch(Throwable e) {
 		// Continue the search through the rest of the model
 		if(context != null) {
 		    mInterface = context.getInterface(name);
@@ -105,7 +100,7 @@ class OuterClassifierContext extends Context
 	    }
         }
         return mInterface;
-    }      
+    }
 
     /**
        Get a classifier from the model. If it is not in the model, try
@@ -116,37 +111,34 @@ class OuterClassifierContext extends Context
        @param classifierName The name of the classifier to find.
        @return Found classifier.
     */
-    public MClassifier get(String name)
+    public Object get(String name)
 	throws ClassifierNotFoundException
     {
 	// Search in classifier
-	MClassifier iClassifier = 
-	    (MClassifier)mClassifier.lookup(name);
-	
+	Object iClassifier = ModelManagementHelper.getHelper().lookupNamespaceFor(mClassifier,name);
+
 	if(iClassifier == null) {
 	    // Try to find it via the classpath
 	    try {
 		Class classifier;
-		
+
 		// Special case for model
-		if(mPackage instanceof MModel) {
+		if(ModelManagementHelper.getHelper().isModel(mPackage)) {
 		    classifier = Class.forName(namePrefix + name);
 		}
 		else {
-		    classifier = 
+		    classifier =
 			Class.forName(packageJavaName + "." +
 				      namePrefix + name);
-		}		    
+		}
 		if(classifier.isInterface()) {
-		    iClassifier = UmlFactory.getFactory().getCore().createInterface();
+		    iClassifier = UmlFactory.getFactory().getCore().buildInterface(name,mClassifier);
 		}
 		else {
-		    iClassifier = UmlFactory.getFactory().getCore().createClass();
+		    iClassifier = UmlFactory.getFactory().getCore().buildClass(name,mClassifier);
 		}
-		iClassifier.setName(name);
-		iClassifier.setNamespace(mClassifier);
 	    }
-	    catch(Throwable e) {		
+	    catch(Throwable e) {
 		// Continue the search through the rest of the model
 		if(context != null) {
 		    iClassifier = context.get(name);

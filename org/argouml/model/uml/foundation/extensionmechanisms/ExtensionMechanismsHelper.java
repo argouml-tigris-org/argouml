@@ -32,16 +32,18 @@ import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.ui.ProjectBrowser;
 
+import ru.novosoft.uml.MFactory;
 import ru.novosoft.uml.foundation.core.MModelElement;
 import ru.novosoft.uml.foundation.core.MNamespace;
 import ru.novosoft.uml.foundation.extension_mechanisms.MStereotype;
+import ru.novosoft.uml.foundation.extension_mechanisms.MTaggedValue;
 import ru.novosoft.uml.model_management.MModel;
 
 /**
  * Helper class for UML Foundation::ExtensionMechanisms Package.
  *
  * Current implementation is a placeholder.
- * 
+ *
  * @since ARGO0.11.2
  * @author Thierry Lach
  * @stereotype singleton
@@ -52,22 +54,22 @@ public class ExtensionMechanismsHelper {
      */
     private ExtensionMechanismsHelper() {
     }
-    
+
      /** Singleton instance.
      */
     private static ExtensionMechanismsHelper SINGLETON =
                    new ExtensionMechanismsHelper();
 
-    
+
     /** Singleton instance access method.
      */
     public static ExtensionMechanismsHelper getHelper() {
         return SINGLETON;
     }
-    
+
     /**
      * Returns all stereotypes in some namespace
-     */    
+     */
     public Collection getStereotypes(MNamespace ns) {
         List l = new ArrayList();
         if (ns == null) return l;
@@ -80,11 +82,11 @@ public class ExtensionMechanismsHelper {
     	}
     	return l;
     }
-    
+
     /**
      * Returns all stereotypes in some model
      * @param ns
-     * @return Collection The stereotypes found. An empty arraylist is returned 
+     * @return Collection The stereotypes found. An empty arraylist is returned
      * if nothing is found.
      */
     public Collection getStereotypes(MModel ns) {
@@ -99,7 +101,7 @@ public class ExtensionMechanismsHelper {
         }
         return l;
     }
-    
+
     /**
      * Finds a stereotype in some namespace. Returns null if no such stereotype is found.
      */
@@ -109,7 +111,7 @@ public class ExtensionMechanismsHelper {
     	Iterator it = getStereotypes(ns).iterator();
     	while (it.hasNext()) {
     		Object o = it.next();
-    		if (o instanceof MStereotype && 
+    		if (o instanceof MStereotype &&
     			((MStereotype)o).getName().equals(name) &&
     			((MStereotype)o).getBaseClass().equals(baseClass)) {
     			return (MStereotype)o;
@@ -117,7 +119,7 @@ public class ExtensionMechanismsHelper {
     	}
     	return null;
     }
-    
+
     /**
      * Searches the given stereotype in all models in the current project.
      * @param stereo
@@ -129,13 +131,13 @@ public class ExtensionMechanismsHelper {
         String baseClass = stereo.getBaseClass();
         if (name == null || baseClass == null) return null;
         ProjectBrowser pb = ProjectBrowser.TheInstance;
-        Iterator it2 = ProjectManager.getManager().getCurrentProject().getModels().iterator(); 
+        Iterator it2 = ProjectManager.getManager().getCurrentProject().getModels().iterator();
         while (it2.hasNext()) {
             MModel model = (MModel)it2.next();
             Iterator it = getStereotypes(model).iterator();
             while (it.hasNext()) {
                 Object o = it.next();
-                if (o instanceof MStereotype && 
+                if (o instanceof MStereotype &&
                     ((MStereotype)o).getName().equals(name) &&
                     ((MStereotype)o).getBaseClass().equals(baseClass)) {
                     return (MStereotype)o;
@@ -144,12 +146,12 @@ public class ExtensionMechanismsHelper {
         }
         return null;
     }
-    
+
     public String getMetaModelName(MModelElement m) {
         if (m == null) return null;
         return getMetaModelName(m.getClass());
     }
-    
+
     protected String getMetaModelName(Class clazz) {
         if (clazz == null) return null;
         String name = clazz.getName();
@@ -159,9 +161,9 @@ public class ExtensionMechanismsHelper {
         }
         return name;
     }
-    
+
     /**
-     * Returns all possible stereotypes for some modelelement. Possible stereotypes 
+     * Returns all possible stereotypes for some modelelement. Possible stereotypes
      * are those stereotypes that are owned by the same namespace the modelelement
      * is owned by and that have a baseclass that is the same as the metamodelelement
      * name of the modelelement.
@@ -181,17 +183,17 @@ public class ExtensionMechanismsHelper {
         }
         return ret;
     }
-    
+
     protected boolean isValidStereoType(Class clazz, MStereotype stereo) {
         if (clazz == null || stereo == null) return false;
-        if (getMetaModelName(clazz).equals(stereo.getBaseClass())) 
+        if (getMetaModelName(clazz).equals(stereo.getBaseClass()))
             return true;
         else {
             if (getMetaModelName(clazz).equals("ModelElement")) return false;
             return isValidStereoType(clazz.getSuperclass(), stereo);
         }
     }
-    
+
     /**
      * Returns true if the given stereotype has a baseclass that equals the baseclass
      * of the given modelelement or one of the superclasses of the given modelelement.
@@ -203,7 +205,7 @@ public class ExtensionMechanismsHelper {
         if (m == null) return false;
        return isValidStereoType(m.getClass(), stereo);
     }
-    
+
     public Collection getStereotypes() {
         List ret = new ArrayList();
         Project p = ProjectManager.getManager().getCurrentProject();
@@ -214,9 +216,9 @@ public class ExtensionMechanismsHelper {
         }
         return ret;
     }
-    
+
     /**
-     * Sets the stereotype of some modelelement. The method also copies a 
+     * Sets the stereotype of some modelelement. The method also copies a
      * stereotype that is not a part of the current model to the current model.
      * @param m
      * @param stereo
@@ -227,10 +229,20 @@ public class ExtensionMechanismsHelper {
         }
         m.setStereotype(stereo);
     }
-            
-        
-         
-    
-   
+
+    /**
+     * Sets a tagged value of some modelelement.
+     * @param model element
+     * @param tag
+     * @param value
+     */
+    public void setTaggedValue(Object o, String tag, String value) {
+        if (o != null && o instanceof MModelElement) {
+		    MTaggedValue tv = MFactory.getDefaultFactory().createTaggedValue();
+		    tv.setModelElement((MModelElement)o);
+		    tv.setTag(tag);
+		    tv.setValue(value);
+        }
+    }
 }
 

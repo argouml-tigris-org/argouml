@@ -3,7 +3,7 @@
 /*
   JavaRE - Code generation and reverse engineering for UML and Java
   Copyright (C) 2000 Marcus Andersson andersson@users.sourceforge.net
-  
+
   This library is free software; you can redistribute it and/or modify
   it under the terms of the GNU Lesser General Public License as
   published by the Free Software Foundation; either version 2.1 of the
@@ -17,17 +17,15 @@
   You should have received a copy of the GNU Lesser General Public
   License along with this library; if not, write to the Free Software
   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307
-  USA 
+  USA
 
 */
 
 package org.argouml.uml.reveng.java;
 
-import ru.novosoft.uml.foundation.core.*;
-import ru.novosoft.uml.model_management.*;
 import java.util.*;
-
-import org.argouml.model.uml.UmlFactory;
+import org.argouml.model.uml.foundation.core.CoreFactory;
+import org.argouml.model.uml.foundation.core.CoreHelper;
 
 /**
    The parse state keep control of data during parsing.
@@ -47,26 +45,25 @@ class ParseState
 
     /** The available context for currentClassifier. */
     private Context context;
-    
+
     /** The classifier that is parsed for the moment. */
-    private MClassifier classifier;
+    private Object classifier;
 
     /** Counter for anonymous innner classes */
     private int anonymousClassCounter;
-    
+
     /**
        Create a new parse state.
 
        @param model The model.
        @param javaLangPackage The default package java.lang.
      */
-    public ParseState(MModel model,
-                      MPackage javaLangPackage)
+    public ParseState(Object model, Object javaLangPackage)
     {
 	obsoleteInnerClasses = new Vector();
 	classifier = null;
-	context = 
-	    new PackageContext(new PackageContext(null, model), 
+	context =
+	    new PackageContext(new PackageContext(null, model),
 				   javaLangPackage);
 	anonymousClassCounter = 0;
     }
@@ -79,13 +76,13 @@ class ParseState
        @param currentPackage The current package being parsed.
      */
     public ParseState(ParseState previousState,
-                      MClassifier mClassifier,
-                      MPackage currentPackage)
+                      Object mClassifier,
+                      Object currentPackage)
     {
 	classnamePrefix =
-	    previousState.classnamePrefix + mClassifier.getName() + "$";
-	obsoleteFeatures = new Vector(mClassifier.getFeatures());
-	obsoleteInnerClasses = new Vector(mClassifier.getOwnedElements());
+	    previousState.classnamePrefix + CoreHelper.getHelper().getClassifierName(mClassifier) + "$";
+	obsoleteFeatures = new Vector(CoreHelper.getHelper().getFeatures(mClassifier));
+	obsoleteInnerClasses = new Vector(CoreHelper.getHelper().getOwnedElements(mClassifier));
 	context = new OuterClassifierContext(previousState.context,
 						     mClassifier,
 						     currentPackage,
@@ -93,27 +90,27 @@ class ParseState
 	classifier = mClassifier;
 	anonymousClassCounter = previousState.anonymousClassCounter;
     }
-   
+
     /**
        Add a package to the current context.
 
        @param mPackage The package to add.
      */
-    public void addPackageContext(MPackage mPackage)
+    public void addPackageContext(Object mPackage)
     {
 	context = new PackageContext(context, mPackage);
     }
-    
+
     /**
        Add a classifier to the current context.
 
        @param mClassifier The classifier to add.
      */
-    public void addClassifierContext(MClassifier mClassifier)
+    public void addClassifierContext(Object mClassifier)
     {
 	context = new ClassifierContext(context, mClassifier);
     }
-    
+
     /**
        Get the current context.
 
@@ -123,13 +120,13 @@ class ParseState
     {
 	return context;
     }
-    
+
     /**
        Get the current classifier.
 
        @return The current classifier.
      */
-    public MClassifier getClassifier()
+    public Object getClassifier()
     {
 	return classifier;
     }
@@ -141,7 +138,7 @@ class ParseState
      */
     public String anonymousClass()
     {
-	classnamePrefix = 
+	classnamePrefix =
 	    classnamePrefix.substring(0, classnamePrefix.indexOf("$") + 1);
 	anonymousClassCounter++;
 	return (new Integer(anonymousClassCounter)).toString();
@@ -165,14 +162,14 @@ class ParseState
     {
 	return classnamePrefix;
     }
- 
+
     /**
        Tell the parse state that a classifier is an inner classifier
        to the current parsed classifier.
-       
+
        @param mClassifier The inner classifier.
     */
-    public void innerClassifier(MClassifier mClassifier)
+    public void innerClassifier(Object mClassifier)
     {
 	obsoleteInnerClasses.remove(mClassifier);
     }
@@ -184,7 +181,7 @@ class ParseState
     public void removeObsoleteFeatures()
     {
 	for(Iterator i = obsoleteFeatures.iterator(); i.hasNext(); ) {
-	    classifier.removeFeature((MFeature)i.next());
+	    CoreHelper.getHelper().removeFeature(classifier,i.next());
 	}
     }
 
@@ -195,11 +192,11 @@ class ParseState
     public void removeObsoleteInnerClasses()
     {
 	for(Iterator i = obsoleteInnerClasses.iterator(); i.hasNext(); ) {
-	    MModelElement element = (MModelElement)i.next();
-	    if(element instanceof MClassifier) {
-                UmlFactory.getFactory().delete(element);
+	    Object element = i.next();
+	    if(CoreHelper.getHelper().isClassifier(element)) {
+                CoreFactory.getFactory().deleteClassifier(element);
 	    }
-	}	
+	}
     }
 
     /**
@@ -208,7 +205,7 @@ class ParseState
 
        @param feature The feature.
     */
-    public void feature(MFeature feature)
+    public void feature(Object feature)
     {
 	obsoleteFeatures.remove(feature);
     }
@@ -219,11 +216,11 @@ class ParseState
        @param name The name of the feature.
        @return The found feature, null if not found.
      */
-    public MFeature getFeature(String name)
+    public Object getFeature(String name)
     {
 	for(Iterator i = obsoleteFeatures.iterator(); i.hasNext(); ) {
-	    MFeature mFeature = (MFeature)i.next();
-	    if(name.equals(mFeature.getName())) {
+	    Object mFeature = i.next();
+	    if(name.equals(CoreHelper.getHelper().getFeatureName(mFeature))) {
 		return mFeature;
 	    }
 	}
@@ -236,13 +233,13 @@ class ParseState
        @param name The name of the method.
        @return The found method, null if not found.
      */
-    public MMethod getMethod(String name)
+    public Object getMethod(String name)
     {
 	for(Iterator i = obsoleteFeatures.iterator(); i.hasNext(); ) {
-	    MFeature mFeature = (MFeature)i.next();
-	    if(mFeature instanceof MMethod &&
-	       name.equals(mFeature.getName())) {
-		return (MMethod)mFeature;
+	    Object mFeature = i.next();
+	    if(CoreHelper.getHelper().isMethod(mFeature) &&
+	       name.equals(CoreHelper.getHelper().getFeatureName(mFeature))) {
+		return mFeature;
 	    }
 	}
 	return null;
@@ -254,16 +251,16 @@ class ParseState
        @param name The name of the operation.
        @return The found operation, null if not found.
      */
-    public MOperation getOperation(String name)
+    public Object getOperation(String name)
     {
 	for(Iterator i = obsoleteFeatures.iterator(); i.hasNext(); ) {
-	    MFeature mFeature = (MFeature)i.next();
-	    if(mFeature instanceof MOperation &&
-	       name.equals(mFeature.getName())) {
-		return (MOperation)mFeature;
+	    Object mFeature = i.next();
+	    if(CoreHelper.getHelper().isOperation(mFeature) &&
+	       name.equals(CoreHelper.getHelper().getFeatureName(mFeature))) {
+		return mFeature;
 	    }
 	}
 	return null;
     }
 }
-	
+

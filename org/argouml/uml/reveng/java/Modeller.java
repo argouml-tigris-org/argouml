@@ -85,16 +85,16 @@ public class Modeller
 
        @param model The model to work with.
     */
-    public Modeller(MModel model,
+    public Modeller(Object model,
 		    DiagramInterface diagram,
 		    boolean noAssociations,
 		    boolean arraysAsDatatype)
     {
-	this.model = model;
+	this.model = (MModel)model;
 	this.noAssociations = noAssociations;
 	this.arraysAsDatatype = arraysAsDatatype;
-	currentPackage = model;
-	parseState = new ParseState(model, getPackage("java.lang"));
+	currentPackage = this.model;
+	parseState = new ParseState(this.model, getPackage("java.lang"));
 	parseStateStack = new Stack();
 	_diagram = diagram;
 	_exception = null;
@@ -164,7 +164,7 @@ public class Modeller
 	else {
 	    try {
 		MClassifier mClassifier =
-		    (new PackageContext(null, mPackage)).get(classifierName);
+		    (MClassifier)(new PackageContext(null, mPackage)).get(classifierName);
 		parseState.addClassifierContext(mClassifier);
 	    }
 	    catch(ClassifierNotFoundException e) {
@@ -213,8 +213,8 @@ public class Modeller
 
 	    for(Iterator i = interfaces.iterator(); i.hasNext(); ) {
 		String interfaceName = (String)i.next();
-		MInterface mInterface = getContext(interfaceName)
-		    .getInterface(getClassifierName(interfaceName));
+		MInterface mInterface = (MInterface)(getContext(interfaceName)
+		    .getInterface(getClassifierName(interfaceName)));
 
 		MAbstraction mAbstraction =
 		    getAbstraction(currentPackage, mInterface, mClass);
@@ -241,7 +241,7 @@ public class Modeller
 	String name = parseState.anonymousClass();
 	try {
 	    MClassifier mClassifier =
-		getContext(type).get(getClassifierName(type));
+		(MClassifier)(getContext(type).get(getClassifierName(type)));
 	    Vector interfaces = new Vector();
 	    if(mClassifier instanceof MInterface) {
 		interfaces.add(type);
@@ -282,8 +282,8 @@ public class Modeller
 	try {
 	    for(Iterator i = interfaces.iterator(); i.hasNext(); ) {
 		String interfaceName = (String)i.next();
-		MInterface parentInterface = getContext(interfaceName)
-		    .getInterface(getClassifierName(interfaceName));
+		MInterface parentInterface = (MInterface)(getContext(interfaceName)
+		    .getInterface(getClassifierName(interfaceName)));
 
 		MGeneralization mGeneralization =
 		    getGeneralization(currentPackage,
@@ -318,12 +318,12 @@ public class Modeller
 
 	if(parseState.getClassifier() != null) {
 	    // Inner classes
-	    mClassifier = (MClassifier)parseState.getClassifier().lookup(name);
-	    mNamespace = parseState.getClassifier();
+	    mClassifier = (MClassifier)((MClassifier)parseState.getClassifier()).lookup(name);
+	    mNamespace = (MClassifier)parseState.getClassifier();
 	}
 	else {
 	    parseState.outerClassifier();
-	    mClassifier = (MClassifier)currentPackage.lookup(name);
+	    mClassifier = (MClassifier)((MPackage)currentPackage).lookup(name);
 	    mNamespace = currentPackage;
 	}
 	if(mClassifier == null) {
@@ -362,7 +362,7 @@ public class Modeller
     public void popClassifier()
     {
 	// add the current classifier to the diagram.
-	MClassifier classifier = parseState.getClassifier();
+	MClassifier classifier = (MClassifier)parseState.getClassifier();
 
 	if(classifier instanceof MInterface) {
 	    getDiagram().addInterface((MInterface)classifier);
@@ -433,10 +433,10 @@ public class Modeller
 	      mParameter = UmlFactory.getFactory().getCore().buildParameter(mOperation);
               mParameter.setName("return");
               mParameter.setKind(MParameterDirectionKind.RETURN);
-       
+
 
         mClassifier =
-            getContext(returnType).get(getClassifierName(returnType));
+            (MClassifier)(getContext(returnType).get(getClassifierName(returnType)));
         mParameter.setType(mClassifier);
           }
 
@@ -445,11 +445,11 @@ public class Modeller
         mParameter = UmlFactory.getFactory().getCore().buildParameter(mOperation);
         mParameter.setName((String)parameter.elementAt(2));
         mParameter.setKind(MParameterDirectionKind.IN);
-       
+
 
         typeName = (String)parameter.elementAt(1);
         mClassifier =
-            getContext(typeName).get(getClassifierName(typeName));
+            (MClassifier)(getContext(typeName).get(getClassifierName(typeName)));
         mParameter.setType(mClassifier);
           }
       }
@@ -533,7 +533,7 @@ public class Modeller
 
       try {
           MClassifier mClassifier =
-        getContext(typeSpec).get(getClassifierName(typeSpec));
+        (MClassifier)(getContext(typeSpec).get(getClassifierName(typeSpec)));
           MAttribute mAttribute =
         getAttribute(name, initializer, mClassifier);
 
@@ -637,7 +637,7 @@ public class Modeller
 	String name = parent.getName() + "<-" + child.getName();
 	MGeneralization mGeneralization = null;
 	mGeneralization = CoreHelper.getHelper().getGeneralization(child, parent);
-	
+
 
 	if(mGeneralization == null) {
 	    mGeneralization = CoreFactory.getFactory().buildGeneralization(child, parent);
@@ -743,15 +743,15 @@ public class Modeller
 	MOperation mOperation = (MOperation)parseState.getOperation(name);
 
 	if(mOperation == null) {
-	    mOperation = UmlFactory.getFactory().getCore().buildOperation(parseState.getClassifier());
+	    mOperation = UmlFactory.getFactory().getCore().buildOperation((MClassifier)parseState.getClassifier());
 	    mOperation.setName(name);
             Iterator it2 = ProjectManager.getManager().getCurrentProject().findFigsForMember(parseState.getClassifier()).iterator();
             while (it2.hasNext()) {
                 MElementListener listener = (MElementListener)it2.next();
                 // UmlModelEventPump.getPump().removeModelEventListener(listener, mOperation);
-                UmlModelEventPump.getPump().addModelEventListener(listener, mOperation); 
+                UmlModelEventPump.getPump().addModelEventListener(listener, mOperation);
                 // UmlModelEventPump.getPump().removeModelEventListener(listener, mOperation.getParameter(0));
-                UmlModelEventPump.getPump().addModelEventListener(listener, mOperation.getParameter(0)); 
+                UmlModelEventPump.getPump().addModelEventListener(listener, mOperation.getParameter(0));
             }
 	}
 	return mOperation;
@@ -771,7 +771,7 @@ public class Modeller
 	if(mMethod == null) {
 	    mMethod = UmlFactory.getFactory().getCore().createMethod();
 	    mMethod.setName(name);
-	    parseState.getClassifier().addFeature(mMethod);
+	    ((MClassifier)parseState.getClassifier()).addFeature(mMethod);
 	}
 	return mMethod;
     }
@@ -798,7 +798,7 @@ public class Modeller
 	     getAssociationEnd(name, mClassifier) == null))) {
 	    mAttribute = UmlFactory.getFactory().getCore().buildAttribute();
 	    mAttribute.setName(name);
-	    parseState.getClassifier().addFeature(mAttribute);
+	    ((MClassifier)parseState.getClassifier()).addFeature(mAttribute);
 	}
 	return mAttribute;
     }
@@ -824,7 +824,7 @@ public class Modeller
 	}
 
 	if(mAssociationEnd == null && !noAssociations) {
-		MAssociation mAssociation = CoreFactory.getFactory().buildAssociation(mClassifier, true, parseState.getClassifier(), false);
+		MAssociation mAssociation = CoreFactory.getFactory().buildAssociation(mClassifier, true, (MClassifier)parseState.getClassifier(), false);
 		mAssociationEnd = CoreHelper.getHelper().getAssociationEnd(mClassifier, mAssociation);
 		mAssociationEnd.setName(name);
 	}
@@ -1250,7 +1250,7 @@ public class Modeller
       // Now store documentation text
       getTaggedValue (me, "documentation").setValue (sJavaDocs);
 
-      // If there is a tagged value named stereotype, make it a real 
+      // If there is a tagged value named stereotype, make it a real
       // stereotype
       String stereo = me.getTaggedValue("stereotype");
       if (stereo != null && stereo.length() > 0) {

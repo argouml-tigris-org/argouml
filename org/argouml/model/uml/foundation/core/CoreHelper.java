@@ -69,6 +69,7 @@ import ru.novosoft.uml.foundation.core.MOperation;
 import ru.novosoft.uml.foundation.core.MParameter;
 import ru.novosoft.uml.foundation.core.MRelationship;
 import ru.novosoft.uml.foundation.core.MStructuralFeature;
+import ru.novosoft.uml.foundation.core.MMethod;
 import ru.novosoft.uml.foundation.data_types.MParameterDirectionKind;
 import ru.novosoft.uml.foundation.data_types.MVisibilityKind;
 import ru.novosoft.uml.foundation.extension_mechanisms.MStereotype;
@@ -79,7 +80,7 @@ import ru.novosoft.uml.model_management.MPackage;
  * Helper class for UML Foundation::Core Package.
  *
  * Current implementation is a placeholder.
- * 
+ *
  * @since ARGO0.11.2
  * @author Thierry Lach
  * @author Jaap Branderhorst
@@ -92,24 +93,33 @@ public class CoreHelper {
      */
     private CoreHelper() {
     }
-    
+
      /** Singleton instance.
      */
     private static CoreHelper SINGLETON =
                    new CoreHelper();
 
-    
+
     /** Singleton instance access method.
      */
     public static CoreHelper getHelper() {
         return SINGLETON;
     }
-    
-    /** This method returns all Classifiers of which this class is a 
+
+    /** This method returns if an object is a classifier.
+	 *
+	 * @param the object
+	 * @return true if it's a classifier, false if not
+	 */
+	public boolean isClassifier(Object o) {
+		return (o instanceof MClassifier);
+	}
+
+    /** This method returns all Classifiers of which this class is a
 	 *	direct or indirect subtype.
 	 *
 	 * @param cls  the class you want to have the parents for
-	 * @return a collection of the parents, each of which is a 
+	 * @return a collection of the parents, each of which is a
 	 *					{@link MGeneralizableElement MGeneralizableElement}
 	 */
 	public Collection getAllSupertypes(MClassifier cls) {
@@ -117,14 +127,14 @@ public class CoreHelper {
 		Collection result = new HashSet();
 
 		Collection add = getSupertypes(cls);
-		do 
+		do
 		{
 			Collection newAdd = new HashSet();
 			Iterator addIter = add.iterator();
 			while (addIter.hasNext())
 			{
 				MGeneralizableElement next = (MGeneralizableElement) addIter.next();
-				if (next instanceof MClassifier) 
+				if (next instanceof MClassifier)
 				{
 					newAdd.addAll( getSupertypes((MClassifier) next) );
 				}
@@ -134,15 +144,15 @@ public class CoreHelper {
 			add.removeAll(result);
 		}
 		while (! add.isEmpty());
-		
+
 		return result;
 	}
-	
-	/** This method returns all Classifiers of which this class is a 
+
+	/** This method returns all Classifiers of which this class is a
 	 *	direct subtype.
 	 *
 	 * @param cls  the class you want to have the parents for
-	 * @return a collection of the parents, each of which is a 
+	 * @return a collection of the parents, each of which is a
 	 *					{@link MGeneralizableElement MGeneralizableElement}
 	 */
 	public Collection getSupertypes(MClassifier cls) {
@@ -157,7 +167,7 @@ public class CoreHelper {
 		}
 		return result;
 	}
-	
+
 	/** This method returns all opposite AssociationEnds of a given Classifier
 	 *
 	 * @param classifier the classifier you want to have the opposite association ends for
@@ -173,7 +183,7 @@ public class CoreHelper {
 		}
 		return result;
 	}
-	
+
 	/** This method returns all opposite AssociationEnds of a given Classifier, including inherited
 	 *
 	 * @param classifier the classifier you want to have the opposite association ends for
@@ -188,13 +198,12 @@ public class CoreHelper {
 		}
 		return result;
 	}
-	
+
 	/** This method returns all attributes of a given Classifier.
 	 *
 	 * @param classifier the classifier you want to have the attributes for
 	 * @return a collection of the attributes
 	 */
-
 	public Collection getAttributes(MClassifier classifier) {
 	    Collection result = new ArrayList();
 		Iterator features = classifier.getFeatures().iterator();
@@ -205,7 +214,48 @@ public class CoreHelper {
 		}
 		return result;
 	}
-	
+
+	/** This method removes a feature from a classifier.
+	 *
+	 * @param classifier
+	 * @param feature
+	 */
+	public void removeFeature(Object cls, Object feature) {
+	    if (cls != null && feature != null
+	        && cls instanceof MClassifier && feature instanceof MFeature) {
+			((MClassifier)cls).removeFeature((MFeature)feature);
+	    }
+	}
+
+	/** This method returns the name of a feature.
+	 *
+	 * @param feature
+	 * @return name
+	 */
+	public String getFeatureName(Object o) {
+	    if (o != null && o instanceof MFeature)
+			return ((MFeature)o).getName();
+		return null;
+	}
+
+	/** This method returns if the object is a method.
+	 *
+	 * @param object
+	 * @return true if it's a method, false if not
+	 */
+	public boolean isMethod(Object o) {
+	    return (o instanceof MMethod);
+	}
+
+	/** This method returns if the object is an operation.
+	 *
+	 * @param object
+	 * @return true if it's an operation, false if not
+	 */
+	public boolean isOperation(Object o) {
+	    return (o instanceof MOperation);
+	}
+
 	/** This method returns all operations of a given Classifier
 	 *
 	 * @param classifier the classifier you want to have the operations for
@@ -221,13 +271,12 @@ public class CoreHelper {
 		}
 		return result;
 	}
-	
+
 	/** This method returns all attributes of a given Classifier, including inherited
 	 *
 	 * @param classifier the classifier you want to have the attributes for
 	 * @return a collection of the attributes
 	 */
-
 	public Collection getAttributesInh(MClassifier classifier) {
 	    Collection result = new ArrayList();
 		result.addAll(getAttributes(classifier));
@@ -239,7 +288,7 @@ public class CoreHelper {
 		}
 		return result;
 	}
-	
+
 	/** This method returns all operations of a given Classifier, including inherited
 	 *
 	 * @param classifier the classifier you want to have the operations for
@@ -254,7 +303,7 @@ public class CoreHelper {
 		}
 		return result;
 	}
-	
+
 	/** this method finds all paramters of the given operation which have
 	 * the MParamterDirectionType RETURN. If it is only one, it is returned.
 	 * In case there are no return parameters, null is returned. If there
@@ -287,7 +336,7 @@ public class CoreHelper {
 			return (MParameter)returnParams.elementAt(0);
 		}
 	}
-	
+
 	/**
      * Returns all return parameters for an operation.
      * @param operation
@@ -305,8 +354,8 @@ public class CoreHelper {
 		}
 		return (Collection)returnParams;
 	}
-	
-	/** 
+
+	/**
 	 * Returns all Interfaces of which this class is a realization.
 	 * @param cls  the class you want to have the interfaces for
 	 * @return a collection of the Interfaces
@@ -328,12 +377,12 @@ public class CoreHelper {
 		}
 		return result;
 	}
-	
-	/** This method returns all Classifiers of which this class is a 
+
+	/** This method returns all Classifiers of which this class is a
 	 *	direct supertype.
 	 *
 	 * @param cls  the class you want to have the children for
-	 * @return a collection of the children, each of which is a 
+	 * @return a collection of the children, each of which is a
 	 *					{@link MGeneralizableElement MGeneralizableElement}
 	 */
 	public Collection getSubtypes(MClassifier cls) {
@@ -348,10 +397,10 @@ public class CoreHelper {
 		}
 		return result;
 	}
-	
+
     /**
      * Build a returnparameter. Removes all current return parameters from the
-     * operation and adds the supplied parameter. The directionkind of the 
+     * operation and adds the supplied parameter. The directionkind of the
      * parameter will be return. The name will be equal to the name of the last
      * found return parameter or the default value "return" if no return
      * parameter was present in the operation.
@@ -383,7 +432,7 @@ public class CoreHelper {
                 UmlModelEventPump.getPump().addModelEventListener(listener, newReturnParameter);
             }
 	}
-	
+
 	/**
 	 * Builds a dependency with stereotype support
 	 */
@@ -393,7 +442,7 @@ public class CoreHelper {
 		MStereotype stereo = ExtensionMechanismsFactory.getFactory().buildStereotype(dep, "support", ProjectManager.getManager().getCurrentProject().getModel());
 		return dep;
 	}
-	
+
 	/**
 	 * Returns all behavioralfeatures found in this element and its children
 	 * @return Collection
@@ -408,11 +457,31 @@ public class CoreHelper {
 			} else {
 				list.addAll(getAllBehavioralFeatures((MModelElement)it.next()));
 			}
-			
+
 		}
 		return list;
 	}
-	
+
+	/**
+	 * Returns all features found in this classifier
+	 * @return Collection
+	 */
+	public Collection getFeatures(Object clazz) {
+		if (clazz != null && clazz instanceof MClassifier)
+		    return ((MClassifier)clazz).getFeatures();
+		return new ArrayList();
+	}
+
+	/**
+	 * Returns all owned elements found in this namespace
+	 * @return Collection
+	 */
+	public Collection getOwnedElements(Object ns) {
+		if (ns != null && ns instanceof MNamespace)
+		    return ((MNamespace)ns).getOwnedElements();
+		return new ArrayList();
+	}
+
 	/**
 	 * Returns all behavioralfeatures found in this classifier and its children
 	 * @return Collection
@@ -430,7 +499,7 @@ public class CoreHelper {
 		}
 		return features;
 	}
-	
+
 	/**
 	 * Returns all behavioralfeatures found in the projectbrowser model
 	 * @return Collection
@@ -439,7 +508,7 @@ public class CoreHelper {
 		MNamespace model = ProjectManager.getManager().getCurrentProject().getModel();
 		return getAllBehavioralFeatures(model);
 	}
-	
+
 	/**
 	 * Returns all interfaces found in the projectbrowser model
 	 * @return Collection
@@ -448,7 +517,7 @@ public class CoreHelper {
 		MNamespace model = ProjectManager.getManager().getCurrentProject().getModel();
 		return getAllInterfaces(model);
 	}
-	
+
 	/**
 	 * Returns all interfaces found in this namespace and in its children
 	 * @return Collection
@@ -461,15 +530,15 @@ public class CoreHelper {
 			Object o = it.next();
 			if (o instanceof MNamespace) {
 				list.addAll(getAllInterfaces((MNamespace)o));
-			} 
+			}
 			if (o instanceof MInterface) {
 				list.add(o);
 			}
-			
+
 		}
 		return list;
 	}
-	
+
 	/**
 	 * Returns all classes found in the projectbrowser model
 	 * @return Collection
@@ -478,7 +547,7 @@ public class CoreHelper {
 		MNamespace model = ProjectManager.getManager().getCurrentProject().getModel();
 		return getAllClasses(model);
 	}
-	
+
 	/**
 	 * Returns all classes found in this namespace and in its children
 	 * @return Collection
@@ -491,15 +560,15 @@ public class CoreHelper {
 			Object o = it.next();
 			if (o instanceof MNamespace) {
 				list.addAll(getAllClasses((MNamespace)o));
-			} 
+			}
 			if (o instanceof MClass) {
 				list.add(o);
 			}
-			
+
 		}
 		return list;
 	}
-	
+
 	/**
 	 * Return all interfaces the given class realizes.
 	 * @param clazz
@@ -515,7 +584,7 @@ public class CoreHelper {
 			if (o instanceof MAbstraction) {
 				MAbstraction abstraction = (MAbstraction)o;
 				MStereotype stereo = abstraction.getStereotype();
-				if (stereo != null && stereo.getBaseClass()!=null && stereo.getName() != null && stereo.getBaseClass().equals("Abstraction") && stereo.getName().equals("realize")) {					
+				if (stereo != null && stereo.getBaseClass()!=null && stereo.getName() != null && stereo.getBaseClass().equals("Abstraction") && stereo.getName().equals("realize")) {
 					Iterator it2 = abstraction.getSuppliers().iterator();
 					while (it2.hasNext()) {
 						Object o2 = it2.next();
@@ -528,7 +597,7 @@ public class CoreHelper {
 		}
 		return list;
 	}
-	
+
 	/**
 	 * Returns the realization (abstraction) between some class and some interface
 	 *
@@ -543,7 +612,7 @@ public class CoreHelper {
 		MStereotype stereo = ExtensionMechanismsFactory.getFactory().buildStereotype(new MAbstractionImpl(), "realize", model);
 		while (it.hasNext()) {
 			Object o = it.next();
-			if (o instanceof MAbstraction && 
+			if (o instanceof MAbstraction &&
 				((MAbstraction)o).getStereotype().equals(stereo)) {
 				Iterator it2 = ((MAbstraction)o).getSuppliers().iterator();
 				while (it2.hasNext()) {
@@ -556,7 +625,7 @@ public class CoreHelper {
 		}
 		return null;
 	}
-				
+
 	/**
 	 * Returns all classes some generalizable element clazz extends.
 	 * @param clazz
@@ -575,7 +644,7 @@ public class CoreHelper {
 		}
 		return list;
 	}
-	
+
 	/**
 	 * Gets the generalization between two generalizable elements. Returns null
 	 * if there is none.
@@ -594,7 +663,7 @@ public class CoreHelper {
 		}
 		return null;
 	}
-    
+
     /**
      * Returns all flows from some source modelelement to a target modelelement.
      * @param source
@@ -614,7 +683,7 @@ public class CoreHelper {
         }
         return ret;
     }
-		
+
 	/**
 	 * Returns all elements that extend some class clazz.
 	 * @param clazz
@@ -633,7 +702,7 @@ public class CoreHelper {
 		}
 		return list;
 	}
-	
+
 	/**
 	 * Returns all classifiers that extend some classifier clazz.
 	 * @param clazz
@@ -652,7 +721,7 @@ public class CoreHelper {
 		}
 		return list;
 	}
-	
+
 	/**
 	 * Returns all components found in the projectbrowser model
 	 * @return Collection
@@ -661,7 +730,7 @@ public class CoreHelper {
 		MNamespace model = ProjectManager.getManager().getCurrentProject().getModel();
 		return getAllComponents(model);
 	}
-	
+
 	/**
 	 * Returns all components found in this namespace and in its children
 	 * @return Collection
@@ -674,15 +743,15 @@ public class CoreHelper {
 			Object o = it.next();
 			if (o instanceof MNamespace) {
 				list.addAll(getAllComponents((MNamespace)o));
-			} 
+			}
 			if (o instanceof MComponent) {
 				list.add(o);
 			}
-			
+
 		}
 		return list;
 	}
-	
+
 	/**
 	 * Returns all datatypes found in the projectbrowser model
 	 * @return Collection
@@ -691,7 +760,7 @@ public class CoreHelper {
 		MNamespace model = ProjectManager.getManager().getCurrentProject().getModel();
 		return getAllDataTypes(model);
 	}
-	
+
 	/**
 	 * Returns all components found in this namespace and in its children
 	 * @return Collection
@@ -704,15 +773,15 @@ public class CoreHelper {
 			Object o = it.next();
 			if (o instanceof MNamespace) {
 				list.addAll(getAllDataTypes((MNamespace)o));
-			} 
+			}
 			if (o instanceof MDataType) {
 				list.add(o);
 			}
-			
+
 		}
 		return list;
 	}
-	
+
 	/**
 	 * Returns all nodes found in the projectbrowser model
 	 * @return Collection
@@ -721,7 +790,7 @@ public class CoreHelper {
 		MNamespace model = ProjectManager.getManager().getCurrentProject().getModel();
 		return getAllNodes(model);
 	}
-	
+
 	/**
 	 * Returns all components found in this namespace and in its children
 	 * @return Collection
@@ -734,17 +803,17 @@ public class CoreHelper {
 			Object o = it.next();
 			if (o instanceof MNamespace) {
 				list.addAll(getAllNodes((MNamespace)o));
-			} 
+			}
 			if (o instanceof MNode) {
 				list.add(o);
 			}
-			
+
 		}
 		return list;
 	}
-	
+
 	/**
-	 * Gets all classifiers that are associated to the given classifier (have 
+	 * Gets all classifiers that are associated to the given classifier (have
 	 * an association relationship with the classifier).
 	 * @param classifier
 	 * @return Collection
@@ -766,7 +835,7 @@ public class CoreHelper {
 		}
 		return list;
 	}
-	
+
 	/**
 	 * Gets the associations between the classifiers from and to. Returns null
 	 * if from or to is null or if there is no association between them.
@@ -775,8 +844,8 @@ public class CoreHelper {
 	 * @return MAssociation
 	 */
 	public Collection getAssociations(MClassifier from, MClassifier to) {
-	    Set ret = new HashSet();	
-            if (from == null || to == null) return ret;              
+	    Set ret = new HashSet();
+            if (from == null || to == null) return ret;
             Iterator it = from.getAssociationEnds().iterator();
             while (it.hasNext()) {
             	MAssociationEnd end = (MAssociationEnd)it.next();
@@ -791,7 +860,7 @@ public class CoreHelper {
             }
             return ret;
 	}
-	
+
 	/**
 	 * Returns all classifiers found in the projectbrowser model
 	 * @return Collection
@@ -800,7 +869,7 @@ public class CoreHelper {
 		MNamespace model = ProjectManager.getManager().getCurrentProject().getModel();
 		return getAllClassifiers(model);
 	}
-	
+
 	/**
 	 * Returns all classifiers found in this namespace and in its children
 	 * @return Collection
@@ -813,15 +882,15 @@ public class CoreHelper {
 			Object o = it.next();
 			if (o instanceof MNamespace) {
 				list.addAll(getAllClasses((MNamespace)o));
-			} 
+			}
 			if (o instanceof MClassifier) {
 				list.add(o);
 			}
-			
+
 		}
 		return list;
 	}
-	
+
 	/**
 	 * Returns all associations for some classifier
 	 * @param classifier
@@ -836,7 +905,7 @@ public class CoreHelper {
 		}
 		return associations;
 	}
-	
+
 	/**
 	 * Returns the associationend between some classifier type and some associaton assoc.
 	 * @param type
@@ -852,7 +921,7 @@ public class CoreHelper {
 		}
 		return null;
 	}
-	
+
 	/**
 	 * Returns the contents (owned elements) of this classifier and all its parents
 	 * as specified in section 2.5.3.8 of the UML 1.3 spec
@@ -876,7 +945,7 @@ public class CoreHelper {
 		}
 		return list;
 	}
-	
+
 	/**
 	 * Returns all attributes of some classifier clazz and of its parents
 	 * @param clazz
@@ -898,11 +967,11 @@ public class CoreHelper {
 		}
 		return list;
 	}
-    
+
     /**
      * Returns the source of a relation. The source of a relation is defined as
-     * the modelelement that propagates this relation. If there are more then 1 
-     * sources, only the first is returned. If there is no source, null is 
+     * the modelelement that propagates this relation. If there are more then 1
+     * sources, only the first is returned. If there is no source, null is
      * returned. Examples of sources include classifiers that are types to
      * associationends, usecases that are bases to extend and include relations
      * and so on.
@@ -942,13 +1011,13 @@ public class CoreHelper {
         }
         return null;
     }
-    
+
     /**
-     * Returns the destination of a relation. The destination of a relation is 
-     * defined as the modelelement that receives this relation. If there are 
-     * more then 1 destinations, only the first is returned. If there is no 
-     * destination, null is returned. Examples of sources include classifiers that 
-     * are types to associationends, usecases that are bases to extend and 
+     * Returns the destination of a relation. The destination of a relation is
+     * defined as the modelelement that receives this relation. If there are
+     * more then 1 destinations, only the first is returned. If there is no
+     * destination, null is returned. Examples of sources include classifiers that
+     * are types to associationends, usecases that are bases to extend and
      * include relations and so on. In the case of an association, the destination
      * is defined as the type of the second element in the connections list.
      * @param relation
@@ -986,8 +1055,8 @@ public class CoreHelper {
             return include.getAddition();
         }
         return null;
-    }	
-    
+    }
+
     /**
      * Returns the dependencies between some supplier modelelement and some client
      * modelelement. Does not return the vica versa relationship (dependency 'from
@@ -1009,8 +1078,8 @@ public class CoreHelper {
         }
         return ret;
     }
-        
-    
+
+
     /**
      * Returns all relationships between the source and dest modelelement and
      * vica versa.
@@ -1027,14 +1096,14 @@ public class CoreHelper {
         ret.addAll(getDependencies(dest, source));
         if (source instanceof MGeneralizableElement && dest instanceof MGeneralizableElement) {
             ret.add(getGeneralization((MGeneralizableElement)source, (MGeneralizableElement)dest));
-            ret.add(getGeneralization((MGeneralizableElement)dest, (MGeneralizableElement)source));				
+            ret.add(getGeneralization((MGeneralizableElement)dest, (MGeneralizableElement)source));
             if (source instanceof MClassifier && dest instanceof MClassifier) {
                 ret.addAll(getAssociations((MClassifier)source, (MClassifier)dest));
             }
         }
         return ret;
     }
-    
+
     /**
      * Returns true if some modelelement may be owned by the given namespace
      * @param m
@@ -1082,9 +1151,9 @@ public class CoreHelper {
         }
         else
         if (ns instanceof MClassifierRole) {
-            if (!(((MClassifierRole)ns).getAvailableContentses().contains(m) || 
+            if (!(((MClassifierRole)ns).getAvailableContentses().contains(m) ||
                 ((MClassifierRole)ns).getAvailableFeatures().contains(m))) return false;
-        } 
+        }
         if (m instanceof MStructuralFeature) {
             if (!isValidNamespace((MStructuralFeature)m, ns)) return false;
         } else
@@ -1100,9 +1169,9 @@ public class CoreHelper {
         if (m instanceof MCollaboration) {
             if (!isValidNamespace((MCollaboration)m, ns)) return false;
         }
-        return true;  
+        return true;
     }
-    
+
     private boolean isValidNamespace(MCollaboration collab, MNamespace ns) {
         Iterator it = collab.getOwnedElements().iterator();
         while (it.hasNext()) {
@@ -1120,7 +1189,7 @@ public class CoreHelper {
         }
         return true;
     }
-    
+
     private boolean isValidNamespace(MGeneralization gen, MNamespace ns) {
         if (gen.getParent() == null || gen.getChild() == null) return true;
         MNamespace ns1 = gen.getParent().getNamespace();
@@ -1128,12 +1197,12 @@ public class CoreHelper {
         if (ns == getFirstSharedNamespace(ns1, ns2)) return true;
         return false;
     }
-            
+
     private boolean isValidNamespace(MStructuralFeature struc, MNamespace ns) {
         if (struc.getType() == null || struc.getOwner() == null) return true;
         return struc.getOwner().getNamespace().getOwnedElements().contains(struc.getType());
     }
-    
+
     private boolean isValidNamespace(MAssociation assoc, MNamespace ns) {
         Iterator it = assoc.getConnections().iterator();
         List namespaces = new ArrayList();
@@ -1151,23 +1220,23 @@ public class CoreHelper {
         }
         return false;
     }
-    
-    private boolean isValidNamespace(MGeneralizableElement gen, MNamespace ns) {     
-        Iterator it = gen.getParents().iterator(); 
+
+    private boolean isValidNamespace(MGeneralizableElement gen, MNamespace ns) {
+        Iterator it = gen.getParents().iterator();
         while (it.hasNext()) {
             MGeneralizableElement gen2 = (MGeneralizableElement)it.next();
             if (!ns.getOwnedElements().contains(gen2)) {
                 return false;
-                
+
             }
         }
         return true;
     }
-            
-    
+
+
     /**
-     * Gets the first namespace two namespaces share. That is: it returns the 
-     * first namespace that owns the given namespaces itself or some owner of 
+     * Gets the first namespace two namespaces share. That is: it returns the
+     * first namespace that owns the given namespaces itself or some owner of
      * the given namespaces.
      * @param ns1
      * @param ns2
@@ -1182,9 +1251,9 @@ public class CoreHelper {
         if (ns2Owner) return ns2;
         return getFirstSharedNamespace(ns1.getNamespace(), ns2.getNamespace());
     }
-    
+
     /**
-     * Returns all possible namespaces that may be selected by some given 
+     * Returns all possible namespaces that may be selected by some given
      * modelelement m. Which namespaces are allowed, is decided in the method
      * isValidNamespace.
      * @param m
@@ -1202,7 +1271,26 @@ public class CoreHelper {
         }
         return ret;
     }
-                
-                
+
+    /**
+     * Checks if the object is an interface.
+     * @param object
+     * @return boolean
+     */
+    public boolean isInterface(Object o) {
+		return (o instanceof MInterface);
+    }
+
+    /**
+     * Gets the name of a classifier.
+     * @param classifier
+     * @return name
+     */
+    public String getClassifierName(Object o) {
+		String name = null;
+		if (o instanceof MClassifier)
+		    name = ((MClassifier)o).getName();
+		return name;
+    }
 }
 

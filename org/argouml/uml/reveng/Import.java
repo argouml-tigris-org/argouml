@@ -7,7 +7,7 @@
 // California. The software program and documentation are supplied "AS
 // IS", without any accompanying services from The Regents. The Regents
 // does not warrant that the operation of the program will be
-// uninterrupted or error-free. The end-user understands that the program       
+// uninterrupted or error-free. The end-user understands that the program
 // was developed for research purposes and is advised not to rely
 // exclusively on the program for any reason.  IN NO EVENT SHALL THE
 // UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
@@ -19,9 +19,9 @@
 // MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
 // PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
-// UPDATES, ENHANCEMENTS, OR MODIFICATIONS. 
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.argouml.uml.reveng; 
+package org.argouml.uml.reveng;
 
 import java.io.*;
 import org.argouml.kernel.*;
@@ -29,8 +29,6 @@ import org.argouml.uml.reveng.java.*;
 import org.argouml.uml.diagram.ui.*;
 import org.argouml.uml.diagram.static_structure.layout.*;
 import org.tigris.gef.base.*;
-import ru.novosoft.uml.*;
-import ru.novosoft.uml.model_management.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -76,7 +74,7 @@ public class Import {
 
 	    descend = new JCheckBox("Descend directories recursively.");
 	    descend.setSelected(true);
-	    general.add(descend, 
+	    general.add(descend,
 			new GridBagConstraints(GridBagConstraints.RELATIVE,
 					       GridBagConstraints.RELATIVE,
 					       GridBagConstraints.REMAINDER,
@@ -94,7 +92,7 @@ public class Import {
 	}
 	return configPanel;
     }
-	
+
 
     /**
      * The method that for all parsing actions. It calls the
@@ -123,7 +121,7 @@ public class Import {
      * @param p is the project
      * @param files is a Vector of the files to be imported.
      */
-    public static void realDoFile(ImportStatusScreen iss, 
+    public static void realDoFile(ImportStatusScreen iss,
 				  Project p, Vector files) {
 
 	ProjectBrowser pb = ProjectBrowser.TheInstance;
@@ -143,7 +141,7 @@ public class Import {
 
 		try {
 		    st.mark(curFile.getName());
-		    pb.showStatus("Importing " + curFile.getName() 
+		    pb.showStatus("Importing " + curFile.getName()
 				  + " (in " + curFile.getParent());
 		    parseFile(p, curFile);       // Try to parse this file.
 
@@ -170,7 +168,7 @@ public class Import {
 	if (files.size() > 0) {
 	    Argo.log.info("There are unparseable files:");
 	    for (int i = 0; i < files.size(); i++) {
-		Argo.log.info("Unparseable file: " 
+		Argo.log.info("Unparseable file: "
 			      + ((File)files.elementAt(i)).getName());
 	    }
 	}
@@ -189,7 +187,7 @@ public class Import {
 	}
 
 	iss.done();
-	
+
 	Argo.log.info(st);
 	pb.getStatusBar().showProgress(0);
     }
@@ -217,7 +215,7 @@ public class Import {
 	    if (!curDir.isDirectory()) {
 		// For some reason, this eledged directory is a single file
 		// This could be that there is some confusion or just
-		// the normal, that a single file was selected and is 
+		// the normal, that a single file was selected and is
 		// supposed to be imported.
 		res.add(curDir);
 		continue;
@@ -249,7 +247,7 @@ public class Import {
 		    if (isParseable(curFile))
 			res.add(curFile);
 		}
-	    } 
+	    }
 	}
 	return res;
     }
@@ -330,10 +328,10 @@ class ImportRun implements Runnable {
 	if (_filesLeft.size() > 0) {
 	    File curFile = (File)_filesLeft.elementAt(0);
 	    _filesLeft.removeElementAt(0);
-	    
+
 	    try {
 		_st.mark(curFile.getName());
-		pb.showStatus("Importing " + curFile.getName() 
+		pb.showStatus("Importing " + curFile.getName()
 			      + " (in " + curFile.getParent());
 		Import.parseFile(_project, curFile); // Try to parse this file.
 
@@ -363,7 +361,7 @@ class ImportRun implements Runnable {
 	    SwingUtilities.invokeLater(this);
 	    return;
 	}
-	    
+
 	// Do post load processings.
 	_st.mark("postprocessings");
 
@@ -390,7 +388,7 @@ class ImportRun implements Runnable {
 	}
 
 	_iss.done();
-	
+
 	Argo.log.info(_st);
 	pb.getStatusBar().showProgress(0);
     }
@@ -419,7 +417,7 @@ class ImportStatusScreen extends JDialog {
     }
 
     public void setMaximum(int i) { _statusBar.setMaximum(i); }
-    public void setValue(int i) { 
+    public void setValue(int i) {
 	_statusBar.setValue(i);
 	repaint();
     }
