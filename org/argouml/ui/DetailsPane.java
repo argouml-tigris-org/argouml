@@ -41,6 +41,7 @@ import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import javax.swing.event.EventListenerList;
 
 import org.apache.log4j.Category;
 import org.argouml.application.api.Argo;
@@ -97,6 +98,11 @@ public class DetailsPane
      */
     protected JTabbedPane _tabs = new JTabbedPane();
 
+    /** 
+     * The current target
+     */
+    private Object _target;
+
     /**
      * a list of all the tabs, which are JPanels, in the JTabbedPane _tabs.
      */
@@ -112,6 +118,27 @@ public class DetailsPane
      */
     private Orientation orientation;
 
+    /**
+       * The list with targetlisteners, this are the property panels managed by TabProps
+       * It should only contain one listener at a time.
+       */
+    private EventListenerList _listenerList = new EventListenerList();
+
+    /**
+        * Adds a listener.
+        * @param listener the listener to add
+        */
+    private void addTargetListener(TargetListener listener) {
+        _listenerList.add(TargetListener.class, listener);
+    }
+
+    /**
+     * Removes a target listener.
+     * @param listener the listener to remove
+     */
+    private void removeTargetListener(TargetListener listener) {
+        _listenerList.remove(TargetListener.class, listener);
+    }
     ////////////////////////////////////////////////////////////////
     // constructors
 
@@ -146,9 +173,13 @@ public class DetailsPane
                 _tabs.addTab(title, _upArrowIcon, t);
             } else {
                 _tabs.addTab(title, t);
-            }
+            } /*
+                        if (t instanceof TargetListener) {
+                            TargetManager.getInstance().addTargetListener((TargetListener)t);
+                        }
+                        */
         }
-        
+
         // set the tab that should be shown on first entrance
         _lastNonNullTab = -1;
         Component[] tabs = _tabs.getComponents();
@@ -162,7 +193,7 @@ public class DetailsPane
             // if there is no tabtodo either, this will result in _lastNonNullTab = -1
             if (tabs[i] instanceof TabToDo) {
                 _lastNonNullTab = i;
-            }            
+            }
         }
         setTarget(null);
         _item = null;
@@ -181,7 +212,7 @@ public class DetailsPane
     }
 
     /**
-     * selects the TODO tab, and sets the target of that tab.
+     * selects the to do tab, and sets the target of that tab.
      */
     public boolean setToDoItem(Object item) {
         _item = item;
@@ -203,7 +234,7 @@ public class DetailsPane
      *
      * <p>Decides which panels to enable.
      * @deprecated replaced by TargetListener, will become non-public in 
-     * the future or be removed
+     * the future
      */
     public void setTarget(Object target) {
         enableTabs(target);
@@ -214,7 +245,7 @@ public class DetailsPane
                 if (tab instanceof TabTarget) {
                     if (((TabTarget) tab).shouldBeEnabled(target)) {
                         if (!(tab instanceof TargetListener))
-                            ((TabTarget) tab).setTarget(target);
+                             ((TabTarget) tab).setTarget(target);
                         _tabs.setSelectedIndex(i);
                         tabSelected = true;
                         _lastNonNullTab = i;
@@ -260,7 +291,8 @@ public class DetailsPane
 
         } else {
             // default tab todo
-            JPanel tab = _tabPanels.isEmpty() ? null : (JPanel) _tabPanels.get(0);
+            JPanel tab =
+                _tabPanels.isEmpty() ? null : (JPanel) _tabPanels.get(0);
             if (!(tab instanceof TabToDo)) {
                 Iterator it = _tabPanels.iterator();
                 while (it.hasNext()) {
@@ -277,18 +309,17 @@ public class DetailsPane
 
             } else {
                 _tabs.setSelectedIndex(-1);
-            }           
+            }
         }
+        _target = target;
 
     }
 
     /**
      * Returns the current model target.
-     * @return
-     * @deprecated use TargetManager.getInstance().getTarget() instead
      */
     public Object getTarget() {
-        return TargetManager.getInstance().getTarget();
+        return _target;
     }
 
     public Dimension getMinimumSize() {
@@ -418,22 +449,29 @@ public class DetailsPane
         Component sel = _tabs.getSelectedComponent();
 
         // update the tab
-
+        if (_lastNonNullTab >= 0) {
+                    Object tab = _tabPanels.get(_lastNonNullTab);
+                    if (tab instanceof TargetListener)
+                        removeTargetListener((TargetListener) tab);
+                }
         Object target = TargetManager.getInstance().getTarget();
         
         if (!(sel instanceof TargetListener)) {
-        if (sel instanceof TabToDoTarget)
-             ((TabToDoTarget) sel).refresh();
+            if (sel instanceof TabToDoTarget)
+                 ((TabToDoTarget) sel).refresh();
 
-        else if (sel instanceof TabTarget)
-             ((TabTarget) sel).setTarget(target);
+            else if (sel instanceof TabTarget)
+                 ((TabTarget) sel).setTarget(target);
+        } else {
+            removeTargetListener((TargetListener) sel);
+            addTargetListener((TargetListener) sel);
         }
-
+        
         if (target != null
             && ModelFacade.isABase(target)
             && _tabs.getSelectedIndex() > 0)
             _lastNonNullTab = _tabs.getSelectedIndex();
-            
+
     }
 
     /**
@@ -533,6 +571,7 @@ public class DetailsPane
         // we can neglect this, the detailspane allways selects the first target
         // in a set of targets. The first target can only be 
         // changed in a targetRemoved or a TargetSet event
+        fireTargetAdded(e);
     }
 
     /**
@@ -542,6 +581,7 @@ public class DetailsPane
         // how to handle empty target lists?
         // probably the detailspane should only show an empty pane in that case
         setTarget(e.getNewTargets()[0]);
+        fireTargetRemoved(e);
     }
 
     /**
@@ -549,6 +589,7 @@ public class DetailsPane
      */
     public void targetSet(TargetEvent e) {
         setTarget(e.getNewTargets()[0]);
+        fireTargetSet(e);
     }
 
     /**
@@ -563,8 +604,6 @@ public class DetailsPane
             JPanel tab = (JPanel) _tabPanels.elementAt(i);
             boolean shouldEnable = false;
             if (tab instanceof TargetListener) {
-                TargetManager.getInstance().removeTargetListener(
-                    (TargetListener) tab);
                 if (tab instanceof TabTarget) {
                     shouldEnable = ((TabTarget) tab).shouldBeEnabled(target);
                 } else {
@@ -572,16 +611,49 @@ public class DetailsPane
                         shouldEnable = true;
                     }
                 }
-                if (shouldEnable)
-                    TargetManager.getInstance().addTargetListener(
-                        (TargetListener) tab);
-
+                if (shouldEnable) {
+                    removeTargetListener((TargetListener) tab);
+                    addTargetListener((TargetListener) tab);
+                }
             }
 
             _tabs.setEnabledAt(i, shouldEnable);
 
         }
 
+    }
+    private void fireTargetSet(TargetEvent targetEvent) {
+        //          Guaranteed to return a non-null array
+        Object[] listeners = _listenerList.getListenerList();
+        for (int i = listeners.length - 2; i >= 0; i -= 2) {
+            if (listeners[i] == TargetListener.class) {
+                // Lazily create the event:                     
+                 ((TargetListener) listeners[i + 1]).targetSet(targetEvent);
+            }
+        }
+    }
+
+    private void fireTargetAdded(TargetEvent targetEvent) {
+        // Guaranteed to return a non-null array
+        Object[] listeners = _listenerList.getListenerList();
+
+        for (int i = listeners.length - 2; i >= 0; i -= 2) {
+            if (listeners[i] == TargetListener.class) {
+                // Lazily create the event:                     
+                 ((TargetListener) listeners[i + 1]).targetAdded(targetEvent);
+            }
+        }
+    }
+
+    private void fireTargetRemoved(TargetEvent targetEvent) {
+        // Guaranteed to return a non-null array
+        Object[] listeners = _listenerList.getListenerList();
+        for (int i = listeners.length - 2; i >= 0; i -= 2) {
+            if (listeners[i] == TargetListener.class) {
+                // Lazily create the event:                     
+                ((TargetListener) listeners[i + 1]).targetRemoved(targetEvent);
+            }
+        }
     }
 
 } /* end class DetailsPane */

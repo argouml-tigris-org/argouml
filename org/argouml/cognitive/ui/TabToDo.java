@@ -64,6 +64,8 @@ public class TabToDo extends TabSpawnable implements TabToDoTarget {
     //JTextArea _description = new JTextArea();
     WizDescription _description = new WizDescription();
     JPanel _lastPanel = null;
+    
+    private Object _target;
 
     ////////////////////////////////////////////////////////////////
     // constructor
@@ -152,6 +154,7 @@ public class TabToDo extends TabSpawnable implements TabToDoTarget {
      */
     public void setTarget(Object item) {
         Object target = item;
+        _target = target;
         updateActionsEnabled();
         // the target of description will allways be set directly by tabtodo
         _description.setTarget(target);
@@ -163,16 +166,15 @@ public class TabToDo extends TabSpawnable implements TabToDoTarget {
         else {
             showDescription();
         }
+        
     }
 
    /**
     * Returns the target of the TabToDo
-    * @deprecated this method will be removed in a couple of releases
-    * Use TargetManager.getInstance().getTarget() instead
     * @return The current target of the TabToDo
     */
     public Object getTarget() {
-        return TargetManager.getInstance().getTarget();
+        return _target;
     }
 
     public void refresh() {

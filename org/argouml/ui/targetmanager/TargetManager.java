@@ -23,8 +23,11 @@
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 package org.argouml.ui.targetmanager;
 
+import java.lang.ref.WeakReference;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 
 import javax.swing.event.EventListenerList;
 
@@ -51,6 +54,70 @@ import org.tigris.gef.presentation.Fig;
  * @author jaap.branderhorst@xs4all.nl
  */
 public final class TargetManager {
+
+    private class HistoryManager implements TargetListener {
+        private List _history = new ArrayList();
+        
+        private boolean _navigateBackward;
+
+        private int _currentTarget = -1;
+
+        private HistoryManager() {
+            addTargetListener(this);
+        }
+
+        private void putInHistory(Object target) {
+            if (target != null && !_navigateBackward) {
+                _currentTarget++;
+                if (_currentTarget == _history.size())
+                    _history.add(new WeakReference(target));
+                else {
+                    WeakReference ref =
+                        (WeakReference) _history.get(_currentTarget);
+                    if (!ref.get().equals(target)) {
+                        for (int i = _currentTarget;
+                            i < _history.size();
+                            i++) {
+                            _history.remove(i);
+                        }
+                        _history.add(_currentTarget, new WeakReference(target));
+                    }
+                }
+            }
+        }
+        
+        private void navigateForward() {
+            setTarget(((WeakReference)_history.get(++_currentTarget)).get());
+        }
+        
+        private void navigateBackward() {
+            _navigateBackward = true;
+            setTarget(((WeakReference)_history.get(--_currentTarget)).get());
+            _navigateBackward = false;
+        }
+
+        /**
+         * @see org.argouml.ui.targetmanager.TargetListener#targetAdded(org.argouml.ui.targetmanager.TargetEvent)
+         */
+        public void targetAdded(TargetEvent e) {
+        }
+
+        /**
+         * @see org.argouml.ui.targetmanager.TargetListener#targetRemoved(org.argouml.ui.targetmanager.TargetEvent)
+         */
+        public void targetRemoved(TargetEvent e) {
+            putInHistory(e.getNewTargets()[0]);
+
+        }
+
+        /**
+         * @see org.argouml.ui.targetmanager.TargetListener#targetSet(org.argouml.ui.targetmanager.TargetEvent)
+         */
+        public void targetSet(TargetEvent e) {
+            putInHistory(e.getNewTargets()[0]);
+        }
+
+    }
     /**
      * The log4j logger to log messages to
      */
@@ -65,12 +132,12 @@ public final class TargetManager {
      * The targets stored in an object array to improve performance
      */
     private Object[] _targets = new Object[0];
-    
+
     /** 
      * Cache for the modeltarget. See getModelTarget
      */
     private Object _modelTarget = null;
-    
+
     /**
      * Cache for the figTarget. See getFigTarget
      */
@@ -80,6 +147,12 @@ public final class TargetManager {
      * The list with targetlisteners
      */
     private EventListenerList _listenerList = new EventListenerList();
+    
+    /**
+     * The history manager of argouml. Via the historymanager browser behaviour
+     * is emulated
+     */
+    private HistoryManager _historyManager = new HistoryManager();
 
     /**
      * While firing events, the list with targets is not updated yet. Therefore
@@ -90,7 +163,10 @@ public final class TargetManager {
      */
     private Object _newTarget;
 
-    private boolean inTransaction = false;
+    /**
+     * Flag to indicate that there is a setTarget method running
+     */
+    private boolean _inTransaction = false;
 
     /**
      * Singleton retrieval method
@@ -117,7 +193,7 @@ public final class TargetManager {
                 _figTarget = determineFigTarget(_newTarget);
                 _modelTarget = determineModelTarget(_newTarget);
                 fireTargetSet(targets);
-                _targets = new Object[] { o };                                
+                _targets = new Object[] { o };
                 _newTarget = null;
                 Actions.updateAllEnabled();
 
@@ -156,11 +232,11 @@ public final class TargetManager {
                     _figTarget = determineFigTarget(_newTarget);
                     _modelTarget = determineModelTarget(_newTarget);
                     fireTargetSet(targets);
-                    _targets = targets;                  
+                    _targets = targets;
                     _newTarget = null;
                 }
             } else {
-                Object[] targets = new Object[] {null};
+                Object[] targets = new Object[] { null };
                 fireTargetSet(targets);
                 _targets = targets;
                 _modelTarget = null;
@@ -299,15 +375,15 @@ public final class TargetManager {
     }
 
     private void startTargetTransaction() {
-        inTransaction = true;
+        _inTransaction = true;
     }
 
     private boolean isInTargetTransaction() {
-        return inTransaction;
+        return _inTransaction;
     }
 
     private void endTargetTransaction() {
-        inTransaction = false;
+        _inTransaction = false;
     }
 
     /**
@@ -319,43 +395,46 @@ public final class TargetManager {
     public Fig getFigTarget() {
         return _figTarget;
     }
-    
+
     private Fig determineFigTarget(Object target) {
         if (!(target instanceof Fig)) {
 
-                    Project p = ProjectManager.getManager().getCurrentProject();
-                    Collection col = p.findFigsForMember(target);
-                    if (col == null || col.isEmpty()) {
-                        target = null;
-                    } else {
-                        target = col.iterator().next();
-                    }
-                }
+            Project p = ProjectManager.getManager().getCurrentProject();
+            Collection col = p.findFigsForMember(target);
+            if (col == null || col.isEmpty()) {
+                target = null;
+            } else {
+                target = col.iterator().next();
+            }
+        }
 
-                return target instanceof Fig ? (Fig) target : null; 
+        return target instanceof Fig ? (Fig) target : null;
     }
 
-   /**
-    * Returns the target in it's 'modelform'. If the target retrieved by getTarget
-    * is an UMLDiagram or a modelelement the target will be returned. If the target
-    * is a fig but owned by a modelelement that modelelement will be returned. 
-    * Otherwise null will be returned.
-    * @return the target in it's 'modelform'.
-    */
+    /**
+     * Returns the target in it's 'modelform'. If the target retrieved by getTarget
+     * is an UMLDiagram or a modelelement the target will be returned. If the target
+     * is a fig but owned by a modelelement that modelelement will be returned. 
+     * Otherwise null will be returned.
+     * @return the target in it's 'modelform'.
+     */
     public Object getModelTarget() {
-       return _modelTarget;
-        
+        return _modelTarget;
+
     }
-    
+
     private Object determineModelTarget(Object target) {
         if (target instanceof Fig) {
-                    Object owner = ((Fig)target).getOwner();
-                    if (ModelFacade.isABase(owner)) {
-                        target = owner;
-                    }
-                }
-                return target instanceof UMLDiagram || ModelFacade.isABase(target) ? target : null;
-        
+            Object owner = ((Fig) target).getOwner();
+            if (ModelFacade.isABase(owner)) {
+                target = owner;
+            }
+        }
+        return target instanceof UMLDiagram
+            || ModelFacade.isABase(target) ? target : null;
+
     }
+    
+    
 
 }

@@ -152,7 +152,7 @@ public class UMLChangeDispatch implements Runnable, UMLUserInterfaceComponent {
         _container = container;
         _eventType = eventType;
         if (container instanceof PropPanel) {
-            _target = ((PropPanel)container).getTarget();            
+            _target = ((PropPanel)container).getTarget();              
         }
         
     }

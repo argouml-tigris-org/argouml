@@ -73,70 +73,16 @@ import org.argouml.uml.diagram.ui.PropPanelUMLDeploymentDiagram;
 import org.argouml.uml.diagram.ui.PropPanelUMLSequenceDiagram;
 import org.argouml.uml.diagram.ui.PropPanelUMLUseCaseDiagram;
 import org.argouml.uml.diagram.use_case.ui.UMLUseCaseDiagram;
-import org.argouml.uml.ui.behavior.activity_graphs.PropPanelActionState;
-import org.argouml.uml.ui.behavior.collaborations.PropPanelAssociationEndRole;
-import org.argouml.uml.ui.behavior.collaborations.PropPanelAssociationRole;
-import org.argouml.uml.ui.behavior.collaborations.PropPanelClassifierRole;
-import org.argouml.uml.ui.behavior.collaborations.PropPanelCollaboration;
-import org.argouml.uml.ui.behavior.collaborations.PropPanelInteraction;
-import org.argouml.uml.ui.behavior.collaborations.PropPanelMessage;
-import org.argouml.uml.ui.behavior.common_behavior.PropPanelCallAction;
-import org.argouml.uml.ui.behavior.common_behavior.PropPanelComponentInstance;
-import org.argouml.uml.ui.behavior.common_behavior.PropPanelInstance;
-import org.argouml.uml.ui.behavior.common_behavior.PropPanelLink;
-import org.argouml.uml.ui.behavior.common_behavior.PropPanelNodeInstance;
-import org.argouml.uml.ui.behavior.common_behavior.PropPanelObject;
-import org.argouml.uml.ui.behavior.common_behavior.PropPanelSignal;
-import org.argouml.uml.ui.behavior.common_behavior.PropPanelStimulus;
-import org.argouml.uml.ui.behavior.state_machines.PropPanelCallEvent;
-import org.argouml.uml.ui.behavior.state_machines.PropPanelCompositeState;
-import org.argouml.uml.ui.behavior.state_machines.PropPanelFinalState;
-import org.argouml.uml.ui.behavior.state_machines.PropPanelGuard;
-import org.argouml.uml.ui.behavior.state_machines.PropPanelPseudostate;
 import org.argouml.uml.ui.behavior.state_machines.PropPanelSimpleState;
-import org.argouml.uml.ui.behavior.state_machines.PropPanelStateMachine;
-import org.argouml.uml.ui.behavior.state_machines.PropPanelTransition;
-import org.argouml.uml.ui.behavior.use_cases.PropPanelActor;
-import org.argouml.uml.ui.behavior.use_cases.PropPanelExtend;
-import org.argouml.uml.ui.behavior.use_cases.PropPanelExtensionPoint;
-import org.argouml.uml.ui.behavior.use_cases.PropPanelInclude;
 import org.argouml.uml.ui.behavior.use_cases.PropPanelUseCase;
-import org.argouml.uml.ui.foundation.core.*;
-import org.argouml.uml.ui.foundation.extension_mechanisms.PropPanelStereotype;
+import org.argouml.uml.ui.foundation.core.PropPanelClass;
 import org.argouml.util.ConfigLoader;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigText;
 
-import ru.novosoft.uml.behavior.activity_graphs.MActionStateImpl;
-import ru.novosoft.uml.behavior.collaborations.MAssociationEndRoleImpl;
-import ru.novosoft.uml.behavior.collaborations.MAssociationRoleImpl;
-import ru.novosoft.uml.behavior.collaborations.MClassifierRoleImpl;
-import ru.novosoft.uml.behavior.collaborations.MCollaborationImpl;
-import ru.novosoft.uml.behavior.collaborations.MInteraction;
-import ru.novosoft.uml.behavior.collaborations.MMessageImpl;
-import ru.novosoft.uml.behavior.common_behavior.MCallActionImpl;
-import ru.novosoft.uml.behavior.common_behavior.MComponentInstanceImpl;
-import ru.novosoft.uml.behavior.common_behavior.MInstanceImpl;
-import ru.novosoft.uml.behavior.common_behavior.MLinkImpl;
-import ru.novosoft.uml.behavior.common_behavior.MNodeInstanceImpl;
-import ru.novosoft.uml.behavior.common_behavior.MObjectImpl;
-import ru.novosoft.uml.behavior.common_behavior.MSignalImpl;
-import ru.novosoft.uml.behavior.common_behavior.MStimulusImpl;
-import ru.novosoft.uml.behavior.state_machines.MCallEventImpl;
-import ru.novosoft.uml.behavior.state_machines.MCompositeStateImpl;
-import ru.novosoft.uml.behavior.state_machines.MFinalStateImpl;
-import ru.novosoft.uml.behavior.state_machines.MGuardImpl;
-import ru.novosoft.uml.behavior.state_machines.MPseudostateImpl;
 import ru.novosoft.uml.behavior.state_machines.MStateImpl;
-import ru.novosoft.uml.behavior.state_machines.MStateMachine;
-import ru.novosoft.uml.behavior.state_machines.MTransitionImpl;
-import ru.novosoft.uml.behavior.use_cases.MActorImpl;
-import ru.novosoft.uml.behavior.use_cases.MExtendImpl;
-import ru.novosoft.uml.behavior.use_cases.MExtensionPointImpl;
-import ru.novosoft.uml.behavior.use_cases.MIncludeImpl;
 import ru.novosoft.uml.behavior.use_cases.MUseCaseImpl;
-import ru.novosoft.uml.foundation.core.*;
-import ru.novosoft.uml.foundation.extension_mechanisms.MStereotypeImpl;
+import ru.novosoft.uml.foundation.core.MClassImpl;
 
 /**
  * <p>
@@ -165,6 +111,8 @@ public class TabProps
     protected JPanel _lastPanel = null;
     protected String _panelClassBaseName = "";
     private LinkedList _navListeners = new LinkedList();
+    
+    private Object _target;
 
     /**
     * The list with targetlisteners, this are the property panels managed by TabProps
@@ -180,6 +128,7 @@ public class TabProps
 
     public TabProps(String tabName, String panelClassBase) {
         super(tabName);
+        TargetManager.getInstance().addTarget(this);
         setOrientation(ConfigLoader.getTabPropsOrientation());
         _panelClassBaseName = panelClassBase;
         setLayout(new BorderLayout());
@@ -357,14 +306,15 @@ public class TabProps
     public void setTarget(Object t) {
         // targets ought to be modelelements or diagrams 
         t = (t instanceof Fig) ? ((Fig) t).getOwner() : t;
-        if (!(ModelFacade.isABase(t) || t instanceof ArgoDiagram))
+        if (!(t== null || ModelFacade.isABase(t) || t instanceof ArgoDiagram))
             return;
-
+        
         if (_lastPanel != null) {
             remove(_lastPanel);
             if (_lastPanel instanceof TargetListener)
                 removeTargetListener((TargetListener) _lastPanel);
         }
+        _target = t;
         if (t == null) {
             add(_blankPanel, BorderLayout.CENTER);
             _shouldBeEnabled = false;
@@ -380,11 +330,9 @@ public class TabProps
                     break;
             }
             if (newPanel != null) {
-                addTargetListener(newPanel);
-                // TODO remove next call as soon as possible
-                newPanel.setTarget(t);
+                addTargetListener(newPanel);                
             }
-            if (newPanel instanceof JPanel) {
+            if (newPanel instanceof JPanel) {  
                 add((JPanel) newPanel, BorderLayout.CENTER);
                 _shouldBeEnabled = true;
                 _lastPanel = (JPanel) newPanel;
@@ -476,7 +424,7 @@ public class TabProps
      * @deprecated use TargetManager.getInstance().getTarget() instead
      */
     public Object getTarget() {
-        return TargetManager.getInstance().getModelTarget();
+        return _target;
     }
 
     /**
@@ -624,6 +572,7 @@ class InitPanelsLater implements Runnable {
 
         //fill the Hashtable. alphabetical order please... ;-)
         try {
+            /*
             _panels.put(MActionStateImpl.class, new PropPanelActionState());
             _panels.put(MActorImpl.class, new PropPanelActor());
             _panels.put(MAssociationImpl.class, new PropPanelAssociation());
@@ -694,6 +643,7 @@ class InitPanelsLater implements Runnable {
             _panels.put(MCallActionImpl.class, new PropPanelCallAction());
             _panels.put(MInteraction.class, new PropPanelInteraction());
             _panels.put(MStateMachine.class, new PropPanelStateMachine());
+            */
         } catch (Exception e) {
             cat.error("Exception in InitPanelsLater.run()", e);
 

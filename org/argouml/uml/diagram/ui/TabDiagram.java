@@ -280,14 +280,19 @@ public class TabDiagram
         LayerManager manager = _jgraph.getEditor().getLayerManager();
         Vector figList = new Vector();
         for (int i = 0; i < targets.length; i++) {
-           Object target = (targets[i] instanceof Fig && manager.getContents().contains(targets[i])) ? targets[i] : manager.presentationFor(targets[i]);
-           if (target != null ) {
-               figList.add(target);
-           }
+            if (targets[i] != null) {
+                Object target =
+                    (targets[i] instanceof Fig
+                        && manager.getContents().contains(targets[i]))
+                        ? targets[i]
+                        : manager.presentationFor(targets[i]);
+                if (target != null) {
+                    figList.add(target);
+                }
+            }
         }
         _jgraph.select(figList);
-                
-        
+
     }
 
 }

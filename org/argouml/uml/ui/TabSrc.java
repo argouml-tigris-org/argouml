@@ -108,6 +108,7 @@ public class TabSrc
     public void setTarget(Object t) {
 
         t = (t instanceof Fig) ? ((Fig)t).getOwner() : t;
+        _target = t;
         _notationName = null;
         _shouldBeEnabled = false;
         if (ModelFacade.isAModelElement(t))

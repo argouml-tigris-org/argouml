@@ -23,28 +23,35 @@
 
 package org.argouml.uml.ui;
 
-import java.awt.*;
-import java.awt.event.*;
-import java.util.*;
-import java.beans.*;
+import java.awt.BorderLayout;
+import java.awt.Font;
+import java.beans.PropertyChangeEvent;
+import java.beans.VetoableChangeListener;
+import java.util.Collection;
+import java.util.Vector;
 
-import javax.swing.*;
-import javax.swing.event.*;
-import javax.swing.table.*;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.SwingUtilities;
+import javax.swing.event.TableModelEvent;
 import javax.swing.plaf.metal.MetalLookAndFeel;
+import javax.swing.table.AbstractTableModel;
+import javax.swing.table.TableCellEditor;
+import javax.swing.table.TableColumn;
 
-import ru.novosoft.uml.*;
-import ru.novosoft.uml.foundation.core.*;
-import ru.novosoft.uml.foundation.data_types.*;
-import ru.novosoft.uml.foundation.extension_mechanisms.*;
-
-import org.argouml.application.api.*;
-import org.argouml.kernel.*;
+import org.argouml.application.api.Argo;
+import org.argouml.kernel.DelayedChangeNotify;
+import org.argouml.kernel.DelayedVChangeListener;
 import org.argouml.model.uml.UmlFactory;
 import org.argouml.model.uml.UmlModelEventPump;
-import org.argouml.ui.*;
+import org.argouml.ui.TabSpawnable;
 import org.argouml.ui.targetmanager.TargetEvent;
 import org.tigris.gef.presentation.Fig;
+
+import ru.novosoft.uml.MElementEvent;
+import ru.novosoft.uml.MElementListener;
+import ru.novosoft.uml.foundation.core.MModelElement;
+import ru.novosoft.uml.foundation.extension_mechanisms.MTaggedValue;
 
 public class TabTaggedValues extends TabSpawnable
 implements TabModelTarget {
@@ -154,15 +161,13 @@ implements TabModelTarget {
      * @see org.argouml.ui.targetmanager.TargetListener#targetAdded(org.argouml.ui.targetmanager.TargetEvent)
      */
     public void targetAdded(TargetEvent e) {
-        // TODO Auto-generated method stub
-
     }
 
     /* (non-Javadoc)
      * @see org.argouml.ui.targetmanager.TargetListener#targetRemoved(org.argouml.ui.targetmanager.TargetEvent)
      */
     public void targetRemoved(TargetEvent e) {
-        // TODO Auto-generated method stub
+        setTarget(e.getNewTargets()[0]);
 
     }
 
@@ -170,7 +175,7 @@ implements TabModelTarget {
      * @see org.argouml.ui.targetmanager.TargetListener#targetSet(org.argouml.ui.targetmanager.TargetEvent)
      */
     public void targetSet(TargetEvent e) {
-        // TODO Auto-generated method stub
+        setTarget(e.getNewTargets()[0]);
 
     }
 

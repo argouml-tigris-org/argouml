@@ -588,6 +588,7 @@ public abstract class FigNodeModelElement
         //     if (me == null) return;
         //     try { me.setName(new Name(_name.getText())); }
         //     catch (PropertyVetoException pve) { }
+        System.out.println();
     }
 
     ////////////////////////////////////////////////////////////////

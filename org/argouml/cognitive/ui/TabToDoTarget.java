@@ -36,8 +36,6 @@ public interface TabToDoTarget extends TargetListener {
     public void setTarget(Object o); //ToDoItem
     /**
      * Returns the target of the TabToDo
-     * @deprecated this method will be removed in a couple of releases
-     * Use TargetManager.getInstance().getTarget() instead
      * @return The current target of the TabToDo
      */
     public Object getTarget();
