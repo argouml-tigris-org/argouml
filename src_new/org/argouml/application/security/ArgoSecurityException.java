@@ -41,7 +41,6 @@ public class ArgoSecurityException extends SecurityException
     public ArgoSecurityException(boolean hidden) {
         super();
 	_hidden = hidden;
-	System.out.println ("ArgoSecurityException(" + hidden + ")");
     }
 
     public boolean isHidden() {
