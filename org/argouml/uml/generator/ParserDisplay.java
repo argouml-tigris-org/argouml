@@ -2298,7 +2298,7 @@ addBases:
 	args = new Vector();
     }
 
-    if (_cat.getPriority().equals(Priority.DEBUG)) {
+    if (_cat.getPriority() != null && _cat.getPriority().equals(Priority.DEBUG)) {
         StringBuffer buf = new StringBuffer();
         buf.append("ParseMessage: " + s + "\n");
         buf.append("Message: ");

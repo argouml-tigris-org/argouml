@@ -101,7 +101,7 @@ public class Trash {
 
   public void emptyTrash() {
     cat.debug("needs-more-work: emptyTheTrash not implemented yet");
-    if (cat.getPriority().equals(Priority.DEBUG)) {
+    if (cat.getPriority() != null && cat.getPriority().equals(Priority.DEBUG)) {
         StringBuffer buf = new StringBuffer("Trash contents:");
         buf.append("\n");
         java.util.Enumeration keys = _contents.elements();

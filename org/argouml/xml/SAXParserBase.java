@@ -40,7 +40,7 @@ import javax.xml.parsers.SAXParser;
 
 public abstract class SAXParserBase extends HandlerBase {
     
-    protected static Category cat = 
+    protected Category cat = 
         Category.getInstance(SAXParserBase.class);
 
   ////////////////////////////////////////////////////////////////
@@ -148,7 +148,7 @@ public abstract class SAXParserBase extends HandlerBase {
     }
     else e = new XMLElement(name, atts);
 
-    if (cat.getPriority().equals(Priority.DEBUG)) {
+    if (cat.getPriority() != null && cat.getPriority().equals(Priority.DEBUG)) {
         StringBuffer buf = new StringBuffer();
         buf.append("START: " + name + " " + e);
         for (int i = 0; i < atts.getLength(); i++) {
@@ -167,7 +167,7 @@ public abstract class SAXParserBase extends HandlerBase {
 
   public void endElement(String name) throws SAXException {
     XMLElement e = _elements[-- _nElements];
-    if (cat.getPriority().equals(Priority.DEBUG)) {
+    if (cat.getPriority() != null && cat.getPriority().equals(Priority.DEBUG)) {
         StringBuffer buf = new StringBuffer();
         buf.append("END: " + e.getName() + " [" +
              e.getText() + "] " + e + "\n");
@@ -198,7 +198,7 @@ public abstract class SAXParserBase extends HandlerBase {
       InputSource s = new InputSource(testIt.openStream());
       return s;
     } catch (Exception e) {
-      cat.error("NOTE: Could not open DTD " + systemId + " due to exception", e);
+      cat.info("NOTE: Could not open DTD " + systemId + " due to exception");
      
       String dtdName = systemId.substring(systemId.lastIndexOf('/')+1);
       String dtdPath = "/org/argouml/xml/dtd/" + dtdName;

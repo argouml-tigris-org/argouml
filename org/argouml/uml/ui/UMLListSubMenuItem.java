@@ -178,7 +178,7 @@ public class UMLListSubMenuItem extends JMenuItem implements ActionListener {
             _action.invoke(_actionObj, argValue);
         }
         catch(InvocationTargetException ex) {
-            if (cat.getPriority().equals(Priority.ERROR)) {
+            if (cat.getPriority() != null && cat.getPriority().equals(Priority.ERROR)) {
                 StringBuffer buf = new StringBuffer();
                 buf.append(this.getClass().toString() +
                                ": actionPerformed(). " + 
