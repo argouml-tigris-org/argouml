@@ -32,6 +32,7 @@ import javax.swing.DefaultListCellRenderer;
 import javax.swing.Icon;
 import javax.swing.JLabel;
 import javax.swing.JList;
+import javax.swing.UIManager;
 
 import org.apache.log4j.Logger;
 import org.argouml.application.helpers.ResourceLoaderWrapper;
@@ -56,7 +57,10 @@ public class UMLListCellRenderer2 extends DefaultListCellRenderer {
      * Constructor for UMLListCellRenderer2.
      */
     public UMLListCellRenderer2(boolean showIcon) {
-        super();
+//        super();
+        updateUI();
+        setAlignmentX(LEFT_ALIGNMENT);
+        
         _showIcon = showIcon;
     }
 
@@ -64,28 +68,56 @@ public class UMLListCellRenderer2 extends DefaultListCellRenderer {
      * @see javax.swing.ListCellRenderer#getListCellRendererComponent(javax.swing.JList, java.lang.Object, int, boolean, boolean)
      */
     public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {       
-        JLabel label = (JLabel) super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+//        JLabel label = (JLabel) super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
 
         if (org.argouml.model.ModelFacade.isABase(value)) {
+            
             String text = makeText(value);            
-            label.setText(text);
+            setText(text);
+            
             if (_showIcon) {
-                Icon icon = ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIcon(value);
-                // if (icon != null)
-		label.setIcon(icon);
+                
+                        setComponentOrientation(list.getComponentOrientation());
+	if (isSelected) {
+	    setBackground(list.getSelectionBackground());
+//	    setForeground(list.getSelectionForeground());
+	}
+	else {
+	    setBackground(list.getBackground());
+//	    setForeground(list.getForeground());
+	}
+
+//	if (value instanceof Icon) {
+//	    setIcon((Icon)value);
+//	    setText("");
+//	}
+//	else {
+//	    setIcon(null);
+//	    setText((value == null) ? "" : value.toString());
+//	}
+
+	setEnabled(list.isEnabled());
+	setFont(list.getFont());
+	setBorder((cellHasFocus) ? UIManager.getBorder("List.focusCellHighlightBorder") : noFocusBorder);
+                
+//                Icon icon = ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIcon(value);
+//                // if (icon != null)
+//		label.setIcon(icon);
+        setIcon(ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIcon(value));
             } else {
                 // hack to make sure that the right hight is applied when no icon is used.
-                label = (JLabel) super.getListCellRendererComponent(list, text, index, isSelected, cellHasFocus);
+                return super.getListCellRendererComponent(list, text, index, isSelected, cellHasFocus);
             }
 
         } else
 	    if (value == null || value.equals("")) {      
-		label = new JLabel(" ");      
+		JLabel label = new JLabel(" ");      
 		label.setIcon(null);
+                return label;
 	    }
         
 
-        return label;
+        return this;
     }
 
     /**

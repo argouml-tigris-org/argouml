@@ -601,40 +601,68 @@ public abstract class FigEdgeModelElement
     }
 
     /**
+     * helper method for hit(Rectangle).
+     */
+    private double polyDist(Polygon poly, int x, int y) {
+	int vx, vy, vl;
+	int px, py;
+	int dx, dy;
+	int tx, ty;
+	double pd, dd;
+	double dist = Double.POSITIVE_INFINITY;
+
+	for (int i = 0; i + 1 < poly.npoints; i++) {
+	    if (poly.xpoints[i] == poly.xpoints[i+1] &&
+		poly.ypoints[i] == poly.ypoints[i+1])
+		continue;
+
+	    tx = x - poly.xpoints[i];
+	    ty = y - poly.ypoints[i];
+	    vx = poly.xpoints[i+1] - poly.xpoints[i];
+	    vy = poly.ypoints[i+1] - poly.ypoints[i];
+	    vl = vx * vx + vy * vy;
+	    px = (int) ((double) (tx * vx + ty * vy) * vx / vl);
+	    py = (int) ((double) (tx * vx + ty * vy) * vy / vl);
+	    dx = tx - px;
+	    dy = ty - py;
+
+	    if (vx != 0)
+		pd = (double) px / vx;
+	    else
+		pd = (double) py / vy;
+
+	    if (pd >= 0. && pd <= 1.) {
+		dd = Math.sqrt(dx * dx + dy * dy);
+		if (dd < dist)
+		    dist = dd;
+	    }
+	}
+
+	return dist;
+    }
+
+    /**
      * Necessary since GEF contains some errors regarding the hit subject.
      * TODO make the bigBounds port go off a little less
      * @see org.tigris.gef.presentation.Fig#hit(Rectangle)
      */
     public boolean hit(Rectangle r) {
-        if (_fig.hit(r))
-            return true;
-        Polygon polOuter = ((FigPoly) _fig).getPolygon();
-        polOuter.translate(-8, -8);
-        Polygon polInner = ((FigPoly) _fig).getPolygon();
-        polInner.translate(8, 8);
-        Polygon containing = new Polygon();
-        for (int i = 0; i < polOuter.xpoints.length; i++) {
-            containing.addPoint(polOuter.xpoints[i], polOuter.ypoints[i]);
-        }
-        for (int i = polInner.xpoints.length - 1; i >= 0; i--) {
-            containing.addPoint(polInner.xpoints[i], polInner.ypoints[i]);
-        }
-        if (containing.intersects(r))
-            return true;
-        // if (polOuter.intersects(r) && !polInner.intersects(r)) return true;
+        Polygon poly = ((FigPoly) _fig).getPolygon();
+	Rectangle rb = poly.getBounds();
+	double MAX_EDGE_HIT_DIST = 6.;
 
-        int size = _pathItems.size();
-        for (int i = 0; i < size; i++) {
-            Fig f = getPathItemFig((FigEdge.PathItem) _pathItems.elementAt(i));
-            if (f.hit(r))
-                return true;
-        }
-        /*Rectangle bigBounds = getBounds();
-	  FigRect rect = new FigRect(bigBounds.x, bigBounds.y,
-	  bigBounds.width, bigBounds.height); if (rect.hit(r)) return
-	  true;
-        */
-        return false;
+	rb.setBounds(
+		(int) (rb.x - MAX_EDGE_HIT_DIST),
+		(int) (rb.y - MAX_EDGE_HIT_DIST),
+		(int) (rb.width + 2 * MAX_EDGE_HIT_DIST),
+		(int) (rb.height + 2 * MAX_EDGE_HIT_DIST));
+	if (!rb.intersects(r))
+	    return false;
+
+	return (polyDist(poly, r.x, r.y) < MAX_EDGE_HIT_DIST)
+		|| (polyDist(poly, r.x + r.width, r.y) < MAX_EDGE_HIT_DIST)
+		|| (polyDist(poly, r.x, r.y + r.height) < MAX_EDGE_HIT_DIST)
+		|| (polyDist(poly, r.x + r.width, r.y + r.height) < MAX_EDGE_HIT_DIST);
     }
 
     /**

@@ -124,14 +124,7 @@ abstract public class PropPanelModelElement extends PropPanel {
     private JScrollPane elementResidenceScroll;
     private JTextField nameTextField;
 
-    /**
-     * the namespace combobox needs to be a singleton because it has a worker
-     * thread that needs to be
-     * updated by any propanel when a target is changed.
-     * the namespace combobox has this optimisation because it is a performance
-     * bottleneck with large models > 100 classifiers.
-     */
-    private static UMLModelElementNamespaceComboBoxModel 
+    private UMLModelElementNamespaceComboBoxModel 
 	namespaceComboBoxModel = new UMLModelElementNamespaceComboBoxModel();
 
     private static UMLModelElementStereotypeComboBoxModel stereotypeComboBoxModel = new UMLModelElementStereotypeComboBoxModel();
