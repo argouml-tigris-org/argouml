@@ -1974,6 +1974,18 @@ public class ModelFacade {
             ((MClassifier)cls).removeFeature((MFeature)feature);
         }
     }
+    
+    /**
+     * Removes a owned modelelement from a namespace
+     * @param handle
+     * @param value
+     */
+    public static void removeOwnedElement(Object handle, Object value) {
+        if (handle instanceof MNamespace && value instanceof MModelElement) {
+            ((MNamespace)handle).removeOwnedElement((MModelElement)value);                       
+        }
+        throw new IllegalArgumentException("Unrecognized object " + handle + " or " + value);
+    }
 
     /** This method removes a parameter from an operation.
      *
@@ -2152,6 +2164,18 @@ public class ModelFacade {
     }
     
     /**
+     * Sets the do activity of a state
+     * @param handle
+     * @param value
+     */
+    public static void setDoActivity(Object handle, Object value) {
+        if (handle instanceof MState && value instanceof MAction) {
+            ((MState)handle).setDoActivity((MAction)value);            
+        }
+        throw new IllegalArgumentException("Unrecognized object " + handle + " or " + value);
+    }
+    
+    /**
      * Sets the effect of some transition
      * @param handle
      * @param value
@@ -2159,6 +2183,30 @@ public class ModelFacade {
     public static void setEffect(Object handle, Object value) {
         if (handle instanceof MTransition && value instanceof MAction) {
             ((MTransition)handle).setEffect((MAction)value);
+        }
+        throw new IllegalArgumentException("Unrecognized object " + handle + " or " + value);
+    }
+    
+    /**
+     * Sets the entry action of some state
+     * @param handle
+     * @param value
+     */
+    public static void setEntry(Object handle, Object value) {
+        if (handle instanceof MState && value instanceof MAction) {
+            ((MState)handle).setEntry((MAction)value);
+        }
+        throw new IllegalArgumentException("Unrecognized object " + handle + " or " + value);
+    }
+    
+    /**
+     * Sets the exit action of some state
+     * @param handle
+     * @param value
+     */
+    public static void setExit(Object handle, Object value) {
+        if (handle instanceof MState && value instanceof MAction) {
+            ((MState)handle).setExit((MAction)value);
         }
         throw new IllegalArgumentException("Unrecognized object " + handle + " or " + value);
     }

@@ -36,6 +36,7 @@ import java.beans.*;
 import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.behavior.common_behavior.*;
 
+import org.argouml.model.ModelFacade;
 import org.argouml.uml.*;
 import org.argouml.uml.diagram.sequence.ui.*;
 
@@ -69,7 +70,7 @@ public class TableModelSeqActionByProps extends TableModelComposite {
       if (figure instanceof FigSeqStimulus) {
         FigSeqStimulus figSti = (FigSeqStimulus) figure;
         MStimulus sti = (MStimulus) figSti.getOwner();
-        MAction act = sti.getDispatchAction();
+        Object act = ModelFacade.getDispatchAction(sti);
         res.addElement(act);
       }
     }

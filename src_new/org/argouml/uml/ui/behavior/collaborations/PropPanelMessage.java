@@ -35,8 +35,8 @@ import javax.swing.JList;
 import javax.swing.JScrollPane;
 
 import org.argouml.application.api.Argo;
+import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.behavioralelements.commonbehavior.CommonBehaviorFactory;
-
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.PropPanelButton;
 import org.argouml.uml.ui.UMLLinkedList;
@@ -46,7 +46,6 @@ import org.argouml.util.ConfigLoader;
 
 import ru.novosoft.uml.behavior.collaborations.MClassifierRole;
 import ru.novosoft.uml.behavior.collaborations.MMessage;
-import ru.novosoft.uml.behavior.common_behavior.MAction;
 import ru.novosoft.uml.behavior.common_behavior.MCallAction;
 import ru.novosoft.uml.foundation.extension_mechanisms.MStereotype;
 
@@ -68,7 +67,7 @@ public class PropPanelMessage extends PropPanelModelElement {
     Class mclass = MMessage.class;
 
     Class[] namesToWatch = { MStereotype.class, MClassifierRole.class,
-        MAction.class };
+        (Class)ModelFacade.ACTION };
     setNameEventListening(namesToWatch);
 
     addField(Argo.localize("UMLMenu", "label.name"), getNameTextField());

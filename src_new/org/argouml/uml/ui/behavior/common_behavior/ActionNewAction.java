@@ -26,7 +26,7 @@ package org.argouml.uml.ui.behavior.common_behavior;
 
 import java.awt.event.ActionEvent;
 
-import org.argouml.model.uml.behavioralelements.collaborations.CollaborationsHelper;
+import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.behavioralelements.statemachines.StateMachinesHelper;
 import org.argouml.uml.ui.AbstractActionNewModelElement;
 
@@ -88,19 +88,19 @@ public abstract class ActionNewAction extends AbstractActionNewModelElement {
         super.actionPerformed(e);
         Object action = createAction();
         if (getValue(ROLE).equals(Roles.EXIT)) {
-            StateMachinesHelper.getHelper().setActionAsExit(getTarget(), action);
+            ModelFacade.setExit(getTarget(), action);
         } else
         if (getValue(ROLE).equals(Roles.ENTRY)) {
-            StateMachinesHelper.getHelper().setActionAsEntry(getTarget(), action);
+            ModelFacade.setEntry(getTarget(), action);          
         } else
         if (getValue(ROLE).equals(Roles.DO)) {
-            StateMachinesHelper.getHelper().setActionAsDoActivity(getTarget(), action);
+            ModelFacade.setDoActivity(getTarget(), action);
         } else
         if (getValue(ROLE).equals(Roles.ACTION)) {
-            CollaborationsHelper.getHelper().setActionAsAction(getTarget(), action);
+            ModelFacade.setAction(getTarget(), action);
         } else
         if (getValue(ROLE).equals(Roles.EFFECT)) {
-            StateMachinesHelper.getHelper().setActionAsEffect(getTarget(), action);
+            ModelFacade.setEffect(getTarget(), action);
         }
         
     }

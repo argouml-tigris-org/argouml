@@ -40,7 +40,6 @@ import org.argouml.application.api.Argo;
 import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.UmlFactory;
-
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.PropPanelButton;
 import org.argouml.uml.ui.UMLList;
@@ -51,7 +50,6 @@ import org.argouml.uml.ui.foundation.core.PropPanelModelElement;
 import org.argouml.util.ConfigLoader;
 
 import ru.novosoft.uml.MElementEvent;
-import ru.novosoft.uml.behavior.common_behavior.MAction;
 import ru.novosoft.uml.behavior.common_behavior.MInstance;
 import ru.novosoft.uml.behavior.common_behavior.MLink;
 import ru.novosoft.uml.behavior.common_behavior.MStimulus;
@@ -70,7 +68,7 @@ public class PropPanelStimulus extends PropPanelModelElement {
     public PropPanelStimulus() {
         super("Stimulus Properties",_stimulusIcon, ConfigLoader.getTabPropsOrientation());
 
-        Class[] namesToWatch = { MAction.class};
+        Class[] namesToWatch = { (Class)ModelFacade.ACTION};
         setNameEventListening(namesToWatch);
 
         Class mclass = MStimulus.class;

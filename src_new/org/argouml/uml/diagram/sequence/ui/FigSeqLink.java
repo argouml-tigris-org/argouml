@@ -36,6 +36,7 @@ import java.util.Vector;
 
 import org.argouml.application.api.Notation;
 import org.argouml.kernel.ProjectManager;
+import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.UmlFactory;
 import org.argouml.model.uml.behavioralelements.commonbehavior.CommonBehaviorHelper;
 import org.argouml.uml.diagram.ui.FigEdgeModelElement;
@@ -178,11 +179,11 @@ public class FigSeqLink extends FigEdgeModelElement implements MElementListener{
   if (ml != null ) {
     Collection col = ml.getStimuli();
     MStimulus stimulus = null;
-    MAction action = null;
+    Object action = null;
     Iterator it = col.iterator();
     while (it.hasNext()) {
-      stimulus = (MStimulus) it.next();
-      action = (MAction) stimulus.getDispatchAction();
+      stimulus = (MStimulus) it.next();    
+      action = ModelFacade.getDispatchAction(stimulus);
    }
 
 
@@ -192,7 +193,7 @@ public class FigSeqLink extends FigEdgeModelElement implements MElementListener{
     FigSeqObject source = (FigSeqObject) getSourceFigNode();
     if (dest != null && source != null) {
     if (action instanceof MCallAction) {
-      if (action.isAsynchronous()) {
+      if (ModelFacade.isAsynchronous(action)) {
         setDestArrowHead(new ArrowHeadHalfTriangle());
         setSourceArrowHead(new ArrowHeadNone());
       }
@@ -214,7 +215,7 @@ public class FigSeqLink extends FigEdgeModelElement implements MElementListener{
       //source.concatActivation(this, contents);
     }
     if (action instanceof MCreateAction) {
-      if (action.isAsynchronous()) {
+      if (ModelFacade.isAsynchronous(action)) {
         setDestArrowHead(new ArrowHeadHalfTriangle());
         setSourceArrowHead(new ArrowHeadNone());
       }
@@ -749,7 +750,7 @@ public class FigSeqLink extends FigEdgeModelElement implements MElementListener{
     Iterator it = col.iterator();
     while (it.hasNext()) {
       MStimulus ms = (MStimulus) it.next();
-      MAction ma = (MAction) ms.getDispatchAction();
+      Object ma = ModelFacade.getDispatchAction(ms);
       MNamespace ns = ms.getNamespace();
       Collection elements = ns.getOwnedElements();
       Iterator iterator = elements.iterator();
@@ -757,13 +758,13 @@ public class FigSeqLink extends FigEdgeModelElement implements MElementListener{
         MModelElement moe = (MModelElement) iterator.next();
         if (moe instanceof MAction) {
           if (moe == ma) {
-            ns.removeOwnedElement(ma);
+              ModelFacade.removeOwnedElement(ns, ma);
           }
         }
       }
       MCallAction mca = UmlFactory.getFactory().getCommonBehavior().createCallAction();
-      mca.setAsynchronous(ma.isAsynchronous());
-      mca.setName(ma.getName());
+      mca.setAsynchronous(ModelFacade.isAsynchronous(ma));
+      mca.setName(ModelFacade.getName(ma));
       ms.setDispatchAction(mca);
       ns.addOwnedElement(mca);
     }

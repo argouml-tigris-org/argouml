@@ -49,6 +49,7 @@ import org.apache.log4j.Category;
 import org.argouml.application.api.Notation;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
+import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.UmlFactory;
 import org.argouml.model.uml.UmlHelper;
 import org.argouml.model.uml.UmlModelEventPump;
@@ -58,13 +59,13 @@ import org.argouml.model.uml.foundation.extensionmechanisms.ExtensionMechanismsF
 import org.argouml.model.uml.foundation.extensionmechanisms.ExtensionMechanismsHelper;
 import org.argouml.model.uml.modelmanagement.ModelManagementHelper;
 import org.argouml.uml.ProfileJava;
+import org.argouml.uml.generator.GeneratorDisplay.MsgPtr;
 import org.argouml.util.MyTokenizer;
 
 import ru.novosoft.uml.MElementListener;
 import ru.novosoft.uml.behavior.collaborations.MClassifierRole;
 import ru.novosoft.uml.behavior.collaborations.MCollaboration;
 import ru.novosoft.uml.behavior.collaborations.MMessage;
-import ru.novosoft.uml.behavior.common_behavior.MAction;
 import ru.novosoft.uml.behavior.common_behavior.MArgument;
 import ru.novosoft.uml.behavior.common_behavior.MCallAction;
 import ru.novosoft.uml.behavior.common_behavior.MComponentInstance;
@@ -3198,9 +3199,9 @@ predfor:
     }
     else name = s;
 
-     MAction act = (MAction) sti.getDispatchAction();
-     act.setName(action);
-     sti.setName(name);
+     Object act = ModelFacade.getDispatchAction(sti);
+     ModelFacade.setName(act, action);
+     ModelFacade.setName(sti, name);    
   }
 
   public Object parseAction(String s) {
