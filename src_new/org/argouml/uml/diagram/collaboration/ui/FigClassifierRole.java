@@ -125,7 +125,7 @@ public class FigClassifierRole extends FigNodeModelElement {
         // The big port and cover. Color of the big port is irrelevant
 
         _bigPort = new FigRect(10, 10, 90, 50, Color.cyan, Color.cyan);
-        _cover   = new FigRect(10, 10, 90, 50, Color.black, Color.white);
+        _cover   = new ShadowRect(10, 10, 90, 50, Color.black, Color.white);
 
         // The stereotype. Width is the same as the cover, height is whatever
         // its minimum permitted is. The text should be centred.

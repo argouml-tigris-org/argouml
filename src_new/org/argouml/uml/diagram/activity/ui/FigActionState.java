@@ -30,6 +30,7 @@ package org.argouml.uml.diagram.activity.ui;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.util.Vector;
 
@@ -65,7 +66,7 @@ public class FigActionState extends FigStateVertex {
     public FigActionState() {
 	_bigPort = new FigRRect(10 + 1, 10 + 1, 90 - 2, 25 - 2,
 				Color.cyan, Color.cyan);
-	_cover = new FigRRect(10, 10, 90, 25, Color.black, Color.white);
+	_cover = new ShadowRRect(10, 10, 90, 25, Color.black, Color.white);
 
 	_bigPort.setLineWidth(0);
 	_name.setLineWidth(0);
@@ -146,5 +147,36 @@ public class FigActionState extends FigStateVertex {
 
     public void setLineWidth(int w) { _cover.setLineWidth(w); }
     public int getLineWidth() { return _cover.getLineWidth(); }
+    
+    /**
+     * A FigRRect that is drawn with a shadow using the current figure's
+     * shadow size.
+    **/
+    protected class ShadowRRect extends FigRRect {
+        public ShadowRRect(int x, int y, int w, int h) {
+            super(x, y, w, h);
+        }
+
+        public ShadowRRect(
+            int x,
+            int y,
+            int w,
+            int h,
+            Color lineColor,
+            Color fillColor) {
+            super(x, y, w, h, lineColor, fillColor);
+        }
+
+        public void paint(Graphics g) {
+            if (_shadowSize > 0) {
+                Color shadow = new Color(
+                    SHADOW_COLOR_VALUE, SHADOW_COLOR_VALUE, SHADOW_COLOR_VALUE, 
+                    SHADOW_COLOR_ALPHA);
+                g.setColor(shadow);
+                g.fillRoundRect(_x + _shadowSize - 1, _y + _shadowSize - 1, _w, _h, _radius, _radius);         
+            }
+            super.paint(g);                
+        }
+    }
 
 } /* end class FigActionState */
