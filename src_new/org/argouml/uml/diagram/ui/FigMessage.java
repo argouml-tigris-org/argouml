@@ -78,6 +78,7 @@ public class FigMessage extends FigNodeModelElement {
      * The main constructor
      */
     public FigMessage() {
+        setShadowSize(0); // Issue 2714. 
 	getNameFig().setLineWidth(0);
 	getNameFig().setMultiLine(false);
 	getNameFig().setFilled(false);
