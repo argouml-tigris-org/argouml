@@ -28,38 +28,50 @@ import java.util.Enumeration;
 import java.util.Vector;
 import org.argouml.cognitive.Designer;
 
-
 /**
- * The standard Control Mech.
- *
+ * The standard Control Mech. It extends an ANDControlMech with the individual
+ * cm's
+ * <ul>
+ * <li>EnabledCM
+ * <li>NotSnoozedCM
+ * <li>DesignGoalsCM
+ * <li>CurDecisionCM
+ * <ul>
+ * 
+ * implying that a critic is relevant if and if only it is enabled, not snoozed,
+ * applicable to the current goals and relevant decisions to be supported.
+ *  
  */
 public class StandardCM extends AndCM {
 
     /**
      * The constructor.
-     *
+     *  
      */
     public StandardCM() {
-	addMech(new EnabledCM());
-	addMech(new NotSnoozedCM());
-	addMech(new DesignGoalsCM());
-	addMech(new CurDecisionCM());
+        addMech(new EnabledCM());
+        addMech(new NotSnoozedCM());
+        addMech(new DesignGoalsCM());
+        addMech(new CurDecisionCM());
     }
 } /* end class StandardCM */
 
 
-
-class NotSnoozedCM extends ControlMech {
+class EnabledCM implements ControlMech {
     public boolean isRelevant(Critic c, Designer d) {
-	return !c.snoozeOrder().getSnoozed();
+    return c.isEnabled();
+    }
+} // end class EnabledCM
+
+class NotSnoozedCM implements ControlMech {
+    public boolean isRelevant(Critic c, Designer d) {
+        return !c.snoozeOrder().getSnoozed();
     }
 } // end class NotSnoozedCM
 
-
-
-class DesignGoalsCM extends ControlMech {
+class DesignGoalsCM implements ControlMech {
     public boolean isRelevant(Critic c, Designer d) {
-	return c.isRelevantToGoals(d);
+        return c.isRelevantToGoals(d);
     }
 } // end class DesignGoalsCM
 
@@ -68,15 +80,13 @@ class DesignGoalsCM extends ControlMech {
 // How does using more semantically rich method calls impact
 // componentization?
 
-class CurDecisionCM extends ControlMech {
+class CurDecisionCM implements ControlMech {
     public boolean isRelevant(Critic c, Designer d) {
-	return c.isRelevantToDecisions(d);
+        return c.isRelevantToDecisions(d);
     }
 } // end class CurDecisionCM
 
-
-
-class CompositeCM extends ControlMech {
+abstract class CompositeCM implements ControlMech {
     private Vector mechs = new Vector();
 
     /**
@@ -87,35 +97,34 @@ class CompositeCM extends ControlMech {
     }
 
     /**
-     * @param cm the ControlMech
+     * @param cm
+     *            the ControlMech
      */
     public void addMech(ControlMech cm) {
-	mechs.addElement(cm);
+        mechs.addElement(cm);
     }
 } // end class CompositeCM
 
-
-
 class AndCM extends CompositeCM {
     public boolean isRelevant(Critic c, Designer d) {
-	Enumeration cur = getMechs().elements();
-	while (cur.hasMoreElements()) {
-	    ControlMech cm = (ControlMech) cur.nextElement();
-	    if (!cm.isRelevant(c, d)) return false;
-	}
-	return true;
+        Enumeration cur = getMechs().elements();
+        while (cur.hasMoreElements()) {
+            ControlMech cm = (ControlMech) cur.nextElement();
+            if (!cm.isRelevant(c, d))
+                return false;
+        }
+        return true;
     }
 } // end class AndCM
 
-
-
 class OrCM extends CompositeCM {
     public boolean isRelevant(Critic c, Designer d) {
-	Enumeration cur = getMechs().elements();
-	while (cur.hasMoreElements()) {
-	    ControlMech cm = (ControlMech) cur.nextElement();
-	    if (cm.isRelevant(c, d)) return true;
-	}
-	return false;
+        Enumeration cur = getMechs().elements();
+        while (cur.hasMoreElements()) {
+            ControlMech cm = (ControlMech) cur.nextElement();
+            if (cm.isRelevant(c, d))
+                return true;
+        }
+        return false;
     }
 } // end class OrCM

@@ -24,7 +24,6 @@
 
 package org.argouml.cognitive.critics;
 
-import java.io.Serializable;
 import org.argouml.cognitive.Designer;
 
 /**
@@ -38,23 +37,16 @@ import org.argouml.cognitive.Designer;
  */
 // TODO: Do all these classes need to be in their own files? public?
 
-public abstract class ControlMech implements Serializable {
+public interface ControlMech  {
 
-    /**
-     * The constructor.
-     *
-     */
-    public ControlMech() { }
 
     /**
      * @param c the critic
      * @param d the designer
      * @return true f the critic is relevant for the given designer
      */
-    public boolean isRelevant(Critic c, Designer d) {
-	return true;
-    }
-} // end class ControlMech
+    boolean isRelevant(Critic c, Designer d) ;
+} // end interface ControlMech
 
 
 
