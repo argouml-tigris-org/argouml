@@ -39,7 +39,6 @@ import org.apache.log4j.Logger;
 import org.argouml.application.api.Argo;
 import org.argouml.application.api.Notation;
 import org.argouml.application.api.PluggableNotation;
-import org.argouml.kernel.Project;
 import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.UmlHelper;
 import org.argouml.uml.DocumentationManager;
@@ -1144,9 +1143,12 @@ public class GeneratorCSharp extends Generator2
 	String name = ModelFacade.getName(associationEnd);
 	Object association = ModelFacade.getAssociation(associationEnd);
         Object multi = ModelFacade.getMultiplicity(associationEnd);
-        if ((multi.equals(ModelFacade.M1_1_MULTIPLICITY)) || multi.equals(ModelFacade.M0_1_MULTIPLICITY)){
-            s += generateClassifierRef(ModelFacade.getType(associationEnd)) + " ";
-        }else if ((multi.equals(ModelFacade.M1_N_MULTIPLICITY)) || multi.equals(ModelFacade.M0_N_MULTIPLICITY)){
+        if ((multi.equals(ModelFacade.M1_1_MULTIPLICITY)) 
+                || multi.equals(ModelFacade.M0_1_MULTIPLICITY)) {
+            s += generateClassifierRef(ModelFacade.getType(associationEnd)) 
+                + " ";
+        } else if ((multi.equals(ModelFacade.M1_N_MULTIPLICITY)) 
+                || multi.equals(ModelFacade.M0_N_MULTIPLICITY)) {
             s += "ArrayList ";
         }
 	String associationName = ModelFacade.getName(association);
