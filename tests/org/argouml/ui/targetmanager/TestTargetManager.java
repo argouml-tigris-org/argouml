@@ -262,6 +262,14 @@ public class TestTargetManager extends TestCase {
 	assertTrue(TargetManager.getInstance().getTargets().contains(test3.get(0)));
 	assertTrue(TargetManager.getInstance().getTargets().size() == 1);
 
+	List test4 = new ArrayList();
+	test4.add(test2.get(0));
+	test4.add(test2.get(2));
+
+	List test5 = new ArrayList();
+	test5.add(test2.get(2));
+	test5.add(test2.get(0));
+
 	List test = new ArrayList();
 	for (int i = 0; i < 10; i++) {
 	    test.add(new Object());
@@ -287,6 +295,14 @@ public class TestTargetManager extends TestCase {
 	test.remove(1);
 	TargetManager.getInstance().setTargets(test);
 	assertTrue(targetSetCalled);
+
+	TargetManager.getInstance().setTargets(test2);
+	targetSetCalled = false;
+	TargetManager.getInstance().setTargets(test4);
+	assertTrue(!targetSetCalled);
+	TargetManager.getInstance().setTargets(test5);
+	assertTrue(targetSetCalled);
+	assertEquals(test5.get(0), targetSetTarget);
 
 	TargetManager.getInstance().removeTargetListener(listener);
     }
@@ -592,7 +608,7 @@ public class TestTargetManager extends TestCase {
 		TargetManager.getInstance().setTarget(new Object());
 		list.add(new Object());
 		TargetManager.getInstance().setTargets(list);
-		TargetManager.getInstance().setTarget(new Object());
+		TargetManager.getInstance().removeTarget(e.getNewTarget());
 
 	    }
 
@@ -605,7 +621,7 @@ public class TestTargetManager extends TestCase {
 		TargetManager.getInstance().setTarget(new Object());
 		list.add(new Object());
 		TargetManager.getInstance().setTargets(list);
-		TargetManager.getInstance().setTarget(new Object());
+		TargetManager.getInstance().removeTarget(e.getNewTarget());
 
 	    }
 
@@ -618,7 +634,7 @@ public class TestTargetManager extends TestCase {
 		TargetManager.getInstance().setTarget(new Object());
 		list.add(new Object());
 		TargetManager.getInstance().setTargets(list);
-		TargetManager.getInstance().setTarget(new Object());
+		TargetManager.getInstance().removeTarget(e.getNewTarget());
 
 	    }
 
