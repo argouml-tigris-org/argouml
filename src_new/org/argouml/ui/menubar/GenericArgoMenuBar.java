@@ -25,6 +25,7 @@
 
 package org.argouml.ui.menubar;
 
+import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.ListIterator;
@@ -242,16 +243,18 @@ public class GenericArgoMenuBar extends JMenuBar
     /** construct the ordinary all purpose Argo Menu Bar.
      */
     protected void initMenus() {
-        KeyStroke ctrlN = KeyStroke.getKeyStroke(KeyEvent.VK_N, KeyEvent.CTRL_MASK);
-        KeyStroke ctrlO = KeyStroke.getKeyStroke(KeyEvent.VK_O, KeyEvent.CTRL_MASK);
-        KeyStroke ctrlS = KeyStroke.getKeyStroke(KeyEvent.VK_S, KeyEvent.CTRL_MASK);
-        KeyStroke ctrlP = KeyStroke.getKeyStroke(KeyEvent.VK_P, KeyEvent.CTRL_MASK);
-        KeyStroke ctrlA = KeyStroke.getKeyStroke(KeyEvent.VK_A, KeyEvent.CTRL_MASK);
-        KeyStroke ctrlC = KeyStroke.getKeyStroke(KeyEvent.VK_C, KeyEvent.CTRL_MASK);
-        KeyStroke ctrlV = KeyStroke.getKeyStroke(KeyEvent.VK_V, KeyEvent.CTRL_MASK);
-        KeyStroke ctrlX = KeyStroke.getKeyStroke(KeyEvent.VK_X, KeyEvent.CTRL_MASK);
-        KeyStroke ctrlMinus = KeyStroke.getKeyStroke(KeyEvent.VK_MINUS, KeyEvent.CTRL_MASK);
-        KeyStroke ctrlEquals = KeyStroke.getKeyStroke(KeyEvent.VK_EQUALS, KeyEvent.CTRL_MASK);
+        int menuShortcut = Toolkit.getDefaultToolkit().getMenuShortcutKeyMask();
+
+        KeyStroke ctrlN = KeyStroke.getKeyStroke(KeyEvent.VK_N, menuShortcut);
+        KeyStroke ctrlO = KeyStroke.getKeyStroke(KeyEvent.VK_O, menuShortcut);
+        KeyStroke ctrlS = KeyStroke.getKeyStroke(KeyEvent.VK_S, menuShortcut);
+        KeyStroke ctrlP = KeyStroke.getKeyStroke(KeyEvent.VK_P, menuShortcut);
+        KeyStroke ctrlA = KeyStroke.getKeyStroke(KeyEvent.VK_A, menuShortcut);
+        KeyStroke ctrlC = KeyStroke.getKeyStroke(KeyEvent.VK_C, menuShortcut);
+        KeyStroke ctrlV = KeyStroke.getKeyStroke(KeyEvent.VK_V, menuShortcut);
+        KeyStroke ctrlX = KeyStroke.getKeyStroke(KeyEvent.VK_X, menuShortcut);
+        KeyStroke ctrlMinus = KeyStroke.getKeyStroke(KeyEvent.VK_MINUS, menuShortcut);
+        KeyStroke ctrlEquals = KeyStroke.getKeyStroke(KeyEvent.VK_EQUALS, menuShortcut);
 
         
         KeyStroke F3 = KeyStroke.getKeyStroke(KeyEvent.VK_F3, 0);
@@ -261,7 +264,7 @@ public class GenericArgoMenuBar extends JMenuBar
         KeyStroke altRight = KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT, KeyEvent.ALT_MASK);
 
         KeyStroke delKey  = KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, 0);
-        KeyStroke ctrlDel = KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, KeyEvent.CTRL_MASK);
+        KeyStroke ctrlDel = KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, menuShortcut);
 
         JMenuItem mi;
         // File Menu
