@@ -54,7 +54,7 @@ public class UMLModelElementTaggedValueDocument extends UMLPlainTextDocument {
      */
     protected void setProperty(String text) {
         if (getTarget() != null)
-            ModelFacade.setTaggedValue(getTarget(), this.getEventName(),text);
+            ModelFacade.setTaggedValue(getTarget(), getEventName(), text);
     }
 
     /**
@@ -63,11 +63,11 @@ public class UMLModelElementTaggedValueDocument extends UMLPlainTextDocument {
      */
     protected String getProperty() {
         String property = null;
-        String eventName = this.getEventName();
+        String eventName = getEventName();
         Object taggedValue = ModelFacade.getTaggedValue(getTarget(), eventName);
-        if(taggedValue!=null)
-            return taggedValue.toString();
+        if (taggedValue != null)
+            return ModelFacade.getValueOfTag(taggedValue);
         else
-            return eventName;
+            return "";
     }
 }
