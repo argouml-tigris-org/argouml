@@ -55,7 +55,7 @@ public class ClOperationCompartment implements Clarifier {
 	    // added by Eric Lefevre 13 Mar 1999: we must check if the
 	    // FigText for operations is drawn before drawing things
 	    // over it
-	    if ( !fc.isOperationVisible() ) {
+	    if ( !fc.isOperationsVisible() ) {
 		_fig = null;
 		return;
 	    }

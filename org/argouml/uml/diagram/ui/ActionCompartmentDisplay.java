@@ -212,17 +212,17 @@ public class ActionCompartmentDisplay extends UMLAction {
             // Perform the action
 
 	    if (compartment.equals("action.show-attribute-compartment")) {
-		((FigClass) f).setAttributeVisible(display);
+		((FigClass) f).setAttributesVisible(display);
             }
 	    else if (compartment.equals("action.hide-attribute-compartment")) {
-		((FigClass) f).setAttributeVisible(display);
+		((FigClass) f).setAttributesVisible(display);
             }
 	    else if (compartment.equals("action.show-operation-compartment")
 		  || compartment.equals("action.hide-operation-compartment")) {
 		if (f instanceof FigClass)
-			((FigClass) f).setOperationVisible(display);
+			((FigClass) f).setOperationsVisible(display);
 		if (f instanceof FigInterface)
-			((FigInterface) f).setOperationVisible(display);
+			((FigInterface) f).setOperationsVisible(display);
             }
 	    else if (compartment.equals(
                 "action.show-extension-point-compartment")) {
@@ -233,12 +233,12 @@ public class ActionCompartmentDisplay extends UMLAction {
 		((FigUseCase) f).setExtensionPointVisible(display);
             }
 	    else if (compartment.equals("action.show-all-compartments")) {
-		((FigClass) f).setAttributeVisible(display);
-		((FigClass) f).setOperationVisible(display);
+		((FigClass) f).setAttributesVisible(display);
+		((FigClass) f).setOperationsVisible(display);
 	    }
 	    else {
-		((FigClass) f).setAttributeVisible(display);
-		((FigClass) f).setOperationVisible(display);
+		((FigClass) f).setAttributesVisible(display);
+		((FigClass) f).setOperationsVisible(display);
 	    }
 	}
     }

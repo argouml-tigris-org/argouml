@@ -75,6 +75,7 @@ public class ZargoFilePersister extends AbstractFilePersister {
         
         project.setFile(file);
         project.setVersion(ArgoVersion.getVersion());
+        project.setPersistenceVersion(PERSISTENCE_VERSION);
 
         if (expander == null) {
             Hashtable templates = TemplateReader.readFile(ARGO_TEE);

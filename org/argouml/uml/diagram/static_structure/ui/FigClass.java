@@ -50,6 +50,8 @@ import org.argouml.uml.diagram.ui.FigNodeModelElement;
 import org.argouml.uml.diagram.ui.ActionAddNote;
 import org.argouml.uml.diagram.ui.ActionAddAttribute;
 import org.argouml.uml.diagram.ui.FigOperationsCompartment;
+import org.argouml.uml.diagram.ui.HasAttributesCompartment;
+import org.argouml.uml.diagram.ui.HasOperationsCompartment;
 import org.argouml.uml.generator.ParserDisplay;
 import org.argouml.uml.diagram.ui.ActionAddOperation;
 import org.argouml.uml.diagram.ui.ActionCompartmentDisplay;
@@ -70,7 +72,8 @@ import ru.novosoft.uml.MElementEvent;
  * <p>Class to display graphics for a UML Class in a diagram.</p>
  */
 
-public class FigClass extends FigNodeModelElement {
+public class FigClass extends FigNodeModelElement 
+        implements HasAttributesCompartment, HasOperationsCompartment{
 
 
     ////////////////////////////////////////////////////////////////
@@ -282,19 +285,19 @@ public class FigClass extends FigNodeModelElement {
             popUpActions.size() - POPUP_ADD_OFFSET);
 
         ArgoJMenu showMenu = new ArgoJMenu(BUNDLE, "menu.popup.show");
-        if (isAttributeVisible() && isOperationVisible()) {
+        if (isAttributesVisible() && isOperationsVisible()) {
             showMenu.add(ActionCompartmentDisplay.HideAllCompartments);
-        } else if (!isAttributeVisible() && !isOperationVisible()) {
+        } else if (!isAttributesVisible() && !isOperationsVisible()) {
             showMenu.add(ActionCompartmentDisplay.ShowAllCompartments);
         }
 
-        if (isAttributeVisible()) {
+        if (isAttributesVisible()) {
             showMenu.add(ActionCompartmentDisplay.HideAttrCompartment);
         } else {
             showMenu.add(ActionCompartmentDisplay.ShowAttrCompartment);
         }
 
-        if (isOperationVisible()) {
+        if (isOperationsVisible()) {
             showMenu.add(ActionCompartmentDisplay.HideOperCompartment);
         } else {
             showMenu.add(ActionCompartmentDisplay.ShowOperCompartment);
@@ -359,7 +362,7 @@ public class FigClass extends FigNodeModelElement {
      * Returns the status of the operation field.
      * @return true if the operations are visible, false otherwise
      */
-    public boolean isOperationVisible() {
+    public boolean isOperationsVisible() {
         return getOperationsFig().isVisible();
     }
 
@@ -367,14 +370,14 @@ public class FigClass extends FigNodeModelElement {
      * Returns the status of the attribute field.
      * @return true if the attributes are visible, false otherwise
      */
-    public boolean isAttributeVisible() {
+    public boolean isAttributesVisible() {
         return getAttributesFig().isVisible();
     }
 
     /**
      * @param isVisible true if the attribute compartment is visible
      */
-    public void setAttributeVisible(boolean isVisible) {
+    public void setAttributesVisible(boolean isVisible) {
         Rectangle rect = getBounds();
         int h;
     	if (isCheckSize()) {
@@ -415,7 +418,7 @@ public class FigClass extends FigNodeModelElement {
     /**
      * @param isVisible true if the operation compartment is visible
      */
-    public void setOperationVisible(boolean isVisible) {
+    public void setOperationsVisible(boolean isVisible) {
         Rectangle rect = getBounds();
         int h =
     	    isCheckSize()
@@ -424,7 +427,7 @@ public class FigClass extends FigNodeModelElement {
     	        * rect.height
     	        / getMinimumSize().height)
     	    : 0;
-        if (isOperationVisible()) { // if displayed
+        if (isOperationsVisible()) { // if displayed
             if (!isVisible) {
                 damage();
                 Iterator it = getOperationsFig().getFigs(null).iterator();
@@ -511,7 +514,7 @@ public class FigClass extends FigNodeModelElement {
 
         // Allow space for each of the operations we have
 
-        if (isOperationVisible()) {
+        if (isOperationsVisible()) {
 
             // Loop through all the operations, to find the widest (remember
             // the first fig is the box for the whole lot, so ignore it).
@@ -962,7 +965,7 @@ public class FigClass extends FigNodeModelElement {
                 displayedFigs++;
             }
 
-            if (isOperationVisible()) {
+            if (isOperationsVisible()) {
                 displayedFigs++;
             }
 
@@ -1009,10 +1012,10 @@ public class FigClass extends FigNodeModelElement {
 
         currentY += height - 1; // -1 for 1 pixel overlap
 
-        int na = (getAttributesFig().isVisible())
+        int na = (isAttributesVisible())
     	    ? Math.max(1, getAttributesFig().getFigs(null).size() - 1)
     	    : 0;
-        int no = (isOperationVisible())
+        int no = (isOperationsVisible())
     	    ? Math.max(1, getOperationsFig().getFigs(null).size() - 1)
     	    : 0;
         if (isCheckSize()) {

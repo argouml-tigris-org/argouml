@@ -44,6 +44,8 @@ public abstract class AbstractFilePersister extends FileFilter implements Projec
     
     protected static final String ARGO_TEE = "/org/argouml/xml/dtd/argo.tee";
 
+    protected int PERSISTENCE_VERSION = 2;
+    
     /**
      * This is used in the save process for PGML.
      */
@@ -51,7 +53,6 @@ public abstract class AbstractFilePersister extends FileFilter implements Projec
     
     protected String extension;
     protected String desc;
-
     
     /**
      * Copies one file src to another, raising file exceptions

@@ -125,6 +125,12 @@ public class Project implements java.io.Serializable, TargetListener {
     private String historyFile;
 
     /**
+     * The version number of the persistence format that last
+     * saved this project.
+     */
+    private int persistenceVersion;
+
+    /**
      * Instances of the uml model.
      */
     private Vector _models;
@@ -1462,5 +1468,19 @@ public class Project implements java.io.Serializable, TargetListener {
         defaultModelCache = null;
         
         TargetManager.getInstance().removeTargetListener(this);
+    }
+    
+    /**
+     * @return Returns the persistenceVersion.
+     */
+    public int getPersistenceVersion() {
+        return persistenceVersion;
+    }
+    
+    /**
+     * @param persistenceVersion The persistenceVersion to set.
+     */
+    public void setPersistenceVersion(int persistenceVersion) {
+        this.persistenceVersion = persistenceVersion;
     }
 } /* end class Project */

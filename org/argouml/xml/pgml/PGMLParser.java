@@ -41,6 +41,9 @@ import org.argouml.cognitive.ItemUID;
 import org.argouml.ui.ArgoDiagram;
 import org.argouml.uml.diagram.ui.FigEdgeModelElement;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
+import org.argouml.uml.diagram.ui.HasAttributesCompartment;
+import org.argouml.uml.diagram.ui.HasFeaturesCompartment;
+import org.argouml.uml.diagram.ui.HasOperationsCompartment;
 import org.apache.log4j.Logger;
 import org.argouml.uml.diagram.static_structure.ui.FigClass;
 import org.argouml.uml.diagram.static_structure.ui.FigInterface;
@@ -193,15 +196,15 @@ public class PGMLParser extends org.tigris.gef.xml.pgml.PGMLParser {
     }
 
     private String[] entityPaths = {
-	"/org/argouml/xml/dtd/",
-	"/org/tigris/gef/xml/dtd/" 
+        "/org/argouml/xml/dtd/",
+        "/org/tigris/gef/xml/dtd/" 
     };
     
     /**
      * @see org.tigris.gef.xml.pgml.PGMLParser#getEntityPaths()
      */
     protected String[] getEntityPaths() {
-	return entityPaths;
+        return entityPaths;
     }
 
     // --------- restoring visibility of node compartments -----------
@@ -215,64 +218,112 @@ public class PGMLParser extends org.tigris.gef.xml.pgml.PGMLParser {
      * Called by the XML framework when an entity starts.
      */
     public void startElement(String elementName, AttributeList attrList) {
-	if (_elementState == NODE_STATE && elementName.equals("group") 
-	        && _currentNode != null && attrList != null 
-	        && (_currentNode instanceof FigClass  
-	            || _currentNode instanceof FigInterface)) {
-	    // compartment of class figure detected
-	    String descr = attrList.getValue("description").trim();
-	    if (descr.endsWith("[0, 0, 0, 0]") || descr.endsWith("[0,0,0,0]")) {
-		// the detected compartment need to be hidden
-		((FigNodeModelElement) _currentNode).enableSizeChecking(false);
-		if (_currentNode != previousNode) {
-		    // it's the first compartment of the class:
-		    if (_currentNode instanceof FigClass) {
-			((FigClass) _currentNode).setAttributeVisible(false);
-		    } else {
-			((FigInterface) _currentNode).setOperationVisible(false);
-		    }
-		} else {
-		    // never reached due to bug in GEF (see below)
-		    ((FigClass) _currentNode).setOperationVisible(false);
-		}
-		((FigNodeModelElement) _currentNode).enableSizeChecking(true);
-	    }
-	    previousNode = _currentNode; // remember for next compartment
-	}
-	// The following should not be necessary, but because of a bug in GEF's
-	// PGMLParser, the second FigGroup (which is the operations compartment)
-	// is parsed in the wrong state (DEFAULT_STATE). Result: _currentNode is
-	// lost (set to null). Solution: use saved version in _previousNode and
-	// watch _nestedGroups in order to decide which compartment is parsed.
-	// This code should work even with a fixed PGMLParser of GEF.
-        // (_elementState) DEFAULT_STATE(=0) is private :-(
-        // NODE_STATE = 4
-        
-	if (_elementState == 0 && elementName.equals("group") 
-	        && previousNode != null && _nestedGroups > 0) { 
-	    String descr = attrList.getValue("description").trim();
-	    _elementState = NODE_STATE;
-	    _currentNode = previousNode;
-	    if (descr.endsWith("[0, 0, 0, 0]") || descr.endsWith("[0,0,0,0]")) {
-        
-		if (previousNode instanceof FigClass) {
-		    ((FigNodeModelElement) previousNode).enableSizeChecking(false);
-		    ((FigClass) previousNode).setOperationVisible(false);
-		    ((FigNodeModelElement) previousNode).enableSizeChecking(true);
-		} 
-	    }
-	}
 
-	if ("private".equals(elementName)) {
-	    privateTextDepth++;
-	}
-	super.startElement(elementName, attrList);
-	if (nestedGroupFlag) {
-	    _diagram.remove(figGroup);
-	    figGroup = null;
-	    nestedGroupFlag = false;
-	}
+        String descr = null;
+        if (attrList != null) {
+            descr = attrList.getValue("description");
+        }
+        if (descr != null) {
+            descr = descr.trim();
+        }
+        if (_elementState == NODE_STATE && elementName.equals("group") 
+                && _currentNode instanceof HasOperationsCompartment
+                && isOperationsXml(attrList)) {
+            if (isHiddenXml(descr)) {
+                ((HasOperationsCompartment) _currentNode).setOperationsVisible(false);
+            }
+            previousNode = _currentNode;
+        } else if (_elementState == DEFAULT_STATE && elementName.equals("group") 
+                && previousNode instanceof HasAttributesCompartment
+                    && isAttributesXml(attrList)) {
+            _elementState = NODE_STATE;
+            _currentNode = previousNode;
+            if (isHiddenXml(descr)) {
+                ((HasAttributesCompartment) previousNode).setAttributesVisible(false);
+            }
+        } else {
+            // The following is required only for backwards
+            // compatability to before fig compartments existed
+            if (_elementState == NODE_STATE && elementName.equals("group") 
+                    && _currentNode != null && attrList != null 
+                    && (_currentNode instanceof FigClass  
+                        || _currentNode instanceof FigInterface)) {
+                // compartment of class figure detected
+                if (isHiddenXml(descr)) {
+                    // the detected compartment need to be hidden
+                    ((FigNodeModelElement) _currentNode).enableSizeChecking(false);
+                    if (_currentNode != previousNode) {
+                        // it's the first compartment of the class:
+                        if (_currentNode instanceof FigClass) {
+                            ((FigClass) _currentNode).setAttributesVisible(false);
+                        } else {
+                            ((FigInterface) _currentNode).setOperationsVisible(false);
+                        }
+                    } else {
+                        // never reached due to bug in GEF (see below)
+                        ((FigClass) _currentNode).setOperationsVisible(false);
+                    }
+                    ((FigNodeModelElement) _currentNode).enableSizeChecking(true);
+                }
+                previousNode = _currentNode; // remember for next compartment
+            } else if (_elementState == DEFAULT_STATE && elementName.equals("group") 
+                    && previousNode != null && _nestedGroups > 0) { 
+                // The following should not be necessary, but because of a bug in GEF's
+                // PGMLParser, the second FigGroup (which is the operations compartment)
+                // is parsed in the wrong state (DEFAULT_STATE). Result: _currentNode is
+                // lost (set to null). Solution: use saved version in _previousNode and
+                // watch _nestedGroups in order to decide which compartment is parsed.
+                // This code should work even with a fixed PGMLParser of GEF.
+                // (_elementState) DEFAULT_STATE(=0) is private :-(
+                // NODE_STATE = 4
+                
+                _elementState = NODE_STATE;
+                _currentNode = previousNode;
+                if (isHiddenXml(descr) && previousNode instanceof FigClass) {
+            	    ((FigNodeModelElement) previousNode).enableSizeChecking(false);
+            	    ((FigClass) previousNode).setOperationsVisible(false);
+            	    ((FigNodeModelElement) previousNode).enableSizeChecking(true);
+                }
+            }
+        }
+        
+        if ("private".equals(elementName)) {
+            privateTextDepth++;
+        }
+        super.startElement(elementName, attrList);
+        if (nestedGroupFlag) {
+            _diagram.remove(figGroup);
+            figGroup = null;
+            nestedGroupFlag = false;
+        }
+        
+    }
+    
+    private boolean isAttributesXml(AttributeList attrList) {
+        if (attrList == null) {
+            return false;
+        }
+        String descr = attrList.getValue("description").trim();
+        return (descr.indexOf("FigAttributesCompartment[") > 0);
+    }
 
+    private boolean isOperationsXml(AttributeList attrList) {
+        if (attrList == null) {
+            return false;
+        }
+        String descr = attrList.getValue("description").trim();
+        return (descr.indexOf("FigOperationsCompartment[") > 0);
+    }
+
+    /**
+     * The fig is denoted as being hidden in the XML if
+     * its description contains co-ordinates and size all
+     * of zero
+     * @param text
+     * @return if the XML denotes a hidden Fig.
+     */
+    private boolean isHiddenXml(String text) {
+        return text.endsWith("[0, 0, 0, 0]") || text.endsWith("[0,0,0,0]");
     }
 
     /**
@@ -517,13 +568,11 @@ public class PGMLParser extends org.tigris.gef.xml.pgml.PGMLParser {
              _elementState = EDGE_STATE;
          }  
        
-     }
-     catch(Exception ex) {
-         System.out.println("Exception in handleGroup");
+     } catch(Exception ex) {
+         LOG.debug("Exception in handleGroup", ex);
          ex.printStackTrace();
-     }
-     catch(NoSuchMethodError ex) {
-         System.out.println("No constructor() in class " + clsName);
+     } catch(NoSuchMethodError ex) {
+         LOG.debug("No constructor() in class " + clsName, ex);
          ex.printStackTrace();
      }
 
