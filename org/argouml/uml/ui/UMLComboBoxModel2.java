@@ -126,9 +126,10 @@ public abstract class UMLComboBoxModel2
     }
 
     /**
-     * If the property that this comboboxmodel depicts is changed by the UML
+     * If the property that this comboboxmodel depicts is changed in the UML
      * model, this method will make sure that it is changed in the comboboxmodel
      * too.
+     * TODO: This function is not yet completely written!
      * 
      * @see java.beans.PropertyChangeListener#propertyChange(java.beans.PropertyChangeEvent)
      */
