@@ -26,6 +26,10 @@
 // Original Author: jrobbins@ics.uci.edu
 // $Id$
 
+// 21 Mar 2002: Jeremy Bennett (mail@jeremybennett.com). Changed to use the
+// labels "Generalizes:" and "Specializes:" for inheritance.
+
+
 package org.argouml.uml.ui.behavior.use_cases;
 
 import org.argouml.uml.ui.*;
@@ -67,10 +71,10 @@ public class PropPanelActor extends PropPanelClassifier {
     modifiersPanel.add(new UMLCheckBox(localize("Root"),this,new UMLReflectionBooleanProperty("isRoot",mclass,"isRoot","setRoot")));
     addField(modifiersPanel,4,0,0);
 
-    addCaption("Derived:",0,1,0);
+    addCaption("Generalizes:",0,1,0);
     addField(derivedScroll,0,1,0);
 
-    addCaption("Extends:",1,1,0);
+    addCaption("Specializes:",1,1,0);
     addLinkField(extendsScroll,1,1,0);
 
     addCaption("Associations:",2,1,0.5);

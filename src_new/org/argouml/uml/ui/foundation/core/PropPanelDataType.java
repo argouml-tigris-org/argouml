@@ -21,6 +21,9 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
+// 21 Mar 2002: Jeremy Bennett (mail@jeremybennett.com). Changed to use the
+// labels "Generalizes:" and "Specializes:" for inheritance.
+
 
 package org.argouml.uml.ui.foundation.core;
 
@@ -50,7 +53,7 @@ public class PropPanelDataType extends PropPanelClassifier {
     addCaption("Stereotype:",2,0,0);
     addField(new UMLComboBoxNavigator(this,"NavStereo",stereotypeBox),2,0,0);
 
-    addCaption("Extends:",3,0,0);
+    addCaption("Specializes:",3,0,0);
     addField(extendsScroll,3,0,0);
 
     addCaption("Implements:",4,0,0);
@@ -62,7 +65,7 @@ public class PropPanelDataType extends PropPanelClassifier {
     addCaption("Namespace:",6,0,0);
     addField(namespaceScroll,6,0,0);
 
-    addCaption("Derived:",7,0,1);
+    addCaption("Generalizes:",7,0,1);
     addField(derivedScroll,7,0,1);
 
     addCaption("Literals:",1,1,0.5);
