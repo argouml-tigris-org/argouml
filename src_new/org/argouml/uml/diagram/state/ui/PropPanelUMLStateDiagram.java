@@ -43,16 +43,19 @@ import org.argouml.uml.diagram.ui.*;
 import org.argouml.uml.diagram.state.*;
 
 public class PropPanelUMLStateDiagram extends PropPanelDiagram {
+/*
   ////////////////////////////////////////////////////////////////
   // instance vars
   JLabel _contextLabel = new JLabel("Context: ");
   JComboBox _contextField = new JComboBox();
+*/
 
   ////////////////////////////////////////////////////////////////
   // constructors
 
   public PropPanelUMLStateDiagram() {
     super();
+/*
     GridBagLayout gb = (GridBagLayout) getLayout();
     GridBagConstraints c = new GridBagConstraints();
     c.fill = GridBagConstraints.BOTH;
@@ -76,8 +79,10 @@ public class PropPanelUMLStateDiagram extends PropPanelDiagram {
     Document contextDoc = ((JTextField)ed).getDocument();
     contextDoc.addDocumentListener(this);
     // needs-more-work: set font?
+*/
   }
 
+  /*
   ////////////////////////////////////////////////////////////////
   // accessors
 
@@ -124,5 +129,6 @@ public class PropPanelUMLStateDiagram extends PropPanelDiagram {
     System.out.println(getClass().getName() + " changed");
     // Apparently, this method is never called.
   }
-  
+
+*/
 } /* end class PropPanelDiagram */

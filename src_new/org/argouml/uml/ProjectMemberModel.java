@@ -25,6 +25,7 @@ package org.argouml.uml;
 
 import java.net.URL;
 import java.io.*;
+import java.util.zip.*;
 import javax.swing.*;
 
 import org.argouml.xml.xmi.XMIParser;
@@ -94,28 +95,30 @@ public class ProjectMemberModel extends ProjectMember {
   }
 
   public void save(String path, boolean overwrite) {
+      save(path, overwrite, null);
+  }
 
-    if (!path.endsWith("/")) path += "/";
-    String fullpath = path + getName();
+  public void save(String path, boolean overwrite, Writer writer) {
+
+      if (writer == null) {
+	  System.out.println("No Writer specified!");
+	  return;
+      }
+
+
+      //if (!path.endsWith("/")) path += "/";
+      //String fullpath = path + getName();
 
     try {
       ProjectBrowser pb = ProjectBrowser.TheInstance;
-      System.out.println("Writing " + fullpath + "...");
-      pb.showStatus("Writing " + fullpath + "...");
-      File f = new File(fullpath);
-      if (f.exists() && !overwrite) {
-	String t = "Overwrite " + fullpath;
-	int response =
-	  JOptionPane.showConfirmDialog(pb, t, t,
-					JOptionPane.YES_NO_OPTION);
-	if (response == JOptionPane.NO_OPTION) return;
-      }
+      //System.out.println("Writing " + fullpath + "...");
+      //pb.showStatus("Writing " + fullpath + "...");
 
-      XMIWriter writer = new XMIWriter(_model,fullpath);
-      writer.gen();
+      XMIWriter xmiwriter = new XMIWriter(_model,writer);
+      xmiwriter.gen();
 
-      System.out.println("Wrote " + fullpath);
-      pb.showStatus("Wrote " + fullpath);
+      //System.out.println("Wrote " + fullpath);
+      //pb.showStatus("Wrote " + fullpath);
     }
     catch (Exception ex) {
       ex.printStackTrace();

@@ -1,4 +1,4 @@
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2001 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -31,6 +31,9 @@ import ru.novosoft.uml.foundation.data_types.*;
 import org.tigris.gef.util.*;
 
 import org.argouml.cognitive.checklist.*;
+//
+//  slightly different from its GEF counterpart
+//
 import org.argouml.ocl.OCLEvaluator;
 
 /** A special kind of CheckItem that can replace OCL expressions with
@@ -56,7 +59,7 @@ public class UMLCheckItem extends CheckItem {
       int endExpr = res.indexOf(OCLEvaluator.OCL_END, matchPos + 1);
       String expr = res.substring(matchPos + OCLEvaluator.OCL_START.length(),
 				  endExpr);
-      String evalStr = OCLEvaluator.evalToString(dm, expr);
+      String evalStr = OCLEvaluator.SINGLETON.evalToString(dm, expr);
       //System.out.println("expr='" + expr + "' = '" + evalStr + "'");
       res = res.substring(0, matchPos) +
 	evalStr +

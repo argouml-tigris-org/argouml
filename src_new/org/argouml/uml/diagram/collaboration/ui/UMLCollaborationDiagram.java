@@ -42,6 +42,7 @@ import org.tigris.gef.presentation.*;
 import org.tigris.gef.ui.*;
 
 import org.argouml.ui.*;
+import org.argouml.uml.ui.*;
 import org.argouml.uml.diagram.ui.*;
 import org.argouml.uml.diagram.collaboration.*;
 
@@ -115,7 +116,7 @@ public class UMLCollaborationDiagram extends UMLDiagram {
     _toolBar.add(_actionClassifierRole);
     _toolBar.addSeparator();
     _toolBar.add(_actionAssoc);
-    _toolBar.add(Actions.AddMessage);
+    _toolBar.add(ActionAddMessage.SINGLETON);
     // other actions
     _toolBar.addSeparator();
 
@@ -130,6 +131,36 @@ public class UMLCollaborationDiagram extends UMLDiagram {
     _toolBar.addSeparator();
 
     _toolBar.add(_diagramName);
+  }
+
+
+  /**  After loading the diagram it´s necessary to connect
+    *  every FigMessage to its FigAssociationRole. 
+    *  This is done by adding the FigMessage 
+    *  to the PathItems of its FigAssociationRole */  
+  public void postLoad() {
+
+    super.postLoad();
+
+    Collection messages;
+    Iterator msgIterator;
+    Collection ownedElements = getNamespace().getOwnedElements();
+    Iterator oeIterator = ownedElements.iterator();   
+    Layer lay = getLayer();
+    while(oeIterator.hasNext()) {
+	MModelElement me = (MModelElement)oeIterator.next();
+	if (me instanceof MAssociationRole) {
+           messages= ((MAssociationRole) me).getMessages();
+           msgIterator= messages.iterator();
+           while(msgIterator.hasNext()) {
+             MMessage message = (MMessage)msgIterator.next();            
+             FigMessage figMessage = (FigMessage) lay.presentationFor(message);
+             if ( figMessage != null ) {
+               figMessage.addPathItemToFigAssociationRole(lay);
+             }
+           }
+       }
+    }
   }
 
 } /* end class UMLCollaborationDiagram */

@@ -137,8 +137,15 @@ public class UMLActivityDiagram extends UMLDiagram {
     lay.setGraphEdgeRenderer(rend);
   }
 
-  public MStateMachine getStateMachine() {
-    return ((StateDiagramGraphModel)getGraphModel()).getMachine();
+    public MModelElement getOwner() {
+	StateDiagramGraphModel gm = (StateDiagramGraphModel)getGraphModel();
+	MStateMachine sm = gm.getMachine();
+	if (sm != null) return sm;
+	return gm.getNamespace();
+    }
+
+    public MStateMachine getStateMachine() {
+	return ((StateDiagramGraphModel)getGraphModel()).getMachine();
   }
 
   public void setStateMachine(MStateMachine sm) {
@@ -164,15 +171,15 @@ public class UMLActivityDiagram extends UMLDiagram {
 
     _toolBar.add(_actionState);
     _toolBar.add(_actionTransition);
+
+    _toolBar.addSeparator();
+
     _toolBar.add(_actionStartPseudoState);
     _toolBar.add(_actionFinalPseudoState);
     _toolBar.add(_actionBranchPseudoState);
     _toolBar.add(_actionForkPseudoState);
     _toolBar.add(_actionJoinPseudoState);
     _toolBar.addSeparator();
-
-    //_toolBar.add(Actions.AddInternalTrans);
-    //_toolBar.addSeparator();
 
     _toolBar.add(_actionRectangle);
     _toolBar.add(_actionRRectangle);

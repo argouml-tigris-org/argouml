@@ -38,7 +38,7 @@ implements IStatusBar {
 
 
   public SplashScreen(String title, String iconName) {
-    super(title);
+    super();
     ImageIcon splashImage = Util.loadIconResource(iconName);
     JLabel splashButton = new JLabel("");
     if (splashImage != null) {
@@ -55,8 +55,9 @@ implements IStatusBar {
     getContentPane().add(splashButton, BorderLayout.CENTER);
     getContentPane().add(_statusBar, BorderLayout.SOUTH);
     // add preloading progress bar?
-    //setSize(imgWidth + 50, imgHeight + 50);
-    setResizable(false);
+	Dimension contentPaneSize = getContentPane().getPreferredSize();
+    setSize(contentPaneSize.width, contentPaneSize.height);
+    //setResizable(false);
     pack();
   }
 

@@ -151,7 +151,18 @@ implements MutableGraphModel, VetoableChangeListener, MElementListener {
 
   /** Return true if the given object is a valid edge in this graph */
   public boolean canAddEdge(Object edge)  {
-    return (edge instanceof MTransition);
+    if(_edges.contains(edge)) return false;
+    Object end0 = null, end1 = null;
+    if (edge instanceof MTransition) {
+      MTransition tr = (MTransition)edge;
+      end0 = tr.getSource();
+      end1 = tr.getTarget();
+    }
+
+    if (end0 == null || end1 == null) return false;
+    if (!_nodes.contains(end0)) return false;
+    if (!_nodes.contains(end1)) return false;
+    return true;
   }
 
   /** Remove the given node from the graph. */
@@ -169,16 +180,18 @@ implements MutableGraphModel, VetoableChangeListener, MElementListener {
       return;
     }
     MStateVertex sv = (MStateVertex) node;
+
     if (_nodes.contains(sv)) return;
     _nodes.addElement(sv);
 	// needs-more-work: assumes public, user pref for default visibility?
-// 	if (sv.getNamespace() == null)
-// 		_namespace.addOwnedElement(sv);
+    //if (sv.getNamespace() == null)
+    //_namespace.addOwnedElement(sv);
       // needs-more-work: assumes not nested in another composite state
       MCompositeState top = (MCompositeState) _machine.getTop();
+
       top.addSubvertex(sv);
-//       sv.setParent(top);
-//       if (sv instanceof MState) ((MState)sv).setStateMachine(_machine);
+//       sv.setParent(top); this is done in setEnclosingFig!!
+//      if ((sv instanceof MState) && (sv.getNamespace()==null)) ((MState)sv).setStateMachine(_machine);
     fireNodeAdded(node);
   }
 
@@ -193,14 +206,25 @@ implements MutableGraphModel, VetoableChangeListener, MElementListener {
     if (_edges.contains(tr)) return;
     _edges.addElement(tr);
 	// needs-more-work: assumes public
-// 	if (tr.getNamespace() == null)
-// 		_namespace.addOwnedElement(tr);
+    //if (tr.getNamespace() == null)
+    //_namespace.addOwnedElement(tr);
 	//_machine.addTransition(tr);
 	tr.setStateMachine(_machine);
     fireEdgeAdded(edge);
   }
 
-  public void addNodeRelatedEdges(Object node) { }
+  public void addNodeRelatedEdges(Object node) {
+      if ( node instanceof MStateVertex ) {
+      Vector transen = new Vector(((MStateVertex)node).getOutgoings());
+      transen.addAll(((MStateVertex)node).getIncomings());
+      Iterator iter = transen.iterator();
+      while (iter.hasNext()) {
+         MTransition dep = (MTransition) iter.next();
+         if(canAddEdge(dep))
+           addEdge(dep);
+      }
+    }
+  }
 
 
   /** Remove the given edge from the graph. */
@@ -210,7 +234,7 @@ implements MutableGraphModel, VetoableChangeListener, MElementListener {
     fireEdgeRemoved(edge);
   }
 
-  /** Return true if the two given ports can be connected by a 
+  /** Return true if the two given ports can be connected by a
    * kind of edge to be determined by the ports. */
   public boolean canConnect(Object fromPort, Object toPort) {
     if (!(fromPort instanceof MStateVertex)) {

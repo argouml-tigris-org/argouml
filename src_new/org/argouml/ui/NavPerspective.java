@@ -44,6 +44,7 @@ import org.argouml.uml.diagram.state.*;
 import org.argouml.uml.diagram.state.ui.*;
 import org.argouml.uml.diagram.collaboration.ui.*;
 import org.argouml.uml.diagram.use_case.ui.*;
+import org.argouml.uml.diagram.sequence.ui.*;
 
 /** This defines a NavPerspective as a kind of TreeModel that is made
  *  up of rules from the files whose names begin with "Go".  It also
@@ -131,6 +132,9 @@ implements Serializable, TreeModel, Cloneable {
     packageCentric.addSubTreeModel(new GoClassifierToStr());
     packageCentric.addSubTreeModel(new GoClassifierToBeh());
     packageCentric.addSubTreeModel(new GoAssocRoleMessages());
+
+    packageCentric.addSubTreeModel(new GoLinkStimuli());
+    packageCentric.addSubTreeModel(new GoStimulusAction());
 
     diagramCentric.addSubTreeModel(new GoProjectDiagram());
     diagramCentric.addSubTreeModel(new GoDiagramToNode());

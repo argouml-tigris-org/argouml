@@ -66,7 +66,7 @@ public class CrNoOperations extends CrUML {
     //needs-more-work: different critic or special message for classes
     //that inherit all ops but define none of their own.
 
-    Collection beh = getInheritedBehavioralFeatures(cls);
+    Collection beh = getInheritedBehavioralFeatures(cls,0);
     if (beh == null) return PROBLEM_FOUND;
     for (Iterator iter = beh.iterator(); iter.hasNext();) {
       MBehavioralFeature bf = (MBehavioralFeature) iter.next();
@@ -81,7 +81,7 @@ public class CrNoOperations extends CrUML {
     return ClOperationCompartment.TheInstance;
   }
 
-  private Collection getInheritedBehavioralFeatures(MClassifier cls)
+  private Collection getInheritedBehavioralFeatures(MClassifier cls,int depth)
   {
      Collection res = new Vector();
      Collection features = cls.getFeatures();
@@ -93,8 +93,9 @@ public class CrNoOperations extends CrUML {
      Collection inh = cls.getGeneralizations();
      for (Iterator iter = inh.iterator(); iter.hasNext();) {
        MGeneralization gen = (MGeneralization)iter.next();
-       if (gen.getParent() instanceof MClassifier) {
-         Collection superassocs = getInheritedBehavioralFeatures((MClassifier)gen.getParent());
+       MGeneralizableElement parent = gen.getParent();
+       if (parent != cls && parent instanceof MClassifier && depth < 50) {
+         Collection superassocs = getInheritedBehavioralFeatures((MClassifier) parent,depth+1);
          res.addAll(superassocs);
        };
      };

@@ -43,6 +43,7 @@ import org.argouml.cognitive.*;
 import org.argouml.cognitive.ui.*;
 import org.argouml.uml.cognitive.critics.*;
 import org.argouml.xml.argo.ArgoParser;
+import org.argouml.uml.ui.UMLAction;
 
 public class Main {
   ////////////////////////////////////////////////////////////////
@@ -60,6 +61,11 @@ public class Main {
   // main
 
   public static void main(String args[]) {
+
+      // first, print out some version info for debuggers...
+
+      System.out.println(org.argouml.util.Tools.getVersionInfo());
+
     boolean doSplash = true;
     boolean useEDEM = true;
     boolean preload = true;
@@ -71,7 +77,7 @@ public class Main {
     URL urlToOpen = null;
 
     long start, phase0, phase1, phase2, phase3, phase4, phase5, now;
-	
+
 	/* set properties for application behaviour */
 	System.setProperty("gef.imageLocation","/org/argouml/Images");
 
@@ -136,7 +142,7 @@ public class Main {
 
 
     start = System.currentTimeMillis();
-    SplashScreen splash = new SplashScreen("Loading Argo/UML...", "Splash");
+    SplashScreen splash = new SplashScreen("Loading ArgoUML...", "Splash");
     splash.getStatusBar().showStatus("Making Project Browser");
     splash.getStatusBar().showProgress(10);
 
@@ -145,7 +151,13 @@ public class Main {
 
 
 	MFactoryImpl.setEventPolicy(MFactoryImpl.EVENT_POLICY_IMMEDIATE);
-    ProjectBrowser pb = new ProjectBrowser("Argo/UML", splash.getStatusBar());
+    //
+    //  sets locale for menus
+    //
+    Locale.setDefault(new Locale(System.getProperty("user.language"),
+				 System.getProperty("user.region")));
+    UMLAction.setLocale(Locale.getDefault());
+    ProjectBrowser pb = new ProjectBrowser("ArgoUML", splash.getStatusBar());
     phase1 = System.currentTimeMillis();
 
     JOptionPane.setRootFrame(pb);
@@ -171,10 +183,7 @@ public class Main {
 
     if (urlToOpen == null) p = Project.makeEmptyProject();
     else {
-      ArgoParser.SINGLETON.readProject(urlToOpen);
-      p = ArgoParser.SINGLETON.getProject();
-      p.loadAllMembers();
-      p.postLoad();
+	p = Project.loadProject(urlToOpen);
     }
 
     phase3 = System.currentTimeMillis();
@@ -309,6 +318,7 @@ public class Main {
     postLoadActions.addElement(r);
   }
 
+
 } /* end Class Main */
 
 
@@ -316,8 +326,10 @@ public class Main {
 class StartCritics implements Runnable {
   public void run() {
     Designer dsgr = Designer.theDesigner();
+    Locale locale = Locale.getDefault();
+    CrUML.setLocale(locale);
     org.argouml.uml.cognitive.critics.Init.init();
-    org.argouml.uml.cognitive.checklist.Init.init();
+    org.argouml.uml.cognitive.checklist.Init.init(locale);
     ProjectBrowser pb = ProjectBrowser.TheInstance;
 	Project p = pb.getProject();
     dsgr.spawnCritiquer(p);
@@ -381,9 +393,9 @@ class PreloadClasses implements Runnable {
       c = org.argouml.uml.diagram.ui.FigAssociation.class;
       c = org.argouml.uml.diagram.ui.FigGeneralization.class;
       c = org.argouml.uml.diagram.ui.FigRealization.class;
-      c = org.argouml.uml.diagram.static_structure.ui.PropPanelClass.class;
-      c = org.argouml.uml.diagram.static_structure.ui.PropPanelInterface.class;
-      c = org.argouml.uml.diagram.static_structure.ui.PropPanelAssociation.class;
+      c = org.argouml.uml.ui.foundation.core.PropPanelClass.class;
+      c = org.argouml.uml.ui.foundation.core.PropPanelInterface.class;
+      c = org.argouml.uml.ui.foundation.core.PropPanelAssociation.class;
       c = org.argouml.ui.StylePanelFig.class;
       c = org.argouml.uml.diagram.static_structure.ui.StylePanelFigClass.class;
       c = org.argouml.uml.diagram.ui.SPFigEdgeModelElement.class;

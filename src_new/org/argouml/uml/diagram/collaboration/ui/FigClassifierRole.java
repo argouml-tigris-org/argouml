@@ -34,6 +34,7 @@ import java.awt.event.*;
 import javax.swing.*;
 
 import ru.novosoft.uml.foundation.core.*;
+import ru.novosoft.uml.foundation.extension_mechanisms.*;
 import ru.novosoft.uml.behavior.collaborations.*;
 
 import org.tigris.gef.presentation.*;
@@ -72,9 +73,16 @@ public class FigClassifierRole extends FigNodeModelElement {
     Dimension nameMin = _name.getMinimumSize();
     _name.setBounds(10, 10, 90, nameMin.height);
 
+    _stereo.setLineWidth(0);
+    _stereo.setFilled(false);
+    _stereo.setJustifciaionByName("Center");
+    Dimension stereoMin = _stereo.getMinimumSize();
+    _stereo.setBounds(10, 10, 90, stereoMin.height);
+
     // add Figs to the FigNode in back-to-front order
     addFig(_bigPort);
     addFig(_cover);
+    addFig(_stereo);
     addFig(_name);
 
     Rectangle r = getBounds();
@@ -86,17 +94,35 @@ public class FigClassifierRole extends FigNodeModelElement {
     setOwner(node);
   }
 
-  public String placeString() { return "new MClassifierRole"; }
+  public String placeString() { return "new ClassifierRole"; }
 
   public Object clone() {
     FigClassifierRole figClone = (FigClassifierRole) super.clone();
     Vector v = figClone.getFigs();
     figClone._bigPort = (FigRect) v.elementAt(0);
     figClone._cover = (FigRect) v.elementAt(1);
-    figClone._name = (FigText) v.elementAt(2);
+    figClone._stereo = (FigText) v.elementAt(2);
+    figClone._name = (FigText) v.elementAt(3);
     return figClone;
   }
 
+
+  protected void updateStereotypeText() {
+    MModelElement me = (MModelElement) getOwner();
+    if (me == null) return;
+    MStereotype stereo = me.getStereotype();
+    if (stereo == null || stereo.getName() == null || stereo.getName().length() == 0) 
+	_stereo.setText("");
+    else {
+	String stereoStr = stereo.getName();
+	_stereo.setText("<<" + stereoStr + ">>");
+    }
+    Rectangle oldBounds = getBounds();
+    _stereo.calcBounds();
+    calcBounds();
+    firePropChange("bounds", oldBounds, getBounds());
+  
+  }
 
   ////////////////////////////////////////////////////////////////
   // Fig accessors
@@ -160,7 +186,7 @@ public class FigClassifierRole extends FigNodeModelElement {
     MClassifierRole cls = (MClassifierRole) getOwner();
     if (ft == _name) {
        String s = ft.getText();
-	   System.out.println("S ist: "+s);
+       // System.out.println("S ist: "+s);
       ParserDisplay.SINGLETON.parseClassifierRole(cls, s);
     }
   }
@@ -170,13 +196,14 @@ public class FigClassifierRole extends FigNodeModelElement {
     MClassifierRole cr = (MClassifierRole) getOwner();
     if (cr == null) return;
     String nameStr = GeneratorDisplay.Generate(cr.getName()).trim();
-	String baseString = "";
+    String baseString = "";
+    if (cr.getBases() != null && cr.getBases().size()>0) {
 	Vector bases = new Vector(cr.getBases());
-	if (bases.size() == 1)
-		baseString = ((MClassifier)bases.elementAt(0)).getName();
-	else if (bases.size() > 1)
-		baseString = "(multiple)";
-		
+	baseString += ((MClassifier)bases.elementAt(0)).getName();
+        for(int i=1; i<bases.size(); i++)
+	    baseString += ", "  + ((MClassifier)bases.elementAt(i)).getName();
+    }
+
     if (_readyToEdit) {
       if( nameStr == "" && baseString == "")
 	_name.setText("");

@@ -30,6 +30,7 @@ import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.foundation.data_types.*;
 import ru.novosoft.uml.foundation.extension_mechanisms.*;
 import ru.novosoft.uml.behavior.common_behavior.*;
+import ru.novosoft.uml.behavior.collaborations.*;
 import ru.novosoft.uml.behavior.state_machines.*;
 import ru.novosoft.uml.model_management.*;
 import org.argouml.uml.MMUtil;
@@ -76,7 +77,7 @@ public class GeneratorJava extends Generator {
 
   public static String GenerateFile(MClassifier cls, String path) {
     // GenerateFile now returns the full path name of the
-    // the generated file. 
+    // the generated file.
     String name = cls.getName();
     if (name == null || name.length() == 0) return null;
     String filename = name + ".java";
@@ -152,9 +153,12 @@ public class GeneratorJava extends Generator {
 		if (returnType == null && !nameStr.equals(clsName)) s += "void ";
 		else if (returnType != null) s += generateClassifierRef(returnType) + " ";
 	} else {
-		if (nameStr.equals(clsName)) s += " "; // this is a constructor!
+//          removed since it was throwing exceptions and didn't seem to do
+//                 much,  Curt Arnold 15 Jan 2001
+//
+//		if (nameStr.equals(clsName)) s += " "; // this is a constructor!
 	}
-		
+
 
     // name and params
     Vector params = new Vector(op.getParameters());
@@ -180,7 +184,7 @@ public class GeneratorJava extends Generator {
     s += generateScope(attr);
     s += generateChangability(attr);
     if (!MMultiplicity.M1_1.equals(attr.getMultiplicity()))
-      s += generateMultiplicity(attr.getMultiplicity()) + " ";
+	s += generateMultiplicity(attr.getMultiplicity()) + " ";
 
     MClassifier type = attr.getType();
     if (type != null) s += generateClassifierRef(type) + " ";
@@ -241,51 +245,53 @@ public class GeneratorJava extends Generator {
     if (cls instanceof MClassImpl) classifierKeyword = "class";
     else if (cls instanceof MInterface) classifierKeyword = "interface";
     else return ""; // actors and use cases
-    String s = "";
-    s += DocumentationManager.getDocs(cls) + "\n";
-    s += generateVisibility(cls.getVisibility());
-    if (cls.isAbstract() && !(cls instanceof MInterface)) s += "abstract ";
-    if (cls.isLeaf()) s += "final ";
-    s += classifierKeyword + " " + generatedName + " ";
+    StringBuffer sb = new StringBuffer(80);
+    sb.append(DocumentationManager.getDocs(cls)).append("\n");
+    sb.append(generateVisibility(cls.getVisibility()));
+    if (cls.isAbstract() && !(cls instanceof MInterface)) sb.append("abstract ");
+    if (cls.isLeaf()) sb.append("final ");
+    sb.append(classifierKeyword).append(" ").append(generatedName);
     String baseClass = generateGeneralzation(cls.getGeneralizations());
-    if (!baseClass.equals("")) s += "extends " + baseClass + " ";
+    String tv = null;
+    if (!baseClass.equals("")) sb.append(' ').append("extends ").append(baseClass);
 
     // nsuml: realizations!
 	if (cls instanceof MClass) {
 		String interfaces = generateSpecification((MClass)cls);
-		if (!interfaces.equals("")) s += "implements " + interfaces + " ";
+		if (!interfaces.equals("")) sb.append(' ').append("implements ").append(interfaces);
 	}
-	s += "{\n";
+	sb.append("\n{");
 
-    s += INDENT + generateTaggedValues(cls);
-    s += generateConstraints(cls);
+    tv = generateTaggedValues(cls);
+    if (tv != null && tv.length() > 0) sb.append(INDENT).append(tv);
+    sb.append(generateConstraints(cls));
 
     Collection strs = MMUtil.SINGLETON.getAttributes(cls);
     if (strs != null) {
-      s += "\n";
+      sb.append('\n');
 
-      if (cls instanceof MClassImpl) s += INDENT + "// Attributes\n";
+      if (cls instanceof MClassImpl) sb.append(INDENT).append("// Attributes\n");
       Iterator strEnum = strs.iterator();
       while (strEnum.hasNext()) {
-	MStructuralFeature sf = (MStructuralFeature) strEnum.next();
-	s += INDENT + generate(sf);
-	String tv = generateTaggedValues(sf);
-	if (tv.length() > 0) s += INDENT + tv;
+		MStructuralFeature sf = (MStructuralFeature) strEnum.next();
+		sb.append('\n').append(INDENT).append(generate(sf));
+		tv = generateTaggedValues(sf);
+		if (tv != null && tv.length() > 0) sb.append(INDENT).append(tv).append('\n');
       }
     }
 
     Collection ends = cls.getAssociationEnds();
     if (ends != null) {
-      s += "\n";
-      if (cls instanceof MClassImpl) s += INDENT + "// Associations\n";
+      sb.append('\n');
+      if (cls instanceof MClassImpl) sb.append(INDENT).append("// Associations\n");
       Iterator endEnum = ends.iterator();
       while (endEnum.hasNext()) {
-	MAssociationEnd ae = (MAssociationEnd) endEnum.next();
-	MAssociation a = ae.getAssociation();
-	s += INDENT + generateAssociationFrom(a, ae);
-	String tv = generateTaggedValues(a);
-	if (tv.length() > 0) s += INDENT + tv;
-	s += generateConstraints(a);
+		MAssociationEnd ae = (MAssociationEnd) endEnum.next();
+		MAssociation a = ae.getAssociation();
+		sb.append('\n').append(INDENT).append(generateAssociationFrom(a, ae));
+		tv = generateTaggedValues(a);
+		if (tv != null && tv.length() > 0) sb.append(INDENT).append(tv);
+		sb.append(generateConstraints(a));
       }
     }
 
@@ -293,35 +299,52 @@ public class GeneratorJava extends Generator {
 
     Collection behs = MMUtil.SINGLETON.getOperations(cls);
     if (behs != null) {
-      s += "\n";
-      s += INDENT + "// Operations\n";
+      sb.append('\n');
+      sb.append(INDENT).append("// Operations\n");
       Iterator behEnum = behs.iterator();
-      String terminator1 = " {\n";
+      String terminator1 = "\n" + INDENT + "{";
       String terminator2 = INDENT + "}";
       if (cls instanceof MInterface) { terminator1 = ";\n"; terminator2 = ""; }
       while (behEnum.hasNext()) {
-	MBehavioralFeature bf = (MBehavioralFeature) behEnum.next();
-	s += INDENT + generate(bf) + terminator1;
-	String tv = generateTaggedValues((MModelElement)bf);
-	if (tv.length() > 0) s += INDENT + tv;
-	s += generateConstraints((MModelElement)bf);
-	
-	// there is no ReturnType in behavioral feature (nsuml)
-	if (cls instanceof MClassImpl && bf instanceof MOperation) {
-	    s += generateMethodBody((MOperation)bf);
-	}
-	s += terminator2 + "\n";
+		MBehavioralFeature bf = (MBehavioralFeature) behEnum.next();
+		sb.append('\n').append(INDENT).append(generate(bf)).append(terminator1);
+		tv = generateTaggedValues((MModelElement)bf);
+		if (tv.length() > 0) sb.append(INDENT).append(tv);
+		sb.append(generateConstraints((MModelElement)bf));
+
+		// there is no ReturnType in behavioral feature (nsuml)
+		if (cls instanceof MClassImpl && bf instanceof MOperation) {
+		    sb.append(generateMethodBody((MOperation)bf)).append('\n');
+		}
+		sb.append(terminator2).append('\n');
       }
     }
-    s += "\n";
-    s += "} /* end " + classifierKeyword + " " + generatedName + " */\n";
-    return s;
+    sb.append("} /* end ").append(classifierKeyword).append(' ').append(generatedName).append(" */\n");
+    return sb.toString();
   }
 
   public String generateMethodBody(MOperation op) {
-    // pick out return type
-    MParameter rp = MMUtil.SINGLETON.getReturnParameter(op);
-    MClassifier returnType = rp.getType();
+      //System.out.print("generateMethodBody");
+      if (op != null) {
+        Collection methods = op.getMethods();
+        Iterator i = methods.iterator();
+        MMethod m = null;
+        //System.out.print(", op!=null, size="+methods.size());
+        while (i != null && i.hasNext()) {
+          //System.out.print(", i!= null");
+          m = (MMethod)i.next();
+          if (m != null) {
+            //System.out.println(", BODY of "+m.getName());
+            //System.out.println("|"+m.getBody().getBody()+"|");
+            return m.getBody().getBody();
+          }
+        }
+      }
+      // pick out return type
+      MParameter rp = MMUtil.SINGLETON.getReturnParameter(op);
+      if (rp == null)
+	    return generateDefaultReturnStatement(null);
+      MClassifier returnType = rp.getType();
       return generateDefaultReturnStatement(returnType);
   }
 
@@ -347,32 +370,44 @@ public class GeneratorJava extends Generator {
   public String generateTaggedValues(MModelElement e) {
     Collection tvs = e.getTaggedValues();
     if (tvs == null || tvs.size() == 0) return "";
-    String s = "// {";
-    int size = tvs.size();
-    MTaggedValue[] tvsarray = (MTaggedValue[])tvs.toArray();
-    for (int i = 0; i < size; i++) {
-      MTaggedValue tv = (MTaggedValue) tvsarray[i];
-      s += generateTaggedValue(tv);
-      if (i < size-1) s += ", ";
+    boolean first=true;
+    StringBuffer buf = new StringBuffer();
+    Iterator iter = tvs.iterator();
+    String s = null;
+    while(iter.hasNext()) {
+        s = generateTaggedValue((MTaggedValue)iter.next());
+        if (s != null && s.length() > 0) {
+			if (first) {
+				buf.append("// {");
+				first = false;
+			} else {
+				buf.append(", ");
+			}
+			buf.append(s);
+		}
     }
-    s += "}\n";
-    return s;
+    if (!first) buf.append("}\n");
+    return buf.toString();
   }
 
   public String generateTaggedValue(MTaggedValue tv) {
     if (tv == null) return "";
-    return generateName(tv.getTag()) + "=" +
-      generateUninterpreted(tv.getValue());
+    String s=generateUninterpreted(tv.getValue());
+    if (s == null || s.length() == 0 || s.equals("/** */")) return "";
+    return generateName(tv.getTag()) + "=" + s;
   }
 
   public String generateConstraints(MModelElement me) {
+
+    // This method just adds comments to the generated java code. This should be code generated by ocl-argo int he future?
     Collection cs = me.getConstraints();
     if (cs == null || cs.size() == 0) return "";
     String s = INDENT + "// constraints\n";
     int size = cs.size();
-    MConstraint[] csarray = (MConstraint[])cs.toArray();
-    for (int i = 0; i < size; i++) {
-      MConstraint c = (MConstraint) csarray[i];
+    // MConstraint[] csarray = (MConstraint[])cs.toArray();
+    // System.out.println("Got " + csarray.size() + " constraints.");
+    for (Iterator i = cs.iterator(); i.hasNext();) {
+      MConstraint c = (MConstraint) i.next();
       String constrStr = generateConstraint(c);
       java.util.StringTokenizer st = new java.util.StringTokenizer(constrStr, "\n\r");
       while (st.hasMoreElements()) {
@@ -441,7 +476,7 @@ public class GeneratorJava extends Generator {
       s += "Vector "; //generateMultiplicity(m) + " ";
 
     s += " ";
-    
+
     String n = ae.getName();
     MAssociation asc = ae.getAssociation();
     String ascName = asc.getName();
@@ -502,14 +537,13 @@ public class GeneratorJava extends Generator {
 		String s = "";
 		Iterator clsEnum = realizations.iterator();
 		while (clsEnum.hasNext()) {
-			MGeneralization r = (MGeneralization)clsEnum.next();
-			s += generateClassifierRef(r.getPowertype());
-			System.out.println("sup=" + r.getPowertype());
+			MInterface i = (MInterface)clsEnum.next();
+			s += generateClassifierRef(i);
 			if (clsEnum.hasNext()) s += ", ";
 		}
 		return s;
 	}
-	
+
 	public String generateClassList(Collection classifiers) {
 		String s = "";
 		if (classifiers == null) return "";
@@ -554,7 +588,7 @@ public class GeneratorJava extends Generator {
   }
 
   public String generateMultiplicity(MMultiplicity m) {
-    if (m == null) { System.out.println("null Multiplicity"); return ""; }
+    if (m == null) { return ""; }
     if (MMultiplicity.M0_N.equals(m)) return ANY_RANGE;
     String s = "";
     Collection v = m.getRanges();
@@ -589,6 +623,7 @@ public class GeneratorJava extends Generator {
   }
 
   public String generateStateBody(MState m) {
+      System.out.println("GeneratorJava: generating state body");
     String s = "";
     MAction entry = m.getEntry();
     MAction exit = m.getExit();
@@ -603,35 +638,71 @@ public class GeneratorJava extends Generator {
     }
     Collection trans = m.getInternalTransitions();
     if (trans != null) {
+	  Iterator iter = trans.iterator();
+	  while(iter.hasNext())
+	      {
+		  if (s.length() > 0) s += "\n";
+		  s += generateTransition((MTransition)iter.next());
+	      }
+      }
+
+  /*   if (trans != null) {
       int size = trans.size();
 	  MTransition[] transarray = (MTransition[])trans.toArray();
       for (int i = 0; i < size; i++) {
 		if (s.length() > 0) s += "\n";
 		s += Generate(transarray[i]);
       }
-    }
+      }*/
     return s;
   }
 
   public String generateTransition(MTransition m) {
-    String s = m.getName();
+    String s = generate(m.getName());
     String t = generate(m.getTrigger());
     String g = generate(m.getGuard());
     String e = generate(m.getEffect());
-    if (s.length() > 0 && (t.length() > 0 || g.length() > 0 || e.length() > 0))
-      s += ": ";
+    if (s.length() > 0) s += ": ";
     s += t;
     if (g.length() > 0) s += " [" + g + "]";
     if (e.length() > 0) s += " / " + e;
     return s;
+
+    /*  String s = m.getName();
+    String t = generate(m.getTrigger());
+    String g = generate(m.getGuard());
+    String e = generate(m.getEffect());
+    if(s == null) s = "";
+    if(t == null) t = "";
+    if (s.length() > 0 &&
+        (t.length() > 0 ||
+        (g != null && g.length() > 0) ||
+        (e != null && e.length() > 0)))
+        s += ": ";
+    s += t;
+    if (g != null && g.length() > 0) s += " [" + g + "]";
+    if (e != null && e.length() > 0) s += " / " + e;
+    return s;*/
   }
 
   public String generateAction(MAction m) {
-    return m.getName();
+      // return m.getName();
+      if ((m.getScript() != null) && (m.getScript().getBody() != null))
+	  return m.getScript().getBody();
+      return "";
   }
 
   public String generateGuard(MGuard m) {
-    return generateExpression(m.getExpression());
+      //return generateExpression(m.getExpression());
+      if (m.getExpression() != null)
+	  return generateExpression(m.getExpression());
+      return "";
   }
+
+    public String generateMessage(MMessage m) {
+    	if (m == null) return "";
+	return generateName(m.getName()) + "::" +
+	    generateAction(m.getAction());
+    }
 
 } /* end class GeneratorJava */

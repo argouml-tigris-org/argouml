@@ -95,27 +95,29 @@ implements ChangeListener, MouseListener {
 
   public void setTarget(Object target) {
     //System.out.println("MultiEditorPane setTarget: " + target);
-    int firstEnabled = -1;
-    boolean jumpToFirstEnabledTab = false;
+    if(_target == target) return;
+    int nextTab = -1;
     int currentTab = _tabs.getSelectedIndex();
-    if (_target == target) return;
+    int tabCount = _tabs.getTabCount();
     _target = target;
-    for (int i = 0; i < _tabPanels.size(); i++) {
-      JPanel tab = (JPanel) _tabPanels.elementAt(i);
-      if (tab instanceof TabModelTarget) {
-	TabModelTarget tabMT = (TabModelTarget) tab;
-	tabMT.setTarget(_target);
-	boolean shouldEnable = tabMT.shouldBeEnabled();
-	_tabs.setEnabledAt(i, shouldEnable);
-	if (shouldEnable && firstEnabled == -1) firstEnabled = i;
-	if (currentTab == i && !shouldEnable) {
-	  jumpToFirstEnabledTab = true;
+    for (int i = 0; i < tabCount; i++) {
+        Component tab = _tabs.getComponentAt(i);
+        if (tab instanceof TabModelTarget) {
+	    TabModelTarget tabMT = (TabModelTarget) tab;
+	    tabMT.setTarget(_target);
+	    boolean shouldEnable = tabMT.shouldBeEnabled();
+	    _tabs.setEnabledAt(i, shouldEnable);
+            if(shouldEnable && (nextTab == -1 || i == currentTab)) 
+                nextTab = i;
 	}
-      }
     }
-    if (jumpToFirstEnabledTab && firstEnabled != -1 )
-      _tabs.setSelectedIndex(firstEnabled);
-    setVisible(firstEnabled != -1);
+//    if this target doesn't match the tabs expectation    
+//        leave the previous tab displayed
+    
+//    
+//    if (nextTab != -1 && nextTab != currentTab) 
+//        _tabs.setSelectedIndex(nextTab);
+//    _tabs.setVisible(nextTab != -1);
   }
 
 
@@ -206,5 +208,27 @@ implements ChangeListener, MouseListener {
     JPanel t = (JPanel) _tabPanels.elementAt(tab);
     if (t instanceof TabSpawnable) ((TabSpawnable)t).spawn();
   }
+
+    public void addNavigationListener(NavigationListener navListener) {
+        Iterator iter = _tabPanels.iterator();
+        Object panel;
+        while(iter.hasNext()) {
+            panel = iter.next();
+            if(panel instanceof TabProps) {
+                ((TabProps) panel).addNavigationListener(navListener);
+            }
+        }
+    }
+    
+    public void removeNavigationListener(NavigationListener navListener) {
+        Iterator iter = _tabPanels.iterator();
+        Object panel;
+        while(iter.hasNext()) {
+            panel = iter.next();
+            if(panel instanceof TabProps) {
+                ((TabProps) panel).removeNavigationListener(navListener);
+            }
+        }
+    }
 
 } /* end class MultiEditorPane */

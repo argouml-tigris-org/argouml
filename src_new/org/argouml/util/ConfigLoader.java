@@ -37,44 +37,68 @@ public class ConfigLoader {
 
 	public static void loadTabs(Vector tabs, String panelName,
 			      StatusBar sb) {
-		String configFile = System.getProperty("argo.config",
-											   "/org/argouml/argo.ini");
-		LineNumberReader lnr = null;
-		InputStream is = ConfigLoader.class.getResourceAsStream(configFile);
-		lnr = new LineNumberReader(new InputStreamReader(is));
+          InputStream is = null;
+	  LineNumberReader lnr = null;
+	  String configFile = System.getProperty("argo.config");
+          //
+          //    if property specified
+          //
+          if(configFile != null) {
+            //    try to load a file
+            try {
+                is = new FileInputStream(configFile);
+            }
+            catch(FileNotFoundException e) {
+                is = ConfigLoader.class.getResourceAsStream(configFile);
+                if(is != null) {
+                    System.out.println("Value of argo.config (" + configFile + ") could not be loaded.\nLoading default configuration.");
+                }
+            }
+        }
+        if(is == null) {
+            configFile = "/org/argouml/argo.ini";
+            is = ConfigLoader.class.getResourceAsStream(configFile);
+        }
+        if(is != null) {
+            lnr = new LineNumberReader(new InputStreamReader(is));
 
-		if (lnr != null) {
-			try {
-				String line = lnr.readLine();
-				while (line != null) {
-					//long start = System.currentTimeMillis();
-					Class tabClass = parseConfigLine(line, panelName, lnr.getLineNumber(),
-													 configFile, sb);
-					if (tabClass != null) {
-						//System.out.println("tab=" + tabClass.getName());
-						try {
-							Object newTab = tabClass.newInstance();
-							tabs.addElement(newTab);
-						}
-						catch (InstantiationException ex) {
-							System.out.println("Could not make instance of " +
-											   tabClass.getName());
-						}
-						catch (IllegalAccessException ex) {
-							System.out.println("Could not make instance of " +
-											   tabClass.getName());
-						}
-					}
-					line = lnr.readLine();
-					//System.out.println("config line: " +
-					//(System.currentTimeMillis() - start));
-				}
-			}
-			catch (java.io.IOException io) { System.out.println("IOException"); }
-		}
-		else { System.out.println("lnr is null"); }
+            if (lnr != null) {
+                  try {
+                      String line = lnr.readLine();
+                      while (line != null) {
+                        //long start = System.currentTimeMillis();
+                        Class tabClass = parseConfigLine(line, panelName, lnr.getLineNumber(),
+                                                                                       configFile, sb);
+                        if (tabClass != null) {
+                              //System.out.println("tab=" + tabClass.getName());
+                            try {
+                                Object newTab = tabClass.newInstance();
+                                tabs.addElement(newTab);
+                            }
+                            catch (InstantiationException ex) {
+                                System.out.println("Could not make instance of " +
+                                    tabClass.getName());
+                            }
+                            catch (IllegalAccessException ex) {
+                                System.out.println("Could not make instance of " +
+                                    tabClass.getName());
+                            }
+                        }
+                        line = lnr.readLine();
+                        //System.out.println("config line: " +
+                        //(System.currentTimeMillis() - start));
+                      }
+                }
+                catch (java.io.IOException io) {
+                    System.out.println("IOException");
+                }
+            }
+            else {
+                System.out.println("lnr is null");
+            }
+        }
 	}
-	
+
 	public static Class parseConfigLine(String line, String panelName,
 										int lineNum, String configFile,
 										StatusBar sb) {
@@ -119,10 +143,10 @@ public class ConfigLoader {
 		}
 		return null;
 	}
-	
+
 	public static String stripBeforeColon(String s) {
 		int colonPos = s.indexOf(":");
 		return s.substring(colonPos  + 1);
 	}
-	
+
 } /* end class ConfigLoader */

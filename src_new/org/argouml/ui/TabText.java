@@ -47,7 +47,8 @@ implements TabModelTarget, DocumentListener {
   public TabText(String title) {
     super(title);
     setLayout(new BorderLayout());
-    setFont(new Font("Dialog", Font.PLAIN, 10));
+    _text.setFont(new Font("Monospaced", Font.PLAIN, 12));
+    _text.setTabSize(4);
     add(new JScrollPane(_text), BorderLayout.CENTER);
     _text.getDocument().addDocumentListener(this);
   }
@@ -93,7 +94,7 @@ implements TabModelTarget, DocumentListener {
 
   protected void parseText(String s) {
     if (s == null) s = "(null)";
-    //System.out.println("parsing text:" + s);
+    System.out.println("parsing text:" + s); // THN
   }
 
   ////////////////////////////////////////////////////////////////
@@ -120,5 +121,5 @@ implements TabModelTarget, DocumentListener {
   }
 
 
-  
+
 } /* end class TabText */

@@ -49,10 +49,10 @@ public class UMLUseCaseDiagram extends UMLDiagram {
   // actions for toolbar
 
 
-  protected static Action _actionActor = 
+  protected static Action _actionActor =
   new CmdCreateNode(MActorImpl.class, "Actor");
 
-  protected static Action _actionUseCase = 
+  protected static Action _actionUseCase =
   new CmdCreateNode(MUseCaseImpl.class, "UseCase");
 
   protected static Action _actionAssoc =
@@ -65,6 +65,10 @@ public class UMLUseCaseDiagram extends UMLDiagram {
 		 "edgeClass", MGeneralizationImpl.class,
 		 "Generalization");
 
+  protected static Action _actionDependency =
+  new CmdSetMode(ModeCreatePolyEdge.class,
+		 "edgeClass", MDependencyImpl.class,
+		 "Dependency");
 
   ////////////////////////////////////////////////////////////////
   // contructors
@@ -110,8 +114,12 @@ public class UMLUseCaseDiagram extends UMLDiagram {
 
     _toolBar.add(_actionActor);
     _toolBar.add(_actionUseCase);
+
+    _toolBar.addSeparator();
+
     _toolBar.add(_actionAssoc);
     _toolBar.add(_actionGeneralize);
+    _toolBar.add(_actionDependency);
     // other actions
     _toolBar.addSeparator();
 

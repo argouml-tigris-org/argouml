@@ -25,13 +25,17 @@ package org.argouml.kernel;
 
 import java.io.*;
 import java.util.*;
+import java.util.zip.*;
 import java.beans.*;
 import java.net.*;
+
+import org.xml.sax.InputSource;
 
 import ru.novosoft.uml.model_management.*;
 import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.behavior.state_machines.*;
 import ru.novosoft.uml.xmi.*;
+import ru.novosoft.uml.behavior.common_behavior.*;
 
 import org.tigris.gef.base.*;
 import org.tigris.gef.presentation.*;
@@ -51,8 +55,10 @@ import org.argouml.uml.diagram.use_case.ui.*;
 import org.argouml.language.java.generator.*;
 import org.argouml.ui.*;
 import org.argouml.util.*;
-import org.argouml.xml.argo.*; 
+import org.argouml.xml.argo.*;
 import org.argouml.xml.pgml.*;
+import org.argouml.xml.xmi.XMIParser;
+
 
 /** A datastructure that represents the designer's current project.  A
  *  Project consists of diagrams and UML models. */
@@ -61,7 +67,7 @@ public class Project implements java.io.Serializable {
   ////////////////////////////////////////////////////////////////
   // constants
   public static final String SEPARATOR = "/";
-  public final static String FILE_EXT = ".argo";
+  public final static String FILE_EXT = ".zargo";
   public final static String TEMPLATES = "/org/argouml/templates/";
   //public final static String EMPTY_PROJ = "EmptyProject" + FILE_EXT;
   public final static String UNTITLED_FILE = "Untitled";
@@ -74,6 +80,7 @@ public class Project implements java.io.Serializable {
 
   //needs-more-work should just be the directory to write
   private URL _url = null;
+  protected ChangeRegistry _saveRegistry;
 
   public String _authorname = "";
   public String _description = "";
@@ -101,12 +108,16 @@ public class Project implements java.io.Serializable {
 
   public Project(URL url) {
     _url = Util.fixURLExtension(url, FILE_EXT);
+    _saveRegistry = new UMLChangeRegistry();
   }
 
-  public Project() { }
+  public Project() {
+    _saveRegistry = new UMLChangeRegistry();
+  }
 
   public Project (MModel model) {
     System.out.println("making empty project with model: "+model.getName());
+    _saveRegistry = new UMLChangeRegistry();
 
     defineType(JavaUML.VOID_TYPE);     //J.101
     defineType(JavaUML.CHAR_TYPE);     //J.102
@@ -147,6 +158,118 @@ public class Project implements java.io.Serializable {
     org.argouml.application.Main.addPostLoadAction(resetStatsLater);
   }
 
+  /**   This method creates a project from the specified URL
+   *
+   *    Unlike the constructor which forces an .argo extension
+   *    This method will attempt to load a raw XMI file
+   */
+  public static Project loadProject(URL url) {
+        Project p = null;
+        String urlString = url.toString();
+        int lastDot = urlString.lastIndexOf(".");
+        String suffix = "";
+        if(lastDot >= 0) {
+            suffix = urlString.substring(lastDot).toLowerCase();
+        }
+        //
+        //    just read XMI file
+        //
+        if(suffix.equals(".xmi")) {
+            p = new Project();
+            XMIParser.SINGLETON.readModels(p,url);
+            MModel model = XMIParser.SINGLETON.getCurModel();
+            p._UUIDRefs = XMIParser.SINGLETON.getUUIDRefs();
+            try {
+                p.addMember(model);
+                p.setNeedsSave(false);
+            }
+            catch (PropertyVetoException pve) { }
+            org.argouml.application.Main.addPostLoadAction(new ResetStatsLater());
+        }
+	
+        else if(suffix.equals(".zargo")) {
+	    try {
+		ZipInputStream zis = new ZipInputStream(url.openStream());
+		
+		// first read the .argo file from Zip
+		String name = zis.getNextEntry().getName();
+		while(!name.endsWith(".argo")) {
+		    name = zis.getNextEntry().getName();
+		}
+		
+		// the "false" means that members should not be added,
+		// we want to do this by hand from the zipped stream.
+		ArgoParser.SINGLETON.setURL(url);
+		ArgoParser.SINGLETON.readProject(zis,false);
+		p = ArgoParser.SINGLETON.getProject();
+		
+		zis.close();
+	    } catch (Exception e) {
+		System.out.println("Oops, something went wrong in Project.loadProject "+e );
+		e.printStackTrace();
+	    }
+	    
+	    p.loadZippedProjectMembers(url);
+	    p.postLoad();
+	}
+	
+	else {
+            ArgoParser.SINGLETON.readProject(url);
+            p = ArgoParser.SINGLETON.getProject();
+            p.loadAllMembers();
+            p.postLoad();
+        }
+        return p;
+  }
+    
+    public void loadZippedProjectMembers(URL url) {
+
+	try {
+	    ZipInputStream zis = new ZipInputStream(url.openStream());
+
+
+	    // first load the Model
+	    String name = zis.getNextEntry().getName();
+	    while(!name.endsWith(".xmi")) {
+		name = zis.getNextEntry().getName();
+	    }
+
+	    System.out.println("Loading Model from "+url);
+
+	    XMIReader xmiReader = new XMIReader();
+	    MModel mmodel = xmiReader.parse(new InputSource(zis));
+	    addMember(mmodel);
+
+            _UUIDRefs = new HashMap(xmiReader.getXMIUUIDToObjectMap());
+
+	    // now close again, reopen and read the Diagrams.
+
+	    PGMLParser.SINGLETON.setOwnerRegistry(_UUIDRefs);
+
+	    //zis.close();
+	    zis = new ZipInputStream(url.openStream());
+	    SubInputStream sub = new SubInputStream(zis);
+
+	    ZipEntry currentEntry = null;
+	    while ( (currentEntry = sub.getNextEntry()) != null) {
+		if (currentEntry.getName().endsWith(".pgml")) {
+		    System.out.println("Now going to load "+currentEntry.getName()+" from ZipInputStream");
+
+		    // "false" means the stream shall not be closed, but it doesn't seem to matter...
+		    ArgoDiagram d = (ArgoDiagram)PGMLParser.SINGLETON.readDiagram(sub,false);
+		    addMember(d);
+		    // sub.closeEntry();
+		    System.out.println("Finished loading "+currentEntry.getName());
+		}
+	    }
+	    zis.close();
+
+	    
+	} catch (Exception e) {
+	    System.out.println("Oops, something went wrong in Project.loadZippedProjectMembers() "+e );
+	    e.printStackTrace();
+	}
+    }
 
   public static Project makeEmptyProject() {
     System.out.println("making empty project");
@@ -177,8 +300,8 @@ public class Project implements java.io.Serializable {
     p.defineType(JavaUML.HASHTABLE_CLASS); //J.302
     p.defineType(JavaUML.STACK_CLASS);     //J.303
 // 	try { p.addMember(JavaUML.javastandards); }
-// 	catch (PropertyVetoException pve) { } 
-	
+// 	catch (PropertyVetoException pve) { }
+
     p.addSearchPath("PROJECT_DIR");
 
 // 	try {
@@ -193,7 +316,7 @@ public class Project implements java.io.Serializable {
     MModel m1 = new MModelImpl();
     m1.setUUID(UUIDManager.SINGLETON.getNewUUID());
     m1.setName("untitledModel");
-    
+
     try {
       p.addMember(new UMLClassDiagram(m1));
       p.addMember(new UMLUseCaseDiagram(m1));
@@ -233,7 +356,7 @@ public class Project implements java.io.Serializable {
 
   ////////////////////////////////////////////////////////////////
   // accessors
-  // needs-more-work 
+  // needs-more-work
 
   public String getBaseName() {
     String n = getName();
@@ -358,7 +481,7 @@ public class Project implements java.io.Serializable {
       //}
   }
 
-  public void addMember(Diagram d) throws PropertyVetoException {
+  public void addMember(ArgoDiagram d) throws PropertyVetoException {
     ProjectMember pm = new ProjectMemberDiagram(d, this);
     addDiagram(d);
     // if diagram added successfully, add the member too
@@ -366,11 +489,27 @@ public class Project implements java.io.Serializable {
   }
 
   public void addMember(MModel m) throws PropertyVetoException {
-    if (_models.contains(m)) return;
-    ProjectMember pm = new ProjectMemberModel(m, this);
-    addModel(m);
-    // got past the veto, add the member
-    _members.addElement(pm);
+    Iterator iter = _members.iterator();
+    Object currentMember = null;
+    boolean memberFound = false;
+    while(iter.hasNext()) {
+        currentMember = iter.next();
+        if(currentMember instanceof ProjectMemberModel) {
+            MModel currentModel = ((ProjectMemberModel) currentMember).getModel();
+            if(currentModel == m) {
+                memberFound = true;
+                break;
+            }
+        }
+    }
+    if(!memberFound) {
+        if(!_models.contains(m)) {
+            addModel(m);
+        }
+        // got past the veto, add the member
+        ProjectMember pm = new ProjectMemberModel(m, this);
+        _members.addElement(pm);
+    }
   }
 
   public void addModel(MNamespace m) throws PropertyVetoException {
@@ -378,7 +517,7 @@ public class Project implements java.io.Serializable {
     getVetoSupport().fireVetoableChange("Models", _models, null);
     if (! _models.contains(m)) _models.addElement(m);
     setCurrentNamespace(m);
-    _needsSave = true;
+    setNeedsSave(true);
   }
 
 //   public void removeMember(Diagram d) {
@@ -395,7 +534,7 @@ public class Project implements java.io.Serializable {
 //   }
 
 
-  public void removeMember(Diagram d) throws PropertyVetoException {
+  public void removeMember(ArgoDiagram d) throws PropertyVetoException {
     removeDiagram(d);
     _members.removeElement(d);
   }
@@ -467,21 +606,44 @@ public class Project implements java.io.Serializable {
 //   }
 
   public void saveAllMembers(String path, boolean overwrite) {
+      saveAllMembers(path, overwrite, null, null);
+  }
+
+  public void saveAllMembers(String path, boolean overwrite, Writer writer, ZipOutputStream zos) {
+
+      if (writer == null) {
+	  System.out.println("No Writer specified!");
+	  return;
+      }
+
     int size = _members.size();
-    // make sure to save the XMI file first so we get the id references
-    for (int i = 0; i < size; i++) {
-        ProjectMember p = (ProjectMember) _members.elementAt(i);
-        if (p.getType().equalsIgnoreCase("xmi")) {
-        System.out.println("Saving member of type: " + ((ProjectMember)_members.elementAt(i)).getType());
-            p.save(path,overwrite);
-        }
-    } 
-    for (int i = 0; i < size; i++) {
-        ProjectMember p = (ProjectMember) _members.elementAt(i);
-        if (!(p.getType().equalsIgnoreCase("xmi"))){
-        System.out.println("Saving member of type: " + ((ProjectMember)_members.elementAt(i)).getType());
-            p.save(path,overwrite);
-        }
+    
+    try {
+
+	// make sure to save the XMI file first so we get the id references
+	for (int i = 0; i < size; i++) {
+	    ProjectMember p = (ProjectMember) _members.elementAt(i);
+	    if (!(p.getType().equalsIgnoreCase("xmi"))){
+		System.out.println("Saving member of type: " + ((ProjectMember)_members.elementAt(i)).getType());
+		zos.putNextEntry(new ZipEntry(p.getName()));
+		p.save(path,overwrite,writer);
+		writer.flush();
+		zos.closeEntry();
+	    }
+	}
+
+	for (int i = 0; i < size; i++) {
+	    ProjectMember p = (ProjectMember) _members.elementAt(i);
+	    if (p.getType().equalsIgnoreCase("xmi")) {
+		System.out.println("Saving member of type: " + ((ProjectMember)_members.elementAt(i)).getType());
+		zos.putNextEntry(new ZipEntry(p.getName()));
+		p.save(path,overwrite,writer);
+	    }
+	}
+
+    } catch (IOException e) {
+	System.out.println("hat nicht geklappt: "+e);
+	e.printStackTrace();
     }
     // needs-more-work: check if each file is dirty
   }
@@ -498,9 +660,8 @@ public class Project implements java.io.Serializable {
   public String getHistoryFile() { return _historyFile; }
   public void setHistoryFile(String s) { _historyFile = s; }
 
-  public boolean getNeedsSave() { return _needsSave; }
-  public void setNeedsSave(boolean ns) { _needsSave = ns; }
-  public void needsSave() { setNeedsSave(true); }
+  public void setNeedsSave(boolean newValue) { _saveRegistry.setChangeFlag(newValue); }
+  public boolean needsSave() { return _saveRegistry.hasChanged(); }
 
   public Vector getModels() { return _models; }
 
@@ -567,16 +728,18 @@ public class Project implements java.io.Serializable {
   public MNamespace getCurrentNamespace() { return _curModel; }
 
   public Vector getDiagrams() { return _diagrams; }
-  public void addDiagram(Diagram d) throws PropertyVetoException {
+  public void addDiagram(ArgoDiagram d) throws PropertyVetoException {
     // send indeterminate new value instead of making copy of vector
     getVetoSupport().fireVetoableChange("Diagrams", _diagrams, null);
     _diagrams.addElement(d);
-    _needsSave = true;
+    d.addChangeRegistryAsListener( _saveRegistry );
+    setNeedsSave(true);
   }
-  public void removeDiagram(Diagram d) throws PropertyVetoException {
+  public void removeDiagram(ArgoDiagram d) throws PropertyVetoException {
     getVetoSupport().fireVetoableChange("Diagrams", _diagrams, null);
     _diagrams.removeElement(d);
-    _needsSave = true;
+    d.removeChangeRegistryAsListener( _saveRegistry );
+    setNeedsSave(true);
   }
 
   public int getPresentationCountFor(MModelElement me) {
@@ -625,14 +788,14 @@ public class Project implements java.io.Serializable {
     for (int i = 0; i < _diagrams.size(); i++)
       ((Diagram)_diagrams.elementAt(i)).postSave();
     // needs-more-work: is postSave needed for models?
-    _needsSave = false;
+    setNeedsSave(false);
   }
 
   public void postLoad() {
     for (int i = 0; i < _diagrams.size(); i++)
       ((Diagram)_diagrams.elementAt(i)).postLoad();
     // needs-more-work: is postLoad needed for models?
-    _needsSave = false;
+    setNeedsSave(false);
     // we don't need this HashMap anymore so free up the memory
     _UUIDRefs = null;
   }
@@ -658,7 +821,7 @@ public class Project implements java.io.Serializable {
 	  }
 	*/
 
-	
+
   }
 
   // Attention: whole Trash mechanism should be rethought concerning nsuml
@@ -668,10 +831,22 @@ public class Project implements java.io.Serializable {
 		  MClassifier me = (MClassifier) obj;
 		  // me.remove();
 		  MMUtil.SINGLETON.remove(me);
-	  }  	
+	  }
 	  if (obj instanceof MStateVertex) {
 		  // System.out.println("trashInternal: "+obj);
 		  MStateVertex me = (MStateVertex) obj;
+		  // me.remove();
+		  MMUtil.SINGLETON.remove(me);
+	  }
+	  if (obj instanceof MObject) {
+		  // System.out.println("trashInternal: "+obj);
+		  MObject me = (MObject) obj;
+		  // me.remove();
+		  MMUtil.SINGLETON.remove(me);
+	  }
+	  if (obj instanceof MStimulus) {
+		  // System.out.println("trashInternal: "+obj);
+		  MStimulus me = (MStimulus) obj;
 		  // me.remove();
 		  MMUtil.SINGLETON.remove(me);
 	  }
@@ -680,7 +855,7 @@ public class Project implements java.io.Serializable {
 		  MModelElement me = (MModelElement) obj;
 		  me.remove();
 	  }
-	  
+
 	  /* old version
 		 if (obj instanceof MModelElement) {
 		 MModelElement me = (MModelElement) obj;
@@ -693,15 +868,15 @@ public class Project implements java.io.Serializable {
 		 f.delete();
 		 if (!places.contains(f)) places.addElement(f);
 		 f = d.getLayer().presentationFor(me);
-		 } // end while 
-		 } // end while 
+		 } // end while
+		 } // end while
 		 Trash.SINGLETON.addItemFrom(obj, places);
 		 if (obj instanceof MNamespace) trashDiagramsOn((MNamespace)obj);
 		 }
 		 // needs-more-work: trash diagrams
-		 
+
 		 }
-		 
+
 		 protected void trashDiagramsOn(MNamespace ns) {
 		 //System.out.println("trashDiagramsOn: " + ns);
 		 int size = _diagrams.size();
@@ -720,10 +895,10 @@ public class Project implements java.io.Serializable {
 		 try { removeMember(d); }
 		 catch (PropertyVetoException pve) { }
 		 }
-		 
+
 	  */
   }
-	
+
   public void moveFromTrash(Object obj) {
     System.out.println("needs-more-work: not restoring " + obj);
   }
@@ -813,7 +988,7 @@ public class Project implements java.io.Serializable {
       ModeCreateEdgeAndNode.Drags_To_New = v;
     else if (n.equals("Drags_To_Existing"))
       ModeCreateEdgeAndNode.Drags_To_Existing = v;
-    
+
     else {
       System.out.println("unknown UsageStatistic: " + n);
     }

@@ -68,16 +68,22 @@ public abstract class FigStateVertex extends FigNodeModelElement {
     MCompositeState m = null;
     if (encloser != null && (encloser.getOwner() instanceof MCompositeState)) {
       m = (MCompositeState) encloser.getOwner();
-    }
+     }
     else {
       ProjectBrowser pb = ProjectBrowser.TheInstance;
       if (pb.getTarget() instanceof UMLDiagram) {
-	GraphModel gm = ((UMLDiagram)pb.getTarget()).getGraphModel();
-	StateDiagramGraphModel sdgm =  (StateDiagramGraphModel) gm;
-	m = (MCompositeState) sdgm.getMachine().getTop();
+        try {
+	  GraphModel gm = ((UMLDiagram)pb.getTarget()).getGraphModel();
+	  StateDiagramGraphModel sdgm =  (StateDiagramGraphModel) gm;
+	  m = (MCompositeState) sdgm.getMachine().getTop();
+        }
+        catch(Exception ex) {
+          ex.printStackTrace();
+        }
       }
-    }
-    sv.setContainer(m);
+    }	
+    if (m!=null) 
+	sv.setContainer(m);
   }
 
 

@@ -6,6 +6,7 @@ import tudresden.ocl.check.types.*;
 import tudresden.ocl.check.*;
 
 import ru.novosoft.uml.foundation.core.*;
+import ru.novosoft.uml.foundation.data_types.MParameterDirectionKind;
 
 import org.argouml.kernel.*;
 import org.argouml.ui.*;
@@ -13,14 +14,26 @@ import org.argouml.uml.MMUtil;
 
 public class ArgoFacade implements ModelFacade {
 
+    public MClassifier target;
+
+    public ArgoFacade(Object target) {
+	if (target instanceof MClassifier)
+	    this.target = (MClassifier)target;
+    }
+
     public Any getClassifier(String name) {
       Project p = ProjectBrowser.TheInstance.getProject();
-      MClassifier classifier = p.findTypeInModel(name, p.getCurrentNamespace());
-      if (classifier == null) {
-          throw new OclTypeException("cannot find classifier: "+name);
+      if (target != null && target.getName().equals(name) ) {
+	  return new ArgoAny(target);
       }
-      ArgoAny result = new ArgoAny(classifier);
-      return result;
+      // else we have a problem: this is not clean!
+      else {
+	  MClassifier classifier = p.findTypeInModel(name, p.getCurrentNamespace());
+	  if (classifier == null) {
+	      throw new OclTypeException("cannot find classifier: "+name);
+	  }
+	  return new ArgoAny(classifier);
+      }
     }
 }
 
@@ -66,7 +79,7 @@ class ArgoAny implements Any {
         MAssociationEnd ae = (MAssociationEnd)asciter.next();
         if (ae.getName()!=null && name.equals(ae.getName())) {
           foundAssocType = ae.getType();
-        } else if (ae.getName()==null) {
+        } else if (ae.getName()==null || ae.getName().equals("")) {
           String oppositeName = ae.getType().getName();
           if (oppositeName != null) {
             String lowerOppositeName = oppositeName.substring(0,1).toLowerCase();
@@ -104,28 +117,7 @@ class ArgoAny implements Any {
         throw new OclTypeException("attribute "+name+" not found in classifier "+toString());
       }
 
-      Type result=null;
-
-      if (foundType.getName().equals("int") || foundType.getName().equals("Integer")) {
-          result = Basic.INTEGER;
-      }
-
-      if (foundType.getName().equals("float") || foundType.getName().equals("double")) {
-          result = Basic.REAL;
-      }
-
-      if (foundType.getName().equals("bool") || foundType.getName().equals("Boolean") ||
-          foundType.getName().equals("boolean")) {
-          result = Basic.BOOLEAN;
-      }
-
-      if (foundType.getName().equals("String")){
-          result = Basic.STRING;
-      }
-
-      if (result==null) {
-        result=new ArgoAny(foundType);
-      }
+      Type result = getOclRepresentation(foundType);
 
       if (isSet) {
         result=new tudresden.ocl.check.types.Collection(
@@ -154,13 +146,18 @@ class ArgoAny implements Any {
       Iterator iter = operations.iterator();
       while (iter.hasNext() && foundOp == null){
           MOperation op = (MOperation)iter.next();
-          if (op.getName().equals(name)) {
+          if ( operationMatchesCall(op, name, params) ) {
             foundOp = op;
           }
       }
 
       if (foundOp == null) { throw new OclTypeException("operation "+name+" not found in classifier "+toString());}
 
+      /* Query checking added 05/21/01, sz9 */
+      if (! foundOp.isQuery()) {
+        throw new OclTypeException ("Non-query operations cannot be used in OCL expressions. (" + name + ")");
+      }      
+      
       MParameter rp = MMUtil.SINGLETON.getReturnParameter(foundOp);
 
       if (rp == null || rp.getType() == null) {
@@ -169,27 +166,19 @@ class ArgoAny implements Any {
       }
       MClassifier returnType = rp.getType();
 
-      if (returnType.getName().equals("int") || returnType.getName().equals("Integer")) {
-          return Basic.INTEGER;
-      }
-
-      if (returnType.getName().equals("float") || returnType.getName().equals("double")) {
-          return Basic.REAL;
-      }
-
-      if (returnType.getName().equals("bool") || returnType.getName().equals("Boolean")) {
-          return Basic.BOOLEAN;
-      }
-
-      if (returnType.getName().equals("String")){
-          return Basic.STRING;
-      }
-
-      return new ArgoAny(returnType);
+      return getOclRepresentation(returnType);
     }
 
     public boolean conformsTo(Type type) {
-      return false;
+			if (type instanceof ArgoAny)
+			{
+				ArgoAny other = (ArgoAny) type;
+				return equals(type) || MMUtil.SINGLETON.getAllSupertypes(classifier).contains(other.classifier);
+			}
+			else
+			{
+				return false;
+			}
     }
 
     public boolean equals(Object o) {
@@ -214,6 +203,81 @@ class ArgoAny implements Any {
     public boolean hasState(String name) {
       System.out.println("ArgoAny.hasState() has been called, but is not implemented yet!");
       return false;
+    }
+
+    protected Type getOclRepresentation(MClassifier foundType)
+    {
+      Type result = null;
+      
+      if (foundType.getName().equals("int") || foundType.getName().equals("Integer")) {
+          result = Basic.INTEGER;
+      }
+
+      if (foundType.getName().equals("float") || foundType.getName().equals("double")) {
+          result = Basic.REAL;
+      }
+
+      if (foundType.getName().equals("bool") || foundType.getName().equals("Boolean") ||
+          foundType.getName().equals("boolean")) {
+          result = Basic.BOOLEAN;
+      }
+
+      if (foundType.getName().equals("String")){
+          result = Basic.STRING;
+      }
+
+      if (result==null) {
+        result=new ArgoAny(foundType);
+      }
+      
+      return result;
+    
+    }
+        
+    /**
+     *	@return true if the given MOperation names and parameters match the given name 
+     *		and parameters
+     */
+    protected boolean operationMatchesCall(MOperation operation, String callName, Type[] callParams)
+    {
+      if ( ! callName.equals(operation.getName()) )
+      {
+        return false;
+      }
+      List operationParameters = operation.getParameters();
+      if (
+        ! (((MParameter)operationParameters.get(0)).getKind().getValue()==MParameterDirectionKind._RETURN)
+      ) 
+      {
+        System.err.println(
+	  			"ArgoFacade$ArgoAny expects the first operation parameter to be the return type; this isn't the case"
+				);
+      }
+      if (
+        ! (
+				  ((MParameter)operationParameters.get(0)).getKind().getValue()==MParameterDirectionKind._RETURN
+          && operationParameters.size()==(callParams.length+1)
+				)
+      )
+      {
+        return false;
+      }
+      Iterator paramIter = operationParameters.iterator();
+      paramIter.next(); // skip first parameter == return type
+      int index = 0;
+      while (paramIter.hasNext())
+      {
+			
+        MParameter nextParam = (MParameter) paramIter.next();
+				MClassifier paramType = nextParam.getType();
+				Type operationParam = getOclRepresentation(paramType);
+				if ( ! callParams[index].conformsTo(operationParam) )
+				{
+				  return false;
+				}
+        index++;
+			}
+      return true;
     }
 }
 

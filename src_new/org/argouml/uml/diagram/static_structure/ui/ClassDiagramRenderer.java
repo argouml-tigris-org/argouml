@@ -143,8 +143,10 @@ implements GraphNodeRenderer, GraphEdgeRenderer {
       return realFig;
 	  }*/
     if (edge instanceof MDependency) {
+	//System.out.println("get fig for "+edge);
       MDependency dep = (MDependency) edge;
-	  if (dep.getStereotype() != null && dep.getStereotype().equals(MMUtil.SINGLETON.getRealizationStereotype())) {
+      //System.out.println("stereo "+dep.getStereotype());
+      if (dep.getStereotype() != null && dep.getStereotype().getName().equals("realize")) {
 		  FigRealization realFig = new FigRealization(dep);
 		  
 		  MModelElement supplier = (MModelElement)((dep.getSuppliers().toArray())[0]);

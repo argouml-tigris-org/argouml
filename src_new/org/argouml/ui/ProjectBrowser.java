@@ -1,4 +1,4 @@
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2001 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -42,11 +42,12 @@ import org.argouml.ui.*;
 import org.argouml.cognitive.*;
 import org.argouml.cognitive.ui.*;
 import org.argouml.uml.diagram.ui.UMLDiagram;
+import org.argouml.uml.ui.*;
 
 /** The main window of the Argo/UML application. */
 
 public class ProjectBrowser extends JFrame
-implements IStatusBar {
+implements IStatusBar, NavigationListener {
   ////////////////////////////////////////////////////////////////
   // constants
 
@@ -59,90 +60,21 @@ implements IStatusBar {
   // class variables
 
   public static ProjectBrowser TheInstance;
-  
-  // Actions
-  // file menu
-  //-protected static Action _actionNew =  Actions.New;
-  //protected static Action _actionOpen = Actions.Open;
-  //protected static Action _actionOpenXMI = Actions.OpenXMI;
-  //-protected static Action _actionOpenProject = Actions.OpenProject;
-  //protected static Action _actionSave = Actions.Save;
-  //protected static Action _actionSaveAs = Actions.SaveAs;
-  //protected static Action _actionSaveAsXMI = Actions.SaveAsXMI;
-  //-protected static Action _actionSaveProject = Actions.SaveProject;
-  //-protected static Action _actionSaveProjectAs = Actions.SaveProjectAs;
-  // -----
-  //protected static Action _actionAddToProj = Actions.AddToProj;
-  // -----
-  //-protected static Action _actionPrint = Actions.Print;
-  // -----
-  //-protected static Action _actionExit = Actions.Exit;
 
-  // edit menu
-  //-protected static Action _actionUndo = Actions.Undo;
-  //-protected static Action _actionRedo = Actions.Redo;
-  //-protected static Action _actionCut = Actions.Cut;
-  //-protected static Action _actionCopy = Actions.Copy;
-  //-protected static Action _actionPaste = Actions.Paste;
-  //-protected static Action _actionDelete = Actions.DeleteFromDiagram;
-  //-protected static Action _actionRemove = Actions.RemoveFromModel;
-  //-protected static Action _actionEmpty = Actions.EmptyTrash;
 
-  // view menu
-//   protected static Action _actionNavUp = Actions.NavUp;
-//   protected static Action _actionNavDown = Actions.NavDown;
-  //-protected static Action _actionNavBack = Actions.NavBack;
-  //-protected static Action _actionNavForw = Actions.NavForw;
-  //-protected static Action _actionFind = Actions.Find;
-  //-protected static Action _actionGotoDiagram = Actions.GotoDiagram;
-  //-protected static Action _actionNextEditTab = Actions.NextEditTab;
-  //protected static Action _actionAddToFavs = Actions.AddToFavs;
-  //-protected static Action _actionNextDetailsTab = Actions.NextDetailsTab;
-
-  // create menu
   protected static Action _actionCreateMultiple = Actions.CreateMultiple;
   // ----- diagrams
-  protected static Action _actionClassDiagram = Actions.ClassDiagram;
-  protected static Action _actionUseCaseDiagram = Actions.UseCaseDiagram;
-  protected static Action _actionStateDiagram = Actions.StateDiagram;
-  protected static Action _actionActivityDiagram = Actions.ActivityDiagram;
-  protected static Action _actionCollaborationDiagram = Actions.CollaborationDiagram;
-  protected static Action _actionDeploymentDiagram = Actions.DeploymentDiagram;
+  protected static Action _actionClassDiagram = ActionClassDiagram.SINGLETON;
+  protected static Action _actionUseCaseDiagram = ActionUseCaseDiagram.SINGLETON;
+  protected static Action _actionStateDiagram = ActionStateDiagram.SINGLETON;
+  protected static Action _actionActivityDiagram = ActionActivityDiagram.SINGLETON;
+  protected static Action _actionCollaborationDiagram = ActionCollaborationDiagram.SINGLETON;
+  protected static Action _actionDeploymentDiagram = ActionDeploymentDiagram.SINGLETON;
+  protected static Action _actionSequenceDiagram = ActionSequenceDiagram.SINGLETON;
 
   // ----- model elements
   //protected static Action _actionModel = Actions.MModel;
-  protected static Action _actionAddTopLevelPackage = Actions.AddTopLevelPackage;
-  //protected static Action _actionClass = Actions.Class;
-  //protected static Action _actionInterface = Actions.MInterface;
-  //protected static Action _actionActor = Actions.MActor;
-  //protected static Action _actionUseCase = Actions.MUseCase;
-  //protected static Action _actionState = Actions.MState;
-  //protected static Action _actionPseudostate = Actions.MPseudostate;
-  //protected static Action _actionAttr = Actions.Attr;
-  //protected static Action _actionOper = Actions.Oper;
-  // -----  shapes
-//   protected static Action _actionRectangle = new org.tigris.gef.base.CmdSetMode(org.tigris.gef.base.ModeCreateFigRect.class, "Rectangle");
-//   protected static Action _actionRRectangle = new org.tigris.gef.base.CmdSetMode(org.tigris.gef.base.ModeCreateFigRRect.class, "RRect");
-//   protected static Action _actionCircle = new org.tigris.gef.base.CmdSetMode(org.tigris.gef.base.ModeCreateFigCircle.class, "Circle");
-//   protected static Action _actionLine = new org.tigris.gef.base.CmdSetMode(org.tigris.gef.base.ModeCreateFigLine.class, "Line");
-//   protected static Action _actionText = new org.tigris.gef.base.CmdSetMode(org.tigris.gef.base.ModeCreateFigText.class, "Text");
-//   protected static Action _actionPoly = new org.tigris.gef.base.CmdSetMode(org.tigris.gef.base.ModeCreateFigPoly.class, "Polygon");
-//   protected static Action _actionInk = new org.tigris.gef.base.CmdSetMode(org.tigris.gef.base.ModeCreateFigInk.class, "Ink");
-
-  // actions menu
-  //-protected static Action _actionGenerateOne = Actions.GenerateOne;
-  //-protected static Action _actionGenerateAll = Actions.GenerateAll;
-  //protected static Action _actionGenerateWeb = Actions.GenerateWeb;
-
-  // critique menu
-  //-protected static Action _actionAutoCritique = Actions.AutoCritique;
-  //-protected static Action _actionOpenDecisions = Actions.OpenDecisions;
-  //-protected static Action _actionOpenGoals = Actions.OpenGoals;
-  //-protected static Action _actionOpenCritics = Actions.OpenCritics;
-
-
-  // Help menu
-  //-protected static Action _actionAboutArgoUML = Actions.AboutArgoUML;
+  protected static Action _actionAddTopLevelPackage = ActionAddTopLevelPackage.SINGLETON;
 
   ////////////////////////////////////////////////////////////////
   // instance variables
@@ -164,6 +96,8 @@ implements IStatusBar {
 
   protected JSplitPane _mainSplit, _topSplit, _botSplit;
 
+  private NavigationHistory _history = new NavigationHistory();
+
 
   ////////////////////////////////////////////////////////////////
   // constructors
@@ -179,7 +113,9 @@ implements IStatusBar {
     sb.incProgress(5);
     _toDoPane = new ToDoPane();
     _multiPane = new MultiEditorPane(sb);
+    _multiPane.addNavigationListener(this);
     _detailsPane = new DetailsPane(sb);
+    _detailsPane.addNavigationListener(this);
     setAppName(appName);
     if (TheInstance == null) TheInstance = this;
     //setName(title);
@@ -210,79 +146,95 @@ implements IStatusBar {
 //     redDot = loadImageIcon("images/redDot.gif", s);
 //   }
 
+  public Locale getLocale() {
+    return Locale.getDefault();
+  }
+
+  static final protected KeyStroke getShortcut(String key) {
+    return UMLAction.getShortcut(key);
+  }
+
+  static final protected void setMnemonic(JMenuItem item,String key,char defMnemonic) {
+    String localMnemonic = UMLAction.getMnemonic("Mnemonic_" + key);
+    char mnemonic = defMnemonic;
+    if(localMnemonic != null && localMnemonic.length() == 1) {
+        mnemonic = localMnemonic.charAt(0);
+    }
+    item.setMnemonic(mnemonic);
+  }
+
+  static final protected String menuLocalize(String key) {
+    return UMLAction.localize(key);
+  }
+
+  static final protected void setAccelerator(JMenuItem item,KeyStroke keystroke) {
+    if(keystroke != null) {
+        item.setAccelerator(keystroke);
+    }
+  }
 
   protected void initMenus() {
-    KeyStroke ctrlN = KeyStroke.getKeyStroke(KeyEvent.VK_N, KeyEvent.CTRL_MASK);
-    KeyStroke ctrlO = KeyStroke.getKeyStroke(KeyEvent.VK_O, KeyEvent.CTRL_MASK);
-    KeyStroke ctrlS = KeyStroke.getKeyStroke(KeyEvent.VK_S, KeyEvent.CTRL_MASK);
-    KeyStroke ctrlP = KeyStroke.getKeyStroke(KeyEvent.VK_P, KeyEvent.CTRL_MASK);
-    KeyStroke ctrlA = KeyStroke.getKeyStroke(KeyEvent.VK_A, KeyEvent.CTRL_MASK);
-    KeyStroke ctrlC = KeyStroke.getKeyStroke(KeyEvent.VK_C, KeyEvent.CTRL_MASK);
-    KeyStroke ctrlV = KeyStroke.getKeyStroke(KeyEvent.VK_V, KeyEvent.CTRL_MASK);
-    KeyStroke ctrlX = KeyStroke.getKeyStroke(KeyEvent.VK_X, KeyEvent.CTRL_MASK);
-    KeyStroke ctrlR = KeyStroke.getKeyStroke(KeyEvent.VK_R, KeyEvent.CTRL_MASK);
+    KeyStroke ctrlN = UMLAction.getShortcut("Shortcut_New");
+    KeyStroke ctrlO = UMLAction.getShortcut("Shortcut_Open");
+    KeyStroke ctrlS = UMLAction.getShortcut("Shortcut_Save");
+    KeyStroke ctrlP = UMLAction.getShortcut("Shortcut_Print");
+    KeyStroke ctrlA = UMLAction.getShortcut("Shortcut_Select_All");
+    KeyStroke ctrlC = UMLAction.getShortcut("Shortcut_Copy");
+    KeyStroke ctrlV = UMLAction.getShortcut("Shortcut_Paste");
+    KeyStroke ctrlX = UMLAction.getShortcut("Shortcut_Cut");
+    KeyStroke ctrlR = UMLAction.getShortcut("Shortcut_Remove_From_Diagram");
 
-    KeyStroke F3 = KeyStroke.getKeyStroke(KeyEvent.VK_F3, 0);
-    KeyStroke F7 = KeyStroke.getKeyStroke(KeyEvent.VK_F7, 0);
-    KeyStroke altF4 = KeyStroke.getKeyStroke(KeyEvent.VK_F4, KeyEvent.ALT_MASK);
+    KeyStroke F3 = UMLAction.getShortcut("Shortcut_Find");
+    KeyStroke F7 = UMLAction.getShortcut("Shortcut_Generate_All");
+    KeyStroke altF4 = UMLAction.getShortcut("Shortcut_Exit");
 
-
-//     KeyStroke ctrlup =
-//       KeyStroke.getKeyStroke(KeyEvent.VK_UP, KeyEvent.CTRL_MASK);
-//     KeyStroke ctrldown =
-//       KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, KeyEvent.CTRL_MASK);
-//     KeyStroke ctrlleft =
-//       KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, KeyEvent.CTRL_MASK);
-//     KeyStroke ctrlright =
-//       KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT, KeyEvent.CTRL_MASK);
-
-    KeyStroke delKey =
-      KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, 0);
+    KeyStroke delKey = UMLAction.getShortcut("Shortcut_Delete");
 
     JMenuItem mi;
     // File Menu
-    JMenu file = (JMenu) _menuBar.add(new JMenu("File"));
-    file.setMnemonic('F');
+    JMenu file = new JMenu(menuLocalize("File"));
+    _menuBar.add(file);
+    setMnemonic(file,"File",'F');
     JMenuItem newItem = file.add(Actions.New);
-    newItem.setMnemonic('N');
-    newItem.setAccelerator(ctrlN);
-    //JMenuItem openItem = file.add(_actionOpen);
-    //JMenuItem openXMIItem = file.add(_actionOpenXMI);
+    setMnemonic(newItem,"New",'N');
+    setAccelerator(newItem,ctrlN);
     JMenuItem openProjectItem = file.add(Actions.OpenProject);
-    openProjectItem.setMnemonic('O');
-    openProjectItem.setAccelerator(ctrlO);
+    setMnemonic(openProjectItem,"Open",'O');
+    setAccelerator(openProjectItem,ctrlO);
     //JMenuItem saveItem = file.add(_actionSave);
     //file.add(_actionSaveAs);
     //file.add(_actionSaveAsXMI);
     JMenuItem saveProjectItem = file.add(Actions.SaveProject);
-    saveProjectItem.setMnemonic('S');
-    saveProjectItem.setAccelerator(ctrlS);
+    setMnemonic(saveProjectItem,"Save",'S');
+    setAccelerator(saveProjectItem,ctrlS);
     JMenuItem saveProjectAsItem = file.add(Actions.SaveProjectAs);
-    saveProjectAsItem.setMnemonic('A');
+    setMnemonic(saveProjectAsItem,"SaveAs",'A');
     file.addSeparator();
+    JMenuItem importProjectAsItem = file.add(Actions.ImportFromSources);
+    file.addSeparator();    
     JMenuItem loadModelFromDBItem = file.add(Actions.LoadModelFromDB);
     JMenuItem storeModelToDBItem = file.add(Actions.StoreModelToDB);
     file.addSeparator();
     JMenuItem printItem = file.add(Actions.Print);
-    printItem.setMnemonic('P');
-    printItem.setAccelerator(ctrlP);
+    setMnemonic(printItem,"Print",'P');
+    setAccelerator(printItem,ctrlP);
     JMenuItem saveGraphicsItem = file.add(Actions.SaveGraphics);
-    saveGraphicsItem.setMnemonic('G');
+    setMnemonic(saveGraphicsItem,"SaveGraphics",'G');
     // JMenuItem savePSItem = file.add(Actions.SavePS);
     //file.addSeparator();
     //file.add(_actionProjectInfo);
     file.addSeparator();
     JMenuItem exitItem = file.add(Actions.Exit);
-    exitItem.setMnemonic('x');
-    exitItem.setAccelerator(altF4);
+    setMnemonic(exitItem,"Exit",'x');
+    setAccelerator(exitItem,altF4);
 
-    JMenu edit = (JMenu) _menuBar.add(new JMenu("Edit"));
-    edit.setMnemonic('E');
+    JMenu edit = (JMenu) _menuBar.add(new JMenu(menuLocalize("Edit")));
+    setMnemonic(edit,"Edit",'E');
 
-    JMenu select = new JMenu("Select");
+    JMenu select = new JMenu(menuLocalize("Select"));
     edit.add(select);
     JMenuItem selectAllItem = select.add(new CmdSelectAll());
-    selectAllItem.setAccelerator(ctrlA);
+    setAccelerator(selectAllItem,ctrlA);
     JMenuItem selectNextItem = select.add(new CmdSelectNext(false));
     //tab
     JMenuItem selectPrevItem = select.add(new CmdSelectNext(true));
@@ -292,28 +244,28 @@ implements IStatusBar {
     edit.add(Actions.Undo);
     edit.add(Actions.Redo);
     edit.addSeparator();
-    JMenuItem cutItem = edit.add(Actions.Cut);
-    cutItem.setMnemonic('X');
-    cutItem.setAccelerator(ctrlX);
-    JMenuItem copyItem = edit.add(Actions.Copy);
-    copyItem.setMnemonic('C');
-    copyItem.setAccelerator(ctrlC);
-    JMenuItem pasteItem = edit.add(Actions.Paste);
-    pasteItem.setMnemonic('V');
-    pasteItem.setAccelerator(ctrlV);
+    JMenuItem cutItem = edit.add(ActionCut.SINGLETON);
+    setMnemonic(cutItem,"Cut",'X');
+    setAccelerator(cutItem,ctrlX);
+    JMenuItem copyItem = edit.add(ActionCopy.SINGLETON);
+    setMnemonic(copyItem,"Copy",'C');
+    setAccelerator(copyItem,ctrlC);
+    JMenuItem pasteItem = edit.add(ActionPaste.SINGLETON);
+    setMnemonic(pasteItem,"Paste",'V');
+    setAccelerator(pasteItem,ctrlV);
     edit.addSeparator();
     // needs-more-work: confusing name change
-    JMenuItem deleteItem = edit.add(Actions.DeleteFromDiagram);
-    deleteItem.setMnemonic('R');
-    deleteItem.setAccelerator(ctrlR);
-    JMenuItem removeItem = edit.add(Actions.RemoveFromModel);
-    removeItem.setMnemonic('D');
-    removeItem.setAccelerator(delKey);
-    JMenuItem emptyItem = edit.add(Actions.EmptyTrash);
+    JMenuItem deleteItem = edit.add(ActionDeleteFromDiagram.SINGLETON);
+    setMnemonic(deleteItem,"RemoveFromDiagram",'R');
+    setAccelerator(deleteItem,ctrlR);
+    JMenuItem removeItem = edit.add(ActionRemoveFromModel.SINGLETON);
+    setMnemonic(removeItem,"DeleteFromModel",'D');
+    setAccelerator(removeItem,delKey);
+    JMenuItem emptyItem = edit.add(ActionEmptyTrash.SINGLETON);
 
-    Menu view = (Menu) _menuBar.add(new Menu("View"));
+    Menu view = (Menu) _menuBar.add(new Menu(menuLocalize("View")));
     // maybe should be Navigate instead of view
-    view.setMnemonic('V');
+    setMnemonic(view,"View",'V');
 
 //     JMenu nav = (JMenu) view.add(new JMenu("Navigate"));
 //     JMenuItem downItem = nav.add(_actionNavDown);
@@ -327,14 +279,14 @@ implements IStatusBar {
 
     view.add(Actions.GotoDiagram);
     JMenuItem findItem =  view.add(Actions.Find);
-    findItem.setAccelerator(F3);
+    setAccelerator(findItem,F3);
     view.addSeparator();
 
-    JMenu editTabs = (JMenu) view.add(new JMenu("Editor Tabs"));
+    JMenu editTabs = (JMenu) view.add(new JMenu(menuLocalize("Editor Tabs")));
 
     //view.addSeparator();
     //view.add(_actionAddToFavorites);
-    JMenu detailsTabs = (JMenu) view.add(new JMenu("Details Tabs"));
+    JMenu detailsTabs = (JMenu) view.add(new JMenu(menuLocalize("Details Tabs")));
 
     view.addSeparator();
     view.add(new CmdAdjustGrid());
@@ -343,18 +295,19 @@ implements IStatusBar {
     view.addCheckItem(Actions.ShowRapidButtons);
 
 
-    JMenu create = (JMenu) _menuBar.add(new JMenu("Create"));
-    create.setMnemonic('C');
+    JMenu create = (JMenu) _menuBar.add(new JMenu(menuLocalize("Create")));
+    setMnemonic(create,"Create",'C');
     create.add(Actions.CreateMultiple);
     create.addSeparator();
 
-    JMenu createDiagrams = (JMenu) create.add(new JMenu("Diagrams"));
-    createDiagrams.add(Actions.ClassDiagram);
-    createDiagrams.add(Actions.UseCaseDiagram);
-    createDiagrams.add(Actions.StateDiagram);
-    createDiagrams.add(Actions.ActivityDiagram);
-    createDiagrams.add(Actions.CollaborationDiagram);
-    createDiagrams.add(Actions.DeploymentDiagram);
+    JMenu createDiagrams = (JMenu) create.add(new JMenu(menuLocalize("Diagrams")));
+    createDiagrams.add(ActionClassDiagram.SINGLETON);
+    createDiagrams.add(ActionUseCaseDiagram.SINGLETON);
+    createDiagrams.add(ActionStateDiagram.SINGLETON);
+    createDiagrams.add(ActionActivityDiagram.SINGLETON);
+    createDiagrams.add(ActionCollaborationDiagram.SINGLETON);
+    createDiagrams.add(ActionDeploymentDiagram.SINGLETON);
+    createDiagrams.add(ActionSequenceDiagram.SINGLETON);
 
     //JMenu createModelElements = (JMenu) create.add(new JMenu("Model Elements"));
     //createModelElements.add(Actions.AddTopLevelPackage);
@@ -376,27 +329,27 @@ implements IStatusBar {
     //createFig.add(_actionPoly);
     //createFig.add(_actionInk);
 
-    JMenu arrange = (JMenu) _menuBar.add(new JMenu("Arrange"));
-    arrange.setMnemonic('A');
+    JMenu arrange = (JMenu) _menuBar.add(new JMenu(menuLocalize("Arrange")));
+    setMnemonic(arrange,"Arrange",'A');
 
-    JMenu align = (JMenu) arrange.add(new JMenu("Align"));
-    JMenu distribute = (JMenu) arrange.add(new JMenu("Distribute"));
-    JMenu reorder = (JMenu) arrange.add(new JMenu("Reorder"));
-    JMenu nudge = (JMenu) arrange.add(new JMenu("Nudge"));
+    JMenu align = (JMenu) arrange.add(new JMenu(menuLocalize("Align")));
+    JMenu distribute = (JMenu) arrange.add(new JMenu(menuLocalize("Distribute")));
+    JMenu reorder = (JMenu) arrange.add(new JMenu(menuLocalize("Reorder")));
+    JMenu nudge = (JMenu) arrange.add(new JMenu(menuLocalize("Nudge")));
 
     Runnable initLater = new
       InitMenusLater(align, distribute, reorder, nudge, editTabs, detailsTabs);
     org.argouml.application.Main.addPostLoadAction(initLater);
 
-    JMenu generate = (JMenu) _menuBar.add(new JMenu("Generation"));
-    generate.setMnemonic('G');
+    JMenu generate = (JMenu) _menuBar.add(new JMenu(menuLocalize("Generation")));
+    setMnemonic(generate,"Generate",'G');
     generate.add(Actions.GenerateOne);
     JMenuItem genAllItem = generate.add(Actions.GenerateAll);
-    genAllItem.setAccelerator(F7);
+    setAccelerator(genAllItem,F7);
     //generate.add(Actions.GenerateWeb);
 
-    Menu critique = (Menu) _menuBar.add(new Menu("Critique"));
-    critique.setMnemonic('R');
+    Menu critique = (Menu) _menuBar.add(new Menu(menuLocalize("Critique")));
+    setMnemonic(critique,"Critique",'R');
     critique.addCheckItem(Actions.AutoCritique);
     critique.addSeparator();
     critique.add(Actions.OpenDecisions);
@@ -404,8 +357,8 @@ implements IStatusBar {
     critique.add(Actions.OpenCritics);
 
     // Help Menu
-    JMenu help = new JMenu("Help");
-    help.setMnemonic('H');
+    JMenu help = new JMenu(menuLocalize("Help"));
+    setMnemonic(help,"Help",'H');
     help.add(Actions.AboutArgoUML);
     //_menuBar.setHelpMenu(help);
     _menuBar.add(help);
@@ -439,10 +392,10 @@ implements IStatusBar {
     setTarget(_project.getInitialTarget());
     _navPane.forceUpdate();
   }
-  public Project getProject() { 
+  public Project getProject() {
 	  // only for testing...
 	  if (_project == null) _project = Project.makeEmptyProject();
-	  return _project; 
+	  return _project;
   }
 
   public void updateTitle() {
@@ -579,6 +532,53 @@ implements IStatusBar {
   ////////////////////////////////////////////////////////////////
   // IStatusBar
   public void showStatus(String s) { _statusBar.showStatus(s); }
+
+    /**    Called by a user interface element when a request to
+     *    navigate to a model element has been received.
+     */
+    public void navigateTo(Object element) {
+        _history.navigateTo(element);
+        setTarget(element);
+    }
+
+    /**   Called by a user interface element when a request to
+     *   open a model element in a new window has been recieved.
+     */
+    public void open(Object element) {
+    }
+
+    public boolean navigateBack(boolean attempt) {
+        boolean navigated = false;
+        if(attempt) {
+            Object target = _history.navigateBack(attempt);
+            if(target != null) {
+                navigated = true;
+                setTarget(target);
+            }
+        }
+        return navigated;
+    }
+
+    public boolean navigateForward(boolean attempt) {
+        boolean navigated = false;
+        if(attempt) {
+            Object target = _history.navigateForward(attempt);
+            if(target != null) {
+                navigated = true;
+                setTarget(target);
+            }
+        }
+        return navigated;
+    }
+
+    public boolean isNavigateBackEnabled() {
+        return _history.isNavigateBackEnabled();
+    }
+
+    public boolean isNavigateForwardEnabled() {
+        return _history.isNavigateForwardEnabled();
+    }
+
 
 
 } /* end class ProjectBrowser */
