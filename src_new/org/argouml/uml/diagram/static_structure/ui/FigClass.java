@@ -1307,7 +1307,8 @@ public class FigClass extends FigNodeModelElement
                 Object feat = /*(MFeature)*/ it.next();
                 if (Model.getFacade().isAOperation(feat)) {
                     Object oper = /*(MOperation)*/ feat;
-                    Iterator it2 = Model.getFacade().getParameters(oper).iterator();
+                    Iterator it2 = 
+                        Model.getFacade().getParameters(oper).iterator();
                     while (it2.hasNext()) {
                         Object param = /*(MParameter)*/ it2.next();
                         Model.getPump()
@@ -1323,7 +1324,8 @@ public class FigClass extends FigNodeModelElement
                 Object feat = /*(MFeature)*/ it.next();
                 if (Model.getFacade().isAOperation(feat)) {
                     Object oper = /*(MOperation)*/ feat;
-                    Iterator it2 = Model.getFacade().getParameters(oper).iterator();
+                    Iterator it2 = 
+                        Model.getFacade().getParameters(oper).iterator();
                     while (it2.hasNext()) {
                         Object param = /*(MParameter)*/ it2.next();
                         // UmlModelEventPump.getPump()
