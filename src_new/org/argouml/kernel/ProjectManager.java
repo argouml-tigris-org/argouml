@@ -68,6 +68,11 @@ public final class ProjectManager {
     private static Project _currentProject;
 
     /**
+     * Flag to indicate we are creating a new current project
+     */
+    private boolean _creatingCurrentProject;
+    
+    /**
      * The listener list
      */
     private EventListenerList _listenerList = new EventListenerList();
@@ -149,7 +154,7 @@ public final class ProjectManager {
      * @return Project
      */
     public Project getCurrentProject() {
-        if (_currentProject == null) {
+        if (_currentProject == null && !_creatingCurrentProject) {
             _currentProject = makeEmptyProject();
         }
         return _currentProject;
@@ -160,10 +165,12 @@ public final class ProjectManager {
      * @return Project
      */
     public Project makeEmptyProject() {
+        _creatingCurrentProject = true;
         Argo.log.info("making empty project");
         Project p = new Project();
         p.makeUntitledProject();
         setCurrentProject(p);
+        _creatingCurrentProject = false;
         return p;
     }
 

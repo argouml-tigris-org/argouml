@@ -123,6 +123,7 @@ public class UmlModelListener implements MElementListener {
 
 	if (mee.getAddedValue() != null || mee.getRemovedValue() != null || !mee.getNewValue().equals(mee.getOldValue())) {
 		NavigatorPane.getNavigatorPane().forceUpdate();
+            if (ProjectManager.getManager().getCurrentProject() != null)
 		ProjectManager.getManager().getCurrentProject().setNeedsSave(true);
 	}
 	
