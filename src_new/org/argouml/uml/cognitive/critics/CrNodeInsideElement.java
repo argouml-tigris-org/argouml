@@ -45,11 +45,19 @@ import org.tigris.gef.util.VectorSet;
 
 public class CrNodeInsideElement extends CrUML {
 
+    /**
+     * The constructor.
+     * 
+     */
     public CrNodeInsideElement() {
 	setHeadline("Nodes normally have no enclosers");
 	addSupportedDecision(CrUML.decPATTERNS);
     }
 
+    /**
+     * @see org.argouml.uml.cognitive.critics.CrUML#predicate2(
+     * java.lang.Object, org.argouml.cognitive.Designer)
+     */
     public boolean predicate2(Object dm, Designer dsgr) {
 	if (!(dm instanceof UMLDeploymentDiagram)) return NO_PROBLEM;
 	UMLDeploymentDiagram dd = (UMLDeploymentDiagram) dm;
@@ -58,12 +66,20 @@ public class CrNodeInsideElement extends CrUML {
 	return PROBLEM_FOUND; 
     }
 
+    /**
+     * @see org.argouml.cognitive.critics.Critic#toDoItem(
+     * java.lang.Object, org.argouml.cognitive.Designer)
+     */
     public ToDoItem toDoItem(Object dm, Designer dsgr) { 
 	UMLDeploymentDiagram dd = (UMLDeploymentDiagram) dm; 
 	VectorSet offs = computeOffenders(dd); 
 	return new UMLToDoItem(this, offs, dsgr); 
     } 
  
+    /**
+     * @see org.argouml.cognitive.Poster#stillValid(
+     * org.argouml.cognitive.ToDoItem, org.argouml.cognitive.Designer)
+     */
     public boolean stillValid(ToDoItem i, Designer dsgr) { 
 	if (!isActive()) return false; 
 	VectorSet offs = i.getOffenders(); 
@@ -79,7 +95,10 @@ public class CrNodeInsideElement extends CrUML {
      * the returned vector-set is not null. Then in the vector-set
      * are the UMLDeploymentDiagram and all FigMNodes with an
      * enclosing Fig
-     **/
+     *
+     * @param dd the diagram to check
+     * @return the set of offenders
+     */
     public VectorSet computeOffenders(UMLDeploymentDiagram dd) { 
 	Collection figs = dd.getLayer().getContents(null);
 	VectorSet offs = null;

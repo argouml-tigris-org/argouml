@@ -37,6 +37,10 @@ import org.argouml.model.ModelFacade;
 
 public class CrMultiComposite extends CrUML {
     
+    /**
+     * The constructor.
+     * 
+     */
     public CrMultiComposite() {
         setHeadline("Composite Role with MMultiplicity > 1");
         addSupportedDecision(CrUML.decCONTAINMENT);
@@ -45,6 +49,10 @@ public class CrMultiComposite extends CrUML {
         addTrigger("multiplicity");
     }
     
+    /**
+     * @see org.argouml.uml.cognitive.critics.CrUML#predicate2(
+     * java.lang.Object, org.argouml.cognitive.Designer)
+     */
     public boolean predicate2(Object dm, Designer dsgr) {
         boolean problem = NO_PROBLEM;
         if (ModelFacade.isAAssociationEnd(dm)) {
@@ -57,6 +65,9 @@ public class CrMultiComposite extends CrUML {
         return problem;
     }
     
+    /**
+     * @see org.argouml.cognitive.critics.Critic#getWizardClass(org.argouml.cognitive.ToDoItem)
+     */
     public Class getWizardClass(ToDoItem item) {
         return WizAssocComposite.class;
     }

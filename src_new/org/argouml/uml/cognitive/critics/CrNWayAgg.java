@@ -53,8 +53,8 @@ import org.argouml.model.ModelFacade;
  * 2-way assocations.</p>
  *
  * @see <a
- * href="http://argouml.tigris.org/documentation/snapshots/manual/argouml.html/#s2.ref.critics_multiple_agg">ArgoUML
- * User Manual: Two Aggregate ends (roles) in binary
+ * href="http://argouml.tigris.org/documentation/snapshots/manual/argouml.html/#s2.ref.critics_multiple_agg">
+ * ArgoUML User Manual: Two Aggregate ends (roles) in binary
  * Association</a> */
 
 public class CrNWayAgg extends CrUML {
