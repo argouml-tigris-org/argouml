@@ -263,6 +263,7 @@ public class GeneratorJava
                             importSet.add(ftype);
                         }
                     }
+
                     // check the return parameter types
                     it =
                         UmlHelper.getHelper()
@@ -278,6 +279,22 @@ public class GeneratorJava
                             importSet.add(ftype);
                         }
                     }
+
+		    // check raised signals
+		    it = ModelFacade.getRaisedSignals(mFeature).iterator();
+		    while (it.hasNext()) {
+			Object signal = it.next();
+			if (!ModelFacade.isAException(signal)) {
+			    continue;
+			}
+
+			ftype =
+			    generateImportType(ModelFacade.getType(signal),
+					       packagePath);
+			if (ftype != null) {
+			    importSet.add(ftype);
+			}
+		    }
                 }
             }
         }
@@ -464,8 +481,29 @@ public class GeneratorJava
 
         sb.append(')');
 
-        return sb.toString();
+	Collection c = ModelFacade.getRaisedSignals(op);
+	if (!c.isEmpty()) {
+	    Iterator it = c.iterator();
+	    boolean first = true;
+	    while (it.hasNext()) {
+		Object signal = it.next();
 
+		if (!ModelFacade.isAException(signal)) {
+		    continue;
+		}
+
+		if (first) {
+		    sb.append(" throws ");
+		} else {
+		    sb.append(", ");
+		}
+
+		sb.append(ModelFacade.getName(it.next()));
+		first = false;
+	    }
+	}
+
+        return sb.toString();
     }
 
     public String generateAttribute(Object attr, boolean documented) {
