@@ -57,8 +57,7 @@ public class FigComponentInstance extends FigNodeModelElement {
   // instance variables
 
   public static int OVERLAP = 4;
-  
-  protected FigRect _bigPort;
+
   protected FigRect _cover;
   protected FigRect _upperRect;
   protected FigRect _lowerRect;
@@ -68,8 +67,6 @@ public class FigComponentInstance extends FigNodeModelElement {
   // constructors
 
   public FigComponentInstance() {
-    _bigPort = new FigRect(10, 10, 120, 80, Color.cyan, Color.cyan);
-
     _cover = new FigRect(10, 10, 120, 80, Color.black, Color.white);
     _upperRect = new FigRect(0, 20, 20, 10, Color.black, Color.white);
     _lowerRect = new FigRect(0, 40, 20, 10, Color.black, Color.white);
@@ -77,11 +74,11 @@ public class FigComponentInstance extends FigNodeModelElement {
     _name.setLineWidth(0);
     _name.setFilled(false);
     _name.setUnderline(true);
-    
+
     addFig(_bigPort);
     addFig(_cover);
     addFig(_stereo);
-    addFig(_name);  
+    addFig(_name);
     addFig(_upperRect);
     addFig(_lowerRect);
 
@@ -97,7 +94,7 @@ public class FigComponentInstance extends FigNodeModelElement {
     updateBounds();
   }
 
-  public String placeString() { 
+  public String placeString() {
     return "new ComponentInstance";
   }
 
@@ -113,7 +110,7 @@ public class FigComponentInstance extends FigNodeModelElement {
 
     return figClone;
   }
- 
+
   ////////////////////////////////////////////////////////////////
   // acessors
 
@@ -128,14 +125,9 @@ public class FigComponentInstance extends FigNodeModelElement {
      _lowerRect.setLineColor(c);
   }
 
- 
+
   public Selection makeSelection() {
       return new SelectionComponentInstance(this);
-  }
-
-  public void setOwner(Object node) {
-    super.setOwner(node);
-    bindPort(node, _bigPort);
   }
 
   public Dimension getMinimumSize() {
@@ -158,11 +150,11 @@ public class FigComponentInstance extends FigNodeModelElement {
 
     if (h<50) {
       _upperRect.setBounds(x-10, y+h/6, 20, 10);
-      _lowerRect.setBounds(x-10, y+3*h/6, 20, 10); 
+      _lowerRect.setBounds(x-10, y+3*h/6, 20, 10);
     }
     else {
       _upperRect.setBounds(x-10, y+13, 20, 10);
-      _lowerRect.setBounds(x-10, y+39, 20, 10); 
+      _lowerRect.setBounds(x-10, y+39, 20, 10);
     }
 
     _stereo.setBounds(x+1, y+1, w-2, stereoDim.height);
@@ -194,7 +186,7 @@ public class FigComponentInstance extends FigNodeModelElement {
 
     Vector figures = getEnclosedFigs();
 
-    if (getLayer() != null) {  
+    if (getLayer() != null) {
       elementOrdering(figures);
       Vector contents = getLayer().getContents();
       int contentsSize = contents.size();
@@ -215,10 +207,10 @@ public class FigComponentInstance extends FigNodeModelElement {
       if (encloser != null && (encloser.getOwner() instanceof MNodeInstanceImpl)) {
         mnode = (MNodeInstance) encloser.getOwner();
       }
-      if (encloser != null && (encloser.getOwner() instanceof MComponentInstanceImpl)) { 
+      if (encloser != null && (encloser.getOwner() instanceof MComponentInstanceImpl)) {
         MComponentInstance comp = (MComponentInstance) encloser.getOwner();
-        mnode = (MNodeInstance) comp.getNodeInstance(); 
-      } 
+        mnode = (MNodeInstance) comp.getNodeInstance();
+      }
       try {
         if(mnode != null) {
           me.setNodeInstance(mnode);
@@ -250,29 +242,29 @@ public class FigComponentInstance extends FigNodeModelElement {
   }
 
   public boolean getUseTrapRect() { return true; }
-	
+
   ////////////////////////////////////////////////////////////////
   // internal methods
 
-  protected void textEdited(FigText ft) throws PropertyVetoException { 
-      //super.textEdited(ft); 
-    MComponentInstance coi = (MComponentInstance) getOwner(); 
-    if (ft == _name) { 
+  protected void textEdited(FigText ft) throws PropertyVetoException {
+      //super.textEdited(ft);
+    MComponentInstance coi = (MComponentInstance) getOwner();
+    if (ft == _name) {
       String s = ft.getText().trim();
       //why this???
 //       if (s.length()>0) {
-//         s = s.substring(0, (s.length() - 1)); 
+//         s = s.substring(0, (s.length() - 1));
 //       }
-      ParserDisplay.SINGLETON.parseComponentInstance(coi, s); 
-    } 
-  } 
+      ParserDisplay.SINGLETON.parseComponentInstance(coi, s);
+    }
+  }
 
 
   protected void updateStereotypeText() {
     MModelElement me = (MModelElement) getOwner();
     if (me == null) return;
     MStereotype stereo = me.getStereotype();
-    if (stereo == null || stereo.getName() == null || stereo.getName().length() == 0) 
+    if (stereo == null || stereo.getName() == null || stereo.getName().length() == 0)
         _stereo.setText("");
      else {
         _stereo.setText(Notation.generateStereotype(this, stereo));
@@ -282,37 +274,37 @@ public class FigComponentInstance extends FigNodeModelElement {
     _stereo.calcBounds();
     calcBounds();
     firePropChange("bounds", oldBounds, getBounds());
-  
+
   }
 
   protected void modelChanged() {
     super.modelChanged();
-    MComponentInstance coi = (MComponentInstance) getOwner(); 
-    if (coi == null) return; 
-    String nameStr = ""; 
-    if (coi.getName() != null) { 
-      nameStr = coi.getName().trim(); 
+    MComponentInstance coi = (MComponentInstance) getOwner();
+    if (coi == null) return;
+    String nameStr = "";
+    if (coi.getName() != null) {
+      nameStr = coi.getName().trim();
     }
-    
+
     // construct bases string (comma separated)
     String baseStr = "";
-    Collection col = coi.getClassifiers(); 
+    Collection col = coi.getClassifiers();
     if (col != null && col.size() > 0){
 	Iterator it = col.iterator();
-	baseStr = ((MClassifier)it.next()).getName(); 
-	while (it.hasNext()) { 
-	    baseStr += ", "+((MClassifier)it.next()).getName(); 
-	} 
+	baseStr = ((MClassifier)it.next()).getName();
+	while (it.hasNext()) {
+	    baseStr += ", "+((MClassifier)it.next()).getName();
+	}
     }
-    if (_readyToEdit) { 
-      if( nameStr == "" && baseStr == "") 
-	_name.setText(""); 
-      else 
-	_name.setText(nameStr.trim() + " : " + baseStr); 
-    } 
-    Dimension nameMin = _name.getMinimumSize(); 
-    Rectangle r = getBounds(); 
-    setBounds(r.x, r.y, r.width, r.height); 
+    if (_readyToEdit) {
+      if( nameStr == "" && baseStr == "")
+	_name.setText("");
+      else
+	_name.setText(nameStr.trim() + " : " + baseStr);
+    }
+    Dimension nameMin = _name.getMinimumSize();
+    Rectangle r = getBounds();
+    setBounds(r.x, r.y, r.width, r.height);
 
     updateStereotypeText();
   }

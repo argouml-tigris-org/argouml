@@ -56,8 +56,7 @@ public class FigComponent extends FigNodeModelElement {
   private static final int BIGPORT_X = 10;
 
   public static int OVERLAP = 4;
-  
-  protected FigRect _bigPort;
+
   protected FigRect _cover;
   protected FigRect _upperRect;
   protected FigRect _lowerRect;
@@ -67,26 +66,24 @@ public class FigComponent extends FigNodeModelElement {
   // constructors
 
   public FigComponent() {
-    _bigPort = new FigRect(BIGPORT_X, 10, 120, 80, Color.cyan, Color.cyan);
-
     _cover = new FigRect(BIGPORT_X, 10, 120, 80, Color.black, Color.white);
     _upperRect = new FigRect(0, 20, 20, 10, Color.black, Color.white);
     _lowerRect = new FigRect(0, 40, 20, 10, Color.black, Color.white);
 
     _name.setLineWidth(0);
     _name.setFilled(false);
-    _name.setText( placeString() );		
-    
+    _name.setText( placeString() );
+
     addFig(_bigPort);
     addFig(_cover);
     addFig(_stereo);
-    addFig(_name);  
+    addFig(_name);
     addFig(_upperRect);
     addFig(_lowerRect);
 
     Rectangle r = getBounds();
     setBounds(r.x, r.y, r.width, r.height);
-    
+
   }
 
   // Why not just super( gm, node ) instead?? (ChL)
@@ -96,11 +93,11 @@ public class FigComponent extends FigNodeModelElement {
     if (node instanceof MClassifier && (((MClassifier)node).getName() != null))
 	_name.setText(((MModelElement)node).getName());
 //     _name.setText(placeString());
-    updateBounds();					
+    updateBounds();
   }
 
-  public String placeString() { 
-    return "new Component"; 
+  public String placeString() {
+    return "new Component";
   }
 
   public Object clone() {
@@ -115,7 +112,7 @@ public class FigComponent extends FigNodeModelElement {
 
     return figClone;
   }
- 
+
   ////////////////////////////////////////////////////////////////
   // acessors
 
@@ -134,14 +131,9 @@ public class FigComponent extends FigNodeModelElement {
      _lowerRect.setLineColor(c);
   }
 
- 
+
   public Selection makeSelection() {
       return new SelectionComponent(this);
-  }
-
-  public void setOwner(Object node) {
-    super.setOwner(node);
-    bindPort(node, _bigPort);
   }
 
   public Dimension getMinimumSize() {
@@ -149,13 +141,13 @@ public class FigComponent extends FigNodeModelElement {
     Dimension nameDim = _name.getMinimumSize();
 
     int h = stereoDim.height + nameDim.height - OVERLAP;
-    int w = Math.max(stereoDim.width, nameDim.width) + BIGPORT_X;	
+    int w = Math.max(stereoDim.width, nameDim.width) + BIGPORT_X;
 
     return new Dimension(w, h);
   }
 
   public void setBounds(int x, int y, int w, int h) {
-   	
+
     Rectangle oldBounds = getBounds();
     _bigPort.setBounds(x + BIGPORT_X, y, w - BIGPORT_X, h);
     _cover.setBounds(x + BIGPORT_X, y, w - BIGPORT_X, h);
@@ -164,11 +156,11 @@ public class FigComponent extends FigNodeModelElement {
     Dimension nameDim = _name.getMinimumSize();
     if (h<50) {
       _upperRect.setBounds(x, y+h/6, 20, 10);
-      _lowerRect.setBounds(x, y+3*h/6, 20, 10); 
+      _lowerRect.setBounds(x, y+3*h/6, 20, 10);
     }
     else {
       _upperRect.setBounds(x, y+13, 20, 10);
-      _lowerRect.setBounds(x, y+39, 20, 10); 
+      _lowerRect.setBounds(x, y+39, 20, 10);
     }
 
     _stereo.setBounds(x+BIGPORT_X+1, y+1, w-BIGPORT_X-2, stereoDim.height);
@@ -232,10 +224,10 @@ public class FigComponent extends FigNodeModelElement {
           mnode = (MNode) it.next();
         }
       }
-          
+
       try {
 
-        Collection nodes = me.getDeploymentLocations();  
+        Collection nodes = me.getDeploymentLocations();
         if ((nodes != null) && (nodes.size()>0) && (!(nodes.contains(mnode)))) {
           Iterator itnodes = nodes.iterator();
           while (itnodes.hasNext()) {
@@ -247,7 +239,7 @@ public class FigComponent extends FigNodeModelElement {
         if(mnode != null && (!(nodes.contains(mnode)))) {
           me.addDeploymentLocation(mnode);
         }
-        setNode(figures);                   
+        setNode(figures);
       }
       catch (Exception e) {
         System.out.println("could not set package");
@@ -265,11 +257,11 @@ public class FigComponent extends FigNodeModelElement {
           figcomp.setEnclosingFig(this);
         }
       }
-    }    
+    }
   }
 
   public boolean getUseTrapRect() { return true; }
-	
+
 
   ////////////////////////////////////////////////////////////////
   // internal methods
@@ -282,7 +274,7 @@ public class FigComponent extends FigNodeModelElement {
     MModelElement me = (MModelElement) getOwner();
     if (me == null) return;
     MStereotype stereo = me.getStereotype();
-    if (stereo == null || stereo.getName() == null || stereo.getName().length() == 0) 
+    if (stereo == null || stereo.getName() == null || stereo.getName().length() == 0)
         _stereo.setText("");
     else {
         _stereo.setText(Notation.generateStereotype(this, stereo));
@@ -292,26 +284,26 @@ public class FigComponent extends FigNodeModelElement {
     _stereo.calcBounds();
     calcBounds();
     firePropChange("bounds", oldBounds, getBounds());
-  
-  }
-  
 
-  
+  }
+
+
+
   /** Get the rectangle on whose corners the dragging handles are to be drawn.
   	  Used by Selection Resize. */
   public Rectangle getHandleBox() {
-  	
+
   	Rectangle r = getBounds();
   	return new Rectangle( r. x + BIGPORT_X, r. y, r. width - BIGPORT_X, r. height );
-  	
+
   }
 
   public void setHandleBox( int x, int y, int w, int h ) {
-  	
+
   	setBounds( x - BIGPORT_X, y, w + BIGPORT_X, h );
-  	
+
   }
-  
+
 
   static final long serialVersionUID = 1647392857462847651L;
 
