@@ -68,7 +68,7 @@ public abstract class SAXParserBase extends DefaultHandler {
     /**
      * Switching this to true gives some extra logging messages. 
      */
-    protected static  boolean       dbg           = false;
+    protected static final boolean DBG = false;
     
     //protected static  boolean       _verbose       = false;
 
@@ -101,12 +101,6 @@ public abstract class SAXParserBase extends DefaultHandler {
     ////////////////////////////////////////////////////////////////
     // accessors
 
-    /**
-     * This allows you to get some more debugging info in the log file.
-     * @param debug true for extra logging
-     */
-    public void    setDebug(boolean debug) { dbg = debug; }
-    
     /**
      * @param s true if statistics have to be shown
      */
@@ -169,8 +163,20 @@ public abstract class SAXParserBase extends DefaultHandler {
     ////////////////////////////////////////////////////////////////
     // abstract methods
 
+    /**
+     * Implement in the concrete class to handle reaching the start tag of
+     * an element of interest.
+     * @param e the element.
+     * @throws SAXException on any error parsing the element.
+     */
     protected abstract void handleStartElement(XMLElement e) 
         throws SAXException;
+    /**
+     * Implement in the concrete class to handle reaching the end tag of
+     * an element of interest.
+     * @param e the element.
+     * @throws SAXException on any error parsing the element.
+     */
     protected abstract void handleEndElement(XMLElement e) 
         throws SAXException;
 
@@ -244,6 +250,12 @@ public abstract class SAXParserBase extends DefaultHandler {
         }
     }
     
+    /**
+     * Determine if an element of the given name is of interest to
+     * the parser. The base implementation assumes always true.
+     * @param name the element name.
+     * @return true if the element name is of interest.
+     */
     protected boolean isElementOfInterest(String name) {
         return true;
     }

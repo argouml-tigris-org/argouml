@@ -29,34 +29,19 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStreamWriter;
-import java.io.PipedReader;
-import java.io.PipedWriter;
 import java.io.PrintWriter;
-import java.io.StringReader;
-import java.io.StringWriter;
 import java.io.Writer;
 import java.net.URL;
-import java.util.HashMap;
 import java.util.Hashtable;
 
 import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.Result;
-import javax.xml.transform.Source;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.stream.StreamResult;
-import javax.xml.transform.stream.StreamSource;
 
 import org.apache.log4j.Logger;
 import org.argouml.application.ArgoVersion;
-import org.argouml.model.uml.UmlHelper;
 import org.argouml.xml.argo.ArgoParser;
-import org.argouml.xml.xmi.XMIReader;
 import org.tigris.gef.ocl.ExpansionException;
 import org.tigris.gef.ocl.OCLExpander;
 import org.tigris.gef.ocl.TemplateReader;
-import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 /**
@@ -192,8 +177,7 @@ public class ArgoFilePersister extends AbstractFilePersister {
                 InputStream is = url.openStream();
 
                 // the "true" means that members should be added.
-                ArgoParser.SINGLETON.setURL(url);
-                ArgoParser.SINGLETON.readProject(is, false);
+                ArgoParser.SINGLETON.readProject(url, true);
                 p = ArgoParser.SINGLETON.getProject();
                 ArgoParser.SINGLETON.setProject(null); // clear up project refs
 
@@ -204,7 +188,6 @@ public class ArgoFilePersister extends AbstractFilePersister {
                 LOG.error(e);
                 throw e;
             }
-            loadProjectMembers(p, url);
             p.postLoad();
             return p;
         } catch (IOException e) {
@@ -214,151 +197,5 @@ public class ArgoFilePersister extends AbstractFilePersister {
         } catch (ParserConfigurationException e) {
             throw new OpenException(e);
         }
-    }
-    
-    /**
-     * @param project the project to load into
-     * @param theUrl the URL to load from
-     * @throws OpenException if opening the URL fails
-     */
-    protected void loadProjectMembers(Project project, URL theUrl) 
-        throws OpenException {
-        
-        try {
-            String xslt = "XSLT to extract XMI";
-            Source xsltSource = new StreamSource(new StringReader(xslt));
-            Source inputSource = new StreamSource(theUrl.openStream());
-
-            Transformer transformer = 
-                TransformerFactory.newInstance().newTransformer(xsltSource);
-            
-            PipedReader pipedReader = new PipedReader();
-            Writer pipedWriter = new PipedWriter(pipedReader);
-            StreamResult result = new StreamResult(pipedWriter);
-            
-            transformer.transform(inputSource, result);
-            
-            InputSource is = new InputSource(pipedReader);
-            loadModel(project, is);
-            
-        } catch (SAXException e) {
-            throw new OpenException(e);
-        } catch (IOException e) {
-            throw new OpenException(e);
-        } catch (TransformerException e) {
-            throw new OpenException(e);
-        } catch (ParserConfigurationException e) {
-            throw new OpenException(e);
-        }
-    }
-
-    /**
-     * Transform a string of XML data according to the service required
-     * @param xml The original XML
-     * @param xsltStreamSource the transformation stream
-     * @return the transformed XML
-     * @throws TransformerException on XSLT transformation error
-     */
-    public static final String transform(String xml, 
-            StreamSource xsltStreamSource)
-        throws TransformerException {
-
-        TransformerFactory factory = TransformerFactory.newInstance();
-        Transformer transformer = factory.newTransformer(xsltStreamSource);
-        Source input = new StreamSource(new StringReader(xml));
-
-        StringWriter writer = new StringWriter();
-        Result result = new StreamResult(writer);
-
-        transformer.transform(input, result);
-        String transformation = writer.toString();
-        return transformation;
-    }
-    
-    /**
-     * Loads a model (XMI only) from a .zargo file. BE ADVISED this
-     * method has a side effect. It sets _UUIDREFS to the model.
-     * 
-     * If there is a problem with the xmi file, an error is set in the
-     * ArgoParser.SINGLETON.getLastLoadStatus() field. This needs to be
-     * examined by the calling function.
-     *
-     * @param theUrl The url with the .zargo file
-     * @param project the project to load into
-     * @return The model loaded
-     * @throws IOException Thrown if the model or the .zargo file is corrupted.
-     * @throws SAXException If the parser template is syntactically incorrect. 
-     * @throws ParserConfigurationException If the initialization of 
-     *         the parser fails.
-     */
-    protected Object loadModel(Project project, URL theUrl)
-        throws IOException, SAXException, ParserConfigurationException {
-        if (LOG.isInfoEnabled()) {
-            LOG.info("Loading Model from " + theUrl);
-        }
-        InputStream is = theUrl.openStream();
-        InputSource source = new InputSource(is);
-        return loadModel(project, source);
-    }
-
-    /**
-     * Loads a model (XMI only) from a .zargo file. BE ADVISED this
-     * method has a side effect. It sets _UUIDREFS to the model.
-     * 
-     * If there is a problem with the xmi file, an error is set in the
-     * ArgoParser.SINGLETON.getLastLoadStatus() field. This needs to be
-     * examined by the calling function.
-     *
-     * @return The model loaded
-     * @throws IOException Thrown if the model or the .zargo file is corrupted.
-     * @throws SAXException If the parser template is syntactically incorrect. 
-     * @throws ParserConfigurationException If the initialization of 
-     *         the parser fails.
-     * @param project the project to load into
-     * @param source the source to load from
-     */
-    protected Object loadModel(Project project, InputSource source)
-        throws IOException, SAXException, ParserConfigurationException {
-        // 2002-07-18
-        // Jaap Branderhorst
-        // changed the loading of the projectfiles to solve hanging 
-        // of argouml if a project is corrupted. Issue 913
-        // Created xmireader with method getErrors to check if parsing went well
-        XMIReader xmiReader = null;
-        try {
-            xmiReader = new XMIReader();
-        } catch (SAXException se) { // duh, this must be caught and handled
-            LOG.error("SAXException caught", se);
-            throw se;
-        } catch (ParserConfigurationException pc) { 
-            // duh, this must be caught and handled
-            LOG.error("ParserConfigurationException caught", pc);
-            throw pc;
-        }
-        Object mmodel = null;
-
-        source.setEncoding("UTF-8");
-        mmodel = xmiReader.parseToModel(source);        
-        if (xmiReader.getErrors()) {
-            ArgoParser.SINGLETON.setLastLoadStatus(false);
-            ArgoParser.SINGLETON.setLastLoadMessage(
-                    "XMI file could not be parsed.");
-            LOG.error("XMI file could not be parsed.");
-            throw new SAXException(
-                    "XMI file could not be parsed.");
-        }
-
-        // This should probably be inside xmiReader.parse
-        // but there is another place in this source
-        // where XMIReader is used, but it appears to be
-        // the NSUML XMIReader.  When Argo XMIReader is used
-        // consistently, it can be responsible for loading
-        // the listener.  Until then, do it here.
-        UmlHelper.getHelper().addListenersToModel(mmodel);
-
-        project.addMember(mmodel);
-
-        project.setUUIDRefs(new HashMap(xmiReader.getXMIUUIDToObjectMap()));
-        return mmodel;
     }
 }
