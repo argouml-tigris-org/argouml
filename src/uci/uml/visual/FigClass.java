@@ -61,14 +61,11 @@ implements VetoableChangeListener, DelayedVetoableChangeListener {
     _clss = new FigText(10,10,90,20, Color.blue, "Times", 10);
     _clss.setExpandOnly(true);
     //_clss.setText((new GeneratorDisplay()).generateClassifierRef((Classifier)node));
-    _clss.setText("A sadfkak large line more\nthan one line of it");
     _attr = new FigText(10,30,90,20, Color.blue, "Times", 10);
     _attr.setExpandOnly(true);
-    _attr.setText("Attrib data");
     _attr.setJustification("Left");
     _oper = new FigText(10,50,90,20, Color.blue, "Times", 10);
     _oper.setExpandOnly(true);
-    _oper.setText("Function data");
     _oper.setJustification("Left");
     addFig(_bigPort);
     addFig(_clss);
@@ -95,12 +92,16 @@ implements VetoableChangeListener, DelayedVetoableChangeListener {
     Rectangle _attr_pref = _attr.getBounds();
     Rectangle _oper_pref = _oper.getBounds();
 
-    widthP = Math.max(widthP, Math.max(_clss_pref.width, Math.max(_attr_pref.width, _oper_pref.width)));
-    heightP = Math.max(heightP, 3*Math.max(_clss_pref.height, Math.max(_attr_pref.height, _oper_pref.height)));
+    int total_height = _clss_pref.height + _attr_pref.height + _oper_pref.height;
 
-    _clss.setBounds(leftSide, topSide, widthP, (heightP/3));
-    _attr.setBounds(leftSide, topSide + (heightP/3), widthP, (heightP/3));
-    _oper.setBounds(leftSide, topSide + (heightP/3) * 2, widthP, (heightP/3));
+    widthP = Math.max(widthP, Math.max(_clss_pref.width, Math.max(_attr_pref.width, _oper_pref.width)));
+    heightP = Math.max(heightP, total_height);
+
+    int extra_each = (heightP - total_height) / 3;
+
+    _clss.setBounds(leftSide, topSide, widthP, _clss_pref.height + extra_each);
+    _attr.setBounds(leftSide, topSide + _clss.getBounds().height, widthP, _attr_pref.height + extra_each);
+    _oper.setBounds(leftSide, topSide + _attr.getBounds().height + _clss.getBounds().height, widthP, _oper_pref.height + extra_each);
     _bigPort.setBounds(leftSide, topSide, widthP, heightP);
 
     calcBounds(); //_x = x; _y = y; _w = w; _h = h;
@@ -230,4 +231,3 @@ implements VetoableChangeListener, DelayedVetoableChangeListener {
 
   
 } /* end class FigClass */
-
