@@ -1275,7 +1275,7 @@ public class Modeller {
        @return The stereotype.
     */
     private Object getStereotype(String name) {
-        LOG.info("Trying to find a stereotype of name " + name);
+        LOG.info("Trying to find a stereotype of name <<" + name + ">>");
         // Is this line really safe wouldn't it just return the first
         // model element of the same name whether or not it is a stereotype
         Object stereotype = Model.getFacade().lookupIn(model, name);
@@ -1324,8 +1324,8 @@ public class Modeller {
                 Object stereotype = iter.next();
                 if (Model.getUmlHelper().getExtensionMechanisms()
                         .isStereotypeInh(stereotype, name, baseClass)) {
-                    LOG.info("Returning the existing stereotype of "
-                            + Model.getFacade().getName(stereotype));
+                    LOG.info("Returning the existing stereotype of <<"
+                            + Model.getFacade().getName(stereotype) + ">>");
                     return stereotype;
                 }
             }
