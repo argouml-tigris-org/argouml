@@ -457,7 +457,6 @@ public class FigClass extends FigNodeModelElement {
         if (_stereoLineBlinder.isDisplayed()) 
 	    noExtraFigs++;
 	extra_each = extra_each / (getDisplayedFigs().size()- noExtraFigs);
-
 	Vector mutableFigs = new Vector(_figs);
 	mutableFigs.remove(_stereo);
 	mutableFigs.remove(_stereoLineBlinder);
@@ -470,7 +469,7 @@ public class FigClass extends FigNodeModelElement {
 	// handle _stereo
 	if (_stereo.isDisplayed()) {
 	    _stereo.setBounds(x, currentY, maxW, _stereo.getMinimumSize().height+1 );
-	    currentY += _stereo.getMinimumSize().height;
+	    currentY += _stereo.getMinimumSize().height; //--pjs--
 	}
 
 	// handle _stereoLineBlinder
@@ -481,12 +480,15 @@ public class FigClass extends FigNodeModelElement {
 	while (figs.hasMoreElements()) {
 	  Fig f = (Fig) figs.nextElement();
 	  if (f.isDisplayed()) {
-	      int height =  f.getMinimumSize().height + extra_each;
+          // extra_each caused class icons to grow vertically each time
+          // the diagram was saved and reloaded. I replaced it with 1 
+          // which gives the text a little room in the class icon. pjs    
+	      int height =  f.getMinimumSize().height + 1; //extra_each;
 	      int overlap = 0;
 	      if (_stereo.isDisplayed()) 
-		  overlap =  (getDisplayedFigs().size() > 4? 1:0);
-	      else  overlap =  (getDisplayedFigs().size() > 3? 1:0);
-	      f.setBounds(x, currentY, maxW,  height+overlap);
+		  overlap =  (getDisplayedFigs().size() > 4 ? 1 : 0);
+	      else  overlap = (getDisplayedFigs().size() > 3 ? 1 :0 );
+	      f.setBounds(x, currentY, maxW,  height + overlap);
 	      currentY += height;
 	  }
 	}
