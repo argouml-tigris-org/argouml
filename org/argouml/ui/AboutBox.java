@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2001 The Regents of the University of California. All
+// Copyright (c) 1996-2003 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -25,8 +25,6 @@
 package org.argouml.ui;
 
 import java.awt.*;
-import java.io.InputStreamReader;
-import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.ListIterator;
 import javax.swing.JDialog;
@@ -74,6 +72,23 @@ public class AboutBox extends JDialog {
 	return str;
     }
 
+    /** Create a JScrollPane from the text
+     *
+     * @returns the JScrollPane
+     * @param the text to represent
+     */
+    private JScrollPane createPane(String text) {
+	JTextArea a = new JTextArea();
+	a.setEditable(false);
+	a.setLineWrap(true);
+	a.setWrapStyleWord(true);
+	a.setMargin(new Insets(i, i, i, i));
+	a.setText(text);
+	a.setCaretPosition(0);
+	return new JScrollPane(a);
+    }
+
+
     public AboutBox(Frame owner, boolean modal) {
 	super(owner, modal);
         // TODO: i18n
@@ -115,7 +130,7 @@ public class AboutBox extends JDialog {
         applied to the "ArgoUML Vx,xx.x" part */
         JPanel myInsetPanel = new JPanel(); //MVW
         /* top, left, bottom, right */
-        myInsetPanel.setBorder(new EmptyBorder(30,40,40,40)); //MVW
+        myInsetPanel.setBorder(new EmptyBorder(30, 40, 40, 40));
         /* This gives some more space to the row of tabs, 
            so that there will not be 2 rows of tabs
            See issue 2365, remark 3 from Jeremy.         */
@@ -126,84 +141,15 @@ public class AboutBox extends JDialog {
         _tabs.addTab("Splash", myInsetPanel); //MVW
 	//_tabs.addTab("Splash", _splashPanel);
 
-	try {
-	    JTextArea a = new JTextArea();
-	    a.setEditable(false);
-            a.setLineWrap(true);
-            a.setWrapStyleWord(true);
-            a.setMargin(new Insets(i, i, i, i));
-	    a.read(new StringReader(versionBuf.toString()), null);
-	    _tabs.addTab("Version", new JScrollPane(a));
-	}
-	catch (Exception e) {
-	    _Log.error("Unable to read version information", e);
-	}
-
-	try {
-	    JTextArea a = new JTextArea();
-	    a.read(new InputStreamReader(
-		           getClass().getResourceAsStream(Argo.RESOURCEDIR 
-							  + "credits.about")),
-		   null);
-	    a.setEditable(false);
-            a.setLineWrap(true);
-            a.setWrapStyleWord(true);
-            a.setMargin(new Insets(i, i, i, i));
-	    _tabs.addTab("Credits", new JScrollPane(a));
-	}
-	catch (Exception e) {
-	    _Log.error("Unable to read 'credits.about'", e);
-	}
-
-	try {
-	    JTextArea a = new JTextArea();
-	    a.setEditable(false);
-            a.setLineWrap(true);
-            a.setWrapStyleWord(true);
-            a.setMargin(new Insets(i, i, i, i));
-	    a.read(new InputStreamReader(getClass().
-			   getResourceAsStream(Argo.RESOURCEDIR
-					       + "contacts.about")),
-		   null);
-	    _tabs.addTab("Contact Info", new JScrollPane(a));
-	}
-	catch (Exception e) {
-	    _Log.error("Unable to read 'contacts.about'", e);
-	}
-
-
-	try {
-	    JTextArea a = new JTextArea();
-	    a.setEditable(false);
-            a.setLineWrap(true);
-            a.setWrapStyleWord(true);
-            a.setMargin(new Insets(i, i, i, i));
-	    a.read(new InputStreamReader(getClass().
-			  getResourceAsStream(Argo.RESOURCEDIR
-					      + "bugreport.about")),
-		   null);
-	    _tabs.addTab("Report bugs", new JScrollPane(a));
-	}
-	catch (Exception e) {
-	    _Log.error("Unable to read 'bugreport.about'", e);
-	}
-
-
-	try {
-	    JTextArea a = new JTextArea();
-	    a.setEditable(false);
-            a.setLineWrap(true);
-            a.setWrapStyleWord(true);
-            a.setMargin(new Insets(i, i, i, i));
-	    a.read(new InputStreamReader(getClass().
-					 getResourceAsStream(Argo.RESOURCEDIR
-							     + "legal.about")),
-		   null);
-	    _tabs.addTab("Legal", new JScrollPane(a));
-	}
-	catch (Exception e) {
-	    _Log.error("Unable to read 'legal.about'", e);
-	}
+	_tabs.addTab("Version", createPane(versionBuf.toString()));
+	_tabs.addTab("Credits", 
+		     createPane(Translator.localize("aboutbox.credits")));
+	_tabs.addTab("Contact Info", 
+		     createPane(Translator.localize("aboutbox.contacts")));
+	_tabs.addTab("Report bugs", 
+		     createPane(Translator.localize("aboutbox.bugreport")));
+	_tabs.addTab("Legal", 
+		     createPane(Translator.localize("aboutbox.legal")));
 
 	// Add the about tabs from the modules.
 	ArrayList list = Argo.getPlugins( PluggableAboutTab.class);
