@@ -33,7 +33,7 @@ import org.argouml.kernel.ProjectManager;
 import org.argouml.model.uml.modelmanagement.ModelManagementHelper;
 import org.argouml.ui.ArgoDiagram;
 import org.argouml.ui.ProjectBrowser;
-import org.argouml.uml.diagram.static_structure.ui.UMLClassDiagram;
+import org.argouml.uml.diagram.ui.UMLDiagram;
 import org.argouml.uml.generator.Generator;
 import org.argouml.uml.generator.ui.ClassGenerationDialog;
 import ru.novosoft.uml.foundation.core.MClassifier;
@@ -89,7 +89,7 @@ public class ActionGenerateProjectCode extends UMLAction {
     public boolean shouldBeEnabled() {
       ProjectBrowser pb = ProjectBrowser.TheInstance;
       ArgoDiagram activeDiagram = pb.getActiveDiagram();
-      return super.shouldBeEnabled() && (activeDiagram instanceof UMLClassDiagram);
+      return super.shouldBeEnabled() && (activeDiagram instanceof UMLDiagram);
     }
 
     private boolean isCodeRelevantClassifier(MClassifier cls) {
