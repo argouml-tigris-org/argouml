@@ -34,6 +34,7 @@ import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.UmlFactory;
+import org.argouml.model.uml.UmlHelper;
 import org.argouml.model.uml.UmlModelEventPump;
 import org.argouml.model.uml.foundation.core.CoreFactory;
 import org.argouml.model.uml.foundation.core.CoreHelper;
@@ -86,6 +87,8 @@ public class Modeller
     /** Arrays will be modelled as unique datatypes. */
     private boolean arraysAsDatatype;
 
+    /** the name of the file being parsed */
+    private String fileName;
     /**
        Create a new modeller.
 
@@ -95,7 +98,8 @@ public class Modeller
                   DiagramInterface diagram,
                   Import _import,
                   boolean noAssociations,
-                  boolean arraysAsDatatype)
+                  boolean arraysAsDatatype,
+                  String fileName)
     {
 	this.model = model;
 	this.noAssociations = noAssociations;
@@ -105,6 +109,7 @@ public class Modeller
 	parseState = new ParseState(this.model, getPackage("java.lang"));
 	parseStateStack = new Stack();
 	_diagram = diagram;
+        this.fileName = fileName;
     }
 
     /**
@@ -116,6 +121,35 @@ public class Modeller
 	return _diagram;
     }
 
+    /**
+     * This is a mapping from a Java compilation Unit -> a UML component.
+     * Classes are resident in a component.
+     * Imports are relationships between components and other classes
+     * / packages.
+     * <p>See JSR 26.
+     */
+    public void addComponent(){
+        
+        // remove the java specific ending (per JSR 26).
+        // BUT we can't do this because then the component will be confused
+        // with its class with the same name when invoking
+        // ModelFacade.lookupIn(Object,String)
+        /*
+        if(fileName.endsWith(".java"))
+            fileName = fileName.substring(0,
+                                          fileName.length()-5);
+         */
+        
+        Object component = UmlFactory.getFactory().getCore().createComponent();
+        ModelFacade.setName(component,fileName);
+        
+        parseState.addComponent(component);
+        
+        // set the namespace of the component, in the event
+        // that the source file does not have a package stmt
+        ModelFacade.setNamespace(parseState.getComponent(),model);
+    }
+    
     /**
        Called from the parser when a package clause is found.
 
@@ -148,6 +182,9 @@ public class Modeller
 	parseState.addPackageContext(mPackage);
 
         // Delay diagram creation until any classifier (class or interface) will be found
+        
+        // set the namespace of the component
+        ModelFacade.setNamespace(parseState.getComponent(),currentPackage);
     }
 
     /**
@@ -163,11 +200,28 @@ public class Modeller
 
 	if(classifierName.equals("*")) {
 	    parseState.addPackageContext(mPackage);
+            
+            // set up the component
+            Object perm = UmlFactory.getFactory().getCore().buildPermission(parseState.getComponent(), mPackage);
+            ModelFacade.setName(perm,
+                ModelFacade.getName(parseState.getComponent())+
+                " -> "+
+                packageName);
+            // TODO:
+            // add all classes from package to the model
 	}
 	else {
+            Object mClassifier=null;
 	    try {
-		Object mClassifier = (new PackageContext(null, mPackage)).get(classifierName);
+		mClassifier= (new PackageContext(null, mPackage)).get(classifierName);
 		parseState.addClassifierContext(mClassifier);
+                
+                // set up the component
+                Object perm = UmlFactory.getFactory().getCore().buildPermission(parseState.getComponent(), mClassifier);
+                ModelFacade.setName(perm,
+                    ModelFacade.getName(parseState.getComponent())+
+                    " -> "+
+                    ModelFacade.getName(mClassifier));
 	    }
 	    catch(ClassifierNotFoundException e) {
 		// Currently if a classifier cannot be found in the
@@ -179,6 +233,8 @@ public class Modeller
                          "(to generate an imported classifier)- information lost\n"+
                          "\t"+e);
 	    }
+            
+            
 	}
     }
 
@@ -325,27 +381,54 @@ public class Modeller
 	Object mClassifier;
 	Object mNamespace;
 
+        // the new classifier is a java inner class
 	if(parseState.getClassifier() != null) {
-	    // Inner classes
 	    mClassifier = ModelFacade.lookupIn(parseState.getClassifier(),name);
 	    mNamespace = parseState.getClassifier();
 	}
+        // the new classifier is a top level java class
 	else {
 	    parseState.outerClassifier();
 	    mClassifier = ModelFacade.lookupIn(currentPackage,name);
 	    mNamespace = currentPackage;
 	}
+        // if the classifier could not be could in the model
 	if(mClassifier == null) {
 	    mClassifier = newClassifier;
 	    ModelFacade.setName(mClassifier,name);
 	    ModelFacade.setNamespace(mClassifier,mNamespace);
 	}
+        // it was found and we delete andy existing tagged values.
 	else {
 	    cleanModelElement(mClassifier);
 	}
 	parseState.innerClassifier(mClassifier);
-	parseStateStack.push(parseState);
-	parseState = new ParseState(parseState, mClassifier, currentPackage);
+        
+        // set up the component residency (only for top level classes)
+        if(parseState.getClassifier() == null){
+            // set the clasifier to be a resident in its component:
+            // (before we push a new parse state on the stack)
+        
+            // this doesn't work because of a bug in NSUML (the ElementResidence
+            // association class is never saved to the xmi).
+            //UmlHelper.getHelper().getCore().setResident(parseState.getComponent(),mClassifier);
+        
+            // therefore temporarily use a non-standard hack:
+            Object dep = CoreFactory.getFactory().buildDependency(parseState.getComponent(),mClassifier);
+            UmlFactory.getFactory().getExtensionMechanisms().buildStereotype(
+                    dep,
+                    "resident",
+                    model);
+            ModelFacade.setName(dep,
+                    ModelFacade.getName(parseState.getComponent())+
+                    " -(location of)-> "+
+                    ModelFacade.getName(mClassifier));
+        }
+        
+        // change the parse state to a classifier parse state
+        parseStateStack.push(parseState);
+        parseState = new ParseState(parseState, mClassifier, currentPackage);
+
 
 	setVisibility(mClassifier, modifiers);
 
@@ -362,6 +445,8 @@ public class Modeller
    */
 
   addDocumentationTag (mClassifier, javadoc);
+  
+        
 	return mClassifier;
     }
 
@@ -459,11 +544,13 @@ public class Modeller
               ModelFacade.setStereotype(mOperation,getStereotype("create"));
           }
           else {
+              try {
+                  mClassifier = getContext(returnType).get(getClassifierName(returnType));
+                
               mParameter = UmlFactory.getFactory().getCore().buildParameter(mOperation);
               ModelFacade.setName(mParameter, "return");
               ModelFacade.setKindToReturn(mParameter);
-              try {
-                mClassifier = getContext(returnType).get(getClassifierName(returnType));
+
                 ModelFacade.setType(mParameter, mClassifier);
               }
               catch(ClassifierNotFoundException e) {
@@ -480,13 +567,13 @@ public class Modeller
 
           for(Iterator i = parameters.iterator(); i.hasNext(); ) {
               Vector parameter = (Vector)i.next();
-              mParameter = UmlFactory.getFactory().getCore().buildParameter(mOperation);
-              ModelFacade.setName(mParameter, (String)parameter.elementAt(2));
-              ModelFacade.setKindToIn(mParameter);
               typeName = (String)parameter.elementAt(1);
               try {
                 mClassifier = getContext(typeName).get(getClassifierName(typeName));
-                ModelFacade.setType(mParameter, mClassifier);
+                mParameter = UmlFactory.getFactory().getCore().buildParameter(mOperation);
+              ModelFacade.setName(mParameter, (String)parameter.elementAt(2));
+              ModelFacade.setKindToIn(mParameter);
+              ModelFacade.setType(mParameter, mClassifier);
               }
               catch(ClassifierNotFoundException e) {
 		// Currently if a classifier cannot be found in the
