@@ -439,8 +439,8 @@ as well as the stereotypes for models
             <para>Radio box,
 with entries
 <literal>public</literal>,
-<literal>protected</literal>, and
-<literal>private</literal>.
+<literal>private</literal>, and
+<literal>protected</literal>.
 </para>
 
             <para>
@@ -470,7 +470,6 @@ this has no meaningful use.
 <literal>Leaf</literal> and 
 <literal>Root</literal>.
 </para>
-<!-- TODO: V0.14 shows the checkboxes centred, not left-aligned. See issue ... -->
             <itemizedlist>
               <listitem>
                 <para><literal>abstract</literal>
@@ -619,31 +618,12 @@ navigating to that artifact.
     <note><para>Also <literal>void</literal> is implemented as a 
       datatype within &argouml;</para></note>
 
-<!-- Issue 1761, (Issue 2114).-->
-<!-- TODO: The description below was true in earlier versions of ArgoUML. 
-How does it work now? -->
-<!--    <para>
-Within &argouml; new datatypes may be created using the <literal>New
+    <para>
+      Within &argouml; new datatypes may be created using the <literal>New
       datatype</literal> button on the property tabs of the model and packages
       (in which case the new datatype is restricted in scope to the
-      package), as well as the properties tab for datatype..</para>
- -->
-    <caution><para>
-Within &argouml; 0.14 new datatypes may be created using the <literal>New
-      datatype</literal> button on the property tabs of existing datatypes only.
-      This function really should be present on the property tabs of the model
-      and packages, too.
-      <!-- TODO: See issue ... -->
-    </para></caution>
-    <tip><para>
-      As a consequence, when starting a new model, a trick is needed to create
-      the first datatype. The easiest way is to create an operation (on a class)
-      and select the return parameter, and set it to any predefined datatype,
-      e.g. <literal>int</literal>. From this moment on, the datatype
-      <literal>int</literal> will be present in the explorer 
-      and its property tabs contains the <literal>New Datatype</literal> button.
-    </para></tip>
-      
+      package), as well as the properties tab for datatype.</para>
+
     <note>
       <para>
 UML&nbsp;1.3 allows user defined datatypes to be placed on
@@ -710,18 +690,6 @@ See <xref linkend="s2.ref.documentation_tab"/>.
           </listitem>
         </varlistentry>
 
-        <!-- Entry for Style tab -->
-
-<!--        <varlistentry>
-          <term><literal>Style</literal></term>
-
-          <listitem><para>Standard tab, but with no effect. In a future
-            version of &argouml; the <literal>Attributes</literal> and
-            <literal>Operations</literal> tick boxes will control the
-            display of literals and operations defined for the
-            datatype.</para></listitem>
-        </varlistentry>
--->
         <!-- Entry for Source tab -->
 
         <varlistentry>
@@ -731,17 +699,6 @@ See <xref linkend="s2.ref.documentation_tab"/>.
              declaration for the new datatype to support code
              generation.</para></listitem>
 <!-- TOTDO: See enhancement issue ... -->
-        </varlistentry>
-
-        <!-- Entry for Constraints tab -->
-
-        <varlistentry>
-          <term><literal>Constraints</literal></term>
-
-          <listitem>
-            <para>&constraintssupport;
-</para>
-          </listitem>
         </varlistentry>
 
         <!-- Entry for Tagged Values tab -->
@@ -845,13 +802,13 @@ In the UML metamodel,
             where you want them.</para></tip></listitem>
         </varlistentry>
 
-        <!-- Entry for Add enumeration literal button -->
+        <!-- Entry for New enumeration literal button -->
 
         <varlistentry>
           <term><guiicon><inlinemediaobject><imageobject><imagedata
             format="GIF" align="center"
             fileref="images/icons/enumeration_literal.gif"/>
-          </imageobject></inlinemediaobject></guiicon> <literal>Add enumeration
+          </imageobject></inlinemediaobject></guiicon> <literal>New enumeration
             literal</literal></term>
 
           <listitem><para>This creates a new enumeration literal within the
@@ -870,6 +827,52 @@ or a critic will fire.
 </para>
             </caution>
           </listitem>
+        </varlistentry>
+
+        <!-- Entry for New operation button -->
+
+        <varlistentry>
+          <term><guiicon><inlinemediaobject><imageobject><imagedata
+            format="GIF" align="center"
+            fileref="images/icons/operation.gif"/>
+          </imageobject></inlinemediaobject></guiicon> <literal>New Operation
+            </literal></term>
+
+          <listitem><para>This creates a new operation within the
+            datatype, navigating immediately to the properties tab for that
+            operation.</para>
+
+          </listitem>
+        </varlistentry>
+
+        <!-- Entry for New stereotype button -->
+
+        <varlistentry>
+          <term><guiicon><inlinemediaobject><imageobject><imagedata
+            format="GIF" align="center"
+            fileref="images/icons/stereotype.gif"/>
+            </imageobject></inlinemediaobject></guiicon> 
+	        <literal>New Stereotype</literal>
+        </term>
+          <listitem>
+            <indexterm>
+              <primary>Add Stereotype</primary>
+            </indexterm>
+            <indexterm>
+              <primary>New Stereotype</primary>
+            </indexterm>
+            <indexterm>
+              <primary>Create New</primary>
+              <secondary>Stereotype</secondary>
+            </indexterm>
+
+            <para>
+			  This creates a new Stereotype (see <xref
+              linkend="s1.ref.stereotype"/>) 
+              within the same package as the datatype, 
+              navigating immediately to the properties tab
+              for that stereotype.</para>
+		  </listitem>
         </varlistentry>
 
         <!-- Entry for Delete button -->
@@ -949,7 +952,7 @@ in the explorer.
             </indexterm>
 
             <para>Drop down selector.
-Package is provided by default
+			  Stereotype is provided by default
             with the UML standard stereotypes for classifier
             (<literal>metaclass</literal>, <literal>powertype</literal>,
             <literal>process</literal>, <literal>thread</literal> and
@@ -969,7 +972,7 @@ Package is provided by default
             <caution>
               <para>
 <!-- Issue 2112 -->
-In version 0.14 the <literal>enumeration</literal> must be created
+In version 0.18 the stereotype <literal>enumeration</literal> must be created
 before it can be used.
 </para>
             </caution>
@@ -1019,22 +1022,12 @@ This is the package hierarchy.
             </indexterm>
 
             <para>Check box, with entries 
-<!-- Issue 2110.
-        <literal>public</literal>, 
- -->
 <literal>Abstract</literal>, 
 <literal>Leaf</literal> and
 <literal>Root</literal>.
 </para>
 
             <itemizedlist>
-<!-- Issue 2110.
-            <listitem><para><literal>public</literal> has identical meaning
-              to the <literal>public</literal> declaration in Java. It
-              indicates whether this datatype is restricted to use in its
-              own package (the default) or can be used by
-              anyone.</para></listitem>
- -->
               <listitem>
                 <para><literal>Abstract</literal>
 is used to declare that this datatype cannot be instantiated,
@@ -1066,6 +1059,33 @@ In effect all datatypes are both
                 </tip>
               </listitem>
             </itemizedlist>
+          </listitem>
+        </varlistentry>
+
+        <!-- Entry for Visibility -->
+
+        <varlistentry>
+          <term><literal>Visibility</literal></term>
+
+          <listitem>
+            <indexterm>
+              <primary>Datatype Visibility</primary>
+            </indexterm>
+            <indexterm>
+              <primary>Visibility</primary>
+              <secondary>of Datatype</secondary>
+            </indexterm>
+
+            <para>Radio box,
+              with entries
+              <literal>public</literal>,
+              <literal>private</literal>, and
+              <literal>protected</literal>.
+            </para>
+
+            <para>
+ 			  Records the visibility for the Datatype.
+            </para>
           </listitem>
         </varlistentry>
 
@@ -1257,23 +1277,12 @@ It is not clear that Dependency datatypes makes much sence.
 
           <listitem>
             <para>Text area. Lists all the operations defined on this
-datatype.
-&Button1; double click navigates to the selected operation.
-</para>
-<!-- Issue: 637
-            &button2; click brings up a pop up menu with five
-            entries.</para>
+			  datatype.
+	    	  &Button1; double click navigates to the selected operation.
+              &button2; click brings up a pop up menu with two
+              entries.</para>
 
           <itemizedlist>
-            <listitem><para><literal>Open</literal>. Navigate to the
-              selected operation.</para></listitem>
-
-            <listitem><para><literal>Add</literal>. Add a new
-              operation and navigate to it.</para></listitem>
-
-            <listitem><para><literal>Delete</literal>. Removes the selected
-              operation from the model.</para></listitem>
-
             <listitem><para><literal>Move Up</literal>. Only available where
               there are two or more operations, and the operation selected is
               not at the top. It is moved up one.</para></listitem>
@@ -1283,21 +1292,17 @@ datatype.
               selected is not at the bottom. It is moved down
               one.</para></listitem>
           </itemizedlist>
- -->
+
           <para>See <xref linkend="s1.ref.operation"/> for details of
             operations.</para>
 
-          <para>Since V0.14 does not provide in any means to create 
-          operations of datatypes, this field is not useful.
-<!-- TODO: See enhancement issue ... -->
-          </para>
-<!--      <caution><para>&argouml; treats all operations as equivalent. Any
+          <caution><para>&argouml; treats all operations as equivalent. Any
             operations created here will use the same mechanism as
             operations for classes. Remember that operations on datatypes
             must have no side effects (they are read-only). This means the
             <literal>query</literal> modifier <emphasis>must</emphasis> be
             checked for all operations.</para></caution>
--->
+
             </listitem>
         </varlistentry>
 
@@ -1317,38 +1322,26 @@ datatype.
             </indexterm>
 
             <para>Text area.
-Lists all the enumeration literals defined for this
-            datatype. &Button1; click navigates to the selected literal,
-            &button2; click brings up a pop up menu with three
-            entries.</para>
+			  Lists all the enumeration literals defined for this datatype. 
+			  &Button1; double click navigates to the selected literal,
+              &button2; click brings up a pop up menu with two entries.
+            </para>
 
             <itemizedlist>
-            <listitem><para><literal>Open</literal>. Navigate to the
-              selected literal.</para></listitem>
+              <listitem><para><literal>Move Up</literal>. Only available where
+                there are two or more literals, and the literal selected is not
+                at the top. It is moved up one.</para></listitem>
 
-              <listitem>
-                <para><literal>New</literal>.
-Add a new literal and navigate to it.
-</para>
+              <listitem><para><literal>Move Down</literal>. Only available where
+                there are two or more literals listed, and the literal selected
+                is not at the bottom. It is moved down one.</para>
               </listitem>
 
-            <listitem><para><literal>Delete</literal>. Removes the selected
-              literal from the model.</para></listitem>
-
-<!-- Issue 2120
-            <listitem><para><literal>Move Up</literal>. Only available where
-              there are two or more literals, and the literal selected is not
-              at the top. It is moved up one.</para></listitem>
-
-            <listitem><para><literal>Move Down</literal>. Only available where
-              there are two or more literals listed, and the literal selected
-              is not at the bottom. It is moved down one.</para></listitem>
- -->
           </itemizedlist>
 
           <caution><para>&argouml; does not actually have a separate
             concept of a literal. The navigations listed above will all
-            navigate to the property sheet for an attribute of a class (see
+            navigate to a property sheet equal to an attribute of a class (see
             <xref linkend="s1.ref.attribute"/>). When defining a literal,
             all that matters is its name. Other parts of the attribute
             property sheet should be ignored.</para></caution>
