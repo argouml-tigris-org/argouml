@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -128,6 +128,11 @@ public class WizStep extends JPanel
     ////////////////////////////////////////////////////////////////
     // accessors
 
+    /**
+     * @deprecated since 0.15.3. The method in TabToDoTarget has been
+     * 		   deprecated and replaced by 
+     * 		   {@link org.argouml.ui.targetmanager.TargetManager}.
+     */
     public void setTarget(Object item) {
 	_target = item;
 	enableButtons();

@@ -58,7 +58,7 @@ public class Init {
     /**
      * static initializer, register all appropriate critics<p>
      *
-     * @deprecated as of 0.15.3.
+     * @deprecated as of 0.15.3. use @see #init()
      */
     public static void init(Locale locale) {
 	init();

@@ -1,7 +1,5 @@
-
-
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -94,18 +92,18 @@ public class FigFinalState extends FigStateVertex {
 	_inCircle.setLineWidth(0);
 
 	_name = new FigText(x + 10, y + 22, 0, 21, true);
-	_name.setFilled(false);
-	_name.setLineWidth(0);
-	_name.setFont(LABEL_FONT);
-	_name.setTextColor(Color.black);
-	_name.setMultiLine(false);
-	_name.setAllowsTab(false);
-	_name.setJustificationByName("center");
+	getNameFig().setFilled(false);
+	getNameFig().setLineWidth(0);
+	getNameFig().setFont(LABEL_FONT);
+	getNameFig().setTextColor(Color.black);
+	getNameFig().setMultiLine(false);
+	getNameFig().setAllowsTab(false);
+	getNameFig().setJustificationByName("center");
 		
 	addFig(_bigPort);
 	addFig(_outCircle);
 	addFig(_inCircle);
-	addFig(_name);
+	addFig(getNameFig());
 
 	setBlinkPorts(false); //make port invisble unless mouse enters
 	Rectangle r = getBounds();

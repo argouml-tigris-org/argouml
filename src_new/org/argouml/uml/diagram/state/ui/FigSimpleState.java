@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -76,22 +76,23 @@ public class FigSimpleState extends FigState {
 			 Color.black, Color.white);
 
 	_bigPort.setLineWidth(0);
-	_name.setLineWidth(0);
-	_name.setBounds(getInitialX() + 2, getInitialY() + 2,
-			getInitialWidth() - 4, _name.getBounds().height);
-	_name.setFilled(false);
+	getNameFig().setLineWidth(0);
+	getNameFig().setBounds(getInitialX() + 2, getInitialY() + 2,
+			       getInitialWidth() - 4,
+			       getNameFig().getBounds().height);
+	getNameFig().setFilled(false);
 
 	_divider =
 	    new FigLine(getInitialX(),
-			getInitialY() + 2 + _name.getBounds().height + 1,
+			getInitialY() + 2 + getNameFig().getBounds().height + 1,
 			getInitialWidth() - 1,
-			getInitialY() + 2 + _name.getBounds().height + 1,
+			getInitialY() + 2 + getNameFig().getBounds().height + 1,
 			Color.black);   
 
 	// add Figs to the FigNode in back-to-front order
 	addFig(_bigPort);
 	addFig(_cover);
-	addFig(_name);
+	addFig(getNameFig());
 	addFig(_divider);
 	addFig(_internal);
 
@@ -132,7 +133,7 @@ public class FigSimpleState extends FigState {
     }
 
     public Dimension getMinimumSize() {
-	Dimension nameDim = _name.getMinimumSize();
+	Dimension nameDim = getNameFig().getMinimumSize();
 	Dimension internalDim = _internal.getMinimumSize();
 
 	int h = nameDim.height + 4 + internalDim.height;
@@ -142,11 +143,13 @@ public class FigSimpleState extends FigState {
 
     /* Override setBounds to keep shapes looking right */
     public void setBounds(int x, int y, int w, int h) {
-	if (_name == null) return;
+	if (getNameFig() == null) {
+	    return;
+	}
 	Rectangle oldBounds = getBounds();
-	Dimension nameDim = _name.getMinimumSize();
+	Dimension nameDim = getNameFig().getMinimumSize();
 
-	_name.setBounds(x + 2, y + 2, w - 4,  nameDim.height);
+	getNameFig().setBounds(x + 2, y + 2, w - 4,  nameDim.height);
 	_divider.setShape(x, y + nameDim.height + 1,
 			  x + w - 1,
 			  y + nameDim.height + 1);

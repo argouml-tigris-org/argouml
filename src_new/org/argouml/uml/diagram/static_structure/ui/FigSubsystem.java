@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2003 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -34,6 +34,7 @@ import java.awt.Polygon;
 import org.apache.log4j.Logger;
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.FigPoly;
+import org.argouml.model.ModelFacade;
 
 /** Class to display graphics for a UML subsystem in a class diagram. */
 
@@ -73,8 +74,10 @@ public class FigSubsystem extends FigPackage {
         // Don't know if this should rather be done in one of the super
         // classes, since similar code is used in FigClass.java etc.
         // Andreas Rueckert <a_rueckert@gmx.net>
-        if (org.argouml.model.ModelFacade.isASubsystem(node) && (org.argouml.model.ModelFacade.getName(node) != null))
-            _name.setText(org.argouml.model.ModelFacade.getName(node));
+        if (ModelFacade.isASubsystem(node)
+	        && (ModelFacade.getName(node) != null)) {
+            getNameFig().setText(ModelFacade.getName(node));
+	}
     }
 
     public String placeString() {

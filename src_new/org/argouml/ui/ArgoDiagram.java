@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -114,7 +114,9 @@ public class ArgoDiagram extends Diagram {
         if (fig == null && ModelFacade.isAModelElement(obj)) {
 	    // maybe we have a modelelement that is part of some other
             // fig
-            if (ModelFacade.isAOperation(obj) || ModelFacade.isAAttribute(obj)) {
+            if (ModelFacade.isAOperation(obj)
+		|| ModelFacade.isAAttribute(obj)) {
+
                 // get all the classes from the diagram
                 Iterator it = getNodes().iterator();
                 while (it.hasNext()) {

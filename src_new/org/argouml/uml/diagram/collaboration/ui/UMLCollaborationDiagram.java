@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -31,7 +31,6 @@ package org.argouml.uml.diagram.collaboration.ui;
 import java.beans.PropertyVetoException;
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.Vector;
 
 import javax.swing.Action;
 
@@ -44,8 +43,8 @@ import org.argouml.uml.diagram.collaboration.CollabDiagramGraphModel;
 import org.argouml.uml.diagram.ui.ActionAddAssociationRole;
 import org.argouml.uml.diagram.ui.FigMessage;
 import org.argouml.uml.diagram.ui.UMLDiagram;
-import org.argouml.uml.ui.ActionAddMessage;
-import org.argouml.uml.ui.ActionAddNote;
+import org.argouml.uml.diagram.ui.ActionAddMessage;
+import org.argouml.uml.diagram.ui.ActionAddNote;
 import org.tigris.gef.base.Layer;
 import org.tigris.gef.base.LayerPerspective;
 import org.tigris.gef.base.LayerPerspectiveMutable;
@@ -126,7 +125,7 @@ public class UMLCollaborationDiagram extends UMLDiagram {
 
         try {
             setName(getNewDiagramName());
-        } catch (PropertyVetoException pve) {}
+        } catch (PropertyVetoException pve) { }
     }
 
     public UMLCollaborationDiagram(Object namespace) {
@@ -140,7 +139,7 @@ public class UMLCollaborationDiagram extends UMLDiagram {
         int res = 0;
         Iterator it = figs.iterator();
         while (it.hasNext()) {
-            Fig f = (Fig)it.next();
+            Fig f = (Fig) it.next();
             if (ModelFacade.isAMessage(f.getOwner())) {
                 res++;
             }
@@ -170,8 +169,7 @@ public class UMLCollaborationDiagram extends UMLDiagram {
             throw new IllegalArgumentException(
                 "Illegal argument. Object " + handle + " is not a namespace");
         }
-        Object m = /*(MNamespace)*/
-        handle;
+        Object m = /*(MNamespace)*/ handle;
         super.setNamespace(m);
         CollabDiagramGraphModel gm = new CollabDiagramGraphModel();
         gm.setNamespace(m);
@@ -189,23 +187,23 @@ public class UMLCollaborationDiagram extends UMLDiagram {
      * graphic triggers
      */
     protected Object[] getUmlActions() {
-        Object actions[] =
-            {
-                _actionClassifierRole,
-                null,
-                getAssociationActions(),
-                ActionAddMessage.SINGLETON,
-                _actionGeneralize,
-                _actionDepend,
-                null,
-                ActionAddNote.SINGLETON };
+        Object actions[] = {
+	    _actionClassifierRole,
+	    null,
+	    getAssociationActions(),
+	    ActionAddMessage.SINGLETON,
+	    _actionGeneralize,
+	    _actionDepend,
+	    null,
+	    ActionAddNote.SINGLETON };
         return actions;
     }
 
     private Object[] getAssociationActions() {
-        Object actions[][] = { { _actionAssociation, _actionUniAssociation }, {
-                _actionAggregation, _actionUniAggregation }, {
-                _actionComposition, _actionUniComposition }
+        Object actions[][] = {
+	    {_actionAssociation, _actionUniAssociation },
+	    {_actionAggregation, _actionUniAggregation },
+	    {_actionComposition, _actionUniComposition }
         };
 
         return actions;
@@ -238,7 +236,7 @@ public class UMLCollaborationDiagram extends UMLDiagram {
                     Object message = /*(MMessage)*/
                     msgIterator.next();
                     FigMessage figMessage =
-                        (FigMessage)lay.presentationFor(message);
+                        (FigMessage) lay.presentationFor(message);
                     if (figMessage != null) {
                         figMessage.addPathItemToFigAssociationRole(lay);
                     }
@@ -255,10 +253,8 @@ public class UMLCollaborationDiagram extends UMLDiagram {
         String name = null;
         name = "Collaboration Diagram " + _CollaborationDiagramSerial;
         _CollaborationDiagramSerial++;
-        if (!ProjectManager
-            .getManager()
-            .getCurrentProject()
-            .isValidDiagramName(name)) {
+        if (!ProjectManager.getManager().getCurrentProject()
+	        .isValidDiagramName(name)) {
             name = getNewDiagramName();
         }
         return name;

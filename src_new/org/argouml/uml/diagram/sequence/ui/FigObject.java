@@ -1,4 +1,5 @@
-// Copyright (c) 1996-2003 The Regents of the University of California. All
+// $Id$
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -21,7 +22,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// $Id$
 package org.argouml.uml.diagram.sequence.ui;
 
 import java.awt.Color;
@@ -55,10 +55,11 @@ import org.tigris.gef.presentation.FigText;
 import ru.novosoft.uml.MElementEvent;
 
 /**
- * Fig to show an object on a sequence diagram. The fig consists of an upper box
- * that shows the name of the object (the owner) and a lifeline. The lifeline consists
- * of lifeline elements. An element can be a dashed line (no link attached) or a
- * rectangle (link attached).
+ * Fig to show an object on a sequence diagram. The fig consists of an
+ * upper box that shows the name of the object (the owner) and a
+ * lifeline. The lifeline consists of lifeline elements. An element
+ * can be a dashed line (no link attached) or a rectangle (link
+ * attached).
  * @author jaap.branderhorst@xs4all.nl
  * Aug 11, 2003
  */
@@ -187,10 +188,10 @@ public class FigObject extends FigNodeModelElement implements MouseListener {
                 "Dialog",
                 12,
                 false);
-        _name.setEditable(false);
-        _name.setAllowsTab(false);
-        _name.setFilled(false);
-        _name.setLineWidth(0);
+        getNameFig().setEditable(false);
+        getNameFig().setAllowsTab(false);
+        getNameFig().setFilled(false);
+        getNameFig().setLineWidth(0);
         _lifeLine =
             new FigLine(
                 DEFAULT_WIDTH / 2,
@@ -208,7 +209,7 @@ public class FigObject extends FigNodeModelElement implements MouseListener {
         addFig(_lifeLine);
         addFig(_backgroundBox);
         addFig(_stereo);
-        addFig(_name);
+        addFig(getNameFig());
         addFig(_outerBox);
     }
 
@@ -242,8 +243,8 @@ public class FigObject extends FigNodeModelElement implements MouseListener {
         String nameText =
             (_objectName + "/" + _classifierRoleNames + ":" + _baseNames)
                 .trim();
-        _name.setText(nameText);
-        center(_name);
+        getNameFig().setText(nameText);
+        center(getNameFig());
         damage();
     }
 
@@ -272,16 +273,16 @@ public class FigObject extends FigNodeModelElement implements MouseListener {
      */
     public void setBounds(int x, int y, int w, int h) {
         Rectangle oldBounds = getBounds();
-        if (_name.getWidth() > w) {
-            w = _name.getWidth() + 2 * MARGIN;
+        if (getNameFig().getWidth() > w) {
+            w = getNameFig().getWidth() + 2 * MARGIN;
         }
         if (_stereo.getWidth() > w) {
             w = _stereo.getWidth() + 2 * MARGIN;
         }
-        _name.setCenter(
-            new Point(
-                x + w / 2,
-                _name.getY() - oldBounds.y + y + _name.getHalfHeight()));
+        getNameFig().setCenter(
+            new Point(x + w / 2,
+		      getNameFig().getY() - oldBounds.y + y
+		      + getNameFig().getHalfHeight()));
         _stereo.setCenter(
             new Point(
                 x + w / 2,
@@ -445,7 +446,7 @@ public class FigObject extends FigNodeModelElement implements MouseListener {
         Rectangle bounds = getBounds();
         bounds.width =
             Math.max(
-                _name.getWidth() + 2 * MARGIN,
+                getNameFig().getWidth() + 2 * MARGIN,
                 _stereo.getWidth() + 2 * MARGIN);
         setBounds(bounds);
     }

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -71,14 +71,14 @@ public class FigComponent extends FigNodeModelElement {
 	_upperRect = new FigRect(0, 20, 20, 10, Color.black, Color.white);
 	_lowerRect = new FigRect(0, 40, 20, 10, Color.black, Color.white);
 
-	_name.setLineWidth(0);
-	_name.setFilled(false);
-	_name.setText( placeString() );
+	getNameFig().setLineWidth(0);
+	getNameFig().setFilled(false);
+	getNameFig().setText( placeString() );
 
 	addFig(_bigPort);
 	addFig(_cover);
 	addFig(_stereo);
-	addFig(_name);
+	addFig(getNameFig());
 	addFig(_upperRect);
 	addFig(_lowerRect);
     }
@@ -88,9 +88,9 @@ public class FigComponent extends FigNodeModelElement {
 	this();
 	setOwner(node);
 	if (org.argouml.model.ModelFacade.isAClassifier(node)
-	    && (org.argouml.model.ModelFacade.getName(node) != null))
-	    _name.setText(org.argouml.model.ModelFacade.getName(node));
-	//     _name.setText(placeString());
+	        && (org.argouml.model.ModelFacade.getName(node) != null)) {
+	    getNameFig().setText(org.argouml.model.ModelFacade.getName(node));
+	}
 	updateBounds();
     }
 
@@ -115,7 +115,7 @@ public class FigComponent extends FigNodeModelElement {
     // acessors
 
     public void setUnderline(boolean b) {
-	_name.setUnderline(b);
+	getNameFig().setUnderline(b);
     }
 
     public void setLineColor(Color c) {
@@ -123,8 +123,8 @@ public class FigComponent extends FigNodeModelElement {
 	_cover.setLineColor(c);
 	_stereo.setFilled(false);
 	_stereo.setLineWidth(0);
-	_name.setFilled(false);
-	_name.setLineWidth(0);
+	getNameFig().setFilled(false);
+	getNameFig().setLineWidth(0);
 	_upperRect.setLineColor(c);
 	_lowerRect.setLineColor(c);
     }
@@ -136,7 +136,7 @@ public class FigComponent extends FigNodeModelElement {
 
     public Dimension getMinimumSize() {
 	Dimension stereoDim = _stereo.getMinimumSize();
-	Dimension nameDim = _name.getMinimumSize();
+	Dimension nameDim = getNameFig().getMinimumSize();
 
 	int h = stereoDim.height + nameDim.height - OVERLAP;
 	int w = Math.max(stereoDim.width, nameDim.width) + BIGPORT_X;
@@ -151,7 +151,7 @@ public class FigComponent extends FigNodeModelElement {
 	_cover.setBounds(x + BIGPORT_X, y, w - BIGPORT_X, h);
 
 	Dimension stereoDim = _stereo.getMinimumSize();
-	Dimension nameDim = _name.getMinimumSize();
+	Dimension nameDim = getNameFig().getMinimumSize();
 	if (h < 50) {
 	    _upperRect.setBounds(x, y + h / 6, 20, 10);
 	    _lowerRect.setBounds(x, y + 3 * h / 6, 20, 10);
@@ -163,9 +163,10 @@ public class FigComponent extends FigNodeModelElement {
 
 	_stereo.setBounds(x + BIGPORT_X + 1, y + 1, w - BIGPORT_X - 2,
 			  stereoDim.height);
-	_name.setBounds(x + BIGPORT_X + 1, y + stereoDim.height - OVERLAP + 1,
-			w - BIGPORT_X - 2,
-			nameDim.height);
+	getNameFig().setBounds(x + BIGPORT_X + 1,
+			       y + stereoDim.height - OVERLAP + 1,
+			       w - BIGPORT_X - 2,
+			       nameDim.height);
 	_x = x; _y = y; _w = w; _h = h;
 	firePropChange("bounds", oldBounds, getBounds());
 	updateEdges();

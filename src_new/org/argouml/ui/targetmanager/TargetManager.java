@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2002-2003 The Regents of the University of California. All
+// Copyright (c) 2002-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -275,9 +275,10 @@ public final class TargetManager {
                 // times in history
             }
             if (oldCurrentTarget != _currentTarget) {
-            	/* TODO updateAllEnabled() has been deprecated, and the replacement
-            	 * is to use updateAllEnabled(TargetEvent e), but what TargetEvent
-            	 * would be passed?
+            	/* TODO: updateAllEnabled() has been deprecated, and
+            	 * the replacement is to use
+            	 * updateAllEnabled(TargetEvent e), but what
+            	 * TargetEvent would be passed?
             	 */
                 Actions.updateAllEnabled();
             }
@@ -361,7 +362,8 @@ public final class TargetManager {
     }
 
     private void internalOnSetTarget(String eventName, Object oldTargets[]) {
-	TargetEvent event = new TargetEvent(this, eventName, oldTargets, _targets.toArray());
+	TargetEvent event =
+	    new TargetEvent(this, eventName, oldTargets, _targets.toArray());
 
 	if (_targets.size() > 0) {
 	    _figTarget = determineFigTarget(_targets.get(0));

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -33,7 +33,6 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.util.Iterator;
-import java.util.Vector;
 
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
 import org.tigris.gef.base.Globals;
@@ -59,8 +58,8 @@ public class FigInstance extends FigNodeModelElement {
     public FigInstance() {
 	Color handleColor = Globals.getPrefs().getHandleColor();
 
-	_name.setUnderline(true);
-	_name.setTextFilled(true);
+	getNameFig().setUnderline(true);
+	getNameFig().setTextFilled(true);
 
 	// initialize any other Figs here
 	_attr = new FigText(10, 30, 90, 40, Color.black, "Times", 10);
@@ -74,7 +73,7 @@ public class FigInstance extends FigNodeModelElement {
 
 	// add Figs to the FigNode in back-to-front order
 	addFig(_bigPort);
-	addFig(_name);
+	addFig(getNameFig());
 	addFig(_attr);
 
 	setBlinkPorts(true); //make port invisble unless mouse enters
@@ -92,14 +91,14 @@ public class FigInstance extends FigNodeModelElement {
     public Object clone() {
 	FigInstance figClone = (FigInstance) super.clone();
 	Iterator iter = figClone.getFigs(null).iterator();
-	figClone._bigPort = (FigRect)iter.next();
-	figClone._name = (FigText)iter.next();
-	figClone._attr = (FigText)iter.next();
+	figClone._bigPort = (FigRect) iter.next();
+	figClone._name = (FigText) iter.next();
+	figClone._attr = (FigText) iter.next();
 	return figClone;
     }
 
     public Dimension getMinimumSize() {
-	Dimension nameMin = _name.getMinimumSize();
+	Dimension nameMin = getNameFig().getMinimumSize();
 	Dimension attrMin = _attr.getMinimumSize();
 
 	int h = nameMin.height + attrMin.height;
@@ -110,14 +109,14 @@ public class FigInstance extends FigNodeModelElement {
 
     /* Override setBounds to keep shapes looking right */
     public void setBounds(int x, int y, int w, int h) {
-	if (_name == null) return;
+	if (getNameFig() == null) return;
 	Rectangle oldBounds = getBounds();
 
-	Dimension nameMinimum = _name.getMinimumSize();
+	Dimension nameMinimum = getNameFig().getMinimumSize();
 
-	_name.setBounds(x, y, w, nameMinimum.height);
-	_attr.setBounds(x, y + _name.getBounds().height,
-			w, h - _name.getBounds().height);
+	getNameFig().setBounds(x, y, w, nameMinimum.height);
+	_attr.setBounds(x, y + getNameFig().getBounds().height,
+			w, h - getNameFig().getBounds().height);
 	_bigPort.setBounds(x + 1, y + 1, w - 2, h - 2);
 
 	calcBounds(); //_x = x; _y = y; _w = w; _h = h;

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2003 The Regents of the University of California. All
+// Copyright (c) 2003-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -40,7 +40,7 @@ import org.argouml.ui.CmdSetMode;
 import org.argouml.uml.diagram.deployment.DeploymentDiagramGraphModel;
 import org.argouml.uml.diagram.ui.ActionAddAssociation;
 import org.argouml.uml.diagram.ui.UMLDiagram;
-import org.argouml.uml.ui.ActionAddNote;
+import org.argouml.uml.diagram.ui.ActionAddNote;
 import org.tigris.gef.base.LayerPerspective;
 import org.tigris.gef.base.LayerPerspectiveMutable;
 import org.tigris.gef.base.ModeCreatePolyEdge;
@@ -132,7 +132,7 @@ public class UMLDeploymentDiagram extends UMLDiagram {
 
         try {
             setName(getNewDiagramName());
-        } catch (PropertyVetoException pve) {}
+        } catch (PropertyVetoException pve) { }
     }
 
     public UMLDeploymentDiagram(Object namespace) {
@@ -145,7 +145,7 @@ public class UMLDeploymentDiagram extends UMLDiagram {
      * 
      * each diagram type has a similar <I>UMLxxxDiagram</I> class.
      *
-     * @param m  MNamespace from the model in NSUML...
+     * @param handle MNamespace from the model in NSUML...
      * @modified changed <I>lay</I> from <I>LayerPerspective</I> to
      * <I>LayerPerspectiveMutable</I>.  This class is a child of
      * <I>LayerPerspective</I> and was implemented to correct some
@@ -162,8 +162,7 @@ public class UMLDeploymentDiagram extends UMLDiagram {
             throw new IllegalArgumentException(
                 "Illegal argument. Object " + handle + " is not a namespace");
         }
-        Object m = /*(MNamespace)*/
-        handle;
+        Object m = /*(MNamespace)*/ handle;
         super.setNamespace(m);
         DeploymentDiagramGraphModel gm = new DeploymentDiagramGraphModel();
         gm.setNamespace(m);
@@ -183,25 +182,25 @@ public class UMLDeploymentDiagram extends UMLDiagram {
      * graphic triggers
      */
     protected Object[] getUmlActions() {
-        Object actions[] =
-            {
-                _actionMNode,
-                _actionMNodeInstance,
-                _actionMComponent,
-                _actionMComponentInstance,
-                _actionMDependency,
-                getAssociationActions(),
-                _actionMObject,
-                _actionMLink,
-                null,
-                ActionAddNote.SINGLETON };
+        Object actions[] = {
+	    _actionMNode,
+	    _actionMNodeInstance,
+	    _actionMComponent,
+	    _actionMComponentInstance,
+	    _actionMDependency,
+	    getAssociationActions(),
+	    _actionMObject,
+	    _actionMLink,
+	    null,
+	    ActionAddNote.SINGLETON };
         return actions;
     }
 
     private Object[] getAssociationActions() {
-        Object actions[][] = { { _actionAssociation, _actionUniAssociation }, {
-                _actionAggregation, _actionUniAggregation }, {
-                _actionComposition, _actionUniComposition }
+        Object actions[][] = {
+	    {_actionAssociation, _actionUniAssociation },
+	    {_actionAggregation, _actionUniAggregation },
+	    {_actionComposition, _actionUniComposition }
         };
 
         return actions;
@@ -217,10 +216,8 @@ public class UMLDeploymentDiagram extends UMLDiagram {
         String name = null;
         name = "Deployment Diagram " + _DeploymentDiagramSerial;
         _DeploymentDiagramSerial++;
-        if (!ProjectManager
-            .getManager()
-            .getCurrentProject()
-            .isValidDiagramName(name)) {
+        if (!ProjectManager.getManager().getCurrentProject()
+	        .isValidDiagramName(name)) {
             name = getNewDiagramName();
         }
         return name;

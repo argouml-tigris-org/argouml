@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2002 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -141,8 +141,8 @@ public class FigInterface extends FigNodeModelElement {
 
         // Set name box. Note the upper line will be blanked out if there is
         // eventually a stereotype above.
-        _name.setLineWidth(1);
-        _name.setFilled(true);
+        getNameFig().setLineWidth(1);
+        getNameFig().setFilled(true);
 
         // this rectangle marks the operation section; all operations
         // are inside it:
@@ -168,7 +168,7 @@ public class FigInterface extends FigNodeModelElement {
         _stereo.setLineWidth(1);
         _stereo.setEditable(false);
         _stereo.setHeight(STEREOHEIGHT + 1);
-        // +1 to have 1 pixel overlap with _name
+        // +1 to have 1 pixel overlap with getNameFig()
         _stereo.setDisplayed(true);
 
         // A thin rectangle to overlap the boundary line between stereotype
@@ -187,7 +187,7 @@ public class FigInterface extends FigNodeModelElement {
         suppressCalcBounds = true;
         addFig(_bigPort);
         addFig(_stereo);
-        addFig(_name);
+        addFig(getNameFig());
         addFig(_stereoLineBlinder);
         addFig(_operVec);
         suppressCalcBounds = false;
@@ -215,9 +215,10 @@ public class FigInterface extends FigNodeModelElement {
         this();
         setOwner(node);
         enableSizeChecking(true);
-        if (org.argouml.model.ModelFacade.isAInterface(node)
-	    && (org.argouml.model.ModelFacade.getName(node) != null))
-            _name.setText(org.argouml.model.ModelFacade.getName(node));
+        if (ModelFacade.isAInterface(node)
+	        && (ModelFacade.getName(node) != null)) {
+            getNameFig().setText(ModelFacade.getName(node));
+	}
     }
 
     public String placeString() {
@@ -273,17 +274,20 @@ public class FigInterface extends FigNodeModelElement {
 		new ActionModifier("Public",
 				   "visibility", "getVisibility",
 				   "setVisibility",
-				   (MInterface)minterface,
-				   (Class)ModelFacade.VISIBILITYKIND,
+				   (MInterface) minterface,
+				   (Class) ModelFacade.VISIBILITYKIND,
 				   ModelFacade.PUBLIC_VISIBILITYKIND,
 				   null));
         modifierMenu.addCheckItem(
 		new ActionModifier("Abstract",
-				   "isAbstract", "isAbstract", "setAbstract", minterface));
+				   "isAbstract", "isAbstract", "setAbstract",
+				   minterface));
         modifierMenu.addCheckItem(
-		new ActionModifier("Leaf", "isLeaf", "isLeaf", "setLeaf", minterface));
+		new ActionModifier("Leaf", "isLeaf", "isLeaf", "setLeaf",
+				   minterface));
         modifierMenu.addCheckItem(
-		new ActionModifier("Root", "isRoot", "isRoot", "setRoot", minterface));
+		new ActionModifier("Root", "isRoot", "isRoot", "setRoot",
+				   minterface));
 
         popUpActions.insertElementAt(modifierMenu, 
             popUpActions.size() - POPUP_ADD_OFFSET);
@@ -317,7 +321,7 @@ public class FigInterface extends FigNodeModelElement {
                 damage();
                 Iterator it = _operVec.getFigs(null).iterator();
                 while (it.hasNext()) {
-                     ((Fig) (it.next())).setDisplayed(false);
+		    ((Fig) (it.next())).setDisplayed(false);
                 }
                 _operVec.setDisplayed(false);
                 setBounds(rect.x, rect.y, rect.width, rect.height - h);
@@ -326,7 +330,7 @@ public class FigInterface extends FigNodeModelElement {
             if (isVisible) {
                 Iterator it = _operVec.getFigs(null).iterator();
                 while (it.hasNext()) {
-                     ((Fig) (it.next())).setDisplayed(true);
+		    ((Fig) (it.next())).setDisplayed(true);
                 }
                 _operVec.setDisplayed(true);
                 setBounds(rect.x, rect.y, rect.width, rect.height + h);
@@ -348,7 +352,7 @@ public class FigInterface extends FigNodeModelElement {
         // Use "aSize" to build up the minimum size. Start with the size of the
         // name compartment and build up.
 
-        Dimension aSize = _name.getMinimumSize();
+        Dimension aSize = getNameFig().getMinimumSize();
         int h = aSize.height;
         int w = aSize.width;
 
@@ -430,7 +434,7 @@ public class FigInterface extends FigNodeModelElement {
         Rectangle r = new Rectangle(me.getX() - 1, me.getY() - 1, 2, 2);
         Fig f = hitFig(r);
         if (f == _operVec && _operVec.getHeight() > 0) {
-            // TODO in future version of GEF call getFigs returning array
+            // TODO: in future version of GEF call getFigs returning array
             Vector v = new Vector(_operVec.getFigs(null));
             i = (v.size() - 1)
 		* (me.getY() - f.getY() - 3)
@@ -455,7 +459,7 @@ public class FigInterface extends FigNodeModelElement {
         if (key == KeyEvent.VK_UP || key == KeyEvent.VK_DOWN) {
             CompartmentFigText ft = unhighlight();
             if (ft != null) {
-                // TODO in future version of GEF call getFigs returning array
+                // TODO: in future version of GEF call getFigs returning array
                 int i = new Vector(_operVec.getFigs(null)).indexOf(ft);
                 if (i != -1) {
                     if (key == KeyEvent.VK_UP) {
@@ -496,7 +500,8 @@ public class FigInterface extends FigNodeModelElement {
             if (encloser != null
                     && oldEncloser != encloser
                     && ModelFacade.isAPackage(encloser.getOwner())) {
-                ModelFacade.setNamespace(me, /*(MNamespace)*/ encloser.getOwner());
+                ModelFacade.setNamespace(me,
+					 /*(MNamespace)*/ encloser.getOwner());
             }
 
             // If default Namespace is not already set
@@ -517,7 +522,8 @@ public class FigInterface extends FigNodeModelElement {
         // The next if-clause is important for the Deployment-diagram
         // it detects if the enclosing fig is a component, in this case
         // the ImplementationLocation will be set for the owning MInterface
-        if (encloser != null && (org.argouml.model.ModelFacade.isAComponent(encloser.getOwner()))) {
+        if (encloser != null
+	        && (ModelFacade.isAComponent(encloser.getOwner()))) {
             Object component = /*(MComponent)*/ encloser.getOwner();
             Object in = /*(MInterface)*/ getOwner();
             ModelFacade.setImplementationLocation(resident, component);
@@ -537,7 +543,7 @@ public class FigInterface extends FigNodeModelElement {
         if (cls == null) {
             return;
         }
-        // TODO in future version of GEF call getFigs returning array
+        // TODO: in future version of GEF call getFigs returning array
         int i = new Vector(_operVec.getFigs(null)).indexOf(ft);
         if (i != -1) {
             highlightedFigText = (CompartmentFigText) ft;
@@ -559,7 +565,7 @@ public class FigInterface extends FigNodeModelElement {
 
     protected FigText getPreviousVisibleFeature(FigText ft, int i) {
         FigText ft2 = null;
-        // TODO in future version of GEF call getFigs returning array
+        // TODO: in future version of GEF call getFigs returning array
         Vector v = new Vector(_operVec.getFigs(null));
         if (i < 1 || i >= v.size() || !((FigText) v.elementAt(i)).isDisplayed())
             return null;
@@ -596,7 +602,7 @@ public class FigInterface extends FigNodeModelElement {
             return;
         }
         ActionAddOperation.SINGLETON.actionPerformed(null);
-        // TODO in future version of GEF call getFigs returning array
+        // TODO: in future version of GEF call getFigs returning array
         CompartmentFigText ft =
             (CompartmentFigText) new Vector(fg.getFigs(null)).lastElement();
         if (ft != null) {
@@ -608,7 +614,7 @@ public class FigInterface extends FigNodeModelElement {
 
     protected CompartmentFigText unhighlight() {
         CompartmentFigText ft;
-        // TODO in future version of GEF call getFigs returning array
+        // TODO: in future version of GEF call getFigs returning array
         Vector v = new Vector(_operVec.getFigs(null));
         int i;
         for (i = 1; i < v.size(); i++) {
@@ -672,8 +678,8 @@ public class FigInterface extends FigNodeModelElement {
         // info. "aSize will be used to maintain a running calculation of our
         // size at various points.
 
-        // "extra_each" is the extra height per displayed fig if requested
-        // height is greater than minimal. "height_correction" is the height
+        // "extraEach" is the extra height per displayed fig if requested
+        // height is greater than minimal. "heightCorrection" is the height
         // correction due to rounded division result, will be added to the name
         // compartment
 
@@ -683,8 +689,8 @@ public class FigInterface extends FigNodeModelElement {
         int newW = Math.max(w, aSize.width);
         int newH = h;
 
-        int extra_each = 0;
-        int height_correction = 0;
+        int extraEach = 0;
+        int heightCorrection = 0;
 
         // First compute all nessessary height data. Easy if we want less than
         // the minimum
@@ -699,7 +705,7 @@ public class FigInterface extends FigNodeModelElement {
 
             // Split the extra amongst the number of displayed compartments
 
-            int displayedFigs = 1; //this is for _name
+            int displayedFigs = 1; //this is for getNameFig()
 
             if (_operVec.isDisplayed()) {
                 displayedFigs++;
@@ -708,9 +714,9 @@ public class FigInterface extends FigNodeModelElement {
             // Calculate how much each, plus a correction to put in the name
             // comparment if the result is rounded
 
-            extra_each = (newH - aSize.height) / displayedFigs;
-            height_correction =
-		(newH - aSize.height) - (extra_each * displayedFigs);
+            extraEach = (newH - aSize.height) / displayedFigs;
+            heightCorrection =
+		(newH - aSize.height) - (extraEach * displayedFigs);
         }
 
         // Now resize all sub-figs, including not displayed figs. Start by the
@@ -718,13 +724,13 @@ public class FigInterface extends FigNodeModelElement {
         // pixels hardcoded!). Add in the shared extra, plus in this case the
         // correction.
 
-        int height = _name.getMinimumSize().height;
+        int height = getNameFig().getMinimumSize().height;
 
         if (height < 21) {
             height = 21;
         }
 
-        height += extra_each + height_correction;
+        height += extraEach + heightCorrection;
 
         // Now sort out the stereotype display. If the stereotype is displayed,
         // move the upper boundary of the name compartment up and set new
@@ -737,7 +743,7 @@ public class FigInterface extends FigNodeModelElement {
             currentY += STEREOHEIGHT;
         }
 
-        _name.setBounds(x, currentY, newW, height);
+        getNameFig().setBounds(x, currentY, newW, height);
         _stereo.setBounds(x, y, newW, STEREOHEIGHT + 1);
         _stereoLineBlinder.setBounds(x + 1, y + STEREOHEIGHT, newW - 2, 2);
 
@@ -781,11 +787,12 @@ public class FigInterface extends FigNodeModelElement {
             Collection behs = ModelFacade.getOperations(cls);
             if (behs != null) {
                 Iterator iter = behs.iterator();
-                // TODO in future version of GEF call getFigs returning array
+                // TODO: in future version of GEF call getFigs returning array
                 Vector figs = new Vector(_operVec.getFigs(null));
                 CompartmentFigText oper;
                 while (iter.hasNext()) {
-                    Object behavioralFeature = /*(MBehavioralFeature)*/ iter.next();
+                    Object behavioralFeature =
+			/*(MBehavioralFeature)*/ iter.next();
                     // update the listeners
                     UmlModelEventPump.getPump().removeModelEventListener(this,
 									 behavioralFeature);
@@ -834,7 +841,7 @@ public class FigInterface extends FigNodeModelElement {
             Rectangle rect = getBounds();
             getUpdatedSize(_operVec, xpos, ypos, 0, 0);
             // ouch ugly but that's for a next refactoring
-            // TODO make setBounds, calcBounds and updateBounds consistent
+            // TODO: make setBounds, calcBounds and updateBounds consistent
             setBounds(rect.x, rect.y, rect.width, rect.height);
             damage();
         }

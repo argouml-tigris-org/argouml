@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2003 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -208,10 +208,10 @@ public class FigUseCase extends FigNodeModelElement {
         // use multiline text (a bit odd - how do we enter a multi-line
         // name?).
 
-        _name.setTextFilled(false);
-        _name.setFilled(false);
-        _name.setLineWidth(0);
-        _name.setMultiLine(true);
+        getNameFig().setTextFilled(false);
+        getNameFig().setFilled(false);
+        getNameFig().setLineWidth(0);
+        getNameFig().setMultiLine(true);
 
         // The separator, again with arbitrary bounds for now.
 
@@ -228,8 +228,8 @@ public class FigUseCase extends FigNodeModelElement {
         // empty) are the same as for the name box at this stage.
 
         _epBigPort =
-	    new FigRect(0, 30, _name.getBounds().width, 20, Color.black,
-			Color.white);
+	    new FigRect(0, 30, getNameFig().getBounds().width, 20,
+			Color.black, Color.white);
 
         _epBigPort.setFilled(false);
         _epBigPort.setLineWidth(0);
@@ -260,12 +260,12 @@ public class FigUseCase extends FigNodeModelElement {
         // Space for the name. Centred horizontally, and (since we are minimum
         // size) _MIN_VERT_PADDING from the top.
 
-        Dimension nameSize = _name.getMinimumSize();
+        Dimension nameSize = getNameFig().getMinimumSize();
 
-        _name.setBounds((ellipse.width - nameSize.width) / 2,
-			_MIN_VERT_PADDING,
-			nameSize.width,
-			nameSize.height);
+        getNameFig().setBounds((ellipse.width - nameSize.width) / 2,
+			       _MIN_VERT_PADDING,
+			       nameSize.width,
+			       nameSize.height);
         
         _stereo.setBounds(0, 0, 0, 0);
 
@@ -293,7 +293,7 @@ public class FigUseCase extends FigNodeModelElement {
 
         addFig(_bigPort);
         addFig(_cover);
-        addFig(_name);
+        addFig(getNameFig());
         addFig(_stereo);
         addFig(_epSep);
         addFig(_epVec);
@@ -581,7 +581,7 @@ public class FigUseCase extends FigNodeModelElement {
      */
 
     private Dimension _getTextSize() {
-        Dimension minSize = _name.getMinimumSize();
+        Dimension minSize = getNameFig().getMinimumSize();
 
         // Now allow for the extension points, if they are displayed
 
@@ -695,12 +695,12 @@ public class FigUseCase extends FigNodeModelElement {
 
         // Adjust the alignment of the name.
 
-        Dimension nameSize = _name.getMinimumSize();
+        Dimension nameSize = getNameFig().getMinimumSize();
 
-        _name.setBounds(x + ((newW - nameSize.width) / 2),
-			y + vPadding,
-			nameSize.width,
-			nameSize.height);
+        getNameFig().setBounds(x + ((newW - nameSize.width) / 2),
+			       y + vPadding,
+			       nameSize.width,
+			       nameSize.height);
 
         // Place extension points if they are showing
 
@@ -1411,9 +1411,9 @@ public class FigUseCase extends FigNodeModelElement {
         // italics if it is abstract, otherwise ordinary font.
 
         if (ModelFacade.isAbstract(useCase)) {
-            _name.setFont(ITALIC_LABEL_FONT);
+            getNameFig().setFont(ITALIC_LABEL_FONT);
         } else {
-            _name.setFont(LABEL_FONT);
+            getNameFig().setFont(LABEL_FONT);
         }
         setBounds(oldBounds.x, oldBounds.y, oldBounds.width, oldBounds.height);
 

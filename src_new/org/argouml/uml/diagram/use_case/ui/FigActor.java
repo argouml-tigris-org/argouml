@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2001 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -74,11 +74,11 @@ public class FigActor extends FigNodeModelElement {
         _arms = new FigLine(10, 50, 30, 50, Color.black);
         _leftLeg = new FigLine(20, 60, 15, 75, Color.black);
         _rightLeg = new FigLine(20, 60, 25, 75, Color.black);
-        _name.setBounds(5, 75, 35, 20);
+        getNameFig().setBounds(5, 75, 35, 20);
 
-        _name.setTextFilled(false);
-        _name.setFilled(false);
-        _name.setLineWidth(0);
+        getNameFig().setTextFilled(false);
+        getNameFig().setFilled(false);
+        getNameFig().setLineWidth(0);
         // initialize any other Figs here
 
         // add Figs to the FigNode in back-to-front order
@@ -88,7 +88,7 @@ public class FigActor extends FigNodeModelElement {
         addFig(_arms);
         addFig(_leftLeg);
         addFig(_rightLeg);
-        addFig(_name);
+        addFig(getNameFig());
 
     }
 
@@ -172,7 +172,7 @@ public class FigActor extends FigNodeModelElement {
     }
 
     public Dimension getMinimumSize() {
-        Dimension nameDim = _name.getMinimumSize();
+        Dimension nameDim = getNameFig().getMinimumSize();
         int w = nameDim.width;
         int h = nameDim.height + 65;
         return new Dimension(w, h);
@@ -189,11 +189,11 @@ public class FigActor extends FigNodeModelElement {
         _leftLeg.setLocation(x + middle - _leftLeg.getWidth(), y + h - 35);
         _rightLeg.setLocation(x + middle, y + h - 35);
 
-        Dimension minTextSize = _name.getMinimumSize();
-        _name.setBounds(x + middle - minTextSize.width / 2,
-			y + h - minTextSize.height,
-			minTextSize.width,
-			minTextSize.height);
+        Dimension minTextSize = getNameFig().getMinimumSize();
+        getNameFig().setBounds(x + middle - minTextSize.width / 2,
+			       y + h - minTextSize.height,
+			       minTextSize.width,
+			       minTextSize.height);
 
         updateEdges();
         _x = x;
@@ -228,8 +228,9 @@ public class FigActor extends FigNodeModelElement {
         int MAXPOINTS = 20;
         Point point = null;
         for (int i = 0; i < MAXPOINTS; i++) {
-            point = new Point((int) (cx + Math.cos(2 * Math.PI / MAXPOINTS * i) * radiusx),
-			      (int) (cy + Math.sin(2 * Math.PI / MAXPOINTS * i) * radiusy));
+	    double angle = 2 * Math.PI / MAXPOINTS * i;
+            point = new Point((int) (cx + Math.cos(angle) * radiusx),
+			      (int) (cy + Math.sin(angle) * radiusy));
             ret.add(point);
         }
         return ret;
