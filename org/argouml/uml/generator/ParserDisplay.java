@@ -2023,7 +2023,7 @@ public class ParserDisplay extends Parser {
      *  lines to according actions or transistions.
      *  The user input consists of multiple lines like:
      *      action-label / action-expression
-     *  or the format of a regulat transition - see parseTransition().
+     *  or the format of a regular transition - see parseTransition().
      *  The words "entry", "do" and "exit" are case-independent.
      *  @param  st       The State object.
      *  @param  s        The string to parse.
@@ -2122,7 +2122,7 @@ public class ParserDisplay extends Parser {
     public Object parseTransition(Object trans, String s) {
 	// strip any trailing semi-colons
 	s = s.trim();
-	if (s.length() == 0) return null;
+        if (s.length() > 0) // otherwise an exception in next line
 	if (s.charAt(s.length() - 1) == ';')
 	    s = s.substring(0, s.length() - 2);
 
@@ -2201,10 +2201,7 @@ public class ParserDisplay extends Parser {
                 ;// case 3
 	    } else {
                 // case 4
-                ModelFacade.setTrigger(trans, null); // unhook it
-                // now erase it:
-		ProjectManager.getManager().getCurrentProject()
-							.moveToTrash(evt);
+                UmlFactory.getFactory().delete(evt); // erase it
             }
         }
 
@@ -2254,11 +2251,7 @@ public class ParserDisplay extends Parser {
                 ;// case 3
 	    } else {
                 // case 4
-		ModelFacade.setGuard(trans, null); // unhook it
-		// now erase it:
-		/* TODO: Erase the guard and the expression, or shouldn't we? */
-		/*ProjectManager.getManager().getCurrentProject()
-							.moveToTrash(g);*/
+		UmlFactory.getFactory().delete(g); // erase it
 	    }
 	}
 
@@ -2292,7 +2285,12 @@ public class ParserDisplay extends Parser {
 		    .getDataTypes().createActionExpression(language, actions));
 	    }
 	} else {  // case 3 & 4
-	    ModelFacade.setEffect(trans, null);
+	    if (effect == null) {
+                ;// case 3
+            } else {
+                // case 4
+                UmlFactory.getFactory().delete(effect); // erase it
+            }
 	}
 
 	return trans;
