@@ -30,6 +30,8 @@ import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.UIManager;
 
+import org.apache.log4j.Logger;
+import org.argouml.application.StartCritics;
 import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.UmlHelper;
 import org.argouml.model.uml.foundation.datatypes.DataTypesHelper;
@@ -47,6 +49,8 @@ import org.tigris.gef.util.ResourceLoader;
  */
 public final class ResourceLoaderWrapper {
 
+    private static final Logger LOG = Logger.getLogger(ResourceLoaderWrapper.class);
+    
     private static ImageIcon actionStateIcon =
         ResourceLoader.lookupIconResource("ActionState");
     private static ImageIcon stateIcon =
@@ -322,8 +326,7 @@ public final class ResourceLoaderWrapper {
                 }
                 icon = lookupIconResource(cName);
                 if (icon == null) {
-                    throw new IllegalStateException("Can't find icon for " 
-                                                    + cName);
+                    LOG.warn("Can't find icon for " + cName);
                 } else {
                     synchronized (iconCache) {
                         iconCache.put(value.getClass(), icon);
