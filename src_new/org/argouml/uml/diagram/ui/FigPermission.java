@@ -31,14 +31,30 @@ package org.argouml.uml.diagram.ui;
 import org.tigris.gef.base.Layer;
 
 public class FigPermission extends FigDependency {
+    
+    /**
+     * The constructor.
+     * 
+     */
     public FigPermission() {
         super();
     }
 
+    /**
+     * The constructor.
+     * 
+     * @param edge the edge
+     */
     public FigPermission(Object edge) {
         super(edge);
     }
 
+    /**
+     * The constructor.
+     * 
+     * @param edg the edgee
+     * @param lay the layer
+     */
     public FigPermission(Object edge, Layer lay) {
         super(edge, lay);
     }

@@ -33,28 +33,50 @@ import org.tigris.gef.base.Layer;
 
 import ru.novosoft.uml.MElementEvent;
 
+/**
+ * This class represents a Fig for a Usage.
+ *
+ */
 public class FigUsage extends FigDependency {
 
+    /**
+     * The constructor.
+     * 
+     */
     public FigUsage() {
         super();
     }
 
+    /**
+     * The constructor.
+     * 
+     * @param edge the owning UML element
+     */
     public FigUsage(Object edge) {
         super(edge);
     }
 
+    /**
+     * The constructor.
+     * 
+     * @param edge the owning UML element
+     * @param lay the layer
+     */
     public FigUsage(Object edge, Layer lay) {
         super(edge, lay);
     }
         
+    /**
+     * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#modelChanged(ru.novosoft.uml.MElementEvent)
+     */
     protected void modelChanged(MElementEvent e) {
         super.modelChanged(e);
         String stereoTypeStr = getStereotypeFig().getText();
         
         if (stereoTypeStr == null || "".equals(stereoTypeStr)) {
             getStereotypeFig().setText(
-                NotationHelper.getLeftGuillemot() + "use" +
-                NotationHelper.getRightGuillemot());
+                NotationHelper.getLeftGuillemot() + "use" 
+                + NotationHelper.getRightGuillemot());
         }
     } 
 

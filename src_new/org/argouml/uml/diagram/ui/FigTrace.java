@@ -36,6 +36,10 @@ public class FigTrace extends FigEdgeLine {
     ////////////////////////////////////////////////////////////////
     // constructors
 
+    /**
+     * The constructor.
+     * 
+     */
     public FigTrace() {
 	_fig.setLineColor(Color.red);
 	ArrowHeadTriangle endArrow = new ArrowHeadTriangle();
@@ -44,6 +48,11 @@ public class FigTrace extends FigEdgeLine {
 	setBetweenNearestPoints(true);
     }
 
+    /**
+     * The constructor.
+     * 
+     * @param edge the owning UML element
+     */
     public FigTrace(Object edge) {
 	this();
 	setOwner(edge);

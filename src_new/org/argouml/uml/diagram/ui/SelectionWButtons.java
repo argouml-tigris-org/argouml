@@ -110,60 +110,60 @@ public abstract class SelectionWButtons extends SelectionNodeClarifiers {
     // interaction utility methods
 
     /**
-     * @param x
-     * @param y
-     * @param w
-     * @param h
-     * @param r
-     * @return
+     * @param x x of the selection button icon
+     * @param y y of the selection button icon
+     * @param w width of the selection button icon
+     * @param h height of the selection button icon
+     * @param r outer rectangle of the fig 
+     * @return true if the selection button above the fig was clicked
      */
     public boolean hitAbove(int x, int y, int w, int h, Rectangle r) {
         return intersectsRect(r, x - w / 2, y - h - MARGIN, w, h + MARGIN);
     }
 
     /**
-     * @param x
-     * @param y
-     * @param w
-     * @param h
-     * @param r
-     * @return
+     * @param x x  of the selection button icon
+     * @param y y of the selection button icon
+     * @param w width of the selection button icon
+     * @param h height of the selection button icon
+     * @param r outer rectangle of the fig
+     * @return true if the selection button below the fig was clicked
      */
     public boolean hitBelow(int x, int y, int w, int h, Rectangle r) {
         return intersectsRect(r, x - w / 2, y, w, h + MARGIN);
     }
 
     /**
-     * @param x
-     * @param y
-     * @param w
-     * @param h
-     * @param r
-     * @return
+     * @param x x of the selection button icon
+     * @param y y of the selection button icon
+     * @param w width of the selection button icon
+     * @param h height of the selection button icon
+     * @param r outer rectangle of the fig
+     * @return true if the selection button left from the fig was clicked
      */
     public boolean hitLeft(int x, int y, int w, int h, Rectangle r) {
         return intersectsRect(r, x, y - h / 2, w + MARGIN, h);
     }
 
     /**
-     * @param x
-     * @param y
-     * @param w
-     * @param h
-     * @param r
-     * @return
+     * @param x x of the selection button icon
+     * @param y y of the selection button icon
+     * @param w width of the selection button icon
+     * @param h height of the selection button icon
+     * @param r outer rectangle of the fig
+     * @return true if the selection button right from the fig was clicked
      */
     public boolean hitRight(int x, int y, int w, int h, Rectangle r) {
         return intersectsRect(r, x - w - MARGIN, y - h / 2, w + MARGIN, h);
     }
 
     /**
-     * @param r
-     * @param x
-     * @param y
-     * @param w
-     * @param h
-     * @return
+     * @param x x of rectangle 2
+     * @param y y of rectangle 2
+     * @param w width of rectangle 2
+     * @param h height of rectangle 2
+     * @param r rectangle 1
+     * @return true if rectangle 1 intersects with the rectangle 2
      */
     public boolean intersectsRect(Rectangle r, int x, int y, int w, int h) {
         return !(
@@ -205,11 +205,11 @@ public abstract class SelectionWButtons extends SelectionNodeClarifiers {
     public abstract void paintButtons(Graphics g);
 
     /**
-     * @param i
-     * @param g
-     * @param x
-     * @param y
-     * @param hi
+     * @param i the icon to be painted
+     * @param g the graphics to draw on
+     * @param x x for the icon
+     * @param y y for the icon
+     * @param hi the button identifier
      */
     public void paintButtonAbove(Icon i, Graphics g, int x, int y, int hi) {
         paintButton(
@@ -221,33 +221,33 @@ public abstract class SelectionWButtons extends SelectionNodeClarifiers {
     }
 
     /**
-     * @param i
-     * @param g
-     * @param x
-     * @param y
-     * @param hi
+     * @param i the icon to be painted
+     * @param g the graphics to draw on
+     * @param x x for the icon
+     * @param y y for the icon
+     * @param hi the button identifier
      */
     public void paintButtonBelow(Icon i, Graphics g, int x, int y, int hi) {
         paintButton(i, g, x - i.getIconWidth() / 2, y + MARGIN, hi);
     }
 
     /**
-     * @param i
-     * @param g
-     * @param x
-     * @param y
-     * @param hi
+     * @param i the icon to be painted
+     * @param g the graphics to draw on
+     * @param x x for the icon
+     * @param y y for the icon
+     * @param hi the button identifier
      */
     public void paintButtonLeft(Icon i, Graphics g, int x, int y, int hi) {
         paintButton(i, g, x + MARGIN, y - i.getIconHeight() / 2, hi);
     }
 
     /**
-     * @param i
-     * @param g
-     * @param x
-     * @param y
-     * @param hi
+     * @param i the icon to be painted
+     * @param g the graphics to draw on
+     * @param x x for the icon
+     * @param y y for the icon
+     * @param hi the button identifier
      */
     public void paintButtonRight(Icon i, Graphics g, int x, int y, int hi) {
         paintButton(
@@ -259,11 +259,11 @@ public abstract class SelectionWButtons extends SelectionNodeClarifiers {
     }
 
     /**
-     * @param i
-     * @param g
-     * @param x
-     * @param y
-     * @param hi
+     * @param i the icon to be painted
+     * @param g the graphics to draw on
+     * @param x x for the icon
+     * @param y y for the icon
+     * @param hi the button identifier
      */
     public void paintButton(Icon i, Graphics g, int x, int y, int hi) {
         int w = i.getIconWidth() + 4;
@@ -311,7 +311,7 @@ public abstract class SelectionWButtons extends SelectionNodeClarifiers {
     }
 
     /**
-     * @param buttonCode
+     * @param buttonCode the button identifier
      */
     public void buttonClicked(int buttonCode) {
         if (buttonCode >= 10)
@@ -546,8 +546,9 @@ public abstract class SelectionWButtons extends SelectionNodeClarifiers {
     /**
      * Implementors should return a new node for adding via the buttons.
      *
-     * @param buttonCode
-     * @return
+     * @param buttonCode the code (identifier) for the selection button 
+     *                   that was hit
+     * @return a newly created UML element
      */
     protected abstract Object getNewNode(int buttonCode);
     
@@ -556,7 +557,7 @@ public abstract class SelectionWButtons extends SelectionNodeClarifiers {
      * a quickbutton above the _content fig. This method returns the
      * edge (modelelement) that should be drawn in the case such a
      * quickbutton was pressed.
-     * @param gm
+     * @param gm the graphmodel
      * @param newNode The node (modelelement) created by pressing the
      * quickbutton
      * @return Object The new edge
@@ -570,7 +571,7 @@ public abstract class SelectionWButtons extends SelectionNodeClarifiers {
      * a quickbutton at the left of the _content fig. This method
      * returns the edge (modelelement) that should be drawn in the
      * case such a quickbutton was pressed.
-     * @param gm
+     * @param gm the graphmodel
      * @param newNode The node (modelelement) created by pressing the
      * quickbutton
      * @return Object The new edge
@@ -584,7 +585,7 @@ public abstract class SelectionWButtons extends SelectionNodeClarifiers {
      * a quickbutton at the right of the _content fig. This method
      * returns the edge (modelelement) that should be drawn in the
      * case such a quickbutton was pressed.
-     * @param gm
+     * @param gm the graphmodel
      * @param newNode The node (modelelement) created by pressing the
      * quickbutton
      * @return Object The new edge
@@ -598,7 +599,7 @@ public abstract class SelectionWButtons extends SelectionNodeClarifiers {
      * a quickbutton under the _content fig. This method returns the
      * edge (modelelement) that should be drawn in the case such a
      * quickbutton was pressed.
-     * @param gm
+     * @param gm the graphmodel
      * @param newNode The node (modelelement) created by pressing the
      * quickbutton
      * @return Object The new edge
@@ -612,7 +613,7 @@ public abstract class SelectionWButtons extends SelectionNodeClarifiers {
      * a quickbutton for selfassociation. This method returns the edge
      * (modelelement) that should be drawn in the case such a
      * quickbutton was pressed.
-     * @param gm
+     * @param gm the graphmodel
      * @return Object The new edge
      */
     protected Object createEdgeToSelf(MutableGraphModel gm) {
@@ -634,14 +635,14 @@ public abstract class SelectionWButtons extends SelectionNodeClarifiers {
     }
 
     /**
-     * @param pressed The _pressedButton to set.
+     * @param pressed the identifier for the pressed Button
      */
     protected void setPressedButton(int pressed) {
         this.pressedButton = pressed;
     }
 
     /**
-     * @return Returns the _pressedButton.
+     * @return Returns the identifier for the pressed Button.
      */
     protected int getPressedButton() {
         return pressedButton;

@@ -36,6 +36,10 @@ import org.argouml.uml.ui.UMLTextField;
 import org.argouml.uml.ui.UMLTextProperty;
 import org.argouml.util.ConfigLoader;
 
+/**
+ * This class represents the properties panel for a Diagram.
+ *
+ */
 public class PropPanelDiagram extends PropPanel {
 
     /**
@@ -62,6 +66,9 @@ public class PropPanelDiagram extends PropPanel {
         this("Diagram");
     }
 
+    /**
+     * @see org.argouml.uml.ui.PropPanel#removeElement()
+     */
     public void removeElement() {
         Object target = getTarget();
         if (target instanceof ArgoDiagram) {

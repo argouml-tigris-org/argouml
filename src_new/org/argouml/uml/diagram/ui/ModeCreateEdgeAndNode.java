@@ -69,48 +69,51 @@ import org.tigris.gef.presentation.Handle;
  *  and connecting it to other model elements. */
 
 public class ModeCreateEdgeAndNode extends ModeCreate {
-    private static Logger LOG =
+    private static final Logger LOG =
         Logger.getLogger(ModeCreateEdgeAndNode.class);
     ////////////////////////////////////////////////////////////////
     // static variables
-    public static int Drags_To_Existing = 0;
-    public static int Drags_To_New = 0;
+    private static int dragsToExisting = 0;
+    private static int dragsToNew = 0;
 
     ////////////////////////////////////////////////////////////////
     // instance variables
 
     /** The NetPort where the arc is paintn from */
-    private Object _startPort;
+    private Object startPort;
 
     /** The Fig that presents the starting NetPort */
-    private Fig _startPortFig;
+    private Fig startPortFig;
 
     /** The FigNode on the NetNode that owns the start port */
-    private FigNode _sourceFigNode;
+    private FigNode sourceFigNode;
 
     /** The new NetEdge that is being created */
-    private Object _newEdge;
+    private Object newEdge;
 
     /** False if drawing from source and destination.  True if drawing
      *  from destination to source. */
-    private boolean _destToSource = false;
+    private boolean destToSource = false;
 
     /** The number of points added so far. */
     //protected int _npoints = 0;
-    protected Handle _handle = new Handle(-1);
+    private Handle handle = new Handle(-1);
 
-    protected FigNode _fn;
+    private FigNode fn;
 
-    protected FigEdge _fe;
+    private FigEdge fe;
 
-    protected boolean _postProcessEdge = false;
+    private boolean postProcessEdge = false;
 
-    ////////////////////////////////////////////////////////////////
-    // constructor
 
+    /**
+     * The constructor.
+     * 
+     */
     public ModeCreateEdgeAndNode() {
         super();
     }
+    
     public ModeCreateEdgeAndNode(
 				 Editor ed,
 				 Class edgeClass,
@@ -119,8 +122,8 @@ public class ModeCreateEdgeAndNode extends ModeCreate {
         super(ed);
         setArg("edgeClass", edgeClass);
         setArg("nodeClass", nodeClass);
-        _postProcessEdge = post;
-        LOG.debug("postprocessing: " + _postProcessEdge);
+        postProcessEdge = post;
+        LOG.debug("postprocessing: " + postProcessEdge);
     }
 
     ////////////////////////////////////////////////////////////////
@@ -128,17 +131,20 @@ public class ModeCreateEdgeAndNode extends ModeCreate {
 
     public void setup(FigNode fn, Object port, int x, int y, boolean reverse) {
         start();
-        _sourceFigNode = fn;
-        _startPortFig = fn.getPortFig(port);
-        _startPort = port;
+        sourceFigNode = fn;
+        startPortFig = fn.getPortFig(port);
+        startPort = port;
         _newItem = createNewItem(null, x, y);
-        _destToSource = reverse;
+        destToSource = reverse;
         setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
     }
 
     ////////////////////////////////////////////////////////////////
     // Mode API
 
+    /**
+     * @see org.tigris.gef.base.FigModifyingMode#instructions()
+     */
     public String instructions() {
         return "Drag to define an edge (and a new node)";
     }
@@ -146,9 +152,14 @@ public class ModeCreateEdgeAndNode extends ModeCreate {
     ////////////////////////////////////////////////////////////////
     // ModeCreate API
 
-    /** Create the new item that will be drawn. In this case I would
-     *  rather create the FigEdge when I am done. Here I just
-     *  create a rubberband FigLine to show during dragging. */
+    /** 
+     * Create the new item that will be drawn. In this case I would
+     * rather create the FigEdge when I am done. Here I just
+     * create a rubberband FigLine to show during dragging.
+     * 
+     * @see org.tigris.gef.base.ModeCreate#createNewItem(
+     * java.awt.event.MouseEvent, int, int)
+     */
     public Fig createNewItem(MouseEvent me, int snapX, int snapY) {
         FigPoly p = new FigPoly(snapX, snapY);
         p.setLineColor(Globals.getPrefs().getRubberbandColor());
@@ -158,32 +169,43 @@ public class ModeCreateEdgeAndNode extends ModeCreate {
         return p;
     }
 
+    /**
+     * @see org.tigris.gef.base.Mode#done()
+     */
     public void done() {
         super.done();
         if (_newItem != null)
             editor.damaged(_newItem);
         _newItem = null; // use this as the fig for the new FigEdge
-        _sourceFigNode = null;
-        _startPort = null;
-        _startPortFig = null;
+        sourceFigNode = null;
+        startPort = null;
+        startPortFig = null;
     }
 
     ////////////////////////////////////////////////////////////////
     // mouse event handlers
 
-    /** On mousePressed determine what port the user is dragging from.
-     *  The mousePressed event is sent via ModeSelect. */
+    /** 
+     * On mousePressed determine what port the user is dragging from.
+     * The mousePressed event is sent via ModeSelect.
+     * 
+     * @see java.awt.event.MouseListener#mousePressed(java.awt.event.MouseEvent)
+     */
     public void mousePressed(MouseEvent me) {
     }
 
-    /** On mouseReleased, find the destination port, ask the GraphModel
-     *  to connect the two ports.  If that connection is allowed, then
-     *  construct a new FigEdge and add it to the Layer and send it to
-     *  the back. */
+    /** 
+     * On mouseReleased, find the destination port, ask the GraphModel
+     * to connect the two ports.  If that connection is allowed, then
+     * construct a new FigEdge and add it to the Layer and send it to
+     * the back.
+     * 
+     * @see java.awt.event.MouseListener#mouseReleased(java.awt.event.MouseEvent)
+     */
     public void mouseReleased(MouseEvent me) {
         if (me.isConsumed())
             return;
-        if (_sourceFigNode == null) {
+        if (sourceFigNode == null) {
             done();
             return;
         }
@@ -204,7 +226,7 @@ public class ModeCreateEdgeAndNode extends ModeCreate {
 
         if (f == null) {
             LOG.debug("make new node");
-            Drags_To_New++;
+            dragsToNew++;
             Object newNode = null;
             Class nodeClass = (Class) getArg("nodeClass");
             try {
@@ -224,18 +246,18 @@ public class ModeCreateEdgeAndNode extends ModeCreate {
             if (mgm.canAddNode(newNode)) {
                 GraphNodeRenderer renderer = editor.getGraphNodeRenderer();
                 Layer lay = editor.getLayerManager().getActiveLayer();
-                _fn = renderer.getFigNodeFor(gm, lay, newNode);
-                editor.add(_fn);
+                fn = renderer.getFigNodeFor(gm, lay, newNode);
+                editor.add(fn);
                 mgm.addNode(newNode);
                 Fig encloser = null;
-                Rectangle bbox = _fn.getBounds();
+                Rectangle bbox = fn.getBounds();
                 Collection otherFigs = lay.getContents(null);
                 Iterator others = otherFigs.iterator();
                 while (others.hasNext()) {
                     Fig otherFig = (Fig) others.next();
                     if (!(otherFig instanceof FigNode))
                         continue;
-                    if (otherFig.equals(_fn))
+                    if (otherFig.equals(fn))
                         continue;
                     Rectangle trap = otherFig.getTrapRect();
                     if (trap != null
@@ -245,16 +267,16 @@ public class ModeCreateEdgeAndNode extends ModeCreate {
 					     bbox.y + bbox.height)))
                         encloser = otherFig;
                 }
-                _fn.setEnclosingFig(encloser);
+                fn.setEnclosingFig(encloser);
                 if (newNode instanceof GraphNodeHooks)
 		    ((GraphNodeHooks) newNode).postPlacement(editor);
-                editor.getSelectionManager().select(_fn);
+                editor.getSelectionManager().select(fn);
                 nodeWasCreated = true;
-                f = _fn;
+                f = fn;
                 f.setLocation(x - f.getWidth() / 2, y - f.getHeight() / 2);
             }
         } else {
-            Drags_To_Existing++;
+            dragsToExisting++;
         }
 
         if (f instanceof FigNode) {
@@ -273,65 +295,65 @@ public class ModeCreateEdgeAndNode extends ModeCreate {
             editor.damaged(p);
             p._isComplete = true;
 
-            if (foundPort != null && foundPort != _startPort) {
+            if (foundPort != null && foundPort != startPort) {
                 Fig destPortFig = destFigNode.getPortFig(foundPort);
                 Class edgeClass = (Class) getArg("edgeClass");
-                if (_destToSource) {
-                    Object temp = _startPort;
-                    _startPort = foundPort;
+                if (destToSource) {
+                    Object temp = startPort;
+                    startPort = foundPort;
                     foundPort = temp;
                     FigNode tempFN = destFigNode;
-                    destFigNode = _sourceFigNode;
-                    _sourceFigNode = tempFN;
-                    Fig tempFigPort = _startPortFig;
-                    _startPortFig = destPortFig;
+                    destFigNode = sourceFigNode;
+                    sourceFigNode = tempFN;
+                    Fig tempFigPort = startPortFig;
+                    startPortFig = destPortFig;
                     destPortFig = tempFigPort;
                 }
                 if (edgeClass != null) {
-                    _newEdge = mgm.connect(_startPort, foundPort, edgeClass);
+                    newEdge = mgm.connect(startPort, foundPort, edgeClass);
                 } else
-                    _newEdge = mgm.connect(_startPort, foundPort);
+                    newEdge = mgm.connect(startPort, foundPort);
 
                 // Calling connect() will add the edge to the GraphModel and
                 // any LayerPersectives on that GraphModel will get a
                 // edgeAdded event and will add an appropriate FigEdge
                 // (determined by the GraphEdgeRenderer).
 
-                if (_newEdge != null) {
-                    if (_postProcessEdge) {
+                if (newEdge != null) {
+                    if (postProcessEdge) {
                         LOG.debug("postprocess edge.");
                         postProcessEdge();
                     }
                     ce.damaged(_newItem);
-                    _sourceFigNode.damage();
+                    sourceFigNode.damage();
                     destFigNode.damage();
 
                     LayerManager lm = ce.getLayerManager();
-                    _fe =
-                        (FigEdge) lm.getActiveLayer().presentationFor(_newEdge);
+                    fe =
+                        (FigEdge) lm.getActiveLayer().presentationFor(newEdge);
                     _newItem.setLineColor(Color.black);
-                    _fe.setLineColor(Color.black);
-                    _fe.setFig(_newItem);
-                    _fe.setSourcePortFig(_startPortFig);
-                    _fe.setSourceFigNode(_sourceFigNode);
-                    _fe.setDestPortFig(destPortFig);
-                    _fe.setDestFigNode(destFigNode);
-                    _fe.setSourcePortFig(_startPortFig);
-                    _fe.setSourceFigNode(_sourceFigNode);
-                    _fe.setDestPortFig(destPortFig);
-                    _fe.setDestFigNode(destFigNode);
-                    if (_fe != null && !nodeWasCreated)
-                        ce.getSelectionManager().select(_fe);
+                    fe.setLineColor(Color.black);
+                    fe.setFig(_newItem);
+                    fe.setSourcePortFig(startPortFig);
+                    fe.setSourceFigNode(sourceFigNode);
+                    fe.setDestPortFig(destPortFig);
+                    fe.setDestFigNode(destFigNode);
+                    fe.setSourcePortFig(startPortFig);
+                    fe.setSourceFigNode(sourceFigNode);
+                    fe.setDestPortFig(destPortFig);
+                    fe.setDestFigNode(destFigNode);
+                    if (fe != null && !nodeWasCreated)
+                        ce.getSelectionManager().select(fe);
                     done();
                     //me.consume();
                     _newItem = null;
 
-                    if (_fe instanceof MouseListener)
-			((MouseListener) _fe).mouseReleased(me);
+                    if (fe instanceof MouseListener)
+			((MouseListener) fe).mouseReleased(me);
 
                     // set the new edge in place
-                    if (_sourceFigNode != null)
-                        _sourceFigNode.updateEdges();
+                    if (sourceFigNode != null)
+                        sourceFigNode.updateEdges();
                     if (destFigNode != null)
                         destFigNode.updateEdges();
 
@@ -342,17 +364,23 @@ public class ModeCreateEdgeAndNode extends ModeCreate {
                 LOG.warn("in dest node but no port");
         }
 
-        _sourceFigNode.damage();
+        sourceFigNode.damage();
         ce.damaged(_newItem);
         _newItem = null;
         done();
         //me.consume();
     }
 
+    /**
+     * @see java.awt.event.MouseMotionListener#mouseMoved(java.awt.event.MouseEvent)
+     */
     public void mouseMoved(MouseEvent me) {
         mouseDragged(me);
     }
 
+    /**
+     * @see java.awt.event.MouseMotionListener#mouseDragged(java.awt.event.MouseEvent)
+     */
     public void mouseDragged(MouseEvent me) {
         if (me.isConsumed())
             return;
@@ -366,8 +394,8 @@ public class ModeCreateEdgeAndNode extends ModeCreate {
         editor.damaged(_newItem); // startTrans?
         Point snapPt = new Point(x, y);
         editor.snap(snapPt);
-        _handle.index = p.getNumPoints() - 1;
-        p.moveVertex(_handle, snapPt.x, snapPt.y, true);
+        handle.index = p.getNumPoints() - 1;
+        p.moveVertex(handle, snapPt.x, snapPt.y, true);
         editor.damaged(_newItem); // endTrans?
         me.consume();
     }
@@ -375,6 +403,9 @@ public class ModeCreateEdgeAndNode extends ModeCreate {
     ////////////////////////////////////////////////////////////////
     // key events
 
+    /**
+     * @see java.awt.event.KeyListener#keyTyped(java.awt.event.KeyEvent)
+     */
     public void keyTyped(KeyEvent ke) {
         if (ke.getKeyChar() == '') { // escape
             done();
@@ -385,10 +416,10 @@ public class ModeCreateEdgeAndNode extends ModeCreate {
     ////////////////////////////////////////////////////////////////
     // internal methods
 
-    public void postProcessEdge() {
-        LOG.debug("postprocessing " + _newEdge);
-        if (ModelFacade.isAAssociation(_newEdge)) {
-            Collection conns = ModelFacade.getConnections(_newEdge);
+    private void postProcessEdge() {
+        LOG.debug("postprocessing " + newEdge);
+        if (ModelFacade.isAAssociation(newEdge)) {
+            Collection conns = ModelFacade.getConnections(newEdge);
             Iterator iter = conns.iterator();
             Object associationEnd0 = iter.next();
             ModelFacade.setAggregation(associationEnd0,

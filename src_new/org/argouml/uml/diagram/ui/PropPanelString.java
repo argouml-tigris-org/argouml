@@ -45,13 +45,14 @@ public class PropPanelString
 {
     ////////////////////////////////////////////////////////////////
     // instance vars
-    FigText _target;
-    JLabel _nameLabel = new JLabel("Text: ");
-    JTextField _nameField = new JTextField();
+    private FigText target;
+    private JLabel nameLabel = new JLabel("Text: ");
+    private JTextField nameField = new JTextField();
 
-    ////////////////////////////////////////////////////////////////
-    // constructors
-
+    /**
+     * The constructor.
+     * 
+     */
     public PropPanelString() {
 	super("String");
 	GridBagLayout gb = new GridBagLayout();
@@ -64,19 +65,19 @@ public class PropPanelString
 	c.gridx = 0;
 	c.gridwidth = 1;
 	c.gridy = 0;
-	gb.setConstraints(_nameLabel, c);
-	add(_nameLabel);
+	gb.setConstraints(nameLabel, c);
+	add(nameLabel);
 
 	c.weightx = 1.0;
 	c.gridx = 1;
 	c.gridwidth = GridBagConstraints.REMAINDER;
 	c.gridheight = GridBagConstraints.REMAINDER;
 	c.gridy = 0;
-	gb.setConstraints(_nameField, c);
-	add(_nameField);
+	gb.setConstraints(nameField, c);
+	add(nameField);
 
-	_nameField.getDocument().addDocumentListener(this);
-	_nameField.setEditable(true);
+	nameField.getDocument().addDocumentListener(this);
+	nameField.setEditable(true);
 	// TODO: set font?
 
     }
@@ -84,20 +85,32 @@ public class PropPanelString
     ////////////////////////////////////////////////////////////////
     // accessors
 
+    /**
+     * @see org.argouml.ui.TabTarget#setTarget(java.lang.Object)
+     */
     public void setTarget(Object t) {
 	if (t instanceof FigText) {
-	    _target = (FigText) t;
+	    target = (FigText) t;
 	    // to circumvent to much registred listeners
-	    _target.removePropertyChangeListener(this);
-	    _target.addPropertyChangeListener(this);
+	    target.removePropertyChangeListener(this);
+	    target.addPropertyChangeListener(this);
 	}
    
     }
 
-    public Object getTarget() { return _target; }
+    /**
+     * @see org.argouml.ui.TabTarget#getTarget()
+     */
+    public Object getTarget() { return target; }
 
-    public void refresh() { setTarget(_target); }
+    /**
+     * @see org.argouml.ui.TabTarget#refresh()
+     */
+    public void refresh() { setTarget(target); }
 
+    /**
+     * @see org.argouml.ui.TabTarget#shouldBeEnabled(java.lang.Object)
+     */
     public boolean shouldBeEnabled(Object target) { return false; }
 
 
@@ -107,15 +120,24 @@ public class PropPanelString
     ////////////////////////////////////////////////////////////////
     // event handling
 
+    /**
+     * @see javax.swing.event.DocumentListener#insertUpdate(javax.swing.event.DocumentEvent)
+     */
     public void insertUpdate(DocumentEvent e) {
-	if (e.getDocument() == _nameField.getDocument() && _target != null) {
-	    _target.setText(_nameField.getText());
-	    _target.damage();
+	if (e.getDocument() == nameField.getDocument() && target != null) {
+	    target.setText(nameField.getText());
+	    target.damage();
 	}
     }
 
+    /**
+     * @see javax.swing.event.DocumentListener#removeUpdate(javax.swing.event.DocumentEvent)
+     */
     public void removeUpdate(DocumentEvent e) { insertUpdate(e); }
 
+    /**
+     * @see javax.swing.event.DocumentListener#changedUpdate(javax.swing.event.DocumentEvent)
+     */
     public void changedUpdate(DocumentEvent e) {
     }
 
@@ -128,35 +150,32 @@ public class PropPanelString
 	    && evt.getNewValue().equals(Boolean.FALSE))
 	{
 	    // ending editing
-	    _nameField.setText(_target.getText());
+	    nameField.setText(target.getText());
 	}
 			
     }
 
-    /* (non-Javadoc)
-     * @see
-     * org.argouml.ui.targetmanager.TargetListener#targetAdded(org.argouml.ui.targetmanager.TargetEvent)
+    /**
+     * @see org.argouml.ui.targetmanager.TargetListener#targetAdded(org.argouml.ui.targetmanager.TargetEvent)
      */
     public void targetAdded(TargetEvent e) {
-        // TODO Auto-generated method stub
+        // TODO: Auto-generated method stub
 
     }
 
-    /* (non-Javadoc)
-     * @see
-     * org.argouml.ui.targetmanager.TargetListener#targetRemoved(org.argouml.ui.targetmanager.TargetEvent)
+    /**
+     * @see org.argouml.ui.targetmanager.TargetListener#targetRemoved(org.argouml.ui.targetmanager.TargetEvent)
      */
     public void targetRemoved(TargetEvent e) {
-        // TODO Auto-generated method stub
+        // TODO: Auto-generated method stub
 
     }
 
-    /* (non-Javadoc)
-     * @see
-     * org.argouml.ui.targetmanager.TargetListener#targetSet(org.argouml.ui.targetmanager.TargetEvent)
+    /**
+     * @see org.argouml.ui.targetmanager.TargetListener#targetSet(org.argouml.ui.targetmanager.TargetEvent)
      */
     public void targetSet(TargetEvent e) {
-        // TODO Auto-generated method stub
+        // TODO: Auto-generated method stub
 
     }
 

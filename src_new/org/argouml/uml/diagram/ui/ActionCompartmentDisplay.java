@@ -43,16 +43,15 @@ import java.util.*;
 
 
 /**
- * <p>A class to implement the actions involved in hiding and showing
- *   compartments on interfaces, classes and use cases.</p>
+ * A class to implement the actions involved in hiding and showing
+ * compartments on interfaces, classes and use cases.<p>
  *
- * <p>This implementation extended to handle compartments for extension points
- *   on use cases.</p>
+ * This implementation extended to handle compartments for extension points
+ * on use cases.<p>
  *
- * <p>The class declares a number of static instances, each with an
- *   actionPerformed method that performs the required action.</p>
+ * The class declares a number of static instances, each with an
+ * actionPerformed method that performs the required action.
  */
-
 public class ActionCompartmentDisplay extends UMLAction {
 
 
@@ -82,23 +81,22 @@ public class ActionCompartmentDisplay extends UMLAction {
     ///////////////////////////////////////////////////////////////////////////
 
     /**
-     * <p>Static instance to show the attribute compartment of a class.</p>
+     * Static instance to show the attribute compartment of a class.
      */
     public static UMLAction ShowAttrCompartment =
         new ActionCompartmentDisplay(true, "action.show-attribute-compartment");
 
 
     /**
-     * <p>Static instance to hide the attribute compartment of a class.</p>
+     * Static instance to hide the attribute compartment of a class.
      */
-
     public static UMLAction HideAttrCompartment =
         new ActionCompartmentDisplay(false, 
                 "action.hide-attribute-compartment");
 
 
     /**
-     * <p>Static instance to show the operation compartment of a class.</p>
+     * Static instance to show the operation compartment of a class.
      */
 
     public static UMLAction ShowOperCompartment =
@@ -106,46 +104,41 @@ public class ActionCompartmentDisplay extends UMLAction {
 
 
     /**
-     * <p>Static instance to hide the operation compartment of a class.</p>
+     * Static instance to hide the operation compartment of a class.
      */
-
     public static UMLAction HideOperCompartment =
         new ActionCompartmentDisplay(false, 
 				     "action.hide-operation-compartment");
 
 
     /**
-     * <p>Static instance to show the extension point compartment of a use
-     *   case.</p>
+     * Static instance to show the extension point compartment of a use
+     * case.
      */
-
     public static UMLAction ShowExtPointCompartment =
         new ActionCompartmentDisplay(true,
                                      "action.show-extension-point-compartment");
 
 
     /**
-     * <p>Static instance to hide the extension point compartment of a use
-     *   case.</p>
+     * Static instance to hide the extension point compartment of a use
+     *   case.
      */
-
     public static UMLAction HideExtPointCompartment =
         new ActionCompartmentDisplay(false,
                                      "action.hide-extension-point-compartment");
 
 
     /**
-     * <p>Static instance to show both compartments of a class.</p>
+     * Static instance to show both compartments of a class.
      */
-
     public static UMLAction ShowAllCompartments =
         new ActionCompartmentDisplay(true, "action.show-all-compartments");
 
 
     /**
-     * <p>Static instance to hide both compartments of a class.</p>
+     * Static instance to hide both compartments of a class.
      */
-
     public static UMLAction HideAllCompartments =
         new ActionCompartmentDisplay(false, "action.hide-all-compartments");
 
@@ -157,23 +150,20 @@ public class ActionCompartmentDisplay extends UMLAction {
     ///////////////////////////////////////////////////////////////////////////
 
     /**
-     * <p>Constructor for a new instance. Can only be called by this class or
-     * its children, since used to create static instances only.</p>
+     * Constructor for a new instance. Can only be called by this class or
+     * its children, since used to create static instances only.
      *
      * @param d  <code>true</code> if the compartment is to be shown,
      *           <code>false</code> if it is to be hidden.
      *
      * @param c  The text to be displayed for this action.
      */
-
     protected ActionCompartmentDisplay(boolean d, String c) {
 
         // Invoke the parent constructor
-
 	super(c, NO_ICON);
 
         // Save copies of the parameters
-
 	display = d;
 	compartment = c;
     }
@@ -197,7 +187,6 @@ public class ActionCompartmentDisplay extends UMLAction {
      *
      * @param ae  The event that triggered us.
      */
-
     public void actionPerformed(ActionEvent ae) {
 
         // Only do anything if we have a single item selected (surely this

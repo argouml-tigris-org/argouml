@@ -47,49 +47,60 @@ public class DiagramInfo extends JComponent {
     ////////////////////////////////////////////////////////////////
     // instance variables
 
-    protected Diagram _diagram = null;
-    private JLabel _name = null;
+    private Diagram diagram = null;
+    private JLabel name = null;
 
     ////////////////////////////////////////////////////////////////
     // constructor
 
+    /**
+     * The constructor.
+     * 
+     * @param d the diagram
+     */
     public DiagramInfo(Diagram d) {
-	_diagram = d;
+	diagram = d;
 	//setBorder(new EtchedBorder());
     }
 
+    /**
+     * @return the diagram info
+     */
     public JComponent getJComponent() {
-	_name = new JLabel("");
+	name = new JLabel("");
 	setLayout(new BorderLayout());
-	_name.setFont(LookAndFeelMgr.getInstance().getSmallFont());
-	add(_name, BorderLayout.CENTER);
+	name.setFont(LookAndFeelMgr.getInstance().getSmallFont());
+	add(name, BorderLayout.CENTER);
 	updateName();
 	return this;
     }
 
     ////////////////////////////////////////////////////////////////
     // updates
+    /**
+     * the name of the diagram
+     */
     public void updateName() {
-	if (_name == null)
+	if (name == null)
 	    return;
 
 	String type = "Diagram";
-	if (_diagram instanceof UMLClassDiagram)
+	if (diagram instanceof UMLClassDiagram)
 	    type = "Class Diagram";
-	if (_diagram instanceof UMLStateDiagram)
+	if (diagram instanceof UMLStateDiagram)
 	    type = "Statechart Diagram";
-	if (_diagram instanceof UMLUseCaseDiagram)
+	if (diagram instanceof UMLUseCaseDiagram)
 	    type = "Use Case Diagram";
-	if (_diagram instanceof UMLActivityDiagram)
+	if (diagram instanceof UMLActivityDiagram)
 	    type = "Activity Diagram";
-	if (_diagram instanceof UMLCollaborationDiagram)
+	if (diagram instanceof UMLCollaborationDiagram)
 	    type = "Collaboration Diagram";
-	if (_diagram instanceof UMLSequenceDiagram)
+	if (diagram instanceof UMLSequenceDiagram)
 	    type = "Sequence Diagram";
-	if (_diagram instanceof UMLDeploymentDiagram)
+	if (diagram instanceof UMLDeploymentDiagram)
 	    type = "Deployment Diagram";
 
-	_name.setText(type + ": " + _diagram.getName());
+	name.setText(type + ": " + diagram.getName());
     }
 
 } /* end class DiagramInfo */
