@@ -47,6 +47,7 @@ public class UMLComboBox2
     public UMLComboBox2(UMLComboBoxModel2 arg0) {
         super(arg0);
         addActionListener(this);
+
     }
     
     /**
@@ -56,9 +57,14 @@ public class UMLComboBox2
      * @param arg0
      * @param action
      */
-    public UMLComboBox2(UMLComboBoxModel2 arg0, UMLAction action) {
+    public UMLComboBox2(UMLComboBoxModel2 arg0, UMLAction action, boolean showIcon) {
         super(arg0);
         addActionListener(action);
+        setRenderer(new UMLListCellRenderer2(showIcon));
+    }
+    
+    public UMLComboBox2(UMLComboBoxModel2 arg0, UMLAction action) {
+        this(arg0, action, false);
     }
     
     /**
