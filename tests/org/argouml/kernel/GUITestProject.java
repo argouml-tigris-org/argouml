@@ -63,7 +63,7 @@ public class GUITestProject extends TestCase {
         int sizeMembers = p.getMembers().size();
         int sizeDiagrams = p.getDiagrams().size();
 
-        // test with a class and class diagram
+        // test with a package and class diagram
         Object package1 = Model.getModelManagementFactory().buildPackage(
                 "test1", null);
         Object package2 = Model.getModelManagementFactory().buildPackage(
@@ -141,7 +141,7 @@ public class GUITestProject extends TestCase {
     }
 
     /**
-     * Test deleting a package that contains a Class.
+     * Test deleting a class that contains a Class.
      * The class should be deleted, too.
      */
     public void testDeleteClassWithInnerClass() {
