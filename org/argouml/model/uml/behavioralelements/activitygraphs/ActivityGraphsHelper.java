@@ -47,6 +47,7 @@ public class ActivityGraphsHelper {
 
     
     /** Singleton instance access method.
+     * @return the singleton instance of the helper
      */
     public static ActivityGraphsHelper getHelper() {
         return SINGLETON;

@@ -47,6 +47,7 @@ public class BehavioralElementsHelper {
 
     
     /** Singleton instance access method.
+     * @return the singleton instance of the helper
      */
     public static BehavioralElementsHelper getHelper() {
         return SINGLETON;
