@@ -627,7 +627,7 @@ public abstract class FigEdgeModelElement
             if (org.argouml.model.ModelFacade.isAModelElement(newOwner)) {
                 Model.getPump().addModelEventListener(this, oldOwner);
                 
-                if (ModelFacade.getUUID(newOwner) == null) {
+                if (UUIDManager.getInstance().getUUID(newOwner) == null) {
                     ModelFacade.setUUID(newOwner,
 					UUIDManager.getInstance().getNewUUID());
 		}

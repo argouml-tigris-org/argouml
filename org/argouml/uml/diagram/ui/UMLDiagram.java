@@ -43,6 +43,7 @@ import org.argouml.ui.ArgoDiagram;
 import org.argouml.ui.CmdCreateNode;
 import org.argouml.ui.CmdSetMode;
 import org.argouml.ui.targetmanager.TargetManager;
+import org.argouml.uml.UUIDManager;
 import org.argouml.uml.diagram.static_structure.ui.CommentEdge;
 import org.tigris.gef.base.ModeBroom;
 import org.tigris.gef.base.ModeCreateFigCircle;
@@ -234,7 +235,7 @@ public abstract class UMLDiagram
         String s = super.getClassAndModelID();
         if (getOwner() == null)
             return s;
-        String id = ModelFacade.getUUID(getOwner());
+        String id = UUIDManager.getInstance().getUUID(getOwner());
         return s + "|" + id;
     }
 

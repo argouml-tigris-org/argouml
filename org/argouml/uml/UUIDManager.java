@@ -33,6 +33,7 @@ import java.rmi.server.UID;
 import org.apache.log4j.Logger;
 import org.argouml.application.security.ArgoSecurityManager;
 import org.argouml.model.ModelFacade;
+import org.argouml.uml.diagram.static_structure.ui.CommentEdge;
 
 /**
  * @stereotype singleton
@@ -131,7 +132,7 @@ public class UUIDManager {
         Collection ownedElements = ModelFacade.getOwnedElements(model);
 	Iterator oeIterator = ownedElements.iterator();
         
-        String uuid = ModelFacade.getUUID(model);
+        String uuid = getUUID(model);
         if (uuid == null) {
 	    ModelFacade.setUUID(model, getNewUUID());
 	}
@@ -153,7 +154,7 @@ public class UUIDManager {
                 || ModelFacade.isAStereotype(me)
 		|| ModelFacade.isAUseCase(me)) {
 
-                uuid = ModelFacade.getUUID(me);
+                uuid = getUUID(me);
                 if (uuid == null) {
                     ModelFacade.setUUID(me, getNewUUID());
                 }
@@ -167,5 +168,16 @@ public class UUIDManager {
         }
     }
   
-
+    /**
+     * Return the UUID of the element.
+     *
+     * @param base base element (MBase type)
+     * @return UUID
+     */
+    public static String getUUID(Object base) {
+        if (base instanceof CommentEdge) {
+            return (String) ((CommentEdge) base).getUUID();
+        }
+        return ModelFacade.getUUID(base);
+    }
 } /* end class UUIDManager */

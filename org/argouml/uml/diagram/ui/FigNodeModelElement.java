@@ -1220,7 +1220,7 @@ public abstract class FigNodeModelElement
         updateListeners(own);
         super.setOwner(own);
         if (ModelFacade.isAModelElement(own)
-                && ModelFacade.getUUID(own) == null) {
+                && UUIDManager.getInstance().getUUID(own) == null) {
             ModelFacade.setUUID(own, UUIDManager.getInstance().getNewUUID());
         }
         readyToEdit = true;
