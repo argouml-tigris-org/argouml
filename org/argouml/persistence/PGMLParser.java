@@ -23,45 +23,47 @@
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 package org.argouml.persistence;
+
 import java.io.InputStream;
-import java.util.*;
+import java.util.HashMap;
+import java.util.StringTokenizer;
 
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
-import org.xml.sax.Attributes;
-import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
+import org.apache.log4j.Logger;
+import org.argouml.cognitive.ItemUID;
+import org.argouml.ui.ArgoDiagram;
+import org.argouml.uml.diagram.static_structure.ui.FigClass;
+import org.argouml.uml.diagram.static_structure.ui.FigInterface;
+import org.argouml.uml.diagram.ui.AttributesCompartmentContainer;
+import org.argouml.uml.diagram.ui.FigEdgeModelElement;
+import org.argouml.uml.diagram.ui.FigNodeModelElement;
+import org.argouml.uml.diagram.ui.OperationsCompartmentContainer;
 import org.tigris.gef.base.Diagram;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigEdge;
 import org.tigris.gef.presentation.FigNode;
-import org.argouml.cognitive.ItemUID;
-import org.argouml.ui.ArgoDiagram;
-import org.argouml.uml.diagram.ui.FigEdgeModelElement;
-import org.argouml.uml.diagram.ui.FigNodeModelElement;
-import org.argouml.uml.diagram.ui.AttributesCompartmentContainer;
-import org.argouml.uml.diagram.ui.OperationsCompartmentContainer;
-import org.apache.log4j.Logger;
-import org.argouml.uml.diagram.static_structure.ui.FigClass;
-import org.argouml.uml.diagram.static_structure.ui.FigInterface;
+import org.xml.sax.Attributes;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
 
 /**
  * The PGML parser.
  *
  */
 public class PGMLParser extends org.tigris.gef.xml.pgml.PGMLParser {
-    
+
     /**
      * HACK to handle issue 2719.
      */
     private boolean nestedGroupFlag = false;
-    
+
     /**
-     * HACK to handle issue 2719
+     * HACK to handle issue 2719.
      */
     private Fig figGroup = null;
-    
+
     private static final Logger LOG = Logger.getLogger(PGMLParser.class);
 
     private int privateTextDepth = 0;
@@ -71,12 +73,12 @@ public class PGMLParser extends org.tigris.gef.xml.pgml.PGMLParser {
     ////////////////////////////////////////////////////////////////
     // static variables
 
-//    private static final PGMLParser INSTANCE = new PGMLParser();
+    //    private static final PGMLParser INSTANCE = new PGMLParser();
 
     private HashMap translationTable = new HashMap();
 
     /**
-     * Constructor
+     * Constructor.
      */
     public PGMLParser() {
 	translationTable.put("uci.uml.visual.UMLClassDiagram",
@@ -180,7 +182,7 @@ public class PGMLParser extends org.tigris.gef.xml.pgml.PGMLParser {
     }
 
     /**
-     * @param from the class name to be "translated", i.e. replaced 
+     * @param from the class name to be "translated", i.e. replaced
      *             by something else
      * @param to   the resulting name
      */
@@ -193,36 +195,43 @@ public class PGMLParser extends org.tigris.gef.xml.pgml.PGMLParser {
      */
     protected String translateClassName(String oldName) {
         if ("org.tigris.gef.presentation.FigGroup".equals(oldName)
-                && _currentNode instanceof FigClass)
+                && _currentNode instanceof FigClass) {
             return "org.argouml.uml.diagram.ui.FigAttributesCompartment";
+        }
         if ("org.tigris.gef.presentation.FigGroup".equals(oldName)
-                && _currentNode instanceof FigClass)
+                && _currentNode instanceof FigClass) {
             return "org.argouml.uml.diagram.ui.FigOperationsCompartment";
+        }
         if ("org.tigris.gef.presentation.FigGroup".equals(oldName)
-                && _currentNode instanceof FigInterface)
+                && _currentNode instanceof FigInterface) {
             return "org.argouml.uml.diagram.ui.FigOperationsCompartment";
+        }
         if ("org.argouml.uml.diagram.static_structure.ui.FigNote"
-            .equals(oldName))
+            .equals(oldName)) {
             return "org.argouml.uml.diagram.static_structure.ui.FigComment";
-	if ("org.argouml.uml.diagram.state.ui.FigState".equals(oldName))
+        }
+	if ("org.argouml.uml.diagram.state.ui.FigState".equals(oldName)) {
 	    return "org.argouml.uml.diagram.state.ui.FigSimpleState";
-        if ( oldName.startsWith("org.") ) return oldName;
+	}
+        if (oldName.startsWith("org.")) {
+            return oldName;
+        }
 
-        if ( oldName.startsWith("uci.gef.") ) {
+        if (oldName.startsWith("uci.gef.")) {
 	    String className = oldName.substring(oldName.lastIndexOf(".") + 1);
 	    return ("org.tigris.gef.presentation." + className);
         }
 
         String translated = (String) translationTable.get(oldName);
-        LOG.debug( "old = " + oldName + " / new = " + translated );
+        LOG.debug("old = " + oldName + " / new = " + translated);
         return translated;
     }
 
     private String[] entityPaths = {
         "/org/argouml/persistence/",
-        "/org/tigris/gef/xml/dtd/" 
+        "/org/tigris/gef/xml/dtd/",
     };
-    
+
     /**
      * @see org.tigris.gef.xml.pgml.PGMLParser#getEntityPaths()
      */
@@ -241,9 +250,10 @@ public class PGMLParser extends org.tigris.gef.xml.pgml.PGMLParser {
      * Called by the XML framework when an entity starts.
      */
     public void startElement(String uri,
-                String localname, 
-                String elementName, 
-                Attributes attrList) throws SAXException {
+                String localname,
+                String elementName,
+                Attributes attrList)
+    	throws SAXException {
 
         String descr = null;
         if (attrList != null) {
@@ -252,8 +262,9 @@ public class PGMLParser extends org.tigris.gef.xml.pgml.PGMLParser {
         if (descr != null) {
             descr = descr.trim();
         }
-        
-        if (_elementState == NODE_STATE && elementName.equals("group") 
+
+        if (_elementState == NODE_STATE
+                && elementName.equals("group")
                 && _currentNode instanceof OperationsCompartmentContainer
                 && isOperationsXml(attrList)) {
             if (isHiddenXml(descr)) {
@@ -261,10 +272,10 @@ public class PGMLParser extends org.tigris.gef.xml.pgml.PGMLParser {
                     .setOperationsVisible(false);
             }
             previousNode = _currentNode;
-        } else if (_elementState 
-                == DEFAULT_STATE && elementName.equals("group") 
+        } else if (_elementState == DEFAULT_STATE
+                && elementName.equals("group")
                 && previousNode instanceof AttributesCompartmentContainer
-                    && isAttributesXml(attrList)) {
+                && isAttributesXml(attrList)) {
             _elementState = NODE_STATE;
             _currentNode = previousNode;
             if (isHiddenXml(descr)) {
@@ -275,13 +286,15 @@ public class PGMLParser extends org.tigris.gef.xml.pgml.PGMLParser {
             // The following is required only for backwards
             // compatability to before fig compartments were
             // introduced in version 0.17
-            if (_elementState == NODE_STATE && elementName.equals("group") 
-                    && _currentNode != null && attrList != null 
-                    && (_currentNode instanceof FigClass  
+            if (_elementState == NODE_STATE
+                    && elementName.equals("group")
+                    && _currentNode != null
+                    && attrList != null
+                    && (_currentNode instanceof FigClass
                         || _currentNode instanceof FigInterface)) {
                 // compartment of class figure detected
                 attributesVisible = true;
-                if (isHiddenXml(descr, (FigNodeModelElement)_currentNode)) {
+                if (isHiddenXml(descr, (FigNodeModelElement) _currentNode)) {
                     // the detected compartment need to be hidden
                     ((FigNodeModelElement) _currentNode)
                         .enableSizeChecking(false);
@@ -301,25 +314,26 @@ public class PGMLParser extends org.tigris.gef.xml.pgml.PGMLParser {
                         .enableSizeChecking(true);
                 }
                 previousNode = _currentNode; // remember for next compartment
-            } else if (_elementState 
-                        == DEFAULT_STATE && elementName.equals("group") 
-                    && previousNode != null && _nestedGroups > 0) { 
+            } else if (_elementState == DEFAULT_STATE
+                    && elementName.equals("group")
+                    && previousNode != null && _nestedGroups > 0) {
                 /* The following should not be necessary, but because of a bug
-                   in GEF's PGMLParser, the second FigGroup (which is the 
-                   operations compartment) is parsed in the wrong state 
-                   (DEFAULT_STATE). Result: _currentNode is lost (set to null). 
+                   in GEF's PGMLParser, the second FigGroup (which is the
+                   operations compartment) is parsed in the wrong state
+                   (DEFAULT_STATE). Result: _currentNode is lost (set to null).
                    Solution: use saved version in _previousNode and
-                   watch _nestedGroups in order to decide which compartment 
-                   is parsed. This code should work even with a fixed 
+                   watch _nestedGroups in order to decide which compartment
+                   is parsed. This code should work even with a fixed
                    PGMLParser of GEF.
                    (_elementState) DEFAULT_STATE(=0) is private :-(
-                   NODE_STATE = 4 
+                   NODE_STATE = 4
                  */
-                
+
                 _elementState = NODE_STATE;
                 _currentNode = previousNode;
                 if (previousNode instanceof FigClass) {
-                    boolean operationsVisible = !isHiddenXml(descr, (FigNodeModelElement)previousNode);
+                    boolean operationsVisible =
+                        !isHiddenXml(descr, (FigNodeModelElement) previousNode);
             	    ((FigNodeModelElement) previousNode)
                         .enableSizeChecking(false);
             	    ((FigClass) previousNode).
@@ -331,7 +345,7 @@ public class PGMLParser extends org.tigris.gef.xml.pgml.PGMLParser {
                 }
             }
         }
-        
+
         if ("private".equals(elementName)) {
             privateTextDepth++;
         }
@@ -341,9 +355,8 @@ public class PGMLParser extends org.tigris.gef.xml.pgml.PGMLParser {
             figGroup = null;
             nestedGroupFlag = false;
         }
-        
     }
-    
+
     private boolean isAttributesXml(Attributes attrList) {
         if (attrList == null) {
             return false;
@@ -363,8 +376,9 @@ public class PGMLParser extends org.tigris.gef.xml.pgml.PGMLParser {
     /**
      * The fig is denoted as being hidden in the XML if
      * its description contains co-ordinates and size all
-     * of zero
-     * @param text
+     * of zero.
+     *
+     * @param text The text to test.
      * @return if the XML denotes a hidden Fig.
      */
     private boolean isHiddenXml(String text) {
@@ -376,12 +390,15 @@ public class PGMLParser extends org.tigris.gef.xml.pgml.PGMLParser {
     /**
      * The fig is denoted as being hidden in the XML if
      * its description contains co-ordinates and size all
-     * of zero
+     * of zero.
+     *
      * @param classNameBounds a string containing the class name of the Fig
      *                        followed by the rectangle bounds.
+     * @param node The Fig.
      * @return if the XML denotes a hidden Fig.
      */
-    private boolean isHiddenXml(String classNameBounds, FigNodeModelElement node) {
+    private boolean isHiddenXml(String classNameBounds,
+            FigNodeModelElement node) {
         if (classNameBounds.endsWith(" 0, 0]")
                || classNameBounds.endsWith("0,0]")
                || classNameBounds.endsWith("[]")) {
@@ -449,10 +466,10 @@ public class PGMLParser extends org.tigris.gef.xml.pgml.PGMLParser {
     protected class NameVal {
         private String name;
         private String value;
-        
+
         /**
          * The constructor.
-         * 
+         *
          * @param n the name
          * @param v the value
          */
@@ -478,8 +495,8 @@ public class PGMLParser extends org.tigris.gef.xml.pgml.PGMLParser {
 
     /**
      * Splits a name value pair into a NameVal instance. A name value pair is
-     * a String on the form <name = ["] value ["]>.
-     * 
+     * a String on the form &lt; name = ["] value ["] &gt;.
+     *
      * @param str A String with a name value pair.
      * @return A NameVal, or null if they could not be split.
      */
@@ -488,21 +505,23 @@ public class PGMLParser extends org.tigris.gef.xml.pgml.PGMLParser {
 	int lqpos, rqpos;
 	int eqpos = str.indexOf('=');
 
-	if (eqpos < 0)
+	if (eqpos < 0) {
 	    return null;
+	}
 
 	lqpos = str.indexOf('"', eqpos);
 	rqpos = str.lastIndexOf('"');
 
-	if (lqpos < 0 || rqpos <= lqpos)
+	if (lqpos < 0 || rqpos <= lqpos) {
 	    return null;
+	}
 
-	rv = new NameVal(str.substring(0, eqpos), 
+	rv = new NameVal(str.substring(0, eqpos),
             str.substring(lqpos + 1, rqpos));
 
 	return rv;
     }
-  
+
     /**
      * @see org.tigris.gef.xml.pgml.PGMLParser#readDiagram(
      *          java.io.InputStream, boolean)
@@ -510,12 +529,12 @@ public class PGMLParser extends org.tigris.gef.xml.pgml.PGMLParser {
     public synchronized Diagram readDiagram(InputStream is,
             				    boolean closeStream) {
         String errmsg = "Exception in readDiagram";
-        
+
         //initialise parsing attributes:
         _figRegistry = new HashMap();
         InputSource source = new InputSource(is);
         _nestedGroups = 0; //issue 2452
-            
+
         try {
             LOG.info("=======================================");
             LOG.info("== READING DIAGRAM");
@@ -526,7 +545,7 @@ public class PGMLParser extends org.tigris.gef.xml.pgml.PGMLParser {
             SAXParser pc = factory.newSAXParser();
             source.setSystemId(systemId);
             source.setEncoding("UTF-8");
-            
+
             // what is this for?
             // source.setSystemId(url.toString());
             pc.parse(source, this);
@@ -534,13 +553,11 @@ public class PGMLParser extends org.tigris.gef.xml.pgml.PGMLParser {
             if (closeStream) {
                 LOG.debug("closing stream now (in PGMLParser.readDiagram)");
                 is.close();
-            }
-            else {
+            } else {
                 LOG.debug("leaving stream OPEN!");
             }
             return _diagram;
-        }
-        catch (SAXException saxEx) {
+        } catch (SAXException saxEx) {
             //
             //  a SAX exception could have been generated
             //    because of another exception.
@@ -549,23 +566,22 @@ public class PGMLParser extends org.tigris.gef.xml.pgml.PGMLParser {
             Exception ex = saxEx.getException();
             if (ex == null) {
                 LOG.error(errmsg, saxEx);
-            }
-            else {
+            } else {
                 LOG.error(errmsg, ex);
             }
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             LOG.error(errmsg, ex);
         }
         return null;
     }
 
     /**
-     * @see org.xml.sax.DocumentHandler#endElement(java.lang.String)
+     * @see org.xml.sax.ContentHandler#endElement(
+     *         java.lang.String, java.lang.String, java.lang.String)
      */
-    public void endElement(String uri, String localname, String name) 
+    public void endElement(String uri, String localname, String name)
         throws SAXException {
-        
+
 	if ("private".equals(name)) {
 	    if (privateTextDepth == 1) {
 		String str = privateText.toString();
@@ -580,20 +596,22 @@ public class PGMLParser extends org.tigris.gef.xml.pgml.PGMLParser {
 			LOG.debug("Private Element: \"" + nval.getName()
 			          + "\" \"" + nval.getValue() + "\"");
 			if ("ItemUID".equals(nval.getName())) {
-			    if (nval.getValue().length() > 0)
-				setElementItemUID(nval.getValue());
+			    if (nval.getValue().length() > 0) {
+			        setElementItemUID(nval.getValue());
+			    }
 			}
 		    }
 		}
 	    }
 
 	    privateTextDepth--;
-	    if (privateTextDepth == 0)
-		privateText = new StringBuffer();
+	    if (privateTextDepth == 0) {
+	        privateText = new StringBuffer();
+	    }
 	}
 
         switch (_elementState) {
-	case NODE_STATE: 
+	case NODE_STATE:
 	    Object own = _currentNode.getOwner();
 	    if (!_diagram.getNodes(null).contains(own)) {
 		_diagram.getNodes(null).add(own);
@@ -609,13 +627,14 @@ public class PGMLParser extends org.tigris.gef.xml.pgml.PGMLParser {
 
         super.endElement(uri, localname, name);
     }
-    
+
     /**
-     * This is a correct implementation of handleGroup and will add 
+     * @see org.tigris.gef.xml.pgml.PGMLParser#handleGroup(
+     *         org.xml.sax.AttributeList)
+     *
+     * This is a correct implementation of handleGroup and will add
      * FigGroups to the diagram ONLY if they are
      * not a FigNode AND if they are not part of a FigNode.
-     *
-     * @see org.tigris.gef.xml.pgml.PGMLParser#handleGroup(org.xml.sax.AttributeList)
      */
     protected Fig handleGroup(Attributes attrList) {
         Fig f = null;
@@ -632,7 +651,7 @@ public class PGMLParser extends org.tigris.gef.xml.pgml.PGMLParser {
             wStr = st.nextToken();
             hStr = st.nextToken();
         }
-        
+
         try {
             Class nodeClass = Class.forName(translateClassName(clsName));
             f = (Fig) nodeClass.newInstance();
@@ -643,17 +662,17 @@ public class PGMLParser extends org.tigris.gef.xml.pgml.PGMLParser {
                 int h = Integer.parseInt(hStr);
                 f.setBounds(x, y, w, h);
             }
-            
+
             if (f instanceof FigNode) {
                 FigNode fn = (FigNode) f;
                 _currentNode = fn;
                 _elementState = NODE_STATE;
-                _textBuf = new StringBuffer();             
-            } 
+                _textBuf = new StringBuffer();
+            }
             if (f instanceof FigNode || f instanceof FigEdge) {
                 _diagram.add(f);
             } else {
-                // nested group flag is a flag to repair 
+                // nested group flag is a flag to repair
                 // the ^*&(*^*& implementation of GEF's parser
                 nestedGroupFlag = true;
                 figGroup = f;
@@ -661,18 +680,18 @@ public class PGMLParser extends org.tigris.gef.xml.pgml.PGMLParser {
                     _currentNode.addFig(f);
                 }
             }
-            
+
             if (f instanceof FigEdge) {
                 _currentEdge = (FigEdge) f;
                 _elementState = EDGE_STATE;
-            }  
-            
+            }
+
         } catch (Exception ex) {
             LOG.error("Exception in handleGroup", ex);
         } catch (NoSuchMethodError ex) {
             LOG.error("No constructor() in class " + clsName, ex);
         }
-        
+
         setAttrs(f, attrList);
         return f;
     }
