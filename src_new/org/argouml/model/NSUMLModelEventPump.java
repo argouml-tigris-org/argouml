@@ -51,8 +51,7 @@ import ru.novosoft.uml.MElementListener;
  * @author Linus Tolke
  */
 class NSUMLModelEventPump 
-	extends AbstractModelEventPump 
-	implements ModelEventPump {
+	extends AbstractModelEventPump {
 
 
     private static final Logger LOG = 
