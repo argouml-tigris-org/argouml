@@ -27,6 +27,7 @@ import org.apache.log4j.Category;
 import org.argouml.application.api.Argo;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.*;
+import org.argouml.cognitive.Designer;
 import org.argouml.ui.*;
 import org.argouml.xml.argo.*;
 import org.argouml.util.*;
@@ -156,7 +157,8 @@ public class ActionOpenProject extends UMLAction {
             // pb.setProject(Project.makeEmptyProject());
             
             // new code:
-            
+            Designer.disableCritiquing();
+
             // 2002-07-18
         	// Jaap Branderhorst
         	// changed the loading of the projectfiles to solve hanging 
@@ -164,6 +166,7 @@ public class ActionOpenProject extends UMLAction {
         	// try catch block added
             try {
             	p = Project.loadProject (url);
+                Designer.clearCritiquing();
             	ProjectManager.getManager().setCurrentProject(p);
             	pb.showStatus (MessageFormat.format (
                 Argo.localize ("Actions", "template.open_project.status_read"),
@@ -178,6 +181,7 @@ public class ActionOpenProject extends UMLAction {
     				JOptionPane.ERROR_MESSAGE);
                // restore old state of the project browser
                ProjectManager.getManager().setCurrentProject(oldProject);
+               Designer.enableCritiquing();
 	       return;
             }
             catch (IOException io) {
@@ -190,6 +194,7 @@ public class ActionOpenProject extends UMLAction {
                     "Error",
                     JOptionPane.ERROR_MESSAGE);
                 ProjectManager.getManager().setCurrentProject(oldProject);
+                Designer.enableCritiquing();
 		return;
             }
             catch (Exception ex) {
@@ -203,6 +208,7 @@ public class ActionOpenProject extends UMLAction {
 
             	// lets restore the state of the projectbrowser
             	ProjectManager.getManager().setCurrentProject(oldProject);
+                Designer.enableCritiquing();
 		return;
             }
 	    if (ArgoParser.SINGLETON.getLastLoadStatus() != true) {
@@ -225,6 +231,7 @@ public class ActionOpenProject extends UMLAction {
 				      "Error",
 				      JOptionPane.ERROR_MESSAGE);
 	    }
+            Designer.enableCritiquing();
           }
           
           return;

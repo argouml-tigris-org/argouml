@@ -23,6 +23,7 @@
 
 package org.argouml.uml.ui;
 
+import org.argouml.cognitive.Designer;
 import org.argouml.application.api.Argo;
 import org.argouml.kernel.*;
 import org.argouml.ui.*;
@@ -83,7 +84,10 @@ public class ActionNew extends UMLAction {
       // return false in that case...
     }
 
+    Designer.disableCritiquing();
+    Designer.clearCritiquing();
     p = ProjectManager.getManager().makeEmptyProject();
     ProjectBrowser.TheInstance.setTarget(p.getDiagrams().toArray()[0]);
+    Designer.enableCritiquing();
   }
 } /* end class ActionNew */
