@@ -20,8 +20,10 @@ public class ArgoFacade implements ModelFacade {
 
     public Any getClassifier(String name) {
       Project p = ProjectBrowser.TheInstance.getProject();
-      if (target != null) 
+      if (target != null && target.getName() == name ) {
 	  return new ArgoAny(target);
+      }
+      // else we have a problem: this is not clean!
       else {
 	  MClassifier classifier = p.findTypeInModel(name, p.getCurrentNamespace());
 	  if (classifier == null) {
