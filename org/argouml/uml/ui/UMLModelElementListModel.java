@@ -62,7 +62,7 @@ abstract public class UMLModelElementListModel extends AbstractListModel impleme
      *  The string used to indicate no actual entries in the list.  Eventually,
      *    should be part of the profile or localization.
      */
-    static String _none = "none";
+    private String _none = "none";
     
     /**
      *  upper bound of length of list.
@@ -84,6 +84,8 @@ abstract public class UMLModelElementListModel extends AbstractListModel impleme
         _property = property;
         _recalcSize = true;
         _upper = -1;
+        _none = _container.localize("none");
+        if(_none == null) _none = "none";
     }
     
     public int getUpperBound() {

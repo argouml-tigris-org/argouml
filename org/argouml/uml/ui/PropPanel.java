@@ -119,7 +119,15 @@ implements TabModelTarget, MElementListener, UMLUserInterfaceContainer {
         if(_bundle == null) {
             _bundle = getResourceBundle();
         }
-        if(_bundle != null) localized = _bundle.getString(key);
+        if(_bundle != null) {
+            try {
+                localized = _bundle.getString(key);
+            }
+            catch(MissingResourceException e) {}
+            if(localized == null) {
+                localized = key;
+            }
+        }
         return localized;
     }
 

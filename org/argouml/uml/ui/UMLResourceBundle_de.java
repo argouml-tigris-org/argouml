@@ -23,163 +23,118 @@
 
 package org.argouml.uml.ui;
 import java.util.*;
+import org.argouml.util.*;
 
-public class UMLResourceBundle_de extends UMLResourceBundle {
+/**
+ *    This class provides resources for the UML PropPanels in German
+ *
+ *    @author Andreas Rueckert
+ *    @since 0.9
+ *    @see UMLResourceBundle
+ *    @see ListResourceBundle
+ *    @see PropPanel
+ *    @see org.argouml.ui.MenuResourceBundle
+ *    @see org.argouml.util.CheckResourceBundle
+ */
+public class UMLResourceBundle_de extends ListResourceBundle {
 
-    public UMLResourceBundle_de() {
-        put("Abstract","Abstract");
-        put("abstract","abstract");
-        put("Action:","Action:");
-        put("Activator:","Activator:");
-        put("active","active");
-        put("Add","Add");
-        put("Add actor","Add actor");
-	    put("Add association","Assoziation hinzufuegen");
-        put("Add association end","Add association end");
-	    put("Add attribute","Attribut hinzufuegen");
-        put("Add class","Add class");
-	    put("Add datatype","Datentyp hinzufuegen");
-        put("Add enumeration literal","Add enumeration literal");
-        put("Add generalization","Add generalization");
-        put("Add inner class","Add inner class");
-        put("Add interface","Add interface");
-        put("Add new class","Add new class");
-        put("add only","add only");
-	    put("Add operation","Operation hinzufuegen");
-	    put("Add parameter","Parameter hinzufuegen");
-        put("Add raised signal","Add raised signal");
-        put("Add realization","Add realization");
-        put("Add stereotype","Add stereotype");
-        put("Add subpackage","Add subpackage");
-	    put("Add use case","Anwendungsfall hinzufuegen");
-        put("Add_Menu_Actor","Actor...");
-        put("Add_Menu_Class","Class...");
-        put("Add_Menu_Datatype","Datatype...");
-        put("Add_Menu_Exception","Exception...");
-        put("Add_Menu_Interface","Interface...");
-        put("Add_Menu_Signal","Signal...");
-        put("Add_Menu_UseCase","Use Case...");
-        put("aggregation","aggregation");
-        put("Aggregation:","Aggregation:");
-        put("Arguments:","Arguments:");
-        put("Association Ends:","Association Ends:");
-	    put("Association:","Assoziation:");
-        put("AssociationRole Ends:","AssociationRole Ends:");
-	    put("Associations:","Assoziationen:");
-	    put("Attributes:","Attribute:");
-        put("Author:","Author:");
-	    put("Base Class:","Basisklasse");
-        put("Changeability:","Changeability:");
-	    put("changeable", "aenderbar");
-        put("Child:","Child:");
-        put("Class","Klasse");
-        put("classifier","classifier");
-        put("Classifier:","Classifier:");
-        put("Classifiers:","Classifiers:");
-        put("Clients:","Clients:");
-	    put("Components:","Komponenten:");
-        put("composite","composite");
-        put("Concurrency:","Concurrency:");
-	    put("Connections:","Verbindungen:");
-        put("Delete","Delete");
-	    put("Delete actor","Aktor loeschen");
-	    put("Delete association","Assoziation loeschen");
-	    put("Delete association end","Assoziationsende loeschen");
-	    put("Delete attribute", "Attribut loeschen");
-	    put("Delete class","Klasse loeschen");
-	    put("Delete interface","Interface loeschen");
-	    put("Delete operation","Operation loeschen");
-	    put("Delete package","Package loeschen");
-	    put("Delete parameter","Parameter loeschen");
-	    put("Derived:","Abgeleitet:");
-        put("Discriminator:","Discriminator:");
-        put("Documentation:","Documentation:");
-        put("dynamic","dynamic");
-        put("Effect:","Effect:");
-        put("Entry","Entry");
-        put("Exceptions:","Exceptions:");
-        put("Exit","Exit");
-	    put("Expression:","Ausdruck:");
-	    put("Extends:","Erweitert:");
-        put("Extension Points:","Extension Points:");
-        put("Final","Final");
-        put("final","final");
-        put("frozen","frozen");
-        put("Generalizations:","Generalizations:");
-	    put("Go back", "Gehe zurueck");
-	    put("Go forward","Gehe vorwaerts");
-        put("Go to other end","Go to other end");
-        put("Go to package","Go to package");
-        put("Go up","Go up");
-        put("Guard:","Guard:");
-        put("Implementations:","Implementations:");
-	    put("Implements:","Implementiert:");
-        put("Includes:","Includes:");
-	    put("Incoming:","Eingehend:");
-        put("Initial Value:","Initial Value:");
-        put("Kind:","Kind:");
-	    put("Language:","Sprache");
-	    put("Literals:","Literale");
-        put("Link Ends:","Link Ends:");
-        put("Links:","Links:");
-        put("Literals:","Literals:");
-        put("Modifiers:","Modifiers:");
-        put("Move Down", "Move Down");
-        put("Move Up","Move Up");
-	    put("Multiplicity:","Kardinalitaet:");
-	    put("Namespace:","Namensraum:");
-        put("navigable","navigable");
-        put("Navigable:","Navigable:");
-	    put("New actor","Neuer Aktor");
-	    put("New association","Neue Assoziation");
-	    put("New attribute","Neues Attribut");
-	    put("New class","Neue Klasse");
-	    put("New data type","Neuer Datentyp");
-	    put("New interface","Neues Interface");
-	    put("New operation","Neue Operation");
-	    put("New signal","Neues Signal");
-        put("New stereotype","New stereotype");
-        put("none","none");
-        put("Open","Open");
-    	put("Operations:","Operationen:");
-        put("ordered","ordered");
-	    put("Ordering:","Sortierung:");
-	    put("Outgoing:","Ausgehend:");
-        put("Owned Elements","Owned Elements");
-    	put("Owner:","Inhaber:");
-        put("Packages:","Packages:");
-        put("Parameters:","Parameters:");
-        put("Parent:","Parent:");
-        put("Powertype:","Powertype:");
-        put("Predecessor:","Predecessor:");
-        put("public","public");
-        put("Public","Public");
-        put("query","query");
-    	put("Receiver:","Empfaenger:");
-    	put("Receives:","Empfaengt:");
-        put("Related Elements","Related Elements");
-        put("Root","Root");
-        put("root","root");
-        put("Scope:","Scope:");
-        put("See:","See:");
-        put("Sender:","Sender:");
-    	put("Sends:","Sendet:");
-        put("Since:","Since:");
-    	put("sorted","sortiert");
-        put("State Machine:","State Machine:");
-        put("static","static");
-        put("Stereotype:","Stereotype:");
-        put("Stereotypes:","Stereotypes:");
-        put("Suppliers:","Suppliers:");
-        put("transient","transient");
-    	put("Transition","Uebergang");
-    	put("Transition:","Uebergang:");
-    	put("Trigger:","Ausloeser");
-    	put("Type:","Typ");
-        put("unordered","unordered");
-        put("Version:","Version:");
-    	put("Visibility:","Sichtbarkeit:");
-        put("volatile","volatile");
+    private static final Object[][] _contents = {
+        { "Add_Menu_Actor" , "Aktor..." },
+        { "Add_Menu_Class" , "Klasse..." },
+        { "Add_Menu_Datatype" , "Datentyp..." },
+        { "Add_Menu_Exception" , "Exception..." },
+        { "Add_Menu_Interface" , "Interface..." },
+        { "Add_Menu_Signal" , "Signal..." },
+        { "Add_Menu_UseCase" , "Anwendungsfall..." },
+        { "Add association" , "Assoziation hinzuf\u00fcgen" },
+        { "Add attribute" , "Attribut hinzuf\u00fcgen" },
+        { "Add datatype" , "Datentyp hinzuf\u00fcgen" },
+        { "Add inner class" , "Innere Klasse hinzuf\u00fcgen" },
+        { "Add operation" , "Operation hinzuf\u00fcgen" },
+        { "Add parameter" , "Parameter hinzuf\u00fcgen" },
+        { "Add use case" , "Anwendungsfall hinzuf\u00fcgen" },
+        { "Association:" , "Assoziation:" },
+        { "Associations:" , "Assoziationen:" },
+        { "Attributes:" , "Attribute:" },
+        { "Base Class:" , "Basisklasse:" },
+        { "Class" , "Klasse" },
+        { "changeable", "\u00e4nderbar" },
+        { "Components:" , "Komponenten:" },
+        { "Connections:" , "Verbindungen:" },
+        { "Delete actor" , "Aktor l\u00f6schen" },
+        { "Delete association" , "Assoziation l\u00f6schen" },
+        { "Delete association end" , "Assoziationsende l\u00f6schen" },
+        { "Delete attribute", "Attribut l\u00f6schen" },
+        { "Delete class" , "Klasse l\u00f6schen" },
+        { "Delete interface" , "Interface l\u00f6schen" },
+        { "Delete operation" , "Operation l\u00f6schen" },
+        { "Delete package" , "Package l\u00f6schen" },
+        { "Delete parameter" , "Parameter l\u00f6schen" },
+        { "Derived:" , "Abgeleitet:" },
+        { "Expression:" , "Ausdruck:" },
+        { "Extends:" , "Erweitert:" },
+        { "Go back", "Gehe zur\u00fcck" },
+        { "Go forward" , "Gehe vorw\u00e4rts" },
+        { "Implements:" , "Implementiert:" },
+        { "Incoming:" , "Eingehend:" },
+        { "Language:" , "Sprache:" },
+        { "Literals:" , "Literale:" },
+        { "Multiplicity:" , "Kardinalit\u00e4t:" },
+        { "Name:" , "Name:" },
+        { "Namespace:" , "Namensraum:" },
+        { "New actor" , "Neuer Aktor" },
+        { "New association" , "Neue Assoziation" },
+        { "New attribute" , "Neues Attribut" },
+        { "New class" , "Neue Klasse" },
+        { "New data type" , "Neuer Datentyp" },
+        { "New interface" , "Neues Interface" },
+        { "New operation" , "Neue Operation" },
+        { "New signal" , "Neues Signal" },
+        { "none" , "keine" },
+        { "Operations:" , "Operationen:" },
+        { "Ordering:" , "Anordnung:" },
+        { "Outgoing:" , "Ausgehend:" },
+        { "Owner:" , "Inhaber:" },
+        { "Receiver:" , "Empf\u00e4nger:" },
+        { "Receives:" , "Empf\u00e4ngt:" },
+        { "Sends:" , "Sendet:" },
+        { "sorted" , "sortiert" },
+        { "Transition" , "\u00dcbergang" },
+        { "Trigger:" , "Ausl\u00f6ser:" },
+        { "Type:" , "Typ:" },
+        { "Visibility:" , "Sichtbarkeit:" },
+        {"public", "public" },  
+        {"abstract", "abstract" },  
+        {"final", "final" },  
+        {"root", "root" },  
+        {"Stereotype:", "Stereotype:" },  
+        {"Modifiers:", "Modifiers:" },  
+        {"active", "active" },  
+        {"Owned Elements:", "Owned Elements:" },  
+        {"Go up", "Go up" },  
+        {"navigateBackAction", "navigateBackAction" },  
+        {"navigateForwardAction", "navigateForwardAction" },  
+        {"Add generalization", "Add generalization" },  
+        {"Add realization", "Add realization" },  
+        {"Owned Elements", "Owned Elements" },  
+        {"Add class", "Add class" },  
+        {"Add interface", "Add interface" },  
+        {"Add stereotype", "Add stereotype" },  
+        {"Add actor", "Add actor" },  
+        {"Add subpackage", "Add subpackage" },  
+        {"Abstract", "Abstract" },  
+        {"Final", "Final" },  
+        {"Root", "Root" },  
+        {"Association Ends:", "Association Ends:" },  
+        {"Add association end", "Add association end" },  
+        {"Public", "Public" },  
+        {"Implementations:", "Implementations:" },  
+        {"New stereotype", "New stereotype" },  
+        {"Add enumeration literal", "Add enumeration literal" }
+    };
+
+    public Object[][] getContents() {
+        return _contents;
     }
 }
 
