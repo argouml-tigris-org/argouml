@@ -96,7 +96,7 @@ public class TestXmiFilePersister extends TestCase {
 
             ProjectManager.getManager().makeEmptyProject();
 
-            persister.doLoad(file);
+            persister.doLoad(file, null);
         } catch (OpenException e) {
             fail("Load resulted in an exception");
         }

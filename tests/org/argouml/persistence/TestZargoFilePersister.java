@@ -27,6 +27,8 @@ package org.argouml.persistence;
 import java.io.File;
 import java.net.URL;
 
+import javax.swing.JProgressBar;
+
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
@@ -68,10 +70,11 @@ public class TestZargoFilePersister extends TestCase {
      * @param filename of the project file to load
      * @throws OpenException if something goes wrong.
      */
-    private Project doLoad(String filename) throws OpenException {
+    private Project doLoad(String filename)
+            throws OpenException {
         URL url = TestZargoFilePersister.class.getResource(filename);
         ZargoFilePersister persister = new ZargoFilePersister();
-        Project p = persister.doLoad(url);
+        Project p = persister.doLoad(url, null);
         assertTrue("Load Status for " + filename + ".",
                LastLoadInfo.getInstance().getLastLoadStatus());
         return p;
@@ -115,7 +118,7 @@ public class TestZargoFilePersister extends TestCase {
         try {
             file = new File("/testmodels/Garbage.zargo");
             ZargoFilePersister persister = new ZargoFilePersister();
-            persister.doLoad(file);
+            persister.doLoad(file, null);
             assertTrue("Load Status",
                     !LastLoadInfo.getInstance().getLastLoadStatus());
         } catch (OpenException io) {

@@ -31,6 +31,8 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.net.URL;
 
+import javax.swing.JProgressBar;
+
 import org.apache.log4j.Logger;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
@@ -175,9 +177,9 @@ public class XmiFilePersister extends AbstractFilePersister {
      * @return The newly loaded project.
      * @throws OpenException if the file can not be opened
      *
-     * @see org.argouml.persistence.ProjectFilePersister#doLoad(java.net.URL)
+     * @see org.argouml.persistence.ProjectFilePersister#doLoad(java.net.URL, javax.swing.JProgressBar)
      */
-    public Project doLoad(URL url) throws OpenException {
+    public Project doLoad(URL url, JProgressBar progressBar) throws OpenException {
         try {
             Project p = new Project();
             XMIParser.getSingleton().readModels(p, url);

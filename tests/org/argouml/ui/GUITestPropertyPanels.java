@@ -140,7 +140,7 @@ public class GUITestPropertyPanels extends TestCase {
 	    new File(projectFile);
 
         ZargoFilePersister persister = new ZargoFilePersister();
-        p = persister.doLoad(testfile);
+        p = persister.doLoad(testfile, null);
         ProjectManager.getManager().setCurrentProject(p);
         Object model = p.getRoot();
         Collection me = Model.getUmlHelper().getModelManagement().
