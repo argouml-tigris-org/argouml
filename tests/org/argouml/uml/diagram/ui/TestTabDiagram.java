@@ -79,4 +79,27 @@ public class TestTabDiagram extends TestCase {
         assertEquals(tabDiagram.getJGraph(), graph);        
     }
 
+    /**
+     * Test the performance of adding an operation to 1 class that's represented on 100 different
+     * diagrams. The last created diagram is the one selected.
+     *
+     */
+    public void testFireModelEventPerformance() {
+    	// setup
+    	UMLDiagram[] diagrams = new UMLDiagram[NUMBER_OF_DIAGRAMS]; 
+    	Project project = ProjectManager.getManager().getCurrentProject();
+    	Object clazz = UmlFactory.getFactory().getCore().buildClass();
+    	for (int i = 0; i <NUMBER_OF_DIAGRAMS; i++) {
+            diagrams[i] = new UMLClassDiagram(project.getRoot());
+    		diagrams[i].add(new FigClass(diagrams[i].getGraphModel(), clazz)); 
+            ProjectBrowser.TheInstance.setTarget(diagrams[i]);   		
+    	}
+        MFactoryImpl.setEventPolicy(MFactoryImpl.EVENT_POLICY_IMMEDIATE);
+    	// real test
+        long currentTime = (new Date()).getTime();
+        UmlFactory.getFactory().getCore().buildOperation(clazz);
+    	System.out.println("Time needed for adding operation: " + ((new Date()).getTime() - currentTime));
+    }
+
+
 }
