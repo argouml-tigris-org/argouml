@@ -88,17 +88,18 @@ public class UUIDManager {
             if (me instanceof MModel ||
                 // me instanceof MNamespace ||
                 me instanceof MClassifier ||
+                me instanceof MFeature ||
                 me instanceof MStateVertex ||
-				me instanceof MStateMachine ||
+		me instanceof MStateMachine ||
                 me instanceof MTransition ||
                 me instanceof MCollaboration ||
-				me instanceof MMessage ||
+		me instanceof MMessage ||
                 me instanceof MAssociation ||
                 me instanceof MAssociationEnd ||
                 me instanceof MGeneralization ||
                 me instanceof MDependency ||
                 me instanceof MStereotype ||
-				me instanceof MUseCase) {
+		me instanceof MUseCase) {
                 uuid = me.getUUID();
                 if (uuid == null) {
                     me.setUUID(getNewUUID());

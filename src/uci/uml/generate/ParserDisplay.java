@@ -55,6 +55,7 @@ public class ParserDisplay extends Parser {
     while (st.hasMoreTokens()) {
       String token = st.nextToken();
       MOperation op = parseOperation(token);
+      op.setNamespace(cls);
       newOps.add(op);
     }
     // System.out.println("parsed " + newOps.size() + " operations");
@@ -62,12 +63,6 @@ public class ParserDisplay extends Parser {
 	features.removeAll(MMUtil.SINGLETON.getOperations(cls));
 	features.addAll(newOps);
 	cls.setFeatures(features);
-	Collection ops = MMUtil.SINGLETON.getOperations(cls);
-	Iterator iter = ops.iterator();
-	while (iter.hasNext()) {
-		System.out.println(MMUtil.SINGLETON.getReturnParameter((MOperation)iter.next()));
-	}
-
   }
 
   public void parseAttributeCompartment(MClassifier cls, String s) {
@@ -76,6 +71,7 @@ public class ParserDisplay extends Parser {
     while (st.hasMoreTokens()) {
       String token = st.nextToken();
       MAttribute attr = parseAttribute(token);
+      attr.setNamespace(cls);
       newAttrs.add(attr);
     }
     // System.out.println("parsed " + newAttrs.size() + " attributes");

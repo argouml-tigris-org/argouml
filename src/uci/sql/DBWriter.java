@@ -131,6 +131,7 @@ public class DBWriter
 			MModelElement me = (MModelElement)ownedElements.next();
 			//System.out.println("Processing " + me.toString());
 			if (me instanceof MClass) store((MClass)me,stmt);
+			if (me instanceof MInterface) store((MInterface)me,stmt);
 			if (me instanceof MAssociation) store((MAssociation)me,stmt);
 			if (me instanceof MGeneralization) store((MGeneralization)me,stmt);
 			if (me instanceof MUseCase) store((MUseCase)me,stmt);
@@ -155,16 +156,17 @@ public class DBWriter
 
 	private void store(MModelElement me, Statement stmt) throws SQLException {
 		boolean hasStereotype = false;
-		stmtString = "REPLACE INTO tModelElement (uuid, name, namespace, stereotype) VALUES ('";
+		stmtString = "REPLACE INTO tModelElement (uuid, name, namespace, stereotype, UMLClassName) VALUES ('";
 		stmtString += me.getUUID() + "','";
 		stmtString += me.getName() + "','" ;
 		if (me.getNamespace() != null) stmtString += me.getNamespace().getUUID() + "','";
 		else stmtString += "','";
 		if (me.getStereotype() != null) {
-			stmtString += me.getStereotype().getUUID() + "')";
+			stmtString += me.getStereotype().getUUID() + "','";
 			hasStereotype = true;
 		}
-		else stmtString += "')";
+		else stmtString += "','";
+		stmtString += me.getUMLClassName() + "')";
 
 		stmt.executeUpdate(stmtString);
 		if (hasStereotype) store((MStereotype)me.getStereotype(),stmt);

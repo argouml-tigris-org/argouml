@@ -1331,18 +1331,18 @@ class ActionAddInternalTrans extends UMLChangeAction {
 // } /* end class ActionInstance */
 
 class ActionAddAttribute extends UMLChangeAction {
-  // needs-more-work: should be part of java binding or common elements
-	public static MDataType INT_TYPE = new MDataTypeImpl();
-	static{ INT_TYPE.setName("int"); }
+    // needs-more-work: should be part of java binding or common elements
+ //    public static MDataType INT_TYPE = new MDataTypeImpl();
+//     static{ INT_TYPE.setName("int"); }
 
-  public ActionAddAttribute() { super("Add Attribute"); }
+    public ActionAddAttribute() { super("Add Attribute"); }
 
-  public void actionPerformed(ActionEvent ae) {
-    ProjectBrowser pb = ProjectBrowser.TheInstance;
-    Project p = pb.getProject();
-    Object target = pb.getDetailsTarget();
-    if (!(target instanceof MClassifier)) return;
-    MClassifier cls = (MClassifier) target;
+    public void actionPerformed(ActionEvent ae) {
+	ProjectBrowser pb = ProjectBrowser.TheInstance;
+	Project p = pb.getProject();
+	Object target = pb.getDetailsTarget();
+	if (!(target instanceof MClassifier)) return;
+	MClassifier cls = (MClassifier) target;
 	MClassifier intType = p.findType("int");
 	MAttribute attr = new MAttributeImpl();
 	attr.setName("newAttr");
@@ -1351,28 +1351,28 @@ class ActionAddAttribute extends UMLChangeAction {
 	attr.setVisibility(MVisibilityKind.PUBLIC);
 	cls.addFeature(attr);
 	super.actionPerformed(ae);
-  }
+    }
 
-  public boolean shouldBeEnabled() {
-    ProjectBrowser pb = ProjectBrowser.TheInstance;
-    Object target = pb.getDetailsTarget();
-    return super.shouldBeEnabled() && target instanceof MClassifier;
-  }
+    public boolean shouldBeEnabled() {
+	ProjectBrowser pb = ProjectBrowser.TheInstance;
+	Object target = pb.getDetailsTarget();
+	return super.shouldBeEnabled() && target instanceof MClassifier;
+    }
 } /* end class ActionAddAttribute */
 
 class ActionAddOperation extends UMLChangeAction {
-  // needs-more-work: should be part of java binding or common elements
-	public static MDataType VOID_TYPE = new MDataTypeImpl();
-	static { VOID_TYPE.setName("void"); }
+    // needs-more-work: should be part of java binding or common elements
+//     public static MDataType VOID_TYPE = new MDataTypeImpl();
+//     static { VOID_TYPE.setName("void"); }
 
-  public ActionAddOperation() { super("Add Operation"); }
+    public ActionAddOperation() { super("Add Operation"); }
 
-  public void actionPerformed(ActionEvent ae) {
-    ProjectBrowser pb = ProjectBrowser.TheInstance;
-    Project p = pb.getProject();
-    Object target = pb.getDetailsTarget();
-    if (!(target instanceof MClassifier)) return;
-    MClassifier cls = (MClassifier) target;
+    public void actionPerformed(ActionEvent ae) {
+	ProjectBrowser pb = ProjectBrowser.TheInstance;
+	Project p = pb.getProject();
+	Object target = pb.getDetailsTarget();
+	if (!(target instanceof MClassifier)) return;
+	MClassifier cls = (MClassifier) target;
 	MClassifier voidType = p.findType("void");
 	MOperation oper = new MOperationImpl();
 	MParameter returnParameter = new MParameterImpl();
@@ -1382,12 +1382,12 @@ class ActionAddOperation extends UMLChangeAction {
 	oper.setVisibility(MVisibilityKind.PUBLIC);
 	cls.addFeature(oper);
 	super.actionPerformed(ae);
-  }
-  public boolean shouldBeEnabled() {
-    ProjectBrowser pb = ProjectBrowser.TheInstance;
-    Object target = pb.getDetailsTarget();
-    return super.shouldBeEnabled() && target instanceof MClassifier;
-  }
+    }
+    public boolean shouldBeEnabled() {
+	ProjectBrowser pb = ProjectBrowser.TheInstance;
+	Object target = pb.getDetailsTarget();
+	return super.shouldBeEnabled() && target instanceof MClassifier;
+    }
 } /* end class ActionAddOperation */
 
 class ActionAddMessage extends UMLChangeAction {
