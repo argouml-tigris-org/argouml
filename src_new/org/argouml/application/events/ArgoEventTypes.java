@@ -32,32 +32,32 @@ package org.argouml.application.events;
 public interface ArgoEventTypes {
 
     /** Id which matches any event */
-    static final int ANY_EVENT                 =  1000;
+    int ANY_EVENT                 =  1000;
 		  		 
     /** Id which matches any module event */
-    static final int ANY_MODULE_EVENT          =  1100;
+    int ANY_MODULE_EVENT          =  1100;
     /** Id indicating a module was loaded */
-    static final int MODULE_LOADED             =  1101;
+    int MODULE_LOADED             =  1101;
     /** Id indicating a module was unloaded */
-    static final int MODULE_UNLOADED           =  1102;
+    int MODULE_UNLOADED           =  1102;
     /** Id indicating a module was enabled */
-    static final int MODULE_ENABLED            =  1103;
+    int MODULE_ENABLED            =  1103;
     /** Id indicating a module was disabled */
-    static final int MODULE_DISABLED           =  1104;
+    int MODULE_DISABLED           =  1104;
 		  		 
     /** Id indicating any notation event */
-    static final int ANY_NOTATION_EVENT        =  1200;
+    int ANY_NOTATION_EVENT        =  1200;
     /** Id indicating the default notation was changed */
-    static final int NOTATION_CHANGED          =  1201;
+    int NOTATION_CHANGED          =  1201;
     /** Id indicating a notation was added */
-    static final int NOTATION_ADDED            =  1202;
+    int NOTATION_ADDED            =  1202;
     /** Id indicating a notation was removed */
-    static final int NOTATION_REMOVED          =  1203;
+    int NOTATION_REMOVED          =  1203;
     /** Id indicating a notation provider was added */
-    static final int NOTATION_PROVIDER_ADDED   =  1204;
+    int NOTATION_PROVIDER_ADDED   =  1204;
     /** Id indicating a notation provider was removed */
-    static final int NOTATION_PROVIDER_REMOVED =  1205;
+    int NOTATION_PROVIDER_REMOVED =  1205;
 		  		 
     /** Id marker for the last Argo event */
-    static final int ARGO_EVENT_END            = 99999;
+    int ARGO_EVENT_END            = 99999;
 }
