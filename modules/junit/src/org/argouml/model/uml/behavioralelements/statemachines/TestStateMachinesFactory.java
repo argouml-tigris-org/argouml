@@ -36,11 +36,15 @@ public class TestStateMachinesFactory extends TestCase {
     }
 
     public void testCreates() {
+
+        // Do not test Event or StateVertex yet.
+        // These are not part of NSUML.
+
 	String [] objs = {
 	    "CallEvent",
 	    "ChangeEvent",
 	    "CompositeState",
-	    "Event",
+	    // "Event",
 	    "FinalState",
 	    "Guard",
 	    "Pseudostate",
@@ -48,7 +52,7 @@ public class TestStateMachinesFactory extends TestCase {
 	    "SimpleState",
 	    "State",
 	    "StateMachine",
-	    "StateVertex",
+	    // "StateVertex",
 	    "StubState",
 	    "SubmachineState",
 	    "SynchState",

@@ -36,13 +36,20 @@ public class TestCoreFactory extends TestCase {
     }
 
     public void testCreates() {
+
+        // Do not test BehavioralFeature, Feature, PresentationElement,
+        //    StructuralFeature yet.
+        // NSUML does not have create method.
+        //
+        // Never test for ModelElement.
+
 	String [] objs = {
 	    "Abstraction",
 	    "Association",
 	    "AssociationClass",
 	    "AssociationEnd",
 	    "Attribute",
-	    "BehavioralFeature",
+	    // "BehavioralFeature",
 	    "Binding",
 	    "Class",
 	    "Classifier",
@@ -51,22 +58,22 @@ public class TestCoreFactory extends TestCase {
 	    "Constraint",
 	    "DataType",
 	    "Dependency",
-	    "Element",
+	    // "Element",
 	    "ElementResidence",
-	    "Feature",
+	    // "Feature",
 	    "Flow",
 	    "Generalization",
 	    "Interface",
 	    "Method",
-	    "ModelElement",
+	    // "ModelElement",
 	    "Namespace",
 	    "Node",
 	    "Operation",
 	    "Parameter",
-	    "Permissions",
-	    "PresentationElement",
+	    "Permission",
+	    // "PresentationElement",
 	    "Relationship",
-	    "StructuralFeature",
+	    // "StructuralFeature",
 	    "TemplateParameter",
 	    "Usage",
 	    null
