@@ -25,10 +25,18 @@
 // $header$
 package org.argouml.kernel;
 
+import junit.framework.TestCase;
+
 import org.argouml.application.security.ArgoSecurityManager;
 import org.argouml.model.uml.UmlFactory;
+import org.argouml.model.uml.foundation.core.CoreFactory;
+import org.argouml.model.uml.modelmanagement.ModelManagementFactory;
+import org.argouml.ui.targetmanager.TargetEvent;
+import org.argouml.uml.diagram.static_structure.ui.UMLClassDiagram;
+import org.argouml.uml.diagram.ui.UMLDiagram;
 
-import junit.framework.TestCase;
+import ru.novosoft.uml.foundation.core.MAttribute;
+import ru.novosoft.uml.model_management.MPackage;
 
 /**
  * @since Nov 17, 2002
@@ -68,6 +76,24 @@ public class TestProject extends TestCase {
      */
     protected void tearDown() throws Exception {
         super.tearDown();
+    }
+    
+    public void testTargetSet() {
+        Project p = ProjectManager.getManager().getCurrentProject();
+        Object pack = ModelManagementFactory.getFactory().createPackage();
+        TargetEvent e = new TargetEvent(this, TargetEvent.TARGET_SET, new Object[] {null}, new Object[] {pack});
+        p.targetSet(e);
+        assertEquals(pack, p.getCurrentNamespace());
+        Object attribute = CoreFactory.getFactory().createAttribute();
+        ((MPackage)pack).addOwnedElement((MAttribute)attribute);
+        e = new TargetEvent(this, TargetEvent.TARGET_SET, new Object[] {pack}, new Object[] {attribute});
+        p.targetSet(e);
+        assertEquals(pack, p.getCurrentNamespace());
+        UMLDiagram diagram = new UMLClassDiagram();
+        e = new TargetEvent(this, TargetEvent.TARGET_SET, new Object[] {attribute}, new Object[] {diagram});
+        p.targetSet(e);
+        assertEquals(diagram.getNamespace(), p.getCurrentNamespace());
+        assertEquals(diagram, p.getActiveDiagram());
     }
 
 }
