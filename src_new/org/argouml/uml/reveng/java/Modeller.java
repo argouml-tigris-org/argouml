@@ -118,9 +118,13 @@ public class Modeller
             }
 	    currentName = ownerPackageName;
 	}
-
+	// Save src_path in the upper package
+	Object mPackage = getPackage(currentName);
+	if (Import.getSrcPath() != null & ModelFacade.getTaggedValue(mPackage, "src_path") == null)
+		ModelFacade.setTaggedValue(mPackage, "src_path", Import.getSrcPath());
+		
 	// Find or create a MPackage NSUML object for this package.
-	Object mPackage = getPackage(name);
+	mPackage = getPackage(name);
         currentPackageName = name;
 
 	// Set the current package for the following source code.
