@@ -56,7 +56,7 @@ a:visited
 	mso-protection:locked visible;
 	mso-style-name:Normal;
 	mso-style-id:0;}
-.font8
+.font9
 	{color:windowtext;
 	font-size:10.0pt;
 	font-weight:400;
@@ -65,7 +65,7 @@ a:visited
 	font-family:Arial;
 	mso-generic-font-family:auto;
 	mso-font-charset:0;}
-.font11
+.font12
 	{color:windowtext;
 	font-size:10.0pt;
 	font-weight:400;
@@ -100,40 +100,39 @@ td
 	mso-number-format:"Short Date";}
 .xl25
 	{mso-style-parent:style0;
-	border:.5pt solid black;
-	background:white;
-	mso-pattern:auto none;
-	white-space:normal;}
+	mso-number-format:0;}
 .xl26
+	{mso-style-parent:style0;
+	text-align:left;}
+.xl27
 	{mso-style-parent:style21;
 	color:blue;
 	text-decoration:underline;
 	text-underline-style:single;
+	text-align:left;
 	border-top:.5pt solid black;
 	border-right:.5pt solid black;
 	border-bottom:.5pt solid black;
 	border-left:none;
 	background:white;
 	mso-pattern:auto none;
-	white-space:normal;}
-.xl27
-	{mso-style-parent:style0;
-	border-top:none;
-	border-right:.5pt solid black;
-	border-bottom:.5pt solid black;
-	border-left:.5pt solid black;
-	background:white;
-	mso-pattern:auto none;
-	white-space:normal;}
+	white-space:normal;
+	mso-rotate:90;}
 .xl28
 	{mso-style-parent:style21;
 	color:blue;
 	text-decoration:underline;
 	text-underline-style:single;
+	text-align:left;
 	border-top:none;
 	border-right:.5pt solid black;
 	border-bottom:.5pt solid black;
 	border-left:none;
 	background:white;
 	mso-pattern:auto none;
-	white-space:normal;}
+	white-space:normal;
+	mso-rotate:90;}
+.xl29
+	{mso-style-parent:style0;
+	text-align:left;
+	mso-rotate:90;}
