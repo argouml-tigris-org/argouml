@@ -21,9 +21,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// File: FigPackage.java
-// Classes: FigPackage
-// Original Author: agauthie@ics.uci.edu
 // $Id$
 
 package org.argouml.uml.diagram.static_structure.ui;
@@ -32,6 +29,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Rectangle;
+import java.awt.Polygon;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
 import java.util.Enumeration;
@@ -56,6 +54,7 @@ import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigRect;
 import org.tigris.gef.presentation.FigText;
+import org.tigris.gef.presentation.FigPoly;
 
 import ru.novosoft.uml.foundation.core.MModelElement;
 import ru.novosoft.uml.foundation.core.MNamespace;
@@ -68,12 +67,24 @@ import ru.novosoft.uml.model_management.MPackage;
 public class FigModel extends FigPackage {
     protected static Category cat = Category.getInstance(FigModel.class);
 
+    protected FigPoly _figPoly;
 
     ////////////////////////////////////////////////////////////////
     // constructors
 
     public FigModel() {
         super();
+        _figPoly = new FigPoly(Color.black, Color.black);
+        int[] xpoints = { 125, 130, 135, 125};
+        int[] ypoints = { 45, 40, 45, 45};
+        Polygon polygon = new Polygon(xpoints, ypoints, 4);
+        _figPoly.setPolygon(polygon);
+        _figPoly.setFilled(false);
+        addFig(_figPoly);
+        Rectangle r = getBounds();
+        setBounds(r.x, r.y, r.width, r.height);
+        updateEdges();
+        
     }
 
     public FigModel(GraphModel gm, Object node) {
