@@ -54,7 +54,7 @@ public class PathConvPercentPlusConst extends PathConv {
 
   public void stuffPoint(Point res) {
     int figLength = _pathFigure.getPerimeterLength();
-    if (figLength < 10) { res.setLocation(_pathFigure.getLocation()); return; }
+    if (figLength < 10) { res.setLocation(_pathFigure.center()); return; }
     int pointToGet = ((figLength * percent) / 100) + _delta;
 
     if (pointToGet < 0) pointToGet = 0;

@@ -22,7 +22,7 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 // ENHANCEMENTS, OR MODIFICATIONS.
 
-
+package uci.uml.critics;
 
 import uci.argo.kernel.*;
 import uci.uml.critics.patterns.*;
