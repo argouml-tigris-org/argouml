@@ -68,19 +68,19 @@ public class UMLMutableLinkedList extends UMLLinkedList {
         public PopupMenu() {
             super();
             if (isAdd()) {
-                _addAction.setTarget((MModelElement) getTarget());
-                add(_addAction);
+                    _addAction.setTarget((MModelElement) getTarget());
+                    add(_addAction);
             }
             if (isNew()) {
-                _newAction.setTarget((MModelElement) getTarget());
-                add(_newAction);
+                    _newAction.setTarget((MModelElement) getTarget());
+                    add(_newAction);
             }
             if (isNew() || isAdd())
                 addSeparator();
             if (isDelete()) {
-                _deleteAction.setObjectToRemove(getSelectedValue());
-                _deleteAction.setTarget(getTarget());
-                add(_deleteAction);
+                    _deleteAction.setObjectToRemove(getSelectedValue());
+                    _deleteAction.setTarget(getTarget());
+                    add(_deleteAction);
             }
 
         }
@@ -125,7 +125,7 @@ public class UMLMutableLinkedList extends UMLLinkedList {
      * @return boolean
      */
     public boolean isAdd() {
-        return _add;
+        return _addAction != null && _add;
     }
 
     /**
@@ -133,7 +133,7 @@ public class UMLMutableLinkedList extends UMLLinkedList {
      * @return boolean
      */
     public boolean isDelete() {
-        return _delete;
+        return _deleteAction != null & _delete;
     }
 
     /**
@@ -141,7 +141,7 @@ public class UMLMutableLinkedList extends UMLLinkedList {
      * @return boolean
      */
     public boolean isNew() {
-        return _new;
+        return _newAction != null && _new;
     }
 
     /**
@@ -201,6 +201,18 @@ public class UMLMutableLinkedList extends UMLLinkedList {
         }
     }
 
+    /**
+     * @see java.awt.event.MouseListener#mousePressed(java.awt.event.MouseEvent)
+    */
+    public void mousePressed(MouseEvent e) {
+        super.mouseReleased(e);
+        if (e.getSource() == this) {
+            if (e.isPopupTrigger()) {
+                getPopupMenu().show(e.getComponent(), e.getX(), e.getY());
+            }
+            e.consume();
+        }
+    }
     /**
      * Returns the popupMenu.
      * @return JPopupMenu
