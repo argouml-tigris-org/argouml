@@ -62,7 +62,8 @@ public class CrMultipleAgg extends CrUML {
     while (enum.hasMoreElements()) {
       AssociationEnd ae = (AssociationEnd) enum.nextElement();
       AggregationKind ak = ae.getAggregation();
-      if (ak != AggregationKind.UNSPEC && ak != AggregationKind.NONE)
+      if (!AggregationKind.UNSPEC.equals(ak)  &&
+	  !AggregationKind.NONE.equals(ak))
 	aggCount++;
     }
     if (aggCount > 1) return PROBLEM_FOUND;

@@ -61,7 +61,7 @@ public class CrDupRoleNames extends CrUML {
     while (enum.hasMoreElements()) {
       AssociationEnd ae = (AssociationEnd) enum.nextElement();
       Name aeName = ae.getName();
-      if (aeName == Name.UNSPEC) continue;
+      if (Name.UNSPEC.equals(aeName)) continue;
       String nameStr = aeName.getBody();
       if (nameStr.length() == 0) continue;
       if (namesSeen.contains(nameStr)) return PROBLEM_FOUND;

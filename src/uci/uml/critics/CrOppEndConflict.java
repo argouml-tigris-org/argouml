@@ -79,8 +79,9 @@ public class CrOppEndConflict extends CrUML {
 	AssociationEnd ae = (AssociationEnd) enum2.nextElement();
 	if (ae.getType() == cls) continue;
 	Name aeName = ae.getName();
-	if (aeName == Name.UNSPEC) continue;
+	if (Name.UNSPEC.equals(aeName)) continue;
 	String aeNameStr = aeName.getBody();
+	if (aeNameStr.length() == 0) continue;
 	if (namesSeen.contains(aeNameStr)) return PROBLEM_FOUND;
 	namesSeen.addElement(aeNameStr);
       }

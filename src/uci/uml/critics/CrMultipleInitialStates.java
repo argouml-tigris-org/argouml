@@ -65,7 +65,7 @@ public class CrMultipleInitialStates extends CrUML {
     for (int i =0; i < size; i++) {
       Object sv = peers.elementAt(i);
       if (sv instanceof Pseudostate &&
-	  ((Pseudostate)sv).getKind() == PseudostateKind.INITIAL)
+	  (PseudostateKind.INITIAL.equals(((Pseudostate)sv).getKind())))
 	initialStateCount++;
     }
     if (initialStateCount > 1) return PROBLEM_FOUND;

@@ -71,8 +71,9 @@ public class CrOppEndVsAttr extends CrUML {
     while (enum.hasMoreElements()) {
       StructuralFeature sf = (StructuralFeature) enum.nextElement();
       Name sfName = sf.getName();
-      if (sfName == Name.UNSPEC) continue;
+      if (Name.UNSPEC.equals(sfName)) continue;
       String nameStr = sfName.getBody();
+      if (nameStr.length() == 0) continue;
       namesSeen.addElement(nameStr);
     }
     Vector assocEnds = cls.getAssociationEnd();
@@ -88,8 +89,9 @@ public class CrOppEndVsAttr extends CrUML {
 	AssociationEnd ae = (AssociationEnd) enum2.nextElement();
 	if (ae.getType() == cls) continue;
 	Name aeName = ae.getName();
-	if (aeName == Name.UNSPEC) continue;
+	if (Name.UNSPEC.equals(aeName)) continue;
 	String aeNameStr = aeName.getBody();
+	if (aeNameStr == null || aeNameStr.length() == 0) continue;
 	if (namesSeen.contains(aeNameStr)) return PROBLEM_FOUND;
       }
     }

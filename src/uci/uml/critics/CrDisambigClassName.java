@@ -63,6 +63,7 @@ public class CrDisambigClassName extends CrUML {
     Name myName = cls.getName();
     if (myName.equals(Name.UNSPEC)) return NO_PROBLEM;
     String myNameString = myName.getBody();
+    if (myNameString.length() == 0) return NO_PROBLEM;
     ElementOwnership oe = cls.getElementOwnership();
     if (oe == null) return NO_PROBLEM;
     Namespace ns = oe.getNamespace();

@@ -35,6 +35,7 @@ CLASSES = \
 	ChildGenUML.class \
 	CrAssocNameConflict.class \
 	CrAttrNameConflict.class \
+	CrOperNameConflict.class \
 	CrCircularAssocClass.class \
 	CrCircularComposition.class \
 	CrCircularInheritance.class \

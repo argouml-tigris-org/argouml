@@ -58,10 +58,10 @@ public class CrUnconventionalAttrName extends CrUML {
     Name myName = attr.getName();
     if (myName == null || myName.equals(Name.UNSPEC)) return NO_PROBLEM;
     String nameStr = myName.getBody();
-    if (nameStr.length() == 0) return NO_PROBLEM;
+    if (nameStr == null || nameStr.length() == 0) return NO_PROBLEM;
     char initalChar = nameStr.charAt(0);
     ChangeableKind ck = attr.getChangeable();
-    if (ck != null && ck.equals(ChangeableKind.FROZEN)) return NO_PROBLEM;
+    if (ChangeableKind.FROZEN.equals(ck)) return NO_PROBLEM;
     if (!Character.isLowerCase(initalChar)) return PROBLEM_FOUND;
     return NO_PROBLEM;
   }

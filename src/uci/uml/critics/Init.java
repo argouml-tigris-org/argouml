@@ -47,6 +47,7 @@ public class Init {
   // UML specific
   public static Critic crAssocNameConflict = new CrAssocNameConflict();
   public static Critic crAttrNameConflict = new CrAttrNameConflict();
+  public static Critic crOperNameConflict = new CrOperNameConflict();
   public static Critic crCircularAssocClass = new CrCircularAssocClass();
   public static Critic crCircularInheritance = new CrCircularInheritance();
   public static Critic crCircularComposition = new CrCircularComposition();
@@ -143,6 +144,7 @@ public class Init {
 
       Agency.register(crAssocNameConflict, namespaceCls);
       Agency.register(crAttrNameConflict, classifierCls);
+      Agency.register(crOperNameConflict, classifierCls);
       Agency.register(crCircularAssocClass, assocClassCls);
       Agency.register(crCircularInheritance, genElementCls);
       Agency.register(crCircularComposition, classCls);

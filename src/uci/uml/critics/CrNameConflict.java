@@ -67,6 +67,7 @@ public class CrNameConflict extends CrUML {
       if (me instanceof Generalization) continue;
       Name meName = me.getName();
       if (meName == null || meName.equals(Name.UNSPEC)) continue;
+      if (meName.getBody().length() == 0) continue;
       if (namesSeen.contains(meName.getBody())) return PROBLEM_FOUND;
       namesSeen.addElement(meName.getBody());
     }
