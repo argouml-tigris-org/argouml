@@ -461,6 +461,39 @@ public class StateMachinesFactory extends AbstractUmlModelFactory {
         event.setNamespace(ProjectManager.getManager().getCurrentProject().getModel());
         return event;
     }
+
+    /**
+     * Builds a signalevent whose namespace (and therefore the ownership) is the
+     * rootmodel.
+     * @return MSignalEvent
+     */
+    public MSignalEvent buildSignalEvent() {
+        MSignalEvent event = createSignalEvent();
+        event.setNamespace(ProjectManager.getManager().getCurrentProject().getModel());
+        return event;
+    }
+
+    /**
+     * Builds a timeevent whose namespace (and therefore the ownership) is the
+     * rootmodel.
+     * @return MTimeEvent
+     */
+    public MTimeEvent buildTimeEvent() {
+        MTimeEvent event = createTimeEvent();
+        event.setNamespace(ProjectManager.getManager().getCurrentProject().getModel());
+        return event;
+    }
+
+    /**
+     * Builds a changeevent whose namespace (and therefore the ownership) is the
+     * rootmodel.
+     * @return MChangeEvent
+     */
+    public MChangeEvent buildChangeEvent() {
+        MChangeEvent event = createChangeEvent();
+        event.setNamespace(ProjectManager.getManager().getCurrentProject().getModel());
+        return event;
+    }
     
     /**
      * Builds a guard condition with a given transition. The guard condition is
