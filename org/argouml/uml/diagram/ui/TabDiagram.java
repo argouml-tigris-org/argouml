@@ -437,23 +437,6 @@ class ArgoJGraph extends JGraph {
     }
 
     /**
-     * @see java.lang.Object#equals(java.lang.Object)
-     */
-    public boolean equals(Object o) {
-        if (o instanceof ArgoJGraph) {
-            ArgoJGraph a = (ArgoJGraph) o;            
-            if (((this.getCurrentDiagramId() != null
-		  && this.getCurrentDiagramId().equals(a.getCurrentDiagramId()))
-		 || (this.getCurrentDiagramId() == null
-		     && a.getCurrentDiagramId() == null))
-                && this.getEditor().equals(a.getEditor())) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    /**
      * Make a new JGraph with a new DefaultGraphModel.
      * @see org.tigris.gef.graph.presentation.DefaultGraphModel
      */
