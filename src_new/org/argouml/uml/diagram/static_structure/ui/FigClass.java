@@ -155,14 +155,20 @@ public class FigClass extends FigNodeModelElement {
     return new SelectionClass(this);
   }
 
+
+  /**
+   * Build a collection of menu items relevant for a right-click popup menu on a Package.
+   *
+   * @param     me     a mouse event
+   * @returns           a collection of menu items
+   */
   public Vector getPopUpActions(MouseEvent me) {
     Vector popUpActions = super.getPopUpActions(me);
     JMenu addMenu = new JMenu("Add");
     addMenu.add(ActionAddAttribute.SINGLETON);
     addMenu.add(ActionAddOperation.SINGLETON);
     addMenu.add(ActionAddNote.SINGLETON);
-    popUpActions.insertElementAt(addMenu,
-				 popUpActions.size() - 1);
+    popUpActions.insertElementAt(addMenu, popUpActions.size() - 1);
     JMenu showMenu = new JMenu("Show");
     if(_attrVec.isDisplayed() && _operVec.isDisplayed())
       showMenu.add(ActionCompartmentDisplay.HideAllCompartments);
@@ -180,6 +186,20 @@ public class FigClass extends FigNodeModelElement {
       showMenu.add(ActionCompartmentDisplay.ShowOperCompartment);
 
     popUpActions.insertElementAt(showMenu, popUpActions.size() - 1);
+
+    // Block added by BobTarling 7-Jan-2001
+    MClass mclass = (MClass) getOwner();
+    ArgoJMenu modifierMenu = new ArgoJMenu("Modifiers");
+
+    modifierMenu.addCheckItem(new ActionModifier("Public", "visibility", "getVisibility", "setVisibility", mclass, MVisibilityKind.class, MVisibilityKind.PUBLIC, null));
+    modifierMenu.addCheckItem(new ActionModifier("Abstract", "isAbstract", "isAbstract", "setAbstract", mclass));
+    modifierMenu.addCheckItem(new ActionModifier("Final", "isLeaf", "isLeaf", "setLeaf", mclass));
+    modifierMenu.addCheckItem(new ActionModifier("Root", "isRoot", "isRoot", "setRoot", mclass));
+    modifierMenu.addCheckItem(new ActionModifier("Active", "isActive", "isActive", "setActive", mclass));
+
+    popUpActions.insertElementAt(modifierMenu, popUpActions.size() - 1);
+    // end of block
+
     return popUpActions;
   }
 
