@@ -114,10 +114,6 @@ public class UMLCognitiveResourceBundle_en_GB extends ListResourceBundle {
         {"mnemonic.button.finish", "F"},
         {"mnemonic.button.help", "H"},
 
-        {"level.low", "Low"},
-        {"level.medium", "Medium"},
-        {"level.high", "High"},
-
 	// Critics text
         { "CrAssocNameConflict_head" ,
                 "Resolve Association Name Conflict" },

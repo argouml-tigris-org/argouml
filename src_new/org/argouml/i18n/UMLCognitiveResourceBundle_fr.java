@@ -106,10 +106,6 @@ public class UMLCognitiveResourceBundle_fr extends ListResourceBundle {
         {"mnemonic.button.finish", "F"},
         {"mnemonic.button.help", "A"},
 
-        {"level.low", "Basse"},
-        {"level.medium", "Moyenne"},
-        {"level.high", "\u00c9lev\u00e9e"},
-
         {"message.no-item-selected",
                 "Aucun \u00e9l\u00e9ment \u00e0 corriger s\u00e9lectionn\u00e9"},
         {"message.branch-critic",

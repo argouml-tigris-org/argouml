@@ -112,10 +112,6 @@ public class UMLCognitiveResourceBundle_de extends ListResourceBundle {
         {"mnemonic.button.finish", "F"},
         {"mnemonic.button.help", "H"},
 
-        {"level.low", "Niedrig"},
-        {"level.medium", "Mittel"},
-        {"level.high", "Hoch"},
-
         {"message.no-item-selected", 
          "Keine \"Zu bearbeiten\"-Elemente ausgew\u00e4hlt"},
          
@@ -152,7 +148,7 @@ public class UMLCognitiveResourceBundle_de extends ListResourceBundle {
           "haben. \n" +
 	  "\n" +
 	  "Eine klare und unzweideutige Namensgebung ist ein " +
-          "Schl\u00fcsselelement für die Codegenerierung, die " +
+          "Schl\u00fcsselelement fï¿½r die Codegenerierung, die " +
           "Verst\u00e4ndlichkeit und die Wartbarkeit des Entwurfes. \n" +
 	  "\n" +
 	  "Zur Problembeseitigung klicken Sie auf die Schaltfl\u00e4che " +
@@ -246,7 +242,7 @@ public class UMLCognitiveResourceBundle_de extends ListResourceBundle {
 	  "(<ocl>self</ocl>), die Teil einer Assoziation ist, sollte sich " +
 	  "innerhalb des Namensraumes der Assoziation befinden.\n" +
 	  "\n" +
-	  "Wenn dies nicht der Fall ist, gibt es für die Klassen, " +
+	  "Wenn dies nicht der Fall ist, gibt es fï¿½r die Klassen, " +
           "Schnittstellen oder anderen Klassifizierungen keine " +
           "M\u00f6glichkeit, die Referenz zu den anderen mit Hilfe der " +
           "Assoziation zu benennen.\n" +
@@ -269,7 +265,7 @@ public class UMLCognitiveResourceBundle_de extends ListResourceBundle {
 	  "Jeder Parameter einer Methode mu\u00df einen eindeutigen Namen " +
           "haben. \n" +
 	  "\n" +
-	  "Die klare und unzweideutige Namensgebung ist für die " +
+	  "Die klare und unzweideutige Namensgebung ist fï¿½r die " +
           "Codegenerierung und zum Erreichen eines klaren und wartbaren " +
           "Entwurfes erforderlich.\n" +
 	  "\n" +
@@ -1083,7 +1079,7 @@ public class UMLCognitiveResourceBundle_de extends ListResourceBundle {
           "\n" +
           "Ein Konstruktor hat per Konvention (Java, C++) den gleichen Namen " +
           "wie die Klasse, ist nicht statisch und gibt keinen " +
-          "R\u00fcckgabewert zur\u00fcck (das bedeutet, Sie müssen den " +
+          "R\u00fcckgabewert zur\u00fcck (das bedeutet, Sie mï¿½ssen den " +
           "return-Parameter, den ArgoUML standardm\u00e4ssig hinzuf\u00fcgt, " +
           "entfernen). ArgoUML wird jede Methode akzeptieren, die diesen " +
           "Konventionen folgt, auch wenn er nicht den Sterotyp <<create>> " +
@@ -1408,7 +1404,7 @@ public class UMLCognitiveResourceBundle_de extends ListResourceBundle {
         { "CrMultipleRealization_desc" ,
           "<ocl>self</ocl> implementiert mehrere Schnittstellen. Obwohl dies " +
           "in UML legal ist, wird dieser Code nicht in Java \u00fcbersetzt " +
-          "werden können. Ersetzen Sie die Mehrfach-Realisierung durch " +
+          "werden kï¿½nnen. Ersetzen Sie die Mehrfach-Realisierung durch " +
           "Vererbungen, wenn Sie kompatiblen und fehlerfreien Code erzeugen " +
           "wollen." },
           
@@ -1439,7 +1435,7 @@ public class UMLCognitiveResourceBundle_de extends ListResourceBundle {
           "<<utility>> geltenden Restriktionen \u00fcberein.\n" +
 	  "Sie enth\u00e4lt Instanz-Attribute oder -Variablen.\n" +
 	  "\n" +
-	  "Wenn Sie wollen, da\u00df diese Klasse nicht länger ein " +
+	  "Wenn Sie wollen, da\u00df diese Klasse nicht lï¿½nger ein " +
           "<<utility>> ist, entfernen Sie das Stereotyp <<utility>>, indem " +
           "Sie auf die Klasse klicken und im Registerblatt \"Eigenschaften\" " +
           "die leere Auswahl in der Stereotyp-Drop-Down-Liste markieren.\n" },
@@ -1512,7 +1508,7 @@ public class UMLCognitiveResourceBundle_de extends ListResourceBundle {
 
         { "CrSingletonViolatedMissingStaticAttr_desc",
 	  "\"<ocl>self</ocl>\" wurde mit dem Stereotyp <<singleton>> " +
-          "gekennzeichnet, aber es erf\u00fcllt nicht die für \"Singletons\" " +
+          "gekennzeichnet, aber es erf\u00fcllt nicht die fï¿½r \"Singletons\" " +
           "geltenden Restriktionen. \n" +
 	  "Sie hat kein statisches Attribut (eine Klassenvariable), welches " +
           "die die Instanz aufnimmt.\n" +
@@ -1537,7 +1533,7 @@ public class UMLCognitiveResourceBundle_de extends ListResourceBundle {
 
         { "CrSingletonViolatedOnlyPrivateConstructors_desc",
 	  "\"<ocl>self</ocl>\" wurde mit dem Stereotyp <<singleton>> " +
-          "gekennzeichnet, aber es erf\u00fcllt nicht die für \"Singletons\" " +
+          "gekennzeichnet, aber es erf\u00fcllt nicht die fï¿½r \"Singletons\" " +
           "geltenden Restriktionen. \n" +
 	  "Sie darf nur mit \"private\" gekennzeichnete Konstruktoren " +
           "aufweisen, damit neue Instanzen nicht durch anderen Code erzeugt " +
