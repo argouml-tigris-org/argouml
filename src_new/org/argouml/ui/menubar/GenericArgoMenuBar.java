@@ -284,11 +284,11 @@ public class GenericArgoMenuBar extends JMenuBar
         // shift tab
         _select.add(new CmdSelectInvert());
 
-        _edit.add(Actions.Undo);
-        editToolbar.add(new ToolButton(Actions.Undo));
-        
-        _edit.add(Actions.Redo);
-        editToolbar.add(new ToolButton(Actions.Redo));
+        //These are not yet implmeneted - Bob Tarling 12 Oct 2002
+        //_edit.add(Actions.Undo);
+        //editToolbar.add(new ToolButton(Actions.Undo));
+        //_edit.add(Actions.Redo);
+        //editToolbar.add(new ToolButton(Actions.Redo));
         
         _edit.addSeparator();
         
