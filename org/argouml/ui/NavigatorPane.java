@@ -222,7 +222,15 @@ public class NavigatorPane
     ////////////////////////////////////////////////////////////////
     // constructors
     
-    /** needs documenting */
+    /**
+     * Constructs a new navigator panel.
+     * 
+     * <p>This panel consists of a Combobox to select a navigation
+     * perspective, a JTree to display the UML model, some history
+     * (back and forward arrows) buttons that are currently disabled,
+     * and a configuration dialog to tailor the perspectives (but this
+     * is not saved).
+     */
     public NavigatorPane(boolean doSplash) {
         
         _combo = new JComboBox();
@@ -873,11 +881,22 @@ public class NavigatorPane
         
         /** brings up the pop-up menu */
         public void mousePressed(MouseEvent me) {
-            
-            if (me.isPopupTrigger()) {
-                
-                showPopupMenu(me);
-            }
+            if (me.isPopupTrigger()) {me.consume();showPopupMenu(me);}
+        }
+        
+        /** brings up the pop-up menu 
+         *
+         * <p>On Windows and Motif platforms, the user brings up a popup menu
+         *    by releasing the right mouse button while the cursor is over a
+         *    component that is popup-enabled.
+         */
+        public void mouseReleased(MouseEvent me) {
+            if (me.isPopupTrigger()) {me.consume();showPopupMenu(me);}
+        }
+        
+        /** brings up the pop-up menu */
+        public void mouseClicked(MouseEvent me) {
+            if (me.isPopupTrigger()) {me.consume();showPopupMenu(me);}
         }
         
         /** builds a pop-up menu for extra functionality for the Tree*/
