@@ -1,10 +1,10 @@
 ArgoUML-*.tar.gz
 ArgoUML-*.zip
 ArgoUML-*.tgz
-# .classpath and .project are used by Eclipse IDE
+# .classpath and .project are used by Eclipse IDE, as is bin
 .classpath
 .project
+bin
 # CVS should ignore this one also
 argouml.log
-#
 #
