@@ -37,6 +37,7 @@ import java.util.Vector;
 import org.argouml.application.api.Notation;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.ModelFacade;
+import org.argouml.model.uml.UmlFactory;
 import org.argouml.model.uml.UmlModelEventPump;
 import org.argouml.ui.ArgoJMenu;
 import org.tigris.gef.base.Layer;
@@ -227,12 +228,20 @@ public class FigAssociation extends FigEdgeModelElement {
 	if (ft == _srcRole) {
 	    Object srcAE = (conn.toArray())[0];
 	    ModelFacade.setName(srcAE, _srcRole.getText());
-	}
-	if (ft == _destRole) {
+	} else if (ft == _destRole) {
 	    Object destAE = (conn.toArray())[1];
 	    ModelFacade.setName(destAE, _destRole.getText());
+	} else if (ft == _srcMult) {
+	    Object srcAE = (conn.toArray())[0];
+	    Object multi = UmlFactory.getFactory().getDataTypes()
+			   .createMultiplicity(_srcMult.getText());
+	    ModelFacade.setMultiplicity(srcAE, multi);
+	} else if (ft == _destMult) {
+	    Object destAE = (conn.toArray())[1];
+	    Object multi = UmlFactory.getFactory().getDataTypes()
+			   .createMultiplicity(_destMult.getText());
+	    ModelFacade.setMultiplicity(destAE, multi);
 	}
-	// TODO: parse multiplicities
     }
   
     private void updateEnd(FigText multiToUpdate, FigText roleToUpdate,
