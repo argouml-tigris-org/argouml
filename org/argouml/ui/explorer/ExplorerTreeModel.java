@@ -77,8 +77,7 @@ ItemListener{
         Iterator nodesIt = this.findNodes(node).iterator();
         while(nodesIt.hasNext()){
             
-            DefaultMutableTreeNode changeNode = (DefaultMutableTreeNode)nodesIt.next();
-            changeNode = (DefaultMutableTreeNode)changeNode.getParent();
+            ExplorerTreeNode changeNode = (ExplorerTreeNode)nodesIt.next();
             this.nodeChanged(changeNode);
         }
         
