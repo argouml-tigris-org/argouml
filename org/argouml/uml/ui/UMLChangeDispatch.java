@@ -43,85 +43,77 @@ import ru.novosoft.uml.MElementEvent;
  * InvokeLater to be run on the user interface thread.<p>
  *
  * This class is updated to cope with changes to the targetchanged
- * mechanism.<p>
+ * mechanism.
  */
 public class UMLChangeDispatch implements Runnable, UMLUserInterfaceComponent {
     private MElementEvent event;
     private int eventType;
     private Container container;
+    
     /**
-     * The target of the proppanel that constructs this umlchangedispatch
+     * The target of the proppanel that constructs this umlchangedispatch.
      */
     private Object target;
 
     /**
-     * <p>Dispatch a target changed event <em>and</em> add a NSUML listener to
-     *   the target afterwards.</p>
+     * Dispatch a target changed event <em>and</em> add a NSUML listener to
+     * the target afterwards.
      */
-
     public static final int TARGET_CHANGED_ADD = -1;
 
 
     /**
-     * <p>Dispatch a target changed event.</p>
+     * Dispatch a target changed event.
      */
-
     public static final int TARGET_CHANGED = 0;
 
 
     /**
-     * <p>Dispatch a NSUML property set event.</p>
+     * Dispatch a NSUML property set event.
      */
-
     public static final int PROPERTY_SET = 1;
 
 
     /**
-     * <p>Dispatch a NSUML list role item set event.</p>
+     * Dispatch a NSUML list role item set event.
      */
-
     public static final int LIST_ROLE_ITEM_SET = 2;
 
 
     /**
-     * <p>Dispatch a NSUML recovered event.</p>
+     * Dispatch a NSUML recovered event.
      */
 
     public static final int RECOVERED = 3;
 
 
     /**
-     * <p>Dispatch a NSUML removed event.</p>
+     * Dispatch a NSUML removed event.
      */
-
     public static final int REMOVED = 4;
 
 
     /**
-     * <p>Dispatch a NSUML role added event.</p>
+     * Dispatch a NSUML role added event.
      */
-
     public static final int ROLE_ADDED = 5;
 
 
     /**
-     * <p>Dispatch a NSUML role removed event.</p>
+     * Dispatch a NSUML role removed event.
      */
-
     public static final int ROLE_REMOVED = 6;
 
 
     /**
-     * <p>Dispatch a target reasserted event.</p>
+     * Dispatch a target reasserted event.
      */
-
     public static final int TARGET_REASSERTED = 7;
 
 
     /**
-     * <p>Dispatch a default (target changed) event.</p>
+     * Dispatch a default (target changed) event.
      */
-
     public static final int DEFAULT = TARGET_CHANGED;
 
 
@@ -129,11 +121,8 @@ public class UMLChangeDispatch implements Runnable, UMLUserInterfaceComponent {
      * Creates a UMLChangeDispatch.  eventType is overriden if a call to 
      * one of the event functions is called.
      *
-     * @param uic user interface container to which changes are
-     *                  dispatched.
-     * @param et -1 will add event listener to new target, 0
-     *                  for default.
-     *     
+     * @param uic user interface container to which changes are dispatched.
+     * @param et -1 will add event listener to new target, 0 for default.
      */
     public UMLChangeDispatch(Container uic, int et) {
         synchronized (uic) {
@@ -142,15 +131,13 @@ public class UMLChangeDispatch implements Runnable, UMLUserInterfaceComponent {
 	    if (uic instanceof PropPanel) {
 		target = ((PropPanel) uic).getTarget();              
 	    }
-        
 	}
     }
     
     /**
-     *   configures this instance to dispatch a targetChanged event.
+     * Configures this instance to dispatch a targetChanged event.
      */
-    public void targetChanged()
-    {
+    public void targetChanged() {
         eventType = 0;
     }
 
@@ -162,8 +149,8 @@ public class UMLChangeDispatch implements Runnable, UMLUserInterfaceComponent {
     }
     
     /**
-     *   configures this instance to dispatch a propertySet event.
-     *   @param mee NSUML event
+     * Configures this instance to dispatch a propertySet event.
+     * @param mee NSUML event
      */
     public void propertySet(MElementEvent mee) {
         event = mee;
@@ -171,8 +158,8 @@ public class UMLChangeDispatch implements Runnable, UMLUserInterfaceComponent {
     }
            
     /**
-     *   configures this instance to dispatch a listRoleItemSet event.
-     *   @param mee NSUML event
+     * Configures this instance to dispatch a listRoleItemSet event.
+     * @param mee NSUML event
      */
     public void listRoleItemSet(MElementEvent mee) {
         event = mee;
@@ -180,8 +167,8 @@ public class UMLChangeDispatch implements Runnable, UMLUserInterfaceComponent {
     }
 
     /**
-     *   configures this instance to dispatch a recovered event.
-     *   @param mee NSUML event.
+     * Configures this instance to dispatch a recovered event.
+     * @param mee NSUML event.
      */
     public void recovered(MElementEvent mee) {
         event = mee;
@@ -189,8 +176,8 @@ public class UMLChangeDispatch implements Runnable, UMLUserInterfaceComponent {
     }
     
     /**  
-     *    configures this instance to dispatch a removed event.
-     *    @param mee NSUML event.
+     * Configures this instance to dispatch a removed event.
+     * @param mee NSUML event.
      */
     public void removed(MElementEvent mee) {
         event = mee;
@@ -198,8 +185,8 @@ public class UMLChangeDispatch implements Runnable, UMLUserInterfaceComponent {
     }
 	
     /**
-     *    configures this instance to dispatch a roleAdded event.
-     *    @param mee NSUML event.
+     * Configures this instance to dispatch a roleAdded event.
+     * @param mee NSUML event.
      */
     public void roleAdded(MElementEvent mee) {
         event = mee;
@@ -207,8 +194,8 @@ public class UMLChangeDispatch implements Runnable, UMLUserInterfaceComponent {
     }
 	
     /**
-     *    configures this instance to dispatch a roleRemoved event.
-     *    @param mee NSUML event
+     * Configures this instance to dispatch a roleRemoved event.
+     * @param mee NSUML event
      */
     public void roleRemoved(MElementEvent mee) {
         event = mee;
@@ -217,10 +204,10 @@ public class UMLChangeDispatch implements Runnable, UMLUserInterfaceComponent {
     
     
     /**
-     *    Called by InvokeLater on user interface thread.  Dispatches
-     *    event to all contained objects implementing
-     *    UMLUserInterfaceComponent.  If event == -1, adds change listener to
-     *    new target on completion of dispatch.
+     * Called by InvokeLater on user interface thread.  Dispatches
+     * event to all contained objects implementing
+     * UMLUserInterfaceComponent.  If event == -1, adds change listener to
+     * new target on completion of dispatch.
      */
     public void run() {
         if (target != null) {
@@ -248,16 +235,16 @@ public class UMLChangeDispatch implements Runnable, UMLUserInterfaceComponent {
             	// added again and again to the target's listeners
 		UmlModelEventPump.getPump().addModelEventListener(propPanel, t);
             }
-            
         }
     }
     
     /**
-     *    Iterates through all children of this container.  If a child
-     *    is another container then calls dispatch iteratively, if
-     *    a child supports UMLUserInterfaceComponent then calls the
-     *    appropriate method.
-     *    @param theAWTContainer AWT container
+     * Iterates through all children of this container.  If a child
+     * is another container then calls dispatch iteratively, if
+     * a child supports UMLUserInterfaceComponent then calls the
+     * appropriate method.
+     * 
+     * @param theAWTContainer AWT container
      */
     private void dispatch(Container theAWTContainer) {
        
@@ -309,7 +296,6 @@ public class UMLChangeDispatch implements Runnable, UMLUserInterfaceComponent {
 		}
             } 
         }
-       
     }
     
     private void synchronizedDispatch(Container cont) {
