@@ -211,7 +211,8 @@ public class Critic implements Poster, Serializable {
     _criticType = "correctness";
     _knowledgeTypes.addElement("Correctness");
     _decisionCategory = "Checking";
-    _emailAddr = "jrobbins@ics.uci.edu";
+    // TODO: make this configurable
+    _emailAddr = "users@argouml.tigris.org";
 
     _moreInfoURL = defaultMoreInfoURL();
 

@@ -96,6 +96,7 @@ public abstract class UMLDiagram extends ArgoDiagram {
 
   public UMLDiagram() { 
   	super();
+    initToolBar();
   }
 
   
@@ -150,8 +151,15 @@ public abstract class UMLDiagram extends ArgoDiagram {
    * clicking on the diagram tab).
    */
   public ToolBar getToolBar() {
-    initToolBar();
+    // initToolBar();
     return _toolBar;
   }
     
+    /**
+     * @see org.tigris.gef.base.Diagram#initToolBar()
+     */
+    public void initToolBar() {
+        super.initToolBar();
+    }
+
 } /* end class UMLDiagram */

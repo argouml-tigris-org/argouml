@@ -99,7 +99,7 @@ public class UMLDeploymentDiagram extends UMLDiagram {
     }
 
     /** initialize the toolbar for this diagram type */
-    protected void initToolBar() {
+    public void initToolBar() {
         cat.debug("making deployment toolbar");
         _toolBar = new ToolBar();
         _toolBar.putClientProperty("JToolBar.isRollover", Boolean.TRUE);

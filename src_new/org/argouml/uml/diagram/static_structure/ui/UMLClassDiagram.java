@@ -127,7 +127,7 @@ public class UMLClassDiagram extends UMLDiagram {
     }
 
     /** initialize the toolbar for this diagram type */
-    protected void initToolBar() {
+    public void initToolBar() {
         _toolBar = new ToolBar();
         _toolBar.putClientProperty("JToolBar.isRollover", Boolean.TRUE);
 

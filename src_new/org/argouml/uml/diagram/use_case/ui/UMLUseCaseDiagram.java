@@ -225,7 +225,7 @@ public class UMLUseCaseDiagram extends UMLDiagram {
      *   diagram specific tools in the middle, grouped appropriately.</p>
      */
 
-    protected void initToolBar() {
+    public void initToolBar() {
 
         cat.debug(this.getClass().toString() + ": making usecase toolbar");
 
