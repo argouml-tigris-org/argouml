@@ -10,7 +10,6 @@ log4j.category.org.argouml.cognitive=ERROR
 log4j.category.org.argouml.uml.cognitive=ERROR
 #
 log4j.appender.FULL=org.apache.log4j.ConsoleAppender
-log4j.appender.DEBUG=org.apache.log4j.ConsoleAppender
 log4j.appender.FULL.layout=org.apache.log4j.PatternLayout
 log4j.appender.FULL.layout.ConversionPattern=%r %5p [%t] %m (%F:%L)%n
 log4j.appender.FULL.Threshold=DEBUG
