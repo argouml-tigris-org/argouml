@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2002 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -62,7 +62,6 @@ import org.argouml.ui.menubar.GenericArgoMenuBar;
 import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.ui.targetmanager.TargetListener;
 import org.argouml.ui.targetmanager.TargetManager;
-import org.argouml.uml.diagram.ui.UMLDiagram;
 import org.argouml.uml.ui.ActionExit;
 import org.argouml.uml.ui.TabProps;
 import org.tigris.gef.base.Diagram;
@@ -292,8 +291,8 @@ public class ProjectBrowser
         _workarea = new BorderSplitPane();
         // create the todopane
         if (doSplash) {
-			_splash.getStatusBar().showStatus(Translator.localize(BUNDLE, 
-											  "statusmsg.bar.making-project-browser-to-do-pane"));
+	    _splash.getStatusBar().showStatus(Translator.localize(
+		    "statusmsg.bar.making-project-browser-to-do-pane"));
             _splash.getStatusBar().incProgress(5);
         }
         _todoPane = new ToDoPane(doSplash);
@@ -323,7 +322,7 @@ public class ProjectBrowser
         // position north, south, east or west.
         JPanel toolbarBoundry = new JPanel();
         toolbarBoundry.setLayout(new DockBorderLayout());
-        // TODO - should save and restore the last positions of the toolbars
+        // TODO: - should save and restore the last positions of the toolbars
         toolbarBoundry.add(_menuBar.getFileToolbar(), BorderLayout.NORTH);
         toolbarBoundry.add(_menuBar.getEditToolbar(), BorderLayout.NORTH);
         toolbarBoundry.add(_menuBar.getViewToolbar(), BorderLayout.NORTH);
@@ -577,14 +576,15 @@ public class ProjectBrowser
 
     /**
      * Find the tabpage with the given label and make it the front tab
-     * @param The tabpage label
-     * @return false if no tab was found of given name
+     *
+     * @param tabName The tabpage label
      */
     public void selectTabNamed(String tabName) {
         Iterator it = detailsPanesByCompassPoint.values().iterator();
         while (it.hasNext()) {
             DetailsPane detailsPane = (DetailsPane) it.next();
-            if (detailsPane.selectTabNamed(Translator.localize("UMLMenu", tabName))) {
+            if (detailsPane.selectTabNamed(Translator.localize("UMLMenu",
+							       tabName))) {
                 return;
             }
         }
@@ -593,7 +593,8 @@ public class ProjectBrowser
 
     /**
      * Find the tabpage with the given label
-     * @param The tabpage label
+     *
+     * @param tabName The tabpage label
      * @return the tabpage
      */
     public JPanel getNamedTab(String tabName) {
@@ -606,7 +607,7 @@ public class ProjectBrowser
                 return panel;
             }
         }
-        //TODO I'd prefer to throw this exception here but doing Argo currently
+        //TODO: I'd prefer to throw this exception here but doing Argo currently
         //falls over - needs more investigation Bob Tarling 8 Dec 2002
         //throw new IllegalArgumentException("No such tab named " + tabName);
         return null;
@@ -693,54 +694,6 @@ public class ProjectBrowser
      *   open a model element in a new window has been recieved.
      */
     public void open(Object element) {
-    }
-
-    /**
-     * @deprecated As of ArgoUml version 0.13.5,replaced by {@link
-     * org.argouml.ui.targetmanager.TargetManager#navigateBack()
-     * TargetManager.getInstance().navigateBack()}
-     */
-    public boolean navigateBack(boolean attempt) {
-        boolean navigated = false;
-        if (attempt && TargetManager.getInstance().navigateBackPossible()) {
-	    TargetManager.getInstance().navigateBackward();
-        }
-        return navigated;
-    }
-
-    /**
-     * @deprecated As of ArgoUml version 0.13.5,replaced by {@link
-     * org.argouml.ui.targetmanager.TargetManager#navigateForward()
-     * TargetManager.getInstance().navigateForward()}
-     */
-    public boolean navigateForward(boolean attempt) {
-        boolean navigated = false;
-        if (attempt) {
-            if (attempt
-		&& TargetManager.getInstance().navigateForwardPossible())
-	    {
-		TargetManager.getInstance().navigateForward();
-	    }
-        }
-        return navigated;
-    }
-
-    /**
-     * @deprecated As of ArgoUml version 0.13.5,replaced by {@link
-     * org.argouml.ui.targetmanager.TargetManager#navigateBackPossible()
-     * TargetManager.getInstance().navigateBackPossible()}
-     */
-    public boolean isNavigateBackEnabled() {
-        return TargetManager.getInstance().navigateBackPossible();
-    }
-
-    /**
-     * @deprecated As of ArgoUml version 0.13.5,replaced by {@link
-     * org.argouml.ui.targetmanager.TargetManager#navigateForwardPossible()
-     * TargetManager.getInstance().navigateForwardPossible()}
-     */
-    public boolean isNavigateForwardEnabled() {
-        return TargetManager.getInstance().navigateForwardPossible();
     }
 
     /**
@@ -873,8 +826,7 @@ public class ProjectBrowser
     /**
      * Returns the navigatorpane. 
      * @return NavigatorPane The navigatorpane
-     * @deprecated 0.15 will be removed in 0.16 use 
-     * NavigatorPane.getInstance() instead
+     * @deprecated 0.15.3 use NavigatorPane.getInstance() instead
      */
     public NavigatorPane getNavigatorPane() {
         return _navPane;
@@ -883,8 +835,7 @@ public class ProjectBrowser
     /**
      * Returns the splashscreen shown at startup. 
      * @return SplashScreen
-     * @deprecated 0.15 will be removed in 0.16 use 
-     * SplashScreen.getInstance() instead
+     * @deprecated 0.15 use SplashScreen.getInstance() instead
      */
     public SplashScreen getSplashScreen() {
         return _splash;

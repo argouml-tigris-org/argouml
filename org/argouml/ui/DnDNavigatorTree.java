@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2003 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -49,7 +49,7 @@ import org.argouml.ui.explorer.ExplorerTree;
 /**
  * This class extends the default Argo JTree with Drag and drop capabilities.
  *
- * @deprecated replaced with DnDExplorerTree in explorer package.
+ * @deprecated in 0.15.3 replaced with DnDExplorerTree in explorer package.
  *
  * <p>$Id$
  *
@@ -102,7 +102,7 @@ public class DnDNavigatorTree extends ExplorerTree
         //Get the selected node from the JTree
         _selectedTreePath = getSelectionPath();
         if (_selectedTreePath == null) return;
-        Object dragNode = ((DefaultMutableTreeNode)_selectedTreePath
+        Object dragNode = ((DefaultMutableTreeNode) _selectedTreePath
                                 .getLastPathComponent()).getUserObject();
         if (dragNode != null) {
             
@@ -208,12 +208,14 @@ public class DnDNavigatorTree extends ExplorerTree
                     return;
                 }
                 
-                Object destinationModelElement = ((DefaultMutableTreeNode)destinationPath
-                                .getLastPathComponent()).getUserObject();
+                Object destinationModelElement =
+		    ((DefaultMutableTreeNode) destinationPath
+		     .getLastPathComponent()).getUserObject();
                 
                 //get old parent node
-                Object oldParentME = ((DefaultMutableTreeNode)_selectedTreePath.getParentPath()
-		    .getLastPathComponent()).getUserObject();
+                Object oldParentME =
+		    ((DefaultMutableTreeNode) _selectedTreePath.getParentPath()
+		     .getLastPathComponent()).getUserObject();
                 
                 int action = dropTargetDropEvent.getDropAction();
                 boolean copyAction = (action == DnDConstants.ACTION_COPY);
@@ -266,9 +268,9 @@ public class DnDNavigatorTree extends ExplorerTree
                 return null;
             }
             
-            Object dest = ((DefaultMutableTreeNode)destinationPath
+            Object dest = ((DefaultMutableTreeNode) destinationPath
                                 .getLastPathComponent()).getUserObject();
-            Object src = ((DefaultMutableTreeNode)sourceTreePath
+            Object src = ((DefaultMutableTreeNode) sourceTreePath
                                 .getLastPathComponent()).getUserObject();
             
             boolean isValid = UmlHelper.getHelper().getCore()

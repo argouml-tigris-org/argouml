@@ -129,17 +129,7 @@ public abstract class ProjectMember {
      * @deprecated As of 7 June 2003 (ArgoUml version 0.13.6).
      *             Will be removed in future.
      *             TODO: What is this method replaced by?
-     *
-     * @param path
-     * @param overwrite
-     * @throws Exception
-     */
-    public abstract void save(String path, boolean overwrite) throws Exception;
-
-    /**
-     * @deprecated As of 7 June 2003 (ArgoUml version 0.13.6).
-     *             Will be removed in future.
-     *             TODO: What is this method replaced by?
+     *		   TODO: This is still in use in 0.15.2.
      *
      * @param path
      * @param overwrite
@@ -159,7 +149,7 @@ public abstract class ProjectMember {
       
     }
 
-    public void remove(){
+    public void remove() {
         
         _name = null;
         _project = null;

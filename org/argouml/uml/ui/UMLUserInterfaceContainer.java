@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2001 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -39,7 +39,7 @@ import ru.novosoft.uml.foundation.core.MNamespace;
  *    @author Curt Arnold
  *    @see PropPanel
  */
-public interface UMLUserInterfaceContainer extends NavigationListener {
+public interface UMLUserInterfaceContainer {
     /**
      *   Returns the current target for the container, may be null.
      */
@@ -69,9 +69,11 @@ public interface UMLUserInterfaceContainer extends NavigationListener {
     public String formatNamespace(MNamespace ns);
 
     /**
-     *     Returns a localized string corresponding to the key
-     *     @param key key for resource bundle, typically english literal
-     *     @return localized string for key based on system settings and configuration file
+     * Returns a localized string corresponding to the key.
+     *
+     * @param key key for resource bundle, typically english literal
+     * @return localized string for key based on system settings and
+     * configuration file
      */
     public String localize(String key);    
 }

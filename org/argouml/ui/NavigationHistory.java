@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -31,14 +31,13 @@ import org.argouml.model.ModelFacade;
 
 
 /**
-*    This class implements a navigation history
-* 
+ *    This class implements a navigation history
+ * 
  * @deprecated since 0.15.2 replace with TargetManager,
- *             remove in 0.15.3
  *
-*    @author Curt Arnold
-*    @since 0.9
-*/
+ *    @author Curt Arnold
+ *    @since 0.9
+ */
 public class NavigationHistory { 
 
     private List _history;

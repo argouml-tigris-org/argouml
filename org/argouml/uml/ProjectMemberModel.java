@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2002 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -70,7 +70,7 @@ public class ProjectMemberModel extends ProjectMember {
         
         super(p.getBaseName() + FILE_EXT, p);
         
-        if(!ModelFacade.isAModel(m))
+        if (!ModelFacade.isAModel(m))
             throw new IllegalArgumentException();
         
         setModel(m);
@@ -104,10 +104,18 @@ public class ProjectMemberModel extends ProjectMember {
         cat.info("Done reading " + getURL());
     }
 
+    /**
+     * @deprecated since 0.l5.3 since the function in the
+     * interface is removed.
+     */
     public void save(String path, boolean overwrite) throws Exception {
         save(path, overwrite, null);
     }
 
+    /**
+     * @deprecated since 0.l5.3 since the function in the
+     * interface is deprecated since 0.13.6.
+     */
     public void save(String path, boolean overwrite, Writer writer)
         throws Exception {
 
@@ -122,7 +130,7 @@ public class ProjectMemberModel extends ProjectMember {
 
         try {
 
-            xmiwriter = new XMIWriter((MModel)_model, writer);
+            xmiwriter = new XMIWriter((MModel) _model, writer);
             xmiwriter.gen();
         } catch (Exception ex) {
             logNotContainedElements(xmiwriter);
@@ -149,7 +157,7 @@ public class ProjectMemberModel extends ProjectMember {
 
         try {
 
-            xmiwriter = new XMIWriter((MModel)_model, writer);
+            xmiwriter = new XMIWriter((MModel) _model, writer);
             xmiwriter.gen();
         } catch (Exception ex) {
             logNotContainedElements(xmiwriter);
