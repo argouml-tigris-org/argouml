@@ -80,14 +80,13 @@ public class TestUMLElementOwnershipSpecificationCheckBox extends TestCase {
         super.setUp();
         MFactoryImpl.setEventPolicy(MFactoryImpl.EVENT_POLICY_IMMEDIATE);
         elem = new MClassImpl();
-        MockUMLUserInterfaceContainer mockcomp = new MockUMLUserInterfaceContainer();
-        mockcomp.setTarget(elem);
-
+        
 	// If we cannot create the box, we assume that it is because
 	// there is no GUI available.
 	// If so, all tests are inconclusive.
 	try {
 	    box = new UMLElementOwnershipSpecificationCheckBox();
+        box.setTarget(elem);
 	} catch (java.lang.InternalError e1) {
 	    return;
 	} catch (java.lang.NoClassDefFoundError e2) {
