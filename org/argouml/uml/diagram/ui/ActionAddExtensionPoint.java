@@ -31,12 +31,13 @@
 // the display of extension points.
 
 
-package org.argouml.uml.ui;
+package org.argouml.uml.diagram.ui;
 
 import java.awt.event.ActionEvent;
 
 import org.argouml.model.uml.UmlFactory;
 import org.argouml.ui.targetmanager.TargetManager;
+import org.argouml.uml.ui.UMLChangeAction;
 
 /**
  * <p>A class to implement the addition of extension points to use cases.</p>
@@ -46,8 +47,6 @@ import org.argouml.ui.targetmanager.TargetManager;
  *   access method wouldn't work properly).</p>
  *
  * @author  Jeremy Bennett (mail@jeremybennett.com).
- * @deprecated since 0.15.2, replace with {@link 
- * org.argouml.uml.diagram.ui.ActionAddExtensionPoint}, remove in 0.15.3, alexb
  */
 
 public final class ActionAddExtensionPoint extends UMLChangeAction {

@@ -22,7 +22,7 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.argouml.uml.ui;
+package org.argouml.uml.diagram.ui;
 
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
@@ -36,6 +36,8 @@ import org.argouml.ui.ProjectBrowser;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.static_structure.ui.FigComment;
 import org.argouml.uml.diagram.static_structure.ui.FigEdgeNote;
+import org.argouml.uml.ui.UMLAction;
+import org.argouml.uml.ui.UMLChangeAction;
 import org.tigris.gef.base.Layer;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigEdge;
@@ -43,8 +45,6 @@ import org.tigris.gef.presentation.FigNode;
 
 /** Action to add a note.
  *  @stereotype singleton
- * @deprecated as of 0.15.2 replace with {@link 
- *  org.argouml.uml.diagram.ui.ActionAddNote}, remove 0.15.3, alexb
  */
 public class ActionAddNote extends UMLChangeAction {
 

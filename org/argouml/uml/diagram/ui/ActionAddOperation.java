@@ -22,58 +22,69 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.argouml.uml.ui;
+package org.argouml.uml.diagram.ui;
 
 import java.awt.event.ActionEvent;
+import java.util.Iterator;
 
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
+import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.UmlFactory;
+import org.argouml.model.uml.UmlModelEventPump;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.ui.targetmanager.TargetManager;
+import org.argouml.uml.ui.UMLChangeAction;
 
-/** Action to add an attribute to a classifier.
+/** Action to add an operation to a classifier.
  *  @stereotype singleton
- * @deprecated since 0.15.2, replace with {@link 
- * org.argouml.uml.diagram.ui.ActionAddAttribute}, remove 0.15.3, alexb
  */
-public class ActionAddAttribute extends UMLChangeAction {
+public class ActionAddOperation extends UMLChangeAction {
 
     ////////////////////////////////////////////////////////////////
     // static variables
 
-    public static ActionAddAttribute SINGLETON = new ActionAddAttribute();
+    public static ActionAddOperation SINGLETON = new ActionAddOperation();
 
-   
+    
 
 
     ////////////////////////////////////////////////////////////////
     // constructors
 
-    public ActionAddAttribute() { super("button.add-attribute"); }
+    public ActionAddOperation() { super("button.add-operation"); }
 
 
     ////////////////////////////////////////////////////////////////
     // main methods
 
-    public void actionPerformed(ActionEvent ae) {	
+    public void actionPerformed(ActionEvent ae) {
+   
+	ProjectBrowser pb = ProjectBrowser.getInstance();
 	Project p = ProjectManager.getManager().getCurrentProject();
-	Object target = TargetManager.getInstance().getModelTarget();
-	if (!(org.argouml.model.ModelFacade.isAClassifier(target))) return;
+	Object target =  TargetManager.getInstance().getModelTarget();
+	if (!(ModelFacade.isAClassifier(target))) return;
 	Object/*MClassifier*/ cls = target;
-	Object/*MAttribute*/ attr = UmlFactory.getFactory().getCore().buildAttribute(cls);
-	TargetManager.getInstance().setTarget(attr);
+	Object/*MOperation*/ oper = UmlFactory.getFactory().getCore().buildOperation(cls);
+        TargetManager.getInstance().setTarget(oper);
+        Iterator it =
+	    pb.getEditorPane().findPresentationsFor(cls,
+						    p.getDiagrams()).iterator();
+        while (it.hasNext()) {
+            Object/*MElementListener*/ listener = it.next();
+            UmlModelEventPump.getPump().removeModelEventListener(listener,
+								 oper);
+            UmlModelEventPump.getPump().addModelEventListener(listener, oper);
+        }
 	super.actionPerformed(ae);
+	
     }
 
     public boolean shouldBeEnabled() {
 	ProjectBrowser pb = ProjectBrowser.getInstance();
 	Object target =  TargetManager.getInstance().getModelTarget();
-	/*
-	if (target instanceof MInterface) {
-		return Notation.getDefaultNotation().getName().equals("Java");
-	}
-	*/
-	return org.argouml.model.ModelFacade.isAClass(target);		
+	return super.shouldBeEnabled() && 
+	    ModelFacade.isAClassifier(target) && 
+	    !(ModelFacade.isASignal(target));
     }
-} /* end class ActionAddAttribute */
+} /* end class ActionAddOperation */

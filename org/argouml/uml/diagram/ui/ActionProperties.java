@@ -22,51 +22,35 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.argouml.uml.ui;
+package org.argouml.uml.diagram.ui;
 
-import org.argouml.uml.diagram.ui.*;
-import org.tigris.gef.base.*;
-import org.tigris.gef.presentation.*;
+import org.argouml.i18n.Translator;
+import org.argouml.ui.*;
 import java.awt.event.*;
-import java.util.*;
-import org.argouml.model.ModelFacade;
+import org.argouml.uml.ui.UMLAction;
 
-/**
- * @deprecated as of 0.15.2, replaced with {@link
- *  org.argouml.uml.diagram.ui.ActionAggregation}, remove in 0.15.3, alexb
+import javax.swing.Action;
+
+/** Action to select the properties tab.
+ * @stereotype singleton
  */
-public class ActionAggregation extends UMLAction {
-    String str = "";
-    Object/*MAggregationKind*/ agg = null;
-
+public class ActionProperties extends UMLAction {
 
     ////////////////////////////////////////////////////////////////
     // static variables
 
-    // aggregation
-    public static UMLAction SrcAgg =
-	new ActionAggregation(ModelFacade.AGGREGATE_AGGREGATIONKIND, "src");
-    public static UMLAction DestAgg =
-	new ActionAggregation(ModelFacade.AGGREGATE_AGGREGATIONKIND, "dest");
-
-    public static UMLAction SrcAggComposite =
-	new ActionAggregation(ModelFacade.COMPOSITE_AGGREGATIONKIND, "src");
-    public static UMLAction DestAggComposite =
-	new ActionAggregation(ModelFacade.COMPOSITE_AGGREGATIONKIND, "dest");
-
-    public static UMLAction SrcAggNone =
-	new ActionAggregation(ModelFacade.NONE_AGGREGATIONKIND, "src");
-    public static UMLAction DestAggNone =
-	new ActionAggregation(ModelFacade.NONE_AGGREGATIONKIND, "dest");
+    public static ActionProperties SINGLETON = new ActionProperties(); 
 
 
     ////////////////////////////////////////////////////////////////
     // constructors
 
-    protected ActionAggregation(Object/*MAggregationKind*/ a, String s) {
-	super(ModelFacade.getName(a), NO_ICON);
-	str = s;
-	agg = a;
+    protected ActionProperties() { 
+        super(Translator.localize("action.properties"), HAS_ICON);
+        String localMnemonic = Translator.localize("action.properties.mnemonic");
+        if (localMnemonic != null && localMnemonic.length() == 1) {
+            putValue(Action.MNEMONIC_KEY, new Integer((int) localMnemonic.charAt(0)));
+        }        
     }
 
 
@@ -74,26 +58,13 @@ public class ActionAggregation extends UMLAction {
     // main methods
 
     public void actionPerformed(ActionEvent ae) {
-	Vector sels = Globals.curEditor().getSelectionManager().selections();
-	if ( sels.size() == 1 ) {
-	    Selection sel = (Selection) sels.firstElement();
-	    Fig f = sel.getContent();
-	    Object owner = ((FigEdgeModelElement) f).getOwner();
-	    Collection ascEnds = ModelFacade.getConnections(owner);
-            Iterator iter = ascEnds.iterator();
-	    Object ascEnd = null;
-	    if (str.equals("src")) {
-		ascEnd = iter.next();
-            } else {
-                while (iter.hasNext()) {
-                    ascEnd = iter.next();
-                }
-            }
-	    ModelFacade.setAggregation(ascEnd, agg);
-	}
+	ProjectBrowser pb = ProjectBrowser.getInstance();
+	if (pb == null) return;
+	pb.selectTabNamed("action.properties");
     }
 
     public boolean shouldBeEnabled() { 
 	return true; 
     }
-} /* end class ActionSrcMultOneToMany */
+} /* end class ActionProperties */
+

@@ -31,9 +31,9 @@
 // use cases
 
 
-package org.argouml.uml.ui;
+package org.argouml.uml.diagram.ui;
 
-import org.argouml.uml.diagram.ui.*;
+import org.argouml.uml.ui.*;
 import org.tigris.gef.base.*;
 import org.tigris.gef.presentation.*;
 import java.awt.event.*;
@@ -48,9 +48,6 @@ import org.argouml.model.ModelFacade;
  * @author  Bob Tarling
  *
  * @author  Jeremy Bennett (mail@jeremybennett.com)&mdash; use case extensions.
- *
- * @deprecated as of 0.15.2 replace with {@link 
- *  org.argouml.uml.diagram.ui.ActionModifier}, remove 0.15.3, alexb
  */
 
 public class ActionModifier extends UMLAction {

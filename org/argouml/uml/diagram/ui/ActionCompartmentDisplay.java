@@ -31,10 +31,11 @@
 // compartments for extension points on use cases.
 
 
-package org.argouml.uml.ui;
+package org.argouml.uml.diagram.ui;
 
 import org.argouml.uml.diagram.static_structure.ui.*;
 import org.argouml.uml.diagram.use_case.ui.*;
+import org.argouml.uml.ui.UMLAction;
 import org.tigris.gef.base.*;
 import org.tigris.gef.presentation.*;
 import java.awt.event.*;
@@ -50,9 +51,6 @@ import java.util.*;
  *
  * <p>The class declares a number of static instances, each with an
  *   actionPerformed method that performs the required action.</p>
- *
- * @deprecated as of 0.15.2, replaced with {@link
- *  org.argouml.uml.diagram.ui.ActionCompartmentDisplay}, remove in 0.15.3, alexb
  */
 
 public class ActionCompartmentDisplay extends UMLAction {

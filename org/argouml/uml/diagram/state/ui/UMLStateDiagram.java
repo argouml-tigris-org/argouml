@@ -43,7 +43,7 @@ import org.argouml.model.uml.UmlModelEventPump;
 import org.argouml.ui.CmdCreateNode;
 import org.argouml.uml.diagram.state.StateDiagramGraphModel;
 import org.argouml.uml.diagram.ui.UMLDiagram;
-import org.argouml.uml.ui.ActionAddNote;
+import org.argouml.uml.diagram.ui.ActionAddNote;
 
 import org.tigris.gef.base.CmdSetMode;
 import org.tigris.gef.base.LayerPerspective;

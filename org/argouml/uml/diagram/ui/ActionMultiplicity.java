@@ -22,47 +22,54 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.argouml.uml.ui;
+package org.argouml.uml.diagram.ui;
 
-import org.argouml.uml.diagram.static_structure.ui.*;
-import org.argouml.ui.*;
+import org.argouml.uml.ui.UMLAction;
 import org.tigris.gef.base.*;
-import org.tigris.gef.graph.*;
 import org.tigris.gef.presentation.*;
 import java.awt.event.*;
 import java.util.*;
+import org.argouml.model.ModelFacade;
 
-/** An action that makes all edges on the selected node visible/not visible
- *  on the diagram.
- *
- * <p>$Id$
- *
- * @author David Manura
- * @since 0.13.5
- *
- * @deprecated as of 0.15.2 replace with {@link 
- *  org.argouml.uml.diagram.ui.ActionEdgesDisplay}, remove 0.15.3, alexb
- */
 
-public class ActionEdgesDisplay extends UMLAction {
+public class ActionMultiplicity extends UMLAction {
+    String str = "";
+    Object/*MMultiplicity*/ mult = null;
+
 
     ////////////////////////////////////////////////////////////////
     // static variables
 
-    // compartments
-    public static UMLAction ShowEdges
-        = new ActionEdgesDisplay(true, "Show All Edges");
-    public static UMLAction HideEdges
-        = new ActionEdgesDisplay(false, "Hide All Edges");
+    // multiplicity
+    public static UMLAction SrcMultOne =
+	new ActionMultiplicity(ModelFacade.M1_1_MULTIPLICITY, "src");
+    public static UMLAction DestMultOne =
+	new ActionMultiplicity(ModelFacade.M1_1_MULTIPLICITY, "dest");
 
-    private boolean _show;
+    public static UMLAction SrcMultZeroToOne =
+	new ActionMultiplicity(ModelFacade.M0_1_MULTIPLICITY, "src");
+    public static UMLAction DestMultZeroToOne =
+	new ActionMultiplicity(ModelFacade.M0_1_MULTIPLICITY, "dest");
+
+    public static UMLAction SrcMultZeroToMany =
+	new ActionMultiplicity(ModelFacade.M0_N_MULTIPLICITY, "src");
+    public static UMLAction DestMultZeroToMany =
+	new ActionMultiplicity(ModelFacade.M0_N_MULTIPLICITY, "dest");
+
+    public static UMLAction SrcMultOneToMany =
+	new ActionMultiplicity(ModelFacade.M1_N_MULTIPLICITY, "src");
+    public static UMLAction DestMultOneToMany =
+	new ActionMultiplicity(ModelFacade.M1_N_MULTIPLICITY, "dest");
+
 
     ////////////////////////////////////////////////////////////////
     // constructors
 
-    protected ActionEdgesDisplay(boolean show, String desc) {
-        super(desc, NO_ICON);
-        _show = show;
+    protected ActionMultiplicity(Object/*MMultiplicity*/ m, String s) {
+	//super(m.getLower() + ".." + m.getUpper(), NO_ICON);
+	super(m.toString(), NO_ICON);
+	str = s;
+	mult = m;
     }
 
 
@@ -70,39 +77,27 @@ public class ActionEdgesDisplay extends UMLAction {
     // main methods
 
     public void actionPerformed(ActionEvent ae) {
-        ProjectBrowser pb = ProjectBrowser.getInstance();
-        ArgoDiagram d = pb.getActiveDiagram();
-        Editor ce = Globals.curEditor();
-        MutableGraphModel mgm = (MutableGraphModel) ce.getGraphModel();
-
-        Enumeration e = ce.getSelectionManager().selections().elements();
-        // note: multiple selection not currently supported (2002-04-05)
-        while (e.hasMoreElements()) {
-            Selection sel = (Selection) e.nextElement();
-            Object owner = sel.getContent().getOwner();
-
-            if (_show) { // add
-                mgm.addNodeRelatedEdges(owner);
+	Vector sels = Globals.curEditor().getSelectionManager().selections();
+	if ( sels.size() == 1 ) {
+	    Selection sel = (Selection) sels.firstElement();
+	    Fig f = sel.getContent();
+	    Object owner = ((FigEdgeModelElement) f).getOwner();
+	    Collection ascEnds = ModelFacade.getConnections(owner);
+            Iterator iter = ascEnds.iterator();
+	    Object ascEnd = null;
+	    if (str.equals("src")) {
+		ascEnd = iter.next();
             }
-            else { // remove
-                Vector edges = mgm.getInEdges(owner);
-                edges.addAll(mgm.getOutEdges(owner));
-                Enumeration e2 = edges.elements();
-                while (e2.hasMoreElements()) {
-                    Object edge = e2.nextElement();
-                    Fig fig = d.presentationFor(edge);
-                    if (fig != null)
-                        fig.delete();
+	    else {
+                while (iter.hasNext()) {
+                    ascEnd = iter.next();
                 }
             }
-        }
+	    ModelFacade.setMultiplicity(ascEnd, mult);
+	}
     }
 
     public boolean shouldBeEnabled() { 
-        return true; 
+	return true; 
     }
-
-} /* end class ActionEdgesDisplay */
-
-
-
+} /* end class ActionSrcMultOneToMany */

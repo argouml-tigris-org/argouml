@@ -22,7 +22,7 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.argouml.uml.ui;
+package org.argouml.uml.diagram.ui;
 
 import java.awt.event.ActionEvent;
 import java.util.Vector;
@@ -32,15 +32,14 @@ import javax.swing.Action;
 import org.argouml.application.api.Argo;
 import org.argouml.i18n.Translator;
 import org.argouml.ui.targetmanager.TargetManager;
+import org.argouml.uml.ui.UMLAction;
+import org.argouml.uml.ui.UMLChangeAction;
 import org.tigris.gef.base.Editor;
 import org.tigris.gef.base.Globals;
 import org.tigris.gef.presentation.Fig;
 
 /** deletes an modelelement from the diagram, but not from the model.
  *  @stereotype singleton
- *
- * @deprecated as of 0.15.2, replaced with {@link
- *  org.argouml.uml.diagram.ui.ActionDeleteFromDiagram}, remove in 0.15.3, alexb
  */
 public class ActionDeleteFromDiagram extends UMLChangeAction {
 

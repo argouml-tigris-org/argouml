@@ -22,10 +22,11 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.argouml.uml.ui;
+package org.argouml.uml.diagram.ui;
 
 import org.argouml.uml.diagram.static_structure.ui.*;
 import org.argouml.ui.*;
+import org.argouml.uml.ui.UMLAction;
 import org.tigris.gef.base.*;
 import org.tigris.gef.graph.*;
 import org.tigris.gef.presentation.*;
@@ -39,9 +40,6 @@ import java.util.*;
  *
  * @author David Manura
  * @since 0.13.5
- *
- * @deprecated as of 0.15.2 replace with {@link 
- *  org.argouml.uml.diagram.ui.ActionEdgesDisplay}, remove 0.15.3, alexb
  */
 
 public class ActionEdgesDisplay extends UMLAction {

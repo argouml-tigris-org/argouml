@@ -37,6 +37,8 @@ import org.argouml.ui.targetmanager.TargetManager;
 
 /** Action to add an operation to a classifier.
  *  @stereotype singleton
+ * @deprecated as of 0.15.2 replaced with {link 
+ *   org.argouml.uml.diagram.ui.ActionAddOperation}, remove in 0.15.2, alexb
  */
 public class ActionAddOperation extends UMLChangeAction {
 

@@ -50,7 +50,7 @@ import org.argouml.ui.ArgoJMenu;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
 import org.argouml.uml.diagram.ui.UMLDiagram;
-import org.argouml.uml.ui.ActionModifier;
+import org.argouml.uml.diagram.ui.ActionModifier;
 import org.argouml.uml.ui.UMLAction;
 import org.tigris.gef.base.Globals;
 import org.tigris.gef.graph.GraphModel;
