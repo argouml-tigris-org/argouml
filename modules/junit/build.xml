@@ -320,9 +320,58 @@ doesn't find it's own XML-libs. You need to set ANT_HOME in your shell.
   </target>
 
   <!-- =================================================================== -->
+  <!-- Initialize for the junit tests.                                     -->
+  <!-- =================================================================== -->
+  <target name="junit-init" depends="init">
+
+     <property name="011202.xml" value="testmodels/01-12-02.xml"/>
+     <property name="model.dtd" value="testmodels/Model.dtd"/>
+
+     <!--available file="${011202.xml}" property="011202.xml.available"/-->
+     <available file="${model.dtd}" property="model.dtd.available"/>
+  </target>
+
+  <!-- =================================================================== -->
+  <!-- Get the uml 1.3 model if necessary                                  -->
+  <!-- =================================================================== -->
+  <target name="junit-get-model" depends="junit-init"
+          unless="model.dtd.available">
+
+    <get src="http://cgi.omg.org/docs/formal/99-10-15.dtd"
+         dest="${model.dtd}"
+	 usetimestamp="true"
+	 verbose="false"
+	 ignoreerrors="true"/>
+
+     <!-- Check availability again - if the get worked, it will be there. -->
+     <available file="${model.dtd}" property="model.dtd.available"/>
+  </target>
+
+  <!-- =================================================================== -->
+  <!-- Get the uml 1.3 dtd if necessary                                    -->
+  <!-- =================================================================== -->
+  <target name="junit-get-011202" depends="junit-init, junit-get-model"
+          unless="011202.xml.available">
+
+    <get src="http://cgi.omg.org/docs/ad/01-12-02.xml"
+         dest="${011202.xml}"
+	 usetimestamp="true"
+	 verbose="false"
+	 ignoreerrors="true"/>
+
+     <!-- Check availability again - if the get worked, it will be there. -->
+     <available file="${011202.xml}" property="011202.xml.available"/>
+  </target>
+
+  <!-- =================================================================== -->
+  <!-- Prepare for the junit tests.                                        -->
+  <!-- =================================================================== -->
+  <target name="junit-setup" depends="junit-get-011202, junit-get-model"/>
+
+  <!-- =================================================================== -->
   <!-- Run the junit tests.                                                -->
   <!-- =================================================================== -->
-  <target name="test-model" depends="compile">
+  <target name="test-model" depends="compile,junit-setup">
     <mkdir dir="${module.reports}/junit/output"/>
     <delete>
         <fileset dir="${module.reports}/junit/output">
@@ -346,12 +395,16 @@ doesn't find it's own XML-libs. You need to set ANT_HOME in your shell.
                 <include name="gef-0.9.6.jar" />
             </fileset>
         </classpath>
-      <batchtest todir="${module.reports}/junit/output">
         <formatter type="plain"/>
+      <batchtest todir="${module.reports}/junit/output">
         <fileset dir="${module.build.src}">
           <include name="org/argouml/model/**/Test*.java" />
         </fileset>
       </batchtest>
+      <test name="org.argouml.model.uml.OptionalTestAgainstUmlModel"
+            todir="${module.reports}/junit/output"
+            if="011202.xml.available">
+      </test>
     </junit>
   </target>
 
