@@ -516,11 +516,9 @@ public abstract class FigNodeModelElement
                 } else {
                     owningModelelement = currentProject.getRoot();
                 }
-	    } else {
-		// moved into a fig
-                if (ModelFacade.isABase(newEncloser.getOwner())) {
-                    owningModelelement = newEncloser.getOwner();
-                }
+	    } else if (newEncloser != null
+                    && ModelFacade.isABase(newEncloser.getOwner())) {
+                owningModelelement = newEncloser.getOwner();
             }
             if (owningModelelement != null
 		&& getOwner() != null
