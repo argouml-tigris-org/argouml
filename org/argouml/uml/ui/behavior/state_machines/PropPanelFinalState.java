@@ -31,32 +31,27 @@
 package org.argouml.uml.ui.behavior.state_machines;
 
 import org.argouml.application.api.Argo;
+import org.argouml.swingext.LabelledLayout;
 import org.argouml.uml.ui.UMLComboBoxNavigator;
-import ru.novosoft.uml.behavior.state_machines.MFinalState;
+import org.argouml.util.ConfigLoader;
 
 public class PropPanelFinalState extends PropPanelState {
 
     public PropPanelFinalState() {
-        super("Final State",_finalStateIcon, 2);
+        super("Final State",_finalStateIcon, ConfigLoader.getTabPropsOrientation());
 
-        Class mclass = MFinalState.class;
+        addField(Argo.localize("UMLMenu", "label.name"), nameField);
+        addField(Argo.localize("UMLMenu", "label.stereotype"), new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-stereo"),stereotypeBox));
+        addField(Argo.localize("UMLMenu", "label.namespace"), namespaceScroll);
+        addField(Argo.localize("UMLMenu", "label.entry"), entryScroll);
+        // TODO: maybe we should add a doactivity
+        
+        add(LabelledLayout.getSeperator());
+        
+        addField(Argo.localize("UMLMenu", "label.incoming"), incomingScroll);
+        addField(Argo.localize("UMLMenu", "label.internal-transitions"), internalTransitionsScroll);        
 
-        addCaption(Argo.localize("UMLMenu", "label.name"),1,0,0);
-        addField(nameField,1,0,0);
-
-        addCaption(Argo.localize("UMLMenu", "label.stereotype"),2,0,1);
-	addField(new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-stereo"),stereotypeBox),2,0,0);
-
-        addCaption(Argo.localize("UMLMenu", "label.incoming"),0,1,1);
-	addField(incomingScroll,0,1,1);
-
- }
-
-    protected boolean isAcceptibleBaseMetaClass(String baseClass) {
-        return baseClass.equals("FinalState");
     }
-
-
 
 } /* end class PropPanelFinalState */
 

@@ -30,54 +30,29 @@
 
 package org.argouml.uml.ui.behavior.state_machines;
 
-import java.awt.*;
-import java.util.*;
-
-import javax.swing.*;
-
-import org.argouml.application.api.*;
-import org.argouml.uml.ui.*;
-
-import ru.novosoft.uml.MFactory;
-import ru.novosoft.uml.behavior.state_machines.*;
-import ru.novosoft.uml.foundation.data_types.*;
-import ru.novosoft.uml.behavior.common_behavior.*;
-import ru.novosoft.uml.foundation.core.*;
+import org.argouml.application.api.Argo;
+import org.argouml.swingext.LabelledLayout;
+import org.argouml.uml.ui.UMLComboBoxNavigator;
+import org.argouml.util.ConfigLoader;
 
 public class PropPanelSimpleState extends PropPanelState {
 
     public PropPanelSimpleState() {
-        super("State",_stateIcon, 3);
+        super("State",_stateIcon, ConfigLoader.getTabPropsOrientation());
 
-        Class mclass = MState.class;
-
-        addCaption(Argo.localize("UMLMenu", "label.name"),1,0,0);
-        addField(nameField,1,0,0);
-
-        addCaption(Argo.localize("UMLMenu", "label.stereotype"),2,0,1);
-	addField(new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-stereo"),stereotypeBox),2,0,0);
-
-        addCaption(Argo.localize("UMLMenu", "label.incoming"),0,1,0.5);
-	addField(incomingScroll,0,1,0.5);
-
-        addCaption(Argo.localize("UMLMenu", "label.outgoing"),1,1,0.5);
-	addField(outgoingScroll,1,1,0.5);
-
-        addCaption("Entry-Action:",0,2,0);
-	addField(entryScroll,0,2,0);
-
-        addCaption("Exit-Action:",1,2,0);
-	addField(exitScroll,1,2,0);
-
-        addCaption("Do-Activity:",2,2,0);
-	addField(doScroll,2,2,0);
-
-        addCaption(Argo.localize("UMLMenu", "label.internal-transitions"),3,2,1);
-	addField(internalTransitionsScroll,3,2,1);
-  }
-
-    protected boolean isAcceptibleBaseMetaClass(String baseClass) {
-        return baseClass.equals("State");
+        addField(Argo.localize("UMLMenu", "label.name"), nameField);
+        addField(Argo.localize("UMLMenu", "label.stereotype"), new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-stereo"),stereotypeBox));
+        addField(Argo.localize("UMLMenu", "label.namespace"), namespaceScroll);
+        addField(Argo.localize("UMLMenu", "label.entry"), entryScroll);
+        addField(Argo.localize("UMLMenu", "label.exit"), exitScroll);;
+        addField(Argo.localize("UMLMenu", "label.do-activity"), doScroll);
+        
+        add(LabelledLayout.getSeperator());
+        
+        addField(Argo.localize("UMLMenu", "label.incoming"), incomingScroll);
+        addField(Argo.localize("UMLMenu", "label.outgoing"), outgoingScroll);
+        addField(Argo.localize("UMLMenu", "label.internal-transitions"), internalTransitionsScroll);
+        
     }
 
 

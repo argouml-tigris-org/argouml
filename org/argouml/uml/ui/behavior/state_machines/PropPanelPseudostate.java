@@ -21,8 +21,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-
-
 // File: PropPanelPseudostate.java
 // Classes: PropPanelPseudostate
 // Original Author: your email address here
@@ -31,84 +29,197 @@
 package org.argouml.uml.ui.behavior.state_machines;
 
 import java.awt.GridLayout;
+import java.util.Enumeration;
+import java.util.Iterator;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JPanel;
 
 import org.argouml.application.api.Argo;
+import org.argouml.kernel.ProjectManager;
+import org.argouml.swingext.LabelledLayout;
+import org.argouml.uml.diagram.state.ui.FigBranchState;
+import org.argouml.uml.diagram.state.ui.FigDeepHistoryState;
+import org.argouml.uml.diagram.state.ui.FigForkState;
+import org.argouml.uml.diagram.state.ui.FigHistoryState;
+import org.argouml.uml.diagram.state.ui.FigInitialState;
+import org.argouml.uml.diagram.state.ui.FigJoinState;
+import org.argouml.uml.diagram.state.ui.FigShallowHistoryState;
+import org.argouml.uml.ui.UMLComboBoxNavigator;
 import org.argouml.uml.ui.UMLEnumerationBooleanProperty;
 import org.argouml.uml.ui.UMLRadioButton;
+import org.argouml.util.ConfigLoader;
 import ru.novosoft.uml.behavior.state_machines.MPseudostate;
 import ru.novosoft.uml.foundation.data_types.MPseudostateKind;
 
 public class PropPanelPseudostate extends PropPanelStateVertex {
 
-  ////////////////////////////////////////////////////////////////
-  // contructors
-  public PropPanelPseudostate() {
-    super("Pseudostate", null,2);
+    private ButtonGroup kindGroup = new ButtonGroup();
+    ////////////////////////////////////////////////////////////////
+    // contructors
+    public PropPanelPseudostate() {
+        super("Pseudostate", null, ConfigLoader.getTabPropsOrientation());
 
-    Class mclass = MPseudostate.class;
+        Class mclass = MPseudostate.class;
 
-    addCaption(Argo.localize("UMLMenu", "label.name"),1,0,0);
-    addField(nameField,1,0,0);
+        addField(Argo.localize("UMLMenu", "label.name"), nameField);
+        addField(Argo.localize("UMLMenu", "label.stereotype"), new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-stereo"),stereotypeBox));
+        addField(Argo.localize("UMLMenu", "label.namespace"), namespaceScroll);
+        
+        JPanel kindPanel = new JPanel(new GridLayout(0, 2));
+        UMLRadioButton junctionButton =
+            new UMLRadioButton(
+                "junction",
+                this,
+                new UMLEnumerationBooleanProperty(
+                    "kind",
+                    mclass,
+                    "getKind",
+                    "setKind",
+                    MPseudostateKind.class,
+                    MPseudostateKind.JUNCTION,
+                    null));
+        junctionButton.setEnabled(false);
+        kindPanel.add(junctionButton);
+        kindGroup.add(junctionButton);
 
-    addCaption("Kind:",2,0,1);
+        UMLRadioButton branchButton =
+            new UMLRadioButton(
+                "branch",
+                this,
+                new UMLEnumerationBooleanProperty(
+                    "kind",
+                    mclass,
+                    "getKind",
+                    "setKind",
+                    MPseudostateKind.class,
+                    MPseudostateKind.BRANCH,
+                    null));
+        branchButton.setEnabled(false);
+        kindPanel.add(branchButton);
+        kindGroup.add(branchButton);
 
-    JPanel kindPanel = new JPanel(new GridLayout(0,2));
-    ButtonGroup kindGroup = new ButtonGroup();
-    UMLRadioButton junctionButton = new UMLRadioButton("junction",this,new UMLEnumerationBooleanProperty("kind",mclass,"getKind","setKind",MPseudostateKind.class,MPseudostateKind.JUNCTION,null));
-    junctionButton.setEnabled(false);
-    kindPanel.add(junctionButton);
-    kindGroup.add(junctionButton);
+        UMLRadioButton forkButton =
+            new UMLRadioButton(
+                "fork",
+                this,
+                new UMLEnumerationBooleanProperty(
+                    "kind",
+                    mclass,
+                    "getKind",
+                    "setKind",
+                    MPseudostateKind.class,
+                    MPseudostateKind.FORK,
+                    null));
+        forkButton.setEnabled(false);
+        kindPanel.add(forkButton);
+        kindGroup.add(forkButton);
 
-    UMLRadioButton branchButton = new UMLRadioButton("branch",this,new UMLEnumerationBooleanProperty("kind",mclass,"getKind","setKind",MPseudostateKind.class,MPseudostateKind.BRANCH,null));
-    branchButton.setEnabled(false);
-    kindPanel.add(branchButton);
-    kindGroup.add(branchButton);
+        UMLRadioButton joinButton =
+            new UMLRadioButton(
+                "join",
+                this,
+                new UMLEnumerationBooleanProperty(
+                    "kind",
+                    mclass,
+                    "getKind",
+                    "setKind",
+                    MPseudostateKind.class,
+                    MPseudostateKind.JOIN,
+                    null));
+        joinButton.setEnabled(false);
+        kindPanel.add(joinButton);
+        kindGroup.add(joinButton);
 
-    UMLRadioButton forkButton = new UMLRadioButton("fork",this,new UMLEnumerationBooleanProperty("kind",mclass,"getKind","setKind",MPseudostateKind.class,MPseudostateKind.FORK,null));
-    forkButton.setEnabled(false);
-    kindPanel.add(forkButton);
-    kindGroup.add(forkButton);
+        UMLRadioButton deepButton =
+            new UMLRadioButton(
+                "deep history",
+                this,
+                new UMLEnumerationBooleanProperty(
+                    "kind",
+                    mclass,
+                    "getKind",
+                    "setKind",
+                    MPseudostateKind.class,
+                    MPseudostateKind.DEEP_HISTORY,
+                    null));
+        deepButton.setEnabled(false);
+        kindPanel.add(deepButton);
+        kindGroup.add(deepButton);
 
-    UMLRadioButton joinButton = new UMLRadioButton("join",this,new UMLEnumerationBooleanProperty("kind",mclass,"getKind","setKind",MPseudostateKind.class,MPseudostateKind.JOIN,null));
-    joinButton.setEnabled(false);
-    kindPanel.add(joinButton);
-    kindGroup.add(joinButton);
+        UMLRadioButton shallowButton =
+            new UMLRadioButton(
+                "shallow history",
+                this,
+                new UMLEnumerationBooleanProperty(
+                    "kind",
+                    mclass,
+                    "getKind",
+                    "setKind",
+                    MPseudostateKind.class,
+                    MPseudostateKind.SHALLOW_HISTORY,
+                    null));
+        shallowButton.setEnabled(false);
+        kindPanel.add(shallowButton);
+        kindGroup.add(shallowButton);
 
-    UMLRadioButton deepButton = new UMLRadioButton("deep history",this,new UMLEnumerationBooleanProperty("kind",mclass,"getKind","setKind",MPseudostateKind.class,MPseudostateKind.DEEP_HISTORY,null));
-    deepButton.setEnabled(false);
-    kindPanel.add(deepButton);
-    kindGroup.add(deepButton);
+        UMLRadioButton initialButton =
+            new UMLRadioButton(
+                "initial",
+                this,
+                new UMLEnumerationBooleanProperty(
+                    "kind",
+                    mclass,
+                    "getKind",
+                    "setKind",
+                    MPseudostateKind.class,
+                    MPseudostateKind.INITIAL,
+                    null));
+        initialButton.setEnabled(false);
+        kindPanel.add(initialButton);
+        kindGroup.add(initialButton);
 
-    UMLRadioButton shallowButton = new UMLRadioButton("shallow history",this,new UMLEnumerationBooleanProperty("kind",mclass,"getKind","setKind",MPseudostateKind.class,MPseudostateKind.SHALLOW_HISTORY,null));
-    shallowButton.setEnabled(false);
-    kindPanel.add(shallowButton);
-    kindGroup.add(shallowButton);
+        addField(Argo.localize("UMLMenu", "label.pseudostate-kind"), kindPanel);
 
-    UMLRadioButton initialButton = new UMLRadioButton("initial",this,new UMLEnumerationBooleanProperty("kind",mclass,"getKind","setKind",MPseudostateKind.class,MPseudostateKind.INITIAL,null));
-    initialButton.setEnabled(false);
-    kindPanel.add(initialButton);
-    kindGroup.add(initialButton);
+        add(LabelledLayout.getSeperator());
+        
+        addField(Argo.localize("UMLMenu", "label.incoming"), incomingScroll);
+        addField(Argo.localize("UMLMenu", "label.outgoing"), outgoingScroll);
 
-    addField(kindPanel,2,0,0); 
+    }
+   
 
-
-    addCaption(Argo.localize("UMLMenu", "label.incoming"),0,1,0.5);
-    addField(incomingScroll,0,1,0.5);
-
-    addCaption(Argo.localize("UMLMenu", "label.outgoing"),1,1,0.5);
-    addField(outgoingScroll,1,1,0.5);
-
-  }
-
-
-    protected boolean isAcceptibleBaseMetaClass(String baseClass) {
-        return baseClass.equals("Pseudostate");
+    /**
+     * @see org.argouml.uml.ui.TabModelTarget#setTarget(java.lang.Object)
+     */
+    public void setTarget(Object o) {
+        super.setTarget(o);
+        Iterator it =
+            ProjectManager
+                .getManager()
+                .getCurrentProject()
+                .findFigsForMember(o)
+                .iterator();
+        boolean represented = false;
+        while (it.hasNext()) {
+            Object i = it.next();
+            // TODO: find out what happened to the junction
+            if (i instanceof FigForkState
+                || i instanceof FigBranchState
+                || i instanceof FigDeepHistoryState
+                || i instanceof FigForkState
+                || i instanceof FigHistoryState
+                || i instanceof FigInitialState
+                || i instanceof FigJoinState
+                || i instanceof FigShallowHistoryState) {                
+                represented = true;           
+                break;     
+            }
+        }        
+        Enumeration e = kindGroup.getElements();
+        while (e.hasMoreElements()) {
+            ((UMLRadioButton)e.nextElement()).setEnabled(!represented);
+        }
     }
 
-
-
 } /* end class PropPanelPseudostate */
-
