@@ -155,9 +155,9 @@ public class GeneratorCpp extends Generator2
      * @author Achim Spangler
      * @since 2002-12-06
      */
-    private static final int SEARCH_REFERENCE_TAG = 1;
-    private static final int SEARCH_POINTER_TAG = 2;
-    private static final int SEARCH_REFERENCE_POINTER_TAG = 3;
+    private static final int NORMAL_MOD = 0;
+    private static final int REFERENCE_MOD = 1;
+    private static final int POINTER_MOD = 2;
 
     private static final GeneratorCpp SINGLETON = new GeneratorCpp();
 
@@ -1146,49 +1146,54 @@ public class GeneratorCpp extends Generator2
      * part of UML - as far as author knows - but important for C++
      * developers)
      * @param elem element to check
-     * @param tagType tag type to check
+     * @return one of NORMAL_MOD, REFERENCE_MOD, POINTER_MOD, or -1 if
+     *         no specific tag is found
      */
-    private boolean checkAttributeParameter4Tag(Object elem, int tagType) {
+    private int getAttributeModifierType(Object elem) {
         // first check whether the parameter shall be a pointer of reference
         Iterator iter = Model.getFacade().getTaggedValues(elem);
         while (iter.hasNext()) {
             Object tv = iter.next();
             String tag = Model.getFacade().getTagOfTag(tv);
-            if ((tag.indexOf("ref") != -1 || tag.equals("&"))
-                    && (tagType != SEARCH_POINTER_TAG)) {
-                return true;
-            } else if ((tag.indexOf("pointer") != -1 || tag.equals("*"))
-                    && (tagType != SEARCH_REFERENCE_TAG)) {
-                return true;
+            String val = Model.getFacade().getValueOfTag(tv);
+            if (tag.indexOf("ref") != -1 || tag.equals("&")) {
+                return val.equals("false") ? NORMAL_MOD
+                                           : REFERENCE_MOD;
+            } else if (tag.indexOf("pointer") != -1 || tag.equals("*")) {
+                return val.equals("false") ? NORMAL_MOD
+                                           : POINTER_MOD;
             }
         }
-        return false;
+        return -1; /* no tag found */
     }
 
 
-    private String generateAttributeParameterModifier(Object attr) {
-        boolean isReference =
-            checkAttributeParameter4Tag(attr, SEARCH_REFERENCE_TAG);
-        boolean isPointer =
-            checkAttributeParameter4Tag(attr, SEARCH_POINTER_TAG);
-        StringBuffer sb = new StringBuffer(2);
+    private String generateAttributeParameterModifier(Object attr,
+                                                      String def) {
+        int modType = getAttributeModifierType(attr);
 
-        if (isReference) {
-            sb.append("&");
-        } else if (isPointer) {
-            sb.append("*");
-        } else if (Model.getFacade().isAParameter(attr)) {
-            if (Model.getFacade().getKind(attr).equals(
+        if (modType == NORMAL_MOD) {
+            return "";
+        } else if (modType == REFERENCE_MOD) {
+            return "&";
+        } else if (modType == POINTER_MOD) {
+            return "*";
+        } else if (def.length() == 0) {
+            if (Model.getFacade().isAParameter(attr)
+                    && (Model.getFacade().getKind(attr).equals(
                         Model.getDirectionKind().getOutParameter())
                     || Model.getFacade().getKind(attr).equals(
-                        Model.getDirectionKind().getInOutParameter())) {
+                            Model.getDirectionKind().getInOutParameter()))) {
                 // out or inout parameters are defaulted to reference if
                 // not specified else
-                sb.append("&");
+                return "&";
             }
         }
+        return def;
+    }
 
-        return sb.toString();
+    private String generateAttributeParameterModifier(Object attr) {
+        return generateAttributeParameterModifier(attr, "");
     }
 
     /**
@@ -1595,6 +1600,48 @@ public class GeneratorCpp extends Generator2
                 generateAssociationFrom(a, ae, part);
             }
             sb.append(generateAllParts(part));
+        }
+        // if this is an association class, generate attributes for
+        // all the AssociationEnds
+        if (Model.getFacade().isAAssociationClass(cls)) {
+            if (verboseDocs) {
+                sb.append(LINE_SEPARATOR).append(INDENT);
+                sb.append("// AssociationClass associated classes");
+            }
+            // make all ends public... does it make sense?
+            // should we declare friend all the associated and make
+            // these protected? (private is too restrictive anyway, IMHO)
+            // TODO: make it configurable, with a tag 
+            sb.append(LINE_SEPARATOR).append(" public:").append(LINE_SEPARATOR);
+            ends = Model.getFacade().getConnections(cls);
+            Iterator iter = ends.iterator();
+            while (iter.hasNext()) {
+                Object ae = iter.next();
+                sb.append(LINE_SEPARATOR);
+                String comment = generateConstraintEnrichedDocComment(cls, ae);
+                if (comment.length() > 0)
+                    sb.append(comment).append(INDENT);
+
+                String n = Model.getFacade().getName(ae);
+                String name;
+                Object type = Model.getFacade().getType(ae);
+
+                if (n != null && n.length() > 0) {
+                    name = generateName(n);
+                } else {
+                    name = "my" + generateClassifierRef(type);
+                }
+
+                sb.append(generateNameWithPkgSelection(type));
+                sb.append(generateAttributeParameterModifier(ae));
+                sb.append(" ").append(name);
+                sb.append(";").append(LINE_SEPARATOR);
+
+                String tv = generateTaggedValues(ae, ALL_BUT_DOC_TAGS);
+                if (tv != null && tv.length() > 0) {
+                    sb.append(INDENT).append(tv);
+                }
+            }
         }
     }
 
@@ -2239,11 +2286,11 @@ public class GeneratorCpp extends Generator2
             // Prepare doccomment
             if (!(s == null || "".equals(s))) {
                 // Just remove closing "*/"
-                sDocComment.append(s.substring(0, s.indexOf("*/") + 1));
+                sDocComment.append(INDENT)
+                    .append(s.substring(0, s.indexOf("*/") + 1));
             }
             else {
                 sDocComment.append(INDENT).append("/**").append(LINE_SEPARATOR);
-                sDocComment.append(INDENT).append(" * ").append(LINE_SEPARATOR);
                 sDocComment.append(INDENT).append(" *");
             }
 
@@ -2294,15 +2341,16 @@ public class GeneratorCpp extends Generator2
                      * Added generation of doccomment 2001-09-26 STEFFEN
                      * ZSCHALER
                      */
-                    sb.append(LINE_SEPARATOR).append(INDENT);
-                    String comment = generateConstraintEnrichedDocComment(a,
-                            ae2);
-                    // the comment line ends with simple newline -> place INDENT
-                    // after comment, if not empty
-                    if (comment.length() > 0)
-                        sb.append(comment).append(INDENT);
-
-                    sb.append(generateAssociationEnd(ae2));
+                    sb.append(LINE_SEPARATOR);
+                    String assend = generateAssociationEnd(ae2);
+                    if (assend.length() > 0) {
+                        String comment =
+                            generateConstraintEnrichedDocComment(a, ae2);
+                        if (comment.length() > 0)
+                            sb.append(comment);
+                        // both comment and assend ends with simple newline
+                        sb.append(INDENT).append(assend);
+                    }
 
                     String tv = generateTaggedValues(a, ALL_BUT_DOC_TAGS);
                     if (tv != null && tv.length() > 0) {
@@ -2348,10 +2396,20 @@ public class GeneratorCpp extends Generator2
             name = "my" + generateClassifierRef(Model.getFacade().getType(ae));
         }
 
-        sb.append(
-                generateMultiplicity(ae, name,
+        String modifier;
+        if (Model.getFacade().isAAssociationClass(asc)) {
+            // With an association class, we actually make an association
+            // between us and the association class itself.
+            // Usually, this is a pointer or a reference, so default
+            // to a pointer.
+            modifier = generateAttributeParameterModifier(asc, "*");
+        } else {
+            modifier = generateAttributeParameterModifier(ae);
+        }
+        
+        sb.append(generateMultiplicity(ae, name,
                              Model.getFacade().getMultiplicity(ae),
-                             generateAttributeParameterModifier(ae)));
+                             modifier));
 
         return (sb.append(";").append(LINE_SEPARATOR)).toString();
     }
@@ -2538,7 +2596,8 @@ public class GeneratorCpp extends Generator2
      * Generate "const" keyword for const pointer/reference parameters.
      */
     private String generateParameterChangeability(Object par) {
-        if (checkAttributeParameter4Tag(par, SEARCH_REFERENCE_POINTER_TAG)
+        int parType = getAttributeModifierType(par);
+        if (parType != -1 && parType != NORMAL_MOD
                 && (Model.getFacade().getKind(par)).equals(
                         Model.getDirectionKind().getInParameter())) {
             return "const ";
@@ -2596,8 +2655,16 @@ public class GeneratorCpp extends Generator2
         String type = null;
         String containerType = null;
         Object typeCls = null;
-        if (Model.getFacade().isAAssociationEnd(item)
-                || Model.getFacade().isAAttribute(item)) {
+        if (Model.getFacade().isAAssociationEnd(item)) {
+            // take into account association classes
+            Object assoc = Model.getFacade().getAssociation(item);
+            if (Model.getFacade().isAAssociationClass(assoc)) {
+                typeCls = assoc;
+                name += "Assoc";
+            }
+            else
+                typeCls = Model.getFacade().getType(item);
+        } else if (Model.getFacade().isAAttribute(item)) {
             typeCls = Model.getFacade().getType(item);
         } else if (Model.getFacade().isAClassifier(item)) {
             type = Model.getFacade().getName(item);
