@@ -94,7 +94,7 @@ public class FigClassifierRole extends FigNodeModelElement {
     setOwner(node);
   }
 
-  public String placeString() { return "new MClassifierRole"; }
+  public String placeString() { return "new ClassifierRole"; }
 
   public Object clone() {
     FigClassifierRole figClone = (FigClassifierRole) super.clone();
