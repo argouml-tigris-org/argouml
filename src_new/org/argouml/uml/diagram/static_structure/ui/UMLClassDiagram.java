@@ -155,7 +155,7 @@ public class UMLClassDiagram extends UMLDiagram {
      */
     protected Object[] getUmlActions() {
         Object actions[] = {
-            getPackageActions(),
+            _actionPackage,
             _actionClass,
             getAssociationActions(),
             _actionDepend,
@@ -173,6 +173,7 @@ public class UMLClassDiagram extends UMLDiagram {
     }
     
     // remove the comment marks to enable models and subsystems.
+    // also replace _actionPackage with getPackageActions() in getUmlActions().
     private Object[] getPackageActions() {
         /* subsystem, model enabled 
 	   Object actions[] = 
