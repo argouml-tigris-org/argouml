@@ -33,7 +33,7 @@ import ru.novosoft.uml.behavior.state_machines.MTransition;
 
 public class GoTransitionToSource extends AbstractGoRule {
 
-  public String getRuleName() { return "Transition->Source MState"; }
+  public String getRuleName() { return "Transition->Source State"; }
 
   public Collection getChildren(Object parent) { 
       if (ModelFacade.isATransition(parent)) {

@@ -33,12 +33,12 @@ import ru.novosoft.uml.behavior.state_machines.MTransition;
 
 public class GoTransitionToTarget extends AbstractGoRule {
 
-  public String getRuleName() { return "Transition->Target MState"; }
+  public String getRuleName() { return "Transition->Target State"; }
 
   public Collection getChildren(Object parent) { 
       if (ModelFacade.isATransition(parent)) {
           Collection col = new ArrayList();
-          col.add(ModelFacade.getTransitions(parent));
+	  col.add(ModelFacade.getTarget(parent));
           return col;
       }
       return null;
