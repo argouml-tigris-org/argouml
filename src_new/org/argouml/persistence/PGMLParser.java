@@ -450,8 +450,8 @@ public class PGMLParser extends org.tigris.gef.xml.pgml.PGMLParser {
 
 	case PRIVATE_EDGE_STATE:
 	    if (_currentEdge instanceof FigEdgeModelElement) {
-		((FigEdgeModelElement) _currentEdge)
-		    .setItemUID(new ItemUID(id));
+            ((FigEdgeModelElement) _currentEdge)
+                .setItemUID(new ItemUID(id));
 	    }
 	    //cat.debug("SetUID: edge: " + _currentEdge);
 	    break;
@@ -622,6 +622,14 @@ public class PGMLParser extends org.tigris.gef.xml.pgml.PGMLParser {
             own = _currentEdge.getOwner();
             if (!_diagram.getEdges(null).contains(own)) {
                 _diagram.getEdges(null).add(own);
+            }
+            break;
+        case POLY_EDGE_STATE:
+            if ("path".equals(name) 
+                    && _currentPoly != null
+                    && _currentPoly.getPointsList().size() == 1) {
+                LOG.warn("An edge has been detected with only one point");
+                _currentPoly.addPoint(0,0);
             }
             break;
         }
