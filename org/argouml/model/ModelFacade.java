@@ -24,7 +24,6 @@
 
 package org.argouml.model;
 
-import java.lang.Integer;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -182,7 +181,7 @@ public class ModelFacade {
     ////////////////////////////////////////////////////////////////
     // constants
 
-	// TODO deprecate all of these constants in favor of a separate declaration
+    // TODO: deprecate all of these constants in favor of a separate declaration
 	
     public static final short ACC_PUBLIC = 1;
     public static final short ACC_PRIVATE = 2;
@@ -412,7 +411,7 @@ public class ModelFacade {
     /**
      * Recognizer for Action state
      * @param handle
-     * @return
+     * @return true if handle is an Action state
      */
     public static boolean isAActionState(Object handle) {
         return handle instanceof MActionState;
@@ -483,8 +482,9 @@ public class ModelFacade {
 
     /**
      * Recognizer for asynchronisity of an action
+     *
      * @param handle candidate
-     * @return
+     * @return true if the argument is asynchronous
      */
     public static boolean isAsynchronous(Object handle) {
         if (handle instanceof MAction) {
@@ -1311,7 +1311,7 @@ public class ModelFacade {
     /** Recognizer for attributes that are initialized.
      *
      * @param handle candidate
-     * @param true if the attribute is initialized.
+     * @return true if the attribute is initialized.
      */
     public static boolean isInitialized(Object handle) {
         if (handle instanceof MAttribute) {
@@ -1462,6 +1462,9 @@ public class ModelFacade {
 
     /**
      * Recognizer for MBehaviouralFeature's that are queries.
+     *
+     * @param handle candidate
+     * @return true if it is a query
      */
     public static boolean isQuery(Object handle) {
         
@@ -1522,7 +1525,7 @@ public class ModelFacade {
     /** Recognizer for a specific stereotype.
      *
      * @param handle candidate
-     * @param stereotype a string that is the stereotype name.
+     * @param stereotypename a string that is the stereotype name.
      * @return true if handle is a singleton.
      * @deprecated As of ArgoUml version 0.13.5, {@link
      * org.argouml.model.uml.foundation.extensionmechanisms.ExtensionMechanismsHelper#isStereotype(Object,String,String)}
@@ -2577,7 +2580,7 @@ public class ModelFacade {
 
     /**
      * Gets a location of some extension point.
-     * @param extension point
+     * @param handle extension point
      * @return the location
      */
     public static String getLocation(Object handle) {
@@ -2699,7 +2702,7 @@ public class ModelFacade {
 
     /** Returns the list of Transitions outgoing from the given stateVertex.
      *
-     * @param statevertex
+     * @param handle statevertex
      * @return Collection
      */
     public static Collection getOutgoings(Object handle) {
