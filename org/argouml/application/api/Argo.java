@@ -186,6 +186,11 @@ public class Argo
     public static final ConfigurationKey KEY_THEME_CLASS =
         Configuration.makeKey("screen", "themeClass");
 
+    /** Key to enable smooth edges of diagram text and lines (anti-aliasing).
+     */
+    public static final ConfigurationKey KEY_SMOOTH_EDGES =
+        Configuration.makeKey("screen", "diagram-antialiasing");
+
     /** Key for user email address
      */
     public static final ConfigurationKey KEY_USER_EMAIL =
