@@ -817,8 +817,10 @@ public class Project implements java.io.Serializable, TargetListener {
         }
         cls = findTypeInModel(s, _defaultModel);
         // hey, now we should move it to the model the user is working in
-        cls = (MClassifier)ModelManagementHelper.getHelper().getCorrespondingElement(cls, getRoot());
-
+        if (cls != null) {
+            cls = (MClassifier)ModelManagementHelper.
+                getHelper().getCorrespondingElement(cls, getRoot());
+        }
         if (cls == null && defineNew) {
             cat.debug("new Type defined!");
             cls =
