@@ -115,6 +115,19 @@ implements TabModelTarget, NavigationListener, ArgoModuleEventListener {
     org.argouml.application.Main.addPostLoadAction(new InitPanelsLater(_panels,this));
   }
 
+  /** Adds a property panel to the internal list. This allows a plugin to
+   *  add a register a new property panel an run-time. This property panel will then
+   *  be displayed in the detatils pane whenever an element of the given metaclass is
+   *  selected.
+   *
+   * @param c the metaclass whose details show be displayed in the property panel p
+   * @param p an instance of the property panel for the metaclass m
+   *
+   */
+  public void addPanel(Class c, PropPanel p) {
+    _panels.put(c,p);
+  }
+
     public void addNavigationListener(NavigationListener navListener) {
         _navListeners.add(navListener);
     }
