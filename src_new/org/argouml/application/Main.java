@@ -77,23 +77,7 @@ public class Main {
     public static final String DEFAULT_LOGGING_CONFIGURATION =
         "org/argouml/resource/default.lcf";
 
-    private static final String STATBUNDLE =
-	"org/argouml/i18n/statusmsg.properties";	
 
-    // Resourcebundle-keys
-    private static final String LBLBUNDLE_PROJECTBROWSER_TITLE = 
-	"label.projectbrowser-title";
-	
-    private static final String STATBUNDLE_BAR_DEFAULTPROJECT = 
-	"statusmsg.bar.defaultproject";
-    private static final String STATBUNDLE_BAR_READINGPROJECT = 
-	"statusmsg.bar.readingproject";
-    private static final String STATBUNDLE_BAR_OPEN_PROJECT_BROWSER = 
-	"statusmsg.bar.open-project-browser";
-    // TODO: document use. No other ref.
-    private static final String STATBUNDLE_BAR_LOADMODULES = 
-	"statusmsg.bar.loadmodules";
-		
     ////////////////////////////////////////////////////////////////
     // static variables
 
@@ -104,16 +88,7 @@ public class Main {
 
     public static void main(String args[]) {        
 
-        // check we are using a supported java version
-        String javaVersion = System.getProperty("java.version", "");
-        // exit if unsupported java version.
-        if (javaVersion.startsWith("1.2")
-	    || javaVersion.startsWith("1.1")) {
-            
-	    System.err.println("You are using Java " + javaVersion + ", "
-			       + "Please use Java 1.3 or later with ArgoUml");
-	    System.exit(0);
-        }
+        checkJVMVersion();
         
         // Force the configuration to load
         Configuration.load();
@@ -171,42 +146,16 @@ public class Main {
         String themeMemory = null;
         for (int i = 0; i < args.length; i++) {
             if (args[i].startsWith("-")) {
-                if ((themeMemory =
-		        LookAndFeelMgr.getInstance().getThemeFromArg(args[i]))
-                    != null) {
-                    // Remembered!
+		String theme =
+		    LookAndFeelMgr.getInstance().getThemeFromArg(args[i]);
+                if (theme != null) {
+		    themeMemory = theme;
                 } else if (
                     args[i].equalsIgnoreCase("-help")
                         || args[i].equalsIgnoreCase("-h")
                         || args[i].equalsIgnoreCase("--help")
                         || args[i].equalsIgnoreCase("/?")) {
-                    System.err.println("Usage: [options] [project-file]");
-                    System.err.println("Options include: ");
-                    LookAndFeelMgr.getInstance().printThemeArgs();
-                    System.err.println(
-                        "  -nosplash       don't display Argo/UML logo");
-                    System.err.println(
-                        "  -noedem         don't report usage statistics");
-                    System.err.println(
-                        "  -nopreload      don't preload common classes");
-                    System.err.println(
-                        "  -profileload    report on load times");
-                    System.err.println(
-                        "  -norecentfile   don't reload last saved file");
-                    System.err.println(
-                        "  -command <arg>  command to perform on startup");
-                    System.err.println(
-                        "  -batch          don't start GUI");
-                    System.err.println("");
-                    System.err.println(
-                        "You can also set java settings which influence "
-			+ "the behaviour of ArgoUML:");
-                    System.err.println("  -Duser.language    [e.g. en]");
-                    System.err.println("  -Duser.region      [e.g. US]");
-                    System.err.println(
-                        "  -Dforce.nativelaf  [force ArgoUML to use "
-			+ "the native look and feel. UNSUPPORTED]");
-                    System.err.println("\n\n");
+                    printUsage();
                     System.exit(0);
                 } else if (args[i].equalsIgnoreCase("-nosplash")) {
                     doSplash = false;
@@ -266,24 +215,13 @@ public class Main {
             }
         }
 
-        File projectFile = null;
         URL urlToOpen = null;
 
         if (projectName != null) {
-            if (!projectName.endsWith(FileConstants.COMPRESSED_FILE_EXT))
+            if (!projectName.endsWith(FileConstants.COMPRESSED_FILE_EXT)) {
                 projectName += FileConstants.COMPRESSED_FILE_EXT;
-            projectFile = new File(projectName);
-            if (!projectFile.exists()) {
-                System.err.println(
-                    "Project file '" + projectFile + "' does not exist.");
-                /* this will cause an empty project to be created */
-            } else {
-                try {
-                    urlToOpen = Util.fileToURL(projectFile);
-                } catch (Exception e) {
-                    LOG.error("Exception opening project in main()", e);
-                }
-            }
+	    }
+            urlToOpen = projectUrl(projectName, urlToOpen);
         }
 
 	ProjectBrowser pb = ProjectBrowser.getInstance();
@@ -305,17 +243,16 @@ public class Main {
             if (urlToOpen == null)
             {
 		splash.getStatusBar().showStatus(
-		        Translator.localize(STATBUNDLE_BAR_DEFAULTPROJECT));
+		    Translator.localize("statusmsg.bar.defaultproject"));
             }
             else
             {
 		Object[] msgArgs = {
-		    projectName
+		    projectName,
 		};
 		splash.getStatusBar().showStatus(
-		        Translator.messageFormat(STATBUNDLE,
-						 STATBUNDLE_BAR_READINGPROJECT,
-						 msgArgs));
+		    Translator.messageFormat("statusmsg.bar.readingproject",
+					     msgArgs));
             }
 
             splash.getStatusBar().showProgress(40);
@@ -329,9 +266,7 @@ public class Main {
         Project p = null;
 
         if (urlToOpen != null) {
-            
             new ActionOpenProject().loadProject(urlToOpen);
-
         }
         p = ProjectManager.getManager().getCurrentProject();
 
@@ -346,7 +281,7 @@ public class Main {
         st.mark("perspectives");
 
         if (urlToOpen == null)
-            pb.setTitle(Translator.localize(LBLBUNDLE_PROJECTBROWSER_TITLE));
+            pb.setTitle(Translator.localize("label.projectbrowser-title"));
 
         if (doSplash) {
             SplashScreen splash = SplashScreen.getInstance();
@@ -362,7 +297,7 @@ public class Main {
         if (doSplash) {
             SplashScreen splash = SplashScreen.getInstance();
 	    splash.getStatusBar().showStatus(
-                Translator.localize(STATBUNDLE_BAR_OPEN_PROJECT_BROWSER));
+                Translator.localize("statusmsg.bar.open-project-browser"));
             splash.getStatusBar().showProgress(95);
         }
 
@@ -412,11 +347,80 @@ public class Main {
         ToolTipManager.sharedInstance().setDismissDelay(50000000);
     }
 
+    /**
+     * Calculates the {@link URL} for the given project name.
+     * If the file does not exist or cannot be converted the default
+     * {@link URL} is returned.
+     *
+     * @param projectName is the file name of the project
+     * @param urlToOpen is the default {@link URL}
+     * @return the new URL.
+     */
+    private static URL projectUrl(final String projectName, URL urlToOpen) {
+        File projectFile = new File(projectName);
+        if (!projectFile.exists()) {
+            System.err.println("Project file '" + projectFile
+			       + "' does not exist.");
+            /* this will cause an empty project to be created */
+        } else {
+            try {
+                urlToOpen = Util.fileToURL(projectFile);
+            } catch (Exception e) {
+                LOG.error("Exception opening project in main()", e);
+            }
+        }
+
+        return urlToOpen;
+    }
+
+    /**
+     * Prints the usage message.
+     */
+    private static void printUsage() {
+        System.err.println("Usage: [options] [project-file]");
+        System.err.println("Options include: ");
+        LookAndFeelMgr.getInstance().printThemeArgs();
+        System.err.println("  -nosplash       don't display Argo/UML logo");
+        System.err.println("  -noedem         don't report usage statistics");
+        System.err.println("  -nopreload      don't preload common classes");
+        System.err.println("  -profileload    report on load times");
+        System.err.println("  -norecentfile   don't reload last saved file");
+        System.err.println("  -command <arg>  command to perform on startup");
+        System.err.println("  -batch          don't start GUI");
+        System.err.println("");
+        System.err.println("You can also set java settings which influence "
+			   + "the behaviour of ArgoUML:");
+        System.err.println("  -Duser.language    [e.g. en]");
+        System.err.println("  -Duser.region      [e.g. US]");
+        System.err.println("  -Dforce.nativelaf  [force ArgoUML to use "
+			   + "the native look and feel. UNSUPPORTED]");
+        System.err.println("\n\n");
+    }
+
+    /**
+     * Checks tha JVM Version.<p>
+     *
+     * If it is a non supported JVM version we exit immediatly.
+     */
+    private static void checkJVMVersion() {
+        // check we are using a supported java version
+        String javaVersion = System.getProperty("java.version", "");
+        // exit if unsupported java version.
+        if (javaVersion.startsWith("1.2")
+	    || javaVersion.startsWith("1.1")) {
+            
+	    System.err.println("You are using Java " + javaVersion + ", "
+			       + "Please use Java 1.3 or later with ArgoUml");
+	    System.exit(0);
+        }
+    }
+
     public static void addPostLoadAction(Runnable r) {
         postLoadActions.addElement(r);
     }
 
-    /** Perform a list of commands that were given on the command line.
+    /**
+     * Perform a list of commands that were given on the command line.
      *
      * This first implementation just has a list of commands that
      * is possible to give.
@@ -560,6 +564,12 @@ public class Main {
         // initLogging();
     }
     
+    /**
+     * Do a part of the initialization that is very much GUI-stuff.
+     *
+     * @param doSplash true if we are updating the splash
+     * @param themeMemory is the theme to set.
+     */
     private static void initializeGUI(boolean doSplash, String themeMemory) 
     {
 	// initialize the correct look and feel
@@ -580,18 +590,14 @@ public class Main {
 	Dimension scrSize = Toolkit.getDefaultToolkit().getScreenSize();
 	pb.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 
-	int w =
-	    Math.min(
-		     Configuration.getInteger(
-					      Argo.KEY_SCREEN_WIDTH,
-					      (int) (0.95 * scrSize.width)),
-		     scrSize.width);
-	int h =
-	    Math.min(
-		     Configuration.getInteger(
-					      Argo.KEY_SCREEN_HEIGHT,
-					      (int) (0.95 * scrSize.height)),
-		     scrSize.height);
+	int configFrameWidth =
+	    Configuration.getInteger(Argo.KEY_SCREEN_WIDTH,
+				     (int) (0.95 * scrSize.width));
+	int configFrameHeight =
+	    Configuration.getInteger(Argo.KEY_SCREEN_HEIGHT,
+				     (int) (0.95 * scrSize.height));
+        int w = Math.min(configFrameWidth, scrSize.width);
+        int h = Math.min(configFrameHeight, scrSize.height);
 	int x = Configuration.getInteger(Argo.KEY_SCREEN_LEFT_X, 0);
 	int y = Configuration.getInteger(Argo.KEY_SCREEN_TOP_Y, 0);
 	pb.setLocation(x, y);
