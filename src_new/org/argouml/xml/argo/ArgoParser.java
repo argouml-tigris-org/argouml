@@ -24,13 +24,10 @@
 
 package org.argouml.xml.argo;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.log4j.Logger;
 import org.argouml.kernel.LastLoadInfo;
@@ -95,18 +92,6 @@ public class ArgoParser extends SAXParserBase {
             LOG.error(is.toString());
             LastLoadInfo.getInstance().setLastLoadMessage(e.toString());
             throw e;
-        } catch (IOException e) {
-            LastLoadInfo.getInstance().setLastLoadStatus(false);
-            LOG.error("Exception reading project================");
-            LOG.error(is.toString());
-            LastLoadInfo.getInstance().setLastLoadMessage(e.toString());
-            throw new SAXException(e);
-        } catch (ParserConfigurationException e) {
-            LastLoadInfo.getInstance().setLastLoadStatus(false);
-            LOG.error("Exception reading project================");
-            LOG.error(is.toString());
-            LastLoadInfo.getInstance().setLastLoadMessage(e.toString());
-            throw new SAXException(e);
         }
     }
     
