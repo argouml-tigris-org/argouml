@@ -1,10 +1,10 @@
 <html><head>
       <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-   <title>2.6.&nbsp;Making a release</title><link rel="stylesheet" href="look-and-feel.css" type="text/css"><meta name="generator" content="DocBook XSL Stylesheets V1.60.1"><link rel="home" href="index.html" title="Cookbook for Developers of ArgoUML"><link rel="up" href="ch02.html" title="Chapter&nbsp;2.&nbsp;Building from source"><link rel="previous" href="ch02s05.html" title="2.5.&nbsp;Manual Test Cases"><link rel="next" href="ch03.html" title="Chapter&nbsp;3.&nbsp;ArgoUML requirements"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">2.6.&nbsp;Making a release</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch02s05.html">Prev</a>&nbsp;</td><th width="60%" align="center">Chapter&nbsp;2.&nbsp;Building from source</th><td width="20%" align="right">&nbsp;<a accesskey="n" href="ch03.html">Next</a></td></tr></table><hr></div><div class="sect1" lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="release_process"></a>2.6.&nbsp;Making a release</h2></div></div><div></div></div><a class="indexterm" name="d0e1472"></a><p>
-To simplify for the person that is actually doing the release work
-and to make sure that everything is done in the exact same way 
-every time and nothing is forgotten,
-this list of what to do when releasing is maintained.
+   <title>2.6.&nbsp;Making a release</title><link rel="stylesheet" href="look-and-feel.css" type="text/css"><meta name="generator" content="DocBook XSL Stylesheets V1.60.1"><link rel="home" href="index.html" title="Cookbook for Developers of ArgoUML"><link rel="up" href="ch02.html" title="Chapter&nbsp;2.&nbsp;Building from source"><link rel="previous" href="ch02s05.html" title="2.5.&nbsp;Manual Test Cases"><link rel="next" href="ch03.html" title="Chapter&nbsp;3.&nbsp;ArgoUML requirements"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">2.6.&nbsp;Making a release</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch02s05.html">Prev</a>&nbsp;</td><th width="60%" align="center">Chapter&nbsp;2.&nbsp;Building from source</th><td width="20%" align="right">&nbsp;<a accesskey="n" href="ch03.html">Next</a></td></tr></table><hr></div><div class="sect1" lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="release_process"></a>2.6.&nbsp;Making a release</h2></div></div><div></div></div><a class="indexterm" name="d0e1535"></a><p>
+The purpose of this chapter is
+to simplify for the person that is actually doing the release work and
+to make sure that everything is done in the exact same way 
+every time and nothing is forgotten.
 </p><p>
 It is provided with the hopes of being helpful.
 
@@ -18,7 +18,7 @@ on a Cygwin system (running build.sh)
 assuming that this will be the same as on any UNIX system.
 How it is actually run on a Cygwin/UNIX system is also noted.
 </p><p>
-What needs to be done when one actually does a release:
+Here are the steps to be done when one actually does a release:
 </p><p>
 	</p><div class="orderedlist"><ol type="1"><li><p>Tag the whole CVS repository with the freeze tag!</p><p>
 Normally this tag is "VERSION_<i class="replaceable"><tt>X_Y_Z</tt></i>_F",
@@ -31,9 +31,13 @@ go to the root directory
 <tt class="filename">argouml</tt>
 and run the command
 <b class="command">cvs tag VERSION_<i class="replaceable"><tt>X_Y_Z</tt></i>_F</b>.)
-</p></li><li><p>Check out a new copy of the source!</p><p>
-This is done by checking out from the tag using the command
-<b class="command">cvs co -r VERSION_<i class="replaceable"><tt>X_Y_Z</tt></i>_F argouml/src_new argouml/lib argouml/tools argouml/modules argouml/tests</b>
+</p></li><li><p>
+Check out the source!
+</p><p>
+To be sure we always work from a clean copy and check out from the tag.
+</p><p>
+This is done using the command
+<b class="command">cvs co -r VERSION_<i class="replaceable"><tt>X_Y_Z</tt></i>_F argouml/src_new argouml/src argouml/lib argouml/tools argouml/modules argouml/tests</b>
 in a newly created directory.
 </p><p>
 These commands assume that you have set the CVSROOT correctly. 
@@ -41,18 +45,38 @@ If not you will have to use commands like
 <b class="command">cvs -d :pserver:<i class="replaceable"><tt>user</tt></i>@cvs.tigris.org:/cvs co ...</b>
 instead.
 </p></li><li><p>
-Build the release!
+Check the key to sign the jar files for java web start!
 </p><p>
+This is to make sure that you have a valid key
+for the purpose of signing the java web start version of the files.
+</p><p>
+Since the ArgoUML project and the Tigris organization are loose
+organizations we cannot buy a "real" key.
+The keys we use are the unsigned keys
+that can be generated by anyone using the keytool provided with java.
+</p><p>
+A key is generated with the command
+<b class="command">keytool -genkey -alias argouml -storepass secret</b>.
+</p><p>
+By default these keys have a validity of just three (3) months
+but by giving the
+<i class="parameter"><tt>-validity <i class="replaceable"><tt>days</tt></i></tt></i>
+the validity can be extended.
+</p></li><li><p>
+Build the release!
+</p><a class="indexterm" name="d0e1619"></a><a class="indexterm" name="d0e1624"></a><p>
 This is done in the
 <tt class="filename">argouml/src_new</tt>
 directory of the newly created copy
 by issuing the command <b class="command">build dist-release</b>!
 (Linus:
+It takes around 2 minutes on my machine 
+        JDK1.3.1_10/Intel 1400MHz (on batteries)/512MB (February 2004),
 It takes around 10 minutes on my machine 
-	JDK1.3.1_01/700MHz/256MB (May 2003),
+	JDK1.3.1_01/Intel 700MHz/256MB (May 2003),
 It takes around 30 minutes on a Lysator machine simultaneously 
 doing a lot of other things.
-	JDK1.3.1_06/sun4d/256MB (July 2003).
+	JDK1.3.1_06/Sun4d/256MB (July 2003).
 )
 </p><p>
 On a Cygwin/Unix system you need to 
@@ -62,7 +86,9 @@ and then issue the command with
 <b class="command">./build.sh</b> instead of 
 <b class="command">build</b>.
 </p><p>
-The output should be the files
+This should create the directory
+<tt class="filename">argouml/argouml-<i class="replaceable"><tt>VERSION</tt></i></tt>
+with the files
 <tt class="filename">ArgoUML-<i class="replaceable"><tt>VERSION</tt></i>-libs.tar.gz</tt>,
 <tt class="filename">ArgoUML-<i class="replaceable"><tt>VERSION</tt></i>-libs.zip</tt>,
 <tt class="filename">ArgoUML-<i class="replaceable"><tt>VERSION</tt></i>-modules.tar.gz</tt>,
@@ -70,17 +96,33 @@ The output should be the files
 <tt class="filename">ArgoUML-<i class="replaceable"><tt>VERSION</tt></i>-src.tar.gz</tt>,
 <tt class="filename">ArgoUML-<i class="replaceable"><tt>VERSION</tt></i>-src.zip</tt>,
 <tt class="filename">ArgoUML-<i class="replaceable"><tt>VERSION</tt></i>-app.tgz</tt>,
-<tt class="filename">ArgoUML-<i class="replaceable"><tt>VERSION</tt></i>.tar.gz</tt>, and
-<tt class="filename">ArgoUML-<i class="replaceable"><tt>VERSION</tt></i>.zip</tt>
-in the <tt class="filename">argouml</tt> directory
-in your new copy.
-</p></li><li><p>Test the release!</p><p>
+<tt class="filename">ArgoUML-<i class="replaceable"><tt>VERSION</tt></i>.tar.gz</tt>,
+<tt class="filename">ArgoUML-<i class="replaceable"><tt>VERSION</tt></i>.zip</tt>, and
+<tt class="filename">index.html</tt>.
+There should also be a subdirectory
+<tt class="filename">argouml/argouml-<i class="replaceable"><tt>VERSION</tt></i>/jws</tt>
+with .jar and .jnlp files.
+The .jar files in the subdirectory differ from
+the jar files in the zip and tar archives
+in that they are signed using your key.
+</p></li><li><p>Test the release manually!</p><p>
+The purpose of this is to make sure that there isn't any problem
+introduced by the release procedure and that the jar files contains
+the correct list of jars.
+</p><p>
 Either the 
 <tt class="filename">ArgoUML-<i class="replaceable"><tt>VERSION</tt></i>.tar.gz</tt> or
 <tt class="filename">ArgoUML-<i class="replaceable"><tt>VERSION</tt></i>.zip</tt>
-file is tested by unpacking, starting and then
-running through the test cases.
-Currently there isn't any defined test cases for manual testing.
+file is tested.
+Unpack,
+start using the command <b class="command">java -jar argouml.jar</b>, and
+do some ad-hoc testing.
+</p><p>
+If the tests did not pass See <a href="ch02s06.html#release_process_test_failed" title="2.6.1.&nbsp;The release did not work">Section&nbsp;2.6.1, &#8220;The release did not work&#8221;</a>.
+</p></li><li><p>Run through the automatic tests!</p><p>
+The purpose of this is to make sure that
+at this point in the development of ArgoUML and the JUnit test cases,
+all tests are working.
 </p><p>
 There are two sets of automatic test cases.
 </p><div class="itemizedlist"><ul type="disc"><li><p>
@@ -90,9 +132,11 @@ by issuing the command
 <b class="command">build alltests</b>
 in the <tt class="filename">argouml/src_new</tt> directory.
 (Linus
+It takes around 10 minutes on my machine 
+        JDK1.3.1_10/Intel 1400MHz (on batteries)/512MB (February 2004),
 It takes around 12 minutes on my machine 
-	JDK1.3.1_01/700MHz/256MB (May 2003),
-It takes around three hours on a Lysator machine simultaneously
+	JDK1.3.1_01/Intel 700MHz/256MB (May 2003),
+It takes around three (3) hours on a Lysator machine simultaneously
 doing a lot of other things and the X session over a 50KB/s modem.
 	JDK1.3.1_06/sun4d/256MB (July 2003).
 )
@@ -143,10 +187,18 @@ to go back to your other working tree or need to check out the file
 <tt class="filename">argouml/src_new/default.properties</tt>
 specifically to do this.
 </p></li><li><p>Build documentation and copy it.</p><p>
+While connected to the internet you download the docbook-xsl and
+JimiProClasses.zip.
+The docboox-xsl is downloaded by issueing the command
+<b class="command">build docbook-xsl-get</b>.
+The JimiProClasses.zip is downloaded from Sun.
+Instructions for this is in the fop README file:
+<tt class="filename">argouml/tools/fop-0.20.3/README</tt>.
+</p><p>
 The PDF versions of the documentation shall be copied from the
 <tt class="filename">build/documentation/pdf/*/*.pdf</tt>
 to
-<tt class="filename">argouml-<i class="replaceable"><tt>version</tt></i>/basename-<i class="replaceable"><tt>version</tt></i></tt>.
+<tt class="filename">argouml-<i class="replaceable"><tt>version</tt></i>/<i class="replaceable"><tt>basename-version</tt></i></tt>.
 </p></li><li><p>Upload the files onto the Tigris website!</p><p>
 A tree with all files is located in 
 <tt class="filename">argouml-<i class="replaceable"><tt>version</tt></i></tt>.
@@ -200,7 +252,7 @@ the plan for the following release.
 Freshmeat: currently Thierry Lach does the Freshmeat announcements
 which require a login so just inform him.
 </p></li></ol></div><p>
-</p><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="release_process_test_failed"></a>2.6.1.&nbsp;The release did not work</h3></div></div><div></div></div><a class="indexterm" name="d0e1789"></a><p>
+</p><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="release_process_test_failed"></a>2.6.1.&nbsp;The release did not work</h3></div></div><div></div></div><a class="indexterm" name="d0e1914"></a><p>
 This shouldn't happen! This really shouldn't happen!
 </p><p>
 The reason that this has happened is that one of the developers 
@@ -231,7 +283,7 @@ the culprit has and how ugly his mother is, is probably in place but
 please keep it constructive!
 Remember, you might be mistaken when you guess who the responsible is.
 </p></li></ul></div><p>
-</p></div><div class="sect3" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="d0e1854"></a>2.6.1.2.&nbsp;
+</p></div><div class="sect3" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="d0e1979"></a>2.6.1.2.&nbsp;
 Delay the release waiting for someone to fix the problem.
 </h4></div></div><div></div></div><p>
 Create the branch as described in 

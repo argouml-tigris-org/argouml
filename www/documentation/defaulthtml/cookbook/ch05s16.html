@@ -8,7 +8,7 @@ The Explorer is located in
 <tt class="classname">org.argouml.ui.explorer</tt> and sub-packages.
 </p><p>
 The Explorer is a Layer 2 subsystem. See <a href="ch04s06.html" title="4.6.&nbsp;Layer 2 - Description of subsystems">Section&nbsp;4.6, &#8220;Layer 2 - Description of subsystems&#8221;</a>.
-</p><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e6250"></a>5.16.1.&nbsp;Requirements</h3></div></div><div></div></div><p>
+</p><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e6404"></a>5.16.1.&nbsp;Requirements</h3></div></div><div></div></div><p>
 The Explorer must react to user and application events.
 </p><p>
 User events include
@@ -57,7 +57,7 @@ and name changes in the model.
 R13: change of project, the tree must update. the root node should be
      expanded with the default diagram selected.
 </p></li></ul></div><p>
-</p></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e6302"></a>5.16.2.&nbsp;Public APIs and SPIs</h3></div></div><div></div></div><p>
+</p></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e6456"></a>5.16.2.&nbsp;Public APIs and SPIs</h3></div></div><div></div></div><p>
 The Explorer Subsystem provides/will provide the following APIs:
 </p><div class="itemizedlist"><ul type="disc" compact><li><p>
 API1: Addition / Removal of a Perspective from the PerspectiveManager.
@@ -91,7 +91,7 @@ Status: not implemented
 </p><p>
 The APIs collectively represent the Explorer subsystem facade 
 and the SPIs represent plug-ins.
-</p></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e6336"></a>5.16.3.&nbsp;Details of the Explorer Implementation</h3></div></div><div></div></div><p>
+</p></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e6490"></a>5.16.3.&nbsp;Details of the Explorer Implementation</h3></div></div><div></div></div><p>
 The Explorer is currently shown in the Explorer Pane 
 (<tt class="classname">org.argouml.ui.NavigatorPane</tt>)
 - the upper left hand pane of ArgoUML.
@@ -140,7 +140,7 @@ This is done using the
 and the text is produced in 
 the <tt class="methodname">convertValueToText(...)</tt> method in 
 <tt class="classname">org.argouml.ui.explorer.ExplorerTree</tt>.
-</p></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e6372"></a>5.16.4.&nbsp;How do I ...?</h3></div></div><div></div></div><p>
+</p></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e6526"></a>5.16.4.&nbsp;How do I ...?</h3></div></div><div></div></div><p>
 </p><div class="itemizedlist"><ul type="disc"><li><p>...add another perspective?</p><p>
 </p><div class="itemizedlist"><ul type="circle"><li><p>
 The perspectives can be changed using the 

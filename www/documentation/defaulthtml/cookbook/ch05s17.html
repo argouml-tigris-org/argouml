@@ -23,7 +23,7 @@ subsystems Facade or Plug-in interface.
 </p><p>
 For details on how to build a module
 see <a href="ch06s02.html" title="6.2.&nbsp;Modules and PlugIns">Section&nbsp;6.2, &#8220;Modules and PlugIns&#8221;</a>.
-</p><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e6435"></a>5.17.1.&nbsp;What the ModuleLoader does</h3></div></div><div></div></div><p>
+</p><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e6589"></a>5.17.1.&nbsp;What the ModuleLoader does</h3></div></div><div></div></div><p>
 The ModuleLoader is looking for module jars.
 It actually scans through all jars available in the ext dir directory.
 See Edit Settings Environment tab.
@@ -34,4 +34,75 @@ A module jar contains the classes, resources and a manifest file.
 The manifest file points out the classes to be loaded.
 Also notice that the Specification-Title and Vendor must be specified
 correctly for this to work.
+</p></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e6596"></a>5.17.2.&nbsp;Design of a new Module Loader</h3></div></div><div></div></div><p>
+In an attempt to improve the Module Loader to make it more flexible a
+new design is suggested.
+This section describes the plan and will become the design documentation
+once some code is developed.
+</p><p>
+The plan is to implement this new Module Loader, then have them both
+working side by side for several releases (two stable releases),
+and if all are happy with it, then remove the old module loader.
+</p><p>
+Design:
+          </p><div class="itemizedlist"><ul type="disc"><li><p>
+We use a Loadable Proxy Pattern(?) for the modules.
+Each module is required to have one (1) class that implements 
+the module loader interface.
+That class (and all other classes that constitute the module)
+needs to be made available for some classloader, either by including
+it in the classpath or by letting the module loader hunt for it in the
+same manner as the old class loader does.
+</p></li><li><p>
+The modules are allowed to use all the APIs available from all
+the subsystems within ArgoUML and from other modules.
+</p><p>
+This is the big improvement in that:
+                </p><div class="itemizedlist"><ul type="circle"><li><p>
+We can use the same APIs for the modules that we use within ArgoUML.
+We don't need to have a special Pluggable class for every possible
+point where ArgoUML can be augmented.
+</p></li><li><p>
+We can have the module have different classes to register at different
+parts of ArgoUML.
+</p></li><li><p>
+We can have dynamic registrations that the module add and remove over time
+depending on some criteria that the module decides.
+</p></li><li><p>
+We don't need to search through all modules at every possible point
+where ArgoUML can be augmented.
+</p></li></ul></div><p>
+But it means that whenever a module needs to do something to ArgoUML,
+there needs to be implemented an API,
+possibly with registration/deregistration and callbacks.
+</p></li><li><p>
+The new Module loader will be in located in
+<tt class="classname">org.argouml.moduleloader</tt>.
+</p></li><li><p>
+All modules that can be found are examined at startup.
+They can be enabled and disabled individually from a special 
+available modules window but have a default state that applies if 
+the user hasn't taken action.
+</p></li><li><p>
+Dependency between modules!
+</p><p>
+If a module cannot be enabled
+because some other module needs to be enabled first or
+because some part of ArgoUML needs to be initialized first
+this is a problem since the plan is not to have any register of dependencies.
+</p><p>
+The suggested solution is that the module loader persists 
+in it's attempts to enable a module so that the order is not important.
+For this to work the modules needs to signal when they fail. 
+This is done by returning false or throwing a Exception from 
+the module enabling method.
+</p><p>
+The module loader also provides an API that the well-behaving modules can
+use to test if the modules they depend on are enabled.
+The less well-behaving module can just throw an exception when they fail
+to enable themselves properly.
+</p><p>
+If a module cannot be disabled, because some other module depends on it
+then this is signaled by returning false from the disabling method.
+</p></li></ul></div><p>
 </p></div></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch05s16.html">Prev</a>&nbsp;</td><td width="20%" align="center"><a accesskey="u" href="ch05.html">Up</a></td><td width="40%" align="right">&nbsp;<a accesskey="n" href="ch05s18.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">5.16.&nbsp;Explorer&nbsp;</td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top">&nbsp;5.18.&nbsp;OCL</td></tr></table></div></body></html>

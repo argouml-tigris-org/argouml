@@ -1,1 +1,11 @@
-body {font-family:lucida,verdana,helvetica,arial,sans-serif;}
+/** $Id$
+*******************************************************************************
+
+Style sheet for the documentation
+
+******************************************************************************/
+
+/* Set preferred fonts */
+
+body, table {
+  font-family: lucida,verdana,helvetica,arial,sans-serif }
