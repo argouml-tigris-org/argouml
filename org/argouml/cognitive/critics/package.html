@@ -29,15 +29,68 @@
 </head>
 <body bgcolor="white">
 
+<p>The classes at the heart of critic functionality, including classes for
+general critics that belong in no more specific category.</p>
+
+
+<!-- Description of the package itself -->
 
 <h2>Package Specification</h2>
 
- (none)
+<h3>Interfaces</h3>
 
+<p>This package defines no interfaces.</p>
+
+<h3>Classes</h3>
+
+<p>The key classes are:<p>
+
+<ul>
+  <li><p>{@link org.argouml.cognitive.critics.Agency}. The central class
+    controlling the critics.</p></li>
+
+  <li><p>{@link org.argouml.cognitive.critics.Critic}. The main class for
+    defining critics. Specializations include {@link
+      org.argouml.cognitive.critics.CompoundCritic} for critics built out of
+    several other critics and {@link org.argouml.uml.cognitive.critics.CrUML}
+    for critics relating specifically to UML.</p></li>
+
+  <li><p>{@link org.argouml.cognitive.critics.CriticUtils}. A utility class
+    containing static methods of general use in writing critics.</p></li>
+</ul>
+
+<p>A number of other classes are provided to support these classes&mdash;see
+the individual classes for more details.</p>
+
+<p>This package also contains critics relating to the overall use of
+Argo/UML. Each critic has its own class, with naming of the form
+Cr<em>CriticName</em>.</p>
+
+<h3>Subpackages</h3>
+
+<p>{@link org.argouml.cognitive.critics.ui} contains classes relating the user
+interface for the critics mechanism.</p>
 
 <h2>Related Documentation </h2>
 
- (none)
+<p>For more information on the critics mechanism, see the {@link <a
+href="http://argouml.tigris.org/documentation/snapshot/manual/argomanual.html">User
+Manual</a>}, in particular the reference section on  {@link <a
+href="http://argouml.tigris.org/documentation/snapshot/manual/argomanual.html#ch.ref.critics">Critics</a>}.</p>
+
+<p>Critics specialized to particular areas may be found in the following
+packages.</p>
+
+<ul>
+  <li><p>{@link org.argouml.language.java.cognitive.critics}. Critics relating
+    to Java language specific issues.</p></li>
+
+  <li><p>{@link org.argouml.pattern.cognitive.critics}. Critics relating
+    to design patterns (in the Gang of Four sense).</p></li>
+
+  <li><p>{@link org.argouml.uml.cognitive.critics}. Critics relating
+    to uml specific issues.</p></li>
+</ul>
 
 </body>
 </html>
