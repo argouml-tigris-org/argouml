@@ -136,31 +136,23 @@ public class CrConsiderSingleton extends CrUML {
 
         MClass cls = (MClass) dm;
 
-        // Check if it is already stereotyped as Singleton. Although
-        // "Singleton" is the usual naming, we'll accept "singleton". If so we
-        // have no problem
+        // Check for Singleton stereotype, uninitialised instance variables and
+        // outgoing associations, as per JavaDoc above.
 
-        if (CriticUtils.hasStereotype(cls,"Singleton") ||
-            CriticUtils.hasStereotype(cls,"singleton")) {
+        if (CriticUtils.hasSingletonStereotype(cls)) {
             return NO_PROBLEM;
         }
-
-        // if it has instance vars, no specific reason for Singleton
 
         if (CriticUtils.hasInstanceVariables(cls)) {
             return NO_PROBLEM;
         }
 
-        // if it has outgoing associatons, no specific reason for Singleton
-
         if (CriticUtils.hasOutgoingAssociations(cls)) {
             return NO_PROBLEM;
         }
-
-        // We have a class with no instance variables and no outgoing
-        // associations. This looks a good candidate for a singleton.
-
-        return PROBLEM_FOUND;
+        else {
+            return PROBLEM_FOUND;
+        }
     }
 
 } /* end class CrConsiderSingleton */
