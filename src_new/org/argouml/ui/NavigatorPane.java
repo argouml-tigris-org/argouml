@@ -52,8 +52,10 @@ import org.argouml.application.api.Configuration;
 import org.argouml.application.api.Notation;
 import org.argouml.application.api.QuadrantPanel;
 import org.argouml.kernel.ProjectManager;
+import org.argouml.model.uml.behavioralelements.statemachines.StateMachinesHelper;
 import org.argouml.swingext.Toolbar;
 import org.argouml.uml.diagram.sequence.ui.UMLSequenceDiagram;
+import org.argouml.uml.diagram.state.ui.UMLStateDiagram;
 import org.argouml.uml.diagram.ui.ActionAddExistingEdge;
 import org.argouml.uml.diagram.ui.ActionAddExistingNode;
 import org.argouml.uml.ui.ActionRemoveFromModel;
@@ -420,7 +422,10 @@ public class NavigatorPane
                                 .getManager()
                                 .getCurrentProject()
                                 .getModel()))
-                    || obj instanceof MStateVertex
+                    || ((obj instanceof MStateVertex) && 
+                        ((ProjectBrowser.TheInstance.getActiveDiagram() instanceof UMLStateDiagram) &&
+                            (((UMLStateDiagram)ProjectBrowser.TheInstance.getActiveDiagram()).getStateMachine() ==
+                                StateMachinesHelper.getHelper().getStateMachine(obj))))                                
                     || (obj instanceof MInstance
                         && !(obj instanceof MDataValue)
                         && !(ProjectBrowser.TheInstance.getActiveDiagram()

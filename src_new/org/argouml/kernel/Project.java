@@ -76,9 +76,11 @@ import org.argouml.uml.ProfileJava;
 import org.argouml.uml.ProjectMemberModel;
 import org.argouml.uml.UMLChangeRegistry;
 import org.argouml.uml.diagram.ProjectMemberDiagram;
+import org.argouml.uml.diagram.state.ui.UMLStateDiagram;
 import org.argouml.uml.diagram.static_structure.ui.UMLClassDiagram;
 import org.argouml.uml.diagram.ui.ModeCreateEdgeAndNode;
 import org.argouml.uml.diagram.ui.SelectionWButtons;
+import org.argouml.uml.diagram.ui.UMLDiagram;
 import org.argouml.uml.diagram.use_case.ui.UMLUseCaseDiagram;
 import org.argouml.uml.generator.GenerationPreferences;
 import org.argouml.util.ChangeRegistry;
@@ -898,7 +900,11 @@ public class Project implements java.io.Serializable {
      */
     protected void removeDiagram(ArgoDiagram d) {
         _diagrams.removeElement(d);
-        d.removeChangeRegistryAsListener( _saveRegistry );
+        if (d instanceof UMLStateDiagram) {
+            UMLStateDiagram statediagram = (UMLStateDiagram)d;
+            ProjectManager.getManager().getCurrentProject().moveToTrash(statediagram.getStateMachine());
+        }
+        d.removeChangeRegistryAsListener( _saveRegistry );        
         setNeedsSave(true);
     }
 
