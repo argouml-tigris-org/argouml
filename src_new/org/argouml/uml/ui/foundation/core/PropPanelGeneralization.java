@@ -23,21 +23,31 @@
 
 package org.argouml.uml.ui.foundation.core;
 
-import java.awt.*;
-import javax.swing.*;
-import javax.swing.plaf.metal.MetalLookAndFeel;
-
-import ru.novosoft.uml.behavior.common_behavior.*;
-import ru.novosoft.uml.behavior.use_cases.*;
-import ru.novosoft.uml.foundation.core.*;
-import ru.novosoft.uml.foundation.data_types.*;
-import ru.novosoft.uml.foundation.extension_mechanisms.*;
-import ru.novosoft.uml.model_management.*;
+import javax.swing.JScrollPane;
 
 import org.apache.log4j.Category;
-import org.argouml.application.api.*;
+import org.argouml.application.api.Argo;
 import org.argouml.ui.ProjectBrowser;
-import org.argouml.uml.ui.*;
+import org.argouml.uml.ui.PropPanelButton;
+import org.argouml.uml.ui.UMLComboBox2;
+import org.argouml.uml.ui.UMLComboBoxNavigator;
+import org.argouml.uml.ui.UMLList;
+import org.argouml.uml.ui.UMLModelElementListModel;
+import org.argouml.uml.ui.UMLReflectionListModel;
+import org.argouml.uml.ui.UMLTextField;
+import org.argouml.uml.ui.UMLTextProperty;
+import ru.novosoft.uml.behavior.common_behavior.MSignal;
+import ru.novosoft.uml.behavior.use_cases.MActor;
+import ru.novosoft.uml.foundation.core.MClass;
+import ru.novosoft.uml.foundation.core.MClassifier;
+import ru.novosoft.uml.foundation.core.MDataType;
+import ru.novosoft.uml.foundation.core.MGeneralizableElement;
+import ru.novosoft.uml.foundation.core.MGeneralization;
+import ru.novosoft.uml.foundation.core.MInterface;
+import ru.novosoft.uml.foundation.core.MModelElement;
+import ru.novosoft.uml.foundation.core.MNamespace;
+import ru.novosoft.uml.foundation.extension_mechanisms.MStereotype;
+import ru.novosoft.uml.model_management.MPackage;
 
 public class PropPanelGeneralization extends PropPanelModelElement {
      protected static Category cat = 
@@ -81,7 +91,7 @@ public class PropPanelGeneralization extends PropPanelModelElement {
         "powertype","getPowertype","setPowertype",false,MClassifier.class,true);
     addField(new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-class"),new UMLComboBox(powerModel)),2,1,0);
     */
-    addField(new UMLTypeComboBox(this, "powertype"),2,1,0);
+    addField(new UMLComboBox2(this, new UMLGeneralizationPowertypeComboBoxModel(this), ActionSetGeneralizationPowertype.SINGLETON),2,1,0);
 
     new PropPanelButton(this,buttonPanel,_navUpIcon, Argo.localize("UMLMenu", "button.go-up"),"navigateUp",null);
     new PropPanelButton(this,buttonPanel,_navBackIcon, Argo.localize("UMLMenu", "button.go-back"),"navigateBackAction","isNavigateBackEnabled");

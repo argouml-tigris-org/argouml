@@ -100,6 +100,8 @@ public abstract class UMLPlainTextDocument extends PlainDocument
      * @see org.argouml.uml.ui.UMLUserInterfaceComponent#targetReasserted()
      */
     public void targetReasserted() {
+        setTarget(_panel.getTarget());
+        handleEvent();  
     }
 
     /**
@@ -201,7 +203,7 @@ public abstract class UMLPlainTextDocument extends PlainDocument
         try {
             setFiring(false);
             if (!isEditing()) {
-                remove(0, getLength());
+                super.remove(0, getLength());
                 insertString(0, getProperty(), null);
             }
         } catch (BadLocationException b) {

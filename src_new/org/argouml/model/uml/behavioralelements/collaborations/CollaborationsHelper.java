@@ -185,10 +185,10 @@ public class CollaborationsHelper {
 	 * @return Collection
 	 */
 	public Collection getAllPossibleActivators(MMessage mes) {
-		if (mes == null) return new ArrayList();
-		MInteraction inter = mes.getInteraction();
+		if (mes == null || mes.getInteraction() == null) return new ArrayList();
+		MInteraction inter = mes.getInteraction();                              
 		Collection predecessors = mes.getPredecessors();
-		Collection allMessages = inter.getMessages();
+		Collection allMessages = inter.getMessages();                
 		Iterator it = allMessages.iterator();
 		List list = new ArrayList();
 		while (it.hasNext()) {

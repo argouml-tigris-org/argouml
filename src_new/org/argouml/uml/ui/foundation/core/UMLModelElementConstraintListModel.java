@@ -51,7 +51,8 @@ public class UMLModelElementConstraintListModel
      * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
      */
     protected void buildModelList() {
-        setAllElements(((MModelElement)getTarget()).getConstraints());
+        if (_target != null)
+            setAllElements(((MModelElement)getTarget()).getConstraints());
     }
 
     /**

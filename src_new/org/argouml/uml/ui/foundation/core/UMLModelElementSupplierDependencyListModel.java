@@ -51,7 +51,9 @@ public class UMLModelElementSupplierDependencyListModel
      * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
      */
     protected void buildModelList() {
-        setAllElements(((MModelElement)getTarget()).getSupplierDependencies());
+        if (_target != null) {
+            setAllElements(((MModelElement)getTarget()).getSupplierDependencies());
+        }
     }
 
     /**

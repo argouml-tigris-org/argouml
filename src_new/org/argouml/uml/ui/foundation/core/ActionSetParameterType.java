@@ -1,4 +1,4 @@
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -24,44 +24,58 @@
 // $header$
 package org.argouml.uml.ui.foundation.core;
 
-import org.argouml.uml.ui.UMLModelElementListModel2;
-import org.argouml.uml.ui.UMLUserInterfaceContainer;
+import java.awt.event.ActionEvent;
 
-import ru.novosoft.uml.MBase;
-import ru.novosoft.uml.MElementEvent;
-import ru.novosoft.uml.foundation.core.MModelElement;
+import org.argouml.application.api.Argo;
+import org.argouml.uml.ui.UMLChangeAction;
+import org.argouml.uml.ui.UMLComboBox2;
+
+import ru.novosoft.uml.foundation.core.MClassifier;
+import ru.novosoft.uml.foundation.core.MParameter;
 
 /**
- * @since Oct 11, 2002
+ * @since Nov 3, 2002
  * @author jaap.branderhorst@xs4all.nl
  */
-public class UMLModelElementNamespaceListModel
-    extends UMLModelElementListModel2 {
+public class ActionSetParameterType extends UMLChangeAction {
 
+    public static final ActionSetParameterType SINGLETON = new ActionSetParameterType();
+    
     /**
-     * Constructor for UMLModelElementNamespaceListModel.
-     * @param container
+     * Constructor for ActionSetAttributeType.
+     * @param s
      */
-    public UMLModelElementNamespaceListModel(UMLUserInterfaceContainer container) {
-        super(container, "namespace");
-    }
-
-    /**
-     * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
-     */
-    protected void buildModelList() {
-        removeAllElements();
-        if (_target != null) {
-            addElement(((MModelElement)_target).getNamespace());
-        }
+    protected ActionSetParameterType() {
+        super(Argo.localize("CoreMenu", "Set"), true, NO_ICON);
     }
 
     
+
     /**
-     * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(ru.novosoft.uml.MBase)
+     * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
-    protected boolean isValidElement(MBase element) {
-        return ((MModelElement)getTarget()).getNamespace() == element;
+    public void actionPerformed(ActionEvent e) {
+        super.actionPerformed(e);
+        Object source = e.getSource();
+        MClassifier oldClassifier = null;
+        MClassifier newClassifier = null;
+        MParameter para = null;
+        if (source instanceof UMLComboBox2) {
+            UMLComboBox2 box = (UMLComboBox2)source;
+            Object o = box.getTarget();
+            if (o instanceof MParameter) {
+                para = (MParameter)o;
+                oldClassifier = para.getType();
+            }
+            o = box.getSelectedItem();
+            if (o instanceof MClassifier) {
+                newClassifier = (MClassifier)o;
+            }
+        }
+        if (newClassifier != oldClassifier && para != null) {
+            para.setType(newClassifier);
+        }
+        
     }
 
 }

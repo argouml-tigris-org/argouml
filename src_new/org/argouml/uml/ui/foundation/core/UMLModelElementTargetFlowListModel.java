@@ -51,7 +51,9 @@ public class UMLModelElementTargetFlowListModel
      * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
      */
     protected void buildModelList() {
-        setAllElements(((MModelElement)getTarget()).getTargetFlows());
+        if (_target != null) {
+            setAllElements(((MModelElement)getTarget()).getTargetFlows());
+        }
     }
 
     

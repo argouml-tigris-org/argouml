@@ -21,47 +21,55 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// $header$
-package org.argouml.uml.ui.foundation.core;
+package org.argouml.uml.ui.behavior.common_behavior;
+
+import java.util.Iterator;
 
 import org.argouml.model.uml.UmlModelEventPump;
-import org.argouml.model.uml.foundation.core.CoreHelper;
+import org.argouml.model.uml.modelmanagement.ModelManagementHelper;
 import org.argouml.uml.ui.UMLComboBoxModel2;
 import org.argouml.uml.ui.UMLUserInterfaceContainer;
 
 import ru.novosoft.uml.MBase;
 import ru.novosoft.uml.MElementEvent;
+import ru.novosoft.uml.behavior.common_behavior.MReception;
+import ru.novosoft.uml.behavior.common_behavior.MSignal;
 import ru.novosoft.uml.foundation.core.MModelElement;
 import ru.novosoft.uml.foundation.core.MNamespace;
 
-
 /**
- * @since Oct 10, 2002
- * @author jaap.branderhorst@xs4all.nl
+ * The model for the signal combobox on the reception proppanel.
  */
-public class UMLModelElementNamespaceComboBoxModel extends UMLComboBoxModel2 {
+public class UMLReceptionSignalComboBoxModel extends UMLComboBoxModel2 {
 
     /**
-     * Constructor for UMLModelElementNamespaceComboBoxModel.
+     * Constructor for UMLReceptionSignalComboBoxModel.
      * @param container
      */
-    public UMLModelElementNamespaceComboBoxModel(UMLUserInterfaceContainer container) {
-        super(container, "namespace", false);
+    public UMLReceptionSignalComboBoxModel(UMLUserInterfaceContainer container) {
+        super(container,"signal", false);
         UmlModelEventPump.getPump().addClassModelEventListener(this, MNamespace.class, "ownedElement");
-    }
-    
-    /**
-     * @see org.argouml.uml.ui.UMLComboBoxModel2#isValidElement(ru.novosoft.uml.MBase)
-     */
-    protected boolean isValidElement(MBase o) {
-        return o instanceof MNamespace && CoreHelper.getHelper().isValidNamespace((MModelElement)getTarget(), (MNamespace)o);
     }
 
     /**
      * @see org.argouml.uml.ui.UMLComboBoxModel2#buildModelList()
      */
     protected void buildModelList() {
-        setElements(CoreHelper.getHelper().getAllPossibleNamespaces((MModelElement)getTarget()));
+        Object target = getContainer().getTarget();
+        if (target instanceof MReception) {
+            MReception rec = (MReception)target;
+            removeAllElements();
+            setElements(ModelManagementHelper.getHelper().getAllModelElementsOfKind(MSignal.class));
+            setSelectedItem(rec.getSignal());      
+        }
+         
+    }
+
+    /**
+     * @see org.argouml.uml.ui.UMLComboBoxModel2#isValidElement(ru.novosoft.uml.MBase)
+     */
+    protected boolean isValidElement(MBase m) {
+        return m instanceof MSignal;
     }
 
     /**
@@ -69,7 +77,7 @@ public class UMLModelElementNamespaceComboBoxModel extends UMLComboBoxModel2 {
      */
     protected Object getSelectedModelElement() {
         if (getTarget() != null) {
-            return ((MModelElement)getTarget()).getNamespace();
+            return ((MReception)getTarget()).getSignal();
         }
         return null;
     }

@@ -173,6 +173,7 @@ public class CollaborationsFactory extends AbstractUmlModelFactory {
     		// we do not create on basis of associations between the bases of the classifierroles
     		role.addConnection(buildAssociationEndRole(from));
     		role.addConnection(buildAssociationEndRole(to));
+                colFrom.addOwnedElement(role);
     		return role;
     	}
     	return null;

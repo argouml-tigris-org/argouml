@@ -21,57 +21,43 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// $header$
-package org.argouml.uml.ui.foundation.core;
+package org.argouml.uml.ui.behavior.common_behavior;
 
-import org.argouml.model.uml.UmlModelEventPump;
-import org.argouml.model.uml.foundation.core.CoreHelper;
+import java.awt.event.ActionEvent;
+
+import org.argouml.uml.ui.UMLComboBox2;
 import org.argouml.uml.ui.UMLComboBoxModel2;
 import org.argouml.uml.ui.UMLUserInterfaceContainer;
 
-import ru.novosoft.uml.MBase;
-import ru.novosoft.uml.MElementEvent;
-import ru.novosoft.uml.foundation.core.MModelElement;
-import ru.novosoft.uml.foundation.core.MNamespace;
-
+import ru.novosoft.uml.behavior.common_behavior.MReception;
+import ru.novosoft.uml.behavior.common_behavior.MSignal;
 
 /**
- * @since Oct 10, 2002
- * @author jaap.branderhorst@xs4all.nl
+ * Combobox for signals on the reception proppanel.
  */
-public class UMLModelElementNamespaceComboBoxModel extends UMLComboBoxModel2 {
+public class UMLReceptionSignalComboBox extends UMLComboBox2 {
 
     /**
-     * Constructor for UMLModelElementNamespaceComboBoxModel.
+     * Constructor for UMLSignalComboBox.
      * @param container
+     * @param arg0
      */
-    public UMLModelElementNamespaceComboBoxModel(UMLUserInterfaceContainer container) {
-        super(container, "namespace", false);
-        UmlModelEventPump.getPump().addClassModelEventListener(this, MNamespace.class, "ownedElement");
-    }
-    
-    /**
-     * @see org.argouml.uml.ui.UMLComboBoxModel2#isValidElement(ru.novosoft.uml.MBase)
-     */
-    protected boolean isValidElement(MBase o) {
-        return o instanceof MNamespace && CoreHelper.getHelper().isValidNamespace((MModelElement)getTarget(), (MNamespace)o);
+    public UMLReceptionSignalComboBox(
+        UMLUserInterfaceContainer container,
+        UMLComboBoxModel2 arg0) {
+        super(container, arg0);
     }
 
     /**
-     * @see org.argouml.uml.ui.UMLComboBoxModel2#buildModelList()
+     * @see org.argouml.uml.ui.UMLComboBox2#doIt(ActionEvent)
      */
-    protected void buildModelList() {
-        setElements(CoreHelper.getHelper().getAllPossibleNamespaces((MModelElement)getTarget()));
-    }
-
-    /**
-     * @see org.argouml.uml.ui.UMLComboBoxModel2#getSelectedModelElement()
-     */
-    protected Object getSelectedModelElement() {
-        if (getTarget() != null) {
-            return ((MModelElement)getTarget()).getNamespace();
+    protected void doIt(ActionEvent event) {
+        Object o = getModel().getElementAt(getSelectedIndex());
+        MSignal signal = (MSignal)o;
+        MReception reception = (MReception)getContainer().getTarget();
+        if (signal != reception.getSignal()) {
+            reception.setSignal(signal);
         }
-        return null;
     }
 
 }

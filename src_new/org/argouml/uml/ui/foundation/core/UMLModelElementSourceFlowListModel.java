@@ -52,6 +52,7 @@ public class UMLModelElementSourceFlowListModel
      * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
      */
     protected void buildModelList() {
+        if (_target != null)
         setAllElements(((MModelElement)getTarget()).getSourceFlows());
     }
 

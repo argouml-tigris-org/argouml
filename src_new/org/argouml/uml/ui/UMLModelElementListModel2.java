@@ -269,8 +269,10 @@ public abstract class UMLModelElementListModel2 extends DefaultListModel impleme
              UmlModelEventPump.getPump().removeModelEventListener(this, (MBase)_target, _eventName);
              UmlModelEventPump.getPump().addModelEventListener(this, (MBase)_target, _eventName);
         }
-        removeAllElements();
-        buildModelList();
+        if (_target != null) {
+            removeAllElements();
+            buildModelList();
+        }
     }
     
     /**

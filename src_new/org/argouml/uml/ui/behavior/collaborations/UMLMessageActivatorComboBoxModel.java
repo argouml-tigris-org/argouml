@@ -29,14 +29,19 @@ import java.util.List;
 
 import javax.swing.DefaultComboBoxModel;
 
+import org.argouml.model.uml.UmlModelEventPump;
 import org.argouml.model.uml.behavioralelements.collaborations.CollaborationsHelper;
 import org.argouml.uml.ui.UMLComboBoxModel;
 import org.argouml.uml.ui.UMLComboBoxModel2;
 import org.argouml.uml.ui.UMLUserInterfaceComponent;
 import org.argouml.uml.ui.UMLUserInterfaceContainer;
 
+import com.sun.corba.se.internal.iiop.messages.Message;
+
+import ru.novosoft.uml.MBase;
 import ru.novosoft.uml.MElementEvent;
 import ru.novosoft.uml.MElementListener;
+import ru.novosoft.uml.behavior.collaborations.MInteraction;
 import ru.novosoft.uml.behavior.collaborations.MMessage;
 import ru.novosoft.uml.foundation.core.MModelElement;
 
@@ -54,7 +59,7 @@ public class UMLMessageActivatorComboBoxModel extends UMLComboBoxModel2 {
      * @param container
      */
     public UMLMessageActivatorComboBoxModel(UMLUserInterfaceContainer container) {
-        super(container, false);
+        super(container, "activator", false);
     }
 
     /**
@@ -69,23 +74,16 @@ public class UMLMessageActivatorComboBoxModel extends UMLComboBoxModel2 {
             setElements(CollaborationsHelper.getHelper().getAllPossibleActivators(mes));
         }
     }
+
     
     /**
-     * @see org.argouml.uml.ui.UMLComboBoxModel2#isValidPropertySet(ru.novosoft.uml.MElementEvent)
+     * @see org.argouml.uml.ui.UMLComboBoxModel2#isValidElement(ru.novosoft.uml.MBase)
      */
-    protected boolean isValidPropertySet(MElementEvent e) {
-        return e.getSource() == getTarget() && e.getName().equals("activator");
-    }
-
-    /**
-     * @see org.argouml.uml.ui.UMLComboBoxModel2#isValidRoleAdded(ru.novosoft.uml.MElementEvent)
-     */
-    protected boolean isValidRoleAdded(MElementEvent e) {
-        MModelElement m = (MModelElement)getChangedElement(e);
+    protected boolean isValidElement(MBase m) {
         return ((m instanceof MMessage)  && 
-            m != getContainer().getTarget() && 
-            !((MMessage)(getContainer().getTarget())).getPredecessors().contains(m) &&
-            ((MMessage)m).getInteraction() == ((MMessage)(getContainer().getTarget())).getInteraction());
+            m != getTarget() && 
+            !((MMessage)(getTarget())).getPredecessors().contains(m) &&
+            ((MMessage)m).getInteraction() == ((MMessage)(getTarget())).getInteraction());
     }
 
     /**
@@ -96,6 +94,23 @@ public class UMLMessageActivatorComboBoxModel extends UMLComboBoxModel2 {
             return ((MMessage)getTarget()).getActivator();
         }
         return null;
+    }
+
+    /**
+     * @see org.argouml.uml.ui.UMLComboBoxModel2#setTarget(java.lang.Object)
+     */
+    protected void setTarget(Object target) {
+        if (getTarget() instanceof MMessage) {
+            MInteraction inter = ((MMessage)getTarget()).getInteraction();
+            if (inter != null)
+                UmlModelEventPump.getPump().removeModelEventListener(this, inter, "message");
+        }   
+        super.setTarget(target);
+        if (target instanceof MMessage) {
+            MInteraction inter = ((MMessage)target).getInteraction();
+            if (inter != null)
+                UmlModelEventPump.getPump().addModelEventListener(this, inter, "message");
+        }
     }
 
 }

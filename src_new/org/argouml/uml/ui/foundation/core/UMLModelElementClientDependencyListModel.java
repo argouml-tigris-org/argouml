@@ -52,7 +52,8 @@ public class UMLModelElementClientDependencyListModel
      * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
      */
     protected void buildModelList() {
-        setAllElements(((MModelElement)getTarget()).getClientDependencies());
+        if (_target != null) 
+            setAllElements(((MModelElement)getTarget()).getClientDependencies());
     }
 
     /**

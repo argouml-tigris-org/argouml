@@ -76,9 +76,11 @@ public class UMLClassifierRoleAvailableContentsListModel
             }
             // make sure we know it when a classifier is added as a base
             UmlModelEventPump.getPump().addModelEventListener(this, (MBase)_target, "base");
-        }            
-        removeAllElements();
-        buildModelList();
+        }         
+        if (_target != null) {   
+            removeAllElements();
+            buildModelList();
+        }
     }
 
     /**

@@ -1,4 +1,4 @@
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -24,45 +24,60 @@
 // $header$
 package org.argouml.uml.ui.foundation.core;
 
-import javax.swing.JList;
-import javax.swing.JScrollPane;
+import java.awt.event.ActionEvent;
 
 import org.argouml.application.api.Argo;
-import org.argouml.swingext.LabelledLayout;
+import org.argouml.uml.ui.UMLChangeAction;
 import org.argouml.uml.ui.UMLComboBox2;
-import org.argouml.uml.ui.UMLComboBoxNavigator;
-import org.argouml.uml.ui.UMLMutableLinkedList;
-import org.argouml.util.ConfigLoader;
+
+import ru.novosoft.uml.foundation.core.MClassifier;
+import ru.novosoft.uml.foundation.core.MGeneralization;
 
 /**
- * @since Oct 12, 2002
+ * @since Nov 3, 2002
  * @author jaap.branderhorst@xs4all.nl
  */
-public class PropPanelFlow extends PropPanelRelationship {
+public class ActionSetGeneralizationPowertype extends UMLChangeAction {
+
+   
+
+    public static final ActionSetGeneralizationPowertype SINGLETON = new ActionSetGeneralizationPowertype();
+    
+    /**
+     * Constructor for ActionSetAttributeType.
+     * @param s
+     */
+    protected ActionSetGeneralizationPowertype() {
+        super(Argo.localize("CoreMenu", "Set"), true, NO_ICON);
+    }
+
+    
 
     /**
-     * Constructor for PropPanelFlow.
+     * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
-    public PropPanelFlow() {
-        super("Flow",_flowIcon, ConfigLoader.getTabPropsOrientation());
-        initialize();
+    public void actionPerformed(ActionEvent e) {
+        super.actionPerformed(e);
+        Object source = e.getSource();
+        MClassifier oldClassifier = null;
+        MClassifier newClassifier = null;
+        MGeneralization gen = null;
+        if (source instanceof UMLComboBox2) {
+            UMLComboBox2 box = (UMLComboBox2)source;
+            Object o = box.getTarget();
+            if (o instanceof MGeneralization) {
+                gen = (MGeneralization)o;
+                oldClassifier = gen.getPowertype();
+            }
+            o = box.getSelectedItem();
+            if (o instanceof MClassifier) {
+                newClassifier = (MClassifier)o;
+            }
+        }
+        if (newClassifier != oldClassifier && gen != null) {
+            gen.setPowertype(newClassifier);
+        }
+        
     }
 
-    private void initialize() {
-        addField(Argo.localize("UMLMenu", "label.name"), nameField);
-        addField(Argo.localize("UMLMenu", "label.stereotype"), new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-stereo"),stereotypeBox));
-        addField(Argo.localize("UMLMenu", "label.namespace"), namespaceScroll);
-        addField(Argo.localize("UMLMenu", "label.constraints"), constraintScroll);
-        
-        add(LabelledLayout.getSeperator());
-/*        
-        UMLComboBox2 sourceBox = new UMLComboBox2(this, 
-            new UMLFlowSourceComboBoxModel(this), 
-            ActionSetFlowSource.SINGLETON);
-        addField(Argo.localize("UMLMenu", "label.sources"), 
-            sourceBox);
-        
-        // addField(Argo.localize("UMLMenu", "label.sources"), targetScroll);
-*/
-    }
 }

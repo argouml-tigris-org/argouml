@@ -53,8 +53,7 @@ public class UMLAssociationEndRoleBaseListModel
      * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
      */
     protected void buildModelList() {
-        removeAllElements();
-        if (((MAssociationEndRole)getTarget()).getBase() != null) {
+        if (_target != null && ((MAssociationEndRole)getTarget()).getBase() != null) {
             addElement(((MAssociationEndRole)getTarget()).getBase());
         }
     }

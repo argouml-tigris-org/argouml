@@ -1,4 +1,4 @@
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -24,52 +24,31 @@
 // $header$
 package org.argouml.uml.ui.foundation.core;
 
-import org.argouml.model.uml.UmlModelEventPump;
-import org.argouml.model.uml.foundation.core.CoreHelper;
-import org.argouml.uml.ui.UMLComboBoxModel2;
 import org.argouml.uml.ui.UMLUserInterfaceContainer;
 
-import ru.novosoft.uml.MBase;
-import ru.novosoft.uml.MElementEvent;
-import ru.novosoft.uml.foundation.core.MModelElement;
-import ru.novosoft.uml.foundation.core.MNamespace;
-
+import ru.novosoft.uml.foundation.core.MParameter;
 
 /**
- * @since Oct 10, 2002
+ * @since Nov 2, 2002
  * @author jaap.branderhorst@xs4all.nl
  */
-public class UMLModelElementNamespaceComboBoxModel extends UMLComboBoxModel2 {
+public class UMLParameterTypeComboBoxModel
+    extends UMLAttributeTypeComboBoxModel {
 
     /**
-     * Constructor for UMLModelElementNamespaceComboBoxModel.
+     * Constructor for UMLParameterTypeComboBoxModel.
      * @param container
      */
-    public UMLModelElementNamespaceComboBoxModel(UMLUserInterfaceContainer container) {
-        super(container, "namespace", false);
-        UmlModelEventPump.getPump().addClassModelEventListener(this, MNamespace.class, "ownedElement");
-    }
-    
-    /**
-     * @see org.argouml.uml.ui.UMLComboBoxModel2#isValidElement(ru.novosoft.uml.MBase)
-     */
-    protected boolean isValidElement(MBase o) {
-        return o instanceof MNamespace && CoreHelper.getHelper().isValidNamespace((MModelElement)getTarget(), (MNamespace)o);
-    }
-
-    /**
-     * @see org.argouml.uml.ui.UMLComboBoxModel2#buildModelList()
-     */
-    protected void buildModelList() {
-        setElements(CoreHelper.getHelper().getAllPossibleNamespaces((MModelElement)getTarget()));
+    public UMLParameterTypeComboBoxModel(UMLUserInterfaceContainer container) {
+        super(container);
     }
 
     /**
      * @see org.argouml.uml.ui.UMLComboBoxModel2#getSelectedModelElement()
      */
     protected Object getSelectedModelElement() {
-        if (getTarget() != null) {
-            return ((MModelElement)getTarget()).getNamespace();
+         if (getTarget() != null) {
+            return ((MParameter)getTarget()).getType();
         }
         return null;
     }
