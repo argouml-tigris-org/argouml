@@ -25,7 +25,6 @@
 // File: FigSimpleState.java
 // Classes: FigSimpleState
 // Original Author: ics 125b silverbullet team
-// $Id$
 
 package org.argouml.uml.diagram.state.ui;
 
@@ -36,7 +35,9 @@ import java.beans.PropertyVetoException;
 import java.util.Vector;
 
 import org.apache.log4j.Logger;
+
 import org.argouml.uml.generator.ParserDisplay;
+
 import org.tigris.gef.base.Selection;
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.FigLine;
@@ -106,7 +107,7 @@ public class FigSimpleState extends FigState {
 	setOwner(node);
     }
 
-    public String placeString() { return "new MState"; }
+    public String placeString() { return "new State"; }
 
     public Object clone() {
 	FigSimpleState figClone = (FigSimpleState) super.clone();
@@ -191,10 +192,10 @@ public class FigSimpleState extends FigState {
     public void textEdited(FigText ft) throws PropertyVetoException {
 	super.textEdited(ft);
 	if (ft == _internal) {
-	    MState st = (MState) getOwner();
-	    if (st == null) return;
+	    Object state = getOwner();
+	    if (state == null) return;
 	    String s = ft.getText();
-	    ParserDisplay.SINGLETON.parseStateBody(st, s);
+	    ParserDisplay.SINGLETON.parseStateBody((MState)state, s);
 	}
     }
    

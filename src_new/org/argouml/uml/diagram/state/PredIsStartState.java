@@ -24,11 +24,9 @@
 
 package org.argouml.uml.diagram.state;
 
-import org.argouml.model.ModelFacade;
-import ru.novosoft.uml.behavior.state_machines.*;
-import ru.novosoft.uml.foundation.data_types.*;
+import org.tigris.gef.util.Predicate;
 
-import org.tigris.gef.util.*;
+import org.argouml.model.ModelFacade;
 
 public class PredIsStartState implements Predicate {
 
@@ -38,7 +36,7 @@ public class PredIsStartState implements Predicate {
 
     public boolean predicate(Object obj) {
 	return (org.argouml.model.ModelFacade.isAPseudostate(obj)) &&
-	    (MPseudostateKind.INITIAL.equals(ModelFacade.getKind(obj)));
+	    (ModelFacade.INITIAL_PSEUDOSTATEKIND.equals(ModelFacade.getKind(obj)));
     }
   
 } /* end class PredIsStartpackage */

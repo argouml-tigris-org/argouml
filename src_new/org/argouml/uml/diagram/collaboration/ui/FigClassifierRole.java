@@ -25,13 +25,6 @@
 // File: FigClassifierRole.java
 // Classes: FigClassifierRole
 // Original Author: agauthie@ics.uci.edu
-// $Id$
-
-// 10 Apr 2002: Jeremy Bennett (mail@jeremybennett.com). Fixed to stop
-// collaboration roles all stretching to the top left on reload. Problem was
-// caused by setBounds not moving the stereotype. This is only a quick fix. It
-// leaves space for the stereotype, even when it isn't being displayed.
-
 
 package org.argouml.uml.diagram.collaboration.ui;
 
@@ -67,7 +60,6 @@ import ru.novosoft.uml.foundation.extension_mechanisms.MStereotype;
  * @author 10 Apr 2002. Jeremy Bennett (mail@jeremybennett.com). Modifications
  *         to ensure stereotypes are handled correctly.
  */
-
 public class FigClassifierRole extends FigNodeModelElement {
 
     ///////////////////////////////////////////////////////////////////////////

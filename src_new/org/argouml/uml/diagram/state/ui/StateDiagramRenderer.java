@@ -28,13 +28,14 @@
 // File: StateDiagramRenderer.java
 // Classes: StateDiagramRenderer
 // Original Author: ics125b spring 1998
-// $Id$
 
 package org.argouml.uml.diagram.state.ui;
 
 import org.apache.log4j.Logger;
+
 import org.argouml.model.ModelFacade;
 import org.argouml.uml.diagram.activity.ui.FigActionState;
+
 import org.tigris.gef.base.Layer;
 import org.tigris.gef.graph.GraphEdgeRenderer;
 import org.tigris.gef.graph.GraphModel;
@@ -42,33 +43,24 @@ import org.tigris.gef.graph.GraphNodeRenderer;
 import org.tigris.gef.presentation.FigEdge;
 import org.tigris.gef.presentation.FigNode;
 
-
-
-import ru.novosoft.uml.behavior.state_machines.MPseudostate;
-
-import ru.novosoft.uml.behavior.state_machines.MTransition;
-import ru.novosoft.uml.foundation.data_types.MPseudostateKind;
-// could be singleton
-
-
 /** This class defines a renderer object for UML State Diagrams. In a
  *  State Diagram the following UML objects are displayed with the
  *  following Figs: <p>
  * <pre>
  *  UML Object          ---  Fig
  *  ---------------------------------------
- *  MState              ---  FigSimpleState
- *  MCompositeState     ---  FigCompositeState
- *  MActionState        ---  FigActionState
- *  MFinalState         ---  FigFinalState
- *  MPseudostate        ---  FigPseudostate
+ *  State              ---  FigSimpleState
+ *  CompositeState     ---  FigCompositeState
+ *  ActionState        ---  FigActionState
+ *  FinalState         ---  FigFinalState
+ *  Pseudostate        ---  FigPseudostate
  *    Inititial         ---  FigInitialState
  *    Branch            ---  FigBranchState
  *    Fork              ---  FigForkState
  *    Join              ---  FigJoinState
  *    DeepHistory       ---  FigDeepHistoryState
  *    ShallowHistory    ---  FigShallowistoryState
- *  MTransition         ---  FigTransition
+ *  Transition         ---  FigTransition
  *  more...
  *  </pre>
  */
@@ -94,27 +86,28 @@ public class StateDiagramRenderer
             return new FigSimpleState(gm, node);
         }
         else if (org.argouml.model.ModelFacade.isAPseudostate(node)) {
-            MPseudostate pState = (MPseudostate) node;
-            if (pState.getKind() == null) {
+            Object pState = node;
+            Object kind = ModelFacade.getKind(pState);
+            if (kind == null) {
                 return null;
             }
-            if (pState.getKind().equals(MPseudostateKind.INITIAL)) {
+            if (kind.equals(ModelFacade.INITIAL_PSEUDOSTATEKIND)) {
                 return new FigInitialState(gm, node);
             }
-            else if (pState.getKind().equals(MPseudostateKind.BRANCH)) {
+            else if (kind.equals(ModelFacade.BRANCH_PSEUDOSTATEKIND)) {
                 return new FigBranchState(gm, node);
             }
-            else if (pState.getKind().equals(MPseudostateKind.FORK)) {
+            else if (kind.equals(ModelFacade.FORK_PSEUDOSTATEKIND)) {
                 return new FigForkState(gm, node);
             }
-            else if (pState.getKind().equals(MPseudostateKind.JOIN)) {
+            else if (kind.equals(ModelFacade.JOIN_PSEUDOSTATEKIND)) {
                 return new FigJoinState(gm, node);
             }
-            else if (pState.getKind().equals(MPseudostateKind.SHALLOW_HISTORY))
+            else if (kind.equals(ModelFacade.SHALLOWHISTORY_PSEUDOSTATEKIND))
 	    {
                 return new FigShallowHistoryState(gm, node);
             }
-            else if (pState.getKind().equals(MPseudostateKind.DEEP_HISTORY)) {
+            else if (kind.equals(ModelFacade.DEEPHISTORY_PSEUDOSTATEKIND)) {
                 return new FigDeepHistoryState(gm, node);     
             }
             else {
@@ -129,8 +122,7 @@ public class StateDiagramRenderer
     public FigEdge getFigEdgeFor(GraphModel gm, Layer lay, Object edge) {
 	cat.debug("making figedge for " + edge);
 	if (org.argouml.model.ModelFacade.isATransition(edge)) {
-	    MTransition tr = (MTransition) edge;
-	    FigTransition trFig = new FigTransition(tr, lay);
+	    FigTransition trFig = new FigTransition(edge, lay);
 	    return trFig;
 	}
 

@@ -4362,6 +4362,21 @@ public class ModelFacade {
     }
 
     /**
+     * Set the container of a statevertex.
+     * @param stateVertex
+     */
+    public static void setContainer(Object stateVertex, Object container) {
+        if (stateVertex instanceof MStateVertex &&
+            container instanceof MCompositeState) {
+            ((MStateVertex)stateVertex)
+                .setContainer((MCompositeState)container);
+            return;
+        }
+        throw new IllegalArgumentException("Unrecognized object " + stateVertex
+                                    +" or "+container);
+    }
+    
+    /**
      * Sets the dispatch action for some stimulus
      * @param handle
      * @param value

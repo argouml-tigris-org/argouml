@@ -30,9 +30,8 @@ import java.util.Iterator;
 
 import org.argouml.kernel.Project;
 import org.argouml.model.uml.modelmanagement.ModelManagementHelper;
+import org.argouml.model.ModelFacade;
 import org.argouml.ui.AbstractGoRule;
-
-import ru.novosoft.uml.behavior.collaborations.MCollaboration;
 
 public class GoProjectToCollaboration extends AbstractGoRule {
 
@@ -45,7 +44,7 @@ public class GoProjectToCollaboration extends AbstractGoRule {
 	    while (it.hasNext()) {
 		col.addAll(ModelManagementHelper.getHelper()
 			   .getAllModelElementsOfKind(it.next(),
-						      MCollaboration.class));
+				(Class)ModelFacade.COLLABORATION));
 	    }
 	}
 	return col;

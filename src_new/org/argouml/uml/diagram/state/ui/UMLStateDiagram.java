@@ -34,6 +34,7 @@ import java.beans.PropertyVetoException;
 import javax.swing.Action;
 
 import org.apache.log4j.Logger;
+
 import org.argouml.application.api.Argo;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.ModelFacade;
@@ -42,20 +43,14 @@ import org.argouml.ui.CmdCreateNode;
 import org.argouml.uml.diagram.state.StateDiagramGraphModel;
 import org.argouml.uml.diagram.ui.UMLDiagram;
 import org.argouml.uml.ui.ActionAddNote;
+
 import org.tigris.gef.base.CmdSetMode;
 import org.tigris.gef.base.LayerPerspective;
 import org.tigris.gef.base.LayerPerspectiveMutable;
 import org.tigris.gef.base.ModeCreatePolyEdge;
 
 import ru.novosoft.uml.MElementEvent;
-import ru.novosoft.uml.behavior.state_machines.MCompositeState;
-import ru.novosoft.uml.behavior.state_machines.MFinalState;
-import ru.novosoft.uml.behavior.state_machines.MState;
 import ru.novosoft.uml.behavior.state_machines.MStateMachine;
-import ru.novosoft.uml.behavior.state_machines.MTransition;
-import ru.novosoft.uml.foundation.core.MModelElement;
-import ru.novosoft.uml.foundation.core.MNamespace;
-import ru.novosoft.uml.foundation.data_types.MPseudostateKind;
 
 public class UMLStateDiagram extends UMLDiagram {
     private Logger _cat = Logger.getLogger(UMLStateDiagram.class);
@@ -69,42 +64,40 @@ public class UMLStateDiagram extends UMLDiagram {
     // actions for toolbar
 
     protected static Action _actionState =
-        new CmdCreateNode(MState.class, "State");
+        new CmdCreateNode((Class)ModelFacade.STATE, "State");
 
     protected static Action _actionCompositeState =
-        new CmdCreateNode(MCompositeState.class, "CompositeState");
+        new CmdCreateNode((Class)ModelFacade.COMPOSITESTATE, "CompositeState");
 
     // start state, end state, forks, joins, etc.
     protected static Action _actionStartPseudoState =
-        new ActionCreatePseudostate(MPseudostateKind.INITIAL, "Initial");
+        new ActionCreatePseudostate(ModelFacade.INITIAL_PSEUDOSTATEKIND, "Initial");
 
     protected static Action _actionFinalPseudoState =
-        new CmdCreateNode(MFinalState.class, "FinalState");
+        new CmdCreateNode((Class)ModelFacade.FINALSTATE, "FinalState");
 
     protected static Action _actionBranchPseudoState =
-        new ActionCreatePseudostate(MPseudostateKind.BRANCH, "Branch");
+        new ActionCreatePseudostate(ModelFacade.BRANCH_PSEUDOSTATEKIND, "Branch");
 
     protected static Action _actionForkPseudoState =
-        new ActionCreatePseudostate(MPseudostateKind.FORK, "Fork");
+        new ActionCreatePseudostate(ModelFacade.FORK_PSEUDOSTATEKIND, "Fork");
 
     protected static Action _actionJoinPseudoState =
-        new ActionCreatePseudostate(MPseudostateKind.JOIN, "Join");
+        new ActionCreatePseudostate(ModelFacade.JOIN_PSEUDOSTATEKIND, "Join");
 
     protected static Action _actionShallowHistoryPseudoState =
-        new ActionCreatePseudostate(
-				    MPseudostateKind.SHALLOW_HISTORY,
+        new ActionCreatePseudostate(ModelFacade.SHALLOWHISTORY_PSEUDOSTATEKIND,
 				    "ShallowHistory");
 
     protected static Action _actionDeepHistoryPseudoState =
-        new ActionCreatePseudostate(
-				    MPseudostateKind.DEEP_HISTORY,
+        new ActionCreatePseudostate(ModelFacade.DEEPHISTORY_PSEUDOSTATEKIND,
 				    "DeepHistory");
 
     protected static Action _actionTransition =
         new CmdSetMode(
 		       ModeCreatePolyEdge.class,
 		       "edgeClass",
-		       MTransition.class,
+		       (Class)ModelFacade.TRANSITION,
 		       "Transition");
 
     ////////////////////////////////////////////////////////////////
@@ -126,9 +119,9 @@ public class UMLStateDiagram extends UMLDiagram {
     public UMLStateDiagram(Object namespace, MStateMachine sm) {
         this();
         if (sm != null && namespace == null) {
-            MModelElement context = sm.getContext();
+            Object context = sm.getContext();
             if (ModelFacade.isAClassifier(context)) {
-                namespace = (MNamespace) context;
+                namespace = context;
             } else if (ModelFacade.isABehavioralFeature(context)) {
                 namespace = ModelFacade.getOwner(context);
             }
@@ -168,7 +161,7 @@ public class UMLStateDiagram extends UMLDiagram {
     public void initialize(Object o) {
         if (ModelFacade.isAStateMachine(o)) {
             MStateMachine sm = (MStateMachine) o;
-            MModelElement context = sm.getContext();
+            Object context = sm.getContext();
             Object contextNamespace = null;
             if (ModelFacade.isAClassifier(context)) {
                 contextNamespace = context;

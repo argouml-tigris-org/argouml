@@ -24,20 +24,23 @@
 
 package org.argouml.uml.diagram.deployment.ui;
 
-import java.util.*;
+import java.util.Collection;
 
-import ru.novosoft.uml.foundation.core.*;
-import ru.novosoft.uml.model_management.*;
-import ru.novosoft.uml.behavior.common_behavior.*;
-
-import org.tigris.gef.base.*;
-import org.tigris.gef.presentation.*;
-import org.tigris.gef.graph.*;
-
-import org.argouml.uml.diagram.ui.*;
 import org.apache.log4j.Logger;
+
 import org.argouml.model.ModelFacade;
-import org.argouml.uml.diagram.static_structure.ui.*;
+import org.argouml.uml.diagram.static_structure.ui.FigClass;
+import org.argouml.uml.diagram.static_structure.ui.FigInterface;
+import org.argouml.uml.diagram.static_structure.ui.FigLink;
+import org.argouml.uml.diagram.ui.FigAssociation;
+import org.argouml.uml.diagram.ui.FigDependency;
+
+import org.tigris.gef.base.Layer;
+import org.tigris.gef.graph.GraphEdgeRenderer;
+import org.tigris.gef.graph.GraphModel;
+import org.tigris.gef.graph.GraphNodeRenderer;
+import org.tigris.gef.presentation.FigEdge;
+import org.tigris.gef.presentation.FigNode;
 
 public class DeploymentDiagramRenderer
     implements GraphNodeRenderer, GraphEdgeRenderer 
@@ -48,17 +51,17 @@ public class DeploymentDiagramRenderer
     /** Return a Fig that can be used to represent the given node */
 
     public FigNode getFigNodeFor(GraphModel gm, Layer lay, Object node) {
-	if (org.argouml.model.ModelFacade.isANode(node)) return new FigMNode(gm, node);
-	else if (org.argouml.model.ModelFacade.isANodeInstance(node))
+	if (ModelFacade.isANode(node)) return new FigMNode(gm, node);
+	else if (ModelFacade.isANodeInstance(node))
 	    return new FigMNodeInstance(gm, node);
-	else if (org.argouml.model.ModelFacade.isAComponent(node))
+	else if (ModelFacade.isAComponent(node))
 	    return new FigComponent(gm, node); 
-	else if (org.argouml.model.ModelFacade.isAComponentInstance(node))
+	else if (ModelFacade.isAComponentInstance(node))
 	    return new FigComponentInstance(gm, node);
-	else if (org.argouml.model.ModelFacade.isAClass(node)) return new FigClass(gm, node); 
-	else if (org.argouml.model.ModelFacade.isAInterface(node))
+	else if (ModelFacade.isAClass(node)) return new FigClass(gm, node); 
+	else if (ModelFacade.isAInterface(node))
 	    return new FigInterface(gm, node); 
-	else if (org.argouml.model.ModelFacade.isAObject(node)) return new FigObject(gm, node);
+	else if (ModelFacade.isAObject(node)) return new FigObject(gm, node);
 	cat.debug("TODO DeploymentDiagramRenderer getFigNodeFor");
 	return null;
     }
@@ -66,21 +69,21 @@ public class DeploymentDiagramRenderer
     /** Return a Fig that can be used to represent the given edge */
     public FigEdge getFigEdgeFor(GraphModel gm, Layer lay, Object edge) {
 
-	if (org.argouml.model.ModelFacade.isAAssociation(edge)) {
+	if (ModelFacade.isAAssociation(edge)) {
 	    Object asc = /*(MAssociation)*/ edge;
 	    FigAssociation ascFig = new FigAssociation(asc, lay);
 	    return ascFig;
 	}
-	if (org.argouml.model.ModelFacade.isALink(edge)) {
+	if (ModelFacade.isALink(edge)) {
 	    Object lnk = /*(MLink)*/ edge;
 	    FigLink lnkFig = new FigLink(lnk);
 	    Collection linkEnds = ModelFacade.getConnections(lnk);
 	    if (linkEnds == null) cat.debug("null linkRoles....");
 	    Object[] leArray = linkEnds.toArray();
-	    MLinkEnd fromEnd = (MLinkEnd) leArray[0];
-	    MInstance fromInst = fromEnd.getInstance();
-	    MLinkEnd toEnd = (MLinkEnd) leArray[1];
-	    MInstance toInst = toEnd.getInstance();
+	    Object fromEnd = leArray[0];
+	    Object fromInst = ModelFacade.getInstance(fromEnd);
+	    Object toEnd = leArray[1];
+	    Object toInst = ModelFacade.getInstance(toEnd);
 	    FigNode fromFN = (FigNode) lay.presentationFor(fromInst);
 	    FigNode toFN = (FigNode) lay.presentationFor(toInst);
 	    lnkFig.setSourcePortFig(fromFN);
@@ -89,7 +92,7 @@ public class DeploymentDiagramRenderer
 	    lnkFig.setDestFigNode(toFN);
 	    return lnkFig;
 	}
-	if (org.argouml.model.ModelFacade.isADependency(edge)) {
+	if (ModelFacade.isADependency(edge)) {
 	    Object dep = /*(MDependency)*/ edge;
 	    FigDependency depFig = new FigDependency(dep);
 

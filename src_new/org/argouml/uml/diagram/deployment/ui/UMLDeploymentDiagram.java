@@ -46,19 +46,6 @@ import org.tigris.gef.base.LayerPerspective;
 import org.tigris.gef.base.LayerPerspectiveMutable;
 import org.tigris.gef.base.ModeCreatePolyEdge;
 
-import ru.novosoft.uml.behavior.common_behavior.MComponentInstance;
-import ru.novosoft.uml.behavior.common_behavior.MLink;
-import ru.novosoft.uml.behavior.common_behavior.MNodeInstance;
-import ru.novosoft.uml.behavior.common_behavior.MObject;
-import ru.novosoft.uml.foundation.core.MAssociation;
-import ru.novosoft.uml.foundation.core.MClass;
-import ru.novosoft.uml.foundation.core.MComponent;
-import ru.novosoft.uml.foundation.core.MDependency;
-import ru.novosoft.uml.foundation.core.MInterface;
-import ru.novosoft.uml.foundation.core.MNamespace;
-import ru.novosoft.uml.foundation.core.MNode;
-import ru.novosoft.uml.foundation.data_types.MAggregationKind;
-
 public class UMLDeploymentDiagram extends UMLDiagram {
     protected static Logger cat =
         Logger.getLogger(UMLDeploymentDiagram.class);
@@ -67,69 +54,65 @@ public class UMLDeploymentDiagram extends UMLDiagram {
     // actions for toolbar
 
     protected static Action _actionMNode =
-        new CmdCreateNode(MNode.class, "Node");
+        new CmdCreateNode((Class)ModelFacade.NODE, "Node");
 
     protected static Action _actionMNodeInstance =
-        new CmdCreateNode(MNodeInstance.class, "NodeInstance");
+        new CmdCreateNode((Class)ModelFacade.NODE_INSTANCE, "NodeInstance");
 
     protected static Action _actionMComponent =
-        new CmdCreateNode(MComponent.class, "Component");
+        new CmdCreateNode((Class)ModelFacade.COMPONENT, "Component");
 
     protected static Action _actionMComponentInstance =
-        new CmdCreateNode(MComponentInstance.class, "ComponentInstance");
+        new CmdCreateNode((Class)ModelFacade.COMPONENT_INSTANCE, "ComponentInstance");
 
     protected static Action _actionMClass =
-        new CmdCreateNode(MClass.class, "Class");
+        new CmdCreateNode((Class)ModelFacade.CLASS, "Class");
 
     protected static Action _actionMInterface =
-        new CmdCreateNode(MInterface.class, "Interface");
+        new CmdCreateNode((Class)ModelFacade.INTERFACE, "Interface");
 
     protected static Action _actionMObject =
-        new CmdCreateNode(MObject.class, "Object");
+        new CmdCreateNode((Class)ModelFacade.OBJECT, "Object");
 
     protected static Action _actionMDependency =
         new CmdSetMode(
 		       ModeCreatePolyEdge.class,
 		       "edgeClass",
-		       MDependency.class,
+		       (Class)ModelFacade.DEPENDENCY,
 		       "Dependency");
 
     protected static Action _actionMAssociation =
         new CmdSetMode(
 		       ModeCreatePolyEdge.class,
 		       "edgeClass",
-		       MAssociation.class,
+		       (Class)ModelFacade.ASSOCIATION,
 		       "Association");
 
     protected static Action _actionMLink =
         new CmdSetMode(
 		       ModeCreatePolyEdge.class,
 		       "edgeClass",
-		       MLink.class,
+		       (Class)ModelFacade.LINK,
 		       "Link");
 
     protected static Action _actionAssociation =
-        new ActionAddAssociation(MAggregationKind.NONE, false, "Association");
+        new ActionAddAssociation(ModelFacade.NONE_AGGREGATIONKIND, false, "Association");
     protected static Action _actionAggregation =
-        new ActionAddAssociation(
-				 MAggregationKind.AGGREGATE,
+        new ActionAddAssociation(ModelFacade.AGGREGATE_AGGREGATIONKIND,
 				 false,
 				 "Aggregation");
     protected static Action _actionComposition =
-        new ActionAddAssociation(
-				 MAggregationKind.COMPOSITE,
+        new ActionAddAssociation(ModelFacade.COMPOSITE_AGGREGATIONKIND,
 				 false,
 				 "Composition");
     protected static Action _actionUniAssociation =
-        new ActionAddAssociation(MAggregationKind.NONE, true, "UniAssociation");
+        new ActionAddAssociation(ModelFacade.NONE_AGGREGATIONKIND, true, "UniAssociation");
     protected static Action _actionUniAggregation =
-        new ActionAddAssociation(
-				 MAggregationKind.AGGREGATE,
+        new ActionAddAssociation(ModelFacade.AGGREGATE_AGGREGATIONKIND,
 				 true,
 				 "UniAggregation");
     protected static Action _actionUniComposition =
-        new ActionAddAssociation(
-				 MAggregationKind.COMPOSITE,
+        new ActionAddAssociation(ModelFacade.COMPOSITE_AGGREGATIONKIND,
 				 true,
 				 "UniComposition");
 
@@ -145,9 +128,9 @@ public class UMLDeploymentDiagram extends UMLDiagram {
         }
     }
 
-    public UMLDeploymentDiagram(MNamespace m) {
+    public UMLDeploymentDiagram(Object namespace) {
         this();
-        setNamespace(m);
+        setNamespace(namespace);
     }
 
     /** method to perform a number of important initializations of a

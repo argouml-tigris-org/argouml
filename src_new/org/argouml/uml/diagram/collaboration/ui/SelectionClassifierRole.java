@@ -22,7 +22,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-
 package org.argouml.uml.diagram.collaboration.ui;
 
 import java.awt.Dimension;
@@ -32,10 +31,13 @@ import java.awt.Rectangle;
 import javax.swing.Icon;
 
 import org.apache.log4j.Logger;
+
 import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.model.uml.UmlFactory;
+import org.argouml.model.ModelFacade;
 import org.argouml.uml.diagram.ui.ModeCreateEdgeAndNode;
 import org.argouml.uml.diagram.ui.SelectionWButtons;
+
 import org.tigris.gef.base.Editor;
 import org.tigris.gef.base.Globals;
 import org.tigris.gef.base.ModeManager;
@@ -46,10 +48,6 @@ import org.tigris.gef.graph.MutableGraphModel;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigNode;
 import org.tigris.gef.presentation.Handle;
-
-import ru.novosoft.uml.behavior.collaborations.MClassifierRole;
-import ru.novosoft.uml.behavior.collaborations.MAssociationRole;
-
 
 public class SelectionClassifierRole extends SelectionWButtons {
     protected static Logger cat = 
@@ -149,7 +147,7 @@ public class SelectionClassifierRole extends SelectionWButtons {
 	Dimension minSize = _content.getMinimumSize();
 	int minWidth = minSize.width, minHeight = minSize.height;
 	Class edgeClass = null;
-	Class nodeClass = MClassifierRole.class;
+	Class nodeClass = (Class)ModelFacade.CLASSIFIER_ROLE;
 
 	Editor ce = Globals.curEditor();
 	GraphModel gm = ce.getGraphModel();
@@ -162,12 +160,12 @@ public class SelectionClassifierRole extends SelectionWButtons {
 	boolean reverse = false;
 	switch (hand.index) {
 	case 12 : //add outgoing
-	    edgeClass = MAssociationRole.class;
+	    edgeClass = (Class)ModelFacade.ASSOCIATION_ROLE;
 	    by = cy + ch / 2;
 	    bx = cx + cw;
 	    break;
 	case 13 : // add incoming
-	    edgeClass = MAssociationRole.class;
+	    edgeClass = (Class)ModelFacade.ASSOCIATION_ROLE;
 	    reverse = true;
 	    by = cy + ch / 2;
 	    bx = cx;
@@ -203,7 +201,7 @@ public class SelectionClassifierRole extends SelectionWButtons {
      */
     protected Object createEdgeAbove(MutableGraphModel mgm, Object newNode) {
 	return mgm.connect(newNode, _content.getOwner(),
-			   MAssociationRole.class);
+			   (Class)ModelFacade.ASSOCIATION_ROLE);
     }
 
     /**
@@ -212,7 +210,7 @@ public class SelectionClassifierRole extends SelectionWButtons {
      * java.lang.Object)
      */
     protected Object createEdgeLeft(MutableGraphModel gm, Object newNode) {
-	return gm.connect(newNode, _content.getOwner(), MAssociationRole.class);
+	return gm.connect(newNode, _content.getOwner(), (Class)ModelFacade.ASSOCIATION_ROLE);
     }
 
     /**
@@ -221,7 +219,7 @@ public class SelectionClassifierRole extends SelectionWButtons {
      * java.lang.Object)
      */
     protected Object createEdgeRight(MutableGraphModel gm, Object newNode) {
-	return gm.connect(_content.getOwner(), newNode, MAssociationRole.class);
+	return gm.connect(_content.getOwner(), newNode, (Class)ModelFacade.ASSOCIATION_ROLE);
     }
 
     /**
@@ -233,7 +231,7 @@ public class SelectionClassifierRole extends SelectionWButtons {
 	return gm.connect(
 			  _content.getOwner(),
 			  _content.getOwner(),
-			  MAssociationRole.class);
+			  (Class)ModelFacade.ASSOCIATION_ROLE);
     }
 
     /**
@@ -242,15 +240,7 @@ public class SelectionClassifierRole extends SelectionWButtons {
      * java.lang.Object)
      */
     protected Object createEdgeUnder(MutableGraphModel gm, Object newNode) {
-	return gm.connect(_content.getOwner(), newNode, MAssociationRole.class);
+	return gm.connect(_content.getOwner(), newNode, (Class)ModelFacade.ASSOCIATION_ROLE);
     }
 
-	
-
 } /* end class SelectionClassifierRole */
-
-
-
-
-
-
