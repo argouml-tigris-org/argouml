@@ -495,6 +495,9 @@ implements VetoableChangeListener, DelayedVChangeListener, MouseListener, KeyLis
                 damage();
                 return;
            } 
+           if (o == getOwner()) {
+            delete();
+           }
 	}
     
         protected boolean isPartlyOwner(Object o) {
