@@ -202,7 +202,7 @@ public class ExtensionMechanismsFactoryImpl
     /**
      * @param elem the stereotype
      */
-    public void deleteStereotype(Object elem) {
+    void deleteStereotype(Object elem) {
         if (!(elem instanceof MStereotype)) {
             throw new IllegalArgumentException();
         }
@@ -212,7 +212,7 @@ public class ExtensionMechanismsFactoryImpl
     /**
      * @param elem the taggedvalue
      */
-    public void deleteTaggedValue(Object elem) {
+    void deleteTaggedValue(Object elem) {
         if (!(elem instanceof MTaggedValue)) {
             throw new IllegalArgumentException();
         }

@@ -70,26 +70,6 @@ public interface ModelManagementFactory {
     Object createSubsystem();
 
     /**
-     * @param elem to be deleted
-     */
-    void deleteElementImport(Object elem);
-
-    /**
-     * @param elem to be deleted
-     */
-    void deleteModel(Object elem);
-
-    /**
-     * @param elem to be deleted
-     */
-    void deletePackage(Object elem);
-
-    /**
-     * @param elem to be deleted
-     */
-    void deleteSubsystem(Object elem);
-
-    /**
      * Copies a package, but not any elements within it. This does however
      * not mean the package will be empty, since eg it or it's parents may
      * reference a stereotype within it causing that to be copied into it.

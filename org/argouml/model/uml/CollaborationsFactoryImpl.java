@@ -545,7 +545,7 @@ public class CollaborationsFactoryImpl
     /**
      * @param elem the associationendrole
      */
-    public void deleteAssociationEndRole(Object elem) {
+    void deleteAssociationEndRole(Object elem) {
         if (!(elem instanceof MAssociationEndRole)) {
             throw new IllegalArgumentException();
         }
@@ -555,7 +555,7 @@ public class CollaborationsFactoryImpl
     /**
      * @param elem the associationrole
      */
-    public void deleteAssociationRole(Object elem) {
+    void deleteAssociationRole(Object elem) {
         if (!(elem instanceof MAssociationRole)) {
             throw new IllegalArgumentException();
         }
@@ -569,7 +569,7 @@ public class CollaborationsFactoryImpl
     /**
      * @param elem the UML element to be deleted
      */
-    public void deleteClassifierRole(Object elem) {
+    void deleteClassifierRole(Object elem) {
         if (!(elem instanceof MClassifierRole)) {
             throw new IllegalArgumentException();
         }
@@ -579,7 +579,7 @@ public class CollaborationsFactoryImpl
     /**
      * @param elem the UML element to be delete
      */
-    public void deleteCollaboration(Object elem) {
+    void deleteCollaboration(Object elem) {
         if (!(elem instanceof MCollaboration)) {
             throw new IllegalArgumentException();
         }
@@ -589,7 +589,7 @@ public class CollaborationsFactoryImpl
     /**
      * @param elem the UML element to be delete
      */
-    public void deleteInteraction(Object elem) {
+    void deleteInteraction(Object elem) {
         if (!(elem instanceof MInteraction)) {
             throw new IllegalArgumentException();
         }
@@ -599,7 +599,7 @@ public class CollaborationsFactoryImpl
     /**
      * @param elem the UML element to be delete
      */
-    public void deleteMessage(Object elem) {
+    void deleteMessage(Object elem) {
         if (!(elem instanceof MMessage)) {
             throw new IllegalArgumentException();
         }

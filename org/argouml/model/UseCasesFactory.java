@@ -139,34 +139,4 @@ public interface UseCasesFactory {
      * @return MActor the newly build actor
      */
     Object buildActor(Object actor, Object model);
-
-    /**
-     * @param elem the UML element to be deleted
-     */
-    void deleteActor(Object elem);
-
-    /**
-     * @param elem the UML element to be deleted
-     */
-    void deleteExtend(Object elem);
-
-    /**
-     * @param elem the UML element to be deleted
-     */
-    void deleteExtensionPoint(Object elem);
-
-    /**
-     * @param elem the UML element to be deleted
-     */
-    void deleteInclude(Object elem);
-
-    /**
-     * @param elem the UML element to be deleted
-     */
-    void deleteUseCase(Object elem);
-
-    /**
-     * @param elem the UML element to be deleted
-     */
-    void deleteUseCaseInstance(Object elem);
 }

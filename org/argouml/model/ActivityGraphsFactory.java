@@ -110,39 +110,4 @@ public interface ActivityGraphsFactory {
      * @return the newly build classifierInState
      */
     Object buildClassifierInState(Object classifier, Object state);
-
-    /**
-     * @param elem the ActionState to be deleted
-     */
-    void deleteActionState(Object elem);
-
-    /**
-     * @param elem the ActivityGraph to be deleted
-     */
-    void deleteActivityGraph(Object elem);
-
-    /**
-     * @param elem the CallState to be deleted
-     */
-    void deleteCallState(Object elem);
-
-    /**
-     * @param elem the ClassifierInState to be deleted
-     */
-    void deleteClassifierInState(Object elem);
-
-    /**
-     * @param elem ObjectFlowState
-     */
-    void deleteObjectFlowState(Object elem);
-
-    /**
-     * @param elem Partition
-     */
-    void deletePartition(Object elem);
-
-    /**
-     * @param elem SubactivityState
-     */
-    void deleteSubactivityState(Object elem);
 }

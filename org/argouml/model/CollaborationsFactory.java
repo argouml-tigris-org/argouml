@@ -169,34 +169,4 @@ public interface CollaborationsFactory {
      * @return the newly build message
      */
     Object buildActivator(Object owner, Object interaction);
-
-    /**
-     * @param elem the associationendrole
-     */
-    void deleteAssociationEndRole(Object elem);
-
-    /**
-     * @param elem the associationrole
-     */
-    void deleteAssociationRole(Object elem);
-
-    /**
-     * @param elem the UML element to be deleted
-     */
-    void deleteClassifierRole(Object elem);
-
-    /**
-     * @param elem the UML element to be delete
-     */
-    void deleteCollaboration(Object elem);
-
-    /**
-     * @param elem the UML element to be delete
-     */
-    void deleteInteraction(Object elem);
-
-    /**
-     * @param elem the UML element to be delete
-     */
-    void deleteMessage(Object elem);
 }

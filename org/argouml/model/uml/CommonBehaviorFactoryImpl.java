@@ -31,6 +31,8 @@ import org.argouml.model.CommonBehaviorFactory;
 
 import ru.novosoft.uml.MFactory;
 import ru.novosoft.uml.behavior.activity_graphs.MActionState;
+import ru.novosoft.uml.behavior.common_behavior.MAction;
+import ru.novosoft.uml.behavior.common_behavior.MActionSequence;
 import ru.novosoft.uml.behavior.common_behavior.MArgument;
 import ru.novosoft.uml.behavior.common_behavior.MAttributeLink;
 import ru.novosoft.uml.behavior.common_behavior.MCallAction;
@@ -495,19 +497,27 @@ public class CommonBehaviorFactoryImpl
     /**
      * @param elem the Action to be deleted
      */
-    public void deleteAction(Object elem) {
+    void deleteAction(Object elem) {
+        if (!(elem instanceof MAction)) {
+            throw new IllegalArgumentException();
+        }
+
     }
 
     /**
      * @param elem the ActionSequence to be deleted
      */
-    public void deleteActionSequence(Object elem) {
+    void deleteActionSequence(Object elem) {
+        if (!(elem instanceof MActionSequence)) {
+            throw new IllegalArgumentException();
+        }
+
     }
 
     /**
      * @param elem the element to be deleted
      */
-    public void deleteArgument(Object elem) {
+    void deleteArgument(Object elem) {
         if (!(elem instanceof MArgument)) {
             throw new IllegalArgumentException();
         }
@@ -517,7 +527,7 @@ public class CommonBehaviorFactoryImpl
     /**
      * @param elem the element to be deleted
      */
-    public void deleteAttributeLink(Object elem) {
+    void deleteAttributeLink(Object elem) {
         if (!(elem instanceof MAttributeLink)) {
             throw new IllegalArgumentException();
         }
@@ -527,7 +537,7 @@ public class CommonBehaviorFactoryImpl
     /**
      * @param elem the element to be deleted
      */
-    public void deleteCallAction(Object elem) {
+    void deleteCallAction(Object elem) {
         if (!(elem instanceof MCallAction)) {
             throw new IllegalArgumentException();
         }
@@ -537,7 +547,7 @@ public class CommonBehaviorFactoryImpl
     /**
      * @param elem the element to be deleted
      */
-    public void deleteComponentInstance(Object elem) {
+    void deleteComponentInstance(Object elem) {
         if (!(elem instanceof MComponentInstance)) {
             throw new IllegalArgumentException();
         }
@@ -547,7 +557,7 @@ public class CommonBehaviorFactoryImpl
     /**
      * @param elem the element to be deleted
      */
-    public void deleteCreateAction(Object elem) {
+    void deleteCreateAction(Object elem) {
         if (!(elem instanceof MCreateAction)) {
             throw new IllegalArgumentException();
         }
@@ -557,7 +567,7 @@ public class CommonBehaviorFactoryImpl
     /**
      * @param elem the element to be deleted
      */
-    public void deleteDataValue(Object elem) {
+    void deleteDataValue(Object elem) {
         if (!(elem instanceof MDataValue)) {
             throw new IllegalArgumentException();
         }
@@ -567,7 +577,7 @@ public class CommonBehaviorFactoryImpl
     /**
      * @param elem the element to be deleted
      */
-    public void deleteDestroyAction(Object elem) {
+    void deleteDestroyAction(Object elem) {
         if (!(elem instanceof MDestroyAction)) {
             throw new IllegalArgumentException();
         }
@@ -577,7 +587,7 @@ public class CommonBehaviorFactoryImpl
     /**
      * @param elem the element to be deleted
      */
-    public void deleteException(Object elem) {
+    void deleteException(Object elem) {
         if (!(elem instanceof MException)) {
             throw new IllegalArgumentException();
         }
@@ -591,7 +601,7 @@ public class CommonBehaviorFactoryImpl
      *
      * @param elem the element to be deleted
      */
-    public void deleteInstance(Object elem) {
+    void deleteInstance(Object elem) {
         if (!(elem instanceof MInstance)) {
             throw new IllegalArgumentException();
         }
@@ -609,7 +619,7 @@ public class CommonBehaviorFactoryImpl
     /**
      * @param elem the element to be deleted
      */
-    public void deleteLink(Object elem) {
+    void deleteLink(Object elem) {
         if (!(elem instanceof MLink)) {
             throw new IllegalArgumentException();
         }
@@ -622,7 +632,7 @@ public class CommonBehaviorFactoryImpl
      *
      * @param elem the element to be deleted
      */
-    public void deleteLinkEnd(Object elem) {
+    void deleteLinkEnd(Object elem) {
         if (!(elem instanceof MLinkEnd)) {
             throw new IllegalArgumentException();
         }
@@ -639,7 +649,7 @@ public class CommonBehaviorFactoryImpl
     /**
      * @param elem the element to be deleted
      */
-    public void deleteLinkObject(Object elem) {
+    void deleteLinkObject(Object elem) {
         if (!(elem instanceof MLinkObject)) {
             throw new IllegalArgumentException();
         }
@@ -649,7 +659,7 @@ public class CommonBehaviorFactoryImpl
     /**
      * @param elem the element to be deleted
      */
-    public void deleteNodeInstance(Object elem) {
+    void deleteNodeInstance(Object elem) {
         if (!(elem instanceof MNodeInstance)) {
             throw new IllegalArgumentException();
         }
@@ -659,7 +669,7 @@ public class CommonBehaviorFactoryImpl
     /**
      * @param elem the element to be deleted
      */
-    public void deleteObject(Object elem) {
+    void deleteObject(Object elem) {
         if (!(elem instanceof MObject)) {
             throw new IllegalArgumentException();
         }
@@ -669,7 +679,7 @@ public class CommonBehaviorFactoryImpl
     /**
      * @param elem the element to be deleted
      */
-    public void deleteReception(Object elem) {
+    void deleteReception(Object elem) {
         if (!(elem instanceof MReception)) {
             throw new IllegalArgumentException();
         }
@@ -679,7 +689,7 @@ public class CommonBehaviorFactoryImpl
     /**
      * @param elem the element to be deleted
      */
-    public void deleteReturnAction(Object elem) {
+    void deleteReturnAction(Object elem) {
         if (!(elem instanceof MReturnAction)) {
             throw new IllegalArgumentException();
         }
@@ -689,7 +699,7 @@ public class CommonBehaviorFactoryImpl
     /**
      * @param elem the element to be deleted
      */
-    public void deleteSendAction(Object elem) {
+    void deleteSendAction(Object elem) {
         if (!(elem instanceof MSendAction)) {
             throw new IllegalArgumentException();
         }
@@ -699,7 +709,7 @@ public class CommonBehaviorFactoryImpl
     /**
      * @param elem the element to be deleted
      */
-    public void deleteSignal(Object elem) {
+    void deleteSignal(Object elem) {
         if (!(elem instanceof MSignal)) {
             throw new IllegalArgumentException();
         }
@@ -709,7 +719,7 @@ public class CommonBehaviorFactoryImpl
     /**
      * @param elem the element to be deleted
      */
-    public void deleteStimulus(Object elem) {
+    void deleteStimulus(Object elem) {
         if (!(elem instanceof MStimulus)) {
             throw new IllegalArgumentException();
         }
@@ -719,7 +729,7 @@ public class CommonBehaviorFactoryImpl
     /**
      * @param elem the element to be deleted
      */
-    public void deleteTerminateAction(Object elem) {
+    void deleteTerminateAction(Object elem) {
         if (!(elem instanceof MTerminateAction)) {
             throw new IllegalArgumentException();
         }
@@ -729,7 +739,7 @@ public class CommonBehaviorFactoryImpl
     /**
      * @param elem the element to be deleted
      */
-    public void deleteUninterpretedAction(Object elem) {
+    void deleteUninterpretedAction(Object elem) {
         if (!(elem instanceof MUninterpretedAction)) {
             throw new IllegalArgumentException();
         }

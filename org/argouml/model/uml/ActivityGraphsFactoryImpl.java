@@ -233,7 +233,7 @@ public class ActivityGraphsFactoryImpl
     /**
      * @param elem the ActionState to be deleted
      */
-    public void deleteActionState(Object elem) {
+    void deleteActionState(Object elem) {
         if (!(elem instanceof MActionState)) {
             throw new IllegalArgumentException();
         }
@@ -243,7 +243,7 @@ public class ActivityGraphsFactoryImpl
     /**
      * @param elem the ActivityGraph to be deleted
      */
-    public void deleteActivityGraph(Object elem) {
+    void deleteActivityGraph(Object elem) {
         if (!(elem instanceof MActivityGraph)) {
             throw new IllegalArgumentException();
         }
@@ -253,7 +253,7 @@ public class ActivityGraphsFactoryImpl
     /**
      * @param elem the CallState to be deleted
      */
-    public void deleteCallState(Object elem) {
+    void deleteCallState(Object elem) {
         if (!(elem instanceof MCallState)) {
             throw new IllegalArgumentException();
         }
@@ -263,7 +263,7 @@ public class ActivityGraphsFactoryImpl
     /**
      * @param elem the ClassifierInState to be deleted
      */
-    public void deleteClassifierInState(Object elem) {
+    void deleteClassifierInState(Object elem) {
         if (!(elem instanceof MClassifierInState)) {
             throw new IllegalArgumentException();
         }
@@ -273,7 +273,7 @@ public class ActivityGraphsFactoryImpl
     /**
      * @param elem ObjectFlowState
      */
-    public void deleteObjectFlowState(Object elem) {
+    void deleteObjectFlowState(Object elem) {
         if (!(elem instanceof MObjectFlowState)) {
             throw new IllegalArgumentException();
         }
@@ -283,7 +283,7 @@ public class ActivityGraphsFactoryImpl
     /**
      * @param elem Partition
      */
-    public void deletePartition(Object elem) {
+    void deletePartition(Object elem) {
         if (!(elem instanceof MPartition)) {
             throw new IllegalArgumentException();
         }
@@ -293,7 +293,7 @@ public class ActivityGraphsFactoryImpl
     /**
      * @param elem SubactivityState
      */
-    public void deleteSubactivityState(Object elem) {
+    void deleteSubactivityState(Object elem) {
         if (!(elem instanceof MSubactivityState)) {
             throw new IllegalArgumentException();
         }

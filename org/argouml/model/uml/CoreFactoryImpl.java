@@ -1573,13 +1573,13 @@ public class CoreFactoryImpl
     /**
      * @param elem the abstraction to be deleted
      */
-    public void deleteAbstraction(Object elem) {
+    void deleteAbstraction(Object elem) {
     }
 
     /**
      * @param elem the association to be deleted
      */
-    public void deleteAssociation(Object elem) {
+    void deleteAssociation(Object elem) {
         if (!(elem instanceof MAssociation)) {
             throw new IllegalArgumentException();
         }
@@ -1588,7 +1588,7 @@ public class CoreFactoryImpl
     /**
      * @param elem the a. to be deleted
      */
-    public void deleteAssociationClass(Object elem) {
+    void deleteAssociationClass(Object elem) {
         if (!(elem instanceof MAssociationClass)) {
             throw new IllegalArgumentException();
         }
@@ -1609,7 +1609,7 @@ public class CoreFactoryImpl
      * @param elem
      * @see UmlFactoryImpl#delete(Object)
      */
-    public void deleteAssociationEnd(Object elem) {
+    void deleteAssociationEnd(Object elem) {
         if (!(elem instanceof MAssociationEnd)) {
             throw new IllegalArgumentException();
         }
@@ -1624,7 +1624,7 @@ public class CoreFactoryImpl
     /**
      * @param elem the attribute to be deleted
      */
-    public void deleteAttribute(Object elem) {
+    void deleteAttribute(Object elem) {
         if (!(elem instanceof MAttribute)) {
             throw new IllegalArgumentException();
         }
@@ -1634,7 +1634,7 @@ public class CoreFactoryImpl
     /**
      * @param elem the element to be deleted
      */
-    public void deleteBehavioralFeature(Object elem) {
+    void deleteBehavioralFeature(Object elem) {
         if (!(elem instanceof MBehavioralFeature)) {
             throw new IllegalArgumentException();
         }
@@ -1644,7 +1644,7 @@ public class CoreFactoryImpl
     /**
      * @param elem the element to be deleted
      */
-    public void deleteBinding(Object elem) {
+    void deleteBinding(Object elem) {
         if (!(elem instanceof MBinding)) {
             throw new IllegalArgumentException();
         }
@@ -1654,7 +1654,7 @@ public class CoreFactoryImpl
     /**
      * @param elem the element to be deleted
      */
-    public void deleteClass(Object elem) {
+    void deleteClass(Object elem) {
         if (!(elem instanceof MClass)) {
             throw new IllegalArgumentException();
         }
@@ -1675,7 +1675,7 @@ public class CoreFactoryImpl
      * @param elem
      * @see UmlFactoryImpl#delete(Object)
      */
-    public void deleteClassifier(Object elem) {
+    void deleteClassifier(Object elem) {
         if (elem != null && elem instanceof MClassifier) {
             Collection col = ((MClassifier) elem).getAssociationEnds();
             Iterator it = col.iterator();
@@ -1688,7 +1688,7 @@ public class CoreFactoryImpl
     /**
      * @param elem the element to be deleted
      */
-    public void deleteComment(Object elem) {
+    void deleteComment(Object elem) {
         if (!(elem instanceof MComment)) {
             throw new IllegalArgumentException();
         }
@@ -1697,7 +1697,7 @@ public class CoreFactoryImpl
     /**
      * @param elem the element to be deleted
      */
-    public void deleteComponent(Object elem) {
+    void deleteComponent(Object elem) {
         if (!(elem instanceof MComponent)) {
             throw new IllegalArgumentException();
         }
@@ -1707,7 +1707,7 @@ public class CoreFactoryImpl
     /**
      * @param elem the element to be deleted
      */
-    public void deleteConstraint(Object elem) {
+    void deleteConstraint(Object elem) {
         if (!(elem instanceof MConstraint)) {
             throw new IllegalArgumentException();
         }
@@ -1717,7 +1717,7 @@ public class CoreFactoryImpl
     /**
      * @param elem the element to be deleted
      */
-    public void deleteDataType(Object elem) {
+    void deleteDataType(Object elem) {
         if (!(elem instanceof MDataType)) {
             throw new IllegalArgumentException();
         }
@@ -1727,7 +1727,7 @@ public class CoreFactoryImpl
     /**
      * @param elem the element to be deleted
      */
-    public void deleteDependency(Object elem) {
+    void deleteDependency(Object elem) {
         if (!(elem instanceof MDependency)) {
             throw new IllegalArgumentException();
         }
@@ -1737,7 +1737,7 @@ public class CoreFactoryImpl
     /**
      * @param elem the element to be deleted
      */
-    public void deleteElement(Object elem) {
+    void deleteElement(Object elem) {
         if (!(elem instanceof MElement)) {
             throw new IllegalArgumentException();
         }
@@ -1747,7 +1747,7 @@ public class CoreFactoryImpl
     /**
      * @param elem the element to be deleted
      */
-    public void deleteElementResidence(Object elem) {
+    void deleteElementResidence(Object elem) {
         if (!(elem instanceof MElementResidence)) {
             throw new IllegalArgumentException();
         }
@@ -1757,7 +1757,7 @@ public class CoreFactoryImpl
     /**
      * @param elem the element to be deleted
      */
-    public void deleteFeature(Object elem) {
+    void deleteFeature(Object elem) {
         if (!(elem instanceof MFeature)) {
             throw new IllegalArgumentException();
         }
@@ -1767,7 +1767,7 @@ public class CoreFactoryImpl
     /**
      * @param elem the element to be deleted
      */
-    public void deleteFlow(Object elem) {
+    void deleteFlow(Object elem) {
         if (!(elem instanceof MFlow)) {
             throw new IllegalArgumentException();
         }
@@ -1777,7 +1777,7 @@ public class CoreFactoryImpl
     /**
      * @param elem the element to be deleted
      */
-    public void deleteGeneralizableElement(Object elem) {
+    void deleteGeneralizableElement(Object elem) {
         if (!(elem instanceof MGeneralizableElement)) {
             throw new IllegalArgumentException();
         }
@@ -1797,7 +1797,7 @@ public class CoreFactoryImpl
     /**
      * @param elem the element to be deleted
      */
-    public void deleteGeneralization(Object elem) {
+    void deleteGeneralization(Object elem) {
         if (!(elem instanceof MGeneralization)) {
             throw new IllegalArgumentException();
         }
@@ -1807,7 +1807,7 @@ public class CoreFactoryImpl
     /**
      * @param elem the element to be deleted
      */
-    public void deleteInterface(Object elem) {
+    void deleteInterface(Object elem) {
         if (!(elem instanceof MInterface)) {
             throw new IllegalArgumentException();
         }
@@ -1817,7 +1817,7 @@ public class CoreFactoryImpl
     /**
      * @param elem the element to be deleted
      */
-    public void deleteMethod(Object elem) {
+    void deleteMethod(Object elem) {
         if (!(elem instanceof MMethod)) {
             throw new IllegalArgumentException();
         }
@@ -1839,7 +1839,7 @@ public class CoreFactoryImpl
      * @param elem
      * @see UmlFactoryImpl#delete(Object)
      */
-    public void deleteModelElement(Object elem) {
+    void deleteModelElement(Object elem) {
         if (!(elem instanceof MModelElement)) {
             throw new IllegalArgumentException();
         }
@@ -1874,7 +1874,7 @@ public class CoreFactoryImpl
      *
      * @param elem is the namespace.
      */
-    public void deleteNamespace(Object elem) {
+    void deleteNamespace(Object elem) {
         if (!(elem instanceof MNamespace)) {
             throw new IllegalArgumentException();
         }
@@ -1890,7 +1890,7 @@ public class CoreFactoryImpl
     /**
      * @param elem the element to be deleted
      */
-    public void deleteNode(Object elem) {
+    void deleteNode(Object elem) {
         if (!(elem instanceof MNode)) {
             throw new IllegalArgumentException();
         }
@@ -1900,7 +1900,7 @@ public class CoreFactoryImpl
     /**
      * @param elem the element to be deleted
      */
-    public void deleteOperation(Object elem) {
+    void deleteOperation(Object elem) {
         if (!(elem instanceof MOperation)) {
             throw new IllegalArgumentException();
         }
@@ -1910,7 +1910,7 @@ public class CoreFactoryImpl
     /**
      * @param elem the element to be deleted
      */
-    public void deleteParameter(Object elem) {
+    void deleteParameter(Object elem) {
         if (!(elem instanceof MParameter)) {
             throw new IllegalArgumentException();
         }
@@ -1920,7 +1920,7 @@ public class CoreFactoryImpl
     /**
      * @param elem the element to be deleted
      */
-    public void deletePermission(Object elem) {
+    void deletePermission(Object elem) {
         if (!(elem instanceof MPermission)) {
             throw new IllegalArgumentException();
         }
@@ -1930,7 +1930,7 @@ public class CoreFactoryImpl
     /**
      * @param elem the element to be deleted
      */
-    public void deletePresentationElement(Object elem) {
+    void deletePresentationElement(Object elem) {
         if (!(elem instanceof MPresentationElement)) {
             throw new IllegalArgumentException();
         }
@@ -1940,7 +1940,7 @@ public class CoreFactoryImpl
     /**
      * @param elem the element to be deleted
      */
-    public void deleteRelationship(Object elem) {
+    void deleteRelationship(Object elem) {
         if (!(elem instanceof MRelationship)) {
             throw new IllegalArgumentException();
         }
@@ -1950,7 +1950,7 @@ public class CoreFactoryImpl
     /**
      * @param elem the element to be deleted
      */
-    public void deleteStructuralFeature(Object elem) {
+    void deleteStructuralFeature(Object elem) {
         if (!(elem instanceof MStructuralFeature)) {
             throw new IllegalArgumentException();
         }
@@ -1960,7 +1960,7 @@ public class CoreFactoryImpl
     /**
      * @param elem the element to be deleted
      */
-    public void deleteTemplateParameter(Object elem) {
+    void deleteTemplateParameter(Object elem) {
         if (!(elem instanceof MTemplateParameter)) {
             throw new IllegalArgumentException();
         }
@@ -1970,7 +1970,7 @@ public class CoreFactoryImpl
     /**
      * @param elem the element to be deleted
      */
-    public void deleteUsage(Object elem) {
+    void deleteUsage(Object elem) {
         if (!(elem instanceof MUsage)) {
             throw new IllegalArgumentException();
         }
