@@ -80,7 +80,7 @@ public class MenuResourceBundle_fr extends ListResourceBundle {
         {"DeploymentDiagram", "Diagramme de d\u00e9ploiement" },  
         {"SequenceDiagram", "Diagramme de sequence" },  
         {"button.add-attribute", "Ajouter un Attribut" },  
-        {"Add Operation", "Ajouter une Op\u00e9ration" },  
+        {"button.add-operation", "Ajouter une Op\u00e9ration" },  
         {"Add Message", "Ajouter un Message" },  
         {"Add Internal Transition", "Ajouter une Transition Interne" },  
         {"Generate Selected Classes", "G\u00e9n\u00e9rer les Classes S\u00e9lectionn\u00e9es..." },  
