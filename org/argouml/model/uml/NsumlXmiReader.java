@@ -210,10 +210,13 @@ class NsumlXmiReader extends ru.novosoft.uml.xmi.XMIReader {
      * @throws IOException if there is a file I/O problem
      */
     public MModel parseToModel(InputSource pIs)
-        throws SAXException, IOException {
-	parseSourceStream(pIs);
-	return getParsedModel();
-
+            throws SAXException, IOException {
+        parseSourceStream(pIs);
+        MModel model = getParsedModel();
+        if (errors) {
+            throw new SAXException("Errors parsing XMI");
+        }
+        return model;
     }
 
     /**

@@ -53,6 +53,7 @@ public abstract class Profile {
 					    Object namespace);
     /**
      * @return the UML Model that contains the profile model
+     * @throws ProfileException if failed to get profile.
      */
-    public abstract Object/*MModel*/ getProfileModel();
+    public abstract Object/*MModel*/ getProfileModel() throws ProfileException;
 }

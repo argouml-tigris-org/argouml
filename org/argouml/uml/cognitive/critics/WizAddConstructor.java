@@ -29,11 +29,13 @@ import java.util.Iterator;
 
 import javax.swing.JPanel;
 
+import org.apache.log4j.Logger;
 import org.argouml.cognitive.ui.WizStepTextField;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
 import org.argouml.ui.targetmanager.TargetManager;
+import org.argouml.uml.ProfileException;
 import org.argouml.uml.ProfileJava;
 
 /**
@@ -43,6 +45,12 @@ import org.argouml.uml.ProfileJava;
  * @since February 7, 2004, 12:35 AM
  */
 public class WizAddConstructor extends UMLWizard {
+    /**
+     * Logger.
+     */
+    private static final Logger LOG =
+        Logger.getLogger(WizAddConstructor.class);
+
     private WizStepTextField step1 = null;
     private String label = Translator.localize("label.name");
     private String instructions =
@@ -96,27 +104,33 @@ public class WizAddConstructor extends UMLWizard {
      * @return a suitable stereotype, or null.
      */
     private Object getCreateStereotype(Object obj) {
-	Iterator iter =
-		Model.getFacade().getOwnedElements(ProfileJava.getInstance()
-			.getProfileModel())
-		.iterator();
-
-	while (iter.hasNext()) {
-	    Object stereo = iter.next();
-	    if (!Model.getFacade().isAStereotype(stereo)
-		|| !"create".equals(Model.getFacade().getName(stereo))) {
-	        continue;
-	    }
-
-	    if (Model.getExtensionMechanismsHelper()
-		    .isValidStereoType(obj, stereo)) {
-		return Model.getModelManagementHelper()
-		    .getCorrespondingElement(stereo,
-					     Model.getFacade().getModel(obj));
-	    }
-	}
-
-	return null;
+        Iterator iter = null;
+        try {
+            iter = Model.getFacade().getOwnedElements(ProfileJava.getInstance()
+        		.getProfileModel())
+        	.iterator();
+        } catch (ProfileException e) {
+            // TODO: How are we going to handle exceptions here?
+            // I suspect the profile should be part of the project
+            // and not a singleton.
+            LOG.error("Failed to get profile", e);
+        }
+        while (iter.hasNext()) {
+            Object stereo = iter.next();
+            if (!Model.getFacade().isAStereotype(stereo)
+        	|| !"create".equals(Model.getFacade().getName(stereo))) {
+                continue;
+            }
+        
+            if (Model.getExtensionMechanismsHelper()
+        	    .isValidStereoType(obj, stereo)) {
+        	return Model.getModelManagementHelper()
+        	    .getCorrespondingElement(stereo,
+        				     Model.getFacade().getModel(obj));
+            }
+        }
+        
+        return null;
     }
 
     /**

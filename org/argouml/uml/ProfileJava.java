@@ -29,10 +29,13 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Iterator;
 
+import javax.xml.parsers.ParserConfigurationException;
+
 import org.apache.log4j.Logger;
 import org.argouml.model.Model;
 import org.argouml.model.uml.XmiReader;
 import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
 
 /**
  *   This class implements the abstract class Profile for use in modelling
@@ -58,15 +61,21 @@ public class ProfileJava extends Profile {
      * @return the instance of this class
      */
     public static ProfileJava getInstance() {
-	if (instance == null)
-	    instance = new ProfileJava();
-	return instance;
+    	if (instance == null)
+    	    instance = new ProfileJava();
+    	return instance;
     }
 
     private Object/*MModel*/ defaultModel;
 
     private ProfileJava() {
-	getProfileModel();
+        try {
+            getProfileModel();
+        } catch (ProfileException e) {
+            // TODO How are we going to handl3e exception here.
+            // I think the profiles need some rethinking - Bob.
+            LOG.error("Exception in ProfileJava constructor", e);
+        }
     }
 
     /**
@@ -270,11 +279,11 @@ public class ProfileJava extends Profile {
     /**
      * @see org.argouml.uml.Profile#getProfileModel()
      */
-    public Object/*MModel*/ getProfileModel() {
-	if (defaultModel == null) {
-	    defaultModel = loadProfileModel();
-	}
-	return defaultModel;
+    public Object/*MModel*/ getProfileModel() throws ProfileException {
+        if (defaultModel == null) {
+            defaultModel = loadProfileModel();
+        }
+        return defaultModel;
     }
 
     /**
@@ -283,92 +292,82 @@ public class ProfileJava extends Profile {
      * May result in null, if the files are not found.
      *
      * @return the model object
+     * @throws ProfileException if failed to load profile
      */
-    public static Object/*MModel*/ loadProfileModel() {
-	//
-	//    get a file name for the default model
-	//
-	String defaultModelFileName =
-	    System.getProperty("argo.defaultModel");
-
-	//
-	//   if the property was set
-	//
-	InputStream is = null;
-	if (defaultModelFileName != null) {
-	    //
-	    //  try to find a file with that name
-	    //
-	    try {
-		is = new FileInputStream(defaultModelFileName);
-	    }
-	    //
-	    //   no file found, try looking in the resources
-	    //
-	    catch (FileNotFoundException ex) {
-		is = new Object().getClass()
-		    .getResourceAsStream(defaultModelFileName);
-		if (is == null) {
-		    LOG.error(
-			      "Value of property argo.defaultModel ("
-			      + defaultModelFileName
-			      + ") did not correspond to an available file.\n");
-		}
-	    }
-	}
-
-	//
-	//   either no name specified or file not found
-	//        load the default
-	if (is == null) {
-	    defaultModelFileName = "/org/argouml/default.xmi";
-
-	    // Notice that the class that we run getClass() in needs to be
-	    // in the same ClassLoader that the default.xmi.
-	    // If we run using Java Web Start then we have every ArgoUML
-	    // file in the same jar (i.e. the same ClassLoader).
-	    is =
-		new Object() { }
-		.getClass().getResourceAsStream(defaultModelFileName);
-
-	    if (is == null) {
-		try {
-		    is =
-			new FileInputStream(defaultModelFileName.substring(1));
-		} catch (FileNotFoundException ex) {
-		    LOG.error("Default model ("
-			      + defaultModelFileName
-			      + ") not found.\n", ex);
-
-		}
-	    }
-	}
-
-	if (is != null) {
-	    try {
-		XmiReader xmiReader = new XmiReader();
-		//
-		//   would really like to turn validation off to save
-		//      a lot of scary messages
-		Object/*MModel*/ model =
-		    xmiReader.parseToModel(new InputSource(is));
-		// 2002-07-18 Jaap Branderhorst changed the loading of
-		// the projectfiles to solve hanging of argouml if a
-		// project is corrupted. Issue 913 Created xmireader
-		// with method getErrors to check if parsing went well
-		if (xmiReader.getErrors()) {
-		    throw new IOException(
-					  "XMI file "
-					  + defaultModelFileName
-					  + " could not be parsed.");
-		}
-
-		return model;
-	    } catch (Exception ex) {
-		LOG.error("Error reading " + defaultModelFileName + "\n", ex);
-	    }
-	}
-
-	return null;
+    public static Object/*MModel*/ loadProfileModel() throws ProfileException {
+        //
+        //    get a file name for the default model
+        //
+        String defaultModelFileName =
+            System.getProperty("argo.defaultModel");
+        
+        //
+        //   if the property was set
+        //
+        InputStream is = null;
+        if (defaultModelFileName != null) {
+            //
+            //  try to find a file with that name
+            //
+            try {
+                is = new FileInputStream(defaultModelFileName);
+            } catch (FileNotFoundException ex) {
+                //
+                //   no file found, try looking in the resources
+                //
+                is = new Object().getClass()
+                    .getResourceAsStream(defaultModelFileName);
+                if (is == null) {
+                    LOG.error(
+                	      "Value of property argo.defaultModel ("
+                	      + defaultModelFileName
+                	      + ") did not correspond to an available file.\n");
+                }
+            }
+        }
+        
+        //
+        //   either no name specified or file not found
+        //        load the default
+        if (is == null) {
+            defaultModelFileName = "/org/argouml/default.xmi";
+        
+            // Notice that the class that we run getClass() in needs to be
+            // in the same ClassLoader that the default.xmi.
+            // If we run using Java Web Start then we have every ArgoUML
+            // file in the same jar (i.e. the same ClassLoader).
+            is = new Object() { }
+                .getClass().getResourceAsStream(defaultModelFileName);
+        
+            if (is == null) {
+                try {
+                    is =
+                	new FileInputStream(defaultModelFileName.substring(1));
+                } catch (FileNotFoundException ex) {
+                    throw new ProfileException(ex);
+                }
+            }
+        }
+        
+        if (is != null) {
+            try {
+                XmiReader xmiReader = new XmiReader();
+                //
+                //   would really like to turn validation off to save
+                //      a lot of scary messages
+                Object/*MModel*/ model =
+                    xmiReader.parseToModel(new InputSource(is));
+            
+                return model;
+            } catch (ParserConfigurationException e) {
+                throw new ProfileException(e);
+            } catch (IOException e) {
+                throw new ProfileException(e);
+            } catch (SAXException e) {
+                throw new ProfileException(e);
+            }
+        }
+        
+        return null;
     }
 }

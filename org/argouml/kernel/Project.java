@@ -49,6 +49,7 @@ import org.argouml.ui.explorer.ExplorerEventAdaptor;
 import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.ui.targetmanager.TargetListener;
 import org.argouml.ui.targetmanager.TargetManager;
+import org.argouml.uml.ProfileException;
 import org.argouml.uml.ProfileJava;
 import org.argouml.uml.ProjectMemberModel;
 import org.argouml.uml.cognitive.ProjectMemberTodoList;
@@ -177,11 +178,16 @@ public class Project implements java.io.Serializable, TargetListener {
 
 //        saveRegistry = new ChangeRegistry();
         LOG.info("making empty project with empty model");
-        // Jaap Branderhorst 2002-12-09
-        // load the default model
-        // this is NOT the way how it should be since this makes argo
-        // depend on Java even more.
-        setDefaultModel(ProfileJava.loadProfileModel());
+        try {
+            // Jaap Branderhorst 2002-12-09
+            // load the default model
+            // this is NOT the way how it should be since this makes argo
+            // depend on Java even more.
+            setDefaultModel(ProfileJava.loadProfileModel());
+        } catch (ProfileException e) {
+            // TODO: how are we going to hand exceptions here?
+            LOG.error("Exception setting the default profile", e);
+        }
         addSearchPath("PROJECT_DIR");
         ProjectManager.getManager().setNeedsSave(false);
         TargetManager.getInstance().addTargetListener(this);
