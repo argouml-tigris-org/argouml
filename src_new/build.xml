@@ -256,6 +256,7 @@ Property files to be searched:
       <pathelement location="${i18n.jar.path}" />
       <pathelement location="${log4j.jar.path}" />
       <pathelement location="${jh.jar.path}" />
+      <pathelement location="${jndi.jar.path}" />
       <path refid="antlr.runtime.classpath" />
     </path>
 
@@ -618,6 +619,8 @@ ${Name} Build file
           tofile="${argo.build.dir}/argouml-model.jar" />
     <copy file="${argouml.diagram.jar.path}"
           tofile="${argo.build.dir}/argouml-diagram.jar" />
+    <copy file="${jndi.jar.path}"
+           tofile="${argo.build.dir}/jndi.jar" />
     <!-- End of name synch area in this file. -->
 
     <copy file="${jh.jar.path}" tofile="${argo.build.dir}/jh.jar" />
