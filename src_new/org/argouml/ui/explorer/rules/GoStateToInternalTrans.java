@@ -44,6 +44,9 @@ public class GoStateToInternalTrans extends AbstractPerspectiveRule {
         return Translator.localize ("misc.state.internal-transitions");
     }
 	
+    /**
+     * @see org.argouml.ui.explorer.rules.PerspectiveRule#getChildren(java.lang.Object)
+     */
     public Collection getChildren(Object parent) {
 	if (ModelFacade.isAState(parent)) {
 	    return ModelFacade.getInternalTransitions(parent);

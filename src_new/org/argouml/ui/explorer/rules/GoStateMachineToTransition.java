@@ -46,6 +46,9 @@ public class GoStateMachineToTransition extends AbstractPerspectiveRule {
         return Translator.localize ("misc.state-machine.transition");
     }
 
+    /**
+     * @see org.argouml.ui.explorer.rules.PerspectiveRule#getChildren(java.lang.Object)
+     */
     public Collection getChildren(Object parent) {
 	if (ModelFacade.isAStateMachine(parent)) {
 	    return ModelFacade.getTransitions(parent);

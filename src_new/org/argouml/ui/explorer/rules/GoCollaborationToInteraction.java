@@ -22,8 +22,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// $header$
-
 package org.argouml.ui.explorer.rules;
 
 import java.util.Collection;
@@ -34,39 +32,34 @@ import org.argouml.i18n.Translator;
 import org.argouml.model.ModelFacade;
 
 /**
- * PerspectiveRule to navigate from statemachine to
- * its top state.
- * 
- * @author jaap.branderhorst@xs4all.nl
+ * Rule for Collaboration->Interaction.
+ *
  */
-public class GoMachineToState extends AbstractPerspectiveRule {
+public class GoCollaborationToInteraction extends AbstractPerspectiveRule {
 
     /**
      * @see org.argouml.ui.explorer.rules.PerspectiveRule#getRuleName()
      */
-    public String getRuleName() { 
-        return Translator.localize ("misc.state-machine.state");
+    public String getRuleName() {
+        return Translator.localize ("misc.collaboration.interaction");
     }
 
+    /**
+     * @see org.argouml.ui.explorer.rules.PerspectiveRule#getChildren(java.lang.Object)
+     */
     public Collection getChildren(Object parent) {
-        
-        if (ModelFacade.isAStateMachine(parent)) {
-            if (ModelFacade.getTop(parent) != null) { 
-                return ModelFacade.getSubvertices(ModelFacade.getTop(parent));
-            }
-        }
-        return null;
+	if (!ModelFacade.isACollaboration(parent))
+	    return null;
+	return ModelFacade.getInteractions(parent);
     }
 
     /**
      * @see org.argouml.ui.explorer.rules.PerspectiveRule#getDependencies(java.lang.Object)
      */
     public Set getDependencies(Object parent) {
-        if (ModelFacade.isAStateMachine(parent)) {
+        if (ModelFacade.isACollaboration(parent)) {
 	    Set set = new HashSet();
 	    set.add(parent);
-	    if (ModelFacade.getTop(parent) != null)
-		set.add(ModelFacade.getTop(parent));
 	    return set;
 	}
 	return null;

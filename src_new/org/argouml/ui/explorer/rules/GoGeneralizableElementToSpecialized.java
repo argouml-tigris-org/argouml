@@ -32,24 +32,26 @@ import org.argouml.i18n.Translator;
 import org.argouml.model.ModelFacade;
 
 /**
- * Rule for Statemachine->Transition.
+ * Rule to navigate from a Generalizable element to its children.<p>
+ * Classifier -> Specialized Classifier
  *
  */
-public class GoMachineToTrans extends AbstractPerspectiveRule {
+public class GoGeneralizableElementToSpecialized 
+    extends AbstractPerspectiveRule {
 
     /**
      * @see org.argouml.ui.explorer.rules.PerspectiveRule#getRuleName()
      */
     public String getRuleName() {
-	return Translator.localize ("misc.state-machine.transition");
+	return Translator.localize ("misc.classifier.specialized-classifier");
     }
-  
+
     /**
      * @see org.argouml.ui.explorer.rules.PerspectiveRule#getChildren(java.lang.Object)
      */
     public Collection getChildren(Object parent) { 
-	if (ModelFacade.isAStateMachine(parent)) {
-	    return ModelFacade.getTransitions(parent);
+	if (ModelFacade.isAGeneralizableElement(parent)) {
+	    return ModelFacade.getChildren(parent);
 	}
 	return null;
     }
@@ -58,11 +60,13 @@ public class GoMachineToTrans extends AbstractPerspectiveRule {
      * @see org.argouml.ui.explorer.rules.PerspectiveRule#getDependencies(java.lang.Object)
      */
     public Set getDependencies(Object parent) {
-        if (ModelFacade.isAStateMachine(parent)) {
+        if (ModelFacade.isAGeneralizableElement(parent)) {
 	    Set set = new HashSet();
 	    set.add(parent);
 	    return set;
 	}
 	return null;
     }
-}
+} /* end class GoGenElementToDerived */
+
+

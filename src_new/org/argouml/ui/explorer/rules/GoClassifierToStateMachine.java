@@ -47,6 +47,9 @@ public class GoClassifierToStateMachine extends AbstractPerspectiveRule {
 	return Translator.localize ("misc.classifier.statemachine");
     }
 
+    /**
+     * @see org.argouml.ui.explorer.rules.PerspectiveRule#getChildren(java.lang.Object)
+     */
     public Collection getChildren(Object parent) {
 	if (ModelFacade.isAClassifier(parent)) 
 	    return ModelFacade.getBehaviors(parent);

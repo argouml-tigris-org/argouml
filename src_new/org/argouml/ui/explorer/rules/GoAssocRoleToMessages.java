@@ -25,64 +25,43 @@
 package org.argouml.ui.explorer.rules;
 
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Set;
-import java.util.Vector;
 
 import org.argouml.i18n.Translator;
-import org.argouml.kernel.Project;
-import org.argouml.kernel.ProjectManager;
 import org.argouml.model.ModelFacade;
-import org.argouml.uml.diagram.activity.ui.UMLActivityDiagram;
-import org.argouml.uml.diagram.state.ui.UMLStateDiagram;
 
 /**
- * Rule for Statemachine->Diagram.
+ * The GoRule AssociationRole->Messages.
  *
  */
-public class GoMachineDiagram extends AbstractPerspectiveRule {
+public class GoAssocRoleToMessages extends AbstractPerspectiveRule {
 
     /**
      * @see org.argouml.ui.explorer.rules.PerspectiveRule#getRuleName()
      */
-    public String getRuleName() {
-        return Translator.localize ("misc.state-machine.diagram");
+    public String getRuleName() { 
+        return Translator.localize ("misc.association-role.messages");
     }
 
     /**
      * @see org.argouml.ui.explorer.rules.PerspectiveRule#getChildren(java.lang.Object)
      */
     public Collection getChildren(Object parent) {
-        if (!ModelFacade.isAStateMachine(parent))
-            return null;
-
-        Project p = ProjectManager.getManager().getCurrentProject();
-        if (p == null)
-            return null;
-
-        Vector res = new Vector();
-        Vector diagrams = p.getDiagrams();
-        if (diagrams == null)
-            return null;
-
-        java.util.Enumeration elems = diagrams.elements();
-        while (elems.hasMoreElements()) {
-            Object d = elems.nextElement();
-            if (d instanceof UMLStateDiagram
-		&& ((UMLStateDiagram) d).getStateMachine() == parent)
-                res.addElement(d);
-            else if (d instanceof UMLActivityDiagram
-		     && ((UMLActivityDiagram) d).getStateMachine() == parent)
-                res.addElement(d);
-        }
-
-        return res;
+	if (!ModelFacade.isAAssociationRole(parent))
+	    return null;
+	return ModelFacade.getMessages(parent);
     }
 
     /**
      * @see org.argouml.ui.explorer.rules.PerspectiveRule#getDependencies(java.lang.Object)
      */
     public Set getDependencies(Object parent) {
-        // TODO: What?
+        if (ModelFacade.isAAssociationRole(parent)) {
+	    Set set = new HashSet();
+	    set.add(parent);
+	    return set;
+	}
 	return null;
     }
 }

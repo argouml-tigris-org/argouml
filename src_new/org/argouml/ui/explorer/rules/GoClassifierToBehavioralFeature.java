@@ -34,19 +34,19 @@ import org.argouml.model.uml.CoreHelper;
 
 /**
  * Go rule to navigate from a classifier to the behavioral 
- * features owned by that classifier
- * 
+ * features owned by that classifier.  <p>
+ * Classifier->BehavioralFeature
  *
  * @since Jul 13, 2004
  * @author jaap.branderhorst@xs4all.nl
  */
-public class GoClassifierToBeh extends AbstractPerspectiveRule {
+public class GoClassifierToBehavioralFeature extends AbstractPerspectiveRule {
 
     /**
      * @see org.argouml.ui.explorer.rules.PerspectiveRule#getRuleName()
      */
     public String getRuleName() {
-	return Translator.localize ("misc.class.operation");
+	return Translator.localize ("misc.classifier.behavioralfeature");
     }
 
     /**

@@ -47,6 +47,9 @@ public class GoBehavioralFeatureToStateMachine extends AbstractPerspectiveRule {
         return Translator.localize ("misc.behavioral-feature.statemachine");
     }
 
+    /**
+     * @see org.argouml.ui.explorer.rules.PerspectiveRule#getChildren(java.lang.Object)
+     */
     public Collection getChildren(Object parent) {
 	if (ModelFacade.isABehavioralFeature(parent)) 
 	    return ModelFacade.getBehaviors(parent);

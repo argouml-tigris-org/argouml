@@ -35,7 +35,7 @@ import org.argouml.i18n.Translator;
 import org.argouml.model.ModelFacade;
 
 /**
- * Go rule to navigate from a state to it's doactivity. Used in the package
+ * Go rule to navigate from a state to it's do-activity. Used in the package
  * perspective.
  * 
  * @author jaap.branderhorst@xs4all.nl	
@@ -43,6 +43,9 @@ import org.argouml.model.ModelFacade;
  */
 public class GoStateToDoActivity extends AbstractPerspectiveRule {
 
+    /**
+     * @see org.argouml.ui.explorer.rules.PerspectiveRule#getChildren(java.lang.Object)
+     */
     public Collection getChildren(Object parent) {
         if (ModelFacade.isAState(parent)
 	    && ModelFacade.getDoActivity(parent) != null)
@@ -67,6 +70,9 @@ public class GoStateToDoActivity extends AbstractPerspectiveRule {
 	return null;
     }
 
+    /**
+     * @see org.argouml.ui.explorer.rules.PerspectiveRule#getRuleName()
+     */
     public String getRuleName() {
         return Translator.localize ("misc.state.do-activity");
     }
