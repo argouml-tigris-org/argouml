@@ -523,12 +523,17 @@ implements VetoableChangeListener, DelayedVChangeListener, MouseListener, KeyLis
      * @see org.tigris.gef.presentation.Fig#delete()
      */
     public void delete() {
-        super.delete();
+        Object o = getOwner();
+        if (o instanceof MBase) {
+            UmlModelEventPump.getPump().removeModelEventListener(this, (MBase)o);
+        }
+        
         Iterator it = getPathItemFigs().iterator();
         while (it.hasNext()) {
             Fig fig = (Fig)it.next();
             fig.delete();
         }
+        
         // GEF does not take into account the multiple diagrams we have
         // therefore we loop through our diagrams and delete each and every 
         // occurence on our own
@@ -537,6 +542,7 @@ implements VetoableChangeListener, DelayedVChangeListener, MouseListener, KeyLis
             ArgoDiagram diagram = (ArgoDiagram)it.next();
             diagram.damage();
         }
+        super.delete();
     }
 
     /**
