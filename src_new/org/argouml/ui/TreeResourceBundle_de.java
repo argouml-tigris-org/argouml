@@ -80,7 +80,8 @@ public class TreeResourceBundle_de extends ListResourceBundle {
         { "Link->Stimuli", "Link->Stimuli" },
         { "Stimulus->Action", "Stimulus->Aktion" },
 	{ "Properties", "Eigenschaften" },
-	{ "Add to Diagram", "Zum Diagramm hinzuf\u00fcgen"}
+	{ "Add to Diagram", "Zum Diagramm hinzuf\u00fcgen"},
+	{ "Click on diagram to add ", "Auf Diagramm klicken zum hinzuf\u00fcgen von "}
    };
 
      public Object[][] getContents() {

@@ -20,6 +20,7 @@ import ru.novosoft.uml.foundation.core.MModelElement;
 
 import org.tigris.gef.base.*;
 import org.tigris.gef.graph.*;
+import org.tigris.gef.util.Localizer;
 
 import org.argouml.ui.*;
 import org.argouml.uml.ui.*;
@@ -48,7 +49,8 @@ public class ActionAddExistingNode extends UMLAction implements GraphFactory
     public boolean shouldBeEnabled() {
 	ProjectBrowser pb = ProjectBrowser.TheInstance;
 	Object target = pb.getDetailsTarget();
-	if (target instanceof MModelElement) return true;
+	if (target instanceof MModelElement) 
+	    return true;
 	return false;
     }
 
@@ -57,8 +59,18 @@ public class ActionAddExistingNode extends UMLAction implements GraphFactory
 	GraphModel gm = ce.getGraphModel();
 	if (!(gm instanceof MutableGraphModel)) return;
 
-	Mode placeMode = new ModePlace(this);
-        ((ModePlace)placeMode).setAddRelatedEdges(true);
+	String instructions = null;
+	if(_object != null) {
+	    instructions =  Localizer.localize ("Tree", "Click on diagram to add ") + _object.toString();
+	    Globals.showStatus(instructions);
+	}
+	ModePlace placeMode = new ModePlace(this,instructions);
+	placeMode.setAddRelatedEdges(true);
+	
+	//
+	//   This only occurs when an diagram is entered
+	//
+	//
 
 	Globals.mode(placeMode, false );
     }
