@@ -67,16 +67,16 @@ import org.tigris.gef.util.*;
  */
 abstract public class PropPanel extends TabSpawnable
 implements TabModelTarget, MElementListener, UMLUserInterfaceContainer {
-  ////////////////////////////////////////////////////////////////
-  // instance vars
-  private Object _target;
-  private MModelElement _modelElement;
-  private static Profile _profile;
-  private LinkedList _navListeners = new LinkedList();
-  private ResourceBundle _bundle = null;
+    ////////////////////////////////////////////////////////////////
+    // instance vars
+    private Object _target;
+    private MModelElement _modelElement;
+    private static Profile _profile;
+    private LinkedList _navListeners = new LinkedList();
+    private ResourceBundle _bundle = null;
 
-  private Vector _panels = new Vector();
-  private UMLNameEventListener _nameListener;
+    private Vector _panels = new Vector();
+    private UMLNameEventListener _nameListener;
 
     private int lastRow;
     /**
@@ -97,19 +97,19 @@ implements TabModelTarget, MElementListener, UMLUserInterfaceContainer {
     private JPanel center;
 
     protected JPanel buttonPanel=new JPanel();
-    protected JPanel buttonPanelWithFlowLayout=new JPanel();
-    protected JPanel captionPanel=new JPanel();
+    private JPanel buttonPanelWithFlowLayout=new JPanel();
+    private JPanel captionPanel=new JPanel();
 
-  protected static ImageIcon _navBackIcon = ResourceLoader.lookupIconResource("NavigateBack");
-  protected static ImageIcon _navForwardIcon = ResourceLoader.lookupIconResource("NavigateForward");
-  protected static ImageIcon _deleteIcon = ResourceLoader.lookupIconResource("RedDelete");
-  protected static ImageIcon _navUpIcon = ResourceLoader.lookupIconResource("NavigateUp");
+    protected static ImageIcon _navBackIcon = ResourceLoader.lookupIconResource("NavigateBack");
+    protected static ImageIcon _navForwardIcon = ResourceLoader.lookupIconResource("NavigateForward");
+    protected static ImageIcon _deleteIcon = ResourceLoader.lookupIconResource("RedDelete");
+    protected static ImageIcon _navUpIcon = ResourceLoader.lookupIconResource("NavigateUp");
 
     protected Font smallFont = MetalLookAndFeel.getSubTextFont();
 
 
-  ////////////////////////////////////////////////////////////////
-  // constructors
+    ////////////////////////////////////////////////////////////////
+    // constructors
 
     /**
      *    Constructs the PropPanel.
@@ -124,9 +124,7 @@ implements TabModelTarget, MElementListener, UMLUserInterfaceContainer {
 	super(title);
         setLayout(new BorderLayout());
         center = new JPanel();
-        
-        setOrientation(ConfigLoader.getTabPropsOrientation());
-        if (orientation == Vertical.getInstance()) panelCount = 1;
+        center.setLayout(new GridLayout(1,0));
         
         JPanel panel;
         for(long i = 0; i < panelCount; i++) {
@@ -163,12 +161,27 @@ implements TabModelTarget, MElementListener, UMLUserInterfaceContainer {
 
     public void setOrientation(Orientation orientation) {
         super.setOrientation(orientation);
-        if (orientation == Horizontal.getInstance()) {
-            center.setLayout(new GridLayout(1,0));
-        }
-        else {
-            center.setLayout(new GridLayout(0,1));
-        }
+    }
+
+    /**
+     * Construct new PropPanel using LabelledLayout
+     * @param icon The icon to display for the panel
+     * @param title The title of the panel
+     * @param sectionCount the number of sections in the proppanel
+     */
+    public PropPanel(String title, ImageIcon icon, Orientation orientation) {
+	super(title);
+        setOrientation(orientation);
+
+        setLayout(new LabelledLayout(orientation));
+
+        JLabel titleLabel;
+	if (icon!=null) titleLabel = new JLabel(localize(title), icon, SwingConstants.LEFT);
+        else titleLabel = new JLabel(localize(title));
+        buttonPanel = new JPanel(new GridLayout2(1, 0, GridLayout2.MAXPREFERRED));
+        titleLabel.setLabelFor(buttonPanel);
+	add(titleLabel);
+        add(buttonPanel);
     }
 
 
@@ -204,6 +217,71 @@ implements TabModelTarget, MElementListener, UMLUserInterfaceContainer {
 
     public void addCaption(String label,int row, int panel,double weighty) {
         addCaption(new JLabel(localize(label)),row,panel,weighty);
+    }
+
+    /**
+     * Add a component with the specified label
+     * @param label the label for the component
+     * @param component the component
+     */
+    public JLabel addField(String label, Component component) {
+        JLabel jlabel = new JLabel(localize(label));
+        jlabel.setLabelFor(component);
+        add(jlabel);
+        add(component);
+        return jlabel;
+    }
+
+    /**
+     * Add a component with the specified label positioned after another component
+     * @param label the label for the component
+     * @param component the component
+     */
+    public JLabel addFieldAfter(String label, Component component, Component afterComponent) {
+        int nComponent = this.getComponentCount();
+        for (int i=0; i < nComponent; ++i) {
+            if (getComponent(i) == afterComponent) {
+                JLabel jlabel = new JLabel(localize(label));
+                jlabel.setLabelFor(component);
+                add(jlabel, ++i);
+                add(component, ++i);
+                return jlabel;
+            }
+        }
+        throw new IllegalArgumentException("Component not found");
+    }
+
+    /**
+     * Add a component with the specified label positioned before another component
+     * @param label the label for the component
+     * @param component the component
+     * @param beforeComponent the component
+     */
+    public JLabel addFieldBefore(String label, Component component, Component beforeComponent) {
+        int nComponent = this.getComponentCount();
+        for (int i=0; i < nComponent; ++i) {
+            if (getComponent(i) == beforeComponent) {
+                JLabel jlabel = new JLabel(localize(label));
+                jlabel.setLabelFor(component);
+                add(jlabel, i);
+                add(component, ++i);
+                return jlabel;
+            }
+        }
+        throw new IllegalArgumentException("Component not found");
+    }
+
+    /**
+     *   Adds a component to the fields of the specified panel
+     *     and sets the background and color to indicate
+     *     the field is a link.
+     *   @param label the required string label
+     *   @param component Component to be added
+     */
+    public final void addLinkField(String label, Component component) {
+        component.setBackground(getBackground());
+        component.setForeground(Color.blue);
+        addField(label, component);
     }
 
     final public String localize(String key) {
