@@ -47,6 +47,7 @@ public class MenuResourceBundle_fr extends ListResourceBundle {
         {"Store model to DB", "Stocker un mod\u00e8le en BD" },  
         {"Save Project As...", "Enregistrer le Projet Sous..." },  
         {"Import sources...", "Importer depuis les sources..."},
+        {"Import...", "Importer..."},
         {"Print...", "Imprimer..." },  
         {"Save GIF...", "Enregistrer au Format GIF..." },
         {"Save Graphics...", "Enregistrer les Graphiques..." },  

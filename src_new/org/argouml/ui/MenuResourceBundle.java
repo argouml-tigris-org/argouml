@@ -37,6 +37,7 @@ public class MenuResourceBundle extends ListResourceBundle {
         {"Load model from DB", "Load model from DB" },  
         {"Store model to DB", "Store model to DB" },  
         {"Save Project As...", "Save Project As..." },  
+        {"Import...", "Import..." },
         {"Import sources...", "Import sources..." },
         {"Print...", "Print..." },  
         {"Save GIF...", "Save GIF..." },  

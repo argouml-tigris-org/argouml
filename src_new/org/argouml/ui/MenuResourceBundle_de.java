@@ -44,6 +44,7 @@ public class MenuResourceBundle_de extends ListResourceBundle {
         {"Load model from DB", "Lade Modell aus DB" },
         {"Store model to DB", "Speichere Modell in DB" },
 	{"Save Project As...", "Projekt speichern unter..." },
+	{"Import...", "Importieren..." },
 	{"Import sources...", "Dateien importieren..." },
         {"Print...", "Drucken..." },
         {"Save GIF...", "Exportieren als GIF..." },
