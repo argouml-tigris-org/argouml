@@ -62,7 +62,8 @@ import ru.novosoft.uml.MElementListener;
  *
  * <p>This class listens to property changes from ...?
  *
- * <p>This class implements Poster because ...?
+ * <p>A Designer can as well create ToDO Items, such as critics do. Hence he 
+ * implements the Poster interface.
  *
  * <p>TODO: implement as singleton?? There are comments that suggest this
  * should be done.
@@ -636,12 +637,15 @@ public class Designer
     
     /** needs documenting */
     public String toString() {
-        String printString = super.toString() + " [\n";
-        printString += "  " + "decisions: " + _decisions.toString() + "\n";
-        printString += "  " + "goals: " + _goals.toString() + "\n";
-        printString += "  " + "prefs: " + _prefs.toString() + "\n";
-        printString += "  " + "to do: " + _toDoList.toString() + "\n";
-        printString += "]\n";
+        //String printString = super.toString() + " [\n";
+        //printString += "  " + "decisions: " + _decisions.toString() + "\n";
+        //printString += "  " + "goals: " + _goals.toString() + "\n";
+        //printString += "  " + "prefs: " + _prefs.toString() + "\n";
+        //printString += "  " + "to do: " + _toDoList.toString() + "\n";
+        //printString += "]\n";
+        
+        // made change in respect to ToDo List Tree
+        String printString = "Designer [name?]";
         return printString;
     }
     
