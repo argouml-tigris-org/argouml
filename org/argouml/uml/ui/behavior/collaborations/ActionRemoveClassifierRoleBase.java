@@ -1,4 +1,4 @@
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -21,49 +21,42 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// $header$
-package org.argouml.uml.ui;
+// $Id$
+package org.argouml.uml.ui.behavior.collaborations;
 
 import java.awt.event.ActionEvent;
 
-import org.argouml.kernel.Project;
-import org.argouml.kernel.ProjectManager;
+import org.argouml.application.api.Argo;
+import org.argouml.uml.ui.AbstractActionRemoveElement;
+
+import ru.novosoft.uml.behavior.collaborations.MClassifierRole;
+import ru.novosoft.uml.foundation.core.MClassifier;
 
 /**
- * Action to delete modelelements from the model without navigating to/from them.
- * Used in UMLMutableList for deletion of modelelements from the list.
- * @since Oct 2, 2002
- * @author jaap.branderhorst@xs4all.nl
- * @stereotype singleton
+ * Action to remove a base from a classifierrole.
+ * @author jaap.branderhorst@xs4all.nl	
+ * @since Jan 25, 2003
  */
-public class ActionRemoveModelElement extends AbstractActionRemoveElement {
-    
-    public final static ActionRemoveModelElement SINGLETON = new ActionRemoveModelElement();
+public class ActionRemoveClassifierRoleBase
+    extends AbstractActionRemoveElement {
+
+    public static ActionRemoveClassifierRoleBase SINGLETON = new ActionRemoveClassifierRoleBase();
     
     /**
-     * Constructor for ActionRemoveModelElement.
+     * Constructor for ActionRemoveClassifierRoleBase.
      */
-    protected ActionRemoveModelElement() {
-        super();
+    protected ActionRemoveClassifierRoleBase() {
+        super(Argo.localize("UMLMenu", "menu.popup.remove"));
     }
+
+    
 
     /**
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent e) {
         super.actionPerformed(e);
-        Project p = ProjectManager.getManager().getCurrentProject();
-        if (getObjectToRemove() != null && ActionRemoveFromModel.sureRemove(getObjectToRemove()))
-            p.moveToTrash(getTarget());
-        setObjectToRemove(null);
-    }
-
-   
-    /**
-     * @see javax.swing.Action#isEnabled()
-     */
-    public boolean isEnabled() {
-        return getObjectToRemove() != null;
+        ((MClassifierRole)getTarget()).removeBase((MClassifier)getObjectToRemove());
     }
 
 }

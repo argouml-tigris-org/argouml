@@ -62,6 +62,7 @@ public class UMLMutableLinkedList extends UMLLinkedList {
 
     private AbstractActionAddModelElement _addAction = null;
     private AbstractActionNewModelElement _newAction = null;
+    private AbstractActionRemoveElement _deleteAction = ActionRemoveModelElement.SINGLETON;
 
     private class PopupMenu extends JPopupMenu {
         public PopupMenu() {
@@ -77,8 +78,9 @@ public class UMLMutableLinkedList extends UMLLinkedList {
             if (isNew() || isAdd())
                 addSeparator();
             if (isDelete()) {
-                ActionRemoveModelElement.SINGLETON.setElementToDelete((MModelElement) getSelectedValue());
-                add(ActionRemoveModelElement.SINGLETON);
+                _deleteAction.setObjectToRemove(getSelectedValue());
+                _deleteAction.setTarget(getTarget());
+                add(_deleteAction);
             }
 
         }
@@ -91,14 +93,15 @@ public class UMLMutableLinkedList extends UMLLinkedList {
      * @param container
      * @param dataModel
      */
-    public UMLMutableLinkedList(UMLModelElementListModel2 dataModel, AbstractActionAddModelElement addAction, AbstractActionNewModelElement newAction, boolean showIcon) {
+    public UMLMutableLinkedList(UMLModelElementListModel2 dataModel, AbstractActionAddModelElement addAction, AbstractActionNewModelElement newAction, AbstractActionRemoveElement deleteAction, boolean showIcon) {
         super(dataModel, showIcon);
         setAddAction(addAction);
         setNewAction(newAction);
+        setDeleteAction(deleteAction);
     }
 
     public UMLMutableLinkedList(UMLModelElementListModel2 dataModel, AbstractActionAddModelElement addAction, AbstractActionNewModelElement newAction) {
-        this(dataModel, addAction, newAction, false);
+        this(dataModel, addAction, newAction, null, false);
     }
 
     /**
@@ -212,6 +215,22 @@ public class UMLMutableLinkedList extends UMLLinkedList {
      */
     public void setPopupMenu(JPopupMenu popupMenu) {
         _popupMenu = popupMenu;
+    }
+
+    /**
+     * Returns the deleteAction.
+     * @return AbstractActionRemoveElement
+     */
+    public AbstractActionRemoveElement getDeleteAction() {
+        return _deleteAction;
+    }
+
+    /**
+     * Sets the deleteAction.
+     * @param deleteAction The deleteAction to set
+     */
+    public void setDeleteAction(AbstractActionRemoveElement deleteAction) {
+        _deleteAction = deleteAction;
     }
 
 }

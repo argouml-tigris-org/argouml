@@ -62,7 +62,7 @@ public class PopupMenuNewEvent extends JPopupMenu {
 
         addSeparator();
 
-        ActionRemoveModelElement.SINGLETON.setElementToDelete(list.getSelectedValue());
+        ActionRemoveModelElement.SINGLETON.setTarget(list.getSelectedValue());
         add(ActionRemoveModelElement.SINGLETON);
 
     }
