@@ -31,7 +31,6 @@ package org.argouml.uml.diagram.activity.ui;
 import java.beans.PropertyVetoException;
 
 import javax.swing.Action;
-import javax.swing.JToolBar;
 
 import org.apache.log4j.Category;
 import org.argouml.kernel.ProjectManager;
@@ -62,84 +61,95 @@ import ru.novosoft.uml.foundation.data_types.MPseudostateKind;
  * diagram is considered valuable as well.
  */
 public class UMLActivityDiagram extends UMLDiagram {
-    protected static Category cat = 
+    protected static Category cat =
         Category.getInstance(UMLActivityDiagram.class);
 
-  ////////////////
-  // actions for toolbar
+    ////////////////
+    // actions for toolbar
 
+    protected static Action _actionState =
+        new CmdCreateNode(MActionState.class, "ActionState");
 
-  protected static Action _actionState =
-  new CmdCreateNode(MActionState.class, "ActionState");
+    // start state, end state, forks, joins, etc.
+    protected static Action _actionStartPseudoState =
+        new ActionCreatePseudostate(MPseudostateKind.INITIAL, "Initial");
 
-  // start state, end state, forks, joins, etc.
-  protected static Action _actionStartPseudoState =
-  new ActionCreatePseudostate(MPseudostateKind.INITIAL, "Initial");
+    protected static Action _actionFinalPseudoState =
+        new CmdCreateNode(MFinalState.class, "FinalState");
 
-  protected static Action _actionFinalPseudoState =
-  new CmdCreateNode(MFinalState.class, "FinalState");
+    protected static Action _actionBranchPseudoState =
+        new ActionCreatePseudostate(MPseudostateKind.BRANCH, "Branch");
 
-  protected static Action _actionBranchPseudoState =
-  new ActionCreatePseudostate(MPseudostateKind.BRANCH, "Branch");
+    protected static Action _actionForkPseudoState =
+        new ActionCreatePseudostate(MPseudostateKind.FORK, "Fork");
 
-  protected static Action _actionForkPseudoState =
-  new ActionCreatePseudostate(MPseudostateKind.FORK, "Fork");
+    protected static Action _actionJoinPseudoState =
+        new ActionCreatePseudostate(MPseudostateKind.JOIN, "Join");
 
-  protected static Action _actionJoinPseudoState =
-  new ActionCreatePseudostate(MPseudostateKind.JOIN, "Join");
+    protected static Action _actionTransition =
+        new CmdSetMode(
+            ModeCreatePolyEdge.class,
+            "edgeClass",
+            MTransition.class,
+            "Transition");
 
-  protected static Action _actionTransition =
-  new CmdSetMode(ModeCreatePolyEdge.class,
-		 "edgeClass", MTransition.class,
-		 "Transition");
+    ////////////////////////////////////////////////////////////////
+    // contructors
 
+    protected static int _ActivityDiagramSerial = 1;
 
+    public UMLActivityDiagram() {
 
-  ////////////////////////////////////////////////////////////////
-  // contructors
-
-  protected static int _ActivityDiagramSerial = 1;
-
-  public UMLActivityDiagram() {
-  	
-    try { setName(getNewDiagramName()); }
-    catch (PropertyVetoException pve) { }
-  }
-
-  public UMLActivityDiagram(MNamespace m) {
-    this();
-    setNamespace(m);
-    MStateMachine sm = getStateMachine();
-    String name = null;
-    if (sm.getContext() != null && sm.getContext().getName() != null &&
-	sm.getContext().getName().length() > 0) {
-      name = sm.getContext().getName();
-      try { setName(name); }
-      catch (PropertyVetoException pve) { }
+        try {
+            setName(getNewDiagramName());
+        } catch (PropertyVetoException pve) {
+        }
     }
-  }
 
-  public UMLActivityDiagram(MNamespace m, MActivityGraph agraph) {
-
-    this();
-	if (m != null && m.getName() != null) {
-		String name = m.getName() + " activity "+ (m.getBehaviors().size());
-		try { setName(name); }
-		catch (PropertyVetoException pve) { }
+    public UMLActivityDiagram(MNamespace m) {
+        this();
+        setNamespace(m);
+        MStateMachine sm = getStateMachine();
+        String name = null;
+        if (sm.getContext() != null
+            && sm.getContext().getName() != null
+            && sm.getContext().getName().length() > 0) {
+            name = sm.getContext().getName();
+            try {
+                setName(name);
+            } catch (PropertyVetoException pve) {
+            }
+        }
     }
-	if (m != null && m.getNamespace() != null) setup(m, agraph);
-  }
 
-	public void initialize(Object o) {
-		if (!(o instanceof MActivityGraph)) return;
-		MActivityGraph sm = (MActivityGraph)o;
-		MModelElement context = sm.getContext();
-		if (context != null && context instanceof MNamespace)
-			setup((MNamespace)context, sm);
-		else
-			cat.debug("ActivityGraph without context not yet possible :-(");
-	}
-        
+    public UMLActivityDiagram(MNamespace m, MActivityGraph agraph) {
+
+        this();
+        if (m != null && m.getName() != null) {
+            String name =
+                m.getName() + " activity " + (m.getBehaviors().size());
+            try {
+                setName(name);
+            } catch (PropertyVetoException pve) {
+            }
+        }
+        if (m != null)
+            setup(m, agraph);
+        else 
+            throw new NullPointerException("Namespace may not be null");
+    }
+
+    public void initialize(Object o) {
+        if (!(o instanceof MActivityGraph))
+            return;
+        MActivityGraph sm = (MActivityGraph)o;
+        MModelElement context = sm.getContext();
+        if (context != null && context instanceof MNamespace)
+            setup((MNamespace)context, sm);
+        else
+            cat.debug("ActivityGraph without context not yet possible :-(");
+    }
+
     /** method to perform a number of important initializations of an <I>Activity Diagram</I>. 
      * 
      * each diagram type has a similar <I>UMLxxxDiagram</I> class.
@@ -152,54 +162,57 @@ public class UMLActivityDiagram extends UMLDiagram {
      *           mainly in <I>LayerManager</I>(GEF) to control the adding, changing and 
      *           deleting layers on the diagram...
      *           psager@tigris.org   Jan. 24, 2oo2
-     */                
-        public void setup(MNamespace m, MActivityGraph agraph) {
-            super.setNamespace(m);
-            StateDiagramGraphModel gm = new StateDiagramGraphModel();
-            gm.setNamespace(m);
-            if (agraph != null) {
-                gm.setMachine(agraph);
-            }
-            setGraphModel(gm);
-            LayerPerspective lay = new LayerPerspectiveMutable(m.getName(), gm);
-            setLayer(lay);
-            StateDiagramRenderer rend = new StateDiagramRenderer(); // singleton
-            lay.setGraphNodeRenderer(rend);
-            lay.setGraphEdgeRenderer(rend);
+     */
+    public void setup(MNamespace m, MActivityGraph agraph) {
+        super.setNamespace(m);
+        StateDiagramGraphModel gm = new StateDiagramGraphModel();
+        gm.setNamespace(m);
+        if (agraph != null) {
+            gm.setMachine(agraph);
         }
+        setGraphModel(gm);
+        LayerPerspective lay = new LayerPerspectiveMutable(m.getName(), gm);
+        setLayer(lay);
+        StateDiagramRenderer rend = new StateDiagramRenderer(); // singleton
+        lay.setGraphNodeRenderer(rend);
+        lay.setGraphEdgeRenderer(rend);
+    }
 
     public MModelElement getOwner() {
-	StateDiagramGraphModel gm = (StateDiagramGraphModel)getGraphModel();
-	MStateMachine sm = gm.getMachine();
-	if (sm != null) return sm;
-	return gm.getNamespace();
+        StateDiagramGraphModel gm = (StateDiagramGraphModel)getGraphModel();
+        MStateMachine sm = gm.getMachine();
+        if (sm != null)
+            return sm;
+        return gm.getNamespace();
     }
 
     public MStateMachine getStateMachine() {
-	return ((StateDiagramGraphModel)getGraphModel()).getMachine();
-  }
+        return ((StateDiagramGraphModel)getGraphModel()).getMachine();
+    }
 
-  public void setStateMachine(MStateMachine sm) {
-    ((StateDiagramGraphModel)getGraphModel()).setMachine(sm);
-  }
+    public void setStateMachine(MStateMachine sm) {
+        ((StateDiagramGraphModel)getGraphModel()).setMachine(sm);
+    }
 
     /**
      * Get the actions from which to create a toolbar or equivilent graphic triggers
      */
     protected Object[] getUmlActions() {
-        Object actions[] = {
-            _actionState,
-            _actionTransition, null,
-            _actionStartPseudoState,
-            _actionFinalPseudoState,
-            _actionBranchPseudoState,
-            _actionForkPseudoState,
-            _actionJoinPseudoState, null,
-            ActionAddNote.SINGLETON
-        };
+        Object actions[] =
+            {
+                _actionState,
+                _actionTransition,
+                null,
+                _actionStartPseudoState,
+                _actionFinalPseudoState,
+                _actionBranchPseudoState,
+                _actionForkPseudoState,
+                _actionJoinPseudoState,
+                null,
+                ActionAddNote.SINGLETON };
         return actions;
     }
-  
+
     /**
       * Creates a new diagramname.
       * @return String
@@ -208,7 +221,10 @@ public class UMLActivityDiagram extends UMLDiagram {
         String name = null;
         name = "Activity Diagram " + _ActivityDiagramSerial;
         _ActivityDiagramSerial++;
-        if (!ProjectManager.getManager().getCurrentProject().isValidDiagramName(name)) {
+        if (!ProjectManager
+            .getManager()
+            .getCurrentProject()
+            .isValidDiagramName(name)) {
             name = getNewDiagramName();
         }
         return name;
