@@ -710,7 +710,8 @@ Most useful targets are:
   <!-- Run the junit tests.                                                -->
   <!-- =================================================================== -->
   <target name="tests"
-          depends="compile,junit-fetch-init,junit-setup,junit-report-clean,ant.optional.init">
+          depends="compile,junit-fetch-init,junit-get-011202-xml,junit-setup,junit-report-clean,ant.optional.init"
+          description="Run all tests that doesn't require any GUI components in headleass mode.">
     <!-- ant 1.4 uses printsummary="true"                          -->
     <!-- ant 1.5 allows printsummary="withOutAndErr"               -->
     <!-- This should never be committed as "withOutAndErr", but    -->
@@ -757,7 +758,6 @@ Most useful targets are:
     <!--        That is part of issue 579.                         -->
 
     <junit errorproperty="junit.failure" fork="yes" haltonfailure="false" maxmemory="48M" printsummary="true">
-	<sysproperty key="test.model.uml13" value="${011202.xml}"/>
 	<sysproperty key="log4j.configuration" value="org/argouml/resource/default.lcf"/>
         <classpath>
             <pathelement location="${argo.build.classes}"/>
