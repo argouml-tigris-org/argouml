@@ -35,7 +35,7 @@ package org.argouml.application;
 public class ArgoVersion {
   /** Version number
    */
-  public final static String VERSION = "@ARGO_RELEASE_VERSION@";
+  public static String VERSION = "@ARGO_RELEASE_VERSION@";
 
   /** Don't allow instantiation
    */
