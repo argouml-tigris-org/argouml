@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
-<!DOCTYPE book SYSTEM "../docbook-setup/docbookx/docbookx.dtd">
+<!DOCTYPE book SYSTEM "../docbook-setup/docbookx/docbookx.dtd" [
+<!ENTITY cookbook_modules SYSTEM "cookbook_modules.xml">
+<!ENTITY cookbook_logging SYSTEM "cookbook_logging.xml">
+]>
 
 <!-- THIS IS THE ARGO/UML DEVELOPER COOKBOOK 
      - PLEASE FEEL FREE TO ADD TO THE CONTENT AND INSERT YOUR 
@@ -238,28 +241,8 @@ programming in Argo/UML.
 <para>...</para></sect2>
 </sect1>
 
-<sect1 id="plugins">
-<title>PlugIns</title>
-<sect2 id="howdoi_plugins">
-<title>How do I ...?</title>
-<para>...</para></sect2>
-</sect1>
-
-<sect1 id="logging">
-<title>Logging</title>
-<sect2 id="howdoi_logging">
-<title>How do I ...?</title>
-<para>
-<itemizedlist>
-<listitem><para>... create logging entries?</para>
-<para>ArgoUML uses the standard <ulink url="http://jakarta.apache.org/log4j/">Log4j</ulink> logging procedures. This is not fully implemented yet at the time of writing. However in <emphasis>org.argouml.resources</emphasis> you will some example log configuration files. Modify these to your needs.</para>
-<para>In order to invoke ArgoUML with logging support give it the command line parameter <emphasis>-Dlog4j.configuration=org/argouml/resource/<emphasis>your-file.lcf</emphasis></emphasis>. You also need to make sure that the log configuration file is in the build directory, so do an ant package for example before starting ArgoUML.
-</para>
-</listitem>
-</itemizedlist>
-</para>
-</sect2>
-</sect1>
+&cookbook_modules;
+&cookbook_logging;
 </chapter>
 
 <chapter id="cvs">
