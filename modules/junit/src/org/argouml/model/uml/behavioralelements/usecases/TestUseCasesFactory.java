@@ -52,6 +52,10 @@ import junit.framework.*;
 
 import org.argouml.util.*;
 
+import ru.novosoft.uml.behavior.use_cases.MExtend;
+import ru.novosoft.uml.behavior.use_cases.MExtensionPoint;
+import ru.novosoft.uml.behavior.use_cases.MUseCase;
+
 
 
 public class TestUseCasesFactory extends TestCase {
@@ -115,5 +119,18 @@ public class TestUseCasesFactory extends TestCase {
         allModelElements);
     }
     
+    public void testBuildExtend1() {
+        MUseCase base = UseCasesFactory.getFactory().createUseCase();
+        MUseCase extension = UseCasesFactory.getFactory().createUseCase();
+        MExtensionPoint point = UseCasesFactory.getFactory().buildExtensionPoint(base);
+        MExtend extend = UseCasesFactory.getFactory().buildExtend(base, extension, point);
+        assert("extensionpoint not added to base", !base.getExtensionPoints().isEmpty());
+        assert("extend not added to base", !base.getExtends2().isEmpty());
+        assert("extend not added to extension", !extension.getExtends().isEmpty());
+        assert("extend not added to correct extensionpoint", 
+            extend.getExtensionPoints().contains(point) && 
+                extend.getExtensionPoints().size() == 1);
+    }
+       
 }
 
