@@ -185,6 +185,9 @@ public class Init {
 	new CompoundCritic(crNoTransitions, crNoIncomingTransitions);
     public static CompoundCritic noTrans2 =
 	new CompoundCritic(crNoTransitions, crNoOutgoingTransitions);
+    // only classes with name need a constructor
+    public static CompoundCritic crCompoundConstructorNeeded =
+        new CompoundCritic(crMissingClassName, crConstructorNeeded);
 
     /** static initializer, register all appropriate critics */
     public static void init() {
@@ -258,14 +261,14 @@ public class Init {
 	Agency.register(crMissingClassName, modelCls);
 	Agency.register(crMissingAttrName, attrCls);
 	Agency.register(crMissingOperName, operCls);
-	Agency.register(crMissingStateName, stateCls);
+	Agency.register(crMissingStateName, stateVertexCls);
 
 	Agency.register(crNoInstanceVariables, classCls);
 	Agency.register(crNoAssociations, classCls);
 	Agency.register(crNoAssociations, actorCls);
 	Agency.register(crNoAssociations, useCaseCls);
 	Agency.register(crNoOperations, classCls);
-	Agency.register(crConstructorNeeded, classCls);
+	Agency.register(crCompoundConstructorNeeded, classCls);
 	Agency.register(crEmptyPackage, packageCls);
 	Agency.register(crNonAggDataType, datatypeCls);
 	Agency.register(crUselessAbstract, classCls);
