@@ -52,11 +52,12 @@ import org.tigris.gef.presentation.Handle;
 public class SelectionActor extends SelectionWButtons {
 
     private static final Logger LOG = Logger.getLogger(SelectionActor.class);
-    ////////////////////////////////////////////////////////////////
-    // constants
-    public static Icon assoc =
-	ResourceLoaderWrapper
-	    .lookupIconResource("Association");
+
+    /**
+     * The icon for an association.
+     */
+    private static Icon assoc =
+	ResourceLoaderWrapper.lookupIconResource("Association");
 
 
 

@@ -114,6 +114,16 @@ public class ModeCreateEdgeAndNode extends ModeCreate {
         super();
     }
     
+    /**
+     * The constructor.
+     * 
+     * @param ed the parent editor of this mode. Each Mode instance belongs to
+     *           exactly one Editor instance.
+     * @param edgeClass the class of the edge
+     * @param nodeClass the class of the node
+     * @param post if true, then the edge is postprocessed. 
+     *             See postProcessEdge().
+     */
     public ModeCreateEdgeAndNode(
 				 Editor ed,
 				 Class edgeClass,
@@ -129,6 +139,14 @@ public class ModeCreateEdgeAndNode extends ModeCreate {
     ////////////////////////////////////////////////////////////////
     // accessors
 
+    /**
+     * @param fignode the source fignode
+     * @param port the port
+     * @param x the x to start from
+     * @param y the y to start from
+     * @param reverse true if the direction is reversed, i.e. 
+     *                from destination to source
+     */
     public void setup(FigNode fignode, Object port, int x, int y, 
             boolean reverse) {
         start();
@@ -211,7 +229,6 @@ public class ModeCreateEdgeAndNode extends ModeCreate {
             return;
         }
         boolean nodeWasCreated = false;
-
         int x = me.getX(), y = me.getY();
         Class arcClass;
         Editor ce = Globals.curEditor();
@@ -224,7 +241,6 @@ public class ModeCreateEdgeAndNode extends ModeCreate {
             f = null;
         MutableGraphModel mgm = (MutableGraphModel) gm;
         // TODO: potential class cast exception
-
         if (f == null) {
             LOG.debug("make new node");
             dragsToNew++;
@@ -232,7 +248,6 @@ public class ModeCreateEdgeAndNode extends ModeCreate {
             Class nodeClass = (Class) getArg("nodeClass");
             try {
                 newNode = nodeClass.newInstance();
-                
             } catch (java.lang.IllegalAccessException ignore) {
                 LOG.error(ignore);
                 return;
@@ -261,10 +276,8 @@ public class ModeCreateEdgeAndNode extends ModeCreate {
                     if (otherFig.equals(fn))
                         continue;
                     Rectangle trap = otherFig.getTrapRect();
-                    if (trap != null
-                        && (trap.contains(bbox.x, bbox.y)
-                            && trap.contains(
-					     bbox.x + bbox.width,
+                    if (trap != null && (trap.contains(bbox.x, bbox.y)
+                            && trap.contains(bbox.x + bbox.width,
 					     bbox.y + bbox.height)))
                         encloser = otherFig;
                 }
@@ -291,7 +304,6 @@ public class ModeCreateEdgeAndNode extends ModeCreate {
                     foundPort = ((Fig) it.next()).getOwner();
                 }
             }
-
             FigPoly p = (FigPoly) _newItem;
             editor.damaged(p);
             p._isComplete = true;
@@ -319,7 +331,6 @@ public class ModeCreateEdgeAndNode extends ModeCreate {
                 // any LayerPersectives on that GraphModel will get a
                 // edgeAdded event and will add an appropriate FigEdge
                 // (determined by the GraphEdgeRenderer).
-
                 if (newEdge != null) {
                     if (postProcessEdge) {
                         LOG.debug("postprocess edge.");
@@ -330,8 +341,7 @@ public class ModeCreateEdgeAndNode extends ModeCreate {
                     destFigNode.damage();
 
                     LayerManager lm = ce.getLayerManager();
-                    fe =
-                        (FigEdge) lm.getActiveLayer().presentationFor(newEdge);
+                    fe = (FigEdge) lm.getActiveLayer().presentationFor(newEdge);
                     _newItem.setLineColor(Color.black);
                     fe.setLineColor(Color.black);
                     fe.setFig(_newItem);
@@ -348,7 +358,6 @@ public class ModeCreateEdgeAndNode extends ModeCreate {
                     done();
                     //me.consume();
                     _newItem = null;
-
                     if (fe instanceof MouseListener)
 			((MouseListener) fe).mouseReleased(me);
 
@@ -357,19 +366,16 @@ public class ModeCreateEdgeAndNode extends ModeCreate {
                         sourceFigNode.updateEdges();
                     if (destFigNode != null)
                         destFigNode.updateEdges();
-
                     return;
                 } else
                     LOG.warn("connection return null");
             } else
                 LOG.warn("in dest node but no port");
         }
-
         sourceFigNode.damage();
         ce.damaged(_newItem);
         _newItem = null;
         done();
-        //me.consume();
     }
 
     /**
