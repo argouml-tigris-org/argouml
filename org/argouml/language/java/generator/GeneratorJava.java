@@ -760,10 +760,10 @@ public class GeneratorJava extends Generator implements PluggableNotation {
           sTag = "@invariant ";
         }
         else if (sKind.equals ("post ")) {
-          sTag = "@post-condition ";
+          sTag = "@postcondition ";
         }
         else if (sKind.equals ("pre ")) {
-          sTag = "@pre-condition ";
+          sTag = "@precondition ";
         }
         else {
           return;
