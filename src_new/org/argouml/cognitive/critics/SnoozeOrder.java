@@ -45,46 +45,53 @@ import org.apache.log4j.Logger;
 
 public class SnoozeOrder implements Serializable {
     /** logger */
-    private static Logger LOG = Logger.getLogger(SnoozeOrder.class);
+    private static final Logger LOG = Logger.getLogger(SnoozeOrder.class);
 
     ////////////////////////////////////////////////////////////////
     // constants
     /** The initial sleeping time. */
-    private final long _initialIntervalMS = 1000 * 60 * 10; /* ten minutes */
+    private final long initialIntervalMS = 1000 * 60 * 10; /* ten minutes */
 
     ////////////////////////////////////////////////////////////////
     // instance variables
 
     /** Critic should sleep until this time. */
-    private Date _snoozeUntil;
+    private Date snoozeUntil;
     /** Ifthe designer snoozees the critics again before this time, then
      * go to sleep for even longer. */
-    private Date _snoozeAgain;
+    private Date snoozeAgain;
     /** The sleeping time, including the effects of repeated snoozeing. */
-    private long _interval;
+    private long interval;
 
-    private Date _now = new Date();
+    private Date now = new Date();
     private Date getNow() {
-	_now.setTime(System.currentTimeMillis());
-	return _now;
+	now.setTime(System.currentTimeMillis());
+	return now;
     }
 	
-    ////////////////////////////////////////////////////////////////
-    // constructor
-
+    /**
+     * The constructor.
+     * 
+     */
     public SnoozeOrder() {
 	/* in the past, 0 milliseconds after January 1, 1970, 00:00:00 GMT. */
-	_snoozeUntil =  new Date(0); 
-	_snoozeAgain =  new Date(0); 
+	snoozeUntil =  new Date(0); 
+	snoozeAgain =  new Date(0); 
     }
 
     ////////////////////////////////////////////////////////////////
     // accessors
 
+    /**
+     * @return true if snoozed
+     */
     public boolean getSnoozed() {
-	return _snoozeUntil.after(getNow());
+	return snoozeUntil.after(getNow());
     }
 
+    /**
+     * @param h if true, then snooze, else unsnooze
+     */
     public void setSnoozed(boolean h) {
 	if (h) 
 	    snooze();
@@ -95,20 +102,30 @@ public class SnoozeOrder implements Serializable {
     ////////////////////////////////////////////////////////////////
     // criticism control
 
+    /**
+     * Snooze the critic.
+     */
     public void snooze() {
-	if (_snoozeAgain.after(getNow())) _interval = nextInterval(_interval);
-	else _interval = _initialIntervalMS;
-	long now = (getNow()).getTime();
-	_snoozeUntil.setTime(now + _interval);
-	_snoozeAgain.setTime(now + _interval + _initialIntervalMS);
-	LOG.info("Setting snooze order to: " + _snoozeUntil.toString());
+	if (snoozeAgain.after(getNow())) interval = nextInterval(interval);
+	else interval = initialIntervalMS;
+	long n = (getNow()).getTime();
+	snoozeUntil.setTime(n + interval);
+	snoozeAgain.setTime(n + interval + initialIntervalMS);
+	LOG.info("Setting snooze order to: " + snoozeUntil.toString());
     }
 
+    /**
+     * Unsnooze the critic.
+     */
     public void unsnooze() {
 	/* in the past, 0 milliseconds after January 1, 1970, 00:00:00 GMT. */
-	_snoozeUntil =  new Date(0); 
+	snoozeUntil =  new Date(0); 
     }
 
+    /**
+     * @param last the previous interval
+     * @return the next longer interval 
+     */
     protected long nextInterval(long last) {
 	/* by default, double the snooze interval each time */
 	return last * 2;

@@ -39,10 +39,12 @@ import org.tigris.gef.presentation.FigEdge;
 public class CrZeroLengthEdge extends CrUML {
     ////////////////////////////////////////////////////////////////
     // constants
-    public static int THRESHOLD = 20;
-  
-    ////////////////////////////////////////////////////////////////
-    // constructor
+    private static final int THRESHOLD = 20;
+
+    /**
+     * The constructor.
+     * 
+     */
     public CrZeroLengthEdge() {
 	// TODO: {name} is not expanded for diagram objects
 	setHeadline("Make Edge More Visible");
@@ -54,6 +56,11 @@ public class CrZeroLengthEdge extends CrUML {
 
     ////////////////////////////////////////////////////////////////
     // critiquing API
+    
+    /**
+     * @see org.argouml.uml.cognitive.critics.CrUML#predicate2(
+     * java.lang.Object, org.argouml.cognitive.Designer)
+     */
     public boolean predicate2(Object dm, Designer dsgr) {
 	if (!(dm instanceof FigEdge)) return NO_PROBLEM;
 	FigEdge fe = (FigEdge) dm;
