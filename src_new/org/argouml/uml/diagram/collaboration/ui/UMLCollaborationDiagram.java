@@ -63,7 +63,7 @@ public class UMLCollaborationDiagram extends UMLDiagram {
 
 
   protected static Action _actionClassifierRole =
-  new CmdCreateNode(MClassifierRoleImpl.class, "ClassifierRole");
+  new CmdCreateNode(MClassifierRole.class, "ClassifierRole");
 
   protected static Action _actionAssoc =
   new CmdSetMode(ModeCreatePolyEdge.class,
