@@ -59,7 +59,6 @@ public class FigMNodeInstance extends FigNodeModelElement {
     ////////////////////////////////////////////////////////////////
     // instance variables
 
-    protected FigRect _bigPort;
     protected FigCube _cover;
     protected FigRect _test;
 
@@ -122,12 +121,7 @@ public class FigMNodeInstance extends FigNodeModelElement {
 
     public Selection makeSelection() {
         return new SelectionNodeInstance(this);
-    }
-
-    public void setOwner(Object node) {
-        super.setOwner(node);
-        bindPort(node, _bigPort);
-    }
+    }   
 
     public Dimension getMinimumSize() {
         Dimension stereoDim = _stereo.getMinimumSize();

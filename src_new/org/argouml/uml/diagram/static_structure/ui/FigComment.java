@@ -102,11 +102,7 @@ public class FigComment extends FigNodeModelElement implements VetoableChangeLis
     private MModelElement _noteOwner = null;
 
     // The figure that holds the text of the note.
-    FigText _text;
-
-    /** UML does not really use ports, so just define one big one so
-     *  that users can drag edges to or from any point in the icon. */
-    FigRect _bigPort;
+    FigText _text;    
 
     FigPoly _body;
     FigPoly _urCorner;

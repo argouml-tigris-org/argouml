@@ -667,22 +667,12 @@ public abstract class FigNodeModelElement
     public void setOwner(Object own) {
         Object oldOwner = getOwner();
         super.setOwner(own);
-        if (oldOwner instanceof MModelElement) {
-            UmlModelEventPump.getPump().removeModelEventListener(
-                this,
-                (MModelElement) oldOwner);
-        }         
-            
+        updateListeners(own);                         
         if (own instanceof MModelElement) {
-            MModelElement me = (MModelElement) own;
-            // UmlModelEventPump.getPump().removeModelEventListener(this, me);
-            UmlModelEventPump.getPump().addModelEventListener(this, me);
+            MModelElement me = (MModelElement) own;          
             if (me.getUUID() == null)
                 me.setUUID(UUIDManager.SINGLETON.getNewUUID());
         }
-        // TODO remove the modelchanged call since it is only needed for rendering
-        // the fig.
-        // modelChanged(null);
         _readyToEdit = true;        
         bindPort(own, _bigPort);
         renderingChanged();
@@ -709,6 +699,24 @@ public abstract class FigNodeModelElement
             _name.setText(nameStr);
             updateBounds();
         }
+    }
+    
+    /**
+     * Implementations of this method should register/unregister the fig for all
+     * (model)events. For FigNodeModelElement only the fig itself is registred
+     * as listening to events fired by the owner itself. But for, for example,
+     * FigClass the fig must also register for events fired by the operations
+     * and attributes of the owner.
+     * @param newOwner
+     */
+    protected void updateListeners(Object newOwner) {
+        Object oldOwner = getOwner();
+
+            UmlModelEventPump.getPump().removeModelEventListener(this, (MBase)oldOwner);
+            if (newOwner != null) {
+            	UmlModelEventPump.getPump().addModelEventListener(this, (MBase)newOwner);                       
+            }
+        
     }
 
     /** This default implementation simply requests the default notation.

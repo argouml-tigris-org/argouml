@@ -53,7 +53,6 @@ public class FigForkState extends FigStateVertex {
   ////////////////////////////////////////////////////////////////
   // instance variables
 
-  FigRect _bigPort;
   FigRect _head;
 
   ////////////////////////////////////////////////////////////////
@@ -85,11 +84,6 @@ public class FigForkState extends FigStateVertex {
 
   ////////////////////////////////////////////////////////////////
   // Fig accessors
-
-  public void setOwner(Object node) {
-    super.setOwner(node);
-    bindPort(node, _bigPort);
-  }
 
   /** Initial states are fixed size. */
   //public boolean isResizable() { return false; }

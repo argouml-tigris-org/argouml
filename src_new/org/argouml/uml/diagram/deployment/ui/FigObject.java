@@ -59,7 +59,6 @@ public class FigObject extends FigNodeModelElement {
   ////////////////////////////////////////////////////////////////
   // instance variables
 
-  FigRect _bigPort;
   FigRect _cover;
   public MElementResidence resident = UmlFactory.getFactory().getCore().createElementResidence();
 
@@ -121,11 +120,6 @@ public class FigObject extends FigNodeModelElement {
   
   public Selection makeSelection() {
     return new SelectionObject(this);
-  }
-
-  public void setOwner(Object node) {
-    super.setOwner(node);
-    bindPort(node, _bigPort);
   }
 
   public Dimension getMinimumSize() {

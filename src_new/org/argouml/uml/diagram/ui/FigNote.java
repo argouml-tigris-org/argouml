@@ -48,11 +48,6 @@ public class FigNote extends FigNodeModelElement {
   ////////////////////////////////////////////////////////////////
   // instance variables
 
-  /** UML does not really use ports, so just define one big one so
-   *  that users can drag edges to or from any point in the icon. */
-
-  FigRect _bigPort;
-
   // add other Figs here aes needed
 
 
@@ -79,11 +74,6 @@ public class FigNote extends FigNodeModelElement {
     this();
     setOwner(node);
 
-  }
-
-  public void setOwner(Object node) {
-    super.setOwner(node);
-    bindPort(node, _bigPort);
   }
 
 

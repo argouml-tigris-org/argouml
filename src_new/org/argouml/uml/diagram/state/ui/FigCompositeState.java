@@ -67,10 +67,6 @@ public class FigCompositeState extends FigStateVertex {
   /** The main label on this icon. */
   //FigText _name;
 
-  /** UML does not really use ports, so just define one big one so
-   *  that users can drag edges to or from any point in the icon. */
-
-  FigRect _bigPort;
   FigRect _cover;
   FigText _internal;
   FigLine _divider;
@@ -139,11 +135,6 @@ public class FigCompositeState extends FigStateVertex {
 
   public Selection makeSelection() {
     return new SelectionState(this);
-  }
-
-  public void setOwner(Object node) {
-    super.setOwner(node);
-    bindPort(node, _bigPort);
   }
 
   public Dimension getMinimumSize() {
@@ -228,6 +219,8 @@ public class FigCompositeState extends FigStateVertex {
         mee.getName().equals("stateMachine") ||
         mee.getName().equals("incoming") || mee.getName().equals("outgoing")) {
             updateInternal();
+            // register this fig as a listener if the event is about adding modelelements to the state
+            updateListeners(getOwner());
     } else
     if (mee.getSource() instanceof MTransition && mee.getName().equals("name")) {
         updateInternal();
