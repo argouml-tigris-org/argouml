@@ -49,7 +49,7 @@ public class TabSpawnable
     extends JPanel
     implements Cloneable, org.argouml.swingext.Orientable  {
         
-    protected static Category cat = 
+    private Category cat = 
         Category.getInstance(TabProps.class);
     
   public final int OVERLAPP = 30;

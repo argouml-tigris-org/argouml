@@ -144,8 +144,7 @@ implements TabToDoTarget, ActionListener, DocumentListener {
       _finishButton.setEnabled(w != null ? w.canFinish() : false);
       _helpButton.setEnabled(true);
     }
-    else {
-      //_description.setText("TODO");
+    else {  
       return;
     }
   }

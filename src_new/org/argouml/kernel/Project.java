@@ -363,10 +363,6 @@ public class Project implements java.io.Serializable, TargetListener {
         }
     }
 
-    ////////////////////////////////////////////////////////////////
-    // accessors
-    // TODO
-
     /**
      * Added Eugenio's patches to load 0.8.1 projects.
      */

@@ -330,15 +330,15 @@ public class GenericArgoMenuBar extends JMenuBar
 
         _edit.addSeparator();
 
-        JMenuItem cutItem = _edit.add(ActionCut.SINGLETON);
+        JMenuItem cutItem = _edit.add(ActionCut.getInstance());
         setMnemonic(cutItem,"Cut",'X');
         setAccelerator(cutItem,ctrlX);
 
-        JMenuItem copyItem = _edit.add(ActionCopy.SINGLETON);
+        JMenuItem copyItem = _edit.add(ActionCopy.getInstance());
         setMnemonic(copyItem,"Copy",'C');
         setAccelerator(copyItem,ctrlC);
 
-        JMenuItem pasteItem = _edit.add(ActionPaste.SINGLETON);
+        JMenuItem pasteItem = _edit.add(ActionPaste.getInstance());
         setMnemonic(pasteItem,"Paste",'V');
         setAccelerator(pasteItem,ctrlV);
 
@@ -525,9 +525,10 @@ public class GenericArgoMenuBar extends JMenuBar
     public org.argouml.swingext.Toolbar getEditToolbar() {
         if (_editToolbar == null) {
             _editToolbar = new Toolbar("Edit Toolbar");
-            _editToolbar.add(ActionCut.SINGLETON);
-            _editToolbar.add(ActionCopy.SINGLETON);
-            _editToolbar.add(ActionPaste.SINGLETON);
+            _editToolbar.add(ActionCut.getInstance());
+            _editToolbar.add(ActionCopy.getInstance());
+            _editToolbar.add(ActionPaste.getInstance());
+            _editToolbar.addFocusListener(ActionPaste.getInstance());
             _editToolbar.add(ActionDeleteFromDiagram.SINGLETON);
             _editToolbar.add(NavigateTargetBackAction.getInstance());
             _editToolbar.add(NavigateTargetForwardAction.getInstance());

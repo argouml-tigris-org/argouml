@@ -23,28 +23,39 @@
 
 package org.argouml.cognitive.checklist.ui;
 
-import java.awt.*;
-import java.awt.event.*;
-import java.util.*;
-import java.beans.*;
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.VetoableChangeListener;
 
-import javax.swing.*;
-import javax.swing.event.*;
-import javax.swing.table.*;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.SwingUtilities;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.plaf.metal.MetalLookAndFeel;
+import javax.swing.table.AbstractTableModel;
+import javax.swing.table.TableColumn;
 
-import ru.novosoft.uml.*;
-import ru.novosoft.uml.foundation.core.*;
-import ru.novosoft.uml.foundation.data_types.*;
-import ru.novosoft.uml.foundation.extension_mechanisms.*;
-
-import org.argouml.kernel.*;
-import org.argouml.model.uml.UmlModelEventPump;
-import org.argouml.ui.*;
-import org.argouml.ui.targetmanager.TargetEvent;
-import org.argouml.uml.ui.*;
 import org.apache.log4j.Category;
-import org.argouml.cognitive.checklist.*;
+import org.argouml.cognitive.checklist.CheckItem;
+import org.argouml.cognitive.checklist.CheckManager;
+import org.argouml.cognitive.checklist.Checklist;
+import org.argouml.cognitive.checklist.ChecklistStatus;
+import org.argouml.kernel.DelayedChangeNotify;
+import org.argouml.kernel.DelayedVChangeListener;
+import org.argouml.model.uml.UmlModelEventPump;
+import org.argouml.ui.TabSpawnable;
+import org.argouml.ui.targetmanager.TargetEvent;
+import org.argouml.uml.ui.TabModelTarget;
+
+import ru.novosoft.uml.MElementEvent;
+import ru.novosoft.uml.MElementListener;
+import ru.novosoft.uml.foundation.core.MElement;
+import ru.novosoft.uml.foundation.core.MModelElement;
 
 /** Doesn't work, checked the argo.ini and it is not commented out
  */
@@ -164,27 +175,26 @@ implements TabModelTarget, ActionListener, ListSelectionListener {
   public void valueChanged(ListSelectionEvent lse) {
   }
 
-    /* (non-Javadoc)
+    /**
      * @see org.argouml.ui.targetmanager.TargetListener#targetAdded(org.argouml.ui.targetmanager.TargetEvent)
      */
-    public void targetAdded(TargetEvent e) {
-        // TODO Auto-generated method stub
+    public void targetAdded(TargetEvent e) {        
 
     }
 
-    /* (non-Javadoc)
+    /**
      * @see org.argouml.ui.targetmanager.TargetListener#targetRemoved(org.argouml.ui.targetmanager.TargetEvent)
      */
     public void targetRemoved(TargetEvent e) {
-        // TODO Auto-generated method stub
+        setTarget(e.getNewTargets()[0]);
 
     }
 
-    /* (non-Javadoc)
+    /**
      * @see org.argouml.ui.targetmanager.TargetListener#targetSet(org.argouml.ui.targetmanager.TargetEvent)
      */
     public void targetSet(TargetEvent e) {
-        // TODO Auto-generated method stub
+       setTarget(e.getNewTargets()[0]);
 
     }
 

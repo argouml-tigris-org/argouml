@@ -41,6 +41,7 @@ import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import javax.swing.event.EventListenerList;
 
+import org.apache.log4j.Logger;
 import org.argouml.kernel.DelayedChangeNotify;
 import org.argouml.kernel.DelayedVChangeListener;
 import org.argouml.kernel.Project;
@@ -77,6 +78,9 @@ import org.tigris.gef.presentation.Fig;
 public class TabStyle
     extends TabSpawnable
     implements TabFigTarget, PropertyChangeListener, DelayedVChangeListener {
+        
+    private Logger _cat = Logger.getLogger(this.getClass());
+    
     ////////////////////////////////////////////////////////////////
     // instance variables
     protected Fig _target;
@@ -232,7 +236,7 @@ public class TabStyle
             }
             _panels.put(targetClass, p);
         } else
-            cat.debug("found style for " + targetClass.getName());
+            _cat.debug("found style for " + targetClass.getName());
         return p;
     }
 

@@ -23,44 +23,104 @@
 
 package org.argouml.uml.ui;
 
-import org.tigris.gef.base.*;
-import java.awt.event.*;
+import java.awt.Toolkit;
+import java.awt.datatransfer.DataFlavor;
+import java.awt.datatransfer.UnsupportedFlavorException;
+import java.awt.event.ActionEvent;
+import java.io.IOException;
+
+import javax.swing.AbstractAction;
+import javax.swing.Action;
+import javax.swing.Icon;
+import javax.swing.event.CaretEvent;
+import javax.swing.event.CaretListener;
+import javax.swing.text.JTextComponent;
+
+import org.argouml.application.helpers.ResourceLoaderWrapper;
+import org.argouml.i18n.Translator;
+import org.tigris.gef.base.CmdCopy;
+import org.tigris.gef.base.Globals;
 
 /** @stereotype singleton
  */
-public class ActionCopy extends UMLChangeAction {
+public class ActionCopy extends AbstractAction implements CaretListener {
 
     ////////////////////////////////////////////////////////////////
     // static variables
-    
-    public static ActionCopy SINGLETON = new ActionCopy(); 
 
-  
+    private static ActionCopy _Instance = new ActionCopy();
+
     ////////////////////////////////////////////////////////////////
     // constructors
 
-    public ActionCopy() { super("action.copy"); }
-
-
-    ////////////////////////////////////////////////////////////////
-    // main methods
-
-    public boolean shouldBeEnabled() {
-	int size = 0;
-	try {
-	    size = Globals.curEditor().getSelectionManager().selections().size();
-	}
-	//
-	//   this can happen when running in a debugger, not sure why
-	//
-	catch(Exception e) {
-	    size = 0;
-	}
-	return (size > 0);
+    private ActionCopy() {
+        Icon icon =
+            ResourceLoaderWrapper
+                .getResourceLoaderWrapper()
+                .lookupIconResource(
+                Translator.getImageBinding("action.copy"),
+                Translator.localize("CoreMenu", "action.copy"));
+        if (icon != null)
+            putValue(Action.SMALL_ICON, icon);
+        putValue(
+            Action.SHORT_DESCRIPTION,
+            Translator.localize("CoreMenu", "action.copy") + " ");
     }
+
+    public static ActionCopy getInstance() {
+        return _Instance;
+    }
+
+    private JTextComponent _textSource;
+
+    /**
+     * Copies some text or a fig
+     */
     public void actionPerformed(ActionEvent ae) {
-	CmdCopy cmd = new CmdCopy();
-	cmd.doIt();
-	super.actionPerformed(ae);
+        if (_textSource != null) {
+            _textSource.copy();
+            Globals.clipBoard = null;            
+        } else {
+            CmdCopy cmd = new CmdCopy();
+            cmd.doIt();            
+        }
+        if (isSystemClipBoardEmpty()
+            && (Globals.clipBoard == null
+            || Globals.clipBoard.isEmpty())) {
+            ActionPaste.getInstance().setEnabled(false);
+        } else {
+            ActionPaste.getInstance().setEnabled(true);
+        }
     }
+
+    /**
+     * @see javax.swing.event.CaretListener#caretUpdate(javax.swing.event.CaretEvent)
+     */
+    public void caretUpdate(CaretEvent e) {
+        if (e.getMark() != e.getDot()) { // there is a selection        
+            setEnabled(true);
+            _textSource = (JTextComponent)e.getSource();
+        } else {
+            setEnabled(false);
+            _textSource = null;
+        }
+    }
+
+    private boolean isSystemClipBoardEmpty() {
+        //      if there is a selection on the clipboard
+        boolean hasContents = false;
+        try {
+            Object text =
+                Toolkit
+                    .getDefaultToolkit()
+                    .getSystemClipboard()
+                    .getContents(null)
+                    .getTransferData(DataFlavor.stringFlavor);
+            return text == null;
+        } catch (IOException ignorable) {
+        } catch (UnsupportedFlavorException ignorable) {
+        }
+        return true;
+    }
+
 } /* end class ActionCopy */
