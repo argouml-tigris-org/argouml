@@ -36,10 +36,10 @@ import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
+import org.argouml.model.OsUtil;
 import org.argouml.persistence.AbstractFilePersister;
 import org.argouml.persistence.PersistenceManager;
 import org.argouml.ui.ProjectBrowser;
-import org.argouml.util.osdep.OsUtil;
 
 /**
  * Action to save project under name.
