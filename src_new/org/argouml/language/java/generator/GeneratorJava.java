@@ -1715,11 +1715,19 @@ public class GeneratorJava
         return "";
     }
 
+    /**
+     * Generates a String representation of a Multiplicity.
+     *
+     * @param m the Multiplicity.
+     * @return a human readable String.
+     * @see #ANY_RANGE
+     * @see #generateMultiplicityRange
+     */
     public String generateMultiplicity(Object m) {
         if (m == null) {
             return "";
         }
-        if (ModelFacade.M0_N_MULTIPLICITY.equals(ModelFacade.getMultiplicity(m))) {
+        if (ModelFacade.M0_N_MULTIPLICITY.equals(m)) {
             return ANY_RANGE;
 	}
         Iterator rangeEnum = ModelFacade.getRanges(m);
