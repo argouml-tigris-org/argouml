@@ -91,84 +91,77 @@ public class FigAssociation extends FigEdgeModelElement {
   ////////////////////////////////////////////////////////////////
   // constructors
 
-  public FigAssociation() {
+    public FigAssociation() {
    
     
-    // lets use groups to construct the different text sections at the association
-    _middleGroup.addFig(_name);
-    _middleGroup.addFig(_stereo);
-    addPathItem(_middleGroup, new PathConvPercent(this, 50, 25));
+        // lets use groups to construct the different text sections at the association
+        _middleGroup.addFig(_name);
+        _middleGroup.addFig(_stereo);
+        addPathItem(_middleGroup, new PathConvPercent(this, 50, 25));
     
-    
-    _srcMult = new FigText(10, 10, 90, 20);
-    _srcMult.setFont(LABEL_FONT);
-    _srcMult.setTextColor(Color.black);
-    _srcMult.setTextFilled(false);
-    _srcMult.setFilled(false);
-    _srcMult.setLineWidth(0);
-    _srcMult.setJustification(FigText.JUSTIFY_CENTER);
+        _srcMult = new FigText(10, 10, 90, 20);
+        _srcMult.setFont(LABEL_FONT);
+        _srcMult.setTextColor(Color.black);
+        _srcMult.setTextFilled(false);
+        _srcMult.setFilled(false);
+        _srcMult.setLineWidth(0);
+        _srcMult.setJustification(FigText.JUSTIFY_CENTER);
 
-    _srcRole = new FigText(10, 10, 90, 20);
-    _srcRole.setFont(LABEL_FONT);
-    _srcRole.setTextColor(Color.black);
-    _srcRole.setTextFilled(false);
-    _srcRole.setFilled(false);
-    _srcRole.setLineWidth(0);
-    _srcRole.setJustification(FigText.JUSTIFY_CENTER);
+        _srcRole = new FigText(10, 10, 90, 20);
+        _srcRole.setFont(LABEL_FONT);
+        _srcRole.setTextColor(Color.black);
+        _srcRole.setTextFilled(false);
+        _srcRole.setFilled(false);
+        _srcRole.setLineWidth(0);
+        _srcRole.setJustification(FigText.JUSTIFY_CENTER);
 
-    _srcOrdering = new FigText(10,10,90,20);
-    _srcOrdering.setFont(LABEL_FONT);
-    _srcOrdering.setTextColor(Color.black);
-    _srcOrdering.setTextFilled(false);
-    _srcOrdering.setFilled(false);
-    _srcOrdering.setLineWidth(0);
-    _srcOrdering.setJustification(FigText.JUSTIFY_CENTER);
+        _srcOrdering = new FigText(10,10,90,20);
+        _srcOrdering.setFont(LABEL_FONT);
+        _srcOrdering.setTextColor(Color.black);
+        _srcOrdering.setTextFilled(false);
+        _srcOrdering.setFilled(false);
+        _srcOrdering.setLineWidth(0);
+        _srcOrdering.setJustification(FigText.JUSTIFY_CENTER);
 
-    _srcGroup.addFig(_srcRole);
-    _srcGroup.addFig(_srcOrdering);
-    _srcGroup.addFig(_srcMult);    
-    addPathItem(_srcGroup, new PathConvPercentPlusConst(this, 0, 35, 15));
+        _srcGroup.addFig(_srcRole);
+        _srcGroup.addFig(_srcOrdering);
+        addPathItem(_srcMult, new PathConvPercentPlusConst(this, 0, 15, 15));
+        addPathItem(_srcGroup, new PathConvPercentPlusConst(this, 0, 35, -15));
    
-    _destMult = new FigText(10, 10, 90, 20);
-    _destMult.setFont(LABEL_FONT);
-    _destMult.setTextColor(Color.black);
-    _destMult.setTextFilled(false);
-    _destMult.setFilled(false);
-    _destMult.setLineWidth(0);
-    _destMult.setJustification(FigText.JUSTIFY_CENTER);
-    
-    _destRole = new FigText(0, 0, 90, 20);
-    _destRole.setFont(LABEL_FONT);
-    _destRole.setTextColor(Color.black);
-    _destRole.setTextFilled(false);
-    _destRole.setFilled(false);
-    _destRole.setLineWidth(0);
-    _destRole.setJustification(FigText.JUSTIFY_CENTER);
-    
-    _destOrdering = new FigText(0,0,90,20);
-    _destOrdering.setFont(LABEL_FONT);
-    _destOrdering.setTextColor(Color.black);
-    _destOrdering.setTextFilled(false);
-    _destOrdering.setFilled(false);
-    _destOrdering.setLineWidth(0);
-    _destOrdering.setJustification(FigText.JUSTIFY_CENTER);
+        _destMult = new FigText(10, 10, 90, 20);
+        _destMult.setFont(LABEL_FONT);
+        _destMult.setTextColor(Color.black);
+        _destMult.setTextFilled(false);
+        _destMult.setFilled(false);
+        _destMult.setLineWidth(0);
+        _destMult.setJustification(FigText.JUSTIFY_CENTER);
 
-    _destGroup.addFig(_destRole);
-    _destGroup.addFig(_destMult);
-    _destGroup.addFig(_destOrdering);
-      addPathItem(_destGroup, new PathConvPercentPlusConst(this, 100, -35, -15));
-    
-    setBetweenNearestPoints(true);
-    // next line necessary for loading
-    setLayer(ProjectBrowser.TheInstance.getActiveDiagram().getLayer());
-  }
+        _destRole = new FigText(0, 0, 90, 20);
+        _destRole.setFont(LABEL_FONT);
+        _destRole.setTextColor(Color.black);
+        _destRole.setTextFilled(false);
+        _destRole.setFilled(false);
+        _destRole.setLineWidth(0);
+        _destRole.setJustification(FigText.JUSTIFY_CENTER);
 
-    /*
-  public FigAssociation(Object edge) {
-    this(edge, null);   
-  }
-  */
-  
+        _destOrdering = new FigText(0,0,90,20);
+        _destOrdering.setFont(LABEL_FONT);
+        _destOrdering.setTextColor(Color.black);
+        _destOrdering.setTextFilled(false);
+        _destOrdering.setFilled(false);
+        _destOrdering.setLineWidth(0);
+        _destOrdering.setJustification(FigText.JUSTIFY_CENTER);
+
+        _destGroup.addFig(_destRole);
+        _destGroup.addFig(_destOrdering);
+        addPathItem(_destMult, new PathConvPercentPlusConst(this, 100, -15, 15));
+        addPathItem(_destGroup, new PathConvPercentPlusConst(this, 100, -35, -15));
+    
+        setBetweenNearestPoints(true);
+        // next line necessary for loading
+        setLayer(ProjectBrowser.TheInstance.getActiveDiagram().getLayer());
+    }
+
   public FigAssociation(Object edge, Layer lay) {
     this();
     setLayer(lay);
