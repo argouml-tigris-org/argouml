@@ -45,12 +45,12 @@ What tools do I need to use this build file?
        you need also to change those files. This is to be made as part 
        of the deployment of a new version of docbook-xsl.
     -->
-  <property name="docbook-xsl" value="docbook-xsl-1.66.0"/>
+  <property name="docbook-xsl" value="docbook-xsl-1.66.1"/>
 
   <property name="docbook-xsl-root" 
 	    value="${documentation.dir}/docbook-setup/${docbook-xsl}"/>
   <property name="docbook-xsl-source-url"
-            value="http://cesnet.dl.sourceforge.net/sourceforge/docbook/${docbook-xsl}.zip"/>
+            value="http://puzzle.dl.sourceforge.net/sourceforge/docbook/${docbook-xsl}.zip"/>
 
   <path id="saxon.classpath">
     <pathelement location="${saxon.jar.path}" />

@@ -7,7 +7,7 @@
 	exclude-result-prefixes="doc"
 	extension-element-prefixes="saxon xalanredirect lxslt">
 
-	<xsl:import href="docbook-xsl-1.66.0/javahelp/javahelp.xsl"/>
+	<xsl:import href="docbook-xsl-1.66.1/javahelp/javahelp.xsl"/>
 	<xsl:import href="commonsettings.xsl"/>
 
 	<xsl:variable name="using.chunker" select="1"/>
