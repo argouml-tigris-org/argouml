@@ -659,19 +659,19 @@ public class CoreFactory extends AbstractUmlModelFactory {
      * @param end2 the second given classifier
      * @return MAssociationClass
      */
-    public MAssociationClass buildAssociationClass(
+    private MAssociationClass buildAssociationClass(
 						   MClassifier end1,
 						   MClassifier end2) {
-	if (end1 == null
-	    || end2 == null
-	    || end1 instanceof MAssociationClass
-	    || end2 instanceof MAssociationClass)
-	    throw new IllegalArgumentException(""
-					       + "either one of the arguments "
-					       + "was null or "
-					       + "was instanceof "
-					       + "MAssociationClass");
-	return buildAssociatonClass(buildClass(), end1, end2);
+        if (end1 == null
+                || end2 == null
+                || end1 instanceof MAssociationClass
+                || end2 instanceof MAssociationClass)
+            throw new IllegalArgumentException(""
+        				       + "either one of the arguments "
+        				       + "was null or "
+        				       + "was instanceof "
+        				       + "MAssociationClass");
+        return buildAssociationClass(buildClass(), end1, end2);
     }
 
     /**
@@ -692,7 +692,7 @@ public class CoreFactory extends AbstractUmlModelFactory {
      * @param visibility the visibilitykind
      * @return MAssociationEnd
      */
-    public MAssociationEnd buildAssociationEnd(
+    private MAssociationEnd buildAssociationEnd(
 					       MAssociation assoc,
 					       String name,
 					       MClassifier type,
@@ -729,16 +729,15 @@ public class CoreFactory extends AbstractUmlModelFactory {
             }
         }
         if (aggregation != null
-	    && aggregation.equals(MAggregationKind.COMPOSITE))
-	{
-            if (multi != null && multi.getUpper() > 1) {
-                throw new IllegalArgumentException("aggregation is composite "
-						   + "and multiplicity > 1");
-            }
+                && aggregation.equals(MAggregationKind.COMPOSITE)
+                && multi != null
+                && multi.getUpper() > 1) {
+            throw new IllegalArgumentException("aggregation is composite "
+					   + "and multiplicity > 1");
         }
 
         MAssociationEnd end =
-	    UmlFactory.getFactory().getCore().createAssociationEnd();
+            UmlFactory.getFactory().getCore().createAssociationEnd();
         end.setAssociation(assoc);
         end.setType(type);
         end.setName(name);
@@ -784,7 +783,7 @@ public class CoreFactory extends AbstractUmlModelFactory {
      * @param assoc the given association
      * @return the newly build associationend
      */
-    public MAssociationEnd buildAssociationEnd(
+    private MAssociationEnd buildAssociationEnd(
 					       MClassifier type,
 					       MAssociation assoc) {
 	if (type == null || assoc == null)
@@ -813,75 +812,75 @@ public class CoreFactory extends AbstractUmlModelFactory {
      * @param end2 the second classifier
      * @return MAssociationClass
      */
-    public MAssociationClass buildAssociatonClass(MClass cl,
+    private MAssociationClass buildAssociationClass(MClass cl,
 						  MClassifier end1,
 						  MClassifier end2) {
-	if (end1 == null
-	    || end2 == null
-	    || cl == null
-	    || end1 instanceof MAssociationClass
-	    || end2 instanceof MAssociationClass)
-	    throw new IllegalArgumentException("either one of the arguments "
-					       + "was null or was instanceof "
-					       + "MAssociationClass");
-	MAssociationClass assoc = createAssociationClass();
-	assoc.setName(cl.getName());
-	assoc.setAbstract(cl.isAbstract());
-	assoc.setActive(cl.isActive());
-	assoc.setAssociationEnds(cl.getAssociationEnds());
-	assoc.setClassifierRoles(cl.getClassifierRoles());
-	assoc.setClassifierRoles1(cl.getClassifierRoles1());
-	assoc.setClassifiersInState(cl.getClassifiersInState());
-	assoc.setClientDependencies(cl.getClientDependencies());
-	assoc.setCollaborations(cl.getCollaborations());
-	assoc.setCollaborations1(cl.getCollaborations1());
-	assoc.setComments(cl.getComments());
-	assoc.setConstraints(cl.getConstraints());
-	assoc.setCreateActions(cl.getCreateActions());
-	assoc.setFeatures(cl.getFeatures());
-	assoc.setExtensions(cl.getExtensions());
-	assoc.setGeneralizations(cl.getGeneralizations());
-	assoc.setInstances(cl.getInstances());
-	assoc.setLeaf(cl.isLeaf());
-	assoc.setNamespace(cl.getNamespace());
-	assoc.setObjectFlowStates(cl.getObjectFlowStates());
-	assoc.setParameters(cl.getParameters());
-	assoc.setParticipants(cl.getParticipants());
-	assoc.setPartitions1(cl.getPartitions1());
-	assoc.setPowertypeRanges(cl.getPowertypeRanges());
-	assoc.setPresentations(cl.getPresentations());
-	assoc.setRoot(cl.isRoot());
-	assoc.setSourceFlows(cl.getSourceFlows());
-	assoc.setSpecification(cl.isSpecification());
-	assoc.setStereotype(cl.getStereotype());
-	assoc.setStructuralFeatures(cl.getStructuralFeatures());
-	assoc.setTaggedValues(cl.getTaggedValues());
-	assoc.setVisibility(cl.getVisibility());
-	buildAssociationEnd(
-			    assoc,
-			    null,
-			    end1,
-			    null,
-			    null,
-			    true,
-			    null,
-			    null,
-			    null,
-			    null,
-			    null);
-	buildAssociationEnd(
-			    assoc,
-			    null,
-			    end2,
-			    null,
-			    null,
-			    true,
-			    null,
-			    null,
-			    null,
-			    null,
-			    null);
-	return assoc;
+        if (end1 == null
+                || end2 == null
+                || cl == null
+                || end1 instanceof MAssociationClass
+                || end2 instanceof MAssociationClass)
+            throw new IllegalArgumentException("either one of the arguments "
+        				       + "was null or was instanceof "
+        				       + "MAssociationClass");
+        MAssociationClass assoc = createAssociationClass();
+        assoc.setName(cl.getName());
+        assoc.setAbstract(cl.isAbstract());
+        assoc.setActive(cl.isActive());
+        assoc.setAssociationEnds(cl.getAssociationEnds());
+        assoc.setClassifierRoles(cl.getClassifierRoles());
+        assoc.setClassifierRoles1(cl.getClassifierRoles1());
+        assoc.setClassifiersInState(cl.getClassifiersInState());
+        assoc.setClientDependencies(cl.getClientDependencies());
+        assoc.setCollaborations(cl.getCollaborations());
+        assoc.setCollaborations1(cl.getCollaborations1());
+        assoc.setComments(cl.getComments());
+        assoc.setConstraints(cl.getConstraints());
+        assoc.setCreateActions(cl.getCreateActions());
+        assoc.setFeatures(cl.getFeatures());
+        assoc.setExtensions(cl.getExtensions());
+        assoc.setGeneralizations(cl.getGeneralizations());
+        assoc.setInstances(cl.getInstances());
+        assoc.setLeaf(cl.isLeaf());
+        assoc.setNamespace(cl.getNamespace());
+        assoc.setObjectFlowStates(cl.getObjectFlowStates());
+        assoc.setParameters(cl.getParameters());
+        assoc.setParticipants(cl.getParticipants());
+        assoc.setPartitions1(cl.getPartitions1());
+        assoc.setPowertypeRanges(cl.getPowertypeRanges());
+        assoc.setPresentations(cl.getPresentations());
+        assoc.setRoot(cl.isRoot());
+        assoc.setSourceFlows(cl.getSourceFlows());
+        assoc.setSpecification(cl.isSpecification());
+        assoc.setStereotype(cl.getStereotype());
+        assoc.setStructuralFeatures(cl.getStructuralFeatures());
+        assoc.setTaggedValues(cl.getTaggedValues());
+        assoc.setVisibility(cl.getVisibility());
+        buildAssociationEnd(
+        		    assoc,
+        		    null,
+        		    end1,
+        		    null,
+        		    null,
+        		    true,
+        		    null,
+        		    null,
+        		    null,
+        		    null,
+        		    null);
+        buildAssociationEnd(
+        		    assoc,
+        		    null,
+        		    end2,
+        		    null,
+        		    null,
+        		    true,
+        		    null,
+        		    null,
+        		    null,
+        		    null,
+        		    null);
+        return assoc;
     }
 
     /**
