@@ -46,16 +46,25 @@ public class ActionNew extends UMLAction {
     ////////////////////////////////////////////////////////////////
     // static variables
 
+    /**
+     * The singleton.
+     */
     public static ActionNew SINGLETON = new ActionNew(); 
 
     ////////////////////////////////////////////////////////////////
     // constructors
 
+    /**
+     * The constructor.
+     */
     protected ActionNew() { super("action.new"); }
 
     ////////////////////////////////////////////////////////////////
     // main methods
 
+    /**
+     * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+     */
     public void actionPerformed(ActionEvent e) {
 	ProjectBrowser pb = ProjectBrowser.getInstance();
 	Project p = ProjectManager.getManager().getCurrentProject();
@@ -63,12 +72,12 @@ public class ActionNew extends UMLAction {
 	if (p != null && p.needsSave()) {
 	    String t =
 		MessageFormat.format(Translator.localize("Actions",
-						   "optionpane.new-project-save-changes-to"),
-				     new Object[] {p.getName()} );
+				"optionpane.new-project-save-changes-to"),
+				new Object[] {p.getName()} );
 	    int response =
 		JOptionPane.showConfirmDialog(pb, t, t,
 					      JOptionPane.YES_NO_CANCEL_OPTION
-					      );
+		);
 
 	    if (response == JOptionPane.CANCEL_OPTION 
 	        || response == JOptionPane.CLOSED_OPTION) return;

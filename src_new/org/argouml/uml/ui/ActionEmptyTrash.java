@@ -35,22 +35,34 @@ public class ActionEmptyTrash extends UMLChangeAction {
     ////////////////////////////////////////////////////////////////
     // static variables
     
+    /**
+     * The singleton.
+     */
     public static ActionEmptyTrash SINGLETON = new ActionEmptyTrash(); 
 
 
     ////////////////////////////////////////////////////////////////
     // constructors
 
+    /**
+     * The constructor.
+     */
     public ActionEmptyTrash() { super("action.empty-trash", NO_ICON); }
 
 
     ////////////////////////////////////////////////////////////////
     // main methods
 
+    /**
+     * @see org.argouml.uml.ui.UMLAction#shouldBeEnabled()
+     */
     public boolean shouldBeEnabled() {
 	return Trash.SINGLETON.getSize() > 0;
     }
 
+    /**
+     * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+     */
     public void actionPerformed(ActionEvent ae) {
 	Trash.SINGLETON.emptyTrash();
 	super.actionPerformed(ae);
