@@ -429,26 +429,6 @@ public class GenericArgoMenuBar extends JMenuBar
         _createDiagramToolbar.add((ActionSequenceDiagram.SINGLETON));
         appendPluggableMenus(_createDiagrams, PluggableMenu.KEY_CREATE_DIAGRAMS);
 
-        //JMenu createModelElements = (JMenu) create.add(new JMenu("Model Elements"));
-        //createModelElements.add(Actions.AddTopLevelPackage);
-        //createModelElements.add(_actionClass);
-        //createModelElements.add(_actionInterface);
-        //createModelElements.add(_actionActor);
-        //createModelElements.add(_actionUseCase);
-        //createModelElements.add(_actionState);
-        //createModelElements.add(_actionPseudostate);
-        //createModelElements.add(_actionAttr);
-        //createModelElements.add(_actionOper);
-
-        //JMenu createFig = (JMenu) create.add(new JMenu("Shapes"));
-        //createFig.add(_actionRectangle);
-        //createFig.add(_actionRRectangle);
-        //createFig.add(_actionCircle);
-        //createFig.add(_actionLine);
-        //createFig.add(_actionText);
-        //createFig.add(_actionPoly);
-        //createFig.add(_actionInk);
-
         _arrange = (ArgoJMenu) add(new ArgoJMenu(menuLocalize("Arrange")));
         setMnemonic(_arrange,"Arrange",'A');
 

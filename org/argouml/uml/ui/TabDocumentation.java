@@ -27,8 +27,11 @@ package org.argouml.uml.ui;
 import javax.swing.JScrollPane;
 
 import org.argouml.application.api.Argo;
+import org.argouml.application.api.Configuration;
 import org.argouml.model.ModelFacade;
+import org.argouml.swingext.Horizontal;
 import org.argouml.swingext.LabelledLayout;
+import org.argouml.swingext.Vertical;
 import org.argouml.util.ConfigLoader;
 import org.tigris.gef.presentation.Fig;
 
@@ -76,7 +79,9 @@ public class TabDocumentation extends PropPanel {
         //- should this change? (Raphael)
         super(
             Argo.localize(BUNDLE, "docpane.label.documentation"),
-            ConfigLoader.getTabPropsOrientation());
+            (Configuration.getString(Configuration.makeKey("layout", "tabdocumentation")).equals("West") ||
+             Configuration.getString(Configuration.makeKey("layout", "tabdocumentation")).equals("East"))
+             ? Vertical.getInstance() : Horizontal.getInstance());
         //        super("tab.documentation", null, 2); // Change this to call labelled layout constructor
 
         addField(

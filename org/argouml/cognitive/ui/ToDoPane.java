@@ -199,10 +199,6 @@ public class ToDoPane extends JPanel
         // next line coming from projectbrowser
         setRoot(Designer.TheDesigner.getToDoList());
         Designer.TheDesigner.getToDoList().addToDoListListener(this);
-        setPreferredSize(new Dimension(
-            Configuration.getInteger(Argo.KEY_SCREEN_SOUTHWEST_WIDTH, ProjectBrowser.DEFAULT_COMPONENTWIDTH),
-            Configuration.getInteger(Argo.KEY_SCREEN_SOUTH_HEIGHT, ProjectBrowser.DEFAULT_COMPONENTHEIGHT)
-            ));
         
         if (doSplash) {
             SplashScreen splash = ProjectBrowser.getInstance().getSplashScreen();

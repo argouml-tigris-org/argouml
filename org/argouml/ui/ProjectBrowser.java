@@ -111,8 +111,10 @@ public class ProjectBrowser
     protected DetailsPane _northEastPane;
     protected DetailsPane _northPane;
     protected DetailsPane _northWestPane;
+    protected JPanel _westPane;
     protected DetailsPane _eastPane;
     protected DetailsPane _southEastPane;
+    protected JPanel _southWestPane;
     protected DetailsPane _southPane;
 
     private Map detailsPanesByCompassPoint = new HashMap();
@@ -254,8 +256,14 @@ public class ProjectBrowser
         if (_southEastPane != null) {
             detailsPanesByCompassPoint.put(BorderSplitPane.SOUTHEAST, _southEastPane);
         }
+        if (_southWestPane != null) {
+            detailsPanesByCompassPoint.put(BorderSplitPane.SOUTHWEST, _southWestPane);
+        }
         if (_eastPane != null) {
             detailsPanesByCompassPoint.put(BorderSplitPane.EAST, _eastPane);
+        }
+        if (_westPane != null) {
+            detailsPanesByCompassPoint.put(BorderSplitPane.WEST, _westPane);
         }
         if (_northWestPane != null) {
             detailsPanesByCompassPoint.put(BorderSplitPane.NORTHWEST, _northWestPane);
@@ -266,16 +274,14 @@ public class ProjectBrowser
         if (_northEastPane != null) {
             detailsPanesByCompassPoint.put(BorderSplitPane.NORTHEAST, _northEastPane);
         }
-                
-        // Set preferred sizes from config file
-        if (_southPane != null) {
-            _southPane.setPreferredSize(
-                new Dimension(
-                    0,
-                    Configuration.getInteger(
-                        Argo.KEY_SCREEN_SOUTH_HEIGHT,
-                        DEFAULT_COMPONENTHEIGHT)));
+        if (_westPane != null) {
+            detailsPanesByCompassPoint.put(BorderSplitPane.WEST, _westPane);
         }
+        if (_southWestPane != null) {
+            detailsPanesByCompassPoint.put(BorderSplitPane.SOUTHWEST, _southWestPane);
+        }
+
+        restorePanelSizes();
 
         // The workarea is all the visible space except the menu, toolbar and status bar.
         // Workarea is layed out as a BorderSplitPane where the various components that make
@@ -298,13 +304,14 @@ public class ProjectBrowser
         Iterator it = detailsPanesByCompassPoint.entrySet().iterator();
         while (it.hasNext()) {
             Map.Entry entry = (Map.Entry) it.next();
-            TargetManager.getInstance().addTargetListener((DetailsPane) entry.getValue());
-            _workarea.add(
-                (DetailsPane) entry.getValue(),
-                (String) entry.getKey());
+            String position = (String)entry.getKey();
+            if (entry.getValue() instanceof DetailsPane) {
+                DetailsPane detailsPane = (DetailsPane)entry.getValue();
+                TargetManager.getInstance().addTargetListener(detailsPane);
+            }
+            _workarea.add((Component)entry.getValue(), position);
         }
         _workarea.add(_editorPane);
-
         // Toolbar boundry is the area between the menu and the status bar. It contains
         // the workarea at centre and the toolbar position north, south, east or west.
         JPanel toolbarBoundry = new JPanel();
@@ -319,14 +326,60 @@ public class ProjectBrowser
         return toolbarBoundry;
     }
 
+    /** Set the size of each panel to that last saved in the configuration file
+     */
+    private void restorePanelSizes() {
+        // Set preferred sizes from config file
+        if (_northPane != null) {
+            _northPane.setPreferredSize(
+                new Dimension(0, Configuration.getInteger(Argo.KEY_SCREEN_NORTH_HEIGHT, DEFAULT_COMPONENTHEIGHT)));
+        }
+        if (_southPane != null) {
+            _southPane.setPreferredSize(
+                new Dimension(0, Configuration.getInteger(Argo.KEY_SCREEN_SOUTH_HEIGHT, DEFAULT_COMPONENTHEIGHT)));
+        }
+        if (_eastPane != null) {
+            _eastPane.setPreferredSize(
+                new Dimension(Configuration.getInteger(Argo.KEY_SCREEN_EAST_WIDTH, DEFAULT_COMPONENTHEIGHT), 0));
+        }
+        if (_westPane != null) {
+            _westPane.setPreferredSize(
+                new Dimension(Configuration.getInteger(Argo.KEY_SCREEN_WEST_WIDTH, DEFAULT_COMPONENTHEIGHT), 0));
+        }
+        if (_northWestPane != null) {
+            _northWestPane.setPreferredSize(new Dimension(
+                Configuration.getInteger(Argo.KEY_SCREEN_NORTHWEST_WIDTH, DEFAULT_COMPONENTWIDTH),
+                Configuration.getInteger(Argo.KEY_SCREEN_NORTH_HEIGHT, DEFAULT_COMPONENTHEIGHT)
+            ));
+        }
+        if (_southWestPane != null) {
+            _southWestPane.setPreferredSize(new Dimension(
+                Configuration.getInteger(Argo.KEY_SCREEN_SOUTHWEST_WIDTH, DEFAULT_COMPONENTWIDTH),
+                Configuration.getInteger(Argo.KEY_SCREEN_SOUTH_HEIGHT, DEFAULT_COMPONENTHEIGHT)
+            ));
+        }
+        if (_northEastPane != null) {
+            _northEastPane.setPreferredSize(new Dimension(
+                Configuration.getInteger(Argo.KEY_SCREEN_NORTHEAST_WIDTH, DEFAULT_COMPONENTWIDTH),
+                Configuration.getInteger(Argo.KEY_SCREEN_NORTH_HEIGHT, DEFAULT_COMPONENTHEIGHT)
+            ));
+        }
+        if (_southEastPane != null) {
+            _southEastPane.setPreferredSize(new Dimension(
+                Configuration.getInteger(Argo.KEY_SCREEN_SOUTHEAST_WIDTH, DEFAULT_COMPONENTWIDTH),
+                Configuration.getInteger(Argo.KEY_SCREEN_SOUTH_HEIGHT, DEFAULT_COMPONENTHEIGHT)
+            ));
+        }
+    }
     ////////////////////////////////////////////////////////////////
     // accessors
 
     public void setTitle(String title) {
-        if (title == null || "".equals(title))
+        if (title == null || "".equals(title)) {
             setTitle(getAppName());
-        else
+        } else {
             super.setTitle(getAppName() + " - " + title);
+        }
     }
 
     public String getAppName() {
@@ -372,12 +425,12 @@ public class ProjectBrowser
      *             {@link org.argouml.ui.targetmanager.TargetManager#setTarget(Object) TargetManager.getInstance().setTarget(Object)}
      */
     public void setTarget(Object o) {
-        
 
         if (isInSelectionTransaction()) {
             return;
-        } else
+        } else {
             startSelectionTransaction();
+        }
 
         if (getTarget() != o) {
 
@@ -542,8 +595,9 @@ public class ProjectBrowser
         Iterator it = detailsPanesByCompassPoint.values().iterator();
         while (it.hasNext()) {
             DetailsPane detailsPane = (DetailsPane) it.next();
-            if (detailsPane.selectTabNamed(Argo.localize("UMLMenu", tabName)))
+            if (detailsPane.selectTabNamed(Argo.localize("UMLMenu", tabName))) {
                 return;
+            }
         }
         throw new IllegalArgumentException("No such tab named " + tabName);
     }
@@ -559,8 +613,9 @@ public class ProjectBrowser
         while (it.hasNext()) {
             DetailsPane detailsPane = (DetailsPane) it.next();
             panel = detailsPane.getNamedTab(tabName);
-            if (panel != null)
+            if (panel != null) {
                 return panel;
+            }
         }
         //TODO I'd prefer to throw this exception here but doing Argo currently
         //falls over - needs more investigation Bob Tarling 8 Dec 2002
@@ -577,8 +632,9 @@ public class ProjectBrowser
      *  @see org.argouml.cognitive.ui.ToDoPane
      */
     public void jumpToDiagramShowing(VectorSet dms) {
-        if (dms.size() == 0)
+        if (dms.size() == 0) {
             return;
+        }
         Object first = dms.elementAt(0);
         if (first instanceof Diagram && dms.size() > 1) {
             setTarget(first);
@@ -691,18 +747,18 @@ public class ProjectBrowser
     }
 
     /**
-     * Save the positions of the screen spliters in the properties file
+     * Save the positions of the screen splitters, sizes and postion of main window
+     * in the properties file
      */
     public void saveScreenConfiguration() {
-        Configuration.setInteger(
-            Argo.KEY_SCREEN_WEST_WIDTH,
-            getNavigatorPane().getWidth());
-        Configuration.setInteger(
-            Argo.KEY_SCREEN_SOUTHWEST_WIDTH,
-            getTodoPane().getWidth());
-        Configuration.setInteger(
-            Argo.KEY_SCREEN_SOUTH_HEIGHT,
-            _southPane.getHeight());
+        Configuration.setInteger(Argo.KEY_SCREEN_WEST_WIDTH, _westPane.getWidth());
+        Configuration.setInteger(Argo.KEY_SCREEN_EAST_WIDTH, _eastPane.getWidth());
+        Configuration.setInteger(Argo.KEY_SCREEN_SOUTHWEST_WIDTH, _southWestPane.getWidth());
+        Configuration.setInteger(Argo.KEY_SCREEN_SOUTHEAST_WIDTH, _southEastPane.getWidth());
+        Configuration.setInteger(Argo.KEY_SCREEN_NORTHWEST_WIDTH, _northWestPane.getWidth());
+        Configuration.setInteger(Argo.KEY_SCREEN_NORTHEAST_WIDTH, _northEastPane.getWidth());
+        Configuration.setInteger(Argo.KEY_SCREEN_NORTH_HEIGHT, _northPane.getHeight());
+        Configuration.setInteger(Argo.KEY_SCREEN_SOUTH_HEIGHT, _southPane.getHeight());
         Configuration.setInteger(Argo.KEY_SCREEN_WIDTH, getWidth());
         Configuration.setInteger(Argo.KEY_SCREEN_HEIGHT, getHeight());
         Configuration.setInteger(Argo.KEY_SCREEN_LEFT_X, getX());
@@ -795,11 +851,6 @@ public class ProjectBrowser
      * @return NavigatorPane The navigatorpane
      */
     public NavigatorPane getNavigatorPane() {
-        /*
-        if (_navPane == null) {
-            _navPane = new NavigatorPane(_Splash);
-        }
-        */
         return _navPane;
     }
 
