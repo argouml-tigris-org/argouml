@@ -674,6 +674,69 @@ These files need to be uploaded onto the tigris website. Only a project owner ca
 <para>Freshmeat: currently Thierry Lach does the freshmeat announcements which require a login.
 </para>
 
+      <para>
+Linus' imperative suggestion:
+	<orderedlist>
+	  <listitem>
+	    <para>Modify <filename>build.xml</filename>!</para>
+	    <para>
+The target to change is setversion where you will need to change the
+property names accordingly.
+TO DO: GIVE CONCRETE EXAMPLE.
+</para>
+	  </listitem>
+	  <listitem>
+	    <para>Make sure you have a clean copy of the source!</para>
+	  </listitem>
+	  <listitem>
+	    <para>Build the release with <command>build dist-release</command>!</para>
+	    <para>
+The output should be some tar.gz and .zip files in the top-level
+argouml directory.
+</para>
+	  </listitem>
+	  <listitem>
+	    <para>Tag the whole cvs directory!</para>
+	    <para>
+Normally a tag would consist of "VERSION_X_Y_Z", e.g. VERSION_0_9_6.
+The according command line cvs command is 
+<command>cvs tag VERSION_X_Y_Z</command>.
+In case you make a mistake doing that (you shouldn't really), one can still retag things. TO DO: Find out how to retag.
+</para>
+	  </listitem>
+	  <listitem>
+	    <para>Upload the files onto the tigris website!</para>
+	    <para>
+Only a project owner can do that.
+Please take the previous releases as an example to write the
+descriptions of the files.
+If erveryone follows his own conventions it is likely to be confusing.
+Hint: upload all the files first, then change all the texts at once in
+the edit window.
+It is much faster since you can copy and paste most of the texts.
+</para>
+	  </listitem>
+	  <listitem>
+	    <para>Contact Jason to make the new Webstart version available!</para>
+	  </listitem>
+	  <listitem>
+	    <para>Make announcements!</para>
+	    <para>
+Write to the dev, users and announce lists.
+Announcer should make sure that he/she is already subscribed to all lists.
+A particular bad aspect in the past releases was that we didn't really
+inform the user what has changed.
+</para>
+	    <para>
+Freshmeat: currently Thierry Lach does the freshmeat announcements
+which require a login so just inform him.
+</para>
+	  </listitem>
+	</orderedlist>
+</para>
+
+
+
 </sect1>
 
  <sect1 id="mailing_lists">
