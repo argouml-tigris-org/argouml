@@ -42,7 +42,7 @@ import ru.novosoft.uml.MElementEvent;
 public abstract class UMLModelElementListModel2 extends DefaultListModel implements UMLUserInterfaceComponent{
 
     private UMLUserInterfaceContainer _container = null;
-    private Object _target = null;
+    protected Object _target = null;
     
     /**
      * Constructor for UMLModelElementListModel2.
@@ -61,8 +61,6 @@ public abstract class UMLModelElementListModel2 extends DefaultListModel impleme
         // the user of this library class some influence
         
         setTarget(getContainer().getTarget());
-        removeAllElements();
-        buildModelList();
     }
 
     /**
@@ -70,8 +68,6 @@ public abstract class UMLModelElementListModel2 extends DefaultListModel impleme
      */
     public void targetReasserted() {
         setTarget(getContainer().getTarget());
-        removeAllElements();
-        buildModelList();
     }
 
     /**
@@ -117,7 +113,8 @@ public abstract class UMLModelElementListModel2 extends DefaultListModel impleme
                     }
                 }
             } else {
-                addElement(o);
+                if (!contains(o))
+                    addElement(o);
             }
         }
     }
@@ -126,7 +123,22 @@ public abstract class UMLModelElementListModel2 extends DefaultListModel impleme
      * @see ru.novosoft.uml.MElementListener#roleRemoved(ru.novosoft.uml.MElementEvent)
      */
     public void roleRemoved(MElementEvent e) {
-        if (isValidRoleRemoved(e)) {
+        boolean valid = false;
+        if (!(getChangedElement(e) instanceof Collection)) {
+            valid = contains(getChangedElement(e));
+        } else {
+            Collection col = (Collection)getChangedElement(e);
+            Iterator it = col.iterator();
+            valid = true;
+            while (it.hasNext()) {
+                Object o = it.next();
+                if (!contains(o)) {
+                    valid = false;
+                    break;
+                }
+            }
+        }
+        if (valid) {
             Object o = getChangedElement(e);
             if (o instanceof Collection) {
                 Iterator it = ((Collection)o).iterator();
@@ -177,10 +189,12 @@ public abstract class UMLModelElementListModel2 extends DefaultListModel impleme
      * element list.
      * @param col
      */
-    private void addAll(Collection col) {
+    protected void addAll(Collection col) {
         Iterator it = col.iterator();
         while (it.hasNext()) {
-            addElement(it.next());
+            Object o = it.next();
+            if (!contains(o)) 
+                addElement(o);
         }
     }
     
@@ -276,6 +290,8 @@ public abstract class UMLModelElementListModel2 extends DefaultListModel impleme
             ((MBase)_target).removeMElementListener(this);
             ((MBase)_target).addMElementListener(this);
         }
+        removeAllElements();
+        buildModelList();
     }
     
 
