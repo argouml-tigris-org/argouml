@@ -31,6 +31,10 @@ import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.foundation.data_types.*;
 import ru.novosoft.uml.foundation.extension_mechanisms.*;
 import ru.novosoft.uml.behavior.collaborations.*;
+import ru.novosoft.uml.behavior.state_machines.MCompositeState;
+import ru.novosoft.uml.behavior.state_machines.MStateMachine;
+import ru.novosoft.uml.behavior.state_machines.MStateVertex;
+import ru.novosoft.uml.behavior.state_machines.MTransition;
 import ru.novosoft.uml.model_management.*;
 
 // GEF imports:
@@ -44,7 +48,6 @@ import org.argouml.uml.*;
 // import org.argouml.uml.diagram.ui.*;
 // import org.argouml.uml.diagram.deployment.ui.*;
 // import org.argouml.uml.diagram.static_structure.ui.*;
-
 
 /**
  * Facade object for the Model component in ArgoUML.<p>
@@ -92,7 +95,7 @@ public class ModelFacade {
      * @returns true if handle is an Association
      */
     public static boolean isAAssociation(Object handle) {
-	return handle instanceof MAssociation;
+        return handle instanceof MAssociation;
     }
 
     /** Recognizer for AssociationRole
@@ -101,8 +104,8 @@ public class ModelFacade {
      * @returns true if handle is an AssociationRole
      */
     public static boolean isAAssociationRole(Object handle) {
-	return handle instanceof MAssociationRole;
-    }	    
+        return handle instanceof MAssociationRole;
+    }
 
     /** Recognizer for abstract classes and operations.
      *
@@ -110,12 +113,12 @@ public class ModelFacade {
      * @returns true if handle is abstract.
      */
     public static boolean isAbstract(Object handle) {
-	if (handle instanceof MOperation)
-	    return ((MOperation) handle).isAbstract();
-	if (handle instanceof MGeneralizableElement)
-	    return ((MGeneralizableElement) handle).isAbstract();
-	// ...
-	throw new IllegalArgumentException("Unrecognized object " + handle);
+        if (handle instanceof MOperation)
+            return ((MOperation)handle).isAbstract();
+        if (handle instanceof MGeneralizableElement)
+            return ((MGeneralizableElement)handle).isAbstract();
+        // ...
+        throw new IllegalArgumentException("Unrecognized object " + handle);
     }
 
     /** Recognizer for Class
@@ -124,7 +127,7 @@ public class ModelFacade {
      * @returns true if handle is a Class
      */
     public static boolean isAClass(Object handle) {
-	return handle instanceof MClass;
+        return handle instanceof MClass;
     }
 
     /** Recognizer for Classifier
@@ -133,7 +136,16 @@ public class ModelFacade {
      * @returns true if handle is a Classifier
      */
     public static boolean isAClassifier(Object handle) {
-	return handle instanceof MClassifier;
+        return handle instanceof MClassifier;
+    }
+    
+    /** Recognizer for Classifier
+     *
+     * @param handle candidate
+     * @returns true if handle is a Classifier
+     */
+    public static boolean isACompositeState(Object handle) {
+        return handle instanceof MCompositeState;
     }
 
     /** Recognizer for Expression
@@ -142,7 +154,7 @@ public class ModelFacade {
      * @returns true if handle is an Expression
      */
     public static boolean isAExpression(Object handle) {
-	return handle instanceof MExpression;
+        return handle instanceof MExpression;
     }
 
     /** Recognizer for Feature
@@ -151,16 +163,25 @@ public class ModelFacade {
      * @returns true if handle is a Feature
      */
     public static boolean isAFeature(Object handle) {
-	return handle instanceof MFeature;
+        return handle instanceof MFeature;
     }
-    
+
     /** Recognizer for GeneralizableElement
      *
      * @param handle candidate
      * @returns true if handle is a GeneralizableElement
      */
     public static boolean isAGeneralizableElement(Object handle) {
-	return handle instanceof MGeneralizableElement;
+        return handle instanceof MGeneralizableElement;
+    }
+
+    /** Recognizer for Interaction
+     *
+     * @param handle candidate
+     * @returns true if handle is a Interaction
+     */
+    public static boolean isAInteraction(Object handle) {
+        return handle instanceof MInteraction;
     }
 
     /** Recognizer for Interface
@@ -169,9 +190,8 @@ public class ModelFacade {
      * @returns true if handle is a Interface
      */
     public static boolean isAInterface(Object handle) {
-	return handle instanceof MInterface;
+        return handle instanceof MInterface;
     }
-
 
     /** Recognizer for ModelElement
      *
@@ -179,7 +199,26 @@ public class ModelFacade {
      * @returns true if handle is a ModelElement
      */
     public static boolean isAModelElement(Object handle) {
-	return handle instanceof MModelElement;
+        return handle instanceof MModelElement;
+    }
+    
+    /** Recognizer for Namespace
+     *
+     * @param handle candidate
+     * @returns true if handle is a Namespace
+     */
+    public static boolean isANamespace(Object handle) {
+        return handle instanceof MNamespace;
+    }
+
+    /** 
+     * Recognizer for Operation
+     *
+     * @param handle candidate
+     * @returns true if handle is an Operation
+     */
+    public static boolean isAOperation(Object handle) {
+        return handle instanceof MOperation;
     }
 
     /** Recognizer for Package
@@ -188,8 +227,45 @@ public class ModelFacade {
      * @returns true if handle is a Package
      */
     public static boolean isAPackage(Object handle) {
-	return handle instanceof MPackage;
+        return handle instanceof MPackage;
     }
+
+    /** Recognizer for StateMachine
+     *
+     * @param handle candidate
+     * @returns true if handle is a StateMachine
+     */
+    public static boolean isAStateMachine(Object handle) {
+        return handle instanceof MStateMachine;
+    }
+    
+    /** Recognizer for StateVertex
+     *
+     * @param handle candidate
+     * @returns true if handle is a StateVertex
+     */
+    public static boolean isAStateVertex(Object handle) {
+        return handle instanceof MStateVertex;
+    }
+    
+    /** Recognizer for StructuralFeature
+     *
+     * @param handle candidate
+     * @returns true if handle is a StructuralFeature
+     */
+    public static boolean isAStructuralFeature(Object handle) {
+        return handle instanceof MStructuralFeature;
+    }
+    
+    /** Recognizer for Transition
+     *
+     * @param handle candidate
+     * @returns true if handle is a Transition
+     */
+    public static boolean isATransition(Object handle) {
+        return handle instanceof MTransition;
+    }
+
 
     /** Recognizer for attributes that are changeable
      *
@@ -197,12 +273,12 @@ public class ModelFacade {
      * @returns true if handle is changeable
      */
     public static boolean isChangeable(Object handle) {
-	if (handle instanceof MAttribute) {
-	    MAttribute a = (MAttribute)handle;
-	    return MChangeableKind.CHANGEABLE.equals(a.getChangeability());
-	}
-	// ...
-	throw new IllegalArgumentException("Unrecognized object " + handle);
+        if (handle instanceof MAttribute) {
+            MAttribute a = (MAttribute)handle;
+            return MChangeableKind.CHANGEABLE.equals(a.getChangeability());
+        }
+        // ...
+        throw new IllegalArgumentException("Unrecognized object " + handle);
     }
 
     /** Recognizer for attributes with classifier scope.
@@ -211,12 +287,12 @@ public class ModelFacade {
      * @returns true if handle has classifier scope.
      */
     public static boolean isClassifierScope(Object handle) {
-	if (handle instanceof MAttribute) {
-	    MAttribute a = (MAttribute)handle;
-	    return MScopeKind.CLASSIFIER.equals(a.getOwnerScope());
-	}
-	// ...
-	throw new IllegalArgumentException("Unrecognized object " + handle);
+        if (handle instanceof MAttribute) {
+            MAttribute a = (MAttribute)handle;
+            return MScopeKind.CLASSIFIER.equals(a.getOwnerScope());
+        }
+        // ...
+        throw new IllegalArgumentException("Unrecognized object " + handle);
     }
 
     /** Recognizer for constructor.
@@ -225,9 +301,8 @@ public class ModelFacade {
      * @returns true if handle is a constructor.
      */
     public static boolean isConstructor(Object handle) {
-	return isStereotype(handle, "create");
+        return isStereotype(handle, "create");
     }
-
 
     /** Recognizer for attributes that are initialized.
      *
@@ -235,18 +310,18 @@ public class ModelFacade {
      * @param true if the attribute is initialized.
      */
     public static boolean isInitialized(Object handle) {
-	if (handle instanceof MAttribute) {
-	    MExpression init = ((MAttribute)handle).getInitialValue();
+        if (handle instanceof MAttribute) {
+            MExpression init = ((MAttribute)handle).getInitialValue();
 
-	    if (init != null
-		&& init.getBody() != null
-		&& init.getBody().trim().length() > 0)
-		return true;
-	    return false;
-	}
+            if (init != null
+                && init.getBody() != null
+                && init.getBody().trim().length() > 0)
+                return true;
+            return false;
+        }
 
-	// ...
-	throw new IllegalArgumentException("Unrecognized object " + handle);
+        // ...
+        throw new IllegalArgumentException("Unrecognized object " + handle);
     }
 
     /** Recognizer for attributes with instance scope.
@@ -255,12 +330,12 @@ public class ModelFacade {
      * @returns true if handle has instance scope.
      */
     public static boolean isInstanceScope(Object handle) {
-	if (handle instanceof MAttribute) {
-	    MAttribute a = (MAttribute)handle;
-	    return MScopeKind.INSTANCE.equals(a.getOwnerScope());
-	}
-	// ...
-	throw new IllegalArgumentException("Unrecognized object " + handle);
+        if (handle instanceof MAttribute) {
+            MAttribute a = (MAttribute)handle;
+            return MScopeKind.INSTANCE.equals(a.getOwnerScope());
+        }
+        // ...
+        throw new IllegalArgumentException("Unrecognized object " + handle);
     }
 
     /** Recognizer for leafs
@@ -269,6 +344,7 @@ public class ModelFacade {
      * @returns true if handle is a leaf
      */
     public static boolean isLeaf(Object handle) {
+
 	if (handle instanceof MGeneralizableElement) {
 	    return ((MGeneralizableElement)handle).isLeaf();
 	}
@@ -285,14 +361,13 @@ public class ModelFacade {
      * @returns true if handle is navigable
      */
     public static boolean isNavigable(Object handle) {
-	if (handle instanceof MAssociationEnd) {
-	    return ((MAssociationEnd) handle).isNavigable();
-	}
+        if (handle instanceof MAssociationEnd) {
+            return ((MAssociationEnd)handle).isNavigable();
+        }
 
-	// ...
-	throw new IllegalArgumentException("Unrecognized object " + handle);
+        // ...
+        throw new IllegalArgumentException("Unrecognized object " + handle);
     }
-
 
     /** Recognizer for primary objects.
      * A primary object is an object that is created by the parser or 
@@ -303,20 +378,20 @@ public class ModelFacade {
      * @returns true if primary object.
      */
     public static boolean isPrimaryObject(Object handle) {
-	if (handle instanceof MModelElement) {
-	    MModelElement element = (MModelElement) handle;
-	    for(Iterator i = element.getTaggedValues().iterator(); 
-		i.hasNext(); 
-		) {
-		MTaggedValue tv = (MTaggedValue)i.next();
-		if ((MMUtil.GENERATED_TAG).equals(tv.getTag())) {
-		    return false;
-		}
-	    }
-	    return true;
-	}
-	// ...
-	throw new IllegalArgumentException("Unrecognized object " + handle);
+        if (handle instanceof MModelElement) {
+            MModelElement element = (MModelElement)handle;
+            for (Iterator i = element.getTaggedValues().iterator();
+                i.hasNext();
+                ) {
+                MTaggedValue tv = (MTaggedValue)i.next();
+                if ((MMUtil.GENERATED_TAG).equals(tv.getTag())) {
+                    return false;
+                }
+            }
+            return true;
+        }
+        // ...
+        throw new IllegalArgumentException("Unrecognized object " + handle);
     }
 
     /** Recognizer for attributes with private
@@ -325,12 +400,12 @@ public class ModelFacade {
      * @returns true if handle has private
      */
     public static boolean isPrivate(Object handle) {
-	if (handle instanceof MBehavioralFeature) {
-	    MBehavioralFeature bf = (MBehavioralFeature)handle;
-	    return MVisibilityKind.PRIVATE.equals(bf.getVisibility());
-	}
-	// ...
-	throw new IllegalArgumentException("Unrecognized object " + handle);
+        if (handle instanceof MBehavioralFeature) {
+            MBehavioralFeature bf = (MBehavioralFeature)handle;
+            return MVisibilityKind.PRIVATE.equals(bf.getVisibility());
+        }
+        // ...
+        throw new IllegalArgumentException("Unrecognized object " + handle);
     }
 
     /** Recognizer for realize
@@ -339,7 +414,7 @@ public class ModelFacade {
      * @returns true if handle has a realize stereotype
      */
     public static boolean isRealize(Object handle) {
-	return isStereotype(handle, "realize");
+        return isStereotype(handle, "realize");
     }
 
     /** Recognizer for return
@@ -348,12 +423,12 @@ public class ModelFacade {
      * @returns true if handle is a return parameter.
      */
     public static boolean isReturn(Object handle) {
-	if (handle instanceof MParameter) {
-	    MParameter p = (MParameter) handle;
-	    return MParameterDirectionKind.RETURN.equals(p.getKind());
-	}
-	// ...
-	throw new IllegalArgumentException("Unrecognized object " + handle);
+        if (handle instanceof MParameter) {
+            MParameter p = (MParameter)handle;
+            return MParameterDirectionKind.RETURN.equals(p.getKind());
+        }
+        // ...
+        throw new IllegalArgumentException("Unrecognized object " + handle);
     }
 
     /** Recognizer for singleton.
@@ -362,7 +437,7 @@ public class ModelFacade {
      * @returns true if handle is a singleton.
      */
     public static boolean isSingleton(Object handle) {
-	return isStereotype(handle, "singleton");
+        return isStereotype(handle, "singleton");
     }
 
     /** Recognizer for a specific stereotype.
@@ -372,20 +447,22 @@ public class ModelFacade {
      * @returns true if handle is a singleton.
      */
     public static boolean isStereotype(Object handle, String stereotypename) {
-	if (handle instanceof MModelElement) {
-	    MModelElement element = (MModelElement) handle;
-	    MStereotype meSt = element.getStereotype();
+        if (handle instanceof MModelElement) {
+            MModelElement element = (MModelElement)handle;
+            MStereotype meSt = element.getStereotype();
 
-	    if (meSt == null) return false;
-	    
-	    String name = meSt.getName();
-	    if (name == null) return false;
+            if (meSt == null)
+                return false;
 
-	    return name.equalsIgnoreCase(stereotypename);
-	}
+            String name = meSt.getName();
+            if (name == null)
+                return false;
 
-	// ...
-	throw new IllegalArgumentException("Unrecognized object " + handle);
+            return name.equalsIgnoreCase(stereotypename);
+        }
+
+        // ...
+        throw new IllegalArgumentException("Unrecognized object " + handle);
     }
 
     /** Recognizer for type.
@@ -394,7 +471,7 @@ public class ModelFacade {
      * @returns true if handle is a type.
      */
     public static boolean isType(Object handle) {
-	return isStereotype(handle, "type");
+        return isStereotype(handle, "type");
     }
 
     /** Recognizer for utility.
@@ -403,10 +480,8 @@ public class ModelFacade {
      * @returns true if handle is a utility.
      */
     public static boolean isUtility(Object handle) {
-	return isStereotype(handle, "utility");
+        return isStereotype(handle, "utility");
     }
-
-
 
     ////////////////////////////////////////////////////////////////
     // Recognizer methods for the diagrams (in alphabetic order)
@@ -416,11 +491,9 @@ public class ModelFacade {
      * @param handle candidate
      * @returns true if handle is a diagram.
      */
-    public static boolean isADiagram(Object handle) { 
-	return handle instanceof Diagram;
+    public static boolean isADiagram(Object handle) {
+        return handle instanceof Diagram;
     }
-
-
 
     ////////////////////////////////////////////////////////////////
     // Getters for the UML model (in alphabetic order)
@@ -431,17 +504,16 @@ public class ModelFacade {
      * @return Iterator with association ends.
      */
     public static Iterator getAssociationEnds(Object handle) {
-	if (handle instanceof MClassifier) {
-	    Collection endc = ((MClassifier)handle).getAssociationEnds();
-	    if (endc == null)
-		return emptyIterator();
-	    return endc.iterator();
-	}
+        if (handle instanceof MClassifier) {
+            Collection endc = ((MClassifier)handle).getAssociationEnds();
+            if (endc == null)
+                return emptyIterator();
+            return endc.iterator();
+        }
 
-	//...
-	throw new IllegalArgumentException("Unrecognized object " + handle);
+        //...
+        throw new IllegalArgumentException("Unrecognized object " + handle);
     }
-
 
     /** The list of Attributes.
      *
@@ -449,16 +521,28 @@ public class ModelFacade {
      * @return iterator with attributes.
      */
     public static Iterator getAttributes(Object handle) {
-	if (handle instanceof MClassifier) {
-	    MClassifier c = (MClassifier) handle;
+        if (handle instanceof MClassifier) {
+            MClassifier c = (MClassifier)handle;
 
-	    // TODO: We are converting back and forth between collections and
-	    // iterators. I (Linus) prefer iterators.
-	    return CoreHelper.getHelper().getAttributes(c).iterator();
-	}
+            // TODO: We are converting back and forth between collections and
+            // iterators. I (Linus) prefer iterators.
+            return CoreHelper.getHelper().getStructuralFeatures(c).iterator();
+        }
 
-	// ...
-	throw new IllegalArgumentException("Unrecognized object " + handle);
+        // ...
+        throw new IllegalArgumentException("Unrecognized object " + handle);
+    }
+
+    /** Get the behaviors of a Modelelement.
+     *
+     *
+     * @param handle modelelement to examine.
+     * @return the behaviors.
+     */
+    public static Collection getBehaviors(Object handle) {
+        if (isAModelElement(handle))
+            return ((MModelElement)handle).getBehaviors();
+        throw new IllegalArgumentException("Unrecognized object " + handle);
     }
 
     /** Get the body of an Expression.
@@ -468,10 +552,10 @@ public class ModelFacade {
      * @return the body.
      */
     public static Object getBody(Object handle) {
-	if (handle instanceof MExpression) 
-	    return ((MExpression)handle).getBody();
-    throw new IllegalArgumentException("Unrecognized object " + handle);
-	}
+        if (handle instanceof MExpression)
+            return ((MExpression)handle).getBody();
+        throw new IllegalArgumentException("Unrecognized object " + handle);
+    }
 
     /** Get the child of a generalization.
      *
@@ -481,14 +565,21 @@ public class ModelFacade {
      * @return the child.
      */
     public static Object getChild(Object handle) {
-	if (handle instanceof MGeneralization) {
-	    return ((MGeneralization)handle).getChild();
-	}
-
-	// ...
-	throw new IllegalArgumentException("Unrecognized object " + handle);
+        if (handle instanceof MGeneralization) {
+            return ((MGeneralization)handle).getChild();
+        }
+        throw new IllegalArgumentException("Unrecognized object " + handle);
     }
 
+    /**
+     * Get the children of some generalizable element
+     */
+    public static Collection getChildren(Object handle) {
+        if (isAGeneralizableElement(handle)) {
+            return ((MGeneralizableElement)handle).getChildren();
+        }
+        throw new IllegalArgumentException("Unrecognized object " + handle);
+    }
 
     /** The list of Connections or AssociationEnds to an Association.
      *
@@ -496,14 +587,13 @@ public class ModelFacade {
      * @return an Iterator with all connections.
      */
     public static Iterator getConnections(Object handle) {
-	if (handle instanceof MAssociation) {
-	    return ((MAssociation) handle).getConnections().iterator();
-	}
+        if (handle instanceof MAssociation) {
+            return ((MAssociation)handle).getConnections().iterator();
+        }
 
-	// ...
-	throw new IllegalArgumentException("Unrecognized object " + handle);
+        // ...
+        throw new IllegalArgumentException("Unrecognized object " + handle);
     }
-
 
     /** The list of Generalizations from a GeneralizableElement.
      *
@@ -511,15 +601,38 @@ public class ModelFacade {
      * @return Iterator with Generalizations
      */
     public static Iterator getGeneralizations(Object handle) {
-	if (handle instanceof MGeneralizableElement) {
-	    MGeneralizableElement ge = (MGeneralizableElement)handle;
-	    return ge.getGeneralizations().iterator();
-	}
+        if (handle instanceof MGeneralizableElement) {
+            MGeneralizableElement ge = (MGeneralizableElement)handle;
+            return ge.getGeneralizations().iterator();
+        }
 
-	// ...
-	throw new IllegalArgumentException("Unrecognized object " + handle);
+        // ...
+        throw new IllegalArgumentException("Unrecognized object " + handle);
+    }
+    
+    /**
+     * Returns the incoming transitions for some statevertex
+     * @param handle
+     * @return Collection
+     */
+    public static Collection getIncomings(Object stateVertex) {
+        if (isAStateVertex(stateVertex)) {
+            return ((MStateVertex)stateVertex).getIncomings();
+        }
+        throw new IllegalArgumentException("Unrecognized object " + stateVertex);
     }
 
+    /**
+     * Returns the messages belonging to some interaction
+     * @param handle
+     * @return Collection
+     */
+    public static Collection getMessages(Object handle) {
+        if (isAInteraction(handle)) {
+            return ((MInteraction)handle).getMessages();
+        }
+        throw new IllegalArgumentException("Unrecognized object " + handle);
+    }
 
     /** Get the namespace of an element.
      *
@@ -527,19 +640,18 @@ public class ModelFacade {
      * @returns the namespace (or null)
      */
     public static Object getNamespace(Object handle) {
-	if (handle == null)
-	    return null;
-	if (handle instanceof MModel)
-	    return handle;
-	if (handle instanceof MSubsystem)
-	    return handle;
-	if (handle instanceof MModelElement)
-	    return getNamespace(((MModelElement)handle).getNamespace());
+        if (handle == null)
+            return null;
+        if (handle instanceof MModel)
+            return handle;
+        if (handle instanceof MSubsystem)
+            return handle;
+        if (handle instanceof MModelElement)
+            return getNamespace(((MModelElement)handle).getNamespace());
 
-	// ...
-	throw new IllegalArgumentException("Unrecognized object " + handle);
+        // ...
+        throw new IllegalArgumentException("Unrecognized object " + handle);
     }
-
 
     /** The list of operations
      *
@@ -547,16 +659,16 @@ public class ModelFacade {
      * @return iterator with operations.
      */
     public static Iterator getOperations(Object handle) {
-	if (handle instanceof MClassifier) {
-	    MClassifier c = (MClassifier) handle;
+        if (handle instanceof MClassifier) {
+            MClassifier c = (MClassifier)handle;
 
-	    // TODO: We are converting back and forth between collections and
-	    // iterators. I (Linus) prefer iterators.
-	    return CoreHelper.getHelper().getOperations(c).iterator();
-	}
+            // TODO: We are converting back and forth between collections and
+            // iterators. I (Linus) prefer iterators.
+            return CoreHelper.getHelper().getOperations(c).iterator();
+        }
 
-	// ...
-	throw new IllegalArgumentException("Unrecognized object " + handle);
+        // ...
+        throw new IllegalArgumentException("Unrecognized object " + handle);
     }
 
     /** The list of Operations of this classifier and all inherited.
@@ -565,16 +677,28 @@ public class ModelFacade {
      * @return Iterator with operations.
      */
     public static Iterator getOperationsInh(Object handle) {
-	if (handle instanceof MClassifier) {
-	    MClassifier c = (MClassifier) handle;
+        if (handle instanceof MClassifier) {
+            MClassifier c = (MClassifier)handle;
 
-	    // TODO: We are converting back and forth between collections and
-	    // iterators. I (Linus) prefer iterators.
-	    return CoreHelper.getHelper().getOperationsInh(c).iterator();
-	}
+            // TODO: We are converting back and forth between collections and
+            // iterators. I (Linus) prefer iterators.
+            return CoreHelper.getHelper().getOperationsInh(c).iterator();
+        }
 
-	// ...
-	throw new IllegalArgumentException("Unrecognized object " + handle);
+        // ...
+        throw new IllegalArgumentException("Unrecognized object " + handle);
+    }
+    
+    /** Returns the list of Transitions outgoing from the given stateVertex.
+     *
+     * @param statevertex 
+     * @return Collection
+     */
+    public static Collection getOutgoings(Object stateVertex) {
+        if (ModelFacade.isAStateVertex(stateVertex)) {
+            return ((MStateVertex)stateVertex).getOutgoings();
+        }
+        throw new IllegalArgumentException("Unrecognized object " + stateVertex);
     }
 
     /** The list of Associations Ends connected to this association end
@@ -583,25 +707,25 @@ public class ModelFacade {
      * @returns Iterator with all connected association ends.
      */
     public static Iterator getOtherAssociationEnds(Object handle) {
-	if (handle instanceof MAssociationEnd) {
-	    MAssociation a = ((MAssociationEnd)handle).getAssociation();
+        if (handle instanceof MAssociationEnd) {
+            MAssociation a = ((MAssociationEnd)handle).getAssociation();
 
-	    if (a == null)
-		return emptyIterator();
+            if (a == null)
+                return emptyIterator();
 
-	    Collection allEnds = a.getConnections();
-	    if (allEnds == null)
-		return emptyIterator();
+            Collection allEnds = a.getConnections();
+            if (allEnds == null)
+                return emptyIterator();
 
-	    // TODO: An Iterator filter would be nice here instead of the 
-	    // mucking around with the Collection.
-	    allEnds = new ArrayList(allEnds);
-	    allEnds.remove(handle);
-	    return allEnds.iterator();
-	}
+            // TODO: An Iterator filter would be nice here instead of the 
+            // mucking around with the Collection.
+            allEnds = new ArrayList(allEnds);
+            allEnds.remove(handle);
+            return allEnds.iterator();
+        }
 
-	// ...
-	throw new IllegalArgumentException("Unrecognized object " + handle);
+        // ...
+        throw new IllegalArgumentException("Unrecognized object " + handle);
     }
 
     /** The list of owned elements of the the package.
@@ -609,15 +733,14 @@ public class ModelFacade {
      * @param handle package to retrieve from.
      * @return Iterator with operations
      */
-    public static Iterator getOwnedElements(Object handle) {
-	if (handle instanceof MNamespace) {
-	    return ((MNamespace)handle).getOwnedElements().iterator();
-	}
+    public static Collection getOwnedElements(Object handle) {
+        if (handle instanceof MNamespace) {
+            return ((MNamespace)handle).getOwnedElements();
+        }
 
-	// ...
-	throw new IllegalArgumentException("Unrecognized object " + handle);
+        // ...
+        throw new IllegalArgumentException("Unrecognized object " + handle);
     }
-
 
     /** Get the parameters of an operation.
      *
@@ -625,14 +748,13 @@ public class ModelFacade {
      * @return Iterator with operations.
      */
     public static Iterator getParameters(Object handle) {
-	if (handle instanceof MOperation) {
-	    return ((MOperation)handle).getParameters().iterator();
-	}
+        if (handle instanceof MOperation) {
+            return ((MOperation)handle).getParameters().iterator();
+        }
 
-	// ...
-	throw new IllegalArgumentException("Unrecognized object " + handle);
+        // ...
+        throw new IllegalArgumentException("Unrecognized object " + handle);
     }
-	
 
     /** Get the parent of a generalization.
      *
@@ -642,14 +764,25 @@ public class ModelFacade {
      * @return the parent.
      */
     public static Object getParent(Object handle) {
-	if (handle instanceof MGeneralization) {
-	    return ((MGeneralization)handle).getParent();
-	}
+        if (handle instanceof MGeneralization) {
+            return ((MGeneralization)handle).getParent();
+        }
 
-	// ...
-	throw new IllegalArgumentException("Unrecognized object " + handle);
+        // ...
+        throw new IllegalArgumentException("Unrecognized object " + handle);
     }
-
+    
+    /**
+     * Gets the source for some given transitions.
+     * @param handle
+     * @return Object
+     */
+    public static Object getSource(Object handle) {
+        if (isATransition(handle)) {
+            return ((MTransition)handle).getSource();
+        }
+        throw new IllegalArgumentException("Unrecognized object " + handle);
+    }
 
     /** The list of Specializations from a GeneralizableElement.
      *
@@ -657,15 +790,27 @@ public class ModelFacade {
      * @return Iterator with Specializations.
      */
     public static Iterator getSpecializations(Object handle) {
-	if (handle instanceof MGeneralizableElement) {
-	    MGeneralizableElement ge = (MGeneralizableElement)handle;
-	    return ge.getSpecializations().iterator();
-	}
+        if (handle instanceof MGeneralizableElement) {
+            MGeneralizableElement ge = (MGeneralizableElement)handle;
+            return ge.getSpecializations().iterator();
+        }
 
-	// ...
-	throw new IllegalArgumentException("Unrecognized object " + handle);
+        // ...
+        throw new IllegalArgumentException("Unrecognized object " + handle);
     }
-
+    
+    /**
+     * Returns a collection with all subvertices belonging to the given
+     * composite state.
+     * @param handle
+     * @return Collection
+     */
+    public static Collection getSubvertices(Object handle) {
+        if (isACompositeState(handle)) {
+            return ((MCompositeState)handle).getSubvertices();
+        }
+        throw new IllegalArgumentException("Unrecognized object " + handle);
+    }
 
     /** The list of SupplierDependencies from a ModelElement.
      *
@@ -673,13 +818,13 @@ public class ModelFacade {
      * @returns Iterator with the supplier dependencies.
      */
     public static Iterator getSupplierDependencies(Object handle) {
-	if (handle instanceof MModelElement) {
-	    MModelElement me = (MModelElement) handle;
-	    return me.getSupplierDependencies().iterator();
-	}
+        if (handle instanceof MModelElement) {
+            MModelElement me = (MModelElement)handle;
+            return me.getSupplierDependencies().iterator();
+        }
 
-	// ...
-	throw new IllegalArgumentException("Unrecognized object " + handle);
+        // ...
+        throw new IllegalArgumentException("Unrecognized object " + handle);
     }
 
     /** The type of an attribute
@@ -688,18 +833,47 @@ public class ModelFacade {
      * @returns the type
      */
     public static Object getType(Object handle) {
-	if (handle instanceof MAttribute) {
-	    return ((MAttribute)handle).getType();
-	}
-	if (handle instanceof MAssociationEnd) {
-	    return ((MAssociationEnd)handle).getType();
-	}
+        if (handle instanceof MAttribute) {
+            return ((MAttribute)handle).getType();
+        }
+        if (handle instanceof MAssociationEnd) {
+            return ((MAssociationEnd)handle).getType();
+        }
 
-	// ...
-	throw new IllegalArgumentException("Unrecognized object " + handle);
+        // ...
+        throw new IllegalArgumentException("Unrecognized object " + handle);
     }
-
-
+    
+    /**
+     * Returns the target of some transition
+     * @param handle
+     * @return Object
+     */
+    public static Object getTarget(Object handle) {
+        if (isATransition(handle)) {
+            return ((MTransition)handle).getTarget();
+        }
+        throw new IllegalArgumentException("Unrecognized object " + handle);
+    }
+    
+    /**
+     * Returns the transitions belonging to the given handle. The handle can be
+     * a statemachine or a composite state. If it's a statemachine the
+     * transitions will be given back belonging to that statemachine. If it's a
+     * compositestate the internal transitions of that compositestate will be
+     * given back.
+     * @param handle
+     * @return Collection
+     */
+    public static Collection getTransitions(Object handle) {        
+        if (isAStateMachine(handle)) {
+            return ((MStateMachine)handle).getTransitions();
+        } else
+        if (isACompositeState(handle)) {
+            return ((MCompositeState)handle).getInternalTransitions();
+        }
+        throw new IllegalArgumentException("Unrecognized object " + handle);
+    }
 
     ////////////////////////////////////////////////////////////////
     // Common getters
@@ -710,22 +884,21 @@ public class ModelFacade {
      * @returns the name
      */
     public static String getName(Object handle) {
-	if (handle instanceof MModelElement) {
-	    MModelElement me = (MModelElement) handle;
+        if (handle instanceof MModelElement) {
+            MModelElement me = (MModelElement)handle;
 
-	    return me.getName();
-	}
+            return me.getName();
+        }
 
-	if (handle instanceof Diagram) {
-	    Diagram d = (Diagram) handle;
+        if (handle instanceof Diagram) {
+            Diagram d = (Diagram)handle;
 
-	    return d.getName();
-	}
+            return d.getName();
+        }
 
-	// ...
-	throw new IllegalArgumentException("Unrecognized object " + handle);
+        // ...
+        throw new IllegalArgumentException("Unrecognized object " + handle);
     }
-
 
     ////////////////////////////////////////////////////////////////
     // Convenience methods
@@ -735,6 +908,6 @@ public class ModelFacade {
      * @returns an empty iterator.
      */
     private static Iterator emptyIterator() {
-	return Collections.EMPTY_SET.iterator();
+        return Collections.EMPTY_SET.iterator();
     }
 }
