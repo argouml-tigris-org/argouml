@@ -116,7 +116,6 @@ public class Main {
         org.tigris.gef.base.Globals.setLastDirectory(directory);
 
         // load i18n bundles
-        Translator trans = new org.argouml.i18n.Translator();
         Translator.init();
         // create an anonymous class as a kind of adaptor for the cognitive
         // System to provide proper translation/i18n.
