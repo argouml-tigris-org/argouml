@@ -25,6 +25,7 @@ package org.argouml.persistence;
 
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
@@ -79,20 +80,21 @@ public class XmiFilePersister extends AbstractFilePersister {
     public void doSave(Project project, File file)
         throws SaveException {
 
-        // frank: first backup the existing file to name+"#"
-        File tempFile = new File(file.getAbsolutePath() + "#");
-        File backupFile = new File(file.getAbsolutePath() + "~");
-        if (tempFile.exists()) {
-            tempFile.delete();
+        File lastArchiveFile = new File(file.getAbsolutePath() + "~");
+        File tempFile = null;
+        
+        try {
+            tempFile = createTempFile(file);
+        } catch (FileNotFoundException e) {
+            throw new SaveException(
+                    "Failed to archive the previous file version", e);
+        } catch (IOException e) {
+            throw new SaveException(
+                    "Failed to archive the previous file version", e);
         }
 
         BufferedWriter writer = null;
         try {
-            if (file.exists()) {
-                copyFile(tempFile, file);
-            }
-            // frank end
-
             project.setFile(file);
 
             String encoding = "UTF-8";
@@ -127,11 +129,11 @@ public class XmiFilePersister extends AbstractFilePersister {
             // if save did not raise an exception
             // and name+"#" exists move name+"#" to name+"~"
             // this is the correct backup file
-            if (backupFile.exists()) {
-                backupFile.delete();
+            if (lastArchiveFile.exists()) {
+                lastArchiveFile.delete();
             }
-            if (tempFile.exists() && !backupFile.exists()) {
-                tempFile.renameTo(backupFile);
+            if (tempFile.exists() && !lastArchiveFile.exists()) {
+                tempFile.renameTo(lastArchiveFile);
             }
             if (tempFile.exists()) {
                 tempFile.delete();
