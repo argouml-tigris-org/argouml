@@ -3,13 +3,19 @@ package org.argouml.ui;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 import java.util.Enumeration;
 
 import javax.swing.Icon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSlider;
+import javax.swing.JTextField;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
@@ -67,9 +73,9 @@ public class ZoomSliderButton extends PopupButton {
     private JSlider             _slider = null;
     
     /**
-     * The label which shows the current zoom magnification value.
+     * The text field which shows the current zoom magnification value.
      */
-    private JLabel              _currentValueLabel = null;
+    private JTextField          _currentValue = null;
 
     /**
      * Constructs a new ZoomSliderButton.
@@ -122,16 +128,30 @@ public class ZoomSliderButton extends PopupButton {
         _slider.setPreferredSize(new Dimension(
             sliderBaseWidth + labelWidth, SLIDER_HEIGHT));
         
-        _currentValueLabel = new JLabel();
-        _currentValueLabel.setHorizontalAlignment(JLabel.CENTER);
-        _currentValueLabel.setFont(LABEL_FONT);
-        _currentValueLabel.setToolTipText(Argo.localize(
+        _currentValue = new JTextField(5);
+        _currentValue.setHorizontalAlignment(JLabel.CENTER);
+        _currentValue.setFont(LABEL_FONT);
+        _currentValue.setToolTipText(Argo.localize(
             BUNDLE, "button.zoom.current-zoom-magnification"));
         updateCurrentValueLabel();
+        _currentValue.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                handleTextEntry();
+            }
+        });
+        _currentValue.addFocusListener(new FocusAdapter() {
+            public void focusLost(FocusEvent e) {
+                handleTextEntry();
+            }
+        });
+        
+        JPanel currentValuePanel = new JPanel(new FlowLayout(
+            FlowLayout.CENTER, 0, 0));
+        currentValuePanel.add(_currentValue);
         
         JPanel zoomPanel = new JPanel(new BorderLayout(0, 0));
         zoomPanel.add(_slider, BorderLayout.CENTER);
-        zoomPanel.add(_currentValueLabel, BorderLayout.NORTH);
+        zoomPanel.add(currentValuePanel, BorderLayout.NORTH);
                 
         setPopupComponent(zoomPanel);
     }
@@ -174,9 +194,29 @@ public class ZoomSliderButton extends PopupButton {
     }
 
     /**
+     * Called when the text field value changes.
+     */
+    private void handleTextEntry() {
+        String value = _currentValue.getText();
+        if (value.endsWith("%")) {
+            value = value.substring(0, value.length() - 1);
+        }
+        try {
+            int newZoom = Integer.parseInt(value);
+            if (newZoom < MINIMUM_ZOOM || newZoom > MAXIMUM_ZOOM) {
+                throw new NumberFormatException();
+            }
+            _slider.setValue(newZoom);
+        }
+        catch (NumberFormatException ex) {
+            updateCurrentValueLabel();
+        }
+    }
+
+    /**
      * Sets the current value label's text to the current slider value.
      */
     private void updateCurrentValueLabel() {
-        _currentValueLabel.setText(String.valueOf(_slider.getValue()) + '%');
+        _currentValue.setText(String.valueOf(_slider.getValue()) + '%');
     }   
 }
