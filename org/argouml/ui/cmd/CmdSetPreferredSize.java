@@ -24,7 +24,6 @@
 
 package org.argouml.ui.cmd;
 
-import java.awt.*;
 import java.util.Vector;
 import org.argouml.application.api.Argo;
 import org.argouml.uml.diagram.state.ui.FigCompositeState;
@@ -53,11 +52,6 @@ public class CmdSetPreferredSize extends Cmd {
     
     private int _mode;
 
-    private Object[] msgArgs = {
-	"preferred",
-	"minimum"
-    };
-	
     /** Constructor for the command.
      * @param mode one of the defined constants
      */

@@ -111,10 +111,6 @@ public class Import {
     
     private ImportStatusScreen iss;
     
-    // log4j logging
-    private static Logger cat =
-	Logger.getLogger(org.argouml.uml.reveng.Import.class);
-    
     /**
      * Unnecessary attribute
      * @deprecated As of ArgoUml version 0.13.5, don't use this!
@@ -199,7 +195,7 @@ public class Import {
             Vector languages = new Vector();
             
             for (Enumeration keys = modules.keys(); keys.hasMoreElements();) {
-                languages.add((String) keys.nextElement());
+                languages.add(keys.nextElement());
             }
             JComboBox selectedLanguage = new JComboBox(languages);
             selectedLanguage.addActionListener(new ActionListener() 
@@ -384,6 +380,8 @@ public class Import {
      * ImportStatusScreen, in order to cancel long import runs.
      */
     class ImportRun implements Runnable {
+		/** logger */
+		private Logger cat = Logger.getLogger(ImportRun.class);
         
         Vector _filesLeft;
         
@@ -530,7 +528,7 @@ public class Import {
             ExplorerEventAdaptor.getInstance().structureChanged();
             pb.setEnabled(true);
             
-            Argo.log.info(_st);
+            cat.info(_st);
             pb.getStatusBar().showProgress(0);
             
         }

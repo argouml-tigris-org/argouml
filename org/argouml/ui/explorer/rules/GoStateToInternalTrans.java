@@ -27,8 +27,6 @@ package org.argouml.ui.explorer.rules;
 import org.argouml.model.ModelFacade;
 import java.util.Collection;
 
-import org.argouml.ui.AbstractGoRule;
-
 public class GoStateToInternalTrans implements PerspectiveRule {
 
     public String getRuleName() { return "State->Internal Transitions"; }

@@ -29,8 +29,7 @@
 
 package org.argouml.uml.diagram.ui;
 
-import java.util.*;
-import java.awt.*;
+import java.awt.Graphics;
 
 import org.tigris.gef.base.*;
 import org.tigris.gef.presentation.*;

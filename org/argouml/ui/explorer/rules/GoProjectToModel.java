@@ -30,7 +30,6 @@ import java.util.Collection;
 
 import org.argouml.application.api.Argo;
 import org.argouml.kernel.Project;
-import org.argouml.ui.AbstractGoRule;
 
 public class GoProjectToModel implements PerspectiveRule {
 

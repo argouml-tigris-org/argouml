@@ -34,11 +34,8 @@
 package org.argouml.uml.diagram.ui;
 
 import org.argouml.uml.ui.*;
-import org.tigris.gef.base.*;
-import org.tigris.gef.presentation.*;
 import java.awt.event.*;
 import java.beans.PropertyVetoException;
-import java.util.*;
 import org.argouml.model.ModelFacade;
 
 /**

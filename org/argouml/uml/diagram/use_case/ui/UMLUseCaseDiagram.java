@@ -74,13 +74,13 @@ public class UMLUseCaseDiagram extends UMLDiagram {
      * <p>Tool to add an actor node.</p>
      */
     protected static Action _actionActor =
-        new CmdCreateNode((Class)ModelFacade.ACTOR, "Actor");
+        new CmdCreateNode(ModelFacade.ACTOR, "Actor");
 
     /**
      * <p>Tool to add a use case node.</p>
      */
     protected static Action _actionUseCase =
-        new CmdCreateNode((Class)ModelFacade.USE_CASE, "UseCase");
+        new CmdCreateNode(ModelFacade.USE_CASE, "UseCase");
 
     /**
      * <p>Tool to create an association between UML artifacts using a
@@ -128,7 +128,7 @@ public class UMLUseCaseDiagram extends UMLDiagram {
         new CmdSetMode(
             ModeCreatePolyEdge.class,
             "edgeClass",
-            (Class)ModelFacade.GENERALIZATION,
+            ModelFacade.GENERALIZATION,
             "Generalization");
 
     /**
@@ -139,7 +139,7 @@ public class UMLUseCaseDiagram extends UMLDiagram {
         new CmdSetMode(
             ModeCreatePolyEdge.class,
             "edgeClass",
-            (Class)ModelFacade.EXTEND,
+            ModelFacade.EXTEND,
             "Extend");
 
     /**
@@ -150,7 +150,7 @@ public class UMLUseCaseDiagram extends UMLDiagram {
         new CmdSetMode(
             ModeCreatePolyEdge.class,
             "edgeClass",
-            (Class)ModelFacade.INCLUDE,
+            ModelFacade.INCLUDE,
             "Include");
 
     /**
@@ -162,7 +162,7 @@ public class UMLUseCaseDiagram extends UMLDiagram {
         new CmdSetMode(
             ModeCreatePolyEdge.class,
             "edgeClass",
-            (Class)ModelFacade.DEPENDENCY,
+            ModelFacade.DEPENDENCY,
             "Dependency");
     /**
      * <p>A static counter of the use case index (used in constructing a unique

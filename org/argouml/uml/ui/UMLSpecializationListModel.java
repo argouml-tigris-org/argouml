@@ -36,18 +36,12 @@ package org.argouml.uml.ui;
 
 import java.util.*;
 
-
-import javax.swing.*;
-
-import org.argouml.ui.*;
 import org.tigris.gef.graph.MutableGraphModel;
 import org.argouml.application.api.Argo;
-import org.argouml.kernel.*;
 import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.foundation.core.CoreFactory;
 import org.argouml.model.uml.foundation.core.CoreHelper;
 import org.argouml.model.uml.modelmanagement.ModelManagementHelper;
-
 
 /**
  * <p>A concrete class to provide the list of model elements that are

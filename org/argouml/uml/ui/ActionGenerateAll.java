@@ -103,7 +103,7 @@ public class ActionGenerateAll extends UMLAction {
     public boolean shouldBeEnabled() {
 	ProjectBrowser pb = ProjectBrowser.getInstance();
 	ArgoDiagram activeDiagram =
-	    ProjectManager.getManager().getCurrentProject().getActiveDiagram();;
+	    ProjectManager.getManager().getCurrentProject().getActiveDiagram();
 	return super.shouldBeEnabled()
 	    && (activeDiagram instanceof UMLClassDiagram);
     }

@@ -27,7 +27,6 @@ package org.argouml.ui.explorer.rules;
 import java.util.Collection;
 
 import org.argouml.model.ModelFacade;
-import org.argouml.ui.AbstractGoRule;
 
 public class GoMachineToTrans implements PerspectiveRule {
 

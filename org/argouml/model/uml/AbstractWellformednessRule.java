@@ -26,8 +26,6 @@ package org.argouml.model.uml;
 
 import org.argouml.application.api.Argo;
 
-import ru.novosoft.uml.MBase;
-
 /**
  * Rule definition for wellformedness of some modelelement. In the UML
  * 1.3 spec so called wellformednessrules are defined. This class is

@@ -28,8 +28,6 @@ package org.argouml.ui.explorer.rules;
 import java.util.Collection;
 import org.argouml.model.ModelFacade;
 
-import org.argouml.ui.AbstractGoRule;
-
 /**
  * Go rule for the package perspective to show the comments belonging to some
  * modelelement.

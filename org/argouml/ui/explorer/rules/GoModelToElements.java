@@ -28,7 +28,6 @@ import org.argouml.model.ModelFacade;
 import java.util.Collection;
 
 import org.argouml.application.api.Argo;
-import org.argouml.ui.AbstractGoRule;
 
 public class GoModelToElements implements PerspectiveRule {
 

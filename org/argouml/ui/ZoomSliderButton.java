@@ -179,7 +179,7 @@ public class ZoomSliderButton extends PopupButton {
         updateCurrentValueLabel();
                 
         //if (!source.getValueIsAdjusting()) {
-        double zoomPercentage = (double) _slider.getValue() / 100d;
+        double zoomPercentage = _slider.getValue() / 100d;
                 
         Editor ed = Globals.curEditor();
         if (ed == null || zoomPercentage <= 0.0) {

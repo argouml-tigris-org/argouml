@@ -24,7 +24,6 @@
 
 package org.argouml.uml.diagram.ui;
 
-import org.argouml.uml.diagram.static_structure.ui.*;
 import org.argouml.ui.*;
 import org.argouml.uml.ui.UMLAction;
 import org.tigris.gef.base.*;

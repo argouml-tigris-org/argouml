@@ -458,7 +458,7 @@ public class ClassdiagramLayouter implements Layouter {
                         }
                         xOffset += ((downlinks.size() - 1) * getHGap());
                         bumperX =
-			    (int) (xOffset / 2) - (int) (currentWidth / 2);
+			    (int) (xOffset / 2) - (currentWidth / 2);
                     }
                     curNode.setLocation(
 			    new Point(Math.max(xPos + bumperX, 

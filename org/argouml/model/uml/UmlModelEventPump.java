@@ -67,8 +67,6 @@ import ru.novosoft.uml.MFactoryImpl;
  */
 public final class UmlModelEventPump implements MElementListener {
 
-    private Logger _cat = Logger.getLogger(UmlModelEventPump.class);
-
     public static final String REMOVE = "remove";
 
     private static UmlModelEventPump _instance = new UmlModelEventPump();
@@ -185,7 +183,7 @@ public final class UmlModelEventPump implements MElementListener {
         while (it.hasNext()) {
             MBase base = (MBase) it.next();
             for (int i = 0; i < keys.length; i++) {
-                _listenerMap.put(base, keys[i], (MElementListener) listener);
+                _listenerMap.put(base, keys[i], listener);
             }
         }
         // add the class to the 'interested classes list' so the listener is 
@@ -449,9 +447,7 @@ public final class UmlModelEventPump implements MElementListener {
 					  eventNames[i]);
             for (int j = 0; j < keys.length; j++) {
                 _listenerMap.remove(
-				    (MBase) modelElement,
-				    keys[j],
-				    (MElementListener) listener);
+				    modelElement, keys[j], (MElementListener) listener);
             }
         }
     }
@@ -503,9 +499,7 @@ public final class UmlModelEventPump implements MElementListener {
             _definition.getEventTypes(modelElement.getClass(), eventName);
         for (int j = 0; j < keys.length; j++) {
             _listenerMap.remove(
-				(MBase) modelElement,
-				keys[j],
-				(MElementListener) listener);
+				modelElement, keys[j], (MElementListener) listener);
         }
 
     }

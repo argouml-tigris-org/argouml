@@ -23,12 +23,10 @@
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 package org.argouml.uml.ui;
-import java.text.*;
 import javax.swing.event.*;
 import javax.swing.*;
 
 import org.apache.log4j.Logger;
-import java.lang.reflect.*;
 import org.argouml.model.ModelFacade;
 import ru.novosoft.uml.MElementEvent;
 

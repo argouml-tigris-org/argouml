@@ -25,11 +25,6 @@
 package org.argouml.ui.explorer;
 
 import javax.swing.KeyStroke;
-import javax.swing.InputMap;
-import javax.swing.ActionMap;
-import javax.swing.AbstractAction;
-
-import org.argouml.ui.targetmanager.TargetManager;
 
 import org.argouml.uml.diagram.ui.ActionSaveDiagramToClipboard;
 

@@ -56,7 +56,7 @@ public class CrInterfaceOperOnly extends CrUML {
 	for (Iterator iter = sf.iterator(); iter.hasNext(); ) {
 	    if (ModelFacade.isAStructuralFeature(iter.next()))
 		return PROBLEM_FOUND;
-	};
+	}
 	return NO_PROBLEM;
     }
 

@@ -64,7 +64,7 @@ public class CrTooManyAttr extends CrUML {
 	for (Iterator iter = str.iterator(); iter.hasNext();) {
 	    if (ModelFacade.isAStructuralFeature(iter.next()))
 		n++;
-	};
+	}
 	if (n <= threshold) return NO_PROBLEM;
 	return PROBLEM_FOUND;
     }

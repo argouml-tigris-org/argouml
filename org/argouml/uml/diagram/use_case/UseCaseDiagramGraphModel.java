@@ -408,8 +408,8 @@ public class UseCaseDiagramGraphModel
                 return false;
             }
 
-            end0 = ((Object[]) clients.toArray())[0];
-            end1 = ((Object[]) suppliers.toArray())[0];
+            end0 = (clients.toArray())[0];
+            end1 = (suppliers.toArray())[0];
         }
 
         // Both ends must be defined and nodes that are on the graph already.

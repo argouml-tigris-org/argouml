@@ -595,12 +595,12 @@ public class StateMachinesFactory extends AbstractUmlModelFactory {
         Collection col = elem.getIncomings();
         Iterator it = col.iterator();
         while (it.hasNext()) {
-            UmlFactory.getFactory().delete((MTransition) it.next());
+            UmlFactory.getFactory().delete(it.next());
         }
         col = elem.getOutgoings();
         it = col.iterator();
         while (it.hasNext()) {
-            UmlFactory.getFactory().delete((MTransition) it.next());
+            UmlFactory.getFactory().delete(it.next());
         }
     }
     

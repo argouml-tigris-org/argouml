@@ -175,17 +175,14 @@ public class FigAssociation extends FigEdgeModelElement {
 	if (org.argouml.model.ModelFacade.isAAssociation(association)) {
 	    Collection connections = ModelFacade.getConnections(association);
 	    for (int i = 0; i < connections.size(); i++) {
-		Object assEnd =
-		    (((Object[]) connections.toArray())[i]);
+		Object assEnd = (connections.toArray())[i];
 		UmlModelEventPump.getPump().removeModelEventListener(this, assEnd);
 		UmlModelEventPump.getPump().addModelEventListener(this, assEnd);
 	    }
 	    UmlModelEventPump.getPump().removeModelEventListener(this, association);
 	    UmlModelEventPump.getPump().addModelEventListener(this, association);
-	    Object assEnd1 = 
-		((Object[]) connections.toArray())[0];
-	    Object assEnd2 =
-		((Object[]) connections.toArray())[1];
+	    Object assEnd1 = (connections.toArray())[0];
+	    Object assEnd2 = (connections.toArray())[1];
 	    FigNode destNode =
 		(FigNode) getLayer().presentationFor(ModelFacade.getType(assEnd1));
 	    FigNode srcNode =
@@ -215,13 +212,11 @@ public class FigAssociation extends FigEdgeModelElement {
 	if (conn == null || conn.size() == 0) return;
 
 	if (ft == _srcRole) {
-	    Object srcAE =
-		((Object[]) conn.toArray())[0];
+	    Object srcAE = (conn.toArray())[0];
 	    ModelFacade.setName(srcAE, _srcRole.getText());
 	}
 	if (ft == _destRole) {
-	    Object destAE =
-		((Object[]) conn.toArray())[1];
+	    Object destAE = (conn.toArray())[1];
 	    ModelFacade.setName(destAE, _destRole.getText());
 	}
 	// TODO: parse multiplicities
@@ -258,9 +253,9 @@ public class FigAssociation extends FigEdgeModelElement {
 	if (associationEnd == null || getLayer() == null) return;
     
 	Object ae0 =
-	    ((Object[]) (ModelFacade.getConnections(associationEnd)).toArray())[0];//MAssociationEnd
+	    ((ModelFacade.getConnections(associationEnd)).toArray())[0];//MAssociationEnd
 	Object ae1 =
-	    ((Object[]) (ModelFacade.getConnections(associationEnd)).toArray())[1];//MAssociationEnd
+	    ((ModelFacade.getConnections(associationEnd)).toArray())[1];//MAssociationEnd
 	updateEnd(_srcMult, _srcRole, _srcOrdering, ae0);
 	updateEnd(_destMult, _destRole, _destOrdering, ae1);
     

@@ -385,7 +385,7 @@ public class CollaborationsFactory extends AbstractUmlModelFactory {
     public void deleteAssociationRole(MAssociationRole elem) {
         Iterator it = elem.getMessages().iterator();
         while (it.hasNext()) {
-            UmlFactory.getFactory().delete((MMessage)it.next());
+            UmlFactory.getFactory().delete(it.next());
         }
     }
 

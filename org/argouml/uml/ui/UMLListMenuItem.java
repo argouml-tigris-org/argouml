@@ -23,14 +23,12 @@
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 package org.argouml.uml.ui;
-import javax.swing.event.*;
 import javax.swing.*;
 
 import org.apache.log4j.Logger;
 
 import java.lang.reflect.*;
 import java.awt.event.*;
-import java.awt.*;
 
 /**
  *   This class extends JMenuItem to invoke a method upon selection.

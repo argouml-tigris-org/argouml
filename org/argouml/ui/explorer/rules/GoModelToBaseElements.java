@@ -30,8 +30,6 @@ import org.apache.log4j.Logger;
 import org.argouml.application.api.Argo;
 import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.foundation.core.CoreHelper;
-import org.argouml.ui.AbstractGoRule;
-
 
 public class GoModelToBaseElements implements PerspectiveRule {
     protected static Logger cat =

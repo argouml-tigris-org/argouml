@@ -64,20 +64,20 @@ public class UMLCollaborationDiagram extends UMLDiagram {
     // actions for toolbar
 
     protected static Action _actionClassifierRole =
-        new CmdCreateNode((Class)ModelFacade.CLASSIFIER_ROLE, "ClassifierRole");
+        new CmdCreateNode(ModelFacade.CLASSIFIER_ROLE, "ClassifierRole");
 
     protected static Action _actionAssoc =
         new CmdSetMode(
             ModeCreatePolyEdge.class,
             "edgeClass",
-            (Class)ModelFacade.ASSOCIATION_ROLE,
+            ModelFacade.ASSOCIATION_ROLE,
             "AssociationRole");
 
     protected static Action _actionGeneralize =
         new CmdSetMode(
             ModeCreatePolyEdge.class,
             "edgeClass",
-            (Class)ModelFacade.GENERALIZATION,
+            ModelFacade.GENERALIZATION,
             "Generalization");
 
     protected static Action _actionAssociation =
@@ -115,7 +115,7 @@ public class UMLCollaborationDiagram extends UMLDiagram {
         new CmdSetMode(
             ModeCreatePolyEdge.class,
             "edgeClass",
-            (Class)ModelFacade.DEPENDENCY,
+            ModelFacade.DEPENDENCY,
             "Dependency");
 
     ////////////////////////////////////////////////////////////////

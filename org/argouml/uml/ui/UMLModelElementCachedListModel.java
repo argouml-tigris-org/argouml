@@ -24,10 +24,7 @@
 
 package org.argouml.uml.ui;
 
-import javax.swing.*;
 import java.util.*;
-import java.awt.*;
-import java.lang.reflect.*;
 import ru.novosoft.uml.MElementEvent;
 import ru.novosoft.uml.foundation.core.MModelElement;
 
@@ -222,7 +219,6 @@ abstract public class UMLModelElementCachedListModel extends UMLModelElementList
             collection = createCollection(items.size());
             Iterator iter = items.iterator();
             Object item;
-            int i = 0;
             while (iter.hasNext()) {
                 item = iter.next();
                 if (isProperClass(item)) {

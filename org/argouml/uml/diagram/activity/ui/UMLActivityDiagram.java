@@ -62,7 +62,7 @@ public class UMLActivityDiagram extends UMLDiagram {
     // actions for toolbar
 
     protected static Action _actionState =
-        new CmdCreateNode((Class)ModelFacade.ACTION_STATE, "ActionState");
+        new CmdCreateNode(ModelFacade.ACTION_STATE, "ActionState");
 
     protected static Action _actionStartPseudoState;
     protected static Action _actionFinalPseudoState;
@@ -74,7 +74,7 @@ public class UMLActivityDiagram extends UMLDiagram {
         new CmdSetMode(
             ModeCreatePolyEdge.class,
             "edgeClass",
-            (Class)ModelFacade.TRANSITION,
+            ModelFacade.TRANSITION,
             "Transition");
 
     ////////////////////////////////////////////////////////////////
@@ -96,7 +96,7 @@ public class UMLActivityDiagram extends UMLDiagram {
                     "Initial");
 
             _actionFinalPseudoState =
-                new CmdCreateNode((Class)ModelFacade.FINALSTATE, "FinalState");
+                new CmdCreateNode(ModelFacade.FINALSTATE, "FinalState");
 
             _actionBranchPseudoState =
                 new ActionCreatePseudostate(

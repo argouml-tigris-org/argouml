@@ -4536,7 +4536,7 @@ public class ModelFacade {
             ((MAttributeLink)handle).setValue((MInstance)value);
         }
         if (handle instanceof MExtension) {
-            ((MExtension)handle).setValue((Object)value);
+            ((MExtension)handle).setValue(value);
         }
         if (handle instanceof MTaggedValue) {
             ((MTaggedValue)handle).setValue((String)value);
@@ -4926,7 +4926,7 @@ public class ModelFacade {
         Object target,
         Collection extensionPoints) {
         if (target instanceof MUseCase && extensionPoints instanceof List) {
-            ((MUseCase)target).setExtensionPoints((List)extensionPoints);
+            ((MUseCase)target).setExtensionPoints(extensionPoints);
             return;
         }
         throw new IllegalArgumentException(

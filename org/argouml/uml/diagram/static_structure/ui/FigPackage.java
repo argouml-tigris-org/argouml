@@ -31,7 +31,6 @@ package org.argouml.uml.diagram.static_structure.ui;
 
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
@@ -56,8 +55,6 @@ import org.tigris.gef.base.Globals;
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.FigRect;
 import org.tigris.gef.presentation.FigText;
-import ru.novosoft.uml.foundation.extension_mechanisms.MStereotype;
-import ru.novosoft.uml.model_management.MPackage;
 
 /** Class to display graphics for a UML package in a class diagram. */
 
@@ -366,7 +363,7 @@ public class FigPackage extends FigNodeModelElement {
             }
         } else {
             /* we got stereotype */
-            _stereo.setText(Notation.generateStereotype(this, (MStereotype)stereo));
+            _stereo.setText(Notation.generateStereotype(this, stereo));
 
             if (!_showStereotype) {
                 _stereoLineBlinder.setDisplayed(false);
@@ -552,9 +549,9 @@ public class FigPackage extends FigNodeModelElement {
 						     "isAbstract",
 						     "isAbstract",
 						     "setAbstract",
-						     (MPackage)mpackage));
-        modifierMenu.addCheckItem(new ActionModifier("Leaf", "isLeaf", "isLeaf", "setLeaf", (MPackage)mpackage));
-        modifierMenu.addCheckItem(new ActionModifier("Root", "isRoot", "isRoot", "setRoot", (MPackage)mpackage));
+						     mpackage));
+        modifierMenu.addCheckItem(new ActionModifier("Leaf", "isLeaf", "isLeaf", "setLeaf", mpackage));
+        modifierMenu.addCheckItem(new ActionModifier("Root", "isRoot", "isRoot", "setRoot", mpackage));
 
         popUpActions.insertElementAt(modifierMenu, popUpActions.size() - 2);
 

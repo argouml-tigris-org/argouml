@@ -23,12 +23,9 @@
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 package org.argouml.uml.ui;
-import javax.swing.event.*;
 import javax.swing.*;
-import java.lang.reflect.*;
 import java.awt.event.*;
 import java.awt.*;
-import javax.swing.plaf.metal.MetalLookAndFeel;
 
 import org.argouml.ui.LookAndFeelMgr;
 
@@ -43,12 +40,10 @@ import ru.novosoft.uml.MElementEvent;
 public class UMLList extends JList implements UMLUserInterfaceComponent, MouseListener {
 
     private UMLModelElementListModel _umlListModel;
-    private boolean _navigate;
 
     public UMLList(UMLModelElementListModel listModel, boolean navigate) {
         super(listModel);
         _umlListModel = listModel;
-        _navigate = navigate;
         setFont(LookAndFeelMgr.getInstance().getSmallFont());
 
         if (navigate) {

@@ -53,7 +53,7 @@ public class ActionAddAssociation extends CmdSetMode {
      * @param name the action description
      */
     public ActionAddAssociation(Object aggregationKind, boolean unidirectional, String name) {
-        super(ModeCreatePolyEdge.class, "edgeClass", (Class)ModelFacade.ASSOCIATION, name);
+        super(ModeCreatePolyEdge.class, "edgeClass", ModelFacade.ASSOCIATION, name);
         _modeArgs.put("aggregation", aggregationKind);
         _modeArgs.put("unidirectional", new Boolean(unidirectional));
     }

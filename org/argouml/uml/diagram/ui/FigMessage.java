@@ -47,8 +47,6 @@ import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigPoly;
 import org.tigris.gef.presentation.FigText;
 
-import ru.novosoft.uml.behavior.collaborations.MMessage;
-
 /** Class to display graphics for a UML collaboration in a diagram. */
 
 public class FigMessage extends FigNodeModelElement {
@@ -212,7 +210,7 @@ public class FigMessage extends FigNodeModelElement {
 	if (message != null && ft == _name) {
 	    String s = ft.getText();
 	    try {
-		ParserDisplay.SINGLETON.parseMessage((MMessage)message, s);
+		ParserDisplay.SINGLETON.parseMessage(message, s);
 		ProjectBrowser.getInstance().getStatusBar().showStatus("");
 	    } catch (ParseException pe) {
 		ProjectBrowser.getInstance().getStatusBar().showStatus("Error: "
@@ -290,7 +288,7 @@ public class FigMessage extends FigNodeModelElement {
     protected void updateNameText() {
         Object mes =  getOwner();
         if (mes == null) return;
-        _name.setText(Notation.generate(this, (MMessage)mes));
+        _name.setText(Notation.generate(this, mes));
     }
 
     /**

@@ -29,7 +29,7 @@ import java.util.Vector;
 
 import javax.swing.Action;
 
-import org.argouml.application.api.Argo;
+import org.apache.log4j.Logger;
 import org.argouml.i18n.Translator;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.tigris.gef.base.Editor;
@@ -47,7 +47,10 @@ public class ActionDeleteFromDiagram extends UMLChangeAction {
     ////////////////////////////////////////////////////////////////
     // static variables
 
-    public static ActionDeleteFromDiagram SINGLETON =
+    /** logger */
+    private static Logger cat = Logger.getLogger(Translator.class);
+
+	public static ActionDeleteFromDiagram SINGLETON =
         new ActionDeleteFromDiagram();
 
     ////////////////////////////////////////////////////////////////
@@ -57,7 +60,7 @@ public class ActionDeleteFromDiagram extends UMLChangeAction {
         super("action.remove-from-diagram");
         String localMnemonic = Translator.localize("action.remove-from-diagram.mnemonic");
         if (localMnemonic != null && localMnemonic.length() == 1) {
-            putValue(Action.MNEMONIC_KEY, new Integer((int) localMnemonic.charAt(0)));
+            putValue(Action.MNEMONIC_KEY, new Integer(localMnemonic.charAt(0)));
         }                
     }
 
@@ -88,8 +91,7 @@ public class ActionDeleteFromDiagram extends UMLChangeAction {
                 TargetManager.getInstance().removeHistoryElement(f);
             }
         } catch (Exception ex) {
-            Argo.log.error(
-                ex);
+            cat.error(ex);
         }
     }
 

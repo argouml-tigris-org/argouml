@@ -26,9 +26,9 @@
 
 package org.argouml.uml.reveng.java;
 
+import org.apache.log4j.Logger;
 import org.argouml.kernel.*;
 import org.argouml.uml.reveng.*;
-import org.argouml.application.api.*;
 import org.argouml.util.FileFilters;
 import org.argouml.util.SuffixFilter;
 
@@ -45,6 +45,8 @@ import java.io.*;
  */
 public class JavaImport extends FileImportSupport {
 
+	/** logger */
+	private static Logger cat = Logger.getLogger(JavaImport.class);
     /**
      * This method parses 1 Java file.
      *
@@ -76,7 +78,7 @@ public class JavaImport extends FileImportSupport {
 
 	    // Print the name of the current file, so we can associate
 	    // exceptions to the file.
-	    Argo.log.info("Parsing " + f.getAbsolutePath());
+	    cat.info("Parsing " + f.getAbsolutePath());
 
 	    // start parsing at the compilationUnit rule
 	    parser.compilationUnit(modeller, lexer);

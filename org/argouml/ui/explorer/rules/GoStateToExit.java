@@ -28,8 +28,6 @@ import java.util.Collection;
 import java.util.Vector;
 import org.argouml.model.ModelFacade;
 
-import org.argouml.ui.AbstractGoRule;
-
 /**
  * 
  * @author jaap.branderhorst@xs4all.nl	

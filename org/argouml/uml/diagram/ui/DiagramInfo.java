@@ -31,7 +31,6 @@ package org.argouml.uml.diagram.ui;
 import java.awt.BorderLayout;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
-import javax.swing.plaf.metal.MetalLookAndFeel;
 
 import org.argouml.ui.LookAndFeelMgr;
 import org.argouml.uml.diagram.activity.ui.UMLActivityDiagram;

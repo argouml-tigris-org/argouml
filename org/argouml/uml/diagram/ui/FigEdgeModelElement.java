@@ -92,7 +92,7 @@ import org.tigris.gef.presentation.Handle;
 
 import ru.novosoft.uml.MElementEvent;
 import ru.novosoft.uml.MElementListener;
-import ru.novosoft.uml.foundation.extension_mechanisms.MStereotype;
+
 
 /** Abstract class to display diagram arcs for UML ModelElements that
  *  look like arcs and that have editiable names. */
@@ -487,7 +487,7 @@ public abstract class FigEdgeModelElement
         if (stereoStr.length() == 0)
             _stereo.setText("");
         else {
-            _stereo.setText(Notation.generateStereotype(this, (MStereotype)stereotype));
+            _stereo.setText(Notation.generateStereotype(this, stereotype));
         }
     }
 
@@ -629,8 +629,7 @@ public abstract class FigEdgeModelElement
             if (f.hit(r))
                 return true;
         }
-        Rectangle bigBounds = getBounds();
-        /*
+        /*Rectangle bigBounds = getBounds();
 	  FigRect rect = new FigRect(bigBounds.x, bigBounds.y,
 	  bigBounds.width, bigBounds.height); if (rect.hit(r)) return
 	  true;
@@ -715,7 +714,7 @@ public abstract class FigEdgeModelElement
                 return false;
             }
             if (true) {
-            };
+            }
             if (newSourceFig != null && newSourceFig != currentSourceFig) {
                 setSourceFigNode((FigNode) newSourceFig);
                 setSourcePortFig(newSourceFig);

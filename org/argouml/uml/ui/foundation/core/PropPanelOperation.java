@@ -158,7 +158,7 @@ public class PropPanelOperation extends PropPanelModelElement {
 								       mclass,
 								       "getOwnerScope",
 								       "setOwnerScope",
-								       (Class)ModelFacade.SCOPEKIND,
+								       ModelFacade.SCOPEKIND,
 								       ModelFacade.CLASSIFIER_SCOPEKIND,
 								       ModelFacade.INSTANCE_SCOPEKIND)));
         addField(Argo.localize("UMLMenu", "label.modifiers"), modPanel);
@@ -175,7 +175,7 @@ public class PropPanelOperation extends PropPanelModelElement {
 								 mclass,
 								 "getConcurrency",
 								 "setConcurrency",
-								 (Class)ModelFacade.CALLCONCURRENCYKIND,
+								 ModelFacade.CALLCONCURRENCYKIND,
 								 ModelFacade.SEQUENTIAL_CONCURRENCYKIND,
 								 null));
         group.add(sequential);
@@ -189,7 +189,7 @@ public class PropPanelOperation extends PropPanelModelElement {
 								 mclass,
 								 "getConcurrency",
 								 "setConcurrency",
-								 (Class)ModelFacade.CALLCONCURRENCYKIND,
+								 ModelFacade.CALLCONCURRENCYKIND,
 								 ModelFacade.GUARDED_CONCURRENCYKIND,
 								 null));
         group.add(synchd);
@@ -203,7 +203,7 @@ public class PropPanelOperation extends PropPanelModelElement {
 								 mclass,
 								 "getConcurrency",
 								 "setConcurrency",
-								 (Class)ModelFacade.CALLCONCURRENCYKIND,
+								 ModelFacade.CALLCONCURRENCYKIND,
 								 ModelFacade.CONCURRENT_CONCURRENCYKIND,
 								 null));
         group.add(concur);

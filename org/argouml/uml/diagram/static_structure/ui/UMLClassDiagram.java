@@ -53,46 +53,46 @@ public class UMLClassDiagram extends UMLDiagram {
     // TODO: should these be static?
 
     protected static Action _actionClass = new RadioAction(
-	new CmdCreateNode((Class)ModelFacade.CLASS, "Class"));
+	new CmdCreateNode(ModelFacade.CLASS, "Class"));
 
     protected static Action _actionObject = new RadioAction(
-	new CmdCreateNode((Class)ModelFacade.INSTANCE, "Instance"));
+	new CmdCreateNode(ModelFacade.INSTANCE, "Instance"));
 
     protected static Action _actionInterface = new RadioAction(
-	new CmdCreateNode((Class)ModelFacade.INTERFACE, "Interface"));
+	new CmdCreateNode(ModelFacade.INTERFACE, "Interface"));
 
     protected static Action _actionDepend = new RadioAction(
 	new CmdSetMode(ModeCreatePolyEdge.class, "edgeClass",
-                    (Class)ModelFacade.DEPENDENCY, "Dependency"));
+                    ModelFacade.DEPENDENCY, "Dependency"));
 
     protected static Action _actionPermission = new RadioAction(
 	new CmdSetMode(ModeCreatePolyEdge.class, "edgeClass", 
-                    (Class)ModelFacade.PERMISSION, "Permission"));
+                    ModelFacade.PERMISSION, "Permission"));
 
     protected static Action _actionUsage = new RadioAction(
 	new CmdSetMode(ModeCreatePolyEdge.class, "edgeClass",
-                    (Class)ModelFacade.USAGE, "Usage"));
+                    ModelFacade.USAGE, "Usage"));
 
     protected static Action _actionLink = new RadioAction(
 	new CmdSetMode(ModeCreatePolyEdge.class, "edgeClass",
-                    (Class)ModelFacade.LINK, "Link"));
+                    ModelFacade.LINK, "Link"));
 
     protected static Action _actionGeneralize = new RadioAction(
 	new CmdSetMode(ModeCreatePolyEdge.class, "edgeClass",
-                    (Class)ModelFacade.GENERALIZATION, "Generalization"));
+                    ModelFacade.GENERALIZATION, "Generalization"));
 
     protected static Action _actionRealize = new RadioAction(
 	new CmdSetMode(ModeCreatePolyEdge.class, "edgeClass",
-                    (Class)ModelFacade.ABSTRACTION, "Realization"));
+                    ModelFacade.ABSTRACTION, "Realization"));
 
     protected static Action _actionPackage = new RadioAction(
-	new CmdCreateNode((Class)ModelFacade.PACKAGE, "Package"));
+	new CmdCreateNode(ModelFacade.PACKAGE, "Package"));
 
     protected static Action _actionModel = new RadioAction(
-	new CmdCreateNode((Class)ModelFacade.MODEL, "Model"));
+	new CmdCreateNode(ModelFacade.MODEL, "Model"));
 
     protected static Action _actionSubsystem = new RadioAction(
-	new CmdCreateNode((Class)ModelFacade.SUBSYSTEM, "Subsystem"));
+	new CmdCreateNode(ModelFacade.SUBSYSTEM, "Subsystem"));
 
     protected static Action _actionAssociation = new RadioAction(
 	new ActionAddAssociation(ModelFacade.NONE_AGGREGATIONKIND,

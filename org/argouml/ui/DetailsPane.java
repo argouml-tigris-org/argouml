@@ -81,7 +81,9 @@ public class DetailsPane
 	       TargetListener
 {
 
-    protected static Logger cat = Logger.getLogger(DetailsPane.class);
+    /** logger */
+    private static Logger cat = Logger.getLogger(DetailsPane.class);
+
     ////////////////////////////////////////////////////////////////
     // constants
 
@@ -157,7 +159,7 @@ public class DetailsPane
      * registers listeners.
      */
     public DetailsPane(String pane, Orientation orientation) {
-        Argo.log.info("making DetailsPane(" + pane + ")");
+        cat.info("making DetailsPane(" + pane + ")");
 
         this.orientation = orientation;
         ConfigLoader.loadTabs(_tabPanels, pane, orientation);

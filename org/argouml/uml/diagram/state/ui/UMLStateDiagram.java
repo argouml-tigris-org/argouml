@@ -36,7 +36,6 @@ import javax.swing.Action;
 
 import org.apache.log4j.Logger;
 
-import org.argouml.application.api.Argo;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.UmlModelEventPump;
@@ -53,7 +52,8 @@ import org.tigris.gef.base.ModeCreatePolyEdge;
 import ru.novosoft.uml.MElementEvent;
 
 public class UMLStateDiagram extends UMLDiagram {
-    private Logger _cat = Logger.getLogger(UMLStateDiagram.class);
+	/** logger */
+	private static Logger cat = Logger.getLogger(UMLStateDiagram.class);
 
     /**
      * this diagram needs to be deleted when its statemachine is deleted.
@@ -64,10 +64,10 @@ public class UMLStateDiagram extends UMLDiagram {
     // actions for toolbar
 
     protected static Action _actionState =
-        new CmdCreateNode((Class)ModelFacade.STATE, "State");
+        new CmdCreateNode(ModelFacade.STATE, "State");
 
     protected static Action _actionCompositeState =
-        new CmdCreateNode((Class)ModelFacade.COMPOSITESTATE, "CompositeState");
+        new CmdCreateNode(ModelFacade.COMPOSITESTATE, "CompositeState");
 
     // start state, end state, forks, joins, etc.
     protected static Action _actionStartPseudoState =
@@ -76,7 +76,7 @@ public class UMLStateDiagram extends UMLDiagram {
             "Initial");
 
     protected static Action _actionFinalPseudoState =
-        new CmdCreateNode((Class)ModelFacade.FINALSTATE, "FinalState");
+        new CmdCreateNode(ModelFacade.FINALSTATE, "FinalState");
 
     protected static Action _actionBranchPseudoState =
         new ActionCreatePseudostate(
@@ -103,7 +103,7 @@ public class UMLStateDiagram extends UMLDiagram {
         new CmdSetMode(
             ModeCreatePolyEdge.class,
             "edgeClass",
-            (Class)ModelFacade.TRANSITION,
+            ModelFacade.TRANSITION,
             "Transition");
 
     ////////////////////////////////////////////////////////////////
@@ -137,13 +137,12 @@ public class UMLStateDiagram extends UMLDiagram {
         }
         if (namespace != null && ModelFacade.getName(namespace) != null) {
             String name = null, diag_name = ModelFacade.getName(namespace);
-            Object[] args = { name };
             int number =
                 (ModelFacade.getBehaviors(namespace)) == null
                     ? 0
                     : ModelFacade.getBehaviors(namespace).size();
             name = diag_name + " " + (number++);
-            Argo.log.info("UMLStateDiagram constructor: String name = " + name);
+            cat.info("UMLStateDiagram constructor: String name = " + name);
             try {
                 setName(name);
             } catch (PropertyVetoException pve) {}

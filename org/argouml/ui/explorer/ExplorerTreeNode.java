@@ -28,8 +28,6 @@ import java.util.*;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 
-import org.argouml.model.ModelFacade;
-
 /**
  * Ensures that explorer tree nodes have a default ordering.
  *

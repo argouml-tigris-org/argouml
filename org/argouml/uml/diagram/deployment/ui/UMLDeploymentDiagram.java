@@ -52,47 +52,45 @@ public class UMLDeploymentDiagram extends UMLDiagram {
     // actions for toolbar
 
     protected static Action _actionMNode =
-        new CmdCreateNode((Class)ModelFacade.NODE, "Node");
+        new CmdCreateNode(ModelFacade.NODE, "Node");
 
     protected static Action _actionMNodeInstance =
-        new CmdCreateNode((Class)ModelFacade.NODE_INSTANCE, "NodeInstance");
+        new CmdCreateNode(ModelFacade.NODE_INSTANCE, "NodeInstance");
 
     protected static Action _actionMComponent =
-        new CmdCreateNode((Class)ModelFacade.COMPONENT, "Component");
+        new CmdCreateNode(ModelFacade.COMPONENT, "Component");
 
     protected static Action _actionMComponentInstance =
-        new CmdCreateNode(
-            (Class)ModelFacade.COMPONENT_INSTANCE,
-            "ComponentInstance");
+        new CmdCreateNode(ModelFacade.COMPONENT_INSTANCE, "ComponentInstance");
 
     protected static Action _actionMClass =
-        new CmdCreateNode((Class)ModelFacade.CLASS, "Class");
+        new CmdCreateNode(ModelFacade.CLASS, "Class");
 
     protected static Action _actionMInterface =
-        new CmdCreateNode((Class)ModelFacade.INTERFACE, "Interface");
+        new CmdCreateNode(ModelFacade.INTERFACE, "Interface");
 
     protected static Action _actionMObject =
-        new CmdCreateNode((Class)ModelFacade.OBJECT, "Object");
+        new CmdCreateNode(ModelFacade.OBJECT, "Object");
 
     protected static Action _actionMDependency =
         new CmdSetMode(
             ModeCreatePolyEdge.class,
             "edgeClass",
-            (Class)ModelFacade.DEPENDENCY,
+            ModelFacade.DEPENDENCY,
             "Dependency");
 
     protected static Action _actionMAssociation =
         new CmdSetMode(
             ModeCreatePolyEdge.class,
             "edgeClass",
-            (Class)ModelFacade.ASSOCIATION,
+            ModelFacade.ASSOCIATION,
             "Association");
 
     protected static Action _actionMLink =
         new CmdSetMode(
             ModeCreatePolyEdge.class,
             "edgeClass",
-            (Class)ModelFacade.LINK,
+            ModelFacade.LINK,
             "Link");
 
     protected static Action _actionAssociation =

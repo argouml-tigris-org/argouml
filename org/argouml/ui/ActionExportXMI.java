@@ -53,7 +53,8 @@ import org.argouml.uml.ui.UMLAction;
  */
 public final class ActionExportXMI extends UMLAction implements PluggableMenu {
 
-    private Logger log = Logger.getLogger(this.getClass());
+    /** logger */
+    private static Logger cat = Logger.getLogger(ActionExportXMI.class);
 
     private static ActionExportXMI instance = new ActionExportXMI();
 
@@ -113,9 +114,9 @@ public final class ActionExportXMI extends UMLAction implements PluggableMenu {
      * @see org.argouml.application.api.ArgoModule#initializeModule()
      */
     public boolean initializeModule() {
-        Argo.log.info("+---------------------------------+");
-        Argo.log.info("| Export XMI plugin enabled!      |");
-        Argo.log.info("+---------------------------------+");
+        cat.info("+---------------------------------+");
+        cat.info("| Export XMI plugin enabled!      |");
+        cat.info("+---------------------------------+");
 
         return true;
     }
@@ -235,7 +236,7 @@ public final class ActionExportXMI extends UMLAction implements PluggableMenu {
 						       "optionpane.save-project-general-exception-title"),
 					       JOptionPane.ERROR_MESSAGE);
 			
-                        log.error(sMessage, ex);
+                        cat.error(sMessage, ex);
                     }
                 }
             }

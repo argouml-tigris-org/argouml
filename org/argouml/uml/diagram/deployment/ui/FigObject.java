@@ -44,7 +44,6 @@ import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigRect;
 import org.tigris.gef.presentation.FigText;
-import ru.novosoft.uml.behavior.common_behavior.MObject;
 
 /** Class to display graphics for a UML Object in a diagram. */
 
@@ -158,7 +157,7 @@ public class FigObject extends FigNodeModelElement {
 	    if (s.length() > 0 && (s.endsWith(":"))) {
 		s = s.substring(0, (s.length() - 1));
 	    }
-	    ParserDisplay.SINGLETON.parseObject((MObject)obj, s);
+	    ParserDisplay.SINGLETON.parseObject(obj, s);
 	}
     }
 

@@ -47,7 +47,8 @@ import org.argouml.ui.ProjectBrowser;
  * @stereotype singleton
  */
 public class ActionSaveProject extends UMLAction {
-    private Logger log = Logger.getLogger(this.getClass());
+	/** logger */
+	private static Logger cat = Logger.getLogger(ActionSaveProject.class);
   
     ////////////////////////////////////////////////////////////////
     // static variables
@@ -93,7 +94,7 @@ public class ActionSaveProject extends UMLAction {
 	try {
 
 	    if (file.exists() && !overwrite) {
-		//Argo.log.info ("Are you sure you want to overwrite "
+		//cat.info ("Are you sure you want to overwrite "
 		//+ fullpath + "?");
 		String sConfirm = 
 		    MessageFormat.format(Argo.localize("Actions",
@@ -126,7 +127,7 @@ public class ActionSaveProject extends UMLAction {
 							 "label.save-project-status-wrote"),
 					   new Object[] {p.getURL()} );
 	    pb.showStatus (sStatus);
-	    Argo.log.debug ("setting most recent project file to " +
+	    cat.debug ("setting most recent project file to " +
 			    file.getCanonicalPath());
 	    Configuration.setString(Argo.KEY_MOST_RECENT_PROJECT_FILE, file.getCanonicalPath());
       
@@ -143,7 +144,7 @@ public class ActionSaveProject extends UMLAction {
 							"optionpane.save-project-file-not-found-title"),
 					  JOptionPane.ERROR_MESSAGE);
       
-	    log.error(sMessage, fnfe);
+	    cat.error(sMessage, fnfe);
 	}
 	catch (IOException ioe) {
 	    String sMessage = 
@@ -156,7 +157,7 @@ public class ActionSaveProject extends UMLAction {
 							"optionpane.save-project-io-exception-title"),
 					  JOptionPane.ERROR_MESSAGE);
       
-	    log.error(sMessage, ioe);
+	    cat.error(sMessage, ioe);
 	}
 	catch (Exception ex) {
 	    String sMessage = 
@@ -169,7 +170,7 @@ public class ActionSaveProject extends UMLAction {
 							 "optionpane.save-project-general-exception-title"),
 					  JOptionPane.ERROR_MESSAGE);
       
-	    log.error(sMessage, ex);
+	    cat.error(sMessage, ex);
 	}
     
 	return false;
@@ -177,7 +178,6 @@ public class ActionSaveProject extends UMLAction {
 
     public boolean shouldBeEnabled() {
         super.shouldBeEnabled();
-        ProjectBrowser pb = ProjectBrowser.getInstance();
         Project p = ProjectManager.getManager().getCurrentProject();
         return (p != null && p.needsSave());
     }

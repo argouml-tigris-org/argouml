@@ -37,7 +37,6 @@ import javax.swing.JTable;
 import javax.swing.JLabel;
 import javax.swing.SwingUtilities;
 import javax.swing.event.TableModelEvent;
-import javax.swing.plaf.metal.MetalLookAndFeel;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableColumn;
@@ -274,10 +273,10 @@ class TableModelTaggedValues extends AbstractTableModel
 	Vector tvs = new Vector(ModelFacade.getTaggedValuesCollection(_target));
 	if (tvs.size() <= rowIndex) {
 	    Object tv = UmlFactory.getFactory().getExtensionMechanisms().createTaggedValue();
-	    if (columnIndex == 0) ModelFacade.setTag(tv,(String) aValue);
+	    if (columnIndex == 0) ModelFacade.setTag(tv, aValue);
 	    if (columnIndex == 1) {
 		ModelFacade.setTag(tv,"");
-		ModelFacade.setValue(tv,(String) aValue);
+		ModelFacade.setValue(tv, aValue);
 	    }
 	    tvs.addElement(tv);
 
@@ -291,9 +290,9 @@ class TableModelTaggedValues extends AbstractTableModel
 	}
 	else {
 	    Object tv = tvs.elementAt(rowIndex);
-	    if (columnIndex == 0) ModelFacade.setTag(tv,(String) aValue);
+	    if (columnIndex == 0) ModelFacade.setTag(tv, aValue);
 	    if (columnIndex == 1)  {
-                ModelFacade.setValue(tv,(String) aValue);
+                ModelFacade.setValue(tv, aValue);
             }
 	    mEvent = new TableModelEvent(this, rowIndex);
 	}

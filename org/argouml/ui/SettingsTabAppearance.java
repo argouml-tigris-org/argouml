@@ -70,7 +70,7 @@ public class SettingsTabAppearance
 
         JLabel label = createLabel("label.look-and-feel");
         _lookAndFeel =
-	    new JComboBox(LookAndFeelMgr.SINGLETON
+	    new JComboBox(LookAndFeelMgr.getInstance()
 			  .getAvailableLookAndFeelNames());
         _lookAndFeel.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e)
@@ -85,7 +85,7 @@ public class SettingsTabAppearance
         _metalLabel = createLabel("label.metal-theme");
 
         _metalTheme =
-	    new JComboBox(LookAndFeelMgr.SINGLETON.getAvailableThemeNames());
+	    new JComboBox(LookAndFeelMgr.getInstance().getAvailableThemeNames());
         _metalLabel.setLabelFor(_metalTheme);
         top.add(_metalLabel);
         top.add(_metalTheme);
@@ -117,16 +117,16 @@ public class SettingsTabAppearance
     {
         String lafName = (String) _lookAndFeel.getSelectedItem();
         boolean enabled =
-	    LookAndFeelMgr.SINGLETON.isThemeCompatibleLookAndFeel(
-		    LookAndFeelMgr.SINGLETON.getLookAndFeelFromName(lafName));
+	    LookAndFeelMgr.getInstance().isThemeCompatibleLookAndFeel(
+		    LookAndFeelMgr.getInstance().getLookAndFeelFromName(lafName));
 
         _metalLabel.setEnabled(enabled);
         _metalTheme.setEnabled(enabled);
     }
 
     public void handleSettingsTabRefresh() {
-        String laf = LookAndFeelMgr.SINGLETON.getCurrentLookAndFeelName();
-    	String theme = LookAndFeelMgr.SINGLETON.getCurrentThemeName();
+        String laf = LookAndFeelMgr.getInstance().getCurrentLookAndFeelName();
+    	String theme = LookAndFeelMgr.getInstance().getCurrentThemeName();
 
         _lookAndFeel.setSelectedItem(laf);
         _metalTheme.setSelectedItem(theme);		
@@ -136,12 +136,12 @@ public class SettingsTabAppearance
     }
 
     public void handleSettingsTabSave() {
-        LookAndFeelMgr.SINGLETON.setCurrentLookAndFeel(
-            LookAndFeelMgr.SINGLETON.getLookAndFeelFromName(
+        LookAndFeelMgr.getInstance().setCurrentLookAndFeel(
+            LookAndFeelMgr.getInstance().getLookAndFeelFromName(
                 (String) _lookAndFeel.getSelectedItem()));
     
-        LookAndFeelMgr.SINGLETON.setCurrentTheme(
-            LookAndFeelMgr.SINGLETON.getThemeFromName(
+        LookAndFeelMgr.getInstance().setCurrentTheme(
+            LookAndFeelMgr.getInstance().getThemeFromName(
                 (String) _metalTheme.getSelectedItem()));
     
         Configuration.setBoolean(Argo.KEY_SMOOTH_EDGES, 

@@ -475,7 +475,7 @@ public class GeneratorDisplay extends Generator {
         MMessage m = (MMessage)message;
         MsgPtr ptr = new MsgPtr();
         int pos = recCountPredecessors(m, ptr) + 1;
-        return generateMessageNumber(m, (MMessage)ptr.message, pos);
+        return generateMessageNumber(m, ptr.message, pos);
     }
 
     private String generateMessageNumber(
@@ -493,7 +493,7 @@ public class GeneratorDisplay extends Generator {
 
         act = ModelFacade.getActivator(m);
         if (act != null)
-            mname = generateMessageNumber((MMessage)act);
+            mname = generateMessageNumber(act);
 
         if (pre != null) {
             c = ModelFacade.getMessages3(pre);
@@ -620,7 +620,7 @@ public class GeneratorDisplay extends Generator {
 
                 if (predecessors.length() > 0)
                     predecessors += ", ";
-                predecessors += generateMessageNumber((MMessage)msg, (MMessage)ptr2.message, mpn);
+                predecessors += generateMessageNumber(msg, ptr2.message, mpn);
                 precnt++;
             }
 
@@ -628,7 +628,7 @@ public class GeneratorDisplay extends Generator {
                 predecessors += " / ";
         }
 
-        number = generateMessageNumber(m, (MMessage)ptr.message, lpn);
+        number = generateMessageNumber(m, ptr.message, lpn);
 
         act = m.getAction();
         if (act != null) {

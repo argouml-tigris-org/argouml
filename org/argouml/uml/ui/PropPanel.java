@@ -61,7 +61,6 @@ import javax.swing.JToolBar;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.event.EventListenerList;
-import javax.swing.plaf.metal.MetalLookAndFeel;
 //
 import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.kernel.ProjectManager;
@@ -124,7 +123,6 @@ abstract public class PropPanel
      *   change.</p>
      */
 
-    private Vector _targetList = null;
     private JPanel center;
 
     protected JToolBar buttonPanel;
@@ -449,7 +447,7 @@ abstract public class PropPanel
     }
 
     public String formatElement(MModelElement element) {
-        return getProfile().formatElement(element, (MNamespace)getDisplayNamespace());
+        return getProfile().formatElement(element, getDisplayNamespace());
     }
 
     public String formatNamespace(MNamespace namespace) {

@@ -26,7 +26,6 @@ package org.argouml.uml.ui;
 import javax.swing.*;
 import ru.novosoft.uml.behavior.common_behavior.MObject;
 import java.util.*;
-import java.awt.*;
 import org.argouml.model.ModelFacade;
 import ru.novosoft.uml.foundation.core.MModelElement;
 
@@ -38,7 +37,6 @@ import ru.novosoft.uml.foundation.core.MModelElement;
  */
 public class UMLStimulusListModel extends UMLModelElementListModel  {
 
-    private final static String _nullLabel = "(null)";
     // list of sent or received stimuli
     private String stimulusType;
 

@@ -24,10 +24,6 @@
 
 package org.argouml.uml.ui;
 import org.argouml.uml.*;
-import javax.swing.event.*;
-import javax.swing.*;
-import java.lang.reflect.*;
-import java.awt.event.*;
 import java.util.*;
 import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.UmlFactory;

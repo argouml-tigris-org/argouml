@@ -24,7 +24,6 @@
 
 
 package org.argouml.uml.ui;
-import javax.swing.event.*;
 import ru.novosoft.uml.MElementListener;
 
 /**

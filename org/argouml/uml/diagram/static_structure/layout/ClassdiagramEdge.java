@@ -25,7 +25,6 @@
 package org.argouml.uml.diagram.static_structure.layout;
 
 import org.argouml.uml.diagram.layout.*;
-import org.argouml.uml.diagram.ui.*;
 import org.tigris.gef.presentation.*;
 
 /** This class is an abstract implementation of all edges which are

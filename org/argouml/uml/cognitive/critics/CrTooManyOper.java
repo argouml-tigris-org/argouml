@@ -65,7 +65,7 @@ public class CrTooManyOper extends CrUML {
 	for (Iterator iter = str.iterator(); iter.hasNext();) {
 	    if (ModelFacade.isABehavioralFeature(iter.next()))
 		n++;
-	};
+	}
 	if (n <= threshold) return NO_PROBLEM;
 	return PROBLEM_FOUND;
     }
