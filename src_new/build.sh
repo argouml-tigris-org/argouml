@@ -1,71 +1,86 @@
-#!/bin/sh
+#! /bin/sh
+#
+# Author: Kunle Odutola
+#         May 2001
+#
+# $Id$
+#
+ 
+# +-------------------------------------------------------------------------+
+# | Verify and Set Required Environment Variables                           |
+# +-------------------------------------------------------------------------+
 
-# Modifications:
-# ==============
+# 	+---------------------------------------------------------------------+
+# 	| Check for existence of ANT_HOME environment variable                |
+# 	+---------------------------------------------------------------------+
 
-# 10 Dec 2001:  Jeremy Bennett. LOCALCLASSPATH modified to point to lib sudir
-#               of $ANT_HOME for ant.jar. Checks added for $JAVA_HOME and
-#               $ARGO_HOME - these should be set in the environment.
+#	+---------------------------------------------------------------------+
+#	| Check for existence of JAVA_HOME environment variable               |
+#	+---------------------------------------------------------------------+
 
-#  8 Jan 2001:  Thierry Lach. LOCALCLASSPATH simplified.
+if [ "$JAVA_HOME" = "" ] ; then
+	#	+---------------------------------------------------------------+
+	#	| JAVA_HOME environment variable not found                      |
+	#	+---------------------------------------------------------------+
 
-#  9 Jan 2001:  Jeremy Bennett. xerces.jar added back to LOCALCLASSPATH, since
-#               otherwise build cannot find org.xml.sax.InputSource
+	echo "******************************************************************"
+	echo "  ERROR: JAVA_HOME environment variable not found."
+	echo ""
+	echo "  Please set JAVA_HOME to the Java JDK installation directory."
+	echo "******************************************************************"
+	exit 1
+fi
 
+#	+--------------------------------------------------------------------+
+# 	| Add Java's tools.jar to the classpath for running Ant              |
+#	+--------------------------------------------------------------------+
+
+if [ -s $JAVA_HOME/lib/tools.jar ] ; then
+	LOCAL_CLASSPATH=$LOCAL_CLASSPATH:$JAVA_HOME/lib/tools.jar
+fi
+
+# For JDK1.1 only
+#if [ -s $JAVA_HOME/jre/lib/classes.zip ] ; then
+#	LOCAL_CLASSPATH=$LOCAL_CLASSPATH:$JAVA_HOME/jre/lib/classes.zip
+#fi
+
+#
+# build.sh always calls the version of ant distributed with ArgoUML
+#
+ANT_HOME=../tools/ant-1.4.1
+
+# 	+--------------------------------------------------------------------+
+# 	| Add required .jar files to local classpath string                  |
+# 	+--------------------------------------------------------------------+
+LOCAL_CLASSPATH=$LOCAL_CLASSPATH:$ANT_HOME/lib/ant.jar
+LOCAL_CLASSPATH=$LOCAL_CLASSPATH:$ANT_HOME/lib/optional.jar
+# LOCAL_CLASSPATH=$LOCAL_CLASSPATH:$ANT_HOME/lib/NetComponents.jar
+# LOCAL_CLASSPATH=$LOCAL_CLASSPATH:$ANT_HOME/lib/parser.jar
+LOCAL_CLASSPATH=$LOCAL_CLASSPATH:$ANT_HOME/lib/jaxp.jar
+LOCAL_CLASSPATH=$LOCAL_CLASSPATH:$ANT_HOME/lib/crimson.jar
+# LOCAL_CLASSPATH=$LOCAL_CLASSPATH:$ANT_HOME/lib/xalan.jar
+# LOCAL_CLASSPATH=$LOCAL_CLASSPATH:$ANT_HOME/lib/xerces.jar
+# LOCAL_CLASSPATH=$LOCAL_CLASSPATH:$ANT_HOME/lib/bsf.jar
+# LOCAL_CLASSPATH=$LOCAL_CLASSPATH:$ANT_HOME/lib/js.jar
+# #LOCAL_CLASSPATH=$LOCAL_CLASSPATH:../lib/fop.jar
+# LOCAL_CLASSPATH=$LOCAL_CLASSPATH:$ANT_HOME/lib/w3c.jar
+# LOCAL_CLASSPATH=$LOCAL_CLASSPATH:../lib
+
+# Uncomment following line to add current CLASSPATH to end of LOCAL_CLASSPATH
+# LOCAL_CLASSPATH=$LOCAL_CLASSPATH:$CLASSPATH
+
+
+if [ "$JAVACMD" = "" ] ; then
+   JAVACMD=java
+fi
+
+echo Building with classpath: $LOCAL_CLASSPATH
 echo
-echo "Argo Build System (borrowed from FOP)"
-echo "-------------------------------------"
+echo ANT_HOME is: $ANT_HOME
 echo
-
-# Check JAVA_HOME and ARGO_HOME are set
-
-if [ "$JAVA_HOME" = "" ]
-then
-  echo "ERROR: JAVA_HOME not found in your environment."
-  echo
-  echo "Please, set the JAVA_HOME variable in your environment to match the"
-  echo "location of the Java Virtual Machine you want to use."
-  exit 1
-fi
-
-if [ "$ARGO_HOME" = "" ]
-then
-    #  If it isn't set, check to see if we are in the src_new
-    #  directory and try it.
-    if [ -f ../src_new/org/argouml.mf ]
-    then
-        ARGO_HOME=..
-    fi
-fi
-
-if [ "$ARGO_HOME" = "" ]
-then
-  echo "ERROR: ARGO_HOME not found in your environment."
-  echo
-  echo "Please, set the ARGO_HOME variable in your environment to match the"
-  echo "location of your copy of the  ArgoUML CVS source tree."
-  exit 1
-fi
-
-# If $ANT_HOME is not set, use ARGO's copy
-
-if [ "$ANT_HOME" = "" ]
-then
-  ANT_HOME=$ARGO_HOME
-fi
-
-
-PATH=$PATH:$JAVA_HOME/bin
-NSUML_HOME=$ARGO_HOME/lib
-XML_HOME=$NSUML_HOME
-OCL_HOME=$NSUML_HOME
-LOCALCLASSPATH=$ANT_HOME/lib/ant.jar:$JAVA_HOME/lib/tools.jar:$ANT_HOME/lib/parser.jar:$ANT_HOME/lib/jaxp.jar:$XML_HOME/xerces.jar
-
-echo Building with classpath $CLASSPATH:$LOCALCLASSPATH
-echo
-
 echo Starting Ant...
 echo
 
-java -Dant.home=$ANT_HOME -classpath $CLASSPATH:$LOCALCLASSPATH org.apache.tools.ant.Main $*
+$ANT_HOME/bin/ant $*
 
+exit

@@ -9,4 +9,7 @@ Fop.class
 documentation
 doc
 javadocs
+local-*.sh
+local-*.bat
+*.LICENSE.txt
 argouml.sh
