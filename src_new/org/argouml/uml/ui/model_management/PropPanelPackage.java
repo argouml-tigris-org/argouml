@@ -24,6 +24,9 @@
 // 21 Mar 2002: Jeremy Bennett (mail@jeremybennett.com). Changed to use the
 // labels "Generalizes:" and "Specializes:" for inheritance.
 
+// 4 Apr 2002: Jeremy Bennett (mail@jeremybennett.com). Labels corrected to
+// "Generalizations:" and "Specializations".
+
 
 package org.argouml.uml.ui.model_management;
 
@@ -74,7 +77,7 @@ implements PluggablePropertyPanel {
     modifiersPanel.add(new UMLCheckBox(localize("root"),this,new UMLReflectionBooleanProperty("isRoot",mclass,"isRoot","setRoot")));
     addField(modifiersPanel,4,0,0);
 
-    addCaption("Generalizes:",5,0,1);
+    addCaption("Specializations:",5,0,1);
     JList derivedList = new UMLList(new UMLSpecializationListModel(this,null,true),true);
     derivedList.setForeground(Color.blue);
     derivedList.setVisibleRowCount(1);
@@ -82,7 +85,7 @@ implements PluggablePropertyPanel {
     JScrollPane derivedScroll = new JScrollPane(derivedList,JScrollPane.VERTICAL_SCROLLBAR_NEVER,JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
     addField(derivedScroll,5,0,0);
 
-    addCaption("Specializes:",0,1,0);
+    addCaption("Generalizations:",0,1,0);
     JList extendsList = new UMLList(new UMLGeneralizationListModel(this,"generalization",true),true);
     extendsList.setBackground(getBackground());
     extendsList.setForeground(Color.blue);

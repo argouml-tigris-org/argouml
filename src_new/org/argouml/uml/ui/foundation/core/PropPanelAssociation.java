@@ -25,6 +25,8 @@
 // 21 Mar 2002: Jeremy Bennett (mail@jeremybennett.com). Changed to use the
 // labels "Generalizes:" and "Specializes:" for inheritance.
 
+// 4 Apr 2002: Jeremy Bennett (mail@jeremybennett.com). Labels corrected to
+// "Generalizations:" and "Specializations".
 
 package org.argouml.uml.ui.foundation.core;
 
@@ -79,12 +81,12 @@ public class PropPanelAssociation extends PropPanelModelElement {
     assocEndList.setForeground(Color.blue);
     addField(new JScrollPane(assocEndList),0,1,0.25);
 
-    addCaption("Specializes:",1,1,0);
+    addCaption("Generalizations:",1,1,0);
     JList extendsList = new UMLList(new UMLGeneralizationListModel(this,"generalization",true),true);
     JScrollPane extendsScroll=new JScrollPane(extendsList,JScrollPane.VERTICAL_SCROLLBAR_NEVER,JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
     addLinkField(extendsScroll,1,1,0);
 
-    addCaption("Generalizes:",2,1,1);
+    addCaption("Specializations:",2,1,1);
     JList derivedList = new UMLList(new UMLSpecializationListModel(this,null,true),true);
     derivedList.setForeground(Color.blue);
     derivedList.setVisibleRowCount(1);
