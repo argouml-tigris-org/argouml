@@ -46,6 +46,10 @@ public abstract class ActionNewAction extends AbstractActionNewModelElement {
      */
     public static final String ROLE = "role";
     
+    /**
+     * Contains the roles definitions for UML actions.
+     *
+     */
     public static interface Roles {
         
         /**

@@ -43,8 +43,10 @@ public class PopupMenuNewAction extends JPopupMenu {
     /**
      * Constructs a new popupmenu. The given parameter role determines what 
      * the purpose is of the actions that can be created via this popupmenu. 
-     * The parameter must comply to the interface Roles defined on ActionNewAction.
-     * @param role 
+     * The parameter must comply to the interface Roles 
+     * defined on ActionNewAction.
+     * @param role the role
+     * @param list the list
      */
     public PopupMenuNewAction(String role, UMLMutableLinkedList list) {
         super();
@@ -60,9 +62,10 @@ public class PopupMenuNewAction extends JPopupMenu {
         newMenu.add(ActionNewDestroyAction.SINGLETON);
         ActionNewDestroyAction.SINGLETON.setTarget(list.getTarget());
         ActionNewDestroyAction.SINGLETON.putValue(ActionNewAction.ROLE, role);
-        newMenu.add(ActionNewReturnAction.SINGLETON);
-        ActionNewReturnAction.SINGLETON.setTarget(list.getTarget());
-        ActionNewReturnAction.SINGLETON.putValue(ActionNewAction.ROLE, role);
+        newMenu.add(ActionNewReturnAction.getInstance());
+        ActionNewReturnAction.getInstance().setTarget(list.getTarget());
+        ActionNewReturnAction.getInstance()
+            .putValue(ActionNewAction.ROLE, role);
         newMenu.add(ActionNewSendAction.SINGLETON);
         ActionNewSendAction.SINGLETON.setTarget(list.getTarget());
         ActionNewSendAction.SINGLETON.putValue(ActionNewAction.ROLE, role);

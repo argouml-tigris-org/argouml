@@ -55,7 +55,7 @@ public class UMLChangeAction extends UMLAction {
      * The constructor.
      * 
      * @param s the to be localized description string
-     * @param global
+     * @param global true if this is a global action
      * @param hasIcon true if an icon is to be shown
      */
     protected UMLChangeAction(String s, boolean global, boolean hasIcon) { 
