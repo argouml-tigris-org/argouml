@@ -85,6 +85,19 @@ public class UMLUseCaseDiagram extends UMLDiagram {
     setNamespace(m);
   }
 
+    /** method to perform a number of important initializations of a <I>Use Case Diagram</I>. 
+     * 
+     * @see      each diagram type has a similar <I>UMLxxxDiagram</I> class.
+     *
+     * @param m  MNamespace from the model in NSUML...connects the class to the State diagram.
+     *
+     * @modified changed <I>lay</I> from <I>LayerPerspective</I> to <I>LayerPerspectiveMutable</I>. 
+     *           This class is a child of <I>LayerPerspective</I> and was implemented 
+     *           to correct some difficulties in changing the model. <I>lay</I> is used 
+     *           mainly in <I>LayerManager</I>(GEF) to control the adding, changing and 
+     *           deleting of items in a layer of the diagram...
+     *           psager@tigris.org   Jan. 24, 2oo2
+     */          
   public void setNamespace(MNamespace m) {
     super.setNamespace(m);
     UseCaseDiagramGraphModel gm = new UseCaseDiagramGraphModel();

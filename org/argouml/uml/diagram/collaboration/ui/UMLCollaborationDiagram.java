@@ -93,17 +93,30 @@ public class UMLCollaborationDiagram extends UMLDiagram {
     }
     return res;
   }
-
+  
+    /** method to perform a number of important initializations of a <I>CollaborationDiagram</I>. 
+     * 
+     * @see      each diagram type has a similar <I>UMLxxxDiagram</I> class.
+     *
+     * @param m  MNamespace from the model in NSUML...
+     *
+     * @modified changed <I>lay</I> from <I>LayerPerspective</I> to <I>LayerPerspectiveMutable</I>. 
+     *           This class is a child of <I>LayerPerspective</I> and was implemented 
+     *           to correct some difficulties in changing the model. <I>lay</I> is used 
+     *           mainly in <I>LayerManager</I>(GEF) to control the adding, changing and 
+     *           deleting layers on the diagram...
+     *           psager@tigris.org   Jan. 24, 2oo2
+     */        
   public void setNamespace(MNamespace m) {
-    super.setNamespace(m);
-    CollabDiagramGraphModel gm = new CollabDiagramGraphModel();
-    gm.setNamespace(m);
-    setGraphModel(gm);
-    LayerPerspective lay = new LayerPerspectiveMutable(m.getName(), gm);
-    setLayer(lay);
-    CollabDiagramRenderer rend = new CollabDiagramRenderer(); // singleton
-    lay.setGraphNodeRenderer(rend);
-    lay.setGraphEdgeRenderer(rend);
+      super.setNamespace(m);
+      CollabDiagramGraphModel gm = new CollabDiagramGraphModel();
+      gm.setNamespace(m);
+      setGraphModel(gm);
+      LayerPerspective lay = new LayerPerspectiveMutable(m.getName(), gm);
+      setLayer(lay);
+      CollabDiagramRenderer rend = new CollabDiagramRenderer(); // singleton
+      lay.setGraphNodeRenderer(rend);
+      lay.setGraphEdgeRenderer(rend);
   }
 
   /** initialize the toolbar for this diagram type */
