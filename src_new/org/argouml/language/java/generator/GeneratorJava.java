@@ -246,6 +246,7 @@ public class GeneratorJava extends Generator {
     else if (cls instanceof MInterface) classifierKeyword = "interface";
     else return ""; // actors and use cases
     StringBuffer sb = new StringBuffer(80);
+    sb.append(DocumentationManager.getComments(cls));  // Add the comments for this classifier first.
     sb.append(DocumentationManager.getDocs(cls)).append("\n");
     sb.append(generateVisibility(cls.getVisibility()));
     if (cls.isAbstract() && !(cls instanceof MInterface)) sb.append("abstract ");

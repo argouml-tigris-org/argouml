@@ -37,6 +37,8 @@ import org.tigris.gef.presentation.*;
 
 import org.argouml.uml.generator.*;
 import org.argouml.ui.*;
+import org.argouml.uml.ui.*;
+
 
 public class FigAssociation extends FigEdgeModelElement {
 
@@ -212,30 +214,30 @@ public class FigAssociation extends FigEdgeModelElement {
     if (srcDeterminingFactor < rSquared &&
 	srcDeterminingFactor < destDeterminingFactor) {
       JMenu multMenu = new JMenu("Multiplicity");
-      multMenu.add(Actions.SrcMultOne);
-      multMenu.add(Actions.SrcMultZeroToOne);
-      multMenu.add(Actions.SrcMultOneToMany);
-      multMenu.add(Actions.SrcMultZeroToMany);
+      multMenu.add(ActionMultiplicity.SrcMultOne);
+      multMenu.add(ActionMultiplicity.SrcMultZeroToOne);
+      multMenu.add(ActionMultiplicity.SrcMultOneToMany);
+      multMenu.add(ActionMultiplicity.SrcMultZeroToMany);
       popUpActions.insertElementAt(multMenu, popUpActions.size() - 1);
 
       JMenu aggMenu = new JMenu("Aggregation");
-      aggMenu.add(Actions.SrcAggNone);
-      aggMenu.add(Actions.SrcAgg);
-      aggMenu.add(Actions.SrcAggComposite);
+      aggMenu.add(ActionAggregation.SrcAggNone);
+      aggMenu.add(ActionAggregation.SrcAgg);
+      aggMenu.add(ActionAggregation.SrcAggComposite);
       popUpActions.insertElementAt(aggMenu, popUpActions.size() - 1);
     }
     else if (destDeterminingFactor < rSquared) {
       JMenu multMenu = new JMenu("Multiplicity");
-      multMenu.add(Actions.DestMultOne);
-      multMenu.add(Actions.DestMultZeroToOne);
-      multMenu.add(Actions.DestMultOneToMany);
-      multMenu.add(Actions.DestMultZeroToMany);
+      multMenu.add(ActionMultiplicity.DestMultOne);
+      multMenu.add(ActionMultiplicity.DestMultZeroToOne);
+      multMenu.add(ActionMultiplicity.DestMultOneToMany);
+      multMenu.add(ActionMultiplicity.DestMultZeroToMany);
       popUpActions.insertElementAt(multMenu, popUpActions.size() - 1);
 
       JMenu aggMenu = new JMenu("Aggregation");
-      aggMenu.add(Actions.DestAggNone);
-      aggMenu.add(Actions.DestAgg);
-      aggMenu.add(Actions.DestAggComposite);
+      aggMenu.add(ActionAggregation.DestAggNone);
+      aggMenu.add(ActionAggregation.DestAgg);
+      aggMenu.add(ActionAggregation.DestAggComposite);
       popUpActions.insertElementAt(aggMenu, popUpActions.size() - 1);
     }
     else { }

@@ -95,4 +95,52 @@ public class DocumentationManager {
     return "(No documentation)";
   }
 
+
+  ////////////////////////////////////////////////////////////////
+  // comments
+
+  /**
+   * Get the comments (the notes in a diagram) for a modelelement.
+   */
+  public static String getComments(Object o) {
+      StringBuffer result = new StringBuffer();
+
+      if(o instanceof MModelElementImpl) {
+	  Collection comments = ((MModelElement) o).getComments();
+	  if (!comments.isEmpty()) {
+	      for(Iterator iter = comments.iterator(); iter.hasNext(); ) {
+		  MComment c = (MComment)iter.next();
+		  if(result.length() > 0) {
+		       result.append("\n");
+		  }
+		  result.append(c.getName());
+	      }
+	  }
+      }
+
+      // If there are no comments, just return an empty string.
+      if(result.length() == 0)
+	  return "";
+
+      // Let every line start with a '*'.
+      for(int i=0; i < result.length() - 1; i++) {
+	  if(result.charAt(i) == '\n') {
+	      result.insert(i+1, " * ");
+	  }
+      }
+      
+      // I add a CR before the end of the comment, so I remove a CR at the
+      // end of the last note.
+      if(result.charAt(result.length()-1) == '\n') {
+	  result.deleteCharAt(result.length()-1);
+      }
+
+      return "/*\n * " + result.toString() + "\n */\n";
+  }
+
 } /* end class DocumentationManager */
+
+
+
+
+

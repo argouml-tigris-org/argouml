@@ -195,36 +195,36 @@ implements IStatusBar, NavigationListener {
     JMenu file = new JMenu(menuLocalize("File"));
     _menuBar.add(file);
     setMnemonic(file,"File",'F');
-    JMenuItem newItem = file.add(Actions.New);
+    JMenuItem newItem = file.add(ActionNew.SINGLETON);
     setMnemonic(newItem,"New",'N');
     setAccelerator(newItem,ctrlN);
-    JMenuItem openProjectItem = file.add(Actions.OpenProject);
+    JMenuItem openProjectItem = file.add(ActionOpenProject.SINGLETON);
     setMnemonic(openProjectItem,"Open",'O');
     setAccelerator(openProjectItem,ctrlO);
     //JMenuItem saveItem = file.add(_actionSave);
     //file.add(_actionSaveAs);
     //file.add(_actionSaveAsXMI);
-    JMenuItem saveProjectItem = file.add(Actions.SaveProject);
+    JMenuItem saveProjectItem = file.add(ActionSaveProject.SINGLETON);
     setMnemonic(saveProjectItem,"Save",'S');
     setAccelerator(saveProjectItem,ctrlS);
-    JMenuItem saveProjectAsItem = file.add(Actions.SaveProjectAs);
+    JMenuItem saveProjectAsItem = file.add(ActionSaveProjectAs.SINGLETON);
     setMnemonic(saveProjectAsItem,"SaveAs",'A');
     file.addSeparator();
-    JMenuItem importProjectAsItem = file.add(Actions.ImportFromSources);
+    JMenuItem importProjectAsItem = file.add(ActionImportFromSources.SINGLETON);
     file.addSeparator();    
-    JMenuItem loadModelFromDBItem = file.add(Actions.LoadModelFromDB);
-    JMenuItem storeModelToDBItem = file.add(Actions.StoreModelToDB);
+    JMenuItem loadModelFromDBItem = file.add(ActionLoadModelFromDB.SINGLETON);
+    JMenuItem storeModelToDBItem = file.add(ActionStoreModelToDB.SINGLETON);
     file.addSeparator();
     JMenuItem printItem = file.add(Actions.Print);
     setMnemonic(printItem,"Print",'P');
     setAccelerator(printItem,ctrlP);
-    JMenuItem saveGraphicsItem = file.add(Actions.SaveGraphics);
+    JMenuItem saveGraphicsItem = file.add(ActionSaveGraphics.SINGLETON);
     setMnemonic(saveGraphicsItem,"SaveGraphics",'G');
     // JMenuItem savePSItem = file.add(Actions.SavePS);
     //file.addSeparator();
     //file.add(_actionProjectInfo);
     file.addSeparator();
-    JMenuItem exitItem = file.add(Actions.Exit);
+    JMenuItem exitItem = file.add(ActionExit.SINGLETON);
     setMnemonic(exitItem,"Exit",'x');
     setAccelerator(exitItem,altF4);
 
@@ -343,8 +343,8 @@ implements IStatusBar, NavigationListener {
 
     JMenu generate = (JMenu) _menuBar.add(new JMenu(menuLocalize("Generation")));
     setMnemonic(generate,"Generate",'G');
-    generate.add(Actions.GenerateOne);
-    JMenuItem genAllItem = generate.add(Actions.GenerateAll);
+    generate.add(ActionGenerateOne.SINGLETON);
+    JMenuItem genAllItem = generate.add(ActionGenerateAll.SINGLETON);
     setAccelerator(genAllItem,F7);
     //generate.add(Actions.GenerateWeb);
 
@@ -589,7 +589,7 @@ implements IStatusBar, NavigationListener {
 class WindowCloser extends WindowAdapter {
   public WindowCloser() { }
   public void windowClosing(WindowEvent e) {
-    Actions.Exit.actionPerformed(null);
+    ActionExit.SINGLETON.actionPerformed(null);
   }
 } /* end class WindowCloser */
 
