@@ -321,7 +321,7 @@ public class ClassGenerationDialog
                         // This will only work for languages that have each node
                         // in a separate files (one or more).
                         if (path != null) {
-                            String fn = generator.GenerateFile(node, path);
+                            String fn = generator.generateFile2(node, path);
                             fileNames[i].add(fn);
                             // save the selected language in the model
                             // TODO: 1: no support of multiple checked

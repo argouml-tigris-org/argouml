@@ -238,10 +238,10 @@ public class GeneratorCpp extends Generator2
      *
      * Returns the full path name of the the generated file.
      *
-     * @see org.argouml.uml.generator.FileGenerator#GenerateFile(
+     * @see org.argouml.uml.generator.FileGenerator#generateFile2(
      * java.lang.Object, java.lang.String)
      */
-    public String GenerateFile(Object o, String path) {
+    public String generateFile2(Object o, String path) {
 	String packagePath = ModelFacade.getName(ModelFacade.getNamespace(o));
    	String pathname = null;
 

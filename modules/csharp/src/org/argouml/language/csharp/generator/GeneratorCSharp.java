@@ -99,10 +99,10 @@ public class GeneratorCSharp extends Generator2
      * call it through the Generatorinterface.
      * Returns the full path name of the the generated file.
      *
-     * @see org.argouml.uml.generator.FileGenerator#GenerateFile(
+     * @see org.argouml.uml.generator.FileGenerator#generateFile2(
      * java.lang.Object, java.lang.String)
      */
-    public String GenerateFile(Object cls, String path) {
+    public String generateFile2(Object cls, String path) {
 	sect = new Section();
 
 	String name = ModelFacade.getName(cls);

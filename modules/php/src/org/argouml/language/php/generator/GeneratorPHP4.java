@@ -786,10 +786,10 @@ public class GeneratorPHP4
      * @return name of generated file on success;
      *         <code>null</code> otherwise.
      *
-     * @see org.argouml.uml.generator.FileGenerator#GenerateFile(
+     * @see org.argouml.uml.generator.FileGenerator#generateFile2(
      * java.lang.Object, java.lang.String)
      */
-    public String GenerateFile(Object modelElement, String sPath) {
+    public String generateFile2(Object modelElement, String sPath) {
         return generateFile(modelElement, sPath);
     }
 
