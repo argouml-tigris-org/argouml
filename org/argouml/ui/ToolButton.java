@@ -33,7 +33,7 @@ import javax.swing.*;
 
 /**
  *
- * @author  administrator
+ * @author Bob Tarling
  */
 public class ToolButton extends javax.swing.JButton {
     
