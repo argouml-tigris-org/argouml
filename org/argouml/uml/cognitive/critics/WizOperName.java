@@ -62,7 +62,7 @@ public class WizOperName extends WizMEName {
      * @deprecated by Linus Tolke as of 0.15.4. Use your own logger in your
      * class. This will be removed.
      */
-    protected static Logger cat = Logger.getLogger(WizOperName.class);
+    private static final Logger LOG = Logger.getLogger(WizOperName.class);
 
     boolean _possibleConstructor = false;
     boolean _stereotypePathChosen;

@@ -32,7 +32,7 @@ import org.argouml.cognitive.Designer;
  * TODO: at the moment only a dummy implementation
 */
 public class CrConsiderFacade extends CrUML {
-    protected static Logger cat =
+    private static final Logger LOG =
 	Logger.getLogger(CrConsiderFacade.class);
 
     public CrConsiderFacade() {
