@@ -54,6 +54,7 @@ import org.argouml.uml.UMLChangeRegistry;
 import org.argouml.uml.cognitive.ProjectMemberTodoList;
 import org.argouml.uml.diagram.ProjectMemberDiagram;
 import org.argouml.uml.diagram.state.ui.UMLStateDiagram;
+import org.argouml.uml.diagram.static_structure.ui.CommentEdge;
 import org.argouml.uml.diagram.static_structure.ui.UMLClassDiagram;
 import org.argouml.uml.diagram.ui.UMLDiagram;
 import org.argouml.uml.diagram.use_case.ui.UMLUseCaseDiagram;
@@ -957,6 +958,11 @@ public class Project implements java.io.Serializable, TargetListener {
                 needSave = true;
                 // for explorer deletion:
                 obj = ((Fig) obj).getOwner();
+            } 
+            if (obj instanceof CommentEdge) {
+                ProjectBrowser.getInstance().getEditorPane()
+                    .removePresentationFor(obj, getDiagrams());
+                ((CommentEdge) obj).delete();
             }
         }        
         setNeedsSave(needSave);
