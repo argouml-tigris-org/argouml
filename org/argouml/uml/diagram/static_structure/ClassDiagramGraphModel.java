@@ -501,7 +501,9 @@ implements VetoableChangeListener  {
               return link;
           }
       }
-      throw new UnsupportedOperationException("should not enter here!");
+      // fail silently
+      // throw new UnsupportedOperationException("should not enter here!");
+      return null;
   }
 
 
