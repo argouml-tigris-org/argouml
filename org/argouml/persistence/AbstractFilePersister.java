@@ -31,6 +31,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.MalformedURLException;
 
+import javax.swing.JProgressBar;
 import javax.swing.filechooser.FileFilter;
 
 import org.apache.log4j.Logger;
@@ -247,11 +248,11 @@ public abstract class AbstractFilePersister extends FileFilter
         throws SaveException;
 
     /**
-     * @see org.argouml.persistence.ProjectFilePersister#loadProject(File)
+     * @see org.argouml.persistence.ProjectFilePersister#loadProject(File, JProgressBar)
      */
-    public Project doLoad(File file) throws OpenException {
+    public Project doLoad(File file, JProgressBar progressBar) throws OpenException {
         try {
-            return doLoad(file.toURL());
+            return doLoad(file.toURL(), progressBar);
         } catch (MalformedURLException e) {
             LOG.error("MalformedURLException", e);
             throw new OpenException(e);

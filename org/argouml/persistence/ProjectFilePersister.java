@@ -26,6 +26,8 @@ package org.argouml.persistence;
 import java.io.File;
 import java.net.URL;
 
+import javax.swing.JProgressBar;
+
 import org.argouml.kernel.Project;
 
 /**
@@ -44,16 +46,19 @@ public interface ProjectFilePersister {
 
     /**
      * @param file the file of the project to load
+     * @param progressBar the progress bar givin by the GUI to indicate progress.
      * @return the Project
+     * 
      * @throws OpenException when we fail to open from this url
      */
-    public Project doLoad(File file) throws OpenException;
+    public Project doLoad(File file, JProgressBar progressBar) throws OpenException;
 
     /**
      * @param url the url of the project to load
+     * @param progressBar the progress bar givin by the GUI to indicate progress.
      * @return the Project
      * @throws OpenException when we fail to open from this url
      */
-    public Project doLoad(URL url) throws OpenException;
+    public Project doLoad(URL url, JProgressBar progressBar) throws OpenException;
 
 }

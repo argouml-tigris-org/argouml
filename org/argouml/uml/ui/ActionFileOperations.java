@@ -153,7 +153,7 @@ public abstract class ActionFileOperations extends AbstractAction {
                     throw new IllegalStateException("Filename " + url.getFile()
                             + " is not of a known file type");
                 }
-                p = persister.doLoad(url);
+                p = persister.doLoad(url, null);
 
                 ProjectBrowser.getInstance().showStatus(
                         MessageFormat.format(Translator.localize(
