@@ -218,6 +218,27 @@ public class Main {
         //
 	st.mark("locales");
         //String lookAndFeelClassName = LookAndFeelMgr.SINGLETON.determineLookAndFeel();
+        String lookAndFeelClassName;
+        if ("true".equals(System.getProperty("force.nativelaf","false"))) {
+            lookAndFeelClassName = UIManager.getSystemLookAndFeelClassName();
+        }
+        else {
+            lookAndFeelClassName = "javax.swing.plaf.metal.MetalLookAndFeel";
+        }
+
+        String lookAndFeelGeneralImagePath = "/org/argouml/Images/plaf/" + lookAndFeelClassName.replace('.', '/') + "/toolbarButtonGraphics/general";
+        String lookAndFeelNavigationImagePath = "/org/argouml/Images/plaf/" + lookAndFeelClassName.replace('.', '/') + "/toolbarButtonGraphics/navigation";
+        String lookAndFeelDiagramImagePath = "/org/argouml/Images/plaf/" + lookAndFeelClassName.replace('.', '/') + "/toolbarButtonGraphics/argouml/diagrams";
+        String lookAndFeelElementImagePath = "/org/argouml/Images/plaf/" + lookAndFeelClassName.replace('.', '/') + "/toolbarButtonGraphics/argouml/elements";
+        String lookAndFeelArgoUmlImagePath = "/org/argouml/Images/plaf/" + lookAndFeelClassName.replace('.', '/') + "/toolbarButtonGraphics/argouml";
+        ResourceLoader.addResourceExtension("gif");
+        ResourceLoader.addResourceLocation(lookAndFeelGeneralImagePath);
+        ResourceLoader.addResourceLocation(lookAndFeelNavigationImagePath);
+        ResourceLoader.addResourceLocation(lookAndFeelDiagramImagePath);
+        ResourceLoader.addResourceLocation(lookAndFeelElementImagePath);
+        ResourceLoader.addResourceLocation(lookAndFeelArgoUmlImagePath);
+        ResourceLoader.addResourceLocation("/org/argouml/Images");
+        ResourceLoader.addResourceLocation("/org/tigris/gef/Images");
 
         Translator.init();
 
