@@ -90,12 +90,11 @@ public class PropPanelCompositeState extends PropPanelState {
 
         addField(Translator.localize("label.subvertex"), 
                 new JScrollPane(subverticesList));
-
     }
 
     /**
      * Initialize the panel with its specific fields, in casu 
-     * the substate vertex list
+     * the substate vertex list.
      */
     protected void initialize() {
 	subverticesList = new UMLCompositeStateSubvertexList(
