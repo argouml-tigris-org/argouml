@@ -54,8 +54,15 @@ public class CrNoOperations extends CrUML {
     if (!(dm instanceof MClass)) return NO_PROBLEM;
     MClass cls = (MClass) dm;
     if (!(CriticUtils.isPrimaryObject(cls))) return NO_PROBLEM;
-    //if (cls.containsStereotype(MStereotype.UTILITY)) return NO_PROBLEM;
-    // stereotype <<record>>?
+    
+    // types can probably contain operations, but we should not nag at them
+    // not having any.
+    // utility is a namespace collection - also not strictly required to have
+    // operations.
+    if (CriticUtils.hasStereotype(cls, "type") ||
+        CriticUtils.hasStereotype(cls, "utility"))
+        return NO_PROBLEM;
+
     //TODO: different critic or special message for classes
     //that inherit all ops but define none of their own.
 	
