@@ -951,6 +951,40 @@ F E D
 
 </sect1>
 
+    <sect1 id="detailspanel">
+      <title>Details Panel</title>
+      <sect2 id="howdoi_detailspanel">
+	<title>How do I ...?</title>
+	<para>
+	  <itemizedlist>
+	    <listitem>
+	      <para>...add a tab in the Details Panel?</para>
+	      <para>
+Create your <classname>TabXXX</classname> class in 
+<classname>org.argouml.uml.ui</classname> by
+copying from another <filename>TabYYY.java</filename>
+(e.g. <classname>TabSrc</classname>, <classname>TabStyle</classname>).
+Then register your <classname>TabXXX</classname> in
+<filename>org/argouml/argo.ini</filename>
+by adding a line like
+<programlisting>
+details: 	TabXXX
+</programlisting>
+</para>
+	    </listitem>
+	    <listitem>
+	      <para>...remove a tab from the Details Panel?</para>
+	      <para>
+Remove the line for the tab from 
+<filename>org/argouml/argo.ini</filename>.
+</para>
+	    </listitem>
+	  </itemizedlist>
+</para>
+      </sect2>
+    </sect1>
+
+
 <sect1 id="help">
 <title>Help System</title>
 <sect2 id="howdoi_help">
