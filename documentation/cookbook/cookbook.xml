@@ -118,14 +118,14 @@ responsibility in the project and more work.
 </para>
       <para>
 	  <orderedlist numeration="arabic">
-	  <listitem>
-	    <para>Use the tool.</para>
-	  </listitem>
+	    <listitem>
+	      <para>Use ArgoUML.</para>
+	    </listitem>
 	    <listitem>
 	      <para>Subscribe to the dev list.</para>
 	      <para>
-Follow the discussions and as soon as you see some issue discussed
-where you know the answer or solution, jump right in!
+Monitor the discussions and as soon as you see something discussed
+where you have an opinion, jump right in!
 </para>
 	    </listitem>
 	    <listitem>
@@ -146,6 +146,27 @@ Suggestion on how to go about this:
 		    <para>
 Read through most of the User manual and install and run 
 the latest version of ArgoUML.
+</para>
+		  </listitem>
+		  <listitem>
+		    <para>Subscribe to the issues list.</para>
+		    <para>
+You will get updates on all issues so you can monitor what
+we are doing in the project.
+(It could be a lot of mails.
+If it turns out you don't like watching issues in this way
+just unsubscibe again.)
+</para>
+		  </listitem>
+		  <listitem>
+		    <para>Subscribe to the cvs list.</para>
+		    <para>
+You will get updates on all changes that are done 
+to code, documentation, and the web site.
+(It could be a lot of mails.
+If it turns out you don't like watching 
+what is going on in the project in this way
+just unsubscibe again.)
 </para>
 		  </listitem>
 		  <listitem>
