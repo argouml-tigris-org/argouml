@@ -57,6 +57,9 @@ public interface TabTarget extends TargetListener {
 
     /**
      * Returns true if the tab should be enabled with the given target
+     *
+     * @param target the given target
+     * @return true if the tab should be enabled
      */
     public boolean shouldBeEnabled(Object target);
 }
