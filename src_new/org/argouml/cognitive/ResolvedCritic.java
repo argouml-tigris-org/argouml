@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2002 The Regents of the University of California. All
+// Copyright (c) 2002-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -43,14 +43,14 @@ import org.apache.log4j.Logger;
  */
 public class ResolvedCritic
 {
-    protected static Logger cat = Logger.getLogger(
-							 ResolvedCritic.class);
+    /** The logger */
+    private static final Logger LOG = Logger.getLogger(ResolvedCritic.class);
 
     /** The name of the critic. */
-    String _critic;
+    String critic;
 
     /** The IDs of the objects that define the context of the critic. */
-    Vector _offenders;
+    Vector offenders;
 
     /**
      * Creates a new ResolvedCritic using the name of the Critic and the
@@ -61,17 +61,19 @@ public class ResolvedCritic
      */
     public ResolvedCritic(String critic, Vector offenders)
     {
-	_critic = critic;
+	this.critic = critic;
 	if (offenders != null && offenders.size() > 0)
-	    _offenders = new Vector(offenders);
+	    offenders = new Vector(offenders);
 	else
-	    _offenders = null;
+	    offenders = null;
     }
 
     /**
      * Same as {@link #ResolvedCritic(Critic,VectorSet,boolean)
      * ResolvedCritic(c, offs, true)}.
      *
+     * @param c The Critic that has been resolved.
+     * @param offs The set of objects that triggered the Critic.
      * @throws	UnresolvableException	If some of the objects does
      *			not have a ItemUID and does not accept a new
      *			one.
@@ -98,17 +100,17 @@ public class ResolvedCritic
 	if (c == null)
 	    throw new NullPointerException();
 
-	//cat.debug("Adding resolution for: " + c.getClass() + " " + canCreate);
+	//LOG.debug("Adding resolution for: " + c.getClass() + " " + canCreate);
 
 	try
 	{
 	    if (offs != null && offs.size() > 0)
 	    {
-		_offenders = new Vector(offs.size());
+		offenders = new Vector(offs.size());
 		importOffenders(offs, canCreate);
 	    }
 	    else
-		_offenders = null;
+		offenders = null;
 	}
 	catch (UnresolvableException ure)
 	{
@@ -124,7 +126,7 @@ public class ResolvedCritic
 	    throw ure;
 	}
 
-	_critic = getCriticString(c);
+	critic = getCriticString(c);
     }
 
     /**
@@ -132,6 +134,9 @@ public class ResolvedCritic
      * has the same critic name, and has all related objects that this
      * object has. Note that it is not required that this object has all
      * related objects that that object has.
+     *
+     * <p>Formally that is inconsistent with equals as specified in
+     * java.lang.Object, but it was probably practical somehow.
      *
      * @param	obj	Object to compare to.
      * @return	True if equal according to the description, false
@@ -147,30 +152,30 @@ public class ResolvedCritic
 
 	rc = (ResolvedCritic) obj;
 
-	if (_critic == null)
+	if (critic == null)
 	{
-	    if (rc._critic != null)
+	    if (rc.critic != null)
 		return false;
 	}
-	else if (!_critic.equals(rc._critic))
+	else if (!critic.equals(rc.critic))
 	    return false;
 
-	if (_offenders == null)
+	if (offenders == null)
 	    return true;
 
-	if (rc._offenders == null)
+	if (rc.offenders == null)
 	    return false;
 
-	for (i = 0; i < _offenders.size(); i++)
+	for (i = 0; i < offenders.size(); i++)
 	{
-	    if (_offenders.elementAt(i) == null)
+	    if (offenders.elementAt(i) == null)
 		continue;
 
-	    for (j = 0; j < rc._offenders.size(); j++)
-		if (_offenders.elementAt(i).equals(rc._offenders.elementAt(j)))
+	    for (j = 0; j < rc.offenders.size(); j++)
+		if (offenders.elementAt(i).equals(rc.offenders.elementAt(j)))
 		    break;
 
-	    if (j >= rc._offenders.size())
+	    if (j >= rc.offenders.size())
 		return false;
 	}
 
@@ -181,7 +186,8 @@ public class ResolvedCritic
      * Obtains a String that identifies the type of Critic.
      *
      * @param	c	A Critic.
-     * @throws	UnreslovableException	Not implemented.
+     * @throws	UnresolvableException	Not implemented.
+     * @return	A identifying name of the critic.
      */
     protected String getCriticString(Critic c) throws UnresolvableException
     {
@@ -228,7 +234,7 @@ public class ResolvedCritic
 		else
 		    fail = fail + ", " + obj.getClass().toString();
 
-		cat.warn("Offender " + obj.getClass() + " unresolvable");
+		LOG.warn("Offender " + obj.getClass() + " unresolvable");
 
 		// Use this for fast fail instead.
 		// Sacrificed for complete fail. d00mst
@@ -237,7 +243,7 @@ public class ResolvedCritic
 		//	+ obj.getClass());
 	    }
 	    else
-		_offenders.add(id);
+		offenders.add(id);
 	}
 
 	if (fail != null)
@@ -247,19 +253,23 @@ public class ResolvedCritic
     }
 
     /**
-     * Gets the content of _critic.
+     * Gets the content of critic.
+     *
+     * @return The critic this instance resolves.
      */
     public String getCritic()
     {
-	return _critic;
+	return critic;
     }
 
     /**
-     * Gets the list of related objects, _offenders.
+     * Gets the list of related objects, offenders.
+     *
+     * @return The list of offenders of the critic this instance resolved.
      */
     public Vector getOffenderList()
     {
-	return _offenders;
+	return offenders;
     }
 
     /**
@@ -268,14 +278,14 @@ public class ResolvedCritic
     public String toString()
     {
 	StringBuffer sb =
-	    new StringBuffer("ResolvedCritic: " + _critic + " : ");
+	    new StringBuffer("ResolvedCritic: " + critic + " : ");
 	int i;
 
-	for (i = 0; i < _offenders.size(); i++)
+	for (i = 0; i < offenders.size(); i++)
 	{
 	    if (i > 0)
 		sb.append(", ");
-	    sb.append(_offenders.elementAt(i));
+	    sb.append(offenders.elementAt(i));
 	}
 
 	return sb.toString();
