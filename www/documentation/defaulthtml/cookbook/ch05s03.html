@@ -1,0 +1,42 @@
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+   <title>5.3. Notation</title><link rel="stylesheet" href="look-and-feel.css" type="text/css"><meta name="generator" content="DocBook XSL Stylesheets V1.49"><link rel="home" href="index.html" title="Cookbook for Developers of ArgoUML"><link rel="up" href="ch05.html" title="Chapter 5. Inside the components"><link rel="previous" href="ch05s02.html" title="5.2. Critics and other cognitive tools"><link rel="next" href="ch05s04.html" title="5.4. Diagrams"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">5.3. Notation</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch05s02.html">Prev</a>&nbsp;</td><th width="60%" align="center">Chapter 5. Inside the components</th><td width="20%" align="right">&nbsp;<a accesskey="n" href="ch05s04.html">Next</a></td></tr></table><hr></div><div class="sect1"><div class="titlepage"><div><h2 class="title" style="clear: both"><a name="notation"></a>5.3. Notation</h2></div></div><a class="indexterm" name="d0e2077"></a><p><a name="comp-notation-purpose"></a>
+Purpose - to provide the different possibilities on how
+classes, methods and attributes are to be shown in diagrams
+and property panels.
+</p><p>
+The interfaces <tt>NotationProvider</tt> and 
+<tt>NotationContext</tt> are used to
+provide linkages to different code generators.
+A class which can ask for different notations, such as the source box,
+or a <tt>FigClass</tt>, extends 
+<tt>NotationContext</tt>. 
+When processed, a <tt>NotationContext</tt> gets asked
+what <tt>NotationName</tt> it wants or null to indicate
+it doesn't care.
+If the <tt>NotationName</tt> is null, then the value of
+the menu selection "Edit-&gt;Notation" are used. 
+The <tt>NotationName</tt> is
+used to find the correct <tt>NotationProvider</tt>.
+That <tt>NotationProvider</tt> gets called, and the
+results are passed to the <tt>NotationContext</tt> for
+it to do what it needs.
+</p><p>
+This module contains the following main class types:
+</p><div class="itemizedlist"><ul type="disc"><li><p>
+<tt>NotationProviderFactory</tt>
+</p></li><li><p>
+<tt>Notation</tt>,
+<tt>NotationContext</tt>,
+<tt>NotationProvider</tt>
+</p></li></ul></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="d0e2138"></a>5.3.1. Collaborations for Notation</h3></div></div><p>
+Notations are used by the diagrams and tabs to provide the correct
+syntax when showing code.
+</p><div class="sect3"><div class="titlepage"><div><h4 class="title"><a name="comp-notation-to-comp-codegenreveng"></a>5.3.1.1. Notation uses Code Generation and Reverse Engineering</h4></div></div><p>
+For generating parts of the java-notation, parts of the
+java code generation is used.
+</p></div><div class="sect3"><div class="titlepage"><div><h4 class="title"><a name="comp-notation-to-comp-plugins"></a>5.3.1.2. Notation uses Plugin-Module API</h4></div></div><p>
+Currently not!
+</p></div><div class="sect3"><div class="titlepage"><div><h4 class="title"><a name="comp-notation-to-comp-logging"></a>5.3.1.3. Notation uses Logging</h4></div></div><p>Currently not.</p></div></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="howdoi_notation"></a>5.3.2. How do I ...?</h3></div></div><div class="itemizedlist"><ul type="disc"><li><p>...add a new notation?</p><p>
+Use the PluggableNotation api!
+</p></li></ul></div></div></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch05s02.html">Prev</a>&nbsp;</td><td width="20%" align="center"><a accesskey="u" href="ch05.html">Up</a></td><td width="40%" align="right">&nbsp;<a accesskey="n" href="ch05s04.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">5.2. Critics and other cognitive tools&nbsp;</td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top">&nbsp;5.4. Diagrams</td></tr></table></div></body></html>
