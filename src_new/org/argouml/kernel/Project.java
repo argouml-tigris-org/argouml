@@ -40,6 +40,7 @@ import ru.novosoft.uml.behavior.common_behavior.*;
 import org.tigris.gef.base.*;
 import org.tigris.gef.presentation.*;
 import org.tigris.gef.util.*;
+import org.tigris.gef.ocl.*;
 
 import org.argouml.application.api.*;
 import org.argouml.cognitive.*;
@@ -72,8 +73,13 @@ public class Project implements java.io.Serializable {
   public final static String UNCOMPRESSED_FILE_EXT = ".argo";
   public final static String PROJECT_FILE_EXT = ".argo";
   public final static String TEMPLATES = "/org/argouml/templates/";
+  public static String ARGO_TEE = "/org/argouml/xml/dtd/argo.tee";
   //public final static String EMPTY_PROJ = "EmptyProject" + FILE_EXT;
   public final static String UNTITLED_FILE = "Untitled";
+  
+    ////////////////////////////////////////////////////////////////
+  // static variables
+  protected static OCLExpander expander = null;
 
   ////////////////////////////////////////////////////////////////
   // instance variables
@@ -617,18 +623,37 @@ public class Project implements java.io.Serializable {
 // 	pm.load();
 //     }
 //   }
-
-  public void saveAllMembers(String path, boolean overwrite) {
-      saveAllMembers(path, overwrite, null, null);
-  }
-
-  public void saveAllMembers(String path, boolean overwrite, Writer writer, ZipOutputStream zos) {
-
-      if (writer == null) {
-	  System.out.println("No Writer specified!");
-	  return;
-      }
-
+  
+    /**
+   * There are known issues with saving, particularly
+   * losing the xmi at save time. see issue
+   * http://argouml.tigris.org/issues/show_bug.cgi?id=410
+   *
+   * It is also being considered to save out individual
+   * xmi's from individuals diagrams to make
+   * it easier to modularize the output of Argo.
+   */
+  public void save(boolean overwrite, File file) throws IOException {
+    if (expander == null) {
+      java.util.Hashtable templates = TemplateReader.readFile(ARGO_TEE);
+      expander = new OCLExpander(templates);
+    }
+        
+    Dbg.log("org.argouml.kernel.Project", "Saving " + file);
+    
+    preSave();
+        
+    ZipOutputStream stream = new ZipOutputStream(new FileOutputStream(file));
+    BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(stream, "UTF-8"));
+ 
+    ZipEntry zipEntry = new ZipEntry (getBaseName() + UNCOMPRESSED_FILE_EXT);
+    stream.putNextEntry (zipEntry);
+    expander.expand (writer, this, "", "");
+    writer.flush();
+    stream.closeEntry();
+        
+    String path = file.getParent();
+    Argo.log.info ("Dir ==" + path);
     int size = _members.size();
     
     try {
@@ -638,10 +663,10 @@ public class Project implements java.io.Serializable {
 	    ProjectMember p = (ProjectMember) _members.elementAt(i);
 	    if (!(p.getType().equalsIgnoreCase("xmi"))){
 		Argo.log.info("Saving member of type: " + ((ProjectMember)_members.elementAt(i)).getType());
-		zos.putNextEntry(new ZipEntry(p.getName()));
+		stream.putNextEntry(new ZipEntry(p.getName()));
 		p.save(path,overwrite,writer);
 		writer.flush();
-		zos.closeEntry();
+		stream.closeEntry();
 	    }
 	}
 
@@ -649,7 +674,7 @@ public class Project implements java.io.Serializable {
 	    ProjectMember p = (ProjectMember) _members.elementAt(i);
 	    if (p.getType().equalsIgnoreCase("xmi")) {
 		Argo.log.info("Saving member of type: " + ((ProjectMember)_members.elementAt(i)).getType());
-		zos.putNextEntry(new ZipEntry(p.getName()));
+		stream.putNextEntry(new ZipEntry(p.getName()));
 		p.save(path,overwrite,writer);
 	    }
 	}
@@ -658,7 +683,16 @@ public class Project implements java.io.Serializable {
 	System.out.println("hat nicht geklappt: "+e);
 	e.printStackTrace();
     }
-    // needs-more-work: check if each file is dirty
+    
+    //needs-more-work: in future allow independent saving
+    writer.close();
+    // zos.close();
+    
+    postSave();
+
+    try {
+      setFile(file);
+    } catch (PropertyVetoException ex) {}
   }
 
   public String getAuthorname() { return _authorname; }

@@ -26,13 +26,12 @@ package org.argouml.uml.ui;
 import org.argouml.application.api.*;
 import org.argouml.kernel.*;
 import org.argouml.ui.*;
-import org.tigris.gef.ocl.*;
 import org.tigris.gef.util.Localizer;
 import java.io.*;
 import java.awt.event.*;
 import java.util.zip.*;
 import java.text.MessageFormat;
-
+import java.net.URL;
 import javax.swing.JOptionPane;
 
 public class ActionSaveProject extends UMLAction {
@@ -41,11 +40,6 @@ public class ActionSaveProject extends UMLAction {
   // static variables
 
   public static ActionSaveProject SINGLETON = new ActionSaveProject(); 
-
-  protected static OCLExpander expander = null;
-
-  public static String ARGO_TEE = "/org/argouml/xml/dtd/argo.tee";
-
 
   ////////////////////////////////////////////////////////////////
   // constructors
@@ -66,40 +60,23 @@ public class ActionSaveProject extends UMLAction {
     trySave(true);
   }
 
-  /**
-   * There are known issues with saving, particularly
-   * losing the xmi at save time. see issue
-   * http://argouml.tigris.org/issues/show_bug.cgi?id=410
-   *
-   * It is also being considered to save out individual
-   * xmi's from individuals diagrams to make
-   * it easier to modularize the output of Argo.
-   */
   public boolean trySave (boolean overwrite) {
+    URL url = ProjectBrowser.TheInstance.getProject().getURL();
+    return trySave(overwrite, new File(url.getFile()));
+  }
+
+  public boolean trySave(boolean overwrite, File file) {
     ProjectBrowser pb = ProjectBrowser.TheInstance;
-    
+    Project p = pb.getProject();
+
     try {
-      if (expander == null) {
-        java.util.Hashtable templates = TemplateReader.readFile (ARGO_TEE);
-        expander = new OCLExpander(templates);
-      }
-      
-      Project p =  pb.getProject();
-      
-      String fullpath = "Untitled" + Project.COMPRESSED_FILE_EXT;
-      if (p.getURL() != null) fullpath = p.getURL().getFile();
-      
-      if (fullpath.charAt (0) == '/' && fullpath.charAt (2) == ':') {
-        fullpath = fullpath.substring(1); // for Windows /D: -> D:
-      }
-      
-      File f = new File (fullpath);
-      if (f.exists() && !overwrite) {
+
+      if (file.exists() && !overwrite) {
         //Argo.log.info ("Are you sure you want to overwrite " + fullpath + "?");
         String sConfirm = MessageFormat.format (
             Localizer.localize ("Actions",
                                 "template.save_project.confirm_overwrite"),
-            new Object[] {fullpath}
+            new Object[] {file}
           );
         int nResult = JOptionPane.showConfirmDialog (
             pb,
@@ -116,27 +93,12 @@ public class ActionSaveProject extends UMLAction {
       
       String sStatus = MessageFormat.format (
           Localizer.localize ("Actions", "template.save_project.status_writing"),
-          new Object[] {fullpath}
+          new Object[] {file}
         );
       pb.showStatus (sStatus);
-      {
-        ZipOutputStream zos = new ZipOutputStream (new FileOutputStream (f));
-        ZipEntry zipEntry = new ZipEntry (p.getBaseName() + Project.PROJECT_FILE_EXT);
-        zos.putNextEntry (zipEntry);
-        OutputStreamWriter fw = new OutputStreamWriter (zos, "UTF-8");
-        p.preSave();
-        expander.expand (fw, p, "", "");
-        fw.flush();
-        // zos.flush();
-        zos.closeEntry();
-        String parentDirName = fullpath.substring (0, fullpath.lastIndexOf ("/"));
-        Argo.log.info ("Dir ==" + parentDirName);
-        p.saveAllMembers (parentDirName, overwrite, fw, zos);
-        //needs-more-work: in future allow independent saving
-        p.postSave();
-        fw.close();
-        // zos.close();
-      }
+
+      p.save(overwrite, file);
+
       sStatus = MessageFormat.format (
           Localizer.localize ("Actions", "template.save_project.status_wrote"),
           new Object[] {p.getURL()}
@@ -180,10 +142,7 @@ public class ActionSaveProject extends UMLAction {
   }
 
   public boolean shouldBeEnabled() {
-    Project p = ProjectBrowser.TheInstance.getProject();
-    return super.shouldBeEnabled() &&
-           p != null &&
-           p.getURL() != null &&
-           p.getURL().toString().indexOf ("templates") == -1;  // something of a hack, isn't it???
+    URL url = ProjectBrowser.TheInstance.getProject().getURL();
+    return super.shouldBeEnabled() && url != null;
   }
 } /* end class ActionSaveProject */
