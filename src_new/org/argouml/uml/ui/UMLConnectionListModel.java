@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2002 The Regents of the University of California. All
+// Copyright (c) 1996-2003 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -21,10 +21,6 @@
 // PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
-
-// 3 May 2002: Jeremy Bennett (mail@jeremybennett.com). Extended to mark the
-// project as needing saving if an association is added, deleted, changed or
-// moved.
 
 package org.argouml.uml.ui;
 
@@ -58,14 +54,14 @@ public class UMLConnectionListModel extends UMLBinaryRelationListModel  {
     }
 
     /**
-     * @see org.argouml.uml.ui.UMLBinaryRelationListModel#build(MModelElement, MModelElement)
+     * @see org.argouml.uml.ui.UMLBinaryRelationListModel#build(Object,Object)
      */
     protected void build(Object/*MModelElement*/ from, Object/*MModelElement*/ to) {
 	CoreFactory.getFactory().buildAssociation(from,to);
     }
 
     /**
-     * @see org.argouml.uml.ui.UMLBinaryRelationListModel#connect(MutableGraphModel, MModelElement, MModelElement)
+     * @see org.argouml.uml.ui.UMLBinaryRelationListModel#connect(MutableGraphModel, Object, Object)
      */
     protected void connect(
 			   MutableGraphModel gm,
@@ -89,7 +85,7 @@ public class UMLConnectionListModel extends UMLBinaryRelationListModel  {
     }
 
     /**
-     * @see org.argouml.uml.ui.UMLBinaryRelationListModel#getRelation(MModelElement, MModelElement)
+     * @see org.argouml.uml.ui.UMLBinaryRelationListModel#getRelation(Object,Object)
      */
     protected Object getRelation(Object from, Object to) {
 	// this could get awkward but we assume that there is only one association

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2001 The Regents of the University of California. All
+// Copyright (c) 1996-2003 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -29,15 +29,11 @@ package org.argouml.uml.ui.behavior.use_cases;
 
 import java.util.*;
 
-//import javax.swing.*;
-
-//import org.argouml.ui.*;
 import org.argouml.uml.ui.UMLBinaryRelationListModel;
 import org.argouml.uml.ui.UMLUserInterfaceContainer;
 import org.tigris.gef.graph.MutableGraphModel;
 import org.apache.log4j.Logger;
 import org.argouml.application.api.Argo;
-//import org.argouml.kernel.*;
 import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.behavioralelements.usecases.UseCasesFactory;
 import org.argouml.model.uml.behavioralelements.usecases.UseCasesHelper;
@@ -64,14 +60,6 @@ public class UMLExtendListModel extends UMLBinaryRelationListModel  {
     protected static Logger cat = Logger.getLogger(UMLExtendListModel.class);
 
     /**
-     * <p>The default text when there is no base class for the extend
-     *   relationship.</p>
-     */
- 
-//    final private static String _nullLabel = "(anon)";
-
-
-    /**
      * <p>Create a new list model.<p>
      *
      * <p>Implementation is just an invocation of the parent constructor.</p>
@@ -96,360 +84,7 @@ public class UMLExtendListModel extends UMLBinaryRelationListModel  {
 
 
     /**
-     * <p>Compute the size of the list model. This method must be provided to
-     *   override the abstract method in the parent.</p>
-     *
-     * @return the number of elements the list model (0 if there are none).
-     */
-    /*
-      protected int recalcModelElementSize() {
-      int        size   = 0;
-      Collection xtends = getExtends();
-
-      if(xtends != null) {
-      size = xtends.size();
-      }
-
-      return size;
-      }
-    */
-    
-    /**
-     * <p>Get the element at a given offset in the model This method must be
-     *   provided to override the abstract method in the parent.</p>
-     *
-     * <p>The implementation makes use of the {@link #elementAtUtil} method,
-     *   which takes care of all unusual cases.</p>
-     *
-     * @param   the index of the desired element.
-     *
-     * @return  the element at that index if there is one, otherwise
-     *          <code>null</code>.
-     */
-    /*
-      protected MModelElement getModelElementAt(int index) {
-
-      return elementAtUtil(getExtends(), index, MExtend.class);
-      }
-    */            
-        
-    /**
-     * <p>A private utility to get the list of extends relationships for this
-     *   use case.</p>
-     *
-     * @return the list of extends relationships for this use case.
-     */
-    /*
-      private Collection getExtends() {
-
-      Collection xtends = null;
-      Object     target = getTarget();
-
-      if(target instanceof MUseCase) {
-      MUseCase useCase = (MUseCase) target;
-
-      xtends = useCase.getExtends();
-      }
-      else if (target instanceof MExtensionPoint) {
-      MExtensionPoint extensionPoint = (MExtensionPoint) target;
-
-      xtends = extensionPoint.getExtends();
-      }
-
-      return xtends;
-      }
-    */    
-
-    /**
-     * <p>Format a given model element.</p>
-     *
-     * <p>If this is invoked on a use case property panel and there is no base
-     *   use case, use the default text ("(anon)"). Otherwise use the parent
-     *   formatElement on the use case attached as base to the extend
-     *   relationship , which will ultimately invoke the format element method
-     *   of {@link PropPanel}.</p>
-     *
-     * <p>If this is invoked on an extension point property panel and there is
-     *   * no extension use case, use the default text ("(anon)"). Otherwise
-     *   use the parent formatElement on the use case attached as extension to
-     *   the extend relationship , which will ultimately invoke the format
-     *   element method of {@link PropPanel}.</p>
-     *
-     * <p>In this current implementation, more rigorously checks it is
-     *   formatting an extend relationship.</p>
-     *
-     * @param element  the model element to format
-     *
-     * @return an object (typically a string) representing the element.
-     */
-    /*
-      public Object formatElement(MModelElement element) {
-
-      Object value = _nullLabel;
-
-      if (element instanceof MExtend) {
-      MExtend  extend = (MExtend) element;
-      MUseCase target;
-
-      // Which end to use depends on the nature of the container. For a
-      // use case we
-
-      if (getTarget() instanceof MUseCase) {
-      target = extend.getBase();
-      }
-      else {
-      target = extend.getExtension();
-      }
-
-      if(target != null) {
-      value = super.formatElement(target);
-      }
-      }
-      else {
-      if (element != null) {
-      cat.warn("UMLExtendListModel." +
-      "formatElement(): Can't format " +
-      element.getClass().toString());
-      }
-      }
-
-      return value;
-      }
-    */
-
-    /**
-     * <p>Implement the "add" function of the pop up menu.</p>
-     *
-     * <p>Creates a dialog in which the user can select usecases this usecase should extend</p>
-     *
-     * @param index  Offset in the list of the element at which the pop-up was
-     *               invoked.
-     */
-    /*
-      public void add(int index) {
-      Object target = getTarget();
-      boolean extensionPoint = false;
-      MExtensionPoint point = null;
-      if (target instanceof MExtensionPoint) {
-      point = (MExtensionPoint)target;
-      target = point.getUseCase();
-      extensionPoint = true;
-      }
-      if (target instanceof MUseCase) {
-      MUseCase usecase = (MUseCase)target;	
-      Vector choices = new Vector();
-      Vector selected = new Vector();
-      choices.addAll(UseCasesHelper.getHelper().getAllUseCases());
-      choices.remove(usecase);
-      selected.addAll(UseCasesHelper.getHelper().getExtendedUseCases(usecase));
-      UMLAddDialog dialog = new UMLAddDialog(choices, selected, Argo.localize("UMLMenu", "dialog.title.add-extended-usecases"), true, true);
-      int returnValue = dialog.showDialog(ProjectBrowser.getInstance());
-      if (returnValue == JOptionPane.OK_OPTION) {
-      Iterator it = dialog.getSelected().iterator();
-      while (it.hasNext()) {
-      MUseCase eusecase = (MUseCase)it.next();
-      if (!selected.contains(eusecase)) {
-      ProjectBrowser pb = ProjectBrowser.getInstance();
-      ArgoDiagram diagram = pb.getActiveDiagram();
-      Fig figclass = diagram.getLayer().presentationFor(usecase);
-      Fig figeusecase = diagram.getLayer().presentationFor(eusecase);
-      if (figclass != null && figeusecase != null) {
-      GraphModel gm = diagram.getGraphModel();
-      if (gm instanceof MutableGraphModel) {
-      if (!extensionPoint)
-      ((MutableGraphModel)gm).connect(usecase, eusecase, MExtend.class);
-      else {
-      ((MutableGraphModel)gm).connect(eusecase, usecase, MExtend.class);
-      List list = new ArrayList();
-      list.add(point);
-      MExtend e = UseCasesHelper.getHelper().getExtends(usecase, eusecase);
-      UmlFactory.getFactory().delete(e.getExtensionPoint(0));
-      e.setExtensionPoints(list);
-      }
-      }
-      } else {
-      if (!extensionPoint)
-      UseCasesFactory.getFactory().buildExtend(eusecase, usecase);
-      else {
-      UseCasesFactory.getFactory().buildExtend(usecase, eusecase);
-      List list = new ArrayList();
-      list.add(point);
-      MExtend e = UseCasesHelper.getHelper().getExtends(usecase, eusecase);
-      UmlFactory.getFactory().delete(e.getExtensionPoint(0));
-      e.setExtensionPoints(list);
-      }
-                            
-      }
-      }
-      }
-      it = selected.iterator();
-      while (it.hasNext()) {
-      MUseCase eusecase = (MUseCase)it.next();
-      if (!dialog.getSelected().contains(eusecase)) {
-      MExtend extend = UseCasesHelper.getHelper().getExtends(eusecase, usecase);
-      Object pt = ProjectBrowser.getInstance().getTarget();
-      ProjectBrowser.getInstance().setTarget(extend);
-      ActionEvent event = new ActionEvent(this, 1, "delete");
-      ActionRemoveFromModel.SINGLETON.actionPerformed(event);
-      ProjectBrowser.getInstance().setTarget(pt);
-      }
-      }
-      }
-      }
-      }
-
-    */
-    /**
-     * <p>Implement the "delete" function of the pop up menu. Delete the
-     *   element at the given index.</p>
-     *
-     * <p>Find the use cases at each end (note that NSUML uses the name
-     *   "extend2" for the use case doing the extended, since it is unnamed in
-     *   the standard). Delete their references to this extend
-     *   relationship. Also remove from the namespace.</p>
-     *
-     * <p><em>Note</em>. We don't actually need to check the target PropPanel
-     *   is a use case&mdash;given an extend relationship we can delete it.</p>
-     *
-     * @param index  Offset in the list of the element at which the pop-up was
-     *               invoked and which is to be deleted.
-     */
-    /*
-      public void delete(int index) {
-      Object target = getTarget();
-      if (target instanceof MExtensionPoint) {
-      target = ((MExtensionPoint)target).getUseCase();
-      }
-      if (target instanceof MUseCase) {
-      MUseCase usecase = (MUseCase)target;
-      MUseCase eusecase = (MUseCase)UMLModelElementListModel.elementAtUtil(UseCasesHelper.getHelper().getExtendedUseCases(usecase), index, null);
-      MExtend gen = UseCasesHelper.getHelper().getExtends(eusecase, usecase);
-      Object pt = ProjectBrowser.getInstance().getTarget();
-      ProjectBrowser.getInstance().setTarget(gen);
-      ActionEvent event = new ActionEvent(this, 1, "delete");
-      ActionRemoveFromModel.SINGLETON.actionPerformed(event);
-      ProjectBrowser.getInstance().setTarget(pt);
-      fireIntervalRemoved(this,index,index);
-      }
-      }
-    */
-
-    /**
-     * <p>Implement the action that occurs with the "MoveUp" pop up.</p>
-     *
-     * <p>Move the extend relationship at the given index in the list up one
-     *   (unless it is already at the top). Since we use {@link #moveUpUtil}
-     *   there is no need to test for unusual cases.</p>
-     *
-     * @param index  the index in the list of the extend relationship to move
-     *               up.
-     */
-    /*
-      public void moveUp(int index) {
-
-      // Only do this if we are an extension point or use case
-
-      Object target = getTarget();
-
-      if ((!(target instanceof MExtensionPoint)) &&
-      (!(target instanceof MUseCase))) {
-      return;
-      }
-
-      // Handle according to the type of target
-
-      if (target instanceof MExtensionPoint) {
-      MExtensionPoint extensionPoint = (MExtensionPoint) target;
-      extensionPoint.setExtends(moveUpUtil(extensionPoint.getExtends(),
-      index));
-      }
-      else {
-      MUseCase useCase = (MUseCase) target;
-      useCase.setExtends(moveUpUtil(useCase.getExtends(), index));
-      }
-
-      // Having moved an extend relationship, mark as needing saving
-
-      Project p = ProjectBrowser.getInstance().getProject();
-      p.setNeedsSave(true);
-
-      // Tell Swing
-
-      fireContentsChanged(this, index - 1, index);
-      }
-    
-    */
-    /**
-     * <p>The action that occurs with the "MoveDown" pop up.</p>
-     *
-     * <p>Move the extend relationship at the given index in the list down one
-     *   (unless it is already at the bottom). Since we use {@link #moveUpUtil}
-     *   there is no need to test for unusual cases.</p>
-     *
-     * @param index  the index in the list of the extend relationship to move
-     *               down.
-     */
-    /*
-      public void moveDown(int index) {
-
-      // Only do this if we are an extension point or use case
-
-      Object target = getTarget();
-
-      if ((!(target instanceof MExtensionPoint)) &&
-      (!(target instanceof MUseCase))) {
-      return;
-      }
-
-      // Handle according to the type of target
-
-      if (target instanceof MExtensionPoint) {
-      MExtensionPoint extensionPoint = (MExtensionPoint) target;
-      extensionPoint.setExtends(moveDownUtil(extensionPoint.getExtends(),
-      index));
-      }
-      else {
-      MUseCase useCase = (MUseCase) target;
-      useCase.setExtends(moveDownUtil(useCase.getExtends(), index));
-      }
-
-      // Having moved an extend relationship, mark as needing saving
-
-      Project p = ProjectBrowser.getInstance().getProject();
-      p.setNeedsSave(true);
-
-      // Tell Swing
-
-      fireContentsChanged(this,index,index+1);
-      }
-    */
-
-    /**
-     * @see org.argouml.uml.ui.UMLModelElementListModel#buildPopup(JPopupMenu, int)
-     */
-    /*
-      public boolean buildPopup(JPopupMenu popup, int index) {
-      UMLUserInterfaceContainer container = getContainer();
-      UMLListMenuItem open = new UMLListMenuItem(container.localize("Open"),this,"open",index);
-      UMLListMenuItem delete = new UMLListMenuItem(container.localize("Delete"),this,"delete",index);
-      if(getModelElementSize() <= 0) {
-      open.setEnabled(false);
-      delete.setEnabled(false);
-      }
-
-      popup.add(open);
-      UMLListMenuItem add =new UMLListMenuItem(container.localize("Add"),this,"add",index);
-      if(_upper >= 0 && getModelElementSize() >= _upper) {
-      add.setEnabled(false);
-      }
-      popup.add(add);
-      popup.add(delete);
-
-      return true;
-      }
-    */
-    /**
-     * @see org.argouml.uml.ui.UMLBinaryRelationListModel#build(MModelElement, MModelElement)
+     * @see org.argouml.uml.ui.UMLBinaryRelationListModel#build(Object,Object)
      */
     protected void build(Object/*MModelElement*/ from, Object/*MModelElement*/ to) {
         if (org.argouml.model.ModelFacade.isAUseCase(from) && org.argouml.model.ModelFacade.isAUseCase(to)) {
@@ -459,7 +94,7 @@ public class UMLExtendListModel extends UMLBinaryRelationListModel  {
     }
 
     /**
-     * @see org.argouml.uml.ui.UMLBinaryRelationListModel#connect(MutableGraphModel, MModelElement, MModelElement)
+     * @see org.argouml.uml.ui.UMLBinaryRelationListModel#connect(MutableGraphModel, Object, Object)
      */
     protected void connect(
 			   MutableGraphModel gm,
@@ -483,7 +118,7 @@ public class UMLExtendListModel extends UMLBinaryRelationListModel  {
     }
 
     /**
-     * @see org.argouml.uml.ui.UMLBinaryRelationListModel#getRelation(MModelElement, MModelElement)
+     * @see org.argouml.uml.ui.UMLBinaryRelationListModel#getRelation(Object,Object)
      */
     protected Object/*MModelElement*/ getRelation(Object/*MModelElement*/ from, Object/*MModelElement*/ to) {
         return UseCasesHelper.getHelper().getExtends(/*(MUseCase)*/ to, /*(MUseCase)*/ from);
