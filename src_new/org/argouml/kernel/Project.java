@@ -24,6 +24,9 @@
 
 package org.argouml.kernel;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyVetoException;
+import java.beans.VetoableChangeListener;
 import java.beans.VetoableChangeSupport;
 import java.io.File;
 import java.io.IOException;
@@ -737,6 +740,7 @@ public class Project implements java.io.Serializable, TargetListener {
     public void addDiagram(ArgoDiagram d) {
         // send indeterminate new value instead of making copy of vector
         diagrams.addElement(d);
+        d.addVetoableChangeListener(new Vcl());
         ProjectManager.getManager().setNeedsSave(true);
     }
 
@@ -751,6 +755,7 @@ public class Project implements java.io.Serializable, TargetListener {
      * @param d the ArgoDiagram
      */
     protected void removeDiagram(ArgoDiagram d) {
+        d.removeVetoableChangeListener(new Vcl());
         diagrams.removeElement(d);
         // if the diagram is a statechart,
         // remove its associated statemachine model elements
@@ -765,6 +770,24 @@ public class Project implements java.io.Serializable, TargetListener {
         }
     }
 
+    /**
+     * Listener to events from the Diagram class. <p>
+     * 
+     * Purpose: changing the name of a diagram shall set the need save flag.
+     * 
+     * @author mvw@tigris.org
+     */
+    private class Vcl implements VetoableChangeListener {
+        /**
+         * @see java.beans.VetoableChangeListener#vetoableChange(java.beans.PropertyChangeEvent)
+         */
+        public void vetoableChange(PropertyChangeEvent evt)
+            throws PropertyVetoException {
+            if (evt.getPropertyName().equals("name"))
+                ProjectManager.getManager().setNeedsSave(true);
+        }
+    }
+    
     /**
      * @param me the given modelelement
      * @return the total number of presentation 
