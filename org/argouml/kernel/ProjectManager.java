@@ -251,10 +251,12 @@ public final class ProjectManager implements PropertyChangeListener {
      * @see java.beans.PropertyChangeListener#propertyChange(java.beans.PropertyChangeEvent)
      */
     public void propertyChange(PropertyChangeEvent pce) {
-        if (pce.getPropertyName().equals(Designer.MODEL_TODOITEM_ADDED)) {
+        if (pce.getPropertyName().equals(
+                Designer.MODEL_TODOITEM_ADDED)) {
             getCurrentProject().setNeedsSave(true);
         }
-        else if (pce.getPropertyName().equals(Designer.MODEL_TODOITEM_DISMISSED)) {
+        else if (pce.getPropertyName().equals(
+                Designer.MODEL_TODOITEM_DISMISSED)) {
             getCurrentProject().setNeedsSave(true);
         }
         
