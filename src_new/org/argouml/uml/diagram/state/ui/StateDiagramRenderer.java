@@ -28,19 +28,22 @@
 
 package org.argouml.uml.diagram.state.ui;
 
-import java.util.*;
-
-import ru.novosoft.uml.foundation.core.*;
-import ru.novosoft.uml.foundation.data_types.*;
-import ru.novosoft.uml.behavior.state_machines.*;
-import ru.novosoft.uml.behavior.activity_graphs.*;
-
-import org.tigris.gef.base.*;
-import org.tigris.gef.presentation.*;
-import org.tigris.gef.graph.*;
-
 import org.apache.log4j.Category;
-import org.argouml.uml.diagram.activity.ui.*;
+import org.argouml.model.ModelFacade;
+import org.argouml.uml.diagram.activity.ui.FigActionState;
+import org.tigris.gef.base.Layer;
+import org.tigris.gef.graph.GraphEdgeRenderer;
+import org.tigris.gef.graph.GraphModel;
+import org.tigris.gef.graph.GraphNodeRenderer;
+import org.tigris.gef.presentation.FigEdge;
+import org.tigris.gef.presentation.FigNode;
+
+import ru.novosoft.uml.behavior.state_machines.MCompositeState;
+import ru.novosoft.uml.behavior.state_machines.MFinalState;
+import ru.novosoft.uml.behavior.state_machines.MPseudostate;
+import ru.novosoft.uml.behavior.state_machines.MState;
+import ru.novosoft.uml.behavior.state_machines.MTransition;
+import ru.novosoft.uml.foundation.data_types.MPseudostateKind;
 // could be singleton
 
 
@@ -72,7 +75,7 @@ public class StateDiagramRenderer implements GraphNodeRenderer, GraphEdgeRendere
 
     /** Return a Fig that can be used to represent the given node */
     public FigNode getFigNodeFor(GraphModel gm, Layer lay, Object node) {
-        if (node instanceof MActionState) {
+        if (ModelFacade.isAActionState(node)) {
             return new FigActionState(gm, node);
         }
         else if (node instanceof MFinalState) {

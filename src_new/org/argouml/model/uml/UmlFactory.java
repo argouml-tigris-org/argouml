@@ -41,7 +41,6 @@ import org.argouml.model.uml.foundation.extensionmechanisms.ExtensionMechanismsF
 import org.argouml.model.uml.modelmanagement.ModelManagementFactory;
 
 import ru.novosoft.uml.MBase;
-import ru.novosoft.uml.behavior.activity_graphs.MActionState;
 import ru.novosoft.uml.behavior.activity_graphs.MActivityGraph;
 import ru.novosoft.uml.behavior.activity_graphs.MCallState;
 import ru.novosoft.uml.behavior.activity_graphs.MClassifierInState;
@@ -790,8 +789,8 @@ public class UmlFactory extends AbstractUmlModelFactory {
             } else
             if (elem instanceof MSimpleState) {
                 getStateMachines().deleteSimpleState((MSimpleState)elem);
-                if (elem instanceof MActionState) {
-                    getActivityGraphs().deleteActionState((MActionState)elem);
+                if (ModelFacade.isAActionState(elem)) {
+                    getActivityGraphs().deleteActionState(elem);
                     if (elem instanceof MCallState) {
                         getActivityGraphs().deleteCallState((MCallState)elem);
                     }
