@@ -128,7 +128,7 @@ public class FigAssociation extends FigEdgeModelElement {
     if (conn == null || conn.size() == 0) return;
 
     if (ft == _srcRole) {
-		MAssociationEnd srcAE = (MAssociationEnd)((Object[]) conn.toArray())[0];
+      MAssociationEnd srcAE = (MAssociationEnd)((Object[]) conn.toArray())[0];
       srcAE.setName(_srcRole.getText());
     }
     if (ft == _destRole) {
@@ -149,7 +149,6 @@ public class FigAssociation extends FigEdgeModelElement {
     MAssociationEnd ae0 =  (MAssociationEnd)((Object[])(as.getConnections()).toArray())[0];
     MAssociationEnd ae1 =  (MAssociationEnd)((Object[])(as.getConnections()).toArray())[1];
 
-   
     MMultiplicity mult0 = ae0.getMultiplicity();
     MMultiplicity mult1 = ae1.getMultiplicity();
     _srcMult.setText(Notation.generate(this, mult0));
@@ -169,7 +168,7 @@ public class FigAssociation extends FigEdgeModelElement {
         if (ae0.getStereotype() != null)
             _srcRole.setText(Notation.generateStereotype(this,
                                                          ae0.getStereotype()) +
-                             " " + _srcRole.getText()); 
+                             " " + _srcRole.getText());
         if (ae1.getStereotype() != null)
             _destRole.setText(Notation.generateStereotype(this,
                                                          ae1.getStereotype()) +
@@ -193,21 +192,28 @@ public class FigAssociation extends FigEdgeModelElement {
 			 ArrowHeadGreater.TheInstance);
 
   protected ArrowHead chooseArrowHead(MAggregationKind ak, boolean nav) {
+      ArrowHead arrow = ArrowHeadNone.TheInstance;
+
       if (nav) {
 	  if (MAggregationKind.NONE.equals(ak) || (ak == null))
-	      return ArrowHeadGreater.TheInstance;
+	      arrow = ArrowHeadGreater.TheInstance;
 	  else if (MAggregationKind.AGGREGATE.equals(ak))
-	      return _NAV_AGGREGATE;
+              arrow = _NAV_AGGREGATE;
 	  else if (MAggregationKind.COMPOSITE.equals(ak))
-	      return _NAV_COMP;
+              arrow = _NAV_COMP;
       }
-      if (MAggregationKind.NONE.equals(ak) || (ak == null))
-	  return ArrowHeadNone.TheInstance;
-      else if (MAggregationKind.AGGREGATE.equals(ak))
-	  return ArrowHeadDiamond.WhiteDiamond;
-      else if (MAggregationKind.COMPOSITE.equals(ak))
-	  return ArrowHeadDiamond.BlackDiamond;
-      return ArrowHeadNone.TheInstance;
+      else {
+          if (MAggregationKind.NONE.equals(ak) || (ak == null)) {
+              arrow = ArrowHeadNone.TheInstance;
+          }
+          else if (MAggregationKind.AGGREGATE.equals(ak)) {
+              arrow = ArrowHeadDiamond.WhiteDiamond;
+          }
+          else if (MAggregationKind.COMPOSITE.equals(ak)) {
+              arrow = ArrowHeadDiamond.BlackDiamond;
+          }
+      }
+      return arrow;
   }
 
   public Vector getPopUpActions(MouseEvent me) {
@@ -271,7 +277,7 @@ public class FigAssociation extends FigEdgeModelElement {
         MAssociationEnd ascStart = (MAssociationEnd) (ascEnds.get(0));
         MAssociationEnd ascEnd = (MAssociationEnd) (ascEnds.get(1));
 
-        if (ascStart.getType() instanceof MClass && ascEnd.getType() instanceof MClass) {
+        if (ascStart.getType() instanceof MClassifier && ascEnd.getType() instanceof MClassifier) {
             JMenu navMenu = new JMenu("Navigability");
             navMenu.add(ActionNavigability.newActionNavigability(ascStart, ascEnd, ActionNavigability.BIDIRECTIONAL));
             navMenu.add(ActionNavigability.newActionNavigability(ascStart, ascEnd, ActionNavigability.STARTTOEND));
