@@ -42,16 +42,16 @@ import javax.jmi.reflect.RefStruct;
  * @author Thierry
  */
 public class RefPackageProxy extends RefBaseObjectProxy
-implements InvocationHandler, RefPackage {
+    implements InvocationHandler, RefPackage {
 
     /**
-	 * @param obj
-	 */
-	public RefPackageProxy(Object obj) {
-		super(obj);
-	}
+     * @param object being proxied
+     */
+    public RefPackageProxy(Object object) {
+        super(object);
+    }
 
-	/** Creates a new instance of the proxied object.
+    /** Creates a new instance of the proxied object.
      * 
      * @param obj to proxy
      * @return a proxy object if obj does not already implement the interface.
@@ -74,128 +74,139 @@ implements InvocationHandler, RefPackage {
         System.arraycopy(oldInterfaces, 0,
                          newInterfaces, 0, oldInterfaces.length);
         // Add our new interface
-		newInterfaces[oldInterfaces.length-1] = RefBaseObject.class;
-		newInterfaces[oldInterfaces.length] = RefPackage.class;
+        newInterfaces[oldInterfaces.length - 1] = RefBaseObject.class;
+        newInterfaces[oldInterfaces.length] = RefPackage.class;
         // Now return the proxy
         return Proxy.newProxyInstance(obj.getClass().getClassLoader(),
                                       newInterfaces,
                                       new RefPackageProxy(obj));
     }
 
-	/**
-	  * @see java.lang.reflect.InvocationHandler#invoke(java.lang.Object, java.lang.reflect.Method, java.lang.Object[])
-	  */
-	public Object invoke(Object proxy, Method method, Object[] args)
-		throws Throwable {
-		Object result = null;
+    /**
+      * @see java.lang.reflect.InvocationHandler#invoke(java.lang.Object, java.lang.reflect.Method, java.lang.Object[])
+      */
+    public Object invoke(Object proxy, Method method, Object[] args)
+        throws Throwable {
+        Object result = null;
 
-		System.out.println("method: " + method.getName());
+        System.out.println("method: " + method.getName());
 
-		if (method.getName().equals("refMetaObject")) {
-			result = refMetaObject();
-		}
-		else if (method.getName().equals("refMofId")) {
-			result = refMofId();
-		}
-		else if (method.getName().equals("refImmediatePackage")) {
-			result = refImmediatePackage();
-		}
-		else if (method.getName().equals("refOutermostPackage")) {
-			result = refOutermostPackage();
-		}
-		else {
-			super.invoke(proxy, method, args);
-		}
-		return result;
-	}
+        if (method.getName().equals("refMetaObject")) {
+            result = refMetaObject();
+        }
+        else if (method.getName().equals("refMofId")) {
+            result = refMofId();
+        }
+        else if (method.getName().equals("refImmediatePackage")) {
+            result = refImmediatePackage();
+        }
+        else if (method.getName().equals("refOutermostPackage")) {
+            result = refOutermostPackage();
+        }
+        else {
+            super.invoke(proxy, method, args);
+        }
+        return result;
+    }
 
 
 
-	/** @see javax.jmi.reflect.RefPackage#refClass(javax.jmi.reflect.RefObject)
-	 */
-	public RefClass refClass(RefObject arg0) {
-		throw new RuntimeException("Not yet implemented");
-	}
+    /**
+     * @see javax.jmi.reflect.RefPackage#refClass(javax.jmi.reflect.RefObject)
+     */
+    public RefClass refClass(RefObject arg0) {
+        throw new RuntimeException("Not yet implemented");
+    }
 
-	/** @see javax.jmi.reflect.RefPackage#refClass(java.lang.String)
-	 */
-	public RefClass refClass(String arg0) {
-		throw new RuntimeException("Not yet implemented");
-	}
+    /**
+     * @see javax.jmi.reflect.RefPackage#refClass(java.lang.String)
+     */
+    public RefClass refClass(String arg0) {
+        throw new RuntimeException("Not yet implemented");
+    }
 
-	/** @see javax.jmi.reflect.RefPackage#refPackage(javax.jmi.reflect.RefObject)
-	 */
-	public RefPackage refPackage(RefObject arg0) {
-		throw new RuntimeException("Not yet implemented");
-	}
+    /**
+     * @see javax.jmi.reflect.RefPackage#refPackage(javax.jmi.reflect.RefObject)
+     */
+    public RefPackage refPackage(RefObject arg0) {
+        throw new RuntimeException("Not yet implemented");
+    }
 
-	/** @see javax.jmi.reflect.RefPackage#refPackage(java.lang.String)
-	 */
-	public RefPackage refPackage(String arg0) {
-		throw new RuntimeException("Not yet implemented");
-	}
+    /**
+     * @see javax.jmi.reflect.RefPackage#refPackage(java.lang.String)
+     */
+    public RefPackage refPackage(String arg0) {
+        throw new RuntimeException("Not yet implemented");
+    }
 
-	/** @see javax.jmi.reflect.RefPackage#refAssociation(javax.jmi.reflect.RefObject)
-	 */
-	public RefAssociation refAssociation(RefObject arg0) {
-		throw new RuntimeException("Not yet implemented");
-	}
+    /**
+     * @see javax.jmi.reflect.RefPackage#refAssociation(javax.jmi.reflect.RefObject)
+     */
+    public RefAssociation refAssociation(RefObject arg0) {
+        throw new RuntimeException("Not yet implemented");
+    }
 
-	/** @see javax.jmi.reflect.RefPackage#refAssociation(java.lang.String)
-	 */
-	public RefAssociation refAssociation(String arg0) {
-		throw new RuntimeException("Not yet implemented");
-	}
+    /**
+     * @see javax.jmi.reflect.RefPackage#refAssociation(java.lang.String)
+     */
+    public RefAssociation refAssociation(String arg0) {
+        throw new RuntimeException("Not yet implemented");
+    }
 
-	/** @see javax.jmi.reflect.RefPackage#refAllPackages()
-	 */
-	public Collection refAllPackages() {
-		throw new RuntimeException("Not yet implemented");
-	}
+    /**
+     * @see javax.jmi.reflect.RefPackage#refAllPackages()
+     */
+    public Collection refAllPackages() {
+        throw new RuntimeException("Not yet implemented");
+    }
 
-	/** @see javax.jmi.reflect.RefPackage#refAllClasses()
-	 */
-	public Collection refAllClasses() {
-		throw new RuntimeException("Not yet implemented");
-	}
+    /**
+     * @see javax.jmi.reflect.RefPackage#refAllClasses()
+     */
+    public Collection refAllClasses() {
+        throw new RuntimeException("Not yet implemented");
+    }
 
-	/** @see javax.jmi.reflect.RefPackage#refAllAssociations()
-	 */
-	public Collection refAllAssociations() {
-		throw new RuntimeException("Not yet implemented");
-	}
+    /**
+     * @see javax.jmi.reflect.RefPackage#refAllAssociations()
+     */
+    public Collection refAllAssociations() {
+        throw new RuntimeException("Not yet implemented");
+    }
 
-	/** @see javax.jmi.reflect.RefPackage#refCreateStruct(javax.jmi.reflect.RefObject, java.util.List)
-	 */
-	public RefStruct refCreateStruct(RefObject arg0, List arg1) {
-		throw new RuntimeException("Not yet implemented");
-	}
+    /**
+     * @see javax.jmi.reflect.RefPackage#refCreateStruct(javax.jmi.reflect.RefObject, java.util.List)
+     */
+    public RefStruct refCreateStruct(RefObject arg0, List arg1) {
+        throw new RuntimeException("Not yet implemented");
+    }
 
-	/** @see javax.jmi.reflect.RefPackage#refCreateStruct(java.lang.String, java.util.List)
-	 */
-	public RefStruct refCreateStruct(String arg0, List arg1) {
-		throw new RuntimeException("Not yet implemented");
-	}
+    /**
+     * @see javax.jmi.reflect.RefPackage#refCreateStruct(java.lang.String, java.util.List)
+     */
+    public RefStruct refCreateStruct(String arg0, List arg1) {
+        throw new RuntimeException("Not yet implemented");
+    }
 
-	/* (non-Javadoc)
-	 * @see javax.jmi.reflect.RefPackage#refGetEnum(javax.jmi.reflect.RefObject, java.lang.String)
-	 */
-	public RefEnum refGetEnum(RefObject arg0, String arg1) {
-		throw new RuntimeException("Not yet implemented");
-	}
+    /**
+     * @see javax.jmi.reflect.RefPackage#refGetEnum(javax.jmi.reflect.RefObject, java.lang.String)
+     */
+    public RefEnum refGetEnum(RefObject arg0, String arg1) {
+        throw new RuntimeException("Not yet implemented");
+    }
 
-	/* (non-Javadoc)
-	 * @see javax.jmi.reflect.RefPackage#refGetEnum(java.lang.String, java.lang.String)
-	 */
-	public RefEnum refGetEnum(String arg0, String arg1) {
-		throw new RuntimeException("Not yet implemented");
-	}
+    /**
+     * @see javax.jmi.reflect.RefPackage#refGetEnum(java.lang.String, java.lang.String)
+     */
+    public RefEnum refGetEnum(String arg0, String arg1) {
+        throw new RuntimeException("Not yet implemented");
+    }
 
-	/* (non-Javadoc)
-	 * @see javax.jmi.reflect.RefPackage#refDelete()
-	 */
-	public void refDelete() {
-		throw new RuntimeException("Not yet implemented");
-	}
+    /**
+     * @see javax.jmi.reflect.RefPackage#refDelete()
+     */
+    public void refDelete() {
+        throw new RuntimeException("Not yet implemented");
+    }
 
 }
