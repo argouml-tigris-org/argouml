@@ -246,12 +246,15 @@ public abstract class PropPanel
     }
 
     /**
-     *   Adds a component to the fields of the specified panel
-     *     and sets the background and color to indicate
-     *     the field is a link.
-     *   @param label the required string label
-     *   @param component Component to be added
-     *   @deprecated replaced by according widgets as of version 0.17.1
+     * Adds a component to the fields of the specified panel
+     * and sets the background and color to indicate
+     * the field is a link.<p>
+     * 
+     * This method is never used.
+     * 
+     * @param label the required string label
+     * @param component Component to be added
+     * @deprecated replaced by according widgets as of version 0.17.1
      */
     public final void addLinkField(String label, JComponent component) {
         component.setBackground(getBackground());
@@ -306,24 +309,27 @@ public abstract class PropPanel
     }
 
     /**
-       This method (and addMElementListener) can be overriden if the
-       prop panel wants to monitor additional objects.
-       ONLY use it if the target is a NSUML modelelement
-
-       @param theTarget target of prop panel
-
-    */
+     * This method (and addMElementListener) can be overriden if the
+     * prop panel wants to monitor additional objects.
+     * ONLY use it if the target is a NSUML modelelement.<p>
+     * 
+     * TODO: This method is never used. Remove?
+     * 
+     * @param theTarget target of prop panel
+     */
     protected void removeMElementListener(Object theTarget) {
         UmlModelEventPump.getPump().removeModelEventListener(this, theTarget);
     }
 
     /**
-       This method (and removeMElementListener) can be overriden if the
-       prop panel wants to monitor additional objects.  This method
-       is public only since it is called from a Runnable object.
-
-       @param theTarget target of prop panel
-    */
+     * This method (and removeMElementListener) can be overriden if the
+     * prop panel wants to monitor additional objects.  This method
+     * is public only since it is called from a Runnable object.<p>
+     * 
+     * TODO: This method is never used. Remove?
+     *
+     * @param theTarget target of prop panel
+     */
     public void addMElementListener(Object theTarget) {
         UmlModelEventPump.getPump().addModelEventListener(this, theTarget);
     }
