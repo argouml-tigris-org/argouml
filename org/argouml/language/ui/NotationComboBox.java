@@ -63,6 +63,10 @@ implements ArgoNotationEventListener {
         Argo.log.info("NotationComboBox.notationChanged(" + event + ")");
         refresh();
     }
+    public void notationAdded(ArgoNotationEvent event) { }
+    public void notationRemoved(ArgoNotationEvent event) { }
+    public void notationProviderAdded(ArgoNotationEvent event) { }
+    public void notationProviderRemoved(ArgoNotationEvent event) { }
 
     public void refresh() {
         if (Configuration.getBoolean(Notation.KEY_UML_NOTATION_ONLY, false)) {
