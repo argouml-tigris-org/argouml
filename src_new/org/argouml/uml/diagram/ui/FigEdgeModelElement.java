@@ -673,44 +673,48 @@ public abstract class FigEdgeModelElement
 	return false;
     }
 
-    /**
-     * Necessary since GEF contains some errors regarding the hit subject.
-     * TODO make the bigBounds port go off a little less
-     * @see org.tigris.gef.presentation.Fig#hit(Rectangle)
-     */
-    public boolean hit(Rectangle r) {
-        Polygon poly = ((FigPoly) _fig).getPolygon();
-	Rectangle rb = poly.getBounds();
-	double MAX_EDGE_HIT_DIST = 6.;
-
-	// Check if labels etc have been hit
-	int size = _pathItems.size();
-	for (int i = 0; i < size; i++) {
-	    Fig f = getPathItemFig((FigEdge.PathItem) _pathItems.elementAt(i));
-	    if (f.hit(r))
-		return true;
-	}
-
-	rb.setBounds(
-		(int) (rb.x - MAX_EDGE_HIT_DIST),
-		(int) (rb.y - MAX_EDGE_HIT_DIST),
-		(int) (rb.width + 2 * MAX_EDGE_HIT_DIST),
-		(int) (rb.height + 2 * MAX_EDGE_HIT_DIST));
-	if (!rb.intersects(r))
-	    return false;
-
-	return isPolyDistLessThan(poly,
-				  r.x + (r.width / 2),
-				  r.y + (r.height / 2),
-				  MAX_EDGE_HIT_DIST);
-    }
+// TODO Explain the added value of this method to that given in
+// the GEF bas class. If this does actually add any value then
+// implement in GEF, not ArgoUML.
+// From my testing the GEF hit method work fine. Bob Tarling 14 Feb 2004
+//    /**
+//     * Necessary since GEF contains some errors regarding the hit subject.
+//     * TODO make the bigBounds port go off a little less
+//     * @see org.tigris.gef.presentation.Fig#hit(Rectangle)
+//     */
+//    public boolean hit(Rectangle r) {
+//        Polygon poly = ((FigPoly) _fig).getPolygon();
+//	Rectangle rb = poly.getBounds();
+//	double MAX_EDGE_HIT_DIST = 6.;
+//
+//	// Check if labels etc have been hit
+//	int size = _pathItems.size();
+//	for (int i = 0; i < size; i++) {
+//	    Fig f = getPathItemFig((FigEdge.PathItem) _pathItems.elementAt(i));
+//	    if (f.hit(r))
+//		return true;
+//	}
+//
+//	rb.setBounds(
+//		(int) (rb.x - MAX_EDGE_HIT_DIST),
+//		(int) (rb.y - MAX_EDGE_HIT_DIST),
+//		(int) (rb.width + 2 * MAX_EDGE_HIT_DIST),
+//		(int) (rb.height + 2 * MAX_EDGE_HIT_DIST));
+//	if (!rb.intersects(r))
+//	    return false;
+//
+//	return isPolyDistLessThan(poly,
+//				  r.x + (r.width / 2),
+//				  r.y + (r.height / 2),
+//				  MAX_EDGE_HIT_DIST);
+//    }
 
     /**
      * @see org.tigris.gef.presentation.Fig#delete()
      */
     public void delete() {
         Object o = getOwner();
-        if (org.argouml.model.ModelFacade.isABase(o)) {
+        if (ModelFacade.isABase(o)) {
             UmlModelEventPump.getPump().removeModelEventListener(this, o);
         }
         if (this instanceof ArgoEventListener) {
