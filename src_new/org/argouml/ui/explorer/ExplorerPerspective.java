@@ -51,7 +51,7 @@ public class ExplorerPerspective {
     /** 
      * Creates a new instance of ExplorerPerspective.
      * 
-     * @param newName the name for the perspective
+     * @param newName the to be localized name for the perspective
      */
     public ExplorerPerspective(String newName) {
         name = Translator.localize(newName);
@@ -95,5 +95,11 @@ public class ExplorerPerspective {
         ExplorerPerspective ep = new ExplorerPerspective(newName);
         ep.rules.addAll(rules);
         return ep;
+    }
+    /**
+     * @param theNewName the new name for the ExplorerPerspective
+     */
+    protected void setName(String theNewName) {
+        this.name = theNewName;
     }
 }
