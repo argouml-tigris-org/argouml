@@ -77,6 +77,15 @@ implements SettingsTabPanel, PluggableSettingsTab {
 	return j;
     }
 
+    /** Create a localized JRadioButton.
+     */
+    protected JRadioButton createRadioButton(ButtonGroup bg, String key, 
+					     boolean selected) {
+	JRadioButton j = new JRadioButton(localize(key), selected);
+	bg.add(j);
+	return j;
+    }
+
     /** Create a JTextField.
      */
     protected JTextField createTextField() {

@@ -100,27 +100,22 @@ public class Main {
 	/* set properties for application behaviour */
 	System.setProperty("gef.imageLocation","/org/argouml/Images");
 
-    /* This is the default */
-    MetalLookAndFeel.setCurrentTheme(new org.argouml.ui.JasonsTheme());
-
     //--------------------------------------------
     // Parse command line args:
     // The assumption is that all options precede
     // the name of a project file to load.
     //--------------------------------------------
 
+	int themeMemory = 0;
     for (int i=0; i < args.length; i++) {
       if (args[i].startsWith("-")) {
-	if (args[i].equalsIgnoreCase("-big")) {
-	  MetalLookAndFeel.setCurrentTheme(new org.argouml.ui.JasonsBigTheme());
-	} else if (args[i].equalsIgnoreCase("-huge")) {
-	  MetalLookAndFeel.setCurrentTheme(new org.argouml.ui.JasonsHugeTheme());
+	if ((themeMemory = ProjectBrowser.getThemeFromArg(args[i])) != 0) {
+	    // Remembered!
 	} else if (args[i].equalsIgnoreCase("-help") ||
 		   args[i].equalsIgnoreCase("-h")) {
 	  System.err.println("Usage: [options] [project-file]");
 	  System.err.println("Options include: ");
-	  System.err.println("  -big            use big fonts");
-	  System.err.println("  -huge           use huge fonts");
+	  ProjectBrowser.printThemeArgs();
 	  System.err.println("  -nosplash       dont display Argo/UML logo");
 	  System.err.println("  -noedem         dont report usage statistics");
 	  System.err.println("  -nopreload      dont preload common classes");
@@ -192,7 +187,9 @@ public class Main {
 
 
 	MFactoryImpl.setEventPolicy(MFactoryImpl.EVENT_POLICY_IMMEDIATE);
-    ProjectBrowser pb = new ProjectBrowser("ArgoUML", splash.getStatusBar());
+    ProjectBrowser pb = new ProjectBrowser("ArgoUML", splash.getStatusBar(),
+					   themeMemory);
+
     phase1 = System.currentTimeMillis();
 
     JOptionPane.setRootFrame(pb);

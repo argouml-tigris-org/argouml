@@ -121,6 +121,10 @@ public class Argo {
    */
   public static final ConfigurationKey KEY_SCREEN_VSPLITBOTTOM = Configuration.makeKey("screen", "split", "vertical", "bottom");
 
+  /** Key for theme
+   */
+    public static final ConfigurationKey KEY_SCREEN_THEME = Configuration.makeKey("screen", "theme");
+
   /** Key for user email address
    */
   public static final ConfigurationKey KEY_USER_EMAIL = Configuration.makeKey("user", "email");
