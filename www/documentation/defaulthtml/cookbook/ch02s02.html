@@ -1,3 +1,183 @@
 <html><head><title>2. Build Process</title><link href="look-and-feel.css" rel="stylesheet" type="text/css"><meta content="DocBook XSL Stylesheets V1.37" name="generator"><link href="index.html" rel="home" title="ArgoUML Programmers Cookbook"><link href="ch02.html" rel="up" title="Chapter 2. Preliminaries"><link href="ch02.html" rel="previous" title="Chapter 2. Preliminaries"><link href="ch02s03.html" rel="next" title="3. Mailing Lists"></head><body alink="#0000FF" bgcolor="white" link="#0000FF" text="black" vlink="#840084"><div class="navheader"><table summary="Navigation header" width="100%"><tr><th align="center" colspan="3">2. Build Process</th></tr><tr><td align="left" width="20%"><a href="ch02.html">Prev</a>&nbsp;</td><th align="center" width="60%">Chapter 2. Preliminaries</th><td align="right" width="20%">&nbsp;<a href="ch02s03.html">Next</a></td></tr></table><hr></div><div class="sect1"><a name="Build"></a><div class="titlepage"><div><h2 class="title" style="clear: all"><a name="Build"></a>2. Build Process</h2></div></div><p>
      The ArgoUML build process is driven by ant, and it is highly recommend that you stick to that. There are people known to build from JBuilder or Netbeans, but always make sure that your work compile with the plain vanilla build process.
-     </p></div><div class="navfooter"><hr><table summary="Navigation footer" width="100%"><tr><td align="left" width="40%"><a href="ch02.html">Prev</a>&nbsp;</td><td align="center" width="20%"><a href="index.html">Home</a></td><td align="right" width="40%">&nbsp;<a href="ch02s03.html">Next</a></td></tr><tr><td align="left" width="40%">Chapter 2. Preliminaries&nbsp;</td><td align="center" width="20%"><a href="ch02.html">Up</a></td><td align="right" width="40%">&nbsp;3. Mailing Lists</td></tr></table></div></body></html>
+     </p><p>
+Ant is a tool written in java developed for Apache that reads an xml-file
+with rules telling what to compile to what result and what files to include
+in what jar-file.
+</p><p>
+The rule file is named <tt>build.xml</tt>.
+There is one of those in every separately built directory
+(<tt>src_new</tt>,
+<tt>documentation</tt>, and
+<tt>modules/<i><tt>whatever</tt></i></tt>).
+</p><div class="sect2"><a name="Nade"></a><div class="titlepage"><div><h3 class="title"><a name="Nade"></a>2.1. How ant is run from the ArgoUML development environment</h3></div></div><p>
+For your convenience the ant tool of the correct version is present in the
+cvs repository of ArgoUML in the file 
+<tt>argouml/lib/ant.jar</tt>.
+</p><p>
+Normally ant is started with the command
+<b>ant <i><tt>parameter</tt></i></b>
+but the ArgoUML cvs repository does not contain that convenience program
+so you would instead have to write:
+<b>java -Dant.home=<i><tt>/your/checked/out/copy/of/argouml</tt></i> -classpath <i><tt>a:complex:classpath</tt></i> -jar ant.jar <i><tt>parameter</tt></i></b>.
+</p><p>
+To help you there are instead two scripts (one for Unix and one for
+Windows) that are called <tt>build.sh</tt> and
+<tt>build.bat</tt> respectively present in most
+of the directories that contain a <tt>build.xml</tt> file.
+These contain some definitions of classpath to simplify the setup.
+All you have to do is to set the variables JAVA_HOME and ANT_HOME.
+</p><p>
+By setting JAVA_HOME to different values you can at different times
+build with different versions of jdk and java.
+</p><p>
+By setting ANT_HOME to different values you can at different times
+build with different versions of ant.
+This does however not work in the Windows case because of
+how <tt>build.bat</tt> is written.
+</p><div class="sect3"><a name="Nb21"></a><div class="titlepage"><div><h4 class="title"><a name="Nb21"></a>2.1.1. Compiling for Unix</h4></div></div><p>
+Here is what you need to do in order to compile and run 
+your checked out copy of ArgoUML under Unix.
+</p><div class="orderedlist"><ol type="1"><li><p><a name="Nb2f"></a><b>JAVA_HOME=<i><tt>/where/you/have/installed/jdk</tt></i></b></p></li><li><p><a name="Nb3a"></a><b>export JAVA_HOME</b></p><p>
+This is for sh-style shells like sh, ksh, zsh and bash. If you use
+csh-style shells like csh and tcsh you will instead have to write
+<b>setenv JAVA_HOME <i><tt>/where/you/have/installed/jdk</tt></i></b>.
+</p></li><li><p><a name="Nb4d"></a>
+Change the current directory to the directory you are building
+</p><p>
+<b>cd <i><tt>/your/checked/out/copy/of/argouml/src_new</tt></i></b>
+</p></li><li><p><a name="Nb5d"></a>
+Modify the beginning of the <tt>build.sh</tt> file 
+by setting ARGO_HOME and ANT_HOME to the name
+<i><tt>/your/checked/out/copy/of/argouml</tt></i>
+</p></li><li><p><a name="Nb6b"></a>Start ant using <b>./build.sh</b></p><p>This gives you a list of targets with descriptions</p></li><li><p><a name="Nb78"></a>
+Compile and run Argouml using <b>./build.sh run</b>
+</p><p>
+You can do this over and over again when you have modified something
+or want to compile and run again.
+</p></li></ol></div></div><div class="sect3"><a name="Nb88"></a><div class="titlepage"><div><h4 class="title"><a name="Nb88"></a>2.1.2. Compiling for Windows</h4></div></div><div class="orderedlist"><ol type="1"><li><p><a name="Nb93"></a>
+<b>set JAVA_HOME=<i><tt>/where/you/have/installed/jdk</tt></i></b>
+</p></li><li><p><a name="Nba0"></a>
+<b>set ANT_HOME=<i><tt>/your/checked/out/copy/of/argouml</tt></i></b>
+</p></li><li><p><a name="Nbad"></a>Change the current directory to the directory you are building</p><p>
+<b>chdir <i><tt>\your\checked\out\copy\of\argouml\src_new</tt></i></b>
+</p></li><li><p><a name="Nbbd"></a>Start ant using <b>build</b></p><p>This gives you a list of targets with descriptions</p></li><li><p><a name="Nbca"></a>
+Compile and run Argouml using <b>build run</b>
+</p><p>
+You can do this over and over again when you have modified something
+or want to compile and run again.
+</p></li></ol></div></div></div><div class="sect2"><a name="Nbdb"></a><div class="titlepage"><div><h3 class="title"><a name="Nbdb"></a>2.2. How documentation is presented</h3></div></div><p>
+This describes how the documentation arrives on the web site.
+</p><div class="sect3"><a name="Nbe3"></a><div class="titlepage"><div><h4 class="title"><a name="Nbe3"></a>2.2.1. How the ArgoUML web site works</h4></div></div><p>
+Tigris provides the ArgoUML site to be edited through cvs. Everything
+that is checked in under <tt>argouml/www</tt>
+becomes immediatly available at the url 
+<a href="http://argouml.tigris.org/" target="_top">http://argouml.tigris.org/</a>
+with some added decorations left and up.
+</p><p>
+Example: The file <tt>argouml/www/project.html</tt> is
+available at 
+<a href="http://argouml.tigris.org/project.html" target="_top">http://argouml.tigris.org/project.html</a>.
+</p><p>
+This is the way the site is maintained and updated.
+</p></div><div class="sect3"><a name="Nc06"></a><div class="titlepage"><div><h4 class="title"><a name="Nc06"></a>2.2.2. The ArgoUML documentation</h4></div></div><p>
+For the ArgoUML project the same documenation shall be available in both
+html, pdf and javahelp. To this end the documentation is written in
+docbook xml and generated into two versions of html 
+(one page per chapter and one page for the whole book),
+pdf and javahelp.
+</p><p>
+We have tools that does the conversion from docbook xml to html and pdf.
+The conversion is done whenever you need to look at the result or when 
+you want to present the final result on the web site.
+</p><p>
+There is currently four different books generated in this way, 
+each its own directory. They are cookbook (this document), faq, 
+manual and quick-guide. They are all generated and stored in the
+exact same way except for the name of the directory that is one
+of <tt>cookbook</tt>,
+<tt>faq</tt>, 
+<tt>manual</tt> or 
+<tt>quick-guide</tt>.
+Below I will reference this directory using 
+<tt><i><tt>book</tt></i></tt>.
+</p><p>
+When a new version of the documentation is to be made available on the
+web site the responsible document release person does the following:
+</p><div class="orderedlist"><ol type="1"><li><p><a name="Nc41"></a>
+He checks out an updated copy of everything needed
+and a copy of the <tt>argouml/www</tt>.
+</p><p>
+To be on the safe side, this could be the whole of ArgoUML.
+</p><p>
+If wanted, the cvs repository could be tagged and then the tag
+can be checked out. This makes it possible to know exactly 
+how a certain version of the documentation was generated.
+</p></li><li><p><a name="Nc54"></a>
+The documentation is generated using <b>build docs</b>.
+</p><p>
+This generates all four books and the result appears in 
+<tt>argouml/build/documentation/defaulthtml/<i><tt>book</tt></i></tt>,
+<tt>argouml/build/documentation/printablehtml/<i><tt>book</tt></i></tt>, and
+<tt>argouml/build/documentation/pdf/<i><tt>book</tt></i></tt>.
+</p><p>
+This has been done several times before while preparing the release so
+no problems are expected. If there are problems then the preparations
+was not good enough and the process is best stopped right here.
+</p></li><li><p><a name="Nc80"></a>
+All the old files are removed from the checked out copy of 
+<tt>argouml/www/documentation/defaulthtml/<i><tt>book</tt></i></tt>, 
+<tt>argouml/www/documentation/printablehtml/<i><tt>book</tt></i></tt>, and
+<tt>argouml/www/documentation/pdf/<i><tt>book</tt></i></tt>.
+</p></li><li><p><a name="Nca1"></a>
+New files are copied into the checked out copy of www
+on top of the previous files there replacing them.
+</p><p>
+All the files are copied from
+<tt>argouml/build/documentation/defaulthtml/<i><tt>book</tt></i></tt> to
+<tt>argouml/www/documentation/defaulthtml/<i><tt>book</tt></i></tt>. 
+The same for <tt>printablehtml</tt> and 
+<tt>pdf</tt>.
+</p></li><li><p><a name="Ncca"></a>
+No longer used files in 
+<tt>argouml/www/documentation</tt>
+are removed from cvs and new files are added.
+</p><p><b>cvs -n update</b></p><p>Watch for "Missing" and "Unknown" files.</p><p>
+The missing files are scheduled to be removed by:
+<b>cvs remove <i><tt>each of the missing files</tt></i></b>
+</p><p>
+The "Unknown" files are scheduled to be added by:
+<b>cvs add <i><tt>each of the added files</tt></i></b>
+</p><p>
+This removing of missing files and adding of unknown files may seem
+backward but it is from the perspective of cvs.
+The missing files are the ones that were present in the previous
+version of the documentation and that does not have a replacement,
+either because that chapter does not exist anymore or that the tool
+generate filenames differently.
+The Unknown files are files with filenames that for the same reason
+appear from one version of the documentation to the next.
+</p></li><li><p><a name="Ncf7"></a>
+Commit the changes thus publishing it on the web site.
+</p><p>
+<b>cvs commit -m'New version of the documentation published'</b>
+</p></li></ol></div><div class="sect4"><a name="Nd06"></a><div class="titlepage"><div><h5 class="title"><a name="Nd06"></a>2.2.2.1. Tools that does the generation</h5></div></div><p>
+The tools and templates to do the conversion from docbook xml to html,
+pdf, and javahelp are developed by other open source projects and
+entered in the ArgoUML cvs as a convenience to the developer and
+quality responsible of the ArgoUML project.
+</p><p>
+The quality responsible is mentioned because 
+this makes it possible to afterwards have access to exactly the tool 
+that was used to generate a certain version of the documentation.
+</p><p>
+When a new release of that tool is provided
+and we have decided that we want to move to that version of the tool,
+possibly at the same time as doing the necessary tweaks
+for that new version in the documentation itself,
+the tool is updated in cvs.
+This means that ArgoUML cvs only contains released versions of that tool.
+If we find an unacceptable bug in any of these tools
+we either refrain from moving to that version or 
+revert to the previous version of the tool.
+</p></div></div></div></div><div class="navfooter"><hr><table summary="Navigation footer" width="100%"><tr><td align="left" width="40%"><a href="ch02.html">Prev</a>&nbsp;</td><td align="center" width="20%"><a href="index.html">Home</a></td><td align="right" width="40%">&nbsp;<a href="ch02s03.html">Next</a></td></tr><tr><td align="left" width="40%">Chapter 2. Preliminaries&nbsp;</td><td align="center" width="20%"><a href="ch02.html">Up</a></td><td align="right" width="40%">&nbsp;3. Mailing Lists</td></tr></table></div></body></html>

@@ -1,6 +1,86 @@
-<html><head><title>Chapter 5. Employed CVS standards</title><link href="look-and-feel.css" rel="stylesheet" type="text/css"><meta content="DocBook XSL Stylesheets V1.37" name="generator"><link href="index.html" rel="home" title="ArgoUML Programmers Cookbook"><link href="index.html" rel="up" title="ArgoUML Programmers Cookbook"><link href="ch04s09.html" rel="previous" title="9. Logging"><link href="ch06.html" rel="next" title="Chapter 6. Further Reading"></head><body alink="#0000FF" bgcolor="white" link="#0000FF" text="black" vlink="#840084"><div class="navheader"><table summary="Navigation header" width="100%"><tr><th align="center" colspan="3">Chapter 5. Employed CVS standards</th></tr><tr><td align="left" width="20%"><a href="ch04s09.html">Prev</a>&nbsp;</td><th align="center" width="60%">&nbsp;</th><td align="right" width="20%">&nbsp;<a href="ch06.html">Next</a></td></tr></table><hr></div><div class="chapter" id="cvs"><div class="titlepage"><div><h2 class="title"><a name="cvs"></a>Chapter 5. Employed CVS standards</h2></div></div><div class="toc"><p><b>Table of Contents</b></p><dl><dt>1 <a href="ch05.html#branches">Creating and using branches</a></dt></dl></div><div class="sect1"><a name="branches"></a><div class="titlepage"><div><h2 class="title" style="clear: all"><a name="branches"></a>1. Creating and using branches</h2></div></div><p>We use the following standards in Argo/UML:
-<div class="itemizedlist"><ul><li><p><a name="Nc72"></a>Released versions get the tag <i>VERSION_X_X_X</i></p></li><li><p><a name="Nc78"></a>Versions which are considered stable in between official releases get build numbers assigned to them: <i>VERSION_X_X_X_BLDYYY</i></p></li><li><p><a name="Nc7e"></a>Developers working on code, with an unspecified due date are requested to put the code into a branch if it is deemed useful that the code can be shared. Developer branches follow the scheme: <i>work_explanation_owner</i>, where 
-            <div class="itemizedlist"><ul><li><p><a name="Nc86"></a>work is a literal</p></li><li><p><a name="Nc8a"></a>explanation is something like javahelp, propertypanel, cppcodegeneration</p></li><li><p><a name="Nc8e"></a>owner is a self explaining code for the owner of the branch, e.g. tlach (Thierry Lach) or mklink (Markus Klink).</p></li></ul></div>
+<html><head><title>Chapter 5. Employed CVS standards</title><link href="look-and-feel.css" rel="stylesheet" type="text/css"><meta content="DocBook XSL Stylesheets V1.37" name="generator"><link href="index.html" rel="home" title="ArgoUML Programmers Cookbook"><link href="index.html" rel="up" title="ArgoUML Programmers Cookbook"><link href="ch04s09.html" rel="previous" title="9. Logging"><link href="ch06.html" rel="next" title="Chapter 6. Further Reading"></head><body alink="#0000FF" bgcolor="white" link="#0000FF" text="black" vlink="#840084"><div class="navheader"><table summary="Navigation header" width="100%"><tr><th align="center" colspan="3">Chapter 5. Employed CVS standards</th></tr><tr><td align="left" width="20%"><a href="ch04s09.html">Prev</a>&nbsp;</td><th align="center" width="60%">&nbsp;</th><td align="right" width="20%">&nbsp;<a href="ch06.html">Next</a></td></tr></table><hr></div><div class="chapter" id="cvs"><div class="titlepage"><div><h2 class="title"><a name="cvs"></a>Chapter 5. Employed CVS standards</h2></div></div><div class="toc"><p><b>Table of Contents</b></p><dl><dt>1 <a href="ch05.html#branches">Creating and using branches</a></dt><dd><dl><dt>1.1 <a href="ch05.html#howdoi_cvs">How do I ...?</a></dt></dl></dd></dl></div><div class="sect1"><a name="branches"></a><div class="titlepage"><div><h2 class="title" style="clear: all"><a name="branches"></a>1. Creating and using branches</h2></div></div><p>We use the following standards in Argo/UML:
+<div class="itemizedlist"><ul><li><p><a name="N1216"></a>Released versions get the tag <i>VERSION_X_X_X</i></p></li><li><p><a name="N121c"></a>Versions which are considered stable in between official releases get build numbers assigned to them: <i>VERSION_X_X_X_BLDYYY</i></p></li><li><p><a name="N1222"></a>Developers working on code, with an unspecified due date are requested to put the code into a branch if it is deemed useful that the code can be shared. Developer branches follow the scheme: <i>work_explanation_owner</i>, where 
+            <div class="itemizedlist"><ul><li><p><a name="N122a"></a>work is a literal</p></li><li><p><a name="N122e"></a>explanation is something like javahelp, propertypanel, cppcodegeneration</p></li><li><p><a name="N1232"></a>owner is a self explaining code for the owner of the branch, e.g. tlach (Thierry Lach) or mklink (Markus Klink).</p></li></ul></div>
 </p></li></ul></div>
 </p><p>Merging branches together is causing some work. So please use them sparingly and announce your attention before on the mailinglist.
-</p></div></div><div class="navfooter"><hr><table summary="Navigation footer" width="100%"><tr><td align="left" width="40%"><a href="ch04s09.html">Prev</a>&nbsp;</td><td align="center" width="20%"><a href="index.html">Home</a></td><td align="right" width="40%">&nbsp;<a href="ch06.html">Next</a></td></tr><tr><td align="left" width="40%">9. Logging&nbsp;</td><td align="center" width="20%"><a href="index.html">Up</a></td><td align="right" width="40%">&nbsp;Chapter 6. Further Reading</td></tr></table></div></body></html>
+</p><div class="sect2"><a name="howdoi_cvs"></a><div class="titlepage"><div><h3 class="title"><a name="howdoi_cvs"></a>1.1. How do I ...?</h3></div></div><p>
+	  <div class="itemizedlist"><ul><li><p><a name="N1249"></a>
+...get my update or patch into cvs if I don't have cvs write rights?
+</p><p>
+Contact any of the active developers on the list and send them your
+updates. They're very nice about it the first few times.
+</p></li><li><p><a name="N1252"></a>...get a list of the currently active working branches?</p><p>
+You can't from cvs. You need to follow the announcements of created
+and discontinued branches on the mailing list to know what branches are
+interesting.
+	      </p></li><li><p><a name="N125b"></a>
+...create a branch for my work on <i><tt>xxxyyy</tt></i> 
+and start work on that branch?</p><p>
+This assumes that you have a checked out copy of argouml
+	      </p><div class="orderedlist"><ol type="1"><li><p><a name="N126c"></a>Change directory to the directory where argouml is checked out.</p></li><li><p><a name="N1272"></a>
+Enter the argouml directory:
+<b>cd argouml</b> or <b>chdir argouml</b>
+		  </p></li><li><p><a name="N1282"></a>
+Create your branch: 
+<b>cvs tag -b <i><tt>work_xxxyyy_myname</tt></i></b>
+		  </p><p>
+<i><tt>myname</tt></i> is is a self explaining code for you
+(your Tigris login).
+		  </p></li><li><p><a name="N1295"></a>
+Change your checked out copy to be on the branch:
+<b>cvs update -r <i><tt>work_xxxyyy_myname</tt></i></b>
+		  </p></li><li><p><a name="N12a2"></a>Do your work!</p></li><li><p><a name="N12a8"></a>
+Check in your changes in the branch:
+<b>cvs commit -m'<i><tt>Blablabla</tt></i>' [file]</b>
+		  </p></li><li><p><a name="N12b8"></a>Continue working and checking in!</p></li></ol></div></li><li><p><a name="N12c0"></a>...move my work from my working branch into the release?</p><p>
+This is done when your work with the feature xxxyyy is finished and you have
+decided/received clearance to enter it in the main branch.
+	      </p><div class="orderedlist"><ol type="1"><li><p><a name="N12ce"></a>
+Change directory to the directory where argouml is checked out.
+		  </p><p>
+If you are just working on one feature at a time this is the place where you
+have a checked out copy on the branch in question. If not, this could be any
+checked out copy of the source that does not contain any uncommited changes.
+		  </p></li><li><p><a name="N12d7"></a>
+Enter the argouml directory:
+<b>cd argouml</b> or <b>chdir argouml</b>
+		  </p></li><li><p><a name="N12e7"></a>
+Move the checked out copy that you are working on to the main branch:
+<b>cvs update -A</b>
+		  </p></li><li><p><a name="N12f2"></a>
+Merge the changes from the branch into you checked out copy:
+<b>cvs update -j <i><tt>work_xxxyyy_myname</tt></i></b>
+		  </p></li><li><p><a name="N12ff"></a>
+Compile and run all your tests again.
+		  </p><p>
+This is to verify that the merge was all right, noone else had done any changes
+that in the meantime that has in any way modified the work made in the branch.
+		  </p></li><li><p><a name="N1308"></a>
+Commit your changes in the main branch:
+<b>cvs commit -m'<i><tt>xxxyyy entered in the main branch</tt></i></b>
+		  </p></li><li><p><a name="N1315"></a>
+Discontinue your branch!
+		  </p><p>
+From this point on it is important that you do not reuse your branch for 
+any work. Only check it out for the purpose of examining how things were
+in the branch. Make sure that all other developers that have been looking
+at your branch also knows that it is discontinued.
+		  </p></li></ol></div></li><li><p><a name="N1320"></a>...look at someone else's work in a branch?</p><p>
+You need the name of the branch, i.e. the 
+<i><tt>work_xxxyyy_hisname</tt></i>.
+	      </p><p>
+There are two alternatives:
+		<div class="itemizedlist"><ul><li><p><a name="N132f"></a>
+Check out argouml or part of it on that branch:
+<b>cvs co -r <i><tt>work_xxxyyy_hisname</tt></i> argouml</b>
+		    </p></li><li><p><a name="N133d"></a>
+Update your copy of argouml to be on that branch:
+<b>cvs update -r <i><tt>work_xxxyyy_hisname</tt></i></b>
+		    </p><p>
+Make sure that your copy does not have any uncommited code or else your
+your uncommited code will be present in your checked out copy on the branch.
+This could, on the other hand, be useful if you want to test if your uncommited
+code works also with the additions on that branch.
+		    </p></li></ul></div>
+	      </p></li></ul></div>
+	</p></div></div></div><div class="navfooter"><hr><table summary="Navigation footer" width="100%"><tr><td align="left" width="40%"><a href="ch04s09.html">Prev</a>&nbsp;</td><td align="center" width="20%"><a href="index.html">Home</a></td><td align="right" width="40%">&nbsp;<a href="ch06.html">Next</a></td></tr><tr><td align="left" width="40%">9. Logging&nbsp;</td><td align="center" width="20%"><a href="index.html">Up</a></td><td align="right" width="40%">&nbsp;Chapter 6. Further Reading</td></tr></table></div></body></html>
