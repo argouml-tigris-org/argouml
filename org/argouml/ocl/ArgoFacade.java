@@ -14,7 +14,7 @@ import org.argouml.uml.MMUtil;
 public class ArgoFacade implements ModelFacade {
 
     public MClassifier target;
-    
+
     public ArgoFacade(Object target) {
 	if (target instanceof MClassifier)
 	    this.target = (MClassifier)target;
@@ -78,7 +78,7 @@ class ArgoAny implements Any {
         MAssociationEnd ae = (MAssociationEnd)asciter.next();
         if (ae.getName()!=null && name.equals(ae.getName())) {
           foundAssocType = ae.getType();
-        } else if (ae.getName()==null) {
+        } else if (ae.getName()==null || ae.getName().equals("")) {
           String oppositeName = ae.getType().getName();
           if (oppositeName != null) {
             String lowerOppositeName = oppositeName.substring(0,1).toLowerCase();

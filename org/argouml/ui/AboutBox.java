@@ -78,7 +78,13 @@ public class AboutBox extends JFrame {
 		     "  JDK 1.2 only plus\n"+
 		     "    IBM's XML4J 2.0.15 or higher\n"+
 		     "    Novosoft's NSUML 0.4.8 or higher (nsuml.sourceforge.net)\n"+
-		     "    Frank Finger's (TU-Dresden) OCL-Compiler (dresden-ocl.sourceforge.net)\n"
+		     "    Frank Finger's (TU-Dresden) OCL-Compiler (dresden-ocl.sourceforge.net)\n"+
+		     "\n"+
+		     "\n"+
+		     "--- Generated version information: ---"+
+		     "\n"+
+
+		     getVersionInfo(packageList)
 		     );
 
     _credits.setText("ArgoUML was developed by the following:\n"+
@@ -94,7 +100,7 @@ public class AboutBox extends JFrame {
 		     "  UML Diagrams: Marko Boger (boger@informatik.uni-hamburg.de)\n"+
 		     "  UML Metamodel, XMI: Toby Baier (Toby.Baier@gmx.net)\n"+
 		     "  Plugin-support: Sean Chen (schen@bw.webex.net)\n"+
-		     "  Java RE: Andreas Rückert (a_rueckert@gmx.net)\n"+
+		     "  Java RE: Andreas Rueckert (a_rueckert@gmx.net)\n"+
 		     "  Knowledge support: Jason Robbins (jrobbins@collab.net)\n"+
 		     "  User manual: Philippe Vanpeperstraete (Philippe.Vanpeperstraete@skynet.be)\n"+
 		     "  \n"+
@@ -106,7 +112,7 @@ public class AboutBox extends JFrame {
 		     "  Eugenio Alvarez\n"+
 		     "  Clemens Eichler\n"+
 		     "  Curt Arnolds\n"+
-		     "  Andreas Rückert\n"+
+		     "  Andreas Rueckert\n"+
 		     "  Frank Finger\n"+
 		     "  Stuart Zakon\n"+
 		     "  Frank Wienberg\n"+
@@ -184,7 +190,46 @@ public class AboutBox extends JFrame {
 
   ////////////////////////////////////////////////////////////////
   // static methods
-
+    static String packageList[] = new String[]{"org.argouml.application","ru.novosoft.uml","org.tigris.gef.base","java.lang"};
+    static String getVersionInfo(String packageList[])
+    {
+	String in = "";
+	StringBuffer sb = new StringBuffer();
+	for(int i=0;i<packageList.length;i++)
+	    {
+		sb.append("Package: ");
+		sb.append(packageList[i]);
+		sb.append('\n');
+		Package pkg = Package.getPackage(packageList[i]);
+		if(pkg == null)
+		    {
+			sb.append("-- No Versioning Information --\nMaybe you don't use the jar?\n\n");
+			continue;
+		    }
+		in = pkg.getImplementationTitle();
+		if(in!=null)
+		    {
+			sb.append("Component: ");
+			sb.append(in);
+		    }
+		in = pkg.getImplementationVendor();
+		if(in!=null)
+		    {
+			sb.append(", by: ");
+			sb.append(in);
+		    }
+		in = pkg.getImplementationVersion();
+		if(in!=null)
+		    {
+			sb.append(", version: ");
+			sb.append(in);
+			sb.append('\n');
+		    }
+		sb.append('\n');
+	    }
+	return sb.toString();
+    }
+    
   protected static ImageIcon loadIconResource(String imgName, String desc) {
     ImageIcon res = null;
     try {

@@ -239,11 +239,16 @@ Sometimes ant gives out this warnings, but the build is finished without any pro
   <!-- =================================================================== -->
   <target name="package" depends="compile">
     <echo message="Creating the jar file ${build.dir}/${name}.jar"/>
+    <filter token="version" value="${version}"/>
+    <copyfile src="${manifest}"
+              dest="${classes}/${manifest}"
+              filtering="on"
+    />
     <jar jarfile="${build.dir}/${name}.jar"
          basedir="${build.dest}"
          includes="org/argouml/**"
-         excludes="*.txt,*.bat,*.xml,*.sh"
-         manifest="${manifest}"/>
+         excludes="*.txt,*.bat,*.xml,*.sh,${manifest}"
+         manifest="${classes}/${manifest}"/>
     <copydir src="${lib.dir}"
              dest="${build.dir}"/>
   </target>
