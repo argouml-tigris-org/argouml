@@ -52,6 +52,7 @@ import org.apache.log4j.Category;
 import org.argouml.application.api.Configuration;
 import org.argouml.application.api.Notation;
 import org.argouml.kernel.*;
+import org.argouml.model.uml.UmlModelEventPump;
 import org.argouml.cognitive.*;
 import org.argouml.uml.generator.*;
 import org.argouml.uml.ui.*;
@@ -151,8 +152,8 @@ implements MElementListener, VetoableChangeListener {
 
   protected void addListenerToNode(Object node) {
     if (node instanceof MBase) {
-        ((MBase)node).removeMElementListener(this);
-        ((MBase)node).addMElementListener(this);
+        UmlModelEventPump.getPump().removeModelEventListener(this, ((MBase)node));
+        UmlModelEventPump.getPump().addModelEventListener(this, ((MBase)node)); 
     }
     if (node instanceof Project) {
         ((Project)node).removeVetoableChangeListener(this);  
@@ -168,8 +169,9 @@ implements MElementListener, VetoableChangeListener {
     for (int i = 0; i < childCount; i++) {
       Object child = tm.getChild(node, i);
       if (child instanceof MBase) {
-        ((MBase)child).removeMElementListener(this);
-	((MBase)child).addMElementListener(this);
+            UmlModelEventPump.getPump().removeModelEventListener(this, ((MBase)child));
+            UmlModelEventPump.getPump().addModelEventListener(this, ((MBase)child));
+       
       }
       if (child instanceof Diagram) {
         ((Diagram)child).removeVetoableChangeListener(this);
@@ -189,8 +191,10 @@ implements MElementListener, VetoableChangeListener {
   public void setModel(TreeModel newModel) {
     super.setModel(newModel);
     Object r = newModel.getRoot();
-    if (r instanceof MBase)
-      ((MBase)r).addMElementListener(this);
+    if (r instanceof MBase) {
+      UmlModelEventPump.getPump().removeModelEventListener(this, (MBase)r);
+      UmlModelEventPump.getPump().addModelEventListener(this, (MBase)r);
+    }
     if (r instanceof Project)
       ((Project)r).addVetoableChangeListener(this);
     if (r instanceof Diagram)
@@ -199,8 +203,10 @@ implements MElementListener, VetoableChangeListener {
     int childCount = newModel.getChildCount(r);
     for (int i = 0; i < childCount; i++) {
       Object child = newModel.getChild(r, i);
-      if (child instanceof MBase)
-	((MBase)child).addMElementListener(this);
+      if (child instanceof MBase) {
+	   UmlModelEventPump.getPump().removeModelEventListener(this, (MBase)child);
+        UmlModelEventPump.getPump().addModelEventListener(this, (MBase)child);
+      }
       if (child instanceof Diagram)
 	((Diagram)child).addVetoableChangeListener(this);
     }

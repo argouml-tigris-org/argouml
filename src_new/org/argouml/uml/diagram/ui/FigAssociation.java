@@ -35,6 +35,7 @@ import java.util.Vector;
 import javax.swing.JMenu;
 
 import org.argouml.application.api.Notation;
+import org.argouml.model.uml.UmlModelEventPump;
 import org.argouml.model.uml.foundation.core.CoreHelper;
 import org.argouml.ui.ArgoDiagram;
 import org.argouml.ui.ProjectBrowser;
@@ -182,11 +183,12 @@ public class FigAssociation extends FigEdgeModelElement {
     if (own instanceof MAssociation) {
 	MAssociation newAsc = (MAssociation)own;
 	for (int i = 0; i < newAsc.getConnections().size(); i++) {
-            ((MAssociationEnd)((Object[]) newAsc.getConnections().toArray())[i]).removeMElementListener(this);
-	    ((MAssociationEnd)((Object[]) newAsc.getConnections().toArray())[i]).addMElementListener(this);
+            MAssociationEnd end = ((MAssociationEnd)((Object[]) newAsc.getConnections().toArray())[i]);
+            UmlModelEventPump.getPump().removeModelEventListener(this, end);
+            UmlModelEventPump.getPump().addModelEventListener(this, end);
         }
-        newAsc.removeMElementListener(this);
-        newAsc.addMElementListener(this);
+        UmlModelEventPump.getPump().removeModelEventListener(this, newAsc);
+        UmlModelEventPump.getPump().addModelEventListener(this, newAsc);
         MAssociationEnd ae0 = 
             (MAssociationEnd)((Object[])(newAsc.getConnections()).toArray())[0];
         MAssociationEnd ae1 =

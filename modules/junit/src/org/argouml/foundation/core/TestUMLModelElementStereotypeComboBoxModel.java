@@ -64,7 +64,6 @@ public class TestUMLModelElementStereotypeComboBoxModel extends TestCase {
         MockUMLUserInterfaceContainer mockcomp = new MockUMLUserInterfaceContainer();
         mockcomp.setTarget(elem);
         model = new UMLModelElementStereotypeComboBoxModel(mockcomp);
-        elem.addMElementListener(model);
     }
     
     /**

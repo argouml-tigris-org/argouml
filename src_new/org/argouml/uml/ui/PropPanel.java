@@ -368,7 +368,7 @@ implements TabModelTarget, MElementListener, UMLUserInterfaceContainer {
 
     */
     protected void removeMElementListener(MBase target) {
-        target.removeMElementListener(this);
+        UmlModelEventPump.getPump().removeModelEventListener(this, target);
     }
 
     /**
@@ -379,7 +379,7 @@ implements TabModelTarget, MElementListener, UMLUserInterfaceContainer {
         @param target target of prop panel
     */
     public void addMElementListener(MBase target) {
-        target.addMElementListener(this);
+        UmlModelEventPump.getPump().addModelEventListener(this, target);
     }
 
     /**

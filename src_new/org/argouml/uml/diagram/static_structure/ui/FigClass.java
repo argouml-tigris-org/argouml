@@ -60,6 +60,7 @@ import org.argouml.uml.diagram.ui.*;
 import org.argouml.ui.*;
 import org.argouml.model.uml.UmlFactory;
 import org.argouml.model.uml.UmlHelper;
+import org.argouml.model.uml.UmlModelEventPump;
 
 /**
  * <p>Class to display graphics for a UML Class in a diagram.</p>
@@ -981,12 +982,12 @@ public class FigClass extends FigNodeModelElement {
                     Iterator it2 = oper.getParameters().iterator();
                     while (it2.hasNext()) {
                         MParameter param = (MParameter)it2.next();
-                        param.removeMElementListener(this);
-                        param.addMElementListener(this);
+                        UmlModelEventPump.getPump().removeModelEventListener(this, param);
+                        UmlModelEventPump.getPump().addModelEventListener(this, param);
                     }
                }
-               feat.removeMElementListener(this);
-               feat.addMElementListener(this);
+               UmlModelEventPump.getPump().removeModelEventListener(this, feat);
+               UmlModelEventPump.getPump().addModelEventListener(this, feat);
            }
        }
        super.setOwner(own);

@@ -190,13 +190,46 @@ public final class UmlModelEventPump implements MElementListener {
         if (eventNames.length == 0)
             throw new IllegalArgumentException("Tried to remove an empty eventName list");
         for (int i = 0; i < eventNames.length; i++) {
-            List listenerList = (List)_listenerClassModelEventsMap.get(getKey(modelClass, eventNames[i]));
-            if (listenerList == null) 
-                throw new IllegalStateException("No class listener for this class registred");
-            listenerList.remove(listener);
-            if (listenerList.isEmpty()) 
-                _listenerClassModelEventsMap.remove(getKey(modelClass, eventNames[i]));
+            executeRemoveClassModelEventListener(listener, modelClass, eventNames[i]);
         }
+    }
+    
+    /**
+     * Convinience method to remove a listener that listens to events named eventName
+     * that are fired by instances of modelClass
+     * @param listener
+     * @param modelClass
+     * @param eventName
+     */
+    public void removeClassModelEventListener(MElementListener listener, Class modelClass, String eventName) {
+        if (listener == null || modelClass == null || eventName == null) 
+            throw new IllegalArgumentException("Tried to remove null listener from null class");
+        if (!MBase.class.isAssignableFrom(modelClass)) 
+            throw new IllegalArgumentException("Tried to remove illegal class modeleventlistener.");    
+        executeRemoveClassModelEventListener(listener, modelClass, eventName);       
+    }
+    
+    /**
+     * Removes a listener that listens to all modelevents fired by instances of 
+     * modelClass.
+     * @param listener
+     * @param modelClass
+     * @param eventName
+     */
+    public void removeClassModelEventListener(MElementListener listener, Class modelClass) {
+        if (listener == null || modelClass == null) 
+            throw new IllegalArgumentException("Tried to remove null listener from null class");
+        if (!MBase.class.isAssignableFrom(modelClass)) 
+            throw new IllegalArgumentException("Tried to remove illegal class modeleventlistener.");    
+        executeRemoveClassModelEventListener(listener, modelClass, null);       
+    }
+    
+    private void executeRemoveClassModelEventListener(MElementListener listener, Class modelClass, String eventName) {
+        List listenerList = (List)_listenerClassModelEventsMap.get(getKey(modelClass, eventName));
+        if (listenerList == null) return;
+        listenerList.remove(listener);
+        if (listenerList.isEmpty()) 
+            _listenerClassModelEventsMap.remove(getKey(modelClass, eventName));
     }
     
     /**
@@ -244,6 +277,21 @@ public final class UmlModelEventPump implements MElementListener {
         executeAddModelEventListener(listener, modelelement, eventName);
     }
     
+    /**
+     * Adds a listener to all events fired by some modelelement.
+     * 
+     * <p><em>Note:</em> Due to the fact that ALL events are pumped for some 
+     * modelelement, this is a rather powerfull method but also
+     * one that can hog performance. Use this with care!</p>
+     * @param listener
+     * @param modelElement
+     */
+    public void addModelEventListener(MElementListener listener, MBase modelelement) {
+        if (listener == null || modelelement == null) 
+            throw new IllegalArgumentException("Tried to add null listener to null class");
+        executeAddModelEventListener(listener, modelelement, null);
+    }
+    
     private void executeAddModelEventListener(MElementListener listener, MBase modelelement, String eventName) {
         List listenerList = (List)_listenerModelEventsMap.get(getKey(modelelement, eventName));
         if (listenerList == null) {
@@ -270,6 +318,17 @@ public final class UmlModelEventPump implements MElementListener {
         for (int i = 0; i < eventNames.length; i++) {
             executeRemoveModelEventListener(listener, modelElement, eventNames[i]);
         }
+    }
+    
+    /**
+     * Removes a listener that listens to all events fired by the given modelelement.
+     * @param listener
+     * @param modelElement
+     */
+    public void removeModelEventListener(MElementListener listener, MBase modelElement) {
+        if (listener == null || modelElement == null) 
+            throw new IllegalArgumentException("Tried to remove null listener from null modelelement");
+        executeRemoveModelEventListener(listener, modelElement, null);
     }
     
     /**

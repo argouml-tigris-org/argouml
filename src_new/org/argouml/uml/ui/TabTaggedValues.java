@@ -41,6 +41,7 @@ import ru.novosoft.uml.foundation.extension_mechanisms.*;
 import org.argouml.application.api.*;
 import org.argouml.kernel.*;
 import org.argouml.model.uml.UmlFactory;
+import org.argouml.model.uml.UmlModelEventPump;
 import org.argouml.ui.*;
 
 public class TabTaggedValues extends TabSpawnable
@@ -158,11 +159,9 @@ implements VetoableChangeListener, DelayedVChangeListener, MElementListener {
   ////////////////
   // accessors
   public void setTarget(MModelElement t) {
-    if (_target instanceof MModelElement)
-      ((MModelElement)_target).removeMElementListener(this);
+    UmlModelEventPump.getPump().removeModelEventListener(this, _target);
     _target = t;
-    if (_target instanceof MModelElement)
-      ((MModelElement)_target).addMElementListener(this);
+    UmlModelEventPump.getPump().addModelEventListener(this, t);
     fireTableDataChanged();
     _tab.resizeColumns();
   }

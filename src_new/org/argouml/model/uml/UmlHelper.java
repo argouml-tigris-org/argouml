@@ -73,7 +73,8 @@ public class UmlHelper {
      *  Internal recursive worker to add UmlModelListener.
      */
     protected void addListenersToMBase(MBase mbase) {
-        mbase.addMElementListener(UmlModelListener.getInstance());
+        UmlModelEventPump.getPump().removeModelEventListener(UmlModelListener.getInstance(), mbase);
+        UmlModelEventPump.getPump().addModelEventListener(UmlModelListener.getInstance(), mbase);
 	Collection elements = mbase.getModelElementContents();
 	if (elements != null) {
 	    Iterator iterator = elements.iterator();

@@ -37,6 +37,7 @@ import org.argouml.model.ModelHelper;
 import org.argouml.model.uml.AbstractUmlModelFactory;
 import org.argouml.model.uml.UmlFactory;
 import org.argouml.model.uml.UmlHelper;
+import org.argouml.model.uml.UmlModelEventPump;
 import org.argouml.model.uml.foundation.extensionmechanisms.ExtensionMechanismsFactory;
 import org.argouml.model.uml.modelmanagement.ModelManagementHelper;
 import org.argouml.ui.ProjectBrowser;
@@ -617,7 +618,8 @@ public class CoreFactory extends AbstractUmlModelFactory {
         Iterator it = p.findFigsForMember(cls).iterator();
         while (it.hasNext()) {
             MElementListener listener = (MElementListener)it.next();
-            attr.addMElementListener(listener);
+            UmlModelEventPump.getPump().removeModelEventListener(listener, attr);
+            UmlModelEventPump.getPump().addModelEventListener(listener, attr);             
         }
        return attr;
     }
@@ -827,7 +829,8 @@ public class CoreFactory extends AbstractUmlModelFactory {
         Iterator it = p.findFigsForMember(cls).iterator();
         while (it.hasNext()) {
             MElementListener listener = (MElementListener)it.next();
-            oper.addMElementListener(listener);
+            UmlModelEventPump.getPump().removeModelEventListener(listener, oper);
+            UmlModelEventPump.getPump().addModelEventListener(listener, oper);             
         }
         return oper;
     }
@@ -890,7 +893,8 @@ public class CoreFactory extends AbstractUmlModelFactory {
         it = p.findFigsForMember(oper).iterator();
         while (it.hasNext()) {
             MElementListener listener = (MElementListener)it.next();
-            res.addMElementListener(listener);
+            UmlModelEventPump.getPump().removeModelEventListener(listener, res);
+            UmlModelEventPump.getPump().addModelEventListener(listener, res); 
         }
         
         return res;
