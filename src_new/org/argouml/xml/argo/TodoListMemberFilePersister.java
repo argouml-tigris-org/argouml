@@ -24,6 +24,8 @@
 
 package org.argouml.xml.argo;
 
+import java.util.Map;
+
 import org.xml.sax.SAXException;
 
 /**
@@ -35,6 +37,6 @@ public class TodoListMemberFilePersister extends MemberFilePersister {
      * Load the todo member.
      * @throws SAXException on any parsing error.
      */
-    public void load() throws SAXException {
+    public void load(Map attributes) throws SAXException {
     }
 }

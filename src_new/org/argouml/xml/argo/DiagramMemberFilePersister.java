@@ -24,6 +24,16 @@
 
 package org.argouml.xml.argo;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
+
+import org.apache.log4j.Logger;
+import org.argouml.kernel.Project;
+import org.argouml.ui.ArgoDiagram;
+import org.argouml.xml.pgml.PGMLParser;
 import org.xml.sax.SAXException;
 
 /**
@@ -31,6 +41,42 @@ import org.xml.sax.SAXException;
  * @author Bob Tarling
  */
 class DiagramMemberFilePersister extends MemberFilePersister {
-    public void load() throws SAXException {
+    
+    /** logger */
+    private static final Logger LOG =
+        Logger.getLogger(ModelMemberFilePersister.class);
+    
+    private InputStream inputStream;
+    
+    private Project project;
+    private URL url;
+    private Map attributes;
+    
+    public DiagramMemberFilePersister(URL url, Project theProject)
+        throws SAXException {
+        this.url = url;
+        this.project = theProject;
+    }
+        
+    public void load(Map attributes) throws SAXException {
+        this.attributes = attributes;
+        try {
+            inputStream =
+                new XmlInputStream(url.openStream(), "pgml", attributes);
+            PGMLParser.getInstance().setOwnerRegistry(project.getUUIDRefs());
+            ArgoDiagram d =
+                    (ArgoDiagram) PGMLParser.getInstance().readDiagram(
+                                  inputStream,
+                                  false);
+            inputStream.close();
+            if (d != null) {
+                project.addMember(d);
+            }
+            else {
+                LOG.error("An error occurred while loading PGML");
+            }
+        } catch (IOException e) {
+            throw new SAXException(e);
+        }
     }
 }
