@@ -108,6 +108,8 @@ abstract public class PropPanelModelElement extends PropPanel {
     
     protected JList constraintList;
     
+    protected JPanel namespaceVisibilitypanel;
+    
     ////////////////////////////////////////////////////////////////
     // constructors
     public PropPanelModelElement(String name, int columns) {
@@ -139,11 +141,13 @@ abstract public class PropPanelModelElement extends PropPanel {
         
         addField(Argo.localize("UMLMenu", "label.supplier-dependencies"), supplierDependencyList);
         addField(Argo.localize("UMLMenu", "label.client-dependencies"), clientDependencyList);
+        addField(Argo.localize("UMLMenu", "label.source-flows"), sourceFlowList);
+        addField(Argo.localize("UMLMenu", "label.target-flows"), targetFlowList);
         
         add(LabelledLayout.getSeperator());
         
-        addField(Argo.localize("UMLMenu", "label.source-flows"), sourceFlowList);
-        addField(Argo.localize("UMLMenu", "label.target-flows"), targetFlowList);
+        addField(Argo.localize("UMLMenu", "label.constraints"), constraintList);
+        addField(Argo.localize("UMLMenu", "label.namespace-visibility"), namespaceVisibilitypanel);
     }
 
     public void navigateUp() {
@@ -211,6 +215,9 @@ abstract public class PropPanelModelElement extends PropPanel {
         targetFlowList = new UMLLinkedList(this, new UMLModelElementTargetFlowListModel(this));
         
         constraintList = new UMLMutableLinkedList(this, new UMLModelElementConstraintListModel(this), null, ActionNewModelElementConstraint.SINGLETON);
+        
+        namespaceVisibilitypanel = new UMLButtonPanel(new UMLElementOwnershipVisibilityButtonGroup(this));
+        
     }
         
 }
