@@ -832,20 +832,22 @@ Compiler options.
 Compliance and classfiles => Compiler compliance level: 1.3.
 </para>
 	<para>
-Suggested settings (only things diverting from the Eclipse Defaults listed:
-Style => Possible accidental boolean assignment: Warning.
-Advanced => Local variable declaration hides another field or variable: Warning.
-Advanced => Field declaration hides another field or variable: Warning.
-Unused code => Local variable is never read: Warning.
-Unused code => Parameter is never read: Warning.
-Unused code => Unused or unread private members: Warning.
-Unused code => Unnecessary semicolon: Warning.
-Unused code => Unnecessary cast or 'instanceof' operation: Warning.
-Unused code => Unnecessary declaration of thrown checked exception: Warning.
-Javadoc => Malformed javadoc comments: Warning, Private, Report errors in tags.
-Javadoc => Missing javadoc tags: Warning, Protected,
-Check overriding and implementing methods.
-To be continued...
+Suggested settings (only things diverting from the Eclipse Defaults are listed):
+<itemizedlist>
+  <listitem>Style => Possible accidental boolean assignment: Warning.</listitem>
+  <listitem>Advanced => Local variable declaration hides another field or variable: Warning.</listitem>
+  <listitem>Advanced => Field declaration hides another field or variable: Warning.</listitem>
+  <listitem>Unused code => Local variable is never read: Warning.</listitem>
+  <listitem>Unused code => Parameter is never read: Warning.</listitem>
+  <listitem>Unused code => Unused or unread private members: Warning.</listitem>
+  <listitem>Unused code => Unnecessary semicolon: Warning.</listitem>
+  <listitem>Unused code => Unnecessary cast or 'instanceof' operation: Warning.</listitem>
+  <listitem>Unused code => Unnecessary declaration of thrown checked exception: Warning.</listitem>
+  <listitem>Javadoc => Malformed javadoc comments: Warning, Private, Report errors in tags.</listitem>
+  <listitem>Javadoc => Missing javadoc tags: Warning, Protected,</listitem>
+  <listitem>Check overriding and implementing methods.</listitem>
+  <listitem>To be continued...</listitem>
+</itemizedlist>
 </para>
       </listitem>
 
