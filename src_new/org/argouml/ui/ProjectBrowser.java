@@ -58,6 +58,9 @@ implements IStatusBar, NavigationListener, ArgoModuleEventListener {
 //   public static int INITIAL_WIDTH = 400; // for showing progress bar
 //   public static int INITIAL_HEIGHT = 200;
 
+  public static int DEFAULT_VSPLIT = 270;
+  public static int DEFAULT_HSPLIT = 512;
+
   ////////////////////////////////////////////////////////////////
   // class variables
 
@@ -93,6 +96,7 @@ implements IStatusBar, NavigationListener, ArgoModuleEventListener {
   protected StatusBar _statusBar = new StatusBar();
   //protected JToolBar _toolBar = new JToolBar();
 
+  protected ComponentResizer _componentResizer = null;
 
   public Font defaultFont = new Font("Dialog", Font.PLAIN, 10);
   //  public static JFrame _Frame;
@@ -139,7 +143,9 @@ implements IStatusBar, NavigationListener, ArgoModuleEventListener {
     // allows me to ask "Do you want to save first?"
     setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
     addWindowListener(new WindowCloser());
-  }
+    if (_componentResizer == null) _componentResizer = new ComponentResizer();
+    addComponentListener(_componentResizer);
+ }
 
 
 //   void loadImages() {
@@ -404,10 +410,29 @@ implements IStatusBar, NavigationListener, ArgoModuleEventListener {
 			       _toDoPane, _detailsPane);
     _mainSplit = new JSplitPane(JSplitPane.VERTICAL_SPLIT, _topSplit, _botSplit);
     _topSplit.setDividerSize(2);
-    _topSplit.setDividerLocation(270);
+    _topSplit.setDividerLocation(Configuration.getInteger(Argo.KEY_SCREEN_VSPLITTOP, DEFAULT_VSPLIT));
+
     _botSplit.setDividerSize(2);
+    _botSplit.setDividerLocation(Configuration.getInteger(Argo.KEY_SCREEN_VSPLITBOTTOM, DEFAULT_VSPLIT));
+
     _mainSplit.setDividerSize(2);
+    _mainSplit.setDividerLocation(Configuration.getInteger(Argo.KEY_SCREEN_HSPLIT, DEFAULT_HSPLIT));
+
     //_botSplit.setOneTouchExpandable(true);
+
+    // Enable the property listeners after all changes are done
+    // (includes component listeners) 
+    if (_componentResizer == null) _componentResizer = new ComponentResizer();
+    _navPane.addComponentListener(_componentResizer);
+    _toDoPane.addComponentListener(_componentResizer);
+
+    // needs-more-work:  Listen for a specific property.  JDK1.3 has
+    // JSplitPane.DIVIDER_LOCATION_PROPERTY.
+
+    // _topSplit.addPropertyChangeListener(JSplitPane.DIVIDER_LOCATION_PROPERTY, this);
+    // _botSplit.addPropertyChangeListener(JSplitPane.DIVIDER_LOCATION_PROPERTY, this);
+    // _mainSplit.addPropertyChangeListener(JSplitPane.DIVIDER_LOCATION_PROPERTY, this);
+
     return _mainSplit;
   }
 
@@ -630,15 +655,50 @@ implements IStatusBar, NavigationListener, ArgoModuleEventListener {
 
 } /* end class ProjectBrowser */
 
-
-
-
 class WindowCloser extends WindowAdapter {
   public WindowCloser() { }
   public void windowClosing(WindowEvent e) {
     ActionExit.SINGLETON.actionPerformed(null);
   }
 } /* end class WindowCloser */
+
+class ComponentResizer extends ComponentAdapter {
+  public ComponentResizer() { }
+
+  public void componentResized(ComponentEvent ce) {
+    Component c = ce.getComponent(); 
+    if (c instanceof NavigatorPane) {
+
+	// Got the 2 and the 4 by experimentation.  This is equivalent
+	// to jdk 1.3 property JSplitPane.DIVIDER_LOCATION_PROPERTY.
+	// If the width and height are not adjusted by this amount,
+	// the divider will slowly creep after close and open.
+	Configuration.setInteger(Argo.KEY_SCREEN_VSPLITTOP, c.getWidth() + 2);
+	Configuration.setInteger(Argo.KEY_SCREEN_HSPLIT, c.getHeight() + 4);
+
+    }
+    else if (c instanceof ToDoPane) {
+	// Got the 2 by experimentation.  This is equivalent to jdk 1.3
+	// property JSplitPane.DIVIDER_LOCATION_PROPERTY.  If the width
+	// is not adjusted by this amount, the divider will slowly creep
+	// after close and open.
+	Configuration.setInteger(Argo.KEY_SCREEN_VSPLITBOTTOM, c.getWidth() + 2);
+    }
+    else if (c instanceof ProjectBrowser) {
+        Configuration.setInteger(Argo.KEY_SCREEN_WIDTH, c.getWidth());
+        Configuration.setInteger(Argo.KEY_SCREEN_HEIGHT, c.getHeight());
+    }
+  }
+
+  public void componentMoved(ComponentEvent ce) {
+    Component c = ce.getComponent(); 
+    if (c instanceof ProjectBrowser) {
+        Configuration.setInteger(Argo.KEY_SCREEN_LEFT_X, c.getX());
+        Configuration.setInteger(Argo.KEY_SCREEN_TOP_Y, c.getY());
+    }
+  }
+} /* end class ComponentResizer */
+
 
 class InitMenusLater implements Runnable {
   JMenu align, distribute, reorder, nudge, layout;
