@@ -1,8 +1,8 @@
-?xml version="1.0" encoding="ISO-8859-1"?>
+<?xml version="1.0" encoding="ISO-8859-1"?>
 
 <!--
 
-Top level description of all the artifacts within Argo/UML.
+Top level description of all the artifacts within ArgoUML.
 
 -->
 
@@ -1357,19 +1357,9 @@ See <xref linkend="s2.ref.documentation_tab"/>.
 defined for <literal>Stereotypes</literal> within the UML
             metamodel.</para>
 
-<!-- Issue 2122
             <caution>
               <para>
-Constraints for a stereotype are rather different
-            to those for elements in the UML core architecture, in that
-            they apply to all artifacts to which the stereotype is applied,
-            <emphasis>not</emphasis> just the stereotype
-            itself.
-</para>
-            </caution>
- -->
-            <caution>
-              <para>
+<!-- Issue 1805 -->
 It is currently not possible to create constraints for Stereotypes
 so the Constraints tab is not active.
 </para>
