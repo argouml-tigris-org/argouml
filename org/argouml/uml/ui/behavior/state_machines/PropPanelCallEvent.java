@@ -41,6 +41,8 @@ import org.argouml.uml.ui.foundation.core.ActionNewParameter;
 import org.argouml.util.ConfigLoader;
 
 /**
+ * The properties panel of a CallEvent. 
+ * 
  * @author oliver.heyden@gentleware.de
  */
 public class PropPanelCallEvent extends PropPanelEvent {
@@ -101,7 +103,7 @@ class UMLCallEventOperationComboBoxModel extends UMLComboBoxModel2 {
      * The constructor.
      */
     public UMLCallEventOperationComboBoxModel() {
-        super("operation", true); // TODO: Is this the correct event name?
+        super("operation", true); 
     }
     
     /**
@@ -109,21 +111,19 @@ class UMLCallEventOperationComboBoxModel extends UMLComboBoxModel2 {
      */
     protected void buildModelList() {
         Object target = TargetManager.getInstance().getModelTarget();
+        Collection ops = new ArrayList();
         if (ModelFacade.isACallEvent(target)) {
             Object ns = ModelFacade.getNamespace(target); 
             if (ModelFacade.isANamespace(ns)) {
                 Collection c = Model.getModelManagementHelper()
                     .getAllModelElementsOfKind(ns, ModelFacade.CLASSIFIER);
-                Collection ops = new ArrayList();
                 Iterator i = c.iterator();
                 while (i.hasNext()) {
                     ops.addAll(ModelFacade.getOperations(i.next()));
                 }
-                setElements(ops);
-                return;
             }
         }
-        setElements(new ArrayList());
+        setElements(ops);
     }
     
     /**
