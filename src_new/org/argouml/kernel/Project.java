@@ -67,8 +67,8 @@ import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.util.Util;
 
 /**
- * A datastructure that represents the designer's current project.  A
- *  Project consists of diagrams and UML models.
+ * The Project is a datastructure that represents the designer's 
+ * current project. It manages the list of diagrams and UML models.
  */
 public class Project implements java.io.Serializable, TargetListener {
 
@@ -77,8 +77,6 @@ public class Project implements java.io.Serializable, TargetListener {
     
     ////////////////////////////////////////////////////////////////
     // constants
-
-    private static final String ARGO_TEE = "/org/argouml/xml/dtd/argo.tee";
 
     /**
      * Default name for a project.
@@ -1121,27 +1119,11 @@ public class Project implements java.io.Serializable, TargetListener {
     }
 
     /**
-     * Sets the diagrams.
-     * @param theDiagrams The diagrams to set
-     */
-    public void setDiagrams(Vector theDiagrams) {
-        this.diagrams = theDiagrams;
-    }
-
-    /**
      * Sets the members.
      * @param theMembers The members to set
      */
     public void setMembers(Vector theMembers) {
         this.members = theMembers;
-    }
-
-    /**
-     * Sets the models.
-     * @param theModels The models to set
-     */
-    public void setModels(Vector theModels) {
-        models = theModels;
     }
 
     /**
