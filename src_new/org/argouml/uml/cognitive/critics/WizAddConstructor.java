@@ -26,7 +26,7 @@ package org.argouml.uml.cognitive.critics;
 
 import java.util.Collection;
 import java.util.Iterator;
-import org.tigris.gef.util.VectorSet;
+
 import javax.swing.JPanel;
 
 import org.argouml.cognitive.ui.WizStepTextField;
@@ -37,7 +37,6 @@ import org.argouml.model.uml.foundation.extensionmechanisms.ExtensionMechanismsH
 import org.argouml.model.uml.modelmanagement.ModelManagementHelper;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ProfileJava;
-import org.argouml.kernel.Wizard;
 
 /**
  * A wizard to add a constructor to a classifier
@@ -45,14 +44,13 @@ import org.argouml.kernel.Wizard;
  * @author  d00mst (copied from WizAddOperation by mkl)
  * @since February 7, 2004, 12:35 AM
  */
-public class WizAddConstructor extends Wizard {
+public class WizAddConstructor extends UMLWizard {
     
     private WizStepTextField step1 = null;
     private String label = Translator.localize("label.name");
     private String instructions =
 	"Please change the name of the offending model element.";
-    private String suggestion = "suggestion";
-
+    
     /**
      * Creates a new instance of WizAddConstructor
      */
@@ -110,47 +108,6 @@ public class WizAddConstructor extends Wizard {
 
 	return null;
     }
-
-    /**
-     * @see org.argouml.kernel.Wizard#getNumSteps()
-     */
-    public int getNumSteps() {
-        return 1;
-    }
-    
-    /**
-     * @return the offending modelelement
-     */
-    public Object getModelElement() {
-        if (getToDoItem() != null) {
-            VectorSet offs = getToDoItem().getOffenders();
-            if (offs.size() >= 1) {
-                Object me = /*(MModelElement)*/ offs.elementAt(0);
-                return me;
-            }
-        }
-        return null;
-    }
-    
-    /**
-     * @return the suggestion string
-     */
-    public String getSuggestion() {
-        if (suggestion != null) return suggestion;
-        Object me = getModelElement();
-        if (me != null) {
-            String n = ModelFacade.getName(me);
-            return n;
-        }
-        return "";
-    }
-
-    /**
-     * @param s set a new suggestion string
-     */
-    public void setSuggestion(String s) {
-	suggestion = s;
-    }
     
     /**
      * @param s set a new instruction string
@@ -159,12 +116,6 @@ public class WizAddConstructor extends Wizard {
 	instructions = s;
     }
     
-    /**
-     * @param b
-     */
-    /*public void setMustEdit(boolean b) {
-	mustEdit = b;
-    }*/
     
     /**
      * Create a new panel for the given step.

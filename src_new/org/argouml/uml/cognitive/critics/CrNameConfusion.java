@@ -181,7 +181,7 @@ public class CrNameConfusion extends CrUML {
      */
     public void initWizard(Wizard w) {
 	if (w instanceof WizManyNames) {
-	    ToDoItem item = w.getToDoItem();
+	    ToDoItem item = (ToDoItem) w.getToDoItem();
 	    String ins =
 		"Change each name to be significantly different from "
 		+ "the others.  "

@@ -128,7 +128,7 @@ public class CrNameConflict extends CrUML {
      */
     public void initWizard(Wizard w) {
         if (w instanceof WizMEName) {
-            ToDoItem item = w.getToDoItem();
+            ToDoItem item = (ToDoItem) w.getToDoItem();
             Object me = item.getOffenders().firstElement();
             String sug = ModelFacade.getName(me);
             String ins = "Change the name to something different.";

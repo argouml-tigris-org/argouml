@@ -29,9 +29,7 @@ import javax.swing.JPanel;
 import org.apache.log4j.Logger;
 import org.argouml.cognitive.ui.WizStepTextField;
 import org.argouml.i18n.Translator;
-import org.argouml.kernel.Wizard;
 import org.argouml.model.ModelFacade;
-import org.tigris.gef.util.VectorSet;
 
 /**
  * A non-modal wizard to help the user change the name of a
@@ -39,17 +37,17 @@ import org.tigris.gef.util.VectorSet;
  * 
  * @author jrobbins
  */
-public class WizMEName extends Wizard {
+public class WizMEName extends UMLWizard {
     private static final Logger LOG = Logger.getLogger(WizMEName.class);
 					   
     private String instructions =
 	"Please change the name of the offending model element.";
     private String label = Translator.localize("label.name");
-    private String suggestion = "suggestion";
-    private String origSuggest = "suggestion";
     private boolean mustEdit = false;
 							       
     private WizStepTextField step1 = null;
+    
+    private String origSuggest;
 								   
     /**
      * The constructor.
@@ -57,45 +55,7 @@ public class WizMEName extends Wizard {
      */
     public WizMEName() { }
 								       
-    /**
-     * @see org.argouml.kernel.Wizard#getNumSteps()
-     */
-    public int getNumSteps() { return 1; }
-									   
-    /**
-     * @return the offending modelelement
-     */
-    public Object getModelElement() {
-	if (getToDoItem() != null) {
-	    VectorSet offs = getToDoItem().getOffenders();
-	    if (offs.size() >= 1) {
-		Object me = /*(MModelElement)*/ offs.elementAt(0);
-		return me;
-	    }
-	}
-	return null;
-    }
-									       
-    /**
-     * @return the suggestion
-     */
-    public String getSuggestion() {
-	if (suggestion != null) return suggestion;
-	Object me = getModelElement();
-	if (me != null) {
-	    String n = ModelFacade.getName(me);
-	    return n;
-	}
-	return "";
-    }
-    
-    /**
-     * @param s the new suggestion
-     */
-    public void setSuggestion(String s) { 
-        origSuggest = s; 
-        suggestion = s; 
-    }
+									   									       
 
     /**
      * @param s the instructions
@@ -124,10 +84,16 @@ public class WizMEName extends Wizard {
 	}
 	return null;
     }
+    
+    public void setSuggestion(String s) {
+        origSuggest = s;
+        suggestion = s;
+    }
 
-    /** 
-     * Return false iff the user has not edited the text and they were
-     * required to.
+
+    /**
+     * Return false if the user has not edited the text and they were required
+     * to.
      * 
      * @see org.argouml.kernel.Wizard#canGoNext()
      */

@@ -140,7 +140,7 @@ public class CrUnconventionalOperName extends CrUML {
      */
     public void initWizard(Wizard w) {
 	if (w instanceof WizOperName) {
-	    ToDoItem item = w.getToDoItem();
+	    ToDoItem item = (ToDoItem) w.getToDoItem();
 	    Object me = /*(MModelElement)*/ item.getOffenders().elementAt(0);
 	    String sug = ModelFacade.getName(me);
 	    sug = sug.substring(0, 1).toLowerCase() + sug.substring(1);
