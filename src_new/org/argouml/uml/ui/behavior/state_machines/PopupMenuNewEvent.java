@@ -38,9 +38,15 @@ import org.argouml.uml.ui.UMLMutableLinkedList;
 public class PopupMenuNewEvent extends JPopupMenu {
 
     /**
-     * Constructor for PopupMenuNewEvent.
-     * @param role
-     * @param list
+     * Constructor for PopupMenuNewEvent.<p>
+     * 
+     * Constructs a new popupmenu. The given parameter role determines what 
+     * the purpose is of the events that can be created via this popupmenu. 
+     * The parameter must comply to the interface Roles 
+     * defined on ActionNewAction.
+     * 
+     * @param role the role
+     * @param list the list
      */
     public PopupMenuNewEvent(String role, UMLMutableLinkedList list) {
         super();
@@ -63,7 +69,8 @@ public class PopupMenuNewEvent extends JPopupMenu {
 
         addSeparator();
 
-        ActionRemoveModelElement.SINGLETON.setTarget(list.getSelectedValue());
+        ActionRemoveModelElement.SINGLETON.setObjectToRemove(ActionNewEvent
+                .getAction(role, list.getTarget()));
         add(ActionRemoveModelElement.SINGLETON);
 
     }

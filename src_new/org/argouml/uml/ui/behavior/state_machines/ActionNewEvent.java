@@ -27,9 +27,10 @@ package org.argouml.uml.ui.behavior.state_machines;
 
 import java.awt.event.ActionEvent;
 
+import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.StateMachinesHelper;
-import org.argouml.uml.ui.AbstractActionNewModelElement;
 import org.argouml.ui.targetmanager.TargetManager;
+import org.argouml.uml.ui.AbstractActionNewModelElement;
 
 /**
  * Abstract action to create new events.
@@ -84,5 +85,17 @@ public abstract class ActionNewEvent extends AbstractActionNewModelElement {
                         .setEventAsTrigger(getTarget(), event);
         }
         TargetManager.getInstance().setTarget(event);
+    }
+
+    /**
+     * @param role the role the event plays
+     * @param t the transition or state to get the event for
+     * @return the event
+     */
+    public static Object getAction(String role, Object t) {
+        if (role.equals(Roles.TRIGGER)) {
+            return ModelFacade.getTrigger(t);
+        }  
+        return null;
     }
 }
