@@ -21,7 +21,7 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.argouml.api.model;
+package org.argouml.api;
 
 import org.argouml.api.model.diagram.DiagramFacade;
 import org.argouml.api.model.uml.UmlModelFacade;
@@ -59,7 +59,7 @@ public final class FacadeManager {
 	static {
 		String cname = null;
 		try {
-			cname = System.getProperty("org.argouml.model.uml.UmlModelFacade");
+			cname = System.getProperty("org.argouml.api.model.uml.facade");
 			if (cname != null && cname.length() > 0) {
 				Class clz = ClassLoader.getSystemClassLoader().loadClass(cname);
 				modelFacade = (UmlModelFacade) clz.newInstance();
@@ -79,9 +79,8 @@ public final class FacadeManager {
 			}
 		}
 		
-		
 		try {
-			cname = System.getProperty("org.argouml.model.diagram.DiagramFacade");
+			cname = System.getProperty("org.argouml.api.model.diagram.facade");
 			if (cname != null && cname.length() > 0) {
 				Class clz = ClassLoader.getSystemClassLoader().loadClass(cname);
 				diagramFacade = (DiagramFacade) clz.newInstance();
