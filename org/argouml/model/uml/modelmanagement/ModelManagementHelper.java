@@ -109,8 +109,7 @@ public class ModelManagementHelper {
      * @return Collection
      */
     public Collection getAllNamespaces() {
-        MNamespace model =
-            (MModel)ProjectManager.getManager().getCurrentProject().getModel();
+        Object model = ProjectManager.getManager().getCurrentProject().getModel();
         return getAllNamespaces(model);
     }
 
@@ -118,10 +117,10 @@ public class ModelManagementHelper {
      * Returns all namespaces found in this namespace and in its children
      * @return Collection
      */
-    public Collection getAllNamespaces(MNamespace ns) {
-        if (ns == null)
+    public Collection getAllNamespaces(Object ns) {
+        if (ns == null || !(ns instanceof MNamespace))
             return new ArrayList();
-        Iterator it = ns.getOwnedElements().iterator();
+        Iterator it = ((MNamespace)ns).getOwnedElements().iterator();
         List list = new ArrayList();
         while (it.hasNext()) {
             Object o = it.next();
@@ -174,7 +173,7 @@ public class ModelManagementHelper {
         return list;
 
     }
-    
+
     /**
      * helper method for {@link #getAllModelElementsOfKind(Object, Class)}
      *

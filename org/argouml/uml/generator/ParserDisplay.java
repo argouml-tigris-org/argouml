@@ -73,21 +73,16 @@ import ru.novosoft.uml.behavior.state_machines.MGuard;
 import ru.novosoft.uml.behavior.state_machines.MState;
 import ru.novosoft.uml.behavior.state_machines.MTransition;
 import ru.novosoft.uml.foundation.core.MAttribute;
-import ru.novosoft.uml.foundation.core.MBehavioralFeature;
 import ru.novosoft.uml.foundation.core.MClassifier;
 import ru.novosoft.uml.foundation.core.MModelElement;
 import ru.novosoft.uml.foundation.core.MOperation;
 import ru.novosoft.uml.foundation.core.MParameter;
-import ru.novosoft.uml.foundation.core.MStructuralFeature;
 import ru.novosoft.uml.foundation.data_types.MActionExpression;
 import ru.novosoft.uml.foundation.data_types.MCallConcurrencyKind;
-import ru.novosoft.uml.foundation.data_types.MChangeableKind;
 import ru.novosoft.uml.foundation.data_types.MExpression;
 import ru.novosoft.uml.foundation.data_types.MIterationExpression;
-import ru.novosoft.uml.foundation.data_types.MMultiplicity;
 import ru.novosoft.uml.foundation.extension_mechanisms.MStereotype;
 import ru.novosoft.uml.foundation.extension_mechanisms.MTaggedValue;
-import ru.novosoft.uml.model_management.MModel;
 
 /**
  * Interface specifying the operation to take when a PropertySpecialString
@@ -117,11 +112,8 @@ interface PropertyOperation {
  *  _attributeSpecialStrings[0] = new PropertySpecialString("frozen",
  *	new PropertyOperation() {
  *	    public void found(Object element, String value) {
- *		MChangeableKind kind = MChangeableKind.FROZEN;
- *		if (value != null && value.equalsIgnoreCase("false"))
- *		    kind = MChangeableKind.CHANGEABLE;
  *		if (ModelFacade.isAStructuralFeature(element))
- *		    ((MStructuralFeature)element).setChangeability(kind);
+ *		    ModelFacade.setChangeable(element, (value != null && value.equalsIgnoreCase("false")));
  *	    }
  *	});</pre>
  *
@@ -218,11 +210,8 @@ public class ParserDisplay extends Parser {
 		    {
 			public void found(Object element, String value)
 			{
-			    MChangeableKind kind = MChangeableKind.FROZEN;
-			    if (value != null && value.equalsIgnoreCase("false"))
-				kind = MChangeableKind.CHANGEABLE;
 			    if (ModelFacade.isAStructuralFeature(element))
-				((MStructuralFeature) element).setChangeability(kind);
+				ModelFacade.setChangeable(element, (value != null && value.equalsIgnoreCase("false")));
 			}
 		    });
 	_attributeSpecialStrings[1] =
@@ -230,11 +219,8 @@ public class ParserDisplay extends Parser {
 		    new PropertyOperation() {
 			public void found(Object element, String value)
 			{
-			    MChangeableKind kind = MChangeableKind.ADD_ONLY;
-			    if ("false".equalsIgnoreCase(value))
-				kind = MChangeableKind.CHANGEABLE;
 			    if (ModelFacade.isAStructuralFeature(element))
-				((MStructuralFeature) element).setChangeability(kind);
+				ModelFacade.setChangeable(element, ("false".equalsIgnoreCase(value)));
 			}
 		    });
 	_attributeCustomSep = new Vector();
@@ -325,7 +311,7 @@ public class ParserDisplay extends Parser {
 			    if (value != null && value.equalsIgnoreCase("false"))
 				isQuery = false;
 			    if (ModelFacade.isABehavioralFeature(element))
-				((MBehavioralFeature) element).setQuery(isQuery);
+			        ModelFacade.setQuery(element, isQuery);
 			}
 		    });
 	_operationSpecialStrings[7] =
@@ -1452,7 +1438,7 @@ public class ParserDisplay extends Parser {
 							     defaultSpace);
 	}
 	if (ModelFacade.getModel(type) != p.getModel()
-	    && !ModelManagementHelper.getHelper().getAllNamespaces((MModel)p.getModel()).contains(ModelFacade.getNamespace(type)))
+	    && !ModelManagementHelper.getHelper().getAllNamespaces(p.getModel()).contains(ModelFacade.getNamespace(type)))
 	{
 	    type =
 		ModelManagementHelper.getHelper()
@@ -1625,7 +1611,7 @@ public class ParserDisplay extends Parser {
 	    }
 	    for (int i = 0; i < properties.size(); i++) {
 		if (properties.get(i).equals("frozen")) {
-		    a.setChangeability(MChangeableKind.FROZEN);
+		    ModelFacade.setChangeable(a, false);
 		} else {
 		    String propertyStr = (String) properties.get(i);
 		    String tagStr = "";
@@ -1991,11 +1977,11 @@ public class ParserDisplay extends Parser {
     //   public abstract Package parsePackage(String s);
     //   public abstract MClassImpl parseClassifier(String s);
 
-    public MStereotype parseStereotype(String s) {
+    public Object parseStereotype(String s) {
 	return null;
     }
 
-    public MTaggedValue parseTaggedValue(String s) {
+    public Object parseTaggedValue(String s) {
 	return null;
     }
 
@@ -2004,13 +1990,13 @@ public class ParserDisplay extends Parser {
 
     /** Parse a string of the form: "range, ...", where range is of the
      *  form "lower..upper", or "integer" */
-    public MMultiplicity parseMultiplicity(String s) {
+    public Object parseMultiplicity(String s) {
 	return UmlFactory.getFactory().getDataTypes().createMultiplicity(s);
 
     }
 
 
-    public MState parseState(String s) {
+    public Object parseState(String s) {
 	return null;
     }
 
@@ -2019,9 +2005,9 @@ public class ParserDisplay extends Parser {
      */
     public void parseStateBody(MState st, String s) {
 	//remove all old transitions; TODO: this should be done better!!
-	st.setEntry(null);
-	st.setExit(null);
-	st.setDoActivity(null);
+	ModelFacade.setEntry(st, null);
+	ModelFacade.setExit(st, null);
+	ModelFacade.setDoActivity(st, null);
 
 	Collection trans = new ArrayList();
 	java.util.StringTokenizer lines =
@@ -2040,7 +2026,7 @@ public class ParserDisplay extends Parser {
 
 		if (t == null) continue;
 		_cat.debug("just parsed:" + GeneratorDisplay.Generate(t));
-		t.setStateMachine(st.getStateMachine());
+		ModelFacade.setStateMachine(t, ModelFacade.getStateMachine(st));
 		t.setTarget(st);
 		t.setSource(st);
 		trans.add(t);
@@ -2059,28 +2045,28 @@ public class ParserDisplay extends Parser {
 	st.setInternalTransitions(trans);
     }
 
-    public void parseStateEntyAction(MState st, String s) {
+    public void parseStateEntyAction(Object st, String s) {
 	if (s.startsWith("entry") && s.indexOf("/") > -1)
 	    s = s.substring(s.indexOf("/") + 1).trim();
 	MCallAction entryAction = (MCallAction) parseAction(s);
 	ModelFacade.setName(entryAction, "anon");
-	st.setEntry(entryAction);
+	ModelFacade.setEntry(st, entryAction);
     }
 
-    public void parseStateExitAction(MState st, String s) {
+    public void parseStateExitAction(Object st, String s) {
 	if (s.startsWith("exit") && s.indexOf("/") > -1)
 	    s = s.substring(s.indexOf("/") + 1).trim();
 	MCallAction exitAction = (MCallAction) parseAction(s);
 	ModelFacade.setName(exitAction, "anon");
-	st.setExit(exitAction);
+	ModelFacade.setExit(st, exitAction);
     }
 
-    public void parseStateDoAction(MState st, String s) {
+    public void parseStateDoAction(Object st, String s) {
         if (s.startsWith("do") && s.indexOf("/") > -1)
             s = s.substring(s.indexOf("/") + 1).trim();
         MCallAction doAction = (MCallAction) parseAction(s);
         ModelFacade.setName(doAction, "anon");
-        st.setDoActivity(doAction);
+        ModelFacade.setDoActivity(st, doAction);
     }
 
     /** Parse a line of the form: "name: trigger [guard] / actions" */
@@ -3260,8 +3246,8 @@ public class ParserDisplay extends Parser {
     /**
      * Counts the number of parameters that are not return values.
      */
-    private int countParameters(MBehavioralFeature bf) {
-	Collection c = bf.getParameters();
+    private int countParameters(Object bf) {
+	Collection c = ModelFacade.getParameters(bf);
 	Iterator it = c.iterator();
 	int count = 0;
 
