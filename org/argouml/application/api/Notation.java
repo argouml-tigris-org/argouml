@@ -172,6 +172,8 @@ public final class Notation implements PropertyChangeListener {
     }
 
     /**
+     * Returns the Notation as set in the menu.
+     * 
      * @return the default NotationName
      */
     public static NotationName getDefaultNotation() {
