@@ -79,8 +79,8 @@ public class UMLStateDiagram extends UMLDiagram {
     // contructors
 
     /**
-     *  this constructor is used to build a dummy statechart diagram so
-     *  that a project will load properly.
+     * This constructor is used to build a dummy statechart diagram so
+     * that a project will load properly.
      */
     public UMLStateDiagram() {
 
@@ -156,8 +156,8 @@ public class UMLStateDiagram extends UMLDiagram {
             if (Model.getFacade().isAClassifier(context)) {
                 contextNamespace = context;
             } else if (Model.getFacade().isABehavioralFeature(context)) {
-                contextNamespace =
-                    Model.getFacade().getNamespace(Model.getFacade().getOwner(context));
+                contextNamespace = Model.getFacade().getNamespace(
+                        Model.getFacade().getOwner(context));
             }
             if (contextNamespace != null) {
                 setup(contextNamespace, sm);
@@ -206,8 +206,8 @@ public class UMLStateDiagram extends UMLDiagram {
         }
         StateDiagramRenderer rend = new StateDiagramRenderer(); // singleton
 
-        LayerPerspective lay =
-            new LayerPerspectiveMutable(Model.getFacade().getName(namespace), gm);
+        LayerPerspective lay = new LayerPerspectiveMutable(
+                Model.getFacade().getName(namespace), gm);
         lay.setGraphNodeRenderer(rend);
         lay.setGraphEdgeRenderer(rend);
         setLayer(lay);
@@ -246,8 +246,8 @@ public class UMLStateDiagram extends UMLDiagram {
 	    getActionCompositeState(),
 	    getActionTransition(),
 	    getActionSynchState(),
-        getActionSubmachineState(),
-        getActionStubState(),
+	    getActionSubmachineState(),
+	    getActionStubState(),
 	    null,
 	    getActionStartPseudoState(),
 	    getActionFinalPseudoState(),
