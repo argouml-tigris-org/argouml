@@ -255,7 +255,8 @@ public class GeneratorPHP4
 
         sOperation += "function " + sOperationName + "(";
 
-        Collection colParameters = Model.getFacade().getParameters(modelElement);
+        Collection colParameters = 
+            Model.getFacade().getParameters(modelElement);
         if (colParameters != null) {
             Iterator itParameters = colParameters.iterator();
             boolean bFirst = true;
@@ -308,7 +309,8 @@ public class GeneratorPHP4
             }
         }
 
-        String sVisibility = generate(Model.getFacade().getVisibility(modelElement));
+        String sVisibility = 
+            generate(Model.getFacade().getVisibility(modelElement));
         if (sVisibility != null && sVisibility != "") {
             sAttribute += sVisibility + " ";
         }
@@ -327,7 +329,8 @@ public class GeneratorPHP4
                 iLanguageMajorVersion);
 
         String sInitialValue = null;
-        Object exprInitialValue = Model.getFacade().getInitialValue(modelElement);
+        Object exprInitialValue = 
+            Model.getFacade().getInitialValue(modelElement);
         if (exprInitialValue != null) {
             sInitialValue = generateDefaultValue(
                     Model.getFacade().getType(modelElement),
@@ -416,8 +419,8 @@ public class GeneratorPHP4
                         Object objParameter = itParameters.next();
                         if (!Model.getFacade().isReturn(objParameter)) {
                             if (!modelElement.equals(objParameter)) {
-                                if (Model.getFacade().getDefaultValue(objParameter)
-                                        != null) {
+                                if (Model.getFacade()
+                                    .getDefaultValue(objParameter) != null) {
                                     bAddDefaultValue = true;
                                 }
                             } else {
@@ -469,7 +472,8 @@ public class GeneratorPHP4
             }
         }
 
-        Collection colElements = Model.getFacade().getOwnedElements(modelElement);
+        Collection colElements = 
+            Model.getFacade().getOwnedElements(modelElement);
         if (colElements != null) {
             Iterator itElements = colElements.iterator();
             if (itElements != null) {
@@ -1527,7 +1531,8 @@ public class GeneratorPHP4
         }
 
         if (Model.getFacade().isAClass(modelElement)) {
-            Collection colSpec = Model.getFacade().getSpecifications(modelElement);
+            Collection colSpec = 
+                Model.getFacade().getSpecifications(modelElement);
             if (colSpec != null) {
                 Iterator itSpec = colSpec.iterator();
                 while (itSpec.hasNext()) {
@@ -1559,7 +1564,8 @@ public class GeneratorPHP4
             }
         }
 
-        Collection colOperations = Model.getFacade().getOperations(modelElement);
+        Collection colOperations =
+            Model.getFacade().getOperations(modelElement);
         if (colOperations != null) {
             Iterator itOperations = colOperations.iterator();
             while (itOperations.hasNext()) {
@@ -1719,14 +1725,16 @@ public class GeneratorPHP4
         if (!Model.getFacade().isAbstract(modelElement) || bIgnoreAbstract) {
             sMethodBody += "\n" + INDENT + "{\n";
 
-            Collection colParameters = Model.getFacade().getParameters(modelElement);
+            Collection colParameters = 
+                Model.getFacade().getParameters(modelElement);
             if (colParameters != null) {
                 Iterator itParameters = colParameters.iterator();
                 while (itParameters.hasNext()) {
                     Object objParameter = itParameters.next();
                     if (Model.getFacade().isReturn(objParameter)) {
                         String sReturnInit = generateDefaultValue(
-                                Model.getFacade().getType(objParameter), null, true);
+                            Model.getFacade().getType(objParameter), 
+                            null, true);
                         String sReturnValue = generate(objParameter);
 
                         if (sReturnInit != null && sReturnValue.trim() != "") {
@@ -1822,7 +1830,8 @@ public class GeneratorPHP4
         }
 
         /* association ends */
-        Collection colAssocEnds = Model.getFacade().getAssociationEnds(modelElement);
+        Collection colAssocEnds = 
+            Model.getFacade().getAssociationEnds(modelElement);
         if (colAssocEnds != null) {
             Iterator itAssocEnds = colAssocEnds.iterator();
             while (itAssocEnds.hasNext()) {
@@ -1841,7 +1850,8 @@ public class GeneratorPHP4
             Iterator itClientDeps = colClientDeps.iterator();
             while (itClientDeps.hasNext()) {
                 Object dep = itClientDeps.next();
-                Collection colDepSuppliers = Model.getFacade().getSuppliers(dep);
+                Collection colDepSuppliers = 
+                    Model.getFacade().getSuppliers(dep);
                 Iterator itDepSuppliers = colDepSuppliers.iterator();
                 while (itDepSuppliers.hasNext()) {
                     tsRequired.add(itDepSuppliers.next());
