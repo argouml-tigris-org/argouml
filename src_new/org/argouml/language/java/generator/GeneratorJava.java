@@ -1236,7 +1236,7 @@ public class GeneratorJava
 		    : (null);
                 String sName =
                     (node.getName() != null)
-		    ? (node.getName().getText().toString())
+		    ? (node.getName().getText())
 		    : (constraintName + "_" + (constraintID++));
 
                 if ((sKind == null) || (sExpression == null)) {
