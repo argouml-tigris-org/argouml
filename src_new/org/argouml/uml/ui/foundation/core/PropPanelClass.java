@@ -44,7 +44,6 @@ import org.argouml.uml.ui.ActionRemoveFromModel;
 import org.argouml.uml.ui.PropPanelButton;
 import org.argouml.uml.ui.PropPanelButton2;
 import org.argouml.uml.ui.UMLLinkedList;
-import org.argouml.uml.ui.behavior.common_behavior.ActionNewReception;
 import org.argouml.util.ConfigLoader;
 
 /**
