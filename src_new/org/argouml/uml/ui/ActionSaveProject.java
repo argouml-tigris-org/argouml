@@ -99,6 +99,7 @@ public class ActionSaveProject extends ActionFileOperations {
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent e) {
+        LOG.info("Performing save action");
         URL url =
             ProjectManager.getManager().getCurrentProject() != null
             ? ProjectManager.getManager().getCurrentProject().getURL() : null;
@@ -126,6 +127,7 @@ public class ActionSaveProject extends ActionFileOperations {
      * @return true if successful
      */
     public boolean trySave(boolean overwrite, File file) {
+        LOG.info("Saving the project");
 	ProjectBrowser pb = ProjectBrowser.getInstance();
 	Project project = ProjectManager.getManager().getCurrentProject();
 	PersistenceManager pm = new PersistenceManager();
