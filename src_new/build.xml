@@ -555,7 +555,29 @@ ${Name} Build file
         <!-- Load all default information here so that no overrides -->
         <!-- can be done either intentionally or accidentally.      -->
         <!-- ====================================================== -->
+
         <include name="default.properties"/>
+
+ 	<!-- ====================================================-- -->
+ 	<!-- Developers can embed version numbers into the source   -->
+ 	<!-- using @ACTUAL_RELEASE@ without knowing what release    -->
+ 	<!-- the source might be released in.                       -->
+ 	<!-- Examples might be:                                     -->
+ 	<!--                                                        -->
+ 	<!--    @since  ARGO@ACTUAL_RELEASE@                        -->
+ 	<!--                                                        -->
+ 	<!-- or                                                     -->
+ 	<!--                                                        -->
+ 	<!--    static String version = "@ACTUAL_RELEASE@";         -->
+ 	<!--                                                        -->
+ 	<!-- This will replace the release in source as required.   -->
+ 	<!-- ====================================================-- -->
+
+        <replace dir="org/argouml" summary="yes" includes="**/*.java">
+             <replacefilter token="@ACTUAL_RELEASE@"
+                            value="${argo.core.version}"/>
+ 	</replace>
+
   	<property name="argo.build.version" value="${argo.core.version}"/>
 
   	<antcall target="dist-all">
