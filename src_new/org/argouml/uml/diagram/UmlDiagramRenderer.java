@@ -180,10 +180,6 @@ public abstract class UmlDiagramRenderer
             }
         }
         
-        if (figNode == null) {
-            throw new IllegalArgumentException("Failed to construct a FigNode for " + node);
-        }
-        
         return figNode;
     }
 
