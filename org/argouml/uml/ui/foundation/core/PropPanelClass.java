@@ -68,7 +68,7 @@ public class PropPanelClass extends PropPanelClassifier {
     
     addField(Argo.localize("UMLMenu", "label.name"), nameField);
     addField(Argo.localize("UMLMenu", "label.stereotype"), new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-stereo"),stereotypeBox));
-    addField(Argo.localize("UMLMenu", "label.namespace"),namespaceScroll);
+    addField(Argo.localize("UMLMenu", "label.namespace"), namespaceComboBox);
     _modifiersPanel.add(new UMLCheckBox(Argo.localize("UMLMenu", "checkbox.active-uc"),this,new UMLReflectionBooleanProperty("isActive",mclass,"isActive","setActive")));
     addField(Argo.localize("UMLMenu", "label.modifiers"), _modifiersPanel);
     

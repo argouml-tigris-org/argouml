@@ -64,7 +64,7 @@ public class PropPanelSignal extends PropPanelModelElement {
         addField(stereotypeBox,2,0,0);
 
         addCaption(Argo.localize("UMLMenu", "label.namespace"),3,0,1);
-        addField(namespaceScroll,3,0,0);
+        addField(namespaceComboBox,3,0,0);
         
         addCaption(Argo.localize("UMLMenu", "label.contexts"), 1,1,0);
         JList contextList = new UMLList(new UMLReflectionListModel(this,"contexts",false,"getContexts",null,"addContext","deleteContext"),true);

@@ -35,11 +35,18 @@ import java.util.Vector;
 import org.apache.log4j.Category;
 import org.argouml.kernel.Project;
 import org.argouml.model.uml.foundation.extensionmechanisms.ExtensionMechanismsFactory;
+import org.argouml.model.uml.modelmanagement.ModelManagementHelper;
 import org.argouml.ui.ProjectBrowser;
 
 import ru.novosoft.uml.MElementListener;
+import ru.novosoft.uml.behavior.collaborations.MAssociationRole;
+import ru.novosoft.uml.behavior.collaborations.MClassifierRole;
+import ru.novosoft.uml.behavior.collaborations.MCollaboration;
+import ru.novosoft.uml.behavior.state_machines.MStateMachine;
+import ru.novosoft.uml.behavior.use_cases.MActor;
 import ru.novosoft.uml.behavior.use_cases.MExtend;
 import ru.novosoft.uml.behavior.use_cases.MInclude;
+import ru.novosoft.uml.behavior.use_cases.MUseCase;
 import ru.novosoft.uml.foundation.core.MAbstraction;
 import ru.novosoft.uml.foundation.core.MAbstractionImpl;
 import ru.novosoft.uml.foundation.core.MAssociation;
@@ -48,6 +55,7 @@ import ru.novosoft.uml.foundation.core.MAttribute;
 import ru.novosoft.uml.foundation.core.MClass;
 import ru.novosoft.uml.foundation.core.MClassifier;
 import ru.novosoft.uml.foundation.core.MComponent;
+import ru.novosoft.uml.foundation.core.MConstraint;
 import ru.novosoft.uml.foundation.core.MDataType;
 import ru.novosoft.uml.foundation.core.MDependency;
 import ru.novosoft.uml.foundation.core.MFeature;
@@ -66,6 +74,7 @@ import ru.novosoft.uml.foundation.data_types.MParameterDirectionKind;
 import ru.novosoft.uml.foundation.data_types.MVisibilityKind;
 import ru.novosoft.uml.foundation.extension_mechanisms.MStereotype;
 import ru.novosoft.uml.model_management.MModel;
+import ru.novosoft.uml.model_management.MPackage;
 
 
 /**
@@ -1023,6 +1032,157 @@ public class CoreHelper {
             if (source instanceof MClassifier && dest instanceof MClassifier) {
                 ret.addAll(getAssociations((MClassifier)source, (MClassifier)dest));
             }
+        }
+        return ret;
+    }
+    
+    /**
+     * Returns true if some modelelement may be owned by the given namespace
+     * @param m
+     * @param ns
+     * @return boolean
+     */
+    public boolean isValidNamespace(MModelElement m, MNamespace ns) {
+        if (m == null || ns == null) return false;
+        if (ns.getModel() != m.getModel()) return false;
+        if (m == ns) return false;
+        if (m instanceof MNamespace && m == getFirstSharedNamespace((MNamespace)m, ns)) return false;
+        if (ns instanceof MInterface || ns instanceof MActor) return false;
+        else
+        if (ns instanceof MComponent) return (m instanceof MComponent && m != ns);
+        else
+        if (ns instanceof MCollaboration) {
+            if (!(m instanceof MClassifierRole ||
+                m instanceof MAssociationRole ||
+                m instanceof MGeneralization ||
+                m instanceof MConstraint)) return false;
+        }
+        else
+        if (ns instanceof MPackage) {
+            if (!(m instanceof MPackage ||
+                m instanceof MClassifier ||
+                m instanceof MAssociation ||
+                m instanceof MGeneralization ||
+                m instanceof MDependency ||
+                m instanceof MConstraint ||
+                m instanceof MCollaboration ||
+                m instanceof MStateMachine ||
+                m instanceof MStereotype)) return false;
+        }
+        else
+        if (ns instanceof MClass) {
+            if (!(m instanceof MClass ||
+                m instanceof MAssociation ||
+                m instanceof MGeneralization ||
+                m instanceof MUseCase ||
+                m instanceof MConstraint ||
+                m instanceof MDependency ||
+                m instanceof MCollaboration ||
+                m instanceof MDataType ||
+                m instanceof MInterface)) return false;
+        }
+        if (m instanceof MStructuralFeature) {
+            if (!isValidNamespace((MStructuralFeature)m, ns)) return false;
+        } else
+        if (m instanceof MGeneralizableElement) {
+            if (!isValidNamespace((MGeneralizableElement)m, ns)) return false;
+        }
+        if (m instanceof MAssociation) {
+            if (!isValidNamespace((MAssociation)m, ns)) return false;
+        } 
+        if (m instanceof MCollaboration) {
+            if (!isValidNamespace((MCollaboration)m, ns)) return false;
+        }
+        return true;  
+    }
+    
+    private boolean isValidNamespace(MCollaboration collab, MNamespace ns) {
+        Iterator it = collab.getOwnedElements().iterator();
+        while (it.hasNext()) {
+            MModelElement m = (MModelElement)it.next();
+            if (m instanceof MClassifierRole) {
+                MClassifierRole role = (MClassifierRole)m;
+                Iterator it2 = role.getBases().iterator();
+                while (it2.hasNext()) {
+                    if (!ns.getOwnedElements().contains(it2.next())) return false;
+                }
+            } else
+            if (m instanceof MAssociationRole) {
+                if (!ns.getOwnedElements().contains(((MAssociationRole)m).getBase())) return false;
+            }
+        }
+        return true;
+    }
+            
+    private boolean isValidNamespace(MStructuralFeature struc, MNamespace ns) {
+        if (struc.getType() == null || struc.getOwner() == null) return true;
+        return struc.getOwner().getNamespace().getOwnedElements().contains(struc.getType());
+    }
+    
+    private boolean isValidNamespace(MAssociation assoc, MNamespace ns) {
+        Iterator it = assoc.getConnections().iterator();
+        List namespaces = new ArrayList();
+        while(it.hasNext()) {
+            MAssociationEnd end = (MAssociationEnd)it.next();
+            namespaces.add(end.getType().getNamespace());
+        }
+        it = namespaces.iterator();
+        while (it.hasNext()) {
+            MNamespace ns1 = (MNamespace)it.next();
+            if (it.hasNext()) {
+                MNamespace ns2 = (MNamespace)it.next();
+                if (ns == getFirstSharedNamespace(ns1, ns2)) return true;
+            }
+        }
+        return false;
+    }
+    
+    private boolean isValidNamespace(MGeneralizableElement gen, MNamespace ns) {     
+        Iterator it = gen.getParents().iterator(); 
+        while (it.hasNext()) {
+            MGeneralizableElement gen2 = (MGeneralizableElement)it.next();
+            if (!ns.getOwnedElements().contains(gen2)) {
+                return false;
+                
+            }
+        }
+        return true;
+    }
+            
+    
+    /**
+     * Gets the first namespace two namespaces share. That is: it returns the 
+     * first namespace that owns the given namespaces itself or some owner of 
+     * the given namespaces.
+     * @param ns1
+     * @param ns2
+     * @return MNamespace
+     */
+    public MNamespace getFirstSharedNamespace(MNamespace ns1, MNamespace ns2) {
+        if (ns1 == null || ns2 == null) return null;
+        if (ns1 == ns2) return ns1;
+        boolean ns1Owner = ModelManagementHelper.getHelper().getAllNamespaces(ns1).contains(ns2);
+        boolean ns2Owner = ModelManagementHelper.getHelper().getAllNamespaces(ns2).contains(ns1);
+        if (ns1Owner) return ns1;
+        if (ns2Owner) return ns2;
+        return getFirstSharedNamespace(ns1.getNamespace(), ns2.getNamespace());
+    }
+    
+    /**
+     * Returns all possible namespaces that may be selected by some given 
+     * modelelement m. Which namespaces are allowed, is decided in the method
+     * isValidNamespace.
+     * @param m
+     * @return Collection
+     */
+    public Collection getAllPossibleNamespaces(MModelElement m) {
+        List ret = new ArrayList();
+        if (m == null) return ret;
+        MNamespace model = ProjectBrowser.TheInstance.getProject().getModel();
+        Iterator it = ModelManagementHelper.getHelper().getAllModelElementsOfKind(model, MNamespace.class).iterator();
+        while (it.hasNext()) {
+            MNamespace ns = (MNamespace)it.next();
+            if (isValidNamespace(m, ns)) ret.add(ns);
         }
         return ret;
     }

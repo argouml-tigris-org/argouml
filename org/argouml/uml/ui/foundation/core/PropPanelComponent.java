@@ -64,7 +64,7 @@ public class PropPanelComponent extends PropPanelClassifier {
     addField(stereotypeBox,2,0,0);
 
     addCaption(Argo.localize("UMLMenu", "label.namespace"),3,0,0);
-    addField(namespaceScroll,3,0,0);
+    addField(namespaceComboBox,3,0,0);
 
     addCaption(Argo.localize("UMLMenu", "label.modifiers"),4,0,1);
     JPanel modifiersPanel = new JPanel(new GridLayout(0,3));

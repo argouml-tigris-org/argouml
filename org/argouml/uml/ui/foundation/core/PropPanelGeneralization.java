@@ -63,7 +63,7 @@ public class PropPanelGeneralization extends PropPanelModelElement {
     addField(new UMLTextField(this,new UMLTextProperty(mclass,"discriminator","getDiscriminator","setDiscriminator")),3,0,0);
 
     addCaption(Argo.localize("UMLMenu", "label.namespace"),4,0,1);
-    addField(namespaceScroll,4,0,0);
+    addField(namespaceComboBox,4,0,0);
 
     addCaption("Parent:",0,1,0);
     UMLModelElementListModel parentModel = new UMLReflectionListModel(this,"parent",true,"getParentElement",null,null,null);

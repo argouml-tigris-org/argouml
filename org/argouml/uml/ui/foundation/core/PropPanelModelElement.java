@@ -96,6 +96,7 @@ abstract public class PropPanelModelElement extends PropPanel {
 
     protected JList namespaceList;
     protected JScrollPane namespaceScroll;
+    protected JComboBox namespaceComboBox;
     protected JTextField nameField;
     protected JComboBox stereotypeBox;
     ////////////////////////////////////////////////////////////////
@@ -111,13 +112,8 @@ abstract public class PropPanelModelElement extends PropPanel {
         
         nameField = new UMLTextField2(this, new UMLModelElementNameDocument(this));
         stereotypeBox = new UMLComboBox2(this, new UMLModelElementStereotypeComboBoxModel(this), ActionSetModelElementStereotype.SINGLETON);
-        
-        
-
-        // nameField=new UMLTextField(this,new UMLTextProperty(mclass,"name","getName","setName"));
-
-        // stereotypeBox = new UMLStereotypeComboBox(this);
-
+        namespaceComboBox = new UMLComboBox2(this, new UMLModelElementNamespaceComboBoxModel(this), ActionSetModelElementNamespace.SINGLETON);
+ 
         namespaceList = new UMLList(new UMLNamespaceListModel(this),true);
         namespaceList.setBackground(getBackground());
         namespaceList.setForeground(Color.blue);
@@ -132,10 +128,11 @@ abstract public class PropPanelModelElement extends PropPanel {
 
         Class mclass = MModelElement.class;
 
-        nameField=new UMLTextField(this,new UMLTextProperty(mclass,"name","getName","setName"));
+        nameField = new UMLTextField2(this, new UMLModelElementNameDocument(this));
+        stereotypeBox = new UMLComboBox2(this, new UMLModelElementStereotypeComboBoxModel(this), ActionSetModelElementStereotype.SINGLETON);
 
-        stereotypeBox = new UMLStereotypeComboBox(this);
-
+        namespaceComboBox = new UMLComboBox2(this, new UMLModelElementNamespaceComboBoxModel(this), ActionSetModelElementNamespace.SINGLETON);
+        
         namespaceList = new UMLList(new UMLNamespaceListModel(this),true);
         namespaceList.setBackground(getBackground());
         namespaceList.setForeground(Color.blue);

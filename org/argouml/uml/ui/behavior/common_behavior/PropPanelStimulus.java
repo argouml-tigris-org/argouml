@@ -89,33 +89,17 @@ public class PropPanelStimulus extends PropPanelModelElement {
     addField(receiverScroll,5,0,0.5);
 
      addCaption(Argo.localize("UMLMenu", "label.namespace"),6,0,1);
-     addLinkField(namespaceScroll,6,0,0);
+     addLinkField(namespaceComboBox,6,0,0);
 
     
 
-    /*
-    UMLActionModel actionModel = new UMLActionModel(this,mclass,"name",
-            MAction.class,"getDispatchAction","setDispatchAction");
-
-        addCaption("Action:",5,0,0);
-        addField(new UMLActionNameField(actionModel,true),5,0,0);
-    */
+   
 
     
    
     
 
-    //
-    //   this is really a property of the link
-    //      but since the link has so few properties of its own
-    //      more convenient to have it here
-    /*
-      addCaption(Argo.localize("UMLMenu", "label.association"),5,0,0);
-      UML ComboBoxModel assocModel = new UMLComboBoxModel(this,"isAcceptibleAssociation",
-      "association","getAssociation","setAssociation",false,MAssociation.class,true);
-      addField(new UMLComboBox(assocModel),5,0,0);
-    */
-
+  
      new PropPanelButton(this,buttonPanel,_navUpIcon, Argo.localize("UMLMenu", "button.go-up"),"navigateNamespace",null);
      new PropPanelButton(this,buttonPanel,_navBackIcon, Argo.localize("UMLMenu" ,"button.go-back"),"navigateBackAction","isNavigateBackEnabled");
      new PropPanelButton(this,buttonPanel,_navForwardIcon, Argo.localize("UMLMenu", "button.go-forward"),"navigateForwardAction","isNavigateForwardEnabled");

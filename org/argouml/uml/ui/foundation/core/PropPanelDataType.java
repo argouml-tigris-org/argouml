@@ -65,7 +65,7 @@ public class PropPanelDataType extends PropPanelClassifier {
     addField(new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-stereo"),stereotypeBox),2,0,0);
 
     addCaption(Argo.localize("UMLMenu", "label.namespace"),3,0,0);
-    addField(namespaceScroll, 3,0,0);
+    addField(namespaceComboBox, 3,0,0);
 
     addCaption(Argo.localize("UMLMenu", "label.modifiers"),4,0,1);
     addField(_modifiersPanel,4,0,0);

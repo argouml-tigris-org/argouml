@@ -60,7 +60,7 @@ public class PropPanelNodeInstance extends PropPanelModelElement {
 
 
 	addCaption(Argo.localize("UMLMenu", "label.namespace"),4,0,1);
-	addField(namespaceScroll,4,0,0);
+	addField(namespaceComboBox,4,0,0);
 
 
 	new PropPanelButton(this,buttonPanel,_navUpIcon, Argo.localize("UMLMenu", "button.go-up"),"navigateUp",null);

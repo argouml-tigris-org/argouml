@@ -72,7 +72,7 @@ public class PropPanelNode extends PropPanelClassifier {
     addField(modifiersPanel,4,0,0);
 
     addCaption(Argo.localize("UMLMenu", "label.namespace"),5,0,0);
-   addField(namespaceScroll,5,0,0);
+   addField(namespaceComboBox,5,0,0);
 
     addCaption("Specializations:",6,0,1);
     addField(derivedScroll,6,0,1);

@@ -83,7 +83,7 @@ public class PropPanelUseCase extends PropPanelClassifier {
         
         addField(Argo.localize("UMLMenu", "label.name"), nameField);
     	addField(Argo.localize("UMLMenu", "label.stereotype"), new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-stereo"),stereotypeBox));
-    	addField(Argo.localize("UMLMenu", "label.namespace"),namespaceScroll);
+    	addField(Argo.localize("UMLMenu", "label.namespace"),namespaceComboBox);
 		
 	PropPanelModifiers mPanel = new PropPanelModifiers(3);
         Class mclass = MUseCase.class;
