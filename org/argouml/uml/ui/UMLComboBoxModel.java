@@ -199,8 +199,8 @@ public class UMLComboBoxModel extends AbstractListModel implements
             //   needs_more_work. should not need to do this  (who ?? pjs)
 
             if(model == null) {
-                System.out.println("Error: getModel() == null for " + 
-                        target.getClass().toString() + " in UMLComboBoxModel");
+                Argo.log.error("Error: UMLComboBoxModel.targetChanged().getModel() == null for " + 
+                        target.getClass().toString());
                 return;
             }
 
