@@ -38,7 +38,9 @@ import org.tigris.toolbar.toolbutton.AbstractButtonAction;
 
 /**
  * A wrapper around a standard action to indicate that any buttons created
- * from this actions should act like radio buttons.
+ * from this actions should act like radio buttons, i.e. that when the 
+ * toolbar buttons are double-clicked, they remain active, and every click 
+ * on the diagram will place a new modelelement.
  *
  * @author Bob Tarling
  */
