@@ -61,19 +61,52 @@ import org.tigris.gef.util.VectorSet;
  */
 public class UMLToDoItem extends ToDoItem {
     
+    /**
+     * The constructor.
+     * 
+     * @param poster the poster
+     * @param h the headline
+     * @param p the priority
+     * @param d the description
+     * @param m the more-info-url
+     * @param offs the offenders
+     */
     public UMLToDoItem(Poster poster, String h, int p, String d, String m,
     VectorSet offs) {
         super(poster, h, p, d, m, offs);
     }
     
+    /**
+     * The constructor.
+     * 
+     * @param poster the poster
+     * @param h the headline
+     * @param p the priority
+     * @param d the description
+     * @param m the more-info-url
+     */
     public UMLToDoItem(Poster poster, String h, int p, String d, String m) {
         super(poster, h, p, d, m);
     }
     
+    /**
+     * The constructor.
+     * 
+     * @param c the poster (critic)
+     * @param dm the offenders
+     * @param dsgr the designer
+     */
     public UMLToDoItem(Critic c, Object dm, Designer dsgr) {
         super(c, dm, dsgr);
     }
     
+    /**
+     * The constructor.
+     * 
+     * @param c the poster (critic)
+     * @param offs the offenders
+     * @param dsgr the designer
+     */
     public UMLToDoItem(Critic c, VectorSet offs, Designer dsgr) {
         super(c, offs, dsgr);
     }
