@@ -20,6 +20,12 @@
          </date>
          <title>Cookbook for Developers of ArgoUML</title>
          <subtitle>An introduction to ArgoUML Programming</subtitle>
+    <abstract>
+      <para>
+The purpose of this Cookbook is to help in coordinating 
+and documenting the development of ArgoUML.
+</para>
+    </abstract>
          <authorgroup>
              <author>
                  <firstname>Markus</firstname>
