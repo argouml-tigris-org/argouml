@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.1.2//EN"
-"file:/C:/argo/argouml/documentation/docbook-setup/docbookx/docbookx.dtd">
+"../docbook-setup/docbookx/docbookx.dtd">
 <book
 ><title
 >Frequently asked questions for ArgoUML.</title
