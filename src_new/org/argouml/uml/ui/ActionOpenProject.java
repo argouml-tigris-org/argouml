@@ -104,8 +104,19 @@ public class ActionOpenProject extends UMLAction {
     }
     
     try {
-      String directory = Globals.getLastDirectory();
-      JFileChooser chooser = OsUtil.getFileChooser (directory);
+      // next line does give user.home back but this is not compliant with how 
+      // the project.url works and therefore open and save project as give 
+      // different starting directories.
+      // String directory = Globals.getLastDirectory();
+      JFileChooser chooser = null;
+      if (p != null && p.getURL() != null) {
+          File file = new File(p.getURL().getFile());
+          if (file.getParentFile() != null)
+            chooser = OsUtil.getFileChooser(file.getParent());
+      } else
+        chooser = OsUtil.getFileChooser();
+      
+      // JFileChooser chooser = OsUtil.getFileChooser (directory);
       
       if (chooser == null) chooser = OsUtil.getFileChooser();
       

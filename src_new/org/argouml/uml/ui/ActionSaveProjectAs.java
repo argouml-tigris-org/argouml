@@ -23,22 +23,18 @@
 
 package org.argouml.uml.ui;
 
-import org.argouml.application.api.Argo;
-import org.argouml.kernel.*;
-import org.argouml.ui.*;
-import org.argouml.util.*;
-import org.argouml.util.osdep.*;
-import org.tigris.gef.ocl.*;
-import sun.security.action.GetPropertyAction;
-
+import java.awt.event.ActionEvent;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.net.URL;
-import java.awt.event.*;
-import java.beans.*;
-import javax.swing.*;
-import javax.swing.filechooser.*;
+
+import javax.swing.JFileChooser;
+
+import org.argouml.application.api.Argo;
+import org.argouml.kernel.Project;
+import org.argouml.kernel.ProjectManager;
+import org.argouml.ui.ProjectBrowser;
+import org.argouml.util.FileFilters;
+import org.argouml.util.osdep.OsUtil;
 
 /** Action to save project under name.
  * @stereotype singleton
@@ -50,74 +46,76 @@ public class ActionSaveProjectAs extends ActionSaveProject {
 
     public static ActionSaveProjectAs SINGLETON = new ActionSaveProjectAs();
 
-    public static final String separator = "/"; //System.getProperty("file.separator");
+    public static final String separator = "/";
+    //System.getProperty("file.separator");
 
     ////////////////////////////////////////////////////////////////
     // constructors
 
     protected ActionSaveProjectAs() {
-	super("Save Project As...", NO_ICON);
+        super("Save Project As...", NO_ICON);
     }
-
 
     ////////////////////////////////////////////////////////////////
     // main methods
 
     public void actionPerformed(ActionEvent e) {
-	trySave(false);
+        trySave(false);
     }
 
-  public boolean trySave(boolean overwrite) {
-	File f = getNewFile();
-	if (f == null)
-	  return false;
-	boolean success = trySave(overwrite,f);
-	if (success) {
-	    ProjectBrowser.TheInstance.setTitle(ProjectManager.getManager().getCurrentProject().getName());
-	}
-	return success;
-  }
+    public boolean trySave(boolean overwrite) {
+        File f = getNewFile();
+        if (f == null)
+            return false;
+        boolean success = trySave(overwrite, f);
+        if (success) {
+            ProjectBrowser.TheInstance.setTitle(
+                ProjectManager.getManager().getCurrentProject().getName());
+        }
+        return success;
+    }
 
     protected File getNewFile() {
-	ProjectBrowser pb = ProjectBrowser.TheInstance;
-	Project p = ProjectManager.getManager().getCurrentProject();
+        ProjectBrowser pb = ProjectBrowser.TheInstance;
+        Project p = ProjectManager.getManager().getCurrentProject();
 
         JFileChooser chooser = null;
-	URL url = p.getURL();
-        if ((url != null) && (url.getFile().length()>0)) {
-	    chooser  = OsUtil.getFileChooser (url.getFile());
+        URL url = p.getURL();
+        if ((url != null) && (url.getFile().length() > 0)) {
+            chooser = OsUtil.getFileChooser(url.getFile());
         }
         if (chooser == null) {
-	    chooser  = OsUtil.getFileChooser ();
+            chooser = OsUtil.getFileChooser();
         }
 
-	if (url != null) {
-	    chooser.setSelectedFile(new File(url.getFile()));
-	}
+        if (url != null) {
+            chooser.setSelectedFile(new File(url.getFile()));
+        }
 
-	String sChooserTitle =
-	    Argo.localize("Actions",
-			       "text.save_as_project.chooser_title");
-	chooser.setDialogTitle(sChooserTitle + p.getName());
-	chooser.setFileFilter(FileFilters.CompressedFileFilter);
+        String sChooserTitle =
+            Argo.localize("Actions", "text.save_as_project.chooser_title");
+        chooser.setDialogTitle(sChooserTitle + p.getName());
+        chooser.setFileFilter(FileFilters.CompressedFileFilter);
 
-	int retval = chooser.showSaveDialog(pb);
-	if (retval == JFileChooser.APPROVE_OPTION) {
-	    File file = chooser.getSelectedFile();
-	    if (file != null) {
-		String name = file.getName();
-		if (! name.endsWith(Project.COMPRESSED_FILE_EXT)) {
-		    file = new File(file.getParent(),
-				    name + Project.COMPRESSED_FILE_EXT);
-		}
-	    }
-	    return file;
-	} else {
-	    return null;
-	}
+        int retval = chooser.showSaveDialog(pb);
+        if (retval == JFileChooser.APPROVE_OPTION) {
+            File file = chooser.getSelectedFile();
+            if (file != null) {
+                String name = file.getName();
+                if (!name.endsWith(Project.COMPRESSED_FILE_EXT)) {
+                    file =
+                        new File(
+                            file.getParent(),
+                            name + Project.COMPRESSED_FILE_EXT);
+                }
+            }
+            return file;
+        } else {
+            return null;
+        }
     }
 
     public boolean shouldBeEnabled() {
-	return true;
+        return true;
     }
 } /* end class ActionSaveProjectAs */
