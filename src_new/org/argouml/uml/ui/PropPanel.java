@@ -605,7 +605,7 @@ public abstract class PropPanel
             Object base = target;
             TargetManager.getInstance().setTarget(base);
             ActionEvent event = new ActionEvent(this, 1, "delete");
-            ActionRemoveFromModel.SINGLETON.actionPerformed(event);
+            new ActionRemoveFromModel().actionPerformed(event);
             if (newTarget != null) {
                 TargetManager.getInstance().setTarget(newTarget);
             }

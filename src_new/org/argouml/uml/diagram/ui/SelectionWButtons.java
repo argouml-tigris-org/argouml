@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -82,7 +82,11 @@ public abstract class SelectionWButtons extends SelectionNodeClarifiers {
     ////////////////////////////////////////////////////////////////
     // constructors
 
-    /** Construct a new SelectionWButtons for the given Fig */
+    /**
+     * Construct a new SelectionWButtons for the given Fig.
+     *
+     * @param f The given Fig.
+     */
     public SelectionWButtons(Fig f) {
         super(f);
         _paintButtons = _showRapidButtons;
@@ -125,8 +129,12 @@ public abstract class SelectionWButtons extends SelectionNodeClarifiers {
     ////////////////////////////////////////////////////////////////
     // display methods
 
-    /** Paint the handles at the four corners and midway along each edge
-     * of the bounding box.  */
+    /**
+     * Paint the handles at the four corners and midway along each edge
+     * of the bounding box.
+     *
+     * @param g The Graphics where we paint this.
+     */
     public void paint(Graphics g) {
         super.paint(g);
         if (!_paintButtons)
@@ -141,6 +149,12 @@ public abstract class SelectionWButtons extends SelectionNodeClarifiers {
         paintButtons(g);
     }
 
+    /**
+     * Paint the handles at the four corners and midway along each edge
+     * of the bounding box.
+     *
+     * @param g The Graphics where to paint the buttons.
+     */
     public abstract void paintButtons(Graphics g);
 
     public void paintButtonAbove(Icon i, Graphics g, int x, int y, int hi) {
@@ -350,6 +364,7 @@ public abstract class SelectionWButtons extends SelectionNodeClarifiers {
         Editor ce = Globals.curEditor();
         ce.damaged(this);
     }
+
     public void mouseExited(MouseEvent me) {
         super.mouseExited(me);
         _paintButtons = false;
@@ -400,7 +415,9 @@ public abstract class SelectionWButtons extends SelectionNodeClarifiers {
             return placeFig(
 			    figToPlace,
 			    layerToPlaceOn,
-			    ((Fig) _content).getX() - figToPlace.getWidth() - 100,
+			    (((Fig) _content).getX()
+			     - figToPlace.getWidth()
+			     - 100),
 			    figToPlace.getY(),
 			    bumpRect);
         } else if (figToPlace.getY() + figToPlace.getHeight() >= 6000) {
@@ -408,7 +425,9 @@ public abstract class SelectionWButtons extends SelectionNodeClarifiers {
 			    figToPlace,
 			    layerToPlaceOn,
 			    figToPlace.getX(),
-			    ((Fig) _content).getY() - figToPlace.getHeight() - 100,
+			    (((Fig) _content).getY()
+			     - figToPlace.getHeight()
+			     - 100),
 			    bumpRect);
         } else if (figToPlace.getY() < 0) {
             return placeFig(

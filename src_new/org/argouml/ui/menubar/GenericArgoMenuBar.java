@@ -263,6 +263,9 @@ public class GenericArgoMenuBar extends JMenuBar
         }
     }
 
+    /**
+     * @see ArgoModuleEventListener#moduleLoaded(ArgoModuleEvent)
+     */
     public void moduleLoaded(ArgoModuleEvent event) {
         if (event.getSource() instanceof PluggableMenu) {
             PluggableMenu module = (PluggableMenu) event.getSource();
@@ -319,21 +322,31 @@ public class GenericArgoMenuBar extends JMenuBar
         }
     }
 
+    /**
+     * @see ArgoModuleEventListener#moduleUnloaded(ArgoModuleEvent)
+     */
     public void moduleUnloaded(ArgoModuleEvent event) {
         // TODO:  Disable menu
     }
 
+    /**
+     * @see ArgoModuleEventListener#moduleEnabled(ArgoModuleEvent)
+     */
     public void moduleEnabled(ArgoModuleEvent event) {
         // TODO:  Enable menu
     }
 
+    /**
+     * @see ArgoModuleEventListener#moduleDisabled(ArgoModuleEvent)
+     */
     public void moduleDisabled(ArgoModuleEvent event) {
         // TODO:  Disable menu
     }
 
 
 
-    /** construct the ordinary all purpose Argo Menu Bar.
+    /**
+     * Construct the ordinary all purpose Argo Menu Bar.
      */
     protected void initMenus() {
         int menuShortcut = Toolkit.getDefaultToolkit().getMenuShortcutKeyMask();
@@ -389,7 +402,7 @@ public class GenericArgoMenuBar extends JMenuBar
         _fileToolbar.add((ActionSaveProject.SINGLETON));
         JMenuItem saveProjectAsItem = _file.add(ActionSaveProjectAs.SINGLETON);
         setMnemonic(saveProjectAsItem, "SaveAs");
-        JMenuItem revertToSavedItem = _file.add(ActionRevertToSaved.SINGLETON);
+        JMenuItem revertToSavedItem = _file.add(new ActionRevertToSaved());
         setMnemonic(revertToSavedItem, "Revert To Saved");
         _file.addSeparator();
 
@@ -485,7 +498,7 @@ public class GenericArgoMenuBar extends JMenuBar
         setMnemonic(removeItem, "Remove from Diagram");
         setAccelerator(removeItem, delKey);
 
-        JMenuItem deleteItem = _edit.add(ActionRemoveFromModel.SINGLETON);
+        JMenuItem deleteItem = _edit.add(new ActionRemoveFromModel());
         setMnemonic(deleteItem, "Delete from Model");
         setAccelerator(deleteItem, ctrlDel);
         // TODO: Bob Tarling: no toolbarbutton till a new one is
@@ -646,7 +659,7 @@ public class GenericArgoMenuBar extends JMenuBar
         setMnemonic(_generate, "Generation");
         JMenuItem genOne = _generate.add(ActionGenerateOne.SINGLETON);
         setMnemonic(genOne, "Generate Selected Classes");
-        JMenuItem genAllItem = _generate.add(ActionGenerateAll.SINGLETON);
+        JMenuItem genAllItem = _generate.add(new ActionGenerateAll());
         setMnemonic(genAllItem, "Generate all classes");
         setAccelerator(genAllItem, F7);
         _generate.addSeparator();

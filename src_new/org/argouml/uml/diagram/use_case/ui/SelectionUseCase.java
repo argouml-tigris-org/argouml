@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2002 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -21,10 +21,6 @@
 // PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
-
-// File: SelectionUseCase.java
-// Classes: SelectionUseCase
-// Original Author: jrobbins@ics.uci.edu
 
 package org.argouml.uml.diagram.use_case.ui;
 
@@ -50,22 +46,36 @@ import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigNode;
 import org.tigris.gef.presentation.Handle;
 
+/**
+ * @author jrobbins@ics.uci.edu
+ */
 public class SelectionUseCase extends SelectionWButtons {
+    /**
+     * @deprecated by Linus Tolke as of 0.15.7. Will be removed.
+     *             Use your own Logger!
+     */
     protected static Logger cat =
+        Logger.getLogger(SelectionUseCase.class);
+
+    private static final Logger LOG =
         Logger.getLogger(SelectionUseCase.class);
     ////////////////////////////////////////////////////////////////
     // constants
     public static Icon inherit =
-        ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource(
-									    "Generalization");
+        ResourceLoaderWrapper.getResourceLoaderWrapper()
+	    .lookupIconResource("Generalization");
     public static Icon assoc =
-        ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource(
-									    "Association");
+        ResourceLoaderWrapper.getResourceLoaderWrapper()
+	    .lookupIconResource("Association");
 
     ////////////////////////////////////////////////////////////////
     // constructors
 
-    /** Construct a new SelectionUseCase for the given Fig */
+    /**
+     * Construct a new SelectionUseCase for the given Fig.
+     *
+     * @param f The given Fig.
+     */
     public SelectionUseCase(Fig f) {
         super(f);
     }
@@ -120,8 +130,9 @@ public class SelectionUseCase extends SelectionWButtons {
         }
     }
 
-    /** Paint the handles at the four corners and midway along each edge
-     * of the bounding box.  */
+    /**
+     * @see SelectionWButtons#paintButtons(Graphics)
+     */
     public void paintButtons(Graphics g) {
         int cx = _content.getX();
         int cy = _content.getY();
@@ -147,37 +158,37 @@ public class SelectionUseCase extends SelectionWButtons {
         Class edgeClass = null;
         Class nodeClass = null;
         if (hand.index == 10 || hand.index == 11)
-            nodeClass = (Class)ModelFacade.USE_CASE;
+            nodeClass = (Class) ModelFacade.USE_CASE;
         else
-            nodeClass = (Class)ModelFacade.ACTOR;
+            nodeClass = (Class) ModelFacade.ACTOR;
 
         int bx = mX, by = mY;
         boolean reverse = false;
         switch (hand.index) {
 	case 10 : //add superclass
-	    edgeClass = (Class)ModelFacade.GENERALIZATION;
+	    edgeClass = (Class) ModelFacade.GENERALIZATION;
 	    by = cy;
 	    bx = cx + cw / 2;
 	    break;
 	case 11 : //add subclass
-	    edgeClass = (Class)ModelFacade.GENERALIZATION;
+	    edgeClass = (Class) ModelFacade.GENERALIZATION;
 	    reverse = true;
 	    by = cy + ch;
 	    bx = cx + cw / 2;
 	    break;
 	case 12 : //add assoc
-	    edgeClass = (Class)ModelFacade.ASSOCIATION;
+	    edgeClass = (Class) ModelFacade.ASSOCIATION;
 	    by = cy + ch / 2;
 	    bx = cx + cw;
 	    break;
 	case 13 : // add assoc
-	    edgeClass = (Class)ModelFacade.ASSOCIATION;
+	    edgeClass = (Class) ModelFacade.ASSOCIATION;
 	    reverse = true;
 	    by = cy + ch / 2;
 	    bx = cx;
 	    break;
 	default :
-	    cat.warn("invalid handle number");
+	    LOG.warn("invalid handle number");
 	    break;
         }
         if (edgeClass != null && nodeClass != null) {
@@ -185,7 +196,7 @@ public class SelectionUseCase extends SelectionWButtons {
             ModeCreateEdgeAndNode m =
                 new ModeCreateEdgeAndNode(ce, edgeClass, nodeClass, false);
             m.setup((FigNode) _content, _content.getOwner(), bx, by, reverse);
-            ce.mode(m);
+            ce.pushMode(m);
         }
 
     }
@@ -194,39 +205,39 @@ public class SelectionUseCase extends SelectionWButtons {
     
 
     /**
-     * @see
-     * org.argouml.uml.diagram.ui.SelectionWButtons#createEdgeAbove(org.tigris.gef.graph.MutableGraphModel,
-     * java.lang.Object)
+     * @see SelectionWButtons#createEdgeAbove(
+     *         org.tigris.gef.graph.MutableGraphModel, java.lang.Object)
      */
     protected Object createEdgeAbove(MutableGraphModel gm, Object newNode) {
-        return gm.connect(_content.getOwner(), newNode, (Class)ModelFacade.GENERALIZATION);
+        return gm.connect(_content.getOwner(), newNode,
+			  (Class) ModelFacade.GENERALIZATION);
     }
 
     /**
-     * @see
-     * org.argouml.uml.diagram.ui.SelectionWButtons#createEdgeLeft(org.tigris.gef.graph.MutableGraphModel,
-     * java.lang.Object)
+     * @see SelectionWButtons#createEdgeLeft(
+     *         org.tigris.gef.graph.MutableGraphModel, java.lang.Object)
      */
     protected Object createEdgeLeft(MutableGraphModel gm, Object newNode) {
-        return gm.connect(newNode, _content.getOwner(), (Class)ModelFacade.ASSOCIATION);
+        return gm.connect(newNode, _content.getOwner(),
+			  (Class) ModelFacade.ASSOCIATION);
     }
 
     /**
-     * @see
-     * org.argouml.uml.diagram.ui.SelectionWButtons#createEdgeRight(org.tigris.gef.graph.MutableGraphModel,
-     * java.lang.Object)
+     * @see SelectionWButtons#createEdgeRight(
+     *         org.tigris.gef.graph.MutableGraphModel, java.lang.Object)
      */
     protected Object createEdgeRight(MutableGraphModel gm, Object newNode) {
-        return gm.connect(_content.getOwner(), newNode, (Class)ModelFacade.ASSOCIATION);
+        return gm.connect(_content.getOwner(), newNode,
+			  (Class) ModelFacade.ASSOCIATION);
     }
 
     /**
-     * @see
-     * org.argouml.uml.diagram.ui.SelectionWButtons#createEdgeUnder(org.tigris.gef.graph.MutableGraphModel,
-     * java.lang.Object)
+     * @see SelectionWButtons#createEdgeUnder(
+     *         org.tigris.gef.graph.MutableGraphModel, java.lang.Object)
      */
     protected Object createEdgeUnder(MutableGraphModel gm, Object newNode) {
-        return gm.connect(newNode, _content.getOwner(), (Class)ModelFacade.GENERALIZATION);
+        return gm.connect(newNode, _content.getOwner(),
+			  (Class) ModelFacade.GENERALIZATION);
     }
 
     /**
