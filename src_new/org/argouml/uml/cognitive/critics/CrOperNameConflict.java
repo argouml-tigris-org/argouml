@@ -1,4 +1,5 @@
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// $Id$
+// Copyright (c) 1996-2003 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -21,32 +22,20 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-
-
 // File: CrOperNameConflict.java
 // Classes: CrOperNameConflict
 // Original Author: jrobbins@ics.uci.edu
-// $Id$
-
-// 5 Mar 2002: Jeremy Bennett (mail@jeremybennett.com). Bug in detection of
-// matching signatures fixed (was checking for matching parameter names, not
-// just types). signaturesMatch() moved to CriticUtils.
-
-// 8 Mar 2002: Jeremy Bennett (mail@jeremybennett.com). Signature simplified to
-// ignore return types (like Java and C++). Javadoc notes this.
-
 
 package org.argouml.uml.cognitive.critics;
 
 import java.util.*;
 import javax.swing.*;
 
-import ru.novosoft.uml.foundation.core.*;
-import ru.novosoft.uml.foundation.data_types.*;
-
 import org.argouml.cognitive.*;
 import org.argouml.cognitive.critics.*;
 
+// Use Model through ModelFacade
+import org.argouml.model.ModelFacade;
 
 /**
  * <p> A critic to detect when a class has operations with two matching
@@ -127,46 +116,30 @@ public class CrOperNameConflict extends CrUML {
 
         // Only do this for classifiers
 
-        if (!(dm instanceof MClassifier)) {
+        if (!(ModelFacade.isAClassifier(dm))) {
             return NO_PROBLEM;
         }
 
-        MClassifier cls = (MClassifier) dm;
+	Iterator enum = ModelFacade.getOperations(dm);
 
         // Get all the features (giving up if there are none). Then loop
         // through finding all operations. Each time we find one, we compare
         // its signature with all previous (held in vector operSeen), and then
         // if it doesn't match add it to the vector.
 
-        Collection str = cls.getFeatures();
-
-        if (str == null) {
-            return NO_PROBLEM;
-        }
-
-        Iterator enum   = str.iterator();
         Vector operSeen = new Vector();
 
         while (enum.hasNext()) {
 
-            // Skip on if its not an operation
-
-            MFeature f = (MFeature) enum.next();
-
-            if (!(f instanceof MOperation)) {
-                continue;
-            }
+	    Object op = enum.next();
 
             // Compare against all earlier operations. If there's a match we've
             // found the problem
 
-            MOperation op   = (MOperation) f;
             int        size = operSeen.size();
 
             for (int i = 0; i < size; i++) {
-                MOperation otherOp = (MOperation) operSeen.elementAt(i);
-
-                if (CriticUtils.signaturesMatch(op, otherOp)) {
+                if (signaturesMatch(op, operSeen.get(i))) {
                     return PROBLEM_FOUND;
                 }
             }
@@ -195,6 +168,106 @@ public class CrOperNameConflict extends CrUML {
     
     public Icon getClarifier() {
         return ClOperationCompartment.TheInstance;
+    }
+
+
+    /**
+     * <p>Sees if the signatures of two Operations are the same.</p>
+     *
+     * <p>Checks for matching operation name, and list of parameter
+     *   types. The order of the parameters is significant.
+     *
+     * <p>This version also checks for the parameter kind, since otherwise,
+     *   "op(int a)" and "op():int" appear to have the same signature. Purists
+     *   would probably suggest that the kind should match exactly. However we
+     *   only differentiate the return parameter(s). It is unlikely that any
+     *   practical OO language would be able to distinguish instantiation of in
+     *   from out from inout parameters.</p>
+     *
+     * <p>We ignore return parameters completely. This is in line with Java/C++
+     *   which regard <code>int x(int, int)</code> and <code>double x(int,
+     *   int)</code> as having the same signature.</p>
+     *
+     * <p>If you need to modify this method, take care, since there are
+     *   numerous "telegraph pole" problems involved in working through pairs
+     *   of mixed lists.</p>
+     *
+     * @param op1 the first operation whose signature is being compared.
+     * @param op2 the second operation whose signature is being compared.
+     *
+     * @return    <code>true</code> if the signatures match, <code>false</code>
+     *            otherwise.
+     */
+    private boolean signaturesMatch(Object op1, Object op2) {
+
+	// Check that the names match.
+
+	String name1 = ModelFacade.getName(op1);
+	if (name1 == null)
+	    return false;
+
+	String name2 = ModelFacade.getName(op2);
+	if (name2 == null)
+	    return false;
+
+	if (!name1.equals(name2))
+	    return false;
+
+	// Check that the parameter lists match.
+
+	Iterator params1 = ModelFacade.getParameters(op1);
+	Iterator params2 = ModelFacade.getParameters(op2);
+
+	while (params1.hasNext() 
+	       && params2.hasNext()) {
+
+	    // Get the next non-return parameter. Null if non left.
+	    Object p1 = null;
+	    while (p1 == null && params1.hasNext()) {
+		p1 = params1.next();
+		if (ModelFacade.isReturn(p1))
+		    p1 = null;
+	    }
+
+	    Object p2 = null;
+	    while (p2 == null && params1.hasNext()) {
+		p2 = params1.next();
+		if (ModelFacade.isReturn(p2))
+		    p2 = null;
+	    }
+
+	    if (p1 == null && p2 == null)
+		return true;	// Both lists have the same length
+
+	    // Different lengths:
+	    if (p1 == null)
+		return false;
+	    if (p2 == null)
+		return false;
+
+	    // Compare the type of the parameters. If any of the types is
+	    // null, then we have a match.
+	    Object p1type = ModelFacade.getType(p1);
+	    if (p1type == null)
+		continue;
+
+	    Object p2type = ModelFacade.getType(p2);
+	    if (p2type == null)
+		continue;
+
+	    if (!p1type.equals(p2type))
+		return false;
+
+	    // This pair of params where the same. Lets check the next pair.
+	}
+
+	if (!params1.hasNext()
+	    && !params2.hasNext()) {
+	    // Both lists have the same length.
+	    return true;
+	}
+	    
+	return false;
     }
 
 } /* end class CrOperNameConflict.java */

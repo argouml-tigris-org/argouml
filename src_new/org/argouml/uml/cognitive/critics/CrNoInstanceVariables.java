@@ -1,4 +1,5 @@
-// Copyright (c) 1996-02 The Regents of the University of California. All
+// $Id$
+// Copyright (c) 1996-2003 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -21,31 +22,23 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-
-
-
-
 // File: CrNoInstanceVariables.java
 // Classes: CrNoInstanceVariables
 // Original Author: jrobbins@ics.uci.edu
-// $Id$
 
 package org.argouml.uml.cognitive.critics;
 
 import java.util.*;
 import javax.swing.*;
 
-import ru.novosoft.uml.foundation.core.*;
-import ru.novosoft.uml.foundation.data_types.*;
-import ru.novosoft.uml.foundation.extension_mechanisms.*;
-
 import org.argouml.cognitive.*;
 import org.argouml.cognitive.critics.*;
-import org.argouml.model.uml.UmlHelper;
-import org.argouml.uml.*;
+
+// Uses Model through ModelFacade.
+import org.argouml.model.ModelFacade;
 
 /** A critic to detect if a class has instance variables.
- *  The critic fires currently only if a class or its base classes have
+ *  The critic fires currently only if a class and its base classes have
  *  no attributes at all.
  *  This is not neccesarily correct and the critic will have to deal with
  *  static attributes or attributes which are defined in a base class but are 
@@ -60,64 +53,72 @@ public class CrNoInstanceVariables extends CrUML {
     addTrigger("structuralFeature");
   }
 
-  public boolean predicate2(Object dm, Designer dsgr) {
-    if (!(dm instanceof MClass)) return NO_PROBLEM;
-    MClass cls = (MClass) dm;
-    if (!(CriticUtils.isPrimaryObject(cls))) return NO_PROBLEM;
+    public boolean predicate2(Object dm, Designer dsgr) {
+	if (!(ModelFacade.isAClass(dm))) return NO_PROBLEM;
 
-    // types can probably have variables, but we should not nag at them
-    // not having any.
-    // utility is a namespace collection - also not strictly required to have
-    // variables.
-    if (CriticUtils.hasStereotype(cls, "type") ||
-        CriticUtils.hasStereotype(cls, "utility"))
-        return NO_PROBLEM;
+	if (!(ModelFacade.isPrimaryObject(dm))) return NO_PROBLEM;
 
-    Collection str = getInheritedStructuralFeatures(cls,0);
-    
-    if (str == null) return PROBLEM_FOUND;
+	// types can probably have variables, but we should not nag at them
+	// not having any.
+	if (ModelFacade.isType(dm)) return NO_PROBLEM;
 
-    // fixes bug #614
-    // mkl: I honestly do not quite understand the code below. 
-    // It makes the critic fire always, because the scope of an attribute is
-    // always null (currently - 2002-03-01).
-    // The if statement below makes the critic fire much less, but it
-    // might ignore states where it would be useful to fire the critic.
-    
-    if (str.size() > 0) return NO_PROBLEM;
-    
-    
-    Iterator enum = str.iterator();
-    while (enum.hasNext()) {
-      MStructuralFeature sf = (MStructuralFeature) enum.next();
-      MChangeableKind ck = sf.getChangeability();
-      MScopeKind sk = sf.getOwnerScope();
-      if (MScopeKind.INSTANCE.equals(sk))
-          return NO_PROBLEM;
+	// utility is a namespace collection - also not strictly 
+	// required to have variables.
+	if (ModelFacade.isUtility(dm)) return NO_PROBLEM;
+
+	if (findChangeableInstanceAttributeInInherited(dm, 0))
+	    return NO_PROBLEM;
+
+	return PROBLEM_FOUND;
     }
-    //TODO?: don't count static or constants?
-    return PROBLEM_FOUND;
-  }
 
-  public Icon getClarifier() {
-    return ClAttributeCompartment.TheInstance;
-  }
+    public Icon getClarifier() {
+	return ClAttributeCompartment.TheInstance;
+    }
 
-  private Collection getInheritedStructuralFeatures(MClassifier cls,int depth)
-  {
-     Collection res = new Vector();
-	 res.addAll(UmlHelper.getHelper().getCore().getAttributes(cls));
+    /**
+     * Searches for attributes that are changeable instance attributes.
+     *
+     * @param handle the classifier to examine
+     * @param number of levels searched
+     * @returns true if an attribute can be found in this class
+     *		or in any of its generalizations.
+     */
+    private boolean findChangeableInstanceAttributeInInherited(Object dm,
+							       int depth) {
 
-     Collection inh = cls.getGeneralizations();
-     for (Iterator iter = inh.iterator(); iter.hasNext();) {
-       MGeneralization gen = (MGeneralization)iter.next();
-       MGeneralizableElement parent = gen.getParent();
-       if (parent != cls && parent instanceof MClassifier && depth < 50) {
-         Collection superstructs = getInheritedStructuralFeatures((MClassifier) parent,depth+1);
-         res.addAll(superstructs);
-       };
-     };
-     return res;
-  };
+	Iterator enum = ModelFacade.getAttributes(dm);
+
+	while (enum.hasNext()) {
+	    Object attr = enum.next();
+
+	    // If we find an instance variable that is not a constant
+	    // we have succeeded
+	    if (ModelFacade.isInstanceScope(attr)
+		&& ModelFacade.isChangeable(attr))
+		return true;
+	}
+
+	// I am only prepared to go this far.
+	if (depth > 50)
+	    return false;
+
+	Iterator iter = ModelFacade.getGeneralizations(dm);
+
+	while (iter.hasNext()) {
+	    Object parent = ModelFacade.getParent(iter.next());
+
+	    if (parent == dm)
+		continue;
+
+	    if (ModelFacade.isAClassifier(parent))
+		if (findChangeableInstanceAttributeInInherited(parent,
+							       depth + 1))
+		    return true;
+	}
+
+	return false;
+    }
+
 } /* end class CrNoInstanceVariables */
 

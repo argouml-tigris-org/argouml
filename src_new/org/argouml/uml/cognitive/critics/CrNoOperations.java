@@ -1,4 +1,5 @@
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// $Id$
+// Copyright (c) 1996-2003 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -24,23 +25,22 @@
 // File: CrNoOperations.javoa
 // Classes: CrNoOperations
 // Original Author: jrobbins@ics.uci.edu
-// $Id$
 
 package org.argouml.uml.cognitive.critics;
 
 import java.util.*;
 import javax.swing.*;
 
-import ru.novosoft.uml.foundation.core.*;
-import ru.novosoft.uml.foundation.data_types.*;
-import ru.novosoft.uml.foundation.extension_mechanisms.*;
-
 import org.argouml.cognitive.*;
 import org.argouml.cognitive.critics.*;
 
-/** A critic to detect when a class or its base claesss doesn't have any operations.
- */
+// Uses Model through ModelFacade.
+import org.argouml.model.ModelFacade;
 
+
+/** A critic to detect when a class or its base class doesn't 
+ * have any operations.
+ */
 public class CrNoOperations extends CrUML {
 
   public CrNoOperations() {
@@ -50,62 +50,58 @@ public class CrNoOperations extends CrUML {
     addTrigger("behavioralFeature");
   }
 
-  public boolean predicate2(Object dm, Designer dsgr) {
-    if (!(dm instanceof MClass)) return NO_PROBLEM;
-    MClass cls = (MClass) dm;
-    if (!(CriticUtils.isPrimaryObject(cls))) return NO_PROBLEM;
-    
-    // types can probably contain operations, but we should not nag at them
-    // not having any.
-    // utility is a namespace collection - also not strictly required to have
-    // operations.
-    if (CriticUtils.hasStereotype(cls, "type") ||
-        CriticUtils.hasStereotype(cls, "utility"))
-        return NO_PROBLEM;
+    public boolean predicate2(Object dm, Designer dsgr) {
+	if (!(ModelFacade.isAClass(dm))) return NO_PROBLEM;
 
-    //TODO: different critic or special message for classes
-    //that inherit all ops but define none of their own.
+	if (!(ModelFacade.isPrimaryObject(dm))) return NO_PROBLEM;
+    
+ 	// types can probably contain operations, but we should not nag at them
+	// not having any.
+	if (ModelFacade.isType(dm)) return NO_PROBLEM;
+
+	// utility is a namespace collection - also not strictly 
+	// required to have operations.
+	if (ModelFacade.isUtility(dm)) return NO_PROBLEM;
+
+	//TODO: different critic or special message for classes
+	//that inherit all ops but define none of their own.
 	
-    Collection beh = getInheritedBehavioralFeatures(cls,0);
-    if (beh == null) return PROBLEM_FOUND;
-    
-    // please see explanation in CrNoInstanceVariables.java for an explanation
-    // of this fix.
-    if (beh.size() > 0) return NO_PROBLEM;
+	if (findInstanceOperationInInherited(dm, 0))
+	    return NO_PROBLEM;
 
-    for (Iterator iter = beh.iterator(); iter.hasNext();) {
-      MBehavioralFeature bf = (MBehavioralFeature) iter.next();
-      MScopeKind sk = bf.getOwnerScope();
-      if (MScopeKind.INSTANCE.equals(sk)) return NO_PROBLEM;
+	return PROBLEM_FOUND;
     }
-    //TODO?: don't count static or constants?
-    return PROBLEM_FOUND;
-  }
 
-  public Icon getClarifier() {
-    return ClOperationCompartment.TheInstance;
-  }
+    public Icon getClarifier() {
+	return ClOperationCompartment.TheInstance;
+    }
 
-  private Collection getInheritedBehavioralFeatures(MClassifier cls,int depth)
-  {
-     Collection res = new Vector();
-     Collection features = cls.getFeatures();
-     for (Iterator iter = features.iterator(); iter.hasNext();) {
-       Object feature = iter.next();
-       if (feature instanceof MBehavioralFeature)
-         res.add(feature);
-     };
-     Collection inh = cls.getGeneralizations();
-     for (Iterator iter = inh.iterator(); iter.hasNext();) {
-       MGeneralization gen = (MGeneralization)iter.next();
-       MGeneralizableElement parent = gen.getParent();
-       if (parent != cls && parent instanceof MClassifier && depth < 50) {
-         Collection superassocs = getInheritedBehavioralFeatures((MClassifier) parent,depth+1);
-         res.addAll(superassocs);
-       };
-     };
-     return res;
-  };
+    private boolean findInstanceOperationInInherited(Object dm, int depth)
+    {
+	Iterator enum = ModelFacade.getOperations(dm);
 
+	while (enum.hasNext()) {
+	    if (ModelFacade.isInstanceScope(enum.next()))
+		return true;
+	}
+
+	if (depth > 50)
+	    return false;
+
+	Iterator iter = ModelFacade.getGeneralizations(dm);
+
+	while (iter.hasNext()) {
+	    Object parent = ModelFacade.getParent(iter.next());
+
+	    if (parent == dm)
+		continue;
+
+	    if (ModelFacade.isAClassifier(parent))
+		if (findInstanceOperationInInherited(parent, depth + 1))
+		    return true;
+	}
+
+	return false;
+    }
 } /* end class CrNoOperations */
 

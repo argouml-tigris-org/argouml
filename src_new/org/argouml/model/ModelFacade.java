@@ -47,24 +47,33 @@ import org.argouml.uml.*;
 
 
 /**
- * Facade object for the Model component in ArgoUML.
+ * Facade object for the Model component in ArgoUML.<p>
  *
  * The purpose of this Facade object is to allow for decoupling other modules
  * from the insides of the model. For this purpose all of the methods in this
  * class give away and accept handles (of type java.lang.Object) to the 
- * objects within the model.
+ * objects within the model.<p>
  *
- * All methods in this facade are static.
+ * This is just getters and recognizers. This is because the Model 
+ * component has an extremely complicated internal data structure 
+ * with lots of internal dependencies. To manipulate these there is
+ * a whole set of factories and helpers within the Model that is to
+ * be used but to use them you need knowledge of the internals of
+ * the Model, specifically the NS-UML objects.<p>
+ *
+ * All methods in this facade are static.<p>
  * 
- * <p>Signature for all recognizers in this Facade:
+ * Signature for all recognizers in this Facade:
  * public static boolean isA<TYPE>(Object handle)
  * public static boolean is<PROPERTY>(Object handle)
+ * <p>
  *
- * <p>Signature for all getters in this Facade:
+ * Signature for all getters in this Facade:
  * public static Object get<TYPE>(Object handle) - 1..1
  * public static Iterator get<TYPES>(Object handle) - 0..*
  * public static String getName(Object handle) - Name
- *  
+ * <p>
+ * 
  * @stereotype utility
  * @author Linus Tolke
  */
@@ -152,6 +161,20 @@ public class ModelFacade {
      */
     public static boolean isAPackage(Object handle) {
 	return handle instanceof MPackage;
+    }
+
+    /** Recognizer for attributes that are changeable
+     *
+     * @param handle candidate
+     * @returns true if handle is changeable
+     */
+    public static boolean isChangeable(Object handle) {
+	if (handle instanceof MAttribute) {
+	    MAttribute a = (MAttribute)handle;
+	    return MChangeableKind.CHANGEABLE.equals(a.getChangeability());
+	}
+	// ...
+	throw new IllegalArgumentException("Unrecognized object " + handle);
     }
 
     /** Recognizer for attributes with classifier scope.
@@ -274,6 +297,29 @@ public class ModelFacade {
 	if (handle instanceof MBehavioralFeature) {
 	    MBehavioralFeature bf = (MBehavioralFeature)handle;
 	    return MVisibilityKind.PRIVATE.equals(bf.getVisibility());
+	}
+	// ...
+	throw new IllegalArgumentException("Unrecognized object " + handle);
+    }
+
+    /** Recognizer for realize
+     *
+     * @param handle candidate
+     * @returns true if handle has a realize stereotype
+     */
+    public static boolean isRealize(Object handle) {
+	return isStereotype(handle, "realize");
+    }
+
+    /** Recognizer for return
+     *
+     * @param handle candidate parameter
+     * @returns true if handle is a return parameter.
+     */
+    public static boolean isReturn(Object handle) {
+	if (handle instanceof MParameter) {
+	    MParameter p = (MParameter) handle;
+	    return MParameterDirectionKind.RETURN.equals(p.getKind());
 	}
 	// ...
 	throw new IllegalArgumentException("Unrecognized object " + handle);
@@ -531,6 +577,21 @@ public class ModelFacade {
     }
 
 
+    /** Get the parameters of an operation.
+     *
+     * @param handle operation to retrieve from
+     * @return Iterator with operations.
+     */
+    public static Iterator getParameters(Object handle) {
+	if (handle instanceof MOperation) {
+	    return ((MOperation)handle).getParameters().iterator();
+	}
+
+	// ...
+	throw new IllegalArgumentException("Unrecognized object " + handle);
+    }
+	
+
     /** Get the parent of a generalization.
      *
      * TODO: Check that the concepts parent and child exist in the UML model.
@@ -563,6 +624,21 @@ public class ModelFacade {
 	throw new IllegalArgumentException("Unrecognized object " + handle);
     }
 
+
+    /** The list of SupplierDependencies from a ModelElement.
+     *
+     * @param handle model element.
+     * @returns Iterator with the supplier dependencies.
+     */
+    public static Iterator getSupplierDependencies(Object handle) {
+	if (handle instanceof MModelElement) {
+	    MModelElement me = (MModelElement) handle;
+	    return me.getSupplierDependencies().iterator();
+	}
+
+	// ...
+	throw new IllegalArgumentException("Unrecognized object " + handle);
+    }
 
     /** The type of an attribute
      *
