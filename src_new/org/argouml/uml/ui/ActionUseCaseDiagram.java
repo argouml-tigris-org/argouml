@@ -26,6 +26,7 @@ package org.argouml.uml.ui;
 import org.argouml.kernel.*;
 import org.argouml.ui.*;
 import org.argouml.uml.diagram.use_case.ui.*;
+import org.argouml.i18n.Translator;
 
 import ru.novosoft.uml.behavior.collaborations.MCollaboration;
 import ru.novosoft.uml.foundation.core.*;
@@ -40,7 +41,9 @@ public class ActionUseCaseDiagram extends ActionAddDiagram {
 
     public static ActionUseCaseDiagram SINGLETON = new ActionUseCaseDiagram(); 
 
-    public ActionUseCaseDiagram() { super("UseCaseDiagram"); }
+    private ActionUseCaseDiagram() {
+        super(Translator.localize("CoreMenu", "UseCaseDiagram"));
+    }
     
     /**
      * @see org.argouml.uml.ui.ActionAddDiagram#createDiagram(MNamespace)

@@ -28,6 +28,7 @@ import org.argouml.kernel.*;
 import org.argouml.model.uml.UmlFactory;
 import org.argouml.uml.diagram.sequence.ui.*;
 import org.argouml.ui.*;
+import org.argouml.i18n.Translator;
 
 import ru.novosoft.uml.behavior.collaborations.MCollaboration;
 import ru.novosoft.uml.behavior.collaborations.MInteraction;
@@ -50,7 +51,9 @@ public class ActionSequenceDiagram extends ActionAddDiagram {
     ////////////////////////////////////////////////////////////////
     // constructors
 
-    private ActionSequenceDiagram() { super("SequenceDiagram"); }
+    private ActionSequenceDiagram() {
+        super(Translator.localize("CoreMenu", "SequenceDiagram"));
+    }
 
 
     ////////////////////////////////////////////////////////////////

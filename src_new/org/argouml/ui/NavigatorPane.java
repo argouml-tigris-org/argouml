@@ -39,10 +39,11 @@ import ru.novosoft.uml.behavior.use_cases.*;
 import ru.novosoft.uml.behavior.state_machines.*;
 
 import org.tigris.gef.base.Diagram;
-import org.tigris.gef.ui.*;
+import org.tigris.gef.ui.PopupGenerator;
 
 import org.apache.log4j.Category;
 import org.argouml.application.api.*;
+import org.argouml.swingext.*;
 import org.argouml.uml.ui.*;
 import org.argouml.uml.diagram.sequence.ui.UMLSequenceDiagram;
 import org.argouml.uml.diagram.ui.*;
@@ -77,7 +78,7 @@ implements ItemListener, TreeSelectionListener, PropertyChangeListener, Quadrant
   // vector of TreeModels
   protected Vector _perspectives = new Vector();
 
-  protected ToolBar _toolbar = new ToolBar();
+  protected Toolbar _toolbar = new Toolbar();
   protected JComboBox _combo = new JComboBox();
   protected Object _root = null;
   protected Vector _navHistory = new Vector();
@@ -96,13 +97,13 @@ implements ItemListener, TreeSelectionListener, PropertyChangeListener, Quadrant
 
   public NavigatorPane() {
     setLayout(new BorderLayout());
-    //_toolbar.add(new JLabel("Perspective "));
-    _toolbar.setLayout(new FlowLayout(FlowLayout.LEFT, 0, 0));
+    JPanel toolbarPanel = new JPanel(new BorderLayout());
+    toolbarPanel.add(_toolbar, BorderLayout.WEST);
     _toolbar.add(_combo);
     _toolbar.add(Actions.NavBack);
     _toolbar.add(Actions.NavForw);
     _toolbar.add(Actions.NavConfig);
-    add(_toolbar, BorderLayout.NORTH);
+    add(toolbarPanel, BorderLayout.NORTH);
     add(new JScrollPane(_tree), BorderLayout.CENTER);
     _combo.addItemListener(this);
     _tree.setRootVisible(false);

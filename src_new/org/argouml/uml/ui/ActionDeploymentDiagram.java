@@ -22,6 +22,7 @@
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 package org.argouml.uml.ui;
+import org.argouml.i18n.Translator;
 
 import org.argouml.kernel.*;
 import org.argouml.ui.*;
@@ -45,8 +46,9 @@ public class ActionDeploymentDiagram extends ActionAddDiagram {
     ////////////////////////////////////////////////////////////////
     // constructors
 
-    private ActionDeploymentDiagram() { super("DeploymentDiagram"); }
-
+    private ActionDeploymentDiagram() { 
+        super(Translator.localize("CoreMenu", "DeploymentDiagram"));
+    }
 
     ////////////////////////////////////////////////////////////////
     // main methods

@@ -1,3 +1,5 @@
+
+
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -212,10 +214,16 @@ public class Main {
         }
 
         String lookAndFeelGeneralImagePath = "/org/argouml/Images/plaf/" + lookAndFeelClassName.replace('.', '/') + "/toolbarButtonGraphics/general";
+        String lookAndFeelNavigationImagePath = "/org/argouml/Images/plaf/" + lookAndFeelClassName.replace('.', '/') + "/toolbarButtonGraphics/navigation";
         String lookAndFeelDiagramImagePath = "/org/argouml/Images/plaf/" + lookAndFeelClassName.replace('.', '/') + "/toolbarButtonGraphics/argouml/diagrams";
+        String lookAndFeelElementImagePath = "/org/argouml/Images/plaf/" + lookAndFeelClassName.replace('.', '/') + "/toolbarButtonGraphics/argouml/elements";
+        String lookAndFeelArgoUmlImagePath = "/org/argouml/Images/plaf/" + lookAndFeelClassName.replace('.', '/') + "/toolbarButtonGraphics/argouml";
         ResourceLoader.addResourceExtension("gif");
         ResourceLoader.addResourceLocation(lookAndFeelGeneralImagePath);
+        ResourceLoader.addResourceLocation(lookAndFeelNavigationImagePath);
         ResourceLoader.addResourceLocation(lookAndFeelDiagramImagePath);
+        ResourceLoader.addResourceLocation(lookAndFeelElementImagePath);
+        ResourceLoader.addResourceLocation(lookAndFeelArgoUmlImagePath);
         ResourceLoader.addResourceLocation("/org/argouml/Images");
         ResourceLoader.addResourceLocation("/org/tigris/gef/Images");
 

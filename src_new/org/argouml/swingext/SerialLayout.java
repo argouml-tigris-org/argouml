@@ -14,7 +14,7 @@ import org.apache.log4j.Category;
  * Components can be set to start draw from, LEFTTORIGHT, TOPTOBOTTOM, RIGHTTOLEFT or BOTTOMTOTOP.<br />
  * Components will line up with eachother by edge or follow a common central line.<br />
  * The gap to leave before the first component and the following gaps between each component can
- * be set to be set.
+ * be set.
  *
  * @author Bob Tarling
  */
@@ -42,6 +42,7 @@ public class SerialLayout extends LineLayout {
     public final static int TOP = 20;
     public final static int BOTTOM = 21;
     public final static int CENTER = 22;
+    public final static int FILL = 23;
 
     String position = WEST;
     int direction = LEFTTORIGHT;
@@ -70,13 +71,18 @@ public class SerialLayout extends LineLayout {
         Insets insets = parent.getInsets();
 
         Point loc;
+        int preferredBreadth = orientation.getBreadth(parent.getPreferredSize());
         if (direction == LEFTTORIGHT) {
             loc = new Point(insets.left, insets.top);
             int nComps = parent.getComponentCount();
             for (int i = 0 ; i < nComps ; i++) {
                 Component comp = parent.getComponent(i);
                 if (comp != null && comp.isVisible()) {
-                    comp.setSize(comp.getPreferredSize());
+                    Dimension size = comp.getPreferredSize();
+                    //if (alignment == FILL) {
+                        orientation.setBreadth(size, preferredBreadth);
+                    //}
+                    comp.setSize(size);
                     comp.setLocation(loc);
                     loc = orientation.addToPosition(loc, comp);
                 }
@@ -93,7 +99,11 @@ public class SerialLayout extends LineLayout {
                 if (comp != null && comp.isVisible()) {
                     if (loc == null) cat.debug("null orientation");
                     loc = orientation.subtractFromPosition(loc, comp);
-                    comp.setSize(comp.getPreferredSize());
+                    Dimension size = comp.getPreferredSize();
+                    if (alignment == FILL) {
+                        orientation.setBreadth(size, preferredBreadth);
+                    }
+                    comp.setSize(size);
                     comp.setLocation(loc);
                 }
             }

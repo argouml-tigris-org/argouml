@@ -31,6 +31,7 @@ import ru.novosoft.uml.behavior.activity_graphs.MActivityGraph;
 import ru.novosoft.uml.foundation.core.MBehavioralFeature;
 import ru.novosoft.uml.foundation.core.MModelElement;
 import ru.novosoft.uml.foundation.core.MNamespace;
+import org.argouml.i18n.Translator;
 
 /** Action to trigger creation of a new activity diagram.
  *  @stereotype singleton
@@ -41,7 +42,9 @@ public class ActionActivityDiagram extends ActionStateDiagram {
     
     protected static Category cat = Category.getInstance(org.argouml.uml.ui.ActionActivityDiagram.class);
 
-    private ActionActivityDiagram() { super("ActivityDiagram"); }
+    private ActionActivityDiagram() {
+        super(Translator.localize("CoreMenu", "ActivityDiagram"));
+    }
    
     /**
      * @see org.argouml.uml.ui.ActionAddDiagram#createDiagram(MNamespace, Object)

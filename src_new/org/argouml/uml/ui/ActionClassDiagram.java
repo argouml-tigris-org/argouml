@@ -30,6 +30,7 @@ import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.model_management.*;
 import java.awt.event.*;
 import java.beans.*;
+import org.argouml.i18n.Translator;
 
 /** Action to trigger creation of new class diagram.
  *  @stereotype singleton
@@ -45,8 +46,9 @@ public class ActionClassDiagram extends ActionAddDiagram {
     ////////////////////////////////////////////////////////////////
     // constructors
 
-    private ActionClassDiagram() { super("ClassDiagram"); }
-
+    private ActionClassDiagram() {
+        super(Translator.localize("CoreMenu", "ClassDiagram"));
+    }
 
     /**
      * @see org.argouml.uml.ui.ActionAddDiagram#createDiagram(MNamespace)
