@@ -204,8 +204,12 @@ public abstract class ActionFileOperations extends AbstractAction {
                     }
                 }
                 ProjectManager.getManager().setCurrentProject(p);
-                LOG.info("There are " + p.getMembers().size()
-                        + " members in the current project");
+                if (p == null) {
+                    LOG.info("The current project is null");
+                } else {
+                    LOG.info("There are " + p.getMembers().size()
+                            + " members in the current project");
+                }
                 Designer.enableCritiquing();
             }
         }
