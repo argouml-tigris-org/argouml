@@ -79,9 +79,9 @@ public class SerialLayout extends LineLayout {
                 Component comp = parent.getComponent(i);
                 if (comp != null && comp.isVisible()) {
                     Dimension size = comp.getPreferredSize();
-                    //if (alignment == FILL) {
+                    if (alignment == FILL) {
                         orientation.setBreadth(size, preferredBreadth);
-                    //}
+                    }
                     comp.setSize(size);
                     comp.setLocation(loc);
                     loc = orientation.addToPosition(loc, comp);
@@ -97,7 +97,6 @@ public class SerialLayout extends LineLayout {
             for (int i = 0 ; i < nComps ; i++) {
                 Component comp = parent.getComponent(i);
                 if (comp != null && comp.isVisible()) {
-                    if (loc == null) cat.debug("null orientation");
                     loc = orientation.subtractFromPosition(loc, comp);
                     Dimension size = comp.getPreferredSize();
                     if (alignment == FILL) {
