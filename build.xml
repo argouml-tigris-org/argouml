@@ -739,6 +739,31 @@ ${Name} Build file
   </target>
 
   <!-- =================================================================== -->
+  <!-- Creates the distribution of modules                                 -->
+  <!-- =================================================================== -->
+  <target name="dist-modules" depends="package">
+    <echo message="Building the modules."/>
+
+    <!-- List of modules to be imported. -->
+    <ant dir="../modules/cpp" target="install" inheritAll="false"/>
+    <ant dir="../modules/csharp" target="install" inheritAll="false"/>
+    <ant dir="../modules/classfile" target="install" inheritAll="false"/>
+    <ant dir="../modules/php" target="install" inheritAll="false"/>
+
+    <zip zipfile="${argo.root.dir}/${Name}-${argo.build.version}-modules.zip"
+         basedir="${argo.build.dir}"
+         includes="ext/**.jar"
+     />
+    <tar tarfile="${argo.root.dir}/${Name}-${argo.build.version}-modules.tar"
+         basedir="${argo.build.dir}" 
+         includes="ext/**.jar"
+     />
+    <gzip zipfile="${argo.root.dir}/${Name}-${argo.build.version}-modules.tar.gz"
+          src="${argo.root.dir}/${Name}-${argo.build.version}-modules.tar" />
+    <delete file="${argo.root.dir}/${Name}-${argo.build.version}-modules.tar"/>
+  </target>
+
+  <!-- =================================================================== -->
   <!-- Creates the distribution as an Mac OS X Application Bundle          -->
   <!-- =================================================================== -->
   <target name="dist-appbund" depends="package"
