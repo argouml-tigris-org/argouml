@@ -34,6 +34,7 @@ import java.util.Vector;
 
 import org.apache.log4j.Category;
 import org.argouml.kernel.Project;
+import org.argouml.model.uml.UmlModelEventPump;
 import org.argouml.model.uml.foundation.extensionmechanisms.ExtensionMechanismsFactory;
 import org.argouml.model.uml.modelmanagement.ModelManagementHelper;
 import org.argouml.ui.ProjectBrowser;
@@ -381,8 +382,8 @@ public class CoreHelper {
             Iterator it = p.findFigsForMember(operation).iterator();
             while (it.hasNext()) {
                 MElementListener listener = (MElementListener)it.next();
-                newReturnParameter.removeMElementListener(listener);
-                newReturnParameter.addMElementListener(listener);
+                UmlModelEventPump.getPump().removeModelEventListener(listener, newReturnParameter);
+                UmlModelEventPump.getPump().addModelEventListener(listener, newReturnParameter);
             }
 	}
 	
@@ -1196,6 +1197,7 @@ public class CoreHelper {
         List ret = new ArrayList();
         if (m == null) return ret;
         MNamespace model = ProjectBrowser.TheInstance.getProject().getModel();
+        if (isValidNamespace(m, model)) ret.add(model);
         Iterator it = ModelManagementHelper.getHelper().getAllModelElementsOfKind(model, MNamespace.class).iterator();
         while (it.hasNext()) {
             MNamespace ns = (MNamespace)it.next();

@@ -24,7 +24,9 @@
 // File: ParserDisplay.java
 // Classes: ParserDisplay
 // Original Author:
+
 // $Id$
+
 
 
 // 12 Apr 2002: Jeremy Bennett (mail@jeremybennett.com). Extended to support
@@ -59,6 +61,7 @@ import org.tigris.gef.graph.*;
 import org.argouml.kernel.Project;
 import org.argouml.model.uml.UmlFactory;
 import org.argouml.model.uml.UmlHelper;
+import org.argouml.model.uml.UmlModelEventPump;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.MMUtil;
 import org.argouml.uml.ProfileJava;
@@ -1558,7 +1561,8 @@ nextProp:
                                     Iterator it = pr.findFigsForMember(op).iterator();
                                     while (it.hasNext()) {
                                         MElementListener listener = (MElementListener)it.next();
-                                        p.addMElementListener(listener);
+                                        UmlModelEventPump.getPump().removeModelEventListener(listener, p);
+                                        UmlModelEventPump.getPump().addModelEventListener(listener, p); 
                                     }
 			         }
 			leftOver = s.substring(end+1);

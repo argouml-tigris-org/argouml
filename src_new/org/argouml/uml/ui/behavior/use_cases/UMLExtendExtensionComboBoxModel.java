@@ -24,9 +24,12 @@
 // $header$
 package org.argouml.uml.ui.behavior.use_cases;
 
+import org.argouml.model.uml.UmlModelEventPump;
 import org.argouml.model.uml.modelmanagement.ModelManagementHelper;
 import org.argouml.uml.ui.UMLComboBoxModel2;
 import org.argouml.uml.ui.UMLUserInterfaceContainer;
+
+import ru.novosoft.uml.MBase;
 import ru.novosoft.uml.MElementEvent;
 import ru.novosoft.uml.behavior.use_cases.MExtend;
 import ru.novosoft.uml.behavior.use_cases.MUseCase;
@@ -44,23 +47,8 @@ public class UMLExtendExtensionComboBoxModel extends UMLComboBoxModel2 {
      * @param container
      */
     public UMLExtendExtensionComboBoxModel(UMLUserInterfaceContainer container) {
-        super(container, false);
-    }
-
-    /**
-     * @see org.argouml.uml.ui.UMLComboBoxModel2#isValidRoleAdded(ru.novosoft.uml.MElementEvent)
-     */
-    protected boolean isValidRoleAdded(MElementEvent e) {
-        MModelElement m = (MModelElement)getChangedElement(e);
-        MExtend extend = (MExtend)getTarget();
-        return (m instanceof MUseCase && m != extend.getBase()); 
-    }
-
-    /**
-     * @see org.argouml.uml.ui.UMLComboBoxModel2#isValidPropertySet(ru.novosoft.uml.MElementEvent)
-     */
-    protected boolean isValidPropertySet(MElementEvent e) {
-         return e.getSource() == getTarget() && e.getName().equals("extension");
+        super(container, "extension", false);
+        UmlModelEventPump.getPump().addClassModelEventListener(this, MNamespace.class, "ownedElement");
     }
 
     /**
@@ -71,7 +59,9 @@ public class UMLExtendExtensionComboBoxModel extends UMLComboBoxModel2 {
         if (extend == null) return;
         MNamespace ns = extend.getNamespace();
         addAll(ModelManagementHelper.getHelper().getAllModelElementsOfKind(ns, MUseCase.class));
-        removeElement(extend.getBase());
+        if (extend.getBase() != null) {
+            removeElement(extend.getBase());
+        }
     }
 
     /**
@@ -82,6 +72,13 @@ public class UMLExtendExtensionComboBoxModel extends UMLComboBoxModel2 {
             return ((MExtend)getTarget()).getExtension();
         }
         return null;
+    }
+
+    /**
+     * @see org.argouml.uml.ui.UMLComboBoxModel2#isValidElement(ru.novosoft.uml.MBase)
+     */
+    protected boolean isValidElement(MBase element) {
+        return element instanceof MUseCase;
     }
 
 }

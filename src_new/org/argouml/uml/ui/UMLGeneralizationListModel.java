@@ -126,6 +126,7 @@ public class UMLGeneralizationListModel extends UMLBinaryRelationListModel  {
 	 * @see org.argouml.uml.ui.UMLBinaryRelationListModel#getSelected()
 	 */
 	protected Collection getSelected() {
+                if (getTarget() == null) return new ArrayList();
 		if (getTarget() instanceof MGeneralizableElement) {
 			return CoreHelper.getHelper().getExtendedClassifiers((MGeneralizableElement)getTarget());
 		} else

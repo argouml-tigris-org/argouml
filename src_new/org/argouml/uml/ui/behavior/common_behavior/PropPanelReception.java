@@ -62,7 +62,7 @@ public class PropPanelReception extends PropPanelModelElement {
         addField(modPanel,4,0,0);
         
         addCaption(Argo.localize("UMLMenu", "label.signal"),1,1,0);
-        addField(new UMLSignalComboBox(this, new UMLSignalComboBoxModel(this)),1,1,0);
+        addField(new UMLReceptionSignalComboBox(this, new UMLReceptionSignalComboBoxModel(this)),1,1,0);
         
         addCaption(Argo.localize("UMLMenu", "label.specification"),3,1,0);
         JScrollPane specificationScroll = new JScrollPane(new UMLTextArea(this, new UMLTextProperty(mclass, "specification", "getSpecification" , "setSpecification")),JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
@@ -124,30 +124,4 @@ public class PropPanelReception extends PropPanelModelElement {
 
 }
 
-class UMLClassifierComboBox extends UMLComboBox {
-	/**
-     * <p>Constructor for the box.</p>
-     *
-     * <p>Creates a model ({@link UMLComboBoxModel} and invokes the superclass
-     *   with that. Then sets a third party listener.</p>
-     *
-     * @param container  The container (invariably a {@link PropPanel}) that
-     *                   contains this box.
-     */
 
-    public UMLClassifierComboBox(UMLUserInterfaceContainer container) {
-
-        super(new UMLComboBoxModel(container, "isAcceptibleClassifier",
-                                   "owner", "getOwner",
-                                   "setOwner", true, MClassifier.class,
-                                   true));
-
-        // Only add a listener if we have a prop panel
-
-        if (container instanceof PropPanel) {
-            Object [] eventsToWatch = { MClassifier.class, "name" };
-            ((PropPanel) container).addThirdPartyEventListening(eventsToWatch);
-        }
-    }
-
-} 

@@ -55,7 +55,7 @@ public class PropPanelFlow extends PropPanelRelationship {
         addField(Argo.localize("UMLMenu", "label.constraints"), constraintScroll);
         
         add(LabelledLayout.getSeperator());
-        
+/*        
         UMLComboBox2 sourceBox = new UMLComboBox2(this, 
             new UMLFlowSourceComboBoxModel(this), 
             ActionSetFlowSource.SINGLETON);
@@ -63,5 +63,6 @@ public class PropPanelFlow extends PropPanelRelationship {
             sourceBox);
         
         // addField(Argo.localize("UMLMenu", "label.sources"), targetScroll);
+*/
     }
 }

@@ -26,25 +26,29 @@ package org.argouml.uml.ui.foundation.core;
 import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
-import java.lang.reflect.Method;
 import java.util.Collection;
 import java.util.Iterator;
 
-import javax.swing.*;
+import javax.swing.ButtonGroup;
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 
-import org.argouml.swingext.*;
-import org.argouml.util.*;
 import org.argouml.application.api.Argo;
 import org.argouml.model.uml.AbstractWellformednessRule;
 import org.argouml.model.uml.UmlFactory;
 import org.argouml.model.uml.foundation.core.AssociationEndAggregationWellformednessRule;
 import org.argouml.model.uml.foundation.core.AssociationEndNamespaceWellformednessRule;
-import org.argouml.model.uml.foundation.core.CoreHelper;
+import org.argouml.swingext.LabelledLayout;
+import org.argouml.swingext.Orientation;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.ui.ActionRemoveFromModel;
 import org.argouml.uml.ui.PropPanelButton;
 import org.argouml.uml.ui.UMLCheckBox;
 import org.argouml.uml.ui.UMLComboBox;
+import org.argouml.uml.ui.UMLComboBox2;
 import org.argouml.uml.ui.UMLComboBoxModel;
 import org.argouml.uml.ui.UMLComboBoxNavigator;
 import org.argouml.uml.ui.UMLEnumerationBooleanProperty;
@@ -53,8 +57,8 @@ import org.argouml.uml.ui.UMLMultiplicityComboBox;
 import org.argouml.uml.ui.UMLRadioButton;
 import org.argouml.uml.ui.UMLReflectionBooleanProperty;
 import org.argouml.uml.ui.UMLReflectionListModel;
-import org.argouml.uml.ui.UMLTypeComboBox;
 import org.argouml.uml.ui.UMLVisibilityPanel;
+import org.argouml.util.ConfigLoader;
 import ru.novosoft.uml.foundation.core.MAssociation;
 import ru.novosoft.uml.foundation.core.MAssociationEnd;
 import ru.novosoft.uml.foundation.core.MClassifier;
@@ -97,7 +101,7 @@ public class PropPanelAssociationEnd extends PropPanelModelElement {
         "type","getType","setType",false,MClassifier.class,true);
     UMLComboBox box = new UMLComboBox(model);
     box.setToolTipText("Warning: Do not use this to change an end that is already in a diagram.");
-    addField(Argo.localize("UMLMenu", "label.type"),new UMLTypeComboBox(this));
+    addField(Argo.localize("UMLMenu", "label.type"),new UMLComboBox2(this, new UMLAssociationEndTypeComboBoxModel(this), ActionSetAssociationEndType.SINGLETON));
 
     addField(Argo.localize("UMLMenu", "label.multiplicity"),new UMLMultiplicityComboBox(this,mclass));
 

@@ -39,6 +39,7 @@ import ru.novosoft.uml.foundation.data_types.*;
 import ru.novosoft.uml.foundation.extension_mechanisms.*;
 
 import org.argouml.kernel.*;
+import org.argouml.model.uml.UmlModelEventPump;
 import org.argouml.ui.*;
 import org.argouml.uml.ui.*;
 import org.apache.log4j.Category;
@@ -169,10 +170,10 @@ implements VetoableChangeListener, DelayedVChangeListener, MElementListener {
   // accessors
   public void setTarget(MModelElement t) {
     if (_target instanceof MElement)
-      ((MModelElement)_target).removeMElementListener(this);
+        UmlModelEventPump.getPump().removeModelEventListener(this, (MElement)_target);
     _target = t;
     if (_target instanceof MElement)
-      ((MModelElement)_target).addMElementListener(this);
+      UmlModelEventPump.getPump().addModelEventListener(this, (MElement)_target);
     fireTableStructureChanged();
   }
 

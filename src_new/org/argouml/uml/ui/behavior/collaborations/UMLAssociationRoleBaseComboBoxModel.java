@@ -26,12 +26,14 @@ package org.argouml.uml.ui.behavior.collaborations;
 
 import java.util.Iterator;
 
+import org.argouml.model.uml.UmlModelEventPump;
 import org.argouml.model.uml.behavioralelements.collaborations.CollaborationsHelper;
 import org.argouml.model.uml.foundation.core.CoreHelper;
 import org.argouml.uml.ui.PropPanel;
 import org.argouml.uml.ui.UMLComboBoxModel2;
 import org.argouml.uml.ui.UMLUserInterfaceContainer;
 
+import ru.novosoft.uml.MBase;
 import ru.novosoft.uml.MElementEvent;
 import ru.novosoft.uml.behavior.collaborations.MAssociationRole;
 import ru.novosoft.uml.behavior.collaborations.MClassifierRole;
@@ -54,43 +56,15 @@ public class UMLAssociationRoleBaseComboBoxModel extends UMLComboBoxModel2 {
      */
     public UMLAssociationRoleBaseComboBoxModel(
         UMLUserInterfaceContainer container) {
-        super(container, true);
-        if (container instanceof PropPanel) {
-            Object [] eventsToWatch = { MClassifierRole.class, "base"};
-            ((PropPanel) container).addThirdPartyEventListening(eventsToWatch);
-        }
+        super(container, "base", true);
+        UmlModelEventPump.getPump().addClassModelEventListener(this, MNamespace.class, "ownedElement");
     }
 
     /**
      * @see org.argouml.uml.ui.UMLComboBoxModel2#buildModelList()
      */
     protected void buildModelList() {
-        MAssociationRole role = (MAssociationRole)getTarget();
-        setElements(CollaborationsHelper.getHelper().getAllPossibleBases(role));
-        if (role != null && role.getBase() != null) {
-            setSelectedItem(role.getBase());
-        } else
-            setSelectedItem("");       
-    }
-
-    /**
-     * @see org.argouml.uml.ui.UMLComboBoxModel2#isValidPropertySet(ru.novosoft.uml.MElementEvent)
-     */
-    protected boolean isValidPropertySet(MElementEvent e) {
-        return e.getSource() == getTarget() && e.getName().equals("base");
-    }
-
-    /**
-     * @see org.argouml.uml.ui.UMLComboBoxModel2#isValidRoleAdded(ru.novosoft.uml.MElementEvent)
-     */
-    protected boolean isValidRoleAdded(MElementEvent e) {
-        MAssociationRole role = (MAssociationRole)getTarget();
-        MModelElement m = (MModelElement)getChangedElement(e);
-        return (e.getSource() instanceof MClassifierRole && e.getName().equals("base") &&
-                (CoreHelper.getHelper().getSource(role) == e.getSource() || CoreHelper.getHelper().getDestination(role) == e.getSource()))  ||
-             (e.getSource() instanceof MNamespace && e.getName().equals("ownedElement") &&
-                CollaborationsHelper.getHelper().getAllPossibleBases(role).contains(m));
-        
+        setElements(CollaborationsHelper.getHelper().getAllPossibleBases((MAssociationRole)getTarget())); 
     }
 
     /**
@@ -101,6 +75,13 @@ public class UMLAssociationRoleBaseComboBoxModel extends UMLComboBoxModel2 {
             return ((MAssociationRole)getTarget()).getBase();
         }
         return null;
+    }
+
+    /**
+     * @see org.argouml.uml.ui.UMLComboBoxModel2#isValidElement(ru.novosoft.uml.MBase)
+     */
+    protected boolean isValidElement(MBase element) {
+        return CollaborationsHelper.getHelper().getAllPossibleBases((MAssociationRole)getTarget()).contains(element);
     }
 
 }

@@ -49,12 +49,15 @@ public abstract class AbstractUmlModelFactory {
 
     protected void initialize(Object o) {
        logger.debug("initialize(" + o + ")");
-	   if (o instanceof MBase) {
-            ((MBase)o).addMElementListener(UmlModelListener.getInstance());
+       if (o instanceof MBase) {
             if (((MBase)o).getUUID() == null) {
                 ((MBase)o).setUUID(UUIDManager.SINGLETON.getNewUUID());
             }
-	   }
+            // next two objects are the ONLY two objects that need to listen
+            // to all modelevents.
+            ((MBase)o).addMElementListener(UmlModelEventPump.getPump());
+            ((MBase)o).addMElementListener(UmlModelListener.getInstance());
+       }
     }
 
 }

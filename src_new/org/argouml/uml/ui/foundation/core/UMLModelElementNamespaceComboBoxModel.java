@@ -24,12 +24,16 @@
 // $header$
 package org.argouml.uml.ui.foundation.core;
 
+import org.argouml.model.uml.UmlModelEventPump;
 import org.argouml.model.uml.foundation.core.CoreHelper;
 import org.argouml.uml.ui.UMLComboBoxModel2;
 import org.argouml.uml.ui.UMLUserInterfaceContainer;
+
+import ru.novosoft.uml.MBase;
 import ru.novosoft.uml.MElementEvent;
 import ru.novosoft.uml.foundation.core.MModelElement;
 import ru.novosoft.uml.foundation.core.MNamespace;
+
 
 /**
  * @since Oct 10, 2002
@@ -42,22 +46,15 @@ public class UMLModelElementNamespaceComboBoxModel extends UMLComboBoxModel2 {
      * @param container
      */
     public UMLModelElementNamespaceComboBoxModel(UMLUserInterfaceContainer container) {
-        super(container, false);
+        super(container, "namespace", false);
+        UmlModelEventPump.getPump().addClassModelEventListener(this, MNamespace.class, "ownedElement");
     }
-
+    
     /**
-     * @see org.argouml.uml.ui.UMLComboBoxModel2#isValidRoleAdded(ru.novosoft.uml.MElementEvent)
+     * @see org.argouml.uml.ui.UMLComboBoxModel2#isValidElement(ru.novosoft.uml.MBase)
      */
-    protected boolean isValidRoleAdded(MElementEvent e) {
-        Object o = getChangedElement(e);
+    protected boolean isValidElement(MBase o) {
         return o instanceof MNamespace && CoreHelper.getHelper().isValidNamespace((MModelElement)getTarget(), (MNamespace)o);
-    }
-
-    /**
-     * @see org.argouml.uml.ui.UMLComboBoxModel2#isValidPropertySet(ru.novosoft.uml.MElementEvent)
-     */
-    protected boolean isValidPropertySet(MElementEvent e) {
-        return e.getSource() == getTarget() && e.getName().equals("namespace");
     }
 
     /**

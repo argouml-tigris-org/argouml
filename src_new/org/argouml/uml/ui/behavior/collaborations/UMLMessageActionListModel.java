@@ -27,6 +27,7 @@ package org.argouml.uml.ui.behavior.collaborations;
 import org.argouml.uml.ui.UMLModelElementListModel2;
 import org.argouml.uml.ui.UMLUserInterfaceContainer;
 
+import ru.novosoft.uml.MBase;
 import ru.novosoft.uml.MElementEvent;
 import ru.novosoft.uml.behavior.collaborations.MMessage;
 import ru.novosoft.uml.behavior.common_behavior.MAction;
@@ -43,7 +44,7 @@ public class UMLMessageActionListModel extends UMLModelElementListModel2 {
      * @param container
      */
     public UMLMessageActionListModel(UMLUserInterfaceContainer container) {
-        super(container);
+        super(container, "action");
     }
 
     /**
@@ -54,11 +55,11 @@ public class UMLMessageActionListModel extends UMLModelElementListModel2 {
         addElement(((MMessage)getContainer().getTarget()).getAction());
     }
 
+    
     /**
-     * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidRoleAdded(ru.novosoft.uml.MElementEvent)
+     * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(ru.novosoft.uml.MBase)
      */
-    protected boolean isValidRoleAdded(MElementEvent e) {
-        Object elem = getChangedElement(e);
+    protected boolean isValidElement(MBase elem) {        
         return elem instanceof MAction && 
             ((MMessage)getTarget()).getAction() == elem;
     }

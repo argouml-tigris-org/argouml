@@ -24,12 +24,16 @@
 // $header$
 package org.argouml.uml.ui.foundation.core;
 
+import org.argouml.model.uml.UmlModelEventPump;
 import org.argouml.model.uml.foundation.extensionmechanisms.ExtensionMechanismsHelper;
 import org.argouml.model.uml.modelmanagement.ModelManagementHelper;
 import org.argouml.uml.ui.UMLComboBoxModel2;
 import org.argouml.uml.ui.UMLUserInterfaceContainer;
+
+import ru.novosoft.uml.MBase;
 import ru.novosoft.uml.MElementEvent;
 import ru.novosoft.uml.foundation.core.MModelElement;
+import ru.novosoft.uml.foundation.core.MNamespace;
 import ru.novosoft.uml.foundation.extension_mechanisms.MStereotype;
 
 /**
@@ -43,25 +47,17 @@ public class UMLModelElementStereotypeComboBoxModel extends UMLComboBoxModel2 {
      * @param container
      */
     public UMLModelElementStereotypeComboBoxModel(UMLUserInterfaceContainer container) {
-        super(container, true);
+        super(container, "stereotype", true);
+        UmlModelEventPump.getPump().addClassModelEventListener(this, MNamespace.class, "ownedElement");
     }
 
+    
     /**
-     * @see org.argouml.uml.ui.UMLComboBoxModel2#isValidRoleAdded(ru.novosoft.uml.MElementEvent)
+     * @see org.argouml.uml.ui.UMLComboBoxModel2#isValidElement(ru.novosoft.uml.MBase)
      */
-    protected boolean isValidRoleAdded(MElementEvent e) {
-        Object o = getChangedElement(e);
+    protected boolean isValidElement(MBase o) {
         return o instanceof MStereotype 
             && ExtensionMechanismsHelper.getHelper().isValidStereoType((MModelElement)getTarget(), (MStereotype)o);
-    }
-
-    /**
-     * @see org.argouml.uml.ui.UMLComboBoxModel2#isValidPropertySet(ru.novosoft.uml.MElementEvent)
-     */
-    protected boolean isValidPropertySet(MElementEvent e) {
-        return (e.getSource() == getTarget() && e.getName().equals("stereotype") ||
-            (e.getSource() instanceof MStereotype && e.getName().equals("base")) ||
-            (e.getSource() instanceof MStereotype && e.getName().equals("name")));
     }
 
     /**

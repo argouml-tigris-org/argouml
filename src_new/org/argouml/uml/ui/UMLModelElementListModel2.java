@@ -29,6 +29,8 @@ import java.util.Iterator;
 
 import javax.swing.DefaultListModel;
 
+import org.argouml.model.uml.UmlModelEventPump;
+
 import ru.novosoft.uml.MBase;
 import ru.novosoft.uml.MElementEvent;
 
@@ -41,11 +43,24 @@ import ru.novosoft.uml.MElementEvent;
  */
 public abstract class UMLModelElementListModel2 extends DefaultListModel implements UMLUserInterfaceComponent{
 
+    private String _eventName = null; 
     private UMLUserInterfaceContainer _container = null;
-    private Object _target = null;
+    protected Object _target = null;
     
     /**
      * Constructor for UMLModelElementListModel2.
+     */
+    public UMLModelElementListModel2(UMLUserInterfaceContainer container, String eventName) {
+        super();
+        setEventName(eventName);
+        setContainer(container);
+    }
+    
+    /**
+     * Constructor to be used if the subclass does not depend on the 
+     * MELementListener methods and setTarget method implemented in this
+     * class
+     * @param container
      */
     public UMLModelElementListModel2(UMLUserInterfaceContainer container) {
         super();
@@ -61,8 +76,6 @@ public abstract class UMLModelElementListModel2 extends DefaultListModel impleme
         // the user of this library class some influence
         
         setTarget(getContainer().getTarget());
-        removeAllElements();
-        buildModelList();
     }
 
     /**
@@ -70,8 +83,6 @@ public abstract class UMLModelElementListModel2 extends DefaultListModel impleme
      */
     public void targetReasserted() {
         setTarget(getContainer().getTarget());
-        removeAllElements();
-        buildModelList();
     }
 
     /**
@@ -84,7 +95,7 @@ public abstract class UMLModelElementListModel2 extends DefaultListModel impleme
      * @see ru.novosoft.uml.MElementListener#propertySet(ru.novosoft.uml.MElementEvent)
      */
     public void propertySet(MElementEvent e) {
-        if (isValidPropertySet(e)) {
+        if (isValidEvent(e)) {
             removeAllElements();
             buildModelList();
         }
@@ -106,15 +117,13 @@ public abstract class UMLModelElementListModel2 extends DefaultListModel impleme
      * @see ru.novosoft.uml.MElementListener#roleAdded(ru.novosoft.uml.MElementEvent)
      */
     public void roleAdded(MElementEvent e) {
-        if (isValidRoleAdded(e)) {
+        if (isValidEvent(e)) {
             Object o = getChangedElement(e);
             if (o instanceof Collection) {
                 Iterator it = ((Collection)o).iterator();
                 while(it.hasNext()) {
                     Object o2 = it.next();
-                    if (!contains(o2)) {
-                        addElement(it.next());
-                    }
+                    addElement(it.next());                    
                 }
             } else {
                 addElement(o);
@@ -126,7 +135,22 @@ public abstract class UMLModelElementListModel2 extends DefaultListModel impleme
      * @see ru.novosoft.uml.MElementListener#roleRemoved(ru.novosoft.uml.MElementEvent)
      */
     public void roleRemoved(MElementEvent e) {
-        if (isValidRoleRemoved(e)) {
+        boolean valid = false;
+        if (!(getChangedElement(e) instanceof Collection)) {
+            valid = contains(getChangedElement(e));
+        } else {
+            Collection col = (Collection)getChangedElement(e);
+            Iterator it = col.iterator();
+            valid = true;
+            while (it.hasNext()) {
+                Object o = it.next();
+                if (!contains(o)) {
+                    valid = false;
+                    break;
+                }
+            }
+        }
+        if (valid) {
             Object o = getChangedElement(e);
             if (o instanceof Collection) {
                 Iterator it = ((Collection)o).iterator();
@@ -153,6 +177,7 @@ public abstract class UMLModelElementListModel2 extends DefaultListModel impleme
      */
     protected void setContainer(UMLUserInterfaceContainer container) {
         _container = container;
+        setTarget(_container.getTarget());
     }
     
     /**
@@ -177,10 +202,11 @@ public abstract class UMLModelElementListModel2 extends DefaultListModel impleme
      * element list.
      * @param col
      */
-    private void addAll(Collection col) {
+    protected void addAll(Collection col) {
         Iterator it = col.iterator();
         while (it.hasNext()) {
-            addElement(it.next());
+            Object o = it.next();
+            addElement(o);
         }
     }
     
@@ -207,44 +233,6 @@ public abstract class UMLModelElementListModel2 extends DefaultListModel impleme
         if (e.getNewValue() != null) return e.getNewValue();
         return null;
     }
-    
-    /**
-     * Returns true if roleAdded(MElementEvent e) should be executed. Developers
-     * should override this method and not directly override roleAdded.  
-     * @param m
-     * @return boolean
-     */
-    protected abstract boolean isValidRoleAdded(MElementEvent e);
-    
-    
-    /**
-     * Returns true if roleRemoved(MElementEvent e) should be executed. Standard
-     * behaviour is that it is allways valid to remove an element that's in the
-     * list.
-     * @param m
-     * @return boolean
-     */
-    protected boolean isValidRoleRemoved(MElementEvent e) {
-        return indexOf(getChangedElement(e)) >= 0;
-    }
-    
-    /**
-     * Returns true if propertySet(MElementEvent e) should be executed. Developers
-     * should override this method and not directly override propertySet in order
-     * to let this listmodel and the component(s) representing this model 
-     * function properly.  
-     * @param m
-     * @return boolean
-     */
-    protected boolean isValidPropertySet(MElementEvent e) {
-        Object o = getChangedElement(e);
-        if (contains(o)) return true;
-        o = e.getSource();
-        if (contains(o)) return true;
-        return false;
-    } 
-            
-
 
     /**
      * @see javax.swing.DefaultListModel#contains(java.lang.Object)
@@ -254,8 +242,11 @@ public abstract class UMLModelElementListModel2 extends DefaultListModel impleme
         if (elem instanceof Collection) {
             Iterator it = ((Collection)elem).iterator();
             while(it.hasNext()) {
-                if (super.contains(it.next())) return true;
+                if (!super.contains(it.next())) {
+                     return false;
+                }
             }
+            return true;
         }
         return false;
     }
@@ -268,14 +259,95 @@ public abstract class UMLModelElementListModel2 extends DefaultListModel impleme
      * @param target
      */
     protected void setTarget(Object target) {
+        if (_eventName == null || _eventName.equals("")) 
+            throw new IllegalStateException("eventName not set!");
         if (_target instanceof MBase) {
-            ((MBase)_target).removeMElementListener(this);
+            UmlModelEventPump.getPump().removeModelEventListener(this, (MBase)_target, _eventName);
         }
         _target = target;
-        if (target instanceof MBase) {
-            ((MBase)_target).addMElementListener(this);
+        if (_target instanceof MBase) {
+             UmlModelEventPump.getPump().removeModelEventListener(this, (MBase)_target, _eventName);
+             UmlModelEventPump.getPump().addModelEventListener(this, (MBase)_target, _eventName);
+        }
+        if (_target != null) {
+            removeAllElements();
+            buildModelList();
         }
     }
     
+    /**
+     * Returns true if the given element is valid, i.e. it may be added to the 
+     * list of elements.
+     * @param element
+     */
+    protected abstract boolean isValidElement(MBase element);
+    
+    /**
+     * Returns true if some event is valid. An event is valid if the element
+     * changed in the event is valid. This is determined via a call to isValidElement.
+     * This method can be overriden by subclasses if they cannot determine if
+     * it is a valid event just by checking the changed element.
+     * @param e
+     * @return boolean
+     */
+    protected boolean isValidEvent(MElementEvent e) {
+        boolean valid = false;
+        if (!(getChangedElement(e) instanceof Collection)) {
+            valid = isValidElement((MBase)getChangedElement(e));
+            if (!valid && e.getNewValue() == null && e.getOldValue() != null) {
+                valid = true; // we tried to remove a value
+            }
+        } else {
+            Collection col = (Collection)getChangedElement(e);
+            Iterator it = col.iterator();
+            if (!col.isEmpty()) {
+                valid = true;
+                while (it.hasNext()) {
+                    Object o = it.next();
+                    if (!isValidElement((MBase)o)) {
+                        valid = false;
+                        break;
+                    }
+                }
+            } else {
+                if (e.getOldValue() instanceof Collection && !((Collection)e.getOldValue()).isEmpty()) {
+                    valid = true;
+                }
+            }   
+        }
+        return valid;
+    }
+    
+
+    /**
+     * @see javax.swing.DefaultListModel#addElement(java.lang.Object)
+     */
+    public void addElement(Object obj) {
+        if (obj != null && !contains(obj)) {
+            super.addElement(obj);
+        }
+    }
+    
+    
+
+    /**
+     * Returns the eventName. This method is only here for testing goals.
+     * @return String
+     */
+    String getEventName() {
+        return _eventName;
+    }
+
+    /**
+     * Sets the eventName. The eventName is the name of the MElementEvent to
+     * which the list should listen. The list is registred with UMLModelEventPump
+     * and only gets events that have a name like eventName.
+     * This method should be called in the constructor
+     * of every subclass.
+     * @param eventName The eventName to set
+     */
+    protected void setEventName(String eventName) {
+        _eventName = eventName;
+    }
 
 }
