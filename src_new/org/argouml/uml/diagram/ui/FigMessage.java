@@ -54,7 +54,6 @@ public class FigMessage extends FigNodeModelElement {
 
     ////////////////////////////////////////////////////////////////
     // constants
-    private static final int PADDING = 5;
     private static Vector arrowDirections = new Vector();
 
     ////////////////////////////////////////////////////////////////
@@ -66,7 +65,11 @@ public class FigMessage extends FigNodeModelElement {
     public static final int EAST = 2;
     public static final int WEST = 3;
     public static final int NORTH = 4;
-    public int arrowDirection = 0;
+    
+    /**
+     * The current arrow direction set to constants above.
+     */
+    private int arrowDirection = 0;
 
     ////////////////////////////////////////////////////////////////
     // constructors
@@ -146,7 +149,9 @@ public class FigMessage extends FigNodeModelElement {
     /**
      * @see org.tigris.gef.presentation.Fig#getLineColor()
      */
-    public Color getLineColor() { return figPoly.getLineColor(); }
+    public Color getLineColor() {
+        return figPoly.getLineColor();
+    }
 
     /**
      * @see org.tigris.gef.presentation.Fig#setFillColor(java.awt.Color)
@@ -158,17 +163,22 @@ public class FigMessage extends FigNodeModelElement {
     /**
      * @see org.tigris.gef.presentation.Fig#getFillColor()
      */
-    public Color getFillColor() { return getNameFig().getFillColor(); }
+    public Color getFillColor() {
+        return getNameFig().getFillColor();
+    }
 
     /**
      * @see org.tigris.gef.presentation.Fig#setFilled(boolean)
      */
-    public void setFilled(boolean f) {  }
+    public void setFilled(boolean f) {
+    }
 
     /**
      * @see org.tigris.gef.presentation.Fig#getFilled()
      */
-    public boolean getFilled() { return true; }
+    public boolean getFilled() {
+        return true;
+    }
 
     /**
      * @see org.tigris.gef.presentation.Fig#setLineWidth(int)
