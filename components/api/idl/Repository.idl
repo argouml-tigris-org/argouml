@@ -1,0 +1,57 @@
+#ifndef _REPOSITORY_IDL_
+#define _REPOSITORY_IDL_
+
+// $Id$
+
+#include <Reflective.idl>
+
+#pragma prefix "org.argouml.mof"
+
+module Repository {
+
+	exception RepositoryException
+	{
+	    enum RepositoryErrorCode
+	    {
+            NoSuchModel,
+            NoSuchMetamodel,
+            DatastoreUnavailable,
+            InternalError
+	    } errorcode;
+	    wstring message;
+	};
+
+    interface BaseManager {
+    };
+
+    interface NamedObject
+    {
+        attribute wstring name;
+    };
+
+    interface MetamodelInfo :  Reflective::RefPackage, NamedObject
+    {
+    };
+    typedef sequence < MetamodelInfo > MetamodelInfoList;
+
+    interface ModelInfo :  Reflective::RefPackage, NamedObject
+    {
+        readonly attribute wstring model_name;
+        readonly attribute MetamodelInfo meta_model;
+    };
+    typedef sequence < ModelInfo > ModelInfoList;
+
+    interface RepositoryManager :  BaseManager
+    {
+        readonly attribute MetamodelInfoList metamodels;
+        readonly attribute ModelInfoList models;
+        
+		void open(in wstring url) raises (RepositoryException);
+		void commit() raises (RepositoryException);
+		void rollback() raises (RepositoryException);
+		void close() raises (RepositoryException);
+    };
+
+};
+
+#endif
