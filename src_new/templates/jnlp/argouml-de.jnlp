@@ -29,7 +29,6 @@
     <jar href="log4j.jar"/>
     <jar href="i18n.jar"/>
     <jar href="toolbar.jar"/>
-    <jar href="toolbutton.jar"/>
     <jar href="jmi.jar"/>
 
     <property name="user.language" value="de"/>
