@@ -185,7 +185,9 @@ public class Designer
         _goals = new GoalModel();
         _agency = new Agency();
         _prefs = new Properties();
-        _toDoList = new ToDoList();
+        
+        _toDoList = ToDoList.getInstance();
+        
         _toDoList.spawnValidityChecker(this);
         // TODO: make this configurable
         _emailAddr = "users@argouml.tigris.org";
@@ -246,9 +248,20 @@ public class Designer
             int minWarmElements = 5;
             int size;
             
+            // the critiquing thread should wait if disabled.
+            synchronized (this) {
+                if(!_autoCritique){
+                    try{
+                        this.wait();
+                    }catch (InterruptedException ignore) {
+                        cat.error("InterruptedException!!!", ignore);
+                    }
+                }
+            }
+            
             // why?
             if (_CritiquingRoot != null
-		&& getAutoCritique()
+//		&& getAutoCritique()
 		&& _critiqueLock <= 0) {
                 
                 // why?
@@ -397,7 +410,14 @@ public class Designer
     public boolean getAutoCritique() { return _autoCritique; }
     
     /** see getAutoCritique() */
-    public void setAutoCritique(boolean b) { _autoCritique = b; }
+    public void setAutoCritique(boolean b) { _autoCritique = b; 
+    
+    synchronized (this) {
+        if(_autoCritique){
+            this.notifyAll();
+        }
+    }
+    }
     
     /** needs documenting */
     public int getCritiquingInterval() {
