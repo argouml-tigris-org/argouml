@@ -128,6 +128,7 @@ public class MMUtil {
 	}
 
 	public MGeneralization buildGeneralization(MGeneralizableElement child, MGeneralizableElement parent) {
+	    if (parent.getParents().contains(child)) return null;
 
 		MGeneralization gen = new MGeneralizationImpl();
 		gen.setParent(parent);
