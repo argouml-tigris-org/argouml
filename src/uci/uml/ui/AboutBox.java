@@ -75,17 +75,17 @@ public class AboutBox extends JFrame {
 //     _legal.setFont(ctrlFont);
 //     _contact.setFont(ctrlFont);
 
-    _version.setText("Argo/UML Version 0.6.2\n"+
-		     "Built on March 25, 1999\n"+
+    _version.setText("Argo/UML Version 0.7.0\n"+
+		     "Built on April 21, 1999\n"+
 		     "\n"+
 		     "Includes:\n"+
-		     "  GEF v0.6.2\n"+
+		     "  GEF v0.6.3\n"+
 		     "  Argo v0.8.1\n"+
 		     "  uci.uml v0.5.1\n"+
 		     "\n"+
 		     "Intended for use with:\n"+
-		     "  Sun's Swing 1.1.1 beta 1\n"+
-		     "  IBM's XML4J 2.0.4\n"
+		     "  Sun's Swing 1.1.1 beta 2\n"+
+		     "  IBM's XML4J 2.0.6\n"
 		     );
 
     _credits.setText("Argo/UML was developed by the following:\n"+
@@ -108,6 +108,7 @@ public class AboutBox extends JFrame {
 		     "  Nick Santucci\n"+
 		     "  Eric Lefevre\n"+
 		     "  Sean Chen\n"
+		     "  Jim Holt\n"
 		     );
 
     _contact.setText("For more information on the Argo project:\n"+
