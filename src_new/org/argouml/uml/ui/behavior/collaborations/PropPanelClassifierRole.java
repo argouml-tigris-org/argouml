@@ -144,8 +144,8 @@ public class PropPanelClassifierRole extends PropPanelClassifier {
     }
     
     /**
-	 * @see org.argouml.uml.ui.foundation.core.PropPanelClassifier#getGeneralizationChoices()
-	 */
+     * @see org.argouml.model.uml.behavioralelements.collaborations.CollaborationsHelper#getAllClassifierRoles()
+     */
 	protected Vector getGeneralizationChoices() {
 		Vector choices = new Vector();
 		choices.addAll(CollaborationsHelper.getHelper().getAllClassifierRoles());

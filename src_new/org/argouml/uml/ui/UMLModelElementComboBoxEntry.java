@@ -173,7 +173,7 @@ public class UMLModelElementComboBoxEntry implements Comparable {
      *
      * <p>Implemented using the {@link #compare(Object,Object)} method.</p>
      *
-     * <p>Provided to comply with the {@link Comparator} interface.</p>
+     * <p>Provided to comply with the {@link Comparable} interface.</p>
      *
      * @param other  The other entry against which we are comparing.
      *

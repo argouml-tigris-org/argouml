@@ -139,12 +139,10 @@ public class UMLActivityDiagram extends UMLDiagram {
         
     /** method to perform a number of important initializations of an <I>Activity Diagram</I>. 
      * 
-     * @see      each diagram type has a similar <I>UMLxxxDiagram</I> class.
+     * each diagram type has a similar <I>UMLxxxDiagram</I> class.
      *
      * @param m  MNamespace from the model in NSUML...
-     *
      * @param agraph MActivityGraph from the model in NSUML...
-     *
      * @modified changed <I>lay</I> from <I>LayerPerspective</I> to <I>LayerPerspectiveMutable</I>. 
      *           This class is a child of <I>LayerPerspective</I> and was implemented 
      *           to correct some difficulties in changing the model. <I>lay</I> is used 
