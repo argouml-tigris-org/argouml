@@ -151,6 +151,8 @@ doesn't find it's own XML-libs. You need to set ANT_HOME in your shell.
 
     <tstamp/>
 
+    <property environment="env"/>
+
     <property name="Name" value="ArgoUML"/>
     <property name="name" value="argouml"/>
     <property name="version" value="${lastversion}-${DSTAMP}-${TSTAMP}"/>
@@ -160,7 +162,7 @@ doesn't find it's own XML-libs. You need to set ANT_HOME in your shell.
 
     <property name="src.dir" value="../src_new"/>
     <property name="lib.dir" value="../lib"/>
-    <property name="classpath" value="${JAVA_HOME}/lib/tools.jar:${lib.dir}/xerces.jar:${lib.dir}/nsuml.jar:${lib.dir}/ocl-argo.jar:${lib.dir}/gef.jar:${lib.dir}/antlrall.jar:${lib.dir}/log4j.jar"/>
+    <property name="classpath" value="${env.JAVA_HOME}/lib/tools.jar:${lib.dir}/xerces.jar:${lib.dir}/nsuml.jar:${lib.dir}/ocl-argo.jar:${lib.dir}/gef.jar:${lib.dir}/antlrall.jar:${lib.dir}/log4j.jar"/>
 
     <property name="packages" value="org.argouml.*"/>
     <property name="manifest" value="${src.dir}/org/argouml.mf"/>

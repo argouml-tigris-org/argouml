@@ -39,39 +39,40 @@ import java.awt.event.*;
 public class ActionResourceBundle_fr extends ListResourceBundle {
   
   static final Object[][] _contents = {
-    {"template.save_project.confirm_overwrite", "Are you sure you want to overwrite {0}?"},
-    {"template.save_project.status_writing", "Writing {0}..."},
-    {"template.save_project.status_wrote", "Wrote {0}"},
+    {"template.save_project.confirm_overwrite", "Êtes-vous sûr de vouloir écraser {0}?"},
+    {"template.save_project.status_writing", "Écriture en cours {0}..."},
+    {"template.save_project.status_wrote", "Écriture terminée {0}"},
     {"template.save_project.file_not_found",
-       "A problem occurred while saving: \"{0}\".\n" +
-       "Your file might be corrupted."},
+       "Problème rencontré lors de la sauvegarde: \"{0}\".\n" +
+       "Votre fichier est peut-être corrompu."},
     {"template.save_project.io_exception",
-       "A problem occurred while saving: \"{0}\".\n" +
-       "Your file might be corrupted."},
-    {"text.save_project.confirm_overwrite_title", "Confirm overwrite"},
-    {"text.save_project.file_not_found_title", "Problem while saving"},
-    {"text.save_project.io_exception_title", "Problem while saving"},
+       "Problème rencontré lors de la sauvegarde: \"{0}\".\n" +
+       "Votre fichier est peut-être corrompu."},
+    {"text.save_project.confirm_overwrite_title", "Confirmez l'écrasement"},
+    {"text.save_project.file_not_found_title", "Problème rencontré lors de la sauvegarde"},
+    {"text.save_project.io_exception_title", "Problème rencontré lors de la sauvegarde"},
     {"text.save_as_project.unstable_release",
-       "This is a developer release of ArgoUML. You should not use it \n" +
-       "for production use, it's only for testing. You may save your models,\n" +
-       "but do not expect future releases of ArgoUML to be able to read them.\n" +
-       "If you want to use a \"stable\" release, please go to www.argouml.org\n" +
-       "and get one there. Thank you."},
-    {"text.save_as_project.unstable_release_title", "Warning"},
-    {"text.save_as_project.chooser_title", "Save Project: "},
-    {"template.new_project.save_changes_to", "Save changes to {0}?"},
-    {"template.open_project.save_changes_to", "Save changes to {0}?"},
-    {"text.open_project.chooser_title", "Open Project"},
-    {"template.open_project.status_read", "Read {0}."},
-    {"text.remove_from_model.will_remove_from_diagrams", "\nIt will be removed from all diagrams."},
-    {"text.remove_from_model.will_remove_subdiagram", "\nIt's subdiagram will also be removed."},
-    {"text.remove_from_model.anon_element_name", "this element"},
-    {"template.remove_from_model.confirm_delete", "Are you sure you want to remove {0}?{1}"},
-    {"text.remove_from_model.confirm_delete_title", "Are you sure?"},
-    {"template.exit.save_changes_to", "Save changes to {0}?"}
+       "Ceci est une version de développement d'ArgoUML. Ne l'utilisez pas pour\n"
+     + "de la production, elle n'est destinée qu'à faire des tests. Vous pouvez\n"
+     + "sauvegarder vos modèles, mais il n'est pas sûr que des versions futures\n"
+     + "d'ArgoUML pourront les relire. Si vous voulez utiliser une version « stable »,\n"
+     + "consultez le site www.argouml.org et prenez en une là bas. Merci."},
+    {"text.save_as_project.unstable_release_title", "Avertissement"},
+    {"text.save_as_project.chooser_title", "Enregistrer le projet: "},
+    {"template.new_project.save_changes_to", "Enregistrer les changements sous {0}?"},
+    {"template.open_project.save_changes_to", "Enregistrer les changements sous {0}?"},
+    {"text.open_project.chooser_title", "Ouvrir un projet"},
+    {"template.open_project.status_read", "Lecture {0}."},
+    {"text.remove_from_model.will_remove_from_diagrams", "\nCet élément sera éliminé de tous les diagrammes."},
+    {"text.remove_from_model.will_remove_subdiagram", "\nSon sous-diagramme sera également éliminé."},
+    {"text.remove_from_model.anon_element_name", "cet élément"},
+    {"template.remove_from_model.confirm_delete", "Êtes-vous sûr de vouloir éliminer {0}?{1}"},
+    {"text.remove_from_model.confirm_delete_title", "Êtes-vous sûr ?"},
+    {"template.exit.save_changes_to", "enregistrez les changements sous {0}?"}
   };
 
   public Object[][] getContents() {
     return _contents;
   }
 }
+
