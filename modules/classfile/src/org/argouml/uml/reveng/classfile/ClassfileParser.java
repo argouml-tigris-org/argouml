@@ -1,16 +1,21 @@
-// $ANTLR 2.7.2a2 (20020112-1): "classfile.g" -> "ClassfileParser.java"$
+// $ANTLR 2.7.2a2 (20020112-1): "../../modules/classfile/src/org/argouml/uml/reveng/classfile/classfile.g" -> "ClassfileParser.java"$
 
 package org.argouml.uml.reveng.classfile;
 
 import antlr.*;
+import antlr.collections.*;
 import java.util.*;
 
 import antlr.TokenBuffer;
 import antlr.TokenStreamException;
+import antlr.TokenStreamIOException;
+import antlr.ANTLRException;
+import antlr.LLkParser;
 import antlr.Token;
 import antlr.TokenStream;
 import antlr.RecognitionException;
 import antlr.NoViableAltException;
+import antlr.MismatchedTokenException;
 import antlr.SemanticException;
 import antlr.ParserSharedInputState;
 import antlr.collections.impl.BitSet;
@@ -146,7 +151,7 @@ public class ClassfileParser extends antlr.LLkParser
 	/**
 	 * Convert the descriptor of a method.
 	 *
-	 * @param The method descriptor as a String.
+	 * @param desc The method descriptor as a String.
 	 *
 	 * @return The method descriptor as a array of Strings, that holds Java types.
 	 */

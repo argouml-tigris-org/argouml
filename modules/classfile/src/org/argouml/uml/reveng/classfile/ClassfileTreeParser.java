@@ -1,13 +1,21 @@
-// $ANTLR 2.7.2a2 (20020112-1): "classfile.tree.g" -> "ClassfileTreeParser.java"$
+// $ANTLR 2.7.2a2 (20020112-1): "../../modules/classfile/src/org/argouml/uml/reveng/classfile/classfile.tree.g" -> "ClassfileTreeParser.java"$
 
 package org.argouml.uml.reveng.classfile;
 
 import org.argouml.uml.reveng.java.*;
 import java.util.*;
 
+import antlr.TreeParser;
+import antlr.Token;
 import antlr.collections.AST;
 import antlr.RecognitionException;
+import antlr.ANTLRException;
 import antlr.NoViableAltException;
+import antlr.MismatchedTokenException;
+import antlr.SemanticException;
+import antlr.collections.impl.BitSet;
+import antlr.ASTPair;
+import antlr.collections.impl.ASTArray;
 
 
 /*************************************

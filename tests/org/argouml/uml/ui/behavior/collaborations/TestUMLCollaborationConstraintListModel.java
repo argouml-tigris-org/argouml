@@ -58,7 +58,7 @@ public class TestUMLCollaborationConstraintListModel
     }
 
     /**
-     * @see org.argouml.uml.ui.AbstractUMLModelElementListModel2Test#buildModel(org.argouml.uml.ui.UMLUserInterfaceContainer)
+     * @see org.argouml.uml.ui.AbstractUMLModelElementListModel2Test#buildModel()
      */
     protected void buildModel() {
         model = new UMLCollaborationConstrainingElementListModel();
@@ -69,7 +69,7 @@ public class TestUMLCollaborationConstraintListModel
      */
     protected MBase[] fillModel() {
         MConstraint[] constraints = new MConstraint[10];
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < constraints.length; i++) {
             constraints[i] = CoreFactory.getFactory().createConstraint();
             ((MCollaboration) elem).addConstrainingElement(constraints[i]);
         }
@@ -77,7 +77,7 @@ public class TestUMLCollaborationConstraintListModel
     }
 
     /**
-     * @see org.argouml.uml.ui.AbstractUMLModelElementListModel2Test#removeHalfModel(ru.novosoft.uml.MBase)
+     * @see org.argouml.uml.ui.AbstractUMLModelElementListModel2Test#removeHalfModel(ru.novosoft.uml.MBase[])
      */
     protected void removeHalfModel(MBase[] elements) {
         for (int i = 0; i < 5; i++) {

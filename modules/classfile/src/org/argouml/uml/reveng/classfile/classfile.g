@@ -177,7 +177,7 @@ tokens {
 	/**
 	 * Convert the descriptor of a method.
 	 *
-	 * @param The method descriptor as a String.
+	 * @param desc The method descriptor as a String.
 	 *
 	 * @return The method descriptor as a array of Strings, that holds Java types.
 	 */

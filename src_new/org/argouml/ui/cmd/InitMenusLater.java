@@ -42,10 +42,10 @@ import org.tigris.gef.base.CmdReorder;
  * third level, so the ones with the triangle on windows systems).
  * 
  *  Menu's and the mnemonics of menu's and the menuitems are separated 
- *  in the PropertyResourceBundle <b>menu.properties<b/>.
+ *  in the PropertyResourceBundle <b>menu.properties</b>.
  * 
  *  menuitems are separated in the PropertyResourceBundle 
- *  <b>action.properties<b/>.
+ *  <b>action.properties</b>.
  * 
  *  The key's in menu.properties have the following structure:
  * 
@@ -59,8 +59,8 @@ import org.tigris.gef.base.CmdReorder;
  *   e.g:                    menu.item.new.mnemonic
  */
 class InitMenusLater implements Runnable {
-    private JMenu align, distribute, reorder, nudge, setPreferredSize, layout;
-    private JMenu /*editTabs,*/ detailsTabs; 
+    private JMenu align, distribute, reorder, nudge, layout;
+    // private JMenu editTabs; 
 
     /**
      * Constructs this new runnable to initialize the submenus.
@@ -69,7 +69,6 @@ class InitMenusLater implements Runnable {
      * @param r the reorder submenu
      * @param n the nudge submenu
      * @param l the layout submenu
-     * @param editTabs the edit tabs submenu
      */
     public InitMenusLater(JMenu a, JMenu d,
 			  JMenu r, JMenu n,

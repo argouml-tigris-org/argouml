@@ -55,7 +55,7 @@ public class TestUMLInteractionMessagesListModel
     }
 
     /**
-     * @see org.argouml.uml.ui.AbstractUMLModelElementListModel2Test#buildModel(org.argouml.uml.ui.UMLUserInterfaceContainer)
+     * @see org.argouml.uml.ui.AbstractUMLModelElementListModel2Test#buildModel()
      */
     protected void buildModel() {
         model = new UMLInteractionMessagesListModel();
@@ -66,7 +66,7 @@ public class TestUMLInteractionMessagesListModel
      */
     protected MBase[] fillModel() {
         MMessage[] messages = new MMessage[10];
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < messages.length; i++) {
             messages[i] = CollaborationsFactory.getFactory().createMessage();
             ((MInteraction) elem).addMessage(messages[i]);
         }
@@ -74,7 +74,7 @@ public class TestUMLInteractionMessagesListModel
     }
 
     /**
-     * @see org.argouml.uml.ui.AbstractUMLModelElementListModel2Test#removeHalfModel(ru.novosoft.uml.MBase)
+     * @see org.argouml.uml.ui.AbstractUMLModelElementListModel2Test#removeHalfModel(ru.novosoft.uml.MBase[])
      */
     protected void removeHalfModel(MBase[] elements) {
         for (int i = 0; i < 5; i++) {
