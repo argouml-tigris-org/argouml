@@ -25,6 +25,9 @@
           <property name="format" value="@todo"/>
         </module>
         <module name="GenericIllegalRegexp">
+          <property name="format" value="TODO[^:]"/>
+        </module>
+        <module name="GenericIllegalRegexp">
           <property name="format" value="needs?-?more-?work"/>
         </module>
         <module name="GenericIllegalRegexp">
@@ -66,12 +69,8 @@
 	</module>
 
         <module name="LocalFinalVariableName"/>
-        <module name="LocalVariableName">
-            <property name="format" value="^[a-z][a-zA-Z0-9_]*$"/>
-	</module>
-        <module name="MemberName">
-            <property name="format" value="^_[a-zA-Z][a-zA-Z0-9]*$"/>
-        </module>
+        <module name="LocalVariableName"/>
+        <module name="MemberName"/>
         <module name="MethodLength"/>
         <module name="MethodName"/>
         <module name="ModifierOrder"/>
@@ -94,9 +93,7 @@
 
         <module name="SimplifyBooleanExpression"/>
         <module name="SimplifyBooleanReturn"/>
-        <module name="StaticVariableName">
-            <property name="format" value="^_[A-Z][a-zA-Z0-9]*$"/>
-        </module>
+        <module name="StaticVariableName"/>
         <module name="TypeName"/>
         <module name="UnusedImports"/>
         <module name="UpperEll"/>
