@@ -49,31 +49,17 @@ import org.argouml.uml.generator.*;
 
 // needs-more-work: always check for null!!!
 
-public class GeneratorJava extends Generator {
+public class GeneratorJava extends Generator
+implements PluggableNotation {
 
-  public static GeneratorJava SINGLETON = null; //new GeneratorJava();
+  private static GeneratorJava SINGLETON = new GeneratorJava();
 
-  public final static NotationName NOTATION = Notation.makeNotation("Java");
+  public static GeneratorJava getInstance() { return SINGLETON; }
 
-  static {
-      // Read Generator class from Property "argo.generator":
-      String generatorClass=System.getProperty("argo.generator");
-      if (generatorClass!=null) {
-	  try {
-	      SINGLETON=(GeneratorJava)Class.forName(generatorClass).newInstance();
-	      System.out.println("Using Generator "+generatorClass+".");
-	  } catch (Exception e) {
-	      System.out.println("Generator "+generatorClass+" not found, using GeneratorJava.");
-	  }
-      }
-      if (SINGLETON==null)
-	  SINGLETON= new GeneratorJava();
+  public GeneratorJava() {
+      super(Notation.makeNotation("Java", null,
+                                  Argo.lookupIconResource("JavaNotation")));
   }
-
-  public final static String fileSep=System.getProperty("file.separator");
-
-  /** Two spaces used for indenting code in classes. */
-  public static String INDENT = "  ";
 
   public static String Generate(Object o) {
     return SINGLETON.generate(o);
@@ -1013,10 +999,6 @@ public class GeneratorJava extends Generator {
 	newFile.renameTo(origFile);
     }
 
-    public NotationName getNotation() {
-        return NOTATION;
-    }
-
     public boolean canParse() {
         return true;
     }
@@ -1024,6 +1006,16 @@ public class GeneratorJava extends Generator {
     public boolean canParse(Object o) {
         return true;
     }
+
+
+    public String getModuleName() { return "GeneratorJava"; }
+    public String getModuleDescription() {
+        return "Java Notation and Code Generator";
+    }
+    public String getModuleAuthor() { return "ArgoUML Core"; }
+    public String getModuleVersion() { return "0.9.4"; }
+    public String getModuleKey() { return "module.language.java.generator"; }
+
 
 } /* end class GeneratorJava */
 
