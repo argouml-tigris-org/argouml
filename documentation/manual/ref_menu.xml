@@ -1486,19 +1486,12 @@ guillemots? -->
           <imageobject>
             <imagedata format="PNG" align="center"
                        fileref="images/reference/menu_find.png"/>
-<!-- TODO: the dialog box window title says "Search". Should be "Find". 
-See issue ... -->
           </imageobject>
         </mediaobject></screenshot>
       </figure>
 
-      <warning><para>In the V0.14 version of &argouml; some minor parts of 
-        this function are broken.
-<!-- TODO: And in V0.15 it doesn't find anything at all. See issue ... -->
-<!-- TODO: It does not find classes that are in a package, 
-but not on any diagram. See issue ... -->
-        </para>
-      </warning>
+<!-- TODO: It does not find anything that is
+not on any diagram. See issue 2500. -->
 
       <para>At the top, the dialog box has four tabs labeled
         <literal>Name&nbsp;and&nbsp;Location</literal>,
@@ -1506,7 +1499,7 @@ but not on any diagram. See issue ... -->
         <literal>Tagged&nbsp;Values</literal> and
         <literal>Constraints</literal>. Of these all but the first are grayed
         out in the V0.14 version of &argouml;
-<!-- TODO: See enhancement issue ... -->
+<!-- TODO: See enhancement issue 2501. -->
         (because they are not imlemented yet),
         so the first tab is always selected.</para>
 
@@ -1540,14 +1533,13 @@ but not on any diagram. See issue ... -->
         </listitem>
         <listitem>
           <para>
-            A selector labeled <literal>Search in:</literal> allows the
-<!-- TODO: Should this not be "Find in:"? See issue ... -->
+            A selector labeled <literal>Find in:</literal> allows the
             search to be made over the entire project (the default) or as a
             sub-search over the results of a previous search. 
             When opened, a list of all the search result tabs appears. 
           </para>
         </listitem>
-<!-- TODO: There is still an empty box at the right. See issue ... -->
+<!-- TODO: There is still an empty box at the right. See issue 2502. -->
         <listitem>
           <para>
             Beneath these boxes is the button 
@@ -1561,8 +1553,7 @@ but not on any diagram. See issue ... -->
         <listitem>
           <para>
             And finally, there is the button
-            <literal>Search</literal>.
-<!-- TODO: Should this not be "Find"? See issue ... -->
+            <literal>Find</literal>.
             This causes the search
             specified in the text boxes and selectors above to be executed. The
             results are displayed in a tab taking up the lower two thirds of the
