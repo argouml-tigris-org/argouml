@@ -588,17 +588,17 @@ public final class TargetManager {
         Object[] listeners = listenerList.getListenerList();
         for (int i = listeners.length - 2; i >= 0; i -= 2) {
 	    try {
-            if (listeners[i] == TargetListener.class) {
-                // Lazily create the event:
-                ((TargetListener) listeners[i + 1]).targetSet(targetEvent);
-            }
-        } catch (RuntimeException e) {
-            LOG.error("While calling targetSet for "
-            	  + targetEvent
-            	  + " in "
-            	  + listeners[i + 1]
-            	  + " an error is thrown.",
-            	  e);
+	        if (listeners[i] == TargetListener.class) {
+	            // Lazily create the event:
+	            ((TargetListener) listeners[i + 1]).targetSet(targetEvent);
+	        }
+	    } catch (RuntimeException e) {
+	        LOG.error("While calling targetSet for "
+	                + targetEvent
+	                + " in "
+	                + listeners[i + 1]
+	                            + " an error is thrown.",
+	                            e);
             }
         }
     }
