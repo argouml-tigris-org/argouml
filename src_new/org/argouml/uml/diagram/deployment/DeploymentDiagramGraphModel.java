@@ -21,7 +21,7 @@ import org.tigris.gef.graph.*;
 import org.argouml.uml.MMUtil;
 
 public class DeploymentDiagramGraphModel extends MutableGraphSupport
-implements MutableGraphModel, VetoableChangeListener, MElementListener {
+implements VetoableChangeListener, MElementListener {
     protected static Category cat = Category.getInstance(DeploymentDiagramGraphModel.class);
   ////////////////////////////////////////////////////////////////
   // instance variables

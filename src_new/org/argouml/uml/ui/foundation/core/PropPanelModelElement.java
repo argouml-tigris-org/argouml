@@ -38,6 +38,7 @@ import ru.novosoft.uml.foundation.extension_mechanisms.*;
 import org.argouml.application.api.*;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.ui.*;
+import org.argouml.util.ConfigLoader;
 import org.argouml.model.uml.foundation.core.CoreFactory;
 import org.argouml.swingext.*;
 import org.tigris.gef.util.*;
@@ -135,6 +136,10 @@ abstract public class PropPanelModelElement extends PropPanel {
         namespaceList.setVisibleRowCount(1);
 
 	namespaceScroll = new JScrollPane(namespaceList,JScrollPane.VERTICAL_SCROLLBAR_NEVER,JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+    }
+    
+    public PropPanelModelElement() {
+        this("ModelElement", null, ConfigLoader.getTabPropsOrientation());
     }
 
     public void navigateUp() {

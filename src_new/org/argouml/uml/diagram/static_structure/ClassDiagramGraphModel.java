@@ -50,7 +50,7 @@ import org.argouml.uml.MMUtil;
  *  GEF.  This class handles only UML Class digrams.  */
 
 public class ClassDiagramGraphModel extends MutableGraphSupport
-implements MutableGraphModel, VetoableChangeListener, MElementListener {
+implements VetoableChangeListener, MElementListener {
     protected static Category cat = Category.getInstance(ClassDiagramGraphModel.class);
   ////////////////////////////////////////////////////////////////
   // instance variables

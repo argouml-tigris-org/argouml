@@ -50,7 +50,7 @@ import org.tigris.gef.graph.*;
  *  GEF.  This class handles only UML Use Case Digrams.  */
 
 public class CollabDiagramGraphModel extends MutableGraphSupport
-implements MutableGraphModel, MElementListener, VetoableChangeListener {
+implements MElementListener, VetoableChangeListener {
     protected static Category cat = Category.getInstance(CollabDiagramGraphModel.class);
   ////////////////////////////////////////////////////////////////
   // instance variables

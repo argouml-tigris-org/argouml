@@ -61,7 +61,7 @@ import org.argouml.uml.diagram.sequence.ui.UMLSequenceDiagram;
  *  GEF.  This class handles only UML Sequence Digrams.  */
 
 public class SequenceDiagramGraphModel extends MutableGraphSupport
-implements MutableGraphModel, MElementListener, VetoableChangeListener {
+implements MElementListener, VetoableChangeListener {
     protected static Category cat = 
         Category.getInstance(SequenceDiagramGraphModel.class);
   ////////////////////////////////////////////////////////////////

@@ -49,7 +49,7 @@ import org.tigris.gef.graph.*;
  *  GEF.  This class handles only UML MState Digrams.  */
 
 public class StateDiagramGraphModel extends MutableGraphSupport
-implements MutableGraphModel, VetoableChangeListener, MElementListener {
+implements VetoableChangeListener, MElementListener {
     protected static Category cat = 
         Category.getInstance(StateDiagramGraphModel.class);
   ////////////////////////////////////////////////////////////////
