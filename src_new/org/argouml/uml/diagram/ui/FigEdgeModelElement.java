@@ -69,6 +69,7 @@ import org.argouml.ui.cmd.CmdSetPreferredSize;
 import org.argouml.uml.UUIDHelper;
 import org.argouml.uml.diagram.static_structure.ui.CommentEdge;
 import org.tigris.gef.base.Globals;
+import org.tigris.gef.base.Layer;
 import org.tigris.gef.base.Selection;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigEdgePoly;
@@ -768,7 +769,8 @@ public abstract class FigEdgeModelElement
         super.removeFromDiagram();
         
         //This partly solves issue 3042.
-        this.getLayer().remove(this);
+        Layer l = this.getLayer();
+        if (l != null) l.remove(this);
     }
 
     /**
