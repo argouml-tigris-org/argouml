@@ -56,80 +56,107 @@ import org.argouml.ui.*;
 public class FigClass extends FigNodeModelElement {
 
   ////////////////////////////////////////////////////////////////
+  // constants
+
+  private static final int ROWHEIGHT = 17; // min. 17, used to calculate y pos of FigText items in _attrVec and _operVec
+  private static final int STEREOHEIGHT = 18;
+
+  ////////////////////////////////////////////////////////////////
   // instance variables
 
-  protected FigText _attr;
-  protected FigText _oper;
+  protected FigGroup _attrVec;
+  protected FigGroup _operVec;
   protected FigRect _bigPort;
+  protected FigRect _attrBigPort;
+  protected FigRect _operBigPort;
   protected FigRect _stereoLineBlinder;
   public MElementResidence resident = new MElementResidenceImpl();
+  private boolean suppressCalcBounds = false;
+
+  protected Vector mAttrs = new Vector();
+  protected Vector mOpers = new Vector();
 
   ////////////////////////////////////////////////////////////////
   // constructors
 
   public FigClass() {
-    _bigPort = new FigRect(10, 10, 90, 60, Color.cyan, Color.cyan);
+    // this rectangle marks the whole class figure; everything is inside it:
+    _bigPort = new FigRect(10, 10, 60, 20+2*ROWHEIGHT, Color.cyan, Color.cyan);
 
     _name.setLineWidth(1);
     _name.setFilled(true);
 
-//     _stereo.setLineWidth(0);
-//     _stereo.setFilled(false);
+    // this rectangle marks the attribute section; all attributes are inside it:
+    _attrBigPort = new FigRect(10, 30, 60, ROWHEIGHT+1, Color.black, Color.white);
+    _attrBigPort.setFilled(true);
+    _attrBigPort.setLineWidth(1);
 
-    _attr = new FigText(10, 30, 90, 21, true);
-    _attr.setFilled(true);
-    _attr.setLineWidth(1);
-    _attr.setFont(LABEL_FONT);
-    _attr.setTextColor(Color.black);
-    _attr.setJustification(FigText.JUSTIFY_LEFT);
+    _attrVec = new FigGroup();
+    _attrVec.setFilled(true);
+    _attrVec.setLineWidth(1);
+    _attrVec.addFig(_attrBigPort);
 
-    _oper = new FigText(10, 50, 90, 21, true);
-    _oper.setFilled(true);
-    _oper.setLineWidth(1);
-    _oper.setFont(LABEL_FONT);
-    _oper.setTextColor(Color.black);
-    _oper.setJustification(FigText.JUSTIFY_LEFT);
+    // this rectangle marks the operation section; all operations are inside it:
+    _operBigPort = new FigRect(10, 30+ROWHEIGHT, 60, ROWHEIGHT+1, Color.black, Color.white);
+    _operBigPort.setFilled(true);
+    _operBigPort.setLineWidth(1);
+
+    _operVec = new FigGroup();
+    _operVec.setFilled(true);
+    _operVec.setLineWidth(1);
+    _operVec.addFig(_operBigPort);
 
     _stereo.setExpandOnly(true);
     _stereo.setFilled(true);
     _stereo.setLineWidth(1);
     _stereo.setEditable(false);
-    _stereo.setHeight(18);
+    _stereo.setHeight(STEREOHEIGHT+1); // +1 to have 1 pixel overlap with _name
     _stereo.setDisplayed(false);
 
-    _stereoLineBlinder = new FigRect(10, 15, 2, 60, Color.white, Color.white);
-    _stereoLineBlinder.setLineWidth(2);
+    _stereoLineBlinder = new FigRect(11, 10+STEREOHEIGHT, 58, 2, Color.white, Color.white);
+    _stereoLineBlinder.setLineWidth(1);
     //_stereoLineBlinder.setFilled(true);
     _stereoLineBlinder.setDisplayed(false);
 
+    suppressCalcBounds = true;
     addFig(_bigPort);
     addFig(_stereo);
     addFig(_name);
     addFig(_stereoLineBlinder);
-    addFig(_attr);
-    addFig(_oper);
+    addFig(_attrVec);
+    addFig(_operVec);
+    suppressCalcBounds = false;
 
-    Rectangle r = getBounds();
-    setBounds(r.x, r.y, r.width, r.height);
+    setBounds(10, 10, 60, 20+2*ROWHEIGHT);
   }
 
   public FigClass(GraphModel gm, Object node) {
     this();
     setOwner(node);
+    // If this figure is created for an existing class node in the
+    // metamodel, set the figure's name according to this node. This is
+    // used when the user click's on 'add to diagram' in the navpane.
+    // Don't know if this should rather be done in one of the super
+    // classes, since similar code is used in FigInterface.java etc.
+    // Andreas Rueckert <a_rueckert@gmx.net>
     if (node instanceof MClassifier && (((MClassifier)node).getName() != null))
-	_name.setText(((MModelElement)node).getName());
+	    _name.setText(((MModelElement)node).getName());
   }
 
   public String placeString() { return "new Class"; }
 
   public Object clone() {
-	  FigClass figClone = (FigClass) super.clone();
-	  Vector v = figClone.getFigs();
-	  figClone._bigPort = (FigRect) v.elementAt(0);
-	  figClone._name = (FigText) v.elementAt(1);
-	  figClone._attr = (FigText) v.elementAt(2);
-	  figClone._oper = (FigText) v.elementAt(3);
-	  return figClone;
+	FigClass figClone = (FigClass) super.clone();
+	Vector v = figClone.getFigs();
+	figClone._bigPort = (FigRect) v.elementAt(0);
+	figClone._stereo = (FigText) v.elementAt(1);
+	figClone._name = (FigText) v.elementAt(2);
+	figClone._stereoLineBlinder = (FigRect) v.elementAt(3);
+	figClone._attrVec = (FigGroup) v.elementAt(4);
+	figClone._operVec = (FigGroup) v.elementAt(5);
+	figClone.mAttrs = mAttrs;
+	figClone.mOpers = mOpers;
+	return figClone;
   }
 
   ////////////////////////////////////////////////////////////////
@@ -148,17 +175,17 @@ public class FigClass extends FigNodeModelElement {
     popUpActions.insertElementAt(addMenu,
 				 popUpActions.size() - 1);
     JMenu showMenu = new JMenu("Show");
-    if(_attr.isDisplayed() && _oper.isDisplayed())
+    if(_attrVec.isDisplayed() && _operVec.isDisplayed())
       showMenu.add(ActionCompartmentDisplay.HideAllCompartments);
-    else if(!_attr.isDisplayed() && !_oper.isDisplayed())
+    else if(!_attrVec.isDisplayed() && !_operVec.isDisplayed())
       showMenu.add(ActionCompartmentDisplay.ShowAllCompartments);
 
-    if (_attr.isDisplayed())
+    if (_attrVec.isDisplayed())
       showMenu.add(ActionCompartmentDisplay.HideAttrCompartment);
     else
       showMenu.add(ActionCompartmentDisplay.ShowAttrCompartment);
 
-    if (_oper.isDisplayed())
+    if (_operVec.isDisplayed())
       showMenu.add(ActionCompartmentDisplay.HideOperCompartment);
     else
       showMenu.add(ActionCompartmentDisplay.ShowOperCompartment);
@@ -169,106 +196,112 @@ public class FigClass extends FigNodeModelElement {
 
   public void setOwner(Object node) {
     super.setOwner(node);
-    Object onlyPort = node; //this kngl should be in the GraphModel
-    bindPort(onlyPort, _bigPort);
+    bindPort(node, _bigPort);
   }
 
-  public FigText getOperationFig() { return _oper; }
-  public FigText getAttributeFig() { return _attr; }
+  public FigGroup getOperationsFig() { return _operVec; }
+  public FigGroup getAttributesFig() { return _attrVec; }
 
   /**
    * Returns the status of the operation field.
    * @return true if the operations are visible, false otherwise
    */
-  // created by Eric Lefevre 13 Mar 1999
-  public boolean isOperationVisible() { return _oper.isDisplayed(); }
+  public boolean isOperationVisible() { return _operVec.isDisplayed(); }
 
   /**
    * Returns the status of the attribute field.
    * @return true if the attributes are visible, false otherwise
    */
-  // created by Eric Lefevre 13 Mar 1999
-  public boolean isAttributeVisible() {  return _attr.isDisplayed(); }
+  public boolean isAttributeVisible() {  return _attrVec.isDisplayed(); }
 
-  // created by Eric Lefevre 13 Mar 1999
   public void setAttributeVisible(boolean isVisible) {
     Rectangle rect = getBounds();
-    if ( _attr.isDisplayed() ) {
+    int h = (ROWHEIGHT*Math.max(1,_attrVec.getFigs().size()-1)+1) * rect.height / getMinimumSize().height;
+    if ( _attrVec.isDisplayed() ) {
       if ( !isVisible ) {
         damage();
-        int h = _attr.getBounds().height;
-        _attr.setDisplayed(false);
-        setBounds(rect.x, rect.y, rect.width, rect.height - h -1);
+        Enumeration enum = _attrVec.getFigs().elements();
+        while (enum.hasMoreElements())
+            ((Fig)(enum.nextElement())).setDisplayed(false);
+        _attrVec.setDisplayed(false);
+        setBounds(rect.x, rect.y, rect.width, rect.height - h);
       }
     }
     else {
       if ( isVisible ) {
-        int h = _attr.getBounds().height;
-        _attr.setDisplayed(true);
+        Enumeration enum = _attrVec.getFigs().elements();
+        while (enum.hasMoreElements())
+            ((Fig)(enum.nextElement())).setDisplayed(true);
+        _attrVec.setDisplayed(true);
         setBounds(rect.x, rect.y, rect.width, rect.height + h);
         damage();
       }
     }
   }
 
-  // created by Eric Lefevre 13 Mar 1999
   public void setOperationVisible(boolean isVisible) {
     Rectangle rect = getBounds();
-    if ( _oper.isDisplayed() ) {
+    int h = (ROWHEIGHT*Math.max(1,_operVec.getFigs().size()-1)+1) * rect.height / getMinimumSize().height;
+    if ( _operVec.isDisplayed() ) {
       if ( !isVisible ) {
         damage();
-        int h = _oper.getBounds().height;
-        _oper.setDisplayed(false);
-        setBounds(rect.x, rect.y, rect.width, rect.height - h -1);
+        Enumeration enum = _operVec.getFigs().elements();
+        while (enum.hasMoreElements())
+            ((Fig)(enum.nextElement())).setDisplayed(false);
+        _operVec.setDisplayed(false);
+        setBounds(rect.x, rect.y, rect.width, rect.height - h);
       }
     }
     else {
       if ( isVisible ) {
-        int h = _oper.getBounds().height;
-        _oper.setDisplayed(true);
+        Enumeration enum = _operVec.getFigs().elements();
+        while (enum.hasMoreElements())
+            ((Fig)(enum.nextElement())).setDisplayed(true);
+        _operVec.setDisplayed(true);
         setBounds(rect.x, rect.y, rect.width, rect.height + h);
         damage();
       }
     }
   }
 
-  // modified by Eric Lefevre 13 Mar 1999
   public Dimension getMinimumSize() {
-    Dimension nameMin = _name.getMinimumSize();
-    Dimension attrMin;
-    if ( _attr.isDisplayed() )
-      attrMin = _attr.getMinimumSize();
-    else
-      attrMin = new Dimension();
-    Dimension operMin;
-    if ( _oper.isDisplayed() )
-      operMin = _oper.getMinimumSize();
-    else
-      operMin = new Dimension();
-
-    int h = nameMin.height;
-    int w = nameMin.width;
-    if ( _attr.isDisplayed() ) {
-      h += attrMin.height;
-      w = Math.max(w, attrMin.width);
+    Dimension aSize = _name.getMinimumSize();
+    int h = aSize.height;
+    int w = aSize.width;
+    if (aSize.height < 21)
+        aSize.height = 21;
+    if (_stereo.isDisplayed()) {
+      aSize.width = Math.max(aSize.width, _stereo.getMinimumSize().width);
+      aSize.height += STEREOHEIGHT;
     }
-    if ( _oper.isDisplayed() ) {
-      h += operMin.height;
-      w = Math.max(w, operMin.width);
+    if (_attrVec.isDisplayed()) {
+      // get minimum size of the attribute section
+      Enumeration enum = _attrVec.getFigs().elements();
+      enum.nextElement(); // _attrBigPort
+      while (enum.hasMoreElements())
+        aSize.width = Math.max(aSize.width,((FigText)enum.nextElement()).getMinimumSize().width+2);
+      aSize.height += ROWHEIGHT*Math.max(1,_attrVec.getFigs().size()-1);
     }
-    //    if ( int w = Math.max(Math.max(nameMin.width, attrMin.width), operMin.width);
-    return new Dimension(w, h);
+    if (_operVec.isDisplayed()) {
+      // get minimum size of the operation section
+      Enumeration enum = _operVec.getFigs().elements();
+      enum.nextElement(); // _operBigPort
+      while (enum.hasMoreElements())
+        aSize.width = Math.max(aSize.width,((FigText)enum.nextElement()).getMinimumSize().width+2);
+      aSize.height += ROWHEIGHT*Math.max(1,_operVec.getFigs().size()-1);
+    }
+    return aSize;
   }
 
-    public void setFillColor(Color lColor) {
-	super.setFillColor(lColor);
+  public void setFillColor(Color lColor) {
+    super.setFillColor(lColor);
 	_stereoLineBlinder.setLineColor(lColor);
-    }
+  }
 
-    public void setLineColor(Color lColor) {
-	super.setLineColor(lColor);
+  public void setLineColor(Color lColor) {
+    super.setLineColor(lColor);
 	_stereoLineBlinder.setLineColor(_stereoLineBlinder.getFillColor());
-    }
+  }
 
   public void translate(int dx, int dy) {
     super.translate(dx, dy);
@@ -278,24 +311,39 @@ public class FigClass extends FigNodeModelElement {
       ((SelectionClass)sel).hideButtons();
   }
 
-//   public void setLineColor(Color c) {
-//       //super.setLineColor(c);
-//      _stereo.setFilled(false);
-//      _stereo.setLineWidth(0);
-//      _name.setFilled(false);
-//      _name.setLineWidth(0);
-//   }
-
-
   ////////////////////////////////////////////////////////////////
   // user interaction methods
 
   public void mousePressed(MouseEvent me) {
     super.mousePressed(me);
+    boolean targetIsSet = false;
     Editor ce = Globals.curEditor();
     Selection sel = ce.getSelectionManager().findSelectionFor(this);
     if (sel instanceof SelectionClass)
       ((SelectionClass)sel).hideButtons();
+    //display attr/op properties if necessary:
+    Rectangle r = new Rectangle(me.getX() - 1, me.getY() - 1, 2, 2);
+	Fig f = hitFig(r);
+    if (f == _attrVec) {
+	  Vector v = _attrVec.getFigs();
+	  int i = (me.getY() - f.getY()) / ROWHEIGHT;
+	  if (i >= 0 && i < mAttrs.size() && i < v.size() && me.getX() >= f.getX()
+	      && me.getX() <= f.getX()+((Fig)(v.elementAt(i))).getWidth()+2) {
+	    ProjectBrowser.TheInstance.setTarget(mAttrs.elementAt(i));
+	    targetIsSet = true;
+	  }
+	}
+    else if (f == _operVec) {
+	  Vector v = _operVec.getFigs();
+	  int i = (me.getY() - f.getY()) / ROWHEIGHT;
+	  if (i >= 0 && i < mOpers.size() && i < v.size() && me.getX() >= f.getX()
+	      && me.getX() <= f.getX()+((Fig)(v.elementAt(i))).getWidth()+2) {
+	    ProjectBrowser.TheInstance.setTarget(mOpers.elementAt(i));
+	    targetIsSet = true;
+	  }
+	}
+	if (targetIsSet == false)
+	  ProjectBrowser.TheInstance.setTarget(getOwner());
   }
 
   public void setEnclosingFig(Fig encloser) {
@@ -304,12 +352,12 @@ public class FigClass extends FigNodeModelElement {
     MModelElement me = (MModelElement) getOwner();
     MNamespace m = null;
     ProjectBrowser pb = ProjectBrowser.TheInstance;
-    if ((encloser == null && me.getNamespace() == null )
-    ||  (encloser != null && encloser.getOwner() instanceof MPackage)) {
-      if (encloser != null && (encloser.getOwner() instanceof MPackage)) {
+    if ((encloser == null && me.getNamespace() == null) ||
+        (encloser != null && encloser.getOwner() instanceof MPackage)) {
+      if (encloser != null) {
         m = (MNamespace) encloser.getOwner();
-      } else if ( pb.getTarget() instanceof UMLDiagram ) {
-	m = (MNamespace) ((UMLDiagram)pb.getTarget()).getNamespace();
+      } else if (pb.getTarget() instanceof UMLDiagram) {
+	    m = (MNamespace) ((UMLDiagram)pb.getTarget()).getNamespace();
       }
       try {
         me.setNamespace(m);
@@ -330,10 +378,8 @@ public class FigClass extends FigNodeModelElement {
     else {
       resident.setImplementationLocation(null);
       resident.setResident(null);
-    }     
-
+    }
   }
-
 
   ////////////////////////////////////////////////////////////////
   // internal methods
@@ -342,170 +388,259 @@ public class FigClass extends FigNodeModelElement {
     super.textEdited(ft);
     MClassifier cls = (MClassifier) getOwner();
     if (cls == null) return;
-    if (ft == _attr) {
-      //System.out.println("\n\n\n Edited Attr");
-      String s = ft.getText();
-      ParserDisplay.SINGLETON.parseAttributeCompartment(cls, s);
-    }
-    if (ft == _oper) {
-      String s = ft.getText();
-      ParserDisplay.SINGLETON.parseOperationCompartment(cls, s);
-    }
+    int i = _attrVec.getFigs().indexOf(ft);
+    if (i != -1) {
+	  if (i > 0 && i <= mAttrs.size())
+	    ParserDisplay.SINGLETON.parseAttributeFig(cls,(MAttribute)mAttrs.elementAt(i-1),ft.getText());
+	  return;
+	}
+	i = _operVec.getFigs().indexOf(ft);
+	if (i != -1) {
+	  if (i > 0 && i <= mOpers.size())
+	    ParserDisplay.SINGLETON.parseOperationFig(cls,(MOperation)mOpers.elementAt(i-1),ft.getText());
+	  return;
+	}
   }
- 
+
   protected void modelChanged() {
     super.modelChanged();
+    Rectangle rect = getBounds();
+	int attrStep = (_attrBigPort.getHeight()-1) / (Math.max(1,_attrVec.getFigs().size()-1));
+	int operStep = (_operBigPort.getHeight()-1) / (Math.max(1,_operVec.getFigs().size()-1));
+    int xpos = _attrBigPort.getX();
+    int ypos = _attrBigPort.getY();
     MClassifier cls = (MClassifier) getOwner();
-    if (cls == null) return;
-    // String clsNameStr = Notation.generate(this, cls.getName());
+    if (cls == null)
+      return;
+	int acounter = 1;
     Collection strs = MMUtil.SINGLETON.getAttributes(cls);
-    String attrStr = "";
     if (strs != null) {
-	Iterator iter = strs.iterator();
+	  Iterator iter = strs.iterator();
+      Vector figs = _attrVec.getFigs();
+	  FigText attr;
       while (iter.hasNext()) {
 	    MStructuralFeature sf = (MStructuralFeature) iter.next();
-	    // sf.addMElementListener(this);
-	    attrStr += Notation.generate(this, sf);
-	    if (iter.hasNext())
-	      attrStr += "\n";
+	    if (figs.size() <= acounter) {
+	      attr = new MyFigText(xpos+1, ypos+1+(acounter-1)*attrStep, 0, ROWHEIGHT-2, _attrBigPort); // bounds not relevant here
+          attr.setFilled(false);
+          attr.setLineWidth(0);
+          attr.setFont(LABEL_FONT);
+          attr.setTextColor(Color.black);
+          attr.setJustification(FigText.JUSTIFY_LEFT);
+          attr.setMultiLine(false);
+	      _attrVec.addFig(attr);
+		} else {
+		  attr = (FigText)figs.elementAt(acounter);
+	    }
+	    attr.setText(Notation.generate(this,sf));
+	    // underline, if static
+	    attr.setUnderline(MScopeKind.CLASSIFIER.equals(sf.getOwnerScope()));
+	    if (acounter <= mAttrs.size())
+	    	mAttrs.setElementAt(sf,acounter-1);
+	    else
+	    	mAttrs.addElement(sf);
+	    acounter++;
       }
-    }
+      if (figs.size() > acounter) {
+        //cleanup of unused attribute FigText's
+        for (int i=figs.size()-1; i>=acounter; i--)
+          _attrVec.removeFig((Fig)figs.elementAt(i));
+	  }
+      if (mAttrs.size() >= acounter) {
+        //cleanup of unused attributes
+        for (int i=mAttrs.size()-1; i>=acounter-1; i--)
+          mAttrs.removeElementAt(i);
+	  }
+	}
+	int ocounter = 1;
     Collection behs = MMUtil.SINGLETON.getOperations(cls);
-    behs.removeAll(strs);
-    String operStr = "";
     if (behs != null) {
-	Iterator iter = behs.iterator();
+      behs.removeAll(strs);
+	  Iterator iter = behs.iterator();
+      Vector figs = _operVec.getFigs();
+	  FigText oper;
       while (iter.hasNext()) {
 	    MBehavioralFeature bf = (MBehavioralFeature) iter.next();
-	    // bf.addMElementListener(this);
-	    operStr += Notation.generate(this, bf);
-	    if (iter.hasNext())
-	      operStr += "\n";
+	    if (figs.size() <= ocounter) {
+	      oper = new MyFigText(xpos+1, ypos+1+(ocounter-1)*operStep, 0, ROWHEIGHT-2, _operBigPort); // bounds not relevant here
+          oper.setFilled(false);
+          oper.setLineWidth(0);
+          oper.setFont(LABEL_FONT);
+          oper.setTextColor(Color.black);
+          oper.setJustification(FigText.JUSTIFY_LEFT);
+          oper.setMultiLine(false);
+	      _operVec.addFig(oper);
+		} else {
+		  oper = (FigText)figs.elementAt(ocounter);
+	    }
+	    oper.setText(Notation.generate(this,bf));
+	    // underline, if static
+	    oper.setUnderline(MScopeKind.CLASSIFIER.equals(bf.getOwnerScope()));
+	    // italics, if abstract
+	    //oper.setItalic(((MOperation)bf).isAbstract()); // does not properly work (GEF bug?)
+        if (((MOperation)bf).isAbstract()) oper.setFont(ITALIC_LABEL_FONT);
+        else oper.setFont(LABEL_FONT);
+	    if (ocounter <= mOpers.size())
+	    	mOpers.setElementAt(bf,ocounter-1);
+	    else
+	    	mOpers.addElement(bf);
+	    ocounter++;
       }
-    }
-
-    _attr.setText(attrStr);
-    _oper.setText(operStr);
+      if (figs.size() > ocounter) {
+        //cleanup of unused operation FigText's
+        for (int i=figs.size()-1; i>=ocounter; i--)
+          _operVec.removeFig((Fig)figs.elementAt(i));
+	  }
+      if (mOpers.size() >= ocounter) {
+        //cleanup of unused operations
+        for (int i=mOpers.size()-1; i>=ocounter-1; i--)
+          mOpers.removeElementAt(i);
+	  }
+	}
 
     if (cls.isAbstract()) _name.setFont(ITALIC_LABEL_FONT);
     else _name.setFont(LABEL_FONT);
 
-    calcBounds();
-    Rectangle rect = getBounds();
-    setBounds(rect.x, rect.y, rect.width, rect.height);
-    firePropChange("bounds", rect, getBounds());
-
+    if (_attrVec.isDisplayed()) {
+      if (acounter > 1)
+        acounter--;
+      ypos += acounter*attrStep;
+    }
+    if (_operVec.isDisplayed()) {
+      if (ocounter > 1)
+        ocounter--;
+      ypos += ocounter*operStep;
+    }
+	setBounds(rect.x, rect.y, rect.width, ypos - rect.y + 1); // recalculates all bounds
   }
 
-  
+  public void renderingChanged() {
+    super.renderingChanged();
+    updateStereotypeText();
+    modelChanged();
+  }
+
   protected void updateStereotypeText() {
     MModelElement me = (MModelElement) getOwner();
-    if (me == null) return;
+    if (me == null)
+      return;
+	Rectangle rect = getBounds();
     MStereotype stereo = me.getStereotype();
     if (stereo == null || stereo.getName() == null || stereo.getName().length() == 0) {
-	if (! _stereo.isDisplayed()) return;
-	Rectangle oldBounds = getBounds();
-	_stereoLineBlinder.setDisplayed(false);
-	_stereo.setDisplayed(false);
-	setBounds(oldBounds.x, oldBounds.y + _stereo.getMinimumSize().height, oldBounds.width, oldBounds.height- _stereo.getMinimumSize().height);
-	calcBounds();
-	firePropChange("bounds", oldBounds, getBounds());
-	
-	return;
+	  if (! _stereo.isDisplayed())
+	    return;
+	  _stereoLineBlinder.setDisplayed(false);
+	  _stereo.setDisplayed(false);
+	  rect.y += STEREOHEIGHT;
+	  rect.height -= STEREOHEIGHT;
     }
     else {
-	Rectangle oldBounds = getBounds();
-	// String stereoStr = stereo.getName();
-	// _stereo.setText("<<" + stereoStr + ">>");
-	_stereo.setText(Notation.generateStereotype(this, stereo));
-	if (!_stereo.isDisplayed()) {
+	  _stereo.setText(Notation.generateStereotype(this,stereo));
+	  if (!_stereo.isDisplayed()) {
 	    _stereoLineBlinder.setDisplayed(true);
-	    _stereoLineBlinder.setBounds(oldBounds.x, oldBounds.y, oldBounds.width, 2);
 	    _stereo.setDisplayed(true);
-	    _stereo.setBounds(oldBounds.x, oldBounds.y -  _stereo.getMinimumSize().height, oldBounds.width,  _stereo.getMinimumSize().height);
-	}
-	_stereo.calcBounds();
-	calcBounds();
-	Rectangle rect = getBounds();
-	setBounds(rect.x, rect.y, rect.width, rect.height);
-	firePropChange("bounds", oldBounds, getBounds());
+	    rect.y -= STEREOHEIGHT;
+	    rect.height += STEREOHEIGHT;
+	  }
     }
+	setBounds(rect.x, rect.y, rect.width, rect.height);
   }
 
-    public void setBounds(int x, int y, int w, int h) {
-	
+  /** sets the bounds, but the size will be at least the
+      one returned by getMinimunSize(); if the required
+      height is bigger, then the additional height is equally
+      distributed among all figs, such that the cumulated
+      height of all visible figs equals the demanded height
+  */
+  public void setBounds(int x, int y, int w, int h) {
 	Rectangle oldBounds = getBounds();
-	Enumeration figs = _figs.elements();
+	Dimension aSize = getMinimumSize();
+	int newW = Math.max(w,aSize.width);
+	int newH = h;
+	int extra_each = 0; // extra height per displayed fig if requested height is greater than minimal
+	int height_correction = 0; // height correction due to rounded division result, will be added to _name
 
-	int maxW = w;
-	int cumulatedHeight = 0;
-	figs.nextElement(); // jump over _bigPort
-	while (figs.hasMoreElements()) {
-	  Fig f = (Fig) figs.nextElement();
-	  if (f.isDisplayed()) {
-	      maxW = Math.max(f.getMinimumSize().width, maxW);
-	      cumulatedHeight += f.getMinimumSize().height;
-	  }
-	}
-	if (_stereoLineBlinder.isDisplayed())
-	    cumulatedHeight -= _stereoLineBlinder.getMinimumSize().height;
-
-	int extra_each = h - cumulatedHeight;
-	int noExtraFigs = 1; //this is the bigPort
-        if (_stereo.isDisplayed()) 
-	    noExtraFigs++;
-        if (_stereoLineBlinder.isDisplayed()) 
-	    noExtraFigs++;
-	extra_each = extra_each / (getDisplayedFigs().size()- noExtraFigs);
-	Vector mutableFigs = new Vector(_figs);
-	mutableFigs.remove(_stereo);
-	mutableFigs.remove(_stereoLineBlinder);
-	mutableFigs.remove(_bigPort);
-
-	figs = mutableFigs.elements();
-
-	int currentY = y;
-
-	// handle _stereo
-	if (_stereo.isDisplayed()) {
-	    _stereo.setBounds(x, currentY, maxW, _stereo.getMinimumSize().height+1 );
-	    currentY += _stereo.getMinimumSize().height; //--pjs--
+	//first compute all nessessary height data
+	if (newH < aSize.height) {
+		newH = aSize.height;
+	} else if (newH > aSize.height) {
+	    extra_each = newH - aSize.height;
+	    int displayedFigs = 1; //this is for _name
+        if (_attrVec.isDisplayed())
+	        displayedFigs++;
+        if (_operVec.isDisplayed())
+	        displayedFigs++;
+	    extra_each = extra_each / displayedFigs; // result might be rounded, so:
+	    height_correction = (newH - aSize.height) - (extra_each * displayedFigs); // will be added to _name only
 	}
 
-	// handle _stereoLineBlinder
-	if (_stereoLineBlinder.isDisplayed()) {
-	    _stereoLineBlinder.setBounds(x + 1, _stereo.getY() + _stereo.getHeight() -2, maxW - 2, 4 );
-	}
+	//now resize all sub-figs, including not displayed figs
+    int height = _name.getMinimumSize().height;
+    if (height < 21)
+        height = 21;
+    height += extra_each+height_correction;
+    int currentY = y;
+    if (_stereo.isDisplayed())
+        currentY += STEREOHEIGHT;
+    _name.setBounds(x,currentY,newW,height);
+	_stereo.setBounds(x,y,newW,STEREOHEIGHT+1);
+    _stereoLineBlinder.setBounds(x+1,y+STEREOHEIGHT,newW-2,2);
+    currentY += height-1; // -1 for 1 pixel overlap
+   	aSize = getUpdatedSize(_attrVec,x,currentY,newW,ROWHEIGHT*Math.max(1,_attrVec.getFigs().size()-1)+1+extra_each);
+   	if (_attrVec.isDisplayed())
+        currentY += aSize.height-1; // -1 for 1 pixel overlap
+   	aSize = getUpdatedSize(_operVec,x,currentY,newW,newH+y-currentY);
 
-	while (figs.hasMoreElements()) {
-	  Fig f = (Fig) figs.nextElement();
-	  if (f.isDisplayed()) {
-          // extra_each caused class icons to grow vertically each time
-          // the diagram was saved and reloaded. I replaced it with 1 
-          // which gives the text a little room in the class icon. pjs    
-	      int height =  f.getMinimumSize().height + 1; //extra_each;
-	      int overlap = 0;
-	      if (_stereo.isDisplayed()) 
-		  overlap =  (getDisplayedFigs().size() > 4 ? 1 : 0);
-	      else  overlap = (getDisplayedFigs().size() > 3 ? 1 :0 );
-	      f.setBounds(x, currentY, maxW,  height + overlap);
-	      currentY += height;
-	  }
-	}
-	_bigPort.setBounds(x, y, maxW, currentY - y);
-	
+	// set bounds of big box
+    _bigPort.setBounds(x,y,newW,newH);
 
 	calcBounds(); //_x = x; _y = y; _w = w; _h = h;
 	updateEdges();
 	firePropChange("bounds", oldBounds, getBounds());
-    }
+  }
 
-    public void renderingChanged() {
-        super.renderingChanged();
-	updateStereotypeText();
-	modelChanged();
-    }
+  public void calcBounds() {
+	if (suppressCalcBounds)
+	    return;
+	super.calcBounds();
+  }
 
-  
+  /** returns the new size of the FigGroup (either attributes or operations)
+      after calculation new bounds for all sub-figs, considering their
+      minimal sizes; FigGroup need not be displayed; no update event is fired */
+  protected Dimension getUpdatedSize(FigGroup fg, int x, int y, int w, int h) {
+	int newW = w;
+	int n = fg.getFigs().size()-1;
+	int newH = Math.max(h,ROWHEIGHT*Math.max(1,n)+1);
+	int step = (n>0) ? newH / n : 0; // width step between FigText objects
+	//int maxA = Toolkit.getDefaultToolkit().getFontMetrics(LABEL_FONT).getMaxAscent();
 
+	//set new bounds for all included figs
+	Enumeration figs = fg.elements();
+	Fig bigPort = (Fig)figs.nextElement();
+	Fig fi;
+	int fw, yy = y;
+	while (figs.hasMoreElements()) {
+	  fi = (Fig)figs.nextElement();
+	  fw = fi.getMinimumSize().width;
+	  fi.setBounds(x+1,yy+1,fw,ROWHEIGHT-2);
+	  if (newW < fw+2)
+	      newW = fw+2;
+	  yy += step;
+	}
+	bigPort.setBounds(x,y,newW,newH); // rectangle containing all following FigText objects
+	fg.calcBounds();
+	return new Dimension(newW,newH);
+  }
+
+  private class MyFigText extends FigText
+  {
+	private Fig refFig;
+	public MyFigText(int x, int y, int w, int h, Fig aFig) {super(x,y,w,h,true); refFig=aFig;}
+	public void setLineWidth(int w) {super.setLineWidth(0);}
+	public int getLineWidth() {return 1;} // don't dare to throw away these fakes!
+	public boolean getFilled() {return true;}
+	public Color getFillColor() {return refFig.getFillColor();}
+	public Color getLineColor() {return refFig.getLineColor();}
+  }
 } /* end class FigClass */

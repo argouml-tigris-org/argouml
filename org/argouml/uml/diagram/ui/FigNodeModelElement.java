@@ -382,8 +382,14 @@ implements VetoableChangeListener, DelayedVChangeListener, MouseListener, KeyLis
 		if (me.getClickCount() >= 2 &&
 			!(me.isPopupTrigger() || me.getModifiers() == InputEvent.BUTTON3_MASK)) {
 			if (getOwner() == null) return;
-			Fig f = hitFig(new Rectangle(me.getX() - 2, me.getY() - 2, 4, 4));
+			Rectangle r = new Rectangle(me.getX() - 2, me.getY() - 2, 4, 4);
+			Fig f = hitFig(r);
 			if (f instanceof MouseListener) ((MouseListener)f).mouseClicked(me);
+			else if (f instanceof FigGroup) {
+				//this enables direct text editing for sub figs of a FigGroup object:
+				f = ((FigGroup)f).hitFig(r);
+				if (f instanceof MouseListener) ((MouseListener)f).mouseClicked(me);
+			}
 		}
 		me.consume();
 	}
@@ -470,7 +476,7 @@ implements VetoableChangeListener, DelayedVChangeListener, MouseListener, KeyLis
 	}
 
     /**
-     * Add the owner of this element to the trash, so other Argo components (i.e. critics) 
+     * Add the owner of this element to the trash, so other Argo components (i.e. critics)
      * realize, that it is deleted.
      */
     public void delete() {
@@ -488,7 +494,7 @@ implements VetoableChangeListener, DelayedVChangeListener, MouseListener, KeyLis
     if (own instanceof MModelElement) {
 	MModelElement me = (MModelElement)own;
 	me.addMElementListener(this);
-	if ( me.getUUID() == null) 
+	if ( me.getUUID() == null)
 	    me.setUUID(UUIDManager.SINGLETON.getNewUUID());
     }
     modelChanged();
@@ -499,7 +505,7 @@ implements VetoableChangeListener, DelayedVChangeListener, MouseListener, KeyLis
     // override this method in subclasses if you want to show stereotype information
   protected void updateStereotypeText() {
   }
-  
+
  /** This default implementation simply requests the default notation.
   */
     public NotationName getContextNotation() { return null; }
@@ -508,11 +514,6 @@ implements VetoableChangeListener, DelayedVChangeListener, MouseListener, KeyLis
 	renderingChanged();
         damage();
     }
-
-    public void notationAdded(ArgoNotationEvent event) { }
-    public void notationRemoved(ArgoNotationEvent event) { }
-    public void notationProviderAdded(ArgoNotationEvent event) { }
-    public void notationProviderRemoved(ArgoNotationEvent event) { }
 
     public void renderingChanged() {
     }

@@ -55,10 +55,10 @@ public class ClOperationCompartment implements Clarifier {
         return;
       }
 
-      FigText ft = fc.getOperationFig();
-      int left  = ft.getX() + 10;
-      int height = ft.getY() + ft.getHeight() - 7;
-      int right = ft.getX() + ft.getWidth() - 10;
+      FigGroup fg = fc.getOperationsFig();
+      int left  = fg.getX() + 10;
+      int height = fg.getY() + fg.getHeight() - 7;
+      int right = fg.getX() + fg.getWidth() - 10;
       g.setColor(Color.red);
       int i = left;
       while (true) {
@@ -85,8 +85,8 @@ public class ClOperationCompartment implements Clarifier {
   public boolean hit(int x, int y) {
     if (!(_fig instanceof FigClass)) return false;
     FigClass fc = (FigClass) _fig;
-    FigText ft = fc.getOperationFig();
-    boolean res = ft.contains(x, y);
+    FigGroup fg = fc.getOperationsFig();
+    boolean res = fg.contains(x, y);
     _fig = null;
     return res;
   }

@@ -83,6 +83,27 @@ public class ParserDisplay extends Parser {
 	}
   }
 
+  public void parseOperationFig(MClassifier cls, MOperation op, String s) {
+	if (cls == null || op == null)
+	  return;
+	int i = cls.getFeatures().indexOf(op);
+	if (s != null && s.length() > 0) {
+	  MOperation newOp = parseOperation(s);
+	  if (newOp != null) {
+		newOp.setAbstract(op.isAbstract());
+		newOp.setOwnerScope(op.getOwnerScope());
+		if (i != -1) {
+		  cls.removeFeature(i);
+		  cls.addFeature(i,newOp);
+	    } else {
+		  cls.addFeature(newOp);
+	    }
+	  }
+    } else {
+	  cls.removeFeature(i);
+	}
+  }
+
   public void parseAttributeCompartment(MClassifier cls, String s) {
     java.util.StringTokenizer st = new java.util.StringTokenizer(s, "\n\r");
     Vector newAttrs = new Vector();
@@ -109,6 +130,26 @@ public class ParserDisplay extends Parser {
 	    cls.addFeature(attr);
 	}
 
+  }
+
+  public void parseAttributeFig(MClassifier cls, MAttribute at, String s) {
+	if (cls == null || at == null)
+	  return;
+	int i = cls.getFeatures().indexOf(at);
+	if (s != null && s.length() > 0) {
+	  MAttribute newAt = parseAttribute(s);
+	  if (newAt != null) {
+		newAt.setOwnerScope(at.getOwnerScope());
+		if (i != -1) {
+		  cls.removeFeature(i);
+		  cls.addFeature(i,newAt);
+	    } else {
+		  cls.addFeature(newAt);
+	    }
+	  }
+    } else {
+	  cls.removeFeature(i);
+	}
   }
 
   /** Parse a line of the form:
@@ -147,7 +188,7 @@ public class ParserDisplay extends Parser {
       s = parseOutInitValue(newAttribute, s);
       s = parseOutColon(s);
       s = parseOutType(newAttribute, s);
-      
+
       if (s.length() > 2){
           System.out.println("leftover in parseAttribute=|" + s + "|");
       }
@@ -297,7 +338,7 @@ public class ParserDisplay extends Parser {
     s = s.trim();
     int equalsIndex = s.indexOf("=");
     int colonIndex  = s.indexOf(":");
-    
+
     if (equalsIndex != 0) return s;
     String initStr = s.substring(1, colonIndex); //move past "=" to end of "initvalue"--pjs--
     if (initStr.trim().length() == 0) return ""; // trim it here...pjs
@@ -305,7 +346,7 @@ public class ParserDisplay extends Parser {
 
       //System.out.println("setting return type: " + rtStr);
       attr.setInitialValue(initExpr);
-      String retStr = s.substring(colonIndex,s.length()); //return whats left --pjs-- 
+      String retStr = s.substring(colonIndex,s.length()); //return whats left --pjs--
     return retStr;
   }
 

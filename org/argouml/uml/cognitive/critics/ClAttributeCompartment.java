@@ -55,10 +55,10 @@ public class ClAttributeCompartment implements Clarifier {
         return;
       }
 
-      FigText ft = fc.getAttributeFig();
-      int left  = ft.getX() + 6;
-      int height = ft.getY() + ft.getHeight() - 5;
-      int right = ft.getX() + ft.getWidth() - 6;
+      FigGroup fg = fc.getAttributesFig();
+      int left  = fg.getX() + 6;
+      int height = fg.getY() + fg.getHeight() - 5;
+      int right = fg.getX() + fg.getWidth() - 6;
       g.setColor(Color.red);
       int i = left;
       while (true) {
@@ -88,8 +88,8 @@ public class ClAttributeCompartment implements Clarifier {
       return false;
     }
     FigClass fc = (FigClass) _fig;
-    FigText ft = fc.getAttributeFig();
-    boolean res = ft.contains(x, y);
+    FigGroup fg = fc.getAttributesFig();
+    boolean res = fg.contains(x, y);
     _fig = null;
     return res;
   }
