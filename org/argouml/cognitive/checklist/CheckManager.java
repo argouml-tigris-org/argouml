@@ -50,7 +50,7 @@ public class CheckManager implements Serializable {
      * Indexed on the object type of the element that this checklist is
      * appropriate for.
      */
-    private static Hashtable _Lists = new Hashtable();
+    private static Hashtable lists = new Hashtable();
     
     /** List of ChecklistStatus:es.
      *
@@ -58,7 +58,7 @@ public class CheckManager implements Serializable {
      * TODO: Should use weak references so that this is forgotten about
      * when the object is removed.
      */
-    private static Hashtable _Statuses = new Hashtable();
+    private static Hashtable statuses = new Hashtable();
 
     /**
      * Constructor.
@@ -99,11 +99,11 @@ public class CheckManager implements Serializable {
      * @param cls the class to lookup.
      */
     private static Checklist lookupChecklist(Class cls) {
-        if (_Lists.contains(cls))
-            return (Checklist) _Lists.get(cls);
+        if (lists.contains(cls))
+            return (Checklist) lists.get(cls);
         
         // Now lets search
-        Enumeration enumeration = _Lists.keys();
+        Enumeration enumeration = lists.keys();
         
         while (enumeration.hasMoreElements()) {
             Class index = (Class) enumeration.nextElement();
@@ -113,10 +113,10 @@ public class CheckManager implements Serializable {
                 if (intfs[i].equals(index))
                 {
                     // We found it!
-                    Checklist chlist = (Checklist) _Lists.get(index);
+                    Checklist chlist = (Checklist) lists.get(index);
                     
                     // Enter the class to speed up the next search.
-                    _Lists.put(cls, chlist);
+                    lists.put(cls, chlist);
                     return chlist;
                 }
             }
@@ -133,7 +133,7 @@ public class CheckManager implements Serializable {
      * @param cl the Checklist
      */
     public static void register(Object dm, Checklist cl) {
-	_Lists.put(dm, cl);
+	lists.put(dm, cl);
     }
 
     /**
@@ -145,10 +145,10 @@ public class CheckManager implements Serializable {
      * @param dm is the object that we retrieve the checklist for
      */ 
     public static ChecklistStatus getStatusFor(Object dm) {
-	ChecklistStatus cls = (ChecklistStatus) _Statuses.get(dm);
+	ChecklistStatus cls = (ChecklistStatus) statuses.get(dm);
 	if (cls == null) {
 	    cls = new ChecklistStatus();
-	    _Statuses.put(dm, cls);
+	    statuses.put(dm, cls);
 	}
 	return cls;
     }

@@ -39,7 +39,7 @@ import org.tigris.gef.util.PredicateTrue;
 /** This class defines an item that can be placed on a Checklist.
  *  This is a short piece of text to prompt the designer to think of a
  *  specific design issue.  CheckItems are similiar to critics in that
- *  they are categorized to be releavant to issues the designer is
+ *  they are categorized to be relevant to issues the designer is
  *  interested in, they have a guarding condition that returns true if
  *  the CheckItem should be presented, and they have a piece of text
  *  as design feedback. They are different in that their predicate is
@@ -56,63 +56,126 @@ import org.tigris.gef.util.PredicateTrue;
  * @see Checklist
  * @see CheckManager
  */
-
 public class CheckItem implements Serializable {
     ////////////////////////////////////////////////////////////////
     // instance variables
 
-    protected String _category;
+    private String category;
 
     /** One sentence description of the issue. usually in the form of a
      *  question. */
-    protected String _description;
+    private String description;
 
     /** URL for background (textbook?) knowledge about the domain. */
-    protected String _moreInfoURL = "http://argouml.tigris.org/";
+    private String moreInfoURL = "http://argouml.tigris.org/";
 
-    protected Predicate _pred = PredicateTrue.theInstance();
+    /**
+     * The predicate is the condition under which 
+     * the checkitem should be listed.
+     */
+    private Predicate pred = PredicateTrue.theInstance();
 
     ////////////////////////////////////////////////////////////////
     // constructors
 
+    /**
+     * The constructor.
+     * 
+     * @param c the category
+     * @param d the description
+     */
     public CheckItem(String c, String d) {
 	setCategory(c);
 	setDescription(d);
     }
 
+    /**
+     * The constructor.
+     * 
+     * @param c the category
+     * @param d the description
+     * @param m the more-info-url
+     * @param p the predicate
+     */
     public CheckItem(String c, String d, String m, Predicate p) {
 	this(c, d);
 	setMoreInfoURL(m);
-	_pred = p;
+	pred = p;
     }
 
     ////////////////////////////////////////////////////////////////
     // accessors
 
-    public String getCategory() { return _category; }
-    public void setCategory(String c) { _category = c; }
+    /**
+     * @return the category
+     */
+    public String getCategory() { return category; }
+    
+    /**
+     * @param c the category
+     */
+    public void setCategory(String c) { category = c; }
 
-    public String getDescription() { return _description; }
+    /**
+     * @return the description
+     */
+    public String getDescription() { return description; }
+    
+    /**
+     * @param dm 
+     * @return the description
+     */
     public String getDescription(Object dm) {
-	return expand(_description, dm);
+	return expand(description, dm);
     }
-    public void setDescription(String d) { _description = d; }
+    /**
+     * @param d the description
+     */
+    public void setDescription(String d) { description = d; }
 
-    public String getMoreInfoURL() { return _moreInfoURL; }
-    public void setMoreInfoURL(String m) { _moreInfoURL = m; }
+    /**
+     * @return the more-info-url
+     */
+    public String getMoreInfoURL() { return moreInfoURL; }
+    
+    /**
+     * @param m  the more-info-url
+     */
+    public void setMoreInfoURL(String m) { moreInfoURL = m; }
 
-    public Predicate getPredicate() { return _pred; }
-    public void setPredicate(Predicate p) { _pred = p; }
+    /**
+     * @return the predicate
+     */
+    public Predicate getPredicate() { return pred; }
+    
+    /**
+     * @param p the predicate
+     */
+    public void setPredicate(Predicate p) { pred = p; }
 
-    /** Is this item already on the list? */
+    /** 
+     * Is this item already on the list? 
+     * 
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
     public boolean equals(Object o) {
 	if (!(o instanceof CheckItem)) return false;
 	CheckItem i = (CheckItem) o;
 	return getDescription().equals(i.getDescription());
     }
 
+    /**
+     * @see java.lang.Object#toString()
+     */
     public String toString() { return getDescription(); }
 
+    /**
+     * TODO: Document the purpose of this function.
+     * 
+     * @param desc       the description
+     * @param dm         ignored
+     * @return           the description
+     */
     public String expand(String desc, Object dm) { return desc; }
   
 } /* end class CheckItem */
