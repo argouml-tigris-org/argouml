@@ -31,7 +31,7 @@ import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.state.ui.UMLStateDiagram;
 import org.argouml.uml.diagram.ui.UMLDiagram;
 
-/** Action to create a new state diagram.
+/** Action to create a new statechart diagram.
  * @stereotype singleton
  */
 public class ActionStateDiagram extends ActionAddDiagram {

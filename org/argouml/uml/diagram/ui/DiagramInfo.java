@@ -77,7 +77,7 @@ public class DiagramInfo extends JComponent {
 	if (_diagram instanceof UMLClassDiagram)
 	    type = "Class Diagram";
 	if (_diagram instanceof UMLStateDiagram)
-	    type = "State Diagram";
+	    type = "Statechart Diagram";
 	if (_diagram instanceof UMLUseCaseDiagram)
 	    type = "Use Case Diagram";
 	if (_diagram instanceof UMLActivityDiagram)

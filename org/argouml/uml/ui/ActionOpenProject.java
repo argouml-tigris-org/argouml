@@ -184,9 +184,9 @@ public class ActionOpenProject extends UMLAction {
 
 	// TODO:
         // This is actually a hack! Some diagram types
-        // (like the state diagrams) access the current
+        // (like the statechart diagrams) access the current
         // diagram to get some info. This might cause 
-        // problems if there's another state diagram
+        // problems if there's another statechart diagram
         // active, so I remove the current project, before
         // loading the new one.
 

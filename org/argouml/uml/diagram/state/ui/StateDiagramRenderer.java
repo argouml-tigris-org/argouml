@@ -1,6 +1,3 @@
-
-
-
 // $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -43,8 +40,8 @@ import org.tigris.gef.graph.GraphNodeRenderer;
 import org.tigris.gef.presentation.FigEdge;
 import org.tigris.gef.presentation.FigNode;
 
-/** This class defines a renderer object for UML State Diagrams. In a
- *  State Diagram the following UML objects are displayed with the
+/** This class defines a renderer object for UML Statechart Diagrams. In a
+ *  Statechart Diagram the following UML objects are displayed with the
  *  following Figs: <p>
  * <pre>
  *  UML Object          ---  Fig

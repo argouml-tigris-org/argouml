@@ -51,6 +51,10 @@ import org.tigris.gef.base.ModeCreatePolyEdge;
 
 import ru.novosoft.uml.MElementEvent;
 
+
+/** The correct name for this class is "UMLStatechartDiagram". See issue 2306.
+ *
+ */
 public class UMLStateDiagram extends UMLDiagram {
 	/** logger */
 	private static Logger cat = Logger.getLogger(UMLStateDiagram.class);
@@ -111,7 +115,7 @@ public class UMLStateDiagram extends UMLDiagram {
 
     protected static int _StateDiagramSerial = 1;
     /** 
-     *  this constructor is used to build a dummy state diagram so
+     *  this constructor is used to build a dummy statechart diagram so
      *  that a project will load properly.
      */
     public UMLStateDiagram() {
@@ -153,7 +157,7 @@ public class UMLStateDiagram extends UMLDiagram {
     }
 
     /**
-     * The owner of a statediagram is the statediagram it's showing.
+     * The owner of a statechart diagram is the statechart diagram it's showing.
      */
     public Object getOwner() {
         StateDiagramGraphModel gm = (StateDiagramGraphModel)getGraphModel();
@@ -161,8 +165,8 @@ public class UMLStateDiagram extends UMLDiagram {
     }
 
     /**
-     * Called by the PGML parser to initialize the statediagram. First the
-     * parser creates a statediagram via the default constructor. Then this
+     * Called by the PGML parser to initialize the statechart diagram. First the
+     * parser creates a statechart diagram via the default constructor. Then this
      * method is called.
      * @see org.tigris.gef.base.Diagram#initialize(Object)
      */
@@ -185,7 +189,7 @@ public class UMLStateDiagram extends UMLDiagram {
             throw new IllegalStateException(
                 "Cannot find context namespace "
                     + "while initializing "
-                    + "statediagram");
+                    + "statechart diagram");
         }
     }
 
@@ -194,8 +198,8 @@ public class UMLStateDiagram extends UMLDiagram {
      * 
      * each diagram type has a similar <I>UMLxxxDiagram</I> class.
      *
-     * @param m MClass from the model in NSUML...connects the class to
-     * the State diagram.
+     * @param namespace MClass from the model in NSUML...connects the class to
+     * the Statechart diagram.
      * @param sm MStateMachine from the model in NSUML...
      * @modified changed <I>lay</I> from <I>LayerPerspective</I> to
      * <I>LayerPerspectiveMutable</I>.  This class is a child of
@@ -236,7 +240,6 @@ public class UMLStateDiagram extends UMLDiagram {
 
     /**
      * @param sm
-     * @param m
      */
     public void setStateMachine(Object sm) {
 
@@ -272,7 +275,7 @@ public class UMLStateDiagram extends UMLDiagram {
 
     protected static String getNewDiagramName() {
         String name = null;
-        name = "State Diagram " + _StateDiagramSerial;
+        name = "Statechart Diagram " + _StateDiagramSerial;
         _StateDiagramSerial++;
         if (!ProjectManager
             .getManager()
