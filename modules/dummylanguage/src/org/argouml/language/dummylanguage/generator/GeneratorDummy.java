@@ -205,6 +205,23 @@ public final class GeneratorDummy
     }
 
     /**
+     * @see org.argouml.application.api.NotationProvider2#generateSubmachine(java.lang.Object)
+     */
+    public String generateSubmachine(Object m) {
+        Object c = Model.getFacade().getSubmachine(m);
+        if (c == null) {
+            return "include / ";
+        }
+        if (Model.getFacade().getName(c) == null) {
+            return "include / ";
+        }
+        if (Model.getFacade().getName(c).length() == 0) {
+            return "include / ";
+        }
+        return ("include / " + generateName(Model.getFacade().getName(c)));
+    }
+    
+    /**
      * @see org.argouml.application.api.NotationProvider2#generateObjectFlowState(java.lang.Object)
      */
     public String generateObjectFlowState(Object m) {

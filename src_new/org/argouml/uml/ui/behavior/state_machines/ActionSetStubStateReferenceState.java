@@ -24,47 +24,49 @@
 
 package org.argouml.uml.ui.behavior.state_machines;
 
-import org.argouml.i18n.Translator;
-import org.argouml.util.ConfigLoader;
-import org.argouml.uml.ui.UMLComboBox2;
-import org.argouml.uml.ui.UMLComboBoxNavigator;
-
-import javax.swing.*;
-
 /**
- * @since Dec 15, 2002
- * @author jaap.branderhorst@xs4all.nl
+ * @author pepargouml@yahoo.es
  */
-public class PropPanelStubState extends PropPanelStateVertex {
+
+import org.argouml.i18n.Translator;
+import org.argouml.model.Model;
+import org.argouml.uml.ui.UMLAction;
+import org.argouml.uml.ui.UMLComboBox2;
+
+import java.awt.event.ActionEvent;
+
+
+public class ActionSetStubStateReferenceState extends UMLAction {
+
+    private static final ActionSetStubStateReferenceState SINGLETON =
+            new ActionSetStubStateReferenceState();
+
+    protected ActionSetStubStateReferenceState() {
+        super(Translator.localize("action.set"), true, NO_ICON);
+    }
 
     /**
-     * Constructor for PropPanelStubState.
+     * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
-    public PropPanelStubState() {
-        super("Stub State", lookupIcon("StubState"),
-                ConfigLoader.getTabPropsOrientation());
-
-        addField(Translator.localize("label.name"),
-                getNameTextField());
-        addField(Translator.localize("label.stereotype"),
-                getStereotypeBox());
-        addField(Translator.localize("label.container"),
-                getContainerScroll());
-        JComboBox referencestateBox =
-                new UMLComboBox2(
-                        new UMLStubStateComboBoxModel(),
-                        ActionSetStubStateReferenceState.getInstance());
-        addField(Translator.localize("label.referencestate"),
-                new UMLComboBoxNavigator(
-                        this,
-                        Translator.localize("tooltip.nav-stubstate"),
-                        referencestateBox));
-
-        addSeperator();
-
-        addField(Translator.localize("label.incoming"),
-                getIncomingScroll());
-        addField(Translator.localize("label.outgoing"),
-                getOutgoingScroll());
+    public void actionPerformed(ActionEvent e) {
+        super.actionPerformed(e);
+        if (e.getSource() instanceof UMLComboBox2) {
+            UMLComboBox2 box = (UMLComboBox2) e.getSource();
+            Object o = box.getSelectedItem();
+            if (o != null) {
+                String name = Model.getStateMachinesHelper().getPath(o);
+                if (name != null)
+                    Model.getStateMachinesHelper()
+                            .setReferenceState(box.getTarget(), name);
+            }
+        }
     }
+
+    /**
+     * @return Returns the sINGLETON.
+     */
+    public static ActionSetStubStateReferenceState getInstance() {
+        return SINGLETON;
+    }
+
 }

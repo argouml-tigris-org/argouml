@@ -368,9 +368,19 @@ public interface MetaTypes {
     Object getStimulus();
 
     /**
+     * @return Returns the StubState.
+     */
+    Object getStubState();
+
+    /**
      * @return Returns the SubactivityState.
      */
     Object getSubactivityState();
+
+    /**
+     * @return Returns the SubmachineState.
+     */
+    Object getSubmachineState();
 
     /**
      * @return Returns the Subsystem.

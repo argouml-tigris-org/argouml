@@ -51,6 +51,8 @@ import org.argouml.uml.diagram.state.ui.FigJoinState;
 import org.argouml.uml.diagram.state.ui.FigJunctionState;
 import org.argouml.uml.diagram.state.ui.FigShallowHistoryState;
 import org.argouml.uml.diagram.state.ui.FigSimpleState;
+import org.argouml.uml.diagram.state.ui.FigStubState;
+import org.argouml.uml.diagram.state.ui.FigSubmachineState;
 import org.argouml.uml.diagram.state.ui.FigSynchState;
 import org.argouml.uml.diagram.state.ui.FigTransition;
 import org.argouml.uml.diagram.static_structure.ui.CommentEdge;
@@ -111,6 +113,8 @@ public abstract class UmlDiagramRenderer
         FigNode figNode = null;
         if (Model.getFacade().isAComment(node)) {
             figNode = new FigComment();
+        } else if (Model.getFacade().isAStubState(node)) {
+            return new FigStubState();
         } else if (Model.getFacade().isAAssociationClass(node)) {
             figNode = new FigClassAssociationClass();
         } else if (Model.getFacade().isAClass(node)) {
@@ -159,6 +163,8 @@ public abstract class UmlDiagramRenderer
             figNode = new FigActionState();
         } else if (Model.getFacade().isAFinalState(node)) {
             figNode = new FigFinalState();
+        } else if (Model.getFacade().isASubmachineState(node)) {
+            figNode = new FigSubmachineState();
         } else if (Model.getFacade().isAConcurrentRegion(node)) {
             figNode = new FigConcurrentRegion();
         } else if (Model.getFacade().isASynchState(node)) {

@@ -181,6 +181,14 @@ public interface NotationProvider2 {
     String generateStateBody(Object stt);
 
     /**
+     * Generate the String representation for a Submachine.
+     *
+     * @param m Object to generate representation for.
+     * @return The String representation of the object.
+     */
+    String generateSubmachine(Object m);
+
+    /**
      * Generate the String representation for a Transition.
      *
      * @param m Object to generate representation for.

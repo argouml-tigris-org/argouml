@@ -451,6 +451,10 @@ class UmlFactoryImpl
         } else if (elementType
                 == nsmodel.getMetaTypes().getSubactivityState()) {
             return getActivityGraphs().createSubactivityState();
+        } else if (elementType == nsmodel.getMetaTypes().getStubState()) {
+            return getStateMachines().createStubState();
+        } else if (elementType == nsmodel.getMetaTypes().getSubmachineState()) {
+            return getStateMachines().createSubmachineState();
         } else if (elementType == nsmodel.getMetaTypes().getCompositeState()) {
             return getStateMachines().createCompositeState();
         } else if (elementType == nsmodel.getMetaTypes().getSynchState()) {

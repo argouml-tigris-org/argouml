@@ -33,17 +33,7 @@ import org.argouml.model.Model;
 import org.argouml.model.StateMachinesHelper;
 
 import ru.novosoft.uml.behavior.common_behavior.MAction;
-import ru.novosoft.uml.behavior.state_machines.MChangeEvent;
-import ru.novosoft.uml.behavior.state_machines.MCompositeState;
-import ru.novosoft.uml.behavior.state_machines.MEvent;
-import ru.novosoft.uml.behavior.state_machines.MGuard;
-import ru.novosoft.uml.behavior.state_machines.MState;
-import ru.novosoft.uml.behavior.state_machines.MStateMachine;
-import ru.novosoft.uml.behavior.state_machines.MStateVertex;
-import ru.novosoft.uml.behavior.state_machines.MSubmachineState;
-import ru.novosoft.uml.behavior.state_machines.MSynchState;
-import ru.novosoft.uml.behavior.state_machines.MTimeEvent;
-import ru.novosoft.uml.behavior.state_machines.MTransition;
+import ru.novosoft.uml.behavior.state_machines.*;
 import ru.novosoft.uml.foundation.core.MBehavioralFeature;
 import ru.novosoft.uml.foundation.core.MClassifier;
 import ru.novosoft.uml.foundation.core.MModelElement;
@@ -612,4 +602,67 @@ class StateMachinesHelperImpl implements StateMachinesHelper {
                 + " or value: " + value);
     }
 
+    /**
+     * Returns the path of a state vertex.
+     * @param o the StateVertex
+     * @return String
+     */
+    public String getPath(Object o) {
+        if (o instanceof MStateVertex) {
+            Object o1 = o;
+            Object o2 = Model.getFacade().getContainer(o1);
+            String path = Model.getFacade().getName(o1);
+            while ((o2 != null)
+                    &&(!Model.getFacade().isTop(o2))) {
+                path = Model.getFacade().getName(o2) + "::" + path;
+                o1 = o2;
+                o2 = Model.getFacade().getContainer(o1);
+            }
+            return path;
+        }
+        return null;
+    }
+
+    /**
+     * Returns a state contained into container. path is the whole pathname
+     * of the state we are looking for.
+     * @param path the path the state
+     * @param container of the state
+     * @return Object
+     */
+    public Object getStatebyName(String path, Object container) {
+        if ( container != null
+                && Model.getFacade().isACompositeState(container)
+                && path != null) {
+
+            Iterator it =  Model.getFacade().getAllPossibleSubvertices(container).iterator();
+            int index = path.lastIndexOf("::");
+            if (index != -1)
+                index += 2;
+            else
+                index += 1;
+
+            path = path.substring(index);
+            while (it.hasNext()) {
+                Object o = it.next();
+                Object oName = Model.getFacade().getName(o);
+                if (oName != null && oName.equals(path))
+                    return o;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Sets the Referenced State of a StubState.
+     * @param o Stub State
+     * @param referenced state
+     */
+    public void setReferenceState(Object o, String referenced) {
+        if (o instanceof MStubState) {
+            ((MStubState)o).setReferenceState(referenced);
+            return;
+        }
+        throw new IllegalArgumentException("handle: " + o);
+    }
 }
