@@ -254,7 +254,7 @@ public class FigClass extends FigNodeModelElement {
     enableSizeChecking(false);
     suppressCalcBounds = true;
     addFig(_bigPort);
-    addFig(_namespace);
+    // addFig(_namespace);
     addFig(_stereo);
     addFig(_name);
     addFig(_stereoLineBlinder);

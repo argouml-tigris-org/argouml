@@ -29,18 +29,19 @@
 
 package org.argouml.uml.diagram.ui;
 
-import java.awt.*;
-import java.beans.*;
-import java.util.*;
-
-import ru.novosoft.uml.foundation.core.*;
-//import ru.novosoft.uml.foundation.extension_mechanisms.*;
+import java.awt.Color;
+import java.awt.Graphics;
 
 import org.argouml.model.uml.foundation.core.CoreFactory;
-import org.argouml.model.uml.foundation.core.CoreHelper;
 import org.argouml.ui.ProjectBrowser;
-import org.tigris.gef.base.*;
-import org.tigris.gef.presentation.*;
+import org.tigris.gef.base.Layer;
+import org.tigris.gef.base.PathConvPercent;
+import org.tigris.gef.presentation.ArrowHeadTriangle;
+import org.tigris.gef.presentation.Fig;
+import org.tigris.gef.presentation.FigNode;
+import org.tigris.gef.presentation.FigText;
+import ru.novosoft.uml.foundation.core.MGeneralizableElement;
+import ru.novosoft.uml.foundation.core.MGeneralization;
 
 public class FigGeneralization extends FigEdgeModelElement {
 	
@@ -151,5 +152,27 @@ public class FigGeneralization extends FigEdgeModelElement {
 	}
 	}
 
+    /**
+     * This method is called after the fig is loaded from pgml. Implemented here
+     * to fix errors with the model concerning the fig not having an owner.
+     * @see org.tigris.gef.presentation.Fig#postLoad()
+     */
+    public void postLoad() {
+        super.postLoad();
+        Object own = getOwner();
+        if (own == null) {
+            fixModel();
+        }
+    }
+
+    private void fixModel() {
+        Fig sourceFig = getSourceFigNode();
+        Fig destFig = getDestFigNode();
+        Object source = sourceFig.getOwner();
+        Object dest = destFig.getOwner();
+        if (source instanceof MGeneralizableElement && dest instanceof MGeneralizableElement) {
+            setOwner(CoreFactory.getFactory().buildGeneralization((MGeneralizableElement)source, (MGeneralizableElement)dest));
+        }
+    }
 } /* end class FigGeneralization */
 
