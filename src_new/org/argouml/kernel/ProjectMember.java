@@ -31,25 +31,15 @@ package org.argouml.kernel;
  * Window - Preferences - Java - Code Style - Code Templates
  */
 public interface ProjectMember {
+    
     /**
-     * In contrast to {@link #getName} returns the member's name without the
-     * prepended name of the project. This is the name that
-     * {@link Project#findMemberByName} goes by.
+     * Returns a unique member's name for storage in a zipfile.
+     * The project's base name is prepended followed by an
+     * underscore '_'.
      *
-     * @author Steffen Zschaler
-     *
-     * @return the member's name without the prepended name of the project
+     * @return the name for zip file storage
      */
-    public abstract String getPlainName();
-
-    /**
-     * In contrast to {@link #getPlainName} returns the member's name
-     * including the project's base name. The project's base name is
-     * prepended followed by an underscore '_'.
-     *
-     * @return the member's name including the project's base name
-     */
-    public abstract String getName();
+    public abstract String getZipName();
 
     /**
      * @return a short string defining the member type. 

@@ -160,9 +160,9 @@ public class ZargoFilePersister extends UmlFilePersister {
                     if (LOG.isInfoEnabled()) {
                         LOG.info("Saving member: "
                                 + ((ProjectMember) project.getMembers()
-                                        .get(i)).getName());
+                                        .get(i)).getZipName());
                     }
-                    String name = projectMember.getName();
+                    String name = projectMember.getZipName();
                     String originalName = name;
                     while (names.contains(name)) {
                         name = ++counter + originalName;
@@ -192,7 +192,7 @@ public class ZargoFilePersister extends UmlFilePersister {
                                 + ((ProjectMember) project.getMembers()
                                         .get(i)).getType());
                     }
-                    stream.putNextEntry(new ZipEntry(projectMember.getName()));
+                    stream.putNextEntry(new ZipEntry(projectMember.getZipName()));
                     MemberFilePersister persister = null;
                     if (projectMember instanceof ProjectMemberDiagram) {
                         persister = new DiagramMemberFilePersister();

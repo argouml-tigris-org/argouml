@@ -51,34 +51,13 @@ public abstract class AbstractProjectMember implements ProjectMember {
     }
 
     /**
-     * In contrast to {@link #getName} returns the member's name without the
-     * prepended name of the project. This is the name that
-     * {@link Project#findMemberByName} goes by.
+     * Returns a unique member's name for storage in a zipfile.
+     * The project's base name is prepended followed by an
+     * underscore '_'.
      *
-     * @author Steffen Zschaler
-     *
-     * @return the member's name without the prepended name of the project
+     * @return the name for zip file storage
      */
-    public String getPlainName() {
-        String s = name;
-        
-        if (s != null) {
-            if (!s.endsWith (getFileExtension())) {
-        	s += getFileExtension();
-            }
-        }
-        
-        return s;
-    }
-
-    /**
-     * In contrast to {@link #getPlainName} returns the member's name
-     * including the project's base name. The project's base name is
-     * prepended followed by an underscore '_'.
-     *
-     * @return the member's name including the project's base name
-     */
-    public String getName() {
+    public String getZipName() {
         if (name == null)
             return null;
         
@@ -89,7 +68,8 @@ public abstract class AbstractProjectMember implements ProjectMember {
         
         if (!s.endsWith(getFileExtension()))
             s += getFileExtension();
-        
+
+        System.out.println("Returning members name as " + s);
         return s;
     }
   
