@@ -88,6 +88,7 @@ public class JavaImport extends FileImportSupport {
 			  + f.getName());
                 throw e;
             }
+		in.close();
 	}
     }
 
