@@ -123,7 +123,6 @@ public abstract class FigNodeModelElement
     private NotationName currentNotationName;
     private static final Font LABEL_FONT;
     private static final Font ITALIC_LABEL_FONT;
-    private static final int MARGIN = 2;
 
     /**
      * min. 17, used to calculate y pos of FigText items in a compartment
@@ -1686,7 +1685,7 @@ public abstract class FigNodeModelElement
      * Method to draw a StateVertex Fig's enclosed figs.
      */
     public void redrawEnclosedFigs() {
-        if (!(org.argouml.model.ModelFacade.isAStateVertex(getOwner()))) {
+        if (!(ModelFacade.isAStateVertex(getOwner()))) {
             return;
         }
         Editor editor = Globals.curEditor();
