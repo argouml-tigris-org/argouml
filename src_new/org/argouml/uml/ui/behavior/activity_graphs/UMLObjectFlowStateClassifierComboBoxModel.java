@@ -30,7 +30,7 @@ import org.argouml.model.uml.UmlModelEventPump;
 import org.argouml.uml.ui.UMLComboBoxModel2;
 
 /**
- * A model for a namespace combo box,
+ * A model for the classifier of an ObjectFlowState.
  *
  * @since Oct 10, 2002
  * @author jaap.branderhorst@xs4all.nl, alexb
