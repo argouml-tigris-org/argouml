@@ -66,7 +66,7 @@ public class MenuResourceBundle extends ListResourceBundle {
         {"Add Top-Level Package", "Add Top-Level Package" },
         {"ClassDiagram", "Class Diagram" },
         {"UseCaseDiagram", "Use Case Diagram" },
-        {"StateDiagram", "State Diagram" },
+        {"StateDiagram", "Statechart Diagram" },
         {"ActivityDiagram", "Activity Diagram" },
         {"CollaborationDiagram", "Collaboration Diagram" },
         {"DeploymentDiagram", "Deployment Diagram" },
