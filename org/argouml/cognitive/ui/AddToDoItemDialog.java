@@ -28,11 +28,13 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
+import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.ToDoItem;
 import org.argouml.i18n.Translator;
@@ -40,6 +42,8 @@ import org.argouml.kernel.ProjectManager;
 import org.argouml.swingext.LabelledLayout;
 import org.argouml.ui.ArgoDialog;
 import org.argouml.ui.ProjectBrowser;
+
+import org.tigris.gef.util.VectorSet;
 
 public class AddToDoItemDialog extends ArgoDialog {
 
@@ -58,6 +62,7 @@ public class AddToDoItemDialog extends ArgoDialog {
     private JTextField _headline;
     private JComboBox  _priority;
     private JTextField _moreinfo;
+    private JList _offenderList;
     private JTextArea  _description;
 
     /**
@@ -72,11 +77,13 @@ public class AddToDoItemDialog extends ArgoDialog {
         _priority = new JComboBox(PRIORITIES);
         _moreinfo = new JTextField(TEXT_COLUMNS);
         _description = new JTextArea(TEXT_ROWS, TEXT_COLUMNS);
+        _offenderList = new JList(TargetManager.
+            getInstance().getModelTargets().toArray());
 
         JLabel headlineLabel = new JLabel(Translator.localize("label.headline"));
         JLabel priorityLabel = new JLabel(Translator.localize("label.priority"));
         JLabel moreInfoLabel = new JLabel(Translator.localize(BUNDLE, "label.more-info-url"));
-   
+        JLabel offenderLabel = new JLabel("Offenders:"/*Translator.localize("label.offenders")*/);
         _priority.setSelectedItem(PRIORITIES[0]);
 
         JPanel panel = new JPanel(new LabelledLayout(labelGap, componentGap));
@@ -93,6 +100,10 @@ public class AddToDoItemDialog extends ArgoDialog {
         panel.add(moreInfoLabel);
         panel.add(_moreinfo);
     
+        offenderLabel.setLabelFor(_offenderList);
+        panel.add(offenderLabel);
+        panel.add(_offenderList);
+        
         _description.setText(Translator.localize("label.enter-todo-item") + "\n");
         JScrollPane descriptionScroller = new JScrollPane(_description);
         descriptionScroller.setPreferredSize(_description.getPreferredSize());
@@ -129,6 +140,11 @@ public class AddToDoItemDialog extends ArgoDialog {
         String moreInfoURL = _moreinfo.getText();
         ToDoItem item =
 	    new ToDoItem(designer, headline, priority, desc, moreInfoURL);
+        VectorSet newOffenders = new VectorSet();
+        for (int i = 0; i < _offenderList.getModel().getSize(); i++) {
+            newOffenders.addElement(_offenderList.getModel().getElementAt(i));
+        }  
+        item.setOffenders(newOffenders);
         designer.getToDoList().addElement(item); //? inform()
         ProjectManager.getManager().getCurrentProject().setNeedsSave(true);
     }
