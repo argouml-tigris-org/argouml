@@ -153,7 +153,7 @@ You can also verify issues according to the
 verification process (see <xref linkend="verify_resolved_fixed"/>).
 </para>
 		    <para>
-This help you in understanding the terminology used in the project
+This will help you understand the terminology used in the project
 and also gives you an idea of the current quality of ArgoUML and
 what needs to be done in the future.
 </para>
@@ -317,6 +317,11 @@ the CVS version of ArgoUML.
 How this is done is described in 
 <xref endterm="cvs_checkout_term" linkend="cvs_checkout"></xref>.
 </para>
+      <para>
+Notice that the CVS contents is not only a set of source files but
+instead it is the complete development environment for
+all work within the ArgoUML project.
+</para>
 
       <sect2>
 	<title>Which tools do I need to build ArgoUML?</title>
@@ -328,10 +333,24 @@ How this is done is described in
 	  <primary>Tools</primary>
 	  <secondary>needed for building</secondary>
 	</indexterm>
+	<para>
+These are the tools not included in the cvs repository that
+you need to work with ArgoUML.
+</para>
 	<itemizedlist>
 	  <listitem>
 	    <para>
-CVS for obtaining the latest files via internet and getting
+A computer with a free disk space for your work.
+</para>
+	    <para>
+Linus' guess is that you need at least 200MB to build it all 
+(javadocs, documentation, classes, packages, ...).
+If you just build the classes and packages 40MB will do.
+</para>
+	  </listitem>
+	  <listitem>
+	    <para>
+CVS for getting the files
 and committing source code updates.
 </para>
 	  </listitem>
@@ -343,13 +362,15 @@ JDK, at least version 1.3 (includes the java compiler)
 	</itemizedlist>
       </sect2>
       <sect2>
-	<title>Which tools are used to build ArgoUML?</title>
+	<title>
+Which tools are part of the ArgoUML development environment?
+</title>
 	<indexterm>
 	  <primary>Tools</primary>
 	  <secondary>used</secondary>
 	</indexterm>
 	<para>
-These tools are provided within the development environment that you
+These tools are provided by the development environment that you
 get when you check out from CVS.
 </para>
 	<itemizedlist>
@@ -367,7 +388,22 @@ ANT, the tool to manage compiling and packaging.
 	    </indexterm>
 	    <para>
 ANTLR, for regenerating the built-in parser.
-Only needed if you are working with the antlr input files.
+</para>
+	  </listitem>
+	  <listitem>
+	    <indexterm>
+	      <primary>JUnit</primary>
+	    </indexterm>
+	    <para>
+JUnit, for running the JUnit test cases.
+</para>
+	  </listitem>
+	  <listitem>
+	    <indexterm>
+	      <primary>jdepend</primary>
+	    </indexterm>
+	    <para>
+JDepend, for examining the code.
 </para>
 	  </listitem>
 	</itemizedlist>
@@ -398,14 +434,19 @@ Docbook XSL stylesheets.
 	    <para>
 fop for generating pdf versions of the docbook format.
 </para>
+	    <para>
+To build a pdf file with the pictures included you 
+</para>
 	  </listitem>
 	</itemizedlist>
       </sect2>
       <sect2>
-	<title>What libraries are needed and used in the build process?</title>
+	<title>What libraries are needed and used by ArgoUML?</title>
 	<para>
-These libraries are provided within the development environment that
+These libraries are provided in the development environment that
 you get when you check out CVS.
+They are checked by the java compiler when compiling, 
+needed for running ArgoUML and therefore distributed with ArgoUML.
 </para>
 	<itemizedlist>
 	  <listitem>
@@ -451,12 +492,26 @@ to get it.
 The ocl package to parse and run the Object Constraint Language things.
 </para>
 	    <para>
-It would be good to have here some more information on how to download
-or how it is used but I don't know where to find it.
-(Linus Tolke April 2002.)
-<ulink url="http://gef.tigris.org">gef.tigris.org</ulink>.
+Details about the package are available from sourceforge
+<ulink url="http://dresden-ocl.sourceforge.net/">OCL Compiler</ulink>.
 </para>
 	  </listitem>
+
+	  <listitem>
+	    <indexterm>
+	      <primary>log4j</primary>
+	    </indexterm>
+	    <para>
+log4j, a library with infrastructure for logs.
+</para>
+	  </listitem>
+
+	  <listitem>
+	    <para>
+antlrall, the run-time part of the antlr tool.
+</para>
+	  </listitem>
+
 	</itemizedlist>
       </sect2>
 
@@ -493,13 +548,15 @@ Then you do the actual checking out.
 <command>cvs checkout <replaceable>modulename</replaceable></command>.
 </para>
       <para>
-The CVS modules you need to check out to build ArgoUML is
+The CVS module you need to check out to build ArgoUML is
 <parameter>argouml_src</parameter>.
 This will check out the directories
-<filename class="directory">argouml/lib</filename>
-<filename class="directory">argouml/tools</filename>
+<filename class="directory">argouml/lib</filename>,
+<filename class="directory">argouml/tools</filename>,
+<filename class="directory">argouml/src</filename>,
+<filename class="directory">argouml/src_new</filename>,
 and
-<filename class="directory">argouml/src_new</filename>.
+<filename class="directory">argouml/tests</filename>.
 </para>
       <para>
 If you want to build to documentation you check out the module
@@ -524,6 +581,10 @@ see how everything is used for a purpose in the project.
       <para>
 If you don't want to acquire a tigris login to do this you can use the
 "guest" account with the password "guest".
+Since the checked out copy remembers the login you used to do the
+check out, if you do this, you will have to remember to delete this
+copy and start over if you get a developer role in the project and
+want to do commits directly.
 </para>
     </sect1>
  <sect1 id="Build">
@@ -595,10 +656,8 @@ build with different versions of jdk and java.
 	<para>
 To use different versions of ANT,
 you are responsible for installing your own version.
-You must set ANT_HOME to the directory contain the ANT version
-you want to use.
 Also, you must execute
-<command>ant <replaceable>target</replaceable></command>
+<command>/where/ever/you/placed/your/new/ant <replaceable>target</replaceable></command>
 rather than
 <command>build <replaceable>target</replaceable></command>.
 </para>
@@ -635,13 +694,6 @@ Change the current directory to the directory you are building
 </para>
 	    </listitem>
 	    <listitem>
-	      <para>
-Modify the beginning of the <filename>build.sh</filename> file 
-by setting ARGO_HOME to the name
-<replaceable>/your/checked/out/copy/of/argouml</replaceable>
-</para>
-	    </listitem>
-	    <listitem>
 	      <para>Start ant using <command>./build.sh</command></para>
 	      <para>This gives you a list of targets with descriptions</para>
 	    </listitem>
@@ -673,7 +725,9 @@ or want to compile and run again.
 </para>
 	    </listitem>
 	    <listitem>
-	      <para>Change the current directory to the directory you are building</para>
+	      <para>
+Change the current directory to the directory you are building
+</para>
 	      <para>
 <command>chdir <replaceable>\your\checked\out\copy\of\argouml\src_new</replaceable></command>
 </para>
@@ -692,6 +746,19 @@ or want to compile and run again.
 </para>
 	    </listitem>
 	  </orderedlist>
+
+	  <indexterm>
+	    <primary>Compiling</primary>
+	    <secondary>Cygwin</secondary>
+	  </indexterm>
+	  <indexterm>
+	    <primary>Cygwin</primary>
+	    <secondary>Compilation</secondary>
+	  </indexterm>
+	  <para>
+If you do this from Cygwin you work just like for Unix.
+</para>
+
 	</sect3>
 	<sect3>
 	  <title>Customizing and configuring your build</title>
@@ -708,12 +775,30 @@ or want to compile and run again.
 	    <secondary>argouml.build.properties</secondary>
 	  </indexterm>
 	  <para>
-It is possible to customize your compilation of ArgoUML rather simply.
-
-<filename class="libraryfile">argouml/src_new/default.properties</filename>
-
+It is possible to customize your compilation of ArgoUML.
+</para>
+	  <para>
+If you issue the command
 <command>build list-property-files</command>
-
+you can see what files are searched for properties.
+</para>
+	  <para>
+Don't change the
+<filename class="libraryfile">argouml/src_new/default.properties</filename>
+file (unless you are working with updating the development environment
+itself).
+Instead create one of the other files locally on you machine.
+The properties in these files have precedence over the properties in
+<filename class="libraryfile">argouml/src_new/default.properties</filename>.
+</para>
+	  <para>
+Remember that if you do this, you have modified your development
+environment.
+To be sure that you will not break anything for
+anyone else when checking in things 
+developed using this modified environment, 
+remove these files temporarily for the compiling and testing
+you do just before you commit.
 	  </para>
 	</sect3>
 	<sect3>
@@ -730,11 +815,6 @@ It is possible to customize your compilation of ArgoUML rather simply.
 By running ANT again using <command>build prepare-docs</command>
 the javadoc documentation is generated and put into
 <filename class="directory">argouml/build/javadocs</filename>.
-</para>
-	  <para>
-Notice that you need to be connected to the Internet to do this since
-the javadoc wants to test the availability of other javadoc sites in 
-order to link to them. This is probably a problem with ANT 1.3.
 </para>
 	</sect3>
       </sect2>
@@ -754,7 +834,7 @@ Tigris provides the ArgoUML site to be edited through CVS. Everything
 that is checked in under <filename>argouml/www</filename>
 becomes immediatly available at the url 
 <ulink url="http://argouml.tigris.org/">http://argouml.tigris.org/</ulink>
-with some added decorations left and up.
+with some added decorations.
 </para>
 	  <para>
 Example: The file <filename>argouml/www/project.html</filename> is
@@ -804,11 +884,11 @@ web site the responsible document release person does the following:
 	  <orderedlist>
 	    <listitem>
 	      <para>
-He checks out an updated copy of everything needed
+He checks out everything needed
 and a copy of the <filename class="directory">argouml/www</filename>.
 </para>
 	      <para>
-To be on the safe side, this could be the whole of ArgoUML.
+The module <parameter>argouml_docs</parameter> is there for this purpose.
 </para>
 	      <para>
 If wanted, the CVS repository could be tagged and then the tag
@@ -966,8 +1046,10 @@ If that doesn't work remove your checked out copy completely and
 get it all again through CVS.
 </para>
 	  <para>
-Another reason might be that you have an .ant.properties or
-.argo.ant.properties file that you have been working with earlier
+Another reason might be that you have an 
+<filename>build.properties</filename> or
+<filename>argouml.build.properties</filename>
+file that you have been working with earlier
 and that is doing something. If in doubt, remove those files.
 </para>
 	  <para>
@@ -1006,6 +1088,350 @@ can continue working with the same checked out copy.
       </sect2>
 
  </sect1>
+
+    <sect1>
+      <title>The JUnit test cases</title>
+      <indexterm>
+	<primary>JUnit testing</primary>
+      </indexterm>
+      <indexterm>
+	<primary>Unit testing of ArgoUML</primary>
+      </indexterm>
+      <indexterm>
+	<primary>Testing ArgoUML</primary>
+      </indexterm>
+      <para>
+ArgoUML has a set of automatic test cases using JUnit-framework
+for testing the insides of the code.
+The purpose of these are to help in pin-pointing problems with
+code changes already before even starting ArgoUML.
+</para>
+      <para>
+The JUnit test cases are residing at two different places in the
+source repository and run in two different ways.
+They are never distributed with ArgoUML but merely a tool for
+developers.
+</para>
+
+      <sect2>
+	<title>New style JUnit test cases</title>
+	<para>
+By running the command
+<command>build tests</command>
+from <filename>src_new</filename>
+these test cases are started, each in their own jvm.
+</para>
+	<para>
+Each test case writes its result on the Ant log.
+</para>
+	<para>
+The result is also generated into a set of files that can be found at
+<filename>build/test/reports/junit/output/html/index.html</filename>.
+</para>
+	<para>
+Testcases shall be located under
+<filename>argouml/tests/org/argouml</filename>
+and the filenames shall be like
+<filename>Test<replaceable>*</replaceable>.java</filename>.
+</para>
+      </sect2>
+
+      <sect2>
+	<title>Old style JUnit test cases</title>
+	<para>
+This chapter describes the old way of doing JUnit test cases.
+</para>
+	<para>
+The JUnit module is an ArgoUML module that is used to contain all 
+Unit Test Cases.
+The reason for it being a module is that the classes contained need
+not be distributed with the ArgoUML distribution. 
+They have their use in the hands of the developers of ArgoUML.
+</para>
+	<para>
+The module is available from CVS under
+<filename class="directory">modules/junit</filename>
+and the used version of the JUnit framework is also available there
+(under <filename class="directory">modules/junit/lib</filename>).
+</para>
+	<para>
+This location will probably change in the future.
+</para>
+	<para>
+The Java package structure under 
+<filename class="directory">modules/junit/src</filename>
+in the module is a complete copy of the ArgoUML Java package
+structure.
+Ideally every class
+<classname>org.argouml.<replaceable>x.y</replaceable>.<replaceable>z</replaceable></classname>
+stored in the file
+<filename class="directory">src_new/org/argouml/<replaceable>x/y</replaceable>/<replaceable>z</replaceable>.java</filename>
+should have a JUnit test case called
+<classname>org.argouml.<replaceable>x.y</replaceable>.Test<replaceable>z</replaceable></classname>
+stored in the file
+<filename class="directory">modules/junit/src/org/argouml/<replaceable>x/y</replaceable>/Test<replaceable>z</replaceable>.java</filename>
+containing all the Unit Test Cases for that class.
+</para>
+
+	<sect3 id="run_junit_testcases">
+	  <title>How to run the old style test cases</title>
+	  <indexterm>
+	    <primary>JUnit testing</primary>
+	  </indexterm>
+	  <para>
+This is a simple description on how to run the JUnit Test Cases.
+</para>
+	  <orderedlist>
+	    <listitem>
+	      <para>
+Check out all you need to build ArgoUML and the modules/junit
+directory.
+</para>
+	    </listitem>
+	    <listitem>
+	      <para>
+Build ArgoUML as a package in src_new as described in the
+<xref endterm="Build_term" linkend="Build"></xref>
+</para>
+	    </listitem>
+	    <listitem>
+	      <para>
+Change directory to
+<filename class="directory">../modules/junit</filename>
+</para>
+	    </listitem>
+	    <listitem>
+	      <para>
+Run ant with the argument run.
+</para>
+	    </listitem>
+	    <listitem>
+	      <para>
+ArgoUML starts up just with the splash screen and then the normal
+window.
+</para>
+	    </listitem>
+	    <listitem>
+	      <para>
+Observe that the Tools menu now is enabled (i.e. not greyed out).
+</para>
+	    </listitem>
+	    <listitem>
+	      <para>
+Under the Tools menu, select the item Test Panel....
+</para>
+	    </listitem>
+	    <listitem>
+	      <para>
+The JUnit panel called Run Test Suite opens on top of ArgoUML.
+</para>
+	    </listitem>
+	    <listitem>
+	      <para>
+Enter the word <classname>TestAll</classname> in the field 
+"Enter the name of the Test class:" to run all tests.
+</para>
+	    </listitem>
+	    <listitem>
+	      <para>
+Uncheck the "Reload classes every run" checkbox.
+</para>
+	    </listitem>
+	    <listitem>
+	      <para>
+Press the "Run"-button and watch the "Progess"-bar turn all green
+(hopefully).
+</para>
+	    </listitem>
+	    <listitem>
+	      <para>
+Verify that all the tests are Run and that there are 
+no "Errors" and no "Failures".
+</para>
+	      <para>
+If there are "Errors" or "Failures" they you can hopefully easily
+pinpoint the problem.
+</para>
+	    </listitem>
+	  </orderedlist>
+	  <para>
+If you only want to run one of your newly written test cases and not
+all the test cases, give the class name of your test case instead of
+"TestAll" like
+<classname>org.argouml.<replaceable>x.y</replaceable>.Test<replaceable>z</replaceable></classname>.
+</para>
+	  <para>
+This will probably change in the future simplifying it to the 
+following even simpler description:
+</para>
+	  <orderedlist>
+	    <listitem>
+	      <para>Check out all you need to build ArgoUML</para>
+	    </listitem>
+	    <listitem>
+	      <para>
+Build ArgoUML and run the JUnit test cases using
+<command>build run-all-junit-tests</command>
+</para>
+	    </listitem>
+	    <listitem>
+	      <para>
+Verify that all the tests are Run and that there are 
+no "Errors" and no "Failures".
+</para>
+	      <para>
+If there are "Errors" or "Failures" they you can hopefully easily
+pinpoint the problem.
+</para>
+	    </listitem>
+	  </orderedlist>
+	</sect3>
+	<sect3>
+	  <title>How to write a test case</title>
+	  <indexterm>
+	    <primary>Unit testing of ArgoUML</primary>
+	  </indexterm>
+	  <indexterm>
+	    <primary>Testing ArgoUML</primary>
+	  </indexterm>
+	  <indexterm>
+	    <primary>Testcases</primary>
+	    <secondary>writing</secondary>
+	  </indexterm>
+	  <para>
+Now this will make all you java-enthusiasts go nuts!
+We have both classnames and method names that need to have a special
+syntax.
+</para>
+	  <para>
+The name of the test case starts with "Test" (i.e. Capital T, then
+small e, s and t). This is to help the TestAll class determine what is
+a Test Case and what is not without loading them. 
+If you write a test case that does not comply to this rule you still
+can run the test case but it wont be run by TestAll.
+This could prove useful sometimes but I (Linus) have yet to figure out
+when.
+</para>
+	  <para>
+The test case imports the JUnit framework: 
+<blockquote>
+	      <para>
+import junit.framework.*;
+</para>
+	    </blockquote>
+and it inherits <classname>TestCase</classname>.
+</para>
+	  <para>
+Methods that are tests must have names that start with "test"
+(i.e. all small t, e, s, t). This is a requirement of the JUnit
+framework.
+</para>
+	  <para>
+A lot of times it is useful just to run the compiler to verify that
+the signatures are correct on the interfaces. Therefor Linus has
+thought it is a good idea to add methods called
+<methodname>compileTestStatics</methodname>,
+<methodname>compileTestConstructors</methodname>, and
+<methodname>compileTestMethods</methodname>
+that was thought to include correct calls to all static methods,
+all public constructors, and all other public methods that are not
+otherwise tested.
+These methods are never called.
+They serve as a guarantee that the public interface of a class will
+ever loose any of the functionality provided by its signature in an
+uncontrolled way in just the same way as the test-methods serve as a
+guarantee that no features will ever be lost.
+</para>
+	  <example>
+	    <title>A complete example</title>
+	    <indexterm>
+	      <primary>Testcases</primary>
+	      <secondary>an example</secondary>
+	    </indexterm>
+	    <para>
+<programlisting>
+package org.argouml.uml.ui;
+import junit.framework.*;
+
+public class TestUMLAction extends TestCase {
+    public TestUMLAction(String name) {
+	super(name);
+    }
+
+    // Testing all three constructors.
+    public void testCreate1() {
+	UMLAction to = new UMLAction(new String("hejsan"));
+	assert("Disabled", to.shouldBeEnabled());
+    }
+    public void testCreate2() {
+	UMLAction to = new UMLAction(new String("hejsan"), true);
+	assert("Disabled", to.shouldBeEnabled());
+    }
+    public void testCreate3() {
+	UMLAction to = new UMLAction(new String("hejsan"), true, UMLAction.NO_ICON);
+	assert("Disabled", to.shouldBeEnabled());
+    }
+	
+
+    // Functions never actually called. Provided in order to make
+    // sure that the static interface has not changed.
+    private void compileTestStatics() {
+	boolean t1 = UMLAction.HAS_ICON;
+	boolean t2 = UMLAction.NO_ICON;
+	UMLAction.getShortcut(new String());
+	UMLAction.getMnemonic(new String());
+    }
+
+    private void compileTestConstructors() {
+	new UMLAction(new String());
+	new UMLAction(new String(), true);
+	new UMLAction(new String(), true, true);
+    }
+
+    private void compileTestMethods() {
+	UMLAction to = new UMLAction(new String());
+	to.markNeedsSave();
+	to.updateEnabled(new Object());
+	to.updateEnabled();
+	to.shouldBeEnabled();
+    }
+}
+</programlisting>
+</para>
+	  </example>
+	</sect3>
+	<sect3>
+	  <title>The TestAll class</title>
+	  <indexterm>
+	    <primary>Testing ArgoUML</primary>
+	  </indexterm>
+	  <para>
+The TestAll class goes through all directories under 
+<filename class="directory">modules/junit/build/classes</filename>
+and finds all class-files beginning with "Test".
+They are all added to the test suite.
+</para>
+	  <para>
+This means that the risk of forgetting to add a test case to the suite
+is reduced and there is no need to maintain such a suite.
+</para>
+	  <para>
+On the other hand this only works in the build environment.
+If the jar-file is used somewhere else or the ArgoUML is started in
+some other place with respect to
+<filename class="directory">modules/junit/build/classes</filename>
+then this will fail and TestAll will probably not detect any test
+cases at all.
+</para>
+	  <para>
+I hope and think that this will never be a problem since most of the
+times the test cases are run by a person with all the source available
+in just this way.
+</para>
+	</sect3>
+      </sect2>
+    </sect1>
+
 
     <sect1 id="release_process">
       <title>Making a release</title>
@@ -2083,7 +2509,7 @@ YYY
 <sect1 id="general">
 <title>General information</title>
 <para>This section explains some general concepts which come in handy, when 
-programming in Argo/UML.
+programming in ArgoUML.
 </para>
 <sect2 id="howdoi_general">
 <title>How do I ...?</title>
@@ -4873,311 +5299,6 @@ as the package root.
 
 &cookbooklogging;
 
-    <sect1>
-      <title>The JUnit test cases</title>
-      <indexterm>
-	<primary>JUnit testing</primary>
-      </indexterm>
-      <indexterm>
-	<primary>Unit testing of ArgoUML</primary>
-      </indexterm>
-      <indexterm>
-	<primary>Testing ArgoUML</primary>
-      </indexterm>
-      <para>
-ArgoUML has a set of automatic test cases using JUnit-framework
-for testing the insides of the code.
-The purpose of these are to help in pin-pointing problems with
-code changes already before even starting ArgoUML.
-</para>
-      <para>
-The JUnit module is an ArgoUML module that is used to contain all 
-Unit Test Cases.
-The reason for it being a module is that the classes contained need
-not be distributed with the ArgoUML distribution. 
-They have their use in the hands of the developers of ArgoUML.
-</para>
-      <para>
-The module is available from CVS under
-<filename class="directory">modules/junit</filename>
-and the used version of the JUnit framework is also available there
-(under <filename class="directory">modules/junit/lib</filename>).
-</para>
-      <para>
-This location will probably change in the future.
-</para>
-      <para>
-The Java package structure under 
-<filename class="directory">modules/junit/src</filename>
-in the module is a complete copy of the ArgoUML Java package
-structure.
-Ideally every class
-<classname>org.argouml.<replaceable>x.y</replaceable>.<replaceable>z</replaceable></classname>
-stored in the file
-<filename class="directory">src_new/org/argouml/<replaceable>x/y</replaceable>/<replaceable>z</replaceable>.java</filename>
-should have a JUnit test case called
-<classname>org.argouml.<replaceable>x.y</replaceable>.Test<replaceable>z</replaceable></classname>
-stored in the file
-<filename class="directory">modules/junit/src/org/argouml/<replaceable>x/y</replaceable>/Test<replaceable>z</replaceable>.java</filename>
-containing all the Unit Test Cases for that class.
-</para>
-      <sect2 id="run_junit_testcases">
-	<title>How to run the test cases</title>
-	<indexterm>
-	  <primary>JUnit testing</primary>
-	</indexterm>
-	<para>
-This is a simple description on how to run the JUnit Test Cases.
-</para>
-	<orderedlist>
-	  <listitem>
-	    <para>
-Check out all you need to build ArgoUML and the modules/junit
-directory.
-</para>
-	  </listitem>
-	  <listitem>
-	    <para>
-Build ArgoUML as a package in src_new as described in the
-<xref endterm="Build_term" linkend="Build"></xref>
-</para>
-	  </listitem>
-	  <listitem>
-	    <para>
-Change directory to
-<filename class="directory">../modules/junit</filename>
-</para>
-	  </listitem>
-	  <listitem>
-	    <para>
-Run ant with the argument run.
-</para>
-	  </listitem>
-	  <listitem>
-	    <para>
-ArgoUML starts up just with the splash screen and then the normal
-window.
-</para>
-	  </listitem>
-	  <listitem>
-	    <para>
-Observe that the Tools menu now is enabled (i.e. not greyed out).
-</para>
-	  </listitem>
-	  <listitem>
-	    <para>
-Under the Tools menu, select the item Test Panel....
-</para>
-	  </listitem>
-	  <listitem>
-	    <para>
-The JUnit panel called Run Test Suite opens on top of ArgoUML.
-</para>
-	  </listitem>
-	  <listitem>
-	    <para>
-Enter the word <classname>TestAll</classname> in the field 
-"Enter the name of the Test class:" to run all tests.
-</para>
-	  </listitem>
-	  <listitem>
-	    <para>
-Uncheck the "Reload classes every run" checkbox.
-</para>
-	  </listitem>
-	  <listitem>
-	    <para>
-Press the "Run"-button and watch the "Progess"-bar turn all green
-(hopefully).
-</para>
-	  </listitem>
-	  <listitem>
-	    <para>
-Verify that all the tests are Run and that there are 
-no "Errors" and no "Failures".
-</para>
-	    <para>
-If there are "Errors" or "Failures" they you can hopefully easily
-pinpoint the problem.
-</para>
-	  </listitem>
-	</orderedlist>
-	<para>
-If you only want to run one of your newly written test cases and not
-all the test cases, give the class name of your test case instead of
-"TestAll" like
-<classname>org.argouml.<replaceable>x.y</replaceable>.Test<replaceable>z</replaceable></classname>.
-</para>
-	<para>
-This will probably change in the future simplifying it to the 
-following even simpler description:
-</para>
-	<orderedlist>
-	  <listitem>
-	    <para>Check out all you need to build ArgoUML</para>
-	  </listitem>
-	  <listitem>
-	    <para>
-Build ArgoUML and run the JUnit test cases using
-<command>build run-all-junit-tests</command>
-</para>
-	  </listitem>
-	  <listitem>
-	    <para>
-Verify that all the tests are Run and that there are 
-no "Errors" and no "Failures".
-</para>
-	    <para>
-If there are "Errors" or "Failures" they you can hopefully easily
-pinpoint the problem.
-</para>
-	  </listitem>
-	</orderedlist>
-      </sect2>
-      <sect2>
-	<title>How to write a test case</title>
-	<indexterm>
-	  <primary>Unit testing of ArgoUML</primary>
-	</indexterm>
-	<indexterm>
-	  <primary>Testing ArgoUML</primary>
-	</indexterm>
-	<indexterm>
-	  <primary>Testcases</primary>
-	  <secondary>writing</secondary>
-	</indexterm>
-	<para>
-Now this will make all you java-enthusiasts go nuts!
-We have both classnames and method names that need to have a special
-syntax.
-</para>
-	<para>
-The name of the test case starts with "Test" (i.e. Capital T, then
-small e, s and t). This is to help the TestAll class determine what is
-a Test Case and what is not without loading them. 
-If you write a test case that does not comply to this rule you still
-can run the test case but it wont be run by TestAll.
-This could prove useful sometimes but I (Linus) have yet to figure out
-when.
-</para>
-	<para>
-The test case imports the JUnit framework: 
-<blockquote>
-	    <para>
-import junit.framework.*;
-</para>
-	  </blockquote>
-and it inherits <classname>TestCase</classname>.
-</para>
-	<para>
-Methods that are tests must have names that start with "test"
-(i.e. all small t, e, s, t). This is a requirement of the JUnit
-framework.
-</para>
-	<para>
-A lot of times it is useful just to run the compiler to verify that
-the signatures are correct on the interfaces. Therefor Linus has
-thought it is a good idea to add methods called
-<methodname>compileTestStatics</methodname>,
-<methodname>compileTestConstructors</methodname>, and
-<methodname>compileTestMethods</methodname>
-that was thought to include correct calls to all static methods,
-all public constructors, and all other public methods that are not
-otherwise tested.
-These methods are never called.
-They serve as a guarantee that the public interface of a class will
-ever loose any of the functionality provided by its signature in an
-uncontrolled way in just the same way as the test-methods serve as a
-guarantee that no features will ever be lost.
-</para>
-	<example>
-	  <title>A complete example</title>
-	  <indexterm>
-	    <primary>Testcases</primary>
-	    <secondary>an example</secondary>
-	  </indexterm>
-	  <para>
-<programlisting>
-package org.argouml.uml.ui;
-import junit.framework.*;
-
-public class TestUMLAction extends TestCase {
-    public TestUMLAction(String name) {
-	super(name);
-    }
-
-    // Testing all three constructors.
-    public void testCreate1() {
-	UMLAction to = new UMLAction(new String("hejsan"));
-	assert("Disabled", to.shouldBeEnabled());
-    }
-    public void testCreate2() {
-	UMLAction to = new UMLAction(new String("hejsan"), true);
-	assert("Disabled", to.shouldBeEnabled());
-    }
-    public void testCreate3() {
-	UMLAction to = new UMLAction(new String("hejsan"), true, UMLAction.NO_ICON);
-	assert("Disabled", to.shouldBeEnabled());
-    }
-	
-
-    // Functions never actually called. Provided in order to make
-    // sure that the static interface has not changed.
-    private void compileTestStatics() {
-	boolean t1 = UMLAction.HAS_ICON;
-	boolean t2 = UMLAction.NO_ICON;
-	UMLAction.getShortcut(new String());
-	UMLAction.getMnemonic(new String());
-    }
-
-    private void compileTestConstructors() {
-	new UMLAction(new String());
-	new UMLAction(new String(), true);
-	new UMLAction(new String(), true, true);
-    }
-
-    private void compileTestMethods() {
-	UMLAction to = new UMLAction(new String());
-	to.markNeedsSave();
-	to.updateEnabled(new Object());
-	to.updateEnabled();
-	to.shouldBeEnabled();
-    }
-}
-</programlisting>
-</para>
-	</example>
-      </sect2>
-      <sect2>
-	<title>The TestAll class</title>
-	<indexterm>
-	  <primary>Testing ArgoUML</primary>
-	</indexterm>
-	<para>
-The TestAll class goes through all directories under 
-<filename class="directory">modules/junit/build/classes</filename>
-and finds all class-files beginning with "Test".
-They are all added to the test suite.
-</para>
-	<para>
-This means that the risk of forgetting to add a test case to the suite
-is reduced and there is no need to maintain such a suite.
-</para>
-	<para>
-On the other hand this only works in the build environment.
-If the jar-file is used somewhere else or the ArgoUML is started in
-some other place with respect to
-<filename class="directory">modules/junit/build/classes</filename>
-then this will fail and TestAll will probably not detect any test
-cases at all.
-</para>
-	<para>
-I hope and think that this will never be a problem since most of the
-times the test cases are run by a person with all the source available
-in just this way.
-</para>
-      </sect2>
-    </sect1>
 
 </chapter>
 
@@ -5251,23 +5372,12 @@ the documentation from the XML-source to HTML and PDF.
 	  <para><filename class="directory">lib</filename></para>
 	  <para>A set of jar files.</para>
 	  <para>
-Currently (June 2002) 
-this directory contains both the jar files of products used
+This directory contains the jar files of products used
 by the ArgoUML
-(such as log4j, nsuml)
-and jar files of tools used in the building of ArgoUML and the 
-documentation
-(such as ant, antlr, fop).
+(such as log4j, nsuml).
 </para>
 	  <para>
-There is an ambition to move the jar files of the tools to the
-<filename class="directory">tools</filename>-directory
-eventually but when this is written (March 2002) this is not yet in effect.
-</para>
-	  <para>
-Things that after this move are left in
-<filename class="directory">lib</filename>
-are distributed with argouml and have licenses that allow this.
+These are distributed with argouml and have licenses that allow this.
 For clairity the readmy files and licenses and other distribution
 details of each used jar will also be stored in this directory.
 (Quick summary: BSD License, Apache License are LGPL are OK, GPL is not.)
@@ -5318,7 +5428,13 @@ Language generating, Notation and reverse engineering for PHP.
 	<listitem>
 	  <para><filename class="directory">src</filename></para>
 	  <para>
-Old source code. Empty.
+Source code.
+</para>
+	  <para>
+This will contain one directory for each component within
+ArgoUML.
+They will all compile and be tested with controlled dependencies
+to other components.
 </para>
 	</listitem>
 	<listitem>
@@ -5327,11 +5443,19 @@ Old source code. Empty.
 All source code for ArgoUML including pictures of icons.
 </para>
 	</listitem>
+
+	<listitem>
+	  <para><filename class="directory">tests</filename></para>
+	  <para>
+All source code for JUnit tests of everything that is in the src_new
+directory.
+</para>
+	</listitem>
+
 	<listitem>
 	  <para><filename class="directory">tools</filename></para>
 	  <para>
-Currently (June 2002) empty.
-Will contain all tools used during the build process.
+All tools used during the build process.
 </para>
 	  <para>
 Tools also have the readme files, licenses and other distribution files
@@ -5769,7 +5893,7 @@ all developers in the project.
 	<primary>CVS</primary>
 	<secondary>branches</secondary>
       </indexterm>
-<para>We use the following standards in Argo/UML:
+<para>We use the following standards in ArgoUML:
 <itemizedlist>
           <listitem><para>Released versions get the tag <emphasis>VERSION_X_X_X</emphasis></para></listitem>
           <listitem>
@@ -5798,7 +5922,7 @@ e.g. tlach (Thierry Lach) or mklink (Markus Klink).
           </listitem>
 </itemizedlist>
 </para>
-      <para>Merging branches together is causing some work. So please use them sparingly and announce your attention before on the mailing list.
+      <para>Merging branches together is causing some work. So please use them sparingly and announce your intentions before on the mailing list.
 </para>
       <sect2 id="howdoi_cvs">
 	<title>How do I ...?</title>
@@ -6012,8 +6136,8 @@ code works also with the additions on that branch.
 This is included in the cookbook because it seems that there are
 persons within the project that don't have the in-depth knowledge
 of CVS nor the interest or need to acquire it.
-For that reason some simple questions are answered here to set
-the ground rule for use of CVS in the project.
+For that reason some simple questions are answered here 
+for use of CVS in the project.
 </para>
       <itemizedlist>
 	<listitem>
@@ -6288,9 +6412,9 @@ This dissertation contributes a practical description of several
 cognitive theories relevant to software design, a method for devising
 cognitive support features based on these theories, a basket of
 cognitive support features that are demonstrated in the context of a
-usable software design tool called Argo/UML, and a reusable
+usable software design tool called ArgoUML, and a reusable
 infrastructure for building similar features into other design tools.
-Argo/UML is an object-oriented design tool that includes several novel
+ArgoUML is an object-oriented design tool that includes several novel
 features that address the identified cognitive needs of software
 designers. Each feature is explained with respect to the cognitive
 theories that inspired it and the set of features is evaluated with a
