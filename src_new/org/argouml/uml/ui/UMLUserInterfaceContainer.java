@@ -26,8 +26,6 @@
 package org.argouml.uml.ui;
 import org.argouml.uml.*;
 import java.util.*;
-import ru.novosoft.uml.foundation.core.MModelElement;
-import ru.novosoft.uml.foundation.core.MNamespace;
 
 /**
  *    Interface supported by any container of UML user interface components.
@@ -47,7 +45,7 @@ public interface UMLUserInterfaceContainer {
      *   Returns the current target for the container if the target is a
      *      MModelElement, otherwise null.
      */
-    public MModelElement getModelElement();
+    public Object getModelElement();
     /**
      *    Returns the current profile, may not be null.
      */
@@ -56,16 +54,16 @@ public interface UMLUserInterfaceContainer {
      *    Formats the specified model element.  Typically, deferred to the
      *    profile.
      */
-    public String formatElement(MModelElement element);
+    public String formatElement(/*MModelElement*/Object element);
     /**
-     *    Formats a collection of model elements.  Typically, deferred to the 
+     *    Formats a collection of model elements.  Typically, deferred to the
      *    profile.
      */
     public String formatCollection(Iterator iter);
     /**
-     *    Formats the model element as a namespace.  
+     *    Formats the model element as a namespace.
      */
-    public String formatNamespace(MNamespace ns);
+    public String formatNamespace(/*MNamespace*/Object ns);
 
     /**
      * Returns a localized string corresponding to the key.
@@ -74,5 +72,5 @@ public interface UMLUserInterfaceContainer {
      * @return localized string for key based on system settings and
      * configuration file
      */
-    public String localize(String key);    
+    public String localize(String key);
 }

@@ -28,7 +28,6 @@ import java.lang.reflect.*;
 import org.apache.log4j.Logger;
 import org.argouml.model.ModelFacade;
 import ru.novosoft.uml.MElementEvent;
-import ru.novosoft.uml.foundation.data_types.MExpression;
 
 /**
  * @deprecated as of ArgoUml 0.13.5 (10-may-2003),
@@ -37,7 +36,7 @@ import ru.novosoft.uml.foundation.data_types.MExpression;
  *             that used reflection a lot.
  */
 public final class UMLExpressionModel  {
-    protected static Logger cat = 
+    protected static Logger cat =
             Logger.getLogger(UMLExpressionModel.class);
 
     private UMLUserInterfaceContainer _container;
@@ -50,9 +49,9 @@ public final class UMLExpressionModel  {
     private static final Object[] _noArgs = {};
     private static final Class[] _noClasses = {};
     private static final String _emptyStr = "";
-    
+
     public UMLExpressionModel(UMLUserInterfaceContainer container, Class targetClass, String propertyName, Class expressionClass, String getMethodName, String setMethodName) {
-        
+
         _container = container;
         _propertyName = propertyName;
         _mustRefresh = true;
@@ -64,7 +63,7 @@ public final class UMLExpressionModel  {
         }
         try {
             _setMethod = targetClass.getMethod(setMethodName, new Class[] {
-		expressionClass 
+		expressionClass
 	    });
         }
         catch (Exception e) {
@@ -72,8 +71,8 @@ public final class UMLExpressionModel  {
         }
         try {
             _constructor = expressionClass.getConstructor(new Class[] {
-		String.class, 
-		String.class 
+		String.class,
+		String.class
 	    });
         }
         catch (Exception e) {
@@ -84,7 +83,7 @@ public final class UMLExpressionModel  {
     public void targetChanged() {
         _mustRefresh = true;
     }
-    
+
     public boolean propertySet(MElementEvent event) {
         boolean isAffected = false;
         String eventName = event.getName();
@@ -109,10 +108,10 @@ public final class UMLExpressionModel  {
             }
         }
         _mustRefresh = false;
-            
+
         return _expression;
     }
-    
+
     public String getLanguage() {
         if (_mustRefresh) {
             getExpression();
@@ -120,9 +119,9 @@ public final class UMLExpressionModel  {
         if (_expression == null) {
             return _emptyStr;
         }
-        return ((MExpression)_expression).getLanguage();
+        return ModelFacade.getLanguage(_expression);
     }
-    
+
     public Object getBody() {
         if (_mustRefresh) {
             getExpression();
@@ -132,11 +131,11 @@ public final class UMLExpressionModel  {
         }
         return ModelFacade.getBody(_expression);
     }
-    
+
     public void setLanguage(String lang) {
         boolean mustChange = true;
         if (_expression != null) {
-            String oldValue = ((MExpression)_expression).getLanguage();
+            String oldValue = ModelFacade.getLanguage(_expression);
             if (oldValue != null && oldValue.equals(lang)) {
                 mustChange = false;
             }
@@ -147,11 +146,11 @@ public final class UMLExpressionModel  {
                 body = ModelFacade.getBody(_expression);
             }
             if (body == null) body = _emptyStr;
-            
+
             setExpression(lang, body);
         }
     }
-    
+
     public void setBody(Object body) {
         boolean mustChange = true;
         if (_expression != null) {
@@ -163,22 +162,22 @@ public final class UMLExpressionModel  {
         if (mustChange) {
             String lang = null;
             if (_expression != null) {
-                lang = ((MExpression)_expression).getLanguage();
+                lang = ModelFacade.getLanguage(_expression);
             }
             if (lang == null) lang = _emptyStr;
-            
+
             setExpression(lang, body);
         }
     }
-    
-    
+
+
     private void setExpression(String lang, Object body) {
         try {
             //MExpression newExpression = (MExpression) _constructor.newInstance(new Object[] { lang,body });
             _expression = _constructor.newInstance(new Object[] {
-		lang, body 
-	    }); 
-            
+		lang, body
+	    });
+
             Object target = _container.getTarget();
             if (target != null) {
                 _setMethod.invoke(target, new Object[] {
@@ -190,5 +189,5 @@ public final class UMLExpressionModel  {
             cat.error(e.toString() + " in UMLExpressionModel.setExpression()", e);
         }
     }
-        
+
 }

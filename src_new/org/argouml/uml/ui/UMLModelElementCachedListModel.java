@@ -26,7 +26,6 @@ package org.argouml.uml.ui;
 
 import java.util.*;
 import ru.novosoft.uml.MElementEvent;
-import ru.novosoft.uml.foundation.core.MModelElement;
 
 /**
  * @deprecated as of ArgoUml 0.13.5 (10-may-2003),
@@ -59,13 +58,13 @@ abstract public class UMLModelElementCachedListModel extends UMLModelElementList
         return size;
     }
 
-    protected MModelElement getModelElementAt(int index) {
+    protected Object getModelElementAt(int index) {
         Object/*MModelElement*/ element = null;
         java.util.List cache = getCache();
         if (cache != null) {
             element = cache.get(index);
         }
-        return (MModelElement)element;
+        return /*(MModelElement)*/ element;
     }
 
     public void targetChanged() {

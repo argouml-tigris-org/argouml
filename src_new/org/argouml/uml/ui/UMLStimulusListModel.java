@@ -24,10 +24,8 @@
 
 package org.argouml.uml.ui;
 import javax.swing.*;
-import ru.novosoft.uml.behavior.common_behavior.MObject;
 import java.util.*;
 import org.argouml.model.ModelFacade;
-import ru.novosoft.uml.foundation.core.MModelElement;
 
 /**
  * @deprecated as of ArgoUml 0.13.5 (10-may-2003),
@@ -43,16 +41,16 @@ public class UMLStimulusListModel extends UMLModelElementListModel  {
     public UMLStimulusListModel(UMLUserInterfaceContainer container, String property, boolean showNone, String stimulusType) {
 	super(container, property, showNone);
 	this.stimulusType = stimulusType;
-       
+
     }
-    
+
     public void open(int index) {
         Object/*MModelElement*/ stimulus = getModelElementAt(index);
         if (stimulus != null) {
             navigateTo(stimulus);
         }
     }
-    
+
 
     protected int recalcModelElementSize() {
         int size = 0;
@@ -63,17 +61,17 @@ public class UMLStimulusListModel extends UMLModelElementListModel  {
         return size;
     }
 
-    protected MModelElement getModelElementAt(int index) {
+    protected Object getModelElementAt(int index) {
         Object/*MModelElement*/ elem = null;
         Collection stimuli = getStimuli();
         if (stimuli != null) {
             elem = elementAtUtil(stimuli, index, (Class)ModelFacade.STIMULUS);
         }
-        return (MModelElement)elem;
+        return /*(MModelElement)*/ elem;
     }
 
     private Collection getStimuli() {
-	Object/*MObject*/ obj = (MObject) getTarget();
+	Object/*MObject*/ obj = getTarget();
 	Collection stimuli = null;
         if (stimulusType.equals("sent") ) {
 	    stimuli = ModelFacade.getStimuli3(obj);
@@ -81,12 +79,12 @@ public class UMLStimulusListModel extends UMLModelElementListModel  {
 	    stimuli = ModelFacade.getStimuli2(obj);
   	}
 	return stimuli;
-		   
-    }
-    
-    
 
-    
+    }
+
+
+
+
     /**
      * @see org.argouml.uml.ui.UMLModelElementListModel#buildPopup(JPopupMenu, int)
      */

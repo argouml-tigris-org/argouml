@@ -42,10 +42,6 @@ import org.argouml.uml.ui.UMLComboBoxNavigator;
 import org.argouml.uml.ui.foundation.core.PropPanelModelElement;
 import org.argouml.util.ConfigLoader;
 
-// The NS-UML imports cannot be removed until we move to UMLComboBoxModel2
-import ru.novosoft.uml.foundation.core.MClassifier;
-import ru.novosoft.uml.foundation.core.MModelElement;
-
 /**
  * TODO: this property panel needs refactoring to remove dependency on
  *       old gui components.
@@ -69,12 +65,12 @@ public class PropPanelNodeInstance extends PropPanelModelElement {
 	new PropPanelButton(this, buttonPanel, _deleteIcon, localize("Delete"), "removeElement", null);
     }
 
-    public boolean isAcceptibleClassifier(MModelElement classifier) {
+    public boolean isAcceptibleClassifier(/*MModelElement*/Object classifier) {
         return org.argouml.model.ModelFacade.isAClassifier(classifier);
     }
 
 
-    public void setClassifier(MClassifier element) {
+    public void setClassifier(/*MClassifier*/Object element) {
         Object target = getTarget();
 
         if (org.argouml.model.ModelFacade.isAInstance(target)) {
