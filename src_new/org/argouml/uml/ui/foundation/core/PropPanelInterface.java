@@ -48,7 +48,7 @@ public class PropPanelInterface extends PropPanelClassifier {
     addCaption("Namespace:",3,0,0);
     addField(namespaceScroll,3,0,0);
 
-    addCaption("Extends:",4,0,0);
+    addCaption("Specializes:",4,0,0);
     addField(extendsScroll,4,0,0);
 
     addCaption("Modifiers:",5,0,1);
@@ -69,7 +69,7 @@ public class PropPanelInterface extends PropPanelClassifier {
     implementations.setFont(smallFont);
     addField(new JScrollPane(implementations),1,1,0.4);
 
-    addCaption("Derived:",2,1,0.3);
+    addCaption("Generalizes:",2,1,0.3);
     addField(derivedScroll,2,1,0.3);
 
     addCaption("Operations:",0,2,0.5);
