@@ -35,6 +35,13 @@ import org.apache.log4j.Logger;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.UmlFactory;
+import org
+    .argouml
+    .model
+    .uml
+    .behavioralelements
+    .collaborations
+    .CollaborationsFactory;
 import org.argouml.ui.CmdCreateNode;
 import org.argouml.uml.diagram.sequence.SequenceDiagramGraphModel;
 import org.argouml.uml.diagram.ui.UMLDiagram;
@@ -65,18 +72,25 @@ public class UMLSequenceDiagram extends UMLDiagram {
      * but that's plain misuse.
      */
     public UMLSequenceDiagram() {
+        this(
+            CollaborationsFactory.getFactory().buildCollaboration(
+                ProjectManager.getManager().getCurrentProject().getRoot()));
+    }
+
+    public UMLSequenceDiagram(Object collaboration) {
+        super();
         try {
             setName(getNewDiagramName());
         } catch (PropertyVetoException pve) {}
         // Dirty hack to remove the trash the Diagram constructor leaves
-        SequenceDiagramGraphModel gm = new SequenceDiagramGraphModel();
+        SequenceDiagramGraphModel gm =
+            new SequenceDiagramGraphModel(collaboration);
         SequenceDiagramLayout lay =
             new SequenceDiagramLayout(this.getName(), gm);
         SequenceDiagramRenderer rend = new SequenceDiagramRenderer();
         lay.setGraphEdgeRenderer(rend);
         lay.setGraphNodeRenderer(rend);
         setLayer(lay);
-
     }
 
     /**
@@ -139,7 +153,13 @@ public class UMLSequenceDiagram extends UMLDiagram {
     public Object getNamespace() {
         if (getGraphModel() == null
             || !(getGraphModel() instanceof SequenceDiagramGraphModel)) {
-            SequenceDiagramGraphModel model = new SequenceDiagramGraphModel();
+            SequenceDiagramGraphModel model =
+                new SequenceDiagramGraphModel(
+                    CollaborationsFactory.getFactory().buildCollaboration(
+                        ProjectManager
+                            .getManager()
+                            .getCurrentProject()
+                            .getRoot()));
             SequenceDiagramLayout lay =
                 new SequenceDiagramLayout(this.getName(), model);
             SequenceDiagramRenderer rend = new SequenceDiagramRenderer();
@@ -158,7 +178,13 @@ public class UMLSequenceDiagram extends UMLDiagram {
     public void setNamespace(Object ns) throws UnsupportedOperationException {
         if (getGraphModel() == null
             || !(getGraphModel() instanceof SequenceDiagramGraphModel)) {
-            SequenceDiagramGraphModel model = new SequenceDiagramGraphModel();
+            SequenceDiagramGraphModel model =
+                new SequenceDiagramGraphModel(
+                    CollaborationsFactory.getFactory().buildCollaboration(
+                        ProjectManager
+                            .getManager()
+                            .getCurrentProject()
+                            .getRoot()));
             SequenceDiagramLayout lay =
                 new SequenceDiagramLayout(this.getName(), model);
             SequenceDiagramRenderer rend = new SequenceDiagramRenderer();
@@ -166,8 +192,11 @@ public class UMLSequenceDiagram extends UMLDiagram {
             lay.setGraphNodeRenderer(rend);
             setLayer(lay);
         }
-        ModelFacade.setNamespace(((SequenceDiagramGraphModel)getLayer().getGraphModel()).getCollaboration(), ns);
-        
+        ModelFacade.setNamespace(
+            ((SequenceDiagramGraphModel)getLayer().getGraphModel())
+                .getCollaboration(),
+            ns);
+
     }
 
     /**

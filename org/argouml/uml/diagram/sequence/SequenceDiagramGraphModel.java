@@ -38,7 +38,6 @@ import java.util.Iterator;
 import java.util.Vector;
 
 import org.apache.log4j.Logger;
-import org.argouml.kernel.ProjectManager;
 import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.UmlFactory;
 import org.argouml.model.uml.behavioralelements.collaborations.CollaborationsFactory;
@@ -100,10 +99,8 @@ public class SequenceDiagramGraphModel
 	 * project.
 	 *
 	 */
-	public SequenceDiagramGraphModel() {
-		_collaboration =
-			CollaborationsFactory.getFactory().buildCollaboration(
-				ProjectManager.getManager().getCurrentProject().getRoot());
+	public SequenceDiagramGraphModel(Object collaboration) {
+		_collaboration = collaboration;			
 	}
 
 	/** Return all edges in the graph */

@@ -119,7 +119,7 @@ public class PerspectiveManager {
         packagePerspective.addRule(new GoProjectToModel());
         packagePerspective.addRule(new GoNamespaceToOwnedElements());
         packagePerspective.addRule(new GoNamespaceToDiagram());
-        packagePerspective.addRule(new GoModelToCollaboration());
+        // packagePerspective.addRule(new GoModelToCollaboration());
         packagePerspective.addRule(new GoUseCaseToExtensionPoint());
         packagePerspective.addRule(new GoClassifierToStructuralFeature());
         packagePerspective.addRule(new GoClassifierToBeh());
@@ -144,6 +144,7 @@ public class PerspectiveManager {
         packagePerspective.addRule(new GoStateToExit());
 		packagePerspective.addRule(new GoClassifierToSequenceDiagram());
 		packagePerspective.addRule(new GoOperationToSequenceDiagram());
+		packagePerspective.addRule(new GoClassifierToInstance());
         
         ExplorerPerspective diagramPerspective = 
             new ExplorerPerspective("combobox.item.diagram-centric");

@@ -24,13 +24,11 @@
 
 package org.argouml.ui.explorer.rules;
 
-import java.util.Collection;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Collection;
 import java.util.Iterator;
-import org.argouml.model.ModelFacade;
 
-import org.argouml.ui.AbstractGoRule;
+import org.argouml.model.ModelFacade;
 
 public class GoNamespaceToOwnedElements implements PerspectiveRule {
 
@@ -42,8 +40,16 @@ public class GoNamespaceToOwnedElements implements PerspectiveRule {
         
         if (!(org.argouml.model.ModelFacade.isANamespace(parent)))
             return null;
-        
-        return ModelFacade.getOwnedElements(parent);
+        Collection ownedElements = ModelFacade.getOwnedElements(parent);
+        Iterator it = ownedElements.iterator();
+        Collection ret = new ArrayList();
+        while (it.hasNext()) {
+        	Object o = it.next();
+        	if (!ModelFacade.isACollaboration(o)) {
+        		ret.add(o);
+        	}
+        }
+        return ret;
     }
 
 }

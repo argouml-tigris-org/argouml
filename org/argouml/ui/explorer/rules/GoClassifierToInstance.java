@@ -22,50 +22,41 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// File: GoUseCaseToExtensionPoint.java
-// Classes: GoUseCaseToExtensionPoint
-// Original Author: mail@jeremybennett.com
-// $Id$
-
-// 16 Apr 2002: Jeremy Bennett (mail@jeremybennett.com). Created to support
-// display of extension points in the navigator pane.
-
+// Original author: jaap.branderhorst@xs4all.nl
 
 package org.argouml.ui.explorer.rules;
 
 import java.util.Collection;
 
-import org.apache.log4j.Logger;
-import org.argouml.application.api.Argo;
 import org.argouml.model.ModelFacade;
 
 /**
- * <p>Provides a rule to display extension points in the navigation pane.</p>
- *
- * @author  16 Apr 2002. Jeremy Bennett (mail@jeremybennett.com).
+ * @author : jaap.branderhorst@xs4all.nl
  */
-
-public class GoUseCaseToExtensionPoint implements PerspectiveRule {
-    
-    protected static Logger cat =
-	Logger.getLogger(GoUseCaseToExtensionPoint.class);
+public class GoClassifierToInstance implements PerspectiveRule {
 
     /**
-     * <p>Give a name to this rule.</p>
-     *
-     * @return  The name of the rule ("<code>Use Case->Extension
-     *          Point</code>"). 
+     * 
      */
+    public GoClassifierToInstance() {
+        super();
+        // TODO Auto-generated constructor stub
+    }
 
+    /**
+     * @see org.argouml.ui.explorer.rules.PerspectiveRule#getRuleName()
+     */
     public String getRuleName() {
-        return Argo.localize ("Tree", "Use Case->Extension Point");
+        return "Classifier -> Instance";
     }
 
-    public Collection getChildren(Object parent) { 
-        if (ModelFacade.isAUseCase(parent)) {
-            return ModelFacade.getExtensionPoints(parent);
-        }
-        return null;
+    /**
+     * @see org.argouml.ui.explorer.rules.PerspectiveRule#getChildren(java.lang.Object)
+     */
+    public Collection getChildren(Object parent) {
+        if (!ModelFacade.isAClassifier(parent))
+        	return null;
+        return ModelFacade.getInstances(parent);
     }
 
-}  /* End of class GoUseCaseToExtensionPoint */
+}
