@@ -32,6 +32,7 @@ import java.text.MessageFormat;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
+import org.apache.log4j.Logger;
 import org.argouml.application.api.Argo;
 import org.argouml.cognitive.Decision;
 import org.argouml.cognitive.Goal;
@@ -41,6 +42,8 @@ import org.argouml.cognitive.critics.Critic;
 
 
 public class WizDescription extends WizStep {
+	/** logger */
+	private static Logger cat = Logger.getLogger(WizDescription.class);
 
     ////////////////////////////////////////////////////////////////
     // instance variables
@@ -50,7 +53,7 @@ public class WizDescription extends WizStep {
 
     public WizDescription() {
 	super();
-	Argo.log.info("making WizDescription");
+	cat.info("making WizDescription");
 
 	_description.setLineWrap(true);
 	_description.setWrapStyleWord(true);

@@ -24,10 +24,14 @@
 
 
 package org.argouml.application.configuration;
-import org.argouml.application.api.*;
-import java.io.*;
-import java.util.*;
-import java.net.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.net.URL;
+import java.util.Properties;
+
+import org.apache.log4j.Logger;
 
 /**
  *  This class provides a user configuration based upon properties files.
@@ -43,6 +47,9 @@ import java.net.*;
  * @author Thierry Lach
  */
 public class ConfigurationProperties extends ConfigurationHandler {
+	/** logger */
+	private static Logger cat = 
+		Logger.getLogger(ConfigurationProperties.class);
 
     /** The location of Argo's default properties resource.
      */
@@ -66,11 +73,11 @@ public class ConfigurationProperties extends ConfigurationHandler {
 	Properties defaults = new Properties();
 	try {
 	    defaults.load(getClass().getResourceAsStream(PROPERTIES));
-	    Configuration.cat.debug("Configuration loaded from " + PROPERTIES);
+	    cat.debug("Configuration loaded from " + PROPERTIES);
 	}
 	catch (Exception ioe) {
 	    // TODO:  What should we do here?
-	    Configuration.cat.warn("Configuration not loaded from "
+	    cat.warn("Configuration not loaded from "
 				   + PROPERTIES,
 				   ioe);
 	}
@@ -95,25 +102,25 @@ public class ConfigurationProperties extends ConfigurationHandler {
     public boolean loadFile(File file) {
         try {
             _properties.load(new FileInputStream(file));
-            Argo.log.info ("Configuration loaded from " + file);
+            cat.info ("Configuration loaded from " + file);
             return true;
         }
         catch (Exception e) {
             if (_canComplain) {
-                Argo.log.warn ("Unable to load configuration " + file);
+                cat.warn ("Unable to load configuration " + file);
             }
             // Try to create an empty file.
             try {
                 file.createNewFile();
                 if (file.exists() && file.isFile()) {
-                    Argo.log.info ("New configuration created as " + file);
+                    cat.info ("New configuration created as " + file);
                     // Pretend we loaded the file correctly
                     return true;
                 }
             }
             catch (IOException e1) {
                 // Ignore an error here
-                Argo.log.warn ("Unable to create configuration " + file, e1);
+                cat.warn ("Unable to create configuration " + file, e1);
             }
             _canComplain = false;
         }
@@ -130,12 +137,12 @@ public class ConfigurationProperties extends ConfigurationHandler {
     boolean saveFile(File file) {
 	try {
 	    _properties.store(new FileOutputStream(file), "Argo properties");
-	    Argo.log.info ("Configuration saved to " + file);
+	    cat.info ("Configuration saved to " + file);
 	    return true;
 	}
 	catch (Exception e) {
 	    if (_canComplain)
-		Argo.log.warn ("Unable to save configuration " + file + "\n");
+		cat.warn ("Unable to save configuration " + file + "\n");
 	    _canComplain = false;
 	}
 
@@ -150,12 +157,12 @@ public class ConfigurationProperties extends ConfigurationHandler {
     public boolean loadURL(URL url) {
 	try {
 	    _properties.load(url.openStream());
-	    Argo.log.info ("Configuration loaded from " + url + "\n");
+	    cat.info ("Configuration loaded from " + url + "\n");
 	    return true;
 	}
 	catch (Exception e) {
 	    if (_canComplain)
-		Argo.log.warn ("Unable to load configuration " + url + "\n");
+		cat.warn ("Unable to load configuration " + url + "\n");
 	    _canComplain = false;
 	    return false;
 	}
@@ -187,8 +194,8 @@ public class ConfigurationProperties extends ConfigurationHandler {
 	catch (Exception e) {
 	    result = defaultValue;
 	}
-	if (Configuration.cat.isDebugEnabled())
-	    Configuration.cat.debug("key '" + key 
+	if (cat.isDebugEnabled())
+	    cat.debug("key '" + key 
 				    + "' returns '" + result + "'");
 	return result;
     }
@@ -199,7 +206,7 @@ public class ConfigurationProperties extends ConfigurationHandler {
      *  @param value the value to set the key to.
      */
     public void setValue(String key, String value) {
-	Configuration.cat.debug("key '" + key + "' set to '" + value + "'");
+	cat.debug("key '" + key + "' set to '" + value + "'");
 	_properties.setProperty(key, value);
     }
 }

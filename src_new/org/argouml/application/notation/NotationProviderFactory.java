@@ -28,6 +28,7 @@
 
 package org.argouml.application.notation;
 
+import org.apache.log4j.Logger;
 import org.argouml.application.api.*;
 import org.argouml.application.events.*;
 
@@ -43,6 +44,9 @@ import org.argouml.uml.generator.GeneratorDisplay;
 public class NotationProviderFactory
     implements ArgoModuleEventListener 
 {
+	/** logger */
+	private static Logger cat = 
+		Logger.getLogger(NotationProviderFactory.class);
 
     static NotationProviderFactory SINGLETON = new NotationProviderFactory();
 
@@ -59,7 +63,7 @@ public class NotationProviderFactory
             Object o = iterator.next();
             if (o instanceof NotationProvider) {
 	        NotationProvider np = (NotationProvider) o;
-                Notation.cat.debug ("added provider:" + np);
+                cat.debug ("added provider:" + np);
                 _providers.add(np);
                 fireEvent(ArgoEventTypes.NOTATION_PROVIDER_ADDED, np);
 	    }
@@ -79,13 +83,13 @@ public class NotationProviderFactory
     public NotationProvider getProvider(NotationName nn) {
         NotationName n = (nn == null) ? Notation.getDefaultNotation() : nn;
 
-	Notation.cat.debug ("looking for " + n);
+	cat.debug ("looking for " + n);
         ListIterator iterator = _providers.listIterator();
         while (iterator.hasNext()) {
             NotationProvider np = (NotationProvider) iterator.next();
-	    Notation.cat.debug ("Checking " + np + ", " + np.getNotation());
+	    cat.debug ("Checking " + np + ", " + np.getNotation());
 	    if (np.getNotation().equals(n)) {
-	        Notation.cat.debug ("found provider " + np);
+	        cat.debug ("found provider " + np);
 	        return np;
 	    }
 	}
@@ -116,10 +120,10 @@ public class NotationProviderFactory
     }
  
     public void moduleLoaded(ArgoModuleEvent event) {
-	Notation.cat.debug (event);
+	cat.debug (event);
 	if (event.getSource() instanceof NotationProvider) {
 	    NotationProvider np = (NotationProvider) event.getSource();
-	    Notation.cat.debug ("added:" + np);
+	    cat.debug ("added:" + np);
 	    _providers.add(np);
 	    fireEvent(ArgoEventTypes.NOTATION_PROVIDER_ADDED, np);
 	}
@@ -135,8 +139,7 @@ public class NotationProviderFactory
     }
 
     private void fireEvent(int eventType,  NotationProvider provider) {
-	ArgoEventPump.getInstance().fireEvent(new ArgoNotationEvent(eventType,
-								    provider));
+	ArgoEventPump.fireEvent(new ArgoNotationEvent(eventType, provider));
     }
 
 }

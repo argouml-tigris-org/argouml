@@ -290,7 +290,7 @@ class TableModelChecklist extends AbstractTableModel
     public Object getValueAt(int row, int col) {
 	Checklist cl = CheckManager.getChecklistFor(_target);
 	if (cl == null) return "no checklist";
-	CheckItem ci = (CheckItem) cl.elementAt(row);
+	CheckItem ci = cl.elementAt(row);
 	if (col == 0) {
 	    ChecklistStatus stat = CheckManager.getStatusFor(_target);
 	    return (stat.contains(ci)) ? Boolean.TRUE : Boolean.FALSE;
@@ -309,7 +309,7 @@ class TableModelChecklist extends AbstractTableModel
 	boolean val = ((Boolean) aValue).booleanValue();
 	Checklist cl = CheckManager.getChecklistFor(_target);
 	if (cl == null) return;
-	CheckItem ci = (CheckItem) cl.elementAt(rowIndex);
+	CheckItem ci = cl.elementAt(rowIndex);
 	if (columnIndex == 0) {
 	    ChecklistStatus stat = CheckManager.getStatusFor(_target);
 	    if (val) stat.addItem(ci);

@@ -24,19 +24,22 @@
 
 package org.argouml.application;
 
+import java.util.Locale;
+
+import org.apache.log4j.Logger;
 import org.argouml.cognitive.Designer;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
-import org.argouml.uml.cognitive.critics.ChildGenUML;
 import org.argouml.model.uml.UmlModelEventPump;
-import org.argouml.application.api.Argo;
+import org.argouml.uml.cognitive.critics.ChildGenUML;
 import org.argouml.uml.cognitive.critics.CrUML;
-
-import java.util.Locale;
 
 /** StartCritics is a thread which helps to start the critiquing thread
  */
 public class StartCritics implements Runnable {
+	/** logger */
+	private static Logger cat = Logger.getLogger(StartCritics.class);
+
 	/**
 	 * @see java.lang.Runnable#run()
 	 */
@@ -55,7 +58,7 @@ public class StartCritics implements Runnable {
             UmlModelEventPump.getPump().addModelEventListener(dsgr,
 							      o); 
         }
-        Argo.log.info("spawned critiquing thread");
+        cat.info("spawned critiquing thread");
 
         // should be in logon wizard?
         dsgr.startConsidering(CrUML.decINHERITANCE);

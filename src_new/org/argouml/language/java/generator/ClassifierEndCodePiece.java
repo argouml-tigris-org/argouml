@@ -36,9 +36,6 @@ import java.util.Iterator;
 import java.util.Stack;
 import java.util.Vector;
 import org.argouml.model.ModelFacade;
-import ru.novosoft.uml.foundation.core.MClass;
-import ru.novosoft.uml.foundation.core.MClassifier;
-import ru.novosoft.uml.foundation.core.MInterface;
 /**
    This code piece represents the end of a class or an interface.
 */
@@ -127,15 +124,14 @@ public class ClassifierEndCodePiece extends NamedCodePiece
         for (Iterator i = newInnerClasses.iterator(); i.hasNext(); ) {
             Object element = /*(MModelElement)*/ i.next();
             if (ModelFacade.isAClass(element)) {
-                CodeGenerator.generateClass((MClass) element, reader, writer);
+                CodeGenerator.generateClass(element, reader, writer);
             } else if (ModelFacade.isAInterface(element)) {
-		CodeGenerator.generateInterface((MInterface) element,
-						reader, writer);
+                CodeGenerator.generateInterface(element, reader, writer);
             }
         }
 
 	StringBuffer sb = GeneratorJava.getInstance()
-	    .appendClassifierEnd (new StringBuffer (2), (MClassifier)mClassifier, true);
+	    .appendClassifierEnd (new StringBuffer (2), mClassifier, true);
 	writer.write (sb.toString());
 	// fast forward original code (overwriting)
 	ffCodePiece(reader, null);

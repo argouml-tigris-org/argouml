@@ -30,7 +30,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 
-import org.argouml.application.api.Argo;
+import org.apache.log4j.Logger;
 import org.argouml.kernel.Project;
 import org.argouml.model.ModelFacade;
 import org.xml.sax.InputSource;
@@ -52,7 +52,10 @@ public class XMIParser {
     ////////////////////////////////////////////////////////////////
     // static variables
 
-    public static XMIParser SINGLETON = new XMIParser();
+	/** logger */
+	private static Logger cat = Logger.getLogger(XMIParser.class);
+
+	public static XMIParser SINGLETON = new XMIParser();
 
     ////////////////////////////////////////////////////////////////
     // instance variables
@@ -87,8 +90,8 @@ public class XMIParser {
 
         _proj = p;
 
-        Argo.log.info("=======================================");
-        Argo.log.info("== READING MODEL " + url);
+        cat.info("=======================================");
+        cat.info("== READING MODEL " + url);
         try {
             XMIReader reader = new XMIReader();
             InputSource source = new InputSource(url.openStream());
@@ -117,7 +120,7 @@ public class XMIParser {
         catch (Exception ex) {
             ex.printStackTrace();
         }
-        Argo.log.info("=======================================");
+        cat.info("=======================================");
 
         
 	_proj.addModel(_curModel);

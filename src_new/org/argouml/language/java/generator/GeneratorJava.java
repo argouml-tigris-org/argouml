@@ -45,6 +45,7 @@ import java.util.LinkedList;
 import java.util.StringTokenizer;
 import java.util.Vector;
 
+import org.apache.log4j.Logger;
 import org.argouml.application.ArgoVersion;
 import org.argouml.application.api.Argo;
 import org.argouml.application.api.Notation;
@@ -97,6 +98,8 @@ import tudresden.ocl.parser.node.AConstraintBody;
 public class GeneratorJava
     extends Generator implements FileGenerator {
 
+    /** logger */
+    private static Logger cat = Logger.getLogger(GeneratorJava.class);
     /*
      * 2002-06-09 changed visibility of VERBOSE_DOCS and
      * LF_BEFORE_CURLY to public instead of private
@@ -160,7 +163,7 @@ public class GeneratorJava
             File f = new File(path);
             if (!f.isDirectory()) {
                 if (!f.mkdir()) {
-                    Argo.log.error(" could not make directory " + path);
+                    cat.error(" could not make directory " + path);
                     return null;
                 }
             }
@@ -178,7 +181,7 @@ public class GeneratorJava
         } while (true);
 
         String pathname = path + filename;
-        //Argo.log.info("-----" + pathname + "-----");
+        //cat.info("-----" + pathname + "-----");
 
         //now decide wether file exist and need an update or is to be
         //newly generated
@@ -190,17 +193,17 @@ public class GeneratorJava
             } catch (Exception exp) {
                 _isInUpdateMode = false;
                 _isFileGeneration = false;
-                Argo.log.error("FAILED: " + f.getPath());
+                cat.error("FAILED: " + f.getPath());
             }
 
-            //Argo.log.info("----- end generating -----");
+            //cat.info("----- end generating -----");
             _isFileGeneration = false;
             return pathname;
         }
 
         //String pathname = path + filename;
         // TODO: package, project basepath, tagged values to configure
-        Argo.log.info("Generating (new) " + f.getPath());
+        cat.info("Generating (new) " + f.getPath());
         _isFileGeneration = true;
         String header = SINGLETON.generateHeader((MClassifier)classifier, pathname, packagePath);
         String src = SINGLETON.generate(classifier);
@@ -216,11 +219,11 @@ public class GeneratorJava
                 if (fos != null)
                     fos.close();
             } catch (IOException exp) {
-                Argo.log.error("FAILED: " + f.getPath());
+                cat.error("FAILED: " + f.getPath());
             }
         }
 
-        //Argo.log.info("----- end updating -----");
+        //cat.info("----- end updating -----");
         return pathname;
     }
 
@@ -989,7 +992,7 @@ public class GeneratorJava
        * method body will be generated.
        */
     public String generateMethodBody(MOperation op) {
-        //Argo.log.info("generateMethodBody");
+        //cat.info("generateMethodBody");
         if (op != null) {
             Collection methods = op.getMethods();
             Iterator i = methods.iterator();
@@ -1355,9 +1358,8 @@ public class GeneratorJava
         StringBuffer sb = new StringBuffer(80);
         if (VERBOSE_DOCS)
             sb.append(INDENT).append("// constraints").append(LINE_SEPARATOR);
-        int size = cs.size();
         // MConstraint[] csarray = (MConstraint[])cs.toArray();
-        // Argo.log.debug("Got " + csarray.size() + " constraints.");
+        // cat.debug("Got " + csarray.size() + " constraints.");
         for (Iterator i = cs.iterator(); i.hasNext();) {
             Object constraint = /*(MConstraint)*/ i.next();
             String constrStr = generateConstraint((MConstraint)constraint);
@@ -1660,7 +1662,7 @@ public class GeneratorJava
     }
 
     public String generateStateBody(MState m) {
-        Argo.log.info("GeneratorJava: generating state body");
+        cat.info("GeneratorJava: generating state body");
         StringBuffer sb = new StringBuffer(80);
         Object entryAction = ModelFacade.getEntry(m);
         Object exitAction = ModelFacade.getExit(m);   
@@ -1806,7 +1808,7 @@ public class GeneratorJava
     */
     protected static void update(MClassifier mClassifier, File file)
         throws Exception {
-        Argo.log.info("Parsing " + file.getPath());
+        cat.info("Parsing " + file.getPath());
 
         BufferedReader in = new BufferedReader(new FileReader(file));
         JavaLexer lexer = new JavaLexer(in);
@@ -1820,13 +1822,13 @@ public class GeneratorJava
         File backupFile = new File(file.getAbsolutePath() + ".backup");
         if (backupFile.exists())
             backupFile.delete();
-        //Argo.log.info("Generating " + newFile.getPath());
+        //cat.info("Generating " + newFile.getPath());
         _isInUpdateMode = true;
         cpc.filter(file, newFile, ModelFacade.getNamespace(mClassifier));
         _isInUpdateMode = false;
-        //Argo.log.info("Backing up " + file.getPath());
+        //cat.info("Backing up " + file.getPath());
         file.renameTo(backupFile);
-        Argo.log.info("Updating " + file.getPath());
+        cat.info("Updating " + file.getPath());
         newFile.renameTo(origFile);
     }
 

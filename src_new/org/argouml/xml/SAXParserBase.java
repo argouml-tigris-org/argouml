@@ -34,7 +34,6 @@ import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
 import org.apache.log4j.Logger;
-import org.argouml.application.api.Argo;
 import org.xml.sax.AttributeList;
 import org.xml.sax.HandlerBase;
 import org.xml.sax.InputSource;
@@ -46,8 +45,8 @@ import org.xml.sax.SAXException;
 
 public abstract class SAXParserBase extends HandlerBase {
     
-    protected Logger cat = 
-        Logger.getLogger(SAXParserBase.class);
+    /** logger */
+    private static Logger cat = Logger.getLogger(SAXParserBase.class);
 
     ////////////////////////////////////////////////////////////////
     // constants
@@ -111,7 +110,7 @@ public abstract class SAXParserBase extends HandlerBase {
 	    end = System.currentTimeMillis();
 	    _parseTime = end - start;
 	    if (_stats) {
-		Argo.log.info("Elapsed time: " + (end - start) + " ms");
+		cat.info("Elapsed time: " + (end - start) + " ms");
 	    }
 	}
 	catch (ParserConfigurationException e) {

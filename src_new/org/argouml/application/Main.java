@@ -68,8 +68,8 @@ import org.tigris.gef.util.Util;
 
 public class Main {
 
-    // instantiation is done in main
-    private static Logger cat = null;
+	/** logger */
+	private static Logger cat = Logger.getLogger(Main.class);
 
     ////////////////////////////////////////////////////////////////
     // constants
@@ -93,6 +93,7 @@ public class Main {
 	"statusmsg.bar.readingproject";
     private static final String STATBUNDLE_BAR_OPEN_PROJECT_BROWSER = 
 	"statusmsg.bar.open-project-browser";
+//	TODO : document use. No other ref.
     private static final String STATBUNDLE_BAR_LOADMODULES = 
 	"statusmsg.bar.loadmodules";
 		
@@ -154,6 +155,7 @@ public class Main {
 
 
         boolean doSplash = Configuration.getBoolean(Argo.KEY_SPLASH, true);
+//		TODO : document use. Ref. 1/2
         boolean useEDEM = Configuration.getBoolean(Argo.KEY_EDEM, true);
         boolean preload = Configuration.getBoolean(Argo.KEY_PRELOAD, true);
         boolean profileLoad = Configuration.getBoolean(Argo.KEY_PROFILE, false);
@@ -214,6 +216,7 @@ public class Main {
                 } else if (args[i].equalsIgnoreCase("-nosplash")) {
                     doSplash = false;
                 } else if (args[i].equalsIgnoreCase("-noedem")) {
+//					TODO : document use. Ref. 2/2
                     useEDEM = false;
                 } else if (args[i].equalsIgnoreCase("-nopreload")) {
                     preload = false;
@@ -259,10 +262,10 @@ public class Main {
             if (!("".equals(s))) {
                 File file = new File(s);
                 if (file.exists()) {
-                    Argo.log.info("Re-opening project " + s);
+                    cat.info("Re-opening project " + s);
                     projectName = s;
                 } else {
-                    Argo.log.warn(
+                    cat.warn(
                         "Cannot re-open " + s + " because it does not exist");
                 }
             }
@@ -283,7 +286,7 @@ public class Main {
                 try {
                     urlToOpen = Util.fileToURL(projectFile);
                 } catch (Exception e) {
-                    Argo.log.error("Exception opening project in main()", e);
+                    cat.error("Exception opening project in main()", e);
                 }
             }
         }
@@ -394,14 +397,14 @@ public class Main {
         postLoadThead.start();
 
         if (profileLoad) {
-            Argo.log.info("");
-            Argo.log.info("profile of load time ############");
+            cat.info("");
+            cat.info("profile of load time ############");
             for (Enumeration i = st.result(); i.hasMoreElements();) {
-                Argo.log.info(i.nextElement());
+                cat.info(i.nextElement());
             }
 
-            Argo.log.info("#################################");
-            Argo.log.info("");
+            cat.info("#################################");
+            cat.info("");
         }
         st = null;
         pb.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
@@ -601,6 +604,9 @@ public class Main {
 } /* end Class Main */
 
 class PostLoad implements Runnable {
+	/** logger */
+	private static Logger cat = Logger.getLogger(PostLoad.class);
+
     Vector postLoadActions = null;
     Thread myThread = null;
     public PostLoad(Vector v) {
@@ -613,7 +619,7 @@ class PostLoad implements Runnable {
         try {
             Thread.sleep(1000);
         } catch (Exception ex) {
-            Argo.log.error("post load no sleep", ex);
+            cat.error("post load no sleep", ex);
         }
         int size = postLoadActions.size();
         for (int i = 0; i < size; i++) {
@@ -622,16 +628,19 @@ class PostLoad implements Runnable {
             try {
                 Thread.sleep(100);
             } catch (Exception ex) {
-                Argo.log.error("post load no sleep2", ex);
+                cat.error("post load no sleep2", ex);
             }
         }
     }
 } /* end class PostLoad */
 
 class PreloadClasses implements Runnable {
-    public void run() {
+	/** logger */
+	private static Logger cat = Logger.getLogger(PreloadClasses.class);
+
+	public void run() {
         Class c = null;
-        Argo.log.info("preloading...");
+        cat.info("preloading...");
 
 	// Alphabetic order
         c = java.beans.BeanDescriptor.class;
@@ -695,7 +704,7 @@ class PreloadClasses implements Runnable {
         c = org.tigris.gef.util.EnumerationEmpty.class;
         c = org.tigris.gef.util.EnumerationSingle.class;
 
-        Argo.log.info(" done preloading");
+        cat.info(" done preloading");
     }
 
 } /* end class PreloadClasses */

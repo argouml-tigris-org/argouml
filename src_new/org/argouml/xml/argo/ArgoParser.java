@@ -31,7 +31,6 @@ import java.net.URL;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.log4j.Logger;
-import org.argouml.application.api.Argo;
 import org.argouml.kernel.Project;
 import org.argouml.xml.SAXParserBase;
 import org.argouml.xml.XMLElement;
@@ -40,7 +39,9 @@ import org.xml.sax.SAXException;
 /** @stereotype singleton
  */
 public class ArgoParser extends SAXParserBase {
-    protected static Logger cat = Logger.getLogger(ArgoParser.class);
+
+    /** logger */
+    private static Logger cat = Logger.getLogger(ArgoParser.class);
 
     ////////////////////////////////////////////////////////////////
     // static variables
@@ -97,7 +98,7 @@ public class ArgoParser extends SAXParserBase {
         _addMembers = addMembers;
 
         if ((_url == null) && _addMembers) {
-            Argo.log.info(
+            cat.info(
 			  "URL not set! Won't be able to add members! Aborting...");
             lastLoadMessage = "URL not set!";
             return;

@@ -191,5 +191,5 @@ public class PropertyTable extends JTable {
                 _properties[rowIndex].setCurrentValue(aValue);
             }
         }
-    };
+    }
 }

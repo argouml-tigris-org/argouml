@@ -24,8 +24,6 @@
 
 package org.argouml.kernel;
 
-import org.tigris.gef.util.*;
-
 /**
  * Predicate to test if an Object is <B>NOT</B> an instance of a class.
  * This class belongs in org.argouml.util

@@ -67,7 +67,6 @@ public class ConfigurationFactory
     /** Private constructor to not allow instantiation.
      */
     private ConfigurationFactory() {
-	// Argo.log.debug("Constructor");
     }
 
     /** Returns the instance of the singleton.

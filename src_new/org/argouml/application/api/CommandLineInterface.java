@@ -43,5 +43,5 @@ public interface CommandLineInterface {
      * @return true if the command was performed successfully.
      */
     public boolean doCommand(String argument);
-};
+}
 
