@@ -90,10 +90,17 @@ public class NotationNameImpl
      *  in a combo box or other such visual location.
      */
     public String getTitle() {
-        // TODO:  Currently this does not
-	//                   differentiate from the configuration
-	//                   value.
-        return getNotationNameString(_name, _version);
+        String name = _name;
+        if (name.equalsIgnoreCase("uml")) {
+            name = name.toUpperCase();
+        }
+
+        if (_version == null || _version.equals("")) {
+            return name;
+        }
+        else {
+            return name + " " + _version;
+        }
     }
 
     /** Returns an icon for the notation, or null if no icon is available.
@@ -107,7 +114,7 @@ public class NotationNameImpl
     }
 
     public String toString() {
-        return getNotationNameString(_name, _version);
+        return getTitle();
     }
 
     /*public String toString() {
