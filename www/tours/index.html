@@ -1,117 +1,211 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
-
 <HTML>
-
-
-
 <HEAD>
-
-     <link REL="stylesheet" TYPE="text/css" HREF="http://www.tigris.org/branding/style.css">
-
-	<META HTTP-EQUIV="Content-Type" CONTENT="text/html;CHARSET=iso-8859-1">
-
-	<META NAME="GENERATOR" Content="Visual Page 1.1a for Windows">
-
+	<META HTTP-EQUIV="CONTENT-TYPE" CONTENT="text/html; charset=windows-1252">
 	<TITLE>Argo/UML Tour</TITLE>
+	<META NAME="GENERATOR" CONTENT="StarOffice 6.0  (Win32)">
+	<META NAME="CREATED" CONTENT="20011205;20232045">
+	<META NAME="CHANGEDBY" CONTENT="Dennis Daniels">
+	<META NAME="CHANGED" CONTENT="20011205;20255698">
+	<script language="javaScript">
 
+function isViewletCompliant()
+{
+     answer=true;
+     version=Math.round(parseFloat(navigator.appVersion) * 1000);
+     if (navigator.appName.substring(0,9) == "Microsoft")
+     {
+          //IE4.0+. Ok on all platforms
+          if(version<4000) answer=false;
+     }
+     if (navigator.appName.substring(0,8) == "Netscape")
+     {
+          //NN5.0+ needed on mac, NN4.06+ on other platforms
+          if ((navigator.appVersion.indexOf("Mac")> 0) && (version<5000))
+          answer=false;
+          else
+          if (version<4060)
+               answer=false;
+     }
+     // Browser Shouldn't support java 1.1 but might have plugin
+     plugins=navigator.plugins;
+     if (answer==false && plugins!=null)
+     {
+          for(i=0;i!=plugins.length;i++)
+          if((plugins[i].name.indexOf("Java Plug-in")>=0) && (plugins[i].name.indexOf("1.0")<0))
+               answer=true;
+     }
+     return answer;
+     //For other browsers we assume it works}function openViewlet(htmlFile,htmlWidth,htmlHeight)
+     {
+          str = 'resizable=0,toolbar=0,menubar=0,';
+          str = str + 'scrollbars=0,status=0,location=0,directory=0,width=350,height=200';
+          if(!isViewletCompliant())
+          {
+               open("http://www.qarbon.com/warning/index.html",'Leelou',str);
+          }
+          else
+          {
+               window.open(htmlFile,'Leelou','width='+htmlWidth+',height='+htmlHeight+',top=10,left=20');
+          }
+     }
+}
+
+function openViewlet(htmlFile,htmlWidth,htmlHeight)
+{
+     str = 'resizable=0,toolbar=0,menubar=0,';
+     str = str + 'scrollbars=0,status=0,location=0,directory=0,width=350,height=200';
+     if(!isViewletCompliant())
+     {
+          open("http://www.qarbon.com/warning/index.html",'Leelou',str);
+     }
+     else
+     {
+          window.open(htmlFile,'Leelou','width='+htmlWidth+',height='+htmlHeight+',top=10,left=20');
+     }
+}
+</script>
+	
+	<STYLE>
+	<!--
+		TD P { color: #000000; font-family: "lucida", "verdana", "helvetica", "arial", sans-serif; font-size: 8pt }
+		H2 { color: #000000 }
+		H3 { color: #000000 }
+		P { color: #000000; font-family: "lucida", "verdana", "helvetica", "arial", sans-serif; font-size: 8pt }
+	-->
+	</STYLE>
 </HEAD>
-
-
-
-<BODY>
-
-
-
+<BODY TEXT="#000000">
 <H2>Argo/UML Tour</H2>
-
-<h3>Wondering what it is like to use Argo/UML? </h3>
-
-Use your web browser to step through screen-shots from usage scenarios that show Argo's features.<p></P>
-
-
-
-<h3>Explore Argo's user interface:</h3>
-
-
-
+<H3>Wondering what it is like to use Argo/UML? 
+</H3>
+<P>Use your web browser to step through screen-shots from usage
+scenarios that show Argo's features.</P>
+<H3>Explore Argo's user interface:</H3>
 <UL>
-  <LI><A HREF="main.html">Argo/UML Main Window</A> 
+  <LI> 
+    <P STYLE="margin-bottom: 0cm"><A HREF="main.html">Argo/UML Main Window</A> 
+    </P>
     <UL>
-      <LI><A HREF="menus.html">Menus</A>: File, Edit, View, Arrange, Create, Generate, 
-        Critique, Help 
-      <LI><A HREF="editpane.html">Editing Pane</A>: As Diagram, As Table, As Metrics 
-      <LI><A HREF="navpane.html">Navigation Pane</A> 
-      <LI><A HREF="todopane.html">To Do Pane</A> 
-      <LI><A HREF="detailspane.html">Details Pane</A>: <A HREF="tabtoditem.html">ToDoItem, 
-        </a><A HREF="tabprops.html">Properties</A>, <A HREF="tabstyle.html">Style</A>, 
-        <A HREF="tabdocs.html">Javadocs</A>, <A HREF="tabsource.html">Source</A>, 
-        <A HREF="tabconstraints.html">Constraints</A>, <A HREF="tabtaggedvalues.html">TaggedValues</A>, 
-        <A HREF="tabchecklist.html">Checklists</A>, <A HREF="tabhistory.html">History</A> 
+      <LI> 
+        <P STYLE="margin-bottom: 0cm"><A HREF="menus.html">Menus</A>: File, Edit, 
+          View, Arrange, Create, Generate, Critique, Help </P>
+      <LI> 
+        <P STYLE="margin-bottom: 0cm"><A HREF="editpane.html">Editing Pane</A>: 
+          As Diagram, As Table, As Metrics </P>
+      <LI> 
+        <P STYLE="margin-bottom: 0cm"><A HREF="navpane.html">Navigation Pane</A> 
+        </P>
+      <LI> 
+        <P STYLE="margin-bottom: 0cm"><A HREF="todopane.html">To Do Pane</A> </P>
+      <LI> 
+        <P STYLE="margin-bottom: 0cm"><A HREF="detailspane.html">Details Pane</A>: 
+          <A HREF="tabtoditem.html">ToDoItem, </A><A HREF="tabprops.html">Properties</A>, 
+          <A HREF="tabstyle.html">Style</A>, <A HREF="tabdocs.html">Javadocs</A>, 
+          <A HREF="tabsource.html">Source</A>, <A HREF="tabconstraints.html">Constraints</A>, 
+          <A HREF="tabtaggedvalues.html">TaggedValues</A>, <A HREF="tabchecklist.html">Checklists</A>, 
+          <A HREF="tabhistory.html">History</A> </P>
     </UL>
-  <LI>Go To Diagram Dialog 
-  <LI><A HREF="navconfig.html">Navigational Perspective Configuration Window</A> 
-  <LI><A HREF="dismiss.html">Dismiss Feedback Item Dialog</A> 
-  <LI><A HREF="classgen.html">Class Generation Window</A> 
-  <LI><A HREF="designissues.html">Design Issues Window</A> 
-  <LI><A HREF="designgoals.html">Design Goals Window</A> 
-  <LI>Design Process ... 
-  <LI><A HREF="criticbrowser.html">Critic Browser Window</A> 
-  <LI><A HREF="aboutbox.html">About Box</A> 
-  <LI><a href="../viewlets/argocvsnb.vp/Viewlet/argocvsnb.html">Test </a> 
+  <LI> 
+    <P STYLE="margin-bottom: 0cm">Go To Diagram Dialog </P>
+  <LI> 
+    <P STYLE="margin-bottom: 0cm"><A HREF="navconfig.html">Navigational Perspective 
+      Configuration Window</A> </P>
+  <LI> 
+    <P STYLE="margin-bottom: 0cm"><A HREF="dismiss.html">Dismiss Feedback Item 
+      Dialog</A> </P>
+  <LI> 
+    <P STYLE="margin-bottom: 0cm"><A HREF="classgen.html">Class Generation Window</A> 
+    </P>
+  <LI> 
+    <P STYLE="margin-bottom: 0cm"><A HREF="designissues.html">Design Issues Window</A> 
+    </P>
+  <LI> 
+    <P STYLE="margin-bottom: 0cm"><A HREF="designgoals.html">Design Goals Window</A> 
+    </P>
+  <LI> 
+    <P STYLE="margin-bottom: 0cm">Design Process ... </P>
+  <LI> 
+    <P STYLE="margin-bottom: 0cm"><A HREF="criticbrowser.html">Critic Browser 
+      Window</A> </P>
+  <LI> <A HREF="aboutbox.html">About Box</A> 
 </UL>
-
-
-
-<h3>Take a tour that shows how Argo can be used:</h3>
-
-
-
+<h3>Viewlets</h3>
 <UL>
-
-	<LI><A HREF="ui.html">Overview of major features</A>
-
-	<LI>Building Diagrams
-
-	<UL>
-
-		<LI><A HREF="bdClassDiagram.html">Class Diagram</A>
-
-		<LI><A HREF="bdUseCaseDiagram.html">Use Case Diagram</A>
-
-		<LI><A HREF="bdStateDiagram.html">State Diagram</A>
-
-	</UL>
-
-	<LI>Generating Java code
-
-	<LI>Working with the &quot;to do&quot; list
-
-	<LI>Working with the user model
-
-	<LI>Working with navigational perspectives
-
-	<LI>Working with checklists
-
-	<LI>Working with the process model
-
-	<LI>Using model-based graph-layout
-
-	<LI>Customizing the user model
-
+  <LI> 
+    <p>This Viewlet will show you how to build argo...<a href="javascript:openViewlet('http://www.viewhow2.com/vf/ckxnkki/1/argobuild_viewlet.html',839+20,600+90);">argouml-'build 
+      package' </a></p>
+  <LI> 
+    <p>This Viewelt will show you how to build the documentation ... <a href="javascript:openViewlet('http://www.viewhow2.com/vf/ckxnkki/2/argobuilddocs_viewlet.html',679+20,480+90);">argobuildocs 
+      </a></p>
+  <LI> 
+    <p>This Viewlet takes you from start to finish in getting Argo loaded under 
+      Netbeans 3.2.1 <a href="javascript:openViewlet('http://www.viewhow2.com/vf/ckxnkki/3/argocvsnb_viewlet.html',839+20,600+90);">argouml 
+      netbeans cvs to compile</a></p>
+  <LI> 
+    <p><a href="javascript:openViewlet('http://www.viewhow2.com/vf/ckxnkki/3/argocvsnb_viewlet.html',839+20,600+90);"> 
+      </a>This Viewlet will show you how to get Argo running using a java console...<a href="javascript:openViewlet('http://www.viewhow2.com/vf/ckxnkki/4/argoumljar_viewlet.html',839+20,600+90);">argouml.jar 
+      </a></p>
+  <LI> 
+    <p><a href="javascript:openViewlet('http://www.viewhow2.com/vf/ckxnkki/4/argoumljar_viewlet.html',839+20,600+90);"> 
+      </a>This is a an error report, unknown if it is a helm or client side problem.<a href="javascript:openViewlet('http://www.viewhow2.com/vf/ckxnkki/5/NBCVScommitunderViewerror_viewlet.html',839+20,600+90);"> 
+      failed cvs with nb under viewlets </a></p>
+  <LI> 
+    <p>This gives you an idea of how Argo would eventually connect to Netbeans, 
+      as Poseidon...<a href="javascript:openViewlet('http://www.viewhow2.com/vf/ckxnkki/6/psdnmoduleerror_viewlet.html',679+20,480+90);">connecting 
+      poseidon to nb</a><br>
+    </p>
+  <LI> 
+    <p>This is a quick run through the interface, mostly testing saving and light 
+      weight functions...<a href="javascript:openViewlet('http://www.viewhow2.com/vf/ckxnkki/7/psdntestandsuggestions_viewlet.html',839+20,600+90);">poseidontest 
+      </a></p>
+  <LI> 
+    <p>This is a very short tutorial on how to use the XMI generated from your 
+      classes can be turned into XSD for further manipulation with XSLT. Courtesy 
+      of xmlmodeling.com... <a href="javascript:openViewlet('http://www.viewhow2.com/vf/ckxnkki/8/xmlmodel_viewlet.html',679+20,480+90);">xmlmodel 
+      </a>This is a must see!<br>
+    </p>
 </UL>
-
-
-
-<P>
-
-<HR ALIGN="CENTER">
-
-Back to <A HREF="../index.html">Argo/UML Home</A>
-
-
-
+<H3>Take a tour that shows how Argo can be used:</H3>
+<UL>
+	<LI><P STYLE="margin-bottom: 0cm"><A HREF="ui.html">Overview of
+	major features</A> 
+	</P>
+	<LI><P STYLE="margin-bottom: 0cm">Building Diagrams 
+	</P>
+	<UL>
+		<LI><P STYLE="margin-bottom: 0cm"><A HREF="bdClassDiagram.html">Class
+		Diagram</A> 
+		</P>
+		<LI><P STYLE="margin-bottom: 0cm"><A HREF="bdUseCaseDiagram.html">Use
+		Case Diagram</A> 
+		</P>
+		<LI><P STYLE="margin-bottom: 0cm"><A HREF="bdStateDiagram.html">State
+		Diagram</A> 
+		</P>
+	</UL>
+	<LI><P STYLE="margin-bottom: 0cm">Generating Java code 
+	</P>
+	<LI><P STYLE="margin-bottom: 0cm">Working with the &quot;to do&quot;
+	list 
+	</P>
+	<LI><P STYLE="margin-bottom: 0cm">Working with the user model 
+	</P>
+	<LI><P STYLE="margin-bottom: 0cm">Working with navigational
+	perspectives 
+	</P>
+	<LI><P STYLE="margin-bottom: 0cm">Working with checklists 
+	</P>
+	<LI><P STYLE="margin-bottom: 0cm">Working with the process model 
+	</P>
+	<LI><P STYLE="margin-bottom: 0cm">Using model-based graph-layout 
+	</P>
+	<LI><P>Customizing the user model 
+	</P>
+</UL>
+<HR>
+<P>Back to <A HREF="../index.html">Argo/UML Home</A>  <A HREF="mailto:webmaster@argouml.org?subject=tour/ index.html">Comments?
+</A>
+</P>
 </BODY>
-
-
-
 </HTML>
