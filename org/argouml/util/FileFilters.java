@@ -132,6 +132,10 @@ public class FileFilters {
     public static final SuffixFilter SVGFilter = new
         SuffixFilter("svg", "Scalable Vector Graphics file");
   
+    /** Filter for IDL files */
+    public static final SuffixFilter IDLFilter = new
+		SuffixFilter("idl", "Interface Definition Language file");
+    
     /**
      * Returns the suffix for which a FileFilter filters. 
      * @param filter The FileFilter from which we want to know the suffix
