@@ -226,7 +226,7 @@ public class MultiEditorPane
         Component curTab = _tabs.getSelectedComponent();
         if (curTab instanceof TabDiagram) {
             JGraph jg = ((TabDiagram) curTab).getJGraph();
-            if (jg.getEditor().getLayerManager().getContents().contains(o))
+            if (jg.getEditor().getLayerManager().getContents(null).contains(o))
                 jg.selectByOwnerOrFig(o);
         }
         //TODO: handle tables
@@ -235,9 +235,9 @@ public class MultiEditorPane
     
 
 
-      /**
-       *  called when the user selects a tab, by clicking or otherwise. 
-       */
+    /**
+     *  called when the user selects a tab, by clicking or otherwise. 
+     */
     public void stateChanged(ChangeEvent  e) {
         //TODO: should fire its own event and ProjectBrowser
         //should register a listener

@@ -84,16 +84,21 @@ public class CrWrongDepEnds extends CrUML {
      * FigObjects described over the supplier and client.
      **/
     public VectorSet computeOffenders(UMLDeploymentDiagram dd) { 
-	Vector figs = dd.getLayer().getContents();
+	Collection figs = dd.getLayer().getContents(null);
 	VectorSet offs = null;
 	int size = figs.size();
-	for (int i = 0; i < size; i++) {
-	    Object obj = figs.elementAt(i);
-	    if (!(obj instanceof FigDependency)) continue;
-	    FigDependency fd = (FigDependency) obj;
-	    if (!(ModelFacade.isADependency(fd.getOwner()))) continue;
-	    Object dep = /*(MDependency)*/ fd.getOwner();
-	    Collection suppliers = ModelFacade.getSuppliers(dep);
+        Iterator figIter = figs.iterator();
+	while (figIter.hasNext()) {
+	    Object obj = figIter.next();
+	    if (!(obj instanceof FigDependency)) {
+                continue;
+            }
+	    FigDependency figDependency = (FigDependency) obj;
+	    if (!(ModelFacade.isADependency(figDependency.getOwner()))) {
+                continue;
+            }
+	    Object dependency = figDependency.getOwner();
+	    Collection suppliers = ModelFacade.getSuppliers(dependency);
 	    int count = 0;
 	    if (suppliers != null && (suppliers.size() > 0)) {
 		Iterator it = suppliers.iterator();
@@ -111,7 +116,7 @@ public class CrWrongDepEnds extends CrUML {
 		    }
 		}
 	    }
-	    Collection clients = ModelFacade.getClients(dep);
+	    Collection clients = ModelFacade.getClients(dependency);
 	    if (clients != null && (clients.size() > 0)) {
 		Iterator it = clients.iterator();
 		while (it.hasNext()) {
@@ -133,9 +138,9 @@ public class CrWrongDepEnds extends CrUML {
 		    offs = new VectorSet();
 		    offs.addElement(dd);
 		}
-		offs.addElement(fd);
-		offs.addElement(fd.getSourcePortFig()); 
-		offs.addElement(fd.getDestPortFig()); 
+		offs.addElement(figDependency);
+		offs.addElement(figDependency.getSourcePortFig()); 
+		offs.addElement(figDependency.getDestPortFig()); 
 	    }
 	}
 	return offs;

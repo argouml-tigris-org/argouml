@@ -25,6 +25,8 @@
 package org.argouml.uml.ui;
 
 import java.awt.event.ActionEvent;
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.Vector;
 
 import org.argouml.kernel.ProjectManager;
@@ -86,12 +88,13 @@ public class ActionLayout extends UMLAction {
         SelectionManager sm = ce.getSelectionManager();
 
         // Get all the figures from the diagram.
-        Vector nodes =
+        Collection nodes =
             ((UMLClassDiagram) ProjectManager.getManager().getCurrentProject()
 	         .getActiveDiagram())
-	        .getLayer().getContents();
-        for (int i = 0; i < nodes.size(); i++) {
-            sm.select((Fig) (nodes.elementAt(i)));
+	        .getLayer().getContents(null);
+        Iterator it = nodes.iterator();
+        while (it.hasNext()) {
+            sm.select((Fig) (it.next()));
             // Select all the figures in the diagram.
         }
 

@@ -220,7 +220,7 @@ public class SequenceDiagramLayout extends LayerPerspectiveMutable {
     }
 
     public void updateActivations() {
-        Iterator it = getContentsNoEdges().iterator();
+        Iterator it = getContentsNoEdges(null).iterator();
         while (it.hasNext()) {
             Fig fig = (Fig) it.next();
             if (fig instanceof FigObject) {
@@ -235,11 +235,11 @@ public class SequenceDiagramLayout extends LayerPerspectiveMutable {
      * @return
      */
     public List getFigLinks(int y) {
-        if (getContents().isEmpty() || getContentsEdgesOnly().isEmpty()) {
+        if (getContents(null).isEmpty() || getContentsEdgesOnly(null).isEmpty()) {
             return Collections.EMPTY_LIST;
         }
         List retList = new ArrayList();
-        Iterator it = getContentsEdgesOnly().iterator();
+        Iterator it = getContentsEdgesOnly(null).iterator();
         while (it.hasNext()) {
             FigEdge fig = (FigEdge) it.next();
             if (fig instanceof FigLink
@@ -253,7 +253,7 @@ public class SequenceDiagramLayout extends LayerPerspectiveMutable {
     }
 
     public void addNode(int position, Node node) {
-        Iterator it = getContentsNoEdges().iterator();
+        Iterator it = getContentsNoEdges(null).iterator();
         while (it.hasNext()) {
             Object o = it.next();
             if (o instanceof FigObject) {

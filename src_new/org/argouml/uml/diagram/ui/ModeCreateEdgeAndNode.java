@@ -229,10 +229,10 @@ public class ModeCreateEdgeAndNode extends ModeCreate {
                 mgm.addNode(newNode);
                 Fig encloser = null;
                 Rectangle bbox = _fn.getBounds();
-                Vector otherFigs = lay.getContents();
-                java.util.Enumeration others = otherFigs.elements();
-                while (others.hasMoreElements()) {
-                    Fig otherFig = (Fig) others.nextElement();
+                Collection otherFigs = lay.getContents(null);
+                Iterator others = otherFigs.iterator();
+                while (others.hasNext()) {
+                    Fig otherFig = (Fig) others.next();
                     if (!(otherFig instanceof FigNode))
                         continue;
                     if (otherFig.equals(_fn))

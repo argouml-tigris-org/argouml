@@ -136,13 +136,14 @@ public class UMLCollaborationDiagram extends UMLDiagram {
 
     public int getNumMessages() {
         Layer lay = getLayer();
-        Vector figs = lay.getContents();
+        Collection figs = lay.getContents(null);
         int res = 0;
-        int size = figs.size();
-        for (int i = 0; i < size; i++) {
-            Fig f = (Fig)figs.elementAt(i);
-            if (org.argouml.model.ModelFacade.isAMessage(f.getOwner()))
+        Iterator it = figs.iterator();
+        while (it.hasNext()) {
+            Fig f = (Fig)it.next();
+            if (ModelFacade.isAMessage(f.getOwner())) {
                 res++;
+            }
         }
         return res;
     }

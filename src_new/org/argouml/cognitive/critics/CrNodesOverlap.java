@@ -99,7 +99,7 @@ public class CrNodesOverlap extends CrUML {
 
     public VectorSet computeOffenders(Diagram d) {
 	//TODO: algorithm is n^2 in number of nodes
-	Vector figs = d.getLayer().getContents();
+	Vector figs = new Vector(d.getLayer().getContents(null));
 	int numFigs = figs.size();
 	int numRects = 0;
 	VectorSet offs = null;
