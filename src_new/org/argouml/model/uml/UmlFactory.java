@@ -147,17 +147,7 @@ public class UmlFactory extends AbstractUmlModelFactory {
 
     /** Log4j logging category.
      */
-    protected Category logger = null;
-
-    /** Singleton instance.
-     */
-    private static final UmlFactory SINGLETON = new UmlFactory();
-
-    /** Singleton instance access method.
-     */
-    public static UmlFactory getFactory() {
-        return SINGLETON;
-    }
+    private Category logger = Category.getInstance("org.argouml.model.uml.factory");
 
     // Types of line
     public static final Class GENERALIZATION   = MGeneralization.class;
@@ -202,51 +192,7 @@ public class UmlFactory extends AbstractUmlModelFactory {
      * The existence of a 4th column indicates that the connection is valid in one
      * direction only.
      */
-    private Object[][] validConnections = {
-        {MAssociationRole.class, MClassifierRole.class},
-        {MPermission.class,      MClass.class},
-        {MPermission.class,      MInterface.class},
-        {MPermission.class,      MPackage.class},
-        {MPermission.class,      MClass.class,             MPackage.class},
-        {MPermission.class,      MClass.class,             MInterface.class},
-        {MPermission.class,      MInterface.class,         MPackage.class},
-        {MUsage.class,           MClass.class},
-        {MUsage.class,           MInterface.class},
-        {MUsage.class,           MPackage.class},
-        {MUsage.class,           MClass.class,             MPackage.class},
-        {MUsage.class,           MClass.class,             MInterface.class},
-        {MUsage.class,           MInterface.class,         MPackage.class},
-        {MGeneralization.class,  MClassifierRole.class},
-        {MGeneralization.class,  MClass.class},
-        {MGeneralization.class,  MInterface.class},
-        {MGeneralization.class,  MUseCase.class},
-        {MGeneralization.class,  MActor.class},
-        {MDependency.class,      MPackage.class},
-        {MDependency.class,      MClass.class},
-        {MDependency.class,      MInterface.class},
-        {MDependency.class,      MInterface.class,         MClass.class},
-        {MDependency.class,      MUseCase.class},
-        {MDependency.class,      MComponent.class},
-        {MDependency.class,      MComponentInstance.class},
-        {MDependency.class,      MObject.class},
-        {MDependency.class,      MComponent.class,         MNode.class,                 null},
-        {MDependency.class,      MObject.class,            MComponent.class,            null},
-        {MDependency.class,      MComponentInstance.class, MNodeInstance.class,         null},
-        {MDependency.class,      MObject.class,            MComponentInstance.class,    null},
-        {MAbstraction.class,     MClass.class,             MInterface.class,            null},
-        {MAssociation.class,     MClass.class},
-        {MAssociation.class,     MClass.class,             MInterface.class},
-        {MAssociation.class,     MActor.class},
-        {MAssociation.class,     MUseCase.class},
-        {MAssociation.class,     MActor.class,             MUseCase.class},
-        {MAssociation.class,     MNode.class},
-        {MExtend.class,          MUseCase.class},
-        {MInclude.class,         MUseCase.class},
-        {MLink.class,            MNodeInstance.class},
-        {MLink.class,            MObject.class}
-    };
-     /*
-    Object[][] validConnections = {
+    private static final Object[][] VALID_CONNECTIONS = {
         {ASSOCIATION_ROLE, CLASSIFIER_ROLE},
         {PERMISSION,       CLASS},
         {PERMISSION,       INTERFACE},
@@ -289,13 +235,21 @@ public class UmlFactory extends AbstractUmlModelFactory {
         {LINK,             NODE_INSTANCE},
         {LINK,             OBJECT}
     };
-     */
     
+    /** Singleton instance.
+     */
+    private static final UmlFactory SINGLETON = new UmlFactory();
+
+    /** Singleton instance access method.
+     */
+    public static UmlFactory getFactory() {
+        return SINGLETON;
+    }
+
     /** Don't allow external instantiation.
      *  Create a logger.
      */
     private UmlFactory() {
-        logger = Category.getInstance("org.argouml.model.uml.factory");
         buildValidConnectionMap();
     }
 
@@ -305,33 +259,33 @@ public class UmlFactory extends AbstractUmlModelFactory {
         
         Object connection = null;
         Object lastConnection = null;
-        for (int i=0; i < validConnections.length; ++i) {
-            connection = validConnections[i][0];
+        for (int i=0; i < VALID_CONNECTIONS.length; ++i) {
+            connection = VALID_CONNECTIONS[i][0];
             ArrayList validItems = (ArrayList)validConnectionMap.get(connection);
             if (validItems == null) {
                 validItems = new ArrayList();
                 validConnectionMap.put(connection, validItems);
             }
-            if (validConnections[i].length < 3) {
+            if (VALID_CONNECTIONS[i].length < 3) {
                 // If there isn't a 3rd column then this represents a connection
                 // of elements of the same type.
                 Object[] modeElementPair = new Class[2];
-                modeElementPair[0] = validConnections[i][1];
-                modeElementPair[1] = validConnections[i][1];
+                modeElementPair[0] = VALID_CONNECTIONS[i][1];
+                modeElementPair[1] = VALID_CONNECTIONS[i][1];
                 validItems.add(modeElementPair);
             } else {
                 // If there is a 3rd column then this represents a connection
                 // of between 2 different types of element.
                 Object[] modeElementPair = new Class[2];
-                modeElementPair[0] = validConnections[i][1];
-                modeElementPair[1] = validConnections[i][2];
+                modeElementPair[0] = VALID_CONNECTIONS[i][1];
+                modeElementPair[1] = VALID_CONNECTIONS[i][2];
                 validItems.add(modeElementPair);
                 // If the array hasn't been flagged to indicate otherwise
                 // swap elements the elemnts and add again.
-                if (validConnections[i].length < 4) {
+                if (VALID_CONNECTIONS[i].length < 4) {
                     Object[] reversedModeElementPair = new Class[2];
-                    reversedModeElementPair[0] = validConnections[i][2];
-                    reversedModeElementPair[1] = validConnections[i][1];
+                    reversedModeElementPair[0] = VALID_CONNECTIONS[i][2];
+                    reversedModeElementPair[1] = VALID_CONNECTIONS[i][1];
                     validItems.add(reversedModeElementPair);
                 }
             }
