@@ -25,12 +25,11 @@
 package org.argouml.uml.ui;
 
 import java.awt.Component;
-import java.awt.GridLayout;
 import java.util.Enumeration;
 
 import javax.swing.JPanel;
 
-import org.argouml.swingext.GridLayout2;
+import org.argouml.swingext.*;
 
 import ru.novosoft.uml.MElementEvent;
 
@@ -54,8 +53,7 @@ public class UMLButtonPanel
     public UMLButtonPanel(UMLButtonGroup group) {
         super();
         _group = group;
-        int i = group.getButtonCount();
-        setLayout(new GridLayout(0, i));  
+        setLayout(new SerialLayout());
         Enumeration en = group.getElements();
         while (en.hasMoreElements()) {
             add((Component)en.nextElement());
