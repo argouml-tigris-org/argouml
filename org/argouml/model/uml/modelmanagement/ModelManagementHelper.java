@@ -114,6 +114,10 @@ public class ModelManagementHelper {
 
     /**
      * Returns all namespaces found in this namespace and in its children
+     *
+     * This method is CPU intensive and therefore needs to be as efficient as
+     * possible.
+     *
      * @ns namespace to process
      * @return Collection of all namespaces found
      */
@@ -149,25 +153,12 @@ public class ModelManagementHelper {
                     
                     Collection namespaces1 = getAllNamespaces(o);
                     // only add all if there are some to add.
-                    if(namespaces1 != Collections.EMPTY_LIST){
+                    if(namespaces1 != Collections.EMPTY_LIST && 
+                       namespaces1.size() > 0){
                         list.addAll(namespaces1);
                     }
                 }
             }
-            
-//            Iterator it = ((MNamespace) ns).getOwnedElements().iterator();
-//            list = new ArrayList();
-//            while (it.hasNext()) {
-//                Object o = it.next();
-//                if (o instanceof MNamespace) {
-//                    list.add(o);
-//                    
-//                    Collection namespaces1 = getAllNamespaces(o);
-//                    if(namespaces1 != Collections.EMPTY_LIST){
-//                        list.addAll(namespaces1);
-//                    }
-//                }
-//            }
         }
         return list;
     }
@@ -179,35 +170,73 @@ public class ModelManagementHelper {
      */
     public Collection getAllModelElementsOfKind(Class kind) {
         if (kind == null)
-            return new ArrayList();
+            return Collections.EMPTY_LIST;
         Project p = ProjectManager.getManager().getCurrentProject();
         MNamespace model = (MModel) p.getRoot();
-        Collection col = getAllModelElementsOfKind(model, kind);
-        return col;
+        return getAllModelElementsOfKind(model, kind);
     }
 
     /**
      * Returns all modelelements found in this namespace and its children
      * that are of some class kind.
+     *
+     * This method is CPU intensive and therefore needs to be as efficient as
+     * possible.
+     *
      * @param ns
      * @param kind
      * @return Collection
      */
     public Collection getAllModelElementsOfKind(Object nsa, Class kind) {
         if (nsa == null || kind == null)
-            return new ArrayList();
+            return Collections.EMPTY_LIST;
+        
         if (!ModelFacade.isANamespace(nsa))
             throw new IllegalArgumentException(
                 "given argument " + nsa + " is not a namespace");
-        Iterator it = ModelFacade.getOwnedElements(nsa).iterator();
-        List list = new ArrayList();
-        while (it.hasNext()) {
-            Object o = it.next();
-            if (o instanceof MNamespace) {
-                list.addAll(getAllModelElementsOfKind(o, kind));
+        
+        Collection elementsCol = ModelFacade.getOwnedElements(nsa);
+        
+        // only continue if there are owned elements
+        if(elementsCol == Collections.EMPTY_LIST ||
+           elementsCol.size() == 0){
+            return Collections.EMPTY_LIST;
+        }
+        
+        // use array for speed over iterator
+        Object[] elements = elementsCol.toArray();
+        Object element = null;
+        // only instantiate arraylist when needed
+        List list = Collections.EMPTY_LIST;
+        
+        for(int i=0;i<elements.length;i++){
+            
+            element = elements[i];
+            
+            if (element instanceof MNamespace) {
+                
+                if(list == Collections.EMPTY_LIST){
+                    list = new ArrayList(elements.length);
+                }
+                
+                // get child model elements recursively
+                Collection elementsCol1 = getAllModelElementsOfKind(element, kind);
+                
+                // only add model elements if there are some
+                if(!(elementsCol1 == Collections.EMPTY_LIST) &&
+                   !(elementsCol1.size() == 0)){
+                       
+                       list.addAll(elementsCol1);
+                }
+                
             }
-            if (kind.isAssignableFrom(o.getClass())) {
-                list.add(o);
+            if (kind.isAssignableFrom(element.getClass())) {
+                
+                if(list == Collections.EMPTY_LIST){
+                    list = new ArrayList(elements.length);
+                }
+                
+                list.add(element);
             }
         }
         return list;
@@ -223,7 +252,7 @@ public class ModelManagementHelper {
     public Collection getAllModelElementsOfKind(Object nsa, String kind) {
 
         if (nsa == null || kind == null)
-            return new ArrayList();
+            return Collections.EMPTY_LIST;
         if (!ModelFacade.isANamespace(nsa))
             throw new IllegalArgumentException(
                 "given argument " + nsa + " is not a namespace");
@@ -232,7 +261,7 @@ public class ModelManagementHelper {
             // TODO This assumes we are working with MThings
             col = getAllModelElementsOfKind(nsa, Class.forName("M" + kind));
         } catch (ClassNotFoundException cnfe) {
-            return new ArrayList();
+            return Collections.EMPTY_LIST;
         }
         return col;
     }
