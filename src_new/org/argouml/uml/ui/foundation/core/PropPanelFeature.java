@@ -25,10 +25,13 @@
 // $header$
 package org.argouml.uml.ui.foundation.core;
 
+import javax.swing.ImageIcon;
 import javax.swing.JList;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
 import org.argouml.swingext.Orientation;
+import org.argouml.uml.ui.UMLButtonPanel;
 import org.argouml.uml.ui.UMLComboBox2;
 import org.argouml.uml.ui.UMLLinkedList;
 
@@ -36,66 +39,93 @@ import org.argouml.uml.ui.UMLLinkedList;
  * @since Nov 6, 2002
  * @author jaap.branderhorst@xs4all.nl
  */
-public class PropPanelFeature extends PropPanelModelElement {
+public abstract class PropPanelFeature extends PropPanelModelElement {
 
     private UMLFeatureOwnerScopeCheckBox _ownerScopeCheckbox;
-    private UMLComboBox2 _ownerComboBox;   
-    private JScrollPane _ownerScroll; 
-    
-    private static UMLFeatureOwnerListModel ownerListModel; 
+
+    private UMLComboBox2 _ownerComboBox;
+
+    private JScrollPane _ownerScroll;
+
+    private static UMLFeatureOwnerListModel ownerListModel;
+
     private static UMLFeatureOwnerComboBoxModel ownerComboBoxModel;
+    
+    private JPanel visibilityPanel;
+
+    /**
+     * Constructor.
+     * @param name name
+     * @param icon icon
+     * @param orientation orientation
+     */
+    protected PropPanelFeature(String name, ImageIcon icon,
+            Orientation orientation) {
+        super(name, icon, orientation);
+    }
 
     /**
      * Constructor for PropPanelFeature.
+     * 
      * @param name
      * @param orientation
      */
-    protected PropPanelFeature(
-			       String name,
-			       Orientation orientation) {
-        super(name, orientation);       
+    protected PropPanelFeature(String name, Orientation orientation) {
+        super(name, orientation);
     }
-
 
     /**
      * Returns the ownerComboBox.
+     * 
      * @return UMLComboBox2
      */
     public UMLComboBox2 getOwnerComboBox() {
-	if (_ownerComboBox == null) {
-	    if (ownerComboBoxModel == null) {
-		ownerComboBoxModel = new UMLFeatureOwnerComboBoxModel();
-	    }
-	    _ownerComboBox = new UMLComboBox2(ownerComboBoxModel, ActionSetFeatureOwner.SINGLETON);
-	}
-	return _ownerComboBox;
+        if (_ownerComboBox == null) {
+            if (ownerComboBoxModel == null) {
+                ownerComboBoxModel = new UMLFeatureOwnerComboBoxModel();
+            }
+            _ownerComboBox = new UMLComboBox2(ownerComboBoxModel,
+                    ActionSetFeatureOwner.SINGLETON);
+        }
+        return _ownerComboBox;
     }
 
     /**
      * Returns the ownerScroll.
+     * 
      * @return JScrollPane
      */
     public JScrollPane getOwnerScroll() {
         if (_ownerScroll == null) {
             if (ownerListModel == null) {
-                ownerListModel = new UMLFeatureOwnerListModel();    	
+                ownerListModel = new UMLFeatureOwnerListModel();
             }
             JList list = new UMLLinkedList(ownerListModel);
             list.setVisibleRowCount(1);
             _ownerScroll = new JScrollPane(list);
-	}
+        }
         return _ownerScroll;
     }
 
     /**
      * Returns the ownerScopeCheckbox.
+     * 
      * @return UMLFeatureOwnerScopeCheckBox
      */
     public UMLFeatureOwnerScopeCheckBox getOwnerScopeCheckbox() {
         if (_ownerScopeCheckbox == null) {
             _ownerScopeCheckbox = new UMLFeatureOwnerScopeCheckBox();
-        }    
-	return _ownerScopeCheckbox;       
+        }
+        return _ownerScopeCheckbox;
+    }
+    
+    protected JPanel getVisibilityPanel() {
+        if (visibilityPanel == null) {
+            visibilityPanel =
+		new UMLButtonPanel(
+			new UMLElementOwnershipVisibilityButtonGroup(this));
+        }
+        return visibilityPanel;
     }
 
 }
