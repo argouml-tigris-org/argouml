@@ -25,7 +25,8 @@ Modifications
 
     <para>Datatypes, classes and interfaces are generally available for use
       anywhere a class may be selected in the properties tab. The most common
-      use is for types of methods and parameters.</para>
+use is for return type and parameter types in method signatures.
+</para>
 
     <sect2>
       <title>Package Structure</title>

@@ -1415,7 +1415,7 @@ Modifications
           <term><literal>Constraints</literal></term>
 
           <listitem><para>Standard tab. There are no standard constraints
-            defined for <literal>Package</literal> within the UML
+defined for <literal>Stereotypes</literal> within the UML
             metamodel.</para>
 
           <caution><para>Constraints for a stereotype are rather different

@@ -80,7 +80,33 @@ Modifications
           remainder should correspond to the file name. For example
           <literal>fig.ref.navigation_pane</literal> for a figure showing the
           explorer, with the diagram in
-          <literal>navigation_pane.gif</literal></para></listitem>
+          <literal>navigation_pane.gif</literal></para>
+
+	<para>
+There is one exception to this and that is the critics.
+Each paragraph about a critic is instead marked with
+<literal>critics.</literal> followed by the classname
+implementing that critic.
+The reason for this is that the intention is to have the manual
+accessable when pressing the Help button on that critic.
+Generating a link to the correct place in the manual is easier
+if the classname need not undergo some kind of textual
+transformation and the implementation doesn't
+care if a a specific critic is described in a 
+<sgmltag>sect1</sgmltag>, 
+<sgmltag>sect2</sgmltag>,
+<sgmltag>sect3</sgmltag>, or
+<sgmltag>sect4</sgmltag>.
+Reorganizing the manual would otherwise affect also the
+java code.
+The conversion to the correct tagname or really the correct URL
+is currently implemented in the 
+<literal>defaultMoreInfoURL()</literal>
+method in the
+<literal>org.argouml.cognitive.critics.Critic</literal>
+class.
+</para>
+      </listitem>
 
       <listitem><para>Only use <sgmltag>glossterm</sgmltag> (for the term
         <emphasis>or</emphasis> its abbreviation/acronym),

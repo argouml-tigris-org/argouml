@@ -384,7 +384,7 @@ Modifications
           associations to the class specified.</para>
 
         <para>The second radio box allows selection between modeling arrays as
-v           new datatypes in their own right (the default) or as their base
+new datatypes in their own right (the default) or as their base
           datatype with multiplicity.</para>
       </sect3>
     </sect2>
@@ -676,7 +676,8 @@ Selects all artifacts on the editing pane.</para></listitem>
       <para>Shortcut Ctrl-V.</para>
 
       <para>This should paste the item(s) last cut or copied to the clipboard
-        on to the currently diagram in the drawing pane.</para>
+on to the current diagram in the drawing pane.
+</para>
 
       <warning><para>If the original item has since been deleted from the model
         or removed from the diagram, pasting will produce a copy that has no
@@ -2740,7 +2741,8 @@ artifact.
         <literal>Never</literal>.</para>
 
       <para>Clarifiers are the icons and wavy red underlines drawn on the
-        actual diagrams to indicate the a critic has triggered. The original
+actual diagrams to indicate the artefact to which the critic refers.
+The original
         intention was to make the mapping from critics to clarifiers to
         somewhat customizable.</para>
 

@@ -19,7 +19,9 @@ Modifications
   <sect1>
     <title>Introduction</title>
 
-    <para>We now have out design fully specified. With the right simulator we
+    <para>
+We now have our design fully specified.
+With the right simulator we
       could actually execute the design and see if it works. &argouml; does not
       provide such functionality, but this functionality has been provided in
       alternative tools.</para>
@@ -34,9 +36,13 @@ Modifications
 
     <para>Once again the <emphasis>recursive</emphasis>, and
       <emphasis>iterative</emphasis> nature of our process means we will come
-      back to the Design phase many times in the future.</para>
+      back to the 
+Build phase many times in the future.
+</para>
 
-    <para>This chapter is a little different to those that went before. UML
+    <para>
+This chapter is a little different from those that went before. 
+UML
       itself is a notation for design. There is no new UML notation to
       understand here.</para>
   </sect1>

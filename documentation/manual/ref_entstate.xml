@@ -70,8 +70,9 @@ Modifications
         are supported, and these are purely textual, with no way to link them
         back to their associated operations.</para>
 
-      <para>There code generation from state diagrams is not properly developed
-        yet.</para>
+      <para>
+Code generation from state diagrams is not properly developed yet.
+</para>
     </sect2>
   </sect1>
 
@@ -771,7 +772,8 @@ Modifications
       is the name of the transition (if any) separated by a colon
       (<literal>:</literal>) from the trigger action, any guard in square
       brackets (<literal>[]</literal>) separated by a slash
-      (<literal>/</literal> from any effect expression.</para>
+(<literal>/</literal>) from any effect expression.
+</para>
 
     <!-- Transition details tabs -->
 
@@ -2285,7 +2287,8 @@ Modifications
       composite state has never been entered before.</para> 
 
     <para>The shallow history ignores any composite states within this
-      composite states, dealing only with direct sub-states.</para>
+composite state, dealing only with direct sub-states.
+</para>
 
     <para>A shallow history is represented on the diagram as a circle
       containing the letter <literal>H</literal>.</para>
@@ -2297,8 +2300,11 @@ Modifications
        which is a real state. -->
 
   <sect1 id="s1.ref.deep_history">
-    <title>Deep History</title>
+    <title>Deep History (to be improved...)</title>
 
+<!-- TODO:
+    Rewrite!
+ -->
     <para>Shallow History is a pseudostate (see <xref
       linkend="s1.ref.pseudostate"/>) within a composite state, which
       causes control to be passed to the state that last had control within the
@@ -2306,7 +2312,7 @@ Modifications
       composite state has never been entered before.</para> 
 
     <para>The deep history will transfer to a state within any hierarchy of
-      composite states within this composite states if that is
+composite states within this composite state if that is
       necessary.</para>
 
     <para>A deep history is represented on the diagram as a circle

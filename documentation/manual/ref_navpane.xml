@@ -19,6 +19,8 @@ Modifications
 
 18 Apr 2002:  Jeremy Bennett. Incorporated comments from Bob Marcum.
 
+10 May 2003:  Linus Tolke. Changed name from Navpane to Explorer.
+
 -->
 
 <chapter id="ch.ref.navpane">
@@ -485,8 +487,9 @@ Modifications
 
 
       <para>&argouml;'s tear-off tabs (see <xref linkend="s2.ref.spawn"/> also
-        help with alternating between views, but sometimes users dont want to
-        work with some many separate windows.</para>
+help with alternating between views, 
+but sometimes users don't want to work with so many separate windows.
+</para>
 
       <para>This is the theory that motivates the idea of multiple nav
         panes. For more information see Jason Robbins' PhD dissertation <ulink

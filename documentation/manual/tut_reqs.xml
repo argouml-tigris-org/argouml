@@ -47,7 +47,9 @@ Modifications
       iteration as we seek to define the requirements of more and more of the
       system</para>
 
-    <note><para>The only part of the requirements notation is specified by the
+    <note>
+      <para>
+The only part of the requirements notation specified by the
       UML standard is the use case diagram. The remainder is process
       specific. The process described in this chapter draws heavily on the
       Rational Unified Process.</para></note>
@@ -903,7 +905,8 @@ Modifications
         on the association icon on the editing pane toolbar
         (<guiicon><inlinemediaobject><imageobject><imagedata format="GIF"
         align="center" fileref="images/icons/association.gif"/>
-        </imageobject></inlinemediaobject></guiicon>). then hold &button1; down
+        </imageobject></inlinemediaobject></guiicon>).
+Then hold &button1; down
         at the use case, move to the actor and release &button1; (or
         alternatively start at the actor and finish at the use case).</para>
 
@@ -1108,7 +1111,8 @@ Modifications
           generalization handles on actors, so generalizations must be created
           using the toolbar icon.</para>
 
-        <para>It is possible to name extend relationships using the property
+        <para>
+It is possible to name generalization relationships using the property
           tab, but this is rarely done. If a name is provided, it will be
           displayed on the use case diagram.</para>
       </sect3>

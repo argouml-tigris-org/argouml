@@ -1745,7 +1745,8 @@ Modifications
           <warning><para>This is a deletion from the model
             <emphasis>not</emphasis> just the diagram. Since attributes
             have no meaning independent of their owning class, it makes no
-            sense to delete them just from the model. If desired the whole
+sense to delete them just from the diagram. 
+If desired the whole
             attribute compartment can be hidden on the diagram using the
             <emphasis>style</emphasis> tab (see <xref
               linkend="s2.ref.attribute_property_toolbar"/>) or the
@@ -2227,7 +2228,8 @@ Modifications
           <warning><para>This is a deletion from the model
             <emphasis>not</emphasis> just the diagram. Since operations
             have no meaning independent of their owning class, it makes no
-            sense to delete them just from the model. If desired the whole
+sense to delete them just from the diagram.
+If desired the whole
             operation compartment can be hidden on the diagram using the
             <emphasis>style</emphasis> tab (see <xref
               linkend="s2.ref.operation_property_toolbar"/>) or the
@@ -2695,7 +2697,8 @@ Modifications
           <warning><para>This is a deletion from the model
             <emphasis>not</emphasis> just the diagram. Since parameters
             have no meaning independent of their owning operation, it makes
-            no sense to delete them just from the model. If desired the
+no sense to delete them just from the diagram.
+If desired the
             whole operation compartment can be hidden on the diagram using
             the <emphasis>style</emphasis> tab (see <xref
             linkend="s2.ref.parameter_property_toolbar"/>) or the
@@ -4428,7 +4431,8 @@ Modifications
 
     <para>An interface is a set of operations characterizing the behavior of
       an element. It can be usefully thought of as an abstract class with no
-      attributes. In the UML metamodel it is a sub-class of
+attributes and no non-abstract operations.
+In the UML metamodel it is a sub-class of
       <literal>Classifier</literal> and through that
       <literal>GeneralizableElement</literal>.</para>
 

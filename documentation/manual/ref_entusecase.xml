@@ -1438,7 +1438,8 @@ Modifications
           <listitem><para>Drop down selector. &argouml; provides the
             non-standard stereotypes, <literal>machine</literal>,
             <literal>organization</literal> and
-            <literal>person</literal>. It also rather bizarly provides the
+<literal>person</literal>.
+It also rather bizarrely provides the
             <literal>realize</literal> stereotype (which is more properly just
             a stereotype of abstraction relationships.</para>
 
@@ -1565,7 +1566,8 @@ Modifications
   <sect1 id="s1.ref.association_use_case">
     <title>Association</title>
 
-    <para>An association on a use case diagram represents is a relationship
+    <para>
+An association on a use case diagram represents a relationship
       between an actor and a use case showing that actor's involvement in the
       use case. The invocation of the use case will involve some (significant)
       change perceived by the actor.</para>
@@ -1599,8 +1601,9 @@ Modifications
       sub-class of <literal>Relationship</literal>.</para>
 
     <para>Dependency is represented as a dotted line with an open arrow head
-      from the dependent to the depending artifact (see <xref
-      linkend="fig.ref.use_case_diagram"/>).</para>
+from the depending artifact to that which it is dependent upon
+(see <xref linkend="fig.ref.use_case_diagram"/>).
+</para>
 
     <!-- The details tabs -->
 
@@ -2226,12 +2229,14 @@ Modifications
             default) for this field. The discriminator is only of practical use
             in cases of multiple inheritance. A (class diagram) example is
             shown in <xref linkend="fig.discriminator_example"/>. Here each
-            type of user should inherit from two sorts of user. One indicating
-            whether he/she is a local or remote user (which can be identified
+type of user should inherit from two sorts of user.
+One distinguishing between local or remote user 
+(which can be identified
             by one discriminator) and one indicating their function as a user
             (identified by a different discriminator).</para>
 
-          <para>There is little point in use this with a use case
+          <para>
+There is little point in using this within a use case
             diagram.</para></tip></listitem>
         </varlistentry>
 
@@ -2566,7 +2571,8 @@ Modifications
           <listitem><para>Drop down selector. &argouml; provides the
             non-standard stereotypes, <literal>machine</literal>,
             <literal>organization</literal> and
-            <literal>person</literal>. It also rather bizarly provides the
+<literal>person</literal>.
+It also rather bizarrely provides the
             <literal>realize</literal> stereotype (which is more properly just
             a stereotype of abstraction relationships.</para>
 
@@ -2969,7 +2975,8 @@ Modifications
           <listitem><para>Drop down selector. &argouml; provides the
             non-standard stereotypes, <literal>machine</literal>,
             <literal>organization</literal> and
-            <literal>person</literal>. It also rather bizarly provides the
+<literal>person</literal>. 
+It also rather bizarrely provides the
             <literal>realize</literal> stereotype (which is more properly just
             a stereotype of abstraction relationships.</para>
 

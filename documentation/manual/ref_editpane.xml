@@ -90,8 +90,10 @@ Modifications
 
       <para>Where &button2; click has been used to bring up a context sensitive
         pop-up menu (see below), &button1; click is used to select the menu
-        entry required. &button1; click outside the menu area will remove
-        it.</para>
+entry required.
+The pop-up menu will be removed by any &button1; click 
+outside of the menu area.".
+</para>
 
       <para>There are various more detailed effects, which are discussed under
         the descriptions of the various tools (see <xref
@@ -236,7 +238,7 @@ Modifications
         artifacts on the diagram.</para></listitem>
 
       <listitem><para><emphasis>Drawing tools.</emphasis> Used to add general
-        graphics artifacts to diagrams.</para></listitem>
+graphic artifacts to diagrams.</para></listitem>
 
       <listitem><para><emphasis>Diagram specific tools.</emphasis> Used to add
         UML artifacts specific to a particular diagram type to the

@@ -461,7 +461,7 @@ Modifications
 
         <para>&argouml; is particularly inspired by three theories within
         cognitive psychology: i) reflection-in-action, ii) opportunistic design
-        ii) and comprehension and problem solving.</para>
+        iii) and comprehension and problem solving.</para>
 
         <!-- A bit on reflection-in-action -->
 
@@ -904,7 +904,8 @@ Modifications
         <emphasis>Panes</emphasis>. Clockwise from top left these are the
         <emphasis>Explorer</emphasis>, <emphasis>Editing
         Pane</emphasis>, <emphasis>Details Pane</emphasis> and
-        <emphasis>To-Do Pane</emphasis>. At the top of the details Pane is a
+<emphasis>To-Do Pane</emphasis>.
+At the top of the Editing Pane is a
         <emphasis>tool bar</emphasis>. Finally at the bottom of the window is
         a <emphasis>status bar</emphasis>.</para>
 
@@ -951,7 +952,7 @@ Modifications
         </figure>
 
         <para>This is the Editing Pane, where you can edit your
-          diagram. This pane lets the user edit her diagram in a graphical
+          diagram. This pane lets the user edit the diagram in a graphical
           way.</para>
       </sect3>
 
@@ -998,8 +999,12 @@ Modifications
           </mediaobject></screenshot>
         </figure>
 
-        <para>This is the to-do pane, that shows all the items on your to-do
-          list. The to-do pane list the items on the users to-do list.</para>
+        <para>
+The To-Do Pane displays the items on the models to-do list in a tree
+which sorts the list in a number of different ways.  
+A drop down selection box at the top of the pane determines the layout
+of the tree.
+</para>
       </sect3>
 
       <!-- More about the Menu Bar -->
@@ -1227,8 +1232,10 @@ Modifications
             an explorer-like tree view of your UML model, the Editing Pane with
             its tool bar, two scroll bars and gray drawing area, the Details
             Pane with the ToDoItem tab selected, and the To-Do Pane with a tree
-            view of the to do items, ranked into three priority levels (High,
-            Medium and Low).</para>
+            view of the to do items, 
+ranked in various ways selected via the drop down list 
+at the top of the pane.
+</para>
 
           <para>Notice that the title bar says
             <literal>&argouml;&nbsp;-&nbsp;Untitled</literal>. The
@@ -1497,11 +1504,14 @@ Modifications
         <sect4>
           <title>The Graph Editing Framework (GEF)</title>
 
-          <para>GEF, the thing which is hidden in gef.jar, is responsible for
-            displaying the graphs and which gives you the the ability to move
-            things around. GEF used to be closely interwoven with Argo, but is
-            now more or less separate. The sources are also available via
-            <ulink url="http://www.tigris.org">www.tigris.org</ulink>.</para>
+          <para>
+GEF is the software package that is 
+the foundation of the diagrams 
+that appear in the Editing Pane.  
+GEF was an integral part of ArgoUML but has been separated.
+Like ArgoUML it is an open source project available via 
+<ulink url="http://www.tigris.org">Tigris</ulink>.
+</para>
         </sect4>
 
         <!-- PGML -->
@@ -1674,10 +1684,14 @@ Modifications
           <title>XMI Interchangeability between &argouml; 0.8.1a and
             0.9.x</title>
 
-          <para>This depends on the version of NSUML (the UML engine underling
-            &argouml;) you are using. You can find out about this i your
-            start-up messages on console). Using version 0.4.19 is OK, should
-            be interchangeable.</para>
+          <para>
+This depends on the version of NSUML 
+(the UML engine underlying &argouml;) you are using. 
+Look in the start-up messages on the console for 
+the entry for Novosoft UML Library for the version number.
+Using version 0.4.19 is OK, and the XMI files should
+be interchangeable.
+</para>
         </sect4>
 
         <!-- Importing XMI into ArgoUML -->

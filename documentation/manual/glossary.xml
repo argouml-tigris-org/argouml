@@ -36,11 +36,9 @@ Modifications
       </indexterm>
 
         <para>A UML diagram capturing the dynamic behavior of a system or
-          sub-system. See 
-
-          <!-- Fix when ready <xref linkend="s1.umlactivitydiags"/> -->
-
-          for more information.</para>
+sub-system.
+See <xref linkend="s1.umlactivitydiags"/> for more information.
+</para>
       </glossdef>
     </glossentry>
 
@@ -1059,8 +1057,9 @@ Modifications
       </indexterm>
 
         <para>Standard Vector Graphics format. A standard representation of
-          graphics diagrams that use vectors. ArgoUML uses SVG to store its
-          diagrams.</para>
+          graphics diagrams that use vectors.
+ArgoUML can export diagrams in SVG.
+</para>
       </glossdef>
     </glossentry>
 
