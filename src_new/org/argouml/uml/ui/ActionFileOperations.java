@@ -124,7 +124,7 @@ public abstract class ActionFileOperations extends AbstractAction {
      */
     public boolean loadProject(URL url) {
         LOG.info("Loading project");
-        PersistenceManager pm = new PersistenceManager();
+        PersistenceManager pm = PersistenceManager.getInstance();
         Project oldProject = ProjectManager.getManager().getCurrentProject();
         boolean success = true;
         

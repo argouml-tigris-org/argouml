@@ -235,7 +235,8 @@ public class Main {
         URL urlToOpen = null;
 
         if (projectName != null) {
-            projectName = (new PersistenceManager()).fixExtension(projectName);
+            projectName = 
+                PersistenceManager.getInstance().fixExtension(projectName);
             urlToOpen = projectUrl(projectName, urlToOpen);
         }
 

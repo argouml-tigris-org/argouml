@@ -43,21 +43,32 @@ import org.tigris.gef.util.UnexpectedException;
  * ArgoUML is able to save and load. And all that knowledge is
  * concentrated in the constructor... <p>
  *
- * The PersisterManager manages the list of persisters.
+ * The PersisterManager manages the list of persisters. <p>
+ * 
+ * This class is a singleton, since this allows external modules to 
+ * add extra persisters to the ArgoUML application.
  *
- * @author MVW
- *
+ * @author mvw@tigris.org
  */
 public class PersistenceManager {
-
+    private static final PersistenceManager SINGLETON = 
+        new PersistenceManager();
+    
     private AbstractFilePersister defaultPersister;
     private List otherPersisters = new ArrayList();
     private UmlFilePersister quickViewDump;
 
     /**
+     * @return returns the singleton
+     */
+    public static PersistenceManager getInstance() {
+        return SINGLETON;
+    }
+    
+    /**
      * The constructor.
      */
-    public PersistenceManager() {
+    private PersistenceManager() {
         // These are the file formats I know about:
         defaultPersister = new ZargoFilePersister();
         quickViewDump = new UmlFilePersister();
@@ -67,9 +78,6 @@ public class PersistenceManager {
 
     /**
      * This function allows e.g. modules to easily add new persisters.<p>
-     *
-     * If someone wants to use this function, then we first should
-     * make the PersisterManager into a singleton!
      *
      * @param fp the persister
      */

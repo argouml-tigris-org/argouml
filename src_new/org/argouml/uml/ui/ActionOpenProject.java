@@ -83,7 +83,7 @@ public class ActionOpenProject extends ActionFileOperations
     public void actionPerformed(ActionEvent e) {
         ProjectBrowser pb = ProjectBrowser.getInstance();
         Project p = ProjectManager.getManager().getCurrentProject();
-        PersistenceManager pm = new PersistenceManager();
+        PersistenceManager pm = PersistenceManager.getInstance();
         
         if (!askConfirmationAndSave()) return;
         

@@ -103,7 +103,6 @@ public class ActionSaveProjectAs extends ActionSaveProject {
     protected File getNewFile() {
         ProjectBrowser pb = ProjectBrowser.getInstance();
         Project p = ProjectManager.getManager().getCurrentProject();
-        PersistenceManager pm = new PersistenceManager();
 
         JFileChooser chooser = null;
         URL url = p.getURL();
@@ -125,7 +124,7 @@ public class ActionSaveProjectAs extends ActionSaveProject {
         FileFilter allFiles = chooser.getFileFilter();
         chooser.removeChoosableFileFilter(allFiles);
         
-        pm.setFileChooserFilters(chooser);
+        PersistenceManager.getInstance().setFileChooserFilters(chooser);
         
         int retval = chooser.showSaveDialog(pb);
         if (retval == JFileChooser.APPROVE_OPTION) {
