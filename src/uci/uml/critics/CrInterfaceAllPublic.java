@@ -62,6 +62,7 @@ public class CrInterfaceAllPublic extends CrUML {
     Iterator enum = bf.iterator();
     while (enum.hasNext()) {
       MFeature f = (MFeature) enum.next();
+	  if (f.getVisibility() == null) return NO_PROBLEM;
       if (!f.getVisibility().equals(MVisibilityKind.PUBLIC))
 	return PROBLEM_FOUND;
     }
