@@ -97,7 +97,7 @@ public class CoreHelper {
     /**
      * Singleton instance.
      */
-    private static final CoreHelper SINGLETON = new CoreHelper();
+    private static final CoreHelper INSTANCE = new CoreHelper();
 
     /**
      * Singleton instance access method.
@@ -105,9 +105,21 @@ public class CoreHelper {
      * @return The instance.
      */
     public static CoreHelper getHelper() {
-        return SINGLETON;
+        return INSTANCE;
     }
-
+    
+    /**
+     * Determine if a meta type is a subtype of another.
+     * @param type The parent metatype.
+     * @param subType The metatype to test for being a subtype.
+     * @return true is subType is a sub-type of type.
+     */
+    public boolean isSubType(Object type, Object subType) {
+        if (!(type instanceof Class) || !(subType instanceof Class))
+                throw new IllegalArgumentException("Metatypes are expected");
+           return ((Class) type).isAssignableFrom((Class) subType);
+    }
+    
     /** This method returns all Classifiers of which this class is a
      *	direct or indirect subtype.
      *

@@ -63,9 +63,9 @@ public class PropPanelOperation extends PropPanelFeature {
          * anytime a stereotype, namespace or classifier
          * has its name, ownedElement or baseClass changed 
          * anywhere in the model. */
-//        Class[] namesToWatch = {(Class) ModelFacade.STEREOTYPE,
-//            (Class) ModelFacade.NAMESPACE, (Class) ModelFacade.CLASSIFIER,
-//            (Class) ModelFacade.PARAMETER};
+//        Object[] namesToWatch = {ModelFacade.STEREOTYPE,
+//            ModelFacade.NAMESPACE, ModelFacade.CLASSIFIER,
+//            ModelFacade.PARAMETER};
 //        setNameEventListening(namesToWatch);
 
         addField(Translator.localize("label.name"),

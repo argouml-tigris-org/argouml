@@ -51,8 +51,8 @@ public class PropPanelComponentInstance extends PropPanelInstance {
         super("Component Instance", lookupIcon("ComponentInstance"), 
                 ConfigLoader.getTabPropsOrientation());
 
-        Class[] namesToWatch = {(Class) ModelFacade.STEREOTYPE,
-            (Class) ModelFacade.NAMESPACE, (Class) ModelFacade.CLASSIFIER };
+        Object[] namesToWatch = {ModelFacade.STEREOTYPE,
+            ModelFacade.NAMESPACE, ModelFacade.CLASSIFIER };
 
         setNameEventListening(namesToWatch);
 

@@ -47,6 +47,7 @@ import javax.swing.event.EventListenerList;
 import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.ModelFacade;
+import org.argouml.model.uml.CoreHelper;
 import org.argouml.model.uml.UmlModelEventPump;
 import org.argouml.ui.LookAndFeelMgr;
 import org.argouml.ui.TabSpawnable;
@@ -308,32 +309,32 @@ public abstract class PropPanel
         return profile;
     }
 
-    /**
-     * This method (and addMElementListener) can be overriden if the
-     * prop panel wants to monitor additional objects.
-     * ONLY use it if the target is a NSUML modelelement.<p>
-     * 
-     * TODO: This method is never used. Remove?
-     * 
-     * @param theTarget target of prop panel
-     */
-    protected void removeMElementListener(Object theTarget) {
-        UmlModelEventPump.getPump().removeModelEventListener(this, theTarget);
-    }
-
-    /**
-     * This method (and removeMElementListener) can be overriden if the
-     * prop panel wants to monitor additional objects.  This method
-     * is public only since it is called from a Runnable object.<p>
-     * 
-     * TODO: This method is never used. Remove?
-     *
-     * @param theTarget target of prop panel
-     */
-    public void addMElementListener(Object theTarget) {
-        UmlModelEventPump.getPump().addModelEventListener(this, theTarget);
-    }
-
+//    /**
+//     * This method (and addMElementListener) can be overriden if the
+//     * prop panel wants to monitor additional objects.
+//     * ONLY use it if the target is a NSUML modelelement.<p>
+//     * 
+//     * TODO: This method is never used. Remove?
+//     * 
+//     * @param theTarget target of prop panel
+//     */
+//    protected void removeMElementListener(Object theTarget) {
+//        UmlModelEventPump.getPump().removeModelEventListener(this, theTarget);
+//    }
+//
+//    /**
+//     * This method (and removeMElementListener) can be overriden if the
+//     * prop panel wants to monitor additional objects.  This method
+//     * is public only since it is called from a Runnable object.<p>
+//     * 
+//     * TODO: This method is never used. Remove?
+//     *
+//     * @param theTarget target of prop panel
+//     */
+//    public void addMElementListener(Object theTarget) {
+//        UmlModelEventPump.getPump().addModelEventListener(this, theTarget);
+//    }
+//
     /**
      * Set the target to be associated with a particular property panel.<p>
      *
@@ -567,7 +568,7 @@ public abstract class PropPanel
      *
      * @param metaclasses  The metaclass array we wish to listen to.
      */
-    public void setNameEventListening(Class[] metaclasses) {
+    public void setNameEventListening(Object[] metaclasses) {
 
         /*
 	   old implementation
@@ -592,12 +593,14 @@ public abstract class PropPanel
 	   addThirdPartyEventListening(targetList.toArray());
         */
         for (int i = 0; i < metaclasses.length; i++) {
-            Class clazz = metaclasses[i];
-            if (((Class) ModelFacade.NAMESPACE).isAssignableFrom(clazz)) {
+            Object clazz = metaclasses[i];
+            if (CoreHelper.getHelper().isSubType(ModelFacade.NAMESPACE,
+                                                 clazz)) {
                 UmlModelEventPump.getPump()
 		    .addClassModelEventListener(this, clazz, "ownedElement");
             }
-            if (((Class) ModelFacade.MODELELEMENT).isAssignableFrom(clazz)) {
+            if (CoreHelper.getHelper().isSubType(ModelFacade.MODELELEMENT,
+                                                 clazz)) {
                 UmlModelEventPump.getPump()
 		    .addClassModelEventListener(this, clazz, "name");
             }
