@@ -15,13 +15,17 @@
 briefly below.</P>
 
 <UL>
-  <LI><A HREF="#crossplatform">Runs on any platform with Java 1.2</A>
-  <LI><A HREF="#Standard">Standard UML Meta-Model</A>
+  <LI><A HREF="#install">Click and Go! with JavaWebStart</A>
+  <LI><A HREF="#crossplatform">Platform Independent: Java 1.3+</A>
+  <LI><A HREF="#Standard">Standard UML 1.3 Meta-Model</A>
+  <LI><A HREF="#Diagrams">8 out of 9 Diagrams supported</A>
   <LI><A HREF="#XMI">XMI-Support</A>
-  <LI><A HREF="#Editing">UML Design Editing</A>
+  <LI><A HREF="#Export">Export Diagrams as GIF, PS, EPS, PGML and SVG</A>
+  <LI><A HREF="#i18n">Internationalization EN, DE, ES, RU, FR</A>
+  <LI><A HREF="#Editing">Advanced diagram editing and Zoom</A>
   <LI><A HREF="#OCL">OCL Support</A>
-  <LI><A HREF="#Export">Several diagram export formats</A>
-  <LI><A HREF="#codegen">Code Generation (partially implemented)</A>
+  <LI><A HREF="#codegen">Forward Engineering</A>
+  <LI><A HREF="#reveng">Reverse Engineering / Jar/classfile Import</A>
   <LI>Cognitive Support
   <UL>
     <LI>Reflection-in-action
@@ -29,24 +33,24 @@ briefly below.</P>
       <LI><A HREF="#critics">Design Critics</A>
       <LI><A HREF="#corrective">Corrective Automations (partially implemented)</A>
       <LI><A HREF="#todolist">&quot;To Do&quot; List</A>
-      <LI><A HREF="#checklists">Checklists</A>
+      <!-- <LI><A HREF="#checklists">Checklists</A> -->
       <LI><A HREF="#usermodel">User model (partially implemented)</A>
     </UL>
     <LI>Opportunistic Design
     <UL>
       <LI><A HREF="#todolist">&quot;To Do&quot; List</A>
-      <LI><A HREF="#checklists">Checklists</A>
-      <LI><A HREF="#wbs">Work Breakdown Structure (future)</A>
+      <!-- <LI><A HREF="#checklists">Checklists</A> -->
+      <!-- <LI><A HREF="#wbs">Work Breakdown Structure (future)</A> -->
     </UL>
     <LI>Comprehension and Problem Solving
     <UL>
-      <LI><A HREF="#navigation">Navigational Perspectives</A>
+      <LI><A HREF="#navigation">Explorer Perspectives</A>
       <LI><A HREF="#views">Multiple, Overlapping Views</A>
       <LI><A HREF="#reps">Alternative Design Representations: Graphs, Text, or Table</A>
-      <LI><A HREF="#layout">Model-based Graph Layout (future)</A>
+      <!-- <LI><A HREF="#layout">Model-based Graph Layout (future)</A> -->
     </UL>
   </UL>
-  <LI>Customization
+  <!-- <LI>Customization
   <UL>
     <LI><A HREF="#usermodeledit">Customizable User Model (partially implemented)</A>
     <LI><A HREF="#processmodel">Customizable Process Model (partially implemented)</A>
@@ -54,13 +58,18 @@ briefly below.</P>
     <LI><A HREF="#checklisteditor">Checklist Editor (future)</A>
     <LI><A HREF="#autoeditor">Corrective Automation Editor (future)</A>
     <LI><A HREF="#naveditor">Navigational Perspective Editor</A>
-  </UL>
+  </UL> -->
 </UL>
 
 <P><BR>
+Click on this thumbnail to see the latest development version in action:
 <BR>
-<IMG SRC="tours/inheritperspective.gif" WIDTH="800" HEIGHT="600" ALIGN="BOTTOM" BORDER="0" X-SAS-UseImageWidth
-X-SAS-UseImageHeight></P>
+<a href="tours/argo0.15.2.png">
+    <IMG SRC="tours/argo0.15.2.png" 
+    WIDTH="400" HEIGHT="300" ALIGN="BOTTOM" BORDER="0" X-SAS-UseImageWidth
+    X-SAS-UseImageHeight>
+    </a>
+</P>
 <P><BR>
 <BR>
 <BR>
@@ -68,15 +77,14 @@ X-SAS-UseImageHeight></P>
 <TABLE BORDER="0" CELLSPACING="0" WIDTH="650">
   <TR>
     <TD WIDTH="10" BGCOLOR="#FFFFFF">&nbsp;</TD>
-    <TD COLSPAN="3"><A NAME="crossplatform"></A><B>Runs on any platform with Java 1.2</B></TD>
+    <TD COLSPAN="3"><A NAME="install"></A><B>Install with Java WebStart</B></TD>
   </TR>
   <TR>
     <TD WIDTH="10" BGCOLOR="#FFFFFF">&nbsp;</TD>
     <TD WIDTH="10">&nbsp;</TD>
     <TD WIDTH="10">&nbsp;</TD>
     <TD>
-      <P>ArgoUML is coded entirely in Java and uses the Java Foundation Classes. This allows
-      ArgoUML to run on virtually any platform.</P>
+      <P>The ArgoUml website provides easy installation with Java Webstart.</P>
     </TD>
   </TR>
   <TR>
@@ -85,6 +93,30 @@ X-SAS-UseImageHeight></P>
     <TD WIDTH="10">&nbsp;</TD>
     <TD>&nbsp;</TD>
   </TR>
+
+
+  <TR>
+    <TD WIDTH="10" BGCOLOR="#FFFFFF">&nbsp;</TD>
+    <TD COLSPAN="3"><A NAME="crossplatform"></A><B>Runs on any platform with Java
+1.3+</B></TD>
+  </TR>
+  <TR>
+    <TD WIDTH="10" BGCOLOR="#FFFFFF">&nbsp;</TD>
+    <TD WIDTH="10">&nbsp;</TD>
+    <TD WIDTH="10">&nbsp;</TD>
+    <TD>
+      <P>ArgoUML is written entirely in Java and uses the Java Foundation 
+        Classes. This allows ArgoUML to run on virtually any platform.</P>
+    </TD>
+  </TR>
+  <TR>
+    <TD WIDTH="10" BGCOLOR="#FFFFFF">&nbsp;</TD>
+    <TD WIDTH="10">&nbsp;</TD>
+    <TD WIDTH="10">&nbsp;</TD>
+    <TD>&nbsp;</TD>
+  </TR>
+
+
   <TR>
     <TD WIDTH="10" BGCOLOR="#FFFFFF">&nbsp;</TD>
     <TD COLSPAN="3"><A NAME="Standard"></A><B>Standard UML Meta-Model</B></TD>
@@ -93,35 +125,68 @@ X-SAS-UseImageHeight></P>
     <TD WIDTH="10" BGCOLOR="#FFFFFF">&nbsp;</TD>
     <TD WIDTH="10">&nbsp;</TD>
   <TD WIDTH="10">&nbsp;</TD>
-
-  <TD>ArgoUML is compliant with the OMG Standard for UML in its latest
-      version 1.3. The code for the internal representation of an UML
+  <TD>ArgoUML is compliant with the <a
+href="http://www.omg.org">OMG</a> Standard for UML 1.3. 
+      The code for the internal representation of an UML
       model is completely generated from the specification and, thus,
       follows it very closely.  To achieve this, a special metamodel
       library (<a href="http://nsuml.sourceforge.net">NSUML</a>) was
-      developed by <a href="http://www.novosoft.ru">Novosofts</a> and
-      made available under LGPL.  This makes ArgoUML extremely
-      flexible, new versions of the UML standard can be adopted within
-      days.  Some advanced features of UML are not yet available in
-      the diagrams, but the foundation to completely fulfill all of
-      UML is laid.</TD>
+      developed by <a href="http://www.novosoft.ru">Novosoft</a> and
+      made available under LGPL.
 
+      <br><br>
+      ArgoUML 0.16 will have a new internal uml implementation that will be
+standards compliant with UML1.4 or 1.5. We are working hard to achieve this.</TD>
   </TR>
   <TR>
     <TD WIDTH="10" BGCOLOR="#FFFFFF">&nbsp;</TD>
     <TD WIDTH="10">&nbsp;</TD>
     <TD WIDTH="10">&nbsp;</TD>
     <TD>&nbsp;</TD>
-  </TR>  <TR>
+  </TR>
+
+
+  <TR>
     <TD WIDTH="10" BGCOLOR="#FFFFFF">&nbsp;</TD>
-    <TD COLSPAN="3"><A NAME="XMI"></A><B>XMI-Support</B></TD>
+    <TD COLSPAN="3"><A NAME="Diagrams"></A><B>UML Diagram Support</B></TD>
   </TR>
   <TR>
     <TD WIDTH="10" BGCOLOR="#FFFFFF">&nbsp;</TD>
     <TD WIDTH="10">&nbsp;</TD>
     <TD WIDTH="10">&nbsp;</TD>
     <TD>
+      <P>ArgoUML uses <A HREF="http://gef.tigris.org/">GEF</A>, the
+      UCI Graph Editing Framework to edit UML diagrams.  The following
+      diagram types are supported:</P>
+      <UL>
+        <LI>Class diagram
+        <LI>Statechart diagram
+        <LI>Activity diagram
+        <LI>Use Case diagram
+        <LI>Collaboration diagram
+        <LI>Deployment diagram (includes Object and Component diagram in one)
+        <LI>[ Sequence diagram - has been removed in version 0.14 for a
+re-design, a new implementation will be included in 0.16]
+      </UL>
+    </TD>
+  </TR>
+  <TR>
+    <TD WIDTH="10" BGCOLOR="#FFFFFF">&nbsp;</TD>
+    <TD WIDTH="10">&nbsp;</TD>
+    <TD WIDTH="10">&nbsp;</TD>
+    <TD>&nbsp;</TD>
+  </TR> 
 
+
+  <TR>
+    <TD WIDTH="10" BGCOLOR="#FFFFFF">&nbsp;</TD>
+    <TD COLSPAN="3"><A NAME="XMI"></A><B>XMI Support</B></TD>
+  </TR>
+  <TR>
+    <TD WIDTH="10" BGCOLOR="#FFFFFF">&nbsp;</TD>
+    <TD WIDTH="10">&nbsp;</TD>
+    <TD WIDTH="10">&nbsp;</TD>
+    <TD>
     <P>XMI is an XML based exchange format between UML tools. ArgoUML
         uses this as standard saving mechanism so that easy
         interchange with other tools and compliance with open
@@ -135,62 +200,11 @@ X-SAS-UseImageHeight></P>
         models to ArgoUML! This currently only includes model
         information, but no graphical information (like layout of
         diagrams).
+
+        <br><br>
+        ArgoUML 0.16 will have a new internal UML implementation that will
+support the latest XMI versions.
       </P>
-
-  </TD>
-  </TR>
-  <TR>
-    <TD WIDTH="10" BGCOLOR="#FFFFFF">&nbsp;</TD>
-    <TD WIDTH="10">&nbsp;</TD>
-    <TD WIDTH="10">&nbsp;</TD>
-    <TD>&nbsp;</TD>
-  </TR>
-  <TR>
-    <TD WIDTH="10" BGCOLOR="#FFFFFF">&nbsp;</TD>
-    <TD COLSPAN="3"><A NAME="Editing"></A><B>UML Design Editing</B></TD>
-  </TR>
-  <TR>
-    <TD WIDTH="10" BGCOLOR="#FFFFFF">&nbsp;</TD>
-    <TD WIDTH="10">&nbsp;</TD>
-    <TD WIDTH="10">&nbsp;</TD>
-    <TD>
-      <P>ArgoUML uses <A HREF="http://gef.tigris.org/">GEF</A>, the
-      UCI Graph Editing Framework to edit UML diagrams.  The following
-      diagram types are supported:</P>
-
-      <UL>
-        <LI>Class diagrams
-        <LI>State machine diagrams
-        <LI>Activity diagrams
-        <LI>Use case diagrams
-        <LI>Collaboration diagrams
-        <LI>Object/Component/Deployment diagrams 
-        (this is basically one diagram type in ArgoUML)
-        <LI>Sequence diagrams (with limitations)
-      </UL>
-    </TD>
-  </TR>
-  <TR>
-    <TD WIDTH="10" BGCOLOR="#FFFFFF">&nbsp;</TD>
-    <TD WIDTH="10">&nbsp;</TD>
-    <TD WIDTH="10">&nbsp;</TD>
-    <TD>&nbsp;</TD>
-  </TR>
-  <TR>
-    <TD WIDTH="10" BGCOLOR="#FFFFFF">&nbsp;</TD>
-    <TD COLSPAN="3"><A NAME="OCL"></A><B>OCL Support</B></TD>
-  </TR>
-  <TR>
-    <TD WIDTH="10" BGCOLOR="#FFFFFF">&nbsp;</TD>
-    <TD WIDTH="10">&nbsp;</TD>
-    <TD WIDTH="10">&nbsp;</TD>
-    <TD>
-      <P>As the first UML-Tool at all ArgoUML provides full OCL syntax
-         and type checking.  This is based on an <a
-         href="http://dresden-ocl.sourceforge.net">OCL-Compiler
-         </a> developed at the Technical University of Dresden. It also is
-         able to generate Java-code from OCL-Constraints.</P>
-
   </TD>
   </TR>
   <TR>
@@ -200,12 +214,7 @@ X-SAS-UseImageHeight></P>
     <TD>&nbsp;</TD>
   </TR>
 
-  <TR>
-    <TD WIDTH="10" BGCOLOR="#FFFFFF">&nbsp;</TD>
-    <TD WIDTH="10">&nbsp;</TD>
-    <TD WIDTH="10">&nbsp;</TD>
-    <TD>&nbsp;</TD>
-  </TR>
+
   <TR>
     <TD WIDTH="10" BGCOLOR="#FFFFFF">&nbsp;</TD>
     <TD COLSPAN="3"><A NAME="Export"></A><B>Several diagram export formats</B></TD>
@@ -216,10 +225,8 @@ X-SAS-UseImageHeight></P>
     <TD WIDTH="10">&nbsp;</TD>
     <TD>
     <P>
-        Diagrams can now be exported to gif, PostScript, eps, PGML and svg.
-        The standard saving format for diagrams is still PGML,
-        but it will be changed to the upcoming standard for Scalable Vector
-        Graphics (svg) of the W3C consortium.
+        Diagrams can be saved as GIF, PostScript, Encapsulated PS, PGML and
+SVG.
       </P>
     </TD>
   </TR>
@@ -229,22 +236,22 @@ X-SAS-UseImageHeight></P>
     <TD WIDTH="10">&nbsp;</TD>
     <TD>&nbsp;</TD>
   </TR>
+
+
   <TR>
     <TD WIDTH="10" BGCOLOR="#FFFFFF">&nbsp;</TD>
-
-    <TD COLSPAN="3"><A NAME="codegen"></A><B>Code Generation</B>
-    <B>(partially implemented)</B></TD>
-
+    <TD COLSPAN="3"><A NAME="i18n"></A><B>Internationalization</B></TD>
   </TR>
   <TR>
     <TD WIDTH="10" BGCOLOR="#FFFFFF">&nbsp;</TD>
     <TD WIDTH="10">&nbsp;</TD>
     <TD WIDTH="10">&nbsp;</TD>
-
-    <TD>We are looking for someone to design, implement, contribute a
-        powerful, flexible, and extensible code generation
-        facility.</TD>
-
+    <TD>
+    <P>
+        ArgoUML has been internationalized to American English, British English,
+        French, German, Spanish and Russian.
+      </P>
+    </TD>
   </TR>
   <TR>
     <TD WIDTH="10" BGCOLOR="#FFFFFF">&nbsp;</TD>
@@ -252,6 +259,109 @@ X-SAS-UseImageHeight></P>
     <TD WIDTH="10">&nbsp;</TD>
     <TD>&nbsp;</TD>
   </TR>
+
+
+  <TR>
+    <TD WIDTH="10" BGCOLOR="#FFFFFF">&nbsp;</TD>
+    <TD COLSPAN="3"><A NAME="Editing"></A><B>Diagram Editing</B></TD>
+  </TR>
+  <TR>
+    <TD WIDTH="10" BGCOLOR="#FFFFFF">&nbsp;</TD>
+    <TD WIDTH="10">&nbsp;</TD>
+    <TD WIDTH="10">&nbsp;</TD>
+    <TD>
+    <P>
+        ArgoUML supports many diagram editing features that help you edit UML
+diagrams. Smooth zooming will be available in version 0.16 to give you the
+bigger picture.
+      </P>
+    </TD>
+  </TR>
+  <TR>
+    <TD WIDTH="10" BGCOLOR="#FFFFFF">&nbsp;</TD>
+    <TD WIDTH="10">&nbsp;</TD>
+    <TD WIDTH="10">&nbsp;</TD>
+    <TD>&nbsp;</TD>
+  </TR>
+
+
+  <TR>
+    <TD WIDTH="10" BGCOLOR="#FFFFFF">&nbsp;</TD>
+    <TD COLSPAN="3"><A NAME="OCL"></A><B>OCL Support</B></TD>
+  </TR>
+  <TR>
+    <TD WIDTH="10" BGCOLOR="#FFFFFF">&nbsp;</TD>
+    <TD WIDTH="10">&nbsp;</TD>
+    <TD WIDTH="10">&nbsp;</TD>
+    <TD>
+      <P>ArgoUML provides constraint modelling support on UML Classes and
+         Features.
+         The <a
+         href="http://dresden-ocl.sourceforge.net">Dresden OCL toolkit </a>
+         enables ArgoUML to perform syntax
+         and type checking on those constraints.  OCL support has been provided
+         by and developed at the Technical University of Dresden, thanks!
+         <!-- It also is able to generate Java-code from OCL-Constraints.
+            [check this] -->
+      </P>
+
+  </TD>
+  </TR>
+  <TR>
+    <TD WIDTH="10" BGCOLOR="#FFFFFF">&nbsp;</TD>
+    <TD WIDTH="10">&nbsp;</TD>
+    <TD WIDTH="10">&nbsp;</TD>
+    <TD>&nbsp;</TD>
+  </TR>
+
+
+  <TR>
+    <TD WIDTH="10" BGCOLOR="#FFFFFF">&nbsp;</TD>
+
+    <TD COLSPAN="3"><A NAME="codegen"></A><B>Forward Engineering</B></TD>
+
+  </TR>
+  <TR>
+    <TD WIDTH="10" BGCOLOR="#FFFFFF">&nbsp;</TD>
+    <TD WIDTH="10">&nbsp;</TD>
+    <TD WIDTH="10">&nbsp;</TD>
+
+    <TD>ArgoUml provides a modular code generation framework. Currently Java is
+provided by default and there are modules for C++ and Php. The Java code
+generation works with the Java reverse engineering to provide basic round -
+trip.</TD>
+  </TR>
+  <TR>
+    <TD WIDTH="10" BGCOLOR="#FFFFFF">&nbsp;</TD>
+    <TD WIDTH="10">&nbsp;</TD>
+    <TD WIDTH="10">&nbsp;</TD>
+    <TD>&nbsp;</TD>
+  </TR>
+
+
+  <TR>
+    <TD WIDTH="10" BGCOLOR="#FFFFFF">&nbsp;</TD>
+
+    <TD COLSPAN="3"><A NAME="reveng"></A><B>Reverse Engineering</B></TD>
+
+  </TR>
+  <TR>
+    <TD WIDTH="10" BGCOLOR="#FFFFFF">&nbsp;</TD>
+    <TD WIDTH="10">&nbsp;</TD>
+    <TD WIDTH="10">&nbsp;</TD>
+
+    <TD>ArgoUml provides a modular reverse engineering framework. Currently Java
+source code is provided by default and there are modules for Java <b>Jar</b> and
+classfile import.</TD>
+  </TR>
+  <TR>
+    <TD WIDTH="10" BGCOLOR="#FFFFFF">&nbsp;</TD>
+    <TD WIDTH="10">&nbsp;</TD>
+    <TD WIDTH="10">&nbsp;</TD>
+    <TD>&nbsp;</TD>
+  </TR>
+
+
   <TR>
     <TD WIDTH="10" BGCOLOR="#FFFFFF">&nbsp;</TD>
     <TD COLSPAN="3"><A NAME="critics"></A><B>Design Critics</B></TD>
@@ -281,6 +391,8 @@ X-SAS-UseImageHeight></P>
     <TD WIDTH="10">&nbsp;</TD>
     <TD>&nbsp;</TD>
   </TR>
+
+
   <TR>
     <TD WIDTH="10">&nbsp;</TD>
 
@@ -391,6 +503,8 @@ do&quot; list may also be viewed as a flat list.</TD>
     <TD WIDTH="10">&nbsp;</TD>
     <TD>&nbsp;</TD>
   </TR>
+
+<!--
   <TR>
     <TD WIDTH="10">&nbsp;</TD>
     <TD COLSPAN="3"><A NAME="checklists"></A><B>Checklists</B></TD>
@@ -452,6 +566,8 @@ do&quot; list may also be viewed as a flat list.</TD>
     <TD WIDTH="10">&nbsp;</TD>
     <TD>&nbsp;</TD>
   </TR>
+-->
+<!--
   <TR>
     <TD WIDTH="10">&nbsp;</TD>
     <TD COLSPAN="3"><A NAME="wbs"></A><B>Work Breakdown Structure (future)</B></TD>
@@ -468,24 +584,27 @@ do&quot; list may also be viewed as a flat list.</TD>
     <TD WIDTH="10">&nbsp;</TD>
     <TD>&nbsp;</TD>
   </TR>
+-->
   <TR>
     <TD WIDTH="10">&nbsp;</TD>
-    <TD COLSPAN="3"><A NAME="navigation"></A><B>Navigational Perspectives</B></TD>
+    <TD COLSPAN="3"><A NAME="navigation"></A><B>Explorer Perspectives</B></TD>
   </TR>
   <TR>
     <TD WIDTH="10">&nbsp;</TD>
     <TD WIDTH="10">&nbsp;</TD>
     <TD WIDTH="10">&nbsp;</TD>
 
-    <TD>Many design tools and IDEs (integrated development
-      environments) use project files to contain all the elements of
-      the system beind designe or built. Argo, like most tools,
-      provide a tree widget to allow the designer to access the
-      various parts of the project. Unlike other tools, Argo gives the
-      designer a much richer set of alternative tree-structured views
-      of the project, and provides a language for designers to <A
+    <TD>Argo, like most tools,
+      provides a tree view to allow the designer to access the
+      various parts of their modelling project. Unlike other tools,
+Argo provides the
+      designer with a much richer set of alternative tree views
+      of the project
+
+<!-- , and provides a language for designers to <A
       HREF="#naveditor">customize</A> those perspectives or add new
-      ones.</TD>
+      ones. -->
+</TD>
 
   </TR>
   <TR>
@@ -513,7 +632,10 @@ do&quot; list may also be viewed as a flat list.</TD>
       <BR>
       Argo allows multiple graphical representations of the same
       design element to be used in different diagrams. In this sense,
-      the views are overlapping.</TD>
+      the views are overlapping.
+
+      <br>
+      ArgoUml has 4 main views: Explorer, Diagram, Details, Critics.</TD>
 
   </TR>
   <TR>
@@ -539,6 +661,7 @@ do&quot; list may also be viewed as a flat list.</TD>
         them are kept consistent.</TD>
 
   </TR>
+<!--
   <TR>
     <TD WIDTH="10">&nbsp;</TD>
     <TD WIDTH="10">&nbsp;</TD>
@@ -671,6 +794,8 @@ do&quot; list may also be viewed as a flat list.</TD>
     <TD WIDTH="10">&nbsp;</TD>
     <TD>&nbsp;</TD>
   </TR>
+-->
+<!--
   <TR>
     <TD WIDTH="10">&nbsp;</TD>
     <TD COLSPAN="3"><A NAME="naveditor"></A><B>Navigational Perspective Editor</B></TD>
@@ -698,6 +823,7 @@ do&quot; list may also be viewed as a flat list.</TD>
     <TD WIDTH="10">&nbsp;</TD>
     <TD>&nbsp;</TD>
   </TR>
+-->
 </TABLE>
 </P>
 <P><BR>
