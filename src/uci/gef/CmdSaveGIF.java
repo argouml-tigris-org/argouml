@@ -45,7 +45,7 @@ import Acme.JPM.Encoders.GifEncoder;
  *  @author Steve Poole, stevep@wrq.com
  */
 
-public class CmdSaveGIF extends Cmd {
+public class CmdSaveGIF extends CmdSaveGraphics {
 
   /** Used as background color in image and set transparent. Chosen because
    *  it's unlikely to be selected by the user, and leaves the diagram readable
@@ -58,62 +58,21 @@ public class CmdSaveGIF extends Cmd {
     super("Save GIF...", NO_ICON);
   }
 
-  /** Set the outputStream argument. This must be done prior to saving
-   *  the image.
-   *
-   *  @param s	the OutputStream into which the image will be saved */
-
-  public void setStream( OutputStream s ) {
-    setArg( "outputStream", s );
-  }
-
   /** Write the diagram contained by the current editor into an OutputStream
-   *  as a GIF image. The "outputStream" argument must have been previously
-   *  set with setStream(). */
-
-  public void doIt() {
-    //	FIX - what's the global exception handling strategy?
-    //	Should this method ensure that no exceptions are propagated?
-
-    Editor ce = Globals.curEditor();
-    OutputStream s = (OutputStream)getArg( "outputStream" );
-
-    //	Determine the bounds of the diagram.
-    //
-    //	FIX - this is a little glitchy. It appears that some elements
-    //	will underreport their size and others will overreport. Various
-    //	line styles seem to have the problem. Haven't spent any time
-    //	trying to figure it out.
-
-    int xmin = 99999, ymin = 99999;
-    Fig f = null;
-    Rectangle rectSize = null;
-    Rectangle drawingArea = new Rectangle( 0, 0 );
-    Enumeration enum = ce.figs();
-    while( enum.hasMoreElements() ) {
-      f = (Fig) enum.nextElement();
-      rectSize = f.getBounds();
-      xmin = Math.min( xmin, rectSize.x );
-      ymin = Math.min( ymin, rectSize.y );
-      drawingArea.add( rectSize );
-    }
+   *  as a GIF image. */
+  protected void saveGraphics(OutputStream s, Editor ce,
+			      Rectangle drawingArea)
+                 throws IOException {
 
     //	Create an offscreen image and render the diagram into it.
-    //	Tell the editor to hide the grid before doing so.
 
-    boolean h = ce.getGridHidden();
-    ce.setGridHidden( true );
-
-    int width = drawingArea.width - xmin;
-    int height = drawingArea.height - ymin;
-    Image i = ce.createImage( width, height );
+    Image i = ce.createImage( drawingArea.width, drawingArea.height );
     Graphics g = i.getGraphics();
     g.setColor( new Color(TRANSPARENT_BG_COLOR) );
     g.fillRect( 0, 0, drawingArea.width, drawingArea.height );
     // a little extra won't hurt
-    g.translate( -xmin, -ymin );
+    g.translate( -drawingArea.x, -drawingArea.y );
     ce.print( g );
-    ce.setGridHidden( h );
 
     //	Tell the Acme GIF encoder to save the image as a GIF into the
     //	output stream. Use the TransFilter to make the background
@@ -133,14 +92,6 @@ public class CmdSaveGIF extends Cmd {
 
     g.dispose();
     g = null;
-  }
-
-  /**
-   *	Undo stub. No useful implementation.
-   */
-
-  public void undoIt() {
-    System.out.println( "Undo does not make sense for CmdSaveGIF" );
   }
 
 } /* end class CmdSaveGIF */

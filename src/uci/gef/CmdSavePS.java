@@ -21,41 +21,52 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
+// File: CmdSavePS.java
+// Classes: CmdSavePS
+// Original Author: wienberg@informatik.uni-hamburg.de
 
-package uci.uml.ui;
+package uci.gef;
 
-//import java.io.File;
-//import javax.swing.*;
-//import javax.swing.preview.*;
-//import javax.swing.filechooser.*;
+import com.sun.java.util.collections.*;
+import java.util.Enumeration;
+import java.io.*;
+import java.awt.Rectangle;
 
-public class FileFilters {
 
-  ////////////////////////////////////////////////////////////////
-  // constants
+/** Cmd to save a diagram as PostScript in a supplied OutputStream. 
+ *  Requires the CH.ifa.draw.util.PostscriptWriter class. Operates on the
+ *  diagram in the current editor.
+ *
+ *  Code loosely adapted from CmdSaveGIF.
+ *
+ *  @author Frank Wienberg, wienberg@informatik.uni-hamburg.de
+ */
 
-  public static final SuffixFilter ArgoFilter = new
-  SuffixFilter("argo", "Argo project file");
+public class CmdSavePS extends CmdSaveGraphics {
 
-  public static final SuffixFilter XMIFilter = new
-  SuffixFilter("xmi", "Argo model file");
+  public CmdSavePS() {
+    super("Save PostScript...", NO_ICON);
+  }
 
-  public static final SuffixFilter PGMLFilter = new
-  SuffixFilter("pgml", "Argo diagram");
+  protected void saveGraphics(OutputStream s, Editor ce,
+			      Rectangle drawingArea)
+                 throws IOException {
+System.out.println("Writing PostScript...");
+      PostscriptWriter ps = new PostscriptWriter(s);
+      ps.translate(32,32+778);
+      double scale=Math.min(535.0/drawingArea.width,
+			    778.0/drawingArea.height);
+      if (scale < 1.0) {
+	  System.out.println("Scaling PS output by "+scale);
+	  ps.scale(scale,scale);
+      }
+      ps.translate(-drawingArea.x,-drawingArea.y);
+      ps.setClip(drawingArea.x, drawingArea.y,
+		 drawingArea.width, drawingArea.height);
+      // java bug if using Rectangle.shape() ???
+      ce.print(ps);
+      ps.dispose();
+System.out.println("Wrote PostScript.");
+  }
 
-  public static final SuffixFilter ConfigFilter = new
-  SuffixFilter("config", "Argo configutation file");
-
-  public static final SuffixFilter HistFilter = new
-  SuffixFilter("hist", "Argo history file");
-
-  public static final SuffixFilter LogFilter = new
-  SuffixFilter("log", "Argo usage log");
-
-  public static final SuffixFilter GIFFilter = new
-  SuffixFilter("gif", "GIF image");
-
-  public static final SuffixFilter PSFilter = new
-  SuffixFilter("ps", "PostScript file");
-
-} /* end class FileFilters */
+} /* end class CmdSavePS */

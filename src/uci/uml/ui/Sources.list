@@ -46,6 +46,7 @@ SOURCES= \
 	SpacerPanel.java \
 	SplashScreen.java \
 	StatusBar.java \
+	SuffixFilter.java \
 	TabChecklist.java \
 	TabConstraints.java \
 	TabDiagram.java \

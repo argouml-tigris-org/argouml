@@ -80,6 +80,7 @@ public class Actions {
   //public static UMLAction AddToProj = new ActionAddToProj();
   public static UMLAction Print = new ActionPrint();
   public static UMLAction SaveGIF = new ActionSaveGIF();
+  public static UMLAction SavePS = new ActionSavePS();
   public static UMLAction Exit = new ActionExit();
 
   public static UMLAction Undo = new ActionUndo();
@@ -701,6 +702,98 @@ class ActionSaveGIF extends UMLAction {
     return false;
   }
 } /* end class ActionSaveGIF */
+
+
+
+/** Wraps a CmdSavePS to allow selection of an output file. */
+
+class ActionSavePS extends UMLAction {
+  public static final String separator = "/";
+
+  public ActionSavePS() {
+    super( "Save PS...", NO_ICON);
+  }
+
+
+  public void actionPerformed( ActionEvent ae ) {
+    trySave( false );
+  }
+
+  public boolean trySave( boolean overwrite ) {
+    CmdSavePS cmd = new CmdSavePS();
+    Object target = ProjectBrowser.TheInstance.getTarget();
+    if( target instanceof Diagram ) {
+      String defaultName = ((Diagram)target).getName();
+      defaultName = Util.stripJunk(defaultName);
+
+      // FIX - It's probably worthwhile to abstract and factor this chooser 
+      // and directory stuff. More file handling is coming, I'm sure.
+
+      ProjectBrowser pb = ProjectBrowser.TheInstance;
+      Project p =  pb.getProject();
+      try {
+	JFileChooser chooser = null;
+	try {
+	  if ( p != null && p.getURL() != null &&
+	       p.getURL().getFile().length() > 0 ) {
+	    String filename = p.getURL().getFile();
+	    if( !filename.startsWith( "/FILE1/+/" ) )
+	      chooser  = new JFileChooser( p.getURL().getFile() );
+	  }
+	}
+	catch( Exception ex ) {
+	    System.out.println( "exception in opening JFileChooser" );
+	    ex.printStackTrace();
+	  }
+
+	if( chooser == null ) chooser = new JFileChooser();
+
+	chooser.setDialogTitle( "Save Diagram as PS: " + defaultName );
+	FileFilter filter = FileFilters.PSFilter;
+	chooser.addChoosableFileFilter( filter );
+	chooser.setFileFilter( filter );
+	File def = new File(  defaultName + ".ps" ); // is .ps preferred?
+	chooser.setSelectedFile( def );
+
+	int retval = chooser.showSaveDialog( pb );
+	if( retval == 0 ) {
+	  File theFile = chooser.getSelectedFile();
+	  if( theFile != null ) {
+	    String path = theFile.getParent();
+	    String name = theFile.getName();
+	    if( !path.endsWith( separator ) ) path += separator;
+	    pb.showStatus( "Writing " + path + name + "..." );
+	    if( theFile.exists() && !overwrite ) {
+	      System.out.println( "Are you sure you want to overwrite " + name + "?");
+	      String t = "Overwrite " + path + name;
+	      int response =
+		JOptionPane.showConfirmDialog(pb, t, t,
+					      JOptionPane.YES_NO_OPTION);
+	      if (response == JOptionPane.NO_OPTION) return false;
+	    }
+	    FileOutputStream fo = new FileOutputStream( theFile );
+	    cmd.setStream( fo );
+	    cmd.doIt();
+	    fo.close();
+	    pb.showStatus( "Wrote " + path + name );
+	    return true;
+	  }
+	}
+      }
+      catch( FileNotFoundException ignore ) 
+	{
+	  System.out.println( "got a FileNotFoundException" );
+	}
+      catch( IOException ignore ) 
+	{
+	  System.out.println( "got an IOException" );
+	  ignore.printStackTrace();
+	}
+    }
+
+    return false;
+  }
+} /* end class ActionSavePS */
 
 
 
