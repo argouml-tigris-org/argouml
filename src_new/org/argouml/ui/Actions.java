@@ -1972,7 +1972,7 @@ class ActionAggregation extends UMLAction {
   String str = "";
   MAggregationKind agg = null;
   public ActionAggregation(MAggregationKind a, String s) {
-    super(a.toString(), NO_ICON);
+    super(a.getName(), NO_ICON);
     str = s;
     agg = a;
   }
