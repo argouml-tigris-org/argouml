@@ -28,7 +28,7 @@ import java.awt.*;
 import java.io.*;
 import java.util.*;
 
-abstract class PathConv
+public abstract class PathConv
 {
 	Fig pathFigure; 	// The intermediate path figure
 	

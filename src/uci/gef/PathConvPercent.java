@@ -28,7 +28,7 @@ import java.awt.*;
 import java.io.*;
 import java.util.*;
 
-class PathConvPercent extends PathConv
+public class PathConvPercent extends PathConv
 {
 	float percent = 0;
 	int offset = 0;
