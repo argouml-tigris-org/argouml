@@ -59,6 +59,7 @@ public class GoProjectMachine extends AbstractGoRule {
   }
 
   public int getIndexOfChild(Object parent, Object child) {
+    if (parent == null) return -1;
     Vector children = new Vector(getChildren(parent));
     if (children != null && children.contains(child))
       return children.indexOf(child);
