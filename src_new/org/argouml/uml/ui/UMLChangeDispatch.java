@@ -215,7 +215,7 @@ public class UMLChangeDispatch implements Runnable, UMLUserInterfaceComponent {
      *    new target on completion of dispatch.
      */
     public void run() {
-        dispatch(_container);
+        dispatch(_container); 
         //
         //   now that we have finished all the UI updating
         //

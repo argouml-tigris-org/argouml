@@ -136,7 +136,7 @@ implements PropertyChangeListener {
   private static boolean reportedNotationProblem = false;
 
   public static NotationName getDefaultNotation() {
-      NotationName n = NotationNameImpl.findNotation(Configuration.getString(KEY_DEFAULT_NOTATION, NOTATION_ARGO.getConfigurationValue()));
+    NotationName n = NotationNameImpl.findNotation(Configuration.getString(KEY_DEFAULT_NOTATION, NOTATION_ARGO.getConfigurationValue()));
       // Needs-more-work:
       // This is needed for the case when the default notation is 
       // not loaded at this point.

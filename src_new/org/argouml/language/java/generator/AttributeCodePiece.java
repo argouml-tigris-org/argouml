@@ -140,8 +140,13 @@ public class AttributeCodePiece extends NamedCodePiece
 		if(mFeature.getName().equals(name)) {
 		    parseState.newFeature(mFeature);
 		    MAttribute mAttribute = (MAttribute)mFeature;
-
-		    String docComment = GeneratorJava.generateConstraintEnrichedDocComment(mAttribute,false,GeneratorJava.INDENT);
+		    /*
+		     * 2002-11-07
+		     * Jaap Branderhorst
+		     * Made the static reference to generateConstraintEnrichedDocComment a non-static one.
+		     * Reason: the method generateConstraintEnrichedDocComment has become a non-static method.
+		     */
+		    String docComment = GeneratorJava.getInstance().generateConstraintEnrichedDocComment(mAttribute,false,GeneratorJava.INDENT);
 		    if(docComment != null) {
               writer.write (docComment);
               writer.write ("\n");
