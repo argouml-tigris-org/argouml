@@ -36,6 +36,7 @@ import javax.swing.Action;
 
 import org.apache.log4j.Logger;
 
+import org.argouml.i18n.Translator;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.ModelFacade;
 import org.argouml.ui.CmdCreateNode;
@@ -263,7 +264,14 @@ public class UMLStateDiagram extends UMLDiagram {
         }
         return name;
     }
-
+    
+    /**
+     * @see org.argouml.uml.diagram.ui.UMLDiagram#getLabelName()
+     */
+    public String getLabelName() {
+        return Translator.localize("label.state-chart-diagram");
+    }
+    
     /**
      * This diagram listens to NSUML events from its Statemachine;
      * When the Statemachine is removed, we also want to delete this diagram.

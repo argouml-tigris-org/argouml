@@ -608,5 +608,11 @@ public abstract class UMLDiagram
     protected int getNextDiagramSerial() {
         return diagramSerial++;
     }
+    
+    /**
+     * @return a string that can be used as a label for this kind of diagram
+     */
+    public abstract String getLabelName();
+    
 } /* end class UMLDiagram */
 

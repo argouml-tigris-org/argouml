@@ -30,13 +30,7 @@ import javax.swing.table.AbstractTableModel;
 
 import org.argouml.i18n.Translator;
 import org.argouml.model.ModelFacade;
-import org.argouml.uml.diagram.activity.ui.UMLActivityDiagram;
-import org.argouml.uml.diagram.collaboration.ui.UMLCollaborationDiagram;
-import org.argouml.uml.diagram.deployment.ui.UMLDeploymentDiagram;
-import org.argouml.uml.diagram.sequence.ui.UMLSequenceDiagram;
-import org.argouml.uml.diagram.state.ui.UMLStateDiagram;
-import org.argouml.uml.diagram.static_structure.ui.UMLClassDiagram;
-import org.argouml.uml.diagram.use_case.ui.UMLUseCaseDiagram;
+import org.argouml.uml.diagram.ui.UMLDiagram;
 import org.tigris.gef.base.Diagram;
 
 /** 
@@ -94,13 +88,13 @@ public class TMResults extends AbstractTableModel {
      */
     public String getColumnName(int c) {
         if (c == 0)
-            return "Type";
+            return Translator.localize("dialog.find.column-name.type");
         if (c == 1)
-            return "Name";
+            return Translator.localize("dialog.find.column-name.name");
         if (c == 2)
-            return "In Diagram";
+            return Translator.localize("dialog.find.column-name.in-diagram");
         if (c == 3)
-            return "Description";
+            return Translator.localize("dialog.find.column-name.description");
         return "XXX";
     }
 
@@ -130,33 +124,23 @@ public class TMResults extends AbstractTableModel {
         if (rowObj instanceof Diagram) {
             Diagram d = (Diagram) rowObj;
             switch (col) {
-	    case 0 :
+	    case 0 : // the name of this type of diagram 
 		String name = null;
-		if (d instanceof UMLClassDiagram)
-		    name = "label.class-diagram";
-		else if (d instanceof UMLUseCaseDiagram) {
-		    name = "label.usecase-diagram";
-		} else if (d instanceof UMLStateDiagram) {
-		    name = "label.state-chart-diagram";
-		} else if (d instanceof UMLDeploymentDiagram) {
-		    name = "label.deployment-diagram";
-		} else if (d instanceof UMLCollaborationDiagram) {
-		    name = "label.collaboration-diagram";
-		} else if (d instanceof UMLActivityDiagram) {
-		    name = "label.activity-diagram";
-		} else if (d instanceof UMLSequenceDiagram) {
-		    name = "label.sequence-diagram";
-		}
-		return Translator.localize(name);
-	    case 1 :
+		if (d instanceof UMLDiagram)
+		    name = ((UMLDiagram) d).getLabelName();
+		return name;
+	    case 1 : // the name of this instance of diagram
 		return d.getName();
-	    case 2 :
-		return "N/A";
-	    case 3 :
+	    case 2 : // N/A
+		return Translator.localize("dialog.find.not-applicable");
+	    case 3 : // "x nodes and x edges"
 		//GraphModel gm = d.getGraphModel();
 		int numNodes = d.getNodes(null).size();
 		int numEdges = d.getEdges(null).size();
-		return numNodes + " nodes and " + numEdges + " edges";
+		Object[] msgArgs = {new Integer(numNodes), 
+		                    new Integer(numEdges) }; 
+		return Translator.messageFormat("dialog.nodes-and-edges", 
+		        msgArgs);
             }
         }
         if (ModelFacade.isAModelElement(rowObj)) {
@@ -165,18 +149,20 @@ public class TMResults extends AbstractTableModel {
                 d = (Diagram) diagrams.elementAt(row);
             }
             switch (col) {
-	    case 0 :
+	    case 0 : // the name of this type of ModelElement
 		return ModelFacade.getUMLClassName(rowObj);
-	    case 1 :
+	    case 1 : // the name of this instance of ModelElement
 		return ModelFacade.getName(rowObj);
-	    case 2 :
-		return (d == null) ? "N/A" : d.getName();
-	    case 3 :
+	    case 2 : // the name of the parent diagram instance
+		return (d == null) 
+		    ? Translator.localize("dialog.find.not-applicable") 
+                    : d.getName();
+	    case 3 : // TODO: implement this - show some documentation?
 		return "docs";
             }
         }
-        switch (col) {
-	case 0 :
+        switch (col) { // TODO: do we need this - when will this appear? 
+	case 0 : // the name of this type of Object
 	    String clsName = rowObj.getClass().getName();
 	    int lastDot = clsName.lastIndexOf(".");
 	    return clsName.substring(lastDot + 1);
