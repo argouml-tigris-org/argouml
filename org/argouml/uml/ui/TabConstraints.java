@@ -49,6 +49,8 @@ import org.argouml.model.uml.UmlFactory;
 import org.argouml.ui.*;
 import org.argouml.ocl.*;
 
+import org.apache.log4j.Category;
+
 /**
   * Tab for OCL constraint editing.
   *
@@ -57,6 +59,7 @@ import org.argouml.ocl.*;
   */
 public class TabConstraints extends TabSpawnable implements TabModelTarget {
   
+    private static Category _cat = Category.getInstance(TabConstraints.class);
 
   
   /**
@@ -301,6 +304,8 @@ public class TabConstraints extends TabSpawnable implements TabModelTarget {
         OclTree tree = null;
 
         MModelElement mmeContext = m_mmeiTarget;
+        
+        try{
         while (! (mmeContext instanceof MClassifier)) {
           mmeContext = mmeContext.getModelElementContainer();
         }
@@ -311,6 +316,8 @@ public class TabConstraints extends TabSpawnable implements TabModelTarget {
         }
         catch (java.io.IOException ioe) {
           // Ignored: Highly unlikely, and what would we do anyway?
+            // log it
+            _cat.error("problem parsing And Checking Constraints",ioe);
           return;
         }
 
@@ -377,6 +384,10 @@ public class TabConstraints extends TabSpawnable implements TabModelTarget {
         }
         
         fireConstraintDataChanged (m_nIdx, mcOld, m_mcConstraint);
+        
+        }
+        catch (OclTypeException pe) {_cat.warn("the user has entered an invalid ocl string",pe);throw pe;}
+        catch (OclParserException pe1) {_cat.warn("the user has entered an invalid ocl string",pe1);throw pe1;}
       }
       
       /**
@@ -435,6 +446,8 @@ public class TabConstraints extends TabSpawnable implements TabModelTarget {
           catch (Throwable t) {
             // OK, so that didn't work out... Just ignore any problems and don't
             // set the name in the constraint body
+              // better had log it.
+              _cat.error("some unidentified problem",t);
           }
         }
         else {
