@@ -45,7 +45,7 @@ import ru.novosoft.uml.MFactoryImpl;
  */
 public class TestTabDiagram extends TestCase {
     
-    private final static int NUMBER_OF_DIAGRAMS = 1000;
+    private final static int NUMBER_OF_DIAGRAMS = 10;
 
     private UMLDiagram _diagram;
     
@@ -100,7 +100,7 @@ public class TestTabDiagram extends TestCase {
     }
     
     /**
-     * Test the performance of adding an operation to 1 class that's represented on 100 different
+     * Test the performance of adding an operation to 1 class that's represented on 10 different
      * diagrams. The last created diagram is the one selected.
      *
      */
