@@ -38,12 +38,16 @@ public interface ArgoSingletonModule extends ArgoModule {
     /** Allows verification that the current singleton can be
      *  activated.  This is useful for determining menu entry
      *  availability, among other things.
+     *  @return <code>true</code> if the singleton can be activated
+     *          <code>false</code> otherwise.
      */
     public boolean canActivateSingleton();
 
     /** Allows verification that the current singleton can be
      *  deactivated.  This is useful for determining menu entry
      *  availability, among other things.
+     *  @return <code>true</code> if the singleton can be deactivated
+                <code>false</code> otherwise.
      */
     public boolean canDeactivateSingleton();
 

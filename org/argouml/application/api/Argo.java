@@ -354,20 +354,19 @@ public class Argo
     }
 
     static {
-		// Create a separate hierarchy for the argo logger
-		Hierarchy hier = new Hierarchy(new RootCategory(Level.INFO));
-		// Set up the argo console logger in its own hierarchy
-		Logger cat = hier.getLogger(CONSOLE_LOG);
-		cat.addAppender(new ConsoleAppender(
-			new PatternLayout(System.getProperty(ARGO_CONSOLE_PREFIX, "")
-					  + "%m%n"),
-			ConsoleAppender.SYSTEM_OUT));
+	// Create a separate hierarchy for the argo logger
+	Hierarchy hier = new Hierarchy(new RootCategory(Level.INFO));
+	// Set up the argo console logger in its own hierarchy
+	Logger cat = hier.getLogger(CONSOLE_LOG);
+	cat.addAppender(new ConsoleAppender(
+	    new PatternLayout(System.getProperty(ARGO_CONSOLE_PREFIX, "")
+				  + "%m%n"),
+		ConsoleAppender.SYSTEM_OUT));
+	if (System.getProperty(ARGO_CONSOLE_SUPPRESS) != null) {
+            Logger.getRoot().getLoggerRepository().setThreshold(Level.OFF);
+	}
 
-		if (System.getProperty(ARGO_CONSOLE_SUPPRESS) != null) {
-			Logger.getRoot().getLoggerRepository().setThreshold(Level.OFF);
-		}
-
-		// Set log here.  No going back.
-		log = cat;
+	// Set log here.  No going back.
+	log = cat;
     }
 }
