@@ -1163,7 +1163,7 @@ class ActionClassDiagram extends UMLChangeAction {
     Project p = ProjectBrowser.TheInstance.getProject();
     Object target = ProjectBrowser.TheInstance.getDetailsTarget();
     MNamespace ns = p.getCurrentNamespace();
-    if (target instanceof MModel) ns = (MNamespace) target;
+    if (target instanceof MPackage) ns = (MNamespace) target;
     try {
       Diagram d = new UMLClassDiagram(ns);
       p.addMember(d);
@@ -1184,7 +1184,7 @@ class ActionUseCaseDiagram extends UMLChangeAction {
     try {
       Object target = ProjectBrowser.TheInstance.getDetailsTarget();
       MNamespace ns = p.getCurrentNamespace();
-      if (target instanceof MModel) ns = (MNamespace) target;
+      if (target instanceof MPackage) ns = (MNamespace) target;
       Diagram d  = new UMLUseCaseDiagram(ns);
       p.addMember(d);
       ProjectBrowser.TheInstance.getNavPane().addToHistory(d);
@@ -1305,7 +1305,7 @@ class ActionDeploymentDiagram extends UMLChangeAction {
     try {
       Object target = ProjectBrowser.TheInstance.getDetailsTarget();
       MNamespace ns = p.getCurrentNamespace();
-      if (target instanceof MModel) ns = (MNamespace) target;
+      if (target instanceof MPackage) ns = (MNamespace) target;
       Diagram d  = new UMLDeploymentDiagram(ns);
       p.addMember(d);
       ProjectBrowser.TheInstance.getNavPane().addToHistory(d);
