@@ -31,6 +31,7 @@ import javax.swing.*;
 import ru.novosoft.uml.*;
 import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.foundation.extension_mechanisms.*;
+import java.lang.reflect.*;
 
 import org.tigris.gef.util.*;
 
@@ -212,13 +213,59 @@ implements TabModelTarget, MElementListener, UMLUserInterfaceContainer {
         target.addMElementListener(this);
     }
 
+    private static Method _removePromisc = null;
+    private static Method _addPromisc = null;
+    private static boolean _loadPromisc = true;
+
+    private static final void loadPromiscMethods() {
+      if(_loadPromisc) {
+        try {
+          _removePromisc = MBase.class.getMethod("removePromiscuousListener",
+            new Class[] { MElementListener.class });
+          _addPromisc = MBase.class.getMethod("addPromiscuousListener",
+            new Class[] { MElementListener.class });
+        }
+        catch(Exception e) {
+          System.out.println("NSUML promiscuous listener hack not detected.");
+        }
+        _loadPromisc = false;
+      }
+    }
+
+    public static final void removePromiscuousListener(MBase base,MElementListener listener) {
+      loadPromiscMethods();
+      if(_removePromisc != null) {
+        try {
+          _removePromisc.invoke(base,
+            new Object[] { listener });
+        }
+        catch(Exception e) {
+          e.printStackTrace();
+        }
+      }
+    }
+
+    public static boolean addPromiscuousListener(MBase base,MElementListener listener) {
+      loadPromiscMethods();
+      boolean value = false;
+      if(_removePromisc != null) {
+        try {
+          value = ((Boolean) _removePromisc.invoke(base,
+            new Object[] { listener })).booleanValue();
+        }
+        catch(Exception e) {
+          e.printStackTrace();
+        }
+      }
+      return value;
+    }
 
     public void setTarget(Object t) {
         if(t != _target) {
             boolean removeOldPromiscuousListener = (_nameListener != null);
             if(t instanceof MBase && _nameListener != null) {
-//XXX                removeOldPromiscuousListener =
-//XXX                    ((MBase) t).addPromiscuousListener(_nameListener);
+                removeOldPromiscuousListener =
+                  addPromiscuousListener((MBase) t,_nameListener);
             }
 
             //
@@ -230,7 +277,7 @@ implements TabModelTarget, MElementListener, UMLUserInterfaceContainer {
                 //  this path shouldn't happen unless t == null
                 //
                 if(removeOldPromiscuousListener) {
-//XXX                    ((MBase) _target).removePromiscuousListener(_nameListener);
+                    removePromiscuousListener((MBase) _target,_nameListener);
                 }
             }
 
