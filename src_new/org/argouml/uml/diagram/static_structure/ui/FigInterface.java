@@ -179,7 +179,7 @@ public class FigInterface extends FigNodeModelElement {
     MModelElement me = (MModelElement) getOwner();
     MNamespace m = null;
     ProjectBrowser pb = ProjectBrowser.TheInstance;
-    if (encloser != null && (encloser.getOwner() instanceof MModel)) {
+    if (encloser != null && (encloser.getOwner() instanceof MPackage)) {
       m = (MNamespace) encloser.getOwner();
     }
     else {
