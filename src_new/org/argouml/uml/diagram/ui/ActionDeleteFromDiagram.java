@@ -40,8 +40,10 @@ import org.argouml.uml.diagram.state.ui.UMLStateDiagram;
 import org.argouml.kernel.ProjectManager;
 
 
-/** deletes an modelelement from the diagram, but not from the model.
- *  @stereotype singleton
+/** 
+ * Removes an modelelement from the diagram, but not from the model.
+ * 
+ * @stereotype singleton
  */
 public class ActionDeleteFromDiagram extends UMLChangeAction {
 
