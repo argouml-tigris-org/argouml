@@ -40,7 +40,6 @@ import java.util.Map;
 import java.util.Vector;
 
 import javax.swing.ImageIcon;
-import javax.swing.JFrame;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
@@ -56,27 +55,27 @@ import org.argouml.cognitive.ui.ToDoPane;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.swingext.BorderSplitPane;
+import org.argouml.swingext.DockLayout;
 import org.argouml.swingext.Horizontal;
 import org.argouml.swingext.Orientation;
 import org.argouml.swingext.Vertical;
-import org.argouml.swingext.DockLayout;
 import org.argouml.ui.menubar.GenericArgoMenuBar;
+import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.ui.UMLDiagram;
 import org.argouml.uml.ui.ActionExit;
 import org.argouml.uml.ui.TabProps;
 import org.tigris.gef.base.Diagram;
 import org.tigris.gef.ui.IStatusBar;
 import org.tigris.gef.util.VectorSet;
+import org.workingfrog.i18n.swing.I18NJFrame;
 
 import ru.novosoft.uml.foundation.core.MModelElement;
 import ru.novosoft.uml.foundation.core.MNamespace;
 
-import org.workingfrog.i18n.swing.I18NJFrame;
-
 /** The main window of the ArgoUML application. */
 
 public class ProjectBrowser
-extends I18NJFrame
+    extends I18NJFrame
     implements IStatusBar, NavigationListener, PropertyChangeListener {
 
     protected static Category cat = Category.getInstance(ProjectBrowser.class);
@@ -89,15 +88,15 @@ extends I18NJFrame
 
     ////////////////////////////////////////////////////////////////
     // class variables
-    
+
     /**
      * ArgoUML will not support this method of invocation of the projectbrowser
      * very soon.
      * @deprecated 
      */
     public static ProjectBrowser TheInstance;
-    
-    private static String _Title ="ArgoUML";
+
+    private static String _Title = "ArgoUML";
     private static boolean _Splash = false;
 
     // ----- diagrams
@@ -155,7 +154,7 @@ extends I18NJFrame
      * The target the user has selected     
      */
     private Object _target;
-    
+
     /**
      * flag to prevent the ProjectBrowser and the GEF SelectionManager
      * from creating cycles of setTarget(..)
@@ -182,14 +181,74 @@ extends I18NJFrame
             _splash.getStatusBar().showProgress(10);
             _splash.setVisible(true);
         }
+
         _menuBar = new GenericArgoMenuBar();
 
         _editorPane = new MultiEditorPane();
         _editorPane.addNavigationListener(this);
+        getContentPane().setFont(defaultFont);
+        getContentPane().setLayout(new BorderLayout());
+        getContentPane().add(_menuBar, BorderLayout.NORTH);
+        getContentPane().add(createPanels(doSplash), BorderLayout.CENTER);
+        getContentPane().add(_statusBar, BorderLayout.SOUTH);
 
+        getTabProps().addNavigationListener(this);
+
+        setAppName(appName);
+
+        // allows me to ask "Do you want to save first?"
+        setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+        addWindowListener(new WindowCloser());
+        ImageIcon argoImage =
+            ResourceLoaderWrapper
+                .getResourceLoaderWrapper()
+                .lookupIconResource(
+                "Model");
+        this.setIconImage(argoImage.getImage());
+        // 
+
+        // adds this as listener to projectmanager so it gets updated when the 
+        // project changes
+        ProjectManager.getManager().addPropertyChangeListener(this);
+
+        isDoingSelection = false;
+    }
+
+    public Locale getLocale() {
+        return Locale.getDefault();
+    }
+
+    /** Scans through all loaded modules to see if it has an item to add
+     * in this diagram.
+     *
+     * @param menuitem The menuitem which this menuitem would attach to.
+     * @param key Non-localized string that tells the module where we are.
+     */
+    private void appendPluggableMenus(JMenuItem menuitem, String key) {
+        Object[] context = { menuitem, key };
+        ArrayList arraylist = Argo.getPlugins(PluggableMenu.class, context);
+        ListIterator iterator = arraylist.listIterator();
+        while (iterator.hasNext()) {
+            PluggableMenu module = (PluggableMenu) iterator.next();
+            menuitem.add(module.getMenuItem(context));
+            menuitem.setEnabled(true);
+        }
+    }
+
+    /**
+     * Creates the panels in the working area
+     * @return Component
+     */
+    protected Component createPanels(boolean doSplash) {
+        if (doSplash) {
+            _splash.getStatusBar().showStatus(
+                "Making Project Browser: Navigator Pane");
+            _splash.getStatusBar().incProgress(5);
+        }
+        _navPane = new NavigatorPane(doSplash);
         /* Work in progress here to allow multiple details panes with 
-        ** different contents - Bob Tarling
-        */
+               ** different contents - Bob Tarling
+               */
         _eastPane =
             makeDetailsPane(
                 BorderSplitPane.EAST.toLowerCase(),
@@ -214,7 +273,6 @@ extends I18NJFrame
             makeDetailsPane(
                 BorderSplitPane.NORTHEAST.toLowerCase(),
                 Horizontal.getInstance());
-
         if (_southPane != null)
             detailsPanesByCompassPoint.put(BorderSplitPane.SOUTH, _southPane);
         if (_southEastPane != null)
@@ -233,61 +291,7 @@ extends I18NJFrame
             detailsPanesByCompassPoint.put(
                 BorderSplitPane.NORTHEAST,
                 _northEastPane);
-
-        getTabProps().addNavigationListener(this);
-
-        setAppName(appName);
-
-        getContentPane().setFont(defaultFont);
-        getContentPane().setLayout(new BorderLayout());
-        getContentPane().add(_menuBar, BorderLayout.NORTH);
-        getContentPane().add(createPanels(doSplash), BorderLayout.CENTER);
-        getContentPane().add(_statusBar, BorderLayout.SOUTH);
-
-        // allows me to ask "Do you want to save first?"
-        setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
-        addWindowListener(new WindowCloser());
-        ImageIcon argoImage =
-            ResourceLoaderWrapper
-                .getResourceLoaderWrapper()
-                .lookupIconResource(
-                "Model");
-        this.setIconImage(argoImage.getImage());
-        // 
-
-        // adds this as listener to projectmanager so it gets updated when the 
-        // project changes
-        ProjectManager.getManager().addPropertyChangeListener(this);
-        
-        isDoingSelection=false;
-    }
-
-    public Locale getLocale() {
-        return Locale.getDefault();
-    }
-
-    /** Scans through all loaded modules to see if it has an item to add
-     * in this diagram.
-     *
-     * @param menuitem The menuitem which this menuitem would attach to.
-     * @param key Non-localized string that tells the module where we are.
-     */
-    private void appendPluggableMenus(JMenuItem menuitem, String key) {
-        Object[] context = { menuitem, key };
-        ArrayList arraylist = Argo.getPlugins(PluggableMenu.class, context);
-        ListIterator iterator = arraylist.listIterator();
-        while (iterator.hasNext()) {
-            PluggableMenu module = (PluggableMenu)iterator.next();
-            menuitem.add(module.getMenuItem(context));
-            menuitem.setEnabled(true);
-        }
-    }
-
-    /**
-     * Creates the panels in the working area
-     * @return Component
-     */
-    protected Component createPanels(boolean doSplash) {
+                
         // Set preferred sizes from config file
         if (_southPane != null) {
             _southPane.setPreferredSize(
@@ -304,18 +308,14 @@ extends I18NJFrame
         _workarea = new BorderSplitPane();
         // create the todopane
         if (doSplash) {
-            _splash.getStatusBar().showStatus("Making Project Browser: To Do Pane");
+            _splash.getStatusBar().showStatus(
+                "Making Project Browser: To Do Pane");
             _splash.getStatusBar().incProgress(5);
         }
         _todoPane = new ToDoPane(doSplash);
         _workarea.add(_todoPane, BorderSplitPane.SOUTHWEST);
         // create the navpane
-        if (doSplash) {
-            _splash.getStatusBar().showStatus(
-                "Making Project Browser: Navigator Pane");
-            _splash.getStatusBar().incProgress(5);
-        }
-        _navPane = new NavigatorPane(doSplash);
+
         _workarea.add(_navPane, BorderSplitPane.WEST);
 
         // There are various details panes all of which could hold
@@ -323,10 +323,11 @@ extends I18NJFrame
         // in progress) - Bob Tarling
         Iterator it = detailsPanesByCompassPoint.entrySet().iterator();
         while (it.hasNext()) {
-            Map.Entry entry = (Map.Entry)it.next();
+            Map.Entry entry = (Map.Entry) it.next();
+            TargetManager.getInstance().addTargetListener((DetailsPane) entry.getValue());
             _workarea.add(
-                (DetailsPane)entry.getValue(),
-                (String)entry.getKey());
+                (DetailsPane) entry.getValue(),
+                (String) entry.getKey());
         }
         _workarea.add(_editorPane);
 
@@ -338,7 +339,9 @@ extends I18NJFrame
         toolbarBoundry.add(_menuBar.getFileToolbar(), BorderLayout.NORTH);
         toolbarBoundry.add(_menuBar.getEditToolbar(), BorderLayout.NORTH);
         toolbarBoundry.add(_menuBar.getViewToolbar(), BorderLayout.NORTH);
-        toolbarBoundry.add(_menuBar.getCreateDiagramToolbar(), BorderLayout.NORTH);
+        toolbarBoundry.add(
+            _menuBar.getCreateDiagramToolbar(),
+            BorderLayout.NORTH);
         toolbarBoundry.add(_workarea, BorderLayout.CENTER);
 
         return toolbarBoundry;
@@ -360,28 +363,28 @@ extends I18NJFrame
     public void setAppName(String n) {
         _appName = n;
     }
-     
-     /**
-      * avoids cyclic events between ProjectBrowser and the GEF SelectionManager.
-      */
-     private void startSelectionTransaction(){
-         isDoingSelection = true;
-     }
-     
-     /**
-      * avoids cyclic events between ProjectBrowser and the GEF SelectionManager.
-      */
-     private boolean isInSelectionTransaction(){
-         return isDoingSelection;
-     }
-     
-     /**
-      * avoids cyclic events between ProjectBrowser and the GEF SelectionManager.
-      */
-     private void selectionTransactionEnded(){
-         isDoingSelection = false;
-     }
-     
+
+    /**
+     * avoids cyclic events between ProjectBrowser and the GEF SelectionManager.
+     */
+    private void startSelectionTransaction() {
+        isDoingSelection = true;
+    }
+
+    /**
+     * avoids cyclic events between ProjectBrowser and the GEF SelectionManager.
+     */
+    private boolean isInSelectionTransaction() {
+        return isDoingSelection;
+    }
+
+    /**
+     * avoids cyclic events between ProjectBrowser and the GEF SelectionManager.
+     */
+    private void selectionTransactionEnded() {
+        isDoingSelection = false;
+    }
+
     /**
      * The method used by the NavigatorPane, MultiEditor and DetailsPane
      * to set the target of the application.
@@ -394,50 +397,52 @@ extends I18NJFrame
      * would then change the target in all views again...
      */
     public void setTarget(Object o) {
-        
-         if(isInSelectionTransaction()){
-             return;
-         }
-         else
-             startSelectionTransaction();
-         
-        
+        TargetManager.getInstance().setTarget(o);
+
+        if (isInSelectionTransaction()) {
+            return;
+        } else
+            startSelectionTransaction();
+
         if (getTarget() != o) {
-            
-            cat.debug("setting project target = "+o);
-            
+
+            cat.debug("setting project target = " + o);
+
             _editorPane.setTarget(o);
 
-            setDetailsTarget(o);
             _target = o;
             if (o instanceof MNamespace) {
                 ProjectManager
                     .getManager()
                     .getCurrentProject()
                     .setCurrentNamespace(
-                    (MNamespace)o);
+                    (MNamespace) o);
             } else if (o instanceof MModelElement) {
-                if (((MModelElement)o).getNamespace() != null) {
+                if (((MModelElement) o).getNamespace() != null) {
                     ProjectManager
                         .getManager()
                         .getCurrentProject()
                         .setCurrentNamespace(
-                        ((MModelElement)o).getNamespace());
+                        ((MModelElement) o).getNamespace());
                 } else
                     ProjectManager
                         .getManager()
                         .getCurrentProject()
                         .setCurrentNamespace(
-                        (MNamespace)ProjectManager
+                        (MNamespace) ProjectManager
                             .getManager()
                             .getCurrentProject()
                             .getRoot());
             }
 
             if (o instanceof ArgoDiagram) {
-                ProjectManager.getManager().getCurrentProject().setActiveDiagram((ArgoDiagram)o);
+                ProjectManager
+                    .getManager()
+                    .getCurrentProject()
+                    .setActiveDiagram(
+                    (ArgoDiagram) o);
                 if (o instanceof UMLDiagram) {
-                    MNamespace m = ((UMLDiagram)o).getNamespace();
+                    MNamespace m = ((UMLDiagram) o).getNamespace();
                     if (m != null)
                         ProjectManager
                             .getManager()
@@ -467,7 +472,7 @@ extends I18NJFrame
      * @deprecated use Project.setActiveDiagram instead
      */
     public void setActiveDiagram(ArgoDiagram ad) {
-        ProjectManager.getManager().getCurrentProject().setActiveDiagram(ad);      
+        ProjectManager.getManager().getCurrentProject().setActiveDiagram(ad);
     }
 
     /**
@@ -475,7 +480,10 @@ extends I18NJFrame
      * @deprecated use Project.getActiveDiagram instead 
      */
     public ArgoDiagram getActiveDiagram() {
-        return ProjectManager.getManager().getCurrentProject().getActiveDiagram();
+        return ProjectManager
+            .getManager()
+            .getCurrentProject()
+            .getActiveDiagram();
     }
 
     /**
@@ -486,27 +494,19 @@ extends I18NJFrame
     public void setToDoItem(Object o) {
         Iterator it = detailsPanesByCompassPoint.values().iterator();
         while (it.hasNext()) {
-            DetailsPane detailsPane = (DetailsPane)it.next();
+            DetailsPane detailsPane = (DetailsPane) it.next();
             if (detailsPane.setToDoItem(o))
                 return;
-        }
-    }
-
-    private void setDetailsTarget(Object o) {
-        Iterator it = detailsPanesByCompassPoint.values().iterator();
-        while (it.hasNext()) {
-            DetailsPane detailsPane = (DetailsPane)it.next();
-            detailsPane.setTarget(o);
         }
     }
 
     public Object getDetailsTarget() {
         Iterator it = detailsPanesByCompassPoint.values().iterator();
         if (it.hasNext()) {
-            DetailsPane detailsPane = (DetailsPane)it.next();
+            DetailsPane detailsPane = (DetailsPane) it.next();
             return detailsPane.getTarget();
         }
-        return null; // TODO Bob Tarling - Should probably throw exception here
+        throw new IllegalStateException("No detailspane present");
     }
 
     /**
@@ -519,7 +519,7 @@ extends I18NJFrame
         // page contains the properties tab. Bob Tarling 7 Dec 2002
         Iterator it = detailsPanesByCompassPoint.values().iterator();
         while (it.hasNext()) {
-            DetailsPane detailsPane = (DetailsPane)it.next();
+            DetailsPane detailsPane = (DetailsPane) it.next();
             TabProps tabProps = detailsPane.getTabProps();
             if (tabProps != null) {
                 return tabProps;
@@ -548,7 +548,7 @@ extends I18NJFrame
     public void selectTabNamed(String tabName) {
         Iterator it = detailsPanesByCompassPoint.values().iterator();
         while (it.hasNext()) {
-            DetailsPane detailsPane = (DetailsPane)it.next();
+            DetailsPane detailsPane = (DetailsPane) it.next();
             if (detailsPane.selectTabNamed(Argo.localize("UMLMenu", tabName)))
                 return;
         }
@@ -564,7 +564,7 @@ extends I18NJFrame
         JPanel panel;
         Iterator it = detailsPanesByCompassPoint.values().iterator();
         while (it.hasNext()) {
-            DetailsPane detailsPane = (DetailsPane)it.next();
+            DetailsPane detailsPane = (DetailsPane) it.next();
             panel = detailsPane.getNamedTab(tabName);
             if (panel != null)
                 return panel;
@@ -592,7 +592,7 @@ extends I18NJFrame
             ProjectManager.getManager().getCurrentProject().getDiagrams();
         Object target = _editorPane.getTarget();
         if ((target instanceof Diagram)
-            && ((Diagram)target).countContained(dms) == dms.size()) {
+            && ((Diagram) target).countContained(dms) == dms.size()) {
             setTarget(first);
             return;
         }
@@ -600,7 +600,7 @@ extends I18NJFrame
         Diagram bestDiagram = null;
         int bestNumContained = 0;
         for (int i = 0; i < diagrams.size(); i++) {
-            Diagram d = (Diagram)diagrams.elementAt(i);
+            Diagram d = (Diagram) diagrams.elementAt(i);
             int nc = d.countContained(dms);
             if (nc > bestNumContained) {
                 bestNumContained = nc;
@@ -742,12 +742,12 @@ extends I18NJFrame
      * @see java.beans.PropertyChangeListener#propertyChange(java.beans.PropertyChangeEvent)
      */
     public void propertyChange(PropertyChangeEvent evt) {
-        
+
         // the project changed
         if (evt
             .getPropertyName()
             .equals(ProjectManager.CURRENT_PROJECT_PROPERTY_NAME)) {
-            Project p = (Project)evt.getNewValue();
+            Project p = (Project) evt.getNewValue();
             if (p != null) {
                 setTitle(p.getName());
                 Actions.updateAllEnabled();
@@ -757,21 +757,22 @@ extends I18NJFrame
                 setTarget(p.getInitialTarget());
             }
         }
-        
+
         // the save state changed
-        else if (evt.getPropertyName()
-                    .equals(ProjectManager.SAVE_STATE_PROPERTY_NAME)) {
-            
+        else if (
+            evt.getPropertyName().equals(
+                ProjectManager.SAVE_STATE_PROPERTY_NAME)) {
+
             String oldTitle = super.getTitle();
-            if(((Boolean)evt.getNewValue()).booleanValue() == true &&
-               !oldTitle.endsWith("*")){
-                   
-                   super.setTitle(oldTitle+" *");
-            }
-            else if(((Boolean)evt.getNewValue()).booleanValue() == false &&
-                    oldTitle.endsWith("*")){
-                        
-                   super.setTitle(oldTitle.substring(0,oldTitle.length()-2));
+            if (((Boolean) evt.getNewValue()).booleanValue() == true
+                && !oldTitle.endsWith("*")) {
+
+                super.setTitle(oldTitle + " *");
+            } else if (
+                ((Boolean) evt.getNewValue()).booleanValue() == false
+                    && oldTitle.endsWith("*")) {
+
+                super.setTitle(oldTitle.substring(0, oldTitle.length() - 2));
             }
         }
     }
@@ -789,6 +790,11 @@ extends I18NJFrame
      * @return NavigatorPane The navigatorpane
      */
     public NavigatorPane getNavigatorPane() {
+        /*
+        if (_navPane == null) {
+            _navPane = new NavigatorPane(_Splash);
+        }
+        */
         return _navPane;
     }
 
@@ -810,7 +816,7 @@ extends I18NJFrame
         }
         _splash = splash;
     }
-    
+
     /**
      * Singleton retrieval method for the projectbrowser. Lazely instantiates
      * the projectbrowser. 
@@ -818,13 +824,13 @@ extends I18NJFrame
      */
     public synchronized static ProjectBrowser getInstance() {
         if (TheInstance == null) {
-            TheInstance = new ProjectBrowser("ArgoUML", _Splash);            
+            TheInstance = new ProjectBrowser("ArgoUML", _Splash);
         }
         return TheInstance;
     }
-    
+
     public synchronized static void setSplash(boolean splash) {
         _Splash = splash;
     }
-       
+
 } /* end class ProjectBrowser */

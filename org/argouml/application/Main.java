@@ -190,6 +190,10 @@ public class Main {
                 }
             }
         }
+        
+        Translator.init();
+        
+        initializeGUI(st, doSplash, themeMemory);
 
         if (reloadRecent && projectName == null) {
             // If no project was entered on the command line,
@@ -228,46 +232,10 @@ public class Main {
             }
         }
 
-        Translator.init();
+        
 
-        st.mark("projectbrowser");
-
-        // Register the default notation.
-        org.argouml.uml.generator.GeneratorDisplay.getInstance();
-
-        MFactoryImpl.setEventPolicy(MFactoryImpl.EVENT_POLICY_IMMEDIATE);
-
-        // initialize the correct theme
-        LookAndFeelMgr.SINGLETON.setCurrentTheme(themeMemory);
-
-        // make the projectbrowser
-        ProjectBrowser.setSplash(doSplash);
+        
         ProjectBrowser pb = ProjectBrowser.getInstance();
-
-        JOptionPane.setRootFrame(pb);
-
-        // Set the screen layout to what the user left it before, or
-        // to reasonable defaults.
-        Dimension scrSize = Toolkit.getDefaultToolkit().getScreenSize();
-        pb.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-
-        int w =
-            Math.min(
-                Configuration.getInteger(
-                    Argo.KEY_SCREEN_WIDTH,
-                    (int) (0.95 * scrSize.width)),
-                scrSize.width);
-        int h =
-            Math.min(
-                Configuration.getInteger(
-                    Argo.KEY_SCREEN_HEIGHT,
-                    (int) (0.95 * scrSize.height)),
-                scrSize.height);
-        int x = Configuration.getInteger(Argo.KEY_SCREEN_LEFT_X, 0);
-        int y = Configuration.getInteger(Argo.KEY_SCREEN_TOP_Y, 0);
-        pb.setLocation(x, y);
-        pb.setSize(w, h);
-
         if (doSplash) {
             SplashScreen splash = pb.getSplashScreen();
             if (urlToOpen == null)
@@ -426,6 +394,46 @@ public class Main {
         }
         
         // initLogging();
+    }
+    
+    private static void initializeGUI(SimpleTimer st, boolean doSplash, int themeMemory) {
+        st.mark("projectbrowser");
+
+                // Register the default notation.
+                org.argouml.uml.generator.GeneratorDisplay.getInstance();
+
+                MFactoryImpl.setEventPolicy(MFactoryImpl.EVENT_POLICY_IMMEDIATE);
+
+                // initialize the correct theme
+                LookAndFeelMgr.SINGLETON.setCurrentTheme(themeMemory);
+
+                // make the projectbrowser
+                ProjectBrowser.setSplash(doSplash);
+                ProjectBrowser pb = ProjectBrowser.getInstance();
+
+                JOptionPane.setRootFrame(pb);
+
+                // Set the screen layout to what the user left it before, or
+                // to reasonable defaults.
+                Dimension scrSize = Toolkit.getDefaultToolkit().getScreenSize();
+                pb.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+
+                int w =
+                    Math.min(
+                        Configuration.getInteger(
+                            Argo.KEY_SCREEN_WIDTH,
+                            (int) (0.95 * scrSize.width)),
+                        scrSize.width);
+                int h =
+                    Math.min(
+                        Configuration.getInteger(
+                            Argo.KEY_SCREEN_HEIGHT,
+                            (int) (0.95 * scrSize.height)),
+                        scrSize.height);
+                int x = Configuration.getInteger(Argo.KEY_SCREEN_LEFT_X, 0);
+                int y = Configuration.getInteger(Argo.KEY_SCREEN_TOP_Y, 0);
+                pb.setLocation(x, y);
+                pb.setSize(w, h);
     }
 
     
