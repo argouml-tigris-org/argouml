@@ -37,7 +37,8 @@ import org.argouml.uml.ui.UMLCheckBox2;
  */
 public class ActionSetBehavioralFeatureQuery extends UMLChangeAction {
 
-    public static final ActionSetBehavioralFeatureQuery SINGLETON = new ActionSetBehavioralFeatureQuery();
+    private static final ActionSetBehavioralFeatureQuery SINGLETON = 
+        new ActionSetBehavioralFeatureQuery();
 
     /**
      * Constructor.
@@ -59,5 +60,12 @@ public class ActionSetBehavioralFeatureQuery extends UMLChangeAction {
                 ModelFacade.setQuery(m, source.isSelected());                
             }
         }
+    }
+
+    /**
+     * @return Returns the SINGLETON.
+     */
+    public static ActionSetBehavioralFeatureQuery getInstance() {
+        return SINGLETON;
     }
 }

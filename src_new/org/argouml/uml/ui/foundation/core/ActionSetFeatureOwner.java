@@ -38,7 +38,8 @@ import org.argouml.uml.ui.UMLComboBox2;
  */
 public class ActionSetFeatureOwner extends UMLChangeAction {
 
-    public static final ActionSetFeatureOwner SINGLETON = new ActionSetFeatureOwner();
+    private static final ActionSetFeatureOwner SINGLETON = 
+        new ActionSetFeatureOwner();
     
     /**
      * Constructor for ActionSetStructuralFeatureType.
@@ -70,10 +71,21 @@ public class ActionSetFeatureOwner extends UMLChangeAction {
                 newClassifier = /*(MClassifier)*/ o;
             }
         }
-        if (newClassifier != oldClassifier && feature != null && newClassifier != null) {
+        if (newClassifier != oldClassifier 
+                && feature != null 
+                && newClassifier != null) {
             ModelFacade.setOwner(feature, newClassifier);
         }
         
+    }
+
+
+
+    /**
+     * @return Returns the sINGLETON.
+     */
+    public static ActionSetFeatureOwner getInstance() {
+        return SINGLETON;
     }
 
 }

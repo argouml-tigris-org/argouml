@@ -54,14 +54,14 @@ public class UMLOperationConcurrencyRadioButtonPanel extends
     /**
      * Constructor.
      * 
-     * @param title
-     * @param horizontal
+     * @param title the title of the panel
+     * @param horizontal determines the orientation
      */
     public UMLOperationConcurrencyRadioButtonPanel(String title,
             boolean horizontal) {
         // TODO: i18n
         super(title, labelTextsAndActionCommands, "Concurrency",
-                ActionSetOperationConcurrencyKind.SINGLETON, horizontal);
+                ActionSetOperationConcurrencyKind.getInstance(), horizontal);
     }
 
     /**
@@ -73,13 +73,16 @@ public class UMLOperationConcurrencyRadioButtonPanel extends
             Object kind = ModelFacade.getConcurrency(target);
             if (kind == null
                     || kind.equals(ModelFacade.SEQUENTIAL_CONCURRENCYKIND)) {
-                setSelected(ActionSetOperationConcurrencyKind.SEQUENTIAL_COMMAND);
+                setSelected(ActionSetOperationConcurrencyKind
+                        .SEQUENTIAL_COMMAND);
             } else if (kind.equals(ModelFacade.GUARDED_CONCURRENCYKIND)) {
                 setSelected(ActionSetOperationConcurrencyKind.GUARDED_COMMAND);
             } else if (kind.equals(ModelFacade.CONCURRENT_CONCURRENCYKIND)) {
-                setSelected(ActionSetOperationConcurrencyKind.CONCURRENT_COMMAND);
+                setSelected(ActionSetOperationConcurrencyKind
+                        .CONCURRENT_COMMAND);
             } else {
-                setSelected(ActionSetOperationConcurrencyKind.SEQUENTIAL_COMMAND);
+                setSelected(ActionSetOperationConcurrencyKind
+                        .SEQUENTIAL_COMMAND);
             }
         }
     }

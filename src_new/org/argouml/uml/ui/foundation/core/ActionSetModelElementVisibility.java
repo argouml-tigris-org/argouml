@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2002 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -40,11 +40,23 @@ import org.argouml.uml.ui.UMLRadioButtonPanel;
  */
 public class ActionSetModelElementVisibility extends UMLChangeAction {
 
-    public static final ActionSetModelElementVisibility SINGLETON = new ActionSetModelElementVisibility();
+    private static final ActionSetModelElementVisibility SINGLETON = 
+        new ActionSetModelElementVisibility();
 
-    public final static String PUBLIC_COMMAND = "public";
-    public final static String PROTECTED_COMMAND = "protected";
-    public final static String PRIVATE_COMMAND = "private";
+    /**
+     * PUBLIC_COMMAND determines the visibility.
+     */
+    public static final String PUBLIC_COMMAND = "public";
+    
+    /**
+     * PROTECTED_COMMAND determines the visibility.
+     */
+    public static final String PROTECTED_COMMAND = "protected";
+    
+    /**
+     * PRIVATE_COMMAND determines the visibility.
+     */
+    public static final String PRIVATE_COMMAND = "private";
 
     /**
      * Constructor for ActionSetElementOwnershipSpecification.
@@ -61,7 +73,8 @@ public class ActionSetModelElementVisibility extends UMLChangeAction {
         if (e.getSource() instanceof JRadioButton) {
             JRadioButton source = (JRadioButton) e.getSource();
             String actionCommand = source.getActionCommand();
-            Object target = ((UMLRadioButtonPanel) source.getParent()).getTarget();
+            Object target = ((UMLRadioButtonPanel) 
+                    source.getParent()).getTarget();
             if (org.argouml.model.ModelFacade.isAModelElement(target)) {
                 Object m = /*(MModelElement)*/ target;
                 Object kind = null;
@@ -76,6 +89,13 @@ public class ActionSetModelElementVisibility extends UMLChangeAction {
 
             }
         }
+    }
+
+    /**
+     * @return Returns the sINGLETON.
+     */
+    public static ActionSetModelElementVisibility getInstance() {
+        return SINGLETON;
     }
 
 }

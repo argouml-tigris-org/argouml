@@ -39,7 +39,8 @@ public class ActionSetGeneralizationPowertype extends UMLChangeAction {
 
    
 
-    public static final ActionSetGeneralizationPowertype SINGLETON = new ActionSetGeneralizationPowertype();
+    private static final ActionSetGeneralizationPowertype SINGLETON = 
+        new ActionSetGeneralizationPowertype();
     
     /**
      * Constructor for ActionSetStructuralFeatureType.
@@ -75,6 +76,15 @@ public class ActionSetGeneralizationPowertype extends UMLChangeAction {
             ModelFacade.setPowertype(gen, newClassifier);
         }
         
+    }
+
+
+
+    /**
+     * @return Returns the SINGLETON.
+     */
+    public static ActionSetGeneralizationPowertype getInstance() {
+        return SINGLETON;
     }
 
 }

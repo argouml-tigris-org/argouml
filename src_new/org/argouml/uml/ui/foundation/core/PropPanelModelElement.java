@@ -382,7 +382,7 @@ public abstract class PropPanelModelElement extends PropPanel {
         if (namespaceComboBox == null) {
             namespaceComboBox = new UMLSearchableComboBox(
                     namespaceComboBoxModel,
-                    ActionSetModelElementNamespace.SINGLETON, true);
+                    ActionSetModelElementNamespace.getInstance(), true);
         }
         return namespaceComboBox;
 
@@ -394,7 +394,7 @@ public abstract class PropPanelModelElement extends PropPanel {
     protected JComboBox getStereotypeComboBox() {
         if (stereotypeComboBox == null) {
             stereotypeComboBox = new UMLComboBox2(stereotypeComboBoxModel,
-                    ActionSetModelElementStereotype.SINGLETON);
+                    ActionSetModelElementStereotype.getInstance());
         }
         return stereotypeComboBox;
     }
@@ -488,7 +488,7 @@ public abstract class PropPanelModelElement extends PropPanel {
         if (constraintScroll == null) {
             JList constraintList = new UMLMutableLinkedList(
                     constraintListModel, null,
-                    ActionNewModelElementConstraint.SINGLETON);
+                    ActionNewModelElementConstraint.getInstance());
             constraintScroll = new JScrollPane(constraintList);
         }
         return constraintScroll;

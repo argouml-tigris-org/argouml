@@ -37,7 +37,7 @@ import org.argouml.uml.ui.UMLComboBox2;
  */
 public class ActionSetStructuralFeatureType extends UMLChangeAction {
 
-    public static final ActionSetStructuralFeatureType SINGLETON =
+    private static final ActionSetStructuralFeatureType SINGLETON =
         new ActionSetStructuralFeatureType();
 
     /**
@@ -70,14 +70,21 @@ public class ActionSetStructuralFeatureType extends UMLChangeAction {
         }
         if (newClassifier != oldClassifier && attr != null) {
             if (newClassifier != null) {
-                newClassifier =
-                    /*(MClassifier)*/ ModelManagementHelper.getHelper().getCorrespondingElement(
+                newClassifier = /*(MClassifier)*/ ModelManagementHelper
+                    .getHelper().getCorrespondingElement(
                                     newClassifier,
                                     ModelFacade.getModel(attr));
             }
 
             ModelFacade.setType(attr, newClassifier);
         }
+    }
+
+    /**
+     * @return Returns the sINGLETON.
+     */
+    public static ActionSetStructuralFeatureType getInstance() {
+        return SINGLETON;
     }
 
 }

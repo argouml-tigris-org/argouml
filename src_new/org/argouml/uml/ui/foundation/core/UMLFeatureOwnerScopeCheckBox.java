@@ -40,7 +40,7 @@ public class UMLFeatureOwnerScopeCheckBox extends UMLCheckBox2 {
      */
     public UMLFeatureOwnerScopeCheckBox() {
         super(Translator.localize("UMLMenu", "label.static"),
-                ActionSetFeatureOwnerScope.SINGLETON, "ownerScope");
+                ActionSetFeatureOwnerScope.getInstance(), "ownerScope");
     }
 
     /**

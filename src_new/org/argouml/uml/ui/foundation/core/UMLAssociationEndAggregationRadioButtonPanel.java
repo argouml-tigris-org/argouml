@@ -37,23 +37,32 @@ import org.argouml.uml.ui.UMLRadioButtonPanel;
  * @author jaap.branderhorst@xs4all.nl	
  * @since Jan 4, 2003
  */
-public class UMLAssociationEndAggregationRadioButtonPanel extends UMLRadioButtonPanel {
+public class UMLAssociationEndAggregationRadioButtonPanel 
+    extends UMLRadioButtonPanel {
 
     private static Map labelTextsAndActionCommands = new HashMap();
 
     static {
-        labelTextsAndActionCommands.put(Translator.localize("UMLMenu", "label.aggregationkind-aggregate"), ActionSetAssociationEndAggregation.AGGREGATE_COMMAND);
-        labelTextsAndActionCommands.put(Translator.localize("UMLMenu", "label.aggregationkind-composite"), ActionSetAssociationEndAggregation.COMPOSITE_COMMAND);
-        labelTextsAndActionCommands.put(Translator.localize("UMLMenu", "label.aggregationkind-none"), ActionSetAssociationEndAggregation.NONE_COMMAND);
+        labelTextsAndActionCommands.put(
+            Translator.localize("UMLMenu", "label.aggregationkind-aggregate"), 
+            ActionSetAssociationEndAggregation.AGGREGATE_COMMAND);
+        labelTextsAndActionCommands.put(
+            Translator.localize("UMLMenu", "label.aggregationkind-composite"), 
+            ActionSetAssociationEndAggregation.COMPOSITE_COMMAND);
+        labelTextsAndActionCommands.put(
+            Translator.localize("UMLMenu", "label.aggregationkind-none"), 
+            ActionSetAssociationEndAggregation.NONE_COMMAND);
     }
 
     /**
      * Constructor for UMLAssociationEndAggregationRadioButtonPanel.
-     * @param title
-     * @param horizontal
+     * @param title the title for the panel
+     * @param horizontal determines the orientation
      */
-    public UMLAssociationEndAggregationRadioButtonPanel(String title, boolean horizontal) {
-        super(title, labelTextsAndActionCommands, "aggregation", ActionSetAssociationEndAggregation.SINGLETON, horizontal);
+    public UMLAssociationEndAggregationRadioButtonPanel(String title, 
+            boolean horizontal) {
+        super(title, labelTextsAndActionCommands, "aggregation", 
+                ActionSetAssociationEndAggregation.getInstance(), horizontal);
     }
 
     /**
@@ -62,17 +71,20 @@ public class UMLAssociationEndAggregationRadioButtonPanel extends UMLRadioButton
     public void buildModel() {
         if (getTarget() != null) {
             Object target = /*(MAssociationEnd)*/ getTarget();
-            Object/*MAggregationKind*/ kind = ModelFacade.getAggregation(target);
+            Object/*MAggregationKind*/kind = ModelFacade.getAggregation(target);
             if (kind == null || kind.equals(ModelFacade.NONE_AGGREGATIONKIND)) {
                 setSelected(ActionSetAssociationEndAggregation.NONE_COMMAND);
             } else
 		if (kind.equals(ModelFacade.AGGREGATE_AGGREGATIONKIND)) {
-		    setSelected(ActionSetAssociationEndAggregation.AGGREGATE_COMMAND); 
+		    setSelected(ActionSetAssociationEndAggregation
+		            .AGGREGATE_COMMAND); 
 		} else
 		    if (kind.equals(ModelFacade.COMPOSITE_AGGREGATIONKIND)) {
-			setSelected(ActionSetAssociationEndAggregation.COMPOSITE_COMMAND);
+			setSelected(ActionSetAssociationEndAggregation
+			        .COMPOSITE_COMMAND);
 		    } else
-			setSelected(ActionSetAssociationEndAggregation.NONE_COMMAND);
+			setSelected(ActionSetAssociationEndAggregation
+			        .NONE_COMMAND);
         }
     }
 

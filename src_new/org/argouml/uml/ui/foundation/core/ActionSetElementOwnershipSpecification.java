@@ -37,7 +37,8 @@ import org.argouml.uml.ui.UMLCheckBox2;
  */
 public class ActionSetElementOwnershipSpecification extends UMLChangeAction {
 
-    public static final ActionSetElementOwnershipSpecification SINGLETON = new ActionSetElementOwnershipSpecification();
+    private static final ActionSetElementOwnershipSpecification SINGLETON = 
+        new ActionSetElementOwnershipSpecification();
 
     /**
      * Constructor for ActionSetElementOwnershipSpecification.
@@ -56,9 +57,17 @@ public class ActionSetElementOwnershipSpecification extends UMLChangeAction {
             Object target = source.getTarget();
             if (org.argouml.model.ModelFacade.isAModelElement(target)) {
                 Object m = /*(MModelElement)*/ target;
-                ModelFacade.setSpecification(m, !ModelFacade.isSpecification(m));
+                ModelFacade.setSpecification(m, 
+                        !ModelFacade.isSpecification(m));
             }
         }
+    }
+
+    /**
+     * @return Returns the SINGLETON.
+     */
+    public static ActionSetElementOwnershipSpecification getInstance() {
+        return SINGLETON;
     }
 
 }

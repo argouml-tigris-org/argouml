@@ -70,7 +70,7 @@ public class PropPanelStructuralFeature extends PropPanelFeature {
 	    }
 	    multiplicityComboBox =
 		new UMLMultiplicityComboBox2(multiplicityComboBoxModel,
-		    ActionSetStructuralFeatureMultiplicity.SINGLETON);
+		    ActionSetStructuralFeatureMultiplicity.getInstance());
 	    multiplicityComboBox.setEditable(true);
 	}
 	return multiplicityComboBox;
@@ -89,7 +89,7 @@ public class PropPanelStructuralFeature extends PropPanelFeature {
             typeComboBox =
 		new UMLComboBox2(
 				 typeComboBoxModel,
-				 ActionSetStructuralFeatureType.SINGLETON);
+				 ActionSetStructuralFeatureType.getInstance());
 	}
 	return typeComboBox;
     }

@@ -113,7 +113,7 @@ public abstract class PropPanelEvent extends PropPanelModelElement {
         if (paramScroll == null) {
             paramListModel = new UMLEventParameterListModel();
             JList paramList = new UMLMutableLinkedList(paramListModel,
-                    ActionNewParameter.SINGLETON);
+                    ActionNewParameter.getInstance());
             paramList.setVisibleRowCount(3);
             paramScroll = new JScrollPane(paramList);
         }

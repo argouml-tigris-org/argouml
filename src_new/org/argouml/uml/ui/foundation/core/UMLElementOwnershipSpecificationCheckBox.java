@@ -40,7 +40,7 @@ public class UMLElementOwnershipSpecificationCheckBox extends UMLCheckBox2 {
      */
     public UMLElementOwnershipSpecificationCheckBox() {
         super(Translator.localize("UMLMenu", "label.specialization"), 
-            ActionSetElementOwnershipSpecification.SINGLETON, 
+            ActionSetElementOwnershipSpecification.getInstance(), 
             "isSpecification");
     }
 

@@ -159,7 +159,7 @@ public class PropPanelAssociationEnd extends PropPanelModelElement {
     protected void createControls(Class mclass) {
         typeCombobox = new UMLComboBox2(
                 new UMLAssociationEndTypeComboBoxModel(),
-                ActionSetAssociationEndType.SINGLETON, true);
+                ActionSetAssociationEndType.getInstance(), true);
         JList associationList = new UMLLinkedList(
                 new UMLAssociationEndAssociationListModel());
         associationList.setVisibleRowCount(1);
@@ -178,7 +178,8 @@ public class PropPanelAssociationEnd extends PropPanelModelElement {
                 Translator.localize("UMLMenu", "label.visibility"), true);
         specificationScroll = new JScrollPane(new UMLMutableLinkedList(
                 new UMLAssociationEndSpecificationListModel(),
-                ActionAddAssociationSpecification.getInstance(), null, null, true));
+                ActionAddAssociationSpecification.getInstance(), 
+                null, null, true));
     }
 
     /**
@@ -247,7 +248,7 @@ public class PropPanelAssociationEnd extends PropPanelModelElement {
             }
             multiplicityComboBox = new UMLMultiplicityComboBox2(
                     multiplicityComboBoxModel,
-                    ActionSetAssociationEndMultiplicity.SINGLETON);
+                    ActionSetAssociationEndMultiplicity.getInstance());
             multiplicityComboBox.setEditable(true);
         }
         return multiplicityComboBox;

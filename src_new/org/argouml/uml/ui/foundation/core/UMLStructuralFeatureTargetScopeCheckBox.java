@@ -41,7 +41,7 @@ public class UMLStructuralFeatureTargetScopeCheckBox extends UMLCheckBox2 {
      */
     public UMLStructuralFeatureTargetScopeCheckBox() {
         super(Translator.localize("UMLMenu", "label.classifier"), 
-	      ActionSetStructuralFeatureTargetScope.SINGLETON, 
+	      ActionSetStructuralFeatureTargetScope.getInstance(), 
 	      "targetScope");
     }
 
@@ -51,8 +51,10 @@ public class UMLStructuralFeatureTargetScopeCheckBox extends UMLCheckBox2 {
     public void buildModel() {
         // repair action for possible NP after load
         if (ModelFacade.getTargetScope(getTarget()) == null) {
-            ModelFacade.setTargetScope(getTarget(), ModelFacade.INSTANCE_SCOPEKIND);
+            ModelFacade.setTargetScope(getTarget(), 
+                    ModelFacade.INSTANCE_SCOPEKIND);
         }
-        setSelected(ModelFacade.getTargetScope(getTarget()).equals(ModelFacade.CLASSIFIER_SCOPEKIND));
+        setSelected(ModelFacade.getTargetScope(getTarget()).equals(
+                ModelFacade.CLASSIFIER_SCOPEKIND));
     }
 }

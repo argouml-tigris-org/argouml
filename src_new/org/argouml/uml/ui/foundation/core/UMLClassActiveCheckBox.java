@@ -40,7 +40,8 @@ public class UMLClassActiveCheckBox extends UMLCheckBox2 {
      * Constructor for UMLGeneralizableElementRootCheckBox.
      */
     public UMLClassActiveCheckBox() {
-        super(Translator.localize("UMLMenu", "checkbox.active-uc"), ActionSetClassActive.SINGLETON, "isActive");
+        super(Translator.localize("UMLMenu", "checkbox.active-uc"), 
+                ActionSetClassActive.getInstance(), "isActive");
     }
 
     /**
