@@ -63,6 +63,9 @@ public class SequenceDiagramGraphModel
     extends UMLMutableGraphSupport
     implements VetoableChangeListener {
 
+    private static final Logger LOG = 
+        Logger.getLogger(SequenceDiagramGraphModel.class);
+    
     private abstract class CanConnectCmd {
         private Object _srcPort;
         private Object _destPort;
@@ -748,7 +751,7 @@ public class SequenceDiagramGraphModel
             edge = link;
         }
         if (edge == null) {
-            cat.debug("Incorrect edge");
+            LOG.debug("Incorrect edge");
         }
         return edge;
 
@@ -765,13 +768,13 @@ public class SequenceDiagramGraphModel
             Object eo = /*(MElementImport)*/ pce.getNewValue();
             Object me = ModelFacade.getModelElement(eo);
             if (oldOwned.contains(eo)) {
-                cat.debug("model removed " + me);
+                LOG.debug("model removed " + me);
                 if (ModelFacade.isAObject(me))
                     removeNode(me);
                 if (ModelFacade.isAAssociation(me))
                     removeEdge(me);
             } else {
-                cat.debug("model added " + me);
+                LOG.debug("model added " + me);
             }
         }
     }
