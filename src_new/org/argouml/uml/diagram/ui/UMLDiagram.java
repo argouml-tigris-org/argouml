@@ -227,12 +227,12 @@ public abstract class UMLDiagram
    * we need to deselect this diagram.
    */
   public void removed(MElementEvent e){
-      
+      Object newTarget = ProjectManager.getManager().getCurrentProject().getDiagrams().get(0);
+      TargetManager.getInstance().setTarget(newTarget);
       UmlModelEventPump.getPump().removeModelEventListener(this,_namespace, UmlModelEventPump.REMOVE);
       ProjectManager.getManager().getCurrentProject().moveToTrash(this);      
       
-      Object newTarget = ProjectManager.getManager().getCurrentProject().getDiagrams().get(0);
-      TargetManager.getInstance().setTarget(newTarget);
+      
   }
   
   /**
