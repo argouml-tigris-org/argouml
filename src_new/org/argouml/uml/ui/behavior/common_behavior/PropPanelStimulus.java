@@ -29,9 +29,8 @@
 
 package org.argouml.uml.ui.behavior.common_behavior;
 
-import java.awt.Color;
-
 import javax.swing.ImageIcon;
+import javax.swing.JList;
 import javax.swing.JScrollPane;
 
 import org.argouml.application.helpers.ResourceLoaderWrapper;
@@ -40,8 +39,7 @@ import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.UmlFactory;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.PropPanelButton;
-import org.argouml.uml.ui.UMLList;
-import org.argouml.uml.ui.UMLReflectionListModel;
+import org.argouml.uml.ui.UMLLinkedList;
 import org.argouml.uml.ui.UMLStimulusActionTextField;
 import org.argouml.uml.ui.UMLStimulusActionTextProperty;
 import org.argouml.uml.ui.foundation.core.PropPanelModelElement;
@@ -55,7 +53,7 @@ import ru.novosoft.uml.MElementEvent;
  */
 public class PropPanelStimulus extends PropPanelModelElement {
 
-    protected static ImageIcon _stimulusIcon = ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource("Stimulus");
+    protected static ImageIcon _stimulusIcon = ResourceLoaderWrapper.lookupIconResource("Stimulus");
 
     public PropPanelStimulus() {
         super("Stimulus Properties", _stimulusIcon, ConfigLoader.getTabPropsOrientation());
@@ -71,20 +69,17 @@ public class PropPanelStimulus extends PropPanelModelElement {
         addField("Action:", new UMLStimulusActionTextField(this, new UMLStimulusActionTextProperty("name")));
         addField(Translator.localize("UMLMenu", "label.stereotype"), getStereotypeBox());
 
-        UMLList senderList = new UMLList(new UMLReflectionListModel(this, "sender", true, "getSender", null, null, null), true);
-        senderList.setForeground(Color.blue);
-        senderList.setVisibleRowCount(1);
-        senderList.setFont(smallFont);
-        JScrollPane senderScroll = new JScrollPane(senderList);
-        addField("Sender:", senderScroll);
+        JList senderList = new UMLLinkedList(new UMLStimulusSenderListModel());
+	senderList.setVisibleRowCount(1);
+	JScrollPane senderScroll = new JScrollPane(senderList);
+	addField(Translator.localize("UMLMenu", "label.sender"), senderScroll);
 
-        UMLList receiverList = new UMLList(new UMLReflectionListModel(this, "receiver", true, "getReceiver", null, null, null), true);
-        receiverList.setForeground(Color.blue);
-        receiverList.setVisibleRowCount(1);
-        receiverList.setFont(smallFont);
-        JScrollPane receiverScroll = new JScrollPane(receiverList);
-        addField(Translator.localize("UMLMenu", "label.receiver"), receiverScroll);
-
+        JList receiverList =
+	    new UMLLinkedList(new UMLStimulusReceiverListModel());
+	receiverList.setVisibleRowCount(1);
+	JScrollPane receiverScroll = new JScrollPane(receiverList);
+	addField(Translator.localize("UMLMenu", "label.receiver"), receiverScroll);
+        
         addLinkField(Translator.localize("UMLMenu", "label.namespace"), getNamespaceComboBox());
 
         new PropPanelButton(this, buttonPanel, _navUpIcon, Translator.localize("UMLMenu", "button.go-up"), "navigateNamespace", null);
