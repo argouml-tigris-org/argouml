@@ -264,8 +264,14 @@ public class Main {
         Object dgd = org.argouml.uml.generator.GeneratorDisplay.getInstance();
 
         MFactoryImpl.setEventPolicy(MFactoryImpl.EVENT_POLICY_IMMEDIATE);
-        ProjectBrowser pb = new ProjectBrowser("ArgoUML",
-        themeMemory);
+        
+        // initialize the correct theme
+        LookAndFeelMgr.SINGLETON.setCurrentTheme(themeMemory);
+        
+        // make the projectbrowser
+        ProjectBrowser pb = new ProjectBrowser("ArgoUML");
+        
+        
         
         // create the navpane
         if (doSplash) {

@@ -111,9 +111,9 @@ public class ProjectBrowser extends JFrame
 
    
 
-    public ProjectBrowser(String appName, int theme) {
+    public ProjectBrowser(String appName) {
         super(appName);
-        LookAndFeelMgr.SINGLETON.setCurrentTheme(theme);
+        
         _menuBar = new GenericArgoMenuBar();
         
             
