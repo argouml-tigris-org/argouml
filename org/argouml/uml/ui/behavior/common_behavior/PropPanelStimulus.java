@@ -86,10 +86,8 @@ public class PropPanelStimulus extends PropPanelModelElement {
         addField(Translator.localize("label.namespace"), 
                 getNamespaceComboBox());
 
-        addButton(new PropPanelButton2(this, 
-                new ActionNavigateNamespace()));    
-        addButton(new PropPanelButton2(this, 
-                new ActionRemoveFromModel()));
+        addButton(new PropPanelButton2(new ActionNavigateNamespace()));    
+        addButton(new PropPanelButton2(new ActionRemoveFromModel()));
     }
 
 

@@ -38,7 +38,7 @@ import org.argouml.uml.ui.AbstractActionNewModelElement;
 /**
  * This action will create a new interface "next to" an existing interface.
  * 
- * @author Michiel
+ * @author mvw@tigris.org
  *
  */
 class ActionNewInterface extends AbstractActionNewModelElement {

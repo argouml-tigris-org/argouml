@@ -40,7 +40,6 @@ import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.AbstractActionNewModelElement;
 import org.argouml.uml.ui.ActionNavigateContainerElement;
 import org.argouml.uml.ui.ActionRemoveFromModel;
-import org.argouml.uml.ui.PropPanelButton;
 import org.argouml.uml.ui.PropPanelButton2;
 import org.argouml.uml.ui.UMLLinkedList;
 import org.argouml.util.ConfigLoader;
@@ -97,20 +96,15 @@ public class PropPanelDataType extends PropPanelClassifier {
         addField(Translator.localize("label.literals"),
                 getAttributeScroll());
 
-        addButton(new PropPanelButton2(this,
-                new ActionNavigateContainerElement()));
-        new PropPanelButton(this, lookupIcon("DataType"), 
-                Translator.localize("button.new-datatype"), 
-                new ActionAddDataTypeToDataType());
-        new PropPanelButton(this, lookupIcon("NewAttribute"), 
-            Translator.localize("button.new-enumeration-literal"),
-            new ActionAddAttributeToDataType());
-
-        new PropPanelButton(this, lookupIcon("NewOperation"), 
-                Translator.localize("button.new-operation"), 
-                new ActionAddQueryOperation());
-        new PropPanelButton(this, lookupIcon("Delete"), Translator.localize(
-            "action.delete-from-model"), new ActionRemoveFromModel());
+        addButton(new PropPanelButton2(new ActionNavigateContainerElement()));
+        addButton(new PropPanelButton2(new ActionAddDataTypeToDataType(), 
+                lookupIcon("DataType")));
+        addButton(new PropPanelButton2(new ActionAddAttributeToDataType(), 
+                lookupIcon("NewAttribute")));
+        addButton(new PropPanelButton2(new ActionAddQueryOperation(), 
+                lookupIcon("NewOperation")));
+        addButton(new PropPanelButton2(new ActionRemoveFromModel(), 
+                lookupIcon("Delete")));
     }
 
     private class ActionAddQueryOperation 

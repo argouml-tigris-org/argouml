@@ -28,7 +28,6 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.JTextField;
 
-import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
@@ -37,7 +36,7 @@ import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.AbstractActionNavigate;
 import org.argouml.uml.ui.ActionRemoveFromModel;
 import org.argouml.uml.ui.PropPanel;
-import org.argouml.uml.ui.PropPanelButton;
+import org.argouml.uml.ui.PropPanelButton2;
 import org.argouml.util.ConfigLoader;
 
 /**
@@ -61,14 +60,10 @@ public class PropPanelDiagram extends PropPanel {
         addField(Translator.localize("label.name"), field);
 
 
-        new PropPanelButton(this,
-                ResourceLoaderWrapper.lookupIconResource("NavigateUp"),
-                Translator.localize("button.go-up"),
-                new ActionNavigateUpFromDiagram());
-        new PropPanelButton(this,
-                ResourceLoaderWrapper.lookupIconResource("Delete"),
-                Translator.localize("button.delete"),
-                new ActionRemoveFromModel());
+        addButton(new PropPanelButton2(new ActionNavigateUpFromDiagram(), 
+                lookupIcon("NavigateUp")));
+        addButton(new PropPanelButton2(new ActionRemoveFromModel(), 
+                lookupIcon("Delete")));
     }
 
     /**
@@ -105,6 +100,13 @@ public class PropPanelDiagram extends PropPanel {
 } /* end class PropPanelDiagram */
 
 class ActionNavigateUpFromDiagram extends AbstractActionNavigate {
+
+    /**
+     * The constructor.
+     */
+    public ActionNavigateUpFromDiagram() {
+        super("button.go-up", true);
+    }
 
     /**
      * @see org.argouml.uml.ui.AbstractActionNavigate#navigateTo(java.lang.Object)

@@ -37,7 +37,6 @@ import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.AbstractActionNewModelElement;
 import org.argouml.uml.ui.ActionNavigateNamespace;
 import org.argouml.uml.ui.ActionRemoveFromModel;
-import org.argouml.uml.ui.PropPanelButton;
 import org.argouml.uml.ui.PropPanelButton2;
 import org.argouml.uml.ui.UMLLinkedList;
 import org.argouml.uml.ui.UMLMutableLinkedList;
@@ -98,20 +97,15 @@ public class PropPanelUseCase extends PropPanelClassifier {
         addField(Translator.localize("label.association-ends"), 
             getAssociationEndScroll());
 
-        addButton(new PropPanelButton2(this, 
-                new ActionNavigateNamespace()));
-        new PropPanelButton(this, lookupIcon("UseCase"),
-                Translator.localize("button.new-usecase"), 
-                new ActionNewUseCase());
-        new PropPanelButton(this, 
-                lookupIcon("ExtensionPoint"),
-                Translator.localize("button.new-extension-point"),
-                new ActionNewExtensionPoint());
-        new PropPanelButton(this, lookupIcon("Reception"), 
-                Translator.localize("button.new-reception"), 
-                getActionNewReception());
-        new PropPanelButton(this, lookupIcon("Delete"), Translator.localize(
-            "action.delete-from-model"), new ActionRemoveFromModel());
+        addButton(new PropPanelButton2(new ActionNavigateNamespace()));
+        addButton(new PropPanelButton2(new ActionNewUseCase(), 
+                lookupIcon("UseCase")));
+        addButton(new PropPanelButton2(new ActionNewExtensionPoint(), 
+                lookupIcon("ExtensionPoint")));
+        addButton(new PropPanelButton2(getActionNewReception(), 
+                lookupIcon("Reception")));
+        addButton(new PropPanelButton2(new ActionRemoveFromModel(), 
+                lookupIcon("Delete")));
     }
 
 

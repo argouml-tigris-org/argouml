@@ -53,7 +53,9 @@ public class ActionAddOperation extends UMLChangeAction {
     /**
      * The constructor.
      */
-    public ActionAddOperation() { super("button.new-operation", true); }
+    public ActionAddOperation() { 
+        super("button.new-operation", true); 
+    }
 
     ////////////////////////////////////////////////////////////////
     // main methods

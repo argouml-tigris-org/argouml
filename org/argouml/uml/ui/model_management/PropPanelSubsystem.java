@@ -35,7 +35,7 @@ import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.UmlFactory;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.AbstractActionNewModelElement;
-import org.argouml.uml.ui.PropPanelButton;
+import org.argouml.uml.ui.PropPanelButton2;
 import org.argouml.uml.ui.UMLLinkedList;
 import org.argouml.uml.ui.foundation.core.UMLClassifierFeatureListModel;
 import org.argouml.util.ConfigLoader;
@@ -61,15 +61,14 @@ public class PropPanelSubsystem extends PropPanelPackage {
         addField(Translator.localize("label.available-features"),
                 getFeatureScroll());
 
-        new PropPanelButton(this, lookupIcon("NewOperation"), 
-                Translator.localize("button.new-operation"), 
-                new ActionNewOperation());
+        addButton(new PropPanelButton2(new ActionNewOperation(), 
+                lookupIcon("NewOperation")));
     }
 
     /**
      * Add a new operation to this classifier.
      * 
-     * @author Michiel
+     * @author mvw@tigris.org
      */
     private class ActionNewOperation extends AbstractActionNewModelElement {
 
