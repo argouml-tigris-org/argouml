@@ -29,16 +29,38 @@ import java.util.Iterator;
 import org.argouml.model.ModelFacade;
 import org.argouml.util.MyTokenizer;
 
+/**
+ * This class handles the Documentation of ModelElements.
+ * Documentation is represented internally by the tagged value "documentation", 
+ * but it has its own tab-panel to ease user handling.
+ *
+ */
 public class DocumentationManager {
 
     /** The system's native line-ends, for when things are written to file */
     private static final String LINE_SEPARATOR =
 	System.getProperty("line.separator");
 
+    /**
+     * This function returns the documentation in C-style comment format.
+     * 
+     * @param o the ModelElement
+     * @param indent the current indentation for new lines
+     * @return the documentation, as a String
+     */
     public static String getDocs(Object o, String indent) {
         return getDocs(o, indent, "/** ", " *  ", " */");
     }
 
+    /**
+     * @param o the ModelElement
+     * @param indent the current indentation for new lines
+     * @param header is the first line
+     * @param prefix is inserted at every line before the doc
+     * @param footer is the closing line
+     * @return the string that represents the documentation 
+     *         for the given ModelElement
+     */
     public static String getDocs(Object o, String indent, String header,
 				 String prefix, String footer) {
         String sResult = defaultFor(o, indent);
@@ -85,6 +107,11 @@ public class DocumentationManager {
         return result.toString();
     }
 
+    /**
+     * @param o the ModelElement. If it is not a ModelElement, 
+     *          then you'll get a IllegalArgumentException
+     * @param s the string representing the documentation
+     */
     public static void setDocs(Object o, String s) {
         ModelFacade.setTaggedValue(o, "documentation", s);
     }
@@ -118,9 +145,13 @@ public class DocumentationManager {
 	return false;
     }
 
-    ////////////////////////////////////////////////////////////////
-    // default documentation
-
+    /**
+     * Generate default documentation.
+     * 
+     * @param o the ModelElement
+     * @param indent the current indentation string for new lines
+     * @return the default documentation
+     */
     public static String defaultFor(Object o, String indent) {
 	if (ModelFacade.isAClass(o)) {
 	    /*

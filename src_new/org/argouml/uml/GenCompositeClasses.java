@@ -31,17 +31,30 @@ import java.util.Vector;
 import org.argouml.model.ModelFacade;
 import org.tigris.gef.util.ChildGenerator;
 
-/** Utility class to generate the children of a class.  In this case
+/** Utility class to generate a list of the children of a class.  In this case
  *  the "children" of a class are the other classes that are
- *  assocaiated with the parent class, and that MAssociation has a
+ *  associated with the parent class, and that MAssociation has a
  *  COMPOSITE end at the parent.  This is used in one of the
  *  Perspectives. 
  *  @stereotype singleton
  */
-
 public class GenCompositeClasses implements ChildGenerator {
-    public static GenCompositeClasses SINGLETON = new GenCompositeClasses();
+    /**
+     * This SINGLETON is used in CrCircularComposition.
+     * 
+     */
+    private static final GenCompositeClasses SINGLETON = 
+        new GenCompositeClasses();
 
+    /**
+     * @return Returns the sINGLETON.
+     */
+    public static GenCompositeClasses getSINGLETON() {
+        return SINGLETON;
+    }
+    /**
+     * @see org.tigris.gef.util.ChildGenerator#gen(java.lang.Object)
+     */
     public Enumeration gen(Object o) {
 	Vector res = new Vector();
 	if (!(ModelFacade.isAClassifier(o))) return res.elements();
@@ -51,12 +64,13 @@ public class GenCompositeClasses implements ChildGenerator {
 	Iterator assocEnds = ends.iterator();
 	while (assocEnds.hasNext()) {
 	    Object ae = /*(MAssociationEnd)*/ assocEnds.next();
-	    if (ModelFacade.COMPOSITE_AGGREGATIONKIND.equals(ModelFacade.getAggregation(ae))) {
+	    if (ModelFacade.COMPOSITE_AGGREGATIONKIND.equals(
+	            ModelFacade.getAggregation(ae))) {
 		Object asc = ModelFacade.getAssociation(ae);
 		ArrayList conn = new ArrayList(ModelFacade.getConnections(asc));
 		if (conn == null || conn.size() != 2) continue;
-		Object otherEnd = (ae == conn.get(0)) ?
-		    conn.get(1) : conn.get(0);
+		Object otherEnd = (ae == conn.get(0)) 
+		    ? conn.get(1) : conn.get(0);
 		res.add(ModelFacade.getType(otherEnd));
 	    }
 	}
