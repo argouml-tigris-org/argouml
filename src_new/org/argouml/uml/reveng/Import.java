@@ -84,9 +84,8 @@ public class Import {
 	private ProjectBrowser pb = ProjectBrowser.TheInstance;
 	private Project p = ProjectManager.getManager().getCurrentProject();
 	private JDialog dialog;
-	// TODO: change to pluggable module
-	private JavaImport module = new JavaImport();
-	
+	private PluggableImport module; // current language module
+	private Hashtable modules; // key = module name, value = PluggableImport instance
 	private ImportStatusScreen iss;
 	
 	/**
@@ -94,6 +93,16 @@ public class Import {
 	 *
 	 */
 	public Import() {
+			modules = new Hashtable();
+			ArrayList arraylist = Argo.getPlugins(PluggableImport.class);
+			ListIterator iterator = arraylist.listIterator();
+			while (iterator.hasNext()) {
+				PluggableImport module = (PluggableImport)iterator.next();
+				modules.put(module.getModuleName(), module);
+			}
+			if (modules.size() == 0) throw new RuntimeException("Internal error. No import modules derfined");
+			module = (PluggableImport)modules.get("Java"); // "Java" is a default module
+			if (module == null) throw new RuntimeException("Internal error. Default import module not found");
 			JComponent chooser = module.getChooser(this);
 			dialog = new JDialog(pb, "Import sources");
 			dialog.setModal(true);
@@ -137,28 +146,25 @@ public class Import {
 		general.add(new JLabel("Select language for import:"));
 		
 		Vector languages = new Vector();
-		languages.add("Java");
-		languages.add("Just for testing");
+		
+		for (Enumeration keys = modules.keys(); keys.hasMoreElements();) {
+			languages.add((String)keys.nextElement());
+		}
 		JComboBox selectedLanguage = new JComboBox(languages);
 		selectedLanguage.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e) {
 				JComboBox cb = (JComboBox)e.getSource();
 				String selected = (String)cb.getSelectedItem();
-				if (selected.equals("Java")) {
-					dialog.getContentPane().remove(0);
-					dialog.getContentPane().add(module.getChooser(imp), 0);
-					tab.add(module.getConfigPanel(), "Java", 1);
-					tab.validate();
-					dialog.validate();
-				} else {
-					dialog.getContentPane().remove(0);
-					JFileChooser ch = (JFileChooser)module.getChooser(imp);
-					ch.setFileFilter(FileFilters.GIFFilter);
-					dialog.getContentPane().add(ch, 0);
-					tab.remove(1);
-					tab.validate();
-					dialog.validate();
-				}
+				module = (PluggableImport)modules.get(selected);
+				dialog.getContentPane().remove(0);
+				JComponent chooser =  module.getChooser(imp);
+				if (chooser == null) chooser = new JPanel();
+				dialog.getContentPane().add(chooser, 0);
+				JComponent config = module.getConfigPanel();
+				if (config == null) config = new JPanel(); 
+				tab.add(config, selected, 1);
+				tab.validate();
+				dialog.validate();
 			}
 		});
 		general.add(selectedLanguage);
@@ -180,7 +186,7 @@ public class Import {
                             minimise_figs.setSelected(false);}});
                 
 	    tab.add(general, "General");
-	    tab.add(module.getConfigPanel(), "Java");
+	    tab.add(module.getConfigPanel(), module.getModuleName());
 	    configPanel = tab;
 	}
 	return configPanel;
