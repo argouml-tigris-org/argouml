@@ -161,6 +161,7 @@ public class NavigatorPane
 	public static NavigatorPane getInstance() {
 		if (! instanceSet) {
 			INSTANCE = new NavigatorPane();
+			instanceSet = true;
 		}
 		return INSTANCE;
 	}
