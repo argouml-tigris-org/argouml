@@ -33,6 +33,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.Vector;
 
+import org.argouml.model.uml.UmlFactory;
 import org.argouml.model.uml.foundation.core.CoreHelper;
 import org.argouml.model.uml.foundation.extensionmechanisms.ExtensionMechanismsHelper;
 import org.argouml.uml.MMUtil;
@@ -105,7 +106,6 @@ import ru.novosoft.uml.foundation.core.MDependency;
 import ru.novosoft.uml.foundation.core.MElement;
 import ru.novosoft.uml.foundation.core.MElementResidence;
 import ru.novosoft.uml.foundation.core.MFeature;
-import ru.novosoft.uml.foundation.core.MBehavioralFeature;
 import ru.novosoft.uml.foundation.core.MFlow;
 import ru.novosoft.uml.foundation.core.MGeneralizableElement;
 import ru.novosoft.uml.foundation.core.MGeneralization;
@@ -282,6 +282,23 @@ public class ModelFacade {
 	public static ModelFacade getFacade() {
 		return singleton;
 	}
+    ////////////////////////////////////////////////////////////////
+    // Object Creation methods
+
+    /** Create a model object from the implementation.
+     * 
+     * This will allow abstraction of the create mechanism at a single point.
+     * 
+     * @param entity Class to create - must implement {@link org.argouml.model.uml.Uml.Entity}
+     * @return the created object or null if it cannot create the class.
+     */
+    public Object create(ModelEntity entity) {
+        if (entity instanceof UmlModelEntity) {
+            return UmlFactory.getFactory().create((UmlModelEntity)entity);
+        }
+        return null;
+    }
+    
     ////////////////////////////////////////////////////////////////
     // Recognizer methods for the UML model (in alphabetic order)
 
