@@ -540,6 +540,7 @@ implements IStatusBar, NavigationListener, ArgoModuleEventListener {
 
   public StatusBar getStatusBar() { return _statusBar; }
 
+  public JMenuBar getJMenuBar() { return _menuBar; }
 
   public ToDoPane getToDoPane() { return _toDoPane; }
   public NavigatorPane getNavPane() { return _navPane; }
