@@ -2164,7 +2164,7 @@ public class ModelFacade {
         if (isADependency(handle)) {
             return ((MDependency) handle).getClients();
         }
-	return illegalArgumentCollection(handle);
+        return illegalArgumentCollection(handle);
     }
 
     /**
@@ -4776,18 +4776,20 @@ public class ModelFacade {
     }
 
     /**
-     * Adds a client classifier to some abstraction.
+     * Adds a client model element to some dependency.
      *
-     * @param handle abstraction
-     * @param cls client classifier
+     * @param handle dependency.
+     * @param element The model element.
+     * @throws IllegalArgumentException if the handle is not a dependency
+     * or the element is not a model element.
      */
-    public static void addClient(Object handle, Object cls) {
-        if (handle instanceof MAbstraction
-                && cls instanceof MClassifier) {
-            ((MAbstraction) handle).addClient((MClassifier) cls);
-	    return;
+    public static void addClient(Object handle, Object element) {
+        if (handle instanceof MDependency
+                && element instanceof MModelElement) {
+            ((MDependency) handle).addClient((MModelElement) element);
+            return;
         }
-	illegalArgument(handle, cls);
+        illegalArgument(handle, element);
     }
 
     /**
