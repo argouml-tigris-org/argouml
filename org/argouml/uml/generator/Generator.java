@@ -61,14 +61,22 @@ import java.util.*;
 public abstract class Generator
 implements NotationProvider {
 
+  /**
+   * Special modus for testing using the JUnit module.
+   */
+  private boolean _testModus = false;
+  
   private NotationName _notationName = null;
 
   /** Two spaces used for indenting code in classes. */
   public static String INDENT = "  ";
 
-  public final static String fileSep=System.getProperty("file.separator");
-
     private static Map s_generators = new HashMap();
+
+	/** 
+	 * suffix placed behind the tag defining a testcase for an element to be generated
+	 */
+	public final static String TEST_SUFFIX = "test";
     public static Generator getGenerator(NotationName n) {
 	return (Generator)s_generators.get(n);
     }
@@ -82,6 +90,12 @@ implements NotationProvider {
         return _notationName;
   }
 
+
+/**
+ * Generates code for some modelelement. Subclasses should implement this to generate code for different notations.
+ * @param o the element to be generated 
+ * @return String the generated code
+ */
   public String generate(Object o) {
     if (o == null)
       return "";
@@ -105,8 +119,20 @@ implements NotationProvider {
       return generateUninterpreted((String) o);
     if (o instanceof MStereotype)
       return generateStereotype((MStereotype) o);
-    if (o instanceof MTaggedValue)
+    if (o instanceof MTaggedValue) {
+    	/*
+    	 * 2002-11-07
+    	 * Jaap Branderhorst
+    	 * Added the if statement to test for the testtag. Did it here and not in (for example) GeneratorJava
+    	 * to have a single point of definition instead of all the generators.
+    	 * If in the generation of an owner of a taggedvalue, the taggedvalue must be generated the method generating
+    	 * the owner should call generate(sometag) and not generateTaggedValue(sometag)
+    	 */
+    	if (_testModus && ((MTaggedValue)o).getTag().equals(getNotation().getName() + TEST_SUFFIX)) {
+    		return "";
+    	}	
       return generateTaggedValue((MTaggedValue) o);
+    }
     if (o instanceof MAssociation)
       return generateAssociation((MAssociation)o);
     if (o instanceof MAssociationEnd)
@@ -190,5 +216,23 @@ implements NotationProvider {
   public boolean initializeModule() { return true; }
   public void setModuleEnabled(boolean enabled) { }
   public boolean inContext(Object[] o) { return false; }
+
+/**
+ * Returns the _testModus.
+ * @return boolean
+ */
+public boolean isTestModus()
+{
+	return _testModus;
+}
+
+/**
+ * Sets the _testModus.
+ * @param _testModus The _testModus to set
+ */
+public void setTestModus(boolean _testModus)
+{
+	this._testModus = _testModus;
+}
 
 } /* end class Generator */
