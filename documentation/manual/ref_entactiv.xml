@@ -28,7 +28,7 @@
 <!--
 
 Description of all the artifacts associated with Activity Diagrams within
-Argo/UML.
+ArgoUML.
 
 -->
 
@@ -71,13 +71,14 @@ Argo/UML.
       <title>Limitations Concerning Activity Diagrams in ArgoUML</title>
 
     <para>Activity diagrams are not fully developed yet in
-      ArgoUML. Many aspects are not fully implemented, or may not behave as
-      expected. In particular swim lanes, action-object flows, control icons
-      (signals), sub-activities, object flows, control icons and interactions 
-      with other classifiers are not provided. 
-      In practice there is little in the current implementation of
-      the activity diagram to distinguish it from the statechart diagram (see <xref
-      linkend="ch.ref.entstate"/>).</para>
+      ArgoUML. Some aspects are not fully implemented, or may not behave as
+      expected. In particular lacking are 
+      call states, swim lanes, control icons (signals), 
+      sub-activities, synch states.
+      Interactions 
+      with other classifiers are provided by an 
+      object-flow-state which is only partly implemented.
+	</para>
 
     </sect2>
   </sect1>
@@ -112,11 +113,20 @@ an exit action and a Do activity are not permitted for action states.
       a rectangle with rounded corners containing the name of the action
       state.</para>
 
-    <caution><para>The UML standard expects that the activity diagram should
-      contain the expression associated with the entry action, rather than the
-      action state name (which is shown by the current version on ArgoUML).
-      <!-- TODO: See issue ...-->
-      </para></caution>
+    <caution><para>The UML standard specifies that the text shown in the 
+      action state on the activity diagram should
+      contain the expression associated with the entry action - which
+      is implemented as such in ArgoUML V0.18.
+      In past versions of ArgoUML (0.16.1 and before), 
+      the diagram used to show the action state name.
+      Loading a project created by one of the older versions, 
+      causes the project file to be converted to the correct
+      format conform the UML standard. 
+      This process is designed to be transparant for the user, and the 
+      only drawback is, that the activity diagram 
+      in the project will not show correctly
+      when reloaded in an old version of ArgoUML again.
+    </para></caution>
 
     <!-- Action state details tabs -->
 
