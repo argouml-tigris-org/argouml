@@ -86,6 +86,7 @@ SOURCES= \
 	LayerManager.java \
 	LayerPageBreaks.java \
 	LayerPerspective.java \
+	LayerPerspectiveMutable.java \
 	LayerPolar.java \
 	Mode.java \
 	ModeBroom.java \
