@@ -52,6 +52,7 @@ class PackageContext extends Context
     }
 
     public MInterface getInterface(String name)
+	throws ClassifierNotFoundException
     {
         // Search in model
         MInterface mInterface = (MInterface)mPackage.lookup(name);
@@ -100,6 +101,7 @@ class PackageContext extends Context
        @returns Found classifier.
     */
     public MClassifier get(String name)
+	throws ClassifierNotFoundException
     {
 	// Search in model
 	MClassifier mClassifier = (MClassifier)mPackage.lookup(name);
