@@ -31,6 +31,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import org.argouml.i18n.Translator;
 import org.argouml.model.ModelFacade;
 
 /**
@@ -46,7 +47,7 @@ public class GoSummaryToOutgoingDependency extends AbstractPerspectiveRule {
      * @see org.argouml.ui.explorer.rules.PerspectiveRule#getRuleName()
      */
     public String getRuleName() {
-	return "Summary->OutgoingDependency";
+        return Translator.localize ("Tree", "misc.summary.outgoing-dependency");
     }
 
     /**

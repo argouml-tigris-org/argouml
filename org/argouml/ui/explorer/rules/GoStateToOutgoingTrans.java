@@ -28,6 +28,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.argouml.i18n.Translator;
 import org.argouml.model.ModelFacade;
 
 /**
@@ -39,7 +40,9 @@ public class GoStateToOutgoingTrans extends AbstractPerspectiveRule {
     /**
      * @see org.argouml.ui.explorer.rules.PerspectiveRule#getRuleName()
      */
-    public String getRuleName() { return "State->Outgoing Transitions"; }
+    public String getRuleName() {
+        return Translator.localize ("Tree", "misc.state.outgoing-transitions");
+    }
 
     /**
      * @see org.argouml.ui.explorer.rules.PerspectiveRule#getChildren(java.lang.Object)

@@ -30,6 +30,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import org.argouml.i18n.Translator;
 import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.modelmanagement.ModelManagementHelper;
 
@@ -43,7 +44,9 @@ public class GoModelToCollaboration extends AbstractPerspectiveRule {
     /**
      * @see org.argouml.ui.explorer.rules.PerspectiveRule#getRuleName()
      */
-    public String getRuleName() { return "Model->Collaboration"; }
+    public String getRuleName() {
+        return Translator.localize ("Tree", "misc.model.collaboration");
+    }
 
     /**
      * @see org.argouml.ui.AbstractGoRule#getChildren(java.lang.Object)

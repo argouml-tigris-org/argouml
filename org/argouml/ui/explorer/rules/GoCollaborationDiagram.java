@@ -28,6 +28,7 @@ import java.util.Collection;
 import java.util.Set;
 import java.util.Vector;
 
+import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.ModelFacade;
@@ -43,7 +44,7 @@ public class GoCollaborationDiagram extends AbstractPerspectiveRule {
      * @see org.argouml.ui.explorer.rules.PerspectiveRule#getRuleName()
      */
     public String getRuleName() {
-        return "Collaboration->Diagram";
+        return Translator.localize ("Tree", "misc.collaboration.diagram");
     }
 
     /**

@@ -29,6 +29,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.Vector;
 
+import org.argouml.i18n.Translator;
 import org.argouml.model.ModelFacade;
 
 /**
@@ -68,6 +69,6 @@ public class GoStateToExit extends AbstractPerspectiveRule {
      * @see org.argouml.ui.AbstractGoRule#getRuleName()
      */
     public String getRuleName() {
-        return "State->Exit"; 
+        return Translator.localize ("Tree", "misc.state.exit");
     }
 }

@@ -29,6 +29,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.argouml.i18n.Translator;
 import org.argouml.model.ModelFacade;
 
 /**
@@ -53,7 +54,7 @@ public class GoModelElementToComment extends AbstractPerspectiveRule {
      * @see org.argouml.ui.AbstractGoRule#getRuleName()
      */
     public String getRuleName() {
-        return "ModelElement->Comment";
+        return Translator.localize ("Tree", "misc.model-element.comment");
     }
 
     /**

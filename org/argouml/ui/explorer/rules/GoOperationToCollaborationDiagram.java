@@ -31,6 +31,7 @@ import java.util.Set;
 import java.util.Vector;
 
 import org.argouml.model.ModelFacade;
+import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.ui.ArgoDiagram;
@@ -80,7 +81,8 @@ public class GoOperationToCollaborationDiagram extends AbstractPerspectiveRule {
      * @see org.argouml.ui.AbstractGoRule#getRuleName()
      */
     public String getRuleName() {
-        return "Operation->Collaboration Diagram";
+        return Translator.localize ("Tree", 
+                "misc.operation.collaboration-diagram");
     }
 
 }

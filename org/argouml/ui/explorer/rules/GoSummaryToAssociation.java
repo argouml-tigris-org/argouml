@@ -28,6 +28,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.argouml.i18n.Translator;
 import org.argouml.model.uml.UmlHelper;
 
 /**
@@ -43,7 +44,7 @@ public class GoSummaryToAssociation extends AbstractPerspectiveRule {
      * @see org.argouml.ui.explorer.rules.PerspectiveRule#getRuleName()
      */
     public String getRuleName() {
-	return "Summary->Association";
+        return Translator.localize ("Tree", "misc.summary.association");
     }
 
     /**
