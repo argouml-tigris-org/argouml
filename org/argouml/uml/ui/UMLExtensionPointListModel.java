@@ -182,20 +182,24 @@ public class UMLExtensionPointListModel extends UMLModelElementListLinkModel  {
     public Object formatElement(MModelElement element) {
 
         Object value = _nullLocation;
+	StringBuffer sb = new StringBuffer(20);
 
         if (element instanceof MExtensionPoint) {
             MExtensionPoint  extensionPoint = (MExtensionPoint) element;
             String           location       = extensionPoint.getLocation();
 
-	    if (extensionPoint.getName() != null)
-		value = extensionPoint.getName() + ":";
-	    else
-		value = "";
-
-            if((location != null) && (!(location.equals(""))))
-		value += " " + location;
-	    else
-		value += _nullLocation;
+	    if (extensionPoint.getName() != null) {
+		sb.append(extensionPoint.getName());
+		sb.append(":");
+	    }
+	    if((location != null) && (!(location.equals("")))) {
+		sb.append(" ");
+		sb.append(location);
+	    }
+	    else {
+		sb.append(_nullLocation);
+	    }
+	    value = sb.toString();
         }
         else {
             if (element != null) {
