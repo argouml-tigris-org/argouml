@@ -90,8 +90,8 @@ public class CrCircularInheritance extends CrUML {
     VectorSet newOffs = computeOffenders(dm);
     boolean res = offs.equals(newOffs);
     cat.debug("offs="+ offs.toString() +
-  		       " newOffs="+ newOffs.toString() +
-  		       " res = " + res);
+	      " newOffs="+ newOffs.toString() +
+	      " res = " + res);
     return res;
   }
 
