@@ -183,11 +183,11 @@ class StateMachinesHelperImpl implements StateMachinesHelper {
      * statemachines for.
      * @return Collection The collection with found statemachines.
      */
-    public Collection getAllPossibleStatemachines(Object oSubmachineState) {
+    public Collection getAllPossibleStatemachines(Object model, Object oSubmachineState) {
         if (oSubmachineState instanceof MSubmachineState) {
             Collection statemachines =
 		nsmodel.getModelManagementHelper()
-		    .getAllModelElementsOfKind(MStateMachine.class);
+		    .getAllModelElementsOfKind(model, MStateMachine.class);
             statemachines.remove(getStateMachine(oSubmachineState));
             return statemachines;
         }

@@ -99,11 +99,12 @@ public interface StateMachinesHelper {
      * Returns all statemachines that can be the statemachine the given
      * submachinestate represents. To decouple ArgoUML as much as possible from
      * the NSUML model, the parameter of the method is of type Object.
+     * @param model the model
      * @param oSubmachineState The submachinestate we are searching the
      * statemachines for.
      * @return Collection The collection with found statemachines.
      */
-    Collection getAllPossibleStatemachines(Object oSubmachineState);
+    Collection getAllPossibleStatemachines(Object model, Object oSubmachineState);
 
     /**
      * Connects a given statemachine to a submachinestate as being the
