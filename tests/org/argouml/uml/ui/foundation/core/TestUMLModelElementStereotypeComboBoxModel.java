@@ -61,7 +61,7 @@ public class TestUMLModelElementStereotypeComboBoxModel extends TestCase {
         MockUMLUserInterfaceContainer mockcomp = new MockUMLUserInterfaceContainer();
         mockcomp.setTarget(elem);
         model = new UMLModelElementStereotypeComboBoxModel(mockcomp);
-        elem.addMElementListener(model);
+        elem.addMElementListener(model); 
     }
     
     /**
@@ -80,14 +80,14 @@ public class TestUMLModelElementStereotypeComboBoxModel extends TestCase {
         m.setBaseClass("Class");
         elem.setStereotype(m);
         // assertEquals(model.getSize()-1, oldSize);
-        assertEquals(model.getSelectedItem(), m);
+        assertEquals(m, model.getSelectedItem());
     }
     
     public void testElementRemoved() {
         MStereotype m = new MStereotypeImpl();
         m.setBaseClass("Class");
         elem.setStereotype(m);
-        assertEquals(model.getSelectedItem(), m);
+        assertEquals(m, model.getSelectedItem());
         m.remove();
         m = null;
         assertNull(elem.getStereotype());
@@ -104,7 +104,7 @@ public class TestUMLModelElementStereotypeComboBoxModel extends TestCase {
         MStereotype m = new MStereotypeImpl();
         m.setBaseClass("Class");
         elem.setStereotype(m);
-        assertEquals(model.getSelectedItem(), m);
+        assertEquals(m, model.getSelectedItem());
         elem.setStereotype(null);
         assertNull(model.getSelectedItem());
     }

@@ -100,6 +100,7 @@ public class TestUMLModelElementNameDocument extends TestCase {
     }
     
     public void testInsertString() {
+        elem.setName("");
         try {
             model.insertString(0, "test", null);
         } catch (Exception ex) {
