@@ -52,12 +52,19 @@ import org.argouml.uml.MMUtil;
 
 // needs-more-work: always check for null!!!
 
-public class GeneratorDisplay extends Generator {
+public class GeneratorDisplay extends Generator
+implements PluggableNotation {
 
-  public static GeneratorDisplay SINGLETON = new GeneratorDisplay();
+  private static GeneratorDisplay SINGLETON = new GeneratorDisplay();
 
-  /** Two spaces used for indenting code in classes. */
-  public static String INDENT = "  ";
+  public static GeneratorDisplay getInstance() { return SINGLETON; }
+
+
+  public GeneratorDisplay() {
+     super(Notation.makeNotation("Uml", "1.3",
+                Argo.lookupIconResource("UmlNotation")));
+  }
+
 
   public static String Generate(Object o) {
     return SINGLETON.generate(o);
@@ -497,5 +504,13 @@ public class GeneratorDisplay extends Generator {
   public boolean canParse() { return true; }
 
   public boolean canParse(Object o) { return true; }
+
+    public String getModuleName() { return "GeneratorDisplay"; }
+    public String getModuleDescription() {
+        return "Uml 1.3 Notation Generator";
+    }
+    public String getModuleAuthor() { return "ArgoUML Core"; }
+    public String getModuleVersion() { return "0.9.4"; }
+    public String getModuleKey() { return "module.language.uml.generator"; }
 
 } /* end class GeneratorDisplay */
