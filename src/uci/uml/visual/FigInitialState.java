@@ -3,10 +3,12 @@
 // software and its documentation for educational, research and non-profit
 // purposes, without fee, and without a written agreement is hereby granted,
 // provided that the above copyright notice and this paragraph appear in all
-// copies. Permission to incorporate this software into commercial products
-// must be negotiated with University of California. This software program and
-// documentation are copyrighted by The Regents of the University of
-// California. The software program and documentation are supplied "as is",
+// copies. Permission to incorporate this software into commercial products may
+// be obtained by contacting the University of California. David F. Redmiles
+// Department of Information and Computer Science (ICS) University of
+// California Irvine, California 92697-3425 Phone: 714-824-3823. This software
+// program and documentation are copyrighted by The Regents of the University
+// of California. The software program and documentation are supplied "as is",
 // without any accompanying services from The Regents. The Regents do not
 // warrant that the operation of the program will be uninterrupted or
 // error-free. The end-user understands that the program was developed for
@@ -22,11 +24,9 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 // ENHANCEMENTS, OR MODIFICATIONS.
 
-
-
-// File: FigState.java
-// Classes: FigState
-// Original Author: your email address here
+// File: FigActor.java
+// Classes: FigActor
+// Original Author: abonner@ics.uci.edu
 // $Id$
 
 package uci.uml.visual;
@@ -41,93 +41,64 @@ import uci.graph.*;
 import uci.uml.ui.*;
 import uci.uml.generate.*;
 import uci.uml.Foundation.Core.*;
-import uci.uml.Behavioral_Elements.State_Machines.*;
 
 /** Class to display graphics for a UML State in a diagram. */
 
-public class FigState extends FigNode
+public class FigInitialState extends FigNode
 implements VetoableChangeListener, DelayedVetoableChangeListener {
 
   ////////////////////////////////////////////////////////////////
   // constants
-  
+
   public final int MARGIN = 2;
+  public int x = 10;
+  public int y = 10;
+  public int width = 20;
+  public int height = 20;
 
   ////////////////////////////////////////////////////////////////
   // instance variables
-  
+
   /** The main label on this icon. */
-  FigText _name;
-  
+//  FigText _name;
+
   /** UML does not really use ports, so just define one big one so
    *  that users can drag edges to or from any point in the icon. */
-  
-  FigRect _bigPort;
-  
+
+  FigCircle _bigPort;
+
   // add other Figs here aes needed
 
-
+ FigCircle _head;
   ////////////////////////////////////////////////////////////////
   // constructors
-  
-  public FigState(GraphModel gm, Object node) {
+
+  public FigInitialState(GraphModel gm, Object node) {
     super(node);
     // if it is a UML meta-model object, register interest in any change events
     if (node instanceof ElementImpl)
       ((ElementImpl)node).addVetoableChangeListener(this);
 
     Color handleColor = Globals.getPrefs().getHandleColor();
-    _bigPort = new FigRRect(10, 10, 90, 70, handleColor, Color.white);
-    _name = new FigText(15,15,80,20, Color.blue, "Times", 10);
-    _name.setExpandOnly(false);
-    _name.setJustification("center");
-    _name.setLineColor(Color.white);
-    _name.setText("FigState");
-    // initialize any other Figs here
-
+    _bigPort = new FigCircle(x,y,width,height, handleColor, Color.black);
+    _head = new FigCircle(x,y,width,height, handleColor, Color.black);
     // add Figs to the FigNode in back-to-front order
     addFig(_bigPort);
-    addFig(_name);
+    addFig(_head);
 
     Object onlyPort = node;
     bindPort(onlyPort, _bigPort);
-    //setBlinkPorts(false); //make port invisble unless mouse enters
+    setBlinkPorts(false); //make port invisble unless mouse enters
     Rectangle r = getBounds();
-    setBounds(r.x, r.y, r.width, r.height);
-
-
   }
 
-/* Override setBounds to keep shapes looking right */
-  public void setBounds(int x, int y, int w, int h) {
-    if (_name == null) return;
-    int leftSide = x;
-    int widthP = w;
-    int topSide = y;
-    int heightP = h;
-
-    Rectangle _name_pref = _name.getBounds();
-
-
-    int total_height = _name_pref.height;
-
-    widthP = Math.max(widthP,_name_pref.width);
-    heightP = Math.max(heightP, total_height);
-
-   int extra_each = (heightP - total_height) / 3;
-
-    _name.setBounds(leftSide+10, topSide+(heightP-total_height)/2, widthP-20, _name_pref.height);
-    _bigPort.setBounds(leftSide, topSide, widthP, heightP);
-
-    calcBounds(); //_x = x; _y = y; _w = w; _h = h;
-  }
 
   /** If the UML meta-model object changes state. Update the Fig.  But
    *  we need to do it as a "DelayedVetoableChangeListener", so that
    *  model changes complete before we update the screen. */
   public void vetoableChange(PropertyChangeEvent pce) {
-    // throws PropertyVetoException 
-    System.out.println("FigState got a change notification!");
+    // throws PropertyVetoException
+    System.out.println("FigInitialState got a change notification!");
     Object src = pce.getSource();
     if (src == getOwner()) {
       DelayedChangeNotify delayedNotify = new DelayedChangeNotify(this, pce);
@@ -138,15 +109,14 @@ implements VetoableChangeListener, DelayedVetoableChangeListener {
   /** The UML meta-model object changed. Now update the Fig to show
    *  its current  state. */
   public void delayedVetoableChange(PropertyChangeEvent pce) {
-    // throws PropertyVetoException 
-    System.out.println("FigState got a delayed change notification!");
+    // throws PropertyVetoException
+    System.out.println("FigInitialState got a delayed change notification!");
     Object src = pce.getSource();
     if (src == getOwner()) {
-      updateText();
+     // updateText();
       // you may have to update more than just the text
     }
   }
-
 
   /** Update the text labels */
   protected void updateText() {
@@ -154,13 +124,11 @@ implements VetoableChangeListener, DelayedVetoableChangeListener {
     String nameStr = GeneratorDisplay.Generate(elmt.getName());
 
     startTrans();
-    _name.setText(nameStr);
+//    _name.setText(nameStr);
     Rectangle bbox = getBounds();
     setBounds(bbox.x, bbox.y, bbox.width, bbox.height);
     endTrans();
   }
-
-  
 
   public void dispose() {
     if (!(getOwner() instanceof Element)) return;
@@ -170,6 +138,4 @@ implements VetoableChangeListener, DelayedVetoableChangeListener {
     super.dispose();
   }
 
-
-
-} /* end class FigState */
+} /* end class FigInitialState */

@@ -38,7 +38,9 @@ CLASSES = \
 	FigAssociation.class \
 	FigClass.class \
 	FigDependency.class \
+	FigFinalState.class \
 	FigGeneralization.class \
+	FigInitialState.class \
 	FigInstance.class \
 	FigLink.class \
 	FigMessage.class \

@@ -49,6 +49,8 @@ import uci.uml.Behavioral_Elements.State_Machines.*;
  *  ---------------------------------------
  *  State           ---  FigState
  *  Pseudostate     ---  FigPseudostate
+ *    as a Final St ---  FigFinalState
+ *    as a Init St  ---  FigInitialState
  *  Transition      ---  FigTransition
  *  more...
  *  </pre>
@@ -60,7 +62,14 @@ implements GraphNodeRenderer, GraphEdgeRenderer {
   /** Return a Fig that can be used to represent the given node */
   public FigNode getFigNodeFor(GraphModel gm, Layer lay, Object node) {
     if (node instanceof State) return new FigState(gm, node);
-    else if (node instanceof Pseudostate) return new FigPseudostate(gm, node);
+    else if (node instanceof Pseudostate) 
+    {
+       Pseudostate pState = (Pseudostate) node;
+       if (pState.getKind() == null) return null;
+       if (pState.getKind().equals("initial")) { return new FigInitialState(gm, node); }
+       else if (pState.getKind().equals("final")) { return new FigFinalState(gm, node); }
+       else { System.out.println("found a type not known"); }
+    };
     System.out.println("needs-more-work StateDiagramRenderer getFigNodeFor");
     return null;
   }
