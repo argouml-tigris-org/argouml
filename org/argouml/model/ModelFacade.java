@@ -58,6 +58,7 @@ import ru.novosoft.uml.behavior.state_machines.MStateVertex;
 import ru.novosoft.uml.behavior.state_machines.MTransition;
 import ru.novosoft.uml.behavior.use_cases.MActor;
 import ru.novosoft.uml.behavior.use_cases.MExtend;
+import ru.novosoft.uml.behavior.use_cases.MExtensionPoint;
 import ru.novosoft.uml.behavior.use_cases.MInclude;
 import ru.novosoft.uml.behavior.use_cases.MUseCase;
 import ru.novosoft.uml.foundation.core.*;
@@ -252,6 +253,17 @@ public class ModelFacade {
         return handle instanceof MClassifier;
     }
 
+    /** Recognizer for Comment
+     *
+     * @param handle candidate
+     * @returns true if handle is a Comment
+     */
+    public static boolean isAComment(Object handle) {
+        return handle instanceof MComment;
+    }
+
+    
+
     /** Recognizer for Component
      *
      * @param handle candidate
@@ -314,6 +326,16 @@ public class ModelFacade {
     public static boolean isAExpression(Object handle) {
         return handle instanceof MExpression;
     }
+
+    /** Recognizer for ExtensionPoint
+     *
+     * @param handle candidate
+     * @returns true if handle is an ExtensionPoint
+     */
+    public static boolean isAExtensionPoint(Object handle) {
+        return handle instanceof MExtensionPoint;
+    }
+    
 
     /** Recognizer for Feature
      *
@@ -526,6 +548,17 @@ public class ModelFacade {
     public static boolean isAStructuralFeature(Object handle) {
         return handle instanceof MStructuralFeature;
     }
+
+
+    /** Recognizer for TaggedValue
+     *
+     * @param handle candidate
+     * @returns true if handle is a TaggedValue
+     */
+    public static boolean isATaggedValue(Object handle) {
+        return handle instanceof MTaggedValue;
+    }
+    
 
     /** Recognizer for Transition
      *
@@ -1544,11 +1577,24 @@ public class ModelFacade {
         return null;
     }
 
+
+    /**
+       Return the key (tag) of some tagged value.
+    
+       @param tv The tagged value.
+       @return The found value, null if not found
+     */
+    public static String getTagOfTag(Object tv) {
+        if (tv != null && tv instanceof MTaggedValue) {
+            return ((MTaggedValue)tv).getTag();
+        }
+        return null;
+    }
+
     /**
        Return the value of some tagged value.
     
        @param tv The tagged value.
-       @param name The tag.
        @return The found value, null if not found
      */
     public static String getValueOfTag(Object tv) {
