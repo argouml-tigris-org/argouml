@@ -259,6 +259,12 @@ implements IStatusBar, NavigationListener, ArgoModuleEventListener {
     }
   }
 
+    /** Scans through all loaded modules to see if it has an item to add
+     * in this diagram.
+     *
+     * @param menuitem The menuitem which this menuitem would attach to.
+     * @param key Non-localized string that tells the module where we are.
+     */
   private void appendPluggableMenus(JMenuItem menuitem, String key) {
     Object[] context = { menuitem, key };
     ArrayList arraylist = Argo.getPlugins(PluggableMenu.class, context);
