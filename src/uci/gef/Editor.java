@@ -43,59 +43,65 @@ import uci.ui.*;
 import uci.gef.event.*;
 
 
-/** This class provides an editor frame for manipulating graphical
+/** This class provides an editor for manipulating graphical
  *  documents. The editor is the central class of the graph editing
- *  framework, but it does not contain very much code. It can be this
+ *  framework, but it does not contain very much code.  It can be this
  *  small because all the net-level models, graphical objects, layers,
- *  editor modes, editor actions, and supporting dialogs and frames are
- *  implemented in their own classes. The framework defines abstract
- *  and example classes for each of those class categories.<p>
+ *  editor modes, editor commands, and supporting dialogs and frames are
+ *  implemented in their own classes. <p>
  *
- *  An editor presents a tree of Layer's. Normally layers contain
- *  Fig's. Some Fig's are linked to
- *  NetPrimitive's. When Fig's are selected the Editor holds
- *  a Selection object. The behavior of the editor is determined by its
- *  current Mode. The Editor acts as a shell for executing Action's
+ *  An Editor's LayerManager has a stack of Layer's. Normally Layers
+ *  contain Figs.  Some Figs are linked to NetPrimitives.  When Figs
+ *  are selected the SelectionManager holds a Selection object.  The
+ *  behavior of the Editor is determined by its current Mode.  The
+ *  Editor's ModeManager keeps track of all the active Modes.  Modes
+ *  interpert user input events and decide how to change the state of
+ *  the diagram.  The Editor acts as a shell for executing Commands
  *  that modify the document or the Editor itself. <p>
  *
- *  A major goal of the graph editing framework is to make it easy to
- *  extend the framework for application to a specific domain. It is
- *  very important that new functionality can be added without
- *  modifying what is already there. The fairly small size of the
- *  editor is a good indicator that it is not a bottleneck for
- *  enhancing the framework. <p>
+ *  When Figs change visible state (e.g., color, size, or postition)
+ *  they tell their Layer that they are damaged and need to be
+ *  repainted. The Layer tells all Editors that are editing that
+ *  Layer.  Each Editor has a RedrawManager that keeps track of what
+ *  parts of the screen need to be redrawn, and does the redraws
+ *  asynchronously.
+ *
+ *  A major goal of GEF is to make it easy to extend the framework for
+ *  application to a specific domain. It is very important that new
+ *  functionality can be added without modifying what is already
+ *  there. The fairly small size of the Editor is a good indicator
+ *  that it is not a bottleneck for enhancing the framework. <p>
  *
  * @see Layer
  * @see Fig
  * @see NetPrimitive
  * @see Selection
  * @see Mode
- * @see Action */
+ * @see Cmd */
 
 
 public class Editor
 implements Serializable, MouseListener, MouseMotionListener, KeyListener {
-  //, GEF { //, IProps //Runnable, IStatusBar
 
   ////////////////////////////////////////////////////////////////
   // constants
 
+  /** Clicking exactly on a small shape is hard for users to
+   *  do. GRIP_MARGIN gives them a chance to have the mouse outside a
+   *  Fig by a few pixels and still hit it.  */
   public static final int GRIP_SIZE = 8;
 
   ////////////////////////////////////////////////////////////////
   // instance variables
 
-  /** The user interface mode that the editor is currently
-   *  in. Generally modes that the user has to think about are a bad
-   *  idea. But even in a very easy to use editor there are plenty of
+  /** The user interface mode that the Editor is currently
+   *  in.  Generally Modes that the user has to think about are a bad
+   *  idea.  But even in a very easy to use editor there are plenty of
    *  "spring-loaded" modes that change the way the system interperts
-   *  input. For example, when placing a new node, the editor is in
+   *  input.  For example, when placing a new node, the editor is in
    *  ModePlace, and when dragging a handle of an object the editor is
-   *  in ModeModify. In each case moving or dragging the mouse has a
-   *  different effect from what happens when the editor is in its
-   *  default mode (usually ModeSelect). <p>
-   *  <A HREF="../features.html#editing_modes">
-   *  <TT>FEATURE: editing_modes</TT></A>
+   *  in ModeModify.  In each case moving or dragging the mouse has a
+   *  different effect.
    *
    * @see ModeModify
    * @see ModeSelect
@@ -106,220 +112,34 @@ implements Serializable, MouseListener, MouseMotionListener, KeyListener {
    *  on. At this point the framework does not have a very strong
    *  concept of document and there is no class Document. For now the
    *  meaning of this pointer is in the hands of the person applying
-   *  this framework to an application.
-   *  <A HREF="../features.html#integration_with_exising_code">
-   *  <TT>FEATURE: integration_with_exising_code</TT></A>
-   */
+   *  this framework to an application. */
   protected Object _document;
 
   /** _selections holds the SelectionMultiple object that describes
    *  all the selection objects for what the user currently has
-   *  selected.
-   *  <A HREF="../features.html#selections">
-   *  <TT>FEATURE: selections</TT></A>
-   */
+   *  selected. */
   protected SelectionManager _selectionManager = new SelectionManager(this);
 
-  /** This holds the LayerComposite being displayed in the editor.
-   *  <A HREF="../features.html#layers">
-   *  <TT>FEATURE: layers </TT></A>
-   */
+  /** The LayerManager for this Editor. */
   protected LayerManager _layerManager = new LayerManager(this);
 
-  /** The grid to snap points to if any.
-   *  <A HREF="../features.html#snap_to_guide">
-   *  <TT>FEATURE: snap_to_guide</TT></A>
-   */
+  /** The grid to snap points to.   */
   protected Guide _guide = new GuideGrid(8);
 
-  /** <A HREF="../features.html#event_skipping">
-   *  <TT>FEATURE: event_skipping</TT></A>
-   */
-  //private transient uci.util.EventQueue _eventQueue = null;
+  /** The Fig that the mouse is in. */ 
+  protected Fig _curFig = null;
 
-  //private transient  Thread _eventHandler = null;
-
-  protected Object _curNode = null;
-
-  protected Fig _curFig = null;     // _focusFig //?
-
+  /** The AWT window or panel that the Editor draws to. */
   private transient Component _awt_component;
 
   /** Each Editor has a RedrawManager that executes in a separate
-   *  thread of control to update damaged regions of the display.
-   *  <A HREF="../features.html#visual_updates">
-   *  <TT>FEATURE: visual_updates</TT></A>
-   *  <A HREF="../features.html#redraw_minimal">
-   *  <TT>FEATURE: redraw_minimal</TT></A>
-   */
+   *  thread of control to update damaged regions of the display. */
   protected transient RedrawManager _redrawer = new RedrawManager(this);
 
-
-  //protected boolean canPeekEvents = false;
-  
-  ////////////////////////////////////////////////////////////////
-  /// methods related to editor state: graphical attributes, modes, view
-
-
-  /** Set the current user interface mode to the given Mode
-   *  instance. */
-  public void mode(Mode m) {
-    _modeManager.push(m);
-    m.setEditor(this);
-    Globals.showStatus(m.instructions());
-  }
-
-  // no mode getter?
-
-  /** <A HREF="../features.html#editing_modes">
-   *  <TT>FEATURE: editing_modes</TT></A>
-   */
-  public void finishMode() {
-    _modeManager.pop();
-    mode(Globals.mode());
-    Globals.clearStatus();
-  }
-
-
-  /** Return the LayerComposite that holds the diagram being edited. */
-  public LayerManager getLayerManager() { return _layerManager; }
-
-  public int gridSize() { return 16; } // Needs-More-Work: prefs
-
-  /** Return the net under the diagram being edited. */
-  public GraphModel getGraphModel() {
-    Layer active = _layerManager.getActiveLayer();
-    if (active instanceof LayerPerspective)
-      return ((LayerPerspective)active).getGraphModel();
-    else return null;
-  }
-
-  public void setGraphModel(GraphModel gm) {
-    Layer active = _layerManager.getActiveLayer();
-    if (active instanceof LayerPerspective)
-      ((LayerPerspective)active).setGraphModel(gm);
-  }
-    
-  public GraphNodeRenderer getGraphNodeRenderer() {
-    Layer active = _layerManager.getActiveLayer();
-    if (active instanceof LayerPerspective)
-      return ((LayerPerspective)active).getGraphNodeRenderer();
-    else return null;
-  }
-
-  public void setGraphNodeRenderer(GraphNodeRenderer rend) {
-    Layer active = _layerManager.getActiveLayer();
-    if (active instanceof LayerPerspective)
-      ((LayerPerspective)active).setGraphNodeRenderer(rend);
-  }
-
-  public GraphEdgeRenderer getGraphEdgeRenderer() {
-    Layer active = _layerManager.getActiveLayer();
-    if (active instanceof LayerPerspective)
-      return ((LayerPerspective)active).getGraphEdgeRenderer();
-    else return null;
-  }
-
-  public void setGraphEdgeRenderer(GraphEdgeRenderer rend) {
-    Layer active = _layerManager.getActiveLayer();
-    if (active instanceof LayerPerspective)
-      ((LayerPerspective)active).setGraphEdgeRenderer(rend);
-  }
-
-  ////////////////////////////////////////////////////////////////
-  // methods related to adding, removing, and accessing DiagramElemnts
-  // shown in the editor
-
-  /** Returns a collection of all Figs in the layer
-   *  currently being edited. Not used very much now, but could be
-   *  useful for many Actions. Now used only by FigEdge. */
-  public Enumeration figs() { return _layerManager.elements(); }
-
-  /** Add a Fig to the diagram being edited. */
-  public void add(Fig f) { getLayerManager().add(f); }
-
-  /** Remove a Fig from the diagram being edited. */
-  public void remove(Fig f) { getLayerManager().remove(f); }
-
-  /** Reply the top Fig in the current layer that contains
-   *  the given point. This is used in determining what the user
-   *  clicked on, among other uses. */
-
-  protected static Rectangle _hitRect
-  = new Rectangle(0, 0, GRIP_SIZE, GRIP_SIZE);
-
-  public final Fig hit(Point p) {
-    _hitRect.move(p.x - GRIP_SIZE/2, p.y - GRIP_SIZE/2);
-    return hit(_hitRect);
-  }
-  public final Fig hit(int x, int y) {
-    _hitRect.move(x - GRIP_SIZE/2, y - GRIP_SIZE/2);
-    return hit(_hitRect);
-  }
-  public final Fig hit(int x, int y, int w, int h) {
-    return hit(new Rectangle(x, y, w, h));
-  }
-  public Fig hit(Rectangle r) { return getLayerManager().hit(r); }
-
-  /** Find the NetNode represented by the FigNode under the mouse,
-   *  if any */
-
-  protected void setUnderMouse(MouseEvent me) {
-    Object node = null;
-    int x = me.getX(), y = me.getY();
-    Fig f = hit(x, y);
-    if (f != _curFig) {
-      if (_curFig instanceof MouseListener)
-	((MouseListener)_curFig).mouseExited(me);
-      if (f instanceof MouseListener)
-	((MouseListener)f).mouseEntered(me);
-    }
-    _curFig = f;
-    if (f instanceof FigNode) node = f.getOwner();
-    if (node != _curNode) {
-      if (_curNode instanceof MouseListener)
-	((MouseListener)_curNode).mouseExited(me);
-      if (node instanceof MouseListener)
-	((MouseListener)node).mouseEntered(me);
-    }
-    _curNode = node;
-  }
-
-  ////////////////////////////////////////////////////////////////
-  // document related methods
-
-  /** Get and set document being edited. There are no deep semantics
-   *  here yet, a "document" is up to you to define. */
-  public Object document() { return _document; }
-  public void document(Object d) { _document = d; }
-
-  ////////////////////////////////////////////////////////////////
-  // Guide and layout related commands
-
-  /** Modify the given point to be on the guideline (In this case, a
-   *  gridline). */
-  public void snap(Point p) { if (_guide != null) _guide.snap(p); }
-
-  public Guide getGuide() { return _guide; }
-  public void setGuide(Guide g) { _guide = g; }
 
   ////////////////////////////////////////////////////////////////
   // constructors and related functions
 
-  /** Clone the receiving editor. Called from ActionSpawn. Subclasses
-   *  of Editor should override this method. */
-  public Object clone() {
-    try {
-      Editor ed = (Editor) this.getClass().newInstance();
-      ed.getLayerManager().addLayer(_layerManager.getActiveLayer());
-      //needs-more-work: does not duplicate layer stack!
-      ed.document(document());
-      return ed;
-    }
-    catch (java.lang.IllegalAccessException ignore) { }
-    catch (java.lang.InstantiationException ignore) { }
-    return null;
-  }
 
   /** Construct a new Editor to edit the given NetList */
   public Editor(GraphModel gm, Component awt_comp) {
@@ -351,54 +171,185 @@ implements Serializable, MouseListener, MouseMotionListener, KeyListener {
     else _layerManager.addLayer(new LayerPerspective("untitled", gm));
   }
 
-
+  /** Called before the Editor is saved to a file. */
   public void preSave() { }
+
+  /** Called after the Editor is saved to a file. */
   public void postSave() { }
+  
+  /** Called after the Editor is loaded from a file. */
   public void postLoad() {
     if (_redrawer == null) _redrawer = new RedrawManager(this);;
   }
+
+  /** Clone the receiving editor. Called from ActionSpawn. Subclasses
+   *  of Editor should override this method. */
+  public Object clone() {
+    try {
+      Editor ed = (Editor) this.getClass().newInstance();
+      ed.getLayerManager().addLayer(_layerManager.getActiveLayer());
+      //needs-more-work: does not duplicate layer stack!
+      ed.document(document());
+      return ed;
+    }
+    catch (java.lang.IllegalAccessException ignore) {
+      System.out.println("IllegalAccessException in spawn");
+    }
+    catch (java.lang.InstantiationException ignore) {
+      System.out.println("InstantiationException in spawn");
+    }
+    return null;
+  }
+
+  ////////////////////////////////////////////////////////////////
+  /// methods related to editor state: graphical attributes, modes, view
+
+
+  /** Set the current user interface mode to the given Mode instance. */
+  public void mode(Mode m) {
+    _modeManager.push(m);
+    m.setEditor(this);
+    Globals.showStatus(m.instructions());
+  }
+
+  /** Set this Editor's current Mode to the next global Mode. */
+  public void finishMode() {
+    _modeManager.pop();
+    mode(Globals.mode());
+    Globals.clearStatus();
+  }
+
+
+  /** Return the LayerComposite that holds the diagram being edited. */
+  public LayerManager getLayerManager() { return _layerManager; }
+
+  /** The size of the grid for grid snap. */
+  //  public int gridSize() { return 16; } // Needs-More-Work: prefs
+
+  /** Return the net under the diagram being edited. */
+  public GraphModel getGraphModel() {
+    Layer active = _layerManager.getActiveLayer();
+    if (active instanceof LayerPerspective)
+      return ((LayerPerspective)active).getGraphModel();
+    else return null;
+  }
+
+  public void setGraphModel(GraphModel gm) {
+    Layer active = _layerManager.getActiveLayer();
+    if (active instanceof LayerPerspective)
+      ((LayerPerspective)active).setGraphModel(gm);
+  }
+
+  /** Get the renderer object that decides how to display nodes */
+  public GraphNodeRenderer getGraphNodeRenderer() {
+    Layer active = _layerManager.getActiveLayer();
+    if (active instanceof LayerPerspective)
+      return ((LayerPerspective)active).getGraphNodeRenderer();
+    else return null;
+  }
+
+  public void setGraphNodeRenderer(GraphNodeRenderer rend) {
+    Layer active = _layerManager.getActiveLayer();
+    if (active instanceof LayerPerspective)
+      ((LayerPerspective)active).setGraphNodeRenderer(rend);
+  }
+
+  /** Get the renderer object that decides how to display edges */
+  public GraphEdgeRenderer getGraphEdgeRenderer() {
+    Layer active = _layerManager.getActiveLayer();
+    if (active instanceof LayerPerspective)
+      return ((LayerPerspective)active).getGraphEdgeRenderer();
+    else return null;
+  }
+
+  public void setGraphEdgeRenderer(GraphEdgeRenderer rend) {
+    Layer active = _layerManager.getActiveLayer();
+    if (active instanceof LayerPerspective)
+      ((LayerPerspective)active).setGraphEdgeRenderer(rend);
+  }
+
+  ////////////////////////////////////////////////////////////////
+  // methods related to adding, removing, and accessing DiagramElemnts
+  // shown in the editor
+
+  /** Returns a collection of all Figs in the layer currently being edited. */
+  public Enumeration figs() { return _layerManager.elements(); }
+
+  /** Add a Fig to the diagram being edited. */
+  public void add(Fig f) { getLayerManager().add(f); }
+
+  /** Remove a Fig from the diagram being edited. */
+  public void remove(Fig f) { getLayerManager().remove(f); }
+
+  /** Temp var used to implement hit() without doing memory allocation. */
+  protected static Rectangle _hitRect
+  = new Rectangle(0, 0, GRIP_SIZE, GRIP_SIZE);
+
+  /** Reply the top Fig in the current layer that contains
+   *  the given point. This is used in determining what the user
+   *  clicked on, among other uses. */
+  public final Fig hit(Point p) {
+    _hitRect.move(p.x - GRIP_SIZE/2, p.y - GRIP_SIZE/2);
+    return hit(_hitRect);
+  }
+  public final Fig hit(int x, int y) {
+    _hitRect.move(x - GRIP_SIZE/2, y - GRIP_SIZE/2);
+    return hit(_hitRect);
+  }
+  public final Fig hit(int x, int y, int w, int h) {
+    return hit(new Rectangle(x, y, w, h));
+  }
+  public Fig hit(Rectangle r) { return getLayerManager().hit(r); }
+
+  /** Find the Fig under the mouse, and the node it represents, if any */
+  protected void setUnderMouse(MouseEvent me) {
+    Object node = null;
+    int x = me.getX(), y = me.getY();
+    Fig f = hit(x, y);
+    if (f != _curFig) {
+      if (_curFig instanceof MouseListener)
+	((MouseListener)_curFig).mouseExited(me);
+      if (f instanceof MouseListener)
+	((MouseListener)f).mouseEntered(me);
+    }
+    _curFig = f;
+  }
+
+  ////////////////////////////////////////////////////////////////
+  // document related methods
+
+  /** Get and set document being edited. There are no deep semantics
+   *  here yet, a "document" is up to you to define. */
+  public Object document() { return _document; }
+  public void document(Object d) { _document = d; }
+
+  ////////////////////////////////////////////////////////////////
+  // Guide and layout related commands
+
+  /** Modify the given point to be on the guideline (In this case, a
+   *  gridline). */
+  public void snap(Point p) { if (_guide != null) _guide.snap(p); }
+
+  public Guide getGuide() { return _guide; }
+  public void setGuide(Guide g) { _guide = g; }
+
   
   ////////////////////////////////////////////////////////////////
   // recording damage to the display for later repair
 
   /** Calling any one of the following damaged() methods adds a
-   *  damaged region (one or more rectangles) to this editors
-   *  RedrawManager.
-   *  <A HREF="../features.html#visual_updates">
-   *  <TT>FEATURE: visual_updates</TT></A>
-   *  <A HREF="../features.html#redraw_minimal">
-   *  <TT>FEATURE: redraw_minimal</TT></A>
-   */
+   *  damaged region (rectangle) to this Editor's RedrawManager.   */
   public void damaged(Rectangle r) { _redrawer.add(r); }
-
-  /** <A HREF="../features.html#visual_updates">
-   *  <TT>FEATURE: visual_updates</TT></A>
-   *  <A HREF="../features.html#redraw_minimal">
-   *  <TT>FEATURE: redraw_minimal</TT></A>
-   */
-
-  // //private Rectangle _damageBounds = new Rectangle(0, 0, 0, 0);
 
   public void damaged(Fig f) {
     if (_redrawer == null) _redrawer = new RedrawManager(this);
     // the line above should not be needed, but without it I get
     // NullPointerExceptions...
-    // // f.stuffBounds(_damageBounds);
     if (f != null) _redrawer.add(f);
   }
 
-  /** <A HREF="../features.html#visual_updates">
-   *  <TT>FEATURE: visual_updates</TT></A>
-   *  <A HREF="../features.html#redraw_minimal">
-   *  <TT>FEATURE: redraw_minimal</TT></A>
-   */
-
   public void damaged(Selection sel) {
-    if (sel != null) {
-      // //sel.stuffBounds(_damageBounds);
-      //Rectangle r = sel.getBounds();
-      _redrawer.add(sel);
-    }
+    if (sel != null) _redrawer.add(sel);
   }
 
   /** Mark the entire visible area of this Editor as
@@ -406,10 +357,7 @@ implements Serializable, MouseListener, MouseMotionListener, KeyListener {
    *  be useful for ActionRefresh if I get around to it. Also some
    *  Actions may perfer to do this instead of keeping track of all
    *  modified objects, but only in cases where most of the visible
-   *  area is expected to change anyway.
-   *  <A HREF="../features.html#visual_updates">
-   *  <TT>FEATURE: visual_updates</TT></A>
-   */
+   *  area is expected to change anyway. */
   public void damageAll() {
     if (_redrawer == null) _redrawer = new RedrawManager(this);
     Dimension size = getAwtComponent().size();
@@ -420,10 +368,7 @@ implements Serializable, MouseListener, MouseMotionListener, KeyListener {
    *  now. Generally, you should not call this method explicitly. It
    *  already gets called periodically from another thread of
    *  control. You should call it if you need a very tight user
-   *  interface feedback loop...
-   *  <A HREF="../features.html#visual_updates">
-   *  <TT>FEATURE: visual_updates</TT></A>
-   */
+   *  interface feedback loop... */
   public void repairDamage() { _redrawer.repairDamage(); }
 
   ////////////////////////////////////////////////////////////////
@@ -446,10 +391,7 @@ implements Serializable, MouseListener, MouseMotionListener, KeyListener {
   }
 
 
-  /** Reply the current selection objects of this editor.
-   *  <A HREF="../features.html#selections">
-   *  <TT>FEATURE: selections</TT></A>
-   */
+  /** Reply the current SelectionManager of this Editor. */
   public SelectionManager getSelectionManager() { return _selectionManager; }
 
 
@@ -457,42 +399,29 @@ implements Serializable, MouseListener, MouseMotionListener, KeyListener {
   // Frame and panel related methods
 
   public Component getAwtComponent() { return _awt_component; }
-  public void setAwtComponent(Component c) {
-    _awt_component = c;
-  }
+  public void setAwtComponent(Component c) { _awt_component = c; }
 
   public void setCursor(Cursor c) {
     if (getAwtComponent() != null) getAwtComponent().setCursor(c);
   }
-  
+
+  /** Get the graphics context object that this editor should draw on. */
   public Graphics getGraphics() {
     if (_awt_component == null) return null;
     return _awt_component.getGraphics();
-
-//     Graphics g = _awt_component.getGraphics();
-//     if ((g != null) && (_awt_component instanceof JComponent)) {
-// 	JComponent parent = (JComponent) _awt_component;
-// 	Rectangle bounds = parent.getBounds();
-// 	if (parent instanceof JViewport) {
-// 	  Point position = ((JViewport) parent).getViewPosition();
-// 	  g.clipRect(bounds.x + position.x, bounds.y + position.y ,
-// 		     bounds.width-1, bounds.height-1);
-// 	}
-// 	else {
-// 	  g.clipRect(bounds.x, bounds.y ,
-// 		     bounds.width-1, bounds.height-1);
-// 	}
-//       }
-//     return g;
   }
-    
+
+  /** Find the AWT Frame that this Editor is being displayed in. This
+   *  is needed to open a dialog box. */
   public Frame findFrame() {
     Component c = _awt_component;
     while (c != null && !(c instanceof Frame)) 
       c = c.getParent();
     return (Frame) c;
   }
-    
+
+  /** Create an Image (an off-screen bit-map) to be used to reduce
+   *  flicker in redrawing. */
   public Image createImage(int w, int h) {
     if (_awt_component == null) return null;
     try { if (_awt_component.getPeer() == null) _awt_component.addNotify(); }
@@ -503,6 +432,9 @@ implements Serializable, MouseListener, MouseMotionListener, KeyListener {
     return _awt_component.createImage(w, h);
   }
 
+  /** Get the backgrund color of the Editor.  Often, none of the
+   *  background will be visible because LayerGrid covers the entire
+   *  drawing area. */
   public Color getBackground() {
     if (_awt_component == null) return Color.lightGray;
     return _awt_component.getBackground();
@@ -512,26 +444,24 @@ implements Serializable, MouseListener, MouseMotionListener, KeyListener {
   ////////////////////////////////////////////////////////////////
   // event handlers
 
+  /** Remember to notify listener whenever the selection changes. */
   public void addGraphSelectionListener(GraphSelectionListener listener) {
     _selectionManager.addGraphSelectionListener(listener);
   }
 
+  /** Stop notifing listener of selection changes. */
   public void removeGraphSelectionListener(GraphSelectionListener listener) {
     _selectionManager.removeGraphSelectionListener(listener);
   }
   
 
 
-    
-
-
   ////////////////////////////////////////////////////////////////
-  // JDK 1.1 event handlers
+  // JDK 1.1 AWT event handlers
 
 
-  /**
-   * Invoked when the mouse has been clicked on a component.
-   */
+  /** Invoked after the mouse has been pressed and released.  All
+   *  events are passed on the SelectionManager and then ModeManager. */
   public void mouseClicked(MouseEvent me) { 
     RedrawManager.lock();
     Globals.curEditor(this);
@@ -542,9 +472,7 @@ implements Serializable, MouseListener, MouseMotionListener, KeyListener {
     _redrawer.repairDamage();
   }
 
-  /**
-   * Invoked when a mouse button has been pressed on a component.
-   */
+  /** Invoked when a mouse button has been pressed. */
   public void mousePressed(MouseEvent me) {
     RedrawManager.lock();
     Globals.curEditor(this);
@@ -555,9 +483,7 @@ implements Serializable, MouseListener, MouseMotionListener, KeyListener {
     _redrawer.repairDamage();    
   }
 
-  /**
-     * Invoked when a mouse button has been released on a component.
-     */
+  /** Invoked when a mouse button has been released. */
   public void mouseReleased(MouseEvent me) {
     RedrawManager.lock();
     Globals.curEditor(this);
@@ -568,9 +494,7 @@ implements Serializable, MouseListener, MouseMotionListener, KeyListener {
     _redrawer.repairDamage();    
   }
 
-  /**
-     * Invoked when the mouse enters a component.
-     */
+  /** Invoked when the mouse enters the Editor. */
   public void mouseEntered(MouseEvent me) {
     if (_awt_component != null) _awt_component.requestFocus();
     RedrawManager.lock();
@@ -582,34 +506,25 @@ implements Serializable, MouseListener, MouseMotionListener, KeyListener {
     _redrawer.repairDamage();
   }
 
-  /**
-     * Invoked when the mouse exits a component.
-     */
+  /** Invoked when the mouse exits the Editor. */
   public void mouseExited(MouseEvent me) {
     RedrawManager.lock();
-//     Globals.curEditor(this);
+    // Globals.curEditor(this);
     setUnderMouse(me);
     if (_curFig instanceof MouseListener)
       ((MouseListener)_curFig).mouseExited(me);
-//     _selectionManager.mouseExited(me);
-//     _modeManager.mouseExited(me);  
     RedrawManager.unlock();
     _redrawer.repairDamage();
   }
 
-  /**
-   * Invoked when a mouse button is pressed on a component and then 
-   * dragged.  Mouse drag events will continue to be delivered to
-   * the component where the first originated until the mouse button is
-   * released (regardless of whether the mouse position is within the
-   * bounds of the component).
-   */
+  /** Invoked when a mouse button is pressed in the Editor and then
+   *  dragged.  Mouse drag events will continue to be delivered to the
+   *  Editor where the first originated until the mouse button is
+   *  released (regardless of whether the mouse position is within the
+   *  bounds of the Editor).  BTW, this makes drag and drop editing
+   *  almost impossible.  */
   public void mouseDragged(MouseEvent me) {
     AWTEvent nextEvent = null;
-//     if (canPeekEvents) {
-//       nextEvent = _awt_component.getToolkit().getSystemEventQueue().peekEvent();
-//       if (nextEvent != null && nextEvent.getID() == me.getID()) return;
-//     }
     RedrawManager.lock();
     Globals.curEditor(this);
     setUnderMouse(me);
@@ -619,16 +534,9 @@ implements Serializable, MouseListener, MouseMotionListener, KeyListener {
     if (nextEvent == null) _redrawer.repairDamage();
   }
 
-  /**
-     * Invoked when the mouse button has been moved on a component
-     * (with no buttons no down).
-     */
+  /** Invoked when the mouse button has been moved (with no buttons no down). */
   public void mouseMoved(MouseEvent me) {
     AWTEvent nextEvent = null;
-//     if (canPeekEvents) {
-//       nextEvent = _awt_component.getToolkit().getSystemEventQueue().peekEvent();
-//       if (nextEvent != null && nextEvent.getID() == me.getID()) return;
-//     }
     RedrawManager.lock();
     Globals.curEditor(this);
     setUnderMouse(me);
@@ -639,10 +547,8 @@ implements Serializable, MouseListener, MouseMotionListener, KeyListener {
   }
   
 
-  /**
-   * Invoked when a key has been typed.
-   * This event occurs when a key press is followed by a key release.
-   */
+  /** Invoked when a key has been pressed and released. The KeyEvent
+   *  has its keyChar ivar set to something, keyCode ivar is junk. */
   public void keyTyped(KeyEvent ke) {
     RedrawManager.lock();
     Globals.curEditor(this);
@@ -652,9 +558,8 @@ implements Serializable, MouseListener, MouseMotionListener, KeyListener {
     _redrawer.repairDamage();    
   }
   
-  /**
-   * Invoked when a key has been pressed.
-     */
+  /** Invoked when a key has been pressed. The KeyEvent
+   *  has its keyCode ivar set to something, keyChar ivar is junk. */
   public void keyPressed(KeyEvent ke) {
     RedrawManager.lock();
     Globals.curEditor(this);
@@ -664,40 +569,21 @@ implements Serializable, MouseListener, MouseMotionListener, KeyListener {
     _redrawer.repairDamage();    
   }
   
-  /**
-   * Invoked when a key has been released.
-   */
-  public void keyReleased(KeyEvent ke) {
-//     RedrawManager.lock();
-//     Globals.curEditor(this);
-//     _selectionManager.keyReleased(ke);
-//     _modeManager.keyReleased(ke);  
-//     RedrawManager.unlock();
-  }
+  /** Invoked when a key has been released. This is not very useful,
+   *  so I ignore it. */
+  public void keyReleased(KeyEvent ke) { }
   
 
   
   ////////////////////////////////////////////////////////////////
-  // Action methods
+  // Command-related methods
 
-  /** The editor acts as a shell for Actions. This method executes the
-   *  given action in response to the given event (some Action's look
-   *  at the Event's that invoke them, even though this is
-   *  discouraged). The Editor executes the Action in a safe
+  /** The editor acts as a shell for Cmds.  This method executes the
+   *  given Cmd in response to the given event (some Cmds look
+   *  at the Event that invoke them, even though this is
+   *  discouraged). The Editor executes the Cmd in a safe
    *  environment so that buggy actions cannot crash the whole
-   *  Editor. <p>
-   *
-   *  Needs-more-work: Action debugging facilities are needed.
-   *  Needs-more-work: support for dynamic loading of actions... here?
-   *  <A HREF="../features.html#editing_actions">
-   *  <TT>FEATURE: editing_actions</TT></A>
-   *  <A HREF="../features.html#undo_and_redo">
-   *  <TT>FEATURE: undo_and_redo</TT></A>
-   *  <A HREF="../features.html#macros">
-   *  <TT>FEATURE: macros</TT></A>
-   *  <A HREF="../features.html#integrated_debugging_support">
-   *  <TT>FEATURE: integrated_debugging_support</TT></A>
-   * @see Action */
+   *  Editor.  */
   public void executeCmd(Cmd c, InputEvent ie) {
     if (c == null) return;
     try { c.doIt(); }
@@ -712,7 +598,8 @@ implements Serializable, MouseListener, MouseMotionListener, KeyListener {
   ////////////////////////////////////////////////////////////////
   // notifications and updates
 
-
+  /** The given Fig was removed from the diagram this Editor is
+   *  showing. Now update the display. */ 
   public void removed(Fig f) {
     _selectionManager.deselect(f);
     remove(f);

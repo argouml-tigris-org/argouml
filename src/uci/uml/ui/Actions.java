@@ -334,11 +334,26 @@ class ActionInterface extends UMLAction {
 } /* end class ActionInterface */
 
 class ActionAttr extends UMLAction {
+  // needs-more-work: should be part of java binding or common elements
+  public static DataType INT_TYPE = new DataType("int");
+
   public ActionAttr() { super("Attribute"); }
 
   public void actionPerformed(ActionEvent e) {
-    System.out.println("making Attribute...");
+    ProjectBrowser pb = ProjectBrowser.TheInstance;
+    Object target = pb.getTarget();
+    if (!(target instanceof Classifier)) return;
+    Classifier cls = (Classifier) target;
+    try {
+      Attribute attr = new Attribute("newAttr", INT_TYPE, "0");
+      attr.setVisibility(VisibilityKind.PUBLIC);
+      cls.addStructuralFeature(attr);
+    }
+    catch (PropertyVetoException pve) {
+      System.out.println("PropertyVetoException in ActionOper");
+    }
   }
+
   public boolean shouldBeEnabled() {
     ProjectBrowser pb = ProjectBrowser.TheInstance;
     Object target = pb.getTarget();
@@ -348,6 +363,9 @@ class ActionAttr extends UMLAction {
 } /* end class ActionAttr */
 
 class ActionOper extends UMLAction {
+  // needs-more-work: should be part of java binding or common elements
+  public static DataType VOID_TYPE = new DataType("void");
+  
   public ActionOper() { super("Operation"); }
 
   public void actionPerformed(ActionEvent e) {
@@ -355,9 +373,8 @@ class ActionOper extends UMLAction {
     Object target = pb.getTarget();
     if (!(target instanceof Classifier)) return;
     Classifier cls = (Classifier) target;
-    System.out.println("making Operation...");
     try {
-      Operation oper = new Operation("NewOperation");
+      Operation oper = new Operation(VOID_TYPE, "newOperation");
       oper.setVisibility(VisibilityKind.PUBLIC);
       cls.addBehavioralFeature(oper);
     }

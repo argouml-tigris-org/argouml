@@ -4,6 +4,8 @@ package uci.uml.Foundation.Core;
 
 //nmw: import uci.uml.Behavioral_Elements.Collaborations.AssociationRole;
 import java.util.*;
+import java.beans.*;
+
 import uci.uml.Foundation.Data_Types.*;
 import uci.uml.Foundation.Data_Types.Name;
 import uci.uml.Foundation.Extension_Mechanisms.*;
@@ -27,7 +29,7 @@ implements IAssociation {
   public void setConnection(Vector x) {
     _connection = x;
   }
-  public void addConnection(AssociationEnd x) {
+  public void addConnection(AssociationEnd x) throws PropertyVetoException {
     if (_connection == null) _connection = new Vector();
     _connection.addElement(x);
     x.setAssociation(this);

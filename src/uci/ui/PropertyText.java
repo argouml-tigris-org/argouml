@@ -31,38 +31,48 @@
 package uci.ui;
 
 import java.awt.*;
+import com.sun.java.swing.*;
 import java.awt.event.*;
 import java.beans.*;
 
-class PropertyText extends TextField implements KeyListener {
+class PropertyText extends JTextField implements KeyListener {
 
-    PropertyText(PropertyEditor pe) {
-	super(pe.getAsText());
-	editor = pe;
-	addKeyListener(this);
+  public PropertyText(PropertyEditor pe) {
+    super();
+    editor = pe;
+    String s = pe.getAsText();
+    if (s != null) setText(s);
+    addKeyListener(this);
+  }
+
+  public void repaint() {
+    super.repaint();
+  }
+  
+  public Dimension getMinimumSize() {
+    return new Dimension(80, 20);
+  }
+
+  public Dimension getPreferredSize() {
+    return new Dimension(80, 20);
+  }
+
+  //----------------------------------------------------------------------
+  // Keyboard listener methods.
+  
+  public void keyReleased(KeyEvent ke) {
+    //super.keyReleased(ke);
+    try {
+      editor.setAsText(getText());
+    } catch (IllegalArgumentException ex) {
+      // Quietly ignore.
     }
+  }
 
-    public void repaint() {
-	setText(editor.getAsText());
-    }
-
-    //----------------------------------------------------------------------
-    // Keyboard listener methods.
-
-    public void keyReleased(KeyEvent e) {
-        try {
-	    editor.setAsText(getText());
-	} catch (IllegalArgumentException ex) {
-	    // Quietly ignore.
-	}
-    }
-
-    public void keyPressed(KeyEvent e) {
-    }
-
-    public void keyTyped(KeyEvent e) {
-    }
-
-    //----------------------------------------------------------------------
-    private PropertyEditor editor;
+  public void keyPressed(KeyEvent ke) { } //super.keyPressed(ke); 
+  
+  public void keyTyped(KeyEvent ke) { } //super.keyTyped(ke); 
+  
+  //----------------------------------------------------------------------
+  private PropertyEditor editor;
 }

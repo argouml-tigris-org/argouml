@@ -35,7 +35,9 @@ package uci.gef.demo;
 import java.io.*;
 import uci.gef.*;
 
-/** A sample NetEdge subclass for use in the Example application. */
+/** A sample NetEdge subclass for use in the example application. This
+ *  represents a power cord that can go from the computer to the wall,
+ *  or from the printer to the wall. */
 
 public class EdgePower extends NetEdge implements Serializable {
 
@@ -43,18 +45,30 @@ public class EdgePower extends NetEdge implements Serializable {
   // instance variables
 
   /** Voltage currently on line. */
-  protected int _voltage;
+  protected int _voltage = 110;
 
   /** Maximum Voltage that this line can handle. */
-  protected int _maxVoltage;
+  protected int _maxVoltage = 560; // realistic?
 
   /** Some power cords have a third grounding prong, some don't. */
-  protected boolean _hasGroundProng;
+  protected boolean _hasGroundProng = true;
 
   ////////////////////////////////////////////////////////////////
   // constructor
 
   public EdgePower() { } /* needs-more-work */
+
+  ////////////////////////////////////////////////////////////////
+  // accessors
+
+  public void setVoltage(int v) { _voltage = v; }
+  public int getVoltage() { return _voltage; }
+
+  public void setMaxVoltage(int v) { _maxVoltage = v; }
+  public int getMaxVoltage() { return _maxVoltage; }
+
+  public void setHasGroundProng(boolean hgp) { _hasGroundProng = hgp; }
+  public boolean getHasGroundProng() { return _hasGroundProng; }
 
   ////////////////////////////////////////////////////////////////
   // NetEdge API

@@ -24,7 +24,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 // ENHANCEMENTS, OR MODIFICATIONS.
 
-
 // File: RedrawManager.java
 // Classes: RedrawManager
 // Original Author: jrobbins@ics.uci.edu
@@ -38,19 +37,19 @@ import java.util.*;
 
 
 /** Stores a list of rectangles (and sometimes merges them) for use in
- *  determing the invalid region of a Editor. When a Fig
- *  changes state, it notifies all Editor's that are viewing it, and
- *  the Editor adds bbox of that Fig to its
- *  RedrawManager. Eventually, the RedrawManager will ask the editor
- *  to repaint damaged regions. It is important that the redraw not
- *  happen too soon after the damage, because we would like to use a
- *  single repaint to repair multple damages to the same part of the
- *  screen.
- *  <A HREF="../features.html#visual_updates">
- *  <TT>FEATURE: visual_updates</TT></A>
- *  <A HREF="../features.html#redraw_minimal">
- *  <TT>FEATURE: redraw_minimal</TT></A>
- */
+ *  determing the invalid region of a Editor. When a Fig changes
+ *  state, it notifies its Layer which notifies all Editors that are
+ *  viewing it, and the Editor adds that Fig to its RedrawManager.
+ *  Eventually, the RedrawManager will ask the Editor to repaint
+ *  damaged regions.  It is important that the redraw not happen too
+ *  soon after the damage, because we would like to use a single
+ *  repaint to repair multple damages to the same part of the screen.
+ *  This is handled by keeping a timer and ignoring redraw requests
+ *  that come too soon after the last one.  Also it is important that
+ *  the redraw not happen while the Editor is processing an event that
+ *  could change the state of the Figs, because that can result in
+ *  screen-dirt. This is handled by the locking and unlocking the
+ *  RedrawManager. */
 
 public class RedrawManager implements Runnable {
 
@@ -267,10 +266,7 @@ public class RedrawManager implements Runnable {
   /** Ask the Editor to repaint damaged Rectangle's on an off screen
    *  Image, and then bitblt that Image to the Graphics used by the
    *  drawing window. This takes more time, but the user will never
-   *  see any flicker.
-   *  <A HREF="../features.html#redraw_off_screen">
-   *  <TT>FEATURE: redraw_off_screen</TT></A>
-   */
+   *  see any flicker. */
   private void paintOffscreen(Editor ed, Graphics g) {
     int F = 16; // fudgefactor, extra redraw area;
     Image offscreen;

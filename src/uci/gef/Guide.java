@@ -42,7 +42,6 @@ import java.awt.*;
  * @see GuideGrid */
 
 public abstract class Guide implements java.io.Serializable {
-  //implements GEF {
 
   ////////////////////////////////////////////////////////////////
   // geometric constraints

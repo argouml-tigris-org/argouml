@@ -35,17 +35,9 @@ package uci.gef;
 import java.util.*;
 import java.awt.*;
 
-/** Selection object for DiagramElement's that do not have handles. A
- *  colorded rectangular frame is drawn just outside the bounding box
- *  of the DiagramElement. The box has things that look like handles on
- *  its four corners so that it looks more like a selection and less
- *  like the NetNode highlighting.  However, these fake handles
- *  cannot be dragged to resize the DiagramElement.
- *  <A HREF="../features.html#selections_box">
- *  <TT>FEATURE: selections_box</TT></A>
- *
- * @see FigText
- * @see FigNode */
+/** Selection object that does not allow the user to do anything. This
+ *  might be useful for some special Figs. it is not used by the Figs
+ *  provided by GEF. */
 
 public class SelectionNoop extends Selection {
 
@@ -76,6 +68,7 @@ public class SelectionNoop extends Selection {
     /* do nothing */
   }
 
+  /** Returns -2 as a special code to indicate that the Fig cannot be moved. */
   public int hitHandle(Rectangle r) { return -2; }
 
 

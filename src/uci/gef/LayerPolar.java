@@ -98,6 +98,9 @@ public class LayerPolar extends Layer {
   public void bgColor(Color c) { _bgColor = c; }
   public Color bgColor() { return _bgColor; }
 
+  public Vector getContents() { return null; }
+  public Fig presentationFor(Object obj) { return null; }
+
   ////////////////////////////////////////////////////////////////
   // Painting methods
 

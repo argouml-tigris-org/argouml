@@ -29,11 +29,15 @@ package uci.graph;
 
 import java.beans.*;
 
+
+/** A set of methods that edges in a GraphModel may implement.  If the
+ *  objects you use to represent edges implement this interface, they
+ *  will get the appropriate calls. NetEdge implements these.
+ *
+ * @see uci.gef.NetEdge */
 public interface GraphEdgeHooks {
-  
   void addPropertyChangeListener(PropertyChangeListener l);
   void removePropertyChangeListener(PropertyChangeListener l);
   void setHighlight(boolean b);
   void dispose();
-  
 } /* end interface GraphEdgeHooks */

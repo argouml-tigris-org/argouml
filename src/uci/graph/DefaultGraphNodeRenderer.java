@@ -36,8 +36,10 @@ import uci.gef.FigNode;
 import uci.gef.Layer;
 
 /** An interface for FigNode factories. Similiar in concept to the
- *  Swing class TreeCellRenderer.
+ *  Swing class TreeCellRenderer.  This Default class asks the NetNode
+ *  to make its own FigNode.
  *
+ * @see uci.gef.NetNode#presentationFor 
  * @see uci.graph.demo.WordNodeRenderer */
 
 public class DefaultGraphNodeRenderer

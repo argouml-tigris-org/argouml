@@ -39,13 +39,11 @@ import java.io.*;
 import uci.gef.*;
 import uci.graph.*;
 
-/** An example subclass of NetPort for the Example application. As
- *  part of the example I constrain the ports to only be on
- *  SampleNode's and only connect to PortPower's. Needs-More-Work:
- *  There should be a way to constrain the type of NetEdge that is
- *  used...
+/** An example subclass of NetPort for the EquipmentApplet demo. As
+ *  part of the example I constrain the ports to only connect to
+ *  PortPowers.
  *
- * @see Example */
+ * @see EquipmentApplet */
 
 public class PortPower extends NetPort implements Serializable {
 
@@ -79,7 +77,7 @@ public class PortPower extends NetPort implements Serializable {
     catch (java.lang.ClassNotFoundException ignore) { return null; }
   }
 
-  /** Add the constraint that PortPower's can only be connected to
+  /** Add the constraint that PortPowers can only be connected to
    *  other ports of the same type. And SOCKETs can only be connected
    *  to RECEPTICALs. */
   public boolean canConnectTo(GraphModel gm, Object otherPort) {

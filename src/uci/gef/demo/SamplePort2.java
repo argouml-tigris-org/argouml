@@ -39,26 +39,22 @@ import java.io.*;
 import uci.gef.*;
 import uci.graph.*;
 
-/** An example subclass of NetPort for the Example application. As
- * part of the example I constrain the ports to only be on
- * SampleNode's and only connect to SamplePort2's. Needs-More-Work:
- * There should be a way to constrain the type of NetEdge that is
- * used...
+/** An example subclass of NetPort for the Example application. 
  *
- * @see Example */
+ * @see BasicApplication */
 
 public class SamplePort2 extends SamplePort implements Serializable {
 
    /** Construct a new SamplePort2 as a port of the given NetNode. This
     * example includes the constraint that SamplePort2's can only be
     * part of SampleNode's. */
-   SamplePort2(NetNode parent) {
-     super(parent);
-     if (!(parent instanceof SampleNode)) {
-       // throw an exception
-       System.out.println("SamplePort2s are only to be used on SampleNodes");
-     }
-   }
+  public SamplePort2(NetNode parent) {
+    super(parent);
+    if (!(parent instanceof SampleNode)) {
+      // throw an exception
+      System.out.println("SamplePort2s are only to be used on SampleNodes");
+    }
+  }
 
   protected Class defaultEdgeClass(NetPort otherPort) {
     try { return Class.forName("uci.gef.demo.SampleEdge2"); }

@@ -10,8 +10,8 @@ import uci.uml.Foundation.Core.*;
 // needs-more-work: nested classes: a class should be treated as a namespace
 
 
-public class NavAssociation extends NavPerspective {
-  public NavAssociation() { }
+public class NavM_DE_F extends NavPerspective {
+  public NavM_DE_F() { }
 
   public Object getChild(Object parent, int index) {
     //System.out.println("NavM_DE_F getChild");
@@ -103,4 +103,4 @@ public class NavAssociation extends NavPerspective {
   }
 
   
-} /* end class NavAssociation */
+} /* end class NavM_DE_F */

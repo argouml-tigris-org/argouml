@@ -65,6 +65,9 @@ public class ModePopup extends Mode {
   /** Always false because I never want to get out of popup mode. */
   public boolean canExit() { return false; }
 
+
+  public String instructions() { return " "; }
+
   ////////////////////////////////////////////////////////////////
   // event handlers
 

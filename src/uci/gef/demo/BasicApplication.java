@@ -54,7 +54,7 @@ public class BasicApplication {
 
   public BasicApplication() {
     _jgf = new JGraphFrame();
-    //_jgf.setToolBar(new SamplePalette()); //needs-more-work
+    _jgf.setToolBar(new SamplePalette()); //needs-more-work
 
     // make the delete key remove elements from the underlying GraphModel
     _jgf.getGraph().bindKey(new CmdDispose(), KeyEvent.VK_DELETE, 0);

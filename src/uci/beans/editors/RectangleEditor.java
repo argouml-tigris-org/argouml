@@ -33,6 +33,7 @@
 package uci.beans.editors;
 
 import java.awt.*;
+import com.sun.java.swing.*;
 import java.beans.*;
 
 /** A widget that allows the user to edit rectangles in the property
@@ -42,26 +43,26 @@ import java.beans.*;
  *  <TT>FEATURE: rectangle_editor</TT></A>
  */
 
-public class RectangleEditor extends Panel implements PropertyEditor {
+public class RectangleEditor extends JPanel implements PropertyEditor {
   ////////////////////////////////////////////////////////////////
   // instance variables
   protected Rectangle _rect = null;
   private java.util.Vector listeners;
 
-  protected TextField xField;
-  protected TextField yField;
-  protected TextField wField;
-  protected TextField hField;
+  protected JTextField xField;
+  protected JTextField yField;
+  protected JTextField wField;
+  protected JTextField hField;
 
   public RectangleEditor() { // //Rectangle r
     setLayout(new GridLayout(1, 4));
-    addNotify();
+    //addNotify();
     resize(insets().left + insets().right + 20,
 	   insets().top + insets().bottom + 20);
-    xField = new TextField("0", 4);
-    yField = new TextField("0", 4);
-    hField = new TextField("0", 4);
-    wField = new TextField("0", 4);
+    xField = new JTextField("0", 4);
+    yField = new JTextField("0", 4);
+    hField = new JTextField("0", 4);
+    wField = new JTextField("0", 4);
     add(xField);
     add(yField);
     add(hField);

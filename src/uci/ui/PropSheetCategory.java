@@ -66,6 +66,8 @@ public class PropSheetCategory extends PropSheet {
 
   protected PropertyDescriptor _properties[];
   protected JFrame _jframe;
+//   protected JScrollPane _scroller = new JScrollPane();
+//   protected JPanel _innerPanel = new JPanel();
 
 
   ////////////////////////////////////////////////////////////////
@@ -75,14 +77,16 @@ public class PropSheetCategory extends PropSheet {
     super();
     _jframe = f;
     setTabName("no key");
-    //{{INIT_CONTROLS
+    //setLayout(new BorderLayout());
+    //_innerPanel.setLayout(new PropsGridLayout(4, 4));
     setLayout(new PropsGridLayout(4, 4));
     //setLayout(new GridLayout(0, 2, 4, 4));
     //setLayout(new FlowLayout());
     //addNotify();
     resize(insets().left + insets().right + 250,insets().top + insets().bottom + 300);
     setFont(getPropertiesFont());
-    //}}
+//     _scroller.add(_innerPanel);
+//     add(_scroller, BorderLayout.CENTER);
     _keysComps = new Hashtable(20);
     _compsKeys = new Hashtable(20);
     _labels = new Hashtable(20);
@@ -96,6 +100,10 @@ public class PropSheetCategory extends PropSheet {
     String[] searchPath = { "uci.beans.editors", "sun.beans.editors" };
     // needs-more-work: doesn't seem to recognize my components!
     PropertyEditorManager.setEditorSearchPath(searchPath);
+    PropertyEditorManager.registerEditor(java.awt.Color.class,
+					 uci.beans.editors.ColorEditor.class);
+    PropertyEditorManager.registerEditor(java.awt.Rectangle.class,
+					 uci.beans.editors.RectangleEditor.class);
   }
 
   ////////////////////////////////////////////////////////////////
@@ -158,6 +166,8 @@ public class PropSheetCategory extends PropSheet {
     Component comp = (Component) _keysComps.get(pd);
     setComponentValue(pd, comp);
     if (_shown.containsKey(pd)) return;
+    //_innerPanel.add(lab);
+    //_innerPanel.add(comp);
     add(lab);
     add(comp);
     lab.setVisible(true);
@@ -171,6 +181,8 @@ public class PropSheetCategory extends PropSheet {
     Component comp = (Component) _keysComps.get(pd);
     lab.setVisible(false);
     comp.setVisible(false);
+    //_innerPanel.remove(lab);
+    //_innerPanel.remove(comp);
     remove(lab);
     remove(comp);
     _shown.remove(pd);
@@ -221,11 +233,12 @@ public class PropSheetCategory extends PropSheet {
       editor.addPropertyChangeListener(this);
       _editorsPds.put(editor, pd);
       _pdsEditors.put(pd, editor);
-      if (editor instanceof java.awt.Component) {
+
+      if (editor.isPaintable() && editor.supportsCustomEditor())
+	comp = new PropertyCanvas(_jframe, editor);
+      else if (editor instanceof java.awt.Component) {
 	comp = (java.awt.Component) editor;
       }
-      else if (editor.isPaintable() && editor.supportsCustomEditor())
-	comp = new PropertyCanvas(_jframe, editor);
       // if it has a small custom editor, embed it
       // if it has a custom editor but not paintable, use an "Edit" button
       else if (editor.getTags() != null)
@@ -266,6 +279,7 @@ public class PropSheetCategory extends PropSheet {
     if (value == null) { System.out.println("null value"); return;}
     // System.out.println("set component value");
 
+    if (comp == null) System.out.println("tag is null");
     
     
      if (comp instanceof PropertyEditor)
@@ -280,7 +294,8 @@ public class PropSheetCategory extends PropSheet {
 	 if (((Boolean)value).booleanValue()) tag = "True";
 	 else tag = "False";
        }
-       ((PropertySelector)comp).select(tag);
+       if (tag == null) System.out.println("tag is null");
+       ((PropertySelector)comp).setSelectedItem(tag);
 //        Vector items = (Vector) _enumProps.get(pd);
 //        if (items != null && items.contains(value))
 //  	((Choice)comp).select(items.indexOf(value));
@@ -303,7 +318,7 @@ public class PropSheetCategory extends PropSheet {
 	 editor.setValue(value);
 	 _ignorePropChanges = false;
        }
-       else System.out.println("xxx");
+       //else System.out.println("xxx");
      }
   }
 

@@ -42,24 +42,21 @@ import uci.graph.*;
 
 /** This class models a node in our underlying connected graph
  *  model. Nodes have ports that are their connection points to other
- *  nodes. Arcs from one port to another.
+ *  nodes. This class is used by DefaultGraphModel, if you implement
+ *  your own GraphModel, you can use your own application-specific
+ *  objects as nodes. Needs-more-work: this should probably move to
+ *  package uci.graph.
  *
  * @see NetEdge
- * @see NetPort
- */
+ * @see NetPort */
 
 public abstract class NetNode extends NetPrimitive
-implements MouseListener, GraphNodeHooks, java.io.Serializable  {
+implements GraphNodeHooks, java.io.Serializable  {
   ////////////////////////////////////////////////////////////////
   // instance variables
 
   /** An array of the ports on this node */
   protected Vector _ports;
-
-  /** Nodes may have a list of predefined FigNode's that give the
-   *  node different looks. Needs-More-Work: This code is not fully
-   *  operational right now. */
-  //protected Hashtable _presentations = new Hashtable();
 
   ////////////////////////////////////////////////////////////////
   // constructors and related methods
@@ -68,9 +65,7 @@ implements MouseListener, GraphNodeHooks, java.io.Serializable  {
    *  ports. The attributes of the default node will be used if they
    *  are not overridden in this node (i.e., nodes have attributes and
    *  there is a virual copy relationship between some nodes). */
-  public NetNode(NetNode deft, Vector ports) {
-    _ports = ports;
-  }
+  public NetNode(NetNode deft, Vector ports) { _ports = ports; }
 
   /** Construct a new NetNode with no default attributes and no ports. */
   public NetNode() { this(null, new Vector()); }
@@ -98,11 +93,6 @@ implements MouseListener, GraphNodeHooks, java.io.Serializable  {
   public void setPorts(Vector ports) { _ports = ports; }
   public void addPort(NetPort p) { _ports.addElement(p); }
 
-  /** returns the FigNodeList */
-  //public Hashtable getPresentations() { return _presentations; }
-
-  ////////////////////////////////////////////////////////////////
-  // Editor API
 
   /** Remove this node from the underling connected graph model. */
   public void dispose() {
@@ -127,7 +117,6 @@ implements MouseListener, GraphNodeHooks, java.io.Serializable  {
       if (fn != null) return fn;
     }
     fn = makePresentation(lay);
-    //_presentations.put(lay, fn);
     return fn;
   }
 
@@ -138,45 +127,6 @@ implements MouseListener, GraphNodeHooks, java.io.Serializable  {
    *  make up the FigNode. */
   public abstract FigNode makePresentation(Layer lay);
 
-  ////////////////////////////////////////////////////////////////
-  // event handlers
-
-  /** NetNode's can process events. If the Editor does not want to
-   *  process an Event and the Editor's current Mode does not want to
-   *  process it, then the Event is passed to the NetNode under the
-   *  mouse, if there is one. This allows nodes to react to user
-   *  input to do application specific actions. By default all of
-   *  these event handlers do nothing and return false. By
-   *  convention, event handlers in subclasses should call the
-   *  handler in their superclass if the choose not to handle an
-   *  event. */
-
-  /** This event handler is defined to call editNode when the user
-   *  clicks the right-hand mouse button on a FigNode. */
-  public void mouseReleased(MouseEvent me) {
-    if (me.isMetaDown()) {
-      Editor ce = Globals.curEditor();
-      CmdEditNode act = new CmdEditNode(this);
-      ce.executeCmd(act, null);
-      me.consume();
-      return;
-    }
-  }
-
-  public void mousePressed(MouseEvent me) { }
-  public void mouseClicked(MouseEvent me) { }
-  public void mouseEntered(MouseEvent me) { }
-  public void mouseExited(MouseEvent me) { }
-  
-
-  /** Edit this NetNode in some application specific way. Typically
-   *  open a dialog box to edit some attributes of the
-   *  node. Needs-More-Work: shuold provide a default attribute editor
-   *  for my system of node attributes. */
-  public void editNode() {
-    Globals.startPropertySheet();
-    Globals.curEditor().getSelectionManager().updatePropertySheet();
-  }
 
   ////////////////////////////////////////////////////////////////
   // net-level hooks
@@ -213,15 +163,6 @@ implements MouseListener, GraphNodeHooks, java.io.Serializable  {
   /** Do some application specific actions after the node is placed in
    *  a drawing area. */
   public void postPlacement(Editor ed) { }
-
-
-  ////////////////////////////////////////////////////////////////
-  // events
-
-  public void addPropertyChangeListener(PropertyChangeListener l) {
-  }
-  public void removePropertyChangeListener(PropertyChangeListener l) {
-  }
 
 
   

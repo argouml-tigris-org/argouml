@@ -34,7 +34,11 @@ package uci.graph;
 import java.util.*;
 
 /** This interface provides a facade to a net-level
- *  representation. Similiar in concept to the Swing class TreeModel.
+ *  representation. Similiar in concept to the Swing class
+ *  TreeModel.<p>
+ *
+ *  This interface goes beyond GraphModel in that it allows
+ *  modifications to the graph, instead of just access.
  *
  * @see DefaultGraphModel
  * @see AdjacencyMatrixGraphModel
@@ -47,16 +51,16 @@ public interface MutableGraphModel extends GraphModel {
   /** Return true if the given object is a valid edge in this graph */
   boolean canAddEdge(Object edge);
 
-  /** Remove the given node from the graph. */
+  /** Remove the given node from the graph. Sends a notification. */
   void removeNode(Object node);
 
-  /** Add the given node to the graph, if valid. */
+  /** Add the given node to the graph, if valid. Sends a notification. */
   void addNode(Object node);
 
-  /** Add the given edge to the graph, if valid. */
+  /** Add the given edge to the graph, if valid. Sends a notification. */
   void addEdge(Object edge);
 
-  /** Remove the given edge from the graph. */
+  /** Remove the given edge from the graph. Sends a notification. */
   void removeEdge(Object edge);
 
   /** Return true if the two given ports can be connected by a 
@@ -67,10 +71,11 @@ public interface MutableGraphModel extends GraphModel {
    * kind of edge. */
   boolean canConnect(Object fromP, Object toP, Class edgeClass);
 
-  /** Contruct and add a new edge of a kind determined by the ports */
+  /** Contruct and add a new edge of a kind determined by the
+   *  ports. Sends a notification.  */
   Object connect(Object fromPort, Object toPort);
 
-  /** Contruct and add a new edge of the given kind */
+  /** Contruct and add a new edge of the given kind. Sends a notification. */
   Object connect(Object fromPort, Object toPort, Class edgeClass);
 
 } /* end interface MutableGraphModel */

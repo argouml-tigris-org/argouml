@@ -23,15 +23,18 @@ public abstract class Feature extends ModelElementImpl {
   public Feature(String nameStr) { super(new Name(nameStr)); }
 
   public ScopeKind getOwnerScope() { return _ownerScope; }
-  public void setOwnerScope(ScopeKind x) {
+  public void setOwnerScope(ScopeKind x) throws PropertyVetoException {
+    fireVetoableChange("ownerScope", _ownerScope, x);
     _ownerScope = x;
   }
   public VisibilityKind getVisibility() { return _visibility; }
-  public void setVisibility(VisibilityKind x) {
+  public void setVisibility(VisibilityKind x) throws PropertyVetoException {
+    fireVetoableChange("visibility", _visibility, x);
     _visibility = x;
   }
   public Classifier getOwner() { return _owner; }
-  public void setOwner(Classifier x) {
+  public void setOwner(Classifier x) throws PropertyVetoException {
+    fireVetoableChange("owner", _visibility, x);
     _owner = x;
   }
 
@@ -42,6 +45,20 @@ public abstract class Feature extends ModelElementImpl {
   //  classifierRole = x;
   //}
 
+  ////////////////////////////////////////////////////////////////
+  // events
+  public void fireVetoableChange(String propertyName, 
+				 Object oldValue, Object newValue) 
+       throws PropertyVetoException {
+    super.fireVetoableChange(propertyName, oldValue, newValue);
+    if (_owner != null) {
+       _owner.fireVetoableChange("feature_"+propertyName,
+				 oldValue, newValue);
+    }
+  }
+
+
+  
   ////////////////////////////////////////////////////////////////
   // debugging
   

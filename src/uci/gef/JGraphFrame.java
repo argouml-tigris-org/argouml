@@ -39,15 +39,22 @@ import uci.ui.*;
 import uci.graph.*;
 import uci.gef.event.*;
 
+/** A window that displays a toolbar, a connected graph editing pane,
+ *  and a status bar. */
 
 public class JGraphFrame extends JFrame
 implements IStatusBar, Cloneable {
 
   ////////////////////////////////////////////////////////////////
   // instance variables
-  protected JGraph _graph;
-  protected JLabel _statusbar = new JLabel("status bar");
+
+  /** The toolbar (shown at top of window). */
   protected ToolBar _toolbar = new PaletteFig();
+  /** The graph pane (shown in middle of window). */
+  protected JGraph _graph;
+  /** A statusbar (shown at bottom ow window). */
+  protected JLabel _statusbar = new JLabel(" ");
+  
   protected JPanel _mainPanel = new JPanel(new BorderLayout());
   protected JPanel _graphPanel = new JPanel(new BorderLayout());
   protected JMenuBar _menubar = new JMenuBar();
@@ -55,11 +62,19 @@ implements IStatusBar, Cloneable {
   ////////////////////////////////////////////////////////////////
   // constructor
 
+  /** Contruct a new JGraphFrame with the title "untitled" and a new
+   *  DefaultGraphModel. */
   public JGraphFrame() { this("untitled"); }
+
+  /** Contruct a new JGraphFrame with the title "untitled" and the
+   *  given GraphModel. */
   public JGraphFrame(GraphModel gm) {
     this("untitled");
     setGraphModel(gm);
   }
+  
+  /** Contruct a new JGraphFrame with the given title and a new
+   *  DefaultGraphModel. */
   public JGraphFrame(String title) {
     this(title, new JGraph());
   }
@@ -68,6 +83,8 @@ implements IStatusBar, Cloneable {
     this(title, new JGraph(ed));
   }
   
+  /** Contruct a new JGraphFrame with the given title and given
+   *  JGraph. All JGraphFrame contructors call this one. */
   public JGraphFrame(String title, JGraph jg) {
     super(title);
     _graph = jg;
@@ -85,6 +102,8 @@ implements IStatusBar, Cloneable {
     resize(300, 250);
   }
 
+  /** Set up the menus and keystrokes for menu items. Subclasses can
+   *  override this, or you can use setMenuBar(). */
   protected void setUpMenus() {
     JMenuItem openItem, saveItem, printItem, prefsItem, exitItem;
     JMenuItem selectAllItem;
@@ -134,13 +153,12 @@ implements IStatusBar, Cloneable {
     edit.add(new CmdUseResize());
     edit.add(new CmdUseRotate());
     edit.addSeparator();
-    edit.add(new CmdEditNode());
 
     JMenu view = new JMenu("View");
     _menubar.add(view);
     view.setMnemonic('V');
     view.add(new CmdSpawn());
-    //view.add(new CmdShowProperties());
+    view.add(new CmdShowProperties());
     //view.addSeparator();
     //view.add(new CmdZoomIn());
     //view.add(new CmdZoomOut());
@@ -227,17 +245,6 @@ implements IStatusBar, Cloneable {
     toFrontItem.setAccelerator(sCtrlF);
     backwardItem.setAccelerator(ctrlB);
     forwardItem.setAccelerator(ctrlF);
-    
-//     nudgeLeftItem.setAccelerator(leftArrow);
-//     nudgeRightItem.setAccelerator(rightArrow);
-//     nudgeUpItem.setAccelerator(upArrow);
-//     nudgeDownItem.setAccelerator(downArrow);
-
-//     //big nudge keystrokes
-
-    //scroll keystrokes?
-
-    
 
   }
 
@@ -269,6 +276,12 @@ implements IStatusBar, Cloneable {
   }
   public ToolBar getToolBar() { return _toolbar; }
 
+  public void setJMenuBar(JMenuBar mb) {
+    _menubar = mb;
+    getContentPane().add(_menubar, BorderLayout.NORTH);    
+  }
+  public JMenuBar getJMenuBar() { return _menubar; }
+
   
   ////////////////////////////////////////////////////////////////
   // display related methods
@@ -285,6 +298,7 @@ implements IStatusBar, Cloneable {
   ////////////////////////////////////////////////////////////////
   // IStatusListener implementation
 
+  /** Show a message in the statusbar. */
   public void showStatus(String msg) {
     if (_statusbar != null) _statusbar.setText(msg);
   }

@@ -34,11 +34,7 @@ package uci.gef.demo;
 
 import uci.gef.*;
 
-/** A sample NetEdge subclass for use in the Example application. There
- * are no real details here yet. If I was to expand this Example more
- * the Edge could have its own attributes, e.g. bandwidth... and it
- * could have its own subclasses of FigEdge to make it look a
- * certain way. */
+/** A sample NetEdge subclass for use in the Example application. */
 
 public class SampleEdge2 extends NetEdge {
   /** Construct a new SampleEdge2. */

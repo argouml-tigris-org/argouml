@@ -153,7 +153,7 @@ implements java.io.Serializable  {
   public void setOnMenu(boolean b) { _onMenu = b; }
   public boolean getOnMenu() { return _onMenu; }
 
-  public Vector getContents() { return null; }
+  public abstract Vector getContents();
 
   /** Return the Vector of Editors that are showing this Layer. */
   public Vector getEditors() { return _editors; }
@@ -177,7 +177,7 @@ implements java.io.Serializable  {
   /** Given an object from the net-level model (e.g., NetNode or
    * NetPort), reply the graphical depiction of that object in this
    * layer, if there is one. Otherwise reply null. */
-  public Fig presentationFor(Object obj) { return null; }
+  public abstract Fig presentationFor(Object obj);
 
   /** Return a string that can be used to make some Layers show nodes
    * in one way and other Layers show the same nodes in a different

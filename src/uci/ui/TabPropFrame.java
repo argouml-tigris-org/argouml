@@ -49,8 +49,6 @@ import com.sun.java.swing.event.*;
  *  take advantage of beans. Needs-More-Work: I would like to handle
  *  multple selections by showing values that all selected objects have in
  *  common and applying changes to all selected objects.
- *  <A HREF="../features.html#property_sheet">
- *  <TT>FEATURE: property_sheet</TT></A>
  */
 
 public class TabPropFrame extends JFrame
@@ -101,7 +99,7 @@ implements ChangeListener, ActionListener {
     //{{INIT_CONTROLS
     getContentPane().setLayout(new BorderLayout(0,0));
     addNotify();
-    resize(insets().left + insets().right + 350,insets().top + insets().bottom + 406);
+    resize(insets().left + insets().right + 250,insets().top + insets().bottom + 406);
     getContentPane().setFont(new Font("Dialog", Font.PLAIN, 10));
     getContentPane().setBackground(new Color(12632256));
     tabPanel = new JTabbedPane();
@@ -150,7 +148,8 @@ implements ChangeListener, ActionListener {
     closeButton = new JButton("Close");
     closeButton.reshape(194,5,40,21);
     closeButton.addActionListener(this);
-    buttonPanel.add(closeButton);
+    //buttonPanel.add(closeButton);
+    
     // //universeChoice = new java.awt.Choice();
     // // universeChoice.reshape(insets().left + 0,insets().top + 0,300,21);
     //sheetChoice = new java.awt.Choice();
@@ -365,7 +364,7 @@ implements ChangeListener, ActionListener {
 // //   }
 
   public void updateTabs() {
-    System.out.println("updateTabs");
+    //System.out.println("updateTabs");
     try {
     int firstEnabled = -1;
     int numTabs = tabPanel.getTabCount();
@@ -393,11 +392,9 @@ implements ChangeListener, ActionListener {
     return false;
   }
     
-/** <A HREF="../bugs.html#win_prop_sheet_grabs_focus">
- *  <FONT COLOR=660000><B>BUG: win_prop_sheet_grabs_focus</B></FONT></A>
- */
+
   public void updateCurSheet() {
-    System.out.println("updateCurSheet");
+    //System.out.println("updateCurSheet");
     int curTab = tabPanel.getSelectedIndex();
     Component c = tabPanel.getSelectedComponent();
     //int curTab = sheetChoice.getSelectedIndex();
@@ -406,10 +403,10 @@ implements ChangeListener, ActionListener {
     if (c instanceof PropSheet) {
       PropSheet curPropSheet = (PropSheet) c;
       curPropSheet.setSelection(_selection);
-      System.out.println("updateCurSheet1: " + curPropSheet);
+      //System.out.println("updateCurSheet1: " + curPropSheet);
       if (_lastPropSheet != curPropSheet) {
-	System.out.println("updateCurSheet2");
-	uci.beans.editors.ColorPickerGrid.stopEditing();
+	//System.out.println("updateCurSheet2");
+	//uci.beans.editors.ColorPickerGrid.stopEditing();
 	if (_lastPropSheet != null) _lastPropSheet.setSelection(null);
       }
       _lastTab = curTab;

@@ -80,27 +80,11 @@ implements PropertyChangeListener {
   ////////////////////////////////////////////////////////////////
   // accessors
 
-// //   public void addPropertyDescriptor(PropertyDescriptor pd, Class c) {
-// //     Hashtable classDesc = (Hashtable) _propertyDescriptors.get(c);
-// //     if (classDesc == null) classDesc = new Hashtable();
-// //     classDesc.put(pd.getName(), pd);
-// //     _propertyDescriptors.put(c, classDesc);
-// //   }
-
-// //   public PropertyDescriptor findPD(String name, Class c) {
-// //     Hashtable classDesc = (Hashtable) _propertyDescriptors.get(c);
-// //     if (classDesc == null) return null;
-// //     if (name == null) { System.out.println("Asdasd"); return null; }
-// //     return (PropertyDescriptor) classDesc.get(name);
-// //   }
 
   public void setSelection(Object s) {
-    System.out.println("setting selection in PropSheet to " + s);
     if (_sel == s) return;
-    //if (_sel instanceof Observable) ((Observable)_sel).deleteObserver(this);
     if (_sel instanceof Fig) ((Fig)_sel).removePropertyChangeListener(this);
     _sel = s;
-    //if (_sel instanceof Observable) ((Observable)_sel).addObserver(this);
     if (_sel instanceof Fig) ((Fig)_sel).addPropertyChangeListener(this);
     updateComponents();
   }
@@ -211,7 +195,6 @@ implements PropertyChangeListener {
 //   }
 
   public void propertyChange(PropertyChangeEvent e) {
-    System.out.println("propertyChange:" + _ignorePropChanges);
     if (_ignorePropChanges) return; //HACK!
     // special case for bounding box, because too many updates make dragging
     // choppy
@@ -221,7 +204,6 @@ implements PropertyChangeListener {
       long now = System.currentTimeMillis();
       //if ("bounds".equals(pName) && _lastUpdateTime + MIN_UPDATE > now)
       if (_lastUpdateTime + MIN_UPDATE > now) {
-	System.out.println("too soon");
 	return;
       }
       updateComponents(); //needs-more-work: narrow to sender?
@@ -232,7 +214,6 @@ implements PropertyChangeListener {
       PropertyDescriptor pd = (PropertyDescriptor) _editorsPds.get(src);
       if (pd != null) store(pd, ((PropertyEditor)src).getValue());
     }
-    System.out.println("end propertyChange");
   }
 
 } /* end class PropSheet */

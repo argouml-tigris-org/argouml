@@ -36,13 +36,13 @@ import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.util.*;
 
-/** A Selection class to represent selections on Fig's that
- *  present handles. Needs-More-Work: in an early version of this graph
- *  editing framework the Fig's did their own painting of
- *  handles. I want to get away from that, but it has not happened
- *  yet.
- *  <A HREF="../features.html#selections_handles">
- *  <TT>FEATURE: selections_handles</TT></A>
+/** A Selection that allows the user to reshape the selected Fig.
+ *  This is used with FigPoly, FigLine, and FigInk.  One handle is
+ *  drawn over each point on the Fig.
+ *
+ * @see FigLine
+ * @see FigPoly
+ * @see FigInk
  */
 
 public class SelectionReshape extends Selection {

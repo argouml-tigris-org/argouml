@@ -37,26 +37,11 @@ import java.io.*;
 import java.util.*;
 import uci.gef.*;
 
-/** An example subclass of NetNode for use in the Example application.
+/** An example subclass of NetNode for use in the demos.
  *
- * @see Example */
+ * @see BasicApplication */
 
 public class SampleNode2 extends SampleNode implements Serializable {
-
-   /** Initialize a new SampleNode2 from the given default node and
-    *  application specific model. <p>
-    *
-    *  Needs-More-Work: for now we construct the FigNode
-    *  programatically, but eventually we will store it in a class
-    *  variable and just refer to it, or copy it(?). That way the user
-    *  can edit the FigNode(s) stored in the class variable and
-    *  have those changes shown for all existing nodes, or for all
-    *  future nodes. Maybe I should think about doing virtual
-    *  copies?<p> */
-
-  public void initialize(Hashtable args) {
-    super.initialize(args);
-   }
 
   public FigNode makePresentation(Layer lay) {
     Fig obj1 = new FigRect(-25, -25, 50, 50, Color.black, Color.white);

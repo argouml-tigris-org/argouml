@@ -62,12 +62,14 @@ public class Globals {
   protected static TabPropFrame _tabPropFrame;
 
   /** String to display when nothing important is being displayed.  By
-   * default the string " " is used. Some applications may want to
-   * change this to "Ready." It should not be set to "", because that
-   * can mess up window layouts, causing the status line to
-   * disappear. */
+   *  default the string " " is used. Some applications may want to
+   *  change this to "Ready." It should not be set to "", because that
+   *  can mess up window layouts, causing the status line to
+   *  disappear. */
   public static String defaultStatus = "  ";
 
+  /** If we are running as an applet, Store the Applet and
+   *  AppletContext in a well known place. */
   public static void setApplet(Applet a) {
     _applet = a;
     _appletContext = a.getAppletContext();
@@ -78,10 +80,13 @@ public class Globals {
   public static AppletContext getAppletContext() { return _appletContext; }
   public static Applet getApplet() { return _applet; }
 
+  /** The place where status messages will be written. */
   public static IStatusBar _StatusBar = null;
+
+  /** Sets the place where status messages will be written. */
   public static void setStatusBar(IStatusBar sb) { _StatusBar = sb; }
 
-  /** Show a string on the browser's status bar, or print a message
+  /** Show a string on the some status bar, or print a message
    * on the console.  */
   public static void showStatus(String s) {
     if (_StatusBar != null) _StatusBar.showStatus(s);
@@ -89,30 +94,29 @@ public class Globals {
     //else System.out.println(s);
   }
 
+  /** Sets the status to its default (blank) string. */
   public static void clearStatus() { showStatus(defaultStatus); }
 
-  /**  <A HREF="../features.html#show_document">
-   *  <TT>FEATURE: show_document</TT></A>
-   */
+  /** If we are running as an applet, ask the browser to display the
+   *  given URL. */
   public static void showDocument(URL url) {
     if (_appletContext != null) _appletContext.showDocument(url);
   }
 
-  /**  <A HREF="../features.html#show_document">
-   *  <TT>FEATURE: show_document</TT></A>
-   */
+  /** If we are running as an applet, ask the browser to display the
+   *  given URL. */
   public static void showDocument(URL url, String target) {
     if (_appletContext != null) _appletContext.showDocument(url, target);
   }
 
-  /**  <A HREF="../features.html#show_document">
-   *  <TT>FEATURE: show_document</TT></A>
-   */
+  /** If we are running as an applet, ask the browser to display the
+   *  given URL. */
   public static void showDocument(String urlString) {
     try { showDocument(new URL(urlString)); }
     catch (MalformedURLException ignore) { }
   }
 
+  /** Get an image from the given URL (usually a gif file). */
   public static Image getImage(URL url) {
     Image img = null;
     if (_appletContext != null) img = _appletContext.getImage(url);
@@ -120,6 +124,7 @@ public class Globals {
     return img;
   }
 
+  /** Get an image from the given URL (usually a gif file). */
   public static Image getImage(String urlStr) {
     try {
       Image img = null;
@@ -130,12 +135,15 @@ public class Globals {
     catch (java.net.MalformedURLException e) { return null; }
   }
 
+  /** Wait for all images to download. */
   public static void waitForImages() {
     if (_tracker == null) return;
     try { _tracker.waitForAll(); }
     catch (InterruptedException e) { }
   }
 
+  /** Try to exit the applet or application.  Needs-more-work: in the
+   *  case of an applet, not all windows are closed. */
   public static void quit() {
     showStatus("Quiting"); // Needs-More-Work: put up "are you sure?" dialog
     if (_appletContext != null) _applet.destroy();
@@ -155,16 +163,13 @@ public class Globals {
   ////////////////////////////////////////////////////////////////
   // properties sheet
 
-  /** <A HREF="../features.html#property_sheet">
-   *  <TT>FEATURE: property_sheet</TT></A>
-   */
+  /** There is one global property sheet that shows details of the
+   *  selected Fig. */
   public static void setPropertySheet(TabPropFrame tpf) {
     _tabPropFrame = tpf;
   }
 
-  /** <A HREF="../features.html#property_sheet">
-   *  <TT>FEATURE: property_sheet</TT></A>
-   */
+  /** Open the property sheet. */
   public static void startPropertySheet() {
     if (_tabPropFrame == null) _tabPropFrame = new TabPropFrame();
     if (_tabPropFrame.isVisible()) _tabPropFrame.toFront();
@@ -175,18 +180,20 @@ public class Globals {
       propertySheetSubject((Fig)selectedFigs.elementAt(0));
   }
 
-  /** <A HREF="../features.html#property_sheet">
-   *  <TT>FEATURE: property_sheet</TT></A>
-   */
+  /** Tell the property sheet to display details of the given Fig. */
   public static void propertySheetSubject(Fig f) {
     if (_tabPropFrame != null) _tabPropFrame.select(f);
   }
 
-  static {
-    if (_tabPropFrame == null) _tabPropFrame = new TabPropFrame();
-    //_tabPropFrame.show();
-  }
+   /** Static initialization: set up the prop sheet. */
+   static {
+     if (_tabPropFrame == null) _tabPropFrame = new TabPropFrame();
+     //_tabPropFrame.show();
+   }
 
+  /** Return an exisiting instance of class Frame.  This is needed to
+   *  create off-screen bit-maps. Needs-more-work: I think Swing keeps
+   *  its own. */
   public static Frame someFrame() { return _tabPropFrame; }
 
   ////////////////////////////////////////////////////////////////
@@ -220,11 +227,9 @@ public class Globals {
   }
 
   /** Determine the next global mode. This is called when a mode
-   *  finishes whatever it was meant to accomplish. For now, a sticky
-   *  mode stays the next global mode, all other modes are "popped" off
-   *  a single element stack and the defaultMode becomes the next
-   *  global mode. In the future it may be useful to have a true stack
-   *  of pending modes, I don't know.
+   *  finishes whatever it was meant to accomplish. If the sticky flag
+   *  is set, the current mode stays the next global mode. Otherwise
+   *  the defaultMode becomes the next global mode.
    *
    * @see Mode#done */
   public static Mode nextMode() {
@@ -248,16 +253,30 @@ public class Globals {
   ////////////////////////////////////////////////////////////////
   // a light-weight data-structure for tracking PropertyChangeListeners
 
+  /** A global dictionary of PropertyChangeListeners for Figs.  Most
+   *  Figs will not have any listeners at any given moment, so I did
+   *  not want to allocate an instance variable to hold
+   *  listeners. Instead I use this global Hashtable with Figs ans
+   *  keys and arrays of up to 4 listeners as values. <p>
+   *
+   *  Note: It is important that all listeners eventually remove
+   *  themselves by calling removePropertyChangeListener.  Otherwise
+   *  this table will keep pointers that can reduce grabage
+   *  collection. */
+   
   protected static Hashtable _pcListeners = new Hashtable();
 
+  /** The most listeners a Fig can have, 4. */
   public static int MAX_LISTENERS = 4;
 
+  /** Add a listener to a Fig.  Now the listener will get
+   *  notifications of all property change events from that Fig. */
   public static void
   addPropertyChangeListener(Object src, PropertyChangeListener l) {
     PropertyChangeListener listeners[] =
       (PropertyChangeListener[]) _pcListeners.get(src);
     if (listeners == null) {
-      listeners = new PropertyChangeListener[4];
+      listeners = new PropertyChangeListener[MAX_LISTENERS];
       _pcListeners.put(src, listeners);
     }
     for (int i=0; i < MAX_LISTENERS; ++i)
@@ -275,16 +294,19 @@ public class Globals {
     System.out.println("listener not found!");
   }
 
+  /** Send a property change event to listeners of the src Fig. */
   public static void firePropChange(Object src, String propName,
 			     boolean oldV, boolean newV) {
     firePropChange(src, propName, new Boolean(oldV), new Boolean(newV));
   }
 
+  /** Send a property change event to listeners of the src Fig. */
   public static void firePropChange(Object src, String propName,
 			     int oldV, int newV) {
     firePropChange(src, propName, new Integer(oldV), new Integer(newV));
   }
 
+  /** Send a property change event to listeners of the src Fig. */
   public static void firePropChange(Object src, String propName,
 			     Object oldValue, Object newValue) {
     if (oldValue != null && oldValue.equals(newValue)) return;

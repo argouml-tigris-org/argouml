@@ -45,10 +45,13 @@ import uci.gef.event.*;
 /** This class handles Manager selections. It is basically a
  *  collection of Selection instances. Most of its operations
  *  just dispatch the same operation to each of the Selection
- *  instances in turn.
+ *  instances in turn.<p>
  *
- * @see Selection
- */
+ *  The SelectionManager is also responsible for sending out
+ *  GraphSelectionEvents to any GraphSelectionListeners that are
+ *  registered.
+ *
+ * @see Selection */
 
 public class SelectionManager extends Observable
 implements Serializable, KeyListener, MouseListener, MouseMotionListener {
@@ -320,8 +323,6 @@ implements Serializable, KeyListener, MouseListener, MouseMotionListener {
   
   /** When an event is passed to a multiple selection, try to pass it
    * off to the first selection that will handle it. */
-  /* needs-more-work: maybe it should pass it to _all_ selections that
-     will handle it */
   public void keyTyped(KeyEvent ke) {
     Enumeration sels = ((Vector)_selections.clone()).elements();
     while (sels.hasMoreElements() && !ke.isConsumed())
@@ -421,15 +422,7 @@ implements Serializable, KeyListener, MouseListener, MouseMotionListener {
   protected static Hashtable _SelectionRegistry = new Hashtable();
 
   public static Selection makeSelectionFor(Fig f) {
-//     Class sc = (Class) _SelectionRegistry.get(f.classClass());
-//     if (sc.isAssignableFrom(Selection.class)) {
-//       Selection s = (Selection) sc.newInstance();
-//       s.setContent(f);
-//       return s;
-//     }
-    // needs-more-work: how do I choose if a fig can do multiple of
-    // the following?
-    //if (f.isRotatable()) return new SelectionResize(f);
+    //if (f.isRotatable()) return new SelectionRotate(f);
     if (f.isReshapable()) return new SelectionReshape(f);
     else if (f.isResizable()) return new SelectionResize(f);
     else if (f.isMovable()) return new SelectionMove(f);

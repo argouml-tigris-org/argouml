@@ -27,7 +27,7 @@
 
 // File: ArrowHead.java
 // Classes: ArrowHead
-// Original Author: Adam Bonner
+// Original Author: abonner@ics.uci.edu
 // $Id$
 
 package uci.gef;
@@ -37,50 +37,48 @@ import java.awt.*;
 import java.io.*;
 import java.util.*;
 
-public abstract class ArrowHead
-{
-	protected final int			arrow_width = 7, arrow_height = 12;
-	protected Color arrowLineColor = Color.black;
-	protected Color arrowFillColor = Color.black;
 
-	public Color getLineColor()
-	{
-		return arrowLineColor;
-	}
+/** Abstract class to draw arrow heads on the ends of FigEdges. */
 
-	public void setLineColor(Color newColor)
-	{
-		arrowLineColor = newColor;
-	}
-
-	public Color getFillColor()
-	{
-		return arrowFillColor;
-	}
-
-	public void setFillColor(Color newColor)
-	{
-		arrowFillColor = newColor;
-	}
-
-	public void paint(Graphics g, Point start, Point end) {
-		// put painting here
-	}
-
+public abstract class ArrowHead {
+  protected final int arrow_width = 7, arrow_height = 12;
+  protected Color arrowLineColor = Color.black;
+  protected Color arrowFillColor = Color.black;
+  
+  public Color getLineColor() {
+    return arrowLineColor;
+  }
+  
+  public void setLineColor(Color newColor) {
+    arrowLineColor = newColor;
+  }
+  
+  public Color getFillColor() {
+    return arrowFillColor;
+  }
+  
+  public void setFillColor(Color newColor) {
+    arrowFillColor = newColor;
+  }
+  
+  public abstract void paint(Graphics g, Point start, Point end);
+  
   /** return the approximate arc length of the path in pixel units */
-  int getLineLength(Point one, Point two) {
+  public int getLineLength(Point one, Point two) {
     int dxdx = (two.x - one.x) * (two.x - one.x);
     int dydy = (two.y - one.y) * (two.y - one.y);
     //System.out.println("    ! pall dx, dy = " + dxdx + " , " + dydy);
     return (int) Math.sqrt(dxdx + dydy);
   }
-
+  
   /** return a point that is dist pixels along the path */
-  Point pointAlongLine(Point one, Point two, int dist) {
+  public Point pointAlongLine(Point one, Point two, int dist) {
     int len = getLineLength(one, two);
     int p = dist;
+    if (len == 0) return one;
     //System.out.println("    ! pall dist, len = " + dist + " , " + len);
-    return new Point(one.x + ((two.x - one.x) * p) / len, one.y + ((two.y - one.y) * p) / len);
+    return new Point(one.x + ((two.x - one.x) * p) / len,
+		     one.y + ((two.y - one.y) * p) / len);
   }
-
+  
 }

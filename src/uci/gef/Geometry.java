@@ -35,12 +35,15 @@ package uci.gef;
 import java.lang.Math;
 import java.awt.*;
 
-/** A library of functions that do geometric opeations.
- *  Needs-More-Work: many of these are not done yet or not used
- *  yet. */
+/** A library of functions that do geometric opeations.  These are all
+ *  static methods, so you never need to make an instance of this
+ *  class.  Needs-More-Work: many of these are not done yet or not
+ *  used yet. */
 
 public class Geometry {
 
+  /** Given a Rectangle and a point, set res to be the point on or in
+   *  the Rectangle that is closest to the given point. */
   public static void ptClosestTo(Rectangle r, Point p, Point res) {
     int x1 = Math.min(r.x, r.x + r.width);
     int y1 = Math.min(r.y, r.y + r.height);
@@ -63,12 +66,15 @@ public class Geometry {
     }
   }
 
+  /** Given a Rectangle and a point, return a new Point on or in the
+   *  Rectangle that is closest to the given Point. */
   public static Point ptClosestTo(Rectangle r, Point p) {
     Point res = new Point(0,0);
     ptClosestTo(r, p, res);
     return res;
   }
 
+  /** Return the angle of the given line segment. */
   public static double segmentAngle(Point p1, Point p2) {
     if (p2.x == p1.x && p2.y <= p1.y) return 90;
     if (p2.x == p1.x && p2.y > p1.y) return 270;
@@ -80,6 +86,9 @@ public class Geometry {
     if (dx > 0) return a; else return -a;
   }
 
+  /** Given the coordinates of the endpoints of a line segment, and a
+   *  point, set res to be the closest point on the segement to the
+   *  given point. */
   public static void ptClosestTo(int x1, int y1, int x2, int y2,
 				 Point p, Point res) {
     // segment is a point
@@ -94,6 +103,8 @@ public class Geometry {
     res.y = (dx * (p.x - res.x)) / dy + p.y;
   }
 
+  /** Given three ints, return the one with the middle value. I.e., it
+   *  is not the single largest or the single smallest. */
   public static int mid(int a, int b, int c) {
     if (a <= b) {
       if (b <= c) return b;
@@ -107,18 +118,27 @@ public class Geometry {
     }
   }
 
+  /** Given the coordinates of the endpoints of a line segment, and a
+   *  point, return a new point that is the closest point on the
+   *  segement to the given point. */
   public static Point ptClosestTo(int x1, int y1, int x2, int y2, Point p) {
     Point res = new Point(0,0);
     ptClosestTo(x1, y1, x2, y2, p, res);
     return res;
   }
 
+  /** Given the endpoints of a line segment, and a point, return a new
+   *  point that is the closest point on the segement to the given
+   *  point. */
   public static Point ptClosestTo(Point p1, Point p2, Point p) {
     return ptClosestTo(p1.x, p1.y, p2.x, p2.y, p);
   }
 
   private static Point tempPoint = new Point(0, 0);
 
+  /** Given a polygon and a point, set res to be the point on 
+   *  the perimiter of the polygon that is closest to to the given
+   *  point. */
   public static synchronized void ptClosestTo(int xs[], int ys[],
 					      int n, Point p, Point res) {
     res.x = xs[0]; res.y = ys[0];
@@ -137,12 +157,18 @@ public class Geometry {
     // xs[n-1] == xs[0] && ys[n-1] == ys[0], if it is a closed polygon
   }
 
+  /** Given a polygon and a point, return a new point on the perimiter
+   *  of the polygon that is closest to to the given point. */
   public static Point ptClosestTo(int xs[], int ys[], int n, Point p) {
     Point res = new Point(0,0);
     ptClosestTo(xs, ys, n, p, res);
     return res;
   }
 
+  /** Reply true iff the given point is within grip pixels of one of
+   *  the segments of the given polygon. Needs-more-work: this is
+   *  never used, I don't know that it is needed now that I use hit
+   *  rectangles instead. */
   public static synchronized boolean
   nearPolySegment(int xs[], int ys[], int n, int x, int y, int grip) {
     for (int i = 0; i < n - 1; ++i) {
@@ -156,6 +182,9 @@ public class Geometry {
 
   private static Rectangle tempRect1 = new Rectangle();
 
+  /** Reply true iff the given point is within grip pixels of the
+   *  given segment. Needs-more-work: this is never used, I don't know
+   *  that it is needed now that I use hit rectangles instead. */
   public static synchronized
   boolean nearSegment(int x1, int y1, int x2, int y2, int x, int y, int grip) {
     tempRect1.reshape(x - grip, y - grip, 2 * grip, 2 * grip);
@@ -163,6 +192,9 @@ public class Geometry {
   }
 
   private static Rectangle tempRect2 = new Rectangle();
+
+  /** Reply true iff the given Rectangle intersects the given line
+   *  segment. */
   public static synchronized
   boolean intersects(Rectangle r, int x1, int y1, int x2, int y2) {
     tempRect2.reshape(Math.min(x1, x2), Math.min(y1, y2),

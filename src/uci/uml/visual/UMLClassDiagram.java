@@ -6,7 +6,6 @@ import com.sun.java.swing.*;
 
 import uci.gef.*;
 import uci.graph.*;
-import uci.ui.ToolBar;
 import uci.ui.*;
 import uci.uml.ui.*;
 import uci.uml.Model_Management.*;

@@ -35,22 +35,10 @@ package uci.gef;
 import java.util.*;
 import java.awt.*;
 
-/** Selection object for DiagramElement's that do not have handles. A
- *  colorded rectangular frame is drawn just outside the bounding box
- *  of the DiagramElement. The box has things that look like handles on
- *  its four corners so that it looks more like a selection and less
- *  like the NetNode highlighting.  However, these fake handles
- *  cannot be dragged to resize the DiagramElement.
- *  <A HREF="../features.html#selections_box">
- *  <TT>FEATURE: selections_box</TT></A>
- *
- * @see FigText
- * @see FigNode */
+/** Selection object that allows the user to rotate the selected Fig.
+ * Needs-more-work: not implemented yet. */
 
 public class SelectionRotate extends Selection {
-
-  /** The margin between the contents bbox and the frame */
-  public static final int BORDER_WIDTH = 4;
 
   /** Construct a new SelectionRotate around the given DiagramElement */
   public SelectionRotate(Fig f) { super(f); }
@@ -68,13 +56,14 @@ public class SelectionRotate extends Selection {
     g.fillOval(x + w, y + h, HAND_SIZE, HAND_SIZE);
   }
 
-  /** SelectionRotate is used when there are no handles, so dragHandle
-   * does nothing. Actually, hitHandle always returns -1 , so this
-   * method should never even get called. */
+  /** Rotate the Fig when the user drags the roataion
+   *  handle(s). Needs-more-work: not implemented yet.  */
   public void dragHandle(int mx, int my, int an_x,int an_y, Handle h) {
     /* do nothing */
   }
 
+  /** Returns -2 to indicate that the user did not click on a handle
+   *  or the body of the Fig. Needs-more-work. */
   public int hitHandle(Rectangle r) { return -2; }
 
 

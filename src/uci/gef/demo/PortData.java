@@ -39,19 +39,16 @@ import java.io.*;
 import uci.gef.*;
 import uci.graph.*;
 
-/** An example subclass of NetPort for the Example application. As
- *  part of the example I constrain the ports to only be on
- *  SampleNode's and only connect to PortData's. Needs-More-Work:
- *  There should be a way to constrain the type of NetEdge that is
- *  used...
+/** An example subclass of NetPort for the EquipmentApplet demo. As
+ *  part of the example I constrain the ports to only connect to
+ *  PortDatas.
  *
- * @see Example */
+ * @see EquipmentApplet */
 
 public class PortData extends NetPort implements Serializable {
 
   /** Construct a new NetPort with the given parent node and no arcs. */
   public PortData(NetNode parent) { super(parent); }
-
 
   /** Add the constraint that PortData's can only be connected to
    *  other ports of the same type. */
@@ -63,6 +60,8 @@ public class PortData extends NetPort implements Serializable {
     // really a java.lang.Class method that is missing: isSubclass()
   }
 
+  /** If the user starts draggin on this port, he will create a new
+   *  EdgeData. */
   protected Class defaultEdgeClass(NetPort otherPort) {
     try { return Class.forName("uci.gef.demo.EdgeData"); }
     catch (java.lang.ClassNotFoundException ignore) { return null; }

@@ -38,22 +38,27 @@ import java.util.*;
 import uci.graph.*;
 
 /** This class models a port in our underlying connected graph model.
- *  <A HREF="../features.html#graph_representation_ports">
- *  <TT>FEATURE: graph_representation_ports</TT></A>
- */
+ *  A port is place on a node where an edge can connect.  For example,
+ *  the power socket in a wall, ot the power cord socket on the back
+ *  of a computer.  This class is used by the DefaultGraphModel. You
+ *  can also define your own GraphModel that uses your own
+ *  application-specific objects as ports. Needs-more-work: this
+ *  should probably move to package uci.graph. */
 
 public class NetPort extends NetPrimitive
 implements GraphPortHooks, java.io.Serializable {
 
   ////////////////////////////////////////////////////////////////
   // constants
+
+  // needs-more-work: main framework should not depend on any demo code
   public static String DEFAULT_EDGE_CLASS = "uci.gef.demo.SampleEdge";
 
 
   ////////////////////////////////////////////////////////////////
   // instance variables
 
-  /** The NetEdge's that are connected to this port. */
+  /** The NetEdges that are connected to this port. */
   protected Vector _edges;
 
   /** The NetNode that this port is a part of. */
@@ -91,9 +96,6 @@ implements GraphPortHooks, java.io.Serializable {
    *  port. Called when the user disposes an edge. Normally, you would
    *  not call this directly, you would call NetEdge#dispose().*/
   public void removeEdge(NetEdge edge) { _edges.removeElement(edge); }
-
-  ////////////////////////////////////////////////////////////////
-  // Editor API
 
   /** Remove this port from the underlying connected graph model and
    *  dispose all arcs connected to it. */

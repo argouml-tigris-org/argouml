@@ -44,21 +44,17 @@ import uci.graph.*;
  *  rectangles, lines, text, circles, etc. Also, class FigGroup
  *  implements a composite figure. Fig's are Diagram elements that can
  *  be placed in any LayerDiagram. Fig's are also used to define the
- *  look of FigNodes on NetNodes.<p>
- *
- * @see FigRect
- * @see FigRRect
- * @see FigPoly
- * @see FigInk
- * @see FigImage
- * @see FigNode
- * @see FigEdge
- * @see FigLine
- * @see FigText
- * @see FigCircle */
+ *  look of FigNodes on NetNodes. */
 
 public class Fig extends Observable
 implements java.io.Serializable  {
+
+  ////////////////////////////////////////////////////////////////
+  // constants
+
+  /** The smallest size that the user can drag this Fig. */
+  public final int MIN_SIZE = 4;
+
 
   ////////////////////////////////////////////////////////
   // instance variables
@@ -416,7 +412,17 @@ implements java.io.Serializable  {
     setBounds(_x, _y, w, h);
   }
 
+  /** Returns the minimum size of the Fig.  This is the smallest size
+   *  that the user can make this Fig by dragging. You can ignore this
+   *  and make Figs smaller programmitically if you must. */
+  public Dimension getMinimumSize() { return new Dimension(MIN_SIZE, MIN_SIZE); }
 
+  /** Returns the prefered size of the Fig. This will be useful for
+   *  automated layout. By default just uses the current
+   *  size. Subclasses must override to return something useful. */
+  public Dimension getPreferedSize() { return new Dimension(_w, _h); }
+
+  
   // needs-more-work: property change events?
   public void setX(int x) { setBounds(x, _y, _w, _h); }
   public int getX() { return _x; }

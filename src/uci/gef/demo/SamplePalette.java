@@ -38,10 +38,11 @@ import com.sun.java.swing.Action;
 
 import uci.gef.*;
 
-/** A class to define the left hand column of buttons in the Example
- * application. Right now it just has one kind of node.
+/** A class to define a custom palette for use in some demos.
  *
- * @see uci.gef.demo.FlexibleApplet */
+ * @see uci.gef.demo.FlexibleApplet
+ * @see uci.gef.demo.BasicApplication
+ */
 
 public class SamplePalette extends PaletteFig {
 
@@ -52,6 +53,9 @@ public class SamplePalette extends PaletteFig {
   public void defineButtons() {
     super.defineButtons();
 
+    add(new CmdCreateNode(uci.gef.demo.SampleNode.class, "Node One"));
+    add(new CmdCreateNode(uci.gef.demo.SampleNode2.class, "Node Two"));
+    addSeparator();
     Cmd image1 = new CmdSetMode(ModeCreateFigImage.class,
 				"imageURL",
 				"http://www.ics.uci.edu/~jrobbins/images/"+

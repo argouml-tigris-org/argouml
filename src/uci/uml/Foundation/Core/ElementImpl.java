@@ -96,6 +96,24 @@ public class ElementImpl implements Element {
   }
 
   public void fireVetoableChange(String propertyName, 
+				 boolean oldValue, boolean newValue) 
+       throws PropertyVetoException {
+	 fireVetoableChange(propertyName,
+			    new Boolean(oldValue),
+			    new Boolean(newValue));
+  }
+
+  public void fireVetoableChange(String propertyName, 
+				 int oldValue, int newValue) 
+       throws PropertyVetoException {
+	 fireVetoableChange(propertyName,
+			    new Integer(oldValue),
+			    new Integer(newValue));
+  }
+
+
+
+  public void fireVetoableChange(String propertyName, 
 				 Object oldValue, Object newValue) 
        throws PropertyVetoException {
 	 if (vetoListeners == null) return;

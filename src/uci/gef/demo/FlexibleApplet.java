@@ -135,9 +135,6 @@ public class FlexibleApplet extends Applet {
 
      if (_spawnFrame) {
        System.out.println("spawning frame");
-//        JGraphFrame jgf = new JGraphFrame(gm);
-//        jgf.setToolBar(palette);
-//        jgf.show();
        JFrame f = new JFrame();
        f.getContentPane().setLayout(new BorderLayout());
        f.getContentPane().add(palette, BorderLayout.NORTH);
@@ -173,7 +170,7 @@ public class FlexibleApplet extends Applet {
     Cmd.register(new CmdDelete());
     Cmd.register(new CmdSpawn());
     Cmd.register(new CmdAdjustGrid());
-    Cmd.register(new CmdEditNode());
+    Cmd.register(new CmdShowProperties());
     Cmd.register(new CmdCreateNode(uci.gef.demo.SampleNode.class,
 				   "Sample Node"));
     Cmd.register(new CmdExit());
@@ -197,7 +194,7 @@ public class FlexibleApplet extends Applet {
       "FlexibleApplet a very simple demonstration of how GEF can \n" +
       "be used. " + "\n\n" +
       "Author: Jason Robbins\n" +
-      "Copyright (c) 1995, 1996 Regents of the University of California.\n"+
+      "Copyright (c) 1996-1998 Regents of the University of California.\n"+
       "All rights reserved.\n\n";
   }
 

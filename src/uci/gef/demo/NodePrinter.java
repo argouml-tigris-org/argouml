@@ -38,31 +38,25 @@ import java.net.*;
 import java.util.*;
 import uci.gef.*;
 
-/** An example subclass of NetNode for use in the Example application.
+/** An example subclass of NetNode for use in the Example
+ * application. This class represents a printer that can be plugged
+ * in and connected to a computer. 
  *
- * @see Example */
+ * @see EquipmentApplet */
+
 public class NodePrinter extends NetNode implements Serializable {
 
   ////////////////////////////////////////////////////////////////
   // instance variables
 
-  PortPower powerPort;
-  PortData dataPort;
+  protected PortPower _powerPort;
+  protected PortData _dataPort;
   
-   /** Initialize a new NodePrinter from the given default node and
-    *  application specific model. <p>
-    *
-    *  Needs-More-Work: for now we construct the FigNode
-    *  programatically, but eventually we will store it in a class
-    *  variable and just refer to it, or copy it(?). That way the user
-    *  can edit the FigNode(s) stored in the class variable and
-    *  have those changes shown for all existing nodes, or for all
-    *  future nodes. Maybe I should think about doing virtual
-    *  copies?<p> */
+   /** Initialize a new NodePrinter. */
 
   public void initialize(Hashtable args) {
-    addPort(powerPort = new PortPower(this, PortPower.RECEPTICAL));
-    addPort(dataPort = new PortData(this));
+    addPort(_powerPort = new PortPower(this, PortPower.RECEPTICAL));
+    addPort(_dataPort = new PortData(this));
   }
 
   public FigNode makePresentation(Layer lay) {
@@ -83,8 +77,8 @@ public class NodePrinter extends NetNode implements Serializable {
     temp_list.addElement(obj3);
     FigNode fn = new FigNode(this, temp_list);
 
-    fn.bindPort(powerPort, obj2);
-    fn.bindPort(dataPort, obj3);
+    fn.bindPort(_powerPort, obj2);
+    fn.bindPort(_dataPort, obj3);
 
     return fn;
   }

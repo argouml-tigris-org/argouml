@@ -37,11 +37,11 @@ import java.awt.*;
 
 /** A class that implements the concept of a connected graph. A
  *  NetList is not any one object in the connected graph, it is the
- *  overall graph. A NetList contains a list of nodes, and the nodes
- *  refer to their ports and edges.
- *  <A HREF="../features.html#graph_representation_nets">
- *  <TT>FEATURE: graph_representation_nets</TT></A>
- */
+ *  overall graph. A NetList contains a list of nodes and edges.  This
+ *  class is used by DefaulGraphModel, if you implement your own
+ *  GraphModel, you can use your own application-specific
+ *  representation of graphs. Needs-more-work: this should probably
+ *  move to package uci.graph. */
 
 public class NetList extends NetPrimitive implements java.io.Serializable {
 
@@ -75,58 +75,21 @@ public class NetList extends NetPrimitive implements java.io.Serializable {
   /** Reply the vector of edges */
   public Vector getEdges() { return _edges; }
 
-  /** Add a node to this NetList. Needs-More-Work: should I send a
-   *  notification? This is called from the Editor when a
-   *  Fig is added that is a FigNode.
-   *
-   * @see Editor#add */
-  public void addNode(NetNode n) {
-    //setChanged();
-    Vector v = new Vector(2);
-    v.addElement("add");
-    v.addElement(n);
-    //notifyObservers(v);
-    _nodes.addElement(n);
-  }
+  /** Add a node to this NetList.  */
+  public void addNode(NetNode n) { _nodes.addElement(n); }
 
   /** Remove a node from this NetList. When a node is deleted a
    *  notification is sent out. */
   public void removeNode(NetNode n) {
-    if (n != null && _nodes.contains(n)) {
-      _nodes.removeElement(n);
-      Vector v = new Vector(2);
-      v.addElement(Globals.REMOVE);
-      v.addElement(n);
-      //setChanged();
-      //notifyObservers(v);
-    }
+    if (n != null && _nodes.contains(n)) _nodes.removeElement(n);
   }
 
-  /** Add a NetEdge to this NetList. Needs-More-Work: should I send a
-   *  notification? This is called from the Editor when a
-   *  Fig is added that is a FigEdge.
-   *
-   * @see Editor#add */
-  public void addEdge(NetEdge a) {
-    //setChanged();
-    Vector v = new Vector(2);
-    v.addElement("add");
-    v.addElement(a);
-    //notifyObservers(v);
-    _edges.addElement(a);
-  }
+  /** Add a NetEdge to this NetList. */
+  public void addEdge(NetEdge a) { _edges.addElement(a); }
 
-  /** Remove a Edge from this NetList. When a Edge is deleted a
-   *  notification is sent out. */
+  /** Remove a Edge from this NetList. */
   public void removeEdge(NetEdge a) {
-    if (a != null && _edges.contains(a)) {
-      _edges.removeElement(a);
-      Vector v = new Vector(2);
-      v.addElement(Globals.REMOVE);
-      v.addElement(a);
-      //setChanged();
-      //notifyObservers(v);
-    }
+    if (a != null && _edges.contains(a)) _edges.removeElement(a);
   }
 
 } /* end class NetList */

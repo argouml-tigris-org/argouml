@@ -33,13 +33,16 @@
 package uci.beans.editors;
 
 import java.awt.*;
+import java.awt.event.*;
+import com.sun.java.swing.*;
 import java.beans.*;
 
 /** <A HREF="../features.html#color_picker">
  *  <TT>FEATURE: color_picker</TT></A>
  */
 
-public class ColorEditor extends Panel implements PropertyEditor {
+public class ColorEditor extends JPanel
+implements PropertyEditor { //, MouseListener {
   ////////////////////////////////////////////////////////////////
   // instance variables
 
@@ -51,7 +54,7 @@ public class ColorEditor extends Panel implements PropertyEditor {
 
   public ColorEditor() {
     setLayout(null);
-    addNotify();
+    //addNotify();
     resize(insets().left + insets().right + 20,
 	   insets().top + insets().bottom + 20);
     setForeground(Color.lightGray);
@@ -66,7 +69,7 @@ public class ColorEditor extends Panel implements PropertyEditor {
     _color = (Color) c;
     repaint();
     firePropertyChange();
-    ColorPickerGrid.updateIfEditing(this);
+    //ColorPickerGrid.updateIfEditing(this);
   }
 
   public Object getValue() { return _color; }
@@ -84,6 +87,7 @@ public class ColorEditor extends Panel implements PropertyEditor {
   }
 
   public void paint(java.awt.Graphics g) {
+    System.out.println("painting!");
     paintValue(g, getBounds());
   }
 
@@ -102,30 +106,47 @@ public class ColorEditor extends Panel implements PropertyEditor {
 
   public String[] getTags() { return null; }
 
-  public java.awt.Component getCustomEditor() { return this; }
+  public java.awt.Component getCustomEditor() {
+    ColorPickerGrid cpg = new ColorPickerGrid(Color.white);
+    System.out.println("made ColorPickerGrid");
+    cpg.setPEColor(this);
+    System.out.println("set ColorPickerGrid editor");
+    return cpg;
+  }
 
   public boolean supportsCustomEditor() { return true; }
 
+  public Dimension getMinimumSize() {
+    return new Dimension(300, 400);
+  }
+
+  public Dimension getPreferredSize() {
+    return new Dimension(300, 400);
+  }
+
+  
 
   ////////////////////////////////////////////////////////////////
   // event handlers
 
-  public boolean handleEvent(Event event) {
-    if (event.id == Event.MOUSE_DOWN) {
-      int gx = event.x;
-      int gy = event.y;
-      Component c = this;
-      while (c instanceof Component) {
-	Point loc = c.location();
-	gx += loc.x;
-	gy += loc.y;
-	c = c.getParent();
-      }
-      ColorPickerGrid.edit(this, gx, gy);
-      return true;
-    }
-    return super.handleEvent(event);
-  }
+//   public void mouseEntered(MouseEvent me) { }
+//   public void mouseExited(MouseEvent me) { }
+//   public void mouseClicked(MouseEvent me) { }
+//   public void mouseReleased(MouseEvent me) { }
+  
+//   public void mousePressed(MouseEvent me) {
+//     int gx = me.getX();
+//     int gy = me.getY();
+//     Component c = this;
+//     while (c instanceof Component) {
+//       Point loc = c.location();
+//       gx += loc.x;
+//       gy += loc.y;
+//       c = c.getParent();
+//     }
+//     ColorPickerGrid.edit(this, gx, gy);
+//     me.consume();
+//   }
 
 // //   public void colorPicked(Color newColor) {
 // //     if (newColor == null) return;
@@ -142,10 +163,10 @@ public class ColorEditor extends Panel implements PropertyEditor {
     return (Frame) c;
   }
 
-  public void hide() {
-    super.hide();
-    ColorPickerGrid.stopIfEditing(this); 
-  }
+//   public void hide() {
+//     super.hide();
+//     //ColorPickerGrid.stopIfEditing(this); 
+//   }
 
 
   public synchronized void

@@ -24,8 +24,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 // ENHANCEMENTS, OR MODIFICATIONS.
 
-// copyright
-
 package uci.gef;
 
 import java.util.*;
@@ -39,45 +37,39 @@ import uci.ui.*;
 import uci.graph.*;
 import uci.gef.event.*;
 
+/** JGraph is a Swing component that displays a connected graph and
+ *  allows interactive editing. In many ways this class serves as a
+ *  simple front-end to class Editor, and other classes which do the
+ *  real work. */
+
 public class JGraph extends JPanel implements Cloneable {
-  //implements MouseListener, MouseMotionListener, KeyListener {
 
   ////////////////////////////////////////////////////////////////
   // instance variables
+
+  /** The Editor object that is being shown in this panel */
   protected Editor _editor;
   
-//  protected JPanel _graphPanel = new JGraphInternalPane();  
-//   protected  ToolBar _toolbar = new PaletteFig();
   
   ////////////////////////////////////////////////////////////////
   // constructor
 
+  /** Make a new JGraph with a new DefaultGraphModel.
+   * @see uci.graph.DefaultGraphModel */
   public JGraph() { this(new DefaultGraphModel()); }
 
+  /** Make a new JGraph with a the GraphModel and Layer from the given
+   *  Diagram. */
   public JGraph(Diagram d) { this(new Editor(d)); }
 
+  /** Make a new JGraph with the given GraphModel */
   public JGraph(GraphModel gm) { this(new Editor(gm, null)); }
-//     super(false); // not double buffered
-//     _editor = new Editor(gm, this);
-//     addMouseListener(_editor);
-//     addMouseMotionListener(_editor);
-//     addKeyListener(_editor);
-//   }
 
+  /** Make a new JGraph with the given Editor.  All JGraph contructors
+   *  eventually call this contructor. */
   public JGraph(Editor ed) {
-    super(false); // not double buffered
+    super(false); // not double buffered. I do my own flicker-free redraw.
     _editor = ed;
-
-//     _graphPanel.setBorder(new EtchedBorder(EtchedBorder.LOWERED));
-//     setLayout(new BorderLayout());
-//     _graphPanel.setPreferredSize(new Dimension(500, 500));
-//     add(new JScrollPane(_graphPanel), BorderLayout.CENTER);
-//     add(_toolbar, BorderLayout.NORTH);
-//     _editor.setAwtComponent(_graphPanel);
-//     _graphPanel.addMouseListener(_editor);
-//     _graphPanel.addMouseMotionListener(_editor);
-//     _graphPanel.addKeyListener(_editor);
-
     _editor.setAwtComponent(this);
     addMouseListener(_editor);
     addMouseMotionListener(_editor);
@@ -86,11 +78,13 @@ public class JGraph extends JPanel implements Cloneable {
     initKeys();
   }
 
+  /** Make a copy of this JGraph so that it can be shown in another window.*/
   public Object clone() {
     JGraph newJGraph = new JGraph((Editor) _editor.clone());
     return newJGraph;
   }
 
+  /* Set up some standard keystrokes and the Cmds that they invoke. */
   public void initKeys() {
     int shift = KeyEvent.SHIFT_MASK;
     int ctrl = KeyEvent.CTRL_MASK;
@@ -122,6 +116,8 @@ public class JGraph extends JPanel implements Cloneable {
 
   }
 
+  /** Utility frunction to bind a keystroke to a Swing Action.  Note
+   *  that GEF Cmds are subclasses of Swing's Actions. */
   public void bindKey(ActionListener action, int keyCode, int modifiers) {
     registerKeyboardAction(action,
 			   KeyStroke.getKeyStroke(keyCode, modifiers),
@@ -131,46 +127,53 @@ public class JGraph extends JPanel implements Cloneable {
   ////////////////////////////////////////////////////////////////
   // accessors
 
+  /** Get the Editor that is being displayed */
   public Editor getEditor() { return _editor; }
 
+  /** Set the Diagram that should be displayed by setting the
+   *  GraphModel and Layer that the Editor is using. */
   public void setDiagram(Diagram d) {
     if (d == null) return;
     _editor.getLayerManager().replaceActiveLayer(d.getLayer());
+    _editor.setGraphModel(d.getGraphModel());
     _editor.getSelectionManager().deselectAll();
     _editor.damageAll();
   }
 
+  /** Get and set the GraphModel the Editor is using. */
   public void setGraphModel(GraphModel gm) { _editor.setGraphModel(gm); }
   public GraphModel getGraphModel() { return _editor.getGraphModel(); }
 
+  /** Get and set the Renderer used to make FigNodes for nodes in the
+   *  GraphModel. */ 
   public void setGraphNodeRenderer(GraphNodeRenderer r) {
-    _editor.setGraphNodeRenderer(r); }
+    _editor.setGraphNodeRenderer(r);
+  }
   public GraphNodeRenderer getGraphNodeRenderer() {
     return _editor.getGraphNodeRenderer();
   }
 
+  /** Get and set the Renderer used to make FigEdges for edges in the
+   *  GraphModel. */ 
   public void setGraphEdgeRenderer(GraphEdgeRenderer r) {
     _editor.setGraphEdgeRenderer(r); }
   public GraphEdgeRenderer getGraphEdgeRenderer() {
     return _editor.getGraphEdgeRenderer();
   }
 
+  /** Tell Swing/AWT that JGraph handles tab-order itself. */
   public boolean isManagingFocus() { return true; }
 
-
+  /** Tell Swing/AWT that JGraph can be tabbed into. */
   public boolean isFocusTraversable() { return true; }
   
-//   public ToolBar getToolBar() { return _toolbar; }
-//   public void setToolBar(ToolBar tb) {
-//     _toolbar = tb;
-//     if (_toolbar != null) add(_toolbar, BorderLayout.NORTH);
-//   }
-
 
   
   ////////////////////////////////////////////////////////////////
   // events
 
+  /** Add listener to the objects to notify whenever the Editor
+   *  changes its current selection. */
   public void addGraphSelectionListener(GraphSelectionListener listener) {
     getEditor().addGraphSelectionListener(listener);
   }
@@ -184,71 +187,50 @@ public class JGraph extends JPanel implements Cloneable {
   // Editor facade
 
   public void layoutGraph() {
-    // needs-more-work: ask the editor to preform an Action
+    // needs-more-work: ask the editor to preform automatic layout
   }
 
-  public void paint(Graphics g) {
-    _editor.paint(g);
-  }
+  /** The JGraph is painted by simply painting its Editor. */
+  public void paint(Graphics g) { _editor.paint(g); }
 
 
   ////////////////////////////////////////////////////////////////
   // selection methods
 
-  /** Add the given item to this editors selections.
-   *  <A HREF="../features.html#selections">
-   *  <TT>FEATURE: selections</TT></A>
-   */
+  /** Add the given item to this Editor's selections. */
   public void select(Fig f) {
     if (f == null) deselectAll();
     else _editor.getSelectionManager().select(f);
   }
 
+  /** Add the Fig that owns the given item to this Editor's selections. */
   public void selectByOwner(Object owner) {
     Layer lay = _editor.getLayerManager().getActiveLayer();
     if (lay instanceof LayerDiagram)
       select(((LayerDiagram)lay).presentationFor(owner));
   }
 
-  /** Remove the given item from this editors selections.
-   *  <A HREF="../features.html#selections">
-   *  <TT>FEATURE: selections</TT></A>
-   */
+  /** Remove the given item from this editors selections.   */
   public void deselect(Fig f) { _editor.getSelectionManager().deselect(f); }
 
   /** Select the given item if it was not already selected, and
-   *  vis-a-versa.
-   *  <A HREF="../features.html#selections">
-   *  <TT>FEATURE: selections</TT></A>
-   */
+   *  vis-a-versa. */
   public void toggleItem(Fig f) { _editor.getSelectionManager().toggle(f); }
 
-  /** Deslect everything that is currently selected.
-   *  <A HREF="../features.html#selections">
-   *  <TT>FEATURE: selections</TT></A>
-   */
+  /** Deslect everything that is currently selected. */
   public void deselectAll() { _editor.getSelectionManager().deselectAll(); }
 
-  /** Select a collection of Fig's.
-   *  <A HREF="../features.html#selections">
-   *  <TT>FEATURE: selections</TT></A>
-   */
+  /** Select a collection of Figs. */
   public void select(Vector items) {
     _editor.getSelectionManager().select(items);
   }
 
-  /** Toggle the selection of a collection of Fig's.
-   *  <A HREF="../features.html#selections">
-   *  <TT>FEATURE: selections</TT></A>
-   */
+  /** Toggle the selection of a collection of Figs. */
   public void toggleItems(Vector items) {
     _editor.getSelectionManager().toggle(items);
   }
   
-
-  /** <A HREF="../features.html#selections">
-   *  <TT>FEATURE: selections</TT></A>
-   */
+  /** reply a Vector of all selected Figs. Used in many Cmds.*/
   public Vector selectedFigs() {
     return _editor.getSelectionManager().getFigs();
   }

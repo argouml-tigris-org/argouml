@@ -46,7 +46,7 @@ public class PathConvPercent extends PathConv
 
     Point linePoint = pathFigure.pointAlongPerimeter(pointToGet);
 
-    //System.out.println("lP=" + linePoint + " ptG=" + pointToGet + " figLen=" + figLength);
+    System.out.println("lP=" + linePoint + " ptG=" + pointToGet + " figLen=" + figLength);
 
     Point offsetAmount = getOffsetAmount(pathFigure.pointAlongPerimeter(pointToGet + 5), pathFigure.pointAlongPerimeter(pointToGet - 5), offset);
 

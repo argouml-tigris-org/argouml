@@ -31,31 +31,41 @@
 package uci.ui;
 
 import java.awt.*;
+import com.sun.java.swing.*;
 import java.awt.event.*;
 import java.beans.*;
 
-class PropertySelector extends Choice implements ItemListener {
+class PropertySelector extends JComboBox implements ItemListener {
 
-    PropertySelector(PropertyEditor pe) {
-	editor = pe;
-	String tags[] = editor.getTags();
-	for (int i = 0; i < tags.length; i++) {
-	    addItem(tags[i]);
-	}
-	select(0);
-	// This is a noop if the getAsText is not a tag.
-	select(editor.getAsText());
-	addItemListener(this);
+  public PropertySelector(PropertyEditor pe) {
+    editor = pe;
+    String tags[] = editor.getTags();
+    for (int i = 0; i < tags.length; i++) {
+      addItem(tags[i]);
     }
+    setSelectedIndex(0);
+    // This is a noop if the getAsText is not a tag.
+    setSelectedItem(editor.getAsText());
+    addItemListener(this);
+  }
 
-    public void itemStateChanged(ItemEvent evt) {
-	String s = getSelectedItem();
-	editor.setAsText(s);
-    }
+  public Dimension getMinimumSize() {
+    return new Dimension(80, 20);
+  }
 
-    public void repaint() {
-	select(editor.getAsText());
-    }
+  public Dimension getPreferredSize() {
+    return new Dimension(80, 20);
+  }
 
-    PropertyEditor editor;    
+  public void itemStateChanged(ItemEvent evt) {
+    String s = getSelectedItem().toString();
+    editor.setAsText(s);
+  }
+  
+//   public void repaint() {
+//     super.repaint();
+//     //setSelectedItem(editor.getAsText());
+//   }
+  
+  PropertyEditor editor;    
 }

@@ -56,8 +56,8 @@ public abstract class PathConv
     double a = offset / Math.sqrt(recipnumerator * recipnumerator+ recipdenominator * recipdenominator);
     Point newPoint = new Point((int) (recipdenominator * a), (int) (recipnumerator * a));
 
-    //System.out.println("p1=" + p1 + " p2=" + p2 + " off=" + offset);
-    //System.out.println("a=" + a + " rn=" + recipnumerator + " rd=" + recipdenominator + " nP=" + newPoint);
+    System.out.println("p1=" + p1 + " p2=" + p2 + " off=" + offset);
+    System.out.println("a=" + a + " rn=" + recipnumerator + " rd=" + recipdenominator + " nP=" + newPoint);
 
     return newPoint;
   }

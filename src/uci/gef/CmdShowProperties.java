@@ -25,59 +25,35 @@
 // ENHANCEMENTS, OR MODIFICATIONS.
 
 
-// File: CmdEditNode.java
-// Classes: CmdEditNode
+// File: CmdShowProperties.java
+// Classes: CmdShowProperties
 // Original Author: jrobbins@ics.uci.edu
 // $Id$
 
 package uci.gef;
 
-import java.util.*;
 import java.awt.*;
-import java.io.*;
+import java.util.*;
 
-/** Cmd to edit a node.  For now this just asks the node to edit
- *  itself via editNode().  In the future their might be some support
- *  for undo or some behavior common to all node editing operations.
+/** Cmd to open a user interface dialog window. Given the name of a
+ *  subclass of Frame, this Cmd makes a new instance and calls
+ *  show().  For example, used to open a list of some availible
+ *  commands.
  *
- * @see NetNode#editNode */
+ * @see uci.gef.JGraphFrame */
 
-public class CmdEditNode extends Cmd {
+public class CmdShowProperties extends Cmd {
 
-  private NetNode _nodeToEdit;
-
-  public CmdEditNode() {
-    super("Edit Node");
-    _nodeToEdit = null;
-  }
-
-  public CmdEditNode(NetNode n) {
-    super("Edit Node");
-    _nodeToEdit = n;
+  public CmdShowProperties() {
+    super("Show Properties");
   }
 
   public void doIt() {
-    if (_nodeToEdit != null) {
-      _nodeToEdit.editNode();
-      return;
-    }
-    Editor ce = Globals.curEditor();
-    if (ce == null) return;
-    Vector selectedFigs = ce.getSelectionManager().getFigs();
-    Enumeration figs = selectedFigs.elements();
-    while (figs.hasMoreElements()) {
-      Fig f = (Fig) figs.nextElement();
-      if (f instanceof FigNode) {
-        _nodeToEdit = (NetNode)((FigNode)f).getOwner();
-	Globals.showStatus("Editing " + _nodeToEdit.toString());
-        _nodeToEdit.editNode();
-      }
-    }
-    _nodeToEdit = null;
+    Globals.startPropertySheet();
   }
 
   public void undoIt() {
-    System.out.println("Undo does not make sense for CmdEditNode");
+    System.out.println("undo CmdShowProperties is not supported");
   }
 
-} /* end class CmdEditNode */
+} /* end class CmdShowProperties */

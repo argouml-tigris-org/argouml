@@ -40,31 +40,17 @@ import java.awt.*;
  *  more of the frame-rate could be self-adusting, not a
  *  preference. Needs-More-Work: more of this should move into
  *  RedrawManager.
- *  <A HREF="../features.html#preferences">
- *  <TT>FEATURE: preferences</TT></A>
  */
 
 public class Prefs {
 
-  /** The color, thickness, etc. of rubberband lines */
-  //private Hashtable _rubberbandAttrs;
 
   /** Construct a new Prefs instance */
   public Prefs() {
-    //initializeRubberBandAttrs();
+
   }
 
-//   /** Set the rubberband attributes to some default values */
-//   protected void initializeRubberBandAttrs() {
-//     _rubberbandAttrs = new Hashtable();
-//     _rubberbandAttrs.put("LineColor", getRubberBandColor());
-// /*    _rubberbandAttrs.put("LineThickness", new Integer(2)); */
-//   }
-
-//   /** Reply the graphical attributes that should be used when the user
-//    *  is dragging out a rubberband for a new arc or line */
-//   public Hashtable rubberbandAttrs() { return _rubberbandAttrs; }
-
+  /** Reply the color that should be used for rubberband lines. */
   public Color getRubberbandColor() { return new Color(0x33, 0x33, 0x99); }
   
   /** The color of the handles used to manipulate Fig's */
@@ -90,25 +76,15 @@ public class Prefs {
   /** The color of the highlight shown to draw the users attention */
   public void setHighlightColor(Color c) { _highlightColor = c; }
 
-  /**  <A HREF="../features.html#printing_config">
-   *  <TT>FEATURE: printing_config</TT></A>
-   */
+  /** True if LayerGrid should appear in printouts. */
   protected boolean _printGrid = false;
   public boolean getPrintGrid() { return _printGrid; }
   public void setPrintGrid(boolean b) { _printGrid = b; }
 
-  /**  <A HREF="../features.html#printing_config">
-   *  <TT>FEATURE: printing_config</TT></A>
-   */
+  /**  True if background Layers should appear in printouts. */
   protected boolean _printBackground = false;
   public boolean getPrintBackground() { return _printBackground; }
   public void setPrintBackground(boolean b) { _printBackground = b; }
-
-  /** needs-more-work
-   */
-  protected boolean _reshapeFirst = false;
-  public boolean getReshapeFirst() { return _reshapeFirst; }
-  public void setReshapeFirst(boolean b) { _reshapeFirst = b; }
 
   /** Times used to fine-tune redrawing behavior */
   private long _redrawTimeThreshold = 500, _lastRedrawTime;
@@ -128,8 +104,6 @@ public class Prefs {
    *  defualt uses, flicker-free, except on JDK 1.0.2 on Sun's
    *  appletviewer for Windows.  Needs-More-Work: should be a
    *  PARAM.
-   *  <A HREF="../features.html#redraw_off_screen">
-   *  <TT>FEATURE: redraw_off_screen</TT></A>
    */
   private boolean _tryOffScreen =
     !(System.getProperty("java.vendor").equals("Sun Microsystems Inc.") &&
@@ -139,26 +113,16 @@ public class Prefs {
   /** Should off screen images be used to reduce flicker? This is not
    *  the default behavior because some (beta) versions of WWW
    *  browsers do not handle off screen images well.
-   *  <A HREF="../features.html#redraw_off_screen">
-   *  <TT>FEATURE: redraw_off_screen</TT></A>
    */
   public void setTryOffScreen(boolean b) { _tryOffScreen = b;  }
 
-  /** Should off screen images be used to reduce flicker?
-   *  <A HREF="../features.html#redraw_off_screen">
-   *  <TT>FEATURE: redraw_off_screen</TT></A>
-   */
+  /** Should off screen images be used to reduce flicker?   */
   public boolean getTryOffScreen() { return _tryOffScreen; }
 
   /** Determine if the next redraw should be done on screen or
    *  offscreen.  If the last redraw was fast, then try this one with
    *  less flicker. Needs-More-Work: this code should be in
-   *  RedrawManager.
-   *  <A HREF="../features.html#redraw_off_screen">
-   *  <TT>FEATURE: redraw_off_screen</TT></A>
-   *  <A HREF="../features.html#adaptive_redraw">
-   *  <TT>FEATURE: adaptive_redraw</TT></A>
-   */
+   *  RedrawManager.   */
   public boolean shouldPaintOffScreen() {
     if (_tryOffScreen)
       return _lastRedrawTime < _redrawTimeThreshold;

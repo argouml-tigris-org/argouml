@@ -130,7 +130,7 @@ public class LayerDiagram extends Layer {
   public Enumeration elements() { return _contents.elements(); }
 
   /** Reply the contents of this layer. Do I really want to do this? */
-  public Vector contents() { return _contents; }
+  public Vector getContents() { return _contents; }
 
   /** Reply the 'top' Fig under the given (mouse)
    *  coordinates. Needs-More-Work: For now, just do a linear search.

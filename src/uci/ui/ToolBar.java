@@ -26,7 +26,7 @@ public class ToolBar extends JToolBar {
   
   public JButton add(Action a, String name, String iconResourceStr) {
     Icon icon = loadIconResource(imageName(iconResourceStr), name);
-    System.out.println(icon);
+    //System.out.println(icon);
     return add(a, name, icon);
   }
   
@@ -81,8 +81,8 @@ public class ToolBar extends JToolBar {
     ImageIcon res = null;
     try {
       java.net.URL imgURL = ToolBar.class.getResource(imgName);
-      System.out.println(imgName);
-      System.out.println(imgURL);
+      //System.out.println(imgName);
+      //System.out.println(imgURL);
       return new ImageIcon(imgURL, desc);
     }
     catch (Exception ex) {

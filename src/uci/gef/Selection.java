@@ -39,19 +39,12 @@ import java.io.Serializable;
 import uci.util.*;
 
 /** This class represents the "selection" object that is used when you
- *  select one or more Figures in the drawing window. Selection's
- *  (should) handle the display of handles or whatever graphics
- *  indicate that something is selected, and they process events to
- *  manipulate the selected Fig. Needs-More-Work: in a
- *  earlier version of this design Fig's did all of that
- *  work themselves which led to much code duplication. Unfortuanately
- *  some of that code is still left over. Specificially,
- *  Fig's still have methods to draw their own handles.<p>
- *  <A HREF="../features.html#selections">
- *  <TT>FEATURE: selections</TT></A>
+ *  select one or more Figs in the drawing window. Selections handle
+ *  the display of handles or whatever graphics indicate that
+ *  something is selected, and they process events to manipulate the
+ *  selected Fig. 
  *
- * @see Fig
- * @see Fig#drawSelected */
+ * @see Fig */
 
 public abstract class Selection extends Observable
 implements Serializable, MouseListener, MouseMotionListener, KeyListener {
@@ -59,6 +52,8 @@ implements Serializable, MouseListener, MouseMotionListener, KeyListener {
   ////////////////////////////////////////////////////////////////
   // constants
 
+
+  /** The size of the little handle boxes. */
   public static final int HAND_SIZE = 6;
 
   /** The margin between the contents bbox and the frame */
@@ -67,9 +62,8 @@ implements Serializable, MouseListener, MouseMotionListener, KeyListener {
   ////////////////////////////////////////////////////////////////
   // instance variables
 
-  /** _content refers to the DiagramElement that is selected.
-   * Needs-more-work:  this could be a blank-final. */ 
-  protected Fig _content; // could be blank final? no...
+  /** _content refers to the Fig that is selected. */ 
+  protected Fig _content;
 
   ////////////////////////////////////////////////////////////////
   // constructors
@@ -96,8 +90,10 @@ implements Serializable, MouseListener, MouseMotionListener, KeyListener {
   ////////////////////////////////////////////////////////////////
   // display methods
 
-  /** Paint something that indicates a selection to the user */
-  public void print(Graphics g) { paint(g); }
+  /** Do nothing. Selections shoudl not appear in print outs. */
+  public void print(Graphics g) { }
+
+  /** Abstract method to display the selection handleds. */
   public abstract void paint(Graphics g);
 
   /** Tell the content to start a transaction that causes damage */
@@ -113,18 +109,20 @@ implements Serializable, MouseListener, MouseMotionListener, KeyListener {
   }
 
   /** This selection object needs to be redrawn, register its damaged
-   * area within the given Editor */
+   *  area within the given Editor */
   public void damage() { _content.damage(); }
 
-  /** reply true if the given point is inside this selection */
+  /** Reply true if the given point is inside this selection */
+  public final boolean contains(Point pnt) { return contains(pnt.x, pnt.y); }
+
   public boolean contains(int x, int y) {
     return _content.contains(x, y) || hitHandle(x, y, 0, 0) != -1;
   }
+
+  /** Reply true if the given Rectangle is inside or overlapps me */
   public boolean hit(Rectangle r) {
     return _content.hit(r) || hitHandle(r) != -1;
   }
-
-  public final boolean contains(Point pnt) { return contains(pnt.x, pnt.y); }
 
   /** Find which handle the user clicked on, or return -1 if none. */
   public abstract int hitHandle(Rectangle r);
@@ -132,7 +130,7 @@ implements Serializable, MouseListener, MouseMotionListener, KeyListener {
     return hitHandle(new Rectangle(x, y, w, h));
   }
 
-    /** Tell the selected Fig to move to front or back, etc. */
+  /** Tell the selected Fig to move to front or back, etc. */
   public void reorder(int func, Layer lay) { lay.reorder(_content, func); }
 
   /** Do nothing because alignment only makes sense for multiple
@@ -147,8 +145,7 @@ implements Serializable, MouseListener, MouseMotionListener, KeyListener {
    * Fig */
   public void translate(int dx,int dy) { _content.translate(dx, dy); }
 
-  /** The bounding box of the selection is the bbox of the contained
-   * Fig. */
+  /** The bounding box of the selection is the bbox of the contained Fig. */
   public Rectangle getBounds() {
     return new Rectangle(_content.getX() - HAND_SIZE/2,
 			 _content.getY() - HAND_SIZE/2,
@@ -156,6 +153,8 @@ implements Serializable, MouseListener, MouseMotionListener, KeyListener {
 			 _content.getHeight() + HAND_SIZE);
   }
 
+  /** Returns my bounding box in the given Rectangle.  This avoids
+   *  memory allocation. */
   public void stuffBounds(Rectangle r) {
     r.reshape(_content.getX() - HAND_SIZE/2,
 	      _content.getY() - HAND_SIZE/2,
@@ -163,26 +162,25 @@ implements Serializable, MouseListener, MouseMotionListener, KeyListener {
 	      _content.getHeight() + HAND_SIZE);
   }
 
-  /** If the selection is being deleted, the selected object is
+  /** If the selection is being deleted, the selected object must be
    * deleted also. This is different from just deselecting the
-   * selected Fig, to do that use one of the deselect
-   * operations in Editor
-   * @see Editor#deselect
-   */
+   * selected Fig, to do that use one of the deselect operations in
+   * Editor.
+   * @see Editor#deselect */
   public void delete() { _content.delete(); }
   public void dispose() { _content.dispose(); }
 
   /** Move one of the handles of a selected Fig. */
   public abstract void dragHandle(int mx, int my, int an_x,int an_y, Handle h);
 
-  /** Reply the bounding box of the selected Fig's, does not
+  /** Reply the bounding box of the selected Figs, does not
    *  include space used by handles. */
   public Rectangle getContentBounds() { return _content.getBounds(); }
 
   ////////////////////////////////////////////////////////////////
   // event handlers
 
-    /** Pass any events along to the selected Fig.
+  /** Pass any events along to the selected Fig.
    * Subclasses of Selection may reimplement this to add
    * functionality.
    */

@@ -33,6 +33,8 @@
 package uci.beans.editors;
 
 import java.awt.*;
+import java.awt.event.*;
+import com.sun.java.swing.*;
 import java.applet.*;
 import java.util.*;
 
@@ -41,7 +43,8 @@ import java.util.*;
  *  colors that Netscape Navigator (TM) tries to allocate when it
  *  starts. */
 
-public class ColorTilePanel extends Panel {
+public class ColorTilePanel extends JPanel
+implements MouseListener, MouseMotionListener {
   ////////////////////////////////////////////////////////////////
   // constants
   public final static int TILESIZE = 6;
@@ -63,6 +66,8 @@ public class ColorTilePanel extends Panel {
   /** disabled. */
   protected boolean _allowSelection = true;
 
+  protected ActionListener _onlyListener = null;
+
   ////////////////////////////////////////////////////////////////
   // constructors
 
@@ -73,11 +78,15 @@ public class ColorTilePanel extends Panel {
   public ColorTilePanel(Vector cs) {
     _colors = cs;
     _nCols = (int) Math.sqrt(cs.size());
+    addMouseListener(this);
+    addMouseMotionListener(this);
   }
 
   public ColorTilePanel(Vector cs, int nCols) {
     _colors = cs;
     _nCols = nCols;
+    addMouseListener(this);
+    addMouseMotionListener(this);
   }
 
   ////////////////////////////////////////////////////////////////
@@ -97,8 +106,7 @@ public class ColorTilePanel extends Panel {
    * window is open but no DiagramElement is selected. */
   public void allowSelection(boolean as) {
     _allowSelection = as;
-    if (_allowSelection) showSelection();
-    else { hideSelection(); }
+    repaint();
   }
 
   ////////////////////////////////////////////////////////////////
@@ -106,7 +114,7 @@ public class ColorTilePanel extends Panel {
 
   public void paint(Graphics g) {
     for (int i = 0; i < _colors.size(); ++i) paintTile(g, i);
-    showSelection();
+    showSelection(g);
   }
 
   public void paintTile(Graphics g, int tileNum) {
@@ -118,12 +126,11 @@ public class ColorTilePanel extends Panel {
 
   /** Draw a black or white hollow rectangle to indicate which color
    * the user selected. */
-  public void showSelection() {
+  public void showSelection(Graphics g) {
     Color c, sc;
     c = (Color)_colors.elementAt(_selected);
     if (c.getRed() + c.getBlue() + c.getGreen() > 255 * 3 / 2)
       sc = Color.black; else sc = Color.white;
-    Graphics g = getGraphics();
     g.setColor(sc);
     g.drawRect((_selected % _nCols)*TILESIZE,
 	       (_selected / _nCols)*TILESIZE,
@@ -134,28 +141,20 @@ public class ColorTilePanel extends Panel {
 		 TILESIZE -3, TILESIZE - 3);
   }
 
-  /** Make the selection rectangle invisible. */
-  public void hideSelection() {
-    paintTile(getGraphics(), _selected);
-  }
 
-  public Dimension minimumSize() {
+  public Dimension getMinimumSize() {
     int xSize = TILESIZE * _nCols;
     int ySize = TILESIZE * ( _colors.size() / _nCols + 2);
     return (new Dimension(xSize, ySize));
   }
 
-  public Dimension preferredSize() { return minimumSize(); }
+  public Dimension getPreferredSize() { return getMinimumSize(); }
 
   public boolean setSelectionIndex(int s) {
     if (s < 0 || s > _colors.size()) return false;
     if (s == _selected) return false;
-    int oldSelection = _selected;
-    Graphics g = getGraphics();
-    if (g == null) return true;
-    hideSelection();
     _selected = s;
-    showSelection();
+    repaint();
     return true;
   }
 
@@ -165,26 +164,28 @@ public class ColorTilePanel extends Panel {
   /** When the user releases the mouse button that signifies that
    * (s)he has made a selection, post an ACTION_EVENT that the
    * enclosing Container can handle. */
-  public boolean mouseUp(Event e, int x, int y) {
+  public void mouseReleased(MouseEvent me) {
+    int x = me.getX();
+    int y = me.getY();
     if (x > _nCols * TILESIZE - 1 ||
         y > (_colors.size() / _nCols) * TILESIZE - 1)
-      return false;
-    if (!_allowSelection) return true;
+      return;
     int col = x / TILESIZE;
     int row = y / TILESIZE;
     if (setSelectionIndex(col + row * _nCols)) {
-      e.id = Event.ACTION_EVENT;
-      postEvent(e);
+      fireActionEvent(null);
     }
-    return true;
   }
 
   /** Mousedown is the same as mouse up: it selects the color under
    * the mouse */
-  public boolean mouseDown(Event e, int x, int y) { return mouseUp(e, x, y); }
+  public void mousePressed(MouseEvent me) { mouseReleased(me); }
 
-  /** Dragging is the same as clicking on every point along the drag */
-  public boolean mouseDrag(Event e, int x, int y) { return mouseUp(e, x, y); }
+  public void mouseMoved(MouseEvent me) { }
+  public void mouseDragged(MouseEvent me) { mouseReleased(me); }
+  public void mouseClicked(MouseEvent me) { mouseReleased(me); }
+  public void mouseEntered(MouseEvent me) { }
+  public void mouseExited(MouseEvent me) { }
 
   ////////////////////////////////////////////////////////////////
   // color sets
@@ -212,6 +213,21 @@ public class ColorTilePanel extends Panel {
     return _NetscapeColors;
   }
 
+
+  ////////////////////////////////////////////////////////////////
+  // events
+
+  public void addActionListener(ActionListener list) {
+    _onlyListener = list;
+  }
+
+  public void removeActionListener(ActionListener list) {
+    if (_onlyListener == list) _onlyListener = null;
+  }
+
+  public void fireActionEvent(ActionEvent ae) {
+    if (_onlyListener != null) _onlyListener.actionPerformed(ae);
+  }
 
 } /* end class ColorTilePanel */
 

@@ -38,9 +38,15 @@ import uci.gef.NetPort;
 import uci.gef.NetEdge;
 
 /** This interface provides a facade to a net-level
- *  representation. Similiar in concept to the Swing class TreeModel.
+ *  representation. Similiar in concept to the Swing class
+ *  TreeModel. This implementation of GraphModel uses the GEF classes
+ *  NetList, NetNode, NetPort, and NetEdge.  If you implement your own
+ *  GraphModel, you can use your own application-specific classes.
  *
- * @see 
+ * @see uci.gef.NetList
+ * @see uci.gef.NetNode
+ * @see uci.gef.NetPort
+ * @see uci.gef.NetEdge
  * @see AdjacencyMatrixGraphModel
  * @see uci.graph.demo.WordTransforms */
 

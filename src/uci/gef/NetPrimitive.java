@@ -43,15 +43,16 @@ import uci.ui.*;
  *  NetList. The only behavior that is common to all of those is that
  *  they pass update notifications on to their Observer's if they don't
  *  handle a notification themselves, and they can highlight by passing
- *  a notification to their FigNode, or FigEdge if any.
+ *  a notification to their FigNode, or FigEdge if any.  <p>
  *
- * @see NetNode
- * @see NetPort
- * @see NetEdge
- * @see NetList
- * @see FigNode
- * @see FigEdge
- */
+ * The classes that subclass from this class are all used by
+ * DefaulGraphModel.  You can also define your own GraphModel with
+ * your own application-specific objects for nodes, ports, and
+ * edges.<p>
+ *
+ * This class may be removed from future versions of GEF.
+ *
+ * @see DefaultgraphModel */
 
 public class NetPrimitive implements java.io.Serializable {
   ////////////////////////////////////////////////////////////////

@@ -38,10 +38,11 @@ import uci.gef.NetNode;
 import uci.gef.NetPort;
 import uci.gef.NetEdge;
 
-/** This interface provides a facade to a net-level
- *  representation. Similiar in concept to the Swing class TreeModel.
+/** An abstract class that makes it easier to implement your own
+ *  version of MutableGraphModel. This class basically includes the
+ *  code for event notifications, so that you don't have to write
+ *  that.  It also provides a few utility methods.
  *
- * @see 
  * @see AdjacencyMatrixGraphModel
  * @see uci.graph.demo.WordTransforms */
 

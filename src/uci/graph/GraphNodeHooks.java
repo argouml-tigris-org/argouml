@@ -31,6 +31,11 @@ import java.util.*;
 import java.beans.*;
 import uci.gef.Editor;
 
+/** A set of methods that nodes in a GraphModel may implement.  If the
+ *  objects you use to represent nodes implement this interface, they
+ *  will get the appropriate calls. NetNode implements these.
+ *
+ * @see uci.gef.NetNode */
 public interface GraphNodeHooks {
 
   /** Do some application specific action just after this node is

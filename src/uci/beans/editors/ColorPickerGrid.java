@@ -33,6 +33,8 @@
 package uci.beans.editors;
 
 import java.awt.*;
+import java.awt.event.*;
+import com.sun.java.swing.*;
 //import java.beans.*;
 
 /** A small window that allows the user to choose a color. This window
@@ -40,7 +42,8 @@ import java.awt.*;
  *  a PropSheet). Whenever the user choose a color, this object
  *  notifies its master ColorEditor. */
 
-public class ColorPickerGrid extends Frame {
+public class ColorPickerGrid extends JPanel
+implements ActionListener {
 
   ////////////////////////////////////////////////////////////////
   // instance variables
@@ -52,21 +55,22 @@ public class ColorPickerGrid extends Frame {
   /** PATTERN: singleton */
   protected static ColorPickerGrid _theInstance = null;
   /** Text to be displayed in the status bar area of this window. */
-  protected Label _statusLabel = new Label("No color selected");
+  protected JLabel _statusLabel = new JLabel("No color selected");
 
   ////////////////////////////////////////////////////////////////
   // constructors
 
   public ColorPickerGrid(Color orig) {
     super();
+    System.out.println("making a ColorPickerGrid");
     setLayout(new BorderLayout());
     _statusLabel.setFont(new Font("Courier", Font.PLAIN, 10));
     setBackground(new Color(12632256));
-    add("Center", _tiles);
-    add("South", _statusLabel);
+    add(_tiles, BorderLayout.CENTER);
+    add(_statusLabel, BorderLayout.SOUTH);
+    System.out.println("setting color1");
     _tiles.setColor(orig);
-    pack();
-    setTitle("Color Picker");
+    _tiles.addActionListener(this);
   }
 
   ////////////////////////////////////////////////////////////////
@@ -74,8 +78,11 @@ public class ColorPickerGrid extends Frame {
 
   public void setPEColor(ColorEditor pec) {
     _peColor = pec;
+    System.out.println("111");
     if (_peColor != null) {
+      System.out.println("222");
       _tiles.allowSelection(true);
+      System.out.println("333");
       setColor((Color)_peColor.getValue());
     }
     else {
@@ -92,21 +99,14 @@ public class ColorPickerGrid extends Frame {
   ////////////////////////////////////////////////////////////////
   // event handlers
 
-  public boolean handleEvent(Event event) {
-    if (event.id == Event.WINDOW_DESTROY) {
-      hide();         // hide the Frame
-      return true;
-    }
-    return super.handleEvent(event);
-  }
 
-  public boolean action(Event e, Object what) {
+  public void actionPerformed(ActionEvent ae) {
     updateStatusLabel();
     if (_peColor != null) _peColor.setValue(_tiles.getColor());
-    return true;
   }
 
   public void updateStatusLabel() {
+    System.out.println("updateStatusLabel");
     if (_peColor == null) {
       _statusLabel.setText("No color selected");
       return;
@@ -126,39 +126,39 @@ public class ColorPickerGrid extends Frame {
    *  <A HREF="../bugs.html#in_color_picker_buried>
    *  <FONT COLOR=660000><B>BUG: in_color_picker_buried</B></FONT></A>
    */
-  public static void edit(ColorEditor pec, int x, int y) {
-    if (_theInstance == null) {
-      _theInstance = new ColorPickerGrid(Color.white);
-      _theInstance.move(x, y);
-      _theInstance.show();
-    }
-    else {
-      _theInstance.show();
-      _theInstance.toFront();
-    }
-    _theInstance.setPEColor(pec);
-  }
+//   public static void edit(ColorEditor pec, int x, int y) {
+//     if (_theInstance == null) {
+//       _theInstance = new ColorPickerGrid(Color.white);
+//       _theInstance.move(x, y);
+//       _theInstance.show();
+//     }
+//     else {
+//       _theInstance.show();
+//       //_theInstance.toFront();
+//     }
+//     _theInstance.setPEColor(pec);
+//   }
 
-  /** The user has done something to hide my master ColorEditor,
-   * so don't allow any more changes. */
-  public static void stopEditing() {
-    if (_theInstance == null) return;
-    _theInstance.setPEColor(null);
-  }
+//   /** The user has done something to hide my master ColorEditor,
+//    * so don't allow any more changes. */
+//   public static void stopEditing() {
+//     if (_theInstance == null) return;
+//     _theInstance.setPEColor(null);
+//   }
 
-  public static void stopIfEditing(ColorEditor pec) {
-    if (_theInstance == null) return;
-    if (_theInstance._peColor != pec) return;
-    _theInstance.setPEColor(null);
-  }
+//   public static void stopIfEditing(ColorEditor pec) {
+//     if (_theInstance == null) return;
+//     if (_theInstance._peColor != pec) return;
+//     _theInstance.setPEColor(null);
+//   }
 
-  /** If the window is shown and is slave to the given
-   * ColorEditor, set its selected color to that of the given
-   * ColorEditor. */
-  public static void updateIfEditing(ColorEditor pec) {
-    if (_theInstance == null) return;
-    if (_theInstance._peColor != pec) return;
-    _theInstance.setColor((Color)pec.getValue());
-  }
+//   /** If the window is shown and is slave to the given
+//    * ColorEditor, set its selected color to that of the given
+//    * ColorEditor. */
+//   public static void updateIfEditing(ColorEditor pec) {
+//     if (_theInstance == null) return;
+//     if (_theInstance._peColor != pec) return;
+//     _theInstance.setColor((Color)pec.getValue());
+//   }
 
 } /* end class ColorPickerGrid */

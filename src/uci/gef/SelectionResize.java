@@ -35,19 +35,14 @@ package uci.gef;
 import java.util.*;
 import java.awt.*;
 
-/** A Selection class to represent selections on Fig's that
- *  present handles. Needs-More-Work: in an early version of this graph
- *  editing framework the Fig's did their own painting of
- *  handles. I want to get away from that, but it has not happened
- *  yet.
- *  <A HREF="../features.html#selections_handles">
- *  <TT>FEATURE: selections_handles</TT></A>
- */
+/** A Selection class to represent selections on Figs that present
+ *  resize handles. The selected Fig can be moved or resized. Figrect,
+ *  FigRRect, FigCircle, and FigGroup are some of the Figs that
+ *  normally use this Selection.  The selected Fig is told it's new
+ *  bounding box, and some Figs (like FigGroup or FigPoly) do
+ *  calculations to scale themselves.*/
 
 public class SelectionResize extends Selection {
-  ////////////////////////////////////////////////////////////////
-  // constants
-  public final int MIN_SIZE = 4;
 
   ////////////////////////////////////////////////////////////////
   // constructors
@@ -104,7 +99,8 @@ public class SelectionResize extends Selection {
     g.fillRect(cx - HAND_SIZE/2, cy - HAND_SIZE/2, HAND_SIZE, HAND_SIZE);
     g.fillRect(cx + cw - HAND_SIZE/2, cy - HAND_SIZE/2, HAND_SIZE, HAND_SIZE);
     g.fillRect(cx - HAND_SIZE/2, cy + ch - HAND_SIZE/2, HAND_SIZE, HAND_SIZE);
-    g.fillRect(cx + cw - HAND_SIZE/2, cy + ch - HAND_SIZE/2, HAND_SIZE, HAND_SIZE);
+    g.fillRect(cx + cw - HAND_SIZE/2, cy + ch - HAND_SIZE/2,
+	       HAND_SIZE, HAND_SIZE);
   }
 
   /** Change some attribute of the selected Fig when the user drags one of its
@@ -114,41 +110,43 @@ public class SelectionResize extends Selection {
     int x = _content.getX(), y = _content.getY();
     int w = _content.getWidth(), h = _content.getHeight();
     int newX = x, newY = y, newW = w, newH = h;
+    Dimension minSize = _content.getMinimumSize();
+    int minWidth = minSize.width, minHeight = minSize.height;
     switch (hand.index) {
     case -1:
       _content.translate(mX + anX, mY + anY);
       return;
     case 0:
       newW = x + w - mX;
-      newW = (newW < MIN_SIZE) ? MIN_SIZE : newW;
+      newW = (newW < minWidth) ? minWidth : newW;
       newH = y + h - mY;
-      newH = (newH < MIN_SIZE) ? MIN_SIZE : newH;
+      newH = (newH < minHeight) ? minHeight : newH;
       newX = x + w - newW;
       newY = y + h - newH;
       break;
     case 1: break;
     case 2:
       newW = mX - x;
-      newW = (newW < MIN_SIZE) ? MIN_SIZE : newW;
+      newW = (newW < minWidth) ? minWidth : newW;
       newH = y + h - mY;
-      newH = (newH < MIN_SIZE) ? MIN_SIZE : newH;
+      newH = (newH < minHeight) ? minHeight : newH;
       newY = y + h - newH;
       break;
     case 3: break;
     case 4: break;
     case 5:
       newW = x + w - mX;
-      newW = (newW < MIN_SIZE) ? MIN_SIZE : newW;
+      newW = (newW < minWidth) ? minWidth : newW;
       newH = mY - y;
-      newH = (newH < MIN_SIZE) ? MIN_SIZE : newH;
+      newH = (newH < minHeight) ? minHeight : newH;
       newX = x + w - newW;
       break;
     case 6: break;
     case 7:
       newW = mX - x;
-      newW = (newW < MIN_SIZE) ? MIN_SIZE : newW;
+      newW = (newW < minWidth) ? minWidth : newW;
       newH = mY - y;
-      newH = (newH < MIN_SIZE) ? MIN_SIZE : newH;
+      newH = (newH < minHeight) ? minHeight : newH;
       break;
     default:
       System.out.println("invalid handle number");

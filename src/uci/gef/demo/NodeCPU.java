@@ -39,7 +39,10 @@ import java.util.*;
 import uci.gef.*;
 import uci.util.*;
 
-/** An example subclass of NetNode for use in the Example application.
+/** An example subclass of NetNode for use in the Example
+ *  application. This class represents a computer that can be plugged
+ *  into electrical power and attached to a printer. The Computer has
+ *  attributes that can be set via the property sheet.
  *
  * @see Example */
 
@@ -70,16 +73,11 @@ public class NodeCPU extends NetNode implements Serializable {
   ////////////////////////////////////////////////////////////////
   // constructors and initialization code
 
-  /** Initialize a new NodeCPU from the given default node and
-   *  application specific model. <p>
+  /** Initialize a new NodeCPU. <p>
    *
    *  Needs-More-Work: for now we construct the FigNode
-   *  programatically, but eventually we will store it in a class
-   *  variable and just refer to it, or copy it(?). That way the user
-   *  can edit the FigNode(s) stored in the class variable and
-   *  have those changes shown for all existing nodes, or for all
-   *  future nodes. Maybe I should think about doing virtual copies?
-   *  <p> */
+   *  programatically in this class.  A more powerful way to do it is
+   *  to make your own sublcass of FigNode. */
 
   public void initialize(Hashtable args) {
     addPort(powerPort = new PortPower(this, PortPower.RECEPTICAL));

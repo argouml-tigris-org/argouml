@@ -3,9 +3,10 @@
 package uci.uml.Foundation.Core;
 
 import java.util.*;
+import java.beans.*;
+
 import uci.uml.Foundation.Data_Types.*;
-//import uci.uml.Foundation.Data_Types.ChangeableKind;
-//import uci.uml.Foundation.Data_Types.ScopeKind;
+
 
 public abstract class StructuralFeature extends Feature {
   public Multiplicity _multiplicity = Multiplicity.ONE;
@@ -18,26 +19,33 @@ public abstract class StructuralFeature extends Feature {
   public StructuralFeature(String nameStr) { super(new Name(nameStr)); }
   public StructuralFeature(Name name, Classifier type) {
     super(name);
-    setType(type);
+    try {
+      setType(type);
+    }
+    catch (PropertyVetoException pve) { }
   }
   public StructuralFeature(String nameStr, Classifier type) {
     this(new Name(nameStr), type);
   }
   
   public Multiplicity getMultiplicity() { return _multiplicity; }
-  public void setMultiplicity(Multiplicity x) {
+  public void setMultiplicity(Multiplicity x) throws PropertyVetoException {
+    fireVetoableChange("multiplicity", _multiplicity, x);
     _multiplicity = x;
   }
   public ChangeableKind getChangeable() { return _changeable; }
-  public void setChangeable(ChangeableKind x) {
+  public void setChangeable(ChangeableKind x) throws PropertyVetoException {
+    fireVetoableChange("changeable", _changeable, x);
     _changeable = x;
   }
   public ScopeKind getTargetScope() { return _targetScope; }
-  public void setTargetScope(ScopeKind x) {
+  public void setTargetScope(ScopeKind x) throws PropertyVetoException {
+    fireVetoableChange("targetScope", _targetScope, x);
     _targetScope = x;
   }
   public Classifier getType() { return _type; }
-  public void setType(Classifier x) {
+  public void setType(Classifier x) throws PropertyVetoException {
+    fireVetoableChange("type", _type, x);
     _type = x;
   }
   

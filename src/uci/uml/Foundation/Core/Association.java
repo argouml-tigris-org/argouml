@@ -4,6 +4,8 @@ package uci.uml.Foundation.Core;
 
 //nmw: import uci.uml.Behavioral_Elements.Collaborations.AssociationRole;
 import java.util.*;
+import java.beans.*;
+
 import uci.uml.Foundation.Data_Types.*;
 import uci.uml.Foundation.Data_Types.Name;
 import uci.uml.Foundation.Extension_Mechanisms.*;
@@ -23,38 +25,55 @@ implements IAssociation {
   public Association(String nameStr) { super(new Name(nameStr)); }
   public Association(String nameStr,AssociationEnd from,AssociationEnd to){
     super(new Name(nameStr));
-    addConnection(from);
-    addConnection(to);
+    try {
+      addConnection(from);
+      addConnection(to);
+    }
+    catch (PropertyVetoException pce) { }
   }
   public Association(Name name, Name srcN, Classifier srcC,
 		     Multiplicity srcM, AggregationKind srcA,
 		     Name dstN, Classifier dstC, Multiplicity dstM,
 		     AggregationKind dstA) { 
     super(name);
+    try {
     AssociationEnd src = new AssociationEnd(srcN, srcC, srcM, srcA);
     AssociationEnd dst = new AssociationEnd(dstN, dstC, dstM, dstA);
     addConnection(src);
     addConnection(dst);
+    }
+    catch (PropertyVetoException pce) { }
   }
 
   public Association(Classifier srcC, Classifier dstC) { 
     super();
+    try {
     AssociationEnd src = new AssociationEnd(srcC);
     AssociationEnd dst = new AssociationEnd(dstC);
     addConnection(src);
     addConnection(dst);
+    }
+    catch (PropertyVetoException pce) { }
   }
 
   public Vector getConnection() { return _connection; }
-  public void setConnection(Vector x) {
+  public void setConnection(Vector x) throws PropertyVetoException {
+    fireVetoableChange("connection", _connection, x);
     _connection = x;
+    java.util.Enumeration enum = _connection.elements();
+    while (enum.hasMoreElements()) {
+      AssociationEnd ae = (AssociationEnd) enum.nextElement();
+      ae.setAssociation(this);
+    }
   }
-  public void addConnection(AssociationEnd x) {
+  public void addConnection(AssociationEnd x) throws PropertyVetoException {
+    fireVetoableChange("connection", _connection, x);
     if (_connection == null) _connection = new Vector();
     _connection.addElement(x);
     x.setAssociation(this);
   }
-  public void removeConnection(AssociationEnd x) {
+  public void removeConnection(AssociationEnd x) throws PropertyVetoException {
+    fireVetoableChange("connection", _connection, x);
     _connection.removeElement(x);
   }
  
@@ -66,14 +85,17 @@ implements IAssociation {
   //- }
 
   public Vector getLink() { return _link; }
-  public void setLink(Vector x) {
+  public void setLink(Vector x) throws PropertyVetoException {
+    fireVetoableChange("link", _link, x);
     _link = x;
   }
-  public void addLink(Link x) {
+  public void addLink(Link x) throws PropertyVetoException {
+    fireVetoableChange("link", _link, x);
     if (_link == null) _link = new Vector();
     _link.addElement(x);
   }
-  public void removeLink(Link x) {
+  public void removeLink(Link x) throws PropertyVetoException {
+    fireVetoableChange("link", _link, x);
     _link.removeElement(x);
   }
 

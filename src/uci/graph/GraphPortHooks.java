@@ -29,6 +29,12 @@ package uci.graph;
 
 import java.beans.*;
 
+/** A set of methods that ports in a GraphModel may implement.  If the
+ *  objects you use to represent ports implement this interface, they
+ *  will get the appropriate calls. NetPort implements these.
+ *
+ * @see uci.gef.NetPort */
+
 public interface GraphPortHooks {
 
   /** Reply true if this port can legally be connected to the given

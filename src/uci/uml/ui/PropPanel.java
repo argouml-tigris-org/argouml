@@ -107,7 +107,7 @@ implements TabModelTarget, DocumentListener {
 
   protected void setTargetStereotype() {
     if (_target == null) return;
-    try {
+    //try {
     ModelElement me = (ModelElement) _target;
     // needs-more-work: find predefined stereotype
     Component ed = _stereoField.getEditor().getEditorComponent();
@@ -117,8 +117,8 @@ implements TabModelTarget, DocumentListener {
     stereos.addElement(s);
     System.out.println("setting stereotype");
     me.setStereotype(stereos);
-    }
-    catch (PropertyVetoException pve) { } 
+    //}
+    //catch (PropertyVetoException pve) { } 
   }
 
   ////////////////////////////////////////////////////////////////

@@ -106,6 +106,13 @@ public class LayerGrid extends Layer {
   }
 
   ////////////////////////////////////////////////////////////////
+  // accessors
+
+  public Vector getContents() { return null; }
+  public Fig presentationFor(Object obj) { return null; }
+
+  
+  ////////////////////////////////////////////////////////////////
   // painting methods
 
   /** Paint the grid lines or dots by repeatedly bitblting a

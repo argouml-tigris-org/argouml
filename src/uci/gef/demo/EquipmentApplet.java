@@ -46,14 +46,14 @@ import com.sun.java.swing.*;
  *  connecting computers to printers with cable, and plugging those
  *  machines into the wall power.  It mainly shows off using Images,
  *  and defining a simple model with properties that can be edited in
- *  the property sheet.
+ *  the property sheet. Some simple constraints are shown as well: for
+ *  example, you cannot connect the power socket to the printer port.
  *
  * @see NodeCPU
  * @see NodePrinter
  * @see NodeWall
  * @see EdgePower
- * @see EdgeData
- */
+ * @see EdgeData */
 
 public class EquipmentApplet extends Applet {
 
@@ -141,7 +141,7 @@ public class EquipmentApplet extends Applet {
       "EquipmentApplet a very simple demonstration of how GEF can \n" +
       "be used. " + "\n\n" +
       "Author: Jason Robbins\n" +
-      "Copyright (c) 1995, 1996 Regents of the University of California.\n"+
+      "Copyright (c) 1996-1998 Regents of the University of California.\n"+
       "All rights reserved.\n\n";
   }
 

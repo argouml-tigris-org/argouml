@@ -28,6 +28,16 @@ package uci.gef.event;
 
 import java.util.*;
 
+
+/** An event object that contains information about the current
+ *  selection(s) in an Editor.  These events are sent to registered
+ *  GraphSelectionListeners whenever the Editor's selection
+ *  changes.
+ *
+ * @see GraphSelectionListener
+ * @see uci.gef.Editor
+ * @see uci.gef.SelectionManager
+ */
 public class GraphSelectionEvent extends EventObject {
 
   ////////////////////////////////////////////////////////////////

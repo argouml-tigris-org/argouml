@@ -27,7 +27,7 @@
 
 // File: ArrowHead.java
 // Classes: ArrowHead
-// Original Author: Adam Bonner
+// Original Author: abonner@ics.uci.edu
 // $Id$
 
 package uci.gef;
@@ -37,55 +37,58 @@ import java.awt.*;
 import java.io.*;
 import java.util.*;
 
-public class ArrowHeadDiamond extends ArrowHead
-{
-	public void paint(Graphics g, Point start, Point end) {
-		int    xFrom, xTo, yFrom, yTo;
-		double denom, x, y, dx, dy, cos, sin;
-		Polygon diamond;
+/** Draws a Diamond at the end of a FigEdge. */
 
-		xFrom  = start.x;
-		xTo   = end.x;
-		yFrom  = start.y;
-		yTo   = end.y;
+public class ArrowHeadDiamond extends ArrowHead {
 
-		dx   	= (double)(xTo - xFrom);
-		dy   	= (double)(yTo - yFrom);
-		denom 	= dist(dx, dy);
-
-		cos = (arrow_height/2)/denom;
-		sin = arrow_width /denom;
-		x   = xTo - cos*dx;
-		y   = yTo - cos*dy;
-		int x1  = (int)(x - sin*dy);
-		int y1  = (int)(y + sin*dx);
-		int x2  = (int)(x + sin*dy);
-		int y2  = (int)(y - sin*dx);
-
+  public void paint(Graphics g, Point start, Point end) {
+    int    xFrom, xTo, yFrom, yTo;
+    double denom, x, y, dx, dy, cos, sin;
+    Polygon diamond;
+    
+    xFrom  = start.x;
+    xTo   = end.x;
+    yFrom  = start.y;
+    yTo   = end.y;
+    
+    dx   	= (double)(xTo - xFrom);
+    dy   	= (double)(yTo - yFrom);
+    denom 	= dist(dx, dy);
+    if (denom == 0) return;
+    
+    cos = (arrow_height/2)/denom;
+    sin = arrow_width /denom;
+    x   = xTo - cos*dx;
+    y   = yTo - cos*dy;
+    int x1  = (int)(x - sin*dy);
+    int y1  = (int)(y + sin*dx);
+    int x2  = (int)(x + sin*dy);
+    int y2  = (int)(y - sin*dx);
+    
     Point topPoint = pointAlongLine(end, start, arrow_height);
-
+    
     //System.out.println("  ! diamond = topP=" + topPoint + " end=" + end);
-
-		diamond = new Polygon();
-		diamond.addPoint(xTo, yTo);
-		diamond.addPoint(x1, y1);
+    
+    diamond = new Polygon();
+    diamond.addPoint(xTo, yTo);
+    diamond.addPoint(x1, y1);
     diamond.addPoint(topPoint.x, topPoint.y);
-		diamond.addPoint(x2, y2);
-
-   		g.setColor(arrowFillColor);
-		g.fillPolygon(diamond);	   
-   		g.setColor(arrowLineColor);
-		g.drawPolygon(diamond);	    
-	}
-
-	private double dist(int x0, int y0, int x1, int y1) {
-		double dx, dy;
-		dx = (double)(x0-x1);
-		dy = (double)(y0-y1);
-		return Math.sqrt(dx*dx+dy*dy);
-	}
-
-	private double dist(double dx, double dy) {
-		return Math.sqrt(dx*dx+dy*dy);
-	}
+    diamond.addPoint(x2, y2);
+    
+    g.setColor(arrowFillColor);
+    g.fillPolygon(diamond);	   
+    g.setColor(arrowLineColor);
+    g.drawPolygon(diamond);	    
+  }
+  
+  private double dist(int x0, int y0, int x1, int y1) {
+    double dx, dy;
+    dx = (double)(x0-x1);
+    dy = (double)(y0-y1);
+    return Math.sqrt(dx*dx+dy*dy);
+  }
+  
+  private double dist(double dx, double dy) {
+    return Math.sqrt(dx*dx+dy*dy);
+  }
 }

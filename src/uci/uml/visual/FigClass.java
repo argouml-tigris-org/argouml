@@ -30,7 +30,6 @@ import com.sun.java.swing.*;
 
 import uci.gef.*;
 import uci.graph.*;
-import uci.ui.*;
 import uci.uml.ui.*;
 import uci.uml.generate.*;
 import uci.uml.Foundation.Core.*;
@@ -56,19 +55,20 @@ implements VetoableChangeListener, DelayedVetoableChangeListener {
     super(node);
     if (node instanceof ElementImpl)
       ((ElementImpl)node).addVetoableChangeListener(this);
+
     Color handleColor = Globals.getPrefs().getHandleColor();
     _bigPort = new FigRect(8, 8, 92, 62, handleColor, Color.lightGray);
     _clss = new FigText(10,10,90,20, Color.blue, "Times", 10);
     _clss.setExpandOnly(true);
     //_clss.setText((new GeneratorDisplay()).generateClassifierRef((Classifier)node));
-    _clss.setText("class foo");
+    _clss.setText("A sadfkak large line more\nthan one line of it");
     _attr = new FigText(10,30,90,20, Color.blue, "Times", 10);
     _attr.setExpandOnly(true);
-    _attr.setText("int bob;\nint bar;\nint adfy;");
+    _attr.setText("Attrib data");
     _attr.setJustification("Left");
     _oper = new FigText(10,50,90,20, Color.blue, "Times", 10);
     _oper.setExpandOnly(true);
-    _oper.setText("int test(double xyzyzyxyzyyyxzyxyzyxyzyyzx, double big2);\n");
+    _oper.setText("Function data");
     _oper.setJustification("Left");
     addFig(_bigPort);
     addFig(_clss);
@@ -83,7 +83,6 @@ implements VetoableChangeListener, DelayedVetoableChangeListener {
     setBounds(r.x, r.y, r.width, r.height);
   }
 
-
   /* Override setBounds to keep shapes looking right */
   public void setBounds(int x, int y, int w, int h) {
     if (_clss == null) return;
@@ -96,24 +95,17 @@ implements VetoableChangeListener, DelayedVetoableChangeListener {
     Rectangle _attr_pref = _attr.getBounds();
     Rectangle _oper_pref = _oper.getBounds();
 
-    int combined_height = _clss_pref.height + _attr_pref.height + _oper_pref.height;
-
     widthP = Math.max(widthP, Math.max(_clss_pref.width, Math.max(_attr_pref.width, _oper_pref.width)));
-    heightP = Math.max(heightP, combined_height);
-    
-    int leftover_height = heightP - combined_height;
+    heightP = Math.max(heightP, 3*Math.max(_clss_pref.height, Math.max(_attr_pref.height, _oper_pref.height)));
 
-    Rectangle _clss_rect = new Rectangle(leftSide, topSide, widthP, _clss_pref.height + leftover_height/3);
-    Rectangle _attr_rect = new Rectangle(leftSide, topSide + _clss_rect.height, widthP, _attr_pref.height + leftover_height/3);
-    Rectangle _oper_rect = new Rectangle(leftSide, topSide + _clss_rect.height + _attr_rect.height, widthP, _oper_pref.height + leftover_height/3);
-
-    _clss.setBounds(_clss_rect);
-    _attr.setBounds(_attr_rect);
-    _oper.setBounds(_oper_rect);
+    _clss.setBounds(leftSide, topSide, widthP, (heightP/3));
+    _attr.setBounds(leftSide, topSide + (heightP/3), widthP, (heightP/3));
+    _oper.setBounds(leftSide, topSide + (heightP/3) * 2, widthP, (heightP/3));
     _bigPort.setBounds(leftSide, topSide, widthP, heightP);
 
     calcBounds(); //_x = x; _y = y; _w = w; _h = h;
-   }
+  }
+
  
   public void vetoableChange(PropertyChangeEvent pce) {
     // throws PropertyVetoException 
@@ -186,6 +178,56 @@ implements VetoableChangeListener, DelayedVetoableChangeListener {
   */
 
 
+  ////////////////////////////////////////////////////////////////
+  // notifications and updates
+
+//   public void update(Observable o, Object arg) {
+//     super.update(o, arg);
+//     Boolean abs = (Boolean) ((NodeUML)getOwner()).get(UML.pABSTRACT);
+//     String attrs = (String) ((NodeUML)getOwner()).get(UML.pATTRS);
+//     boolean showAttrs = (attrs.length() > 0 && _showAttrs);
+//     startTrans();
+//     if (arg.equals(UML.pABSTRACT)) {
+//       _nameFig.setItalic(abs.booleanValue());
+//     }
+//     if (arg.equals(UML.pATTRS) || arg.equals(UML.pSHOW_ATTRS)) {
+//       _attrsFig.setText(attrs);
+//       Vector figs = getFigs();
+//       if (!showAttrs) figs.removeElement(_attrsFig);
+//       else if (!figs.contains(_attrsFig))
+// 	figs.insertElementAt(_attrsFig, 1);
+//     }
+//     //GEF v06: _nameFig.measure();
+//     //GEF v06: _attrsFig.measure();
+
+//     Rectangle nameBBox = _nameFig.getBounds();
+//     int origX = nameBBox.x;
+//     int origY = nameBBox.y;
+//     int nameWidth = nameBBox.width;
+//     int nameHeight = nameBBox.height;
+//     int attrsWidth = _attrsFig.getBounds().width;
+//     int maxWidth = Math.max(nameWidth, attrsWidth);
+//     if (showAttrs) {
+//       _nameFig.setWidth(maxWidth);
+//       _nameFig.setLocation(origX, origY);
+//       _attrsFig.setWidth(maxWidth);
+//       _attrsFig.setLocation(origX, origY + nameHeight);
+//     }
+//     Rectangle attrBBox = null;
+//     if (showAttrs) attrBBox = _attrsFig.getBounds();
+//     else attrBBox = _nameFig.getBounds();
+//     Rectangle botArrowBBox = _botArrow.getBounds();
+//     Rectangle topArrowBBox = _topArrow.getBounds();
+//     _botArrow.translate(attrBBox.x + (attrBBox.width -
+// 			 botArrowBBox.width) / 2 - botArrowBBox.x,
+// 			attrBBox.y + attrBBox.height - botArrowBBox.y-
+// 			botArrowBBox.height + 4);
+//     _topArrow.translate(attrBBox.x + (attrBBox.width -
+// 			 topArrowBBox.width) / 2 - topArrowBBox.x,
+// 			0);
+//     endTrans();
+//   }
 
   
 } /* end class FigClass */
+
