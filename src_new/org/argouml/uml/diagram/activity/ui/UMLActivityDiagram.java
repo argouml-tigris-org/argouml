@@ -140,7 +140,7 @@ public class UMLActivityDiagram extends UMLDiagram {
     gm.setNamespace(m);
 	if (agraph != null) gm.setMachine(agraph);
     setGraphModel(gm);
-    LayerPerspective lay = new LayerPerspective(m.getName(), gm);
+    LayerPerspective lay = new LayerPerspectiveMutable(m.getName(), gm);
     setLayer(lay);
     StateDiagramRenderer rend = new StateDiagramRenderer(); // singleton
     lay.setGraphNodeRenderer(rend);

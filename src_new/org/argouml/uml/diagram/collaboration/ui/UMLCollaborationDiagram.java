@@ -99,7 +99,7 @@ public class UMLCollaborationDiagram extends UMLDiagram {
     CollabDiagramGraphModel gm = new CollabDiagramGraphModel();
     gm.setNamespace(m);
     setGraphModel(gm);
-    LayerPerspective lay = new LayerPerspective(m.getName(), gm);
+    LayerPerspective lay = new LayerPerspectiveMutable(m.getName(), gm);
     setLayer(lay);
     CollabDiagramRenderer rend = new CollabDiagramRenderer(); // singleton
     lay.setGraphNodeRenderer(rend);

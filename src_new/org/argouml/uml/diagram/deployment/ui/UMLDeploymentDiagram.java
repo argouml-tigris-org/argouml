@@ -82,7 +82,7 @@ public class UMLDeploymentDiagram extends UMLDiagram {
     DeploymentDiagramGraphModel gm = new DeploymentDiagramGraphModel(); 
     gm.setNamespace(m);
     setGraphModel(gm);
-    LayerPerspective lay = new LayerPerspective(m.getName(), gm);   
+    LayerPerspective lay = new LayerPerspectiveMutable(m.getName(), gm);   
     setLayer(lay);
     DeploymentDiagramRenderer rend = new DeploymentDiagramRenderer(); // singleton
     lay.setGraphNodeRenderer(rend);
