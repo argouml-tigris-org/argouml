@@ -66,9 +66,9 @@ public class ToDoByDecision extends ToDoPerspective
 	Vector items = tde.getToDoItems();
 	int nItems = items.size();
 	Object path[] = new Object[2];
-	path[0] = Designer.TheDesigner.getToDoList();
+	path[0] = Designer.theDesigner().getToDoList();
 
-	Vector decs = Designer.TheDesigner.getDecisions();
+	Vector decs = Designer.theDesigner().getDecisions();
 	Enumeration elems = decs.elements();
 	while (elems.hasMoreElements()) {
 	    Decision dec = (Decision) elems.nextElement();
@@ -102,9 +102,9 @@ public class ToDoByDecision extends ToDoPerspective
 	Vector items = tde.getToDoItems();
 	int nItems = items.size();
 	Object path[] = new Object[2];
-	path[0] = Designer.TheDesigner.getToDoList();
+	path[0] = Designer.theDesigner().getToDoList();
 
-	Vector decs = Designer.TheDesigner.getDecisions();
+	Vector decs = Designer.theDesigner().getDecisions();
 	Enumeration elems = decs.elements();
 	while (elems.hasMoreElements()) {
 	    Decision dec = (Decision) elems.nextElement();
@@ -135,13 +135,13 @@ public class ToDoByDecision extends ToDoPerspective
      */
     public void toDoItemsRemoved(ToDoListEvent tde) {
 	LOG.debug("toDoItemRemoved");
-	ToDoList list = Designer.TheDesigner.getToDoList(); //source?
+	ToDoList list = Designer.theDesigner().getToDoList(); //source?
 	Vector items = tde.getToDoItems();
 	int nItems = items.size();
 	Object path[] = new Object[2];
-	path[0] = Designer.TheDesigner.getToDoList();
+	path[0] = Designer.theDesigner().getToDoList();
 
-	Vector decs = Designer.TheDesigner.getDecisions();
+	Vector decs = Designer.theDesigner().getDecisions();
 	Enumeration elems = decs.elements();
 	while (elems.hasMoreElements()) {
 	    Decision dec = (Decision) elems.nextElement();

@@ -233,7 +233,7 @@ public class DismissToDoItemDialog extends ArgoDialog {
     private void explain(ActionEvent e) {
         //cat.debug("I can explain!");
         //TODO: make a new history item
-        ToDoList list = Designer.TheDesigner.getToDoList();
+        ToDoList list = Designer.theDesigner().getToDoList();
         try {
             list.explicitlyResolve(target, explanation.getText());
             ProjectManager.getManager().getCurrentProject().setNeedsSave(true);

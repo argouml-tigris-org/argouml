@@ -86,7 +86,7 @@ public class DesignIssuesDialog extends ArgoDialog implements ChangeListener {
 
 
     private void initMainPanel() {
-        DecisionModel dm = Designer.TheDesigner.getDecisionModel();
+        DecisionModel dm = Designer.theDesigner().getDecisionModel();
         Vector decs = dm.getDecisions();
 
         GridBagLayout gb = new GridBagLayout();

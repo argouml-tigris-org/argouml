@@ -61,7 +61,7 @@ public class GoListToTypeToItem implements TreeModel {
 	if (parent instanceof KnowledgeTypeNode) {
 	    KnowledgeTypeNode ktn = (KnowledgeTypeNode) parent;
 	    Enumeration itemEnum =
-		Designer.TheDesigner.getToDoList().elements();
+		Designer.theDesigner().getToDoList().elements();
 	    while (itemEnum.hasMoreElements()) {
 		ToDoItem item = (ToDoItem) itemEnum.nextElement();
 		if (item.containsKnowledgeType(ktn.getName())) {
@@ -84,7 +84,7 @@ public class GoListToTypeToItem implements TreeModel {
 	if (parent instanceof KnowledgeTypeNode) {
 	    KnowledgeTypeNode ktn = (KnowledgeTypeNode) parent;
 	    Enumeration itemEnum =
-		Designer.TheDesigner.getToDoList().elements();
+		Designer.theDesigner().getToDoList().elements();
 	    int count = 0;
 	    while (itemEnum.hasMoreElements()) {
 		ToDoItem item = (ToDoItem) itemEnum.nextElement();
@@ -110,7 +110,7 @@ public class GoListToTypeToItem implements TreeModel {
 	    Vector candidates = new Vector();
 	    KnowledgeTypeNode ktn = (KnowledgeTypeNode) parent;
 	    Enumeration itemEnum =
-		Designer.TheDesigner.getToDoList().elements();
+		Designer.theDesigner().getToDoList().elements();
 	    while (itemEnum.hasMoreElements()) {
 		ToDoItem item = (ToDoItem) itemEnum.nextElement();
 		if (item.containsKnowledgeType(ktn.getName()))

@@ -66,9 +66,9 @@ public class ToDoByGoal extends ToDoPerspective
 	Vector items = tde.getToDoItems();
 	int nItems = items.size();
 	Object path[] = new Object[2];
-	path[0] = Designer.TheDesigner.getToDoList();
+	path[0] = Designer.theDesigner().getToDoList();
 
-	Vector goals = Designer.TheDesigner.getGoals();
+	Vector goals = Designer.theDesigner().getGoals();
 	Enumeration elems = goals.elements();
 	while (elems.hasMoreElements()) {
 	    Goal g = (Goal) elems.nextElement();
@@ -102,9 +102,9 @@ public class ToDoByGoal extends ToDoPerspective
 	Vector items = tde.getToDoItems();
 	int nItems = items.size();
 	Object path[] = new Object[2];
-	path[0] = Designer.TheDesigner.getToDoList();
+	path[0] = Designer.theDesigner().getToDoList();
 
-	Vector goals = Designer.TheDesigner.getGoals();
+	Vector goals = Designer.theDesigner().getGoals();
 	Enumeration elems = goals.elements();
 	while (elems.hasMoreElements()) {
 	    Goal g = (Goal) elems.nextElement();
@@ -135,13 +135,13 @@ public class ToDoByGoal extends ToDoPerspective
      */
     public void toDoItemsRemoved(ToDoListEvent tde) {
 	LOG.debug("toDoItemAdded");
-	ToDoList list = Designer.TheDesigner.getToDoList(); //source?
+	ToDoList list = Designer.theDesigner().getToDoList(); //source?
 	Vector items = tde.getToDoItems();
 	int nItems = items.size();
 	Object path[] = new Object[2];
-	path[0] = Designer.TheDesigner.getToDoList();
+	path[0] = Designer.theDesigner().getToDoList();
 
-	Vector goals = Designer.TheDesigner.getGoals();
+	Vector goals = Designer.theDesigner().getGoals();
 	Enumeration elems = goals.elements();
 	while (elems.hasMoreElements()) {
 	    Goal g = (Goal) elems.nextElement();

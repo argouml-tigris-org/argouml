@@ -63,9 +63,9 @@ public class ToDoByOffender extends ToDoPerspective
         Vector items = tde.getToDoItems();
         int nItems = items.size();
         Object path[] = new Object[2];
-        path[0] = Designer.TheDesigner.getToDoList();
+        path[0] = Designer.theDesigner().getToDoList();
 
-        VectorSet allOffenders = Designer.TheDesigner.getToDoList()
+        VectorSet allOffenders = Designer.theDesigner().getToDoList()
                 .getOffenders();
         Enumeration elems = allOffenders.elements();
         while (elems.hasMoreElements()) {
@@ -102,9 +102,9 @@ public class ToDoByOffender extends ToDoPerspective
         Vector items = tde.getToDoItems();
         int nItems = items.size();
         Object path[] = new Object[2];
-        path[0] = Designer.TheDesigner.getToDoList();
+        path[0] = Designer.theDesigner().getToDoList();
 
-        VectorSet allOffenders = Designer.TheDesigner.getToDoList()
+        VectorSet allOffenders = Designer.theDesigner().getToDoList()
                 .getOffenders();
         Enumeration elems = allOffenders.elements();
         while (elems.hasMoreElements()) {
@@ -141,9 +141,9 @@ public class ToDoByOffender extends ToDoPerspective
         Vector items = tde.getToDoItems();
         int nItems = items.size();
         Object path[] = new Object[2];
-        path[0] = Designer.TheDesigner.getToDoList();
+        path[0] = Designer.theDesigner().getToDoList();
 
-        VectorSet allOffenders = Designer.TheDesigner.getToDoList()
+        VectorSet allOffenders = Designer.theDesigner().getToDoList()
                 .getOffenders();
         Enumeration elems = allOffenders.elements();
         while (elems.hasMoreElements()) {

@@ -138,7 +138,7 @@ public class EmailExpertDialog extends ArgoDialog {
     public void actionPerformed(ActionEvent e) {
 	super.actionPerformed(e);   
 	if (e.getSource() == getOkButton()) {
-	    Designer dsgr = Designer.TheDesigner;
+	    Designer dsgr = Designer.theDesigner();
 	    String to = emailTo.getText();
 	    String cc = emailCc.getText();
 	    String subject = emailSubject.getText();

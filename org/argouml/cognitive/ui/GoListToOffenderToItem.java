@@ -96,8 +96,8 @@ public class GoListToOffenderToItem implements TreeModel {
      */
     public Vector getChildren(Object parent) {
         VectorSet allOffenders = new VectorSet();
-        allOffenders.addAllElementsSuchThat(Designer.TheDesigner.getToDoList().
-            getOffenders(), 
+        allOffenders.addAllElementsSuchThat(Designer.theDesigner()
+            .getToDoList().getOffenders(), 
             new PredicateNotInTrash());
         
         
@@ -107,7 +107,7 @@ public class GoListToOffenderToItem implements TreeModel {
 	//otherwise parent must be an offending design material
 	if (allOffenders.contains(parent)) {
 	    Vector res = new Vector();
-	    ToDoList list = Designer.TheDesigner.getToDoList();
+	    ToDoList list = Designer.theDesigner().getToDoList();
 	    Enumeration elems = list.elements();
 	    while (elems.hasMoreElements()) {
 		ToDoItem item = (ToDoItem) elems.nextElement();

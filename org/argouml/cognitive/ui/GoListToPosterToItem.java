@@ -94,14 +94,14 @@ public class GoListToPosterToItem implements TreeModel {
      * @return the children
      */
     public Vector getChildren(Object parent) {
-	VectorSet allPosters = Designer.TheDesigner.getToDoList().getPosters();
+	VectorSet allPosters = Designer.theDesigner().getToDoList().getPosters();
 	if (parent instanceof ToDoList) {
 	    return allPosters.asVector();
 	}
 	//otherwise parent must be an offending design material
 	if (allPosters.contains(parent)) {
 	    Vector res = new Vector();
-	    ToDoList list = Designer.TheDesigner.getToDoList();
+	    ToDoList list = Designer.theDesigner().getToDoList();
 	    Enumeration elems = list.elements();
 	    while (elems.hasMoreElements()) {
 		ToDoItem item = (ToDoItem) elems.nextElement();
