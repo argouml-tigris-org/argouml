@@ -60,6 +60,9 @@ options {
     
     private Vector paramStack = new Vector();
     
+    /**
+     * This is a Vector containing String.
+     */
     private Vector superclassStack = new Vector();
     
     private StringNamespace sns = new StringNamespace(".");
@@ -80,6 +83,16 @@ options {
      */
     public final void setModeller( Modeller modeller) {
         _modeller = modeller;
+    }
+    
+	/**
+	 * Get the current superclass name.
+	 */
+    private String getSuperclassName() {
+        if (superclassStack.isEmpty()) {
+            return null;
+        }
+        return (String) superclassStack.get(superclassStack.size() - 1);
     }
 
 }
@@ -137,7 +150,7 @@ interf
 interface_dcl[String classifierName]
 	:   { superclassStack.clear(); }
 	    interface_header
-		{ getModeller().addClass(classifierName, ACC_PUBLIC, superclassStack, null, null); }
+		{ getModeller().addClass(classifierName, ACC_PUBLIC, getSuperclassName(), null, null); }
 	    LCURLY! interface_body RCURLY!
 	    { getModeller().popClassifier(); }
 	;

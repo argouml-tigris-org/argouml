@@ -13,3 +13,7 @@
 /argouml/modules/classfile/src/org/argouml/uml/reveng/classfile/ClassfileTokenTypes.java
 /argouml/modules/classfile/src/org/argouml/uml/reveng/classfile/ClassfileTreeParser.java
 /argouml/modules/classfile/src/org/argouml/uml/reveng/classfile/ClassfileTreeParserTokenTypes.java
+
+/argouml/modules/idl/src/org/argouml/uml/reveng/idl/IDLLexer.java
+/argouml/modules/idl/src/org/argouml/uml/reveng/idl/IDLParser.java
+/argouml/modules/idl/src/org/argouml/uml/reveng/idl/IDLTokenTypes.java
