@@ -33,60 +33,75 @@ import java.util.*;
  * points in the code.
  */
 public class SimpleTimer {
-    String _name = null;
-    Vector _points = new Vector();
-    Vector _labels = new Vector();
+    private String name = null;
+    private Vector points = new Vector();
+    private Vector labels = new Vector();
 
+    /**
+     * The constructor. Creates a simple timer with given name.
+     * 
+     * @param n the name
+     */
     public SimpleTimer(String n) {
-	_name = n;
+	name = n;
     }
 
+    /**
+     * Mark (Store) the current time.
+     */
     public void mark() {
-	_points.add(new Long(System.currentTimeMillis()));
-	_labels.add(null);
+	points.add(new Long(System.currentTimeMillis()));
+	labels.add(null);
     }
 
+    /**
+     * Mark (Store) the current time.
+     * 
+     * @param label the mark will be labelled with this string
+     */
     public void mark(String label) {
 	mark();
-	_labels.setElementAt(label, _labels.size() - 1);
+	labels.setElementAt(label, labels.size() - 1);
     }
 
     /**
      * Returns a string of formatted distances.
+     *
+     * @return a string representing the results
      */
     public Enumeration result() {
 	mark();
 	return new Enumeration() {
-	    int count = 1;
+	    private int count = 1;
 
 	    public boolean hasMoreElements() {
-		return count <= _points.size();
+		return count <= points.size();
 	    }
 
 	    public Object nextElement() {
 		StringBuffer res = new StringBuffer();
-		synchronized (_points) {
-		    if (count < _points.size()) {
-			if (_labels.get(count - 1) == null) {
+		synchronized (points) {
+		    if (count < points.size()) {
+			if (labels.get(count - 1) == null) {
 			    res.append("phase ").append(count);
 			} else {
-			    res.append(_labels.get(count - 1));
+			    res.append(labels.get(count - 1));
 			}
 			res.append("                            ");
 			res.append("                            ");
 			res.setLength(60);
-			res.append((((Long) _points.elementAt(count)).
+			res.append((((Long) points.elementAt(count)).
 				    longValue()
-				    - ((Long) _points.elementAt(count - 1))
+				    - ((Long) points.elementAt(count - 1))
 				    .longValue()));
 		    }
-		    else if (count == _points.size()) {
+		    else if (count == points.size()) {
 			res.append("Total                      ");
 			res.setLength(18);
-			res.append((((Long) _points.
-				     elementAt(_points.size() - 1))
+			res.append((((Long) points.
+				     elementAt(points.size() - 1))
 				    .longValue()
-				    - ((Long) _points.
+				    - ((Long) points.
 				       elementAt(0)).longValue()));
 		    }
 		}
@@ -96,6 +111,9 @@ public class SimpleTimer {
 	};
     }
 
+    /**
+     * @see java.lang.Object#toString()
+     */
     public String toString() {
 	StringBuffer sb = new StringBuffer("");
 

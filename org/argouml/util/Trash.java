@@ -29,86 +29,111 @@ import java.util.Vector;
 import org.apache.log4j.Logger;
 import org.argouml.model.ModelFacade;
 
-/** In the furture this will be a trash can icon in the project
+/** In the future this will be a trash can icon in the project
  * browser.  Deleting an object moves it to the trash.  You can move
  * things back out of the trash if you like.  Eventually you empty the
  * trash.  Critics check for relationships between things that will
  * break when the trash is empty.  E.g., Class X's superclass is in
  * the trash, you must fix this before you empty the trash. 
+ * 
+ * TODO: Move to the Model component.
+ * Problem: there are public static attributes so it is hard to make a proxy
  */
-// TODO: Move to the Model component.
-// Problem: there are public static attributes so it is hard to make a proxy
 public class Trash {
-    protected static Logger cat = 
+    private static final Logger LOG = 
         Logger.getLogger(Trash.class);
     
-    public static Trash SINGLETON = new Trash();
+    /**
+     * The SINGLETON trashcan.
+     */
+    public static final Trash SINGLETON = new Trash();
 
     /** Keys are model objects, values are TrashItems with recovery info */
-    public Vector _contents = new Vector();
+    private Vector contents = new Vector();
 
-    protected Trash() { }
+    private Trash() { }
 
+    /**
+     * @param obj the object to be added
+     * @param places currently null in all calls to this function
+     */
     public void addItemFrom(Object obj, Vector places) {
 	if (obj == null) {
-	    cat.warn("tried to add null to trash!");
+	    LOG.warn("tried to add null to trash!");
 	    return;
 	}    
 	if (ModelFacade.isAModelElement(obj)) {
 	    //MModelElement me = (MModelElement) obj;
 	    TrashItem ti = new TrashItem(obj, places);
-	    _contents.addElement(ti);
+	    contents.addElement(ti);
       
-	    // next two lines give runtime exceptions. Remove should be done properly
-	    //me.setNamespace(null);
+	    // next two lines give runtime exceptions. 
+	    // Remove should be done properly
+	    // me.setNamespace(null);
 	    // me.setNamespace(Trash_Model);
-	    cat.debug("added " + obj + " to trash");
+	    LOG.debug("added " + obj + " to trash");
 	}
 	//TODO: trash diagrams
     }
 
+    /**
+     * @param obj the object we look for
+     * @return true if the object is present in the trashcan
+     */
     public boolean contains(Object obj) {
-	int size = _contents.size();
+	int size = contents.size();
 	for (int i = 0; i < size; i++) {
-	    TrashItem ti = (TrashItem) _contents.elementAt(i);
-	    if (ti._item == obj) return true;
+	    TrashItem ti = (TrashItem) contents.elementAt(i);
+	    if (ti.getItem() == obj) return true;
 	}
 	return false;
     }
   
+    /**
+     * @param obj the object to be recovered, i.e. put it back into the model
+     */
     public void recoverItem(Object obj) {
-	cat.debug("TODO: recover from trash");
+	LOG.debug("TODO: recover from trash");
 	if (ModelFacade.isAModelElement(obj)) {
 	    TrashItem ti = null; //TODO: find in trash
 	    //((MModelElement)obj).recoverFromTrash(ti);
 	}
     }
 
+    /**
+     * @param obj the object to be removed from the trashcan, i.e. nuke it
+     */
     public void removeItem(Object obj) {
 	if (obj == null) {
-	    cat.debug("tried to remove null from trash!");
+	    LOG.debug("tried to remove null from trash!");
 	    return;
 	}
 	TrashItem ti = null; //TODO: find in trash
-	_contents.removeElement(ti);
+	contents.removeElement(ti);
     }
 
+    /**
+     * Empty the trashcan.
+     */
     public void emptyTrash() {
-	cat.debug("TODO: emptyTheTrash not implemented yet");
-	if (cat.isDebugEnabled()) {
+	LOG.debug("TODO: emptyTheTrash not implemented yet");
+	if (LOG.isDebugEnabled()) {
 	    StringBuffer buf = new StringBuffer("Trash contents:");
 	    buf.append("\n");
-	    java.util.Enumeration keys = _contents.elements();
+	    java.util.Enumeration keys = contents.elements();
 	    while (keys.hasMoreElements()) {
 		Object k = keys.nextElement();
-		buf.append("| " + ((TrashItem) k)._item + "\n");
+		buf.append("| " + ((TrashItem) k).getItem() + "\n");
 	    }
-	    cat.debug(buf.toString());
+	    LOG.debug(buf.toString());
 	}
     
     }
 
-    public int getSize() { return _contents.size(); }
+    /**
+     * @return the number of items in the trashcan
+     */
+    public int getSize() { return contents.size(); }
 
 } /* end class Trash */
 
@@ -116,13 +141,13 @@ public class Trash {
 
 class TrashItem {
 
-    Object _item;
-    Object _recoveryInfo = null;
-    Vector _places;
+    private Object item;
+    private Object recoveryInfo = null;
+    private Vector places;
 
-    TrashItem(Object item, Vector places) {
-	_item = item;
-	_places = places;
+    TrashItem(Object theItem, Vector thePlaces) {
+	item = theItem;
+	places = thePlaces;
 	//if (item instanceof MModelElement) {
 	// this can't work with nsuml. Toby
 	/*      try {
@@ -136,11 +161,18 @@ class TrashItem {
     public boolean equals(Object o) {
 	if (o instanceof TrashItem) {
 	    TrashItem ti = (TrashItem) o;
-	    return ti._item == _item;
+	    return ti.item == item;
 	}
 	return false;
     }
 
-    public int hashCode() { return _item.hashCode(); }
+    public int hashCode() { return item.hashCode(); }
+
+    /**
+     * @return Returns the _item.
+     */
+    Object getItem() {
+        return item;
+    }
 
 } /* end class TrashItem */
