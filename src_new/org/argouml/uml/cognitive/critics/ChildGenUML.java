@@ -44,7 +44,7 @@ import org.argouml.kernel.*;
  *  of any given part of the UML model.  Basically, it goes from
  *  Project, to Models, to ModelElements.  Argo's critic Agency uses
  *  this to apply critics where appropriate.
- *
+ * @stereotype singleton
  * @see org.argouml.cognitive.critics.Agency */
 
 public class ChildGenUML implements ChildGenerator {
