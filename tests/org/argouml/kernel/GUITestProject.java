@@ -299,6 +299,45 @@ public class GUITestProject extends TestCase {
 
 
     /**
+     * Test deleting a package with a package with a Activity diagram.
+     * The diagram should be deleted, too.
+     */ 
+    public void testDeletePackageWithPackageWithActivityDiagram() {
+        Project p = ProjectManager.getManager().getCurrentProject();
+        assertEquals(2, p.getDiagrams().size());
+        
+        int sizeMembers = p.getMembers().size();
+        int sizeDiagrams = p.getDiagrams().size();
+        
+        // test with a package and a class and activity diagram
+        Object package1 = ModelManagementFactory.getFactory().buildPackage(
+                "test1", null);
+        ModelFacade.setNamespace(package1, p.getModel());
+        Object package2 = ModelManagementFactory.getFactory().buildPackage(
+                "test2", null);
+        ModelFacade.setNamespace(package2, package1);
+      
+        // build the Activity Diagram
+        Object actgrph = ActivityGraphsFactory.getFactory().buildActivityGraph(
+                package2);
+        UMLActivityDiagram d = new UMLActivityDiagram(ModelFacade
+                .getNamespace(actgrph), actgrph);
+        p.addMember(d);
+        assertEquals(sizeDiagrams + 1, p.getDiagrams().size());
+        assertEquals(sizeMembers + 1, p.getMembers().size());
+        
+        p.moveToTrash(package1);
+        
+        assertTrue("Package 2 not in trash", 
+                UmlFactory.getFactory().isRemoved(package2));
+        assertTrue("ActivityGraph not in trash", 
+                UmlFactory.getFactory().isRemoved(actgrph));
+        assertEquals(sizeDiagrams, p.getDiagrams().size());
+        assertEquals(sizeMembers, p.getMembers().size());
+    }
+
+    
+    /**
      * @see junit.framework.TestCase#setUp()
      */
     protected void setUp() throws Exception {
