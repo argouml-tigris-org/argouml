@@ -185,7 +185,7 @@ public class NavigatorPane
     public NavigatorPane(boolean doSplash) {
 
         _combo = new JComboBox();
-        _tree = new DisplayTextTree(); // _tree = new DnDNavigatorTree();//
+        _tree = new DnDNavigatorTree();
         TargetManager.getInstance().addTargetListener(_tree);
         _toolbar = new Toolbar();
         JPanel toolbarPanel = new JPanel(new BorderLayout());
