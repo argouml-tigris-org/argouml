@@ -1,4 +1,4 @@
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2001 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -280,7 +280,7 @@ class ColumnSrcType extends ColumnDescriptor {
     if (conns.size() == 2) {
       MAssociationEnd ae = (MAssociationEnd) conns.elementAt(0);
 	  if (ae != null && ae.getType() != null && ae.getType().getName() != null) {
-		  GeneratorDisplay g = GeneratorDisplay.SINGLETON;
+		  GeneratorDisplay g = GeneratorDisplay.getInstance();
 		  return g.generateClassifierRef(ae.getType());
 	  }
     }
@@ -383,7 +383,7 @@ class ColumnDstType extends ColumnDescriptor {
     if (conns.size() == 2) {
 		MAssociationEnd ae = (MAssociationEnd) conns.elementAt(1);
 		if (ae != null && ae.getType() != null && ae.getType().getName() != null) {	
-			GeneratorDisplay g = GeneratorDisplay.SINGLETON;
+			GeneratorDisplay g = GeneratorDisplay.getInstance();
 			return g.generateClassifierRef(ae.getType());
 		}
     }
@@ -650,7 +650,7 @@ class ColumnExtends extends ColumnDescriptor {
     String res = "";
     if  (gen == null || gen.size() == 0) return res;
     int size = gen.size();
-    GeneratorDisplay gd = GeneratorDisplay.SINGLETON;
+    GeneratorDisplay gd = GeneratorDisplay.getInstance();
     for (int i = 0; i < size; i++) {
       MGeneralization g = (MGeneralization) gen.elementAt(i);
       MClassifier base = (MClassifier) g.getParent();
@@ -676,7 +676,7 @@ class ColumnExtends extends ColumnDescriptor {
   String res = "";
   if  (gen == null || gen.size() == 0) return res;
   int size = gen.size();
-  GeneratorDisplay gd = GeneratorDisplay.SINGLETON;
+  GeneratorDisplay gd = GeneratorDisplay.getInstance();
   for (int i = 0; i < size; i++) {
   Realization g = (Realization) gen.elementAt(i);
   MClassifier base = (MClassifier) g.getParenttype();
@@ -893,7 +893,7 @@ class ColumnReturn extends ColumnDescriptor {
 	MParameter rp = MMUtil.SINGLETON.getReturnParameter(op);
 	if (rp != null && rp.getType() != null) {
 		MClassifier returnType = rp.getType();
-		GeneratorDisplay gd = GeneratorDisplay.SINGLETON;
+		GeneratorDisplay gd = GeneratorDisplay.getInstance();
 		return gd.generateClassifierRef(returnType);
 	}
 	return "";
@@ -964,7 +964,7 @@ class ColumnType extends ColumnDescriptor {
     if (!(target instanceof MAttribute)) return null;
     MAttribute op = (MAttribute) target;
     MClassifier type = op.getType();
-    GeneratorDisplay gd = GeneratorDisplay.SINGLETON;
+    GeneratorDisplay gd = GeneratorDisplay.getInstance();
     return gd.generateClassifierRef(type);
   }
 
@@ -1399,5 +1399,4 @@ class ColumnAction extends ColumnDescriptor {
   }
 
 } /* end class ColumnAction */
-
 
