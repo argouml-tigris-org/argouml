@@ -382,8 +382,8 @@ public class Import {
                 Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 
         //turn off critiquing for reverse engineering
-        boolean b = Designer.TheDesigner.getAutoCritique();
-        if (b)  Designer.TheDesigner.setAutoCritique(false);
+        boolean b = Designer.theDesigner().getAutoCritique();
+        if (b)  Designer.theDesigner().setAutoCritique(false);
         UmlModelEventPump.getPump().stopPumpingEvents();
         
         // now start importing (with an empty problem list)
@@ -677,7 +677,7 @@ public class Import {
             }
             
             // turn criticing on again
-            if (criticThreadWasOn)  Designer.TheDesigner.setAutoCritique(true);
+            if (criticThreadWasOn)  Designer.theDesigner().setAutoCritique(true);
 
             UmlModelEventPump.getPump().startPumpingEvents();
 

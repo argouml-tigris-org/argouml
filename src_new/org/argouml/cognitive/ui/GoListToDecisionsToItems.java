@@ -62,7 +62,7 @@ public class GoListToDecisionsToItems implements TreeModel {
 	if (parent instanceof Decision) {
 	    Decision dec = (Decision) parent;
 	    Enumeration itemEnum =
-		Designer.TheDesigner.getToDoList().elements();
+		Designer.theDesigner().getToDoList().elements();
 	    while (itemEnum.hasMoreElements()) {
 		ToDoItem item = (ToDoItem) itemEnum.nextElement();
 		if (item.getPoster().supports(dec)) {
@@ -83,7 +83,7 @@ public class GoListToDecisionsToItems implements TreeModel {
 	if (parent instanceof Decision) {
 	    Decision dec = (Decision) parent;
 	    Enumeration itemEnum =
-		Designer.TheDesigner.getToDoList().elements();
+		Designer.theDesigner().getToDoList().elements();
 	    int count = 0;
 	    while (itemEnum.hasMoreElements()) {
 		ToDoItem item = (ToDoItem) itemEnum.nextElement();
@@ -125,7 +125,7 @@ public class GoListToDecisionsToItems implements TreeModel {
 	    Vector candidates = new Vector();
 	    Decision dec = (Decision) parent;
 	    Enumeration itemEnum =
-		Designer.TheDesigner.getToDoList().elements();
+		Designer.theDesigner().getToDoList().elements();
 	    while (itemEnum.hasMoreElements()) {
 		ToDoItem item = (ToDoItem) itemEnum.nextElement();
 		if (item.getPoster().supports(dec)) candidates.addElement(item);
@@ -167,7 +167,7 @@ public class GoListToDecisionsToItems implements TreeModel {
      * @return the decisions
      */
     public Vector getDecisions() {
-	return Designer.TheDesigner.getDecisionModel().getDecisions();
+	return Designer.theDesigner().getDecisionModel().getDecisions();
     }
   
 

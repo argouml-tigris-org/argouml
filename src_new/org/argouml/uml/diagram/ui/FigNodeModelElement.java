@@ -379,7 +379,7 @@ public abstract class FigNodeModelElement
      */
     public Vector getPopUpActions(MouseEvent me) {
         Vector popUpActions = super.getPopUpActions(me);
-        ToDoList list = Designer.TheDesigner.getToDoList();
+        ToDoList list = Designer.theDesigner().getToDoList();
         Vector items = (Vector) list.elementsForOffender(getOwner()).clone();
         if (items != null && items.size() > 0) {
             ArgoJMenu critiques = new ArgoJMenu(BUNDLE, "menu.popup.critiques");

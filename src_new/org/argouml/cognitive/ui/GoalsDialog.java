@@ -86,7 +86,7 @@ public class GoalsDialog extends ArgoDialog implements ChangeListener
 
 
     private void initMainPanel() {
-	GoalModel gm = Designer.TheDesigner.getGoalModel();
+	GoalModel gm = Designer.theDesigner().getGoalModel();
 	Vector goals = gm.getGoals();
 
 	GridBagLayout gb = new GridBagLayout();

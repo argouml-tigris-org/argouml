@@ -66,7 +66,7 @@ public class StartCritics implements Runnable {
         // should be in logon wizard?
         dsgr.startConsidering(CrUML.decINHERITANCE);
         dsgr.startConsidering(CrUML.decCONTAINMENT);
-        Designer._userWorking = true;
+        Designer.setUserWorking(true);
     }
 
 } /* end class StartCritics */

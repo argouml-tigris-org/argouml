@@ -144,7 +144,7 @@ public class AddToDoItemDialog extends ArgoDialog {
     }
     
     private void doAdd() {
-        Designer designer = Designer.TheDesigner;
+        Designer designer = Designer.theDesigner();
         String headline = headLineTextField.getText();
         int priority = ToDoItem.HIGH_PRIORITY;
         switch (priorityComboBox.getSelectedIndex()) {

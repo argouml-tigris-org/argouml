@@ -548,7 +548,7 @@ class ActionAutoCritique extends UMLAction {
     public void actionPerformed(ActionEvent ae) {
         
         // stop/start creating more critics
-	Designer d = Designer.TheDesigner;
+	Designer d = Designer.theDesigner();
 	boolean b = d.getAutoCritique();
 	d.setAutoCritique(!b);
         
@@ -699,7 +699,7 @@ class ActionEmailExpert extends ToDoItemAction {
                 subject = s.replace(i, i + 1, "%20").toString();
             }
             
-            Designer dsgr = Designer.TheDesigner;
+            Designer dsgr = Designer.theDesigner();
             try {                
                 //MVW: This works under MSWindows only, I guess.
                 Runtime.getRuntime().exec(

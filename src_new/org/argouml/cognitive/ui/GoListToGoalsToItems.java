@@ -62,7 +62,7 @@ public class GoListToGoalsToItems implements TreeModel {
 	if (parent instanceof Goal) {
 	    Goal g = (Goal) parent;
 	    Enumeration itemEnum =
-		Designer.TheDesigner.getToDoList().elements();
+		Designer.theDesigner().getToDoList().elements();
 	    while (itemEnum.hasMoreElements()) {
 		ToDoItem item = (ToDoItem) itemEnum.nextElement();
 		if (item.getPoster().supports(g)) {
@@ -85,7 +85,7 @@ public class GoListToGoalsToItems implements TreeModel {
 	if (parent instanceof Goal) {
 	    Goal g = (Goal) parent;
 	    Enumeration itemEnum =
-		Designer.TheDesigner.getToDoList().elements();
+		Designer.theDesigner().getToDoList().elements();
 	    int count = 0;
 	    while (itemEnum.hasMoreElements()) {
 		ToDoItem item = (ToDoItem) itemEnum.nextElement();
@@ -110,7 +110,7 @@ public class GoListToGoalsToItems implements TreeModel {
 	    Vector candidates = new Vector();
 	    Goal g = (Goal) parent;
 	    Enumeration itemEnum =
-		Designer.TheDesigner.getToDoList().elements();
+		Designer.theDesigner().getToDoList().elements();
 	    while (itemEnum.hasMoreElements()) {
 		ToDoItem item = (ToDoItem) itemEnum.nextElement();
 		if (item.getPoster().supports(g)) candidates.addElement(item);
@@ -154,7 +154,7 @@ public class GoListToGoalsToItems implements TreeModel {
      * @return the goals
      */
     public Vector getGoals() {
-	return Designer.TheDesigner.getGoalModel().getGoals();
+	return Designer.theDesigner().getGoalModel().getGoals();
     }
   
 } /* end class GoListToGoalsToItems */

@@ -189,8 +189,8 @@ public class ToDoPane extends JPanel
         tree.addMouseListener(this);
         
         // next line coming from projectbrowser
-        setRoot(Designer.TheDesigner.getToDoList());
-        Designer.TheDesigner.getToDoList().addToDoListListener(this);
+        setRoot(Designer.theDesigner().getToDoList());
+        Designer.theDesigner().getToDoList().addToDoListListener(this);
         
         if (doSplash) {
             SplashScreen splash = SplashScreen.getInstance();
@@ -488,7 +488,7 @@ public class ToDoPane extends JPanel
      * Update the count label.
      */
     public void updateCountLabel() {
-        int size = Designer.TheDesigner.getToDoList().size();
+        int size = Designer.theDesigner().getToDoList().size();
         if (size > oldSize) {
 	    dir = '+';
 	}
