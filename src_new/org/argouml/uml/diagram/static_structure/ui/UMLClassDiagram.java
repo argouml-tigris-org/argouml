@@ -28,14 +28,10 @@
 
 package org.argouml.uml.diagram.static_structure.ui;
 
-import java.awt.Component;
-
 import javax.swing.Action;
-import javax.swing.JToolBar;
 
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.ModelFacade;
-import org.argouml.swingext.PopupToolBoxButton;
 import org.argouml.ui.CmdCreateNode;
 import org.argouml.uml.diagram.static_structure.ClassDiagramGraphModel;
 import org.argouml.uml.diagram.ui.ActionAddAssociation;
@@ -50,7 +46,6 @@ import org.tigris.gef.base.ModeCreatePolyEdge;
 
 import ru.novosoft.uml.behavior.common_behavior.MInstance;
 import ru.novosoft.uml.behavior.common_behavior.MLink;
-import ru.novosoft.uml.foundation.core.MAbstraction;
 import ru.novosoft.uml.foundation.core.MClass;
 import ru.novosoft.uml.foundation.core.MDependency;
 import ru.novosoft.uml.foundation.core.MGeneralization;
@@ -59,8 +54,8 @@ import ru.novosoft.uml.foundation.core.MNamespace;
 import ru.novosoft.uml.foundation.core.MPermission;
 import ru.novosoft.uml.foundation.core.MUsage;
 import ru.novosoft.uml.foundation.data_types.MAggregationKind;
-import ru.novosoft.uml.model_management.MPackage;
 import ru.novosoft.uml.model_management.MModel;
+import ru.novosoft.uml.model_management.MPackage;
 import ru.novosoft.uml.model_management.MSubsystem;
 
 public class UMLClassDiagram extends UMLDiagram {

@@ -52,7 +52,7 @@ public class GoSummaryToOutgoingDependency extends AbstractGoRule {
           
           List list = new ArrayList();
           
-          Iterator it = ModelFacade.getClientDependencies(((OutgoingDependencyNode)parent).getParent());
+          Iterator it = ModelFacade.getClientDependencies(((OutgoingDependencyNode)parent).getParent()).iterator();
           
           while(it.hasNext()){
               

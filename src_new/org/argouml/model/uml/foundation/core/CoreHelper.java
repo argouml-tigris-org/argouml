@@ -46,7 +46,6 @@ import ru.novosoft.uml.behavior.use_cases.MActor;
 import ru.novosoft.uml.behavior.use_cases.MExtend;
 import ru.novosoft.uml.behavior.use_cases.MInclude;
 import ru.novosoft.uml.behavior.use_cases.MUseCase;
-import ru.novosoft.uml.foundation.core.MAbstraction;
 import ru.novosoft.uml.foundation.core.MAssociation;
 import ru.novosoft.uml.foundation.core.MAssociationEnd;
 import ru.novosoft.uml.foundation.core.MAttribute;
@@ -360,12 +359,13 @@ public class CoreHelper {
         Collection deps = cls.getClientDependencies();
         Iterator depIterator = deps.iterator();
         while (depIterator.hasNext()) {
-            MDependency dep = (MDependency)depIterator.next();
-            if ((dep instanceof MAbstraction)
-                && dep.getStereotype() != null
-                && dep.getStereotype().getName() != null
-                && dep.getStereotype().getName().equals("realize")) {
-                MInterface i = (MInterface)dep.getSuppliers().toArray()[0];
+            Object dep = depIterator.next();
+            Object stereo = ModelFacade.getStereoType(dep);           
+            if ((ModelFacade.isAAbstraction(dep))
+                && stereo != null
+                && ModelFacade.getName(stereo) != null
+                && ModelFacade.getName(stereo).equals("realize")) {
+                   Object i = ModelFacade.getSuppliers(dep).toArray()[0];               
                 result.add(i);
             }
         }
@@ -560,15 +560,14 @@ public class CoreHelper {
             ProjectManager.getManager().getCurrentProject().getModel();
         while (it.hasNext()) {
             Object o = it.next();
-            if (o instanceof MAbstraction) {
-                MAbstraction abstraction = (MAbstraction)o;
-                MStereotype stereo = abstraction.getStereotype();
+            if (ModelFacade.isAAbstraction(o)) {
+                Object stereo = ModelFacade.getStereoType(o);
                 if (stereo != null
-                    && stereo.getBaseClass() != null
-                    && stereo.getName() != null
-                    && stereo.getBaseClass().equals("Abstraction")
-                    && stereo.getName().equals("realize")) {
-                    Iterator it2 = abstraction.getSuppliers().iterator();
+                    && ModelFacade.getBaseClass(stereo) != null
+                    && ModelFacade.getName(stereo) != null
+                    && ModelFacade.getBaseClass(stereo).equals("Abstraction")
+                    && ModelFacade.getName(stereo).equals("realize")) {
+                    Iterator it2 = ModelFacade.getSuppliers(o).iterator();
                     while (it2.hasNext()) {
                         Object o2 = it2.next();
                         if (o2 instanceof MInterface) {
@@ -1376,7 +1375,7 @@ public class CoreHelper {
                 while (it.hasNext()) {
                     MDependency dependency = (MDependency)it.next();
                     MStereotype stereo = dependency.getStereotype();
-                    if (dependency instanceof MAbstraction
+                    if (ModelFacade.isAAbstraction(dependency)
                         && stereo != null && 
                         "realize".equals(stereo.getName()) && 
                         "Abstraction".equals(stereo.getBaseClass())) {

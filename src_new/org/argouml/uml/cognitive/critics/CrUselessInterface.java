@@ -58,7 +58,7 @@ public class CrUselessInterface extends CrUML {
 	    return NO_PROBLEM;
 
 
-	Iterator iter = ModelFacade.getSupplierDependencies(dm);
+	Iterator iter = ModelFacade.getSupplierDependencies(dm).iterator();
 
 	while (iter.hasNext())
 	    if (ModelFacade.isRealize(iter.next()))

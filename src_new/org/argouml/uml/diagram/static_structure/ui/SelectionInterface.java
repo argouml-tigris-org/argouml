@@ -50,7 +50,7 @@ import org.tigris.gef.graph.MutableGraphModel;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigNode;
 import org.tigris.gef.presentation.Handle;
-import ru.novosoft.uml.foundation.core.MAbstraction;
+
 import ru.novosoft.uml.foundation.core.MClass;
 import ru.novosoft.uml.foundation.core.MClassImpl;
 import ru.novosoft.uml.foundation.core.MInterface;
@@ -134,7 +134,7 @@ public class SelectionInterface extends SelectionWButtons {
     boolean reverse = false;
     switch (hand.index) {
     case 11: //add realization
-      edgeClass = MAbstraction.class;
+      edgeClass = (Class)ModelFacade.ABSTRACTION;
       reverse = true;
       by = cy + ch;
       bx = cx + cw/2;
@@ -165,7 +165,7 @@ public class SelectionInterface extends SelectionWButtons {
      * @see org.argouml.uml.diagram.ui.SelectionWButtons#createEdgeUnder(org.tigris.gef.graph.MutableGraphModel, java.lang.Object)
      */
     protected Object createEdgeUnder(MutableGraphModel gm, Object newNode) {
-        return gm.connect(newNode, _content.getOwner(), MAbstraction.class);
+        return gm.connect(newNode, _content.getOwner(), (Class)ModelFacade.ABSTRACTION);
     }
 
     /**
