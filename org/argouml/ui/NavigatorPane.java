@@ -527,7 +527,7 @@ public class NavigatorPane
                 if (obj instanceof MPackage || obj instanceof MModel){
                     popup.add(ActionAddPackage.SINGLETON);
                 }
-                popup.add(new ActionGoToDetails(menuLocalize("Properties")));
+                popup.add(new ActionGoToDetails(menuLocalize("action.properties")));
             }
             popup.show(_tree, me.getX(), me.getY());
         }
