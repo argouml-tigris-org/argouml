@@ -1,5 +1,3 @@
-
-
 // $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -33,13 +31,11 @@ import java.util.Vector;
 import org.argouml.cognitive.ItemUID;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.util.ChangeRegistry;
+import org.argouml.model.ModelFacade;
+
 import org.tigris.gef.base.Diagram;
 import org.tigris.gef.base.Editor;
 import org.tigris.gef.presentation.Fig;
-
-import ru.novosoft.uml.foundation.core.MClassifier;
-
-
 
 public class ArgoDiagram extends Diagram {
 
@@ -121,9 +117,8 @@ public class ArgoDiagram extends Diagram {
                 while (it.hasNext()) {
                     Object o = it.next();
                     if (org.argouml.model.ModelFacade.isAClassifier(o)) {
-                        MClassifier cl = (MClassifier) o;
-                        if (cl.getFeatures().contains(obj))
-			    return presentationFor(cl);
+                        if (ModelFacade.getFeatures(o).contains(obj))
+			    return presentationFor(o);
                     }
                 }
             }

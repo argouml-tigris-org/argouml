@@ -37,8 +37,6 @@ import java.util.Vector;
 
 import org.apache.log4j.Category;
 
-import ru.novosoft.uml.foundation.data_types.MAggregationKind;
-
 import org.tigris.gef.base.Editor;
 import org.tigris.gef.base.Globals;
 import org.tigris.gef.base.Mode;
@@ -148,7 +146,7 @@ public abstract class UMLMutableGraphSupport extends MutableGraphSupport {
             ModeManager modeManager = curEditor.getModeManager();
             Mode mode = (Mode) modeManager.top();
             Hashtable args = mode.getArgs();
-            MAggregationKind style = (MAggregationKind) args.get("aggregation");
+            Object style = args.get("aggregation");//MAggregationKind
             Boolean unidirectional = (Boolean) args.get("unidirectional");
             // Create the UML connection of the given type between the
             // given model elements.

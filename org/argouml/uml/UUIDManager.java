@@ -35,8 +35,6 @@ import java.rmi.server.UID;
 import org.apache.log4j.Category;
 import org.argouml.application.security.ArgoSecurityManager;
 import org.argouml.model.ModelFacade;
-import ru.novosoft.uml.foundation.core.MModelElement;
-import ru.novosoft.uml.foundation.core.MNamespace;
 
 /** @stereotype singleton
  */
@@ -84,18 +82,21 @@ public class UUIDManager {
 	return s;
     }
 
-    public synchronized void createModelUUIDS(MNamespace model) {
+    public synchronized void createModelUUIDS(Object model) {
         
         cat.info("NOTE: The temporary method 'createModelUUIDs' has been called.");
         
-        Collection ownedElements = model.getOwnedElements();
+        if(!ModelFacade.isANamespace(model))
+            throw new IllegalArgumentException();
+        
+        Collection ownedElements = ModelFacade.getOwnedElements(model);
 	Iterator oeIterator = ownedElements.iterator();
         
-        String uuid = model.getUUID();
-        if (uuid == null) model.setUUID(getNewUUID());
+        String uuid = ModelFacade.getUUID(model);
+        if (uuid == null) ModelFacade.setUUID(model,getNewUUID());
 
 	while (oeIterator.hasNext()) {
-            MModelElement me = (MModelElement) oeIterator.next();
+            Object me = oeIterator.next();
             if (ModelFacade.isAModel(me) ||
                 // me instanceof MNamespace ||
                 ModelFacade.isAClassifier(me) ||
@@ -111,15 +112,15 @@ public class UUIDManager {
                 ModelFacade.isADependency(me) ||
                 ModelFacade.isAStereotype(me) ||
 		ModelFacade.isAUseCase(me)) {
-                uuid = me.getUUID();
+                uuid = ModelFacade.getUUID(me);
                 if (uuid == null) {
-                    me.setUUID(getNewUUID());
+                    ModelFacade.setUUID(me,getNewUUID());
                 }
             }
 	    //recursive handling of namespaces, needed for Collaborations
 	    if (ModelFacade.isANamespace(me)) {
 		cat.debug("Found another namespace: " + me);
-		createModelUUIDS((MNamespace) me);
+		createModelUUIDS(me);
 	    }
         }
     }

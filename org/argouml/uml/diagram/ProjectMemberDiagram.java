@@ -25,9 +25,6 @@
 
 package org.argouml.uml.diagram;
 
-/**
- * @author Piotr Kaminski
- */
 
 import java.io.Writer;
 
@@ -41,8 +38,9 @@ import org.tigris.gef.ocl.OCLExpander;
 import org.tigris.gef.ocl.TemplateReader;
 import org.tigris.gef.util.Util;
 
-import ru.novosoft.uml.foundation.core.MModelElement;
-
+/**
+ * @author Piotr Kaminski
+ */
 public class ProjectMemberDiagram extends ProjectMember {
 
     ////////////////////////////////////////////////////////////////
@@ -73,20 +71,8 @@ public class ProjectMemberDiagram extends ProjectMember {
     public ProjectMemberDiagram(ArgoDiagram d, Project p) {
         super(null, p);
         String s = Util.stripJunk(d.getName());
-        //if (!(s.startsWith(_project.getBaseName() + "_")))
-        //  s = _project.getBaseName() + "_" + s;
         setName(s);
         setDiagram(d);
-        // Make sure that the namespace has an UUID, otherwise we will not
-        // be able to match them after a save-load cycle.
-        if (d instanceof UMLDiagram) {
-            UMLDiagram u = (UMLDiagram) d;
-            if (org.argouml.model.ModelFacade.isAModelElement(u.getNamespace())) {
-                MModelElement me = (MModelElement) u.getNamespace();
-                // if (me.getUUID() == null)
-                //   me.setUUID(UUIDManager.SINGLETON.getNewUUID());
-            }
-        }
     }
 
     ////////////////////////////////////////////////////////////////
