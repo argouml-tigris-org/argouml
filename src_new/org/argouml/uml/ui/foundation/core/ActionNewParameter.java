@@ -45,7 +45,7 @@ public class ActionNewParameter extends AbstractActionNewModelElement {
      * 
      */
     protected ActionNewParameter() {
-        super();
+        super("button.new-parameter");
     }
 
     /**
@@ -60,6 +60,7 @@ public class ActionNewParameter extends AbstractActionNewModelElement {
 
     /**
      * @return Returns the sINGLETON.
+     * @deprecated singleton use will be removed in 0.18.0. Use the constructor instead
      */
     public static ActionNewParameter getInstance() {
         return SINGLETON;
