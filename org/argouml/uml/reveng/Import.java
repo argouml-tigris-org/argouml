@@ -114,12 +114,6 @@ public class Import {
 	Category.getInstance(org.argouml.uml.reveng.Import.class);
     
     /**
-     * not used.
-     * @deprecated As of ArgoUml version 0.13.5, don't use this!
-     */
-    public static final String separator = "/";
-    
-    /**
      * Unnecessary attribute
      * @deprecated As of ArgoUml version 0.13.5, don't use this!
      */
