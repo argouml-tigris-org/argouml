@@ -61,7 +61,7 @@ public class OperationCodePiece extends NamedCodePiece
                               String name)
     {
 	this.name = name;
-	fullyQualifiedTypeNames = (operationDef.getText().indexOf('.') != -1);
+	fullyQualifiedTypeNames = (operationDef.getText().toString().indexOf('.') != -1);
 	if(javadocDef != null) {
 	    CompositeCodePiece cp = new CompositeCodePiece(javadocDef);
 	    cp.add(operationDef);
@@ -75,7 +75,7 @@ public class OperationCodePiece extends NamedCodePiece
     /**
        Return the string representation for this piece of code.
     */
-    public String getText()
+    public StringBuffer getText()
     {
 	return operationDef.getText();
     }
@@ -124,10 +124,10 @@ public class OperationCodePiece extends NamedCodePiece
       Vector features = parseState.getNewFeatures();
 
       boolean found = false;
-      
+
 	    for(Iterator j=features.iterator(); j.hasNext() && !found; ) {
   	    MFeature feature = (MFeature)j.next();
-        
+
 	      if(feature.getName().equals(name)) {
 		      found = true;
 		      parseState.newFeature(feature);
@@ -137,7 +137,7 @@ public class OperationCodePiece extends NamedCodePiece
               GeneratorJava.getInstance()
                            .generateOperation (mOperation, true)
             );
-    
+
           /*
           if ((new CodeGenerator()).generateJavadoc(mOperation, writer)) {
             for(int k=0; k<column; k++) {
@@ -173,13 +173,13 @@ public class OperationCodePiece extends NamedCodePiece
           Collection parameters = mOperation.getParameters();
           for(Iterator i = parameters.iterator(); i.hasNext(); ) {
             MParameter mParameter = (MParameter)i.next();
-           
+
             if (mParameter.getKind() == MParameterDirectionKind.RETURN) {
               if (fullyQualifiedTypeNames) {
                 writer.write (mParameter.getType().getNamespace().getName()
                               + ".");
               }
-           
+
               writer.write(mParameter.getType().getName() + " ");
               column += mParameter.getType().getName().length() + 1;
             }
@@ -191,7 +191,7 @@ public class OperationCodePiece extends NamedCodePiece
           boolean first = true;
           for (Iterator i = parameters.iterator(); i.hasNext(); ) {
             MParameter mParameter = (MParameter)i.next();
-            
+
             if (mParameter.getKind() != MParameterDirectionKind.RETURN) {
               if(first) {
                 first = false;
@@ -202,22 +202,22 @@ public class OperationCodePiece extends NamedCodePiece
                   writer.write(" ");
                 }
               }
-           
+
               if (fullyQualifiedTypeNames) {
                 writer.write (mParameter.getType().getNamespace().getName()
                               + ".");
               }
-           
+
               writer.write (mParameter.getType().getName() + " " +
                             mParameter.getName());
             }
           }
-           
+
           writer.write(")");
           */
         }
       }
-      
+
       if(!found) {
         writer.write("REMOVED");
       }

@@ -55,7 +55,7 @@ public class PackageCodePiece extends NamedCodePiece
     /**
        Return the string representation for this piece of code.
     */
-    public String getText()
+    public StringBuffer getText()
     {
 	return identifier.getText();
     }

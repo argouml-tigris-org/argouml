@@ -54,7 +54,7 @@ public class ClassifierEndCodePiece extends NamedCodePiece
     /**
        Return the string representation for this piece of code.
     */
-    public String getText()
+    public StringBuffer getText()
     {
 	return bracket.getText();
     }

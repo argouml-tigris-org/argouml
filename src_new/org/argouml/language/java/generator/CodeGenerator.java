@@ -419,9 +419,9 @@ class CodeGenerator
 
 	OperationCodePiece ocp =
 
-	    new OperationCodePiece(new SimpleCodePiece("", 0, 0, 0),
+	    new OperationCodePiece(new SimpleCodePiece(new StringBuffer(), 0, 0, 0),
 
-				   new SimpleCodePiece("", 0, 0, 0),
+				   new SimpleCodePiece(new StringBuffer(), 0, 0, 0),
 
 				   mOperation.getName());
 
@@ -475,13 +475,13 @@ class CodeGenerator
 
 	Vector names = new Vector();
 
-	names.addElement(new SimpleCodePiece(mAttribute.getName(), 0, 0, 0));
+	names.addElement(new SimpleCodePiece(new StringBuffer(mAttribute.getName()), 0, 0, 0));
 
 	AttributeCodePiece acp =
 
 	    new AttributeCodePiece(null,
 
-				   new SimpleCodePiece("", 0, 0, 0),
+				   new SimpleCodePiece(new StringBuffer(), 0, 0, 0),
 
 				   names);
 
@@ -497,7 +497,7 @@ class CodeGenerator
 
 
 
-    /* 
+    /*
 
      * Changed 2001-10-05 STEFFEN ZSCHALER
 
@@ -609,7 +609,7 @@ class CodeGenerator
 
              i = sDocComment.indexOf ('\n', i + 1)) {
 
-          sDocComment = sDocComment.substring (0, i + 1) + 
+          sDocComment = sDocComment.substring (0, i + 1) +
 
                         INDENT + sDocComment.substring (i + 1);
 
@@ -647,7 +647,7 @@ class CodeGenerator
 
         }
 
-    
+
 
         // Add each constraint
 
@@ -701,7 +701,7 @@ class CodeGenerator
 
             String sName = (node.getName() != null)?
 
-                           (node.getName().getText()):
+                           (node.getName().getText().toString()):
 
                            (m_sConstraintName + "_" + (m_nConstraintID++));
 
@@ -759,7 +759,7 @@ class CodeGenerator
 
             new org.argouml.ocl.ArgoFacade (element);
 
-        
+
 
         for (Iterator i = cConstraints.iterator(); i.hasNext();) {
 
@@ -803,13 +803,13 @@ class CodeGenerator
 
         }
 
-    
+
 
         sDocComment += "/";
 
       }
 
-    
+
 
 
 

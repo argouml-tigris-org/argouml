@@ -61,7 +61,7 @@ public class ClassCodePiece extends NamedCodePiece
     /**
        Return the string representation for this piece of code.
     */
-    public String getText()
+    public StringBuffer getText()
     {
 	return classDef.getText();
     }
@@ -119,7 +119,7 @@ public class ClassCodePiece extends NamedCodePiece
 	parseStateStack.push(new ParseState(mClass));
 
   StringBuffer sbText = GeneratorJava.getInstance().generateClassifierStart (mClass);
-  
+
   if (sbText != null) {
     writer.write (sbText.toString());
   }

@@ -66,11 +66,11 @@ public class CompositeCodePiece extends CodePiece
     /**
        Return the string representation for this piece of code.
     */
-    public String getText()
+    public StringBuffer getText()
     {
 	Iterator i = codePieces.iterator();
 	CodePiece cp = (CodePiece)i.next();
-	String text = cp.getText();
+	StringBuffer text = cp.getText();
 	int prevEnd = cp.getEndPosition();
 	int prevLine = cp.getEndLine();
 
@@ -78,13 +78,13 @@ public class CompositeCodePiece extends CodePiece
 	    cp = (CodePiece)i.next();
 	    int spaces = cp.getStartPosition() - prevEnd;
 	    if(prevLine != cp.getStartLine()) {
-		text += '\n';
+		text.append('\n');
 		spaces--;
 	    }
 	    for(int j=0; j < spaces; j++) {
-		text += ' ';
+		text.append(' ');
 	    }
-	    text += cp.getText();
+	    text.append(cp.getText().toString());
 	    prevEnd = cp.getEndPosition();
 	    prevLine = cp.getEndLine();
 	}

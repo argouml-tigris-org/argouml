@@ -68,22 +68,23 @@ public class AttributeCodePiece extends NamedCodePiece
 	attributeDef.add(type);
 	for(Iterator i = names.iterator(); i.hasNext(); ) {
 	    CodePiece cp = (CodePiece)i.next();
+	    String cpText = cp.getText().toString();
 	    attributeDef.add(cp);
 	    int pos=0;
-	    if((pos=cp.getText().indexOf('[')) != -1) {
-		attributeNames.add(cp.getText().substring(0, pos));
+	    if((pos=cpText.indexOf('[')) != -1) {
+		attributeNames.add(cpText.substring(0, pos));
 	    }
 	    else {
-		attributeNames.add(cp.getText());
+		attributeNames.add(cpText);
 	    }
 	}
-	typeFullyQualified = (type.getText().indexOf('.') != -1);
+	typeFullyQualified = (type.getText().toString().indexOf('.') != -1);
     }
 
     /**
        Return the string representation for this piece of code.
     */
-    public String getText()
+    public StringBuffer getText()
     {
 	return attributeDef.getText();
     }

@@ -124,12 +124,12 @@ public JavaRecognizer(ParserSharedInputState state) {
 	public final void compilationUnit(
 		CodePieceCollector cpc
 	) throws RecognitionException, TokenStreamException {
-		
+
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST compilationUnit_AST = null;
 		this.cpc = cpc;
-		
+
 		{
 		switch ( LA(1)) {
 		case LITERAL_package:
@@ -178,7 +178,7 @@ public JavaRecognizer(ParserSharedInputState state) {
 			else {
 				break _loop4;
 			}
-			
+
 		} while (true);
 		}
 		{
@@ -196,7 +196,7 @@ public JavaRecognizer(ParserSharedInputState state) {
 			else {
 				break _loop6;
 			}
-			
+
 		} while (true);
 		}
 		AST tmp1_AST = null;
@@ -208,9 +208,9 @@ public JavaRecognizer(ParserSharedInputState state) {
 		compilationUnit_AST = (AST)currentAST.root;
 		returnAST = compilationUnit_AST;
 	}
-	
+
 	public final void packageDefinition() throws RecognitionException, TokenStreamException {
-		
+
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST packageDefinition_AST = null;
@@ -219,7 +219,7 @@ public JavaRecognizer(ParserSharedInputState state) {
 		Token  t2 = null;
 		AST t2_AST = null;
 		CompositeCodePiece comp=null; CodePiece i=null;
-		
+
 		t1 = LT(1);
 		if (inputState.guessing==0) {
 			t1_AST = (AST)astFactory.create(t1);
@@ -249,15 +249,15 @@ public JavaRecognizer(ParserSharedInputState state) {
 		packageDefinition_AST = (AST)currentAST.root;
 		returnAST = packageDefinition_AST;
 	}
-	
+
 	public final void importDefinition() throws RecognitionException, TokenStreamException {
-		
+
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST importDefinition_AST = null;
 		Token  i = null;
 		AST i_AST = null;
-		
+
 		i = LT(1);
 		if (inputState.guessing==0) {
 			i_AST = (AST)astFactory.create(i);
@@ -277,16 +277,16 @@ public JavaRecognizer(ParserSharedInputState state) {
 		importDefinition_AST = (AST)currentAST.root;
 		returnAST = importDefinition_AST;
 	}
-	
+
 	public final void typeDefinition() throws RecognitionException, TokenStreamException {
-		
+
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST typeDefinition_AST = null;
 		Token  c = null;
 		AST c_AST = null;
 		CodePiece m=null; CompositeCodePiece pre=null;
-		
+
 		switch ( LA(1)) {
 		case FINAL:
 		case ABSTRACT:
@@ -321,7 +321,7 @@ public JavaRecognizer(ParserSharedInputState state) {
 				else {
 					break _loop11;
 				}
-				
+
 			} while (true);
 			}
 			m=modifiers();
@@ -329,7 +329,7 @@ public JavaRecognizer(ParserSharedInputState state) {
 				astFactory.addASTChild(currentAST, returnAST);
 			}
 			if ( inputState.guessing==0 ) {
-				if(pre == null) pre = new CompositeCodePiece(m); 
+				if(pre == null) pre = new CompositeCodePiece(m);
 								else pre.add(m);
 			}
 			{
@@ -377,10 +377,10 @@ public JavaRecognizer(ParserSharedInputState state) {
 		}
 		returnAST = typeDefinition_AST;
 	}
-	
+
 	public final CompositeCodePiece  identifier() throws RecognitionException, TokenStreamException {
 		CompositeCodePiece codePiece=null;
-		
+
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST identifier_AST = null;
@@ -390,7 +390,7 @@ public JavaRecognizer(ParserSharedInputState state) {
 		AST t2_AST = null;
 		Token  t3 = null;
 		AST t3_AST = null;
-		
+
 		t1 = LT(1);
 		if (inputState.guessing==0) {
 			t1_AST = (AST)astFactory.create(t1);
@@ -426,17 +426,17 @@ public JavaRecognizer(ParserSharedInputState state) {
 			else {
 				break _loop28;
 			}
-			
+
 		} while (true);
 		}
 		identifier_AST = (AST)currentAST.root;
 		returnAST = identifier_AST;
 		return codePiece;
 	}
-	
+
 	public final CompositeCodePiece  identifierStar() throws RecognitionException, TokenStreamException {
 		CompositeCodePiece codePiece=null;
-		
+
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST identifierStar_AST = null;
@@ -450,7 +450,7 @@ public JavaRecognizer(ParserSharedInputState state) {
 		AST t4_AST = null;
 		Token  t5 = null;
 		AST t5_AST = null;
-		
+
 		t1 = LT(1);
 		if (inputState.guessing==0) {
 			t1_AST = (AST)astFactory.create(t1);
@@ -486,7 +486,7 @@ public JavaRecognizer(ParserSharedInputState state) {
 			else {
 				break _loop31;
 			}
-			
+
 		} while (true);
 		}
 		{
@@ -527,15 +527,15 @@ public JavaRecognizer(ParserSharedInputState state) {
 		returnAST = identifierStar_AST;
 		return codePiece;
 	}
-	
+
 	public final CompositeCodePiece  modifiers() throws RecognitionException, TokenStreamException {
 		CompositeCodePiece codePiece=null;
-		
+
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST modifiers_AST = null;
 		CodePiece cp=null;
-		
+
 		{
 		_loop16:
 		do {
@@ -548,27 +548,27 @@ public JavaRecognizer(ParserSharedInputState state) {
 					if(codePiece == null) {
 								codePiece = new CompositeCodePiece(cp);
 							  }
-							  else {	
+							  else {
 								codePiece.add(cp);
 							  }
-							
+
 				}
 			}
 			else {
 				break _loop16;
 			}
-			
+
 		} while (true);
 		}
 		modifiers_AST = (AST)currentAST.root;
 		returnAST = modifiers_AST;
 		return codePiece;
 	}
-	
+
 	public final void classDefinition(
 		CodePiece preCode
 	) throws RecognitionException, TokenStreamException {
-		
+
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST classDefinition_AST = null;
@@ -576,9 +576,9 @@ public JavaRecognizer(ParserSharedInputState state) {
 		AST t1_AST = null;
 		Token  t2 = null;
 		AST t2_AST = null;
-		CodePiece sc=null, ic=null; 
+		CodePiece sc=null, ic=null;
 			 CompositeCodePiece codePiece = new CompositeCodePiece(preCode);
-		
+
 		t1 = LT(1);
 		if (inputState.guessing==0) {
 			t1_AST = (AST)astFactory.create(t1);
@@ -610,7 +610,7 @@ public JavaRecognizer(ParserSharedInputState state) {
 		}
 		if ( inputState.guessing==0 ) {
 			codePiece.add(ic);
-					 cpc.add(new ClassCodePiece(codePiece, t2.getText()));
+					 cpc.add(new ClassCodePiece(codePiece, t2.getText().toString()));
 		}
 		classBlock(codePiece);
 		if (inputState.guessing==0) {
@@ -619,11 +619,11 @@ public JavaRecognizer(ParserSharedInputState state) {
 		classDefinition_AST = (AST)currentAST.root;
 		returnAST = classDefinition_AST;
 	}
-	
+
 	public final void interfaceDefinition(
 		CodePiece preCode
 	) throws RecognitionException, TokenStreamException {
-		
+
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST interfaceDefinition_AST = null;
@@ -633,7 +633,7 @@ public JavaRecognizer(ParserSharedInputState state) {
 		AST t2_AST = null;
 		CodePiece ie=null;
 			 CompositeCodePiece codePiece = new CompositeCodePiece(preCode);
-		
+
 		t1 = LT(1);
 		if (inputState.guessing==0) {
 			t1_AST = (AST)astFactory.create(t1);
@@ -658,7 +658,7 @@ public JavaRecognizer(ParserSharedInputState state) {
 		}
 		if ( inputState.guessing==0 ) {
 			codePiece.add(ie);
-					 cpc.add(new InterfaceCodePiece(codePiece, t2.getText()));
+					 cpc.add(new InterfaceCodePiece(codePiece, t2.getText().toString()));
 		}
 		classBlock(codePiece);
 		if (inputState.guessing==0) {
@@ -667,16 +667,16 @@ public JavaRecognizer(ParserSharedInputState state) {
 		interfaceDefinition_AST = (AST)currentAST.root;
 		returnAST = interfaceDefinition_AST;
 	}
-	
+
 /** A declaration is the creation of a reference or primitive-type variable
  *  Create a separate Type/Var tree for each var in the var list.
  */
 	public final void declaration() throws RecognitionException, TokenStreamException {
-		
+
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST declaration_AST = null;
-		
+
 		modifiers();
 		if (inputState.guessing==0) {
 			astFactory.addASTChild(currentAST, returnAST);
@@ -692,14 +692,14 @@ public JavaRecognizer(ParserSharedInputState state) {
 		declaration_AST = (AST)currentAST.root;
 		returnAST = declaration_AST;
 	}
-	
+
 	public final CodePiece  typeSpec() throws RecognitionException, TokenStreamException {
 		CodePiece cp=null;
-		
+
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST typeSpec_AST = null;
-		
+
 		switch ( LA(1)) {
 		case IDENT:
 		{
@@ -735,15 +735,15 @@ public JavaRecognizer(ParserSharedInputState state) {
 		returnAST = typeSpec_AST;
 		return cp;
 	}
-	
+
 	public final Vector  variableDefinitions() throws RecognitionException, TokenStreamException {
 		Vector codePieces=new Vector();
-		
+
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST variableDefinitions_AST = null;
 		CodePiece v1=null, v2=null;
-		
+
 		v1=variableDeclarator();
 		if (inputState.guessing==0) {
 			astFactory.addASTChild(currentAST, returnAST);
@@ -772,17 +772,17 @@ public JavaRecognizer(ParserSharedInputState state) {
 			else {
 				break _loop69;
 			}
-			
+
 		} while (true);
 		}
 		variableDefinitions_AST = (AST)currentAST.root;
 		returnAST = variableDefinitions_AST;
 		return codePieces;
 	}
-	
+
 	public final CodePiece  modifier() throws RecognitionException, TokenStreamException {
 		CodePiece codePiece=null;
-		
+
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST modifier_AST = null;
@@ -808,7 +808,7 @@ public JavaRecognizer(ParserSharedInputState state) {
 		AST t12_AST = null;
 		Token  t13 = null;
 		AST t13_AST = null;
-		
+
 		switch ( LA(1)) {
 		case LITERAL_private:
 		{
@@ -994,10 +994,10 @@ public JavaRecognizer(ParserSharedInputState state) {
 		returnAST = modifier_AST;
 		return codePiece;
 	}
-	
+
 	public final CompositeCodePiece  classTypeSpec() throws RecognitionException, TokenStreamException {
 		CompositeCodePiece cp=null;
-		
+
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST classTypeSpec_AST = null;
@@ -1006,7 +1006,7 @@ public JavaRecognizer(ParserSharedInputState state) {
 		Token  t2 = null;
 		AST t2_AST = null;
 		CodePiece i=null;
-		
+
 		i=identifier();
 		if (inputState.guessing==0) {
 			astFactory.addASTChild(currentAST, returnAST);
@@ -1040,17 +1040,17 @@ public JavaRecognizer(ParserSharedInputState state) {
 			else {
 				break _loop20;
 			}
-			
+
 		} while (true);
 		}
 		classTypeSpec_AST = (AST)currentAST.root;
 		returnAST = classTypeSpec_AST;
 		return cp;
 	}
-	
+
 	public final CompositeCodePiece  builtInTypeSpec() throws RecognitionException, TokenStreamException {
 		CompositeCodePiece cp=null;
-		
+
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST builtInTypeSpec_AST = null;
@@ -1059,7 +1059,7 @@ public JavaRecognizer(ParserSharedInputState state) {
 		Token  t2 = null;
 		AST t2_AST = null;
 		CodePiece i=null;
-		
+
 		i=builtInType();
 		if (inputState.guessing==0) {
 			astFactory.addASTChild(currentAST, returnAST);
@@ -1093,17 +1093,17 @@ public JavaRecognizer(ParserSharedInputState state) {
 			else {
 				break _loop23;
 			}
-			
+
 		} while (true);
 		}
 		builtInTypeSpec_AST = (AST)currentAST.root;
 		returnAST = builtInTypeSpec_AST;
 		return cp;
 	}
-	
+
 	public final SimpleCodePiece  builtInType() throws RecognitionException, TokenStreamException {
 		SimpleCodePiece cp=null;
-		
+
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST builtInType_AST = null;
@@ -1125,7 +1125,7 @@ public JavaRecognizer(ParserSharedInputState state) {
 		AST t8_AST = null;
 		Token  t9 = null;
 		AST t9_AST = null;
-		
+
 		switch ( LA(1)) {
 		case LITERAL_void:
 		{
@@ -1261,14 +1261,14 @@ public JavaRecognizer(ParserSharedInputState state) {
 		returnAST = builtInType_AST;
 		return cp;
 	}
-	
+
 	public final CodePiece  type() throws RecognitionException, TokenStreamException {
 		CodePiece cp=null;
-		
+
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST type_AST = null;
-		
+
 		switch ( LA(1)) {
 		case IDENT:
 		{
@@ -1304,17 +1304,17 @@ public JavaRecognizer(ParserSharedInputState state) {
 		returnAST = type_AST;
 		return cp;
 	}
-	
+
 	public final CompositeCodePiece  superClassClause() throws RecognitionException, TokenStreamException {
 		CompositeCodePiece codePiece=null;
-		
+
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST superClassClause_AST = null;
 		Token  t1 = null;
 		AST t1_AST = null;
 		CodePiece id=null;
-		
+
 		{
 		switch ( LA(1)) {
 		case LITERAL_extends:
@@ -1352,10 +1352,10 @@ public JavaRecognizer(ParserSharedInputState state) {
 		returnAST = superClassClause_AST;
 		return codePiece;
 	}
-	
+
 	public final CompositeCodePiece  implementsClause() throws RecognitionException, TokenStreamException {
 		CompositeCodePiece codePiece=null;
-		
+
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST implementsClause_AST = null;
@@ -1364,7 +1364,7 @@ public JavaRecognizer(ParserSharedInputState state) {
 		Token  t2 = null;
 		AST t2_AST = null;
 		CodePiece id1=null, id2=null;
-		
+
 		{
 		switch ( LA(1)) {
 		case LITERAL_implements:
@@ -1409,7 +1409,7 @@ public JavaRecognizer(ParserSharedInputState state) {
 				else {
 					break _loop59;
 				}
-				
+
 			} while (true);
 			}
 			break;
@@ -1428,11 +1428,11 @@ public JavaRecognizer(ParserSharedInputState state) {
 		returnAST = implementsClause_AST;
 		return codePiece;
 	}
-	
+
 	public final void classBlock(
 		CompositeCodePiece header
 	) throws RecognitionException, TokenStreamException {
-		
+
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST classBlock_AST = null;
@@ -1440,7 +1440,7 @@ public JavaRecognizer(ParserSharedInputState state) {
 		AST t0_AST = null;
 		Token  t1 = null;
 		AST t1_AST = null;
-		
+
 		t0 = LT(1);
 		if (inputState.guessing==0) {
 			t0_AST = (AST)astFactory.create(t0);
@@ -1515,10 +1515,10 @@ public JavaRecognizer(ParserSharedInputState state) {
 		classBlock_AST = (AST)currentAST.root;
 		returnAST = classBlock_AST;
 	}
-	
+
 	public final CompositeCodePiece  interfaceExtends() throws RecognitionException, TokenStreamException {
 		CompositeCodePiece codePiece=null;
-		
+
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST interfaceExtends_AST = null;
@@ -1527,7 +1527,7 @@ public JavaRecognizer(ParserSharedInputState state) {
 		Token  t2 = null;
 		AST t2_AST = null;
 		CodePiece id1=null, id2=null;
-		
+
 		{
 		switch ( LA(1)) {
 		case LITERAL_extends:
@@ -1572,7 +1572,7 @@ public JavaRecognizer(ParserSharedInputState state) {
 				else {
 					break _loop55;
 				}
-				
+
 			} while (true);
 			}
 			break;
@@ -1591,9 +1591,9 @@ public JavaRecognizer(ParserSharedInputState state) {
 		returnAST = interfaceExtends_AST;
 		return codePiece;
 	}
-	
+
 	public final void field() throws RecognitionException, TokenStreamException {
-		
+
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST field_AST = null;
@@ -1605,12 +1605,12 @@ public JavaRecognizer(ParserSharedInputState state) {
 		AST t2_AST = null;
 		Token  t3 = null;
 		AST t3_AST = null;
-		CodePiece m=null, t=null, rb=null, pdl=null; 
+		CodePiece m=null, t=null, rb=null, pdl=null;
 			  Vector vd=null;
-			  CompositeCodePiece cp=null, 
+			  CompositeCodePiece cp=null,
 						doccp=null,
 						composite=null;
-		
+
 		if ((_tokenSet_2.member(LA(1))) && (_tokenSet_3.member(LA(2)))) {
 			{
 			_loop62:
@@ -1630,7 +1630,7 @@ public JavaRecognizer(ParserSharedInputState state) {
 				else {
 					break _loop62;
 				}
-				
+
 			} while (true);
 			}
 			m=modifiers();
@@ -1638,12 +1638,12 @@ public JavaRecognizer(ParserSharedInputState state) {
 				astFactory.addASTChild(currentAST, returnAST);
 			}
 			if ( inputState.guessing==0 ) {
-				cp = new CompositeCodePiece(m); 
-								if(composite == null) 
-									composite = 
+				cp = new CompositeCodePiece(m);
+								if(composite == null)
+									composite =
 										(m==null)?
 										null:
-										new CompositeCodePiece(m); 
+										new CompositeCodePiece(m);
 								else composite.add(m);
 			}
 			{
@@ -1717,9 +1717,9 @@ public JavaRecognizer(ParserSharedInputState state) {
 											 cp.add(rb);
 											 cpc.add(new OperationCodePiece(
 													doccp,
-													cp, 
-													t1.getText()));
-											
+													cp,
+													t1.getText().toString()));
+
 						}
 						{
 						switch ( LA(1)) {
@@ -1787,7 +1787,7 @@ public JavaRecognizer(ParserSharedInputState state) {
 					else {
 						throw new NoViableAltException(LT(1), getFilename());
 					}
-					
+
 					}
 				}
 			else {
@@ -1820,14 +1820,14 @@ public JavaRecognizer(ParserSharedInputState state) {
 		else {
 			throw new NoViableAltException(LT(1), getFilename());
 		}
-		
+
 		returnAST = field_AST;
 	}
-	
+
 	public final void ctorHead(
 		CompositeCodePiece doccp, CompositeCodePiece cp
 	) throws RecognitionException, TokenStreamException {
-		
+
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST ctorHead_AST = null;
@@ -1836,7 +1836,7 @@ public JavaRecognizer(ParserSharedInputState state) {
 		Token  t2 = null;
 		AST t2_AST = null;
 		CodePiece pdl=null;
-		
+
 		t1 = LT(1);
 		if (inputState.guessing==0) {
 			t1_AST = (AST)astFactory.create(t1);
@@ -1863,8 +1863,8 @@ public JavaRecognizer(ParserSharedInputState state) {
 			cp.add(new SimpleCodePiece(t1));
 					 cp.add(pdl);
 					 cp.add(new SimpleCodePiece(t2));
-					 cpc.add(new OperationCodePiece(doccp, cp, t1.getText()));
-					
+					 cpc.add(new OperationCodePiece(doccp, cp, t1.getText().toString()));
+
 		}
 		{
 		switch ( LA(1)) {
@@ -1889,13 +1889,13 @@ public JavaRecognizer(ParserSharedInputState state) {
 		ctorHead_AST = (AST)currentAST.root;
 		returnAST = ctorHead_AST;
 	}
-	
+
 	public final void compoundStatement() throws RecognitionException, TokenStreamException {
-		
+
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST compoundStatement_AST = null;
-		
+
 		AST tmp10_AST = null;
 		if (inputState.guessing==0) {
 			tmp10_AST = (AST)astFactory.create(LT(1));
@@ -1914,7 +1914,7 @@ public JavaRecognizer(ParserSharedInputState state) {
 			else {
 				break _loop102;
 			}
-			
+
 		} while (true);
 		}
 		AST tmp11_AST = null;
@@ -1926,17 +1926,17 @@ public JavaRecognizer(ParserSharedInputState state) {
 		compoundStatement_AST = (AST)currentAST.root;
 		returnAST = compoundStatement_AST;
 	}
-	
+
 	public final CompositeCodePiece  parameterDeclarationList() throws RecognitionException, TokenStreamException {
 		CompositeCodePiece cp=null;
-		
+
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST parameterDeclarationList_AST = null;
 		Token  t1 = null;
 		AST t1_AST = null;
 		CodePiece pd=null;
-		
+
 		{
 		switch ( LA(1)) {
 		case FINAL:
@@ -1982,7 +1982,7 @@ public JavaRecognizer(ParserSharedInputState state) {
 				else {
 					break _loop93;
 				}
-				
+
 			} while (true);
 			}
 			break;
@@ -2001,10 +2001,10 @@ public JavaRecognizer(ParserSharedInputState state) {
 		returnAST = parameterDeclarationList_AST;
 		return cp;
 	}
-	
+
 	public final CompositeCodePiece  returnTypeBrackersOnEndOfMethodHead() throws RecognitionException, TokenStreamException {
 		CompositeCodePiece cp=null;
-		
+
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST returnTypeBrackersOnEndOfMethodHead_AST = null;
@@ -2012,7 +2012,7 @@ public JavaRecognizer(ParserSharedInputState state) {
 		AST t1_AST = null;
 		Token  t2 = null;
 		AST t2_AST = null;
-		
+
 		{
 		_loop89:
 		do {
@@ -2029,7 +2029,7 @@ public JavaRecognizer(ParserSharedInputState state) {
 									new SimpleCodePiece(t1));
 							else
 								cp.add(new SimpleCodePiece(t1));
-							
+
 				}
 				t2 = LT(1);
 				if (inputState.guessing==0) {
@@ -2044,20 +2044,20 @@ public JavaRecognizer(ParserSharedInputState state) {
 			else {
 				break _loop89;
 			}
-			
+
 		} while (true);
 		}
 		returnTypeBrackersOnEndOfMethodHead_AST = (AST)currentAST.root;
 		returnAST = returnTypeBrackersOnEndOfMethodHead_AST;
 		return cp;
 	}
-	
+
 	public final void throwsClause() throws RecognitionException, TokenStreamException {
-		
+
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST throwsClause_AST = null;
-		
+
 		AST tmp12_AST = null;
 		if (inputState.guessing==0) {
 			tmp12_AST = (AST)astFactory.create(LT(1));
@@ -2086,27 +2086,27 @@ public JavaRecognizer(ParserSharedInputState state) {
 			else {
 				break _loop86;
 			}
-			
+
 		} while (true);
 		}
 		throwsClause_AST = (AST)currentAST.root;
 		returnAST = throwsClause_AST;
 	}
-	
+
 /** Declaration of a variable.  This can be a class/instance variable,
  *   or a local variable in a method
  * It can also include possible initialization.
  */
 	public final CompositeCodePiece  variableDeclarator() throws RecognitionException, TokenStreamException {
 		CompositeCodePiece cp=null;
-		
+
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST variableDeclarator_AST = null;
 		Token  t1 = null;
 		AST t1_AST = null;
 		CodePiece db=null;
-		
+
 		t1 = LT(1);
 		if (inputState.guessing==0) {
 			t1_AST = (AST)astFactory.create(t1);
@@ -2132,10 +2132,10 @@ public JavaRecognizer(ParserSharedInputState state) {
 		returnAST = variableDeclarator_AST;
 		return cp;
 	}
-	
+
 	public final CompositeCodePiece  declaratorBrackets() throws RecognitionException, TokenStreamException {
 		CompositeCodePiece cp=null;
-		
+
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST declaratorBrackets_AST = null;
@@ -2143,7 +2143,7 @@ public JavaRecognizer(ParserSharedInputState state) {
 		AST t1_AST = null;
 		Token  t2 = null;
 		AST t2_AST = null;
-		
+
 		{
 		_loop73:
 		do {
@@ -2161,36 +2161,36 @@ public JavaRecognizer(ParserSharedInputState state) {
 				}
 				match(RBRACK);
 				if ( inputState.guessing==0 ) {
-					
+
 								if(cp == null)
 									cp = new CompositeCodePiece(
 										new SimpleCodePiece(t1));
 								else
 									cp.add(new SimpleCodePiece(t1));
 								cp.add(new SimpleCodePiece(t2));
-							
+
 				}
 			}
 			else {
 				break _loop73;
 			}
-			
+
 		} while (true);
 		}
 		declaratorBrackets_AST = (AST)currentAST.root;
 		returnAST = declaratorBrackets_AST;
 		return cp;
 	}
-	
+
 	public final CompositeCodePiece  varInitializer() throws RecognitionException, TokenStreamException {
 		CompositeCodePiece cp=null;
-		
+
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST varInitializer_AST = null;
 		Token  t1 = null;
 		AST t1_AST = null;
-		
+
 		{
 		switch ( LA(1)) {
 		case ASSIGN:
@@ -2211,7 +2211,7 @@ public JavaRecognizer(ParserSharedInputState state) {
 			}
 			if ( inputState.guessing==0 ) {
 				cp.add(new SimpleCodePiece(
-							"@", 
+							new StringBuffer("@"),
 							t1.getLine(),
 							t1.getColumn()+1,
 							t1.getColumn()+2));
@@ -2233,13 +2233,13 @@ public JavaRecognizer(ParserSharedInputState state) {
 		returnAST = varInitializer_AST;
 		return cp;
 	}
-	
+
 	public final void initializer() throws RecognitionException, TokenStreamException {
-		
+
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST initializer_AST = null;
-		
+
 		switch ( LA(1)) {
 		case LITERAL_void:
 		case LITERAL_boolean:
@@ -2292,13 +2292,13 @@ public JavaRecognizer(ParserSharedInputState state) {
 		}
 		returnAST = initializer_AST;
 	}
-	
+
 	public final void arrayInitializer() throws RecognitionException, TokenStreamException {
-		
+
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST arrayInitializer_AST = null;
-		
+
 		AST tmp14_AST = null;
 		if (inputState.guessing==0) {
 			tmp14_AST = (AST)astFactory.create(LT(1));
@@ -2358,7 +2358,7 @@ public JavaRecognizer(ParserSharedInputState state) {
 				else {
 					break _loop79;
 				}
-				
+
 			} while (true);
 			}
 			{
@@ -2404,13 +2404,13 @@ public JavaRecognizer(ParserSharedInputState state) {
 		arrayInitializer_AST = (AST)currentAST.root;
 		returnAST = arrayInitializer_AST;
 	}
-	
+
 	public final void expression() throws RecognitionException, TokenStreamException {
-		
+
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST expression_AST = null;
-		
+
 		assignmentExpression();
 		if (inputState.guessing==0) {
 			astFactory.addASTChild(currentAST, returnAST);
@@ -2418,17 +2418,17 @@ public JavaRecognizer(ParserSharedInputState state) {
 		expression_AST = (AST)currentAST.root;
 		returnAST = expression_AST;
 	}
-	
+
 	public final CompositeCodePiece  parameterDeclaration() throws RecognitionException, TokenStreamException {
 		CompositeCodePiece cp=null;
-		
+
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST parameterDeclaration_AST = null;
 		Token  t1 = null;
 		AST t1_AST = null;
 		CodePiece ts=null;
-		
+
 		parameterModifier();
 		if (inputState.guessing==0) {
 			astFactory.addASTChild(currentAST, returnAST);
@@ -2457,13 +2457,13 @@ public JavaRecognizer(ParserSharedInputState state) {
 		returnAST = parameterDeclaration_AST;
 		return cp;
 	}
-	
+
 	public final void parameterModifier() throws RecognitionException, TokenStreamException {
-		
+
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST parameterModifier_AST = null;
-		
+
 		{
 		switch ( LA(1)) {
 		case FINAL:
@@ -2498,13 +2498,13 @@ public JavaRecognizer(ParserSharedInputState state) {
 		parameterModifier_AST = (AST)currentAST.root;
 		returnAST = parameterModifier_AST;
 	}
-	
+
 	public final void parameterDeclaratorBrackets() throws RecognitionException, TokenStreamException {
-		
+
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST parameterDeclaratorBrackets_AST = null;
-		
+
 		{
 		_loop97:
 		do {
@@ -2525,15 +2525,15 @@ public JavaRecognizer(ParserSharedInputState state) {
 			else {
 				break _loop97;
 			}
-			
+
 		} while (true);
 		}
 		parameterDeclaratorBrackets_AST = (AST)currentAST.root;
 		returnAST = parameterDeclaratorBrackets_AST;
 	}
-	
+
 	public final void statement() throws RecognitionException, TokenStreamException {
-		
+
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST statement_AST = null;
@@ -2541,7 +2541,7 @@ public JavaRecognizer(ParserSharedInputState state) {
 		AST t1_AST = null;
 		Token  t2 = null;
 		AST t2_AST = null;
-		
+
 		switch ( LA(1)) {
 		case LCURLY:
 		{
@@ -2607,7 +2607,7 @@ public JavaRecognizer(ParserSharedInputState state) {
 			else {
 				throw new NoViableAltException(LT(1), getFilename());
 			}
-			
+
 			}
 			statement_AST = (AST)currentAST.root;
 			break;
@@ -2920,7 +2920,7 @@ public JavaRecognizer(ParserSharedInputState state) {
 				else {
 					break _loop111;
 				}
-				
+
 			} while (true);
 			}
 			AST tmp50_AST = null;
@@ -3097,13 +3097,13 @@ public JavaRecognizer(ParserSharedInputState state) {
 			}}
 			returnAST = statement_AST;
 		}
-		
+
 	public final void forInit() throws RecognitionException, TokenStreamException {
-		
+
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST forInit_AST = null;
-		
+
 		{
 		boolean synPredMatched123 = false;
 		if (((_tokenSet_10.member(LA(1))) && (_tokenSet_11.member(LA(2))))) {
@@ -3138,18 +3138,18 @@ public JavaRecognizer(ParserSharedInputState state) {
 		else {
 			throw new NoViableAltException(LT(1), getFilename());
 		}
-		
+
 		}
 		forInit_AST = (AST)currentAST.root;
 		returnAST = forInit_AST;
 	}
-	
+
 	public final void forCond() throws RecognitionException, TokenStreamException {
-		
+
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST forCond_AST = null;
-		
+
 		{
 		switch ( LA(1)) {
 		case LITERAL_void:
@@ -3199,13 +3199,13 @@ public JavaRecognizer(ParserSharedInputState state) {
 		forCond_AST = (AST)currentAST.root;
 		returnAST = forCond_AST;
 	}
-	
+
 	public final void forIter() throws RecognitionException, TokenStreamException {
-		
+
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST forIter_AST = null;
-		
+
 		{
 		switch ( LA(1)) {
 		case LITERAL_void:
@@ -3255,13 +3255,13 @@ public JavaRecognizer(ParserSharedInputState state) {
 		forIter_AST = (AST)currentAST.root;
 		returnAST = forIter_AST;
 	}
-	
+
 	public final void casesGroup() throws RecognitionException, TokenStreamException {
-		
+
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST casesGroup_AST = null;
-		
+
 		{
 		int _cnt114=0;
 		_loop114:
@@ -3275,7 +3275,7 @@ public JavaRecognizer(ParserSharedInputState state) {
 			else {
 				if ( _cnt114>=1 ) { break _loop114; } else {throw new NoViableAltException(LT(1), getFilename());}
 			}
-			
+
 			_cnt114++;
 		} while (true);
 		}
@@ -3286,13 +3286,13 @@ public JavaRecognizer(ParserSharedInputState state) {
 		casesGroup_AST = (AST)currentAST.root;
 		returnAST = casesGroup_AST;
 	}
-	
+
 	public final void tryBlock() throws RecognitionException, TokenStreamException {
-		
+
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST tryBlock_AST = null;
-		
+
 		AST tmp61_AST = null;
 		if (inputState.guessing==0) {
 			tmp61_AST = (AST)astFactory.create(LT(1));
@@ -3315,7 +3315,7 @@ public JavaRecognizer(ParserSharedInputState state) {
 			else {
 				break _loop130;
 			}
-			
+
 		} while (true);
 		}
 		{
@@ -3401,13 +3401,13 @@ public JavaRecognizer(ParserSharedInputState state) {
 		tryBlock_AST = (AST)currentAST.root;
 		returnAST = tryBlock_AST;
 	}
-	
+
 	public final void aCase() throws RecognitionException, TokenStreamException {
-		
+
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST aCase_AST = null;
-		
+
 		{
 		switch ( LA(1)) {
 		case LITERAL_case:
@@ -3449,13 +3449,13 @@ public JavaRecognizer(ParserSharedInputState state) {
 		aCase_AST = (AST)currentAST.root;
 		returnAST = aCase_AST;
 	}
-	
+
 	public final void caseSList() throws RecognitionException, TokenStreamException {
-		
+
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST caseSList_AST = null;
-		
+
 		{
 		_loop119:
 		do {
@@ -3468,19 +3468,19 @@ public JavaRecognizer(ParserSharedInputState state) {
 			else {
 				break _loop119;
 			}
-			
+
 		} while (true);
 		}
 		caseSList_AST = (AST)currentAST.root;
 		returnAST = caseSList_AST;
 	}
-	
+
 	public final void expressionList() throws RecognitionException, TokenStreamException {
-		
+
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST expressionList_AST = null;
-		
+
 		expression();
 		if (inputState.guessing==0) {
 			astFactory.addASTChild(currentAST, returnAST);
@@ -3503,19 +3503,19 @@ public JavaRecognizer(ParserSharedInputState state) {
 			else {
 				break _loop136;
 			}
-			
+
 		} while (true);
 		}
 		expressionList_AST = (AST)currentAST.root;
 		returnAST = expressionList_AST;
 	}
-	
+
 	public final void handler() throws RecognitionException, TokenStreamException {
-		
+
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST handler_AST = null;
-		
+
 		AST tmp67_AST = null;
 		if (inputState.guessing==0) {
 			tmp67_AST = (AST)astFactory.create(LT(1));
@@ -3545,13 +3545,13 @@ public JavaRecognizer(ParserSharedInputState state) {
 		handler_AST = (AST)currentAST.root;
 		returnAST = handler_AST;
 	}
-	
+
 	public final void assignmentExpression() throws RecognitionException, TokenStreamException {
-		
+
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST assignmentExpression_AST = null;
-		
+
 		conditionalExpression();
 		if (inputState.guessing==0) {
 			astFactory.addASTChild(currentAST, returnAST);
@@ -3723,13 +3723,13 @@ public JavaRecognizer(ParserSharedInputState state) {
 		assignmentExpression_AST = (AST)currentAST.root;
 		returnAST = assignmentExpression_AST;
 	}
-	
+
 	public final void conditionalExpression() throws RecognitionException, TokenStreamException {
-		
+
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST conditionalExpression_AST = null;
-		
+
 		logicalOrExpression();
 		if (inputState.guessing==0) {
 			astFactory.addASTChild(currentAST, returnAST);
@@ -3790,13 +3790,13 @@ public JavaRecognizer(ParserSharedInputState state) {
 		conditionalExpression_AST = (AST)currentAST.root;
 		returnAST = conditionalExpression_AST;
 	}
-	
+
 	public final void logicalOrExpression() throws RecognitionException, TokenStreamException {
-		
+
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST logicalOrExpression_AST = null;
-		
+
 		logicalAndExpression();
 		if (inputState.guessing==0) {
 			astFactory.addASTChild(currentAST, returnAST);
@@ -3819,19 +3819,19 @@ public JavaRecognizer(ParserSharedInputState state) {
 			else {
 				break _loop144;
 			}
-			
+
 		} while (true);
 		}
 		logicalOrExpression_AST = (AST)currentAST.root;
 		returnAST = logicalOrExpression_AST;
 	}
-	
+
 	public final void logicalAndExpression() throws RecognitionException, TokenStreamException {
-		
+
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST logicalAndExpression_AST = null;
-		
+
 		inclusiveOrExpression();
 		if (inputState.guessing==0) {
 			astFactory.addASTChild(currentAST, returnAST);
@@ -3854,19 +3854,19 @@ public JavaRecognizer(ParserSharedInputState state) {
 			else {
 				break _loop147;
 			}
-			
+
 		} while (true);
 		}
 		logicalAndExpression_AST = (AST)currentAST.root;
 		returnAST = logicalAndExpression_AST;
 	}
-	
+
 	public final void inclusiveOrExpression() throws RecognitionException, TokenStreamException {
-		
+
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST inclusiveOrExpression_AST = null;
-		
+
 		exclusiveOrExpression();
 		if (inputState.guessing==0) {
 			astFactory.addASTChild(currentAST, returnAST);
@@ -3889,19 +3889,19 @@ public JavaRecognizer(ParserSharedInputState state) {
 			else {
 				break _loop150;
 			}
-			
+
 		} while (true);
 		}
 		inclusiveOrExpression_AST = (AST)currentAST.root;
 		returnAST = inclusiveOrExpression_AST;
 	}
-	
+
 	public final void exclusiveOrExpression() throws RecognitionException, TokenStreamException {
-		
+
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST exclusiveOrExpression_AST = null;
-		
+
 		andExpression();
 		if (inputState.guessing==0) {
 			astFactory.addASTChild(currentAST, returnAST);
@@ -3924,19 +3924,19 @@ public JavaRecognizer(ParserSharedInputState state) {
 			else {
 				break _loop153;
 			}
-			
+
 		} while (true);
 		}
 		exclusiveOrExpression_AST = (AST)currentAST.root;
 		returnAST = exclusiveOrExpression_AST;
 	}
-	
+
 	public final void andExpression() throws RecognitionException, TokenStreamException {
-		
+
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST andExpression_AST = null;
-		
+
 		equalityExpression();
 		if (inputState.guessing==0) {
 			astFactory.addASTChild(currentAST, returnAST);
@@ -3959,19 +3959,19 @@ public JavaRecognizer(ParserSharedInputState state) {
 			else {
 				break _loop156;
 			}
-			
+
 		} while (true);
 		}
 		andExpression_AST = (AST)currentAST.root;
 		returnAST = andExpression_AST;
 	}
-	
+
 	public final void equalityExpression() throws RecognitionException, TokenStreamException {
-		
+
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST equalityExpression_AST = null;
-		
+
 		relationalExpression();
 		if (inputState.guessing==0) {
 			astFactory.addASTChild(currentAST, returnAST);
@@ -4016,19 +4016,19 @@ public JavaRecognizer(ParserSharedInputState state) {
 			else {
 				break _loop160;
 			}
-			
+
 		} while (true);
 		}
 		equalityExpression_AST = (AST)currentAST.root;
 		returnAST = equalityExpression_AST;
 	}
-	
+
 	public final void relationalExpression() throws RecognitionException, TokenStreamException {
-		
+
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST relationalExpression_AST = null;
-		
+
 		shiftExpression();
 		if (inputState.guessing==0) {
 			astFactory.addASTChild(currentAST, returnAST);
@@ -4126,7 +4126,7 @@ public JavaRecognizer(ParserSharedInputState state) {
 				else {
 					break _loop165;
 				}
-				
+
 			} while (true);
 			}
 			break;
@@ -4154,13 +4154,13 @@ public JavaRecognizer(ParserSharedInputState state) {
 		relationalExpression_AST = (AST)currentAST.root;
 		returnAST = relationalExpression_AST;
 	}
-	
+
 	public final void shiftExpression() throws RecognitionException, TokenStreamException {
-		
+
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST shiftExpression_AST = null;
-		
+
 		additiveExpression();
 		if (inputState.guessing==0) {
 			astFactory.addASTChild(currentAST, returnAST);
@@ -4215,19 +4215,19 @@ public JavaRecognizer(ParserSharedInputState state) {
 			else {
 				break _loop169;
 			}
-			
+
 		} while (true);
 		}
 		shiftExpression_AST = (AST)currentAST.root;
 		returnAST = shiftExpression_AST;
 	}
-	
+
 	public final void additiveExpression() throws RecognitionException, TokenStreamException {
-		
+
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST additiveExpression_AST = null;
-		
+
 		multiplicativeExpression();
 		if (inputState.guessing==0) {
 			astFactory.addASTChild(currentAST, returnAST);
@@ -4272,19 +4272,19 @@ public JavaRecognizer(ParserSharedInputState state) {
 			else {
 				break _loop173;
 			}
-			
+
 		} while (true);
 		}
 		additiveExpression_AST = (AST)currentAST.root;
 		returnAST = additiveExpression_AST;
 	}
-	
+
 	public final void multiplicativeExpression() throws RecognitionException, TokenStreamException {
-		
+
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST multiplicativeExpression_AST = null;
-		
+
 		unaryExpression();
 		if (inputState.guessing==0) {
 			astFactory.addASTChild(currentAST, returnAST);
@@ -4339,19 +4339,19 @@ public JavaRecognizer(ParserSharedInputState state) {
 			else {
 				break _loop177;
 			}
-			
+
 		} while (true);
 		}
 		multiplicativeExpression_AST = (AST)currentAST.root;
 		returnAST = multiplicativeExpression_AST;
 	}
-	
+
 	public final void unaryExpression() throws RecognitionException, TokenStreamException {
-		
+
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST unaryExpression_AST = null;
-		
+
 		switch ( LA(1)) {
 		case INC:
 		{
@@ -4451,13 +4451,13 @@ public JavaRecognizer(ParserSharedInputState state) {
 		}
 		returnAST = unaryExpression_AST;
 	}
-	
+
 	public final void unaryExpressionNotPlusMinus() throws RecognitionException, TokenStreamException {
-		
+
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST unaryExpressionNotPlusMinus_AST = null;
-		
+
 		switch ( LA(1)) {
 		case BNOT:
 		{
@@ -4597,13 +4597,13 @@ public JavaRecognizer(ParserSharedInputState state) {
 			}
 			returnAST = unaryExpressionNotPlusMinus_AST;
 		}
-		
+
 	public final void postfixExpression() throws RecognitionException, TokenStreamException {
-		
+
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST postfixExpression_AST = null;
-		
+
 		primaryExpression();
 		if (inputState.guessing==0) {
 			astFactory.addASTChild(currentAST, returnAST);
@@ -4779,7 +4779,7 @@ public JavaRecognizer(ParserSharedInputState state) {
 						else {
 							if ( _cnt188>=1 ) { break _loop188; } else {throw new NoViableAltException(LT(1), getFilename());}
 						}
-						
+
 						_cnt188++;
 					} while (true);
 					}
@@ -4893,13 +4893,13 @@ public JavaRecognizer(ParserSharedInputState state) {
 		postfixExpression_AST = (AST)currentAST.root;
 		returnAST = postfixExpression_AST;
 	}
-	
+
 	public final void primaryExpression() throws RecognitionException, TokenStreamException {
-		
+
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST primaryExpression_AST = null;
-		
+
 		switch ( LA(1)) {
 		case IDENT:
 		{
@@ -5043,7 +5043,7 @@ public JavaRecognizer(ParserSharedInputState state) {
 				else {
 					break _loop193;
 				}
-				
+
 			} while (true);
 			}
 			AST tmp141_AST = null;
@@ -5068,24 +5068,24 @@ public JavaRecognizer(ParserSharedInputState state) {
 		}
 		returnAST = primaryExpression_AST;
 	}
-	
+
 /** object instantiation.
  *  Trees are built as illustrated by the following input/tree pairs:
- *  
+ *
  *  new T()
- *  
+ *
  *  new
  *   |
  *   T --  ELIST
  *           |
  *          arg1 -- arg2 -- .. -- argn
- *  
+ *
  *  new int[]
  *
  *  new
  *   |
  *  int -- ARRAY_DECLARATOR
- *  
+ *
  *  new int[] {1,2}
  *
  *  new
@@ -5095,7 +5095,7 @@ public JavaRecognizer(ParserSharedInputState state) {
  *                                EXPR -- EXPR
  *                                  |      |
  *                                  1      2
- *  
+ *
  *  new int[3]
  *  new
  *   |
@@ -5104,9 +5104,9 @@ public JavaRecognizer(ParserSharedInputState state) {
  *              EXPR
  *                |
  *                3
- *  
+ *
  *  new int[1][2]
- *  
+ *
  *  new
  *   |
  *  int -- ARRAY_DECLARATOR
@@ -5116,15 +5116,15 @@ public JavaRecognizer(ParserSharedInputState state) {
  *             EXPR             1
  *               |
  *               2
- *  
+ *
  */
 	public final void newExpression() throws RecognitionException, TokenStreamException {
-		
+
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST newExpression_AST = null;
 		CodePiece t=null;
-		
+
 		AST tmp143_AST = null;
 		if (inputState.guessing==0) {
 			tmp143_AST = (AST)astFactory.create(LT(1));
@@ -5161,7 +5161,7 @@ public JavaRecognizer(ParserSharedInputState state) {
 			{
 				if ( inputState.guessing==0 ) {
 					cpc.add(new AnonymousClassCodePiece(
-										t, 
+										t,
 										++anonymousNumber));
 				}
 				classBlock(null);
@@ -5305,13 +5305,13 @@ public JavaRecognizer(ParserSharedInputState state) {
 		newExpression_AST = (AST)currentAST.root;
 		returnAST = newExpression_AST;
 	}
-	
+
 	public final void argList() throws RecognitionException, TokenStreamException {
-		
+
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST argList_AST = null;
-		
+
 		{
 		switch ( LA(1)) {
 		case LITERAL_void:
@@ -5361,13 +5361,13 @@ public JavaRecognizer(ParserSharedInputState state) {
 		argList_AST = (AST)currentAST.root;
 		returnAST = argList_AST;
 	}
-	
+
 	public final void constant() throws RecognitionException, TokenStreamException {
-		
+
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST constant_AST = null;
-		
+
 		switch ( LA(1)) {
 		case NUM_INT:
 		{
@@ -5420,13 +5420,13 @@ public JavaRecognizer(ParserSharedInputState state) {
 		}
 		returnAST = constant_AST;
 	}
-	
+
 	public final void newArrayDeclarator() throws RecognitionException, TokenStreamException {
-		
+
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST newArrayDeclarator_AST = null;
-		
+
 		{
 		int _cnt203=0;
 		_loop203:
@@ -5494,15 +5494,15 @@ public JavaRecognizer(ParserSharedInputState state) {
 			else {
 				if ( _cnt203>=1 ) { break _loop203; } else {throw new NoViableAltException(LT(1), getFilename());}
 			}
-			
+
 			_cnt203++;
 		} while (true);
 		}
 		newArrayDeclarator_AST = (AST)currentAST.root;
 		returnAST = newArrayDeclarator_AST;
 	}
-	
-	
+
+
 	public static final String[] _tokenNames = {
 		"<0>",
 		"EOF",
@@ -5653,7 +5653,7 @@ public JavaRecognizer(ParserSharedInputState state) {
 		"EXPONENT",
 		"FLOAT_SUFFIX"
 	};
-	
+
 	private static final long _tokenSet_0_data_[] = { -576437112803426304L, 95L, 0L, 0L };
 	public static final BitSet _tokenSet_0 = new BitSet(_tokenSet_0_data_);
 	private static final long _tokenSet_1_data_[] = { -576459103035981824L, 15L, 0L, 0L };
@@ -5694,5 +5694,5 @@ public JavaRecognizer(ParserSharedInputState state) {
 	public static final BitSet _tokenSet_18 = new BitSet(_tokenSet_18_data_);
 	private static final long _tokenSet_19_data_[] = { 144044819331678208L, -3746994889972250624L, 4095L, 0L, 0L, 0L };
 	public static final BitSet _tokenSet_19 = new BitSet(_tokenSet_19_data_);
-	
+
 	}
