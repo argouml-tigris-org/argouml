@@ -35,7 +35,6 @@ import java.beans.PropertyVetoException;
 import java.util.Vector;
 
 import org.apache.log4j.Category;
-import org.argouml.application.api.Notation;
 import org.argouml.uml.generator.ParserDisplay;
 import org.tigris.gef.base.Selection;
 import org.tigris.gef.graph.GraphModel;
@@ -43,32 +42,23 @@ import org.tigris.gef.presentation.FigLine;
 import org.tigris.gef.presentation.FigRRect;
 import org.tigris.gef.presentation.FigRect;
 import org.tigris.gef.presentation.FigText;
-import ru.novosoft.uml.MElementEvent;
+
 import ru.novosoft.uml.behavior.state_machines.MState;
 
 /** Class to display graphics for a UML MState in a diagram. */
 
-public class FigSimpleState extends FigStateVertex {
+public class FigSimpleState extends FigState {
     protected static Category cat = Category.getInstance(FigSimpleState.class);
 
   ////////////////////////////////////////////////////////////////
   // constants
 
   public final int MARGIN = 2;
-  public final int X = 0;
-  public final int Y = 0;
-  public final int W = 70;
-  public final int H = 40;
 
   ////////////////////////////////////////////////////////////////
   // instance variables
 
-  /** UML does not really use ports, so just define one big one so
-   *  that users can drag edges to or from any point in the icon. */
-
-  FigRect _bigPort;
   FigRect _cover;
-  FigText _internal;
   FigLine _divider;
 
 
@@ -76,27 +66,17 @@ public class FigSimpleState extends FigStateVertex {
   // constructors
 
   public FigSimpleState() {
-    _bigPort = new FigRRect(X+1, Y+1, W-2, H-2, Color.cyan, Color.cyan);
-    _cover = new FigRRect(X, Y, W, H, Color.black, Color.white);
+    _bigPort = new FigRRect(getInitialX()+1, getInitialY()+1, getInitialWidth()-2, getInitialHeight()-2, Color.cyan, Color.cyan);
+    _cover = new FigRRect(getInitialX(), getInitialY(), getInitialWidth(), getInitialHeight(), Color.black, Color.white);
 
     _bigPort.setLineWidth(0);
     _name.setLineWidth(0);
-    _name.setBounds(X+2, Y+2, W-4, _name.getBounds().height);
+    _name.setBounds(getInitialX()+2, getInitialY()+2, getInitialWidth()-4, _name.getBounds().height);
     _name.setFilled(false);
 
-    _divider = new FigLine(X,  Y+2 + _name.getBounds().height + 1,
-			   W-1,  Y+2 + _name.getBounds().height + 1,
-			   Color.black);
-
-    _internal = new FigText(X+2, Y+2 + _name.getBounds().height + 4,
-			    W-4, H - (Y+2 + _name.getBounds().height + 4));
-    _internal.setFont(LABEL_FONT);
-    _internal.setTextColor(Color.black);
-    _internal.setLineWidth(0);
-    _internal.setFilled(false);
-    _internal.setExpandOnly(true);
-    _internal.setMultiLine(true);
-    _internal.setJustification(FigText.JUSTIFY_LEFT);
+    _divider = new FigLine(getInitialX(),  getInitialY()+2 + _name.getBounds().height + 1,
+    getInitialWidth()-1,  getInitialY()+2 + _name.getBounds().height + 1,
+			   Color.black);   
 
     // add Figs to the FigNode in back-to-front order
     addFig(_bigPort);
@@ -193,19 +173,7 @@ public class FigSimpleState extends FigStateVertex {
 
 
   ////////////////////////////////////////////////////////////////
-  // event processing
-
-  /** Update the text labels */
-  protected void modelChanged(MElementEvent mee) {
-    if (mee == null || mee.getName().equals("classifierInState") || mee.getName().equals("classifierInState") ||
-        mee.getName().equals("deferrableEvent") || mee.getName().equals("internalTransition") ||
-        mee.getName().equals("doActivity") || mee.getName().equals("entry") || mee.getName().equals("exit") ||
-        mee.getName().equals("stateMachine") ||
-        mee.getName().equals("incoming") || mee.getName().equals("outgoing")) {
-        updateInternal();
-    }
-     super.modelChanged(mee);
-  }
+  // event processing  
 
   public void textEdited(FigText ft) throws PropertyVetoException {
     super.textEdited(ft);
@@ -216,17 +184,34 @@ public class FigSimpleState extends FigStateVertex {
       ParserDisplay.SINGLETON.parseStateBody(st, s);
     }
   }
-  
-  protected void updateInternal() {
-    MState s = (MState) getOwner();
-    if (s == null) return;
-    String newText = Notation.generateStateBody(this, s);
-    _internal.setText(newText);
+   
 
-    calcBounds();
-    Rectangle rect = getBounds();
-    setBounds(rect.x, rect.y, rect.width, rect.height);
-  }
+    /**
+     * @see org.argouml.uml.diagram.state.ui.FigState#getInitialHeight()
+     */
+    protected int getInitialHeight() {
+        return 40;
+    }
 
+    /**
+     * @see org.argouml.uml.diagram.state.ui.FigState#getInitialWidth()
+     */
+    protected int getInitialWidth() {
+        return 70;
+    }
+
+    /**
+     * @see org.argouml.uml.diagram.state.ui.FigState#getInitialX()
+     */
+    protected int getInitialX() {
+        return 0;
+    }
+
+    /**
+     * @see org.argouml.uml.diagram.state.ui.FigState#getInitialY()
+     */
+    protected int getInitialY() {
+        return 0;
+    }
 
 } /* end class FigSimpleState */

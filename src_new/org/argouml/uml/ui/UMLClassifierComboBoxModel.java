@@ -34,20 +34,18 @@
 
 package org.argouml.uml.ui;
 
-import org.apache.log4j.Category;
-import org.argouml.uml.*;
-import javax.swing.event.*;
-import javax.swing.*;
-import java.lang.reflect.*;
-import ru.novosoft.uml.*;
-import java.awt.event.*;
-import java.util.*;
-import ru.novosoft.uml.foundation.data_types.*;
-import ru.novosoft.uml.foundation.core.*;
-import ru.novosoft.uml.model_management.*;
+import java.lang.reflect.InvocationTargetException;
+import java.util.Collection;
+import java.util.Iterator;
 
-import ru.novosoft.uml.foundation.core.*;
-import ru.novosoft.uml.behavior.common_behavior.*;
+import org.apache.log4j.Category;
+import org.argouml.uml.Profile;
+
+import ru.novosoft.uml.MElementEvent;
+import ru.novosoft.uml.behavior.common_behavior.MInstance;
+import ru.novosoft.uml.foundation.core.MClassifier;
+import ru.novosoft.uml.foundation.core.MModelElement;
+import ru.novosoft.uml.model_management.MModel;
 
 
 public class UMLClassifierComboBoxModel extends UMLComboBoxModel  {
