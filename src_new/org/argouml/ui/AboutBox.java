@@ -111,7 +111,7 @@ public class AboutBox extends JFrame {
 		     "  Toby Baier\n"+
 		     "  Eugenio Alvarez\n"+
 		     "  Clemens Eichler\n"+
-		     "  Curt Arnolds\n"+
+		     "  Curt Arnold\n"+
 		     "  Andreas Rueckert\n"+
 		     "  Frank Finger\n"+
 		     "  Stuart Zakon\n"+
