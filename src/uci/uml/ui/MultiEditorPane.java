@@ -62,8 +62,8 @@ implements ChangeListener, MouseListener {
 
   public MultiEditorPane() {
     System.out.println("making MultiEditorPane");
-    _tabPanels.addElement(new TabSrc());
     _tabPanels.addElement(new TabDiagram());
+    _tabPanels.addElement(new TabSrc());
     _tabPanels.addElement(new TabTable());
     _tabPanels.addElement(new TabUMLDisplay());
     // debugging: _tabPanels.addElement(new TabHash());
@@ -80,6 +80,9 @@ implements ChangeListener, MouseListener {
       _tabs.addTab("As " + title, t);
     } /* end for */
 
+    for (int i = 0; i < _tabPanels.size(); i++)
+      _tabs.setEnabledAt(i, false);
+
 
     _tabs.addChangeListener(this);
     _tabs.addMouseListener(this);
@@ -91,8 +94,8 @@ implements ChangeListener, MouseListener {
   ////////////////////////////////////////////////////////////////
   // accessors
 
+  public Dimension getPreferredSize() { return new Dimension(400, 500); }
   public Dimension getMinimumSize() { return new Dimension(100, 100); }
-  public Dimension getPreferredSize() { return new Dimension(400, 400); }
 
   public void setTarget(Object target) {
     int firstEnabled = -1;
@@ -101,7 +104,7 @@ implements ChangeListener, MouseListener {
     if (_target == target) return;
     _target = target;
     for (int i = 0; i < _tabPanels.size(); i++) {
-      JPanel tab = (JPanel) _tabPanels.elementAt(i);      
+      JPanel tab = (JPanel) _tabPanels.elementAt(i);
       if (tab instanceof TabModelTarget) {
 	TabModelTarget tabMT = (TabModelTarget) tab;
 	tabMT.setTarget(_target);
@@ -116,11 +119,11 @@ implements ChangeListener, MouseListener {
     if (jumpToFirstEnabledTab && firstEnabled != -1 )
       _tabs.setSelectedIndex(firstEnabled);
   }
-    
+
 
   public Object getTarget() { return _target; }
 
-  
+
   ////////////////////////////////////////////////////////////////
   // actions
 
@@ -130,9 +133,9 @@ implements ChangeListener, MouseListener {
       ((TabDiagram)curTab).getJGraph().selectByOwner(o);
     }
     //needs-more-work: handle tables
-    
+
   }
-  
+
   ////////////////////////////////////////////////////////////////
   // event handlers
 

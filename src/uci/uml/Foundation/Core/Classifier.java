@@ -39,6 +39,7 @@ import uci.uml.Model_Management.*;
 import uci.uml.Behavioral_Elements.Common_Behavior.*;
 import uci.uml.Behavioral_Elements.State_Machines.*;
 //nmw: import uci.uml.Behavioral_Elements.Collaborations.*;
+import uci.uml.util.*;
 
 
 public abstract class Classifier extends GeneralizableElementImpl {
@@ -231,14 +232,13 @@ public abstract class Classifier extends GeneralizableElementImpl {
     Vector supers = getGeneralization();
     if (supers == null || supers.size() == 0) return res;
 
-    java.util.Enumeration superEnum = supers.elements();
+    java.util.Enumeration superEnum = GenAncestorClasses.TheInstance.gen(this);
     while (superEnum.hasMoreElements()) {
-      Generalization g = (Generalization) superEnum.nextElement();
-      Classifier c = (Classifier) g.getSupertype();
-      Vector beh = c.getInheritedBehavioralFeatures();
-      java.util.Enumeration enum = beh.elements();
-      while (enum.hasMoreElements()) {
-	res.addElement(enum.nextElement());
+      Classifier c = (Classifier) superEnum.nextElement();
+      Vector beh = c.getBehavioralFeature();
+      int size = beh.size();
+      for (int i = 0; i < size; i++) {
+	res.addElement(beh.elementAt(i));
       }
     }
     return res;
@@ -249,11 +249,10 @@ public abstract class Classifier extends GeneralizableElementImpl {
     Vector supers = getGeneralization();
     if (supers == null || supers.size() == 0) return res;
 
-    java.util.Enumeration superEnum = supers.elements();
+    java.util.Enumeration superEnum = GenAncestorClasses.TheInstance.gen(this);
     while (superEnum.hasMoreElements()) {
-      Generalization g = (Generalization) superEnum.nextElement();
-      Classifier c = (Classifier) g.getSupertype();
-      Vector str = c.getInheritedStructuralFeatures();
+      Classifier c = (Classifier) superEnum.nextElement();
+      Vector str = c.getStructuralFeature();
       java.util.Enumeration enum = str.elements();
       while (enum.hasMoreElements()) {
 	res.addElement(enum.nextElement());
@@ -267,11 +266,10 @@ public abstract class Classifier extends GeneralizableElementImpl {
     Vector supers = getGeneralization();
     if (supers == null || supers.size() == 0) return res;
 
-    java.util.Enumeration superEnum = supers.elements();
+    java.util.Enumeration superEnum = GenAncestorClasses.TheInstance.gen(this);
     while (superEnum.hasMoreElements()) {
-      Generalization g = (Generalization) superEnum.nextElement();
-      Classifier c = (Classifier) g.getSupertype();
-      Vector ends = c.getInheritedAssociationEnds();
+      Classifier c = (Classifier) superEnum.nextElement();
+      Vector ends = c.getAssociationEnd();
       java.util.Enumeration enum = ends.elements();
       while (enum.hasMoreElements()) {
 	res.addElement(enum.nextElement());
@@ -285,11 +283,10 @@ public abstract class Classifier extends GeneralizableElementImpl {
     Vector supers = getGeneralization();
     if (supers == null || supers.size() == 0) return res;
 
-    java.util.Enumeration superEnum = supers.elements();
+    java.util.Enumeration superEnum = GenAncestorClasses.TheInstance.gen(this);
     while (superEnum.hasMoreElements()) {
-      Generalization g = (Generalization) superEnum.nextElement();
-      Classifier c = (Classifier) g.getSupertype();
-      Vector reals = c.getInheritedRealizations();
+      Classifier c = (Classifier) superEnum.nextElement();
+      Vector reals = c.getRealization();
       java.util.Enumeration enum = reals.elements();
       while (enum.hasMoreElements()) {
 	res.addElement(enum.nextElement());

@@ -227,21 +227,20 @@ public class ModelElementImpl extends ElementImpl implements ModelElement {
   }
 
   public Vector getStereotype() { return (Vector) _stereotype;}
-  public void setStereotype(Vector x)
-  throws PropertyVetoException {
+  public void setStereotype(Vector x) throws PropertyVetoException {
     if (_stereotype == null) _stereotype = new Vector();
     fireVetoableChange("stereotype", _stereotype, x);
     _stereotype = x;
   }
-  public void addStereotype(Stereotype x)
-  throws PropertyVetoException {
+  public void addStereotype(Stereotype x) throws PropertyVetoException {
     if (_stereotype == null) _stereotype = new Vector();
+    else if (_stereotype.contains(x)) return;
     fireVetoableChange("stereotype", _stereotype, x);
     _stereotype.addElement(x);
   }
-  public void removeStereotype(Stereotype x)
-  throws PropertyVetoException {
+  public void removeStereotype(Stereotype x) throws PropertyVetoException {
     if (_stereotype == null) return;
+    else if (!_stereotype.contains(x)) return;
     fireVetoableChange("stereotype", _stereotype, x);
     _stereotype.removeElement(x);
   }
@@ -262,16 +261,18 @@ public class ModelElementImpl extends ElementImpl implements ModelElement {
       sm.setNamespace(getNamespace());
     }
   }
-  public void addBehavior(StateMachine x)
-  throws PropertyVetoException {
+  public void addBehavior(StateMachine x) throws PropertyVetoException {
     if (_behavior == null) _behavior = new Vector();
+    else if (_behavior.contains(x)) return;
     fireVetoableChange("behavior", _behavior, x);
     _behavior.addElement(x);
     x.setNamespace(getNamespace());
+    x.setContext(this);
   }
   public void removeBehavior(StateMachine x)
   throws PropertyVetoException {
     if (_behavior == null) return;
+    else if (!_behavior.contains(x)) return;
     fireVetoableChange("behavior", _behavior, x);
     _behavior.removeElement(x);
   }

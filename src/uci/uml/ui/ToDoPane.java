@@ -142,9 +142,9 @@ implements ItemListener, TreeSelectionListener, MouseListener, ToDoListListener 
     else _tree.setShowsRootHandles(true);
     updateTree();
   }
-  
-  public Dimension getPreferredSize() { return new Dimension(200, 100); }
-  public Dimension getMinimumSize() { return new Dimension(100, 100); }
+
+  public Dimension getPreferredSize() { return new Dimension(220, 100); }
+  public Dimension getMinimumSize() { return new Dimension(120, 100); }
 
   ////////////////////////////////////////////////////////////////
   // event handlers
@@ -203,7 +203,7 @@ implements ItemListener, TreeSelectionListener, MouseListener, ToDoListListener 
     Object sel = getSelectedObject();
     if (sel instanceof ToDoItem)
       ((ToDoItem)sel).action();
-    
+
     //needs-more-work: should fire its own event and ProjectBrowser
     //should register a listener
     //System.out.println("2: " + getSelectedObject().toString());
@@ -223,18 +223,20 @@ implements ItemListener, TreeSelectionListener, MouseListener, ToDoListListener 
   public void toDoItemAdded(ToDoListEvent tde) {
     if (_curPerspective instanceof ToDoListListener) 
       ((ToDoListListener)_curPerspective).toDoItemAdded(tde);
+    paintImmediately(getBounds());
   }
 
   public void toDoItemRemoved(ToDoListEvent tde) {
     if (_curPerspective instanceof ToDoListListener)
       ((ToDoListListener)_curPerspective).toDoItemRemoved(tde);
+    paintImmediately(getBounds());
   }
-  
+
   public void toDoListChanged(ToDoListEvent tde) { 
     if (_curPerspective instanceof ToDoListListener)
       ((ToDoListListener)_curPerspective).toDoListChanged(tde);
   }
-  
+
 
 
   ////////////////////////////////////////////////////////////////

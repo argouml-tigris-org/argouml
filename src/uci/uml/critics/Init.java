@@ -29,6 +29,9 @@ import uci.uml.critics.patterns.*;
 import uci.uml.critics.java.*;
 import uci.uml.Foundation.Core.*;
 import uci.uml.Model_Management.*;
+import uci.uml.Behavioral_Elements.Common_Behavior.*;
+import uci.uml.Behavioral_Elements.State_Machines.*;
+import uci.uml.Behavioral_Elements.Use_Cases.*;
 
 /** Registers critics for use in Argo/UML.  This class is called at
  *  system startup time. If you add a new critic, you need to add a
@@ -67,6 +70,11 @@ public class Init {
   public static Critic crUselessAbstract = new CrUselessAbstract();
   public static Critic crDisambigClassName = new CrDisambigClassName();
   public static Critic crConflictingComposites = new CrConflictingComposites();
+
+  public static Critic crNoTransitions = new CrNoTransitions();
+  public static Critic crNoIncomingTransitions = new CrNoIncomingTransitions();
+  public static Critic crNoOutgoingTransitions = new CrNoOutgoingTransitions();
+  public static Critic crMultipleInitialStates = new CrMultipleInitialStates();
 
   public static Critic crEmptyPackage = new CrEmptyPackage();
   public static Critic crNoOperations = new CrNoOperations();
@@ -118,9 +126,14 @@ public class Init {
       java.lang.Class genCls = Generalization.class;
       java.lang.Class datatypeCls = DataType.class;
 
+      java.lang.Class stateVertexCls = StateVertex.class;
+      java.lang.Class stateCls = State.class;
+      java.lang.Class compositieStateCls = CompositeState.class;
+      java.lang.Class pseudostateCls = Pseudostate.class;
+
       // needs-more-work: Agency should allow registration by interface
       // useful for IAssociation.
-      
+
       Agency.register(crAssocNameConflict, namespaceCls);
       Agency.register(crAttrNameConflict, classifierCls);
       Agency.register(crCircularAssocClass, assocClassCls);
@@ -155,6 +168,11 @@ public class Init {
       Agency.register(crReservedName, modelElementCls);
       Agency.register(crMultiInherit, classifierCls);
       Agency.register(crConflictingComposites, classifierCls);
+
+      Agency.register(crNoTransitions, stateVertexCls);
+      Agency.register(crNoIncomingTransitions, stateVertexCls);
+      Agency.register(crNoOutgoingTransitions, stateVertexCls);
+      Agency.register(crMultipleInitialStates, pseudostateCls);
 
       Agency.register(crUnconventionalOperName, operCls);
       Agency.register(crUnconventionalAttrName, attrCls);

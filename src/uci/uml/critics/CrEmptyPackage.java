@@ -58,9 +58,7 @@ public class CrEmptyPackage extends CrUML {
     addSupportedDecision(CrUML.decMODULARITY);
   }
 
-  protected void sd(String s) { setDescription(s); }
-  
-  public boolean predicate(Object dm, Designer dsgr) {
+  public boolean predicate2(Object dm, Designer dsgr) {
     if (!(dm instanceof Model)) return NO_PROBLEM;
     Model mod = (Model) dm;
     Vector elms = mod.getOwnedElement();

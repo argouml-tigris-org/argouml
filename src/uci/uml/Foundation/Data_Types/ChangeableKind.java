@@ -31,7 +31,7 @@ package uci.uml.Foundation.Data_Types;
 
 import java.util.*;
 
-public class ChangeableKind {
+public class ChangeableKind implements java.io.Serializable {
   public static final ChangeableKind UNSPEC = new ChangeableKind("unspec"); 
   public static final ChangeableKind NONE = new ChangeableKind("none"); 
   public static final ChangeableKind FROZEN = new ChangeableKind("frozen");

@@ -31,7 +31,7 @@ package uci.uml.Foundation.Data_Types;
 
 import java.util.*;
 
-public class Expression {
+public class Expression implements java.io.Serializable {
   public static final Name UNSPEC = new Name("Unspecified");
   public static final Name JAVA = new Name("Java");
   public static final Name C = new Name("C/C++");

@@ -61,7 +61,7 @@ public class CrMergeClasses extends CrUML {
   }
 
 
-  public boolean predicate(Object dm, Designer dsgr) {
+  public boolean predicate2(Object dm, Designer dsgr) {
     if (!(dm instanceof MMClass)) return NO_PROBLEM;
     MMClass cls = (MMClass) dm;
     Vector ends = cls.getAssociationEnd();

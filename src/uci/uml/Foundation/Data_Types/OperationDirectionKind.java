@@ -31,7 +31,7 @@ package uci.uml.Foundation.Data_Types;
 
 import java.util.*;
 
-public class OperationDirectionKind {
+public class OperationDirectionKind  implements java.io.Serializable{
     
   public OperationDirectionKind() { }
   

@@ -28,11 +28,15 @@
 package uci.uml.ui;
 
 import java.util.*;
+import java.io.*;
 import java.beans.*;
+import java.awt.*;
 import java.awt.event.*;
 import com.sun.java.swing.*;
 import com.sun.java.swing.event.*;
 import com.sun.java.swing.tree.*;
+import com.sun.java.swing.preview.*;
+import com.sun.java.swing.preview.filechooser.*;
 
 import uci.util.*;
 import uci.argo.kernel.*;
@@ -145,6 +149,42 @@ class ActionNew extends UMLAction {
 
 class ActionOpen extends UMLAction {
   public ActionOpen() { super("Open..."); }
+  public void actionPerformed(ActionEvent e) {
+    ProjectBrowser pb = ProjectBrowser.TheInstance;
+    try {
+      JFileChooser chooser = new JFileChooser();
+      ArgoFileFilter filter = new ArgoFileFilter();
+      chooser.addChoosableFileFilter(filter);
+      chooser.setFileFilter(filter);
+      int retval = chooser.showOpenDialog(pb);
+      if(retval == 0) {
+	File theFile = chooser.getSelectedFile();
+	if(theFile != null) {
+	  String pathname = chooser.getSelectedFile().getAbsolutePath();
+    	pb.showStatus("Reading " + pathname + "...");
+    	FileInputStream fis = new FileInputStream(pathname);
+    	ObjectInput s = new ObjectInputStream(fis);
+    	Project p = (Project) s.readObject();
+	//ed.postLoad();
+	if (fis != null) fis.close();
+    	pb.showStatus("Read " + pathname);
+	pb.setProject(p);
+	return;
+	}
+      }
+      JOptionPane.showMessageDialog(pb, "No file chosen");
+    }
+    catch (FileNotFoundException ignore) {
+      System.out.println("got an FileNotFoundException");
+     }
+    catch (java.lang.ClassNotFoundException ignore) {
+      System.out.println("got an ClassNotFoundException");
+     }
+    catch (IOException ignore) {
+      System.out.println("got an IOException");
+    }
+
+  }
 } /* end class ActionOpen */
 
 class ActionSave extends UMLAction {
@@ -153,6 +193,10 @@ class ActionSave extends UMLAction {
     Project p = ProjectBrowser.TheInstance.getProject();
     return super.shouldBeEnabled() && p != null && p.getNeedsSave();
   }
+  public void actionPerformed(ActionEvent ae) {
+    // needs-more-work: should just save
+    Actions.SaveAs.actionPerformed(ae);
+  }
 } /* end class ActionSave */
 
 class ActionSaveAs extends UMLAction {
@@ -160,6 +204,45 @@ class ActionSaveAs extends UMLAction {
   public boolean shouldBeEnabled() {
     Project p = ProjectBrowser.TheInstance.getProject();
     return super.shouldBeEnabled() && p != null;
+  }
+  public void actionPerformed(ActionEvent ae) {
+    ProjectBrowser pb = ProjectBrowser.TheInstance;
+    Project p =  pb.getProject();
+    try {
+      JFileChooser chooser = new JFileChooser();
+      ArgoFileFilter filter = new ArgoFileFilter();
+      chooser.addChoosableFileFilter(filter);
+      chooser.setFileFilter(filter);
+      int retval = chooser.showSaveDialog(pb);
+      if(retval == 0) {
+	File theFile = chooser.getSelectedFile();
+	if (theFile != null) {
+	  String pathname = chooser.getSelectedFile().getAbsolutePath();
+	  pb.showStatus("Writing " + pathname + "...");
+	  FileOutputStream fos = new FileOutputStream(pathname);
+	  ObjectOutput oo = new ObjectOutputStream(fos);
+	  oo.writeObject(p);
+	  //p.postLoad();
+	  if (fos != null) fos.close();
+	  pb.showStatus("Wrote " + pathname);
+	  return;
+	}
+      }
+      JOptionPane.showMessageDialog(pb, "No file chosen");
+    }
+    catch (FileNotFoundException ignore) {
+      System.out.println("got an FileNotFoundException");
+    }
+//     catch (PropertyVetoException ignore) {
+//       System.out.println("got an PropertyVetoException");
+//     }
+    //    catch (java.lang.ClassMismatchException ignore) {
+    //      System.out.println("got an ClassMismatchException");
+    //    }
+    catch (IOException ignore) {
+      System.out.println("got an IOException");
+      ignore.printStackTrace();
+    }
   }
 } /* end class ActionSaveAS */
 
@@ -397,15 +480,30 @@ class ActionStateDiagram extends UMLAction {
   public void actionPerformed(ActionEvent e) {
     //System.out.println("making state diagram...");
     //_cmdCreateNode.doIt();
-    Project p = ProjectBrowser.TheInstance.getProject();
+    ProjectBrowser pb = ProjectBrowser.TheInstance;
+    Project p = pb.getProject();
     try {
-      p.addDiagram(new UMLStateDiagram(p.getCurrentModel()));
+      ModelElement context = (ModelElement) pb.getDetailsTarget();
+      if (context == null) {System.out.println("null context"); return;}
+      Name contextName = context.getName();
+      String contextNameStr = "untitled";
+      if (contextName != null && !contextName.equals(Name.UNSPEC))
+	contextNameStr = contextName.getBody();
+      StateMachine sm = new StateMachine(contextNameStr + "States");
+      sm.setTop(new CompositeState());
+      context.addBehavior(sm);
+      UMLStateDiagram d = new UMLStateDiagram(p.getCurrentModel(), sm);
+      p.addDiagram(d);
     }
-    catch (PropertyVetoException pve) { }
+    catch (PropertyVetoException pve) {
+      System.out.println("PropertyVetoException in ActionStateDiagram");
+    }
   }
   public boolean shouldBeEnabled() {
-    Project p = ProjectBrowser.TheInstance.getProject();
-    return super.shouldBeEnabled() && p != null;
+    ProjectBrowser pb = ProjectBrowser.TheInstance;
+    Project p = pb.getProject();
+    Object target = pb.getDetailsTarget();
+    return super.shouldBeEnabled() && p != null && (target instanceof ModelElement);
   }
 } /* end class ActionStateDiagram */
 
@@ -549,7 +647,7 @@ class ActionAttr extends UMLAction {
 
   public void actionPerformed(ActionEvent e) {
     ProjectBrowser pb = ProjectBrowser.TheInstance;
-    Object target = pb.getTarget();
+    Object target = pb.getDetailsTarget();
     if (!(target instanceof Classifier)) return;
     Classifier cls = (Classifier) target;
     try {
@@ -564,7 +662,7 @@ class ActionAttr extends UMLAction {
 
   public boolean shouldBeEnabled() {
     ProjectBrowser pb = ProjectBrowser.TheInstance;
-    Object target = pb.getTarget();
+    Object target = pb.getDetailsTarget();
     return super.shouldBeEnabled() && target instanceof Classifier;
   }
 } /* end class ActionAttr */
@@ -577,7 +675,7 @@ class ActionOper extends UMLAction {
 
   public void actionPerformed(ActionEvent e) {
     ProjectBrowser pb = ProjectBrowser.TheInstance;
-    Object target = pb.getTarget();
+    Object target = pb.getDetailsTarget();
     if (!(target instanceof Classifier)) return;
     Classifier cls = (Classifier) target;
     try {
@@ -591,7 +689,7 @@ class ActionOper extends UMLAction {
   }
   public boolean shouldBeEnabled() {
     ProjectBrowser pb = ProjectBrowser.TheInstance;
-    Object target = pb.getTarget();
+    Object target = pb.getDetailsTarget();
     return super.shouldBeEnabled() && target instanceof Classifier;
   }
 } /* end class ActionOper */

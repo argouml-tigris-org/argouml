@@ -88,6 +88,7 @@ implements PropertyChangeListener {
     destFigNode(dfn);
     setOwner(edge);
     _fig = makeEdgeFig();
+    _fig.setGroup(this);
   }
 
   /** Contruct a new FigEdge without any underlying edge. */
@@ -125,6 +126,19 @@ implements PropertyChangeListener {
     _destFigNode = fn;
     fn.addFigEdge(this);
   }
+
+  public Fig hitFig(Rectangle r) {
+    Enumeration enum = _pathItems.elements();
+    Fig res = null;
+    if (_fig.hit(r)) res = _fig;
+    while (enum.hasMoreElements()) {
+      PathItem pi = (PathItem) enum.nextElement();
+      Fig f = pi.getFig();
+      if (f.hit(r)) res = f;
+    }
+    return res;
+  }
+
 
   /** Set the edge (some object in an underlying model) that this
    *  FigEdge should represent. */
@@ -175,11 +189,13 @@ implements PropertyChangeListener {
    *  location and the Fig (usually FigText) that should be drawn. */
   public void addPathItem(Fig newFig, PathConv newPath) {
     _pathItems.addElement(new PathItem(newFig, newPath));
+    newFig.setGroup(this);
   }
 
   /** Removes the given path item. */
   public void removePathItem(PathItem goneItem) {
-    _pathItems.removeElement(goneItem);    
+    _pathItems.removeElement(goneItem);
+    goneItem.getFig().setGroup(null);
   }
 
   /** Get and set the flag about using Fig connection points rather
@@ -331,7 +347,7 @@ implements PropertyChangeListener {
     paintPathItems(g);
   }
 
-  
+
   ////////////////////////////////////////////////////////////////
   // notifications and updates
 
@@ -346,10 +362,10 @@ implements PropertyChangeListener {
     }
   }
 
-  
+
   ////////////////////////////////////////////////////////////////
   // inner classes
-  protected class PathItem {
+  protected class PathItem implements java.io.Serializable {
     Fig _fig;
     PathConv _path;
 

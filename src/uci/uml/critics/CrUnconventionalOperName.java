@@ -52,9 +52,7 @@ public class CrUnconventionalOperName extends CrUML {
     addSupportedDecision(CrUML.decNAMING);
   }
 
-  protected void sd(String s) { setDescription(s); }
-  
-  public boolean predicate(Object dm, Designer dsgr) {
+  public boolean predicate2(Object dm, Designer dsgr) {
     if (!(dm instanceof Operation)) return NO_PROBLEM;
     Operation oper = (Operation) dm;
     Name myName = oper.getName();

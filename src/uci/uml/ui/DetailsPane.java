@@ -77,8 +77,8 @@ implements ChangeListener, MouseListener {
   public DetailsPane() {
     System.out.println("making DetailsPane");    
     _tabPanels.addElement(new TabToDo());
-    _tabPanels.addElement(new TabDocs());
     _tabPanels.addElement(new TabProps());
+    _tabPanels.addElement(new TabDocs());
     _tabPanels.addElement(new TabSrc());
     _tabPanels.addElement(new TabConstraints());
     _tabPanels.addElement(new TabTaggedValues());

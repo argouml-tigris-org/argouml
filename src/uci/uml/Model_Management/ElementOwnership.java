@@ -35,7 +35,7 @@ import java.beans.PropertyVetoException;
 import uci.uml.Foundation.Core.*;
 import uci.uml.Foundation.Data_Types.*;
 
-public class ElementOwnership {
+public class ElementOwnership implements java.io.Serializable {
   public VisibilityKind _visibility;
   public ModelElement _modelElement;
   public Namespace _namespace;

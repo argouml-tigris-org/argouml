@@ -36,6 +36,7 @@ import java.util.*;
 import uci.util.*;
 import uci.uml.ui.*;
 import uci.uml.Foundation.Core.*;
+import uci.uml.Behavioral_Elements.State_Machines.*;
 import uci.uml.Model_Management.*;
 
 /** This class gives critics access to parts of the UML model of the
@@ -63,42 +64,47 @@ public class ChildGenUML implements ChildGenerator {
       return new EnumerationSingle(me);
     }
 
-//     // needs-more-work: associationclasses fit both of the next 2 cases
+    if (o instanceof ModelElement) {
+      Vector behavior = ((ModelElement)o).getBehavior();
+      if (behavior != null) behavior.elements();
+    }
 
-//     if (o instanceof Classifier) {
-//       Classifier c = (Classifier) o;
-//       EnumerationComposite res = new EnumerationComposite();
-//       res.addSub(c.getBehavioralFeature());
-//       res.addSub(c.getStructuralFeature());
-//       return res;
-//     }
+    // needs-more-work: associationclasses fit both of the next 2 cases
 
-//     if (o instanceof IAssociation) {
-//       IAssociation asc = (IAssociation) o;
-//       Vector assocEnds = asc.getConnection();
-//       if (assocEnds != null) return assocEnds.elements();
-//     }
+    if (o instanceof Classifier) {
+      Classifier c = (Classifier) o;
+      EnumerationComposite res = new EnumerationComposite();
+      res.addSub(c.getBehavioralFeature());
+      res.addSub(c.getStructuralFeature());
+      return res;
+    }
+
+    if (o instanceof IAssociation) {
+      IAssociation asc = (IAssociation) o;
+      Vector assocEnds = asc.getConnection();
+      if (assocEnds != null) return assocEnds.elements();
+    }
 
 
 
 
 
     // // needed?
-//     if (o instanceof StateMachine) {
-//       StateMachine sm = (StateMachine) o;
-//       EnumerationComposite res = new EnumerationComposite();
-//       State top = sm.getTop();
-//       if (top != null) res.addSub(EnumerationSingle(top));
-//       res.addSub(sm.getTransitions());
-//       return res;
-//     }
+    if (o instanceof StateMachine) {
+      StateMachine sm = (StateMachine) o;
+      EnumerationComposite res = new EnumerationComposite();
+      State top = sm.getTop();
+      if (top != null) res.addSub(new EnumerationSingle(top));
+      res.addSub(sm.getTransitions());
+      return res;
+    }
 
-//     // needed?
-//     if (o instanceof CompositeState) {
-//       CompositeState cs = (CompositeState) o;
-//       Vector substates = cs.getSubstates();
-//       if (substates != null) return substates.elements();
-//     }
+    // needed?
+    if (o instanceof CompositeState) {
+      CompositeState cs = (CompositeState) o;
+      Vector substates = cs.getSubstate();
+      if (substates != null) return substates.elements();
+    }
 
     // tons more cases
 

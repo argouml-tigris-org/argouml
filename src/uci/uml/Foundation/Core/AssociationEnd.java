@@ -141,8 +141,8 @@ public class AssociationEnd extends ModelElementImpl {
     if (x == _type) return;
     fireVetoableChange("type", _type, x);
     Classifier oldType = _type;
-    if (oldType != null) oldType.removeAssociationEnd(this);
     _type = x;
+    if (oldType != null) oldType.removeAssociationEnd(this);
     if (_type != null) _type.addAssociationEnd(this);
   }
 

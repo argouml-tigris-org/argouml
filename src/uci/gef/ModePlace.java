@@ -47,7 +47,7 @@ public class ModePlace extends Mode {
 
   ////////////////////////////////////////////////////////////////
   // instance variables
-  
+
   /** The (new) node being placed. It might be an existing node that
    *  is adding a new FigNode. */
   protected Object _node;
@@ -56,36 +56,47 @@ public class ModePlace extends Mode {
    *  FigNode on an existing node being place in another diagram. */
   protected FigNode _pers;
 
+  protected GraphFactory _factory;
+
   ////////////////////////////////////////////////////////////////
   // constructor
-  
+
   /** Construct a new instance of ModePlace and store the given node. */
-  ModePlace(Object node) {
-    _node = node;
+  public ModePlace(GraphFactory gf) {
+    _factory = gf;
+    _node = null;
     _pers = null;
   }
 
   ////////////////////////////////////////////////////////////////
   // user feedback
-  
+
   /** A string to be shown in the status bar of the Editor when this
    * mode is on top of the ModeManager. */
   public String instructions() {
-    if (_node == null) return "";
-    else return "Click to place " + _node.toString();
+    if (_node != null) return "Click to place " + _node.toString();
+    //if (_factory != null) return "Click to place " + _factory.toString();
+    return "";
+  }
+
+  /** By default all creation modes use CROSSHAIR_CURSOR. */
+  public Cursor getInitialCursor() {
+    return Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR);
   }
 
   ////////////////////////////////////////////////////////////////
   // event handlers
-  
+
   /** Move the perpective along with the mouse. */
-  public void mouseEntered(MouseEvent me) {
+  public void mousePressed(MouseEvent me) {
+    _node = _factory.makeNode();
     start();
     _editor = Globals.curEditor();
     GraphModel gm = _editor.getGraphModel();
     GraphNodeRenderer renderer = _editor.getGraphNodeRenderer();
     Layer lay = _editor.getLayerManager().getActiveLayer();
     _pers = renderer.getFigNodeFor(gm, lay, _node);
+    mouseMoved(me); // move _pers into position
     me.consume();
   }
 
@@ -99,7 +110,7 @@ public class ModePlace extends Mode {
   /** Move the perpective along with the mouse. */
   public void mouseMoved(MouseEvent me) {
     int x = me.getX(), y = me.getY();
-    if (_pers == null) {System.out.println("null pers"); me.consume(); return; }
+    if (_pers == null) { me.consume(); return; }
     _editor.damaged(_pers);
     Point snapPt = new Point(x, y);
     _editor.snap(snapPt);
@@ -109,7 +120,7 @@ public class ModePlace extends Mode {
   }
 
   /** Eat this event and do nothing */
-  public void mousePressed(MouseEvent me) {
+  public void mouseEntered(MouseEvent me) {
     me.consume();
   }
 
@@ -136,6 +147,12 @@ public class ModePlace extends Mode {
     }
     done();
     me.consume();
+  }
+
+  public void done() {
+    super.done();
+    _pers = null;
+    _node = null;
   }
 
   /** Paint the FigNode being dragged around. */

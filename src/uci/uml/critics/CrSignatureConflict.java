@@ -55,9 +55,7 @@ public class CrSignatureConflict extends CrUML {
     addSupportedDecision(CrUML.decMETHODS);
   }
 
-  protected void sd(String s) { setDescription(s); }
-  
-  public boolean predicate(Object dm, Designer dsgr) {
+  public boolean predicate2(Object dm, Designer dsgr) {
     if (!(dm instanceof uci.uml.Foundation.Core.Classifier)) return NO_PROBLEM;
     Classifier cls = (Classifier) dm;
     Vector str = cls.getBehavioralFeature();

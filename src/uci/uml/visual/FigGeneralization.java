@@ -54,11 +54,12 @@ public class FigGeneralization extends FigEdgeLine {
   public void dispose() {
     if (!(getOwner() instanceof Generalization)) return;
     Generalization gen = (Generalization) getOwner();
+    if (gen == null) return;
     Project p = ProjectBrowser.TheInstance.getProject();
     p.moveToTrash(gen);
     super.dispose();
   }
-  
+
 
 } /* end class FigGeneralization */
 

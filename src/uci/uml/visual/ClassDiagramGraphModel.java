@@ -165,7 +165,8 @@ implements MutableGraphModel, VetoableChangeListener {
     _nodes.addElement(node);
     // needs-more-work: assumes public, user pref for default visibility?
     try {
-      if (node instanceof Classifier) {
+      if (node instanceof ModelElement &&
+	  ((ModelElement)node).getElementOwnership() == null) {
 	_model.addPublicOwnedElement((Classifier) node);
       }
     }
@@ -228,7 +229,7 @@ implements MutableGraphModel, VetoableChangeListener {
 	  addEdge(asc);
 	  return asc;
 	}
-  else if (edgeClass == Dependency.class) {
+	else if (edgeClass == Dependency.class) {
 	  Dependency dep = new Dependency(fromCls, toCls);
 	  addEdge(dep);
 	  return dep;

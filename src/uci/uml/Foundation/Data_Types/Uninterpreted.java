@@ -29,7 +29,7 @@ package uci.uml.Foundation.Data_Types;
 
 import java.util.*;
 
-public class Uninterpreted {
+public class Uninterpreted  implements java.io.Serializable{
   public String _body;
 
   public Uninterpreted(String body) { setBody(body); }

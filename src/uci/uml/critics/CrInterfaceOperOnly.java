@@ -53,9 +53,7 @@ public class CrInterfaceOperOnly extends CrUML {
     addSupportedDecision(CrUML.decPLANNED_EXTENSIONS);
   }
 
-  protected void sd(String s) { setDescription(s); }
-  
-  public boolean predicate(Object dm, Designer dsgr) {
+  public boolean predicate2(Object dm, Designer dsgr) {
     if (!(dm instanceof Interface)) return NO_PROBLEM;
     Interface inf = (Interface) dm;
     Vector sf = inf.getStructuralFeature();

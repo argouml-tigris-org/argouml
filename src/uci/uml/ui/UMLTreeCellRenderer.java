@@ -41,11 +41,17 @@ import uci.uml.visual.*;
 import uci.uml.Foundation.Core.*;
 import uci.uml.Foundation.Data_Types.*;
 import uci.uml.Behavioral_Elements.State_Machines.*;
+import uci.uml.Behavioral_Elements.Use_Cases.*;
 import uci.uml.Model_Management.*;
 
 public class UMLTreeCellRenderer extends BasicTreeCellRenderer {
   ////////////////////////////////////////////////////////////////
   // class variables
+
+  protected ImageIcon _ClassDiagramIcon = loadIconResource("ClassDiagram");
+  protected ImageIcon _UseCaseDiagramIcon = loadIconResource("UseCaseDiagram");
+  protected ImageIcon _StateDiagramIcon = loadIconResource("StateDiagram");
+
   protected ImageIcon _AttributeIcon = loadIconResource("Attribute");
   protected ImageIcon _OperationIcon = loadIconResource("Operation");
   protected ImageIcon _ClassIcon = loadIconResource("Class");
@@ -57,11 +63,12 @@ public class UMLTreeCellRenderer extends BasicTreeCellRenderer {
   protected ImageIcon _AssociationIcon5 = loadIconResource("Association5");
   protected ImageIcon _GeneralizationIcon = loadIconResource("Generalization");
   protected ImageIcon _RealizationIcon = loadIconResource("Realization");
-  protected ImageIcon _ClassDiagramIcon = loadIconResource("ClassDiagram");
-  protected ImageIcon _UseCaseDiagramIcon = loadIconResource("UseCaseDiagram");
-  protected ImageIcon _StateDiagramIcon = loadIconResource("StateDiagram");
+  protected ImageIcon _DependencyIcon = loadIconResource("Dependency");
 
+
+  protected ImageIcon _StateMachineIcon = loadIconResource("StateMachine");
   protected ImageIcon _StateIcon = loadIconResource("State");
+  protected ImageIcon _CompositeStateIcon = loadIconResource("CompositeState");
   protected ImageIcon _StartStateIcon = loadIconResource("StartState");
   protected ImageIcon _DeepIcon = loadIconResource("DeepHistory");
   protected ImageIcon _ShallowIcon = loadIconResource("ShallowHistory");
@@ -69,10 +76,11 @@ public class UMLTreeCellRenderer extends BasicTreeCellRenderer {
   protected ImageIcon _JoinIcon = loadIconResource("Join");
   protected ImageIcon _BranchIcon = loadIconResource("Branch");
   protected ImageIcon _FinalStateIcon = loadIconResource("FinalState");
-
-  protected ImageIcon _StateMachineIcon = loadIconResource("StateMachine");
-  protected ImageIcon _CompositeStateIcon = loadIconResource("CompositeState");
   protected ImageIcon _TransitionIcon = loadIconResource("Transition");
+
+  protected ImageIcon _UseCaseIcon = loadIconResource("UseCase");
+  protected ImageIcon _Actor = loadIconResource("Actor");
+
 
 
   ////////////////////////////////////////////////////////////////
@@ -90,6 +98,10 @@ public class UMLTreeCellRenderer extends BasicTreeCellRenderer {
 
     if (r instanceof JLabel) {
       JLabel lab = (JLabel) r;
+      if (value instanceof UMLClassDiagram) lab.setIcon(_ClassDiagramIcon);
+      if (value instanceof UMLUseCaseDiagram) lab.setIcon(_UseCaseDiagramIcon);
+      if (value instanceof UMLStateDiagram) lab.setIcon(_StateDiagramIcon);
+
       if (value instanceof Attribute) lab.setIcon(_AttributeIcon);
       if (value instanceof Operation) lab.setIcon(_OperationIcon);
       if (value instanceof MMClass) lab.setIcon(_ClassIcon);
@@ -97,9 +109,7 @@ public class UMLTreeCellRenderer extends BasicTreeCellRenderer {
       if (value instanceof Association) lab.setIcon(_AssociationIcon);
       if (value instanceof Generalization) lab.setIcon(_GeneralizationIcon);
       //if (value instanceof Realization) lab.setIcon(_RealizationIcon);
-      if (value instanceof UMLClassDiagram) lab.setIcon(_ClassDiagramIcon);
-      if (value instanceof UMLUseCaseDiagram) lab.setIcon(_UseCaseDiagramIcon);
-      if (value instanceof UMLStateDiagram) lab.setIcon(_StateDiagramIcon);
+      if (value instanceof Dependency) lab.setIcon(_DependencyIcon);
 
       if (value instanceof Transition) lab.setIcon(_TransitionIcon);
       if (value instanceof StateMachine) lab.setIcon(_StateMachineIcon);
@@ -118,8 +128,15 @@ public class UMLTreeCellRenderer extends BasicTreeCellRenderer {
       }
       else if (value instanceof State) lab.setIcon(_StateIcon);
 
+      if (value instanceof UseCase) lab.setIcon(_UseCaseIcon);
+      if (value instanceof Actor) lab.setIcon(_Actor);
+
       String tip = (value == null) ? "null" : value.toString();
+      if (value instanceof ElementImpl)
+	tip = ((ElementImpl)value).getOCLTypeStr() + ": " +
+	  ((ElementImpl)value).getName().getBody();
       lab.setToolTipText(tip);
+      tree.setToolTipText(tip);
 
 //       ProjectBrowser pb = ProjectBrowser.TheInstance;
 //       if (pb != null) {
@@ -133,7 +150,7 @@ public class UMLTreeCellRenderer extends BasicTreeCellRenderer {
 
   ////////////////////////////////////////////////////////////////
   // utility functions
-  
+
   protected static ImageIcon loadIconResource(String name) {
     String imgName = imageName(name);
     ImageIcon res = null;
@@ -149,7 +166,7 @@ public class UMLTreeCellRenderer extends BasicTreeCellRenderer {
   protected static String imageName(String name) {
     return "/uci/Images/Tree" + stripJunk(name) + ".gif";
   }
-  
+
   protected static String stripJunk(String s) {
     String res = "";
     int len = s.length();
@@ -159,7 +176,5 @@ public class UMLTreeCellRenderer extends BasicTreeCellRenderer {
     }
     return res;
   }
-  
 
-  
 } /* end class UMLTreeCellRenderer */

@@ -37,31 +37,34 @@ import uci.uml.Model_Management.*;
 import uci.uml.Foundation.Core.*;
 
 public class GoAssocToSource implements TreeModelPrereqs {
-  public String toString() { return "Asssociation->Target Class"; }
-  
+  public String toString() { return "Association->Source Class"; }
+
   public Object getRoot() {
     System.out.println("getRoot should never be called");
     return null;
-  } 
+  }
   public void setRoot(Object r) { }
 
   public Object getChild(Object parent, int index) {
     if (parent instanceof IAssociation) {
-      Vector ends = ((IAssociation)parent).getConnection();      
-      return (ends != null && index == 0) ?  ends.elementAt(0): null;
+      Vector ends = ((IAssociation)parent).getConnection();
+      AssociationEnd ae = null;
+      if (ends != null && index == 0) ae = (AssociationEnd) ends.elementAt(0);
+      if (ae == null) return null;
+      return ae.getType();
     }
     System.out.println("getChild should never be get here GoAssocToSource");
     return null;
   }
-  
+
   public int getChildCount(Object parent) {
-    if (parent instanceof IAssociation) return 1; 
+    if (parent instanceof IAssociation) return 1;
     return 0;
   }
-  
+
   public int getIndexOfChild(Object parent, Object child) {
     if (parent instanceof IAssociation) {
-      Vector ends = ((IAssociation)parent).getConnection();      
+      Vector ends = ((IAssociation)parent).getConnection();
       if (ends != null && ends.elementAt(0) == child)
 	return 0;
     }

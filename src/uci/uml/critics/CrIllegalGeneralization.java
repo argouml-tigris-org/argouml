@@ -44,17 +44,15 @@ public class CrIllegalGeneralization extends CrUML {
   public CrIllegalGeneralization() {
     setHeadline("Illegal Generalization ");
     sd("Model elements can only be inherit from others of the same type. \n\n"+
-       "A legal inheritance hierarchy is needed for code generation \n"+
+       "A legal inheritance hierarchy is needed for code generation "+
        "and the correctness of the design. \n\n"+
-       "To fix this, use the FixIt button, or manually select the  \n"+
+       "To fix this, use the FixIt button, or manually select the  "+
        "generalization arrow and remove it.");
 
     addSupportedDecision(CrUML.decINHERITANCE);
   }
 
-  protected void sd(String s) { setDescription(s); }
-  
-  public boolean predicate(Object dm, Designer dsgr) {
+  public boolean predicate2(Object dm, Designer dsgr) {
     if (!(dm instanceof Generalization)) return NO_PROBLEM;
     Generalization gen = (Generalization) dm;
     java.lang.Class javaClass1 = gen.getSupertype().getClass();

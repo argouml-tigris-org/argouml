@@ -41,6 +41,8 @@ import com.sun.java.swing.event.*;
 import com.sun.java.swing.tree.*;
 import com.sun.java.swing.text.*;
 import com.sun.java.swing.border.*;
+import com.sun.java.swing.table.*;
+import com.sun.java.swing.plaf.metal.MetalLookAndFeel;
 
 import uci.util.*;
 import uci.uml.Foundation.Core.*;
@@ -49,11 +51,11 @@ import uci.uml.Model_Management.*;
 import uci.uml.Behavioral_Elements.Use_Cases.*;
 
 /** User interface panel shown at the bottom of the screen that allows
- *  the user to edit the properties of the selected UML model
- *  element. */
+ *  the user to edit the properties of the selected UML model element.
+ *  Needs-More-Work: cut and paste base class code from
+ *  PropPanelClass. */
 
-public class PropPanelUseCase extends PropPanel
-implements DocumentListener, ItemListener {
+public class PropPanelUseCase extends PropPanel {
 
   ////////////////////////////////////////////////////////////////
   // constants
@@ -61,8 +63,9 @@ implements DocumentListener, ItemListener {
 
   ////////////////////////////////////////////////////////////////
   // instance vars
-  JLabel _nmwLabel = new JLabel("Needs-more-work PropPanelUseCase");
-
+  JLabel _extPtsLabel = new JLabel("Extension Points");
+  TableModelExtensions _tableModel = new TableModelExtensions();
+  JTable _extPts = new JTable(4, 1);
   // declare and initialize all widgets
 
   ////////////////////////////////////////////////////////////////
@@ -75,14 +78,52 @@ implements DocumentListener, ItemListener {
     c.weightx = 0.0;
     c.ipadx = 0; c.ipady = 0;
 
+    _extPts.setModel(_tableModel);
 
+    Font labelFont = MetalLookAndFeel.getSubTextFont();
+    _extPts.setFont(labelFont);
+
+    _extPts.setIntercellSpacing(new Dimension(0, 1));
+    _extPts.setShowVerticalLines(false);
+    //_extPts.getSelectionModel().addListSelectionListener(this);
+    _extPts.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);
+
+    TableColumn descCol = _extPts.getColumnModel().getColumn(0);
+    descCol.setMinWidth(50);
+
+
+    SpacerPanel spacer1 = new SpacerPanel();
     c.gridx = 0;
-    c.gridwidth = 1;
-    c.gridy = 1;
-    gb.setConstraints(_nmwLabel, c);
-    add(_nmwLabel);
+    c.gridy = 5;
+    c.weighty = 1.0;
+    gb.setConstraints(spacer1, c);
+    add(spacer1);
+
+    SpacerPanel spacer2 = new SpacerPanel();
+    c.weightx = 0.0;
+    c.gridx = 2;
+    c.gridy = 0;
+    gb.setConstraints(spacer2, c);
+    add(spacer2);
 
     // add all widgets and labels
+    c.gridx = 3;
+    c.gridwidth = 1;
+    c.gridy = 0;
+    c.weighty = 0.0;
+    gb.setConstraints(_extPtsLabel, c);
+    add(_extPtsLabel);
+
+    c.gridy = 1;
+    c.gridheight = 5;
+    c.weightx = 0.0;
+    c.weighty = 0.0;
+    JScrollPane scroll = new JScrollPane(_extPts,
+					 JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
+					 JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+    gb.setConstraints(scroll, c);
+    add(scroll);
+    _extPts.setTableHeader(null);
 
     // register interest in change events from all widgets
   }
@@ -95,6 +136,11 @@ implements DocumentListener, ItemListener {
     super.setTarget(t);
     UseCase uc = (UseCase) t;
     // set the values to be shown in all widgets based on model
+
+    _tableModel.setTarget(uc);
+    TableColumn descCol = _extPts.getColumnModel().getColumn(0);
+    descCol.setMinWidth(50);
+    validate();
   }
 
 
@@ -124,3 +170,91 @@ implements DocumentListener, ItemListener {
 
 
 } /* end class PropPanelUseCase */
+
+
+class TableModelExtensions extends AbstractTableModel
+implements VetoableChangeListener, DelayedVetoableChangeListener {
+  ////////////////
+  // instance varables
+  UseCase _target;
+
+  ////////////////
+  // constructor
+  public TableModelExtensions() { }
+
+  ////////////////
+  // accessors
+  public void setTarget(UseCase uc) {
+    if (_target instanceof ElementImpl)
+      ((ModelElementImpl)_target).removeVetoableChangeListener(this);
+    _target = uc;
+    if (_target instanceof ElementImpl)
+      ((ModelElementImpl)_target).addVetoableChangeListener(this);
+    fireTableStructureChanged();
+  }
+
+  ////////////////
+  // TableModel implemetation
+  public int getColumnCount() { return 1; }
+
+  public String  getColumnName(int c) {
+    if (c == 0) return "Description";
+    return "XXX";
+  }
+
+  public Class getColumnClass(int c) {
+    return String.class;
+  }
+
+  public boolean isCellEditable(int row, int col) {
+    return col == 0;
+  }
+
+  public int getRowCount() {
+    if (_target == null) return 0;
+    Vector extPts = _target.getExtensionPoint();
+    if (extPts == null) return 0;
+    return extPts.size() + 1;
+  }
+
+  public Object getValueAt(int row, int col) {
+    Vector extPts = _target.getExtensionPoint();
+    if (extPts == null) return "no extension points";
+    if (row == extPts.size()) return ""; // blank line allows adding
+    String ext = (String) extPts.elementAt(row);
+    if (col == 0) return ext;
+    else return "UC-" + row*2+col; // for debugging
+  }
+
+  public void setValueAt(Object aValue, int rowIndex, int columnIndex)  {
+    //System.out.println("setting table value " + rowIndex + ", " + columnIndex);
+    if (columnIndex != 0) return;
+    if (!(aValue instanceof String)) return;
+    String val = (String) aValue;
+    Vector extPts = _target.getExtensionPoint();
+    if (rowIndex >= extPts.size()) {
+      extPts.addElement(val);
+      fireTableStructureChanged();
+    }
+    else if (val.equals("")) {
+      extPts.removeElementAt(rowIndex);
+      fireTableStructureChanged();
+    }
+    else extPts.setElementAt(val, rowIndex);
+  }
+
+  ////////////////
+  // event handlers
+
+  public void vetoableChange(PropertyChangeEvent pce) {
+    DelayedChangeNotify delayedNotify = new DelayedChangeNotify(this, pce);
+    SwingUtilities.invokeLater(delayedNotify);
+  }
+
+  public void delayedVetoableChange(PropertyChangeEvent pce) {
+    fireTableStructureChanged();
+  }
+
+
+} /* end class TableModelExtensions */
+

@@ -61,9 +61,7 @@ public class CrUtilityViolated extends CrUML {
     addSupportedDecision(CrUML.decSTEREOTYPES);
   }
 
-  protected void sd(String s) { setDescription(s); }
-  
-  public boolean predicate(Object dm, Designer dsgr) {
+  public boolean predicate2(Object dm, Designer dsgr) {
     if (!(dm instanceof MMClass)) return NO_PROBLEM;
     MMClass cls = (MMClass) dm;
     if (!cls.containsStereotype(Stereotype.UTILITY)) return NO_PROBLEM;

@@ -141,6 +141,9 @@ implements VetoableChangeListener, DelayedVetoableChangeListener {
     Project p = ProjectBrowser.TheInstance.getProject();
     p.moveToTrash(elmt);
     super.dispose();
+    StateVertex sv = (StateVertex) getOwner();
+    try { sv.setParent(null); }
+    catch (PropertyVetoException pve) { }
   }
 
 

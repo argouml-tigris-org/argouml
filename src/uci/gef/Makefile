@@ -79,6 +79,7 @@ CLASSES = \
 	FigRRect.class \
 	FigRect.class \
 	FigText.class \
+	FigTextEditor.class \
 	Geometry.class \
 	Globals.class \
 	Guide.class \

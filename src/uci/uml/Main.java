@@ -48,8 +48,8 @@ public class Main {
   ////////////////////////////////////////////////////////////////
   // constants
 
-  public static int WIDTH = 800;
-  public static int HEIGHT = 600;
+  public static int WIDTH = 1024;
+  public static int HEIGHT = 768;
 
   ////////////////////////////////////////////////////////////////
   // main
@@ -58,7 +58,7 @@ public class Main {
     defineMockHistory();
     Vector argv = new Vector();
     for (int i = 0; i < args.length; ++i) argv.addElement(args[i]);
-    
+
     if (argv.contains("-big")) {
       MetalLookAndFeel.setCurrentTheme(new uci.uml.ui.JasonsBigTheme());
     }
@@ -72,14 +72,14 @@ public class Main {
     boolean doSplash = !argv.contains("-nosplash");
 
     SplashScreen splash = null;
-    
+
     if (doSplash) {
       splash = new SplashScreen("Loading Argo/UML...", "Splash");
       splash.setVisible(true);
       splash.getStatusBar().showStatus("Making Project Browser");
       splash.getStatusBar().showProgress(10);
     }
-    
+
     ProjectBrowser pb = new ProjectBrowser("Argo/UML");
     JOptionPane.setRootFrame(pb);
     //pb.setSize(INITIAL_WIDTH, INITIAL_HEIGHT);
@@ -93,13 +93,14 @@ public class Main {
       splash.getStatusBar().showStatus("Making Mock Project");
       splash.getStatusBar().showProgress(20);
     }
-    pb.setProject(new EmptyProject());
+    EmptyProject empty = new EmptyProject();
+    pb.setProject(empty);
 
     if (splash != null) {
       splash.getStatusBar().showStatus("Setting Perspectives");
       splash.getStatusBar().showProgress(50);
     }
-    
+
     pb.setPerspectives(NavPerspective.getRegisteredPerspectives());
     pb.setToDoPerspectives(ToDoPerspective.getRegisteredPerspectives());
 
@@ -112,7 +113,7 @@ public class Main {
       splash.getStatusBar().showStatus("Setting up critics");
       splash.getStatusBar().showProgress(70);
     }
-    
+
     Designer dsgr = Designer.theDesigner();
     uci.uml.critics.Init.init();
     uci.uml.checklist.Init.init();
@@ -121,20 +122,25 @@ public class Main {
       splash.getStatusBar().showStatus("Opening Project Browser");
       splash.getStatusBar().showProgress(90);
     }
-    
+
     pb.setVisible(true);
+    Object model = empty.getModels().elementAt(0);
+    Object diag = empty.getDiagrams().elementAt(0);
+    pb.setTarget(diag);
+    pb.getNavPane().setSelection(model, diag);
     if (splash != null) splash.setVisible(false);
 
 
     //should be done in ProjectBrowser.setProject();
     Designer.theDesigner().spawnCritiquer(pb.getProject());
     Designer.theDesigner().setChildGenerator(new ChildGenUML());
-    System.out.println("spawned");
+    System.out.println("spawned critiquing thread");
 
     // should be in logon wizard?
     dsgr.startConsidering(uci.uml.critics.CrUML.decINHERITANCE);
     dsgr.startConsidering(uci.uml.critics.CrUML.decCONTAINMENT);
 
+    Designer._userWorking = true;
   }
 
 

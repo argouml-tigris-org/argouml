@@ -33,6 +33,13 @@ import java.beans.*;
 import uci.uml.Model_Management.*;
 import uci.uml.Foundation.Core.*;
 
+/** In the furture this will be a trash can icon in the project
+ * browser.  Deleting an object moves it to the trash.  You can move
+ * things back out of the trash if you like.  Eventually you empty the
+ * trash.  Critics check for relationships between things that will
+ * break when the trash is empty.  E.g., Class X's superclass is in
+ * the trash, you must fix this before you empty the trash. */
+
 public class Trash {
   public static Trash TheTrash = new Trash();
 

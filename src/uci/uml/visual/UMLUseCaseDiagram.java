@@ -99,9 +99,11 @@ public class UMLUseCaseDiagram extends UMLDiagram {
 
   ////////////////////////////////////////////////////////////////
   // contructors
+  protected static int _UseCaseDiagramSerial = 1;
+
 
   public UMLUseCaseDiagram(Model m) {
-    super(m);
+    super("use case diagram " + _UseCaseDiagramSerial++, m);
     UseCaseDiagramGraphModel gm = new UseCaseDiagramGraphModel();
     gm.setModel(m);
     setGraphModel(gm);
@@ -117,10 +119,10 @@ public class UMLUseCaseDiagram extends UMLDiagram {
   protected void initToolBar() {
     System.out.println("making usecase toolbar");
     _toolBar = new ToolBar();
-    _toolBar.add(Actions.Cut);
-    _toolBar.add(Actions.Copy);
-    _toolBar.add(Actions.Paste);
-    _toolBar.addSeparator();
+//     _toolBar.add(Actions.Cut);
+//     _toolBar.add(Actions.Copy);
+//     _toolBar.add(Actions.Paste);
+//     _toolBar.addSeparator();
 
     _toolBar.add(_actionSelect);
     _toolBar.addSeparator();

@@ -31,7 +31,7 @@ package uci.uml.Foundation.Data_Types;
 
 import java.util.*;
 
-public class EventOriginKind {
+public class EventOriginKind implements java.io.Serializable {
     
   public EventOriginKind() { }
 

@@ -44,7 +44,7 @@ CLASSES = \
 	CrDupParamName.class \
 	CrDupRoleNames.class \
 	CrFinalSubclassed.class \
-	CrIlleagleGeneralization.class \
+	CrIllegalGeneralization.class \
 	CrInterfaceAllPublic.class \
 	CrInterfaceOperOnly.class \
 	CrMergeClasses.class \
@@ -56,6 +56,11 @@ CLASSES = \
 	CrNameConflict.class \
 	CrNameConflictAC.class \
 	CrNoInstanceVariables.class \
+	CrNoOperations.class \
+	CrNoTransitions.class \
+	CrNoIncomingTransitions.class \
+	CrNoOutgoingTransitions.class \
+	CrMultipleInitialStates.class \
 	CrNonAggDataType.class \
 	CrOppEndConflict.class \
 	CrOppEndVsAttr.class \

@@ -44,19 +44,17 @@ import uci.uml.util.*;
 public class CrCircularInheritance extends CrUML {
 
   public CrCircularInheritance() {
-    setHeadline("Remove Circular Inheritance");
+    setHeadline("Remove {name}'s Circular Inheritance");
     sd("Inheritances relationships cannot have cycles. \n\n"+
-       "A legal class inheritance hierarchy is needed for code generation \n"+
+       "A legal class inheritance hierarchy is needed for code generation "+
        "and the correctness of the design. \n\n"+
-       "To fix this, use the FixIt button, or manually select one of the  \n"+
+       "To fix this, use the FixIt button, or manually select one of the  "+
        "generalization arrows in the cycle and remove it.");
-
+    setPriority(ToDoItem.HIGH_PRIORITY);
     addSupportedDecision(CrUML.decINHERITANCE);
   }
 
-  protected void sd(String s) { setDescription(s); }
-  
-  public boolean predicate(Object dm, Designer dsgr) {
+  public boolean predicate2(Object dm, Designer dsgr) {
     if (!(dm instanceof GeneralizableElement)) return NO_PROBLEM;
     GeneralizableElement ge = (GeneralizableElement) dm;
     Set reach = (new Set(ge)).reachable(new SuperclassGen());
@@ -94,6 +92,6 @@ public class CrCircularInheritance extends CrUML {
 //  		       " res = " + res);
     return res;
   }
-  
+
 } /* end class CrCircularInheritance.java */
 

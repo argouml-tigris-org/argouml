@@ -31,7 +31,7 @@ package uci.uml.Foundation.Data_Types;
 
 import java.util.*;
 
-public class ScopeKind {
+public class ScopeKind implements java.io.Serializable {
   public static final ScopeKind UNSPEC = new ScopeKind("unspec");
   public static final ScopeKind CLASSIFIER = new ScopeKind("static"); 
   public static final ScopeKind INSTANCE = new ScopeKind("instance");

@@ -34,6 +34,7 @@ GEN =
 CLASSES = \
 	AboutBox.class \
 	Actions.class \
+	ActionCreatePseudostate.class \
 	AddToDoItemDialog.class \
 	DelayedChangeNotify.class \
 	DelayedVetoableChangeListener.class \

@@ -43,18 +43,16 @@ public class CrIllegalName extends CrUML {
 
   public CrIllegalName() {
     setHeadline("Choose a Legal Name");
-    sd("The names of model elements must be sequences of letters, \n"+
+    sd("The names of model elements must be sequences of letters, "+
        "numbers, and underscores.  They cannot contain punctuation.\n\n"+
        "useing legal names is needed for code generation. \n\n"+
-       "To fix this, use the FixIt button, or manually select the \n"+
-       "highlighted element and use the Properties tab to give it \n"+
+       "To fix this, use the FixIt button, or manually select the "+
+       "highlighted element and use the Properties tab to give it "+
        "a different name.");
     addSupportedDecision(CrUML.decNAMING);
   }
 
-  protected void sd(String s) { setDescription(s); }
-  
-  public boolean predicate(Object dm, Designer dsgr) {
+  public boolean predicate2(Object dm, Designer dsgr) {
     if (!(dm instanceof ModelElement)) return NO_PROBLEM;
     ModelElement me = (ModelElement) dm;
     Name meName = me.getName();

@@ -34,7 +34,7 @@ import java.util.*;
 //import uci.uml.Foundation.Core.Element;
 
 
-public class Name {
+public class Name implements java.io.Serializable {
   public static final Name UNSPEC = new Name("");
   
   public String _body;

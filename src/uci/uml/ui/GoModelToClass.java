@@ -78,7 +78,7 @@ public class GoModelToClass implements TreeModelPrereqs {
     }
     return res;
   }
-  
+
   public boolean isLeaf(Object node) {
     return !(node instanceof Package && getChildCount(node) > 0);
   }

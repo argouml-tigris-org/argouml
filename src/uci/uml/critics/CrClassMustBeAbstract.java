@@ -43,21 +43,19 @@ public class CrClassMustBeAbstract extends CrUML {
 
   public CrClassMustBeAbstract() {
     setHeadline("Class Must be Abstract");
-    sd("Classes that include or inherit abstract methods from base classes or \n"+
+    sd("Classes that include or inherit abstract methods from base classes or "+
        "interfaces must be marked Abstract.\n\n"+
-       "Deciding which classes are abstract or concrete is a key part of class \n"+
+       "Deciding which classes are abstract or concrete is a key part of class "+
        "hierarchy design.\n\n"+
-       "To fix this, use the FixIt button, or manually select the class and use the \n"+
-       "properties tab to add the Abstract keyword, or manually override each abstract \n"+
+       "To fix this, use the FixIt button, or manually select the class and use the "+
+       "properties tab to add the Abstract keyword, or manually override each abstract "+
        "operation that is inherited from a base class or interface.");
 
     addSupportedDecision(CrUML.decINHERITANCE);
     addSupportedDecision(CrUML.decMETHODS);
   }
 
-  protected void sd(String s) { setDescription(s); }
-
-  public boolean predicate(Object dm, Designer dsgr) {
+  public boolean predicate2(Object dm, Designer dsgr) {
     if (!(dm instanceof MMClass)) return NO_PROBLEM;
     MMClass cls = (MMClass) dm;
     if (!cls.getIsAbstract()) return NO_PROBLEM;

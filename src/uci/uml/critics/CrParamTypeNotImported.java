@@ -53,8 +53,6 @@ public class CrParamTypeNotImported extends CrUML {
     addSupportedDecision(CrUML.decCONTAINMENT);
   }
 
-  protected void sd(String s) { setDescription(s); }
-  
   public boolean predicate(Object dm, Designer dsgr) {
     if (!(dm instanceof BehavioralFeature)) return NO_PROBLEM;
     // needs-more-work

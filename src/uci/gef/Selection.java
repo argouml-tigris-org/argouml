@@ -193,8 +193,11 @@ implements Serializable, MouseListener, MouseMotionListener, KeyListener {
     if (_content instanceof KeyListener)
       ((KeyListener)_content).keyPressed(ke);
   }
-  
-  public void keyReleased(KeyEvent ke) { }
+
+  public void keyReleased(KeyEvent ke) {
+    if (_content instanceof KeyListener)
+      ((KeyListener)_content).keyReleased(ke);
+  }
 
 
   public void mouseMoved(MouseEvent me) {

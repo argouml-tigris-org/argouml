@@ -74,15 +74,15 @@ public abstract class Feature extends ModelElementImpl {
 
   ////////////////////////////////////////////////////////////////
   // events
-//   public void fireVetoableChange(String propertyName,
-// 				 Object oldValue, Object newValue)
-//        throws PropertyVetoException {
-//     super.fireVetoableChange(propertyName, oldValue, newValue);
-//     if (_owner != null) {
-//        _owner.fireVetoableChange("feature_"+propertyName,
-// 				 oldValue, newValue);
-//     }
-//   }
+   public void fireVetoableChange(String propertyName,
+ 				 Object oldValue, Object newValue)
+        throws PropertyVetoException {
+    super.fireVetoableChange(propertyName, oldValue, newValue);
+    if (_owner != null) {
+       _owner.fireVetoableChange("feature_"+propertyName,
+				 oldValue, newValue);
+    }
+  }
 
 
 

@@ -37,7 +37,7 @@ import uci.uml.Foundation.Core.GeneralizableElement;
 import uci.uml.Foundation.Core.ModelElement;
 
 
-public interface Package extends GeneralizableElement {
+public interface Package extends GeneralizableElement, java.io.Serializable {
   // public ModelElement _referencedElement[];
 
   public Vector getReferencedElement();

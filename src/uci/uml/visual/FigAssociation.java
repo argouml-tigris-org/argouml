@@ -32,7 +32,6 @@ import java.awt.event.*;
 import java.beans.*;
 import java.util.*;
 import com.sun.java.swing.*;
-import com.sun.java.swing.plaf.metal.MetalLookAndFeel;
 
 import uci.gef.*;
 import uci.uml.ui.*;
@@ -40,35 +39,16 @@ import uci.uml.Foundation.Core.*;
 import uci.uml.Foundation.Data_Types.*;
 import uci.uml.generate.*;
 
-public class FigAssociation extends FigEdgeLine
-implements VetoableChangeListener, DelayedVetoableChangeListener,
-  KeyListener, MouseListener {
-
-  protected FigText _name;
+public class FigAssociation extends FigEdgeModelElement {
   protected FigText _srcMult, _srcRole;
   protected FigText _destMult, _destRole;
 
   public FigAssociation(Object edge) {
-    super();
-    setOwner(edge);
-
-    if (edge instanceof ElementImpl)
-      ((ElementImpl)edge).addVetoableChangeListener(this);
-
-    Font labelFont = MetalLookAndFeel.getSubTextFont();
-    
-    
-    _name = new FigText(10, 30, 90, 20);
-    _name.setFont(labelFont);
-    _name.setTextColor(Color.black);
-    _name.setTextFilled(false);
-    _name.setFilled(false);
-    _name.setLineWidth(0);
-
+    super(edge);
     addPathItem(_name, new PathConvPercent(this, 50, 10));
 
     _srcMult = new FigText(10, 30, 90, 20);
-    _srcMult.setFont(labelFont);
+    _srcMult.setFont(LABEL_FONT);
     _srcMult.setTextColor(Color.black);
     _srcMult.setTextFilled(false);
     _srcMult.setFilled(false);
@@ -77,7 +57,7 @@ implements VetoableChangeListener, DelayedVetoableChangeListener,
 		new PathConvPercentPlusConst(this, 0, 15, 15));
 
     _srcRole = new FigText(10, 30, 90, 20);
-    _srcRole.setFont(labelFont);
+    _srcRole.setFont(LABEL_FONT);
     _srcRole.setTextColor(Color.black);
     _srcRole.setTextFilled(false);
     _srcRole.setFilled(false);
@@ -86,7 +66,7 @@ implements VetoableChangeListener, DelayedVetoableChangeListener,
 		new PathConvPercentPlusConst(this, 0, 35, -15));
 
     _destMult = new FigText(10, 30, 90, 20);
-    _destMult.setFont(labelFont);
+    _destMult.setFont(LABEL_FONT);
     _destMult.setTextColor(Color.black);
     _destMult.setTextFilled(false);
     _destMult.setFilled(false);
@@ -95,7 +75,7 @@ implements VetoableChangeListener, DelayedVetoableChangeListener,
 		new PathConvPercentPlusConst(this, 100, -15, 15));
 
     _destRole = new FigText(10, 30, 90, 20);
-    _destRole.setFont(labelFont);
+    _destRole.setFont(LABEL_FONT);
     _destRole.setTextColor(Color.black);
     _destRole.setTextFilled(false);
     _destRole.setFilled(false);
@@ -103,113 +83,58 @@ implements VetoableChangeListener, DelayedVetoableChangeListener,
     addPathItem(_destRole,
 		new PathConvPercentPlusConst(this, 100, -35, -15));
     setBetweenNearestPoints(true);
-    updateText();
+    modelChanged();
 
-    _name.addPropertyChangeListener(this);
-    _srcRole.addPropertyChangeListener(this);
-    _destRole.addPropertyChangeListener(this);
+    //_name.addPropertyChangeListener(this);
+//     _srcRole.addPropertyChangeListener(this);
+//     _srcMult.addPropertyChangeListener(this);
+//     _destRole.addPropertyChangeListener(this);
+//     _destMult.addPropertyChangeListener(this);
 
   }
 
 
   public void dispose() {
-    if (!(getOwner() instanceof Association)) return;
+    System.out.println("disposing FigAssociation");
     Association asc = (Association) getOwner();
-    Project p = ProjectBrowser.TheInstance.getProject();
-    p.moveToTrash(asc);
+    if (asc == null) return;
+    Vector conns = asc.getConnection();
+    for (int i = 0; i < conns.size(); i++) {
+      try { ((AssociationEnd)conns.elementAt(i)).setType(null); }
+      catch (PropertyVetoException pve) { }
+    }
     super.dispose();
   }
 
+  protected void textEdited(FigText ft) throws PropertyVetoException {
+    IAssociation asc = (IAssociation) getOwner();
+    super.textEdited(ft);
 
-  public void vetoableChange(PropertyChangeEvent pce) {
-    // throws PropertyVetoException 
-    //System.out.println("FigAssociation got a change notification!");
-    Object src = pce.getSource();
-    if (src == getOwner()) {
-      DelayedChangeNotify delayedNotify = new DelayedChangeNotify(this, pce);
-      SwingUtilities.invokeLater(delayedNotify);
+    Vector conn = asc.getConnection();
+    if (conn == null || conn.size() == 0) return;
+
+    if (ft == _srcRole) {
+      AssociationEnd srcAE = (AssociationEnd) conn.elementAt(0);
+      srcAE.setName(new Name(_srcRole.getText()));
     }
-  }
-
-  public void delayedVetoableChange(PropertyChangeEvent pce) {
-    // throws PropertyVetoException 
-    //System.out.println("FigAssociation got a delayed change notification!");
-    Object src = pce.getSource();
-    updateText();
-  }
-
-  public void propertyChange(PropertyChangeEvent pve) {
-    Object src = pve.getSource();
-    String pName = pve.getPropertyName();
-    if (pName.equals("editing") && Boolean.FALSE.equals(pve.getNewValue())) {
-      //System.out.println("finished editing");
-      IAssociation asc = (IAssociation) getOwner();
-      try {
-	if (src == _name) { asc.setName(new Name(_name.getText())); }
-	Vector conn = asc.getConnection();
-	if (conn == null || conn.size() == 0) return;
-
-	if (src == _srcRole) {
-	  AssociationEnd srcAE = (AssociationEnd) conn.elementAt(0);
-	  srcAE.setName(new Name(_srcRole.getText()));
-	}
-	if (src == _destRole) {
-	  AssociationEnd destAE = (AssociationEnd) conn.elementAt(1);
-	  destAE.setName(new Name(_destRole.getText()));
-	}
-      }
-      catch (PropertyVetoException ex) {
-	System.out.println("could not parse and use the text you entered");
-      }
+    if (ft == _destRole) {
+      AssociationEnd destAE = (AssociationEnd) conn.elementAt(1);
+      destAE.setName(new Name(_destRole.getText()));
     }
-    else super.propertyChange(pve);
+    // needs-more-work: parse multiplicities
   }
 
-    
-  ////////////////////////////////////////////////////////////////
-  // event handlers
-
-  public void mousePressed(MouseEvent me) { }
-  public void mouseReleased(MouseEvent me) { }
-  public void mouseEntered(MouseEvent me) { }
-  public void mouseExited(MouseEvent me) { }
-
-  public void mouseClicked(MouseEvent me) {
-    if (me.isConsumed()) return;
-    if (me.getClickCount() >= 2) {
-      if (_name.contains(me.getX(), me.getY())) _name.mouseClicked(me);
-      if (_destRole.contains(me.getX(), me.getY())) _destRole.mouseClicked(me);
-      if (_srcRole.contains(me.getX(), me.getY())) _srcRole.mouseClicked(me);
-    }
-    me.consume();
-  }
+//   protected boolean canEdit(Fig f) {
+//     return (f == _name || f == _srcRole || f == _destRole);
+//   }
 
 
-  public void keyPressed(KeyEvent ke) { }
-
-  public void keyReleased(KeyEvent ke) { }
-
-  public void keyTyped(KeyEvent ke) {
-    if (!ke.isConsumed()) {
-      _name.keyTyped(ke);
-      ke.consume();
-      IAssociation asc = (IAssociation) getOwner();
-      try {
-	asc.setName(new Name(_name.getText()));
-      }
-      catch (PropertyVetoException pve) {
-	System.out.println("could not set association name");
-      }
-    }
-  }
-
-
-  protected void updateText() {
+  protected void modelChanged() {
     Association as = (Association) getOwner();
+    if (as == null) return;
     String asNameStr = GeneratorDisplay.Generate(as.getName());
 
-    startTrans();
-    _name.setText(asNameStr);
+    super.modelChanged();
 
     AssociationEnd ae0 = ((AssociationEnd)(as.getConnection().elementAt(0)));
     AssociationEnd ae1 = ((AssociationEnd)(as.getConnection().elementAt(1)));
@@ -226,10 +151,6 @@ implements VetoableChangeListener, DelayedVetoableChangeListener,
 
     setSourceArrowHead(chooseArrowHead(ae0.getAggregation()));
     setDestArrowHead(chooseArrowHead(ae1.getAggregation()));
-    
-    Rectangle bbox = getBounds();
-    setBounds(bbox.x, bbox.y, bbox.width, bbox.height);
-    endTrans();
   }
 
   protected ArrowHead chooseArrowHead(AggregationKind ak) {
@@ -243,7 +164,7 @@ implements VetoableChangeListener, DelayedVetoableChangeListener,
       return ArrowHeadDiamond.WhiteDiamond;
     if (AggregationKind.COMPOSITE.equals(ak))
       return ArrowHeadDiamond.BlackDiamond;
-    System.out.println("unknown case in drawing arrowhead");
+    System.out.println("unknown case in drawing assoc arrowhead");
     return ArrowHeadNone.TheInstance;
   }
 

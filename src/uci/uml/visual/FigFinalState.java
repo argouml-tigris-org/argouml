@@ -24,8 +24,8 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 // ENHANCEMENTS, OR MODIFICATIONS.
 
-// File: FigActor.java
-// Classes: FigActor
+// File: FigFinalState.java
+// Classes: FigFinalState
 // Original Author: your email address here
 // $Id$
 
@@ -41,6 +41,7 @@ import uci.graph.*;
 import uci.uml.ui.*;
 import uci.uml.generate.*;
 import uci.uml.Foundation.Core.*;
+import uci.uml.Behavioral_Elements.State_Machines.*;
 
 /** Class to display graphics for a UML State in a diagram. */
 
@@ -51,8 +52,8 @@ implements VetoableChangeListener, DelayedVetoableChangeListener {
   // constants
 
   public final int MARGIN = 2;
-  public int x = 10;
-  public int y = 10;
+  public int x = 0;
+  public int y = 0;
   public int width = 20;
   public int height = 20;
   public Point pos;
@@ -83,9 +84,9 @@ implements VetoableChangeListener, DelayedVetoableChangeListener {
       ((ElementImpl)node).addVetoableChangeListener(this);
 
     Color handleColor = Globals.getPrefs().getHandleColor();
-    _bigPort = new FigCircle(x,y,width,height, handleColor, Color.white);
+    _bigPort = new FigCircle(x,y,width,height, handleColor, Color.cyan);
     _outCircle = new FigCircle(x,y,width,height, handleColor, Color.white);
-    _inCircle = new FigCircle(x-5,y-5,width,height, handleColor, Color.black);
+    _inCircle = new FigCircle(x+5,y+5,width-10,height-10, handleColor, Color.black);
     // initialize any other Figs here
     // add Figs to the FigNode in back-to-front order
     addFig(_bigPort);
@@ -97,6 +98,9 @@ implements VetoableChangeListener, DelayedVetoableChangeListener {
     setBlinkPorts(false); //make port invisble unless mouse enters
     Rectangle r = getBounds();
   }
+
+  /** Final states are fixed size. */
+  public boolean isResizable() { return false; }
 
   /** If the UML meta-model object changes state. Update the Fig.  But
    *  we need to do it as a "DelayedVetoableChangeListener", so that
@@ -125,29 +129,28 @@ implements VetoableChangeListener, DelayedVetoableChangeListener {
 
   /** Update the text labels */
   protected void updateText() {
-    Element elmt = (Element) getOwner();
-    String nameStr = GeneratorDisplay.Generate(elmt.getName());
+//     Element elmt = (Element) getOwner();
+//     String nameStr = GeneratorDisplay.Generate(elmt.getName());
 
-    startTrans();
-//    _name.setText(nameStr);
-    Rectangle bbox = getBounds();
-    setBounds(bbox.x, bbox.y, bbox.width, bbox.height);
-    endTrans();
+//     startTrans();
+// //    _name.setText(nameStr);
+//     Rectangle bbox = getBounds();
+//     setBounds(bbox.x, bbox.y, bbox.width, bbox.height);
+//     endTrans();
   }
 
-  public void paint(Graphics g) {
-    super.paint(g);
-    pos = getLocation();
-    dim = getSize() ;//{ return new Dimension(_w, _h); }
-    g.setColor(Color.black);
-    g.fillOval(pos.x - 5,pos.y - 5,dim.width,dim.height);
-  }
 
   public void dispose() {
-    if (!(getOwner() instanceof Element)) return;
+    System.out.println("disposing FigFinalState");
     Element elmt = (Element) getOwner();
+    if (elmt == null) return;
     Project p = ProjectBrowser.TheInstance.getProject();
     p.moveToTrash(elmt);
+    StateVertex sv = (StateVertex) getOwner();
+    try { sv.setParent(null); }
+    catch (PropertyVetoException pve) { }
     super.dispose();
   }
 } /* end class FigFinalState */
+
+

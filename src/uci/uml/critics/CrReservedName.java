@@ -185,12 +185,10 @@ public class CrReservedName extends CrUML {
     setPriority(ToDoItem.HIGH_PRIORITY);
   }
 
-  protected void sd(String s) { setDescription(s); }
-
   ////////////////////////////////////////////////////////////////
   // Critic implementation
   
-  public boolean predicate(Object dm, Designer dsgr) {
+  public boolean predicate2(Object dm, Designer dsgr) {
     if (!(dm instanceof ModelElement)) return NO_PROBLEM;
     ModelElement me = (ModelElement) dm;
     Name meName = me.getName();

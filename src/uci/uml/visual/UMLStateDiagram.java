@@ -34,6 +34,7 @@ package uci.uml.visual;
 
 import java.util.*;
 import java.awt.*;
+import java.beans.*;
 import com.sun.java.swing.*;
 
 import uci.gef.*;
@@ -42,6 +43,7 @@ import uci.ui.*;
 import uci.uml.ui.*;
 import uci.uml.Model_Management.*;
 import uci.uml.Foundation.Core.*;
+import uci.uml.Foundation.Data_Types.*;
 import uci.uml.Behavioral_Elements.State_Machines.*;
 
 
@@ -59,16 +61,16 @@ public class UMLStateDiagram extends UMLDiagram {
 
   // start state, end state, forks, joins, etc.
   protected static Action _actionStartPseudoState = 
-  new CmdCreateNode(Pseudostate.class, "StartState");
+  new ActionCreatePseudostate(PseudostateKind.INITIAL, "StartState");
 
   protected static Action _actionFinalPseudoState = 
-  new CmdCreateNode(Pseudostate.class, "FinalState");
+  new ActionCreatePseudostate(PseudostateKind.FINAL, "FinalState");
 
-  protected static Action _actionForkPseudoState = 
-  new CmdCreateNode(Pseudostate.class, "Fork");
+//   protected static Action _actionForkPseudoState = 
+//   new CmdCreateNode(Pseudostate.class, "Fork");
 
-  protected static Action _actionJoinPseudoState = 
-  new CmdCreateNode(Pseudostate.class, "Join");
+//   protected static Action _actionJoinPseudoState = 
+//   new CmdCreateNode(Pseudostate.class, "Join");
 
 
   protected static Action _actionTransition =
@@ -102,10 +104,23 @@ public class UMLStateDiagram extends UMLDiagram {
   ////////////////////////////////////////////////////////////////
   // contructors
 
-  public UMLStateDiagram(Model m) {
+  protected static int _StateDiagramSerial = 1;
+
+
+  public UMLStateDiagram(Model m, StateMachine sm) {
     super(m);
+    String name = null;
+    if (sm.getContext() != null && sm.getContext().getName() != Name.UNSPEC &&
+	sm.getContext().getName().getBody().length() > 0)
+      name = sm.getContext().getName().getBody() + " states";
+    else
+      name = "state diagram " + _StateDiagramSerial;
+    _StateDiagramSerial++;
+    try { setName(name); } catch (PropertyVetoException pve) { }
+
     StateDiagramGraphModel gm = new StateDiagramGraphModel();
     gm.setModel(m);
+    gm.setMachine(sm);
     setGraphModel(gm);
     LayerPerspective lay = new LayerPerspective(m.getName().getBody(), gm);
     setLayer(lay);
@@ -119,10 +134,10 @@ public class UMLStateDiagram extends UMLDiagram {
   protected void initToolBar() {
     System.out.println("making state toolbar");
     _toolBar = new ToolBar();
-    _toolBar.add(Actions.Cut);
-    _toolBar.add(Actions.Copy);
-    _toolBar.add(Actions.Paste);
-    _toolBar.addSeparator();
+//     _toolBar.add(Actions.Cut);
+//     _toolBar.add(Actions.Copy);
+//     _toolBar.add(Actions.Paste);
+//     _toolBar.addSeparator();
 
     _toolBar.add(_actionSelect);
     _toolBar.addSeparator();
@@ -131,8 +146,8 @@ public class UMLStateDiagram extends UMLDiagram {
     _toolBar.add(_actionTransition);
     _toolBar.add(_actionStartPseudoState);
     _toolBar.add(_actionFinalPseudoState);
-    _toolBar.add(_actionForkPseudoState);
-    _toolBar.add(_actionJoinPseudoState);
+//     _toolBar.add(_actionForkPseudoState);
+//     _toolBar.add(_actionJoinPseudoState);
     _toolBar.addSeparator();
 
     _toolBar.add(_actionRectangle);

@@ -102,10 +102,18 @@ public class SelectionReshape extends Selection
   ////////////////////////////////////////////////////////////////
   // event handlers
 
-  public void keyPressed(KeyEvent ke) { }
-    
-  public void keyReleased(KeyEvent ke) { }
-    
+  public void keyPressed(KeyEvent ke) {
+    if (ke.isConsumed()) return;
+    if (_content instanceof KeyListener)
+      ((KeyListener)_content).keyPressed(ke);
+  }
+
+  public void keyReleased(KeyEvent ke) {
+    if (ke.isConsumed()) return;
+    if (_content instanceof KeyListener)
+      ((KeyListener)_content).keyReleased(ke);
+  }
+
   /** If the user presses delete or backaspace while a handle is
    *  selected, remove that point from the polygon. The 'n' and 'p'
    *  keys select the next and previous points. The 'i' key inserts a
@@ -117,7 +125,7 @@ public class SelectionReshape extends Selection
     if (ke.isConsumed()) return;
     if (_content instanceof KeyListener)
       ((KeyListener)_content).keyTyped(ke);
-    if (ke.isConsumed()) return;    
+    if (ke.isConsumed()) return;
 
     if (_selectedHandle != -1 && (key == 127 || key == 8)) {
       ce.executeCmd(new CmdRemovePoint(_selectedHandle), ke);

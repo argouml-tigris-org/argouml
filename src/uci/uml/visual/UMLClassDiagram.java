@@ -57,8 +57,8 @@ public class UMLClassDiagram extends UMLDiagram {
   protected static Action _actionClass = 
   new CmdCreateNode(MMClass.class, "Class");
 
-  protected static Action _actionInterface =
-  new CmdCreateNode(Interface.class, "Interface");
+//   protected static Action _actionInterface =
+//   new CmdCreateNode(Interface.class, "Interface");
 
   protected static Action _actionDepend =
   new CmdSetMode(ModeCreateEdge.class,
@@ -99,9 +99,11 @@ public class UMLClassDiagram extends UMLDiagram {
 
   ////////////////////////////////////////////////////////////////
   // contructors
+  protected static int _ClassDiagramSerial = 1;
+
 
   public UMLClassDiagram(Model m) {
-    super(m);
+    super("class diagram " + _ClassDiagramSerial++, m);
     ClassDiagramGraphModel gm = new ClassDiagramGraphModel();
     gm.setModel(m);
     setGraphModel(gm);
@@ -116,10 +118,10 @@ public class UMLClassDiagram extends UMLDiagram {
   /** initialize the toolbar for this diagram type */
   protected void initToolBar() {
     _toolBar = new ToolBar();
-    _toolBar.add(Actions.Cut);
-    _toolBar.add(Actions.Copy);
-    _toolBar.add(Actions.Paste);
-    _toolBar.addSeparator();
+//     _toolBar.add(Actions.Cut);
+//     _toolBar.add(Actions.Copy);
+//     _toolBar.add(Actions.Paste);
+//     _toolBar.addSeparator();
 
     _toolBar.add(_actionSelect);
     _toolBar.addSeparator();
@@ -128,6 +130,11 @@ public class UMLClassDiagram extends UMLDiagram {
     _toolBar.add(_actionAssoc);
     _toolBar.add(_actionDepend);
     _toolBar.add(_actionGeneralize);
+    _toolBar.addSeparator();
+
+    _toolBar.add(Actions.Attr);
+    _toolBar.add(Actions.Oper);
+    // needs-more-work: remove attribute and operation?
     _toolBar.addSeparator();
 
     _toolBar.add(_actionRectangle);

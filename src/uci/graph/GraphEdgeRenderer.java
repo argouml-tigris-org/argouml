@@ -40,7 +40,7 @@ import uci.gef.Layer;
  * @see DefaultGraphEdgeRenderer
  * @see uci.graph.demo.TranscriptionRenderer */
 
-public interface GraphEdgeRenderer {
+public interface GraphEdgeRenderer extends java.io.Serializable {
   /** Return a Fig that can be used to represent the given edge */
   FigEdge getFigEdgeFor(GraphModel gm, Layer lay, Object edge);
 

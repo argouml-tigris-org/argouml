@@ -46,7 +46,7 @@ import uci.graph.*;
  *  be placed in any LayerDiagram. Fig's are also used to define the
  *  look of FigNodes on NetNodes. */
 
-public class Fig implements java.io.Serializable  {
+public class Fig implements java.io.Serializable, PropertyChangeListener  {
 
   ////////////////////////////////////////////////////////////////
   // constants
@@ -84,7 +84,7 @@ public class Fig implements java.io.Serializable  {
 
   /** Outline color of fig object. */
   protected Color _lineColor = Color.black;
-  
+
   /** Fill color of fig object. */
   protected Color _fillColor = Color.white;
 
@@ -93,6 +93,8 @@ public class Fig implements java.io.Serializable  {
 
   /** True if the object should fill in its area. */
   protected boolean _filled = true;
+
+  protected Fig _group = null;
 
 
   ////////////////////////////////////////////////////////////////
@@ -182,6 +184,11 @@ public class Fig implements java.io.Serializable  {
     _owner = own;
   }
   public Object getOwner() { return _owner; }
+
+  /** Sets the enclosing FigGroup of this Fig.  The enclosing group is
+   * always notified of property changes, without need to add a listener. */
+  public void setGroup(Fig f) { _group = f; }
+  public Fig getGroup() { return _group; }
 
   /** Internal function to change the line color attribute. Other code
    *  should use put(String key, Object value). */
@@ -654,16 +661,28 @@ public class Fig implements java.io.Serializable  {
    *  propertyChanged() method. */
   protected void firePropChange(String propName, Object oldV, Object newV) {
     Globals.firePropChange(this, propName, oldV, newV);
+    if (_group != null) {
+      PropertyChangeEvent pce =
+	new PropertyChangeEvent(this, propName, oldV, newV);
+      _group.propertyChange(pce);
+    }
   }
 
   protected void firePropChange(String propName, int oldV, int newV) {
-    Globals.firePropChange(this, propName,
-			   new Integer(oldV), new Integer(newV));
+    firePropChange(propName, new Integer(oldV), new Integer(newV));
   }
 
   protected void firePropChange(String propName, boolean oldV, boolean newV) {
-    Globals.firePropChange(this, propName,
-			   new Boolean(oldV), new Boolean(newV));
+    firePropChange(propName, new Boolean(oldV), new Boolean(newV));
+  }
+
+  ////////////////////////////////////////////////////////////////
+  // property change handling
+
+  /** By default just pass it up to enclosing groups.  Subclasses of
+   *  FigNode may want to override this method. */
+  public void propertyChange(PropertyChangeEvent pce) {
+    if (_group != null) _group.propertyChange(pce);
   }
 
 

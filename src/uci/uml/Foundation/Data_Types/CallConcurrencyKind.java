@@ -31,7 +31,7 @@ package uci.uml.Foundation.Data_Types;
 
 import java.util.*;
 
-public class CallConcurrencyKind {
+public class CallConcurrencyKind implements java.io.Serializable {
     
   public static final CallConcurrencyKind SEQUENTIAL =
   new CallConcurrencyKind("sequential"); 

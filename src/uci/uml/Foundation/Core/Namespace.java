@@ -35,7 +35,7 @@ import java.beans.PropertyVetoException;
 import uci.uml.Model_Management.*;
 
 
-public interface Namespace extends ModelElement {
+public interface Namespace extends ModelElement, java.io.Serializable {
   //public ModelElement _ownedElement[];
 
   public Vector getOwnedElement();

@@ -31,8 +31,8 @@ package uci.uml.Foundation.Data_Types;
 
 import java.util.*;
 
-public class Multiplicity {
-    
+public class Multiplicity implements java.io.Serializable {
+
   public static final Multiplicity ONE = new Multiplicity(1, 1);
   public static final Multiplicity ONE_OR_ZERO = new Multiplicity(0, 1);
   public static final Multiplicity ONE_OR_MORE =
@@ -40,7 +40,7 @@ public class Multiplicity {
   public static final Multiplicity ZERO_OR_MORE =
   new Multiplicity(new Integer(0), null);
   public static int MAX_MULTIPLICITY_RANGES = 10;
-  
+
   //% public MultiplicityRange _ranges[];
   public Vector _ranges;
     

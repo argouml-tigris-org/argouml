@@ -91,7 +91,7 @@ public abstract class ModeCreate extends Mode {
     return Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR);
   }
 
-  
+
   ////////////////////////////////////////////////////////////////
   // event handlers
 

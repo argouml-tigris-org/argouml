@@ -24,9 +24,9 @@
 
 
 
-// File: FigText.java
-// Classes: FigText
-// Original Author: ics125 spring 1996
+// File: FigTextEditor.java
+// Classes: FigTextEditor
+// Original Author: jrobbins@ics.uci.edu
 // $Id$
 
 package uci.gef;
@@ -37,23 +37,27 @@ import java.util.*;
 import java.beans.*;
 import com.sun.java.swing.*;
 import com.sun.java.swing.event.*;
+import com.sun.java.swing.text.*;
 
 import uci.ui.*;
 import uci.util.*;
 
 // needs-more-work: could this be a singleton?
 
-public class FigTextEditor extends JTextArea
+public class FigTextEditor extends JTextPane
 implements PropertyChangeListener, DocumentListener, KeyListener {
 
   FigText _target;
   JPanel drawingPanel;
   JPanel _glass;
   boolean _editing = false;
-  
+
   public static int EXTRA = 2;
-  
-  public FigTextEditor(FigText ft) {
+
+
+  /** Needs-more-work: does not open if I use tab to select the
+   *  FigText. */
+  public FigTextEditor(FigText ft, InputEvent ie) {
     _target = ft;
     System.out.println("making FigTextEditor");
     Editor ce = Globals.curEditor();
@@ -81,14 +85,29 @@ implements PropertyChangeListener, DocumentListener, KeyListener {
     _glass.add(this);
     String text = ft.getText();
     if (!text.endsWith("\n")) setText(text + "\n");
+//     setDocument(new DefaultStyledDocument());
     setText(text);
-    setFont(ft.getFont());
     //addFocusListener(this);
     addKeyListener(this);
     requestFocus();
     getDocument().addDocumentListener(this);
     ce.setActiveTextEditor(this);
     _editing = true;
+    setSelectionStart(0);
+    setSelectionEnd(getDocument().getLength());
+    MutableAttributeSet attr = new SimpleAttributeSet();
+    if (ft.getJustification() == FigText.JUSTIFY_CENTER)
+      StyleConstants.setAlignment(attr, StyleConstants.ALIGN_CENTER);
+    if (ft.getJustification() == FigText.JUSTIFY_RIGHT)
+      StyleConstants.setAlignment(attr, StyleConstants.ALIGN_RIGHT);
+    Font font = ft.getFont();
+    StyleConstants.setFontFamily(attr, font.getFamily());
+    StyleConstants.setFontSize(attr, font.getSize());
+    setParagraphAttributes(attr, true);
+    if (ie instanceof KeyEvent) {
+      setSelectionStart(getDocument().getLength());
+      setSelectionEnd(getDocument().getLength());
+    }
   }
 
   public void propertyChange(PropertyChangeEvent pve) { updateFigText(); }
@@ -122,11 +141,17 @@ implements PropertyChangeListener, DocumentListener, KeyListener {
   ////////////////////////////////////////////////////////////////
   // event handlers for KeyListener implementaion
 
-  
+
   public void keyTyped(KeyEvent ke) {
     if (ke.getKeyChar() == KeyEvent.VK_ENTER &&
 	 !_target.getMultiLine()) {
       ke.consume();
+    }
+    if (ke.getKeyCode() == KeyEvent.VK_TAB) {
+      if (!_target.getAllowsTab()) {
+	endEditing();
+	ke.consume();
+      }
     }
     //else super.keyTyped(ke);
   }
@@ -135,9 +160,17 @@ implements PropertyChangeListener, DocumentListener, KeyListener {
   }
 
   public void keyPressed(KeyEvent ke) {
-    if (ke.getKeyCode() == KeyEvent.VK_ENTER &&
-	 !_target.getMultiLine()) {
-      ke.consume();
+    if (ke.getKeyCode() == KeyEvent.VK_ENTER) {
+      if (!_target.getMultiLine()) {
+	endEditing();
+	ke.consume();
+      }
+    }
+    if (ke.getKeyCode() == KeyEvent.VK_TAB) {
+      if (!_target.getAllowsTab()) {
+	endEditing();
+	ke.consume();
+      }
     }
     else if (ke.getKeyCode() == KeyEvent.VK_F2) {
       endEditing();

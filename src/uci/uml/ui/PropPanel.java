@@ -72,6 +72,7 @@ implements TabModelTarget, DocumentListener {
     GridBagConstraints c = new GridBagConstraints();
     c.fill = GridBagConstraints.BOTH;
     c.weightx = 0.0;
+    c.weighty = 0.0;
     c.ipadx = 3; c.ipady = 3;
 
     c.gridx = 0;
@@ -83,6 +84,8 @@ implements TabModelTarget, DocumentListener {
     gb.setConstraints(_stereoLabel, c);
     add(_stereoLabel);
 
+
+    _nameField.setMinimumSize(new Dimension(120, 20));
     c.weightx = 1.0;
     c.gridx = 1;
     //c.gridwidth = GridBagConstraints.REMAINDER;

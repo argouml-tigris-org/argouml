@@ -33,7 +33,7 @@ import uci.uml.Foundation.Core.*;
 import uci.uml.Model_Management.*;
 
 /** Defines a checklist to help designers design better operations.
- *  Basically, propmts them to think about various aspects of the
+ *  Basically, prompts them to think about various aspects of the
  *  design. Needs-More-Work: the checklist items are categorized, but
  *  those categories are not shown yet in the user interface. */
 
@@ -44,7 +44,7 @@ public class ChOperation extends UMLChecklist {
   setNextCategory("Naming");
   addItem("Does the name '{name}' clearly describe the operation?");
   addItem("Is '{name}' a verb or verb phrase?");
-  addItem("Could the name '{name}' be misinterperrted to mean something else?");
+  addItem("Could the name '{name}' be misinterpreted to mean something else?");
   addItem("Does {name} do one thing and do it well?");
 
 
@@ -54,8 +54,8 @@ public class ChOperation extends UMLChecklist {
   addItem("Does '{returns}' allow return values that could never be correct?");
   addItem("Could {name} be combined with some other operation of "+
 	  "{owner} (e.g., {owner.behavioralFeature})?");
-  addItem("Could {name} be broken down into two or more parts (e.g., preprocess, "+
-	  "main processing, and postprocessing)?");
+  addItem("Could {name} be broken down into two or more parts (e.g., pre-process, "+
+	  "main processing, and post-processing)?");
   addItem("Could {name} be replaced by a series of client calls to "+
 	  "simpler operations?");
   addItem("Could {name} be combined with other operations to reduce the "+
@@ -65,7 +65,7 @@ public class ChOperation extends UMLChecklist {
   addItem("Can {name} handle all possible inputs?");
   addItem("Are there special case inputs that must be handled separately?");
   addItem("Could you write an expression to check if the arguments to {name} "+
-	  "are correct? Plausable?");
+	  "are correct? Plausible?");
   addItem("Can you express the preconditions of {name}?");
   addItem("Can you express the postconditions of {name}?");
   addItem("How will {name} behave if preconditions are violated?");

@@ -32,7 +32,7 @@ import java.beans.*;
 
 // needs-more-work
 
-public class LinkEnd {
+public class LinkEnd implements java.io.Serializable{
 
   public LinkEnd() { }
   

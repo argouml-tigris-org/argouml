@@ -35,7 +35,7 @@ import java.beans.*;
  *  will get the appropriate calls. NetEdge implements these.
  *
  * @see uci.gef.NetEdge */
-public interface GraphEdgeHooks {
+public interface GraphEdgeHooks extends java.io.Serializable {
   void addPropertyChangeListener(PropertyChangeListener l);
   void removePropertyChangeListener(PropertyChangeListener l);
   void setHighlight(boolean b);

@@ -44,7 +44,7 @@ public class ChClass extends UMLChecklist {
   setNextCategory("Naming");
   addItem("Does the name '{name}' clearly describe the class?");
   addItem("Is '{name}' a noun or noun phrase?");
-  addItem("Could the name '{name}' be misinterperrted to mean something else?");
+  addItem("Could the name '{name}' be misinterpreted to mean something else?");
 
 
   setNextCategory("Encoding");

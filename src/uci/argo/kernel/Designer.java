@@ -45,6 +45,7 @@ public class Designer implements Poster, Runnable, java.io.Serializable {
   // instance variables
 
   public static Designer TheDesigner = new Designer();
+  public static boolean _userWorking = false;
 
   /** ToDoList items that are on the designers ToDoList because of
    *  this material. */
@@ -80,12 +81,23 @@ public class Designer implements Poster, Runnable, java.io.Serializable {
 
   private Thread _critiquer;
   private int _critiquingInterval = 8000;
+  private int _critiqueCPUPercent = 10;
   private boolean _autoCritique = true;
+
+  /** dm's that should be critiqued ASAP. */
+  private Vector _hotQueue = new Vector();
+  private Vector _addQueue = new Vector();
+  private Vector _removeQueue = new Vector();
+
+  /** dm's that should be critiqued relatively soon. */
+  private Vector _warmQueue = new Vector();
 
   private ChildGenerator _cg = new ChildGenDMElements();
   //needs-more-work: theInstance()
 
   private static Object _CritiquingRoot;
+
+  protected long _critiqueDuration;
 
   ////////////////////////////////////////////////////////////////
   // constructor and singeton methods
@@ -114,48 +126,100 @@ public class Designer implements Poster, Runnable, java.io.Serializable {
     /* needs-more-work really should be a separate class */
     _critiquer = new Thread(this, "CritiquingThread");
     _critiquer.setDaemon(true);
+    _critiquer.setPriority(Thread.currentThread().getPriority() - 1);
     _critiquer.start();
     _CritiquingRoot = root;
   }
+
 
   /** Continuously select and execute critics against this designer's
    *  design. spawnCritiquer is used to start a Thread that runs
    *  this. */
   public void run() {
-    Vector alreadyCritiqued = new Vector();       // jer added 970911
-    Vector toCritique = new Vector();     // jer added 970911
+//     Vector alreadyCritiqued = new Vector();       // jer added 970911
+//     Vector toCritique = new Vector();     // jer added 970911
     while (true) {
+      long critiqueStartTime = System.currentTimeMillis();
+      long cutoffTime = critiqueStartTime + 3000;
       if (_CritiquingRoot != null && getAutoCritique()) {
-        synchronized (_CritiquingRoot) {
+        synchronized (_hotQueue) {
+	  synchronized (_addQueue) {
+	    int size = _addQueue.size();
+	    for (int i = 0; i < size; i++)
+	      _hotQueue.addElement(_addQueue.elementAt(i));
+	    _addQueue.removeAllElements();
+	  }
+	}
+	synchronized (_hotQueue) {
           _agency.determineActiveCritics(this);
           // jer added 970911
           // now use ChildGenerators instead of elements()
           //- _CritiquingRoot.critique(this);
-          alreadyCritiqued.removeAllElements();
-          toCritique.removeAllElements();
-          toCritique.addElement(_CritiquingRoot);
-          while (toCritique.size() > 0) {
-            Object dm = toCritique.elementAt(toCritique.size()-1);
-            toCritique.removeElement(dm);
-            if (!alreadyCritiqued.contains(dm)) {
-              alreadyCritiqued.addElement(dm);
-              Agency.applyAllCritics(dm, theDesigner());
-              Enumeration subDMs = _cg.gen(dm);
-              while (subDMs.hasMoreElements())
-                toCritique.addElement(subDMs.nextElement());
-            }
+          //alreadyCritiqued.removeAllElements();
+          //_hotQueue.removeAllElements();
+          //_hotQueue.addElement(_CritiquingRoot);
+          while (_hotQueue.size() > 0) {
+	    //System.currentTimeMillis() < cutoffTime + 1000) {
+	    //System.out.println("hot:"+ _hotQueue.size());
+            Object dm = _hotQueue.elementAt(0);
+            _hotQueue.removeElementAt(0);
+	    Agency.applyAllCritics(dm, theDesigner());
+// 	    Enumeration subDMs = _cg.gen(dm);
+// 	    while (subDMs.hasMoreElements()) {
+// 	      Object nextDM = subDMs.nextElement();
+// 	      if (!(_warmQueue.contains(nextDM)))
+// 		_warmQueue.addElement(nextDM);
+// 	    }
           }
-        }
+        synchronized (_warmQueue) {
+	  synchronized (_removeQueue) {
+	    int size = _removeQueue.size();
+	    for (int i = 0; i < size; i++)
+	      _warmQueue.removeElement(_removeQueue.elementAt(i));
+	    _removeQueue.removeAllElements();
+	  }
+	}
+
+	  synchronized (_warmQueue) {
+	    if (_warmQueue.size() == 0)
+	      _warmQueue.addElement(_CritiquingRoot);
+	    while (_warmQueue.size() > 0 && System.currentTimeMillis() < cutoffTime) {
+	      //System.out.println("warm");
+	      Object dm = _warmQueue.elementAt(0);
+	      _warmQueue.removeElementAt(0);
+	      Agency.applyAllCritics(dm, theDesigner());
+	      Enumeration subDMs = _cg.gen(dm);
+	      while (subDMs.hasMoreElements()) {
+		Object nextDM = subDMs.nextElement();
+		if (!(_warmQueue.contains(nextDM)))
+		  _warmQueue.addElement(nextDM);
+	      }
+	    }
+	  }
+	}
       }
-      // needs-more-work: limit % CPU time used
-      try { _critiquer.sleep(getCritiquingInterval()); }
+      _critiqueDuration = System.currentTimeMillis() - critiqueStartTime;
+      long cycleDuration = (_critiqueDuration * 100) / _critiqueCPUPercent;
+      long sleepDuration = Math.min(cycleDuration - _critiqueDuration, 3000);
+      sleepDuration = Math.max(sleepDuration, 1000);
+      //System.out.println("sleepDuration= " + sleepDuration);
+      try { _critiquer.sleep(sleepDuration); }
       catch (InterruptedException ignore) {
         System.out.println("InterruptedException!!!");
       }
-      System.gc();
+      //System.gc();
     }
   }
 
+
+  public void critiqueASAP(Object dm) {
+    synchronized (_addQueue) {
+      if (!_userWorking) return;
+      //System.out.println("critiqueASAP:" + dm);
+      if (!(_addQueue.contains(dm))) _addQueue.addElement(dm);
+      _removeQueue.addElement(dm);
+    }
+  }
 
   /** Look for potential problems or open issues in the given design. */
   public void critique(Design des) { des.critique(this); }
@@ -181,7 +245,14 @@ public class Designer implements Poster, Runnable, java.io.Serializable {
 
   public boolean getAutoCritique() { return _autoCritique; }
   public void setAutoCritique(boolean b) { _autoCritique = b; }
-  public int getCritiquingInterval() { return _critiquingInterval; }
+
+  /// needs-more-work: change to percentage of CPU time!
+
+  protected long _lastCritique = 0;
+  public int getCritiquingInterval() {
+
+    return _critiquingInterval;
+  }
   public void setCritiquingInterval(int i) { _critiquingInterval = i; }
 
    public static void setCritiquingRoot(Object d) {

@@ -100,8 +100,8 @@ public class TabToDo extends TabSpawnable implements TabToDoTarget {
     toolBar.add(_actionHush);
     toolBar.addSeparator();
     
-    toolBar.add(_actionRecordFix);
-    toolBar.add(_actionReplayFix);
+//     toolBar.add(_actionRecordFix);
+//     toolBar.add(_actionReplayFix);
 
     //     toolBar.add(_actionFixItNext);
     //     toolBar.add(_actionFixItBack);

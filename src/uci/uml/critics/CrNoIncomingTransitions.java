@@ -22,10 +22,8 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 // ENHANCEMENTS, OR MODIFICATIONS.
 
-
-
-// File: CrIlleagleGeneralization.java.java
-// Classes: CrIlleagleGeneralization.java
+// File: CrNoIncomingTransitions.java
+// Classes: CrNoIncomingTransitions
 // Original Author: jrobbins@ics.uci.edu
 // $Id$
 
@@ -35,33 +33,46 @@ import java.util.*;
 import uci.argo.kernel.*;
 import uci.util.*;
 import uci.uml.Foundation.Core.*;
+import uci.uml.Foundation.Data_Types.*;
+import uci.uml.Behavioral_Elements.State_Machines.*;
 
-/** Well-formedness rule [1] for Generalization. See page 32 of UML 1.1
- *  Semantics. OMG document ad/97-08-04. */
+/** A critic to detect when a state has no outgoing transitions. */
 
-public class CrIlleagleGeneralization extends CrUML {
+public class CrNoIncomingTransitions extends CrUML {
 
-  public CrIlleagleGeneralization() {
-    setHeadline("Illeagle Generalization ");
-    sd("Model elements can only be inherit from others of the same type. \n\n"+
-       "A legal inheritance hierarchy is needed for code generation \n"+
-       "and the correctness of the design. \n\n"+
-       "To fix this, use the FixIt button, or manually select the  \n"+
-       "generalization arrow and remove it.");
+  public CrNoIncomingTransitions() {
+    setHeadline("Add Incoming Transitions to {name}");
+    sd("State {name} has no incoming transitions. "+
+       "Normally states have both incoming and outgoing transitions. \n\n"+
+       "Defining complete state transitions is needed to complete the behavioral "+
+       "specification part of your design. Without incoming transitions, "+
+       "this state can never be reached.\n\n"+
+       "To fix this, press the \"Next>\" button, or add transitions manually "+
+       "by clicking on transition tool in the tool bar and dragging from "+
+       "another state to {name}. ");
 
-    addSupportedDecision(CrUML.decINHERITANCE);
+    addSupportedDecision(CrUML.decSTATE_MACHINES);
   }
 
-  protected void sd(String s) { setDescription(s); }
-  
-  public boolean predicate(Object dm, Designer dsgr) {
-    if (!(dm instanceof Generalization)) return NO_PROBLEM;
-    Generalization gen = (Generalization) dm;
-    java.lang.Class javaClass1 = gen.getSupertype().getClass();
-    java.lang.Class javaClass2 = gen.getSubtype().getClass();
-    if (javaClass1 != javaClass2) return PROBLEM_FOUND;
+  public boolean predicate2(Object dm, Designer dsgr) {
+    if (!(dm instanceof StateVertex)) return NO_PROBLEM;
+    StateVertex sv = (StateVertex) dm;
+    if (sv instanceof State) {
+      StateMachine sm = ((State)sv).getStateMachine();
+      if (sm != null && sm.getTop() == sv) return NO_PROBLEM;
+    }
+    Vector outgoing = sv.getOutgoing();
+    Vector incoming = sv.getIncoming();
+    boolean needsOutgoing = outgoing == null || outgoing.size() == 0;
+    boolean needsIncoming = incoming == null || incoming.size() == 0;
+    if (sv instanceof Pseudostate) {
+      PseudostateKind k = ((Pseudostate)sv).getKind();
+      if (k.equals(PseudostateKind.INITIAL)) needsIncoming = false;
+      if (k.equals(PseudostateKind.FINAL)) needsOutgoing = false;
+    }
+    if (needsIncoming && !needsOutgoing) return PROBLEM_FOUND;
     return NO_PROBLEM;
   }
 
-} /* end class CrIlleagleGeneralization.java */
+} /* end class CrNoIncomingTransitions */
 

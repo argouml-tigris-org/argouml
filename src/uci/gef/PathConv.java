@@ -44,7 +44,7 @@ import java.util.*;
  *  along a FigEdge and have the label stay in the right place, even
  *  if the FigEdge moves. */
 
-public abstract class PathConv {
+public abstract class PathConv implements java.io.Serializable {
   protected Fig _pathFigure; 	// The intermediate path figure
 
   public PathConv(Fig theFig) {

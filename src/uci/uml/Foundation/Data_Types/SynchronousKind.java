@@ -31,7 +31,7 @@ package uci.uml.Foundation.Data_Types;
 
 import java.util.*;
 
-public class SynchronousKind {
+public class SynchronousKind implements java.io.Serializable {
     
   public SynchronousKind() { }
   

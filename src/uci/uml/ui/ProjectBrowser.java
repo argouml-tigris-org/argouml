@@ -71,7 +71,7 @@ implements IStatusBar {
   // -----
   protected static Action _actionAddToProj = Actions.AddToProj;
   // -----
-  protected static Action _actionPrint = Actions.Print;
+  protected static Action _actionPrint = new CmdPrint(); //Actions.Print;
   // -----
   protected static Action _actionExit = Actions.Exit;
 
@@ -262,9 +262,9 @@ implements IStatusBar {
     
     JMenuItem tab1Item = detailsTabs.add(new ActionGoToDetails("ToDoItem"));
     tab1Item.setAccelerator(alt1);
-    JMenuItem tab2Item = detailsTabs.add(new ActionGoToDetails("Javadocs"));
+    JMenuItem tab2Item = detailsTabs.add(new ActionGoToDetails("Properties"));
     tab2Item.setAccelerator(alt2);
-    JMenuItem tab3Item = detailsTabs.add(new ActionGoToDetails("Properties"));
+    JMenuItem tab3Item = detailsTabs.add(new ActionGoToDetails("Javadocs"));
     tab3Item.setAccelerator(alt3);
     JMenuItem tab4Item = detailsTabs.add(new ActionGoToDetails("Source"));
     tab4Item.setAccelerator(alt4);
@@ -384,7 +384,7 @@ implements IStatusBar {
   public void select(Object o) {
     _multiPane.select(o);
   }
-  
+
   public void setTarget(Object o) {
     _multiPane.setTarget(o);
     _detailsPane.setTarget(o);
@@ -409,8 +409,13 @@ implements IStatusBar {
     _detailsPane.setToDoItem(o);
   }
 
-  public void setDetalsTarget(Object o) {
+  public void setDetailsTarget(Object o) {
     _detailsPane.setTarget(o);
+    Actions.updateAllEnabled();
+  }
+
+  public Object getDetailsTarget() {
+    return _detailsPane.getTarget();
   }
 
   public StatusBar getStatusBar() { return _statusBar; }

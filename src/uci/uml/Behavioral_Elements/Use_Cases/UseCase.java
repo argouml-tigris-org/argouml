@@ -38,7 +38,7 @@ import uci.uml.Foundation.Data_Types.*;
 
 public class UseCase extends Classifier {
   //% public String _extensionPoint[];
-  public Vector _extensionPoint;
+  public Vector _extensionPoint = new Vector();
     
   public UseCase() { }
   public UseCase(Name name) { super(name); }

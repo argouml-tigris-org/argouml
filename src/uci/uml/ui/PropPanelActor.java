@@ -26,7 +26,7 @@
 
 // File: PropPanelActor.java
 // Classes: PropPanelActor
-// Original Author: your email address here
+// Original Author: jrobbins@ics.uci.edu
 // $Id$
 
 package uci.uml.ui;
@@ -50,76 +50,16 @@ import uci.uml.Behavioral_Elements.Use_Cases.*;
 
 /** User interface panel shown at the bottom of the screen that allows
  *  the user to edit the properties of the selected UML model
- *  element. */
+ *  element. Actors have no properties other than name, so this is a
+ *  trivial class.  Needs-More-Work: cut and paste base class code
+ *  from PropPanelClass.*/
 
-public class PropPanelActor extends PropPanel
-implements DocumentListener, ItemListener {
-
-  ////////////////////////////////////////////////////////////////
-  // constants
-  // needs-more-work 
-
-  ////////////////////////////////////////////////////////////////
-  // instance vars
-  JLabel _nmwLabel = new JLabel("Needs-more-work PropPanelActor");
-
-  // declare and initialize all widgets
+public class PropPanelActor extends PropPanel {
 
   ////////////////////////////////////////////////////////////////
   // contructors
   public PropPanelActor() {
     super("Actor Properties");
-    GridBagLayout gb = (GridBagLayout) getLayout();
-    GridBagConstraints c = new GridBagConstraints();
-    c.fill = GridBagConstraints.BOTH;
-    c.weightx = 0.0;
-    c.ipadx = 0; c.ipady = 0;
-
-
-    c.gridx = 0;
-    c.gridwidth = 1;
-    c.gridy = 1;
-    gb.setConstraints(_nmwLabel, c);
-    add(_nmwLabel);
-
-    // add all widgets and labels
-
-    // register interest in change events from all widgets
-  }
-
-  ////////////////////////////////////////////////////////////////
-  // accessors
-
-  /** Set the values to be shown in all widgets based on model */
-  public void setTarget(Object t) {
-    super.setTarget(t);
-    Actor act = (Actor) t;
-    // set the values to be shown in all widgets based on model
-  }
-
-
-  ////////////////////////////////////////////////////////////////
-  // event handlers
-
-
-  /** The user typed some text */
-  public void insertUpdate(DocumentEvent e) {
-    //System.out.println(getClass().getName() + " insert");
-    // check if it was one of my text fields
-    super.insertUpdate(e);
-  }
-
-  public void removeUpdate(DocumentEvent e) { insertUpdate(e); }
-
-  public void changedUpdate(DocumentEvent e) {
-    //System.out.println(getClass().getName() + " changed");
-    // Apparently, this method is never called.
-  }
-
-  /** The user modified one of the widgets */
-  public void itemStateChanged(ItemEvent e) {
-    Object src = e.getSource();
-    // check for each widget, and update the model with new value
   }
 
 

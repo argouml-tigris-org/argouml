@@ -42,6 +42,8 @@ import uci.uml.Foundation.Data_Types.*;
  *  NavPerspectives. */
 
 public class GenCompositeClasses implements ChildGenerator {
+  public static GenAncestorClasses TheInstance = new GenAncestorClasses();
+
   public java.util.Enumeration gen(Object o) {
     Classifier cls = (Classifier) o;
     Vector ends = cls.getInheritedAssociationEnds();

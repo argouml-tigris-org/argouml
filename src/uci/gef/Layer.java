@@ -95,7 +95,7 @@ public abstract class Layer implements java.io.Serializable {
   protected boolean _onMenu = false;
 
   /** A Vector of the Editors that are displaying this Layer. */
-  public Vector _editors = new Vector();
+  public transient Vector _editors = new Vector();
 
   ////////////////////////////////////////////////////////////////
   // constructors
@@ -233,6 +233,7 @@ public abstract class Layer implements java.io.Serializable {
    *  redrawn. Notify all Editors showing this Layer that they should
    *  record the damage. */ 
   public void damaged(Fig f) {
+    if (_editors == null) return;
     Enumeration eds = _editors.elements();
     while (eds.hasMoreElements())
       ((Editor)eds.nextElement()).damaged(f);
@@ -241,6 +242,7 @@ public abstract class Layer implements java.io.Serializable {
   /** A Fig in this Layer has been deleted. Notify all Editors so that
    *  they can deselect the Fig. */
   public void deleted(Fig f) {
+    if (_editors == null) return;
     Enumeration eds = _editors.elements();
     while (eds.hasMoreElements())
       ((Editor)eds.nextElement()).removed(f);
@@ -249,14 +251,21 @@ public abstract class Layer implements java.io.Serializable {
 
   /** Ask all Editors to completely redraw their display. */
   public void refreshEditors() {
+    if (_editors == null) return;
     Enumeration eds = _editors.elements();
     while (eds.hasMoreElements()) ((Editor) eds.nextElement()).damageAll();
   }
 
   /** Add an Editor to the list of Editors showing this Layer. */ 
-  public void addEditor(Editor ed) { _editors.addElement(ed); }
+  public void addEditor(Editor ed) {
+    if (_editors == null) _editors = new Vector();
+    _editors.addElement(ed);
+  }
 
-  public void removeEditor(Editor ed) { _editors.removeElement(ed); }
+  public void removeEditor(Editor ed) {
+    if (_editors == null) return;
+    _editors.removeElement(ed);
+  }
 
   ////////////////////////////////////////////////////////////////
   // user interface

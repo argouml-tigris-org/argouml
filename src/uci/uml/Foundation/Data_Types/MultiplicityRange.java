@@ -31,7 +31,7 @@ package uci.uml.Foundation.Data_Types;
 
 import java.util.*;
 
-public class MultiplicityRange {
+public class MultiplicityRange implements java.io.Serializable {
   public Integer lower;
   public Integer upper;
   //-public Multiplicity m_Multiplicity;

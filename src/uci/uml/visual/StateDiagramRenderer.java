@@ -36,6 +36,7 @@ import java.util.*;
 import uci.graph.*;
 import uci.gef.*;
 import uci.uml.Foundation.Core.*;
+import uci.uml.Foundation.Data_Types.*;
 import uci.uml.Behavioral_Elements.State_Machines.*;
 
 // could be singleton
@@ -66,8 +67,12 @@ implements GraphNodeRenderer, GraphEdgeRenderer {
     {
        Pseudostate pState = (Pseudostate) node;
        if (pState.getKind() == null) return null;
-       if (pState.getKind().equals("initial")) { return new FigInitialState(gm, node); }
-       else if (pState.getKind().equals("final")) { return new FigFinalState(gm, node); }
+       if (pState.getKind().equals(PseudostateKind.INITIAL)) {
+	 return new FigInitialState(gm, node);
+       }
+       else if (pState.getKind().equals(PseudostateKind.FINAL)) {
+	 return new FigFinalState(gm, node);
+       }
        else { System.out.println("found a type not known"); }
     };
     System.out.println("needs-more-work StateDiagramRenderer getFigNodeFor");
@@ -77,13 +82,21 @@ implements GraphNodeRenderer, GraphEdgeRenderer {
   /** Return a Fig that can be used to represent the given edge */
   public FigEdge getFigEdgeFor(GraphModel gm, Layer lay, Object edge) {
     System.out.println("making figedge for " + edge);
-//     if (edge instanceof Transition) {
-//       Transition tr = (Transition) edge;
-//       FigTransition trFig = new FigTransition(tr);
-//       // set source and dest
-//       // set any arrowheads, labels, or colors
-//       return trFig;
-//     }
+    if (edge instanceof Transition) {
+      Transition tr = (Transition) edge;
+      FigTransition trFig = new FigTransition(tr);
+      // set source and dest
+      // set any arrowheads, labels, or colors
+      StateVertex sourceSV = tr.getSource();
+      StateVertex destSV = tr.getTarget();
+      FigNode sourceFN = (FigNode) lay.presentationFor(sourceSV);
+      FigNode destFN = (FigNode) lay.presentationFor(destSV);
+      trFig.sourcePortFig(sourceFN);
+      trFig.sourceFigNode(sourceFN);
+      trFig.destPortFig(destFN);
+      trFig.destFigNode(destFN);
+      return trFig;
+    }
 
     System.out.println("needs-more-work StateDiagramRenderer getFigEdgeFor");
     return null;

@@ -52,17 +52,15 @@ public class CrUnconventionalClassName extends CrUML {
     addSupportedDecision(CrUML.decNAMING);
   }
 
-  protected void sd(String s) { setDescription(s); }
-  
-  public boolean predicate(Object dm, Designer dsgr) {
+  public boolean predicate2(Object dm, Designer dsgr) {
     if (!(dm instanceof Classifier)) return NO_PROBLEM;
     Classifier cls = (Classifier) dm;
     Name myName = cls.getName();
     if (myName == null || myName.equals(Name.UNSPEC)) return NO_PROBLEM;
     String nameStr = myName.getBody();
     if (nameStr.length() == 0) return NO_PROBLEM;
-    char initalChar = nameStr.charAt(0);
-    if (!Character.isUpperCase(initalChar)) return PROBLEM_FOUND;
+    char initialChar = nameStr.charAt(0);
+    if (!Character.isUpperCase(initialChar)) return PROBLEM_FOUND;
     return NO_PROBLEM;
   }
 

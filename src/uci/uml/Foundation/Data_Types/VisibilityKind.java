@@ -31,7 +31,7 @@ package uci.uml.Foundation.Data_Types;
 
 import java.util.*;
 
-public class VisibilityKind {
+public class VisibilityKind implements java.io.Serializable {
   public static final VisibilityKind UNSPEC = new VisibilityKind("unspec"); 
   public static final VisibilityKind PUBLIC = new VisibilityKind("public"); 
   public static final VisibilityKind PRIVATE = new VisibilityKind("private");

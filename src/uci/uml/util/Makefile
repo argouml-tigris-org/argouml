@@ -33,6 +33,7 @@ GEN =
 
 CLASSES = \
 	GenCompositeClasses.class \
+	GenAncestorClasses.class \
 	UMLDescription.class \
 	SuperclassGen.class
 

@@ -30,7 +30,7 @@
 package uci.uml.Foundation.Core;
 
 import java.util.*;
-import java.beans.PropertyVetoException;
+import java.beans.*;
 import uci.uml.Foundation.Extension_Mechanisms.*;
 import uci.uml.Behavioral_Elements.State_Machines.*;
 //nmw: import uci.uml.Behavioral_Elements.Collaborations.Collaboration;
@@ -43,7 +43,7 @@ import uci.uml.Model_Management.*;
  * @see ModelElementImpl */
 
 
-public interface ModelElement extends Element {
+public interface ModelElement extends Element, java.io.Serializable {
   //    public Name _name;
   //    public Namespace _namespace;
   //    public Constraint _constraint[];
@@ -112,5 +112,9 @@ public interface ModelElement extends Element {
   //public Binding getBinding();
   //public void setBinding(Binding x);
 
+  public void addVetoableChangeListener(VetoableChangeListener listener);
 
+  public void removeVetoableChangeListener(VetoableChangeListener listener);
+
+  public String getOCLTypeStr();
 }

@@ -39,7 +39,7 @@ import java.util.*;
 
 /** Abstract class to draw arrow heads on the ends of FigEdges. */
 
-public abstract class ArrowHead {
+public abstract class ArrowHead implements java.io.Serializable {
   protected int arrow_width = 7, arrow_height = 12;
   protected Color arrowLineColor = Color.black;
   protected Color arrowFillColor = Color.black;

@@ -36,7 +36,7 @@ import uci.gef.Editor;
  *  will get the appropriate calls. NetNode implements these.
  *
  * @see uci.gef.NetNode */
-public interface GraphNodeHooks {
+public interface GraphNodeHooks extends java.io.Serializable{
 
   /** Do some application specific action just after this node is
    *  connected to another node. the arguments contain some info about

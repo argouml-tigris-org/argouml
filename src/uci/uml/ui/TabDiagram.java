@@ -56,14 +56,14 @@ implements TabModelTarget, uci.gef.event.GraphSelectionListener {
 
   ////////////////////////////////////////////////////////////////
   // constructor
-  
+
   public TabDiagram() {
     super("Diagram");
     setLayout(new BorderLayout());
     _jgraph = new JGraph();
     _jgraph.setDrawingSize(1000, 1000);
     // needs-more-work: should update to size of diagram contents
-    
+
     uci.gef.Globals.setStatusBar(ProjectBrowser.TheInstance);
     //_toolBar = d.getToolBar();
     //_jgraph.setToolBar(_toolBar); //I wish this had worked...
@@ -76,8 +76,6 @@ implements TabModelTarget, uci.gef.event.GraphSelectionListener {
     _jgraph.addGraphSelectionListener(this);
   }
 
-    
-
   public Object clone() {
     try {
       TabDiagram newPanel = new TabDiagram();
@@ -88,7 +86,7 @@ implements TabModelTarget, uci.gef.event.GraphSelectionListener {
     }
     return null;
   }
-  
+
 
   ////////////////////////////////////////////////////////////////
   // accessors
@@ -126,7 +124,7 @@ implements TabModelTarget, uci.gef.event.GraphSelectionListener {
     super.setVisible(b);
     getJGraph().setVisible(b);
   }
-  
+
   ////////////////////////////////////////////////////////////////
   // events
 
@@ -134,10 +132,10 @@ implements TabModelTarget, uci.gef.event.GraphSelectionListener {
     //System.out.println("TabDiagram got editor selection event");
     Vector sels = gse.getSelections();
     ProjectBrowser pb = ProjectBrowser.TheInstance;
-    if (sels.size() == 1) pb.setDetalsTarget(sels.elementAt(0));
-    else pb.setDetalsTarget(null);
+    if (sels.size() == 1) pb.setDetailsTarget(sels.elementAt(0));
+    else pb.setDetailsTarget(null);
   }
-  
+
   public void removeGraphSelectionListener(GraphSelectionListener listener) {
     _jgraph.removeGraphSelectionListener(listener);
   }
@@ -155,8 +153,6 @@ implements TabModelTarget, uci.gef.event.GraphSelectionListener {
     catch (Exception ex) { return new ImageIcon(desc); }
   }
 
-
-  
   protected static String imageName(String name) {
     return "/uci/Images/" + stripJunk(name) + ".gif";
   }

@@ -44,11 +44,11 @@ public class CrAttrNameConflict extends CrUML {
 
   public CrAttrNameConflict() {
     setHeadline("Two Attributes have same Name");
-    sd("Attributes must have distinct names.  This may because of an inherited \n"+
+    sd("Attributes must have distinct names.  This may because of an inherited "+
        "attribute. \n\n"+
-       "Clear and unambiguous names are key to code generation and producing an \n"+
+       "Clear and unambiguous names are key to code generation and producing an "+
        "understandable and maintainable design.\n\n"+
-       "To fix this, use the FixIt button, or manually select the one of the \n"+
+       "To fix this, use the FixIt button, or manually select the one of the "+
        "conflicting attributes of this class and change its name.");
 
     addSupportedDecision(CrUML.decINHERITANCE);
@@ -56,9 +56,7 @@ public class CrAttrNameConflict extends CrUML {
     addSupportedDecision(CrUML.decNAMING);
   }
 
-  protected void sd(String s) { setDescription(s); }
-  
-  public boolean predicate(Object dm, Designer dsgr) {
+  public boolean predicate2(Object dm, Designer dsgr) {
     if (!(dm instanceof Classifier)) return NO_PROBLEM;
     Classifier cls = (Classifier) dm;
     Vector str = cls.getStructuralFeature();

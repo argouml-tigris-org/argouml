@@ -45,18 +45,16 @@ public class CrCircularComposition extends CrUML {
   public CrCircularComposition() {
     setHeadline("Remove Circular Composition");
     sd("Composition relationships (black diamonds) cannot have cycles. \n\n"+
-       "A legal aggregation inheritance hierarchy is needed for code \n"+
+       "A legal aggregation inheritance hierarchy is needed for code "+
        "generation and the correctness of the design. \n\n"+
-       "To fix this, use the FixIt button, or manually select one of the  \n"+
-       "associations in the cycle and remove it or change its aggregation \n"+
+       "To fix this, use the FixIt button, or manually select one of the  "+
+       "associations in the cycle and remove it or change its aggregation "+
        "to something other than composite.");
 
     addSupportedDecision(CrUML.decCONTAINMENT);
   }
 
-  protected void sd(String s) { setDescription(s); }
-  
-  public boolean predicate(Object dm, Designer dsgr) {
+  public boolean predicate2(Object dm, Designer dsgr) {
     if (!(dm instanceof Classifier)) return NO_PROBLEM;
     Classifier cls = (Classifier) dm;
     Set reach = (new Set(cls)).reachable(new GenCompositeClasses());

@@ -45,7 +45,7 @@ import uci.graph.*;
  * @see NetNode
  * @see FigNode */
 
-public class CmdCreateNode extends Cmd {
+public class CmdCreateNode extends Cmd implements GraphFactory {
 
   ////////////////////////////////////////////////////////////////
   // constants
@@ -90,17 +90,8 @@ public class CmdCreateNode extends Cmd {
     GraphModel gm = ce.getGraphModel();
     if (!(gm instanceof MutableGraphModel)) return;
 
-    Object newNode;
-    Class nodeClass = (Class) getArg("className", DEFAULT_NODE_CLASS);
-    //assert _nodeClass != null
-    try { newNode = nodeClass.newInstance(); }
-    catch (java.lang.IllegalAccessException ignore) { return; }
-    catch (java.lang.InstantiationException ignore) { return; }
 
-    if (newNode instanceof GraphNodeHooks)
-      ((GraphNodeHooks)newNode).initialize(_args);
-
-    Mode placeMode = new ModePlace(newNode);
+    Mode placeMode = new ModePlace(this);
 
     Object shouldBeSticky = getArg("shouldBeSticky");
     Globals.mode(placeMode, shouldBeSticky == Boolean.TRUE);
@@ -108,6 +99,25 @@ public class CmdCreateNode extends Cmd {
 
   public void undoIt() {
     System.out.println("undo is not implemented");
+  }
+
+  ////////////////////////////////////////////////////////////////
+  // GraphFactory implementation
+
+  public GraphModel makeGraphModel() { return null; }
+  public Object makeEdge() { return null; }
+
+  public Object makeNode() {
+    Object newNode;
+    Class nodeClass = (Class) getArg("className", DEFAULT_NODE_CLASS);
+    //assert _nodeClass != null
+    try { newNode = nodeClass.newInstance(); }
+    catch (java.lang.IllegalAccessException ignore) { return null; }
+    catch (java.lang.InstantiationException ignore) { return null; }
+
+    if (newNode instanceof GraphNodeHooks)
+      ((GraphNodeHooks)newNode).initialize(_args);
+    return newNode;
   }
 
 } /* end class CmdCreateNode */

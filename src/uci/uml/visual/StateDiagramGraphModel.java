@@ -60,6 +60,9 @@ implements MutableGraphModel, VetoableChangeListener {
 
   protected Model _model;
 
+  /** The statemachine we are diagramming */
+  protected StateMachine _machine;
+
   ////////////////////////////////////////////////////////////////
   // accessors
 
@@ -68,6 +71,13 @@ implements MutableGraphModel, VetoableChangeListener {
     if (_model != null) _model.removeVetoableChangeListener(this);
     _model = m;
     if (_model != null) _model.addVetoableChangeListener(this);
+  }
+
+  public StateMachine getMachine() { return _machine; }
+  public void setMachine(StateMachine sm) {
+    if (_machine != null) _machine.removeVetoableChangeListener(this);
+    _machine = sm;
+    if (_machine != null) _machine.addVetoableChangeListener(this);
   }
 
   ////////////////////////////////////////////////////////////////
@@ -94,19 +104,20 @@ implements MutableGraphModel, VetoableChangeListener {
 
   /** Return all edges going to given port */
   public Vector getInEdges(Object port) {
-    Vector res = new Vector(); //wasteful!
-    if (port instanceof State) {
-      // needs-more-work
+    if (port instanceof StateVertex) {
+      return ((StateVertex)port).getIncoming();
     }
-    if (port instanceof Pseudostate) {
-      // needs-more-work
-    }
-    return res;
+    System.out.println("needs-more-work getInEdges of State");
+    return new Vector(); //wasteful!
   }
 
   /** Return all edges going from given port */
   public Vector getOutEdges(Object port) {
-    return new Vector(); // needs-more-work?
+    if (port instanceof StateVertex) {
+      return ((StateVertex)port).getOutgoing();
+    }
+    System.out.println("needs-more-work getOutEdges of State");
+    return new Vector(); //wasteful!
   }
 
   /** Return one end of an edge */
@@ -115,7 +126,7 @@ implements MutableGraphModel, VetoableChangeListener {
       Transition tr = (Transition) edge;
       return tr.getSource();
     }
-    System.out.println("needs-more-work getSourcePort");
+    System.out.println("needs-more-work getSourcePort of Transition");
     return null;
   }
 
@@ -125,7 +136,7 @@ implements MutableGraphModel, VetoableChangeListener {
       Transition tr = (Transition) edge;
       return tr.getTarget();
     }
-    System.out.println("needs-more-work getDestPort");
+    System.out.println("needs-more-work getDestPort of Transition");
     return null;
   }
 
@@ -135,7 +146,7 @@ implements MutableGraphModel, VetoableChangeListener {
 
   /** Return true if the given object is a valid node in this graph */
   public boolean canAddNode(Object node) {
-    return (node instanceof State) || (node instanceof Pseudostate);
+    return (node instanceof StateVertex);
   }
 
   /** Return true if the given object is a valid edge in this graph */
@@ -152,20 +163,26 @@ implements MutableGraphModel, VetoableChangeListener {
 
   /** Add the given node to the graph, if valid. */
   public void addNode(Object node) {
-    System.out.println("adding state diagram node!!");
-    if (_nodes.contains(node)) return;
-    _nodes.addElement(node);
-    // needs-more-work: assumes public, user pref for default visibility?
+    System.out.println("adding state diagram node: " + node);
+    if (!(node instanceof StateVertex)) {
+      System.out.println("internal error: got past canAddNode");
+      return;
+    }
+    StateVertex sv = (StateVertex) node;
+    if (_nodes.contains(sv)) return;
+    _nodes.addElement(sv);
     try {
-      if (node instanceof State) {
-	_model.addPublicOwnedElement((State) node);
-      }
-      else if (node instanceof Pseudostate) {
-	_model.addPublicOwnedElement((Pseudostate) node);
-      }
+      // needs-more-work: assumes public, user pref for default visibility?
+//       if (sv.getElementOwnership() == null)
+// 	_model.addPublicOwnedElement(sv);
+      // needs-more-work: assumes not nested in another composite state
+      CompositeState top = (CompositeState) _machine.getTop();
+      top.addSubstate(sv);
+//       sv.setParent(top);
+//       if (sv instanceof State) ((State)sv).setStateMachine(_machine);
     }
     catch (PropertyVetoException pve) {
-      System.out.println("got a PropertyVetoException");
+      System.out.println("PropertyVetoException in StateDiagramGraphModel addNode");
     }
     fireNodeAdded(node);
   }
@@ -173,13 +190,18 @@ implements MutableGraphModel, VetoableChangeListener {
   /** Add the given edge to the graph, if valid. */
   public void addEdge(Object edge) {
     System.out.println("adding state diagram edge!!!!!!");
-    if (_edges.contains(edge)) return;
-    _edges.addElement(edge);
-    // needs-more-work: assumes public
+    if (!(edge instanceof Transition)) {
+      System.out.println("internal error: got past canAddEdge");
+      return;
+    }
+    Transition tr = (Transition) edge;
+    if (_edges.contains(tr)) return;
+    _edges.addElement(tr);
     try {
-      if (edge instanceof Transition) {
-	_model.addPublicOwnedElement((Transition) edge);
-      }
+      // needs-more-work: assumes public
+//       if (tr.getElementOwnership() == null)
+// 	_model.addPublicOwnedElement(tr);
+      _machine.addTransition(tr);
     }
     catch (PropertyVetoException pve) {
       System.out.println("got a PropertyVetoException");
@@ -208,9 +230,33 @@ implements MutableGraphModel, VetoableChangeListener {
   /** Contruct and add a new edge of the given kind */
   public Object connect(Object fromPort, Object toPort,
 			java.lang.Class edgeClass) {
-    // needs-more-work, see ClassDiagramGraphModel
-    System.out.println("should not enter here! connect3");
-    return null;
+    //    try {
+    if (!(fromPort instanceof StateVertex)) {
+      System.out.println("internal error not from sv");
+      return null;
+    }
+    if (!(toPort instanceof StateVertex)) {
+      System.out.println("internal error not to sv");
+      return null;
+    }
+    StateVertex fromSV = (StateVertex) fromPort;
+    StateVertex toSV = (StateVertex) toPort;
+
+    if (edgeClass == Transition.class) {
+      Transition tr = new Transition(fromSV, toSV);
+      // the constructor adds the edge to the SV's incoming and
+      // outgoing vectors
+      addEdge(tr);
+      return tr;
+    }
+    else {
+      System.out.println("wrong kind of edge in StateDiagram connect3");
+      return null;
+    }
+      //}
+//     catch (java.beans.PropertyVetoException ex) { }
+//     System.out.println("should not enter here! StateDiagram connect3");
+//     return null;
   }
 
 

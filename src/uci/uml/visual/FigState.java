@@ -45,48 +45,43 @@ import uci.uml.Behavioral_Elements.State_Machines.*;
 
 /** Class to display graphics for a UML State in a diagram. */
 
-public class FigState extends FigNode
-implements VetoableChangeListener, DelayedVetoableChangeListener {
+public class FigState extends FigNodeModelElement {
 
   ////////////////////////////////////////////////////////////////
   // constants
-  
+
   public final int MARGIN = 2;
 
   ////////////////////////////////////////////////////////////////
   // instance variables
-  
+
   /** The main label on this icon. */
-  FigText _name;
-  
+  //FigText _name;
+
   /** UML does not really use ports, so just define one big one so
    *  that users can drag edges to or from any point in the icon. */
-  
+
   FigRect _bigPort;
-  
+  FigRect _cover;
+
   // add other Figs here aes needed
 
 
   ////////////////////////////////////////////////////////////////
   // constructors
-  
-  public FigState(GraphModel gm, Object node) {
-    super(node);
-    // if it is a UML meta-model object, register interest in any change events
-    if (node instanceof ElementImpl)
-      ((ElementImpl)node).addVetoableChangeListener(this);
 
-    Color handleColor = Globals.getPrefs().getHandleColor();
-    _bigPort = new FigRRect(10, 10, 90, 70, handleColor, Color.white);
-    _name = new FigText(15,15,80,20, Color.blue, "Times", 10);
-    _name.setExpandOnly(false);
-    _name.setJustification("center");
-    _name.setLineColor(Color.white);
-    _name.setText("FigState");
+  public FigState(GraphModel gm, Object node) {
+    super(gm, node);
+    _bigPort = new FigRRect(10+1, 10+1, 90-2, 70-2, Color.cyan, Color.cyan);
+    _cover = new FigRRect(10, 10, 90, 70, Color.black, Color.white);
+
+    _bigPort.setLineWidth(0);
+    _name.setLineWidth(0);
     // initialize any other Figs here
 
     // add Figs to the FigNode in back-to-front order
     addFig(_bigPort);
+    addFig(_cover);
     addFig(_name);
 
     Object onlyPort = node;
@@ -116,57 +111,30 @@ implements VetoableChangeListener, DelayedVetoableChangeListener {
 
    int extra_each = (heightP - total_height) / 3;
 
-    _name.setBounds(leftSide+10, topSide+(heightP-total_height)/2, widthP-20, _name_pref.height);
-    _bigPort.setBounds(leftSide, topSide, widthP, heightP);
+    _name.setBounds(leftSide+10, topSide+(heightP-total_height)/2,
+		    widthP-20, _name_pref.height);
+    _bigPort.setBounds(leftSide+1, topSide+1, widthP-2, heightP-2);
 
     calcBounds(); //_x = x; _y = y; _w = w; _h = h;
   }
 
-  /** If the UML meta-model object changes state. Update the Fig.  But
-   *  we need to do it as a "DelayedVetoableChangeListener", so that
-   *  model changes complete before we update the screen. */
-  public void vetoableChange(PropertyChangeEvent pce) {
-    // throws PropertyVetoException 
-    System.out.println("FigState got a change notification!");
-    Object src = pce.getSource();
-    if (src == getOwner()) {
-      DelayedChangeNotify delayedNotify = new DelayedChangeNotify(this, pce);
-      SwingUtilities.invokeLater(delayedNotify);
-    }
-  }
-
-  /** The UML meta-model object changed. Now update the Fig to show
-   *  its current  state. */
-  public void delayedVetoableChange(PropertyChangeEvent pce) {
-    // throws PropertyVetoException 
-    System.out.println("FigState got a delayed change notification!");
-    Object src = pce.getSource();
-    if (src == getOwner()) {
-      updateText();
-      // you may have to update more than just the text
-    }
-  }
-
 
   /** Update the text labels */
-  protected void updateText() {
-    Element elmt = (Element) getOwner();
-    String nameStr = GeneratorDisplay.Generate(elmt.getName());
-
-    startTrans();
-    _name.setText(nameStr);
-    Rectangle bbox = getBounds();
-    setBounds(bbox.x, bbox.y, bbox.width, bbox.height);
-    endTrans();
+  protected void modelChanged() {
+    super.modelChanged();
+    //needs-more-work: text fields other than name
   }
 
-  
+
 
   public void dispose() {
-    if (!(getOwner() instanceof Element)) return;
-    Element elmt = (Element) getOwner();
-    Project p = ProjectBrowser.TheInstance.getProject();
-    p.moveToTrash(elmt);
+    System.out.println("disposing FigState");
+    State s = (State) getOwner();
+    try {
+      s.setParent(null);
+      s.setStateMachine(null);
+    }
+    catch (PropertyVetoException pve) { }
     super.dispose();
   }
 

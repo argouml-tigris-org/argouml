@@ -64,14 +64,22 @@ public class CompositeState extends State {
   }
   public void addSubstate(StateVertex x) throws PropertyVetoException {
     if (_substate == null) _substate = new Vector();
+    else if (_substate.contains(x)) return;
     fireVetoableChange("substate", _substate, x);
     _substate.addElement(x);
     x.setNamespace(getNamespace());
+    CompositeState oldParent = x.getParent();
+    if (oldParent != null) oldParent.removeSubstate(x);
+    x.setParent(this);
+    if (x instanceof State)
+      ((State)x).setStateMachine(getStateMachine());
   }
   public void removeSubstate(StateVertex x) throws PropertyVetoException {
     if (_substate == null) return;
+    else if (!_substate.contains(x)) return;
     fireVetoableChange("substate", _substate, x);
     _substate.removeElement(x);
+    x.setParent(null);
   }
 
 

@@ -29,6 +29,7 @@ package uci.uml.visual;
 
 import java.util.*;
 import java.awt.*;
+import java.beans.*;
 
 import uci.gef.*;
 import uci.graph.*;
@@ -46,6 +47,12 @@ public class UMLDiagram extends Diagram {
   // constructors
 
   public UMLDiagram(Model m) {
+    _model = m;
+  }
+
+  public UMLDiagram(String diagramName, Model m) {
+    try { setName(diagramName); }
+    catch (PropertyVetoException pve) { }
     _model = m;
   }
 

@@ -49,26 +49,26 @@ implements VetoableChangeListener, DelayedVetoableChangeListener {
 
   ////////////////////////////////////////////////////////////////
   // constants
-  
+
   public final int MARGIN = 2;
 
   ////////////////////////////////////////////////////////////////
   // instance variables
-  
+
   /** The main label on this icon. */
   FigText _name;
-  
+
   /** UML does not really use ports, so just define one big one so
    *  that users can drag edges to or from any point in the icon. */
-  
+
   FigRect _bigPort;
-  
+
   // add other Figs here aes needed
 
 
   ////////////////////////////////////////////////////////////////
   // constructors
-  
+
   public FigNote(GraphModel gm, Object node) {
     super(node);
     // if it is a UML meta-model object, register interest in any change events
@@ -131,8 +131,6 @@ implements VetoableChangeListener, DelayedVetoableChangeListener {
     setBounds(bbox.x, bbox.y, bbox.width, bbox.height);
     endTrans();
   }
-
-  
 
   public void dispose() {
     if (!(getOwner() instanceof Element)) return;

@@ -33,6 +33,7 @@ package uci.uml.critics;
 
 import uci.util.*;
 import uci.argo.kernel.*;
+import uci.uml.ui.*;
 import uci.uml.util.*;
 import uci.uml.Foundation.Core.*;
 import uci.uml.Foundation.Data_Types.*;
@@ -86,24 +87,28 @@ public class CrUML extends Critic {
   public static final Decision decSTEREOTYPES = new
   Decision("Stereotypes", 5);
 
+  public static final Decision decSTATE_MACHINES = new
+  Decision("State Machines", 5);
+
 
 
   /** Static initializer for this class. Called when the class is
    *  loaded (which is before any subclass instances are instanciated). */
   static {
     Designer d = Designer.theDesigner();
+    d.startConsidering(decCLASS_SELECTION);
+    d.startConsidering(decNAMING);
+    d.startConsidering(decSTORAGE);
     d.startConsidering(decINHERITANCE);
     d.startConsidering(decCONTAINMENT);
+    d.startConsidering(decPLANNED_EXTENSIONS);
+    d.startConsidering(decSTATE_MACHINES);
     d.startConsidering(decPATTERNS);
     d.startConsidering(decRELATIONSHIPS);
-    d.startConsidering(decSTORAGE);
     d.startConsidering(decINSTANCIATION);
-    d.startConsidering(decNAMING);
     d.startConsidering(decMODULARITY);
-    d.startConsidering(decCLASS_SELECTION);
     d.startConsidering(decMETHODS);
     d.startConsidering(decCODE_GEN);
-    d.startConsidering(decPLANNED_EXTENSIONS);
     d.startConsidering(decSTEREOTYPES);
   }
 
@@ -116,6 +121,22 @@ public class CrUML extends Critic {
     //decisionCategory("UML Decisions");
     // what do UML critics have in common? anything?
   }
+
+  public boolean predicate(Object dm, Designer dsgr) {
+    Project p = ProjectBrowser.TheInstance.getProject();
+    if (p.isInTrash(dm)) return NO_PROBLEM;
+    else return predicate2(dm, dsgr);
+  }
+
+  public boolean predicate2(Object dm, Designer dsgr) {
+    return super.predicate(dm, dsgr);
+  }
+
+  ////////////////////////////////////////////////////////////////
+  // coding shorthand
+
+  protected void sd(String s) { setDescription(s); }
+
 
   ////////////////////////////////////////////////////////////////
   // display related methods

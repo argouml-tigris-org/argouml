@@ -279,6 +279,9 @@ public class Globals {
       listeners = new PropertyChangeListener[MAX_LISTENERS];
       _pcListeners.put(src, listeners);
     }
+    // debugging warning
+    if (_pcListeners.size() > 100)
+      System.out.println("_pcListeners size = " + _pcListeners.size());
     for (int i=0; i < MAX_LISTENERS; ++i)
       if (listeners[i] == null) { listeners[i] = l; return; }
     System.out.println("ran out of listeners!");
@@ -288,10 +291,15 @@ public class Globals {
   removePropertyChangeListener(Object s, PropertyChangeListener l){
     PropertyChangeListener listeners[] =
       (PropertyChangeListener[]) _pcListeners.get(s);
+    boolean found = false;
     if (listeners == null) return;
     for (int i=0; i < MAX_LISTENERS; ++i)
-      if (listeners[i] == l) { listeners[i] = null; return; }
-    System.out.println("listener not found!");
+      if (listeners[i] == l) { listeners[i] = null; found = true; }
+    if (!found) System.out.println("listener not found!");
+    for (int i=0; i < MAX_LISTENERS; ++i)
+      if (listeners[i] != null) return;
+    // s has no listeners, keep Hashtable size reasonable
+    _pcListeners.remove(s);
   }
 
   /** Send a property change event to listeners of the src Fig. */

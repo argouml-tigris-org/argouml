@@ -69,7 +69,7 @@ implements Runnable, java.io.Serializable {
   protected Designer _designer;
 
   protected EventListenerList _listenerList = new EventListenerList();
-  
+
   ////////////////////////////////////////////////////////////////
   // constructor
 
@@ -80,6 +80,7 @@ implements Runnable, java.io.Serializable {
     _designer = d;
     _validityChecker = new Thread(this, "ValidityCheckingThread");
     _validityChecker.setDaemon(true);
+    _validityChecker.setPriority(Thread.currentThread().getPriority() - 1);
     _validityChecker.start();
   }
 
@@ -89,7 +90,7 @@ implements Runnable, java.io.Serializable {
     while (true) {
       forceValidityCheck(removes);
       removes.removeAllElements();
-      try { _validityChecker.sleep(6000); }
+      try { _validityChecker.sleep(3000); }
       catch (InterruptedException ignore) {
 	System.out.println("InterruptedException!!!");
       }
@@ -100,23 +101,34 @@ implements Runnable, java.io.Serializable {
     Vector removes = new Vector();
     forceValidityCheck(removes);
   }
-  
+
   protected synchronized void forceValidityCheck(Vector removes) {
-    Enumeration cur = _items.elements();
-    while (cur.hasMoreElements()) {
-      ToDoItem item = (ToDoItem) cur.nextElement();
-      if (!item.stillValid(_designer)) removes.addElement(item);
+    //Enumeration cur = _items.elements();
+    int size = _items.size();
+    for (int i = 0; i < size; ++i) {
+      ToDoItem item = (ToDoItem) _items.elementAt(i);
+      boolean valid;
+      try { valid = item.stillValid(_designer); }
+      catch (Exception ex) {
+	valid = false;
+	System.out.println("Exception raised in to do list cleaning");
+	System.out.println(item.toString());
+	ex.printStackTrace();
+	System.out.println("----------");
+      }
+      if (!valid) removes.addElement(item);
     }
-    cur = removes.elements();
-    while (cur.hasMoreElements()) {
-      ToDoItem item = (ToDoItem) cur.nextElement();
+    //cur = removes.elements();
+    size = removes.size();
+    for (int i = 0; i < size; ++i) {
+      ToDoItem item = (ToDoItem) removes.elementAt(i);
       resolve(item);
       History.TheHistory.addItemResolution(item, "no longer valid");
       //((ToDoItem)item).resolve("no longer valid");
       notifyObservers("removeElement", item);
     }
   }
-  
+
   ////////////////////////////////////////////////////////////////
   // Notifications and Updates
 

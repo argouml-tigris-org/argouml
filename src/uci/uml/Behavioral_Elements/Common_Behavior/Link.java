@@ -32,7 +32,7 @@ import java.beans.*;
 
 // needs-more-work
 
-public class Link {
+public class Link implements java.io.Serializable {
 
   public Link() { }
   

@@ -60,7 +60,7 @@ implements ItemListener, TreeSelectionListener {
   protected Action _navBack = Actions.NavBack;
   protected Action _navForw = Actions.NavForw;
   protected Action _navConfig = Actions.NavConfig;
-  
+
   ////////////////////////////////////////////////////////////////
   // constructors
 
@@ -120,8 +120,21 @@ implements ItemListener, TreeSelectionListener {
     return _tree.getLastSelectedPathComponent();
   }
 
-  public Dimension getPreferredSize() { return new Dimension(200, 100); }
-  public Dimension getMinimumSize() { return new Dimension(100, 100); }
+  /** This is pretty limited, it is really only useful for selecting
+   *  the default diagram when the user does New.  A general function
+   *  to select a given object would have to find the shortest path to
+   *  it. */
+  public void setSelection(Object level1, Object level2) {
+    Object objs[] = new Object[3];
+    objs[0] = _root;
+    objs[1] = level1;
+    objs[2] = level2;
+    TreePath path = new TreePath(objs);
+    _tree.setSelectionPath(path);
+  }
+
+  public Dimension getPreferredSize() { return new Dimension(220, 500); }
+  public Dimension getMinimumSize() { return new Dimension(120, 100); }
 
   ////////////////////////////////////////////////////////////////
   // event handlers

@@ -146,12 +146,18 @@ public class Agency extends Observable { //implements java.io.Serialization
     critics.addElement(c);
     notifyStaticObservers(c);
     Dbg.log("debugRegistration","Registered: " + critics.toString());
+    _cachedCritics.remove(clazz);
   }
+
+  protected static Hashtable _cachedCritics = new Hashtable();
 
   /** Return a Vector of all critics that can be applied to the
    * design material subclass, including inherited critics. */
   public static Vector criticsForClass(Class clazz) {
-    Vector critics = new Vector();
+    Vector critics = (Vector) _cachedCritics.get(clazz);
+    if (critics != null) return critics;
+    Class origClazz = clazz;
+    critics = new Vector();
     while (clazz != null) {
       Vector specificCritics = criticsForSpecificClass(clazz);
       Enumeration cur = specificCritics.elements();
@@ -159,6 +165,7 @@ public class Agency extends Observable { //implements java.io.Serialization
 	critics.addElement(cur.nextElement());
       clazz = clazz.getSuperclass();
     }
+    _cachedCritics.put(origClazz, critics);
     return critics;
   }
 
@@ -199,11 +206,13 @@ public class Agency extends Observable { //implements java.io.Serialization
     //System.out.println("applying all critics ====================");
     Class dmClazz = dm.getClass();
     Vector critics = criticsForClass(dmClazz);
-    Enumeration cur = critics.elements();
+    //Enumeration cur = critics.elements();
     /* needs-more-work: execution policies here? */
     //Dbg.log("debug", "Applying: " + critics.toString());
-    while (cur.hasMoreElements()) {
-      Critic c = (Critic) cur.nextElement();
+    //while (cur.hasMoreElements()) {
+    int size = critics.size();
+    for (int i = 0; i < size; i++) {
+      Critic c = (Critic) critics.elementAt(i);
       if (c.isActive()) {
 	try { c.critique(dm, d); }
 	catch (Exception ex) {

@@ -125,7 +125,7 @@ public class ModeCreateEdge extends ModeCreate {
     if (!(gm instanceof MutableGraphModel)) f = null;
     MutableGraphModel mgm = (MutableGraphModel) gm;
     // needs-more-work: potential class cast exception
-    
+
     if (f instanceof FigNode) {
       FigNode destFigNode = (FigNode) f;
       // If its a FigNode, then check within the  
@@ -144,14 +144,14 @@ public class ModeCreateEdge extends ModeCreate {
 	// any LayerPersectives on that GraphModel will get a
 	// edgeAdded event and will add an appropriate FigEdge
 	// (determined by the GraphEdgeRenderer).
-	
+
 	if (null != _newEdge) {
 	  LayerManager lm = _editor.getLayerManager();
 	  _editor.damaged(_newItem);
 	  _sourceFigNode.damage();
 	  destFigNode.damage();
 	  _newItem = null;
-	  
+
 	  Fig pers = _editor.getLayerManager().getActiveLayer().
 	    presentationFor(_newEdge);
 	  if (pers != null) _editor.getSelectionManager().select(pers);

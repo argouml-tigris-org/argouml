@@ -45,106 +45,84 @@ import uci.uml.Behavioral_Elements.Use_Cases.*;
 
 /** Class to display graphics for a UML State in a diagram. */
 
-public class FigUseCase extends FigNode
-implements VetoableChangeListener, DelayedVetoableChangeListener {
+public class FigUseCase extends FigNodeModelElement {
+  //implements VetoableChangeListener, DelayedVetoableChangeListener {
 
   ////////////////////////////////////////////////////////////////
   // constants
-  
-  public final int MARGIN = 2;
-  public int x = 10;
-  public int y = 10;
-  public int width = 100;
-  public int height = 60;
-  public int textH = 20;
-  public Point pos;
-  public Dimension dim;
-  protected int _radius = 20;
+
+//   public int x = 10;
+//   public int y = 10;
+//   public int width = 100;
+//   public int height = 60;
+//   public int textH = 20;
+//   public Point pos;
+//   public Dimension dim;
+//   protected int _radius = 20;
 
   ////////////////////////////////////////////////////////////////
   // instance variables
-  
+
   /** The main label on this icon. */
-  FigText _name;
-  
+  //  FigText _name;
+
   /** UML does not really use ports, so just define one big one so
    *  that users can drag edges to or from any point in the icon. */
-  
-  FigRect _bigPort;
-  
+
+  FigCircle _bigPort;
+
   // add other Figs here aes needed
 
 
-  FigCircle _useCase;
+  FigCircle _cover;
   ////////////////////////////////////////////////////////////////
   // constructors
-  
-  public FigUseCase(GraphModel gm, Object node) {
-    super(node);
-    // if it is a UML meta-model object, register interest in any change events
-    if (node instanceof ElementImpl)
-      ((ElementImpl)node).addVetoableChangeListener(this);
 
-    Color handleColor = Globals.getPrefs().getHandleColor();
-    _bigPort = new FigRect(x, y, width, height, handleColor, Color.lightGray);
-    _name = new FigText(x,y+height-textH,width,textH, Color.black, "Times", 10);
-    _useCase = new FigCircle(x, y, width, height-textH, handleColor, Color.white);
-    _name.setExpandOnly(true);
+  public FigUseCase(GraphModel gm, Object node) {
+    super(gm, node);
+
+    _bigPort = new FigCircle(0, 0, 100, 40, Color.black, Color.white);
+    _cover = new FigCircle(0, 0, 100, 40, Color.black, Color.white);
+    _name.setBounds(20, 10, 60, 20);
     _name.setTextFilled(false);
-    _name.setFillColor(null);
-    _name.setText("FigUseCase");
-    // initialize any other Figs here
+    _name.setFilled(false);
+    _name.setLineWidth(0);
 
     // add Figs to the FigNode in back-to-front order
     addFig(_bigPort);
-    addFig(_useCase);
+    addFig(_cover);
     addFig(_name);
 
     Object onlyPort = node;
     bindPort(onlyPort, _bigPort);
-    setBlinkPorts(false); //make port invisble unless mouse enters
     Rectangle r = getBounds();
+    setBounds(r.x, r.y, r.width, r.height);
   }
 
 
-  /** If the UML meta-model object changes state. Update the Fig.  But
-   *  we need to do it as a "DelayedVetoableChangeListener", so that
-   *  model changes complete before we update the screen. */
-  public void vetoableChange(PropertyChangeEvent pce) {
-    // throws PropertyVetoException 
-    System.out.println("FigUseCase got a change notification!");
-    Object src = pce.getSource();
-    if (src == getOwner()) {
-      DelayedChangeNotify delayedNotify = new DelayedChangeNotify(this, pce);
-      SwingUtilities.invokeLater(delayedNotify);
-    }
-  }
-
-  /** The UML meta-model object changed. Now update the Fig to show
-   *  its current  state. */
-  public void delayedVetoableChange(PropertyChangeEvent pce) {
-    // throws PropertyVetoException 
-    System.out.println("FigUseCase got a delayed change notification!");
-    Object src = pce.getSource();
-    if (src == getOwner()) {
-      updateText();
-      // you may have to update more than just the text
-    }
-  }
 
 
   /** Update the text labels */
-  protected void updateText() {
-    Element elmt = (Element) getOwner();
-    String nameStr = GeneratorDisplay.Generate(elmt.getName());
-
-    startTrans();
-    _name.setText(nameStr);
-    Rectangle bbox = getBounds();
-    setBounds(bbox.x, bbox.y, bbox.width, bbox.height);
-    endTrans();
+  protected void modelChanged() {
+    super.modelChanged();
+    // needs-more-work: update extension points?
   }
 
+
+  public void setBounds(int x, int y, int w, int h) {
+    Rectangle oldBounds = getBounds();
+    Rectangle nameBbox = _name.getBounds();
+    x = Math.min(x, nameBbox.x - 20);
+    y = Math.min(y, nameBbox.y - 20);
+    w = Math.max(w, nameBbox.width + 40);
+    h = Math.max(h, nameBbox.height + 40);
+    _bigPort.setBounds(x, y, w, h);
+    _cover.setBounds(x, y, w, h);
+    _name.setLocation(x + (w - nameBbox.width)/2,
+		      y + (h - nameBbox.height)/2);
+    _x = x; _y = y; _w = w; _h = h;
+    firePropChange("bounds", oldBounds, getBounds());
+  }
 
   public void dispose() {
     if (!(getOwner() instanceof Element)) return;

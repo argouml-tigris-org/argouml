@@ -46,22 +46,22 @@ public class CrDisambigClassName extends CrUML {
   public CrDisambigClassName() {
     setHeadline("Choose unique name");
     sd("Every class and interface within a package must have a unique name. \n\n"+
-       "Clear and unambiguous naming is key to code generation and \n"+
+       "Clear and unambiguous naming is key to code generation and "+
        "the understandability and maintainability of the design. \n\n"+
-       "To fix this, use the FixIt button, or manually select one of the \n"+
+       "To fix this, use the FixIt button, or manually select one of the "+
        "conflicting classes and use the Properties tab to change their names.");
     addSupportedDecision(CrUML.decNAMING);
   }
 
-  protected void sd(String s) { setDescription(s); }
-  
-  public boolean predicate(Object dm, Designer dsgr) {
+  public boolean predicate2(Object dm, Designer dsgr) {
     if (!(dm instanceof Classifier)) return NO_PROBLEM;
     Classifier cls = (Classifier) dm;
     Name myName = cls.getName();
     if (myName.equals(Name.UNSPEC)) return NO_PROBLEM;
     String myNameString = myName.getBody();
-    Namespace ns = cls.getElementOwnership().getNamespace();
+    ElementOwnership oe = cls.getElementOwnership();
+    if (oe == null) return NO_PROBLEM;
+    Namespace ns = oe.getNamespace();
     Vector oes = ns.getOwnedElement();
     if (oes == null) return NO_PROBLEM;
     java.util.Enumeration enum = oes.elements();

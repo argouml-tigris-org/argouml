@@ -34,7 +34,7 @@ import uci.uml.Model_Management.*;
 
 
 /** Defines a checklist to help designers design better attributes.
- *  Basically, propmts them to think about various aspects of the
+ *  Basically, prompts them to think about various aspects of the
  *  design. Needs-More-Work: the checklist items are categorized, but
  *  those categories are not shown yet in the user interface. */
 
@@ -44,7 +44,7 @@ public class ChAttribute extends UMLChecklist {
     setNextCategory("Naming");
     addItem("Does the name '{name}' clearly describe the attribute?");
     addItem("Is '{name}' a noun or noun phrase?");
-    addItem("Could the name '{name}' be misinterperrted to mean something else?");
+    addItem("Could the name '{name}' be misinterpreted to mean something else?");
 
 
     setNextCategory("Encoding");
@@ -62,7 +62,7 @@ public class ChAttribute extends UMLChecklist {
     addItem("Should {name} have an initial (or default) value?");
     addItem("Is the initial value {initialValue} correct?");
     addItem("Could you write an expression to check if {name} is correct? "+
-	    "Plausable?");
+	    "Plausible?");
 
     setNextCategory("Location");
     addItem("Could {name} be defined in a different class that is associated "+

@@ -37,14 +37,14 @@ import uci.ui.*;
 /** A diagram is just combination of a GraphModel, a Layer, and a
     title. The GraphModel stores the connected graph representation,
     without any graphics. The Layer stores all the Figs. */
-public class Diagram {
+public class Diagram implements java.io.Serializable {
 
   ////////////////////////////////////////////////////////////////
   // instance variables
   protected String _name = "no title set";
   protected String _comments = "(no comments given)";
   protected LayerPerspective _lay;
-  protected ToolBar _toolBar;
+  protected transient ToolBar _toolBar;
   public transient Vector vetoListeners;
 
   ////////////////////////////////////////////////////////////////
@@ -66,7 +66,7 @@ public class Diagram {
     _name = name;
     _lay = lay;
     setGraphModel(gm);
-    initToolBar();
+    //initToolBar();
   }
 
   protected void initToolBar() {
@@ -76,7 +76,10 @@ public class Diagram {
   ////////////////////////////////////////////////////////////////
   // accessors
 
-  public ToolBar getToolBar() { return _toolBar; }
+  public ToolBar getToolBar() {
+    if (_toolBar == null) initToolBar();
+    return _toolBar;
+  }
   public void setToolBar(ToolBar tb) { _toolBar = tb; }
 
   public String getComments() { return _comments; }

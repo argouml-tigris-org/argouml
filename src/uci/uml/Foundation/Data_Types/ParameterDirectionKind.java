@@ -29,7 +29,7 @@ package uci.uml.Foundation.Data_Types;
 
 import java.util.*;
 
-public class ParameterDirectionKind {
+public class ParameterDirectionKind implements java.io.Serializable {
 
   public static final ParameterDirectionKind IN =
   new ParameterDirectionKind("in");

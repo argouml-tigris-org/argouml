@@ -36,7 +36,7 @@ import uci.uml.Foundation.Extension_Mechanisms.TaggedValue;
 import uci.uml.Foundation.Data_Types.Name;
 
 
-public interface Element {
+public interface Element extends java.io.Serializable {
   //    public TaggedValue _characteristic[];
   //    public Stereotype _classification;
   //    public Name _name;

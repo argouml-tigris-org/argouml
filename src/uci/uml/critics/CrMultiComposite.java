@@ -56,9 +56,7 @@ public class CrMultiComposite extends CrUML {
     addSupportedDecision(CrUML.decCONTAINMENT);
   }
 
-  protected void sd(String s) { setDescription(s); }
-
-  public boolean predicate(Object dm, Designer dsgr) {
+  public boolean predicate2(Object dm, Designer dsgr) {
     if (!(dm instanceof AssociationEnd)) return NO_PROBLEM;
     AssociationEnd ae = (AssociationEnd) dm;
     AggregationKind ak = ae.getAggregation();

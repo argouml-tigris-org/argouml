@@ -85,7 +85,8 @@ public class UMLListCellRenderer extends BasicListCellRenderer {
     if (name != null) return lab;
     String nameStr = name.getBody();
     lab.setText(nameStr);
-
+    lab.setToolTipText(nameStr);
+    list.setToolTipText(nameStr);
     // icons?
     return lab;
   }

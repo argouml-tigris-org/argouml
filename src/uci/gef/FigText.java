@@ -51,12 +51,12 @@ public class FigText extends Fig implements KeyListener, MouseListener {
   // constants
 
   /** Constants to specify text justification. */
-  public final int JUSTIFY_LEFT = 0;
-  public final int JUSTIFY_RIGHT = 1;
-  public final int JUSTIFY_CENTER = 2;
+  public static final int JUSTIFY_LEFT = 0;
+  public static final int JUSTIFY_RIGHT = 1;
+  public static final int JUSTIFY_CENTER = 2;
 
   /** Minimum size of a FigText object. */
-  public final int MIN_TEXT_WIDTH = 30;
+  public static final int MIN_TEXT_WIDTH = 30;
 
   ////////////////////////////////////////////////////////////////
   // instance variables
@@ -85,6 +85,8 @@ public class FigText extends Fig implements KeyListener, MouseListener {
    *  characters will be ignored. True by default. */
   protected boolean _multiLine = true;
 
+  protected boolean _allowsTab = true;
+
   /** Extra spacing between lines. Default is 0 pixels. */
   protected int _lineSpacing = 0;
 
@@ -98,7 +100,7 @@ public class FigText extends Fig implements KeyListener, MouseListener {
   protected boolean _expandOnly = false;
 
   /** Text justification can be JUSTIFY_LEFT, JUSTIFY_RIGHT, or JUSTIFY_CENTER. */
-  protected int _justification;
+  protected int _justification = JUSTIFY_LEFT;
 
   /** The current string to display. */
   protected String _curText;
@@ -191,7 +193,7 @@ public class FigText extends Fig implements KeyListener, MouseListener {
     firePropChange("textColor", _textColor, c);
     _textColor = c;
   }
-  
+
   public Color getTextFillColor() { return _textFillColor; }
   public void setTextFillColor(Color c) {
     firePropChange("textFillColor", _textFillColor, c);
@@ -210,10 +212,10 @@ public class FigText extends Fig implements KeyListener, MouseListener {
     _underline = b;
   }
 
-  public String getJustification() { return getJustificationByName(); }
-  public void setJustification(String align) {
-    firePropChange("justifciaion", getJustificationByName(), align);
-    setJustifciaionByName(align);
+  public int getJustification() { return _justification; }
+  public void setJustification(int align) {
+    firePropChange("justifciaion", getJustification(), align);
+    _justification = align;
   }
 
   public int getLineSpacing() { return _lineSpacing; }
@@ -280,7 +282,10 @@ public class FigText extends Fig implements KeyListener, MouseListener {
 
   public void setMultiLine(boolean b) { _multiLine = b; }
   public boolean getMultiLine() { return _multiLine; }
-  
+
+  public void setAllowsTab(boolean b) { _allowsTab = b; }
+  public boolean getAllowsTab() { return _allowsTab; }
+
   /** Remove the last char from the current string line and return the
    *  new string.  Called whenever the user hits the backspace key.
    *  Needs-More-Work: Very slow.  This will eventually be replaced by
@@ -368,6 +373,14 @@ public class FigText extends Fig implements KeyListener, MouseListener {
     }
   }
 
+  /** Muse clicks are handled differentlty that the defi]ault Fig
+   *  behavior so that it is easier to select text that is not
+   *  filled.  Needs-More-Work: should actually check the individual
+   *  text rectangles. */
+  public boolean hit(Rectangle r) {
+    int cornersHit = countCornersContained(r.x, r.y, r.width, r.height);
+    return cornersHit > 0;
+  }
 
 
   ////////////////////////////////////////////////////////////////
@@ -379,33 +392,24 @@ public class FigText extends Fig implements KeyListener, MouseListener {
    *  also catch arrow keys and mouse clicks for full text
    *  editing... someday... */
   public void keyTyped(KeyEvent ke) {
-    int mods = ke.getModifiers();
-    if (mods != 0 && mods != KeyEvent.SHIFT_MASK) return;
-    char c = ke.getKeyChar();
-    if (!Character.isISOControl(c)) {
-      startTrans();
-      append(c);
-      endTrans();
-      ke.consume();
-    }
+//     int mods = ke.getModifiers();
+//     if (mods != 0 && mods != KeyEvent.SHIFT_MASK) return;
+//     char c = ke.getKeyChar();
+//     if (!Character.isISOControl(c)) {
+//       FigTextEditor te = startTextEditor(ke);
+//       te.keyTyped(ke);
+// //       startTrans();
+// //       append(c);
+// //       endTrans();
+//       ke.consume();
+//     }
   }
 
   /** This method handles backspace and enter. */
   public void keyPressed(KeyEvent ke) {
-    if (ke.getKeyCode() == KeyEvent.VK_BACK_SPACE) {
-      startTrans();
-      deleteLastChar();
-      endTrans();
-      ke.consume();
-    }
-    else if (ke.getKeyCode() == KeyEvent.VK_F2) {
-      startTextEditor();
-      ke.consume();
-    }
-    else if (ke.getKeyCode() == KeyEvent.VK_ENTER && _multiLine) {
-      startTrans();
-      append('\n');
-      endTrans();
+    if (!ke.isActionKey() && !isNonStartEditingKey(ke)) {
+      FigTextEditor te = startTextEditor(ke);
+      te.keyPressed(ke);
       ke.consume();
     }
   }
@@ -413,14 +417,28 @@ public class FigText extends Fig implements KeyListener, MouseListener {
   /** Not used, does nothing. */
   public void keyReleased(KeyEvent ke) { }
 
-  
+  protected boolean isNonStartEditingKey(KeyEvent ke) {
+    int keyCode = ke.getKeyCode();
+    switch (keyCode) {
+    case KeyEvent.VK_TAB:
+    case KeyEvent.VK_CANCEL:
+    case KeyEvent.VK_CLEAR:
+    case KeyEvent.VK_SHIFT:
+    case KeyEvent.VK_CONTROL:
+    case KeyEvent.VK_ALT:
+    case KeyEvent.VK_PAUSE:
+    case KeyEvent.VK_DELETE:
+      return true;
+    }
+    return false;
+  }
   ////////////////////////////////////////////////////////////////
   // event handlers: KeyListener implemtation
 
   public void mouseClicked(MouseEvent me) {
     if (me.isConsumed()) return;
     if (me.getClickCount() >= 2) {
-        startTextEditor();
+        startTextEditor(me);
         me.consume();
     }
   }
@@ -433,8 +451,9 @@ public class FigText extends Fig implements KeyListener, MouseListener {
   
   public void mouseExited(MouseEvent me) { }
   
-  public void startTextEditor() {
-    FigTextEditor ta = new FigTextEditor(this);
+  public FigTextEditor startTextEditor(InputEvent ie) {
+    FigTextEditor te = new FigTextEditor(this, ie);
+    return te;
   }
 
 

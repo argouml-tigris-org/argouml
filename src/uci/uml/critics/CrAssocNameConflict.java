@@ -52,9 +52,7 @@ public class CrAssocNameConflict extends CrUML {
     addSupportedDecision(CrUML.decNAMING);
   }
 
-  protected void sd(String s) { setDescription(s); }
-  
-  public boolean predicate(Object dm, Designer dsgr) {
+  public boolean predicate2(Object dm, Designer dsgr) {
     if (!(dm instanceof Namespace)) return NO_PROBLEM;
     Namespace ns = (Namespace) dm;
     Vector oes = ns.getOwnedElement();

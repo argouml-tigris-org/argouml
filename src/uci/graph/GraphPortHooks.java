@@ -35,7 +35,7 @@ import java.beans.*;
  *
  * @see uci.gef.NetPort */
 
-public interface GraphPortHooks {
+public interface GraphPortHooks extends java.io.Serializable {
 
   /** Reply true if this port can legally be connected to the given
    *  port. Subclasses may implement this to reflect application

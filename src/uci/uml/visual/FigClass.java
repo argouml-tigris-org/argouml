@@ -47,159 +47,94 @@ import uci.uml.Foundation.Data_Types.*;
 
 /** Class to display graphics for a UML Class in a diagram. */
 
-public class FigClass extends FigNode
-implements VetoableChangeListener, DelayedVetoableChangeListener,
-  MouseListener, KeyListener, PropertyChangeListener  {
+public class FigClass extends FigNodeModelElement  {
 
-  public final int MARGIN = 2;
-  
-  protected FigText _clss;
   protected FigText _attr;
   protected FigText _oper;
   protected FigRect _bigPort;
-  
+
   public FigClass(GraphModel gm, Object node) {
-    super(node);
-    if (node instanceof ElementImpl)
-      ((ElementImpl)node).addVetoableChangeListener(this);
+    super(gm, node);
 
-    Font labelFont = MetalLookAndFeel.getSubTextFont();
-
-    Color handleColor = Globals.getPrefs().getHandleColor();
-    _bigPort = new FigRect(8, 8, 91, 61, handleColor, Color.lightGray);
-    _clss = new FigText(10, 10, 90, 20);
-    _clss.setFont(labelFont);
-    _clss.setTextColor(Color.black);
-    _clss.setExpandOnly(true);
-    _clss.setMultiLine(false);
-    //_clss.setText((new GeneratorDisplay()).generateClassifierRef((Classifier)node));
+    _bigPort = new FigRect(10, 10, 90, 60, Color.cyan, Color.cyan);
+//     _clss = new FigText(10, 10, 90, 20);
+//     _clss.setFont(labelFont);
+//     _clss.setTextColor(Color.black);
+//     _clss.setExpandOnly(true);
+//     _clss.setMultiLine(false);
+//     _clss.setText("Class"); // shown while placing node
+//     //_clss.setText((new GeneratorDisplay()).generateClassifierRef((Classifier)node));
 
     _attr = new FigText(10, 30, 90, 20);
-    _attr.setFont(labelFont);
+    _attr.setFont(LABEL_FONT);
     _attr.setTextColor(Color.black);
     _attr.setExpandOnly(true);
-    _attr.setJustification("Left");
+    _attr.setJustification(FigText.JUSTIFY_LEFT);
 
     _oper = new FigText(10, 50, 90, 20);
-    _oper.setFont(labelFont);
+    _oper.setFont(LABEL_FONT);
     _oper.setTextColor(Color.black);
     _oper.setExpandOnly(true);
-    _oper.setJustification("Left");
+    _oper.setJustification(FigText.JUSTIFY_LEFT);
+
     addFig(_bigPort);
-    addFig(_clss);
+    addFig(_name);
     addFig(_attr);
     addFig(_oper);
+
     //Vector ports = gm.getPorts(node);
     //Object onlyPort = ports.firstElement();
     Object onlyPort = node; //this kngl should be in the GraphModel
     bindPort(onlyPort, _bigPort);
-    setBlinkPorts(true); 
-    Rectangle r = getBounds();  
+    Rectangle r = getBounds();
     setBounds(r.x, r.y, r.width, r.height);
 
-    _clss.addPropertyChangeListener(this);
-    _attr.addPropertyChangeListener(this);
-    _oper.addPropertyChangeListener(this);
+//     _attr.addPropertyChangeListener(this);
+//     _oper.addPropertyChangeListener(this);
   }
 
   /* Override setBounds to keep shapes looking right */
   public void setBounds(int x, int y, int w, int h) {
-    if (_clss == null) return;
+    if (_name == null) return;
     int leftSide = x;
     int widthP = w;
     int topSide = y;
     int heightP = h;
 
-    Rectangle _clss_pref = _clss.getBounds();
+    Rectangle _name_pref = _name.getBounds();
     Rectangle _attr_pref = _attr.getBounds();
     Rectangle _oper_pref = _oper.getBounds();
 
-    int total_height = _clss_pref.height + _attr_pref.height + _oper_pref.height;
+    int total_height = _name_pref.height + _attr_pref.height + _oper_pref.height;
 
-    widthP = Math.max(widthP, Math.max(_clss_pref.width, Math.max(_attr_pref.width, _oper_pref.width)));
+    widthP = Math.max(widthP, Math.max(_name_pref.width, Math.max(_attr_pref.width, _oper_pref.width)));
     heightP = Math.max(heightP, total_height);
 
     int extra_each = (heightP - total_height) / 3;
 
-    _clss.setBounds(leftSide, topSide, widthP, _clss_pref.height + extra_each);
-    _attr.setBounds(leftSide, topSide + _clss.getBounds().height, widthP, _attr_pref.height + extra_each);
-    _oper.setBounds(leftSide, topSide + _attr.getBounds().height + _clss.getBounds().height, widthP, _oper_pref.height + extra_each);
-    _bigPort.setBounds(leftSide, topSide, widthP, heightP);
+    _name.setBounds(leftSide, topSide, widthP, _name_pref.height + extra_each);
+    _attr.setBounds(leftSide, topSide + _name.getBounds().height, widthP, _attr_pref.height + extra_each);
+    _oper.setBounds(leftSide, topSide + _attr.getBounds().height + _name.getBounds().height, widthP, _oper_pref.height + extra_each);
+    _bigPort.setBounds(leftSide+1, topSide+1, widthP-2, heightP-2);
 
     calcBounds(); //_x = x; _y = y; _w = w; _h = h;
   }
 
- 
-  public void vetoableChange(PropertyChangeEvent pce) {
-    // throws PropertyVetoException 
-    //System.out.println("FigClass got a change notification!");
-    Object src = pce.getSource();
-    if (src == getOwner()) {
-      DelayedChangeNotify delayedNotify = new DelayedChangeNotify(this, pce);
-      SwingUtilities.invokeLater(delayedNotify);
-    }
-  }
 
-  public void delayedVetoableChange(PropertyChangeEvent pce) {
-    // throws PropertyVetoException 
-    //System.out.println("FigClass got a delayed change notification!");
-    Object src = pce.getSource();
-    updateText();
-  }
-    
-  public void propertyChange(PropertyChangeEvent pve) {
-    Object src = pve.getSource();
-    String pName = pve.getPropertyName();
-    if (pName.equals("editing") && Boolean.FALSE.equals(pve.getNewValue())) {
-      //System.out.println("finished editing");
-      Classifier cls = (Classifier) getOwner();
-      try {
-	if (src == _clss) { cls.setName(new Name(_clss.getText())); }
-	if (src == _attr) { System.out.println("attr changed " + pName);}
-	if (src == _oper) { System.out.println("oper changed " + pName);}
-      }
-      catch (PropertyVetoException ex) {
-	System.out.println("could not parse and use the text you entered");
-      }
-    }
-    else super.propertyChange(pve);
-  }
-
-  ////////////////////////////////////////////////////////////////
-  // event handlers - MouseListener implementation
-
-  public void mouseClicked(MouseEvent me) {
-    if (me.isConsumed()) return;
-    if (me.getClickCount() >= 2) {
-      if (_clss.contains(me.getX(), me.getY())) _clss.mouseClicked(me);
-      if (_attr.contains(me.getX(), me.getY())) _attr.mouseClicked(me);
-      if (_oper.contains(me.getX(), me.getY())) _oper.mouseClicked(me);
-    }
-    me.consume();
-  }
-
-  public void keyPressed(KeyEvent ke) { }
-
-  public void keyReleased(KeyEvent ke) { }
-
-  public void keyTyped(KeyEvent ke) {
-    if (!ke.isConsumed()) {
-      _clss.keyTyped(ke);
-      ke.consume();
-      Classifier cls = (Classifier) getOwner();
-      try {
-	cls.setName(new Name(_clss.getText()));
-      }
-      catch (PropertyVetoException pve) { }
-    }
-  }
-    
   ////////////////////////////////////////////////////////////////
   // internal methods
-  
-  protected void updateText() {
+
+  protected void textEdited(FigText ft) throws PropertyVetoException {
+    super.textEdited(ft);
+    if (ft == _attr) { System.out.println("edited Attr"); }
+    if (ft == _oper) { System.out.println("edited Oper"); }
+  }
+
+  protected void modelChanged() {
+    super.modelChanged();
     Classifier cls = (Classifier) getOwner();
-    String clsNameStr = GeneratorDisplay.Generate(cls.getName());
+    if (cls == null) return;
+    //    String clsNameStr = GeneratorDisplay.Generate(cls.getName());
     Vector strs = cls.getStructuralFeature();
     String attrStr = "";
     if (strs != null) {
@@ -223,36 +158,27 @@ implements VetoableChangeListener, DelayedVetoableChangeListener,
       }
     }
 
-    startTrans();
-    _clss.setText(clsNameStr);
     _attr.setText(attrStr);
     _oper.setText(operStr);
 
     if (cls.getIsAbstract()) {
-        Font italicFont = MetalLookAndFeel.getSubTextFont();
-        italicFont = new Font(italicFont.getFamily(),
-			      Font.ITALIC, italicFont.getSize());
-        _clss.setFont(italicFont);
+        _name.setFont(ITALIC_LABEL_FONT);
     }
     else {
-        Font labelFont = MetalLookAndFeel.getSubTextFont();
-        _clss.setFont(labelFont);
+        _name.setFont(LABEL_FONT);
     }
-    
-    Rectangle bbox = getBounds();
-    setBounds(bbox.x, bbox.y, bbox.width, bbox.height);
-    endTrans();
+
   }
 
-  
 
-  public void dispose() {
-    if (!(getOwner() instanceof Classifier)) return;
-    Classifier cls = (Classifier) getOwner();
-    Project p = ProjectBrowser.TheInstance.getProject();
-    p.moveToTrash(cls);
-    super.dispose();
-  }
+
+//   public void dispose() {
+//     if (!(getOwner() instanceof Classifier)) return;
+//     Classifier cls = (Classifier) getOwner();
+//     Project p = ProjectBrowser.TheInstance.getProject();
+//     p.moveToTrash(cls);
+//     super.dispose();
+//   }
 
 
   

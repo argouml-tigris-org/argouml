@@ -31,7 +31,7 @@ package uci.uml.Foundation.Data_Types;
 
 import java.util.*;
 
-public class PseudostateKind {
+public class PseudostateKind  implements java.io.Serializable {
     
   public static final PseudostateKind INITIAL = new PseudostateKind("initial");
   public static final PseudostateKind DEEP_HISTORY =
@@ -51,8 +51,8 @@ public class PseudostateKind {
   public PseudostateKind(String label) { _label = label; }
   
   public boolean equals(Object o) {
-    if (!(o instanceof VisibilityKind)) return false;
-    String oLabel = ((VisibilityKind)o)._label;
+    if (!(o instanceof PseudostateKind)) return false;
+    String oLabel = ((PseudostateKind)o)._label;
     return _label.equals(oLabel);
   }
 

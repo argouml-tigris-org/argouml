@@ -22,10 +22,8 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 // ENHANCEMENTS, OR MODIFICATIONS.
 
-
-
-// File: CrNameConflictAC.java.java
-// Classes: CrNameConflictAC.java
+// File: CrNoTransitions.java
+// Classes: CrNoTransitions
 // Original Author: jrobbins@ics.uci.edu
 // $Id$
 
@@ -35,25 +33,45 @@ import java.util.*;
 import uci.argo.kernel.*;
 import uci.util.*;
 import uci.uml.Foundation.Core.*;
+import uci.uml.Foundation.Data_Types.*;
+import uci.uml.Behavioral_Elements.State_Machines.*;
 
-/** Well-formedness rule [1] for AssociationClass. See page 28 of UML 1.1
- *  Semantics. OMG document ad/97-08-04. */
+/** A critic to detect when a state has no outgoing transitions. */
 
-public class CrNameConflictAC extends CrUML {
+public class CrNoTransitions extends CrUML {
 
-  public CrNameConflictAC() {
-    setHeadline("Role name conflicts with member");
-    sd("Association role names of an AssociationClass must not conflict \n"+
-       "with the names of structral features (e.g., instance variables) \n"+
-       "of the class.\n");
+  public CrNoTransitions() {
+    setHeadline("Add Transitions to {name}");
+    sd("State {name} has no Incoming or Outgoing transitions. "+
+       "Normally states have both incoming and outgoing transitions. \n\n"+
+       "Defining complete state transitions is needed to complete the behavioral "+
+       "specification part of your design.  \n\n"+
+       "To fix this, press the \"Next>\" button, or add transitions manually "+
+       "by clicking on transition tool in the tool bar and dragging from "+
+       "another state to {name} or from {name} to another state. ");
 
-    addSupportedDecision(CrUML.decNAMING);
+    addSupportedDecision(CrUML.decSTATE_MACHINES);
   }
 
   public boolean predicate2(Object dm, Designer dsgr) {
-    // needs-more-work: not implemented
+    if (!(dm instanceof StateVertex)) return NO_PROBLEM;
+    StateVertex sv = (StateVertex) dm;
+    if (sv instanceof State) {
+      StateMachine sm = ((State)sv).getStateMachine();
+      if (sm != null && sm.getTop() == sv) return NO_PROBLEM;
+    }
+    Vector outgoing = sv.getOutgoing();
+    Vector incoming = sv.getIncoming();
+    boolean needsOutgoing = outgoing == null || outgoing.size() == 0;
+    boolean needsIncoming = incoming == null || incoming.size() == 0;
+    if (sv instanceof Pseudostate) {
+      PseudostateKind k = ((Pseudostate)sv).getKind();
+      if (k.equals(PseudostateKind.INITIAL)) needsIncoming = false;
+      if (k.equals(PseudostateKind.FINAL)) needsOutgoing = false;
+    }
+    if (needsIncoming && needsOutgoing) return PROBLEM_FOUND;
     return NO_PROBLEM;
   }
 
-} /* end class CrNameConflictAC.java */
+} /* end class CrNoTransitions */
 

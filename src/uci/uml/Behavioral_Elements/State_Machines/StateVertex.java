@@ -53,8 +53,9 @@ public abstract class StateVertex extends ModelElementImpl {
   public void setParent(CompositeState x) throws PropertyVetoException {
     if (_parent == x) return;
     fireVetoableChange("parent", _parent, x);
-    if (_parent != null) _parent.removeSubstate(this);
+    CompositeState oldParent = _parent;
     _parent = x;
+    if (oldParent != null) oldParent.removeSubstate(this);
     if (_parent != null) _parent.addSubstate(this);
   }
 

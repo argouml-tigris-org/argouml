@@ -51,9 +51,7 @@ public class CrMissingAttrName extends CrUML {
     addSupportedDecision(CrUML.decNAMING);
   }
 
-  protected void sd(String s) { setDescription(s); }
-  
-  public boolean predicate(Object dm, Designer dsgr) {
+  public boolean predicate2(Object dm, Designer dsgr) {
     if (!(dm instanceof Attribute)) return NO_PROBLEM;
     Attribute attr = (Attribute) dm;
     Name myName = attr.getName();

@@ -43,15 +43,13 @@ public class CrCircularAssocClass extends CrUML {
 
   public CrCircularAssocClass() {
     setHeadline("Circular Association");
-    sd("AssociationClasses cannot include roles that refer directly \n"+
+    sd("AssociationClasses cannot include roles that refer directly "+
        "back to the AssociationClass.");
 
     addSupportedDecision(CrUML.decRELATIONSHIPS);
   }
 
-  protected void sd(String s) { setDescription(s); }
-  
-  public boolean predicate(Object dm, Designer dsgr) {
+  public boolean predicate2(Object dm, Designer dsgr) {
     // needs-more-work: not implemented
     return NO_PROBLEM;
   }

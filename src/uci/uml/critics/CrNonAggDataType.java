@@ -57,9 +57,7 @@ public class CrNonAggDataType extends CrUML {
     addSupportedDecision(CrUML.decCLASS_SELECTION);
   }
 
-  protected void sd(String s) { setDescription(s); }
-  
-  public boolean predicate(Object dm, Designer dsgr) {
+  public boolean predicate2(Object dm, Designer dsgr) {
     // needs-more-work: not implemented
     return NO_PROBLEM;
   }

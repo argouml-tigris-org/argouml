@@ -58,7 +58,7 @@ public class CrUselessAbstract extends CrUML {
     addSupportedGoal(Goal.UNSPEC);
   }
 
-  public boolean predicate(Object dm, Designer dsgr) {
+  public boolean predicate2(Object dm, Designer dsgr) {
     MMClass cls, c;
     if (!(dm instanceof MMClass)) return false;
     cls = (MMClass) dm;

@@ -93,8 +93,8 @@ public class Transition extends ModelElementImpl {
     if (_state == x) return;
     fireVetoableChange("state", _state, x);
     State oldState = _state;
-    if (oldState != null) oldState.removeInternalTransition(this);
     _state = x;
+    if (oldState != null) oldState.removeInternalTransition(this);
     if (_state != null) _state.addInternalTransition(this);
   }
 
@@ -108,8 +108,9 @@ public class Transition extends ModelElementImpl {
   public void setStateMachine(StateMachine x) throws PropertyVetoException {
     if (_stateMachine == x) return;
     fireVetoableChange("stateMachine", _stateMachine, x);
-    if (_stateMachine != null) _stateMachine.removeTransition(this);
+    StateMachine oldStateMachine = _stateMachine;
     _stateMachine = x;
+    if (oldStateMachine != null) oldStateMachine.removeTransition(this);
     if (_stateMachine != null) _stateMachine.addTransition(this);
   }
 
@@ -118,9 +119,9 @@ public class Transition extends ModelElementImpl {
     if (_source == x) return;
     fireVetoableChange("source", _source, x);
     StateVertex oldSource = _source;
-    if (oldSource != null) oldSource.removeOutgoing(this);
     _source = x;
-    if (_source != null) _source.addOutgoing(this);    
+    if (oldSource != null) oldSource.removeOutgoing(this);
+    if (_source != null) _source.addOutgoing(this);
   }
 
   public StateVertex getTarget() { return _target; }
@@ -128,8 +129,8 @@ public class Transition extends ModelElementImpl {
     if (_target == x) return;
     fireVetoableChange("target", _target, x);
     StateVertex oldTarget = _target;
-    if (oldTarget != null) oldTarget.removeIncoming(this);
     _target = x;
+    if (oldTarget != null) oldTarget.removeIncoming(this);
     if (_target != null) _target.addIncoming(this);
   }
 

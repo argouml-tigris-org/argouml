@@ -96,9 +96,10 @@ public class ToDoTreeRenderer extends BasicTreeCellRenderer {
 	return _navRenderer.getTreeCellRendererComponent(tree, value, sel,
 					      expanded, leaf, row, hasFocus);
       }
-      
 
-      lab.setToolTipText(value.toString());
+      String tip = lab.getText();
+      lab.setToolTipText(tip);
+      tree.setToolTipText(tip);
 
       if (sel) {
 	Color high = uci.gef.Globals.getPrefs().getHighlightColor();

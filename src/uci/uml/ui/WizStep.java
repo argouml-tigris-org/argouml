@@ -53,10 +53,10 @@ implements TabToDoTarget, ActionListener {
   // instance variables
 
   JPanel  _mainPanel = new JPanel();
-  JButton _backButton = new JButton("< Back");
-  JButton _nextButton = new JButton("Next >");
-  JButton _finishButton = new JButton("Finish");
-  JButton _helpButton = new JButton("Help");
+  JButton _backButton = new JButton(" < Back ");
+  JButton _nextButton = new JButton(" Next > ");
+  JButton _finishButton = new JButton(" Finish ");
+  JButton _helpButton = new JButton(" Help ");
   JPanel  _buttonPanel = new JPanel();
 
   Object _target;

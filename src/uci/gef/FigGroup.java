@@ -70,7 +70,11 @@ public class FigGroup extends Fig {
   public Enumeration elements() { return _figs.elements(); }
 
   /** Add a Fig to the group.  New Figs are added on the top. */
-  public void addFig(Fig p) { _figs.addElement(p); calcBounds(); }
+  public void addFig(Fig f) {
+    _figs.addElement(f);
+    f.setGroup(this);
+    calcBounds();
+  }
 
   /** Reply the Vector of Figs. */
   public Vector getFigs() { return _figs; }
@@ -84,10 +88,12 @@ public class FigGroup extends Fig {
   }
 
 
-  /** Delete a Fig from the group. Fires PropertyChange with "bounds". */
-  public void deleteFig(Fig p) {
+  /** Remove a Fig from the group. Fires PropertyChange with "bounds". */
+  public void removeFig(Fig f) {
+    if (!_figs.contains(f)) return;
     Rectangle oldBounds = getBounds();
-    _figs.removeElement(p);
+    _figs.removeElement(f);
+    f.setGroup(null);
     calcBounds();
     firePropChange("bounds", oldBounds, getBounds());
   }
@@ -95,6 +101,10 @@ public class FigGroup extends Fig {
   /** Delete all Fig's from the group. Fires PropertyChange with "bounds".*/
   public void removeAll() {
     Rectangle oldBounds = getBounds();
+    for (int i = 0; i < _figs.size(); ++i) {
+      Fig f = (Fig) _figs.elementAt(i);
+      f.setGroup(null);
+    }
     _figs.removeAllElements();
     calcBounds();
     firePropChange("bounds", oldBounds, getBounds());
@@ -188,6 +198,7 @@ public class FigGroup extends Fig {
     _w = bbox.width;
     _h = bbox.height;
   }
+
 
 } /* end class FigGroup */
 

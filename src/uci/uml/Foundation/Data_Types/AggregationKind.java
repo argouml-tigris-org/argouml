@@ -31,7 +31,7 @@ package uci.uml.Foundation.Data_Types;
 
 import java.util.*;
 
-public class AggregationKind {
+public class AggregationKind implements java.io.Serializable {
   public static final AggregationKind UNSPEC = new AggregationKind("unspec");
   public static final AggregationKind AGG = new AggregationKind("Aggregate");
   public static final AggregationKind COMPOSITE =

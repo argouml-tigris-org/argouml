@@ -46,7 +46,7 @@ public class CrMultipleInheritance extends CrUML {
   public CrMultipleInheritance() {
     setHeadline("Change Multiple Inheritance to Interfaces");
     sd("{name} has multiple base classes, but Java does not support "+
-       "mutiple inheritance.  You must use interfaces instead. \n\n"+
+       "multiple inheritance.  You must use interfaces instead. \n\n"+
        "This change is required before you can generate Java code.\n\n"+
        "To fix this, use the FixIt button, or manually (1) remove one of "+
        "the base classes and then (2) optionally define a new interface "+
@@ -59,8 +59,8 @@ public class CrMultipleInheritance extends CrUML {
   }
 
   protected void sd(String s) { setDescription(s); }
-  
-  public boolean predicate(Object dm, Designer dsgr) {
+
+  public boolean predicate2(Object dm, Designer dsgr) {
     if (!(dm instanceof Classifier)) return NO_PROBLEM;
     Classifier cls = (Classifier) dm;
     Vector gen = cls.getGeneralization();

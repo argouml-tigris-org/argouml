@@ -26,19 +26,23 @@ package uci.ui;
 
 
 
+import java.util.*;
+import java.beans.*;
 import java.awt.*;
+import java.awt.event.*;
 import com.sun.java.swing.*;
 import com.sun.java.swing.border.*;
 import com.sun.java.swing.event.*;
-import java.beans.*;
 
-public class ToolBar extends JToolBar {
+import uci.gef.*;
 
+public class ToolBar extends JToolBar implements MouseListener {
+  protected Vector _lockable = new Vector();
 
   public ToolBar() {
     setFloatable(false);
   }
-  
+
   /**
    * Add a new JButton which dispatches the action.
    *
@@ -49,22 +53,25 @@ public class ToolBar extends JToolBar {
     Icon icon = (Icon) a.getValue(Action.SMALL_ICON);
     return add(a, name, icon);
   }
-  
+
   public JButton add(Action a, String name, String iconResourceStr) {
     Icon icon = loadIconResource(imageName(iconResourceStr), name);
     //System.out.println(icon);
     return add(a, name, icon);
   }
-  
+
   public JButton add(Action a, String name, Icon icon) {
     JButton b = new JButton(icon);
     b.setToolTipText(name);
     b.setEnabled(a.isEnabled());
     b.addActionListener(a);
     add(b);
-    PropertyChangeListener actionPropertyChangeListener = 
+    if (a instanceof CmdSetMode || a instanceof CmdCreateNode)
+      _lockable.addElement(b);
+    PropertyChangeListener actionPropertyChangeListener =
       createActionChangeListener(b);
     a.addPropertyChangeListener(actionPropertyChangeListener);
+    b.addMouseListener(this);
     // needs-more-work: should buttons appear stuck down while action executes?
     return b;
   }
@@ -74,13 +81,13 @@ public class ToolBar extends JToolBar {
     Icon icon = (Icon) a.getValue(Action.SMALL_ICON);
     return addToggle(a, name, icon);
   }
-  
+
   public JToggleButton addToggle(Action a, String name, String iconResourceStr) {
     Icon icon = loadIconResource(imageName(iconResourceStr), name);
     //System.out.println(icon);
     return addToggle(a, name, icon);
   }
-  
+
   public JToggleButton addToggle(Action a, String name, Icon icon) {
     JToggleButton b = new JToggleButton(icon);
     b.setToolTipText(name);
@@ -113,7 +120,7 @@ public class ToolBar extends JToolBar {
   }
 
 
-  
+
   public ButtonGroup addRadioGroup(String name1, ImageIcon oneUp,
 				      ImageIcon oneDown,
 				      String name2, ImageIcon twoUp,
@@ -139,7 +146,7 @@ public class ToolBar extends JToolBar {
     //     p.add(b1);
     //     p.add(b2);
     //     add(p);
-    
+
     ButtonGroup bg = new ButtonGroup();
     bg.add(b1);
     bg.add(b2);
@@ -147,12 +154,12 @@ public class ToolBar extends JToolBar {
   }
 
   protected PropertyChangeListener createActionToggleListener(JToggleButton b) {
-	return new ActionToggleChangedListener(b);
-    }
+    return new ActionToggleChangedListener(b);
+  }
 
   private class ActionToggleChangedListener implements PropertyChangeListener {
         JToggleButton button;
-        
+
         ActionToggleChangedListener(JToggleButton b) {
             super();
             this.button = b;
@@ -176,6 +183,46 @@ public class ToolBar extends JToolBar {
         }
     }
 
+
+
+  ////////////////////////////////////////////////////////////////
+  // MouseListener implementation
+
+  public void mouseEntered(MouseEvent me) { }
+  public void mouseExited(MouseEvent me) { }
+  public void mousePressed(MouseEvent me) { }
+  public void mouseReleased(MouseEvent me) { }
+  public void mouseClicked(MouseEvent me) {
+    Object src = me.getSource();
+    unpressAllButtonsExcept(src);
+    Editor ce = uci.gef.Globals.curEditor();
+    if (ce != null) ce.finishMode();
+    uci.gef.Globals.setSticky(false);
+    if (me.getClickCount() >= 2) {
+      if (!(src instanceof JButton)) return;
+      JButton b = (JButton) src;
+      if (canLock(b)) {
+	b.getModel().setPressed(true);
+	uci.gef.Globals.setSticky(true);
+      }
+    }
+  }
+
+
+  protected boolean canLock(Object b) {
+    return _lockable.contains(b);
+  }
+
+  protected void unpressAllButtonsExcept(Object src) {
+    int size = getComponentCount();
+    for (int i = 0; i < size; i++) {
+      Component c = getComponent(i);
+      if (!(c instanceof JButton)) continue;
+      if (c == src) continue;
+      ((JButton)c).getModel().setArmed(false);
+      ((JButton)c).getModel().setPressed(false);
+    }
+  }
 
   protected static ImageIcon loadIconResource(String imgName, String desc) {
     ImageIcon res = null;
@@ -207,5 +254,5 @@ public class ToolBar extends JToolBar {
     return res;
   }
 
-  
+
 } /* end class ToolBar */
