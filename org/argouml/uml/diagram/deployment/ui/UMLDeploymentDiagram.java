@@ -171,7 +171,7 @@ public class UMLDeploymentDiagram extends UMLDiagram {
             _actionMComponent,
             _actionMComponentInstance,
             _actionMDependency,
-            buildAssociationPopup(),
+            getAssociationActions(),
             _actionMObject,
             _actionMLink,
             null,
@@ -180,17 +180,16 @@ public class UMLDeploymentDiagram extends UMLDiagram {
         return actions;
     }
 
-    private PopupToolBoxButton buildAssociationPopup() {
-        PopupToolBoxButton toolBox =
-            new PopupToolBoxButton(_actionAssociation, 0, 2);
-        toolBox.add(_actionAssociation);
-        toolBox.add(_actionUniAssociation);
-        toolBox.add(_actionAggregation);
-        toolBox.add(_actionUniAggregation);
-        toolBox.add(_actionComposition);
-        toolBox.add(_actionUniComposition);
-        return toolBox;
+    private Object[] getAssociationActions() {
+        Object actions[][] = {
+            {_actionAssociation,_actionUniAssociation},
+            {_actionAggregation,_actionUniAggregation},
+            {_actionComposition,_actionUniComposition}
+        };
+
+        return actions;
     }
+    
 
     static final long serialVersionUID = -375918274062198744L;
 

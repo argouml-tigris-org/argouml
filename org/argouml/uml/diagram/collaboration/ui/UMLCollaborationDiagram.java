@@ -188,7 +188,7 @@ public class UMLCollaborationDiagram extends UMLDiagram {
         Object actions[] = {
             _actionClassifierRole,
             null,
-            buildAssociationPopup(),
+            getAssociationActions(),
             ActionAddMessage.SINGLETON,
             _actionGeneralize,
             null,
@@ -197,17 +197,16 @@ public class UMLCollaborationDiagram extends UMLDiagram {
         return actions;
     }
 
-    private PopupToolBoxButton buildAssociationPopup() {
-        PopupToolBoxButton toolBox =
-            new PopupToolBoxButton(_actionAssociation, 0, 2);
-        toolBox.add(_actionAssociation);
-        toolBox.add(_actionUniAssociation);
-        toolBox.add(_actionAggregation);
-        toolBox.add(_actionUniAggregation);
-        toolBox.add(_actionComposition);
-        toolBox.add(_actionUniComposition);
-        return toolBox;
+    private Object[] getAssociationActions() {
+        Object actions[][] = {
+            {_actionAssociation,_actionUniAssociation},
+            {_actionAggregation,_actionUniAggregation},
+            {_actionComposition,_actionUniComposition}
+        };
+
+        return actions;
     }
+    
 
     /**  After loading the diagram it?s necessary to connect
       *  every FigMessage to its FigAssociationRole. 

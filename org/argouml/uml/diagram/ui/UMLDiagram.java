@@ -191,22 +191,35 @@ public abstract class UMLDiagram
         super.initToolBar();
         _toolBar = new ToolBar();
         _toolBar.putClientProperty("JToolBar.isRollover", Boolean.TRUE);
-        _toolBar.add(_actionSelect);
-        _toolBar.add(_actionBroom);
-        _toolBar.addSeparator();
-        initToolBar(_toolBar);
-        _toolBar.addSeparator();
-        _toolBar.add(buildShapePopup());
-        _toolBar.addSeparator();
-        _toolBar.add(_diagramName.getJComponent());
+        addActionsToToolbar(_toolBar, getActions());
+    }
+
+    /**
+     * Return actions available for building toolbar or similar.
+     * @return an array of available actions.
+     */
+    public Object[] getActions() {
+        Object manipulateActions[] = getManipulateActions();
+        Object umlActions[] = getUmlActions();
+        Object shapeActions[] = getShapeActions();
+
+        Object actions[] = new Object[manipulateActions.length + umlActions.length + shapeActions.length];
+
+        int posn = 0;
+        System.arraycopy(manipulateActions, 0, actions, posn, manipulateActions.length);
+        posn += manipulateActions.length;
+        System.arraycopy(umlActions, 0, actions, posn, umlActions.length);
+        posn += umlActions.length;
+        System.arraycopy(shapeActions, 0, actions, posn, shapeActions.length);
+        
+        return actions;
     }
     
     /**
      * <p>Initialize the toolbar with buttons required for a specific diagram</p>
      * @param toolBar The toolbar to which to add the buttons.
      */
-    private void initToolBar(JToolBar toolBar) {
-        Object actions[] = getUmlActions();
+    private void addActionsToToolbar(JToolBar toolBar, Object actions[]) {
         
         for (int i=0; i < actions.length; ++i) {
             Object o = actions[i];
@@ -214,16 +227,73 @@ public abstract class UMLDiagram
                 toolBar.addSeparator();
             } else if (o instanceof Action) {
                 toolBar.add((Action)o);
+            } else if (o instanceof Object[]) {
+                Object[] subActions = (Object[])o;
+                toolBar.add(buildPopupToolBoxButton(subActions));
             } else if (o instanceof Component) {
                 toolBar.add((Component)o);
             }
         }
     }
 
+    private PopupToolBoxButton buildPopupToolBoxButton(Object[] actions) {
+        PopupToolBoxButton toolBox = null;
+        for (int i=0; i < actions.length; ++i) {
+            if (actions[i] instanceof Action) {
+                Action a = (Action)actions[i];
+                if (toolBox == null) {
+                    toolBox = new PopupToolBoxButton(a, 0, 1);
+                }
+                toolBox.add(a);
+            } else if (actions[i] instanceof Object[]) {
+                Object[] actionRow = (Object[])actions[i];
+                for (int j=0; j < actionRow.length; ++j) {
+                    Action a = (Action)actionRow[j];
+                    if (toolBox == null) {
+                        int cols = actionRow.length;
+                        toolBox = new PopupToolBoxButton(a, 0, cols);
+                    }
+                    toolBox.add(a);
+                }
+            }
+        }
+        return toolBox;
+    }
+    
+    
     /**
      * Implement on the ancestor to get actions to populate toolbar.
      */
     protected abstract Object[] getUmlActions();
+
+    private Object[] getManipulateActions() {
+        Object actions[] = {
+            _actionSelect,
+            _actionBroom,
+            null
+        };
+        return actions;
+    }
+    
+    private Object[] getShapeActions() {
+        Object actions[] = {
+            null,
+            getShapePopupActions(),null,
+            _diagramName.getJComponent()
+        };
+        return actions;
+    }
+    
+    private Object[] getShapePopupActions() {
+        Object actions[][] = {
+            {_actionRectangle, _actionRRectangle},
+            {_actionCircle,    _actionLine},
+            {_actionText,      _actionPoly},
+            {_actionSpline,    _actionInk}
+        };
+
+        return actions;
+    }
     
     private PopupToolBoxButton buildShapePopup() {
         PopupToolBoxButton toolBox = new PopupToolBoxButton(_actionRectangle, 0, 2);
@@ -237,6 +307,8 @@ public abstract class UMLDiagram
         toolBox.add(_actionInk);
         return toolBox;
     }
+    
+    
   /**
    * This diagram listens to events from is namespace ModelElement;
    * When the modelelement is removed, we also want to delete this diagram too.
