@@ -125,7 +125,6 @@ public class SettingsTabEnvironment extends SettingsTabHelper
 
 	labelConstraints.gridy = 5;
 	fieldConstraints.gridy = 5;
-        buttonConstraints.gridy = 5;
   	top.add(createLabel("${user.dir}"), labelConstraints);
         _userDir = createTextField();
 	_userDir.setEnabled(false);
