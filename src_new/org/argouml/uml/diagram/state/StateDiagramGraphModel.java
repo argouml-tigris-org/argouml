@@ -236,26 +236,15 @@ public class StateDiagramGraphModel extends UMLMutableGraphSupport implements
     public void addNode(Object node) {
         LOG.debug("adding statechart diagram node: " + node);
         if (!canAddNode(node)) return;
-        if (!(ModelFacade.isAStateVertex(node))) {
-            LOG.error("internal error: got past canAddNode");
-            return;
+        if (containsNode(node)) return;
+
+        getNodes().add(node);
+        
+        if (ModelFacade.isAStateVertex(node)) {
+            Object top = Model.getStateMachinesHelper().getTop(getMachine());
+            Model.getStateMachinesHelper().addSubvertex(top, node);
         }
-        Object sv = /* (MStateVertex) */node;
-
-        if (containsNode(sv)) return;
-        getNodes().add(sv);
-        // TODO: assumes public, user pref for default visibility?
-        //if (sv.getNamespace() == null)
-        //_namespace.addOwnedElement(sv);
-        // TODO: assumes not nested in another composite state
-        Object top = /* (MCompositeState) */Model.getStateMachinesHelper()
-                .getTop(getMachine());
-
-        Model.getStateMachinesHelper().addSubvertex(top, sv);
-        //       sv.setParent(top); this is done in setEnclosingFig!!
-        //      if ((sv instanceof MState) &&
-        //      (sv.getNamespace()==null))
-        //      ((MState)sv).setStateMachine(_machine);
+        
         fireNodeAdded(node);
     }
 
@@ -268,8 +257,7 @@ public class StateDiagramGraphModel extends UMLMutableGraphSupport implements
         LOG.debug("adding statechart diagram edge!!!!!!");
 
         if (!canAddEdge(edge)) return;
-        Object transition = /* (MTransition) */edge;
-        getEdges().add(transition);
+        getEdges().add(edge);
         fireEdgeAdded(edge);
     }
 
