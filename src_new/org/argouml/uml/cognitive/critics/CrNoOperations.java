@@ -58,8 +58,6 @@ public class CrNoOperations extends CrUML {
     // stereotype <<record>>?
     //needs-more-work: different critic or special message for classes
     //that inherit all ops but define none of their own.
-    MStereotype stereo = cls.getStereotype();
-	if (stereo != null && stereo.getName() != null && stereo.getName().toLowerCase().equals("type")) return NO_PROBLEM;
 	
     Collection beh = getInheritedBehavioralFeatures(cls,0);
     if (beh == null) return PROBLEM_FOUND;
