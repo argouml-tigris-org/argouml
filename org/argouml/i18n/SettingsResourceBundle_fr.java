@@ -43,29 +43,31 @@ public class SettingsResourceBundle_fr extends ListResourceBundle {
     */
 
    static final Object[][] _contents = {
-        {"button_ok", "OK"},
-        {"button_cancel", "Annuler"},
         {"button_apply", "Appliquer"},
-        {"tab_user", "Utilisateur"},
-        {"label_user", "Nom complet :"},
-        {"label_email", "Adresse \u00e9lectronique :"},
-        {"label_splash", "Afficher le panneau d'accueil"},
-        {"label_preload", "Charger les classes communes"},
-        {"label_edem", "Rendre compte des statistiques d'utilisation"},
-        {"label_profile", "Rendre compte des temps de chargement"},
-        {"label_reload_recent", "Recharger au d\u00e9marrage le dernier projet enregistr\u00e9" }, 
-        {"label_startup_directory", "R\u00e9pertoire de d\u00e9marrage" }, 
-        {"tab_preferences", "Pr\u00e9f\u00e9rences"},
-        {"tab_environment", "Environnement"},
-        {"tab_notation", "Notations"},
-        {"label_uml_notation_only", "n'utiliser que la notation UML" }, 
-        {"label_use_guillemots", "utiliser des guillemets" }, 
-	{"tab_fonts", "Polices" },
-	{"label_fonts_normal", "Taille normale" },
-	{"label_fonts_big", "Grande taille" },
-	{"label_fonts_huge", "Tr\u00E8s grande taille" },
+        {"button_cancel", "Annuler"},
+        {"button_ok", "OK"},
 
         {"caption_settings", "Param\u00e9trages"},
+
+        {"label_edem", "Rendre compte des statistiques d'utilisation"},
+        {"label_email", "Adresse \u00e9lectronique :"},
+	{"label_fonts_big", "Grande taille" },
+	{"label_fonts_huge", "Tr\u00E8s grande taille" },
+	{"label_fonts_normal", "Taille normale" },
+        {"label_preload", "Charger les classes communes"},
+        {"label_profile", "Rendre compte des temps de chargement"},
+        {"label_reload_recent", "Recharger au d\u00e9marrage le dernier projet enregistr\u00e9" }, 
+        {"label_splash", "Afficher le panneau d'accueil"},
+        {"label_startup_directory", "R\u00e9pertoire de d\u00e9marrage" }, 
+        {"label_uml_notation_only", "n'utiliser que la notation UML" }, 
+        {"label_use_guillemots", "utiliser des guillemets" }, 
+        {"label_user", "Nom complet :"},
+
+        {"tab_environment", "Environnement"},
+	{"tab_fonts", "Polices" },
+        {"tab_notation", "Notations"},
+        {"tab_preferences", "Pr\u00e9f\u00e9rences"},
+        {"tab_user", "Utilisateur"},
    };
 
      public Object[][] getContents() {

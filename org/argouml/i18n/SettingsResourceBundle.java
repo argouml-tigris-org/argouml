@@ -36,27 +36,31 @@ import java.awt.event.*;
 public class SettingsResourceBundle extends ListResourceBundle {
 
    static final Object[][] _contents = {
-        {"button_ok", "OK" },  
-        {"button_cancel", "Cancel" },  
         {"button_apply", "Apply" },  
-        {"tab_user", "User" },  
-        {"label_user", "Full Name:" },  
-        {"label_email", "Email Address:" },  
-        {"label_splash", "Show Splash Panel" },  
-        {"label_preload", "Preload Common Classes" },  
-        {"label_edem", "Report Usage Statistics" },  
-        {"label_profile", "Report on Load Times" },  
-        {"label_reload_recent", "Reload last saved project on startup" },  
-        {"label_startup_directory", "Startup Directory" },  
-        {"tab_preferences", "Preferences" },  
-        {"tab_environment", "Environment" },  
-
-	{"tab_fonts", "Fonts" },
-	{"label_fonts_normal", "Normal size" },
-	{"label_fonts_big", "Big size" },
-	{"label_fonts_huge", "Huge size" },
+        {"button_cancel", "Cancel" },  
+        {"button_ok", "OK" },  
 
         {"caption_settings", "Settings" },
+
+        {"label_edem", "Report Usage Statistics" },  
+        {"label_email", "Email Address:" },  
+	{"label_fonts_big", "Big size" },
+	{"label_fonts_huge", "Huge size" },
+	{"label_fonts_normal", "Normal size" },
+        {"label_preload", "Preload Common Classes" },  
+        {"label_profile", "Report on Load Times" },  
+        {"label_reload_recent", "Reload last saved project on startup" },  
+        {"label_splash", "Show Splash Panel" },  
+        {"label_startup_directory", "Startup Directory" },  
+        {"label_uml_notation_only", "use only UML notation" }, 
+        {"label_use_guillemots", "use guillemots" }, 
+        {"label_user", "Full Name:" },  
+
+        {"tab_environment", "Environment" },  
+	{"tab_fonts", "Fonts" },
+        {"tab_notation", "Notations"},
+        {"tab_preferences", "Preferences" },  
+        {"tab_user", "User" },  
    };
 
      public Object[][] getContents() {
