@@ -29,13 +29,7 @@ import java.util.Iterator;
 
 import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.UmlModelEventPump;
-import org
-    .argouml
-    .model
-    .uml
-    .behavioralelements
-    .collaborations
-    .CollaborationsHelper;
+import org.argouml.model.uml.behavioralelements.collaborations.CollaborationsHelper;
 import org.argouml.uml.ui.UMLModelElementListModel2;
 import org.tigris.gef.presentation.Fig;
 
@@ -129,7 +123,12 @@ public class UMLClassifierRoleAvailableContentsListModel
             }
             if (_target != null) {
                 removeAllElements();
+                _buildingModel = true;
                 buildModelList();
+                _buildingModel = false;
+                if (getSize() > 0) {
+                    fireIntervalAdded(this, 0, getSize() - 1);
+                }
             }
         }
     }
