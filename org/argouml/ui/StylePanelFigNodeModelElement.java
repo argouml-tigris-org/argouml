@@ -36,6 +36,8 @@ import javax.swing.JLabel;
 import javax.swing.text.Document;
 
 import org.argouml.i18n.Translator;
+import org.argouml.kernel.Project;
+import org.argouml.kernel.ProjectManager;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
 import org.tigris.gef.ui.ColorRenderer;
 
@@ -164,7 +166,10 @@ public class StylePanelFigNodeModelElement extends StylePanelFig implements
         nodeTarget.setShadowSize(i);
         getPanelTarget().endTrans();
         if (i != oldShadowSize) {
-            markNeedsSave();
+            Project p = ProjectManager.getManager().getCurrentProject();
+            if (p != null) {
+                p.setNeedsSave(true);
+            }
         }
     }
 

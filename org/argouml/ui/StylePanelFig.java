@@ -333,7 +333,10 @@ public class StylePanelFig extends StylePanel implements ItemListener,
             getPanelTarget().setBounds(bounds.x, bounds.y, bounds.width, 
                     bounds.height);
             getPanelTarget().endTrans();
-            markNeedsSave();
+            Project p = ProjectManager.getManager().getCurrentProject();
+            if (p != null) {
+                p.setNeedsSave(true);
+            }
         }
     }
 
@@ -448,7 +451,10 @@ public class StylePanelFig extends StylePanel implements ItemListener,
         getPanelTarget().setFilled(c instanceof Color);
         getPanelTarget().endTrans();
         if (!c.equals(oldColor)) {
-            markNeedsSave();
+            Project p = ProjectManager.getManager().getCurrentProject();
+            if (p != null) {
+                p.setNeedsSave(true);
+            }
         }
     }
 
@@ -463,18 +469,10 @@ public class StylePanelFig extends StylePanel implements ItemListener,
         getPanelTarget().setLineWidth((c instanceof Color) ? 1 : 0);
         getPanelTarget().endTrans();
         if (!c.equals(oldColor)) {
-            markNeedsSave();
-        }
-    }
-
-    /**
-     * Called when some property of the target has changed through the style
-     * panel. Sets the save flag in the current project.
-     */
-    protected void markNeedsSave() {
-        Project p = ProjectManager.getManager().getCurrentProject();
-        if (p != null) {
-            p.setNeedsSave(true);
+            Project p = ProjectManager.getManager().getCurrentProject();
+            if (p != null) {
+                p.setNeedsSave(true);
+            }
         }
     }
 
