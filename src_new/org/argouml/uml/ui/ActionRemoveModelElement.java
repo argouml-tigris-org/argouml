@@ -31,15 +31,17 @@ import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 
 /**
- * Action to delete modelelements from the model without navigating to/from them.
- * Used in UMLMutableList for deletion of modelelements from the list.
+ * Action to delete modelelements from the model without navigating
+ * to/from them.  Used in UMLMutableList for deletion of modelelements
+ * from the list.
  * @since Oct 2, 2002
  * @author jaap.branderhorst@xs4all.nl
  * @stereotype singleton
  */
 public class ActionRemoveModelElement extends AbstractActionRemoveElement {
     
-    public final static ActionRemoveModelElement SINGLETON = new ActionRemoveModelElement();
+    public final static ActionRemoveModelElement SINGLETON =
+	new ActionRemoveModelElement();
     
     /**
      * Constructor for ActionRemoveModelElement.

@@ -45,10 +45,11 @@ import org.tigris.gef.base.CmdPaste;
 import org.tigris.gef.base.Globals;
 
 /** 
- * Action to paste the content of either the GEF clipboard or the system clipboard. 
- * The action is enabled if there is content on either clipboard AND either the 
- * mouse hovers over the JGraph (the diagram) or the caret in a UMLTextField2 or
- * UMLTextArea2 is enabled. 
+ * Action to paste the content of either the GEF clipboard or the
+ * system clipboard.  The action is enabled if there is content on
+ * either clipboard AND either the mouse hovers over the JGraph (the
+ * diagram) or the caret in a UMLTextField2 or UMLTextArea2 is
+ * enabled.
  */
 public class ActionPaste
     extends AbstractAction
@@ -62,9 +63,10 @@ public class ActionPaste
     private static final String LOCALIZE_KEY = "action.paste";
 
     /**
-     * Default constructor for action. We cannot use UMLChangeAction as a parent
-     * for this class since it works with shouldBeEnabled etc. which doesn't give
-     * enough control about enabling/disabling this action.
+     * Default constructor for action. We cannot use UMLChangeAction
+     * as a parent for this class since it works with shouldBeEnabled
+     * etc. which doesn't give enough control about enabling/disabling
+     * this action.
      *
      */
     private ActionPaste() {
@@ -80,7 +82,9 @@ public class ActionPaste
         putValue(
 		 Action.SHORT_DESCRIPTION,
 		 Translator.localize("CoreMenu", LOCALIZE_KEY) + " ");
-        // setEnabled((Globals.clipBoard != null && !Globals.clipBoard.isEmpty()) || !isSystemClipBoardEmpty());
+        // setEnabled((Globals.clipBoard != null &&
+        // !Globals.clipBoard.isEmpty()) ||
+        // !isSystemClipBoardEmpty());
         setEnabled(false);
     }
 
@@ -144,7 +148,8 @@ public class ActionPaste
     }
 
     /**
-     * @see javax.swing.event.CaretListener#caretUpdate(javax.swing.event.CaretEvent)
+     * @see
+     * javax.swing.event.CaretListener#caretUpdate(javax.swing.event.CaretEvent)
      */
     public void caretUpdate(CaretEvent e) {
         _textSource = (JTextComponent) e.getSource();

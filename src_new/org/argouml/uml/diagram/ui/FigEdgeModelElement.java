@@ -133,7 +133,8 @@ public abstract class FigEdgeModelElement
     private ItemUID _id;
     
     /**
-     * The current notation for this fig. The notation is for example UML 1.3 or Java
+     * The current notation for this fig. The notation is for example
+     * UML 1.3 or Java
      */
     private NotationName _currentNotationName;
 
@@ -328,8 +329,8 @@ public abstract class FigEdgeModelElement
     }
 
     /**
-     * Returns a SelectionRerouteEdge object that manages selection and rerouting
-     * of the edge.
+     * Returns a SelectionRerouteEdge object that manages selection
+     * and rerouting of the edge.
      */
     public Selection makeSelection() {
         return new SelectionRerouteEdge(this);
@@ -500,7 +501,8 @@ public abstract class FigEdgeModelElement
 		((MModelElement) oldOwner).removeMElementListener(this);
             if (own instanceof MModelElement) {
                 MModelElement me = (MModelElement) own;
-                // UmlModelEventPump.getPump().removeModelEventListener(this, me);
+                // UmlModelEventPump.getPump().removeModelEventListener(this,
+                // me);
                 UmlModelEventPump.getPump().addModelEventListener(this, me);
                 if (me.getUUID() == null)
                     me.setUUID(UUIDManager.SINGLETON.getNewUUID());
@@ -581,8 +583,10 @@ public abstract class FigEdgeModelElement
     }
 
     public void notationChanged(ArgoNotationEvent event) {
-        PropertyChangeEvent changeEvent = (PropertyChangeEvent) event.getSource();
-	_currentNotationName = Notation.findNotation((String) changeEvent.getNewValue());
+        PropertyChangeEvent changeEvent =
+	    (PropertyChangeEvent) event.getSource();
+	_currentNotationName =
+	    Notation.findNotation((String) changeEvent.getNewValue());
         renderingChanged();
         damage();
     }
@@ -597,8 +601,9 @@ public abstract class FigEdgeModelElement
     }
 
     /**
-     * Rerenders the fig if needed. This functionality was originally the functionality
-     * of modelChanged but modelChanged takes the event now into account.
+     * Rerenders the fig if needed. This functionality was originally
+     * the functionality of modelChanged but modelChanged takes the
+     * event now into account.
      */
     public void renderingChanged() {
         // updateAnnotationPositions();
@@ -639,8 +644,9 @@ public abstract class FigEdgeModelElement
         }
         Rectangle bigBounds = getBounds();
         /*
-	  FigRect rect = new FigRect(bigBounds.x, bigBounds.y, bigBounds.width, bigBounds.height);
-	  if (rect.hit(r)) return true;
+	  FigRect rect = new FigRect(bigBounds.x, bigBounds.y,
+	  bigBounds.width, bigBounds.height); if (rect.hit(r)) return
+	  true;
         */
         return false;
     }
@@ -690,9 +696,9 @@ public abstract class FigEdgeModelElement
     }
 
     /**
-     * <p>Updates the classifiers the edge is attached to.
-     * <p>Calls a helper method (layoutThisToSelf) to avoid this edge disappearing
-     * if the new source and dest are the same node.
+     * <p>Updates the classifiers the edge is attached to.  <p>Calls a
+     * helper method (layoutThisToSelf) to avoid this edge
+     * disappearing if the new source and dest are the same node.
      *
      * @return boolean whether or not the update was sucessful
      */
@@ -787,9 +793,9 @@ public abstract class FigEdgeModelElement
     }
 
     /**
-     * Returns the source of the edge. The source is the owner of the node the edge
-     * travels from in a binary relationship. For instance: for a classifierrole, 
-     * this is the sender.
+     * Returns the source of the edge. The source is the owner of the
+     * node the edge travels from in a binary relationship. For
+     * instance: for a classifierrole, this is the sender.
      * @return MModelElement
      */
     protected Object getSource() {
@@ -799,9 +805,10 @@ public abstract class FigEdgeModelElement
         return null;
     }
     /**
-     * Returns the destination of the edge. The destination is the owner of the node the edge
-     * travels to in a binary relationship. For instance: for a classifierrole, 
-     * this is the receiver. Since we don't support n-array associations but only
+     * Returns the destination of the edge. The destination is the
+     * owner of the node the edge travels to in a binary
+     * relationship. For instance: for a classifierrole, this is the
+     * receiver. Since we don't support n-array associations but only
      * binary relations, source/destination works for all edges.
      * @return Object
      */

@@ -152,10 +152,11 @@ public abstract class FigNodeModelElement
     private ItemUID _id;
 
     /**
-     * A set of object arrays consisting of a sender of events and the event
-     * types this object is interested in. The eventSenders are a cache to 
-     * improve performance when this fig is disabled/enabled as interested listener
-     * to the events maintained in the _eventSenders set.
+     * A set of object arrays consisting of a sender of events and the
+     * event types this object is interested in. The eventSenders are
+     * a cache to improve performance when this fig is
+     * disabled/enabled as interested listener to the events
+     * maintained in the _eventSenders set.
      */
     private Set _eventSenders = new HashSet();
 
@@ -163,7 +164,8 @@ public abstract class FigNodeModelElement
     // constructors
 
     public FigNodeModelElement() {
-        // this rectangle marks the whole interface figure; everything is inside it:
+        // this rectangle marks the whole interface figure; everything
+        // is inside it:
         _bigPort = new FigRect(10, 10, 0, 0, Color.cyan, Color.cyan) 
 	    {
 		public void paint(Graphics g) {
@@ -291,9 +293,12 @@ public abstract class FigNodeModelElement
             return;
         MModelElement elem = (MModelElement) getOwner();
         if (f == null
-            && getEnclosingFig() != null) { // move from a package to the diagram
+            && getEnclosingFig() != null) {
+	    // move from a package to the diagram
             // TODO: we should print "from blahblah package
-            // TODO: we should take into account 'playing around with the classes' on some diagram
+
+            // TODO: we should take into account 'playing around with
+            // the classes' on some diagram
             return;
         }
         if (f == null
@@ -562,7 +567,8 @@ public abstract class FigNodeModelElement
             if (f instanceof MouseListener)
 		((MouseListener) f).mouseClicked(me);
             else if (f instanceof FigGroup) {
-                //this enables direct text editing for sub figs of a FigGroup object:
+                //this enables direct text editing for sub figs of a
+                //FigGroup object:
                 Fig f2 = ((FigGroup) f).hitFig(r);
                 if (f2 instanceof MouseListener)
 		    ((MouseListener) f2).mouseClicked(me);
@@ -736,11 +742,14 @@ public abstract class FigNodeModelElement
     /**
      * Updates the text of the sterotype FigText. Override in subclasses to get
      * wanted behaviour.
-     * TODO remove all 'misuses' of the stereotype figtexts (like in FigInterface)
+     *
+     * TODO remove all 'misuses' of the stereotype figtexts (like in
+     * FigInterface)
      */
     protected void updateStereotypeText() {
         _stereo.setText(
-			Notation.generate(this, ModelFacade.getStereoType(getOwner())));
+			Notation.generate(this,
+					  ModelFacade.getStereoType(getOwner())));
     }
 
     /**
@@ -781,8 +790,8 @@ public abstract class FigNodeModelElement
     }
 
     /**
-     * Returns the notation name for this fig. First start to implement notations on
-     * a per fig basis.
+     * Returns the notation name for this fig. First start to
+     * implement notations on a per fig basis.
      * @see org.argouml.application.api.NotationContext#getContextNotation()
      */
     public NotationName getContextNotation() {
@@ -790,8 +799,10 @@ public abstract class FigNodeModelElement
     }
 
     public void notationChanged(ArgoNotationEvent event) {
-        PropertyChangeEvent changeEvent = (PropertyChangeEvent) event.getSource();
-        _currentNotationName = Notation.findNotation((String) changeEvent.getNewValue());
+        PropertyChangeEvent changeEvent =
+	    (PropertyChangeEvent) event.getSource();
+        _currentNotationName =
+	    Notation.findNotation((String) changeEvent.getNewValue());
         renderingChanged();
     }
 
@@ -805,8 +816,9 @@ public abstract class FigNodeModelElement
     }
 
     /**
-     * Rerenders the fig if needed. This functionality was originally the functionality
-     * of modelChanged but modelChanged takes the event now into account.
+     * Rerenders the fig if needed. This functionality was originally
+     * the functionality of modelChanged but modelChanged takes the
+     * event now into account.
      */
     public void renderingChanged() {
         updateNameText();
@@ -825,9 +837,11 @@ public abstract class FigNodeModelElement
         checkSize = flag;
     }
 
-    /** returns the new size of the FigGroup (either attributes or operations)
-	after calculation new bounds for all sub-figs, considering their
-	minimal sizes; FigGroup need not be displayed; no update event is fired */
+    /** returns the new size of the FigGroup (either attributes or
+     * operations) after calculation new bounds for all sub-figs,
+     * considering their minimal sizes; FigGroup need not be
+     * displayed; no update event is fired
+     */
     protected Dimension getUpdatedSize(
 				       FigGroup fg,
 				       int x,
@@ -838,8 +852,8 @@ public abstract class FigNodeModelElement
         int n = fg.getFigs().size() - 1;
         int newH = checkSize ? Math.max(h, ROWHEIGHT * Math.max(1, n) + 2) : h;
         int step = (n > 0) ? (newH - 1) / n : 0;
-        // width step between FigText objects
-        //int maxA = Toolkit.getDefaultToolkit().getFontMetrics(LABEL_FONT).getMaxAscent();
+        // width step between FigText objects int maxA =
+        //Toolkit.getDefaultToolkit().getFontMetrics(LABEL_FONT).getMaxAscent();
 
         //set new bounds for all included figs
         Enumeration figs = fg.elements();
@@ -942,7 +956,9 @@ public abstract class FigNodeModelElement
         while (it.hasNext()) {
             Fig fig = (Fig) it.next();
             if (fig instanceof ArgoEventListener) {
-                // cannot do the adding of listeners recursive since some are not children of FigNodeModelELement or FigEdgeModelElement
+                // cannot do the adding of listeners recursive since
+                // some are not children of FigNodeModelELement or
+                // FigEdgeModelElement
                 ArgoEventPump.removeListener((ArgoEventListener) fig);
                 ArgoEventPump.addListener((ArgoEventListener) fig);
             }

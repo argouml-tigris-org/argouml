@@ -30,7 +30,9 @@ import ru.novosoft.uml.MBase;
 import ru.novosoft.uml.behavior.collaborations.MAssociationRole;
 import ru.novosoft.uml.behavior.collaborations.MMessage;
 
-public class UMLAssociationRoleMessageListModel extends UMLModelElementListModel2 {
+public class UMLAssociationRoleMessageListModel
+    extends UMLModelElementListModel2
+{
 
     /**
      * Constructor for UMLAssociationRoleMessageListModel.

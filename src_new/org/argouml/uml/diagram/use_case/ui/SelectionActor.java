@@ -57,7 +57,8 @@ public class SelectionActor extends SelectionWButtons {
         Category.getInstance(SelectionActor.class);
     ////////////////////////////////////////////////////////////////
     // constants
-    public static Icon assoc = ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource("Association");
+    public static Icon assoc =
+	ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource("Association");
 
 
 
@@ -162,14 +163,18 @@ public class SelectionActor extends SelectionWButtons {
     }
 
     /**
-     * @see org.argouml.uml.diagram.ui.SelectionWButtons#createEdgeLeft(org.tigris.gef.graph.MutableGraphModel, java.lang.Object)
+     * @see
+     * org.argouml.uml.diagram.ui.SelectionWButtons#createEdgeLeft(org.tigris.gef.graph.MutableGraphModel,
+     * java.lang.Object)
      */
     protected Object createEdgeLeft(MutableGraphModel gm, Object newNode) {
         return gm.connect(newNode, _content.getOwner(), MAssociation.class);
     }
 
     /**
-     * @see org.argouml.uml.diagram.ui.SelectionWButtons#createEdgeRight(org.tigris.gef.graph.MutableGraphModel, java.lang.Object)
+     * @see
+     * org.argouml.uml.diagram.ui.SelectionWButtons#createEdgeRight(org.tigris.gef.graph.MutableGraphModel,
+     * java.lang.Object)
      */
     protected Object createEdgeRight(MutableGraphModel gm, Object newNode) {
         return gm.connect(_content.getOwner(), newNode , MAssociation.class);

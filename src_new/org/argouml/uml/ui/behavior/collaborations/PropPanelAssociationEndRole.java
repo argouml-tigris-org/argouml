@@ -52,9 +52,11 @@ public class PropPanelAssociationEndRole extends PropPanelAssociationEnd {
 
     protected void positionControls() {
 
-        JList baseList = new UMLLinkedList(new UMLAssociationEndRoleBaseListModel());
+        JList baseList =
+	    new UMLLinkedList(new UMLAssociationEndRoleBaseListModel());
         baseList.setVisibleRowCount(1);
-        addField(Argo.localize("UMLMenu", "label.base"), new JScrollPane(baseList));
+        addField(Argo.localize("UMLMenu", "label.base"),
+		 new JScrollPane(baseList));
 
         super.positionControls();
     }

@@ -44,7 +44,10 @@ import org.argouml.ui.*;
 import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.uml.ui.*;
 
-public class PropPanelString extends TabSpawnable implements TabModelTarget, PropertyChangeListener, DocumentListener {
+public class PropPanelString
+    extends TabSpawnable
+    implements TabModelTarget, PropertyChangeListener, DocumentListener
+{
     ////////////////////////////////////////////////////////////////
     // instance vars
     FigText _target;
@@ -89,7 +92,8 @@ public class PropPanelString extends TabSpawnable implements TabModelTarget, Pro
     public void setTarget(Object t) {
 	if (t instanceof FigText) {
 	    _target = (FigText) t;
-	    _target.removePropertyChangeListener(this); // to circumvent to much registred listeners
+	    // to circumvent to much registred listeners
+	    _target.removePropertyChangeListener(this);
 	    _target.addPropertyChangeListener(this);
 	}
    
@@ -121,17 +125,22 @@ public class PropPanelString extends TabSpawnable implements TabModelTarget, Pro
     }
 
     /**
-     * @see java.beans.PropertyChangeListener#propertyChange(PropertyChangeEvent)
+     * @see
+     * java.beans.PropertyChangeListener#propertyChange(PropertyChangeEvent)
      */
     public void propertyChange(PropertyChangeEvent evt) {
-	if (evt.getPropertyName().equals("editing") && evt.getNewValue().equals(Boolean.FALSE)) { // ending editing
+	if (evt.getPropertyName().equals("editing")
+	    && evt.getNewValue().equals(Boolean.FALSE))
+	{
+	    // ending editing
 	    _nameField.setText(_target.getText());
 	}
 			
     }
 
     /* (non-Javadoc)
-     * @see org.argouml.ui.targetmanager.TargetListener#targetAdded(org.argouml.ui.targetmanager.TargetEvent)
+     * @see
+     * org.argouml.ui.targetmanager.TargetListener#targetAdded(org.argouml.ui.targetmanager.TargetEvent)
      */
     public void targetAdded(TargetEvent e) {
         // TODO Auto-generated method stub
@@ -139,7 +148,8 @@ public class PropPanelString extends TabSpawnable implements TabModelTarget, Pro
     }
 
     /* (non-Javadoc)
-     * @see org.argouml.ui.targetmanager.TargetListener#targetRemoved(org.argouml.ui.targetmanager.TargetEvent)
+     * @see
+     * org.argouml.ui.targetmanager.TargetListener#targetRemoved(org.argouml.ui.targetmanager.TargetEvent)
      */
     public void targetRemoved(TargetEvent e) {
         // TODO Auto-generated method stub
@@ -147,7 +157,8 @@ public class PropPanelString extends TabSpawnable implements TabModelTarget, Pro
     }
 
     /* (non-Javadoc)
-     * @see org.argouml.ui.targetmanager.TargetListener#targetSet(org.argouml.ui.targetmanager.TargetEvent)
+     * @see
+     * org.argouml.ui.targetmanager.TargetListener#targetSet(org.argouml.ui.targetmanager.TargetEvent)
      */
     public void targetSet(TargetEvent e) {
         // TODO Auto-generated method stub

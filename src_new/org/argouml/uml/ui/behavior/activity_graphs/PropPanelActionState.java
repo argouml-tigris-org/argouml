@@ -45,11 +45,17 @@ public class PropPanelActionState extends PropPanelState {
     // contructors
     public PropPanelActionState() {
 
-        super("Action State", _actionStateIcon, ConfigLoader.getTabPropsOrientation());
+        super("Action State", _actionStateIcon,
+	      ConfigLoader.getTabPropsOrientation());
 
         addField(Argo.localize("UMLMenu", "label.name"), getNameTextField());
-        addField(Argo.localize("UMLMenu", "label.stereotype"), new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-stereo"), getStereotypeBox()));
-        addField(Argo.localize("UMLMenu", "label.namespace"), getNamespaceScroll());
+        addField(Argo.localize("UMLMenu", "label.stereotype"),
+		 new UMLComboBoxNavigator(this,
+					  Argo.localize("UMLMenu",
+							"tooltip.nav-stereo"),
+					  getStereotypeBox()));
+        addField(Argo.localize("UMLMenu", "label.namespace"),
+		 getNamespaceScroll());
 
         addField(Argo.localize("UMLMenu", "label.entry"), entryScroll);
         addField(Argo.localize("UMLMenu", "label.exit"), exitScroll);
@@ -59,7 +65,8 @@ public class PropPanelActionState extends PropPanelState {
 
         addField(Argo.localize("UMLMenu", "label.incoming"), incomingScroll);
         addField(Argo.localize("UMLMenu", "label.outgoing"), outgoingScroll);
-        addField(Argo.localize("UMLMenu", "label.internal-transitions"), internalTransitionsScroll);
+        addField(Argo.localize("UMLMenu", "label.internal-transitions"),
+		 internalTransitionsScroll);
 
     }
 

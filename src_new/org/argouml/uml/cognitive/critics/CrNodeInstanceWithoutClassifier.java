@@ -25,7 +25,6 @@
 // File: CrNodeInstanceInsideElement.java
 // Classes: CrNodeInstanceWithoutClassifier
 // Original Author: jrobbins@5eichler@informatik.uni-hamburg.de
-// $Id$
 
 package org.argouml.uml.cognitive.critics;
 

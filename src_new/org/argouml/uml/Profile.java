@@ -37,20 +37,22 @@ import java.util.*;
  */
 abstract public class Profile {
     /**
-     *    This method produces a string that represents the specific model element
-     *    in the context of the specified namespace.
+     *    This method produces a string that represents the specific
+     *    model element in the context of the specified namespace.
      *    @param element element to represent.
      *    @param namespace context namespace (may be null).
      *    @return a string representing the model element
      */
-    abstract public String formatElement(MModelElement element, MNamespace namespace);
+    abstract public String formatElement(MModelElement element,
+					 MNamespace namespace);
     /**
-     *   This method produces a string the represents the collection of model elements
-     *   in the context of the specified namespace.
+     *   This method produces a string the represents the collection
+     *   of model elements in the context of the specified namespace.
      *   @param iter iterator over collection
      *   @param namespace context namespace (may be null).
      *   @return a string representing the collection
      */
-    abstract public String formatCollection(Iterator iter, MNamespace namespace);
+    abstract public String formatCollection(Iterator iter,
+					    MNamespace namespace);
     abstract public MModel getProfileModel();
 }

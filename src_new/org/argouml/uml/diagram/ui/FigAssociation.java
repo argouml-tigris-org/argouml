@@ -92,13 +92,15 @@ public class FigAssociation extends FigEdgeModelElement {
 
 
     /**
-     * Don't call this constructor directly. It is public since this is necessary 
-     * for loading. Use the FigAssociation(Object, Layer) constructor instead!
+     * Don't call this constructor directly. It is public since this
+     * is necessary for loading. Use the FigAssociation(Object, Layer)
+     * constructor instead!
      */
     public FigAssociation() {
         super();
     
-        // lets use groups to construct the different text sections at the association
+        // lets use groups to construct the different text sections at
+        // the association
         _middleGroup.addFig(_name);
         _middleGroup.addFig(_stereo);
         addPathItem(_middleGroup, new PathConvPercent(this, 50, 25));
@@ -158,8 +160,10 @@ public class FigAssociation extends FigEdgeModelElement {
 
         _destGroup.addFig(_destRole);
         _destGroup.addFig(_destOrdering);
-        addPathItem(_destMult, new PathConvPercentPlusConst(this, 100, -15, 15));
-        addPathItem(_destGroup, new PathConvPercentPlusConst(this, 100, -35, -15));
+        addPathItem(_destMult,
+		    new PathConvPercentPlusConst(this, 100, -15, 15));
+        addPathItem(_destGroup,
+		    new PathConvPercentPlusConst(this, 100, -35, -15));
     
         setBetweenNearestPoints(true);
         // next line necessary for loading
@@ -179,7 +183,8 @@ public class FigAssociation extends FigEdgeModelElement {
 	if (own instanceof MAssociation) {
 	    MAssociation newAsc = (MAssociation) own;
 	    for (int i = 0; i < newAsc.getConnections().size(); i++) {
-		MAssociationEnd end = ((MAssociationEnd) ((Object[]) newAsc.getConnections().toArray())[i]);
+		MAssociationEnd end =
+		    ((MAssociationEnd) ((Object[]) newAsc.getConnections().toArray())[i]);
 		UmlModelEventPump.getPump().removeModelEventListener(this, end);
 		UmlModelEventPump.getPump().addModelEventListener(this, end);
 	    }
@@ -189,8 +194,10 @@ public class FigAssociation extends FigEdgeModelElement {
 		(MAssociationEnd) ((Object[]) (newAsc.getConnections()).toArray())[0];
 	    MAssociationEnd ae1 =
 		(MAssociationEnd) ((Object[]) (newAsc.getConnections()).toArray())[1];
-	    FigNode destNode = (FigNode) getLayer().presentationFor(ae1.getType());
-	    FigNode srcNode = (FigNode) getLayer().presentationFor(ae0.getType());
+	    FigNode destNode =
+		(FigNode) getLayer().presentationFor(ae1.getType());
+	    FigNode srcNode =
+		(FigNode) getLayer().presentationFor(ae0.getType());
 	    if (destNode != null) {
 		setDestFigNode(destNode);
 		setDestPortFig(destNode);
@@ -216,17 +223,21 @@ public class FigAssociation extends FigEdgeModelElement {
 	if (conn == null || conn.size() == 0) return;
 
 	if (ft == _srcRole) {
-	    MAssociationEnd srcAE = (MAssociationEnd) ((Object[]) conn.toArray())[0];
+	    MAssociationEnd srcAE =
+		(MAssociationEnd) ((Object[]) conn.toArray())[0];
 	    srcAE.setName(_srcRole.getText());
 	}
 	if (ft == _destRole) {
-	    MAssociationEnd destAE = (MAssociationEnd) ((Object[]) conn.toArray())[1];
+	    MAssociationEnd destAE =
+		(MAssociationEnd) ((Object[]) conn.toArray())[1];
 	    destAE.setName(_destRole.getText());
 	}
 	// TODO: parse multiplicities
     }
   
-    private void updateEnd(FigText multiToUpdate, FigText roleToUpdate, FigText orderingToUpdate, MAssociationEnd end) {
+    private void updateEnd(FigText multiToUpdate, FigText roleToUpdate,
+			   FigText orderingToUpdate,
+			   MAssociationEnd end) {
 	MMultiplicity multi = end.getMultiplicity();
 	String name = end.getName();
 	MOrderingKind order = end.getOrdering();
@@ -235,7 +246,9 @@ public class FigAssociation extends FigEdgeModelElement {
 	multiToUpdate.setText(Notation.generate(this, multi));
 	orderingToUpdate.setText(getOrderingName(order));
 	if (stereo != null) {
-	    roleToUpdate.setText(Notation.generate(this, stereo) + " " + Notation.generate(this, name));
+	    roleToUpdate.setText(Notation.generate(this, stereo)
+				 + " "
+				 + Notation.generate(this, name));
 	} else
 	    roleToUpdate.setText(Notation.generate(this, name));
     }
@@ -314,8 +327,10 @@ public class FigAssociation extends FigEdgeModelElement {
 	else
 	    rSquared *= rSquared;
 
-	int srcDeterminingFactor = getSquaredDistance(me.getPoint(), firstPoint);
-	int destDeterminingFactor = getSquaredDistance(me.getPoint(), lastPoint);
+	int srcDeterminingFactor =
+	    getSquaredDistance(me.getPoint(), firstPoint);
+	int destDeterminingFactor =
+	    getSquaredDistance(me.getPoint(), lastPoint);
 
 	if (srcDeterminingFactor < rSquared &&
 	    srcDeterminingFactor < destDeterminingFactor) {
@@ -350,21 +365,31 @@ public class FigAssociation extends FigEdgeModelElement {
 	    // No particular options for right click in middle of line
 	}
 
-	// Options available when right click anywhere on line (added by BobTarling 7-Jan-2002)
+	// Options available when right click anywhere on line (added
+	// by BobTarling 7-Jan-2002)
 	MAssociation asc = (MAssociation) getOwner();
 	if (asc != null) {
-	    // Navigability menu with suboptions built dynamically to allow navigability
-	    // from atart to end, from end to start or bidirectional
+	    // Navigability menu with suboptions built dynamically to
+	    // allow navigability from atart to end, from end to start
+	    // or bidirectional
 
 	    java.util.List ascEnds = ((MAssociation) asc).getConnections();
 	    MAssociationEnd ascStart = (MAssociationEnd) (ascEnds.get(0));
 	    MAssociationEnd ascEnd = (MAssociationEnd) (ascEnds.get(1));
 
-	    if (ascStart.getType() instanceof MClassifier && ascEnd.getType() instanceof MClassifier) {
+	    if (ascStart.getType() instanceof MClassifier
+		&& ascEnd.getType() instanceof MClassifier)
+	    {
 		JMenu navMenu = new JMenu("Navigability");
-		navMenu.add(ActionNavigability.newActionNavigability(ascStart, ascEnd, ActionNavigability.BIDIRECTIONAL));
-		navMenu.add(ActionNavigability.newActionNavigability(ascStart, ascEnd, ActionNavigability.STARTTOEND));
-		navMenu.add(ActionNavigability.newActionNavigability(ascStart, ascEnd, ActionNavigability.ENDTOSTART));
+		navMenu.add(ActionNavigability.newActionNavigability(ascStart,
+								     ascEnd,
+								     ActionNavigability.BIDIRECTIONAL));
+		navMenu.add(ActionNavigability.newActionNavigability(ascStart,
+								     ascEnd,
+								     ActionNavigability.STARTTOEND));
+		navMenu.add(ActionNavigability.newActionNavigability(ascStart,
+								     ascEnd,
+								     ActionNavigability.ENDTOSTART));
 
 		popUpActions.insertElementAt(navMenu, popUpActions.size() - 1);
 	    }

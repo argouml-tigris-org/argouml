@@ -31,8 +31,9 @@ import org.tigris.gef.presentation.FigGroup;
 import org.tigris.gef.presentation.FigText;
 
 /**
- * Custom class to group FigTexts in such a way that they don't overlap and that 
- * the group is shrinked to fit (no whitespace in group).
+ * Custom class to group FigTexts in such a way that they don't
+ * overlap and that the group is shrinked to fit (no whitespace in
+ * group).
  * 
  * @author jaap.branderhorst@xs4all.nl
  */
@@ -42,7 +43,8 @@ public class FigTextGroup extends FigGroup {
     protected boolean supressCalcBounds = false;
 
     /**
-     * Adds a FigText to the list with figs. Makes sure that the figtexts do not overlap.
+     * Adds a FigText to the list with figs. Makes sure that the
+     * figtexts do not overlap.
      * @see org.tigris.gef.presentation.FigGroup#addFig(Fig)
      */
     public void addFig(Fig f) {

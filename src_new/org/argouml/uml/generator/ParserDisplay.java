@@ -167,10 +167,11 @@ class PropertySpecialString {
     }
 
     /**
-     * Called by {@link ParserDisplay#setProperties() ParserDisplay.setProperties}
-     * while searching for an action to invoke for a property. If it returns
-     * true, then setProperties may assume that all required actions have been
-     * taken and stop searching.
+     * Called by {@link ParserDisplay#setProperties()
+     * ParserDisplay.setProperties} while searching for an action to
+     * invoke for a property. If it returns true, then setProperties
+     * may assume that all required actions have been taken and stop
+     * searching.
      *
      * @param name The name of a property.
      * @param value The value of a property.
@@ -210,7 +211,8 @@ public class ParserDisplay extends Parser {
     /** The vector of CustomSeparators to use when tokenizing parameters */
     private Vector _parameterCustomSep;
 
-    /** The character with a meaning as a visibility at the start of an attribute */
+    /** The character with a meaning as a visibility at the start of
+     * an attribute */
     private final static String visibilityChars = "+#-";
 
     /**
@@ -221,112 +223,134 @@ public class ParserDisplay extends Parser {
      */
     private ParserDisplay() {
 	_attributeSpecialStrings = new PropertySpecialString[2];
-	_attributeSpecialStrings[0] = new PropertySpecialString("frozen",
-								new PropertyOperation() {
-								    public void found(MModelElement element, String value) {
-									MChangeableKind kind = MChangeableKind.FROZEN;
-									if (value != null && value.equalsIgnoreCase("false"))
-									    kind = MChangeableKind.CHANGEABLE;
-									if (element instanceof MStructuralFeature)
-									    ((MStructuralFeature) element).setChangeability(kind);
-								    }
-								});
-	_attributeSpecialStrings[1] = new PropertySpecialString("addonly",
-								new PropertyOperation() {
-								    public void found(MModelElement element, String value) {
-									MChangeableKind kind = MChangeableKind.ADD_ONLY;
-									if ("false".equalsIgnoreCase(value))
-									    kind = MChangeableKind.CHANGEABLE;
-									if (element instanceof MStructuralFeature)
-									    ((MStructuralFeature) element).setChangeability(kind);
-								    }
-								});
+	_attributeSpecialStrings[0] =
+	    new PropertySpecialString("frozen",
+		    new PropertyOperation()
+		    {
+			public void found(MModelElement element, String value)
+			{
+			    MChangeableKind kind = MChangeableKind.FROZEN;
+			    if (value != null && value.equalsIgnoreCase("false"))
+				kind = MChangeableKind.CHANGEABLE;
+			    if (element instanceof MStructuralFeature)
+				((MStructuralFeature) element).setChangeability(kind);
+			}
+		    });
+	_attributeSpecialStrings[1] =
+	    new PropertySpecialString("addonly",
+		    new PropertyOperation() {
+			public void found(MModelElement element, String value)
+			{
+			    MChangeableKind kind = MChangeableKind.ADD_ONLY;
+			    if ("false".equalsIgnoreCase(value))
+				kind = MChangeableKind.CHANGEABLE;
+			    if (element instanceof MStructuralFeature)
+				((MStructuralFeature) element).setChangeability(kind);
+			}
+		    });
 	_attributeCustomSep = new Vector();
 	_attributeCustomSep.add(MyTokenizer.SINGLE_QUOTED_SEPARATOR);
 	_attributeCustomSep.add(MyTokenizer.DOUBLE_QUOTED_SEPARATOR);
 	_attributeCustomSep.add(MyTokenizer.PAREN_EXPR_STRING_SEPARATOR);
 
 	_operationSpecialStrings = new PropertySpecialString[8];
-	_operationSpecialStrings[0] = new PropertySpecialString("sequential",
-								new PropertyOperation() {
-								    public void found(MModelElement element, String value) {
-									MCallConcurrencyKind kind = MCallConcurrencyKind.SEQUENTIAL;
-									if (element instanceof MOperation)
-									    ((MOperation) element).setConcurrency(kind);
-								    }
-								});
-	_operationSpecialStrings[1] = new PropertySpecialString("guarded",
-								new PropertyOperation() {
-								    public void found(MModelElement element, String value) {
-									MCallConcurrencyKind kind = MCallConcurrencyKind.GUARDED;
-									if (value != null && value.equalsIgnoreCase("false"))
-									    kind = MCallConcurrencyKind.SEQUENTIAL;
-									if (element instanceof MOperation)
-									    ((MOperation) element).setConcurrency(kind);
-								    }
-								});
-	_operationSpecialStrings[2] = new PropertySpecialString("concurrent",
-								new PropertyOperation() {
-								    public void found(MModelElement element, String value) {
-									MCallConcurrencyKind kind = MCallConcurrencyKind.CONCURRENT;
-									if (value != null && value.equalsIgnoreCase("false"))
-									    kind = MCallConcurrencyKind.SEQUENTIAL;
-									if (element instanceof MOperation)
-									    ((MOperation) element).setConcurrency(kind);
-								    }
-								});
-	_operationSpecialStrings[3] = new PropertySpecialString("concurrency",
-								new PropertyOperation() {
-								    public void found(MModelElement element, String value) {
-									MCallConcurrencyKind kind = MCallConcurrencyKind.SEQUENTIAL;
-									if ("guarded".equalsIgnoreCase(value))
-									    kind = MCallConcurrencyKind.GUARDED;
-									else if ("concurrent".equalsIgnoreCase(value))
-									    kind = MCallConcurrencyKind.CONCURRENT;
-									if (element instanceof MOperation)
-									    ((MOperation) element).setConcurrency(kind);
-								    }
-								});
-	_operationSpecialStrings[4] = new PropertySpecialString("abstract",
-								new PropertyOperation() {
-								    public void found(MModelElement element, String value) {
-									boolean isAbstract = true;
-									if (value != null && value.equalsIgnoreCase("false"))
-									    isAbstract = false;
-									if (element instanceof MOperation)
-									    ((MOperation) element).setAbstract(isAbstract);
-								    }
-								});
-	_operationSpecialStrings[5] = new PropertySpecialString("leaf",
-								new PropertyOperation() {
-								    public void found(MModelElement element, String value) {
-									boolean isLeaf = true;
-									if (value != null && value.equalsIgnoreCase("false"))
-									    isLeaf = false;
-									if (element instanceof MOperation)
-									    ((MOperation) element).setLeaf(isLeaf);
-								    }
-								});
-	_operationSpecialStrings[6] = new PropertySpecialString("query",
-								new PropertyOperation() {
-								    public void found(MModelElement element, String value) {
-									boolean isQuery = true;
-									if (value != null && value.equalsIgnoreCase("false"))
-									    isQuery = false;
-									if (element instanceof MBehavioralFeature)
-									    ((MBehavioralFeature) element).setQuery(isQuery);
-								    }
-								});
-	_operationSpecialStrings[7] = new PropertySpecialString("root",
-								new PropertyOperation() {
-								    public void found(MModelElement element, String value) {
-									boolean isRoot = true;
-									if (value != null && value.equalsIgnoreCase("false"))
-									    isRoot = false;
-									if (element instanceof MOperation)
-									    ((MOperation) element).setRoot(isRoot);
-								    }
-								});
+	_operationSpecialStrings[0] =
+	    new PropertySpecialString("sequential",
+		    new PropertyOperation() {
+			public void found(MModelElement element, String value)
+			{
+			    MCallConcurrencyKind kind =
+				MCallConcurrencyKind.SEQUENTIAL;
+			    if (element instanceof MOperation)
+				((MOperation) element).setConcurrency(kind);
+			}
+		    });
+	_operationSpecialStrings[1] =
+	    new PropertySpecialString("guarded",
+		    new PropertyOperation() {
+			public void found(MModelElement element, String value)
+			{
+			    MCallConcurrencyKind kind =
+				MCallConcurrencyKind.GUARDED;
+			    if (value != null && value.equalsIgnoreCase("false"))
+				kind = MCallConcurrencyKind.SEQUENTIAL;
+			    if (element instanceof MOperation)
+				((MOperation) element).setConcurrency(kind);
+			}
+		    });
+	_operationSpecialStrings[2] =
+	    new PropertySpecialString("concurrent",
+		    new PropertyOperation() {
+			public void found(MModelElement element, String value)
+			{
+			    MCallConcurrencyKind kind =
+				MCallConcurrencyKind.CONCURRENT;
+			    if (value != null && value.equalsIgnoreCase("false"))
+				kind = MCallConcurrencyKind.SEQUENTIAL;
+			    if (element instanceof MOperation)
+				((MOperation) element).setConcurrency(kind);
+			}
+		    });
+	_operationSpecialStrings[3] =
+	    new PropertySpecialString("concurrency",
+		    new PropertyOperation() {
+			public void found(MModelElement element, String value) {
+			    MCallConcurrencyKind kind =
+				MCallConcurrencyKind.SEQUENTIAL;
+			    if ("guarded".equalsIgnoreCase(value))
+				kind = MCallConcurrencyKind.GUARDED;
+			    else if ("concurrent".equalsIgnoreCase(value))
+				kind = MCallConcurrencyKind.CONCURRENT;
+			    if (element instanceof MOperation)
+				((MOperation) element).setConcurrency(kind);
+			}
+		    });
+	_operationSpecialStrings[4] =
+	    new PropertySpecialString("abstract",
+		    new PropertyOperation() {
+			public void found(MModelElement element, String value) {
+			    boolean isAbstract = true;
+			    if (value != null && value.equalsIgnoreCase("false"))
+				isAbstract = false;
+			    if (element instanceof MOperation)
+				((MOperation) element).setAbstract(isAbstract);
+			}
+		    });
+	_operationSpecialStrings[5] =
+	    new PropertySpecialString("leaf",
+		    new PropertyOperation() {
+			public void found(MModelElement element, String value) {
+			    boolean isLeaf = true;
+			    if (value != null && value.equalsIgnoreCase("false"))
+				isLeaf = false;
+			    if (element instanceof MOperation)
+				((MOperation) element).setLeaf(isLeaf);
+			}
+		    });
+	_operationSpecialStrings[6] =
+	    new PropertySpecialString("query",
+		    new PropertyOperation() {
+			public void found(MModelElement element, String value)
+			{
+			    boolean isQuery = true;
+			    if (value != null && value.equalsIgnoreCase("false"))
+				isQuery = false;
+			    if (element instanceof MBehavioralFeature)
+				((MBehavioralFeature) element).setQuery(isQuery);
+			}
+		    });
+	_operationSpecialStrings[7] =
+	    new PropertySpecialString("root",
+		    new PropertyOperation() {
+			public void found(MModelElement element, String value)
+			{
+			    boolean isRoot = true;
+			    if (value != null && value.equalsIgnoreCase("false"))
+				isRoot = false;
+			    if (element instanceof MOperation)
+				((MOperation) element).setRoot(isRoot);
+			}
+		    });
 	_operationCustomSep = new Vector();
 	_operationCustomSep.add(MyTokenizer.SINGLE_QUOTED_SEPARATOR);
 	_operationCustomSep.add(MyTokenizer.DOUBLE_QUOTED_SEPARATOR);
@@ -411,7 +435,8 @@ public class ParserDisplay extends Parser {
 		} else if ("<<".equals(token)) {
 		    if (stereotype != null)
 			throw new ParseException("Element cannot have " +
-						 "two stereotypes", st.getTokenIndex());
+						 "two stereotypes",
+						 st.getTokenIndex());
 
 		    stereotype = "";
 		    while (true) {
@@ -423,7 +448,8 @@ public class ParserDisplay extends Parser {
 		} else if ("::".equals(token) || ".".equals(token)) {
 		    if (name == null && path != null)
 			throw new ParseException("Element cannot have " +
-						 "anonymous qualifiers", st.getTokenIndex());
+						 "anonymous qualifiers",
+						 st.getTokenIndex());
 
 		    if (path == null)
 			path = new Vector();
@@ -433,13 +459,15 @@ public class ParserDisplay extends Parser {
 		} else {
 		    if (name != null)
 			throw new ParseException("Element cannot have " +
-						 "two word names or qualifiers", st.getTokenIndex());
+						 "two word names or qualifiers",
+						 st.getTokenIndex());
 
 		    name = token;
 		}
 	    }
 	} catch (NoSuchElementException nsee) {
-	    throw new ParseException("Unexpected end of element", text.length());
+	    throw new ParseException("Unexpected end of element",
+				     text.length());
 	} catch (ParseException pre) {
 	    throw pre;
 	}
@@ -474,9 +502,10 @@ public class ParserDisplay extends Parser {
     }
 
 
-    // checks for ';' in Strings or chars in ';' separated tokens in order to
-    // return an index to the next attribute or operation substring, -1 otherwise
-    // (a ';' inside a String or char delimiters is ignored)
+    // checks for ';' in Strings or chars in ';' separated tokens in
+    // order to return an index to the next attribute or operation
+    // substring, -1 otherwise (a ';' inside a String or char
+    // delimiters is ignored)
     private int indexOfNextCheckedSemicolon(String s, int start) { 
 	if (s == null || start < 0 || start >= s.length())
 	    return -1;
@@ -532,11 +561,13 @@ public class ParserDisplay extends Parser {
 	    s = text.substring(start, end).trim();
 	    if (s != null && s.length() > 0) {
 		// yes, there are more:
-		MOperation newOp = UmlFactory.getFactory().getCore().buildOperation(cls);
+		MOperation newOp =
+		    UmlFactory.getFactory().getCore().buildOperation(cls);
 		if (newOp != null) {
 		    try {
 			parseOperation(s, newOp);
-			//newOp.setOwnerScope(op.getOwnerScope()); // not needed in case of operation
+			//newOp.setOwnerScope(op.getOwnerScope()); //
+			//not needed in case of operation
 			if (i != -1) {
 			    cls.addFeature(++i, newOp);
 			} else {
@@ -593,7 +624,8 @@ public class ParserDisplay extends Parser {
 	    s = text.substring(start, end).trim();
 	    if (s != null && s.length() > 0) {
 		// yes, there are more:
-		MAttribute newAt = UmlFactory.getFactory().getCore().buildAttribute();
+		MAttribute newAt =
+		    UmlFactory.getFactory().getCore().buildAttribute();
 		if (newAt != null) {
 		    try {
 			parseAttribute(s, newAt);
@@ -647,7 +679,8 @@ public class ParserDisplay extends Parser {
 
         // Build a new extension point
 
-        MExtensionPoint ep = UmlFactory.getFactory().getUseCases().buildExtensionPoint(null);
+        MExtensionPoint ep =
+	    UmlFactory.getFactory().getUseCases().buildExtensionPoint(null);
 
         StringTokenizer st = new StringTokenizer(text.trim(), ":", true);
         int numTokens = st.countTokens();
@@ -761,15 +794,21 @@ public class ParserDisplay extends Parser {
 	}
 
 	try {
-	    st = new MyTokenizer(s, " ,\t,<<,>>,:,=,{,},\\,", _operationCustomSep);
+	    st =
+		new MyTokenizer(s, " ,\t,<<,>>,:,=,{,},\\,",
+				_operationCustomSep);
 	    while (st.hasMoreTokens()) {
 		token = st.nextToken();
-		if (" ".equals(token) || "\t".equals(token) || ",".equals(token)) {
+		if (" ".equals(token)
+		    || "\t".equals(token)
+		    || ",".equals(token))
+		{
 		    ; // Do nothing
 		} else if ("<<".equals(token)) {
 		    if (stereotype != null)
 			throw new ParseException("Operations cannot have two " +
-						 "stereotypes", st.getTokenIndex());
+						 "stereotypes",
+						 st.getTokenIndex());
 		    stereotype = "";
 		    while (true) {
 			token = st.nextToken();
@@ -797,7 +836,8 @@ public class ParserDisplay extends Parser {
 				break;
 			} else if ("=".equals(token)) {
 			    if (propvalue != null)
-				throw new ParseException("Property " + propname +
+				throw new ParseException("Property "
+							 + propname +
 							 " cannot have two values",
 							 st.getTokenIndex());
 			    propvalue = "";
@@ -815,18 +855,21 @@ public class ParserDisplay extends Parser {
 		    hasColon = true;
 		} else if ("=".equals(token)) {
 		    throw new ParseException("Operations cannot have " +
-					     "default values", st.getTokenIndex());
+					     "default values",
+					     st.getTokenIndex());
 		} else if (token.charAt(0) == '(' && !hasColon) {
 		    if (parameterlist != null)
 			throw new ParseException("Operations cannot have two " +
-						 "parameter lists", st.getTokenIndex());
+						 "parameter lists",
+						 st.getTokenIndex());
 
 		    parameterlist = token;
 		} else {
 		    if (hasColon) {
 			if (type != null)
 			    throw new ParseException("Operations cannot have " +
-						     "two types", st.getTokenIndex());
+						     "two types",
+						     st.getTokenIndex());
 
 			if (token.length() > 0 && (token.charAt(0) == '\"' ||
 						   token.charAt(0) == '\''))
@@ -835,7 +878,8 @@ public class ParserDisplay extends Parser {
 
 			if (token.length() > 0 && token.charAt(0) == '(')
 			    throw new ParseException("Type cannot be an " +
-						     "expression", st.getTokenIndex());
+						     "expression",
+						     st.getTokenIndex());
 
 			type = token;
 		    } else {
@@ -846,11 +890,13 @@ public class ParserDisplay extends Parser {
 			if (token.length() > 0 && (token.charAt(0) == '\"' ||
 						   token.charAt(0) == '\''))
 			    throw new ParseException("Name or visibility cannot " +
-						     "be quoted", st.getTokenIndex());
+						     "be quoted",
+						     st.getTokenIndex());
 
 			if (token.length() > 0 && token.charAt(0) == '(')
 			    throw new ParseException("Name or visibility cannot " +
-						     "be an expression", st.getTokenIndex());
+						     "be an expression",
+						     st.getTokenIndex());
 
 			if (name == null && visibility == null &&
 			    token.length() > 1 &&
@@ -878,10 +924,12 @@ public class ParserDisplay extends Parser {
 	    // parameterlist is guaranteed to contain at least "("
 	    if (parameterlist.charAt(parameterlist.length() - 1) != ')')
 		throw new ParseException("The parameter list was incomplete",
-					 paramOffset + parameterlist.length() - 1);
+					 paramOffset
+					 + parameterlist.length() - 1);
 
 	    paramOffset++;
-	    parameterlist = parameterlist.substring(1, parameterlist.length() - 1);
+	    parameterlist = parameterlist.substring(1,
+						    parameterlist.length() - 1);
 	    parseParamList(op, parameterlist, paramOffset);
 	}
 
@@ -946,7 +994,8 @@ public class ParserDisplay extends Parser {
      */
     private void parseParamList(MOperation op, String param, int paramOffset)
 	throws ParseException {
-	MyTokenizer st = new MyTokenizer(param, " ,\t,:,=,\\,", _parameterCustomSep);
+	MyTokenizer st = new MyTokenizer(param, " ,\t,:,=,\\,",
+					 _parameterCustomSep);
 	List origParam = op.getParameters();
 	MClassifier ow = op.getOwner();
 	MNamespace ns = null;
@@ -986,22 +1035,26 @@ public class ParserDisplay extends Parser {
 		} else if ("=".equals(tok)) {
 		    if (value != null)
 			throw new ParseException("Parameters cannot have two " +
-						 "default values", paramOffset + st.getTokenIndex());
+						 "default values",
+						 paramOffset + st.getTokenIndex());
 		    hasEq = true;
 		    hasColon = false;
 		    value = "";
 		} else if (hasColon) {
 		    if (type != null)
 			throw new ParseException("Parameters cannot have two " +
-						 "types", paramOffset + st.getTokenIndex());
+						 "types",
+						 paramOffset + st.getTokenIndex());
 
 		    if (tok.charAt(0) == '\'' || tok.charAt(0) == '\"')
 			throw new ParseException("Parameter type cannot be " +
-						 "quoted", paramOffset + st.getTokenIndex());
+						 "quoted",
+						 paramOffset + st.getTokenIndex());
 
 		    if (tok.charAt(0) == '(')
 			throw new ParseException("Parameter type cannot be an " +
-						 "expression", paramOffset + st.getTokenIndex());
+						 "expression",
+						 paramOffset + st.getTokenIndex());
 
 		    type = tok;
 		} else if (hasEq) {
@@ -1009,15 +1062,18 @@ public class ParserDisplay extends Parser {
 		} else {
 		    if (name != null && kind != null)
 			throw new ParseException("Extra text in parameter",
-						 paramOffset + st.getTokenIndex());
+						 paramOffset
+						 + st.getTokenIndex());
 
 		    if (tok.charAt(0) == '\'' || tok.charAt(0) == '\"')
 			throw new ParseException("Parameter name/kind cannot be" +
-						 " quoted", paramOffset + st.getTokenIndex());
+						 " quoted",
+						 paramOffset + st.getTokenIndex());
 
 		    if (tok.charAt(0) == '(')
 			throw new ParseException("Parameter name/kind cannot be" +
-						 " an expression", paramOffset + st.getTokenIndex());
+						 " an expression",
+						 paramOffset + st.getTokenIndex());
 
 		    kind = name;
 		    name = tok;
@@ -1041,8 +1097,8 @@ public class ParserDisplay extends Parser {
 	    if (value != null) {
 		MExpression initExpr =
 		    UmlFactory.getFactory().getDataTypes().createExpression(
-									    Notation.getDefaultNotation().toString(),
-									    value.trim());
+			    Notation.getDefaultNotation().toString(),
+			    value.trim());
 		p.setDefaultValue(initExpr);
 	    }
 	}
@@ -1119,7 +1175,9 @@ public class ParserDisplay extends Parser {
 	if (multiEnd > 0 && multiString.charAt(multiEnd - 1) == ']') --multiEnd;
 	multiString = multiString.substring(multiStart, multiEnd).trim();
 
-	if (multiString.length() > 0) f.setMultiplicity(UmlFactory.getFactory().getDataTypes().createMultiplicity(multiString));
+	if (multiString.length() > 0)
+	    f.setMultiplicity(UmlFactory.getFactory().getDataTypes()
+			      .createMultiplicity(multiString));
 
 	return s;
     }
@@ -1155,7 +1213,9 @@ public class ParserDisplay extends Parser {
     /* (formerly: visibility name [multiplicity] : type-expression
      *   = initial-value {property-string} ) */
     /* (2nd formerly: [visibility] [keywords] type name [= init] [;] ) */
-    public void parseAttribute(String s, MAttribute attr) throws ParseException {
+    public void parseAttribute(String s, MAttribute attr)
+	throws ParseException
+    {
 	String multiplicity = null;
 	String name = null;
 	Vector properties = null;
@@ -1176,10 +1236,14 @@ public class ParserDisplay extends Parser {
 	}
 
 	try {
-	    st = new MyTokenizer(s, " ,\t,<<,>>,[,],:,=,{,},\\,", _attributeCustomSep);
+	    st = new MyTokenizer(s, " ,\t,<<,>>,[,],:,=,{,},\\,",
+				 _attributeCustomSep);
 	    while (st.hasMoreTokens()) {
 		token = st.nextToken();
-		if (" ".equals(token) || "\t".equals(token) || ",".equals(token)) {
+		if (" ".equals(token)
+		    || "\t".equals(token)
+		    || ",".equals(token))
+		{
 		    if (hasEq)
 			value += token;
 		} else if ("<<".equals(token)) {
@@ -1188,7 +1252,8 @@ public class ParserDisplay extends Parser {
 		    } else {
 			if (stereotype != null)
 			    throw new ParseException("Attribute cannot have two " +
-						     "stereotypes", st.getTokenIndex());
+						     "stereotypes",
+						     st.getTokenIndex());
 			stereotype = "";
 			while (true) {
 			    token = st.nextToken();
@@ -1203,7 +1268,8 @@ public class ParserDisplay extends Parser {
 		    } else {
 			if (multiplicity != null)
 			    throw new ParseException("Attribute cannot have two" +
-						     " multiplicities", st.getTokenIndex());
+						     " multiplicities",
+						     st.getTokenIndex());
 			multiplicity = "";
 			multindex = st.getTokenIndex() + 1;
 			while (true) {
@@ -1233,7 +1299,8 @@ public class ParserDisplay extends Parser {
 				break;
 			} else if ("=".equals(token)) {
 			    if (propvalue != null)
-				throw new ParseException("Property " + propname +
+				throw new ParseException("Property "
+							 + propname +
 							 " cannot have two values",
 							 st.getTokenIndex());
 			    propvalue = "";
@@ -1253,7 +1320,8 @@ public class ParserDisplay extends Parser {
 		} else if ("=".equals(token)) {
 		    if (value != null)
 			throw new ParseException("Attribute cannot have two " +
-						 "default values", st.getTokenIndex());
+						 "default values",
+						 st.getTokenIndex());
 		    value = "";
 		    hasColon = false;
 		    hasEq = true;
@@ -1261,14 +1329,16 @@ public class ParserDisplay extends Parser {
 		    if (hasColon) {
 			if (type != null)
 			    throw new ParseException("Attribute cannot have two" +
-						     " types", st.getTokenIndex());
+						     " types",
+						     st.getTokenIndex());
 			if (token.length() > 0 && (token.charAt(0) == '\"' ||
 						   token.charAt(0) == '\''))
 			    throw new ParseException("Type cannot be quoted",
 						     st.getTokenIndex());
 			if (token.length() > 0 && token.charAt(0) == '(')
 			    throw new ParseException("Type cannot be an " +
-						     "expression", st.getTokenIndex());
+						     "expression",
+						     st.getTokenIndex());
 			type = token;
 		    } else if (hasEq) {
 			value += token;
@@ -1279,10 +1349,12 @@ public class ParserDisplay extends Parser {
 			if (token.length() > 0 && (token.charAt(0) == '\"' ||
 						   token.charAt(0) == '\''))
 			    throw new ParseException("Name or visibility cannot " +
-						     "be quoted", st.getTokenIndex());
+						     "be quoted",
+						     st.getTokenIndex());
 			if (token.length() > 0 && token.charAt(0) == '(')
 			    throw new ParseException("Name or visibility cannot " +
-						     "be an expression", st.getTokenIndex());
+						     "be an expression",
+						     st.getTokenIndex());
 
 			if (name == null && visibility == null &&
 			    token.length() > 1 &&
@@ -1307,7 +1379,8 @@ public class ParserDisplay extends Parser {
 	}
 
 	_cat.debug("ParseAttribute [name: " + name + " visibility: " +
-		   visibility + " type: " + type + " value: " + value + " stereo: " +
+		   visibility + " type: " + type + " value: " + value
+		   + " stereo: " +
 		   stereotype + " mult: " + multiplicity);
 
 	if (properties != null) {
@@ -1349,8 +1422,8 @@ public class ParserDisplay extends Parser {
 	if (multiplicity != null) {
 	    try {
 		attr.setMultiplicity(
-				     UmlFactory.getFactory().getDataTypes().createMultiplicity(
-											       multiplicity.trim()));
+			UmlFactory.getFactory().getDataTypes()
+			.createMultiplicity(multiplicity.trim()));
 	    } catch (IllegalArgumentException iae) {
 		throw new ParseException("Bad multiplicity (" + iae + ")",
 					 multindex);
@@ -1383,10 +1456,18 @@ public class ParserDisplay extends Parser {
 	// Should we be getting this from the GUI? BT 11 aug 2002
 	type = p.findType(name, false);
 	if (type == null) { // no type defined yet
-	    type = UmlFactory.getFactory().getCore().buildClass(name, defaultSpace);
+	    type =
+		UmlFactory.getFactory().getCore().buildClass(name,
+							     defaultSpace);
 	}
-	if (type.getModel() != p.getModel() && !ModelManagementHelper.getHelper().getAllNamespaces(p.getModel()).contains(type.getNamespace())) {
-	    type = (MClassifier) ModelManagementHelper.getHelper().getCorrespondingElement(type, defaultSpace.getModel());
+	if (type.getModel() != p.getModel()
+	    && !ModelManagementHelper.getHelper().getAllNamespaces(p.getModel()).contains(type.getNamespace()))
+	{
+	    type =
+		(MClassifier)
+		ModelManagementHelper.getHelper()
+		.getCorrespondingElement(type,
+					 defaultSpace.getModel());
 	}
 	return type;
     }
@@ -1473,7 +1554,8 @@ public class ParserDisplay extends Parser {
 	    if (ExtensionMechanismsHelper.getHelper().isValidStereoType(obj, (MStereotype) root))
 		return (MStereotype) root;
 	    else
-		_cat.debug("Missed stereotype " + ((MStereotype) root).getBaseClass());
+		_cat.debug("Missed stereotype "
+			   + ((MStereotype) root).getBaseClass());
 
 	}
 
@@ -1537,9 +1619,9 @@ public class ParserDisplay extends Parser {
     }
 
     /**
-     * Parses the properties for some attribute a out of a string s. The properties
-     * are all keywords between the braces at the end of a string notation of an
-     * attribute.
+     * Parses the properties for some attribute a out of a string
+     * s. The properties are all keywords between the braces at the
+     * end of a string notation of an attribute.
      * @param a
      * @param s
      * @return String
@@ -1547,8 +1629,10 @@ public class ParserDisplay extends Parser {
     protected String parseOutProperties(MAttribute a, String s) {
 	s = s.trim();
 	if (s.indexOf("{") >= 0) {
-	    StringTokenizer tokenizer = new StringTokenizer(
-							    s.substring(s.indexOf("{") + 1, s.indexOf("}")), ",");
+	    StringTokenizer tokenizer =
+		new StringTokenizer(s.substring(s.indexOf("{") + 1,
+						s.indexOf("}")),
+				    ",");
 	    List properties = new ArrayList();
 	    while (tokenizer.hasMoreElements()) {
 		properties.add(tokenizer.nextToken().trim());
@@ -1561,10 +1645,15 @@ public class ParserDisplay extends Parser {
 		    String tagStr = "";
 		    String valueStr = "";
 		    if (propertyStr.indexOf("=") >= 0) {
-			tagStr = propertyStr.substring(0, propertyStr.indexOf("=") - 1);
-			valueStr = propertyStr.substring(propertyStr.indexOf("=" + 1, propertyStr.length()));
+			tagStr =
+			    propertyStr.substring(0,
+						  propertyStr.indexOf("=") - 1);
+			valueStr =
+			    propertyStr.substring(propertyStr.indexOf("=" + 1,
+								      propertyStr.length()));
 		    }
-		    MTaggedValue tag = UmlFactory.getFactory().getExtensionMechanisms().createTaggedValue();
+		    MTaggedValue tag =
+			UmlFactory.getFactory().getExtensionMechanisms().createTaggedValue();
 
 		    tag.setTag(tagStr);
 		    tag.setValue(valueStr);
@@ -1579,8 +1668,10 @@ public class ParserDisplay extends Parser {
     protected String parseOutProperties(MOperation op, String s) {
 	s = s.trim();
 	if (s.indexOf("{") >= 0) {
-	    StringTokenizer tokenizer = new StringTokenizer(
-							    s.substring(s.indexOf("{") + 1, s.indexOf("}")), ",");
+	    StringTokenizer tokenizer =
+		new StringTokenizer(s.substring(s.indexOf("{") + 1,
+						s.indexOf("}")),
+				    ",");
 	    List properties = new ArrayList();
 	    while (tokenizer.hasMoreElements()) {
 		properties.add(tokenizer.nextToken().trim());
@@ -1605,10 +1696,13 @@ public class ParserDisplay extends Parser {
 				String tagStr = "";
 				String valueStr = "";
 				if (propertyStr.indexOf("=") >= 0) {
-				    tagStr = propertyStr.substring(0, propertyStr.indexOf("=") - 1);
-				    valueStr = propertyStr.substring(propertyStr.indexOf("=" + 1, propertyStr.length()));
+				    tagStr =
+					propertyStr.substring(0, propertyStr.indexOf("=") - 1);
+				    valueStr =
+					propertyStr.substring(propertyStr.indexOf("=" + 1, propertyStr.length()));
 				}
-				MTaggedValue tag = UmlFactory.getFactory().getExtensionMechanisms().createTaggedValue();
+				MTaggedValue tag =
+				    UmlFactory.getFactory().getExtensionMechanisms().createTaggedValue();
 				tag.setTag(tagStr);
 				tag.setValue(valueStr);
 				op.addTaggedValue(tag);
@@ -1625,16 +1719,21 @@ public class ParserDisplay extends Parser {
       public String parseOutMultiplicity(MFeature f, String s) {
 
       s = s.trim();
-      MMultiplicity multi = UmlFactory.getFactory().getDataTypes().createMultiplicity();
+      MMultiplicity multi =
+      UmlFactory.getFactory().getDataTypes().createMultiplicity();
       boolean startMulti = false; // start of a multiplicity
       boolean inRange = false;    // true if we are in a range
       boolean formerNumber = false;   // true if last char was a number
       boolean inMultiString = true;  // true if we are still parsing a multi
                                      // string\
-				     boolean inDots = false      // true if we are in ..
-				     int dotCounter = 0;          // number of dots we passed
-				     StringBuffer startMultiSb = new StringBuffer();
-				     StringBuffer endMultiSb = new StringBuffer();
+				     boolean inDots =
+				     false      // true if we are in ..
+				     int dotCounter =
+				     0;          // number of dots we passed
+				     StringBuffer startMultiSb =
+				     new StringBuffer();
+				     StringBuffer endMultiSb =
+				     new StringBuffer();
 				     for (int i = 0; i < s.length(); i++) {
 				     char c = s.charAt(i);
 				     switch (c) {
@@ -1642,11 +1741,14 @@ public class ParserDisplay extends Parser {
 				     case '4' : case '5' : case '6' : case '7' :
 				     case '8' : case '9' : case '*' :
 				     if (!inRange && inMultiString) { // we start possibly a range
-				     startMulti = true;
+				     startMulti =
+				     true;
 				     startMultiSb.append(c);
 				     }
-				     if (inRange && inMultiString) { // end range
-				     if (inDots) {               // first char of endrange
+				     if (inRange && inMultiString) {
+				     // end range
+				     if (inDots) {
+				     // first char of endrange
 				     inDots = false;
 				     endMultiSb = new StringBuffer();
 				     }
@@ -1661,13 +1763,15 @@ public class ParserDisplay extends Parser {
 				     dotCounter++;
 				     break;
 				     case ',' :
-				     if (inMultiString) { // we have an end sign of a mutiplicity
+				     if (inMultiString) {
+				     // we have an end sign of a mutiplicity
 
 				     break;
 				     case ' ' :
 				     break;
 				     default : // some other character
-				     inMultiString = false; //only here if we stopped parsing the
+				     inMultiString = false;
+				     //only here if we stopped parsing the
 				     // multistring
 				     break;
 				     }
@@ -1728,7 +1832,8 @@ public class ParserDisplay extends Parser {
 	String leftOver = s;
 	int end = s.lastIndexOf(")");
 	if (end != -1) {
-	    java.util.StringTokenizer st = new java.util.StringTokenizer(s.substring(1, end), ",");
+	    java.util.StringTokenizer st =
+		new java.util.StringTokenizer(s.substring(1, end), ",");
 	    while (st.hasMoreTokens()) {
 		String token = st.nextToken();
 		MParameter p = parseParameter(token);
@@ -1736,12 +1841,16 @@ public class ParserDisplay extends Parser {
 		    op.addParameter(p);
 		    // we set the listeners to the figs here too
 		    // it would be better to do that in the figs themselves
-		    Project pr = ProjectManager.getManager().getCurrentProject();
+		    Project pr =
+			ProjectManager.getManager().getCurrentProject();
 		    Iterator it = pr.findFigsForMember(op).iterator();
 		    while (it.hasNext()) {
-			MElementListener listener = (MElementListener) it.next();
-			// UmlModelEventPump.getPump().removeModelEventListener(listener, p);
-			UmlModelEventPump.getPump().addModelEventListener(listener, p);
+			MElementListener listener =
+			    (MElementListener) it.next();
+			// UmlModelEventPump.getPump().removeModelEventListener(listener,
+			// p);
+			UmlModelEventPump.getPump().addModelEventListener(listener,
+									  p);
 		    }
 		}
 		leftOver = s.substring(end + 1);
@@ -1751,8 +1860,8 @@ public class ParserDisplay extends Parser {
     }
 
     /**
-     * Parses the name of modelelement me from some input string s. The name must be
-     * the first word of the string.
+     * Parses the name of modelelement me from some input string
+     * s. The name must be the first word of the string.
      * @param me
      * @param s
      * @return String
@@ -1760,7 +1869,8 @@ public class ParserDisplay extends Parser {
     public String parseOutName(MModelElement me, String s) {
 	String delim = ": \t()[]{}=;";
 	s = s.trim();
-	if (s.equals("") || delim.indexOf(s.charAt(0)) >= 0) { //duh there is no name
+	if (s.equals("") || delim.indexOf(s.charAt(0)) >= 0) {
+	    //duh there is no name
 	    if (me.getName() == null || me.getName().equals("")) {
 		me.setName("anno");
 	    }
@@ -1798,9 +1908,11 @@ public class ParserDisplay extends Parser {
             String typeExpr = beforeAnyOf(s, " ={").trim();
 	    if (typeExpr.length() > 0) {
 		Project p = ProjectManager.getManager().getCurrentProject();
-		type = p.findType(typeExpr); // Should we be getting this from the GUI? BT 11 aug 2002
+		type = p.findType(typeExpr);
+		// Should we be getting this from the GUI? BT 11 aug 2002
 		if (type == null) { // no type defined yet
-		    type = UmlFactory.getFactory().getCore().buildClass(typeExpr);
+		    type =
+			UmlFactory.getFactory().getCore().buildClass(typeExpr);
 		}
 		if (attr.getNamespace() != null) {
 		    type.setNamespace(attr.getNamespace());
@@ -1830,13 +1942,15 @@ public class ParserDisplay extends Parser {
 		Project p = ProjectManager.getManager().getCurrentProject();
 		type = p.findType(typeExpr);
 		if (type == null) { // no type defined yet
-		    type = UmlFactory.getFactory().getCore().buildClass(typeExpr);
+		    type =
+			UmlFactory.getFactory().getCore().buildClass(typeExpr);
 		    // the owner of this type should be the model in which
 		    // the class that contains the operation lives
 		    // since we don't know that class, the model is not set here
 		    // but in the method that calls parseOperation(String s)
 		}
-		MParameter param = UmlFactory.getFactory().getCore().buildParameter();
+		MParameter param =
+		    UmlFactory.getFactory().getCore().buildParameter();
 		UmlHelper.getHelper().getCore().setReturnParameter(op, param);
 		param.setType(type);
 		s = s.substring(typeExpr.length(), s.length());
@@ -1850,13 +1964,20 @@ public class ParserDisplay extends Parser {
         s = s.trim();
         int equalsIndex = s.indexOf("=");
         int braceIndex = s.indexOf("{");
-        if (equalsIndex >= 0 && ((braceIndex >= 0 && braceIndex > equalsIndex) ||
-				(braceIndex < 0 && equalsIndex >= 0 ))) { // we have ourselves some init
+        if (equalsIndex >= 0
+	    && ((braceIndex >= 0 && braceIndex > equalsIndex)
+		|| (braceIndex < 0 && equalsIndex >= 0 )))
+	{ // we have ourselves some init
 	    // expression
             s = s.substring(equalsIndex, s.length());
-            String initExprStr = s.substring(s.indexOf("=") + 1, (braceIndex < 0) ?
-					     s.length() : s.indexOf("{"));
-            MExpression initExpr = UmlFactory.getFactory().getDataTypes().createExpression(Notation.getDefaultNotation().toString(), initExprStr);
+            String initExprStr =
+		s.substring(s.indexOf("=") + 1,
+			    (braceIndex < 0)
+			    ? s.length()
+			    : s.indexOf("{"));
+            MExpression initExpr =
+		UmlFactory.getFactory().getDataTypes().createExpression(Notation.getDefaultNotation().toString(),
+									initExprStr);
             attr.setInitialValue(initExpr);
             return s.substring(initExprStr.length(), s.length());
         }
@@ -1864,7 +1985,8 @@ public class ParserDisplay extends Parser {
     }
 
     public MParameter parseParameter(String s) {
-	java.util.StringTokenizer st = new java.util.StringTokenizer(s, ": = \t");
+	java.util.StringTokenizer st =
+	    new java.util.StringTokenizer(s, ": = \t");
 	String typeStr = "int";
 	String paramNameStr = "parameterName?";
 
@@ -1927,7 +2049,8 @@ public class ParserDisplay extends Parser {
 	    else {
 		MTransition t =
 		    parseTransition(UmlFactory.getFactory().
-				    getStateMachines().createTransition(), line);
+				    getStateMachines().createTransition(),
+				    line);
 
 
 		if (t == null) continue;
@@ -1994,7 +2117,8 @@ public class ParserDisplay extends Parser {
 
 	if (s.indexOf("[", 0) > -1 && s.indexOf("]", 0) > -1) {
 	    guard = s.substring(s.indexOf("[", 0) + 1, s.indexOf("]")).trim();
-	    s = s.substring(0, s.indexOf("[")) + s.substring(s.indexOf("]") + 1);
+	    s = s.substring(0, s.indexOf("[")) + s.substring(s.indexOf("]")
+							     + 1);
 	    s = s.trim();
 	}
 
@@ -2234,8 +2358,9 @@ public class ParserDisplay extends Parser {
 	currentseq.add(null);
 
 	try {
-	    MyTokenizer st = new MyTokenizer(s, " ,\t,*,[,],.,:,=,/,\\,",
-					     MyTokenizer.PAREN_EXPR_STRING_SEPARATOR);
+	    MyTokenizer st =
+		new MyTokenizer(s, " ,\t,*,[,],.,:,=,/,\\,",
+				MyTokenizer.PAREN_EXPR_STRING_SEPARATOR);
 
 	    while (st.hasMoreTokens()) {
 		token = st.nextToken();
@@ -2249,7 +2374,8 @@ public class ParserDisplay extends Parser {
 		} else if ("[".equals(token)) {
 		    if (mustBePre)
 			throw new ParseException("Predecessors cannot be " +
-						 "qualified", st.getTokenIndex());
+						 "qualified",
+						 st.getTokenIndex());
 		    mustBeSeq = true;
 
 		    if (guard != null)
@@ -2267,7 +2393,8 @@ public class ParserDisplay extends Parser {
 		} else if ("*".equals(token)) {
 		    if (mustBePre)
 			throw new ParseException("Predecessors cannot be " +
-						 "iterated", st.getTokenIndex());
+						 "iterated",
+						 st.getTokenIndex());
 		    mustBeSeq = true;
 
 		    if (currentseq != null)
@@ -2347,7 +2474,8 @@ public class ParserDisplay extends Parser {
 		} else if ("//".equals(token)) {
 		    if (mustBePre)
 			throw new ParseException("Predecessors cannot be " +
-						 "parallellized", st.getTokenIndex());
+						 "parallellized",
+						 st.getTokenIndex());
 		    mustBeSeq = true;
 
 		    if (currentseq != null)
@@ -2356,7 +2484,8 @@ public class ParserDisplay extends Parser {
 		    if (currentseq != null) {
 			if (mustBeSeq)
 			    throw new ParseException("Messages cannot have many " +
-						     "sequence numbers", st.getTokenIndex());
+						     "sequence numbers",
+						     st.getTokenIndex());
 			mustBePre = true;
 
 			if (currentseq.size() > 2 &&
@@ -2404,7 +2533,8 @@ public class ParserDisplay extends Parser {
 						     st.getTokenIndex());
 			if (fname == null || "".equals(fname))
 			    throw new ParseException("Must be a function name " +
-						     "before the parameters", st.getTokenIndex());
+						     "before the parameters",
+						     st.getTokenIndex());
 			if (varname == null)
 			    varname = "";
 			paramExpr = token.substring(1, token.length() - 1);
@@ -2417,8 +2547,10 @@ public class ParserDisplay extends Parser {
 						 ")", st.getTokenIndex());
 		    }
 		} else {
-		    boolean hasVal = currentseq.get(currentseq.size() - 2) != null;
-		    boolean hasOrd = currentseq.get(currentseq.size() - 1) != null;
+		    boolean hasVal =
+			currentseq.get(currentseq.size() - 2) != null;
+		    boolean hasOrd =
+			currentseq.get(currentseq.size() - 1) != null;
 		    boolean assigned = false;
 		    int bp = findMsgOrderBreak(token);
 
@@ -2445,7 +2577,8 @@ public class ParserDisplay extends Parser {
 			Integer nbr, ord;
 			try {
 			    nbr = new Integer(token.substring(0, bp));
-			    ord = new Integer(parseMsgOrder(token.substring(bp)));
+			    ord =
+				new Integer(parseMsgOrder(token.substring(bp)));
 			    currentseq.set(currentseq.size() - 2,
 					   nbr);
 			    currentseq.set(currentseq.size() - 1,
@@ -2518,8 +2651,11 @@ public class ParserDisplay extends Parser {
 		    buf.append(v.get(j) + " (" + v.get(j + 1)  + ")");
 		}
 	    }
-	    buf.append("guard: " + guard + " it: " + iterative + " pl: " + parallell + "\n");
-	    buf.append(varname + " := " + fname + " ( " + paramExpr + " )" + "\n");
+	    buf.append("guard: " + guard + " it: " + iterative + " pl: "
+		       + parallell
+		       + "\n");
+	    buf.append(varname + " := " + fname + " ( " + paramExpr + " )"
+		       + "\n");
 	    _cat.debug(buf);
 	}
 
@@ -2635,18 +2771,24 @@ public class ParserDisplay extends Parser {
 	    String gname = GeneratorDisplay.getInstance()
 		.generateMessageNumber(mes);
 	    boolean swapRoles = false;
-	    int majval = (seqno.get(seqno.size() - 2) != null ?
-			  Math.max(((Integer) seqno.get(seqno.size() - 2)).intValue() - 1, 0)
-			  : 0);
-	    int minval = (seqno.get(seqno.size() - 1) != null ?
-			  Math.max(((Integer) seqno.get(seqno.size() - 1)).intValue(), 0)
-			  : 0);
+	    int majval =
+		(seqno.get(seqno.size() - 2) != null
+		 ? Math.max(((Integer) seqno.get(seqno.size() - 2)).intValue() - 1,
+			    0)
+		 : 0);
+	    int minval =
+		(seqno.get(seqno.size() - 1) != null
+		 ? Math.max(((Integer) seqno.get(seqno.size() - 1)).intValue(),
+			    0)
+		 : 0);
 
 	    for (i = 0; i + 1 < seqno.size(); i += 2) {
 		int bv = (seqno.get(i) != null ?
 			  Math.max(((Integer) seqno.get(i)).intValue(), 1) : 1);
-		int sv = (seqno.get(i + 1) != null ?
-			  Math.max(((Integer) seqno.get(i + 1)).intValue(), 0) : 0);
+		int sv =
+		    (seqno.get(i + 1) != null
+		     ? Math.max(((Integer) seqno.get(i + 1)).intValue(), 0)
+		     : 0);
 
 		if (i > 0)
 		    mname += ".";
@@ -2680,7 +2822,8 @@ public class ParserDisplay extends Parser {
 	    } else if (mes.getPredecessors().size() > 1 &&
 		       mes.getMessages3().size() > 1) {
 		throw new ParseException("Cannot move a message which is " +
-					 "both start and end of several threads", 0);
+					 "both start and end of several threads",
+					 0);
 	    } else if (root == null && pname.length() > 0) {
 		throw new ParseException("Cannot find the activator for the " +
 					 "message", 0);
@@ -2718,21 +2861,24 @@ public class ParserDisplay extends Parser {
 		}
 
 		if (root == null) {
-		    c = filterWithActivator(mes.getSender().getMessages2(), null);
+		    c =
+			filterWithActivator(mes.getSender().getMessages2(),
+					    null);
 		} else {
 		    c = root.getMessages4();
 		}
 		c2 = findCandidateRoots(c, root, mes);
 		it = c2.iterator();
-		// If c2 is empty, then we're done
-		// (or there is a cycle in the message graph, which would be bad)
-		// If c2 has more than one element, then the model is crappy,
-		// but we'll just use one of them anyway
+		// If c2 is empty, then we're done (or there is a
+		// cycle in the message graph, which would be bad) If
+		// c2 has more than one element, then the model is
+		// crappy, but we'll just use one of them anyway
 		if (majval <= 0) {
 		    while (it.hasNext())
 			mes.addMessage3((MMessage) it.next());
 		} else if (it.hasNext()) {
-		    MMessage pre = walk((MMessage) it.next(), majval - 1, false);
+		    MMessage pre =
+			walk((MMessage) it.next(), majval - 1, false);
 		    MMessage post = successor(pre, minval);
 		    if (post != null) {
 			post.removePredecessor(pre);
@@ -2746,8 +2892,9 @@ public class ParserDisplay extends Parser {
 
 	if (fname != null && refindOperation) {
 	    MClassifierRole role = mes.getReceiver();
-	    Vector ops = getOperation(role.getBases(), fname.trim(),
-				      mes.getAction().getActualArguments().size());
+	    Vector ops =
+		getOperation(role.getBases(), fname.trim(),
+			     mes.getAction().getActualArguments().size());
 
 	    // TODO: Should someone choose one, if there are more
 	    // than one?
@@ -2781,7 +2928,8 @@ public class ParserDisplay extends Parser {
 		    if (msg != null && msg != mes) {
 			if (isBadPreMsg(mes, msg)) {
 			    throw new ParseException("One predecessor cannot be " +
-						     "a predecessor to this message", 0);
+						     "a predecessor to this message",
+						     0);
 			}
 			pre.add(msg);
 			continue predfor;
@@ -2856,7 +3004,8 @@ public class ParserDisplay extends Parser {
 		}
 	    }
 	    if (i + 3 < path.size()) {
-		Iterator it = findCandidateRoots(root.getMessages4(), root, null)
+		Iterator it =
+		    findCandidateRoots(root.getMessages4(), root, null)
 		    .iterator();
 		// Things are strange if there are more than one candidate root,
 		// it has no obvious interpretation in terms of a call tree.
@@ -2980,8 +3129,8 @@ public class ParserDisplay extends Parser {
 	Iterator it = c.iterator();
 	while (it.hasNext()) {
 	    MMessage msg = (MMessage) it.next();
-	    String gname = GeneratorDisplay.getInstance().generateMessageNumber(
-										msg);
+	    String gname =
+		GeneratorDisplay.getInstance().generateMessageNumber(msg);
 	    if (compareMsgNumbers(gname, n))
 		return msg;
 	}
@@ -3104,15 +3253,18 @@ public class ParserDisplay extends Parser {
 		expr += "param" + (i + 1);
 	    }
 	    expr += ")";
-	    // Jaap Branderhorst 2002-23-09 added next lines to link parameters and
-	    // operations to the figs that represent them
+	    // Jaap Branderhorst 2002-23-09 added next lines to link
+	    // parameters and operations to the figs that represent
+	    // them
 	    MClassifier cls = (MClassifier) it.next();
-	    MOperation op = UmlFactory.getFactory().getCore().buildOperation(cls);
+	    MOperation op =
+		UmlFactory.getFactory().getCore().buildOperation(cls);
 
 	    try {
 		parseOperation(expr, op);
 	    } catch (ParseException pe) {
-		_cat.error("Unexpected ParseException in getOperation: " + pe, pe);
+		_cat.error("Unexpected ParseException in getOperation: " + pe,
+			   pe);
 
 	    }
 	    options.add(op);
@@ -3194,7 +3346,8 @@ public class ParserDisplay extends Parser {
 	    name = s.substring(0, s.indexOf(":")).trim();
 	    actionfirst = s.substring(s.indexOf(":") + 1).trim();
 	    if (actionfirst.indexOf(":", 0) > 1) {
-		action = actionfirst.substring(0, actionfirst.indexOf(":")).trim();
+		action =
+		    actionfirst.substring(0, actionfirst.indexOf(":")).trim();
 	    }
 	    else action = actionfirst;
 	}
@@ -3206,7 +3359,8 @@ public class ParserDisplay extends Parser {
     }
 
     public Object parseAction(String s) {
-	MCallAction a = UmlFactory.getFactory().getCommonBehavior().createCallAction();
+	MCallAction a =
+	    UmlFactory.getFactory().getCommonBehavior().createCallAction();
 
 	a.setScript(UmlFactory.getFactory().getDataTypes().createActionExpression("Java", s));
 
@@ -3228,7 +3382,8 @@ public class ParserDisplay extends Parser {
     }
 
     public MEvent parseEvent(String s) {
-	MCallEvent ce = UmlFactory.getFactory().getStateMachines().buildCallEvent();
+	MCallEvent ce =
+	    UmlFactory.getFactory().getStateMachines().buildCallEvent();
 	ce.setName(s);
 	return ce;
     }
@@ -3262,7 +3417,8 @@ public class ParserDisplay extends Parser {
 	if (baseTokens != null) {
 	    while (baseTokens.hasMoreElements()) {
 		String typeString = baseTokens.nextToken();
-		MClassifier type = ProjectManager.getManager().getCurrentProject().findType(typeString);
+		MClassifier type =
+		    ProjectManager.getManager().getCurrentProject().findType(typeString);
 		obj.addClassifier(type);
 	    }
 	}

@@ -147,9 +147,9 @@ public class TabDiagram
      * Sets the target of the tab. The target should allways be an instance of
      * UMLDiagram
      * @param t
-     * @deprecated As of ArgoUml version 0.13.5,
-     *             the visibility of this method will change in the future,
-     *             replaced by {@link org.argouml.ui.targetmanager.TargetManager}.
+     * @deprecated As of ArgoUml version 0.13.5, the visibility of
+     * this method will change in the future, replaced by {@link
+     * org.argouml.ui.targetmanager.TargetManager}.
      */
     public void setTarget(Object t) {
 
@@ -265,7 +265,8 @@ public class TabDiagram
     }
 
     /**
-     * @see org.argouml.ui.targetmanager.TargetListener#targetAdded(org.argouml.ui.targetmanager.TargetEvent)
+     * @see
+     * org.argouml.ui.targetmanager.TargetListener#targetAdded(org.argouml.ui.targetmanager.TargetEvent)
      */
     public void targetAdded(TargetEvent e) {
         // we can neglect this, the TabDiagram allways selects the first target
@@ -274,7 +275,8 @@ public class TabDiagram
     }
 
     /**
-     * @see org.argouml.ui.targetmanager.TargetListener#targetRemoved(org.argouml.ui.targetmanager.TargetEvent)
+     * @see
+     * org.argouml.ui.targetmanager.TargetListener#targetRemoved(org.argouml.ui.targetmanager.TargetEvent)
      */
     public void targetRemoved(TargetEvent e) {
         // how to handle empty target lists?
@@ -285,7 +287,8 @@ public class TabDiagram
     }
 
     /**
-     * @see org.argouml.ui.targetmanager.TargetListener#targetSet(org.argouml.ui.targetmanager.TargetEvent)
+     * @see
+     * org.argouml.ui.targetmanager.TargetListener#targetSet(org.argouml.ui.targetmanager.TargetEvent)
      */
     public void targetSet(TargetEvent e) {
         setTarget(e.getNewTargets()[0]);
@@ -327,7 +330,10 @@ class ArgoJGraph extends JGraph {
     public boolean equals(Object o) {
         if (o instanceof ArgoJGraph) {
             ArgoJGraph a = (ArgoJGraph) o;            
-            if (((this._currentDiagramId != null && this._currentDiagramId.equals(a._currentDiagramId)) || (this._currentDiagramId == null && a._currentDiagramId == null))
+            if (((this._currentDiagramId != null
+		  && this._currentDiagramId.equals(a._currentDiagramId))
+		 || (this._currentDiagramId == null
+		     && a._currentDiagramId == null))
                 && this.getEditor().equals(a.getEditor()))
                 return true;
         }
@@ -383,7 +389,8 @@ class ArgoEditor extends Editor {
 	_modeManager.mouseEntered(me);
     }
         
-    /** Invoked when the mouse button has been moved (with no buttons no down). */
+    /** Invoked when the mouse button has been moved (with no buttons
+     * no down). */
     public void mouseMoved(MouseEvent me) {
 	//- RedrawManager.lock();
 	translateMouseEvent(me);
@@ -394,11 +401,12 @@ class ArgoEditor extends Editor {
 	    if (tip != null && tip.length() > 0 && !tip.endsWith(" "))
 		tip += " ";
 	    if (tip != null && (getAwtComponent() instanceof JComponent)) {
-		if (((JComponent) getAwtComponent()).getToolTipText() != null && !((JComponent) getAwtComponent()).getToolTipText().equals(tip))
+		if (((JComponent) getAwtComponent()).getToolTipText() != null
+		    && !((JComponent) getAwtComponent()).getToolTipText().equals(tip))
                     ((JComponent) getAwtComponent()).setToolTipText(tip);
 	    }
 	} else if (getAwtComponent() instanceof JComponent) {
-	    if (((JComponent) getAwtComponent()).getToolTipText() != null)            
+	    if (((JComponent) getAwtComponent()).getToolTipText() != null)
 		((JComponent) getAwtComponent()).setToolTipText(null); //was ""
 	}
 

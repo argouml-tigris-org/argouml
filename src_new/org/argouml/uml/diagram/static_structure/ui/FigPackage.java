@@ -146,16 +146,13 @@ public class FigPackage extends FigNodeModelElement {
 					   _stereo.getX() + _stereo.getWidth() + i,
 					   _stereo.getY() + _stereo.getHeight() + _name.getHeight() + _shadowSize - 2);
                                 
-				//int blinderheight =
-				//    (_name.getY()
-				//        - 1
-				//        - (_stereo.getY() + _stereo.getHeight() + 1));
-				//if (blinderheight > 0) {
-				//                  g.fillRect(_stereo.getX()+_stereo.getWidth(),
-				//                             _stereo.getY()+_stereo.getHeight(),
-				//                             _shadowSize,
-				//                             blinderheight);
-				//}
+				//int blinderheight = (_name.getY() -
+				//1 - (_stereo.getY() +
+				//_stereo.getHeight() + 1)); if
+				//(blinderheight > 0) {
+				//g.fillRect(_stereo.getX()+_stereo.getWidth(),
+				//_stereo.getY()+_stereo.getHeight(),
+				//_shadowSize, blinderheight); }
 			    }
 			    else if (_name.getHeight() > _shadowSize) {
 				g.drawLine(
@@ -212,7 +209,8 @@ public class FigPackage extends FigNodeModelElement {
 				}
 			    } /*while*/
 
-			    /* if we get here then we didnt get the default diagram*/
+			    /* if we get here then we didnt get the
+			     * default diagram*/
 			    if (lFirst != null) {
 				me.consume();
 				super.mouseClicked(me);
@@ -241,7 +239,8 @@ public class FigPackage extends FigNodeModelElement {
 								      "Add new class diagram?",
 								      JOptionPane.YES_NO_OPTION);
 				    if (option == JOptionPane.YES_OPTION) {
-					ArgoDiagram lNew = new UMLClassDiagram(lNS);
+					ArgoDiagram lNew =
+					    new UMLClassDiagram(lNS);
 					String diagramName =
 					    lsDefaultName + "_" + lNew.getName();
 
@@ -430,14 +429,15 @@ public class FigPackage extends FigNodeModelElement {
                     _stereoLineBlinder.setDisplayed(true);
                     _stereo.setDisplayed(true);
 
-                    // Only adjust the stereotype height if we are not newly
-                    // created. This gets round the problem of loading classes with
-                    // stereotypes defined, which have the height already including
-                    // the stereotype.
+                    // Only adjust the stereotype height if we are not
+                    // newly created. This gets round the problem of
+                    // loading classes with stereotypes defined, which
+                    // have the height already including the
+                    // stereotype.
 
                     if (!_newlyCreated) {
-                        //						rect.y      -= STEREOHEIGHT;
-                        //						rect.height += STEREOHEIGHT;
+                        // rect.y -= STEREOHEIGHT; rect.height +=
+                        // STEREOHEIGHT;
                     }
                 }
             }
@@ -617,7 +617,8 @@ public class FigPackage extends FigNodeModelElement {
     }
 
     /**
-     * Build a collection of menu items relevant for a right-click popup menu on a Package.
+     * Build a collection of menu items relevant for a right-click
+     * popup menu on a Package.
      *
      * @param     me     a mouse event
      * @return          a collection of menu items

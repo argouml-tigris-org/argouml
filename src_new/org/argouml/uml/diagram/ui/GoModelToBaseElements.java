@@ -34,7 +34,8 @@ import org.argouml.ui.AbstractGoRule;
 
 
 public class GoModelToBaseElements extends AbstractGoRule {
-    protected static Category cat = Category.getInstance(GoModelToBaseElements.class);
+    protected static Category cat =
+	Category.getInstance(GoModelToBaseElements.class);
 
     public String getRuleName() {
 	return Argo.localize ("Tree", "misc.package.base-class");

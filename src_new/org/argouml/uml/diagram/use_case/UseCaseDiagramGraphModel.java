@@ -69,9 +69,12 @@ import ru.novosoft.uml.model_management.MElementImport;
  * <p>This class handles only UML Use Case Diagrams.</p>
  */
 
-public class UseCaseDiagramGraphModel extends UMLMutableGraphSupport
-    implements VetoableChangeListener {
-    protected static Category cat = Category.getInstance(UseCaseDiagramGraphModel.class);
+public class UseCaseDiagramGraphModel
+    extends UMLMutableGraphSupport
+    implements VetoableChangeListener
+{
+    protected static Category cat =
+	Category.getInstance(UseCaseDiagramGraphModel.class);
 
     ///////////////////////////////////////////////////////////////////////////
     //

@@ -231,7 +231,9 @@ public class FigUseCase extends FigNodeModelElement {
         // a surrounding line. Its bounds, which allow for one line (which is
         // empty) are the same as for the name box at this stage.
 
-        _epBigPort = new FigRect(0, 30, _name.getBounds().width, 20, Color.black, Color.white);
+        _epBigPort =
+	    new FigRect(0, 30, _name.getBounds().width, 20, Color.black,
+			Color.white);
 
         _epBigPort.setFilled(false);
         _epBigPort.setLineWidth(0);
@@ -264,7 +266,10 @@ public class FigUseCase extends FigNodeModelElement {
 
         Dimension nameSize = _name.getMinimumSize();
 
-        _name.setBounds((ellipse.width - nameSize.width) / 2, _MIN_VERT_PADDING, nameSize.width, nameSize.height);
+        _name.setBounds((ellipse.width - nameSize.width) / 2,
+			_MIN_VERT_PADDING,
+			nameSize.width,
+			nameSize.height);
         
         _stereo.setBounds(0, 0, 0, 0);
 
@@ -272,7 +277,10 @@ public class FigUseCase extends FigNodeModelElement {
         // rectangles are the same size at this stage, this must be at the
         // midpoint of the elipse.
 
-        _epSep.setShape(0, ellipse.height / 2, ellipse.width, ellipse.height / 2);
+        _epSep.setShape(0,
+			ellipse.height / 2,
+			ellipse.width,
+			ellipse.height / 2);
 
         // The surrounding box for the extension points. At this stage we know
         // the separator is 1 pixel wide at the midpoint, and there is _SPACER
@@ -280,7 +288,10 @@ public class FigUseCase extends FigNodeModelElement {
 
         Dimension epSize = _epBigPort.getMinimumSize();
 
-        _epBigPort.setBounds((ellipse.width - epSize.width) / 2, ellipse.height / 2 + 1 + _SPACER, epSize.width, epSize.height);
+        _epBigPort.setBounds((ellipse.width - epSize.width) / 2,
+			     ellipse.height / 2 + 1 + _SPACER,
+			     epSize.width,
+			     epSize.height);
 
         // add Figs to the FigNode in back-to-front order
 
@@ -408,11 +419,23 @@ public class FigUseCase extends FigNodeModelElement {
 
         MUseCase useCase = (MUseCase) getOwner();
 
-        modifierMenu.addCheckItem(new ActionModifier("Abstract", "isAbstract", "isAbstract", "setAbstract", useCase));
+        modifierMenu.addCheckItem(new ActionModifier("Abstract",
+						     "isAbstract",
+						     "isAbstract",
+						     "setAbstract",
+						     useCase));
 
-        modifierMenu.addCheckItem(new ActionModifier("Leaf", "isLeaf", "isLeaf", "setLeaf", useCase));
+        modifierMenu.addCheckItem(new ActionModifier("Leaf",
+						     "isLeaf",
+						     "isLeaf",
+						     "setLeaf",
+						     useCase));
 
-        modifierMenu.addCheckItem(new ActionModifier("Root", "isRoot", "isRoot", "setRoot", useCase));
+        modifierMenu.addCheckItem(new ActionModifier("Root",
+						     "isRoot",
+						     "isRoot",
+						     "setRoot",
+						     useCase));
 
         popUpActions.insertElementAt(modifierMenu, popUpActions.size() - 1);
 
@@ -472,7 +495,9 @@ public class FigUseCase extends FigNodeModelElement {
 
             // Redo the bounds and then tell GEF the change has finished
 
-            setBounds(oldBounds.x, oldBounds.y, oldBounds.width, oldBounds.height);
+            setBounds(oldBounds.x, oldBounds.y,
+		      oldBounds.width,
+		      oldBounds.height);
             endTrans();
         }
 
@@ -499,7 +524,9 @@ public class FigUseCase extends FigNodeModelElement {
 
             // Redo the bounds and then tell GEF the change has finished
 
-            setBounds(oldBounds.x, oldBounds.y, oldBounds.width, oldBounds.height);
+            setBounds(oldBounds.x, oldBounds.y,
+		      oldBounds.width,
+		      oldBounds.height);
             endTrans();
         }
     }
@@ -547,7 +574,8 @@ public class FigUseCase extends FigNodeModelElement {
 
         Dimension _size = _calcEllipse(textSize, _MIN_VERT_PADDING);
 
-        return new Dimension(Math.max(_size.width, 100), Math.max(_size.height, 60));
+        return new Dimension(Math.max(_size.width, 100),
+			     Math.max(_size.height, 60));
     }
 
     /**
@@ -576,7 +604,8 @@ public class FigUseCase extends FigNodeModelElement {
             enum.nextElement(); // ignore
 
             while (enum.hasMoreElements()) {
-                int elemWidth = ((FigText) enum.nextElement()).getMinimumSize().width;
+                int elemWidth =
+		    ((FigText) enum.nextElement()).getMinimumSize().width;
                 minSize.width = Math.max(minSize.width, elemWidth);
             }
 
@@ -584,7 +613,8 @@ public class FigUseCase extends FigNodeModelElement {
             // ignore the first element, which is the box for the lot), subject
             // to there always being space for at least one extension point.
 
-            minSize.height += ROWHEIGHT * Math.max(1, _epVec.getFigs().size() - 1);
+            minSize.height +=
+		ROWHEIGHT * Math.max(1, _epVec.getFigs().size() - 1);
         }
 
         return minSize;
@@ -627,7 +657,8 @@ public class FigUseCase extends FigNodeModelElement {
         // Result as integers, rounded up. We ensure that the radii are
         // integers for convenience.
 
-        return new Dimension(((int) (Math.ceil(a)) * 2), ((int) (Math.ceil(b)) * 2));
+        return new Dimension(((int) (Math.ceil(a)) * 2),
+			     ((int) (Math.ceil(b)) * 2));
     }
 
     /**
@@ -671,7 +702,10 @@ public class FigUseCase extends FigNodeModelElement {
 
         Dimension nameSize = _name.getMinimumSize();
 
-        _name.setBounds(x + ((newW - nameSize.width) / 2), y + vPadding, nameSize.width, nameSize.height);
+        _name.setBounds(x + ((newW - nameSize.width) / 2),
+			y + vPadding,
+			nameSize.width,
+			nameSize.height);
 
         // Place extension points if they are showing
 
@@ -682,9 +716,14 @@ public class FigUseCase extends FigNodeModelElement {
             // calculated from the formula for an ellipse.
 
             int currY = y + vPadding + nameSize.height + _SPACER;
-            int sepLen = 2 * (int) (_calcX(((double) newW) / 2.0, ((double) newH) / 2.0, ((double) newH) / 2.0 - ((double) (currY - y))));
+            int sepLen =
+		2 * (int) (_calcX(((double) newW) / 2.0, ((double) newH) / 2.0,
+				  ((double) newH) / 2.0 - ((double) (currY - y))));
 
-            _epSep.setShape(x + (newW - sepLen) / 2, currY, x + (newW + sepLen) / 2, currY);
+            _epSep.setShape(x + (newW - sepLen) / 2,
+			    currY,
+			    x + (newW + sepLen) / 2,
+			    currY);
 
             // Extension points are 1 pixel for the line and _SPACER gap below
             // the separator
@@ -696,7 +735,12 @@ public class FigUseCase extends FigNodeModelElement {
             // now we assume that extension points are the width of the overall
             // text rectangle (true unless the name is wider than any EP).
 
-            Dimension epSize = getUpdatedSize(_epVec, x + ((newW - textSize.width) / 2), currY, textSize.width, textSize.height - nameSize.height - _SPACER * 2 - 1);
+            Dimension epSize =
+		getUpdatedSize(_epVec,
+			       x + ((newW - textSize.width) / 2),
+			       currY,
+			       textSize.width,
+			       textSize.height - nameSize.height - _SPACER * 2 - 1);
         }
 
         // Set the bounds of the bigPort and cover
@@ -856,7 +900,9 @@ public class FigUseCase extends FigNodeModelElement {
          * @param fColor  Fill colour of the fig.
          */
 
-        public FigMyCircle(int x, int y, int w, int h, Color lColor, Color fColor) {
+        public FigMyCircle(int x, int y, int w, int h,
+			   Color lColor,
+			   Color fColor) {
             super(x, y, w, h, lColor, fColor);
         }
 
@@ -878,7 +924,9 @@ public class FigUseCase extends FigNodeModelElement {
             double dd = ry * ry * dx * dx + rx * rx * dy * dy;
             double mu = rx * ry / Math.sqrt(dd);
 
-            Point res = new Point((int) (mu * dx + _x + rx), (int) (mu * dy + _y + ry));
+            Point res =
+		new Point((int) (mu * dx + _x + rx),
+			  (int) (mu * dy + _y + ry));
             cat.debug("    returns " + res.x + ',' + res.y + ')');
             return res;
         }
@@ -1091,7 +1139,9 @@ public class FigUseCase extends FigNodeModelElement {
      * @return       The new fig to use.
      */
 
-    private CompartmentFigText getPreviousVisibleFeature(FigGroup fgVec, int i) {
+    private CompartmentFigText getPreviousVisibleFeature(FigGroup fgVec,
+							 int i)
+    {
 
         // Give up if the index we don't have a vector, or the index is less
         // than 1 (the 0th entry is the bigPort surrounding all entries)
@@ -1249,7 +1299,10 @@ public class FigUseCase extends FigNodeModelElement {
         // Let our superclass sort itself out first
 
         super.modelChanged(mee);
-        if (mee == null || mee.getName().equals("extensionPoint") || mee.getSource() instanceof MExtensionPoint) {
+        if (mee == null
+	    || mee.getName().equals("extensionPoint")
+	    || mee.getSource() instanceof MExtensionPoint)
+	{
             updateExtensionPoint();
             return;
         }
@@ -1277,7 +1330,8 @@ public class FigUseCase extends FigNodeModelElement {
         // Loop through all the extension points. epCount keeps track of the
         // fig's index as we go through the extension points.
 
-        Collection eps = UmlHelper.getHelper().getUseCases().getExtensionPoints(useCase);
+        Collection eps =
+	    UmlHelper.getHelper().getUseCases().getExtensionPoints(useCase);
         int epCount = 1;
 
         if (eps != null) {
@@ -1297,7 +1351,12 @@ public class FigUseCase extends FigNodeModelElement {
                 // one. We set the bounds, but they will be reset later.
 
                 if (figs.size() <= epCount) {
-                    epFig = new CompartmentFigText(xpos, ypos + (epCount - 1) * ROWHEIGHT, 0, ROWHEIGHT, _epBigPort);
+                    epFig =
+			new CompartmentFigText(xpos,
+					       ypos + (epCount - 1) * ROWHEIGHT,
+					       0,
+					       ROWHEIGHT,
+					       _epBigPort);
 
                     epFig.setFilled(false);
                     epFig.setLineWidth(0);
@@ -1373,19 +1432,25 @@ public class FigUseCase extends FigNodeModelElement {
         int MAXPOINTS = 20;
         Point point = null;
         for (int i = 0; i < MAXPOINTS; i++) {
-            point = new Point((int) (cx + Math.cos(2 * Math.PI / MAXPOINTS * i) * radiusx), (int) (cy + Math.sin(2 * Math.PI / MAXPOINTS * i) * radiusy));
+            point =
+		new Point((int) (cx + Math.cos(2 * Math.PI / MAXPOINTS * i) * radiusx),
+			  (int) (cy + Math.sin(2 * Math.PI / MAXPOINTS * i) * radiusy));
             ret.add(point);
         }
         return ret;
     }
 
     /**
-     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#updateStereotypeText()
+     * @see
+     * org.argouml.uml.diagram.ui.FigNodeModelElement#updateStereotypeText()
      */
     protected void updateStereotypeText() {
         super.updateStereotypeText();
         if (!(_stereo.getText() == null || _stereo.getText().equals(""))) {
-            _stereo.setBounds(_bigPort.getX() + _bigPort.getWidth() / 2 - _stereo.getWidth() / 2, _bigPort.getY() + _bigPort.getHeight() + _MIN_VERT_PADDING, _stereo.getWidth(), _stereo.getHeight());
+            _stereo.setBounds(_bigPort.getX() + _bigPort.getWidth() / 2 - _stereo.getWidth() / 2,
+			      _bigPort.getY() + _bigPort.getHeight() + _MIN_VERT_PADDING,
+			      _stereo.getWidth(),
+			      _stereo.getHeight());
         } else {
             _stereo.setBounds(0, 0, 0, 0);     
         }

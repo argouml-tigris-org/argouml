@@ -217,7 +217,10 @@ public class FigMessage extends FigNodeModelElement {
 		ParserDisplay.SINGLETON.parseMessage(mes, s);
 		ProjectBrowser.getInstance().getStatusBar().showStatus("");
 	    } catch (ParseException pe) {
-		ProjectBrowser.getInstance().getStatusBar().showStatus("Error: " + pe + " at " + pe.getErrorOffset());
+		ProjectBrowser.getInstance().getStatusBar().showStatus("Error: "
+								       + pe
+								       + " at "
+								       + pe.getErrorOffset());
 	    }
 	}
 	else
@@ -255,9 +258,11 @@ public class FigMessage extends FigNodeModelElement {
     /** add the FigMessage to the Path Items of its FigAssociationRole */
     public void addPathItemToFigAssociationRole(Layer lay) {
 
-	MAssociationRole ar = ((MMessage) getOwner()).getCommunicationConnection();
+	MAssociationRole ar =
+	    ((MMessage) getOwner()).getCommunicationConnection();
 	if (ar != null && lay != null) {
-	    FigAssociationRole figAssocRole = (FigAssociationRole) lay.presentationFor(ar);
+	    FigAssociationRole figAssocRole =
+		(FigAssociationRole) lay.presentationFor(ar);
 	    if (figAssocRole != null) {
 		figAssocRole.addMessage(this);
 		figAssocRole.updatePathItemLocations();

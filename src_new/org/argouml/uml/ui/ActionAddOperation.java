@@ -70,10 +70,13 @@ public class ActionAddOperation extends UMLChangeAction {
 	MClassifier cls = (MClassifier) target;
 	MOperation oper = UmlFactory.getFactory().getCore().buildOperation(cls);
         TargetManager.getInstance().setTarget(oper);
-        Iterator it = pb.getEditorPane().findPresentationsFor(cls, p.getDiagrams()).iterator();
+        Iterator it =
+	    pb.getEditorPane().findPresentationsFor(cls,
+						    p.getDiagrams()).iterator();
         while (it.hasNext()) {
             MElementListener listener = (MElementListener) it.next();
-            UmlModelEventPump.getPump().removeModelEventListener(listener, oper);
+            UmlModelEventPump.getPump().removeModelEventListener(listener,
+								 oper);
             UmlModelEventPump.getPump().addModelEventListener(listener, oper);
         }
 	super.actionPerformed(ae);

@@ -78,7 +78,8 @@ import ru.novosoft.uml.foundation.core.MModelElement;
 public class UseCaseDiagramRenderer
     implements GraphNodeRenderer, GraphEdgeRenderer 
 {
-    protected static Category cat = Category.getInstance(UseCaseDiagramRenderer.class);
+    protected static Category cat =
+	Category.getInstance(UseCaseDiagramRenderer.class);
 
 
     /**

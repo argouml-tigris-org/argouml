@@ -62,8 +62,9 @@ public class UMLCheckItem extends CheckItem {
 	// first offender
 	while (matchPos != -1) {
 	    int endExpr = res.indexOf(OCLEvaluator.OCL_END, matchPos + 1);
-	    String expr = res.substring(matchPos + OCLEvaluator.OCL_START.length(),
-					endExpr);
+	    String expr =
+		res.substring(matchPos + OCLEvaluator.OCL_START.length(),
+			      endExpr);
 	    String evalStr = OCLEvaluator.SINGLETON.evalToString(dm, expr);
 	    cat.debug("expr='" + expr + "' = '" + evalStr + "'");
 	    res = res.substring(0, matchPos) +

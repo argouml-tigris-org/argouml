@@ -55,7 +55,8 @@ import org.tigris.gef.util.Util;
  */
 
 public class ActionSaveGraphics extends UMLAction {
-    protected static Category cat = Category.getInstance(ActionSaveGraphics.class);
+    protected static Category cat =
+	Category.getInstance(ActionSaveGraphics.class);
 
     ////////////////////////////////////////////////////////////////
     // static variables
@@ -81,13 +82,15 @@ public class ActionSaveGraphics extends UMLAction {
     }
 
     public boolean trySave( boolean overwrite ) {
-	Object target = ProjectManager.getManager().getCurrentProject().getActiveDiagram();
+	Object target =
+	    ProjectManager.getManager().getCurrentProject().getActiveDiagram();
 	if ( target instanceof Diagram ) {
 	    String defaultName = ((Diagram) target).getName();
 	    defaultName = Util.stripJunk(defaultName);
 
-	    // FIX - It's probably worthwhile to abstract and factor this chooser
-	    // and directory stuff. More file handling is coming, I'm sure.
+	    // FIX - It's probably worthwhile to abstract and factor
+	    // this chooser and directory stuff. More file handling is
+	    // coming, I'm sure.
 
 	    ProjectBrowser pb = ProjectBrowser.getInstance();
 	    Project p =  ProjectManager.getManager().getCurrentProject();
@@ -98,7 +101,8 @@ public class ActionSaveGraphics extends UMLAction {
 			 p.getURL().getFile().length() > 0 ) {
 			String filename = p.getURL().getFile();
 			if ( !filename.startsWith( "/FILE1/+/" ) )
-			    chooser  = OsUtil.getFileChooser( p.getURL().getFile() );
+			    chooser  =
+				OsUtil.getFileChooser( p.getURL().getFile() );
 		    }
 		}
 		catch ( Exception ex ) {
@@ -107,7 +111,8 @@ public class ActionSaveGraphics extends UMLAction {
 
 		if ( chooser == null ) chooser = OsUtil.getFileChooser();
 
-		chooser.setDialogTitle( "Save Diagram as Graphics: " + defaultName );
+		chooser.setDialogTitle( "Save Diagram as Graphics: "
+					+ defaultName );
 		// Only specified format are allowed.
 		chooser.removeChoosableFileFilter(chooser.
 						  getAcceptAllFileFilter());
@@ -128,13 +133,11 @@ public class ActionSaveGraphics extends UMLAction {
 			String path = theFile.getParent();
 			String name = theFile.getName();
 			String extension = SuffixFilter.getExtension(theFile);
-			// 2002-07-16
-			// Jaap Branderhorst
-			// patch to issue 517
-			// issue is:
-			// a file should be saved with the extension from the selected filter and according to the format 
-			// of the selected filter.
-			// start new code
+			// 2002-07-16 Jaap Branderhorst patch to issue
+			// 517 issue is: a file should be saved with
+			// the extension from the selected filter and
+			// according to the format of the selected
+			// filter.  start new code
 			
 			if (extension == null || 
 			    !((extension.equals(FileFilters.PSFilter._suffix)) || 
@@ -145,7 +148,9 @@ public class ActionSaveGraphics extends UMLAction {
 			    // add the selected filter extension
 			    FileFilter filter = (FileFilter) chooser.getFileFilter();
 			    extension = FileFilters.getSuffix(filter);  
-			    theFile = new File(theFile.getParentFile(), theFile.getName() + "." + extension);
+			    theFile =
+				new File(theFile.getParentFile(),
+					 theFile.getName() + "." + extension);
 			}
 			// end new code
 				

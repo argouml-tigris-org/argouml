@@ -123,7 +123,8 @@ public class TableModelComposite extends AbstractTableModel
 	if (row >= 0 && row < _rowObjects.size()) {
 	    if (col >= 0 && col < _colDescs.size()) {
 		Object rowObj = _rowObjects.elementAt(row);
-		ColumnDescriptor cd = (ColumnDescriptor) _colDescs.elementAt(col);
+		ColumnDescriptor cd =
+		    (ColumnDescriptor) _colDescs.elementAt(col);
 		return cd.getValueFor(rowObj);
 	    }
 	}
@@ -134,7 +135,8 @@ public class TableModelComposite extends AbstractTableModel
 	if (row >= 0 && row < _rowObjects.size()) {
 	    if (col >= 0 && col < _colDescs.size()) {
 		Object rowObj = _rowObjects.elementAt(row);
-		ColumnDescriptor cd = (ColumnDescriptor) _colDescs.elementAt(col);
+		ColumnDescriptor cd =
+		    (ColumnDescriptor) _colDescs.elementAt(col);
 		cd.setValueFor(rowObj, val);
 		return;
 	    }

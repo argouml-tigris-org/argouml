@@ -41,7 +41,8 @@ import ru.novosoft.uml.behavior.collaborations.MMessage;
  */
 public class ActionAddMessagePredecessor extends AbstractActionAddModelElement {
 
-    public final static ActionAddMessagePredecessor SINGLETON = new ActionAddMessagePredecessor();
+    public final static ActionAddMessagePredecessor SINGLETON =
+	new ActionAddMessagePredecessor();
     
     /**
      * Constructor for ActionAddMessagePredecessor.
@@ -64,7 +65,8 @@ public class ActionAddMessagePredecessor extends AbstractActionAddModelElement {
      * @see org.argouml.uml.ui.AbstractActionAddModelElement#getSelected()
      */
     protected Vector getSelected() {
-        if (getTarget() == null) throw new IllegalStateException("getSelected may not be called with null target");
+        if (getTarget() == null)
+	    throw new IllegalStateException("getSelected may not be called with null target");
         Vector vec = new Vector();
         vec.addAll(((MMessage) getTarget()).getPredecessors());
         return vec;
@@ -78,10 +80,12 @@ public class ActionAddMessagePredecessor extends AbstractActionAddModelElement {
     }
 
     /**
-     * @see org.argouml.uml.ui.AbstractActionAddModelElement#doIt(java.util.Vector)
+     * @see
+     * org.argouml.uml.ui.AbstractActionAddModelElement#doIt(java.util.Vector)
      */
     protected void doIt(Vector selected) {
-	if (getTarget() == null) throw new IllegalStateException("doIt may not be called with null target");
+	if (getTarget() == null)
+	    throw new IllegalStateException("doIt may not be called with null target");
 	MMessage message = (MMessage) getTarget();
 	message.setPredecessors(selected);
     }

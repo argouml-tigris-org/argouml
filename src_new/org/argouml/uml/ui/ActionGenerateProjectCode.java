@@ -49,7 +49,8 @@ public class ActionGenerateProjectCode extends UMLAction {
     ////////////////////////////////////////////////////////////////
     // static variables
 
-    public static ActionGenerateProjectCode SINGLETON = new ActionGenerateProjectCode();
+    public static ActionGenerateProjectCode SINGLETON =
+	new ActionGenerateProjectCode();
 
 
     ////////////////////////////////////////////////////////////////
@@ -65,17 +66,23 @@ public class ActionGenerateProjectCode extends UMLAction {
 
     public void actionPerformed(ActionEvent ae) {
 	Vector classes = new Vector();
-	// The following lines should be substituted by the following 2 commented lines.
-	// (This is because getting the project still does not seem to work...)
+	// The following lines should be substituted by the following
+	// 2 commented lines.  (This is because getting the project
+	// still does not seem to work...)
 	ProjectBrowser pb = ProjectBrowser.getInstance();
-	ArgoDiagram activeDiagram = ProjectManager.getManager().getCurrentProject().getActiveDiagram();
-	if (!(activeDiagram instanceof org.argouml.uml.diagram.ui.UMLDiagram)) return;
-	ru.novosoft.uml.foundation.core.MNamespace ns = ((org.argouml.uml.diagram.ui.UMLDiagram) activeDiagram).getNamespace();
+	ArgoDiagram activeDiagram =
+	    ProjectManager.getManager().getCurrentProject().getActiveDiagram();
+	if (!(activeDiagram instanceof org.argouml.uml.diagram.ui.UMLDiagram))
+	    return;
+	ru.novosoft.uml.foundation.core.MNamespace ns =
+	    ((org.argouml.uml.diagram.ui.UMLDiagram) activeDiagram).getNamespace();
 	if (ns == null) return;
 	while (ns.getNamespace() != null) ns = ns.getNamespace();
-	Collection elems = ModelManagementHelper.getHelper().getAllModelElementsOfKind(ns, MClassifier.class);
+	Collection elems =
+	    ModelManagementHelper.getHelper().getAllModelElementsOfKind(ns, MClassifier.class);
 	//Project p = ProjectManager.getManager().getCurrentProject();
-	//Collection elems = ModelManagementHelper.getHelper().getAllModelElementsOfKind(MClassifier.class);
+	//Collection elems =
+	//ModelManagementHelper.getHelper().getAllModelElementsOfKind(MClassifier.class);
 	Iterator iter = elems.iterator();
 	while (iter.hasNext()) {
 	    MClassifier cls = (MClassifier) iter.next();
@@ -89,7 +96,8 @@ public class ActionGenerateProjectCode extends UMLAction {
 
     public boolean shouldBeEnabled() {
 	ProjectBrowser pb = ProjectBrowser.getInstance();
-	ArgoDiagram activeDiagram = ProjectManager.getManager().getCurrentProject().getActiveDiagram();
+	ArgoDiagram activeDiagram =
+	    ProjectManager.getManager().getCurrentProject().getActiveDiagram();
 	return super.shouldBeEnabled() && (activeDiagram instanceof UMLDiagram);
     }
 

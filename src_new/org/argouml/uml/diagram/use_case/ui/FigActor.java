@@ -189,7 +189,10 @@ public class FigActor extends FigNodeModelElement {
         _rightLeg.setLocation(x + middle, y + h - 35);
 
         Dimension minTextSize = _name.getMinimumSize();
-        _name.setBounds(x + middle - minTextSize.width / 2, y + h - minTextSize.height, minTextSize.width, minTextSize.height);
+        _name.setBounds(x + middle - minTextSize.width / 2,
+			y + h - minTextSize.height,
+			minTextSize.width,
+			minTextSize.height);
 
         updateEdges();
         _x = x;
@@ -224,7 +227,8 @@ public class FigActor extends FigNodeModelElement {
         int MAXPOINTS = 20;
         Point point = null;
         for (int i = 0; i < MAXPOINTS; i++) {
-            point = new Point((int) (cx + Math.cos(2 * Math.PI / MAXPOINTS * i) * radiusx), (int) (cy + Math.sin(2 * Math.PI / MAXPOINTS * i) * radiusy));
+            point = new Point((int) (cx + Math.cos(2 * Math.PI / MAXPOINTS * i) * radiusx),
+			      (int) (cy + Math.sin(2 * Math.PI / MAXPOINTS * i) * radiusy));
             ret.add(point);
         }
         return ret;

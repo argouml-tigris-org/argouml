@@ -32,7 +32,8 @@ import java.io.*;
 public class GenerationPreferences implements java.io.Serializable {
     ////////////////////////////////////////////////////////////////
     // instance variables
-    protected String _headerComment = "Your copyright and other header comments";
+    protected String _headerComment =
+	"Your copyright and other header comments";
     protected String _outputDir = "/home/jrobbins/vtmp/";
 
     public GenerationPreferences() {

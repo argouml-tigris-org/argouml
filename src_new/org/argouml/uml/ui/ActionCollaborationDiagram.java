@@ -96,7 +96,8 @@ public class ActionCollaborationDiagram extends ActionAddDiagram {
     }
 
     /**
-     * @see org.argouml.model.uml.behavioralelements.collaborations.CollaborationsHelper#isAddingCollaborationAllowed(Object)
+     * @see
+     * org.argouml.model.uml.behavioralelements.collaborations.CollaborationsHelper#isAddingCollaborationAllowed(Object)
      * @see org.argouml.uml.ui.ActionAddDiagram#isValidNamespace(MNamespace)
      */
     public boolean isValidNamespace(Object handle) {

@@ -40,7 +40,8 @@ import ru.novosoft.uml.behavior.collaborations.MClassifierRole;
  */
 public class ActionAddClassifierRoleBase extends AbstractActionAddModelElement {
 
-    public final static ActionAddClassifierRoleBase SINGLETON = new ActionAddClassifierRoleBase();
+    public final static ActionAddClassifierRoleBase SINGLETON =
+	new ActionAddClassifierRoleBase();
     /**
      * Constructor for ActionAddClassifierRoleBase.
      */
@@ -74,7 +75,8 @@ public class ActionAddClassifierRoleBase extends AbstractActionAddModelElement {
     }
 
     /**
-     * @see org.argouml.uml.ui.AbstractActionAddModelElement#doIt(java.util.Vector)
+     * @see
+     * org.argouml.uml.ui.AbstractActionAddModelElement#doIt(java.util.Vector)
      */
     protected void doIt(Vector selected) {
         MClassifierRole role = (MClassifierRole) getTarget();

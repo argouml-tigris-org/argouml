@@ -25,7 +25,6 @@
 // File: TableModelInterface_in_DeplByProps.java
 // Classes: TableModelInterface_in_DeplByProps
 // Original Author: 5eichler@informatik.uni-hamburg.de
-// $Id$
 
 package org.argouml.uml.diagram.deployment;
 

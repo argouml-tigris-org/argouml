@@ -66,53 +66,88 @@ public class ActionModifier extends UMLAction {
     Object falseValue = null;
 
     /**
-     * Defines an Action object with the specified description which will use the given reflection methods
-     * to modify boolean values in an <code>MClass</code> object.
+     * Defines an Action object with the specified description which
+     * will use the given reflection methods to modify boolean values
+     * in an <code>MClass</code> object.
      *
      * @param     name           the text for the actions menu item
      * @param     propertyName   the name of the modifier property to be amended
-     * @param     getMethod      the name of the getter method to retrieve the property
-     * @param     setMethod      the name of the setter method to change the property
-     * @param     mclass         the <code>MClass</code> object containing the modifier property.
+     * @param getMethod the name of the getter method to retrieve the
+     * property
+     * @param setMethod the name of the setter method to change the
+     * property
+     * @param mclass the <code>MClass</code> object containing the
+     * modifier property.
      */
-    public ActionModifier(String name, String propertyName, String getMethod, String setMethod, MClass mclass) {
+    public ActionModifier(String name, String propertyName,
+			  String getMethod,
+			  String setMethod,
+			  MClass mclass) {
 	super(name, NO_ICON);
 	this.object = mclass;
-	_property = new UMLReflectionBooleanProperty(propertyName, mclassClass, getMethod, setMethod);
+	_property =
+	    new UMLReflectionBooleanProperty(propertyName, mclassClass,
+					     getMethod,
+					     setMethod);
 	putValue("SELECTED", new Boolean(_property.getProperty(object)));
     }
 
     /**
-     * Defines an Action object with the specified description which will use the given reflection methods
-     * to modify an enumerated values in an <code>MClass</code> object.
+     * Defines an Action object with the specified description which
+     * will use the given reflection methods to modify an enumerated
+     * values in an <code>MClass</code> object.
      *
      * @param     name           the text for the actions menu item
      * @param     propertyName   the name of the modifier property to be amended
-     * @param     getMethod      the name of the getter method to retrieve the property
-     * @param     setMethod      the name of the setter method to change the property
-     * @param     mclass         the <code>MClass</code> object containing the modifier property.
+     * @param getMethod the name of the getter method to retrieve the
+     * property
+     * @param setMethod the name of the setter method to change the
+     * property
+     * @param mclass the <code>MClass</code> object containing the
+     * modifier property.
      * @param     enumClass      the class representing the enumeration
      * @param     trueValue      The enumerated value representing true
      * @param     falseValue     The enumerated value representing false
      */
-    public ActionModifier(String name, String propertyName, String getMethod, String setMethod, MClass mclass, Class enumClass, Object trueValue, Object falseValue) {
+    public ActionModifier(String name, String propertyName,
+			  String getMethod,
+			  String setMethod,
+			  MClass mclass,
+			  Class enumClass,
+			  Object trueValue,
+			  Object falseValue)
+    {
 	super(name, NO_ICON);
 	this.object = mclass;
-	_property = new UMLEnumerationBooleanProperty(propertyName, mclassClass, getMethod, setMethod, enumClass, trueValue, falseValue);
+	_property =
+	    new UMLEnumerationBooleanProperty(propertyName, mclassClass,
+					      getMethod,
+					      setMethod,
+					      enumClass,
+					      trueValue,
+					      falseValue);
 	putValue("SELECTED", new Boolean(_property.getProperty(object)));
     }
 
     /**
-     * Defines an Action object with the specified description which will use the given reflection methods
-     * to modify boolean values in an <code>MInterface</code> object.
+     * Defines an Action object with the specified description which
+     * will use the given reflection methods to modify boolean values
+     * in an <code>MInterface</code> object.
      *
      * @param     name           the text for the actions menu item
      * @param     propertyName   the name of the modifier property to be amended
-     * @param     getMethod      the name of the getter method to retrieve the property
-     * @param     setMethod      the name of the setter method to change the property
-     * @param     minterface     the <code>MInterface</code> object containing the modifier property.
+     * @param getMethod the name of the getter method to retrieve the
+     * property
+     * @param setMethod the name of the setter method to change the
+     * property
+     * @param minterface the <code>MInterface</code> object containing
+     * the modifier property.
      */
-    public ActionModifier(String name, String propertyName, String getMethod, String setMethod, MInterface minterface) {
+    public ActionModifier(String name, String propertyName,
+			  String getMethod,
+			  String setMethod,
+			  MInterface minterface)
+    {
 	super(name, NO_ICON);
 	this.object = minterface;
 	_property = new UMLReflectionBooleanProperty(propertyName, minterfaceClass, getMethod, setMethod);
@@ -120,59 +155,100 @@ public class ActionModifier extends UMLAction {
     }
 
     /**
-     * Defines an Action object with the specified description which will use the given reflection methods
-     * to modify an enumerated values in an <code>MInterface</code> object.
+     * Defines an Action object with the specified description which
+     * will use the given reflection methods to modify an enumerated
+     * values in an <code>MInterface</code> object.
      *
      * @param     name           the text for the actions menu item
      * @param     propertyName   the name of the modifier property to be amended
-     * @param     getMethod      the name of the getter method to retrieve the property
-     * @param     setMethod      the name of the setter method to change the property
-     * @param     minterface     the <code>MInterface</code> object containing the modifier property.
+     * @param getMethod the name of the getter method to retrieve the
+     * property
+     * @param setMethod the name of the setter method to change the
+     * property
+     * @param minterface the <code>MInterface</code> object containing
+     * the modifier property.
      * @param     enumClass      the class representing the enumeration
      * @param     trueValue      The enumerated value representing true
      * @param     falseValue     The enumerated value representing false
      */
-    public ActionModifier(String name, String propertyName, String getMethod, String setMethod, MInterface minterface, Class enumClass, Object trueValue, Object falseValue) {
+    public ActionModifier(String name, String propertyName,
+			  String getMethod,
+			  String setMethod,
+			  MInterface minterface,
+			  Class enumClass,
+			  Object trueValue,
+			  Object falseValue)
+    {
 	super(name, NO_ICON);
 	this.object = minterface;
-	_property = new UMLEnumerationBooleanProperty(propertyName, minterfaceClass, getMethod, setMethod, enumClass, trueValue, falseValue);
+	_property =
+	    new UMLEnumerationBooleanProperty(propertyName, minterfaceClass,
+					      getMethod,
+					      setMethod,
+					      enumClass,
+					      trueValue,
+					      falseValue);
 	putValue("SELECTED", new Boolean(_property.getProperty(object)));
     }
 
     /**
-     * Defines an Action object with the specified description which will use the given reflection methods
-     * to modify boolean values in an <code>MPackage</code> object.
+     * Defines an Action object with the specified description which
+     * will use the given reflection methods to modify boolean values
+     * in an <code>MPackage</code> object.
      *
      * @param     name           the text for the actions menu item
      * @param     propertyName   the name of the modifier property to be amended
-     * @param     getMethod      the name of the getter method to retrieve the property
-     * @param     setMethod      the name of the setter method to change the property
-     * @param     mpackage       the <code>MPackage</code> object containing the modifier property.
+     * @param getMethod the name of the getter method to retrieve the
+     * property
+     * @param setMethod the name of the setter method to change the
+     * property
+     * @param mpackage the <code>MPackage</code> object containing the
+     * modifier property.
      */
     public ActionModifier(String name, String propertyName, String getMethod, String setMethod, MPackage mpackage) {
 	super(name, NO_ICON);
 	this.object = mpackage;
-	_property = new UMLReflectionBooleanProperty(propertyName, mpackageClass, getMethod, setMethod);
+	_property =
+	    new UMLReflectionBooleanProperty(propertyName, mpackageClass,
+					     getMethod,
+					     setMethod);
 	putValue("SELECTED", new Boolean(_property.getProperty(object)));
     }
 
     /**
-     * Defines an Action object with the specified description which will use the given reflection methods
-     * to modify an enumerated values in an <code>MPackage</code> object.
+     * Defines an Action object with the specified description which
+     * will use the given reflection methods to modify an enumerated
+     * values in an <code>MPackage</code> object.
      *
      * @param     name           the text for the actions menu item
      * @param     propertyName   the name of the modifier property to be amended
-     * @param     getMethod      the name of the getter method to retrieve the property
-     * @param     setMethod      the name of the setter method to change the prvoperty
-     * @param     mpackage       the <code>MPackage</code> object containing the modifier property.
+     * @param getMethod the name of the getter method to retrieve the
+     * property
+     * @param setMethod the name of the setter method to change the
+     * prvoperty
+     * @param mpackage the <code>MPackage</code> object containing the
+     * modifier property.
      * @param     enumClass      the class representing the enumeration
      * @param     trueValue      The enumerated value representing true
      * @param     falseValue     The enumerated value representing false
      */
-    public ActionModifier(String name, String propertyName, String getMethod, String setMethod, MPackage mpackage, Class enumClass, Object trueValue, Object falseValue) {
+    public ActionModifier(String name, String propertyName,
+			  String getMethod,
+			  String setMethod,
+			  MPackage mpackage,
+			  Class enumClass,
+			  Object trueValue,
+			  Object falseValue)
+    {
 	super(name, NO_ICON);
 	this.object = mpackage;
-	_property = new UMLEnumerationBooleanProperty(propertyName, mpackageClass, getMethod, setMethod, enumClass, trueValue, falseValue);
+	_property =
+	    new UMLEnumerationBooleanProperty(propertyName, mpackageClass,
+					      getMethod,
+					      setMethod,
+					      enumClass,
+					      trueValue,
+					      falseValue);
 	putValue("SELECTED", new Boolean(_property.getProperty(object)));
     }
 

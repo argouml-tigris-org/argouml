@@ -63,13 +63,15 @@ public class UMLClassifierRoleAvailableFeaturesListModel
     }
 
     /**
-     * @see ru.novosoft.uml.MElementListener#roleAdded(ru.novosoft.uml.MElementEvent)
+     * @see
+     * ru.novosoft.uml.MElementListener#roleAdded(ru.novosoft.uml.MElementEvent)
      */
     public void roleAdded(MElementEvent e) {
         if (e.getName().equals("base") && e.getSource() == getTarget()) {
             MClassifier clazz = (MClassifier) getChangedElement(e);
             addAll(clazz.getFeatures());
-            // UmlModelEventPump.getPump().removeModelEventListener(this, clazz, "feature");
+            // UmlModelEventPump.getPump().removeModelEventListener(this,
+            // clazz, "feature");
             UmlModelEventPump.getPump().addModelEventListener(
 							      this,
 							      clazz,
@@ -77,13 +79,14 @@ public class UMLClassifierRoleAvailableFeaturesListModel
         } else if (
 		   e.getName().equals("feature")
 		   && ((MClassifierRole) getTarget()).getBases().contains(
-									 e.getSource())) {
+									  e.getSource())) {
             addElement(getChangedElement(e));
         }
     }
 
     /**
-     * @see org.argouml.uml.ui.UMLModelElementListModel2#setTarget(java.lang.Object)
+     * @see
+     * org.argouml.uml.ui.UMLModelElementListModel2#setTarget(java.lang.Object)
      */
     public void setTarget(Object target) {
         if (_target != null) {
@@ -138,7 +141,8 @@ public class UMLClassifierRoleAvailableFeaturesListModel
     }
 
     /**
-     * @see ru.novosoft.uml.MElementListener#roleRemoved(ru.novosoft.uml.MElementEvent)
+     * @see
+     * ru.novosoft.uml.MElementListener#roleRemoved(ru.novosoft.uml.MElementEvent)
      */
     public void roleRemoved(MElementEvent e) {
         if (e.getName().equals("base") && e.getSource() == getTarget()) {

@@ -37,9 +37,9 @@ import org.tigris.gef.base.CmdSetMode;
 import org.tigris.gef.base.ModeCreatePolyEdge;
 
 /** 
- * The ActionAddAssociation class is for creating a dummy link with a stimulus and 
- * a given action type. This is done in one step when a new edge between
- * two nodes is instanciated
+ * The ActionAddAssociation class is for creating a dummy link with a
+ * stimulus and a given action type. This is done in one step when a
+ * new edge between two nodes is instanciated
  *
  * @author Bob Tarling
  */

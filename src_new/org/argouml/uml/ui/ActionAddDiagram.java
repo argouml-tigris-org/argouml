@@ -81,17 +81,17 @@ public abstract class ActionAddDiagram extends UMLChangeAction {
             UMLDiagram diagram = createDiagram(ns);
             p.addMember(diagram);
             TargetManager.getInstance().setTarget(diagram);
-            //TODO make the explorer listen to project member property changes...
-            // to eliminate coupling on gui.
+            //TODO make the explorer listen to project member property
+            //changes...  to eliminate coupling on gui.
             ProjectBrowser.getInstance().getNavigatorPane().forceUpdate();
             super.actionPerformed(e);
         } else {
             log.error("No valid namespace found");
             throw new IllegalStateException("No valid namespace found");
         }
-        // Issue 1722
-        // Removed following code so we allways get the correct namespace of the 
-        // diagram (via the getContainer method). 
+        // Issue 1722 Removed following code so we allways get the
+        // correct namespace of the diagram (via the getContainer
+        // method).
         /*    
         if (ModelFacade.isABase(target)) {
             MBase base = (MBase)target;

@@ -117,10 +117,11 @@ public class ActionOpenProject extends UMLAction {
         }
 
         try {
-            // next line does give user.home back but this is not compliant with how 
-            // the project.url works and therefore open and save project as give 
-            // different starting directories.
-            // String directory = Globals.getLastDirectory();
+            // next line does give user.home back but this is not
+            // compliant with how the project.url works and therefore
+            // open and save project as give different starting
+            // directories.  String directory =
+            // Globals.getLastDirectory();
             JFileChooser chooser = null;
             if (p != null && p.getURL() != null) {
                 File file = new File(p.getURL().getFile());
@@ -135,7 +136,8 @@ public class ActionOpenProject extends UMLAction {
                 chooser = OsUtil.getFileChooser();
 
             chooser.setDialogTitle(
-				   Argo.localize("Actions", "filechooser.open-project"));
+				   Argo.localize("Actions",
+						 "filechooser.open-project"));
             SuffixFilter filter = FileFilters.CompressedFileFilter;
             chooser.addChoosableFileFilter(filter);
             chooser.addChoosableFileFilter(FileFilters.UncompressedFileFilter);
@@ -190,13 +192,11 @@ public class ActionOpenProject extends UMLAction {
             p = ProjectManager.getManager().loadProject(url);
 
             ProjectBrowser.getInstance().showStatus(
-						    MessageFormat.format(
-									 Argo.localize(
-										       "Actions",
-										       "label.open-project-status-read"),
-									 new Object[] {
-									     url.toString()
-									 }));
+		    MessageFormat.format(Argo.localize("Actions",
+						       "label.open-project-status-read"),
+					 new Object[] {
+					     url.toString()
+					 }));
         } catch (ParserConfigurationException ex) {
             showErrorPane(
 			  "Could not load the project "

@@ -122,7 +122,8 @@ public class ActionAddNote extends UMLChangeAction {
                 }
             }
         } else if (elemFig instanceof FigEdge) {
-            // we cannot do this yet since we have to modify all our edges probably
+            // we cannot do this yet since we have to modify all our
+            // edges probably
             /*
 	      Point startPoint = new Point(elemFig.getX(), elemFig.getY());
 	      Point endPoint = new Point(elemFig.getX() + elemFig.getWidth(), 

@@ -83,7 +83,8 @@ public class ActionAddExistingNode extends UMLAction
 
         String instructions = null;
         if (_object != null) {
-            instructions =  Argo.localize ("Tree", "misc.message.click-on-diagram-to-add") + _object.toString();
+            instructions =
+		Argo.localize ("Tree", "misc.message.click-on-diagram-to-add") + _object.toString();
             Globals.showStatus(instructions);
         }
         ModePlace placeMode = new ModePlace(this, instructions);

@@ -61,7 +61,8 @@ public class ActionAddPackage  extends UMLAction {
     public void actionPerformed(ActionEvent e) {
         
         ProjectBrowser pb = ProjectBrowser.getInstance();
-        MNamespace namespace = (MNamespace) pb.getNavigatorPane().getSelectedObject();
+        MNamespace namespace =
+	    (MNamespace) pb.getNavigatorPane().getSelectedObject();
         namespace.addOwnedElement(
             UmlFactory.getFactory().getModelManagement().createPackage());
     }

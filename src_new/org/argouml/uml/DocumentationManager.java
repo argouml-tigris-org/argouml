@@ -49,7 +49,8 @@ public class DocumentationManager {
 		    String tag = tv.getTag();
 		    if (tag.equals("documentation") || tag.equals("javadocs")) {
 			sResult = tv.getValue();
-			if (tag.equals("documentation")) break; // give priority to "documentation"
+			// give priority to "documentation"
+			if (tag.equals("documentation")) break;
 		    }
 		}
 	    }
@@ -91,9 +92,11 @@ public class DocumentationManager {
     }
 
     /**
-     * Determine whether documentation is associated with the given element or not.
+     * Determine whether documentation is associated with the given
+     * element or not.
      *
-     * Added 2001-10-05 STEFFEN ZSCHALER for use by org.argouml.language.java.generator.CodeGenerator
+     * Added 2001-10-05 STEFFEN ZSCHALER for use by
+     * org.argouml.language.java.generator.CodeGenerator
      *
      */
     public static boolean hasDocs (Object o) {
@@ -225,7 +228,8 @@ public class DocumentationManager {
 	    if (!comments.isEmpty()) {
 		for (Iterator iter = comments.iterator(); iter.hasNext(); ) {
 		    MComment c = (MComment) iter.next();
-		    String s = (c.getName() != null) ? c.getName().trim() : null;
+		    String s =
+			(c.getName() != null) ? c.getName().trim() : null;
 		    if (s != null && s.length() > 0) {
 			if (result.length() > 0) {
 			    result.append("\n");

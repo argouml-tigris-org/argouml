@@ -84,7 +84,8 @@ public class StylePanelFigInterface extends StylePanelFig {
 
     public void refresh() {
 	super.refresh();
-	org.argouml.uml.diagram.static_structure.ui.FigInterface ti = (org.argouml.uml.diagram.static_structure.ui.FigInterface) _target;
+	org.argouml.uml.diagram.static_structure.ui.FigInterface ti =
+	    (org.argouml.uml.diagram.static_structure.ui.FigInterface) _target;
 	_operCheckBox.setSelected(ti.isOperationVisible());
     }
 

@@ -22,7 +22,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// $Id$
 package org.argouml.uml.ui.behavior.collaborations;
 
 import java.awt.event.ActionEvent;
@@ -41,7 +40,8 @@ import ru.novosoft.uml.foundation.core.MClassifier;
 public class ActionRemoveClassifierRoleBase
     extends AbstractActionRemoveElement {
 
-    public static ActionRemoveClassifierRoleBase SINGLETON = new ActionRemoveClassifierRoleBase();
+    public static ActionRemoveClassifierRoleBase SINGLETON =
+	new ActionRemoveClassifierRoleBase();
     
     /**
      * Constructor for ActionRemoveClassifierRoleBase.
@@ -53,7 +53,8 @@ public class ActionRemoveClassifierRoleBase
     
 
     /**
-     * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+     * @see
+     * java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent e) {
         super.actionPerformed(e);

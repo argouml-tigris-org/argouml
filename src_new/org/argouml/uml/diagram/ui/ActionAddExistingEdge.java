@@ -60,8 +60,10 @@ public class ActionAddExistingEdge extends UMLAction {
         // we have an edge
         if (_edge == null) return;
         // lets test which situation we have. 3 Possibilities:
-        // 1. The nodes are allready on the diagram, we can use canAddEdge for this
-        // 2. One of the nodes is allready on the diagram. The other has to be added
+        // 1. The nodes are allready on the diagram, we can use
+        //    canAddEdge for this
+        // 2. One of the nodes is allready on the diagram. The other
+        //    has to be added
         // 3. Both of the nodes are not yet on the diagram.
         // For the time being we will only implement situation 1.
         // TODO implement situation 2 and 3.

@@ -253,7 +253,8 @@ public class LookAndFeelMgr {
         } else {
             String name = null;
 
-            UIManager.LookAndFeelInfo[] lafs = UIManager.getInstalledLookAndFeels();
+            UIManager.LookAndFeelInfo[] lafs =
+		UIManager.getInstalledLookAndFeels();
             for (int i = 0; i < lafs.length; ++i) {
                 if (lafs[i].getClassName().equals(currentLookAndFeel)) {
 		    name = lafs[i].getName();

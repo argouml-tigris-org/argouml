@@ -46,13 +46,15 @@ import org.tigris.gef.base.ModeManager;
 import org.tigris.gef.graph.MutableGraphSupport;
 
 
-/** UMLMutableGraphSupport is a helper class which extends MutableGraphSupport to
- * provide additional helper and common methods for UML Diagrams.
+/** UMLMutableGraphSupport is a helper class which extends
+ * MutableGraphSupport to provide additional helper and common methods
+ * for UML Diagrams.
  * @author mkl@tigris.org
  */
 public abstract class UMLMutableGraphSupport extends MutableGraphSupport {
     
-    protected static Category cat = Category.getInstance(UMLMutableGraphSupport.class);
+    protected static Category cat =
+	Category.getInstance(UMLMutableGraphSupport.class);
     
     /** contains all the nodes in the graphmodel/diagram. */    
     protected Vector _nodes = new Vector();
@@ -133,30 +135,35 @@ public abstract class UMLMutableGraphSupport extends MutableGraphSupport {
      *                   <code>edgeClass</code> if we succeeded,
      *                   <code>null</code> otherwise)
      */
-    public Object connect(Object fromPort, Object toPort, java.lang.Class edgeClass) {
+    public Object connect(Object fromPort, Object toPort,
+			  java.lang.Class edgeClass)
+    {
         Object connection = null;
         try {
-            // If this was an association then there will be relevant information
-            // to fetch out of the mode arguments.
-            // If it not an association then these will be passed forward harmlessly
-            // as null.
+            // If this was an association then there will be relevant
+            // information to fetch out of the mode arguments.  If it
+            // not an association then these will be passed forward
+            // harmlessly as null.
             Editor curEditor = Globals.curEditor();
             ModeManager modeManager = curEditor.getModeManager();
             Mode mode = (Mode) modeManager.top();
             Hashtable args = mode.getArgs();
             MAggregationKind style = (MAggregationKind) args.get("aggregation");
             Boolean unidirectional = (Boolean) args.get("unidirectional");
-            // Create the UML connection of the given type between the given model elements.
+            // Create the UML connection of the given type between the
+            // given model elements.
+	    // default aggregation (none)
             connection = UmlFactory.getFactory().buildConnection(
 								 edgeClass,
 								 fromPort,
 								 style,
 								 toPort,
-								 null, // default aggregation (none)
+								 null, 
 								 unidirectional
 								 );
         } catch (org.argouml.model.uml.UmlException ex) {
-            // fail silently as we expect users to accidentally drop on to wrong component
+            // fail silently as we expect users to accidentally drop
+            // on to wrong component
         }
         
         if (connection == null) {

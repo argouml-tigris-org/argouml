@@ -60,36 +60,64 @@ public class PropPanelClassifierRole extends PropPanelClassifier {
 	Class mclass = MClassifierRole.class;
 
 	addField(Argo.localize("UMLMenu", "label.name"), getNameTextField());
-	addField(Argo.localize("UMLMenu", "label.stereotype"), new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-stereo"), getStereotypeBox()));
-	addField(Argo.localize("UMLMenu", "label.namespace"), getNamespaceScroll());
+	addField(Argo.localize("UMLMenu", "label.stereotype"),
+		 new UMLComboBoxNavigator(this,
+					  Argo.localize("UMLMenu",
+							"tooltip.nav-stereo"),
+					  getStereotypeBox()));
+	addField(Argo.localize("UMLMenu", "label.namespace"),
+		 getNamespaceScroll());
 
-	addField(Argo.localize("UMLMenu", "label.multiplicity"), new UMLMultiplicityComboBox(this, mclass));
+	addField(Argo.localize("UMLMenu", "label.multiplicity"),
+		 new UMLMultiplicityComboBox(this,
+					     mclass));
 
-	JList baseList = new UMLMutableLinkedList(new UMLClassifierRoleBaseListModel(), ActionAddClassifierRoleBase.SINGLETON, null, ActionRemoveClassifierRoleBase.SINGLETON, false);
-	addField(Argo.localize("UMLMenu", "label.base"), new JScrollPane(baseList));
+	JList baseList =
+	    new UMLMutableLinkedList(new UMLClassifierRoleBaseListModel(),
+				     ActionAddClassifierRoleBase.SINGLETON,
+				     null,
+				     ActionRemoveClassifierRoleBase.SINGLETON,
+				     false);
+	addField(Argo.localize("UMLMenu", "label.base"),
+		 new JScrollPane(baseList));
 
 
 	addSeperator();
 
-	addField(Argo.localize("UMLMenu", "label.generalizations"), getGeneralizationScroll());
-	addField(Argo.localize("UMLMenu", "label.specializations"), getSpecializationScroll());
+	addField(Argo.localize("UMLMenu", "label.generalizations"),
+		 getGeneralizationScroll());
+	addField(Argo.localize("UMLMenu", "label.specializations"),
+		 getSpecializationScroll());
 
-	JList connectList = new UMLList(new UMLClassifierRoleAssociationRoleListModel(this, null, true), true);
+	JList connectList =
+	    new UMLList(new UMLClassifierRoleAssociationRoleListModel(this,
+								      null,
+								      true),
+			true);
 	addField(Argo.localize("UMLMenu", "label.associationrole-ends"),
 		 getAssociationEndScroll());
 
 	addSeperator();
 
-	JList availableContentsList = new UMLLinkedList(new UMLClassifierRoleAvailableContentsListModel());
+	JList availableContentsList =
+	    new UMLLinkedList(new UMLClassifierRoleAvailableContentsListModel());
 	addField(Argo.localize("UMLMenu", "label.available-contents"),
 		 new JScrollPane(availableContentsList));
 
-	JList availableFeaturesList = new UMLLinkedList(new UMLClassifierRoleAvailableFeaturesListModel());
+	JList availableFeaturesList =
+	    new UMLLinkedList(new UMLClassifierRoleAvailableFeaturesListModel());
 	addField(Argo.localize("UMLMenu", "label.available-features"),
 		 new JScrollPane(availableFeaturesList));
 
-	new PropPanelButton(this, buttonPanel, _navUpIcon, Argo.localize("UMLMenu", "button.go-up"), "navigateUp", null);
-	new PropPanelButton(this, buttonPanel, _deleteIcon, localize("Delete"), "removeElement", null);
+	new PropPanelButton(this, buttonPanel, _navUpIcon,
+			    Argo.localize("UMLMenu",
+					  "button.go-up"),
+			    "navigateUp",
+			    null);
+	new PropPanelButton(this, buttonPanel, _deleteIcon,
+			    localize("Delete"),
+			    "removeElement",
+			    null);
     }
 
 

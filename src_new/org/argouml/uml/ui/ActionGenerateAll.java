@@ -66,7 +66,8 @@ public class ActionGenerateAll extends UMLAction {
 
     public void actionPerformed(ActionEvent ae) {
 	ProjectBrowser pb = ProjectBrowser.getInstance();
-	ArgoDiagram activeDiagram = ProjectManager.getManager().getCurrentProject().getActiveDiagram();
+	ArgoDiagram activeDiagram =
+	    ProjectManager.getManager().getCurrentProject().getActiveDiagram();
 	if (!(activeDiagram instanceof UMLClassDiagram)) return;
 
 	UMLClassDiagram d = (UMLClassDiagram) activeDiagram;
@@ -78,7 +79,8 @@ public class ActionGenerateAll extends UMLAction {
 	    if (!ModelFacade.isAClass(owner) && !ModelFacade.isAInterface(owner))
 		continue;
 	    String name = ModelFacade.getName(owner);
-	    if (name == null || name.length() == 0 || Character.isDigit(name.charAt(0))) continue;
+	    if (name == null || name.length() == 0 || Character.isDigit(name.charAt(0)))
+		continue;
             classes.addElement(owner);
 	}
 	TreePath[] paths = pb.getNavigatorPane().getTree().getSelectionPaths();
@@ -89,7 +91,8 @@ public class ActionGenerateAll extends UMLAction {
 		    addCollection(ModelManagementHelper.getHelper().getAllModelElementsOfKind(selected, MClass.class), classes);
 		    addCollection(ModelManagementHelper.getHelper().getAllModelElementsOfKind(selected, MInterface.class), classes);
 		} else if (ModelFacade.isAClass(selected) || ModelFacade.isAInterface(selected)) {
-		    if (!classes.contains(selected)) classes.addElement(selected);
+		    if (!classes.contains(selected))
+			classes.addElement(selected);
 		}
 	    }
 	}
@@ -99,8 +102,10 @@ public class ActionGenerateAll extends UMLAction {
 
     public boolean shouldBeEnabled() {
 	ProjectBrowser pb = ProjectBrowser.getInstance();
-	ArgoDiagram activeDiagram = ProjectManager.getManager().getCurrentProject().getActiveDiagram();;
-	return super.shouldBeEnabled() && (activeDiagram instanceof UMLClassDiagram);
+	ArgoDiagram activeDiagram =
+	    ProjectManager.getManager().getCurrentProject().getActiveDiagram();;
+	return super.shouldBeEnabled()
+	    && (activeDiagram instanceof UMLClassDiagram);
     }
     
     /**

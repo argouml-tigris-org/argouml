@@ -153,9 +153,11 @@ public class GeneratorDisplay extends Generator {
     */
     /**
      * Generates an operation accordin to the UML 1.3 notation:
-     * stereotype visibility name (parameter-list) : return-type-expression {property-string}
-     * For the return-type-expression: only the types of the return parameters are shown.
-     * Depending on settings in Notation visibility and properties are shown/not shown.
+     * stereotype visibility name (parameter-list) :
+     * return-type-expression {property-string} For the
+     * return-type-expression: only the types of the return parameters
+     * are shown.  Depending on settings in Notation visibility and
+     * properties are shown/not shown.
      * @author jaap.branderhorst@xs4all.nl
      * @see org.argouml.application.api.NotationProvider#generateOperation(MOperation, boolean)
      */
@@ -269,11 +271,12 @@ public class GeneratorDisplay extends Generator {
     }
 
     /**
-     * Generates a string representation for the provided attribute. The string
-     * representation will be of the form:
-     * visibility name [multiplicity] : type-expression = initial-value {property-string}
-     * Depending on settings in Notation visibility,
-     * multiplicity, initial value and properties are shown/not shown.
+     * Generates a string representation for the provided
+     * attribute. The string representation will be of the form:
+     * visibility name [multiplicity] : type-expression =
+     * initial-value {property-string} Depending on settings in
+     * Notation visibility, multiplicity, initial value and properties
+     * are shown/not shown.
      * @see org.argouml.application.api.NotationProvider#generateAttribute(MAttribute, boolean)
      */
     public String generateAttribute(MAttribute attr, boolean documented) {
@@ -399,15 +402,17 @@ public class GeneratorDisplay extends Generator {
         if (!baseClass.equals(""))
             s += "extends " + baseClass + " ";
 
-        //nsuml: realizations!
-        //     String interfaces = generateRealization(cls.getRealizations(), true);
-        //     if (!interfaces.equals("")) s += "implements " + interfaces + " ";
+        //nsuml: realizations!  String interfaces =
+        //generateRealization(cls.getRealizations(), true); if
+        //(!interfaces.equals("")) s += "implements " + interfaces + "
+        //";
         s += "{\n";
 
         Collection strs = ModelFacade.getStructuralFeatures(cls);
         if (strs != null) {
             s += "\n";
-            //s += "////////////////////////////////////////////////////////////////\n";
+            //s +=
+            //"////////////////////////////////////////////////////////////////\n";
             s += INDENT + "// Attributes\n";
             Iterator strEnum = strs.iterator();
             while (strEnum.hasNext())
@@ -417,7 +422,8 @@ public class GeneratorDisplay extends Generator {
         Collection ends = cls.getAssociationEnds();
         if (ends != null) {
             s += "\n";
-            //s += "////////////////////////////////////////////////////////////////\n";
+            //s +=
+            //"////////////////////////////////////////////////////////////////\n";
             s += INDENT + "// Associations\n";
             Iterator endEnum = ends.iterator();
             while (endEnum.hasNext()) {
@@ -432,7 +438,8 @@ public class GeneratorDisplay extends Generator {
         Collection behs = ModelFacade.getOperations(cls);
         if (behs != null) {
             s += "\n";
-            //s += "////////////////////////////////////////////////////////////////\n";
+            //s +=
+            //"////////////////////////////////////////////////////////////////\n";
             s += INDENT + "// Operations\n";
             Iterator behEnum = behs.iterator();
             String terminator = " {\n" + INDENT + "}";
@@ -626,7 +633,10 @@ public class GeneratorDisplay extends Generator {
         act = m.getAction();
         if (act != null) {
             if (ModelFacade.getRecurrence(act) != null)
-                number = generateRecurrence(ModelFacade.getRecurrence(act)) + " " + number;
+                number =
+		    generateRecurrence(ModelFacade.getRecurrence(act))
+		    + " "
+		    + number;
 
             action = generateAction(act);
         }
@@ -668,10 +678,10 @@ public class GeneratorDisplay extends Generator {
         String s = "protected ";
         if (MScopeKind.CLASSIFIER.equals(ae.getTargetScope()))
             s += "static ";
-        //     String n = ae.getName();
-        //     if (n != null && !String.UNSPEC.equals(n)) s += generateName(n) + " ";
-        //     if (ae.isNavigable()) s += "navigable ";
-        //     if (ae.getIsOrdered()) s += "ordered ";
+        //     String n = ae.getName(); if (n != null &&
+        //     !String.UNSPEC.equals(n)) s += generateName(n) + " ";
+        //     if (ae.isNavigable()) s += "navigable "; if
+        //     (ae.getIsOrdered()) s += "ordered ";
         MMultiplicity m = ae.getMultiplicity();
         if (MMultiplicity.M1_1.equals(m) || MMultiplicity.M0_1.equals(m))
             s += generateClassifierRef(ae.getType());
@@ -805,7 +815,8 @@ public class GeneratorDisplay extends Generator {
     }
 
     /**
-     * @see org.argouml.application.api.NotationProvider#generateMultiplicity(MMultiplicity)
+     * @see
+     * org.argouml.application.api.NotationProvider#generateMultiplicity(MMultiplicity)
      */
     public String generateMultiplicity(MMultiplicity m) {
         if (m == null) {
@@ -834,9 +845,9 @@ public class GeneratorDisplay extends Generator {
     public static final String ANY_RANGE = "0..*";
 
     /**
-     * Generates a multiplicity range. The standard getLower and getUpper defined on
-     * MMultiplicityRange give a -1 if the multiplicity is n or *. This method
-     * circumvents that behaviour.
+     * Generates a multiplicity range. The standard getLower and
+     * getUpper defined on MMultiplicityRange give a -1 if the
+     * multiplicity is n or *. This method circumvents that behaviour.
      * @param mr
      * @return String
      */

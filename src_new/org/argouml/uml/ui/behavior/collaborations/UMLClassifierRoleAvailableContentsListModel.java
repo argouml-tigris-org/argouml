@@ -64,13 +64,15 @@ public class UMLClassifierRoleAvailableContentsListModel
     }
 
     /**
-     * @see ru.novosoft.uml.MElementListener#roleAdded(ru.novosoft.uml.MElementEvent)
+     * @see
+     * ru.novosoft.uml.MElementListener#roleAdded(ru.novosoft.uml.MElementEvent)
      */
     public void roleAdded(MElementEvent e) {
         if (e.getName().equals("base") && e.getSource() == getTarget()) {
             MClassifier clazz = (MClassifier) getChangedElement(e);
             addAll(clazz.getOwnedElements());
-            // UmlModelEventPump.getPump().removeModelEventListener(this, clazz, "ownedElement");
+            // UmlModelEventPump.getPump().removeModelEventListener(this,
+            // clazz, "ownedElement");
             UmlModelEventPump.getPump().addModelEventListener(
 							      this,
 							      clazz,
@@ -84,7 +86,8 @@ public class UMLClassifierRoleAvailableContentsListModel
     }
 
     /**
-     * @see org.argouml.uml.ui.UMLModelElementListModel2#setTarget(java.lang.Object)
+     * @see
+     * org.argouml.uml.ui.UMLModelElementListModel2#setTarget(java.lang.Object)
      */
     public void setTarget(Object target) {
         target = target instanceof Fig ? ((Fig) target).getOwner() : target;
@@ -141,7 +144,8 @@ public class UMLClassifierRoleAvailableContentsListModel
     }
 
     /**
-     * @see ru.novosoft.uml.MElementListener#roleRemoved(ru.novosoft.uml.MElementEvent)
+     * @see
+     * ru.novosoft.uml.MElementListener#roleRemoved(ru.novosoft.uml.MElementEvent)
      */
     public void roleRemoved(MElementEvent e) {
         if (e.getName().equals("base") && e.getSource() == getTarget()) {

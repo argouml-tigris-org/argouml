@@ -110,7 +110,8 @@ public class Import {
     private ImportStatusScreen iss;
     
     // log4j logging
-    private static Category cat = Category.getInstance(org.argouml.uml.reveng.Import.class);
+    private static Category cat =
+	Category.getInstance(org.argouml.uml.reveng.Import.class);
     
     /**
      * not used.
@@ -143,8 +144,10 @@ public class Import {
         }
         if (modules.size() == 0)
             throw new RuntimeException("Internal error. No import modules defined");
-        module = (PluggableImport) modules.get("Java"); // "Java" is a default module
-        if (module == null) throw new RuntimeException("Internal error. Default import module not found");
+	// "Java" is a default module
+        module = (PluggableImport) modules.get("Java");
+        if (module == null)
+	    throw new RuntimeException("Internal error. Default import module not found");
         JComponent chooser = module.getChooser(this);
         dialog = new JDialog(pb, "Import sources");
         dialog.setModal(true);
@@ -226,13 +229,16 @@ public class Import {
             general.add(descend);
             
             
-            create_diagrams = new JCheckBox("Create diagrams from imported code", true);
+            create_diagrams =
+		new JCheckBox("Create diagrams from imported code", true);
             general.add(create_diagrams);
             
-            minimise_figs = new JCheckBox("Minimise Class icons in diagrams", true);
+            minimise_figs =
+		new JCheckBox("Minimise Class icons in diagrams", true);
             general.add(minimise_figs);
             
-            layout_diagrams = new JCheckBox("Perform Automatic Diagram Layout", true);
+            layout_diagrams =
+		new JCheckBox("Perform Automatic Diagram Layout", true);
             general.add(layout_diagrams);
             
             // de-selects the fig minimising & layout
@@ -276,7 +282,8 @@ public class Import {
         if (b)  Designer.TheDesigner.setAutoCritique(false);
         iss = new ImportStatusScreen("Importing", "Splash");
         SwingUtilities.invokeLater(
-				   new ImportRun(files, b, layout_diagrams.isSelected()));
+				   new ImportRun(files, b,
+						 layout_diagrams.isSelected()));
         iss.show();
     }
     
@@ -350,7 +357,8 @@ public class Import {
      * Project.postLoad() is called after the import and it sets the
      * _needsSave flag to false.
      *
-     * @return true, if any diagrams where modified and the project should be saved before exit.
+     * @return true, if any diagrams where modified and the project
+     * should be saved before exit.
      */
     public boolean needsSave() {
         return (_diagram.getModifiedDiagrams().size() > 0);
@@ -373,8 +381,8 @@ public class Import {
      * This class parses each file in turn and allows the GUI to refresh
      * itself by performing the run() once for each file.
      *
-     * <p> this class also listens for a "Stop" message from the ImportStatusScreen,
-     * in order to cancel long import runs.
+     * <p> this class also listens for a "Stop" message from the
+     * ImportStatusScreen, in order to cancel long import runs.
      */
     class ImportRun implements Runnable {
         
@@ -417,8 +425,8 @@ public class Import {
         /**
          * called once for each file to be parsed.
          *
-         * <p>to refresh the GUI it calls itself again using the SwingUtilities.invokeLater(...)
-         * method.
+         * <p>to refresh the GUI it calls itself again using the
+         * SwingUtilities.invokeLater(...)  method.
          */
         public void run() {
             
@@ -434,7 +442,9 @@ public class Import {
                     
                     int tot;
                     iss.setMaximum(tot = _countFiles
-				   + (_diagram == null ? 0 : _diagram.getModifiedDiagrams().size() / 10));
+				   + (_diagram == null
+				      ? 0
+				      : _diagram.getModifiedDiagrams().size() / 10));
                     int act;
                     iss.setValue(act = _countFiles
                                  - _filesLeft.size()
@@ -486,9 +496,14 @@ public class Import {
             if (doLayout) {
                 _st.mark("layout");
                 if (_diagram != null) {
-                    for (int i = 0; i < _diagram.getModifiedDiagrams().size(); i++) {
-                        UMLDiagram diagram = (UMLDiagram) _diagram.getModifiedDiagrams().elementAt(i);
-                        ClassdiagramLayouter layouter = module.getLayout(diagram);
+                    for (int i = 0;
+			 i < _diagram.getModifiedDiagrams().size();
+			 i++)
+		    {
+                        UMLDiagram diagram =
+			    (UMLDiagram) _diagram.getModifiedDiagrams().elementAt(i);
+                        ClassdiagramLayouter layouter =
+			    module.getLayout(diagram);
                         layouter.layout();
                         
                         // Resize the diagram???
@@ -573,12 +588,15 @@ public class Import {
             this.setResizable(false);
         }
         
-        public void setMaximum(int i) { _statusBar.setMaximum(i); numberOfFiles = i; }
+        public void setMaximum(int i) {
+	    _statusBar.setMaximum(i); numberOfFiles = i;
+	}
         
         public void setValue(int i) {
             
             _statusBar.setValue(i);
-            progressLabel.setText("Parsing file " + i + " of " + numberOfFiles + ".");
+            progressLabel.setText("Parsing file " + i + " of " + numberOfFiles
+				  + ".");
             repaint();
         }
         

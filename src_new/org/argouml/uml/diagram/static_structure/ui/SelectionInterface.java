@@ -60,7 +60,8 @@ public class SelectionInterface extends SelectionWButtons {
         Category.getInstance(SelectionInterface.class);
     ////////////////////////////////////////////////////////////////
     // constants
-    public static Icon realiz = ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource("Realization");
+    public static Icon realiz =
+	ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource("Realization");
 
 
     ////////////////////////////////////////////////////////////////
@@ -162,7 +163,9 @@ public class SelectionInterface extends SelectionWButtons {
     }
 	
     /**
-     * @see org.argouml.uml.diagram.ui.SelectionWButtons#createEdgeUnder(org.tigris.gef.graph.MutableGraphModel, java.lang.Object)
+     * @see
+     * org.argouml.uml.diagram.ui.SelectionWButtons#createEdgeUnder(org.tigris.gef.graph.MutableGraphModel,
+     * java.lang.Object)
      */
     protected Object createEdgeUnder(MutableGraphModel gm, Object newNode) {
         return gm.connect(newNode, _content.getOwner(), (Class) ModelFacade.ABSTRACTION);
