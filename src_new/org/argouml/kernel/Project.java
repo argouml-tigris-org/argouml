@@ -53,6 +53,7 @@ import org.apache.log4j.Category;
 import org.argouml.application.api.Argo;
 import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.ToDoList;
+import org.argouml.cognitive.ProjectMemberTodoList;
 import org.argouml.cognitive.checklist.ChecklistStatus;
 import org.argouml.cognitive.critics.Agency;
 import org.argouml.cognitive.critics.Critic;
@@ -198,6 +199,7 @@ public class Project implements java.io.Serializable {
         model.setName("untitledModel");
         setRoot(model);
         setCurrentNamespace(model);
+        addMember(new ProjectMemberTodoList("", this));
         addMember(new UMLClassDiagram(model));
         addMember(new UMLUseCaseDiagram(model));
         setNeedsSave(false);
@@ -244,6 +246,7 @@ public class Project implements java.io.Serializable {
             MModel model = XMIParser.SINGLETON.getCurModel();
             UmlHelper.getHelper().addListenersToModel(model);
             p._UUIDRefs = XMIParser.SINGLETON.getUUIDRefs();        
+            p.addMember(new ProjectMemberTodoList("", p));
             p.addMember(model);
             p.setNeedsSave(false);            
             org.argouml.application.Main.addPostLoadAction(new ResetStatsLater());
@@ -407,6 +410,15 @@ public class Project implements java.io.Serializable {
                     // sub.closeEntry();
                     Argo.log.info("Finished loading "+currentEntry.getName());
                 }
+                if (currentEntry.getName().endsWith(".todo")) {
+                    ProjectMemberTodoList pm = new ProjectMemberTodoList(currentEntry.getName(), this);
+                    try {
+                        pm.load(sub);
+                    } catch (IOException ioe) {
+                    } catch (org.xml.sax.SAXException se) {
+                    }
+                    addMember(pm);
+                }
             }
             zis.close();
 
@@ -538,6 +550,20 @@ public class Project implements java.io.Serializable {
         _members.addElement(pm);
     }
 
+    public void addMember(ProjectMemberTodoList pm) {
+        Iterator iter = _members.iterator();
+        Object currentMember = null;
+        while(iter.hasNext()) {
+            currentMember = iter.next();
+            if(currentMember instanceof ProjectMemberTodoList) {
+                /* No need to have several of these */
+                return;
+            }
+        }
+        // got past the veto, add the member
+        _members.addElement(pm);
+    }
+
     public void addMember(MModel m) {
         Iterator iter = _members.iterator();
         Object currentMember = null;
@@ -650,6 +676,7 @@ public class Project implements java.io.Serializable {
         loadMembersOfType("xmi");
         loadMembersOfType("argo");
         loadMembersOfType("pgml");
+        loadMembersOfType("todo");
         loadMembersOfType("text");
         loadMembersOfType("html");
     }
@@ -673,6 +700,8 @@ public class Project implements java.io.Serializable {
      * it easier to modularize the output of Argo.
      */
     public void save(boolean overwrite, File file) throws IOException, Exception {
+        setFile(file);
+
         if (expander == null) {
             java.util.Hashtable templates = TemplateReader.readFile(ARGO_TEE);
             expander = new OCLExpander(templates);
@@ -728,10 +757,6 @@ public class Project implements java.io.Serializable {
         // zos.close();
     
         postSave();
-
-       
-        setFile(file);
-       
     }
 
     public String getAuthorname() { return _authorname; }
