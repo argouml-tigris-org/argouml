@@ -668,16 +668,12 @@ public abstract class FigNodeModelElement
         Object oldOwner = getOwner();
         super.setOwner(own);
         if (oldOwner instanceof MModelElement) {
-            // patch for issue 1439
             UmlModelEventPump.getPump().removeModelEventListener(
                 this,
                 (MModelElement) oldOwner);
-            ((MModelElement)oldOwner).removeMElementListener(UmlModelEventPump.getPump());   
         }         
             
         if (own instanceof MModelElement) {
-            // patch for issue 1439
-            ((MModelElement)own).addMElementListener(UmlModelEventPump.getPump());
             MModelElement me = (MModelElement) own;
             // UmlModelEventPump.getPump().removeModelEventListener(this, me);
             UmlModelEventPump.getPump().addModelEventListener(this, me);
