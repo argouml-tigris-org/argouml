@@ -101,14 +101,7 @@ public class CrComponentInstanceWithoutClassifier extends CrUML {
 
 	Collection figs = deploymentDiagram.getLayer().getContents(null);
 	ListSet offs = null;
-	int size = figs.size();
-	boolean isNode = false;
-        Iterator figIter = figs.iterator();
-	while (figIter.hasNext()) {
-	    Object obj = figIter.next();
-	    if (obj instanceof FigMNodeInstance) isNode = true;
-	}
-        figIter = figs.iterator();
+    Iterator figIter = figs.iterator();
 	while (figIter.hasNext()) {
 	    Object obj = figIter.next();
 	    if (!(obj instanceof FigComponentInstance)) continue;

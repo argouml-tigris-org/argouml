@@ -85,7 +85,6 @@ public class FigDependency extends FigEdgeModelElement {
      * @see org.tigris.gef.presentation.Fig#setOwner(java.lang.Object)
      */
     public void setOwner(Object own) {
-        Object oldOwner = getOwner();
         super.setOwner(own);
 
         if (Model.getFacade().isADependency(own)) {

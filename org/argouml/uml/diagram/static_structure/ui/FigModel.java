@@ -80,8 +80,6 @@ public class FigModel extends FigPackage {
 
         if (figPoly != null) {
             Rectangle oldBounds = getBounds();
-            Rectangle polyBounds = figPoly.getBounds();
-;
             figPoly.translate((x - oldBounds.x) + (w - oldBounds.width), y
                     - oldBounds.y);
 

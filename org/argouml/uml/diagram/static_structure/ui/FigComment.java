@@ -292,7 +292,6 @@ public class FigComment
      * @see org.argouml.kernel.DelayedVChangeListener#delayedVetoableChange(java.beans.PropertyChangeEvent)
      */
     public void delayedVetoableChange(PropertyChangeEvent pce) {
-        Object src = pce.getSource();
         // update any text, colors, fonts, etc.
         renderingChanged();
         // update the relative sizes and positions of internel Figs

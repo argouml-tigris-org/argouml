@@ -139,7 +139,6 @@ public class ToDoByOffender extends ToDoPerspective
     public void toDoItemsRemoved(ToDoListEvent tde) {
         LOG.debug("toDoItemRemoved");
         Vector items = tde.getToDoItems();
-        int nItems = items.size();
         Object[] path = new Object[2];
         path[0] = Designer.theDesigner().getToDoList();
 

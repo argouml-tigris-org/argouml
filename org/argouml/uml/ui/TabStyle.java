@@ -289,8 +289,6 @@ public class TabStyle extends TabSpawnable implements TabFigTarget,
     public Class panelClassFor(Class targetClass) {
         if (targetClass == null) return null;
 
-        String pack = "org.argouml.ui";
-
         StringNamespace classNs = (StringNamespace) StringNamespace
                 .parse(targetClass);
 

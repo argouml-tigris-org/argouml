@@ -158,9 +158,6 @@ public class SelectionState extends SelectionWButtons {
 	}
 	int cx = _content.getX(), cy = _content.getY();
 	int cw = _content.getWidth(), ch = _content.getHeight();
-	int newX = cx, newY = cy, newW = cw, newH = ch;
-	Dimension minSize = _content.getMinimumSize();
-	int minWidth = minSize.width, minHeight = minSize.height;
 	Object edgeType= null;
 	Object nodeType = Model.getMetaTypes().getState();
 
@@ -169,8 +166,6 @@ public class SelectionState extends SelectionWButtons {
 	if (!(gm instanceof MutableGraphModel)) {
 	    return;
 	}
-
-	MutableGraphModel mgm = (MutableGraphModel) gm;
 
 	int bx = mX, by = mY;
 	boolean reverse = false;

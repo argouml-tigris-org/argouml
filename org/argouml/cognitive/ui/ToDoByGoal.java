@@ -138,7 +138,6 @@ public class ToDoByGoal extends ToDoPerspective
      */
     public void toDoItemsRemoved(ToDoListEvent tde) {
 	LOG.debug("toDoItemAdded");
-	ToDoList list = Designer.theDesigner().getToDoList(); //source?
 	Vector items = tde.getToDoItems();
 	int nItems = items.size();
 	Object[] path = new Object[2];

@@ -240,8 +240,7 @@ public class FigComponentInstance extends FigNodeModelElement {
                 else if (Model.getFacade().isANode(nodeOrComp)) {
                     super.setEnclosingFig(encloser);
                 }
-                Vector figures = getEnclosedFigs();
-
+                
                 if (getLayer() != null) {
                     // elementOrdering(figures);
                     List contents = getLayer().getContents();
