@@ -100,19 +100,21 @@ round-trip engineering for C++ projects.
     <property name="module.root" value="${argo.root}/modules/${argo.module.name}"/>
     <property name="argo.src.dir" value="${argo.root}/src_new"/>
     <property name="module.src.dir" value="${module.root}/src"/>
+    <property name="module.tests.src" value="${module.root}/tests"/>
 
     <property name="argo.build.dir" value="${argo.root}/build"/>
     <property name="argo.build.src" value="${argo.root}/src_new"/>
 
     <property name="module.lib.dir" value="${module.root}/lib"/>
-    <property name="classpath" value="${argo.build.dir}/nsuml.jar:${argo.build.dir}/ocl-argo.jar:${argo.build.dir}/gef.jar:${argo.build.dir}/antlrall.jar:${argo.build.dir}/log4j.jar:${argo.build.dir}/argouml.jar"/>
 
     <property name="manifest" value="manifest.mf"/>
     <property name="manifest.src" value="${module.src.dir}/org/${manifest}"/>
 
     <property name="module.build.dir" value="${module.root}/build"/>
-    <property name="module.build.src" value="${module.src.dir}"/>
     <property name="module.build.dest" value="${module.build.dir}/classes"/>
+    <property name="module.tests.build" value="${module.build.dir}/tests"/>
+    <property name="module.tests.classes" value="${module.tests.build}/classes"/>
+    <property name="module.tests.reports" value="${module.tests.build}/reports"/>
     <property name="argo.build.dest" value="${argo.build.dir}/classes"/>
 
     <property name="argo.jarfile"
@@ -131,8 +133,37 @@ round-trip engineering for C++ projects.
     <property name="developer.lib.dir" value="${argo.build.dir}"/>
 
     <!-- Load ArgoUML properties, including the version -->
+    <property name="argo.root.dir" value="${argo.root}"/>
     <property file="${argo.src.dir}/default.properties"/>
     <property name="module.version" value="${argo.core.version}-${DSTAMP}-${TSTAMP}"/>
+
+    <path id="module.compile.classpath">
+      <fileset dir="${argo.build.dir}">
+          <include name="argouml.jar" />
+          <include name="nsuml.jar" />
+          <include name="ocl-argo.jar" />
+          <include name="antlrall.jar" />
+          <include name="log4j.jar" />
+          <include name="gef.jar" />
+      </fileset>
+    </path>
+    
+    <path id="ant.optional.classpath">
+      <pathelement location="${ant.home}/optional.jar"/>
+      <pathelement location="${junit.jar.path}"/>
+    </path>
+
+    <taskdef classname="org.apache.tools.ant.taskdefs.optional.junit.JUnitTask" name="junit">
+      <classpath>
+	 <path refid="ant.optional.classpath"/>
+      </classpath>
+    </taskdef>
+
+    <taskdef classname="org.apache.tools.ant.taskdefs.optional.junit.XMLResultAggregator" name="junitreport">
+      <classpath>
+	 <path refid="ant.optional.classpath"/>
+      </classpath>
+    </taskdef>
 
     <echo message="------------------- ${Name} ${module.version} ----------------"/>
   </target>
@@ -147,32 +178,26 @@ round-trip engineering for C++ projects.
     <!-- create directories -->
     <echo message="Preparing the build directories"/>
     <mkdir dir="${module.build.dest}"/>
+    <mkdir dir="${module.tests.classes}"/>
+    <mkdir dir="${module.tests.reports}"/>
   </target>
 
   <!-- =================================================================== -->
   <!-- Compiles the source directory                                       -->
   <!-- =================================================================== -->
-
   <target name="compile" depends="init, prepare" 
           description="compiles the module source code"> 
 
     <echo message="Compiling the sources"/>
 
-    <javac srcdir="${module.build.src}"
+    <javac srcdir="${module.src.dir}"
            destdir="${module.build.dest}"
            excludes="*.txt,*.bat,*.xml,*.sh"
            debug="${debug}"
            deprecation="${deprecation}"
            optimize="${optimize}">
         <classpath>
-            <fileset dir="${argo.build.dir}">
-                <include name="argouml.jar" />
-                <include name="nsuml.jar" />
-                <include name="ocl-argo.jar" />
-                <include name="antlrall.jar" />
-                <include name="log4j.jar" />
-                <include name="gef.jar" />
-            </fileset>
+            <path refid="module.compile.classpath"/>
         </classpath>
      </javac>
   </target>
@@ -200,26 +225,19 @@ round-trip engineering for C++ projects.
     <echo message="--- Executing ${Name} ---"/>
     <java classname="org.argouml.application.Main"
           fork="yes">
-        <classpath>
-            <fileset dir="${module.build.dir}">
-                <include name="${module.jarfile.name}" />
-	    </fileset>
-            <fileset dir="${argo.build.dir}">
-                <include name="argouml.jar" />
-                <include name="nsuml.jar" />
-                <include name="ocl-argo.jar" />
-                <include name="antlrall.jar" />
-                <include name="log4j.jar" />
-                <include name="gef.jar" />
-            </fileset>
-            <!-- maybe this will be used in the future, but, for now it makes 
-                 this build target fail -->
-            <!--
-            <fileset dir="${module.lib.dir}">
-                <include name="*.jar" />
-            </fileset>
-            -->
-        </classpath>
+      <classpath>
+        <fileset dir="${module.build.dir}">
+            <include name="${module.jarfile.name}" />
+        </fileset>
+        <path refid="module.compile.classpath"/>
+        <!-- maybe this will be used in the future, but, for now it makes 
+             this build target fail -->
+        <!--
+        <fileset dir="${module.lib.dir}">
+            <include name="*.jar" />
+        </fileset>
+        -->
+      </classpath>
 
     </java>
   </target>
@@ -242,6 +260,66 @@ round-trip engineering for C++ projects.
     <copy todir="${developer.lib.dir}/ext">
       <fileset dir="${module.build.dir}" includes="${module.jarfile.name}"/>
     </copy>
+  </target>
+
+  <!-- =================================================================== -->
+  <!-- Compiles the tests directory                                        -->
+  <!-- =================================================================== -->
+  <target name="compile-tests" depends="compile"> 
+
+    <echo message="Compiling the unit tests"/>
+
+    <javac srcdir="${module.tests.src}"
+           destdir="${module.tests.classes}"
+           debug="true"
+           deprecation="false"
+           optimize="false">
+      <classpath>
+        <pathelement location="${module.build.dest}"/>
+        <!-- reuse the ArgoUML properties -->
+        <path refid="module.compile.classpath"/>
+        <pathelement location="${junit.jar.path}"/>
+      </classpath>
+     </javac>
+  </target>
+
+  <!-- =================================================================== -->
+  <!-- Run the module unit tests                                           -->
+  <!-- =================================================================== -->
+  <target name="tests" depends="init, compile-tests" 
+          description="run the module unit tests"> 
+
+    <echo message="running the unit tests"/>
+    
+    <junit errorproperty="junit.failure" fork="yes" haltonfailure="false" 
+           maxmemory="48M" printsummary="true">
+          <!-- use different log4j configuration for testing -->
+      <sysproperty key="log4j.configuration" value="org/argouml/resource/full_console.lcf"/>
+      <classpath>
+        <path refid="module.compile.classpath"/>
+        <pathelement location="${module.build.dest}"/>
+        <pathelement location="${junit.jar.path}"/>
+        <pathelement location="${module.tests.classes}"/>
+      </classpath>
+      <formatter type="xml"/>
+      <batchtest todir="${module.tests.reports}">
+        <fileset dir="${module.tests.src}">
+          <include name="org/argouml/**/Test*.java"/>
+        </fileset>
+      </batchtest>
+    </junit>
+    <antcall target="create-tests-report"/>
+  </target>
+  
+  <target name="create-tests-report">
+    <echo message="Creating unit tests report to ${module.tests.reports}/html/index.html"/>
+    
+    <junitreport todir="${module.tests.reports}">
+      <fileset dir="${module.tests.reports}">
+        <include name="TEST-*.xml"/>
+      </fileset>
+      <report format="frames" todir="${module.tests.reports}/html"/>
+    </junitreport>
   </target>
 
 </project>
