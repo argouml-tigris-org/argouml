@@ -46,7 +46,7 @@ import uci.util.*;
  *
  * @see Fig */
 
-public abstract class Selection extends Observable
+public abstract class Selection
 implements Serializable, MouseListener, MouseMotionListener, KeyListener {
 
   ////////////////////////////////////////////////////////////////

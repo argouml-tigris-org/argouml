@@ -53,7 +53,7 @@ import uci.gef.event.*;
  *
  * @see Selection */
 
-public class SelectionManager extends Observable
+public class SelectionManager
 implements Serializable, KeyListener, MouseListener, MouseMotionListener {
 
   /** The collection of Selection instances */

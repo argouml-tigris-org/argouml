@@ -46,8 +46,7 @@ import uci.graph.*;
  *  be placed in any LayerDiagram. Fig's are also used to define the
  *  look of FigNodes on NetNodes. */
 
-public class Fig extends Observable
-implements java.io.Serializable  {
+public class Fig implements java.io.Serializable  {
 
   ////////////////////////////////////////////////////////////////
   // constants

@@ -67,8 +67,7 @@ import uci.util.*;
  * @see LayerGrid
  * @see LayerPolar */
 
-public abstract class Layer extends Observable
-implements java.io.Serializable  { 
+public abstract class Layer implements java.io.Serializable {
 
   ////////////////////////////////////////////////////////////////
   // instance variables
