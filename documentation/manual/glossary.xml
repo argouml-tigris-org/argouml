@@ -362,18 +362,18 @@ See <xref linkend="s1.umlactivitydiags"/> for more information.
   <glossdiv>
     <title>E</title>
 
-    <!-- Extends Relationship -->
+    <!-- Extend Relationship -->
 
     <glossentry id="gl.extends">
-      <glossterm>Extends Relationship</glossterm>
+      <glossterm>Extend Relationship</glossterm>
 
       <glossdef>
       <indexterm>
-        <primary>Extends Relationship</primary>
+        <primary>Extend Relationship</primary>
       </indexterm>
       <indexterm>
         <primary>Relationship</primary>
-	<secondary>Extends</secondary>
+	<secondary>Extend</secondary>
       </indexterm>
 
         <para>A relationship between two Use Cases, where the
@@ -492,18 +492,18 @@ See <xref linkend="s1.umlactivitydiags"/> for more information.
   <glossdiv>
     <title>I</title>
 
-    <!-- Includes Relationship -->
+    <!-- Include Relationship -->
 
     <glossentry id="gl.includes">
-      <glossterm>Includes Relationship</glossterm>
+      <glossterm>Include Relationship</glossterm>
 
       <glossdef>
       <indexterm>
-        <primary>Includes Relationship</primary>
+        <primary>Include Relationship</primary>
       </indexterm>
       <indexterm>
         <primary>Relationship</primary>
-	<secondary>Includes</secondary>
+	<secondary>Include</secondary>
       </indexterm>
 
         <para>A relationship between two Use Cases, where the
