@@ -24,8 +24,9 @@
 package org.argouml.uml.ui;
 
 import org.apache.log4j.Category;
+import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.behavioralelements.activitygraphs.ActivityGraphsFactory;
-import org.argouml.ui.ProjectBrowser;
+import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.activity.ui.UMLActivityDiagram;
 import org.argouml.uml.diagram.ui.UMLDiagram;
 
@@ -51,13 +52,13 @@ public class ActionActivityDiagram extends ActionStateDiagram {
     /**
      * @see org.argouml.uml.ui.ActionAddDiagram#createDiagram(MNamespace, Object)
      */
-    public UMLDiagram createDiagram(MNamespace ns) {
-        Object target = ProjectBrowser.getInstance().getTarget();
+    public UMLDiagram createDiagram(Object ns) {
+        Object target = TargetManager.getInstance().getModelTarget();
         MActivityGraph graph = ActivityGraphsFactory.getFactory().buildActivityGraph((MModelElement)target);
         if (target instanceof MBehavioralFeature) {
             ns = ((MBehavioralFeature)target).getNamespace();
         }
-        UMLActivityDiagram d = new UMLActivityDiagram(ns, graph);
+        UMLActivityDiagram d = new UMLActivityDiagram((MNamespace)ns, graph);
         return d;
     }
 
@@ -65,7 +66,13 @@ public class ActionActivityDiagram extends ActionStateDiagram {
      * @see org.argouml.uml.ui.UMLAction#shouldBeEnabled()
      */
     public boolean shouldBeEnabled() {
-        return super.shouldBeEnabled() || ProjectBrowser.getInstance().getTarget() instanceof MPackage;
+        return super.shouldBeEnabled() || TargetManager.getInstance().getModelTarget() instanceof MPackage;
+    }
+    /**
+     * @see org.argouml.uml.ui.ActionAddDiagram#isValidNamespace(MNamespace)
+     */
+    public boolean isValidNamespace(Object handle) {
+        return super.isValidNamespace(handle) || ModelFacade.isAPackage(handle);
     }
 
 } /* end class ActionActivityDiagram */

@@ -38,6 +38,7 @@ import ru.novosoft.uml.foundation.core.MBehavioralFeature;
 import ru.novosoft.uml.foundation.core.MClassifier;
 import ru.novosoft.uml.foundation.core.MModelElement;
 import ru.novosoft.uml.foundation.core.MNamespace;
+import ru.novosoft.uml.model_management.MPackage;
 
 /**
  * Factory to create UML classes for the UML
@@ -141,7 +142,7 @@ public class ActivityGraphsFactory extends AbstractUmlModelFactory {
 	 * @return MActivityGraph
 	 */
     public MActivityGraph buildActivityGraph(MModelElement context) {
-    	if (context != null && (context instanceof MBehavioralFeature || context instanceof MClassifier)) {
+    	if (context != null && (context instanceof MBehavioralFeature || context instanceof MClassifier || context instanceof MPackage)) {
     		MActivityGraph graph = createActivityGraph();
     		graph.setContext(context);
     		if (context instanceof MNamespace) {
