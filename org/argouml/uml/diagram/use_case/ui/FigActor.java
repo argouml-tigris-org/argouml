@@ -33,7 +33,6 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.Rectangle;
-import java.util.Iterator;
 import java.util.Vector;
 
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
@@ -42,7 +41,6 @@ import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.FigCircle;
 import org.tigris.gef.presentation.FigLine;
 import org.tigris.gef.presentation.FigRect;
-import org.tigris.gef.presentation.FigText;
 
 /** Class to display graphics for a UML MState in a diagram. */
 
@@ -51,14 +49,14 @@ public class FigActor extends FigNodeModelElement {
     ////////////////////////////////////////////////////////////////
     // instance variables
 
-    /* Put in the things for the "person" in the FigActor */
-    private FigCircle head;
-    private FigLine body;
-    private FigLine arms;
-    private FigLine leftLeg;
-    private FigLine rightLeg;
-
-    // add other Figs here as needed
+    //These are the positions of child figs inside this fig
+    //They mst be added in the constructor in this order.
+    private static final int HEAD_POSN = 1;
+    private static final int BODY_POSN = 2;
+    private static final int ARMS_POSN = 3;
+    private static final int LEFT_LEG_POSN = 4;
+    private static final int RIGHT_LEG_POSN = 5;
+    private static final int NAME_POSN = 6;
 
     ////////////////////////////////////////////////////////////////
     // constructors
@@ -68,13 +66,13 @@ public class FigActor extends FigNodeModelElement {
      */
     public FigActor() {
         // Put this rectangle behind the rest, so it goes first
-        FigRect bigPort = new FigRect(10, 30, 15, 45);
+        FigRect bigPort = new FigRect(10, 30, 15, 60);
         bigPort.setVisible(false);
-        head = new FigCircle(10, 30, 15, 15, Color.black, Color.white);
-        body = new FigLine(20, 45, 20, 60, Color.black);
-        arms = new FigLine(10, 50, 30, 50, Color.black);
-        leftLeg = new FigLine(20, 60, 15, 75, Color.black);
-        rightLeg = new FigLine(20, 60, 25, 75, Color.black);
+        FigCircle head = new FigCircle(10, 30, 15, 15, Color.black, Color.white);
+        FigLine body = new FigLine(20, 45, 20, 60, Color.black);
+        FigLine arms = new FigLine(10, 50, 30, 50, Color.black);
+        FigLine leftLeg = new FigLine(20, 60, 15, 75, Color.black);
+        FigLine rightLeg = new FigLine(20, 60, 25, 75, Color.black);
         getNameFig().setBounds(5, 75, 35, 20);
 
         getNameFig().setTextFilled(false);
@@ -112,22 +110,6 @@ public class FigActor extends FigNodeModelElement {
         return "new MActor";
     }
 
-    /**
-     * @see java.lang.Object#clone()
-     */
-    public Object clone() {
-        FigActor figClone = (FigActor) super.clone();
-        Iterator it = figClone.getFigs(null).iterator();
-        figClone.setBigPort((FigCircle) it.next());
-        figClone.head = (FigCircle) it.next();
-        figClone.body = (FigLine) it.next();
-        figClone.arms = (FigLine) it.next();
-        figClone.leftLeg = (FigLine) it.next();
-        figClone.rightLeg = (FigLine) it.next();
-        figClone.setNameFig((FigText) it.next());
-        return figClone;
-    }
-
     ////////////////////////////////////////////////////////////////
     // Fig accessors
 
@@ -143,70 +125,6 @@ public class FigActor extends FigNodeModelElement {
      */
     public boolean isResizable() {
         return false;
-    }
-
-    /**
-     * @see org.tigris.gef.presentation.Fig#setLineColor(java.awt.Color)
-     */
-    public void setLineColor(Color col) {
-        head.setLineColor(col);
-        body.setLineColor(col);
-        arms.setLineColor(col);
-        leftLeg.setLineColor(col);
-        rightLeg.setLineColor(col);
-    }
-    
-    /**
-     * @see org.tigris.gef.presentation.Fig#getLineColor()
-     */
-    public Color getLineColor() {
-        return head.getLineColor();
-    }
-
-    /**
-     * @see org.tigris.gef.presentation.Fig#setFillColor(java.awt.Color)
-     */
-    public void setFillColor(Color col) {
-        head.setFillColor(col);
-    }
-    
-    /**
-     * @see org.tigris.gef.presentation.Fig#getFillColor()
-     */
-    public Color getFillColor() {
-        return head.getFillColor();
-    }
-
-    /**
-     * @see org.tigris.gef.presentation.Fig#setFilled(boolean)
-     */
-    public void setFilled(boolean f) {
-        head.setFilled(f);
-    }
-    
-    /**
-     * @see org.tigris.gef.presentation.Fig#getFilled()
-     */
-    public boolean getFilled() {
-        return head.getFilled();
-    }
-
-    /**
-     * @see org.tigris.gef.presentation.Fig#setLineWidth(int)
-     */
-    public void setLineWidth(int w) {
-        head.setLineWidth(w);
-        body.setLineWidth(w);
-        arms.setLineWidth(w);
-        leftLeg.setLineWidth(w);
-        rightLeg.setLineWidth(w);
-    }
-    
-    /**
-     * @see org.tigris.gef.presentation.Fig#getLineWidth()
-     */
-    public int getLineWidth() {
-        return head.getLineWidth();
     }
 
     /**
@@ -228,11 +146,11 @@ public class FigActor extends FigNodeModelElement {
         Rectangle oldBounds = getBounds();
         getBigPort().setLocation(x + middle - getBigPort().getWidth() / 2,
                                  y + h - 65);
-        head.setLocation(x + middle - head.getWidth() / 2, y + h - 65);
-        body.setLocation(x + middle, y + h - 50);
-        arms.setLocation(x + middle - arms.getWidth() / 2, y + h - 45);
-        leftLeg.setLocation(x + middle - leftLeg.getWidth(), y + h - 35);
-        rightLeg.setLocation(x + middle, y + h - 35);
+        getFigAt(HEAD_POSN).setLocation(x + middle - getFigAt(HEAD_POSN).getWidth() / 2, y + h - 65);
+        getFigAt(BODY_POSN).setLocation(x + middle, y + h - 50);
+        getFigAt(ARMS_POSN).setLocation(x + middle - getFigAt(ARMS_POSN).getWidth() / 2, y + h - 45);
+        getFigAt(LEFT_LEG_POSN).setLocation(x + middle - getFigAt(LEFT_LEG_POSN).getWidth(), y + h - 35);
+        getFigAt(RIGHT_LEG_POSN).setLocation(x + middle, y + h - 35);
 
         Dimension minTextSize = getNameFig().getMinimumSize();
         getNameFig().setBounds(x + middle - minTextSize.width / 2,
@@ -266,10 +184,10 @@ public class FigActor extends FigNodeModelElement {
      */
     public Vector getGravityPoints() {
         Vector ret = new Vector();
-        int cx = head.center().x;
-        int cy = head.center().y;
-        int radiusx = Math.round(head.getWidth() / 2) + 1;
-        int radiusy = Math.round(head.getHeight() / 2) + 1;
+        int cx = getFigAt(HEAD_POSN).center().x;
+        int cy = getFigAt(HEAD_POSN).center().y;
+        int radiusx = Math.round(getFigAt(HEAD_POSN).getWidth() / 2) + 1;
+        int radiusy = Math.round(getFigAt(HEAD_POSN).getHeight() / 2) + 1;
         final int maxPoints = 20;
         Point point = null;
         for (int i = 0; i < maxPoints; i++) {
@@ -278,14 +196,22 @@ public class FigActor extends FigNodeModelElement {
 			      (int) (cy + Math.sin(angle) * radiusy));
             ret.add(point);
         }
-        ret.add(new Point(body.getX(), body.getY()));
-        ret.add(new Point(body.getX1(), body.getY1()));
-        ret.add(new Point(leftLeg.getX(), leftLeg.getY()));
-        ret.add(new Point(leftLeg.getX1(), leftLeg.getY1()));
-        ret.add(new Point(rightLeg.getX(), rightLeg.getY()));
-        ret.add(new Point(rightLeg.getX1(), rightLeg.getY1()));
-        ret.add(new Point(arms.getX(), arms.getY()));
-        ret.add(new Point(arms.getX1(), arms.getY1()));
+        ret.add(new Point(getFigAt(BODY_POSN).getX(),
+                          getFigAt(BODY_POSN).getY()));
+        ret.add(new Point(((FigLine)getFigAt(BODY_POSN)).getX1(),
+                          ((FigLine)getFigAt(BODY_POSN)).getY1()));
+        ret.add(new Point(getFigAt(LEFT_LEG_POSN).getX(),
+                          getFigAt(LEFT_LEG_POSN).getY()));
+        ret.add(new Point(((FigLine)getFigAt(LEFT_LEG_POSN)).getX1(),
+                          ((FigLine)getFigAt(LEFT_LEG_POSN)).getY1()));
+        ret.add(new Point(getFigAt(RIGHT_LEG_POSN).getX(),
+                          getFigAt(RIGHT_LEG_POSN).getY()));
+        ret.add(new Point(((FigLine)getFigAt(RIGHT_LEG_POSN)).getX1(),
+                          ((FigLine)getFigAt(RIGHT_LEG_POSN)).getY1()));
+        ret.add(new Point(getFigAt(ARMS_POSN).getX(),
+                          getFigAt(ARMS_POSN).getY()));
+        ret.add(new Point(((FigLine)getFigAt(ARMS_POSN)).getX1(),
+                          ((FigLine)getFigAt(ARMS_POSN)).getY1()));
         return ret;
     }
 
