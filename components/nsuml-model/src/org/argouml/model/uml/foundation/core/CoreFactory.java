@@ -30,10 +30,10 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-import org.argouml.application.api.Notation;
-import org.argouml.application.api.NotationName;
-import org.argouml.kernel.Project;
-import org.argouml.kernel.ProjectManager;
+//import org.argouml.application.api.Notation;
+//import org.argouml.application.api.NotationName;
+//import org.argouml.kernel.Project;
+//import org.argouml.kernel.ProjectManager;
 import org.argouml.api.FacadeManager;
 import org.argouml.model.uml.AbstractUmlModelFactory;
 import org.argouml.model.uml.MofHelper;
@@ -828,13 +828,14 @@ public class CoreFactory extends AbstractUmlModelFactory {
 		
 		// TODO Do not use Project or ProjectManager
 		
-		Project p = ProjectManager.getManager().getCurrentProject();
-		MClassifier intType = p.findType("int");
-		if (p.getModel() != intType.getNamespace()
+//		Project p = ProjectManager.getManager().getCurrentProject();
+		MModel model = (MModel)MofHelper.refOutermostPackage();
+		MClassifier intType = ModelManagementHelper.getHelper().findType(model, "int");
+		if (model != intType.getNamespace()
 			&& !ModelManagementHelper.getHelper().getAllNamespaces(
-				p.getModel()).contains(
+				model).contains(
 				intType.getNamespace())) {
-			intType.setNamespace(p.getModel());
+			intType.setNamespace(model);
 		}
 		MAttribute attr = createAttribute();
 		attr.setName("newAttr");
@@ -886,13 +887,13 @@ public class CoreFactory extends AbstractUmlModelFactory {
 		// TODO Do not use Project or ProjectManager
 		// TODO Figs should be pulled out of here
 
-		Project p = ProjectManager.getManager().getCurrentProject();
-		Iterator it = p.findFigsForMember(cls).iterator();
-		while (it.hasNext()) {
-			MElementListener listener = (MElementListener)it.next();
-			// UmlModelEventPump.getPump().removeModelEventListener(listener, attr);
-			UmlModelEventPump.getPump().addModelEventListener(listener, attr);
-		}
+//		Project p = ProjectManager.getManager().getCurrentProject();
+//		Iterator it = p.findFigsForMember(cls).iterator();
+//		while (it.hasNext()) {
+//			MElementListener listener = (MElementListener)it.next();
+//			// UmlModelEventPump.getPump().removeModelEventListener(listener, attr);
+//			UmlModelEventPump.getPump().addModelEventListener(listener, attr);
+//		}
 		return attr;
 	}
 
@@ -1172,17 +1173,17 @@ public class CoreFactory extends AbstractUmlModelFactory {
         return gen;
     }
 
-	/**
-	 * Builds a default method belonging to a certain operation. The language of the body is set to the
-	 * selected Notation language. The body of the method is set to an emtpy string.
-	 * @param op
-	 * @return MMethod
-	 */
-	public MMethod buildMethod(MOperation op) {
-		// TODO Notation needs to be pulled out of here
-		return buildMethod(op, Notation.getDefaultNotation(), "");
-	}
-
+//	/**
+//	 * Builds a default method belonging to a certain operation. The language of the body is set to the
+//	 * selected Notation language. The body of the method is set to an emtpy string.
+//	 * @param op
+//	 * @return MMethod
+//	 */
+//	public MMethod buildMethod(MOperation op) {
+//		// TODO Notation needs to be pulled out of here
+//		return buildMethod(op, "", "");
+//	}
+//
 	/**
 	 * Builds a method belonging to a certain operation.
 	 * @param op The operation this method belongs to
@@ -1192,7 +1193,7 @@ public class CoreFactory extends AbstractUmlModelFactory {
 	 */
 	public MMethod buildMethod(
 		MOperation op,
-		NotationName notation,
+		String notation,
 		String body) {
 			// TODO Notation needs to be pulled out of here
 		MMethod method = createMethod();
@@ -1203,13 +1204,13 @@ public class CoreFactory extends AbstractUmlModelFactory {
 				method.setOwner(owner);
 			}
 		}
-		if (notation != null && notation.getName() != null) {
+		if (notation != null && notation != null) {
 			method.setBody(
 				UmlFactory
 					.getFactory()
 					.getDataTypes()
 					.createProcedureExpression(
-					notation.getName(),
+					notation,
 					body));
 		}
 		return method;
@@ -1262,14 +1263,14 @@ public class CoreFactory extends AbstractUmlModelFactory {
 		// it would be better to do that in the figs themselves
 		// the elementlistener for the parameter is allready set in buildparameter(oper)
 
-		// TODO References to Figs need to be pulled out of here
-		Project p = ProjectManager.getManager().getCurrentProject();
-		Iterator it = p.findFigsForMember(cls).iterator();
-		while (it.hasNext()) {
-			MElementListener listener = (MElementListener)it.next();
-			// UmlModelEventPump.getPump().removeModelEventListener(listener, oper);
-			UmlModelEventPump.getPump().addModelEventListener(listener, oper);
-		}
+//		// TODO References to Figs need to be pulled out of here
+//		Project p = ProjectManager.getManager().getCurrentProject();
+//		Iterator it = p.findFigsForMember(cls).iterator();
+//		while (it.hasNext()) {
+//			MElementListener listener = (MElementListener)it.next();
+//			// UmlModelEventPump.getPump().removeModelEventListener(listener, oper);
+//			UmlModelEventPump.getPump().addModelEventListener(listener, oper);
+//		}
 		return oper;
 	}
 
@@ -1294,15 +1295,10 @@ public class CoreFactory extends AbstractUmlModelFactory {
 	 * @return      The newly created parameter.
 	 */
 	public MParameter buildParameter() {
-		// this should not be here via the ProjectBrowser but the CoreHelper
-		// should provide this functionality
-
-        // TODO Figure out how to replace Project.findType();
-
-		Project p = ProjectManager.getManager().getCurrentProject();
 		MModel model = (MModel) MofHelper.refOutermostPackage();
-        // TODO 
-		MClassifier voidType = p.findType("void");
+        // TODO Make sure that findType works
+		MClassifier voidType = ModelManagementHelper.getHelper().findType(model, "void");
+        
 		if (voidType.getModel() != model) {
 			voidType.setNamespace(model);
 		}
@@ -1347,13 +1343,13 @@ public class CoreFactory extends AbstractUmlModelFactory {
 
         // TODO Figs need to be pulled out of here
 		// TODO This should probably get the outermost model and work from there
-		Project p = ProjectManager.getManager().getCurrentProject();
-		it = p.findFigsForMember(oper).iterator();
-		while (it.hasNext()) {
-			MElementListener listener = (MElementListener)it.next();
-			// UmlModelEventPump.getPump().removeModelEventListener(listener, res);
-			UmlModelEventPump.getPump().addModelEventListener(listener, res);
-		}
+//		Project p = ProjectManager.getManager().getCurrentProject();
+//		it = p.findFigsForMember(oper).iterator();
+//		while (it.hasNext()) {
+//			MElementListener listener = (MElementListener)it.next();
+//			// UmlModelEventPump.getPump().removeModelEventListener(listener, res);
+//			UmlModelEventPump.getPump().addModelEventListener(listener, res);
+//		}
 
 		return res;
 	}

@@ -23,8 +23,9 @@
 
 package org.argouml.model.uml.foundation.extensionmechanisms;
 
-import org.argouml.kernel.ProjectManager;
+// import org.argouml.kernel.ProjectManager;
 import org.argouml.model.uml.AbstractUmlModelFactory;
+import org.argouml.model.uml.MofHelper;
 import org.argouml.model.uml.UmlFactory;
 import org.argouml.model.uml.foundation.core.CoreFactory;
 
@@ -33,6 +34,7 @@ import ru.novosoft.uml.foundation.core.MModelElement;
 import ru.novosoft.uml.foundation.core.MNamespace;
 import ru.novosoft.uml.foundation.extension_mechanisms.MStereotype;
 import ru.novosoft.uml.foundation.extension_mechanisms.MTaggedValue;
+import ru.novosoft.uml.model_management.MModel;
 
 /**
  * Factory to create UML classes for the UML
@@ -132,8 +134,8 @@ public class ExtensionMechanismsFactory extends AbstractUmlModelFactory {
             UmlFactory.getFactory().delete(stereo);
             return stereo2;
         } else {
-			// TODO This should probably get the outermost model and work from there
-            ProjectManager.getManager().getCurrentProject().getModel().addOwnedElement(stereo);
+            MModel model = (MModel)MofHelper.refOutermostPackage();
+            model.addOwnedElement(stereo);
             if (m != null)
                 stereo.addExtendedElement(m);
             return stereo;

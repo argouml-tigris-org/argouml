@@ -32,11 +32,11 @@ import java.util.Set;
 import java.util.Vector;
 
 import org.apache.log4j.Category;
-import org.argouml.kernel.Project;
-import org.argouml.kernel.ProjectManager;
 import org.argouml.api.FacadeManager;
 import org.argouml.model.uml.CopyHelper;
+import org.argouml.model.uml.MofHelper;
 
+import ru.novosoft.uml.foundation.core.MClassifier;
 import ru.novosoft.uml.foundation.core.MModelElement;
 import ru.novosoft.uml.foundation.core.MNamespace;
 import ru.novosoft.uml.model_management.MModel;
@@ -75,8 +75,7 @@ public class ModelManagementHelper {
      * @return Collection
      */
     public Collection getAllSubSystems() {
-        MNamespace model =
-            ProjectManager.getManager().getCurrentProject().getModel();
+		MNamespace model = (MModel)MofHelper.refOutermostPackage();
         return getAllSubSystems(model);
     }
 
@@ -107,8 +106,7 @@ public class ModelManagementHelper {
      * @return Collection
      */
     public Collection getAllNamespaces() {
-        MNamespace model =
-            ProjectManager.getManager().getCurrentProject().getModel();
+		MNamespace model = (MModel)MofHelper.refOutermostPackage();
         return getAllNamespaces(model);
     }
 
@@ -139,9 +137,7 @@ public class ModelManagementHelper {
     public Collection getAllModelElementsOfKind(Class kind) {
         if (kind == null)
             return new ArrayList();
-		// TODO This should probably get the outermost model and work from there
-        Project p = ProjectManager.getManager().getCurrentProject();
-        MNamespace model = p.getRoot();
+		MNamespace model = (MModel)MofHelper.refOutermostPackage();
         return getAllModelElementsOfKind(model, kind);
     }
 
@@ -330,5 +326,15 @@ public class ModelManagementHelper {
 		return false;
 	return corresponds(obj1.getNamespace(), obj2.getNamespace());
     }
+
+	/**
+	 * @param model
+	 * @param string
+	 * @return
+	 */
+	public MClassifier findType(MModel model, String string) {
+		// TODO Implement this
+		return null;
+	}
 }
 

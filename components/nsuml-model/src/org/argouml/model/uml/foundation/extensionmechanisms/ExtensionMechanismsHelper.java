@@ -28,8 +28,9 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
-import org.argouml.kernel.Project;
-import org.argouml.kernel.ProjectManager;
+//import org.argouml.kernel.Project;
+//import org.argouml.kernel.ProjectManager;
+import org.argouml.model.uml.MofHelper;
 import org.argouml.model.uml.foundation.core.CoreHelper;
 
 import ru.novosoft.uml.foundation.core.MModelElement;
@@ -130,10 +131,8 @@ public class ExtensionMechanismsHelper {
         String name = stereo.getName();
         String baseClass = stereo.getBaseClass();
         if (name == null || baseClass == null) return null;
-		// TODO This should probably get the outermost model and work from there
-        Iterator it2 = ProjectManager.getManager().getCurrentProject().getModels().iterator();
-        while (it2.hasNext()) {
-            MModel model = (MModel)it2.next();
+
+		MModel model = (MModel)MofHelper.refOutermostPackage();
             Iterator it = getStereotypes(model).iterator();
             while (it.hasNext()) {
                 Object o = it.next();
@@ -142,7 +141,6 @@ public class ExtensionMechanismsHelper {
                     ((MStereotype)o).getBaseClass().equals(baseClass)) {
                     return (MStereotype)o;
                 }
-            }
         }
         return null;
     }
@@ -208,12 +206,8 @@ public class ExtensionMechanismsHelper {
 
     public Collection getStereotypes() {
         List ret = new ArrayList();
-        Project p = ProjectManager.getManager().getCurrentProject();
-        Iterator it = p.getModels().iterator();
-        while (it.hasNext()) {
-            MModel model = (MModel)it.next();
+ 			MModel model = (MModel)MofHelper.refOutermostPackage();
             ret.addAll(getStereotypes(model));
-        }
         return ret;
     }
 

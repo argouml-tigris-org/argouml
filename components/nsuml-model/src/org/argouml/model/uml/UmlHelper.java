@@ -61,31 +61,31 @@ public class UmlHelper {
     private UmlHelper() {
     }
 
-    /** 
-     *  Ensures that all of the elements in a model are registered
-     *  to the UmlModelListener.  This is useful when the MModel is
-     *  not created by the UmlFactory.
-     */
-    public void addListenersToModel(MModel model) {
-	addListenersToMBase(model);
-    }
+//    /** 
+//     *  Ensures that all of the elements in a model are registered
+//     *  to the UmlModelListener.  This is useful when the MModel is
+//     *  not created by the UmlFactory.
+//     */
+//    public void addListenersToModel(MModel model) {
+//	addListenersToMBase(model);
+//    }
 
-    /** 
-     *  Internal recursive worker to add UmlModelListener.
-     */
-    protected void addListenersToMBase(MBase mbase) {     
-	UmlFactory.getFactory().addListenersToModelElement(mbase);
-    Collection elements = mbase.getModelElementContents();
-	if (elements != null) {
-	    Iterator iterator = elements.iterator();
-	    while(iterator.hasNext()) {
-	        Object o = iterator.next();
-	        if (o instanceof MBase) {
-	            addListenersToMBase((MBase)o);
-	        }
-	    }
-	}
-    }
+//    /** 
+//     *  Internal recursive worker to add UmlModelListener.
+//     */
+//    protected void addListenersToMBase(MBase mbase) {     
+//	UmlFactory.getFactory().addListenersToModelElement(mbase);
+//    Collection elements = mbase.getModelElementContents();
+//	if (elements != null) {
+//	    Iterator iterator = elements.iterator();
+//	    while(iterator.hasNext()) {
+//	        Object o = iterator.next();
+//	        if (o instanceof MBase) {
+//	            addListenersToMBase((MBase)o);
+//	        }
+//	    }
+//	}
+//    }
     
     /** Singleton instance access method.
      */

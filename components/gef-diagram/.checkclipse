@@ -1,2 +1,3 @@
-#Mon Jun 30 10:14:53 EDT 2003
-enabled=true
+#Mon Jul 21 13:51:16 EDT 2003
+enabled=false
+projectclassloader=false

@@ -7,11 +7,6 @@
 	</projects>
 	<buildSpec>
 		<buildCommand>
-			<name>de.mvmsoft.checkclipse.CheckclipseBuilder</name>
-			<arguments>
-			</arguments>
-		</buildCommand>
-		<buildCommand>
 			<name>org.eclipse.jdt.core.javabuilder</name>
 			<arguments>
 			</arguments>

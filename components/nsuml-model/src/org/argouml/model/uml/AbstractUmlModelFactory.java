@@ -24,7 +24,7 @@
 package org.argouml.model.uml;
 
 import org.apache.log4j.Category;
-import org.argouml.ui.ProjectBrowser;
+// import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.UUIDManager;
 
 import ru.novosoft.uml.MBase;
@@ -64,19 +64,19 @@ public abstract class AbstractUmlModelFactory {
             if (((MBase) o).getUUID() == null) {
                 ((MBase) o).setUUID(UUIDManager.SINGLETON.getNewUUID());
             }            
-            addListenersToModelElement(o);
-            UmlModelEventPump pump = UmlModelEventPump.getPump();
-            EventListenerList[] lists =
-                pump.getClassListenerMap().getListenerList(o.getClass());
-            for (int i = 0; i < lists.length; i++) {
-                Object[] listenerList = lists[i]._listenerList;
-                for (int j = 0; j < listenerList.length; j += 3) {
-                    pump.addModelEventListener(
-                        listenerList[j + 2],
-                        o,
-                        (String) listenerList[j + 1]);
-                }
-            }
+//            addListenersToModelElement(o);
+//            UmlModelEventPump pump = UmlModelEventPump.getPump();
+//            EventListenerList[] lists =
+//                pump.getClassListenerMap().getListenerList(o.getClass());
+//            for (int i = 0; i < lists.length; i++) {
+//                Object[] listenerList = lists[i]._listenerList;
+//                for (int j = 0; j < listenerList.length; j += 3) {
+//                    pump.addModelEventListener(
+//                        listenerList[j + 2],
+//                        o,
+//                        (String) listenerList[j + 1]);
+//                }
+//            }
         }
     }
 
@@ -97,24 +97,24 @@ public abstract class AbstractUmlModelFactory {
         return GuiEnabled;
     }
 
-    /**
-     * Adds all interested (and centralized) listeners to the given modelelement
-     * handle.
-     * @param handle the modelelement the listeners are interested in
-     */
-    public void addListenersToModelElement(Object handle) {
-		// TODO Listeners should not be handled in here
-        if (handle instanceof MBase) {
-            MBase base = (MBase) handle;
-            UmlModelEventPump pump = UmlModelEventPump.getPump();
-            ((MBase) handle).addMElementListener(pump);
-            if (GuiEnabled) {
-                ((MBase) handle).addMElementListener(
-                    ProjectBrowser.getInstance().getNavigatorPane());
-            }
-            ((MBase) handle).addMElementListener(
-                UmlModelListener.getInstance());
-        }
-    }
+//    /**
+//     * Adds all interested (and centralized) listeners to the given modelelement
+//     * handle.
+//     * @param handle the modelelement the listeners are interested in
+//     */
+//    public void addListenersToModelElement(Object handle) {
+//		// TODO Listeners should not be handled in here
+////        if (handle instanceof MBase) {
+////            MBase base = (MBase) handle;
+////            UmlModelEventPump pump = UmlModelEventPump.getPump();
+////            ((MBase) handle).addMElementListener(pump);
+////            if (GuiEnabled) {
+////                ((MBase) handle).addMElementListener(
+////                    ProjectBrowser.getInstance().getNavigatorPane());
+////            }
+////            ((MBase) handle).addMElementListener(
+////                UmlModelListener.getInstance());
+////        }
+//    }
 
 }
