@@ -27,6 +27,7 @@ package org.argouml.uml.reveng;
 import org.argouml.kernel.*;
 import org.argouml.application.api.*;
 import org.argouml.util.osdep.OsUtil;
+import org.argouml.util.osdep.win32.Win32FileSystemView;
 import org.argouml.uml.diagram.static_structure.layout.ClassdiagramLayouter;
 import org.argouml.uml.diagram.ui.UMLDiagram;
 import org.argouml.util.SuffixFilter;
@@ -35,9 +36,9 @@ import org.tigris.gef.base.Globals;
 
 import java.io.*;
 import javax.swing.*;
+import javax.swing.filechooser.FileSystemView;
+
 import java.awt.*;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
 import java.util.Vector;
 
 /**
@@ -177,8 +178,25 @@ public abstract class FileImportSupport implements PluggableImport {
      */
     public JComponent getChooser(Import imp) {
 	String directory = Globals.getLastDirectory();
-	JFileChooser ch = OsUtil.getFileChooser(directory);
-	if (ch == null) ch = OsUtil.getFileChooser();
+	//JFileChooser ch = OsUtil.getFileChooser(directory);
+    
+	JFileChooser ch;
+        if (OsUtil.isWin32() && OsUtil.isSunJdk() && OsUtil.isJdk131()) {
+            ch = new ImportFileChooser(
+                imp,
+                directory,
+                new Win32FileSystemView());
+        } else {
+            ch = new ImportFileChooser(imp, directory);
+        }
+    
+	if (ch == null) {
+            if (OsUtil.isWin32() && OsUtil.isSunJdk() && OsUtil.isJdk131()) {
+                ch = new ImportFileChooser(imp, new Win32FileSystemView());
+            } else {
+                ch = new ImportFileChooser(imp);
+            }
+        }
 
 	final JFileChooser chooser = ch; 
 	final Import theIimport = imp;
@@ -186,33 +204,10 @@ public abstract class FileImportSupport implements PluggableImport {
 	chooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
 	SuffixFilter[] filters = getSuffixFilters();
 	if (filters != null) {
-	    for (int i = 0; i < filters.length; i++)
-		chooser.addChoosableFileFilter(filters[i]);
+	    for (int i = 0; i < filters.length; i++) {
+                chooser.addChoosableFileFilter(filters[i]);
+            }
 	}
-	chooser.addActionListener(new ActionListener() 
-	{
-	    public void actionPerformed(ActionEvent e) {
-		if (e.getActionCommand().equals(
-			JFileChooser.APPROVE_SELECTION)) {
-		    theFile = chooser.getSelectedFile();
-		    if (theFile != null) {
-			String path = chooser.getSelectedFile().getParent();
-			String filename =
-			    chooser.getSelectedFile().getName();
-			filename = path + SEPARATOR + filename;
-			Globals.setLastDirectory(path);
-			if (filename != null) {
-			    theIimport.disposeDialog();
-			    theIimport.getUserClasspath();
-			    return;
-			}
-		    }
-		} else if (e.getActionCommand().equals(
-			       JFileChooser.CANCEL_SELECTION)) {
-		    theIimport.disposeDialog();
-		}
-	    }
-	});
 	return chooser;
     }
 	
@@ -398,4 +393,70 @@ public abstract class FileImportSupport implements PluggableImport {
         return datatype;
     }
 
+    private class ImportFileChooser extends JFileChooser {
+            
+        Import imp;
+        
+        /**
+         * @see javax.swing.JFileChooser#JFileChooser(String)
+         */
+        public ImportFileChooser(Import imp, String currentDirectoryPath) {
+            super(currentDirectoryPath);
+            this.imp = imp;
+        }
+        /**
+         * @see javax.swing.JFileChooser#JFileChooser(String, FileSystemView)
+         */
+        public ImportFileChooser(
+                Import imp,
+                String currentDirectoryPath,
+                FileSystemView fsv) {
+            super(currentDirectoryPath, fsv);
+            this.imp = imp;
+        }
+    
+        /**
+         * @see javax.swing.JFileChooser#JFileChooser()
+         */
+        public ImportFileChooser(Import imp) {
+            super();
+            this.imp = imp;
+        }
+        
+        /**
+         * @see javax.swing.JFileChooser#JFileChooser(FileSystemView)
+         */
+        public ImportFileChooser(
+                Import imp,
+                FileSystemView fsv) {
+            super(fsv);
+            this.imp = imp;
+        }
+    
+	/**
+	 * @see javax.swing.JFileChooser#approveSelection()
+	 */
+	public void approveSelection() {
+            theFile = getSelectedFile();
+            if (theFile != null) {
+                String path = getSelectedFile().getParent();
+                String filename =
+                    getSelectedFile().getName();
+                filename = path + SEPARATOR + filename;
+                Globals.setLastDirectory(path);
+                if (filename != null) {
+                    imp.disposeDialog();
+                    imp.getUserClasspath();
+                    return;
+                }
+            }
+	}
+    
+	/**
+	 * @see javax.swing.JFileChooser#cancelSelection()
+	 */
+	public void cancelSelection() {
+            imp.disposeDialog();
+	}
+    }
 }
