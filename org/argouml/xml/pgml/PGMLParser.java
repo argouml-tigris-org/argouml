@@ -155,6 +155,10 @@ public class PGMLParser extends org.tigris.gef.xml.pgml.PGMLParser {
 
 
     protected String translateClassName(String oldName) {
+        if ("org.argouml.uml.diagram.static_structure.ui.FigNote"
+            .equals(oldName))
+            return "org.argouml.uml.diagram.static_structure.ui.FigComment";
+
         if ( oldName.startsWith("org.") ) return oldName;
 
         if ( oldName.startsWith("uci.gef.") ) {
