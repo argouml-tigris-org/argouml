@@ -35,28 +35,49 @@ import org.tigris.gef.presentation.FigGroup;
 
 
 
+/**
+ * The clarifier (red wavy line) for the operation compartiment.
+ *
+ */
 public class ClOperationCompartment implements Clarifier {
-    public static ClOperationCompartment TheInstance =
+    private static ClOperationCompartment theInstance =
 	new ClOperationCompartment();
-    public static int WAVE_LENGTH = 4;
-    public static int WAVE_HEIGHT = 2;
+    private static final int WAVE_LENGTH = 4;
+    private static final int WAVE_HEIGHT = 2;
 
     ////////////////////////////////////////////////////////////////
     // instance variables
-    Fig _fig;
+    private Fig fig;
 
-    public void setFig(Fig f) { _fig = f; }
+    /**
+     * @return Returns the theInstance.
+     */
+    public static ClOperationCompartment getTheInstance() {
+        return theInstance;
+    }
+    /**
+     * @see org.argouml.ui.Clarifier#setFig(org.tigris.gef.presentation.Fig)
+     */
+    public void setFig(Fig f) { fig = f; }
+    
+    /**
+     * @see org.argouml.ui.Clarifier#setToDoItem(org.argouml.cognitive.ToDoItem)
+     */
     public void setToDoItem(ToDoItem i) { }
 
+    /**
+     * @see javax.swing.Icon#paintIcon(java.awt.Component, java.awt.Graphics, 
+     * int, int)
+     */
     public void paintIcon(Component c, Graphics g, int x, int y) {
-	if (_fig instanceof FigClass) {
-	    FigClass fc = (FigClass) _fig;
+	if (fig instanceof FigClass) {
+	    FigClass fc = (FigClass) fig;
 
 	    // added by Eric Lefevre 13 Mar 1999: we must check if the
 	    // FigText for operations is drawn before drawing things
 	    // over it
 	    if ( !fc.isOperationsVisible() ) {
-		_fig = null;
+		fig = null;
 		return;
 	    }
 
@@ -82,19 +103,29 @@ public class ClOperationCompartment implements Clarifier {
 		i += WAVE_LENGTH;
 		if (i >= right) break;
 	    }
-	    _fig = null;
+	    fig = null;
 	}
     }
 
+    /**
+     * @see javax.swing.Icon#getIconWidth()
+     */
     public int getIconWidth() { return 0; }
+    
+    /**
+     * @see javax.swing.Icon#getIconHeight()
+     */
     public int getIconHeight() { return 0; }
 
+    /**
+     * @see org.argouml.ui.Clarifier#hit(int, int)
+     */
     public boolean hit(int x, int y) {
-	if (!(_fig instanceof FigClass)) return false;
-	FigClass fc = (FigClass) _fig;
+	if (!(fig instanceof FigClass)) return false;
+	FigClass fc = (FigClass) fig;
 	FigGroup fg = fc.getOperationsFig();
 	boolean res = fg.contains(x, y);
-	_fig = null;
+	fig = null;
 	return res;
     }
 
