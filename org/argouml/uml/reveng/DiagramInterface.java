@@ -45,7 +45,7 @@ import org.tigris.gef.presentation.Fig;
 import org.argouml.model.ModelFacade;
 
 /**
- * Instances of this class interface the current diagram.
+ * Instances of this class interface the current Class diagram.
  * <p>
  * This class is used by the import mechanism to create packages,
  * interfaces and classes within the diagrams.
@@ -63,6 +63,21 @@ public class DiagramInterface {
      */
     Vector _modifiedDiagrams = new Vector();
 
+    /**
+     * the current GraphModel of the current classdiagram
+     */
+    ClassDiagramGraphModel currentGM;
+    
+    /**
+     * the current Layer of the current classdiagram
+     */
+    LayerPerspective currentLayer;
+    
+    /**
+     * the current diagram for the isInDiagram method
+     */
+    ArgoDiagram currentDiagram;
+    
     /**
      * Creates a new DiagramInterface
      *
@@ -116,19 +131,17 @@ public class DiagramInterface {
      * @param newPackage The package to add.
      */
     public void addPackage(Object newPackage) {
-	if(!isInDiagram(newPackage)) {
-	    ClassDiagramGraphModel gm =
-		(ClassDiagramGraphModel)getEditor().getGraphModel();
-	    LayerPerspective lay     = (LayerPerspective)getEditor().getLayerManager().getActiveLayer();
-	    FigPackage newPackageFig = new FigPackage( gm, newPackage);
-
-	    if (gm.canAddNode(newPackage)) {
-		getEditor().add(newPackageFig);
-		gm.addNode(newPackage);
-		lay.putInPosition((Fig)newPackageFig);
-		getEditor().damaged(newPackageFig);
-	    }
-	}
+        
+        if(!isInDiagram(newPackage)) {
+            
+            FigPackage newPackageFig = new FigPackage( currentGM, newPackage);
+            if (currentGM.canAddNode(newPackage)) {
+                
+                currentGM.addNode(newPackage);
+                currentLayer.add(newPackageFig);
+                currentLayer.putInPosition((Fig)newPackageFig);
+            }
+        }
     }
 
     /**
@@ -140,16 +153,11 @@ public class DiagramInterface {
      *         false otherwise.
      */
     public boolean isInDiagram(Object p) {
-	Object target = ProjectBrowser.TheInstance.getTarget();
-	if(target instanceof Diagram) {
-	    return (((Diagram)target).getNodes()).contains(p);
-	} else {
-	    if(target instanceof ProjectMemberDiagram) {
-		return ((ProjectMemberDiagram)target).getDiagram().getNodes().contains(p);
-	    } else {
-		return false;
-	    }
-	}
+        
+	if(currentDiagram == null)
+            return false;
+        else
+            return currentDiagram.getNodes().contains(p);
     }
     
     /**
@@ -195,21 +203,12 @@ public class DiagramInterface {
 	    m = ProjectManager.getManager().getCurrentProject().findMemberByName( getDiagramName(name) + ".pgml");
 
 	    // The diagram already exists in this project. Select it as the current target.
-	    // Andreas: These lines did cost me a few hours of debugging.
-	    // Why is it that findMemberByName sometimes returns a ProjectMemberDiagram, but in other
-	    // cases a UMLDiagram?
 	    if(m instanceof ProjectMemberDiagram) {
-		ProjectBrowser.TheInstance.setTarget(((ProjectMemberDiagram)m).getDiagram());
-
+		setCurrentDiagram(((ProjectMemberDiagram)m).getDiagram());
+                
 		// This is sorta hack, since we don't know yet if anything will
 		// be added later.
 		markDiagramAsModified(((ProjectMemberDiagram)m).getDiagram());
-	    } else {
-		ProjectBrowser.TheInstance.setTarget(m);
-
-		// This is sorta hack, since we don't know yet if anything will
-		// be added later.
-		markDiagramAsModified(m);
 	    }
 
 	} else {  // Otherwise
@@ -226,13 +225,11 @@ public class DiagramInterface {
      */
     public void addClassDiagram(Object ns, String name) {
 	Project p = ProjectManager.getManager().getCurrentProject();
-	//MNamespace ns = (MNamespace) target;
 	try {
 	    ArgoDiagram d = new UMLClassDiagram(ns);
 	    d.setName(getDiagramName(name));
-		p.addMember(d);
-	    ProjectBrowser.TheInstance.getNavigatorPane().addToHistory(d);
-	    ProjectBrowser.TheInstance.setTarget(d);
+            p.addMember(d);
+	    setCurrentDiagram(d);
 
 	    // This is sorta hack, since we don't know yet if anything will
 	    // be added later.
@@ -247,15 +244,14 @@ public class DiagramInterface {
      * @param newClass The new class to add to the editor.
      */
     public void addClass(Object newClass) {
-	ClassDiagramGraphModel gm        = (ClassDiagramGraphModel)getEditor().getGraphModel();
-	LayerPerspective lay = (LayerPerspective)getEditor().getLayerManager().getActiveLayer();
-	FigClass newClassFig = new FigClass( gm, newClass);
-	getEditor().add( newClassFig);
-	if (gm.canAddNode(newClass))
-	    gm.addNode(newClass);
-	lay.putInPosition( (Fig)newClassFig);
-	gm.addNodeRelatedEdges( newClass);
-	getEditor().damaged( newClassFig);
+        
+        FigClass newClassFig = new FigClass( currentGM, newClass);
+        if (currentGM.canAddNode(newClass)){
+            currentLayer.add( newClassFig);
+            currentGM.addNode(newClass);
+            currentLayer.putInPosition( (Fig)newClassFig);
+            currentGM.addNodeRelatedEdges( newClass);
+        }
     }
 
     /**
@@ -264,16 +260,15 @@ public class DiagramInterface {
      * @param newInterface The interface to add.
      */
     public void addInterface(Object newInterface) {
-	ClassDiagramGraphModel gm        = (ClassDiagramGraphModel)getEditor().getGraphModel();
-	LayerPerspective lay             = (LayerPerspective)getEditor().getLayerManager().getActiveLayer();
-	FigInterface     newInterfaceFig = new FigInterface( gm, newInterface);
-
-	getEditor().add( newInterfaceFig);
-	if (gm.canAddNode(newInterface))
-	    gm.addNode(newInterface);
-	lay.putInPosition( (Fig)newInterfaceFig);
-	gm.addNodeRelatedEdges( newInterface);
-	getEditor().damaged( newInterfaceFig);
+        
+        FigInterface     newInterfaceFig = new FigInterface( currentGM, newInterface);
+        
+        if (currentGM.canAddNode(newInterface)){
+            currentLayer.add( newInterfaceFig);
+            currentGM.addNode(newInterface);
+            currentLayer.putInPosition( (Fig)newInterfaceFig);
+            currentGM.addNodeRelatedEdges( newInterface);
+        }
     }
 
 	/**
@@ -282,7 +277,7 @@ public class DiagramInterface {
 	 * @param currentPackageName The fully qualified name of the package, which is
      *             used to generate the diagram name from.
 	 */
-	public static void createOrSelectClassDiagram(Object currentPackage, String currentPackageName) {
+	public void createOrSelectClassDiagram(Object currentPackage, String currentPackageName) {
 		Project p = ProjectManager.getManager().getCurrentProject();
 		String diagramName = currentPackageName.replace('.','_') + "_classes";
 		UMLClassDiagram d = new UMLClassDiagram(currentPackage==null?p.getRoot():currentPackage);
@@ -293,12 +288,10 @@ public class DiagramInterface {
 				e.printStackTrace();
 			}
 			p.addMember(d);
-			ProjectBrowser.TheInstance.getNavigatorPane().addToHistory(d);
-			ProjectBrowser.TheInstance.setTarget(d);
+			setCurrentDiagram(d);
 		} else {
 			ArgoDiagram ddi = ((ProjectMemberDiagram)p.findMemberByName(diagramName + ".pgml")).getDiagram();
-			ProjectBrowser.TheInstance.getNavigatorPane().addToHistory(ddi);
-			ProjectBrowser.TheInstance.setTarget(ddi);
+			setCurrentDiagram(ddi);
 		}
 	}
 	
@@ -307,9 +300,23 @@ public class DiagramInterface {
 	 * Is used for classes out of packages.
 	 *
 	 */
-	public static void createRootClassDiagram() {
+	public void createRootClassDiagram() {
 		createOrSelectClassDiagram(null, "");
 	}
+        
+    /**
+     * selects a diagram without affecting the gui.
+     */
+    public void setCurrentDiagram(ArgoDiagram diagram){
+        
+        if(diagram == null){
+            throw new RuntimeException("you can't select a null diagram");
+        }
+        
+        currentGM = (ClassDiagramGraphModel)diagram.getGraphModel();
+        currentLayer = diagram.getLayer();
+        currentDiagram = diagram;
+    }
 }
 
 
