@@ -1054,7 +1054,7 @@ on to the current diagram in the drawing pane.
         set various options that control the behavior of &argouml; (see
         <xref linkend="fig.ref.menu_settings"/>).</para>
 
-      <!-- Example of the import sources dialog -->
+      <!-- Example of the settings dialog -->
 
       <figure id="fig.ref.menu_settings" float="1">
         <title>The dialog for <literal>Settings - Preferences</literal>.</title>
@@ -1254,7 +1254,7 @@ on to the current diagram in the drawing pane.
 <!-- TODO: How is this working in cooperation with the View-Notation-... menu?
 It has been discussed somewhere before...
 -->
-          <warning><para>This is not currently (V0.14) supported and is not a
+          <warning><para>This is not currently (V0.14) supported and there is no
             commitment to the feature of assigning a notation to a diagram
             either.</para></warning></listitem>
 
@@ -1285,9 +1285,7 @@ guillemots? -->
 <!-- TODO: fill in ...           (clear/set by default) -->(To be written)
           </para></listitem>
           
-          <listitem><para><literal>Show stereotypes in navigator</literal>
-<!-- TODO: This is the old term "navigator". Should be "explorer". 
-See issue ... -->
+          <listitem><para><literal>Show stereotypes in explorer</literal>
 <!-- TODO: fill in ...           (clear/set by default) -->(To be written)
           </para></listitem>
           
@@ -1304,7 +1302,7 @@ See issue ... -->
 
         <para>This tab allows the user to specify the LAF (Look And Feel) and theme,
           i.e. what the complete &argouml; UI looks like. 
-          It comprises the following combo boxes.</para>
+          It comprises the following settings.</para>
 
           <figure float="1">
           <title>The dialog for <literal>Settings - Appearance</literal>.</title>
@@ -1330,6 +1328,15 @@ See issue ... -->
               The choice made here
               influences the complete User Interface. 
               It only becomes effective when &argouml; is exited and restarted.
+            </para>
+          </listitem>
+          
+          <listitem><para><literal>Smooth edges of diagram lines and text</literal>. 
+              This feature is known as <quote>anti-aliasing</quote> 
+              on certain platforms.
+              It causes diagonal lines to look much less jagged, by making use
+              of several shades of gray. This feature only works if the
+              operating system supports it.
             </para>
           </listitem>
         </itemizedlist>
@@ -1389,6 +1396,7 @@ See issue ... -->
           This column is present, because this menu item reuses the
           code for the more general <literal>Find</literal>
           menu.</para>
+          <!-- TODO: Get rid of this column. See issue ... -->
         </listitem>
 
         <listitem><para><literal>Description</literal>. Shows how many nodes
@@ -1400,12 +1408,15 @@ See issue ... -->
         </para></listitem>
       </itemizedlist>
       
+      <para>This dialog box is not modal, which allows it to remain open while
+        editing the model for easy navigation.
+      </para>
+      
       <caution><para>
-        This dialog box is not modal, which allows it to remain open while
-        editing the model for easy navigation. But the V0.14 imlementation of
+        But the V0.14 imlementation of
         &argouml; does not inmediately update the dialog box with changes made 
         to diagrams: change of name, addition of diagrams, deletion of diagrams.
-        <!-- TODO: See issue ... -->
+        <!-- TODO: See issue 2475. -->
       </para></caution>
     </sect2>
 
