@@ -46,286 +46,300 @@ import org.tigris.gef.util.ResourceLoader;
  * @author jaap.branderhorst@xs4all.nl @stereotype singleton
  */
 public final class ResourceLoaderWrapper {
-	static {
-		initResourceLoader();
+    static {
+	initResourceLoader();
+    }
+
+    private static ImageIcon actionStateIcon =
+	ResourceLoader.lookupIconResource("ActionState");
+    private static ImageIcon stateIcon =
+	ResourceLoader.lookupIconResource("State");
+    private static ImageIcon initialStateIcon =
+	ResourceLoader.lookupIconResource("Initial");
+    private static ImageIcon deepIcon =
+	ResourceLoader.lookupIconResource("DeepHistory");
+    private static ImageIcon shallowIcon =
+	ResourceLoader.lookupIconResource("ShallowHistory");
+    private static ImageIcon forkIcon =
+	ResourceLoader.lookupIconResource("Fork");
+    private static ImageIcon joinIcon =
+	ResourceLoader.lookupIconResource("Join");
+    private static ImageIcon branchIcon =
+	ResourceLoader.lookupIconResource("Branch");
+    private static ImageIcon finalStateIcon =
+	ResourceLoader.lookupIconResource("FinalState");
+    private static ImageIcon realizeIcon =
+	ResourceLoader.lookupIconResource("Realization");
+    private static ImageIcon signalIcon =
+	ResourceLoader.lookupIconResource("SignalSending");
+    private static ImageIcon commentIcon =
+	ResourceLoader.lookupIconResource("Note");
+
+    private Hashtable iconCache = new Hashtable();
+
+    /**
+     * Singleton implementation.
+     */
+    private static ResourceLoaderWrapper instance;
+
+    /**
+     * Returns the singleton instance
+     * 
+     * @return ResourceLoaderWrapper
+     */
+    public static ResourceLoaderWrapper getResourceLoaderWrapper() {
+	if (instance == null) {
+	    instance = new ResourceLoaderWrapper();
 	}
+	return instance;
+    }
 
-	private static ImageIcon actionStateIcon =
-		ResourceLoader.lookupIconResource("ActionState");
-	private static ImageIcon stateIcon =
-		ResourceLoader.lookupIconResource("State");
-	private static ImageIcon initialStateIcon =
-		ResourceLoader.lookupIconResource("Initial");
-	private static ImageIcon deepIcon =
-		ResourceLoader.lookupIconResource("DeepHistory");
-	private static ImageIcon shallowIcon =
-		ResourceLoader.lookupIconResource("ShallowHistory");
-	private static ImageIcon forkIcon =
-		ResourceLoader.lookupIconResource("Fork");
-	private static ImageIcon joinIcon =
-		ResourceLoader.lookupIconResource("Join");
-	private static ImageIcon branchIcon =
-		ResourceLoader.lookupIconResource("Branch");
-	private static ImageIcon finalStateIcon =
-		ResourceLoader.lookupIconResource("FinalState");
-	private static ImageIcon realizeIcon =
-		ResourceLoader.lookupIconResource("Realization");
-	private static ImageIcon signalIcon =
-		ResourceLoader.lookupIconResource("SignalSending");
-	private static ImageIcon commentIcon =
-		ResourceLoader.lookupIconResource("Note");
+    /**
+     * Constructor for ResourceLoaderWrapper.
+     * 
+     * @deprecated by Linus Tolke as of 0.15.5. Will be private. Use
+     *             {@link #getResourceLoaderWrapper()}to get hold of the
+     *             singleton.
+     */
+    public ResourceLoaderWrapper() {
+	super();
+	initResourceLoader();
+    }
 
-	private Hashtable _iconCache = new Hashtable();
+    /**
+     * Calculate the path to a look and feel object.
+     * 
+     * @param classname
+     *            The look and feel classname
+     * @param element
+     *            The en part of the path.
+     * @return the complete path.
+     */
+    private static String lookAndFeelPath(String classname, String element) {
+	return "/org/argouml/Images/plaf/"
+	    + classname.replace('.', '/')
+	    + "/toolbarButtonGraphics/"
+	    + element;
+    }
 
-	/**
-	 * Singleton implementation
-	 */
-	private static ResourceLoaderWrapper _instance;
+    /**
+     * Initializes the resourceloader.
+     * 
+     * LookupIconResource checks if there are locations and extensions known.
+     * If there are none, this method is called to initialize the resource
+     * loader. Originally, this method was placed within Main but this coupled
+     * Main and the resourceLoader to much.
+     */
+    private static void initResourceLoader() {
+	String lookAndFeelClassName;
+	if ("true".equals(System.getProperty("force.nativelaf", "false"))) {
+	    lookAndFeelClassName = UIManager.getSystemLookAndFeelClassName();
+	} else {
+	    lookAndFeelClassName = "javax.swing.plaf.metal.MetalLookAndFeel";
+	}
+	String lookAndFeelGeneralImagePath =
+	    lookAndFeelPath(lookAndFeelClassName, "general");
+	String lookAndFeelNavigationImagePath =
+	    lookAndFeelPath(lookAndFeelClassName, "navigation");
+	String lookAndFeelDiagramImagePath =
+	    lookAndFeelPath(lookAndFeelClassName, "argouml/diagrams");
+	String lookAndFeelElementImagePath =
+	    lookAndFeelPath(lookAndFeelClassName, "argouml/elements");
+	String lookAndFeelArgoUmlImagePath =
+	    lookAndFeelPath(lookAndFeelClassName, "argouml");
+	ResourceLoader.addResourceExtension("gif");
+	ResourceLoader.addResourceLocation(lookAndFeelGeneralImagePath);
+	ResourceLoader.addResourceLocation(lookAndFeelNavigationImagePath);
+	ResourceLoader.addResourceLocation(lookAndFeelDiagramImagePath);
+	ResourceLoader.addResourceLocation(lookAndFeelElementImagePath);
+	ResourceLoader.addResourceLocation(lookAndFeelArgoUmlImagePath);
+	ResourceLoader.addResourceLocation("/org/argouml/Images");
+	ResourceLoader.addResourceLocation("/org/tigris/gef/Images");
+    }
 
-	/**
-	 * Returns the singleton instance
-	 * 
-	 * @return ResourceLoaderWrapper
-	 */
-	public static ResourceLoaderWrapper getResourceLoaderWrapper() {
-		if (_instance == null) {
-			_instance = new ResourceLoaderWrapper();
+    /**
+     * @see ResourceLoader#addResourceExtension(String)
+     */
+    public static void addResourceExtension(String extension) {
+	ResourceLoader.addResourceExtension(extension);
+    }
+
+    /**
+     * @see ResourceLoader#addResourceLocation(String)
+     */
+    public static void addResourceLocation(String location) {
+	ResourceLoader.addResourceLocation(location);
+    }
+
+    /**
+     * @see ResourceLoader#containsExtension(String)
+     */
+    public static boolean containsExtension(String extension) {
+	return ResourceLoader.containsExtension(extension);
+    }
+
+    /**
+     * @see ResourceLoader#containsLocation(String)
+     */
+    public static boolean containsLocation(String location) {
+	return ResourceLoader.containsLocation(location);
+    }
+
+    /**
+     * @see ResourceLoader#isInCache(String)
+     */
+    public static boolean isInCache(String resource) {
+	return ResourceLoader.isInCache(resource);
+    }
+
+    /**
+     * @see ResourceLoader#lookupIconResource(String)
+     */
+    public static ImageIcon lookupIconResource(String resource) {
+	return ResourceLoader.lookupIconResource(resource);
+    }
+
+    /**
+     * @see ResourceLoader#lookupIconResource(String, ClassLoader)
+     */
+    public static ImageIcon lookupIconResource(
+					       String resource,
+					       ClassLoader loader) {
+	return ResourceLoader.lookupIconResource(resource, loader);
+    }
+
+    /**
+     * @see ResourceLoader#lookupIconResource(String, String)
+     */
+    public static ImageIcon lookupIconResource(String resource, String desc) {
+	return ResourceLoader.lookupIconResource(resource, desc);
+    }
+
+    /**
+     * @see ResourceLoader#lookupIconResource(String, String, ClassLoader)
+     */
+    public static ImageIcon lookupIconResource(
+					       String resource,
+					       String desc,
+					       ClassLoader loader) {
+	return ResourceLoader.lookupIconResource(resource, desc, loader);
+    }
+
+    /**
+     * @see ResourceLoader#removeResourceExtension(String)
+     */
+    public static void removeResourceExtension(String extension) {
+	ResourceLoader.removeResourceExtension(extension);
+    }
+
+    /**
+     * @see ResourceLoader#removeResourceLocation(String)
+     */
+    public static void removeResourceLocation(String location) {
+	ResourceLoader.removeResourceExtension(location);
+    }
+
+    /**
+     * Find the Icon for a given model element.
+     *
+     * @return The Icon.
+     * @param value The model element.
+     *
+     * TODO: This should not use string matching on classnames to do this
+     *       since this means that we have knowledge about how the model
+     *       elements are implemented outside of the Model component.
+     */
+    public Icon lookupIcon(Object value) {
+	Icon icon = null;
+	if (value != null) {
+
+	    icon = (Icon) iconCache.get(value.getClass());
+
+	    if (ModelFacade.isAPseudostate(value)) {
+
+		Object kind = ModelFacade.getKind(value);
+		DataTypesHelper helper = UmlHelper.getHelper().getDataTypes();
+		if (helper.equalsINITIALKind(kind)) {
+		    icon = initialStateIcon;
 		}
-		return _instance;
-	}
-
-	/**
-	 * Constructor for ResourceLoaderWrapper.
-	 * 
-	 * @deprecated by Linus Tolke as of 0.15.5. Will be private. Use
-	 *             {@link #getResourceLoaderWrapper()}to get hold of the
-	 *             singleton.
-	 */
-	public ResourceLoaderWrapper() {
-		super();
-		initResourceLoader();
-	}
-
-	/**
-	 * Calculate the path to a look and feel object.
-	 * 
-	 * @param classname
-	 *            The look and feel classname
-	 * @param element
-	 *            The en part of the path.
-	 * @return the complete path.
-	 */
-	private static String lookAndFeelPath(String classname, String element) {
-		return "/org/argouml/Images/plaf/"
-			+ classname.replace('.', '/')
-			+ "/toolbarButtonGraphics/"
-			+ element;
-	}
-
-	/**
-	 * Initializes the resourceloader.
-	 * 
-	 * LookupIconResource checks if there are locations and extensions known.
-	 * If there are none, this method is called to initialize the resource
-	 * loader. Originally, this method was placed within Main but this coupled
-	 * Main and the resourceLoader to much.
-	 */
-	private static void initResourceLoader() {
-		String lookAndFeelClassName;
-		if ("true".equals(System.getProperty("force.nativelaf", "false"))) {
-			lookAndFeelClassName = UIManager.getSystemLookAndFeelClassName();
-		} else {
-			lookAndFeelClassName = "javax.swing.plaf.metal.MetalLookAndFeel";
+		if (helper.equalsDEEP_HISTORYKind(kind)) {
+		    icon = deepIcon;
 		}
-		String lookAndFeelGeneralImagePath =
-			lookAndFeelPath(lookAndFeelClassName, "general");
-		String lookAndFeelNavigationImagePath =
-			lookAndFeelPath(lookAndFeelClassName, "navigation");
-		String lookAndFeelDiagramImagePath =
-			lookAndFeelPath(lookAndFeelClassName, "argouml/diagrams");
-		String lookAndFeelElementImagePath =
-			lookAndFeelPath(lookAndFeelClassName, "argouml/elements");
-		String lookAndFeelArgoUmlImagePath =
-			lookAndFeelPath(lookAndFeelClassName, "argouml");
-		ResourceLoader.addResourceExtension("gif");
-		ResourceLoader.addResourceLocation(lookAndFeelGeneralImagePath);
-		ResourceLoader.addResourceLocation(lookAndFeelNavigationImagePath);
-		ResourceLoader.addResourceLocation(lookAndFeelDiagramImagePath);
-		ResourceLoader.addResourceLocation(lookAndFeelElementImagePath);
-		ResourceLoader.addResourceLocation(lookAndFeelArgoUmlImagePath);
-		ResourceLoader.addResourceLocation("/org/argouml/Images");
-		ResourceLoader.addResourceLocation("/org/tigris/gef/Images");
-	}
-
-	/**
-	 * @see ResourceLoader#addResourceExtension(String)
-	 */
-	public static void addResourceExtension(String extension) {
-		ResourceLoader.addResourceExtension(extension);
-	}
-
-	/**
-	 * @see ResourceLoader#addResourceLocation(String)
-	 */
-	public static void addResourceLocation(String location) {
-		ResourceLoader.addResourceLocation(location);
-	}
-
-	/**
-	 * @see ResourceLoader#containsExtension(String)
-	 */
-	public static boolean containsExtension(String extension) {
-		return ResourceLoader.containsExtension(extension);
-	}
-
-	/**
-	 * @see ResourceLoader#containsLocation(String)
-	 */
-	public static boolean containsLocation(String location) {
-		return ResourceLoader.containsLocation(location);
-	}
-
-	/**
-	 * @see ResourceLoader#isInCache(String)
-	 */
-	public static boolean isInCache(String resource) {
-		return ResourceLoader.isInCache(resource);
-	}
-
-	/**
-	 * @see ResourceLoader#lookupIconResource(String)
-	 */
-	public static ImageIcon lookupIconResource(String resource) {
-		return ResourceLoader.lookupIconResource(resource);
-	}
-
-	/**
-	 * @see ResourceLoader#lookupIconResource(String, ClassLoader)
-	 */
-	public static ImageIcon lookupIconResource(
-		String resource,
-		ClassLoader loader) {
-		return ResourceLoader.lookupIconResource(resource, loader);
-	}
-
-	/**
-	 * @see ResourceLoader#lookupIconResource(String, String)
-	 */
-	public static ImageIcon lookupIconResource(String resource, String desc) {
-		return ResourceLoader.lookupIconResource(resource, desc);
-	}
-
-	/**
-	 * @see ResourceLoader#lookupIconResource(String, String, ClassLoader)
-	 */
-	public static ImageIcon lookupIconResource(
-		String resource,
-		String desc,
-		ClassLoader loader) {
-		return ResourceLoader.lookupIconResource(resource, desc, loader);
-	}
-
-	/**
-	 * @see ResourceLoader#removeResourceExtension(String)
-	 */
-	public static void removeResourceExtension(String extension) {
-		ResourceLoader.removeResourceExtension(extension);
-	}
-
-	/**
-	 * @see ResourceLoader#removeResourceLocation(String)
-	 */
-	public static void removeResourceLocation(String location) {
-		ResourceLoader.removeResourceExtension(location);
-	}
-
-	public Icon lookupIcon(Object value) {
-		Icon icon = null;
-		if (value != null) {
-
-			icon = (Icon) _iconCache.get(value.getClass());
-
-			if (ModelFacade.isAPseudostate(value)) {
-
-				Object kind = ModelFacade.getKind(value);
-				DataTypesHelper helper = UmlHelper.getHelper().getDataTypes();
-				if (helper.equalsINITIALKind(kind)) {
-					icon = initialStateIcon;
-				}
-				if (helper.equalsDEEP_HISTORYKind(kind)) {
-					icon = deepIcon;
-				}
-				if (helper.equalsSHALLOW_HISTORYKind(kind)) {
-					icon = shallowIcon;
-				}
-				if (helper.equalsFORKKind(kind)) {
-					icon = forkIcon;
-				}
-				if (helper.equalsJOINKind(kind)) {
-					icon = joinIcon;
-				}
-				if (helper.equalsBRANCHKind(kind)) {
-					icon = branchIcon;
-				}
-				// if (MPseudostateKind.FINAL.equals(kind))
-				// icon = _FinalStateIcon;
-			}
-			if (ModelFacade.isAAbstraction(value)) {
-				icon = realizeIcon;
-			}
-			// needs more work: sending and receiving icons
-			if (ModelFacade.isASignal(value)) {
-				icon = signalIcon;
-			}
-
-			if (ModelFacade.isAComment(value)) {
-				icon = commentIcon;
-			}
-
-			if (icon == null) {
-
-				StringNamespace sns =
-					(StringNamespace) StringNamespace.parse(value.getClass());
-				StringNamespace org =
-					new StringNamespace(new String[] { "org" });
-				StringNamespace ru = new StringNamespace(new String[] { "ru" });
-
-				if (ru.equals(sns.getCommonNamespace(ru))
-					|| org.equals(sns.getCommonNamespace(org))) {
-
-					String cName = sns.popNamespaceElement().toString();
-
-					if (cName.startsWith("UML")) {
-						cName = cName.substring(3);
-					}
-					if (cName.startsWith("M")) {
-						cName = cName.substring(1);
-					}
-					if (cName.endsWith("Impl")) {
-						cName = cName.substring(0, cName.length() - 4);
-					}
-					icon = getResourceLoaderWrapper().lookupIconResource(cName);
-					if (icon != null) {
-						_iconCache.put(value.getClass(), icon);
-					}
-				}
-
-				//String clsPackName = value.getClass().getName();
-
-				/*
-				 * if (clsPackName.startsWith("org") ||
-				 * clsPackName.startsWith("ru")) { String cName =
-				 * clsPackName.substring(clsPackName.lastIndexOf(".") + 1); "
-				 * e.g. UMLClassDiagram if (cName.startsWith("UML")) { cName =
-				 * cName.substring(3); } if (cName.startsWith("M")) { cName =
-				 * cName.substring(1); } if (cName.endsWith("Impl")) { cName =
-				 * cName.substring(0, cName.length() - 4); } icon =
-				 * getResourceLoaderWrapper().lookupIconResource(cName); if
-				 * (icon != null) { _iconCache.put(value.getClass(), icon); }
-				 */
-			}
+		if (helper.equalsSHALLOW_HISTORYKind(kind)) {
+		    icon = shallowIcon;
 		}
-		return icon;
+		if (helper.equalsFORKKind(kind)) {
+		    icon = forkIcon;
+		}
+		if (helper.equalsJOINKind(kind)) {
+		    icon = joinIcon;
+		}
+		if (helper.equalsBRANCHKind(kind)) {
+		    icon = branchIcon;
+		}
+		// if (MPseudostateKind.FINAL.equals(kind))
+		// icon = _FinalStateIcon;
+	    }
+	    if (ModelFacade.isAAbstraction(value)) {
+		icon = realizeIcon;
+	    }
+	    // needs more work: sending and receiving icons
+	    if (ModelFacade.isASignal(value)) {
+		icon = signalIcon;
+	    }
 
+	    if (ModelFacade.isAComment(value)) {
+		icon = commentIcon;
+	    }
+
+	    if (icon == null) {
+
+		StringNamespace sns =
+		    (StringNamespace) StringNamespace.parse(value.getClass());
+		StringNamespace org =
+		    new StringNamespace(new String[] {
+			"org"
+		    });
+		StringNamespace ru = new StringNamespace(new String[] {
+		    "ru"
+		});
+
+		if (ru.equals(sns.getCommonNamespace(ru))
+		    || org.equals(sns.getCommonNamespace(org))) {
+
+		    String cName = sns.popNamespaceElement().toString();
+
+		    if (cName.startsWith("UML")) {
+			cName = cName.substring(3);
+		    }
+		    if (cName.startsWith("M")) {
+			cName = cName.substring(1);
+		    }
+		    if (cName.endsWith("Impl")) {
+			cName = cName.substring(0, cName.length() - 4);
+		    }
+		    icon = getResourceLoaderWrapper().lookupIconResource(cName);
+		    if (icon != null) {
+			iconCache.put(value.getClass(), icon);
+		    }
+		}
+
+		//String clsPackName = value.getClass().getName();
+
+		/*
+		 * if (clsPackName.startsWith("org") ||
+		 * clsPackName.startsWith("ru")) { String cName =
+		 * clsPackName.substring(clsPackName.lastIndexOf(".") + 1); "
+		 * e.g. UMLClassDiagram if (cName.startsWith("UML")) { cName =
+		 * cName.substring(3); } if (cName.startsWith("M")) { cName =
+		 * cName.substring(1); } if (cName.endsWith("Impl")) { cName =
+		 * cName.substring(0, cName.length() - 4); } icon =
+		 * getResourceLoaderWrapper().lookupIconResource(cName); if
+		 * (icon != null) { iconCache.put(value.getClass(), icon); }
+		 */
+	    }
 	}
+	return icon;
+
+    }
 }
