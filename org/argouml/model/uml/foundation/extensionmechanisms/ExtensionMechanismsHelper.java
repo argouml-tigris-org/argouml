@@ -29,7 +29,6 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
-import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.foundation.core.CoreHelper;
@@ -153,6 +152,10 @@ public class ExtensionMechanismsHelper {
      *
      * TODO: Should it only search for stereotypes owned by the Model object?
      *
+     * TODO: This function should get the project as parameter, 
+     * and be independent of the ProjectManager. 
+     * Or should it not even know what a project is?
+     *
      * @param stereo is the given stereotype
      * @return MStereotype
      */
@@ -161,8 +164,7 @@ public class ExtensionMechanismsHelper {
         String name = stereo.getName();
         String baseClass = stereo.getBaseClass();
         if (name == null || baseClass == null) return null;
-        Iterator it2 =
-	    ProjectManager.getManager().getCurrentProject()
+        Iterator it2 = ProjectManager.getManager().getCurrentProject()
 	        .getModels().iterator();
         while (it2.hasNext()) {
             MModel model = (MModel) it2.next();
@@ -265,13 +267,17 @@ public class ExtensionMechanismsHelper {
     /**
      * TODO: Should it only search for stereotypes owned by the Model objects?
      *
+     * TODO: This function should get the project as parameter, 
+     * and be independent of the ProjectManager. 
+     * Or should it not even know what a project is?
+     *
      * @return the collection of stereotypes in all models 
      *         in the current project
      */
     public Collection getStereotypes() {
         List ret = new ArrayList();
-        Project p = ProjectManager.getManager().getCurrentProject();
-        Iterator it = p.getModels().iterator();
+        Iterator it = ProjectManager.getManager().getCurrentProject()
+            .getModels().iterator();
         while (it.hasNext()) {
             MModel model = (MModel) it.next();
             ret.addAll(getStereotypes(model));
