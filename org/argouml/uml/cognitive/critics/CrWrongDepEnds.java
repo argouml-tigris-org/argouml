@@ -30,16 +30,18 @@
 
 package org.argouml.uml.cognitive.critics;
 
-import java.util.*;
-
-import ru.novosoft.uml.foundation.core.*;
-import ru.novosoft.uml.behavior.common_behavior.*;
-
-import org.tigris.gef.util.*;
-
-import org.argouml.cognitive.*;
-import org.argouml.uml.diagram.ui.*;
-import org.argouml.uml.diagram.deployment.ui.*;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.Vector;
+import org.argouml.cognitive.Designer;
+import org.argouml.cognitive.ToDoItem;
+import org.argouml.model.ModelFacade;
+import org.argouml.uml.diagram.deployment.ui.UMLDeploymentDiagram;
+import org.argouml.uml.diagram.ui.FigDependency;
+import org.tigris.gef.util.VectorSet;
+import ru.novosoft.uml.behavior.common_behavior.MObject;
+import ru.novosoft.uml.foundation.core.MDependency;
+import ru.novosoft.uml.foundation.core.MModelElement;
 
 /**
  * A critic to detect when in a deployment-diagram the supplier or the
@@ -93,7 +95,7 @@ public class CrWrongDepEnds extends CrUML {
 	    Object obj = figs.elementAt(i);
 	    if (!(obj instanceof FigDependency)) continue;
 	    FigDependency fd = (FigDependency) obj;
-	    if (!(org.argouml.model.ModelFacade.isADependency(fd.getOwner()))) continue;
+	    if (!(ModelFacade.isADependency(fd.getOwner()))) continue;
 	    MDependency dep = (MDependency) fd.getOwner();
 	    Collection suppliers = dep.getSuppliers();
 	    int count = 0;
@@ -101,7 +103,7 @@ public class CrWrongDepEnds extends CrUML {
 		Iterator it = suppliers.iterator();
 		while (it.hasNext()) {
 		    MModelElement moe = (MModelElement) it.next();
-		    if (org.argouml.model.ModelFacade.isAObject(moe)) {
+		    if (ModelFacade.isAObject(moe)) {
 			MObject obj_sup = (MObject) moe;
 			if (obj_sup.getElementResidences() != null
 			    && (obj_sup.getElementResidences().size() > 0))
@@ -116,7 +118,7 @@ public class CrWrongDepEnds extends CrUML {
 		Iterator it = clients.iterator();
 		while (it.hasNext()) {
 		    MModelElement moe = (MModelElement) it.next();
-		    if (org.argouml.model.ModelFacade.isAObject(moe)) {
+		    if (ModelFacade.isAObject(moe)) {
 			MObject obj_cli = (MObject) moe;
 			if (obj_cli.getElementResidences() != null
 			    && (obj_cli.getElementResidences().size() > 0))

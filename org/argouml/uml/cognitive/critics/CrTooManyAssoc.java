@@ -30,14 +30,10 @@
 
 package org.argouml.uml.cognitive.critics;
 
-import java.util.*;
-import javax.swing.*;
-
-import ru.novosoft.uml.foundation.core.*;
-import ru.novosoft.uml.foundation.data_types.*;
-import ru.novosoft.uml.foundation.extension_mechanisms.*;
-
-import org.argouml.cognitive.*;
+import java.util.Collection;
+import org.argouml.cognitive.Designer;
+import org.argouml.model.ModelFacade;
+import ru.novosoft.uml.foundation.core.MClassifier;
 
 /** A critic to detect when a class can never have instances (of
  *  itself of any subclasses). */
@@ -61,7 +57,7 @@ public class CrTooManyAssoc extends CrUML {
     ////////////////////////////////////////////////////////////////
     // critiquing API
     public boolean predicate2(Object dm, Designer dsgr) {
-	if (!(org.argouml.model.ModelFacade.isAClassifier(dm))) return NO_PROBLEM;
+	if (!(ModelFacade.isAClassifier(dm))) return NO_PROBLEM;
 	MClassifier cls = (MClassifier) dm;
 	// TODO: consider inherited associations?
 	// TODO: self loops are double counted

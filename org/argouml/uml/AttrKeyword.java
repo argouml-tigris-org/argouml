@@ -24,13 +24,12 @@
 
 package org.argouml.uml;
 
-import java.util.*;
-import java.beans.*;
-
+import java.io.Serializable;
 import org.apache.log4j.Category;
 
-import ru.novosoft.uml.foundation.core.*;
-import ru.novosoft.uml.foundation.data_types.*;
+import ru.novosoft.uml.foundation.core.MAttribute;
+import ru.novosoft.uml.foundation.data_types.MChangeableKind;
+import ru.novosoft.uml.foundation.data_types.MScopeKind;
 
 /** This class  handles the
  * none
@@ -40,7 +39,7 @@ import ru.novosoft.uml.foundation.data_types.*;
  * transient
  * for the UML foundation data type
  */
-public class AttrKeyword implements java.io.Serializable {
+public class AttrKeyword implements Serializable {
     protected static Category cat = Category.getInstance(AttrKeyword.class);
     
     public static final AttrKeyword NONE = new AttrKeyword("none");

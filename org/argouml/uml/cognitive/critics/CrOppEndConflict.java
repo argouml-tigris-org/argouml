@@ -21,10 +21,12 @@
 // PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
 // File: CrOppEndConflict.java
 // Classes: CrOppEndConflict
 // Original Author: jrobbins@ics.uci.edu
 // $Id$
+
 package org.argouml.uml.cognitive.critics;
 import java.util.ArrayList;
 import java.util.Collection;

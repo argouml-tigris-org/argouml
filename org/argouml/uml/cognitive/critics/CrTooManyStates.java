@@ -30,14 +30,10 @@
 
 package org.argouml.uml.cognitive.critics;
 
-import java.util.*;
-import javax.swing.*;
-
-import ru.novosoft.uml.foundation.core.*;
-import ru.novosoft.uml.foundation.data_types.*;
-import ru.novosoft.uml.behavior.state_machines.*;
-
-import org.argouml.cognitive.*;
+import java.util.Collection;
+import org.argouml.cognitive.Designer;
+import org.argouml.model.ModelFacade;
+import ru.novosoft.uml.behavior.state_machines.MCompositeState;
 
 /** A critic to detect when a class can never have instances (of
  *  itself of any subclasses). */
@@ -60,7 +56,7 @@ public class CrTooManyStates extends CrUML {
     ////////////////////////////////////////////////////////////////
     // critiquing API
     public boolean predicate2(Object dm, Designer dsgr) {
-	if (!(org.argouml.model.ModelFacade.isACompositeState(dm))) return NO_PROBLEM;
+	if (!(ModelFacade.isACompositeState(dm))) return NO_PROBLEM;
 	MCompositeState cs = (MCompositeState) dm;
 
 	int threshold = ((Integer) getArg(THRESHOLD)).intValue();

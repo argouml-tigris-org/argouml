@@ -31,14 +31,13 @@
 
 package org.argouml.uml.cognitive.critics;
 
-import java.util.*;
-import javax.swing.*;
+import java.util.Collection;
+import java.util.Iterator;
+import org.argouml.cognitive.Designer;
+import org.argouml.model.ModelFacade;
+import ru.novosoft.uml.foundation.core.MClassifier;
 
-import ru.novosoft.uml.foundation.core.*;
-import ru.novosoft.uml.foundation.data_types.*;
-import ru.novosoft.uml.foundation.extension_mechanisms.*;
 
-import org.argouml.cognitive.*;
 
 /** A critic to detect when a classifier has to many operations). 
  *  TODO: exclude getter and setter operations from count
@@ -62,7 +61,7 @@ public class CrTooManyOper extends CrUML {
     ////////////////////////////////////////////////////////////////
     // critiquing API
     public boolean predicate2(Object dm, Designer dsgr) {
-	if (!(org.argouml.model.ModelFacade.isAClassifier(dm))) return NO_PROBLEM;
+	if (!(ModelFacade.isAClassifier(dm))) return NO_PROBLEM;
 	MClassifier cls = (MClassifier) dm;
 	// TODO: consider inherited attributes?
 	int threshold = ((Integer) getArg(THRESHOLD)).intValue();
@@ -70,7 +69,7 @@ public class CrTooManyOper extends CrUML {
 	if (str == null) return NO_PROBLEM;
 	int n = 0;
 	for (Iterator iter = str.iterator(); iter.hasNext();) {
-	    if (org.argouml.model.ModelFacade.isABehavioralFeature(iter.next()))
+	    if (ModelFacade.isABehavioralFeature(iter.next()))
 		n++;
 	};
 	if (n <= threshold) return NO_PROBLEM;

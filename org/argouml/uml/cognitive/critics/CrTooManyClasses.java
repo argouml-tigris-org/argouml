@@ -29,14 +29,9 @@
 
 package org.argouml.uml.cognitive.critics;
 
-import java.util.*;
-import javax.swing.*;
-
-import ru.novosoft.uml.foundation.core.*;
-import ru.novosoft.uml.foundation.data_types.*;
-
-import org.argouml.cognitive.*;
-import org.argouml.uml.diagram.static_structure.ui.*;
+import java.util.Vector;
+import org.argouml.cognitive.Designer;
+import org.argouml.uml.diagram.static_structure.ui.UMLClassDiagram;
 
 /** A critic to detect when a class can never have instances (of
  *  itself of any subclasses). */

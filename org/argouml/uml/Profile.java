@@ -24,11 +24,10 @@
 
 
 package org.argouml.uml;
-import ru.novosoft.uml.foundation.core.*;
-import ru.novosoft.uml.model_management.*;
-import ru.novosoft.uml.foundation.extension_mechanisms.*;
 
-import java.util.*;
+import java.util.Iterator;
+import ru.novosoft.uml.foundation.core.MModelElement;
+import ru.novosoft.uml.model_management.MModel;
 
 /**
  *   This abstract class captures the configurable behavior of Argo.

@@ -24,13 +24,12 @@
 
 package org.argouml.uml;
 
-import java.util.*;
-import java.beans.*;
+import java.io.Serializable;
+import ru.novosoft.uml.foundation.core.MOperation;
+import ru.novosoft.uml.foundation.data_types.MCallConcurrencyKind;
+import ru.novosoft.uml.foundation.data_types.MScopeKind;
 
-import ru.novosoft.uml.foundation.core.*;
-import ru.novosoft.uml.foundation.data_types.*;
-
-public class OperKeyword implements java.io.Serializable {
+public class OperKeyword implements Serializable {
     public static final OperKeyword NONE = new OperKeyword("none");
     public static final OperKeyword STATIC = new OperKeyword("static");
     public static final OperKeyword FINAL = new OperKeyword("final");

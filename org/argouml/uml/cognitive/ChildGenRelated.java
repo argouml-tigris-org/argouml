@@ -33,14 +33,26 @@
 
 package org.argouml.uml.cognitive;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.Enumeration;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Vector;
 
-import ru.novosoft.uml.foundation.core.*;
-import ru.novosoft.uml.behavior.state_machines.*;
-import ru.novosoft.uml.model_management.*;
+import org.argouml.model.ModelFacade;
 
 import org.tigris.gef.base.Diagram;
-import org.tigris.gef.util.*;
+import org.tigris.gef.util.ChildGenerator;
+
+import ru.novosoft.uml.behavior.state_machines.MCompositeState;
+import ru.novosoft.uml.behavior.state_machines.MState;
+import ru.novosoft.uml.behavior.state_machines.MStateMachine;
+import ru.novosoft.uml.behavior.state_machines.MStateVertex;
+import ru.novosoft.uml.behavior.state_machines.MTransition;
+import ru.novosoft.uml.foundation.core.MAssociation;
+import ru.novosoft.uml.foundation.core.MAssociationEnd;
+import ru.novosoft.uml.foundation.core.MClassifier;
+import ru.novosoft.uml.model_management.MPackage;
 
 /** @stereotype singleton
  */
@@ -55,13 +67,13 @@ public class ChildGenRelated implements ChildGenerator {
 		
 	Vector res = new Vector();
 		
-	if (org.argouml.model.ModelFacade.isAPackage(o)) {
+	if (ModelFacade.isAPackage(o)) {
 	    Collection ownedElements = ((MPackage) o).getOwnedElements();
 	    if (ownedElements != null)
 		return null;
 	}
 		
-	if (org.argouml.model.ModelFacade.isAClassifier(o)) {
+	if (ModelFacade.isAClassifier(o)) {
 	    MClassifier cls = (MClassifier) o;
 	    Collection assocEnds = cls.getAssociationEnds();
 	    Iterator assocIterator = assocEnds.iterator();
@@ -75,17 +87,17 @@ public class ChildGenRelated implements ChildGenerator {
 	    return res.elements();
 	}
 		
-	if (org.argouml.model.ModelFacade.isAAssociation(o)) {
+	if (ModelFacade.isAAssociation(o)) {
 	    MAssociation asc = (MAssociation) o;
 	    List assocEnds = asc.getConnections();
 	    Iterator iter = assocEnds.iterator();
 	    while (iter.hasNext()) {
-		res.add(org.argouml.model.ModelFacade.getType(iter.next()));
+		res.add(ModelFacade.getType(iter.next()));
 	    }
 	    return res.elements();
 	}
 		
-	if (org.argouml.model.ModelFacade.isAStateMachine(o)) {
+	if (ModelFacade.isAStateMachine(o)) {
 	    MStateMachine sm = (MStateMachine) o;
 	    MState top = sm.getTop();
 	    if (top != null)
@@ -95,24 +107,24 @@ public class ChildGenRelated implements ChildGenerator {
 	    return res.elements();
 	}
 		
-	if (org.argouml.model.ModelFacade.isAStateVertex(o)) {
+	if (ModelFacade.isAStateVertex(o)) {
 	    MStateVertex sv = (MStateVertex) o;
 	    res.addAll(sv.getIncomings());
 	    res.addAll(sv.getOutgoings());
 			
-	    if (org.argouml.model.ModelFacade.isAState(o)) {
+	    if (ModelFacade.isAState(o)) {
 		MState s = (MState) o;
 		res.addAll(s.getInternalTransitions());
 	    }
 			
-	    if (org.argouml.model.ModelFacade.isACompositeState(o)) {
+	    if (ModelFacade.isACompositeState(o)) {
 		MCompositeState cs = (MCompositeState) o;
 		res.addAll(cs.getSubvertices());
 	    }
 	    return res.elements();
 	}
 		
-	if (org.argouml.model.ModelFacade.isATransition(o)) {
+	if (ModelFacade.isATransition(o)) {
 	    MTransition tr = (MTransition) o;
 	    res.add(tr.getTrigger());
 	    res.add(tr.getGuard());
