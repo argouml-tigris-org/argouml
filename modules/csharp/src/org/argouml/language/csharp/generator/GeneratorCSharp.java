@@ -1075,9 +1075,9 @@ public class GeneratorCSharp extends Generator2
     public String generateGeneralzation(Collection generalizations) {
 	if (generalizations == null) return "";
 	Collection classes = new ArrayList();
-	Iterator enum = generalizations.iterator();
-	while (enum.hasNext()) {
-	    MGeneralization g = (MGeneralization) enum.next();
+	Iterator genEnum = generalizations.iterator();
+	while (genEnum.hasNext()) {
+	    MGeneralization g = (MGeneralization) genEnum.next();
 	    MGeneralizableElement ge = g.getParent();
 	    // assert ge != null
 	    if (ge != null) classes.add(ge);
