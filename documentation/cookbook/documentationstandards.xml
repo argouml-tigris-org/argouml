@@ -280,7 +280,7 @@ editors use 6 spaces), making documents unreadable between users.
 </para>
       </listitem>
 
-      <listitem>
+      <!--listitem>
 	<para>
 Indent only the tags, not the text.
 The Docbook source is kept in CVS that is a line-oriented tool. 
@@ -294,7 +294,7 @@ The contributions that Jeremy Bennet did for the 0.10 User Manual
 are not indented like this.
 Change it while changing the paragraphs.
 </para>
-      </listitem>
+      </listitem-->
 
       <listitem>
 	<para>
