@@ -206,8 +206,13 @@ public class UMLUseCaseDiagram extends UMLDiagram {
      *
      * @param m  the desired namespace for this diagram.
      */
-    public UMLUseCaseDiagram(MNamespace m) {
+    public UMLUseCaseDiagram(Object m) {
+        
         this();
+        
+        if(!ModelFacade.isANamespace(m))
+            throw new IllegalArgumentException();
+        
         setNamespace(m);
     }
 

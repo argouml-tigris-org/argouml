@@ -951,7 +951,7 @@ class ColumnReturn extends ColumnDescriptor {
 	MOperation op = (MOperation) target;
 	String s = (String) value;
 	Project p = ProjectManager.getManager().getCurrentProject();
-	MClassifier rt = p.findType(s);
+	MClassifier rt = (MClassifier)p.findType(s);
 	ParserDisplay pd = ParserDisplay.SINGLETON;
 	MParameter rp = UmlFactory.getFactory().getCore().buildParameter(op);
 	rp.setType(rt);
@@ -1020,7 +1020,7 @@ class ColumnType extends ColumnDescriptor {
 	MAttribute op = (MAttribute) target;
 	String s = (String) value;
 	Project p = ProjectManager.getManager().getCurrentProject();
-	MClassifier t = p.findType(s);
+	MClassifier t = (MClassifier)p.findType(s);
 	if (t == null) {
 	    cat.warn("attribute type not found");
 	    return;

@@ -77,7 +77,7 @@ public class ArgoFacade implements tudresden.ocl.check.types.ModelFacade {
 	     p.getCurrentNamespace());
 	     *
 	     */
-	    MClassifier classifier = p.findTypeInModel(name, p.getModel());
+	    MClassifier classifier = (MClassifier)p.findTypeInModel(name, p.getModel());
 
 	    if (classifier == null) {
 		/**

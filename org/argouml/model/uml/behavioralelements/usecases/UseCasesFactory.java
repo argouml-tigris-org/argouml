@@ -37,6 +37,7 @@ import ru.novosoft.uml.behavior.use_cases.MInclude;
 import ru.novosoft.uml.behavior.use_cases.MUseCase;
 import ru.novosoft.uml.behavior.use_cases.MUseCaseInstance;
 import ru.novosoft.uml.foundation.core.MNamespace;
+import ru.novosoft.uml.model_management.MModel;
 
 /**
  * Factory to create UML classes for the UML
@@ -284,7 +285,7 @@ public class UseCasesFactory extends AbstractUmlModelFactory {
      */
     public MActor buildActor() {
 	MNamespace ns =
-	    ProjectManager.getManager().getCurrentProject().getModel();
+	    (MModel)ProjectManager.getManager().getCurrentProject().getModel();
 	return buildActor(ns);
     }
      

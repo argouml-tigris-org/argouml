@@ -95,23 +95,20 @@ import org.argouml.util.Trash;
 import org.argouml.xml.argo.ArgoParser;
 import org.argouml.xml.pgml.PGMLParser;
 import org.argouml.xml.xmi.XMIReader;
+
 import org.tigris.gef.base.Diagram;
 import org.tigris.gef.ocl.OCLExpander;
 import org.tigris.gef.ocl.TemplateReader;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.util.Util;
+
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
-import ru.novosoft.uml.MBase;
-import ru.novosoft.uml.foundation.core.MClassifier;
-import ru.novosoft.uml.foundation.core.MModelElement;
-import ru.novosoft.uml.foundation.core.MNamespace;
-import ru.novosoft.uml.model_management.MModel;
-
-/** A datastructure that represents the designer's current project.  A
- *  Project consists of diagrams and UML models. */
-
+/**
+ * A datastructure that represents the designer's current project.  A
+ *  Project consists of diagrams and UML models.
+ */
 public class Project implements java.io.Serializable, TargetListener {
     ////////////////////////////////////////////////////////////////
     // constants
@@ -144,9 +141,9 @@ public class Project implements java.io.Serializable, TargetListener {
 
     private Vector _models = new Vector(); //instances of MModel
     private Vector _diagrams = new Vector(); // instances of LayerDiagram
-    protected MModel _defaultModel = null;
+    protected Object _defaultModel = null;
     private boolean _needsSave = false;
-    protected MNamespace _currentNamespace = null;
+    protected Object _currentNamespace = null;
     private HashMap _UUIDRefs = null;
     private GenerationPreferences _cgPrefs = new GenerationPreferences();
     private transient VetoableChangeSupport _vetoSupport = null;
@@ -160,7 +157,7 @@ public class Project implements java.io.Serializable, TargetListener {
      * The root of the modeltree the user is working on. (The untitled_model in
      * the navpane).
      */
-    private MModel _root;
+    private Object _root;
     
     /**
      * The active diagram, pointer to a diagram in the list with diagrams.
@@ -205,9 +202,9 @@ public class Project implements java.io.Serializable, TargetListener {
         if (getRoot() != null)
             throw new IllegalStateException("Tried to make a non-empty project "
 					    + "to an untitled project");
-        MModel model =
+        Object model =
             UmlFactory.getFactory().getModelManagement().createModel();
-        model.setName("untitledModel");
+        ModelFacade.setName(model,"untitledModel");
         setRoot(model);
         setCurrentNamespace(model);
         addMember(new ProjectMemberTodoList("", this));
@@ -217,9 +214,13 @@ public class Project implements java.io.Serializable, TargetListener {
         setActiveDiagram((ArgoDiagram) getDiagrams().get(0));
     }
  
-    public Project(MModel model) {
+    public Project(Object model) {
         this();
-        Argo.log.info("making empty project with model: " + model.getName());
+        
+        if(!ModelFacade.isAModel(model))
+            throw new IllegalArgumentException();
+        
+        Argo.log.info("making empty project with model: " + ModelFacade.getName(model));
         setRoot(model);
         setCurrentNamespace(model);
         setNeedsSave(false);
@@ -243,7 +244,7 @@ public class Project implements java.io.Serializable, TargetListener {
      * @return MModel The model loaded
      * @throws IOException Thrown if the model or the .zargo file is corrupted.
      */
-    protected MModel loadModelFromXMI(URL url)
+    protected Object loadModelFromXMI(URL url)
 	throws IOException, SAXException, ParserConfigurationException
     {
         ZipInputStream zis = new ZipInputStream(url.openStream());
@@ -269,7 +270,7 @@ public class Project implements java.io.Serializable, TargetListener {
             cat.error(pc);
             throw pc;
         }
-        MModel mmodel = null;
+        Object mmodel = null;
 
         InputSource source = new InputSource(zis);
         source.setEncoding("UTF-8");
@@ -520,14 +521,18 @@ public class Project implements java.io.Serializable, TargetListener {
         _members.addElement(pm);
     }
 
-    public void addMember(MModel m) {
+    public void addMember(Object m) {
+        
+        if(!ModelFacade.isAModel(m))
+            throw new IllegalArgumentException();
+        
         Iterator iter = _members.iterator();
         Object currentMember = null;
         boolean memberFound = false;
         while (iter.hasNext()) {
             currentMember = iter.next();
             if (currentMember instanceof ProjectMemberModel) {
-                MModel currentModel =
+                Object currentModel =
                     ((ProjectMemberModel) currentMember).getModel();
                 if (currentModel == m) {
                     memberFound = true;
@@ -545,7 +550,14 @@ public class Project implements java.io.Serializable, TargetListener {
         }
     }
 
-    public void addModel(MNamespace m) {
+    /**
+     * @param m a namespace
+     */
+    public void addModel(Object m) {
+        
+        if(!ModelFacade.isANamespace(m))
+            throw new IllegalArgumentException();
+        
         // fire indeterminate change to avoid copying vector
         if (!_models.contains(m))
             _models.addElement(m);
@@ -769,10 +781,10 @@ public class Project implements java.io.Serializable, TargetListener {
         return ret;
     }
 
-    public MNamespace getModel() {
+    public Object getModel() {
         if (_models.size() != 1)
             return null;
-        return (MNamespace) _models.elementAt(0);
+        return _models.elementAt(0);
     }
     //   public void addModel(MNamespace m) throws PropertyVetoException {
     //     getVetoSupport().fireVetoableChange("Models", _models, m);
@@ -787,7 +799,7 @@ public class Project implements java.io.Serializable, TargetListener {
      * @param s
      * @return MClassifier
      */
-    public MClassifier findType(String s) {
+    public Object findType(String s) {
         return findType(s, true);
     }
 
@@ -800,22 +812,22 @@ public class Project implements java.io.Serializable, TargetListener {
      * @param defineNew
      * @return MClassifier
      */
-    public MClassifier findType(String s, boolean defineNew) {
+    public Object findType(String s, boolean defineNew) {
         if (s != null)
             s = s.trim();
         if (s == null || s.length() == 0)
             return null;
-        MClassifier cls = null;
+        Object cls = null;
         int numModels = _models.size();
         for (int i = 0; i < numModels; i++) {
-            cls = findTypeInModel(s, (MNamespace) _models.elementAt(i));
+            cls = findTypeInModel(s, _models.elementAt(i));
             if (cls != null)
                 return cls;
         }
         cls = findTypeInModel(s, _defaultModel);
         // hey, now we should move it to the model the user is working in
         if (cls != null) {
-            cls = (MClassifier) ModelManagementHelper.
+            cls = ModelManagementHelper.
                 getHelper().getCorrespondingElement(cls, getRoot());
         }
         if (cls == null && defineNew) {
@@ -823,7 +835,7 @@ public class Project implements java.io.Serializable, TargetListener {
             cls =
                 UmlFactory.getFactory().getCore()
 		    .buildClass(getCurrentNamespace());
-            cls.setName(s);
+            ModelFacade.setName(cls,s);
         }
         return cls;
     }
@@ -854,23 +866,31 @@ public class Project implements java.io.Serializable, TargetListener {
      *
      * @param s is short name
      */
-    public MClassifier findTypeInModel(String s, MNamespace ns) {
+    public Object findTypeInModel(String s, Object ns) {
+        
+        if(!ModelFacade.isANamespace(ns))
+            throw new IllegalArgumentException();
+        
         Collection allClassifiers =
             ModelManagementHelper.getHelper()
-	        .getAllModelElementsOfKind(ns, MClassifier.class);
+	        .getAllModelElementsOfKind(ns, "Classifier");
         Iterator it = allClassifiers.iterator();
         while (it.hasNext()) {
-            MClassifier classifier = (MClassifier) it.next();
-            if (classifier.getName() != null && classifier.getName().equals(s))
+            Object classifier = it.next();
+            if (ModelFacade.getName(classifier) != null && ModelFacade.getName(classifier).equals(s))
                 return classifier;
         }
         return null;
     }
 
-    public void setCurrentNamespace(MNamespace m) {
+    public void setCurrentNamespace(Object m) {
+        
+        if(!ModelFacade.isANamespace(m))
+            throw new IllegalArgumentException();
+        
         _currentNamespace = m;
     }
-    public MNamespace getCurrentNamespace() {
+    public Object getCurrentNamespace() {
         return _currentNamespace;
     }
 
@@ -933,7 +953,11 @@ public class Project implements java.io.Serializable, TargetListener {
         setNeedsSave(true);
     }
 
-    public int getPresentationCountFor(MModelElement me) {
+    public int getPresentationCountFor(Object me) {
+        
+        if(!ModelFacade.isAModelElement(me))
+            throw new IllegalArgumentException();
+        
         int presentations = 0;
         int size = _diagrams.size();
         for (int i = 0; i < size; i++) {
@@ -990,7 +1014,7 @@ public class Project implements java.io.Serializable, TargetListener {
 	    ((Diagram) _diagrams.elementAt(i)).postLoad();
         // issue 1725: the root is not set, which leads to problems
         // with displaying prop panels
-        setRoot((MModel) getModel());
+        setRoot( getModel());
         
         setNeedsSave(false);
         // we don't need this HashMap anymore so free up the memory
@@ -1048,10 +1072,10 @@ public class Project implements java.io.Serializable, TargetListener {
             TargetManager.getInstance().removeHistoryElement(obj);
             Trash.SINGLETON.addItemFrom(obj, null);
         }
-        if (obj instanceof MBase) { // an object that can be represented
+        if (ModelFacade.isABase(obj)) { // an object that can be represented
             ProjectBrowser.getInstance().getEditorPane()
 		.removePresentationFor(obj, getDiagrams());
-            UmlFactory.getFactory().delete((MBase) obj);
+            UmlFactory.getFactory().delete(obj);
             if (_members.contains(obj)) {
                 _members.remove(obj);
             }
@@ -1216,12 +1240,19 @@ public class Project implements java.io.Serializable, TargetListener {
      */
     private HashMap _defaultModelCache = new HashMap();
 
-    public void setDefaultModel(MModel defaultModel) {
+    /**
+     * @param defaultModel a uml model
+     */
+    public void setDefaultModel(Object defaultModel) {
+        
+        if(!ModelFacade.isAModel(defaultModel))
+            throw new IllegalArgumentException();
+        
         _defaultModel = defaultModel;
 	_defaultModelCache = new HashMap();
     }
 
-    public MModel getDefaultModel() {
+    public Object getDefaultModel() {
         return _defaultModel;
     }
 
@@ -1245,15 +1276,19 @@ public class Project implements java.io.Serializable, TargetListener {
      * Returns the root.
      * @return MModel
      */
-    public MModel getRoot() {
+    public Object getRoot() {
         return _root;
     }
 
     /**
      * Sets the root.
-     * @param root The root to set
+     * @param root The root to set, a uml model
      */
-    public void setRoot(MModel root) {
+    public void setRoot(Object root) {
+        
+        if(!ModelFacade.isAModel(root))
+            throw new IllegalArgumentException();
+        
         if (_root != null) {
             _members.remove(_root);
             _models.remove(_root);
@@ -1450,14 +1485,14 @@ public class Project implements java.io.Serializable, TargetListener {
         if (target instanceof UMLDiagram) {
             currentNamespace = ((UMLDiagram) target).getNamespace();
         } else
-	    if (target instanceof MNamespace)
+	    if (ModelFacade.isANamespace(target))
 		currentNamespace = target;
 	    else 
-		if (target instanceof MModelElement) 
+		if (ModelFacade.isAModelElement(target))
 		    currentNamespace = ModelFacade.getNamespace(target);
 		else
 		    currentNamespace = getRoot();
-        setCurrentNamespace((MNamespace) currentNamespace);
+        setCurrentNamespace(currentNamespace);
                
         if (target instanceof ArgoDiagram) {
             setActiveDiagram((ArgoDiagram) target);
