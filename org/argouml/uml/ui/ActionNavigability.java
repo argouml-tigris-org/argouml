@@ -64,11 +64,17 @@ public class ActionNavigability extends UMLAction {
     }
 
     static private String getDescription(MAssociationEnd start, MAssociationEnd end, int nav) {
+        String startName = start.getType().getName();
+        String endName = end.getType().getName();
+
+        if (startName == null || startName.length() == 0) startName = "anon";
+        if (endName == null || endName.length() == 0) endName = "anon";
+
         if (nav == STARTTOEND) {
-            return start.getType().getName() + " to " + end.getType().getName();
+            return startName + " to " + endName;
         }
         else if (nav == ENDTOSTART) {
-            return end.getType().getName() + " to " + start.getType().getName();
+            return endName + " to " + startName;
         }
         else {
             return "Bidirectional";
