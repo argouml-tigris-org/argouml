@@ -315,15 +315,4 @@
 			The website, mailing lists etc...
 		</para>
 	</sect1>
-	<!--
-		===========================================================
-			 Chapter "SUMMARY" section 
-		===========================================================
-	-->
-	<sect1>
-		<title>Summary</title>
-		<para>
-				In this section, we covered or learned that:
-			</para>
-	</sect1>
 </chapter>

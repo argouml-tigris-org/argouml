@@ -21,7 +21,6 @@
 	<!ENTITY chapter-introduction.xml SYSTEM "qstart-introduction.xml">
 	<!ENTITY chapter-installation.xml SYSTEM "qstart-installation.xml">
 	<!ENTITY chapter-credits.xml SYSTEM "qstart-credits.xml">
-	<!ENTITY chapter-glossary.xml SYSTEM "qstart-glossary.xml">
 	
 	<!--   
 			TEXT SUBSTITUTION MACROS
@@ -57,6 +56,5 @@
 &chapter-introduction.xml;
 &chapter-installation.xml;
 &chapter-credits.xml;
-&chapter-glossary.xml;
 
 </book>

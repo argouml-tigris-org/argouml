@@ -39,47 +39,7 @@
 	-->
 	<para>Author:
 		<!-- Repeat <author> and [optional] <email> elements as needed for each "main" author -->
-		<author>
-			<firstname>FIRSTNAME</firstname>
-			<surname>LASTNAME</surname>
-		</author>
-		<email>USERNAME@EMAIL.ADDRESS</email>
 		&author-kunle.odu;
-		&address-kunle.odu;
 		&email-kunle.odu;
 	</para>
-	<!--
-		===========================================================
-			 Chapter "INTRODUCTION" section 
-		===========================================================
-	-->
-	<sect1>
-		<title>Credits</title>
-		<para>
-				This section presents a...
-			</para>
-	</sect1>
-	<!--
-		===========================================================
-			 Chapter section template - copy for each major "topic" 
-												  discussed in this chapter
-		===========================================================
-	-->
-	<sect1 id="credits-SECTION-ID">
-		<title>Section Title</title>
-		<para>
-			This is the text of this section...
-		</para>
-	</sect1>
-	<!--
-		===========================================================
-			 Chapter "SUMMARY" section 
-		===========================================================
-	-->
-	<sect1>
-		<title>Summary</title>
-		<para>
-				In this section, we covered or learned that:
-			</para>
-	</sect1>
 </chapter>

@@ -23,6 +23,10 @@
                  <firstname>Markus</firstname>
                  <surname>Klink</surname>
              </author>
+             <author>
+                 <firstname>Linus</firstname>
+                 <surname>Tolke</surname>
+             </author>
          </authorgroup>
          <legalnotice>
              <para>
@@ -52,10 +56,62 @@
          </legalnotice>
      </bookinfo>
      <toc/>
-     <chapter id="thanks">
-     <title>Thanks</title>
-     <para>We, the authors would like to take the opportunity to thank everyone involved in the creation of this documentation, and especially the people behind setting up the DocBook environment. In particular thanks go out to Alejandro Ramirez, Phillipe Vanpeperstraete and Andreas Rueckert.  Thank you!</para>
- </chapter>
+
+  <chapter>
+    <title>Introduction</title>
+    <sect1 id="thanks">
+      <title>Thanks</title>
+      <para>
+We, the authors would like to take the opportunity to thank everyone
+involved in the creation of this documentation, and especially the
+people behind setting up the DocBook environment. In particular thanks
+go out to Alejandro Ramirez, Phillipe Vanpeperstraete and Andreas
+Rueckert.  Thank you!
+</para>
+    </sect1>
+  
+    <sect1>
+      <title>About this Cookbook...</title>
+      <para>
+This document, the ArgoUML Programmers Cookbook, is provided
+with the hopes of being helpful for the developers of ArgoUML when
+it comes to learning and understanding how ArgoUML work in order
+to improve on its functions and features. 
+
+It can also be of interest for persons that wish to analyse the
+ArgoUML project for whatever purpose that may be.
+</para>
+      <sect2>
+	<title>In this Cookbook, you will find...</title>
+	<para>
+Information on how you can compile ArgoUML.
+</para>
+	<para>
+Information on how different features of ArgoUML are implemented.
+</para>
+	<para>
+Information on how you should add modules and Plug-ins to ArgoUML.
+</para>
+	<para>
+Some information that you, as a developer of ArgoUML,
+needs to know about how the project is organised and
+what requirements you need to fulfil in order to contribute.
+</para>
+
+      </sect2>
+      <sect2>
+	<title>In this guide, you will not find...</title>
+	<para>
+Information on how to install and use ArgoUML.
+</para>
+	<para>
+Information on what UML is and if/how you should use it in your project.
+How to convince your project to use ArgoUML as a modelling tool.
+</para>
+      </sect2>
+    </sect1>
+  </chapter>
+
      <chapter id="Preliminaries">
      <title>Preliminaries</title>
      <sect1 id="starting">
@@ -91,7 +147,7 @@
 				</mediaobject>
     <itemizedlist>
       <listitem><para>Well, ArgoUML is obviously the main thing.</para></listitem>
-      <listitem><para> stands for <emphasis>Graph Editing Framework</emphasis>. It is the package which controls most of the graphical aspects of ArgoUML.</para></listitem>
+      <listitem><para>GEF stands for <emphasis>Graph Editing Framework</emphasis>. It is the package which controls most of the graphical aspects of ArgoUML.</para></listitem>
       <listitem><para>NSUML stands for <emphasis>Novosoft UML</emphasis>. This library gives ArgoUML all the components which are required to deal with UML objects and their relationships with each other. Normally you can recognize everything out of the NSUML packages very easily because the classes start with a capital M.</para>
 </listitem>
 </itemizedlist>
@@ -270,6 +326,15 @@ programming in Argo/UML.
 	<para>
 	  <itemizedlist>
 	    <listitem>
+	      <para>
+...get my update or patch into cvs if I don't have cvs write rights?
+</para>
+	      <para>
+Contact any of the active developers on the list and send them your
+updates. They're very nice about it the first few times.
+</para>
+	    </listitem>
+	    <listitem>
 	      <para>...get a list of the currently active working branches?</para>
 	      <para>
 You can't from cvs. You need to follow the announcements of created
@@ -435,6 +500,283 @@ The dissertation of Jason Robbins is a <emphasis>MUST READ</emphasis> for everyo
 </para>
 </sect1>
 </chapter>
+
+
+ <chapter>
+  <title>Screen Grabs</title> 
+    <para>
+The following chapters are moved here from the User FAQ. They need rework.
+</para>
+ <qandaset defaultlabel="none">
+ <qandadiv>
+  <title>Screen Grabs</title> 
+ <qandaentry>
+ <question>
+  <para>There's nothing like show and tell when using software! Everyone likes screen grabs...here's how you can help out!</para> 
+  </question>
+ <answer>
+  <para/> 
+  <para/> 
+  <para>Make screen grabs as you go! And here's how...</para> 
+  <para>MS Windows</para> 
+  <para>You can use the PrintScreen key to copy the screen to the clipboard (as a bitmap), and then you can paste it into another application (such as MS Word, PowerPoint, etc. (maybe Paint, too)) using the Paste function (ctrl-v). MS Word may (depending on your version) allow you to save the document as an HTML page, which creates an html source file and gif files for all the embedded images (i.e. your pasted screen shot).</para> 
+  <para>To capture a single window instead of the entire screen, use Alt-PrintScreen.</para> 
+  <para>Image resolution is determined by screen size, for best results: 256 colors by 800X600 is good for a full screen capture.</para> 
+  <para>Thanks to Derek for that little tip!</para> 
+  <para>Do a search on any of your favorite freeware sites for more elaborate applications. Snagit from techsmith has been recommended</para> 
+  <para>Linux</para> 
+  <para>There's a number of screen shots apps under Linux though they escape me now!</para> 
+  </answer>
+  </qandaentry>
+  </qandadiv>
+  </qandaset>
+  </chapter>
+ <chapter>
+  <title>Argouml\application\api</title> 
+ <qandaset>
+ <qandadiv>
+  <title>Argouml\application\api class diagram screen grab</title> 
+ <qandaentry>
+ <question>
+  <para>I'd like to see a class diagram for the api. Where is it?</para> 
+  </question>
+ <answer>
+  <para>Right here!</para> 
+ <mediaobject>
+ <imageobject>
+  <imagedata format="PNG" fileref="images/screenshots/Argoapi.png"/> 
+  </imageobject>
+  </mediaobject>
+  </answer>
+  </qandaentry>
+  </qandadiv>
+  </qandaset>
+  </chapter>
+ <!--  end chapter api
+  --> 
+ <!-- start chapter  application config 
+  --> 
+ <chapter>
+  <title>org\Argouml\application\configuration</title> 
+ <qandaset defaultlabel="none">
+ <qandadiv>
+  <title>org\Argouml\application\configuration class diagram screen grab</title> 
+ <qandaentry>
+ <question>
+  <para>Is there a screen grab for the application configuration?</para> 
+  </question>
+ <answer>
+  <para>Yes!</para> 
+ <mediaobject>
+ <imageobject>
+  <imagedata format="PNG" fileref="images/screenshots/Argoconfig.png"/> 
+  </imageobject>
+  </mediaobject>
+  </answer>
+  </qandaentry>
+  </qandadiv>
+  </qandaset>
+  </chapter>
+ <!-- end chapter  application config 
+  --> 
+ <!-- start chapter Argouml\cognitive\checklist 
+  --> 
+ <chapter>
+  <title>org\Argouml\cognitive\checklist</title> 
+ <qandaset defaultlabel="none">
+ <qandadiv>
+  <title>org\Argouml\application\configuration class diagram screen grab</title> 
+ <qandaentry>
+ <question>
+  <para>Is there a screen grab for the Argouml\cognitive\checklist?</para> 
+  </question>
+ <answer>
+  <para/> 
+  <para/> 
+  <para>Yes!</para> 
+ <!--  copy and paste working pieces!
+  --> 
+ <mediaobject>
+ <imageobject>
+  <imagedata format="PNG" fileref="images/screenshots/Argocogchklist.png"/> 
+  </imageobject>
+  </mediaobject>
+  </answer>
+  </qandaentry>
+  </qandadiv>
+  </qandaset>
+  </chapter>
+ <!--  end Chapter cognitive checklist
+  --> 
+ <!--  start Chapter cognitive critics
+  --> 
+ <chapter>
+  <title>org\Argouml\cognitive\critics</title> 
+ <qandaset defaultlabel="none">
+ <qandadiv>
+ <title>org\Argouml\cognitive\critics class diagram screen grab</title> 
+ <qandaentry>
+ <question>
+  <para>Is there a screen grab for the org\Argouml\cognitive\critics?</para> 
+  </question>
+ <answer>
+  <para/> 
+  <para/> 
+  <para>Yes!</para> 
+ <mediaobject>
+ <imageobject>
+  <imagedata format="PNG" fileref="images/screenshots/Argocogcritics.png"/> 
+  </imageobject>
+  </mediaobject>
+  </answer>
+  </qandaentry>
+  </qandadiv>
+  </qandaset>
+  </chapter>
+ <!--  end Chapter Argocogcritics.png
+  --> 
+ <!--  start chapter Argouml\cognitive\ui
+  --> 
+ <chapter>
+  <title>org\Argouml\cognitive\critics\ui</title> 
+ <qandaset defaultlabel="none">
+ <qandadiv>
+  <title>org\Argouml\cognitive\critics\ui class diagram screen grab</title> 
+ <qandaentry>
+ <question>
+  <para>Is there a screen grab for the org\Argouml\cognitive\critics\ui?</para> 
+  </question>
+ <answer>
+  <para/> 
+  <para/> 
+  <para>No! But feel free to generate one and submit it!</para> 
+ <!-- 
+  <mediaobject>
+					<imageobject>
+						<imagedata format="PNG" fileref="images/screenshots/Argocogcritics.png"/>
+					</imageobject>
+				</mediaobject>
+
+  --> 
+  </answer>
+  </qandaentry>
+  </qandadiv>
+  </qandaset>
+  </chapter>
+ <!--  end chapter cog ui
+ --> 
+ <!--  start chapter Argouml\kernel
+  --> 
+ <chapter>
+  <title>src_new\org\Argouml\kernel</title> 
+ <qandaset defaultlabel="none">
+ <qandadiv>
+  <title>src_new\org\Argouml\kernel class diagram screen grab</title> 
+ <qandaentry>
+ <question>
+  <para>Is there a screen grab for the src_new\org\Argouml\kernel?</para> 
+  </question>
+ <answer>
+  <para/> 
+  <para/> 
+  <para>Yes!</para> 
+ <mediaobject>
+ <imageobject>
+  <imagedata format="PNG" fileref="images/screenshots/Argokernel.png"/> 
+  </imageobject>
+  </mediaobject>
+  </answer>
+  </qandaentry>
+  </qandadiv>
+  </qandaset>
+  </chapter>
+ <!--  end chapter kernel
+  --> 
+<!--  start chapter Argouml\ocl
+  --> 
+<chapter>
+  <title>src_new\org\Argouml\ocl</title> 
+<qandaset defaultlabel="none">
+<qandadiv>
+  <title>src_new\org\Argouml\ocl class diagram screen grab</title> 
+<qandaentry>
+<question>
+  <para>Is there a screen grab for the src_new\org\Argouml\ocl?</para> 
+  </question>
+<answer>
+  <para/> 
+  <para/> 
+  <para>Yes!</para> 
+<mediaobject>
+<imageobject>
+  <imagedata format="PNG" fileref="images/screenshots/Argoocl.png"/> 
+  </imageobject>
+  </mediaobject>
+  </answer>
+  </qandaentry>
+  </qandadiv>
+  </qandaset>
+  </chapter>
+<!--  end chapter ocl
+  --> 
+<!--  I did all of this manually and I'll tell you it's a pain 
+  --> 
+<!--  start chapter to do list
+  --> 
+<chapter>
+  <title>To Do List</title> 
+<qandaset defaultlabel="none">
+<qandadiv>
+  <title>User Faq</title> 
+<qandaentry>
+<question>
+  <para>User's Need Help!</para> 
+  </question>
+<answer>
+  <para>The user Faq is available in the CVS. You can see it in it's current online form here. Check it out! Add to it! Submit your addtions! Get your name in lights!</para> 
+  <para>link goes here</para> 
+  </answer>
+  </qandaentry>
+  </qandadiv>
+<qandadiv>
+  <title>To Do</title> 
+<qandaentry>
+<question>
+  <para>How can I begin to help?</para> 
+  <para>Here's a short list of To Dos! Feel free to add (and contribute) to this list!</para> 
+  </question>
+<answer>
+  <para>Enable output of finished project.zArgo into one graphically 
+	enhanced HTML file for publshing. This should include a choice of 
+	graphical output i.e. SVG, PNG, etc.</para> 
+  <para>Enable zooming on the diagram window</para> 
+  <para>Note: This is available in the CVS.</para> 
+  <para>Enable collapsing of panes.</para> 
+  <para>Enable connection to class names to object names. Use case: When the user clicks on the properties pane for an object, the user has the option of choosing from a list of UML artifacts: classes, actors, etc.</para> 
+  <para>Enable import interface for XML documents.</para> 
+  <para>Enable data base modelling.</para> 
+  <para>Enable C++ modelling.</para> 
+  <para>Enable .jar reverse engineering. Perhaps using the parser that is available in the JDK distribution for generating javadocs from a jar?</para> 
+  <para>Include edit commands under right click ...</para> 
+<mediaobject>
+<imageobject>
+  <imagedata format="PNG" fileref="images/screenshots/cannotremovediagram.png"/> 
+  </imageobject>
+  </mediaobject>
+  <para>Swim lanes for activity diagrams.</para> 
+  <para>Set the save as field when user selects file> "save graphics" the 
+	"file name" of the project" file of type" automatically i.e. "myproject.svg"
+for example.</para> 
+  <para>Test scripts for end user to replicate errors. See the developers 
+	discussion group for more information on that development.</para> 
+  </answer>
+  </qandaentry>
+  </qandadiv>
+  </qandaset>
+  </chapter>
+<!--  end chapter to do list
+  --> 
+
 </book>
 
 

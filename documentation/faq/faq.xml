@@ -4,12 +4,49 @@
 
 <!-- ArgoUML and Poseidon for UML Documentation -->
 
-<!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.1.2//EN" "http://www.oasis-open.org/docbook/xml/4.0/docbookx.dtd">
+<!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.1.2//EN" "../docbook-setup/docbookx/docbookx.dtd">
 
 <book>
-	<title>ArgoUML and Poseidon for UML</title>
+  <title>Frequently asked questions for ArgoUML and Poseidon for UML</title>
 	<chapter>
 		<title>Introduction</title>
+    <sect1>
+      <title>About this FAQ...</title>
+      <para>
+This FAQ is provided with the hopes to be helpful for users using
+ArgoUML or Poseidon for their projects.
+</para>
+      <para>
+It is a collection of tips and tricks from the mailing lists and
+from other persons that have made experiences using ArgoUML that
+they want to share for the benefit of the community. It is by no means
+a complete overview but does rather reflect the interest and problems
+that the users have.
+</para>
+      <para>
+The information is updated as the questions and answers becomes
+appearant to the FAQ moderator. A certain version of the FAQ is
+only loosely connected to a specific version of ArgoUML or Poseidon
+but can rather elaborate on how a problem is solved differently in the
+different versions.
+</para>
+      <sect2>
+	<title>In this FAQ, you will find...</title>
+	<para>
+The information is layed out as Question and Answers and sorted on subject.
+</para>
+      </sect2>
+      <sect2>
+	<title>In this guide, you will not find...</title>
+	<para>
+Any information that is exactly the same as in the last frosen version
+of the Users' manual. If it is in the manual, the answer does not need
+to be in the FAQ also. The FAQ might still contain the question but the
+answer is merely a reference.
+</para>
+      </sect2>
+    </sect1>
+
 		<qandaset defaultlabel="none">
 			<qandadiv>
 				<title>Introduction</title>
@@ -45,9 +82,11 @@
 				</qandaentry>
 			</qandadiv>
 		</qandaset>
+
+
 	</chapter>
 	<chapter>
-		<title>Frequently Asked Questions</title>
+		<title>General questions</title>
 		<qandaset defaultlabel="qanda">
 			<qandadiv>
 				<title>General Questions</title>
@@ -181,55 +220,6 @@ Can I reverse engineer a .jar file with Argo .9.4?
 	</chapter>
 	-->
 	<chapter>
-		<title>Round trip Engineering</title>
-		<qandaset>
-			<qandadiv>
-				<title>Round trip Engineering</title>
-				<!--  <qandadiv>
-					<title>Reverse Engineering</title>-->
-					<qandaentry>
-						<question>
-							<para>I'd really like to get into a round trip engineering environment. How can I do that with Argo?</para>
-						</question>
-						<answer>
-							<para>Gunnar Strand has graciously offered us a nice workaround for some of the basic functionality of Round Trip Engineering with Argo...Here's his response to a critical functionality for all developers.</para>
-							<para>--snip--After some investigation, I found that I really didn't need to
-mount all those sources. Now the project looks like this:</para>
-							<para>File systems:</para>
-							<para>nsuml.jar</para>
-							<para>gef.jar</para>
-							<para>ocl-Argo.jar</para>
-							<para>xerces.jar</para>
-							<para>parser.jar</para>
-							<para/>
-							<para>jaxp.jar</para>
-							<para/>
-							<para>jdom.jar</para>
-							<para>d:\...\Antlr-2.7.1\</para>
-							<para>  +-antlr\</para>
-							<para>+-doc\</para>
-							<para>  +-examples\
-  ...etc...
-</para>
-							<para>d:\...\unpacked093-src\src_new\</para>
-							<para>  +-org\
-</para>
-							<para>etc...</para>
-							<para>Project:</para>
-							<para>src_new\</para>
-							<para>The sub-entries after the "+" in the File systems list above are
-only there to make it clear which directory I have mounted.</para>
-							<para> The ellipses are there for brevity.</para>
-							<para>Screen shots of config</para>
-							<para>http://239b.licentiaten.umea.hsb.se/Argouml/forte-filesystems.png</para>
-							<para>http://239b.licentiaten.umea.hsb.se/Argouml/forte-project.png</para>
-							<para>Please help us out here, diagram the steps in an activity diagram, and maybe enable the above functionality in Argo.</para>
-						</answer>
-					</qandaentry>
-				</qandadiv>
-			</qandaset>
-	</chapter>
-	<chapter>
 		<title>User Interface:navigation panes</title>
 		<qandaset>
 			<qandadiv>
@@ -309,15 +299,6 @@ only there to make it clear which directory I have mounted.</para>
 					<title>User Interface:Navigation Panes</title>
 					<qandaentry>
 						<question>
-							<para>How do I know what diagram I'm working on?
-                                                </para>
-						</question>
-						<answer>
-							<para>Sometimes, if your screen is large enough, you will see the name of the diagram in the top right corner.</para>
-						</answer>
-					</qandaentry>
-					<qandaentry>
-						<question>
 							<para> How do I arrange my diagram elements?
                                                 </para>
 						</question>
@@ -330,25 +311,6 @@ only there to make it clear which directory I have mounted.</para>
 							<para>Or click on the broom button, move your mouse to the diagram pane, right click and hold. Now moving your mouse side ways (or up and down) will align elements.</para>
 							<para>There also is the menu item arrange where you can align, group or nudge (move a little bit) elements.
                                                 </para>
-						</answer>
-					</qandaentry>
-					<qandaentry>
-						<question>
-							<para>
-						How can I look at different diagrams at the same time?	
-						</para>
-						</question>
-						<answer>
-							<para>You can 'spawn' a panel by double-clicking on the tab. It will then show as individual window and you can put it next to another. But beware, this function does not work in the diagram window for the moment. This is believed to be an issue with GEF. </para>
-						</answer>
-					</qandaentry>
-					<qandaentry>
-						<question>
-							<para>How do I reduce the  number of panes open in the window?</para>
-						</question>
-						<answer>
-							<para>Unimplemented feature :(You can, however, "spawn" a window by double-clicking on the tab, and maximize that.</para>
-							<para>See to do list.</para>
 						</answer>
 					</qandaentry>
 					<qandaentry>
@@ -375,172 +337,7 @@ only there to make it clear which directory I have mounted.</para>
 			</qandadiv>
 		</qandaset>
 	</chapter>
-	<chapter>
-		<title>User Interface:toolbars</title>
-		<qandaset>
-			<qandadiv>
-				<title> Contribute  Diagrams.</title>
-				<qandadiv>
-					<title>User Interface:Toolbars</title>
-					<qandaentry>
-						<question>
-							<para>Is there a way to change to change the font size?</para>
-						</question>
-						<answer>
-							<para>Turns out it is quite easy. (Rick grepped the sources to find this.)</para>
-							<para> java -jar Argouml.jar -h</para>
-							<para>Usage: [options] [project-file]</para>
-							<para> Options include:</para>
-							<para>-big            use big fonts</para>
-							<para>-huge           use huge fonts</para>
-							<para>-nosplash       do not display Argo/UML logo</para>
-							<para>-noedem         do not report usage statistics</para>
-							<para>-nopreload      do not preload common classes</para>
-							<para>-profileload    report on load times</para>
-							<para>java -jar Argouml.jar -big</para>
-							<para>That does the trick. Thanks go to Rick.</para>
-							<para>See to do list: We'd like to get these "hidden" functionalities into the User Interface</para>
-							<para>As well enable saving these preferences for individual users.</para>
-							<para>If you'd like to do a diagram of this please contribute.</para>
-                                                        <para>This should be made into a user controlled interface with a GUI interface</para>
-							<para/>
-						</answer>
-					</qandaentry>
-				</qandadiv>
-			</qandadiv>
-		</qandaset>
-		<qandaset>
-			<qandadiv>
-				<title> Contribute  Diagrams.</title>
-				<qandadiv>
-					<title>File</title>
-					<qandaentry>
-						<question>
-							<para>What works under File?</para>
-						</question>
-						<answer>
-							<para>new: works</para>
-							<para>open project: works</para>
-							<para>save project: does not work dependably.</para>
-							<para>save project as: does not work dependably</para>
-							<para>import sources: does not work dependably</para>
-							<para>load model from db: does not work dependably</para>
-							<para>store model to db: does not work dependably</para>
-							<para>print: very limited options here</para>
-							<para>save graphics: very limited options here</para>
-							<para>Please contribute.</para>
-							<para>See To Do list.</para>
-						</answer>
-					</qandaentry>
-				</qandadiv>
-			</qandadiv>
-		</qandaset>
-		<qandaset>
-			<qandadiv>
-				<title>Edit: Contribute  Diagrams.</title>
-				<qandadiv>
-					<title>Edit</title>
-					<qandaentry>
-						<question>
-							<para>What works under Edit?</para>
-						</question>
-						<answer>
-							<!--This is where a table structure would be very nice!-->
-							<para/>
-							<para>select:all/ previous/ next/invert selection: works as far as this user knows</para>
-							<para>undo:does not work</para>
-							<para>redo: does not work </para>
-							<para>cut: works</para>
-							<para>Enable under right click, see to do list.</para>
-							<para>copy:works</para>
-							<para>Enable under right click, see to do list.</para>
-							<para>paste:works</para>
-							<para>Enable under right click, see to do list.</para>
-							<para>remove from diagram:does not work dependably</para>
-							<para>Use with CAUTION.</para>
-							<para>Unpredictable behaviors.</para>
-							<para>Delete from model</para>
-							<para>Use with CAUTION.</para>
-							<para>Unpredictable behaviors.</para>
-							<para>Empty trash: unknown functionality, perhaps related to future undo/redo?</para>
-						</answer>
-					</qandaentry>
-				</qandadiv>
-			</qandadiv>
-		</qandaset>
-		<qandaset>
-			<qandadiv>
-				<title>Generation: Contribute  Diagrams.</title>
-				<qandadiv>
-					<title>Generate</title>
-					<qandaentry>
-						<question>
-							<para>What works under generation?</para>
-						</question>
-						<answer>
-							<!--This is where a table structure would be very nice!-->
-							<para>You can generate code from your work with Argo.</para>
-							<para>It will save it to your output folder of choice.</para>
-							<para>It would be nice if the generate code also generated the javadocs and the diagrams for the code at the same time.</para>
-							<para/>
-							<para>See to do list.</para>
-						</answer>
-					</qandaentry>
-				</qandadiv>
-			</qandadiv>
-		</qandaset>
-		<qandaset>
-			<qandadiv>
-				<title>Help: Contribute  Diagrams.</title>
-				<qandadiv>
-					<title>help</title>
-					<qandaentry>
-						<question>
-							<para>What works under help?</para>
-						</question>
-						<answer>
-							<!--This is where a table structure would be very nice!-->
-							<para>Not much.</para>
-							<para>It should be renamed About, rather than help.</para>
-							<para>You can help us out if you know how we can docbook compliant XML and put them into an online help system.</para>
-							<para>Another thing out of that, allow people to send in their questions right out of Argo help to the user-group.</para>
-							<para>See to do list.</para>
-						</answer>
-					</qandaentry>
-				</qandadiv>
-			</qandadiv>
-		</qandaset>
-	</chapter>
-	<chapter>
-		<title>Activity Diagrams</title>
-		<qandaset>
-			<qandadiv>
-				<title/>
-				<qandadiv>
-					<title>Acitivity Diagrams</title>
-					<qandaentry>
-						<question>
-							<para>How do I create a activity diagram?</para>
-						</question>
-						<answer>
-							<para>Select a class, then you can create an activity diagram.</para>
-							<para>Be aware you cannot create an activity diagram connected to an actor.</para>
-							<para>This is considered important for business modeling.</para>
-						</answer>
-					</qandaentry>
-					<qandaentry>
-						<question>
-							<para>How do I move between the objects in the activity diagram?</para>
-						</question>
-						<answer>
-							<para>Select one artifact in the diagram and click the tab key. You can move backwards by using shift+tab.</para>
-							<para>Hit the return key to activate cursor. You can begin typing immediately. This works in Class diagrams as well. Give it a try.</para>
-						</answer>
-					</qandaentry>
-				</qandadiv>
-			</qandadiv>
-		</qandaset>
-	</chapter>
+
 	<chapter>
 		<title>Sequence Diagrams</title>
 		<qandaset>
@@ -550,31 +347,6 @@ only there to make it clear which directory I have mounted.</para>
 					<title>Sequence Diagrams</title>
 					<qandaentry>
 						<question>
-							<para>Are there known issues with sequence diagrams in Argo?</para>
-						</question>
-						<answer>
-							<para>Yes.
-</para>
-							<para>Checklist is not enabled with Sequence artifacts.</para>
-							<para>It is not possible (as yet) to create call backs.</para>
-							<para>You cannot change the order of the connectivity of a link artifact in Argo yet.</para>
-							<para>StimulusDestroy is not dependable.</para>
-							<para>If you would like to help us out, please see to do list.</para>
-						</answer>
-					</qandaentry>
-					<qandaentry>
-						<question>
-							<para>
-How do I create a sequence diagram?
-</para>
-						</question>
-						<answer>
-							<para>Normally, you can just start a sequence diagram right away. Create>Diagrams>Sequence
-</para>
-						</answer>
-					</qandaentry>
-					<qandaentry>
-						<question>
 							<para>I'm trying to change the ordering of the links in the sequence diagram. How do I do that?
 </para>
 						</question>
@@ -582,79 +354,6 @@ How do I create a sequence diagram?
 							<para>Unimplemented feature.</para>
 							<para>If you can help out there please let us know.</para>
 							<para>see to do list</para>
-						</answer>
-					</qandaentry>
-				</qandadiv>
-			</qandadiv>
-		</qandaset>
-	</chapter>
-	<chapter>
-		<title>Deployment Diagrams</title>
-		<qandaset>
-			<qandadiv>
-				<title/>
-				<qandadiv>
-					<title>Acitivity Diagrams</title>
-					<qandaentry>
-						<question>
-							<para>
-How do I create a state diagram?
-</para>
-						</question>
-						<answer>
-							<para>
-Select a class, then you can create a state
-diagram.
-</para>
-						</answer>
-					</qandaentry>
-					<qandaentry>
-						<question>
-							<para>
-I am trying to use Argo to edit a state machine diagram for a model. But when I edit a composite state, I don't know how to provide do and event for a composite state. Can you help me?
-</para>
-						</question>
-						<answer>
-							<para>
-Select a class, then you can create a state
-diagram.
-</para>
-						</answer>
-					</qandaentry>
-				</qandadiv>
-			</qandadiv>
-		</qandaset>
-	</chapter>
-	<chapter>
-		<title>Use Case Diagrams</title>
-		<qandaset>
-			<qandadiv>
-				<title/>
-				<qandadiv>
-					<title>Acitivity Diagrams</title>
-					<qandaentry>
-						<question>
-							<para>How do I create a state diagram?
-</para>
-						</question>
-						<answer>
-							<para>
-Select a class, then you can create a state
-diagram.
-</para>
-						</answer>
-					</qandaentry>
-					<qandaentry>
-						<question>
-							<para>
-I am trying to use Argo to edit a state machine diagram for a model. But when I edit a composite state, I don't know how to provide do and event for a composite state. Can you help me?
-</para>
-						</question>
-						<answer>
-							<para>
-Select a class, then you can create a state
-diagram.
-</para>
 						</answer>
 					</qandaentry>
 				</qandadiv>
@@ -812,61 +511,6 @@ their Bridge product available to transform between XMI flavors.
 				<qandaentry>
 					<question>
 						<para>
-If i design a model by using Argo UML how I can generate XMI format?
-</para>
-					</question>
-					<answer>
-						<para>
-Check out the .zArgo file. Open it and Viola! It's tucked inside...
-</para>
-					</answer>
-				</qandaentry>
-			</qandadiv>
-			<qandadiv>
-				<title>Graphics and Printing</title>
-				<qandaentry>
-					<question>
-						<para>
-What does GEF mean?
-</para>
-					</question>
-					<answer>
-						<para>
-GEF = Graph Editing Framework - the thing which is hidden in gef.jar and
-is responsible for displaying the graphs and which gives you the the
-ability to move things around. GEF used to be closely interwoven with
-Argo, but is now more or less separate as far as I know. The sources are
-also available via www.tigris.org
-</para>
-					</answer>
-				</qandaentry>
-				<qandaentry>
-					<question>
-						<para>
-What is PGML?
-</para>
-					</question>
-					<answer>
-						<para>
-PGML is the saving format for diagram information used in Argo and Poseidon. Although this is outdated a little, it shows why we chose PGML in the first place. In the future, PGML will be replaced by an extended XMI format which will include graphical representation. PGML is shortcut for Precision Graphics Markup Language. In April 1998 Adobe Systems proposed a new Standard for Vector Graphics to the World Wide Web Consortium (W3C), which should facilitate the creation and usage of image material in the World Wide Web. It will be replaced by SVG. We will support SVG by generating it from the XMI in the future.
-</para>
-					</answer>
-				</qandaentry>
-				<qandaentry>
-					<question>
-						<para>
-What applications open PGML?
-</para>
-					</question>
-					<answer>
-						<para>PGML is a predecessor of SVG. It was dropped by the W3C Consortium.</para>
-						<para>Currently there are no other tools that we know of working on PGML. We will move to SVG soon. And THAT will be read by many tools.
-</para>
-					</answer>
-				</qandaentry>
-				<qandaentry>
-					<question>
-						<para>
 How can I print my diagrams?
 </para>
 					</question>
@@ -915,10 +559,7 @@ the www.W3C.org. </para>
 						</para>
 					</question>
 					<answer>
-						<para>No not yet. This feature is much desired. Please see the to-do list.</para>
-						<para>Use case: File>Save As>project.html>select diagram output i.e. .svg, .gif, .jpg, etc.</para>
-						<para>Output would include: Java docs.</para>
-						<para>Diagrams with rollover functionality i.e. when users rollover diagram elements their is an embedded link to the javadocs.</para>
+						<para>No not yet.</para>
 					</answer>
 				</qandaentry>
 			</qandadiv>
@@ -962,571 +603,130 @@ the www.W3C.org. </para>
 					</answer>
 				</qandaentry>
 			</qandadiv>
-			<qandadiv>
-				<title>Code Generation</title>
-				<qandaentry>
-					<question>
-						<para>
-Is the generated code meant to be able to compile?
-</para>
-					</question>
-					<answer>
-						<para>
-Yes, it is possible to compile your generated code with  Poseidon, you
-still need to implement method bodies, though, to get usable results.
-</para>
-						<para>But not Argo!</para>
-						<para>Yes, it is possible to compile your generated code from Argo, but that is of no use yet, since you can't implement method bodies.
-</para>
-						<para>You can help us out there if you'd like!</para>
-					</answer>
-				</qandaentry>
-				<qandaentry>
-					<question>
-						<para>Where/how do I implement code for my methods?</para>
-					</question>
-					<answer>
-						<para>Nowhere, yet. The source pane is editable, but the changes are ignored.
-ArgoUML is a pure design tool for now, no IDE functionality but the desire is there. You might consider using Forte and Argo together...it's a good work around!</para>
-					</answer>
-				</qandaentry>
-			</qandadiv>
 		</qandaset>
 	</chapter>
-        	<chapter>
-		<title>To Do List</title>
-		<qandaset defaultlabel="none">
-			<qandadiv>
-				<title>To Do</title>
-				<qandaentry>
-					<question>
-						<para>How can I begin to help?</para>
-					</question>
-					<answer>
-						<para> Here's a short list of To Dos! Feel free to add (and contribute) to this list!			</para>
-						<para>If you're not a progammer you can still help by modeling these functions.</para>
-						<para>We need to identify all of the diagrams that are possible with Argo 
-						Reverse Engineering.</para>
-								
-						<para>If you understand enough about programming to take a guess at which classes in Argo can be used to enable these functions, diagram that!</para>
-						<para>If you know how to code in Java, all the better! Take a look at the list below!</para>
-						<para>Enable output of finished project.zArgo into one graphically enhanced HTML file for publishing. This should include a choice of graphical output i.e. SVG, PNG, etc.</para>
-						<para>enable implementation of method bodies</para>
-						<para>Enable auto activiity creation with Branch artifact.</para>
-						<para>Enable javadoc output from Argo.</para>
-						<para>Embed authors name, date and copyright in diagram output.</para>
-						<para>Embed folder and file name in diagram output</para>
-						<para>Enable zooming on the diagram window Note: This is available in the CVS.</para>
-						<para>enable auto self association for state and sequence diagrams.</para>
-						<para>Enable collapsing of panes.</para>
-						<para>Enable progress indicator when saving, reengineering, printing etc.</para>
-						<para>Enable notes to commented out instructions in source code for javadoc creation.</para>
-						<para>Enable connection to class names to object names. Use case: When the user clicks on the properties pane for an object, the user has the option of choosing from a list of UML artifacts: classes, actors, etc.</para>
-						<para>Enable import interface for XML documents.</para>
-						<para>Enable data base modeling.</para>
-						<para>Enable C++ modeling.</para>
-						<para>Enable .jar reverse engineering.</para>
-						<para>Include edit commands under right click ...*</para>
-						<para>Swim lanes for activity diagrams.</para>
-						<para>Set the save as field when user selects file> "save graphics"  the "file name" of the project" file of type" automatically i.e. "myproject.svg" for example.</para>
-						<para>Test scripts for end user to replicate errors. PGUIRobot has been suggested.</para>
-						<para>Enable more right click functionality, cut copy paste </para>
-						<para>Add underline to hotkey for toolbars and enable more hot keys. Put the hotkey information in the rollover infomation of the button. Put the hotkey info in the tabbed windows under the property window.</para>
-						<para>Create user preference UI and storage procedures.</para>
-						<para>Enable embedded subject line for email operations out of FAQ and Help pages. i.e. subject=?"the title from the portion of the faq or help item in question"</para>
-						<para>Enable activity diagram connection to Actors for business and process modeling.</para>
-					</answer>
-				</qandaentry>
-			</qandadiv>
-			<qandadiv>
-				<title>User FAQ</title>
-				<qandaentry>
-					<question>
-						<para>I'd like to add something to the faq, where do I get it?</para>
-					</question>
-					<answer>
-						<para>The user FAQ is available in the CVS. You can see it in it's current online form here. Check it out! Add to it! Submit your additions! Get your name in lights!</para>
-						<para>link goes here</para>
-					</answer>
-					<answer>
-						<para>Yes, you can. We're working on a list of diagrams that need to be done. Take a look!</para>
-						<para>activity diagram of the CVS process</para>
-					</answer>
-				</qandaentry>
-				<qandaentry>
-					<question>
-						<para>I' want to help with the documentation. How can I help?</para>
-					</question>
-					<answer>
-						<para>Take a look at the CVS for the web site, anything that is more than a year old needs to be updated and integrated into docbook format.</para>
-						<para>You won't beleive how many screen grabs are already done. We need to get them connected to our docbook project.</para>
-						<para>There is also a lot of buried documentation that could be reincorporated.</para>
-						<para>We also need to get the help document working in Argo, probably a copy of this document, the tour, and some of the basic tutorial stuff that's already been done.</para>
-						<para>The old site has a lot of hardcoded html. If we can get an xsl that strips out just the text then we can incorporate more documentation into our docbook.</para>
-						<para/>
-						<para/>
-						<para/>
-					</answer>
-				</qandaentry>
-				<qandaentry>
-					<question>
-						<para>I'm good at modelling, can I help?</para>
-					</question>
-					<answer>
-						<para>Yes, you can. We're working on a list of diagrams that need to be done. Take a look!</para>
-						<para>activity diagram of the CVS process</para>
-						<para>sequence diagram for CVS permissions</para>
-						<para>activity diagram of the reverse engineering process</para>
-						<para>activity diagram of the ideal software development</para>
-						<para>activity diagram for creating, running and debugging test suites</para>
-						<para>use case diagrams for dream features</para>
-						<para>see To Do list for more ideas</para>
-						<para>And don't be afraid to suggest more!</para>
-					</answer>
-				</qandaentry>
-			</qandadiv>
-		</qandaset>
-	</chapter>
-	<chapter>
-		<title>Bugs</title>
-		<qandaset defaultlabel="none">
-			<qandadiv>
-				<title>Report</title>
-				<qandaentry>
-					<question>
-						<para>Where do I report bugs?</para>
-					</question>
-					<answer>
-						<para/>
-						<para>If you find a bug you should register it at: </para>
-						<para>http://Argouml.tigris.org/project_bugs.html</para>
-						<para>Be aware that you're bug may have already been registered.</para>
-						<para>If you've got a new bug, try to get a screen grab of it and a .txt copy of the stack output for analysis.</para>
-						<para>And if you know how normal users can get output stack  information from Argo let me know!</para>
-						<para>We're working on a matrix that will show the bugs by version, title and status.</para>
-						<para>If you'd like to help us out there feel free to volunteer!</para>
-					</answer>
-				</qandaentry>
-				<qandaentry>
-					<question>
-						<para>What are the known limitations of Argo?</para>
-					</question>
-					<answer>
-						<para>Saving: problems are still be encountered</para>
-						<para>Drag and drop from Navigation pane: does not work</para>
-						<para>Auto-jump to properties when double clicking UML artifact: doesn't work</para>
-						<para>Entering data in the properties window: sometimes yes sometimes no.</para>
-						<para/>
-						<para>Zoom control on diagram pane:  implemented in CVS</para>
-						<para>Output the project into an html file: not implemented</para>
-						<para>Setting user preferences: not implemented</para>
-						<para>Using stereotypes for attributes: not implemented</para>
-						<para>Changing format for commentary in source code generated: not implemented</para>
-					</answer>
-				</qandaentry>
-			</qandadiv>
-		</qandaset>
-	</chapter>
-	<chapter>
-		<title>CVS</title>
-		<qandaset defaultlabel="none">
-			<qandadiv>
-				<title>Upload CVS</title>
-				<qandaentry>
-					<question>
-						<para>I don't have CVS access but I have an update or patch I'd like to submit. How do I do that?</para>
-					</question>
-					<answer>
-						<para>Contact any of the active developers on the list and send them your updates. They're very nice about it the first few times. </para>
-					</answer>
-				</qandaentry>
-			</qandadiv>
-		</qandaset>
-		<qandaset defaultlabel="none">
-			<qandadiv>
-				<title>CVS</title>
+
+  <chapter>
+    <title>Contributing to the ArgoUML project</title>
+    <qandaset defaultlabel="none">
+      <qandadiv>
+	<title>To Do</title>
+	<qandaentry>
+	  <question>
+	    <para>How can I help?</para>
+	  </question>
+	  <answer>
+	    <para>
+You can help by joining the ArgoUML project.
+</para>
+	    <para>
+On the 
+<ulink url="http://www.argouml.org/">ArgoUML web site</ulink>
+there is a list of things to do in Issues.
+</para>
+	    <para>
+The project needs persons skilled in several different fields such as:
+</para>
+	    <itemizedlist>
+		<listitem>
+		  <para>Programming Java, C++...</para>
+		</listitem>
+		<listitem>
+		  <para>Testing</para>
+		</listitem>
+		<listitem>
+		  <para>Writing documentation</para>
+		</listitem>
+		<listitem>
+		  <para>Proofreading documentation</para>
+		</listitem>
+		<listitem>
+		  <para>UML</para>
+		</listitem>
+	      </itemizedlist>
+
+	    <para>
+A good place to start is to take a look at the To Do list.
+</para> 
+	    <para>Download the CVS take a look at the code.</para> 
+	  </answer>
+	</qandaentry>
+
+	<qandaentry>
+	  <question>
+	    <para>
+I don't have CVS access but I have an update or patch I'd like to
+submit. How do I do that?</para>
+	  </question>
+	  <answer>
+	    <para>
+Contact any of the active developers on the list and send them your
+updates for review and inclusion.
+</para>
+	  </answer>
+	</qandaentry>
+      </qandadiv>
+    </qandaset>
+  </chapter>
+
+  <chapter>
+    <title>Bugs</title>
+    <qandaset defaultlabel="none">
+      <qandadiv>
+	<title>Report Bugs</title>
+	<qandaentry>
+	  <question>
+	    <para>Where do I report bugs?</para>
+	  </question>
+	  <answer>
+	    <para>
+The known bugs to the ArgoUML project are registered in the issuezilla at
+Tigris.
+</para>
+	    <para>
+If you find a bug you should register it according to 
+<ulink url="http://argouml.tigris.org/project_bugs.html">the instruction on the web site</ulink>
+</para>
+	    <para>
+Be aware that you're bug may have already been registered i.e. it is
+already known. If so, please just add the additional observations 
+you have made.
+</para>
+	  </answer>
+	</qandaentry>
+	<qandaentry>
+	  <question>
+	    <para>What information is interesting when reporting a Bug</para>
+	  </question>
+	  <answer>
+	    <para>
+Get a screen grab of it and a .txt
+copy of the stack output for analysis.
+</para>
+	    <para>
+Also include what version of ArgoUML you are running and on what platform
+(Hardware, OS, Java-version).
+</para>
+	  </answer>
+	</qandaentry>
+      </qandadiv>
+    </qandaset>
+  </chapter>
+  <chapter>
+    <title>CVS</title>
+    <qandaset defaultlabel="none">
+      <qandadiv>
+	<title>CVS</title>
 				<qandaentry>
 					<question>
 						<para>I've got a bunch of people working on the same diagrams. How do I track who is doing what on the diagram? How do I use Argo for CVS?</para>
 					</question>
 					<answer>
 						<para>Unimplemented feature. It would be nice though wouldn't it? The folks at Gentleware have mentioned something about that though the status is unknown.</para>
-						<para>See To Do list.</para>
-						<para>Initial thoughts on that have circled around the unimplemented feature of storing user preferences.</para>
-						<para>See To Do list.</para>
-					</answer>
-				</qandaentry>
-			</qandadiv>
-		</qandaset>
-		<qandaset defaultlabel="none">
-			<qandadiv>
-				<title>Model the CVS Update</title>
-				<qandaentry>
-					<question>
-						<para>I understand CVS a little bit but find the process a little confusing...How can I help there?</para>
-					</question>
-					<answer>
-						<para>Model it! Take a look at the processes and try to model them in UML with Argo and send in your diagram!</para>
 					</answer>
 				</qandaentry>
 			</qandadiv>
 		</qandaset>
 	</chapter>
-	<chapter>
-  <title>Developers</title> 
- <qandaset>
- <qandadiv>
-  <title>Developer Faq</title> 
- <qandaentry>
- <question>
-  <para>I want to help the Developer's. How can I Help!</para> 
-  </question>
- <answer>
-  <para>A good place to start is to take a look at the To Do list and then browse through the Developer FAQ.</para> 
-  <para>Download the CVS take a look at the code.</para> 
-  <para>The Developer Faq is available in the CVS. You can see it in it's current online form here. Check it out! Add to it! Submit your addtions! Get your name in lights!</para> 
-  <para>(http://Argouml.tigris.org/newsite/faq/faq.html)</para> 
-  </answer>
-  </qandaentry>
-  </qandadiv>
-  </qandaset>
-  </chapter>
- <chapter>
-  <title>Screen Grabs</title> 
- <qandaset defaultlabel="none">
- <qandadiv>
-  <title>Screen Grabs</title> 
- <qandaentry>
- <question>
-  <para>There's nothing like show and tell when using software! Everyone likes screen grabs...here's how you can help out!</para> 
-  </question>
- <answer>
-  <para/> 
-  <para/> 
-  <para>Make screen grabs as you go! And here's how...</para> 
-  <para>MS Windows</para> 
-  <para>You can use the PrintScreen key to copy the screen to the clipboard (as a bitmap), and then you can paste it into another application (such as MS Word, PowerPoint, etc. (maybe Paint, too)) using the Paste function (ctrl-v). MS Word may (depending on your version) allow you to save the document as an HTML page, which creates an html source file and gif files for all the embedded images (i.e. your pasted screen shot).</para> 
-  <para>To capture a single window instead of the entire screen, use Alt-PrintScreen.</para> 
-  <para>Image resolution is determined by screen size, for best results: 256 colors by 800X600 is good for a full screen capture.</para> 
-  <para>Thanks to Derek for that little tip!</para> 
-  <para>Do a search on any of your favorite freeware sites for more elaborate applications. Snagit from techsmith has been recommended</para> 
-  <para>Linux</para> 
-  <para>There's a number of screen shots apps under Linux though they escape me now!</para> 
-  </answer>
-  </qandaentry>
-  </qandadiv>
-  </qandaset>
-  </chapter>
- <chapter>
-  <title>Argouml\application\api</title> 
- <qandaset>
- <qandadiv>
-  <title>Argouml\application\api class diagram screen grab</title> 
- <qandaentry>
- <question>
-  <para>I'd like to see a class diagram for the api. Where is it?</para> 
-  </question>
- <answer>
-  <para>Right here!</para> 
- <mediaobject>
- <imageobject>
-  <imagedata format="PNG" fileref="images/screenshots/Argoapi.png"/> 
-  </imageobject>
-  </mediaobject>
-  </answer>
-  </qandaentry>
-  </qandadiv>
-  </qandaset>
-  </chapter>
- <!--  end chapter api
-  --> 
- <!-- start chapter  application config 
-  --> 
- <chapter>
-  <title>org\Argouml\application\configuration</title> 
- <qandaset defaultlabel="none">
- <qandadiv>
-  <title>org\Argouml\application\configuration class diagram screen grab</title> 
- <qandaentry>
- <question>
-  <para>Is there a screen grab for the application configuration?</para> 
-  </question>
- <answer>
-  <para>Yes!</para> 
- <mediaobject>
- <imageobject>
-  <imagedata format="PNG" fileref="images/screenshots/Argoconfig.png"/> 
-  </imageobject>
-  </mediaobject>
-  </answer>
-  </qandaentry>
-  </qandadiv>
-  </qandaset>
-  </chapter>
- <!-- end chapter  application config 
-  --> 
- <!-- start chapter Argouml\cognitive\checklist 
-  --> 
- <chapter>
-  <title>org\Argouml\cognitive\checklist</title> 
- <qandaset defaultlabel="none">
- <qandadiv>
-  <title>org\Argouml\application\configuration class diagram screen grab</title> 
- <qandaentry>
- <question>
-  <para>Is there a screen grab for the Argouml\cognitive\checklist?</para> 
-  </question>
- <answer>
-  <para/> 
-  <para/> 
-  <para>Yes!</para> 
- <!--  copy and paste working pieces!
-  --> 
- <mediaobject>
- <imageobject>
-  <imagedata format="PNG" fileref="images/screenshots/Argocogchklist.png"/> 
-  </imageobject>
-  </mediaobject>
-  </answer>
-  </qandaentry>
-  </qandadiv>
-  </qandaset>
-  </chapter>
- <!--  end Chapter cognitive checklist
-  --> 
- <!--  start Chapter cognitive critics
-  --> 
- <chapter>
-  <title>org\Argouml\cognitive\critics</title> 
- <qandaset defaultlabel="none">
- <qandadiv>
- <title>org\Argouml\cognitive\critics class diagram screen grab</title> 
- <qandaentry>
- <question>
-  <para>Is there a screen grab for the org\Argouml\cognitive\critics?</para> 
-  </question>
- <answer>
-  <para/> 
-  <para/> 
-  <para>Yes!</para> 
- <mediaobject>
- <imageobject>
-  <imagedata format="PNG" fileref="images/screenshots/Argocogcritics.png"/> 
-  </imageobject>
-  </mediaobject>
-  </answer>
-  </qandaentry>
-  </qandadiv>
-  </qandaset>
-  </chapter>
- <!--  end Chapter Argocogcritics.png
-  --> 
- <!--  start chapter Argouml\cognitive\ui
-  --> 
- <chapter>
-  <title>org\Argouml\cognitive\critics\ui</title> 
- <qandaset defaultlabel="none">
- <qandadiv>
-  <title>org\Argouml\cognitive\critics\ui class diagram screen grab</title> 
- <qandaentry>
- <question>
-  <para>Is there a screen grab for the org\Argouml\cognitive\critics\ui?</para> 
-  </question>
- <answer>
-  <para/> 
-  <para/> 
-  <para>No! But feel free to generate one and submit it!</para> 
- <!-- 
-  <mediaobject>
-					<imageobject>
-						<imagedata format="PNG" fileref="images/screenshots/Argocogcritics.png"/>
-					</imageobject>
-				</mediaobject>
-
-  --> 
-  </answer>
-  </qandaentry>
-  </qandadiv>
-  </qandaset>
-  </chapter>
- <!--  end chapter cog ui
- --> 
- <!--  start chapter Argouml\kernel
-  --> 
- <chapter>
-  <title>src_new\org\Argouml\kernel</title> 
- <qandaset defaultlabel="none">
- <qandadiv>
-  <title>src_new\org\Argouml\kernel class diagram screen grab</title> 
- <qandaentry>
- <question>
-  <para>Is there a screen grab for the src_new\org\Argouml\kernel?</para> 
-  </question>
- <answer>
-  <para/> 
-  <para/> 
-  <para>Yes!</para> 
- <mediaobject>
- <imageobject>
-  <imagedata format="PNG" fileref="images/screenshots/Argokernel.png"/> 
-  </imageobject>
-  </mediaobject>
-  </answer>
-  </qandaentry>
-  </qandadiv>
-  </qandaset>
-  </chapter>
- <!--  end chapter kernel
-  --> 
-<!--  start chapter Argouml\ocl
-  --> 
-<chapter>
-  <title>src_new\org\Argouml\ocl</title> 
-<qandaset defaultlabel="none">
-<qandadiv>
-  <title>src_new\org\Argouml\ocl class diagram screen grab</title> 
-<qandaentry>
-<question>
-  <para>Is there a screen grab for the src_new\org\Argouml\ocl?</para> 
-  </question>
-<answer>
-  <para/> 
-  <para/> 
-  <para>Yes!</para> 
-<mediaobject>
-<imageobject>
-  <imagedata format="PNG" fileref="images/screenshots/Argoocl.png"/> 
-  </imageobject>
-  </mediaobject>
-  </answer>
-  </qandaentry>
-  </qandadiv>
-  </qandaset>
-  </chapter>
-<!--  end chapter ocl
-  --> 
-<!--  I did all of this manually and I'll tell you it's a pain 
-  --> 
-<!--  start chapter to do list
-  --> 
-<chapter>
-  <title>To Do List</title> 
-<qandaset defaultlabel="none">
-<qandadiv>
-  <title>User Faq</title> 
-<qandaentry>
-<question>
-  <para>User's Need Help!</para> 
-  </question>
-<answer>
-  <para>The user Faq is available in the CVS. You can see it in it's current online form here. Check it out! Add to it! Submit your addtions! Get your name in lights!</para> 
-  <para>link goes here</para> 
-  </answer>
-  </qandaentry>
-  </qandadiv>
-<qandadiv>
-  <title>To Do</title> 
-<qandaentry>
-<question>
-  <para>How can I begin to help?</para> 
-  <para>Here's a short list of To Dos! Feel free to add (and contribute) to this list!</para> 
-  </question>
-<answer>
-  <para>Enable output of finished project.zArgo into one graphically 
-	enhanced HTML file for publshing. This should include a choice of 
-	graphical output i.e. SVG, PNG, etc.</para> 
-  <para>Enable zooming on the diagram window</para> 
-  <para>Note: This is available in the CVS.</para> 
-  <para>Enable collapsing of panes.</para> 
-  <para>Enable connection to class names to object names. Use case: When the user clicks on the properties pane for an object, the user has the option of choosing from a list of UML artifacts: classes, actors, etc.</para> 
-  <para>Enable import interface for XML documents.</para> 
-  <para>Enable data base modelling.</para> 
-  <para>Enable C++ modelling.</para> 
-  <para>Enable .jar reverse engineering. Perhaps using the parser that is available in the JDK distribution for generating javadocs from a jar?</para> 
-  <para>Include edit commands under right click ...</para> 
-<mediaobject>
-<imageobject>
-  <imagedata format="PNG" fileref="images/screenshots/cannotremovediagram.png"/> 
-  </imageobject>
-  </mediaobject>
-  <para>Swim lanes for activity diagrams.</para> 
-  <para>Set the save as field when user selects file> "save graphics" the 
-	"file name" of the project" file of type" automatically i.e. "myproject.svg"
-for example.</para> 
-  <para>Test scripts for end user to replicate errors. See the developers 
-	discussion group for more information on that development.</para> 
-  </answer>
-  </qandaentry>
-  </qandadiv>
-  </qandaset>
-  </chapter>
-<!--  end chapter to do list
-  --> 
-<!--  don't be bashful! add your own notes and docs!
-  --> 
-<!--  start chapter Bugs
-  --> 
-<chapter>
-  <title>Bugs</title> 
-<qandaset defaultlabel="none">
-<qandadiv>
-  <title>Report Bugs</title> 
-<qandaentry>
-<question>
-  <para>Where do I report bugs?</para> 
-  </question>
-<answer>
-  <para>Like our heroes on the original Argo the Argonauts kept an eye on what the boat is doing and when it's behaving strangely...Please Please Please!</para> 
-  <para>If you find a bug you should register it at:</para> 
-  <para>http://Argouml.tigris.org/project_bugs.html</para> 
-  </answer>
-  </qandaentry>
-  </qandadiv>
-<qandadiv>
-  <title>Known Bugs</title> 
-<qandaentry>
-<question>
-  <para>Are there any known bugs?</para> 
-  </question>
-<answer>
-  <para>You'll find a couple of bugs here and there in Argo. The idea here is to prevent you, the users or developers, from registering old bugs as new. Screen grabs really help, so if you find a bug, decribe it and take a screen grab if possible.</para> 
-  </answer>
-  </qandaentry>
-  </qandadiv>
-<qandadiv>
-  <title>Sequence Diagram Bugs</title> 
-<qandaentry>
-<question>
-  <para>How do I set associations between links using the association arrows at the top of the sequence diagram window?</para> 
-<mediaobject>
-<imageobject>
-  <imagedata format="JPG" fileref="images/screenshots/turn_off_link.jpg"/> 
-  </imageobject>
-  </mediaobject>
-  </question>
-<answer>
-  <para>It can be kind of tricky sometime but hold the mouse down and continue to click on the desired object until it sets the association.</para> 
-  </answer>
-  </qandaentry>
-<qandaentry>
-<question>
-  <para>How do I delete old messages from my sequence digram?</para> 
-<mediaobject>
-<imageobject>
-  <imagedata format="PNG" fileref="images/screenshots/delete does not work.png"/> 
-  </imageobject>
-  </mediaobject>
-  </question>
-<answer>
-  <para>This is a known problem. Take a look at the code itself! 
-	Use the force read the source!</para> 
-  </answer>
-  </qandaentry>
-  </qandadiv>
-  </qandaset>
-  </chapter>
-<!--  end chapter Bugs
-  --> 
-  
 </book>
 
