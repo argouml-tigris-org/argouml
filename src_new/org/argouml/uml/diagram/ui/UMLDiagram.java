@@ -66,7 +66,14 @@ import ru.novosoft.uml.MElementListener;
  * <p>It adds common buttons, a namespace, capability
  * to delete itself when its namespace is deleted, some help
  * with creating a valid diagram name.
- *
+ * <p>There are various methods for returning 'structures' of Actions
+ * which are used to build toolbars and dropdown buttons within toolbars.
+ * These structures are arrays of Objects.
+ * An array element is actually either an Action, null or another array.
+ * When building a toolbar an Action is used to create a button and null
+ * is used to create a spacer in the toolbar.
+ * An element containing an array results in a dropdown toolbar button
+ * being created which contains all the items in that array.
  */
 public abstract class UMLDiagram
     extends ArgoDiagram
@@ -309,12 +316,17 @@ public abstract class UMLDiagram
     }
 
     /**
-     * Implement on the ancestor to get actions to populate toolbar.
-     *
-     * @return the actions for the toolbar
+     * Implement in the ancestor to get a 'structure' of actions for
+     * appending the UML creation tools to the toolbar.
+     * @return the actions structure
      */
     protected abstract Object[] getUmlActions();
 
+    /**
+     * Get a 'structure' of actions for appending the manipulation
+     * mode tools to the toolbar.
+     * @return the actions structure
+     */
     private Object[] getManipulateActions() {
         Object actions[] =
         {
@@ -325,6 +337,11 @@ public abstract class UMLDiagram
         return actions;
     }
 
+    /**
+     * Get a 'structure' of actions for appending the comment
+     * tools to the toolbar.
+     * @return the actions structure
+     */
     private Object[] getCommentActions() {
         Object actions[] =
         {
@@ -335,22 +352,30 @@ public abstract class UMLDiagram
         return actions;
     }
     
+    /**
+     * Get a 'structure' of actions for appending primitive drawing
+     * tools to the toolbar.
+     * @return the actions structure
+     */
     private Object[] getShapeActions() {
         Object actions[] = {
-	    null, getShapePopupActions(),
+	    null,
+            getShapePopupActions(),
 	};
         return actions;
     }
 
+    /**
+     * Get a 'structure' of actions for showing in the shape
+     * primitives popup tool button.
+     * @return the actions structure
+     */
     private Object[] getShapePopupActions() {
         Object actions[][] = {
-	    {
-		actionRectangle, actionRRectangle
-	    },
-	    {
-                actionCircle, actionLine }, {
-                actionText, actionPoly }, {
-                actionSpline, actionInk }
+	    {actionRectangle, actionRRectangle },
+	    {actionCircle,    actionLine },
+            {actionText,      actionPoly },
+            {actionSpline,    actionInk }
         };
 
         return actions;
