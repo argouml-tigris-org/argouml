@@ -65,9 +65,9 @@ public class TabSrc
         super("tab.source", true);
         // super("Source", false);
         _notationName = null;
-        _toolbar.add(NotationComboBox.getInstance());
+        getToolbar().add(NotationComboBox.getInstance());
         NotationComboBox.getInstance().addItemListener(this);
-        _toolbar.addSeparator();
+        getToolbar().addSeparator();
         ArgoEventPump.addListener(ArgoEventTypes.ANY_NOTATION_EVENT, this);
     }
 
@@ -95,12 +95,12 @@ public class TabSrc
     }
 
     protected void parseText(String s) {
-        cat.debug("TabSrc   setting src for " + _target);
-        Object modelObject = _target;
-        if (_target instanceof FigNode)
-            modelObject = ((FigNode) _target).getOwner();
-        if (_target instanceof FigEdge)
-            modelObject = ((FigEdge) _target).getOwner();
+        cat.debug("TabSrc   setting src for " + getTarget());
+        Object modelObject = getTarget();
+        if (getTarget() instanceof FigNode)
+            modelObject = ((FigNode) getTarget()).getOwner();
+        if (getTarget() instanceof FigEdge)
+            modelObject = ((FigEdge) getTarget()).getOwner();
         if (modelObject == null)
             return;
         cat.debug("TabSrc   setting src for " + modelObject);
@@ -113,11 +113,11 @@ public class TabSrc
     public void setTarget(Object t) {
 
         t = (t instanceof Fig) ? ((Fig) t).getOwner() : t;
-        _target = t;
+        setTarget(t);
         _notationName = null;
-        _shouldBeEnabled = false;
+        setShouldBeEnabled(false);
         if (ModelFacade.isAModelElement(t))
-            _shouldBeEnabled = true;
+            setShouldBeEnabled(true);
         // If the target is a notation context, use its notation.
         if (t instanceof NotationContext) {
             _notationName = ((NotationContext) t).getContextNotation();
@@ -149,12 +149,12 @@ public class TabSrc
     public boolean shouldBeEnabled(Object target) {
         target = (target instanceof Fig) ? ((Fig) target).getOwner() : target;
 
-        _shouldBeEnabled = false;
+        setShouldBeEnabled(false);
         if (ModelFacade.isAModelElement(target)) {
-            _shouldBeEnabled = true;
+            setShouldBeEnabled(true);
         }
 
-        return _shouldBeEnabled;
+        return shouldBeEnabled();
     }
 
     /**
@@ -187,7 +187,7 @@ public class TabSrc
     }
 
     public void refresh() {
-        setTarget(_target);
+        setTarget(getTarget());
     }
 
     public NotationName getContextNotation() {
