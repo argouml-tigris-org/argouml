@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -28,16 +28,18 @@ import org.argouml.i18n.Translator;
 import org.argouml.util.ConfigLoader;
 
 /**
- * @since Dec 15, 2002
- * @author jaap.branderhorst@xs4all.nl
+ * The properties panel for a SynchState.
+ * 
+ * @author Michiel
+ *
  */
-public class PropPanelStubState extends PropPanelStateVertex {
+public class PropPanelSynchState extends PropPanelStateVertex {
 
     /**
-     * Constructor for PropPanelStubState.
+     * The constructor.
      */
-    public PropPanelStubState() {
-        super("Stub State", lookupIcon("StubState"), 
+    public PropPanelSynchState() {
+        super("Synch State", lookupIcon("SyncState"), 
                 ConfigLoader.getTabPropsOrientation());
 
         addField(Translator.localize("label.name"), 
@@ -46,8 +48,6 @@ public class PropPanelStubState extends PropPanelStateVertex {
                 getStereotypeBox());
         addField(Translator.localize("label.container"), 
                 getContainerScroll());
-        // TODO: add the referenced state. 
-        //       This is a string which is IMHO not necessary.
 
         addSeperator();
 
@@ -56,4 +56,5 @@ public class PropPanelStubState extends PropPanelStateVertex {
         addField(Translator.localize("label.outgoing"), 
                 getOutgoingScroll());
     }
+
 }
