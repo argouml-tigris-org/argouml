@@ -122,7 +122,7 @@ implements PluggableNotation, FileGenerator {
   public static boolean VERBOSE = false;
 
   private static Section sect;
-		
+
 	/**
 		* 2002-11-21
 		* aim: convert package nesting in C++ namespaces
@@ -139,8 +139,8 @@ implements PluggableNotation, FileGenerator {
 		* multiplicity to get needed container type
 		*/
 	private static String _ExtraIncludes = "";
-	
-	
+
+
 	/**
 	  * 2002-11-28 Achim Spangler
 		* C++ doesn't place visibility information for each class member
@@ -165,7 +165,7 @@ implements PluggableNotation, FileGenerator {
   static public int header_pass = 2;
   static public int source_pass = 3;
 	private static int GeneratorPass = none_pass;
-	
+
 	/**
 	  * 2002-12-05 Achim Spangler
 		* use Tag generation for generation of: doccomment, simlpe tags of
@@ -174,7 +174,7 @@ implements PluggableNotation, FileGenerator {
 	static public int DocCommentTags = 1;
 	static public int AllButDocTags = 2;
 	static public int AllTags = 3;
-	
+
 	/**
 	  * 2002-12-06 Achim Spangler
 		* C++ developers need to specify for parameters whether they are
@@ -184,7 +184,7 @@ implements PluggableNotation, FileGenerator {
 	static public int SearchReferenceTag = 1;
 	static public int SearchPointerTag = 2;
 	static public int SearchReferencePointerTag = 3;
-		
+
 
 
   private static GeneratorCpp SINGLETON = new GeneratorCpp();
@@ -208,10 +208,10 @@ implements PluggableNotation, FileGenerator {
 	private String GetFileExtension()
 	{
 		// for Java simply answer ".java" every time
-		if (GeneratorPass == header_pass) return ".h";		
+		if (GeneratorPass == header_pass) return ".h";
 		else return ".cpp";
 	}
-	
+
 	/**
 	  * create the needed directories for the derived appropriate pathname
 		* @return full pathname
@@ -263,7 +263,8 @@ implements PluggableNotation, FileGenerator {
      * call it through the Generatorinterface.
      * @returns the full path name of the the generated file.
      */
-  public String GenerateFile(MClassifier cls, String path) {
+  public String GenerateFile(Object o, String path) {
+	MClassifier cls = (MClassifier)o;
     String packagePath = cls.getNamespace().getName();
    	String pathname = null;
 
@@ -322,13 +323,13 @@ implements PluggableNotation, FileGenerator {
 
 			// clear extra includes after usage for each pass
 			_ExtraIncludes = "";
-			
+
 			// output lost sections only in the second path
 			// -> sections which are moved from header(inline) to source
 			// file are prevented to be outputted in header pass
     	if ( GeneratorPass == header_pass )	sect.write(pathname, INDENT, false);
 			else sect.write(pathname, INDENT, true);
-			
+
     	Argo.log.info("written: " + pathname);
 
 
@@ -377,7 +378,7 @@ implements PluggableNotation, FileGenerator {
 		df = DateFormat.getTimeInstance(DateFormat.DEFAULT);
 		return df.format(cal.getTime());
 	}
-	
+
 	/** 2002-12-07 Achim Spangler
 	  * write template content on top of file
 		*/
@@ -460,7 +461,7 @@ implements PluggableNotation, FileGenerator {
     if (VERBOSE_DOCS) sb.append("// FILE: ").append(pathname.replace('\\','/')).append("\n\n");
     return sb.toString();
 	}
-	
+
   private String generateHeaderImportLine4ItemList(Collection classifiers) {
     StringBuffer sb = new StringBuffer(80);
 		Iterator clsEnum = classifiers.iterator();
@@ -469,7 +470,7 @@ implements PluggableNotation, FileGenerator {
 		}
 		return sb.toString();
 	}
-	
+
 	/** 2002-11-28 Achim Spangler
 	  * as each language has its own syntax to incorporate other elements
 		* the command for this inclusion is created in a seperate function
@@ -505,11 +506,11 @@ implements PluggableNotation, FileGenerator {
 
 	private boolean checkInclude4UsageIndirection( boolean isIndirect, String usage_tag) {
 		boolean result = false;
-/*	
+/*
 		if ( usage_tag.length() > 0 ) Argo.log.info("usage tag " + usage_tag + " gefunden");
 		if ( isIndirect ) Argo.log.info("indirection tag gefunden");
 		if ( GeneratorPass == header_pass ) Argo.log.info("Header pass");
-*/		
+*/
 
 		if (( GeneratorPass != header_pass ) && ( usage_tag.indexOf("source") != -1 ))
 		{ // generate include line for source .cpp pass only if
@@ -521,10 +522,10 @@ implements PluggableNotation, FileGenerator {
 		{ // generate include line for header, if not specified as only accessed from .cpp
 			result = true;
 		}
-		
+
 		// only predeclare candidates can be ignored in include block of header
 		if (( GeneratorPass == header_pass ) && ( !isIndirect ) ) result = true;
-		
+
 		return result;
 	}
 
@@ -548,7 +549,7 @@ implements PluggableNotation, FileGenerator {
 		}
 		return checkInclude4UsageIndirection(predeclare_candidate, usage_tag) ;
 	}
-	
+
 	private boolean checkIncludeNeeded4Element( MDependency cls ) {
 		String usage_tag = "";
 		boolean result = false,
@@ -571,12 +572,12 @@ implements PluggableNotation, FileGenerator {
 	}
 	private boolean checkIncludeNeeded4Element( MAttribute cls ) {
     // Argo.log.info("checkIncludeNeeded4Element: fuer Item" + cls );
-		if (!(((MAttribute)cls).getType() instanceof MClass)) return false; 
-				
+		if (!(((MAttribute)cls).getType() instanceof MClass)) return false;
+
 		String usage_tag = "";
 		boolean result = false,
 		        predeclare_candidate = false;
-		
+
     Collection tValues = cls.getTaggedValues();
     if (!tValues.isEmpty()) {
       Iterator iter = tValues.iterator();
@@ -598,7 +599,7 @@ implements PluggableNotation, FileGenerator {
 	{
     StringBuffer sb = new StringBuffer(160),
 		             predeclare_statements = new StringBuffer(60);
-		
+
 		if ( GeneratorPass != header_pass )
 		{ // include header in .cpp
 			sb.append( SINGLETON.generateHeaderImportLine4Item( (MClass) cls ) );
@@ -752,7 +753,7 @@ implements PluggableNotation, FileGenerator {
 			{
 				absolute_name = absolute_name.substring(0, (absolute_name.indexOf( token ) + token.length() ) );
 			}
-			
+
 			// create line: namespace FOO {"
 			temp_buf.append( "} /* End of namespace ")
 			        .append( absolute_name )
@@ -781,7 +782,7 @@ implements PluggableNotation, FileGenerator {
 		}
     return sb.toString();
 	}
-	
+
 	private String generateNameWithPkgSelection( MModelElement item, MNamespace local_pkg ) {
 		if ( item == null ) {
 	    // Argo.log.info("generateNameWithPkgSelection: zu void" );
@@ -796,9 +797,9 @@ implements PluggableNotation, FileGenerator {
 		else if ( item instanceof MClassifier ) pkg = ((MClassifier)item).getNamespace();
 
 		if ( pkg == null ) return generateName( item.getName() );
-		if (local_pkg == null ) 
+		if (local_pkg == null )
 	    Argo.log.info("LOCAL NAMESPACE IS NULL" );
-			
+
 		String localPkgName = generatePackageAbsoluteName( local_pkg );
 		String targetPkgName = generatePackageAbsoluteName( pkg );
     // Argo.log.info("targetNamespace:" + targetPkgName + ":" );
@@ -824,12 +825,12 @@ implements PluggableNotation, FileGenerator {
 	private String generateNameWithPkgSelection( MModelElement item ) {
 		return generateNameWithPkgSelection( item, ActualNamespace );
 	}
-	
+
 	private String generateHeaderPackageStart(MClassifier cls)
 	{
     // Argo.log.info("generateHeaderPackageStart: " + cls.getName() + " aus Namespace: " + cls.getNamespace().getName() );
     StringBuffer sb = new StringBuffer(80);
-		
+
 		if ( ActualNamespace != null )
 		{
 			for ( MNamespace FromSearch = ActualNamespace; FromSearch != null; FromSearch = FromSearch.getNamespace() )
@@ -864,10 +865,10 @@ implements PluggableNotation, FileGenerator {
 		ActualNamespace = cls.getNamespace();
     return sb.toString();
 	}
-	
+
 	private String generateHeaderPackageEnd() {
     StringBuffer sb = new StringBuffer(20);
-		
+
 		for ( MNamespace CloseIt = ActualNamespace; CloseIt != null; CloseIt = CloseIt.getNamespace() )
 		{
 			sb.append( generateHeaderPackageEndSingle( CloseIt ) );
@@ -1030,7 +1031,7 @@ implements PluggableNotation, FileGenerator {
 
     sb.append(") ")
 		  .append( SINGLETON.generateOperationSuffix( op ) );
-			
+
     return sb.toString();
 
   }
@@ -1057,13 +1058,13 @@ implements PluggableNotation, FileGenerator {
 		}
 		return false;
 	}
-	
+
 
 	private String generateAttributeParameterModifier(MModelElement attr) {
 		boolean isReference = checkAttributeParameter4Tag( attr, SearchReferenceTag),
 		        isPointer = checkAttributeParameter4Tag( attr, SearchPointerTag);
     StringBuffer sb = new StringBuffer(2);
-		
+
 		if ( isReference ) sb.append("&");
 		else if ( isPointer ) sb.append("*");
 		else if ( attr instanceof MParameter ) {
@@ -1125,10 +1126,10 @@ implements PluggableNotation, FileGenerator {
     	} else
     	sb.append("java.util.Vector ");
     }
-		
+
 		sb.append( generateAttributeParameterModifier(attr));
     sb.append(generateName(attr.getName()));
-*/		
+*/
 		sb.append( generateMultiplicity(attr, generateName(attr.getName()),
 		                                attr.getMultiplicity(), generateAttributeParameterModifier(attr)));
     MExpression init = attr.getInitialValue();
@@ -1155,12 +1156,12 @@ implements PluggableNotation, FileGenerator {
     sb.append(generateNameWithPkgSelection(param.getType())).append(' ');
 		sb.append( generateAttributeParameterModifier(param));
     sb.append(generateName(param.getName()));
-    
+
 		// insert default value, if we are generating the header
 		if (( GeneratorPass == header_pass ) && (param.getDefaultValue() != null)) {
 			sb.append(" = ").append( param.getDefaultValue() );
 		}
-		
+
     return sb.toString();
   }
 
@@ -1202,7 +1203,7 @@ implements PluggableNotation, FileGenerator {
 
 		// don't create class-Start for implementation in .cpp
 		if ( GeneratorPass != header_pass ) return sb;
-		
+
     String sClassifierKeyword;
     if (cls instanceof MClass) sClassifierKeyword = "class";
     else if (cls instanceof MInterface) sClassifierKeyword = "interface";
@@ -1393,7 +1394,7 @@ implements PluggableNotation, FileGenerator {
 					|| ( ( public_protected_private == protected_part ) && (MVisibilityKind.PROTECTED.equals(vis) ) )
 					|| ( ( public_protected_private == private_part ) && (MVisibilityKind.PRIVATE.equals(vis) ) )
 					 )
-				{ 
+				{
 					if ( !isVisibilityLinePrinted )
 					{
 						isVisibilityLinePrinted = true;
@@ -1449,7 +1450,7 @@ implements PluggableNotation, FileGenerator {
 					|| ( ( public_protected_private == protected_part ) && (MVisibilityKind.PROTECTED.equals(vis) ) )
 					|| ( ( public_protected_private == private_part ) && (MVisibilityKind.PRIVATE.equals(vis) ) )
 					 )
-				{ 
+				{
 					if ( !isVisibilityLinePrinted )
 					{
 						isVisibilityLinePrinted = true;
@@ -1480,7 +1481,7 @@ implements PluggableNotation, FileGenerator {
 	private boolean checkGenerateOperationBody(MOperation cls )
 	{
 		boolean result = ( ( GeneratorPass == header_pass ) || (cls.isAbstract() ) )?false:true;
-		
+
 		// if this operation has Tag "inline" the method shall be generated in header
     Collection tValues = cls.getTaggedValues();
     if (!tValues.isEmpty()) {
@@ -1640,7 +1641,7 @@ implements PluggableNotation, FileGenerator {
 							 )
 						&& (( GeneratorPass == header_pass ) || ( checkGenerateOperationBody((MOperation) bf) ))
 						 )
-					{ 
+					{
 						if ( ( !isVisibilityLinePrinted ) && ( GeneratorPass == header_pass ) )
 						{
 							isVisibilityLinePrinted = true;
@@ -1682,7 +1683,7 @@ implements PluggableNotation, FileGenerator {
 	 */
 	private void generateClassifierBodyTypedefs(MClassifier cls, StringBuffer sb)
 	{
-		if ( GeneratorPass == header_pass ) { 
+		if ( GeneratorPass == header_pass ) {
 			Collection public_typedef_statements = findTagValues( cls, "typedef_public" );
 			Collection protected_typedef_statements = findTagValues( cls, "typedef_protected" );
 			Collection private_typedef_statements = findTagValues( cls, "typedef_private" );
@@ -1734,7 +1735,7 @@ implements PluggableNotation, FileGenerator {
 
     	// add attributes implementing associations
 			generateClassifierBodyAssociations( cls, sb );
-			
+
 			// add typedefs
 			generateClassifierBodyTypedefs( cls, sb );
   	}
@@ -1770,7 +1771,7 @@ implements PluggableNotation, FileGenerator {
 			// to be autogenerated with an army of special tags
 			sb.append( generateSectionTop(op, OperationIndent) )
 			  .append( OperationIndent ).append( "{\n" );
-			
+
       // System.out.print(", op!=null, size="+methods.size());
       // return INDENT + INDENT + "/* method body for " + op.getName() + " */";
 
@@ -1861,7 +1862,7 @@ implements PluggableNotation, FileGenerator {
     if (tvs == null || tvs.size() == 0) return "";
     boolean first=true;
     StringBuffer buf = new StringBuffer();
-		
+
     Iterator iter = tvs.iterator();
     String s = null;
     while(iter.hasNext())
@@ -1967,12 +1968,12 @@ implements PluggableNotation, FileGenerator {
 			return "";
 		}
   }
-	
+
 	private Collection findTagValues( MModelElement item, String searched_name ) {
 		Collection result = new Vector();
     Collection tvs = item.getTaggedValues();
     if (tvs == null || tvs.size() == 0) return result;
-		
+
     Iterator iter = tvs.iterator();
 		MTaggedValue tag;
     String s = null;
@@ -2227,7 +2228,7 @@ implements PluggableNotation, FileGenerator {
 				// after comment, if not empty
 				if ( comment.length() > 0)
         	sb.append(comment).append(INDENT);
-					
+
 				sb.append(generateAssociationEnd(ae2));
       }
     }
@@ -2533,7 +2534,7 @@ implements PluggableNotation, FileGenerator {
 					_ExtraIncludes += "#include <stack>\n";
 				container_type = "stack";
 			}
-			
+
 			if ( container_type != null ) {
 				// known container type
 				String include_line = "#include <" + container_type + ">";

@@ -60,7 +60,7 @@ public class ClassfileImport {
     private JComponent   configPanel = null;
     private JCheckBox    _descend;
     private JRadioButton _attribute;
-    private JRadioButton _datatype;  
+    private JRadioButton _datatype;
 
     /** The files that needs a second RE pass. */
     private ArrayList _secondPassFiles;
@@ -96,7 +96,7 @@ public class ClassfileImport {
 
 	    _descend = new JCheckBox("Descend directories recursively.");
 	    _descend.setSelected(true);
-	    general.add(_descend, 
+	    general.add(_descend,
 			new GridBagConstraints(GridBagConstraints.RELATIVE,
 					       GridBagConstraints.RELATIVE,
 					       GridBagConstraints.REMAINDER,
@@ -180,7 +180,7 @@ public class ClassfileImport {
                                              GridBagConstraints.NORTHWEST,
                                              GridBagConstraints.NONE,
                                              new Insets(0, 5, 5, 5),
-                                             0, 0));                                       
+                                             0, 0));
 
 	    tab.add(java, "Java classfile");
 	    configPanel = tab;
@@ -273,7 +273,7 @@ public class ClassfileImport {
 	    }
 	}
     }
-    
+
     /**
      * Count the files to process in a directory.
      *
@@ -285,7 +285,7 @@ public class ClassfileImport {
 
 	for( int i = 0; i < files.length; i++) {
 	    total += countFiles( new File( f, files[i]), _descend.isSelected());
-	} 
+	}
 
 	return total;
     }
@@ -311,11 +311,11 @@ public class ClassfileImport {
      * file.
      *
      * @param f The file or directory, we want to parse.
-     * @exception Parser exceptions.  
+     * @exception Parser exceptions.
      */
     public void processFile(File f, boolean subdirectories) throws Exception {
 
-	if ( f.isDirectory() && subdirectories) {    // If f is a directory and the subdirectory flag is set, 
+	if ( f.isDirectory() && subdirectories) {    // If f is a directory and the subdirectory flag is set,
 	    processDirectory(f);                     // import all the files in this directory
 	} else {
 	    // Is this file a Jarfile?
@@ -354,7 +354,7 @@ public class ClassfileImport {
 
 	for( int i = 0; i < files.length; i++) {
 	    processFile( new File( f, files[i]), doSubdirs);
-	} 
+	}
 
 	_status.leaveDirectory();
     }
@@ -403,8 +403,8 @@ public class ClassfileImport {
 
     /**
      * Do a 2nd pass on a Jar file.
-     * 
-     * @param secondPassBuffer A buffer, that holds the jarfile and 
+     *
+     * @param secondPassBuffer A buffer, that holds the jarfile and
      *                         the names of the entries to parse again.
      */
     private void do2ndJarPass(ArrayList secondPassBuffer) throws Exception {
@@ -463,13 +463,13 @@ public class ClassfileImport {
 	// do something with the tree
 	ClassfileTreeParser tparser = new ClassfileTreeParser();
 	tparser.classfile(parser.getAST(), modeller);
-			
+
         // Was there an exception thrown during modelling?
-        Exception e = modeller.getException();
-        if(e != null) {
-            throw e;
-        }
-    }    
+        //Exception e = modeller.getException();
+        //if(e != null) {
+        //    throw e;
+        //}
+    }
 
     /**
      * If we have modified any diagrams, the project was modified and

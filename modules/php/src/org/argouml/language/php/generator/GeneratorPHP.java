@@ -77,7 +77,8 @@ implements PluggableNotation, FileGenerator {
      * call it through the Generatorinterface.
      * @returns the full path name of the the generated file.
      */
-  public String GenerateFile(MClassifier cls, String path) {
+  public String GenerateFile(Object o, String path) {
+	MClassifier cls = (MClassifier)o;
     sect = new Section();
 
     String name = cls.getName();
