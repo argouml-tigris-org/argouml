@@ -1528,8 +1528,8 @@ public abstract class FigNodeModelElement
         shadowSize = 0;
         
         // This partly solves issue 3042.
-        Layer l = this.getLayer();
-        if (l != null) l.remove(this);
+//        Layer l = this.getLayer();
+//        if (l != null) l.remove(this);
         
         super.removeFromDiagram();
     }

@@ -769,8 +769,8 @@ public abstract class FigEdgeModelElement
         super.removeFromDiagram();
         
         //This partly solves issue 3042.
-        Layer l = this.getLayer();
-        if (l != null) l.remove(this);
+//        Layer l = this.getLayer();
+//        if (l != null) l.remove(this);
     }
 
     /**
