@@ -130,7 +130,7 @@ public class XMIParser {
         while (oeIterator.hasNext()) {
             MModelElement me = (MModelElement) oeIterator.next();
             if (me.getName() == null)
-                me.setName("anon");
+                me.setName("");
                 /*
             if (me instanceof MClass) {
                 // _proj.defineType((MClass) me);
