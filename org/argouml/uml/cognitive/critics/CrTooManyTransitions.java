@@ -32,8 +32,7 @@ package org.argouml.uml.cognitive.critics;
 import java.util.Collection;
 import org.argouml.cognitive.Designer;
 import org.argouml.model.ModelFacade;
-/** A critic to detect when a class can never have instances (of
- *  itself of any subclasses). */
+/** A critic to detect when a state has too many ingoing and outgoing transitions. */
 
 public class CrTooManyTransitions extends CrUML {
 

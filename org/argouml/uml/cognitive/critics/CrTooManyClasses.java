@@ -32,8 +32,9 @@ package org.argouml.uml.cognitive.critics;
 import org.argouml.cognitive.Designer;
 import org.argouml.uml.diagram.static_structure.ui.UMLClassDiagram;
 
-/** A critic to detect when a class can never have instances (of
- *  itself of any subclasses). 
+/** A critic to detect when a classdiagram has too many classes.
+ * TODO: currently it checks for nodes (classes, interfaces, comments).
+ * This critic should be rewritten to work with namespaces.
  */
 public class CrTooManyClasses extends CrUML {
 

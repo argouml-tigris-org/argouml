@@ -33,9 +33,12 @@ import java.util.Collection;
 import java.util.Iterator;
 import org.argouml.cognitive.Designer;
 import org.argouml.model.ModelFacade;
-/** A critic to detect when a class can never have instances (of
- *  itself of any subclasses). */
-
+/** A critic to detect when a classifier has too many attributes.
+ * 
+ * 
+ * @author mkl
+ *
+ */
 public class CrTooManyAttr extends CrUML {
 
     ////////////////////////////////////////////////////////////////
