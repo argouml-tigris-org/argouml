@@ -160,7 +160,7 @@ public class ExplorerTreeModel extends DefaultTreeModel
 
     /** Creates a new instance of ExplorerTreeModel */
     public ExplorerTreeModel(Object root) {
-	super(null);
+	super(new DefaultMutableTreeNode());
 
 	setRoot(new ExplorerTreeNode(root, this));
 	setAsksAllowsChildren(false);
