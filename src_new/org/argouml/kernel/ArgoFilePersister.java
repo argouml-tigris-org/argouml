@@ -76,7 +76,7 @@ public class ArgoFilePersister extends AbstractFilePersister {
      * org.argouml.kernel.Project, java.io.File)
      */
     public void save(Project project, File file)
-            throws SaveException {
+        throws SaveException {
         
         project.setFile(file);
         project.setVersion(ArgoVersion.getVersion());
@@ -100,7 +100,8 @@ public class ArgoFilePersister extends AbstractFilePersister {
             FileOutputStream stream =
                 new FileOutputStream(file);
             writer =
-                new PrintWriter(new BufferedWriter(new OutputStreamWriter(stream, "UTF-8")));
+                new PrintWriter(new BufferedWriter(new OutputStreamWriter(
+                        stream, "UTF-8")));
     
             expand(writer, project);
             writer.flush();

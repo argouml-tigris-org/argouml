@@ -47,7 +47,7 @@ public abstract class AbstractFilePersister extends FileFilter
     protected static final String ARGO_TEE = "/org/argouml/xml/dtd/argo.tee";
     protected static final String ARGO2_TEE = "/org/argouml/xml/dtd/argo2.tee";
 
-    protected int PERSISTENCE_VERSION = 2;
+    protected static final int PERSISTENCE_VERSION = 2;
     
     /**
      * This is used in the save process for PGML.
