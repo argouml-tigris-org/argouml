@@ -293,12 +293,11 @@ public class ProjectBrowser
             _splash.getStatusBar().incProgress(5);
         }
         _todoPane = new ToDoPane(doSplash);
-        
         restorePanelSizes();
 
         // There are various details panes all of which could hold
-        // different tabs pages according to users settings (work
-        // in progress) - Bob Tarling
+        // different tabs pages according to users settings.
+        // Place each pane in the required border area.
         Iterator it = detailsPanesByCompassPoint.entrySet().iterator();
         while (it.hasNext()) {
             Map.Entry entry = (Map.Entry) it.next();
@@ -332,7 +331,6 @@ public class ProjectBrowser
     /** Set the size of each panel to that last saved in the configuration file
      */
     private void restorePanelSizes() {
-        // Set preferred sizes from config file
         if (_northPane != null) {
             _northPane.setPreferredSize(
                 new Dimension(0, Configuration.getInteger(Argo.KEY_SCREEN_NORTH_HEIGHT, DEFAULT_COMPONENTHEIGHT)));

@@ -210,8 +210,11 @@ public class ToDoPane extends JPanel
         
         _oldSize = 0;
         _dir = ' ';
+        
+        setMinimumSize(new Dimension(120, 100));
+        
         Dimension preferredSize = getPreferredSize();
-        preferredSize.height = 30;
+        preferredSize.height = 120;
         setPreferredSize(preferredSize);
     }
     
@@ -295,9 +298,6 @@ public class ToDoPane extends JPanel
         else _tree.setShowsRootHandles(true);
         updateTree();
     }
-    
-    /** to be documented */
-    public Dimension getMinimumSize() { return new Dimension(120, 100); }
     
     // ------------ ItemListener implementation ----------------------
     
