@@ -144,13 +144,11 @@ Modifications
   &applegal;
 
   <index>
-    <warning>
-      <para>
+    <para>
 The use of the index in the document is done a little at random
 and cannot be trusted.
 Please help in suggesting new index entries!
 </para>
-    </warning>
   </index>
 
 </book>
