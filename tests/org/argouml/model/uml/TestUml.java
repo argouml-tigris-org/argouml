@@ -62,14 +62,19 @@ public class TestUml extends TestCase
 	public void testUmlClassList() {
 		Map map = Uml.getUmlClassList();
 		Set keys = map.keySet();
-		for (Iterator i = keys.iterator(); i.hasNext(); ) {
+		for (Iterator i = keys.iterator(); i.hasNext();) {
 			Object key = i.next();
-			Class type = (Class)map.get(key);
-			String typeName = type.getName().toUpperCase();
+			Uml.UmlEntity type = (Uml.UmlEntity) map.get(key);
+			String typeName = type.getClass().getName().toUpperCase();
 			String expected = key.toString().toUpperCase();
-			assertEquals("Not the correct class",
-                         type.getName().toUpperCase(),
-                         "ORG.ARGOUML.MODEL.UML.UML$TYPE" + key.toString().toUpperCase());
+			// System.out.println(type.getClass().getName().toUpperCase());
+			// System.out.println("ORG.ARGOUML.MODEL.UML.UML$TYPE" + key.toString().toUpperCase());
+			assertEquals(
+				"Not the correct class",
+				type.getClass().getName().toUpperCase(),
+				"ORG.ARGOUML.MODEL.UML.UML$TYPE"
+					+ key.toString().toUpperCase());
 		}
 	}
+
 }

@@ -119,7 +119,7 @@ public abstract class GenericObjectTestFixture extends TestCase
 	 * @param class1
 	 * @param b
 	 */
-	protected void setTruth(Class class1, boolean b) {
+	protected void setTruth(Uml.UmlEntity class1, boolean b) {
         truths.put(class1, new Boolean(b));
 	}
 
@@ -181,7 +181,7 @@ public abstract class GenericObjectTestFixture extends TestCase
 	/**
 	 * @param class1
 	 */
-	private void runTruthTest(boolean result, Class class1) {
+	private void runTruthTest(boolean result, Uml.UmlEntity class1) {
         // TODO Look up class in truth table
         Boolean truth = (Boolean)truths.get(class1);
         if (truth == null) {

@@ -1086,7 +1086,7 @@ public class UmlFactory extends AbstractUmlModelFactory {
 	 * @param entity Class to create - must implement {@link org.argouml.model.uml.Uml.Entity}
 	 * @throws InvalidObjectRequestException if it cannot create the class.
 	 */
-	public Object create(Class entity) {
+	public Object create(Uml.UmlEntity entity) {
 		ObjectCreateInfo oi = (ObjectCreateInfo) elements.get(entity);
 		if (oi == null) {
 			return null;
