@@ -54,6 +54,12 @@ public class CrNoAssociations extends CrUML {
 	if (!(ModelFacade.isPrimaryObject(dm)))
 	    return NO_PROBLEM;
 
+	// if the object does not have a name,
+	// than no problem
+	if ((ModelFacade.getName(dm) == null) ||
+	    ("".equals(ModelFacade.getName(dm))))
+	    return NO_PROBLEM;
+
 	// types can probably have associations, but we should not nag at them
 	// not having any.
 	// utility is a namespace collection - also not strictly required 

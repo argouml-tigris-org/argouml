@@ -54,7 +54,13 @@ public class CrNoOperations extends CrUML {
 	if (!(ModelFacade.isAClass(dm))) return NO_PROBLEM;
 
 	if (!(ModelFacade.isPrimaryObject(dm))) return NO_PROBLEM;
-    
+
+        // if the object does not have a name,
+        // than no problem
+        if ((ModelFacade.getName(dm) == null) ||
+            ("".equals(ModelFacade.getName(dm))))
+            return NO_PROBLEM;
+
  	// types can probably contain operations, but we should not nag at them
 	// not having any.
 	if (ModelFacade.isType(dm)) return NO_PROBLEM;
