@@ -36,6 +36,7 @@ import org.apache.log4j.Logger;
 import org.argouml.cognitive.ItemUID;
 import org.argouml.ui.ArgoDiagram;
 import org.argouml.uml.diagram.static_structure.ui.FigClass;
+import org.argouml.uml.diagram.static_structure.ui.FigEdgeNote;
 import org.argouml.uml.diagram.static_structure.ui.FigInterface;
 import org.argouml.uml.diagram.ui.AttributesCompartmentContainer;
 import org.argouml.uml.diagram.ui.FigEdgeModelElement;
@@ -80,6 +81,8 @@ public class PGMLParser extends org.tigris.gef.xml.pgml.PGMLParser {
 
     /**
      * Constructor.
+     * @param modelElementsByUuid a map of model elements indexed
+     *                            by a unique string identifier.
      */
     public PGMLParser(Map modelElementsByUuid) {
         super(modelElementsByUuid);
@@ -598,52 +601,60 @@ public class PGMLParser extends org.tigris.gef.xml.pgml.PGMLParser {
             hStr = st.nextToken();
         }
 
-        try {
-            Map attributeMap = interpretStyle(st);
+        Map attributeMap = interpretStyle(st);
 
-            Object modelElement = getModelElement(attrList);
-            GraphNodeRenderer figNodeRenderer = _diagram.getLayer().getGraphNodeRenderer();
+        Object modelElement = getModelElement(attrList);
+        if (xStr != null) {
+            // The only clue that we have a node is that we have bounds
+            // info. Thats what sticking with PGML gives us.
+            GraphNodeRenderer figNodeRenderer
+                = _diagram.getLayer().getGraphNodeRenderer();
             f = figNodeRenderer.getFigNodeFor(modelElement, attributeMap);
-            if (f == null) {
-                GraphEdgeRenderer figEdgeRenderer = _diagram.getLayer().getGraphEdgeRenderer();
-                f = figEdgeRenderer.getFigEdgeFor(modelElement, attributeMap);
-            }
-            
-            if (xStr != null && !xStr.equals("")) {
-                int x = Integer.parseInt(xStr);
-                int y = Integer.parseInt(yStr);
-                int w = Integer.parseInt(wStr);
-                int h = Integer.parseInt(hStr);
-                f.setBounds(x, y, w, h);
-            }
-
-            if (f instanceof FigNode) {
-                FigNode fn = (FigNode) f;
-                _currentNode = fn;
-                _elementState = NODE_STATE;
-                _textBuf = new StringBuffer();
-            }
-            if (f instanceof FigNode || f instanceof FigEdge) {
-                _diagram.add(f);
+        } else {
+            // Otherwise we can only assume this is an edge. But we need to
+            // bodge up recognision of comment edges until some stylesheet
+            // is in place to make sure they have the correct uuid.
+            if (modelElement == null
+                    && clsNameBounds.endsWith(".FigEdgeNote")) {
+                f = new FigEdgeNote();
             } else {
-                // nested group flag is a flag to repair
-                // the ^*&(*^*& implementation of GEF's parser
-                nestedGroupFlag = true;
-                figGroup = f;
-                if (_currentNode != null) {
-                    _currentNode.addFig(f);
-                }
+                GraphEdgeRenderer figEdgeRenderer
+                    = _diagram.getLayer().getGraphEdgeRenderer();
+                f = figEdgeRenderer.getFigEdgeFor(
+                        modelElement,
+                        attributeMap);
             }
+        }
+        
+        if (xStr != null && !xStr.equals("")) {
+            int x = Integer.parseInt(xStr);
+            int y = Integer.parseInt(yStr);
+            int w = Integer.parseInt(wStr);
+            int h = Integer.parseInt(hStr);
+            f.setBounds(x, y, w, h);
+        }
 
-            if (f instanceof FigEdge) {
-                _currentEdge = (FigEdge) f;
-                _elementState = EDGE_STATE;
+        if (f instanceof FigNode) {
+            FigNode fn = (FigNode) f;
+            _currentNode = fn;
+            _elementState = NODE_STATE;
+            _textBuf = new StringBuffer();
+        }
+        if (f instanceof FigNode || f instanceof FigEdge) {
+            _diagram.add(f);
+        } else {
+            // nested group flag is a flag to repair
+            // the ^*&(*^*& implementation of GEF's parser
+            nestedGroupFlag = true;
+            figGroup = f;
+            if (_currentNode != null) {
+                _currentNode.addFig(f);
             }
+        }
 
-        } catch (Exception ex) {
-            LOG.error("Exception in handleGroup", ex);
-        } catch (NoSuchMethodError ex) {
-            LOG.error("No constructor() in class " + clsName, ex);
+        if (f instanceof FigEdge) {
+            _currentEdge = (FigEdge) f;
+            _elementState = EDGE_STATE;
         }
 
         setAttrs(f, attrList);
