@@ -994,7 +994,7 @@ ${Name} Build file
   <!-- Get the uml 1.3 model if necessary                                  -->
   <!-- =================================================================== -->
   <target name="junit-get-011202-xml"
-          depends="junit-init, junit-get-991015-dtd"
+          depends="junit-init"
           unless="011202.xml.available">
 
     <get src="http://cgi.omg.org/docs/ad/01-12-02.xml"
@@ -1017,6 +1017,22 @@ ${Name} Build file
 
     <!-- create directories -->
     <mkdir dir="${argo.tests.classes}"/>
+
+    <!-- There are classes/test that actually test deprecated methods. -->
+    <!-- They are listed here. -->
+    <!-- We want debug, optimize, deprecation to be non-modifiable here -->
+    <javac srcdir="${argo.tests.src}"
+           destdir="${argo.tests.classes}"
+	   includes="**/GUITestProjectBrowser.java"
+           debug="true"
+           deprecation="false"
+           optimize="false">
+        <classpath>
+            <pathelement location="${argo.build.classes}" />
+            <pathelement location="${junit.jar.path}" />
+	    <path refid="argo.compile.classpath" />
+        </classpath>
+     </javac>
 
     <!-- We want debug, optimize, deprecation to be non-modifiable here -->
     <javac srcdir="${argo.tests.src}"
