@@ -53,8 +53,8 @@ import ru.novosoft.uml.model_management.MSubsystem;
  * @stereotype singleton
  */
 public class ModelManagementHelper {
-    protected static Logger cat =
-	Logger.getLogger(ModelManagementHelper.class);
+
+    private static Logger _cat = Logger.getLogger(ModelManagementHelper.class);
 
     /** Don't allow instantiation.
      */
@@ -78,7 +78,7 @@ public class ModelManagementHelper {
      */
     public Collection getAllSubSystems() {
         MNamespace model =
-            (MModel)ProjectManager.getManager().getCurrentProject().getModel();
+            (MModel) ProjectManager.getManager().getCurrentProject().getModel();
         return getAllSubSystems(model);
     }
 
@@ -109,18 +109,20 @@ public class ModelManagementHelper {
      * @return Collection
      */
     public Collection getAllNamespaces() {
-        Object model = ProjectManager.getManager().getCurrentProject().getModel();
+        Object model = ProjectManager.getManager()
+            .getCurrentProject().getModel();
         return getAllNamespaces(model);
     }
 
     /**
      * Returns all namespaces found in this namespace and in its children
-     * @return Collection
+     * @ns namespace to process
+     * @return Collection of all namespaces found
      */
     public Collection getAllNamespaces(Object ns) {
         if (ns == null || !(ns instanceof MNamespace))
             return new ArrayList();
-        Iterator it = ((MNamespace)ns).getOwnedElements().iterator();
+        Iterator it = ((MNamespace) ns).getOwnedElements().iterator();
         List list = new ArrayList();
         while (it.hasNext()) {
             Object o = it.next();
@@ -141,7 +143,7 @@ public class ModelManagementHelper {
         if (kind == null)
             return new ArrayList();
         Project p = ProjectManager.getManager().getCurrentProject();
-        MNamespace model = (MModel)p.getRoot();
+        MNamespace model = (MModel) p.getRoot();
         Collection col = getAllModelElementsOfKind(model, kind);
         return col;
     }
@@ -187,10 +189,11 @@ public class ModelManagementHelper {
         if (!ModelFacade.isANamespace(nsa))
             throw new IllegalArgumentException(
                 "given argument " + nsa + " is not a namespace");
-        Collection col=null;
-        try{
-            col= getAllModelElementsOfKind(nsa, Class.forName("M"+kind));
-        }catch(ClassNotFoundException cnfe){
+        Collection col = null;
+        try {
+            // TODO This assumes we are working with MThings
+            col = getAllModelElementsOfKind(nsa, Class.forName("M" + kind));
+        } catch (ClassNotFoundException cnfe) {
             return new ArrayList();
         }
         return col;
@@ -199,8 +202,8 @@ public class ModelManagementHelper {
     /**
      * Returns all surrounding namespaces of some namespace ns. See
      * section 2.5.3.24 of the UML 1.3 spec for a definition.
-     * @param ns
-     * @return Collection
+     * @param ns to process
+     * @return Collection of surrounding namespaces.
      */
     public Collection getAllSurroundingNamespaces(MNamespace ns) {
         Set set = new HashSet();
@@ -212,28 +215,28 @@ public class ModelManagementHelper {
     }
 
     public MModelElement getElement(Vector path, MModelElement root) {
-	Object name;
-	int i;
+        Object name;
+        int i;
 
-	for (i = 0; i < path.size(); i++) {
-	    if (root == null || !(root instanceof MNamespace))
-		return null;
+        for (i = 0; i < path.size(); i++) {
+            if (root == null || !(root instanceof MNamespace))
+                return null;
 
-	    name = path.get(i);
-	    Iterator it = ((MNamespace) root).getOwnedElements().iterator();
-	    root = null;
-	    while (it.hasNext()) {
-		MModelElement me = (MModelElement) it.next();
-		if (i < path.size() - 1 &&
-		    !(me instanceof MNamespace))
-		    continue;
-		if (name.equals(me.getName())) {
-		    root = me;
-		    break;
-		}
-	    }
-	}
-	return root;
+            name = path.get(i);
+            Iterator it = ((MNamespace) root).getOwnedElements().iterator();
+            root = null;
+            while (it.hasNext()) {
+                MModelElement me = (MModelElement) it.next();
+                if (i < path.size() - 1 &&
+                    !(me instanceof MNamespace))
+                        continue;
+                if (name.equals(me.getName())) {
+                    root = me;
+                    break;
+                }
+            }
+        }
+        return root;
     }
 
     /**
@@ -260,9 +263,9 @@ public class ModelManagementHelper {
             return new Vector();
 
         path = getPath(ModelFacade.getNamespace(element));
-	path.add(ModelFacade.getName(element));
+        path.add(ModelFacade.getName(element));
 
-	return path;
+        return path;
     }
 
     /**
@@ -280,7 +283,7 @@ public class ModelManagementHelper {
      *  model as elem, or if that would turn out impossible then null.
      */
     public Object getCorrespondingElement(Object elem, Object model) {
-	return getCorrespondingElement(elem, model, true);
+    return getCorrespondingElement(elem, model, true);
     }
 
     /**
@@ -301,42 +304,41 @@ public class ModelManagementHelper {
      *  model as elem, or if that would turn out impossible then null.
      */
     public Object getCorrespondingElement(Object elem,
-					 Object model, boolean canCreate) {
-	if (elem == null || model == null || !(elem instanceof MModelElement))
- 	    throw new NullPointerException();
+                     Object model, boolean canCreate) {
+        if (elem == null || model == null || !(elem instanceof MModelElement))
+             throw new NullPointerException();
 
-	// Trivial case
-	if (((MModelElement)elem).getModel() == model)
-	    return elem;
+        // Trivial case
+        if (((MModelElement) elem).getModel() == model)
+            return elem;
 
-	// Base case
-	if (elem instanceof MModel)
-	    return model;
+        // Base case
+        if (elem instanceof MModel)
+            return model;
 
-	// The cast is actually safe
-	MNamespace ns = (MNamespace) getCorrespondingElement(
-					((MModelElement)elem).getNamespace(),
-					model,
-					canCreate);
-	if (ns == null)
-	    return null;
+        // The cast is actually safe
+        MNamespace ns = (MNamespace) getCorrespondingElement(
+            ((MModelElement) elem).getNamespace(), model, canCreate);
+        if (ns == null)
+            return null;
 
-	Iterator it = ns.getOwnedElements().iterator();
-	while (it.hasNext()) {
-	    MModelElement e = (MModelElement) it.next();
-	    if (e.getClass() == ((MModelElement)elem).getClass()
-		&& ((((MModelElement)elem).getName() == null && e.getName() == null)
-		    || (((MModelElement)elem).getName() != null
-			&& ((MModelElement)elem).getName().equals(e.getName()))))
-	    {
-		return (MModelElement) e;
-	    }
-	}
+        Iterator it = ns.getOwnedElements().iterator();
+        while (it.hasNext()) {
+            MModelElement e = (MModelElement) it.next();
+            if (e.getClass() == ((MModelElement) elem).getClass()
+                && ((((MModelElement) elem).getName() == null
+                && e.getName() == null)
+                || (((MModelElement) elem).getName() != null
+                && ((MModelElement) elem).getName().equals(e.getName()))))
+            {
+                return (MModelElement) e;
+            }
+        }
 
-	if (!canCreate)
-	    return null;
+        if (!canCreate)
+            return null;
 
-	return CopyHelper.getHelper().copy((MModelElement)elem, ns);
+        return CopyHelper.getHelper().copy((MModelElement) elem, ns);
     }
 
     /**
@@ -352,14 +354,14 @@ public class ModelManagementHelper {
      * @return true if obj1 corresponds to obj2, false otherwise.
      */
     public boolean corresponds(MModelElement obj1, MModelElement obj2) {
-	if (obj1 instanceof MModel && obj2 instanceof MModel)
-	    return true;
-	if (obj1.getClass() != obj2.getClass())
-	    return false;
-	if (obj1.getName() == null && obj2.getName() != null ||
-	    obj1.getName() != null && !obj1.getName().equals(obj2.getName()))
-		return false;
-	return corresponds(obj1.getNamespace(), obj2.getNamespace());
+        if (obj1 instanceof MModel && obj2 instanceof MModel)
+            return true;
+        if (obj1.getClass() != obj2.getClass())
+            return false;
+        if (obj1.getName() == null && obj2.getName() != null ||
+            obj1.getName() != null && !obj1.getName().equals(obj2.getName()))
+            return false;
+        return corresponds(obj1.getNamespace(), obj2.getNamespace());
     }
 
     /**

@@ -64,7 +64,7 @@ public final class ProjectManager {
 	"currentProject";
     public static final String SAVE_STATE_PROPERTY_NAME = "saveState";
 
-    private Logger cat = Logger.getLogger(this.getClass());
+    private Logger _cat = Logger.getLogger(this.getClass());
 
     /**
      * The singleton instance of this class
@@ -295,7 +295,7 @@ public final class ProjectManager {
         } catch (IOException e) {
             // exception can occur both due to argouml code as to J2SE
             // code, so lets log it
-            cat.error(e);
+            _cat.error(e);
             throw e;
         }
         // read the xmi
@@ -315,12 +315,12 @@ public final class ProjectManager {
             XMIReader xmiReader = null;
             try {
                 xmiReader = new org.argouml.xml.xmi.XMIReader();
-            } catch (SAXException se) { // duh, this must be catched and handled
-                cat.error(se);
+            } catch (SAXException se) { // duh, this must be _catched and handled
+                _cat.error(se);
                 throw se;
             } catch (ParserConfigurationException pc) {
 		// duh, this must be catched and handled
-                cat.error(pc);
+                _cat.error(pc);
                 throw pc;
             }
             Object mmodel = null;
@@ -339,7 +339,7 @@ public final class ProjectManager {
                             + url.toString()
                             + " could not be "
                             + "parsed.");
-                    cat.error(
+                    _cat.error(
                         "XMI file "
                             + url.toString()
                             + " could not be "
@@ -356,7 +356,7 @@ public final class ProjectManager {
         } catch (IOException e) {
             // exception can occur both due to argouml code as to J2SE
             // code, so lets log it
-            cat.error(e);
+            _cat.error(e);
             throw e;
         }
         p.loadZippedProjectMembers(url);

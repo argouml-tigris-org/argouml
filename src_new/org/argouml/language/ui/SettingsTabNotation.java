@@ -54,77 +54,77 @@ public class SettingsTabNotation extends SettingsTabHelper
     implements SettingsTabPanel 
 {
 
-    JCheckBox _allowNotations = null;
-    JCheckBox _useGuillemots = null;
-    JCheckBox _showVisibility = null;
-    JCheckBox _showMultiplicity = null;
-    JCheckBox _showInitialValue = null;
-    JCheckBox _showProperties = null;
-    JCheckBox _showStereotypes = null;
-    ShadowComboBox _defaultShadowWidth = null;
+    private JCheckBox _allowNotations = null;
+    private JCheckBox _useGuillemots = null;
+    private JCheckBox _showVisibility = null;
+    private JCheckBox _showMultiplicity = null;
+    private JCheckBox _showInitialValue = null;
+    private JCheckBox _showProperties = null;
+    private JCheckBox _showStereotypes = null;
+    private ShadowComboBox _defaultShadowWidth = null;
 
     public SettingsTabNotation() {
-	super();
-	setLayout(new BorderLayout());
-	JPanel top = new JPanel();
-       
-	top.setLayout(new GridBagLayout()); 
+        super();
+        setLayout(new BorderLayout());
+        JPanel top = new JPanel();
 
-	GridBagConstraints constraints = new GridBagConstraints();
-	constraints.anchor = GridBagConstraints.WEST;
-	constraints.fill = GridBagConstraints.HORIZONTAL;
-	constraints.gridy = 0;
-	constraints.gridx = 0;
-	constraints.gridwidth = 1;
-	constraints.gridheight = 1;
-	constraints.weightx = 1.0;
-	constraints.insets = new Insets(0, 30, 0, 4);
+        top.setLayout(new GridBagLayout());
 
-	constraints.gridy = 0;
-	_allowNotations = createCheckBox("label.uml-notation-only");
-	top.add(_allowNotations, constraints);
+        GridBagConstraints constraints = new GridBagConstraints();
+        constraints.anchor = GridBagConstraints.WEST;
+        constraints.fill = GridBagConstraints.HORIZONTAL;
+        constraints.gridy = 0;
+        constraints.gridx = 0;
+        constraints.gridwidth = 1;
+        constraints.gridheight = 1;
+        constraints.weightx = 1.0;
+        constraints.insets = new Insets(0, 30, 0, 4);
 
-	constraints.gridy = 1;
-	_useGuillemots = createCheckBox("label.use-guillemots");
-	top.add(_useGuillemots, constraints);
-    
-	// 2002-07-31
-	// Jaap Branderhorst
-	// from here made visibility etc. configurable
-    
-	constraints.gridy = 2;
-	_showVisibility = createCheckBox("label.show-visibility");
-	top.add(_showVisibility, constraints);
-    
-	constraints.gridy = 3;
-	_showMultiplicity = createCheckBox("label.show-multiplicity");
-	top.add(_showMultiplicity, constraints);
+        constraints.gridy = 0;
+        _allowNotations = createCheckBox("label.uml-notation-only");
+        top.add(_allowNotations, constraints);
 
-	constraints.gridy = 4;
-	_showInitialValue = createCheckBox("label.show-initialvalue");
-	top.add(_showInitialValue, constraints);
-    
-	constraints.gridy = 5;
-	_showProperties = createCheckBox("label.show-properties");
-	top.add(_showProperties, constraints);
-	
-	constraints.gridy = 6;
-	_showStereotypes = createCheckBox("label.show-stereotypes");
-	top.add(_showStereotypes, constraints);
+        constraints.gridy = 1;
+        _useGuillemots = createCheckBox("label.use-guillemots");
+        top.add(_useGuillemots, constraints);
 
-	constraints.gridy = 7;
-	constraints.insets = new Insets(5, 30, 0, 4);
-	JPanel defaultShadowWidthPanel =
-	    new JPanel(new FlowLayout(FlowLayout.LEFT, 5, 0));
-	JLabel defaultShadowWidthLabel =
-	    createLabel("label.default-shadow-width");
-	_defaultShadowWidth = new ShadowComboBox();
-	defaultShadowWidthLabel.setLabelFor(_defaultShadowWidth);
-	defaultShadowWidthPanel.add(defaultShadowWidthLabel);
-	defaultShadowWidthPanel.add(_defaultShadowWidth);
-	top.add(defaultShadowWidthPanel, constraints);
-	
-	add(top, BorderLayout.NORTH);
+        // 2002-07-31
+        // Jaap Branderhorst
+        // from here made visibility etc. configurable
+
+        constraints.gridy = 2;
+        _showVisibility = createCheckBox("label.show-visibility");
+        top.add(_showVisibility, constraints);
+
+        constraints.gridy = 3;
+        _showMultiplicity = createCheckBox("label.show-multiplicity");
+        top.add(_showMultiplicity, constraints);
+
+        constraints.gridy = 4;
+        _showInitialValue = createCheckBox("label.show-initialvalue");
+        top.add(_showInitialValue, constraints);
+
+        constraints.gridy = 5;
+        _showProperties = createCheckBox("label.show-properties");
+        top.add(_showProperties, constraints);
+
+        constraints.gridy = 6;
+        _showStereotypes = createCheckBox("label.show-stereotypes");
+        top.add(_showStereotypes, constraints);
+
+        constraints.gridy = 7;
+        constraints.insets = new Insets(5, 30, 0, 4);
+        JPanel defaultShadowWidthPanel =
+            new JPanel(new FlowLayout(FlowLayout.LEFT, 5, 0));
+        JLabel defaultShadowWidthLabel =
+            createLabel("label.default-shadow-width");
+        _defaultShadowWidth = new ShadowComboBox();
+        defaultShadowWidthLabel.setLabelFor(_defaultShadowWidth);
+        defaultShadowWidthPanel.add(defaultShadowWidthLabel);
+        defaultShadowWidthPanel.add(_defaultShadowWidth);
+        top.add(defaultShadowWidthPanel, constraints);
+
+        add(top, BorderLayout.NORTH);
     }
 
     public void handleSettingsTabRefresh() {
@@ -132,10 +132,10 @@ public class SettingsTabNotation extends SettingsTabHelper
         _allowNotations.setSelected(getBoolean(Notation.KEY_UML_NOTATION_ONLY));
         _showVisibility.setSelected(getBoolean(Notation.KEY_SHOW_VISIBILITY));
         _showInitialValue.setSelected(
-	        getBoolean(Notation.KEY_SHOW_INITIAL_VALUE));
+            getBoolean(Notation.KEY_SHOW_INITIAL_VALUE));
         _showProperties.setSelected(getBoolean(Notation.KEY_SHOW_PROPERTIES));
         _showMultiplicity.setSelected(
-	        getBoolean(Notation.KEY_SHOW_MULTIPLICITY));
+            getBoolean(Notation.KEY_SHOW_MULTIPLICITY));
         _showStereotypes.setSelected(getBoolean(Notation.KEY_SHOW_STEREOTYPES));
         _defaultShadowWidth.setSelectedIndex(
                 Configuration.getInteger(Notation.KEY_DEFAULT_SHADOW_WIDTH, 1));
@@ -147,23 +147,23 @@ public class SettingsTabNotation extends SettingsTabHelper
      * @returns a boolean
      */
     private static boolean getBoolean(ConfigurationKey key) {
-	return Configuration.getBoolean(key, false);
+    return Configuration.getBoolean(key, false);
     }
 
     public void handleSettingsTabSave() {
         Notation.setUseGuillemots(_useGuillemots.isSelected());
         Configuration.setBoolean(Notation.KEY_UML_NOTATION_ONLY, 
-				 _allowNotations.isSelected());
+                 _allowNotations.isSelected());
         Configuration.setBoolean(Notation.KEY_SHOW_VISIBILITY,
-				 _showVisibility.isSelected());
+                 _showVisibility.isSelected());
         Configuration.setBoolean(Notation.KEY_SHOW_MULTIPLICITY,
-				 _showMultiplicity.isSelected());
+                 _showMultiplicity.isSelected());
         Configuration.setBoolean(Notation.KEY_SHOW_PROPERTIES,
-				 _showProperties.isSelected());
+                 _showProperties.isSelected());
         Configuration.setBoolean(Notation.KEY_SHOW_INITIAL_VALUE,
-				 _showInitialValue.isSelected());
+                 _showInitialValue.isSelected());
         Configuration.setBoolean(Notation.KEY_SHOW_STEREOTYPES,
-				 _showStereotypes.isSelected());
+                 _showStereotypes.isSelected());
         Configuration.setInteger(Notation.KEY_DEFAULT_SHADOW_WIDTH,
                 _defaultShadowWidth.getSelectedIndex());
     }
@@ -180,9 +180,4 @@ public class SettingsTabNotation extends SettingsTabHelper
     public String getTabKey() { return "tab.notation"; }
     public String getTabResourceBundleKey() { return "CoreSettings"; }
 
-
-
 }
-
-
-

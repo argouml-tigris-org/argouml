@@ -87,7 +87,7 @@ public class ProjectMemberDiagram extends ProjectMember {
     }
 
     public void load() {
-        cat.debug("Reading " + getURL());
+        _cat.debug("Reading " + getURL());
         PGMLParser.SINGLETON.setOwnerRegistry(getProject().getUUIDRefs());
         ArgoDiagram d =
 	    (ArgoDiagram) PGMLParser.SINGLETON.readDiagram(getURL());
