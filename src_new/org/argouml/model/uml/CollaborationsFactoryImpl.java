@@ -38,8 +38,6 @@ import ru.novosoft.uml.behavior.collaborations.MClassifierRole;
 import ru.novosoft.uml.behavior.collaborations.MCollaboration;
 import ru.novosoft.uml.behavior.collaborations.MInteraction;
 import ru.novosoft.uml.behavior.collaborations.MMessage;
-import ru.novosoft.uml.foundation.core.MAssociationEnd;
-import ru.novosoft.uml.foundation.core.MClassifier;
 import ru.novosoft.uml.foundation.core.MNamespace;
 import ru.novosoft.uml.foundation.data_types.MAggregationKind;
 
@@ -150,6 +148,7 @@ public class CollaborationsFactoryImpl
 
     /**
      * Builds a default collaboration not attached to a classifier.
+     * I.e. the represented element is NOT filled in.
      *
      * @param handle the namespace for the collaboration
      * @return the created collaboration
@@ -161,9 +160,6 @@ public class CollaborationsFactoryImpl
             modelelement.setNamespace(namespace);
             modelelement.setName("newCollaboration");
             modelelement.setAbstract(false);
-            if (namespace instanceof MClassifier) {
-                modelelement.setRepresentedClassifier((MClassifier) namespace);
-            }
             return modelelement;
 
         }
@@ -183,7 +179,7 @@ public class CollaborationsFactoryImpl
         Object representedElement) {
         if (ModelFacade.isANamespace(namespace)
             && (ModelFacade.isAClassifier(representedElement)
-                || ModelFacade.isAObject(representedElement))) {
+                || ModelFacade.isAOperation(representedElement))) {
             Object collaboration = buildCollaboration(namespace);
             if (ModelFacade.isAClassifier(representedElement)) {
                 ModelFacade.setRepresentedClassifier(
