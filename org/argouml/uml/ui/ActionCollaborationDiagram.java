@@ -29,6 +29,8 @@ import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.diagram.collaboration.ui.UMLCollaborationDiagram;
 import org.argouml.uml.diagram.ui.UMLDiagram;
 
+import org.argouml.model.uml.behavioralelements.collaborations.CollaborationsHelper;
+
 import ru.novosoft.uml.behavior.collaborations.MCollaboration;
 import ru.novosoft.uml.behavior.collaborations.MInteraction;
 import ru.novosoft.uml.foundation.core.MClassifier;
@@ -83,10 +85,24 @@ public class ActionCollaborationDiagram extends ActionAddDiagram {
     }
 
     /**
+     * @see org.argouml.model.uml.behavioralelements.collaborations.CollaborationsHelper#isAddingCollaborationAllowed(Object)
      * @see org.argouml.uml.ui.ActionAddDiagram#isValidNamespace(MNamespace)
      */
     public boolean isValidNamespace(MNamespace ns) {
-        return (ns instanceof MCollaboration || ns instanceof MClassifier || ns == ProjectManager.getManager().getCurrentProject().getModel());
+        return CollaborationsHelper.getHelper().isAddingCollaborationAllowed(ns);
     }
 
+    /**
+     * Just calls isValidNamespace(...) on the nav pane target.
+     * @see org.argouml.uml.ui.UMLAction#shouldBeEnabled()
+     */
+    public boolean shouldBeEnabled() {
+        
+        Object target = ProjectBrowser.TheInstance.getTarget();
+        if(target instanceof MNamespace)
+            return isValidNamespace((MNamespace)target);
+        else
+            return false;
+    }
+    
 } /* end class ActionCollaborationDiagram */
