@@ -272,6 +272,9 @@ public class ModelFacade {
 	if (handle instanceof MGeneralizableElement) {
 	    return ((MGeneralizableElement)handle).isLeaf();
 	}
+    if (handle instanceof MOperation) {
+        return ((MOperation)handle).isLeaf();
+    }
 	// ...
 	throw new IllegalArgumentException("Unrecognized object " + handle);
     }
