@@ -56,18 +56,11 @@ a:visited
 	mso-protection:locked visible;
 	mso-style-name:Normal;
 	mso-style-id:0;}
-.font11
-	{color:windowtext;
-	font-size:10.0pt;
-	font-weight:400;
-	font-style:normal;
-	text-decoration:none;
-	font-family:Arial;
-	mso-generic-font-family:auto;
-	mso-font-charset:0;}
 td
 	{mso-style-parent:style0;
-	padding:0px;
+	padding-top:1px;
+	padding-right:1px;
+	padding-left:1px;
 	mso-ignore:padding;
 	color:windowtext;
 	font-size:10.0pt;
