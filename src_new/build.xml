@@ -916,7 +916,7 @@ ${Name} Build file
   <!-- =================================================================== -->
   <!-- Prepare for the junit tests.                                        -->
   <!-- =================================================================== -->
-  <target depends="compile-tests,                                       junit-get-011202-xml,                                       junit-get-991015-dtd" name="junit-setup"/>
+  <target depends="compile-tests" name="junit-setup"/>
 
   <target name="junit-report-clean">
     <mkdir dir="${argo.tests.reports}/junit/output"/>
