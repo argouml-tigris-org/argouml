@@ -33,8 +33,6 @@ import org.argouml.model.ModelFacade;
 import org.argouml.uml.ui.UMLChangeAction;
 import org.argouml.uml.ui.UMLRadioButtonPanel;
 
-//import ru.novosoft.uml.foundation.data_types.MAggregationKind;
-
 /**
  * 
  * @author jaap.branderhorst@xs4all.nl	

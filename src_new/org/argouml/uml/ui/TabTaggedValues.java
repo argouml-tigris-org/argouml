@@ -47,6 +47,7 @@ import org.argouml.kernel.DelayedChangeNotify;
 import org.argouml.kernel.DelayedVChangeListener;
 import org.argouml.model.uml.UmlFactory;
 import org.argouml.model.uml.UmlModelEventPump;
+import org.argouml.model.ModelFacade;
 import org.argouml.ui.LookAndFeelMgr;
 import org.argouml.ui.TabSpawnable;
 import org.argouml.ui.targetmanager.TargetEvent;
@@ -54,8 +55,6 @@ import org.tigris.gef.presentation.Fig;
 
 import ru.novosoft.uml.MElementEvent;
 import ru.novosoft.uml.MElementListener;
-import ru.novosoft.uml.foundation.core.MModelElement;
-import ru.novosoft.uml.foundation.extension_mechanisms.MTaggedValue;
 
 /**
  * Table view of a Model Element's Tagged Values.
@@ -137,11 +136,10 @@ public class TabTaggedValues extends TabSpawnable
         _table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
         _table.sizeColumnsToFit(0);
 
-        MModelElement me = (MModelElement) _target;
-        Vector tvs = new Vector(me.getTaggedValues());
-        _tableModel.setTarget(me);
-        if (me != null) {
-            _titleLabel.setText("Target: " + me.getUMLClassName() + " (" + me.getName() + ")");
+        Vector tvs = new Vector(ModelFacade.getTaggedValuesCollection(_target));
+        _tableModel.setTarget(_target);
+        if (_target != null) {
+            _titleLabel.setText("Target: " + ModelFacade.getUMLClassName(_target) + " (" + ModelFacade.getName(_target) + ")");
         }
         else {
             _titleLabel.setText("none");
@@ -201,7 +199,7 @@ class TableModelTaggedValues extends AbstractTableModel
 
     ////////////////
     // instance varables
-    MModelElement _target;
+    Object _target;// ModelElement
     TabTaggedValues _tab = null;
 
     ////////////////
@@ -210,7 +208,11 @@ class TableModelTaggedValues extends AbstractTableModel
 
     ////////////////
     // accessors
-    public void setTarget(MModelElement t) {
+    public void setTarget(Object t) {
+        
+        if(!ModelFacade.isAModelElement(t))
+            throw new IllegalArgumentException();
+        
 	if (_target != null)
 	    UmlModelEventPump.getPump().removeModelEventListener(this, _target);
 	_target = t;
@@ -239,23 +241,23 @@ class TableModelTaggedValues extends AbstractTableModel
 
     public int getRowCount() {
 	if (_target == null) return 0;
-	Collection tvs = _target.getTaggedValues();
+	Collection tvs = ModelFacade.getTaggedValuesCollection(_target);
 	//if (tvs == null) return 1;
 	return tvs.size() + 1;
     }
 
     public Object getValueAt(int row, int col) {
-	Vector tvs = new Vector(_target.getTaggedValues());
+	Vector tvs = new Vector(ModelFacade.getTaggedValuesCollection(_target));
 	//if (tvs == null) return "";
 	if (row == tvs.size()) return ""; //blank line allows addition
-	MTaggedValue tv = (MTaggedValue) tvs.elementAt(row);
+	Object tv = tvs.elementAt(row);
 	if (col == 0) {
-	    String n = tv.getTag();
+	    String n = ModelFacade.getTagOfTag(tv);
 	    if (n == null) return "";
 	    return n;
 	}
 	if (col == 1) {
-	    String be = tv.getValue();
+	    String be = ModelFacade.getValueOfTag(tv);
 	    if (be == null) return "";
 	    return be;
 	}
@@ -267,13 +269,13 @@ class TableModelTaggedValues extends AbstractTableModel
 
 	if (columnIndex != 0 && columnIndex != 1) return;
 	if (!(aValue instanceof String)) return;
-	Vector tvs = new Vector(_target.getTaggedValues());
+	Vector tvs = new Vector(ModelFacade.getTaggedValuesCollection(_target));
 	if (tvs.size() <= rowIndex) {
-	    MTaggedValue tv = UmlFactory.getFactory().getExtensionMechanisms().createTaggedValue();
-	    if (columnIndex == 0) tv.setTag((String) aValue);
+	    Object tv = UmlFactory.getFactory().getExtensionMechanisms().createTaggedValue();
+	    if (columnIndex == 0) ModelFacade.setTag(tv,(String) aValue);
 	    if (columnIndex == 1) {
-		tv.setTag("");
-		tv.setValue((String) aValue);
+		ModelFacade.setTag(tv,"");
+		ModelFacade.setValue(tv,(String) aValue);
 	    }
 	    tvs.addElement(tv);
 
@@ -286,12 +288,15 @@ class TableModelTaggedValues extends AbstractTableModel
 					 TableModelEvent.ALL_COLUMNS, TableModelEvent.DELETE);
 	}
 	else {
-	    MTaggedValue tv = (MTaggedValue) tvs.elementAt(rowIndex);
-	    if (columnIndex == 0) tv.setTag((String) aValue);
-	    if (columnIndex == 1) tv.setValue((String) aValue);
+	    Object tv = tvs.elementAt(rowIndex);
+	    if (columnIndex == 0) ModelFacade.setTag(tv,(String) aValue);
+	    if (columnIndex == 1)  {
+		ModelFacade.setTag(tv,"");
+                ModelFacade.setValue(tv,(String) aValue);
+            }
 	    mEvent = new TableModelEvent(this, rowIndex);
 	}
-	_target.setTaggedValues(tvs);
+	ModelFacade.setTaggedValues(_target,tvs);
 	if (mEvent != null)
 	    fireTableChanged(mEvent);
 	_tab.resizeColumns();

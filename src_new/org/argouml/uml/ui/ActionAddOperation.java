@@ -35,7 +35,6 @@ import org.argouml.model.uml.UmlModelEventPump;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.ui.targetmanager.TargetManager;
 
-//import ru.novosoft.uml.MElementListener;
 /** Action to add an operation to a classifier.
  *  @stereotype singleton
  */

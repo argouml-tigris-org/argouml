@@ -31,8 +31,6 @@ import org.argouml.model.ModelFacade;
 import org.argouml.uml.ui.UMLChangeAction;
 import org.argouml.uml.ui.UMLCheckBox2;
 
-//import ru.novosoft.uml.foundation.data_types.MScopeKind;
-
 /**
  * 
  * @author jaap.branderhorst@xs4all.nl	

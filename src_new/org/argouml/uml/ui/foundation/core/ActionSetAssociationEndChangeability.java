@@ -33,12 +33,14 @@ import org.argouml.model.ModelFacade;
 import org.argouml.uml.ui.UMLChangeAction;
 import org.argouml.uml.ui.UMLRadioButtonPanel;
 
-//import ru.novosoft.uml.foundation.data_types.MChangeableKind;
-
 /**
  * 
  * @author jaap.branderhorst@xs4all.nl	
  * @since Jan 4, 2003
+ *
+ * @deprecated since 0.15.1, replace with 
+ *             org.argouml.uml.ui.foundation.core.ActionSetChangeability
+ *             remove in 0.15.2, alexb
  */
 public class ActionSetAssociationEndChangeability extends UMLChangeAction {
 

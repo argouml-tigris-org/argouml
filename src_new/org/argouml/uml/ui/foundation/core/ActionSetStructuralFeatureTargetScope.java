@@ -31,8 +31,6 @@ import org.argouml.model.ModelFacade;
 import org.argouml.uml.ui.UMLChangeAction;
 import org.argouml.uml.ui.UMLCheckBox2;
 
-import ru.novosoft.uml.foundation.data_types.MScopeKind;
-
 /**
  * @author jaap.branderhorst@xs4all.nl
  * @since Jan 29, 2003
@@ -60,7 +58,9 @@ public class ActionSetStructuralFeatureTargetScope extends UMLChangeAction {
 	    Object target = source.getTarget();
 	    if (org.argouml.model.ModelFacade.isAStructuralFeature(target)) {
                 Object m = /*(MStructuralFeature)*/ target;
-		ModelFacade.setTargetScope(m, source.isSelected() ? MScopeKind.CLASSIFIER : MScopeKind.INSTANCE);
+		ModelFacade.setTargetScope(m, 
+                    source.isSelected() ? ModelFacade.CLASSIFIER_SCOPEKIND
+                                        : ModelFacade.INSTANCE_SCOPEKIND);
 	    }
 	}
     }

@@ -36,10 +36,6 @@ import javax.swing.JList;
 import org.apache.log4j.Logger;
 import org.argouml.application.helpers.ResourceLoaderWrapper;
 
-//import ru.novosoft.uml.MBase;
-//import ru.novosoft.uml.foundation.core.MModelElement;
-
-
 /**
  * The default cell renderer for uml model elements. Used by UMLList2 and its
  * children.

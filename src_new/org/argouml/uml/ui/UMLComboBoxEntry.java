@@ -30,10 +30,7 @@ import java.lang.reflect.*;
 import java.awt.event.*;
 import java.util.*;
 import org.argouml.model.ModelFacade;
-import ru.novosoft.uml.foundation.core.MNamespace;
-
-//import ru.novosoft.uml.foundation.core.MModelElement;
-//import ru.novosoft.uml.foundation.core.MNamespace;
+import org.argouml.model.uml.UmlFactory;
 
 public class UMLComboBoxEntry implements Comparable {
     private Object/*MModelElement*/ _element;
@@ -144,7 +141,7 @@ public class UMLComboBoxEntry implements Comparable {
                 }
             }
             if (ns == null) {
-                ns = ((MNamespace)targetParentNS).getFactory().createPackage();
+                ns = UmlFactory.getFactory().getModelManagement().createPackage();
                 ModelFacade.setName(ns, phantomName);
                 ModelFacade.addOwnedElement(targetParentNS, ns);
             }

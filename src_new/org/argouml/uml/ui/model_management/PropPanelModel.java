@@ -27,7 +27,7 @@ package org.argouml.uml.ui.model_management;
 import org.argouml.application.api.*;
 import org.argouml.util.ConfigLoader;
 import org.argouml.application.ArgoVersion;
-import ru.novosoft.uml.model_management.MModelImpl;
+import org.argouml.model.ModelFacade;
 
 public class PropPanelModel extends PropPanelPackage 
         implements PluggablePropertyPanel {
@@ -42,7 +42,7 @@ public class PropPanelModel extends PropPanelPackage
 
     public Class getClassForPanel() {
         // TODO Shouldn't refer to NSUML implementation class
-        return MModelImpl.class;
+        return (Class)ModelFacade.MODEL;//MModelImpl.class;
     }
 
     public String getModuleName() { return "PropPanelModel"; }

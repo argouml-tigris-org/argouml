@@ -33,8 +33,6 @@ import org.argouml.uml.ui.foundation.core.*;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.util.ConfigLoader;
 
-import ru.novosoft.uml.model_management.MPackage;
-
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -111,7 +109,7 @@ public class PropPanelPackage extends PropPanelNamespace  {
         if (org.argouml.model.ModelFacade.isAPackage(target)) {
             Object/*MPackage*/ newPackage =  UmlFactory.getFactory().
                 getModelManagement().createPackage();
-            Object/*MPackage*/ currentPackage = (MPackage) target;
+            Object/*MPackage*/ currentPackage = target;
             ModelFacade.addOwnedElement(currentPackage, newPackage);
             TargetManager.getInstance().setTarget(newPackage);
         }

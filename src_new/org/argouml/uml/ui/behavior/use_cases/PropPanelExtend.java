@@ -46,9 +46,6 @@ import org.argouml.uml.ui.UMLMutableLinkedList;
 import org.argouml.uml.ui.foundation.core.PropPanelModelElement;
 import org.argouml.util.ConfigLoader;
 
-//import ru.novosoft.uml.foundation.data_types.MBooleanExpression;
-
-
 /**
  * <p>Builds the property panel for an Extend relationship.</p>
  *
