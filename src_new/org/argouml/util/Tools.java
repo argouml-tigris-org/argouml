@@ -1,4 +1,4 @@
-// Copyright (c) 1996-2001 The Regents of the University of California. All
+// Copyright (c) 1996-2003 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -22,6 +22,7 @@
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 package org.argouml.util;
+
 import org.argouml.application.api.*;
 import java.io.*;
 import java.util.*;
@@ -29,115 +30,128 @@ import java.util.*;
 public class Tools {
 
     static String packageList[] = new 
-String[]{"org.argouml.application","ru.novosoft.uml","org.tigris.gef.base","org.xml.sax","java.lang","org.apache.log4j"};
+        String[]{"org.argouml.application","ru.novosoft.uml","org.tigris.gef.base","org.xml.sax","java.lang","org.apache.log4j"};
 
     private static void getComponentVersionInfo(StringBuffer sb, String pn) 
-{
-	sb.append("Package: ");
-	sb.append(pn);
-	sb.append('\n');
-	Package pkg = Package.getPackage(pn);
-	if(pkg == null) {
-	    sb.append("-- No Versioning Information --\nMaybe you don't use the jar?\n");
-	}
-	else {
-	    String in = pkg.getImplementationTitle();
-	    if(in!=null) {
-	        sb.append("Component: ");
-	        sb.append(in);
-	    }
-	    in = pkg.getImplementationVendor();
-	    if(in!=null) {
-	        sb.append(", by: ");
-	        sb.append(in);
-	    }
-	    in = pkg.getImplementationVersion();
-	    if(in!=null) {
-	        sb.append(", version: ");
-	        sb.append(in);
-	        sb.append('\n');
-	    }
-	}
-	sb.append('\n');
+    {
+        sb.append("Package: ");
+        sb.append(pn);
+        sb.append('\n');
+        Package pkg = Package.getPackage(pn);
+        if(pkg == null) {
+            sb.append("-- No Versioning Information --\nMaybe you don't use the jar?\n");
+        }
+        else {
+            String in = pkg.getImplementationTitle();
+            if(in!=null) {
+                sb.append("Component: ");
+                sb.append(in);
+            }
+            in = pkg.getImplementationVendor();
+            if(in!=null) {
+                sb.append(", by: ");
+                sb.append(in);
+            }
+            in = pkg.getImplementationVersion();
+            if(in!=null) {
+                sb.append(", version: ");
+                sb.append(in);
+                sb.append('\n');
+            }
+        }
+        sb.append('\n');
     }
 
     public static String getVersionInfo()
     {
-      try{
+        try{
 
-	// class preloading, so packages are there...
-	Class cls = Class.forName("ru.novosoft.uml.MBase");
-	cls = Class.forName("org.tigris.gef.base.Editor");
-	cls = Class.forName("ru.novosoft.uml.MBase");
-	cls = Class.forName("org.xml.sax.AttributeList");
-	cls = Class.forName("org.apache.log4j.Category");
+            // class preloading, so packages are there...
+            Class cls = Class.forName("ru.novosoft.uml.MBase");
+            cls = Class.forName("org.tigris.gef.base.Editor");
+            cls = Class.forName("ru.novosoft.uml.MBase");
+            cls = Class.forName("org.xml.sax.AttributeList");
+            cls = Class.forName("org.apache.log4j.Category");
 
-	StringBuffer sb = new StringBuffer();
+            StringBuffer sb = new StringBuffer();
 
-	String saxFactory = System.getProperty("javax.xml.parsers.SAXParserFactory");
-	if(saxFactory != null) {
-	    sb.append("SAX Parser Factory " + saxFactory+ " specified using system property\n");
-	}
-
-	Object saxObject = null;
-	try {
-	    saxObject = javax.xml.parsers.SAXParserFactory.newInstance();
-	    sb.append("SAX Parser Factory " +
-		       saxObject.getClass().getName() + " will be used.\n");
-	    sb.append("\n");
-	}
-	catch(Exception ex) {
-	    sb.append("Error determining SAX Parser Factory\n.");
-	}
-
-	for(int i=0;i<packageList.length;i++) {
-	    getComponentVersionInfo(sb, packageList[i]);
-	}
-
-	if (saxObject != null) {
-	    // ...getPackage() can return null's, so we have to cater for this:
-	    Package pckg = saxObject.getClass().getPackage();
-	    if (pckg != null) {
-	    	getComponentVersionInfo(sb, pckg.getName());
+            String saxFactory = System.getProperty("javax.xml.parsers.SAXParserFactory");
+            if(saxFactory != null) {
+                sb.append("SAX Parser Factory " + saxFactory+ " specified using system property\n");
             }
-	}
+
+            Object saxObject = null;
+            try {
+                saxObject = javax.xml.parsers.SAXParserFactory.newInstance();
+                sb.append("SAX Parser Factory " +
+                          saxObject.getClass().getName() + " will be used.\n");
+                sb.append("\n");
+            }
+            catch(Exception ex) {
+                sb.append("Error determining SAX Parser Factory\n.");
+            }
+
+            for(int i=0;i<packageList.length;i++) {
+                getComponentVersionInfo(sb, packageList[i]);
+            }
+
+            if (saxObject != null) {
+                // ...getPackage() can return null's, so we have to cater for this:
+                Package pckg = saxObject.getClass().getPackage();
+                if (pckg != null) {
+                    getComponentVersionInfo(sb, pckg.getName());
+                }
+            }
       
 
 
-	sb.append("\n");
-	sb.append("Operating System is: ");
-	sb.append(System.getProperty("os.name", "unknown"));
-	sb.append('\n');
-	sb.append("Operating System Version: ");
-	sb.append(System.getProperty("os.version", "unknown"));
-	sb.append('\n');
-	sb.append("Language: ");
-	sb.append(Locale.getDefault().getLanguage());
-	sb.append('\n');
-	sb.append("Country: ");
-	sb.append(Locale.getDefault().getCountry());
-	sb.append('\n');
-	sb.append('\n');
+            sb.append("\n");
+            sb.append("Operating System is: ");
+            sb.append(System.getProperty("os.name", "unknown"));
+            sb.append('\n');
+            sb.append("Operating System Version: ");
+            sb.append(System.getProperty("os.version", "unknown"));
+            sb.append('\n');
+            sb.append("Language: ");
+            sb.append(Locale.getDefault().getLanguage());
+            sb.append('\n');
+            sb.append("Country: ");
+            sb.append(Locale.getDefault().getCountry());
+            sb.append('\n');
+            sb.append('\n');
 
 
-	return sb.toString();
+            return sb.toString();
 
-      } catch (Exception e) { return e.toString();}
+        } catch (Exception e) { return e.toString();}
 
     }
 
     public static void logVersionInfo()
     {
-      BufferedReader r = new BufferedReader(new StringReader(getVersionInfo()));
+        BufferedReader r = new BufferedReader(new StringReader(getVersionInfo()));
 
-      try {
-          while (true) {
-              String s = r.readLine();
-	      if (s == null) break;
-	      Argo.log.info(s);
-          }
-      }
-      catch (IOException ioe) { }
+        try {
+            while (true) {
+                String s = r.readLine();
+                if (s == null) break;
+                Argo.log.info(s);
+            }
+        }
+        catch (IOException ioe) { }
+    }
+
+    /** getFileExtension returns the file extension of a file.
+     *  @param file the File to examine
+     *  @return extension including the dot, or null
+     */  
+    public static String getFileExtension(File file) {
+        String ext = null;
+        String s = file.getName();
+        int i = s.lastIndexOf('.');
+
+        if (i>0) ext = s.substring(i).toLowerCase();
+        return ext;
     }
 }
 
