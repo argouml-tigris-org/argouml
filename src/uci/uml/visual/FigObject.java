@@ -163,7 +163,7 @@ public class FigObject extends FigNodeModelElement {
   // user interaction methods
 
   protected void textEdited(FigText ft) throws PropertyVetoException {
-    super.textEdited(ft);
+      // umbringen! super.textEdited(ft);
     MObject obj = (MObject) getOwner();
     if (ft == _name) {
       String s = ft.getText().trim();
@@ -182,17 +182,23 @@ public class FigObject extends FigNodeModelElement {
     if (obj.getName() != null) {
       nameStr = obj.getName().trim();
     }
-    Collection col = obj.getClassifiers();
-    Iterator it = col.iterator();
-    String baseStr = "";
-    while (it.hasNext()) {
-        baseStr = ((MClassifier)it.next()).getName();
+
+    Vector bases = new Vector(obj.getClassifiers());
+ 
+    String baseString = "";
+
+    if (obj.getClassifiers() != null && obj.getClassifiers().size()>0) {
+
+	baseString += ((MClassifier)bases.elementAt(0)).getName();
+        for(int i=1; i<bases.size(); i++)
+	    baseString += ", "  + ((MClassifier)bases.elementAt(i)).getName();
     }
+
     if (_readyToEdit) {
-      if( nameStr == "" && baseStr == "")
+      if( nameStr == "" && baseString == "")
 	_name.setText("");
       else
-	_name.setText(nameStr.trim() + " : " + baseStr);
+	  _name.setText(nameStr.trim() + " : " + baseString);
     }
     Dimension nameMin = _name.getMinimumSize();
     Rectangle r = getBounds();

@@ -396,25 +396,35 @@ public class ParserDisplay extends Parser {
       s = s.substring(0, s.length() - 2);
 
     String name = "";
-    String base = "";
+    String basefirst = "";
+    String bases = "";
+    StringTokenizer baseTokens = null;
+
     if (s.indexOf(":", 0) > -1) {
       name = s.substring(0, s.indexOf(":")).trim();
-      base = s.substring(s.indexOf(":") + 1).trim();
+      bases = s.substring(s.indexOf(":") + 1).trim();
+      baseTokens = new StringTokenizer(bases,",");
     }
     else {
       name = s;
     }
 
-	Project p = ProjectBrowser.TheInstance.getProject();
-	MClassifier type = p.findType(base);
-	if (type != null) {
-		cls.setBases(new Vector());
-		cls.addBase(type);
-	}
-	else {
-		// generate critic here? (Toby)
-		cls.setBases(new Vector());
-	}
+    cls.setName(name);
+
+    Collection col = cls.getBases();
+    if ((col != null) && (col.size()>0)) { 
+      Iterator itcol = col.iterator(); 
+      while (itcol.hasNext()) { 
+        MClassifier bse = (MClassifier) itcol.next();
+        cls.removeBase(bse); 
+      } 
+    } 
+
+    while(baseTokens.hasMoreElements()){
+	String typeString = baseTokens.nextToken();
+	MClassifier type = ProjectBrowser.TheInstance.getProject().findType(typeString);
+	cls.addBase(type);
+    }
 
     cls.setName(name);
 
@@ -479,64 +489,27 @@ public class ParserDisplay extends Parser {
 
     String name = "";
     String basefirst = "";
-    String base = "";
+    String bases = "";
+    StringTokenizer baseTokens = null;
+
     if (s.indexOf(":", 0) > -1) {
-      name = s.substring(0, s.indexOf(":")).trim();
-      basefirst = s.substring(s.indexOf(":") + 1).trim();
-      if (basefirst.indexOf(":", 0) > 1) {
-        base = basefirst.substring(0, basefirst.indexOf(":")).trim();
-      }
-      else base = basefirst;
+      name = s.substring(0, s.indexOf(":",0)).trim();
+      bases = s.substring(s.indexOf(":",0) + 1).trim();
+      baseTokens = new StringTokenizer(bases,",");
     }
     else {
       name = s;
     }
 
-    Collection col = obj.getClassifiers();
-    if ((col != null) && (col.size()>0)) { 
-      Iterator itcol = col.iterator(); 
-      while (itcol.hasNext()) { 
-        MClassifier cls = (MClassifier) itcol.next(); 
-        obj.removeClassifier(cls); 
-      } 
-    } 
-
-    Vector diagrams = ProjectBrowser.TheInstance.getProject().getDiagrams();
-    Vector v = new Vector();
-    MClass classifier = new MClassImpl();
-    GraphModel model = null;
-    int size = diagrams.size();
-    for (int i=0; i<size; i++) {
-      Object o = diagrams.elementAt(i);
-      if (!(o instanceof Diagram)) continue;
-      if (o instanceof MModel) continue;
-      Diagram d = (Diagram) o;
-      model = d.getGraphModel(); 
-      if (!(model instanceof ClassDiagramGraphModel || model instanceof DeploymentDiagramGraphModel)) continue;
-       
-      Vector nodes = model.getNodes();
-      int si = nodes.size();
-      for (int j=0; j<si; j++) {
-        MModelElement node = (MModelElement) nodes.elementAt(j);
-        if (node != null && (node instanceof MClassImpl)) {
-          MClass mclass = (MClass) node;
-          if (mclass.getNamespace() != obj.getNamespace()) continue;
-          String class_name = mclass.getName();
-          if (class_name != null && (class_name.equals(base))) {
-            v.addElement(mclass);
-            obj.setClassifiers(v);
-            obj.setName(new String(name)); 
-            return; 
-          }      
-        }
-      }
-    }
-    classifier.setName(base);
+    obj.setName(name);
     
-    v.addElement(classifier);
-    obj.setClassifiers(v);
-    obj.setName(new String(name));
-
+    obj.setClassifiers(new Vector());
+    
+    while(baseTokens.hasMoreElements()){
+	String typeString = baseTokens.nextToken();
+	MClassifier type = ProjectBrowser.TheInstance.getProject().findType(typeString);
+	obj.addClassifier(type);
+    }
   }
 
   /** Parse a line of the form: "name : base-node" */ 
