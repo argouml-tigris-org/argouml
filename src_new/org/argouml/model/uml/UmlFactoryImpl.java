@@ -45,7 +45,6 @@ import org.argouml.model.StateMachinesFactory;
 import org.argouml.model.UmlFactory;
 import org.argouml.model.UmlModelEntity;
 import org.argouml.model.UseCasesFactory;
-import org.argouml.uml.diagram.static_structure.ui.CommentEdge;
 
 import ru.novosoft.uml.MBase;
 import ru.novosoft.uml.MFactory;
@@ -159,10 +158,10 @@ class UmlFactoryImpl extends AbstractUmlModelFactory implements UmlFactory {
      */
     private NSUMLModelImplementation nsmodel;
 
-    /**
-     * A map of valid connections keyed by the connection type.
-     * The constructor builds this from the data in the VALID_CONNECTIONS array
-     */
+//    /**
+//     * A map of valid connections keyed by the connection type.
+//     * The constructor builds this from the data in the VALID_CONNECTIONS array
+//     */
     private Map validConnectionMap = new HashMap();
 
     // TODO: The purpose of the jmiProxy is not understood (Linus January
@@ -255,10 +254,6 @@ class UmlFactoryImpl extends AbstractUmlModelFactory implements UmlFactory {
 	{ModelFacade.INCLUDE,          ModelFacade.USE_CASE, },
 	{ModelFacade.LINK,             ModelFacade.NODE_INSTANCE, },
 	{ModelFacade.LINK,             ModelFacade.OBJECT, },
-	{CommentEdge.class,            ModelFacade.MODELELEMENT,
-	 ModelFacade.COMMENT, },
-	{CommentEdge.class,            ModelFacade.COMMENT,
-         ModelFacade.MODELELEMENT, },
         {ModelFacade.TRANSITION,       ModelFacade.STATEVERTEX, },
         {ModelFacade.ASSOCIATION_CLASS, ModelFacade.CLASS, },
         {ModelFacade.ASSOCIATION_END, ModelFacade.CLASS,
@@ -275,7 +270,7 @@ class UmlFactoryImpl extends AbstractUmlModelFactory implements UmlFactory {
     UmlFactoryImpl(NSUMLModelImplementation implementation) {
         nsmodel = implementation;
 
-        buildValidConnectionMap();
+//        buildValidConnectionMap();
         initializeFactoryMethods();
     }
 
@@ -471,6 +466,13 @@ class UmlFactoryImpl extends AbstractUmlModelFactory implements UmlFactory {
     }
 
     /**
+     * Creates a UML model element of the given type and uses
+     * this to connect two other existing UML model elements.
+     * This only works for UML elements. If a diagram contains
+     * elements of another type then it is the responsibility
+     * of the diagram manage those items and not call this
+     * method.
+     *
      * @param connectionType the UML object type of the connection
      * @param fromElement    the UML object for the "from" element
      * @param fromStyle      the aggregationkind for the connection
@@ -553,11 +555,8 @@ class UmlFactoryImpl extends AbstractUmlModelFactory implements UmlFactory {
             connection = getUseCases().buildExtend(toElement, fromElement);
         } else if (connectionType == ModelFacade.INCLUDE) {
             connection = getUseCases().buildInclude(fromElement, toElement);
-        } else if (connectionType == CommentEdge.class) {
-            connection =
-                getCore().buildCommentConnection(fromElement, toElement);
         }
-
+        
         if (connection == null) {
             throw new IllegalModelElementConnectionException(
             "Cannot make a "
@@ -570,7 +569,12 @@ class UmlFactoryImpl extends AbstractUmlModelFactory implements UmlFactory {
     }
 
     /**
-     * Checks if some type of connection is valid between two elements.
+     * Checks if some type of UML model element is valid to
+     * connect two other existing UML model elements.
+     * This only works for UML elements. If a diagram contains
+     * elements of another type then it is the responsibility
+     * of the diagram to filter those out before calling this
+     * method.
      *
      * @param connectionType  the UML object type of the connection
      * @param fromElement     the UML object type of the "from"
@@ -808,6 +812,8 @@ class UmlFactoryImpl extends AbstractUmlModelFactory implements UmlFactory {
             // TODO: (MVW) How do we replace next statement?
             // Answer (Linus): We don't need to replace it. This file is now
             // in org.argouml.model.uml and is allowed to use NSUML API:s.
+            // Qustion (Bob): Surely MVW wants to replace this because it is deprecated
+            // So how do we replace it ow do we undeprecate?.
             UmlModelEventPump.getPump().cleanUp((MBase) elem);
             UmlModelListener.getInstance().deleteElement(elem);
         }

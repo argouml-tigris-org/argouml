@@ -30,9 +30,11 @@ import java.util.Vector;
 
 import org.apache.log4j.Logger;
 import org.argouml.kernel.ProjectManager;
+import org.argouml.model.IllegalModelElementConnectionException;
 import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
 import org.argouml.model.UmlException;
+import org.argouml.uml.diagram.static_structure.ui.CommentEdge;
 import org.tigris.gef.base.Editor;
 import org.tigris.gef.base.Globals;
 import org.tigris.gef.base.Mode;
@@ -181,32 +183,26 @@ public abstract class UMLMutableGraphSupport extends MutableGraphSupport {
      */
     public Object connect(Object fromPort, Object toPort,
 			  java.lang.Class edgeClass) {
-        Object connection = null;
-        try {
-            // If this was an association then there will be relevant
-            // information to fetch out of the mode arguments.  If it
-            // not an association then these will be passed forward
-            // harmlessly as null.
-            Editor curEditor = Globals.curEditor();
-            ModeManager modeManager = curEditor.getModeManager();
-            Mode mode = modeManager.top();
-            Dictionary args = mode.getArgs();
-            Object style = args.get("aggregation"); //MAggregationKind
-            Boolean unidirectional = (Boolean) args.get("unidirectional");
-            // Create the UML connection of the given type between the
-            // given model elements.
-	    // default aggregation (none)
-            connection =
-		Model.getUmlFactory().buildConnection(
-		        edgeClass, fromPort,
-		        style, toPort,
-		        null, unidirectional,
-		        ProjectManager.getManager().getCurrentProject()
-		        	.getModel());
-        } catch (UmlException ex) {
-            // fail silently as we expect users to accidentally drop
-            // on to wrong component
-        }
+        // If this was an association then there will be relevant
+        // information to fetch out of the mode arguments.  If it
+        // not an association then these will be passed forward
+        // harmlessly as null.
+        Editor curEditor = Globals.curEditor();
+        ModeManager modeManager = curEditor.getModeManager();
+        Mode mode = modeManager.top();
+        Dictionary args = mode.getArgs();
+        Object style = args.get("aggregation"); //MAggregationKind
+        Boolean unidirectional = (Boolean) args.get("unidirectional");
+        Object model = 
+            ProjectManager.getManager().getCurrentProject().getModel();
+        
+        // Create the UML connection of the given type between the
+        // given model elements.
+        // default aggregation (none)
+        Object connection = buildConnection(
+                edgeClass, fromPort, style, toPort,
+                null, unidirectional,
+                model);
 
         if (connection == null) {
             LOG.debug("Cannot make a " + edgeClass.getName()
@@ -244,8 +240,80 @@ public abstract class UMLMutableGraphSupport extends MutableGraphSupport {
         if (edge == null) {
             return false;
         }
-       return Model.getUmlFactory().isConnectionValid(edge.getClass(),
+       return isConnectionValid(edge.getClass(),
                Model.getUmlHelper().getSource(edge),
                Model.getUmlHelper().getDestination(edge));
+    }
+    
+    /**
+     * Create an edge of the given type and connect it to the
+     * given nodes.
+     * 
+     * @param edgeType       the UML object type of the connection
+     * @param fromElement    the UML object for the "from" element
+     * @param fromStyle      the aggregationkind for the connection
+     *                       in case of an association
+     * @param toElement      the UML object for the "to" element
+     * @param toStyle        the aggregationkind for the connection
+     *                       in case of an association
+     * @param unidirectional for association and associationrole
+     * @param namespace      the namespace to use if it can't be determined
+     * @return               the newly build connection (UML object)
+     */
+    protected Object buildConnection(
+            Object edgeType,
+            Object fromElement,
+            Object fromStyle,
+            Object toElement,
+            Object toStyle,
+            Object unidirectional,
+            Object namespace) {
+        
+        Object connection = null;
+        if (edgeType == CommentEdge.class) {
+            connection =
+                Model.getCoreFactory().buildCommentConnection(fromElement, toElement);
+        } else {
+            try {
+                connection = Model.getUmlFactory().buildConnection(
+                    edgeType,
+                    fromElement,
+                    fromStyle,
+                    toElement,
+                    toStyle,
+                    unidirectional,
+                    namespace);
+            } catch (UmlException ex) {
+                // fail silently as we expect users to accidentally drop
+                // on to wrong component
+            }
+        }
+        return connection;
+    }
+    
+    /**
+     * Checks if some type of edge is valid to connect two
+     * types of node.
+     *
+     * @param edgeType  the UML object type of the connection
+     * @param fromElement     the UML object type of the "from"
+     * @param toElement       the UML object type of the "to"
+     * @return true if valid
+     */
+    protected boolean isConnectionValid(
+            Object edgeType,
+            Object fromElement,
+            Object toElement) {
+        if (edgeType.equals(CommentEdge.class) ) {
+            return ((ModelFacade.isAComment(fromElement)
+                   && ModelFacade.isAModelElement(toElement))
+                 || (ModelFacade.isAComment(toElement)
+                   && ModelFacade.isAModelElement(fromElement)));
+        } else {
+            return Model.getUmlFactory().isConnectionValid(
+                edgeType,
+                fromElement,
+                toElement);
+        }
     }
 }
