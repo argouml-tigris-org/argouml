@@ -49,22 +49,25 @@ import ru.novosoft.uml.foundation.core.MModelElement;
  */
 public class PropPanelObject extends PropPanelInstance {
 
-    protected JScrollPane stimuliSenderScroll;
-    protected JScrollPane stimuliReceiverScroll;
+    private JScrollPane stimuliSenderScroll;
+    private JScrollPane stimuliReceiverScroll;
     
-    protected static UMLInstanceSenderStimulusListModel stimuliSenderListModel;
-    protected static UMLInstanceReceiverStimulusListModel stimuliReceiverListModel;
+    private static UMLInstanceSenderStimulusListModel 
+        stimuliSenderListModel;
+    private static UMLInstanceReceiverStimulusListModel 
+        stimuliReceiverListModel;
     /**
      * Constructor.
      */
     public PropPanelObject() {
-	super("Object", _objectIcon, ConfigLoader.getTabPropsOrientation());
+	super("Object", objectIcon, ConfigLoader.getTabPropsOrientation());
 
 	Class mclass = (Class) ModelFacade.OBJECT;
 
 	addField(Translator.localize("label.name"), getNameTextField());
 
-	addField(Translator.localize("UMLMenu", "label.stereotype"), getStereotypeBox());
+	addField(Translator.localize("UMLMenu", "label.stereotype"), 
+	    getStereotypeBox());
 
 	addField(Translator.localize("label.namespace"),
 		     getNamespaceComboBox());
@@ -78,15 +81,20 @@ public class PropPanelObject extends PropPanelInstance {
 	addField("Stimuli received:", getStimuliReceiverScroll());
 	
 	addSeperator();
-	AbstractActionAddModelElement _action = new ActionAddInstanceClassifier((Class)ModelFacade.CLASS);
-	        JScrollPane _classifierScroll = new JScrollPane(new UMLMutableLinkedList(
-	                new UMLInstanceClassifierListModel(), 
-	            _action, null, null, true));
-	        addField(Translator.localize("UMLMenu","label.classifiers"), _classifierScroll);
+	AbstractActionAddModelElement action = 
+	    new ActionAddInstanceClassifier((Class) ModelFacade.CLASS);
+	JScrollPane classifierScroll = new JScrollPane(
+            new UMLMutableLinkedList(
+	    new UMLInstanceClassifierListModel(), 
+	            action, null, null, true));
+	addField(Translator.localize("UMLMenu", "label.classifiers"), 
+            classifierScroll);
 
 
-	buttonPanel.add(new PropPanelButton2(this, new ActionNavigateNamespace()));	
-	buttonPanel.add(new PropPanelButton2(this, new ActionRemoveFromModel()));
+	buttonPanel.add(new PropPanelButton2(this, 
+            new ActionNavigateNamespace()));	
+	buttonPanel.add(new PropPanelButton2(this, 
+            new ActionRemoveFromModel()));
 	
     }
 
@@ -107,6 +115,9 @@ public class PropPanelObject extends PropPanelInstance {
         return org.argouml.model.ModelFacade.isAClassifier(classifier);
     }
 
+    /**
+     * @see org.argouml.uml.ui.behavior.common_behavior.PropPanelInstance#getClassifier()
+     */
     public Object getClassifier() {
         Object classifier = null;
         Object target = getTarget();

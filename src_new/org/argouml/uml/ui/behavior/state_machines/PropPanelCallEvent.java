@@ -38,13 +38,18 @@ import org.argouml.util.ConfigLoader;
  */
 public class PropPanelCallEvent extends PropPanelEvent {
 
-    ////////////////////////////////////////////////////////////////
-    // contructors
+    /**
+     * The constructor.
+     * 
+     */
     public PropPanelCallEvent() {
         super("Call event", _eventIcon, 
               ConfigLoader.getTabPropsOrientation());
     }
 
+    /**
+     * @see org.argouml.uml.ui.behavior.state_machines.PropPanelEvent#initialize()
+     */
     public void initialize() {
         super.initialize();
        

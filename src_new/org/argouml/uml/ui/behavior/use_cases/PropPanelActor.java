@@ -74,18 +74,25 @@ public class PropPanelActor extends PropPanelClassifier {
     	super("Actor", ConfigLoader.getTabPropsOrientation());
 
 
-    	addField(Translator.localize("UMLMenu", "label.name"), getNameTextField());
-    	// addField(Translator.localize("UMLMenu", "label.stereotype"), new UMLComboBoxNavigator(this, Translator.localize("UMLMenu", "tooltip.nav-stereo"), getStereotypeBox()));
-    	addField(Translator.localize("UMLMenu", "label.stereotype"), getStereotypeBox());
+    	addField(Translator.localize("UMLMenu", "label.name"), 
+                getNameTextField());
+    	// addField(Translator.localize("UMLMenu", "label.stereotype"), 
+        //     new UMLComboBoxNavigator(this, Translator.localize("UMLMenu", 
+        //     "tooltip.nav-stereo"), getStereotypeBox()));
+    	addField(Translator.localize("UMLMenu", "label.stereotype"), 
+                getStereotypeBox());
 
         add(_modifiersPanel);
 
-    	addField(Translator.localize("UMLMenu", "label.namespace"), getNamespaceComboBox());
+    	addField(Translator.localize("UMLMenu", "label.namespace"), 
+                getNamespaceComboBox());
 
     	addSeperator();
 
-    	addField(Translator.localize("UMLMenu", "label.generalizations"), getGeneralizationScroll());
-    	addField(Translator.localize("UMLMenu", "label.specializations"), getSpecializationScroll());
+    	addField(Translator.localize("UMLMenu", "label.generalizations"), 
+                getGeneralizationScroll());
+    	addField(Translator.localize("UMLMenu", "label.specializations"), 
+                getSpecializationScroll());
 
     	addSeperator();
 
@@ -93,11 +100,14 @@ public class PropPanelActor extends PropPanelClassifier {
             getAssociationEndScroll());
         // The toolbar buttons that go at the top.
 
-        buttonPanel.add(new PropPanelButton2(this, new ActionNavigateContainerElement()));
-        new PropPanelButton(this, buttonPanel, _actorIcon,
+        buttonPanel.add(new PropPanelButton2(this, 
+                new ActionNavigateContainerElement()));
+        new PropPanelButton(this, buttonPanel, actorIcon,
                 Translator.localize("UMLMenu", "button.new-actor"), "newActor",
                             null);
-        new PropPanelButton(this, buttonPanel, _receptionIcon, Translator.localize("UMLMenu", "button.new-reception"), getActionNewReception());
+        new PropPanelButton(this, buttonPanel, _receptionIcon, 
+                Translator.localize("UMLMenu", "button.new-reception"), 
+                getActionNewReception());
         buttonPanel
         .add(new PropPanelButton2(this, new ActionRemoveFromModel()));
     }
@@ -112,7 +122,8 @@ public class PropPanelActor extends PropPanelClassifier {
      */
 
     public void newActor() {
-        TargetManager.getInstance().setTarget(UseCasesFactory.getFactory().buildActor(getTarget()));
+        TargetManager.getInstance().setTarget(UseCasesFactory.getFactory()
+                .buildActor(getTarget()));
     }
 
 

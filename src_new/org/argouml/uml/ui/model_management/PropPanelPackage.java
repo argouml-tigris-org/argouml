@@ -54,28 +54,34 @@ import org.argouml.util.ConfigLoader;
  */
 public class PropPanelPackage extends PropPanelNamespace  {
 
-    protected JPanel _modifiersPanel = new JPanel();
-    protected PropPanelButton _stereotypeButton;
-    protected JScrollPane _generalizationScroll;
-    protected JScrollPane _specializationScroll;
+    private JPanel modifiersPanel = new JPanel();
+    private PropPanelButton stereotypeButton;
+    private JScrollPane generalizationScroll;
+    private JScrollPane specializationScroll;
 
-    private static UMLGeneralizableElementGeneralizationListModel generalizationListModel =
+    private static UMLGeneralizableElementGeneralizationListModel 
+        generalizationListModel =
         new UMLGeneralizableElementGeneralizationListModel();
-    private static UMLGeneralizableElementSpecializationListModel specializationListModel =
+    private static UMLGeneralizableElementSpecializationListModel 
+        specializationListModel =
         new UMLGeneralizableElementSpecializationListModel();
 
-    ////////////////////////////////////////////////////////////////
-    // contructors
+    /**
+     * The constructor.
+     * 
+     */
     public PropPanelPackage() {
-        this("Package", _packageIcon, ConfigLoader.getTabPropsOrientation());
+        this("Package", packageIcon, ConfigLoader.getTabPropsOrientation());
     }
 
     /**
      * Constructor for PropPanelPackage.
-     * @param title
-     * @param orientation
+     * @param title the title for this panel
+     * @param orientation the orientation
+     * @param icon the icon to show next to the title
      */
-    public PropPanelPackage(String title, ImageIcon icon, Orientation orientation) {
+    public PropPanelPackage(String title, ImageIcon icon, 
+            Orientation orientation) {
         super(title, icon, orientation);
         placeElements();
     }
@@ -85,37 +91,50 @@ public class PropPanelPackage extends PropPanelNamespace  {
      * should override to place the elements the way they want.
      */
     protected void placeElements() {
-        addField(Translator.localize("UMLMenu", "label.name"), getNameTextField());
-        // addField(Translator.localize("UMLMenu", "label.stereotype"), new UMLComboBoxNavigator(this, Translator.localize("UMLMenu", "tooltip.nav-stereo"), getStereotypeBox()));
-        addField(Translator.localize("UMLMenu", "label.stereotype"), getStereotypeBox());
-        addField(Translator.localize("UMLMenu", "label.namespace"), getNamespaceComboBox());
+        addField(Translator.localize("UMLMenu", "label.name"), 
+                getNameTextField());
+        // addField(Translator.localize("UMLMenu", "label.stereotype"), 
+        //      new UMLComboBoxNavigator(this, Translator.localize("UMLMenu", 
+        //          "tooltip.nav-stereo"), getStereotypeBox()));
+        addField(Translator.localize("UMLMenu", "label.stereotype"), 
+                getStereotypeBox());
+        addField(Translator.localize("UMLMenu", "label.namespace"), 
+                getNamespaceComboBox());
 
         add(getNamespaceVisibilityPanel());
 
         // TODO: facilitate importedElements.
         
-        _modifiersPanel =
+        modifiersPanel =
             new JPanel(new GridLayout2()); 
-        _modifiersPanel.setBorder(
-                new TitledBorder(Translator.localize("UMLMenu", "label.modifiers")));
+        modifiersPanel.setBorder(
+            new TitledBorder(Translator.localize("UMLMenu", 
+                    "label.modifiers")));
         
-        _modifiersPanel.add(
+        modifiersPanel.add(
                             new UMLGeneralizableElementAbstractCheckBox());
-        _modifiersPanel.add(
+        modifiersPanel.add(
                             new UMLGeneralizableElementLeafCheckBox());
-        _modifiersPanel.add(
+        modifiersPanel.add(
                             new UMLGeneralizableElementRootCheckBox());
         
-        add(_modifiersPanel);
+        add(modifiersPanel);
         addSeperator();
-        addField(Translator.localize("UMLMenu", "label.generalizations"), getGeneralizationScroll());
-        addField(Translator.localize("UMLMenu", "label.specializations"), getSpecializationScroll());
+        addField(Translator.localize("UMLMenu", "label.generalizations"), 
+                getGeneralizationScroll());
+        addField(Translator.localize("UMLMenu", "label.specializations"), 
+                getSpecializationScroll());
         addSeperator();
-        addField(Translator.localize("UMLMenu", "label.owned-elements"), getOwnedElementsScroll());
+        addField(Translator.localize("UMLMenu", "label.owned-elements"), 
+                getOwnedElementsScroll());
 
-        buttonPanel.add(new PropPanelButton2(this, new ActionNavigateNamespace()));
-        new PropPanelButton(this, buttonPanel, _packageIcon, Translator.localize("UMLMenu", "button.new-package"), "addPackage", null);
-	buttonPanel.add(new PropPanelButton2(this, new ActionRemoveFromModel()));
+        buttonPanel.add(new PropPanelButton2(this, 
+                new ActionNavigateNamespace()));
+        new PropPanelButton(this, buttonPanel, packageIcon, 
+                Translator.localize("UMLMenu", "button.new-package"), 
+                "addPackage", null);
+	buttonPanel.add(new PropPanelButton2(this, 
+            new ActionRemoveFromModel()));
     }
 
 
@@ -136,11 +155,11 @@ public class PropPanelPackage extends PropPanelNamespace  {
      * @return JScrollPane
      */
     public JScrollPane getGeneralizationScroll() {
-        if (_generalizationScroll == null) {
+        if (generalizationScroll == null) {
             JList list = new UMLLinkedList(generalizationListModel);
-            _generalizationScroll = new JScrollPane(list);
+            generalizationScroll = new JScrollPane(list);
         }
-        return _generalizationScroll;
+        return generalizationScroll;
     }
 
     /**
@@ -148,11 +167,11 @@ public class PropPanelPackage extends PropPanelNamespace  {
      * @return JScrollPane
      */
     public JScrollPane getSpecializationScroll() {
-        if (_specializationScroll == null) {
+        if (specializationScroll == null) {
             JList list = new UMLLinkedList(specializationListModel);
-            _specializationScroll = new JScrollPane(list);
+            specializationScroll = new JScrollPane(list);
         }
-        return _specializationScroll;
+        return specializationScroll;
     }
 
 

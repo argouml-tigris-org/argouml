@@ -31,8 +31,12 @@ import org.argouml.util.ConfigLoader;
  */
 public class PropPanelModel extends PropPanelPackage  {
 
+    /**
+     * The constructor.
+     * 
+     */
     public PropPanelModel() {
-        super("Model", _modelIcon, ConfigLoader.getTabPropsOrientation());
+        super("Model", modelIcon, ConfigLoader.getTabPropsOrientation());
     }
 
 } /* end class PropPanelModel */

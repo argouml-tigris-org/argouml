@@ -57,20 +57,26 @@ import org.argouml.util.ConfigLoader;
  */
 public class PropPanelNode extends PropPanelClassifier {
 
-    ////////////////////////////////////////////////////////////////
-    // contructors
+    /**
+     * The constructor.
+     * 
+     */
     public PropPanelNode() {
-        super("Node", _nodeIcon, ConfigLoader.getTabPropsOrientation());
+        super("Node", nodeIcon, ConfigLoader.getTabPropsOrientation());
 
         Class mclass = (Class) ModelFacade.NODE;
 
-        addField(Translator.localize("UMLMenu", "label.name"), getNameTextField());
+        addField(Translator.localize("UMLMenu", "label.name"), 
+                getNameTextField());
 
         
-
-        // addField(Translator.localize("UMLMenu", "label.stereotype"), new UMLComboBoxNavigator(this, Translator.localize("UMLMenu", "tooltip.nav-stereo"), getStereotypeBox()));
-        addField(Translator.localize("UMLMenu", "label.stereotype"), getStereotypeBox());
-        addField(Translator.localize("UMLMenu", "label.namespace"), getNamespaceComboBox());
+        // addField(Translator.localize("UMLMenu", "label.stereotype"), 
+        //     new UMLComboBoxNavigator(this, Translator.localize("UMLMenu", 
+        //     "tooltip.nav-stereo"), getStereotypeBox()));
+        addField(Translator.localize("UMLMenu", "label.stereotype"), 
+                getStereotypeBox());
+        addField(Translator.localize("UMLMenu", "label.namespace"), 
+                getNamespaceComboBox());
 
         add(_modifiersPanel);
         
@@ -83,13 +89,21 @@ public class PropPanelNode extends PropPanelClassifier {
         addSeperator();
 
         JList resList = new UMLLinkedList(new UMLContainerResidentListModel());
-        addField(Translator.localize("UMLMenu", "label.residents"), new JScrollPane(resList));
+        addField(Translator.localize("UMLMenu", "label.residents"), 
+                new JScrollPane(resList));
 
-        buttonPanel.add(new PropPanelButton2(this, new ActionNavigateContainerElement()));
-                new PropPanelButton(this, buttonPanel, _receptionIcon, Translator.localize("UMLMenu", "button.new-reception"), getActionNewReception());
-        buttonPanel
-        .add(new PropPanelButton2(this, new ActionRemoveFromModel()));   }
+        buttonPanel.add(new PropPanelButton2(this, 
+                new ActionNavigateContainerElement()));
+        new PropPanelButton(this, buttonPanel, _receptionIcon, 
+                Translator.localize("UMLMenu", "button.new-reception"), 
+                getActionNewReception());
+        buttonPanel.add(new PropPanelButton2(this, 
+                new ActionRemoveFromModel()));   
+    }
 
+    /**
+     * @return the residents of this node
+     */
     public Collection getResidents() {
         Collection components = null;
         Object target = getTarget();
@@ -99,6 +113,9 @@ public class PropPanelNode extends PropPanelClassifier {
         return components;
     }
 
+    /**
+     * @param components set the residents of this node
+     */
     public void setResidents(Collection components) {
         Object target = getTarget();
         if (ModelFacade.isANode(target)) {

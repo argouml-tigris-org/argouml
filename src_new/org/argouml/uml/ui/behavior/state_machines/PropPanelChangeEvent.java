@@ -30,10 +30,16 @@ package org.argouml.uml.ui.behavior.state_machines;
 
 import org.argouml.util.ConfigLoader;
 
+/**
+ * The properties panel for a ChangeEvent.
+ *
+ */
 public class PropPanelChangeEvent extends PropPanelEvent {
 
-    ////////////////////////////////////////////////////////////////
-    // contructors
+    /**
+     * The constructor.
+     * 
+     */
     public PropPanelChangeEvent() {
         super("Change event", _eventIcon, 
               ConfigLoader.getTabPropsOrientation());

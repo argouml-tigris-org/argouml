@@ -39,12 +39,17 @@ import org.argouml.util.ConfigLoader;
  */
 public class PropPanelLinkEnd extends PropPanelModelElement {
 
+    /**
+     * The constructor.
+     * 
+     */
     public PropPanelLinkEnd() {
-        super("Linkend", _assocEndIcon, ConfigLoader.getTabPropsOrientation());
+        super("Linkend", assocEndIcon, ConfigLoader.getTabPropsOrientation());
         addField(Translator.localize("UMLMenu", "label.name"),
                 getNameTextField());
         
-        addField(Translator.localize("UMLMenu", "label.stereotype"), getStereotypeBox());
+        addField(Translator.localize("UMLMenu", "label.stereotype"), 
+                getStereotypeBox());
                 
         addField(Translator.localize("UMLMenu", "label.namespace"),
                 getNamespaceScroll());

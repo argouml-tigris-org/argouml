@@ -43,26 +43,29 @@ import org.tigris.gef.base.Diagram;
 import org.tigris.gef.presentation.Fig;
 
 /**
- * <p>
  * The manager of the target of argouml. The target of argouml is the selected
  * element in the model. This can either be an instance of a meta-class (an
  * Interface or a Class for example) but it can also be a diagram or a figure 
- * on a diagram.
- * </p>
- * <p>
+ * on a diagram.<p>
+ * 
+ * The purpose of the targetmanager is to have a central spot where we
+ * manage the list of current targets.<p>
+ * 
+ * There can be multiple targets in case
+ * someone selected in the explorer or on the diagram multiple modelelements or
+ * figs.<p>
+ * 
  * Via an event mechanism this manager makes sure that all objects interested 
- * in knowing wether the event changed are acknowledged.
- * </p>
- * <p>
+ * in knowing wether the event changed are acknowledged. <p>
+ * 
  * Note in particular that null is an invalid target.
- * </p>
  * 
  * @author jaap.branderhorst@xs4all.nl
  */
 public final class TargetManager {
 
     /**
-     * The manager of the history of targets. Everytimes the user (or
+     * The manager of the history of targets. Every time the user (or
      * the program) selects a new target, this is recorded in the
      * history. Via navigateBack and navigateForward, the user can
      * browse through the history just like in an ordinary internet

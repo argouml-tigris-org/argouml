@@ -30,10 +30,16 @@ package org.argouml.uml.ui.behavior.state_machines;
 
 import org.argouml.util.ConfigLoader;
 
+/**
+ * The properties panel for a SignalEvent.
+ *
+ */
 public class PropPanelSignalEvent extends PropPanelEvent {
 
-    ////////////////////////////////////////////////////////////////
-    // contructors
+    /**
+     * The constructor.
+     * 
+     */
     public PropPanelSignalEvent() {
         super("Signal event", _eventIcon, 
               ConfigLoader.getTabPropsOrientation());

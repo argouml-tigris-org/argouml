@@ -55,37 +55,55 @@ import org.argouml.util.ConfigLoader;
  */
 public class PropPanelSignal extends PropPanelModelElement {
 
-
-    ////////////////////////////////////////////////////////////////
-    // contructors
+    /**
+     * The constructor.
+     * 
+     */
     public PropPanelSignal() {
-        super("Signal", _signalIcon, ConfigLoader.getTabPropsOrientation());
+        super("Signal", signalIcon, ConfigLoader.getTabPropsOrientation());
 
-        Class mclass = (Class)ModelFacade.SIGNAL;
+        Class mclass = (Class) ModelFacade.SIGNAL;
 
-        addField(Translator.localize("UMLMenu", "label.name"), getNameTextField());
-        addField(Translator.localize("UMLMenu", "label.stereotype"), getStereotypeBox());
-        addField(Translator.localize("UMLMenu", "label.namespace"), getNamespaceComboBox());
+        addField(Translator.localize("UMLMenu", "label.name"), 
+                getNameTextField());
+        addField(Translator.localize("UMLMenu", "label.stereotype"), 
+                getStereotypeBox());
+        addField(Translator.localize("UMLMenu", "label.namespace"), 
+                getNamespaceComboBox());
 
         addSeperator();
 
-        JList contextList = new UMLList(new UMLReflectionListModel(this, "contexts", false, "getContexts", null, "addContext", "deleteContext"), true);
+        JList contextList = new UMLList(new UMLReflectionListModel(this, 
+                "contexts", false, "getContexts", null, "addContext", 
+                "deleteContext"), true);
 	contextList.setBackground(getBackground());
         contextList.setForeground(Color.blue);
-        JScrollPane contextScroll = new JScrollPane(contextList, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-        addField(Translator.localize("UMLMenu", "label.contexts"), contextScroll);        
+        JScrollPane contextScroll = new JScrollPane(
+                contextList, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, 
+                JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        addField(Translator.localize("UMLMenu", "label.contexts"), 
+                contextScroll);        
 
-        buttonPanel.add(new PropPanelButton2(this, new ActionNavigateNamespace()));
-        new PropPanelButton(this, buttonPanel, _signalIcon, Translator.localize("UMLMenu", "button.new-signal"), "newSignal", null);
-        buttonPanel
-        .add(new PropPanelButton2(this, new ActionRemoveFromModel()));   }
+        buttonPanel.add(new PropPanelButton2(this, 
+                new ActionNavigateNamespace()));
+        new PropPanelButton(this, buttonPanel, signalIcon, 
+                Translator.localize("UMLMenu", "button.new-signal"), 
+                "newSignal", null);
+        buttonPanel.add(new PropPanelButton2(this, 
+                new ActionRemoveFromModel()));   
+    }
 
+    /**
+     * Create a new Signal. 
+     */
     public void newSignal() {
         Object target = getTarget();
         if (ModelFacade.isASignal(target)) {
             Object ns = /*(MNamespace)*/ ModelFacade.getNamespace(target);
             if (ns != null) {
-                Object newSig = UmlFactory.getFactory().getCommonBehavior().createSignal();//((MNamespace)ns).getFactory().createSignal();
+                Object newSig = UmlFactory.getFactory().getCommonBehavior()
+                    .createSignal(); 
+                //((MNamespace)ns).getFactory().createSignal();
                 ModelFacade.addOwnedElement(ns, newSig);
                 TargetManager.getInstance().setTarget(newSig);
             }
@@ -95,7 +113,9 @@ public class PropPanelSignal extends PropPanelModelElement {
 
 
     /**
-     * Gets all behavioralfeatures that form the contexts that can send the signal
+     * Gets all behavioralfeatures that form the contexts that 
+     * can send the signal.
+     * 
      * @return Collection
      */
     public Collection getContexts() {
@@ -109,8 +129,10 @@ public class PropPanelSignal extends PropPanelModelElement {
 
 
     /**
-     * Opens a new window where existing behavioral features can be added to the signal as context.
-     * @param index
+     * Opens a new window where existing behavioral features can be added 
+     * to the signal as context.
+     * 
+     * @param index the location of the context
      */
     public void addContext(Integer index) {
     	Object target = getTarget();
@@ -120,7 +142,9 @@ public class PropPanelSignal extends PropPanelModelElement {
 	    Vector selected = new Vector();
 	    choices.addAll(CoreHelper.getHelper().getAllBehavioralFeatures());
 	    selected.addAll(ModelFacade.getContexts(signal));
-	    UMLAddDialog dialog = new UMLAddDialog(choices, selected, Translator.localize("UMLMenu", "dialog.title.add-contexts"), true, true);
+	    UMLAddDialog dialog = new UMLAddDialog(choices, selected, 
+                Translator.localize("UMLMenu", "dialog.title.add-contexts"), 
+                true, true);
 	    int returnValue = dialog.showDialog(ProjectBrowser.getInstance());
 	    if (returnValue == JOptionPane.OK_OPTION) {
 		ModelFacade.setContexts(signal, dialog.getSelected());
@@ -130,13 +154,15 @@ public class PropPanelSignal extends PropPanelModelElement {
 
     /**
      * Deletes the context at index from the list with contexts.
-     * @param index
+     * @param index the location of the context
      */
     public void deleteContext(Integer index) {
     	Object target = getTarget();
     	if (ModelFacade.isASignal(target)) {
 	    Object signal = /*(MSignal)*/ target;
-	    Object feature = /*(MBehavioralFeature)*/ UMLModelElementListModel.elementAtUtil(ModelFacade.getContexts(signal), index.intValue(), null);
+	    Object feature = /*(MBehavioralFeature)*/ 
+	        UMLModelElementListModel.elementAtUtil(ModelFacade
+                    .getContexts(signal), index.intValue(), null);
 	    ModelFacade.removeContext(signal, feature);
     	}
     }

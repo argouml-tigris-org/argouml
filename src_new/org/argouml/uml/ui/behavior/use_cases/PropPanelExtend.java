@@ -76,7 +76,8 @@ public class PropPanelExtend extends PropPanelModelElement {
 //					      "UMLMenu",
 //					      "tooltip.nav-stereo"),
 //					  getStereotypeBox()));
-        addField(Translator.localize("UMLMenu", "label.stereotype"), getStereotypeBox());
+        addField(Translator.localize("UMLMenu", "label.stereotype"), 
+                getStereotypeBox());
         addField(Translator.localize("UMLMenu", "label.namespace"),
 		 getNamespaceScroll());
 
@@ -123,14 +124,15 @@ public class PropPanelExtend extends PropPanelModelElement {
 
         // Add the toolbar.
 
-        buttonPanel.add(new PropPanelButton2(this, new ActionNavigateNamespace()));
-        new PropPanelButton(this, buttonPanel, _extensionPointIcon,
+        buttonPanel.add(new PropPanelButton2(this, 
+                new ActionNavigateNamespace()));
+        new PropPanelButton(this, buttonPanel, extensionPointIcon,
                             localize("New Extension Point"),
                             "newExtensionPoint",
                             null);
         buttonPanel
         .add(new PropPanelButton2(this, new ActionRemoveFromModel()));
-   }
+    }
 
 
     /**

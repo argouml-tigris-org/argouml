@@ -55,22 +55,22 @@ import org.argouml.util.ConfigLoader;
  */
 public class PropPanelAssociationEnd extends PropPanelModelElement {
 
-    protected JLabel associationsLabel;
+    private JLabel associationsLabel;
 
     /**
      * The combobox that shows the type of this association end.
      */
-    protected JComboBox _typeCombobox;
+    private JComboBox typeCombobox;
 
     /**
      * The scrollpane showing the association that owns this associationend
      */
-    protected JScrollPane _associationScroll;
+    private JScrollPane associationScroll;
 
     /**
      * The combobox for the multiplicity of this type.
      */
-    protected UMLComboBox2 _multiplicityComboBox;
+    private UMLComboBox2 multiplicityComboBox;
 
     /**
      * Model for the MultiplicityComboBox
@@ -80,33 +80,33 @@ public class PropPanelAssociationEnd extends PropPanelModelElement {
     /**
      * The checkbox that shows if this association end is navigable.
      */
-    protected JCheckBox _navigabilityCheckBox;
+    private JCheckBox navigabilityCheckBox;
 
     /**
      * The checkbox that shows the ordering of the associationend. It's selected
      * if it's an ordered associationend. Unselected if it's unordered. Sorted
      * is not supported atm.
      */
-    protected JCheckBox _orderingCheckBox;
+    private JCheckBox orderingCheckBox;
 
     /**
      * The checkbox that shows the scope of the associationend. Selected means
      * that the scope is the classifier. Unselected means that the scope is the
      * instance (the default).
      */
-    protected JCheckBox _targetScopeCheckBox;
+    private JCheckBox targetScopeCheckBox;
 
     /**
      * The panel with the radiobuttons the user can select to select the
      * aggregation of this associationend.
      */
-    protected JPanel _aggregationRadioButtonpanel;
+    private JPanel aggregationRadioButtonpanel;
 
     /**
      * The panel with the radiobuttons the user can select to select the
      * changeability of this associationend.
      */
-    protected JPanel _changeabilityRadioButtonpanel;
+    private JPanel changeabilityRadioButtonpanel;
 
     /**
      * The panel with the radiobuttons to set the visibility (public, protected,
@@ -116,14 +116,14 @@ public class PropPanelAssociationEnd extends PropPanelModelElement {
      * as much as possible, the panel is defined here and not in
      * PropPanelModelElement
      */
-    protected JPanel _visibilityRadioButtonPanel;
+    private JPanel visibilityRadioButtonPanel;
 
     /**
      * The list of classifiers that specify the operations that must be
      * implemented by the classifier type. These operations can be used by this
      * association.
      */
-    protected JScrollPane _specificationScroll;
+    private JScrollPane specificationScroll;
 
     /**
      * Constructs the proppanel including initializing all scrollpanes, panels
@@ -135,9 +135,9 @@ public class PropPanelAssociationEnd extends PropPanelModelElement {
         super(name, orientation);
     }
 
-    private String _associationLabel;
+    private String associationLabel;
 
-    protected Icon assocEndorRoleIcon = _assocEndIcon;
+    protected Icon assocEndorRoleIcon = assocEndIcon;
 
     /**
      * Constructs the proppanel and places all scrollpanes etc. on the canvas.
@@ -146,35 +146,44 @@ public class PropPanelAssociationEnd extends PropPanelModelElement {
      */
     public PropPanelAssociationEnd() {
         super("AssociationEnd", ConfigLoader.getTabPropsOrientation());
-        _associationLabel = Translator.localize("UMLMenu", "label.association");
+        associationLabel = Translator.localize("UMLMenu", "label.association");
         Class mclass = (Class) ModelFacade.ASSOCIATION_END;
         createControls(mclass);
         positionStandardControls();
         positionControls();
     }
 
+    /**
+     * @param mclass (not used) the association end
+     */
     protected void createControls(Class mclass) {
-        _typeCombobox = new UMLComboBox2(
+        typeCombobox = new UMLComboBox2(
                 new UMLAssociationEndTypeComboBoxModel(),
                 ActionSetAssociationEndType.SINGLETON, true);
         JList associationList = new UMLLinkedList(
                 new UMLAssociationEndAssociationListModel());
         associationList.setVisibleRowCount(1);
-        _associationScroll = new JScrollPane(associationList);
-        _navigabilityCheckBox = new UMLAssociationEndNavigableCheckBox();
-        _orderingCheckBox = new UMLAssociationEndOrderingCheckBox();
-        _targetScopeCheckBox = new UMLAssociationEndTargetScopeCheckbox();
-        _aggregationRadioButtonpanel = new UMLAssociationEndAggregationRadioButtonPanel(
+        associationScroll = new JScrollPane(associationList);
+        navigabilityCheckBox = new UMLAssociationEndNavigableCheckBox();
+        orderingCheckBox = new UMLAssociationEndOrderingCheckBox();
+        targetScopeCheckBox = new UMLAssociationEndTargetScopeCheckbox();
+        aggregationRadioButtonpanel = 
+            new UMLAssociationEndAggregationRadioButtonPanel(
                 Translator.localize("UMLMenu", "label.aggregation"), true);
-        _changeabilityRadioButtonpanel = new UMLAssociationEndChangeabilityRadioButtonPanel(
+        changeabilityRadioButtonpanel = 
+            new UMLAssociationEndChangeabilityRadioButtonPanel(
                 Translator.localize("UMLMenu", "label.changeability"), true);
-        _visibilityRadioButtonPanel = new UMLModelElementVisibilityRadioButtonPanel(
+        visibilityRadioButtonPanel = 
+            new UMLModelElementVisibilityRadioButtonPanel(
                 Translator.localize("UMLMenu", "label.visibility"), true);
-        _specificationScroll = new JScrollPane(new UMLMutableLinkedList(
+        specificationScroll = new JScrollPane(new UMLMutableLinkedList(
                 new UMLAssociationEndSpecificationListModel(),
                 ActionAddAssociationSpecification.SINGLETON, null, null, true));
     }
 
+    /**
+     * Add the standard controls to the panel.
+     */
     protected void positionStandardControls() {
         addField(Translator.localize("UMLMenu", "label.name"),
                 getNameTextField());
@@ -185,30 +194,33 @@ public class PropPanelAssociationEnd extends PropPanelModelElement {
                 getStereotypeBox());
     }
 
+    /**
+     * Add the specific controls for an associationend to the panel.
+     */
     protected void positionControls() {
-        addField(_associationLabel, _associationScroll);
-        addField(Translator.localize("UMLMenu", "label.type"), _typeCombobox);
+        addField(associationLabel, associationScroll);
+        addField(Translator.localize("UMLMenu", "label.type"), typeCombobox);
         addField(Translator.localize("UMLMenu", "label.multiplicity"),
                 getMultiplicityComboBox());
 
         addSeperator();
 
         JPanel panel = new JPanel(new GridLayout2());
-        panel.add(_navigabilityCheckBox);
-        panel.add(_orderingCheckBox);
-        panel.add(_targetScopeCheckBox);
+        panel.add(navigabilityCheckBox);
+        panel.add(orderingCheckBox);
+        panel.add(targetScopeCheckBox);
         panel.setBorder(new TitledBorder(Translator.localize("UMLMenu",
                 "label.modifiers")));
         panel.setVisible(true);
         add(panel);
         addField(Translator.localize("UMLMenu", "label.specification"),
-                _specificationScroll);
+                specificationScroll);
 
         addSeperator();
 
-        add(_aggregationRadioButtonpanel);
-        add(_changeabilityRadioButtonpanel);
-        add(_visibilityRadioButtonPanel);
+        add(aggregationRadioButtonpanel);
+        add(changeabilityRadioButtonpanel);
+        add(visibilityRadioButtonPanel);
 
         buttonPanel.add(new PropPanelButton2(this,
                 new ActionNavigateAssociation()));
@@ -229,16 +241,17 @@ public class PropPanelAssociationEnd extends PropPanelModelElement {
      * @return UMLMultiplicityComboBox2
      */
     protected UMLComboBox2 getMultiplicityComboBox() {
-        if (_multiplicityComboBox == null) {
+        if (multiplicityComboBox == null) {
             if (multiplicityComboBoxModel == null) {
-                multiplicityComboBoxModel = new UMLAssociationEndMultiplicityComboBoxModel();
+                multiplicityComboBoxModel = 
+                    new UMLAssociationEndMultiplicityComboBoxModel();
             }
-            _multiplicityComboBox = new UMLMultiplicityComboBox2(
+            multiplicityComboBox = new UMLMultiplicityComboBox2(
                     multiplicityComboBoxModel,
                     ActionSetAssociationEndMultiplicity.SINGLETON);
-            _multiplicityComboBox.setEditable(true);
+            multiplicityComboBox.setEditable(true);
         }
-        return _multiplicityComboBox;
+        return multiplicityComboBox;
     }
 
     /**
@@ -261,8 +274,9 @@ public class PropPanelAssociationEnd extends PropPanelModelElement {
      * @return boolean
      */
     public boolean isDeleteEnabled() {
-        if (ModelFacade.isAAssociationEnd(getTarget())) { return ModelFacade
-                .getOtherAssociationEnds(getTarget()).size() > 1; }
+        if (ModelFacade.isAAssociationEnd(getTarget())) { 
+            return ModelFacade.getOtherAssociationEnds(getTarget()).size() > 1; 
+        }
         return false;
     }
 
