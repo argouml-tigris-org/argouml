@@ -36,6 +36,8 @@ import org.apache.log4j.Logger;
 
 import org.argouml.application.api.Argo;
 import org.argouml.application.api.QuadrantPanel;
+import org.argouml.ui.explorer.DnDExplorerTree;
+import org.argouml.ui.explorer.ExportExplorer;
 import org.argouml.ui.explorer.ExplorerTree;
 import org.argouml.ui.explorer.PerspectiveComboBox;
 import org.argouml.ui.explorer.PerspectiveManager;
@@ -130,7 +132,7 @@ public class NavigatorPane
         
         JComboBox combo = new PerspectiveComboBox();
         JComboBox orderByCombo = new JComboBox();
-        tree = new DnDNavigatorTree();
+        tree = new ExportExplorer();//DnDExplorerTree();
         ToolBar toolbar = new ToolBar();
         
         toolbar.putClientProperty("JToolBar.isRollover",  Boolean.TRUE);
