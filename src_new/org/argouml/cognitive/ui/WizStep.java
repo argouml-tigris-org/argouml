@@ -65,7 +65,7 @@ public class WizStep extends JPanel
     ////////////////////////////////////////////////////////////////
     // constants
     public static final ImageIcon WIZ_ICON =
-	ResourceLoaderWrapper.getResourceLoaderWrapper()
+	ResourceLoaderWrapper
 	    .lookupIconResource("Wiz", "Wiz");
 
     ////////////////////////////////////////////////////////////////

@@ -171,9 +171,9 @@ public class ToDoPane extends JPanel
         toolbarPanel.add(_toolbar, BorderLayout.WEST);
         
         ImageIcon hierarchicalIcon =
-	    ResourceLoaderWrapper.getResourceLoaderWrapper()
+	    ResourceLoaderWrapper
 	        .lookupIconResource("Hierarchical", "Hierarchical");
-        ImageIcon flatIcon = ResourceLoaderWrapper.getResourceLoaderWrapper()
+        ImageIcon flatIcon = ResourceLoaderWrapper
 	    .lookupIconResource("Flat", "Flat");
         _flatButton.setIcon(hierarchicalIcon);
         _flatButton.setSelectedIcon(flatIcon);
