@@ -116,7 +116,8 @@ public class ProjectMemberDiagram extends ProjectMember {
     public void save(Writer writer, Integer indent) throws SaveException {
         OCLExpander expander;
         try {
-            expander = new OCLExpander(TemplateReader.SINGLETON.read(PGML_TEE));
+            expander = 
+                new OCLExpander(TemplateReader.getInstance().read(PGML_TEE));
         } catch (FileNotFoundException e) {
             throw new SaveException(e);
         }
