@@ -31,8 +31,6 @@ import java.util.Set;
 import java.util.Vector;
 
 import org.apache.log4j.Logger;
-import org.argouml.kernel.Project;
-import org.argouml.kernel.ProjectManager;
 import org.argouml.model.ModelFacade;
 import org.argouml.uml.diagram.static_structure.ui.CommentEdge;
 
@@ -71,7 +69,6 @@ import ru.novosoft.uml.foundation.data_types.MAggregationKind;
 import ru.novosoft.uml.foundation.data_types.MParameterDirectionKind;
 import ru.novosoft.uml.foundation.data_types.MVisibilityKind;
 import ru.novosoft.uml.foundation.extension_mechanisms.MStereotype;
-import ru.novosoft.uml.model_management.MModel;
 import ru.novosoft.uml.model_management.MPackage;
 
 /**
@@ -503,62 +500,7 @@ public class CoreHelper {
         }
         return result;
     }
-    /**
-     * Build a returnparameter. Removes all current return parameters from the
-     * operation and adds the supplied parameter. The directionkind of the
-     * parameter will be return. The name will be equal to the name of the last
-     * found return parameter or the default value "return" if no return
-     * parameter was present in the operation.
-     *
-     * @param operation is the operation
-     * @param newReturnParameter is the return parameter.
-     */
-//    public void setReturnParameter(Object/*MOperation*/ operation,
-//				   Object/*MParameter*/ newReturnParameter) {
-//        Iterator params = ModelFacade.getParameters(operation).iterator();
-//        String name = "return";
-//        while (params.hasNext()) {
-//            MParameter parameter = (MParameter) params.next();
-//            if ((parameter.getKind()).equals(MParameterDirectionKind.RETURN)){
-//                ModelFacade.removeParameter(operation, parameter);
-//                if (parameter.getName() != null || parameter.getName() == ""){
-//                    name = parameter.getName();
-//                }
-//            }
-//        }
-//        ModelFacade.setName(newReturnParameter, name);
-//        ModelFacade.setKind(newReturnParameter, 
-//                      MParameterDirectionKind.RETURN);
-//        ModelFacade.addParameter(operation, 0, newReturnParameter);
-//        // we set the listeners to the figs here too
-//        // it would be better to do that in the figs themselves
-//        Project p = ProjectManager.getManager().getCurrentProject();
-//        Iterator it = p.findFigsForMember(operation).iterator();
-//        while (it.hasNext()) {
-//            MElementListener listener = (MElementListener) it.next();
-//            // UmlModelEventPump.getPump().removeModelEventListener(listener,
-//            // newReturnParameter);
-//            UmlModelEventPump.getPump()
-//		.addModelEventListener(listener,
-//				       newReturnParameter);
-//        }
-//    }
-
-    /**
-     * Builds a dependency with stereotype support.
-     *
-     * @param from is the model element where the dependency begins
-     * @param to is the model element where dependency ends
-     * @return a newly created dependency.
-     */
-    public Object buildSupportDependency(MModelElement from,
-					      MModelElement to) {
-        Object dep = CoreFactory.getFactory().buildDependency(from, to);
-        ExtensionMechanismsFactory.getFactory()
-	    .buildStereotype(dep, "support", getCurrentModel());
-        return dep;
-    }
-
+    
     /**
      * Returns all behavioralfeatures found in this element and its
      * children.<p>
@@ -624,24 +566,6 @@ public class CoreHelper {
     }
 
     /**
-     * Returns all behavioralfeatures found in the projectbrowser model
-     * @return Collection
-     */
-    public Collection getAllBehavioralFeatures() {
-        MNamespace model = getCurrentModel();
-        return getAllBehavioralFeatures(model);
-    }
-
-    /**
-     * Returns all interfaces found in the projectbrowser model
-     * @return Collection
-     */
-    public Collection getAllInterfaces() {
-        MNamespace model = getCurrentModel();
-        return getAllInterfaces(model);
-    }
-
-    /**
      * Returns all interfaces found in this namespace and in its children
      * @param ns the given namespace
      * @return Collection with all interfaces found 
@@ -661,15 +585,6 @@ public class CoreHelper {
             }
         }
         return list;
-    }
-
-    /**
-     * Returns all classes found in the projectbrowser model.<p>
-     * @return Collection
-     */
-    public Collection getAllClasses() {
-        MNamespace model = getCurrentModel();
-        return getAllClasses(model);
     }
 
     /**
@@ -847,16 +762,6 @@ public class CoreHelper {
     }
 
     /**
-     * Returns all components found in the projectbrowser model
-     *
-     * @return Collection
-     */
-    public Collection getAllComponents() {
-        MNamespace model = getCurrentModel();
-        return getAllComponents(model);
-    }
-
-    /**
      * Returns all components found in this namespace and in its children.
      *
      * @param ns is the namespace.
@@ -880,16 +785,6 @@ public class CoreHelper {
     }
 
     /**
-     * Returns all datatypes found in the projectbrowser model.
-     *
-     * @return Collection
-     */
-    public Collection getAllDataTypes() {
-        MNamespace model = getCurrentModel();
-        return getAllDataTypes(model);
-    }
-
-    /**
      * Returns all components found in this namespace and in its children.
      *
      * @param ns is the namespace
@@ -910,15 +805,6 @@ public class CoreHelper {
             }
         }
         return list;
-    }
-
-    /**
-     * Returns all nodes found in the projectbrowser model
-     * @return Collection
-     */
-    public Collection getAllNodes() {
-        MNamespace model = getCurrentModel();
-        return getAllNodes(model);
     }
 
     /**
@@ -998,23 +884,17 @@ public class CoreHelper {
         }
         return ret;
     }
-    /**
-     * Returns all classifiers found in the projectbrowser model
-     * @return Collection
-     */
-    public Collection getAllClassifiers() {
-        MNamespace model = getCurrentModel();
-        return getAllClassifiers(model);
-    }
+    
     /**
      * Returns all classifiers found in this namespace and in its children
-     * @param ns the given namespace
+     * @param namespace the given namespace
      * @return Collection the collection of all classifiers 
      *                    found in the namespace
      */
-    public Collection getAllClassifiers(MNamespace ns) {
-        if (ns == null)
+    public Collection getAllClassifiers(Object namespace) {
+        if (namespace == null)
             return new ArrayList();
+        MNamespace ns = (MNamespace)namespace;
         Iterator it = ns.getOwnedElements().iterator();
         List list = new ArrayList();
         while (it.hasNext()) {
@@ -1529,13 +1409,11 @@ public class CoreHelper {
      * @param modelElement is the model element
      * @return Collection
      */
-    public Collection getAllPossibleNamespaces(Object modelElement) {
+    public Collection getAllPossibleNamespaces(Object modelElement, Object model) {
         MModelElement m = (MModelElement) modelElement;
         List ret = new ArrayList();
         if (m == null)
             return ret;
-        MNamespace model =
-            (MModel) ProjectManager.getManager().getCurrentProject().getRoot();
         if (isValidNamespace(m, model))
             ret.add(model);
         Iterator it =
@@ -1723,15 +1601,5 @@ public class CoreHelper {
             throw new IllegalArgumentException("kindType: " + kindType
 					       + " not supported");
         }
-    }
-
-    /**
-     * Get the current model.
-     *
-     * @return the current model.
-     */
-    private MNamespace getCurrentModel() {
-	Project project = ProjectManager.getManager().getCurrentProject();
-	return (MModel) project.getModel();
     }
 }

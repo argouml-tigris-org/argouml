@@ -457,7 +457,8 @@ public class ParserDisplay extends Parser {
 
             if (nspe == null || !(ModelFacade.isANamespace(nspe)))
                 throw new ParseException("Unable to resolve namespace", 0);
-            if (!CoreHelper.getHelper().getAllPossibleNamespaces(me).contains(
+            Object model = ProjectManager.getManager().getCurrentProject().getRoot();
+            if (!CoreHelper.getHelper().getAllPossibleNamespaces(me, model).contains(
                     nspe))
                 throw new ParseException("Invalid namespace for element", 0);
 

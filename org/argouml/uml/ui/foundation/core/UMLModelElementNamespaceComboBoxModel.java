@@ -24,6 +24,7 @@
 
 package org.argouml.uml.ui.foundation.core;
 
+import org.argouml.kernel.ProjectManager;
 import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.CoreHelper;
 import org.argouml.model.uml.UmlModelEventPump;
@@ -62,8 +63,9 @@ public class UMLModelElementNamespaceComboBoxModel extends UMLComboBoxModel2 {
      * @see org.argouml.uml.ui.UMLComboBoxModel2#buildModelList()
      */
     protected void buildModelList() {
+        Object model = ProjectManager.getManager().getCurrentProject().getRoot();
         setElements(CoreHelper.getHelper()
-		    .getAllPossibleNamespaces(/*(MModelElement)*/ getTarget()));
+		    .getAllPossibleNamespaces(/*(MModelElement)*/ getTarget(), model));
     }
     
     /**

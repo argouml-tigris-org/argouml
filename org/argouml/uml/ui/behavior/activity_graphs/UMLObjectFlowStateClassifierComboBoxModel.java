@@ -24,6 +24,7 @@
 
 package org.argouml.uml.ui.behavior.activity_graphs;
 
+import org.argouml.kernel.ProjectManager;
 import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.CoreHelper;
 import org.argouml.model.uml.UmlModelEventPump;
@@ -64,8 +65,9 @@ public class UMLObjectFlowStateClassifierComboBoxModel
      * @see org.argouml.uml.ui.UMLComboBoxModel2#buildModelList()
      */
     protected void buildModelList() {
-        setElements(CoreHelper.getHelper()
-                .getAllClassifiers());
+        Object model = 
+            ProjectManager.getManager().getCurrentProject().getModel();
+        setElements(CoreHelper.getHelper().getAllClassifiers(model));
     }
     
     /**
