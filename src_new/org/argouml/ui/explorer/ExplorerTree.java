@@ -194,7 +194,7 @@ public class ExplorerTree
             // Jeremy Bennett patch
             if (ModelFacade.isATransition(value)
 		    || ModelFacade.isAExtensionPoint(value)) {
-                name = GeneratorDisplay.Generate(value);
+                name = GeneratorDisplay.getInstance().generate(value);
             }
             // changing the label in case of comments
             // this is necessary since the name of the comment is the same as
@@ -228,7 +228,8 @@ public class ExplorerTree
 			ModelFacade.getStereotypes(value).iterator().next();
                 }
                 if (stereo != null) {
-                    name += " " + GeneratorDisplay.Generate(stereo);
+                    name += " " + GeneratorDisplay.getInstance()
+                        .generate(stereo);
                 }
             }
             
