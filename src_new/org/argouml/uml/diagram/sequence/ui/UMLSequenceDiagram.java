@@ -30,22 +30,14 @@
 package org.argouml.uml.diagram.sequence.ui;
 
 import java.beans.PropertyVetoException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.UmlFactory;
-import org.argouml.model.uml.behavioralelements.collaborations.CollaborationsFactory;
+import org.argouml.ui.CmdCreateNode;
 import org.argouml.uml.diagram.sequence.SequenceDiagramGraphModel;
 import org.argouml.uml.diagram.ui.UMLDiagram;
-import org.tigris.gef.base.LayerPerspective;
-import org.tigris.gef.base.LayerPerspectiveMutable;
-
-import ru.novosoft.uml.foundation.core.MNamespace;
 
 /**
  * The diagram for sequence diagrams. 
@@ -58,13 +50,7 @@ public class UMLSequenceDiagram extends UMLDiagram {
     
     private Logger _log = Logger.getLogger(this.getClass());
     
-    /**
-     * The interaction that's shown on this sequence diagram.
-     * By default, the interaction is owned by a dummy collaboration that
-     * can be retrieved by calling getCollaboration. See 
-     * the constructor.
-     */
-    private Object _interaction;
+    private Object[] _actions;
     
     /**
      * Flag to indicate if this sequence diagram was derived from some collaboration
@@ -82,16 +68,15 @@ public class UMLSequenceDiagram extends UMLDiagram {
             setName(getNewDiagramName());
         } catch (PropertyVetoException pve) {
         }
-        SequenceDiagramGraphModel gm = new SequenceDiagramGraphModel();
-        setGraphModel(gm);
-        LayerPerspective lay = new LayerPerspectiveMutable(this.getName(), gm);
-        setLayer(lay);
-        SequenceDiagramRenderer rend = new SequenceDiagramRenderer();
-        lay.setGraphEdgeRenderer(rend);
-        lay.setGraphNodeRenderer(rend);        
-        Object rootModel = ProjectManager.getManager().getCurrentProject().getRoot();
-        Object collaboration = CollaborationsFactory.getFactory().buildCollaboration(rootModel);
-        _interaction = CollaborationsFactory.getFactory().buildInteraction(collaboration);
+        // Dirty hack to remove the trash the Diagram constructor leaves
+		SequenceDiagramGraphModel gm = new SequenceDiagramGraphModel();
+		SequenceDiagramLayout lay = new SequenceDiagramLayout(this.getName(), gm);
+		SequenceDiagramRenderer rend = new SequenceDiagramRenderer();
+	    lay.setGraphEdgeRenderer(rend);
+		lay.setGraphNodeRenderer(rend);    
+	    setLayer(lay);        
+        setGraphModel(gm);       
+                   
     }
     
     /**
@@ -138,18 +123,21 @@ public class UMLSequenceDiagram extends UMLDiagram {
      * @see org.argouml.uml.diagram.ui.UMLDiagram#getUmlActions()
      */
     protected Object[] getUmlActions() {
-       return new Object[0];
+    	if (_actions == null) {
+    		_actions = new Object[1];
+    		_actions[0] = new CmdCreateNode(ModelFacade.OBJECT, false, "Object");
+    	}
+       return _actions;
     }
     
     
 
     /**
-     * UMLSequencediagram does not have a namespace. This method throws therefore
-     * an UnsupportedOperationException
+     * 
      * @see org.argouml.uml.diagram.ui.UMLDiagram#getNamespace()
      */
-    public MNamespace getNamespace() throws UnsupportedOperationException {
-        throw new UnsupportedOperationException("Sequence diagram does not have a namespace");
+    public Object getNamespace() {
+       return ModelFacade.getNamespace(((SequenceDiagramGraphModel)getGraphModel() ).getCollaboration());
     }
 
     /**
@@ -165,40 +153,13 @@ public class UMLSequenceDiagram extends UMLDiagram {
      * Method called by Project.removeDiagram to cleanUp the mess in this diagram 
      * when the diagram is removed.
      */
-    public void cleanUp() {        
-       Iterator it = getObjects().iterator();
-       while (it.hasNext()) {
-           UmlFactory.getFactory().delete(it.next()); 
-       }
-       if (!_isDerivedFromCollaboration) {
-           UmlFactory.getFactory().delete(getCollaboration());
-       }
+    public void cleanUp() {   
+    	Object collab = ((SequenceDiagramGraphModel)getGraphModel()).getCollaboration();
+    	UmlFactory.getFactory().delete(collab);           
     }
+       
     
-    /**
-     * Utility method to retreive the collaboration. 
-     * @return the collaboration that owns the interaction shown on this diagram
-     */
-    public Object getCollaboration() {
-        return ModelFacade.getContext(_interaction);
-    }
     
-    /**
-     * Utility method to retrieve all objects (the modelelement Object, not all figs)
-     * on this sequence diagram.
-     * @return
-     */
-    public Collection getObjects() {
-        Iterator it = getGraphModel().getNodes().iterator();
-        List objects = new ArrayList();
-        while (it.hasNext()) {
-            Object o = it.next();
-            if (ModelFacade.isAObject(o)) {
-                objects.add(o);
-            }
-        }
-        return objects;
-    }
     
 
 } /* end class UMLSequenceDiagram */

@@ -1,5 +1,4 @@
-// $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2003 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -22,49 +21,45 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-
-// File: TableModelSeqObjectByProps.java
-// Classes: TableModelSeqObjectByProps
-// Original Author: 5eichler@informatik.uni-hamburg.de
 // $Id$
+package org.argouml.uml.diagram.sequence.ui;
 
+import org.argouml.ui.CmdCreateNode;
+import org.argouml.uml.diagram.sequence.SequenceDiagramGraphModel;
+import org.tigris.gef.base.Editor;
+import org.tigris.gef.base.Globals;
+import org.tigris.gef.graph.GraphModel;
 
-package org.argouml.uml.diagram.sequence;
+import ru.novosoft.uml.behavior.common_behavior.MObject;
 
-import java.util.*;
-import java.beans.*;
+/**
+ * Action to add an object to a sequence diagram.
+ * @author jaap.branderhorst@xs4all.nl
+ * Aug 11, 2003
+ */
+public class ActionAddObject extends CmdCreateNode {
 
-import ru.novosoft.uml.foundation.core.*;
-import ru.novosoft.uml.behavior.common_behavior.*;
+      
+    public ActionAddObject() {
+        super(MObject.class, "Object");   
+    }
+       
 
-import org.argouml.uml.*;
-import org.argouml.uml.diagram.sequence.ui.*;
-
-
-public class TableModelSeqObjectByProps extends TableModelComposite {
-    ////////////////
-    // constructor
-    public TableModelSeqObjectByProps() { }
-
-    public void initColumns() {
-	addColumn(ColumnDescriptor.Name);
-	addColumn(ColumnDescriptor.BaseForObject);
-	addColumn(ColumnDescriptor.MStereotype);
+    /**
+     * @see org.tigris.gef.graph.GraphFactory#makeNode()
+     */
+    public Object makeNode() {        
+        Object o = super.makeNode();
+        Editor ce = Globals.curEditor();
+        GraphModel gm = ce.getGraphModel();
+        if (gm instanceof SequenceDiagramGraphModel) {
+            SequenceDiagramGraphModel sgm = (SequenceDiagramGraphModel) gm;
+            // first, lets get the nodes so we can determine where to place this one
+            // sgm.get
+        } else {
+            throw new IllegalStateException("Graphmodel is not a sequence diagram graph model");
+        }
+        return o;
     }
 
-    public Vector rowObjectsFor(Object t) {
-	if (!(t instanceof UMLSequenceDiagram)) return new Vector();
-	UMLSequenceDiagram d = (UMLSequenceDiagram) t;
-	Vector nodes = d.getNodes();
-	Vector res = new Vector();
-	int size = nodes.size();
-	for (int i = 0; i < size; i++) {
-	    Object node = nodes.elementAt(i);
-	    if (node instanceof MObject) res.addElement(node);
-	}
-	return res;
-    }
-
-    public String toString() { return "SeqObjects vs. Properties"; }
-} /* end class TableModelSeqObjectByProps */
-
+}
