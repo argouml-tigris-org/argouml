@@ -49,7 +49,17 @@ the version &argoversion; of &argouml;.
       <firstname>Linus</firstname>
       <surname>Tolke</surname>
     </author>
+
+    <author>
+      <firstname>Michiel</firstname>
+      <surname>van der Wulp</surname>
+    </author>
   </authorgroup>
+
+  <copyright>
+    <year>2004</year>
+    <holder>Michiel van der Wulp</holder>
+  </copyright>
 
   <copyright>
     <year>2003</year>
