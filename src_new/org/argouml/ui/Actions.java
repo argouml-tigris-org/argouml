@@ -68,6 +68,7 @@ import org.argouml.uml.diagram.deployment.ui.*;
 import org.argouml.uml.diagram.state.ui.*;
 import org.argouml.uml.diagram.static_structure.ui.*;
 import org.argouml.uml.diagram.use_case.ui.*;
+import org.argouml.uml.diagram.sequence.ui.*;
 import org.argouml.util.*;
 import org.argouml.xml.argo.ArgoParser;
 
@@ -128,6 +129,7 @@ public class Actions {
   public static UMLAction ActivityDiagram = new ActionActivityDiagram();
   public static UMLAction CollaborationDiagram = new ActionCollaborationDiagram();
   public static UMLAction DeploymentDiagram = new ActionDeploymentDiagram();
+  public static UMLAction SequenceDiagram = new ActionSequenceDiagram();
 
   //public static UMLAction Class = new ActionClass();
   //public static UMLAction MInterface = new ActionInterface();
@@ -1329,6 +1331,26 @@ class ActionDeploymentDiagram extends UMLChangeAction {
     super.actionPerformed(ae);
   }
 } /* end class ActionDeploymentDiagram */
+
+
+class ActionSequenceDiagram extends UMLChangeAction {
+  public ActionSequenceDiagram() { super("SequenceDiagram"); }
+
+  public void actionPerformed(ActionEvent ae) {
+    Project p = ProjectBrowser.TheInstance.getProject();
+    try {
+      Object target = ProjectBrowser.TheInstance.getDetailsTarget();
+      MNamespace ns = p.getCurrentNamespace();
+      if (target instanceof MModel) ns = (MNamespace) target;
+      Diagram d  = new UMLSequenceDiagram(ns);
+      p.addMember(d);
+      ProjectBrowser.TheInstance.getNavPane().addToHistory(d);
+      ProjectBrowser.TheInstance.setTarget(d);
+    }
+    catch (PropertyVetoException pve) { }
+    super.actionPerformed(ae);
+  }
+}  /* end class ActionSequenceDiagram */
 
 ////////////////////////////////////////////////////////////////
 // model element creation actions

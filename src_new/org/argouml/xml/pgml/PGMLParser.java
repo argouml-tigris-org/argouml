@@ -70,6 +70,8 @@ public class PGMLParser implements ElementHandler, TagHandler {
 							 "org.argouml.uml.diagram.deployment.ui.UMLDeploymentDiagram");
 	  _translateUciToOrg.put("uci.uml.visual.UMLStateDiagram",
 							 "org.argouml.uml.diagram.state.ui.UMLStateDiagram");
+           _translateUciToOrg.put("uci.uml.visual.UMLSequenceDiagram",
+							 "org.argouml.uml.diagram.sequence.ui.UMLSequenceDiagram");
 	  _translateUciToOrg.put("uci.uml.visual.FigAssociation",
 							 "org.argouml.uml.diagram.ui.FigAssociation");
 	  _translateUciToOrg.put("uci.uml.visual.FigRealization",
@@ -148,6 +150,12 @@ public class PGMLParser implements ElementHandler, TagHandler {
 							 "org.argouml.uml.diagram.use_case.ui.FigActor");
 	  _translateUciToOrg.put("uci.uml.visual.FigUseCase",
 							 "org.argouml.uml.diagram.use_case.ui.FigUseCase");
+          _translateUciToOrg.put("uci.uml.visual.FigSeqLink",
+						 "org.argouml.uml.diagram.sequence.ui.FigSeqLink");
+          _translateUciToOrg.put("uci.uml.visual.FigSeqObject",
+							 "org.argouml.uml.diagram.sequence.ui.FigSeqObject");
+          _translateUciToOrg.put("uci.uml.visual.FigSeqStimulus",
+							 "org.argouml.uml.diagram.sequence.ui.FigSeqStimulus");
   }
 
   ////////////////////////////////////////////////////////////////
@@ -509,6 +517,14 @@ public class PGMLParser implements ElementHandler, TagHandler {
     if (dasharray != null && !dasharray.equals("") &&
 	!dasharray.equals("solid"))
       f.setDashed(true);
+
+    String dynobjs = e.getAttribute("dynobjects");
+    if (dynobjs != null && !dynobjs.equals("")) {
+      if (f instanceof FigGroup) {
+        FigGroup fg = (FigGroup) f;
+        fg.parseDynObjects(dynobjs);
+      }
+    }
 
     try {
       String owner = e.getAttribute("href");

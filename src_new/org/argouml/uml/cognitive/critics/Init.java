@@ -37,6 +37,7 @@ import org.argouml.uml.diagram.deployment.ui.*;
 import org.argouml.uml.diagram.state.ui.*;
 import org.argouml.uml.diagram.static_structure.ui.*;
 import org.argouml.uml.diagram.use_case.ui.*;
+import org.argouml.uml.diagram.sequence.ui.*;
 
 /** Registers critics for use in Argo/UML.  This class is called at
  *  system startup time. If you add a new critic, you need to add a
@@ -123,6 +124,12 @@ public class Init {
   public static Critic crWrongLinkEnds = new CrWrongLinkEnds();
   public static Critic crInstanceWithoutClassifier = new CrInstanceWithoutClassifier();
 
+  public static Critic crCallWithoutReturn = new CrCallWithoutReturn();
+  public static Critic crReturnWithoutCall = new CrReturnWithoutCall();
+  public static Critic crLinkWithoutStimulus = new CrLinkWithoutStimulus();
+  public static Critic crSeqInstanceWithoutClassifier = new CrSeqInstanceWithoutClassifier();
+  public static Critic crStimulusWithWrongPosition = new CrStimulusWithWrongPosition();
+
   // from UML 1.1 Semantics spec
 
   // common coding conventions
@@ -196,7 +203,8 @@ public class Init {
       java.lang.Class classDiagramCls   = UMLClassDiagram.class;
       java.lang.Class stateDiagramCls   = UMLStateDiagram.class;
       java.lang.Class useCaseDiagramCls = UMLUseCaseDiagram.class;
-      java.lang.Class deploymentDiagramCls = UMLDeploymentDiagram.class;     
+      java.lang.Class deploymentDiagramCls = UMLDeploymentDiagram.class;
+      java.lang.Class sequenceDiagramCls = UMLSequenceDiagram.class;
       java.lang.Class nodeCls           = FigNodeModelElement.class;
       java.lang.Class edgeCls           = FigEdgeModelElement.class;
 
@@ -309,6 +317,12 @@ public class Init {
       Agency.register(crObjectWithoutComponent, deploymentDiagramCls);
       Agency.register(crWrongLinkEnds, deploymentDiagramCls);
       Agency.register(crInstanceWithoutClassifier, deploymentDiagramCls);
+
+      Agency.register(crCallWithoutReturn, sequenceDiagramCls);
+      Agency.register(crReturnWithoutCall, sequenceDiagramCls);
+      Agency.register(crLinkWithoutStimulus, sequenceDiagramCls);
+      Agency.register(crSeqInstanceWithoutClassifier, sequenceDiagramCls);
+      Agency.register(crStimulusWithWrongPosition, sequenceDiagramCls);
 
       Agency.register(crNodesOverlap, diagramCls);
       Agency.register(crZeroLengthEdge, edgeCls);
