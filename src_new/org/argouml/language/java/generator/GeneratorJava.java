@@ -1,4 +1,4 @@
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2001 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -20,6 +20,7 @@
 // PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
 
 package org.argouml.language.java.generator;
 
@@ -86,7 +87,9 @@ public class GeneratorJava extends Generator {
     String packagePath = cls.getNamespace().getName();
     MNamespace parent = cls.getNamespace().getNamespace();
     while (parent != null) {
-      packagePath = parent.getName() + "." + packagePath;
+	  // ommit root package name; it's the model's root
+	  if (parent.getNamespace() != null)
+        packagePath = parent.getName() + "." + packagePath;
       parent = parent.getNamespace();
     }
 
@@ -108,21 +111,40 @@ public class GeneratorJava extends Generator {
 	  lastIndex = index;
 	} while (true);
     String pathname = path + filename;
+	System.out.println("-----" + pathname + "-----");
+
+    //now decide wether file exist and need an update or is to be newly generated
+    File f = new File(pathname);
+	if(f.exists()) {
+		try {
+	      update(cls, f);
+	    }
+	    catch (Exception exp) {
+			System.out.println("FAILED: " + f.getPath());
+		}
+		System.out.println("----- end generating -----");
+	    return pathname;
+	}
+
     //String pathname = path + filename;
     // needs-more-work: package, project basepath, tagged values to configure
+	System.out.println("Generating (new) " + f.getPath());
     String header = SINGLETON.generateHeader(cls, pathname, packagePath);
     String src = SINGLETON.generate(cls);
-    FileOutputStream fos = null;
+    BufferedWriter fos = null;
     try {
-      fos = new FileOutputStream(pathname);
-      fos.write(header.getBytes());
-      fos.write(src.getBytes());
+      fos = new BufferedWriter(new FileWriter(f));
+      fos.write(header);
+      fos.write(src);
     }
     catch (IOException exp) { }
     finally {
       try { if (fos != null) fos.close(); }
-      catch (IOException exp) { }
+      catch (IOException exp) {
+		System.out.println("FAILED: " + f.getPath());
+	  }
     }
+	System.out.println("----- end updating -----");
     return pathname;
   }
 
@@ -706,4 +728,32 @@ public class GeneratorJava extends Generator {
 	    generateAction(m.getAction());
     }
 
+
+    /**
+       Update a source code file.
+
+       @param mClassifier The classifier to update from.
+       @param file The file to update.
+    */
+    private static void update(MClassifier mClassifier,
+                        File file)
+	throws Exception
+    {
+	System.out.println("Parsing " + file.getPath());
+
+	JavaLexer lexer =
+	    new JavaLexer(new BufferedReader(new FileReader(file)));
+	JavaRecognizer parser = new JavaRecognizer(lexer);
+	CodePieceCollector cpc = new CodePieceCollector();
+	parser.compilationUnit(cpc);
+
+	File origFile = new File(file.getAbsolutePath());
+	File newFile = new File(file.getAbsolutePath()+".updated");
+	System.out.println("Generating " + newFile.getPath());
+	cpc.filter(file, newFile, mClassifier.getNamespace());
+	System.out.println("Backing up " + file.getPath());
+	file.renameTo(new File(file.getAbsolutePath()+".backup"));
+	System.out.println("Updating " + file.getPath());
+	newFile.renameTo(origFile);
+    }
 } /* end class GeneratorJava */
