@@ -429,11 +429,15 @@ public class GenericArgoMenuBar extends JMenuBar
         JMenu distribute = (JMenu) _arrange.add(new JMenu(menuLocalize("Distribute")));
         JMenu reorder = (JMenu) _arrange.add(new JMenu(menuLocalize("Reorder")));
         JMenu nudge = (JMenu) _arrange.add(new JMenu(menuLocalize("Nudge")));
+        JMenu setPreferredSize = (JMenu) _arrange.add(new JMenu(menuLocalize("Set size")));
         JMenu layout = (JMenu) _arrange.add(new JMenu(menuLocalize("Layout")));
         appendPluggableMenus(_arrange, PluggableMenu.KEY_ARRANGE);
 
-        Runnable initLater = new
-            InitMenusLater(align, distribute, reorder, nudge, layout, editTabs, detailsTabs);
+        Runnable initLater = new InitMenusLater(align, distribute, 
+                                                reorder, nudge, 
+                                                setPreferredSize, layout, 
+                                                editTabs, detailsTabs);
+
         org.argouml.application.Main.addPostLoadAction(initLater);
 
         _generate = (JMenu) add(new JMenu(menuLocalize("Generation")));
