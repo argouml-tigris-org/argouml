@@ -91,7 +91,8 @@ public class TestModelFacade extends TestCase {
 			rc = (Boolean)methodIsA.invoke(facade, args);
 			assertNotNull("isA" + objectType + " called with null", rc);
 			assertTrue("isA" + objectType + " called with null", ! rc.booleanValue());
-            assertTrue("Should not be able to call isA" + objectType, umlClass.isAvailableInFacade());
+            assertTrue("Should not be able to call isA" + objectType,
+                       umlClass.isAvailableInFacade());
 
 			// Test with an object
 			args[0] = new Object();
@@ -99,7 +100,8 @@ public class TestModelFacade extends TestCase {
 			rc = (Boolean)methodIsA.invoke(facade, args);
 			assertNotNull("isA" + objectType + " called with new Object()", rc);
 			assertTrue("isA" + objectType + " called with new Object()", ! rc.booleanValue());
-            assertTrue("Should not be able to call isA" + objectType, umlClass.isAvailableInFacade());
+            assertTrue("Should not be able to call isA" + objectType,
+                       umlClass.isAvailableInFacade());
     
             if (umlClass.isCreatable()) {
                 Object testObject = null;
@@ -112,8 +114,10 @@ public class TestModelFacade extends TestCase {
 					args[0] = testObject;
 					rc = null;
 					rc = (Boolean)methodIsA.invoke(facade, args);
-					assertTrue("isA" + objectType + " did not work with legacy create", rc.booleanValue());
-					assertTrue("Should not be able to call isA" + objectType, umlClass.isAvailableInFacade());
+					assertTrue("isA" + objectType
+					           + " did not work with legacy create", rc.booleanValue());
+					assertTrue("Should not be able to call isA" + objectType,
+					           umlClass.isAvailableInFacade());
 				}
 
 				// TODO Make sure ActionExpression and ComponentInstance
@@ -149,7 +153,8 @@ public class TestModelFacade extends TestCase {
 
 		}
 		catch (Exception e) {
-			assertTrue("Cannot execute ModelFacade.isA" + objectType + " because of " + e, umlClass.isAvailableInFacade());
+			assertTrue("Cannot execute ModelFacade.isA" + objectType
+			           + " because of " + e, umlClass.isAvailableInFacade());
 		}
 	}
 
