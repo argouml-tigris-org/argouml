@@ -1,4 +1,4 @@
-// FILE: INSTALL.txt
+  // FILE: INSTALL.txt
 // $Id$
 
 Notes on how to install and compile the UCI Graph Editing Framework
