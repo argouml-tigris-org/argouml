@@ -32,6 +32,7 @@ import ru.novosoft.uml.foundation.data_types.MActionExpression;
 import ru.novosoft.uml.foundation.data_types.MArgListsExpression;
 import ru.novosoft.uml.foundation.data_types.MBooleanExpression;
 import ru.novosoft.uml.foundation.data_types.MExpression;
+import ru.novosoft.uml.foundation.data_types.MExpressionEditor;
 import ru.novosoft.uml.foundation.data_types.MIterationExpression;
 import ru.novosoft.uml.foundation.data_types.MMappingExpression;
 import ru.novosoft.uml.foundation.data_types.MMultiplicity;
@@ -100,6 +101,19 @@ public class DataTypesFactory extends AbstractUmlModelFactory {
         MBooleanExpression expression = new MBooleanExpression(language, body);
 	super.initialize(expression);
 	return expression;
+    }
+    
+    /** Create an UML ExpressionEditor.
+     *  
+     *  @return an initialized ExpressionEditor instance.
+     */
+    public Object/*MExpressionEditor */ createExpressionEditor(Object expr) {
+        MExpressionEditor editor = new MExpressionEditor();
+        MExpression expression = (MExpression) expr;
+	super.initialize(editor);
+        editor.setBody(expression.getBody());
+        editor.setLanguage(expression.getLanguage());
+	return editor;
     }
 
     /** Create an empty but initialized instance of a UML Expression.
