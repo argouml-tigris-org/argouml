@@ -31,7 +31,6 @@ import org.argouml.ui.targetmanager.TargetListener;
  * based on the selections made in the gui/views.
  * 
  * @since 0.13.4
- * @author $Author$
  */
 public interface TabTarget extends TargetListener {
 
