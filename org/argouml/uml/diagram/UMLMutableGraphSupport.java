@@ -342,8 +342,12 @@ public abstract class UMLMutableGraphSupport extends MutableGraphSupport {
             comment = from;
             annotatedElement = to;
         } else {
-            comment = to;
-            annotatedElement = from;
+            if (ModelFacade.isAComment(to)) {
+                comment = to;
+                annotatedElement = from;
+            } else {
+                return null;
+            }
         }
 
         CommentEdge connection = new CommentEdge(from, to);
