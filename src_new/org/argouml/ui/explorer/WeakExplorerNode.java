@@ -51,9 +51,6 @@ public interface WeakExplorerNode {
      * This method is called by ExplorerTreeModel to check if this
      * WeakExplorerNode subsumes another WeakExplorerNode, ie if this
      * node should be preserved rather than adding the other node.
-     * This only comes into play if this instance and the other
-     * sorts equal, since otherwise there will anyway be tree
-     * modifications and then it doesn't matter.
      *
      * @param obj another WeakExplorerNode
      * @return true if this node subsumes obj, otherwise false.
