@@ -251,7 +251,14 @@ implements TabModelTarget, NavigationListener, ArgoModuleEventListener {
   ////////////////////////////////////////////////////////////////
   // accessors
 	public void setTarget(Object t) {
-		_target = t;
+            
+		// don't need to change the target if it is the same as the
+                // existing one!
+                if(_target == t)
+                    return;
+                
+                _target = t;
+                
 		if (_lastPanel != null) remove(_lastPanel);
 		if (t == null) {
 			add(_blankPanel, BorderLayout.CENTER);
