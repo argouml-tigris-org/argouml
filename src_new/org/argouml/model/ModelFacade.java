@@ -360,8 +360,17 @@ public class ModelFacade {
      * @returns true if handle is a constructor.
      */
     public static boolean isConstructor(Object handle) {
-        return CoreHelper.getHelper().isOperation(handle)
-		&& isStereotype(handle, "create");
+	return  (CoreHelper.getHelper().isOperation(handle)
+		 && ExtensionMechanismsHelper.getHelper().isStereotypeInh(
+			getStereoType(handle),
+			"create",
+			"BehavioralFeature"))
+		||
+		(CoreHelper.getHelper().isMethod(handle)
+		 && ExtensionMechanismsHelper.getHelper().isStereotypeInh(
+			getStereoType(CoreHelper.getHelper().getSpecification(handle)),
+			"create",
+			"BehavioralFeature"));
     }
 
     /**
@@ -522,6 +531,9 @@ public class ModelFacade {
      * @param handle candidate
      * @param stereotype a string that is the stereotype name.
      * @return true if handle is a singleton.
+     * @deprecated ExtensionMechanismsFactory::isStereotype should be used
+     *	instead. Since this should only ever be used together with predefined
+     *	stereotypes the base class can be found in the UML 1.3 specification.
      */
     public static boolean isStereotype(Object handle, String stereotypename) {
         if (handle instanceof MModelElement) {
