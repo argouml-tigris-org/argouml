@@ -212,6 +212,15 @@ public class Argo
     public static final ConfigurationKey KEY_USER_IMPORT_CLASSPATH =
 	Configuration.makeKey("import", "clazzpath");
     
+    /** Key for user explorer perspectives.
+     *<pre>
+     * format:
+     * perspective name,rule,rule,rule;perspective name, etc
+     *</pre>
+     */
+    public static final ConfigurationKey KEY_USER_EXPLORER_PERSPECTIVES =
+	Configuration.makeKey("explorer", "perspectives");
+    
     /** Standard definition of the logging category for the console.
      */
     public static final String CONSOLE_LOG = "argo.console.log";
