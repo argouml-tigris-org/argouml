@@ -152,8 +152,8 @@ public class UMLInitialValueComboBox extends JComboBox
         String eventProp = event.getName();
 //      Argo.log.info("UMLInitialValueComboBox: " + eventProp);     //--pjs--        
         if(eventProp.equals("type")) {
-//            updateDefaults();
-            update();
+            updateDefaults();
+//            update();
         }
         // update for the name field is handled in UMLTextField.java
         else if(!eventProp.equals("name")){
