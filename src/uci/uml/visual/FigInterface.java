@@ -44,6 +44,8 @@ import uci.uml.Foundation.Data_Types.*;
 
 public class FigInterface extends FigNodeModelElement {
 
+  public static int OVERLAP = 4;
+
   protected FigRect _bigPort;
   protected FigRect _outline; 
   protected FigText _stereo; 
@@ -52,13 +54,13 @@ public class FigInterface extends FigNodeModelElement {
   public FigInterface(GraphModel gm, Object node) {
     super(gm, node);
 
-    if (node instanceof ElementImpl)
-      ((ElementImpl)node).addVetoableChangeListener(this);
+//     if (node instanceof ElementImpl)
+//       ((ElementImpl)node).addVetoableChangeListener(this);
 
     _bigPort = new FigRect(8, 8, 92, 64, Color.cyan, Color.cyan);
-    
+
     _outline = new FigRect(8,8,92,30, Color.black, Color.white);
-    
+
     _stereo = new FigText(10,10,92,15,Color.black, "Times", 10);
     _stereo.setExpandOnly(true);
     _stereo.setFilled(false);
@@ -66,7 +68,7 @@ public class FigInterface extends FigNodeModelElement {
     _stereo.setEditable(false);
     _stereo.setText("<<Interface>>");
     _stereo.setHeight(15);
- 
+
     _name.setHeight(18);
     _name.setY(23);
     _name.setWidth(92);
@@ -74,6 +76,7 @@ public class FigInterface extends FigNodeModelElement {
     _name.setFilled(false);
 
     _oper = new FigText(10,40,92,33,Color.black, "Times", 10);
+    _oper.setFont(LABEL_FONT);
     _oper.setExpandOnly(true);
     _oper.setJustification(FigText.JUSTIFY_LEFT);
 
@@ -89,33 +92,33 @@ public class FigInterface extends FigNodeModelElement {
     setBounds(r.x, r.y, r.width, r.height);
   }
 
+  public Dimension getMinimumSize() {
+    Dimension stereoMin = _stereo.getMinimumSize();
+    Dimension nameMin = _name.getMinimumSize();
+    Dimension operMin = _oper.getMinimumSize();
+
+    int h = stereoMin.height + nameMin.height - OVERLAP + operMin.height;
+    int w = Math.max(stereoMin.width, Math.max(nameMin.width, operMin.width));
+    return new Dimension(w, h);
+  }
+  
   /* Override setBounds to keep shapes looking right */
   public void setBounds(int x, int y, int w, int h) {
     if (_name == null) return;
-    int leftSide = x;
-    int widthP = w;
-    int topSide = y;
-    int heightP = h;
 
-    Rectangle _outline_pref = _outline.getBounds();
-    Rectangle _stereo_pref = _stereo.getBounds();
-    Rectangle _name_pref = _name.getBounds();
-    Rectangle _oper_pref = _oper.getBounds();
+    Dimension stereoMin = _stereo.getMinimumSize();
+    Dimension nameMin = _name.getMinimumSize();
+    Dimension operMin = _oper.getMinimumSize();
 
-    int total_height = _stereo_pref.height + _name_pref.height + _oper_pref.height;
-
-    widthP = Math.max(widthP, Math.max(_stereo_pref.width, Math.max(_name_pref.width, _oper_pref.width)));
-    heightP = Math.max(heightP, total_height);
-
-    int extra_each = (heightP - total_height) / 3;
-
-    _outline.setBounds(leftSide-1, topSide, widthP+2, _stereo_pref.height + _name.getBounds().height + extra_each);
-    _stereo.setBounds(leftSide, topSide, widthP, _stereo_pref.height + extra_each);
-    _name.setBounds(leftSide, topSide + _stereo.getBounds().height, widthP, _name_pref.height + extra_each);
-    _oper.setBounds(leftSide, topSide + _stereo.getBounds().height + _name.getBounds().height, widthP, _oper_pref.height + extra_each);
-    _bigPort.setBounds(leftSide+1, topSide+1, widthP-1, heightP-2);
+    _outline.setBounds(x, y, w, stereoMin.height + nameMin.height - OVERLAP);
+    _stereo.setBounds(x, y, w, stereoMin.height);
+    _name.setBounds(x, y + stereoMin.height - OVERLAP, w, nameMin.height);
+    _oper.setBounds(x+1, y + _outline.getBounds().height,
+		    w-2, h - _outline.getBounds().height);
+    _bigPort.setBounds(x+1, y+1, w-2, h-2);
 
     calcBounds(); //_x = x; _y = y; _w = w; _h = h;
+    updateEdges();
   }
 
   ////////////////////////////////////////////////////////////////

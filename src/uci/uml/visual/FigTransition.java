@@ -38,27 +38,56 @@ import java.beans.*;
 import uci.gef.*;
 import uci.uml.ui.*;
 import uci.uml.Foundation.Core.*;
+import uci.uml.Foundation.Data_Types.*;
 import uci.uml.Behavioral_Elements.State_Machines.*;
+import uci.uml.generate.*;
 
-public class FigTransition extends FigEdgeLine {
+public class FigTransition extends FigEdgeModelElement {
 
   public FigTransition(Object edge) {
-    super();
-    setOwner(edge);
+    super(edge);
+    addPathItem(_name, new PathConvPercent(this, 50, 10));
 
     // set whatever arrow heads and colors are appropriate
     _fig.setLineColor(Color.black);
 
     setDestArrowHead(new ArrowHeadGreater());
-    setBetweenNearestPoints(true);
+  }
+
+  /** This method is called after the user finishes editing a text
+   *  field that is in the FigEdgeModelElement.  Determine which field
+   *  and update the model.  This class handles the name, subclasses
+   *  should override to handle other text elements. */
+  protected void textEdited(FigText ft) throws PropertyVetoException {
+    String s = ft.getText();
+    Transition newTrans = ParserDisplay.SINGLETON.parseTransition(s);
+    if (newTrans == null) return;
+    Transition t = (Transition) getOwner();
+
+    try {
+      t.setName(newTrans.getName());
+      t.setTrigger(newTrans.getTrigger());
+      t.setGuard(newTrans.getGuard());
+      t.setEffect(newTrans.getEffect());
+    }
+    catch (PropertyVetoException pve) {
+      System.out.println("PropertyVetoException in FigTransition#textEdited");
+    }
+  }
+
+  /** This is called aftern any part of the UML ModelElement has
+   *  changed. This method automatically updates the name FigText.
+   *  Subclasses should override and update other parts. */
+  protected void modelChanged() {
+    ModelElement me = (ModelElement) getOwner();
+    //System.out.println("FigTransition modelChanged: " + me.getClass());
+    String nameStr = GeneratorDisplay.Generate(me);
+    _name.setText(nameStr);
   }
 
   public void dispose() {
     //System.out.println("disposing FigTransition");
     if (!(getOwner() instanceof Element)) return;
-    Element elmt = (Element) getOwner();
-    Project p = ProjectBrowser.TheInstance.getProject();
-    p.moveToTrash(elmt);
     Transition tr = (Transition) getOwner();
     if (tr == null) return;
     try {

@@ -30,11 +30,12 @@ package uci.uml.ui;
 import java.util.*;
 import java.beans.*;
 
-import uci.uml.Model_Management.*;
-import uci.uml.Foundation.Core.*;
 import uci.gef.Layer;
 import uci.gef.Diagram;
 import uci.gef.Fig;
+import uci.uml.Model_Management.*;
+import uci.uml.Foundation.Core.*;
+import uci.uml.generate.GenerationPreferences;
 
 /** A datastructure that represents the designer's current project.  A
  *  Project consists of diagrams and UML models. */
@@ -49,6 +50,7 @@ public class Project implements java.io.Serializable {
   public Vector _diagrams = new Vector(); // instances of LayerDiagram
   public boolean _needsSave = false;
   public Model _curModel = null;
+  public GenerationPreferences _cgPrefs = new GenerationPreferences();
   public transient VetoableChangeSupport _vetoSupport = null;
 
   ////////////////////////////////////////////////////////////////
@@ -118,6 +120,9 @@ public class Project implements java.io.Serializable {
     if (_models.size() > 0) return _models.elementAt(0);
     return null;
   }
+
+  public void setGenerationPrefs(GenerationPreferences cgp) { _cgPrefs = cgp; }
+  public GenerationPreferences getGenerationPrefs() { return _cgPrefs; }
 
   ////////////////////////////////////////////////////////////////
   // event handling

@@ -54,7 +54,7 @@ public class Model extends GeneralizableElementImpl implements Package {
   }
   public void setReferencedElement(Vector x) throws PropertyVetoException {
     if (_referencedElement == null) _referencedElement = new Vector();
-    fireVetoableChange("referencedElemement", _referencedElement, x);
+    fireVetoableChangeNoCompare("referencedElemement", _referencedElement, x);
     _referencedElement = x;
   }
   public void addReferencedElement(ModelElement x) throws PropertyVetoException {

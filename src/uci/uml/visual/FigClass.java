@@ -58,24 +58,17 @@ public class FigClass extends FigNodeModelElement  {
     super(gm, node);
 
     _bigPort = new FigRect(10, 10, 90, 60, Color.cyan, Color.cyan);
-//     _clss = new FigText(10, 10, 90, 20);
-//     _clss.setFont(labelFont);
-//     _clss.setTextColor(Color.black);
-//     _clss.setExpandOnly(true);
-//     _clss.setMultiLine(false);
-//     _clss.setText("Class"); // shown while placing node
-//     //_clss.setText((new GeneratorDisplay()).generateClassifierRef((Classifier)node));
 
     _attr = new FigText(10, 30, 90, 20);
     _attr.setFont(LABEL_FONT);
-    _attr.setTextColor(Color.black);
     _attr.setExpandOnly(true);
+    _attr.setTextColor(Color.black);
     _attr.setJustification(FigText.JUSTIFY_LEFT);
 
     _oper = new FigText(10, 50, 90, 20);
     _oper.setFont(LABEL_FONT);
-    _oper.setTextColor(Color.black);
     _oper.setExpandOnly(true);
+    _oper.setTextColor(Color.black);
     _oper.setJustification(FigText.JUSTIFY_LEFT);
 
     addFig(_bigPort);
@@ -97,32 +90,38 @@ public class FigClass extends FigNodeModelElement  {
   public FigText getOperationFig() { return _oper; }
   public FigText getAttributeFig() { return _attr; }
 
-
+  public Dimension getMinimumSize() {
+    Dimension nameMin = _name.getMinimumSize();
+    Dimension attrMin = _attr.getMinimumSize();
+    Dimension operMin = _oper.getMinimumSize();
+    int h = nameMin.height + attrMin.height + operMin.height;
+    int w = Math.max(Math.max(nameMin.width, attrMin.width), operMin.width);
+    return new Dimension(w, h);
+  }
+  
   /* Override setBounds to keep shapes looking right */
   public void setBounds(int x, int y, int w, int h) {
     if (_name == null) return;
-    int leftSide = x;
-    int widthP = w;
-    int topSide = y;
-    int heightP = h;
+//     int leftSide = x;
+//     int widthP = w;
+//     int topSide = y;
+//     int heightP = h;
 
-    Rectangle _name_pref = _name.getBounds();
-    Rectangle _attr_pref = _attr.getBounds();
-    Rectangle _oper_pref = _oper.getBounds();
+    Dimension nameMin = _name.getMinimumSize();
+    Dimension attrMin = _attr.getMinimumSize();
+    Dimension operMin = _oper.getMinimumSize();
 
-    int total_height = _name_pref.height + _attr_pref.height + _oper_pref.height;
+    int extra_each = (h - nameMin.height - attrMin.height - operMin.height) / 2;
 
-    widthP = Math.max(widthP, Math.max(_name_pref.width, Math.max(_attr_pref.width, _oper_pref.width)));
-    heightP = Math.max(heightP, total_height);
-
-    int extra_each = (heightP - total_height) / 3;
-
-    _name.setBounds(leftSide, topSide, widthP, _name_pref.height + extra_each);
-    _attr.setBounds(leftSide, topSide + _name.getBounds().height, widthP, _attr_pref.height + extra_each);
-    _oper.setBounds(leftSide, topSide + _attr.getBounds().height + _name.getBounds().height, widthP, _oper_pref.height + extra_each);
-    _bigPort.setBounds(leftSide+1, topSide+1, widthP-2, heightP-2);
+    _name.setBounds(x, y, w, nameMin.height);
+    _attr.setBounds(x, y + _name.getBounds().height,
+		    w, attrMin.height + extra_each);
+    _oper.setBounds(x, y + _attr.getBounds().height + _name.getBounds().height,
+		    w, operMin.height + extra_each);
+    _bigPort.setBounds(x+1, y+1, w-2, h-2);
 
     calcBounds(); //_x = x; _y = y; _w = w; _h = h;
+    updateEdges();
   }
 
   ////////////////////////////////////////////////////////////////

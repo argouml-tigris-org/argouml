@@ -423,6 +423,7 @@ implements Serializable, KeyListener, MouseListener, MouseMotionListener {
   public static Selection makeSelectionFor(Fig f) {
     //if (f.isRotatable()) return new SelectionRotate(f);
     if (f.isReshapable()) return new SelectionReshape(f);
+    else if (f.isLowerRightResizable()) return new SelectionLowerRight(f);
     else if (f.isResizable()) return new SelectionResize(f);
     else if (f.isMovable()) return new SelectionMove(f);
     else return new SelectionNoop(f);

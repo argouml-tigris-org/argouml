@@ -46,15 +46,49 @@ import uci.uml.Model_Management.*;
 
 // needs-more-work: always check for null!!!
 
-public class GeneratorDisplay extends Generator {
+public class GeneratorJava extends Generator {
 
-  public static GeneratorDisplay SINGLETON = new GeneratorDisplay();
+  public static GeneratorJava SINGLETON = new GeneratorJava();
 
   /** Two spaces used for indenting code in classes. */
   public static String INDENT = "  ";
 
   public static String Generate(Object o) {
     return SINGLETON.generate(o);
+  }
+
+  public static void GenerateFile(Classifier cls, String path) {
+    String name = cls.getName().getBody();
+    if (name == null || name.length() == 0) return;
+    String filename = name + ".java";
+    if (!path.endsWith("/")) path += "/";
+    String pathname = path + filename;
+    // needs-more-work: package, project basepath, tagged values to configure
+    String header = SINGLETON.generateHeader(cls, pathname);
+    String src = SINGLETON.generate(cls);
+    FileOutputStream fos = null;
+    try {
+      fos = new FileOutputStream(pathname);
+      fos.write(header.getBytes());
+      fos.write(src.getBytes());
+    }
+    catch (IOException exp) { }
+    finally {
+      try { if (fos != null) fos.close(); }
+      catch (IOException exp) { }
+    }
+  }
+
+  public String generateHeader(Classifier cls, String pathname) {
+    String s = "";
+    //needs-more-work: add user-defined copyright
+    s += "// FILE: " + pathname +"\n\n";
+    String pack = cls.getNamespace().getName().getBody();
+    if (pack.length() > 0) s += "package " + pack + ";\n";
+    s += "import java.util.*;\n";
+
+    s += "\n";
+    return s;
   }
 
   public String generateOperation(Operation op) {
@@ -464,4 +498,4 @@ public class GeneratorDisplay extends Generator {
     return generateExpression(m.getExpression());
   }
 
-} /* end class GeneratorDisplay */
+} /* end class GeneratorJava */

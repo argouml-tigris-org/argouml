@@ -150,6 +150,9 @@ public class UMLStateDiagram extends UMLDiagram {
 //     _toolBar.add(_actionJoinPseudoState);
     _toolBar.addSeparator();
 
+    _toolBar.add(Actions.InternalTransition);
+    _toolBar.addSeparator();
+
     _toolBar.add(_actionRectangle);
     _toolBar.add(_actionRRectangle);
     _toolBar.add(_actionCircle);
@@ -158,5 +161,5 @@ public class UMLStateDiagram extends UMLDiagram {
     _toolBar.add(_actionPoly);
     _toolBar.add(_actionInk);
   }
-  
+
 } /* end class UMLStateDiagram */

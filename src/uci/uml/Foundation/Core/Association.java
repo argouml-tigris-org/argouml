@@ -90,7 +90,7 @@ implements IAssociation {
   public Vector getConnection() { return (Vector) _connection; }
   public void setConnection(Vector x) throws PropertyVetoException {
     if (_connection == null) _connection = new Vector();
-    fireVetoableChange("connection", _connection, x);
+    fireVetoableChangeNoCompare("connection", _connection, x);
     _connection = x;
     java.util.Enumeration enum = _connection.elements();
     while (enum.hasMoreElements()) {
@@ -120,7 +120,7 @@ implements IAssociation {
   public Vector getLink() { return (Vector) _link;}
   public void setLink(Vector x) throws PropertyVetoException {
     if (_link == null) _link = new Vector();
-    fireVetoableChange("link", _link, x);
+    fireVetoableChangeNoCompare("link", _link, x);
     _link = x;
   }
   public void addLink(Link x) throws PropertyVetoException {

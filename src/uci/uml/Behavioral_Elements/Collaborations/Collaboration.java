@@ -63,7 +63,7 @@ public class Collaboration extends NamespaceImpl {
 
   public Vector getInteraction() { return _interaction; }
   public void setInteraction(Vector x) throws PropertyVetoException {
-    fireVetoableChange("interaction", _interaction, x);
+    fireVetoableChangeNoCompare("interaction", _interaction, x);
     _interaction = x;
   }
   public void addInteraction(Interaction x) throws PropertyVetoException {
@@ -82,7 +82,7 @@ public class Collaboration extends NamespaceImpl {
   }
   public void setConstrainingElement(Vector x)
        throws PropertyVetoException {
-    fireVetoableChange("constrainingElement", _constrainingElement, x);
+    fireVetoableChangeNoCompare("constrainingElement", _constrainingElement, x);
     _constrainingElement = x;
   }
   public void addConstrainingElement(ModelElement x) 

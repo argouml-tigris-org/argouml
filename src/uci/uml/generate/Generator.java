@@ -27,6 +27,8 @@ package uci.uml.generate;
 import uci.uml.Foundation.Core.*;
 import uci.uml.Foundation.Data_Types.*;
 import uci.uml.Foundation.Extension_Mechanisms.*;
+import uci.uml.Behavioral_Elements.Common_Behavior.*;
+import uci.uml.Behavioral_Elements.State_Machines.*;
 import uci.uml.Model_Management.*;
 
 /** This class is the abstract super class that defines a code
@@ -65,10 +67,19 @@ public abstract class Generator {
       return generateAssociation((IAssociation)o);
     if (o instanceof AssociationEnd)
       return generateAssociationEnd((AssociationEnd)o);
-    if (o instanceof Element)
-      return generateName(((Element)o).getName());
     if (o instanceof Multiplicity)
       return generateMultiplicity((Multiplicity)o);
+    if (o instanceof State)
+      return generateState((State)o);
+    if (o instanceof Transition)
+      return generateTransition((Transition)o);
+    if (o instanceof MMAction)
+      return generateAction((MMAction)o);
+    if (o instanceof Guard)
+      return generateGuard((Guard)o);
+
+    if (o instanceof Element)
+      return generateName(((Element)o).getName());
     if (o == null) return "";
     return o.toString();
   }
@@ -83,12 +94,16 @@ public abstract class Generator {
   public abstract String generateAssociation(IAssociation a);
   public abstract String generateAssociationEnd(AssociationEnd ae);
   public abstract String generateMultiplicity(Multiplicity m);
+  public abstract String generateState(State m);
+  public abstract String generateTransition(Transition m);
+  public abstract String generateAction(MMAction m);
+  public abstract String generateGuard(Guard m);
 
-  
+
   public String generateExpression(Expression expr) {
     return generateUninterpreted(expr.getBody());
   }
-  
+
   public String generateName(Name n) {
     return n.getBody();
   }

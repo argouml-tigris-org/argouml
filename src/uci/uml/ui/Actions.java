@@ -38,6 +38,7 @@ import com.sun.java.swing.preview.*;
 import com.sun.java.swing.preview.filechooser.*;
 
 import uci.util.*;
+import uci.gef.*;
 import uci.argo.kernel.*;
 import uci.uml.Foundation.Core.*;
 import uci.uml.Foundation.Data_Types.*;
@@ -46,7 +47,8 @@ import uci.uml.Behavioral_Elements.State_Machines.*;
 import uci.uml.Behavioral_Elements.Use_Cases.*;
 import uci.uml.Model_Management.*;
 import uci.uml.visual.*;
-import uci.uml.xmi.*;
+import uci.uml.generate.*;
+//@ import uci.uml.xmi.*;
 
 public class Actions {
 
@@ -103,9 +105,11 @@ public class Actions {
   public static UMLAction Instance = new ActionInstance();
   public static UMLAction Attr = new ActionAttr();
   public static UMLAction Oper = new ActionOper();
+  public static UMLAction InternalTransition = new ActionInternalTransition();
 
-  public static UMLAction AboutArgoUML = new ActionAboutArgoUML();
-  
+  public static UMLAction GenerateOne = new ActionGenerateOne();
+  public static UMLAction GenerateAll = new ActionGenerateAll();
+
 
   public static UMLAction AutoCritique = new ActionAutoCritique();
   public static UMLAction OpenDecisions = new ActionOpenDecisions();
@@ -126,6 +130,10 @@ public class Actions {
   //   public static UMLAction FixItNext = new ActionFixItNext();
   //   public static UMLAction FixItBack = new ActionFixItBack();
   //   public static UMLAction FixItFinish = new ActionFixItFinish();
+
+  public static UMLAction AboutArgoUML = new ActionAboutArgoUML();
+
+
 
 
   public static void updateAllEnabled() {
@@ -264,7 +272,7 @@ class ActionSaveAsXMI extends UMLAction {
     System.out.println("Dump XMI now.");
     Project p = ProjectBrowser.TheInstance.getProject();
 
-    XMITraverse.traverse(p);
+    //@ XMITraverse.traverse(p);
   }
 } /* end class ActionSaveAsXMI */
 
@@ -613,6 +621,34 @@ class ActionState extends UMLAction {
   }
 } /* end class ActionState */
 
+class ActionInternalTransition extends UMLAction {
+  public ActionInternalTransition() { super("Internal Transition"); }
+
+  public void actionPerformed(ActionEvent e) {
+    System.out.println("adding internal transition...");
+    ProjectBrowser pb = ProjectBrowser.TheInstance;
+    Object target = pb.getDetailsTarget();
+    if (!(target instanceof State)) return;
+    State st = (State) target;
+    try {
+      Transition t = new Transition(st, st);
+      t.setTrigger(new
+		   uci.uml.Behavioral_Elements.State_Machines.Event("event"));
+      t.setGuard(new Guard("condition"));
+      t.setEffect(new ActionSequence(new Name("actions")));
+      t.setState(st);
+    }
+    catch (PropertyVetoException pve) {
+      System.out.println("PropertyVetoException in ActionInternalTransition");
+    }
+  }
+  public boolean shouldBeEnabled() {
+    ProjectBrowser pb = ProjectBrowser.TheInstance;
+    Object target = pb.getDetailsTarget();
+    return super.shouldBeEnabled() && target instanceof State;
+  }
+} /* end class ActionState */
+
 class ActionPseudostate extends UMLAction {
   uci.gef.Cmd _cmdCreateNode = new
   uci.gef.CmdCreateNode(Pseudostate.class, "Pseudostate");
@@ -740,17 +776,68 @@ class ActionModel extends UMLAction {
 } /* end class ActionModel */
 
 ////////////////////////////////////////////////////////////////
-// general user interface actions
+// tool menu actions
 
-class ActionAboutArgoUML extends UMLAction {
-  public ActionAboutArgoUML() { super("About Argo/UML"); }
+class ActionGenerateOne extends UMLAction {
+  public ActionGenerateOne() { super("Generate Selected Classes"); }
 
   public void actionPerformed(ActionEvent e) {
-    AboutBox box = new AboutBox();
-    box.show();
+    ProjectBrowser pb = ProjectBrowser.TheInstance;
+    Editor ce = uci.gef.Globals.curEditor();
+    Vector sels = ce.getSelectionManager().getFigs();
+    java.util.Enumeration enum = sels.elements();
+    while (enum.hasMoreElements()) {
+      Fig f = (Fig) enum.nextElement();
+      Object owner = f.getOwner();
+      if (!(owner instanceof MMClass) && !(owner instanceof Interface)) continue;
+      Classifier cls = (Classifier) owner;
+      String name = cls.getName().getBody();
+      if (name == null || name.length() == 0) return;
+      String path = ".";
+      pb.showStatus("Generating source file for " + name + "...");
+      GeneratorJava.GenerateFile(cls, path);
+      pb.showStatus("Generating source file for " + name + "... done.");
+      //pb.showStatus(" ");
+    }
   }
-  public boolean shouldBeEnabled() { return true; }
-} /* end class ActionAboutArgoUML */
+
+  public boolean shouldBeEnabled() {
+    if (!super.shouldBeEnabled()) return false;
+    Editor ce = uci.gef.Globals.curEditor();
+    Vector sels = ce.getSelectionManager().getFigs();
+    java.util.Enumeration enum = sels.elements();
+    boolean foundOne = false;
+    while (enum.hasMoreElements()) {
+      Fig f = (Fig) enum.nextElement();
+      Object owner = f.getOwner();
+      if (!(owner instanceof Classifier)) continue;
+      Classifier cls = (Classifier) owner;
+      String name = cls.getName().getBody();
+      if (name == null || name.length() == 0) return false;
+      foundOne = true;
+    }
+    return foundOne;
+  }
+} /* end class ActionGenerateOne */
+
+class ActionGenerateAll extends UMLAction {
+  public ActionGenerateAll() { super("Generate All Classes"); }
+
+  public void actionPerformed(ActionEvent e) {
+    ProjectBrowser pb = ProjectBrowser.TheInstance;
+    Object target = pb.getTarget();
+    if (!(target instanceof UMLClassDiagram)) return;
+    UMLClassDiagram d = (UMLClassDiagram) target;
+    ClassGenerationDiaglog cgd = new ClassGenerationDiaglog(d);
+    cgd.show();
+  }
+
+  public boolean shouldBeEnabled() {
+    ProjectBrowser pb = ProjectBrowser.TheInstance;
+    Object target = pb.getTarget();
+    return super.shouldBeEnabled() && target instanceof UMLClassDiagram;
+  }
+} /* end class ActionGenerateAll */
 
 
 ////////////////////////////////////////////////////////////////
@@ -870,3 +957,16 @@ class ActionHush extends ToDoItemAction {
   }
 } /* end class ActionHush */
 
+
+////////////////////////////////////////////////////////////////
+// general user interface actions
+
+class ActionAboutArgoUML extends UMLAction {
+  public ActionAboutArgoUML() { super("About Argo/UML"); }
+
+  public void actionPerformed(ActionEvent e) {
+    AboutBox box = new AboutBox();
+    box.show();
+  }
+  public boolean shouldBeEnabled() { return true; }
+} /* end class ActionAboutArgoUML */

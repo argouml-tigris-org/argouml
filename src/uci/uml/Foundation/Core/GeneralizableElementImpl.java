@@ -72,7 +72,7 @@ implements GeneralizableElement {
   }
   public void setGeneralization(Vector x) throws PropertyVetoException {
     if (_generalization == null) _generalization = new Vector();
-    fireVetoableChange("generalization", _generalization, x);
+    fireVetoableChangeNoCompare("generalization", _generalization, x);
     _generalization = x;
     java.util.Enumeration enum = _generalization.elements();
     while (enum.hasMoreElements()) {
@@ -98,7 +98,7 @@ implements GeneralizableElement {
   }
   public void setSpecialization(Vector x) throws PropertyVetoException {
     if (_specialization == null) _specialization = new Vector();
-    fireVetoableChange("specalization", _specialization, x);
+    fireVetoableChangeNoCompare("specalization", _specialization, x);
     _specialization = x;
     java.util.Enumeration enum = _specialization.elements();
     while (enum.hasMoreElements()) {

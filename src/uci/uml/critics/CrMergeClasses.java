@@ -43,7 +43,7 @@ public class CrMergeClasses extends CrUML {
     setHeadline("Consider Combining Classes");
     String s = "";
     s += "The highlighted class, {name}, only participates in one association and that ";
-    s += "association is one-to-one with another class.  Since instances of these";
+    s += "association is one-to-one with another class.  Since instances of these ";
     s += "two classes must always be created together and destroyed together, ";
     s += "combining these classes might simplify your design without lose of any ";
     s += "representation power.  However, you may find the combined class too large ";

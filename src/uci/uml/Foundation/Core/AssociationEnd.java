@@ -122,7 +122,7 @@ public class AssociationEnd extends ModelElementImpl {
   public Vector getQualifier() { return (Vector) _qualifier;}
   public void setQualifier(Vector x) throws PropertyVetoException {
     if (_qualifier == null) _qualifier = new Vector();
-    fireVetoableChange("qualifier", _qualifier, x);
+    fireVetoableChangeNoCompare("qualifier", _qualifier, x);
     _qualifier = x;
   }
   public void addQualifier(Attribute x) throws PropertyVetoException {
@@ -149,7 +149,7 @@ public class AssociationEnd extends ModelElementImpl {
   public Vector getSpecification() { return (Vector) _specification;}
   public void setSpecification(Vector x) throws PropertyVetoException {
     if (_specification == null) _specification = new Vector();
-    fireVetoableChange("specification", _specification, x);
+    fireVetoableChangeNoCompare("specification", _specification, x);
     _specification = x;
   }
   public void addSpecification(Classifier x) throws PropertyVetoException {
@@ -173,7 +173,7 @@ public class AssociationEnd extends ModelElementImpl {
   public Vector getLinkEnd() { return (Vector) _linkEnd;}
   public void setLinkEnd(Vector x) throws PropertyVetoException {
     if (_linkEnd == null) _linkEnd = new Vector();
-    fireVetoableChange("linkEnd", _linkEnd, x);
+    fireVetoableChangeNoCompare("linkEnd", _linkEnd, x);
     _linkEnd = x;
   }
   public void addLinkEnd(LinkEnd x) throws PropertyVetoException {

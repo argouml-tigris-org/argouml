@@ -39,6 +39,7 @@ import com.sun.java.swing.tree.*;
 
 import uci.gef.Diagram;
 import uci.uml.Foundation.Core.*;
+import uci.uml.Behavioral_Elements.Common_Behavior.*;
 import uci.uml.Behavioral_Elements.State_Machines.*;
 import uci.uml.Behavioral_Elements.Use_Cases.*;
 import uci.uml.Model_Management.*;
@@ -58,12 +59,15 @@ implements TabModelTarget {
   PropPanelOper operPane = new PropPanelOper();
   PropPanelAssoc assocPane = new PropPanelAssoc();
   PropPanelState statePane = new PropPanelState();
+  PropPanelTransition transitionPane = new PropPanelTransition();
   PropPanelPseudostate pseudostatePane = new PropPanelPseudostate();
   PropPanelUseCase useCasePane = new PropPanelUseCase();
   PropPanelActor actorPane = new PropPanelActor();
+  PropPanelInstance instancePane = new PropPanelInstance();
+  PropPanelLink linkPane = new PropPanelLink();
   // more: packages, ...
   JPanel _lastPanel = null;
-  
+
   ////////////////////////////////////////////////////////////////
   // constructor
   public TabProps() {
@@ -125,6 +129,12 @@ implements TabModelTarget {
       add(statePane, BorderLayout.NORTH);
       _lastPanel = statePane;
     }
+    else if (_target instanceof Transition) {
+      _shouldBeEnabled = true;
+      transitionPane.setTarget(_target);
+      add(transitionPane, BorderLayout.NORTH);
+      _lastPanel = transitionPane;
+    }
     else if (_target instanceof Pseudostate) {
       _shouldBeEnabled = true;
       pseudostatePane.setTarget(_target);
@@ -142,6 +152,18 @@ implements TabModelTarget {
       actorPane.setTarget(_target);
       add(actorPane, BorderLayout.NORTH);
       _lastPanel = actorPane;
+    }
+    else if (_target instanceof Instance) {
+      _shouldBeEnabled = true;
+      instancePane.setTarget(_target);
+      add(instancePane, BorderLayout.NORTH);
+      _lastPanel = instancePane;
+    }
+    else if (_target instanceof Link) {
+      _shouldBeEnabled = true;
+      linkPane.setTarget(_target);
+      add(linkPane, BorderLayout.NORTH);
+      _lastPanel = linkPane;
     }
     //else if ...
     else {

@@ -37,6 +37,7 @@ CLASSES = \
 	ActionCreatePseudostate.class \
 	AddToDoItemDialog.class \
 	ArgoFileFilter.class \
+	ClassGenerationDiaglog.class \
 	DelayedChangeNotify.class \
 	DelayedVetoableChangeListener.class \
 	DesignIssuesDialog.class \
@@ -109,10 +110,14 @@ CLASSES = \
 	PropPanelUseCase.class \
 	PropPanelNote.class \
 	PropPanelState.class \
+	PropPanelTransition.class \
 	PropPanelPseudostate.class \
+	PropPanelInstance.class \
+	PropPanelLink.class \
 	SpacerPanel.class \
 	SplashScreen.class \
 	StatusBar.class \
+	TabChecklist.class \
 	TabConstraints.class \
 	TabDiagram.class \
 	TabDocs.class \

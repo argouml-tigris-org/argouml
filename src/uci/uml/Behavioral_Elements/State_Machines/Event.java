@@ -55,7 +55,7 @@ public class Event extends ModelElementImpl {
   public Vector getState() { return _state; }
   public void setState(Vector x) throws PropertyVetoException {
     if (_state == null) _state = new Vector();
-    fireVetoableChange("state", _state, x);
+    fireVetoableChangeNoCompare("state", _state, x);
     _state = x;
   }
   public void addState(State x) throws PropertyVetoException {
@@ -72,7 +72,7 @@ public class Event extends ModelElementImpl {
   public Vector getParameters() { return _parameters; }
   public void setParameters(Vector x) throws PropertyVetoException {
     if (_parameters == null) _parameters = new Vector();
-    fireVetoableChange("parameters", _parameters, x);
+    fireVetoableChangeNoCompare("parameters", _parameters, x);
     _parameters = x;
   }
   public void addParameters(Parameter x) throws PropertyVetoException {
@@ -89,7 +89,7 @@ public class Event extends ModelElementImpl {
   public Vector getTransition() { return _transition; }
   public void setTransition(Vector x) throws PropertyVetoException {
     if (_transition == null) _transition = new Vector();
-    fireVetoableChange("transition", _transition, x);
+    fireVetoableChangeNoCompare("transition", _transition, x);
     _transition = x;
   }
   public void addTransition(Transition x) throws PropertyVetoException {

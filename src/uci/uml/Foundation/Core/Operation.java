@@ -107,7 +107,7 @@ public class Operation extends BehavioralFeature {
   public Vector getMethod() { return (Vector) _method;}
   public void setMethod(Vector x) throws PropertyVetoException {
     if (_method == null) _method = new Vector();
-    fireVetoableChange("method", _method, x);
+    fireVetoableChangeNoCompare("method", _method, x);
     _method = x;
     java.util.Enumeration enum = _method.elements();
     while (enum.hasMoreElements()) {

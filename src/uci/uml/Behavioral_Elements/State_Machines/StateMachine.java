@@ -84,7 +84,7 @@ public class StateMachine extends ModelElementImpl {
   public Vector getTransitions() { return _transitions; }
   public void setTransitions(Vector x) throws PropertyVetoException {
     if (_transitions == null) _transitions = new Vector();
-    fireVetoableChange("transitions", _transitions, x);
+    fireVetoableChangeNoCompare("transitions", _transitions, x);
     _transitions = x;
     java.util.Enumeration enum = _transitions.elements();
     while (enum.hasMoreElements()) {
@@ -107,7 +107,7 @@ public class StateMachine extends ModelElementImpl {
   public Vector getSubmachineState() { return _submachineState; }
   public void setSubmachineState(Vector x) throws PropertyVetoException {
     if (_submachineState == null) _submachineState = new Vector();
-    fireVetoableChange("submachineState", _submachineState, x);
+    fireVetoableChangeNoCompare("submachineState", _submachineState, x);
     _submachineState = x;
     java.util.Enumeration enum = _submachineState.elements();
     while (enum.hasMoreElements()) {

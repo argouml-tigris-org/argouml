@@ -94,11 +94,11 @@ public class ModeCreateEdge extends ModeCreate {
    *  The mousePressed event is sent via ModeSelect. */
   public void mousePressed(MouseEvent me) {
     int x = me.getX(), y = me.getY();
-    Editor _editor = Globals.curEditor();
-    Fig underMouse = _editor.hit(x, y);
+    Editor ce = Globals.curEditor();
+    Fig underMouse = ce.hit(x, y);
     if (underMouse == null) { 
       //System.out.println("bighit");
-        underMouse = _editor.hit(x-16, y-16, 32, 32); 
+        underMouse = ce.hit(x-16, y-16, 32, 32); 
     }
     if (underMouse == null) { done(); me.consume(); return; }
     if (!(underMouse instanceof FigNode)) { done(); me.consume(); return; }
@@ -118,10 +118,10 @@ public class ModeCreateEdge extends ModeCreate {
 
     int x = me.getX(), y = me.getY();
     Class arcClass;
-    Editor _editor = Globals.curEditor();
-    Fig f = _editor.hit(x, y);
-    if (f == null) { f = _editor.hit(x-16, y-16, 32, 32); }
-    GraphModel gm = _editor.getGraphModel();
+    Editor ce = Globals.curEditor();
+    Fig f = ce.hit(x, y);
+    if (f == null) { f = ce.hit(x-16, y-16, 32, 32); }
+    GraphModel gm = ce.getGraphModel();
     if (!(gm instanceof MutableGraphModel)) f = null;
     MutableGraphModel mgm = (MutableGraphModel) gm;
     // needs-more-work: potential class cast exception
@@ -146,15 +146,15 @@ public class ModeCreateEdge extends ModeCreate {
 	// (determined by the GraphEdgeRenderer).
 
 	if (null != _newEdge) {
-	  LayerManager lm = _editor.getLayerManager();
-	  _editor.damaged(_newItem);
+	  LayerManager lm = ce.getLayerManager();
+	  ce.damaged(_newItem);
 	  _sourceFigNode.damage();
 	  destFigNode.damage();
 	  _newItem = null;
 
-	  Fig pers = _editor.getLayerManager().getActiveLayer().
+	  Fig pers = ce.getLayerManager().getActiveLayer().
 	    presentationFor(_newEdge);
-	  if (pers != null) _editor.getSelectionManager().select(pers);
+	  if (pers != null) ce.getSelectionManager().select(pers);
 	  done();
 	  me.consume();
 	  return;
@@ -164,7 +164,7 @@ public class ModeCreateEdge extends ModeCreate {
       }
     }
     _sourceFigNode.damage();
-    _editor.damaged(_newItem);
+    ce.damaged(_newItem);
     _newItem = null;
     done();
     me.consume();

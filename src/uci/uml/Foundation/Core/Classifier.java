@@ -99,7 +99,7 @@ public abstract class Classifier extends GeneralizableElementImpl {
   public void setStructuralFeature(Vector x)
   throws PropertyVetoException {
     if (_structuralFeature == null) _structuralFeature = new Vector();
-    fireVetoableChange("structuralFeature", _structuralFeature, x);
+    fireVetoableChangeNoCompare("structuralFeature", _structuralFeature, x);
     _structuralFeature = x;
     java.util.Enumeration enum = _structuralFeature.elements();
     while (enum.hasMoreElements()) {
@@ -127,7 +127,7 @@ public abstract class Classifier extends GeneralizableElementImpl {
   public void setSpecification(Vector x)
   throws PropertyVetoException {
     if (_specification == null) _specification = new Vector();
-    fireVetoableChange("specification", _specification, x);
+    fireVetoableChangeNoCompare("specification", _specification, x);
     _specification = x;
   }
   public void addSpecification(Classifier x)
@@ -146,7 +146,7 @@ public abstract class Classifier extends GeneralizableElementImpl {
   public Vector getRealization() { return (Vector) _realization;}
   public void setRealization(Vector x) throws PropertyVetoException {
     if (_realization == null) _realization = new Vector();
-    fireVetoableChange("realization", _realization, x);
+    fireVetoableChangeNoCompare("realization", _realization, x);
     _realization = x;
     java.util.Enumeration enum = _realization.elements();
     while (enum.hasMoreElements()) {
@@ -174,7 +174,7 @@ public abstract class Classifier extends GeneralizableElementImpl {
   }
   public void setSpecialization(Vector x) throws PropertyVetoException {
     if (_specialization == null) _specialization = new Vector();
-    fireVetoableChange("specialization", _specialization, x);
+    fireVetoableChangeNoCompare("specialization", _specialization, x);
     _specialization = x;
     java.util.Enumeration enum = _specialization.elements();
     while (enum.hasMoreElements()) {
@@ -203,7 +203,7 @@ public abstract class Classifier extends GeneralizableElementImpl {
   public void setAssociationEnd(Vector x)
   throws PropertyVetoException {
     if (_associationEnd == null) _associationEnd = new Vector();
-    fireVetoableChange("associationEnd", _associationEnd, x);
+    fireVetoableChangeNoCompare("associationEnd", _associationEnd, x);
     _associationEnd = x;
     java.util.Enumeration enum = _associationEnd.elements();
     while (enum.hasMoreElements()) {
@@ -230,7 +230,7 @@ public abstract class Classifier extends GeneralizableElementImpl {
   public void setParticipant(Vector x)
   throws PropertyVetoException {
     if (_participant == null) _participant = new Vector();
-    fireVetoableChange("participant", _participant, x);
+    fireVetoableChangeNoCompare("participant", _participant, x);
     _participant = x;
     java.util.Enumeration enum = _associationEnd.elements();
     while (enum.hasMoreElements()) {

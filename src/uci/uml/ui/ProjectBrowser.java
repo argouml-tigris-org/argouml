@@ -121,6 +121,10 @@ implements IStatusBar {
   protected static Action _actionPoly = new uci.gef.CmdSetMode(uci.gef.ModeCreateFigPoly.class, "Polygon");
   protected static Action _actionInk = new uci.gef.CmdSetMode(uci.gef.ModeCreateFigInk.class, "Ink");
 
+  // actions menu
+  protected static Action _actionGenerateOne = Actions.GenerateOne;
+  protected static Action _actionGenerateAll = Actions.GenerateAll;
+
   // critique menu
   protected static Action _actionAutoCritique = Actions.AutoCritique;
   protected static Action _actionOpenDecisions = Actions.OpenDecisions;
@@ -173,6 +177,9 @@ implements IStatusBar {
     getContentPane().add(createPanels(), BorderLayout.CENTER);
     getContentPane().add(_statusBar, BorderLayout.SOUTH);
     _toDoPane.setRoot(uci.argo.kernel.Designer.TheDesigner.getToDoList());
+
+    // allows me to ask "Do you want to save first?"
+    setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
     addWindowListener(new WindowCloser());
   }
 
@@ -314,6 +321,11 @@ implements IStatusBar {
     createFig.add(_actionPoly);
     createFig.add(_actionInk);
 
+    JMenu generate = (JMenu) _menuBar.add(new JMenu("Generation"));
+    generate.setMnemonic('G');
+    generate.add(_actionGenerateOne);
+    generate.add(_actionGenerateAll);
+
     Menu critique = (Menu) _menuBar.add(new Menu("Critique"));
     critique.setMnemonic('R');
     critique.addCheckItem(_actionAutoCritique);
@@ -327,7 +339,7 @@ implements IStatusBar {
     help.setMnemonic('H');
     help.add(_actionAboutArgoUML);
     //_menuBar.setHelpMenu(help);
-    _menuBar.add(help);    
+    _menuBar.add(help);
   }
 
 
@@ -388,6 +400,7 @@ implements IStatusBar {
 
   public void select(Object o) {
     _multiPane.select(o);
+    _detailsPane.setTarget(o);
   }
 
   public void setTarget(Object o) {

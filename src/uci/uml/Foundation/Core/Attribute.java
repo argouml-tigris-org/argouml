@@ -51,13 +51,11 @@ public class Attribute extends StructuralFeature {
     super(name, type);
     try { setInitialValue(init); }
     catch (PropertyVetoException pve) { }
-
   }
   public Attribute(String nameStr, Classifier type, Expression init) {
     super(new Name(nameStr), type);
     try { setInitialValue(init); }
     catch (PropertyVetoException pve) { }
-
   }
   public Attribute(String nameStr, Classifier type, String initStr) {
     super(new Name(nameStr), type);

@@ -22,62 +22,17 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 // ENHANCEMENTS, OR MODIFICATIONS.
 
-
-
-
-// Source file: f:/jr/projects/uml/Behavioral_Elements/State_Machines/Guard.java
-
-package uci.uml.Behavioral_Elements.State_Machines;
+package uci.uml.generate;
 
 import java.util.*;
-import java.beans.*;
+import java.io.*;
 
-import uci.uml.Foundation.Core.*;
-import uci.uml.Foundation.Data_Types.*;
+/** Stores preference information entered by the user. */
 
-/** By defualt a Guard is in the same Namespace as its Transition */
-
-public class Guard extends ModelElementImpl {
-  public BooleanExpression _expression;
-  //  public Transition _guard;
-
-  public Guard() { }
-  public Guard(Name name, BooleanExpression exp) {
-    super(name);
-    try {
-      setExpression(exp);
-      //setGuard(t);
-    }
-    catch (PropertyVetoException pve) { }
-  }
-  public Guard(BooleanExpression exp) {
-    super();
-    try { setExpression(exp); }
-    catch (PropertyVetoException pve) { }
-  }
-  public Guard(String exp) {
-    super();
-    try { setExpression(new BooleanExpression(exp)); }
-    catch (PropertyVetoException pve) { }
-  }
-
-  public BooleanExpression getExpression() { return _expression; }
-  public void setExpression(BooleanExpression x) throws PropertyVetoException {
-    fireVetoableChange("expression", _expression, x);
-    _expression = x;
-  }
-//   public Transition getGuard() { return _guard; }
-//   public void setGuard(Transition x) throws PropertyVetoException {
-//     fireVetoableChange("guard", _guard, x);
-//     _guard = x;
-//   }
-
+public class GenerationPreferences implements java.io.Serializable {
   ////////////////////////////////////////////////////////////////
-  // debugging
-  public String dbgString() {
-    String s = getOCLTypeStr();
-    if (_expression != null)
-      s += _expression.dbgString();
-    return s;
-  }
-}
+  // instance variables
+  public String headerComments = "Your copyright and other header comments";
+  public String outputDir = "/home/jrobbins/vtmp/";
+
+} /* end class GenerationPreferences */

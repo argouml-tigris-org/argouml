@@ -88,23 +88,35 @@ implements VetoableChangeListener, DelayedVetoableChangeListener, MouseListener,
     //_name.addPropertyChangeListener(this);
   }
 
+//   /** Returns true if this Fig can be resized by the user. */
+//   public boolean isResizable() { return false; }
+//   public boolean isLowerRightResizable() { return true; }
+
+
+
   public FigText getNameFig() { return _name; }
 
   public void vetoableChange(PropertyChangeEvent pce) {
+    System.out.println("in vetoableChange");
     Object src = pce.getSource();
     if (src == getOwner()) {
       DelayedChangeNotify delayedNotify = new DelayedChangeNotify(this, pce);
       SwingUtilities.invokeLater(delayedNotify);
     }
+    else System.out.println("aaaaa");
   }
 
   public void delayedVetoableChange(PropertyChangeEvent pce) {
+    System.out.println("in delayedVetoableChange");
     Object src = pce.getSource();
     startTrans();
     // update any text, colors, fonts, etc.
     modelChanged();
     // update the relative sizes and positions of internel Figs
     Rectangle bbox = getBounds();
+    Dimension minSize = getMinimumSize();
+    bbox.width = Math.max(bbox.width, minSize.width);
+    bbox.height = Math.max(bbox.height, minSize.height);
     setBounds(bbox.x, bbox.y, bbox.width, bbox.height);
     endTrans();
   }
@@ -114,7 +126,18 @@ implements VetoableChangeListener, DelayedVetoableChangeListener, MouseListener,
     String pName = pve.getPropertyName();
     if (pName.equals("editing") && Boolean.FALSE.equals(pve.getNewValue())) {
       //System.out.println("finished editing");
-      try { textEdited((FigText) src); }
+      try {
+	startTrans();
+	//parse the text that was edited
+	textEdited((FigText) src);
+	// resize the FigNode to accomodate the new text
+	Rectangle bbox = getBounds();
+	Dimension minSize = getMinimumSize();
+	bbox.width = Math.max(bbox.width, minSize.width);
+	bbox.height = Math.max(bbox.height, minSize.height);
+	setBounds(bbox.x, bbox.y, bbox.width, bbox.height);
+	endTrans();
+      }
       catch (PropertyVetoException ex) {
 	System.out.println("could not parse and use the text you entered");
       }

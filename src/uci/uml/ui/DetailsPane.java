@@ -110,14 +110,14 @@ implements ChangeListener, MouseListener {
     _item = null;
     _tabs.addMouseListener(this);
   }
-    
+
 
 
   ////////////////////////////////////////////////////////////////
   // accessors
 
   public JTabbedPane getTabs() { return _tabs; }
-  
+
   // needs-more-work: ToDoItem
   public void setToDoItem(Object item) {
     _item = item;
@@ -140,7 +140,7 @@ implements ChangeListener, MouseListener {
     if (_target == target) return;
     _target = target;
     for (int i = 0; i < _tabPanels.size(); i++) {
-      JPanel tab = (JPanel) _tabPanels.elementAt(i);      
+      JPanel tab = (JPanel) _tabPanels.elementAt(i);
       if (tab instanceof TabModelTarget) {
 	TabModelTarget tabMT = (TabModelTarget) tab;
 	tabMT.setTarget(_target);
@@ -158,7 +158,7 @@ implements ChangeListener, MouseListener {
     if (jumpToFirstEnabledTab && firstEnabled == -1)
       _tabs.setSelectedIndex(0);
   }
-  
+
   public Object getTarget() { return _target; }
 
   public Dimension getMinimumSize() { return new Dimension(100, 100); }
@@ -174,22 +174,21 @@ implements ChangeListener, MouseListener {
 	_tabs.setSelectedIndex(i);
 	return;
       }
-    }        
+    }
   }
 
   public void selectNextTab() {
     int size = _tabPanels.size();
     int currentTab = _tabs.getSelectedIndex();
-    
     for (int i = 1; i < _tabPanels.size(); i++) {
       int newTab = (currentTab + i) % size;
       if (_tabs.isEnabledAt(newTab)) {
 	_tabs.setSelectedIndex(newTab);
 	return;
       }
-    }    
+    }
   }
-  
+
   ////////////////////////////////////////////////////////////////
   // event handlers
 

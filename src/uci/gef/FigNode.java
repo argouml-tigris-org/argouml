@@ -451,6 +451,19 @@ implements MouseListener, PropertyChangeListener, Serializable {
     }
   }
 
+  public void setBounds(int x, int y, int w, int h) {
+    super.setBounds(x, y, w, h);
+    updateEdges();
+  }
+
+  public void updateEdges() {
+    Enumeration arcPers = _figEdges.elements();
+    while (arcPers.hasMoreElements()) {
+      FigEdge fe = (FigEdge) arcPers.nextElement();
+      fe.computeRoute();
+    }
+  }
+
   /** After the file is loaded, re-establish any connections from the
    * model to the Figs */
   public void postLoad() { setOwner(getOwner()); }

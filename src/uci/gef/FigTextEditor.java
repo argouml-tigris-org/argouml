@@ -52,7 +52,7 @@ implements PropertyChangeListener, DocumentListener, KeyListener {
   JPanel _glass;
   boolean _editing = false;
 
-  public static int EXTRA = 2;
+  public static int EXTRA = 5;
 
 
   /** Needs-more-work: does not open if I use tab to select the

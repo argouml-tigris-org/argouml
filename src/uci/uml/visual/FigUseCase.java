@@ -51,20 +51,10 @@ public class FigUseCase extends FigNodeModelElement {
   ////////////////////////////////////////////////////////////////
   // constants
 
-//   public int x = 10;
-//   public int y = 10;
-//   public int width = 100;
-//   public int height = 60;
-//   public int textH = 20;
-//   public Point pos;
-//   public Dimension dim;
-//   protected int _radius = 20;
+  public int PADDING = 10;
 
   ////////////////////////////////////////////////////////////////
   // instance variables
-
-  /** The main label on this icon. */
-  //  FigText _name;
 
   /** UML does not really use ports, so just define one big one so
    *  that users can drag edges to or from any point in the icon. */
@@ -83,7 +73,7 @@ public class FigUseCase extends FigNodeModelElement {
 
     _bigPort = new FigCircle(0, 0, 100, 40, Color.black, Color.white);
     _cover = new FigCircle(0, 0, 100, 40, Color.black, Color.white);
-    _name.setBounds(20, 10, 60, 20);
+    _name.setBounds(10, 10, 80, 20);
     _name.setTextFilled(false);
     _name.setFilled(false);
     _name.setLineWidth(0);
@@ -109,20 +99,23 @@ public class FigUseCase extends FigNodeModelElement {
     // needs-more-work: update extension points?
   }
 
+  public Dimension getMinimumSize() {
+    Dimension nameDim = _name.getMinimumSize();
+    int w = nameDim.width + PADDING*2;
+    int h = nameDim.height + PADDING*2;
+    return new Dimension(w, h);
+  }
 
   public void setBounds(int x, int y, int w, int h) {
     Rectangle oldBounds = getBounds();
-    Rectangle nameBbox = _name.getBounds();
-    x = Math.min(x, nameBbox.x - 20);
-    y = Math.min(y, nameBbox.y - 20);
-    w = Math.max(w, nameBbox.width + 40);
-    h = Math.max(h, nameBbox.height + 40);
     _bigPort.setBounds(x, y, w, h);
     _cover.setBounds(x, y, w, h);
-    _name.setLocation(x + (w - nameBbox.width)/2,
-		      y + (h - nameBbox.height)/2);
+    Dimension nameDim = _name.getMinimumSize();
+    _name.setBounds(x + (w - nameDim.width)/2, y + (h - nameDim.height),
+		    nameDim.width, nameDim.height);
     _x = x; _y = y; _w = w; _h = h;
     firePropChange("bounds", oldBounds, getBounds());
+    updateEdges();
   }
 
   public void dispose() {

@@ -52,7 +52,7 @@ public class Interaction extends ModelElementImpl {
   public Vector getMessage() { return _message; }
   public void setMessage(Vector x) throws PropertyVetoException {
     if (_message == null) _message = new Vector();
-    fireVetoableChange("message", _message, x);
+    fireVetoableChangeNoCompare("message", _message, x);
     _message = x;
   }
   public void addMessage(Message x) throws PropertyVetoException {
@@ -75,7 +75,7 @@ public class Interaction extends ModelElementImpl {
   public Vector getLink() { return _link; }
   public void setLink(Vector x) throws PropertyVetoException {
     if (_link == null) _link = new Vector();
-    fireVetoableChange("link", _link, x);
+    fireVetoableChangeNoCompare("link", _link, x);
     _link = x;
   }
   public void addLink(Link x) throws PropertyVetoException {
@@ -92,7 +92,7 @@ public class Interaction extends ModelElementImpl {
   public Vector getInstances() { return _instances; }
   public void setInstances(Vector x) throws PropertyVetoException {
     if (_instances == null) _instances = new Vector();
-    fireVetoableChange("instances", _instances, x);
+    fireVetoableChangeNoCompare("instances", _instances, x);
     _instances = x;
   }
   public void addInstance(Instance x) throws PropertyVetoException {

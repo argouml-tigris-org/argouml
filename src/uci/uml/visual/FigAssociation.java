@@ -57,8 +57,7 @@ public class FigAssociation extends FigEdgeModelElement {
     _srcMult.setTextFilled(false);
     _srcMult.setFilled(false);
     _srcMult.setLineWidth(0);
-    addPathItem(_srcMult,
-		new PathConvPercentPlusConst(this, 0, 15, 15));
+    addPathItem(_srcMult, new PathConvPercentPlusConst(this, 0, 15, 15));
 
     _srcRole = new FigText(10, 30, 90, 20);
     _srcRole.setFont(LABEL_FONT);
@@ -66,8 +65,7 @@ public class FigAssociation extends FigEdgeModelElement {
     _srcRole.setTextFilled(false);
     _srcRole.setFilled(false);
     _srcRole.setLineWidth(0);
-    addPathItem(_srcRole,
-		new PathConvPercentPlusConst(this, 0, 35, -15));
+    addPathItem(_srcRole, new PathConvPercentPlusConst(this, 0, 35, -15));
 
     _destMult = new FigText(10, 30, 90, 20);
     _destMult.setFont(LABEL_FONT);
@@ -75,8 +73,7 @@ public class FigAssociation extends FigEdgeModelElement {
     _destMult.setTextFilled(false);
     _destMult.setFilled(false);
     _destMult.setLineWidth(0);
-    addPathItem(_destMult,
-		new PathConvPercentPlusConst(this, 100, -15, 15));
+    addPathItem(_destMult, new PathConvPercentPlusConst(this, 100, -15, 15));
 
     _destRole = new FigText(10, 30, 90, 20);
     _destRole.setFont(LABEL_FONT);
@@ -84,8 +81,7 @@ public class FigAssociation extends FigEdgeModelElement {
     _destRole.setTextFilled(false);
     _destRole.setFilled(false);
     _destRole.setLineWidth(0);
-    addPathItem(_destRole,
-		new PathConvPercentPlusConst(this, 100, -35, -15));
+    addPathItem(_destRole, new PathConvPercentPlusConst(this, 100, -35, -15));
     setBetweenNearestPoints(true);
     modelChanged();
 

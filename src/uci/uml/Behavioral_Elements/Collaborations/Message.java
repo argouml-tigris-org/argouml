@@ -69,7 +69,7 @@ public class Message extends ModelElementImpl {
   public Vector getMessage() { return _message; }
   public void setMessage(Vector x) throws PropertyVetoException {
     if (_message == null) _message = new Vector();
-    fireVetoableChange("message", _message, x);
+    fireVetoableChangeNoCompare("message", _message, x);
      _message = x;
   }
   public void addMessage(Message x) throws PropertyVetoException {
@@ -86,7 +86,7 @@ public class Message extends ModelElementImpl {
   public Vector getPredecessor() { return _predecessor; }
   public void setPredecessor(Vector x) throws PropertyVetoException {
     if (_predecessor == null) _predecessor = new Vector();
-    fireVetoableChange("predecessor", _predecessor, x);
+    fireVetoableChangeNoCompare("predecessor", _predecessor, x);
      _predecessor = x;
   }
   public void addPredecessor(Message x) throws PropertyVetoException {
@@ -115,7 +115,7 @@ public class Message extends ModelElementImpl {
   public Vector getInteraction() { return _interaction; }
   public void setInteraction(Vector x) throws PropertyVetoException {
     if (_interaction == null) _interaction = new Vector();
-    fireVetoableChange("interaction", _interaction, x);
+    fireVetoableChangeNoCompare("interaction", _interaction, x);
      _interaction = x;
   }
   public void addInteraction(Interaction x) throws PropertyVetoException {

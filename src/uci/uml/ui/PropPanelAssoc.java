@@ -42,6 +42,7 @@ import uci.util.*;
 import uci.uml.Foundation.Core.*;
 import uci.uml.Foundation.Data_Types.*;
 import uci.uml.Model_Management.*;
+import uci.uml.generate.ParserDisplay;
 
 public class PropPanelAssoc extends PropPanel
 implements DocumentListener, ItemListener, ChangeListener {
@@ -98,10 +99,10 @@ implements DocumentListener, ItemListener, ChangeListener {
     c.ipadx = 0; c.ipady = 0;
 
 
-//     _multAField.setEditable(true);
-//     _multBField.setEditable(true);
-//     _multAField.getEditor().getEditorComponent().setBackground(Color.white);
-//     _multBField.getEditor().getEditorComponent().setBackground(Color.white);
+    _multAField.setEditable(true);
+    _multBField.setEditable(true);
+    _multAField.getEditor().getEditorComponent().setBackground(Color.white);
+    _multBField.getEditor().getEditorComponent().setBackground(Color.white);
 
 
     c.gridx = 0;
@@ -141,14 +142,11 @@ implements DocumentListener, ItemListener, ChangeListener {
     gb.setConstraints(_navAField, c);
     add(_navAField);
 
-    
-
     c.weightx = 0.0;
     c.gridx = 2;
     c.gridy = 0;
     gb.setConstraints(_spacer, c);
     add(_spacer);
-    
 
     c.weightx = 0.0;
     c.gridx = 3;
@@ -189,13 +187,13 @@ implements DocumentListener, ItemListener, ChangeListener {
     add(_navBField);
 
 
-//     Component ed = _multAField.getEditor().getEditorComponent();
-//     Document typeDoc = ((JTextField)ed).getDocument();
-//     typeDoc.addDocumentListener(this);
+    Component ed = _multAField.getEditor().getEditorComponent();
+    Document typeDoc = ((JTextField)ed).getDocument();
+    typeDoc.addDocumentListener(this);
 
-//     ed = _multBField.getEditor().getEditorComponent();
-//     typeDoc = ((JTextField)ed).getDocument();
-//     typeDoc.addDocumentListener(this);
+    ed = _multBField.getEditor().getEditorComponent();
+    typeDoc = ((JTextField)ed).getDocument();
+    typeDoc.addDocumentListener(this);
 
     _roleAField.getDocument().addDocumentListener(this);
     _roleBField.getDocument().addDocumentListener(this);
@@ -255,7 +253,6 @@ implements DocumentListener, ItemListener, ChangeListener {
     _aggBField.setSelectedItem(akB);
     _navAField.getModel().setSelected(navA);
     _navBField.getModel().setSelected(navB);
-    
   }
 
 
@@ -274,11 +271,13 @@ implements DocumentListener, ItemListener, ChangeListener {
     Object mBs = _multBField.getSelectedItem();
 
     if (mAs == null || mBs == null) return;
-    
+
     // will be a String if I allow editing, needs-more-work: implement
     // parsing of multiplicities
-    //System.out.println("a mult:" + _multAField.getSelectedItem().getClass());
-    //System.out.println("b mult:" + _multBField.getSelectedItem().getClass());
+    if (mAs instanceof String)
+      mAs = ParserDisplay.SINGLETON.parseMultiplicity((String)mAs);
+    if (mBs instanceof String)
+      mBs = ParserDisplay.SINGLETON.parseMultiplicity((String)mBs);
 
     if (mAs instanceof Multiplicity) mA = (Multiplicity) mAs;
     else mA = Multiplicity.ONE; // needs-more-work: parse
@@ -286,7 +285,6 @@ implements DocumentListener, ItemListener, ChangeListener {
     if (mBs instanceof Multiplicity) mB = (Multiplicity) mBs;
     else mB = Multiplicity.ONE; // needs-more-work: parse
 
-    
     Association asc = (Association) _target;
     Vector conns = asc.getConnection();
     if (conns == null || conns.size() != 2) return;

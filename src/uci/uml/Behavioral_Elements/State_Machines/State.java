@@ -73,7 +73,7 @@ public class State extends StateVertex {
   public Vector getDeferredEvent() { return _deferredEvent; }
   public void setDeferredEvent(Vector x) throws PropertyVetoException {
     if (_deferredEvent == null) _deferredEvent = new Vector();
-    fireVetoableChange("deferredEvent", _deferredEvent, x);
+    fireVetoableChangeNoCompare("deferredEvent", _deferredEvent, x);
     _deferredEvent = x;
     java.util.Enumeration enum = _deferredEvent.elements();
     while (enum.hasMoreElements()) {
@@ -107,7 +107,7 @@ public class State extends StateVertex {
   public Vector getStateVariable() { return _stateVariable; }
   public void setStateVariable(Vector x) throws PropertyVetoException {
     if (_stateVariable == null) _stateVariable = new Vector();
-    fireVetoableChange("stateVariable", _stateVariable, x);
+    fireVetoableChangeNoCompare("stateVariable", _stateVariable, x);
     _stateVariable = x;
     java.util.Enumeration enum = _stateVariable.elements();
     while (enum.hasMoreElements()) {
@@ -129,7 +129,7 @@ public class State extends StateVertex {
 
   public Vector getClassifierInState() { return _classifierInState; }
   public void setClassifierInState(Vector x) throws PropertyVetoException {
-    fireVetoableChange("classifierInState", _classifierInState, x);
+    fireVetoableChangeNoCompare("classifierInState", _classifierInState, x);
     if (_classifierInState == null) _classifierInState = new Vector();
     _classifierInState = x;
   }
@@ -149,11 +149,20 @@ public class State extends StateVertex {
   public Vector getInternalTransition() { return _internalTransition; }
   public void setInternalTransition(Vector x) throws PropertyVetoException {
     if (_internalTransition == null) _internalTransition = new Vector();
-    fireVetoableChange("internalTransition", _internalTransition, x);
-    _internalTransition = x;
+    fireVetoableChangeNoCompare("internalTransition", _internalTransition, x);
     java.util.Enumeration enum = _internalTransition.elements();
     while (enum.hasMoreElements()) {
       Transition t = (Transition) enum.nextElement();
+      t.setSource(null);
+      t.setTarget(null);
+      t.setNamespace(null);
+    }
+    _internalTransition = x;
+    enum = _internalTransition.elements();
+    while (enum.hasMoreElements()) {
+      Transition t = (Transition) enum.nextElement();
+      t.setSource(this);
+      t.setTarget(this);
       t.setNamespace(getNamespace());
     }
   }
@@ -161,13 +170,19 @@ public class State extends StateVertex {
     if (_internalTransition == null) _internalTransition = new Vector();
     fireVetoableChange("internalTransition", _internalTransition, x);
     _internalTransition.addElement(x);
+    x.setSource(this);
+    x.setTarget(this);
     x.setNamespace(getNamespace());
   }
   public void removeInternalTransition(Transition x) throws PropertyVetoException {
     if (_internalTransition == null) return;
     fireVetoableChange("internalTransition", _internalTransition, x);
     _internalTransition.removeElement(x);
+    x.setSource(null);
+    x.setTarget(null);
+    x.setNamespace(null);
   }
+
 
   ////////////////////////////////////////////////////////////////
   // debugging

@@ -62,7 +62,7 @@ public class ClassifierRole extends Classifier {
   }
   public void setAssociationEndRole(Vector x) throws PropertyVetoException {
     if (_associationEndRole == null) _associationEndRole = new Vector();
-    fireVetoableChange("associationEndRole", _associationEndRole, x);
+    fireVetoableChangeNoCompare("associationEndRole", _associationEndRole, x);
     _associationEndRole = x;
   }
   public void addAssociationEndRole(AssociationEndRole x)
@@ -82,7 +82,7 @@ public class ClassifierRole extends Classifier {
   public Vector getMessage() { return _message; }
   public void setMessage(Vector x) throws PropertyVetoException {
     if (_message == null) _message = new Vector();
-    fireVetoableChange("message", _message, x);
+    fireVetoableChangeNoCompare("message", _message, x);
     _message = x;
   }
   public void addMessage(Message x) throws PropertyVetoException {
@@ -99,7 +99,7 @@ public class ClassifierRole extends Classifier {
   public Vector getAvailableFeature() { return _availableFeature; }
   public void setAvailableFeature(Vector x) throws PropertyVetoException {
     if (_availableFeature == null) _availableFeature = new Vector();
-    fireVetoableChange("availableFeature", _availableFeature, x);
+    fireVetoableChangeNoCompare("availableFeature", _availableFeature, x);
     _availableFeature = x;
   }
   public void addAvailableFeature(Feature x) throws PropertyVetoException {

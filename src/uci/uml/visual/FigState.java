@@ -26,7 +26,7 @@
 
 // File: FigState.java
 // Classes: FigState
-// Original Author: your email address here
+// Original Author: ics 125b silverbullet team
 // $Id$
 
 package uci.uml.visual;
@@ -63,6 +63,8 @@ public class FigState extends FigNodeModelElement {
 
   FigRect _bigPort;
   FigRect _cover;
+  FigText _internal;
+  FigLine _divider;
 
   // add other Figs here aes needed
 
@@ -77,12 +79,29 @@ public class FigState extends FigNodeModelElement {
 
     _bigPort.setLineWidth(0);
     _name.setLineWidth(0);
-    // initialize any other Figs here
+    _name.setBounds(12, 12, 86, _name.getBounds().height);
+    _name.setFilled(false);
+
+    _divider = new FigLine(10,  12 + _name.getBounds().height + 1,
+			   90-1,  12 + _name.getBounds().height + 1,
+			   Color.black);
+
+    _internal = new FigText(12, 12 + _name.getBounds().height + 4,
+			    86, 70 - (12 + _name.getBounds().height + 4));
+    _internal.setFont(LABEL_FONT);
+    _internal.setTextColor(Color.black);
+    _internal.setLineWidth(0);
+    _internal.setFilled(false);
+    _internal.setExpandOnly(true);
+    _internal.setMultiLine(true);
+    _internal.setJustification(FigText.JUSTIFY_LEFT);
 
     // add Figs to the FigNode in back-to-front order
     addFig(_bigPort);
     addFig(_cover);
     addFig(_name);
+    addFig(_divider);
+    addFig(_internal);
 
     Object onlyPort = node;
     bindPort(onlyPort, _bigPort);
@@ -93,40 +112,53 @@ public class FigState extends FigNodeModelElement {
 
   }
 
+  public Dimension getMinimumSize() {
+    Dimension nameDim = _name.getMinimumSize();
+    Dimension internalDim = _internal.getMinimumSize();
+
+    int h = nameDim.height + 4 + internalDim.height;
+    int w = Math.max(nameDim.width + 4, internalDim.width + 4);
+    return new Dimension(w, h);
+  }
+
 /* Override setBounds to keep shapes looking right */
   public void setBounds(int x, int y, int w, int h) {
     if (_name == null) return;
-    int leftSide = x;
-    int widthP = w;
-    int topSide = y;
-    int heightP = h;
 
-    Rectangle name_pref = _name.getBounds();
+    Dimension nameDim = _name.getMinimumSize();
 
 
-    int total_height = name_pref.height;
+    _name.setBounds(x+2, y+2, w-4,  nameDim.height);
+    _divider.setShape(x, y + nameDim.height + 1, x + w - 1,  y + nameDim.height + 1);
 
-    widthP = Math.max(widthP, name_pref.width);
-    heightP = Math.max(heightP, total_height);
+    _internal.setBounds(x+2, y + nameDim.height + 4,
+			w-4, h - nameDim.height - 6);
 
-//    int extra_each = (heightP - total_height) / 3;
-
-    _name.setBounds(leftSide+10, topSide+(heightP-total_height)/2,
-		    widthP-20,  name_pref.height);
-    _bigPort.setBounds(leftSide, topSide, widthP, heightP);
-    _cover.setBounds(leftSide, topSide, widthP, heightP);
+    _bigPort.setBounds(x, y, w, h);
+    _cover.setBounds(x, y, w, h);
 
     calcBounds(); //_x = x; _y = y; _w = w; _h = h;
+    updateEdges();
   }
 
 
   /** Update the text labels */
   protected void modelChanged() {
     super.modelChanged();
-    //needs-more-work: text fields other than name
+    System.out.println("FigState modelChanged");
+    State s = (State) getOwner();
+    String newText = GeneratorDisplay.SINGLETON.generateStateBody(s);
+    _internal.setText(newText);
   }
 
-
+  public void textEdited(FigText ft) throws PropertyVetoException {
+    super.textEdited(ft);
+    if (ft == _internal) {
+      State st = (State) getOwner();
+      String s = ft.getText();
+      ParserDisplay.SINGLETON.parseStateBody(st, s);
+    }
+  }
 
   public void dispose() {
     //System.out.println("disposing FigState");

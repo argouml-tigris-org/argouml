@@ -24,7 +24,6 @@
 
 
 
-
 package uci.uml.ui;
 
 //import jargo.kernel.*;
@@ -40,6 +39,7 @@ import uci.gef.*;
 import uci.uml.visual.*;
 import uci.uml.Foundation.Core.*;
 import uci.uml.Foundation.Data_Types.*;
+import uci.uml.Behavioral_Elements.Common_Behavior.*;
 import uci.uml.Behavioral_Elements.State_Machines.*;
 import uci.uml.Behavioral_Elements.Use_Cases.*;
 import uci.uml.Model_Management.*;
@@ -55,10 +55,13 @@ public class UMLTreeCellRenderer extends BasicTreeCellRenderer {
   protected ImageIcon _AttributeIcon = loadIconResource("Attribute");
   protected ImageIcon _OperationIcon = loadIconResource("Operation");
   protected ImageIcon _ClassIcon = loadIconResource("Class");
+  protected ImageIcon _InstanceIcon = loadIconResource("Instance");
+  protected ImageIcon _InterfaceIcon = loadIconResource("Interface");
+  protected ImageIcon _LinkIcon = loadIconResource("Link");
   protected ImageIcon _PackageIcon = loadIconResource("Package");
   protected ImageIcon _AssociationIcon = loadIconResource("Association");
-  protected ImageIcon _AssociationIcon2 = loadIconResource("Association2");
-  protected ImageIcon _AssociationIcon3 = loadIconResource("Association3");
+  protected ImageIcon _AssociationIcon2 = loadIconResource("Aggregation");
+  protected ImageIcon _AssociationIcon3 = loadIconResource("CompositeAggregation");
   protected ImageIcon _AssociationIcon4 = loadIconResource("Association4");
   protected ImageIcon _AssociationIcon5 = loadIconResource("Association5");
   protected ImageIcon _GeneralizationIcon = loadIconResource("Generalization");
@@ -105,10 +108,20 @@ public class UMLTreeCellRenderer extends BasicTreeCellRenderer {
       if (value instanceof Attribute) lab.setIcon(_AttributeIcon);
       if (value instanceof Operation) lab.setIcon(_OperationIcon);
       if (value instanceof MMClass) lab.setIcon(_ClassIcon);
+      if (value instanceof Instance) lab.setIcon(_InstanceIcon);
+      if (value instanceof Interface) lab.setIcon(_InterfaceIcon);
+      if (value instanceof Link) lab.setIcon(_LinkIcon);
       if (value instanceof Package) lab.setIcon(_PackageIcon);
-      if (value instanceof Association) lab.setIcon(_AssociationIcon);
+      if (value instanceof Association) {
+        /*if (((Association)value).hasAggregateEnd())  
+          lab.setIcon(_AssociationIcon2);
+        else if (((Association)value).hasCompositeEnd())  
+          lab.setIcon(_AssociationIcon3);
+        else*/
+          lab.setIcon(_AssociationIcon);
+      }
       if (value instanceof Generalization) lab.setIcon(_GeneralizationIcon);
-      //if (value instanceof Realization) lab.setIcon(_RealizationIcon);
+      if (value instanceof Realization) lab.setIcon(_RealizationIcon);
       if (value instanceof Dependency) lab.setIcon(_DependencyIcon);
 
       if (value instanceof Transition) lab.setIcon(_TransitionIcon);
@@ -164,7 +177,8 @@ public class UMLTreeCellRenderer extends BasicTreeCellRenderer {
   }
 
   protected static String imageName(String name) {
-    return "/uci/Images/Tree" + stripJunk(name) + ".gif";
+    return "/uci/Images/" + stripJunk(name) + ".gif";
+    //return "/uci/Images/Tree" + stripJunk(name) + ".gif";
   }
 
   protected static String stripJunk(String s) {

@@ -22,62 +22,44 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 // ENHANCEMENTS, OR MODIFICATIONS.
 
-
-
-
-// Source file: f:/jr/projects/uml/Behavioral_Elements/State_Machines/Guard.java
-
-package uci.uml.Behavioral_Elements.State_Machines;
-
-import java.util.*;
-import java.beans.*;
+package uci.uml.generate;
 
 import uci.uml.Foundation.Core.*;
 import uci.uml.Foundation.Data_Types.*;
+import uci.uml.Foundation.Extension_Mechanisms.*;
+import uci.uml.Behavioral_Elements.Common_Behavior.*;
+import uci.uml.Behavioral_Elements.State_Machines.*;
+import uci.uml.Model_Management.*;
 
-/** By defualt a Guard is in the same Namespace as its Transition */
+public abstract class Parser {
 
-public class Guard extends ModelElementImpl {
-  public BooleanExpression _expression;
-  //  public Transition _guard;
+  public abstract Operation parseOperation(String s);
+  public abstract Attribute parseAttribute(String s);
+  public abstract Parameter parseParameter(String s);
+//   public abstract Package parsePackage(String s);
+//   public abstract Classifier parseClassifier(String s);
+  public abstract Stereotype parseStereotype(String s);
+  public abstract TaggedValue parseTaggedValue(String s);
+//   public abstract IAssociation parseAssociation(String s);
+//   public abstract AssociationEnd parseAssociationEnd(String s);
+  public abstract Multiplicity parseMultiplicity(String s);
+  public abstract State parseState(String s);
+  public abstract Transition parseTransition(String s);
+  public abstract MMAction parseAction(String s);
+  public abstract Guard parseGuard(String s);
+  public abstract Event parseEvent(String s);
 
-  public Guard() { }
-  public Guard(Name name, BooleanExpression exp) {
-    super(name);
-    try {
-      setExpression(exp);
-      //setGuard(t);
-    }
-    catch (PropertyVetoException pve) { }
-  }
-  public Guard(BooleanExpression exp) {
-    super();
-    try { setExpression(exp); }
-    catch (PropertyVetoException pve) { }
-  }
-  public Guard(String exp) {
-    super();
-    try { setExpression(new BooleanExpression(exp)); }
-    catch (PropertyVetoException pve) { }
+
+  public Expression parseExpression(String s) {
+    return new Expression(parseUninterpreted(s));
   }
 
-  public BooleanExpression getExpression() { return _expression; }
-  public void setExpression(BooleanExpression x) throws PropertyVetoException {
-    fireVetoableChange("expression", _expression, x);
-    _expression = x;
+  public Name parseName(String s) {
+    return new Name(s);
   }
-//   public Transition getGuard() { return _guard; }
-//   public void setGuard(Transition x) throws PropertyVetoException {
-//     fireVetoableChange("guard", _guard, x);
-//     _guard = x;
-//   }
 
-  ////////////////////////////////////////////////////////////////
-  // debugging
-  public String dbgString() {
-    String s = getOCLTypeStr();
-    if (_expression != null)
-      s += _expression.dbgString();
-    return s;
+  public Uninterpreted parseUninterpreted(String s) {
+    return new Uninterpreted(s);
   }
-}
+
+} /* end class Parser */

@@ -46,36 +46,40 @@ import uci.uml.Behavioral_Elements.Common_Behavior.*;
 
 /** Class to display graphics for a UML Instance in a diagram. */
 
-public class FigInstance extends FigNodeModelElement 
-/*implements VetoableChangeListener, DelayedVetoableChangeListener*/ {
+public class FigInstance extends FigNodeModelElement {
 
   /** UML does not really use ports, so just define one big one so
    *  that users can drag edges to or from any point in the icon. */
-  
+
   FigText _attr;
   FigRect _bigPort;
-  
+
   // add other Figs here aes needed
 
 
   ////////////////////////////////////////////////////////////////
   // constructors
-  
+
   public FigInstance(GraphModel gm, Object node) {
     super(gm, node);
     // if it is a UML meta-model object, register interest in any change events
-    if (node instanceof ElementImpl)
-      ((ElementImpl)node).addVetoableChangeListener(this);
+//     if (node instanceof ElementImpl)
+//       ((ElementImpl)node).addVetoableChangeListener(this);
 
     Color handleColor = Globals.getPrefs().getHandleColor();
-   
+
     _bigPort = new FigRect(8, 8, 92, 62, handleColor, Color.lightGray);
     _name.setUnderline(true);
     _name.setTextFilled(true);
 
     // initialize any other Figs here
     _attr = new FigText(10,30,90,40, Color.black, "Times", 10);
+    _attr.setFont(LABEL_FONT);
     _attr.setExpandOnly(true);
+    _attr.setTextColor(Color.black);
+    _attr.setAllowsTab(false);
+
+    //_attr.setExpandOnly(true);
     _attr.setJustification(FigText.JUSTIFY_LEFT);
 
     // add Figs to the FigNode in back-to-front order
@@ -90,25 +94,38 @@ public class FigInstance extends FigNodeModelElement
     setBounds(r.x, r.y, r.width, r.height);
   }
 
+  public Dimension getMinimumSize() {
+    Dimension nameMin = _name.getMinimumSize();
+    Dimension attrMin = _attr.getMinimumSize();
+
+    int h = nameMin.height + attrMin.height;
+    int w = Math.max(nameMin.width, attrMin.width);
+    return new Dimension(w, h);
+  }
+
+  
   /* Override setBounds to keep shapes looking right */
   public void setBounds(int x, int y, int w, int h) {
     if (_name == null) return;
-    int leftSide = x;
-    int widthP = w;
-    int topSide = y;
-    int heightP = h;
+//     int leftSide = x;
+//     int widthP = w;
+//     int topSide = y;
+//     int heightP = h;
 
-    Rectangle _clss_pref = _name.getBounds();
-    Rectangle _attr_pref = _attr.getBounds();
+    Dimension nameMinimum = _name.getMinimumSize();
+//     Dimension attrMinimum = _attr.getMinimumSize();
 
-    int total_height = _clss_pref.height + _attr_pref.height;
-    int extra_each = (heightP - total_height);
+//     int total_height = Math.max(heightP, nameMinimum.height + attrMinimum.height);
+//     int total_width = Math.max(widthP, Math.max(nameMinimum.width, attrMinimum.width));
 
-    _name.setBounds(leftSide, topSide, widthP, _clss_pref.height);
-    _attr.setBounds(leftSide, topSide + _name.getBounds().height, widthP, _attr_pref.height + extra_each);
-    _bigPort.setBounds(leftSide, topSide, widthP, heightP);
+
+    _name.setBounds(x, y, w, nameMinimum.height);
+    _attr.setBounds(x, y + _name.getBounds().height,
+		    w, h - _name.getBounds().height);
+    _bigPort.setBounds(x+1, y+1, w-2, h-2);
 
     calcBounds(); //_x = x; _y = y; _w = w; _h = h;
+    updateEdges();
   }
 
 } /* end class FigInstance */

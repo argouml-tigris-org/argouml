@@ -44,7 +44,7 @@ public class ActivityModel extends StateMachine {
   public Vector getPartition() { return _partition; }
   public void setPartition(Vector x) throws PropertyVetoException {
     if (_partition == null) _partition = new Vector();
-    fireVetoableChange("partition", _partition, x);
+    fireVetoableChangeNoCompare("partition", _partition, x);
     _partition = x;
   }
   public void addPartition(Partition x) throws PropertyVetoException {

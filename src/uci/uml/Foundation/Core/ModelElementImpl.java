@@ -104,7 +104,7 @@ public class ModelElementImpl extends ElementImpl implements ModelElement {
   public void setConstraint(Vector x)
   throws PropertyVetoException {
     if (_constraint == null) _constraint = new Vector();
-    fireVetoableChange("constraint", _constraint, x);
+    fireVetoableChangeNoCompare("constraint", _constraint, x);
     java.util.Enumeration enum = _constraint.elements();
     while (enum.hasMoreElements()) {
       Constraint c = (Constraint) enum.nextElement();
@@ -130,7 +130,7 @@ public class ModelElementImpl extends ElementImpl implements ModelElement {
   public void setProvision(Vector x)
   throws PropertyVetoException {
     if (_provision == null) _provision = new Vector();
-    fireVetoableChange("provision", _provision, x);
+    fireVetoableChangeNoCompare("provision", _provision, x);
     _provision = x;
   }
   public void addProvision(Dependency x)
@@ -150,7 +150,7 @@ public class ModelElementImpl extends ElementImpl implements ModelElement {
   public void setRequirement(Vector x)
   throws PropertyVetoException {
     if (_requirement == null) _requirement = new Vector();
-    fireVetoableChange("requirement", _requirement, x);
+    fireVetoableChangeNoCompare("requirement", _requirement, x);
     _requirement = x;
   }
   public void addRequirement(Dependency x)
@@ -172,7 +172,7 @@ public class ModelElementImpl extends ElementImpl implements ModelElement {
   public void setTemplateParameter(Vector x)
   throws PropertyVetoException {
     if (_templateParameter == null) _templateParameter = new Vector();
-    fireVetoableChange("templateParameter", _templateParameter, x);
+    fireVetoableChangeNoCompare("templateParameter", _templateParameter, x);
     _templateParameter = x;
   }
   public void addTemplateParameter(ModelElement x)
@@ -210,7 +210,7 @@ public class ModelElementImpl extends ElementImpl implements ModelElement {
   public void setElementReference(Vector x)
   throws PropertyVetoException {
     if (_elementReference == null) _elementReference = new Vector();
-    fireVetoableChange("elementReference", _elementReference, x);
+    fireVetoableChangeNoCompare("elementReference", _elementReference, x);
     _elementReference = x;
   }
   public void addElementReference(ElementReference x)
@@ -229,7 +229,7 @@ public class ModelElementImpl extends ElementImpl implements ModelElement {
   public Vector getStereotype() { return (Vector) _stereotype;}
   public void setStereotype(Vector x) throws PropertyVetoException {
     if (_stereotype == null) _stereotype = new Vector();
-    fireVetoableChange("stereotype", _stereotype, x);
+    fireVetoableChangeNoCompare("stereotype", _stereotype, x);
     _stereotype = x;
   }
   public void addStereotype(Stereotype x) throws PropertyVetoException {
@@ -253,7 +253,7 @@ public class ModelElementImpl extends ElementImpl implements ModelElement {
   public void setBehavior(Vector x)
   throws PropertyVetoException {
     if (_behavior == null) _behavior = new Vector();
-    fireVetoableChange("behavior", _behavior, x);
+    fireVetoableChangeNoCompare("behavior", _behavior, x);
     _behavior = x;
     java.util.Enumeration enum = _behavior.elements();
     while (enum.hasMoreElements()) {

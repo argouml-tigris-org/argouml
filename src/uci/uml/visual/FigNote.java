@@ -44,8 +44,7 @@ import uci.uml.Foundation.Core.*;
 
 /** Class to display graphics for a UML State in a diagram. */
 
-public class FigNote extends FigNode
-implements VetoableChangeListener, DelayedVetoableChangeListener {
+public class FigNote extends FigNodeModelElement {
 
   ////////////////////////////////////////////////////////////////
   // constants
@@ -54,9 +53,6 @@ implements VetoableChangeListener, DelayedVetoableChangeListener {
 
   ////////////////////////////////////////////////////////////////
   // instance variables
-
-  /** The main label on this icon. */
-  FigText _name;
 
   /** UML does not really use ports, so just define one big one so
    *  that users can drag edges to or from any point in the icon. */
@@ -70,16 +66,15 @@ implements VetoableChangeListener, DelayedVetoableChangeListener {
   // constructors
 
   public FigNote(GraphModel gm, Object node) {
-    super(node);
+    super(gm, node);
     // if it is a UML meta-model object, register interest in any change events
     if (node instanceof ElementImpl)
       ((ElementImpl)node).addVetoableChangeListener(this);
 
     Color handleColor = Globals.getPrefs().getHandleColor();
     _bigPort = new FigRect(10, 10, 90, 20, handleColor, Color.lightGray);
-    _name = new FigText(10,10,90,20, Color.blue, "Times", 10);
     _name.setExpandOnly(true);
-    _name.setText("FigNode");
+    _name.setText("FigNote");
     // initialize any other Figs here
 
     // add Figs to the FigNode in back-to-front order
@@ -94,42 +89,19 @@ implements VetoableChangeListener, DelayedVetoableChangeListener {
   }
 
 
-  /** If the UML meta-model object changes state. Update the Fig.  But
-   *  we need to do it as a "DelayedVetoableChangeListener", so that
-   *  model changes complete before we update the screen. */
-  public void vetoableChange(PropertyChangeEvent pce) {
-    // throws PropertyVetoException 
-    //System.out.println("FigNote got a change notification!");
-    Object src = pce.getSource();
-    if (src == getOwner()) {
-      DelayedChangeNotify delayedNotify = new DelayedChangeNotify(this, pce);
-      SwingUtilities.invokeLater(delayedNotify);
-    }
+  public Dimension getMinimumSize() {
+    Dimension nameDim = _name.getMinimumSize();
+    int w = nameDim.width;
+    int h = nameDim.height;
+    return new Dimension(w, h);
   }
 
-  /** The UML meta-model object changed. Now update the Fig to show
-   *  its current  state. */
-  public void delayedVetoableChange(PropertyChangeEvent pce) {
-    // throws PropertyVetoException 
-    //System.out.println("FigNote got a delayed change notification!");
-    Object src = pce.getSource();
-    if (src == getOwner()) {
-      updateText();
-      // you may have to update more than just the text
-    }
-  }
-
-
-  /** Update the text labels */
-  protected void updateText() {
-    Element elmt = (Element) getOwner();
-    String nameStr = GeneratorDisplay.Generate(elmt.getName());
-
-    startTrans();
-    _name.setText(nameStr);
-    Rectangle bbox = getBounds();
-    setBounds(bbox.x, bbox.y, bbox.width, bbox.height);
-    endTrans();
+  public void setBounds(int x, int y, int w, int h) {
+    Rectangle oldBounds = getBounds();
+    _name.setBounds(x, y, w, h);
+    _x = x; _y = y; _w = w; _h = h;
+    firePropChange("bounds", oldBounds, getBounds());
+    updateEdges();
   }
 
   public void dispose() {

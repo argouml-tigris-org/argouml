@@ -332,6 +332,9 @@ public class Fig implements java.io.Serializable, PropertyChangeListener  {
   /** Returns true if this Fig can be resized by the user. */
   public boolean isResizable() { return true; }
 
+  /** Returns true if this Fig can be resized by the user. */
+  public boolean isLowerRightResizable() { return false; }
+
   /** Returns true if this Fig can be reshaped by the user. */
   public boolean isReshapable() { return false; }
 

@@ -47,7 +47,7 @@ public class UseCase extends Classifier {
   public Vector getExtensionPoint() { return _extensionPoint; }
   public void setExtensionPoint(Vector x) throws PropertyVetoException {
     if (_extensionPoint == null) _extensionPoint = new Vector();
-    fireVetoableChange("extensionPoint", _extensionPoint, x);
+    fireVetoableChangeNoCompare("extensionPoint", _extensionPoint, x);
     _extensionPoint = x;
   }
   public void addExtensionPoint(String x) throws PropertyVetoException {

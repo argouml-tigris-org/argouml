@@ -102,7 +102,7 @@ public class ElementImpl implements Element, Highlightable {
   public Vector getCharacteristic() { return (Vector) _characteristic;}
   public void setCharacteristic(Vector x) throws PropertyVetoException {
     if (_characteristic == null) _characteristic = new Vector();
-    fireVetoableChange("characteristic", _characteristic, x);
+    fireVetoableChangeNoCompare("characteristic", _characteristic, x);
     _characteristic = x;
   }
   public void addCharacteristic(TaggedValue x) throws PropertyVetoException {
@@ -131,7 +131,7 @@ public class ElementImpl implements Element, Highlightable {
   public Vector getTaggedValue() { return (Vector) _taggedValue;}
   public void setTaggedValue(Vector x) throws PropertyVetoException {
     if (_taggedValue == null) _taggedValue = new Vector();
-    fireVetoableChange("taggedValue", _taggedValue, x);
+    fireVetoableChangeNoCompare("taggedValue", _taggedValue, x);
     _taggedValue = x;
   }
   public void addTaggedValue(TaggedValue x) throws PropertyVetoException {
@@ -192,10 +192,15 @@ public class ElementImpl implements Element, Highlightable {
   public void fireVetoableChange(String propertyName,
 				 Object oldValue, Object newValue)
        throws PropertyVetoException {
-    uci.argo.kernel.Designer.TheDesigner.critiqueASAP(this);
     if (_vetoListeners == null) return;
     if (oldValue != null && oldValue.equals(newValue)) return;
-    //System.out.println("fire _vetoListeners.size() = " + _vetoListeners.size());
+    fireVetoableChangeNoCompare(propertyName, oldValue, newValue);
+  }
+
+  public void fireVetoableChangeNoCompare(String propertyName,
+				 Object oldValue, Object newValue)
+       throws PropertyVetoException {
+    uci.argo.kernel.Designer.TheDesigner.critiqueASAP(this);
     PropertyChangeEvent evt =
       new PropertyChangeEvent(this,
 			      propertyName, oldValue, newValue);

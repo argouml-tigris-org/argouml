@@ -62,11 +62,12 @@ public abstract class StateVertex extends ModelElementImpl {
   public Vector getOutgoing() { return _outgoing; }
   public void setOutgoing(Vector x) throws PropertyVetoException {
     if (_outgoing == null) _outgoing = new Vector();
-    fireVetoableChange("outgoing", _outgoing, x);
+    fireVetoableChangeNoCompare("outgoing", _outgoing, x);
     _outgoing = x;
   }
   public void addOutgoing(Transition x) throws PropertyVetoException {
     if (_outgoing == null) _outgoing = new Vector();
+    else if (_outgoing.contains(x)) return;
     fireVetoableChange("outgoing", _outgoing, x);
     _outgoing.addElement(x);
   }
@@ -80,11 +81,12 @@ public abstract class StateVertex extends ModelElementImpl {
   public Vector getIncoming() { return _incoming; }
   public void setIncoming(Vector x) throws PropertyVetoException {
     if (_incoming == null) _incoming = new Vector();
-    fireVetoableChange("incoming", _incoming, x);
+    fireVetoableChangeNoCompare("incoming", _incoming, x);
     _incoming = x;
   }
   public void addIncoming(Transition x) throws PropertyVetoException {
     if (_incoming == null) _incoming = new Vector();
+    else if (_incoming.contains(x)) return;
     fireVetoableChange("incoming", _incoming, x);
     _incoming.addElement(x);
   }

@@ -66,7 +66,7 @@ public class Subsystem extends Classifier implements Package {
   public Vector getReferencedElement() { return _referencedElement; }
   public void setReferencedElement(Vector x) throws PropertyVetoException {
     if (_referencedElement == null) _referencedElement = new Vector();
-    fireVetoableChange("referencedElement", _referencedElement, x);
+    fireVetoableChangeNoCompare("referencedElement", _referencedElement, x);
     _referencedElement = x;
   }
   public void addReferencedElement(ModelElement x) throws PropertyVetoException {

@@ -134,6 +134,9 @@ implements TabModelTarget, uci.gef.event.GraphSelectionListener {
     ProjectBrowser pb = ProjectBrowser.TheInstance;
     if (sels.size() == 1) pb.setDetailsTarget(sels.elementAt(0));
     else pb.setDetailsTarget(null);
+    // needs-more-work: single-clicking objects from navigator pane that do
+    // not have a Fig in the diagram cause the DetailsPane to jump to
+    // tab 0 (the TabToDo).
   }
 
   public void removeGraphSelectionListener(GraphSelectionListener listener) {
