@@ -140,16 +140,9 @@ implements PluggableNotation, FileGenerator {
     String filename = name + ".java";
     if (!path.endsWith (FILE_SEPARATOR)) path += FILE_SEPARATOR;
 
-    String packagePath = cls.getNamespace().getName();
-    MNamespace parent = cls.getNamespace().getNamespace();
-    while (parent != null) {
-	  // ommit root package name; it's the model's root
-	  if (parent.getNamespace() != null)
-        packagePath = parent.getName() + "." + packagePath;
-      parent = parent.getNamespace();
-    }
+    String packagePath = getPackageName(cls.getNamespace());
 
-	  int lastIndex=-1;
+    int lastIndex=-1;
     do {
       File f = new File (path);
       if (!f.isDirectory()) {
@@ -1546,6 +1539,19 @@ implements PluggableNotation, FileGenerator {
 	    generateAction(m.getAction());
     }
 
+    public String getPackageName(MNamespace parent) {
+        if (parent == null)
+            return "";
+        String packagePath = parent.getName();
+        parent = parent.getNamespace();
+        while (parent != null) {
+            // ommit root package name; it's the model's root
+            if (parent.getNamespace() != null)
+            packagePath = parent.getName() + '.' + packagePath;
+            parent = parent.getNamespace();
+        }
+        return packagePath;
+    }
 
     /**
        Update a source code file.

@@ -98,18 +98,18 @@ public class PackageCodePiece extends NamedCodePiece
     public void write(Writer writer,
                       Stack parseStateStack,
                       int column)
-	throws Exception
+    throws Exception
     {
-	ParseState parseState = (ParseState)parseStateStack.peek();
-	MNamespace mNamespace = parseState.getNamespace();
+    ParseState parseState = (ParseState)parseStateStack.peek();
+    MNamespace mNamespace = parseState.getNamespace();
 
-	if(mNamespace instanceof MModel) {
-	    writer.write("// No package");
-	}
-	else {
-	    writer.write("package " +
-			 mNamespace.getName() +
-			 ";");
-	}
+    if(mNamespace instanceof MModel) {
+        writer.write("// No package");
+    }
+    else {
+        writer.write("package ");
+        writer.write(GeneratorJava.getInstance().getPackageName(mNamespace));
+        writer.write(";");
+    }
     }
 }
