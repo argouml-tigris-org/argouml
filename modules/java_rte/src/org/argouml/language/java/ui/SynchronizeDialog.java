@@ -126,8 +126,33 @@ public class SynchronizeDialog extends javax.swing.JDialog {
         getContentPane().add(labelCode, gridBagConstraints);
 
         tableModel.setBorder(new javax.swing.border.EtchedBorder());
-        tableModel.setForeground(new java.awt.Color(0, 0, 0));
-        tableModel.setModel(new ModelTableModel());
+        tableModel.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         tableModel.setEnabled(false);
         tableModel.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
