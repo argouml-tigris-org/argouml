@@ -269,11 +269,11 @@ public class TabResults
 	    Object sel = _results.elementAt(row);
 	    cat.debug("selected " + sel);
 	    _related.removeAllElements();
-	    java.util.Enumeration enum =
+	    java.util.Enumeration elems =
 		ChildGenRelated.SINGLETON.gen(sel);
-	    if (enum != null) {
-		while (enum.hasMoreElements()) {
-		    _related.addElement(enum.nextElement());
+	    if (elems != null) {
+		while (elems.hasMoreElements()) {
+		    _related.addElement(elems.nextElement());
 		}
 	    }
 	    _relatedModel.setTarget(_related, null);

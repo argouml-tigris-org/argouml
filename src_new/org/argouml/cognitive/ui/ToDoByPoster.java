@@ -59,9 +59,9 @@ public class ToDoByPoster extends ToDoPerspective
 	path[0] = Designer.TheDesigner.getToDoList();
 
 	VectorSet posters = Designer.theDesigner().getToDoList().getPosters();
-	Enumeration enum = posters.elements();
-	while (enum.hasMoreElements()) {
-	    Poster p = (Poster) enum.nextElement();
+	Enumeration elems = posters.elements();
+	while (elems.hasMoreElements()) {
+	    Poster p = (Poster) elems.nextElement();
 	    path[1] = p;
 	    int nMatchingItems = 0;
 	    for (int i = 0; i < nItems; i++) {
@@ -94,9 +94,9 @@ public class ToDoByPoster extends ToDoPerspective
 	path[0] = Designer.TheDesigner.getToDoList();
 
 	VectorSet posters = Designer.theDesigner().getToDoList().getPosters();
-	Enumeration enum = posters.elements();
-	while (enum.hasMoreElements()) {
-	    Poster p = (Poster) enum.nextElement();
+	Enumeration elems = posters.elements();
+	while (elems.hasMoreElements()) {
+	    Poster p = (Poster) elems.nextElement();
 	    path[1] = p;
 	    int nMatchingItems = 0;
 	    for (int i = 0; i < nItems; i++) {
@@ -130,9 +130,9 @@ public class ToDoByPoster extends ToDoPerspective
 	path[0] = Designer.TheDesigner.getToDoList();
 
 
-	Enumeration enum = list.getPosters().elements();
-	while (enum.hasMoreElements()) {
-	    Poster p = (Poster) enum.nextElement();
+	Enumeration elems = list.getPosters().elements();
+	while (elems.hasMoreElements()) {
+	    Poster p = (Poster) elems.nextElement();
 	    //       boolean anyInPoster = false;
 	    //       for (int i = 0; i < nItems; i++) {
 	    // 	ToDoItem item = (ToDoItem) items.elementAt(i);

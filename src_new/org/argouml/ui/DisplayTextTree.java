@@ -184,9 +184,9 @@ public class DisplayTextTree extends JTree {
 
         _reexpanding = true;
 
-        Enumeration enum = getExpandedPaths().elements();
-        while (enum.hasMoreElements()) {
-            TreePath path = (TreePath) enum.nextElement();
+        Enumeration pathsEnum = getExpandedPaths().elements();
+        while (pathsEnum.hasMoreElements()) {
+            TreePath path = (TreePath) pathsEnum.nextElement();
             expandPath(path);
         }
         _reexpanding = false;

@@ -508,9 +508,9 @@ public class Critic implements Poster, Serializable {
     public boolean isRelevantToDecisions(Designer dsgr) {
 //	cat.debug(this);
 //        boolean isDebugEnabled = cat.isDebugEnabled();
-	Enumeration enum = getSupportedDecisions().elements();
-	while (enum.hasMoreElements()) {
-	    Decision d = (Decision) enum.nextElement();
+	Enumeration elems = getSupportedDecisions().elements();
+	while (elems.hasMoreElements()) {
+	    Decision d = (Decision) elems.nextElement();
 	    if (d.getPriority() > 0 && d.getPriority() <= getPriority()) {
                 
 //                if(isDebugEnabled) cat.debug(d + " " + d.getPriority());

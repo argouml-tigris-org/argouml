@@ -58,9 +58,9 @@ public class ToDoByGoal extends ToDoPerspective
 	path[0] = Designer.TheDesigner.getToDoList();
 
 	Vector goals = Designer.TheDesigner.getGoals();
-	Enumeration enum = goals.elements();
-	while (enum.hasMoreElements()) {
-	    Goal g = (Goal) enum.nextElement();
+	Enumeration elems = goals.elements();
+	while (elems.hasMoreElements()) {
+	    Goal g = (Goal) elems.nextElement();
 	    path[1] = g;
 	    int nMatchingItems = 0;
 	    for (int i = 0; i < nItems; i++) {
@@ -91,9 +91,9 @@ public class ToDoByGoal extends ToDoPerspective
 	path[0] = Designer.TheDesigner.getToDoList();
 
 	Vector goals = Designer.TheDesigner.getGoals();
-	Enumeration enum = goals.elements();
-	while (enum.hasMoreElements()) {
-	    Goal g = (Goal) enum.nextElement();
+	Enumeration elems = goals.elements();
+	while (elems.hasMoreElements()) {
+	    Goal g = (Goal) elems.nextElement();
 	    path[1] = g;
 	    int nMatchingItems = 0;
 	    for (int i = 0; i < nItems; i++) {
@@ -125,9 +125,9 @@ public class ToDoByGoal extends ToDoPerspective
 	path[0] = Designer.TheDesigner.getToDoList();
 
 	Vector goals = Designer.TheDesigner.getGoals();
-	Enumeration enum = goals.elements();
-	while (enum.hasMoreElements()) {
-	    Goal g = (Goal) enum.nextElement();
+	Enumeration elems = goals.elements();
+	while (elems.hasMoreElements()) {
+	    Goal g = (Goal) elems.nextElement();
 	    cat.debug("toDoItemRemoved updating decision node!");
 	    boolean anyInGoal = false;
 	    for (int i = 0; i < nItems; i++) {

@@ -676,10 +676,10 @@ public class Project implements java.io.Serializable, TargetListener {
     public void loadMembersOfType(String type) {
         if (type == null)
             return;
-        java.util.Enumeration enum = getMembers().elements();
+        java.util.Enumeration members = getMembers().elements();
         try {
-            while (enum.hasMoreElements()) {
-                ProjectMember pm = (ProjectMember) enum.nextElement();
+            while (members.hasMoreElements()) {
+                ProjectMember pm = (ProjectMember) members.nextElement();
                 if (type.equalsIgnoreCase(pm.getType()))
                     pm.load();
             }

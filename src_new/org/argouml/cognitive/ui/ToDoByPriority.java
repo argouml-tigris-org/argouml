@@ -57,9 +57,9 @@ public class ToDoByPriority extends ToDoPerspective
 	Object path[] = new Object[2];
 	path[0] = Designer.TheDesigner.getToDoList();
 
-	Enumeration enum = PriorityNode.getPriorities().elements();
-	while (enum.hasMoreElements()) {
-	    PriorityNode pn = (PriorityNode) enum.nextElement();
+	Enumeration elems = PriorityNode.getPriorities().elements();
+	while (elems.hasMoreElements()) {
+	    PriorityNode pn = (PriorityNode) elems.nextElement();
 	    path[1] = pn;
 	    int nMatchingItems = 0;
 	    for (int i = 0; i < nItems; i++) {
@@ -89,9 +89,9 @@ public class ToDoByPriority extends ToDoPerspective
 	Object path[] = new Object[2];
 	path[0] = Designer.TheDesigner.getToDoList();
 
-	Enumeration enum = PriorityNode.getPriorities().elements();
-	while (enum.hasMoreElements()) {
-	    PriorityNode pn = (PriorityNode) enum.nextElement();
+	Enumeration elems = PriorityNode.getPriorities().elements();
+	while (elems.hasMoreElements()) {
+	    PriorityNode pn = (PriorityNode) elems.nextElement();
 	    path[1] = pn;
 	    int nMatchingItems = 0;
 	    for (int i = 0; i < nItems; i++) {
@@ -122,9 +122,9 @@ public class ToDoByPriority extends ToDoPerspective
 	Object path[] = new Object[2];
 	path[0] = Designer.TheDesigner.getToDoList();
 
-	Enumeration enum = PriorityNode.getPriorities().elements();
-	while (enum.hasMoreElements()) {
-	    PriorityNode pn = (PriorityNode) enum.nextElement();
+	Enumeration elems = PriorityNode.getPriorities().elements();
+	while (elems.hasMoreElements()) {
+	    PriorityNode pn = (PriorityNode) elems.nextElement();
 	    int nodePriority = pn.getPriority();
 	    boolean anyInPri = false;
 	    for (int i = 0; i < nItems; i++) {
