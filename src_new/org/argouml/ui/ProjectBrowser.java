@@ -306,12 +306,12 @@ implements IStatusBar, NavigationListener {
     view.addCheckItem(Actions.ShowRapidButtons);
 
 
-    JMenu create = (JMenu) _menuBar.add(new JMenu(menuLocalize("Create")));
-    setMnemonic(create,"Create",'C');
-    create.add(Actions.CreateMultiple);
-    create.addSeparator();
+    //JMenu create = (JMenu) _menuBar.add(new JMenu(menuLocalize("Create")));
+    //setMnemonic(create,"Create",'C');
+    //create.add(Actions.CreateMultiple);
+    //create.addSeparator();
 
-    JMenu createDiagrams = (JMenu) create.add(new JMenu(menuLocalize("Diagrams")));
+    JMenu createDiagrams = (JMenu) _menuBar.add(new JMenu(menuLocalize("Create Diagram")));
     createDiagrams.add(ActionClassDiagram.SINGLETON);
     createDiagrams.add(ActionUseCaseDiagram.SINGLETON);
     createDiagrams.add(ActionStateDiagram.SINGLETON);

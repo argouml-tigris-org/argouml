@@ -130,7 +130,7 @@ doesn't find it's own XML-libs. You need to set ANT_HOME in your shell.
 
 ============================================================================ -->
 
-<project default="usage" basedir=".">
+<project name="argouml" default="usage" basedir=".">
 
   <!-- =================================================================== -->
   <!-- Initialization target                                               -->
