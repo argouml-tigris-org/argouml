@@ -60,14 +60,15 @@ import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.event.EventListenerList;
 import javax.swing.plaf.metal.MetalLookAndFeel;
-
+//
 import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.UmlModelEventPump;
-import org.argouml.swingext.GridLayout2;
 import org.argouml.swingext.LabelledLayout;
 import org.argouml.swingext.Orientation;
+import org.argouml.swingext.SerialLayout;
+import org.argouml.swingext.Toolbar;
 import org.argouml.swingext.Vertical;
 import org.argouml.ui.TabSpawnable;
 import org.argouml.ui.targetmanager.TargetEvent;
@@ -76,6 +77,7 @@ import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.ui.targetmanager.TargettableModelView;
 import org.argouml.uml.Profile;
 import org.argouml.uml.ProfileJava;
+
 import org.tigris.gef.presentation.Fig;
 
 import ru.novosoft.uml.MBase;
@@ -123,7 +125,7 @@ abstract public class PropPanel extends TabSpawnable implements TabModelTarget, 
     private Vector _targetList = null;
     private JPanel center;
 
-    protected JPanel buttonPanel = new JPanel();
+    protected Toolbar buttonPanel = new Toolbar();
     private JPanel buttonPanelWithFlowLayout = new JPanel();
 
     private JLabel _titleLabel;
@@ -153,7 +155,7 @@ abstract public class PropPanel extends TabSpawnable implements TabModelTarget, 
         else {
             _titleLabel = new JLabel(localize(title));
         }
-        buttonPanel = new JPanel(new GridLayout2(1, 0, GridLayout2.MAXPREFERRED));
+        //buttonPanel = new JPanel(new SerialLayout());
         _titleLabel.setLabelFor(buttonPanel);
         add(_titleLabel);
         add(buttonPanel);
@@ -708,7 +710,8 @@ abstract public class PropPanel extends TabSpawnable implements TabModelTarget, 
         captionPanel.add(new JLabel(localize(title)));
         addCaption(captionPanel, 0, 0, 0);
 
-        buttonPanel = new JPanel(new GridLayout(1, 0));
+        buttonPanel = new Toolbar();
+        //buttonPanel = new JPanel(new SerialLayout());
         buttonPanelWithFlowLayout = new JPanel(new FlowLayout());
         buttonPanelWithFlowLayout.add(buttonPanel);
         addField(buttonPanelWithFlowLayout, 0, 0, 0);
