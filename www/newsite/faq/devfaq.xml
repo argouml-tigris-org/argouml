@@ -27,9 +27,9 @@
   <a href="mailto:dev@argouml.tigris.org">dev mailing list</a>!
   </para>
 
- <subsection title="0. Prerequisite stuff">
+ <subsection title="Prerequisite stuff">
 
-  <subsubsection title="0.1. Which tools do I need to build ArgoUML?">
+  <subsubsection title="Which tools do I need to build ArgoUML?">
    <ul>
      <li>CVS for obtaining the latest files via internet</li>
      <li>ANT, the Java make tool to manage compiling and packaging</li>
@@ -44,7 +44,7 @@
    should be sufficient.
    </para>
   </subsubsection>
-  <subsubsection title="0.2. Compiling failed. Any suggestions?">
+  <subsubsection title="Compiling failed. Any suggestions?">
    <para>
    Most compiling problems arise from wrong versions: maybe ANT
    or JDK, but most often one of the four libs. A look on the error
@@ -59,9 +59,9 @@
 
  </subsection>
 
- <subsection title="1. Argo Initialization">
+ <subsection title="Argo Initialization">
 
-  <subsubsection title="1.1. Which sources are involved?">
+  <subsubsection title="Which sources are involved?">
   <para>
   Relative to the directory org/argouml, they are mainly:
   </para>
@@ -72,7 +72,7 @@
     <li>cognitive/{Designer.java,ui/ToDoPane.java}.</li>
   </ul>
   </subsubsection>
-  <subsubsection title="1.2. What is loaded/initialized?">
+  <subsubsection title="What is loaded/initialized?">
   <para>
   It all begins in org.argouml.application.Main: set up
   main application frame (org.argouml.ui.ProjectBrowser), the
@@ -96,14 +96,14 @@
 
  </subsection>
 
- <subsection title="2. Runtime Issues">
+ <subsection title="Runtime Issues">
 
-  <subsubsection title="2.1. Which Objects live during a typical session?">
+  <subsubsection title="Which Objects live during a typical session?">
   <para>
   (Project, Designer, Globals, NavPane, ToDoPane, ...)
   </para>
   </subsubsection>
-  <subsubsection title="2.2. What is their task?">
+  <subsubsection title="What is their task?">
   <para>
   (visual component, model, controller, ...)
   </para>
@@ -115,17 +115,17 @@
 
  </subsection>
 
- <subsection title="3. Working with Projects">
+ <subsection title="Working with Projects">
 
-  <subsubsection title="3.1. How is a project represented/stored/loaded?">
+  <subsubsection title="How is a project represented/stored/loaded?">
   <para>
   </para>
   </subsubsection>
-  <subsubsection title="3.2. Which sources are involved?">
+  <subsubsection title="Which sources are involved?">
   <para>
   </para>
   </subsubsection>
-  <subsubsection title="3.3. What happens when something is added/removed/modified?">
+  <subsubsection title="What happens when something is added/removed/modified?">
   <para>
   (in the model and/or the diagram)
   </para>
@@ -133,51 +133,51 @@
 
  </subsection>
 
- <subsection title="4. Cognitive Support">
+ <subsection title="Cognitive Support">
 
-  <subsubsection title="4.1. Which sources are involved?">
+  <subsubsection title="Which sources are involved?">
   <para>
   </para>
   </subsubsection>
-  <subsubsection title="4.2. How do Critics/Checklists work?">
+  <subsubsection title="How do Critics/Checklists work?">
   <para>
   </para>
   </subsubsection>
-  <subsubsection title="4.3. How are changes recognized?">
+  <subsubsection title="How are changes recognized?">
   <para>
   </para>
   </subsubsection>
-  <subsubsection title="4.4. How is the connection to the model/diagrams?">
-  <para>
-  </para>
-  </subsubsection>
-
- </subsection>
-
- <subsection title="5. Code Generation">
-
-  <subsubsection title="5.1. Which sources are involved?">
-  <para>
-  </para>
-  </subsubsection>
-  <subsubsection title="5.2. How does it work?">
-  <para>
-  </para>
-  </subsubsection>
-  <subsubsection title="5.3. What in the model is (not) considered?">
-  <para>
-  </para>
-  </subsubsection>
-  <subsubsection title="5.4. How is Java/C++ specific stuff handled?">
+  <subsubsection title="How is the connection to the model/diagrams?">
   <para>
   </para>
   </subsubsection>
 
  </subsection>
 
- <subsection title="6. Reverse Engineering">
+ <subsection title="Code Generation">
 
-  <subsubsection title="6.1. Which sources are involved?">
+  <subsubsection title="Which sources are involved?">
+  <para>
+  </para>
+  </subsubsection>
+  <subsubsection title="How does it work?">
+  <para>
+  </para>
+  </subsubsection>
+  <subsubsection title="What in the model is (not) considered?">
+  <para>
+  </para>
+  </subsubsection>
+  <subsubsection title="How is Java/C++ specific stuff handled?">
+  <para>
+  </para>
+  </subsubsection>
+
+ </subsection>
+
+ <subsection title="Reverse Engineering">
+
+  <subsubsection title="Which sources are involved?">
   <para>
   The package org.argouml.uml.reveng is supposed to hold those classes
   that are common to all RE packages. At the moment this is the Import
@@ -194,7 +194,7 @@
   or so...
   </para>
   </subsubsection>
-  <subsubsection title="6.2. How is the grammar of the target language implemented?">
+  <subsubsection title="How is the grammar of the target language implemented?">
   <para>
   It's a Antlr (<a href="http://www.antlr.org" target="_blank">
   http://www.antlr.org</a>) grammar, based on the Antlr Java parser
@@ -206,7 +206,7 @@
   of an AST and the frequent GC while parsing many source files.
   </para>
   </subsubsection>
-  <subsubsection title="6.3. Which model/diagramm elements are generated?">
+  <subsubsection title="Which model/diagramm elements are generated?">
   <para>
   The *context classes hold the current context for a package, class
   etc. When the required information for a object is available, the
@@ -214,7 +214,7 @@
   to visualize it.
   </para>
   </subsubsection>
-  <subsubsection title="6.4. Which layout algorithm is used?">
+  <subsubsection title="Which layout algorithm is used?">
   <para>
   The classes in org.argouml.uml.diagram.static_structure.layout.* hold
   the Classdiagram layout code. No layout for other diagram types yet.
@@ -295,9 +295,9 @@
 
  </subsection>
 
- <subsection title="7. Graphics Environment (GEF)">
+ <subsection title="Graphics Environment (GEF)">
 
-  <subsubsection title="7.1. What are the basics of GEF (short intro)?">
+  <subsubsection title="What are the basics of GEF (short intro)?">
   <para>
   The basic element in GEF is a figure. There are five different kinds
   of figures: lines, rectangles, edges, texts and nodes (with groups as
@@ -310,7 +310,7 @@
   class diagram</a> about GEF.
   </para>
   </subsubsection>
-  <subsubsection title="7.2. How and where is the GEF API used for UML?">
+  <subsubsection title="How and where is the GEF API used for UML?">
   At the moment there only exists old documentation: about
   <a href="http://argouml.tigris.org/nonav/v07/docs/cookbook/figure/">
   UML figures</a> and their associated
@@ -325,17 +325,17 @@
 
  </subsection>
 
- <subsection title="8. UML Meta Model (NSUML)">
+ <subsection title="UML Meta Model (NSUML)">
 
-  <subsubsection title="8.1. What are the basics of the used meta model (short intro)?">
+  <subsubsection title="What are the basics of the used meta model (short intro)?">
   <para>
   </para>
   </subsubsection>
-  <subsubsection title="8.2. How and where is the Novosoft API used?">
+  <subsubsection title="How and where is the Novosoft API used?">
   <para>
   </para>
   </subsubsection>
-  <subsubsection title="8.3. How is the model and its representation (e.g. in diagrams) synchronized?">
+  <subsubsection title="How is the model and its representation (e.g. in diagrams) synchronized?">
   <para>
   All changes immediately modify the model that the prop panels, diagrams
   and other panels share. (Since one might change one thing in PropPanel,

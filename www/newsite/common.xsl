@@ -62,7 +62,7 @@
        <xsl:value-of select="position()"/>
      </xsl:attribute>
     </xsl:element>
-    <h1><xsl:value-of select="@title"/></h1>
+    <h1><xsl:number level="single"/>. <xsl:value-of select="@title"/></h1>
     <xsl:apply-templates/>
 </xsl:template>
 
@@ -72,7 +72,7 @@
        <xsl:value-of select="position()"/>
      </xsl:attribute>
     </xsl:element>
-    <h2><xsl:value-of select="@title"/></h2>
+    <h2><xsl:number level="single"/>. <xsl:value-of select="@title"/></h2>
     <xsl:apply-templates/>
 </xsl:template>
 
@@ -82,7 +82,7 @@
        <xsl:value-of select="position()"/>
      </xsl:attribute>
     </xsl:element>
-  <h3><xsl:value-of select="@title"/></h3> 
+  <h3><xsl:number level="single"/>. <xsl:value-of select="@title"/></h3> 
   <xsl:apply-templates/> 
 </xsl:template>
 
