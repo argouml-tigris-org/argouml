@@ -26,23 +26,12 @@ package org.argouml.kernel;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.io.IOException;
-import java.net.URL;
 import java.util.Vector;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipInputStream;
 
 import javax.swing.event.EventListenerList;
-import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.log4j.Logger;
-import org.argouml.cognitive.ProjectMemberTodoList;
-import org.argouml.model.uml.UmlHelper;
 import org.argouml.ui.ArgoDiagram;
-import org.argouml.util.FileConstants;
-import org.argouml.xml.argo.ArgoParser;
-import org.argouml.xml.xmi.XMIParser;
-import org.xml.sax.SAXException;
 
 /**
  * This class manages the projects loaded in argouml.
