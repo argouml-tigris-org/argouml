@@ -228,11 +228,11 @@ public class GenericArgoMenuBar extends JMenuBar
         JMenuItem newItem = _file.add(ActionNew.SINGLETON);
         setMnemonic(newItem,"New",'N');
         setAccelerator(newItem,ctrlN);
-        fileToolbar.add(new ToolButton(ActionNew.SINGLETON));
+        fileToolbar.add((ActionNew.SINGLETON));
         JMenuItem openProjectItem = _file.add(ActionOpenProject.SINGLETON);
         setMnemonic(openProjectItem,"Open",'O');
         setAccelerator(openProjectItem,ctrlO);
-        fileToolbar.add(new ToolButton(ActionOpenProject.SINGLETON));
+        fileToolbar.add((ActionOpenProject.SINGLETON));
     
         //JMenuItem saveItem = _file.add(_actionSave);
         //file.add(_actionSaveAs);
@@ -240,7 +240,7 @@ public class GenericArgoMenuBar extends JMenuBar
         JMenuItem saveProjectItem = _file.add(ActionSaveProject.SINGLETON);
         setMnemonic(saveProjectItem,"Save",'S');
         setAccelerator(saveProjectItem,ctrlS);
-        fileToolbar.add(new ToolButton(ActionSaveProject.SINGLETON));
+        fileToolbar.add((ActionSaveProject.SINGLETON));
         JMenuItem saveProjectAsItem = _file.add(ActionSaveProjectAs.SINGLETON);
         setMnemonic(saveProjectAsItem,"SaveAs",'A');
         _file.addSeparator();
@@ -257,7 +257,7 @@ public class GenericArgoMenuBar extends JMenuBar
         JMenuItem printItem = _file.add(Actions.Print);
         setMnemonic(printItem,"Print",'P');
         setAccelerator(printItem,ctrlP);
-        fileToolbar.add(new ToolButton(Actions.Print));
+        fileToolbar.add((Actions.Print));
         JMenuItem pageSetupItem = _file.add(Actions.PageSetup);
         JMenuItem saveGraphicsItem = _file.add(ActionSaveGraphics.SINGLETON);
         setMnemonic(saveGraphicsItem,"SaveGraphics",'G');
@@ -286,26 +286,26 @@ public class GenericArgoMenuBar extends JMenuBar
 
         //These are not yet implmeneted - Bob Tarling 12 Oct 2002
         //_edit.add(Actions.Undo);
-        //editToolbar.add(new ToolButton(Actions.Undo));
+        //editToolbar.add((Actions.Undo));
         //_edit.add(Actions.Redo);
-        //editToolbar.add(new ToolButton(Actions.Redo));
+        //editToolbar.add((Actions.Redo));
         
         _edit.addSeparator();
         
         JMenuItem cutItem = _edit.add(ActionCut.SINGLETON);
         setMnemonic(cutItem,"Cut",'X');
         setAccelerator(cutItem,ctrlX);
-        editToolbar.add(new ToolButton(ActionCut.SINGLETON));
+        editToolbar.add((ActionCut.SINGLETON));
         
         JMenuItem copyItem = _edit.add(ActionCopy.SINGLETON);
         setMnemonic(copyItem,"Copy",'C');
         setAccelerator(copyItem,ctrlC);
-        editToolbar.add(new ToolButton(ActionCopy.SINGLETON));
+        editToolbar.add(ActionCopy.SINGLETON);
         
         JMenuItem pasteItem = _edit.add(ActionPaste.SINGLETON);
         setMnemonic(pasteItem,"Paste",'V');
         setAccelerator(pasteItem,ctrlV);
-        editToolbar.add(new ToolButton(ActionPaste.SINGLETON));
+        editToolbar.add((ActionPaste.SINGLETON));
         
         _edit.addSeparator();
         
@@ -343,7 +343,7 @@ public class GenericArgoMenuBar extends JMenuBar
         _view.add(Actions.GotoDiagram);
         JMenuItem findItem =  _view.add(Actions.Find);
         setAccelerator(findItem,F3);
-        viewToolbar.add(new ToolButton(Actions.Find));
+        viewToolbar.add((Actions.Find));
 
         _view.addSeparator();
 
@@ -387,19 +387,19 @@ public class GenericArgoMenuBar extends JMenuBar
         Toolbar createDiagramToolbar = new Toolbar("Create Diagram Toolbar");
         _multiToolbar.add(createDiagramToolbar);
         _createDiagrams.add(ActionClassDiagram.SINGLETON);
-        createDiagramToolbar.add(new ToolButton(ActionClassDiagram.SINGLETON));
+        createDiagramToolbar.add((ActionClassDiagram.SINGLETON));
         _createDiagrams.add(ActionUseCaseDiagram.SINGLETON);
-        createDiagramToolbar.add(new ToolButton(ActionUseCaseDiagram.SINGLETON));
+        createDiagramToolbar.add((ActionUseCaseDiagram.SINGLETON));
         _createDiagrams.add(ActionStateDiagram.SINGLETON);
-        createDiagramToolbar.add(new ToolButton(ActionStateDiagram.SINGLETON));
+        createDiagramToolbar.add((ActionStateDiagram.SINGLETON));
         _createDiagrams.add(ActionActivityDiagram.SINGLETON);
-        createDiagramToolbar.add(new ToolButton(ActionActivityDiagram.SINGLETON));
+        createDiagramToolbar.add((ActionActivityDiagram.SINGLETON));
         _createDiagrams.add(ActionCollaborationDiagram.SINGLETON);
-        createDiagramToolbar.add(new ToolButton(ActionCollaborationDiagram.SINGLETON));
+        createDiagramToolbar.add((ActionCollaborationDiagram.SINGLETON));
         _createDiagrams.add(ActionDeploymentDiagram.SINGLETON);
-        createDiagramToolbar.add(new ToolButton(ActionDeploymentDiagram.SINGLETON));
+        createDiagramToolbar.add((ActionDeploymentDiagram.SINGLETON));
         _createDiagrams.add(ActionSequenceDiagram.SINGLETON);
-        createDiagramToolbar.add(new ToolButton(ActionSequenceDiagram.SINGLETON));
+        createDiagramToolbar.add((ActionSequenceDiagram.SINGLETON));
         appendPluggableMenus(_createDiagrams, PluggableMenu.KEY_CREATE_DIAGRAMS);
 
         //JMenu createModelElements = (JMenu) create.add(new JMenu("Model Elements"));
