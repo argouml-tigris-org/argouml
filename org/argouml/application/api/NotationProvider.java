@@ -82,10 +82,15 @@ public interface NotationProvider {
     public String generateAssociationRole(MAssociationRole m);
 
     /** Can the notation be parsed for this object?
+     *  @param o the object to be tested.
+     *  @return <code>true</code> if it can be parsed
+     *          <code>false</code> if not 
      */
     public boolean canParse(Object o);
 
     /** Can the notation be parsed at all?
+     *  @return <code>true</code> if it can be parsed
+     *          <code>false</code> if not 
      */
     public boolean canParse();
 

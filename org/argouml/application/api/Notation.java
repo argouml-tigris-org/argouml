@@ -84,7 +84,7 @@ public final class Notation implements PropertyChangeListener {
     /** The name of the default Argo notation.  This notation is
      *  part of Argo core distribution.
      */
-    private static NotationName NOTATION_ARGO =
+    private static NotationName notationArgo =
         org.argouml.uml.generator.GeneratorDisplay.getInstance().getNotation();
 
     /** The name of the Argo java-like notation.  This notation is
@@ -196,7 +196,7 @@ public final class Notation implements PropertyChangeListener {
             NotationNameImpl.findNotation(
                 Configuration.getString(
                     KEY_DEFAULT_NOTATION,
-                    NOTATION_ARGO.getConfigurationValue()));
+                    notationArgo.getConfigurationValue()));
         // TODO:
         // This is needed for the case when the default notation is
         // not loaded at this point.
@@ -290,7 +290,8 @@ public final class Notation implements PropertyChangeListener {
     protected String generateState(NotationName notation, Object/*MState*/ m) {
         return getProvider(notation).generateState((MState) m);
     }
-    protected String generateStateBody(NotationName notation, Object/*MState*/ stt) {
+    protected String generateStateBody(NotationName notation, 
+                                        Object/*MState*/ stt) {
         return getProvider(notation).generateStateBody((MState) stt);
     }
     protected String generateTransition(NotationName notation,
@@ -592,7 +593,7 @@ public final class Notation implements PropertyChangeListener {
 
         // UML is the default language
         if (Configuration.getBoolean(Notation.KEY_UML_NOTATION_ONLY, false)) {
-            return NOTATION_ARGO;
+            return notationArgo;
         }
         return context.getContextNotation();
     }
@@ -739,7 +740,8 @@ public final class Notation implements PropertyChangeListener {
     ////////////////////////////////////////////////////////////////
     // Static workers for dealing with notation names.
 
-    /** List of available notations.
+    /** Get list of available notations.
+     *  @return list of available notations
      */
     public static ArrayList getAvailableNotations() {
         return NotationNameImpl.getAvailableNotations();
@@ -750,8 +752,8 @@ public final class Notation implements PropertyChangeListener {
     public static NotationName makeNotation(String k1, String k2, Icon icon) {
         NotationName nn = NotationNameImpl.makeNotation(k1, k2, icon);
         // Making the first created notation the default.
-        if (NOTATION_ARGO == null) {
-            NOTATION_ARGO = nn;
+        if (notationArgo == null) {
+            notationArgo = nn;
         }
         return nn;
     }
@@ -764,12 +766,16 @@ public final class Notation implements PropertyChangeListener {
         Configuration.setBoolean(KEY_USE_GUILLEMOTS, useGuillemots);
     }
 
-    /** get the default width for Fig shadows. */
+    /** get the default width for Fig shadows. 
+     *  @return the default width for Fig shadows
+     */
     public static int getDefaultShadowWidth() {
         return Configuration.getInteger(KEY_DEFAULT_SHADOW_WIDTH, 1);
     }
 
-    /** set the default width for Fig Shadow. */
+    /** set the default width for Fig Shadow. 
+     *  @param width    the Fig shadow width
+     */
     public static void setDefaultShadowWidth(int width) {
         Configuration.setInteger(KEY_DEFAULT_SHADOW_WIDTH, width);
     }
