@@ -1,4 +1,4 @@
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2001 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -28,6 +28,7 @@
 
 package org.argouml.cognitive.critics;
 
+import java.io.*;
 import java.util.*;
 import javax.swing.*;
 
@@ -35,6 +36,10 @@ import org.tigris.gef.util.*;
 
 import org.argouml.kernel.*;
 import org.argouml.cognitive.*;
+import org.argouml.util.*;
+import org.argouml.application.api.*;
+
+import org.apache.log4j.*;
 
 /** "Abstract" base class for design critics.  Each subclass should define
  *  its own predicate method and define its own relevance tags. <p>
@@ -43,7 +48,7 @@ import org.argouml.cognitive.*;
  *  cookbook under <A HREF="../cookbook.html#define_critic">
  *  define_critic</a>. */
 
-public class Critic implements Poster, java.io.Serializable {
+public class Critic implements Poster, Serializable {
 
   ////////////////////////////////////////////////////////////////
   // constants
@@ -77,6 +82,12 @@ public class Critic implements Poster, java.io.Serializable {
   ////////////////////////////////////////////////////////////////
   // instance variables
 
+  /** log4j generic critic logging category
+   *
+   *  @since 0.9.4
+   */
+  public final static Category cat = Category.getInstance(Critic.class.getPackage().getName());
+
   /** The email address of the author/maintainer of this critic. */
   private String _emailAddr;
 
@@ -95,6 +106,8 @@ public class Critic implements Poster, java.io.Serializable {
   /** Arguments used to configure the critic. */
   private Hashtable _args = new Hashtable();
 
+  /** The icon representing the resource.
+   */
   public static Icon DEFAULT_CLARIFIER = ResourceLoader.lookupIconResource("PostIt0");
   protected Icon _clarifier = DEFAULT_CLARIFIER;
 
@@ -108,7 +121,8 @@ public class Critic implements Poster, java.io.Serializable {
    *  particular domain.
    *
    * @see GoalModel
-   * @see ControlMech */
+   * @see ControlMech
+   */
   private String _decisionCategory;
   protected Vector _supportedDecisions = new Vector();
 
@@ -116,9 +130,7 @@ public class Critic implements Poster, java.io.Serializable {
 
   /** The decision type of this critic.  For example, correctness,
    *  completeness, consistency, alternative, presentation,
-   *  optimization, organizational, tool critics, etc.
-   *
-   * @see Critic#criticType */
+   *  optimization, organizational, tool critics, etc. */
   private String _criticType;
 
   /** Internal flag that stores the end result of all ControlMech
@@ -140,21 +152,83 @@ public class Critic implements Poster, java.io.Serializable {
   /** Construct a new critic instance.  Typically only one instance of
    *  each critic class is created and stored in a static variable, as
    *  per the Singleton pattern.  Each domain extension should define
-   *  a static initlizer block to make one instance of each critic and
-   *  call <TT>Agency.register()</TT> with that instance. */
+   *  a static initializer block to make one instance of each critic and
+   *  call {@link Agency#register} with that instance. */
   public Critic() {
-    addControlRec(ENABLED, Boolean.TRUE);
+    /* needs-more-work:  THIS IS A HACK.
+     * A much better way of doing this would be not to start
+     * the critic in the first place.
+     */
+    if (Configuration.getBoolean(getCriticKey(), true)) {
+        addControlRec(ENABLED, Boolean.TRUE);
+	_isActive = true;
+    }
+    else {
+        addControlRec(ENABLED, Boolean.FALSE);
+	_isActive = false;
+    }
     addControlRec(SNOOZE_ORDER, new SnoozeOrder());
     _criticType = "correctness";
     _knowledgeTypes.addElement("Correctness");
     _decisionCategory = "Checking";
     _emailAddr = "jrobbins@ics.uci.edu";
     _moreInfoURL = "http://ics.uci.edu/~jrobbins";
-    _description = "no description is available";
-    _headline = "default critic headline";
+    _description = "no description is availible";
+    _headline = "default critic headline (" + getClass().getName() + ")";
     _priority = ToDoItem.MED_PRIORITY;
   }
 
+  /** Returns the {@link org.argouml.application.api.ConfigurationKey}
+   *  that the critic uses to determine if it is enabled or disabled.
+   *
+   *  The string resulting from the ConfigurationKey
+   *  <code>argo.critic.critic_category.critic_name</code>.
+   *  
+   *  <code>critic_category</code> would describe the type of critic and is
+   *  taken from {@link #getCriticCategory}.
+   *
+   *  <code>critic_name</code> would describe the function of the critic and is
+   *  taken from {@link #getCriticName}.
+   *
+   *  Some examples:
+   *
+   *  argo.critic.layout.Overlap
+   *  argo.critic.uml.ReservedWord
+   *  argo.critic.java.ReservedWord
+   *  argo.critic.idl.ReservedWord
+   *
+   *  @see org.argouml.application.api.Configuration#makeKey
+   *  @see #getCriticCategory
+   *  @see #getCriticName
+   *
+   *  @since 0.9.4
+   */
+  public ConfigurationKey getCriticKey() {
+      return Configuration.makeKey("critic",
+                                   getCriticCategory(),
+				   getCriticName());
+  }
+
+  /** Returns a default critic category.
+   *  Critics should override this
+   *  to provide specific classification information.
+   *
+   *  @since 0.9.4
+   */
+  public String getCriticCategory() {
+      return "unclassified";
+  }
+
+  /** Returns a default critic name.
+   *  By default this is the simple class name.
+   *  Critic implementations should override this
+   *  to provide a better (more descriptive) string.
+   *
+   *  @since 0.9.4
+   */
+  public String getCriticName() {
+      return getClass().getName().substring(getClass().getName().lastIndexOf(".") + 1);
+  }
 
   ////////////////////////////////////////////////////////////////
   // critiquing
@@ -176,11 +250,9 @@ public class Critic implements Poster, java.io.Serializable {
    * @see Critic#predicate
    # @see Critic#toDoItem */
   public void critique(Object dm, Designer dsgr) {
-    //System.out.println("applying critic: " + _headline);
+    cat.debug("applying critic: " + _headline);
     if (predicate(dm, dsgr)) {
-      //       if (Boolean.getBoolean("debug")) {
-      // 	System.out.println(this.toString() + " detected error");
-      //       }
+      cat.debug("predicate() detected error");
       _numCriticsFired++;
       ToDoItem item = toDoItem(dm, dsgr);
       postItem(item, dm, dsgr);
@@ -224,7 +296,10 @@ public class Critic implements Poster, java.io.Serializable {
    *  Needs-More-Work: Maybe ToDoItem should carry some data to make
    *  this method more efficient. */
   public boolean stillValid(ToDoItem i, Designer dsgr) {
-    if (!isActive()) { System.out.println("aasd"); return false; }
+    if (!isActive()) {
+        cat.warn("got to stillvalid while not active");
+	return false;
+    }
     if (i.getOffenders().size() != 1) return true;
     if (predicate(i.getOffenders().firstElement(), dsgr)) {
       ToDoItem item = toDoItem(i.getOffenders().firstElement(), dsgr);
@@ -310,11 +385,21 @@ public class Critic implements Poster, java.io.Serializable {
 
   /** Make this critic active. From now on it can be applied to a
    *  design material in critiquing. */
-  public void beActive() { _isActive = true; }
+  public void beActive() {
+      if (! _isActive) {
+          Configuration.setBoolean(getCriticKey(), true);
+      }
+      _isActive = true;
+  }
 
   /** Make this critic inactive. From now on it will be idle and will
    *  not be applied to a design material in critiquing. */
-  public void beInactive() { _isActive = false; }
+  public void beInactive() {
+      if (_isActive) {
+          Configuration.setBoolean(getCriticKey(), false);
+      }
+      _isActive = false;
+  }
 
   /** Add some attribute used by ControlMech to determine if this
    *  Critic should be active. Critics store control record so that
@@ -403,7 +488,7 @@ public class Critic implements Poster, java.io.Serializable {
 	return w;
       }
       catch (Exception ex) {
-	System.out.println("Could not make wizard: " + item);
+	Argo.log.error("Could not make wizard: " + item, ex);
       }
     }
     return null;
@@ -443,16 +528,25 @@ public class Critic implements Poster, java.io.Serializable {
   /** Reply the email address of the person who is the author or
    *  maintainer of this critic. */
   public String getExpertEmail() { return _emailAddr; }
+
+  /** Set the email address of the person who is the author or
+   *  maintainer of this critic. */
   public void setExpertEmail(String addr) { _emailAddr = addr; }
 
   /** Reply the headline used in feedback produced by this Critic. */
   public String getHeadline(Object dm, Designer dsgr) {
     return getHeadline();
   }
+
+  /** Reply the headline used in feedback produced by this Critic. */
   public String getHeadline(VectorSet offenders, Designer dsgr) {
     return getHeadline(offenders.firstElement(), dsgr);
   }
+
+  /** Reply the headline used in feedback produced by this Critic. */
   public String getHeadline() { return _headline; }
+
+  /** Set the headline used in feedback produced by this Critic. */
   public void setHeadline(String h) {  _headline = h; }
 
   /** Reply the priority used in feedback produced by this Critic. */
@@ -517,7 +611,7 @@ public class Critic implements Poster, java.io.Serializable {
    *  to resolve the problem. This method replies true iff the given
    *  problem can be fixed. The fixIt() method actually does the fix.
    *
-   * @see Critic@fixIt */
+   * @see Critic#fixIt */
   public boolean canFixIt(ToDoItem item) {
     return false;
   }
@@ -534,6 +628,7 @@ public class Critic implements Poster, java.io.Serializable {
    *  debugging. */
   public String toString() {
     return this.getClass().getName() + "(" +
+      getCriticKey() + "," +
       getCriticType() + "," +
       getDecisionCategory() + "," +
       getHeadline() + ")";
