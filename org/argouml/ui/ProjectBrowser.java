@@ -767,7 +767,7 @@ public class ProjectBrowser
                 //Designer.TheDesigner.getToDoList().removeAllElements();
                 Designer.TheDesigner.setCritiquingRoot(p);
                 // update all panes
-                setTarget(p.getInitialTarget());
+                TargetManager.getInstance().setTarget(p.getInitialTarget());
             }
         }
 
