@@ -153,14 +153,14 @@ public class FigSeqLink extends FigEdgeModelElement implements MElementListener{
     }
   }
 
-  protected void modelChanged() {
+  protected void modelChanged(MElementEvent e) {
 
     MLink ml = (MLink) getOwner();
     if (ml == null) return;
 
     String mlNameStr = Notation.generate(this, ml.getName());
 
-    super.modelChanged();
+    super.modelChanged(null);
 
     Vector contents = getContents();
 
@@ -730,7 +730,7 @@ public class FigSeqLink extends FigEdgeModelElement implements MElementListener{
           fso._activations = newActivations;
           for (int j=0; j<edges.size(); j++) {
             FigSeqLink fsl = (FigSeqLink) edges.elementAt(j);
-            fsl.modelChanged();
+            fsl.modelChanged(null);
           }
         }
       }

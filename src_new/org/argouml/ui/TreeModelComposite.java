@@ -159,6 +159,8 @@ implements TreeModel, Cloneable {
       childCount += tm.getChildCount(parent);
     }
     cat.debug("child not found!");
+    
+   
     //The child is sometimes not found when the tree is being updated
     return -1;
   }

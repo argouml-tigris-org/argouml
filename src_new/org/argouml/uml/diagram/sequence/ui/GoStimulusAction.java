@@ -21,66 +21,41 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
+// $Id$
+
 package org.argouml.uml.diagram.sequence.ui;
 
-import java.util.*;
-import javax.swing.*;
-import javax.swing.event.*;
-import javax.swing.tree.*;
-
-import ru.novosoft.uml.model_management.*;
-import ru.novosoft.uml.foundation.core.*;
-import ru.novosoft.uml.behavior.common_behavior.*;
+import java.util.Collection;
+import java.util.Vector;
 
 import org.argouml.application.api.Argo;
-import org.argouml.ui.*;
+import org.argouml.ui.AbstractGoRule;
 
-public class GoStimulusAction implements TreeModel {
+import ru.novosoft.uml.behavior.common_behavior.MAction;
+import ru.novosoft.uml.behavior.common_behavior.MStimulus;
 
-  public String toString() {
-    return Argo.localize ("Tree", "misc.stimulus.action");
-  }
+public class GoStimulusAction extends AbstractGoRule {
 
-  public Object getRoot() {
-      throw
-	  new UnsupportedOperationException("getRoot should never be called");
-  }
-  public void setRoot(Object r) { }
+    public Collection getChildren(Object parent) {
+        if (!(parent instanceof MStimulus))
+            return null;
+        MStimulus ms = (MStimulus) parent;
+        MAction action = ms.getDispatchAction();
+        Vector vector = new Vector();
+        vector.addElement(action);
+        return vector;
 
-  public Object getChild(Object parent, int index) {
-    Vector children = getChildren(parent);
-    if (children != null) return children.elementAt(index);
-    return null;
-  }
+    }
 
-  public int getChildCount(Object parent) {
-    Vector children = getChildren(parent);
-    if (children != null) return children.size();
-    return 0;
-  }
+    public boolean isLeaf(Object node) {
+        return !(node instanceof MStimulus && getChildCount(node) > 0);
 
-  public int getIndexOfChild(Object parent, Object child) {
-    Vector children = getChildren(parent);
-    if (children != null && children.contains(child))
-      return children.indexOf(child);
-    return -1;
-  }
+    }
 
-  public Vector getChildren(Object parent) {
-    if (!(parent instanceof MStimulus)) return null;
-    MStimulus ms = (MStimulus) parent;
-    MAction action = ms.getDispatchAction();
-    Vector vector = new Vector();
-    vector.addElement(action);
-    return vector;
-  }
-
-  public boolean isLeaf(Object node) {
-    return !(node instanceof MStimulus && getChildCount(node) > 0);
-  }
-
-  public void valueForPathChanged(TreePath path, Object newValue) { }
-  public void addTreeModelListener(TreeModelListener l) { }
-  public void removeTreeModelListener(TreeModelListener l) { }
-
+    /**
+     * @see org.argouml.ui.AbstractGoRule#getRuleName()
+     */
+    public String getRuleName() {
+        return Argo.localize("Tree", "misc.stimulus.action");
+    }
 }

@@ -13,71 +13,38 @@
 // UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
 // SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
 // ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY O
 // SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
 // WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
 // MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
 // PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
-
+// $Id$
 package org.argouml.uml.diagram.sequence.ui;
 
-import java.util.*;
-import javax.swing.*;
-import javax.swing.event.*;
-import javax.swing.tree.*;
+import java.util.Collection;
 
-import ru.novosoft.uml.model_management.*;
-import ru.novosoft.uml.foundation.core.*;
-import ru.novosoft.uml.behavior.common_behavior.*;
+import org.argouml.application.api.Argo;
+import org.argouml.ui.AbstractGoRule;
 
-import org.argouml.application.api.*;
-import org.argouml.ui.*;
+import ru.novosoft.uml.behavior.common_behavior.MLink;
 
 
-public class GoLinkStimuli implements TreeModel {
 
-  public String toString() {
-    return Argo.localize ("Tree", "misc.link.stimuli");
-  }
-
-  public Object getRoot() {
-      throw
-	  new UnsupportedOperationException("getRoot should never be called");
-  }
-  public void setRoot(Object r) { }
-
-  public Object getChild(Object parent, int index) {
-    Vector children = getChildren(parent);
-    if (children != null) return children.elementAt(index);
-    return null;
-  }
-
-  public int getChildCount(Object parent) {
-    Vector children = getChildren(parent);
-    if (children != null) return children.size();
-    return 0;
-  }
-
-  public int getIndexOfChild(Object parent, Object child) {
-    Vector children = getChildren(parent);
-    if (children != null && children.contains(child))
-      return children.indexOf(child);
-    return -1;
-  }
-
-  public Vector getChildren(Object parent) {
+public class GoLinkStimuli extends AbstractGoRule {
+  public Collection getChildren(Object parent) {
     if (!(parent instanceof MLink)) return null;
-    return new Vector(((MLink)parent).getStimuli());
+    return ((MLink)parent).getStimuli();
   }
-
   public boolean isLeaf(Object node) {
     return !(node instanceof MLink && getChildCount(node) > 0);
   }
-
-  public void valueForPathChanged(TreePath path, Object newValue) { }
-  public void addTreeModelListener(TreeModelListener l) { }
-  public void removeTreeModelListener(TreeModelListener l) { }
+    /**
+     * @see org.argouml.ui.AbstractGoRule#getRuleName()
+     */
+    public String getRuleName() {
+        return Argo.localize ("Tree", "misc.link.stimuli");
+    }
 
 }

@@ -80,6 +80,12 @@ public abstract class AbstractGoRule implements TreeModel {
 	 * @see javax.swing.tree.TreeModel#getIndexOfChild(Object, Object)
 	 */
 	public int getIndexOfChild(Object parent, Object child) {
+        // the next line does not take into account multiple levels of the Tree
+        // to change that we must change ALL implementations of getChildren(Object)
+        // to return ALL elements of the tree instead of only the first level.
+        // since this is going to be quite complicated and a violation of the 
+        // design with GoRules (GoRules do only take into account one node) we have
+        // to invent a way around it.
 		Vector children = toVector(getChildren(parent));
     	if (children != null && children.contains(child))
       		return children.indexOf(child);

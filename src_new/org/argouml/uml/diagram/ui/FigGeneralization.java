@@ -40,6 +40,8 @@ import org.tigris.gef.presentation.ArrowHeadTriangle;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigNode;
 import org.tigris.gef.presentation.FigText;
+
+import ru.novosoft.uml.MElementEvent;
 import ru.novosoft.uml.foundation.core.MGeneralizableElement;
 import ru.novosoft.uml.foundation.core.MGeneralization;
 
@@ -98,7 +100,7 @@ public class FigGeneralization extends FigEdgeModelElement {
   /** This is called aftern any part of the UML MModelElement has
    *  changed. This method automatically updates the name FigText.
    *  Subclasses should override and update other parts. */
-  protected void modelChanged() {
+  protected void modelChanged(MElementEvent e) {
     // do not set _name
     updateStereotypeText();
     updateDiscriminatorText();

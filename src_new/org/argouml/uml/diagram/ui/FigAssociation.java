@@ -51,6 +51,7 @@ import org.tigris.gef.presentation.ArrowHeadNone;
 import org.tigris.gef.presentation.FigNode;
 import org.tigris.gef.presentation.FigText;
 
+import ru.novosoft.uml.MElementEvent;
 import ru.novosoft.uml.foundation.core.MAssociation;
 import ru.novosoft.uml.foundation.core.MAssociationEnd;
 import ru.novosoft.uml.foundation.core.MClassifier;
@@ -199,7 +200,7 @@ public class FigAssociation extends FigEdgeModelElement {
         }
     }
    
-    modelChanged();
+    modelChanged(null);
   }
 
   ////////////////////////////////////////////////////////////////
@@ -238,8 +239,8 @@ public class FigAssociation extends FigEdgeModelElement {
         roleToUpdate.setText(Notation.generate(this, name));
   }
 
-  protected void modelChanged() {
-    super.modelChanged();
+  protected void modelChanged(MElementEvent e) {
+    super.modelChanged(e);
     MAssociation as = (MAssociation) getOwner();
     if (as == null || getLayer() == null) return;
     
@@ -385,7 +386,7 @@ public class FigAssociation extends FigEdgeModelElement {
   
      public void paint(Graphics g) {
         if (sourceArrowHead == null || destArrowHead == null) {
-           modelChanged();
+           modelChanged(null);
         }
         if (sourceArrowHead != null && destArrowHead != null) {
            sourceArrowHead.setLineColor(getLineColor());

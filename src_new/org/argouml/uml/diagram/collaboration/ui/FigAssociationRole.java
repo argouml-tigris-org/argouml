@@ -34,6 +34,7 @@ import org.tigris.gef.base.PathConvPercent;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigGroup;
 
+import ru.novosoft.uml.MElementEvent;
 import ru.novosoft.uml.behavior.collaborations.MAssociationRole;
 
 public class FigAssociationRole extends FigAssociation {
@@ -65,8 +66,8 @@ public class FigAssociationRole extends FigAssociation {
      * and then changes the name to take care of the
      * "/ name : base association name" form.
      **/    
-    protected void modelChanged() {
-        super.modelChanged();
+    protected void modelChanged(MElementEvent e) {
+        super.modelChanged(e);
         //change the name
         MAssociationRole ar = (MAssociationRole) getOwner();
         if (ar == null) return;

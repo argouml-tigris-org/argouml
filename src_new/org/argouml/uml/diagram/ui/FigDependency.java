@@ -31,6 +31,7 @@ package org.argouml.uml.diagram.ui;
 import java.awt.*;
 import java.beans.*;
 
+import ru.novosoft.uml.MElementEvent;
 import ru.novosoft.uml.foundation.core.*;
 
 import org.tigris.gef.base.*;
@@ -115,7 +116,7 @@ public class FigDependency extends FigEdgeModelElement {
   /** This is called aftern any part of the UML MModelElement has
    *  changed. This method automatically updates the name FigText.
    *  Subclasses should override and update other parts. */
-  protected void modelChanged() {
+  protected void modelChanged(MElementEvent e) {
     // do not set _name
     updateStereotypeText();
   }
