@@ -11,8 +11,6 @@ Diagram Pane or the Drawing Pane of the Multi-Editor Pane.
 <chapter id="ch.ref.editpane">
   <title>The Editing Pane</title>
 
-  &notupdatedfor014disclaimer;
-
   <sect1>
     <title>Introduction</title>
 
@@ -44,7 +42,9 @@ Diagram Pane or the Drawing Pane of the Multi-Editor Pane.
     <para>The pane has a tool bar at the top, and a single tab labeled
       <literal>As&nbsp;Diagram</literal> at the bottom. So long as your
       window is big enough, you will see the name of the diagram in the top
-      right corner at the end of the tool bar.</para>
+      right corner at the end of the tool bar.
+      <!-- TODO: This will change in V0.15.x due to issue ...  -->
+    </para>
   </sect1>
 
   <!-- How the mouse behaves in the editing pane -->
@@ -62,19 +62,29 @@ Diagram Pane or the Drawing Pane of the Multi-Editor Pane.
       <title>&Button1; Click</title>
 
       <para>In the tool bar of the editing pane, &button1; click is used to
-        select the next tool for adding artifacts to the diagram (but only
-        once&mdash;see double clicking for adding multiple artifacts).  Adding
+        select the next tool for adding an artifact to the diagram 
+        (see double clicking for adding multiple artifacts).  Adding
         to the diagram is achieved by moving the mouse to the editing area and
         clicking again.</para>
 
       <para>In the main editing area &button1; click is used to select an
         individual artifact.</para>
 
+      <para>Some artifacts (e.g. actor, class) show special handles at 
+        the sides, top and bottom, 
+        which can be clicked to create a new related artifact, 
+        with the relation indicated. 
+        If the shift key
+        is pressed when hovering the mouse over a selected artifact,
+        sometimes different handles are shown, 
+        which stand for different relation types. 
+      </para>
+
       <para>Where &button2; click has been used to bring up a context sensitive
         pop-up menu (see below), &button1; click is used to select the menu
 entry required.
 The pop-up menu will be removed by any &button1; click 
-outside of the menu area.".
+outside of the menu area.
 </para>
 
       <para>There are various more detailed effects, which are discussed under
@@ -90,25 +100,45 @@ outside of the menu area.".
       <para>When used on the tool bar with a tool to add an artifact, the
         selected artifact will be added multiple times to the drawing area,
         once for each further button click, until the tool is again selected or
-        another tool chosen.</para>
+        another tool chosen.
+        <!-- TODO Make issue for the bug: The status area should indicate 
+        e.g. "Click to place Class" not only the first time! -->
+      </para>
 
       <para>When used within the drawing area on an artifact that has
         sub-components, double click will select the sub-component (creating
         it if necessary).</para> 
 
       <para>For example double clicking over an operation compartment of a
-        class will select the operation. Or create one if there is not one
-        there.</para>
+        class will select the operation. Or create one if there is none yet.
+      </para>
 
       <para>A special use is with package artifacts on the class diagram. A
         double click on a package will navigate to the class diagram associated
         with a package (the first created if there is more than one), or will
-        offer to create one for you if there is none.</para>
+        offer to create one for you if there is none.
+        See <xref linkend="fig.ref.edit_add_class_diagram"/>
+      </para>
+
+      <figure id="fig.ref.edit_add_class_diagram" float="1">
+        <title>The dialog for adding a new class diagram
+        </title>
+
+        <screenshot><mediaobject>
+          <imageobject>
+            <imagedata format="PNG" align="center"
+                       fileref="images/reference/edit_add_class_diagram.png"/>
+          </imageobject>
+        </mediaobject></screenshot>
+      </figure>
 
       <para>You can <quote>spawn</quote> a copy of the editing pane by
         double-clicking on the <literal>As Diagram</literal> tab at the bottom
         of the pane. It will then show as an individual window and you can put
-        it where you will on the screen.</para>
+        it where you will on the screen.
+        <!-- TODO: This despite the fact that the tab is downlighted! Come up
+        with a better solution... See issue ... -->
+      </para>
     </sect2>
 
     <!-- Button1 Motion -->
@@ -126,9 +156,14 @@ outside of the menu area.".
         artifact. &button1; click may be used in the space between artifacts to
         create articulation points in the connector. This is particularly
         useful where connectors must loopback on themselves.</para>
+<!-- TODO: Rewrite the 2 paragraphs above into something understandable. -->
 
       <para>Over graphical artifacts &button1; motion will move the artifact to
-        a new position. Graphical artifacts that are selected show handles, and
+        a new position.
+      </para>
+      
+      <para>Graphical artifacts that are selected show handles 
+        at the corners or ends, and
         these can be used for re-sizing.</para>
 
       <para>Some artifacts (e.g. actor, class) show special handles at the
@@ -137,8 +172,9 @@ outside of the menu area.".
 
       <para>Where the artifact is some form of connector between other items,
         &button1; motion other than at a handle will cause a new handle to be
-        created, allowing the connector to be articulated at that point. Such
-        new handles can be removed by moving them to the end of the
+        created, allowing the connector to be articulated at that point.
+        This only works when the connecting line is not straight angled.
+        Such new handles can be removed by moving them to the end of the
         connector.</para>
 
       <para>There are various more detailed effects, which are discussed under
@@ -151,14 +187,24 @@ outside of the menu area.".
     <sect2>
       <title>Shift and Control with &Button1;</title>
 
-      <para>Where selections are to be made, the SHIFT key is used to with
+      <para>Where selections are to be made, the SHIFT key is used with
         &button1; to <emphasis>add</emphasis> unselected artifacts to the
         current selection. Where an artifact is already selected, it is removed
-        from the current selection.</para>
+        from the current selection.
+        <!-- TODO: This function is broken in V0.14. See issue ... -->
+      </para>
 
-      <para>Using the CONTROL key invokes the broom tool, causing the selected
+      <para>Clicking &Button1; while the CONTROL key is pressed, 
+        invokes the broom tool, which causes the selected
         artifacts (and any others swept up with them) to be moved with the
         broom tool (see <xref linkend="s2.ref.edit_layout"/>).</para>
+        
+      <para>
+        However, if the CONTROL key is pressed while moving an artifact, 
+        then the artifact's
+        movement is constrained to one orthogonal direction, i.e. either
+        vertical or horizontal, depending on the first movement made.
+      </para>
     </sect2>
 
     <!-- Button2 click -->
@@ -169,12 +215,16 @@ outside of the menu area.".
       <para>When used over artifacts in the the editing pane, this will display
         a context dependent pop-up menu. Menu entries are highlighted (but not
         selected) and sub-menus exposed by subsequent mouse motion (without any
-        buttons). Menu entry selection is with &button1;. See <xref
+        buttons). Menu entry selection is with &button1; or &button2;. 
+        See <xref
         linkend="s1.ref.edit_pane_pop_up"/> for details of the specific pop-up
         menus.</para>
 
-      <para>If the artifact generating the menu has not yet been selected it
-        will also be selected.</para>
+      <para>The artifact generating the menu 
+        will be selected, and all other artifacts are deselected. 
+        This means that the pop-up menu always only applies to the artifact 
+        on which it was invoked.
+      </para>
     </sect2>
 
     <!-- Button2 double click -->
@@ -205,10 +255,10 @@ outside of the menu area.".
       functions of the pane. The default tool is the <literal>Select</literal>
       tool (<guiicon><inlinemediaobject><imageobject><imagedata format="GIF"
         align="center" fileref="images/icons/select.gif"/>
-      </imageobject></inlinemediaobject></guiicon>. In general &button1; on any
-      tool click selects a tool for one use, before reverting to the default
-      tool, &button1; double click selects a tool for repeat use until another
-      tool is selected.</para>
+      </imageobject></inlinemediaobject></guiicon>). 
+      In general &button1; click on any
+      tool selects a tool for one use, before reverting to the default
+      tool, and &button1; double click selects a tool for repeated use.</para>
 
     <para>The tools fall into four categories.</para>
 
@@ -232,7 +282,8 @@ graphic artifacts to diagrams.</para></listitem>
     <sect2 id="s2.ref.edit_layout">
       <title>Layout Tools</title>
 
-      <para>Two tools are provided in all diagrams in this category.</para>
+      <para>The following two tools are provided in all diagrams in this category.
+      </para>
 
       <itemizedlist>
         <listitem><para><guiicon><inlinemediaobject><imageobject>
@@ -241,7 +292,7 @@ graphic artifacts to diagrams.</para></listitem>
           </imageobject></inlinemediaobject></guiicon>
           <literal>Select</literal>. This tool provides for general selection
           of artifacts on the diagram. &Button1; click will select an
-          artifact. SHIFT with &button1; can be used to select (or deselect
+          artifact. SHIFT with &button1; can be used to select (or deselect)
           multiple artifacts. &Button1; motion will move selected 2D items or
           add and move a new control point on a link. &Button1; motion on a
           selected component's control point will stretch that component's
@@ -281,25 +332,21 @@ graphic artifacts to diagrams.</para></listitem>
       <caution><para>Unlike most other tools you use the
         <literal>Select</literal> tool to select an artifact, and then
         &button1; click on <literal>Note</literal> to create the
-        note.</para></caution>
+        note.
+        <!-- TODO: Maybe it is better to order this chapter according 
+        this principle, instead of pretending it is an extension. 
+        Also in the toolbar implementation itself, 
+        we could order them according the way they work. -->
+      </para></caution>
 
-      <para>The note is created alongside the selected artifact, with the
-        default contents <literal>New note</literal>. This text can be selected
-        with &button1; and edited from the keyboard.</para>
+      <para>The note is created alongside the selected artifact, 
+        empty by default. The text can be selected
+        with &button1; double-click and edited from the keyboard.</para>
 
-      <warning><para>The UML standard allows notes to be attached to any
-        artifact. However in the current version of &argouml; there is only a
-        partial implementation. <literal>Note</literal> is only provided on
-        class and state diagrams, and can only be attached to classes,
-        interfaces, states and pseudostates.</para></warning>
+      <para>The UML standard allows notes to be attached to any
+        artifact. 
+      </para>
 
-      <tip><para>You can add a note also to an object in a deployment diagram
-        by using its context sensitive <literal>Add</literal> pop-up menu (see
-        <xref linkend="s1.ref.edit_pane_pop_up"/>).</para></tip>
-
-      <tip><para>If you need to add a note to some other artifact, try using
-        a text box from the graphics drawing tools (see
-        <xref linkend="s2.ref.edit_pane_drawing_tools"/>).</para></tip>
     </sect2>
 
     <!-- Tools for drawing non-UML artifacts on diagrams -->
@@ -314,9 +361,13 @@ graphic artifacts to diagrams.</para></listitem>
 
       <tip><para>These drawing tools provide a useful way to partially support
         some of the UML features (such as general purpose notes) that are
-        missing from the current release of &argouml;.</para></tip>
+        missing from the current release of &argouml;.
+      <!-- TODO: Remove this tip when ArgoUML finally supports all of UML ;-) -->
+      </para></tip>
 
-      <para>Eight tools are provided. &button1; click on the diagram will place
+      <para>Eight tools are provided, all grouped into one drop-down widget.
+        See <xref linkend="fig.ref.edit_graphical_tools"/>.
+        &Button1; click on the diagram will place
         an instance of the graphical item of the same size as the last one
         placed. The size can be controlled by &button1; motion during
         placement. One side or end of the element will be at &button1; down,
@@ -324,6 +375,17 @@ graphic artifacts to diagrams.</para></listitem>
         on the diagram, graphical elements can be moved with the
         <literal>Select</literal> tool and &button1; and re-sized by &button1;
         motion on the handles after they have been selected.</para>
+
+      <figure id="fig.ref.edit_graphical_tools" float="1">
+        <title>The drawing tools selector.</title>
+        <screenshot><mediaobject>
+          <imageobject>
+            <imagedata format="PNG" align="center"
+                       fileref="images/reference/edit_graphical_tools.png"/>
+          </imageobject>
+        </mediaobject></screenshot>
+      </figure>
+
 
       <itemizedlist>
         <listitem><para><guiicon><inlinemediaobject><imageobject>
@@ -420,11 +482,44 @@ graphic artifacts to diagrams.</para></listitem>
 
         <listitem><para><guiicon><inlinemediaobject><imageobject>
           <imagedata format="GIF" align="center"
-                     fileref="images/icons/association.gif"/> 
+                     fileref="images/icons/association_plain.gif"/> 
           </imageobject></inlinemediaobject></guiicon>
           <literal>Association</literal>. Add an association between two
-          artifacts selected using &button1; motion (for the first artifact to
-          the second).</para></listitem>
+          artifacts selected using &button1; motion (from the first artifact to
+          the second). There are 6 types of association offered here, 
+          see <xref linkend="fig.ref.edit_association_tools"/>: 
+          <literal>association</literal>,
+          <literal>aggregation</literal> and 
+          <literal>composition</literal>, and all these three can be  
+          <literal>bidirectional</literal> or
+          <literal>unidirectional</literal>.
+          </para>
+      
+          <figure id="fig.ref.edit_association_tools" float="1">
+            <title>The association tool selector.</title>
+            <screenshot><mediaobject>
+              <imageobject>
+                <imagedata format="PNG" align="center"
+                       fileref="images/reference/edit_association_tools.png"/>
+              </imageobject>
+            </mediaobject></screenshot>
+          </figure>
+        </listitem>
+
+        <listitem><para><guiicon><inlinemediaobject><imageobject>
+          <imagedata format="GIF" align="center"
+                     fileref="images/icons/dependency.gif"/>
+          </imageobject></inlinemediaobject></guiicon>
+          <literal>Dependency</literal>. Add a dependency between two artifacts
+          selected using &button1; motion (from the dependent artifact).</para>
+
+        <!--caution><para>Older versions of &argouml; incorrectly used stereotyped
+          dependencies to represent UML <literal>extends</literal> and
+          <literal>includes</literal> relationships. Where these are found they
+          should be replaced by proper extend and include relationships, which
+          are now supported on the use case
+          diagram.</para></caution-->
+        </listitem>
 
         <listitem><para><guiicon><inlinemediaobject><imageobject>
           <imagedata format="GIF" align="center"
@@ -461,24 +556,16 @@ graphic artifacts to diagrams.</para></listitem>
           &button1; double click and using the keyboard, or by selecting with
           &button1; click (after the use case has been selected) and using the
           property tab. Otherwise it may be edited through its property tab,
-          selected through the property tab of the owning use case.</para>
+          selected through the property tab of the owning use case.
+          <!-- TODO: Editing the name of the EP on the diagram does not give a
+          usable result: the name is not shown in the properties pane. 
+          See issue ... -->
+          </para>
 
-        <note><para>This tool is grayed out except when a use case is
-          selected.</para></note></listitem>
+          <note><para>This tool is grayed out except when a use case is
+            selected.</para></note>
+        </listitem>
 
-        <listitem><para><guiicon><inlinemediaobject><imageobject>
-          <imagedata format="GIF" align="center"
-                     fileref="images/icons/dependency.gif"/>
-          </imageobject></inlinemediaobject></guiicon>
-          <literal>Dependency</literal>. Add a dependency between two artifacts
-          selected using &button1; motion (from the dependent artifact).</para>
-
-        <caution><para>Older versions of &argouml; incorrectly used stereotyped
-          dependencies to represent UML <literal>extends</literal> and
-          <literal>includes</literal> relationships. Where these are found they
-          should be replaced by proper extend and include relationships, which
-          are now supported on the use case
-          diagram.</para></caution></listitem>
       </itemizedlist>
     </sect2>
 
@@ -498,7 +585,10 @@ graphic artifacts to diagrams.</para></listitem>
                      fileref="images/icons/package.gif"/> 
           </imageobject></inlinemediaobject></guiicon>
           <literal>Package</literal>. Add a package to the
-          diagram.</para></listitem>
+          diagram.</para>
+          <!-- TODO: Why is a package a drop-down selector with 1 item? Enter an
+          issue for this. See issue ... -->
+        </listitem>
 
         <listitem><para><guiicon><inlinemediaobject><imageobject>
           <imagedata format="GIF" align="center"
@@ -507,23 +597,49 @@ graphic artifacts to diagrams.</para></listitem>
           <literal>Class</literal>. Add a class to the
           diagram. For convenience, when the mouse is over a selected class it
           displays two handles to left and right which may be dragged to form
-          association relationships and two handles top and bottom which may be
+          association relationships 
+          (or composition in case SHIFT has been pressed) 
+          and two handles top and bottom which may be
           dragged to form generalization and specialization relationships
           respectively.</para></listitem>
 
         <listitem><para><guiicon><inlinemediaobject><imageobject>
           <imagedata format="GIF" align="center"
-                     fileref="images/icons/association.gif"/> 
+                     fileref="images/icons/association_plain.gif"/> 
           </imageobject></inlinemediaobject></guiicon>
           <literal>Association</literal>. Add an association between two
-          artifacts selected using &button1; motion (from the first artifact
-          to the second artifact).</para></listitem>
+          artifacts selected using &button1; motion (from the first artifact to
+          the second). There are 6 types of association offered here, 
+          see <xref linkend="fig.ref.edit_association_tools"/>: 
+          <literal>association</literal>,
+          <literal>aggregation</literal> and 
+          <literal>composition</literal>, and all these three can be  
+          <literal>bidirectional</literal> or
+          <literal>unidirectional</literal>.
+          </para>
+        </listitem>
 
         <listitem><para><guiicon><inlinemediaobject><imageobject>
           <imagedata format="GIF" align="center"
                      fileref="images/icons/dependency.gif"/> 
           </imageobject></inlinemediaobject></guiicon>
           <literal>Dependency</literal>. Add a dependency between two artifacts
+          selected using &button1; motion (from the dependent
+          artifact).</para></listitem>
+
+        <listitem><para><guiicon><inlinemediaobject><imageobject>
+          <imagedata format="GIF" align="center"
+                     fileref="images/icons/permission.gif"/> 
+          </imageobject></inlinemediaobject></guiicon>
+          <literal>Permission</literal>. Add a permission between two artifacts
+          selected using &button1; motion (from the dependent
+          artifact).</para></listitem>
+
+        <listitem><para><guiicon><inlinemediaobject><imageobject>
+          <imagedata format="GIF" align="center"
+                     fileref="images/icons/usage.gif"/> 
+          </imageobject></inlinemediaobject></guiicon>
+          <literal>Usage</literal>. Add a usage between two artifacts
           selected using &button1; motion (from the dependent
           artifact).</para></listitem>
 
@@ -565,13 +681,7 @@ graphic artifacts to diagrams.</para></listitem>
           and using the property tab.</para>
 
         <note><para>This tool is grayed out except when a class or interface is
-          selected.</para></note>
-
-        <caution><para>In the current release of &argouml; this tool is not
-          grayed out for intefaces as it should be (attributes are not
-          permitted for interfaces in the UML 1.3 standard). However the tool
-          has no effect if selected for an
-          interface.</para></caution></listitem>
+          selected.</para></note></listitem>
 
         <listitem><para><guiicon><inlinemediaobject><imageobject>
           <imagedata format="GIF" align="center"
@@ -595,6 +705,14 @@ graphic artifacts to diagrams.</para></listitem>
     <sect2>
       <title>Sequence Diagram Specific Tools</title>
 
+      <warning>
+        <para>
+          Sequence diagrams are not implemented in V0.14 of &argouml;. Hence the
+          description below will (might) only become correct in future versions of
+          &argouml;.
+        </para>
+      </warning>
+      
       <para>Six tools are provided specific to UML artifacts on sequence
         diagrams. The detailed properties of these artifacts are described in
         the section on sequence diagram artifacts (see
@@ -695,7 +813,9 @@ graphic artifacts to diagrams.</para></listitem>
         <caution><para>There is nothing to stop you adding more than one
           initial state to a diagram or composite state. However to do so is
           meaningless, and one of the critics will
-          complain.</para></caution></listitem>
+          complain.
+          <!-- TODO: Is that so? Check which critic. -->
+        </para></caution></listitem>
 
         <listitem><para><guiicon><inlinemediaobject><imageobject>
           <imagedata format="GIF" align="center"
@@ -714,7 +834,9 @@ graphic artifacts to diagrams.</para></listitem>
         <caution><para>A well formed branch should have one incoming transition
           and two or more outgoing. &argouml; does not enforce this, but an
           &argouml; critic will complain about any branch that does not follow
-          this rule.</para></caution></listitem>
+          this rule.
+          <!-- TODO: Is that so? Check which critic. -->
+        </para></caution></listitem>
 
         <listitem><para><guiicon><inlinemediaobject><imageobject>
           <imagedata format="GIF" align="center"
@@ -726,7 +848,9 @@ graphic artifacts to diagrams.</para></listitem>
         <caution><para>A well formed fork should have one incoming transition
           and two or more outgoing. &argouml; does not enforce this, but an
           &argouml; critic will complain about any fork that does not follow
-          this rule.</para></caution></listitem>
+          this rule.
+          <!-- TODO: Is that so? Check which critic. -->
+        </para></caution></listitem>
 
         <listitem><para><guiicon><inlinemediaobject><imageobject>
           <imagedata format="GIF" align="center"
@@ -738,7 +862,9 @@ graphic artifacts to diagrams.</para></listitem>
         <caution><para>A well formed join should have one outgoing transition
           and two or more incoming. &argouml; does not enforce this, but an
           &argouml; critic will complain about any join that does not follow
-          this rule.</para></caution></listitem>
+          this rule.
+          <!-- TODO: Is that so? Check which critic. -->
+        </para></caution></listitem>
 
         <listitem><para><guiicon><inlinemediaobject><imageobject>
           <imagedata format="GIF" align="center"
@@ -776,12 +902,21 @@ graphic artifacts to diagrams.</para></listitem>
 
         <listitem><para><guiicon><inlinemediaobject><imageobject>
           <imagedata format="GIF" align="center"
-                     fileref="images/icons/association_role.gif"/> 
+                     fileref="images/icons/association_plain.gif"/> 
           </imageobject></inlinemediaobject></guiicon>
-          <literal>Association Role</literal>. Add an association role between
+          <literal>Association Role</literal>. Add an association role between 
           two classifier roles selected using &button1; motion (from the
           originating classifier role to the receiving classifier
-          role).</para></listitem>
+          role). 
+          There are 6 types of association roles offered here, 
+          see <xref linkend="fig.ref.edit_association_tools"/>: 
+          <literal>association</literal>,
+          <literal>aggregation</literal> and 
+          <literal>composition</literal>, and all these three can be  
+          <literal>bidirectional</literal> or
+          <literal>unidirectional</literal>.
+          </para>
+        </listitem>
 
         <listitem><para><guiicon><inlinemediaobject><imageobject>
           <imagedata format="GIF" align="center"
@@ -938,44 +1073,25 @@ graphic artifacts to diagrams.</para></listitem>
 
         <listitem><para><guiicon><inlinemediaobject><imageobject>
           <imagedata format="GIF" align="center"
-                     fileref="images/icons/class.gif"/> 
-          </imageobject></inlinemediaobject></guiicon>
-          <literal>Class</literal>. Add a class to the diagram. For
-          convenience, when the mouse is over a selected class it displays two
-          handles to left and right which may be dragged to form association
-          relationships.</para>
-
-        <note><para>Unlike a class diagram, two handles top and bottom which
-          may be dragged to form generalization and specialization
-          relationships are not shown. Such relationships may not be described
-          on a deployment or component diagram.</para></note></listitem>
-
-        <listitem><para><guiicon><inlinemediaobject><imageobject>
-          <imagedata format="GIF" align="center"
-                     fileref="images/icons/interface.gif"/> 
-          </imageobject></inlinemediaobject></guiicon>
-          <literal>Interface</literal>. Add an interface to the diagram.</para>
-
-        <caution><para>In the current release of &argouml;, when the mouse is
-          over a selected interface it displays a handle at the bottom.  This
-          suggests this may be dragged to form a realization relationship as in
-          a class diagram. Such relationships may not be displayed on a
-          deployment or component diagram, and this handle has no
-          effect.</para></caution></listitem>
-
-        <listitem><para><guiicon><inlinemediaobject><imageobject>
-          <imagedata format="GIF" align="center"
-                     fileref="images/icons/association.gif"/> 
+                     fileref="images/icons/association_plain.gif"/> 
           </imageobject></inlinemediaobject></guiicon>
           <literal>Association</literal>. Add an association between two
           artifacts (node, component, class or interface) selected using
           &button1; motion (from the first artifact to the second
-          artifact).</para>
+          artifact). There are 6 types of association offered here, 
+          see <xref linkend="fig.ref.edit_association_tools"/>: 
+          <literal>association</literal>,
+          <literal>aggregation</literal> and 
+          <literal>composition</literal>, and all these three can be  
+          <literal>bidirectional</literal> or
+          <literal>unidirectional</literal>.
+          </para>
 
-        <caution><para>The constraint that associations between classes and
+          <caution><para>The constraint that associations between classes and
           interfaces must not be navigable <emphasis>from</emphasis> the
           interface still applies on deployment
-          diagrams.</para></caution></listitem>
+          diagrams.</para></caution>
+        </listitem>
 
         <listitem><para><guiicon><inlinemediaobject><imageobject> <imagedata
           format="GIF" align="center" fileref="images/icons/object.gif"/>
@@ -1029,7 +1145,9 @@ graphic artifacts to diagrams.</para></listitem>
         editing, but used when a to-do item is highlighted from the to-do pane
         (see <xref linkend="ch.ref.todopane"/>) by &button1; double click. The
         solid line is used to show all the artifacts affected by the critic,
-        for example all stimuli that are out of order.</para></listitem>
+        for example all stimuli that are out of order.</para>
+        <!-- TODO: Does this still work? -->
+      </listitem>
     </itemizedlist>
   </sect1>
 
@@ -1040,7 +1158,7 @@ graphic artifacts to diagrams.</para></listitem>
 
     <para>The editing pane is provided with a background grid which can be set
       in various styles or turned off altogether through the
-      <literal>Edit</literal> menu (see
+      menu (see
       <xref linkend="s2.ref.menu_adjust_grid"/>).</para>
 
     <para>Whatever grid is actually displayed, placement of items on the
@@ -1061,7 +1179,7 @@ graphic artifacts to diagrams.</para></listitem>
 
     <para>Earlier versions of &argouml; did implement a tabular representation,
       but the current release only supports a diagram representation, so this
-      tab is of null function.</para>
+      tab does not function.</para>
 
     <para>In addition you can use &button1; double click on this tab to spawn a
       copy of the current diagram (see <xref linkend="s2.ref.spawn"/> for more
@@ -1076,7 +1194,7 @@ graphic artifacts to diagrams.</para></listitem>
     <!-- Tool Bar selection -->
 
     <para>Within the editing pane, &button2; click over an artifact will bring
-      up a pop-up menu with up to six main entries, each with a
+      up a pop-up menu with a variable number of main entries, each with a
       sub-menu.</para>
 
     <!-- Critiques sub-menu -->
@@ -1133,6 +1251,18 @@ graphic artifacts to diagrams.</para></listitem>
       </itemizedlist>
     </sect2>
 
+    <!-- Properties sub-menu -->
+
+    <sect2>
+      <title>Properties</title>
+
+      <para>This entry has no sub-menu. Selecting the entry will cause the
+        property tab for the selected artifact to be displayed in the details
+        pane.
+        <!-- TODO: Enter an issue to remove this useless item. -->
+      </para>
+    </sect2>
+
     <!-- Add sub-menu -->
 
     <sect2>
@@ -1149,7 +1279,7 @@ graphic artifacts to diagrams.</para></listitem>
             fileref="images/icons/attribute.gif"/>
           </imageobject></inlinemediaobject></guiicon>
           <literal>Add Attribute</literal>. Only appears where the selected
-            artifact is a class or interface. Adds an attribute to the
+            artifact is a class<!-- or interface-->. Adds an attribute to the
             artifact</para></listitem>
 
         <listitem><para><guiicon><inlinemediaobject><imageobject><imagedata
@@ -1214,7 +1344,31 @@ graphic artifacts to diagrams.</para></listitem>
         <listitem><para><literal>Show Operation Compartment</literal>. Only
           appears when the operation compartment of a class or object is
           hidden. Displays the compartment.</para></listitem>
-      </itemizedlist>
+
+        <listitem><para><literal>Show All Edges</literal>. Only
+          appears on a class.  Displays all associations (to shown artifacts)
+          that are not shown yet. This is the same function as the "add to
+          Diagram" on the asociation in the explorer context menu.
+          currently.
+        </para></listitem>
+
+        <listitem><para><literal>Hide All Edges</literal>. Only
+          appears on a class. Hides all associations. 
+          This is the same function as <quote>Remove from
+          Diagram</quote> on all the associations of this class.
+        </para></listitem>
+
+        <listitem><para><literal>Hide Stereotype</literal>. Only
+          appears when the Stereotype of a package is displayed.
+          Hides the stereotype.
+        </para></listitem>
+
+        <listitem><para><literal>Show Stereotype</literal>. Only
+          appears when the Stereotype of a package is hidden.
+          Displays the stereotype.
+        </para></listitem>
+
+        </itemizedlist>
     </sect2>
 
     <!-- Modifiers sub-menu -->
@@ -1222,26 +1376,28 @@ graphic artifacts to diagrams.</para></listitem>
     <sect2>
       <title>Modifiers</title>
 
-      <para>This sub-menu only appears with class artifacts. It is used to set
+      <para>This sub-menu only appears with class, interface, package 
+        and use case artifacts. 
+        It is used to set
         or clear the values of the various modifiers available.</para>
 
       <itemizedlist>
-        <listitem><para><literal>Public</literal>. Set if this class is
+        <listitem><para><literal>Public</literal>. Set if this artifact is
           visible outside its package.</para></listitem>
 
         <listitem><para><literal>Abstract</literal>. Set for an abstract
-        class.</para></listitem>
+        artifact.</para></listitem>
 
-        <listitem><para><literal>Final</literal>. Set for a final class,
-          i.e. one with no subclasses.</para></listitem>
+        <listitem><para><literal>Leaf</literal>. Set for a final artifact,
+          i.e. one with no subartifacts.</para></listitem>
 
-        <listitem><para><literal>Root</literal>. Set for a root class, i.e. one
-          with no superclasses.</para></listitem>
+        <listitem><para><literal>Root</literal>. Set for a root artifact, i.e. one
+          with no superartifacts.</para></listitem>
 
-        <listitem><para><literal>Active</literal>. Set for a class with dynamic
+        <listitem><para><literal>Active</literal>. Set for a artifact with dynamic
           behavior.</para>
 
-        <note><para>This really ought to be set automatically for classes with
+        <note><para>This really ought to be set automatically for artifacts with
           state machines or activity diagrams.</para></note></listitem>
       </itemizedlist>
     </sect2>
@@ -1251,7 +1407,8 @@ graphic artifacts to diagrams.</para></listitem>
     <sect2>
       <title>Multiplicity</title>
 
-      <para>This sub-menu only appears with association artifacts. It is
+      <para>This sub-menu only appears with association artifacts, 
+        when clicking at one end of the association. It is
         used to control the multiplicity at the end of the association nearest
         the mouse click point. There are only four entries, a sub-set of the
         range of multiplicities that are available through the property sheet
@@ -1274,7 +1431,8 @@ graphic artifacts to diagrams.</para></listitem>
     <sect2>
       <title>Aggregation</title>
 
-      <para>This sub-menu only appears with association artifacts. It is
+      <para>This sub-menu only appears with association artifacts, 
+        when clicking at one end of the association. It is
         used to control the aggregation at the end of the association nearest
         the mouse click point. There are three entries.</para>
 
@@ -1291,15 +1449,6 @@ graphic artifacts to diagrams.</para></listitem>
           <quote>composition</quote>).</para></listitem>
       </itemizedlist>
 
-      <warning><para>UML requires that at most one end of an association has
-        any aggregation relationship. The current release of &argouml; has a
-        known problem where it believes any end whose aggregation has not been
-        explicity set is in some form of aggregation (although this is not
-        shown on the diagram or property sheet). This will trigger a
-        critic. The solution is to change the aggregation to one of the
-        aggregate forms and then back to none to explicitly set no
-        aggregation.</para></warning>
-
       <caution><para>UML requires that an end with a composition relationship
         must have a multiplicity of 1 (the default).</para></caution>
     </sect2>
@@ -1309,7 +1458,8 @@ graphic artifacts to diagrams.</para></listitem>
     <sect2>
       <title>Navigability</title>
 
-      <para>This sub-menu only appears with association artifacts. It is used
+      <para>This sub-menu only appears with association artifacts, 
+        when clicking at one end of the association. It is used
         to control the navigability of the association. There are three
         entries.</para>
 
@@ -1333,27 +1483,22 @@ graphic artifacts to diagrams.</para></listitem>
       </itemizedlist>
 
       <note><para>UML does permit an association to be non-navigable in both
-        directions. If you want this, you will have to set each of the
+        directions. &argouml; will allow this, but you will have to set each of the
         association ends navigation property, reached from the property tab of
-        the association.</para>
+        the association - and the diagram does not show any arrows in this case.
+        </para>
 
       <para>This is considered bad design practice (it will trigger a critic in
-        &argouml;), so is only of theorertical interest.</para></note>
+        &argouml;), so is only of theoretical interest.</para></note>
 
       <note><para>UML does not permit navigability from an interface to a
-        class. This drop down is disabled for associations between interfaces
-        and classes.</para></note>
+        class.
+        <!-- TODO: The next statement is not working for V0.14. See issue ... -->
+        <!--This drop down is disabled for associations between interfaces
+        and classes.--> &argouml; does not prevent this.
+      </para></note>
     </sect2>
 
-    <!-- Properties sub-menu -->
-
-    <sect2>
-      <title>Properties</title>
-
-      <para>This entry has no sub-menu. Selecting the entry will cause the
-        property tab for the selected artifact to be displayed in the details
-        pane.</para>
-    </sect2>
   </sect1>
 
 </chapter>

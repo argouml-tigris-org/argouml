@@ -34,8 +34,6 @@ This chapter covers the Explorer.
     Navigator Pane/Tree.
   </para>  
 
-  &notupdatedfor014disclaimer;
-
   <sect1>
     <title>Introduction</title>
 
@@ -102,7 +100,9 @@ This chapter covers the Explorer.
           format="GIF" align="center"
           fileref="images/icons/hierarchy_open.gif"/>
         </imageobject></inlinemediaobject></guiicon> when the hierarchy is
-        open.</para>
+        open.
+        <!-- TODO: These symbols depend on the LAF. How to deal with that? -->
+      </para>
 
       <para>&Button1; click over the name of any diagram artifact will cause
         the diagram to be selected and displayed in the editing pane. Its
@@ -130,8 +130,10 @@ This chapter covers the Explorer.
     <sect2>
       <title>&Button1; Double Click</title>
 
-      <para>This has no effect other than that of &button1; single
-        click.</para>
+      <para>This has the effect of a &button1; single
+        click, and if the tree item was not a leaf, 
+        it will toggle the hierarchy open or close.
+      </para>
     </sect2>
 
     <!-- Button2 click -->
@@ -139,13 +141,16 @@ This chapter covers the Explorer.
     <sect2>
       <title>&Button2; Actions</title>
 
-      <para>When used over text items in the the explorer, this will
-        display a context dependent pop-up menu. Menu entries are highlighted
+      <para>When used  in the the explorer, this will
+        display a selection dependent pop-up menu. Menu entries are highlighted
         (but not selected) and sub-menus exposed by subsequent mouse motion
-        (without any buttons). Menu entry selection is with &button1;</para>
+        (without any buttons). Menu entry selection is with &button1; or
+        &button2;.
+      </para>
 
-      <para>If the artifact generating the menu has not yet been selected it
-        will also be selected.</para>
+      <!-- TODO: The next is not true in V0.14. Should it? --> 
+      <!--para>If the artifact generating the menu has not yet been selected it
+        will also be selected.</para-->
     </sect2>
 
     <!-- Button2 double click -->
@@ -169,8 +174,10 @@ This chapter covers the Explorer.
 
     <note><para>Within the hierarchy, there is no particular ordering of
       artifacts at a particular level. They tend to be in order of
-      creation. This is a known limitation of the current release of
-      &argouml;.</para></note>
+      creation. This is a known limitation of the V0.14 release of
+      &argouml;.
+      <!-- TODO: See issue ... -->
+    </para></note>
 
     <itemizedlist>
       <listitem><para><literal>Package-centric</literal> (the default). The
@@ -183,6 +190,11 @@ This chapter covers the Explorer.
         namespace of that package, including any further sub-packages (which in
         turn have their own sub-hierarchies).</para></listitem>
 
+      <listitem>
+        <para><literal>Class-centric</literal>. (To be written)
+        </para>
+      </listitem>
+      
       <listitem><para><literal>Diagram-centric</literal>. In this view the top
         level comprises all the diagrams in the model. Beneath each diagram is
         a flat listing of all the artifacts on the diagram. Artifacts that have
@@ -203,19 +215,17 @@ This chapter covers the Explorer.
       <listitem><para><literal>Navigable Associations</literal>. This is
         identical to the Class Associations ordering, but includes only
         navigable associations.</para></listitem>
-
-      <listitem><para><literal>Association-centric</literal>. In this view the
+        
+      <!--listitem><para><literal>Association-centric</literal>. In this view the
         top level shows the model. Beneath this are all diagrams and all
         associations. All associations then have a sub-hierarchy listing
         the classes they connect. Where classes have associated state diagrams
-        these are shown beneath the class.</para></listitem>
+        these are shown beneath the class.</para></listitem-->
 
       <listitem><para><literal>State-centric</literal>. In this view the top
         level shows all the state machines and all activity graphics associated
-        with classes. The state machine for <emphasis>Class</emphasis> is named
-        <emphasis>Class</emphasis><literal>StateMachine</literal> and the
-        activity graph for <emphasis>Class</emphasis> is named
-        <emphasis>Class</emphasis><literal>ActivityGraph</literal>.</para>
+        with classes. 
+      </para>
 
       <para>Beneath each state machine is a hierarchy showing the state
         diagram and all of the states. Beneath each state is a list of the
@@ -246,26 +256,36 @@ This chapter covers the Explorer.
       <listitem><para><literal>Collaboration-centric</literal>. This should
         show all collaborations in the view with artifacts in hierarchies under
         their collaborations.</para>
+      </listitem>
 
-      <warning><para>In the current release of &argouml; this view is broken,
-        and will display nothing.</para></warning></listitem>
+      <listitem>
+        <para><literal>Dependency-centric</literal>. In this view the
+          top level shows the model. Beneath this are all diagrams and top level
+          artifacts. A hierarchy is shown for any dependency beneath any top
+          level artifact.
+        </para>
 
-      <listitem><para><literal>Dependency-centric</literal>. In this view the
-        top level shows the model. Beneath this are all diagrams and top level
-        artifacts. A hierarchy is shown for any dependency beneath any top
-        level artifact.</para>
+        <warning>
+          <para>In the V0.14 release of &argouml; this view is broken,
+            and will display nothing.
+          </para>
+        </warning>
+        
+        <caution>
+          <para>Dependencies include realizations and
+            implicit dependencies such as inner classes and state machines on their
+            owning classes.
+          </para>
 
-      <caution><para>Dependencies include realizations and
-        implicit dependencies such as inner classes and state machines on their
-        owning classes.</para>
-
-      <para>When examining older &argouml; models, you may find some
-        dependencies stereotyped as <literal>&laquo;extend&raquo;</literal> or
-        <literal>&laquo;include&raquo;</literal>, since they were used
-        (incorrectly) to depict extend and include relationships on use case
-        diagrams. If such dependencies are seen, they should be replaced by
-        proper extend and include relationships, which are now supported on the
-        use case diagram.</para></caution></listitem>
+          <!--para>When examining older &argouml; models, you may find some
+          dependencies stereotyped as <literal>&laquo;extend&raquo;</literal> or
+          <literal>&laquo;include&raquo;</literal>, since they were used
+          (incorrectly) to depict extend and include relationships on use case
+          diagrams. If such dependencies are seen, they should be replaced by
+          proper extend and include relationships, which are now supported on the
+          use case diagram.</para-->
+        </caution>
+      </listitem>
     </itemizedlist>
   </sect1>
 
@@ -311,7 +331,10 @@ This chapter covers the Explorer.
         the currently defined perspectives and to the right three buttons
         stacked vertically. &Button1; click can be used to select a
         perspective, with CONTROL and SHIFT keys used for multiple
-        perspectives.</para>
+        perspectives.
+      <!-- TODO: Yeah, but the Shift click does deselect everything 
+      selected before. See issue ... -->
+      </para>
 
       <itemizedlist>
         <listitem><para><literal>New</literal>. This creates a new perspective
@@ -320,20 +343,30 @@ This chapter covers the Explorer.
         <listitem><para><literal>Remove</literal>. This removes the selected
           perspective(s).</para></listitem>
 
-        <listitem><para><literal>Duplicate</literal>. This should copy the
+        <listitem><para><literal>Duplicate</literal>. This copies the
           selected perspective(s) so it/they can be used as the basis of a new
           perspective.</para>
 
-        <warning><para>In the current release of &argouml; this function,
+        <warning><para>In the V0.14 release of &argouml; this function,
           although not grayed out, has no effect.</para></warning></listitem>
       </itemizedlist>
 
       <para>The lower half of the dialog contains two text areas. The one on
         the left, labeled <literal>Rules&nbsp;Library</literal>contains
+        <!-- TODO: In V0.12 it did, since then this feature is broken...
+        See issue ... -->
         possible expansion rules to be expanded in turn to create the
         hierarchy. The one on the right contains the actual rules chosen for
         the hierarchy.</para>
 
+      <warning>
+        <para>
+          In the V0.14 version of &argouml;, the left bottom area which should
+          show the "Rules Library", but remains empty at all times. Hence it is
+          impossible to add any rule to any perspective. 
+        </para>
+      </warning>
+      
       <para>Separating the two areas are buttons labeled
         <literal>&gt;&gt;</literal> and <literal>&lt;&lt;</literal>. The first
         of these transfers rules selected on the left to the text area on the
@@ -351,7 +384,9 @@ This chapter covers the Explorer.
         button will close the dialog window.</para>
 
       <note><para>There is no <literal>Cancel</literal> button, because all
-        changes take immediate effect.</para></note>
+        changes take immediate effect.
+        <!-- TODO: Where are the changes stored? Per project or per PC? -->
+      </para></note>
     </sect2>
     
     <!-- The Panes - appears to be a null operation -->
@@ -434,7 +469,7 @@ This chapter covers the Explorer.
         finish what they were doing, or simply to help them switch between two
         or three related parts of the design.  The <literal>Navigate
         Back</literal> and <literal>Navigate Forward</literal> buttons in the
-        explorer serve the same basic purpose and use a lot less screen
+        toolbar serve the same basic purpose and use a lot less screen
         space.</para>
 
 
@@ -461,6 +496,10 @@ but sometimes users don't want to work with so many separate windows.
 
     <para>&Button2; Click over any selected artifact in the main area of the
       explorer will cause a pop-up menu to appear.</para>
+      <!-- TODO: Even if not clicking on an item, but in a blank area it works.
+      In fact, if you select something, and then button2 click, you'll get the
+      pop-up of the selected item, as long as the mouse is still in the pane.
+      Is it a bug? Is it a feature? -->
 
      <!-- Add artifact to diagram -->
 
@@ -468,8 +507,9 @@ but sometimes users don't want to work with so many separate windows.
       <title>Add to Diagram</title>
 
       <para>This entry on the pop-up menu appears for any artifact that could
-        be added to a diagram in the editing
-        pane. This could be the diagram currently displayed in editing pane, or
+        be added to the diagram in the editing
+        pane. 
+        Usually, this would be the diagram currently displayed in editing pane, or
         it could be a diagram in a <quote>spawned</quote> window (see
         <xref linkend="s2.ref.edit_button1_double_click"/> for an explantion of
         how to do this).</para>
@@ -478,22 +518,19 @@ but sometimes users don't want to work with so many separate windows.
         editing pane or a spawned editing pane window (where it will appear as
         a cross) and clicking &button1;.</para>
 
-      <caution><para>This menu entry appears and is not grayed out, even for
-        some artifacts that can not be placed on the currently selected diagram
-        in the editing pane.</para>
+      <caution>
+        <para>This menu entry only appears as not grayed out, 
+          when the artifact is not present in the diagram in the editor pane, 
+          while it is allowed to be put there. 
+          Hence, it is only possible to place an artifact on a spawned diagram, 
+          if the <literal>Add&nbsp;to&nbsp;Diagram</literal> function would also work 
+          on the diagram in the editor pane.
+          <!-- TODO: This is not a good situation. Come up with a better
+          alternative. -->  
+        </para>
+      </caution>
 
-      <para>This is because there may be separate spawned editing pane windows
-        on which the artifact can validly be placed. &argouml; cannot track
-        which windows are available, and can only know if an artifact can be
-        validly placed, until a window is selected with the cursor
-        <emphasis>after</emphasis> the
-        <literal>Add&nbsp;to&nbsp;Diagram</literal> is chosen.</para>
-
-      <para>The only way to find out if an artifact can be placed in a
-        particular window is to try the operation and see if the artifact is
-        placed.</para></caution>
-
-      <caution><para>A separate known limitation is that the current release of
+      <caution><para>A separate known limitation is that the V0.14 release of
         &argouml; will not let you place more than one copy of any particular
         artifact on a diagram.</para></caution>
         <!-- TODO: check if an issue exists for this defect-->
@@ -503,7 +540,13 @@ but sometimes users don't want to work with so many separate windows.
     <!-- Delete From Model -->
 
     <sect2>
-      <title>Delete From Model</title>
+      <title>
+        <guiicon><inlinemediaobject><imageobject><imagedata
+          format="GIF" align="center" fileref="images/icons/delete_from_model.gif"/>
+          </imageobject></inlinemediaobject>
+        </guiicon>
+        Delete From Model
+      </title>
 
       <para>This entry on the pop-up menu appears for any artifact that could
         be deleted from the model.</para>
@@ -539,7 +582,7 @@ and hence also all the artifacts owned by the statemachine.
     <!-- Set Source Path... -->
 
     <sect2>
-      <title>Set Source Path ... (To be written)</title>
+      <title>Set Source Path&hellip; (To be written)</title>
       <para>This entry on the pop-up menu ...</para>
     </sect2>
 
@@ -553,23 +596,25 @@ whenever an artifact is selected that may contain a package,
 e.g. a package. 
 
 After activating this menu the artifact will own a new package.
+<!-- TODO: refer to the identical function on the properties pane. -->
       </para>
     </sect2>
 
     <!-- Properties -->
 
     <sect2>
-      <title>Properties Pop-Up</title>
+      <title>Properties</title>
 
       <para>
 This entry on the pop-up menu causes the properties tab of the selected artifact or diagram 
 to be displayed in the details pane.
       </para>
       <para>
-The use of this function is limited, 
+The use of this function is limited <!-- read: non-existent -->, 
 since the same effect can be obtained by 
 clicking on the tab for the properties in the details pane directly.
-Besides, &argouml; currently always downlights this menu-item. 
+Besides, &argouml; V0.14 always downlights this menu-item.
+<!-- TODO: enter (or check for) an issue to remove this useless function --> 
       </para>
 
     </sect2>
