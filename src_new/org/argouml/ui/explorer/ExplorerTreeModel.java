@@ -161,7 +161,7 @@ public class ExplorerTreeModel extends DefaultTreeModel
 	    if (!done)
 		schedule();
 	}
-    };
+    }
 
     /** Creates a new instance of ExplorerTreeModel */
     public ExplorerTreeModel(Object root) {
@@ -195,15 +195,15 @@ public class ExplorerTreeModel extends DefaultTreeModel
      * Traverses the children, finds those affected by node, and notifies
      * them that they are modified.
      */
-    private void traverseModified(TreeNode root, Object node) {
-	Enumeration children = root.children();
+    private void traverseModified(TreeNode start, Object node) {
+	Enumeration children = start.children();
 	while (children.hasMoreElements()) {
 	    TreeNode child = (TreeNode) children.nextElement();
 	    traverseModified(child, node);
 	}
 
-	if (root instanceof ExplorerTreeNode) {
-	    ((ExplorerTreeNode) root).nodeModified(node);
+	if (start instanceof ExplorerTreeNode) {
+	    ((ExplorerTreeNode) start).nodeModified(node);
 	}
     }
 
@@ -331,7 +331,7 @@ public class ExplorerTreeModel extends DefaultTreeModel
 
 	    // Avoid our deinitialization here
 	    // The node will be added back to the tree again
-	    super.removeNodeFromParent((MutableTreeNode) child);
+	    super.removeNodeFromParent(child);
 	}
 
 	// For each reordered node, find it's new position among the current
@@ -342,10 +342,9 @@ public class ExplorerTreeModel extends DefaultTreeModel
 	    Object obj = child.getUserObject();
 	    int ip = Collections.binarySearch(children, obj, order);
 
-	    if (ip < 0)
+	    if (ip < 0) {
 		ip = -(ip + 1);
-
-	    int cidx = node.getIndex(child);
+	    }
 
 	    // Avoid our initialization here
 	    super.insertNodeInto(child, node, ip);
@@ -502,11 +501,11 @@ public class ExplorerTreeModel extends DefaultTreeModel
 
 	int position = 0;
 	// Remember that children are not TreeNodes but UserObjects
-	Iterator childNodes = Collections.list(node.children()).iterator();
+	Enumeration childNodes = node.children();
 	Iterator newNodes = newChildren.iterator();
 	Object firstNew = newNodes.hasNext() ? newNodes.next() : null;
-	while (childNodes.hasNext()) {
-	    Object childObj = childNodes.next();
+	while (childNodes.hasMoreElements()) {
+	    Object childObj = childNodes.nextElement();
 	    if (!(childObj instanceof DefaultMutableTreeNode)) {
 		continue;
 	    }
