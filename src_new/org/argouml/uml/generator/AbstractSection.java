@@ -52,6 +52,12 @@ public abstract class AbstractSection
     private static final Logger LOG =
         Logger.getLogger(AbstractSection.class);
 
+    /**
+     * System newline separator.
+     */
+    private static final String LINE_SEPARATOR =
+	System.getProperty("line.separator");
+
     private Map mAry;
 
     /** Creates a new instance of Section */
@@ -92,7 +98,7 @@ public abstract class AbstractSection
                 if (sectionId != null) {
                     String content = (String) mAry.get(sectionId);
                     if (content != null) {
-                        fw.write(line + "\n");
+                        fw.write(line + LINE_SEPARATOR);
                         fw.write(content);
                         // read until the end section is found, discard 
                         // generated content
@@ -117,20 +123,20 @@ public abstract class AbstractSection
                 fw.write(line);
                 line = fr.readLine();
                 if (line != null) {
-                    fw.write("\n");
+                    fw.write(LINE_SEPARATOR);
                 }
             }
             if ((!mAry.isEmpty()) && (outputLostSections)) {
-                fw.write("/* lost code following: \n");
+                fw.write("/* lost code following: " + LINE_SEPARATOR);
                 Set mapEntries = mAry.entrySet();
                 Iterator itr = mapEntries.iterator();
                 while (itr.hasNext()) {
                     Map.Entry entry = (Map.Entry) itr.next();
                     fw.write(indent + "// section " + entry.getKey()
-			     + " begin\n");
+			     + " begin" + LINE_SEPARATOR);
                     fw.write((String) entry.getValue());
                     fw.write(indent + "// section " + entry.getKey()
-			     + " end\n");
+			     + " end" + LINE_SEPARATOR);
                 }
                 fw.write("*/");
             }
@@ -162,7 +168,7 @@ public abstract class AbstractSection
                             mAry.put(sectionId, content);
                             content = "";
                         } else {
-                            content += line + "\n";
+                            content += line + LINE_SEPARATOR;
                         }
                     } else {
                         String sectionId = getSectId(line);
