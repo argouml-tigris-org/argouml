@@ -172,7 +172,8 @@ public class ActivityGraphsFactoryImpl
     		if (context instanceof MBehavioralFeature) {
 		    graph.setNamespace(context.getNamespace());
     		}
-	    nsmodel.getStateMachinesFactory().buildCompositeState(graph);
+	    nsmodel.getStateMachinesFactory()
+	    	.buildCompositeStateOnStateMachine(graph);
 	    return graph;
     	} else {
 	    throw new IllegalArgumentException("In buildActivityGraph: "
