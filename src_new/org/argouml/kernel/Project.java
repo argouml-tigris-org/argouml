@@ -316,7 +316,23 @@ public class Project implements java.io.Serializable {
         
         InputSource source = new InputSource(zis);
         source.setEncoding("UTF-8");
-        mmodel = xmiReader.parse(new InputSource(zis));
+        try {
+        	mmodel = xmiReader.parse(new InputSource(zis));
+        }
+        catch (ClassCastException cc) {
+        	ArgoParser.SINGLETON.setLastLoadStatus(false);
+			ArgoParser.SINGLETON.setLastLoadMessage("XMI file "
+							+ url.toString()
+							+ " could not be "
+							+ "parsed.");
+        }
+        if (xmiReader.getErrors()) {
+		ArgoParser.SINGLETON.setLastLoadStatus(false);
+		ArgoParser.SINGLETON.setLastLoadMessage("XMI file "
+							+ url.toString()
+							+ " could not be "
+							+ "parsed.");
+	    }
 
         // This should probably be inside xmiReader.parse
         // but there is another place in this source
@@ -340,13 +356,7 @@ public class Project implements java.io.Serializable {
             //throw new IOException("XMI file " + url.toString() + 
 	    //" could not be parsed.");
 	    //}
-	    if (xmiReader.getErrors()) {
-		ArgoParser.SINGLETON.setLastLoadStatus(false);
-		ArgoParser.SINGLETON.setLastLoadMessage("XMI file "
-							+ url.toString()
-							+ " could not be "
-							+ "parsed.");
-	    }
+	    
 
         _UUIDRefs = new HashMap(xmiReader.getXMIUUIDToObjectMap());
         return mmodel;
@@ -733,13 +743,11 @@ public class Project implements java.io.Serializable {
      * xmi's from individuals diagrams to make
      * it easier to modularize the output of Argo.
      */
-    public void save(boolean overwrite, File file) throws IOException {
+    public void save(boolean overwrite, File file) throws IOException, Exception {
         if (expander == null) {
             java.util.Hashtable templates = TemplateReader.readFile(ARGO_TEE);
             expander = new OCLExpander(templates);
         }
-        
-        Dbg.log("org.argouml.kernel.Project", "Saving " + file);
     
         preSave();
         
@@ -778,16 +786,6 @@ public class Project implements java.io.Serializable {
                     Argo.log.info("Saving member of type: " + ((ProjectMember)_members.elementAt(i)).getType());
                     stream.putNextEntry(new ZipEntry(p.getName()));
                     p.save(path,overwrite,writer);
-                    // 2002-07-15
-                    // Jaap Branderhorst
-                    // zipentry is not closed properly. Added next two lines.
-                    // could be patch for issues 893 and 925
-                    // OUCH didn't work
-                    /*
-                    writer.flush();
-                    stream.closeEntry();
-                    */
-                    // end patch
                 }
             }
 
