@@ -1377,6 +1377,9 @@ class ActionCollaborationDiagram extends UMLChangeAction {
 		MCollaboration c = new MCollaborationImpl();
 		c.setName("Collaboration");
 		p.getModel().addOwnedElement(c);
+		MInteraction interaction = new MInteractionImpl();
+		interaction.setName("default Interaction");
+		c.addInteraction(interaction);
 		UMLCollaborationDiagram d  = new UMLCollaborationDiagram(c);
 		p.addMember(d);
 		ProjectBrowser.TheInstance.getNavPane().addToHistory(d);
