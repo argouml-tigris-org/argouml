@@ -23,6 +23,7 @@
 
 package org.argouml.uml.ui;
 
+import org.argouml.kernel.Project;
 import org.argouml.kernel.*;
 import org.argouml.ui.*;
 import org.argouml.util.*;
@@ -107,20 +108,55 @@ public class ActionOpenProject extends UMLAction {
           Globals.setLastDirectory (path);
           URL url = theFile.toURL();
           if(url != null) {
+          	// 2002-07-18
+        	// Jaap Branderhorst
+        	// changed the loading of the projectfiles to solve hanging 
+        	// of argouml if a project is corrupted. Issue 913
+        	// made it possible to return to the old project if loading went wrong
+        	Project oldProject = pb.getProject();
+        	if (oldProject == null) {
+        		oldProject = Project.makeEmptyProject();
+        	}
             // This is actually a hack! Some diagram types
             // (like the state diagrams) access the current
             // diagram to get some info. This might cause 
             // problems if there's another state diagram
             // active, so I remove the current project, before
             // loading the new one.
-            pb.setProject(Project.makeEmptyProject());
+            // 2002-07-18
+        	// Jaap Branderhorst
+        	// changed the loading of the projectfiles to solve hanging 
+        	// of argouml if a project is corrupted. Issue 913
+        	// old code:
+      
+            // pb.setProject(Project.makeEmptyProject());
             
-            p = Project.loadProject (url);
-            pb.setProject (p);
-            pb.showStatus (MessageFormat.format (
+            // new code:
+            pb.setProject(oldProject);
+            // 2002-07-18
+        	// Jaap Branderhorst
+        	// changed the loading of the projectfiles to solve hanging 
+        	// of argouml if a project is corrupted. Issue 913
+        	// try catch block added
+            try {
+            	p = Project.loadProject (url);
+            	pb.setProject (p);
+            	pb.showStatus (MessageFormat.format (
                 Localizer.localize ("Actions", "template.open_project.status_read"),
-                new Object[] {url.toString()}
-              ));
+                	new Object[] {url.toString()}
+              	));
+            }
+            catch (Exception ex) {
+            	// now show some errorpane
+            	JOptionPane.showMessageDialog(pb,
+    				"Could not load the project " + url.toString() + "/n" +
+    				"Project file probably corrupted.",
+   					"Error",
+    				JOptionPane.ERROR_MESSAGE);
+
+            	// lets restore the state of the projectbrowser
+            	pb.setProject(oldProject);
+            }
           }
           
           return;
