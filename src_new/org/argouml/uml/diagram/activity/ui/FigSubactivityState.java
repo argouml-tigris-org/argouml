@@ -41,6 +41,8 @@ import org.argouml.model.uml.UmlModelEventPump;
 import org.argouml.uml.diagram.state.ui.FigStateVertex;
 //import org.argouml.uml.generator.ParserDisplay;
 import org.tigris.gef.graph.GraphModel;
+import org.tigris.gef.presentation.FigLine;
+import org.tigris.gef.presentation.FigGroup;
 import org.tigris.gef.presentation.FigRRect;
 import org.tigris.gef.presentation.FigText;
 
@@ -55,19 +57,18 @@ public class FigSubactivityState extends FigStateVertex {
     // constants
 
     private static final int MARGIN = 2;
-
     private static final int PADDING = 8;
+    
+    private static final int X = 10;
+    private static final int Y = 10;
+    private static final int W = 90;
+    private static final int H = 25;
 
     ////////////////////////////////////////////////////////////////
     // instance variables
 
-    /**
-     * UML does not really use ports, so just define one big one so that users
-     * can drag edges to or from any point in the icon.
-     */
-    private FigRRect bigPort;
-
     private FigRRect cover;
+    private FigGroup icon;
 
     ////////////////////////////////////////////////////////////////
     // constructors
@@ -76,13 +77,16 @@ public class FigSubactivityState extends FigStateVertex {
      * Main Constructor (called from file loading)
      */
     public FigSubactivityState() {
-        bigPort = new FigRRect(10 + 1, 10 + 1, 90 - 2, 25 - 2, Color.cyan,
-                Color.cyan);
+        FigRRect bigPort = new FigRRect(X + 1, Y + 1, W - 2, H - 2, 
+                Color.cyan, Color.cyan);
         bigPort.setCornerRadius(bigPort.getHalfHeight());
-        cover = new FigRRect(10, 10, 90, 25, Color.black, Color.white);
+        cover = new FigRRect(X, Y, W, H, Color.black, Color.white);
         cover.setCornerRadius(getHalfHeight());
 
         bigPort.setLineWidth(0);
+        
+        //icon = makeSubStatesIcon(X + W, Y); // the substate icon in the corner
+        
         getNameFig().setLineWidth(0);
         getNameFig().setBounds(10 + PADDING, 10, 90 - PADDING * 2, 25);
         getNameFig().setFilled(false);
@@ -92,11 +96,37 @@ public class FigSubactivityState extends FigStateVertex {
         addFig(bigPort);
         addFig(cover);
         addFig(getNameFig());
+        //addFig(icon);
+        
+        makeSubStatesIcon(X + W, Y);
 
+        setBigPort(bigPort);
         Rectangle r = getBounds();
         setBounds(r.x, r.y, r.width, r.height);
     }
-   
+
+    /**
+     * @param x the x-coordinate of the right corner 
+     * @param y the y coordinate of the bottom corner
+     */
+    private void makeSubStatesIcon(int x, int y) {
+        FigRRect s1 = new FigRRect(x - 22, y + 3, 8, 6, 
+                Color.black, Color.white);
+        FigRRect s2 = new FigRRect(x - 11, y + 9, 8, 6, 
+                Color.black, Color.white);
+        s1.setFilled(true);
+        s2.setFilled(true);
+        s1.setLineWidth(1);
+        s2.setLineWidth(1);
+        s1.setCornerRadius(3);
+        s2.setCornerRadius(3);
+        FigLine s3 = new FigLine(x - 18, y + 6, x - 7, y + 12, Color.black);
+        
+        addFig(s3); // add them back to front
+        addFig(s1);
+        addFig(s2);
+    }
+    
     /**
      * Constructor that hooks the Fig into 
      * an existing UML model element
@@ -121,7 +151,7 @@ public class FigSubactivityState extends FigStateVertex {
     public Object clone() {
         FigSubactivityState figClone = (FigSubactivityState) super.clone();
         Iterator it = figClone.getFigs(null).iterator();
-        figClone.bigPort = (FigRRect) it.next();
+        figClone.setBigPort((FigRRect) it.next());
         figClone.cover = (FigRRect) it.next();
         figClone.setNameFig((FigText) it.next());
         return figClone;
@@ -135,7 +165,7 @@ public class FigSubactivityState extends FigStateVertex {
      */
     public void setOwner(Object node) {
         super.setOwner(node);
-        bindPort(node, bigPort);
+        bindPort(node, getBigPort());
     }
     
     /**
@@ -157,9 +187,9 @@ public class FigSubactivityState extends FigStateVertex {
         Rectangle oldBounds = getBounds();
 
         getNameFig().setBounds(x + PADDING, y, w - PADDING * 2, h - PADDING);
-        bigPort.setBounds(x + 1, y + 1, w - 2, h - 2);
+        getBigPort().setBounds(x + 1, y + 1, w - 2, h - 2);
         cover.setBounds(x, y, w, h);
-        bigPort.setCornerRadius(h);
+        ((FigRRect) getBigPort()).setCornerRadius(h);
         cover.setCornerRadius(h);
 
         calcBounds(); 
