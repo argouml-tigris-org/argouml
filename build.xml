@@ -828,7 +828,6 @@ ${Name} Build file
 
     <!-- create directories -->
     <mkdir dir="${argo.tests.classes}"/>
-    <echo message="argo.tests.src=${argo.tests.src}"/>
 
     <!-- We want debug, optimize, deprecation to be non-modifiable here -->
     <javac srcdir="${argo.tests.src}"
