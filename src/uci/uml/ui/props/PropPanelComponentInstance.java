@@ -126,25 +126,23 @@ implements ItemListener, DocumentListener {
       _deploymentLocationField.setText(null);
     }
 
-    if (coi.getClassifiers() != null) { 
-      String base = ""; 
-      Collection classifiers = coi.getClassifiers(); 
-      Iterator it = classifiers.iterator(); 
-      while (it.hasNext()) { 
-        Object o = it.next(); 
-        if (o != null && (o instanceof MClassifier)) { 
-          MClassifier cls = (MClassifier) o; 
-          if (cls != null) { 
-            base = cls.getName(); 
-          } 
-        } 
-      } 
-      _baseField.setText(base);         
-    }  
-    else { 
-      _baseField.setText(null); 
-    } 
 
+    // construct bases string (comma separated)
+    String baseStr = "";
+    Collection col = coi.getClassifiers(); 
+    if (col != null && col.size() > 0){
+	Iterator it = col.iterator();
+	baseStr = ((MClassifier)it.next()).getName(); 
+	while (it.hasNext()) { 
+	    baseStr += ", "+((MClassifier)it.next()).getName(); 
+	} 
+	_baseField.setText(baseStr);
+    } 
+      
+    else { 
+	_baseField.setText(null); 
+    } 
+    
     validate();
   }
   
@@ -153,53 +151,12 @@ implements ItemListener, DocumentListener {
     if (_inChange) return; 
   
     MComponentInstance coi = (MComponentInstance) _target; 
-    MComponent classifier = new MComponentImpl();  
-    String base = _baseField.getText(); 
-    Collection col = coi.getClassifiers(); 
-    if ((col != null) && (col.size()>0)) {  
-      Iterator itcol = col.iterator();  
-      while (itcol.hasNext()) {  
-        MClassifier cls = (MClassifier) itcol.next();  
-        coi.removeClassifier(cls);  
-      }  
-    }  
- 
-    Vector diagrams = ProjectBrowser.TheInstance.getProject().getDiagrams(); 
-    GraphModel model = null; 
-    Vector v = new Vector(); 
-    int size = diagrams.size(); 
-    for (int i=0; i<size; i++) { 
-      Object o = diagrams.elementAt(i); 
-      if (!(o instanceof Diagram)) continue; 
-      if (o instanceof MModel) continue; 
-      Diagram d = (Diagram) o; 
-      model = d.getGraphModel();  
- 
-      if (!(model instanceof DeploymentDiagramGraphModel)) continue; 
-        
-      Vector nodes = model.getNodes(); 
-      int s = nodes.size(); 
-      for (int j=0; j<s; j++) { 
-        MModelElement node = (MModelElement) nodes.elementAt(j); 
-        if (node != null && (node instanceof MComponentImpl)) { 
-          MComponent mcomp = (MComponent) node; 
-          if (mcomp.getNamespace() != coi.getNamespace()) continue;
-          String comp_name = mcomp.getName(); 
-          if (comp_name != null && (comp_name.equals(base))) { 
-            v.addElement(mcomp); 
-            coi.setClassifiers(v); 
-            return;  
-          }       
-        } 
-      } 
-    } 
- 
-    classifier.setName(base); 
-    v.addElement(classifier); 
-    coi.setClassifiers(v); 
- 
-    //System.out.println("needs-more-work: baseClass = " + base);  
-    // needs-more-work: this could involve changes to the graph model  
+
+    //little hack: use ParserDisplay instead...
+
+    String toBeParsed = coi.getName() + ":" + _baseField.getText();
+    ParserDisplay.SINGLETON.parseComponentInstance(coi, toBeParsed); 
+
   }  
  
 

@@ -134,53 +134,9 @@ implements ItemListener, DocumentListener {
     if (_inChange) return; 
   
     MNodeInstance noi = (MNodeInstance) _target; 
-    MNode classifier = new MNodeImpl();  
-    String base = _baseField.getText(); 
-    Collection col = noi.getClassifiers(); 
-    if ((col != null) && (col.size()>0)) {  
-      Iterator itcol = col.iterator();  
-      while (itcol.hasNext()) {  
-        MClassifier cls = (MClassifier) itcol.next();  
-        noi.removeClassifier(cls);  
-      }  
-    }  
- 
-    Vector diagrams = ProjectBrowser.TheInstance.getProject().getDiagrams(); 
-    GraphModel model = null; 
-    Vector v = new Vector(); 
-    int size = diagrams.size(); 
-    for (int i=0; i<size; i++) { 
-      Object o = diagrams.elementAt(i); 
-      if (!(o instanceof Diagram)) continue; 
-      if (o instanceof MModel) continue; 
-      Diagram d = (Diagram) o; 
-      model = d.getGraphModel();  
- 
-      if (!(model instanceof DeploymentDiagramGraphModel)) continue; 
-        
-      Vector nodes = model.getNodes(); 
-      int s = nodes.size(); 
-      for (int j=0; j<s; j++) { 
-        MModelElement node = (MModelElement) nodes.elementAt(j); 
-        if (node != null && (node instanceof MNodeImpl)) { 
-          MNode mnode = (MNode) node; 
-          if (mnode.getNamespace() != noi.getNamespace()) continue;
-          String node_name = mnode.getName(); 
-          if (node_name != null && (node_name.equals(base))) { 
-            v.addElement(mnode); 
-            noi.setClassifiers(v); 
-            return;  
-          }       
-        } 
-      } 
-    } 
- 
-    classifier.setName(base); 
-    v.addElement(classifier); 
-    noi.setClassifiers(v); 
- 
-    //System.out.println("needs-more-work: baseClass = " + base);  
-    // needs-more-work: this could involve changes to the graph model  
+    // use ParserDisplay instead of reimplementiong
+    ParserDisplay.SINGLETON.parseNodeInstance(noi, noi.getName() + ":" + _baseField.getText());
+
   }  
 
   ////////////////////////////////////////////////////////////////
