@@ -690,7 +690,7 @@ public class UMLCognitiveResourceBundle extends ListResourceBundle {
           "drop-down within the properties tab.\n" },
 
         { "CrNodesOverlap_head" ,
-                "Clean Up Diagram" },
+                "Clean Up Diagram <ocl>self</ocl>" },
         { "CrNodesOverlap_desc" ,
                 "Some of the objects in this diagram overlap and obscure each other. This may hide important information and make it difficult for humans to understand. A neat appearance may also make your diagrams more influencial on other designers, implementors, and decision makers.\n\nConstructing an understandable set of class diagrams is an important part of your design. \n\nTo fix this, move the highlighted nodes in the diagram." },
         { "CrZeroLengthEdge_head" ,
