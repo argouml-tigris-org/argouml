@@ -32,6 +32,7 @@ package org.argouml.ui;
 
 import java.awt.Frame;
 
+import javax.swing.AbstractButton;
 import javax.swing.JButton;
 
 import org.argouml.i18n.Translator;
@@ -71,7 +72,7 @@ public class ArgoDialog extends org.argouml.swingext.Dialog {
         nameButton(getHelpButton(), "button.help");
     }
     
-    protected void nameButton(JButton button, String key) {
+    protected void nameButton(AbstractButton button, String key) {
         if (button != null) {
             button.setText(Translator.localize(BUNDLE, key));
             String mnemonic = Translator.localize(BUNDLE, key + MNEMONIC_KEY_SUFFIX);
