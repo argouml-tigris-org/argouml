@@ -162,6 +162,7 @@ Property files to be searched:
 
     <path id="argo.compile.classpath">
       <pathelement location="${xercesImpl.jar.path}"/>
+      <pathelement location="${xalan.jar.path}"/>
       <pathelement location="${xml-apis.jar.path}"/>
       <pathelement location="${nsuml.jar.path}"/>
       <pathelement location="${jmi.jar.path}"/>
@@ -177,6 +178,7 @@ Property files to be searched:
 
     <path id="argo.compile.classpath.without.nsuml">
       <pathelement location="${xercesImpl.jar.path}"/>
+      <pathelement location="${xalan.jar.path}"/>
       <pathelement location="${xml-apis.jar.path}"/>
       <pathelement location="${jmi.jar.path}"/>
       <pathelement location="${ocl-argo.jar.path}"/>
@@ -258,8 +260,8 @@ Property files to be searched:
       <pathelement location="${ant.home}/optional.jar"/>
       <pathelement location="${junit.jar.path}"/>
       <pathelement location="${jdepend.jar.path}"/>
-      <pathelement location="${xerces.jar.path}"/>
-      <pathelement location="${xalan.jar.path}"/>
+      <pathelement location="${ant-xerces.jar.path}"/>
+      <pathelement location="${ant-xalan.jar.path}"/>
       <pathelement location="${bsf.jar.path}"/>
       <pathelement location="${javasrc.jar.path}"/>
     </path>
@@ -378,8 +380,8 @@ Property files to be searched:
 
     <copy todir="${argo.build.classes}/org/argouml/Images">
       <fileset dir="${argo.src.dir}/org/argouml/Images" excludes="CVS/**" includes="**/**"/>
-
     </copy>
+  	
     <copy todir="${argo.build.classes}/org/argouml/i18n">
       <fileset dir="${argo.src.dir}/org/argouml/i18n" includes="*.properties"/>
     </copy>
@@ -390,8 +392,8 @@ Property files to be searched:
     <copy todir="${argo.build.classes}/org/argouml/resource">
       <fileset dir="${argo.src.dir}/org/argouml/resource" excludes="CVS/**" includes="**/**"/>
     </copy>
-    <copy todir="${argo.build.classes}/org/argouml/xml/dtd">
-      <fileset dir="${argo.src.dir}/org/argouml/xml/dtd" excludes="CVS/**" includes="**/**"/>
+    <copy todir="${argo.build.classes}/org/argouml/persistence">
+      <fileset dir="${argo.src.dir}/org/argouml/persistence" excludes="CVS/**" includes="**/**"/>
     </copy>
     <copy file="${argo.src.dir}/org/argouml/argo.ini" tofile="${argo.build.classes}/org/argouml/argo.ini"/>
     <copy file="${argo.src.dir}/org/argouml/default.xmi" tofile="${argo.build.classes}/org/argouml/default.xmi"/>
@@ -590,7 +592,7 @@ Property files to be searched:
   <!-- =================================================================== -->
   <target name="package" depends="jar"
           description="Prepare all jar files, both built and just delivered.">
-    <property name="names.of.all.included.libs" value="antlrall.jar gef.jar i18n.jar log4j.jar nsuml.jar ocl-argo.jar toolbar.jar xml-apis.jar xercesImpl.jar jmi.jar swidgets.jar commons-logging.jar"/>
+    <property name="names.of.all.included.libs" value="antlrall.jar gef.jar i18n.jar log4j.jar nsuml.jar ocl-argo.jar toolbar.jar xml-apis.jar xercesImpl.jar xalan.jar jmi.jar swidgets.jar commons-logging.jar"/>
     <copy file="${antlrall.jar.path}" tofile="${argo.build.dir}/antlrall.jar"/>
     <copy file="${gef.jar.path}" tofile="${argo.build.dir}/gef.jar"/>
     <copy file="${i18n.jar.path}" tofile="${argo.build.dir}/i18n.jar"/>
@@ -602,6 +604,7 @@ Property files to be searched:
     <copy file="${toolbar.jar.path}" tofile="${argo.build.dir}/toolbar.jar"/>
     <copy file="${ocl-argo.jar.path}" tofile="${argo.build.dir}/ocl-argo.jar"/>
     <copy file="${xercesImpl.jar.path}" tofile="${argo.build.dir}/xercesImpl.jar"/>
+    <copy file="${xalan.jar.path}" tofile="${argo.build.dir}/xalan.jar"/>
     <copy file="${xml-apis.jar.path}" tofile="${argo.build.dir}/xml-apis.jar"/>
     <!-- End of name synch area in this file. -->
 
@@ -646,6 +649,8 @@ Property files to be searched:
             packagelistLoc="${commons-logging.javadoc.packagelist}"/>
       <link href="${xerces.javadoc.link}" offline="true"
             packagelistLoc="${xerces.javadoc.packagelist}"/>
+        <link href="${xalan.javadoc.link}" offline="true"
+              packagelistLoc="${xalan.javadoc.packagelist}"/>
       <link href="${jmi.javadoc.link}" offline="true"
             packagelistLoc="${jmi.javadoc.packagelist}"/>
       <!-- Rest of the packages -->
@@ -689,6 +694,8 @@ Property files to be searched:
             packagelistLoc="${log4j.javadoc.packagelist}"/>
       <link href="${xerces.javadoc.link}" offline="true"
             packagelistLoc="${xerces.javadoc.packagelist}"/>
+        <link href="${xalan.javadoc.link}" offline="true"
+              packagelistLoc="${xalan.javadoc.packagelist}"/>
       <link href="${jmi.javadoc.link}" offline="true"
             packagelistLoc="${jmi.javadoc.packagelist}"/>
       <!-- Rest of the packages -->
@@ -1116,7 +1123,7 @@ For details see http://www.clarkware.com/software/JDepend.html.
       <sysproperty key="checkstyle.header.file" value="${argo.tools.dir}/checkstyle/java.header"/>
       <classpath>
         <pathelement location="${checkstyle.jar.path}"/>
-        <pathelement location="${xerces.jar.path}"/>
+        <pathelement location="${ant-xerces.jar.path}"/>
       </classpath>
       <arg value="-c"/>
       <arg value="${argo.tools.dir}/checkstyle/checkstyle_argouml.xml"/>
@@ -1134,7 +1141,7 @@ For details see http://www.clarkware.com/software/JDepend.html.
       <sysproperty key="checkstyle.header.file" value="${argo.tools.dir}/checkstyle/java.header"/>
       <classpath>
         <pathelement location="${checkstyle.jar.path}"/>
-        <pathelement location="${xerces.jar.path}"/>
+        <pathelement location="${ant-xerces.jar.path}"/>
       </classpath>
       <arg value="-c"/>
       <arg value="${argo.tools.dir}/checkstyle/checkstyle_argouml.xml"/>
@@ -1382,6 +1389,7 @@ you will have to resurrect them using cvs update.
     <signjar jar="${jwsdir}/swidgets.jar"        alias="argouml" storepass="secret"/>
     <signjar jar="${jwsdir}/toolbar.jar"         alias="argouml" storepass="secret"/>
     <signjar jar="${jwsdir}/xercesImpl.jar"      alias="argouml" storepass="secret"/>
+    <signjar jar="${jwsdir}/xalan.jar"           alias="argouml" storepass="secret"/>
     <signjar jar="${jwsdir}/xml-apis.jar"        alias="argouml" storepass="secret"/>
 
     <copy todir="${argo.dist.dir}/jws/">
