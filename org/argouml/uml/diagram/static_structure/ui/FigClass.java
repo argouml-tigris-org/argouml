@@ -36,6 +36,7 @@ import javax.swing.*;
 import javax.swing.plaf.metal.MetalLookAndFeel;
 
 import ru.novosoft.uml.foundation.core.*;
+import ru.novosoft.uml.foundation.extension_mechanisms.*;
 import ru.novosoft.uml.foundation.data_types.*;
 import ru.novosoft.uml.model_management.*;
 
@@ -66,6 +67,12 @@ public class FigClass extends FigNodeWithCompartments {
   public FigClass() {
     _bigPort = new FigRect(10, 10, 90, 60, Color.cyan, Color.cyan);
 
+//     _name.setLineWidth(0);
+//     _name.setFilled(false);
+
+//     _stereo.setLineWidth(0);
+//     _stereo.setFilled(false);
+
     _attr = new FigCompartment(10, 30, 90, 21);
     _attr.setFont(LABEL_FONT);
     _attr.setExpandOnly(true);
@@ -79,6 +86,7 @@ public class FigClass extends FigNodeWithCompartments {
     _oper.setJustification(FigText.JUSTIFY_LEFT);
 
     setPort(_bigPort);
+
     addFig(_name);
     addCompartment(_attr);
     addCompartment(_oper);
@@ -241,6 +249,14 @@ public class FigClass extends FigNodeWithCompartments {
       ((SelectionClass)sel).hideButtons();
   }
 
+//   public void setLineColor(Color c) {
+//       //super.setLineColor(c);
+//      _stereo.setFilled(false);
+//      _stereo.setLineWidth(0);
+//      _name.setFilled(false);
+//      _name.setLineWidth(0);
+//   }
+
 
   ////////////////////////////////////////////////////////////////
   // user interaction methods
@@ -346,5 +362,37 @@ public class FigClass extends FigNodeWithCompartments {
     else _name.setFont(LABEL_FONT);
 
   }
+
+  
+  protected void updateStereotypeText() {
+    MModelElement me = (MModelElement) getOwner();
+    if (me == null) return;
+    MStereotype stereo = me.getStereotype();
+    if (stereo == null || stereo.getName() == null || stereo.getName().length() == 0) {
+	if (_figs.contains(_stereo)) {
+	    removeFig(_stereo);
+	    Rectangle oldBounds = getBounds();
+	    setBounds(oldBounds.x, oldBounds.y + 10, oldBounds.width, oldBounds.height-10);
+	    calcBounds();
+	    firePropChange("bounds", oldBounds, getBounds());
+	}
+      return;
+    }
+    else {
+	String stereoStr = stereo.getName();
+	_stereo.setText("<<" + stereoStr + ">>");
+	Rectangle oldBounds = getBounds();
+	if (! _figs.contains(_stereo)) {
+	    _stereo.setBounds(oldBounds.x, oldBounds.y - 10, oldBounds.width, 10);
+	    int namePosition = _figs.indexOf(_name);
+	    _figs.insertElementAt(_stereo, namePosition);
+	    _stereo.setGroup(this);
+	}
+	_stereo.calcBounds();
+	calcBounds();
+	firePropChange("bounds", oldBounds, getBounds());
+    }
+  }
+  
 
 } /* end class FigClass */

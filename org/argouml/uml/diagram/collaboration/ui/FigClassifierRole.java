@@ -34,6 +34,7 @@ import java.awt.event.*;
 import javax.swing.*;
 
 import ru.novosoft.uml.foundation.core.*;
+import ru.novosoft.uml.foundation.extension_mechanisms.*;
 import ru.novosoft.uml.behavior.collaborations.*;
 
 import org.tigris.gef.presentation.*;
@@ -72,9 +73,16 @@ public class FigClassifierRole extends FigNodeModelElement {
     Dimension nameMin = _name.getMinimumSize();
     _name.setBounds(10, 10, 90, nameMin.height);
 
+    _stereo.setLineWidth(0);
+    _stereo.setFilled(false);
+    _stereo.setJustifciaionByName("Center");
+    Dimension stereoMin = _stereo.getMinimumSize();
+    _stereo.setBounds(10, 10, 90, stereoMin.height);
+
     // add Figs to the FigNode in back-to-front order
     addFig(_bigPort);
     addFig(_cover);
+    addFig(_stereo);
     addFig(_name);
 
     Rectangle r = getBounds();
@@ -93,10 +101,28 @@ public class FigClassifierRole extends FigNodeModelElement {
     Vector v = figClone.getFigs();
     figClone._bigPort = (FigRect) v.elementAt(0);
     figClone._cover = (FigRect) v.elementAt(1);
-    figClone._name = (FigText) v.elementAt(2);
+    figClone._stereo = (FigText) v.elementAt(2);
+    figClone._name = (FigText) v.elementAt(3);
     return figClone;
   }
 
+
+  protected void updateStereotypeText() {
+    MModelElement me = (MModelElement) getOwner();
+    if (me == null) return;
+    MStereotype stereo = me.getStereotype();
+    if (stereo == null || stereo.getName() == null || stereo.getName().length() == 0) 
+	_stereo.setText("");
+    else {
+	String stereoStr = stereo.getName();
+	_stereo.setText("<<" + stereoStr + ">>");
+    }
+    Rectangle oldBounds = getBounds();
+    _stereo.calcBounds();
+    calcBounds();
+    firePropChange("bounds", oldBounds, getBounds());
+  
+  }
 
   ////////////////////////////////////////////////////////////////
   // Fig accessors
