@@ -33,6 +33,7 @@ import ru.novosoft.uml.foundation.core.MClassifier;
 import ru.novosoft.uml.foundation.core.MModelElement;
 
 /**
+ * Shows the bases belonging to some classifierrole.
  * @since Oct 3, 2002
  * @author jaap.branderhorst@xs4all.nl
  */
