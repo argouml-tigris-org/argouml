@@ -43,8 +43,9 @@ public class TestParserDisplay extends TestCase {
 	private final String attr07 = "+name : String = \'val[15] \'";
 	private final String attr08 = "  +name : String = \"a <<string>>\"";
 	private final String attr09 = "+name : String = (a * (b+c) - d)";
-	private final String attr10 = "+name : String = 2 * (b+c) - 10";
-	private final String attr11 = "+name : String = a[15]";
+	private final String attr10 = "+name << organization >> : String = 2 * (b+c) - 10";
+	private final String attr11 = "+ <<machine>> name : String = a[15]";
+	private final String attr12 = "+ name : String = a << 5";
 
 	private final String nattr01 = "too many string in an attribute";
 	private final String nattr02 = "+vis name";
@@ -264,6 +265,9 @@ public class TestParserDisplay extends TestCase {
 
 		attr = UmlFactory.getFactory().getCore().buildAttribute();
 		checkValue(attr, attr11, "a[15]");
+
+		attr = UmlFactory.getFactory().getCore().buildAttribute();
+		checkValue(attr, attr12, "a << 5");
 	}
 
 	private void checkValue(MAttribute attr, String text, String val) {
@@ -272,6 +276,36 @@ public class TestParserDisplay extends TestCase {
 			assert(text + " gave wrong visibility: " + (attr.getInitialValue() == null ? "(null)" : attr.getInitialValue().getBody()),
 				val == null && (attr.getInitialValue() == null || "".equals(attr.getInitialValue().getBody())) ||
 				val != null && attr.getInitialValue() != null && val.equals(attr.getInitialValue().getBody()));
+		} catch (Exception e) {
+			assert(text + " threw unexpectedly: " + e, false);
+		}
+	}
+
+	public void testStereotype() {
+		MAttribute attr;
+
+		attr = UmlFactory.getFactory().getCore().buildAttribute();
+		checkStereotype(attr, attr01, null);
+
+		attr = UmlFactory.getFactory().getCore().buildAttribute();
+		checkStereotype(attr, attr10, "organization");
+
+		attr = UmlFactory.getFactory().getCore().buildAttribute();
+		checkStereotype(attr, attr11, "machine");
+		checkStereotype(attr, attr01, "machine");
+	}
+
+	private void checkStereotype(MAttribute attr, String text,
+			String val) {
+		try {
+			ParserDisplay.SINGLETON.parseAttribute(text, attr);
+			assert(text + " gave wrong stereotype " +
+				(attr.getStereotype() != null ?
+				 attr.getStereotype().getName() : "(null)"),
+				(val == null && attr.getStereotype() == null)||
+				(val != null &&
+				 attr.getStereotype() != null &&
+				 val.equals(attr.getStereotype().getName())));
 		} catch (Exception e) {
 			assert(text + " threw unexpectedly: " + e, false);
 		}
