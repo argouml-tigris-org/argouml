@@ -391,7 +391,7 @@ public class Main {
         System.err.println("You can also set java settings which influence "
 			   + "the behaviour of ArgoUML:");
         System.err.println("  -Duser.language    [e.g. en]");
-        System.err.println("  -Duser.region      [e.g. US]");
+        System.err.println("  -Duser.country     [e.g. US]");
         System.err.println("  -Dforce.nativelaf  [force ArgoUML to use "
 			   + "the native look and feel. UNSUPPORTED]");
         System.err.println("\n\n");
