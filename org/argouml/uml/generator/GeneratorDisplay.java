@@ -448,8 +448,20 @@ public String generateConcurrency(MCallConcurrencyKind concurrency) {
 
     public String generateMessage(MMessage m) {
 	if (m == null) return "";
-	return generateName(m.getName()) + "::" +
-	    generateAction(m.getAction());
+	String number = "";
+	if (m.getPredecessors() != null) {
+		number = "" + (m.getPredecessors().size() + 1);
+	}
+	String name = "";
+	if (m.getName() != null) {
+		name = m.getName();
+	}
+	name = generateName(name);
+	String action = "";
+	if (m.getAction() != null) {
+		action = generateAction(m.getAction());
+	}
+	return number + " " + name + " :: " + action;
     }
 
     public String generateAssociationFrom(MAssociation a, MAssociationEnd ae) {

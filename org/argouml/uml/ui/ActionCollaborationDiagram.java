@@ -24,6 +24,7 @@
 package org.argouml.uml.ui;
 import org.argouml.model.uml.UmlFactory;
 
+import org.argouml.application.api.Argo;
 import org.argouml.kernel.*;
 import org.argouml.model.uml.UmlFactory;
 import org.argouml.uml.*;
@@ -86,17 +87,21 @@ public class ActionCollaborationDiagram extends UMLChangeAction {
 				c = UmlFactory.getFactory().getCollaborations().buildCollaboration(p.getModel());
 			}
 		} else {
-		if (target instanceof UMLDiagram) {
-			c = UmlFactory.getFactory().getCollaborations().buildCollaboration(ns);
-		} else {
-		if (target instanceof MCollaboration) {
+			if (target instanceof MCollaboration) {
 			c = (MCollaboration)target;
-		} } } } } } 
+		} else {
+ 		//if (target instanceof UMLDiagram) {
+			c = UmlFactory.getFactory().getCollaborations().buildCollaboration(p.getModel());
+		//} else {
+			
+		} } } } }  
 		if (c != null) {
 	    	UMLCollaborationDiagram d  = new UMLCollaborationDiagram(c);
 	    	p.addMember(d);
 	    	ProjectBrowser.TheInstance.getNavPane().addToHistory(d);
 	    	ProjectBrowser.TheInstance.setTarget(d);
+		} else {
+			ProjectBrowser.TheInstance.getStatusBar().showStatus(Argo.localize("UMLMenu", "diagram.collaboration.notpossible"));
 		}
 	}
 	catch (PropertyVetoException pve) { }

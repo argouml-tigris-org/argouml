@@ -88,12 +88,16 @@ public class ActionStoreModelToDB extends UMLAction {
     }
 
     public boolean shouldBeEnabled() {
+    	return false;
 
 	// my way of finding out whether these actions should be enabled
 	// is to look for the Properties file. Not nice, but working.
 	// should be replaecd by a proper plug-in mechanism as soon as there
 	// is one for Argo
 
+// Jaap Branderhorst
+// Killed this mechanism
+/*
 	java.util.Properties props =  new java.util.Properties();
 	String configFile =  System.getProperty("argo.dbconfig", "/db.ini");
 	// System.out.println("Using: "+configFile);
@@ -105,5 +109,7 @@ public class ActionStoreModelToDB extends UMLAction {
 	    return false;
 	}
 	return true;
+	*/
     }
+    
 } /* end class ActionStoreModelToDB */
