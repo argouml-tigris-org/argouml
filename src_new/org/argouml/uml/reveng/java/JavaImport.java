@@ -52,6 +52,8 @@ public class JavaImport {
 
     static private JRadioButton datatype;
 
+    static private JCheckBox create_diagrams;
+
     /**
      * Get the panel that lets the user set reverse engineering
      * parameters.
@@ -124,11 +126,22 @@ public class JavaImport {
 		      new GridBagConstraints(GridBagConstraints.RELATIVE,
 					     GridBagConstraints.RELATIVE,
 					     GridBagConstraints.REMAINDER,
-					     GridBagConstraints.REMAINDER,
+					     1,
 					     1.0, 1.0,
 					     GridBagConstraints.NORTHWEST,
 					     GridBagConstraints.NONE,
 					     new Insets(0, 5, 5, 5),
+					     0, 0));
+            create_diagrams = new JCheckBox("Create diagrams from imported code", true);
+            configPanel.add(create_diagrams,
+		      new GridBagConstraints(GridBagConstraints.RELATIVE,
+					     GridBagConstraints.RELATIVE,
+					     GridBagConstraints.REMAINDER,
+					     GridBagConstraints.REMAINDER,
+					     1.0, 1.0,
+					     GridBagConstraints.NORTHWEST,
+					     GridBagConstraints.NONE,
+					     new Insets(5, 5, 0, 5),
 					     0, 0));
 	}
 	return configPanel;
@@ -154,7 +167,7 @@ public class JavaImport {
 
 	// Create a modeller for the parser
 	Modeller modeller = new Modeller(p.getModel(),
-					 diagram,
+                                         create_diagrams.isSelected()?diagram:null,
 					 attribute.isSelected(),
 					 datatype.isSelected());
 
