@@ -73,7 +73,7 @@ public class ActionSetModelElementNamespace extends UMLChangeAction {
                 newNamespace = (MNamespace)o;
             }
         }
-        if (newNamespace != oldNamespace && m != null) {
+        if (newNamespace != oldNamespace && m != null && newNamespace != null) {
             m.setNamespace(newNamespace);
         }
     }

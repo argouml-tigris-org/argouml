@@ -97,18 +97,18 @@ abstract public class PropPanelModelElement extends PropPanel {
     protected static ImageIcon _messageIcon = ResourceLoader.lookupIconResource("Message");
     protected static ImageIcon _flowIcon = ResourceLoader.lookupIconResource("Flow");
 
-    protected JScrollPane namespaceScroll;
-    protected JComboBox namespaceComboBox;
-    protected JTextField nameField;
-    protected JComboBox stereotypeBox;    
-    protected JScrollPane supplierDependencyScroll;
-    protected JScrollPane clientDependencyScroll;
-    protected JScrollPane targetFlowScroll;
-    protected JScrollPane sourceFlowScroll;
-    protected JScrollPane constraintScroll;
-    protected JPanel namespaceVisibilityPanel;
-    protected JCheckBox specializationCheckBox;
-    protected JScrollPane elementResidenceScroll;
+    protected static JScrollPane namespaceScroll;
+    protected static JComboBox namespaceComboBox;
+    protected static JTextField nameField;
+    protected static JComboBox stereotypeBox;    
+    protected static JScrollPane supplierDependencyScroll;
+    protected static JScrollPane clientDependencyScroll;
+    protected static JScrollPane targetFlowScroll;
+    protected static JScrollPane sourceFlowScroll;
+    protected static JScrollPane constraintScroll;
+    protected static JPanel namespaceVisibilityPanel;
+    protected static JCheckBox specializationCheckBox;
+    protected static JScrollPane elementResidenceScroll;
     
     ////////////////////////////////////////////////////////////////
     // constructors
