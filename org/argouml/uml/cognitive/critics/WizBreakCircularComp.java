@@ -114,8 +114,8 @@ public class WizBreakCircularComp extends UMLWizard {
 		Object toEnd =
 		    new ArrayList(Model.getFacade().getConnections(asc)).get(0);
 		if (toEnd == fromEnd) {
-		    toEnd =
-		        new ArrayList(Model.getFacade().getConnections(asc)).get(1);
+		    toEnd = new ArrayList(
+		            Model.getFacade().getConnections(asc)).get(1);
 		}
 		Object toType = Model.getFacade().getType(toEnd);
 		String ascName = GeneratorDisplay.getInstance()
@@ -200,8 +200,8 @@ public class WizBreakCircularComp extends UMLWizard {
 	    ////////////////
 	case 3:
 	    if (selectedAsc != null) {
-		List conns =
-		    new ArrayList(Model.getFacade().getConnections(selectedAsc));
+		List conns = new ArrayList(
+		        Model.getFacade().getConnections(selectedAsc));
 		Object ae0 = /*(MAssociationEnd)*/ conns.get(0);
 		Object ae1 = /*(MAssociationEnd)*/ conns.get(1);
 		try {

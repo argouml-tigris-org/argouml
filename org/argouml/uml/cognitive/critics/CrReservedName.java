@@ -245,7 +245,8 @@ public class CrReservedName extends CrUML {
     public void initWizard(Wizard w) {
 	if (w instanceof WizMEName) {
 	    ToDoItem item = (ToDoItem) w.getToDoItem();
-	    String sug = Model.getFacade().getName(item.getOffenders().elementAt(0));
+	    String sug = 
+	        Model.getFacade().getName(item.getOffenders().elementAt(0));
 	    String ins = "Change the name to something different.";
 	    ((WizMEName) w).setInstructions(ins);
 	    ((WizMEName) w).setSuggestion(sug);

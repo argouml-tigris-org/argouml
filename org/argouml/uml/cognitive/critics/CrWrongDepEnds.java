@@ -122,12 +122,14 @@ public class CrWrongDepEnds extends CrUML {
 		    Object moe = /*(MModelElement)*/ it.next();
 		    if (Model.getFacade().isAObject(moe)) {
 			Object objSup = /*(MObject)*/ moe;
-			if (Model.getFacade().getElementResidences(objSup) != null
-			    && (Model.getFacade().getElementResidences(objSup).size()
-			                                        > 0)) {
+			if (Model.getFacade().getElementResidences(objSup) 
+			        != null
+			    && (Model.getFacade().getElementResidences(objSup)
+			            .size() > 0)) {
 			    count += 2;
                         }
-			if (Model.getFacade().getComponentInstance(objSup) != null) {
+			if (Model.getFacade().getComponentInstance(objSup) 
+			        != null) {
 			    count++;
                         }
 		    }
@@ -140,12 +142,14 @@ public class CrWrongDepEnds extends CrUML {
 		    Object moe = /*(MModelElement)*/ it.next();
 		    if (Model.getFacade().isAObject(moe)) {
 			Object objCli = /*(MObject)*/ moe;
-			if (Model.getFacade().getElementResidences(objCli) != null
-			    && (Model.getFacade().getElementResidences(objCli).size()
-			                                            > 0)) {
+			if (Model.getFacade().getElementResidences(objCli) 
+			        != null
+			    && (Model.getFacade().getElementResidences(objCli)
+			            .size() > 0)) {
 			    count += 2;
                         }
-			if (Model.getFacade().getComponentInstance(objCli) != null) {
+			if (Model.getFacade().getComponentInstance(objCli) 
+			        != null) {
 			    count++;
                         }
 		    }

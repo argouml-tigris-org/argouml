@@ -59,7 +59,7 @@ public class WizAddOperation extends UMLWizard {
     public void doAction(int oldStep) {
         switch (oldStep) {
 	case 1:
-	    String newName = suggestion;
+	    String newName = getSuggestion();
 	    if (step1 != null) {
 		newName = step1.getText();
 	    }
@@ -100,7 +100,7 @@ public class WizAddOperation extends UMLWizard {
 	    if (step1 == null) {
 		step1 =
 		    new WizStepTextField(this, instructions,
-		            label, getSuggestion());
+		            label, offerSuggestion());
 	    }
 	    return step1;
         }

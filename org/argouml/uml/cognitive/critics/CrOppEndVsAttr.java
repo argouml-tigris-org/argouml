@@ -97,7 +97,8 @@ public class CrOppEndVsAttr extends CrUML {
         Iterator myEnds = assocEnds.iterator();
         while (myEnds.hasNext()) {
             Object myAe = /*(MAssociationEnd)*/ myEnds.next();
-            Object asc = /*(MAssociation)*/ Model.getFacade().getAssociation(myAe);
+            Object asc = /*(MAssociation)*/ 
+                Model.getFacade().getAssociation(myAe);
             Collection conn = Model.getFacade().getConnections(asc);
 
             if (Model.getFacade().isAAssociationRole(asc))

@@ -202,8 +202,8 @@ public class WizOperName extends WizMEName {
                 if (!oldStereotypeIsSet) {
                     oldStereotype = null;
                     if (Model.getFacade().getStereotypes(oper).size() > 0) {
-                        oldStereotype =
-                            Model.getFacade().getStereotypes(oper).iterator().next();
+                        oldStereotype = Model.getFacade().getStereotypes(oper)
+                            .iterator().next();
                     }
                     oldStereotypeIsSet = true;
                 }
@@ -214,13 +214,15 @@ public class WizOperName extends WizMEName {
                 // put it there.
                 Object m = Model.getFacade().getModel(oper);
                 Object theStereotype = null;
-                for (Iterator iter = Model.getFacade().getOwnedElements(m).iterator();
+                for (Iterator iter = 
+                        Model.getFacade().getOwnedElements(m).iterator();
                                         iter.hasNext();) {
                     Object candidate = iter.next();
                     if (!(Model.getFacade().isAStereotype(candidate))) {
                         continue;
                     }
-                    if (!("create".equals(Model.getFacade().getName(candidate)))) {
+                    if (!("create".equals(
+                            Model.getFacade().getName(candidate)))) {
                         continue;
                     }
                     if (!("BehavioralFeature".equals(
@@ -241,7 +243,8 @@ public class WizOperName extends WizMEName {
                     Object targetNS =
                         findNamespace(Model.getFacade().getNamespace(oper),
                                       Model.getFacade().getModel(oper));
-                    Model.getCoreHelper().addOwnedElement(targetNS, theStereotype);
+                    Model.getCoreHelper()
+                        .addOwnedElement(targetNS, theStereotype);
                 }
 
                 try {

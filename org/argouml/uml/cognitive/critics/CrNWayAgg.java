@@ -136,7 +136,8 @@ public class CrNWayAgg extends CrUML {
         Iterator assocEnds = conns.iterator();
         while (assocEnds.hasNext()) {
             Object ae = /*(MAssociationEnd)*/ assocEnds.next();
-            if (Model.getFacade().isAggregate(ae) || Model.getFacade().isComposite(ae)) {
+            if (Model.getFacade().isAggregate(ae) 
+                    || Model.getFacade().isComposite(ae)) {
                 return PROBLEM_FOUND;
             }
         }

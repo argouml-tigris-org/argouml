@@ -71,7 +71,7 @@ public class CrUnconventionalOperName extends AbstractCrUnconventionalName {
         }
 	if ((stereo != null)
             && ("create".equals(Model.getFacade().getName(stereo))
-                    || "constructor".equals(Model.getFacade().getName(stereo)))) {
+                || "constructor".equals(Model.getFacade().getName(stereo)))) {
 	    return NO_PROBLEM;
         }
 	if (!Character.isLowerCase(initalChar)) {
