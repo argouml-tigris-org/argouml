@@ -1099,6 +1099,10 @@ public class ParserDisplay extends Parser {
      * @param f
      * @param s
      * @return String
+     * @deprecated Since 0.15.1, was probably part of the old parsing strategy
+     *		   which arguably wasn't a strategy and using it is a bad idea.
+     *		   It is not used within core ArgoUML.
+     *		   d00mst.
      */
     protected String parseOutMultiplicity(Object/*MAttribute*/ f, String s) {
 	s = s.trim();
@@ -1561,6 +1565,12 @@ public class ParserDisplay extends Parser {
 	return stereo;
     }
 
+    /**
+     * @deprecated Since 0.15.1, was probably part of the old parsing strategy
+     *		   which arguably wasn't a strategy and using it is a bad idea.
+     *		   It is not used within core ArgoUML.
+     *		   d00mst.
+     */
     protected String parseOutProperties(Object handle, String s) {
         if (ModelFacade.isAAttribute(handle)) {
             return parseOutAttributeProperties(handle, s);
@@ -1569,6 +1579,7 @@ public class ParserDisplay extends Parser {
         }
         throw new IllegalArgumentException("Can't get properties of " + handle);
     }
+
     /**
      * Parses the properties for some attribute a out of a string
      * s. The properties are all keywords between the braces at the
@@ -1576,6 +1587,10 @@ public class ParserDisplay extends Parser {
      * @param a
      * @param s
      * @return String
+     * @deprecated Since 0.15.1, was probably part of the old parsing strategy
+     *		   which arguably wasn't a strategy and using it is a bad idea.
+     *		   It is not used within core ArgoUML.
+     *		   d00mst.
      */
     private String parseOutAttributeProperties(Object/*MAttribute*/ a, String s) {
 	s = s.trim();
@@ -1599,6 +1614,12 @@ public class ParserDisplay extends Parser {
         return s.substring(s.indexOf("}"), s.length());
     }
 
+    /**
+     * @deprecated Since 0.15.1, was probably part of the old parsing strategy
+     *		   which arguably wasn't a strategy and using it is a bad idea.
+     *		   It is not used within core ArgoUML.
+     *		   d00mst.
+     */
     private String parseOutOperationProperties(Object op, String s) {
 	s = s.trim();
 	if (s.indexOf("{") < 0) return s;
@@ -1647,68 +1668,6 @@ public class ParserDisplay extends Parser {
         ModelFacade.setValue(tag, valueStr);
         ModelFacade.addTaggedValue(target, tag);
     }
-    /*
-      public String parseOutMultiplicity(MFeature f, String s) {
-
-      s = s.trim();
-      MMultiplicity multi =
-      UmlFactory.getFactory().getDataTypes().createMultiplicity();
-      boolean startMulti = false; // start of a multiplicity
-      boolean inRange = false;    // true if we are in a range
-      boolean formerNumber = false;   // true if last char was a number
-      boolean inMultiString = true;  // true if we are still parsing a multi
-                                     // string\
-				     boolean inDots =
-				     false      // true if we are in ..
-				     int dotCounter =
-				     0;          // number of dots we passed
-				     StringBuffer startMultiSb =
-				     new StringBuffer();
-				     StringBuffer endMultiSb =
-				     new StringBuffer();
-				     for (int i = 0; i < s.length(); i++) {
-				     char c = s.charAt(i);
-				     switch (c) {
-				     case '0' : case '1' : case '2' : case '3' :
-				     case '4' : case '5' : case '6' : case '7' :
-				     case '8' : case '9' : case '*' :
-				     if (!inRange && inMultiString) { // we start possibly a range
-				     startMulti =
-				     true;
-				     startMultiSb.append(c);
-				     }
-				     if (inRange && inMultiString) {
-				     // end range
-				     if (inDots) {
-				     // first char of endrange
-				     inDots = false;
-				     endMultiSb = new StringBuffer();
-				     }
-				     endMultiSb.append(c);
-				     }
-				     break;
-				     case '.' :
-				     if (!inDots && inMultiString) {
-				     inDots = true;
-				     dotCounter = 0;
-				     }
-				     dotCounter++;
-				     break;
-				     case ',' :
-				     if (inMultiString) {
-				     // we have an end sign of a mutiplicity
-
-				     break;
-				     case ' ' :
-				     break;
-				     default : // some other character
-				     inMultiString = false;
-				     //only here if we stopped parsing the
-				     // multistring
-				     break;
-				     }
-				     }
-    */
 
     /**
      * Parses a string for visibilitykind. Visibilitykind can both be specified
@@ -1716,6 +1675,10 @@ public class ParserDisplay extends Parser {
      * @param f The feature the visibility is part of
      * @param s The string that possibly identifies some visibility
      * @return String The string s WITHOUT the visibility signs.
+     * @deprecated Since 0.15.1, was probably part of the old parsing strategy
+     *		   which arguably wasn't a strategy and using it is a bad idea.
+     *		   It is not used within core ArgoUML.
+     *		   d00mst.
      */
     public String parseOutVisibility(Object f, String s) {
 	s = s.trim();
@@ -1758,6 +1721,10 @@ public class ParserDisplay extends Parser {
      * @param op
      * @param s
      * @return String
+     * @deprecated Since 0.15.1, was probably part of the old parsing strategy
+     *		   which arguably wasn't a strategy and using it is a bad idea.
+     *		   It is not used within core ArgoUML.
+     *		   d00mst.
      */
     public String parseOutParams(Object/*MOperation*/ op, String s) {
 	s = s.trim();
@@ -1796,6 +1763,10 @@ public class ParserDisplay extends Parser {
      * @param me
      * @param s
      * @return String
+     * @deprecated Since 0.15.1, was probably part of the old parsing strategy
+     *		   which arguably wasn't a strategy and using it is a bad idea.
+     *		   It is not used within core ArgoUML.
+     *		   d00mst.
      */
     public String parseOutName(Object/*MModelElement*/ me, String s) {
 	String delim = ": \t()[]{}=;";
@@ -1830,6 +1801,10 @@ public class ParserDisplay extends Parser {
      * @param attr
      * @param s
      * @return String
+     * @deprecated Since 0.15.1, was probably part of the old parsing strategy
+     *		   which arguably wasn't a strategy and using it is a bad idea.
+     *		   It is not used within core ArgoUML.
+     *		   d00mst.
      */
     public String parseOutType(Object/*MAttribute*/ attr, String s) {
         s = s.trim();
@@ -1861,6 +1836,10 @@ public class ParserDisplay extends Parser {
      * @param op
      * @param s
      * @return String
+     * @deprecated Since 0.15.1, was probably part of the old parsing strategy
+     *		   which arguably wasn't a strategy and using it is a bad idea.
+     *		   It is not used within core ArgoUML.
+     *		   d00mst.
      */
     protected String parseOutReturnType(Object/*MOperation*/ op, String s) {
         s = s.trim();
@@ -1890,7 +1869,12 @@ public class ParserDisplay extends Parser {
         return s;
     }
 
-
+    /**
+     * @deprecated Since 0.15.1, was probably part of the old parsing strategy
+     *		   which arguably wasn't a strategy and using it is a bad idea.
+     *		   It is not used within core ArgoUML.
+     *		   d00mst.
+     */
     protected String parseOutInitValue(Object/*MAttribute*/ attr, String s) {
         s = s.trim();
         int equalsIndex = s.indexOf("=");
@@ -1915,6 +1899,13 @@ public class ParserDisplay extends Parser {
         return s;
     }
 
+    /**
+     * @deprecated Since 0.15.1, this is essentially a String constructor.
+     *		   It breaks the idea the idea that the parser is editing
+     *		   preexisting objects, which is bad.
+     *		   It is not used within core ArgoUML.
+     *		   d00mst.
+     */
     public Object parseParameter(String s) {
 	java.util.StringTokenizer st =
 	    new java.util.StringTokenizer(s, ": = \t");
@@ -1933,29 +1924,48 @@ public class ParserDisplay extends Parser {
 	return /*(MParameter)*/param;
     }
 
-
-    //   public abstract Package parsePackage(String s);
-    //   public abstract MClassImpl parseClassifier(String s);
-
+    /**
+     * @deprecated Since 0.15.1, this is essentially a String constructor.
+     *		   It breaks the idea the idea that the parser is editing
+     *		   preexisting objects, which is bad.
+     *		   It is not used within core ArgoUML.
+     *		   d00mst.
+     */
     public Object parseStereotype(String s) {
 	return null;
     }
 
+    /**
+     * @deprecated Since 0.15.1, this is essentially a String constructor.
+     *		   It breaks the idea the idea that the parser is editing
+     *		   preexisting objects, which is bad.
+     *		   It is not used within core ArgoUML.
+     *		   d00mst.
+     */
     public Object parseTaggedValue(String s) {
 	return null;
     }
 
-    //   public abstract MAssociation parseAssociation(String s);
-    //   public abstract MAssociationEnd parseAssociationEnd(String s);
-
-    /** Parse a string of the form: "range, ...", where range is of the
-     *  form "lower..upper", or "integer" */
+    /**
+     * Parse a string of the form: "range, ...", where range is of the
+     * form "lower..upper", or "integer"
+     * @deprecated Since 0.15.1, this is essentially a String constructor.
+     *		   It breaks the idea the idea that the parser is editing
+     *		   preexisting objects, which is bad.
+     *		   It is not used within core ArgoUML.
+     *		   d00mst.
+     */
     public Object parseMultiplicity(String s) {
 	return UmlFactory.getFactory().getDataTypes().createMultiplicity(s);
-
     }
 
-
+    /**
+     * @deprecated Since 0.15.1, this is essentially a String constructor.
+     *		   It breaks the idea the idea that the parser is editing
+     *		   preexisting objects, which is bad.
+     *		   It is not used within core ArgoUML.
+     *		   d00mst.
+     */
     public Object parseState(String s) {
 	return null;
     }
@@ -2065,7 +2075,7 @@ public class ParserDisplay extends Parser {
 	_cat.debug("guard=|" + guard + "|");
 	_cat.debug("actions=|" + actions + "|");
 
-	ModelFacade.setName(trans, parseName(name));
+	ModelFacade.setName(trans, name);
 
 	if (trigger.length() > 0) {
 	    Object/*MEvent*/ evt = parseEvent(trigger);
@@ -3292,6 +3302,13 @@ public class ParserDisplay extends Parser {
 	ModelFacade.setName(sti, name);
     }
 
+    /**
+     * @deprecated Since 0.15.1, this is essentially a String constructor.
+     *		   It breaks the idea the idea that the parser is editing
+     *		   preexisting objects, which is bad.
+     *		   It is not used within core ArgoUML.
+     *		   d00mst.
+     */
     public Object parseAction(String s) {
 	Object a =
 	    UmlFactory.getFactory().getCommonBehavior().createCallAction();
@@ -3301,13 +3318,13 @@ public class ParserDisplay extends Parser {
 	return a;
     }
 
-    /*  public MActionSequence parseActions(String s) {
-	MActionSequence as = UmlFactory.getFactory().getCommonBehavior().createActionSequence(s);
-
-	ModelFacade.setName(as, s);
-	return as;
-	}*/
-
+    /**
+     * @deprecated Since 0.15.1, this is essentially a String constructor.
+     *		   It breaks the idea the idea that the parser is editing
+     *		   preexisting objects, which is bad.
+     *		   It is not used within core ArgoUML.
+     *		   d00mst.
+     */
     public Object parseGuard(String s) {
 	Object g = UmlFactory.getFactory().getStateMachines().createGuard();
 	ModelFacade.setExpression(g, UmlFactory.getFactory().getDataTypes().createBooleanExpression("Java", s));
@@ -3315,6 +3332,13 @@ public class ParserDisplay extends Parser {
         return g;
     }
 
+    /**
+     * @deprecated Since 0.15.1, this is essentially a String constructor.
+     *		   It breaks the idea the idea that the parser is editing
+     *		   preexisting objects, which is bad.
+     *		   It is not used within core ArgoUML.
+     *		   d00mst.
+     */
     public Object/*MEvent*/ parseEvent(String s) {
 	Object ce =
 	    UmlFactory.getFactory().getStateMachines().buildCallEvent();

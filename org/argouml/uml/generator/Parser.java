@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2002 The Regents of the University of California. All
+// Copyright (c) 1996-2003 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -44,30 +44,122 @@ public abstract class Parser {
 	throws ParseException;
     public abstract void parseAttribute(String s, Object attr)
 	throws ParseException;
+
+    /**
+     * @deprecated Since 0.15.1, this is essentially a String constructor.
+     *		   It breaks the idea the idea that the parser is editing
+     *		   preexisting objects, which is bad. Arguably it should not
+     *		   belong to the public API.
+     *		   It is not used within core ArgoUML.
+     *		   d00mst.
+     */
     public abstract Object parseParameter(String s);
-    //   public abstract Package parsePackage(String s);
-    //   public abstract MClassImpl parseClassifier(String s);
+
+    /**
+     * @deprecated Since 0.15.1, this is essentially a String constructor.
+     *		   It breaks the idea the idea that the parser is editing
+     *		   preexisting objects, which is bad. Arguably it should not
+     *		   belong to the public API.
+     *		   It is not used within core ArgoUML.
+     *		   d00mst.
+     */
     public abstract Object parseStereotype(String s);
+
+    /**
+     * @deprecated Since 0.15.1, this is essentially a String constructor.
+     *		   It breaks the idea the idea that the parser is editing
+     *		   preexisting objects, which is bad. Arguably it should not
+     *		   belong to the public API.
+     *		   It is not used within core ArgoUML.
+     *		   d00mst.
+     */
     public abstract Object parseTaggedValue(String s);
-    //   public abstract MAssociation parseAssociation(String s);
-    //   public abstract MAssociationEnd parseAssociationEnd(String s);
+
+    /**
+     * @deprecated Since 0.15.1, this is essentially a String constructor.
+     *		   It breaks the idea the idea that the parser is editing
+     *		   preexisting objects, which is bad. Arguably it should not
+     *		   belong to the public API.
+     *		   It is not used within core ArgoUML.
+     *		   d00mst.
+     */
     public abstract Object parseMultiplicity(String s);
+
+    /**
+     * @deprecated Since 0.15.1, this is essentially a String constructor.
+     *		   It breaks the idea the idea that the parser is editing
+     *		   preexisting objects, which is bad. Arguably it should not
+     *		   belong to the public API.
+     *		   It is not used within core ArgoUML.
+     *		   d00mst.
+     */
     public abstract Object parseState(String s);
+
     public abstract Object parseTransition(Object trans, String s);
+
+    /**
+     * @deprecated Since 0.15.1, this is essentially a String constructor.
+     *		   It breaks the idea the idea that the parser is editing
+     *		   preexisting objects, which is bad. Arguably it should not
+     *		   belong to the public API.
+     *		   It is not used within core ArgoUML.
+     *		   d00mst.
+     */
     public abstract Object parseAction(String s);
+
+    /**
+     * @deprecated Since 0.15.1, this is essentially a String constructor.
+     *		   It breaks the idea the idea that the parser is editing
+     *		   preexisting objects, which is bad. Arguably it should not
+     *		   belong to the public API.
+     *		   It is not used within core ArgoUML.
+     *		   d00mst.
+     */
     public abstract Object parseGuard(String s);
+
+    /**
+     * @deprecated Since 0.15.1, this is essentially a String constructor.
+     *		   It breaks the idea the idea that the parser is editing
+     *		   preexisting objects, which is bad. Arguably it should not
+     *		   belong to the public API.
+     *		   It is not used within core ArgoUML.
+     *		   d00mst.
+     */
     public abstract Object parseEvent(String s);
 
-
+    /**
+     * @deprecated Since 0.15.1, this is essentially a String constructor.
+     *		   It breaks the idea the idea that the parser is editing
+     *		   preexisting objects, which is bad. Arguably it should not
+     *		   belong to the public API.
+     *		   It is not used within core ArgoUML.
+     *		   d00mst.
+     */
     public Object parseExpression(String s) {
 	return UmlFactory.getFactory().getDataTypes().createExpression("Java",
 								       s);
     }
 
+    /**
+     * @deprecated Since 0.15.1, this is essentially a String constructor.
+     *		   It breaks the idea the idea that the parser is editing
+     *		   preexisting objects, which is bad. Arguably it should not
+     *		   belong to the public API.
+     *		   It is not used within core ArgoUML.
+     *		   d00mst.
+     */
     public String parseName(String s) {
 	return new String(s);
     }
 
+    /**
+     * @deprecated Since 0.15.1, this is essentially a String constructor.
+     *		   It breaks the idea the idea that the parser is editing
+     *		   preexisting objects, which is bad. Arguably it should not
+     *		   belong to the public API.
+     *		   It is not used within core ArgoUML.
+     *		   d00mst.
+     */
     public String parseUninterpreted(String s) {
 	return new String(s);
     }
