@@ -51,10 +51,11 @@ public abstract class FigEdge extends Fig {
   /** Fig that presents the NetEdge. */
   protected Fig _fig;
   /** The ArrowHead at the start of the line */
-  ArrowHead ArrowHeadStart = new ArrowHeadTriangle();
+  ArrowHead _arrowHeadStart = new ArrowHeadNone();
   /** The ArrowHead at the end of the line */
-  ArrowHead ArrowHeadEnd = new ArrowHeadTriangle();
-
+  ArrowHead _arrowHeadEnd = new ArrowHeadNone();
+  /** The items that are accumulated along the path, a vector. */
+  Vector _pathItems = new Vector();
 
   ////////////////////////////////////////////////////////////////
   // constructors
@@ -94,16 +95,30 @@ public abstract class FigEdge extends Fig {
     super.setOwner(own);
   }
 
-  public void setSourceArrowHead(ArrowHead newArrow)
-  {
-    ArrowHeadStart = newArrow;
+  public ArrowHead getSourceArrowHead() { return _arrowHeadStart; }
+
+  public ArrowHead getDestArrowHead() { return _arrowHeadEnd; }
+
+  public void setSourceArrowHead(ArrowHead newArrow) { _arrowHeadStart = newArrow; }
+
+  public void setDestArrowHead(ArrowHead newArrow) { _arrowHeadEnd = newArrow; }
+
+  public Vector getPathItemsRaw() { return _pathItems; }
+
+  public Fig getPathItem(PathConv pointOnPath) { 
+    // needs-more-work: Find the closest Fig to this point
+    return null;
   }
 
-  public void setDestArrowHead(ArrowHead newArrow)
+  public void addPathItem(Fig newFig, PathConv newPath)
   {
-    ArrowHeadEnd = newArrow;
+    _pathItems.addElement(new PathItem(newFig, newPath));
   }
 
+  public void removePathItem(PathItem goneItem)
+  {
+    _pathItems.removeElement(goneItem);    
+  }
 
   ////////////////////////////////////////////////////////////////
   // Routing related methods
@@ -165,6 +180,14 @@ public abstract class FigEdge extends Fig {
 
   public void dispose(Editor ed) {
     System.out.println("disposing: " + toString());
+
+    Vector pathVec = getPathItemsRaw();
+    for (int i = 0; i < pathVec.size(); i++)
+    {
+      Fig fig = ((PathItem)pathVec.elementAt(i)).getFig();
+      fig.dispose(ed);
+    } 
+
     ((NetEdge)getOwner()).dispose();
     super.dispose(ed);
   }
@@ -182,49 +205,35 @@ public abstract class FigEdge extends Fig {
   // display methods
 
   protected void drawArrowHead(Graphics g) {
-    ArrowHeadStart.setFillColor(Color.white);
-    System.out.println("p0= " + pointAlongPerimeter(0) + " len= " + getPerimeterLength() + " pE= " + pointAlongPerimeter(getPerimeterLength()));
-    ArrowHeadStart.paint(g, pointAlongPerimeter(20), pointAlongPerimeter(0));
-    ArrowHeadEnd.paint(g, pointAlongPerimeter(getPerimeterLength() - 21), pointAlongPerimeter(getPerimeterLength() - 1));
+    _arrowHeadStart.setFillColor(Color.white);
+    //System.out.println("p0= " + pointAlongPerimeter(0) + " len= " + getPerimeterLength() + " pE= " + pointAlongPerimeter(getPerimeterLength()));
+    _arrowHeadStart.paint(g, pointAlongPerimeter(5), pointAlongPerimeter(0));
+    _arrowHeadEnd.paint(g, pointAlongPerimeter(getPerimeterLength() - 6), pointAlongPerimeter(getPerimeterLength() - 1));
   }
 
+  protected void drawPathItems(Graphics g)
+  {
+    Vector pathVec = getPathItemsRaw();
 
-  PathConvPercent[] labelPos = {
-    new PathConvPercent(this, (float) .2, 0),
-    new PathConvPercent(this, (float) .5, 0),
-    new PathConvPercent(this, (float) .8, 0) };
-  FigText[] labelText = {
-    new FigText(0, 0, 100, 10, Color.black, "TimesRoman", 8),
-    new FigText(0, 0, 100, 10, Color.black, "TimesRoman", 8),
-    new FigText(0, 0, 100, 10, Color.black, "TimesRoman", 8), };
+    for (int i = 0; i < pathVec.size(); i++)
+    {
+      PathItem element = (PathItem) pathVec.elementAt(i);
 
-  boolean initedFigs = false;
+      PathConv path = element.getPath();
+      Fig fig = element.getFig();
+
+      fig.setLocation(path.getPoint().x, path.getPoint().y);
+
+      fig.paint(g);
+    } 
+  }
 
   /** Paint this object. */
   public void paint(Graphics g) {
     computeRoute();
     _fig.paint(g);
     drawArrowHead(g);
-
-    if (!initedFigs)
-    {
-      getLayer().add(labelText[0]);
-      getLayer().add(labelText[1]);
-      getLayer().add(labelText[2]);
-      initedFigs = true;
-    }
-
-    labelText[0].setText("x= " + labelPos[0].getPoint().x + " y= " + labelPos[0].getPoint().y);
-    labelText[1].setText("x= " + labelPos[1].getPoint().x + " y= " + labelPos[1].getPoint().y);
-    labelText[2].setText("x= " + labelPos[2].getPoint().x + " y= " + labelPos[2].getPoint().y);
-
-    labelText[0].setLocation(labelPos[0].getPoint().x, labelPos[0].getPoint().y);
-    labelText[1].setLocation(labelPos[1].getPoint().x, labelPos[1].getPoint().y);
-    labelText[2].setLocation(labelPos[2].getPoint().x, labelPos[2].getPoint().y);
-
-    labelText[0].paint(g);
-    labelText[1].paint(g);
-    labelText[2].paint(g);
+    drawPathItems(g);
   }
 
   ////////////////////////////////////////////////////////////////
@@ -239,6 +248,21 @@ public abstract class FigEdge extends Fig {
 	removeFrom(null);
       }
     }
+  }
+
+  protected class PathItem
+  {
+    Fig theFig;
+    PathConv thePath;
+
+    PathItem(Fig inFig, PathConv inPath)
+    {
+        theFig = inFig;
+        thePath = inPath;
+    }
+
+    PathConv getPath() { return thePath; }
+    Fig getFig() { return theFig; }
   }
 
 } /* end class ArcFigNode */

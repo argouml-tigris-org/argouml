@@ -28,7 +28,7 @@ import java.awt.*;
 import java.io.*;
 import java.util.*;
 
-class ArrowHeadNone extends ArrowHead
+public class ArrowHeadNone extends ArrowHead
 {
 	public void paint(Graphics g, Point start, Point end) {
 	}

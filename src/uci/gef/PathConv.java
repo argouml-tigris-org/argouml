@@ -39,4 +39,26 @@ abstract class PathConv
 
 	abstract public Point getPoint();
 	abstract public void setClosestPoint(Point newPoint);
+
+  protected Point getOffsetAmount(Point p1, Point p2, int offset)
+  {
+    // slope of the line we're finding the normal to
+    // is slope, and the normal is the negative reciprocal
+    // slope is (p1.y - p2.y) / (p1.x - p2.x)
+    // so recip is - (p1.x - p2.x) / (p1.y - p2.y)
+
+    int recipnumerator = (p1.x - p2.x) * -1;
+    int recipdenominator = (p1.y - p2.y);
+
+    // find the point offset on the line that gives a 
+    // correct offset
+
+    double a = offset / Math.sqrt(recipnumerator * recipnumerator+ recipdenominator * recipdenominator);
+    Point newPoint = new Point((int) (recipdenominator * a), (int) (recipnumerator * a));
+
+    System.out.println("p1=" + p1 + " p2=" + p2 + " off=" + offset);
+    System.out.println("a=" + a + " rn=" + recipnumerator + " rd=" + recipdenominator + " nP=" + newPoint);
+
+    return newPoint;
+  }
 }

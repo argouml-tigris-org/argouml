@@ -28,20 +28,20 @@ import java.awt.*;
 import java.io.*;
 import java.util.*;
 
-abstract class ArrowHead
+public abstract class ArrowHead
 {
 	protected final int			arrow_width = 5, arrow_height = 16;
-	protected Color arrowOutlineColor = Color.black;
+	protected Color arrowLineColor = Color.black;
 	protected Color arrowFillColor = Color.black;
 
-	Color getOutlineColor()
+	Color getLineColor()
 	{
-		return arrowOutlineColor;
+		return arrowLineColor;
 	}
 
-	void setOutlineColor(Color newColor)
+	void setLineColor(Color newColor)
 	{
-		arrowOutlineColor = newColor;
+		arrowLineColor = newColor;
 	}
 
 	Color getFillColor()

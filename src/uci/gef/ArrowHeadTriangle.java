@@ -28,7 +28,7 @@ import java.awt.*;
 import java.io.*;
 import java.util.*;
 
-class ArrowHeadTriangle extends ArrowHead
+public class ArrowHeadTriangle extends ArrowHead
 {
 	public void paint(Graphics g, Point start, Point end) {
 		int    xFrom, xTo, yFrom, yTo;
@@ -60,7 +60,7 @@ class ArrowHeadTriangle extends ArrowHead
 
    		g.setColor(arrowFillColor);
 		g.fillPolygon(triangle);	   
-   		g.setColor(arrowOutlineColor);
+   		g.setColor(arrowLineColor);
 		g.drawPolygon(triangle);	    
 	}
 
