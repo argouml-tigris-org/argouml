@@ -127,8 +127,8 @@ public class StateDiagramGraphModel extends UMLMutableGraphSupport implements
     /**
      * Return the node or edge that owns the given port.
      *
+     * @param port the port
      * @return The owner of the port.
-     *
      * @see org.tigris.gef.graph.BaseGraphModel#getOwner(java.lang.Object)
      */
     public Object getOwner(Object port) {
@@ -216,9 +216,11 @@ public class StateDiagramGraphModel extends UMLMutableGraphSupport implements
             state = ModelFacade.getState(edge);
             end0 = ModelFacade.getSource(edge);
             end1 = ModelFacade.getTarget(edge);
-            // it's not allowed to directly draw a transition from a composite state to
-            // one of it's substates.
-            if (ModelFacade.isACompositeState(end0) && StateMachinesHelper.getHelper().getAllSubStates(end0).contains(end1)) {
+            // it's not allowed to directly draw a transition 
+            // from a composite state to one of it's substates.
+            if (ModelFacade.isACompositeState(end0) 
+                    && StateMachinesHelper.getHelper().getAllSubStates(end0)
+                                                        .contains(end1)) {
                 return false;
             }
         }
@@ -262,7 +264,8 @@ public class StateDiagramGraphModel extends UMLMutableGraphSupport implements
         fireNodeAdded(node);
     }
 
-    /** Add the given edge to the graph, if valid.     * @see org.tigris.gef.graph.MutableGraphModel#addEdge(java.lang.Object)
+    /** Add the given edge to the graph, if valid.     
+     * @see org.tigris.gef.graph.MutableGraphModel#addEdge(java.lang.Object)
      */
     public void addEdge(Object edge) {
         LOG.debug("adding statechart diagram edge!!!!!!");
@@ -348,23 +351,25 @@ public class StateDiagramGraphModel extends UMLMutableGraphSupport implements
             }
             return tr;
         } else
-        if (edgeClass == CommentEdge.class) {
-            try {
-                Object connection = UmlFactory.getFactory().buildConnection(edgeClass, fromPort, null, toPort, null, null);
-                addEdge(connection);
-                return connection;
+            if (edgeClass == CommentEdge.class) {
+                try {
+                    Object connection = UmlFactory.getFactory()
+                        .buildConnection(edgeClass, fromPort, null, 
+                                                toPort, null, null);
+                    addEdge(connection);
+                    return connection;
+                }
+                catch (Exception ex) {
+                    // fail silently                
+                }
+                return null;
             }
-            catch (Exception ex) {
-                // fail silently                
+            
+            else {
+                LOG.debug("wrong kind of edge in StateDiagram connect3 "
+                        + edgeClass);
+                return null;
             }
-            return null;
-        }
-        
-        else {
-            LOG.debug("wrong kind of edge in StateDiagram connect3 "
-                    + edgeClass);
-            return null;
-        }
     }
 
     ////////////////////////////////////////////////////////////////
