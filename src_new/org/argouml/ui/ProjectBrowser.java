@@ -430,10 +430,10 @@ implements IStatusBar, NavigationListener, ArgoModuleEventListener {
     if (_help.getItemCount() > 0) {
         _help.insertSeparator(0);
     }
-    _help.add(Actions.Manual);
-    _help.add(Actions.Quickguide);
-    _help.add(Actions.CookBook);
-    _help.add(Actions.FAQ);
+    _help.add(Actions.HelpManual);
+    _help.add(Actions.HelpQuickguide);
+    _help.add(Actions.HelpCookBook);
+    _help.add(Actions.HelpFAQ);
     _help.add(Actions.AboutArgoUML);
     //_menuBar.setHelpMenu(help);
     _menuBar.add(_help);
@@ -637,7 +637,8 @@ implements IStatusBar, NavigationListener, ArgoModuleEventListener {
   ////////////////////////////////////////////////////////////////
   // IStatusBar
   public void showStatus(String s) { _statusBar.showStatus(s); }
-
+  
+  public void showProgress(int progress) { _statusBar.showProgress(progress);}
     /**    Called by a user interface element when a request to
      *    navigate to a model element has been received.
      */
