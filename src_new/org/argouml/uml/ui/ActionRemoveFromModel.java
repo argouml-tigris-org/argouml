@@ -33,7 +33,7 @@ import javax.swing.JOptionPane;
 import org.argouml.application.api.Argo;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
-import org.argouml.ui.ArgoDiagram;
+import org.argouml.model.ModelFacade;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.ui.UMLDiagram;
@@ -60,29 +60,29 @@ import ru.novosoft.uml.model_management.MModel;
  */
 
 public class ActionRemoveFromModel extends UMLChangeAction {
- 
+
     ////////////////////////////////////////////////////////////////
     // static variables
-    
+
     public static ActionRemoveFromModel SINGLETON = new ActionRemoveFromModel();
-    
+
     ////////////////////////////////////////////////////////////////
     // constructors
-    
+
     public ActionRemoveFromModel() {
         super(Argo.localize("CoreMenu", "action.delete-from-model"));
     }
-    
+
     protected ActionRemoveFromModel(boolean global) {
-        super(Argo.localize("CoreMenu", "action.delete-from-model"),global);
-    }      
-    
+        super(Argo.localize("CoreMenu", "action.delete-from-model"), global);
+    }
+
     /**
      * Only disabled when nothing is selected. Necessary to use since this 
      * option works via the menu too. A user cannot delete the last diagram. 
      * A user cannot delete the root model.
      * @see org.argouml.uml.ui.UMLAction#shouldBeEnabled()
-     */	
+     */
     public boolean shouldBeEnabled() {
         boolean enabled = false;
         super.shouldBeEnabled();
@@ -91,20 +91,27 @@ public class ActionRemoveFromModel extends UMLChangeAction {
             Editor ce = Globals.curEditor();
             Vector figs = ce.getSelectionManager().getFigs();
             size = figs.size();
-        } catch (Exception e) {
-        }
-        if (size > 0) return true;
-        Object target = TargetManager.getInstance().getTarget();                
+        } catch (Exception e) {}
+        if (size > 0)
+            return true;
+        Object target = TargetManager.getInstance().getTarget();
         if (target instanceof Diagram) { // we cannot delete the last diagram
-            return ProjectManager.getManager().getCurrentProject().getDiagrams().size() > 1;
+            return ProjectManager
+                .getManager()
+                .getCurrentProject()
+                .getDiagrams()
+                .size()
+                > 1;
         }
-        if (target instanceof MModel &&  // we cannot delete the model itself
-            target.equals(ProjectManager.getManager().getCurrentProject().getModel())) {
-                return false;
+        if (target instanceof MModel
+            && // we cannot delete the model itself
+        target.equals(
+                ProjectManager.getManager().getCurrentProject().getModel())) {
+            return false;
         }
-    	return target != null;    	
+        return target != null;
     }
-    
+
     /**
      * Moves the selected target to the trash bin. Moves the selected target 
      * after the remove to the parent of the selected target (that is: the next
@@ -113,38 +120,54 @@ public class ActionRemoveFromModel extends UMLChangeAction {
      * @see java.awt.event.ActionListener#actionPerformed(ActionEvent)
      */
     public void actionPerformed(ActionEvent ae) {
+        Project p = ProjectManager.getManager().getCurrentProject();
         Object[] targets = null;
         if (ae.getSource() instanceof PropPanel) {
-            targets = new Object[] {TargetManager.getInstance().getModelTarget()};
-            }
-        else
-          targets = getTargets();
+            targets =
+                new Object[] { TargetManager.getInstance().getModelTarget()};
+        } else
+            targets = getTargets();
+        Object target = null;
         for (int i = 0; i < targets.length; i++) {
-            Object target = targets[i];
+            target = targets[i];
             if (sureRemove(target)) {
                 // Argo.log.info("deleting "+target+"+ "+(((MModelElement)target).getMElementListeners()).size());
                 // remove from the model
                 if (target instanceof Fig) {
-                    target = ((Fig)target).getOwner();                    
+                    target = ((Fig)target).getOwner();
                 }
-                ProjectManager.getManager().getCurrentProject().moveToTrash(target); 
-                
-                // move the pointer to the target in the NavPane to some other target
-                Object newTarget = null;
-                if (target instanceof MBase) {
-                    newTarget = ((MBase)target).getModelElementContainer();
+                p.moveToTrash(target);
+                if (target instanceof Diagram) {
+                    Diagram firstDiagram = (Diagram)p.getDiagrams().get(0);
+                    if (target != firstDiagram)
+                        TargetManager.getInstance().setTarget(firstDiagram);
+                }
+
+            }
+        }
+        //      move the pointer to the target in the NavPane to some other target
+        Object newTarget = null;
+        target = target instanceof Fig ? ((Fig)target).getOwner() : target;
+        if (ModelFacade.isABase(target)) {
+            newTarget = ((MBase)target).getModelElementContainer();
+        } else if (ModelFacade.isADiagram(target)) {
+            Diagram firstDiagram = (Diagram)p.getDiagrams().get(0);
+            if (target != firstDiagram)
+                newTarget = firstDiagram;
+            else {
+                if (p.getDiagrams().size() > 1) {
+                    newTarget = p.getDiagrams().get(1);
                 } else
-                if (target instanceof ArgoDiagram) {
-                    newTarget = ProjectManager.getManager().getCurrentProject().getDiagrams().get(0);
-                }              
-                if (newTarget != null) 
-                    TargetManager.getInstance().setTarget(newTarget);
-                
-            } 
-        }        
+                    newTarget = p.getRoot();
+            }
+        } else {
+            newTarget = p.getRoot();
+        }       
+        if (newTarget != null)
+            TargetManager.getInstance().setTarget(newTarget);
         super.actionPerformed(ae);
     }
-    
+
     /**
      * A utility method that asks the user if he is sure to remove the selected
      * target. 
@@ -152,39 +175,45 @@ public class ActionRemoveFromModel extends UMLChangeAction {
      * @return boolean
      */
     public static boolean sureRemove(Object target) {
-    	// usage of other sureRemove method is legacy. They should be integrated.
-    	boolean sure = false;
-    	if (target instanceof MModelElement) {
-    		sure = sureRemove((MModelElement)target); 
-    	} else 
-    	if (target instanceof UMLDiagram) {
-    		// lets see if this diagram has some figs on it
-    		UMLDiagram diagram = (UMLDiagram)target;
-    		Vector nodes = diagram.getNodes();
-    		Vector edges = diagram.getNodes();
-    		if ((nodes.size() + edges.size()) > 0) {
-    			 // the diagram contains figs so lets ask the user if he/she is sure
-    			 String confirmStr = MessageFormat.format(Argo.localize("Actions",
-                                         "optionpane.remove-from-model-confirm-delete"),
-                                          new Object[] {diagram.getName(), ""});
-                 int response = JOptionPane.showConfirmDialog(ProjectBrowser.getInstance(), confirmStr,
-                                            Argo.localize("Actions", 
-                                            "optionpane.remove-from-model-confirm-delete-title"),
-                                            JOptionPane.YES_NO_OPTION);
-        		sure = (response == JOptionPane.YES_OPTION);
-    		} else { // no content of diagram
-    			sure = true;
-    		}
-    	} else
-    	if (target instanceof Fig) { // we can delete figs like figrects now too
+        // usage of other sureRemove method is legacy. They should be integrated.
+        boolean sure = false;
+        if (target instanceof MModelElement) {
+            sure = sureRemove((MModelElement)target);
+        } else if (target instanceof UMLDiagram) {
+            // lets see if this diagram has some figs on it
+            UMLDiagram diagram = (UMLDiagram)target;
+            Vector nodes = diagram.getNodes();
+            Vector edges = diagram.getNodes();
+            if ((nodes.size() + edges.size()) > 0) {
+                // the diagram contains figs so lets ask the user if he/she is sure
+                String confirmStr =
+                    MessageFormat.format(
+                        Argo.localize(
+                            "Actions",
+                            "optionpane.remove-from-model-confirm-delete"),
+                        new Object[] { diagram.getName(), "" });
+                int response =
+                    JOptionPane.showConfirmDialog(
+                        ProjectBrowser.getInstance(),
+                        confirmStr,
+                        Argo.localize(
+                            "Actions",
+                            "optionpane.remove-from-model-confirm-delete-title"),
+                        JOptionPane.YES_NO_OPTION);
+                sure = (response == JOptionPane.YES_OPTION);
+            } else { // no content of diagram
+                sure = true;
+            }
+        } else if (target instanceof Fig) {
+            // we can delete figs like figrects now too
             if (((Fig)target).getOwner() instanceof MModelElement) {
-    	       sure = sureRemove((MModelElement)((Fig)target).getOwner()); 
+                sure = sureRemove((MModelElement) ((Fig)target).getOwner());
             } else
                 sure = true;
-    	}
-    	return sure;
+        }
+        return sure;
     }
-    
+
     /**
      * An utility method that asks the user if he is sure to remove a selected 
      * modelement.
@@ -195,44 +224,58 @@ public class ActionRemoveFromModel extends UMLChangeAction {
     public static boolean sureRemove(MModelElement me) {
         ProjectBrowser pb = ProjectBrowser.getInstance();
         Project p = ProjectManager.getManager().getCurrentProject();
-        
+
         int count = p.getPresentationCountFor(me);
-        
+
         boolean doAsk = false;
         String confirmStr = "";
         if (count > 1) {
-            confirmStr += Argo.localize("Actions",
-                                    "optionpane.remove-from-model-will-remove-from-diagrams");
+            confirmStr
+                += Argo.localize(
+                    "Actions",
+                    "optionpane.remove-from-model-will-remove-from-diagrams");
             doAsk = true;
         }
-        
+
         Collection beh = me.getBehaviors();
         if (beh != null && beh.size() > 0) {
-            confirmStr += Argo.localize("Actions",
-                                    "optionpane.remove-from-model-will-remove-subdiagram");
+            confirmStr
+                += Argo.localize(
+                    "Actions",
+                    "optionpane.remove-from-model-will-remove-subdiagram");
             doAsk = true;
         }
-        
+
         if (!doAsk) {
             return true;
         }
-        
+
         String name = me.getName();
         if (name == null || name.equals("")) {
-            name = Argo.localize("Actions", "optionpane.remove-from-model-anon-element-name");
+            name =
+                Argo.localize(
+                    "Actions",
+                    "optionpane.remove-from-model-anon-element-name");
         }
-        
-        confirmStr = MessageFormat.format(Argo.localize("Actions",
-                                         "optionpane.remove-from-model-confirm-delete"),
-                                          new Object[] {name, confirmStr});
-        int response = JOptionPane.showConfirmDialog(pb, confirmStr,
-                                            Argo.localize("Actions", 
-                                            "optionpane.remove-from-model-confirm-delete-title"),
-                                            JOptionPane.YES_NO_OPTION);
-        
+
+        confirmStr =
+            MessageFormat.format(
+                Argo.localize(
+                    "Actions",
+                    "optionpane.remove-from-model-confirm-delete"),
+                new Object[] { name, confirmStr });
+        int response =
+            JOptionPane.showConfirmDialog(
+                pb,
+                confirmStr,
+                Argo.localize(
+                    "Actions",
+                    "optionpane.remove-from-model-confirm-delete-title"),
+                JOptionPane.YES_NO_OPTION);
+
         return (response == JOptionPane.YES_OPTION);
     }
-    
+
     protected Object[] getTargets() {
         /*
         Vector figs = null;
@@ -243,6 +286,6 @@ public class ActionRemoveFromModel extends UMLChangeAction {
         }
         return figs.size() > 0 ? figs.toArray() : new Object[] {TargetManager.getInstance().getTarget()};
         */
-        return TargetManager.getInstance().getTargets().toArray();        
+        return TargetManager.getInstance().getTargets().toArray();
     }
 } /* end class ActionRemoveFromModel */
