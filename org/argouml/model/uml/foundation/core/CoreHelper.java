@@ -33,13 +33,7 @@ import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.UmlModelEventPump;
-import org
-    .argouml
-    .model
-    .uml
-    .foundation
-    .extensionmechanisms
-    .ExtensionMechanismsFactory;
+import org.argouml.model.uml.foundation.extensionmechanisms.ExtensionMechanismsFactory;
 import org.argouml.model.uml.modelmanagement.ModelManagementHelper;
 import ru.novosoft.uml.MElementListener;
 import ru.novosoft.uml.behavior.collaborations.MAssociationRole;
@@ -871,7 +865,7 @@ public class CoreHelper {
         while (it.hasNext()) {
             Object o = it.next();
             if (o instanceof MNamespace) {
-                list.addAll(getAllClasses((MNamespace)o));
+                list.addAll(getAllClassifiers((MNamespace)o));
             }
             if (o instanceof MClassifier) {
                 list.add(o);
