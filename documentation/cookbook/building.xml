@@ -253,16 +253,32 @@ The CVS root is <filename>/cvs</filename> at cvs.tigris.org.
 You use your Tigris login and Tigris password.
 </para>
       <para>
-This means that you will set the <varname>CVSROOT</varname>-variable to
-<parameter>:pserver:<replaceable>login</replaceable>@cvs.tigris.org:/cvs</parameter>
-where <replaceable>login</replaceable> is your Tigris login.
-This needs to be done for the first checkout.
-After that the root will be remembered by the checked out copy.
-</para>
+        The first thing you will need to do, is select the CVS client. 
+        Most of the description below is about the command line CVS tool, 
+        which is available for most operating systems.
+      </para>
+      <para>
+        Whatever tool you use, 
+        do not checkout into a directory that contains spaces 
+        in a directory name somewhere in the path!
+        E.g. <literal>c:\Documents and Settings\...\My Documents\Java Development\</literal> 
+        violates this advise 3 times.
+        Reason: You can not build the documentation.
+        (BTW: Building ArgoUML itself works.)
+      </para>
+      <para>
+        In case you use the command-line CVS client, the above
+        means that you will set the <varname>CVSROOT</varname>-variable to
+        <parameter>:pserver:<replaceable>login</replaceable>@cvs.tigris.org:/cvs</parameter>
+        where <replaceable>login</replaceable> is your Tigris login.
+        This needs to be done before the first checkout.
+        After that the root will be remembered by the checked out copy.
+      </para>
 
       <para>
         If you use one of the CVS clients with a graphical user interface,
-        (like WinCVS, GruntSpud,...)
+        (like WinCVS, GruntSpud, ...),
+        or an IDE with a built-in CVS client (like Eclipse, ...)
         then configuration will be done by filling in fields. These fields mean
         the following:
       </para>
