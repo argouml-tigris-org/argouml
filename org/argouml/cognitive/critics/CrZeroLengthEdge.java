@@ -28,13 +28,9 @@
 
 package org.argouml.cognitive.critics;
 
-import java.util.*;
-import java.awt.*;
-
-import org.tigris.gef.presentation.*;
-
-import org.argouml.cognitive.*;
-import org.argouml.uml.cognitive.critics.*;
+import org.argouml.cognitive.Designer;
+import org.argouml.uml.cognitive.critics.CrUML;
+import org.tigris.gef.presentation.FigEdge;
 
 /** A critic to detect when an edge is very short in order to suggest to
  *  improve the layout of the diagram.

@@ -23,8 +23,6 @@
 
 package org.argouml.cognitive.critics;
 
-import java.util.*;
-
 import org.argouml.cognitive.*;
 
 class EnabledCM extends ControlMech {
