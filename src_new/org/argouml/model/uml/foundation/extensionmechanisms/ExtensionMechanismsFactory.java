@@ -83,7 +83,7 @@ public class ExtensionMechanismsFactory extends AbstractUmlModelFactory {
     /**
      * Builds a stereotype for some kind of modelelement.
      * @deprecated This method should not be used any more since it leads to
-     * faulty models if the namespace is not equal to the model the user is 
+     * faulty models if the namespace is not in the model the user is 
      * working on.
      */
     public MStereotype buildStereotype(MModelElement m, String text, MNamespace ns) {
