@@ -631,7 +631,7 @@ public class FigObject extends FigNodeModelElement implements MouseListener {
                     int nextPosition =
                         getYCoordinate((Node) _linkPositions.get(i + 1));
                     if (nextPosition >= y && position < y) {
-                        if ((y - position) < (nextPosition - y)) {
+                        if ((y - position) <= (nextPosition - y)) {
                             foundNode = node;
                         } else {
                             foundNode = (Node) _linkPositions.get(i + 1);
@@ -644,20 +644,20 @@ public class FigObject extends FigNodeModelElement implements MouseListener {
                     break;
                 }
             }
-            if (foundNode instanceof LinkPort
-                && !(foundNode instanceof ObjectNode)) {
+            int yCoordinate = 0;
+            SequenceDiagramLayout layout = (SequenceDiagramLayout) getLayer();
+            if (!layout.getFigLinks(getYCoordinate(foundNode)).isEmpty()) { 
                 FigLinkPort figLinkPort =
                     new FigLinkPort(
                         _lifeLine.getX() - WIDTH / 2,
-                        getYCoordinate(foundNode),
+                        getYCoordinate(foundNode)
+                            + SequenceDiagramLayout.LINK_DISTANCE,
                         _lifeLine.getX() + WIDTH / 2);
                 addFig(figLinkPort);
                 _figFigLinkPorts.add(figLinkPort);
                 LinkNode linkNode = new LinkNode(getOwner(), figLinkPort);
-                _linkPositions.add(
-                    _linkPositions.indexOf(foundNode) + 1,
-                    linkNode);
-                foundNode = linkNode;
+                layout.addNode(getIndexOf(foundNode) + 1, linkNode);
+                foundNode = linkNode;           
             } else {
                 if (!(foundNode instanceof LinkPort)
                     && !(foundNode instanceof ObjectNode)) {
@@ -673,7 +673,7 @@ public class FigObject extends FigNodeModelElement implements MouseListener {
                         _linkPositions.indexOf(foundNode),
                         linkNode);
                     foundNode = linkNode;
-                }
+                } 
 
             }
             return foundNode;
@@ -974,4 +974,25 @@ public class FigObject extends FigNodeModelElement implements MouseListener {
         }
         return retList;
     }
+
+    public void addNode(int position, Node node) {
+        _linkPositions.add(position, node);
+        Iterator it =
+            _linkPositions
+                .subList(position + 1, _linkPositions.size())
+                .iterator();
+        while (it.hasNext()) {
+            Object o = it.next();
+            if (o instanceof LinkPort) {
+                FigLinkPort figLinkPort = ((LinkPort) o).getFigLinkPort();
+                if (figLinkPort != null) {
+                    figLinkPort.setY(
+                        figLinkPort.getY()
+                            + SequenceDiagramLayout.LINK_DISTANCE);
+                }
+            }
+        }
+        calcBounds();
+    }
+
 }

@@ -24,15 +24,21 @@
 
 package org.argouml.uml.diagram.sequence.ui;
 
+import java.awt.Rectangle;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
+import org.argouml.uml.diagram.sequence.Node;
 import org.tigris.gef.base.LayerPerspectiveMutable;
 import org.tigris.gef.graph.GraphEvent;
 import org.tigris.gef.graph.MutableGraphModel;
 import org.tigris.gef.presentation.Fig;
+import org.tigris.gef.presentation.FigEdge;
 
 /**
  * The layer on which the figs in a sequence diagram are placed. Also responsible for
@@ -220,6 +226,39 @@ public class SequenceDiagramLayout extends LayerPerspectiveMutable {
                 ((FigObject) fig).updateActivations();
             }
         }
+    }
+    
+    /**
+     * Returns a list with all figLinks that intersect with the given y coordinate.
+     * @param y
+     * @return
+     */
+    public List getFigLinks(int y) {
+    	if (getContents().isEmpty() || getContentsEdgesOnly().isEmpty()) {
+    		return Collections.EMPTY_LIST;
+    	}
+    	List retList = new ArrayList();
+    	Iterator it = getContentsEdgesOnly().iterator();
+    	while (it.hasNext()) {		
+    		FigEdge fig = (FigEdge) it.next();
+    		if (fig instanceof FigLink && fig.hit(new Rectangle(fig.getX(), y, 8, 8))) {
+    			retList.add(fig);
+    		}
+    		
+    	}
+    	return retList;
+    	
+    }
+    
+    public void addNode(int position, Node node) {
+    	Iterator it = getContentsNoEdges().iterator();
+    	while (it.hasNext()) {
+    		Object o = it.next();
+    		if (o instanceof FigObject) {
+    			((FigObject)o).addNode(position, node);
+    			((FigObject)o).updateActivations();
+    		}
+    	}
     }
 
 }
