@@ -38,10 +38,13 @@
 package org.argouml.uml.ui.behavior.use_cases;
 
 import org.argouml.application.api.*;
+import org.argouml.model.uml.behavioralelements.usecases.UseCasesFactory;
 import org.argouml.model.uml.behavioralelements.usecases.UseCasesHelper;
+import org.argouml.swingext.LabelledLayout;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.ui.*;
 import org.argouml.uml.ui.foundation.core.*;
+import org.argouml.util.ConfigLoader;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -77,6 +80,20 @@ public class PropPanelActor extends PropPanelClassifier {
      */
 
     public PropPanelActor() {
+    	super("Actor", _actorIcon, ConfigLoader.getTabPropsOrientation());
+    	addField(Argo.localize("UMLMenu", "label.name"), nameField);
+    	addField(Argo.localize("UMLMenu", "label.stereotype"), new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-stereo"),stereotypeBox));
+    	addField(Argo.localize("UMLMenu", "label.namespace"),namespaceScroll);
+    	
+    	add(LabelledLayout.getSeperator());
+    	
+    	addField(Argo.localize("UMLMenu", "label.generalizations"), extendsScroll);
+    	addField(Argo.localize("UMLMenu", "label.specializations"), derivedScroll);
+    	
+    	add(LabelledLayout.getSeperator());
+    	
+    	addField(Argo.localize("UMLMenu", "label.associations"), connectScroll);
+    	/*
 
         // Invoke the Classifier constructor, but passing in our name and
         // representation and requesting 2 columns
@@ -131,6 +148,7 @@ public class PropPanelActor extends PropPanelClassifier {
 
         addCaption(Argo.localize("UMLMenu", "label.associations"),2,1,1);
         addField(connectScroll,2,1,1);
+        */
 
         // The toolbar buttons that go at the top.
 
@@ -165,18 +183,8 @@ public class PropPanelActor extends PropPanelClassifier {
 
         if(target instanceof MActor) {
             MNamespace ns = ((MActor) target).getNamespace();
-
-            if(ns != null) {
-                MActor actor = ns.getFactory().createActor();
-
-                ns.addOwnedElement(actor);
-                navigateTo(actor);
-            }
+            navigateTo( UseCasesFactory.getFactory().buildActor(ns));
         }
-        // 2002-07-15
-            // Jaap Branderhorst
-            // Force an update of the navigation pane to solve issue 323
-            ProjectBrowser.TheInstance.getNavPane().forceUpdate();
     }
 
     /**
