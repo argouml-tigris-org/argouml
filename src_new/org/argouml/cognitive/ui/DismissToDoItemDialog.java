@@ -105,7 +105,7 @@ public class DismissToDoItemDialog extends JDialog {
                 "button.not-of-concern-at-moment.mnemonic").charAt(0));
         _explainButton.setMnemonic(
             Argo.localize(BTNBUNDLE, 
-                "button.button.reason-given-below.mnemonic").charAt(0));
+                "button.reason-given-below.mnemonic").charAt(0));
 	setLocation(300, 200);
 	setSize(new Dimension(300, 250));
 	Container content = getContentPane();
