@@ -38,6 +38,8 @@ import ru.novosoft.uml.behavior.collaborations.MCollaboration;
 import ru.novosoft.uml.behavior.collaborations.MInteraction;
 import ru.novosoft.uml.behavior.collaborations.MMessage;
 import ru.novosoft.uml.behavior.common_behavior.MCallAction;
+import ru.novosoft.uml.foundation.core.MClassifier;
+import ru.novosoft.uml.foundation.core.MNamespace;
 
 /**
  * Factory to create UML classes for the UML
@@ -140,42 +142,63 @@ public class CollaborationsFactory extends AbstractUmlModelFactory {
      * @return MMessage
      */
     public MMessage buildMessage(MAssociationRole ar,String sequenceNumber){
-
-    MMessage msg = UmlFactory.getFactory().getCollaborations().createMessage();
-    msg.setName(sequenceNumber);
-    Collection ascEnds = ar.getConnections();
-
-    // next line poses a problem. N-array associations are not supported in this
-    // way
-    // TODO implement this for N-array associations.
-    if (ascEnds.size() != 2 ) return null;
-    Iterator iter = ascEnds.iterator();
-    MAssociationEndRole aer1 = (MAssociationEndRole)iter.next();
-    MAssociationEndRole aer2 = (MAssociationEndRole)iter.next();
+	
+	    MMessage msg = UmlFactory.getFactory().getCollaborations().createMessage();
+	    msg.setName(sequenceNumber);
+	    Collection ascEnds = ar.getConnections();
+	
+	    // next line poses a problem. N-array associations are not supported in this
+	    // way
+	    // TODO implement this for N-array associations.
+	    if (ascEnds.size() != 2 ) return null;
+	    Iterator iter = ascEnds.iterator();
+	    MAssociationEndRole aer1 = (MAssociationEndRole)iter.next();
+	    MAssociationEndRole aer2 = (MAssociationEndRole)iter.next();
+	    
+	    // by default the "first" Classifierrole is the Sender,
+	    // should be configurable in PropPanelMessage!
+	    MClassifierRole crSrc = (MClassifierRole)aer1.getType();
+	    MClassifierRole crDst = (MClassifierRole)aer2.getType();
+	    msg.setSender(crSrc);
+	    msg.setReceiver(crDst);
+	
+	    // TODO: correct the creation of the CallAction. This is probably the wrong 
+	    // element.
+	    MCallAction action = UmlFactory.getFactory().getCommonBehavior().createCallAction();
+	    action.setNamespace(ProjectBrowser.TheInstance.getProject().getModel());
+	    action.setName("action"+sequenceNumber);
+	    msg.setAction(action);
+	
+	    ar.addMessage(msg);
+	    MCollaboration collab = (MCollaboration) ar.getNamespace();
+	    // collab.addOwnedElement(msg);
+	    Collection interactions = collab.getInteractions();
+	    // at the moment there can be only one Interaction per Collaboration
+	    Iterator iter2 = interactions.iterator();
+	    ((MInteraction)iter2.next()).addMessage(msg);
+	    
+    	return msg;
+    }
     
-    // by default the "first" Classifierrole is the Sender,
-    // should be configurable in PropPanelMessage!
-    MClassifierRole crSrc = (MClassifierRole)aer1.getType();
-    MClassifierRole crDst = (MClassifierRole)aer2.getType();
-    msg.setSender(crSrc);
-    msg.setReceiver(crDst);
-
-    // TODO: correct the creation of the CallAction. This is probably the wrong 
-    // element.
-    MCallAction action = UmlFactory.getFactory().getCommonBehavior().createCallAction();
-    action.setNamespace(ProjectBrowser.TheInstance.getProject().getModel());
-    action.setName("action"+sequenceNumber);
-    msg.setAction(action);
-
-    ar.addMessage(msg);
-    MCollaboration collab = (MCollaboration) ar.getNamespace();
-    // collab.addOwnedElement(msg);
-    Collection interactions = collab.getInteractions();
-    // at the moment there can be only one Interaction per Collaboration
-    Iterator iter2 = interactions.iterator();
-    ((MInteraction)iter2.next()).addMessage(msg);
     
-    return msg;
+    /**
+     * Builds a default collaboration not attached to a classifier
+     */
+    public MCollaboration buildCollaboration(MNamespace namespace) {
+    	MCollaboration modelelement = createCollaboration();
+    	modelelement.setNamespace(namespace);
+    	modelelement.setName("newCollaboration");
+    	modelelement.setAbstract(false);
+    	return modelelement;
+    }
+    
+    /** 
+     * Builds a default collaborationa representing some classifier
+     */
+    public MCollaboration buildCollaboration(MClassifier classifier) {
+    	MCollaboration modelelement = buildCollaboration(classifier.getNamespace());
+    	modelelement.setRepresentedClassifier(classifier);
+    	return modelelement;
     }
 
 
