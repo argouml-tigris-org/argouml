@@ -67,40 +67,30 @@ public class AboutBox extends JFrame {
 //     _legal.setFont(ctrlFont);
 //     _contact.setFont(ctrlFont);
 
-    StringBuffer versionBuf = new StringBuffer(
-        "ArgoUML Version 0.9.1\n"+
-		     "Built on March 2nd of 2001\n"+
-		     "\n"+
-		     "Needed:\n"+
-		     "  GEF (Graph Editing Framework)\n"+
-		     "  GIF generation code from www.acme.com (comes with GEF)\n"+
+    StringBuffer versionBuf = new StringBuffer();
+    versionBuf.append("\n--- Generated version information: ---\n");
+    versionBuf.append(org.argouml.util.Tools.getVersionInfo());
+    versionBuf.append(
 		     "\n"+
 		     "Intended for use with:\n"+
 		     "  JDK 1.2 only plus\n"+
+		     "    GEF Graph Editing Framework (gef.tigris.org)\n"+
+		     "      including GIF generation code from www.acme.com\n"+
 		     "    A JAXP 1.0.1 compatible parser\n" +
-                     "       [Xerces-J 1.2.2 or later recommended, (xml.apache.org)]\n"+
+                     "       [Xerces-J 1.2.2 or later recommended, (xml.apache.org), it's just great!]\n"+
 		     "    Novosoft's NSUML 0.4.19 or higher (nsuml.sourceforge.net)\n"+
 		     "    Frank Finger's (TU-Dresden) OCL-Compiler (dresden-ocl.sourceforge.net)\n"+
 		     "    ANTLR (www.antlr.org) version 2.7\n"+
 		     "\n");
 
-        try {
-            String factoryClass = javax.xml.parsers.SAXParserFactory.newInstance().getClass().getName();
-            if(factoryClass.indexOf("org.apache.") >= 0) {
-                versionBuf.append("This product includes software developed by the\n");
-                versionBuf.append("Apache Software Foundation (http://www.apache.org/).\n");
-            }
-        }
-        catch(Exception e) {}
-
 	versionBuf.append("\n");
 	versionBuf.append("The ArgoUML developers would like to thank all those broad-minded people\n");
 	versionBuf.append("who spend their valuable time in contributing to the projects ArgoUML\n");
-	versionBuf.append("uses! We wouldn't be here without your work!\n");
+	versionBuf.append("depends on! We wouldn't be here without your work!\n");
 	versionBuf.append("\n");
 
     versionBuf.append("\n--- Generated version information: ---\n");
-    versionBuf.append(getVersionInfo(packageList));
+    versionBuf.append(org.argouml.util.Tools.getVersionInfo());
 
       String saxFactory = System.getProperty("javax.xml.parsers.SAXParserFactory");
       if(saxFactory != null) {
@@ -219,56 +209,6 @@ public class AboutBox extends JFrame {
     setSize(imgWidth + 20, imgHeight + 50);
     //pack();
   }
-
-  ////////////////////////////////////////////////////////////////
-  // static methods
-    static String packageList[] = new String[]{"org.argouml.application","ru.novosoft.uml","org.tigris.gef.base","org.xml.sax","java.lang"};
-    static String getVersionInfo(String packageList[])
-    {
-	String in = "";
-	StringBuffer sb = new StringBuffer();
-	for(int i=0;i<packageList.length;i++)
-	    {
-		sb.append("Package: ");
-		sb.append(packageList[i]);
-		sb.append('\n');
-		Package pkg = Package.getPackage(packageList[i]);
-		if(pkg == null)
-		    {
-			sb.append("-- No Versioning Information --\nMaybe you don't use the jar?\n\n");
-			continue;
-		    }
-		in = pkg.getImplementationTitle();
-		if(in!=null)
-		    {
-			sb.append("Component: ");
-			sb.append(in);
-		    }
-		in = pkg.getImplementationVendor();
-		if(in!=null)
-		    {
-			sb.append(", by: ");
-			sb.append(in);
-		    }
-		in = pkg.getImplementationVersion();
-		if(in!=null)
-		    {
-			sb.append(", version: ");
-			sb.append(in);
-			sb.append('\n');
-		    }
-		sb.append('\n');
-	    }
-
-	sb.append("Operation System is: ");
-	sb.append(System.getProperty("os.name", "unknown"));
-	sb.append('\n');
-	sb.append("Operation System Version: ");
-	sb.append(System.getProperty("os.version", "unknown"));
-	sb.append('\n');
-
-	return sb.toString();
-    }
 
   protected static ImageIcon loadIconResource(String imgName, String desc) {
     ImageIcon res = null;

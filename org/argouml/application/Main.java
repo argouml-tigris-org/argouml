@@ -125,21 +125,8 @@ public class Main {
   public static void main(String args[]) {
 
       // first, print out some version info for debuggers...
-      try{
-	  System.out.println(getVersionInfo(packageList));
-      } catch (Exception e) { System.out.println("Couldn't generate version info, please check AboutBox!");}
 
-      String saxFactory = System.getProperty("javax.xml.parsers.SAXParserFactory");
-      if(saxFactory != null) {
-        System.out.println("SAX Parser Factory " + saxFactory+ " specified using system property\n");
-      }
-      try {
-        System.out.println("SAX Parser Factory " +
-            javax.xml.parsers.SAXParserFactory.newInstance().getClass().getName() + " will be used.\n");
-      }
-      catch(Exception ex) {
-        System.out.println("Error determining SAX Parser Factory\n.");
-      }
+      System.out.println(org.argouml.util.Tools.getVersionInfo());
 
     boolean doSplash = true;
     boolean useEDEM = true;
