@@ -91,7 +91,7 @@ public class MenuResourceBundle_es extends ListResourceBundle {
         {"CollaborationDiagram", "Diagrama de colaboracion" },
         {"DeploymentDiagram", "Diagrama de Instalaci\u00f3n" },
         {"SequenceDiagram", "Diagrama de secuencia" },
-        {"Add Attribute", "A\u00f1adir atributo" },
+        {"button.add-attribute", "A\u00f1adir atributo" },
         {"Add Operation", "A\u00f1adir operaci\u00f3n" },
         {"Add Message", "A\u00f1adir mensaje" },
         {"Add Internal Transition", "A\u00f1adir transici\u00f3n interna" },
