@@ -76,7 +76,7 @@ class OuterClassifierContext extends Context
 		}
 		else {
 		    classifier = 
-			Class.forName(mPackage.getName() + "." +
+			Class.forName(getJavaName(mPackage) + "." +
 				      namePrefix + name);
 		}		    
 		if(classifier.isInterface()) {
@@ -125,7 +125,7 @@ class OuterClassifierContext extends Context
 		}
 		else {
 		    classifier = 
-			Class.forName(mPackage.getName() + "." +
+			Class.forName(getJavaName(mPackage) + "." +
 				      namePrefix + name);
 		}		    
 		if(classifier.isInterface()) {
