@@ -43,6 +43,10 @@ import org.tigris.gef.ocl.*;
 import org.argouml.kernel.*;
 import org.argouml.ui.*;
 
+import org.argouml.uml.*;
+import org.argouml.uml.diagram.ui.*;
+import ru.novosoft.uml.foundation.core.*;
+
 public class ProjectMemberDiagram extends ProjectMember {
 
   ////////////////////////////////////////////////////////////////
@@ -75,6 +79,16 @@ public class ProjectMemberDiagram extends ProjectMember {
     //  s = _project.getBaseName() + "_" + s;
     setName(s);
     setDiagram(d);
+    // Make sure that the namespace has an UUID, otherwise we will not
+    // be able to match them after a save-load cycle.
+    if (d instanceof UMLDiagram) {
+	UMLDiagram u = (UMLDiagram)d;
+	if (u.getNamespace() instanceof MModelElement) {
+	    MModelElement me = (MModelElement)u.getNamespace();
+	    if (me.getUUID() == null)
+		me.setUUID(UUIDManager.SINGLETON.getNewUUID());
+	}
+    }
   }
 
   ////////////////////////////////////////////////////////////////
