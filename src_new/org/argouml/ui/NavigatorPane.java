@@ -188,7 +188,6 @@ public class NavigatorPane
         _perspectives = new Vector();
         _navHistory = new Vector();
         _historyIndex = 0;
-        
     }
     
     ////////////////////////////////////////////////////////////////
@@ -270,6 +269,18 @@ public class NavigatorPane
      */
     public void forceUpdate() {
         _tree.forceUpdate();
+    }
+    
+    /**
+     * Countpart to forceUpdate() that only updates viewable
+     * rows, instead of rebuilding the whole tree; a vast improvement
+     * in performance.
+     *
+     * @see org.argouml.model.uml.UmlModelListener
+     */
+    public void forceUpdate(Object changed){
+        
+        _tree.forceUpdate(changed);
     }
     
     /**
