@@ -59,12 +59,19 @@ import org.tigris.gef.base.CmdPrint;
 import org.tigris.gef.base.Diagram;
 
 
+/**
+ * ArgoUML's global actions.
+ *
+ */
 public class Actions implements TargetListener {
     
     private static final Logger LOG = Logger.getLogger(Actions.class);
 
     private static final Actions INSTANCE = new Actions();
 
+    /**
+     * @return the singleton
+     */
     public static Actions getInstance() {
         return INSTANCE;
     }
@@ -76,40 +83,102 @@ public class Actions implements TargetListener {
     private static Vector allActions = new Vector(100);
 
 
+    /**
+     * The action to print.
+     */
     public static UMLAction Print = new ActionPrint();
+    /**
+     * The action to start page setup.
+     */
     public static UMLAction PageSetup = new ActionPageSetup();
 
+    /**
+     * The action to undo.
+     */
     public static UMLAction Undo = new ActionUndo();
+    
+    /**
+     * The action to Redo.
+     */
     public static UMLAction Redo = new ActionRedo();
 
     //public static UMLAction NavBack = new ActionNavBack();
     //public static UMLAction NavForw = new ActionNavForw();
     //public static UMLAction NavFavs = new ActionNavFavs();
-//    public static UMLAction NavConfig = new ActionNavConfig();
+    //public static UMLAction NavConfig = new ActionNavConfig();
 
+    /**
+     * The action to Find.
+     */
     public static UMLAction Find = new ActionFind();
+    
+    /**
+     * The action to Goto a Diagram.
+     */
     public static UMLAction GotoDiagram = new ActionGotoDiagram();
 
-    public static UMLAction NextEditTab = new ActionNextEditTab();
-    //  public static UMLAction NextDetailsTab = new ActionNextDetailsTab();
+    //public static UMLAction NextEditTab = new ActionNextEditTab();
+    //public static UMLAction NextDetailsTab = new ActionNextDetailsTab();
+    
     public static UMLAction ShowRapidButtons = new ActionShowRapidButtons();
 
     public static UMLAction CreateMultiple = new ActionCreateMultiple();
 
+    /**
+     * The action to toggle AutoCritique.
+     */
     public static UMLAction AutoCritique = new ActionAutoCritique();
+    
+    /**
+     * The action to Open the Decisions dialog.
+     */
     public static UMLAction OpenDecisions = new ActionOpenDecisions();
+    
+    /**
+     * The action to Open the Goals dialog.
+     */
     public static UMLAction OpenGoals = new ActionOpenGoals();
+    
+    /**
+     * The action to browse the critics.
+     */
     public static UMLAction OpenCritics = new ActionOpenCritics();
 
+    /**
+     * The action to toggle the Flat setting for the Todo item tree.
+     */
     public static UMLAction FlatToDo = new ActionFlatToDo();
 
+    /**
+     * The action to create a NewToDoItem.
+     */
     public static UMLAction NewToDoItem = new ActionNewToDoItem();
+    
+    /**
+     * The action to Resolve todo items.
+     */
     public static UMLAction Resolve = new ActionResolve();
+    
+    /**
+     * The action to send Email to an Expert.
+     */
     public static UMLAction EmailExpert = new ActionEmailExpert();
+    
     public static UMLAction MoreInfo = new ActionMoreInfo();
+    
+    /**
+     * The action to snooze the critics.
+     */
     public static UMLAction Snooze = new ActionSnooze();
 
+    /**
+     * The action to open the SystemInfo dialog box.
+     */
     public static UMLAction SystemInfo = new ActionSystemInfo();
+    
+    /**
+     * The action to open the About ArgoUML dialog box.
+     */
     public static UMLAction AboutArgoUML = new ActionAboutArgoUML();
 
     /**
@@ -136,11 +205,18 @@ public class Actions implements TargetListener {
 	}
     }
 
+    /**
+     * @param newAction the new action to be added
+     */
     public static void addAction(AbstractAction newAction) {
         LOG.debug("Adding action: " + newAction.getClass().getName());
 	allActions.addElement(newAction);
     }
 
+    /**
+     * @param action the given action
+     * @return truee if this is a global action
+     */
     public static boolean isGlobalAction(AbstractAction action) {
         return allActions.contains(action);
     }
@@ -376,19 +452,20 @@ class ActionNavForw extends UMLAction {
 //    }
 //} /* end class ActionNavConfig */
 
-class ActionNextEditTab extends UMLAction {
-
-    public ActionNextEditTab() { super("action.next-editing-tab", NO_ICON); }
-
-    /**
-     * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
-     */
-    public void actionPerformed(ActionEvent ae) {
-	ProjectBrowser pb = ProjectBrowser.getInstance();
-	MultiEditorPane mep = pb.getEditorPane();
-	mep.selectNextTab();
-    }
-} /* end class ActionNextEditTab */
+//class ActionNextEditTab extends UMLAction {
+//
+//    public ActionNextEditTab() { super("action.next-editing-tab", NO_ICON); }
+//
+//    /**
+//     * @see java.awt.event.ActionListener#actionPerformed(
+//     * java.awt.event.ActionEvent)
+//     */
+//    public void actionPerformed(ActionEvent ae) {
+//	ProjectBrowser pb = ProjectBrowser.getInstance();
+//	MultiEditorPane mep = pb.getEditorPane();
+//	mep.selectNextTab();
+//    }
+//} /* end class ActionNextEditTab */
 
 // class ActionAddToFavs extends UMLAction {
 //   public ActionAddToFavs() { super("Add To Favorites"); }
@@ -709,7 +786,7 @@ class ActionAboutArgoUML extends UMLAction {
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent ae) {
-	JFrame jframe = ((JFrame)(ProjectBrowser.getInstance()));
+	JFrame jframe = ((JFrame) (ProjectBrowser.getInstance()));
 	AboutBox box = new AboutBox(jframe, true);
 
 	box.setLocationRelativeTo(jframe);
