@@ -1,17 +1,18 @@
+/*
+ * BorderSplitPane.java
+ */
 package org.argouml.swingext;
 
 import javax.swing.JComponent;
 import java.awt.*;
 
 /**
- * Title:
- * Description:
- * Copyright:    Copyright (c) 2002
- * Company:
- * @author Bob Tarling
- * @version 1.0
+ * A component designed to display its child components in a similar fashion to a component 
+ * implementing the standard java class <code>BorderLayout</code> but with each child component
+ * seperated by a positional splitterbar.<br />
+ * The compass points have been expanded from those available in <code>BorderLayout</code> to
+ * the diaganal compass points, NORTHWEST, NORTHEAST, SOUTHEAST, SOUTHWEST.
  */
-
 public class BorderSplitPane extends JComponent {
     final public static String NORTH = "North";
     final public static String SOUTH = "South";

@@ -1,3 +1,6 @@
+/*
+ * SplitterLayout.java
+ */
 package org.argouml.swingext;
 
 import java.awt.*;
@@ -5,14 +8,9 @@ import java.util.*;
 import java.awt.event.*;
 
 /**
- * Title:
- * Description:
- * Copyright:    Copyright (c) 2002
- * Company:
- * @author Bob Tarling
- * @version 1.0
+ * A <code>ProportionalLayout</code> which recognises a contained <code>Splitter</code> and 
+ * automatically registers components either side to be resized.
  */
-
 public class SplitterLayout extends ProportionalLayout {
 
     SplitterMouseListener splitterMouseListener;

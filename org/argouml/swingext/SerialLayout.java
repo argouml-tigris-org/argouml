@@ -1,18 +1,19 @@
+/*
+ * SerialLayout.java
+ */
 package org.argouml.swingext;
 
 import java.awt.*;
 import java.util.*;
 
 /**
- * Title:
- * Description:
- * Copyright:    Copyright (c) 2002
- * Company:
- * @author
- * @version 1.0
+ * Lays out components in a single row or column starting from any side and aligning  components
+ * to eachother.<br />
+ * Components can be set to start draw from, LEFTTORIGHT, TOPTOBOTTOM, RIGHTTOLEFT or BOTTOMTOTOP.<br />
+ * Components will line up with eachother by edge or follow a common central line.<br />
+ * The gap to leave before the first component and the following gaps between each component can
+ * be set to be set.
  */
-
-
 public class SerialLayout extends LineLayout {
     public final static int VERTICAL = Orientation.VERTICAL;
     public final static int HORIZONTAL = Orientation.HORIZONTAL;
@@ -85,7 +86,7 @@ public class SerialLayout extends LineLayout {
                 if (comp != null && comp.isVisible()) {
                     comp.setSize(comp.getPreferredSize());
                     comp.setLocation(loc);
-                    loc = orientation.addLength(loc, comp);
+                    loc = orientation.addToPosition(loc, comp);
                 }
             }
         }
@@ -98,7 +99,7 @@ public class SerialLayout extends LineLayout {
                 Component comp = parent.getComponent(i);
                 if (comp != null && comp.isVisible()) {
                     if (loc == null) System.out.println("null orientation");
-                    loc = orientation.subtractLength(loc, comp);
+                    loc = orientation.subtractFromPosition(loc, comp);
                     comp.setSize(comp.getPreferredSize());
                     comp.setLocation(loc);
                 }

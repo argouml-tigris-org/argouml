@@ -1,17 +1,15 @@
+/*
+ * MultipleSplitPane.java
+ */
 package org.argouml.swingext;
 
 import javax.swing.*;
 import java.awt.*;
 
 /**
- * Title:
- * Description:
- * Copyright:    Copyright (c) 2002
- * Company:
- * @author Bob Tarling
- * @version 1.0
+ * Similar to the standard java class <code>JSplitPane</code> but allows the number of panes to 
+ * be set in the constructor.
  */
-
 public class MultipleSplitPane extends JComponent {
     final static public int HORIZONTAL_SPLIT = Orientation.HORIZONTAL;
     final static public int VERTICAL_SPLIT = Orientation.VERTICAL;
