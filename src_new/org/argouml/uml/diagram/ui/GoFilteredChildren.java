@@ -88,6 +88,15 @@ public class GoFilteredChildren implements TreeModelPrereqs {
     return filteredCount;
   }
   
+  private boolean hasChildren(Object parent) {
+    int unfilteredCount = _tm.getChildCount(parent);
+    for (int i = 0; i < unfilteredCount; ++i) {
+      Object kid = _tm.getChild(parent, i);
+      if (_pred.predicate(kid)) return true;
+    }
+    return false;
+  }
+  
   public int getIndexOfChild(Object parent, Object child) {
     int unfilteredCount = _tm.getChildCount(parent);
     int filteredCount = 0;
@@ -109,7 +118,7 @@ public class GoFilteredChildren implements TreeModelPrereqs {
   public Vector getProvidedTypes() { return _tm.getProvidedTypes(); }
 
   public boolean isLeaf(Object node) {
-    return (getChildCount(node) == 0);
+    return !hasChildren(node);
   }
 
 }

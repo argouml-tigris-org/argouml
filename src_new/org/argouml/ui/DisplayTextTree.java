@@ -72,6 +72,9 @@ implements MElementListener, VetoableChangeListener {
     if (value instanceof ToDoItem) {
       return ((ToDoItem)value).getHeadline();
     }
+    if (value instanceof ToDoList) {
+	return "ToDoList";
+    }
     if (value instanceof MTaggedValue) {
         String tagName = ((MTaggedValue)value).getTag();
         if (tagName == null || tagName.equals("")) tagName = "(anon)";

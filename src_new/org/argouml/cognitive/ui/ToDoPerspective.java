@@ -40,9 +40,6 @@ implements Serializable {
 
 
   static {
-    // this are meant for pane-1 of NavigatorPane, they all have
-    // Project as their only prerequiste.  Thesee trees tend to be 3
-    // to 5 levels deep and sometimes have recursion.
     ToDoPerspective priority = new ToDoByPriority();
     ToDoPerspective decision = new ToDoByDecision();
     ToDoPerspective goal = new ToDoByGoal();

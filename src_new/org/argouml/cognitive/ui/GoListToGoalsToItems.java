@@ -47,16 +47,15 @@ public class GoListToGoalsToItems implements TreeModelPrereqs {
       return getGoals().elementAt(index);
     }
     if (parent instanceof Goal) {
-      // instead of makning a new vector, decrement index, return when
-      // found and index == 0
-      Vector candidates = new Vector();
       Goal g = (Goal) parent;
       java.util.Enumeration itemEnum = Designer.TheDesigner.getToDoList().elements();
       while (itemEnum.hasMoreElements()) {
 	ToDoItem item = (ToDoItem) itemEnum.nextElement();
-	if (item.getPoster().supports(g)) candidates.addElement(item);
+	if (item.getPoster().supports(g)) {
+	    if (index == 0) return item;
+	    index--;
+	}
       }
-      return candidates.elementAt(index);
     }
     System.out.println("getChild shouldnt get here GoListToGoalsToItems");
     return null;
@@ -67,16 +66,14 @@ public class GoListToGoalsToItems implements TreeModelPrereqs {
       return getGoals().size();
     }
     if (parent instanceof Goal) {
-      // instead of makning a new vector, decrement index, return when
-      // found and index == 0
-      Vector candidates = new Vector();
       Goal g = (Goal) parent;
       java.util.Enumeration itemEnum = Designer.TheDesigner.getToDoList().elements();
+      int count = 0;
       while (itemEnum.hasMoreElements()) {
 	ToDoItem item = (ToDoItem) itemEnum.nextElement();
-	if (item.getPoster().supports(g)) candidates.addElement(item);
+	if (item.getPoster().supports(g)) count++;
       }
-      return candidates.size();
+      return count;
     }
     return 0;
   }
