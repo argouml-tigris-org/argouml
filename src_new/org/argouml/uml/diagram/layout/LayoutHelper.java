@@ -47,7 +47,7 @@ public class LayoutHelper {
     static public Point 
         getPointOnPerimeter(Rectangle rect, int direction) 
     {
-        return getPointOnPerimeter(rect, direction);
+        return getPointOnPerimeter(rect, direction, 0, 0);
     }
 
     static public Point 
