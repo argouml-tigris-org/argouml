@@ -22,42 +22,61 @@
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 // $header$
-package org.argouml.uml.ui.behavior.collaborations;
+package org.argouml.uml.ui.behavior.use_cases;
 
-import org.argouml.uml.ui.UMLModelElementListModel2;
+import org.argouml.model.uml.modelmanagement.ModelManagementHelper;
+import org.argouml.uml.ui.UMLComboBoxModel2;
 import org.argouml.uml.ui.UMLUserInterfaceContainer;
-
 import ru.novosoft.uml.MElementEvent;
-import ru.novosoft.uml.behavior.collaborations.MMessage;
+import ru.novosoft.uml.behavior.use_cases.MExtend;
+import ru.novosoft.uml.behavior.use_cases.MUseCase;
 import ru.novosoft.uml.foundation.core.MModelElement;
+import ru.novosoft.uml.foundation.core.MNamespace;
 
 /**
- * @since Oct 3, 2002
+ * @since Oct 6, 2002
  * @author jaap.branderhorst@xs4all.nl
  */
-public class UMLMessageSenderListModel extends UMLModelElementListModel2 {
+public class UMLExtendExtensionComboBoxModel extends UMLComboBoxModel2 {
 
     /**
-     * Constructor for UMLMessageSenderListModel.
+     * Constructor for UMLExtendExtensionComboBoxModel.
      * @param container
      */
-    public UMLMessageSenderListModel(UMLUserInterfaceContainer container) {
+    public UMLExtendExtensionComboBoxModel(UMLUserInterfaceContainer container) {
         super(container);
     }
 
     /**
-     * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
+     * @see org.argouml.uml.ui.UMLComboBoxModel2#isValidRoleAdded(ru.novosoft.uml.MElementEvent)
      */
-    protected void buildModelList() {
-        removeAllElements();
-        addElement(((MMessage)getContainer().getTarget()).getSender());
+    protected boolean isValidRoleAdded(MElementEvent e) {
+        MModelElement m = (MModelElement)getChangedElement(e);
+        MExtend extend = (MExtend)getTarget();
+        return (m instanceof MUseCase && m != extend.getBase()); 
     }
 
     /**
-     * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidRoleAdded(ru.novosoft.uml.MElementEvent)
+     * @see org.argouml.uml.ui.UMLComboBoxModel2#isValidPropertySet(ru.novosoft.uml.MElementEvent)
      */
-    protected boolean isValidRoleAdded(MElementEvent e) {
-        return false;
+    protected boolean isValidPropertySet(MElementEvent e) {
+         return e.getSource() == getTarget() && e.getName().equals("extension");
+    }
+
+    /**
+     * @see org.argouml.uml.ui.UMLComboBoxModel2#buildModelList()
+     */
+    protected void buildModelList() {
+        MExtend extend = (MExtend)getTarget();
+        if (extend == null) return;
+        MNamespace ns = extend.getNamespace();
+        addAll(ModelManagementHelper.getHelper().getAllModelElementsOfKind(ns, MUseCase.class));
+        removeElement(extend.getBase());
+        if (extend.getExtension() != null) {
+            setSelectedItem(extend.getExtension());
+        } else {
+            setSelectedItem("");
+        }   
     }
 
 }

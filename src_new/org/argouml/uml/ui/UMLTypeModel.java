@@ -58,12 +58,7 @@ public class UMLTypeModel extends UMLComboBoxModel2 {
      */
     public UMLTypeModel(
         UMLUserInterfaceContainer container) {
-        super(container, "type");
-    }
-    
-    public UMLTypeModel(
-        UMLUserInterfaceContainer container, String propertySetName) {
-        super(container, propertySetName);
+        super(container);
     }
 
     /**
@@ -86,27 +81,9 @@ public class UMLTypeModel extends UMLComboBoxModel2 {
         if (target instanceof MParameter) {
             setSelectedItem(((MParameter)target).getType());
         } else
-        if (target instanceof MClassifierRole) {
-            it = ((MClassifierRole)target).getBases().iterator();
-            if (it.hasNext()) {
-                setSelectedItem(it.next());
-            } else
-                setSelectedItem(null);
-        }
         if (target instanceof MAssociationEnd) {
             setSelectedItem(((MAssociationEnd)target).getType());
         }
-    }
-
-    /**
-     * @see org.argouml.uml.ui.UMLComboBoxModel2#isValid(MModelElement)
-     */
-    protected boolean isValid(MElementEvent e) {
-        MModelElement m = (MModelElement)e.getAddedValue();
-        if (m == null) {
-           m = (MModelElement)e.getRemovedValue();
-        };
-        return m instanceof MClassifier;
     }
 
     /**
@@ -137,6 +114,33 @@ public class UMLTypeModel extends UMLComboBoxModel2 {
             move(elem.getNamespace());
         } else
             elem.setNamespace(p.getModel());
+    }
+
+    /**
+     * @see org.argouml.uml.ui.UMLComboBoxModel2#isValidPropertySet(ru.novosoft.uml.MElementEvent)
+     */
+    protected boolean isValidPropertySet(MElementEvent e) {
+        MClassifier type = null;
+        if (getTarget() instanceof MParameter)
+            type = ((MParameter)getTarget()).getType();
+        else
+        if (getTarget() instanceof MAttribute)
+            type = ((MAttribute)getTarget()).getType();
+        else
+        if (getTarget() instanceof MAssociationEnd)
+            type = ((MAssociationEnd)getTarget()).getType();
+        return ((e.getSource() instanceof MAssociationEnd && e.getName().equals("type")) ||
+            (e.getSource() instanceof MParameter && e.getName().equals("type")) ||
+            (e.getSource() instanceof MAttribute && e.getName().equals("type"))) ||
+            (type == e.getSource());
+    }
+
+    /**
+     * @see org.argouml.uml.ui.UMLComboBoxModel2#isValidRoleAdded(ru.novosoft.uml.MElementEvent)
+     */
+    protected boolean isValidRoleAdded(MElementEvent e) {
+        MModelElement m = (MModelElement)getChangedElement(e);
+        return m instanceof MClassifier;
     }
 
 }

@@ -77,9 +77,28 @@ public abstract class UMLModelElementListModel2 extends DefaultListModel impleme
      * @see ru.novosoft.uml.MElementListener#propertySet(ru.novosoft.uml.MElementEvent)
      */
     public void propertySet(MElementEvent e) {
+        if (isValidPropertySet(e)) {
+        Object o = getChangedElement(e);
+        if (o instanceof Collection) {
+            Iterator it = ((Collection)o).iterator();
+            while(it.hasNext()) {
+                int index = indexOf(it.next());
+                if (index >= 0) {
+                   fireContentsChanged(this, index, index);
+                }
+            }
+        } else {
+            int index = indexOf(o);
+            if (index >= 0) {
+               fireContentsChanged(this, index, index); 
+            }
+        }
+        /*
         int index = indexOf(e.getSource());
         if ( index >= 0 ) {
             fireContentsChanged(this, index, index);
+        }
+        */
         }
     }
 
@@ -100,7 +119,7 @@ public abstract class UMLModelElementListModel2 extends DefaultListModel impleme
      * @see ru.novosoft.uml.MElementListener#roleAdded(ru.novosoft.uml.MElementEvent)
      */
     public void roleAdded(MElementEvent e) {
-        if (isValid((MModelElement)e.getAddedValue())) {
+        if (isValidRoleAdded(e)) {
             addElement(e.getAddedValue());
         }
     }
@@ -109,7 +128,7 @@ public abstract class UMLModelElementListModel2 extends DefaultListModel impleme
      * @see ru.novosoft.uml.MElementListener#roleRemoved(ru.novosoft.uml.MElementEvent)
      */
     public void roleRemoved(MElementEvent e) {
-        if (isValid((MModelElement)e.getRemovedValue())) {
+        if (isValidRoleRemoved(e)) {
             removeElement(e.getRemovedValue());
         }
     }
@@ -135,13 +154,6 @@ public abstract class UMLModelElementListModel2 extends DefaultListModel impleme
      * target of the proppanel is changed. 
      */
     protected abstract void buildModelList();
-    
-    /**
-     * Returns true if the given modelelement m may be added to the model.
-     * @param elem the modelelement to be checked
-     * @return boolean
-     */
-    protected abstract boolean isValid(MModelElement elem);
     
     /**
      * Utility method to set the elements of this list to the contents of the
@@ -175,5 +187,55 @@ public abstract class UMLModelElementListModel2 extends DefaultListModel impleme
         }
         return null;
     }
+    
+    /**
+     * Utility method to get the changed element from some event e
+     * @param e
+     * @return Object
+     */
+    protected Object getChangedElement(MElementEvent e) {
+        if (e.getAddedValue() != null) return e.getAddedValue();
+        if (e.getRemovedValue() != null) return e.getRemovedValue();
+        if (e.getNewValue() != null) return e.getNewValue();
+        return null;
+    }
+    
+    /**
+     * Returns true if roleAdded(MElementEvent e) should be executed. Developers
+     * should override this method and not directly override roleAdded.  
+     * @param m
+     * @return boolean
+     */
+    protected abstract boolean isValidRoleAdded(MElementEvent e);
+    
+    
+    /**
+     * Returns true if roleRemoved(MElementEvent e) should be executed. Standard
+     * behaviour is that it is allways valid to remove an element that's in the
+     * list.
+     * @param m
+     * @return boolean
+     */
+    protected boolean isValidRoleRemoved(MElementEvent e) {
+        return indexOf(getChangedElement(e)) >= 0;
+    }
+    
+    /**
+     * Returns true if propertySet(MElementEvent e) should be executed. Developers
+     * should override this method and not directly override propertySet in order
+     * to let this listmodel and the component(s) representing this model 
+     * function properly.  
+     * @param m
+     * @return boolean
+     */
+    protected boolean isValidPropertySet(MElementEvent e) {
+        Object o = getChangedElement(e);
+        if (contains(o)) return true;
+        o = e.getSource();
+        if (contains(o)) return true;
+        return false;
+    } 
+            
+
 
 }

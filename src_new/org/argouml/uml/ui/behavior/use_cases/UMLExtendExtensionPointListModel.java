@@ -22,26 +22,28 @@
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 // $header$
-package org.argouml.uml.ui.behavior.collaborations;
+package org.argouml.uml.ui.behavior.use_cases;
 
 import org.argouml.uml.ui.UMLModelElementListModel2;
 import org.argouml.uml.ui.UMLUserInterfaceContainer;
 
 import ru.novosoft.uml.MElementEvent;
-import ru.novosoft.uml.behavior.collaborations.MMessage;
+import ru.novosoft.uml.behavior.use_cases.MExtend;
+import ru.novosoft.uml.behavior.use_cases.MExtensionPoint;
 import ru.novosoft.uml.foundation.core.MModelElement;
 
 /**
- * @since Oct 3, 2002
+ * @since Oct 6, 2002
  * @author jaap.branderhorst@xs4all.nl
  */
-public class UMLMessageSenderListModel extends UMLModelElementListModel2 {
+public class UMLExtendExtensionPointListModel
+    extends UMLModelElementListModel2 {
 
     /**
-     * Constructor for UMLMessageSenderListModel.
+     * Constructor for UMLExtendExtensionPointListModel.
      * @param container
      */
-    public UMLMessageSenderListModel(UMLUserInterfaceContainer container) {
+    public UMLExtendExtensionPointListModel(UMLUserInterfaceContainer container) {
         super(container);
     }
 
@@ -49,15 +51,16 @@ public class UMLMessageSenderListModel extends UMLModelElementListModel2 {
      * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
      */
     protected void buildModelList() {
-        removeAllElements();
-        addElement(((MMessage)getContainer().getTarget()).getSender());
     }
+
+   
 
     /**
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidRoleAdded(ru.novosoft.uml.MElementEvent)
      */
     protected boolean isValidRoleAdded(MElementEvent e) {
-        return false;
+        Object o = getChangedElement(e);
+        return o instanceof MExtensionPoint && ((MExtend)getTarget()).getExtensionPoints().contains(o);
     }
 
 }

@@ -356,7 +356,7 @@ public class CollaborationsHelper {
      * @param bases
      */
     public void setBases(MClassifierRole role, Collection bases) {
-        if (role == null || bases == null) throw new IllegalArgumentException("In addBase: either the role or the collection bases is null");
+        if (role == null || bases == null) throw new IllegalArgumentException("In setBases: either the role or the collection bases is null");
         Iterator it = role.getBases().iterator();
         while(it.hasNext()) {
             role.removeBase((MClassifier)it.next());
@@ -474,6 +474,36 @@ public class CollaborationsHelper {
         }                 
         return ret;   
     } 
+    
+    /**
+     * Sets the base of some associationrole, including the attached assocationendroles.
+     * Checks for wellformedness first.
+     * @param role
+     * @param base
+     */
+    public void setBase(MAssociationRole role, MAssociation base) {
+        if (role == null) throw  new IllegalArgumentException("role is null");
+        if (base != null && !getAllPossibleBases(role).contains(base)) { 
+            throw new IllegalArgumentException("base is not allowed for this role");
+        }
+        role.setBase(base);
+        MClassifierRole sender = (MClassifierRole)CoreHelper.getHelper().getSource(role);
+        MClassifierRole receiver = (MClassifierRole)CoreHelper.getHelper().getDestination(role);
+        Collection senderBases = sender.getBases();
+        Collection receiverBases = receiver.getBases();
+        Collection baseConnections = base.getConnections();
+        Iterator it = baseConnections.iterator();
+        while (it.hasNext()) {
+            MAssociationEnd end = (MAssociationEnd)it.next();
+            if (senderBases.contains(end.getType())) {
+                ((MAssociationEndRole)CoreHelper.getHelper().getAssociationEnd(sender, role)).setBase(end);
+            } else
+            if (receiverBases.contains(end.getType())) {
+                ((MAssociationEndRole)CoreHelper.getHelper().getAssociationEnd(receiver, role)).setBase(end);
+            }
+        }
+    }
+            
 		
 }
 

@@ -44,7 +44,7 @@ public class UMLSignalComboBoxModel extends UMLComboBoxModel2 {
      * @param container
      */
     public UMLSignalComboBoxModel(UMLUserInterfaceContainer container) {
-        super(container, "signal");
+        super(container);
     }
 
     /**
@@ -67,6 +67,21 @@ public class UMLSignalComboBoxModel extends UMLComboBoxModel2 {
             setSelectedItem(rec.getSignal());      
         }
          
+    }
+
+    /**
+     * @see org.argouml.uml.ui.UMLComboBoxModel2#isValidPropertySet(ru.novosoft.uml.MElementEvent)
+     */
+    protected boolean isValidPropertySet(MElementEvent e) {
+        return e.getSource() == getTarget() && e.getName().equals("signal");
+    }
+
+    /**
+     * @see org.argouml.uml.ui.UMLComboBoxModel2#isValidRoleAdded(ru.novosoft.uml.MElementEvent)
+     */
+    protected boolean isValidRoleAdded(MElementEvent e) {
+        MModelElement m = (MModelElement)getChangedElement(e);
+        return m instanceof MSignal;
     }
 
 }

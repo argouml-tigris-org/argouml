@@ -154,28 +154,6 @@ public class CollaborationsFactory extends AbstractUmlModelFactory {
     }
     
     /**
-     * Builds an associationrole with some association as base and with some collaboration as owner
-     */
-    public MAssociationRole buildAssociationRole(MAssociation base, MCollaboration owner) {
-    	MAssociationRole role = createAssociationRole();
-    	Iterator it = base.getConnections().iterator();
-    	while (it.hasNext()) {
-    		role.addConnection(buildAssociationEndRole((MAssociationEnd)it.next()));
-    	}
-    	role.setBase(base);
-    	return role;
-    }
-    
-    /**
-     * Builds an associationendrole based on some associationend
-     */
-    public MAssociationEndRole buildAssociationEndRole(MAssociationEnd base) {
-    	MAssociationEndRole end = createAssociationEndRole();
-    	end.setBase(base);
-    	return end;
-    }
-    
-    /**
      * Builds an associationendrole based on some classifierrole
      */
     public MAssociationEndRole buildAssociationEndRole(MClassifierRole type) {

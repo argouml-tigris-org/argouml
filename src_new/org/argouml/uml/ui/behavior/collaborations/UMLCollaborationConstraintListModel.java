@@ -27,6 +27,7 @@ package org.argouml.uml.ui.behavior.collaborations;
 import org.argouml.uml.ui.UMLModelElementListModel2;
 import org.argouml.uml.ui.UMLUserInterfaceContainer;
 
+import ru.novosoft.uml.MElementEvent;
 import ru.novosoft.uml.behavior.collaborations.MCollaboration;
 import ru.novosoft.uml.foundation.core.MModelElement;
 
@@ -53,10 +54,11 @@ public class UMLCollaborationConstraintListModel
     }
 
     /**
-     * @see org.argouml.uml.ui.UMLModelElementListModel2#isValid(ru.novosoft.uml.foundation.core.MModelElement)
+     * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidRoleAdded(ru.novosoft.uml.MElementEvent)
      */
-    protected boolean isValid(MModelElement elem) {
-        return (elem.getCollaborations1().contains(getTarget())) || contains(elem);
+    protected boolean isValidRoleAdded(MElementEvent e) {
+        MModelElement elem = (MModelElement)getChangedElement(e);
+        return elem.getCollaborations1().contains(getTarget());
     }
 
 }

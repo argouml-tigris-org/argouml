@@ -22,47 +22,58 @@
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 // $header$
-package org.argouml.uml.ui.behavior.collaborations;
+package org.argouml.uml.ui.behavior.use_cases;
 
-import org.argouml.uml.ui.UMLModelElementListModel2;
-import org.argouml.uml.ui.UMLUserInterfaceContainer;
+import java.awt.event.ActionEvent;
 
-import ru.novosoft.uml.MElementEvent;
-import ru.novosoft.uml.behavior.collaborations.MAssociationEndRole;
-import ru.novosoft.uml.behavior.collaborations.MAssociationRole;
-import ru.novosoft.uml.foundation.core.MAssociationEnd;
-import ru.novosoft.uml.foundation.core.MModelElement;
+import org.argouml.application.api.Argo;
+import org.argouml.model.uml.behavioralelements.usecases.UseCasesHelper;
+import org.argouml.uml.ui.UMLChangeAction;
+import org.argouml.uml.ui.UMLComboBox2;
+
+import ru.novosoft.uml.behavior.use_cases.MExtend;
+import ru.novosoft.uml.behavior.use_cases.MUseCase;
 
 /**
+ * Sets the base of an extend. Updates both the model (NSUML) as the diagrams.
  * @since Oct 5, 2002
  * @author jaap.branderhorst@xs4all.nl
  */
-public class UMLAssociationEndRoleBaseListModel
-    extends UMLModelElementListModel2 {
+public class ActionSetExtendBase extends UMLChangeAction {
+
+
+    public static final ActionSetExtendBase SINGLETON = new ActionSetExtendBase();
 
     /**
-     * Constructor for UMLAssociationEndRoleBaseListModel.
-     * @param container
+     * Constructor for ActionSetExtendBase.
+     * @param s
      */
-    public UMLAssociationEndRoleBaseListModel(UMLUserInterfaceContainer container) {
-        super(container);
+    protected ActionSetExtendBase() {
+        super(Argo.localize("CoreMenu", "Set"), true, NO_ICON);
     }
 
+   
     /**
-     * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
+     * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
-    protected void buildModelList() {
-        removeAllElements();
-        addElement(((MAssociationEndRole)getTarget()).getBase());
-    }
-
-    /**
-     * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidRoleAdded(ru.novosoft.uml.MElementEvent)
-     */
-    protected boolean isValidRoleAdded(MElementEvent e) {
-        MModelElement m = (MModelElement)getChangedElement(e);
-        return m instanceof MAssociationEnd && 
-            ((MAssociationRole)((MAssociationEndRole)getTarget()).getAssociation()).getBase().getConnections().contains(m);
+    public void actionPerformed(ActionEvent e) {
+        super.actionPerformed(e);
+        Object source = e.getSource();
+        MUseCase newBase = null;
+        MExtend extend = null;
+        if (source instanceof UMLComboBox2) {
+            UMLComboBox2 combo = (UMLComboBox2)source;
+            newBase = (MUseCase)combo.getSelectedItem();
+            if (combo.getTarget() instanceof MExtend) {
+                extend = (MExtend)combo.getTarget();
+            }
+        }
+        MUseCase oldBase = extend.getBase();
+        // oldbase can never be null
+        if (oldBase == null || newBase == null) throw new IllegalStateException("Base of extend is null!");
+        if (oldBase != newBase) {
+            UseCasesHelper.getHelper().setBase(extend, newBase);
+        }
     }
 
 }

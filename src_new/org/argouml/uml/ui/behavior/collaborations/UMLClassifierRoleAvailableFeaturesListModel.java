@@ -57,27 +57,12 @@ public class UMLClassifierRoleAvailableFeaturesListModel
     protected void buildModelList() {
         setAllElements(CollaborationsHelper.getHelper().allAvailableFeatures((MClassifierRole)getTarget()));
     }
-
-    /**
-     * @see org.argouml.uml.ui.UMLModelElementListModel2#isValid(ru.novosoft.uml.foundation.core.MModelElement)
-     */
-    protected boolean isValid(MModelElement elem) {
-        if (elem instanceof MClassifier) {
-            Collection availableFeatures = CollaborationsHelper.getHelper().allAvailableFeatures((MClassifierRole)getTarget());
-            Iterator it = ((MClassifier)elem).getFeatures().iterator();
-            while (it.hasNext()) {
-                MFeature feature = (MFeature)it.next();
-                if (availableFeatures.contains(feature) || contains(feature)) return true;
-            }
-        }
-        return false;
-    }
     
     /**
      * @see ru.novosoft.uml.MElementListener#roleAdded(ru.novosoft.uml.MElementEvent)
      */
     public void roleAdded(MElementEvent e) {
-        if (isValid((MModelElement)e.getAddedValue())) {
+        if (isValidRoleAdded(e)) {
             MClassifier clazz = (MClassifier)e.getAddedValue();
             Iterator it = clazz.getFeatures().iterator();
             while (it.hasNext()) {
@@ -90,13 +75,29 @@ public class UMLClassifierRoleAvailableFeaturesListModel
      * @see ru.novosoft.uml.MElementListener#roleRemoved(ru.novosoft.uml.MElementEvent)
      */
     public void roleRemoved(MElementEvent e) {
-        if (isValid((MModelElement)e.getRemovedValue())) {
+        if (isValidRoleRemoved(e)) {
             MClassifier clazz = (MClassifier)e.getRemovedValue();
             Iterator it = clazz.getFeatures().iterator();
             while (it.hasNext()) {
                 removeElement(it.next());
             }
         }
+    }
+
+    /**
+     * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidRoleAdded(ru.novosoft.uml.MElementEvent)
+     */
+    protected boolean isValidRoleAdded(MElementEvent e) {
+        Object elem = getChangedElement(e);
+        if (elem instanceof MClassifier) {
+            Collection availableFeatures = CollaborationsHelper.getHelper().allAvailableFeatures((MClassifierRole)getTarget());
+            Iterator it = ((MClassifier)elem).getFeatures().iterator();
+            while (it.hasNext()) {
+                MFeature feature = (MFeature)it.next();
+                if (availableFeatures.contains(feature)) return true;
+            }
+        }
+        return false;
     }
 
 }

@@ -225,53 +225,6 @@ public class FigAssociation extends FigEdgeModelElement {
     // needs-more-work: parse multiplicities
   }
   
-  private boolean updateClassifiers() {
-    MAssociation as = (MAssociation) getOwner();
-    if (as == null || getLayer() == null) throw new IllegalStateException("Association or layer null");
-    
-    MClassifier newSource = (MClassifier)CoreHelper.getHelper().getSource(as);
-    MClassifier newDest = (MClassifier)CoreHelper.getHelper().getDestination(as);
-    
-    Fig currentSourceFig = getSourceFigNode();
-    Fig currentDestFig = getDestFigNode();
-    MClassifier currentSource = null;
-    MClassifier currentDestination = null;
-    if (currentSourceFig != null && currentDestFig != null) {
-        
-        currentSource = (MClassifier)currentSourceFig.getOwner();
-        currentDestination = (MClassifier)currentDestFig.getOwner();
-    }
-    if (newSource != currentSource || newDest != currentDestination) {
-        Fig newSourceFig = getLayer().presentationFor(newSource);
-        Fig newDestFig = getLayer().presentationFor(newDest);
-        if (newSourceFig == null || newDestFig == null) {
-            delete();
-            return false;
-        }
-        if (newSourceFig != currentSourceFig || currentSourceFig == null) {
-            setSourceFigNode((FigNode)newSourceFig);
-            setSourcePortFig(newSourceFig);
-            
-        }
-        if (newDestFig != currentDestFig || currentDestFig == null) {
-            setDestFigNode((FigNode)newDestFig);
-            setDestPortFig(newDestFig);            
-        }
-        if (newDestFig != null) {
-            ((FigNode)newSourceFig).updateEdges();
-        }
-        if (newSourceFig != null) {
-            ((FigNode)newDestFig).updateEdges();
-        }
-        calcBounds();
-        // Globals.curEditor().remove(this);
-        // Globals.curEditor().add(this);
-        // Globals.curEditor().
-        // Globals.curEditor().getSelectionManager().select(this);
-    }
-    return true;
-  }
-  
   private void updateEnd(FigText multiToUpdate, FigText roleToUpdate, FigText orderingToUpdate, MAssociationEnd end) {
     MMultiplicity multi = end.getMultiplicity();
     String name = end.getName();
@@ -290,8 +243,6 @@ public class FigAssociation extends FigEdgeModelElement {
     super.modelChanged();
     MAssociation as = (MAssociation) getOwner();
     if (as == null || getLayer() == null) return;
-    
-    if (!updateClassifiers()) return;
     
     MAssociationEnd ae0 =
         (MAssociationEnd)((Object[])(as.getConnections()).toArray())[0];
@@ -312,117 +263,6 @@ public class FigAssociation extends FigEdgeModelElement {
     _destGroup.calcBounds();
     _middleGroup.calcBounds();
   }
-    
-
-/*
-  // String asNameStr = Notation.generate(this, as.getName());
-    MAssociationEnd ae0 =
-        (MAssociationEnd)((Object[])(as.getConnections()).toArray())[0];
-    MAssociationEnd ae1 =
-        (MAssociationEnd)((Object[])(as.getConnections()).toArray())[1];
-    
-    FigNode oldDest = (FigNode)getDestFigNode();
-    FigNode oldSource = (FigNode)getSourceFigNode();
-    
-    FigNode dest = (FigNode)getLayer().presentationFor(ae1.getType());
-    FigNode src = (FigNode)getLayer().presentationFor(ae0.getType());
-    boolean setFigs = true;
-    if (oldDest != null && oldDest.equals(dest)) {
-        if (oldSource != null && oldSource.equals(src)) {
-            setFigs = false;
-        } 
-    } else {
-        if (oldDest != null && oldDest.equals(src)) {
-            if (oldSource != null && oldSource.equals(dest)) {
-                setFigs = false;
-            } else {
-                FigNode tempSrc = src;
-                src = dest;
-                dest = tempSrc;
-            }
-        }
-    }
-    
-    if (setFigs) {
-        if (dest != null) {
-            setDestFigNode((FigNode)getLayer().presentationFor(ae1.getType()));
-            setDestPortFig(getLayer().presentationFor(ae1.getType()));
-        }
-        if (src != null) {
-            setSourceFigNode((FigNode)getLayer().presentationFor(ae0.getType())); 
-            setSourcePortFig(getLayer().presentationFor(ae0.getType()));  
-        }
-        if (src != null && dest != null) {
-            computeRoute();
-            calcBounds();
-            ArgoDiagram ad = ProjectBrowser.TheInstance.getActiveDiagram();
-            Object obj = ProjectBrowser.TheInstance.getTarget();
-            Iterator editors = getLayer().getEditors().iterator();
-            while (editors.hasNext()) {
-                ((Editor)editors.next()).damaged(this); 
-            }
-            ProjectBrowser.TheInstance.setTarget(obj);
-            ProjectBrowser.TheInstance.setActiveDiagram(ad);
-        }
-    }
-    MMultiplicity mult0 = ae0.getMultiplicity();
-    MMultiplicity mult1 = ae1.getMultiplicity();
-    _srcMult.setText(Notation.generate(this, mult0));
-    _destMult.setText(Notation.generate(this, mult1));
-
-    _srcRole.setText(Notation.generate(this, ae0.getName()));
-    _destRole.setText(Notation.generate(this, ae1.getName()));
-
-    // now add the stereotypes on associatenends if desired
-    // need more work!
-
-    // this should be configurable
-    if (true == true) {
-
-        if (ae0.getStereotype() != null)
-            _srcRole.setText(Notation.generateStereotype(this,
-                                                         ae0.getStereotype()) +
-                             " " + _srcRole.getText());
-        if (ae1.getStereotype() != null)
-            _destRole.setText(Notation.generateStereotype(this,
-                                                         ae1.getStereotype()) +
-                              " " + _destRole.getText());
-    }
-
-    if (true == true ) {
-       _srcOrdering.setText(getOrderingName(ae0.getOrdering()));
-       _destOrdering.setText(getOrderingName(ae1.getOrdering()));
-    }
-    
-    
-    
-
-    boolean srcNav = ae0.isNavigable();
-    boolean destNav = ae1.isNavigable();
-    if (srcNav && destNav && SUPPRESS_BIDIRECTIONAL_ARROWS)
-      srcNav = destNav = false;
-    sourceArrowHead = chooseArrowHead(ae0.getAggregation(), srcNav);
-    destArrowHead = chooseArrowHead(ae1.getAggregation(), destNav);
-    setSourceArrowHead(sourceArrowHead);
-    setDestArrowHead(destArrowHead);
-    _srcGroup.calcBounds();
-    _destGroup.calcBounds();
-    _middleGroup.calcBounds();
-*/
-    /*
-    if (setFigs) {
-        computeRoute();
-        calcBounds();
-        Iterator editors = getLayer().getEditors().iterator();
-        while (editors.hasNext()) {
-            ((Editor)editors.next()).damageAll(); 
-        }
-    }
-    */
-    
-  // }
-
-  
 
   static ArrowHead _NAV_AGGREGATE =
   new ArrowHeadComposite(ArrowHeadDiamond.WhiteDiamond,

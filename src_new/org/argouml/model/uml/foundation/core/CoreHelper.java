@@ -926,7 +926,7 @@ public class CoreHelper {
         }
         if (relation instanceof MExtend) {
             MExtend extend = (MExtend) relation;
-            return extend.getBase();
+            return extend.getExtension(); // we have to follow the arrows..
         }
         if (relation instanceof MInclude) {
             MInclude include = (MInclude) relation;
@@ -971,7 +971,7 @@ public class CoreHelper {
         }
         if (relation instanceof MExtend) {
             MExtend extend = (MExtend) relation;
-            return extend.getExtension();
+            return extend.getBase();
         }
         if (relation instanceof MInclude) {
             MInclude include = (MInclude) relation;

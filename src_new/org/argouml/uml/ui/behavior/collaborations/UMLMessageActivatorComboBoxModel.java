@@ -54,7 +54,7 @@ public class UMLMessageActivatorComboBoxModel extends UMLComboBoxModel2 {
      * @param container
      */
     public UMLMessageActivatorComboBoxModel(UMLUserInterfaceContainer container) {
-        super(container, "activator");
+        super(container);
     }
 
     /**
@@ -72,9 +72,16 @@ public class UMLMessageActivatorComboBoxModel extends UMLComboBoxModel2 {
     }
     
     /**
-     * @see org.argouml.uml.ui.UMLComboBoxModel2#isValid(MModelElement)
+     * @see org.argouml.uml.ui.UMLComboBoxModel2#isValidPropertySet(ru.novosoft.uml.MElementEvent)
      */
-    protected boolean isValid(MElementEvent e) {
+    protected boolean isValidPropertySet(MElementEvent e) {
+        return e.getSource() == getTarget() && e.getName().equals("activator");
+    }
+
+    /**
+     * @see org.argouml.uml.ui.UMLComboBoxModel2#isValidRoleAdded(ru.novosoft.uml.MElementEvent)
+     */
+    protected boolean isValidRoleAdded(MElementEvent e) {
         MModelElement m = (MModelElement)getChangedElement(e);
         return ((m instanceof MMessage)  && 
             m != getContainer().getTarget() && 

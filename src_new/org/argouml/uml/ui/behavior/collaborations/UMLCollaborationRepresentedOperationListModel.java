@@ -27,6 +27,7 @@ package org.argouml.uml.ui.behavior.collaborations;
 import org.argouml.uml.ui.UMLModelElementListModel2;
 import org.argouml.uml.ui.UMLUserInterfaceContainer;
 
+import ru.novosoft.uml.MElementEvent;
 import ru.novosoft.uml.behavior.collaborations.MCollaboration;
 import ru.novosoft.uml.foundation.core.MModelElement;
 import ru.novosoft.uml.foundation.core.MOperation;
@@ -52,7 +53,7 @@ public class UMLCollaborationRepresentedOperationListModel
      * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
      */
     protected void buildModelList() {
-        Object target = getContainer().getTarget();
+        Object target = getTarget();
         if (target instanceof MCollaboration) {
             MCollaboration col = (MCollaboration)target;
             removeAllElements();
@@ -62,12 +63,12 @@ public class UMLCollaborationRepresentedOperationListModel
     }
 
     /**
-     * @see org.argouml.uml.ui.UMLModelElementListModel2#isValid(ru.novosoft.uml.foundation.core.MModelElement)
+     * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidRoleAdded(ru.novosoft.uml.MElementEvent)
      */
-    protected boolean isValid(MModelElement elem) {
+    protected boolean isValidRoleAdded(MElementEvent e) {
+        Object elem = getChangedElement(e);
         return elem instanceof MOperation && 
-            (((MCollaboration)getTarget()).getRepresentedOperation() == elem ||
-                contains(elem));
+            ((MCollaboration)getTarget()).getRepresentedOperation() == elem;
     }
 
 }

@@ -54,7 +54,6 @@ public abstract class UMLComboBoxModel2
         
     protected UMLUserInterfaceContainer container = null;
     protected int selectedIndex = -1;
-    protected String propertySetName;
     protected List list = new ArrayList();
     
 	
@@ -67,15 +66,14 @@ public abstract class UMLComboBoxModel2
      * @param roleAddedName
      * @throws IllegalArgumentException if one of the arguments is null
      */
-    public UMLComboBoxModel2(UMLUserInterfaceContainer container, String propertySetName) {
+    public UMLComboBoxModel2(UMLUserInterfaceContainer container) {
         super();
-        if (propertySetName == null || container == null) throw new IllegalArgumentException("In UMLComboBoxModel2: one of the arguments is null");
-        setPropertySetName(propertySetName);
+        if (container == null) throw new IllegalArgumentException("In UMLComboBoxModel2: one of the arguments is null");
         // it would be better that we don't need the container to get the target
         // this constructor can be without parameters as soon as we improve
         // targetChanged
         setContainer(container);
-        buildModelList();
+        targetChanged();
     }
     
     
@@ -91,14 +89,18 @@ public abstract class UMLComboBoxModel2
      * @see ru.novosoft.uml.MElementListener#propertySet(MElementEvent)
      */
     public void propertySet(MElementEvent e) {
-        if (e.getName().equals(getPropertySetName()) && e.getOldValue() != e.getNewValue()) {
-            setSelectedItem(e.getNewValue());
-        }
-        int index = getIndexOf(e.getSource());
-        if ( index >= 0 ) {
-            fireContentsChanged(this, index, index);
-        }
-            
+        if (isValidPropertySet(e)  && getChangedElement(e) != getSelectedItem()) {
+            Object o = getChangedElement(e);
+            if (o instanceof Collection) {     
+                if (((Collection)o).size() == 1) {
+                    Iterator it = ((Collection)o).iterator();
+                    o = it.next();
+                }
+            }
+            if (getIndexOf(o) >= 0) {
+                setSelectedItem(o);
+            }
+        }   
     }
 
     /**
@@ -113,36 +115,23 @@ public abstract class UMLComboBoxModel2
      */
     public void removed(MElementEvent e) {
         cat.debug("removed");
+        Object o = getChangedElement(e);
+        if (getIndexOf(o) >= 0) {
+            removeElement(o);
+        }
     }
 
     /**
      * @see ru.novosoft.uml.MElementListener#roleAdded(MElementEvent)
      */
     public void roleAdded(MElementEvent e) {
-        if (isValid(e)) {
-            if (e.getAddedValue() != null) {
-                if (e.getAddedValue() instanceof Collection) {
-                    addAll((Collection)e.getAddedValue());
-                } else {
-                    addElement(e.getAddedValue());
-                }
+        if (isValidRoleAdded(e)) {
+            Object o = getChangedElement(e);
+            if (o instanceof Collection) {
+                addAll((Collection)o);
             } else {
-                if (e.getOldValue() != null) {
-                    if (e.getOldValue() instanceof Collection) {
-                        removeAll((Collection)e.getOldValue());
-                    } else {
-                        removeElement(e.getOldValue());
-                    }
-                }
-                if (e.getNewValue() != null ) {
-                    if (e.getNewValue() instanceof Collection) {
-                        addAll((Collection)e.getNewValue());
-                    } else {
-                        addElement(e.getNewValue());
-                    }
-                }
-            }
-                    
+                addElement(o);
+            }      
         }
     }
 
@@ -150,30 +139,13 @@ public abstract class UMLComboBoxModel2
      * @see ru.novosoft.uml.MElementListener#roleRemoved(MElementEvent)
      */
     public void roleRemoved(MElementEvent e) {
-        if (isValid(e)) {
-            if (e.getRemovedValue() != null) {
-                if (e.getRemovedValue() instanceof Collection) {
-                    addAll((Collection)e.getRemovedValue());
-                } else {
-                    addElement(e.getRemovedValue());
-                }
+        if (isValidRoleRemoved(e)) {
+            Object o = getChangedElement(e);
+            if (o instanceof Collection) {
+                removeAll((Collection)o);
             } else {
-                if (e.getOldValue() != null) {
-                    if (e.getOldValue() instanceof Collection) {
-                        removeAll((Collection)e.getOldValue());
-                    } else {
-                        removeElement(e.getOldValue());
-                    }
-                }
-                if (e.getNewValue() != null ) {
-                    if (e.getNewValue() instanceof Collection) {
-                        addAll((Collection)e.getNewValue());
-                    } else {
-                        addElement(e.getNewValue());
-                    }
-                }
-            }
-                    
+                removeElement(o);
+            }      
         }
     }
 
@@ -201,6 +173,8 @@ public abstract class UMLComboBoxModel2
         // the change (the actual old and new target)
         // this must be implemented in the whole of argo one time or another
         // to improve performance and reduce errors
+        removeAllElements();
+        addElement("");
         buildModelList();
     }
 
@@ -213,11 +187,36 @@ public abstract class UMLComboBoxModel2
     }
     
     /**
-     * Returns true if the given modelelement m may be added to the model.
+     * Returns true if roleAdded(MElementEvent e) should be executed. Developers
+     * should override this method and not directly override roleAdded.  
      * @param m
      * @return boolean
      */
-    protected abstract boolean isValid(MElementEvent e);
+    protected abstract boolean isValidRoleAdded(MElementEvent e);
+    
+    
+    /**
+     * Returns true if roleRemoved(MElementEvent e) should be executed. Standard
+     * behaviour is such that some element that is changed allways may be 
+     * removed.
+     * @param m
+     * @return boolean
+     */
+    protected boolean isValidRoleRemoved(MElementEvent e) {
+        return getIndexOf(getChangedElement(e)) >= 0;
+    }
+    
+    /**
+     * Returns true if propertySet(MElementEvent e) should be executed. Developers
+     * should override this method and not directly override propertySet in order
+     * to let this comboboxmodel and the combobox(es) representing this model 
+     * function properly.  
+     * @param m
+     * @return boolean
+     */
+    protected abstract boolean isValidPropertySet(MElementEvent e);
+    
+    
     
     /**
      * Builds the list of elements and sets the selectedIndex to the currently 
@@ -345,21 +344,6 @@ public abstract class UMLComboBoxModel2
         } else
             throw new IllegalArgumentException("In setElements: may not set " +
                 "elements to null collection");
-    }
-    /**
-     * Returns the propertySetName.
-     * @return String
-     */
-    public String getPropertySetName() {
-        return propertySetName;
-    }
-
-    /**
-     * Sets the propertySetName.
-     * @param propertySetName The propertySetName to set
-     */
-    public void setPropertySetName(String propertySetName) {
-        this.propertySetName = propertySetName;
     }
     
     /**

@@ -27,6 +27,7 @@ package org.argouml.uml.ui.behavior.collaborations;
 import org.argouml.uml.ui.UMLModelElementListModel2;
 import org.argouml.uml.ui.UMLUserInterfaceContainer;
 
+import ru.novosoft.uml.MElementEvent;
 import ru.novosoft.uml.behavior.collaborations.MCollaboration;
 import ru.novosoft.uml.behavior.collaborations.MInteraction;
 import ru.novosoft.uml.foundation.core.MModelElement;
@@ -55,12 +56,12 @@ public class UMLInteractionCollaborationListModel
     }
 
     /**
-     * @see org.argouml.uml.ui.UMLModelElementListModel2#isValid(ru.novosoft.uml.foundation.core.MModelElement)
+     * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidRoleAdded(ru.novosoft.uml.MElementEvent)
      */
-    protected boolean isValid(MModelElement elem) {
-        return (elem instanceof MCollaboration && 
-            (((MCollaboration)elem).getInteractions().contains(getContainer().getTarget()) ||
-            contains(elem)));
+    protected boolean isValidRoleAdded(MElementEvent e) {
+        Object elem = getChangedElement(e);
+        return elem instanceof MCollaboration && 
+            ((MCollaboration)elem).getInteractions().contains(getContainer().getTarget());
     }
 
 }

@@ -46,10 +46,12 @@ import org.tigris.gef.base.*;
 import org.tigris.gef.presentation.*;
 
 import org.apache.log4j.Category;
+import org.apache.log4j.helpers.RelativeTimeDateFormat;
 import org.argouml.application.api.*;
 import org.argouml.application.events.*;
 import org.argouml.kernel.*;
 import org.argouml.model.uml.UmlFactory;
+import org.argouml.model.uml.foundation.core.CoreHelper;
 import org.argouml.ui.*;
 import org.argouml.cognitive.*;
 import org.argouml.uml.*;
@@ -359,17 +361,18 @@ implements VetoableChangeListener, DelayedVChangeListener, MouseListener, KeyLis
   protected void modelChanged() {
     updateNameText();
     updateStereotypeText();
+    if (!updateClassifiers()) return;
   }
 
 
-  public void updateNameText() {
+  private void updateNameText() {
     MModelElement me = (MModelElement) getOwner();
     if (me == null) return;
     String nameStr = Notation.generate(this, me.getName());
     _name.setText(nameStr);
   }
 
-  public void updateStereotypeText() {
+  protected void updateStereotypeText() {
     MModelElement me = (MModelElement) getOwner();
     if (me == null) return;
     MStereotype stereos = me.getStereotype();
@@ -515,6 +518,14 @@ implements VetoableChangeListener, DelayedVChangeListener, MouseListener, KeyLis
             Fig fig = (Fig)it.next();
             fig.delete();
         }
+        // GEF does not take into account the multiple diagrams we have
+        // therefore we loop through our diagrams and delete each and every 
+        // occurence on our own
+        it = ProjectBrowser.TheInstance.getProject().getDiagrams().iterator();
+        while (it.hasNext()) {
+            ArgoDiagram diagram = (ArgoDiagram)it.next();
+            diagram.damage();
+        }
     }
 
     /**
@@ -524,6 +535,49 @@ implements VetoableChangeListener, DelayedVChangeListener, MouseListener, KeyLis
         super.damage();
         _fig.damage();
     }
+    
+    private boolean updateClassifiers() {
+    Object owner = getOwner();
+    if (owner == null || getLayer() == null) return false;
+    if (!(owner instanceof MRelationship)) throw new IllegalStateException("Owner not instance of Relationship");
+    
+    MModelElement newSource = CoreHelper.getHelper().getSource((MRelationship)owner);
+    MModelElement newDest = (MClassifier)CoreHelper.getHelper().getDestination((MRelationship)owner);
+    
+    Fig currentSourceFig = getSourceFigNode();
+    Fig currentDestFig = getDestFigNode();
+    MModelElement currentSource = null;
+    MModelElement currentDestination = null;
+    if (currentSourceFig != null && currentDestFig != null) {       
+        currentSource = (MModelElement)currentSourceFig.getOwner();
+        currentDestination = (MModelElement)currentDestFig.getOwner();
+    }
+    if (newSource != currentSource || newDest != currentDestination) {
+        Fig newSourceFig = getLayer().presentationFor(newSource);
+        Fig newDestFig = getLayer().presentationFor(newDest);
+        if (newSourceFig == null || newDestFig == null) {
+            delete();
+            return false;
+        }
+        if (newSourceFig != currentSourceFig || currentSourceFig == null) {
+            setSourceFigNode((FigNode)newSourceFig);
+            setSourcePortFig(newSourceFig);
+            
+        }
+        if (newDestFig != currentDestFig || currentDestFig == null) {
+            setDestFigNode((FigNode)newDestFig);
+            setDestPortFig(newDestFig);            
+        }
+        if (newDestFig != null) {
+            ((FigNode)newSourceFig).updateEdges();
+        }
+        if (newSourceFig != null) {
+            ((FigNode)newDestFig).updateEdges();
+        }
+        calcBounds();
+    }
+    return true;
+  }
 
 } /* end class FigEdgeModelElement */
 

@@ -22,42 +22,55 @@
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 // $header$
-package org.argouml.uml.ui.behavior.collaborations;
+package org.argouml.uml.ui.behavior.use_cases;
 
-import org.argouml.uml.ui.UMLModelElementListModel2;
-import org.argouml.uml.ui.UMLUserInterfaceContainer;
+import java.awt.event.ActionEvent;
 
-import ru.novosoft.uml.MElementEvent;
-import ru.novosoft.uml.behavior.collaborations.MMessage;
-import ru.novosoft.uml.foundation.core.MModelElement;
+import org.argouml.application.api.Argo;
+import org.argouml.model.uml.behavioralelements.usecases.UseCasesHelper;
+import org.argouml.uml.ui.UMLChangeAction;
+import org.argouml.uml.ui.UMLComboBox2;
+
+import ru.novosoft.uml.behavior.use_cases.MExtend;
+import ru.novosoft.uml.behavior.use_cases.MUseCase;
 
 /**
- * @since Oct 3, 2002
+ * @since Oct 6, 2002
  * @author jaap.branderhorst@xs4all.nl
  */
-public class UMLMessageSenderListModel extends UMLModelElementListModel2 {
+public class ActionSetExtendExtension extends UMLChangeAction {
+
+     public static final ActionSetExtendExtension SINGLETON = new ActionSetExtendExtension();
 
     /**
-     * Constructor for UMLMessageSenderListModel.
-     * @param container
+     * Constructor for ActionSetExtendBase.
+     * @param s
      */
-    public UMLMessageSenderListModel(UMLUserInterfaceContainer container) {
-        super(container);
+    protected ActionSetExtendExtension() {
+        super(Argo.localize("CoreMenu", "Set"), true, NO_ICON);
     }
 
-    /**
-     * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
+     /**
+     * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
-    protected void buildModelList() {
-        removeAllElements();
-        addElement(((MMessage)getContainer().getTarget()).getSender());
-    }
-
-    /**
-     * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidRoleAdded(ru.novosoft.uml.MElementEvent)
-     */
-    protected boolean isValidRoleAdded(MElementEvent e) {
-        return false;
+    public void actionPerformed(ActionEvent e) {
+        super.actionPerformed(e);
+        Object source = e.getSource();
+        MUseCase newExtension = null;
+        MExtend extend = null;
+        if (source instanceof UMLComboBox2) {
+            UMLComboBox2 combo = (UMLComboBox2)source;
+            newExtension = (MUseCase)combo.getSelectedItem();
+            if (combo.getTarget() instanceof MExtend) {
+                extend = (MExtend)combo.getTarget();
+            }
+        }
+        MUseCase oldExtension = extend.getExtension();
+        // oldbase can never be null
+        if (oldExtension == null || newExtension == null) throw new IllegalStateException("Base of extend is null!");
+        if (oldExtension != newExtension) {
+            extend.setExtension(newExtension);
+        }
     }
 
 }

@@ -37,25 +37,10 @@ public class UMLClassifierRoleAvailableContentsListModel
     }
 
     /**
-     * @see org.argouml.uml.ui.UMLModelElementListModel2#isValid(ru.novosoft.uml.foundation.core.MModelElement)
-     */
-    protected boolean isValid(MModelElement elem) {
-        if (elem instanceof MClassifier) {
-            Collection availableContents = CollaborationsHelper.getHelper().allAvailableContents((MClassifierRole)getTarget());
-            Iterator it = ((MClassifier)elem).getOwnedElements().iterator();
-            while (it.hasNext()) {
-                MModelElement me = (MModelElement)it.next();
-                if (availableContents.contains(me) || contains(me)) return true;
-            }
-        }
-        return false;
-    }
-    
-    /**
      * @see ru.novosoft.uml.MElementListener#roleAdded(ru.novosoft.uml.MElementEvent)
      */
     public void roleAdded(MElementEvent e) {
-        if (isValid((MModelElement)e.getAddedValue())) {
+        if (isValidRoleAdded(e)) {
             MClassifier clazz = (MClassifier)e.getAddedValue();
             Iterator it = clazz.getOwnedElements().iterator();
             while (it.hasNext()) {
@@ -68,7 +53,7 @@ public class UMLClassifierRoleAvailableContentsListModel
      * @see ru.novosoft.uml.MElementListener#roleRemoved(ru.novosoft.uml.MElementEvent)
      */
     public void roleRemoved(MElementEvent e) {
-        if (isValid((MModelElement)e.getRemovedValue())) {
+        if (isValidRoleRemoved(e)) {
             MClassifier clazz = (MClassifier)e.getRemovedValue();
             Iterator it = clazz.getOwnedElements().iterator();
             while (it.hasNext()) {
@@ -77,7 +62,20 @@ public class UMLClassifierRoleAvailableContentsListModel
         }
     }
 
-
-
+    /**
+     * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidRoleAdded(ru.novosoft.uml.MElementEvent)
+     */
+    protected boolean isValidRoleAdded(MElementEvent e) {
+        Object elem = getChangedElement(e);
+        if (elem instanceof MClassifier) {
+            Collection availableContents = CollaborationsHelper.getHelper().allAvailableContents((MClassifierRole)getTarget());
+            Iterator it = ((MClassifier)elem).getOwnedElements().iterator();
+            while (it.hasNext()) {
+                MModelElement me = (MModelElement)it.next();
+                if (availableContents.contains(me)) return true;
+            }
+        }
+        return false;
+    }
 
 }

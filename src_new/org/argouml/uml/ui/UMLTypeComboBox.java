@@ -39,7 +39,7 @@ public class UMLTypeComboBox extends UMLComboBox2 {
     
     public UMLTypeComboBox(
         UMLUserInterfaceContainer container, String propertySetName) {
-        super(container, new UMLTypeModel(container, propertySetName));
+        super(container, new UMLTypeModel(container));
     } 
 
     /**

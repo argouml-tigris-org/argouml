@@ -22,42 +22,39 @@
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 // $header$
-package org.argouml.uml.ui.behavior.collaborations;
+package org.argouml.uml.ui.behavior.use_cases;
 
-import org.argouml.uml.ui.UMLModelElementListModel2;
-import org.argouml.uml.ui.UMLUserInterfaceContainer;
+import java.awt.event.ActionEvent;
 
-import ru.novosoft.uml.MElementEvent;
-import ru.novosoft.uml.behavior.collaborations.MMessage;
-import ru.novosoft.uml.foundation.core.MModelElement;
+import org.argouml.model.uml.behavioralelements.usecases.UseCasesFactory;
+import org.argouml.uml.ui.AbstractActionNewModelElement;
+import ru.novosoft.uml.behavior.use_cases.MExtend;
 
 /**
- * @since Oct 3, 2002
+ * @since Oct 6, 2002
  * @author jaap.branderhorst@xs4all.nl
  */
-public class UMLMessageSenderListModel extends UMLModelElementListModel2 {
-
+public class ActionNewExtendExtensionPoint
+    extends AbstractActionNewModelElement {
+        
+    public final static ActionNewExtendExtensionPoint SINGLETON = 
+        new ActionNewExtendExtensionPoint();
+    
     /**
-     * Constructor for UMLMessageSenderListModel.
-     * @param container
+     * Constructor for ActionNewExtendExtensionPoint.
      */
-    public UMLMessageSenderListModel(UMLUserInterfaceContainer container) {
-        super(container);
+    protected ActionNewExtendExtensionPoint() {
+        super();
     }
 
     /**
-     * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
+     * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
-    protected void buildModelList() {
-        removeAllElements();
-        addElement(((MMessage)getContainer().getTarget()).getSender());
-    }
-
-    /**
-     * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidRoleAdded(ru.novosoft.uml.MElementEvent)
-     */
-    protected boolean isValidRoleAdded(MElementEvent e) {
-        return false;
+    public void actionPerformed(ActionEvent e) {
+        super.actionPerformed(e);
+        if (getTarget() instanceof MExtend) {
+            UseCasesFactory.getFactory().buildExtensionPoint(((MExtend)getTarget()).getBase());
+        }
     }
 
 }

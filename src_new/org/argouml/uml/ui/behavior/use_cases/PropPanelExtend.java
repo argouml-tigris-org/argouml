@@ -37,9 +37,11 @@ package org.argouml.uml.ui.behavior.use_cases;
 import org.argouml.application.api.*;
 import org.argouml.model.uml.UmlFactory;
 import org.argouml.model.uml.behavioralelements.usecases.UseCasesFactory;
+import org.argouml.swingext.LabelledLayout;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.ui.*;
 import org.argouml.uml.ui.foundation.core.*;
+import org.argouml.util.ConfigLoader;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -68,72 +70,50 @@ public class PropPanelExtend extends PropPanelModelElement {
      */
 
     public PropPanelExtend() {
+        super("Extend", _extendIcon, ConfigLoader.getTabPropsOrientation());
 
-        // Invoke the ModelElement constructor, but passing in our name and
-        // representation and requesting 2 columns
-
-        super("Extend", _extendIcon, 2);
-
-        // nameField, stereotypeBox and namespaceScroll are all set up by
-        // PropPanelModelElement.
-
-        addCaption(Argo.localize("UMLMenu", "label.name"), 1, 0, 0);
-        addField(nameField, 1, 0, 0);
-
-        addCaption(Argo.localize("UMLMenu", "label.stereotype"), 2, 0, 0);
-        addField(new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-stereo"),stereotypeBox),
-                 2, 0, 0);
-
-        addCaption(Argo.localize("UMLMenu", "label.namespace"), 3, 0, 0);
-        addField(namespaceScroll, 3, 0, 0);
+        addField(Argo.localize("UMLMenu", "label.name"), nameField);
+        addField(Argo.localize("UMLMenu", "label.stereotype"), 
+            new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-stereo"),stereotypeBox));
+        addField(Argo.localize("UMLMenu", "label.namespace"), namespaceScroll);
 
         // Our condition (ultimately a String). NSUML actually returns a
         // MBooleanExpression, so we must provide our own get and set methods.
         // Allow the condition label to expand vertically so we all float to
         // the top.
 
+        add(LabelledLayout.getSeperator());
+            
+
+        // Link to the two ends. This is done as a drop down. First for the
+        // base use case.
+        
+        addField(Argo.localize("UMLMenu", "label.usecase-base"), 
+            new UMLComboBox2(this, new UMLExtendBaseComboBoxModel(this), ActionSetExtendBase.SINGLETON));
+            
+        addField(Argo.localize("UMLMenu", "label.extension"), 
+            new UMLComboBox2(this, new UMLExtendExtensionComboBoxModel(this), ActionSetExtendExtension.SINGLETON));
+            
+        JList extensionPointList = new UMLMutableLinkedList(this, new UMLExtendExtensionPointListModel(this), null, ActionNewExtendExtensionPoint.SINGLETON);
+        addField(Argo.localize("UMLMenu", "label.extensionpoint"), 
+            new JScrollPane(extensionPointList));
+            
         UMLExpressionModel conditionModel =
             new UMLExpressionModel(this,MExtend.class,"condition",
-		    MBooleanExpression.class,"getCondition","setCondition");
+            MBooleanExpression.class,"getCondition","setCondition");
 
         JTextArea conditionArea = new UMLExpressionBodyField(conditionModel,
                                                             true);
         JScrollPane conditionScroll =
-            new JScrollPane(conditionArea,
-                            JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
-                            JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+            new JScrollPane(conditionArea);
 
-        addCaption("Condition:", 4, 0, 1);
-        addField(conditionScroll, 4, 0, 0);
-
-        // Link to the two ends. This is done as a drop down. First for the
-        // base use case.
-
-        UMLModelElementComboBoxModel     model = 
-            new UMLModelElementComboBoxModel(this, "getBase", "setBase",
-                                             true, MUseCase.class);
-        UMLModelElementComboBox          box   =
-            new UMLModelElementComboBox(model);
-        UMLModelElementComboBoxNavigator nav   =
-            new UMLModelElementComboBoxNavigator(this, "NavUseCase", box);
-
-        addCaption("Base:", 0, 1, 0);
-        addField(nav, 0, 1, 0);
-
-        // The extension use case (reuse earlier variables)
-
-        model = new UMLModelElementComboBoxModel(this, "getExtension",
-                                                 "setExtension", true,
-                                                 MUseCase.class);
-        box   = new UMLModelElementComboBox(model);
-        nav   = new UMLModelElementComboBoxNavigator(this, "NavUseCase", box);
-
-        addCaption("Extension:", 1, 1, 0);
-        addField(nav, 1, 1, 0);
-
+        addField("Condition:", conditionScroll);
+        
         // Build up a panel for extension points. This one will expand
         // vertically
 
+        add(LabelledLayout.getSeperator());
+   /*         
         JList extensionPointList =
             new UMLList(new UMLExtensionPointListModel(this, true, true),
                         true);
@@ -146,9 +126,8 @@ public class PropPanelExtend extends PropPanelModelElement {
                             JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
                             JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 
-        addCaption("Extension Points:", 2, 1, 1);
-        addField(extensionPointScroll, 2, 1, 1);
-
+        addField("Extension Points:", extensionPointScroll);
+*/
 
         // Add the toolbar.
 
