@@ -1,15 +1,14 @@
+/*
+ * ProportionalLayout.java
+ */
 package org.argouml.swingext;
 
 import java.awt.*;
 import java.util.*;
 
 /**
- * Title:
- * Description:
- * Copyright:    Copyright (c) 2002
- * Company:
- * @author Bob Tarling
- * @version 1.0
+ * Allows components to be a set as a proportion to their container or left as fixed size.
+ * Components are resized accordingly when the parent is resized.
  */
 
 public class ProportionalLayout extends LineLayout {
@@ -81,7 +80,7 @@ public class ProportionalLayout extends LineLayout {
                 }
                 comp.setSize(orientation.setLength(parent.getSize(), length));
                 comp.setLocation(loc);
-                loc = orientation.addLength(loc, length);
+                loc = orientation.addToPosition(loc, length);
             }
         }
     }

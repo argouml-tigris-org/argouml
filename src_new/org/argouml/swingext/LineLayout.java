@@ -1,18 +1,15 @@
+/*
+ * LineLayout.java
+ */
 package org.argouml.swingext;
 
 import java.awt.*;
 import java.util.*;
 
 /**
- * Title:
- * Description:
- * Copyright:    Copyright (c) 2002
- * Company:
- * @author
- * @version 1.0
+ * Abstract class for a layout manager that sets all child components in a single row or single
+ * column. PrefferedSize and MinimumSize are calculated.
  */
-
-
 public abstract class LineLayout implements LayoutManager2 {
 
     final static public int HORIZONTAL = Orientation.HORIZONTAL;
@@ -49,7 +46,7 @@ public abstract class LineLayout implements LayoutManager2 {
                 }
             }
         }
-        preferredSize = orientation.add(preferredSize, parent.getInsets());
+        preferredSize = DimensionUtilities.add(preferredSize, parent.getInsets());
         return preferredSize;
     }
 
@@ -65,7 +62,7 @@ public abstract class LineLayout implements LayoutManager2 {
                 }
             }
         }
-        minimumSize = orientation.add(minimumSize, parent.getInsets());
+        minimumSize = DimensionUtilities.add(minimumSize, parent.getInsets());
         return minimumSize;
     }
 
@@ -82,7 +79,7 @@ public abstract class LineLayout implements LayoutManager2 {
                 }
             }
         }
-        maximumSize = orientation.add(maximumSize, parent.getInsets());
+        maximumSize = DimensionUtilities.add(maximumSize, parent.getInsets());
         return maximumSize;
     }
 

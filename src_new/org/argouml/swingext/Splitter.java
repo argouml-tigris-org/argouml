@@ -1,3 +1,6 @@
+/*
+ * Splitter.java
+ */
 package org.argouml.swingext;
 
 import java.io.Serializable;
@@ -14,14 +17,9 @@ import javax.swing.plaf.metal.MetalLookAndFeel;
 import javax.swing.border.Border;
 
 /**
- * Title:
- * Description:
- * Copyright:    Copyright (c) 2002
- * Company:
- * @author Bob Tarling
- * @version 1.0
+ * Acts as a seperator between components which will automatically resize those components when
+ * the splitter is moved.. 
  */
-
 public class Splitter extends JComponent {
 
     final static public int HORIZONTAL_SPLIT = Orientation.HORIZONTAL;

@@ -1,17 +1,17 @@
+/*
+ * NewspaperLayout.java
+ */
 package org.argouml.swingext;
 
 import java.awt.*;
 import javax.swing.*;
 
 /**
- * Title:
- * Description:
- * Copyright:    Copyright (c) 2002
- * Company:
- * @author Bob Tarling
- * @version 1.0
+ * Similar to <code>GridLayout2</code> but once the components fill the height of the container they flow into
+ * another grid on the right until the full width of the container is filled. Once the containers
+ * width is full it flows to the right no more, the grid depths increase instead so that the user
+ * scrolls up/down instead of left/right.
  */
-
 public class NewspaperLayout extends GridLayout2 {
 
     private int gridGap = 0;

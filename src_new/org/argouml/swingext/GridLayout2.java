@@ -1,16 +1,14 @@
+/*
+ * GridLayout2.java
+ */
 package org.argouml.swingext;
 
 import java.awt.*;
 
 /**
- * Title:
- * Description:
- * Copyright:    Copyright (c) 2002
- * Company:
- * @author Bob Tarling
- * @version 1.0
+ * Same as the standard java class GridLayout but allows more flexability for sizing of columns
+ * and rows.
  */
-
 public class GridLayout2 implements LayoutManager, java.io.Serializable {
 
      /**
