@@ -28,6 +28,7 @@ import java.net.InetAddress;
 import java.util.*;
 
 import org.apache.log4j.Category;
+import org.argouml.application.security.ArgoSecurityManager;
 
 import ru.novosoft.uml.model_management.*;
 import ru.novosoft.uml.foundation.core.*;
@@ -52,7 +53,10 @@ public class UUIDManager {
         try {
             _address = InetAddress.getLocalHost(); 
         } catch (java.net.UnknownHostException e) {
-            cat.fatal("ERROR: unable to get localhost information.  UUIDs will not be unique.", e);
+            cat.fatal("ERROR: unable to get localhost information.", e);
+            cat.fatal("On Unix systems this usually indicates that your /etc/hosts file is incorrectly setup.");
+            cat.fatal("Stopping execution of ArgoUML.");
+            ArgoSecurityManager.getInstance().setAllowExit(true);
             System.exit(-1);
         }
     }
