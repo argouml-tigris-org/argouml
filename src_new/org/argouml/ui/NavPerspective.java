@@ -79,6 +79,13 @@ import org.argouml.uml.diagram.state.ui.GoTransitionToTarget;
 import org.argouml.uml.diagram.static_structure.ui.GoClassToAssociatedClass;
 import org.argouml.uml.diagram.static_structure.ui.GoClassToNavigableClass;
 import org.argouml.uml.diagram.static_structure.ui.GoModelToClass;
+import org.argouml.uml.diagram.static_structure.ui.GoClassToSummary;
+import org.argouml.uml.diagram.static_structure.ui.GoSummaryToAssociation;
+import org.argouml.uml.diagram.static_structure.ui.GoSummaryToAttribute;
+import org.argouml.uml.diagram.static_structure.ui.GoSummaryToInheritance;
+import org.argouml.uml.diagram.static_structure.ui.GoSummaryToIncomingDependency;
+import org.argouml.uml.diagram.static_structure.ui.GoSummaryToOutgoingDependency;
+import org.argouml.uml.diagram.static_structure.ui.GoSummaryToOperation;
 import org.argouml.uml.diagram.ui.GoBehavioralFeatureToStateDiagram;
 import org.argouml.uml.diagram.ui.GoBehavioralFeatureToStateMachine;
 import org.argouml.uml.diagram.ui.GoClassifierToBeh;
@@ -179,6 +186,9 @@ public class NavPerspective
             new NavPerspective("misc.states-of-class");
         NavPerspective machineToTransition =
             new NavPerspective("misc.transitions-of-class");
+        
+        NavPerspective classCentric =
+            new NavPerspective("Class - centric");
 
         // Subsystem is travsersed via Classifier. Eugenio
         GoFilteredChildren modelToPackages =
@@ -398,7 +408,20 @@ public class NavPerspective
 
         machineToTransition.addSubTreeModel(new GoMachineToTrans());
 
+        classCentric.addSubTreeModel(new GoProjectToModel());
+        classCentric.addSubTreeModel(new GoModelToDiagram());
+        classCentric.addSubTreeModel(modelToPackages);
+        classCentric.addSubTreeModel(modelToClassifiers);
+        classCentric.addSubTreeModel(new GoClassToSummary());
+        classCentric.addSubTreeModel(new GoSummaryToAssociation());
+        classCentric.addSubTreeModel(new GoSummaryToAttribute());
+        classCentric.addSubTreeModel(new GoSummaryToOperation());
+        classCentric.addSubTreeModel(new GoSummaryToInheritance());
+        classCentric.addSubTreeModel(new GoSummaryToIncomingDependency());
+        classCentric.addSubTreeModel(new GoSummaryToOutgoingDependency());
+        
         registerPerspective(packageCentric);
+        registerPerspective(classCentric);
         registerPerspective(diagramCentric);
         registerPerspective(inheritanceCentric);
         registerPerspective(classAssociation);
