@@ -933,7 +933,15 @@ public class GeneratorDisplay extends Generator2 {
         }
         if (s.length() == 0 && p.length() == 0)
             return "";
-
+        
+        /* If there are no arguments, then do not show the ().
+         * This solves issue 1758. 
+         * Arguments are not supported anyhow in the UI yet.
+         * These brackets are easily confused with the brackets 
+         * for the Operation of a CallAction.
+         */
+        if (p.length() == 0) return s;
+        
         return s + " (" + p + ")";
     }
 
