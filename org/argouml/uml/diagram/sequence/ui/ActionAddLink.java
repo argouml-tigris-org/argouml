@@ -35,7 +35,7 @@
 package org.argouml.uml.diagram.sequence.ui;
 
 import org.argouml.model.ModelFacade;
-import org.tigris.gef.base.CmdSetMode;
+import org.argouml.ui.CmdSetMode;
 import org.tigris.gef.base.ModeCreatePolyEdge;
 
 public class ActionAddLink extends CmdSetMode {

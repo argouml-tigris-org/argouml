@@ -49,6 +49,7 @@ public class RadioAction extends AbstractButtonAction {
 
     public RadioAction(Action action) {
         super(new JButton(action).getName(), new JButton(action).getIcon());
+        putValue(Action.SHORT_DESCRIPTION, action.getValue(Action.SHORT_DESCRIPTION));
         realAction = action;
     }
 

@@ -37,8 +37,8 @@ import org.argouml.kernel.ProjectManager;
 import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.UmlModelEventPump;
 import org.argouml.ui.ArgoDiagram;
+import org.argouml.ui.CmdSetMode;
 import org.argouml.ui.targetmanager.TargetManager;
-import org.tigris.gef.base.CmdSetMode;
 import org.tigris.gef.base.ModeBroom;
 import org.tigris.gef.base.ModeCreateFigCircle;
 import org.tigris.gef.base.ModeCreateFigInk;
@@ -50,7 +50,6 @@ import org.tigris.gef.base.ModeCreateFigSpline;
 import org.tigris.gef.base.ModeCreateFigText;
 import org.tigris.gef.base.ModeSelect;
 import org.tigris.gef.presentation.Fig;
-
 import org.tigris.toolbar.ToolBarFactory;
 import org.tigris.toolbutton.ToolButton;
 

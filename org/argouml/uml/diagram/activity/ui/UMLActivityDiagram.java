@@ -38,13 +38,13 @@ import org.apache.log4j.Logger;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.ModelFacade;
 import org.argouml.ui.CmdCreateNode;
+import org.argouml.ui.CmdSetMode;
 import org.argouml.uml.diagram.state.StateDiagramGraphModel;
 import org.argouml.uml.diagram.state.ui.ActionCreatePseudostate;
 import org.argouml.uml.diagram.state.ui.StateDiagramRenderer;
 import org.argouml.uml.diagram.ui.UMLDiagram;
 import org.argouml.uml.diagram.ui.ActionAddNote;
 
-import org.tigris.gef.base.CmdSetMode;
 import org.tigris.gef.base.LayerPerspective;
 import org.tigris.gef.base.LayerPerspectiveMutable;
 import org.tigris.gef.base.ModeCreatePolyEdge;
