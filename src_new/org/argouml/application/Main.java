@@ -45,7 +45,10 @@ import org.argouml.cognitive.ui.*;
 import org.argouml.uml.cognitive.critics.*;
 import org.argouml.xml.argo.ArgoParser;
 import org.argouml.uml.ui.UMLAction;
+
 import org.argouml.application.security.ArgoSecurityManager;
+
+import org.apache.log4j.*;
 
 public class Main {
   ////////////////////////////////////////////////////////////////
@@ -138,8 +141,7 @@ public class Main {
 	} else {
 	  try { urlToOpen = Util.fileToURL(projectFile); }
 	  catch (Exception e) {
-	    System.out.println("Exception opening project in main()");
-	    e.printStackTrace();
+	    Argo.log.error("Exception opening project in main()", e);
 	  }
 	}
 	/* by our assumption, any following args will be ignored */
@@ -338,6 +340,29 @@ public class Main {
     postLoadActions.addElement(r);
   }
 
+   /** Do basic initialization of log4j.
+    *
+    *  This must be done as part of the main class initializer, so that
+    *  the initialization is complete before any other static initializers.
+    */
+   static {
+       /*  The string <code>log4j.configuration</code> is the
+        *  same string found in
+	*  {@link org.apache.log4j.Configuration.DEFAULT_CONFIGURATION_FILE}
+	*  but if we use the reference, then log4j configures itself
+	*  and clears the system property and we never know if it was
+	*  set.
+	*
+	*  If it is set, then we let the static initializer in
+	* {@link Argo} perform the initialization.
+        */
+       if(System.getProperty("log4j.configuration") == null) {
+           BasicConfigurator.configure();
+           Category.getRoot().getHierarchy().disableAll();
+       }
+
+   }
+
 
 } /* end Class Main */
 
@@ -374,13 +399,13 @@ class PostLoad implements Runnable {
   public void setThread(Thread t) { myThread = t; }
   public void run() {
     try { myThread.sleep(1000); }
-    catch (Exception ex) { System.out.println("post load no sleep"); }
+    catch (Exception ex) { Argo.log.error("post load no sleep", ex); }
     int size = postLoadActions.size();
     for (int i = 0; i < size; i++) {
       Runnable r = (Runnable) postLoadActions.elementAt(i);
       r.run();
       try { myThread.sleep(100); }
-      catch (Exception ex) { System.out.println("post load no sleep2"); }
+      catch (Exception ex) { Argo.log.error("post load no sleep2", ex); }
     }
   }
 } /* end class PostLoad */
