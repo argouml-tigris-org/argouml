@@ -30,6 +30,7 @@ import javax.swing.Icon;
 import javax.swing.JLabel;
 import javax.swing.JTree;
 import javax.swing.tree.DefaultTreeCellRenderer;
+import javax.swing.tree.DefaultMutableTreeNode;
 
 import org.apache.log4j.Logger;
 import org.argouml.application.api.Argo;
@@ -70,12 +71,17 @@ public class UMLTreeCellRenderer extends DefaultTreeCellRenderer {
         boolean leaf,
         int row,
         boolean _hasFocus) {
+            
+            if(value instanceof DefaultMutableTreeNode){
+                value = ((DefaultMutableTreeNode)value).getUserObject();
+            }
+            
         if (TargetManager.getInstance().getTargets().contains(value)) {
             sel = true;           
         } else {
             sel = false;          
         }
-
+        
         Component r =
             super.getTreeCellRendererComponent(
                 tree,
@@ -88,14 +94,15 @@ public class UMLTreeCellRenderer extends DefaultTreeCellRenderer {
 
         if (r instanceof JLabel) {
             JLabel lab = (JLabel) r;
+            
+            
+            
             Icon icon =
                 ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIcon(
                     value);
 
             if (icon != null)
                 lab.setIcon(icon);
-            else
-                cat.warn("UMLTreeCellRenderer: using default Icon");
 
             // setting the tooltip
             String type = null;
@@ -118,6 +125,7 @@ public class UMLTreeCellRenderer extends DefaultTreeCellRenderer {
                 else if (value instanceof UMLClassDiagram)
                     type = Argo.localize(BUNDLE, "label.class-diagram");
             }
+            
             if (type != null) {
                 StringBuffer buf = new StringBuffer();
                 buf.append("<html>");

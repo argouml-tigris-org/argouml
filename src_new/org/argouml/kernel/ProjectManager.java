@@ -194,8 +194,12 @@ public final class ProjectManager {
         _creatingCurrentProject = true;
         Argo.log.info("making empty project");
         Project p = new Project();
+        // the following line should not normally be here,
+        // but is necessary for argouml start up.
         setCurrentProject(p);
         p.makeUntitledProject();
+        // set the current project after making it!
+        setCurrentProject(p);
         _creatingCurrentProject = false;
         return p;
     }
