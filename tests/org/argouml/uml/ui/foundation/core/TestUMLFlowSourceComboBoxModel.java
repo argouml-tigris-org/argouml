@@ -88,9 +88,11 @@ public class TestUMLFlowSourceComboBoxModel extends TestCase {
         MModelElement m = new MClassImpl();
         elem.addSource(m);
         assert(model.getSize() == 1);
-        assert(model.getElementAt(0) == m);
+        assertEquals(model.getElementAt(0), m);
+        assertEquals(model.getSelectedItem(), m);
         elem.removeSource(m);
         assert(model.getSize() == 0);
+        assertNull(model.getSelectedItem());
     }
     
     public void testNoElements() {
@@ -109,9 +111,8 @@ public class TestUMLFlowSourceComboBoxModel extends TestCase {
             m[i] = new MClassImpl();
             model.addElement(m[i]);
         }
-        model.setSelectedItem(m[5]);
+        model.setSelectedItem(m[5]); // 'userclick'
         assertEquals(model.getSelectedItem(), m[5]);
     }
-
 
 }
