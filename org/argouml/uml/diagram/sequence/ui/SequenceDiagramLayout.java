@@ -24,14 +24,11 @@
 
 package org.argouml.uml.diagram.sequence.ui;
 
-import java.util.Collection;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.SortedMap;
-import java.util.SortedSet;
 import java.util.TreeMap;
-import java.util.TreeSet;
 
-import org.tigris.gef.base.Layer;
 import org.tigris.gef.base.LayerPerspectiveMutable;
 import org.tigris.gef.graph.GraphEvent;
 import org.tigris.gef.graph.MutableGraphModel;
@@ -52,7 +49,17 @@ public class SequenceDiagramLayout extends LayerPerspectiveMutable {
      * The distance between the top side of the diagram and the top of the highest FigObject
      */
     public final static int DIAGRAM_TOP_MARGE = 50;
-    
+
+    /**
+     * Linked list with all fig objects sorted by x coordinate in it
+     */
+    private LinkedList _figObjectsX = new LinkedList();
+
+    /**
+     * The heighest height of the outer box of a figobject.
+     */
+    private int _heighestObjectHeight = 0;
+
     public SequenceDiagramLayout(String name, MutableGraphModel gm) {
         super(name, gm);
 
@@ -63,80 +70,126 @@ public class SequenceDiagramLayout extends LayerPerspectiveMutable {
      */
     public void putInPosition(Fig f) {
         if (f instanceof FigObject) {
-            distributeFigObjects();
+            distributeFigObjects(f);
         } else
             super.putInPosition(f);
     }
 
-    private void distributeFigObjects() {
-        Layer lay = this;
-        Collection contents = lay.getContentsNoEdges();
-        if (!contents.isEmpty()) {
-            distributeFigObjectsHorizontal(lay.getContentsNoEdges());
-            distributeFigObjectsVertical(lay.getContentsNoEdges());
-        }
-    }
-
-    private void distributeFigObjectsVertical(Collection figObjects) {
-        Iterator it = figObjects.iterator();
-        SortedSet highestSet = new TreeSet();
-        while (it.hasNext()) {
-            Fig fig = (Fig)it.next();
-            if (fig instanceof FigObject) {
-                highestSet.add(new Integer(fig.getHalfHeight()));
+    /**
+     * Distributes the fig objects contained in _figObjectsX over the sequencediagram.
+     * @param f
+     */
+    private void distributeFigObjects(Fig f) {
+        int listPosition = _figObjectsX.indexOf(f);
+        if (listPosition < _figObjectsX.size() - 1) {
+            Fig next = (Fig)_figObjectsX.get(listPosition + 1);
+            if (next.getX() < f.getX()) {
+                reshuffelFigObjectsX(f);
+                listPosition = _figObjectsX.indexOf(f);
+            }
+        } else if (listPosition > 0) {
+            Fig previous = (Fig)_figObjectsX.get(listPosition - 1);
+            if (previous.getX() > f.getX()) {
+                reshuffelFigObjectsX(f);
+                listPosition = _figObjectsX.indexOf(f);
             }
         }
-
-        if (!highestSet.isEmpty()) {
-            int heighestHalfHeight = ((Integer)highestSet.last()).intValue();
-            it = figObjects.iterator();
+        Iterator it =
+            _figObjectsX.subList(listPosition, _figObjectsX.size()).iterator();
+        int positionX =
+            listPosition == 0
+                ? DIAGRAM_LEFT_MARGE
+                : (((Fig)_figObjectsX.get(listPosition - 1)).getX()
+                    + ((Fig)_figObjectsX.get(listPosition - 1)).getWidth()
+                    + OBJECT_DISTANCE);
+        while (it.hasNext()) {
+            Fig fig = (Fig)it.next();
+            if (fig.getX() == positionX) {
+                break;
+            }
+            fig.setX(positionX);
+            positionX += (fig.getWidth() + OBJECT_DISTANCE);
+        }
+        if (_heighestObjectHeight < f.getHeight()) {
+            _heighestObjectHeight = f.getHeight();
+            it = _figObjectsX.iterator();
             while (it.hasNext()) {
                 Fig fig = (Fig)it.next();
-                if (fig instanceof FigObject) {
-                    fig.setY(
-                        DIAGRAM_TOP_MARGE
-                            + (heighestHalfHeight - fig.getHalfHeight()));
-                    fig.damage();
-                }
-            }
-        }
-
-    }
-
-    private void distributeFigObjectsHorizontal(Collection figObjects) {
-        Iterator it = figObjects.iterator();
-        SortedMap positionMap = new TreeMap();
-        while (it.hasNext()) {
-            Fig fig = (Fig)it.next();
-            if (fig instanceof FigObject) {
-                positionMap.put(
-                    new Integer(fig.getX() + fig.getHalfWidth()),
-                    fig);
-            }
-        }
-        int position = DIAGRAM_LEFT_MARGE;
-        int mapSize = positionMap.size();
-        for (int i = 0; i < mapSize; i++) {
-            Object key = positionMap.firstKey();
-            Fig fig = (Fig)positionMap.get(key);
-            if (fig.getX() != position) {
-                // move fig
-                fig.setX(position);
+                fig.setY(
+                    DIAGRAM_TOP_MARGE + _heighestObjectHeight - f.getHeight());
                 fig.damage();
             }
-            position += (fig.getWidth() + OBJECT_DISTANCE);
-            positionMap.remove(key);
+        } else {
+            f.setY(DIAGRAM_TOP_MARGE + _heighestObjectHeight - f.getHeight());
+            f.damage();
         }
     }
 
     /**
      * @see org.tigris.gef.graph.GraphListener#nodeAdded(org.tigris.gef.graph.GraphEvent)
      */
-    public void nodeAdded(GraphEvent ge) {       
+    public void nodeAdded(GraphEvent ge) {
         super.nodeAdded(ge);
         Fig fig = presentationFor(ge.getArg());
         if (fig instanceof FigObject) {
-        	((FigObject)fig).renderingChanged();
+            ((FigObject)fig).renderingChanged();
+        }
+    }
+
+    /**
+     * @see org.tigris.gef.base.Layer#add(org.tigris.gef.presentation.Fig)
+     */
+    public void add(Fig f) {
+        super.add(f);
+        if (f instanceof FigObject) {
+            SortedMap x = new TreeMap();
+            if (!_figObjectsX.isEmpty()) {
+                Iterator it = _figObjectsX.iterator();
+                while (it.hasNext()) {
+                    Fig fig = (Fig)it.next();
+                    x.put(new Integer(fig.getX()), fig);
+                }
+                Object o = x.get(x.headMap(new Integer(f.getX())).lastKey());
+                _figObjectsX.add(_figObjectsX.indexOf(o) + 1, f);
+            } else
+                _figObjectsX.add(f);
+            _heighestObjectHeight =
+                Math.max(_heighestObjectHeight, f.getHeight());
+        }
+    }
+
+    private void reshuffelFigObjectsX(Fig f) {
+        _figObjectsX.remove(f);
+        int x = f.getX();
+        int newPosition = 0;
+        for (int i = 0; i < _figObjectsX.size(); i++) {
+            Fig fig = (Fig)_figObjectsX.get(i);
+            if (fig.getX() < x) {
+                if (i != (_figObjectsX.size() - 1)
+                    && ((Fig)_figObjectsX.get(i + 1)).getX() > x) {
+                    newPosition = i + 1;
+                    break;
+                }
+                if (i == (_figObjectsX.size() - 1)) {
+                    newPosition = i;
+                }
+            }
+        }
+        _figObjectsX.add(newPosition, f);
+
+    }
+
+    /**
+     * @see org.tigris.gef.base.Layer#deleted(org.tigris.gef.presentation.Fig)
+     */
+    public void deleted(Fig f) {       
+        super.deleted(f);
+        _figObjectsX.remove(f);
+        if (f.getHeight() == _heighestObjectHeight) {
+        	Iterator it = _figObjectsX.iterator();
+        	while (it.hasNext()) {
+        		_heighestObjectHeight = Math.max(_heighestObjectHeight, ((Fig)it.next()).getHeight());
+        	}
         }
     }
 
