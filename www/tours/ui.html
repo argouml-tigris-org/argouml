@@ -12,7 +12,7 @@
 
 <P>This tour consists of 18 screens, each of which is described in a section of this
 page:<BR>
-(The screenshots in this tour were made with ArgoUML v0.15.2)</P>
+(The first 10 screenshots in this tour were made with ArgoUML v0.15.2)</P>
 
 
 <ol>
@@ -31,9 +31,8 @@ page:<BR>
 	<LI><A HREF="#13">Class Source Code</A></LI>
 	<LI><A HREF="#14">Inheritance-centric Perspective</A></LI>
 	<LI><A HREF="#15">Dismissing a &quot;To Do&quot; Item</A></LI>
-	<LI><A HREF="#17">Design History</A></LI>
-	<LI><A HREF="#18">Customizing a Perspective</A></LI>
-	<LI><A HREF="#19">Modified Perspective w/ Javadocs</A></LI>
+	<LI><A HREF="#16">Customizing a Perspective</A></LI>
+	<LI><A HREF="#17">Modified Perspective</A></LI>
 </ol> 
 
 
@@ -119,8 +118,6 @@ in the &quot;Properties&quot; tab.<BR>
 Note that the criticism that class Shape has no operations has been automatically removed.</P>
 <hr>
 
-<!-- TODO: Text and figures to be updated below here -->
-
 <h3><A NAME="11"></A>11. Operation Checklist</h3>
 <P><IMG SRC="opercheck.gif"></P>
 <P>Design checklists are commonly used in review meetings to help catch design errors
@@ -136,10 +133,11 @@ Argo provides checklists that are specific to the selected model element.</P>
 <h3><A NAME="13"></A>13. Class Source Code</h3>
 <P><IMG SRC="annotated.gif"></P>
 <P>Source code for the selected model element is shown in the &quot;Source&quot; tab
-if appropriate. In the future, ArgoUML will parse what the<BR>
-designer types here and update the model. This screenshot also shows Argo's ability to place unstructured graphics
-in diagrams.<BR>
-Not shown: the designer can enter comments in JavaDoc format by using the &quot;Javadocs&quot; tab.</P>
+if appropriate. In the future, ArgoUML will parse what the
+designer types here and update the model. <!--This screenshot also shows Argo's 
+ability to place unstructured graphics in diagrams.-->
+Not shown: the designer can enter comments in JavaDoc format by using 
+the &quot;Javadocs&quot; tab.</P>
 <hr>
 
 <h3><A NAME="14"></A>14. Inheritance-centric Perspective</h3>
@@ -154,7 +152,7 @@ emphasize associations, states, or transitions.</P>
 <hr>
 
 <h3><A NAME="15"></A>15. Dismissing a &quot;To Do&quot; Item</h3>
-<P><IMG SRC="resolvedialog.gif"></P>
+<P><IMG SRC="newresolvedialog.gif"></P>
 <P>This critic reminds the designer to add instance variables to class Shape. The
 designer considers the advice but decides against following
 the critic's advice, and clicks the &quot;Resolve Item&quot; 
@@ -164,18 +162,11 @@ explanation for his or her decision. This explanation will be added
 to the design history for later reference.</P>
 <hr>
 
-<h3><A NAME="16"></A>16. Design History</h3>
-<P><IMG SRC="history.gif"></P>
-<P>All criticisms and their resolutions are recorded in a design history for later
-review. In the future, Argo will also record design changes and
-the causal relationships between changes and criticism being produced or withdrawn.</P>
-<hr>
-
-<h3><A NAME="17"></A>17. Customizing a Perspective</h3>
+<h3><A NAME="16"></A>16. Customizing a Perspective</h3>
 <P><IMG SRC="configurepers.gif"></P>
 <P>This dialog allows designers to customize 
 or define new explorer perspectives.
-Each perspective is composed from a set of rules
+Each perspective is composed of a set of rules
 that generate the children of each node in the tree. 
 Here we see that the Inheritance-centric perspective will
 start at the project, packages
@@ -185,7 +176,7 @@ an example, we have
 added in a new rule that makes each class show its operations.</P>
 <hr>
 
-<h3><A NAME="18"></A>18. Modified Perspective w/ Javadocs</h3>
+<h3><A NAME="17"></A>17. Modified Perspective</h3>
 <P><IMG SRC="modifiedpersjavadocs.gif"></P>
 <P>This is the result of modifying the Inheritance-centric perspective to also show
 operations by selecting rule &quot;Class -&gt; Operations&quot;.<BR>
