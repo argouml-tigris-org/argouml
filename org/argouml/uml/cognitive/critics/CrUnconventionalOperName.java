@@ -52,23 +52,31 @@ public class CrUnconventionalOperName extends AbstractCrUnconventionalName {
      * java.lang.Object, org.argouml.cognitive.Designer)
      */
     public boolean predicate2(Object dm, Designer dsgr) {
-	if (!(ModelFacade.isAOperation(dm))) return NO_PROBLEM;
+	if (!(ModelFacade.isAOperation(dm))) {
+	    return NO_PROBLEM;
+	}
 	Object oper = /*(MOperation)*/ dm;
 	String myName = ModelFacade.getName(oper);
-	if (myName == null || myName.equals("")) return NO_PROBLEM;
+	if (myName == null || myName.equals("")) {
+	    return NO_PROBLEM;
+	}
 	String nameStr = myName;
-	if (nameStr == null || nameStr.length() == 0) return NO_PROBLEM;
+	if (nameStr == null || nameStr.length() == 0) {
+	    return NO_PROBLEM;
+	}
 	char initalChar = nameStr.charAt(0);
         Object stereo = null;
         if (ModelFacade.getStereotypes(oper).size() > 0) {
             stereo = ModelFacade.getStereotypes(oper).iterator().next();
         }
-	if ((stereo != null) 
-            && ("create".equals(ModelFacade.getName(stereo)) 
+	if ((stereo != null)
+            && ("create".equals(ModelFacade.getName(stereo))
                     || "constructor".equals(ModelFacade.getName(stereo)))) {
 	    return NO_PROBLEM;
         }
-	if (!Character.isLowerCase(initalChar)) return PROBLEM_FOUND;
+	if (!Character.isLowerCase(initalChar)) {
+	    return PROBLEM_FOUND;
+	}
 	return NO_PROBLEM;
     }
 
@@ -97,33 +105,45 @@ public class CrUnconventionalOperName extends AbstractCrUnconventionalName {
      * org.argouml.cognitive.ToDoItem, org.argouml.cognitive.Designer)
      */
     public boolean stillValid(ToDoItem i, Designer dsgr) {
-	if (!isActive()) return false;
+	if (!isActive()) {
+	    return false;
+	}
 	VectorSet offs = i.getOffenders();
 	Object f = /*(MFeature)*/ offs.firstElement();
-	if (!predicate(f, dsgr)) return false;
+	if (!predicate(f, dsgr)) {
+	    return false;
+	}
 	VectorSet newOffs = computeOffenders(f);
 	boolean res = offs.equals(newOffs);
 	return res;
     }
 
 
-    /** 
+    /**
      * CandidateForConstructor tests if the operation name is the same
-     * as the class name. If so, an alternative path in the wizard is 
+     * as the class name. If so, an alternative path in the wizard is
      * possible where we are suggested to make the operation a constructor.
      *
      * @param me the operation to check
      * @return true if this operation looks like a constructor
      */
     protected boolean candidateForConstructor(Object/*MModelElement*/ me) {
-	if (!(ModelFacade.isAOperation(me))) return false;
+	if (!(ModelFacade.isAOperation(me))) {
+	    return false;
+	}
 	Object oper = /*(MOperation)*/ me;
 	String myName = ModelFacade.getName(oper);
-	if (myName == null || myName.equals("")) return false;
+	if (myName == null || myName.equals("")) {
+	    return false;
+	}
 	Object cl = ModelFacade.getOwner(oper);
 	String nameCl = ModelFacade.getName(cl);
-	if (nameCl == null || nameCl.equals("")) return false;
-	if (myName.equals(nameCl)) return true;
+	if (nameCl == null || nameCl.equals("")) {
+	    return false;
+	}
+	if (myName.equals(nameCl)) {
+	    return true;
+	}
 	return false;
     }
 
@@ -139,25 +159,27 @@ public class CrUnconventionalOperName extends AbstractCrUnconventionalName {
 	    String sug = ModelFacade.getName(me);
 	    sug = computeSuggestion(sug);
 	    boolean cand = candidateForConstructor(me);
-	    String ins = "Change the operation name to start with a " 
+	    String ins =
+	        "Change the operation name to start with a "
 		+ "lowercase letter";
-	    if (cand)
-		ins = ins + " or make it a constructor";
+	    if (cand) {
+	        ins = ins + " or make it a constructor";
+	    }
 	    ins = ins + ".";
 	    ((WizOperName) w).setInstructions(ins);
 	    ((WizOperName) w).setSuggestion(sug);
 	    ((WizOperName) w).setPossibleConstructor(cand);
 	}
     }
-    
+
     /**
-     * @param sug The not formatted suggestion String.
-     * @return the suggested string.
+     * @see org.argouml.uml.cognitive.critics.AbstractCrUnconventionalName#computeSuggestion(java.lang.String)
      */
     public String computeSuggestion(String sug) {
-        if (sug == null) return "";
-        sug = sug.substring(0, 1).toLowerCase() + sug.substring(1);
-        return sug;
+        if (sug == null) {
+            return "";
+        }
+        return sug.substring(0, 1).toLowerCase() + sug.substring(1);
     }
 
     /**

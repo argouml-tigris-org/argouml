@@ -39,7 +39,6 @@ public class CrUnconventionalPackName extends AbstractCrUnconventionalName {
 
     /**
      * The constructor.
-     * 
      */
     public CrUnconventionalPackName() {
 	setHeadline("Revise Package Name <ocl>self</ocl>");
@@ -53,16 +52,24 @@ public class CrUnconventionalPackName extends AbstractCrUnconventionalName {
      * java.lang.Object, org.argouml.cognitive.Designer)
      */
     public boolean predicate2(Object dm, Designer dsgr) {
-	if (!(ModelFacade.isAPackage(dm))) return NO_PROBLEM;
+	if (!(ModelFacade.isAPackage(dm))) {
+	    return NO_PROBLEM;
+	}
 
 	String myName = ModelFacade.getName(dm);
-	if (myName == null || myName.equals("")) return NO_PROBLEM;
+	if (myName == null || myName.equals("")) {
+	    return NO_PROBLEM;
+	}
 	String nameStr = myName;
-	if (nameStr == null || nameStr.length() == 0) return NO_PROBLEM;
+	if (nameStr == null || nameStr.length() == 0) {
+	    return NO_PROBLEM;
+	}
 	int size = nameStr.length();
 	for (int i = 0; i < size; i++) {
 	    char c = nameStr.charAt(i);
-	    if (!Character.isLowerCase(c) && c != '.') return PROBLEM_FOUND;
+	    if (!Character.isLowerCase(c) && c != '.') {
+	        return PROBLEM_FOUND;
+	    }
 	}
 	return NO_PROBLEM;
     }
@@ -89,9 +96,8 @@ public class CrUnconventionalPackName extends AbstractCrUnconventionalName {
 	    ((WizMEName) w).setSuggestion(sug);
 	}
     }
-    
+
     /**
-     * 
      * @see org.argouml.uml.cognitive.critics.AbstractCrUnconventionalName#computeSuggestion(java.lang.String)
      */
     public String computeSuggestion(String nameStr) {
@@ -101,13 +107,16 @@ public class CrUnconventionalPackName extends AbstractCrUnconventionalName {
             int size = nameStr.length();
             for (int i = 0; i < size; i++) {
                 char c = nameStr.charAt(i);
-                if (Character.isLowerCase(c) || c == '.')
+                if (Character.isLowerCase(c) || c == '.') {
                     sug += c;
-                else if (Character.isUpperCase(c))
-                        sug += Character.toLowerCase(c);
+                } else if (Character.isUpperCase(c)) {
+                    sug += Character.toLowerCase(c);
+                }
             }
         }
-        if (sug.equals("")) sug = "packageName";
+        if (sug.equals("")) {
+            sug = "packageName";
+        }
         return sug;
     }
 

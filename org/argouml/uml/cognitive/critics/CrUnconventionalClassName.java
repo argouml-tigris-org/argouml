@@ -39,7 +39,6 @@ public class CrUnconventionalClassName extends AbstractCrUnconventionalName {
 
     /**
      * The constructor.
-     * 
      */
     public CrUnconventionalClassName() {
 	setHeadline("Capitalize Class Name <ocl>self</ocl>");
@@ -53,15 +52,22 @@ public class CrUnconventionalClassName extends AbstractCrUnconventionalName {
      * java.lang.Object, org.argouml.cognitive.Designer)
      */
     public boolean predicate2(Object dm, Designer dsgr) {
-	if (!(ModelFacade.isAClass(dm)) && !(ModelFacade.isAInterface(dm)))
+	if (!(ModelFacade.isAClass(dm)) && !(ModelFacade.isAInterface(dm))) {
 	    return NO_PROBLEM;
+	}
 	Object cls = /*(MClassifier)*/ dm;
 	String myName = ModelFacade.getName(cls);
-	if (myName == null || myName.equals("")) return NO_PROBLEM;
+	if (myName == null || myName.equals("")) {
+	    return NO_PROBLEM;
+	}
 	String nameStr = myName;
-	if (nameStr == null || nameStr.length() == 0) return NO_PROBLEM;
+	if (nameStr == null || nameStr.length() == 0) {
+	    return NO_PROBLEM;
+	}
 	char initialChar = nameStr.charAt(0);
-	if (!Character.isUpperCase(initialChar)) return PROBLEM_FOUND;
+	if (!Character.isUpperCase(initialChar)) {
+	    return PROBLEM_FOUND;
+	}
 	return NO_PROBLEM;
     }
 
@@ -82,21 +88,22 @@ public class CrUnconventionalClassName extends AbstractCrUnconventionalName {
 	    Object me = /*(MModelElement)*/ item.getOffenders().elementAt(0);
 	    String sug = ModelFacade.getName(me);
 	    sug = computeSuggestion(sug);
-	    String ins = "Change the class name to start with an " 
+	    String ins =
+	        "Change the class name to start with an "
 		+ "uppercase letter.";
 	    ((WizMEName) w).setInstructions(ins);
 	    ((WizMEName) w).setSuggestion(sug);
 	}
     }
-    
+
     /**
-     * 
      * @see org.argouml.uml.cognitive.critics.AbstractCrUnconventionalName#computeSuggestion(java.lang.String)
      */
     public String computeSuggestion(String sug) {
-        if (sug == null) return "";
-        sug = sug.substring(0, 1).toUpperCase() + sug.substring(1);
-        return sug;
+        if (sug == null) {
+            return "";
+        }
+        return sug.substring(0, 1).toUpperCase() + sug.substring(1);
     }
 
     /**
