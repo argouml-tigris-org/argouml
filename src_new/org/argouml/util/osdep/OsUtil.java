@@ -69,7 +69,10 @@ public class OsUtil {
                 .equals("Sun Microsystems Inc."));
     }
 
-    /** check whether we deal with a JDK 1.3.x */
+    /** 
+     * Check whether we deal with a JDK 1.3.x. 
+     * @return true if we deal with Java 1.3.x.
+     */
     public static boolean isJdk131() {
         return (System.getProperty("java.version").startsWith("1.3.")); 
     }
