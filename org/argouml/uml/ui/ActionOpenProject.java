@@ -263,7 +263,7 @@ public class ActionOpenProject extends UMLAction {
             else if (oldProject != null) {
                 // if p equals oldProject there was an exception and we do
                 // not have to gc the old project
-                if( !p.equals(oldProject)) {
+                if( p!= null && !p.equals(oldProject)) {
                 
                 	//prepare the old project for gc
 	                ProjectManager.getManager().removeProject(oldProject);
