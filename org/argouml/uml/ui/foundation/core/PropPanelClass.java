@@ -28,9 +28,6 @@ import javax.swing.JList;
 import javax.swing.JScrollPane;
 
 import org.argouml.i18n.Translator;
-import org.argouml.model.ModelFacade;
-import org.argouml.model.uml.CoreFactory;
-import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.ui.ActionAddAttribute;
 import org.argouml.uml.diagram.ui.ActionAddOperation;
 import org.argouml.uml.ui.ActionNavigateNamespace;
@@ -106,41 +103,39 @@ public class PropPanelClass extends PropPanelClassifier {
                         new ActionAddOperation()));
         addButton(new PropPanelButton2(this, getActionNewReception()));
         new PropPanelButton(this, lookupIcon("InnerClass"), 
-                Translator.localize("button.new-inner-class"),
-                "addInnerClass", null);
-        new PropPanelButton(this, lookupIcon("Class"), 
-                Translator.localize(
-                "button.new-class"), "newClass", null);
+                Translator.localize("button.new-inner-class"), 
+                new ActionNewInnerClass());
+        new PropPanelButton(this, lookupIcon("Class"), Translator.localize(
+                "button.new-class"), new ActionNewClass());
         addButton(new PropPanelButton2(this, new ActionRemoveFromModel()));
     }
 
     /**
      * Add an inner class. 
      */
-    public void addInnerClass() {
-        Object target = getTarget();
-        if (org.argouml.model.ModelFacade.isAClassifier(target)) {
-            Object classifier = /* (MClassifier) */target;
-            Object inner = CoreFactory.getFactory().buildClass(classifier);
-            TargetManager.getInstance().setTarget(inner);
-        }
-    }
+//    public void addInnerClass() {
+//        Object target = getTarget();
+//        if (org.argouml.model.ModelFacade.isAClassifier(target)) {
+//            Object classifier = /* (MClassifier) */target;
+//            Object inner = CoreFactory.getFactory().buildClass(classifier);
+//            TargetManager.getInstance().setTarget(inner);
+//        }
+//    }
 
     /**
      * Add a new class.
      */
-    public void newClass() {
-        Object target = getTarget();
-        if (org.argouml.model.ModelFacade.isAClassifier(target)) {
-            Object classifier = /* (MClassifier) */target;
-            Object ns = ModelFacade.getNamespace(classifier);
-            if (ns != null) {
-                Object peer = CoreFactory.getFactory().buildClass(ns);
-                TargetManager.getInstance().setTarget(peer);
-            }
-        }
-
-    }
+//    public void newClass() {
+//        Object target = getTarget();
+//        if (org.argouml.model.ModelFacade.isAClassifier(target)) {
+//            Object classifier = /* (MClassifier) */target;
+//            Object ns = ModelFacade.getNamespace(classifier);
+//            if (ns != null) {
+//                Object peer = CoreFactory.getFactory().buildClass(ns);
+//                TargetManager.getInstance().setTarget(peer);
+//            }
+//        }
+//    }
 
     /**
      * Returns the operationScroll.
