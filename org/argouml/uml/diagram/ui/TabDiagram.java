@@ -438,6 +438,7 @@ class ArgoEditor extends Editor {
      * Overridden to set Argo-specific RenderingHints to determine whether
      * or not antialiasing should be turned on.
      */
+    /*
     public synchronized void paint(Graphics g) {
         if(!shouldPaint())
             return;
@@ -454,6 +455,7 @@ class ArgoEditor extends Editor {
             _modeManager.paint(g);
         }        
     }
+    */
     
     /**
      * Construct a new set of RenderingHints to reflect current user
