@@ -207,28 +207,67 @@ public class MMUtil {
 		return result;
 	}
 
-	/** This method returns all Classifiers of which this class is a subtype.
+	/** This method returns all Classifiers of which this class is a 
+	 *	direct subtype.
+	 *
 	 * @param cls  the class you want to have the parents for
-	 * @return a collection of the parents
+	 * @return a collection of the parents, each of which is a 
+	 *					{@link MGeneralizableElement MGeneralizableElement}
 	 */
-
 	public Collection getSupertypes(MClassifier cls) {
 
-		Collection result = new Vector();
+		Collection result = new HashSet();
 		Collection gens = cls.getGeneralizations();
 		Iterator genIterator = gens.iterator();
 
 		while (genIterator.hasNext()) {
-			result.add(genIterator.next());
+			MGeneralization next = (MGeneralization) genIterator.next();
+			result.add(next.getParent());
 		}
 		return result;
 	}
-
-	/** This method returns all Classifiers of which this class is a supertype.
-	 * @param cls  the class you want to have the children for
-	 * @return a collection of the children
+	
+	/** This method returns all Classifiers of which this class is a 
+	 *	direct or indirect subtype.
+	 *
+	 * @param cls  the class you want to have the parents for
+	 * @return a collection of the parents, each of which is a 
+	 *					{@link MGeneralizableElement MGeneralizableElement}
 	 */
+	public Collection getAllSupertypes(MClassifier cls) {
 
+		Collection result = new HashSet();
+
+		Collection add = getSupertypes(cls);
+		do 
+		{
+			Collection newAdd = new HashSet();
+			Iterator addIter = add.iterator();
+			while (addIter.hasNext())
+			{
+				MGeneralizableElement next = (MGeneralizableElement) addIter.next();
+				if (next instanceof MClassifier) 
+				{
+					newAdd.addAll( getSupertypes((MClassifier) next) );
+				}
+			}
+			result.addAll(add);
+			add = newAdd;
+			add.removeAll(result);
+		}
+		while (! add.isEmpty());
+		
+		return result;
+	}
+	
+
+	/** This method returns all Classifiers of which this class is a 
+	 *	direct supertype.
+	 *
+	 * @param cls  the class you want to have the children for
+	 * @return a collection of the children, each of which is a 
+	 *					{@link MGeneralizableElement MGeneralizableElement}
+	 */
 	public Collection getSubtypes(MClassifier cls) {
 
 		Collection result = new Vector();
@@ -236,7 +275,8 @@ public class MMUtil {
 		Iterator genIterator = gens.iterator();
 
 		while (genIterator.hasNext()) {
-			result.add(genIterator.next());
+			MGeneralization next = (MGeneralization) genIterator.next();
+			result.add(next.getChild());
 		}
 		return result;
 	}
