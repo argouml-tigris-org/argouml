@@ -134,17 +134,13 @@ This will force Ant to compile with jikes if you have it on your system. Refer t
 <project name="ArgoDocs" default="help" basedir="..">
 
   <property name="argo.root.dir" value="${basedir}"/>
-  <property environment="env"/>
   <property file="${argo.root.dir}/documentation/build.properties"/>
   <property file="${user.home}/argouml.build.properties"/>
   <property file="${argo.root.dir}/documentation/default.properties"/>
   <property name="documentation.dir" value="${argo.root.dir}/documentation"/>
-  <property name="extlib.dir"        
-      value="${argo.docbook.dir}/docbook-xsl-1.49/extensions"/>
 
   <path id="saxon.classpath">
     <pathelement location="${saxon.jar.path}" />
-    <pathelement location="${extlib.dir}/saxon65.jar"/>
   </path>
 
   <target name="init">
