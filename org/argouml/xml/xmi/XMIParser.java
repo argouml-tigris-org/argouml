@@ -55,7 +55,7 @@ public class XMIParser {
     /** logger */
     private static final Logger LOG = Logger.getLogger(XMIParser.class);
 
-    public static XMIParser singleton = new XMIParser();
+    private static XMIParser singleton = new XMIParser();
 
     ////////////////////////////////////////////////////////////////
     // instance variables
@@ -146,4 +146,10 @@ public class XMIParser {
         }
     }
 
+    /**
+     * @return Returns the singleton.
+     */
+    public static XMIParser getSingleton() {
+        return singleton;
+    }
 } /* end class XMIParser */

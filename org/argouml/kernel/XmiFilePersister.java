@@ -165,10 +165,10 @@ public class XmiFilePersister extends AbstractFilePersister {
     public Project loadProject(URL url) throws OpenException {
         try {
             Project p = new Project();
-            XMIParser.SINGLETON.readModels(p, url);
-            Object model = XMIParser.SINGLETON.getCurModel();
+            XMIParser.getSingleton().readModels(p, url);
+            Object model = XMIParser.getSingleton().getCurModel();
             UmlHelper.getHelper().addListenersToModel(model);
-            p.setUUIDRefs(XMIParser.SINGLETON.getUUIDRefs());
+            p.setUUIDRefs(XMIParser.getSingleton().getUUIDRefs());
             p.addMember(new ProjectMemberTodoList("", p));
             p.addMember(model);
             p.setNeedsSave(false);

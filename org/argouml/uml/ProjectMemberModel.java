@@ -107,9 +107,9 @@ public class ProjectMemberModel extends ProjectMember {
      */
     public void load() throws java.io.IOException, org.xml.sax.SAXException {
         LOG.info("Reading " + getURL());
-        XMIParser.SINGLETON.readModels(getProject(), getURL());
-        _model = XMIParser.SINGLETON.getCurModel();
-        getProject().setUUIDRefs(XMIParser.SINGLETON.getUUIDRefs());
+        XMIParser.getSingleton().readModels(getProject(), getURL());
+        _model = XMIParser.getSingleton().getCurModel();
+        getProject().setUUIDRefs(XMIParser.getSingleton().getUUIDRefs());
         LOG.info("Done reading " + getURL());
     }
 
