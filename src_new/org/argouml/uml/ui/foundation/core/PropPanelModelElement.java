@@ -52,6 +52,7 @@ abstract public class PropPanelModelElement extends PropPanel {
     protected static ImageIcon _stimulusIcon = ResourceLoader.lookupIconResource("Stimulus");
     protected static ImageIcon _associationIcon = ResourceLoader.lookupIconResource("Association");
     protected static ImageIcon _assocEndIcon = ResourceLoader.lookupIconResource("AssociationEnd");
+    protected static ImageIcon _assocEndRoleIcon = ResourceLoader.lookupIconResource("AssociationEndRole");
     protected static ImageIcon _generalizationIcon = ResourceLoader.lookupIconResource("Generalization");
     protected static ImageIcon _realizationIcon = ResourceLoader.lookupIconResource("Realization");
     protected static ImageIcon _classIcon = ResourceLoader.lookupIconResource("Class");
@@ -103,7 +104,7 @@ abstract public class PropPanelModelElement extends PropPanel {
         namespaceList = new UMLList(new UMLNamespaceListModel(this),true);
         namespaceList.setBackground(getBackground());
         namespaceList.setForeground(Color.blue);
-        
+
 	namespaceScroll = new JScrollPane(namespaceList,JScrollPane.VERTICAL_SCROLLBAR_NEVER,JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
     }
 
@@ -160,7 +161,7 @@ abstract public class PropPanelModelElement extends PropPanel {
     // THIS CLASS MUST NOT IMPLEMENT PluggablePropertyPanel.  These
     // are present to provide default implementations for any
     // property panel that extends this class.
-    public PropPanel getPropertyPanel() { return this; } 
+    public PropPanel getPropertyPanel() { return this; }
     public boolean isModuleEnabled() { return true; }
     public Vector getModulePopUpActions(Vector v, Object o) { return null; }
     public boolean shutdownModule() { return true; }

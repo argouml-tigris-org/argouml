@@ -95,7 +95,7 @@ implements TabModelTarget, NavigationListener, ArgoModuleEventListener {
     while (iterator.hasNext()) {
 	Object o = iterator.next();
 	PluggablePropertyPanel ppp = (PluggablePropertyPanel)o;
-        _panels.put(ppp.getClassForPanel(), ppp.getPropertyPanel()); 
+        _panels.put(ppp.getClassForPanel(), ppp.getPropertyPanel());
     }
 
     ArgoEventPump.addListener(ArgoEventTypes.ANY_MODULE_EVENT, this);
@@ -318,16 +318,16 @@ implements TabModelTarget, NavigationListener, ArgoModuleEventListener {
 
   public boolean shouldBeEnabled() { return _shouldBeEnabled; }
 
-  public void moduleLoaded (ArgoModuleEvent event) { 
-      if (event.getSource() instanceof PluggablePropertyPanel) { 
-          PluggablePropertyPanel p = (PluggablePropertyPanel)event.getSource(); 
-          _panels.put(p.getClassForPanel(), p.getPropertyPanel()); 
+  public void moduleLoaded (ArgoModuleEvent event) {
+      if (event.getSource() instanceof PluggablePropertyPanel) {
+          PluggablePropertyPanel p = (PluggablePropertyPanel)event.getSource();
+          _panels.put(p.getClassForPanel(), p.getPropertyPanel());
 	  if(p.getPropertyPanel() instanceof UMLUserInterfaceContainer) {
             ((UMLUserInterfaceContainer)p.getPropertyPanel()).addNavigationListener(this);
 	}
 
-      } 
-  } 
+      }
+  }
   public void moduleUnloaded (ArgoModuleEvent event) { }
   public void moduleEnabled (ArgoModuleEvent event) { }
   public void moduleDisabled (ArgoModuleEvent event) { }
@@ -390,6 +390,7 @@ class InitPanelsLater implements Runnable {
         _panels.put(MTransitionImpl.class, new PropPanelTransition());
         //_panels.put(MUseCaseImpl.class, new PropPanelUseCase());
         _panels.put(MAssociationEndImpl.class, new PropPanelAssociationEnd());
+        _panels.put(MAssociationEndRoleImpl.class, new PropPanelAssociationEndRole());
         _panels.put(MParameterImpl.class,new PropPanelParameter());
         _panels.put(MSignalImpl.class, new PropPanelSignal());
         _panels.put(MStereotypeImpl.class, new PropPanelStereotype());
