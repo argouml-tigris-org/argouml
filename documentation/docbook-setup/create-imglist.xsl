@@ -35,7 +35,7 @@
 </xsl:text>
 </xsl:template>
 
-<xsl:template match="note|caution|important">
+<xsl:template match="note|caution|important|tip|warning">
   <xsl:message>
     <xsl:text>Found </xsl:text>
     <xsl:value-of select="name(.)"/>
