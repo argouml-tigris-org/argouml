@@ -1018,7 +1018,7 @@ Every interface has a description at componentname-to-componentname
 	      <entry id="comp-ocl">OCL-constraints</entry>
 	      <entry id="comp-critics">Cognitive</entry>
 	      <entry id="comp-help">Help system</entry>
-	      <entry id="comp-internationalization">Internationalization</entry>
+	      <entry id="comp-internationalization">I18n</entry>
 	      <entry id="comp-logging">Logging</entry>
 	      <entry id="comp-plugins">Plug in and Module API</entry>
 	    </row>
@@ -1107,16 +1107,16 @@ Every interface has a description at componentname-to-componentname
 	    <row>
 	      <entry>Notation</entry>
 	      <entry>       </entry>
+	      <entry>No</entry>
 	      <entry>       </entry>
-	      <entry>       </entry>
-	      <entry>       </entry>
-	      <entry>       </entry>
+	      <entry>No</entry>
+	      <entry>No</entry>
 	      <entry> - </entry>
+	      <entry><xref linkend="comp-notation-to-comp-codegenreveng"/></entry>
 	      <entry>       </entry>
-	      <entry>       </entry>
-	      <entry>       </entry>
-	      <entry>       </entry>
-	      <entry>       </entry>
+	      <entry>No</entry>
+	      <entry>No</entry>
+	      <entry>No</entry>
 	      <entry>       </entry>
 	      <entry>       </entry>
 	    </row>
@@ -1159,8 +1159,8 @@ Every interface has a description at componentname-to-componentname
 	      <entry>       </entry>
 	      <entry><xref linkend="comp-critics-to-comp-model"/></entry>
 	      <entry><xref linkend="comp-critics-to-comp-saveload"/></entry>
-	      <entry><xref linkend="comp-critics-to-comp-notation"/></entry>
-	      <entry><xref linkend="comp-critics-to-comp-codegenreveng"/></entry>
+	      <entry>No</entry>
+	      <entry>No</entry>
 	      <entry>       </entry>
 	      <entry> - </entry>
 	      <entry><xref linkend="comp-critics-to-comp-help"/></entry>
@@ -1460,14 +1460,6 @@ Not at all!
 Eventually the user created To Do Items needs to be saved as well as
 information on what Critiques that have been snoozed.
 </para>
-	</sect3>
-	<sect3 id="comp-critics-to-comp-notation">
-	  <title>Critics uses Notation</title>
-	  <para>Not at all!</para>
-	</sect3>
-	<sect3 id="comp-critics-to-comp-codegenreveng">
-	  <title>Critics uses Code Generation and Reverse Engineering</title>
-	  <para>Not at all!</para>
 	</sect3>
 	<sect3 id="comp-critics-to-comp-help">
 	  <title>Critics uses Help System</title>
@@ -1791,40 +1783,12 @@ This module contains the following main class types:
 Notations are used by the diagrams and tabs to provide the correct
 syntax when showing code.
 </para>
-	<sect3 id="comp-notation-to-comp-diagrams">
-	  <title>Notation uses Diagrams</title>
-	  <para>
-Not at all. It is the other way around.
-</para>
-	</sect3>
-	<sect3 id="comp-notation-to-comp-model">
-	  <title>Notation uses the Model</title>
-	  <para>
-Not at all. It is the other way around.
-</para>
-	</sect3>
-	<sect3 id="comp-notation-to-comp-saveload">
-	  <title>Notation uses Saving/Loading</title>
-	  <para>Not at all!</para>
-	</sect3>
 	<sect3 id="comp-notation-to-comp-codegenreveng">
 	  <title>Notation uses Code Generation and Reverse Engineering</title>
 	  <para>
 For generating parts of the java-notation, parts of the
 java code generation is used.
 </para>
-	</sect3>
-	<sect3 id="comp-notation-to-comp-critics">
-	  <title>Notation uses the Cognitive stuff</title>
-	  <para>Not at all!</para>
-	</sect3>
-	<sect3 id="comp-notation-to-comp-help">
-	  <title>Notation uses Help System</title>
-	  <para>Not at all.</para>
-	</sect3>
-	<sect3 id="comp-notation-to-comp-internationalization">
-	  <title>Notation uses Internationalization</title>
-	  <para>Not at all.</para>
 	</sect3>
 	<sect3 id="comp-notation-to-comp-plugins">
 	  <title>Notation uses Plugin-Module API</title>
