@@ -43,6 +43,7 @@ import org.argouml.cognitive.*;
 import org.argouml.cognitive.ui.*;
 import org.argouml.uml.cognitive.critics.*;
 import org.argouml.xml.argo.ArgoParser;
+import org.argouml.uml.ui.UMLAction;
 
 public class Main {
   ////////////////////////////////////////////////////////////////
@@ -219,6 +220,10 @@ public class Main {
 
 
 	MFactoryImpl.setEventPolicy(MFactoryImpl.EVENT_POLICY_IMMEDIATE);
+    //
+    //  sets locale for menus
+    //
+    UMLAction.setLocale(Locale.getDefault());
     ProjectBrowser pb = new ProjectBrowser("ArgoUML", splash.getStatusBar());
     phase1 = System.currentTimeMillis();
 

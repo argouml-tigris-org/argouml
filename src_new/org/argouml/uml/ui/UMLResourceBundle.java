@@ -24,6 +24,7 @@
 
 package org.argouml.uml.ui;
 import java.util.*;
+import org.argouml.util.*;
 
 /**
  *   This class is the default member of a resource bundle that
@@ -37,45 +38,108 @@ import java.util.*;
  *   @since 0.9
  *   @see java.util.ResourceBundle
  *   @see UMLResourceBundle_de
+ *   @see org.argouml.util.CheckResourceBundle
  */
-public class UMLResourceBundle extends ResourceBundle {
+public class UMLResourceBundle extends ListResourceBundle {
 
-    private Hashtable _map = null;
+    private static final Object[][] _contents = {
+        { "Add_Menu_Actor" , "Actor..." } ,
+        { "Add_Menu_Class" , "Class..." } ,
+        { "Add_Menu_Datatype" , "Datatype..." } ,
+        { "Add_Menu_Exception" , "Exception..." } ,
+        { "Add_Menu_Interface" , "Interface..." } ,
+        { "Add_Menu_Signal" , "Signal..." } ,
+        { "Add_Menu_UseCase" , "Use Case..." },
+        { "Add association" , "Add association" },
+        { "Add attribute" , "Add attribute" },
+        { "Add datatype" , "Add datatype" },
+        { "Add inner class" , "Add inner class" },
+        { "Add operation" , "Add operation" },
+        { "Add parameter" , "Add parameter" },
+        { "Add use case" , "Add use case" },
+        { "Association:" , "Association:" },
+        { "Associations:" , "Associations:" },
+        { "Attributes:" , "Attributes:" },
+        { "Base Class:" , "Base Class:" },
+        { "Class" , "Class" },
+        { "changeable" , "changeable" },
+        { "Components:" , "Components:" },
+        { "Connections:" , "Connections:" },
+        { "Delete actor" , "Delete actor" },
+        { "Delete association" , "Delete association" },
+        { "Delete association end" , "Delete association end" },
+        { "Delete attribute" , "Delete attribute" },
+        { "Delete class" , "Delete class" },
+        { "Delete interface" , "Delete interface" },
+        { "Delete operation" , "Delete operation" },
+        { "Delete package" , "Delete package" },
+        { "Delete parameter" , "Delete parameter" },
+        { "Derived:" , "Derived:" },
+        { "Expression:" , "Expression:" },
+        { "Extends:" , "Extends:" },
+        { "Go back" , "Go back" },
+        { "Go forward" , "Go forward" },
+        { "Implements:" , "Implements:" },
+        { "Incoming:" , "Incoming:" },
+        { "Language:" , "Language:" },
+        { "Literals:" , "Literals:" },
+        { "Multiplicity:" , "Multiplicity:" },
+        { "Name:" , "Name:" },
+        { "Namespace:" , "Namespace:" },
+        { "New actor" , "New actor" },
+        { "New association" , "New association" },
+        { "New attribute" , "New attribute" },
+        { "New class" , "New class" },
+        { "New data type" , "New data type" },
+        { "New interface" , "New interface" },
+        { "New operation" , "New operation" },
+        { "New signal" , "New signal" },
+        { "none" , "none" },
+        { "Operations:" , "Operations:" },
+        { "Ordering:" , "Ordering:" },
+        { "Outgoing:" , "Outgoing:" },
+        { "Owner:" , "Owner:" },
+        { "Receiver:" , "Receiver:" },
+        { "Receives:" , "Receives:" },
+        { "Sends:" , "Sends:" },
+        { "sorted" , "sorted" },
+        { "Transition" , "Transition" },
+        { "Trigger:" , "Trigger:" },
+        { "Type:" , "Type:" },
+        { "Visibility:" , "Visibility:" },
+        {"public", "public" },  
+        {"abstract", "abstract" },  
+        {"final", "final" },  
+        {"root", "root" },  
+        {"Stereotype:", "Stereotype:" },  
+        {"Modifiers:", "Modifiers:" },  
+        {"active", "active" },  
+        {"Owned Elements:", "Owned Elements:" },  
+        {"Go up", "Go up" },  
+        {"navigateBackAction", "navigateBackAction" },  
+        {"navigateForwardAction", "navigateForwardAction" },  
+        {"Add generalization", "Add generalization" },  
+        {"Add realization", "Add realization" },  
+        {"Owned Elements", "Owned Elements" },  
+        {"Add class", "Add class" },  
+        {"Add interface", "Add interface" },  
+        {"Add stereotype", "Add stereotype" },  
+        {"Add actor", "Add actor" },  
+        {"Add subpackage", "Add subpackage" },  
+        {"Abstract", "Abstract" },  
+        {"Final", "Final" },  
+        {"Root", "Root" },  
+        {"Association Ends:", "Association Ends:" },  
+        {"Add association end", "Add association end" },  
+        {"Public", "Public" },  
+        {"Implementations:", "Implementations:" },  
+        {"New stereotype", "New stereotype" },  
+        {"Add enumeration literal", "Add enumeration literal" },  
+    };
 
-    public UMLResourceBundle() {
-        put("Add_Menu_Actor","Actor...");
-        put("Add_Menu_Class","Class...");
-        put("Add_Menu_Datatype","Datatype...");
-        put("Add_Menu_Exception","Exception...");
-        put("Add_Menu_Interface","Interface...");
-        put("Add_Menu_Signal","Signal...");
-        put("Add_Menu_UseCase","Use Case...");
+    public Object[][] getContents() {
+        return _contents;
     }
 
-    public Enumeration getKeys() {
-        Enumeration enum = null;
-        if(_map != null) {
-            enum = _map.elements();
-        }
-        return enum;
-    }
 
-    /**
-     * Retrieves the corresponding object.  If no entry, just returns the key
-     */
-    protected Object handleGetObject(String key) throws java.util.MissingResourceException {
-        Object object = key;
-        if(_map != null) {
-            object = _map.get(key);
-            if(object == null) object = key;
-        }
-        return object;
-    }
-
-    public void put(String key,Object object) {
-        if(_map == null) {
-            _map = new Hashtable();
-        }
-        _map.put(key,object);
-    }
 }

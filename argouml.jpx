@@ -68,6 +68,7 @@
   <file path="src_new/org/argouml/uml/cognitive/checklist/ChAssociation.java" />
   <file path="src_new/org/argouml/uml/cognitive/checklist/ChAttribute.java" />
   <file path="src_new/org/argouml/uml/cognitive/checklist/ChClass.java" />
+  <file path="src_new/org/argouml/util/CheckResourceBundle.java" />
   <file path="src_new/org/argouml/kernel/ChildGenDMElements.java" />
   <file path="src_new/org/argouml/uml/cognitive/ChildGenFind.java" />
   <file path="src_new/org/argouml/uml/cognitive/ChildGenRelated.java" />
@@ -309,6 +310,8 @@
   <file path="src_new/org/argouml/Images/Link.gif" />
   <file path="src_new/org/argouml/application/Main.java" />
   <file path="src_new/org/argouml/ui/Menu.java" />
+  <file path="src_new/org/argouml/ui/MenuResourceBundle.java" />
+  <file path="src_new/org/argouml/ui/MenuResourceBundle_de.java" />
   <file path="src_new/org/argouml/Images/Message.gif" />
   <file path="src_new/org/argouml/uml/MMUtil.java" />
   <file path="src_new/org/argouml/uml/diagram/ui/ModeCreateEdgeAndNode.java" />
