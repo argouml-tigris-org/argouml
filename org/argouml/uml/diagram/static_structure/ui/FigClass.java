@@ -1006,13 +1006,24 @@ public class FigClass extends FigNodeModelElement {
 	 * @see org.tigris.gef.presentation.Fig#setOwner(Object)
 	 */
 	public void setOwner(Object own) {
+		MClass cl;
+		cl = (MClass)getOwner();
+		if (cl != null) {
+			Iterator it = cl.getFeatures().iterator();
+			while (it.hasNext()) {
+				MFeature feat = (MFeature)it.next();
+				feat.removeMElementListener(this);
+			}
+		}
 		super.setOwner(own);
-		MClass cl = (MClass)own;
-		Iterator it = cl.getFeatures().iterator();
-		while (it.hasNext()) {
-			MFeature feat = (MFeature)it.next();
-			feat.removeMElementListener(this);
-			feat.addMElementListener(this);
+		cl = (MClass)own;
+		if (cl != null) {
+			Iterator it = cl.getFeatures().iterator();
+			while (it.hasNext()) {
+				MFeature feat = (MFeature)it.next();
+				feat.removeMElementListener(this);
+				feat.addMElementListener(this);
+			}
 		}
 	}
 
