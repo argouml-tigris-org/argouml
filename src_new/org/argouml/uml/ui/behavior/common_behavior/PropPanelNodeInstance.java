@@ -24,9 +24,6 @@
 
 package org.argouml.uml.ui.behavior.common_behavior;
 
-import java.util.Collection;
-import java.util.Iterator;
-
 import javax.swing.JList;
 import javax.swing.JScrollPane;
 
@@ -41,9 +38,6 @@ import org.argouml.uml.ui.UMLLinkedList;
 import org.argouml.uml.ui.UMLMutableLinkedList;
 import org.argouml.uml.ui.foundation.core.UMLContainerResidentListModel;
 import org.argouml.util.ConfigLoader;
-
-import ru.novosoft.uml.foundation.core.MClassifier;
-import ru.novosoft.uml.foundation.core.MModelElement;
 
 /**
  * The properties panel of a NodeInstance.
@@ -69,11 +63,11 @@ public class PropPanelNodeInstance extends PropPanelInstance {
 
         addSeperator();
 
-        // TODO: i18n
-        addField("Stimuli sent:", getStimuliSenderScroll());
+        addField(Translator.localize("label.stimili-sent"), 
+                getStimuliSenderScroll());
 
-        //TODO: i18n
-        addField("Stimuli received:", getStimuliReceiverScroll());
+        addField(Translator.localize("label.stimili-received"), 
+                getStimuliReceiverScroll());
         
         JList resList = new UMLLinkedList(new UMLContainerResidentListModel());
         addField(Translator.localize("label.residents"), 
@@ -94,71 +88,5 @@ public class PropPanelNodeInstance extends PropPanelInstance {
                 new ActionNavigateContainerElement()));
         new PropPanelButton(this, lookupIcon("Delete"), Translator.localize(
             "action.delete-from-model"), new ActionRemoveFromModel());
-    }
-
-    /**
-     * Callback method from UMLComboBoxModel.
-     * 
-     * Note: UMLComboBoxModel uses reflection to find this one so when changing
-     * it is not enough that the compiler accepts this. All test cases must also
-     * accept this. Linus has sofar changed the parameter type back from Object
-     * to MModelElement twice in order to get it to work again.
-     * 
-     * @param classifier
-     *            The classifier to test.
-     * @return <tt>true</tt> if acceptible.
-     */
-    public boolean isAcceptibleClassifier(MModelElement classifier) {
-        return org.argouml.model.ModelFacade.isAClassifier(classifier);
-    }
-
-    /**
-     * Callback method from UMLComboBoxModel.
-     * 
-     * Note: UMLComboBoxModel uses reflection to find this one so when changing
-     * it is not enough that the compiler accepts this. All test cases must also
-     * accept this. Linus has sofar changed the parameter type back from Object
-     * to MClassifier twice in order to get it to work again.
-     * 
-     * @param element
-     *            The classifier to test.
-     */
-    public void setClassifier(MClassifier element) {
-        Object target = getTarget();
-
-        if (org.argouml.model.ModelFacade.isAInstance(target)) {
-            Object inst = /* (MInstance) */target;
-
-            // delete all classifiers
-            Collection col = ModelFacade.getClassifiers(inst);
-            if (col != null) {
-                Iterator iter = col.iterator();
-                if (iter != null && iter.hasNext()) {
-                    Object classifier = /* (MClassifier) */iter.next();
-                    ModelFacade.removeClassifier(inst, classifier);
-                }
-            }
-            // add classifier
-            ModelFacade.addClassifier(inst, element);
-        }
-    }
-
-    /**
-     * @see org.argouml.uml.ui.behavior.common_behavior.PropPanelInstance#getClassifier()
-     */
-    public Object getClassifier() {
-        Object classifier = null;
-        Object target = getTarget();
-        if (org.argouml.model.ModelFacade.isAInstance(target)) {
-            // at the moment , we only deal with one classifier
-            Collection col = ModelFacade.getClassifiers(target);
-            if (col != null) {
-                Iterator iter = col.iterator();
-                if (iter != null && iter.hasNext()) {
-                    classifier = /* (MClassifier) */iter.next();
-                }
-            }
-        }
-        return classifier;
     }
 }
