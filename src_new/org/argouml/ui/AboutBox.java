@@ -45,32 +45,6 @@ public class AboutBox extends JDialog {
 
   JTabbedPane _tabs = new JTabbedPane();
   JLabel _splashButton = new JLabel("");
-  /** Version information. This is calling on
-   * a simple test file located in the resources
-   * file. One day this will be an xml file.
-   */  
-  JTextArea _version = new JTextArea();
-  /** This is calling on
-   * a simple test file located in the resources
-   * file. One day this will be an xml file.
-   * Get your names in lights! Help make Argo the best
-   * choice for UML design and development.
-   */  
-  JTextArea _credits = new JTextArea();
-  /** This is calling on
-   * a simple test file located in the resources
-   * file. One day this will be an xml file.
-   * This one day will allow users to send emails
-   * directly from the java window.
-   * Also see email expert.
-   */  
-  JTextArea _contact = new JTextArea();
-  /** The small print.
-   * This is calling on
-   * a simple test file located in the resources
-   * file. One day this will be an xml file.
-   */  
-  JTextArea _legal = new JTextArea();
 
   ////////////////////////////////////////////////////////////////
   // constructor
@@ -84,7 +58,7 @@ public class AboutBox extends JDialog {
 
   public AboutBox(Frame owner, boolean modal) {
     super(owner,modal);
-    this.setTitle("About Argo/UML");
+    this.setTitle("About ArgoUML");
     String iconName = "Splash";
     ImageIcon splashImage = ResourceLoader.lookupIconResource(iconName, iconName);
     int imgWidth = splashImage.getIconWidth();
@@ -100,10 +74,6 @@ public class AboutBox extends JDialog {
 
 
     Font ctrlFont = MetalLookAndFeel.getControlTextFont();
-//     _version.setFont(ctrlFont);
-//     _credits.setFont(ctrlFont);
-//     _legal.setFont(ctrlFont);
-//     _contact.setFont(ctrlFont);
 
     StringBuffer versionBuf = new StringBuffer();
     versionBuf.append("\n--- Generated version information: ---\n");
@@ -132,24 +102,33 @@ public class AboutBox extends JDialog {
     _tabs.addTab("Splash", _splashButton);
 
     try {
-        _version.read(new StringReader(versionBuf.toString()), null);
-        _tabs.addTab("Version", new JScrollPane(_version));
+	JTextArea a = new JTextArea();
+        a.read(new StringReader(versionBuf.toString()), null);
+        _tabs.addTab("Version", new JScrollPane(a));
     }
     catch (Exception e) {
         Argo.log.error("Unable to read version information", e);
     }
 
     try {
-        _credits.read(new InputStreamReader(getClass().getResourceAsStream(Argo.RESOURCEDIR + "credits.about")), null);
-        _tabs.addTab("Credits", new JScrollPane(_credits));
+	JTextArea a = new JTextArea();
+        a.read(new InputStreamReader(getClass().
+				     getResourceAsStream(Argo.RESOURCEDIR 
+							 + "credits.about")),
+	       null);
+        _tabs.addTab("Credits", new JScrollPane(a));
     }
     catch (Exception e) {
         Argo.log.error("Unable to read 'credits.about'", e);
     }
 
     try {
-        _contact.read(new InputStreamReader(getClass().getResourceAsStream(Argo.RESOURCEDIR + "contacts.about")), null);
-        _tabs.addTab("Contact Info", new JScrollPane(_contact));
+	JTextArea a = new JTextArea();
+        a.read(new InputStreamReader(getClass().
+				     getResourceAsStream(Argo.RESOURCEDIR
+							 + "contacts.about")),
+	       null);
+        _tabs.addTab("Contact Info", new JScrollPane(a));
     }
     catch (Exception e) {
         Argo.log.error("Unable to read 'contacts.about'", e);
@@ -157,8 +136,25 @@ public class AboutBox extends JDialog {
 
 
     try {
-        _legal.read(new InputStreamReader(getClass().getResourceAsStream(Argo.RESOURCEDIR + "legal.about")), null);
-        _tabs.addTab("Legal", new JScrollPane(_legal));
+	JTextArea a = new JTextArea();
+        a.read(new InputStreamReader(getClass().
+				     getResourceAsStream(Argo.RESOURCEDIR
+							 + "bugreport.about")),
+	       null);
+        _tabs.addTab("Report bugs", new JScrollPane(a));
+    }
+    catch (Exception e) {
+        Argo.log.error("Unable to read 'bugreport.about'", e);
+    }
+
+
+    try {
+	JTextArea a = new JTextArea();
+        a.read(new InputStreamReader(getClass().
+				     getResourceAsStream(Argo.RESOURCEDIR
+							 + "legal.about")),
+	       null);
+        _tabs.addTab("Legal", new JScrollPane(a));
     }
     catch (Exception e) {
         Argo.log.error("Unable to read 'legal.about'", e);
