@@ -294,7 +294,7 @@ implements ActionListener, ListSelectionListener, ItemListener, DocumentListener
     _headline.setText(_target.getHeadline());
 
     int p = _target.getPriority();
-    if (p == ToDoItem.HIGH_PRIORITY) 
+    if (p == ToDoItem.HIGH_PRIORITY)
 	_priority.setSelectedItem(high);
     else if (p == ToDoItem.MED_PRIORITY)
 	_priority.setSelectedItem(medium);
@@ -377,7 +377,7 @@ implements ActionListener, ListSelectionListener, ItemListener, DocumentListener
       return;
     }
     //System.out.println("got valueChanged from " + src);
-    int row = lse.getFirstIndex();
+    int row = _table.getSelectedRow();
     Vector critics = Agency.getCritics();
     setTarget(critics.elementAt(row));
   }
