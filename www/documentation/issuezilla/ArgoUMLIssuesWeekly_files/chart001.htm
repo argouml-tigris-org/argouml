@@ -52,6 +52,12 @@ else
   <x:Selected/>
   <x:ProtectContents>False</x:ProtectContents>
   <x:ProtectObjects>False</x:ProtectObjects>
+  <x:Print>
+   <x:ValidPrinterInfo/>
+   <x:PaperSizeIndex>9</x:PaperSizeIndex>
+   <x:HorizontalResolution>600</x:HorizontalResolution>
+   <x:VerticalResolution>0</x:VerticalResolution>
+  </x:Print>
  </x:WorksheetOptions>
 </xml><![endif]-->
 </head>
@@ -188,11 +194,11 @@ else
       <x:Name>Open DEFECTs that noone works with</x:Name>
       <x:Category>
        <x:DataSource>0</x:DataSource>
-       <x:Data>Data!$A$2:$A$21</x:Data>
+       <x:Data>Data!$A$2:$A$22</x:Data>
       </x:Category>
       <x:Value>
        <x:DataSource>0</x:DataSource>
-       <x:Data>Data!$B$2:$B$21</x:Data>
+       <x:Data>Data!$B$2:$B$22</x:Data>
       </x:Value>
      </x:Series>
      <x:Series>
@@ -201,14 +207,14 @@ else
        <x:DataSource>0</x:DataSource>
        <x:Data>Data!$C$1</x:Data>
       </x:Caption>
-      <x:Name>Resolved DEFECTs in 0.9.6</x:Name>
+      <x:Name>The list of Open DEFECTs that someone works with</x:Name>
       <x:Category>
        <x:DataSource>0</x:DataSource>
-       <x:Data>Data!$A$2:$A$21</x:Data>
+       <x:Data>Data!$A$2:$A$22</x:Data>
       </x:Category>
       <x:Value>
        <x:DataSource>0</x:DataSource>
-       <x:Data>Data!$C$2:$C$21</x:Data>
+       <x:Data>Data!$C$2:$C$22</x:Data>
       </x:Value>
      </x:Series>
      <x:Series>
@@ -217,14 +223,14 @@ else
        <x:DataSource>0</x:DataSource>
        <x:Data>Data!$D$1</x:Data>
       </x:Caption>
-      <x:Name>Resolved DEFECTs in 0.9.7</x:Name>
+      <x:Name>Resolved DEFECTS in 0.9.*</x:Name>
       <x:Category>
        <x:DataSource>0</x:DataSource>
-       <x:Data>Data!$A$2:$A$21</x:Data>
+       <x:Data>Data!$A$2:$A$22</x:Data>
       </x:Category>
       <x:Value>
        <x:DataSource>0</x:DataSource>
-       <x:Data>Data!$D$2:$D$21</x:Data>
+       <x:Data>Data!$D$2:$D$22</x:Data>
       </x:Value>
      </x:Series>
      <x:Series>
@@ -233,62 +239,14 @@ else
        <x:DataSource>0</x:DataSource>
        <x:Data>Data!$E$1</x:Data>
       </x:Caption>
-      <x:Name>Resolved DEFECTs in 0.9.8</x:Name>
+      <x:Name>Resolved DEFECTS in 0.11.1</x:Name>
       <x:Category>
        <x:DataSource>0</x:DataSource>
-       <x:Data>Data!$A$2:$A$21</x:Data>
+       <x:Data>Data!$A$2:$A$22</x:Data>
       </x:Category>
       <x:Value>
        <x:DataSource>0</x:DataSource>
-       <x:Data>Data!$E$2:$E$21</x:Data>
-      </x:Value>
-     </x:Series>
-     <x:Series>
-      <x:Index>4</x:Index>
-      <x:Caption>
-       <x:DataSource>0</x:DataSource>
-       <x:Data>Data!$F$1</x:Data>
-      </x:Caption>
-      <x:Name>Resolved DEFECTs in 0.9.9</x:Name>
-      <x:Category>
-       <x:DataSource>0</x:DataSource>
-       <x:Data>Data!$A$2:$A$21</x:Data>
-      </x:Category>
-      <x:Value>
-       <x:DataSource>0</x:DataSource>
-       <x:Data>Data!$F$2:$F$21</x:Data>
-      </x:Value>
-     </x:Series>
-     <x:Series>
-      <x:Index>5</x:Index>
-      <x:Caption>
-       <x:DataSource>0</x:DataSource>
-       <x:Data>Data!$G$1</x:Data>
-      </x:Caption>
-      <x:Name>Older resolved DEFECTs</x:Name>
-      <x:Category>
-       <x:DataSource>0</x:DataSource>
-       <x:Data>Data!$A$2:$A$21</x:Data>
-      </x:Category>
-      <x:Value>
-       <x:DataSource>0</x:DataSource>
-       <x:Data>Data!$G$2:$G$21</x:Data>
-      </x:Value>
-     </x:Series>
-     <x:Series>
-      <x:Index>6</x:Index>
-      <x:Caption>
-       <x:DataSource>0</x:DataSource>
-       <x:Data>Data!$H$1</x:Data>
-      </x:Caption>
-      <x:Name>The list of Open DEFECTs that someone works with</x:Name>
-      <x:Category>
-       <x:DataSource>0</x:DataSource>
-       <x:Data>Data!$A$2:$A$21</x:Data>
-      </x:Category>
-      <x:Value>
-       <x:DataSource>0</x:DataSource>
-       <x:Data>Data!$H$2:$H$21</x:Data>
+       <x:Data>Data!$E$2:$E$22</x:Data>
       </x:Value>
      </x:Series>
      <x:PlotVisible/>
@@ -340,28 +298,7 @@ else
     </x:Font>
    </x:Legend>
   </x:Chart>
-  <o:shapelayout v:ext="edit">
-   <o:idmap v:ext="edit" data="3"/>
-  </o:shapelayout><v:shapetype id="_x0000_t202" coordsize="21600,21600" o:spt="202"
-   path="m0,0l0,21600,21600,21600,21600,0xe">
-   <v:stroke joinstyle="miter"/>
-   <v:path gradientshapeok="t" o:connecttype="rect"/>
-  </v:shapetype><v:shape id="_x0000_s3073" type="#_x0000_t202" style='position:absolute;
-   margin-left:4494809emu;margin-top:221.25pt;width:195727emu;height:184047emu;
-   z-index:1;mso-wrap-style:tight' filled="f" fillcolor="windowText [64]"
-   stroked="f" strokecolor="window [65]" strokeweight="1emu" o:insetmode="auto">
-   <v:fill color2="window [65]"/>
-   <v:textbox>
-    <div style='text-align:center'><font class=font9>D</font></div>
-   </v:textbox>
-   <x:ClientData ObjectType="Text">
-    <x:AutoFill>False</x:AutoFill>
-    <x:AutoLine>False</x:AutoLine>
-    <x:TextHAlign>Center</x:TextHAlign>
-    <x:TextVAlign>Center</x:TextVAlign>
-    <x:AutoScale/>
-   </x:ClientData>
-  </v:shape></x:WebChart>
+ </x:WebChart>
 </xml><![endif]--><![if !supportChartImage]><img src=image001.gif alt=Defects><![endif]>
 </body>
 
