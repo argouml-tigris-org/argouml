@@ -27,12 +27,10 @@ package org.argouml.uml.cognitive.critics;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Graphics;
+
 import org.apache.log4j.Logger;
-
-
 import org.argouml.cognitive.ToDoItem;
 import org.argouml.ui.Clarifier;
-import org.argouml.uml.diagram.static_structure.ui.FigClass;
 import org.argouml.uml.diagram.ui.AttributesCompartmentContainer;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigGroup;
@@ -73,7 +71,8 @@ public class ClAttributeCompartment implements Clarifier {
      */
     public void paintIcon(Component c, Graphics g, int x, int y) {
 	if (fig instanceof AttributesCompartmentContainer) {
-	    AttributesCompartmentContainer fc = (AttributesCompartmentContainer) fig;
+	    AttributesCompartmentContainer fc = 
+	        (AttributesCompartmentContainer) fig;
     
 	    // added by Eric Lefevre 13 Mar 1999: we must check if the
 	    // FigText for attributes is drawn before drawing things
@@ -127,7 +126,8 @@ public class ClAttributeCompartment implements Clarifier {
 	    LOG.debug("not a FigClass");
 	    return false;
 	}
-	AttributesCompartmentContainer fc = (AttributesCompartmentContainer) fig;
+	AttributesCompartmentContainer fc = 
+	    (AttributesCompartmentContainer) fig;
 	FigGroup fg = fc.getAttributesFig();
 	boolean res = fg.contains(x, y);
 	fig = null;

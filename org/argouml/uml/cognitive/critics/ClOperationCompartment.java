@@ -72,7 +72,8 @@ public class ClOperationCompartment implements Clarifier {
      */
     public void paintIcon(Component c, Graphics g, int x, int y) {
 	if (fig instanceof OperationsCompartmentContainer) {
-	    OperationsCompartmentContainer fc = (OperationsCompartmentContainer) fig;
+	    OperationsCompartmentContainer fc = 
+	        (OperationsCompartmentContainer) fig;
 
 	    // added by Eric Lefevre 13 Mar 1999: we must check if the
 	    // FigText for operations is drawn before drawing things
@@ -123,7 +124,8 @@ public class ClOperationCompartment implements Clarifier {
      */
     public boolean hit(int x, int y) {
 	if (!(fig instanceof OperationsCompartmentContainer)) return false;
-	OperationsCompartmentContainer fc = (OperationsCompartmentContainer) fig;
+	OperationsCompartmentContainer fc = 
+	    (OperationsCompartmentContainer) fig;
 	FigGroup fg = fc.getOperationsFig();
 	boolean res = fg.contains(x, y);
 	fig = null;
