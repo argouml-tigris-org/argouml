@@ -67,6 +67,7 @@ import org.argouml.cognitive.ToDoItem;
 import org.argouml.cognitive.ToDoList;
 import org.argouml.kernel.DelayedChangeNotify;
 import org.argouml.kernel.DelayedVChangeListener;
+import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.uml.UmlFactory;
 import org.argouml.model.uml.UmlModelEventPump;
@@ -89,6 +90,7 @@ import org.tigris.gef.presentation.FigEdgePoly;
 import org.tigris.gef.presentation.FigNode;
 import org.tigris.gef.presentation.FigPoly;
 import org.tigris.gef.presentation.FigText;
+import org.tigris.gef.presentation.Handle;
 
 import ru.novosoft.uml.MElementEvent;
 import ru.novosoft.uml.MElementListener;
@@ -808,6 +810,17 @@ public abstract class FigEdgeModelElement
         if (this instanceof ArgoEventListener) {
             ArgoEventPump.removeListener(this);
             ArgoEventPump.addListener(this);
+        }
+    }
+
+    /**
+     * Overridden to notify project that save is needed when edge is moved.
+     */
+    public void setPoints(Handle h, int x, int y) {
+        super.setPoints(h, x, y);
+        Project p = ProjectManager.getManager().getCurrentProject();
+        if (p != null) {      
+            p.setNeedsSave(true);
         }
     }
 
