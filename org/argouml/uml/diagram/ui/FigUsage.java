@@ -30,18 +30,13 @@ package org.argouml.uml.diagram.ui;
 
 import org.argouml.language.helpers.NotationHelper;
 import org.tigris.gef.base.Layer;
-import org.tigris.gef.presentation.ArrowHeadGreater;
 
 import ru.novosoft.uml.MElementEvent;
 
 public class FigUsage extends FigDependency {
 
-    ////////////////////////////////////////////////////////////////
-    // constructors
-    protected ArrowHeadGreater endArrow;
-
     public FigUsage() {
-	super();
+        super();
     }
 
     public FigUsage(Object edge) {
@@ -53,14 +48,14 @@ public class FigUsage extends FigDependency {
     }
         
     protected void modelChanged(MElementEvent e) {
-	super.modelChanged(e);
-	
-	String stereoTypeStr = getStereotypeFig().getText();
-
-	if (stereoTypeStr == null || "".equals(stereoTypeStr)) {
-	    getStereotypeFig().setText(NotationHelper.getLeftGuillemot() + "use"
-			    + NotationHelper.getRightGuillemot());
-	}
+        super.modelChanged(e);
+        String stereoTypeStr = getStereotypeFig().getText();
+        
+        if (stereoTypeStr == null || "".equals(stereoTypeStr)) {
+            getStereotypeFig().setText(
+                NotationHelper.getLeftGuillemot() + "use" +
+                NotationHelper.getRightGuillemot());
+        }
     } 
 
 } /* end class FigUsage */
