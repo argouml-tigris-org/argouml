@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Registry xmlns="http://www.argouml.org/Namespace/0.9/Registry" xmlns:xsi="http://www.w3.org/2000/10/XMLSchema-instance" xsi:schemaLocation="http://www.argouml.org/Namespace/0.9/Registry
+xml\dtd\repository.xsd">
+	<UMLProfile id="profile1" name="default.xmi">
+		<TagName name="fred" baseClass="ModelElement"/>
+		<FigShape name="BoundaryShape" renderer="org.example.ArgoUML.shapes.BoundaryShape" stereotype="Boundary" baseClass="Class"/>
+	</UMLProfile>
+	<Critique name="crNoCircularInheritance" id="crNoCircInherit" class="org.argouml.critics.NoCircularInheritance"/>
+	<Critique name="CrNoDoubleInheritance" id="crNoDoubleInheritance" class="org.argouml.critics.NoDoubleInheritance" description="Complains if you use double inheritance."/>
+	<CritiqueGroup name="GenericUMLCritiques" id="genUMLCritiques" critiques="crNoCircInherit"/>
+	<CritiqueGroup name="javaCritiques" id="javaCritiques" critiques="genUMLCritiques crNoDoubleInheritance" description="Generic UML critiques + Java Critiques"/>
+	<CodeGenerator name="JavaGen" id="JavaGen" class="org,example.CodeGenerators.JavaGen"/>
+	<CodeAnalyzer name="JavaRE" id="JavaRE" class="org.example.CodeGenerators.JavaRE" description="Sample Java Code Reverse engineering"/>
+	<Notation name="UML Notation" id="umlNotation" class="org.argouml.Notations.UMLNotation" description="Textual notation per UML spec"/>
+	<Frame id="bigFrame" height="900" width="700" title="ArgoUML" notation="umlNotation" class="org.argouml.application.MainFrame" theme="org.argouml.themes.JasonTheme" defaultPackage="org.argouml.application">
+		<Pane/>
+		<Pane/>
+	</Frame>
+	<Personality name="JavaPersonality" frame="bigFrame" profiles="profile1" isDefault="false" description="Default Java profile" behaviors="JavaGen JavaRE javaCritiques"/>
+</Registry>
