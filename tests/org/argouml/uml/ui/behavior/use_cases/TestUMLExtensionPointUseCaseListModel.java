@@ -64,7 +64,6 @@ public class TestUMLExtensionPointUseCaseListModel extends TestCase {
         MockUMLUserInterfaceContainer cont = new MockUMLUserInterfaceContainer();
         cont.setTarget(elem);
         model = new UMLExtensionPointUseCaseListModel(cont);
-        elem.addMElementListener(model);
     }
     
     /**

@@ -60,7 +60,7 @@ public class TestUMLCollaborationConstraintListModel
      * @see org.argouml.uml.ui.AbstractUMLModelElementListModel2Test#buildModel(org.argouml.uml.ui.UMLUserInterfaceContainer)
      */
     protected void buildModel(UMLUserInterfaceContainer cont) {
-        model = new UMLCollaborationConstraintListModel(cont);
+        model = new UMLCollaborationConstrainingElementListModel(cont);
     }
 
     /**

@@ -31,14 +31,10 @@ import junit.framework.TestCase;
 
 import org.argouml.model.uml.behavioralelements.statemachines.StateMachinesFactory;
 import org.argouml.model.uml.foundation.core.CoreFactory;
-import org.argouml.uml.ui.UMLModelElementCachedListModel;
-
 import ru.novosoft.uml.MElementEvent;
 import ru.novosoft.uml.MElementListener;
-import ru.novosoft.uml.MFactory;
 import ru.novosoft.uml.MFactoryImpl;
 import ru.novosoft.uml.foundation.core.MClass;
-import ru.novosoft.uml.foundation.core.MClassifier;
 import ru.novosoft.uml.foundation.core.MDependency;
 import ru.novosoft.uml.foundation.core.MModelElement;
 import ru.novosoft.uml.foundation.core.MOperationImpl;
@@ -383,20 +379,6 @@ public class TestUmlModelEventPump extends TestCase {
     
     /**
      * Tests if an exception is thrown if one tries to remove a listener twice
-     * from model listener hashmap.
-     */
-    public void testRemoveTwice() {
-        UmlModelEventPump.getPump().addModelEventListener(listener2, elem, new String[] {"isRoot"});
-        UmlModelEventPump.getPump().removeModelEventListener(listener2, elem, new String[] {"isRoot"});
-        try {
-           UmlModelEventPump.getPump().removeModelEventListener(listener2, elem, new String[] {"isRoot"});
-           fail();
-        }
-        catch (Exception ex) {}
-    }
-    
-    /**
-     * Tests if an exception is thrown if one tries to remove a listener twice
      * from the class listener hashmap.
      */
     public void testRemoveTwiceClass() {
@@ -404,18 +386,6 @@ public class TestUmlModelEventPump extends TestCase {
         UmlModelEventPump.getPump().removeClassModelEventListener(listener2, elem.getClass(), new String[] {"isRoot"});
         try {
            UmlModelEventPump.getPump().removeClassModelEventListener(listener2, elem.getClass(), new String[] {"isRoot"});
-           fail();
-        }
-        catch (Exception ex) {}
-    } 
-    
-    /**
-     * Tests if an exception is thrown if one tries to remove a non registred 
-     * listener from the list with listeners to modelevents.
-     */
-    public void testRemoveNonRegistredListener() {
-        try {
-           UmlModelEventPump.getPump().removeModelEventListener(listener2, elem, new String[] {"isRoot"});
            fail();
         }
         catch (Exception ex) {}

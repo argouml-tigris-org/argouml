@@ -26,6 +26,15 @@ package org.argouml.uml.ui.behavior.collaborations;
 
 import junit.framework.TestCase;
 
+import org.argouml.model.uml.UmlFactory;
+import org.argouml.model.uml.behavioralelements.collaborations.CollaborationsFactory;
+import org.argouml.model.uml.foundation.core.CoreFactory;
+import org.argouml.uml.ui.MockUMLUserInterfaceContainer;
+import ru.novosoft.uml.MFactoryImpl;
+import ru.novosoft.uml.behavior.collaborations.MCollaboration;
+import ru.novosoft.uml.foundation.core.MClassifier;
+import ru.novosoft.uml.foundation.core.MOperation;
+
 /**
  * @since Oct 28, 2002
  * @author jaap.branderhorst@xs4all.nl
@@ -33,6 +42,10 @@ import junit.framework.TestCase;
 public class TestUMLCollaborationRepresentedClassifierListModel
     extends TestCase {
 
+    private int oldEventPolicy;
+    protected MCollaboration elem;
+    protected UMLCollaborationRepresentedClassifierListModel model;
+    
     /**
      * Constructor for TestUMLCollaborationRepresentedClassifierListModel.
      * @param arg0
@@ -41,6 +54,43 @@ public class TestUMLCollaborationRepresentedClassifierListModel
         super(arg0);
     }
     
+    /**
+     * @see junit.framework.TestCase#setUp()
+     */
+    protected void setUp() throws Exception {
+        super.setUp();
+        elem = CollaborationsFactory.getFactory().createCollaboration();
+        oldEventPolicy = MFactoryImpl.getEventPolicy();
+        MFactoryImpl.setEventPolicy(MFactoryImpl.EVENT_POLICY_IMMEDIATE);
+        MockUMLUserInterfaceContainer cont = new MockUMLUserInterfaceContainer();
+        cont.setTarget(elem);
+        model = new UMLCollaborationRepresentedClassifierListModel(cont);
+        elem.addMElementListener(model);
+    }
     
+    /**
+     * @see junit.framework.TestCase#tearDown()
+     */
+    protected void tearDown() throws Exception {
+        super.tearDown();
+        UmlFactory.getFactory().delete(elem);
+        MFactoryImpl.setEventPolicy(oldEventPolicy);
+        model = null;
+    }
+    
+    public void testSetRepresentedOperation() {
+        MClassifier oper = CoreFactory.getFactory().createClassifier();
+        elem.setRepresentedClassifier(oper);
+        assertEquals(1, model.getSize());
+        assertEquals(oper, model.getElementAt(0));
+    }
+    
+    public void testRemoveRepresentedOperation() {
+       MClassifier oper = CoreFactory.getFactory().createClassifier();
+        elem.setRepresentedClassifier(oper);
+        elem.setRepresentedClassifier(null);
+        assertEquals(0, model.getSize());
+        assertTrue(model.isEmpty());
+    }
 
 }
