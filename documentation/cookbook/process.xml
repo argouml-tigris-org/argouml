@@ -539,7 +539,8 @@ Do one of the following:
 	    <listitem>
 	      <para>
 If the problem is gone, the feature is present put the Issue in
-Status VERIFIED.
+Status VERIFIED and
+add the version of the ArgoUML used for the test in in the comment.
 </para>
 	    </listitem>
 	    <listitem>
@@ -547,14 +548,15 @@ Status VERIFIED.
 If the problem is still there, the feature does not work, put the
 Issue in Status REOPENED with a description of what is still there, is
 still missing.
+Also state what version of ArgoUML used for the test in the comment.
 </para>
 	    </listitem>
 	  </itemizedlist>
 	</listitem>
 	<listitem>
 	  <para>
-If you during this, have discovered other problems than the ones that
-are stated in the Issue, create new Issues stating those new problems
+If you during this, have discovered other problems than the one
+stated in the Issue, create new Issues for those new problems
 according to the rule for creating Issues.
 </para>
 	</listitem>
