@@ -115,6 +115,9 @@ public class WizStep extends JPanel
     }   
 
     
+    /**
+     * The constructor.
+     */
     public WizStep() {
         this(new ActionOpenBrowser());
     }
@@ -122,7 +125,8 @@ public class WizStep extends JPanel
      * The constructor.
      * @param helpAction 
      *      an action which does the needful, 
-     *      e.g. open a browser, display help, when the according button had been pressed.
+     *      e.g. open a browser, display help, 
+     *      when the according button had been pressed.
      * 
      */
     public WizStep(Action helpAction) {

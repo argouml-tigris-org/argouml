@@ -73,6 +73,7 @@ public class DismissToDoItemDialog extends ArgoDialog {
     /**
      * The constructor.
      * 
+     * @param owner the parent frame
      */
     public DismissToDoItemDialog(Frame owner) {
         super(
@@ -236,7 +237,8 @@ public class DismissToDoItemDialog extends ArgoDialog {
         ToDoList list = Designer.theDesigner().getToDoList();
         try {
             list.explicitlyResolve(target, explanation.getText());
-            Designer.firePropertyChange(Designer.MODEL_TODOITEM_DISMISSED, null, null);
+            Designer.firePropertyChange(
+                    Designer.MODEL_TODOITEM_DISMISSED, null, null);
         }
         catch (UnresolvableException ure) {
             LOG.error("Resolve failed (ure): " + ure);

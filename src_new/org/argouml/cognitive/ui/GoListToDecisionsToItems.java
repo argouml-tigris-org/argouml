@@ -27,7 +27,6 @@ package org.argouml.cognitive.ui;
 import java.util.Enumeration;
 import java.util.Vector;
 import javax.swing.event.TreeModelListener;
-import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreePath;
 import org.argouml.cognitive.Decision;
 import org.argouml.cognitive.Designer;
