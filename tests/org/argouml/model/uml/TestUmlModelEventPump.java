@@ -38,7 +38,9 @@ import ru.novosoft.uml.MElementListener;
 import ru.novosoft.uml.MFactory;
 import ru.novosoft.uml.MFactoryImpl;
 import ru.novosoft.uml.foundation.core.MClass;
+import ru.novosoft.uml.foundation.core.MClassifier;
 import ru.novosoft.uml.foundation.core.MDependency;
+import ru.novosoft.uml.foundation.core.MModelElement;
 import ru.novosoft.uml.foundation.core.MOperationImpl;
 import ru.novosoft.uml.foundation.core.MParameter;
 import ru.novosoft.uml.foundation.core.MParameterImpl;
@@ -143,7 +145,6 @@ public class TestUmlModelEventPump extends TestCase {
         UmlModelEventPump.getPump().addModelEventListener(listener, elem, new String[] {"name"});
         assert(!UmlModelEventPump.getPump().getListenerClassModelEventsMap().isEmpty());
         assert(!UmlModelEventPump.getPump().getListenerModelEventsMap().isEmpty());
-        assert(UmlModelEventPump.getPump().getListenerClassModelEventsMap().get(elem.getClass().getName() + "name") instanceof Collection);
         assert(UmlModelEventPump.getPump().getListenerModelEventsMap().get(elem.hashCode() + "name") instanceof Collection);
         assert(((Collection)UmlModelEventPump.getPump().getListenerClassModelEventsMap().get(elem.getClass().getName() + "name")).contains(listener));
         assert(((Collection)UmlModelEventPump.getPump().getListenerModelEventsMap().get(elem.hashCode() + "name")).contains(listener));
@@ -455,9 +456,15 @@ public class TestUmlModelEventPump extends TestCase {
     }
     
     public void testListensDependencyToSuperClass() {
-        MClass elem2 = CoreFactory.getFactory().createClass();
         MDependency dep = CoreFactory.getFactory().createDependency();
         UmlModelEventPump.getPump().addClassModelEventListener(listener2, dep.getClass(), "behavior");
+        dep.addBehavior(StateMachinesFactory.getFactory().createStateMachine());
+        assertTrue(eventcalled);
+    }
+    
+    public void testListensSuperClassToDependency() {
+        MDependency dep = CoreFactory.getFactory().createDependency();
+        UmlModelEventPump.getPump().addClassModelEventListener(listener2, MModelElement.class, "behavior");
         dep.addBehavior(StateMachinesFactory.getFactory().createStateMachine());
         assertTrue(eventcalled);
     }
