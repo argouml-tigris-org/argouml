@@ -83,6 +83,7 @@ import ru.novosoft.uml.foundation.core.MClassifier;
 import ru.novosoft.uml.foundation.core.MGeneralizableElement;
 import ru.novosoft.uml.foundation.core.MGeneralization;
 import ru.novosoft.uml.foundation.core.MInterface;
+import ru.novosoft.uml.foundation.core.MModelElement;
 import ru.novosoft.uml.foundation.core.MNamespace;
 import ru.novosoft.uml.foundation.core.MOperation;
 import ru.novosoft.uml.foundation.core.MParameter;
@@ -326,6 +327,17 @@ abstract public class PropPanelClassifier extends PropPanelNamespace {
       innerScroll= new JScrollPane(innerList,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 
     } 
+    
+     public void addDataType() {
+        Object target = getTarget();
+        if(target instanceof MNamespace) {
+            MNamespace ns = (MNamespace) target;
+            MModelElement ownedElem = CoreFactory.getFactory().createDataType();
+            ns.addOwnedElement(ownedElem);
+            navigateTo(ownedElem);
+        }
+    }
+
     
 	
 

@@ -99,6 +99,13 @@ abstract public class PropPanelModelElement extends PropPanel {
     protected JComboBox namespaceComboBox;
     protected JTextField nameField;
     protected JComboBox stereotypeBox;
+    
+    protected JList supplierDependencyList;
+    protected JList clientDependencyList;
+    
+    protected JList targetFlowList;
+    protected JList sourceFlowList;
+    
     ////////////////////////////////////////////////////////////////
     // constructors
     public PropPanelModelElement(String name, int columns) {
@@ -107,35 +114,34 @@ abstract public class PropPanelModelElement extends PropPanel {
 
     public PropPanelModelElement(String name, ImageIcon icon, Orientation orientation) {
         super(name, icon, orientation);
-
-        Class mclass = MModelElement.class;
-        
-        nameField = new UMLTextField2(this, new UMLModelElementNameDocument(this));
-        stereotypeBox = new UMLComboBox2(this, new UMLModelElementStereotypeComboBoxModel(this), ActionSetModelElementStereotype.SINGLETON);
-        namespaceComboBox = new UMLComboBox2(this, new UMLModelElementNamespaceComboBoxModel(this), ActionSetModelElementNamespace.SINGLETON);
-        namespaceList = new UMLLinkedList(this, new UMLModelElementNamespaceListModel(this));
-        namespaceList.setVisibleRowCount(1);
-	namespaceScroll = new JScrollPane(namespaceList);
-    
+        initialize();
     }
     
     public PropPanelModelElement(String name, ImageIcon icon, int columns) {
         super(name,icon,columns);
-
         Class mclass = MModelElement.class;
-
-        nameField = new UMLTextField2(this, new UMLModelElementNameDocument(this));
-        stereotypeBox = new UMLComboBox2(this, new UMLModelElementStereotypeComboBoxModel(this), ActionSetModelElementStereotype.SINGLETON);
-
-        namespaceComboBox = new UMLComboBox2(this, new UMLModelElementNamespaceComboBoxModel(this), ActionSetModelElementNamespace.SINGLETON);
-        
-        namespaceList = new UMLLinkedList(this, new UMLModelElementNamespaceListModel(this));
-        namespaceList.setVisibleRowCount(1);
-	namespaceScroll = new JScrollPane(namespaceList);
+        initialize();
     }
     
+    /**
+     * Constructor that is used if no other proppanel can be found for a modelelement
+     * of some kind. Since this is the default
+     */
     public PropPanelModelElement() {
         this("ModelElement", null, ConfigLoader.getTabPropsOrientation());
+        addField(Argo.localize("UMLMenu", "label.name"), nameField);
+        addField(Argo.localize("UMLMenu", "label.stereotype"), new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-stereo"),stereotypeBox));
+        addField(Argo.localize("UMLMenu", "label.namespace"), namespaceList);
+        
+        add(LabelledLayout.getSeperator());
+        
+        addField(Argo.localize("UMLMenu", "label.supplier-dependencies"), supplierDependencyList);
+        addField(Argo.localize("UMLMenu", "label.client-dependencies"), clientDependencyList);
+        
+        add(LabelledLayout.getSeperator());
+        
+        addField(Argo.localize("UMLMenu", "label.source-flows"), sourceFlowList);
+        addField(Argo.localize("UMLMenu", "label.target-flows"), targetFlowList);
     }
 
     public void navigateUp() {
@@ -148,16 +154,7 @@ abstract public class PropPanelModelElement extends PropPanel {
         }
     }
 
-    public void addDataType() {
-        Object target = getTarget();
-        if(target instanceof MNamespace) {
-            MNamespace ns = (MNamespace) target;
-            MModelElement ownedElem = CoreFactory.getFactory().createDataType();
-            ns.addOwnedElement(ownedElem);
-            navigateTo(ownedElem);
-        }
-    }
-
+   
     public void navigateNamespace() {
         Object target = getTarget();
         if(target instanceof MModelElement) {
@@ -185,4 +182,32 @@ abstract public class PropPanelModelElement extends PropPanel {
     }
     public void setModuleEnabled(boolean enabled) { }
     public boolean inContext(Object[] o) { return true; }
+    
+     
+    /**
+     * Initializes the fields in this proppanel. The fields are used by the children
+     * of this proppanel. 
+     */
+    private void initialize() {
+        nameField = new UMLTextField2(this, new UMLModelElementNameDocument(this));
+        stereotypeBox = new UMLComboBox2(this, new UMLModelElementStereotypeComboBoxModel(this), ActionSetModelElementStereotype.SINGLETON);
+        namespaceComboBox = new UMLComboBox2(this, new UMLModelElementNamespaceComboBoxModel(this), ActionSetModelElementNamespace.SINGLETON);
+        namespaceList = new UMLLinkedList(this, new UMLModelElementNamespaceListModel(this));
+        namespaceList.setVisibleRowCount(1);
+        namespaceScroll = new JScrollPane(namespaceList);
+        
+        // supplierDependencyList and clientDependencyList are not mutable atm
+        // reason for this is that users would have an enormous choice if they 
+        // are implemented as mutable
+        supplierDependencyList = new UMLLinkedList(this, new UMLModelElementSupplierDependencyListModel(this));
+        clientDependencyList = new UMLLinkedList(this, new UMLModelElementClientDependencyListModel(this));
+        
+        // 2002-11-10 flows are not supported yet by the rest of argouml but 
+        // included here for future compliance. For the same reason as
+        // supplierDependency not mutable
+        sourceFlowList = new UMLLinkedList(this, new UMLModelElementSourceFlowListModel(this));
+        targetFlowList = new UMLLinkedList(this, new UMLModelElementTargetFlowListModel(this));
+        
+    }
+        
 }
