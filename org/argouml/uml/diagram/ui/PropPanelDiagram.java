@@ -31,7 +31,6 @@ import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.ui.ArgoDiagram;
 import org.argouml.uml.ui.PropPanel;
-import org.argouml.uml.ui.PropPanelButton;
 import org.argouml.uml.ui.UMLTextField;
 import org.argouml.uml.ui.UMLTextProperty;
 import org.argouml.util.ConfigLoader;
@@ -49,10 +48,7 @@ public class PropPanelDiagram extends PropPanel {
         
 
         addField(Argo.localize("UMLMenu", "label.name"), field);
-       
-        
-        new PropPanelButton(this, buttonPanel, _navBackIcon, Argo.localize("UMLMenu", "button.go-back"), "navigateBackAction", "isNavigateBackEnabled");
-        new PropPanelButton(this, buttonPanel, _navForwardIcon, Argo.localize("UMLMenu", "button.go-forward"), "navigateForwardAction", "isNavigateForwardEnabled");
+          
     }
     
     /**

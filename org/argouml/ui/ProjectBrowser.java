@@ -43,6 +43,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.JToolBar;
 
 import org.apache.log4j.Category;
 import org.argouml.application.api.Argo;
@@ -58,6 +59,7 @@ import org.argouml.swingext.BorderSplitPane;
 import org.argouml.swingext.DockLayout;
 import org.argouml.swingext.Horizontal;
 import org.argouml.swingext.Orientation;
+import org.argouml.swingext.Toolbar;
 import org.argouml.swingext.Vertical;
 import org.argouml.ui.menubar.GenericArgoMenuBar;
 import org.argouml.ui.targetmanager.TargetManager;

@@ -91,9 +91,7 @@ public class PropPanelNode extends PropPanelClassifier {
     compList.setVisibleRowCount(1);
     addField(new JScrollPane(compList),0,1,1);
 
-    new PropPanelButton(this,buttonPanel,_navUpIcon, Argo.localize("UMLMenu", "button.go-up"),"navigateUp",null);
-    new PropPanelButton(this,buttonPanel,_navBackIcon, Argo.localize("UMLMenu", "button.go-back"),"navigateBackAction","isNavigateBackEnabled");
-    new PropPanelButton(this,buttonPanel,_navForwardIcon, Argo.localize("UMLMenu" ,"button.go-forward"),"navigateForwardAction","isNavigateForwardEnabled");
+    new PropPanelButton(this,buttonPanel,_navUpIcon, Argo.localize("UMLMenu", "button.go-up"),"navigateUp",null);   
     new PropPanelButton(this,buttonPanel,_deleteIcon,localize("Delete node"),"removeElement",null);
 
   }

@@ -109,13 +109,7 @@ public class PropPanelExtend extends PropPanelModelElement {
         // Add the toolbar.
 
         new PropPanelButton(this, buttonPanel, _navUpIcon,
-                            Argo.localize("UMLMenu", "button.go-up"), "navigateNamespace", null);
-        new PropPanelButton(this, buttonPanel, _navBackIcon,
-                            Argo.localize("UMLMenu", "button.go-back"), "navigateBackAction",
-                            "isNavigateBackEnabled");
-        new PropPanelButton(this, buttonPanel, _navForwardIcon,
-                            Argo.localize("UMLMenu", "button.go-forward"), "navigateForwardAction",
-                            "isNavigateForwardEnabled");
+                            Argo.localize("UMLMenu", "button.go-up"), "navigateNamespace", null);       
         new PropPanelButton(this, buttonPanel, _extensionPointIcon,
                             localize("Add extension point"),
                             "newExtensionPoint",

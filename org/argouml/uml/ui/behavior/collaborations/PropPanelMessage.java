@@ -96,9 +96,7 @@ public class PropPanelMessage extends PropPanelModelElement {
     JScrollPane predecessorScroll = new JScrollPane(new UMLMutableLinkedList(new UMLMessagePredecessorListModel(), ActionAddMessagePredecessor.SINGLETON, null));
     addField(Argo.localize("UMLMenu", "label.predecessor"), predecessorScroll);
 
-    new PropPanelButton(this,buttonPanel,_navUpIcon, Argo.localize("UMLMenu", "button.go-up"),"navigateInteraction",null);
-    new PropPanelButton(this,buttonPanel,_navBackIcon, Argo.localize("UMLMenu" ,"button.go-back"),"navigateBackAction","isNavigateBackEnabled");
-    new PropPanelButton(this,buttonPanel,_navForwardIcon, Argo.localize("UMLMenu", "button.go-forward"),"navigateForwardAction","isNavigateForwardEnabled");
+    new PropPanelButton(this,buttonPanel,_navUpIcon, Argo.localize("UMLMenu", "button.go-up"),"navigateInteraction",null);   
     new PropPanelButton(this,buttonPanel,_actionIcon, Argo.localize("UMLMenu", "button.add-action"),"addAction","isAddActionEnabled");
     // ActionNewAction.SINGLETON.setTarget((MModelElement)getTarget());
     // buttonPanel.add(new PropPanelButton2(this, ActionNewAction.SINGLETON));

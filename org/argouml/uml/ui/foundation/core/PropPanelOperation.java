@@ -26,7 +26,6 @@ package org.argouml.uml.ui.foundation.core;
 
 
 import java.awt.Color;
-import java.awt.GridLayout;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
@@ -125,9 +124,7 @@ public class PropPanelOperation extends PropPanelModelElement {
 	exceptList.setFont(smallFont);
         addField(Argo.localize("UMLMenu", "label.raisedsignals"), new JScrollPane(exceptList));
 
-        new PropPanelButton(this, buttonPanel, _navUpIcon, Argo.localize("UMLMenu", "button.go-up"), "navigateUp", null);
-        new PropPanelButton(this, buttonPanel, _navBackIcon, Argo.localize("UMLMenu", "button.go-back"), "navigateBackAction", "isNavigateBackEnabled");
-        new PropPanelButton(this, buttonPanel, _navForwardIcon, Argo.localize("UMLMenu" ,"button.go-forward"), "navigateForwardAction", "isNavigateForwardEnabled");
+        new PropPanelButton(this, buttonPanel, _navUpIcon, Argo.localize("UMLMenu", "button.go-up"), "navigateUp", null);     
         new PropPanelButton(this, buttonPanel, _operationIcon, Argo.localize("UMLMenu", "button.add-new-operation"), "buttonAddOperation", null);
         // I uncommented this next line. I don't know why it was commented out, it seems to work just fine...--pjs--
         new PropPanelButton(this, buttonPanel, _parameterIcon, Argo.localize("UMLMenu", "button.add-parameter"), "buttonAddParameter", null);       

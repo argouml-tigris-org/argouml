@@ -30,8 +30,8 @@
 
 package org.argouml.uml.ui.foundation.core;
 
-import javax.swing.JScrollPane;
 import javax.swing.JList;
+import javax.swing.JScrollPane;
 
 import org.argouml.application.api.Argo;
 import org.argouml.model.uml.foundation.core.CoreFactory;
@@ -39,8 +39,8 @@ import org.argouml.swingext.LabelledLayout;
 import org.argouml.uml.ui.PropPanelButton;
 import org.argouml.uml.ui.UMLCheckBox;
 import org.argouml.uml.ui.UMLComboBoxNavigator;
-import org.argouml.uml.ui.UMLReflectionBooleanProperty;
 import org.argouml.uml.ui.UMLLinkedList;
+import org.argouml.uml.ui.UMLReflectionBooleanProperty;
 import org.argouml.util.ConfigLoader;
 
 import ru.novosoft.uml.foundation.core.MClass;
@@ -85,9 +85,7 @@ public class PropPanelClass extends PropPanelClassifier {
     addField(Argo.localize("UMLMenu", "label.owned-elements"), getOwnedElementsScroll());
     
   
-    new PropPanelButton(this,buttonPanel,_navUpIcon, Argo.localize("UMLMenu", "button.go-up"),"navigateUp",null);
-    new PropPanelButton(this,buttonPanel,_navBackIcon, Argo.localize("UMLMenu", "button.go-back"),"navigateBackAction","isNavigateBackEnabled");
-    new PropPanelButton(this,buttonPanel,_navForwardIcon, Argo.localize("UMLMenu", "button.go-forward"),"navigateForwardAction","isNavigateForwardEnabled");
+    new PropPanelButton(this,buttonPanel,_navUpIcon, Argo.localize("UMLMenu", "button.go-up"),"navigateUp",null);   
     new PropPanelButton(this,buttonPanel,_addAttrIcon, Argo.localize("UMLMenu", "button.add-attribute"),"addAttribute",null);
     new PropPanelButton(this,buttonPanel,_addOpIcon, Argo.localize("UMLMenu", "button.add-operation"),"addOperation",null);
     new PropPanelButton(this,buttonPanel,_innerClassIcon, Argo.localize("UMLMenu", "button.add-inner-class"),"addInnerClass",null);
