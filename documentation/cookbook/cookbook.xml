@@ -70,7 +70,7 @@ and documenting the development of ArgoUML.
     <sect1 id="thanks">
       <title>Thanks</title>
       <para>
-We, the authors would like to take the opportunity to thank everyone
+We, the authors, would like to take the opportunity to thank everyone
 involved in the creation of this documentation, and especially the
 people behind setting up the DocBook environment. In particular thanks
 go out to Alejandro Ramirez, Phillipe Vanpeperstraete and Andreas
@@ -2793,7 +2793,7 @@ This chapter is currently under rework with new component organization.
     <sect1 id="model">
       <title>Model</title>
       <para id="comp-model-purpose">
-Purpose - to provide the data structures that keeps track of the model
+Purpose - to provide the data structures that keep track of the model
 and the diagrams. 
 This comes with a complete set of methods to modify the model
 and register interest in changes to the model.
@@ -2814,9 +2814,9 @@ The NSUML model itself does not define enough 'business' logic
 to be directly used and the factories and helperclasses provide a
 centralized place for accessing this 'business' logic.
 Per section of chapter 2 of the UML 1.3 specification there is one factory
-and one helper. They are placed in their own package. The package name
+and one helper. They are placed in their own packages. The package name
 convention is:
-<classname>org.argouml.model.uml.SECTIONNAME</classname> 
+<classname>org.argouml.model.uml.SECTIONNAME</classname>
 where sectionname is one of the following:
 <itemizedlist>
 	  <listitem>
@@ -2855,14 +2855,14 @@ where sectionname is one of the following:
 	</itemizedlist>
 </para>
       <para>
-Each package has at least a helper and a factory in it. 
-The factories contain all methods that deal with 
+Each package has at least a helper and a factory in it.
+The factories contain all methods that deal with
 creating and building modelelements.
 The helpers contain all utility methods needed to manipulate
 the modelelements.
 </para>
       <para>
-Both helpers and factories are singletons. 
+Both helpers and factories are singletons.
 The static method to access them is
 <methodname>getFactory</methodname> for the factory
 and <methodname>getHelper</methodname> for the helper.
@@ -2887,10 +2887,10 @@ The build methods have a signature like
 </para>
 	<para>
 Each build method verifies the wellformednessrules
-as defined in the UML spec 1.3. 
-The reason for this is that NS-UML does not enforce 
+as defined in the UML spec 1.3.
+The reason for this is that NS-UML does not enforce
 the wellformedness rules even though non-wellformed UML can lead to
-non-wellformed XMI which leads to saving/loading issues and 
+non-wellformed XMI which leads to saving/loading issues and
 all kinds of illegal states of argouml.
 </para>
 	<para>
@@ -2898,9 +2898,9 @@ If you want to create an element you shall use the create methods
 in the factories.
 You are strongly advised to use a build method or, if there is
 none that suits your needs, to build one thereby reusing the allready
-existing build methods and utility methods in the helpers. 
+existing build methods and utility methods in the helpers.
 One reason for this is that the eventlisteners for
-the newly create modelelement are setup correctly.
+the newly created modelelement are setup correctly.
 </para>
         <para>
 TODO: Am I allowed to call the factories from any thread?
@@ -2909,9 +2909,9 @@ TODO: Am I allowed to call the factories from any thread?
       <sect2>
 	<title>Helpers</title>
 	<para>
-The helpers contain all utility methods for manipulating modelelements. 
-For example, they contain methods to get all modelelements 
-of a certain class out of the model 
+The helpers contain all utility methods for manipulating modelelements.
+For example, they contain methods to get all modelelements
+of a certain class out of the model
 (see <methodname>getAllModelelementsOfKind</methodname> in 
 <classname>ModelmanagementHelper</classname>).
 </para>
@@ -2942,7 +2942,7 @@ TODO: Am I allowed to call the helpers from any thread?
 	<sect3>
 	  <title>Introduction</title>
 	  <para>
-Late 2002, the ArgoUML community decided for introduction of a clean
+Late 2002, the ArgoUML community decided for the introduction of a clean
 interface between the NSUML model and the rest of ArgoUML.
 This interface consists of three parts:
 <orderedlist>
@@ -3006,15 +3006,14 @@ The model event pump will replace all other event mechanisms for model
 events in the future.
 These mechanisms (like UMLChangeDispatch and ThirdPartyEventlisteners
 for those who are interested) are DEPRECATED.
-Do not use them therefore.
-Do not use classes that use them therefore.
+Do not use them therefore and do not use classes that use them.
 </para>
 	</sect3>
 	<sect3>
 	  <title>Public API</title>
 	  <para>
 You might wonder: how does this all work?
-Well very simple in fact.
+Well, very simple in fact.
 </para>
 	  <para>
 A modelevent (from now on a MEvent) has a name that uniquely
@@ -3108,7 +3107,7 @@ types of events but coming from 1 modelelement.
 This is a convenience method for not having to call the methods
 explained in section
 <xref linkend="pump-register-listener-for-type"/>
-more then once.
+more than once.
 
 It works via:
 <programlisting>
@@ -3137,7 +3136,7 @@ for a set of types of events fired by all modelements of a certain
 class.
 </para>
 	    <para>
-Offcourse you can remove your listeners from the event pump. 
+Of course you can remove your listeners from the event pump. 
 This works with methods starting with remove instead of add.
 </para>
 	  </sect4>
@@ -3266,7 +3265,7 @@ The Critics are located in <classname>org.argouml.cognitive</classname>.
 The Critics is a Layer 3 component. See <xref linkend="layer3"></xref>.
 </para>
       <para>
-The Critics component depend on the Model that it works against to take
+The Critics component depends on the Model that it works against to take
 all decisions
 and the To Do Items used to present the information.
 </para>
@@ -3277,7 +3276,7 @@ This component contains the following main class types:
 	<listitem>
 	  <para>
 Critics provide help to find artifacts in
-the model that do not obey simple design "rules" or 
+the model that do not obey simple design "rules" or
 "best practises".
 </para>
 	</listitem>
@@ -3292,12 +3291,12 @@ Checklists are currently (0.9.5 and 0.9.6) turned off.
 	<listitem>
 	  <para>
 ToDoItems provide a way for the Critics to communicate
-its knowledge to the User and let the User start Wizards.
+their knowledge to the User and let the User start Wizards.
 </para>
 	</listitem>
 	<listitem>
 	  <para>
-Wizards are step by step instructions that fixes problems
+Wizards are step by step instructions that fix problems
 found by the Critics.
 </para>
 	</listitem>
@@ -3320,13 +3319,13 @@ ArgoUML keeps nagging when Modelelements overlap, which makes the
 Diagram hard to read.
 </para>
 	    <para>
-This package also contain the base classes for the handling.
+This package also contains the base classes for the handling.
 </para>
 </listitem>
 <listitem><para>org.argouml.uml.cognitive.critics</para>
 	    <para>
 These are Critics which are directly related to UML issues (well, more
-or less). For example, it will nag when a class has two many
+or less). For example, it will nag when a class has too many
 operations, because that makes it hard to maintain the particular
 class.
 </para>
@@ -3343,14 +3342,14 @@ This package also contains Wizards used by these Critiques.
 </itemizedlist>
 </para>
       <para>
-Base classes for Wizards is <classname>org.argouml.kernel.Wizard</classname>.
+The Base class for Wizards is <classname>org.argouml.kernel.Wizard</classname>.
 </para>
       <para>
 Checklists are located in the package org.argouml.cognitive.checklist.
 </para>
       <para>
 Helper classes for To Do Items, To Do Pane, Wizards and the Knowledge Types
-is located in the package org.argouml.cognitive.ui.
+are located in the package org.argouml.cognitive.ui.
 </para>
       </sect2>
 
