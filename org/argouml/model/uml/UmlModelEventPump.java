@@ -48,6 +48,8 @@ import ru.novosoft.uml.MBase;
 import ru.novosoft.uml.MElementEvent;
 import ru.novosoft.uml.MElementListener;
 import ru.novosoft.uml.model_management.MModel;
+import ru.novosoft.uml.MFactoryImpl;
+
 
 /**
  * This class implements an event pump for all modelevents (MEvents
@@ -90,10 +92,13 @@ public final class UmlModelEventPump implements MElementListener {
     }
 
     /**
-     * Constructor for UmlModelEventPump.
+     * Constructor for UmlModelEventPump, initialises the NSUML event policy.
      */
     private UmlModelEventPump() {
         super();
+        // Initialize NSUML
+	MFactoryImpl.setEventPolicy(MFactoryImpl.EVENT_POLICY_IMMEDIATE);
+
     }
 
     /**

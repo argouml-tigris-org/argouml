@@ -34,8 +34,6 @@ import org.argouml.uml.cognitive.critics.CrUML;
 
 import java.util.Locale;
 
-import ru.novosoft.uml.model_management.MModel;
-
 /** StartCritics is a thread which helps to start the critiquing thread
  */
 public class StartCritics implements Runnable {
@@ -52,7 +50,7 @@ public class StartCritics implements Runnable {
             // UmlModelEventPump.getPump()
 	    // .removeModelEventListener(dsgr, (MModel)o);
             UmlModelEventPump.getPump().addModelEventListener(dsgr,
-							      (MModel) o); 
+							      o); 
         }
         Argo.log.info("spawned critiquing thread");
 
