@@ -201,6 +201,7 @@ public class Project implements java.io.Serializable {
         setCurrentNamespace(model);
         addMember(new UMLClassDiagram("class diagram 1", model));
         addMember(new UMLUseCaseDiagram("use case diagram 1", model));
+        setNeedsSave(false);
     }
 
     public Project(MModel model) {
