@@ -152,16 +152,14 @@ After these operations the file will still be visible in the GUI.
 
 <project name="ArgoDocs" default="help" basedir="..">
 
+  <property name="argo.root.dir" value="${basedir}"/>
   <property environment="env"/>
-  <property name="argo.tools.dir" value="${basedir}/tools"/>
-  <property name="argo.tools.lib.dir" value="${argo.tools.dir}/lib"/>
-  <property name="argo.lib.dir" value="${basedir}/lib"/>
-  <property file="${basedir}/documentation/build.properties"/>
+  <property file="${argo.root.dir}/documentation/build.properties"/>
   <property file="${user.home}/argouml.build.properties"/>
-  <property file="${basedir}/documentation/default.properties"/>
-  <property name="documentation.dir" value="${basedir}/documentation"/>
+  <property file="${argo.root.dir}/documentation/default.properties"/>
+  <property name="documentation.dir" value="${argo.root.dir}/documentation"/>
   <property name="extlib.dir"        
-      value="${documentation.dir}/docbook-setup/docbook-xsl-1.49/extensions"/>
+      value="${argo.docbook.dir}/docbook-xsl-1.49/extensions"/>
 
   <path id="saxon.classpath">
     <pathelement location="${saxon.jar.path}" />
@@ -180,16 +178,10 @@ After these operations the file will still be visible in the GUI.
     <echo message="Using ${ant.version}"/>
 
 
-    <property name="build.dir"         value="${basedir}/build"/>
-    <property name="output.dir"        value="${build.dir}/documentation"/>
-    <property name="printablehtml.dir" value="${output.dir}/printablehtml"/>
-    <property name="defaulthtml.dir"   value="${output.dir}/defaulthtml"/>
-    <property name="pdf.dir"           value="${output.dir}/pdf"/>
-    <property name="javahelp.dir"      value="${output.dir}/javahelp"/>
-    <property name="dist.dir"          value="${basedir}/dist"/>
-    <property name="lib.dir"           value="${basedir}/lib"/>
-    <property name="fop.lib.dir"        value="${argo.tools.dir}/fop-0.20.3/lib"/>
-    <property name="fop.build.dir"      value="${argo.tools.dir}/fop-0.20.3/build"/>
+    <property name="printablehtml.dir" value="${argo.docs.output.dir}/printablehtml"/>
+    <property name="defaulthtml.dir"   value="${argo.docs.output.dir}/defaulthtml"/>
+    <property name="pdf.dir"           value="${argo.docs.output.dir}/pdf"/>
+    <property name="javahelp.dir"      value="${argo.docs.output.dir}/javahelp"/>
   </target>
 
   <!-- =================================================================== -->
@@ -217,8 +209,8 @@ After these operations the file will still be visible in the GUI.
   <!-- =================================================================== -->
 
   <target name="prepare" depends="init">
-    <mkdir dir="${build.dir}"/>
-    <mkdir dir="${output.dir}"/>
+    <mkdir dir="${argo.build.dir}"/>
+    <mkdir dir="${argo.docs.output.dir}"/>
     <mkdir dir="${defaulthtml.dir}"/>
     <mkdir dir="${printablehtml.dir}"/>
     <mkdir dir="${javahelp.dir}"/>
@@ -633,7 +625,7 @@ After these operations the file will still be visible in the GUI.
     <move file="${target.dir}/jhelpset.hs"
           tofile="${target.dir}/${target.hs}"/>
 
-    <jar jarfile="${build.dir}/${target.jar}"
+    <jar jarfile="${argo.build.dir}/${target.jar}"
          basedir="${target.dir}"
          includes="**"
          excludes="*.jar"/>
@@ -666,7 +658,7 @@ After these operations the file will still be visible in the GUI.
   <!-- =================================================================== -->
 
   <target name="clean" depends="init">
-    <delete dir="${output.dir}"/>
+    <delete dir="${argo.docs.output.dir}"/>
   </target>
   
 

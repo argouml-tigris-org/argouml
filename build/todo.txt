@@ -7,19 +7,7 @@
 3.  Determine behavior if using ant pre 1.4.1 version.
     Is there a way of catching it and bailing out with a warning?
 
-4.  See if setting argo.tools.dir in build.properties with current
-    load order of properties file will allow appropriate override.
-    Rephrasing the issue, if ${argo.tools.dir} is referenced in a
-    property file before it is set, will it still be expanded correctly?
-    (Late-breaking-news: according to ant documentation these are
-    expanded when file is loaded.)
-
-    If not,
-        4a.  Move locations from default.properties
-             into default.location.properties
-
-        5b.  Allow override of locations with build.location.properties
-             and ${user.home}/argouml.build.location.properties
+4.  Completed.
 
 5.  Make sure that all the changes of ${version} to ${build.version}
     didn't break anything.
@@ -28,17 +16,15 @@
 
 7.  Add executable mode setting in tar creation.
 
-8.  Copy the jars from their individual ${x.jar.path} locations.
-    Make sure they are copied to a versionless name.
+8.  Completed.
 
 9.  Consider changing basedir to always be ${argo.root.dir}
     - that might eliminate many of the properties issues.
     For example, that means that argouml/src_new/build.xml
     would have its basedir="..", and the default tools directory
-    woud be ${basedir}/tools .
+    woud be ${basedir}/tools rather than ${argo.root.dir}/tools .
 
-10. Add local-ant-*.bat and local-build-*.bat files to cvs branch.
-    (Do not merge into CVSHEAD).
+10. Completed.
 
 11. Lay foundation for javadoc integration.
 
@@ -96,4 +82,51 @@
     building a class in tools since the <concat> task is not available
     until ant 1.5, but perhaps this can be done somehow
     using <echo file="${user.home}/argouml.build.properties" append="true">
+
+    Perhaps it would be better to ignore ${user.home}/.ant.properties
+    and simply rename ${user.home}/.argo.ant.properties to
+    ${user.home}/argouml.build.properties if the first exists and the
+    second does not.
+
+28. Remove local-ant-*.bat and local-build-*.bat files from cvs branch
+    before merging into CVSHEAD.
+
+29. Completed.
+
+30. Make sure all options work properly with "build option" and "ant option",
+    using ant 1.4.1.
+
+31. Make sure all options work properly with "build option" and "ant option",
+    using ant 1.5.
+
+32. Check that variables are being used consistently between build.xml files
+    located in src_new, documentation, and modules.
+
+=========================== COMPLETED ========================================
+
+4.  See if setting argo.tools.dir in build.properties with current
+    load order of properties file will allow appropriate override.
+    Rephrasing the issue, if ${argo.tools.dir} is referenced in a
+    property file before it is set, will it still be expanded correctly?
+    (Late-breaking-news: according to ant documentation these are
+    expanded when file is loaded.)
+
+    If not,
+        4a.  Move locations from default.properties
+             into default.location.properties
+
+        5b.  Allow override of locations with build.location.properties
+             and ${user.home}/argouml.build.location.properties
+
+    Resolved without using default.location.properties by careful
+    arrangement of the property values.  
+
+8.  Copy the jars from their individual ${x.jar.path} locations.
+    Make sure they are copied to a versionless name.
+
+10. Add local-ant-*.bat and local-build-*.bat files to cvs branch.
+    (Do not merge into CVSHEAD).
+
+29. Try to refer to most argo ant variables as ${argo.x} rather than ${x}
+    (for example: ${argo.lib.dir} instead of ${lib.dir}.
 

@@ -103,11 +103,11 @@ Build targets
 
 These are the meaningful targets for this build file:
 
--   compile      -> compiles your source code to ../build/classes
+-   compile      -> compiles your source code to ${argo.root.dir}/build/classes
 -   run          -> runs ArgoUML from compiled source
--   package      -> generates a jar file, ../build/argouml09.jar
--   dist         -> generates distribution .tar.gz and .zip files in ../build/dist
--   prepare-docs -> writes the documentation to ../build/doc
+-   package      -> generates a jar file, ${argo.root.dir}/build/argouml09.jar
+-   dist         -> generates distribution .tar.gz and .zip files in ${argo.root.dir}/build/dist
+-   prepare-docs -> writes the documentation to ${argo.root.dir}/build/doc
 -   clean        -> cleans up (deletes) the build directory
 -   distclean    -> cleans up the distribution directory
 -   usage        -> show this message (default)
@@ -135,6 +135,8 @@ doesn't find it's own XML-libs. You need to set ANT_HOME in your shell.
   <!-- =================================================================== -->
   <!-- Global initialization                                               -->
   <!-- =================================================================== -->
+
+  <property name="argo.root.dir" value=".."/>
 
   <property environment="env"/>
   <property file="build.properties"/>
@@ -174,23 +176,7 @@ doesn't find it's own XML-libs. You need to set ANT_HOME in your shell.
     <echo message="--------------- ${Name} ${build.version} [${year}] ------------"/>
     <echo message="Using ${ant.version}"/>
 
-    <property name="src.dir" value="../src_new"/>
-    <!--property name="lib.dir" value="../lib"/-->
-    <!--property name="gef.jar" value="gef-0.9.6.jar"/-->
-    <!--property name="classpath" value="${JAVA_HOME}/lib/tools.jar:${lib.dir}/xerces.jar:${lib.dir}/nsuml.jar:${lib.dir}/ocl-argo.jar:${lib.dir}/${gef.jar}:${lib.dir}/antlrall.jar:${lib.dir}/log4j.jar:${lib.dir}/jh.jar"/-->
-
     <property name="packages" value="org.argouml.*"/>
-    <property name="manifest" value="${src.dir}/org/argouml.mf"/>
-
-    <property name="build.dir" value="../build"/>
-    <property name="build.src" value="${src.dir}"/>
-    <property name="build.dest" value="${build.dir}/classes"/>
-    <property name="dist.dir" value="${build.dir}/dist"/>
-    <property name="docs.dir" value="${build.dir}/javadocs"/>
-    <property name="snapshot.dir" value="../www/snapshots"/>
-
-    <property name="argo.bin.dir" value="${build.dir}/bin"/>
-    <property name="argo.bin.src" value="${build.src}/bin"/>
 
     <available classname="org.tigris.gef.base.Globals"
 	       classpathref="argo.classpath"
@@ -208,7 +194,7 @@ doesn't find it's own XML-libs. You need to set ANT_HOME in your shell.
     <!-- developer.lib.dir is the developer snapshot directory.           -->
     <!-- If it is not set, it defaults to build.dir, and "build install"  -->
     <!-- will not do anything.                                            -->
-    <property name="developer.lib.dir" value="${build.dir}"/>
+    <property name="developer.lib.dir" value="${argo.build.dir}"/>
 
     <!-- developer.bin.dir is the developer snapshot directory.           -->
     <!-- If it is not set, it defaults to argo.bin.dir, and               -->
@@ -231,13 +217,13 @@ doesn't find it's own XML-libs. You need to set ANT_HOME in your shell.
     <echo message=""/>
     <echo message=" available targets are:"/>
     <echo message=""/>
-    <echo message="   compile      --> compiles the source code to the tree under ${build.dir}"/>
+    <echo message="   compile      --> compiles the source code to the tree under ${argo.build.dir}"/>
     <echo message="   run          --> runs ArgoUML from compiled source"/>
     <echo message="   package      --> generates the ${name}.jar file"/>
-    <echo message="   dist         --> generates ${Name} .tar.gz and .zip files into ${dist.dir}"/>
-    <echo message="   prepare-docs --> writes the documentation to ${docs.dir}"/>
-    <echo message="   clean        --> cleans up the ${build.dir} directory"/>
-    <echo message="   distclean    --> cleans up the distribution directory, ${dist.dir}"/>
+    <echo message="   dist         --> generates ${Name} .tar.gz and .zip files into ${argo.dist.dir}"/>
+    <echo message="   prepare-docs --> writes the documentation to ${argo.javadocs.dir}"/>
+    <echo message="   clean        --> cleans up the ${argo.build.dir} directory"/>
+    <echo message="   distclean    --> cleans up the distribution directory, ${argo.dist.dir}"/>
     <echo message="   usage        --> show this message (default)"/>
     <echo message=""/>
     <echo message=" See the comments inside the build.xml file for more details."/>
@@ -252,24 +238,24 @@ doesn't find it's own XML-libs. You need to set ANT_HOME in your shell.
   <target name="prepare" depends="init">
     <!-- create directories -->
     <echo message="Preparing the build directories"/>
-    <mkdir dir="${build.dir}"/>
-    <mkdir dir="${build.dir}/ext"/>
-    <mkdir dir="${build.dest}"/>
-    <copy todir="${build.dest}/org/argouml/Images">
-      <fileset dir="${build.src}/org/argouml/Images" includes="**/**" excludes="CVS/**" />
+    <mkdir dir="${argo.build.dir}"/>
+    <mkdir dir="${argo.build.dir}/ext"/>
+    <mkdir dir="${argo.build.classes}"/>
+    <copy todir="${argo.build.classes}/org/argouml/Images">
+      <fileset dir="${argo.src.dir}/org/argouml/Images" includes="**/**" excludes="CVS/**" />
     </copy>
-    <copy todir="${build.dest}/org/argouml/i18n">
-      <fileset dir="${build.src}/org/argouml/i18n" includes="*.properties" />
+    <copy todir="${argo.build.classes}/org/argouml/i18n">
+      <fileset dir="${argo.src.dir}/org/argouml/i18n" includes="*.properties" />
     </copy>
-    <copy todir="${build.dest}/org/argouml/resource">
-      <fileset dir="${build.src}/org/argouml/resource" includes="**/**" excludes="CVS/**" />
+    <copy todir="${argo.build.classes}/org/argouml/resource">
+      <fileset dir="${argo.src.dir}/org/argouml/resource" includes="**/**" excludes="CVS/**" />
     </copy>
-    <copy todir="${build.dest}/org/argouml/xml/dtd">
-      <fileset dir="${build.src}/org/argouml/xml/dtd" includes="**/**" excludes="CVS/**" />
+    <copy todir="${argo.build.classes}/org/argouml/xml/dtd">
+      <fileset dir="${argo.src.dir}/org/argouml/xml/dtd" includes="**/**" excludes="CVS/**" />
     </copy>
-    <copy file="${build.src}/org/argouml/argo.ini" tofile="${build.dest}/org/argouml/argo.ini" />
-    <copy file="${build.src}/org/argouml/default.xmi" tofile="${build.dest}/org/argouml/default.xmi" />
-	<copy file="${build.src}/org/argouml/registry.xml" tofile="${build.dest}/org/argouml/registry.xml"/>
+    <copy file="${argo.src.dir}/org/argouml/argo.ini" tofile="${argo.build.classes}/org/argouml/argo.ini" />
+    <copy file="${argo.src.dir}/org/argouml/default.xmi" tofile="${argo.build.classes}/org/argouml/default.xmi" />
+	<copy file="${argo.src.dir}/org/argouml/registry.xml" tofile="${argo.build.classes}/org/argouml/registry.xml"/>
   </target>
 
   <!-- =================================================================== -->
@@ -278,7 +264,7 @@ doesn't find it's own XML-libs. You need to set ANT_HOME in your shell.
 
   <target name="update" depends="prepare">
     <echo message="Updating from CVS "/>
-    <cvs dest="${src.dir}"
+    <cvs dest="${argo.src.dir}"
 	 command="update"
     />
   </target>
@@ -291,10 +277,10 @@ doesn't find it's own XML-libs. You need to set ANT_HOME in your shell.
     <echo message="Generate parsers"/>
 
     <java fork="yes" classname="antlr.Tool" classpath="${classpath}">
-          <arg line="-o ${build.src}/org/argouml/uml/reveng/java  ${build.src}/org/argouml/uml/reveng/java/java.g"/>
+          <arg line="-o ${argo.src.dir}/org/argouml/uml/reveng/java  ${argo.src.dir}/org/argouml/uml/reveng/java/java.g"/>
     </java>
     <java fork="yes" classname="antlr.Tool" classpath="${classpath}">
-          <arg line="-o ${build.src}/org/argouml/language/java/generator  ${build.src}/org/argouml/language/java/generator/java.g"/>
+          <arg line="-o ${argo.src.dir}/org/argouml/language/java/generator  ${argo.src.dir}/org/argouml/language/java/generator/java.g"/>
     </java>
 
   </target>
@@ -345,10 +331,10 @@ doesn't find it's own XML-libs. You need to set ANT_HOME in your shell.
     <echo message="Compiling the sources"/>
 
     <!-- create directories -->
-    <mkdir dir="${build.dest}"/>
+    <mkdir dir="${argo.build.classes}"/>
 
-    <javac srcdir="${build.src}"
-           destdir="${build.dest}"
+    <javac srcdir="${argo.src.dir}"
+           destdir="${argo.build.classes}"
            excludes="*.txt,*.bat,*.xml,*.sh"
            debug="${debug}"
            deprecation="${deprecation}"
@@ -365,18 +351,21 @@ doesn't find it's own XML-libs. You need to set ANT_HOME in your shell.
   <!-- =================================================================== -->
   <target name="package" depends="compile">
     <filter token="version" value="${build.version}"/>
-    <copy file="${manifest}" tofile="${build.dest}/${manifest}" filtering="on" overwrite="on" />
-    <jar jarfile="${build.dir}/${name}.jar"
-         basedir="${build.dest}"
+    <copy file="${argo.manifest.src}" tofile="${argo.build.manifest}" filtering="on" overwrite="on" />
+    <jar jarfile="${argo.build.dir}/${name}.jar"
+         basedir="${argo.build.classes}"
          includes="org/argouml/**"
-         excludes="*.txt,*.bat,*.xml,*.sh,${manifest}"
-         manifest="${build.dest}/${manifest}"/>
-    <copy todir="${build.dir}">
-      <!-- todo - do not copy lib dir, copy individual jars from wherever they are -->
-      <fileset dir="${lib.dir}" />
-    </copy>
-    <copy file="${src.dir}/README.txt" tofile="${build.dir}/README.txt" />
-    <copy file="${src.dir}/bin/argouml.sh" todir="${build.dir}" />
+         excludes="*.txt,*.bat,*.xml,*.sh"
+         manifest="${argo.build.manifest}"/>
+    <copy file="${antlrall.jar.path}" tofile="${argo.build.dir}/antlrall.jar" />
+    <copy file="${gef.jar.path}" tofile="${argo.build.dir}/gef.jar" />
+    <copy file="${jh.jar.path}" tofile="${argo.build.dir}/jh.jar" />
+    <copy file="${log4j.jar.path}" tofile="${argo.build.dir}/log4j.jar" />
+    <copy file="${nsuml.jar.path}" tofile="${argo.build.dir}/nsuml.jar" />
+    <copy file="${ocl-argo.jar.path}" tofile="${argo.build.dir}/ocl-argo.jar" />
+    <copy file="${xerces.jar.path}" tofile="${argo.build.dir}/xerces.jar" />
+    <copy file="${argo.src.dir}/README.txt" tofile="${argo.build.dir}/README.txt" />
+    <copy file="${argo.src.dir}/bin/argouml.sh" todir="${argo.build.dir}" />
   </target>
 
   <!-- =================================================================== -->
@@ -384,14 +373,14 @@ doesn't find it's own XML-libs. You need to set ANT_HOME in your shell.
   <!-- =================================================================== -->
   <target name="snapshot" depends="compile">
     <!-- create directories -->
-    <mkdir dir="${snapshot.dir}"/>
+    <mkdir dir="${argo.snapshot.dir}"/>
     <filter token="version" value="${build.version}"/>
-    <copy file="${manifest}" tofile="${build.dest}/${manifest}" filtering="on" />
-    <jar jarfile="${snapshot.dir}/${name}-snapshot-${DSTAMP}.jar"
-         basedir="${build.dest}"
+    <copy file="${argo.manifest.src}" tofile="${argo.build.manifest}" filtering="on" />
+    <jar jarfile="${argo.snapshot.dir}/${name}-snapshot-${DSTAMP}.jar"
+         basedir="${argo.build.classes}"
          includes="org/argouml/**"
-         excludes="*.txt,*.bat,*.xml,*.sh,${manifest}"
-         manifest="${build.dest}/${manifest}"/>
+         excludes="*.txt,*.bat,*.xml,*.sh"
+         manifest="${argo.build.manifest}"/>
   </target>
 
   <!-- =================================================================== -->
@@ -401,11 +390,11 @@ doesn't find it's own XML-libs. You need to set ANT_HOME in your shell.
   </target>
 
   <target name="javadocs" depends="init">
-    <mkdir dir="${docs.dir}"/>
+    <mkdir dir="${argo.javadocs.dir}"/>
 
     <!-- Links allow reference to external classes from within Argo javadocs -->
-    <javadoc sourcepath="${build.src}"
-             destdir="${docs.dir}"
+    <javadoc sourcepath="${argo.src.dir}"
+             destdir="${argo.javadocs.dir}"
              packagenames="${packages}"
 	     use="${javadoc.use}"
 	     private="${javadoc.private}"
@@ -429,8 +418,8 @@ doesn't find it's own XML-libs. You need to set ANT_HOME in your shell.
 
     </javadoc>
 
-    <copy todir="${docs.dir}/org/argouml/doc-files">
-      <fileset dir="${build.src}/org/argouml/doc-files" includes="**/**" excludes="CVS/**" />
+    <copy todir="${argo.javadocs.dir}/org/argouml/doc-files">
+      <fileset dir="${argo.src.dir}/org/argouml/doc-files" includes="**/**" excludes="CVS/**" />
     </copy>
 
   </target>
@@ -440,8 +429,8 @@ doesn't find it's own XML-libs. You need to set ANT_HOME in your shell.
   <!-- Coincidentally (not) this file is suitable for adding to NetBeans   -->
   <!-- =================================================================== -->
   <target name="zip-docs" depends="prepare-docs">
-      <zip zipfile="${build.dir}/argo-javadocs.zip"
-           basedir="${docs.dir}">
+      <zip zipfile="${argo.build.dir}/argo-javadocs.zip"
+           basedir="${argo.javadocs.dir}">
       </zip> 
   </target>
 
@@ -450,16 +439,16 @@ doesn't find it's own XML-libs. You need to set ANT_HOME in your shell.
   <!-- =================================================================== -->
   <target name="dist" depends="package">
     <echo message="Building the distribution files (zip,tar)"/>
-    <zip zipfile="../${Name}-${build.version}.zip" basedir="${build.dir}" includes="${gef.jar.name} log4j.jar nsuml.jar xerces.jar ocl-argo.jar antlrall.jar argouml.jar README.txt"/>
-    <tar tarfile="../${Name}-${build.version}.tar" basedir="${build.dir}" includes="${gef.jar.name} log4j.jar nsuml.jar xerces.jar ocl-argo.jar antlrall.jar argouml.jar README.txt">
+    <zip zipfile="${argo.root.dir}/${Name}-${build.version}.zip" basedir="${argo.build.dir}" includes="${gef.jar.name} log4j.jar nsuml.jar xerces.jar ocl-argo.jar antlrall.jar argouml.jar README.txt"/>
+    <tar tarfile="${argo.root.dir}/${Name}-${build.version}.tar" basedir="${argo.build.dir}" includes="${gef.jar.name} log4j.jar nsuml.jar xerces.jar ocl-argo.jar antlrall.jar argouml.jar README.txt">
     <!--
       <tarfileset mode="555">
 	<include name="argouml.sh">
       </tarfileset>
     -->
     </tar>
-    <gzip zipfile="../${Name}-${build.version}.tar.gz" src="../${Name}-${build.version}.tar" />
-    <delete file="../${Name}-${build.version}.tar"/>
+    <gzip zipfile="${argo.root.dir}/${Name}-${build.version}.tar.gz" src="${argo.root.dir}/${Name}-${build.version}.tar" />
+    <delete file="${argo.root.dir}/${Name}-${build.version}.tar"/>
   </target>
 
   <!-- =================================================================== -->
@@ -467,11 +456,11 @@ doesn't find it's own XML-libs. You need to set ANT_HOME in your shell.
   <!-- =================================================================== -->
   <target name="dist-src" depends="init">
     <echo message="Building the source distribution files (zip,tar)"/>
-    <chmod file="${src.dir}/build.sh" perm="ugo+rx" />
-    <zip zipfile="../${Name}-${build.version}-src.zip" basedir="${src.dir}/.." excludes="**/.*/** **/.* **/*% **/*~ **/*.shared* **/*.proj* **/*.ref.* **/*.bak" includes="src_new/**"/>
-    <tar tarfile="../${Name}-${build.version}-src.tar" basedir="${src.dir}/.." excludes="**/.*/** **/.* **/*% **/*~ **/*.shared* **/*.proj* **/*.ref.* **/*.bak" includes="src_new/**"/>
-    <gzip zipfile="../${Name}-${build.version}-src.tar.gz" src="../${Name}-${build.version}-src.tar" />
-    <delete file="../${Name}-${build.version}-src.tar"/>
+    <chmod file="${argo.src.dir}/build.sh" perm="ugo+rx" />
+    <zip zipfile="${argo.root.dir}/${Name}-${build.version}-src.zip" basedir="${argo.src.dir}/.." excludes="**/.*/** **/.* **/*% **/*~ **/*.shared* **/*.proj* **/*.ref.* **/*.bak" includes="src_new/**"/>
+    <tar tarfile="${argo.root.dir}/${Name}-${build.version}-src.tar" basedir="${argo.src.dir}/.." excludes="**/.*/** **/.* **/*% **/*~ **/*.shared* **/*.proj* **/*.ref.* **/*.bak" includes="src_new/**"/>
+    <gzip zipfile="${argo.root.dir}/${Name}-${build.version}-src.tar.gz" src="${argo.root.dir}/${Name}-${build.version}-src.tar" />
+    <delete file="${argo.root.dir}/${Name}-${build.version}-src.tar"/>
   </target>
 
   <!-- =================================================================== -->
@@ -479,10 +468,10 @@ doesn't find it's own XML-libs. You need to set ANT_HOME in your shell.
   <!-- =================================================================== -->
   <target name="dist-lib" depends="init">
     <echo message="Building the library distribution files (zip,tar)"/>
-    <zip zipfile="../${Name}-${build.version}-libs.zip" basedir="${lib.dir}/.." includes="lib/${gef.jar.name} lib/log4j.jar lib/nsuml.jar lib/xerces.jar lib/ocl-argo.jar lib/antlrall.jar" />
-    <tar tarfile="../${Name}-${build.version}-libs.tar" basedir="${lib.dir}/.." includes="lib/${gef.jar.name} lib/log4j.jar lib/nsuml.jar lib/xerces.jar lib/ocl-argo.jar lib/antlrall.jar" />
-    <gzip zipfile="../${Name}-${build.version}-libs.tar.gz" src="../${Name}-${build.version}-libs.tar" />
-    <delete file="../${Name}-${build.version}-libs.tar"/>
+    <zip zipfile="${argo.root.dir}/${Name}-${build.version}-libs.zip" basedir="${argo.lib.dir}/.." includes="lib/${gef.jar.name} lib/log4j.jar lib/nsuml.jar lib/xerces.jar lib/ocl-argo.jar lib/antlrall.jar" />
+    <tar tarfile="${argo.root.dir}/${Name}-${build.version}-libs.tar" basedir="${argo.lib.dir}/.." includes="lib/${gef.jar.name} lib/log4j.jar lib/nsuml.jar lib/xerces.jar lib/ocl-argo.jar lib/antlrall.jar" />
+    <gzip zipfile="${argo.root.dir}/${Name}-${build.version}-libs.tar.gz" src="${argo.root.dir}/${Name}-${build.version}-libs.tar" />
+    <delete file="${argo.root.dir}/${Name}-${build.version}-libs.tar"/>
   </target>
   <!-- =================================================================== -->
   <!-- Creates the whole distribution                                            -->
@@ -502,11 +491,11 @@ doesn't find it's own XML-libs. You need to set ANT_HOME in your shell.
   <!-- Clean targets                                                       -->
   <!-- =================================================================== -->
   <target name="clean" depends="init">
-    <delete dir="${build.dir}/src_new"/>
-    <delete dir="${build.dir}/classes"/>
-    <delete dir="${build.dir}/bin"/>
+    <delete dir="${argo.build.dir}/src_new"/>
+    <delete dir="${argo.build.dir}/classes"/>
+    <delete dir="${argo.build.dir}/bin"/>
     <delete>
-        <fileset dir="${build.dir}">
+        <fileset dir="${argo.build.dir}">
             <include name="*.jar"/>
             <include name="Fop.java"/>
             <include name="Fop.class"/>
@@ -517,9 +506,9 @@ doesn't find it's own XML-libs. You need to set ANT_HOME in your shell.
   </target>
 
   <target name="distclean" depends="clean">
-    <delete dir="${dist.dir}"/>
+    <delete dir="${argo.dist.dir}"/>
     <delete>
-       <fileset dir=".." includes="${Name}-${build.version}*" />
+       <fileset dir="${argo.root.dir}" includes="${Name}-${build.version}*" />
     </delete>
   </target>
 
@@ -532,11 +521,11 @@ doesn't find it's own XML-libs. You need to set ANT_HOME in your shell.
     <!-- Uncomment the sysproperty and change the value if you want -->
     <java classname="org.argouml.application.Main"
           fork="yes"
-          classpath="${build.dest};${classpath}">
+          classpath="${argo.build.classes};${classpath}">
       <!-- sysproperty key="log4j.configuration"
                    value="org/argouml/resource/configuration.lcf"/-->
         <classpath>
-	  <pathelement location="${build.dest}"/>
+	  <pathelement location="${argo.build.classes}"/>
 	  <path refid="argo.classpath"/>
         </classpath>
     </java>
@@ -546,7 +535,7 @@ doesn't find it's own XML-libs. You need to set ANT_HOME in your shell.
   <!-- Move the jar file into the user execution directory.                -->
   <!-- =================================================================== -->
   <target name="developer_snapshot" depends="package">
-    <copy file="${build.dir}/${name}.jar" todir="${developer.lib.dir}"/>
+    <copy file="${argo.build.dir}/${name}.jar" todir="${developer.lib.dir}"/>
 
     <filter token="argojarfile" value="${developer.lib.dir}/${name}.jar"/>
     <copy todir="${argo.bin.dir}" filtering="on" >
