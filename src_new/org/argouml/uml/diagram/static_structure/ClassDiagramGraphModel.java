@@ -307,14 +307,6 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
 	    ((MModelElement) node).getNamespace() == null) {
 	    _model.addOwnedElement((MModelElement) node);
 	}
-	if (node instanceof MInterface) {
-	    cat.debug("Interface stereo: " +
-		      MMUtil.STANDARDS.lookup("interface"));
-
-	    ((MInterface) node)
-		.setStereotype((MStereotype)
-			       MMUtil.STANDARDS.lookup("interface"));
-	}
 
 	fireNodeAdded(node);
 	cat.debug("adding " + node + " OK");
