@@ -21,27 +21,16 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// $header$
+// $Id$
+
 package org.argouml.kernel;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
 import javax.swing.event.EventListenerList;
-import javax.xml.parsers.ParserConfigurationException;
 
-import org.apache.log4j.Category;
 import org.argouml.application.api.Argo;
-import org.argouml.model.uml.UmlFactory;
-import org.argouml.model.uml.UmlHelper;
-import org.argouml.model.uml.foundation.core.CoreHelper;
-import org.argouml.model.uml.modelmanagement.ModelManagementHelper;
-import org.argouml.xml.xmi.XMIParser;
-import org.argouml.xml.xmi.XMIReader;
-import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
-import ru.novosoft.uml.MBase;
-import ru.novosoft.uml.model_management.MModel;
 
 /**
  * This class manages the projects loaded in argouml. It is a singleton. Classes
