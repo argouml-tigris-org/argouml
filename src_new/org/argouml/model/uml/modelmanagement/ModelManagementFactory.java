@@ -63,7 +63,7 @@ public class ModelManagementFactory extends AbstractUmlModelFactory {
     }
 
     /** Create an empty but initialized instance of a UML Model.
-     *  
+     *
      *  @return an initialized UML Model instance.
      */
     public MModel createModel() {
@@ -73,7 +73,7 @@ public class ModelManagementFactory extends AbstractUmlModelFactory {
     }
 
     /** Create an empty but initialized instance of a UML ElementImport.
-     *  
+     *
      *  @return an initialized UML ElementImport instance.
      */
     public MElementImport createElementImport() {
@@ -83,7 +83,7 @@ public class ModelManagementFactory extends AbstractUmlModelFactory {
     }
 
     /** Create an empty but initialized instance of a UML Package.
-     *  
+     *
      *  @return an initialized UML Package instance.
      */
     public MPackage createPackage() {
@@ -92,8 +92,24 @@ public class ModelManagementFactory extends AbstractUmlModelFactory {
 	return modelElement;
     }
 
+    /** Build an empty but initialized instance of a UML Package
+     *  with a given name, and set it's UUID, if it doesn't exist.
+     *
+     * @param name
+     * @param uuid
+     *  @return an initialized UML Package instance.
+     */
+    public MPackage buildPackage(String name, String uuid) {
+        MPackage modelElement = MFactory.getDefaultFactory().createPackage();
+	super.initialize(modelElement);
+	modelElement.setName(name);
+	if(modelElement.getUUID() == null)
+	    modelElement.setUUID(uuid);
+	return modelElement;
+    }
+
     /** Create an empty but initialized instance of a UML Subsystem.
-     *  
+     *
      *  @return an initialized UML Subsystem instance.
      */
     public MSubsystem createSubsystem() {
@@ -101,13 +117,13 @@ public class ModelManagementFactory extends AbstractUmlModelFactory {
 	super.initialize(modelElement);
 	return modelElement;
     }
-    
+
     public void deleteElementImport(MElementImport elem) {}
-        
+
     public void deleteModel(MModel elem) {}
-    
+
     public void deletePackage(MPackage elem) {}
-    
+
     public void deleteSubsystem(MSubsystem elem) {}
 
     /**

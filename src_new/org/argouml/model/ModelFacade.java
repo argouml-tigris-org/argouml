@@ -108,6 +108,12 @@ public class ModelFacade {
     public static final short ACC_PRIVATE   = 2;
     public static final short ACC_PROTECTED = 3;
 
+   	public static final short CLASSIFIER = 1;
+    public static final short INSTANCE   = 2;
+
+   	public static final short GUARDED    = 1;
+    public static final short SEQUENTIAL = 2;
+
     ////////////////////////////////////////////////////////////////
     // Recognizer methods for the UML model (in alphabetic order)
 
@@ -715,6 +721,18 @@ public class ModelFacade {
         throw new IllegalArgumentException("Unrecognized object " + handle);
     }
 
+    /** Get the concurrency of an operation.
+     *
+     * @param o operation.
+     * @return the concurrency.
+     */
+    public static short getConcurrency(Object o) {
+        if (o != null && o instanceof MOperation) {
+            return ((MOperation)o).getConcurrency() == MCallConcurrencyKind.GUARDED ? GUARDED : SEQUENTIAL;
+        }
+        throw new IllegalArgumentException("Unrecognized object " + o);
+    }
+
     /** The list of Connections or AssociationEnds to an Association.
      *
      * @param handle to the association.
@@ -1204,6 +1222,18 @@ public class ModelFacade {
     }
 
     /**
+       Return the owner of a feature.
+       @param feature
+       @return classifier
+     */
+    public static Object getOwner(Object f) {
+        if (f != null && f instanceof MFeature) {
+            return ((MFeature)f).getOwner();
+        }
+        return null;
+    }
+
+    /**
        Return the tagged values iterator of a model element.
 
        @param element The tagged values belong to this.
@@ -1282,6 +1312,19 @@ public class ModelFacade {
     }
 
     /**
+     * Adds a method to some operation and copies the op's attributes to the method.
+     * @param operation
+     * @param method
+     */
+    public static void addMethod(Object o, Object m) {
+        if (o != null && m != null && o instanceof MOperation && m instanceof MMethod) {
+            ((MMethod)m).setVisibility(((MOperation)o).getVisibility());
+            ((MMethod)m).setOwnerScope(((MOperation)o).getOwnerScope());
+            ((MOperation)o).addMethod((MMethod)m);
+        }
+    }
+
+    /**
      * Adds a model element to some namespace.
      * @param ns namespace
      * @param me model element
@@ -1289,6 +1332,28 @@ public class ModelFacade {
     public static void addOwnedElement(Object ns, Object me) {
         if (ns != null && ns instanceof MNamespace && me != null && me instanceof MModelElement) {
             ((MNamespace)ns).addOwnedElement((MModelElement)me);
+        }
+    }
+
+    /**
+     * Adds a supplier classifier to some abstraction.
+     * @param a abstraction
+     * @param cls supplier classifier
+     */
+    public static void addSupplier(Object a, Object cls) {
+        if (a != null && cls != null && a instanceof MAbstraction && cls instanceof MClassifier) {
+            ((MAbstraction)a).addSupplier((MClassifier)cls);
+        }
+    }
+
+    /**
+     * Adds a client classifier to some abstraction.
+     * @param a abstraction
+     * @param cls client classifier
+     */
+    public static void addClient(Object a, Object cls) {
+        if (a != null && cls != null && a instanceof MAbstraction && cls instanceof MClassifier) {
+            ((MAbstraction)a).addClient((MClassifier)cls);
         }
     }
 
@@ -1314,6 +1379,28 @@ public class ModelFacade {
             && cls instanceof MClassifier
             && feature instanceof MFeature) {
             ((MClassifier)cls).removeFeature((MFeature)feature);
+        }
+    }
+
+    /** This method removes a parameter from an operation.
+     *
+     * @param operation
+     * @param parameter
+     */
+    public static void removeParameter(Object o, Object p) {
+        if (o != null && p != null && o instanceof MOperation && p instanceof MParameter) {
+            ((MOperation)o).removeParameter((MParameter)p);
+        }
+    }
+
+    /**
+     * Sets a body of some method.
+     * @param method
+     * @param expression
+     */
+    public static void setBody(Object m, Object expr) {
+        if (m != null && expr != null && m instanceof MMethod && expr instanceof MProcedureExpression) {
+            ((MMethod)m).setBody((MProcedureExpression)expr);
         }
     }
 
@@ -1359,6 +1446,54 @@ public class ModelFacade {
     }
 
     /**
+     * Set the owner scope of some feature.
+     * @param feature
+     * @param owner scope
+     */
+    public static void setOwnerScope(Object f, short os) {
+        if (f != null && f instanceof MFeature) {
+            if(os == CLASSIFIER) {
+                ((MFeature)f).setOwnerScope(MScopeKind.CLASSIFIER);
+            }
+            else if(os == INSTANCE) {
+                ((MFeature)f).setOwnerScope(MScopeKind.INSTANCE);
+            }
+        }
+    }
+
+    /**
+     * Set the target scope of some association end.
+     * @param association end
+     * @param target scope
+     */
+    public static void setTargetScope(Object ae, short ts) {
+        if (ae != null && ae instanceof MAssociationEnd) {
+            if(ts == CLASSIFIER) {
+                ((MAssociationEnd)ae).setTargetScope(MScopeKind.CLASSIFIER);
+            }
+            else if(ts == INSTANCE) {
+                ((MAssociationEnd)ae).setTargetScope(MScopeKind.INSTANCE);
+            }
+        }
+    }
+
+    /**
+     * Set the concurrency of some operation.
+     * @param operation
+     * @param concurrency
+     */
+    public static void setConcurrency(Object o, short c) {
+        if (o != null && o instanceof MOperation) {
+            if(c == GUARDED) {
+                ((MOperation)o).setConcurrency(MCallConcurrencyKind.GUARDED);
+            }
+            else if(c == SEQUENTIAL) {
+                ((MOperation)o).setConcurrency(MCallConcurrencyKind.SEQUENTIAL);
+            }
+        }
+    }
+
+    /**
      * Sets if of some classifier is abstract.
      * @param classifier
      * @param flag
@@ -1388,6 +1523,37 @@ public class ModelFacade {
     public static void setRoot(Object o, boolean flag) {
         if (o != null && o instanceof MClassifier) {
             ((MClassifier)o).setRoot(flag);
+        }
+    }
+
+    /**
+     * Set some parameters kind to 'in'.
+     * @param parameter
+     */
+    public static void setKindToIn(Object p) {
+        if (p != null && p instanceof MParameter) {
+            ((MParameter)p).setKind(MParameterDirectionKind.IN);
+        }
+    }
+
+    /**
+     * Set some parameters kind to 'return'.
+     * @param parameter
+     */
+    public static void setKindToReturn(Object p) {
+        if (p != null && p instanceof MParameter) {
+            ((MParameter)p).setKind(MParameterDirectionKind.RETURN);
+        }
+    }
+
+    /**
+     * Sets the type of some parameter.
+     * @param parameter
+     * @param type
+     */
+    public static void setType(Object p, Object cls) {
+        if (p != null && cls != null && p instanceof MParameter && cls instanceof MClassifier) {
+            ((MParameter)p).setType((MClassifier)cls);
         }
     }
 
