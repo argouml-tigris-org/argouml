@@ -24,9 +24,7 @@
 // $header$
 package org.argouml.uml.ui.behavior.use_cases;
 
-import org.argouml.uml.ui.PropPanel;
 import org.argouml.uml.ui.UMLPlainTextDocument;
-import org.argouml.uml.ui.UMLUserInterfaceContainer;
 
 import ru.novosoft.uml.behavior.use_cases.MExtensionPoint;
 
@@ -41,8 +39,8 @@ public class UMLExtensionPointLocationDocument extends UMLPlainTextDocument {
      * @param panel
      * @param propertyList
      */
-    public UMLExtensionPointLocationDocument(UMLUserInterfaceContainer cont) {   
-        super(cont, "location");
+    public UMLExtensionPointLocationDocument() {   
+        super("location");
     }
 
     /**

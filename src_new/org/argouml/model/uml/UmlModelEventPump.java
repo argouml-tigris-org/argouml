@@ -24,11 +24,7 @@
 
 package org.argouml.model.uml;
 
-import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -40,7 +36,6 @@ import org.apache.log4j.Category;
 import org.argouml.model.uml.modelmanagement.ModelManagementHelper;
 
 import ru.novosoft.uml.MBase;
-import ru.novosoft.uml.MBaseImpl;
 import ru.novosoft.uml.MElementEvent;
 import ru.novosoft.uml.MElementListener;
 
@@ -334,6 +329,8 @@ public final class UmlModelEventPump implements MElementListener {
             _listenerModelEventsMap.put(key, listenerList);
         }
         listenerList.add(listener);
+        modelelement.removeMElementListener(this);
+        modelelement.addMElementListener(this);
     }
         
     /**
@@ -422,7 +419,7 @@ public final class UmlModelEventPump implements MElementListener {
     private Set getListenerList(MElementEvent e) {
         MBase source = (MBase)e.getSource();
         String eventName = e.getName();
-        if (e.getType() == e.ELEMENT_REMOVED)
+        if (e.getType() == MElementEvent.ELEMENT_REMOVED)
             eventName = REMOVE;
         Set listenerList = (Set)_listenerModelEventsMap.get(getKey(source, eventName));
         if (_listenerModelEventsMap.get(getKey(source, null)) != null) {

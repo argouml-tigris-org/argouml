@@ -1209,10 +1209,11 @@ public class FigClass extends FigNodeModelElement {
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#updateNameText()
      */
     protected void updateNameText() {
-        Rectangle rect = getBounds();
+        
         super.updateNameText();
-
-        setBounds(rect.x, rect.y, rect.width, rect.height);
+		calcBounds();
+        setBounds(getBounds());
+        // setBounds(rect.x, rect.y, rect.width, rect.height);
     }
 
     /**

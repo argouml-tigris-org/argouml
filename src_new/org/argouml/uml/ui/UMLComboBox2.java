@@ -27,8 +27,6 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.JComboBox;
 
-import ru.novosoft.uml.MElementEvent;
-
 /**
  * ComboBox for UML modelelements. This implementation does not use 
  * reflection and seperates Model, View and Controller better then does

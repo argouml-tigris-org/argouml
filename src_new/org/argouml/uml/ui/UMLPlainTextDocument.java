@@ -21,15 +21,12 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// $header$
+// $Id$
 package org.argouml.uml.ui;
 
-import javax.swing.JTextField;
-import javax.swing.event.CaretListener;
 import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.PlainDocument;
-import javax.swing.text.AbstractDocument.DefaultDocumentEvent;
 
 import org.apache.log4j.Category;
 import org.argouml.model.uml.UmlModelEventPump;
@@ -54,7 +51,7 @@ import ru.novosoft.uml.MElementListener;
  * @author jaap.branderhorst@xs4all.nl
  */
 public abstract class UMLPlainTextDocument extends PlainDocument
-    implements UMLUserInterfaceComponent {
+    implements MElementListener, TargetChangedListener {
         
     public static Category cat = Category.getInstance(UMLPlainTextDocument.class);
     
@@ -79,32 +76,14 @@ public abstract class UMLPlainTextDocument extends PlainDocument
      */
     private String _eventName = null;
     
-    private UMLUserInterfaceContainer _container = null;
-    
     /**
      * Constructor for UMLPlainTextDocument. This takes a panel to set the
      * thirdpartyeventlistener to the given list of events to listen to.
      */
-    public UMLPlainTextDocument(UMLUserInterfaceContainer cont, String eventName) {
+    public UMLPlainTextDocument(String eventName) {
         super();
-        _container = cont;
         setEventName(eventName);
-        setTarget(cont.getTarget());
-    }
-
-    /**
-     * @see org.argouml.uml.ui.UMLUserInterfaceComponent#targetChanged()
-     */
-    public void targetChanged() {
-        setTarget(_container.getTarget());
-    }
-
-    /**
-     * @see org.argouml.uml.ui.UMLUserInterfaceComponent#targetReasserted()
-     */
-    public void targetReasserted() {
-        setTarget(_container.getTarget());
-    }
+    }    
 
     /**
      * @see ru.novosoft.uml.MElementListener#propertySet(ru.novosoft.uml.MElementEvent)
@@ -257,6 +236,20 @@ public abstract class UMLPlainTextDocument extends PlainDocument
      */
     protected void setEventName(String eventName) {
         _eventName = eventName;
+    }
+
+    /**
+     * @see org.argouml.uml.ui.TargetChangedListener#targetChanged(java.lang.Object)
+     */
+    public void targetChanged(Object newTarget) {
+        setTarget(newTarget);
+    }
+
+    /**
+     * @see org.argouml.uml.ui.TargetChangedListener#targetReasserted(java.lang.Object)
+     */
+    public void targetReasserted(Object newTarget) {
+        setTarget(newTarget);
     }
 
 }
