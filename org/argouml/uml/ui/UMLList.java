@@ -26,11 +26,11 @@ package org.argouml.uml.ui;
 import javax.swing.event.*;
 import javax.swing.*;
 import java.lang.reflect.*;
-import ru.novosoft.uml.*;
 import java.awt.event.*;
 import java.awt.*;
 import ru.novosoft.uml.foundation.core.*;
 import javax.swing.plaf.metal.MetalLookAndFeel;
+import ru.novosoft.uml.MElementEvent;
 
 /**
  * @deprecated as of ArgoUml 0.13.5 (10-may-2003),

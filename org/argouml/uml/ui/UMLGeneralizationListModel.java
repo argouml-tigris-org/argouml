@@ -43,9 +43,6 @@ import java.awt.*;
 
 import javax.swing.*;
 
-import ru.novosoft.uml.*;
-import ru.novosoft.uml.foundation.core.*;
-
 import org.argouml.ui.*;
 import org.tigris.gef.graph.MutableGraphModel;
 import org.argouml.application.api.Argo;
@@ -106,7 +103,7 @@ public class UMLGeneralizationListModel
     protected void connect(MutableGraphModel gm,
 			   Object/*MModelElement*/ from,
 			   Object/*MModelElement*/ to) {
-	gm.connect(from, to, MGeneralization.class);
+	gm.connect(from, to, (Class)ModelFacade.GENERALIZATION);
     }
 
     /**
@@ -127,7 +124,7 @@ public class UMLGeneralizationListModel
      * @see org.argouml.uml.ui.UMLBinaryRelationListModel#getRelation(MModelElement, MModelElement)
      */
     protected Object getRelation(Object from, Object to) {
-	return CoreHelper.getHelper().getGeneralization((MGeneralizableElement) from, (MGeneralizableElement) to);
+	return CoreHelper.getHelper().getGeneralization(from, to);
     }
 
     /**
@@ -136,7 +133,7 @@ public class UMLGeneralizationListModel
     protected Collection getSelected() {
 	if (getTarget() == null) return new ArrayList();
 	if (org.argouml.model.ModelFacade.isAGeneralizableElement(getTarget())) {
-	    return CoreHelper.getHelper().getExtendedClassifiers((MGeneralizableElement) getTarget());
+	    return CoreHelper.getHelper().getExtendedClassifiers(getTarget());
 	} else
 	    throw new IllegalStateException("In getSelected of UMLGeneralizaitonListModel: target is not an instanceof GeneralizbleElement");
     }

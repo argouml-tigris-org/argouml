@@ -26,8 +26,8 @@
 package org.argouml.uml.ui;
 import javax.swing.*;
 import java.awt.*;
-import ru.novosoft.uml.*;
-import ru.novosoft.uml.foundation.extension_mechanisms.*;
+import ru.novosoft.uml.MElementEvent;
+import ru.novosoft.uml.MElementListener;
 
 /**
  *  This class is used to dispatch a NSUML change event (which may occur on a non-UI)

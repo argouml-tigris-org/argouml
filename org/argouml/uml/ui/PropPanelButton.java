@@ -32,7 +32,7 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 import java.lang.reflect.*;
-import ru.novosoft.uml.*;
+import ru.novosoft.uml.MElementEvent;
 
 /**
  *   This abstract class provides the basic layout and event dispatching

@@ -29,8 +29,6 @@ import javax.swing.*;
 import org.apache.log4j.Logger;
 
 import java.lang.reflect.*;
-import ru.novosoft.uml.*;
-import ru.novosoft.uml.foundation.core.*;
 import java.awt.event.*;
 import java.awt.*;
 

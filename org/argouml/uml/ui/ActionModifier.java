@@ -39,14 +39,10 @@ import org.tigris.gef.presentation.*;
 import java.awt.event.*;
 import java.beans.PropertyVetoException;
 import java.util.*;
-
-import ru.novosoft.uml.model_management.*;
-import ru.novosoft.uml.foundation.core.*;
-import ru.novosoft.uml.foundation.extension_mechanisms.*;
-import ru.novosoft.uml.*;
-import ru.novosoft.uml.behavior.use_cases.*;
+import ru.novosoft.uml.behavior.use_cases.MUseCase;
 import ru.novosoft.uml.foundation.core.MClass;
 import ru.novosoft.uml.foundation.core.MInterface;
+import ru.novosoft.uml.model_management.MPackage;
 
 /**
  * <p>A class to perform the action of changing value of the modifiers on a

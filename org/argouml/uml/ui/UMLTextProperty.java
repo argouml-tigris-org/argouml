@@ -27,12 +27,9 @@ package org.argouml.uml.ui;
 import org.apache.log4j.Logger;
 import org.argouml.application.api.Argo;
 import org.argouml.kernel.*;
-
 import org.argouml.ui.*;
-
 import java.lang.reflect.*;
-
-import ru.novosoft.uml.*;
+import ru.novosoft.uml.MElementEvent;
 
 /**
  * @deprecated as of ArgoUml 0.13.5 (10-may-2003),

@@ -30,7 +30,7 @@ import javax.swing.*;
 import org.apache.log4j.Logger;
 import java.lang.reflect.*;
 import org.argouml.model.ModelFacade;
-import ru.novosoft.uml.*;
+import ru.novosoft.uml.MElementEvent;
 
 /**
  * This class depends on {@link org.argouml.uml.ui.UMLExpressionModel}, therefore deprecated.

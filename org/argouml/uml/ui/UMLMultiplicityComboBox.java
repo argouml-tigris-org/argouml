@@ -33,9 +33,7 @@ import java.awt.event.*;
 import javax.swing.event.*;
 import javax.swing.*;
 import org.argouml.model.ModelFacade;
-
-import ru.novosoft.uml.*;
-import ru.novosoft.uml.foundation.data_types.*;
+import ru.novosoft.uml.MElementEvent;
 
 /**
  * @deprecated as of ArgoUml 0.13.5 (10-may-2003),
@@ -94,7 +92,7 @@ public class UMLMultiplicityComboBox
 
         Class[] getArgs = {};
         Class[] setArgs = {
-	    MMultiplicity.class 
+	    (Class)ModelFacade.MULTIPLICITY
 	};
 
         try {

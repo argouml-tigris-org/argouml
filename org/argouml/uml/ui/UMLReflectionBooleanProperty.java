@@ -30,8 +30,6 @@ package org.argouml.uml.ui;
 
 import java.lang.reflect.*;
 
-import ru.novosoft.uml.*;
-
 import org.argouml.ui.*;
 import org.apache.log4j.Logger;
 import org.argouml.kernel.*;
