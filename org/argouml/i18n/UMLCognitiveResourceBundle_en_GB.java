@@ -560,7 +560,7 @@ public class UMLCognitiveResourceBundle_en_GB extends ListResourceBundle {
         { "CrMultipleInheritance_desc" ,
                 "<ocl>self</ocl> has multiple base classes, but Java does not support multiple inheritance.  You must use interfaces instead. \n\nThis change is required before you can generate Java code.\n\nTo fix this, use the \"Next>\" button, or manually (1) remove one of the base classes and then (2) optionally define a new interface with the same method declarations and (3) add it as an interface of <ocl>self</ocl>, and (4) move the method bodies from the old base class down into <ocl>self</ocl>." },
         { "CrIllegalName_head" ,
-                "Choose a Legal Name" },
+                "Choose a Legal Name for <ocl>self</ocl>" },
         { "CrIllegalName_desc" ,
                 "The names of model elements must be sequences of letters, numbers, and underscores.  They cannot contain punctuation.\n\nCode generation requires legal names for the resulting code to compile correctly. \n\nTo fix this, use the \"Next>\" button, or manually select the highlighted element and use the Properties tab to give it a different name." },
 
