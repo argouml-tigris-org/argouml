@@ -3306,6 +3306,10 @@ public class ModelFacade {
                 upper = end.getMultiplicity().getUpper();
             return upper;
         }
+	if (isAMultiplicity(handle)) {
+	    MMultiplicity up = (MMultiplicity)handle;
+	    return up.getUpper();
+	}
         throw new IllegalArgumentException("Unrecognized object " + handle);
     }
 
@@ -3335,7 +3339,11 @@ public class ModelFacade {
                 lower = end.getMultiplicity().getLower();
             return lower;
         }
-        throw new IllegalArgumentException("Unrecognized object " + handle);
+	if (isAMultiplicity(handle)) {
+	    MMultiplicity low = (MMultiplicity) handle;
+	    return low.getLower();
+	}
+        throw new IllegalArgumentException("Unrecognized object " + handle.getClass());
     }
 
     /**
