@@ -2507,12 +2507,14 @@ behaviour of the other.
 	<para>
 The classes involved in this particular example have all been well
 commented and have full Javadoc descriptions, to help when examining
-the code. You wil need to read the description here in conjunction
+the code. 
+You will need to read the description here in conjunction
 with looking at the code.
 </para>
 
-	<sect3>
-	  <title>Adding the property panel</title>
+      </sect2>
+      <sect2>
+	<title>Adding the property panel</title>
 
 	  <para>
 Property Panels are found as class PropPanelXXX.java, where XXX is the
@@ -2634,8 +2636,8 @@ A set of check boxes for modifiers. Supported by the
 
 	  <para>Examples of these in more detail now follow.</para>
 
-	  <sect4>
-	    <title>Adding a simple list field</title>
+	<sect3>
+	  <title>Adding a simple list field</title>
 
 	    <para>
 For example We need to add a field to the use case property panel for
@@ -2669,8 +2671,8 @@ The list model should be a subclass of
 <literal>ElementListener</literal> interface.
 </para>
 
-	    <sect5>
-	      <title>The list model</title>
+	  <sect4>
+	    <title>The list model</title>
 
 	      <para>
 In out example we create UMLExtendListModel. Its constructor should
@@ -3385,11 +3387,11 @@ The last argument is ignored!
 		  </listitem>
 		</varlistentry>
 	      </variablelist>
-	    </sect5>
 	  </sect4>
+	</sect3>
 
-	  <sect4>
-	    <title>Building the field</title>
+	<sect3>
+	  <title>Building the field</title>
 
 	    <para>
 By convention the background of the list is set to the same as the
@@ -3424,10 +3426,10 @@ the caption only of the last field in each column should be given a
 non-zero value.
 </para>
 
-	  </sect4>
+	</sect3>
 
-	  <sect4>
-	    <title>Adding Property Tab Toolbar Buttons</title>
+	<sect3>
+	  <title>Adding Property Tab Toolbar Buttons</title>
 
 	    <para>
 These are added by creating new instances of
@@ -3491,10 +3493,10 @@ point</quote> button, with a method
 <literal>newExtensionPoint</literal> that we provide to create a new
 use case.
 </para>
-	  </sect4>
+	</sect3>
 
-	  <sect4>
-	    <title>Support for stereotypes</title>
+	<sect3>
+	  <title>Support for stereotypes</title>
 
 	    <para>
 The PropPanel should override the following (note the spelling of the
@@ -3512,10 +3514,10 @@ the target in the <literal>PropPanel</literal>.
 This is used to determine what stereotypes may be shown for this
 property panel.
 </para>
-	  </sect4>
+	</sect3>
 
-	  <sect4>
-	    <title>Other sorts of fields</title>
+	<sect3>
+	  <title>Other sorts of fields</title>
 
 	    <para>
 Another sort of field that may be useful is the ComboBox.
@@ -3569,11 +3571,153 @@ and we define the methods <literal>isAcceptableUseCase</literal>,
 <literal>getBase</literal> and <literal>setBase</literal> in
 <literal>PropPanelExtend</literal>.
 </para>
-	  </sect4>
 	</sect3>
 
 	<sect3>
-	  <title>How to add a new Fig</title>
+	  <title>How UMLTextField works</title>
+	  <para>
+This information is provided by Jaap Branderhorst (September 2002).
+</para>
+
+	  <para>
+<classname>UMLTextField</classname> implements several kinds of 
+event listeners:
+<itemizedlist>
+	      <listitem>
+		<para><interfacename>MMelementListener</interfacename></para>
+	      </listitem>
+	      <listitem>
+		<para><interfacename>DocumentListener</interfacename></para>
+	      </listitem>
+	      <listitem>
+		<para><interfacename>FocusListener</interfacename></para>
+	      </listitem>
+	    </itemizedlist>
+Furthermore it is a <classname>UMLUserInterfaceComponent</classname>.
+</para>
+
+	  <para>
+Since it is an <classname>UMLUserInterfaceComponent</classname>
+it must implement <methodname>targetChanged</methodname> and
+<methodname>targetReasserted</methodname>.
+<methodname>TargetChanged</methodname> is called everytime the 
+<classname>UMLTextField</classname> is selected. 
+<methodname>targetReasserted</methodname> is of no interest for 
+<classname>UMLTextField</classname>.
+It plays a role in keeping history but since history 
+is not really implemented at the moment in ArgoUML 
+it is of no interest.
+<methodname>targetChanged</methodname> does two things:
+<itemizedlist>
+	      <listitem>
+		<para>
+It calls the <methodname>targetChanged</methodname> method 
+of the <classname>UMLTextProperty</classname> this 
+<classname>UMLTextfield</classname> is showing.
+</para>
+	      </listitem>
+	      <listitem>
+		<para>
+It calls the <methodname>update</methodname> method.
+The <methodname>update</methodname> method is described further on.
+</para>
+	      </listitem>
+	    </itemizedlist>
+</para>
+
+	  <para>
+Besides <classname>UMLUserInterfaceComponent</classname>
+there are several other interfaces of interest. 
+One of them is <interfacename>MMElementListener</interfacename>.
+</para>
+
+	  <para>
+Every time a <interfacename>MModelElement</interfacename> is
+changed this will fire an <classname>MEvent</classname>
+to <classname>UMLChangeDispatch</classname>.
+<classname>UMLChangeDispatch</classname> will dispatch 
+these events to all containers implementing
+<interfacename>UMLUserInterfaceComponents</interfacename>
+interested in this event, including <classname>UMLTextField</classname>.
+It will also dispatch the event to all childs of an interested container
+implementing
+<interfacename>UMLUserInterfaceComponent</interfacename>.
+By this it is only necessary to register a 
+<classname>PropPanel</classname> which holds an 
+<classname>UMLTextField</classname> at 
+<classname>UMLChangeDispatch</classname> to
+dispatch the event to the <classname>UMLTextField</classname> too.
+<interfacename>MMelementListener</interfacename>
+knows several methods of which only one is of interest to
+<classname>UMLTextField</classname>s:
+<itemizedlist>
+	      <listitem>
+		<para>propertySet</para>
+		<para>
+Called everytime a property in a 
+<classname>MModelElement</classname> is set. 
+This method calls 
+<methodname>update</methodname> too if the 
+<classname>UMLTextProperty</classname> really is affected.
+</para>
+	      </listitem>
+	    </itemizedlist>
+</para>
+
+	  <para>
+Furthermore <classname>UMLTextField</classname> implements
+<interfacename>DocumentListener</interfacename>. 
+This is very typical for <classname>UMLTextField</classname>.
+At the moment it is not possible to change the style of
+the text in the <classname>UMLTextField</classname>.
+Therefore the method <methodname>changedUpdate</methodname> does not
+have a body.
+This method is only called when a <classname>DocumentEvent</classname>
+occurs that changes the style/layout of the text.
+The methods <methodname>insertUpdate</methodname>
+and <methodname>removeUpdate</methodname> are respectively called when a
+character is added to the document 
+<classname>UMLTextField</classname> contains or removed. 
+Since both methods are called when there is true userinput 
+and when the contents of the document are changed programmaticaly,
+the methods distinguish between them.
+<methodname>InsertUpdate</methodname> and 
+<methodname>removeUpdate</methodname>
+are both handled via the protected method 
+<methodname>handleEvent</methodname>.
+<methodname>HandleEvent</methodname> updates the property in 
+<classname>UMLTextProperty</classname> if it is really changed.
+If the update comes via userinput, it is checked if it is valid input. 
+If it is not, a <classname>JOptionPane</classname> is shown with '
+a warning and the change is not commited into the model.
+If it is not via userinput, the input is not checked and the
+property is set. If the property is set, the update method is called.
+</para>
+
+	  <para>
+The implementation of <interfacename>FocusListener</interfacename>
+makes sure that the checking of userinput only happens when focus is lost.
+Otherwise, it would not be possible to enter 'intermediate' values 
+that are not legal. 
+For instance, say the value class is not legal. 
+Without the implementation of <interfacename>FocusListener</interfacename>,
+it would not be possible to enter classdiagram since
+handleEvent would popup a warning messagebox.
+</para>
+
+	  <para>
+The method <methodname>update</methodname> updates both the actual
+<classname>JTextfield</classname> as the diagram as soon
+as some property is set. 
+The updating of the diagram is done by calling the
+<methodname>damage</methodname> method of the figs that
+represent the property on the diagram.
+</para>
+	</sect3>
+      </sect2>
+
+      <sect2>
+	<title>How to add a new Fig</title>
 
 	  <para>
 The new item must be added to the toolbar. Both the graph model and
@@ -3581,8 +3725,8 @@ diagram renderer for the diagram will need modifying for any new fig
 object.
 </para>
 
-	  <sect4>
-	    <title>Adding to the toolbar</title>
+	<sect3>
+	  <title>Adding to the toolbar</title>
 
 	    <para>
 Find the diagram object in
@@ -3653,10 +3797,10 @@ as an argument, and sets up a graph model
 renderer (<literal>UseCaseDigramRenderer</literal>) for nodes and
 edges.
 </para>
-	  </sect4>
+	</sect3>
 
-	  <sect4>
-	    <title>Changing the graph model</title>
+	<sect3>
+	  <title>Changing the graph model</title>
 
 	    <para>
 The graph model is the bridge between the UML meta-model
@@ -3675,10 +3819,10 @@ The graph model is defined as a child of the GEF class
 <literal>VetoableChangeListener</literal> (Java) and
 <literal>MElementListener</literal> (NSUML).
 </para>
-	  </sect4>
+	</sect3>
 
-	  <sect4>
-	    <title>Changing the renderer</title>
+	<sect3>
+	  <title>Changing the renderer</title>
 
 	    <para>
 The renderer is responsible for creating graphic figs as required on
@@ -3702,10 +3846,10 @@ In our example, we must extend <literal>getFigEdgeFor()</literal> so
 it can handle NSUML MExtend objects (producing a
 <literal>FigExtend</literal>).
 </para>
-	  </sect4>
+	</sect3>
 
-	  <sect4>
-	    <title>Creating a new Fig</title>
+	<sect3>
+	  <title>Creating a new Fig</title>
 
 	    <para>
 New objects that are to appear on a diagram will require new Fig
@@ -3722,7 +3866,6 @@ should provide a method canEdit() to indicate whether the Fig can be
 edited. It should provide an event handler modelChanged() to cope with
 advice that the model has changed.
 </para>
-	  </sect4>
 	</sect3>
       </sect2>
     </sect1>
