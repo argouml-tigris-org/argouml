@@ -53,7 +53,7 @@ public class ToDoTreeRenderer extends DefaultTreeCellRenderer {
   public ImageIcon _PostIt75    = Util.loadIconResource("PostIt75");
   public ImageIcon _PostIt99    = Util.loadIconResource("PostIt99");
   public ImageIcon _PostIt100   = Util.loadIconResource("PostIt100");
-  public ImageIcon _MultiPostIt = Util.loadIconResource("MultiPostIt");
+  //public ImageIcon _MultiPostIt = Util.loadIconResource("MultiPostIt");
 
   protected UMLTreeCellRenderer _navRenderer = new UMLTreeCellRenderer();
 
@@ -102,8 +102,8 @@ public class ToDoTreeRenderer extends DefaultTreeCellRenderer {
       }
 
       String tip = lab.getText();
-      lab.setToolTipText(tip);
-      tree.setToolTipText(tip);
+      lab.setToolTipText(tip + " ");
+      tree.setToolTipText(tip + " ");
 
       if (!sel)
 	lab.setBackground(getBackgroundNonSelectionColor());

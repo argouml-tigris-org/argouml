@@ -137,7 +137,6 @@ implements VetoableChangeListener {
 
 
   public void setModel(TreeModel newModel) {
-    System.out.println("entered setModel:" + newModel.getClass().getName());
     super.setModel(newModel);
     Object r = newModel.getRoot();
     if (r instanceof ElementImpl)
@@ -174,36 +173,32 @@ implements VetoableChangeListener {
   public static final int REMOVE = 3;
   //public static Object path[] = new Object[DEPTH_LIMIT];
 
-  public void forceUpdate_new() {
-     System.out.println("entered forceUpdate");
-     clearToggledPaths();
-     TreeModel tm = getModel();
-     firePropertyChange(TREE_MODEL_PROPERTY, null, tm);
-     setExpandedState(new TreePath(treeModel.getRoot()), true);
-     reexpand();
-     invalidate();
-     setVisible(true);
-
-     //     Object rootArray[] = new Object[1];
-//     rootArray[0] = getModel().getRoot();
-//     TreeModelEvent tme = new TreeModelEvent(this, new TreePath(rootArray));
-//     treeModelListener.treeStructureChanged(tme);
-//     TreeModel tm = getModel();
-//     if (tm instanceof TreeModelComposite) {
-//       ((TreeModelComposite)tm).fireTreeStructureChanged();
-  }
-
   public void forceUpdate() {
-    int n = 0;
-    ProjectBrowser pb = ProjectBrowser.TheInstance;
-    Vector pers = pb.getNavPane().getPerspectives();
-    NavPerspective curPerspective = pb.getNavPane().getCurPerspective();
-    if (curPerspective == null) return;
-    n = (pers.indexOf(curPerspective) + 1) % pers.size();
-    NavPerspective otherPerspective = (NavPerspective) pers.elementAt(n);
-    pb.getNavPane().setCurPerspective(otherPerspective);
-    pb.getNavPane().setCurPerspective(curPerspective);
+    Object rootArray[] = new Object[1];
+    rootArray[0] = getModel().getRoot();
+    Object noChildren[] = null;
+    int noIndexes[] = null;
+    TreeModelEvent tme = new TreeModelEvent(this, new TreePath(rootArray));
+    treeModelListener.treeStructureChanged(tme);
+    TreeModel tm = getModel();
+    if (tm instanceof NavPerspective) {
+      NavPerspective np = (NavPerspective) tm;
+      np.fireTreeStructureChanged(this, rootArray, noIndexes, noChildren);
+    }
+    reexpand();
   }
+
+//   public void forceUpdate_old() {
+//     int n = 0;
+//     ProjectBrowser pb = ProjectBrowser.TheInstance;
+//     Vector pers = pb.getNavPane().getPerspectives();
+//     NavPerspective curPerspective = pb.getNavPane().getCurPerspective();
+//     if (curPerspective == null) return;
+//     n = (pers.indexOf(curPerspective) + 1) % pers.size();
+//     NavPerspective otherPerspective = (NavPerspective) pers.elementAt(n);
+//     pb.getNavPane().setCurPerspective(otherPerspective);
+//     pb.getNavPane().setCurPerspective(curPerspective);
+//   }
 
   public void reexpand() {
     if (_expandedPathsInModel == null) return;
@@ -213,9 +208,6 @@ implements VetoableChangeListener {
     TreeModelEvent tme = new TreeModelEvent(this, path2, null, null);
     treeModelListener.treeStructureChanged(tme);
     treeDidChange();
-    //((AbstractTreeUI)getUI()).rebuild();
-    //In Swing 1.1.1 try: treeDidChange();
-    //In Swing 1.1.1 try: fireTreeStructureChanged();
 
     java.util.Enumeration enum = getExpandedPaths().elements();
     while (enum.hasMoreElements()) {
@@ -227,49 +219,6 @@ implements VetoableChangeListener {
     }
     _reexpanding = false;
 
-//     if (depth >= DEPTH_LIMIT) return;
-//     path[depth] = searchNode;
-//     if (updateNode == searchNode) {
-//       System.out.println("= = = = depth " + depth);
-//       System.out.println("= = = = found! " + searchNode);
-//       int childIndices[] = new int[1];
-//       Object children[] = new Object[1];
-//       Object path2[] = new Object[depth-1];
-//       for (int i = 1; i <= depth; i++) path2[i-1] = path[i];
-//       NavPerspective pers = (NavPerspective) getModel();
-//       children[0] = newValue;
-//       if (newValue != null)
-// 	childIndices[0] = pers.getIndexOfChild(updateNode, newValue);
-      
-//       //if (action == ADD)
-//       //pers.fireTreeNodesInserted(this, path2, childIndices, children);
-//       //else if (action == REMOVE) 
-//       //pers.fireTreeNodesRemoved(this, path2, childIndices, children);
-//       //else if (action == CHANGE)
-//       pers.fireTreeStructureChanged(this, path2);      
-//     }
-//     TreeModel tm = getModel();
-//     int numChildren = tm.getChildCount(searchNode);
-//     for (int i = 0; i < numChildren; i++) {
-//       Object child = tm.getChild(searchNode, i);
-//       searchAndUpdate(updateNode, child, action, newValue, depth + 1);
-//     }
-//     if (depth == 0) invalidate();
   }
 
 } /* end class DisplayTextTree */
-
-
-
-class UpdateTreeHack implements Runnable {
-  DisplayTextTree _tree;
-  boolean pending = false;
-
-  public UpdateTreeHack(DisplayTextTree t) { _tree = t; }
-
-  public void run() {
-    _tree.forceUpdate();
-    pending = false;
-  }
-
-} /* end class UpdateTreeHack */

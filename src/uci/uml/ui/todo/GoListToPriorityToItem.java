@@ -35,7 +35,7 @@ public class GoListToPriorityToItem implements TreeModelPrereqs {
   
   ////////////////////////////////////////////////////////////////
   // TreeModel implementation
-  
+
   public Object getRoot() {
     System.out.println("getRoot should never be called");
     return null;
@@ -47,55 +47,55 @@ public class GoListToPriorityToItem implements TreeModelPrereqs {
       return PriorityNode.getPriorities().elementAt(index);
     }
     if (parent instanceof PriorityNode) {
-      // instead of makning a new vector, decrement index, return when
-      // found and index == 0
-      Vector candidates = new Vector();
       PriorityNode pn = (PriorityNode) parent;
-      Enumeration itemEnum = Designer.TheDesigner.getToDoList().elements();
-      while (itemEnum.hasMoreElements()) {
-	ToDoItem item = (ToDoItem) itemEnum.nextElement();
-	if (item.getPriority() == pn.getPriority()) candidates.addElement(item);
+      ToDoList list = Designer.TheDesigner.getToDoList();
+      int size = list.size();
+      for (int i = 0; i < size; i++) {
+	ToDoItem item = list.elementAt(i);
+	if (item.getPriority() == pn.getPriority()) {
+	  if (index == 0) return item;
+	  index--;
+	}
       }
-      return candidates.elementAt(index);
     }
     System.out.println("getChild shouldnt get here GoListToPriorityToItem");
     return null;
   }
-  
+
   public int getChildCount(Object parent) {
     if (parent instanceof ToDoList) {
       return PriorityNode.getPriorities().size();
     }
     if (parent instanceof PriorityNode) {
-      // instead of makning a new vector, decrement index, return when
-      // found and index == 0
-      Vector candidates = new Vector();
+      int res = 0;
       PriorityNode pn = (PriorityNode) parent;
-      Enumeration itemEnum = Designer.TheDesigner.getToDoList().elements();
-      while (itemEnum.hasMoreElements()) {
-	ToDoItem item = (ToDoItem) itemEnum.nextElement();
-	if (item.getPriority() == pn.getPriority()) candidates.addElement(item);
+      ToDoList list = Designer.TheDesigner.getToDoList();
+      int size = list.size();
+      for (int i = 0; i < size; i++) {
+	ToDoItem item = list.elementAt(i);
+	if (item.getPriority() == pn.getPriority()) res++;
       }
-      return candidates.size();
+      return res;
     }
     return 0;
   }
-  
+
   public int getIndexOfChild(Object parent, Object child) {
     if (parent instanceof ToDoList) {
       return PriorityNode.getPriorities().indexOf(child);
     }
     if (parent instanceof PriorityNode) {
-      // instead of makning a new vector, decrement index, return when
-      // found and index == 0
-      Vector candidates = new Vector();
+      int index = 0;
       PriorityNode pn = (PriorityNode) parent;
-      Enumeration itemEnum = Designer.TheDesigner.getToDoList().elements();
-      while (itemEnum.hasMoreElements()) {
-	ToDoItem item = (ToDoItem) itemEnum.nextElement();
-	if (item.getPriority() == pn.getPriority()) candidates.addElement(item);
+      ToDoList list = Designer.TheDesigner.getToDoList();
+      int size = list.size();
+      for (int i = 0; i < size; i++) {
+	ToDoItem item = list.elementAt(i);
+	if (item.getPriority() == pn.getPriority()) {
+	  if (item == child) return index;
+	  index++;
+	}
       }
-      return candidates.indexOf(child);
     }
     return -1;
   }

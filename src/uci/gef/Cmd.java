@@ -35,6 +35,8 @@ import java.util.*;
 import java.awt.event.*;
 import javax.swing.*;
 
+import uci.util.Util;
+
 /** Abstract class for all editor commands. The editor serves as a
  *  command shell for executing actions in much the same way that a
  *  DOS or UNIX commmand command shell executes programs. Each command
@@ -78,7 +80,7 @@ implements java.io.Serializable {
   /** Construct a new Cmd with the given arguments */
   public Cmd(Hashtable args, String name) {
     super(name);
-    Icon icon = loadIconResource(imageName(name), name);
+    Icon icon = Util.loadIconResource(name, name);
     if (icon != null) putValue(Action.SMALL_ICON, icon);
     _args = args;
   }
@@ -86,7 +88,7 @@ implements java.io.Serializable {
   public Cmd(Hashtable args, String name, boolean hasIcon) {
     super(name);
     if (hasIcon) {
-      Icon icon = loadIconResource(imageName(name), name);
+      Icon icon = Util.loadIconResource(name, name);
       if (icon != null) putValue(Action.SMALL_ICON, icon);
     }
     _args = args;
@@ -103,31 +105,6 @@ implements java.io.Serializable {
 
   /** Construct a new Cmd with no arguments */
   public Cmd(String name) { this(null, name); }
-
-  protected static ImageIcon loadIconResource(String imgName, String desc) {
-    ImageIcon res = null;
-    try {
-      java.net.URL imgURL = Cmd.class.getResource(imgName);
-      return new ImageIcon(imgURL, desc);
-    }
-    catch (Exception ex) {
-      return null;
-    }
-  }
-
-  protected static String imageName(String name) {
-    return "/uci/Images/" + stripJunk(name) + ".gif";
-  }
-
-  protected static String stripJunk(String s) {
-    String res = "";
-    int len = s.length();
-    for (int i = 0; i < len; i++) {
-      char c = s.charAt(i);
-      if (Character.isJavaIdentifierPart(c)) res += c;
-    }
-    return res;
-  }
 
   ////////////////////////////////////////////////////////////////
   // enabling and disabling

@@ -63,8 +63,8 @@ public class ProjectMemberDiagram extends ProjectMember {
   public ProjectMemberDiagram(Diagram d, Project p) {
     super(null, p);
     String s = Util.stripJunk(d.getName());
-    if (!(s.startsWith(_project.getBaseName() + "_")))
-      s = _project.getBaseName() + "_" + s;
+    //if (!(s.startsWith(_project.getBaseName() + "_")))
+    //  s = _project.getBaseName() + "_" + s;
     setName(s);
     setDiagram(d);
   }
@@ -75,12 +75,6 @@ public class ProjectMemberDiagram extends ProjectMember {
   public Diagram getDiagram() { return _diagram; }
   public String getType() { return MEMBER_TYPE; }
   public String getFileExtension() { return FILE_EXT; }
-
-  public String getName() {
-    String s = _name;
-    if (!(s.endsWith(getFileExtension()))) s += getFileExtension();
-    return s;
-  }
 
   public void load() {
     Dbg.log(getClass().getName(), "Reading " + getURL());

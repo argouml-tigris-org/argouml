@@ -143,6 +143,7 @@ public class SelectionActor extends SelectionWButtons {
 
 
   public void buttonClicked(int buttonCode) {
+    super.buttonClicked(buttonCode);
     UseCase newNode = new UseCase();
     FigActor fc = (FigActor) _content;
     Actor cls = (Actor) fc.getOwner();

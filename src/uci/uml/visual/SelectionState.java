@@ -156,6 +156,7 @@ public class SelectionState extends SelectionWButtons {
 
 
   public void buttonClicked(int buttonCode) {
+    super.buttonClicked(buttonCode);
     State newNode = new State();
     FigState fc = (FigState) _content;
     State cls = (State) fc.getOwner();

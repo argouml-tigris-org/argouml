@@ -181,7 +181,7 @@ implements ListSelectionListener, ListCellRenderer, MouseMotionListener {
     if (index == -1) return;
     String tip = _list.getModel().getElementAt(index).toString();
     //System.out.println("tip=" + tip);
-    _list.setToolTipText(tip);
+    _list.setToolTipText(tip + " ");
   }
 
   public void mouseDragged(MouseEvent me) { }

@@ -22,36 +22,17 @@
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 
-package uci.ui;
+package uci.uml.ui;
 
-import java.awt.*;
-import java.util.*;
+public class UpdateTreeHack implements Runnable {
+  DisplayTextTree _tree;
+  boolean pending = false;
 
-import javax.swing.*;
-import javax.swing.event.*;
-import javax.swing.tree.*;
-import javax.swing.text.*;
-import javax.swing.border.*;
-import javax.swing.plaf.basic.*;
-import javax.swing.plaf.metal.MetalLookAndFeel;
+  public UpdateTreeHack(DisplayTextTree t) { _tree = t; }
 
-
-public class ColorRenderer extends DefaultListCellRenderer {
-  public Component getListCellRendererComponent(JList list,
-        Object value, int index, boolean isSelected, 
-        boolean cellHasFocus) {
-    JLabel label = (JLabel)
-      super.getListCellRendererComponent(list, value, index,
-					 isSelected, cellHasFocus);
-
-    if (value instanceof Color) {
-      label.setIcon(Swatch.forColor((Color) value));
-      label.setText("  ");
-    }
-    else label.setIcon(null);
-    return label;
+  public void run() {
+    _tree.forceUpdate();
+    pending = false;
   }
-} /* end class ColorRenderer */
 
-
-
+} /* end class UpdateTreeHack */

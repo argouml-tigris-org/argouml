@@ -32,6 +32,7 @@ package uci.argo.kernel;
 
 import java.util.*;
 import java.awt.*;
+import java.beans.*;
 import javax.swing.*;
 
 import uci.util.*;
@@ -40,7 +41,8 @@ import uci.util.*;
  *  some application domain and needs continuous feedback to aid in the
  *  making of good design decisions. */
 
-public class Designer implements Poster, Runnable, java.io.Serializable {
+public class Designer
+implements Poster, Runnable, PropertyChangeListener, java.io.Serializable {
   ////////////////////////////////////////////////////////////////
   // instance variables
 
@@ -249,6 +251,10 @@ public class Designer implements Poster, Runnable, java.io.Serializable {
   /** Look for potential problems or open issues in the given design. */
   public void critique(Design des) { des.critique(this); }
 
+  public void propertyChange(PropertyChangeEvent pce) {
+    critiqueASAP(pce.getSource(), pce.getPropertyName());
+  }
+
   ////////////////////////////////////////////////////////////////
   // criticism control
 
@@ -320,7 +326,7 @@ public class Designer implements Poster, Runnable, java.io.Serializable {
       UNSPEC_DECISION_VECTOR.addElement(Decision.UNSPEC);
       UNSPEC_GOAL_VECTOR = new Vector();
       UNSPEC_GOAL_VECTOR.addElement(Goal.UNSPEC);
-  }  
+  }
   public boolean supports(Decision d) { return d == Decision.UNSPEC; }
   public Vector getSupportedDecisions() { return UNSPEC_DECISION_VECTOR; }
 

@@ -309,6 +309,7 @@ class StartCritics implements Runnable {
     ProjectBrowser pb = ProjectBrowser.TheInstance;
     dsgr.spawnCritiquer(pb.getProject());
     dsgr.setChildGenerator(new ChildGenUML());
+    uci.uml.Foundation.Core.ElementImpl.setStaticChangeListener(dsgr);
     System.out.println("spawned critiquing thread");
 
     // should be in logon wizard?
@@ -391,7 +392,6 @@ class PreloadClasses implements Runnable {
       c = java.beans.PropertyDescriptor.class;
       c = java.lang.Void.class;
       c = java.beans.MethodDescriptor.class;
-      c = java.beans.GenericBeanInfo.class;
       c = java.beans.SimpleBeanInfo.class;
       c = java.util.TooManyListenersException.class;
       c = java.beans.PropertyVetoException.class;

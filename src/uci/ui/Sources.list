@@ -1,5 +1,6 @@
 SOURCES= \
 	ColorRenderer.java \
+	Swatch.java \
 	Highlightable.java \
 	IStatusBar.java \
 	JSortedTable.java \

@@ -95,13 +95,15 @@ public class UMLTreeCellRenderer extends DefaultTreeCellRenderer {
 
       if (icon == null) {
 	String clsPackName = value.getClass().getName();
-	String clsName = clsPackName.substring(clsPackName.lastIndexOf(".")+1);
-	// special case "UML*" e.g. UMLClassDiagram
-	if (clsName.startsWith("UML")) clsName = clsName.substring(3);
-	// special case "MM*" e.g. MMClass
-	if (clsName.startsWith("MM")) clsName = clsName.substring(2);
-	icon = Util.loadIconResource(clsName);
-	if (icon != null) _iconCache.put(value.getClass(), icon);
+	if (clsPackName.startsWith("uci")) {
+	  String cName = clsPackName.substring(clsPackName.lastIndexOf(".")+1);
+	  // special case "UML*" e.g. UMLClassDiagram
+	  if (cName.startsWith("UML")) cName = cName.substring(3);
+	  // special case "MM*" e.g. MMClass
+	  if (cName.startsWith("MM")) cName = cName.substring(2);
+	  icon = Util.loadIconResource(cName);
+	  if (icon != null) _iconCache.put(value.getClass(), icon);
+	}
       }
 
       if (icon != null) lab.setIcon(icon);
@@ -110,8 +112,8 @@ public class UMLTreeCellRenderer extends DefaultTreeCellRenderer {
       if (value instanceof ElementImpl)
 	    tip = ((ElementImpl)value).getOCLTypeStr() + ": " +
 	                               ((ElementImpl)value).getName().getBody();
-      lab.setToolTipText(tip);
-      tree.setToolTipText(tip);
+      lab.setToolTipText(tip + " ");
+      tree.setToolTipText(tip + " ");
 
     }
     return r;

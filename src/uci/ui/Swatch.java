@@ -28,30 +28,30 @@ import java.awt.*;
 import java.util.*;
 
 import javax.swing.*;
-import javax.swing.event.*;
-import javax.swing.tree.*;
-import javax.swing.text.*;
-import javax.swing.border.*;
-import javax.swing.plaf.basic.*;
-import javax.swing.plaf.metal.MetalLookAndFeel;
 
 
-public class ColorRenderer extends DefaultListCellRenderer {
-  public Component getListCellRendererComponent(JList list,
-        Object value, int index, boolean isSelected, 
-        boolean cellHasFocus) {
-    JLabel label = (JLabel)
-      super.getListCellRendererComponent(list, value, index,
-					 isSelected, cellHasFocus);
+class Swatch implements Icon {
+  protected static Hashtable _swatches = new Hashtable();
 
-    if (value instanceof Color) {
-      label.setIcon(Swatch.forColor((Color) value));
-      label.setText("  ");
+  Color _color = Color.black;
+
+  public static Swatch forColor(Color c) {
+    Swatch s = (Swatch) _swatches.get(c);
+    if (s == null) {
+      s = new Swatch(c);
+      _swatches.put(c, s);
     }
-    else label.setIcon(null);
-    return label;
+    return s;
   }
-} /* end class ColorRenderer */
 
+  public Swatch(Color c) { _color = c; }
 
+  public void paintIcon(Component c, Graphics g, int x, int y) {
+    int w = getIconWidth(), h = getIconHeight();
+    g.setColor(_color);
+    g.fillRect(x, y, getIconWidth(), getIconHeight());
+  }
+  public int getIconWidth() { return 150; }
+  public int getIconHeight() { return 12; }
 
+} /* end class Swatch */

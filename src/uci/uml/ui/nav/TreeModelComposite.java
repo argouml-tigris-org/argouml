@@ -39,6 +39,7 @@ implements TreeModel, Cloneable {
 
   protected Vector _subTreeModels = new Vector();
   protected Vector _providedClasses = new Vector();
+  //protected Vector _treeListeners = null;
   protected Object _root;
   protected boolean _flat;
   protected Vector _flatChildren = new Vector();
@@ -167,7 +168,7 @@ implements TreeModel, Cloneable {
     }
     //System.out.println("child not found!");
     //The child is sometimes not found when the tree is being updated
-    return 0;
+    return -1;
   }
 
 
@@ -208,6 +209,12 @@ implements TreeModel, Cloneable {
   }
 
 
+  public void fireTreeStructureChanged() {
+//     Object path[] = new Object[1];
+//     path[0] = getRoot();
+//     fireTreeStructureChanged(new TreePath(path));
+  }
+
   public void fireTreeStructureChanged(TreePath path) {
 //     if (_treeListeners == null) return;
 //     TreeModelEvent evt =
@@ -223,13 +230,13 @@ implements TreeModel, Cloneable {
 
   public void addTreeModelListener(TreeModelListener l) {
 //     System.out.println("adding tree listener to " + toString());
-//     if (_treeListeners == null) _vetoListeners = new Vector();
-//     _treeListeners.removeElement(listener);
-//     _treeListeners.addElement(listener);
+//     if (_treeListeners == null) _treeListeners = new Vector();
+//     _treeListeners.removeElement(l);
+//     _treeListeners.addElement(l);
   }
   public void removeTreeModelListener(TreeModelListener l) {
 //     if (_treeListeners == null) return;
-//     _treeListeners.removeElement(listener);
+//     _treeListeners.removeElement(l);
 //     //System.out.println("rm _treeListeners.size() = " + _treeListeners.size());
   }
 

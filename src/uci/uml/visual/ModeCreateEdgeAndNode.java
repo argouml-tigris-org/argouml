@@ -54,6 +54,11 @@ import uci.uml.Foundation.Data_Types.*;
 
 public class ModeCreateEdgeAndNode extends ModeCreate {
   ////////////////////////////////////////////////////////////////
+  // static variables
+  public static int Drags_To_Existing = 0;
+  public static int Drags_To_New = 0;
+
+  ////////////////////////////////////////////////////////////////
   // instance variables
 
   /** The NetPort where the arc is paintn from */
@@ -182,6 +187,7 @@ public class ModeCreateEdgeAndNode extends ModeCreate {
 
     if (f == null) {
       //System.out.println("make new node");
+      Drags_To_New++;
       Object newNode = null;
       Class nodeClass = (Class) getArg("nodeClass");
       try { newNode = nodeClass.newInstance(); }
@@ -219,6 +225,9 @@ public class ModeCreateEdgeAndNode extends ModeCreate {
 	f = _fn;
 	f.setLocation(x - f.getWidth() / 2, y - f.getHeight() / 2);
       }
+    }
+    else {
+      Drags_To_Existing++;
     }
 
 

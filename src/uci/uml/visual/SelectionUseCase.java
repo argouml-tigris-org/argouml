@@ -182,6 +182,7 @@ public class SelectionUseCase extends SelectionWButtons {
 
 
   public void buttonClicked(int buttonCode) {
+    super.buttonClicked(buttonCode);
     Classifier newNode = null;
     if (buttonCode == 10 || buttonCode == 11)
       newNode = new UseCase();

@@ -92,8 +92,8 @@ public class UMLListCellRenderer extends DefaultListCellRenderer {
     String nameStr = name.getBody();
     if (nameStr.length() == 0) nameStr = "(anon)";
     lab.setText(nameStr);
-    lab.setToolTipText(nameStr);
-    list.setToolTipText(nameStr);
+    lab.setToolTipText(nameStr + " ");
+    list.setToolTipText(nameStr + " ");
     // icons?
     return lab;
   }

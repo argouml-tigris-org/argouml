@@ -433,7 +433,7 @@ implements Serializable, TreeModel, Cloneable {
    * the fire method.
    * @see EventListenerList
    */
-  protected void fireTreeStructureChanged(Object source, Object[] path, 
+  public void fireTreeStructureChanged(Object source, Object[] path, 
 					  int[] childIndices, 
 					  Object[] children) {
     // Guaranteed to return a non-null array

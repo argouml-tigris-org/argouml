@@ -152,6 +152,26 @@ implements ItemListener, TreeSelectionListener, MouseListener, ToDoListListener 
     return _tree.getLastSelectedPathComponent();
   }
 
+  public void selectItem(ToDoItem item) {
+    TreeModel tm = _tree.getModel();
+    Object path[] = new Object[3];
+    Object category = null;
+    int size = _curPerspective.getChildCount(_root);
+    for (int i = 0; i < size; i++) {
+      category = _curPerspective.getChild(_root, i);
+      if (_curPerspective.getIndexOfChild(category, item) != -1)
+	break;
+    }
+    if (category == null) return;
+    path[0] = _root;
+    path[1] = category;
+    path[2] = item;
+    TreePath trPath = new TreePath(path);
+    _tree.expandPath(trPath);
+    _tree.scrollPathToVisible(trPath);
+    _tree.setSelectionPath(trPath);
+  }
+
   public boolean isFlat() { return _flat; }
   public void setFlat(boolean b) { _flat = b; }
   public void toggleFlat() {

@@ -102,7 +102,7 @@ public class AboutBox extends JFrame {
 		     "  David Hilbert\n"+
 		     "  ICS 125 team Spring 1996\n"+
 		     "  ICS 125 teams Spring 1998\n"+
-		     "\nSpecial Thanks To:\n"+
+		     "\nContributing Developers:\n"+
 		     "  Scott Guyer\n"+
 		     "  Piotr Kaminski\n"+
 		     "  Nick Santucci\n"+

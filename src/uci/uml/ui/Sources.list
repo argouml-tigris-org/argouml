@@ -4,6 +4,7 @@ SOURCES= \
 	ActionGoToDetails.java \
 	ActionGoToEdit.java \
 	Actions.java \
+	ActionGoToCritique.java \
 	AddToDoItemDialog.java \
 	ArgoFileFilter.java \
 	ChildGenFind.java \
@@ -18,6 +19,7 @@ SOURCES= \
 	DetailsPane.java \
 	DismissToDoItemDialog.java \
 	DisplayTextTree.java \
+	UpdateTreeHack.java \
 	DocumentationManager.java \
 	EmailExpertDialog.java \
 	FileFilters.java \

@@ -44,6 +44,12 @@ import uci.ui.Highlightable;
 
 
 public class ElementImpl implements Element, Highlightable {
+  ////////////////////////////////////////////////////////////////
+  // static variables
+  protected static PropertyChangeListener _staticListener = null;
+
+  ////////////////////////////////////////////////////////////////
+  // instance variables
   private static int elementCount = 0;
   public String elementID = newElementID();
   public Name _name = Name.UNSPEC;
@@ -55,6 +61,9 @@ public class ElementImpl implements Element, Highlightable {
   public transient Vector _vetoListeners;
   public transient Vector _propertyListeners;
   public boolean _highlight;
+
+  ////////////////////////////////////////////////////////////////
+  // constructors
 
   public ElementImpl() { }
   public ElementImpl(Name name) {
@@ -70,6 +79,16 @@ public class ElementImpl implements Element, Highlightable {
     elementCount++;
     return "S." + (100000 + elementCount);
   }
+
+  ////////////////////////////////////////////////////////////////
+  // static methods
+
+  public static void setStaticChangeListener(PropertyChangeListener l) {
+    _staticListener = l;
+  }
+
+  ////////////////////////////////////////////////////////////////
+  // accessors
 
   public static int getElementCount() { return elementCount; }
   public static void setElementCount(int c) { elementCount = c; }
@@ -208,12 +227,12 @@ public class ElementImpl implements Element, Highlightable {
   public void fireVetoableChangeNoCompare(String propertyName,
 				 Object oldValue, Object newValue)
        throws PropertyVetoException {
-    uci.argo.kernel.Designer.TheDesigner.critiqueASAP(this, propertyName);
     if (_vetoListeners == null) return;
     PropertyChangeEvent evt =
       new PropertyChangeEvent(this,
 			      propertyName, oldValue, newValue);
     try {
+      if (_staticListener != null) _staticListener.propertyChange(evt);
       for (int i = 0; i < _vetoListeners.size(); i++) {
 	VetoableChangeListener target =
 	  (VetoableChangeListener) _vetoListeners.elementAt(i);
@@ -279,7 +298,6 @@ public class ElementImpl implements Element, Highlightable {
 
   public void firePropertyChange(String propertyName,
 				 Object oldValue, Object newValue) {
-    uci.argo.kernel.Designer.TheDesigner.critiqueASAP(this, propertyName);
     firePropertyChangeNoCritique(propertyName, oldValue, newValue);
   }
 
@@ -289,6 +307,7 @@ public class ElementImpl implements Element, Highlightable {
     if (oldValue != null && oldValue.equals(newValue)) return;
     PropertyChangeEvent evt =
       new PropertyChangeEvent(this, propertyName, oldValue, newValue);
+    if (_staticListener != null) _staticListener.propertyChange(evt);
     //System.out.println("fire _propertyListeners.size() = " +
     //_propertyListeners.size());
     for (int i = 0; i < _propertyListeners.size(); i++) {

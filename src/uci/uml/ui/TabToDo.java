@@ -148,20 +148,6 @@ public class TabToDo extends TabSpawnable implements TabToDoTarget {
     repaint();
   }
 
-  
-  // needs-more-work: change this to use Actions
-//   protected void addTool(JToolBar tb, String name) {
-//     ImageIcon icon = loadImageIcon("images/" + name + ".gif",name);
-//     JButton b = (JButton) tb.add(new JButton(icon));
-//     b.setToolTipText(name);
-//     b.setMargin(new Insets(0,0,0,0));
-//     b.getAccessibleContext().setAccessibleName(name);
-//   }
-
-//   protected ImageIcon loadImageIcon(String filename, String desc) {
-//     return new ImageIcon(filename, desc);
-//   }
-  
   ////////////////////////////////////////////////////////////////
   // accessors
   public void setTarget(Object item) {  //ToDoItem
@@ -172,22 +158,8 @@ public class TabToDo extends TabSpawnable implements TabToDoTarget {
     if (_target instanceof ToDoItem) w = ((ToDoItem)_target).getWizard();
     if (w != null) showStep(w.getCurrentPanel());
     else { showDescription(); }
-//     if (_target == null) {
-//       //_description.setEnabled(false);
-//       _description.setText("No ToDoItem selected");
-//     }
-//     else if (_target instanceof ToDoItem) {
-//       ToDoItem tdi = (ToDoItem) _target;
-//       _description.setEnabled(true);
-//       _description.setText(tdi.getDescription());
-//       _description.setCaretPosition(0);
-//     }
-//     else {
-//       _description.setText("needs-more-work");
-//       return;
-//     }
-
   }
+
   public Object getTarget() { return _target; }
 
   public void refresh() { setTarget(_target); }
@@ -195,16 +167,10 @@ public class TabToDo extends TabSpawnable implements TabToDoTarget {
   protected void updateActionsEnabled() {
     _actionResolve.updateEnabled(_target);
     _actionEmailExpert.updateEnabled(_target);
-    //_actionMoreInfo.updateEnabled(_target);
     _actionSnooze.updateEnabled(_target);
-    //_actionRecordFix.updateEnabled(_target);
-    //_actionReplayFix.updateEnabled(_target);
-    //     _actionFixItNext.updateEnabled(_target);
-    //     _actionFixItBack.updateEnabled(_target);
-    //     _actionFixItFinish.updateEnabled(_target);
   }
 
-  
+
 } /* end class TabToDo */
 
 

@@ -47,9 +47,14 @@ import uci.uml.Foundation.Data_Types.*;
 public abstract class SelectionWButtons extends SelectionNodeClarifiers {
   ////////////////////////////////////////////////////////////////
   // constants
-  public static int IMAGE_SIZE = 22;
-  public static int MARGIN = 2;
-  public static Color PRESSED_COLOR = Color.gray.brighter();
+  public static final int IMAGE_SIZE = 22;
+  public static final int MARGIN = 2;
+  public static final Color PRESSED_COLOR = Color.gray.brighter();
+
+  ////////////////////////////////////////////////////////////////
+  // static variables
+  public static int Num_Button_Clicks = 0;
+  public static boolean _showRapidButtons = true;
 
   ////////////////////////////////////////////////////////////////
   // instance variables
@@ -60,8 +65,20 @@ public abstract class SelectionWButtons extends SelectionNodeClarifiers {
   // constructors
 
   /** Construct a new SelectionWButtons for the given Fig */
-  public SelectionWButtons(Fig f) { super(f); }
+  public SelectionWButtons(Fig f) {
+    super(f);
+    _paintButtons = _showRapidButtons;
+  }
 
+  ////////////////////////////////////////////////////////////////
+  // static accessors
+
+  public static void toggleShowRapidButtons() {
+    _showRapidButtons = ! _showRapidButtons;
+  }
+
+  ////////////////////////////////////////////////////////////////
+  // interaction utility methods
 
   public boolean hitAbove(int x, int y, int w, int h, Rectangle r) {
     return intersectsRect(r, x - w/2, y - h - MARGIN, w, h + MARGIN);
@@ -85,6 +102,9 @@ public abstract class SelectionWButtons extends SelectionNodeClarifiers {
 	     (r.x >= x + w) ||
 	     (r.y >= y + h));
   }
+
+  ////////////////////////////////////////////////////////////////
+  // display methods
 
   /** Paint the handles at the four corners and midway along each edge
    * of the bounding box.  */
@@ -158,7 +178,9 @@ public abstract class SelectionWButtons extends SelectionNodeClarifiers {
    *  from FigClass when it is translated. */
   public void hideButtons() { _paintButtons = false; }
 
-  public abstract void buttonClicked(int buttonInt);
+  public void buttonClicked(int buttonInt) {
+    if (buttonInt >= 10) Num_Button_Clicks++;
+  }
 
 
   ////////////////////////////////////////////////////////////////
@@ -186,7 +208,7 @@ public abstract class SelectionWButtons extends SelectionNodeClarifiers {
 
   public void mouseEntered(MouseEvent me) {
     super.mouseEntered(me);
-    _paintButtons = true;
+    if (_showRapidButtons) _paintButtons = true;
     Editor ce = Globals.curEditor();
     ce.damaged(this);
   }

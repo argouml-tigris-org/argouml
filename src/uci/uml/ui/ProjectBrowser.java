@@ -305,7 +305,7 @@ implements IStatusBar {
     removeItem.setAccelerator(delKey);
     JMenuItem emptyItem = edit.add(Actions.EmptyTrash);
 
-    JMenu view = (JMenu) _menuBar.add(new JMenu("View"));
+    Menu view = (Menu) _menuBar.add(new Menu("View"));
     // maybe should be Navigate instead of view
     view.setMnemonic('V');
 
@@ -334,6 +334,7 @@ implements IStatusBar {
     view.add(new CmdAdjustGrid());
     view.add(new CmdAdjustGuide());
     view.add(new CmdAdjustPageBreaks());
+    view.addCheckItem(Actions.ShowRapidButtons);
 
 
     JMenu create = (JMenu) _menuBar.add(new JMenu("Create"));

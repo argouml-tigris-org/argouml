@@ -186,6 +186,7 @@ public class SelectionClass extends SelectionWButtons {
 
 
   public void buttonClicked(int buttonCode) {
+    super.buttonClicked(buttonCode);
     MMClass newNode = new MMClass();
     FigClass fc = (FigClass) _content;
     MMClass cls = (MMClass) fc.getOwner();

@@ -57,7 +57,7 @@ public class CmdSelectNear extends Cmd {
 
   public CmdSelectNear(int dir) { this(dir, 1); }
   public CmdSelectNear(int dir, int mag) {
-    super("SelectNear " + wordFor(dir)); //needs-more-work: direction
+    super("SelectNear " + wordFor(dir), NO_ICON); //needs-more-work: direction
     _direction = dir;
     _magnitude = mag;
   }

@@ -32,6 +32,7 @@ import javax.swing.border.*;
 import javax.swing.event.*;
 
 import uci.gef.*;
+import uci.util.Util;
 
 public class ToolBar extends JToolBar implements MouseListener {
   protected Vector _lockable = new Vector();
@@ -53,7 +54,7 @@ public class ToolBar extends JToolBar implements MouseListener {
   }
 
   public JButton add(Action a, String name, String iconResourceStr) {
-    Icon icon = loadIconResource(imageName(iconResourceStr), name);
+    Icon icon = Util.loadIconResource(iconResourceStr, name);
     //System.out.println(icon);
     return add(a, name, icon);
   }
@@ -62,7 +63,7 @@ public class ToolBar extends JToolBar implements MouseListener {
     JButton b = new JButton(icon);
     if (a instanceof CmdSetMode || a instanceof CmdCreateNode)
       _modeButtons.addElement(b);
-    b.setToolTipText(name);
+    b.setToolTipText(name + " ");
     b.setEnabled(a.isEnabled());
     b.addActionListener(a);
     add(b);
@@ -83,14 +84,14 @@ public class ToolBar extends JToolBar implements MouseListener {
   }
 
   public JToggleButton addToggle(Action a, String name, String iconResourceStr) {
-    Icon icon = loadIconResource(imageName(iconResourceStr), name);
+    Icon icon = Util.loadIconResource(iconResourceStr, name);
     //System.out.println(icon);
     return addToggle(a, name, icon);
   }
 
   public JToggleButton addToggle(Action a, String name, Icon icon) {
     JToggleButton b = new JToggleButton(icon);
-    b.setToolTipText(name);
+    b.setToolTipText(name + " ");
     b.setEnabled(a.isEnabled());
     b.addActionListener(a);
     add(b);
@@ -103,10 +104,10 @@ public class ToolBar extends JToolBar implements MouseListener {
 
   public JToggleButton addToggle(Action a, String name,
 				 String upRes, String downRes) {
-    ImageIcon upIcon = loadIconResource(imageName(upRes), name);
-    ImageIcon downIcon = loadIconResource(imageName(downRes), name);
+    ImageIcon upIcon = Util.loadIconResource(upRes, name);
+    ImageIcon downIcon = Util.loadIconResource(downRes, name);
     JToggleButton b = new JToggleButton(upIcon);
-    b.setToolTipText(name);
+    b.setToolTipText(name + " ");
     b.setEnabled(a.isEnabled());
     b.addActionListener(a);
     b.setPressedIcon(downIcon);
@@ -127,13 +128,13 @@ public class ToolBar extends JToolBar implements MouseListener {
 				      ImageIcon twoDown) {
     JRadioButton b1 = new JRadioButton(oneUp, true);
     b1.setSelectedIcon(oneDown);
-    b1.setToolTipText(name1);
+    b1.setToolTipText(name1 + " ");
     b1.setMargin(new Insets(0,0,0,0));
     b1.getAccessibleContext().setAccessibleName(name1);
 
     JRadioButton b2 = new JRadioButton(twoUp, false);
     b2.setSelectedIcon(twoDown);
-    b2.setToolTipText(name2);
+    b2.setToolTipText(name2 + " ");
     b2.setMargin(new Insets(0,0,0,0));
     b2.getAccessibleContext().setAccessibleName(name2);
 
@@ -250,37 +251,6 @@ public class ToolBar extends JToolBar implements MouseListener {
     JButton select = (JButton) c;
     select.getModel().setArmed(true);
     select.getModel().setPressed(true);
-  }
-
-  protected static ImageIcon loadIconResource(String imgName, String desc) {
-    ImageIcon res = null;
-    try {
-      java.net.URL imgURL = ToolBar.class.getResource(imgName);
-      if (imgURL == null) return null;
-      //System.out.println(imgName);
-      //System.out.println(imgURL);
-      return new ImageIcon(imgURL, desc);
-    }
-    catch (Exception ex) {
-      System.out.println("Exception in loadIconResource");
-      ex.printStackTrace();
-      return new ImageIcon(desc);
-    }
-  }
-
-  protected static String imageName(String name) {
-    return "/uci/Images/" + stripJunk(name) + ".gif";
-  }
-
-
-  protected static String stripJunk(String s) {
-    String res = "";
-    int len = s.length();
-    for (int i = 0; i < len; i++) {
-      char c = s.charAt(i);
-      if (Character.isJavaIdentifierPart(c)) res += c;
-    }
-    return res;
   }
 
   static final long serialVersionUID = -633571897049780787L;

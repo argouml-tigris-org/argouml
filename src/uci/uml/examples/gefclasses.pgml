@@ -4,7 +4,7 @@
       name="class diagram 3"
 >
   <group name="Fig0"
-       description="uci.uml.visual.FigClass[32, 120, 165, 128]"
+       description="uci.uml.visual.FigClass[32, 120, 171, 128]"
        href="S.101263"
        fill="1"
        fillcolor="-1"
@@ -17,7 +17,7 @@
     <rectangle name="Fig0.0"
       x="33"
       y="121"
-      width="163"
+      width="169"
       height="126"
       fill="1"
       fillcolor="-1"
@@ -36,7 +36,7 @@
     >Editor</text>
     <text name="Fig0.2"
       x="32"
-      y="136"
+      y="134"
       fill="1"
       fillcolor="-1"
       stroke="1"
@@ -47,7 +47,7 @@
 public Fig curFig = null</text>
     <text name="Fig0.3"
       x="32"
-      y="167"
+      y="168"
       fill="1"
       fillcolor="-1"
       stroke="1"
@@ -62,7 +62,7 @@ public void paint(Graphics g)
 public void mousePressed()</text>
   </group>
   <group name="Fig1"
-       description="uci.uml.visual.FigClass[240, 216, 124, 64]"
+       description="uci.uml.visual.FigClass[240, 216, 135, 65]"
        href="S.101264"
        fill="1"
        fillcolor="-1"
@@ -75,8 +75,8 @@ public void mousePressed()</text>
     <rectangle name="Fig1.0"
       x="241"
       y="217"
-      width="122"
-      height="62"
+      width="133"
+      height="63"
       fill="1"
       fillcolor="-1"
       stroke="1"
@@ -94,7 +94,7 @@ public void mousePressed()</text>
     >LayerManager</text>
     <text name="Fig1.2"
       x="240"
-      y="232"
+      y="230"
       fill="1"
       fillcolor="-1"
       stroke="1"
@@ -147,7 +147,7 @@ public void addLayer(Layer l)</text>
     >CmdPaste</text>
     <text name="Fig2.2"
       x="784"
-      y="880"
+      y="878"
       fill="1"
       fillcolor="-1"
       stroke="1"
@@ -157,7 +157,7 @@ public void addLayer(Layer l)</text>
     ></text>
     <text name="Fig2.3"
       x="784"
-      y="901"
+      y="900"
       fill="1"
       fillcolor="-1"
       stroke="1"
@@ -199,7 +199,7 @@ public void addLayer(Layer l)</text>
     >CmdSavePGML</text>
     <text name="Fig3.2"
       x="672"
-      y="880"
+      y="878"
       fill="1"
       fillcolor="-1"
       stroke="1"
@@ -209,7 +209,7 @@ public void addLayer(Layer l)</text>
     ></text>
     <text name="Fig3.3"
       x="672"
-      y="901"
+      y="900"
       fill="1"
       fillcolor="-1"
       stroke="1"
@@ -219,7 +219,7 @@ public void addLayer(Layer l)</text>
     ></text>
   </group>
   <group name="Fig4"
-       description="uci.uml.visual.FigClass[240, 144, 105, 60]"
+       description="uci.uml.visual.FigClass[240, 144, 117, 60]"
        href="S.101267"
        fill="1"
        fillcolor="-1"
@@ -232,7 +232,7 @@ public void addLayer(Layer l)</text>
     <rectangle name="Fig4.0"
       x="241"
       y="145"
-      width="103"
+      width="115"
       height="58"
       fill="1"
       fillcolor="-1"
@@ -251,7 +251,7 @@ public void addLayer(Layer l)</text>
     >Guide</text>
     <text name="Fig4.2"
       x="240"
-      y="160"
+      y="158"
       fill="1"
       fillcolor="-1"
       stroke="1"
@@ -261,7 +261,7 @@ public void addLayer(Layer l)</text>
     ></text>
     <text name="Fig4.3"
       x="240"
-      y="181"
+      y="180"
       fill="1"
       fillcolor="-1"
       stroke="1"
@@ -303,7 +303,7 @@ public void addLayer(Layer l)</text>
     >LayerGrid</text>
     <text name="Fig5.2"
       x="467"
-      y="580"
+      y="578"
       fill="1"
       fillcolor="-1"
       stroke="1"
@@ -313,7 +313,7 @@ public void addLayer(Layer l)</text>
     ></text>
     <text name="Fig5.3"
       x="467"
-      y="601"
+      y="600"
       fill="1"
       fillcolor="-1"
       stroke="1"
@@ -355,7 +355,7 @@ public void addLayer(Layer l)</text>
     >FigRect</text>
     <text name="Fig6.2"
       x="808"
-      y="339"
+      y="337"
       fill="1"
       fillcolor="-1"
       stroke="1"
@@ -365,7 +365,7 @@ public void addLayer(Layer l)</text>
     ></text>
     <text name="Fig6.3"
       x="808"
-      y="360"
+      y="359"
       fill="1"
       fillcolor="-1"
       stroke="1"
@@ -375,7 +375,7 @@ public void addLayer(Layer l)</text>
     ></text>
   </group>
   <group name="Fig7"
-       description="uci.uml.visual.FigClass[800, 15, 154, 208]"
+       description="uci.uml.visual.FigClass[800, 15, 168, 209]"
        href="S.101270"
        fill="1"
        fillcolor="-1"
@@ -388,8 +388,8 @@ public void addLayer(Layer l)</text>
     <rectangle name="Fig7.0"
       x="801"
       y="16"
-      width="152"
-      height="206"
+      width="166"
+      height="207"
       fill="1"
       fillcolor="-1"
       stroke="1"
@@ -407,7 +407,7 @@ public void addLayer(Layer l)</text>
     >Fig</text>
     <text name="Fig7.2"
       x="800"
-      y="31"
+      y="29"
       fill="1"
       fillcolor="-1"
       stroke="1"
@@ -425,7 +425,7 @@ protected Layer layer
 protected Fig group</text>
     <text name="Fig7.3"
       x="800"
-      y="144"
+      y="142"
       fill="1"
       fillcolor="-1"
       stroke="1"
@@ -472,7 +472,7 @@ public Vector getGravityPoints()</text>
     >ModeModify</text>
     <text name="Fig8.2"
       x="333"
-      y="864"
+      y="862"
       fill="1"
       fillcolor="-1"
       stroke="1"
@@ -482,7 +482,7 @@ public Vector getGravityPoints()</text>
     ></text>
     <text name="Fig8.3"
       x="333"
-      y="885"
+      y="884"
       fill="1"
       fillcolor="-1"
       stroke="1"
@@ -524,7 +524,7 @@ public Vector getGravityPoints()</text>
     >ModeSelect</text>
     <text name="Fig9.2"
       x="67"
-      y="864"
+      y="862"
       fill="1"
       fillcolor="-1"
       stroke="1"
@@ -534,7 +534,7 @@ public Vector getGravityPoints()</text>
     ></text>
     <text name="Fig9.3"
       x="67"
-      y="885"
+      y="884"
       fill="1"
       fillcolor="-1"
       stroke="1"
@@ -544,7 +544,7 @@ public Vector getGravityPoints()</text>
     ></text>
   </group>
   <group name="Fig10"
-       description="uci.uml.visual.FigClass[256, 728, 121, 64]"
+       description="uci.uml.visual.FigClass[256, 728, 135, 65]"
        href="S.101273"
        fill="1"
        fillcolor="-1"
@@ -557,8 +557,8 @@ public Vector getGravityPoints()</text>
     <rectangle name="Fig10.0"
       x="257"
       y="729"
-      width="119"
-      height="62"
+      width="133"
+      height="63"
       fill="1"
       fillcolor="-1"
       stroke="1"
@@ -576,7 +576,7 @@ public Vector getGravityPoints()</text>
     >Mode</text>
     <text name="Fig10.2"
       x="256"
-      y="744"
+      y="742"
       fill="1"
       fillcolor="-1"
       stroke="1"
@@ -629,7 +629,7 @@ public void mousePressed()</text>
     >FigGroup</text>
     <text name="Fig11.2"
       x="952"
-      y="475"
+      y="473"
       fill="1"
       fillcolor="-1"
       stroke="1"
@@ -639,7 +639,7 @@ public void mousePressed()</text>
     ></text>
     <text name="Fig11.3"
       x="952"
-      y="496"
+      y="495"
       fill="1"
       fillcolor="-1"
       stroke="1"
@@ -649,7 +649,7 @@ public void mousePressed()</text>
     ></text>
   </group>
   <group name="Fig12"
-       description="uci.uml.visual.FigClass[240, 336, 121, 88]"
+       description="uci.uml.visual.FigClass[240, 336, 135, 89]"
        href="S.101275"
        fill="1"
        fillcolor="-1"
@@ -662,8 +662,8 @@ public void mousePressed()</text>
     <rectangle name="Fig12.0"
       x="241"
       y="337"
-      width="119"
-      height="86"
+      width="133"
+      height="87"
       fill="1"
       fillcolor="-1"
       stroke="1"
@@ -681,7 +681,7 @@ public void mousePressed()</text>
     >ModeManager</text>
     <text name="Fig12.2"
       x="240"
-      y="352"
+      y="350"
       fill="1"
       fillcolor="-1"
       stroke="1"
@@ -691,7 +691,7 @@ public void mousePressed()</text>
     ></text>
     <text name="Fig12.3"
       x="240"
-      y="369"
+      y="370"
       fill="1"
       fillcolor="-1"
       stroke="1"
@@ -704,7 +704,7 @@ public void paint(Graphics g)
 public void mousePressed()</text>
   </group>
   <group name="Fig13"
-       description="uci.uml.visual.FigClass[416, 344, 124, 112]"
+       description="uci.uml.visual.FigClass[416, 344, 135, 112]"
        href="S.101276"
        fill="1"
        fillcolor="-1"
@@ -717,7 +717,7 @@ public void mousePressed()</text>
     <rectangle name="Fig13.0"
       x="417"
       y="345"
-      width="122"
+      width="133"
       height="110"
       fill="1"
       fillcolor="-1"
@@ -736,7 +736,7 @@ public void mousePressed()</text>
     >Layer</text>
     <text name="Fig13.2"
       x="416"
-      y="360"
+      y="358"
       fill="1"
       fillcolor="-1"
       stroke="1"
@@ -748,7 +748,7 @@ protected boolean hidden
 protected boolean locked</text>
     <text name="Fig13.3"
       x="416"
-      y="407"
+      y="406"
       fill="1"
       fillcolor="-1"
       stroke="1"
@@ -792,7 +792,7 @@ public void paint(Graphics g)</text>
     >ModePlace</text>
     <text name="Fig14.2"
       x="466"
-      y="864"
+      y="862"
       fill="1"
       fillcolor="-1"
       stroke="1"
@@ -802,7 +802,7 @@ public void paint(Graphics g)</text>
     ></text>
     <text name="Fig14.3"
       x="466"
-      y="885"
+      y="884"
       fill="1"
       fillcolor="-1"
       stroke="1"
@@ -812,7 +812,7 @@ public void paint(Graphics g)</text>
     ></text>
   </group>
   <group name="Fig15"
-       description="uci.uml.visual.FigClass[680, 323, 112, 88]"
+       description="uci.uml.visual.FigClass[680, 323, 112, 89]"
        href="S.101278"
        fill="1"
        fillcolor="-1"
@@ -826,7 +826,7 @@ public void paint(Graphics g)</text>
       x="681"
       y="324"
       width="110"
-      height="86"
+      height="87"
       fill="1"
       fillcolor="-1"
       stroke="1"
@@ -844,7 +844,7 @@ public void paint(Graphics g)</text>
     >FigLine</text>
     <text name="Fig15.2"
       x="680"
-      y="339"
+      y="337"
       fill="1"
       fillcolor="-1"
       stroke="1"
@@ -857,7 +857,7 @@ protected int x2
 protected int y2</text>
     <text name="Fig15.3"
       x="680"
-      y="392"
+      y="390"
       fill="1"
       fillcolor="-1"
       stroke="1"
@@ -899,7 +899,7 @@ protected int y2</text>
     >ModeCreateFigRect</text>
     <text name="Fig16.2"
       x="184"
-      y="1112"
+      y="1110"
       fill="1"
       fillcolor="-1"
       stroke="1"
@@ -909,7 +909,7 @@ protected int y2</text>
     ></text>
     <text name="Fig16.3"
       x="184"
-      y="1133"
+      y="1132"
       fill="1"
       fillcolor="-1"
       stroke="1"
@@ -951,7 +951,7 @@ protected int y2</text>
     >FigNode</text>
     <text name="Fig17.2"
       x="944"
-      y="575"
+      y="573"
       fill="1"
       fillcolor="-1"
       stroke="1"
@@ -961,7 +961,7 @@ protected int y2</text>
     ></text>
     <text name="Fig17.3"
       x="944"
-      y="596"
+      y="595"
       fill="1"
       fillcolor="-1"
       stroke="1"
@@ -971,7 +971,7 @@ protected int y2</text>
     ></text>
   </group>
   <group name="Fig18"
-       description="uci.uml.visual.FigClass[816, 459, 119, 64]"
+       description="uci.uml.visual.FigClass[816, 459, 132, 65]"
        href="S.101281"
        fill="1"
        fillcolor="-1"
@@ -984,8 +984,8 @@ protected int y2</text>
     <rectangle name="Fig18.0"
       x="817"
       y="460"
-      width="117"
-      height="62"
+      width="130"
+      height="63"
       fill="1"
       fillcolor="-1"
       stroke="1"
@@ -1003,7 +1003,7 @@ protected int y2</text>
     >FigText</text>
     <text name="Fig18.2"
       x="816"
-      y="475"
+      y="473"
       fill="1"
       fillcolor="-1"
       stroke="1"
@@ -1014,7 +1014,7 @@ protected int y2</text>
 protected Color textFillColor</text>
     <text name="Fig18.3"
       x="816"
-      y="504"
+      y="503"
       fill="1"
       fillcolor="-1"
       stroke="1"
@@ -1056,7 +1056,7 @@ protected Color textFillColor</text>
     >ModeDragSelect</text>
     <text name="Fig19.2"
       x="200"
-      y="864"
+      y="862"
       fill="1"
       fillcolor="-1"
       stroke="1"
@@ -1066,7 +1066,7 @@ protected Color textFillColor</text>
     ></text>
     <text name="Fig19.3"
       x="200"
-      y="885"
+      y="884"
       fill="1"
       fillcolor="-1"
       stroke="1"
@@ -1108,7 +1108,7 @@ protected Color textFillColor</text>
     >FigEdge</text>
     <text name="Fig20.2"
       x="712"
-      y="475"
+      y="473"
       fill="1"
       fillcolor="-1"
       stroke="1"
@@ -1118,7 +1118,7 @@ protected Color textFillColor</text>
     ></text>
     <text name="Fig20.3"
       x="712"
-      y="496"
+      y="495"
       fill="1"
       fillcolor="-1"
       stroke="1"
@@ -1128,7 +1128,7 @@ protected Color textFillColor</text>
     ></text>
   </group>
   <group name="Fig21"
-       description="uci.uml.visual.FigClass[240, 40, 111, 76]"
+       description="uci.uml.visual.FigClass[240, 40, 120, 76]"
        href="S.101284"
        fill="1"
        fillcolor="-1"
@@ -1141,7 +1141,7 @@ protected Color textFillColor</text>
     <rectangle name="Fig21.0"
       x="241"
       y="41"
-      width="109"
+      width="118"
       height="74"
       fill="1"
       fillcolor="-1"
@@ -1160,7 +1160,7 @@ protected Color textFillColor</text>
     >SelectionManager</text>
     <text name="Fig21.2"
       x="240"
-      y="56"
+      y="54"
       fill="1"
       fillcolor="-1"
       stroke="1"
@@ -1182,7 +1182,7 @@ public void deselect(Fig f)
 public Fig hit(Rectangle r)</text>
   </group>
   <group name="Fig22"
-       description="uci.uml.visual.FigClass[386, 152, 103, 60]"
+       description="uci.uml.visual.FigClass[386, 152, 116, 60]"
        href="S.101285"
        fill="1"
        fillcolor="-1"
@@ -1195,7 +1195,7 @@ public Fig hit(Rectangle r)</text>
     <rectangle name="Fig22.0"
       x="387"
       y="153"
-      width="101"
+      width="114"
       height="58"
       fill="1"
       fillcolor="-1"
@@ -1214,7 +1214,7 @@ public Fig hit(Rectangle r)</text>
     >SelectionResize</text>
     <text name="Fig22.2"
       x="386"
-      y="168"
+      y="166"
       fill="1"
       fillcolor="-1"
       stroke="1"
@@ -1224,7 +1224,7 @@ public Fig hit(Rectangle r)</text>
     ></text>
     <text name="Fig22.3"
       x="386"
-      y="189"
+      y="188"
       fill="1"
       fillcolor="-1"
       stroke="1"
@@ -1234,7 +1234,7 @@ public Fig hit(Rectangle r)</text>
     >public void dragHandle()</text>
   </group>
   <group name="Fig23"
-       description="uci.uml.visual.FigClass[424, 224, 103, 60]"
+       description="uci.uml.visual.FigClass[424, 224, 116, 60]"
        href="S.101286"
        fill="1"
        fillcolor="-1"
@@ -1247,7 +1247,7 @@ public Fig hit(Rectangle r)</text>
     <rectangle name="Fig23.0"
       x="425"
       y="225"
-      width="101"
+      width="114"
       height="58"
       fill="1"
       fillcolor="-1"
@@ -1266,7 +1266,7 @@ public Fig hit(Rectangle r)</text>
     >SelectionReshape</text>
     <text name="Fig23.2"
       x="424"
-      y="240"
+      y="238"
       fill="1"
       fillcolor="-1"
       stroke="1"
@@ -1276,7 +1276,7 @@ public Fig hit(Rectangle r)</text>
     ></text>
     <text name="Fig23.3"
       x="424"
-      y="261"
+      y="260"
       fill="1"
       fillcolor="-1"
       stroke="1"
@@ -1286,7 +1286,7 @@ public Fig hit(Rectangle r)</text>
     >public void dragHandle()</text>
   </group>
   <group name="Fig24"
-       description="uci.uml.visual.FigClass[347, 564, 110, 60]"
+       description="uci.uml.visual.FigClass[347, 564, 119, 60]"
        href="S.101287"
        fill="1"
        fillcolor="-1"
@@ -1299,7 +1299,7 @@ public Fig hit(Rectangle r)</text>
     <rectangle name="Fig24.0"
       x="348"
       y="565"
-      width="108"
+      width="117"
       height="58"
       fill="1"
       fillcolor="-1"
@@ -1318,7 +1318,7 @@ public Fig hit(Rectangle r)</text>
     >LayerPerspective</text>
     <text name="Fig24.2"
       x="347"
-      y="580"
+      y="578"
       fill="1"
       fillcolor="-1"
       stroke="1"
@@ -1328,7 +1328,7 @@ public Fig hit(Rectangle r)</text>
     >protected Vector contents</text>
     <text name="Fig24.3"
       x="347"
-      y="601"
+      y="600"
       fill="1"
       fillcolor="-1"
       stroke="1"
@@ -1370,7 +1370,7 @@ public Fig hit(Rectangle r)</text>
     >JGraph</text>
     <text name="Fig25.2"
       x="16"
-      y="40"
+      y="38"
       fill="1"
       fillcolor="-1"
       stroke="1"
@@ -1380,7 +1380,7 @@ public Fig hit(Rectangle r)</text>
     ></text>
     <text name="Fig25.3"
       x="16"
-      y="61"
+      y="60"
       fill="1"
       fillcolor="-1"
       stroke="1"
@@ -1422,7 +1422,7 @@ public Fig hit(Rectangle r)</text>
     >Cmd</text>
     <text name="Fig26.2"
       x="720"
-      y="784"
+      y="782"
       fill="1"
       fillcolor="-1"
       stroke="1"
@@ -1432,7 +1432,7 @@ public Fig hit(Rectangle r)</text>
     ></text>
     <text name="Fig26.3"
       x="720"
-      y="805"
+      y="804"
       fill="1"
       fillcolor="-1"
       stroke="1"
@@ -1474,7 +1474,7 @@ public Fig hit(Rectangle r)</text>
     >ModeCreate</text>
     <text name="Fig27.2"
       x="160"
-      y="976"
+      y="974"
       fill="1"
       fillcolor="-1"
       stroke="1"
@@ -1484,7 +1484,7 @@ public Fig hit(Rectangle r)</text>
     ></text>
     <text name="Fig27.3"
       x="160"
-      y="997"
+      y="996"
       fill="1"
       fillcolor="-1"
       stroke="1"
@@ -1494,7 +1494,7 @@ public Fig hit(Rectangle r)</text>
     ></text>
   </group>
   <group name="Fig28"
-       description="uci.uml.visual.FigClass[360, 960, 111, 60]"
+       description="uci.uml.visual.FigClass[360, 960, 121, 60]"
        href="S.101291"
        fill="1"
        fillcolor="-1"
@@ -1507,7 +1507,7 @@ public Fig hit(Rectangle r)</text>
     <rectangle name="Fig28.0"
       x="361"
       y="961"
-      width="109"
+      width="119"
       height="58"
       fill="1"
       fillcolor="-1"
@@ -1526,7 +1526,7 @@ public Fig hit(Rectangle r)</text>
     >ModeBroom</text>
     <text name="Fig28.2"
       x="360"
-      y="976"
+      y="974"
       fill="1"
       fillcolor="-1"
       stroke="1"
@@ -1536,7 +1536,7 @@ public Fig hit(Rectangle r)</text>
     >protected int dir = NORTH</text>
     <text name="Fig28.3"
       x="360"
-      y="997"
+      y="996"
       fill="1"
       fillcolor="-1"
       stroke="1"
@@ -1546,7 +1546,7 @@ public Fig hit(Rectangle r)</text>
     ></text>
   </group>
   <group name="Fig29"
-       description="uci.uml.visual.FigClass[64, 416, 121, 64]"
+       description="uci.uml.visual.FigClass[64, 416, 135, 65]"
        href="S.101273"
        fill="1"
        fillcolor="-1"
@@ -1559,8 +1559,8 @@ public Fig hit(Rectangle r)</text>
     <rectangle name="Fig29.0"
       x="65"
       y="417"
-      width="119"
-      height="62"
+      width="133"
+      height="63"
       fill="1"
       fillcolor="-1"
       stroke="1"
@@ -1578,7 +1578,7 @@ public Fig hit(Rectangle r)</text>
     >Mode</text>
     <text name="Fig29.2"
       x="64"
-      y="432"
+      y="430"
       fill="1"
       fillcolor="-1"
       stroke="1"
@@ -1599,7 +1599,7 @@ public Fig hit(Rectangle r)</text>
 public void mousePressed()</text>
   </group>
   <group name="Fig30"
-       description="uci.uml.visual.FigClass[408, 32, 121, 64]"
+       description="uci.uml.visual.FigClass[408, 32, 135, 65]"
        href="S.101316"
        fill="1"
        fillcolor="-1"
@@ -1612,8 +1612,8 @@ public void mousePressed()</text>
     <rectangle name="Fig30.0"
       x="409"
       y="33"
-      width="119"
-      height="62"
+      width="133"
+      height="63"
       fill="1"
       fillcolor="-1"
       stroke="1"
@@ -1631,7 +1631,7 @@ public void mousePressed()</text>
     >Selection</text>
     <text name="Fig30.2"
       x="408"
-      y="48"
+      y="46"
       fill="1"
       fillcolor="-1"
       stroke="1"
@@ -1652,7 +1652,7 @@ public void mousePressed()</text>
 public void dragHandle()</text>
   </group>
   <group name="Fig31"
-       description="uci.uml.visual.FigClass[8, 1024, 154, 208]"
+       description="uci.uml.visual.FigClass[8, 1024, 168, 209]"
        href="S.101270"
        fill="1"
        fillcolor="-1"
@@ -1665,8 +1665,8 @@ public void dragHandle()</text>
     <rectangle name="Fig31.0"
       x="9"
       y="1025"
-      width="152"
-      height="206"
+      width="166"
+      height="207"
       fill="1"
       fillcolor="-1"
       stroke="1"
@@ -1684,7 +1684,7 @@ public void dragHandle()</text>
     >Fig</text>
     <text name="Fig31.2"
       x="8"
-      y="1040"
+      y="1038"
       fill="1"
       fillcolor="-1"
       stroke="1"
@@ -1702,7 +1702,7 @@ protected Layer layer
 protected Fig group</text>
     <text name="Fig31.3"
       x="8"
-      y="1153"
+      y="1151"
       fill="1"
       fillcolor="-1"
       stroke="1"
@@ -1717,7 +1717,7 @@ public Point getClosestPoint(Point p)
 public Vector getGravityPoints()</text>
   </group>
   <text name="Fig32"
-    x="119"
+    x="42"
     y="256"
     fill="0"
     fillcolor="-16777216"
@@ -1728,7 +1728,7 @@ public Vector getGravityPoints()</text>
   >Editor coordinates interactions 
 between most of the other classes.</text>
   <text name="Fig33"
-    x="454"
+    x="384"
     y="488"
     fill="0"
     fillcolor="-16777216"
@@ -1740,7 +1740,7 @@ between most of the other classes.</text>
 in back-to-front order, or show
 static graphics (like a grid).</text>
   <text name="Fig34"
-    x="136"
+    x="67"
     y="488"
     fill="0"
     fillcolor="-16777216"
@@ -1751,7 +1751,7 @@ static graphics (like a grid).</text>
   >Modes interpert user imput and
 make changes to Figs.</text>
   <text name="Fig35"
-    x="293"
+    x="197"
     y="424"
     fill="0"
     fillcolor="-16777216"
@@ -1764,7 +1764,7 @@ uses a stack.  Events are passed to the top
 Mode first. Short term modes are on top.
 Long term modes stay at the bottom.</text>
   <text name="Fig36"
-    x="482"
+    x="395"
     y="112"
     fill="0"
     fillcolor="-16777216"
@@ -1775,7 +1775,7 @@ Long term modes stay at the bottom.</text>
   >Selections draw handles on Figs and
 respond when the user drags a handle.</text>
   <text name="Fig37"
-    x="185"
+    x="129"
     y="16"
     fill="0"
     fillcolor="-16777216"
@@ -1786,7 +1786,7 @@ respond when the user drags a handle.</text>
   >JGraph is a widget that
 can be placed in a JFrame.</text>
   <text name="Fig38"
-    x="860"
+    x="748"
     y="240"
     fill="0"
     fillcolor="-16777216"
@@ -1798,7 +1798,7 @@ can be placed in a JFrame.</text>
 can be complex groups of shapes. 
 Each knows how to draw itself.</text>
   <text name="Fig39"
-    x="894"
+    x="823"
     y="776"
     fill="0"
     fillcolor="-16777216"
@@ -1809,7 +1809,7 @@ Each knows how to draw itself.</text>
   >Cmds (short for commands) are 
 invoked from menus or toolbars.</text>
   <text name="Fig40"
-    x="289"
+    x="193"
     y="1040"
     fill="0"
     fillcolor="-16777216"
@@ -1821,7 +1821,7 @@ invoked from menus or toolbars.</text>
 each class of Fig.  They manage user input
 when first creating new Figs.</text>
   <text name="Fig41"
-    x="149"
+    x="44"
     y="728"
     fill="0"
     fillcolor="-16777216"
@@ -1932,7 +1932,7 @@ the edge of the drawing area.</text>
       stroke="1"
       strokecolor="-16777216"
     >
-      <moveto x="196"
+      <moveto x="202"
               y="152" />
       <lineto x="241"
               y="152" />
@@ -1957,7 +1957,7 @@ the edge of the drawing area.</text>
       stroke="1"
       strokecolor="-16777216"
     >
-      <moveto x="196"
+      <moveto x="202"
               y="224" />
       <lineto x="241"
               y="224" />
@@ -2009,7 +2009,7 @@ the edge of the drawing area.</text>
       stroke="1"
       strokecolor="-16777216"
     >
-      <moveto x="363"
+      <moveto x="374"
               y="240" />
       <lineto x="384"
               y="240" />
@@ -2044,7 +2044,7 @@ the edge of the drawing area.</text>
               y="488" />
       <lineto x="1088"
               y="80" />
-      <lineto x="953"
+      <lineto x="967"
               y="80" />
     </path>
   </group>
@@ -2067,7 +2067,7 @@ the edge of the drawing area.</text>
       stroke="1"
       strokecolor="-16777216"
     >
-      <moveto x="350"
+      <moveto x="359"
               y="96" />
       <lineto x="376"
               y="96" />
@@ -2099,7 +2099,7 @@ the edge of the drawing area.</text>
       <moveto x="472"
               y="153" />
       <lineto x="472"
-              y="95" />
+              y="96" />
     </path>
   </group>
   <group name="Fig52"
@@ -2124,7 +2124,7 @@ the edge of the drawing area.</text>
       <moveto x="504"
               y="225" />
       <lineto x="504"
-              y="95" />
+              y="96" />
     </path>
   </group>
   <group name="Fig53"
@@ -2203,7 +2203,7 @@ the edge of the drawing area.</text>
       <lineto x="856"
               y="296" />
       <lineto x="856"
-              y="222" />
+              y="223" />
     </path>
   </group>
   <group name="Fig56"
@@ -2232,7 +2232,7 @@ the edge of the drawing area.</text>
       <lineto x="856"
               y="296" />
       <lineto x="856"
-              y="222" />
+              y="223" />
     </path>
   </group>
   <group name="Fig57"
@@ -2261,7 +2261,7 @@ the edge of the drawing area.</text>
       <lineto x="856"
               y="296" />
       <lineto x="856"
-              y="222" />
+              y="223" />
     </path>
   </group>
   <group name="Fig58"
@@ -2290,7 +2290,7 @@ the edge of the drawing area.</text>
       <lineto x="856"
               y="296" />
       <lineto x="856"
-              y="222" />
+              y="223" />
     </path>
   </group>
   <group name="Fig59"
@@ -2315,7 +2315,7 @@ the edge of the drawing area.</text>
       <moveto x="856"
               y="324" />
       <lineto x="856"
-              y="222" />
+              y="223" />
     </path>
   </group>
   <group name="Fig60"
@@ -2369,7 +2369,7 @@ the edge of the drawing area.</text>
       <lineto x="264"
               y="816" />
       <lineto x="264"
-              y="791" />
+              y="792" />
     </path>
   </group>
   <group name="Fig62"
@@ -2394,7 +2394,7 @@ the edge of the drawing area.</text>
       <moveto x="288"
               y="849" />
       <lineto x="288"
-              y="791" />
+              y="792" />
     </path>
   </group>
   <group name="Fig63"
@@ -2419,7 +2419,7 @@ the edge of the drawing area.</text>
       <moveto x="334"
               y="849" />
       <lineto x="334"
-              y="791" />
+              y="792" />
     </path>
   </group>
   <group name="Fig64"
@@ -2448,7 +2448,7 @@ the edge of the drawing area.</text>
       <lineto x="352"
               y="816" />
       <lineto x="352"
-              y="791" />
+              y="792" />
     </path>
   </group>
   <group name="Fig65"
@@ -2477,7 +2477,7 @@ the edge of the drawing area.</text>
       <lineto x="320"
               y="928" />
       <lineto x="320"
-              y="791" />
+              y="792" />
     </path>
   </group>
   <group name="Fig66"
@@ -2506,7 +2506,7 @@ the edge of the drawing area.</text>
       <lineto x="304"
               y="928" />
       <lineto x="304"
-              y="791" />
+              y="792" />
     </path>
   </group>
   <group name="Fig67"

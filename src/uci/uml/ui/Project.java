@@ -173,7 +173,7 @@ public class Project implements java.io.Serializable {
   public String getBaseName() {
     String n = getName();
     if (!n.endsWith(FILE_EXT)) return n;
-    return n.substring(0, n.length() - ".argo".length());
+    return n.substring(0, n.length() - FILE_EXT.length());
   }
 
   public String getName() {
@@ -192,6 +192,13 @@ public class Project implements java.io.Serializable {
     setURL(new URL(s));
   }
 
+  public void updateMemberNames() {
+    for (int i = 0 ; i < _members.size(); i++) {
+      ProjectMember pm = (ProjectMember) _members.elementAt(i);
+      pm.updateProjectName();
+    }
+  }
+
 //   public void setName(String n) throws PropertyVetoException {
 //     getVetoSupport().fireVetoableChange("Name", _filename, n);
 //     _filename = n;
@@ -203,6 +210,7 @@ public class Project implements java.io.Serializable {
     url = Util.fixURLExtension(url, FILE_EXT);
     getVetoSupport().fireVetoableChange("url", _url, url);
     _url = url;
+    updateMemberNames();
   }
 
 //   public void setFilename(String path, String name) throws PropertyVetoException {
@@ -218,6 +226,7 @@ public class Project implements java.io.Serializable {
       URL url = Util.fileToURL(file);
       getVetoSupport().fireVetoableChange("url", _url, url);
       _url = url;
+      updateMemberNames();
     }
     catch (MalformedURLException murle) {
       System.out.println("problem in setFile:" + file);
@@ -619,6 +628,9 @@ public class Project implements java.io.Serializable {
     NavigatorConfigDialog._numNavConfig = 0;
     TabToDo._numHushes = 0;
     ChecklistStatus._numChecks = 0;
+    SelectionWButtons.Num_Button_Clicks = 0;
+    ModeCreateEdgeAndNode.Drags_To_New = 0;
+    ModeCreateEdgeAndNode.Drags_To_Existing = 0;
   }
 
   public static void setStat(String n, int v) {
@@ -665,6 +677,14 @@ public class Project implements java.io.Serializable {
       TabToDo._numHushes = v;
     else if (n.equals("numChecks"))
       ChecklistStatus._numChecks = v;
+
+    else if (n.equals("Num_Button_Clicks"))
+      SelectionWButtons.Num_Button_Clicks = v;
+    else if (n.equals("Drags_To_New"))
+      ModeCreateEdgeAndNode.Drags_To_New = v;
+    else if (n.equals("Drags_To_Existing"))
+      ModeCreateEdgeAndNode.Drags_To_Existing = v;
+    
     else {
       System.out.println("unknown UsageStatistic: " + n);
     }
@@ -693,6 +713,11 @@ public class Project implements java.io.Serializable {
     addStat(s, "numNavConfig", NavigatorConfigDialog._numNavConfig);
     addStat(s, "numHushes", TabToDo._numHushes);
     addStat(s, "numChecks", ChecklistStatus._numChecks);
+
+    addStat(s, "Num_Button_Clicks", SelectionWButtons.Num_Button_Clicks);
+    addStat(s, "Drags_To_New", ModeCreateEdgeAndNode.Drags_To_New);
+    addStat(s, "Drags_To_Existing", ModeCreateEdgeAndNode.Drags_To_Existing);
+
     return s;
   }
 

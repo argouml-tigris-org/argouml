@@ -65,14 +65,19 @@ public abstract class ProjectMember {
 
   public String getName() {
     String s = _name;
-    if (!(s.startsWith(_project.getBaseName() + "_")))
-      s = _project.getBaseName() + "_" + s;
     if (!(s.endsWith(getFileExtension()))) s += getFileExtension();
     return s;
   }
   public void setName(String s) { _name = s; }
 
   public Project getProject() { return _project; }
+
+  public void updateProjectName() {
+    if (_name == null) return;
+    if (_name.indexOf("_") >= 0)
+      _name = _name.substring(_name.indexOf("_")+1);
+    _name = _project.getBaseName() + "_" + _name;
+  }
 
   public abstract String getType();
   public abstract String getFileExtension();

@@ -121,14 +121,10 @@ implements ItemListener, TreeSelectionListener {
 
     if (_perspectives == null || _perspectives.isEmpty())
       _curPerspective = null;
-    else if (oldCurPers != null && _perspectives.contains(oldCurPers)) {
-      System.out.println("case1");
+    else if (oldCurPers != null && _perspectives.contains(oldCurPers))
       setCurPerspective(oldCurPers);
-    }
-    else {
-      System.out.println("case2");
+    else
       setCurPerspective((NavPerspective) _perspectives.elementAt(0));
-    }
     updateTree();
   }
 
@@ -169,7 +165,6 @@ implements ItemListener, TreeSelectionListener {
   public void itemStateChanged(ItemEvent e) {
     updateTree();
     _navPerspectivesChanged++;
-    System.out.println("    _navPerspectivesChanged++;");
   }
 
   /** called when the user selects an item in the tree, by clicking or
@@ -263,7 +258,6 @@ implements ItemListener, TreeSelectionListener {
   // internal methods
 
   protected void updateTree() {
-    //System.out.println("updateTree!");
     NavPerspective tm = (NavPerspective) _combo.getSelectedItem();
     //if (tm == _curPerspective) return;
     _curPerspective = tm;
@@ -272,22 +266,12 @@ implements ItemListener, TreeSelectionListener {
       _tree.setVisible(false);
     }
     else {
-	//System.out.println("updateTree _curPerspective=" + _curPerspective.toString());
       _curPerspective.setRoot(_root);
       _tree.setModel(_curPerspective);
       _tree.setVisible(true); // blinks?
     }
   }
 
-//   /** This tells the listeners the editor has ended editing */
-//   public void editingStopped(ChangeEvent e) {
-//     System.out.println("editingStopped NavigatorPane");
-//   }
-
-//   /** This tells the listeners the editor has canceled editing */
-//   public void editingCanceled(ChangeEvent e) {
-//     System.out.println("editingCanceled NavigatorPane");
-//   }
 
   ////////////////////////////////////////////////////////////////
   // inner classes

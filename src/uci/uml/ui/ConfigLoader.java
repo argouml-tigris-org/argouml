@@ -38,23 +38,27 @@ public class ConfigLoader {
 			      StatusBar sb) {
     String configFile = System.getProperty("argo.config", "argo.ini");
     LineNumberReader lnr = null;
-    try {
-      java.net.URL configURL = ConfigLoader.class.getResource(configFile);
-      Object config = configURL.getContent();
-      if (config != null) {
-	InputStream is = (InputStream) config;
-	lnr = new LineNumberReader(new InputStreamReader(is));
-      }
-      else System.out.println("Could not open argo.ini!");
-    }
-    catch (java.io.IOException io) {
-      System.out.println("IOException on reading argo.ini");
-      io.printStackTrace();
-    }
-    catch (ClassCastException io) {
-      System.out.println("ClassCastException");
-      io.printStackTrace();
-    }
+    //    try {
+      InputStream is = ConfigLoader.class.getResourceAsStream(configFile);
+      lnr = new LineNumberReader(new InputStreamReader(is));
+
+//       java.net.URL configURL = ConfigLoader.class.getResource(configFile);
+//       Object config = configURL.getContent();
+//       if (config != null) {
+// 	InputStream is = (InputStream) config;
+// 	lnr = new LineNumberReader(new InputStreamReader(is));
+//       }
+//      else System.out.println("Could not open argo.ini!");
+
+      //    }
+//     catch (java.io.IOException io) {
+//       System.out.println("IOException on reading argo.ini");
+//       io.printStackTrace();
+//     }
+//     catch (ClassCastException io) {
+//       System.out.println("ClassCastException");
+//       io.printStackTrace();
+//     }
 
     if (lnr != null) {
       try {

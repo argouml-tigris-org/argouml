@@ -61,7 +61,7 @@ public class UMLAction extends AbstractAction {
       if (icon != null) putValue(Action.SMALL_ICON, icon);
       else { System.out.println("icon not found: " + name); }
     }
-    putValue(Action.SHORT_DESCRIPTION, name);
+    putValue(Action.SHORT_DESCRIPTION, name + " ");
     if (global) Actions._allActions.addElement(this);
   }
 

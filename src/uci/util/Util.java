@@ -84,10 +84,11 @@ public class Util {
     ImageIcon res = null;
     try {
       java.net.URL imgURL = Util.class.getResource(imageName(imgName));
-      if (imgURL == null) return null;
-      //System.out.println(imgName);
-      //System.out.println(imgURL);
-      return new ImageIcon(imgURL, desc);
+      if (imgURL == null) {
+	System.out.println("Icon for " + imgName + " not found");
+	return null;
+      }
+      return new ImageIcon(imgURL, desc + " ");
     }
     catch (Exception ex) {
       System.out.println("Exception in loadIconResource");

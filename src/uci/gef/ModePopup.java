@@ -32,6 +32,7 @@ import javax.swing.*;
 
 import uci.ui.PopupGenerator;
 
+
 /** A permanent Mode to catch right-mouse-button events and show a
  *  popup menu.  Needs-more-work: this is not fully implemented
  *  yet. It should ask the Fig under the mouse what menu it should

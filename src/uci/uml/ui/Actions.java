@@ -95,6 +95,7 @@ public class Actions {
   public static UMLAction NextEditTab = new ActionNextEditTab();
   //public static UMLAction AddToFavs = new ActionAddToFavs();
   public static UMLAction NextDetailsTab = new ActionNextDetailsTab();
+  public static UMLAction ShowRapidButtons = new ActionShowRapidButtons();
 
   public static UMLAction CreateMultiple = new ActionCreateMultiple();
   //public static UMLAction ClassWizard = new ActionClassWizard();
@@ -971,7 +972,8 @@ class ActionEmptyTrash extends UMLChangeAction {
 
 
 ////////////////////////////////////////////////////////////////
-// navigation actions
+// items on view menu
+
 
 // class ActionNavUp extends UMLAction {
 //   public ActionNavUp() { super("Navigate Up"); }
@@ -1097,7 +1099,19 @@ class ActionNextDetailsTab extends UMLAction {
 //   public ActionPrevDetailsTab() { super("Previous Details Tab"); }
 // } /* end class ActionPrevDetailsTab */
 
+
+class ActionShowRapidButtons extends UMLAction {
+  public ActionShowRapidButtons() {
+    super("Buttons on Selection", NO_ICON);
+  }
+  public void actionPerformed(ActionEvent ae) {
+    SelectionWButtons.toggleShowRapidButtons();
+  }
+} /* end class ActionShowRapidButtons */
+
+
 ////////////////////////////////////////////////////////////////
+// items on create menu
 
 class ActionCreateMultiple extends UMLAction {
   public ActionCreateMultiple() { super("Create Multiple...", NO_ICON); }

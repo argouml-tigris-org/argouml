@@ -633,7 +633,7 @@ implements Serializable, MouseListener, MouseMotionListener, KeyListener {
     Globals.curEditor(this);
     setUnderMouse(me);
     if (_curFig != null && Globals.getShowFigTips()) {
-      String tip = _curFig.getTipString(me);
+      String tip = _curFig.getTipString(me) + " ";
       if (tip != null && (_awt_component instanceof JComponent)) {
  	((JComponent)_awt_component).setToolTipText(tip);
       }

@@ -142,6 +142,7 @@ public class SelectionInterface extends SelectionWButtons {
 
 
   public void buttonClicked(int buttonCode) {
+    super.buttonClicked(buttonCode);
     MMClass newNode = new MMClass();
     FigInterface fc = (FigInterface) _content;
     Interface cls = (Interface) fc.getOwner();

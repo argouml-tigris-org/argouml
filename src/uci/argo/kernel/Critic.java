@@ -92,7 +92,7 @@ public class Critic implements Poster, java.io.Serializable {
   /** Arguments used to configure the critic. */
   private Hashtable _args = new Hashtable();
 
-  public static Icon DEFAULT_CLARIFIER = loadIconResource("PostIt0");
+  public static Icon DEFAULT_CLARIFIER = Util.loadIconResource("PostIt0");
   protected Icon _clarifier = DEFAULT_CLARIFIER;
 
   /** The decision category that this critic is relevant to. The idea
@@ -534,35 +534,6 @@ public class Critic implements Poster, java.io.Serializable {
       getCriticType() + "," +
       getDecisionCategory() + "," +
       getHeadline() + ")";
-  }
-
-  ////////////////////////////////////////////////////////////////
-  // image loading
-  
-    protected static ImageIcon loadIconResource(String name) {
-    String imgName = imageName(name);
-    ImageIcon res = null;
-    try {
-      java.net.URL imgURL = Critic.class.getResource(imgName);
-      return new ImageIcon(imgURL);
-    }
-    catch (Exception ex) {
-      return new ImageIcon(name);
-    }
-  }
-
-  protected static String imageName(String name) {
-    return "/uci/Images/" + stripJunk(name) + ".gif";
-  }
-
-  protected static String stripJunk(String s) {
-    String res = "";
-    int len = s.length();
-    for (int i = 0; i < len; i++) {
-      char c = s.charAt(i);
-      if (Character.isJavaIdentifierPart(c)) res += c;
-    }
-    return res;
   }
 
 } /* end class Critic */
