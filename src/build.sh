@@ -5,11 +5,10 @@ echo "Argo Build System (borrowed from FOP)"
 echo "-------------------------------------"
 echo
 
-ANT_HOME=/usr/local/jakarta-ant/lib/
-NSUML_HOME=/home/andreas/argo/nsuml/
-XML_HOME=/usr/local/xml4j/
-OCL_HOME=/home/andreas/argo/ocl/
-LOCALCLASSPATH=$JAVA_HOME/lib/tools.jar:$JAVA_HOME/lib/classes.zip:$ANT_HOME/ant.jar:$ANT_HOME/xml.jar:$NSUML_HOME/lib/nsuml.jar:$NSUML_HOME/lib/xml4j_dom.jar:$NSUML_HOME/lib/collections.jar:$XML_HOME/xml4j.jar:$OCL_HOME/ocl-argo-cmplt.jar
+ANT_HOME=~/bin/jakarta-ant/lib
+LIBS=~/jars
+JAVA_HOME=/usr/remote/jdk12
+CLASSPATH=$ANT_HOME/jaxp.jar:$ANT_HOME/parser.jar:$JAVA_HOME/lib/tools.jar:$JAVA_HOME/lib/classes.zip:$ANT_HOME/ant.jar:$ANT_HOME/xml.jar:$LIBS/nsuml.jar:$LIBS/xml4j.jar:$LIBS/ocl-argo.jar:$CLASSPATH
 
 if [ "$JAVA_HOME" = "" ] ; then
   echo "ERROR: JAVA_HOME not found in your environment."
@@ -19,10 +18,12 @@ if [ "$JAVA_HOME" = "" ] ; then
   exit 1
 fi
 
-echo Building with classpath $CLASSPATH:$LOCALCLASSPATH
+echo Building with classpath $CLASSPATH
 echo
 
 echo Starting Ant...
 echo
 
-$JAVA_HOME/bin/java -green -Dant.home=$ANT_HOME -classpath "$LOCALCLASSPATH:$CLASSPATH" org.apache.tools.ant.Main $*
+ant $*
+
+# $JAVA_HOME/bin/java -Dant.home=$ANT_HOME -classpath "$CLASSPATH" org.apache.tools.ant.Main $*
