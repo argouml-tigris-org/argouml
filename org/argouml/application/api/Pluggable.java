@@ -53,7 +53,12 @@ public interface Pluggable extends ArgoModule {
 
     public static final String PLUGIN_VENDOR = "University of California";
 
-    public static final String PLUGIN_PREFIX = Pluggable.class.getName();
+    public static final String PLUGIN_PREFIX = "org.argouml.application.api.Pluggable";
+    //
+    // needs-more-work:  jdk1.2.2 has problems with the following static
+    //                   declaration.  jdk1.3 seems to be ok.  
+    //
+    // public static final String PLUGIN_PREFIX = Pluggable.class.getName();
 
     /** A function which allows a plug-in to decide if it is available
      *  under a specific context. 
