@@ -24,12 +24,12 @@
 
 package org.argouml.uml.ui.behavior.common_behavior;
 
-import java.awt.GridLayout;
-
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
 import org.argouml.application.api.Argo;
+import org.argouml.model.ModelFacade;
+
 import org.argouml.swingext.GridLayout2;
 import org.argouml.swingext.LabelledLayout;
 import org.argouml.uml.ui.PropPanelButton;
@@ -42,7 +42,6 @@ import org.argouml.util.ConfigLoader;
 
 import ru.novosoft.uml.behavior.common_behavior.MReception;
 import ru.novosoft.uml.foundation.core.MClassifier;
-import ru.novosoft.uml.foundation.core.MDataType;
 import ru.novosoft.uml.foundation.core.MModelElement;
 
 /**
@@ -53,7 +52,7 @@ public class PropPanelReception extends PropPanelModelElement {
     public PropPanelReception() {
         super("Reception", _receptionIcon, ConfigLoader.getTabPropsOrientation());
 		
-        Class mclass = MReception.class;
+        Class mclass = (Class)ModelFacade.RECEPTION;
 
         addField(Argo.localize("UMLMenu", "label.name"), getNameTextField());
         addField(Argo.localize("UMLMenu", "label.stereotype"), getStereotypeBox());
@@ -85,7 +84,7 @@ public class PropPanelReception extends PropPanelModelElement {
      * @return boolean
      */
     public boolean isAcceptibleClassifier(MModelElement element) {
-        return (element instanceof MClassifier && !(element instanceof MDataType));
+        return (ModelFacade.isAClassifier(element) && !(ModelFacade.isADataType(element)));
     }
 
     /**
@@ -94,7 +93,7 @@ public class PropPanelReception extends PropPanelModelElement {
      */
     public MClassifier getOwner() {
         Object target = getTarget();
-        if (target instanceof MReception) {
+        if (ModelFacade.isAReception(target)) {
             return ((MReception)target).getOwner();
         }
         return null;
@@ -106,7 +105,7 @@ public class PropPanelReception extends PropPanelModelElement {
      */
     public void setOwner(MClassifier owner) {
         Object target = getTarget();
-        if (target instanceof MReception) {
+        if (ModelFacade.isAReception(target)) {
             MReception rec = (MReception)target;
             if (rec.getOwner() != null) {
                 rec.setOwner(null);
@@ -115,5 +114,3 @@ public class PropPanelReception extends PropPanelModelElement {
         }
     }
 }
-
-
