@@ -3654,7 +3654,7 @@ have any effect.
 	<title>org.argouml.cognitive.critics.* class diagram</title> 
 	  <mediaobject>
 	    <imageobject>
-	      <imagedata format="PNG" fileref="images/screenshots/argocogcritics.png"/> 
+	      <imagedata fileref="images/screenshots/argocogcritics.png" format="png" scale="70"/> 
 	    </imageobject>
 	</mediaobject>
       </sect2>
