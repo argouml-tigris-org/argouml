@@ -115,6 +115,8 @@ implements Poster, Runnable, PropertyChangeListener, MElementListener, java.io.S
 
   protected long _critiqueDuration;
 
+  protected int _critiqueLock = 0;
+
   ////////////////////////////////////////////////////////////////
   // constructor and singeton methods
 
@@ -156,21 +158,23 @@ implements Poster, Runnable, PropertyChangeListener, MElementListener, java.io.S
 //     Vector alreadyCritiqued = new Vector();       // jer added 970911
 //     Vector toCritique = new Vector();     // jer added 970911
     while (true) {
-      long critiqueStartTime = System.currentTimeMillis();
-      long cutoffTime = critiqueStartTime + 3000;
-      if (_CritiquingRoot != null && getAutoCritique()) {
+      long critiqueStartTime;
+      long cutoffTime;
+      int minWarmElements = 5;
+      int size;
+      if (_CritiquingRoot != null && getAutoCritique() && _critiqueLock <= 0) {
         synchronized (this) {
-	  //synchronized (_addQueue) {
-	    int size = _addQueue.size();
-	    for (int i = 0; i < size; i++) {
-	      _hotQueue.addElement(_addQueue.elementAt(i));
-	      _hotReasonQueue.addElement(_addReasonQueue.elementAt(i));
-	    }
-	    _addQueue.removeAllElements();
-	    _addReasonQueue.removeAllElements();
-	    //}
-	}
-	synchronized (this) {
+          critiqueStartTime = System.currentTimeMillis();
+          cutoffTime = critiqueStartTime + 3000;
+
+	  size = _addQueue.size();
+	  for (int i = 0; i < size; i++) {
+	    _hotQueue.addElement(_addQueue.elementAt(i));
+	    _hotReasonQueue.addElement(_addReasonQueue.elementAt(i));
+	  }
+	  _addQueue.removeAllElements();
+	  _addReasonQueue.removeAllElements();
+
 	  _longestHot = Math.max(_longestHot, _hotQueue.size());
           _agency.determineActiveCritics(this);
 
@@ -181,25 +185,32 @@ implements Poster, Runnable, PropertyChangeListener, MElementListener, java.io.S
 	    _hotReasonQueue.removeElementAt(0);
 	    Agency.applyAllCritics(dm, theDesigner(), reasonCode.longValue());
           }
-	    int size = _removeQueue.size();
-	    for (int i = 0; i < size; i++)
-	      _warmQueue.removeElement(_removeQueue.elementAt(i));
-	    _removeQueue.removeAllElements();
-	    if (_warmQueue.size() == 0)
-	      _warmQueue.addElement(_CritiquingRoot);
-	    while (_warmQueue.size() > 0 && System.currentTimeMillis() < cutoffTime) {
-	      Object dm = _warmQueue.elementAt(0);
-	      _warmQueue.removeElementAt(0);
-	      Agency.applyAllCritics(dm, theDesigner());
-	      java.util.Enumeration subDMs = _cg.gen(dm);
-	      while (subDMs.hasMoreElements()) {
-		Object nextDM = subDMs.nextElement();
-		if (!(_warmQueue.contains(nextDM)))
-		  _warmQueue.addElement(nextDM);
-	      }
-	      //}
+
+	  size = _removeQueue.size();
+	  for (int i = 0; i < size; i++)
+	    _warmQueue.removeElement(_removeQueue.elementAt(i));
+	  _removeQueue.removeAllElements();
+
+	  if (_warmQueue.size() == 0)
+	    _warmQueue.addElement(_CritiquingRoot);
+	  while (_warmQueue.size() > 0 &&
+                   (System.currentTimeMillis() < cutoffTime ||
+                    minWarmElements > 0)) {
+            if (minWarmElements > 0)
+              minWarmElements--;
+	    Object dm = _warmQueue.elementAt(0);
+	    _warmQueue.removeElementAt(0);
+	    Agency.applyAllCritics(dm, theDesigner());
+	    java.util.Enumeration subDMs = _cg.gen(dm);
+	    while (subDMs.hasMoreElements()) {
+	      Object nextDM = subDMs.nextElement();
+	      if (!(_warmQueue.contains(nextDM)))
+		_warmQueue.addElement(nextDM);
+	    }
 	  }
 	}
+      } else {
+        critiqueStartTime = System.currentTimeMillis();
       }
       _critiqueDuration = System.currentTimeMillis() - critiqueStartTime;
       long cycleDuration = (_critiqueDuration * 100) / _critiqueCPUPercent;
@@ -287,20 +298,42 @@ implements Poster, Runnable, PropertyChangeListener, MElementListener, java.io.S
   }
   public void setCritiquingInterval(int i) { _critiquingInterval = i; }
 
-   public static void setCritiquingRoot(Object d) {
-     _CritiquingRoot = d;
-     synchronized (theDesigner()) {
-       theDesigner()._toDoList.removeAllElements(); //v71
-       theDesigner()._hotQueue.removeAllElements();
-       theDesigner()._hotReasonQueue.removeAllElements();
-       theDesigner()._addQueue.removeAllElements();
-       theDesigner()._addReasonQueue.removeAllElements();
-       theDesigner()._removeQueue.removeAllElements();
-       theDesigner()._warmQueue.removeAllElements();
-     }
-     //clear out queues! @@@
-   }
-   public static Object getCritiquingRoot() { return _CritiquingRoot; }
+  public static void disableCritiquing() {
+    synchronized (theDesigner()) {
+      theDesigner()._critiqueLock++;
+    }
+  }
+
+  public static void enableCritiquing() {
+    synchronized (theDesigner()) {
+      theDesigner()._critiqueLock--;
+    }
+  }
+
+  public static void clearCritiquing() {
+    synchronized (theDesigner()) {
+      theDesigner()._toDoList.removeAllElements(); //v71
+      theDesigner()._hotQueue.removeAllElements();
+      theDesigner()._hotReasonQueue.removeAllElements();
+      theDesigner()._addQueue.removeAllElements();
+      theDesigner()._addReasonQueue.removeAllElements();
+      theDesigner()._removeQueue.removeAllElements();
+      theDesigner()._warmQueue.removeAllElements();
+    }
+    //clear out queues! @@@
+  }
+
+  public static void setCritiquingRoot(Object d) {
+    synchronized (theDesigner()) {
+      _CritiquingRoot = d;
+    }
+    /*  Don't clear everything here, breaks loading! */
+  }
+  public static Object getCritiquingRoot() {
+    synchronized (theDesigner()) {
+      return _CritiquingRoot;
+    }
+  }
 
    public ChildGenerator getChildGenerator() { return _cg; }
    public void setChildGenerator(ChildGenerator cg) { _cg = cg; }

@@ -1,221 +1,522 @@
 <?xml version="1.0"?>
+
 <!DOCTYPE TemplateSet [
+
   <!ELEMENT TemplateSet (macro | template)* >
+
   <!ELEMENT macro (#PCDATA)>
+
   <!ATTLIST macro name ID #REQUIRED>
+
   <!ELEMENT template (#PCDATA)>
+
   <!ATTLIST template class CDATA #REQUIRED>
+
 ]>
+
 <!-- This is PGML.tee, for GEF Diagrams to generate Percision Graphics -->
+
 <!-- Markup Langauge files.  "tee" = Template with Embedded Expressions. -->
+
+
 
 <TemplateSet>
 
+
+
 <macro name="FILL_AND_STROKE">
+
 <![CDATA[
+
 fill="<ocl>self.filled01</ocl>"
+
 fillcolor="<ocl>self.fillColor</ocl>"
+
 stroke="<ocl>self.lineWidth</ocl>"
+
 strokecolor="<ocl>self.lineColor</ocl>"
+
 ]]>
+
 </macro>
+
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+
+
 
 <template class="org.tigris.gef.base.Diagram">
+
 <![CDATA[
+
 <?xml version="1.0" encoding="ISO-8859-1" ?>
+
 <!DOCTYPE pgml SYSTEM "pgml.dtd">
+
 <pgml description="<ocl>self.classAndModelID</ocl>"
+
       name="<ocl>self.name</ocl>"
+
 >
+  <private>ItemUID="<ocl>self.ItemUID</ocl>"</private>
+
   <ocl>self.layer.contentsNoEdges</ocl>
+
   <ocl>self.layer.contentsEdgesOnly</ocl>
+
 </pgml>
+
 ]]>
+
 </template>
 
+
+
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+
 <template class="java.awt.Rectangle">
+
 <![CDATA[
+
 x="<ocl>self.x.intValue</ocl>"
+
 y="<ocl>self.y.intValue</ocl>"
+
 width="<ocl>self.width.intValue</ocl>"
+
 height="<ocl>self.height.intValue</ocl>"
+
 ]]>
+
 </template>
 
+
+
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+
 <template class="java.awt.Point">
+
 <![CDATA[
+
 <lineto x="<ocl>self.x.intValue</ocl>"
+
         y="<ocl>self.y.intValue</ocl>" />
+
 ]]>
+
 </template>
+
 <!-- luckily, points are only used in paths -->
 
+
+
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+
 <template class="java.awt.Color">
+
 <![CDATA[
+
 <ocl>self.RGB</ocl>
+
 ]]>
+
 </template>
 
+
+
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+
 <template class="org.tigris.gef.presentation.FigRect">
+
 <![CDATA[
+
 <rectangle name="<ocl>self.id</ocl>"
+
   <ocl>self.bounds</ocl>
+
   FILL_AND_STROKE
+
 />
+
 ]]>
+
 </template>
 
+
+
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+
 <template class="org.tigris.gef.presentation.FigRRect">
+
 <![CDATA[
+
 <rectangle name="<ocl>self.id</ocl>"
+
   <ocl>self.bounds</ocl>
+
   FILL_AND_STROKE
+
   rounding="<ocl>self.cornerRadius</ocl>"
+
 />
+
 ]]>
+
 </template>
 
+
+
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+
 <template class="org.tigris.gef.presentation.FigCircle">
+
 <![CDATA[
+
 <ellipse name="<ocl>self.id</ocl>"
+
   x="<ocl>self.center.x.intValue</ocl>"
+
   y="<ocl>self.center.y.intValue</ocl>"
+
   rx="<ocl>self.halfWidth.intValue</ocl>"
+
   ry="<ocl>self.halfHeight.intValue</ocl>"
+
   FILL_AND_STROKE
+
 />
+
 ]]>
+
 </template>
 
+
+
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+
 <template class="org.tigris.gef.presentation.FigText">
+
 <![CDATA[
+
 <text name="<ocl>self.id</ocl>"
+
   x="<ocl>self.x.intValue</ocl>"
+
   y="<ocl>self.y.intValue</ocl>"
+
   FILL_AND_STROKE
+
   font="<ocl>self.fontFamily</ocl>"
+
   textsize="<ocl>self.fontSize</ocl>"
+
 ><ocl>self.text</ocl></text>
+
 ]]>
+
 </template>
 
 
+
+
+
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+
 <template class="org.tigris.gef.presentation.FigLine">
+
 <![CDATA[
+
 <path name="<ocl>self.id</ocl>"
+
   description="<ocl>self.class.name</ocl>"
+
   FILL_AND_STROKE
+
 >
+
   <moveto x="<ocl>self.x1.intValue</ocl>"
+
           y="<ocl>self.y1.intValue</ocl>" />
+
   <lineto x="<ocl>self.x2.intValue</ocl>"
+
           y="<ocl>self.y2.intValue</ocl>" />
+
 </path>
+
 ]]>
+
 </template>
 
+
+
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+
 <template class="org.tigris.gef.presentation.FigPoly">
+
 <![CDATA[
+
 <path name="<ocl>self.id</ocl>"
+
   description="<ocl>self.class.name</ocl>"
+
   FILL_AND_STROKE
+
 >
+
   <moveto x="<ocl>self.firstPoint.x.intValue</ocl>"
+
           y="<ocl>self.firstPoint.y.intValue</ocl>" />
+
   <ocl>self.pointsVectorNotFirst</ocl>
+
 </path>
+
 ]]>
+
 </template>
 
+
+
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+
 <template class="org.tigris.gef.presentation.FigSpline">
+
 <![CDATA[
+
 <path name="<ocl>self.id</ocl>"
+
   description="<ocl>self.class.name</ocl>"
+
   FILL_AND_STROKE
+
 >
+
   <moveto x="<ocl>self.firstPoint.x.intValue</ocl>"
+
           y="<ocl>self.firstPoint.y.intValue</ocl>" />
+
   <ocl>self.pointsVector</ocl>
+
 </path>
+
 ]]>
+
 </template>
 
+
+
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+
 <template class="org.tigris.gef.presentation.FigInk">
+
 <![CDATA[
+
 <path name="<ocl>self.id</ocl>"
+
   description="<ocl>self.class.name</ocl>"
+
   FILL_AND_STROKE
+
 >
+
   <moveto x="<ocl>self.firstPoint.x.intValue</ocl>"
+
           y="<ocl>self.firstPoint.y.intValue</ocl>" />
+
   <ocl>self.pointsVector</ocl>
+
 </path>
+
 ]]>
+
 </template>
 
+
+
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+
 <!-- image? -->
 
-<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
-<template class="org.tigris.gef.presentation.FigGroup">
-<![CDATA[
-<group name="<ocl>self.id</ocl>"
-     description="<ocl>self.classNameAndBounds</ocl>"
-     href="<ocl>self.owner.UUID</ocl>"
-     dynobjects="<ocl>self._dynObjects</ocl>"
-     FILL_AND_STROKE
->
-  <private>
-    enclosingFig="<ocl>self.enclosingFig.id</ocl>"
-  </private>
-  
-  <ocl>self.figs</ocl>
-</group>
-]]>
-</template>
+
 
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
-<template class="org.tigris.gef.presentation.FigEdge">
+
+<template class="org.tigris.gef.presentation.FigGroup">
+
 <![CDATA[
+
 <group name="<ocl>self.id</ocl>"
-     description="<ocl>self.class.name</ocl>"
+
+     description="<ocl>self.classNameAndBounds</ocl>"
+
      href="<ocl>self.owner.UUID</ocl>"
-     stroke="<ocl>self.lineWidth</ocl>"
-     strokecolor="<ocl>self.lineColor</ocl>"
+
+     dynobjects="<ocl>self._dynObjects</ocl>"
+
+     FILL_AND_STROKE
+
 >
+
   <private>
-    sourcePortFig="<ocl>self.sourcePortFig.id</ocl>"
-    destPortFig="<ocl>self.destPortFig.id</ocl>"
-    sourceFigNode="<ocl>self.sourceFigNode.id</ocl>"
-    destFigNode="<ocl>self.destFigNode.id</ocl>"
+
+    enclosingFig="<ocl>self.enclosingFig.id</ocl>"
+
   </private>
+
+  
+
+  <ocl>self.figs</ocl>
+
+</group>
+
+]]>
+
+</template>
+
+
+
+<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+
+<template class="org.argouml.uml.diagram.ui.FigNodeModelElement">
+
+<![CDATA[
+
+<group name="<ocl>self.id</ocl>"
+
+     description="<ocl>self.classNameAndBounds</ocl>"
+
+     href="<ocl>self.owner.UUID</ocl>"
+
+     dynobjects="<ocl>self._dynObjects</ocl>"
+
+     FILL_AND_STROKE
+
+>
+
+  <private>
+
+    ItemUID="<ocl>self.ItemUID</ocl>"
+    enclosingFig="<ocl>self.enclosingFig.id</ocl>"
+
+  </private>
+
+  
+
+  <ocl>self.figs</ocl>
+
+</group>
+
+]]>
+
+</template>
+
+
+<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+
+<template class="org.tigris.gef.presentation.FigEdge">
+
+<![CDATA[
+
+<group name="<ocl>self.id</ocl>"
+
+     description="<ocl>self.class.name</ocl>"
+
+     href="<ocl>self.owner.UUID</ocl>"
+
+     stroke="<ocl>self.lineWidth</ocl>"
+
+     strokecolor="<ocl>self.lineColor</ocl>"
+
+>
+
+  <private>
+
+    sourcePortFig="<ocl>self.sourcePortFig.id</ocl>"
+
+    destPortFig="<ocl>self.destPortFig.id</ocl>"
+
+    sourceFigNode="<ocl>self.sourceFigNode.id</ocl>"
+
+    destFigNode="<ocl>self.destFigNode.id</ocl>"
+
+  </private>
+
+
 
   <ocl>self.fig</ocl>
+
 </group>
+
 ]]>
+
 </template>
 
+
+
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
-<template class="org.tigris.gef.presentation.FigCube">
+
+<template class="org.argouml.uml.diagram.ui.FigEdgeModelElement">
+
 <![CDATA[
-<rectangle name="<ocl>self.id</ocl>"
-  <ocl>self.bounds</ocl>
-  FILL_AND_STROKE
-/>
+
+<group name="<ocl>self.id</ocl>"
+
+     description="<ocl>self.class.name</ocl>"
+
+     href="<ocl>self.owner.UUID</ocl>"
+
+     stroke="<ocl>self.lineWidth</ocl>"
+
+     strokecolor="<ocl>self.lineColor</ocl>"
+
+>
+
+  <private>
+
+    ItemUID="<ocl>self.ItemUID</ocl>"
+    sourcePortFig="<ocl>self.sourcePortFig.id</ocl>"
+
+    destPortFig="<ocl>self.destPortFig.id</ocl>"
+
+    sourceFigNode="<ocl>self.sourceFigNode.id</ocl>"
+
+    destFigNode="<ocl>self.destFigNode.id</ocl>"
+
+  </private>
+
+
+
+  <ocl>self.fig</ocl>
+
+</group>
+
 ]]>
+
 </template>
+
+
+
+<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+
+<template class="org.tigris.gef.presentation.FigCube">
+
+<![CDATA[
+
+<rectangle name="<ocl>self.id</ocl>"
+
+  <ocl>self.bounds</ocl>
+
+  FILL_AND_STROKE
+
+/>
+
+]]>
+
+</template>
+
+
+
 
 
 </TemplateSet>
+

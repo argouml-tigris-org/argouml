@@ -63,6 +63,7 @@ import org.argouml.application.events.ArgoEventPump;
 import org.argouml.application.events.ArgoNotationEvent;
 import org.argouml.application.events.ArgoNotationEventListener;
 import org.argouml.cognitive.Designer;
+import org.argouml.cognitive.ItemUID;
 import org.argouml.cognitive.ToDoItem;
 import org.argouml.cognitive.ToDoList;
 import org.argouml.kernel.DelayedChangeNotify;
@@ -123,6 +124,7 @@ implements VetoableChangeListener, DelayedVChangeListener, MouseListener, KeyLis
 
   protected FigText _name;
   protected FigText _stereo = new FigText(10, 30, 90, 20);
+  private ItemUID _id;
 
   ////////////////////////////////////////////////////////////////
   // constructors
@@ -169,6 +171,10 @@ implements VetoableChangeListener, DelayedVChangeListener, MouseListener, KeyLis
 
   ////////////////////////////////////////////////////////////////
   // accessors
+
+  public void setItemUID(ItemUID id) { _id = id; }
+
+  public ItemUID getItemUID() { return _id; }
 
   public String getTipString(MouseEvent me) {
     ToDoItem item = hitClarifier(me.getX(), me.getY());

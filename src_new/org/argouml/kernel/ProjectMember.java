@@ -79,29 +79,38 @@ public abstract class ProjectMember {
    * underscore '_'.
    */
   public String getName() {
-    String s = _name;
+    if (_name == null)
+        return null;
+
+    String s = _project.getBaseName();
+
+    if (_name.length() > 0)
+	s += "_" + _name;
     
-    if (s != null) {
-      s = _project.getBaseName() + "_" + s;
-    
-      if (! s.endsWith (getFileExtension())) {
+    if (!s.endsWith(getFileExtension()))
         s += getFileExtension();
-      }
-    }
     
     return s;
   }
   
   public void setName(String s) { 
-    if ((s != null) &&
-        (s.startsWith (_project.getBaseName()))) {
-      cat.debug ("Setting project member name excluding project base name...");
-      _name = s.substring (_project.getBaseName().length());
+    _name = s;
+
+    if (_name == null)
+        return;
+
+    if (_name.startsWith (_project.getBaseName())) {
+      _name = _name.substring (_project.getBaseName().length());
+      int i = 0;
+      for (; i < _name.length(); i++)
+        if (_name.charAt(i) != '_')
+          break;
+      if (i > 0)
+        _name = _name.substring(i);
     }
-    else {
-      cat.debug ("Setting project member name including project base name...");
-      _name = s;
-    }
+
+    if (_name.endsWith(getFileExtension()))
+        _name = _name.substring(0, _name.length() - getFileExtension().length());
   }
 
   public Project getProject() { return _project; }
