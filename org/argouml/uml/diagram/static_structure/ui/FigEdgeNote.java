@@ -61,7 +61,7 @@ public class FigEdgeNote
 	       KeyListener,
 	       PropertyChangeListener
 {
-    private Object _owner;
+    private Object owner;
 
     
     /** 
@@ -75,9 +75,15 @@ public class FigEdgeNote
 	setDashed(true);	
     }      
     
-    public FigEdgeNote(Object owner, Layer layer) {
-        this(((CommentEdge)owner).getSource(), ((CommentEdge)owner).getDestination());
-        setOwner(owner);
+    /**
+     * Constructor that hooks the Fig to a UML element
+     * @param theOwner the UML element
+     * @param theLayer the layer (ignored)
+     */
+    public FigEdgeNote(Object theOwner, Layer theLayer) {
+        this(((CommentEdge) theOwner).getSource(), 
+                ((CommentEdge) theOwner).getDestination());
+        setOwner(theOwner);
     }
     
     /**
@@ -85,8 +91,8 @@ public class FigEdgeNote
      * object. The objects must have a representation on the given
      * layer.<p>
      *
-     * @param fromNode
-     * @param toNode
+     * @param fromNode the source
+     * @param toNode the destination
      */
     public FigEdgeNote(Object fromNode, Object toNode) {
         this();
@@ -109,13 +115,22 @@ public class FigEdgeNote
     ////////////////////////////////////////////////////////////////
     // accessors
 
+    /**
+     * @see org.tigris.gef.presentation.FigEdge#setFig(org.tigris.gef.presentation.Fig)
+     */
     public void setFig(Fig f) {
 	super.setFig(f);
 	_fig.setDashed(true);
     }    
 
+    /**
+     * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#canEdit(org.tigris.gef.presentation.Fig)
+     */
     protected boolean canEdit(Fig f) { return false; }
     
+    /**
+     * @see java.lang.Object#toString()
+     */
     public String toString() {
         return Translator.localize("misc.comment-edge");
     }
@@ -133,13 +148,14 @@ public class FigEdgeNote
      * @see org.tigris.gef.presentation.Fig#setOwner(java.lang.Object)
      */
     public void setOwner(Object newOwner) {
-        // hack to avoid loading problems since we cannot store the whole model yet in XMI
+        // hack to avoid loading problems since we cannot store 
+        // the whole model yet in XMI
         if (newOwner == null) {
             newOwner = new CommentEdge(getSourceFigNode(), getDestFigNode());
         }
-       _owner = newOwner;
-       if (ModelFacade.getUUID(newOwner) == null) {
-           ModelFacade.setUUID(newOwner,
+        owner = newOwner;
+        if (ModelFacade.getUUID(newOwner) == null) {
+            ModelFacade.setUUID(newOwner,
 				UUIDManager.getInstance().getNewUUID());
 	}
     }
@@ -148,7 +164,7 @@ public class FigEdgeNote
      * @see org.tigris.gef.presentation.Fig#getOwner()
      */
     public Object getOwner() {
-        return _owner;
+        return owner;
     }
     
     
@@ -157,8 +173,8 @@ public class FigEdgeNote
      */
     public void postLoad() {       
         super.postLoad();
-        CommentEdge owner = (CommentEdge)getOwner();
-        owner.setDestination(getDestFigNode().getOwner());
-        owner.setSource(getSourceFigNode().getOwner());
+        CommentEdge o = (CommentEdge) getOwner();
+        o.setDestination(getDestFigNode().getOwner());
+        o.setSource(getSourceFigNode().getOwner());
     }
 } /* end class FigEdgeNote */

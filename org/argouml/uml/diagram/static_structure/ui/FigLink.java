@@ -35,22 +35,38 @@ import java.awt.Color;
 import org.argouml.model.uml.behavioralelements.commonbehavior.CommonBehaviorHelper;
 import org.argouml.uml.diagram.ui.FigEdgeModelElement;
 import org.tigris.gef.presentation.Fig;
+/**
+ * Class to display graphics for a UML Link in a diagram.
+ *
+ */
 public class FigLink extends FigEdgeModelElement {
 
     ////////////////////////////////////////////////////////////////
     // constructors
 
+    /**
+     * Constructor
+     */
     public FigLink() {
 	_fig.setLineColor(Color.black);
 	setBetweenNearestPoints(true);
     }
 
+    /**
+     * Constructor that hooks the Fig to a UML element
+     * 
+     * @param edge the UML element
+     */
     public FigLink(Object edge) {
 	this();
 	setOwner(edge);
     }
 
-    // TODO: should edit something...
+    /**
+     * TODO: should edit something...
+     * 
+     * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#canEdit(org.tigris.gef.presentation.Fig)
+     */
     protected boolean canEdit(Fig f) { return false; }
 
 

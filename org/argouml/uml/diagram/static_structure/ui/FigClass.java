@@ -163,11 +163,13 @@ public class FigClass extends FigNodeModelElement {
         getNameFig().setFilled(true);
 
         // Attributes inside. First one is the attribute box itself.
-        FigCompartment attrVec = new FigAttributesCompartment(10, 30, 60, ROWHEIGHT + 2);
+        FigCompartment attrVec = 
+            new FigAttributesCompartment(10, 30, 60, ROWHEIGHT + 2);
 
         // this rectangle marks the operation section; all operations
         // are inside it
-        FigCompartment operVec = new FigOperationsCompartment(10, 31 + ROWHEIGHT, 60, ROWHEIGHT + 2);
+        FigCompartment operVec = 
+            new FigOperationsCompartment(10, 31 + ROWHEIGHT, 60, ROWHEIGHT + 2);
 
         // Set properties of the stereotype box. Make it 1 pixel higher than
         // before, so it overlaps the name box, and the blanking takes out both
@@ -376,12 +378,12 @@ public class FigClass extends FigNodeModelElement {
         Rectangle rect = getBounds();
         int h;
     	if (isCheckSize()) {
-    	    h = ((ROWHEIGHT * 
-                Math.max(1, getAttributesFig().getFigs(null).size() - 1) + 2)
+    	    h = ((ROWHEIGHT  
+                * Math.max(1, getAttributesFig().getFigs(null).size() - 1) + 2)
                 * rect.height
                 / getMinimumSize().height);
         } else {
-            h= 0;
+            h = 0;
         }
         if (getAttributesFig().isVisible()) {
             if (!isVisible) {  // hide compartment
@@ -417,8 +419,8 @@ public class FigClass extends FigNodeModelElement {
         Rectangle rect = getBounds();
         int h =
     	    isCheckSize()
-    	    ? ((ROWHEIGHT * 
-                Math.max(1, getOperationsFig().getFigs(null).size() - 1) + 2)
+    	    ? ((ROWHEIGHT  
+                * Math.max(1, getOperationsFig().getFigs(null).size() - 1) + 2)
     	        * rect.height
     	        / getMinimumSize().height)
     	    : 0;
@@ -663,10 +665,10 @@ public class FigClass extends FigNodeModelElement {
     }
 
     /**
-     * @param fgVec
-     * @param ft
-     * @param i
-     * @return
+     * @param fgVec the FigGroup
+     * @param ft    the Figtext
+     * @param i     get the fig before fig i
+     * @return the FigText
      */
     protected FigText getPreviousVisibleFeature(FigGroup fgVec,
 						FigText ft, int i) {
@@ -697,10 +699,10 @@ public class FigClass extends FigNodeModelElement {
     }
 
     /**
-     * @param fgVec
-     * @param ft
-     * @param i
-     * @return
+     * @param fgVec the FigGroup
+     * @param ft    the Figtext
+     * @param i     get the fig after fig i
+     * @return the FigText
      */
     protected FigText getNextVisibleFeature(FigGroup fgVec, FigText ft, int i)
     {
@@ -755,7 +757,7 @@ public class FigClass extends FigNodeModelElement {
     }
 
     /**
-     * @return
+     * @return the compartment
      */
     protected CompartmentFigText unhighlight() {
         CompartmentFigText ft;
@@ -1105,7 +1107,8 @@ public class FigClass extends FigNodeModelElement {
      */
     protected void updateAttributes() {
         Object cls = /*(MClassifier)*/ getOwner();
-        Fig attrPort = ((FigAttributesCompartment)getFigAt(ATTRIBUTES_POSN)).getBigPort();
+        Fig attrPort = ((FigAttributesCompartment) getFigAt(ATTRIBUTES_POSN))
+            .getBigPort();
         int xpos = attrPort.getX();
         int ypos = attrPort.getY();
         int acounter = 1;
@@ -1168,7 +1171,8 @@ public class FigClass extends FigNodeModelElement {
      */
     protected void updateOperations() {
         Object cls = /*(MClassifier)*/ getOwner();
-        Fig operPort = ((FigOperationsCompartment)getFigAt(OPERATIONS_POSN)).getBigPort();
+        Fig operPort = ((FigOperationsCompartment) getFigAt(OPERATIONS_POSN))
+            .getBigPort();
 
         int xpos = operPort.getX();
         int ypos = operPort.getY();
