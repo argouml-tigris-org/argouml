@@ -1091,8 +1091,7 @@ public class Modeller
   private void addDocumentationTag (MModelElement me,
                                     String sJavaDocs) {
     if ((sJavaDocs != null) &&
-        (! "".equals (sJavaDocs))) {
-
+        (sJavaDocs.trim().length() >=5 )) {
       cat.debug ("Modeller.addDocumentationTag: sJavaDocs = \"" + sJavaDocs + "\"");
 
       StringBuffer sbPureDocs = new StringBuffer(80);
@@ -1131,19 +1130,19 @@ public class Modeller
 
             if (j < sJavaDocs.length()) {
               if (sJavaDocs.charAt (j) == '@') {
+                sbPureDocs.append (sJavaDocs.substring (j, sJavaDocs.indexOf('\n',j) + 1));  // afl 05/02/03 fix Issue 1511
                 // start standard tag
-
                 // potentially add current tag to set of tagged values...
                 if (sCurrentTagName != null) {
                   addJavadocTagContents (me, sCurrentTagName, sCurrentTagData);
                 }
 
                 // open new tag
+
                 int nTemp = sJavaDocs.indexOf (' ', j + 1);
                 if (nTemp == -1) {
                   nTemp = sJavaDocs.length() - 1;
                 }
-
                 sCurrentTagName = sJavaDocs.substring (
                     j + 1,
                     nTemp
@@ -1181,6 +1180,7 @@ public class Modeller
                 }
 
                 if (sCurrentTagName != null) {
+                  sbPureDocs.append (sJavaDocs.substring (nStartPos, nTemp));  // afl 05/02/03 fixed Issue 1511
                   cat.debug (
                       "Modeller.addDocumentationTag (continuing tag): nTemp = " +
                       nTemp + ", nStartPos = " + nStartPos
@@ -1206,7 +1206,7 @@ public class Modeller
       }
 
       sJavaDocs = sbPureDocs.toString();
-
+      cat.debug(sJavaDocs);
       /*
        * After this, we have the documentation text, but unfortunately, there's
        * still a trailing '/' left. If this is even the only thing on it's line,
@@ -1243,7 +1243,7 @@ public class Modeller
           }
         }
       }
-
+      if (sJavaDocs.endsWith("/")) sJavaDocs = sJavaDocs.substring(0, sJavaDocs.length() - 1);
 
       // Do special things:
 
@@ -1266,4 +1266,3 @@ public class Modeller
 	    cat.debug("Add call to method " + method + " in " + obj);
     }
 }
-
