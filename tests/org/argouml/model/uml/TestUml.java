@@ -51,7 +51,8 @@ public class TestUml extends TestCase
 //            String typeName = type.getClass().getName().toUpperCase();
 //            String expected = type.getName().toUpperCase();
 //            // System.out.println(type.getClass().getName().toUpperCase());
-//            // System.out.println("ORG.ARGOUML.MODEL.UML.UML$TYPE" + key.toString().toUpperCase());
+//            // System.out.println("ORG.ARGOUML.MODEL.UML.UML$TYPE" 
+//            // + key.toString().toUpperCase());
 //            assertEquals(
 //                "Not the correct class",
 //                type.getClass().getName().toUpperCase(),

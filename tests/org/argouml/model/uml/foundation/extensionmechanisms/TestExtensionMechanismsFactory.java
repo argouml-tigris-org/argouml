@@ -52,16 +52,16 @@ public class TestExtensionMechanismsFactory extends TestCase {
 	};
 
 	CheckUMLModelHelper.createAndRelease(
-					     this,
-					     ExtensionMechanismsFactory.getFactory(),
-					     objs);
+		     this,
+		     ExtensionMechanismsFactory.getFactory(),
+		     objs);
 
     }
 
     public void testDeleteComplete() {
 	CheckUMLModelHelper.deleteComplete(
-					   this,
-					   ExtensionMechanismsFactory.getFactory(),
-					   allModelElements);
+		   this,
+		   ExtensionMechanismsFactory.getFactory(),
+		   allModelElements);
     }
 }

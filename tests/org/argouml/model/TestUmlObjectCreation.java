@@ -111,7 +111,8 @@ public class TestUmlObjectCreation extends TestCase {
 		    assertTrue(o.getClass().getName() + " is not a proxy",
 			       ih instanceof RefBaseObjectProxy);
 		    Object proxiedObject =
-			RefBaseObjectProxy.getProxiedObject((RefBaseObjectProxy) ih);
+			RefBaseObjectProxy.getProxiedObject(
+			        (RefBaseObjectProxy) ih);
 		    assertEquals("Not the correct class",
 				 proxiedObject.getClass(),
 				 legacy.getClass());
@@ -156,7 +157,8 @@ public class TestUmlObjectCreation extends TestCase {
 	testObjectFactoryType(
 			      Uml.ASSOCIATION_ROLE,
 			      MAssociationRoleImpl.class,
-			      CollaborationsFactory.getFactory().createAssociationRole(),
+			      CollaborationsFactory.getFactory()
+			          .createAssociationRole(),
 			      true);
 	testObjectFactoryType(
 			      Uml.DEPENDENCY,
@@ -196,7 +198,8 @@ public class TestUmlObjectCreation extends TestCase {
 	testObjectFactoryType(
 			      Uml.TRANSITION,
 			      MTransitionImpl.class,
-			      StateMachinesFactory.getFactory().createTransition(),
+			      StateMachinesFactory.getFactory()
+			          .createTransition(),
 			      true);
 	testObjectFactoryType(
 			      Uml.ACTOR,
@@ -216,7 +219,8 @@ public class TestUmlObjectCreation extends TestCase {
 	testObjectFactoryType(
 			      Uml.CLASSIFIER_ROLE,
 			      MClassifierRoleImpl.class,
-			      CollaborationsFactory.getFactory().createClassifierRole(),
+			      CollaborationsFactory.getFactory()
+			          .createClassifierRole(),
 			      true);
 	testObjectFactoryType(
 			      Uml.COMPONENT,
@@ -226,7 +230,8 @@ public class TestUmlObjectCreation extends TestCase {
 	testObjectFactoryType(
 			      Uml.INSTANCE,
 			      MInstanceImpl.class,
-			      CommonBehaviorFactory.getFactory().createInstance(),
+			      CommonBehaviorFactory.getFactory()
+			          .createInstance(),
 			      true);
 	testObjectFactoryType(
 			      Uml.INTERFACE,
@@ -241,7 +246,8 @@ public class TestUmlObjectCreation extends TestCase {
 	testObjectFactoryType(
 			      Uml.NODE_INSTANCE,
 			      MNodeInstanceImpl.class,
-			      CommonBehaviorFactory.getFactory().createNodeInstance(),
+			      CommonBehaviorFactory.getFactory()
+			          .createNodeInstance(),
 			      true);
 	testObjectFactoryType(
 			      Uml.OBJECT,
@@ -251,7 +257,8 @@ public class TestUmlObjectCreation extends TestCase {
 	testObjectFactoryType(
 			      Uml.PACKAGE,
 			      MPackageImpl.class,
-			      ModelManagementFactory.getFactory().createPackage(),
+			      ModelManagementFactory.getFactory()
+			          .createPackage(),
 			      true);
 	testObjectFactoryType(
 			      Uml.STATE,
@@ -261,12 +268,14 @@ public class TestUmlObjectCreation extends TestCase {
 	testObjectFactoryType(
 			      Uml.COMPOSITE_STATE,
 			      MCompositeStateImpl.class,
-			      StateMachinesFactory.getFactory().createCompositeState(),
+			      StateMachinesFactory.getFactory()
+			          .createCompositeState(),
 			      true);
 	testObjectFactoryType(
 			      Uml.PSEUDOSTATE,
 			      MPseudostateImpl.class,
-			      StateMachinesFactory.getFactory().createPseudostate(),
+			      StateMachinesFactory.getFactory()
+			          .createPseudostate(),
 			      true);
 	testObjectFactoryType(
 			      Uml.USE_CASE,
@@ -286,7 +295,8 @@ public class TestUmlObjectCreation extends TestCase {
 	testObjectFactoryType(
 			      Uml.CALL_ACTION,
 			      MCallActionImpl.class,
-			      CommonBehaviorFactory.getFactory().createCallAction(),
+			      CommonBehaviorFactory.getFactory()
+			          .createCallAction(),
 			      true);
 	testObjectFactoryType(
 			      Uml.NAMESPACE,
@@ -296,12 +306,14 @@ public class TestUmlObjectCreation extends TestCase {
 	testObjectFactoryType(
 			      Uml.RECEPTION,
 			      MReceptionImpl.class,
-			      CommonBehaviorFactory.getFactory().createReception(),
+			      CommonBehaviorFactory.getFactory()
+			          .createReception(),
 			      true);
 	testObjectFactoryType(
 			      Uml.STEREOTYPE,
 			      MStereotypeImpl.class,
-			      ExtensionMechanismsFactory.getFactory().createStereotype(),
+			      ExtensionMechanismsFactory.getFactory()
+			          .createStereotype(),
 			      true);
 	testObjectFactoryType(
 			      Uml.ATTRIBUTE,
@@ -327,7 +339,8 @@ public class TestUmlObjectCreation extends TestCase {
 	testObjectFactoryType(
 			      Uml.COMPONENT_INSTANCE,
 			      MComponentInstanceImpl.class,
-			      CommonBehaviorFactory.getFactory().createComponentInstance(),
+			      CommonBehaviorFactory.getFactory()
+			          .createComponentInstance(),
 			      true);
 
 

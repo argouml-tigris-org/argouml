@@ -39,7 +39,7 @@ public class StatemachinesTestSuite {
     public static Test suite() {
         TestSuite suite =
 	    new TestSuite("Tests for "
-			  + StatemachinesTestSuite.class.getPackage().getName());
+	            + StatemachinesTestSuite.class.getPackage().getName());
 	suite.addTestSuite(TestStateMachinesFactory.class);
 	suite.addTestSuite(TestStateMachinesHelper.class);
         return suite;

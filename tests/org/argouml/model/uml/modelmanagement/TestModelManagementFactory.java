@@ -56,16 +56,16 @@ public class TestModelManagementFactory extends TestCase {
 	};
 
 	CheckUMLModelHelper.createAndRelease(
-					     this,
-					     ModelManagementFactory.getFactory(),
-					     objs);
+		     this,
+		     ModelManagementFactory.getFactory(),
+		     objs);
 
     }
 
     public void testDeleteComplete() {
 	CheckUMLModelHelper.deleteComplete(
-					   this,
-					   ModelManagementFactory.getFactory(),
-					   allModelElements);
+		   this,
+		   ModelManagementFactory.getFactory(),
+		   allModelElements);
     }
 }

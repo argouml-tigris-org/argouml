@@ -45,15 +45,15 @@ public class TestUseCasesHelper extends TestCase {
 
     public void testGetMetaModelName() {
 	CheckUMLModelHelper.metaModelNameCorrect(
-						 this,
-						 UseCasesFactory.getFactory(),
-						 TestUseCasesFactory.allModelElements);
+			 this,
+			 UseCasesFactory.getFactory(),
+			 TestUseCasesFactory.allModelElements);
     }
 
     public void testIsValidStereoType() {
-	CheckUMLModelHelper.isValidStereoType(
-					      this,
-					      UseCasesFactory.getFactory(),
-					      TestUseCasesFactory.allModelElements);
+        CheckUMLModelHelper.isValidStereoType(
+		      this,
+		      UseCasesFactory.getFactory(),
+		      TestUseCasesFactory.allModelElements);
     }
 }

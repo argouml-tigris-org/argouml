@@ -61,7 +61,7 @@ public abstract class GenericUmlObjectTestFixture extends TestCase {
 	entity = ent;
     }
 
-    /*
+    /**
      * @see TestCase#setUp()
      */
     protected void setUp() throws Exception {
@@ -217,7 +217,8 @@ public abstract class GenericUmlObjectTestFixture extends TestCase {
 	runTruthTest(ModelFacade.isAClassifier(o), Uml.CLASSIFIER);
 	runTruthTest(ModelFacade.isAComment(o), Uml.COMMENT);
 	runTruthTest(ModelFacade.isAComponent(o), Uml.COMPONENT);
-	runTruthTest(ModelFacade.isAComponentInstance(o), Uml.COMPONENT_INSTANCE);
+	runTruthTest(ModelFacade.isAComponentInstance(o), 
+            Uml.COMPONENT_INSTANCE);
 	runTruthTest(ModelFacade.isADataType(o), Uml.DATATYPE);
 	runTruthTest(ModelFacade.isADependency(o), Uml.DEPENDENCY);
 	runTruthTest(ModelFacade.isACompositeState(o), Uml.COMPOSITE_STATE);
@@ -225,7 +226,8 @@ public abstract class GenericUmlObjectTestFixture extends TestCase {
 	runTruthTest(ModelFacade.isAExpression(o), Uml.EXPRESSION);
 	runTruthTest(ModelFacade.isAExtensionPoint(o), Uml.EXTENSION_POINT);
 	runTruthTest(ModelFacade.isAFeature(o), Uml.FEATURE);
-	runTruthTest(ModelFacade.isAGeneralizableElement(o), Uml.GENERALIZABLE_ELEMENT);
+	runTruthTest(ModelFacade.isAGeneralizableElement(o), 
+            Uml.GENERALIZABLE_ELEMENT);
 	runTruthTest(ModelFacade.isAGeneralization(o), Uml.GENERALIZATION);
 
 	// TODO: this fails on ModelElement - why?
@@ -254,7 +256,8 @@ public abstract class GenericUmlObjectTestFixture extends TestCase {
 	runTruthTest(ModelFacade.isAStateMachine(o), Uml.STATE_MACHINE);
 	runTruthTest(ModelFacade.isAStateVertex(o), Uml.STATE_VERTEX);
 	runTruthTest(ModelFacade.isAStereotype(o), Uml.STEREOTYPE);
-	runTruthTest(ModelFacade.isAStructuralFeature(o), Uml.STRUCTURAL_FEATURE);
+	runTruthTest(ModelFacade.isAStructuralFeature(o), 
+            Uml.STRUCTURAL_FEATURE);
 	runTruthTest(ModelFacade.isATaggedValue(o), Uml.TAGGED_VALUE);
 	runTruthTest(ModelFacade.isATransition(o), Uml.TRANSITION);
 	runTruthTest(ModelFacade.isAUseCase(o), Uml.USE_CASE);
@@ -265,7 +268,8 @@ public abstract class GenericUmlObjectTestFixture extends TestCase {
      * @param b
      * @param c
      */
-    private void runTruthTest(boolean result, boolean expected, ModelEntity class1) {
+    private void runTruthTest(boolean result, boolean expected, 
+            ModelEntity class1) {
 	assertEquals("Failure testing "
 		     + (class1 == null ? "MBase" : class1.getName()),
 		     expected,
@@ -285,7 +289,7 @@ public abstract class GenericUmlObjectTestFixture extends TestCase {
     }
 
     /**
-     * @return
+     * @return the model entity
      */
     public ModelEntity getEntity() {
 	return entity;

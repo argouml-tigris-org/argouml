@@ -50,16 +50,16 @@ public class TestCoreHelper extends TestCase {
 
     public void testGetMetaModelName() {
 	CheckUMLModelHelper.metaModelNameCorrect(
-						 this,
-						 CoreFactory.getFactory(),
-						 TestCoreFactory.allModelElements);
+			 this,
+			 CoreFactory.getFactory(),
+			 TestCoreFactory.allModelElements);
     }
 
     public void testIsValidStereoType() {
 	CheckUMLModelHelper.isValidStereoType(
-					      this,
-					      CoreFactory.getFactory(),
-					      TestCoreFactory.allModelElements);
+		      this,
+		      CoreFactory.getFactory(),
+		      TestCoreFactory.allModelElements);
     }
 
     public void testGetChildren() {

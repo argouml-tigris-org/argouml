@@ -532,14 +532,16 @@ public class TestUmlModelEventPump extends TestCase {
     /*
       public void testListensDependencyToSuperClass() {
       MDependency dep = CoreFactory.getFactory().createDependency();
-      UmlModelEventPump.getPump().addClassModelEventListener(listener2, dep.getClass(), "behavior");
+      UmlModelEventPump.getPump().addClassModelEventListener(listener2, 
+          dep.getClass(), "behavior");
       dep.addBehavior(StateMachinesFactory.getFactory().createStateMachine());
       assertTrue(eventcalled);
       }
     
       public void testListensSuperClassToDependency() {
       MDependency dep = CoreFactory.getFactory().createDependency();
-      UmlModelEventPump.getPump().addClassModelEventListener(listener2, MModelElement.class, "behavior");
+      UmlModelEventPump.getPump().addClassModelEventListener(listener2, 
+          MModelElement.class, "behavior");
       dep.addBehavior(StateMachinesFactory.getFactory().createStateMachine());
       assertTrue(eventcalled);
       }

@@ -39,7 +39,7 @@ public class ActivityGraphsTestSuite {
     public static Test suite() {
 	TestSuite suite =
 	    new TestSuite("Tests for "
-			  + ActivityGraphsTestSuite.class.getPackage().getName());
+		+ ActivityGraphsTestSuite.class.getPackage().getName());
 	suite.addTestSuite(TestActivityGraphsFactory.class);
 	suite.addTestSuite(TestActivityGraphsHelper.class);
         return suite;
