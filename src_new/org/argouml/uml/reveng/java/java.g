@@ -191,7 +191,7 @@ tokens {
 // Compilation Unit: In Java, this is a single file.  This is the start
 //   rule for this parser
 compilationUnit[ Modeller modeller, JavaLexer lexer]
-{ setModeller(modeller); 
+{ setModeller(modeller);
   setLexer(lexer); }
 	:	// A compilation unit starts with an optional package definition
 		(	packageDefinition
@@ -205,7 +205,7 @@ compilationUnit[ Modeller modeller, JavaLexer lexer]
 		//    definitions
 		( typeDefinition )*
 
-		EOF!
+		EOF
 	;
 
 
@@ -213,7 +213,7 @@ compilationUnit[ Modeller modeller, JavaLexer lexer]
 packageDefinition
 	options {defaultErrorHandler = true;} // let ANTLR handle errors
 {String packageName = null;}
-	:	"package"^ packageName=identifier SEMI
+	:	"package" packageName=identifier SEMI
 		{getModeller().addPackage(packageName);}     	
 	;
 
@@ -222,7 +222,7 @@ packageDefinition
 importDefinition
 	options {defaultErrorHandler = true;}
 {String name=null;}
-	:	"import"^ name=identifierStar SEMI
+	:	"import" name=identifierStar SEMI
  		{getModeller().addImport(name);}    
 	;
 
@@ -234,13 +234,13 @@ typeDefinition
 		( classDefinition[getJavadocComment(), m]
 		| interfaceDefinition[getJavadocComment(), m]
 		)
-	|	SEMI!
+	|	SEMI
 	;
 
 /** A declaration is the creation of a reference or primitive-type variable
  *  Create a separate Type/Var tree for each var in the var list.
  */
-declaration!
+declaration
 {short m = 0; String t=null;}
 	:	m=modifiers t=typeSpec v:variableDefinitions["", m, t]
 	;
@@ -267,13 +267,13 @@ typeSpec returns [String type=null]
 // A class type specification is a class type with possible brackets afterwards
 //   (which would make it an array type).
 classTypeSpec returns [String type=null]
-	:	type=identifier ((lb:LBRACK^ RBRACK!) {type +="[]";})*
+	:	type=identifier (LBRACK RBRACK {type +="[]";})*
 	;
 
 // A builtin type specification is a builtin type with possible brackets
 // afterwards (which would make it an array type).
 builtInTypeSpec returns [String type=null]
-	:	type=builtInType ((lb:LBRACK^ RBRACK!) {type += "[]";})*
+	:	type=builtInType (LBRACK RBRACK {type += "[]";})*
 	;
 
 // A type name. which is either a (possibly qualified) class name or
@@ -304,16 +304,14 @@ identifier returns [String name=null]
         ;    
 
 identifierStar returns [String name=null]
-	:	t1:IDENT
- 		{name = t1.getText();}
-		( DOT^ t2:IDENT {name = name + "." + t2.getText();} )*
-		( DOT^ STAR {name = name + "." + "*";} )?
+	:	t1:IDENT {name = t1.getText();}
+		( DOT t2:IDENT {name = name + "." + t2.getText();} )*
+		( DOT STAR {name = name + "." + "*";} )?
 	;
 
 
 // modifiers for Java classes, interfaces, class/instance vars and methods
-modifier returns [ short mod_flag]
-{ mod_flag = 0; }
+modifier returns [short mod_flag = 0]
 	:	"private"      { mod_flag = ACC_PRIVATE; }
 	|	"public"       { mod_flag = ACC_PUBLIC; }
 	|	"protected"    { mod_flag = ACC_PROTECTED; }
@@ -339,7 +337,7 @@ classDefinition[String javadoc, short modifiers]
 		ic=implementsClause
 		{getModeller().addClass(className.getText(), modifiers, superClassName, ic, javadoc);}  
 		// now parse the body of the class
-		cb:classBlock
+		classBlock
 		{getModeller().popClassifier();}
 	;
 
@@ -348,7 +346,7 @@ superClassClause returns [String superClassName = null]
 	;
 
 // Definition of a Java Interface
-interfaceDefinition![String javadoc, short modifiers]
+interfaceDefinition[String javadoc, short modifiers]
 {Vector ie=null;}
         :       "interface" interfaceName:IDENT
                 // it might extend some other interfaces
@@ -356,7 +354,7 @@ interfaceDefinition![String javadoc, short modifiers]
                 {getModeller().addInterface(interfaceName.getText(), modifiers,
 ie, javadoc);}
                 // now parse the body of the interface (looks like a class...)
-                cb:classBlock
+                classBlock
                 {getModeller().popClassifier();}
         ;
 
@@ -364,17 +362,18 @@ ie, javadoc);}
 // This is the body of a class.  You can have fields and extra semicolons,
 // That's about it (until you see what a field is...)
 classBlock
-	:	LCURLY!
-			( field | SEMI! )*
-		RCURLY!
+	:	LCURLY
+			( field | SEMI )*
+		RCURLY
 	;
 
 // An interface can extend several other interfaces...
 interfaceExtends returns [Vector names=new Vector()]
 	{String n=null;}
 	:	(
-		e:"extends"!
-		n=identifier {names.addElement(n);} ( COMMA! n=identifier {names.addElement(n);})*
+			e:"extends"
+			n=identifier {names.addElement(n);}
+			(COMMA n=identifier {names.addElement(n);})*
 		)?
 	;
 
@@ -382,7 +381,9 @@ interfaceExtends returns [Vector names=new Vector()]
 implementsClause returns [Vector names=new Vector()]
 	{String n=null;}
 	:	(
-			i:"implements"! n=identifier {names.addElement(n);} ( COMMA! n=identifier {names.addElement(n);})*
+			i:"implements"
+			n=identifier {names.addElement(n);}
+			(COMMA n=identifier {names.addElement(n);})*
 		)?
 	;
 
@@ -390,27 +391,28 @@ implementsClause returns [Vector names=new Vector()]
 // Note that not all of these are really valid in an interface (constructors,
 //   for example), and if this grammar were used for a compiler there would
 //   need to be some semantic checks to make sure we're doing the right thing...
-field!
-{short mods=0; String t=null; Vector param=null; }
+field
+{short mods=0; String t=null; Vector param=null; String a=null;}
 	:	// method, constructor, or variable declaration
 		mods=modifiers
-		(	ctorHead[mods] s:compoundStatement // constructor
-		|	cd:classDefinition["", mods]       // inner class
-		|	id:interfaceDefinition["", mods]   // inner interface
-		|	t=typeSpec                     // method or variable declaration(s)
+		(	ctorHead[mods] compoundStatement // constructor
+		|	classDefinition["", mods]       // inner class
+		|	interfaceDefinition["", mods]   // inner interface
+		|	t=typeSpec         // method or variable declaration(s)
 			(	( name:IDENT  // the name of the method
 
 				  // parse the formal parameter declarations.
-				  LPAREN! param=parameterDeclarationList RPAREN!
+				  LPAREN param=parameterDeclarationList RPAREN
 
-				  rt:returnTypeBrackersOnEndOfMethodHead
+				  (a=returnTypeBrackersOnEndOfMethodHead
+				   {t += a;})
 
 				  // get the list of exceptions that this method is declared to throw
-				  (tc:throwsClause)?
+				  (throwsClause)?
 
-				  ( s2:compoundStatement | SEMI )
-				) { getModeller().addOperation(mods, t, name.getText(), param, getJavadocComment()); }
-			|	v:classVariableDefinitions[getJavadocComment(), mods, t] SEMI
+				  ( compoundStatement | SEMI )
+				) {getModeller().addOperation(mods, t, name.getText(), param, getJavadocComment()); }
+			|	classVariableDefinitions[getJavadocComment(), mods, t] SEMI
 			)
 		)
 
@@ -422,7 +424,7 @@ field!
 
 classVariableDefinitions[String javadoc, short modifiers, String returnType]
 	:	classVariableDeclarator[javadoc, modifiers, returnType]
-		(	COMMA!
+		(	COMMA
 			classVariableDeclarator[javadoc, modifiers, returnType]
 		)*
 	;
@@ -438,7 +440,7 @@ classVariableDeclarator[String javadoc, short modifiers, String varType]
 
 variableDefinitions[String javadoc, short modifiers, String returnType]
 	:	variableDeclarator[javadoc, modifiers, returnType]
-		(	COMMA!
+		(	COMMA
 			variableDeclarator[javadoc, modifiers, returnType]
 		)*
 	;
@@ -449,20 +451,20 @@ variableDefinitions[String javadoc, short modifiers, String returnType]
  */
 variableDeclarator[String javadoc, short modifiers, String varType]
 {String initializer=null;}
-	:	(id:IDENT d:declaratorBrackets initializer=varInitializer)
+	:	(IDENT declaratorBrackets initializer=varInitializer)
 	;
 
 declaratorBrackets
-	:	(lb:LBRACK^ RBRACK!)*
+	:	(LBRACK RBRACK)*
 	;
 
 varInitializer returns [String expression=null]
-	:	( ASSIGN^ {activateExpressionTracking();} initializer {deactivateExpressionTracking(); expression=getExpression();})?
+	:	( ASSIGN {activateExpressionTracking();} initializer {deactivateExpressionTracking(); expression=getExpression();})?
 	;
 
 // This is an initializer used to set up an array.
 arrayInitializer
-	:	lc:LCURLY^
+	:	LCURLY
 			(	initializer
 				(
 					// CONFLICT: does a COMMA after an initializer start a new
@@ -473,11 +475,11 @@ arrayInitializer
 						warnWhenFollowAmbig = false;
 					}
 				:
-					COMMA! initializer
+					COMMA initializer
 				)*
-				(COMMA!)?
+				(COMMA)?
 			)?
-		RCURLY!
+		RCURLY
 	;
 
 
@@ -492,23 +494,28 @@ initializer
 //   for the method.
 //   This also watches for a list of exception classes in a "throws" clause.
 ctorHead[ short mods]
-	:	IDENT  // the name of the method
+	{Vector param = null;}
+	:	name:IDENT  // the name of the method
 
 		// parse the formal parameter declarations.
-		LPAREN! parameterDeclarationList RPAREN!
+		LPAREN param=parameterDeclarationList RPAREN
 
-		// get the list of exceptions that this method is declared to throw
+		{ getModeller().addOperation(mods, null, 
+			name.getText(), param, getJavadocComment()); }
+
+		// get the list of exceptions that this method is
+		// declared to throw
 		(throwsClause)?
 	;
 
 // This is a list of exception classes that the method is declared to throw
 throwsClause
-	:	"throws"^ identifier ( COMMA! identifier )*
+	:	"throws" identifier ( COMMA identifier )*
 	;
 
 
-returnTypeBrackersOnEndOfMethodHead
-	:	(lb:LBRACK^ RBRACK!)*
+returnTypeBrackersOnEndOfMethodHead returns [String a=""]
+	:	(LBRACK RBRACK {a += "[]";})*
 	;
 
 // A list of formal parameters
@@ -516,26 +523,26 @@ parameterDeclarationList returns [Vector paramList=new Vector()]
 {Vector currentParameter=null;}
 	:	( 
 		  currentParameter=parameterDeclaration { paramList.add(currentParameter); } 
-		  ( COMMA! currentParameter=parameterDeclaration { paramList.add(currentParameter); } )* 
+		  ( COMMA currentParameter=parameterDeclaration { paramList.add(currentParameter); } )* 
 		)?
 	;
 
 // A formal parameter.
 parameterDeclaration returns [Vector pd=new Vector()]
-{short pm=0; String ts=null;}
+{short pm=0; String ts=null; String pdb=null;}
 	:	(pm=parameterModifier ts=typeSpec id:IDENT) 
+		pdb=parameterDeclaratorBrackets
 		{ pd.add(new Short(pm));
-		  pd.add(ts);
+		  pd.add(ts + pdb);
 		  pd.add(id.getText());}
-		pd:parameterDeclaratorBrackets
 	;
 
-parameterDeclaratorBrackets
-	:	(lb:LBRACK^ RBRACK!)*
+parameterDeclaratorBrackets returns [String pdb=""]
+	:	(LBRACK RBRACK {pdb += "[]";} )*
 	;
 
 parameterModifier returns [short mods=0;]
-	:	((f:"final") { mods |= ACC_FINAL;})?
+	:	("final" {mods |= ACC_FINAL;})?
 	;
 
 // Compound statement.  This is used in many contexts:
@@ -548,10 +555,10 @@ parameterModifier returns [short mods=0;]
 //      it starts a new scope for variable definitions
 
 compoundStatement
-	:	lc:LCURLY^ 
+	:	LCURLY
 			// include the (possibly-empty) list of statements
 			(statement)*
-		RCURLY!
+		RCURLY
 	;
 
 
@@ -563,27 +570,27 @@ statement
 	|	classDefinition["",(short)0]
 
 	// final class definition
-	|	"final"! classDefinition["",ACC_FINAL]
+	|	"final" classDefinition["",ACC_FINAL]
 
 	// abstract class definition
-	|	"abstract"! classDefinition["",ACC_ABSTRACT]
+	|	"abstract" classDefinition["",ACC_ABSTRACT]
 
 	// declarations are ambiguous with "ID DOT" relative to expression
 	// statements.  Must backtrack to be sure.  Could use a semantic
 	// predicate to test symbol table to see what the type was coming
 	// up, but that's pretty hard without a symbol table ;)
-	|	(declaration)=> declaration SEMI!
+	|	(declaration)=> declaration SEMI
 
 	// An expression statement.  This could be a method call,
 	// assignment statement, or any other expression evaluated for
 	// side-effects.
-	|	expression SEMI!
+	|	expression SEMI
 
 	// Attach a label to the front of a statement
-	|	IDENT c:COLON^ statement
+	|	IDENT COLON statement
 
 	// If-else statement
-	|	"if"^ LPAREN! expression RPAREN! statement
+	|	"if" LPAREN expression RPAREN statement
 		(
 			// CONFLICT: the old "dangling-else" problem...
 			//           ANTLR generates proper code matching
@@ -592,49 +599,49 @@ statement
 				warnWhenFollowAmbig = false;
 			}
 		:
-			"else"! statement
+			"else" statement
 		)?
 
 	// For statement
-	|	"for"^
-			LPAREN!
-				forInit SEMI!   // initializer
-				forCond	SEMI!   // condition test
+	|	"for"
+			LPAREN
+				forInit SEMI   // initializer
+				forCond	SEMI   // condition test
 				forIter         // updater
-			RPAREN!
+			RPAREN
 			statement                     // statement to loop over
 
 	// While statement
-	|	"while"^ LPAREN! expression RPAREN! statement
+	|	"while" LPAREN expression RPAREN statement
 
 	// do-while statement
-	|	"do"^ statement "while"! LPAREN! expression RPAREN! SEMI!
+	|	"do" statement "while" LPAREN expression RPAREN SEMI
 
 	// get out of a loop (or switch)
-	|	"break"^ (IDENT)? SEMI!
+	|	"break" (IDENT)? SEMI
 
 	// do next iteration of a loop
-	|	"continue"^ (IDENT)? SEMI!
+	|	"continue" (IDENT)? SEMI
 
 	// Return an expression
-	|	"return"^ (expression)? SEMI!
+	|	"return" (expression)? SEMI
 
 	// switch/case statement
-	|	"switch"^ LPAREN! expression RPAREN! LCURLY!
+	|	"switch" LPAREN expression RPAREN LCURLY
 			( casesGroup )*
-		RCURLY!
+		RCURLY
 
 	// exception try-catch block
 	|	tryBlock
 
 	// throw an exception
-	|	"throw"^ expression SEMI!
+	|	"throw" expression SEMI
 
 	// synchronize a statement
-	|	"synchronized"^ LPAREN! expression RPAREN! compoundStatement
+	|	"synchronized" LPAREN expression RPAREN compoundStatement
 
 	// empty statement
-	|	s:SEMI 
+	|	SEMI 
 	;
 
 
@@ -653,7 +660,7 @@ casesGroup
 	;
 
 aCase
-	:	("case"^ expression | "default") COLON!
+	:	("case" expression | "default") COLON
 	;
 
 caseSList
@@ -679,15 +686,15 @@ forIter
 
 // an exception handler try/catch block
 tryBlock
-	:	"try"^ compoundStatement
+	:	"try" compoundStatement
 		(handler)*
-		( "finally"^ compoundStatement )?
+		( "finally" compoundStatement )?
 	;
 
 
 // an exception handler
 handler
-	:	"catch"^ LPAREN! parameterDeclaration RPAREN! compoundStatement
+	:	"catch" LPAREN parameterDeclaration RPAREN compoundStatement
 	;
 
 
@@ -733,25 +740,25 @@ expression
 
 // This is a list of expressions.
 expressionList
-	:	expression (COMMA! expression)*
+	:	expression (COMMA expression)*
 	;
 
 
 // assignment expression (level 13)
 assignmentExpression
 	:	conditionalExpression
-		(	(	ASSIGN^
-            |   PLUS_ASSIGN^
-            |   MINUS_ASSIGN^
-            |   STAR_ASSIGN^
-            |   DIV_ASSIGN^
-            |   MOD_ASSIGN^
-            |   SR_ASSIGN^
-            |   BSR_ASSIGN^
-            |   SL_ASSIGN^
-            |   BAND_ASSIGN^
-            |   BXOR_ASSIGN^
-            |   BOR_ASSIGN^
+		(	(	ASSIGN
+            |   PLUS_ASSIGN
+            |   MINUS_ASSIGN
+            |   STAR_ASSIGN
+            |   DIV_ASSIGN
+            |   MOD_ASSIGN
+            |   SR_ASSIGN
+            |   BSR_ASSIGN
+            |   SL_ASSIGN
+            |   BAND_ASSIGN
+            |   BXOR_ASSIGN
+            |   BOR_ASSIGN
             )
 			assignmentExpression
 		)?
@@ -761,89 +768,89 @@ assignmentExpression
 // conditional test (level 12)
 conditionalExpression
 	:	logicalOrExpression
-		( QUESTION^ assignmentExpression COLON! conditionalExpression )?
+		( QUESTION assignmentExpression COLON conditionalExpression )?
 	;
 
 
 // logical or (||)  (level 11)
 logicalOrExpression
-	:	logicalAndExpression (LOR^ logicalAndExpression)*
+	:	logicalAndExpression (LOR logicalAndExpression)*
 	;
 
 
 // logical and (&&)  (level 10)
 logicalAndExpression
-	:	inclusiveOrExpression (LAND^ inclusiveOrExpression)*
+	:	inclusiveOrExpression (LAND inclusiveOrExpression)*
 	;
 
 
 // bitwise or non-short-circuiting or (|)  (level 9)
 inclusiveOrExpression
-	:	exclusiveOrExpression (BOR^ exclusiveOrExpression)*
+	:	exclusiveOrExpression (BOR exclusiveOrExpression)*
 	;
 
 
 // exclusive or (^)  (level 8)
 exclusiveOrExpression
-	:	andExpression (BXOR^ andExpression)*
+	:	andExpression (BXOR andExpression)*
 	;
 
 
 // bitwise or non-short-circuiting and (&)  (level 7)
 andExpression
-	:	equalityExpression (BAND^ equalityExpression)*
+	:	equalityExpression (BAND equalityExpression)*
 	;
 
 
 // equality/inequality (==/!=) (level 6)
 equalityExpression
-	:	relationalExpression ((NOT_EQUAL^ | EQUAL^) relationalExpression)*
+	:	relationalExpression ((NOT_EQUAL | EQUAL) relationalExpression)*
 	;
 
 
 // boolean relational expressions (level 5)
 relationalExpression
 	:	shiftExpression
-		(	(	(	LT^
-				|	GT^
-				|	LE^
-				|	GE^
+		(	(	(	LT
+				|	GT
+				|	LE
+				|	GE
 				)
 				shiftExpression
 			)*
-		|	"instanceof"^ typeSpec
+		|	"instanceof" typeSpec
 		)
 	;
 
 
 // bit shift expressions (level 4)
 shiftExpression
-	:	additiveExpression ((SL^ | SR^ | BSR^) additiveExpression)*
+	:	additiveExpression ((SL | SR | BSR) additiveExpression)*
 	;
 
 
 // binary addition/subtraction (level 3)
 additiveExpression
-	:	multiplicativeExpression ((PLUS^ | MINUS^) multiplicativeExpression)*
+	:	multiplicativeExpression ((PLUS | MINUS) multiplicativeExpression)*
 	;
 
 
 // multiplication/division/modulo (level 2)
 multiplicativeExpression
-	:	unaryExpression ((STAR^ | DIV^ | MOD^ ) unaryExpression)*
+	:	unaryExpression ((STAR | DIV | MOD ) unaryExpression)*
 	;
 
 unaryExpression
-	:	INC^ unaryExpression
-	|	DEC^ unaryExpression
-	|	MINUS^ unaryExpression
-	|	PLUS^ unaryExpression
+	:	INC unaryExpression
+	|	DEC unaryExpression
+	|	MINUS unaryExpression
+	|	PLUS unaryExpression
 	|	unaryExpressionNotPlusMinus
 	;
 
 unaryExpressionNotPlusMinus
-	:	BNOT^ unaryExpression
-	|	LNOT^ unaryExpression
+	:	BNOT unaryExpression
+	|	LNOT unaryExpression
 
 	|	(	// subrule allows option to shut off warnings
 			options {
@@ -853,14 +860,14 @@ unaryExpressionNotPlusMinus
 			}
 		:	// If typecast is built in type, must be numeric operand
 			// Also, no reason to backtrack if type keyword like int, float...
-			lpb:LPAREN^ builtInTypeSpec RPAREN!
+			LPAREN builtInTypeSpec RPAREN
 			unaryExpression
 
 			// Have to backtrack to see if operator follows.  If no operator
 			// follows, it's a typecast.  No semantic checking needed to parse.
 			// if it _looks_ like a cast, it _is_ a cast; else it's a "(expr)"
 		|	(LPAREN classTypeSpec RPAREN unaryExpressionNotPlusMinus)=>
-			lp:LPAREN^ classTypeSpec RPAREN!
+			LPAREN classTypeSpec RPAREN
 			unaryExpressionNotPlusMinus
 
 		|	postfixExpression
@@ -872,7 +879,7 @@ postfixExpression
 	:	primaryExpression // start with a primary
 
 		(	// qualified id (id.id.id.id...) -- build the name
-			DOT^ ( IDENT
+			DOT ( IDENT
 				| "this"
 				| "class"
 				| newExpression
@@ -882,33 +889,33 @@ postfixExpression
 			//   is the _last_ qualifier.
 
 			// allow ClassName[].class
-		|	( lbc:LBRACK^ RBRACK! )+
-			DOT^ "class"
+		|	( LBRACK RBRACK )+
+			DOT "class"
 
 			// an array indexing operation
-		|	lb:LBRACK^ expression RBRACK!
+		|	LBRACK expression RBRACK
 
 			// method invocation
 			// The next line is not strictly proper; it allows x(3)(4) or
 			//  x[2](4) which are not valid in Java.  If this grammar were used
 			//  to validate a Java program a semantic check would be needed, or
 			//   this rule would get really ugly...
-		|	lp:LPAREN^
+		|	LPAREN
 				argList
-			RPAREN!
+			RPAREN
 		)*
 
 		// possibly add on a post-increment or post-decrement.
 		// allows INC/DEC on too much, but semantics can check
-		(	in:INC^
-	 	|	de:DEC^
+		(	INC
+	 	|	DEC
 		|	// nothing
 		)
 
 		// look for int.class and int[].class
 	|	builtInType 
-		( lbt:LBRACK^ RBRACK! )*
-		DOT^ "class"
+		(LBRACK RBRACK)*
+		DOT "class"
 	;
 
 // the basic element of an expression
@@ -921,7 +928,7 @@ primaryExpression
 	|	"false"
 	|	"this"
 	|	"null"
-	|	LPAREN! assignmentExpression RPAREN!
+	|	LPAREN assignmentExpression RPAREN
 	;
 
 /** object instantiation.
@@ -974,8 +981,8 @@ primaryExpression
  *  
  */
 newExpression
-	:	"new"^ type
-		(	LPAREN! argList RPAREN! (classBlock)?
+	:	"new" type
+		(	LPAREN argList RPAREN (classBlock)?
 
 			//java 1.1
 			// Note: This will allow bad constructs like
@@ -1006,9 +1013,9 @@ newArrayDeclarator
 				warnWhenFollowAmbig = false;
 			}
 		:
-			lb:LBRACK^
+			LBRACK
 				(expression)?
-			RBRACK!
+			RBRACK
 		)+
 	;
 
