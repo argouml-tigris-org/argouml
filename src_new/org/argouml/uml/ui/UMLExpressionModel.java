@@ -23,10 +23,14 @@
 
 package org.argouml.uml.ui;
 import java.lang.reflect.*;
+
+import org.apache.log4j.Category;
 import ru.novosoft.uml.*;
 import ru.novosoft.uml.foundation.data_types.*;
 
 public final class UMLExpressionModel  {
+    protected static Category cat = 
+            Category.getInstance(UMLExpressionModel.class);
 
     private UMLUserInterfaceContainer _container;
     private Method _getMethod;
@@ -40,6 +44,7 @@ public final class UMLExpressionModel  {
     private static final String _emptyStr = "";
     
     public UMLExpressionModel(UMLUserInterfaceContainer container,Class targetClass,String propertyName,Class expressionClass,String getMethodName,String setMethodName) {
+        
         _container = container;
         _propertyName = propertyName;
         _mustRefresh = true;
@@ -47,19 +52,19 @@ public final class UMLExpressionModel  {
             _getMethod = targetClass.getMethod(getMethodName,_noClasses);
         }
         catch(Exception e) {
-            System.out.println(e.toString() + " in UMLExpressionModel() for " + getMethodName);
+            cat.error(e.toString() + " in UMLExpressionModel() for " + getMethodName, e);
         }
         try {
             _setMethod = targetClass.getMethod(setMethodName,new Class[] { expressionClass });
         }
         catch(Exception e) {
-            System.out.println(e.toString() + " in UMLExpressionModel() for " + setMethodName);
+            cat.error(e.toString() + " in UMLExpressionModel() for " + setMethodName, e);
         }
         try {
             _constructor = expressionClass.getConstructor(new Class[] { String.class, String.class });
         }
         catch(Exception e) {
-            System.out.println(e.toString() + " in UMLExpressionModel() for " + expressionClass.getName());
+            cat.error(e.toString() + " in UMLExpressionModel() for " + expressionClass.getName(), e);
         }
     }
 
@@ -86,7 +91,7 @@ public final class UMLExpressionModel  {
                     _expression = (MExpression) _getMethod.invoke(target,_noArgs);
                 }
                 catch(Exception e) {
-                    System.out.println(e.toString() + " in UMLExpressionModel.getExpression()");
+                    cat.error(e.toString() + " in UMLExpressionModel.getExpression()", e);
                 }
             }
         }
@@ -165,7 +170,7 @@ public final class UMLExpressionModel  {
             }
         }
         catch(Exception e) {
-              System.out.println(e.toString() + " in UMLExpressionModel.setExpression()");
+            cat.error(e.toString() + " in UMLExpressionModel.setExpression()", e);
         }
     }
         

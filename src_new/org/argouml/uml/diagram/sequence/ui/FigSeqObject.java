@@ -46,9 +46,11 @@ import org.tigris.gef.graph.*;
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.graph.GraphNodeRenderer;
 import org.tigris.gef.graph.GraphEdgeRenderer;
+import org.tigris.gef.base.Diagram;
 import org.tigris.gef.base.Editor;
 import org.tigris.gef.base.Layer;
 import org.tigris.gef.base.Globals;
+import org.tigris.gef.base.LayerPerspective;
 import org.tigris.gef.base.Selection;
 import org.tigris.gef.base.SelectionManager;
 
@@ -285,8 +287,7 @@ public class FigSeqObject extends FigNodeModelElement
 
   public void setOwner(Object node) {
     super.setOwner(node);
-    Object onlyPort = node;
-    bindPort(onlyPort, _lifeline);
+    bindPort(node, _lifeline);
   }
 
   /** Sets the port (some object in an underlying model) for Fig f.  f
@@ -530,8 +531,35 @@ public class FigSeqObject extends FigNodeModelElement
     }
     setEnclosingFig(this);
 
-    if ( getLayer() != null )((SequenceDiagramLayout)getLayer()).placeAllFigures();
-
+    if (getLayer() != null && getLayer() instanceof SequenceDiagramLayout) {
+    	((SequenceDiagramLayout)getLayer()).placeAllFigures();
+    } else {
+    	Diagram diagram = ProjectBrowser.TheInstance.getActiveDiagram();
+    	Layer lay = null;
+    	if (diagram != null) {
+    		lay = diagram.getLayer();
+    		if (lay instanceof SequenceDiagramLayout) {
+    			setLayer(lay);
+    		} else {
+    			String name = null;
+    			GraphModel gm = null;
+    			if (lay != null && lay instanceof LayerPerspective) {
+    				gm = ((LayerPerspective)lay).getGraphModel();
+    				name = ((LayerPerspective)lay).getName();
+    			} else {
+    				Editor ed = Globals.curEditor();
+    				if (ed != null && ed.getGraphModel() != null && ed.getLayerManager() != null && ed.getLayerManager().getActiveLayer() != null) {
+    					lay = ed.getLayerManager().getActiveLayer();
+    					name = lay.getName();
+    					gm = ed.getGraphModel();
+    				} else
+    					throw new IllegalStateException("No way to get graphmodel. Project corrupted");
+    			}
+    			setLayer(new SequenceDiagramLayout(name, gm));
+    		}
+    	}
+    	((SequenceDiagramLayout)getLayer()).placeAllFigures();
+    }
   }
 
 
@@ -854,8 +882,34 @@ public class FigSeqObject extends FigNodeModelElement
   public void mouseReleased(MouseEvent me) {
     super.mouseReleased(me);
    
-    if (getLayer()!= null  &&  getLayer() instanceof SequenceDiagramLayout) {
-         ((SequenceDiagramLayout)getLayer()).placeAllFigures();
+    if (getLayer() != null && getLayer() instanceof SequenceDiagramLayout) {
+    	((SequenceDiagramLayout)getLayer()).placeAllFigures();
+    } else {
+    	Diagram diagram = ProjectBrowser.TheInstance.getActiveDiagram();
+    	Layer lay = null;
+    	if (diagram != null) {
+    		lay = diagram.getLayer();
+    		if (lay instanceof SequenceDiagramLayout) {
+    			setLayer(lay);
+    		} else {
+    			String name = null;
+    			GraphModel gm = null;
+    			if (lay != null && lay instanceof LayerPerspective) {
+    				gm = ((LayerPerspective)lay).getGraphModel();
+    				name = ((LayerPerspective)lay).getName();
+    			} else {
+    				Editor ed = Globals.curEditor();
+    				if (ed != null && ed.getGraphModel() != null && ed.getLayerManager() != null && ed.getLayerManager().getActiveLayer() != null) {
+    					lay = ed.getLayerManager().getActiveLayer();
+    					name = lay.getName();
+    					gm = ed.getGraphModel();
+    				} else
+    					throw new IllegalStateException("No way to get graphmodel. Project corrupted");
+    			}
+    			setLayer(new SequenceDiagramLayout(name, gm));
+    		}
+    	}
+    	((SequenceDiagramLayout)getLayer()).placeAllFigures();
     }
     
   }
@@ -872,18 +926,5 @@ public class FigSeqObject extends FigNodeModelElement
    
   }
 
-
-///////////////////////////////////////////////////////////////////////////////
-// MElementListener-implementation
-/*
-  public void removed(MElementEvent mee) {
-
-     Vector edges = getFigEdges();
-     if (edges == null || edges.size() == 0) {
-       this.delete();
-     }
-     else System.out.println("Object not deleted, there are some Links to or from this object left!");
-  }
-*/
 
 } /* end class FigSeqObject */

@@ -45,6 +45,7 @@ import org.tigris.gef.base.*;
 import org.tigris.gef.presentation.*;
 import org.tigris.gef.graph.*;
 
+import org.apache.log4j.Category;
 import org.argouml.application.api.*;
 import org.argouml.kernel.*;
 
@@ -54,11 +55,11 @@ import org.argouml.uml.generator.*;
 import org.argouml.uml.diagram.ui.*;
 import org.argouml.ui.*;
 
-import org.argouml.uml.diagram.static_structure.ui.*;
 
 /** Class to display graphics for a UML MState in a diagram. */
 
 public class FigPackage extends FigNodeModelElement {
+    protected static Category cat = Category.getInstance(FigPackage.class);
 
   ////////////////////////////////////////////////////////////////
   // constants
@@ -450,7 +451,7 @@ public class FigPackage extends FigNodeModelElement {
         }
     }
     catch (Exception e) {
-      System.out.println("could not set package due to:"+e + "' at "+encloser);
+        cat.error("could not set package due to:"+e + "' at "+encloser, e);
     }
   }
 
@@ -499,7 +500,7 @@ public class FigPackage extends FigNodeModelElement {
 
     /** 
      * <p>Sets the bounds, but the size will be at least the one returned by
-     *   {@link #getMinimunSize()}.</p> 
+     *   {@link #getMinimumSize()}.</p> 
      *
      * <p>If the required height is bigger, then the additional height is
      *   equally distributed among all figs (i.e. compartments), such that the
@@ -602,7 +603,7 @@ public class FigPackage extends FigNodeModelElement {
     ArgoJMenu modifierMenu = new ArgoJMenu("Modifiers");
 
     modifierMenu.addCheckItem(new ActionModifier("Abstract", "isAbstract", "isAbstract", "setAbstract", mclass));
-    modifierMenu.addCheckItem(new ActionModifier("Final", "isLeaf", "isLeaf", "setLeaf", mclass));
+    modifierMenu.addCheckItem(new ActionModifier("Leaf", "isLeaf", "isLeaf", "setLeaf", mclass));
     modifierMenu.addCheckItem(new ActionModifier("Root", "isRoot", "isRoot", "setRoot", mclass));
 
     popUpActions.insertElementAt(modifierMenu, popUpActions.size() - 1);

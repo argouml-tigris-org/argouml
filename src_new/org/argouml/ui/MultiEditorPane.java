@@ -23,7 +23,10 @@
 
 package org.argouml.ui;
 
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Rectangle;
 import java.awt.event.*;
 import java.util.*;
 import java.io.*;
@@ -36,6 +39,7 @@ import org.tigris.gef.base.*;
 import org.tigris.gef.graph.presentation.*;
 import org.tigris.gef.presentation.Fig;
 
+import org.apache.log4j.Category;
 import org.argouml.application.api.*;
 import org.argouml.util.*;
 import org.argouml.uml.ui.*;
@@ -48,6 +52,17 @@ import org.argouml.swingext.*;
 
 public class MultiEditorPane extends JPanel
 implements ChangeListener, MouseListener, QuadrantPanel {
+    protected static Category cat = Category.getInstance(MultiEditorPane.class);
+	
+	protected class DiagramFigDeleter {
+		Fig fig = null;
+		Diagram diagram = null;
+		public DiagramFigDeleter(Fig fig, Diagram diagram) {
+			this.diagram = diagram;
+			this.fig = fig;
+		}
+		
+	}
 
   ////////////////////////////////////////////////////////////////
   // instance variables
@@ -178,8 +193,8 @@ implements ChangeListener, MouseListener, QuadrantPanel {
     //should register a listener
     if (_lastTab != null) { _lastTab.setVisible(false); }
     _lastTab = _tabs.getSelectedComponent();
-    //System.out.println("MultiEditorPane state changed:" +
-    //  _lastTab.getClass().getName());
+    cat.debug("MultiEditorPane state changed:" +
+        _lastTab.getClass().getName());
     _lastTab.setVisible(true);
     if (_lastTab instanceof TabModelTarget)
       ((TabModelTarget)_lastTab).refresh();
@@ -205,14 +220,14 @@ implements ChangeListener, MouseListener, QuadrantPanel {
   public void mySingleClick(int tab) {
     //needs-more-work: should fire its own event and ProjectBrowser
     //should register a listener
-    //System.out.println("single: " + _tabs.getComponentAt(tab).toString());
+    cat.debug("single: " + _tabs.getComponentAt(tab).toString());
   }
 
   /** called when the user clicks twice on a tab. */
   public void myDoubleClick(int tab) {
     //needs-more-work: should fire its own event and ProjectBrowser
     //should register a listener
-    //System.out.println("double: " + _tabs.getComponentAt(tab).toString());
+    cat.debug("double: " + _tabs.getComponentAt(tab).toString());
     JPanel t = (JPanel) _tabPanels.elementAt(tab);
     if (t instanceof TabSpawnable) ((TabSpawnable)t).spawn();
   }
@@ -242,29 +257,44 @@ implements ChangeListener, MouseListener, QuadrantPanel {
     public int getQuadrant() { return Q_TOP_RIGHT; }
     
     /**
-     * Removes all figs from all diagrams for some object obj.
+     * Removes all figs from all diagrams for some object obj. Does not remove 
+     * the owner of the objects (does not do a call to dispose).
      * @param obj
      */
     public void removePresentationFor(Object obj, Vector diagrams) {
     	for (int i = 0; i < _tabs.getComponentCount() ; i++) {
-    		Component comp = _tabs.getComponentAt(i);
-    		if (comp instanceof TabDiagram) {
-    			TabDiagram tabDia = (TabDiagram)comp;
-    			Object oldDia = tabDia.getTarget();
-    			Iterator it = diagrams.iterator();
-    			while (it.hasNext()) {
-    				Diagram diagram = (Diagram)it.next();
-    				Fig aFig = diagram.presentationFor(obj);
-    				if (aFig != null) {
-    					tabDia.getJGraph().setDiagram(diagram);
-    					aFig.delete();
-    				}
-    			}
-    			tabDia.getJGraph().setDiagram((Diagram)oldDia);
-    			break;
-    		}	
-    		
-    	}
+    	   Component comp = _tabs.getComponentAt(i);
+    	   if (comp instanceof TabDiagram) {
+    	       TabDiagram tabDia = (TabDiagram)comp;
+    	       Object oldDia = tabDia.getTarget();
+    	       Iterator it = diagrams.iterator();
+    	       List figsToRemove = new ArrayList();
+    	       while (it.hasNext()) {
+                    Diagram diagram = (Diagram)it.next();
+                    Fig aFig = diagram.presentationFor(obj);
+                    if (aFig != null) {
+                        // figsToRemove.add(new DiagramFigDeleter(aFig, diagram));
+                        tabDia.getJGraph().setDiagram(diagram);
+                        if (aFig.getOwner() == obj) {
+                            aFig.delete();
+                        }
+                    }
+    	       }
+               /*
+               if (figsToRemove.size() >= 1) {
+                    for (int j = 0; j < figsToRemove.size()-1 ; j++) {
+                        Fig aFig = ((DiagramFigDeleter)figsToRemove.get(j)).fig;
+                        tabDia.getJGraph().setDiagram(((DiagramFigDeleter)figsToRemove.get(j)).diagram);
+                        aFig.delete();
+                    }
+                    tabDia.getJGraph().setDiagram(((DiagramFigDeleter)figsToRemove.get(figsToRemove.size()-1)).diagram);
+                    ((DiagramFigDeleter)figsToRemove.get(figsToRemove.size()-1)).fig.dispose();
+                    tabDia.getJGraph().setDiagram((Diagram)oldDia);
+                    break;
+    	       }  
+               */   	
+    	   }
+       }
     }
     			
 

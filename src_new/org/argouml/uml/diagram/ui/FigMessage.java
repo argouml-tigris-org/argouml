@@ -47,6 +47,7 @@ import org.argouml.application.api.*;
 import org.argouml.kernel.*;
 import org.argouml.ui.*;
 import org.argouml.uml.generator.*;
+import org.argouml.util.Trash;
 import org.argouml.uml.diagram.collaboration.ui.FigAssociationRole;
 
 /** Class to display graphics for a UML collaboration in a diagram. */
@@ -242,6 +243,7 @@ public class FigMessage extends FigNodeModelElement {
     MClassifierRole receiver = mes.getReceiver();
     Fig senderPort = getLayer().presentationFor(sender);
     Fig receiverPort = getLayer().presentationFor(receiver);
+    if (senderPort == null || receiverPort == null) return;
     int sx = senderPort.getX();
     int sy = senderPort.getY();
     int rx = receiverPort.getX();
@@ -256,14 +258,6 @@ public class FigMessage extends FigNodeModelElement {
     	setArrow(1);
     } else
     	setArrow(4);
-  }
-
-  public void dispose() {
-    if (!(getOwner() instanceof MElement)) return;
-    MElement elmt = (MElement) getOwner();
-    Project p = ProjectBrowser.TheInstance.getProject();
-    p.moveToTrash(elmt);
-    super.dispose();
   }
 
   /** add the FigMessage to the Path Items of its FigAssociationRole */
@@ -292,5 +286,7 @@ public class FigMessage extends FigNodeModelElement {
 		updateArrow();
 		super.paint(g);
 	}
+
+    
 
 } /* end class FigMessage */

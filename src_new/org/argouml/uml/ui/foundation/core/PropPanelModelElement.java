@@ -38,6 +38,7 @@ import ru.novosoft.uml.foundation.extension_mechanisms.*;
 import org.argouml.application.api.*;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.ui.*;
+import org.argouml.model.uml.foundation.core.CoreFactory;
 import org.argouml.swingext.*;
 import org.tigris.gef.util.*;
 import java.util.*;
@@ -89,6 +90,7 @@ abstract public class PropPanelModelElement extends PropPanel {
     // added next one so someone can change the icon independant of callaction
     protected static ImageIcon _actionIcon = ResourceLoader.lookupIconResource("CallAction");
     protected static ImageIcon _receptionIcon = ResourceLoader.lookupIconResource("Reception");
+    protected static ImageIcon _commentIcon = ResourceLoader.lookupIconResource("Note");
 
     protected JList namespaceList;
     protected JScrollPane namespaceScroll;
@@ -148,13 +150,9 @@ abstract public class PropPanelModelElement extends PropPanel {
         Object target = getTarget();
         if(target instanceof MNamespace) {
             MNamespace ns = (MNamespace) target;
-            MModelElement ownedElem = ns.getFactory().createDataType();
+            MModelElement ownedElem = CoreFactory.getFactory().createDataType();
             ns.addOwnedElement(ownedElem);
             navigateTo(ownedElem);
-            // 2002-07-15
-            // Jaap Branderhorst
-            // Force an update of the navigation pane to solve issue 323
-            ProjectBrowser.TheInstance.getNavPane().forceUpdate();
         }
     }
 

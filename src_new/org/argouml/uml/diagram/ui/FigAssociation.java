@@ -171,15 +171,20 @@ public class FigAssociation extends FigEdgeModelElement {
   public void setOwner(Object own) {
     Object oldOwner = getOwner();
     super.setOwner(own);
+    /* removed next lines because a fig should not be allowed to delete it's owner
+     * otherwise then via the dispose method
     if (oldOwner != null && !oldOwner.equals(own) && oldOwner instanceof MAssociation) {
         ((MAssociation)oldOwner).remove();
     }
+    */
 
     if (own instanceof MAssociation) {
 	MAssociation newAsc = (MAssociation)own;
-	for (int i = 0; i < newAsc.getConnections().size(); i++)
+	for (int i = 0; i < newAsc.getConnections().size(); i++) {
+            ((MAssociationEnd)((Object[]) newAsc.getConnections().toArray())[i]).removeMElementListener(this);
 	    ((MAssociationEnd)((Object[]) newAsc.getConnections().toArray())[i]).addMElementListener(this);
-
+        }
+        newAsc.removeMElementListener(this);
         newAsc.addMElementListener(this);
         MAssociationEnd ae0 = 
             (MAssociationEnd)((Object[])(newAsc.getConnections()).toArray())[0];
@@ -481,5 +486,22 @@ public class FigAssociation extends FigEdgeModelElement {
 	public Selection makeSelection() {
 		return super.makeSelection();
 	}
+
+    /**
+     * @see org.tigris.gef.presentation.Fig#delete()
+     */
+    public void delete() {
+        // deleting the elementlisteners to this class too
+        Object own = getOwner();
+        if (own instanceof MAssociation) {
+            MAssociation assoc = (MAssociation)own;
+            assoc.removeMElementListener(this);
+            Iterator it = assoc.getConnections().iterator();
+            while (it.hasNext()) {
+                ((MAssociationEnd)it.next()).removeMElementListener(this);
+            }
+        }
+        super.delete();
+    }
 
 } /* end class FigAssociation */

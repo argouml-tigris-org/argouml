@@ -26,12 +26,15 @@
 package org.argouml.uml.ui.behavior.use_cases;
 
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.Vector;
 
 import org.argouml.application.api.Argo;
+import org.argouml.model.uml.behavioralelements.usecases.UseCasesHelper;
 import org.argouml.model.uml.foundation.core.CoreFactory;
 import org.argouml.model.uml.foundation.core.CoreHelper;
 import org.argouml.uml.ui.UMLBinaryRelationListModel;
+import org.argouml.uml.ui.UMLConnectionListModel;
 import org.argouml.uml.ui.UMLUserInterfaceContainer;
 import org.tigris.gef.graph.MutableGraphModel;
 
@@ -46,7 +49,7 @@ import ru.novosoft.uml.foundation.core.MModelElement;
  * @author jaap.branderhorst@xs4all.nl
  */
 public class UMLUseCaseAssociationListModel
-	extends UMLBinaryRelationListModel {
+	extends UMLConnectionListModel {
 
 	/**
 	 * Constructor for UMLUseCaseAssociationListModel.
@@ -66,54 +69,30 @@ public class UMLUseCaseAssociationListModel
 	 */
 	protected Collection getChoices() {
 		Vector choices = new Vector();	
-		choices.addAll(CoreHelper.getHelper().getAllClassifiers());
-		return choices;
-	}
-
-	/**
-	 * @see org.argouml.uml.ui.UMLBinaryRelationListModel#getSelected()
-	 */
-	protected Collection getSelected() {
-		if (getTarget() instanceof MClassifier) {
-			return CoreHelper.getHelper().getAssociatedClassifiers((MClassifier)getTarget());
-		} else
-			throw new IllegalStateException("Target is no instanceof MClassifier");
-	}
+		choices.addAll(super.getChoices());
+		Vector choices2 = new Vector();
+		Collection specpath = UseCasesHelper.getHelper().getSpecificationPath((MUseCase)getTarget());
+		if (!specpath.isEmpty()) {
+			Iterator it = choices.iterator();
+			while (it.hasNext()) {
+				MClassifier choice = (MClassifier)it.next();
+				if (choice instanceof MUseCase) {
+					Collection specpath2 = UseCasesHelper.getHelper().getSpecificationPath((MUseCase)choice);
+					if (!specpath.equals(specpath2)) choices2.add(choice);
+				} else
+					choices2.add(choice);
+			}
+		} else {
+			choices2 = choices;
+		}
+		return choices2;
+	}	
 
 	/**
 	 * @see org.argouml.uml.ui.UMLBinaryRelationListModel#getAddDialogTitle()
 	 */
 	protected String getAddDialogTitle() {
-		return Argo.localize("UMLMenu", "dialog.title.add-realized-interfaces");
-	}
-
-	/**
-	 * @see org.argouml.uml.ui.UMLBinaryRelationListModel#connect(MutableGraphModel, MModelElement, MModelElement)
-	 */
-	protected void connect(
-		MutableGraphModel gm,
-		MModelElement from,
-		MModelElement to) {
-			gm.connect(from, to, MAssociation.class);
-	}
-
-	/**
-	 * @see org.argouml.uml.ui.UMLBinaryRelationListModel#build(MModelElement, MModelElement)
-	 */
-	protected void build(MModelElement from, MModelElement to) {
-		if (from != null && to != null && from instanceof MUseCase && to instanceof MClassifier) {
-			CoreFactory.getFactory().buildAssociation((MClassifier)from, (MClassifier)to);
-		}
-	}
-
-	/**
-	 * @see org.argouml.uml.ui.UMLBinaryRelationListModel#getRelation(MModelElement, MModelElement)
-	 */
-	protected MModelElement getRelation(MModelElement from, MModelElement to) {
-		if (from instanceof MClassifier && to instanceof MClassifier) {
-			return CoreHelper.getHelper().getAssociation((MClassifier)from, (MClassifier)to);
-		} else 
-			throw new IllegalArgumentException("Tried to get relation between some objects of which one was not a classifier");
+		return Argo.localize("UMLMenu", "dialog.title.add-associated-usecases");
 	}
 
 }

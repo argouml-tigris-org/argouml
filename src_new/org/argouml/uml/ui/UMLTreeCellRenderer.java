@@ -40,6 +40,7 @@ import ru.novosoft.uml.behavior.use_cases.*;
 import ru.novosoft.uml.behavior.collaborations.*;
 import ru.novosoft.uml.model_management.*;
 
+import org.apache.log4j.Category;
 import org.tigris.gef.util.*;
 
 /** UMTreeCellRenderer determines how the entries in the Navigationpane will be
@@ -48,6 +49,7 @@ import org.tigris.gef.util.*;
  *  of object to be displayed.
  */
 public class UMLTreeCellRenderer extends DefaultTreeCellRenderer {
+            protected static Category cat = Category.getInstance(UMLTreeCellRenderer.class);
   ////////////////////////////////////////////////////////////////
   // class variables
 
@@ -124,7 +126,7 @@ public class UMLTreeCellRenderer extends DefaultTreeCellRenderer {
                       cName = cName.substring(0,cName.length() -4 );
                   icon = ResourceLoader.lookupIconResource(cName);
                   if (icon != null) _iconCache.put(value.getClass(), icon);
-                  if (icon == null) ; //System.out.println("UMLTreeCellRenderer: using default Icon for " + cName);
+                  if (icon == null) cat.debug("UMLTreeCellRenderer: using default Icon for " + cName);
               }
           }
 

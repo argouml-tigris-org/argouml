@@ -40,11 +40,13 @@ import org.argouml.kernel.*;
 import org.argouml.ui.*;
 import org.argouml.util.osdep.*;
 import org.argouml.language.java.generator.*;
+import org.apache.log4j.Category;
 import org.argouml.application.api.*;
 import org.argouml.application.notation.*;
 import org.argouml.uml.generator.*;
 
 public class ClassGenerationDialog extends JDialog implements ActionListener {
+    protected static Category cat = Category.getInstance(ClassGenerationDialog.class);
 
   ////////////////////////////////////////////////////////////////
   // constants
@@ -259,7 +261,7 @@ public class ClassGenerationDialog extends JDialog implements ActionListener {
     
     // Cancel Button ------------------------------------------
     if (e.getSource() == _cancelButton) {
-      //System.out.println("cancel");
+      cat.debug("cancel");
       setVisible(false);
       dispose();
     }
@@ -292,6 +294,7 @@ public class ClassGenerationDialog extends JDialog implements ActionListener {
 
 
 class TableModelClassChecks extends AbstractTableModel {
+    protected static Category cat = Category.getInstance(TableModelClassChecks.class);
   ////////////////
   // instance varables
   Vector _classes;
@@ -410,7 +413,7 @@ class TableModelClassChecks extends AbstractTableModel {
     }
 
     public void setValueAt(Object aValue, int rowIndex, int columnIndex)  {
-	//System.out.println("setting table value " + rowIndex + ", " + columnIndex);
+	cat.debug("setting table value " + rowIndex + ", " + columnIndex);
 	if (columnIndex == 0) return;
 	if (columnIndex >= getColumnCount()) return;
 	if (!(aValue instanceof Boolean)) return;

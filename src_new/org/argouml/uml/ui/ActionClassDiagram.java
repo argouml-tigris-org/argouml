@@ -32,7 +32,7 @@ import java.awt.event.*;
 import java.beans.*;
 
 
-public class ActionClassDiagram extends UMLChangeAction {
+public class ActionClassDiagram extends ActionAddDiagram {
   
     ////////////////////////////////////////////////////////////////
     // static variables
@@ -43,26 +43,22 @@ public class ActionClassDiagram extends UMLChangeAction {
     ////////////////////////////////////////////////////////////////
     // constructors
 
-    public ActionClassDiagram() { super("ClassDiagram"); }
+    private ActionClassDiagram() { super("ClassDiagram"); }
 
 
-    ////////////////////////////////////////////////////////////////
-    // main methods
+    /**
+     * @see org.argouml.uml.ui.ActionAddDiagram#createDiagram(MNamespace)
+     */
+    public ArgoDiagram createDiagram(MNamespace ns, Object target) {
+        return new UMLClassDiagram(ns);
+    }
 
-    public void actionPerformed(ActionEvent ae) {
-	//_cmdCreateNode.doIt();
-	Project p = ProjectBrowser.TheInstance.getProject();
-	Object target = ProjectBrowser.TheInstance.getDetailsTarget();
-	MNamespace ns = p.getCurrentNamespace();
-	if (target instanceof MPackage) ns = (MNamespace) target;
-	try {
-	    ArgoDiagram d = new UMLClassDiagram(ns);
-	    p.addMember(d);
-	    ProjectBrowser.TheInstance.getNavPane().addToHistory(d);
-	    ProjectBrowser.TheInstance.setTarget(d);
-	}
-	catch (PropertyVetoException pve) { }
-	super.actionPerformed(ae);
+    /**
+     * @see org.argouml.uml.ui.ActionAddDiagram#isValidNamespace(MNamespace)
+     */
+    public boolean isValidNamespace(MNamespace ns) {
+        if (ns instanceof MPackage) return true;
+        return false;
     }
 } /* end class ActionClassDiagram */
 

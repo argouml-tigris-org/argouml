@@ -243,6 +243,14 @@ public class OptionalTestAgainstUmlModel extends TestCase {
         refs.put("ElementImport",         ModelManagementFactory.getFactory());
     }
 
+    /**
+     * Returns the refs.
+     * @return Hashtable
+     */
+    public static Hashtable getRefs() {
+        return refs;
+    }
+
 }
 
 interface CannotTestThisClass {

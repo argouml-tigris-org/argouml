@@ -79,24 +79,17 @@ public class ExtensionMechanismsFactory extends AbstractUmlModelFactory {
     }
     
     /**
-     * Builds a stereotype for some kind of modelelement. WARNING: set the namespace
-     * of the returned stereo type by hand. Otherwise the stereo type will not
-     * show in the stereotype box.
-     */
-    public MStereotype buildStereotype(MModelElement m, String text) {
-    	return buildStereotype(m, text, null);
-    }
-    
-    /**
      * Builds a stereotype for some kind of modelelement.
      */
     public MStereotype buildStereotype(MModelElement m, String text, MNamespace ns) {
+    	if (m == null || text == null || ns == null) throw new IllegalArgumentException("In buildStereotype: one of the arguments is null");
     	MStereotype stereo = createStereotype();
     	stereo.setName(text);
     	stereo.setBaseClass(getMetaModelName(m));
     	MStereotype stereo2 = ExtensionMechanismsHelper.getHelper().getStereotype(ns, stereo);
     	if (stereo2 != null) {
     		stereo2.addExtendedElement(m);
+    		UmlFactory.getFactory().delete(stereo);
     		return stereo2;
     	} else {
     		ns.addOwnedElement(stereo);
@@ -113,5 +106,9 @@ public class ExtensionMechanismsFactory extends AbstractUmlModelFactory {
     	}
     	return name;
     }
+    
+    public void deleteStereotype(MStereotype elem) {}
+    
+    public void deleteTaggedValue(MTaggedValue elem) {}
 }
 

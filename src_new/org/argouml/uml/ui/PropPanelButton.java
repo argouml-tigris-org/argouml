@@ -46,6 +46,7 @@
 
 package org.argouml.uml.ui;
 
+import org.apache.log4j.Category;
 import org.argouml.ui.*;
 
 import org.argouml.uml.*;
@@ -81,6 +82,8 @@ import ru.novosoft.uml.*;
  */
 
 public class PropPanelButton extends JButton implements ActionListener, UMLUserInterfaceComponent {
+    protected static Category cat = 
+        Category.getInstance(PropPanelButton.class);
 
     private PropPanel _propPanel;
 
@@ -131,9 +134,7 @@ public class PropPanelButton extends JButton implements ActionListener, UMLUserI
         }
 
         catch(Exception e) {
-
-            System.out.println(e.toString() + " in PropPanelButton("+  toolTipText + ")");
-
+            cat.error(e.toString() + " in PropPanelButton("+  toolTipText + ")", e);
         }
 
         setEnabled(false);
@@ -167,17 +168,13 @@ public class PropPanelButton extends JButton implements ActionListener, UMLUserI
                 }
 
 		catch(InvocationTargetException ex) {
-                    System.out.println(ex.getTargetException().toString() + " is InvocationTargetException in PropPanelButton");
-
-                    System.out.println("Container: " + _propPanel.getClass().getName());
-
-                    System.out.println("ActionMethod: " + _actionMethod.toString());
+                    cat.error(ex.getTargetException().toString() + " is InvocationTargetException in PropPanelButton", ex.getTargetException());
+                    cat.error("Container: " + _propPanel.getClass().getName());
+                    cat.error("ActionMethod: " + _actionMethod.toString());
                 }              
 
 		catch(Exception e) {
-
-                    System.out.println(e.toString() + " in PropPanelButton");
-
+                    cat.error(e.toString() + " in PropPanelButton", e);
                 }
 
             }
@@ -235,23 +232,15 @@ public class PropPanelButton extends JButton implements ActionListener, UMLUserI
           }
 
 	  catch(InvocationTargetException ex) {
-
-	      System.out.println(ex.getTargetException().toString() + " is InvocationTargetException in PropPanelButton");
-
-              System.out.println("Container: " + _propPanel.getClass().getName());
-
-              System.out.println("ActionMethod: " + _actionMethod.toString());
-
+            cat.error(ex.getTargetException().toString() + " is InvocationTargetException in PropPanelButton", ex.getTargetException());
+            cat.error("Container: " + _propPanel.getClass().getName());
+            cat.error("ActionMethod: " + _actionMethod.toString());
 	  }              
 
           catch(Exception e) {
-
-              System.out.println(e.toString() + " in PropPanelButton.actionPerformed");
-
-              System.out.println("Container: " + _propPanel.getClass().getName());
-
-              System.out.println("ActionMethod: " + _actionMethod.toString());
-
+            cat.error(e.toString() + " in PropPanelButton.actionPerformed", e);
+            cat.error("Container: " + _propPanel.getClass().getName());
+            cat.error("ActionMethod: " + _actionMethod.toString());
           }
 
         }

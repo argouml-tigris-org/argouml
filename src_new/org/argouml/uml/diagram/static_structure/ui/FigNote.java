@@ -43,6 +43,7 @@ import org.tigris.gef.base.*;
 import org.tigris.gef.presentation.*;
 import org.tigris.gef.graph.*;
 
+import org.apache.log4j.Category;
 import org.argouml.kernel.*;  
 import org.argouml.ui.*;
 import org.argouml.uml.*;
@@ -59,6 +60,7 @@ import org.argouml.model.uml.UmlFactory;
  * note layout, I subclass FigNode instead of FigNodeModelElement.
  */
 public class FigNote extends FigNode implements VetoableChangeListener, DelayedVChangeListener, MouseListener, KeyListener, PropertyChangeListener, MElementListener {
+    protected static Category cat = Category.getInstance(FigNote.class);
 
     ////////////////////////////////////////////////////////////////
     // constants
@@ -229,7 +231,7 @@ public class FigNote extends FigNode implements VetoableChangeListener, DelayedV
 		storeNote("");
 		_readyToEdit = true;
 	    } else {
-		System.out.println("not ready to edit note");
+		cat.debug("not ready to edit note");
 		return;
 	    }
 	}
@@ -249,7 +251,7 @@ public class FigNote extends FigNode implements VetoableChangeListener, DelayedV
 	    DelayedChangeNotify delayedNotify = new DelayedChangeNotify(this, pce);
 	    SwingUtilities.invokeLater(delayedNotify);
 	}
-	else System.out.println("FigNodeModelElement got vetoableChange"+
+	else cat.debug("FigNodeModelElement got vetoableChange"+
 				" from non-owner:" + src);
     }     
 
@@ -280,7 +282,7 @@ public class FigNote extends FigNode implements VetoableChangeListener, DelayedV
 		endTrans();
 	    }
 	    catch (PropertyVetoException ex) {
-		System.out.println("could not parse and use the text you entered");
+                cat.error("Could not parse the text entered. PropertyVetoException", ex);
 	    }
 	}
 	else super.propertyChange(pve);
@@ -319,7 +321,7 @@ public class FigNote extends FigNode implements VetoableChangeListener, DelayedV
 		storeNote("");
 		_readyToEdit = true;
 	    } else {
-		System.out.println("not ready to edit note");
+		cat.debug("not ready to edit note");
 		return;
 	    }
 	}

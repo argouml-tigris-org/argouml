@@ -25,6 +25,7 @@ package org.argouml.model.uml.behavioralelements.collaborations;
 
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.Vector;
 
 import org.argouml.model.uml.AbstractUmlModelFactory;
 import org.argouml.model.uml.UmlFactory;
@@ -207,15 +208,18 @@ public class CollaborationsFactory extends AbstractUmlModelFactory {
     
     /**
      * Builds a message within some interaction related to some assocationrole. The message
-     * is added as the last in the interaction sequence.
+     * is added as the last in the interaction sequence. Furthermore, the message is added as the last
+     * to the list of messages allready attached to the role. Effectively, the allready attached messages
+     * become predecessors of this message.
      */
     public MMessage buildMessage(MInteraction inter, MAssociationRole role) {
 	if (inter == null || role == null)
-		return null;
+	   return null;
 
 	MMessage message = createMessage();
 
 	inter.addMessage(message);
+        
 	message.setCommunicationConnection(role);
 
 	if (role.getConnections().size() == 2) {
@@ -226,15 +230,16 @@ public class CollaborationsFactory extends AbstractUmlModelFactory {
 	    MMessage lastMsg = lastMessage(messages, message);
 
 	    if (lastMsg != null) {
-		message.setActivator(lastMsg);
-		messages = lastMsg.getMessages4();
+                message.setActivator(lastMsg);
+                messages = lastMsg.getMessages4();
 	    } else {
 		messages = message.getSender().getMessages2();
 	    }
-
+            
 	    lastMsg = lastMessage(messages, message);
 	    if (lastMsg != null)
 		message.addPredecessor(findEnd(lastMsg));
+        
 	}
 
 	return message;
@@ -303,6 +308,19 @@ public class CollaborationsFactory extends AbstractUmlModelFactory {
     	owner.setActivator(activator);
     	return activator;
     }
+    
+    public void deleteAssociationEndRole(MAssociationEndRole elem) {}
+    
+    public void deleteAssociationRole(MAssociationRole elem) {}
+    
+    public void deleteClassifierRole(MClassifierRole elem) {}
+    
+    public void deleteCollaboration(MCollaboration elem) {}
+    
+    public void deleteInteraction(MInteraction elem) {}
+    
+    public void deleteMessage(MMessage elem) {}
+    
 
 }
 

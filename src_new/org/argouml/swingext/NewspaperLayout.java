@@ -6,6 +6,8 @@ package org.argouml.swingext;
 import java.awt.*;
 import javax.swing.*;
 
+import org.apache.log4j.Category;
+
 /**
  * Similar to <code>GridLayout2</code> but once the components fill the height of the container they flow into
  * another grid on the right until the full width of the container is filled. Once the containers
@@ -15,6 +17,7 @@ import javax.swing.*;
  * @author Bob Tarling
  */
 public class NewspaperLayout extends GridLayout2 {
+    protected static Category cat = Category.getInstance(NewspaperLayout.class);
 
     private int gridGap = 0;
     private int preferredX;
@@ -48,12 +51,12 @@ public class NewspaperLayout extends GridLayout2 {
         JComponent comp = (JComponent)parent;
         Rectangle rect = comp.getVisibleRect();
         //preferredX = (int) rect.getWidth();
-        System.out.println("Visible width = " + preferredX);
-        System.out.println("Visible X = " + rect.getX() + " Width = " + preferredX);
+        cat.debug("Visible width = " + preferredX);
+        cat.debug("Visible X = " + rect.getX() + " Width = " + preferredX);
         Insets insets = parent.getInsets();
         layoutContainer(parent);
         if (preferredX < insets.right + gridWidth + insets.left) preferredX = insets.right + gridWidth + insets.left;
-        System.out.println("Preferred width = " + preferredX);
+        cat.debug("Preferred width = " + preferredX);
         return new Dimension(preferredX, preferredY);
     }
 

@@ -215,9 +215,9 @@ public class PropPanelActor extends PropPanelClassifier {
     }
 
 
-	/**
-	 * @see org.argouml.uml.ui.foundation.core.PropPanelClassifier#getGeneralizationChoices()
-	 */
+    /**
+     * @see org.argouml.model.uml.behavioralelements.usecases.UseCasesHelper#getAllActors()
+     */
 	protected Vector getGeneralizationChoices() {
 		Vector choices = new Vector();
 		choices.addAll(UseCasesHelper.getHelper().getAllActors());

@@ -36,6 +36,7 @@ package org.argouml.uml.ui.behavior.use_cases;
 
 import org.argouml.application.api.*;
 import org.argouml.model.uml.UmlFactory;
+import org.argouml.model.uml.behavioralelements.usecases.UseCasesFactory;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.ui.*;
 import org.argouml.uml.ui.foundation.core.*;
@@ -240,7 +241,7 @@ public class PropPanelExtend extends PropPanelModelElement {
 
             if(ns != null) {
                 MExtensionPoint extensionPoint =
-                    ns.getFactory().createExtensionPoint();
+                    UseCasesFactory.getFactory().createExtensionPoint();
 
                 // Add to the current extend relationship (NSUML will set the
                 // reverse link) and place in the namespace, before navigating
@@ -250,10 +251,6 @@ public class PropPanelExtend extends PropPanelModelElement {
                 ns.addOwnedElement(extensionPoint);
 
                 navigateTo(extensionPoint);
-                // 2002-07-15
-            // Jaap Branderhorst
-            // Force an update of the navigation pane to solve issue 323
-            ProjectBrowser.TheInstance.getNavPane().forceUpdate();
             }
         }
     }

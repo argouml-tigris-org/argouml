@@ -157,6 +157,20 @@ public class ActivityGraphsFactory extends AbstractUmlModelFactory {
     	} else 
     		throw new IllegalArgumentException("In buildActivityGraph: context null or not legal");
     }
+    
+    public void deleteActionState(MActionState elem) {}
+    
+    public void deleteActivityGraph(MActivityGraph elem) {}
+    
+    public void deleteCallState(MCallState elem) {}
+    
+    public void deleteClassifierInState(MClassifierInState elem) {}
+    
+    public void deleteObjectFlowState(MObjectFlowState elem) {}
+    
+    public void deletePartition(MPartition elem) {}
+    
+    public void deleteSubactivityState(MSubactivityState elem) {}
 
 }
 

@@ -34,6 +34,7 @@ import java.util.*;
 import java.beans.*;
 import javax.swing.*;
 
+import org.apache.log4j.Category;
 import org.argouml.application.api.*;
 import org.argouml.cognitive.ui.*;
 import ru.novosoft.uml.foundation.core.*;
@@ -48,6 +49,7 @@ import org.argouml.kernel.*;
  *  MModelElement to a better name. */
 
 public class WizMEName extends Wizard {
+    protected static Category cat = Category.getInstance(WizMEName.class);
 
   protected String _instructions =
   "Please change the name of the offending model element.";
@@ -118,7 +120,7 @@ public class WizMEName extends Wizard {
    *  they do along, as soon as possible, they should not wait until
    *  the final step. */
   public void doAction(int oldStep) {
-    //System.out.println("doAction " + oldStep);
+    cat.debug("doAction " + oldStep);
     switch (oldStep) {
     case 1:
       String newName = _suggestion;
@@ -128,7 +130,7 @@ public class WizMEName extends Wizard {
 	me.setName(newName);
       }
       catch (Exception pve) {
-	System.out.println("could not set name");
+	cat.error("could not set name", pve);
       }
     }
   }

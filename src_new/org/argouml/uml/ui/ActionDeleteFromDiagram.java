@@ -74,6 +74,7 @@ public class ActionDeleteFromDiagram extends UMLChangeAction {
             size = figs.size();
             for (int i = 0; i < size; i++) {
                 Fig f = (Fig) figs.elementAt(i);
+                /*
                 if ( f instanceof FigNodeModelElement ) {
                     FigNodeModelElement fnme = (FigNodeModelElement) f;
                     Object owner = fnme.getOwner();
@@ -85,12 +86,14 @@ public class ActionDeleteFromDiagram extends UMLChangeAction {
                     FigEdgeModelElement fnme = (FigEdgeModelElement) f;
                     Object owner = fnme.getOwner();
                     if (owner instanceof MModelElement) {
-                        fnme.remove();
+                        fnme.();
                     }
                 }
                 else {
                     f.delete();
                 }
+                */
+                f.delete();
             }
         }
         catch(Exception ex) {

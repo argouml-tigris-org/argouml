@@ -35,81 +35,75 @@ import java.awt.event.ActionEvent;
 import org.argouml.model.uml.UmlFactory;
 import org.argouml.model.uml.foundation.core.CoreFactory;
 import org.argouml.model.uml.foundation.core.CoreHelper;
+import org.argouml.model.uml.modelmanagement.ModelManagementHelper;
 import org.argouml.ui.*;
+import org.tigris.gef.graph.MutableGraphModel;
+import org.argouml.application.api.Argo;
 import org.argouml.kernel.*;
 
 import ru.novosoft.uml.*;
 import ru.novosoft.uml.foundation.core.*;
 
-public class UMLConnectionListModel extends UMLModelElementListModel  {
+public class UMLConnectionListModel extends UMLBinaryRelationListModel  {
 
-    private final static String _nullLabel = "(null)";
-
-    public UMLConnectionListModel(UMLUserInterfaceContainer container,String property,boolean showNone) {
-        super(container,property,showNone);
-    }
-
-    protected int recalcModelElementSize() {
-        int size = 0;
-        Collection connections = getConnections();
-        if(connections != null) {
-            size = connections.size();
-        }
-        return size;
-    }
-
-    protected MModelElement getModelElementAt(int index) {
-        MModelElement elem = null;
-        Collection connections = getConnections();
-        if(connections != null) {
-            elem = elementAtUtil(connections,index,MAssociationEnd.class);
-            if(elem != null) {
-              elem = ((MAssociationEnd) elem).getAssociation();
-            }
-        }
-        return elem;
-    }
-
-
-    private Collection getConnections() {
-        Collection connections = null;
-        Object target = getTarget();
-        if(target instanceof MClassifier) {
-            MClassifier classifier = (MClassifier) target;
-            connections = classifier.getAssociationEnds();
-        }
-        return connections;
-    }
-
-
-    public void open(int index) {
-        MModelElement assoc = getModelElementAt(index);
-        if(assoc != null) {
-            navigateTo(assoc);
-        }
-    }   
-
-    public void roleAdded(final MElementEvent event) {
-        super.roleAdded(event);
-    }
-
+    
 
 	/**
-	 * @see org.argouml.uml.ui.UMLModelElementListModel#buildPopup(JPopupMenu, int)
+	 * Constructor for UMLConnectionListModel.
+	 * @param container
+	 * @param property
+	 * @param showNone
 	 */
-	public boolean buildPopup(JPopupMenu popup, int index) {
-		UMLUserInterfaceContainer container = getContainer();
-        UMLListMenuItem open = new UMLListMenuItem(container.localize("Open"),this,"open",index);
-        UMLListMenuItem delete = new UMLListMenuItem(container.localize("Delete"),this,"delete",index);
-        if(getModelElementSize() <= 0) {
-            open.setEnabled(false);
-            delete.setEnabled(false);
-        }
+	public UMLConnectionListModel(
+		UMLUserInterfaceContainer container,
+		String property,
+		boolean showNone) {
+		super(container, property, showNone);
+	}
 
-        popup.add(open);
-        popup.add(delete);
-        
-		return true;
+	/**
+	 * @see org.argouml.uml.ui.UMLBinaryRelationListModel#build(MModelElement, MModelElement)
+	 */
+	protected void build(MModelElement from, MModelElement to) {
+		CoreFactory.getFactory().buildAssociation((MClassifier)from, (MClassifier)to);
+	}
+
+	/**
+	 * @see org.argouml.uml.ui.UMLBinaryRelationListModel#connect(MutableGraphModel, MModelElement, MModelElement)
+	 */
+	protected void connect(
+		MutableGraphModel gm,
+		MModelElement from,
+		MModelElement to) {
+			gm.connect(from, to, MAssociation.class);
+	}
+
+	/**
+	 * @see org.argouml.uml.ui.UMLBinaryRelationListModel#getAddDialogTitle()
+	 */
+	protected String getAddDialogTitle() {
+		return Argo.localize("UMLMenu", "dialog.add-associations");
+	}
+
+	/**
+	 * @see org.argouml.uml.ui.UMLBinaryRelationListModel#getChoices()
+	 */
+	protected Collection getChoices() {
+		return ModelManagementHelper.getHelper().getAllModelElementsOfKind(MClassifier.class);
+	}
+
+	/**
+	 * @see org.argouml.uml.ui.UMLBinaryRelationListModel#getRelation(MModelElement, MModelElement)
+	 */
+	protected MModelElement getRelation(MModelElement from, MModelElement to) {
+		return CoreHelper.getHelper().getAssociation((MClassifier)from, (MClassifier)to);
+	}
+
+	/**
+	 * @see org.argouml.uml.ui.UMLBinaryRelationListModel#getSelected()
+	 */
+	protected Collection getSelected() {
+		return CoreHelper.getHelper().getAssociatedClassifiers((MClassifier)getTarget());
 	}
 
 }

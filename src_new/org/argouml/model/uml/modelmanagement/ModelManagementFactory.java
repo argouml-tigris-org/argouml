@@ -27,7 +27,11 @@ import org.argouml.model.uml.AbstractUmlModelFactory;
 import org.argouml.model.uml.UmlFactory;
 
 import ru.novosoft.uml.MFactory;
-import ru.novosoft.uml.model_management.*;
+import ru.novosoft.uml.model_management.MElementImport;
+import ru.novosoft.uml.model_management.MModel;
+import ru.novosoft.uml.model_management.MPackage;
+import ru.novosoft.uml.model_management.MSubsystem;
+
 
 /**
  * Factory to create UML classes for the UML
@@ -94,4 +98,14 @@ public class ModelManagementFactory extends AbstractUmlModelFactory {
 	super.initialize(modelElement);
 	return modelElement;
     }
+    
+    public void deleteElementImport(MElementImport elem) {}
+        
+    public void deleteModel(MModel elem) {}
+    
+    public void deletePackage(MPackage elem) {}
+    
+    public void deleteSubsystem(MSubsystem elem) {}
+    
+    
 }

@@ -23,6 +23,9 @@
 
 package org.argouml.model.uml.behavioralelements.statemachines;
 
+import ru.novosoft.uml.behavior.state_machines.MStateVertex;
+import ru.novosoft.uml.behavior.state_machines.MTransition;
+
 /**
  * Helper class for UML BehavioralElements::StateMachines Package.
  *
@@ -48,6 +51,28 @@ public class StateMachinesHelper {
      */
     public static StateMachinesHelper getHelper() {
         return SINGLETON;
+    }
+    
+    /**
+     * Returns the source of the given transition. This operation is here to 
+     * give a full implementation of all getSource and getDestination methods
+     * on the uml helpers.
+     * @param trans
+     * @return MStateVertex
+     */
+    public MStateVertex getSource(MTransition trans) {
+        return trans.getSource();
+    }
+    
+    /**
+     * Returns the destination of the given transition. This operation is here 
+     * to give a full implementation of all getSource and getDestination methods
+     * on the uml helpers.
+     * @param trans
+     * @return MStateVertex
+     */
+    public MStateVertex getDestination(MTransition trans) {
+        return trans.getTarget();
     }
 }
 

@@ -59,6 +59,7 @@ import org.argouml.ui.*;
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.graph.MutableGraphModel;
 import org.tigris.gef.presentation.Fig;
+import org.apache.log4j.Category;
 import org.argouml.application.api.Argo;
 import org.argouml.kernel.*;
 import org.argouml.model.uml.behavioralelements.usecases.UseCasesFactory;
@@ -84,6 +85,7 @@ import org.argouml.model.uml.behavioralelements.usecases.UseCasesHelper;
  */
 
 public class UMLIncludeListModel extends UMLModelElementListModel  {
+    protected static Category cat = Category.getInstance(UMLIncludeListModel.class);
 
     /**
      * <p>The default text when there is no addition class for the include
@@ -221,7 +223,7 @@ public class UMLIncludeListModel extends UMLModelElementListModel  {
         }
         else {
             if (element != null) {
-                System.out.println("UMLIncludeListModel." +
+                cat.warn("UMLIncludeListModel." +
                                    "formatElement(): Can't format " +
                                    element.getClass().toString());
             }
@@ -292,60 +294,7 @@ public class UMLIncludeListModel extends UMLModelElementListModel  {
 	    		}
 	    	}
     	}
-/*
-        // Give up if the target isn't a use case or if it doesn't have a
-        // namespace.
 
-        Object target = getTarget();
-
-        if (!(target instanceof MUseCase)) {
-            return;
-        }
-
-        MNamespace ns = ((MModelElement) target).getNamespace();
-
-        if (ns == null) {
-            return;
-        }
-
-        // Get the new include relationship from the factory, and add it to the
-        // namespace
-
-        MInclude newInclude = ns.getFactory().createInclude();
-        ns.addOwnedElement(newInclude);
-
-        // Link it in to the list of includes relationships of the use case
-        // (NSUML will set set up the other end correctly) in the correct
-        // place.
-
-        MUseCase useCase = (MUseCase) target;
-
-        // Now put it in the list of extends relationships of the use case in
-        // the correct place. NSUML will automatically set up the other end.
-
-        // Note there is a bug in NSUML. It has the include and include2
-        // associations swapped over (include should be the other end of base,
-        // not additon). We deal with this elsewhere by swapping accessor
-        // functions for "base" and "addition".
-
-        if (index == getModelElementSize()) {
-            useCase.addInclude(newInclude);
-        }
-        else {
-            useCase.setIncludes(addAtUtil(useCase.getIncludes(),
-                                           newInclude, index));
-        }
-
-        // Having added an include relationship, mark as needing saving
-
-        Project p = ProjectBrowser.TheInstance.getProject();
-        p.setNeedsSave(true);
-
-        // Advise Swing that we have added something at this index and
-        // navigate there.
-*/
-        // fireIntervalAdded(this,index,index);
-        // navigateTo(newInclude);
     }
     
     /**

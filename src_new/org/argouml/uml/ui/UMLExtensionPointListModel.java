@@ -37,6 +37,7 @@ import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.behavior.use_cases.*;
 
 import org.argouml.ui.*;
+import org.apache.log4j.Category;
 import org.argouml.kernel.*;
 
 
@@ -54,6 +55,7 @@ import org.argouml.kernel.*;
  */
 
 public class UMLExtensionPointListModel extends UMLModelElementListLinkModel  {
+    protected static Category cat = Category.getInstance(UMLExtensionPointListModel.class);
 
     /**
      * <p>The default text when there is no location for the
@@ -181,37 +183,6 @@ public class UMLExtensionPointListModel extends UMLModelElementListLinkModel  {
 
     public Object formatElement(MModelElement element) {
     	return element.getName();
-    	/*
-
-        Object value = _nullLocation;
-	StringBuffer sb = new StringBuffer(20);
-
-        if (element instanceof MExtensionPoint) {
-            MExtensionPoint  extensionPoint = (MExtensionPoint) element;
-            String           location       = extensionPoint.getLocation();
-
-	    if (extensionPoint.getName() != null) {
-		sb.append(extensionPoint.getName());
-		sb.append(":");
-	    }
-	    if((location != null) && (!(location.equals("")))) {
-		sb.append(" ");
-		sb.append(location);
-	    }
-	    else {
-		sb.append(_nullLocation);
-	    }
-	    value = sb.toString();
-        }
-        else {
-            if (element != null) {
-                System.out.println("UMLExtensionPointListModel." +
-                                   "formatElement(): Can't format " +
-                                   element.getClass().toString());
-            }
-        }
-		*/
-       
     }
 
 

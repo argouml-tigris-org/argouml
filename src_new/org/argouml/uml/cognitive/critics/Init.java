@@ -341,18 +341,6 @@ public class Init {
 
       Agency.register(crNodesOverlap, diagramCls);
       Agency.register(crZeroLengthEdge, edgeCls);
-
-
-      
-      
-      //Agency.register(crTooMuchFeedback, project);
-      //Agency.register(crTooManyDisabled, project);
-      //Agency.dumpRegistry();
-      
-//     }
-//     catch (java.lang.ClassNotFoundException e) {
-// 	System.out.println("!!!! Error while registering " + e.toString());
-//     }
   }
 
       

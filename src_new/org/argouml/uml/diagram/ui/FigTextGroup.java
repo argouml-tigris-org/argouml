@@ -85,4 +85,26 @@ public class FigTextGroup extends FigGroup {
         }
 	}   
 
+    /**
+     * @see org.tigris.gef.presentation.Fig#delete()
+     */
+    public void delete() {
+        Iterator it = getFigs().iterator();
+        while (it.hasNext()) {
+            ((Fig)it.next()).delete();
+        }
+        super.delete();
+    }
+
+    /**
+     * @see org.tigris.gef.presentation.Fig#dispose()
+     */
+    public void dispose() {
+        Iterator it = getFigs().iterator();
+        while (it.hasNext()) {
+            ((Fig)it.next()).dispose();
+        }
+        super.dispose();
+    }
+
 }

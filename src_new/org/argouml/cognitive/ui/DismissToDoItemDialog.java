@@ -30,9 +30,11 @@ import javax.swing.*;
 import javax.swing.event.*;
 
 import org.argouml.ui.*;
+import org.apache.log4j.Category;
 import org.argouml.cognitive.*;
 
 public class DismissToDoItemDialog extends JDialog implements ActionListener {
+    protected static Category cat = Category.getInstance(DismissToDoItemDialog.class);
 
   ////////////////////////////////////////////////////////////////
   // constants
@@ -115,7 +117,7 @@ public class DismissToDoItemDialog extends JDialog implements ActionListener {
   // event handlers
   public void actionPerformed(ActionEvent e) {
     if (e.getSource() == _badGoalButton) {
-      //System.out.println("bad goal");
+      cat.debug("bad goal");
       GoalsDialog d = new GoalsDialog(ProjectBrowser.TheInstance);
       d.setVisible(true);
       setVisible(false);
@@ -123,7 +125,7 @@ public class DismissToDoItemDialog extends JDialog implements ActionListener {
       return;
     }
     if (e.getSource() == _badDecButton) {
-      //System.out.println("bad decision");
+      cat.debug("bad decision");
       DesignIssuesDialog d = new DesignIssuesDialog(ProjectBrowser.TheInstance);
       d.setVisible(true);
       setVisible(false);
@@ -131,7 +133,7 @@ public class DismissToDoItemDialog extends JDialog implements ActionListener {
       return;
     }
     if (e.getSource() == _explainButton) {
-      //System.out.println("I can explain!");
+      cat.debug("I can explain!");
       //needs-more-work: make a new history item
       ToDoList list = Designer.TheDesigner.getToDoList();
       list.explicitlyResolve(_target, _explaination.getText());
@@ -139,7 +141,7 @@ public class DismissToDoItemDialog extends JDialog implements ActionListener {
       dispose();
       return;
     }
-    System.out.println("unknown src in DismissToDoItemDialog: " + e.getSource());
+    cat.debug("unknown src in DismissToDoItemDialog: " + e.getSource());
   }
 
 } /* end class DismissToDoItemDialog */

@@ -121,7 +121,7 @@ public abstract class ConfigurationHandler {
 
       boolean status = load(new File(getDefaultPath()));
       if (!status) status = loadUnspecified();
-      if (status) _loaded = status;
+      _loaded = true;
       return status;
   }
 
@@ -186,16 +186,12 @@ public abstract class ConfigurationHandler {
    */
 
   public final boolean load(File file) {
-      // Only allow one load
-      if (_loaded) return false;
-
       boolean status = loadFile(file);
       if (status) {
           if (_pcl != null) {
               _pcl.firePropertyChange(Configuration.FILE_LOADED, null, file);
           }
           _loadedFromFile = file;
-	  _loaded = status;
       }
       return status;
   }
@@ -207,16 +203,12 @@ public abstract class ConfigurationHandler {
    *  error or a previously loaded configuration.
    */ 
   public final boolean load(URL url) {
-      // Only allow one load
-      if (_loaded) return false;
-
       boolean status = loadURL(url);
       if (status) {
           if (_pcl != null) {
               _pcl.firePropertyChange(Configuration.URL_LOADED, null, url);
           }
           _loadedFromURL = url;
-	  _loaded = status;
       }
       return status;
   }

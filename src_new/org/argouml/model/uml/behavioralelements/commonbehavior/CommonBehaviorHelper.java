@@ -23,6 +23,12 @@
 
 package org.argouml.model.uml.behavioralelements.commonbehavior;
 
+import java.util.Collection;
+
+import ru.novosoft.uml.behavior.common_behavior.MInstance;
+import ru.novosoft.uml.behavior.common_behavior.MLink;
+import ru.novosoft.uml.behavior.common_behavior.MLinkEnd;
+
 /**
  * Helper class for UML BehavioralElements::CommonBehavior Package.
  *
@@ -49,5 +55,34 @@ public class CommonBehaviorHelper {
     public static CommonBehaviorHelper getHelper() {
         return SINGLETON;
     }
+    
+    /**
+     * Returns the source of a link. The source of a binary link is defined as
+     * the instance where the first linkend is pointing to via the association
+     * instance.
+     * @param link
+     * @return MInstance
+     */
+    public MInstance getSource(MLink link) {
+        Collection con = link.getConnections();
+        if (con.isEmpty()) return null;
+        MLinkEnd le0 = (MLinkEnd)((Object[]) con.toArray())[0];
+        return le0.getInstance();
+    }
+    
+    /**
+     * Returns the destination of a link. The destination of a binary link is 
+     * defined as the instance where the second linkend is pointing to via the 
+     * association instance.
+     * @param link
+     * @return MInstance
+     */
+    public MInstance getDestination(MLink link) {
+        Collection con = link.getConnections();
+        if (con.size() <= 1) return null;
+        MLinkEnd le0 = (MLinkEnd)((Object[]) con.toArray())[1];
+        return le0.getInstance();
+    }
+    
 }
 

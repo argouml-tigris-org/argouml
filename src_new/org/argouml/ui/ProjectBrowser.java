@@ -39,6 +39,7 @@ import org.tigris.gef.base.*;
 import org.tigris.gef.ui.*;
 import org.tigris.gef.util.*;
 
+import org.apache.log4j.Category;
 import org.argouml.application.api.*;
 import org.argouml.application.events.*;
 import org.argouml.kernel.*;
@@ -52,6 +53,10 @@ import org.argouml.swingext.*;
 
 public class ProjectBrowser extends JFrame
 implements IStatusBar, NavigationListener, ArgoModuleEventListener {
+    
+    protected static Category cat = 
+        Category.getInstance(ProjectBrowser.class);
+    
   ////////////////////////////////////////////////////////////////
   // constants
 
@@ -183,7 +188,7 @@ implements IStatusBar, NavigationListener, ArgoModuleEventListener {
   ////////////////////////////////////////////////////////////////
   // constructors
 
-    public ProjectBrowser() {new ProjectBrowser("Test",null,0);}
+   
 
     public ProjectBrowser(String appName, StatusBar sb, int theme) {
 	super(appName);
@@ -340,7 +345,7 @@ implements IStatusBar, NavigationListener, ArgoModuleEventListener {
     file.addSeparator();
     // JMenuItem loadModelFromDBItem = file.add(ActionLoadModelFromDB.SINGLETON);
     // JMenuItem storeModelToDBItem = file.add(ActionStoreModelToDB.SINGLETON);
-    file.addSeparator();
+    // file.addSeparator();
     JMenuItem printItem = file.add(Actions.Print);
     setMnemonic(printItem,"Print",'P');
     setAccelerator(printItem,ctrlP);
@@ -384,10 +389,10 @@ implements IStatusBar, NavigationListener, ArgoModuleEventListener {
     // needs-more-work: confusing name change
     JMenuItem deleteItem = _edit.add(ActionDeleteFromDiagram.SINGLETON);
     setMnemonic(deleteItem,"RemoveFromDiagram",'R');
-    setAccelerator(deleteItem,ctrlR);
+    setAccelerator(deleteItem,delKey);
     JMenuItem removeItem = _edit.add(ActionRemoveFromModel.SINGLETON);
     setMnemonic(removeItem,"DeleteFromModel",'D');
-    setAccelerator(removeItem,delKey);
+    setAccelerator(removeItem,ctrlR);
     JMenuItem emptyItem = _edit.add(ActionEmptyTrash.SINGLETON);
     _edit.addSeparator();
     _edit.add(ActionSettings.getInstance());
@@ -659,8 +664,11 @@ implements IStatusBar, NavigationListener, ArgoModuleEventListener {
         }
 	if (o instanceof MModelElement) {
 	    MModelElement eo = (MModelElement)o;
-	    if (eo == null) { System.out.println("no path to model"); return; }
-	    _project.setCurrentNamespace(eo.getNamespace());
+	    if (eo == null) { cat.debug("no path to model"); return; }
+	    if (eo.getNamespace() != null) {
+                _project.setCurrentNamespace(eo.getNamespace());
+            } else
+                _project.setCurrentNamespace((MNamespace)_project.getModels().get(0));
 	}
 	Actions.updateAllEnabled();
     }
@@ -679,7 +687,7 @@ implements IStatusBar, NavigationListener, ArgoModuleEventListener {
    */
   public void setActiveDiagram (ArgoDiagram ad) {
     _activeDiagram = ad;
-    //System.out.println ("Active diagram set to " + ad.getName());
+    cat.debug ("Active diagram set to " + ad.getName());
   }
 
   /**
@@ -718,6 +726,21 @@ implements IStatusBar, NavigationListener, ArgoModuleEventListener {
             return detailsPane.getTarget();
         }
         return null; // TODO Bob Tarling - Should probably throw exception here
+    }
+    
+    /**
+     * Returns the detailsPane. This is the pane normally in the lower right 
+     * corner of ArgoUML which contains the ToDoPane and the Property panels for
+     * example.
+     * @return DetailsPane
+     */
+    public DetailsPane getDetailsPane() {
+        Iterator it = detailsPanesByCompassPoint.values().iterator();
+        if (it.hasNext()) {
+            DetailsPane detailsPane = (DetailsPane)it.next();
+            return detailsPane;
+        }
+        throw new IllegalStateException("No detailspane in ArgoUML");
     }
 
   public StatusBar getStatusBar() { return _statusBar; }
@@ -1096,7 +1119,7 @@ implements IStatusBar, NavigationListener, ArgoModuleEventListener {
 	else if ("huge".equals(arg))
 	    setCurrentTheme(ThemeHuge);
 	else {
-	    System.out.println("ProjectBrowser.setCurrentTheme: "
+	    cat.debug("ProjectBrowser.setCurrentTheme: "
 			       + "Incorrect theme: " + arg);
 	}
     }
@@ -1108,7 +1131,7 @@ implements IStatusBar, NavigationListener, ArgoModuleEventListener {
 	else if ("huge".equals(arg))
 	    return getCurrentTheme() == ThemeHuge;
 	else {
-	    System.out.println("ProjectBrowser.isCurrentTheme: "
+	    cat.debug("ProjectBrowser.isCurrentTheme: "
 			       + "Incorrect theme: " + arg);
 	    return false;
 	}

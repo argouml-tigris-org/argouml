@@ -41,6 +41,7 @@ import ru.novosoft.uml.model_management.*;
 import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.behavior.use_cases.*;
 
+import org.apache.log4j.Category;
 import org.argouml.application.api.Argo;
 import org.argouml.model.uml.UmlHelper;
 import org.argouml.ui.*;
@@ -54,6 +55,7 @@ import org.argouml.uml.MMUtil;
  */
 
 public class GoUseCaseToExtensionPoint implements TreeModel {
+    protected static Category cat = Category.getInstance(GoUseCaseToExtensionPoint.class);
 
 
     /**
@@ -94,7 +96,7 @@ public class GoUseCaseToExtensionPoint implements TreeModel {
      */
 
     public void setRoot(Object r) {
-        System.out.println(getClass().toString() +
+        cat.error(getClass().toString() +
                            ": setRoot() should never be called");
     }
 

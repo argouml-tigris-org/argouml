@@ -36,6 +36,7 @@ import java.beans.*;
 import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.foundation.data_types.*;
 
+import org.apache.log4j.Category;
 import org.tigris.gef.base.*;
 import org.tigris.gef.presentation.*;
 import org.tigris.gef.graph.*;
@@ -52,6 +53,7 @@ import org.tigris.gef.graph.*;
  *  and connecting it to other model elements. */
 
 public class ModeCreateEdgeAndNode extends ModeCreate {
+    protected static Category cat = Category.getInstance(ModeCreateEdgeAndNode.class);
   ////////////////////////////////////////////////////////////////
   // static variables
   public static int Drags_To_Existing = 0;
@@ -148,21 +150,6 @@ public class ModeCreateEdgeAndNode extends ModeCreate {
   /** On mousePressed determine what port the user is dragging from.
    *  The mousePressed event is sent via ModeSelect. */
   public void mousePressed(MouseEvent me) {
-//     if (me.isConsumed()) return;
-//     int x = me.getX(), y = me.getY();
-//     Editor ce = Globals.curEditor();
-//     Fig underMouse = ce.hit(x, y);
-//     if (underMouse == null) {
-//       //System.out.println("bighit");
-//         underMouse = ce.hit(x-16, y-16, 32, 32);
-//     }
-//     if (underMouse == null) { done(); me.consume(); return; }
-//     if (!(underMouse instanceof FigNode)) { done(); me.consume(); return; }
-//     _sourceFigNode = (FigNode) underMouse;
-//     _startPort = _sourceFigNode.deepHitPort(x, y);
-//     if (_startPort == null) { done(); me.consume(); return; }
-//     _startPortFig = _sourceFigNode.getPortFig(_startPort);
-//     super.mousePressed(me);
   }
 
   /** On mouseReleased, find the destination port, ask the GraphModel
@@ -185,7 +172,7 @@ public class ModeCreateEdgeAndNode extends ModeCreate {
 		// needs-more-work: potential class cast exception
 
 		if (f == null) {
-			//System.out.println("make new node");
+			cat.debug("make new node");
 			Drags_To_New++;
 			Object newNode = null;
 			Class nodeClass = (Class) getArg("nodeClass");
@@ -303,10 +290,10 @@ public class ModeCreateEdgeAndNode extends ModeCreate {
 					return;
 				}
 				else
-					System.out.println("connection return null");
+					cat.warn("connection return null");
 			}
 			else
-				System.out.println("in dest node but no port");
+				cat.warn("in dest node but no port");
 		}
 
 		_sourceFigNode.damage();
@@ -354,8 +341,6 @@ public class ModeCreateEdgeAndNode extends ModeCreate {
 			MAssociationEnd ae0 = (MAssociationEnd) conn.get(0);
 			ae0.setAggregation(MAggregationKind.COMPOSITE);
 		}
-		// else if transition
-		// else if MAssociationRole
 	}
 
 	static final long serialVersionUID = -427957543380196265L;

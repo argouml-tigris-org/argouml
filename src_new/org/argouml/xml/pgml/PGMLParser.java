@@ -22,15 +22,25 @@
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 package org.argouml.xml.pgml;
+import java.io.InputStream;
 import java.util.*;
+
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
+
 import org.xml.sax.AttributeList;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
+import org.tigris.gef.base.Diagram;
 import org.tigris.gef.presentation.FigNode;
 // the following three ugly package dependency are for restoring compartment visibility
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
+import org.apache.log4j.Category;
 import org.argouml.uml.diagram.static_structure.ui.FigClass;
 import org.argouml.uml.diagram.static_structure.ui.FigInterface;
 
 public class PGMLParser extends org.tigris.gef.xml.pgml.PGMLParser {
+    protected static Category cat = Category.getInstance(PGMLParser.class);
 
   ////////////////////////////////////////////////////////////////
   // static variables
@@ -153,7 +163,7 @@ public class PGMLParser extends org.tigris.gef.xml.pgml.PGMLParser {
         }
 
         String translated = (String)_translateUciToOrg.get(oldName);
-        //System.out.println( "old = " + oldName + " / new = " + translated );
+        cat.debug( "old = " + oldName + " / new = " + translated );
         return translated;
     }
 
@@ -167,7 +177,7 @@ public class PGMLParser extends org.tigris.gef.xml.pgml.PGMLParser {
   protected FigNode _previousNode = null;
 
   public void startElement(String elementName,AttributeList attrList) {
-    //System.out.println("startElement("+elementName+",AttributeList)"+_elementState+";"+_nestedGroups);
+    cat.debug("startElement("+elementName+",AttributeList)"+_elementState+";"+_nestedGroups);
     if (_elementState == NODE_STATE && elementName.equals("group") &&
         _currentNode != null && attrList != null &&
         (_currentNode instanceof FigClass  || _currentNode instanceof FigInterface)) {
@@ -210,5 +220,54 @@ public class PGMLParser extends org.tigris.gef.xml.pgml.PGMLParser {
     // OK, that's all with hiding compartments. Now business as usual...
     super.startElement(elementName,attrList);
   }
+  
+  public synchronized Diagram readDiagram(InputStream is, boolean closeStream) {
+        try {
+            cat.info("=======================================");
+            cat.info("== READING DIAGRAM");
+            SAXParserFactory factory = SAXParserFactory.newInstance();
+            factory.setNamespaceAware(false);
+            factory.setValidating(false);
+            initDiagram("org.tigris.gef.base.Diagram");
+            _figRegistry = new HashMap();
+            SAXParser pc = factory.newSAXParser();
+            InputSource source = new InputSource(is);
+            source.setSystemId(systemId);
+            source.setEncoding("UTF-8");
+            
+            // what is this for?
+            // source.setSystemId(url.toString());
+            pc.parse(source,this);
+            // source = null;
+            if (closeStream) {
+                cat.debug("closing stream now (in PGMLParser.readDiagram)");
+                is.close();
+            }
+            else {
+                cat.debug("leaving stream OPEN!");
+            }
+            return _diagram;
+        }
+        catch(SAXException saxEx) {
+            System.err.println("Exception in readDiagram");
+            //
+            //  a SAX exception could have been generated
+            //    because of another exception.
+            //    Get the initial exception to display the
+            //    location of the true error
+            Exception ex = saxEx.getException();
+            if(ex == null) {
+                saxEx.printStackTrace();
+            }
+            else {
+                ex.printStackTrace();
+            }
+        }
+        catch (Exception ex) {
+            System.err.println("Exception in readDiagram");
+            ex.printStackTrace();
+        }
+        return null;
+    }
 } /* end class PGMLParser */
 

@@ -260,6 +260,18 @@ public class UseCasesFactory extends AbstractUmlModelFactory {
      	actor.setName("newActor");
      	return actor;
      }
+     
+     public void deleteActor(MActor elem) {}
+     
+     public void deleteExtend(MExtend elem) {}
+     
+     public void deleteExtensionPoint(MExtensionPoint elem) {}
+     
+     public void deleteInclude(MInclude elem) {}
+     
+     public void deleteUseCase(MUseCase elem) {}
+     
+     public void deleteUseCaseInstance(MUseCaseInstance elem) {}
 
 
 

@@ -25,8 +25,10 @@ package org.argouml.model.uml.foundation.core;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import org.argouml.application.api.Notation;
 import org.argouml.application.api.NotationName;
@@ -39,6 +41,7 @@ import org.argouml.model.uml.foundation.extensionmechanisms.ExtensionMechanismsF
 import org.argouml.model.uml.modelmanagement.ModelManagementHelper;
 import org.argouml.ui.ProjectBrowser;
 
+import ru.novosoft.uml.MElementListener;
 import ru.novosoft.uml.MFactory;
 import ru.novosoft.uml.behavior.state_machines.MEvent;
 import ru.novosoft.uml.foundation.core.MAbstraction;
@@ -55,6 +58,7 @@ import ru.novosoft.uml.foundation.core.MComponent;
 import ru.novosoft.uml.foundation.core.MConstraint;
 import ru.novosoft.uml.foundation.core.MDataType;
 import ru.novosoft.uml.foundation.core.MDependency;
+import ru.novosoft.uml.foundation.core.MElement;
 import ru.novosoft.uml.foundation.core.MElementResidence;
 import ru.novosoft.uml.foundation.core.MFeature;
 import ru.novosoft.uml.foundation.core.MFlow;
@@ -94,6 +98,7 @@ import ru.novosoft.uml.foundation.extension_mechanisms.MStereotype;
  *
  * @since ARGO0.11.2
  * @author Thierry Lach
+ * @author Jaap Branderhorst
  */
 
 public class CoreFactory extends AbstractUmlModelFactory {
@@ -614,6 +619,14 @@ public class CoreFactory extends AbstractUmlModelFactory {
     public MAttribute buildAttribute(MClassifier cls) {
        MAttribute attr = buildAttribute();
        cls.addFeature(attr);
+       // we set the listeners to the figs here too
+        // it would be better to do that in the figs themselves
+        Project p = ProjectBrowser.TheInstance.getProject();
+        Iterator it = p.findFigsForMember(cls).iterator();
+        while (it.hasNext()) {
+            MElementListener listener = (MElementListener)it.next();
+            attr.addMElementListener(listener);
+        }
        return attr;
     }
     
@@ -663,6 +676,12 @@ public class CoreFactory extends AbstractUmlModelFactory {
         cl.setLeaf(false);
         cl.setSpecification(false);
         cl.setVisibility(MVisibilityKind.PUBLIC);
+        return cl;
+    }
+    
+    public MClass buildClass(MNamespace owner) {
+        MClass cl = buildClass();
+        cl.setNamespace(owner);
         return cl;
     }
     
@@ -774,10 +793,21 @@ public class CoreFactory extends AbstractUmlModelFactory {
         oper.setQuery(false);
         oper.setOwnerScope(MScopeKind.INSTANCE);
         oper.setConcurrency(MCallConcurrencyKind.SEQUENTIAL);
+        
+        
     
         MParameter returnParameter = buildParameter(oper);
         returnParameter.setKind(MParameterDirectionKind.RETURN);
         returnParameter.setName("return");
+        // we set the listeners to the figs here too
+        // it would be better to do that in the figs themselves
+        // the elementlistener for the parameter is allready set in buildparameter(oper)
+        Project p = ProjectBrowser.TheInstance.getProject();
+        Iterator it = p.findFigsForMember(cls).iterator();
+        while (it.hasNext()) {
+            MElementListener listener = (MElementListener)it.next();
+            oper.addMElementListener(listener);
+        }
         return oper;
     }
     
@@ -794,6 +824,9 @@ public class CoreFactory extends AbstractUmlModelFactory {
         ProjectBrowser pb = ProjectBrowser.TheInstance;
         Project p = pb.getProject();
         MClassifier voidType = p.findType("void");
+        if (voidType.getModel() != p.getModel()) {
+        	voidType.setNamespace(p.getModel());
+        }
         MParameter res = UmlFactory.getFactory().getCore().createParameter();
         res.setName(null);
         res.setStereotype(null);
@@ -815,24 +848,30 @@ public class CoreFactory extends AbstractUmlModelFactory {
     public MParameter buildParameter(MBehavioralFeature oper) {
     	if (oper == null || oper.getOwner() == null) throw new IllegalArgumentException("In buildParameter: operation is null or does not have an owner");
         MParameter res = buildParameter();
-        /*
-        if (!ModelManagementHelper.getHelper().getAllNamespaces(oper.getOwner().getNamespace()).contains(res.getNamespace())) {
-        	res.setNamespace(oper.getOwner().getNamespace());
-        }
-        */
     	String name = "arg";
     	int counter = 1;
        
-        	Iterator it = oper.getParameters().iterator();
-        	while (it.hasNext()) {
-        		MParameter para = (MParameter)it.next();
-        		if ((name + counter).equals(para.getName())) {
-        			counter++;
-        		} 
-        	}
-            oper.addParameter(res);
+        oper.addParameter(res);
+        Iterator it = oper.getParameters().iterator();
+        while (it.hasNext()) {
+            MParameter para = (MParameter)it.next();
+            if ((name + counter).equals(para.getName())) {
+                counter++;
+            } 
+        }
+       
        
         res.setName(name + counter);
+        
+        // we set the listeners to the figs here too
+        // it would be better to do that in the figs themselves
+        Project p = ProjectBrowser.TheInstance.getProject();
+        it = p.findFigsForMember(oper).iterator();
+        while (it.hasNext()) {
+            MElementListener listener = (MElementListener)it.next();
+            res.addMElementListener(listener);
+        }
+        
         return res;
     }
     
@@ -912,5 +951,169 @@ public class CoreFactory extends AbstractUmlModelFactory {
         else if (client.getNamespace() != null) usage.setNamespace(client.getNamespace());
         return usage;
     }
+    
+    /**
+     * Builds a comment inluding a reference to the given modelelement to comment. 
+     * If the element is null, the comment is still build since it is not 
+     * mandatory to have an annotated element in the comment.
+     * @param elementToComment
+     * @return MComment
+     */
+    public MComment buildComment(MModelElement elementToComment) {
+        MComment comment = createComment();
+        if (elementToComment != null) {
+            comment.addAnnotatedElement(elementToComment);
+            comment.setNamespace(elementToComment.getModel());
+        } else
+            comment.setNamespace(ProjectBrowser.TheInstance.getProject().getModel());
+        
+        return comment;
+    }
+    
+    public void deleteAbstraction(MAbstraction elem) {}
+    
+    public void deleteAssociation(MAssociation elem) {}
+    
+    public void deleteAssociationClass(MAssociationClass elem) {}       
+    
+    /**
+     * <p>
+     * Does a 'cascading delete' to all modelelements that are associated
+     * with this element that would be in an illegal state after deletion
+     * of the element. Does not do an cascading delete for elements that
+     * are deleted by the NSUML method remove. This method should not be called
+     * directly.
+     * </p>
+     * <p>
+     * In the case of an associationend these are the following elements:
+     * </p>
+     * <p>
+     * - Binary Associations that 'loose' one of the associationends by this
+     * deletion.
+     * </p>
+     * @param elem
+     * @see UmlFactory#delete(MBase)
+     */
+    public void deleteAssociationEnd(MAssociationEnd elem) {
+        MAssociation assoc = elem.getAssociation();
+        if (assoc.getConnections().size() == 2) { // binary association
+            UmlFactory.getFactory().delete(assoc);
+        }
+    }
+    
+    public void deleteAttribute(MAttribute elem) {}
+    
+    public void deleteBehavioralFeature(MBehavioralFeature elem) {}
+    
+    public void deleteBinding(MBinding elem) {}
+    
+    public void deleteClass(MClass elem) {}
+    
+    /**
+     * <p>
+     * Does a 'cascading delete' to all modelelements that are associated
+     * with this element that would be in an illegal state after deletion
+     * of the element. Does not do an cascading delete for elements that
+     * are deleted by the NSUML method remove. This method should not be called
+     * directly.
+     * </p>
+     * <p>
+     * In the case of a classifier these are the following elements:
+     * </p>
+     * <p>
+     * - AssociationEnds that have this classifier as type
+     * </p>
+     * @param elem
+     * @see UmlFactory#delete(MBase)
+     */
+    public void deleteClassifier(MClassifier elem) {
+        Collection col = elem.getAssociationEnds();
+        Iterator it = col.iterator();
+        while (it.hasNext()) {
+            UmlFactory.getFactory().delete((MAssociationEnd)it.next());
+        }
+    }
+    
+    public void deleteComment(MComment elem) {}
+    
+    public void deleteComponent(MComponent elem) {}
+    
+    public void deleteConstraint(MConstraint elem) {}
+    
+    public void deleteDataType(MDataType elem) {}
+    
+    public void deleteDependency(MDependency elem) {}
+    
+    public void deleteElement(MElement elem) {}
+    
+    public void deleteElementResidence(MElementResidence elem) {}
+    
+    public void deleteFeature(MFeature elem) {}
+    
+    public void deleteFlow(MFlow elem) {}
+    
+    public void deleteGeneralizableElement(MGeneralizableElement elem) {}    
+    
+    public void deleteGeneralization(MGeneralization elem) {}
+    
+    public void deleteInterface(MInterface elem) {}
+    
+    public void deleteMethod(MMethod elem) {}
+    
+    /**
+     * <p>
+     * Does a 'cascading delete' to all modelelements that are associated
+     * with this element that would be in an illegal state after deletion
+     * of the element. Does not do an cascading delete for elements that
+     * are deleted by the NSUML method remove. This method should not be called
+     * directly.
+     * </p>
+     * <p>
+     * In the case of a modelelement these are the following elements:
+     * </p>
+     * <p>
+     * - Dependencies that have the modelelement as supplier or as a client
+     * and are binary. (that is, they only have one supplier and one client)
+     * </p>
+     * @param elem
+     * @see UmlFactory#delete(MBase)
+     */
+    public void deleteModelElement(MModelElement elem) {
+        Collection supplierDep = elem.getSupplierDependencies();
+        Collection clientDep = elem.getClientDependencies();
+        Set deps = new HashSet();
+        deps.addAll(supplierDep);
+        deps.addAll(clientDep);
+        Iterator it = deps.iterator();
+        while (it.hasNext()) {
+            MDependency dep = (MDependency)it.next();
+            Collection clients = dep.getClients();
+            Collection suppliers = dep.getSuppliers();
+            if ((clients.size() + suppliers.size()) == 2) {
+                UmlFactory.getFactory().delete(dep);
+            }
+        }
+    }
+    
+    public void deleteNamespace(MNamespace elem) {}
+    
+    public void deleteNode(MNode elem) {}
+    
+    public void deleteOperation(MOperation elem) {}
+    
+    public void deleteParameter(MParameter elem) {}
+    
+    public void deletePermission(MPermission elem) {}
+    
+    public void deletePresentationElement(MPresentationElement elem) {}
+    
+    public void deleteRelationship(MRelationship elem) {}
+    
+    public void deleteStructuralFeature(MStructuralFeature elem) {}
+    
+    public void deleteTemplateParameter(MTemplateParameter elem) {}
+    
+    public void deleteUsage(MUsage elem) {}
+    
 }
 

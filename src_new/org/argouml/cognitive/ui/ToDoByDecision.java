@@ -30,10 +30,13 @@ import ru.novosoft.uml.foundation.core.*;
 
 import org.tigris.gef.util.*;
 
+import org.apache.log4j.Category;
 import org.argouml.cognitive.*;
 
 public class ToDoByDecision extends ToDoPerspective
 implements ToDoListListener {
+    protected static Category cat = 
+        Category.getInstance(ToDoByDecision.class);
 
 
   public ToDoByDecision() {
@@ -50,7 +53,7 @@ implements ToDoListListener {
   // ToDoListListener implementation
 
   public void toDoItemsChanged(ToDoListEvent tde) {
-    System.out.println("toDoItemChanged");
+    cat.debug("toDoItemChanged");
     Vector items = tde.getToDoItems();
     int nItems = items.size();
     Object path[] = new Object[2];
@@ -83,7 +86,7 @@ implements ToDoListListener {
   }
 
   public void toDoItemsAdded(ToDoListEvent tde) {
-    //System.out.println("toDoItemAdded");
+    cat.debug("toDoItemAdded");
     Vector items = tde.getToDoItems();
     int nItems = items.size();
     Object path[] = new Object[2];
@@ -116,7 +119,7 @@ implements ToDoListListener {
   }
 
   public void toDoItemsRemoved(ToDoListEvent tde) {
-    //System.out.println("toDoItemRemoved");
+    cat.debug("toDoItemRemoved");
     ToDoList list = Designer.TheDesigner.getToDoList(); //source?
     Vector items = tde.getToDoItems();
     int nItems = items.size();
@@ -127,7 +130,7 @@ implements ToDoListListener {
     java.util.Enumeration enum = decs.elements();
     while (enum.hasMoreElements()) {
       Decision dec = (Decision) enum.nextElement();
-      //System.out.println("toDoItemRemoved updating decision node!");
+      cat.debug("toDoItemRemoved updating decision node!");
       boolean anyInDec = false;
       for (int i = 0; i < nItems; i++) {
 	ToDoItem item = (ToDoItem) items.elementAt(i);

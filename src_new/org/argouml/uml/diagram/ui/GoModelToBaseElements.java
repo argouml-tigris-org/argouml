@@ -31,10 +31,12 @@ import javax.swing.tree.*;
 import ru.novosoft.uml.model_management.*;
 import ru.novosoft.uml.foundation.core.*;
 
+import org.apache.log4j.Category;
 import org.argouml.application.api.Argo;
 import org.argouml.ui.*;
 
 public class GoModelToBaseElements implements TreeModel {
+    protected static Category cat = Category.getInstance(GoModelToBaseElements.class);
 
   public String toString() {
     return Argo.localize ("Tree", "misc.package.base-class");
@@ -58,7 +60,7 @@ public class GoModelToBaseElements implements TreeModel {
 	  if (index == -1) return me;
 	}
       }
-      System.out.println("getChild not enough base elements found!");
+      cat.warn("getChild not enough base elements found!");
     }
     throw new UnsupportedOperationException("getChild should not get here");
   }

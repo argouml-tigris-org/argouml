@@ -528,6 +528,7 @@ public class UMLCognitiveResourceBundle_fr extends ListResourceBundle {
               + " classe de base doit \u00eatre Class." },
         { "CrSingletonViolated_head" ,
                 "Corrigez l'utilisation du st\u00e9r\u00e9otype du singleton pour <ocl>self</ocl>" },
+                /*
         { "CrSingletonViolated_desc" ,
                 "<ocl>self</ocl> est marqu\u00e9e avec le st\u00e9r\u00e9otype"
               + " \u00ab Singleton \u00bb, mais elle ne respecte pas les contraintes"
@@ -590,6 +591,7 @@ public class UMLCognitiveResourceBundle_fr extends ListResourceBundle {
               + " par d\u00e9faut). ArgoUML acceptera toute op\u00e9ration respectant"
               + " ces conventions comme un constructeur m\u00eame si elle n'a pas le"
               + " st\u00e9r\u00e9otype \u00ab Create \u00bb." },
+              */
         { "CrNodesOverlap_head" ,
                 "R\u00e9organisez votre diagramme" },
         { "CrNodesOverlap_desc" ,

@@ -38,11 +38,12 @@ import ru.novosoft.uml.foundation.data_types.*;
 
 import org.tigris.gef.presentation.*;
 
-import org.argouml.ui.*;
+import org.apache.log4j.Category;
 
 public class StylePanel extends TabSpawnable
 implements TabFigTarget, ItemListener, DocumentListener, ListSelectionListener, ActionListener {
-
+    protected static Category cat = 
+        Category.getInstance(StylePanel.class);
   ////////////////////////////////////////////////////////////////
   // instance vars
   protected Fig    _target;
@@ -90,14 +91,12 @@ implements TabFigTarget, ItemListener, DocumentListener, ListSelectionListener, 
   // document event handling
 
   public void insertUpdate(DocumentEvent e) {
-    //System.out.println(getClass().getName() + " insert");
+    cat.debug(getClass().getName() + " insert");
   }
 
   public void removeUpdate(DocumentEvent e) { insertUpdate(e); }
 
   public void changedUpdate(DocumentEvent e) {
-    //System.out.println(getClass().getName() + " changed");
-    // Apparently, this method is never called.
   }
 
   ////////////////////////////////////////////////////////////////
@@ -105,42 +104,14 @@ implements TabFigTarget, ItemListener, DocumentListener, ListSelectionListener, 
 
   public void itemStateChanged(ItemEvent e) {
     Object src = e.getSource();
-//     if (src == _persCombo) {
-//       //System.out.println("class keywords now is " +
-//       //_keywordsField.getSelectedItem());
-//       setTablePerspective();
-//     }
-//     else if (src == _filterCombo) {
-//       //System.out.println("class MVisibilityKind now is " +
-//       //_visField.getSelectedItem());
-//       setFilter();
-//     }
   }
 
   /////////////////////////////////////////////////////////////////
   // ListSelectionListener implemention
 
   public void valueChanged(ListSelectionEvent lse) {
-//     if (lse.getValueIsAdjusting()) return;
-//     Object src = lse.getSource();
-//     if (src == _table.getSelectionModel()) {
-//       int row = lse.getFirstIndex();
-//       if (_tableModel != null) {
-// 	Vector rowObjects = _tableModel.getRowObjects();
-// 	if (row >= 0 && row < rowObjects.size()) {
-// 	  Object sel = rowObjects.elementAt(row);
-// 	  objectSelected(sel);
-// 	  return;
-// 	}
-//       }
-//     }
-//     objectSelected(null);
   }
 
-//   public void objectSelected(Object sel) {
-//     ProjectBrowser pb = ProjectBrowser.TheInstance;
-//     pb.setDetailsTarget(sel);
-//   }
   
   /////////////////////////////////////////////////////////////////
   // ActionListener implementation

@@ -50,6 +50,7 @@ import org.tigris.gef.base.*;
 import org.tigris.gef.presentation.*;
 import org.tigris.gef.graph.*;
 
+import org.apache.log4j.Category;
 import org.argouml.application.api.*;
 import org.argouml.uml.*;
 import org.argouml.uml.ui.*;
@@ -64,6 +65,7 @@ import org.argouml.model.uml.UmlHelper;
  */
 
 public class FigClass extends FigNodeModelElement {
+    protected static Category cat = Category.getInstance(FigClass.class);
 
   ////////////////////////////////////////////////////////////////
   // constants
@@ -317,7 +319,7 @@ public class FigClass extends FigNodeModelElement {
 
     modifierMenu.addCheckItem(new ActionModifier("Public", "visibility", "getVisibility", "setVisibility", mclass, MVisibilityKind.class, MVisibilityKind.PUBLIC, null));
     modifierMenu.addCheckItem(new ActionModifier("Abstract", "isAbstract", "isAbstract", "setAbstract", mclass));
-    modifierMenu.addCheckItem(new ActionModifier("Final", "isLeaf", "isLeaf", "setLeaf", mclass));
+    modifierMenu.addCheckItem(new ActionModifier("Leaf", "isLeaf", "isLeaf", "setLeaf", mclass));
     modifierMenu.addCheckItem(new ActionModifier("Root", "isRoot", "isRoot", "setRoot", mclass));
     modifierMenu.addCheckItem(new ActionModifier("Active", "isActive", "isActive", "setActive", mclass));
 
@@ -586,7 +588,7 @@ public class FigClass extends FigNodeModelElement {
         }
     }
     catch (Exception e) {
-      System.out.println("could not set package due to:"+e + "' at "+encloser);
+        cat.error("could not set package due to:" + e + "' at "+ encloser, e);
     }
 
     // The next if-clause is important for the Deployment-diagram
@@ -865,7 +867,7 @@ public class FigClass extends FigNodeModelElement {
 
   /**
    * <p>Sets the bounds, but the size will be at least the one returned by
-   *   {@link #getMinimunSize()}, unless checking of size is disabled.</p>
+   *   {@link #getMinimumSize()}, unless checking of size is disabled.</p>
    *
    * <p>If the required height is bigger, then the additional height is
    *   equally distributed among all figs (i.e. compartments), such that the
@@ -1001,5 +1003,30 @@ public class FigClass extends FigNodeModelElement {
     updateEdges();
     firePropChange("bounds", oldBounds, getBounds());
   }
+
+    /**
+     * @see org.tigris.gef.presentation.Fig#setOwner(Object)
+     */
+    public void setOwner(Object own) {      
+       if (own != null) {
+           MClass cl = (MClass)own;
+           Iterator it = cl.getFeatures().iterator();
+           while (it.hasNext()) {
+               MFeature feat = (MFeature)it.next();
+               if (feat instanceof MOperation) {
+                    MOperation oper = (MOperation)feat;
+                    Iterator it2 = oper.getParameters().iterator();
+                    while (it2.hasNext()) {
+                        MParameter param = (MParameter)it2.next();
+                        param.removeMElementListener(this);
+                        param.addMElementListener(this);
+                    }
+               }
+               feat.removeMElementListener(this);
+               feat.addMElementListener(this);
+           }
+       }
+       super.setOwner(own);
+    }
 
 } /* end class FigClass */

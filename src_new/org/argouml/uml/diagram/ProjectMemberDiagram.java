@@ -114,35 +114,7 @@ public class ProjectMemberDiagram extends ProjectMember {
   public void save(String path, boolean overwrite, Writer writer) {
     if (expander == null)
       expander = new OCLExpander(TemplateReader.readFile(PGML_TEE));
-
-//     if (!path.endsWith("/")) path += "/";
-//     String fullpath = path + getName();
-//     try {
-//       System.out.println("Writing " + fullpath + "...");
-//       Globals.showStatus("Writing " + fullpath + "...");
-//       File f = new File(fullpath);
-//       if (f.exists() && !overwrite) {
-// 	String t = "Overwrite " + fullpath;
-// 	ProjectBrowser pb = ProjectBrowser.TheInstance;
-// 	int response =
-// 	  JOptionPane.showConfirmDialog(pb, t, t,
-// 					JOptionPane.YES_NO_OPTION);
-// 	if (response == JOptionPane.NO_OPTION) return;
-//       }
-//       FileWriter fw = new FileWriter(f);
       expander.expand(writer, _diagram, "", "");
-//       System.out.println("Wrote " + fullpath);
-//       Globals.showStatus("Wrote " + fullpath);
-      // needs-more-work: progress bar in ProjectBrowser
-//      fw.close();
-//     }
-//     catch (FileNotFoundException ignore) {
-//       System.out.println("got an FileNotFoundException");
-//     }
-//     catch (IOException ignore) {
-//       System.out.println("got an IOException");
-//       ignore.printStackTrace();
-//     }
   }
 
   protected void setDiagram(ArgoDiagram diagram) {

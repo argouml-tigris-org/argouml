@@ -28,6 +28,7 @@ import java.beans.PropertyVetoException;
 import javax.swing.*;
 import javax.swing.event.*;
 
+import org.apache.log4j.Category;
 import org.argouml.ui.ProjectBrowser;
 import java.lang.reflect.*;
 
@@ -37,6 +38,8 @@ import ru.novosoft.uml.foundation.data_types.*;
 
 public class UMLRadioButton extends JRadioButton implements ItemListener, 
                                                             UMLUserInterfaceComponent {
+    protected static Category cat = Category.getInstance(UMLRadioButton.class);
+                                                                
         
 	private class BooleanSetter implements Runnable {
 		JRadioButton _field = null;
@@ -76,7 +79,7 @@ public class UMLRadioButton extends JRadioButton implements ItemListener,
         update();
     }
     public void itemStateChanged(final ItemEvent event) {
-//		System.out.println(getAccessibleContext().getAccessibleName()+" itemStateChanged "+event.getStateChange());
+		cat.debug(getAccessibleContext().getAccessibleName()+" itemStateChanged "+event.getStateChange());
 		try {
         	_property.setProperty(_container.getTarget(),event.getStateChange() == ItemEvent.SELECTED);
 		}

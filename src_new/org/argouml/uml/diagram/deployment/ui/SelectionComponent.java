@@ -42,10 +42,13 @@ import org.tigris.gef.presentation.*;
 import org.tigris.gef.graph.*;
 import org.tigris.gef.util.*;
 
+import org.apache.log4j.Category;
 import org.argouml.model.uml.UmlFactory;
 import org.argouml.uml.diagram.ui.*;
 
 public class SelectionComponent extends SelectionWButtons {
+    protected static Category cat = 
+        Category.getInstance(SelectionComponent.class);
   ////////////////////////////////////////////////////////////////
   // constants
   public static Icon dep = ResourceLoader.lookupIconResource("Dependency");
@@ -149,7 +152,7 @@ public class SelectionComponent extends SelectionWButtons {
       bx = cx;
       break;
     default:
-      System.out.println("invalid handle number");
+      cat.warn("invalid handle number");
       break;
     }
     if (edgeClass != null && nodeClass != null) {

@@ -20,10 +20,14 @@ import org.tigris.gef.base.ModeCreatePolyEdge;
 import org.tigris.gef.ui.*;
 
 import org.argouml.uml.diagram.ui.*;
+import org.argouml.uml.ui.ActionAddNote;
+import org.apache.log4j.Category;
 import org.argouml.ui.CmdCreateNode;
 import org.argouml.uml.diagram.deployment.*;
 
 public class UMLDeploymentDiagram extends UMLDiagram {
+    protected static Category cat = 
+        Category.getInstance(UMLDeploymentDiagram.class);
 
   ////////////////
   // actions for toolbar
@@ -84,10 +88,9 @@ public class UMLDeploymentDiagram extends UMLDiagram {
 
     /** method to perform a number of important initializations of a <I>Deployment Diagram</I>. 
      * 
-     * @see      each diagram type has a similar <I>UMLxxxDiagram</I> class.
+     * each diagram type has a similar <I>UMLxxxDiagram</I> class.
      *
      * @param m  MNamespace from the model in NSUML...
-     *
      * @modified changed <I>lay</I> from <I>LayerPerspective</I> to <I>LayerPerspectiveMutable</I>. 
      *           This class is a child of <I>LayerPerspective</I> and was implemented 
      *           to correct some difficulties in changing the model. <I>lay</I> is used 
@@ -110,7 +113,7 @@ public class UMLDeploymentDiagram extends UMLDiagram {
 
   /** initialize the toolbar for this diagram type */
   protected void initToolBar() {
-    //System.out.println("making deployment toolbar");
+    cat.debug("making deployment toolbar");
     _toolBar = new ToolBar();
     _toolBar.setLayout(new FlowLayout(FlowLayout.LEFT, 0, 0));
 //     _toolBar.add(Actions.Cut);
@@ -131,6 +134,8 @@ public class UMLDeploymentDiagram extends UMLDiagram {
     _toolBar.add(_actionMObject); 
     _toolBar.add(_actionMLink);
 // other actions
+   _toolBar.addSeparator();
+    _toolBar.add(ActionAddNote.SINGLETON);
     _toolBar.addSeparator();
 
     _toolBar.add(_actionRectangle);

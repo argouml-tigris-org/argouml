@@ -40,17 +40,20 @@ import org.tigris.gef.base.*;
 import org.tigris.gef.presentation.*;
 import org.tigris.gef.graph.*;
 
+import org.apache.log4j.Category;
 import org.argouml.uml.diagram.ui.*;
 
 
 public class SequenceDiagramRenderer
 implements GraphNodeRenderer, GraphEdgeRenderer {
+    protected static Category cat = 
+        Category.getInstance(SequenceDiagramRenderer.class);
 
   /** Return a Fig that can be used to represent the given node */
   public FigNode getFigNodeFor(GraphModel gm, Layer lay, Object node) {
     if (node instanceof MObject) return new FigSeqObject(gm, node);
     if (node instanceof MStimulus) return new FigSeqStimulus(gm, node);
-    System.out.println("needs-more-work SequenceDiagramRenderer getFigNodeFor");
+    cat.debug("needs-more-work SequenceDiagramRenderer getFigNodeFor");
     return null;
   }
 
@@ -62,7 +65,10 @@ implements GraphNodeRenderer, GraphEdgeRenderer {
       MLink ml = (MLink) edge;
       FigSeqLink mlFig = new FigSeqLink(ml);
       Collection connections = ml.getConnections();
-      if (connections == null) System.out.println("null connections....");
+      if (connections == null) {
+        cat.debug("null connections....");
+        return null;
+      }
       MLinkEnd fromEnd = (MLinkEnd) ((Object[])connections.toArray())[0];
       MInstance fromInst = (MInstance) fromEnd.getInstance();
       MLinkEnd toEnd = (MLinkEnd) ((Object[])connections.toArray())[1];
@@ -76,7 +82,7 @@ implements GraphNodeRenderer, GraphEdgeRenderer {
       return mlFig;
     }
 
-    System.out.println("needs-more-work SequenceDiagramRenderer getFigEdgeFor");
+    cat.debug("needs-more-work SequenceDiagramRenderer getFigEdgeFor");
     return null;
   }
 

@@ -140,10 +140,6 @@ implements PluggablePropertyPanel {
             MActor actor = pkg.getFactory().createActor();
             pkg.addOwnedElement(actor);
             navigateTo(actor);
-            // 2002-07-15
-            // Jaap Branderhorst
-            // Force an update of the navigation pane to solve issue 323
-            ProjectBrowser.TheInstance.getNavPane().forceUpdate();
         }
     }
 
@@ -154,10 +150,6 @@ implements PluggablePropertyPanel {
             MUseCase useCase = pkg.getFactory().createUseCase();
             pkg.addOwnedElement(useCase);
             navigateTo(useCase);
-            // 2002-07-15
-            // Jaap Branderhorst
-            // Force an update of the navigation pane to solve issue 323
-            ProjectBrowser.TheInstance.getNavPane().forceUpdate();
         }
     }  
 
@@ -192,11 +184,7 @@ implements PluggablePropertyPanel {
     }
 
     public void deleteElement(MModelElement element) {
-        element.remove();
-        // 2002-07-15
-        // Jaap Branderhorst
-        // Force an update of the navigation pane to solve issue 323
-        ProjectBrowser.TheInstance.getNavPane().forceUpdate();
+        UmlFactory.getFactory().delete(element);
     }
 
     public void addStereotype(MModelElement element) {

@@ -176,7 +176,7 @@ public class FigClassifierRole extends FigNodeModelElement {
      * <p>Variant constructor that associates the classifier role with a
      *   particular NSUML object.</p>
      *
-     * <p>Classifier role is constructed with {@link FigClassifierRole()}.</p>
+     * <p>Classifier role is constructed with {@link #FigClassifierRole()}.</p>
      *
      * @param gm    The graph model to use. Ignored in this implementation.
      *
@@ -325,8 +325,7 @@ public class FigClassifierRole extends FigNodeModelElement {
 
     public void setOwner(Object node) {
         super.setOwner(node);
-        bindPort((Object) node, _bigPort);
-	modelChanged();
+        bindPort(node, _bigPort);
     }
 
 
@@ -527,28 +526,6 @@ public class FigClassifierRole extends FigNodeModelElement {
         // Now recalculate all the bounds, using our old bounds.
 
 	setBounds(oldBounds.x, oldBounds.y, oldBounds.width, oldBounds.height);
-    }
-
-
-    /**
-     * <p>Handle the deletion of the owner of this fig.</p>
-     *
-     * <p>Not clear that this does anything beyond the default.</p>
-     */
-
-    public void dispose() {
-
-        // Give up if no owner
-
-        if (!(getOwner() instanceof MElement)) {
-            return;
-        }
-
-        MElement elmt = (MElement) getOwner();
-        Project  p    = ProjectBrowser.TheInstance.getProject();
-
-        p.moveToTrash(elmt);
-        super.dispose();
     }
 
 

@@ -62,13 +62,9 @@ public class ActionCreatePseudostate extends CmdCreateNode {
   // needs-more-work: should call super, reduce code volume!
   public Object makeNode() {
     Object newNode = super.makeNode();
-    // try {
     MPseudostateKind kind = (MPseudostateKind) _args.get("kind");
     ((MPseudostate)newNode).setKind(kind);
-	// }
-	//catch (PropertyVetoException pve) {
-    //  System.out.println("PropertyVetoException in seting pseudo kind");
-    //}
+
     return newNode;
   }
 

@@ -36,11 +36,14 @@ import org.tigris.gef.graph.presentation.*;
 import org.tigris.gef.event.*;
 import org.tigris.gef.ui.*;
 
+import org.apache.log4j.Category;
 import org.argouml.ui.*;
 import org.argouml.uml.ui.*;
 
 public class TabDiagram extends TabSpawnable
 implements TabModelTarget, GraphSelectionListener, ModeChangeListener {
+    protected static Category cat = 
+        Category.getInstance(TabDiagram.class);
   ////////////////////////////////////////////////////////////////
   // instance variables
   protected UMLDiagram _target; // the diagram object
@@ -106,7 +109,7 @@ implements TabModelTarget, GraphSelectionListener, ModeChangeListener {
       remove(_toolBar);
     }
     _toolBar = d.getToolBar();
-    //System.out.println("setting toolbar in NORTH panel");
+    cat.debug("setting toolbar in NORTH panel");
     add(_toolBar, BorderLayout.NORTH);
     setVisible(visible);
     //layout();
@@ -142,7 +145,7 @@ implements TabModelTarget, GraphSelectionListener, ModeChangeListener {
   }
 
   public void modeChange(ModeChangeEvent mce) {
-    //System.out.println("TabDiagram got mode change event");
+    cat.debug("TabDiagram got mode change event");
     if (!Globals.getSticky() && Globals.mode() instanceof ModeSelect)
       _toolBar.unpressAllButtons();
   }

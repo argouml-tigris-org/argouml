@@ -36,11 +36,13 @@ import ru.novosoft.uml.behavior.state_machines.*;
 
 import org.tigris.gef.util.*;
 
+import org.apache.log4j.Category;
 import org.argouml.cognitive.*;
 
 /** A critic to detect when a state has no outgoing transitions. */
 
 public class CrMultipleInitialStates extends CrUML {
+    protected static Category cat = Category.getInstance(CrMultipleInitialStates.class);
 
   public CrMultipleInitialStates() {
     setHeadline("Remove Extra Initial States");
@@ -54,7 +56,7 @@ public class CrMultipleInitialStates extends CrUML {
     MPseudostate ps = (MPseudostate) dm;
     if (ps.getKind() != MPseudostateKind.INITIAL) return NO_PROBLEM;
     MCompositeState cs = ps.getContainer();
-    if (cs == null) { System.out.println("null parent state"); return NO_PROBLEM; }
+    if (cs == null) { cat.debug("null parent state"); return NO_PROBLEM; }
     Collection peers = cs.getSubvertices();
     int initialStateCount = 0;
     int size = peers.size();
@@ -77,7 +79,7 @@ public class CrMultipleInitialStates extends CrUML {
   protected VectorSet computeOffenders(MPseudostate ps) {
     VectorSet offs = new VectorSet(ps);
     MCompositeState cs = ps.getContainer();
-    if (cs == null) { System.out.println("null parent in still valid"); return offs; }
+    if (cs == null) { cat.debug("null parent in still valid"); return offs; }
     Collection peers = cs.getSubvertices();
     for (Iterator iter = peers.iterator(); iter.hasNext();) {
       Object sv = iter.next();
@@ -95,9 +97,7 @@ public class CrMultipleInitialStates extends CrUML {
     //if (!predicate(dm, dsgr)) return false;
     VectorSet newOffs = computeOffenders(dm);
     boolean res = offs.equals(newOffs);
-//      System.out.println("offs="+ offs.toString() +
-//  		       " newOffs="+ newOffs.toString() +
-//  		       " res = " + res);
+
     return res;
   }
 

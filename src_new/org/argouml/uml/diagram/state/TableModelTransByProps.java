@@ -28,10 +28,13 @@ import java.beans.*;
 
 import ru.novosoft.uml.behavior.state_machines.*;
 
+import org.apache.log4j.Category;
 import org.argouml.uml.*;
 import org.argouml.uml.diagram.state.ui.UMLStateDiagram;
 
 public class TableModelTransByProps extends TableModelComposite {
+    protected static Category cat = 
+        Category.getInstance(TableModelTransByProps.class);
   ////////////////
   // constructor
   public TableModelTransByProps() { }
@@ -47,7 +50,6 @@ public class TableModelTransByProps extends TableModelComposite {
   }
 
   public Vector rowObjectsFor(Object t) {
-    //System.out.println("rowObjectsFor " + t);
     if (!(t instanceof UMLStateDiagram)) return new Vector();
     UMLStateDiagram d = (UMLStateDiagram) t;
     Vector edges = d.getEdges();

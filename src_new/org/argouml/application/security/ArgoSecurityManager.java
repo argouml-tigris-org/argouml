@@ -25,20 +25,15 @@ package org.argouml.application.security;
 
 // Import the following classes fully qualified to ensure that
 // no one can short-circuit our intended inheritance.
-import java.lang.ClassLoader;
-import java.lang.SecurityManager;
 import java.util.jar.JarFile;
 import java.util.jar.Manifest;
 import java.util.jar.Attributes;
 import java.util.PropertyPermission;
 import java.security.Permission;
-import java.lang.Thread;
-import java.lang.Class;
-import java.lang.ThreadGroup;
-import java.lang.Object;
-import java.lang.String;
 import java.io.FileDescriptor;
 import java.net.InetAddress;
+
+import org.apache.log4j.Category;
 
 /** The Argo custom security manager.
  *
@@ -52,8 +47,7 @@ import java.net.InetAddress;
  *
  *  One of the areas this is necessary is to protect from the
  *  {@link java.lang.System#exit(int)} or
- *  <!-- for some reason, java.lang.Runtime#exit is not found by javadoc -->
- *  java.lang.Runtime.exit(int) calls.
+ *  {@java.lang.Runtime#exit(int)} calls.
  *
  *  Another is to prevent modules from replacing the awt exception
  *  trapping hook so that we are able to properly catch any
@@ -62,10 +56,11 @@ import java.net.InetAddress;
  *
  *  @author Thierry Lach
  *  @since 0.9.4
+ *  @stereotype singleton
  */
 public final class ArgoSecurityManager extends SecurityManager
 {
-
+    protected static Category cat = Category.getInstance(ArgoSecurityManager.class);
     private boolean _allowExit = false;
 
     /** The only allowed instance. */
@@ -97,7 +92,7 @@ public final class ArgoSecurityManager extends SecurityManager
 	else if (perm.getClass().equals(java.lang.RuntimePermission.class)) {
 	    RuntimePermission rp = (RuntimePermission)perm;
             // Uncomment for more information about what happens...
-	    // System.out.println ("RuntimePermission: " + rp.getName() + " - '" + rp.getActions()+ "'");
+	    cat.debug("RuntimePermission: " + rp.getName() + " - '" + rp.getActions()+ "'");
 	    if ("exitVM".equals(rp.getName())) {
 		if (! _allowExit) {
 		    throw new ArgoSecurityException(true);

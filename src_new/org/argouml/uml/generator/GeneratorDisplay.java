@@ -289,45 +289,6 @@ public String generateConcurrency(MCallConcurrencyKind concurrency) {
   		sb.append(properties);
   	}
   	return sb.toString().trim();
-  
-  	
-  	/*
-  	 * 2002-07-22
-  	 * Jaap Branderhorst
-  	 * This does not comply to the UML 1.3 spec
-  	 * so rewritten it. (Patch to issue 765 and 558)
-  	 * Start old code
-  	
-    String s = "";
-    s += generateVisibility(attr);
-    s += generateMultiplicity(attr);
-    s += generateScope(attr);
-    s += generateChangability(attr);
-    
-
-    String slash = "";
-    // not in nsuml: if (attr.containsStereotype(MStereotype.DERIVED)) slash = "/";
-
-    s += slash + generateName(attr.getName());
-
-    MClassifier type = attr.getType();
-    if (type != null) s += ": " + generateClassifierRef(type);
-
-    MExpression init = attr.getInitialValue();
-    if (init != null) {
-      String initStr = generateExpression(init).trim();
-      if (initStr.length() > 0)
-		  s += " = " + initStr;
-    }
-
-
-//     String constraintStr = generateConstraints(attr);
-//     if (constraintStr.length() > 0)
-//       s += " " + constraintStr;
-
-	// System.out.println("generated attribute string: "+s);
-    return s;
-    */
     
   }
 
@@ -574,8 +535,7 @@ public String generateConcurrency(MCallConcurrencyKind concurrency) {
     String predecessors = "";
     int lpn;
 
-    if (m == null)
-	return "";
+    if (m == null) return "";
 
     ptr = new MsgPtr();
     lpn = recCountPredecessors(m, ptr) + 1;
@@ -584,37 +544,37 @@ public String generateConcurrency(MCallConcurrencyKind concurrency) {
     pre = m.getPredecessors();
     it = pre.iterator();
     if (it.hasNext()) {
-	MsgPtr ptr2 = new MsgPtr();
-	int precnt = 0;
-
-	while (it.hasNext()) {
-	    MMessage msg = (MMessage) it.next();
-	    int mpn = recCountPredecessors(msg, ptr2) + 1;
-
-	    if (mpn == lpn - 1 && rt == msg.getActivator() &&
-		msg.getPredecessors().size() < 2 &&
-		(ptr2.message == null || countSuccessors(ptr2.message) < 2)) {
-		continue;
-	    }
-
-	    if (predecessors.length() > 0)
-		predecessors += ", ";
-	    predecessors += generateMessageNumber(msg, ptr2.message, mpn);
-	    precnt++;
-	}
-
-	if (precnt > 0)
-	    predecessors += " / ";
+		MsgPtr ptr2 = new MsgPtr();
+		int precnt = 0;
+	
+		while (it.hasNext()) {
+		    MMessage msg = (MMessage) it.next();
+		    int mpn = recCountPredecessors(msg, ptr2) + 1;
+	
+		    if (mpn == lpn - 1 && rt == msg.getActivator() &&
+			msg.getPredecessors().size() < 2 &&
+			(ptr2.message == null || countSuccessors(ptr2.message) < 2)) {
+				continue;
+		    }
+	
+		    if (predecessors.length() > 0)
+				predecessors += ", ";
+		    predecessors += generateMessageNumber(msg, ptr2.message, mpn);
+		    precnt++;
+		}
+	
+		if (precnt > 0)
+		    predecessors += " / ";
     }
 
     number = generateMessageNumber(m, ptr.message, lpn);
 
     act = m.getAction();
     if (act != null) {
-	if (act.getRecurrence() != null)
-	    number = generateRecurrence(act.getRecurrence()) + " " + number;
-
-	action = generateAction(act);
+		if (act.getRecurrence() != null)
+		    number = generateRecurrence(act.getRecurrence()) + " " + number;
+	
+		action = generateAction(act);
     }
 
     return predecessors + number + " : " + action;

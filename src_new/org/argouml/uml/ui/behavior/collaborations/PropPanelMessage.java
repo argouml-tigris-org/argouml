@@ -97,13 +97,17 @@ public class PropPanelMessage extends PropPanelModelElement {
 
     addCaption("Activator:",1,1,0);
     // UMLModelElementListModel activatorModel=new UMLReflectionListModel(this, "activator",true,"getActivator",null, "addActivator",null);
+    /*
     UMLModelElementListModel activatorModel = new UMLActivatorListModel(this, "activator", true);
     JList activatorList = new UMLList(activatorModel,true);
     activatorList.setForeground(Color.blue);
     activatorList.setFont(smallFont);
     activatorList.setVisibleRowCount(1);
     JScrollPane activatorScroll = new JScrollPane(activatorList,JScrollPane.VERTICAL_SCROLLBAR_NEVER,JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-    addField(activatorScroll,1,1,0);
+    */
+    UMLActivatorComboBoxModel model = new UMLActivatorComboBoxModel(this);
+    
+    addField(new UMLActivatorComboBox(this, model),1,1,0);
 
     addCaption("Action:",2,1,1);
     UMLModelElementListModel actionModel=new UMLActionListModel(this, "action",true,"getAction",null,"addAction","deleteAction");
@@ -171,7 +175,6 @@ public class PropPanelMessage extends PropPanelModelElement {
         if(target instanceof MMessage) {
             action = (MCallAction)CommonBehaviorFactory.getFactory().buildAction((MMessage)target);
         }
-        ProjectBrowser.TheInstance.getNavPane().forceUpdate();
         return action;
     }
     
@@ -181,7 +184,6 @@ public class PropPanelMessage extends PropPanelModelElement {
         if(target instanceof MMessage) {
             action = (MCallAction)CommonBehaviorFactory.getFactory().buildAction((MMessage)target);
         }
-        ProjectBrowser.TheInstance.getNavPane().forceUpdate();
         return action;
     }
     	
@@ -261,5 +263,7 @@ class UMLActionListModel extends UMLReflectionListModel {
         popup.add(add);
         return true;
 	}
+	
+	
 
 }

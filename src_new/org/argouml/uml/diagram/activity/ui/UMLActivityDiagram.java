@@ -46,13 +46,14 @@ import org.tigris.gef.base.ModeCreatePolyEdge;
 import org.tigris.gef.ui.*;
 
 import org.argouml.uml.diagram.ui.*;
+import org.apache.log4j.Category;
 import org.argouml.ui.CmdCreateNode;
 import org.argouml.uml.diagram.state.*;
 import org.argouml.uml.diagram.state.ui.*;
 
 // get the note from the class diagram
 import org.argouml.uml.ui.*;
-import org.argouml.uml.diagram.static_structure.ui.FigNote;
+import org.argouml.uml.diagram.static_structure.ui.FigComment;
 
 /** Enabling an activity diagram connected to an
  * actor has been requested as a feature.
@@ -61,6 +62,8 @@ import org.argouml.uml.diagram.static_structure.ui.FigNote;
  * diagram is considered valuable as well.
  */
 public class UMLActivityDiagram extends UMLDiagram {
+    protected static Category cat = 
+        Category.getInstance(UMLActivityDiagram.class);
 
   ////////////////
   // actions for toolbar
@@ -134,17 +137,15 @@ public class UMLActivityDiagram extends UMLDiagram {
 		if (context != null && context instanceof MNamespace)
 			setup((MNamespace)context, sm);
 		else
-			System.out.println("ActivityGraph without context not yet possible :-(");
+			cat.debug("ActivityGraph without context not yet possible :-(");
 	}
         
     /** method to perform a number of important initializations of an <I>Activity Diagram</I>. 
      * 
-     * @see      each diagram type has a similar <I>UMLxxxDiagram</I> class.
+     * each diagram type has a similar <I>UMLxxxDiagram</I> class.
      *
      * @param m  MNamespace from the model in NSUML...
-     *
      * @param agraph MActivityGraph from the model in NSUML...
-     *
      * @modified changed <I>lay</I> from <I>LayerPerspective</I> to <I>LayerPerspectiveMutable</I>. 
      *           This class is a child of <I>LayerPerspective</I> and was implemented 
      *           to correct some difficulties in changing the model. <I>lay</I> is used 
@@ -186,7 +187,7 @@ public class UMLActivityDiagram extends UMLDiagram {
 
   /** initialize the toolbar for this diagram type */
   protected void initToolBar() {
-    //System.out.println("making state toolbar");
+    cat.debug("making state toolbar");
     _toolBar = new ToolBar();
     _toolBar.setLayout(new FlowLayout(FlowLayout.LEFT, 0, 0));
 
@@ -209,7 +210,8 @@ public class UMLActivityDiagram extends UMLDiagram {
     _toolBar.add(_actionBranchPseudoState);
     _toolBar.add(_actionForkPseudoState);
     _toolBar.add(_actionJoinPseudoState);
-    //_toolBar.add(ActionAddNote.SINGLETON); // removed until issue 529 resolved
+    _toolBar.addSeparator();
+    _toolBar.add(ActionAddNote.SINGLETON);
     _toolBar.addSeparator();
 
     _toolBar.add(_actionRectangle);

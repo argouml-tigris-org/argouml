@@ -57,14 +57,13 @@ public class ActionAddMessage extends UMLChangeAction {
     // main methods
 
     public void actionPerformed(ActionEvent ae) {
-	ProjectBrowser pb = ProjectBrowser.TheInstance;
-	Object target = pb.getDetailsTarget();
-	Object d = pb.getTarget();
-	
-	if (!(target instanceof MAssociationRole) && ((MAssociationRole)target).getNamespace() instanceof MCollaboration) return;
-	MAssociationRole ar = (MAssociationRole) target;
-    this.addMessage(ar);
-    pb.getNavPane().forceUpdate();
+    	ProjectBrowser pb = ProjectBrowser.TheInstance;
+    	Object target = pb.getDetailsTarget();
+    	Object d = pb.getTarget();
+    	
+    	if (!(target instanceof MAssociationRole) && ((MAssociationRole)target).getNamespace() instanceof MCollaboration) return;
+    	MAssociationRole ar = (MAssociationRole) target;
+        this.addMessage(ar);
     }
     
     /**
