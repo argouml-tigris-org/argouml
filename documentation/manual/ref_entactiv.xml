@@ -9,7 +9,7 @@ Argo/UML.
 -->
 
 <chapter id="ch.ref.entactiv">
-  <title>&argouml; Activity Diagram Artifact Reference</title>
+  <title>Activity Diagram Artifact Reference</title>
 
   &notupdatedfor014disclaimer;
 
@@ -218,40 +218,6 @@ Argo/UML.
             structure.</para></listitem>
         </varlistentry>
 
-        <!-- Entry for Go back button -->
-
-        <varlistentry>
-          <term><guiicon><inlinemediaobject><imageobject><imagedata
-            format="GIF" align="center"
-            fileref="images/icons/navigate_back.gif"/>
-          </imageobject></inlinemediaobject></guiicon> <literal>Go
-            back</literal></term>
-
-          <listitem><para>Navigate back to the previous
-            artifact.</para>
-
-          <warning><para>This feature is currently broken within &argouml;
-            and there is no guarantee where (if anywhere) this button will
-            take you.</para></warning></listitem>
-        </varlistentry>
-
-        <!-- Entry for Go forward button -->
-
-        <varlistentry>
-          <term><guiicon><inlinemediaobject><imageobject><imagedata
-            format="GIF" align="center"
-            fileref="images/icons/navigate_forward.gif"/>
-          </imageobject></inlinemediaobject></guiicon> <literal>Go
-            forward</literal></term>
-
-          <listitem><para>Navigate forward to the next
-            artifact.</para>
-
-          <warning><para>This feature is currently broken within &argouml;
-            and there is no guarantee where (if anywhere) this button will
-            take you.</para></warning></listitem>
-        </varlistentry>
-
         <!-- Entry for Delete button -->
 
         <varlistentry>
@@ -266,8 +232,8 @@ Argo/UML.
           <warning><para>This is a deletion from the model
             <emphasis>not</emphasis> just the diagram. To delete an
             action state from the diagram, but keep it within the model, use
-            the main menu <literal>Edit/Remove From Diagram</literal>
-            (Ctrl-R).</para></warning></listitem>
+            the main menu <literal>Remove From Diagram</literal>
+            (or press the Delete key).</para></warning></listitem>
         </varlistentry>
       </variablelist>
     </sect2>
@@ -298,16 +264,9 @@ Argo/UML.
           <term><literal>Stereotype</literal></term>
 
           <listitem><para>Drop down selector. Action state has no stereotypes
-            by default in the UML standard, but &argouml; provides the
-            stereotypes, <literal>machine</literal>,
-            <literal>organization</literal> and
-            <literal>person</literal>.</para>
+            by default in the UML standard.</para>
 
-          <caution><para>&argouml; also provides the stereotype
-            <literal>realize</literal> for action states. This appears to
-            be an error, since this stereotype properly belongs to the
-            <literal>Abstraction</literal>
-            metaclass.</para></caution></listitem>
+          </listitem>
         </varlistentry>
 
         <!-- Entry for NavStereo -->
@@ -320,8 +279,21 @@ Argo/UML.
               fileref="images/icons/navigate_stereotype.gif"/>
             </imageobject></inlinemediaobject></guiicon> icon. If a
               stereotype has been selected, this will navigate to the
-              stereotype property panel (see <xref
-                linkend="s1.ref.stereotype_class"/>).</para></listitem>
+              stereotype property panel (see
+<!-- MVW: This reference is wrong! It should refer to 14.4, not 16.4. -->
+              <xref linkend="s1.ref.stereotype_class"/>).</para></listitem>
+        </varlistentry>
+
+        <!-- Entry for Namespace -->
+
+        <varlistentry>
+          <term><literal>Namespace</literal></term>
+
+          <listitem>
+            <para>
+Text box.
+The namespace in which the action state is defined.
+            </para></listitem>
         </varlistentry>
 
         <!-- Entry for Entry Action -->
@@ -329,27 +301,43 @@ Argo/UML.
         <varlistentry>
           <term><literal>Entry-Action</literal></term>
 
-          <listitem><para>Text box. Lists the action (if any) to be invoked on
+          <listitem><para>Text box. 
+Shows the name of the action to be invoked on
             entry to this action state.</para>
 
-          <para>&Button1; click navigates to the selected entry, &button2;
-            gives a pop up menu with three entries.</para>
+            <para>&Button1; double-click navigates to the selected entry, 
+              &button2; gives a pop up menu with two entries.</para>
 
-          <itemizedlist>
-            <listitem><para><literal>Open</literal>. Navigate to the
-              selected action.</para></listitem>
+            <itemizedlist>
+              <listitem>
+                <para><literal>New</literal>. 
+Add a new Entry action of a certain kind. 
+This menu has the following 7 submenus 
+to select the kind of action: Call Action, Create Action, 
+Destroy Action, Return Action, Send Action, Terminate Action, 
+Uninterpreted Action.
+                </para>
+              </listitem>
+              <listitem><para><literal>Delete From Model</literal>. 
+Delete the Entry-Action.
+              </para></listitem>
+            </itemizedlist>
 
-            <listitem><para><literal>Delete</literal>. Delete the selected
-              action.</para></listitem>
-
-            <listitem><para><literal>Add</literal>. Add a new
-              action.</para></listitem>
-          </itemizedlist></listitem>
+          </listitem>
         </varlistentry>
 
-        <!-- Entry for Modifiers -->
+        <!-- Entry for Exit Action -->
+<!-- MVW: This field is present in 0.14 ArgoUML, 
+but should not be according UML standard.-->
 
-        <varlistentry>
+        <!-- Entry for Do-Activity -->
+<!-- MVW: This field is present in 0.14 ArgoUML, 
+but should not be according UML standard.-->
+
+
+        <!-- Entry for Modifiers -->
+<!-- MVW: Missing in ArgoUML: a modifier checkbox field for "Dynamic" -->
+        <!--varlistentry>
           <term><literal>Modifiers</literal></term>
 
           <listitem><para>Check box. Indicates whether the action state's
@@ -360,7 +348,7 @@ Argo/UML.
             release of &argouml; in the absence of fields specifying
             dynamic arguments and dynamic
             multiplicity.</para></caution></listitem>
-        </varlistentry>
+        </varlistentry-->
 
         <!-- Entry for Incoming -->
 
@@ -401,6 +389,11 @@ Argo/UML.
               selected transition.</para></listitem>
           </itemizedlist></listitem>
         </varlistentry>
+
+        <!-- Entry for Internal Transitions -->
+<!-- MVW: This field is present in 0.14 ArgoUML, 
+but should not be according UML standard.-->
+
       </variablelist>
     </sect2>
   </sect1>

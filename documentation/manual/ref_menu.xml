@@ -29,6 +29,60 @@ A description of all the menu bar entries
       while holding down the ALT key should select the entry. In the current
       version of &argouml; this functionality is only available when running
       under Microsoft Windows.</para></warning>
+
+    <para>
+The following is an explanation of why the menuitems are grouped as they are.
+    </para>
+
+    <para>
+      <itemizedlist>
+        <listitem>
+The <emphasis>File</emphasis> menu contains operations that affect on the whole project/file. 
+All the items in this menu can be explained as such.
+        </listitem>
+        <listitem>
+The <emphasis>Edit</emphasis> menu is generally intended for editing the model or changing the content of a diagram. 
+It also contains functions to enable editing, like e.g. selecting. 
+This menu is not intended for diagram layout functions. 
+Most functions here do something with the selected modelelement and diagram. 
+The item "Settings..." is an exception here, logically it might belong better under
+the File menu, but people are used to find it here.
+        </listitem>
+        <listitem>
+The <emphasis>View</emphasis> menu is for functions that do never alter the model, 
+nor the diagram layout, only the way you view the diagram. 
+Good examples are "zoom" and "notation".  
+Also navigational functions belong here, e.g. "Find" and "Goto Diagram...". 
+All changes of settings in this menu apply to all diagrams (e.g. zoom).
+        </listitem>
+        <listitem>
+The <emphasis>Create Diagram</emphasis> menu contains all possible diagrams that can be
+created. 
+Downlighting is context dependend, since these functions work on the selected modelelement.
+        </listitem>
+        <listitem>
+The <emphasis>Arrange</emphasis> menu is only for layout changes in a diagram, which is not the same as the items in the View menu. 
+Functions here can not alter the UML model.
+        </listitem>
+        <listitem>
+The <emphasis>Generation</emphasis> menu is for Code Generation. 
+The functions here work either on the selected modelelements, or on the whole project.
+        </listitem>
+        <listitem>
+The <emphasis>Critique</emphasis> menu is specific for this function, 
+it contains settings for the project.
+        </listitem>
+        <listitem>
+The <emphasis>Tools</emphasis> menu currently contains the "Export as XMI" item. 
+Also, if plugins are installed, then their functions appear here.
+        </listitem>
+        <listitem>
+The <emphasis>Help</emphasis> menu contains the usual "information" and "about".
+        </listitem>
+      </itemizedlist>
+    </para>
+
+
   </sect1>
 
   <!-- How the mouse behaves in the menu bar -->
