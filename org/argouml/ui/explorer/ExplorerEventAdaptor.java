@@ -29,6 +29,7 @@ import java.beans.PropertyChangeListener;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.application.api.Notation;
 import org.argouml.application.api.Configuration;
+import org.argouml.model.Model;
 import org.argouml.model.uml.ExplorerNSUMLEventAdaptor;
 
 /**
@@ -76,7 +77,7 @@ public final class ExplorerEventAdaptor
         Configuration.addListener(Notation.KEY_USE_GUILLEMOTS, this);
         Configuration.addListener(Notation.KEY_SHOW_STEREOTYPES, this);
         ProjectManager.getManager().addPropertyChangeListener(this);
-        ExplorerNSUMLEventAdaptor.getInstance().addPropertyChangeListener(this);
+        Model.getEventAdapter().addPropertyChangeListener(this);
     }
 
     /**
