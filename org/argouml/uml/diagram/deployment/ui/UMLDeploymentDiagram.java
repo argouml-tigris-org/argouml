@@ -11,6 +11,7 @@ import javax.swing.JToolBar;
 
 import org.apache.log4j.Category;
 import org.argouml.kernel.ProjectManager;
+import org.argouml.model.ModelFacade;
 import org.argouml.ui.CmdCreateNode;
 import org.argouml.uml.diagram.deployment.DeploymentDiagramGraphModel;
 import org.argouml.uml.diagram.ui.ActionAddAssociation;
@@ -38,37 +39,78 @@ import ru.novosoft.uml.foundation.core.MNode;
 import ru.novosoft.uml.foundation.data_types.MAggregationKind;
 
 public class UMLDeploymentDiagram extends UMLDiagram {
-    protected static Category cat = Category.getInstance(UMLDeploymentDiagram.class);
+    protected static Category cat =
+        Category.getInstance(UMLDeploymentDiagram.class);
 
     ////////////////
     // actions for toolbar
 
-    protected static Action _actionMNode = new CmdCreateNode(MNode.class, "Node");
+    protected static Action _actionMNode =
+        new CmdCreateNode(MNode.class, "Node");
 
-    protected static Action _actionMNodeInstance = new CmdCreateNode(MNodeInstance.class, "NodeInstance");
+    protected static Action _actionMNodeInstance =
+        new CmdCreateNode(MNodeInstance.class, "NodeInstance");
 
-    protected static Action _actionMComponent = new CmdCreateNode(MComponent.class, "Component");
+    protected static Action _actionMComponent =
+        new CmdCreateNode(MComponent.class, "Component");
 
-    protected static Action _actionMComponentInstance = new CmdCreateNode(MComponentInstance.class, "ComponentInstance");
+    protected static Action _actionMComponentInstance =
+        new CmdCreateNode(MComponentInstance.class, "ComponentInstance");
 
-    protected static Action _actionMClass = new CmdCreateNode(MClass.class, "Class");
+    protected static Action _actionMClass =
+        new CmdCreateNode(MClass.class, "Class");
 
-    protected static Action _actionMInterface = new CmdCreateNode(MInterface.class, "Interface");
+    protected static Action _actionMInterface =
+        new CmdCreateNode(MInterface.class, "Interface");
 
-    protected static Action _actionMObject = new CmdCreateNode(MObject.class, "Object");
+    protected static Action _actionMObject =
+        new CmdCreateNode(MObject.class, "Object");
 
-    protected static Action _actionMDependency = new CmdSetMode(ModeCreatePolyEdge.class, "edgeClass", MDependency.class, "Dependency");
+    protected static Action _actionMDependency =
+        new CmdSetMode(
+            ModeCreatePolyEdge.class,
+            "edgeClass",
+            MDependency.class,
+            "Dependency");
 
-    protected static Action _actionMAssociation = new CmdSetMode(ModeCreatePolyEdge.class, "edgeClass", MAssociation.class, "Association");
+    protected static Action _actionMAssociation =
+        new CmdSetMode(
+            ModeCreatePolyEdge.class,
+            "edgeClass",
+            MAssociation.class,
+            "Association");
 
-    protected static Action _actionMLink = new CmdSetMode(ModeCreatePolyEdge.class, "edgeClass", MLink.class, "Link");
+    protected static Action _actionMLink =
+        new CmdSetMode(
+            ModeCreatePolyEdge.class,
+            "edgeClass",
+            MLink.class,
+            "Link");
 
-    protected static Action _actionAssociation = new ActionAddAssociation(MAggregationKind.NONE, false, "Association");
-    protected static Action _actionAggregation = new ActionAddAssociation(MAggregationKind.AGGREGATE, false, "Aggregation");
-    protected static Action _actionComposition = new ActionAddAssociation(MAggregationKind.COMPOSITE, false, "Composition");
-    protected static Action _actionUniAssociation = new ActionAddAssociation(MAggregationKind.NONE, true, "UniAssociation");
-    protected static Action _actionUniAggregation = new ActionAddAssociation(MAggregationKind.AGGREGATE, true, "UniAggregation");
-    protected static Action _actionUniComposition = new ActionAddAssociation(MAggregationKind.COMPOSITE, true, "UniComposition");
+    protected static Action _actionAssociation =
+        new ActionAddAssociation(MAggregationKind.NONE, false, "Association");
+    protected static Action _actionAggregation =
+        new ActionAddAssociation(
+            MAggregationKind.AGGREGATE,
+            false,
+            "Aggregation");
+    protected static Action _actionComposition =
+        new ActionAddAssociation(
+            MAggregationKind.COMPOSITE,
+            false,
+            "Composition");
+    protected static Action _actionUniAssociation =
+        new ActionAddAssociation(MAggregationKind.NONE, true, "UniAssociation");
+    protected static Action _actionUniAggregation =
+        new ActionAddAssociation(
+            MAggregationKind.AGGREGATE,
+            true,
+            "UniAggregation");
+    protected static Action _actionUniComposition =
+        new ActionAddAssociation(
+            MAggregationKind.COMPOSITE,
+            true,
+            "UniComposition");
 
     ////////////////////////////////////////////////////////////////
     // contructors
@@ -99,14 +141,22 @@ public class UMLDeploymentDiagram extends UMLDiagram {
      *           deleting layers on the diagram...
      *           psager@tigris.org   Jan. 24, 2oo2
      */
-    public void setNamespace(MNamespace m) {
+    public void setNamespace(Object handle) {
+        if (!ModelFacade.isANamespace(handle)) {
+            cat.error(
+                "Illegal argument. Object " + handle + " is not a namespace");
+            throw new IllegalArgumentException(
+                "Illegal argument. Object " + handle + " is not a namespace");
+        }
+        MNamespace m = (MNamespace)handle;
         super.setNamespace(m);
         DeploymentDiagramGraphModel gm = new DeploymentDiagramGraphModel();
         gm.setNamespace(m);
         setGraphModel(gm);
         LayerPerspective lay = new LayerPerspectiveMutable(m.getName(), gm);
         setLayer(lay);
-        DeploymentDiagramRenderer rend = new DeploymentDiagramRenderer(); // singleton
+        DeploymentDiagramRenderer rend = new DeploymentDiagramRenderer();
+        // singleton
         lay.setGraphNodeRenderer(rend);
         lay.setGraphEdgeRenderer(rend);
     }
@@ -131,7 +181,8 @@ public class UMLDeploymentDiagram extends UMLDiagram {
     }
 
     private PopupToolBoxButton buildAssociationPopup() {
-        PopupToolBoxButton toolBox = new PopupToolBoxButton(_actionAssociation, 0, 2);
+        PopupToolBoxButton toolBox =
+            new PopupToolBoxButton(_actionAssociation, 0, 2);
         toolBox.add(_actionAssociation);
         toolBox.add(_actionUniAssociation);
         toolBox.add(_actionAggregation);
@@ -140,7 +191,7 @@ public class UMLDeploymentDiagram extends UMLDiagram {
         toolBox.add(_actionUniComposition);
         return toolBox;
     }
-    
+
     static final long serialVersionUID = -375918274062198744L;
 
     /**
@@ -151,7 +202,10 @@ public class UMLDeploymentDiagram extends UMLDiagram {
         String name = null;
         name = "Deployment Diagram " + _DeploymentDiagramSerial;
         _DeploymentDiagramSerial++;
-        if (!ProjectManager.getManager().getCurrentProject().isValidDiagramName(name)) {
+        if (!ProjectManager
+            .getManager()
+            .getCurrentProject()
+            .isValidDiagramName(name)) {
             name = getNewDiagramName();
         }
         return name;

@@ -45,7 +45,7 @@ import org.tigris.gef.base.CmdSetMode;
 import org.tigris.gef.base.LayerPerspective;
 import org.tigris.gef.base.LayerPerspectiveMutable;
 import org.tigris.gef.base.ModeCreatePolyEdge;
-import org.tigris.gef.ui.ToolBar;
+
 import ru.novosoft.uml.behavior.activity_graphs.MActionState;
 import ru.novosoft.uml.behavior.activity_graphs.MActivityGraph;
 import ru.novosoft.uml.behavior.state_machines.MFinalState;

@@ -883,6 +883,23 @@ public class ModelFacade {
         }
         throw new IllegalArgumentException("Unrecognized object " + handle);
     }
+    
+    /**
+     * Returns the container for the given modelelement. The container is the
+     * owner of the modelelement. It will be null for elements that don't have
+     * an owner. All elements except for the root element in a project should
+     * have an owner. The root element is allways a model.
+     * <p> In  the future, this function could return the container of Figs too.
+     * </p>
+     * @param handle
+     * @return Object
+     */
+    public static Object getContainer(Object handle) {
+        if (handle instanceof MBase) {
+            return ((MBase) handle).getModelElementContainer();
+        }
+        throw new IllegalArgumentException("Unrecognized object " + handle);
+    }
 
     /** Get the namespace of an element.
      *

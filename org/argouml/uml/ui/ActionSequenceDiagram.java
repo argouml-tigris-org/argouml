@@ -24,6 +24,7 @@
 package org.argouml.uml.ui;
 
 import org.argouml.kernel.ProjectManager;
+import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.UmlFactory;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.diagram.sequence.ui.UMLSequenceDiagram;
@@ -46,7 +47,6 @@ public class ActionSequenceDiagram extends ActionAddDiagram {
 
     public static ActionSequenceDiagram SINGLETON = new ActionSequenceDiagram();
 
-
     ////////////////////////////////////////////////////////////////
     // constructors
 
@@ -54,48 +54,68 @@ public class ActionSequenceDiagram extends ActionAddDiagram {
         super("action.sequence-diagram");
     }
 
-
-    
     /**
      * @see org.argouml.uml.ui.ActionAddDiagram#createDiagram(MNamespace, Object)
      */
-    public UMLDiagram createDiagram(MNamespace ns) {
+    public UMLDiagram createDiagram(Object handle) {
+        if (!ModelFacade.isANamespace(handle)) {
+            cat.error("No namespace as argument");
+            cat.error(handle);
+            throw new IllegalArgumentException(
+                "The argument " + handle + "is not a namespace.");
+        }
+        MNamespace ns = (MNamespace)handle;
         MCollaboration c = null;
         Object target = ProjectBrowser.TheInstance.getTarget();
         if (target instanceof MOperation) {
-            c = UmlFactory.getFactory().getCollaborations().buildCollaboration(ns);
+            c =
+                UmlFactory.getFactory().getCollaborations().buildCollaboration(
+                    ns);
             c.setRepresentedOperation((MOperation)target);
-        } else
-        if (target instanceof MClassifier) {
-            c = UmlFactory.getFactory().getCollaborations().buildCollaboration(ns);
+        } else if (target instanceof MClassifier) {
+            c =
+                UmlFactory.getFactory().getCollaborations().buildCollaboration(
+                    ns);
             c.setRepresentedClassifier((MClassifier)target);
-        } else
-        if (target instanceof MModel) {
-            c = UmlFactory.getFactory().getCollaborations().buildCollaboration((MModel)target);
-        } else
-        if (target instanceof MInteraction) {
+        } else if (target instanceof MModel) {
+            c =
+                UmlFactory.getFactory().getCollaborations().buildCollaboration(
+                    (MModel)target);
+        } else if (target instanceof MInteraction) {
             c = ((MInteraction)target).getContext();
-        } else
-        if (target instanceof UMLSequenceDiagram) {
+        } else if (target instanceof UMLSequenceDiagram) {
             Object o = ((UMLSequenceDiagram)target).getOwner();
-            if (o instanceof MCollaboration) { //preventing backward compat problems
+            if (o instanceof MCollaboration) {
+                //preventing backward compat problems
                 c = (MCollaboration)o;
             }
-        } else
-        if (target instanceof MCollaboration) {
+        } else if (target instanceof MCollaboration) {
             c = (MCollaboration)target;
         } else {
-            c =  UmlFactory.getFactory().getCollaborations().buildCollaboration(ns);
+            c =
+                UmlFactory.getFactory().getCollaborations().buildCollaboration(
+                    ns);
         }
-        UMLSequenceDiagram d  = new UMLSequenceDiagram(c);
+        UMLSequenceDiagram d = new UMLSequenceDiagram(c);
         return d;
     }
 
     /**
      * @see org.argouml.uml.ui.ActionAddDiagram#isValidNamespace(MNamespace)
      */
-    public boolean isValidNamespace(MNamespace ns) {
-        return (ns instanceof MCollaboration || ns instanceof MClassifier || ns == ProjectManager.getManager().getCurrentProject().getModel());
+    public boolean isValidNamespace(Object handle) {
+        if (!ModelFacade.isANamespace(handle)) {
+            cat.error("No namespace as argument");
+            cat.error(handle);
+            throw new IllegalArgumentException(
+                "The argument " + handle + "is not a namespace.");
+        }
+        MNamespace ns = (MNamespace)handle;
+        return (
+            ns instanceof MCollaboration
+                || ns instanceof MClassifier
+                || ns
+                    == ProjectManager.getManager().getCurrentProject().getModel());
     }
 
-}  /* end class ActionSequenceDiagram */
+} /* end class ActionSequenceDiagram */

@@ -40,6 +40,7 @@ import java.awt.GridLayout;
 
 import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.kernel.ProjectManager;
+import org.argouml.model.ModelFacade;
 import org.argouml.swingext.PopupToolBoxButton;
 import org.argouml.ui.CmdCreateNode;
 import org.argouml.ui.LookAndFeelMgr;
@@ -119,7 +120,12 @@ public class UMLClassDiagram extends UMLDiagram {
         this(getNewDiagramName(), m);
     }
 
-    public void setNamespace(MNamespace m) {
+    public void setNamespace(Object handle) {
+        if (!ModelFacade.isANamespace(handle)) {
+          cat.error("Illegal argument. Object " + handle + " is not a namespace");
+          throw new IllegalArgumentException("Illegal argument. Object " + handle + " is not a namespace");
+        }
+        MNamespace m = (MNamespace)handle;
         super.setNamespace(m);
         ClassDiagramGraphModel gm = new ClassDiagramGraphModel();
         gm.setNamespace(m);

@@ -45,6 +45,7 @@ import javax.swing.JToolBar;
 
 import org.apache.log4j.Category;
 import org.argouml.kernel.ProjectManager;
+import org.argouml.model.ModelFacade;
 import org.argouml.swingext.PopupToolBoxButton;
 import org.argouml.ui.CmdCreateNode;
 import org.argouml.uml.diagram.ui.UMLDiagram;
@@ -78,57 +79,97 @@ import ru.novosoft.uml.foundation.data_types.MAggregationKind;
  */
 
 public class UMLUseCaseDiagram extends UMLDiagram {
-    protected static Category cat = Category.getInstance(UMLUseCaseDiagram.class);
+    protected static Category cat =
+        Category.getInstance(UMLUseCaseDiagram.class);
 
     // Actions specific to the use case diagram toolbar
 
     /**
      * <p>Tool to add an actor node.</p>
      */
-    protected static Action _actionActor = new CmdCreateNode(MActor.class, "Actor");
+    protected static Action _actionActor =
+        new CmdCreateNode(MActor.class, "Actor");
 
     /**
      * <p>Tool to add a use case node.</p>
      */
-    protected static Action _actionUseCase = new CmdCreateNode(MUseCase.class, "UseCase");
+    protected static Action _actionUseCase =
+        new CmdCreateNode(MUseCase.class, "UseCase");
 
     /**
      * <p>Tool to create an association between UML artifacts using a
      *   polyedge.</p>
      */
     //protected static Action _actionAssoc = new CmdSetMode(ModeCreatePolyEdge.class, "edgeClass", MAssociation.class, "Association");
-    protected static Action _actionAssociation = new ActionAddAssociation(MAggregationKind.NONE, false, "Association");
-    protected static Action _actionAggregation = new ActionAddAssociation(MAggregationKind.AGGREGATE, false, "Aggregation");
-    protected static Action _actionComposition = new ActionAddAssociation(MAggregationKind.COMPOSITE, false, "Composition");
-    protected static Action _actionUniAssociation = new ActionAddAssociation(MAggregationKind.NONE, true, "UniAssociation");
-    protected static Action _actionUniAggregation = new ActionAddAssociation(MAggregationKind.AGGREGATE, true, "UniAggregation");
-    protected static Action _actionUniComposition = new ActionAddAssociation(MAggregationKind.COMPOSITE, true, "UniComposition");
-
+    protected static Action _actionAssociation =
+        new ActionAddAssociation(MAggregationKind.NONE, false, "Association");
+    protected static Action _actionAggregation =
+        new ActionAddAssociation(
+            MAggregationKind.AGGREGATE,
+            false,
+            "Aggregation");
+    protected static Action _actionComposition =
+        new ActionAddAssociation(
+            MAggregationKind.COMPOSITE,
+            false,
+            "Composition");
+    protected static Action _actionUniAssociation =
+        new ActionAddAssociation(MAggregationKind.NONE, true, "UniAssociation");
+    protected static Action _actionUniAggregation =
+        new ActionAddAssociation(
+            MAggregationKind.AGGREGATE,
+            true,
+            "UniAggregation");
+    protected static Action _actionUniComposition =
+        new ActionAddAssociation(
+            MAggregationKind.COMPOSITE,
+            true,
+            "UniComposition");
 
     /**
      * <p>Tool to create a generalization between UML artifacts using a
      *   polyedge.</p>
      */
-    protected static Action _actionGeneralize = new CmdSetMode(ModeCreatePolyEdge.class, "edgeClass", MGeneralization.class, "Generalization");
+    protected static Action _actionGeneralize =
+        new CmdSetMode(
+            ModeCreatePolyEdge.class,
+            "edgeClass",
+            MGeneralization.class,
+            "Generalization");
 
     /**
      * <p>Tool to create an extend relationship between UML use cases using a
      *   polyedge.</p>
      */
-    protected static Action _actionExtend = new CmdSetMode(ModeCreatePolyEdge.class, "edgeClass", MExtend.class, "Extend");
+    protected static Action _actionExtend =
+        new CmdSetMode(
+            ModeCreatePolyEdge.class,
+            "edgeClass",
+            MExtend.class,
+            "Extend");
 
     /**
      * <p>Tool to create an include relationship between UML use cases using a
      *   polyedge.</p>
      */
-    protected static Action _actionInclude = new CmdSetMode(ModeCreatePolyEdge.class, "edgeClass", MInclude.class, "Include");
+    protected static Action _actionInclude =
+        new CmdSetMode(
+            ModeCreatePolyEdge.class,
+            "edgeClass",
+            MInclude.class,
+            "Include");
 
     /**
      * <p>Tool to create a dependency between UML artifacts using a
      *   polyedge.</p>
      */
 
-    protected static Action _actionDependency = new CmdSetMode(ModeCreatePolyEdge.class, "edgeClass", MDependency.class, "Dependency");
+    protected static Action _actionDependency =
+        new CmdSetMode(
+            ModeCreatePolyEdge.class,
+            "edgeClass",
+            MDependency.class,
+            "Dependency");
     /**
      * <p>A static counter of the use case index (used in constructing a unique
      *   name for each new diagram.</p>
@@ -204,7 +245,14 @@ public class UMLUseCaseDiagram extends UMLDiagram {
      * @author   psager@tigris.org  Jan 24, 2002
      */
 
-    public void setNamespace(MNamespace m) {
+    public void setNamespace(MNamespace handle) {
+        if (!ModelFacade.isANamespace(handle)) {
+            cat.error(
+                "Illegal argument. Object " + handle + " is not a namespace");
+            throw new IllegalArgumentException(
+                "Illegal argument. Object " + handle + " is not a namespace");
+        }
+        MNamespace m = (MNamespace)handle;
         super.setNamespace(m);
 
         UseCaseDiagramGraphModel gm = new UseCaseDiagramGraphModel();
@@ -251,9 +299,9 @@ public class UMLUseCaseDiagram extends UMLDiagram {
         toolBar.add(ActionAddNote.SINGLETON);
     }
 
-    
     private PopupToolBoxButton buildAssociationPopup() {
-        PopupToolBoxButton toolBox = new PopupToolBoxButton(_actionAssociation, 0, 2);
+        PopupToolBoxButton toolBox =
+            new PopupToolBoxButton(_actionAssociation, 0, 2);
         toolBox.add(_actionAssociation);
         toolBox.add(_actionUniAssociation);
         toolBox.add(_actionAggregation);
@@ -262,12 +310,15 @@ public class UMLUseCaseDiagram extends UMLDiagram {
         toolBox.add(_actionUniComposition);
         return toolBox;
     }
-    
+
     protected static String getNewDiagramName() {
         String name = null;
         name = "Usecase Diagram " + _UseCaseDiagramSerial;
         _UseCaseDiagramSerial++;
-        if (!ProjectManager.getManager().getCurrentProject().isValidDiagramName(name)) {
+        if (!ProjectManager
+            .getManager()
+            .getCurrentProject()
+            .isValidDiagramName(name)) {
             name = getNewDiagramName();
         }
         return name;
