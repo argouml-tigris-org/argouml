@@ -54,9 +54,17 @@ public class CrMergeClasses extends CrUML {
     List conns = asc.getConnections();
     MAssociationEnd ae0 = (MAssociationEnd) conns.get(0);
     MAssociationEnd ae1 = (MAssociationEnd) conns.get(1);
+    // both ends must be classes, otherwise there is nothing to merge
+    if (!(ModelFacade.isAClass(ae0.getType()) && 
+          ModelFacade.isAClass(ae1.getType()))) 
+        return NO_PROBLEM;
+    // both ends must be navigable, otherwise there is nothing to merge
+    if (!(ModelFacade.isNavigable(ae0) && 
+          ModelFacade.isNavigable(ae1)))
+        return NO_PROBLEM;
     if (ae0.getMultiplicity().equals(MMultiplicity.M1_1) &&
         ae1.getMultiplicity().equals(MMultiplicity.M1_1))
-      return PROBLEM_FOUND;
+        return PROBLEM_FOUND;
     return NO_PROBLEM;
   }
 
