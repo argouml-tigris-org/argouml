@@ -44,7 +44,6 @@ import org.argouml.uml.DocumentationManager;
 import org.argouml.uml.generator.FileGenerator;
 import org.argouml.uml.generator.Generator2;
 
-import ru.novosoft.uml.foundation.core.MClass;
 import tudresden.ocl.parser.node.AConstraintBody;
 
 /**
@@ -1199,7 +1198,7 @@ public class GeneratorCSharp extends Generator2
 	//s += cls.getName();
 	
 	Collection realizations =
-	    UmlHelper.getHelper().getCore().getRealizedInterfaces((MClass) cls);
+	    UmlHelper.getHelper().getCore().getRealizedInterfaces(cls);
 	if (realizations == null) {
 	    return "";
 	}
