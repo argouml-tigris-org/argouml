@@ -435,6 +435,8 @@ implements Serializable, MouseListener, MouseMotionListener, KeyListener {
   /** Get the graphics context object that this editor should draw on. */
   public Graphics getGraphics() {
     if (_awt_component == null) return null;
+//     if (_awt_component instanceof JGraphInternalPane)
+//       return ((JGraphInternalPane) _awt_component).getGraphicsCounted();
     return _awt_component.getGraphics();
   }
 

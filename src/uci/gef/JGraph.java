@@ -267,28 +267,39 @@ public class JGraph extends JPanel implements Cloneable {
 
 //   public Dimension getSize() { return new Dimension(1000, 1000); }
 
-  
+
 } /* end class JGraph */
+
 
 
 class JGraphInternalPane extends JPanel {
 //implements FocusListener 
   protected Editor _editor;
-  
+
   public JGraphInternalPane(Editor e) {
     _editor = e;
     setLayout(null);
     // setAutoscrolls(true); // needs-more-work: no effect...
     //addFocusListener(this);
   }
- 
+
   public void paint(Graphics g) { _editor.paint(g); }
-  
+
+//   static int getGraphicsCount = 0;
+
+//   public Graphics getGraphicsCounted() {
+//     getGraphicsCount = 0;
+//     Graphics g = getGraphics();
+//     System.out.println("getGraphics recurred " + getGraphicsCount + "times");
+//     return g;
+//   }
+
   public Graphics getGraphics() {
+    //getGraphicsCount++;
     Graphics res = super.getGraphics();
     if (res == null) { return res; }
     Component parent = getParent();
-   
+
     if (parent instanceof JViewport) {
       JViewport view = (JViewport) parent;
       Rectangle bounds = view.getBounds();
@@ -304,5 +315,5 @@ class JGraphInternalPane extends JPanel {
 
   /** Tell Swing/AWT that JGraph can be tabbed into. */
   public boolean isFocusTraversable() { return true; }  
-  
+
 }
