@@ -453,17 +453,20 @@ public class Modeller
 	    return;
 	
 	MOperation operation = (MOperation)op;
-	MMethod method = new MMethodImpl();
+
+	MMethod method = getMethod(operation.getName());
+	parseState.feature(method);
+
 	method.setBody(new MProcedureExpression("Java", body));
 
 	// Mirror the operation properties to get the method in sync with it.
-	method.setName(operation.getName());
 	method.setVisibility(operation.getVisibility());
 	method.setOwnerScope(operation.getOwnerScope());
 
 	operation.addMethod(method);  // Add the method to it's specification.
 
-	// Add this method as a feature to the classifier that owns the operation.
+	// Add this method as a feature to the classifier that owns
+	// the operation.
 	operation.getOwner().addFeature(method);
     }
 
@@ -687,7 +690,7 @@ public class Modeller
     */
     private MOperation getOperation(String name)
     {
-	MOperation mOperation = (MOperation)parseState.getFeature(name);
+	MOperation mOperation = (MOperation)parseState.getOperation(name);
 
 	if(mOperation == null) {
 	    mOperation = new MOperationImpl();
@@ -695,6 +698,25 @@ public class Modeller
 	    parseState.getClassifier().addFeature(mOperation);
 	}
 	return mOperation;
+    }
+
+    /**
+       Find an operation in the currentClassifier. If the operation is
+       not found, a new is created.
+
+       @param name The name of the method.
+       @returns The method found or created.
+    */
+    private MMethod getMethod(String name)
+    {
+	MMethod mMethod = (MMethod)parseState.getMethod(name);
+
+	if(mMethod == null) {
+	    mMethod = new MMethodImpl();
+	    mMethod.setName(name);
+	    parseState.getClassifier().addFeature(mMethod);
+	}
+	return mMethod;
     }
 
     /**
