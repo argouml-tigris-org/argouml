@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-      <!-- JNLP File for launching Argo/UML with WebStart -->
+      <!-- JNLP File for launching ArgoUML with WebStart -->
       <jnlp
         spec="1.0+"
         codebase="http://www.tigris.org/upload"
@@ -7,7 +7,7 @@
         <information>
           <title>ArgoUML</title>
           <vendor>Tigris.org (Open Source)</vendor>
-          <homepage href=">
+          <homepage href="http://argouml.tigris.org/">
           <description>ArgoUML Tigris Application</description>
           <description kind="short">The ArgoUML Swing based editor</description>
           <icon href="images/notepad.gif"/>
