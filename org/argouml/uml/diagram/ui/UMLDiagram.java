@@ -32,10 +32,12 @@ import ru.novosoft.uml.foundation.core.*;
 
 import org.tigris.gef.base.*;
 
+import org.apache.log4j.Category;
 import org.argouml.ui.*;
 
 public class UMLDiagram extends ArgoDiagram {
 
+  Category cat = Category.getInstance(org.argouml.uml.diagram.ui.UMLDiagram.class);
   ////////////////////////////////////////////////////////////////
   // actions for toolbar
 
@@ -79,16 +81,21 @@ public class UMLDiagram extends ArgoDiagram {
   ////////////////////////////////////////////////////////////////
   // constructors
 
-  public UMLDiagram() { }
-
-  public UMLDiagram(MNamespace ns) {
-    _namespace = ns;
+  public UMLDiagram() { 
+  	super();
   }
 
+  
+  public UMLDiagram(MNamespace ns) {
+  	this();
+    setNamespace(ns);
+  }
+  
+  
   public UMLDiagram(String diagramName, MNamespace ns) {
+  	this(ns);
     try { setName(diagramName); }
     catch (PropertyVetoException pve) { }
-    _namespace = ns;
   }
 
   public void initialize(Object owner) {
