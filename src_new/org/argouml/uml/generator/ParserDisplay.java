@@ -2112,15 +2112,16 @@ public class ParserDisplay extends Parser {
                 }
             } else {
                 // case 2
+                Object expr = ModelFacade.getExpression(g);
+                String language = "";
                 
                 /* TODO: This does not work! Why not? (MVW)
-                 Object expr = ModelFacade.getExpression(g);
                  ModelFacade.setBody(expr,guard);
                  ModelFacade.setExpression(g,expr); */
                 
                 //hence a less elegant workaround that works:
-                String language = ModelFacade.getLanguage(
-                        ModelFacade.getExpression(g));
+                if (expr != null)
+                    language = ModelFacade.getLanguage(expr);
                 ModelFacade.setExpression(g, UmlFactory.getFactory()
                         .getDataTypes().createBooleanExpression(
                                 language, guard));
