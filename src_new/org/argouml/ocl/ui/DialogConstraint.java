@@ -23,7 +23,7 @@ public class DialogConstraint extends JDialog {
       super(parentFrame, true);
       setTitle("Enter new OCL constraint");
       ace=new ArgoConstraintEvaluation(this, me);
-      ace.setConstraint("context " + me.getName());
+      ace.setConstraint(me.getName(), "");
       getContentPane().add(ace);
       pack();
     }
@@ -32,7 +32,7 @@ public class DialogConstraint extends JDialog {
       super(parentFrame, true);
       setTitle("Enter new OCL constraint");
       ace=new ArgoConstraintEvaluation(this, me);
-      ace.setConstraint(cs.getBody().getBody());
+      ace.setConstraint(me.getName(), cs.getBody().getBody());
       getContentPane().add(ace);
       pack();
     }
@@ -40,5 +40,10 @@ public class DialogConstraint extends JDialog {
     public String getResultingExpression() {
       return ace.getResultConstraint();
     }
+
+	public String getConstraintName() {
+	  return ace.getConstraintName();
+    }
+
 }
 

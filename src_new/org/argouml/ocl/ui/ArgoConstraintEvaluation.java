@@ -20,6 +20,9 @@ public class ArgoConstraintEvaluation extends ConstraintEvaluation {
 
   Object target;
 
+  JTextField cContext;
+  String classifierName;
+
   public ArgoConstraintEvaluation(JDialog dialog, Object target) {
     this.dialog=dialog;
     this.target=target;
@@ -37,6 +40,9 @@ public class ArgoConstraintEvaluation extends ConstraintEvaluation {
   protected JPanel getConstraintPane() {
     JPanel result=new JPanel(new BorderLayout());
     JPanel buttons=new JPanel(new GridLayout(0, 1));
+
+    cContext = new JTextField();
+    cContext.setEditable(false);
     cInput=new JTextArea();
     cInput.setFont(new Font("Monospaced", Font.PLAIN, 12));
 
@@ -44,8 +50,8 @@ public class ArgoConstraintEvaluation extends ConstraintEvaluation {
     cOk=new JButton("OK");
     cCancel=new JButton("Cancel");
 
-    cToClipboard=new JButton(getImage("right.gif"));
-    cFromClipboard=new JButton(getImage("left.gif"));
+    cToClipboard=new JButton(getImage("images/right.gif"));
+    cFromClipboard=new JButton(getImage("images/left.gif"));
 
     cToClipboard.setToolTipText("copy constraint to clipboard");
     cFromClipboard.setToolTipText("copy constraint from clipboard");
@@ -63,7 +69,11 @@ public class ArgoConstraintEvaluation extends ConstraintEvaluation {
     buttons.add(cToClipboard);
     buttons.add(cFromClipboard);
 
-    result.add(new JScrollPane(cInput));
+    JPanel constraintPanel = new JPanel(new BorderLayout());
+    constraintPanel.add(cContext, BorderLayout.NORTH);
+    constraintPanel.add(cInput);
+
+    result.add(new JScrollPane(constraintPanel));
     result.add(panelAround(buttons), BorderLayout.EAST);
     return result;
   }
@@ -79,7 +89,7 @@ public class ArgoConstraintEvaluation extends ConstraintEvaluation {
     aCancel=new JButton("Cancel");
     aShowLeaves=new JButton("Show Leaves");
     aToText=new JButton("To Text");
-    aToClipboard=new JButton(getImage("right.gif"));
+    aToClipboard=new JButton(getImage("images/right.gif"));
 
     JLabel txtTypeCheck=new JLabel("Type Check:");
     JLabel txtGeneratedTests=new JLabel("Generated Tests:");
@@ -129,22 +139,40 @@ public class ArgoConstraintEvaluation extends ConstraintEvaluation {
     return new ArgoFacade(target);
   }
 
-  public void setConstraint(String text) {
-    cInput.setText(text);
+  protected String getEnteredConstraint()
+  {
+    return "context " + classifierName + "\n" + super.getEnteredConstraint();
+  }
+
+  protected void doCopyTreeToText() {
+    if (tree!=null) {
+      String oclExpression = tree.getExpression();
+      java.util.StringTokenizer st = new java.util.StringTokenizer(oclExpression);
+      int startOfBodies = oclExpression.indexOf(st.nextToken());
+      String classifierName = st.nextToken();
+      startOfBodies = oclExpression.indexOf(classifierName, startOfBodies);
+      startOfBodies = startOfBodies + classifierName.length();
+      String bodies = oclExpression.substring(startOfBodies);
+      cInput.setText( bodies.trim() );
+      showTab(0);
+    } else {
+      message.setText("no syntax tree to copy...");
+    }
+  }
+
+  public void setConstraint(String classifierName, String constraintBodies) {
+    this.classifierName = classifierName;
+    cContext.setText("context "+classifierName);
+    cInput.setText(constraintBodies);
   }
 
   public String getResultConstraint() {
-    if (synAndSemOK)
-      return resultConstraint;
-    else
-      return null;
+	return resultConstraint;
   }
 
   protected void doParse(boolean s) {
     super.doParse(s);
-    if (synAndSemOK) {
-      resultConstraint=cInput.getText();
-    }
+    resultConstraint=cInput.getText();
   }
 
   public void actionPerformed(ActionEvent e) {
