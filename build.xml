@@ -648,7 +648,7 @@ ${Name} Build file
 	     author="${javadoc.author}"
 	     windowtitle="ArgoUML Documentation"
 	     overview="org/argouml/overview-argo.html"
-             bottom="&lt;table width='100%'&gt;&lt;tr&gt;&lt;td width='20%'&gt;ArgoUML (c) 1996-2002&lt;/td&gt;&lt;td width='20%'&gt;&lt;center&gt;&lt;a href='http://argouml.tigris.org/' target='_blank'&gt;ArgoUML Project Home&lt;/a&gt;&lt;/center&gt;&lt;/td&gt;&lt;td width='20%'&gt;&lt;center&gt;&lt;a href='http://argouml.tigris.org/documentation/defaulthtml/cookbook/index.html' target='_blank'&gt;ArgoUML Cookbook&lt;/a&gt;&lt;/center&gt;&lt;/td&gt;&lt;td width='20%'&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;">
+             bottom="&lt;table width='100%'&gt;&lt;tr&gt;&lt;td width='33%' align='left'&gt;ArgoUML &amp;copy; 1996-2003 (${DSTAMP})&lt;/td&gt;&lt;td width='34%' align='center'&gt;&lt;a href='http://argouml.tigris.org/' target='_blank'&gt;ArgoUML Project Home&lt;/a&gt;&lt;/td&gt;&lt;td width='33%' align='right'&gt;&lt;a href='http://argouml.tigris.org/documentation/defaulthtml/cookbook/' target='_blank'&gt;ArgoUML Cookbook&lt;/a&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;">
       <classpath>
 	  <path refid="argo.compile.classpath"/>
       </classpath>
