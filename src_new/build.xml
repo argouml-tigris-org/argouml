@@ -278,6 +278,9 @@ doesn't find it's own XML-libs. You need to set ANT_HOME in your shell.
     <copy todir="${build.dest}/org/argouml/Images">
       <fileset dir="${build.src}/org/argouml/Images" includes="**/**" excludes="CVS/**" />
     </copy>
+    <copy todir="${build.dest}/org/argouml/i18n">
+      <fileset dir="${build.src}/org/argouml/i18n" includes="*.properties" />
+    </copy>
     <copy todir="${build.dest}/org/argouml/resource">
       <fileset dir="${build.src}/org/argouml/resource" includes="**/**" excludes="CVS/**" />
     </copy>
