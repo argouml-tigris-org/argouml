@@ -324,10 +324,6 @@ doesn't find it's own XML-libs. You need to set ANT_HOME in your shell.
           classpath="${build.dest};${classpath};${ant.xml-libs}"/>
   </target>
 
-  <target name="test">
-    <echo message="Datum: ${system.date}"/>
-  </target>
-
 </project>
 
 
