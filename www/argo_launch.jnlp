@@ -7,7 +7,7 @@
         <information>
           <title>ArgoUML</title>
           <vendor>Tigris.org (Open Source)</vendor>
-          <homepage href="http://argouml.tigris.org/">
+          <homepage href="http://argouml.tigris.org/"/>
           <description>ArgoUML Tigris Application</description>
           <description kind="short">The ArgoUML Swing based editor</description>
           <icon href="images/notepad.gif"/>
