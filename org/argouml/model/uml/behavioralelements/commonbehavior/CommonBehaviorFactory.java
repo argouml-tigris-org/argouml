@@ -50,6 +50,7 @@ import ru.novosoft.uml.behavior.common_behavior.MSignal;
 import ru.novosoft.uml.behavior.common_behavior.MStimulus;
 import ru.novosoft.uml.behavior.common_behavior.MTerminateAction;
 import ru.novosoft.uml.behavior.common_behavior.MUninterpretedAction;
+import ru.novosoft.uml.foundation.core.MOperation;
 
 /**
  * Factory to create UML classes for the UML
@@ -305,6 +306,28 @@ public class CommonBehaviorFactory extends AbstractUmlModelFactory {
 	super.initialize(modelElement);
 	return modelElement;
     }
+    
+    /**
+     * Builds a Callaction belonging to operation oper with a given name. 
+     * Ownership of this modelelement is not set! It is unwise to build a 
+     * callaction without an operation since the multiplicity according to the
+     * UML spec 1.3 is 1..1. Therefore precondition is that there is an 
+     * operation.
+     * @param oper
+     * @param name
+     * @return MCallAction
+     */
+    public MCallAction buildCallAction(MOperation oper, String name) {
+        if (oper == null) {
+            throw new IllegalArgumentException("There should be an operation" +
+            " with a callaction.");
+        }
+        MCallAction action = createCallAction();
+        action.setName(name);
+        action.setOperation(oper); 
+        return action;
+    }
+        
 
 }
 

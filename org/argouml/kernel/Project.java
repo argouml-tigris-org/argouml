@@ -437,7 +437,7 @@ public class Project implements java.io.Serializable {
 
         MModel m1 = UmlFactory.getFactory().getModelManagement().createModel();
 
-        m1.setUUID(UUIDManager.SINGLETON.getNewUUID());
+        // m1.setUUID(UUIDManager.SINGLETON.getNewUUID());
         m1.setName("untitledModel");
 
         try {

@@ -27,18 +27,42 @@
 
 package org.argouml.uml.ui.foundation.core;
 
-import java.awt.*;
-import javax.swing.*;
+import java.awt.Color;
+import java.awt.GridLayout;
 
-import ru.novosoft.uml.*;
-import ru.novosoft.uml.foundation.core.*;
-import ru.novosoft.uml.foundation.data_types.*;
-import ru.novosoft.uml.foundation.extension_mechanisms.*;
+import javax.swing.ImageIcon;
+import javax.swing.JList;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 
-import org.argouml.application.api.*;
-import org.argouml.uml.ui.*;
+import org.argouml.application.api.Argo;
+import org.argouml.model.uml.UmlFactory;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.MMUtil;
+import org.argouml.uml.ui.UMLAttributesListModel;
+import org.argouml.uml.ui.UMLCheckBox;
+import org.argouml.uml.ui.UMLClassifiersListModel;
+import org.argouml.uml.ui.UMLClientDependencyListModel;
+import org.argouml.uml.ui.UMLConnectionListModel;
+import org.argouml.uml.ui.UMLEnumerationBooleanProperty;
+import org.argouml.uml.ui.UMLGeneralizationListModel;
+import org.argouml.uml.ui.UMLList;
+import org.argouml.uml.ui.UMLOperationsListModel;
+import org.argouml.uml.ui.UMLReflectionBooleanProperty;
+import org.argouml.uml.ui.UMLSpecializationListModel;
+import ru.novosoft.uml.MElementListener;
+import ru.novosoft.uml.MFactory;
+import ru.novosoft.uml.foundation.core.MAssociation;
+import ru.novosoft.uml.foundation.core.MAssociationEnd;
+import ru.novosoft.uml.foundation.core.MAttribute;
+import ru.novosoft.uml.foundation.core.MClassifier;
+import ru.novosoft.uml.foundation.core.MGeneralizableElement;
+import ru.novosoft.uml.foundation.core.MGeneralization;
+import ru.novosoft.uml.foundation.core.MNamespace;
+import ru.novosoft.uml.foundation.core.MOperation;
+import ru.novosoft.uml.foundation.core.MParameter;
+import ru.novosoft.uml.foundation.data_types.MVisibilityKind;
+import ru.novosoft.uml.foundation.extension_mechanisms.MStereotype;
 
 abstract public class PropPanelClassifier extends PropPanelNamespace {
 
@@ -118,7 +142,7 @@ abstract public class PropPanelClassifier extends PropPanelNamespace {
         Object target = getTarget();
         if(target instanceof MClassifier) {
             MClassifier classifier = (MClassifier) target;
-            MOperation oper = MMUtil.SINGLETON.buildOperation(classifier);
+            MOperation oper = UmlFactory.getFactory().getCore().buildOperation(classifier);
             oper.addMElementListener(((MElementListener)ProjectBrowser.TheInstance.getActiveDiagram().presentationFor(classifier)));
             navigateTo(oper);
             // 2002-07-15
@@ -132,7 +156,7 @@ abstract public class PropPanelClassifier extends PropPanelNamespace {
         Object target = getTarget();
         if(target instanceof MClassifier) {
 	    MClassifier cls = (MClassifier) target;
-	    MAttribute attr = MMUtil.SINGLETON.buildAttribute(cls);
+	    MAttribute attr = UmlFactory.getFactory().getCore().buildAttribute(cls);
 	      navigateTo(attr);
           // 2002-07-15
             // Jaap Branderhorst

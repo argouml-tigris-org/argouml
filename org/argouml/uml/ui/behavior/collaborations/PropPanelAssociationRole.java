@@ -33,6 +33,7 @@ import javax.swing.*;
 import org.argouml.application.api.*;
 import org.argouml.uml.ui.*;
 import org.argouml.uml.ui.foundation.core.PropPanelModelElement;
+import org.argouml.model.uml.UmlFactory;
 import org.argouml.uml.MMUtil;
 
 import java.awt.*;
@@ -129,7 +130,7 @@ public class PropPanelAssociationRole extends PropPanelModelElement {
         Object target = getTarget();
         MMessage newMessage = null;
         if(target instanceof MAssociationRole) {
-            return MMUtil.SINGLETON.buildMessage((MAssociationRole)target,"");
+            return UmlFactory.getFactory().getCollaborations().buildMessage((MAssociationRole)target,"");
         }
         return newMessage;
     }

@@ -23,12 +23,13 @@
 
 package org.argouml.uml.ui;
 
-import org.argouml.kernel.*;
-import org.argouml.uml.*;
-import org.argouml.ui.*;
-import ru.novosoft.uml.*;
-import ru.novosoft.uml.foundation.core.*;
-import java.awt.event.*;
+import java.awt.event.ActionEvent;
+
+import org.argouml.kernel.Project;
+import org.argouml.model.uml.UmlFactory;
+import org.argouml.ui.ProjectBrowser;
+import ru.novosoft.uml.foundation.core.MAttribute;
+import ru.novosoft.uml.foundation.core.MClassifier;
 
 
 public class ActionAddAttribute extends UMLChangeAction {
@@ -59,7 +60,7 @@ public class ActionAddAttribute extends UMLChangeAction {
 	if (!(target instanceof MClassifier)) return;
 	MClassifier cls = (MClassifier) target;
 
-	MAttribute attr = MMUtil.SINGLETON.buildAttribute(cls);
+	MAttribute attr = UmlFactory.getFactory().getCore().buildAttribute(cls);
 	pb.setTarget(attr);
 	super.actionPerformed(ae);
     }

@@ -297,7 +297,7 @@ public class ParserDisplay extends Parser {
 
         // Build a new extension point
 
-        MExtensionPoint ep = MMUtil.SINGLETON.buildExtensionPoint(null);
+        MExtensionPoint ep = UmlFactory.getFactory().getUseCases().buildExtensionPoint(null);
 
         StringTokenizer st        = new StringTokenizer(text.trim(), ":",
                                                         true);
@@ -374,7 +374,7 @@ public class ParserDisplay extends Parser {
   public MOperation parseOperation(String s) {
     s = s.trim();
     if (s.endsWith(";")) s = s.substring(0, s.length()-1);
-    MOperation res = MMUtil.SINGLETON.buildOperation();
+    MOperation res = UmlFactory.getFactory().getCore().buildOperation();
     s = parseOutVisibility(res, s);
     // s = parseOutKeywords(res, s);
     s = parseOutName(res, s);
@@ -430,7 +430,7 @@ public class ParserDisplay extends Parser {
       if (s.endsWith(";")) {
           s = s.substring(0, s.length()-1);
       }
-      MAttribute newAttribute = MMUtil.SINGLETON.buildAttribute();
+      MAttribute newAttribute = UmlFactory.getFactory().getCore().buildAttribute();
       s = parseOutVisibility(newAttribute, s);
       s = parseOutName(newAttribute, s);
       s = parseOutMultiplicity(newAttribute, s);
@@ -731,7 +731,7 @@ public class ParserDisplay extends Parser {
             Project p = ProjectBrowser.TheInstance.getProject();
             type = p.findType(typeExpr);
             if (type == null) { // no type defined yet
-                type = MMUtil.SINGLETON.buildClass(typeExpr);                
+                type = UmlFactory.getFactory().getCore().buildClass(typeExpr);                
             }
             if (attr.getNamespace() != null) {
                 type.setNamespace(attr.getNamespace());
@@ -760,13 +760,13 @@ public class ParserDisplay extends Parser {
             Project p = ProjectBrowser.TheInstance.getProject();
             type = p.findType(typeExpr);
             if (type == null) { // no type defined yet
-                type = MMUtil.SINGLETON.buildClass(typeExpr); 
+                type = UmlFactory.getFactory().getCore().buildClass(typeExpr); 
                 // the owner of this type should be the model in which
                 // the class that contains the operation lives
                 // since we don't know that class, the model is not set here
                 // but in the method that calls parseOperation(String s)               
             }
-            MParameter param = MMUtil.SINGLETON.buildParameter();
+            MParameter param = UmlFactory.getFactory().getCore().buildParameter();
             MMUtil.SINGLETON.setReturnParameter(op,param);
             param.setType(type);
             s = s.substring(typeExpr.length(), s.length());
@@ -801,7 +801,7 @@ public class ParserDisplay extends Parser {
     if (st.hasMoreTokens()) typeStr = st.nextToken();
     Project p = ProjectBrowser.TheInstance.getProject();
     MClassifier cls = p.findType(typeStr);
-    MParameter param = MMUtil.SINGLETON.buildParameter();
+    MParameter param = UmlFactory.getFactory().getCore().buildParameter();
     param.setType(cls);
     param.setKind(MParameterDirectionKind.IN);
     param.setName(paramNameStr);

@@ -58,7 +58,7 @@ public class ActionCollaborationDiagram extends UMLChangeAction {
 	Project p = ProjectBrowser.TheInstance.getProject();
 	try {
 	    MCollaboration c = UmlFactory.getFactory().getCollaborations().createCollaboration();
-	    c.setUUID(UUIDManager.SINGLETON.getNewUUID());
+	    // c.setUUID(UUIDManager.SINGLETON.getNewUUID());
 	    c.setName("Collaboration");
 	    p.getModel().addOwnedElement(c);
 	    MInteraction interaction = UmlFactory.getFactory().getCollaborations().createInteraction();

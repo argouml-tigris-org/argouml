@@ -72,7 +72,7 @@ public class ActionStateDiagram extends UMLChangeAction {
 	    String contextNameStr = cls.getName();
 	    if (contextNameStr == null) contextNameStr = "untitled";
 	    MStateMachine sm = UmlFactory.getFactory().getStateMachines().createStateMachine();
-	    sm.setUUID(UUIDManager.SINGLETON.getNewUUID());
+	    // sm.setUUID(UUIDManager.SINGLETON.getNewUUID());
 	    sm.setName(contextNameStr + "StateMachine");
 	    MCompositeState cs = UmlFactory.getFactory().getStateMachines().createCompositeState();
 	    cs.setName("state_machine_top");

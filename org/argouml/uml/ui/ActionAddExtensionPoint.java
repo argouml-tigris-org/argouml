@@ -33,6 +33,7 @@
 package org.argouml.uml.ui;
 
 import org.argouml.kernel.*;
+import org.argouml.model.uml.UmlFactory;
 import org.argouml.uml.*;
 import org.argouml.ui.*;
 import ru.novosoft.uml.foundation.core.*;
@@ -138,7 +139,7 @@ public final class ActionAddExtensionPoint extends UMLChangeAction {
         // invoke the superclass action method.
 
 	MExtensionPoint ep =
-            MMUtil.SINGLETON.buildExtensionPoint((MUseCase) target);
+            UmlFactory.getFactory().getUseCases().buildExtensionPoint((MUseCase) target);
 
 	pb.setTarget(ep);
 	super.actionPerformed(ae);

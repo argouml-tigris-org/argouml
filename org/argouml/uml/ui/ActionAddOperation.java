@@ -24,6 +24,7 @@
 package org.argouml.uml.ui;
 
 import org.argouml.kernel.*;
+import org.argouml.model.uml.UmlFactory;
 import org.argouml.uml.*;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
 import org.tigris.gef.presentation.FigNode;
@@ -63,7 +64,7 @@ public class ActionAddOperation extends UMLChangeAction {
 	if (!(target instanceof MClassifier)) return;
 
 	MClassifier cls = (MClassifier) target;
-	MOperation oper=MMUtil.SINGLETON.buildOperation(cls);
+	MOperation oper = UmlFactory.getFactory().getCore().buildOperation(cls);
 	// need to add FigClass as modeleventlistener to oper
 	// FigClass can be the selected class if this was called from within the diagram
 	oper.addMElementListener((FigNodeModelElement)pb.getActiveDiagram().presentationFor(cls));
