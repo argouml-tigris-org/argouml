@@ -163,8 +163,11 @@ implements ItemListener {
     MClass cls = (MClass) t;
 
     MVisibilityKind vk = cls.getVisibility();
-    if (vk != null) 
-	_visField.setSelectedItem(vk.getName());
+	//System.out.println("visibility:"+vk + " Name: "+vk.getName() );
+    if (vk == null)
+	_visField.setSelectedItem("");
+    else
+        _visField.setSelectedItem(vk.getName());
 
     if (cls.isAbstract())
       _keywordsField.setSelectedItem("abstract");
@@ -256,6 +259,7 @@ implements ItemListener {
   ////////////////////////////////////////////////////////////////
   // event handling
 
+
     public void focusLost(FocusEvent e){
 	super.focusLost(e);
 	if (e.getComponent() == _extendsField)
@@ -266,7 +270,7 @@ implements ItemListener {
     Object src = e.getSource();
     if (src == _keywordsField) {
       //System.out.println("class keywords now is " +
-      //_keywordsField.getSelectedItem());
+      //_keywordsField.getSelectedItem());                                                                     se
       setTargetKeywords();
     }
     else if (src == _visField) {

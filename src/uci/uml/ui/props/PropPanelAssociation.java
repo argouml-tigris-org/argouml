@@ -235,22 +235,30 @@ implements ItemListener, ChangeListener {
     _roleBField.setText(roleBStr);
     if (mA != null)
 	_multAField.setSelectedItem(mA.toString());
+
     else
 	_multAField.setSelectedItem(null);
+
     if (mB != null)
 	_multBField.setSelectedItem(mB.toString());
+
     else
 	_multBField.setSelectedItem(null);
+
     if (akA != null)
 	_aggAField.setSelectedItem(akA.getName());
+
     else
 	_aggAField.setSelectedItem(MAggregationKind.NONE.getName());
+
     if (akB != null)
 	_aggBField.setSelectedItem(akB.getName());
+
     else
 	_aggBField.setSelectedItem(MAggregationKind.NONE.getName());
 
     _navAField.getModel().setSelected(navA);
+
     _navBField.getModel().setSelected(navB);
   }
 
@@ -352,6 +360,10 @@ implements ItemListener, ChangeListener {
     MAssociationEnd endB = (MAssociationEnd) conns.elementAt(1);
       endA.setNavigable(navA);
       endB.setNavigable(navB);
+	
+	//very dirty patch: navigation change is not visible until aggregation-kind has been changed!!
+	setAgg();
+
   }
   
   public void setRoleNames() {

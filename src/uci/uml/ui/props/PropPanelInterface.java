@@ -48,7 +48,7 @@ public class PropPanelInterface extends PropPanel implements ItemListener{
   ////////////////////////////////////////////////////////////////
   // constants
 
-  public static final String VISIBILITIES[] = {
+  public static final String VISIBILITIES[] = { "",
     MVisibilityKind.PUBLIC.getName(), MVisibilityKind.PRIVATE.getName(),
     MVisibilityKind.PROTECTED.getName() };
 	// what about PACKAGE in nsuml?
@@ -108,8 +108,10 @@ public class PropPanelInterface extends PropPanel implements ItemListener{
     MInterface inf = (MInterface) t;
 
     MVisibilityKind vk = inf.getVisibility();
-    if (vk == null) vk = MVisibilityKind.PUBLIC;
-    _visField.setSelectedItem(vk.getName());
+    if (vk != null)
+	_visField.setSelectedItem(vk.getName());
+    else
+	_visField.setSelectedItem("");
 
     Vector gens = new Vector(inf.getGeneralizations());
     MGeneralization gen = null;
