@@ -117,15 +117,14 @@ public class PropPanelOperation extends PropPanelModelElement {
 	exceptList.setFont(smallFont);
         addField(new JScrollPane(exceptList),1,2,0.5);
 
-	new PropPanelButton(this,buttonPanel,_navUpIcon, Argo.localize("UMLMenu", "button.go-up"),"navigateUp",null);
-	new PropPanelButton(this,buttonPanel,_navBackIcon, Argo.localize("UMLMenu", "button.go-back"),"navigateBackAction","isNavigateBackEnabled");
-	new PropPanelButton(this,buttonPanel,_navForwardIcon, Argo.localize("UMLMenu" ,"button.go-forward"),"navigateForwardAction","isNavigateForwardEnabled");
-	
-	// new PropPanelButton(this,buttonPanel,_operationIcon, Argo.localize("UMLMenu", "button.add-new-operation"),"buttonAddOperation",null);
-// I uncommented this next line. I don't know why it was commented out, it seems to work just fine...--pjs--
-        new PropPanelButton(this,buttonPanel,_parameterIcon, Argo.localize("UMLMenu", "button.add-parameter"),"buttonAddParameter",null);
-	//new PropPanelButton(this,buttonPanel,_signalIcon,localize("Add raised signal"),"buttonAddRaisedSignal",null);
-	new PropPanelButton(this,buttonPanel,_deleteIcon, Argo.localize("UMLMenu", "button.delete-operation"),"removeElement",null);
+		new PropPanelButton(this,buttonPanel,_navUpIcon, Argo.localize("UMLMenu", "button.go-up"),"navigateUp",null);
+		new PropPanelButton(this,buttonPanel,_navBackIcon, Argo.localize("UMLMenu", "button.go-back"),"navigateBackAction","isNavigateBackEnabled");
+		new PropPanelButton(this,buttonPanel,_navForwardIcon, Argo.localize("UMLMenu" ,"button.go-forward"),"navigateForwardAction","isNavigateForwardEnabled");
+		new PropPanelButton(this,buttonPanel,_operationIcon, Argo.localize("UMLMenu", "button.add-new-operation"),"buttonAddOperation",null);
+		// I uncommented this next line. I don't know why it was commented out, it seems to work just fine...--pjs--
+        new PropPanelButton(this,buttonPanel,_parameterIcon, Argo.localize("UMLMenu", "button.add-parameter"),"buttonAddParameter",null);       
+		new PropPanelButton(this,buttonPanel,_signalIcon,localize("Add raised signal"),"buttonAddRaisedSignal",null);
+		new PropPanelButton(this,buttonPanel,_deleteIcon, Argo.localize("UMLMenu", "button.delete-operation"),"removeElement",null);
     }
 
     public MClassifier getReturnType() {
@@ -280,8 +279,7 @@ public class PropPanelOperation extends PropPanelModelElement {
     public void buttonAddRaisedSignal() {
         Object target = getTarget();
         if(target instanceof MOperation) {
-            MOperation oper = (MOperation) target;
-            MSignal newSignal = CommonBehaviorFactory.getFactory().buildSignal(oper);
+           addRaisedSignal(new Integer(1));
         }
     }
 
