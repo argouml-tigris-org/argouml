@@ -89,28 +89,28 @@ public class ProjectBrowser
      */
     private static ProjectBrowser theInstance;
 
-    private static boolean _Splash = false;
+    private static boolean showSplashScreen = false;
 
     // ----- diagrams
 
     ////////////////////////////////////////////////////////////////
     // instance variables
 
-    protected String _appName = "ProjectBrowser";
+    private String appName = "ProjectBrowser";
 
-    protected MultiEditorPane _editorPane;
+    private MultiEditorPane editorPane;
 
     /* Work in progress here to allow multiple details panes with 
     ** different contents - Bob Tarling
     */
-    protected DetailsPane _northEastPane;
-    protected DetailsPane _northPane;
-    protected DetailsPane _northWestPane;
-    protected JPanel _westPane;
-    protected DetailsPane _eastPane;
-    protected DetailsPane _southEastPane;
-    protected JPanel _southWestPane;
-    protected DetailsPane _southPane;
+    private DetailsPane northEastPane;
+    private DetailsPane northPane;
+    private DetailsPane northWestPane;
+    private JPanel westPane;
+    private DetailsPane eastPane;
+    private DetailsPane southEastPane;
+    private JPanel southWestPane;
+    private DetailsPane southPane;
 
     private Map detailsPanesByCompassPoint = new HashMap();
 
@@ -168,7 +168,7 @@ public class ProjectBrowser
 
         menuBar = new GenericArgoMenuBar();
 
-        _editorPane = new MultiEditorPane();
+        editorPane = new MultiEditorPane();
         getContentPane().setFont(defaultFont);
         getContentPane().setLayout(new BorderLayout());
         this.setJMenuBar(menuBar);
@@ -219,56 +219,56 @@ public class ProjectBrowser
         /* Work in progress here to allow multiple details panes with 
         ** different contents - Bob Tarling
         */
-        _eastPane  =
+        eastPane  =
 	    makeDetailsPane(BorderSplitPane.EAST,  Vertical.getInstance());
-        _southPane =
+        southPane =
 	    makeDetailsPane(BorderSplitPane.SOUTH, Horizontal.getInstance());
-        _southEastPane =
+        southEastPane =
 	    makeDetailsPane(BorderSplitPane.SOUTHEAST,
 			    Horizontal.getInstance());
-        _northWestPane =
+        northWestPane =
 	    makeDetailsPane(BorderSplitPane.NORTHWEST,
 			    Horizontal.getInstance());
-        _northPane =
+        northPane =
 	    makeDetailsPane(BorderSplitPane.NORTH, Horizontal.getInstance());
-        _northEastPane =
+        northEastPane =
 	    makeDetailsPane(BorderSplitPane.NORTHEAST,
 			    Horizontal.getInstance());
         
-        if (_southPane != null) {
-            detailsPanesByCompassPoint.put(BorderSplitPane.SOUTH, _southPane);
+        if (southPane != null) {
+            detailsPanesByCompassPoint.put(BorderSplitPane.SOUTH, southPane);
         }
-        if (_southEastPane != null) {
+        if (southEastPane != null) {
             detailsPanesByCompassPoint.put(BorderSplitPane.SOUTHEAST,
-					   _southEastPane);
+					   southEastPane);
         }
-        if (_southWestPane != null) {
+        if (southWestPane != null) {
             detailsPanesByCompassPoint.put(BorderSplitPane.SOUTHWEST,
-					   _southWestPane);
+					   southWestPane);
         }
-        if (_eastPane != null) {
-            detailsPanesByCompassPoint.put(BorderSplitPane.EAST, _eastPane);
+        if (eastPane != null) {
+            detailsPanesByCompassPoint.put(BorderSplitPane.EAST, eastPane);
         }
-        if (_westPane != null) {
-            detailsPanesByCompassPoint.put(BorderSplitPane.WEST, _westPane);
+        if (westPane != null) {
+            detailsPanesByCompassPoint.put(BorderSplitPane.WEST, westPane);
         }
-        if (_northWestPane != null) {
+        if (northWestPane != null) {
             detailsPanesByCompassPoint.put(BorderSplitPane.NORTHWEST,
-					   _northWestPane);
+					   northWestPane);
         }
-        if (_northPane != null) {
-            detailsPanesByCompassPoint.put(BorderSplitPane.NORTH, _northPane);
+        if (northPane != null) {
+            detailsPanesByCompassPoint.put(BorderSplitPane.NORTH, northPane);
         }
-        if (_northEastPane != null) {
+        if (northEastPane != null) {
             detailsPanesByCompassPoint.put(BorderSplitPane.NORTHEAST,
-					   _northEastPane);
+					   northEastPane);
         }
-        if (_westPane != null) {
-            detailsPanesByCompassPoint.put(BorderSplitPane.WEST, _westPane);
+        if (westPane != null) {
+            detailsPanesByCompassPoint.put(BorderSplitPane.WEST, westPane);
         }
-        if (_southWestPane != null) {
+        if (southWestPane != null) {
             detailsPanesByCompassPoint.put(BorderSplitPane.SOUTHWEST,
-					   _southWestPane);
+					   southWestPane);
         }
 
         // The workarea is all the visible space except the menu,
@@ -304,7 +304,7 @@ public class ProjectBrowser
                                //       it can be removed alltogether.
         //todo.setTree(_todoPane);
         workAreaPane.add(todoPane, BorderSplitPane.SOUTHWEST);
-        workAreaPane.add(_editorPane);
+        workAreaPane.add(editorPane);
         // Toolbar boundry is the area between the menu and the status
         // bar. It contains the workarea at centre and the toolbar
         // position north, south, east or west.
@@ -324,22 +324,22 @@ public class ProjectBrowser
     /** Set the size of each panel to that last saved in the configuration file
      */
     private void restorePanelSizes() {
-        if (_northPane != null) {
-            _northPane.setPreferredSize(
+        if (northPane != null) {
+            northPane.setPreferredSize(
 		    new Dimension(0,
 				  Configuration.getInteger(
 					  Argo.KEY_SCREEN_NORTH_HEIGHT,
 					  DEFAULT_COMPONENTHEIGHT)));
         }
-        if (_southPane != null) {
-            _southPane.setPreferredSize(
+        if (southPane != null) {
+            southPane.setPreferredSize(
 		    new Dimension(0,
 				  Configuration.getInteger(
 					  Argo.KEY_SCREEN_SOUTH_HEIGHT,
 					  DEFAULT_COMPONENTHEIGHT)));
         }
-        if (_eastPane != null) {
-            _eastPane.setPreferredSize(
+        if (eastPane != null) {
+            eastPane.setPreferredSize(
 		    new Dimension(Configuration.getInteger(
 					  Argo.KEY_SCREEN_EAST_WIDTH,
 					  DEFAULT_COMPONENTHEIGHT),
@@ -420,10 +420,10 @@ public class ProjectBrowser
     }
     
     public String getAppName() {
-        return _appName;
+        return appName;
     }
     public void setAppName(String n) {
-        _appName = n;
+        appName = n;
     }
 
     /**
@@ -523,7 +523,7 @@ public class ProjectBrowser
     }
 
     public MultiEditorPane getEditorPane() {
-        return _editorPane;
+        return editorPane;
     }
 
     /**
@@ -589,7 +589,7 @@ public class ProjectBrowser
         }
         Vector diagrams =
             ProjectManager.getManager().getCurrentProject().getDiagrams();
-        Object target = _editorPane.getTarget();
+        Object target = editorPane.getTarget();
         if ((target instanceof Diagram)
             && ((Diagram) target).countContained(dms) == dms.size()) {
             setTarget(first);
@@ -662,15 +662,15 @@ public class ProjectBrowser
         if (explorerPane != null)
 	    Configuration.setInteger(Argo.KEY_SCREEN_WEST_WIDTH,
 				     explorerPane.getWidth());
-        if (_eastPane != null)
+        if (eastPane != null)
 	    Configuration.setInteger(Argo.KEY_SCREEN_EAST_WIDTH,
-				     _eastPane.getWidth());
-        if (_northPane != null)
+				     eastPane.getWidth());
+        if (northPane != null)
 	    Configuration.setInteger(Argo.KEY_SCREEN_NORTH_HEIGHT,
-				     _northPane.getHeight());
-        if (_southPane != null)
+				     northPane.getHeight());
+        if (southPane != null)
 	    Configuration.setInteger(Argo.KEY_SCREEN_SOUTH_HEIGHT,
-				     _southPane.getHeight());
+				     southPane.getHeight());
 	//        if (_todoPane != null)
 	// Configuration.setInteger(Argo.KEY_SCREEN_SOUTHWEST_WIDTH,
 	// _todoPane.getWidth());
@@ -804,13 +804,13 @@ public class ProjectBrowser
 
     /**
      * Sets the splashscreen. Sets the current splashscreen to invisible
-     * @param splash
+     * @param ss
      */
-    public void setSplashScreen(SplashScreen splash) {
-        if (splashScreen != null && splashScreen != splash) {
+    public void setSplashScreen(SplashScreen ss) {
+        if (splashScreen != null && splashScreen != ss) {
             splashScreen.setVisible(false);
         }
-        splashScreen = splash;
+        splashScreen = ss;
     }
 
     /**
@@ -820,13 +820,13 @@ public class ProjectBrowser
      */
     public static synchronized ProjectBrowser getInstance() {
         if (theInstance == null) {
-            theInstance = new ProjectBrowser("ArgoUML", _Splash);
+            theInstance = new ProjectBrowser("ArgoUML", showSplashScreen);
         }
         return theInstance;
     }
 
     public static synchronized void setSplash(boolean splash) {
-        _Splash = splash;
+        showSplashScreen = splash;
     }
 
     /**
