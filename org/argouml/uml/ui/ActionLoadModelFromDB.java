@@ -44,7 +44,7 @@ public class ActionLoadModelFromDB extends UMLAction {
     // constructors
 
     protected ActionLoadModelFromDB() {
-	super("Load model from DB", NO_ICON);
+	super("Load Model from DB", NO_ICON);
     }
 
 
