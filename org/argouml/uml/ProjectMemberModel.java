@@ -39,7 +39,6 @@ import ru.novosoft.uml.model_management.MModel;
 import ru.novosoft.uml.foundation.core.MNamespace;
 import ru.novosoft.uml.xmi.*;
 
-import org.tigris.gef.util.Dbg;
 
 /**
  * @author Piotr Kaminski
