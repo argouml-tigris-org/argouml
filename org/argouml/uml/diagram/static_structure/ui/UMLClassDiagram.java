@@ -245,4 +245,114 @@ public class UMLClassDiagram extends UMLDiagram {
         }
         return name;
     }
+    
+    /**
+     * See issue 2835.
+     * @return Returns the actionAggregation.
+     */
+    protected Action getActionAggregation() {
+        return actionAggregation;
+    }
+    /**
+     * @return Returns the actionAssociation.
+     */
+    protected Action getActionAssociation() {
+        return actionAssociation;
+    }
+    /**
+     * @return Returns the actionClass.
+     */
+    protected Action getActionClass() {
+        return actionClass;
+    }
+    /**
+     * @return Returns the actionComposition.
+     */
+    protected Action getActionComposition() {
+        return actionComposition;
+    }
+    /**
+     * @return Returns the actionDepend.
+     */
+    protected Action getActionDepend() {
+        return actionDepend;
+    }
+    /**
+     * @return Returns the actionGeneralize.
+     */
+    protected Action getActionGeneralize() {
+        return actionGeneralize;
+    }
+    /**
+     * @return Returns the actionInterface.
+     */
+    protected Action getActionInterface() {
+        return actionInterface;
+    }
+    /**
+     * @return Returns the actionLink.
+     */
+    protected Action getActionLink() {
+        return actionLink;
+    }
+    /**
+     * @return Returns the actionModel.
+     */
+    protected Action getActionModel() {
+        return actionModel;
+    }
+    /**
+     * @return Returns the actionObject.
+     */
+    protected Action getActionObject() {
+        return actionObject;
+    }
+    /**
+     * @return Returns the actionPackage.
+     */
+    protected Action getActionPackage() {
+        return actionPackage;
+    }
+    /**
+     * @return Returns the actionPermission.
+     */
+    protected Action getActionPermission() {
+        return actionPermission;
+    }
+    /**
+     * @return Returns the actionRealize.
+     */
+    protected Action getActionRealize() {
+        return actionRealize;
+    }
+    /**
+     * @return Returns the actionSubsystem.
+     */
+    protected Action getActionSubsystem() {
+        return actionSubsystem;
+    }
+    /**
+     * @return Returns the actionUniAggregation.
+     */
+    protected Action getActionUniAggregation() {
+        return actionUniAggregation;
+    }
+    /**
+     * @return Returns the actionUniAssociation.
+     */
+    protected Action getActionUniAssociation() {
+        return actionUniAssociation;
+    }
+    /**
+     * @return Returns the actionUniComposition.
+     */
+    protected Action getActionUniComposition() {
+        return actionUniComposition;
+    }
+    /**
+     * @return Returns the actionUsage.
+     */
+    protected Action getActionUsage() {
+        return actionUsage;
+    }
 } /* end class UMLClassDiagram */
