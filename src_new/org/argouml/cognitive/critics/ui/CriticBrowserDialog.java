@@ -33,6 +33,7 @@ import javax.swing.table.*;
 import javax.swing.text.*;
 
 import org.argouml.kernel.*;
+import org.argouml.ui.ArgoDialog;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.cognitive.*;
 import org.argouml.cognitive.critics.*;
@@ -43,7 +44,7 @@ import org.argouml.application.api.*;
 /** Dialog box to list all critics and allow editing of some of their
  *  properties.  TODO: knowledge type, supported goals,
  *  supported decisions, critic network, localize labels. */
-public class CriticBrowserDialog extends JDialog
+public class CriticBrowserDialog extends ArgoDialog
 implements ActionListener, ListSelectionListener, ItemListener, DocumentListener {
     
   protected static Category cat = Category.getInstance(CriticBrowserDialog.class);
@@ -86,7 +87,6 @@ implements ActionListener, ListSelectionListener, ItemListener, DocumentListener
   protected JTextArea _desc      = new JTextArea("", 6, NUM_COLUMNS);
   protected JComboBox _useClar   = new JComboBox(USE_CLAR);
 
-  protected JButton _okButton      = new JButton("OK");
   protected JButton _wakeButton    = new JButton("Wake");
   protected JButton _configButton  = new JButton("Configure");
   protected JButton _networkButton = new JButton("Edit Network");
@@ -98,15 +98,14 @@ implements ActionListener, ListSelectionListener, ItemListener, DocumentListener
   // constructors
 
   public CriticBrowserDialog() {
-    super(ProjectBrowser.getInstance(), "Critics");
+    super(ProjectBrowser.getInstance(), "Critics", true);
 
-    Container mainContent = getContentPane();
-    mainContent.setLayout(new BorderLayout());
+    JPanel mainContent = new JPanel();
+    mainContent.setLayout(new BorderLayout(10, 10));
 
     // Critics Table
     
     JPanel tablePanel = new JPanel(new BorderLayout(5, 5));
-    tablePanel.setBorder(BorderFactory.createEmptyBorder(5, 5, 0, 5));
 
     _tableModel.setTarget(Agency.getCritics());
     _table.setModel(_tableModel);
@@ -141,9 +140,6 @@ implements ActionListener, ListSelectionListener, ItemListener, DocumentListener
 	// Critic Details panel
 
 	JPanel detailsPanel = new JPanel(new GridBagLayout());
-	detailsPanel.setBorder(BorderFactory.createCompoundBorder(
-			BorderFactory.createEmptyBorder(5, 0, 0, 5), 
-			BorderFactory.createTitledBorder("Critic Details")));
 	
 	GridBagConstraints labelConstraints = new GridBagConstraints();
 	labelConstraints.anchor = GridBagConstraints.EAST;
@@ -193,9 +189,9 @@ implements ActionListener, ListSelectionListener, ItemListener, DocumentListener
 	fieldConstraints.gridy = 4;
 	labelConstraints.anchor = GridBagConstraints.NORTHEAST;
 	detailsPanel.add(_descLabel, labelConstraints);
-	labelConstraints.anchor = GridBagConstraints.EAST;
 	detailsPanel.add(new JScrollPane(_desc), fieldConstraints);
 
+    labelConstraints.anchor = GridBagConstraints.EAST;
 	labelConstraints.gridy = 5;
 	fieldConstraints.gridy = 5;
 	detailsPanel.add(_clarifierLabel, labelConstraints);
@@ -211,17 +207,11 @@ implements ActionListener, ListSelectionListener, ItemListener, DocumentListener
     detailsPanel.add(buttonPanel, fieldConstraints);
 
 	JPanel detailsContainer = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 0));
+    detailsContainer.setBorder(BorderFactory.createTitledBorder("Critic Details"));
 	detailsContainer.add(detailsPanel);
 	mainContent.add(detailsContainer, BorderLayout.EAST);	
     
-    // South buttons
-    JPanel buttonPane = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-	buttonPane.add(_okButton);
-    mainContent.add(buttonPane, BorderLayout.SOUTH);
-	_okButton.setMnemonic('O');
-
     _goButton.addActionListener(this);
-    _okButton.addActionListener(this);
     _networkButton.addActionListener(this);
     _wakeButton.addActionListener(this);
     _configButton.addActionListener(this);
@@ -241,14 +231,7 @@ implements ActionListener, ListSelectionListener, ItemListener, DocumentListener
 
     setResizable(true);
     
-    pack();
-    
-    // Center on parent
-	Dimension size = getSize();
-	Dimension p = getParent().getSize();
-	int x = (getParent().getX() - size.width) + (int) ((size.width + p.width) / 2d);
-	int y = (getParent().getY() - size.height) + (int) ((size.height + p.height) / 2d);
-	setLocation(x, y);
+    setContent(mainContent);
     
     _numCriticBrowser++;
   }
@@ -315,11 +298,7 @@ implements ActionListener, ListSelectionListener, ItemListener, DocumentListener
 
 
   public void actionPerformed(ActionEvent e) {
-    if (e.getSource() == _okButton) {
-      setVisible(false);
-      dispose();
-      return;
-    }
+    super.actionPerformed(e);
     if (e.getSource() == _goButton) {
       cat.debug("TODO go!");
       return;
