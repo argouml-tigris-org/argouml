@@ -259,7 +259,7 @@ public class CoreHelper {
 	 * the MParamterDirectionType RETURN. If it is only one, it is returned.
 	 * In case there are no return parameters, null is returned. If there
 	 * is more than one return paramter, first of them is returned, but a
-	 * message is written to System.out
+	 * message is logged.
 	 *
 	 * @param operation the operation you want to find the return parameter for
 	 * @return If this operation has only one paramter with Kind: RETURN, this is it, otherwise null
