@@ -38,7 +38,6 @@ import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
-import javax.swing.JToolBar;
 
 import org.apache.log4j.Logger;
 import org.argouml.application.api.ArgoModule;
@@ -107,6 +106,8 @@ public abstract class PropPanelModelElement extends PropPanel {
     protected static ImageIcon _packageIcon = lookupIcon("Package");
 
     protected static ImageIcon _modelIcon = lookupIcon("Model");
+    
+    protected static ImageIcon _subsystemIcon = lookupIcon("Subsystem");
 
     protected static ImageIcon _innerClassIcon = lookupIcon("InnerClass");
 
@@ -374,10 +375,11 @@ public abstract class PropPanelModelElement extends PropPanel {
             // stereoTypeButton.setContentAreaFilled(false);
             stereoTypeButton.setSize(stereoTypeButton.getWidth() - 10,
                     stereoTypeButton.getHeight());
-            JToolBar toolbar = new JToolBar();
-            toolbar.putClientProperty("JToolBar.isRollover", Boolean.TRUE);
-            toolbar.add(stereoTypeButton);
-            _stereotypeBox.add(toolbar);
+            //JToolBar toolbar = new JToolBar();
+            //toolbar.putClientProperty("JToolBar.isRollover", Boolean.TRUE);
+            //toolbar.add(stereoTypeButton);
+            //_stereotypeBox.add(toolbar);
+            _stereotypeBox.add(stereoTypeButton);
         }
         return _stereotypeBox;
     }
