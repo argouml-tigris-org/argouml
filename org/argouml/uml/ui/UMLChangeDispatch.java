@@ -22,6 +22,15 @@
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 
+// File: UMLChangeDispatch.java
+// Classes: UMLChangeDispatch
+// Original Author:
+// $Id$
+
+// 23 Apr 2002: Jeremy Bennett (mail@jeremybennett.com). Added named constants
+// for the various event types.
+
+
 package org.argouml.uml.ui;
 import javax.swing.event.*;
 import java.awt.*;
@@ -37,7 +46,78 @@ public class UMLChangeDispatch implements Runnable, UMLUserInterfaceComponent {
     private MElementEvent _event;
     private int _eventType;
     private Container _container;
- 
+
+    /**
+     * <p>Dispatch a target changed event <em>and</em> add a NSUML listener to
+     *   the target afterwards.</p>
+     */
+
+    public static final int TARGET_CHANGED_ADD = -1;
+
+
+    /**
+     * <p>Dispatch a target changed event.</p>
+     */
+
+    public static final int TARGET_CHANGED = 0;
+
+
+    /**
+     * <p>Dispatch a NSUML property set event.</p>
+     */
+
+    public static final int PROPERTY_SET = 1;
+
+
+    /**
+     * <p>Dispatch a NSUML list role item set event.</p>
+     */
+
+    public static final int LIST_ROLE_ITEM_SET = 2;
+
+
+    /**
+     * <p>Dispatch a NSUML recovered event.</p>
+     */
+
+    public static final int RECOVERED = 3;
+
+
+    /**
+     * <p>Dispatch a NSUML removed event.</p>
+     */
+
+    public static final int REMOVED = 4;
+
+
+    /**
+     * <p>Dispatch a NSUML role added event.</p>
+     */
+
+    public static final int ROLE_ADDED = 5;
+
+
+    /**
+     * <p>Dispatch a NSUML role removed event.</p>
+     */
+
+    public static final int ROLE_REMOVED = 6;
+
+
+    /**
+     * <p>Dispatch a target reasserted event.</p>
+     */
+
+    public static final int TARGET_REASSERTED = 7;
+
+
+    /**
+     * <p>Dispatch a default (target changed) event.</p>
+     */
+
+    public static final int DEFAULT = TARGET_CHANGED;
+
+
     /**
      *  Creates a UMLChangeDispatch.  eventType is overriden if a call to 
      *  one of the event functions is called.
