@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2003 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -41,41 +41,43 @@ import org.argouml.model.uml.modelmanagement.ModelManagementHelper;
 
 
 /**
- * <p>A list model for the extend relationship on use case and extension point
- *   property panels.</p>
+ * A list model for the extend relationship on use case and extension
+ * point property panels.<p>
  *
- * <p>Supports the full menu (Open, Add, Delete, Move Up, Move Down). Provides
- *   its own formatElement routine, to use the name of the base use case (where
- *   the container is a use case) or the extension use case (where the
- *   container is an extension point, rather than name of the extend
- *   relationship itself.</p>
+ * Supports the full menu (Open, Add, Delete, Move Up, Move
+ * Down). Provides its own formatElement routine, to use the name of
+ * the base use case (where the container is a use case) or the
+ * extension use case (where the container is an extension point,
+ * rather than name of the extend relationship itself.<p>
  *
  * @deprecated as of ArgoUml 0.13.5 (10-may-2003),
- *             replaced by ?,
- *             this class is part of the 'old'(pre 0.13.*) implementation of proppanels
- *             that used reflection a lot.
+ * TODO: What is this replaced by?
+ * this class is part of the 'old'(pre 0.13.*) implementation of proppanels
+ * that used reflection a lot.
  */
-
 public class UMLExtendListModel extends UMLBinaryRelationListModel  {
+    /**
+     * @deprecated by Linus Tolke as of 0.15.4. Use your own logger in your
+     * class. This will be removed.
+     */
     protected static Logger cat = Logger.getLogger(UMLExtendListModel.class);
 
     /**
-     * <p>Create a new list model.<p>
+     * Create a new list model.<p>
      *
-     * <p>Implementation is just an invocation of the parent constructor.</p>
+     * Implementation is just an invocation of the parent constructor.<p>
      *
-     * @param container  The container for this list - the use case property
-     *                   panel.
+     * @param container The container for this list - the use case
+     * property panel.
      *
-     * @param property   The name associated with the NSUML {@link
-     *                   MElementEvent} that we are tracking or
-     *                   <code>null</code> if we track them all. We 
-     *                   probably want to just track the "extend" event.
+     * @param property The name associated with the NSUML {@link
+     * ru.novosoft.uml.MElementEvent} that we are tracking or
+     * <code>null</code> if we track them all. We probably want to
+     * just track the "extend" event.
      *
      * @param showNone   True if an empty list is represented by the keyword
      *                   "none"
      */
-
     public UMLExtendListModel(UMLUserInterfaceContainer container,
                               String property, boolean showNone) {
 
@@ -86,52 +88,65 @@ public class UMLExtendListModel extends UMLBinaryRelationListModel  {
     /**
      * @see org.argouml.uml.ui.UMLBinaryRelationListModel#build(Object,Object)
      */
-    protected void build(Object/*MModelElement*/ from, Object/*MModelElement*/ to) {
-        if (org.argouml.model.ModelFacade.isAUseCase(from) && org.argouml.model.ModelFacade.isAUseCase(to)) {
-            UseCasesFactory.getFactory().buildExtend(/*(MUseCase)*/ to, /*(MUseCase)*/ from);
+    protected void build(Object/*MModelElement*/ from,
+			 Object/*MModelElement*/ to) {
+        if (ModelFacade.isAUseCase(from) && ModelFacade.isAUseCase(to)) {
+            UseCasesFactory.getFactory().buildExtend(/*(MUseCase)*/ to,
+						     /*(MUseCase)*/ from);
         } else
-            throw new IllegalArgumentException("In build of UMLExtendListModel: either the arguments are null or not instanceof MUseCase");
+            throw new IllegalArgumentException("In build of UMLExtendListModel:"
+					       + " either the arguments are "
+					       + "null or "
+					       + "not instanceof MUseCase");
     }
 
     /**
-     * @see org.argouml.uml.ui.UMLBinaryRelationListModel#connect(MutableGraphModel, Object, Object)
+     * @see org.argouml.uml.ui.UMLBinaryRelationListModel#connect(
+     *          MutableGraphModel, Object, Object)
      */
     protected void connect(
 			   MutableGraphModel gm,
 			   Object/*MModelElement*/ from,
 			   Object/*MModelElement*/ to) {
-	gm.connect(from, to, (Class)ModelFacade.EXTEND);
+	gm.connect(from, to, (Class) ModelFacade.EXTEND);
     }
 
     /**
      * @see org.argouml.uml.ui.UMLBinaryRelationListModel#getAddDialogTitle()
      */
     protected String getAddDialogTitle() {
-        return Translator.localize("UMLMenu", "dialog.title.add-extended-usecases");
+        return Translator.localize("UMLMenu",
+				   "dialog.title.add-extended-usecases");
     }
 
     /**
      * @see org.argouml.uml.ui.UMLBinaryRelationListModel#getChoices()
      */
     protected Collection getChoices() {
-        return ModelManagementHelper.getHelper().getAllModelElementsOfKind(getTarget().getClass());
+        return ModelManagementHelper.getHelper()
+	    .getAllModelElementsOfKind(getTarget().getClass());
     }
 
     /**
-     * @see org.argouml.uml.ui.UMLBinaryRelationListModel#getRelation(Object,Object)
+     * @see org.argouml.uml.ui.UMLBinaryRelationListModel#getRelation(
+     *          Object, Object)
      */
-    protected Object/*MModelElement*/ getRelation(Object/*MModelElement*/ from, Object/*MModelElement*/ to) {
-        return UseCasesHelper.getHelper().getExtends(/*(MUseCase)*/ to, /*(MUseCase)*/ from);
+    protected Object/*MModelElement*/ getRelation(Object/*MModelElement*/ from,
+						  Object/*MModelElement*/ to) {
+        return UseCasesHelper.getHelper().getExtends(/*(MUseCase)*/ to,
+						     /*(MUseCase)*/ from);
     }
 
     /**
      * @see org.argouml.uml.ui.UMLBinaryRelationListModel#getSelected()
      */
     protected Collection getSelected() {
-        if (org.argouml.model.ModelFacade.isAUseCase(getTarget())) {
-            return UseCasesHelper.getHelper().getExtendedUseCases(/*(MUseCase)*/ getTarget());
-        } else
-            throw new IllegalStateException("In getSelected of UMLExtendListModel: target is not an instanceof MUseCase");
+        if (ModelFacade.isAUseCase(getTarget())) {
+            return UseCasesHelper.getHelper().getExtendedUseCases(getTarget());
+        } else {
+            throw new IllegalStateException("target is not "
+					    + "an instanceof MUseCase");
+	}
     }
 
 } /* End of class UMLExtendListModel */

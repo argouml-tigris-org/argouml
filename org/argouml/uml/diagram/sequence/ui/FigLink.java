@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2003 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -63,8 +63,9 @@ public abstract class FigLink
     }
 
     /**
-     * Returns the action attached to this link if any
-     * @return
+     * Returns the action attached to this link if any.<p>
+     *
+     * @return the action attached to this link or null if there isn't any.
      */
     public Object getAction() {
         Object owner = getOwner();
@@ -79,10 +80,12 @@ public abstract class FigLink
     }
 
     /**
-     * Computes the route of this FigLink and computes the connectionpoints of 
-     * the figlink to the ports.This depends on the action attached to the 
-     * owner of the figlink. Also adds FigActivations etc or moves the FigObjects
-     * if necessary.
+     * Computes the route of this {@link FigLink} and computes the
+     * connectionpoints of the figlink to the ports.  This depends on
+     * the action attached to the owner of the {@link FigLink}.  Also
+     * adds FigActivations etc or moves the {@link FigObject}s
+     * if necessary.<p>
+     *
      * @see org.tigris.gef.presentation.FigEdge#computeRoute()
      */
     public void computeRoute() {
@@ -132,8 +135,10 @@ public abstract class FigLink
     }
 
     /**
-     * Returns the message belonging to this link if there is one (otherwise null).
-     * @return
+     * Returns the message belonging to this link if there is one
+     * (otherwise null).<p>
+     *
+     * @return the message.
      */
     public Object getMessage() {
         Object action = getAction();
@@ -156,8 +161,8 @@ public abstract class FigLink
     }
 
     /**
-     * Lays out the activations to which the links is attached. Only does this at creation time.
-     *
+     * Lays out the activations to which the links is attached. Only
+     * does this at creation time.
      */
     protected abstract void layoutActivations();
 

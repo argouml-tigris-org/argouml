@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -152,11 +152,14 @@ public class DetailsPane
 
     /**
      * Gets all of the _tabPanels from the ConfigLoader, then 
-     * adds them to the JTabbedPane.
+     * adds them to the JTabbedPane.<p>
      *
-     * sets the target to null.
+     * Sets the target to null.<p>
      *
-     * registers listeners.
+     * Registers listeners.<p>
+     *
+     * @param pane is probably the name of the pane TODO: verify this!
+     * @param orientation is the orientation.
      */
     public DetailsPane(String pane, Orientation orientation) {
         cat.info("making DetailsPane(" + pane + ")");
@@ -209,14 +212,18 @@ public class DetailsPane
     // accessors
 
     /**
-     * returns the JTabbedPane that contains all details panels.
+     * Returns the JTabbedPane that contains all details panels.
+     *
+     * @return the JTabbedPane.
      */
     public JTabbedPane getTabs() {
         return _tabs;
     }
 
     /**
-     * selects the to do tab, and sets the target of that tab.
+     * Selects the to do tab, and sets the target of that tab.<p>
+     *
+     * @return true if ? Yes when? TODO: Explain.
      */
     public boolean setToDoItem(Object item) {
         _item = item;
@@ -545,8 +552,9 @@ public class DetailsPane
     }
 
     /**
-     * Set the orientation of this details pane;
-     * @param the required orientation
+     * Set the orientation of this details pane.<p>
+     *
+     * @param orientation the required orientation
      */
     public void setOrientation(Orientation orientation) {
         this.orientation = orientation;
@@ -560,19 +568,17 @@ public class DetailsPane
     }
 
     /**
-     * @see
-     * org.argouml.ui.targetmanager.TargetListener#targetAdded(org.argouml.ui.targetmanager.TargetEvent)
+     * @see TargetListener#targetAdded(TargetEvent)
      */
     public void targetAdded(TargetEvent e) {
-        // we can neglect this, the detailspane allways selects the first target
-        // in a set of targets. The first target can only be 
-        // changed in a targetRemoved or a TargetSet event
+        // we can neglect this, the detailspane allways selects the
+        // first target in a set of targets. The first target can only
+        // be changed in a targetRemoved or a TargetSet event
         fireTargetAdded(e);
     }
 
     /**
-     * @see
-     * org.argouml.ui.targetmanager.TargetListener#targetRemoved(org.argouml.ui.targetmanager.TargetEvent)
+     * @see TargetListener#targetRemoved(TargetEvent)
      */
     public void targetRemoved(TargetEvent e) {
         // how to handle empty target lists?
@@ -582,8 +588,7 @@ public class DetailsPane
     }
 
     /**
-     * @see
-     * org.argouml.ui.targetmanager.TargetListener#targetSet(org.argouml.ui.targetmanager.TargetEvent)
+     * @see TargetListener#targetSet(TargetEvent)
      */
     public void targetSet(TargetEvent e) {
         setTarget(e.getNewTarget());

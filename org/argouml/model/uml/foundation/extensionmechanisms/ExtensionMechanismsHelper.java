@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2003 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -62,14 +62,18 @@ public class ExtensionMechanismsHelper {
 	new ExtensionMechanismsHelper();
 
 
-    /** Singleton instance access method.
+    /**
+     * Singleton instance access method.
      */
     public static ExtensionMechanismsHelper getHelper() {
         return SINGLETON;
     }
 
     /**
-     * Returns all stereotypes in some namespace
+     * Returns all stereotypes in a namespace.
+     *
+     * @param ns is the namespace.
+     * @return a Collection with the stereotypes.
      */
     public Collection getStereotypes(MNamespace ns) {
         List l = new ArrayList();
@@ -85,8 +89,9 @@ public class ExtensionMechanismsHelper {
     }
 
     /**
-     * Returns all stereotypes in some model
-     * @param ns
+     * Returns all stereotypes in some model.
+     *
+     * @param ns is the model.
      * @return Collection The stereotypes found. An empty arraylist is returned
      * if nothing is found.
      */
@@ -106,6 +111,10 @@ public class ExtensionMechanismsHelper {
     /**
      * Finds a stereotype in some namespace. Returns null if no such
      * stereotype is found.
+     *
+     * @return the stereotype found or null.
+     * @param ns is the namespace.
+     * @param stereo is the stereotype.
      */
     public MStereotype getStereotype(MNamespace ns, MStereotype stereo) {
     	String name = stereo.getName();
@@ -113,12 +122,14 @@ public class ExtensionMechanismsHelper {
     	Iterator it = getStereotypes(ns).iterator();
     	while (it.hasNext()) {
 	    Object o = it.next();
-	    if (o instanceof MStereotype &&
-                ((MStereotype) o).getName() != null &&
-		((MStereotype) o).getName().equals(name) &&
-                ((MStereotype) o).getBaseClass() != null &&
-		((MStereotype) o).getBaseClass().equals(baseClass)) {
+	    if (o instanceof MStereotype
+		&& ((MStereotype) o).getName() != null
+		&& ((MStereotype) o).getName().equals(name)
+		&& ((MStereotype) o).getBaseClass() != null
+		&& ((MStereotype) o).getBaseClass().equals(baseClass)) {
+
 		return (MStereotype) o;
+
 	    }
     	}
     	return null;
@@ -126,7 +137,8 @@ public class ExtensionMechanismsHelper {
 
     /**
      * Searches the given stereotype in all models in the current project.
-     * @param stereo
+     *
+     * @param stereo is the given stereotype
      * @return MStereotype
      */
     public MStereotype getStereotype(MStereotype stereo) {
@@ -136,16 +148,18 @@ public class ExtensionMechanismsHelper {
         if (name == null || baseClass == null) return null;
         Iterator it2 =
 	    ProjectManager.getManager().getCurrentProject()
-	    .getModels().iterator();
+	        .getModels().iterator();
         while (it2.hasNext()) {
             MModel model = (MModel) it2.next();
             Iterator it = getStereotypes(model).iterator();
             while (it.hasNext()) {
                 Object o = it.next();
-                if (o instanceof MStereotype &&
-                    ((MStereotype) o).getName().equals(name) &&
-                    ((MStereotype) o).getBaseClass().equals(baseClass)) {
+                if (o instanceof MStereotype
+		    && ((MStereotype) o).getName().equals(name)
+		    && ((MStereotype) o).getBaseClass().equals(baseClass)) {
+
                     return (MStereotype) o;
+
                 }
             }
         }
@@ -173,11 +187,12 @@ public class ExtensionMechanismsHelper {
      * are owned by the same namespace the modelelement is owned by
      * and that have a baseclass that is the same as the
      * metamodelelement name of the modelelement.
-     * @param m
+     *
+     * @param modelElement is the model element
      * @return Collection
      */
     public Collection getAllPossibleStereotypes(Object modelElement) {
-        MModelElement m = (MModelElement)modelElement;
+        MModelElement m = (MModelElement) modelElement;
         List ret = new ArrayList();
         if (m == null) return ret;
         Iterator it = getStereotypes().iterator();
@@ -205,8 +220,9 @@ public class ExtensionMechanismsHelper {
      * Returns true if the given stereotype has a baseclass that
      * equals the baseclass of the given modelelement or one of the
      * superclasses of the given modelelement.
-     * @param m
-     * @param stereo
+     *
+     * @param m is the model element
+     * @param stereo is the stereotype
      * @return boolean
      */
     public boolean isValidStereoType(Object m, Object stereo) {
@@ -226,17 +242,20 @@ public class ExtensionMechanismsHelper {
     }
 
     /**
-     * Sets the stereotype of some modelelement. The method also copies a
-     * stereotype that is not a part of the current model to the current model.
-     * @param m
-     * @param stereo
+     * Sets the stereotype of some modelelement. The method also
+     * copies a stereotype that is not a part of the current model to
+     * the current model.<p>
+     *
+     * @param modelElement is the model element
+     * @param stereotype is the stereotype
      */
     public void setStereoType(Object modelElement, Object stereotype) {
 	if (stereotype != null)
-	    stereotype = ModelManagementHelper.getHelper().getCorrespondingElement(
-				stereotype,
-				ModelFacade.getModel(modelElement),
-				true);
+	    stereotype =
+		ModelManagementHelper.getHelper().getCorrespondingElement(
+			stereotype,
+			ModelFacade.getModel(modelElement),
+			true);
         ModelFacade.setStereotype(
 		modelElement,
 		stereotype);

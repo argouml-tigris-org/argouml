@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -30,25 +30,24 @@ import java.awt.event.MouseEvent;
 import javax.swing.JPopupMenu;
 
 /**
- * <p>
- * This class is the GUI front for a mutable linked list. The user can add,
- * delete or create modelelements to the model. He can do that via a popup
- * menu.
- * </p>
- * <p>
- * The developer using this class can turn on and off the actions the user can
- * do via various configuration switches. To turn on/off the add option for
- * example, he can call the method setAddOption. Default the options for delete
- * and add are on. The option for new is off, since this is much less used.
- * </p>
- * <p>
- * The implementation of the three actions, are delegated to several other
- * ActionClasses. ActionRemoveFromModel for the delete, the other actionclasses
- * need to be provided when constructing this object</p>
- * <p>
- * Since december 14th, an option is added to configure the popupmenu that should
- * be shown.
- * </p>
+ * This class is the GUI front for a mutable linked list. The user can
+ * add, delete or create modelelements to the model. He can do that
+ * via a popup menu.<p>
+ *
+ * The developer using this class can turn on and off the actions the
+ * user can do via various configuration switches. To turn on/off the
+ * add option for example, he can call the method
+ * setAddOption. Default the options for delete and add are on. The
+ * option for new is off, since this is much less used.<p>
+ *
+ * The implementation of the three actions, are delegated to several
+ * other ActionClasses. ActionRemoveFromModel for the delete, the
+ * other actionclasses need to be provided when constructing this
+ * object.<p>
+ *
+ * Since december 14th, an option is added to configure the popupmenu
+ * that should be shown.<p>
+ *
  * @since Oct 2, 2002
  * @author jaap.branderhorst@xs4all.nl
  */
@@ -61,7 +60,8 @@ public class UMLMutableLinkedList extends UMLLinkedList {
 
     private AbstractActionAddModelElement _addAction = null;
     private AbstractActionNewModelElement _newAction = null;
-    private AbstractActionRemoveElement _deleteAction = ActionRemoveModelElement.SINGLETON;
+    private AbstractActionRemoveElement _deleteAction =
+	ActionRemoveModelElement.SINGLETON;
 
     private class PopupMenu extends JPopupMenu {
         public PopupMenu() {
@@ -89,33 +89,42 @@ public class UMLMutableLinkedList extends UMLLinkedList {
      * Constructor that should be used if the developer wishes the popupmenu to
      * be constructed via the actions (as described in the javadoc of this class
      * itself).
-     * @param container
+
      * @param dataModel
      */
-    public UMLMutableLinkedList(UMLModelElementListModel2 dataModel, AbstractActionAddModelElement addAction, AbstractActionNewModelElement newAction, AbstractActionRemoveElement deleteAction, boolean showIcon) {
+    public UMLMutableLinkedList(UMLModelElementListModel2 dataModel,
+				AbstractActionAddModelElement addAction,
+				AbstractActionNewModelElement newAction,
+				AbstractActionRemoveElement deleteAction,
+				boolean showIcon) {
         super(dataModel, showIcon);
         setAddAction(addAction);
         setNewAction(newAction);
         setDeleteAction(deleteAction);
     }
 
-    public UMLMutableLinkedList(UMLModelElementListModel2 dataModel, AbstractActionAddModelElement addAction, AbstractActionNewModelElement newAction) {
+    public UMLMutableLinkedList(UMLModelElementListModel2 dataModel,
+				AbstractActionAddModelElement addAction,
+				AbstractActionNewModelElement newAction) {
         this(dataModel, addAction, newAction, null, false);
     }
 
     /**
      * Constructor that should be used if the developer wishes a customized 
      * popupmenu.
-     * @param container 
+     *
      * @param dataModel
      * @param popup
      */
-    public UMLMutableLinkedList(UMLModelElementListModel2 dataModel, JPopupMenu popup, boolean showIcon) {
+    public UMLMutableLinkedList(UMLModelElementListModel2 dataModel,
+				JPopupMenu popup,
+				boolean showIcon) {
         super(dataModel, showIcon);
         setPopupMenu(popup);
     }
     
-    public UMLMutableLinkedList(UMLModelElementListModel2 dataModel, JPopupMenu popup) {
+    public UMLMutableLinkedList(UMLModelElementListModel2 dataModel,
+				JPopupMenu popup) {
         this(dataModel, popup, false);
     }
 
@@ -188,7 +197,8 @@ public class UMLMutableLinkedList extends UMLLinkedList {
     }
 
     /**
-     * @see java.awt.event.MouseListener#mouseReleased(java.awt.event.MouseEvent)
+     * @see java.awt.event.MouseListener#mouseReleased(
+     *          java.awt.event.MouseEvent)
      */
     public void mouseReleased(MouseEvent e) {       
         if (e.isPopupTrigger()) {

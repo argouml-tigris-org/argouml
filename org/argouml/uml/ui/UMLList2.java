@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -22,7 +22,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// $header$
 package org.argouml.uml.ui;
 
 import javax.swing.JList;
@@ -75,7 +74,8 @@ public abstract class UMLList2
     }
 
     /**
-     * @see javax.swing.event.ListSelectionListener#valueChanged(javax.swing.event.ListSelectionEvent)
+     * @see javax.swing.event.ListSelectionListener#valueChanged(
+     *          javax.swing.event.ListSelectionEvent)
      */
     public void valueChanged(ListSelectionEvent e) {
         if (e.getFirstIndex() >= 0) {
@@ -86,7 +86,6 @@ public abstract class UMLList2
     /**
      * The 'body' of the valueChanged method. Is only called if there is
      * actually a selection made.
-     * @param event
      */
     protected abstract void doIt(ListSelectionEvent e);
 
@@ -97,8 +96,9 @@ public abstract class UMLList2
     public Object getTarget() {
         return ((UMLModelElementListModel2) getModel()).getTarget();
     }
+
     /** 
-     * @see org.argouml.ui.targetmanager.TargettableModelView#getTargettableModel()
+     * @see TargettableModelView#getTargettableModel()
      */
     public TargetListener getTargettableModel() {
         return (TargetListener) getModel();

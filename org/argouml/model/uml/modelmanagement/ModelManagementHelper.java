@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2003 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -44,10 +44,11 @@ import ru.novosoft.uml.model_management.MModel;
 import ru.novosoft.uml.model_management.MSubsystem;
 
 import org.apache.log4j.Logger;
+
 /**
- * Helper class for UML ModelManagement Package.
+ * Helper class for UML ModelManagement Package.<p>
  *
- * Current implementation is a placeholder.
+ * Current implementation is a placeholder.<p>
  *
  * @since ARGO0.11.2
  * @author Thierry Lach
@@ -55,10 +56,15 @@ import org.apache.log4j.Logger;
  */
 public class ModelManagementHelper {
 
+    /**
+     * @deprecated by Linus Tolke as of 0.15.4. Use your own logger in your
+     * class. This will be removed.
+     */
+    protected static Logger cat =
+	Logger.getLogger(ModelManagementHelper.class);
     
-    protected static Logger cat = Logger.getLogger(ModelManagementHelper.class);
-    
-    /** Don't allow instantiation.
+    /**
+     * Don't allow instantiation.
      */
     private ModelManagementHelper() {
     }
@@ -68,7 +74,8 @@ public class ModelManagementHelper {
     private static ModelManagementHelper SINGLETON =
         new ModelManagementHelper();
 
-    /** Singleton instance access method.
+    /**
+     * Singleton instance access method.
      */
     public static ModelManagementHelper getHelper() {
         return SINGLETON;
@@ -86,6 +93,8 @@ public class ModelManagementHelper {
 
     /**
      * Returns all subsystems found in this namespace and in its children
+     *
+     * @param ns is the namespace
      * @return Collection
      */
     public Collection getAllSubSystems(MNamespace ns) {
@@ -122,7 +131,7 @@ public class ModelManagementHelper {
      * This method is CPU intensive and therefore needs to be as efficient as
      * possible.
      *
-     * @ns namespace to process
+     * @param ns namespace to process
      * @return Collection of all namespaces found
      */
     public Collection getAllNamespaces(Object ns) {
@@ -134,22 +143,22 @@ public class ModelManagementHelper {
         List list = Collections.EMPTY_LIST;
         
         // if there are no owned elements then return empty list
-        if(namespaces == Collections.EMPTY_LIST ||
-           namespaces.size() == 0){
+        if (namespaces == Collections.EMPTY_LIST
+	    || namespaces.size() == 0) {
             return Collections.EMPTY_LIST;
         }
-        else{
+        else {
             
             // work with an array instead of iterator.
             Object[] nsArray = namespaces.toArray();
             
-            for(int i=0;i<nsArray.length;i++){
+            for (int i = 0; i < nsArray.length; i++) {
             
                 Object o = nsArray[i];
                 if (o instanceof MNamespace) {
                     
                     // only build a namepace if needed, with 
-                    if(list == Collections.EMPTY_LIST){
+                    if (list == Collections.EMPTY_LIST) {
                         list = new ArrayList(nsArray.length);
                     }
                     
@@ -157,8 +166,8 @@ public class ModelManagementHelper {
                     
                     Collection namespaces1 = getAllNamespaces(o);
                     // only add all if there are some to add.
-                    if(namespaces1 != Collections.EMPTY_LIST && 
-                       namespaces1.size() > 0){
+                    if (namespaces1 != Collections.EMPTY_LIST
+			&& namespaces1.size() > 0) {
                         list.addAll(namespaces1);
                     }
                 }
@@ -169,7 +178,9 @@ public class ModelManagementHelper {
 
     /**
      * Returns all modelelements found in this namespace and its children
-     * that are of some class kind n the projectbrowser model
+     * that are of some class kind the projectbrowser model
+     *
+     * @param kind is the class kind
      * @return Collection
      */
     public Collection getAllModelElementsOfKind(Class kind) {
@@ -182,13 +193,13 @@ public class ModelManagementHelper {
 
     /**
      * Returns all modelelements found in this namespace and its children
-     * that are of some class kind.
+     * that are of some class kind.<p>
      *
      * This method is CPU intensive and therefore needs to be as efficient as
-     * possible.
+     * possible.<p>
      *
-     * @param ns
-     * @param kind
+     * @param nsa is the namespace
+     * @param kind is the class kind
      * @return Collection
      */
     public Collection getAllModelElementsOfKind(Object nsa, Class kind) {
@@ -202,8 +213,8 @@ public class ModelManagementHelper {
         Collection elementsCol = ModelFacade.getOwnedElements(nsa);
         
         // only continue if there are owned elements
-        if(elementsCol == Collections.EMPTY_LIST ||
-           elementsCol.size() == 0){
+        if (elementsCol == Collections.EMPTY_LIST
+	    || elementsCol.size() == 0) {
             return Collections.EMPTY_LIST;
         }
         
@@ -213,30 +224,32 @@ public class ModelManagementHelper {
         // only instantiate arraylist when needed
         List list = Collections.EMPTY_LIST;
         
-        for(int i=0;i<elements.length;i++){
+        for (int i = 0; i < elements.length; i++) {
             
             element = elements[i];
             
             if (element instanceof MNamespace) {
                 
-                if(list == Collections.EMPTY_LIST){
+                if (list == Collections.EMPTY_LIST) {
                     list = new ArrayList(elements.length);
                 }
                 
                 // get child model elements recursively
-                Collection elementsCol1 = getAllModelElementsOfKind(element, kind);
+                Collection elementsCol1 =
+		    getAllModelElementsOfKind(element, kind);
                 
                 // only add model elements if there are some
-                if(!(elementsCol1 == Collections.EMPTY_LIST) &&
-                   !(elementsCol1.size() == 0)){
-                       
-                       list.addAll(elementsCol1);
+                if (!(elementsCol1 == Collections.EMPTY_LIST)
+		    && !(elementsCol1.size() == 0)) {
+
+		    list.addAll(elementsCol1);
+
                 }
                 
             }
             if (kind.isAssignableFrom(element.getClass())) {
                 
-                if(list == Collections.EMPTY_LIST){
+                if (list == Collections.EMPTY_LIST) {
                     list = new ArrayList(elements.length);
                 }
                 
@@ -250,8 +263,10 @@ public class ModelManagementHelper {
     /**
      * helper method for {@link #getAllModelElementsOfKind(Object, Class)}
      *
+     * @param nsa namespace.
      * @param kind name of class to find, this implementation will add the "M"
      *             for NSUML.
+     * @return a Collection.
      */
     public Collection getAllModelElementsOfKind(Object nsa, String kind) {
 
@@ -262,7 +277,7 @@ public class ModelManagementHelper {
                 "given argument " + nsa + " is not a namespace");
         Collection col = null;
         try {
-            // TODO This assumes we are working with MThings
+            // TODO: This assumes we are working with MThings
             col = getAllModelElementsOfKind(nsa, Class.forName("M" + kind));
         } catch (ClassNotFoundException cnfe) {
             cat.error(cnfe);
@@ -300,9 +315,12 @@ public class ModelManagementHelper {
             root = null;
             while (it.hasNext()) {
                 MModelElement me = (MModelElement) it.next();
-                if (i < path.size() - 1 &&
-                    !(me instanceof MNamespace))
-                        continue;
+                if (i < path.size() - 1
+		    && !(me instanceof MNamespace)) {
+
+		    continue;
+
+		}
                 if (name.equals(me.getName())) {
                     root = me;
                     break;
@@ -431,9 +449,13 @@ public class ModelManagementHelper {
             return true;
         if (obj1.getClass() != obj2.getClass())
             return false;
-        if (obj1.getName() == null && obj2.getName() != null ||
-            obj1.getName() != null && !obj1.getName().equals(obj2.getName()))
+        if (obj1.getName() == null && obj2.getName() != null
+	    || obj1.getName() != null
+	    && !obj1.getName().equals(obj2.getName())) {
+
             return false;
+
+	}
         return corresponds(obj1.getNamespace(), obj2.getNamespace());
     }
 

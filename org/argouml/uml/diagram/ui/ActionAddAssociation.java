@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2002 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -46,14 +46,17 @@ import org.tigris.gef.base.ModeCreatePolyEdge;
 public class ActionAddAssociation extends CmdSetMode {
     
     /**
-     * Construct a new ActionAddAssociation
-     * @param aggregation the required aggregation for the association.
+     * Construct a new ActionAddAssociation.<p>
+     *
+     * @param aggregationKind the required aggregation for the association.
      * @param unidirectional true if this is to create a unidirectional 
      *        association
      * @param name the action description
      */
-    public ActionAddAssociation(Object aggregationKind, boolean unidirectional, String name) {
-        super(ModeCreatePolyEdge.class, "edgeClass", ModelFacade.ASSOCIATION, name);
+    public ActionAddAssociation(Object aggregationKind, boolean unidirectional,
+				String name) {
+        super(ModeCreatePolyEdge.class, "edgeClass",
+	      ModelFacade.ASSOCIATION, name);
         _modeArgs.put("aggregation", aggregationKind);
         _modeArgs.put("unidirectional", new Boolean(unidirectional));
     }

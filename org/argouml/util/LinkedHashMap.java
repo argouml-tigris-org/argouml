@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -30,10 +30,11 @@ import java.util.Map;
 import java.util.Iterator;
 
 /**
- * This implements all the same methods of the JDK1.4 LinkedHashMap class and is
- * provided to give the same functionality for previous versions of JDK.
- * @see http://java.sun.com/j2se/1.4.2/docs/api/java/util/LinkedHashMap.html
+ * This implements all the same methods of the JDK1.4 LinkedHashMap
+ * class and is provided to give the same functionality for previous
+ * versions of JDK.<p>
  *
+ * @see <a href="http://java.sun.com/j2se/1.4.2/docs/api/java/util/LinkedHashMap.html">LinkedHashMap in JDK1.4</a>
  * @author Bob Tarling
  */
 public class LinkedHashMap extends java.util.HashMap {
@@ -57,7 +58,8 @@ public class LinkedHashMap extends java.util.HashMap {
         super(initialCapacity, loadFactor);
     }
     
-    public LinkedHashMap(int initialCapacity, float loadFactor, boolean accessOrder) {
+    public LinkedHashMap(int initialCapacity, float loadFactor,
+			 boolean accessOrder) {
         super(initialCapacity, loadFactor);
     }
     
@@ -158,15 +160,22 @@ public class LinkedHashMap extends java.util.HashMap {
 	}
 
 	public boolean equals(Object o) {
-	    if (!(o instanceof Map.Entry)) return false;
+	    if (!(o instanceof Map.Entry)) {
+		return false;
+	    }
 	    Map.Entry other = (Map.Entry) o;
 
-	    return (key == null ? other.getKey() == null : key.equals(other.getKey())) &&
-	       (value == null ? other.getValue() == null : value.equals(other.getValue()));
+	    return (key == null
+		    ? other.getKey() == null
+		    : key.equals(other.getKey()))
+		&& (value == null
+		    ? other.getValue() == null
+		    : value.equals(other.getValue()));
 	}
 
 	public int hashCode() {
-	    return (key == null ? 0 : key.hashCode()) ^ (value == null ? 0 : value.hashCode());
+	    return (key == null ? 0 : key.hashCode())
+		^ (value == null ? 0 : value.hashCode());
 	}
 
 	public String toString() {
@@ -234,7 +243,8 @@ public class LinkedHashMap extends java.util.HashMap {
             }
 
             public void remove() {
-                if (modCount != expectedModCount) throw new java.util.ConcurrentModificationException();
+                if (modCount != expectedModCount)
+		    throw new java.util.ConcurrentModificationException();
                 if (!valid) throw new IllegalStateException();
                 LhmSet.this.remove(lastObject);
                 //LhmSet.super.remove(lastObject);
@@ -290,12 +300,12 @@ public class LinkedHashMap extends java.util.HashMap {
         public ValuesList(Collection c) {
         }
         
-        //TODO turn off after built
+        //TODO: turn off after built
         //public boolean add(Object o) {
         //    throw new java.lang.UnsupportedOperationException();
         //}
         
-        //TODO turn off after built
+        //TODO: turn off after built
         //public boolean addAll(Collection c) {
         //    throw new java.lang.UnsupportedOperationException();
         //}
@@ -339,9 +349,11 @@ public class LinkedHashMap extends java.util.HashMap {
             }
 
             public void remove() {
-                if (modCount != expectedModCount) throw new java.util.ConcurrentModificationException();
+                if (modCount != expectedModCount)
+		    throw new java.util.ConcurrentModificationException();
                 if (!valid) throw new IllegalStateException();
-                if (!ValuesList.super.remove(lastObject)) throw new java.util.ConcurrentModificationException();
+                if (!ValuesList.super.remove(lastObject))
+		    throw new java.util.ConcurrentModificationException();
                 keySet.remove(index);
                 entrySet.remove(index);
                 ++modCount;

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2002 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -41,11 +41,15 @@ import org.argouml.cognitive.ToDoList;
 import org.argouml.uml.ui.UMLTreeCellRenderer;
 
 /**
- * This is the JTree that is the gui component view of the model navigation and
- * todo list.
+ * This is the JTree that is the gui component view of the model
+ * navigation and todo list.
  */
-public class DisplayTextTree extends JTree{
+public class DisplayTextTree extends JTree {
 
+    /**
+     * @deprecated by Linus Tolke as of 0.15.4. Use your own logger in your
+     * class. This will be removed.
+     */
     protected static Logger cat = Logger.getLogger(DisplayTextTree.class);
 
     /**
@@ -58,7 +62,6 @@ public class DisplayTextTree extends JTree{
      */
     private Hashtable _expandedPathsInModel;
 
-    /** needs documenting */
     private boolean _reexpanding;
 
     /** Sets the label renderer, line style angled, enable tooltips,
@@ -86,6 +89,8 @@ public class DisplayTextTree extends JTree{
      * override default JTree implementation to display the
      * appropriate text for any object that will be displayed in
      * the todo list.
+     *
+     * @return the value converted to text.
      */
     public String convertValueToText(
         Object value,
@@ -95,7 +100,7 @@ public class DisplayTextTree extends JTree{
         int row,
         boolean hasFocus) {
 
-            String name = null;
+	String name = null;
 
         if (value instanceof ToDoItem) {
             return ((ToDoItem) value).getHeadline();
@@ -110,9 +115,9 @@ public class DisplayTextTree extends JTree{
     }
 
     /**
-     * Tree MModel Expansion notification.
+     * Tree MModel Expansion notification.<p>
      *
-     * @param e  a Tree node insertion event
+     * @param path a Tree node insertion event
      */
     public void fireTreeExpanded(TreePath path) {
 
@@ -128,7 +133,6 @@ public class DisplayTextTree extends JTree{
         expanded.addElement(path);
     }
 
-    /** needs documenting */
     public void fireTreeCollapsed(TreePath path) {
 
         super.fireTreeCollapsed(path);
@@ -140,7 +144,6 @@ public class DisplayTextTree extends JTree{
         expanded.removeElement(path);
     }
 
-    /** needs documenting */
     public void setModel(TreeModel newModel) {
 
         cat.debug("setModel");
@@ -152,8 +155,7 @@ public class DisplayTextTree extends JTree{
 
     // ------------- other methods ------------------
 
-    /** needs documenting
-     *
+    /**
      * called in reexpand()
      */
     protected Vector getExpandedPaths() {

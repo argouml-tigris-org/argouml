@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2001 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -25,15 +25,16 @@
 package org.argouml.application.api;
 import javax.swing.*;
 
-/**  An interface which identifies an ArgoUML plug-in to the menu.
- *   Plug-ins are replacements or additions to standard Argo classes.
+/**
+ * An interface which identifies an ArgoUML plug-in to the menu.
+ * Plug-ins are replacements or additions to standard Argo classes.
  *   
- *   PluggableMenu require two criteria.  The first is a JMenuItem.
- *   The second is an unlocalized string which identifies the menu
- *   requesting the plugin, such as "File" or "Edit".
+ * PluggableMenu require two criteria.  The first is a JMenuItem.  The
+ * second is an unlocalized string which identifies the menu
+ * requesting the plugin, such as "File" or "Edit".
  *
- *   @author Thierry Lach
- *   @since 0.9.4
+ * @author Thierry Lach
+ * @since 0.9.4
  */
 public interface PluggableMenu extends Pluggable {
 
@@ -72,22 +73,25 @@ public interface PluggableMenu extends Pluggable {
     public static String KEY_HELP = "Help";
 
 
-    /** Return the JMenuItem controlled by the plugin under the specific
-     *  context.  One menu plugin may control multiple menu items.
+    /**
+     * Return the JMenuItem controlled by the plugin under the
+     * specific context.  One menu plugin may control multiple menu
+     * items.
      *
-     *  @param context array of objects
-     *             as created by {@link #buildContext(JMenuItem, String) }.
+     * @param context array of objects
+     *            as created by {@link #buildContext(JMenuItem, String) }.
      *
-     *  @return A JMenuItem object controlled by the plug-in.
+     * @return A JMenuItem object controlled by the plug-in.
      *
-     *  @since ARGO0.11.3
-     *  @author Thierry Lach
+     * @since ARGO0.11.3
+     * @author Thierry Lach
      */
     public JMenuItem getMenuItem(Object[] context);
 
     /**
      * Helper to create a context recognized by
-     * {@link Pluggable#inContext(Object[])}
+     * {@link org.argouml.application.api.Pluggable#inContext(Object[])}.
+     *
      * @param parentMenuItem menu item
      * @param menuType menu name
      * @return the proper context array.

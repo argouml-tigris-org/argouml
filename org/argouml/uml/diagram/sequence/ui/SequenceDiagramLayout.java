@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2003 The Regents of the University of California. All
+// Copyright (c) 2003-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -41,30 +41,34 @@ import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigEdge;
 
 /**
- * The layer on which the figs in a sequence diagram are placed. Also responsible for
- * distributing figs on the diagram if a fig is added or removed.
+ * The layer on which the figs in a sequence diagram are placed. Also
+ * responsible for distributing figs on the diagram if a fig is added
+ * or removed.
+ *
  * @author : jaap.branderhorst@xs4all.nl
  */
 public class SequenceDiagramLayout extends LayerPerspectiveMutable {
     /**
-     * The distance between two objects on the sequence diagram
+     * The distance between two objects on the sequence diagram.
      */
-    public final static int OBJECT_DISTANCE = 30;
+    public static final int OBJECT_DISTANCE = 30;
 
     /**
-     * The distance between the left side of the diagram and the first FigObject
+     * The distance between the left side of the diagram and the first
+     * {@link FigObject}.
      */
-    public final static int DIAGRAM_LEFT_MARGE = 50;
+    public static final int DIAGRAM_LEFT_MARGE = 50;
 
     /**
-     * The distance between the top side of the diagram and the top of the highest FigObject
+     * The distance between the top side of the diagram and the top of
+     * the highest {@link FigObject}
      */
-    public final static int DIAGRAM_TOP_MARGE = 50;
+    public static final int DIAGRAM_TOP_MARGE = 50;
 
     /**
      * The vertical distance between two links 
      */
-    public final static int LINK_DISTANCE = 60;
+    public static final int LINK_DISTANCE = 60;
 
     /**
      * Linked list with all fig objects sorted by x coordinate in it
@@ -82,7 +86,7 @@ public class SequenceDiagramLayout extends LayerPerspectiveMutable {
     }
 
     /** 
-     * @see org.tigris.gef.base.LayerPerspective#putInPosition(org.tigris.gef.presentation.Fig)
+     * @see org.tigris.gef.base.LayerPerspective#putInPosition(Fig)
      */
     public void putInPosition(Fig f) {
         if (f instanceof FigObject) {
@@ -93,7 +97,9 @@ public class SequenceDiagramLayout extends LayerPerspectiveMutable {
     }
 
     /**
-     * Distributes the fig objects contained in _figObjectsX over the sequencediagram.
+     * Distributes the fig objects contained in _figObjectsX over the
+     * sequencediagram.
+     *
      * @param f
      */
     private void distributeFigObjects(Fig f) {
@@ -146,7 +152,7 @@ public class SequenceDiagramLayout extends LayerPerspectiveMutable {
     }
 
     /**
-     * @see org.tigris.gef.graph.GraphListener#nodeAdded(org.tigris.gef.graph.GraphEvent)
+     * @see org.tigris.gef.graph.GraphListener#nodeAdded(GraphEvent)
      */
     public void nodeAdded(GraphEvent ge) {
         super.nodeAdded(ge);
@@ -230,12 +236,15 @@ public class SequenceDiagramLayout extends LayerPerspectiveMutable {
     }
 
     /**
-     * Returns a list with all figLinks that intersect with the given y coordinate.
+     * Returns a list with all {@link FigLink}s that intersect with
+     * the given y coordinate.<p>
+     *
      * @param y
-     * @return
+     * @return the list with {@link FigLink}s.
      */
     public List getFigLinks(int y) {
-        if (getContents(null).isEmpty() || getContentsEdgesOnly(null).isEmpty()) {
+        if (getContents(null).isEmpty()
+	    || getContentsEdgesOnly(null).isEmpty()) {
             return Collections.EMPTY_LIST;
         }
         List retList = new ArrayList();

@@ -1,7 +1,5 @@
-
-
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -36,12 +34,11 @@ import javax.swing.event.ListSelectionEvent;
 
 import org.argouml.ui.targetmanager.TargetManager;
 
-
-
-
 /**
- * An UMLList that implements 'jump' behaviour. As soon as the user doubleclicks 
- * on an element in the list, that element is selected in argouml.
+ * An UMLList that implements 'jump' behaviour. As soon as the user
+ * doubleclicks on an element in the list, that element is selected in
+ * argouml.
+ *
  * @since Oct 2, 2002
  * @author jaap.branderhorst@xs4all.nl
  */
@@ -49,7 +46,7 @@ public class UMLLinkedList extends UMLList2 implements MouseListener {
 
     /**
      * Constructor for UMLLinkedList.
-     * @param container
+     *
      * @param dataModel
      */
     public UMLLinkedList(
@@ -64,21 +61,26 @@ public class UMLLinkedList extends UMLList2 implements MouseListener {
     }
 
     /**
-     * @see org.argouml.uml.ui.UMLList2#doIt(javax.swing.event.ListSelectionEvent)
+     * @see org.argouml.uml.ui.UMLList2#doIt(
+     *          javax.swing.event.ListSelectionEvent)
      */
     protected void doIt(ListSelectionEvent e) {
     }
 
     /**
-     * @see java.awt.event.MouseListener#mouseClicked(java.awt.event.MouseEvent)
+     * @see java.awt.event.MouseListener#mouseClicked(
+     *          java.awt.event.MouseEvent)
      */
     public void mouseClicked(MouseEvent e) {
         if (e.getSource() == this) {
-            if (e.getClickCount() >= 2 && SwingUtilities.isLeftMouseButton(e)) {
+            if (e.getClickCount() >= 2
+		&& SwingUtilities.isLeftMouseButton(e)) {
+		
                 Object o = getSelectedValue();
-                if (org.argouml.model.ModelFacade.isAModelElement(o)) {                    
+                if (org.argouml.model.ModelFacade.isAModelElement(o)) {
                     TargetManager.getInstance().setTarget(o);
                 }
+
             }
             e.consume();
         }
@@ -103,7 +105,8 @@ public class UMLLinkedList extends UMLList2 implements MouseListener {
     }
 
     /**
-     * @see java.awt.event.MouseListener#mouseReleased(java.awt.event.MouseEvent)
+     * @see java.awt.event.MouseListener#mouseReleased(
+     *          java.awt.event.MouseEvent)
      */
     public void mouseReleased(MouseEvent e) {
     }

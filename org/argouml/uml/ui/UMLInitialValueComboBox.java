@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2002 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -30,18 +30,20 @@ import javax.swing.*;
 import org.argouml.model.ModelFacade;
 import ru.novosoft.uml.MElementEvent;
 
-/** handles communication between the initial value JComboBox and the Collection.
- *  This class also causes NSUML to refresh and so keeps the diagram in synch
- *  with the model.
+/**
+ * Handles communication between the initial value JComboBox and the
+ * Collection.  This class also causes NSUML to refresh and so keeps
+ * the diagram in synch with the model.
  *
- *  Method PropertySet listens for MElementEvent events and updates the other
- *  elements, such as type, visibility and changeability.
- *      Modified psager@tigris.org
+ * Method PropertySet listens for MElementEvent events and updates the
+ * other elements, such as type, visibility and changeability.
+ * Modified psager@tigris.org
  *
- * @deprecated as of ArgoUml 0.13.5 (10-may-2003),
- *             to be replaced by something similar to {@link org.argouml.uml.ui.foundation.core.UMLAttributeInitialValueListModel},
- *             this class is part of the 'old'(pre 0.13.*) implementation of proppanels
- *             that used reflection a lot.
+ * @deprecated as of ArgoUml 0.13.5 (10-may-2003), to be replaced by
+ * something similar to {@link
+ * org.argouml.uml.ui.foundation.core.UMLAttributeInitialValueListModel},
+ * this class is part of the 'old'(pre 0.13.*) implementation of
+ * proppanels that used reflection a lot.
  */
 public class UMLInitialValueComboBox extends JComboBox 
              implements ActionListener, UMLUserInterfaceComponent {
@@ -83,12 +85,16 @@ public class UMLInitialValueComboBox extends JComboBox
                 String item = (String) getSelectedItem();
                 Object target = _container.getTarget();
                 if (org.argouml.model.ModelFacade.isAAttribute(target)) {
-                    Object/*MExpression*/ itemExpr = UmlFactory.getFactory().getDataTypes().createExpression("Java", item);
+                    Object/*MExpression*/ itemExpr =
+			UmlFactory.getFactory().getDataTypes()
+			    .createExpression("Java", item);
                     ModelFacade.setInitialValue(target, itemExpr);
                     update();
                 }
                 else if (org.argouml.model.ModelFacade.isAParameter(target)) {
-                    Object/*MExpression*/ itemExpr = UmlFactory.getFactory().getDataTypes().createExpression("Java", item);
+                    Object/*MExpression*/ itemExpr =
+			UmlFactory.getFactory().getDataTypes()
+			    .createExpression("Java", item);
                     ModelFacade.setDefaultValue(target, itemExpr);
                     update();
                 }
@@ -97,38 +103,44 @@ public class UMLInitialValueComboBox extends JComboBox
         
     }   //...end of constructor...
     
-/** 
- *  On change of target (when we display the Parameter or Attribute property panel)
- *  we set the initial value of the attribute into the UMLInitialValueComboBox.
- *
- *  If the attribute or the parameter has no value, then clear the
- *  initialValue combobox of residual junk..this is also done to keep from setting
- *  residual values into the return parameter.
- *  @author psager@tigris.org Aug. 31, 2001. Modified Sept. 05, 2001
- */ 
+    /** 
+     * On change of target (when we display the Parameter or Attribute
+     * property panel) we set the initial value of the attribute into
+     * the UMLInitialValueComboBox.
+     *
+     * If the attribute or the parameter has no value, then clear the
+     * initialValue combobox of residual junk..this is also done to
+     * keep from setting residual values into the return parameter.
+     *
+     * @author psager@tigris.org Aug. 31, 2001. Modified Sept. 05, 2001
+     */ 
     public void targetChanged() {
         Object target = _container.getTarget();
 	_isUpdating = true;
         if (org.argouml.model.ModelFacade.isAAttribute(target)) {
-            Object/*MExpression*/ initExpr = ModelFacade.getInitialValue(target);
+            Object/*MExpression*/ initExpr =
+		ModelFacade.getInitialValue(target);
             if (initExpr != null) {
                 Object init = ModelFacade.getBody(initExpr);
                 setSelectedItem(init);
                 //update();
             }
             else if (initExpr == null) {
-                setSelectedItem(null); // clear residual junk from the combo box.
+                setSelectedItem(null); // clear residual junk from the
+				       // combo box.
             }
         } 
         else if (ModelFacade.isAParameter(target)) {
-            Object/*MExpression*/ initExpr = ModelFacade.getDefaultValue(target);
+            Object/*MExpression*/ initExpr =
+		ModelFacade.getDefaultValue(target);
             if (initExpr != null) {
                 Object init = ModelFacade.getBody(initExpr);
                 setSelectedItem(init);
                 //update();
             }
             else if (initExpr == null) {
-                setSelectedItem(null); // clear the previous value from the combo box.
+                setSelectedItem(null); // clear the previous value
+				       // from the combo box.
             }
         }
 	_isUpdating = false;
@@ -149,17 +161,17 @@ public class UMLInitialValueComboBox extends JComboBox
     public void removed(final MElementEvent p1) {
     }
 
-/**  event handler for MElement events generated by the attribute/parameter 
- *   property panels and the diagram. 
- *
- *   The event name is used to identify whether the event should be handled here
- *   or not. eventProp "owner" and "name" are handled elsewhere while 
- *   eventProp "type" and "initValue" are handled here.
-  *          modified Aug. 29, 2001 psager@tigris.org
- *          modified Dec. 13, 2001 psager@tigris.org cleaned up the code.
- *          modified Aug. 21, 2002 d00mst@tigris.org catch changes to the initial value
- *   @param  MElementEvent event the event object that identifies the event
- */
+    /**
+     * Event handler for MElement events generated by the
+     * attribute/parameter property panels and the diagram.<p>
+     *
+     * The event name is used to identify whether the event should be
+     * handled here or not. eventProp "owner" and "name" are handled
+     * elsewhere while eventProp "type" and "initValue" are handled
+     * here.
+     *
+     * @param event the event object that identifies the event
+     */
     public void propertySet(final MElementEvent event) {
         String eventProp = event.getName();
         if (eventProp.equals("owner") || eventProp.equals("name")) {
@@ -184,7 +196,8 @@ public class UMLInitialValueComboBox extends JComboBox
             if (classifier == null) {
                 return;
             }
-            ModelFacade.setFeatures(classifier, ModelFacade.getFeatures(classifier));
+            ModelFacade.setFeatures(classifier,
+				    ModelFacade.getFeatures(classifier));
         }
         else if (ModelFacade.isAParameter(target)) {
             if (ModelFacade.isACallEvent(target)) {
@@ -196,7 +209,8 @@ public class UMLInitialValueComboBox extends JComboBox
                 if (classifier == null) {
                     return;
                 }
-                ModelFacade.setFeatures(classifier, ModelFacade.getFeatures(classifier));
+                ModelFacade.setFeatures(classifier,
+					ModelFacade.getFeatures(classifier));
             }
         }
     }   // ...end of update() method...

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2003 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -47,20 +47,22 @@ import org.tigris.gef.base.Globals;
  * will only work with Java1.4, but it will compile with 1.3. It can be put into
  * GEF as it is rather generic.
  *
- * @see http://java.sun.com/docs/books/tutorial/uiswing/misc/dnd.html
+ * @see <a href="http://java.sun.com/docs/books/tutorial/uiswing/misc/dnd.html">
+ * Swing Drag and Drop
+ * </a>
  * @author  alexb
  * @since argoUML version 0.15.2, Created on 19 October 2003, 08:36
  */
 public class ActionSaveDiagramToClipboard
-extends AbstractAction
-implements ClipboardOwner{
+    extends AbstractAction
+    implements ClipboardOwner {
     
     /** get diagram image and put in system clipboard. */
     public void actionPerformed(ActionEvent actionEvent) {
         
         Image diagramGifImage = getImage();
         
-        if(diagramGifImage == null){
+        if (diagramGifImage == null) {
             return;
         }
         
@@ -70,25 +72,28 @@ implements ClipboardOwner{
     }
     
     /** get image from gef */
-    private Image getImage(){
+    private Image getImage() {
         
         Editor ce = Globals.curEditor();
-        Rectangle drawingArea = ce.getLayerManager().getActiveLayer().calcDrawingArea();
+        Rectangle drawingArea =
+	    ce.getLayerManager().getActiveLayer().calcDrawingArea();
         
         // avoid GEF calcDrawingArea bug when nothing in a diagram.
-        if(drawingArea.x < 0 ||
-        drawingArea.y < 0 ||
-        drawingArea.width < 0 ||
-        drawingArea.height < 0){
+        if (drawingArea.x < 0
+	    || drawingArea.y < 0
+	    || drawingArea.width < 0
+	    || drawingArea.height < 0) {
             return null;
         }
         
         boolean isGridHidden = ce.getGridHidden();
-        ce.setGridHidden( true );// hide grid, otherwise can't see anything
-        Image diagramGifImage = ce.createImage( drawingArea.width, drawingArea.height );
+        ce.setGridHidden( true ); // hide grid, otherwise can't see anything
+        Image diagramGifImage =
+	    ce.createImage(drawingArea.width, drawingArea.height);
         Graphics g = diagramGifImage.getGraphics();
         
-        g.setColor( new Color(CmdSaveGIF.TRANSPARENT_BG_COLOR) ); // background color.
+	// background color.
+        g.setColor( new Color(CmdSaveGIF.TRANSPARENT_BG_COLOR) );
         g.fillRect( 0, 0, drawingArea.width, drawingArea.height );
         g.translate( -drawingArea.x, -drawingArea.y );
         ce.print( g );
@@ -105,9 +110,9 @@ implements ClipboardOwner{
 /**
  * Encapsulates an awt Image for Data Transfer to/from the clipboard.
  */
-class ImageSelection implements Transferable{
+class ImageSelection implements Transferable {
     
-    static public DataFlavor imageFlavor;
+    public static DataFlavor imageFlavor;
     private DataFlavor [] supportedFlavors = {imageFlavor};
     
     // the diagram image data
@@ -118,7 +123,8 @@ class ImageSelection implements Transferable{
         diagramImage = newDiagramImage;
         // hack in order to be able to compile in java1.3
         imageFlavor =
-        new DataFlavor("image/x-java-image; class=java.awt.Image", "Image");
+	    new DataFlavor("image/x-java-image; class=java.awt.Image",
+			   "Image");
     }
     
     public synchronized DataFlavor [] getTransferDataFlavors() {
@@ -130,20 +136,19 @@ class ImageSelection implements Transferable{
         
         // hack in order to be able to compile in java1.3
         return (parFlavor.getMimeType().
-                    equals(imageFlavor.getMimeType()) &&
-        
-                parFlavor.getHumanPresentableName()
-                    .equals(imageFlavor.getHumanPresentableName()));
+                    equals(imageFlavor.getMimeType())
+		&& parFlavor.getHumanPresentableName()
+                       .equals(imageFlavor.getHumanPresentableName()));
         
     }
     
     public synchronized Object getTransferData(DataFlavor parFlavor)
-    throws UnsupportedFlavorException {
+	throws UnsupportedFlavorException {
         
-        if (isDataFlavorSupported(parFlavor)){
+        if (isDataFlavorSupported(parFlavor)) {
             return (diagramImage);
         }
-        else{
+        else {
             throw new UnsupportedFlavorException(imageFlavor);
         }
         

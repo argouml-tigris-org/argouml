@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2002 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -58,6 +58,10 @@ import org.argouml.model.uml.UmlFactory;
  */
 
 public class WizOperName extends WizMEName {
+    /**
+     * @deprecated by Linus Tolke as of 0.15.4. Use your own logger in your
+     * class. This will be removed.
+     */
     protected static Logger cat = Logger.getLogger(WizOperName.class);
 
     boolean _possibleConstructor = false;
@@ -90,12 +94,14 @@ public class WizOperName extends WizMEName {
     /** 
      * Method to tell the Wizard what path it should work with.
      *
-     * @param setToConstructor is true if we shall take the path where
+     * @param b setToConstructor is true if we shall take the path where
      * the oper is converted to a constructor.
      */
     public void setPossibleConstructor(boolean b) { _possibleConstructor = b; }
 
-    /** Create a new panel for the given step. */
+    /**
+     * Create a new panel for the given step.
+     */
     public JPanel makePanel(int newStep) {
 	if (!_possibleConstructor)
 	    return super.makePanel(newStep);
@@ -176,7 +182,8 @@ public class WizOperName extends WizMEName {
 		if (!_oldStereotypeIsSet) {
 		    _oldStereotype = null;
 		    if (ModelFacade.getStereotypes(oper).size() > 0) {
-                        _oldStereotype = ModelFacade.getStereotypes(oper).iterator().next();
+                        _oldStereotype =
+			    ModelFacade.getStereotypes(oper).iterator().next();
                     }
 		    _oldStereotypeIsSet = true;
 		}
@@ -196,20 +203,24 @@ public class WizOperName extends WizMEName {
                     Object ns = ModelFacade.getNamespace(ster);
                     if (!("create".equals(ModelFacade.getName(ster))))
                         continue;
-                    if (!("BehavioralFeature".equals(ModelFacade.getBaseClass(ster))))
+                    if (!("BehavioralFeature".equals(
+			    ModelFacade.getBaseClass(ster)))) {
                         continue;
+		    }
                     theStereotype = ster;
                     break;
                 }
                 if (theStereotype == null) {
                     theStereotype =
 			UmlFactory.getFactory().getExtensionMechanisms()
-			.createStereotype();
+			    .createStereotype();
 		    ModelFacade.setName(theStereotype, "create");
 		    // theStereotype.setStereotype(???);
-		    ModelFacade.setBaseClass(theStereotype, "BehavioralFeature");
-		    Object targetNS = findNamespace(ModelFacade.getNamespace(oper),
-							ModelFacade.getModel(oper));
+		    ModelFacade.setBaseClass(theStereotype,
+					     "BehavioralFeature");
+		    Object targetNS =
+			findNamespace(ModelFacade.getNamespace(oper),
+				      ModelFacade.getModel(oper));
                     ModelFacade.addOwnedElement(targetNS, theStereotype);
 		}
 
@@ -255,7 +266,8 @@ public class WizOperName extends WizMEName {
             //
             //   see if there is already an element with the same name
             //
-            Collection ownedElements = ModelFacade.getOwnedElements(targetParentNS);
+            Collection ownedElements =
+		ModelFacade.getOwnedElements(targetParentNS);
             String phantomName = ModelFacade.getName(phantomNS);
             String targetName;
             if (ownedElements != null) {

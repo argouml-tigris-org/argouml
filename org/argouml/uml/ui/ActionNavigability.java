@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2001 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -37,9 +37,9 @@ import org.argouml.model.ModelFacade;
  *  org.argouml.uml.diagram.ui.ActionNavigability}, remove 0.15.3, alexb
  */
 public class ActionNavigability extends UMLAction {
-    final public static int BIDIRECTIONAL = 0;
-    final public static int STARTTOEND = 1;
-    final public static int ENDTOSTART = 2;
+    public static final int BIDIRECTIONAL = 0;
+    public static final int STARTTOEND = 1;
+    public static final int ENDTOSTART = 2;
 
     int nav = BIDIRECTIONAL;
     Object assocStart = null;
@@ -48,15 +48,17 @@ public class ActionNavigability extends UMLAction {
     /**
      * The <code>ActionNavigability</code> constructor.
      *
-     * @param start a <code>MAssociationEnd</code> object at the start
-     * of an association.
-     * @param end a <code>MAssociationEnd</code> object at the end of
-     * an association.
+     * @param assocStart a <code>MAssociationEnd</code> object at the
+     * start of an association.
+     * @param assocEnd a <code>MAssociationEnd</code> object at the
+     * end of an association.
      * @param nav the type of navigation required in the association
-     * being either <ul> <li>BIDIRECTIONAL <li>STARTTOEND
-     * <li>ENDTOSTART </ul>
+     * being either:<ul>
+     * <li>BIDIRECTIONAL
+     * <li>STARTTOEND
+     * <li>ENDTOSTART
+     * </ul>
      */
-
     public static ActionNavigability newActionNavigability(Object assocStart,
 							   Object assocEnd,
 							   int nav) {
@@ -66,7 +68,7 @@ public class ActionNavigability extends UMLAction {
 				      nav);
     }
 
-    static private String getDescription(Object assocStart,
+    private static String getDescription(Object assocStart,
 					 Object assocEnd,
 					 int nav) {
         String startName = ModelFacade.getName(ModelFacade.getType(assocStart));
@@ -101,12 +103,14 @@ public class ActionNavigability extends UMLAction {
      * To perform the action of changing navigability
      */
     public void actionPerformed(ActionEvent ae) {
-	ModelFacade.setNavigable(assocStart, (nav == BIDIRECTIONAL || nav == ENDTOSTART));
-        ModelFacade.setNavigable(assocEnd,   (nav == BIDIRECTIONAL || nav == STARTTOEND));
+	ModelFacade.setNavigable(assocStart,
+				 (nav == BIDIRECTIONAL || nav == ENDTOSTART));
+        ModelFacade.setNavigable(assocEnd,
+				 (nav == BIDIRECTIONAL || nav == STARTTOEND));
     }
 
     /**
-     * The is action is always enabled
+     * The is action is always enabled.
      */
     public boolean shouldBeEnabled() {
 	return true;

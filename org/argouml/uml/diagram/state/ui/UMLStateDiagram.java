@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -56,8 +56,8 @@ import ru.novosoft.uml.MElementEvent;
  *
  */
 public class UMLStateDiagram extends UMLDiagram {
-	/** logger */
-	private static Logger cat = Logger.getLogger(UMLStateDiagram.class);
+    /** logger */
+    private static Logger cat = Logger.getLogger(UMLStateDiagram.class);
 
     /**
      * this diagram needs to be deleted when its statemachine is deleted.
@@ -122,7 +122,7 @@ public class UMLStateDiagram extends UMLDiagram {
 
         try {
             setName(getNewDiagramName());
-        } catch (PropertyVetoException pve) {}
+        } catch (PropertyVetoException pve) { }
     }
 
     public UMLStateDiagram(Object namespace, Object sm) {
@@ -149,7 +149,7 @@ public class UMLStateDiagram extends UMLDiagram {
             cat.info("UMLStateDiagram constructor: String name = " + name);
             try {
                 setName(name);
-            } catch (PropertyVetoException pve) {}
+            } catch (PropertyVetoException pve) { }
         }
         if (namespace != null) {
             setup(namespace, sm);
@@ -157,23 +157,24 @@ public class UMLStateDiagram extends UMLDiagram {
     }
 
     /**
-     * The owner of a statechart diagram is the statechart diagram it's showing.
+     * The owner of a statechart diagram is the statechart diagram
+     * it's showing.
      */
     public Object getOwner() {
-        StateDiagramGraphModel gm = (StateDiagramGraphModel)getGraphModel();
+        StateDiagramGraphModel gm = (StateDiagramGraphModel) getGraphModel();
         return gm.getMachine();
     }
 
     /**
-     * Called by the PGML parser to initialize the statechart diagram. First the
-     * parser creates a statechart diagram via the default constructor. Then this
-     * method is called.
+     * Called by the PGML parser to initialize the statechart
+     * diagram. First the parser creates a statechart diagram via the
+     * default constructor. Then this method is called.
+     *
      * @see org.tigris.gef.base.Diagram#initialize(Object)
      */
     public void initialize(Object o) {
         if (ModelFacade.isAStateMachine(o)) {
-            Object sm = /*(MStateMachine)*/
-            o;
+            Object sm = /*(MStateMachine)*/ o;
             Object context = ModelFacade.getContext(sm);
             Object contextNamespace = null;
             if (ModelFacade.isAClassifier(context)) {
@@ -193,25 +194,26 @@ public class UMLStateDiagram extends UMLDiagram {
         }
     }
 
-    /** method to perform a number of important initializations of a
-     * StateDiagram.
+    /** 
+     * Method to perform a number of important initializations of a
+     * StateDiagram.<p>
      * 
-     * each diagram type has a similar <I>UMLxxxDiagram</I> class.
+     * Each diagram type has a similar <I>UMLxxxDiagram</I> class.<p>
      *
-     * @param namespace MClass from the model in NSUML...connects the class to
-     * the Statechart diagram.
-     * @param sm MStateMachine from the model in NSUML...
-     * @modified changed <I>lay</I> from <I>LayerPerspective</I> to
+     * Changed <I>lay</I> from <I>LayerPerspective</I> to
      * <I>LayerPerspectiveMutable</I>.  This class is a child of
      * <I>LayerPerspective</I> and was implemented to correct some
      * difficulties in changing the model. <I>lay</I> is used mainly
      * in <I>LayerManager</I>(GEF) to control the adding, changing and
      * deleting layers on the diagram...
      *
+     * @param namespace MClass from the model in NSUML...connects the class to
+     * the Statechart diagram.
+     * @param sm MStateMachine from the model in NSUML...
      * @author psager@tigris.org Jan. 24, 2oo2
      */
-    public void setup(Object namespace, Object /*MStateMachine*/
-    sm) {
+    public void setup(Object namespace,
+		      Object /*MStateMachine*/ sm) {
         setNamespace(namespace);
 
         // add the diagram as a listener to the statemachine so
@@ -235,7 +237,7 @@ public class UMLStateDiagram extends UMLDiagram {
 
     public Object getStateMachine() {
         return /*(MStateMachine)*/
-         ((StateDiagramGraphModel)getGraphModel()).getMachine();
+         ((StateDiagramGraphModel) getGraphModel()).getMachine();
     }
 
     /**
@@ -246,30 +248,31 @@ public class UMLStateDiagram extends UMLDiagram {
         if (!ModelFacade.isAStateMachine(sm))
             throw new IllegalArgumentException();
 
-        ((StateDiagramGraphModel)getGraphModel()).setMachine(sm);
+        ((StateDiagramGraphModel) getGraphModel()).setMachine(sm);
     }
 
     /**
      * Get the actions from which to create a toolbar or equivilent
-     * graphic triggers
+     * graphic triggers.
      */
     protected Object[] getUmlActions() {
         Object actions[] =
-            {
-                _actionState,
-                _actionCompositeState,
-                _actionTransition,
-                null,
-                _actionStartPseudoState,
-                _actionFinalPseudoState,
-                _actionBranchPseudoState,
-                _actionForkPseudoState,
-                _actionJoinPseudoState,
-                _actionShallowHistoryPseudoState,
-                _actionDeepHistoryPseudoState,
-                null,
-                ActionAddNote.SINGLETON,
-                null };
+        {
+	    _actionState,
+	    _actionCompositeState,
+	    _actionTransition,
+	    null,
+	    _actionStartPseudoState,
+	    _actionFinalPseudoState,
+	    _actionBranchPseudoState,
+	    _actionForkPseudoState,
+	    _actionJoinPseudoState,
+	    _actionShallowHistoryPseudoState,
+	    _actionDeepHistoryPseudoState,
+	    null,
+	    ActionAddNote.SINGLETON,
+	    null,
+	};
         return actions;
     }
 
@@ -277,10 +280,8 @@ public class UMLStateDiagram extends UMLDiagram {
         String name = null;
         name = "Statechart Diagram " + _StateDiagramSerial;
         _StateDiagramSerial++;
-        if (!ProjectManager
-            .getManager()
-            .getCurrentProject()
-            .isValidDiagramName(name)) {
+        if (!ProjectManager.getManager().getCurrentProject()
+                 .isValidDiagramName(name)) {
             name = getNewDiagramName();
         }
         return name;

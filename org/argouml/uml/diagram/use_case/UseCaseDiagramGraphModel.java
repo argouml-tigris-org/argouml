@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -22,9 +22,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// File: UseCaseDiagramGraphModel.java
-// Classes: UseCaseDiagramGraphModel
-
 package org.argouml.uml.diagram.use_case;
 
 import java.beans.PropertyChangeEvent;
@@ -39,15 +36,20 @@ import org.argouml.model.uml.foundation.core.CoreHelper;
 import org.argouml.uml.diagram.UMLMutableGraphSupport;
 
 /**
- * <p>This class defines a bridge between the UML meta-model representation of
- *   the design and the GraphModel interface used by GEF.</p>
+ * This class defines a bridge between the UML meta-model
+ * representation of the design and the GraphModel interface used by
+ * GEF.<p>
  *
- * <p>This class handles only UML Use Case Diagrams.</p>
+ * This class handles only UML Use Case Diagrams.<p>
  */
 public class UseCaseDiagramGraphModel
     extends UMLMutableGraphSupport
     implements VetoableChangeListener
 {
+    /**
+     * @deprecated by Linus Tolke as of 0.15.4. Use your own logger in your
+     * class. This will be removed.
+     */
     protected static Logger cat =
 	Logger.getLogger(UseCaseDiagramGraphModel.class);
 
@@ -60,12 +62,12 @@ public class UseCaseDiagramGraphModel
     
 
     /**
-     * <p>The "home" UML model of this diagram, not all ModelElements in this
-     *   graph are in the home model, but if they are added and don't already
-     *   have a model, they are placed in the "home model".  Also, elements
-     *   from other models will have their FigNodes add a line to say what
-     *   their model is.</p>  */
-
+     * The "home" UML model of this diagram, not all ModelElements in
+     * this graph are in the home model, but if they are added and
+     * don't already have a model, they are placed in the "home
+     * model".  Also, elements from other models will have their
+     * FigNodes add a line to say what their model is.<p>
+     */
     protected Object _model;
 
 
@@ -76,28 +78,26 @@ public class UseCaseDiagramGraphModel
     ///////////////////////////////////////////////////////////////////////////
 
     /**
-     * <p>Accessor to get the namespace.</p>
+     * Accessor to get the namespace.<p>
      *
      * @return  The namespace associated with this graph model.
      */
-
     public Object getNamespace() {
         return _model;
     }
 
 
     /**
-     * <p>Accessor to set the namespace.</p>
+     * Accessor to set the namespace.<p>
      *
-     * <p>Clears the current listener if we have a namespace at present. Sets a
-     *   new listener if we set a new namespace (i.e. m is non-null).</p>
+     * Clears the current listener if we have a namespace at present.
+     * Sets a new listener if we set a new namespace (i.e. m is
+     * non-null).<p>
      *
-     * @param m  The namespace to use for this graph model
+     * @param namespace  The namespace to use for this graph model
      */
-
     public void setNamespace(Object namespace) {
-        
-        if(!ModelFacade.isANamespace(namespace))
+        if (!ModelFacade.isANamespace(namespace))
             throw new IllegalArgumentException();
 	_model = namespace;
     }
@@ -111,24 +111,23 @@ public class UseCaseDiagramGraphModel
 
 
     /**
-     * <p>Return all ports on a node or edge supplied as argument.</p>
+     * Return all ports on a node or edge supplied as argument.<p>
      *
-     * <p>The only objects on our diagram that have any ports are use cases and
-     *   actors, and they each have one - themself.</p>
+     * The only objects on our diagram that have any ports are use
+     * cases and actors, and they each have one - themself.<p>
      *
      * @param nodeOrEdge  A model element, for whom the list of ports is
      *                    wanted.
      *
      * @return            A vector of the ports found.
      */
-
     public Vector getPorts(Object nodeOrEdge) {
         Vector res = new Vector();  //wasteful!
 
-        if (org.argouml.model.ModelFacade.isAActor(nodeOrEdge)) {
+        if (ModelFacade.isAActor(nodeOrEdge)) {
             res.addElement(nodeOrEdge);
         }
-        else if (org.argouml.model.ModelFacade.isAUseCase(nodeOrEdge)) {
+        else if (ModelFacade.isAUseCase(nodeOrEdge)) {
             res.addElement(nodeOrEdge);
         }
 
@@ -136,39 +135,37 @@ public class UseCaseDiagramGraphModel
     }
 
 
-    /* <p>Return the node or edge that owns the given port.</p>
+    /* Return the node or edge that owns the given port.<p>
      *
-     * <p>In our implementation the only objects with ports, use themselves as
-     *   the port, so are there own owner.</p>
+     * In our implementation the only objects with ports, use
+     * themselves as the port, so are there own owner.<p>
      *
      * @param port  The port, whose owner is wanted.
      *
      * @return      The owner of the port.
      */
-
     public Object getOwner(Object port) {
         return port;
     }
 
 
     /**
-     * <p>Return all edges going to given port.</p>
+     * Return all edges going to given port.<p>
      *
-     * <p>The only objects with ports on the use case diagram are actors and
-     *   use cases. In each case we find the attached association ends, and
-     *   build a list of them as the incoming ports.</p>
+     * The only objects with ports on the use case diagram are actors
+     * and use cases.  In each case we find the attached association
+     * ends, and build a list of them as the incoming ports.<p>
      *
      * @param port  The port for which we want to know the incoming edges.
      *
      * @return      A vector of objects which are the incoming edges.
      */
-
     public Vector getInEdges(Object port) {
         Vector res = new Vector(); //wasteful!
 
         // The actor case
 
-        if (org.argouml.model.ModelFacade.isAActor(port)) {
+        if (ModelFacade.isAActor(port)) {
             Object act  = /*(MActor)*/ port;
             Vector ends = new Vector(ModelFacade.getAssociationEnds(act));
 
@@ -190,7 +187,7 @@ public class UseCaseDiagramGraphModel
 
         // The use case
 
-        else if (org.argouml.model.ModelFacade.isAUseCase(port)) {
+        else if (ModelFacade.isAUseCase(port)) {
             Object use  = /*(MUseCase)*/ port;
             Vector   ends = new Vector(ModelFacade.getAssociationEnds(use));
 
@@ -217,57 +214,57 @@ public class UseCaseDiagramGraphModel
 
 
     /**
-     * <p>Return all edges going from the given port.</p>
+     * Return all edges going from the given port.<p>
      *
-     * <p><em>Needs more work</em>. This would seem superficially to be
-     *   identical to {@link #getInEdges}, but in our implementation we return
-     *   an empty vector.</p>
+     * <em>Needs more work</em>.  This would seem superficially to be
+     * identical to {@link #getInEdges}, but in our implementation we
+     * return an empty vector.<p>
      *
      * @param port  The port for which we want to know the outgoing edges.
      *
      * @return      A vector of objects which are the outgoing edges. Currently
      *              return the empty vector.
      */
-
     public Vector getOutEdges(Object port) {
         return new Vector();
     }
 
 
     /**
-     * <p>Return the source end of an edge.</p>
+     * Return the source end of an edge.<p>
      *
-     * <p><em>Needs more work</em>. In the current implementation we only know
-     *   how to handle associations, returning the first of its
-     *   connections&mdash;which, if set, will be a use case or an actor.</p>
+     * <em>Needs more work</em>.  In the current implementation we
+     * only know how to handle associations, returning the first of
+     * its connections&mdash;which, if set, will be a use case or an
+     * actor.<p>
      *
      * @param edge  The edge for which we want the source port.
      *
      * @return      The source port for the edge, or <code>null</code> if the
      *              edge given is not an association or has no source defined.
      */
-
     public Object getSourcePort(Object edge) {
         
-        if (org.argouml.model.ModelFacade.isARelationship(edge)) {
+        if (ModelFacade.isARelationship(edge)) {
             return CoreHelper.getHelper().getSource(/*(MRelationship)*/ edge);
 	}
 
         // Don't know what to do otherwise
 
-        cat.debug(this.getClass().toString() + ": getSourcePort(" +
-		  edge.toString() + ") - can't handle");
+        cat.debug(this.getClass().toString() + ": getSourcePort("
+		  + edge.toString() + ") - can't handle");
 
         return null;
     }
 
 
     /**
-     * <p>Return the destination end of an edge.</p>
+     * Return the destination end of an edge.<p>
      *
-     * <p><em>Needs more work</em>. In the current implementation we only know
-     *   how to handle associations, returning the second of its
-     *   connections&mdash;which, if set, will be a use case or an actor.</p>
+     * <em>Needs more work</em>.  In the current implementation we
+     * only know how to handle associations, returning the second of
+     * its connections&mdash;which, if set, will be a use case or an
+     * actor.<p>
      *
      * @param edge  The edge for which we want the destination port.
      *
@@ -275,12 +272,11 @@ public class UseCaseDiagramGraphModel
      *              the edge given is not an association or has no destination
      *              defined.
      */
-
     public Object getDestPort(Object edge) {
 
         // Know what to do for an association
 
-        if (org.argouml.model.ModelFacade.isAAssociation(edge)) {
+        if (ModelFacade.isAAssociation(edge)) {
             Object assoc = /*(MAssociation)*/ edge;
             Vector       conns = new Vector(ModelFacade.getConnections(assoc));
 
@@ -289,8 +285,8 @@ public class UseCaseDiagramGraphModel
 
         // Don't know what to do otherwise
 
-        cat.debug(this.getClass().toString() + ": getDestPort(" +
-		  edge.toString() + ") - can't handle");
+        cat.debug(this.getClass().toString() + ": getDestPort("
+		  + edge.toString() + ") - can't handle");
 
         return null;
     }
@@ -303,43 +299,45 @@ public class UseCaseDiagramGraphModel
     ///////////////////////////////////////////////////////////////////////////
 
     /**
-     * <p>Determine if the given node can validly be placed on this graph.</p>
+     * Determine if the given node can validly be placed on this
+     * graph.<p>
      *
-     * <p>This is simply a matter of determining if the node is an actor or use
-     *   case.</p>
+     * This is simply a matter of determining if the node is an actor
+     * or use case.<p>
      *
-     * <p><em>Note</em>. This is inconsistent with {@link #addNode}, which will
-     *   not allow a node to be added to the graph if it is already there.</p>
+     * <em>Note</em>. This is inconsistent with {@link #addNode},
+     * which will not allow a node to be added to the graph if it is
+     * already there.<p>
      *
      * @param node  The node to be considered
      *
      * @return      <code>true</code> if the given object is a valid node in
      *              this graph, <code>false</code> otherwise.
      */
-
     public boolean canAddNode(Object node) {
-        if (_nodes.contains(node)) return false;
-        return (org.argouml.model.ModelFacade.isAActor(node)) || (org.argouml.model.ModelFacade.isAUseCase(node));
+        if (_nodes.contains(node)) {
+	    return false;
+	}
+        return ModelFacade.isAActor(node) || ModelFacade.isAUseCase(node);
     }
 
 
     /**
-     * <p>Determine if the given edge can validly be placed on this graph.</p>
+     * Determine if the given edge can validly be placed on this graph.<p>
      *
-     * <p>We cannot do so if the edge is already on the graph (unlike nodes
-     *   they may not appear more than once).<p>
+     * We cannot do so if the edge is already on the graph (unlike
+     * nodes they may not appear more than once).<p>
      *
-     * <p>Otherwise, for all valid types of edge (binary association,
-     *   generalization, extend, include, dependency) we get the two ends. If
-     *   they are both nodes already on the graph we are OK, otherwise we
-     *   cannot place the edge on the graph.</p>
+     * Otherwise, for all valid types of edge (binary association,
+     * generalization, extend, include, dependency) we get the two
+     * ends. If they are both nodes already on the graph we are OK,
+     * otherwise we cannot place the edge on the graph.<p>
      *
      * @param edge  The edge to be considered
      *
      * @return      <code>true</code> if the given object is a valid edge in
      *              this graph, <code>false</code> otherwise.
      */
-
     public boolean canAddEdge(Object edge)  {
 
         // Give up if we are already on the graph
@@ -353,7 +351,7 @@ public class UseCaseDiagramGraphModel
         Object end0 = null;
         Object end1 = null;
 
-        if (org.argouml.model.ModelFacade.isAAssociation(edge)) {
+        if (ModelFacade.isAAssociation(edge)) {
 
             // Only allow binary associations
 
@@ -384,7 +382,7 @@ public class UseCaseDiagramGraphModel
             end0 = ModelFacade.getBase(edge);
             end1 = ModelFacade.getExtension(edge);
         }
-        else if (org.argouml.model.ModelFacade.isAInclude(edge)) {
+        else if (ModelFacade.isAInclude(edge)) {
 
             // There is a bug in NSUML which gets the addition and base
             // relationships back to front for include relationships. Solve
@@ -393,7 +391,7 @@ public class UseCaseDiagramGraphModel
             end0 = ModelFacade.getAddition(edge);
             end1 = ModelFacade.getBase(edge);
         }
-        else if (org.argouml.model.ModelFacade.isADependency(edge)) {
+        else if (ModelFacade.isADependency(edge)) {
 
             // A dependency potentially has many clients and suppliers. We only
             // consider the first of each (not clear that we should really
@@ -414,9 +412,13 @@ public class UseCaseDiagramGraphModel
 
         // Both ends must be defined and nodes that are on the graph already.
 
-        if ((end0 == null) || (end1 == null) ||
-            (!(_nodes.contains(end0))) || (!(_nodes.contains(end1)))) {
+        if ((end0 == null)
+	    || (end1 == null)
+	    || (!(_nodes.contains(end0)))
+	    || (!(_nodes.contains(end1)))) {
+
             return false;
+
         }
 
         // AOK
@@ -426,23 +428,22 @@ public class UseCaseDiagramGraphModel
 
     
     /** 
-     * <p>Add the given node to the graph, if valid.</p>
+     * Add the given node to the graph, if valid.<p>
      *
-     * <p>We add the node if it is not already on the graph, and (assuming it
-     *   to be an actor or use case) add it to the owned elements for the
-     *   model.</p>
+     * We add the node if it is not already on the graph, and
+     * (assuming it to be an actor or use case) add it to the owned
+     * elements for the model.<p>
      *
-     * <p><em>Needs more work</em>. In adding the node to the owned elements of
-     *   the model namespace, we are implicitly making it public visibility (it
-     *   could be private to this namespace).</p>
+     * <em>Needs more work</em>. In adding the node to the owned
+     * elements of the model namespace, we are implicitly making it
+     * public visibility (it could be private to this namespace).<p>
      *
-     * <p><em>Note</em>. This method is inconsistent with {@link #canAddNode},
-     *   which will allow a node to be added to the graph if it is already
-     *   there.</p>
+     * <em>Note</em>.  This method is inconsistent with 
+     * {@link #canAddNode}, which will allow a node to be added to the
+     * graph if it is already there.<p>
      *
      * @param node  The node to be added to the graph.
      */
-
     public void addNode(Object node) {
 
         cat.debug("adding usecase node!!");
@@ -471,10 +472,12 @@ public class UseCaseDiagramGraphModel
          
          * NEW CODE:
          */
-	if (((ModelFacade.isAActor(node)) || (ModelFacade.isAUseCase(node))) && (ModelFacade.getNamespace(node) == null)) {
+	if (((ModelFacade.isAActor(node))
+	     || (ModelFacade.isAUseCase(node)))
+	    && (ModelFacade.getNamespace(node) == null)) {
 	    // end NEW CODE
-            cat.debug("setting namespace " + _model +
-		      " to element " + node);
+            cat.debug("setting namespace " + _model
+		      + " to element " + node);
             ModelFacade.addOwnedElement(_model, /*(MModelElement)*/ node);
         }
 
@@ -485,19 +488,19 @@ public class UseCaseDiagramGraphModel
 
 
     /** 
-     * <p>Add the given edge to the graph, if valid.</p>
+     * Add the given edge to the graph, if valid.<p>
      *
-     * <p>We add the edge if it is not already on the graph, and (assuming it
-     *   to be an association, generalization, extend, include or dependency)
-     *   add it to the owned elements for the model.</p>
+     * We add the edge if it is not already on the graph, and
+     * (assuming it to be an association, generalization, extend,
+     * include or dependency) add it to the owned elements for the
+     * model.<p>
      *
-     * <p><em>Needs more work</em>. In adding the edge to the owned elements of
-     *   the model namespace, we are implicitly making it public visibility (it
-     *   could be private to this namespace).</p>
+     * <em>Needs more work</em>. In adding the edge to the owned
+     * elements of the model namespace, we are implicitly making it
+     * public visibility (it could be private to this namespace).<p>
      *
      * @param edge  The edge to be added to the graph.
      */
-
     public void addEdge(Object edge) {
         cat.debug("adding class edge!!!!!!");
         if (!canAddEdge(edge)) return;
@@ -515,26 +518,25 @@ public class UseCaseDiagramGraphModel
     }
 
     /**
-     * <p>Add the various types of edge that may be connected with the given
-     *   node.</p>
+     * Add the various types of edge that may be connected with the
+     * given node.<p>
      *
-     * <p>For use cases we may find extend and include relationships. For
-     *   classifiers (effectively actors and use cases) we may find
-     *   associations. For generalizable elements (effectively actors and use
-     *   cases again) we may find generalizations and
-     *   specializations. For ModelElements (effectively actors and use cases
-     *   again) we may find dependencies.</p>
+     * For use cases we may find extend and include relationships. For
+     * classifiers (effectively actors and use cases) we may find
+     * associations. For generalizable elements (effectively actors
+     * and use cases again) we may find generalizations and
+     * specializations. For ModelElements (effectively actors and use
+     * cases again) we may find dependencies.<p>
      *
      * @param node  The node whose edges are to be added.
      */
-
     public void addNodeRelatedEdges(Object node) {
 
         // Extend and include relationships for use cases. Collect all the
         // relationships of which the use case is either end and iterate to see
         // if they can be added.
 
-        if (org.argouml.model.ModelFacade.isAUseCase(node)) {
+        if (ModelFacade.isAUseCase(node)) {
             Vector ends = new Vector();
 
             // Collect all the includes at either end.
@@ -558,7 +560,7 @@ public class UseCaseDiagramGraphModel
         // Associations for classifiers. Iterate over all the association ends
         // to find the associations.
 
-        if (org.argouml.model.ModelFacade.isAClassifier(node)) {
+        if (ModelFacade.isAClassifier(node)) {
             Collection ends = ModelFacade.getAssociationEnds(node);
             Iterator   iter = ends.iterator();
 
@@ -574,7 +576,7 @@ public class UseCaseDiagramGraphModel
         // Generalizations and specializations for generalizable
         // elements. Iterate over each set in turn
 
-        if (org.argouml.model.ModelFacade.isAGeneralizableElement(node)) {
+        if (ModelFacade.isAGeneralizableElement(node)) {
 
             // The generalizations
 
@@ -608,7 +610,7 @@ public class UseCaseDiagramGraphModel
         // Dependencies for model elements. Iterate over client and suppliers
         // together.
 
-        if ( org.argouml.model.ModelFacade.isAModelElement(node) ) {
+        if ( ModelFacade.isAModelElement(node) ) {
             Vector specs =
                 new Vector(ModelFacade.getClientDependencies(node));
 
@@ -629,13 +631,14 @@ public class UseCaseDiagramGraphModel
 
  
     /**
-     * <p>Determine if the two given ports can be connected by a
-     *   kind of edge to be determined by the ports.</p>
+     * Determine if the two given ports can be connected by a kind of
+     * edge to be determined by the ports.<p>
      *
-     * <p><em>Note</em>. There appears to be a problem with the implementation,
-     *   since it suggests actors cannot connect. In fact generalization is
-     *   permitted, and this works, suggesting this method is not actually
-     *   invoked in the current implementation of ArgoUML.</p>
+     * <em>Note</em>. There appears to be a problem with the
+     * implementation, since it suggests actors cannot connect. In
+     * fact generalization is permitted, and this works, suggesting
+     * this method is not actually invoked in the current
+     * implementation of ArgoUML.<p>
      *
      * @param fromP  The source port of the connection
      *
@@ -645,13 +648,12 @@ public class UseCaseDiagramGraphModel
      *               by a kind of edge to be determined by the
      *               ports. <code>false</code> otherwise.
      */
-
     public boolean canConnect(Object fromP, Object toP) {
 
         // Suggest that actors may not connect (see JavaDoc comment about
         // this).
 
-        if ((org.argouml.model.ModelFacade.isAActor(fromP)) && (org.argouml.model.ModelFacade.isAActor(toP))) {
+        if (ModelFacade.isAActor(fromP) && ModelFacade.isAActor(toP)) {
             return false;
         }
 
@@ -668,17 +670,16 @@ public class UseCaseDiagramGraphModel
     ///////////////////////////////////////////////////////////////////////////
 
     /**
-     * <p>Called when a property of interest has been changed - in this case
-     *   the owned elements of the model. Provided to implement the {@link
-     *   VetoableChangeListener} interface.</p>
+     * Called when a property of interest has been changed - in this
+     * case the owned elements of the model. Provided to implement the
+     * {@link VetoableChangeListener} interface.<p>
      *
-     * <p>We could throw a {@link PropertyVetoException} if we wished to allow
-     *   the change to be rolled back, but we don't.</p>
+     * We could throw a PropertyVetoException if we wished to allow
+     * the change to be rolled back, but we don't.<p>
      *
      * @param pce  The event that triggered us, and from which we can extract
      *             the name of the property that triggered us.
      */
-
     public void vetoableChange(PropertyChangeEvent pce) {
 
         // Only interested in the "ownedElement" property. Either something has
@@ -703,19 +704,19 @@ public class UseCaseDiagramGraphModel
 
                 // Remove a node
 
-                if ((org.argouml.model.ModelFacade.isAActor(me)) ||
-                    (org.argouml.model.ModelFacade.isAUseCase(me))) {
+                if ((ModelFacade.isAActor(me))
+		    || (ModelFacade.isAUseCase(me))) {
 
                     removeNode(me);
                 }
 
                 // Remove an edge
 
-                else if ((org.argouml.model.ModelFacade.isAAssociation(me)) ||
-                         (org.argouml.model.ModelFacade.isAGeneralization(me)) ||
-                         (org.argouml.model.ModelFacade.isAExtend(me)) ||
-                         (org.argouml.model.ModelFacade.isAInclude(me)) ||
-                         (org.argouml.model.ModelFacade.isADependency(me))) {
+                else if ((ModelFacade.isAAssociation(me))
+			 || (ModelFacade.isAGeneralization(me))
+			 || (ModelFacade.isAExtend(me))
+			 || (ModelFacade.isAInclude(me))
+			 || (ModelFacade.isADependency(me))) {
 
                     removeEdge(me);
                 }

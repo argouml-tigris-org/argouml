@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -30,7 +30,6 @@ import org.argouml.util.osdep.OsUtil;
 import org.argouml.uml.diagram.static_structure.layout.ClassdiagramLayouter;
 import org.argouml.uml.diagram.ui.UMLDiagram;
 import org.argouml.util.SuffixFilter;
-import org.argouml.ui.ProjectBrowser;
 
 import org.tigris.gef.base.Globals;
 
@@ -62,7 +61,9 @@ public abstract class FileImportSupport implements PluggableImport {
     protected static final String separator = "/";
     //System.getProperty("file.separator");
 	
-    /** Object(s) selected in chooser */
+    /**
+     * Object(s) selected in chooser
+     */
     protected Object theFile;
 	
     /**
@@ -151,11 +152,10 @@ public abstract class FileImportSupport implements PluggableImport {
      * This method parses 1 file.
      * Default implementation does nothing.
      *
-     * @param f The input file for the parser.
      * @exception Exception Parser exception.
      */
-    public void parseFile( Project p, Object o, DiagramInterface diagram,
-			   Import _import)
+    public void parseFile(Project p, Object o, DiagramInterface diagram,
+			  Import _import)
 	throws Exception {
     }
 
@@ -163,7 +163,7 @@ public abstract class FileImportSupport implements PluggableImport {
      * Create chooser for objects we are to import.
      * Default implemented chooser is JFileChooser.
      */
-    public JComponent getChooser(Import  imp) {
+    public JComponent getChooser(Import imp) {
 	String directory = Globals.getLastDirectory();
 	JFileChooser ch = OsUtil.getFileChooser(directory);
 	if (ch == null) ch = OsUtil.getFileChooser();
@@ -178,37 +178,39 @@ public abstract class FileImportSupport implements PluggableImport {
 		chooser.addChoosableFileFilter(filters[i]);
 	}
 	chooser.addActionListener(new ActionListener() 
-	    {
-		public void actionPerformed(ActionEvent e) {
-		    if (e.getActionCommand().equals(JFileChooser.APPROVE_SELECTION)) {
-			theFile = chooser.getSelectedFile();
-			if (theFile != null) {
-			    String path = chooser.getSelectedFile().getParent();
-			    String filename =
-				chooser.getSelectedFile().getName();
-			    filename = path + separator + filename;
-			    Globals.setLastDirectory(path);
-			    if (filename != null) {
-				_import.disposeDialog();
-				_import.getUserClasspath();
-				return;
-			    }
+	{
+	    public void actionPerformed(ActionEvent e) {
+		if (e.getActionCommand().equals(
+			JFileChooser.APPROVE_SELECTION)) {
+		    theFile = chooser.getSelectedFile();
+		    if (theFile != null) {
+			String path = chooser.getSelectedFile().getParent();
+			String filename =
+			    chooser.getSelectedFile().getName();
+			filename = path + separator + filename;
+			Globals.setLastDirectory(path);
+			if (filename != null) {
+			    _import.disposeDialog();
+			    _import.getUserClasspath();
+			    return;
 			}
-		    } else if (e.getActionCommand().equals(JFileChooser.CANCEL_SELECTION)) {
-			_import.disposeDialog();
 		    }
+		} else if (e.getActionCommand().equals(
+			       JFileChooser.CANCEL_SELECTION)) {
+		    _import.disposeDialog();
 		}
-	    });
+	    }
+	});
 	return chooser;
     }
 	
     /**
-     * <p>This method returns a Vector with objects to import.
+     * This method returns a Vector with objects to import.<p>
      *
-     * <p>Processing each file in turn is equivalent to a breadth first
+     * Processing each file in turn is equivalent to a breadth first
      * search through the directory structure.
      *
-     * @param Import object called this method..
+     * @param _import object called by this method.
      */
     public Vector getList(Import _import) {
 	Vector res = new Vector();

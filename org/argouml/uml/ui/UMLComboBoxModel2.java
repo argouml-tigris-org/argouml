@@ -1,6 +1,5 @@
-
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -98,22 +97,23 @@ public abstract class UMLComboBoxModel2
     private boolean _buildingModel = false;
 
     /**
-     * Constructs a model for a combobox. The container given is used to retreive
-     * the target that is manipulated through this combobox. If clearable is true,
-     * the user can select null in the combobox and thereby clear the attribute
-     * in the model.
-     * @param container
-     * @param propertySetName The name of the NSUML event that must be fired to set
-     * the selected item programmatically (via setting the NSUML model)
+     * Constructs a model for a combobox. The container given is used
+     * to retreive the target that is manipulated through this
+     * combobox. If clearable is true, the user can select null in the
+     * combobox and thereby clear the attribute in the model.
+     *
+     * @param propertySetName The name of the NSUML event that must be
+     * fired to set the selected item programmatically (via setting
+     * the NSUML model)
      * @throws IllegalArgumentException if one of the arguments is null
      */
     public UMLComboBoxModel2(String propertySetName, boolean clearable) {
         super();
         if (propertySetName == null || propertySetName.equals(""))
-            throw new IllegalArgumentException("In UMLComboBoxModel2: one of the arguments is null");
-        // it would be better that we don't need the container to get the target
-        // this constructor can be without parameters as soon as we improve
-        // targetChanged
+            throw new IllegalArgumentException("one of the arguments is null");
+        // it would be better that we don't need the container to get
+        // the target this constructor can be without parameters as
+        // soon as we improve targetChanged
         _clearable = clearable;
         _propertySetName = propertySetName;
     }
@@ -231,13 +231,14 @@ public abstract class UMLComboBoxModel2
                 addElement("");
             }
         } else
-            throw new IllegalArgumentException(
-					       "In setElements: may not set " + "elements to null collection");
+            throw new IllegalArgumentException("In setElements: may not set "
+					       + "elements to null collection");
     }
 
     /**
-     * Utility method to get the target. Sets the _target if the _target is null
-     * via the method setTarget().
+     * Utility method to get the target. Sets the _target if the
+     * _target is null via the method setTarget().
+     *
      * @return MModelElement
      */
     protected Object getTarget() {
@@ -245,7 +246,8 @@ public abstract class UMLComboBoxModel2
     }
 
     /**
-     * Utility method to remove a collection of elements from the model
+     * Utility method to remove a collection of elements from the model.
+     *
      * @param col
      */
     protected void removeAll(Collection col) {
@@ -319,13 +321,17 @@ public abstract class UMLComboBoxModel2
         if (ModelFacade.isABase(target) || ModelFacade.isADiagram(target)) {
             UmlModelEventPump eventPump = UmlModelEventPump.getPump();
             if (ModelFacade.isABase(_target)) {
-                eventPump.removeModelEventListener(this, _target, _propertySetName);
+                eventPump.removeModelEventListener(this, _target,
+						   _propertySetName);
             }
 
             if (ModelFacade.isABase(target)) {
                 _target = target;
-                // UmlModelEventPump.getPump().removeModelEventListener(this, (MBase)_target, _propertySetName);
-                eventPump.addModelEventListener(this, _target, _propertySetName);
+                // UmlModelEventPump.getPump()
+                // .removeModelEventListener(this, (MBase)_target,
+                // _propertySetName);
+                eventPump.addModelEventListener(this, _target,
+						_propertySetName);
             } else {
                 _target = null;
             }
@@ -348,9 +354,11 @@ public abstract class UMLComboBoxModel2
     }
 
     /**
-     * Gets the modelelement that is selected in the NSUML model. For example,
-     * say that this ComboBoxmodel contains all namespaces (as in UMLNamespaceComboBoxmodel)
-     * , this method should return the namespace that owns the target then.
+     * Gets the modelelement that is selected in the NSUML model. For
+     * example, say that this ComboBoxmodel contains all namespaces
+     * (as in UMLNamespaceComboBoxmodel) , this method should return
+     * the namespace that owns the target then.
+     *
      * @return Object
      */
     protected abstract Object getSelectedModelElement();
@@ -394,8 +402,9 @@ public abstract class UMLComboBoxModel2
         int index = _objects.indexOf(o);
         if (getElementAt(index) == _selectedObject) {
             if (index == 0) {
-                setSelectedItem(
-				getSize() == 1 ? null : getElementAt(index + 1));
+                setSelectedItem(getSize() == 1
+				? null
+				: getElementAt(index + 1));
             } else {
                 setSelectedItem(getElementAt(index - 1));
             }
@@ -440,10 +449,12 @@ public abstract class UMLComboBoxModel2
     }
 
     /**
-     * Returns true if some event is valid. An event is valid if the element
-     * changed in the event is valid. This is determined via a call to isValidElement.
-     * This method can be overriden by subclasses if they cannot determine if
-     * it is a valid event just by checking the changed element.
+     * Returns true if some event is valid. An event is valid if the
+     * element changed in the event is valid. This is determined via a
+     * call to isValidElement.  This method can be overriden by
+     * subclasses if they cannot determine if it is a valid event just
+     * by checking the changed element.
+     *
      * @param e
      * @return boolean
      */
@@ -477,7 +488,8 @@ public abstract class UMLComboBoxModel2
     }
 
     /**
-     * @see javax.swing.AbstractListModel#fireContentsChanged(java.lang.Object, int, int)
+     * @see javax.swing.AbstractListModel#fireContentsChanged(
+     *          Object, int, int)
      */
     protected void fireContentsChanged(Object source, int index0, int index1) {
         if (_fireListEvents && !_buildingModel)
@@ -485,7 +497,8 @@ public abstract class UMLComboBoxModel2
     }
 
     /**
-     * @see javax.swing.AbstractListModel#fireIntervalAdded(java.lang.Object, int, int)
+     * @see javax.swing.AbstractListModel#fireIntervalAdded(
+     *          Object, int, int)
      */
     protected void fireIntervalAdded(Object source, int index0, int index1) {
         if (_fireListEvents && !_buildingModel)
@@ -493,7 +506,8 @@ public abstract class UMLComboBoxModel2
     }
 
     /**
-     * @see javax.swing.AbstractListModel#fireIntervalRemoved(java.lang.Object, int, int)
+     * @see javax.swing.AbstractListModel#fireIntervalRemoved(
+     *          Object, int, int)
      */
     protected void fireIntervalRemoved(Object source, int index0, int index1) {
         if (_fireListEvents && !_buildingModel)
@@ -501,12 +515,12 @@ public abstract class UMLComboBoxModel2
     }
 
     /**
-     * @see org.argouml.ui.targetmanager.TargetListener#targetAdded(org.argouml.ui.targetmanager.TargetEvent)
+     * @see TargetListener#targetAdded(TargetEvent)
      */
     public void targetAdded(TargetEvent e) { }
 
     /**
-     * @see org.argouml.ui.targetmanager.TargetListener#targetRemoved(org.argouml.ui.targetmanager.TargetEvent)
+     * @see TargetListener#targetRemoved(TargetEvent)
      */
     public void targetRemoved(TargetEvent e) {
         setTarget(e.getNewTarget());
@@ -514,7 +528,7 @@ public abstract class UMLComboBoxModel2
     }
 
     /**
-     * @see org.argouml.ui.targetmanager.TargetListener#targetSet(org.argouml.ui.targetmanager.TargetEvent)
+     * @see TargetListener#targetSet(TargetEvent)
      */
     public void targetSet(TargetEvent e) {
         setTarget(e.getNewTarget());

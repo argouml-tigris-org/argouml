@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2003 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -73,7 +73,8 @@ public class StateMachinesFactory extends AbstractUmlModelFactory {
     private static StateMachinesFactory SINGLETON =
 	new StateMachinesFactory();
 
-    /** Singleton instance access method.
+    /**
+     * Singleton instance access method.
      */
     public static StateMachinesFactory getFactory() {
         return SINGLETON;
@@ -248,7 +249,8 @@ public class StateMachinesFactory extends AbstractUmlModelFactory {
     }
     
     /**
-     * Builds a compositestate as top for some statemachine
+     * Builds a compositestate as top for some statemachine.<p>
+     *
      * @param statemachine
      * @return MCompositeState
      */
@@ -263,15 +265,16 @@ public class StateMachinesFactory extends AbstractUmlModelFactory {
     }
     
     /**
-     * Builds a state machine owned by the given context
-     * @param context
+     * Builds a state machine owned by the given context.
+     *
+     * @param oContext
      * @return MActivityGraph
      */
     public MStateMachine buildStateMachine(Object oContext) {
     	if (oContext != null
-	    && StateMachinesHelper.getHelper()
-	       .isAddingStatemachineAllowed(oContext))
-	{
+	    && (StateMachinesHelper.getHelper()
+		.isAddingStatemachineAllowed(oContext))) {
+
 	    MStateMachine graph = createStateMachine();
             MModelElement context = (MModelElement) oContext;
 	    graph.setContext(context);
@@ -283,31 +286,36 @@ public class StateMachinesFactory extends AbstractUmlModelFactory {
     		}
 	    StateMachinesFactory.getFactory().buildCompositeState(graph);
 	    return graph;
-    	} else 
+
+    	} else {
 	    throw new IllegalArgumentException("In buildStateMachine: "
 					       + "context null or not legal");
+	}
     }
     
     /**
      * Builds a complete transition including all associations
      * (composite state the transition belongs to, source the
      * transition is coming from, destination the transition is going
-     * to). The transition is owned by the compositestate.
+     * to). The transition is owned by the compositestate.<p>
+     *
      * @param owningState
      * @param source
      * @param dest
      * @return MTransition
      */
     public Object buildTransition(MCompositeState owningState, 
-				       MStateVertex source, MStateVertex dest) {
-      	if (owningState != null && source != null && dest != null && 
-	    owningState.getSubvertices().contains(source) &&
-	    owningState.getSubvertices().contains(dest)) { 
-	    MTransition trans = (MTransition)createTransition();
+				  MStateVertex source, MStateVertex dest) {
+      	if (owningState != null && source != null && dest != null
+	    && owningState.getSubvertices().contains(source)
+	    && owningState.getSubvertices().contains(dest)) {
+
+	    MTransition trans = (MTransition) createTransition();
 	    owningState.addInternalTransition(trans);
 	    trans.setSource(source);
 	    trans.setTarget(dest);
 	    return trans;
+
       	} else {
 	    throw new IllegalArgumentException("In buildTransition: "
 					       + "arguments not legal");
@@ -319,7 +327,8 @@ public class StateMachinesFactory extends AbstractUmlModelFactory {
      * pseudostate will be a subvertix of the given
      * compositestate. The parameter compositeState is of type Object
      * to decouple the factory and NSUML as much as possible from the
-     * rest of ArgoUML.
+     * rest of ArgoUML.<p>
+     *
      * @param compositeState
      * @return MPseudostate
      */
@@ -339,6 +348,7 @@ public class StateMachinesFactory extends AbstractUmlModelFactory {
      * will be a subvertix of the given compositestate. The parameter
      * compositeState is of type Object to decouple the factory and
      * NSUML as much as possible from the rest of ArgoUML.
+     *
      * @param compositeState
      * @return MSynchState
      */
@@ -358,6 +368,7 @@ public class StateMachinesFactory extends AbstractUmlModelFactory {
      * compositestate. The parameter compositeState is of type Object
      * to decouple the factory and NSUML as much as possible from the
      * rest of ArgoUML.
+     *
      * @param compositeState
      * @return MSynchState
      */
@@ -377,6 +388,7 @@ public class StateMachinesFactory extends AbstractUmlModelFactory {
      * given compositestate. The parameter compositeState is of type
      * Object to decouple the factory and NSUML as much as possible
      * from the rest of ArgoUML.
+     *
      * @param compositeState
      * @return MSynchState
      */
@@ -395,6 +407,7 @@ public class StateMachinesFactory extends AbstractUmlModelFactory {
      * the given compositestate. The parameter compositeState is of
      * type Object to decouple the factory and NSUML as much as
      * possible.  from the rest of ArgoUML.
+     *
      * @param compositeState
      * @return MSynchState
      */
@@ -412,6 +425,7 @@ public class StateMachinesFactory extends AbstractUmlModelFactory {
      * given compositestate. The parameter compositeState is of type
      * Object to decouple the factory and NSUML as much as possible.
      * from the rest of ArgoUML.
+     *
      * @param compositeState
      * @return MSynchState
      */
@@ -429,6 +443,7 @@ public class StateMachinesFactory extends AbstractUmlModelFactory {
      * subvertix of the given compositestate. The parameter
      * compositeState is of type Object to decouple the factory and
      * NSUML as much as possible.  from the rest of ArgoUML.
+     *
      * @param compositeState
      * @return MSynchState
      */
@@ -445,12 +460,13 @@ public class StateMachinesFactory extends AbstractUmlModelFactory {
     /**
      * Builds an internal transition for a given state. The parameter state is 
      * of type Object to decouple the factory and NSUML as much as possible.  
+     *
      * @param state The state the internal transition should belong to
      * @return MTransition The internal transition constructed
      */
     public MTransition buildInternalTransition(Object state) {
         if (state instanceof MState) {
-            MTransition trans = (MTransition)createTransition();
+            MTransition trans = (MTransition) createTransition();
             trans.setState((MState) state);
             trans.setSource((MState) state);
             trans.setTarget((MState) state);
@@ -469,7 +485,7 @@ public class StateMachinesFactory extends AbstractUmlModelFactory {
      */
     public MTransition buildTransition(Object source, Object target) {
         if (source instanceof MStateVertex && target instanceof MStateVertex) {
-            MTransition trans = (MTransition)createTransition();
+            MTransition trans = (MTransition) createTransition();
             trans.setSource((MStateVertex) source);
             trans.setTarget((MStateVertex) target);
             trans.setStateMachine(StateMachinesHelper.getHelper()
@@ -482,50 +498,54 @@ public class StateMachinesFactory extends AbstractUmlModelFactory {
     /**
      * Builds a callevent whose namespace (and therefore the ownership) is the
      * rootmodel.
+     *
      * @return MCallEvent
      */
     public MCallEvent buildCallEvent() {
         MCallEvent event = createCallEvent();
-        event.setNamespace((MModel)ProjectManager.getManager()
+        event.setNamespace((MModel) ProjectManager.getManager()
 			   .getCurrentProject().getModel());
         event.setName("");
         return event;
     }
 
     /**
-     * Builds a signalevent whose namespace (and therefore the ownership) is the
-     * rootmodel.
+     * Builds a signalevent whose namespace (and therefore the
+     * ownership) is the rootmodel.<p>
+     *
      * @return MSignalEvent
      */
     public MSignalEvent buildSignalEvent() {
         MSignalEvent event = createSignalEvent();
-        event.setNamespace((MModel)ProjectManager.getManager()
+        event.setNamespace((MModel) ProjectManager.getManager()
 			   .getCurrentProject().getModel());
         event.setName("");
         return event;
     }
 
     /**
-     * Builds a timeevent whose namespace (and therefore the ownership) is the
-     * rootmodel.
+     * Builds a timeevent whose namespace (and therefore the
+     * ownership) is the rootmodel.<p>
+     *
      * @return MTimeEvent
      */
     public MTimeEvent buildTimeEvent() {
         MTimeEvent event = createTimeEvent();
-        event.setNamespace((MModel)ProjectManager.getManager()
+        event.setNamespace((MModel) ProjectManager.getManager()
 			   .getCurrentProject().getModel());
         event.setName("");
         return event;
     }
 
     /**
-     * Builds a changeevent whose namespace (and therefore the ownership) is the
-     * rootmodel.
+     * Builds a changeevent whose namespace (and therefore the
+     * ownership) is the rootmodel.<p>
+     *
      * @return MChangeEvent
      */
     public MChangeEvent buildChangeEvent() {
         MChangeEvent event = createChangeEvent();
-        event.setNamespace((MModel)ProjectManager.getManager()
+        event.setNamespace((MModel) ProjectManager.getManager()
 			   .getCurrentProject().getModel());
         event.setName("");
         return event;
@@ -552,7 +572,7 @@ public class StateMachinesFactory extends AbstractUmlModelFactory {
     public void deleteChangeEvent(MChangeEvent elem) { }
     
     /**
-     * deletes any associated subVertices.
+     * Deletes any associated subVertices.
      */
     public void deleteCompositeState(MCompositeState elem) {
     
@@ -590,7 +610,9 @@ public class StateMachinesFactory extends AbstractUmlModelFactory {
     }
     
     /**
-     * Deletes the outgoing and incoming transitions of a statevertex.
+     * Deletes the outgoing and incoming transitions of a
+     * statevertex.<p>
+     *
      * @param elem
      */
     public void deleteStateVertex(MStateVertex elem) {

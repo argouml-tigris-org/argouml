@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2003 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -45,7 +45,6 @@ import org.argouml.model.uml.modelmanagement.ModelManagementHelper;
 
 import ru.novosoft.uml.MElementListener;
 import ru.novosoft.uml.MFactory;
-import ru.novosoft.uml.behavior.common_behavior.MComponentInstance;
 import ru.novosoft.uml.behavior.state_machines.MEvent;
 import ru.novosoft.uml.foundation.core.MAssociation;
 import ru.novosoft.uml.foundation.core.MAssociationClass;
@@ -112,7 +111,8 @@ public class CoreFactory extends AbstractUmlModelFactory {
      */
     private static CoreFactory SINGLETON = new CoreFactory();
 
-    /** Singleton instance access method.
+    /**
+     * Singleton instance access method.
      */
     public static CoreFactory getFactory() {
 	return SINGLETON;
@@ -134,11 +134,12 @@ public class CoreFactory extends AbstractUmlModelFactory {
 	return modelElement;
     }
 
-    /** Build an empty but initialized instance of a UML Abstraction
-     *  with a given name.
+    /**
+     * Build an empty but initialized instance of a UML Abstraction
+     * with a given name.
      *
-     *  @param name
-     *  @return an initialized UML Abstraction instance.
+     * @param name
+     * @return an initialized UML Abstraction instance.
      */
     public Object buildAbstraction(String name) {
         Object abstraction = createAbstraction();
@@ -232,16 +233,17 @@ public class CoreFactory extends AbstractUmlModelFactory {
 	return modelElement;
     }
 
-	/** Create an empty but initialized instance of a UML Component.
-	 *
-	 *  @return an initialized UML Component instance.
-	 */
-	public MComponent createComponent() {
+    /**
+     * Create an empty but initialized instance of a UML Component.
+     *
+     * @return an initialized UML Component instance.
+     */
+    public MComponent createComponent() {
 	MComponent modelElement =
-		MFactory.getDefaultFactory().createComponent();
+	    MFactory.getDefaultFactory().createComponent();
 	super.initialize(modelElement);
 	return modelElement;
-	}
+    }
 
 	
 
@@ -479,7 +481,7 @@ public class CoreFactory extends AbstractUmlModelFactory {
 
     /**
      * Builds a binary associationrole on basis of two classifierroles,
-     * navigation and aggregation
+     * navigation and aggregation.
      */
     public MAssociation buildAssociation(
 					 MClassifier from,
@@ -550,14 +552,16 @@ public class CoreFactory extends AbstractUmlModelFactory {
     /**
      * Builds a binary associations between two classifiers with
      * default values for the association ends and the association
-     * itself.
-     * @param c1 The first classifier to connect
-     * @param c2 The second classifier to connect
+     * itself.<p>
+     *
+     * @param classifier1 The first classifier to connect
+     * @param classifier2 The second classifier to connect
      * @return MAssociation
      */
-    public MAssociation buildAssociation(Object classifier1, Object classifier2) {
-        MClassifier c1 = (MClassifier)classifier1;
-        MClassifier c2 = (MClassifier)classifier2;
+    public MAssociation buildAssociation(Object classifier1,
+					 Object classifier2) {
+        MClassifier c1 = (MClassifier) classifier1;
+        MClassifier c2 = (MClassifier) classifier2;
         return buildAssociation(c1, true, MAggregationKind.NONE,
                                 c2, true, MAggregationKind.NONE);
     }
@@ -620,7 +624,8 @@ public class CoreFactory extends AbstractUmlModelFactory {
 
     /**
      * Builds an associationClass between classifier end1 and end2 with a
-     * default class.
+     * default class.<p>
+     *
      * @param end1
      * @param end2
      * @return MAssociationClass
@@ -765,14 +770,16 @@ public class CoreFactory extends AbstractUmlModelFactory {
     }
 
     /**
-     * Builds an association class from a class and two classifiers that should
-     * be associated. Both ends of the associationclass are navigable.
+     * Builds an association class from a class and two classifiers
+     * that should be associated. Both ends of the associationclass
+     * are navigable.<p>
+     *
      * @param cl
-     * @param assoc
+     * @param end1
+     * @param end2
      * @return MAssociationClass
      */
-    public MAssociationClass buildAssociatonClass(
-						  MClass cl,
+    public MAssociationClass buildAssociatonClass(MClass cl,
 						  MClassifier end1,
 						  MClassifier end2) {
 	if (end1 == null
@@ -852,13 +859,13 @@ public class CoreFactory extends AbstractUmlModelFactory {
 	// this should not be here via the ProjectBrowser but the CoreHelper
 	// should provide this functionality
 	Project p = ProjectManager.getManager().getCurrentProject();
-	MClassifier intType = (MClassifier)p.findType("int");
+	MClassifier intType = (MClassifier) p.findType("int");
 	if (p.getModel() != intType.getNamespace()
 	    && !(ModelManagementHelper.getHelper()
 		 .getAllNamespaces(p.getModel())
-		 .contains(intType.getNamespace())))
+		     .contains(intType.getNamespace())))
 	{
-	    intType.setNamespace((MModel)p.getModel());
+	    intType.setNamespace((MModel) p.getModel());
 	}
 	MAttribute attr = createAttribute();
 	attr.setName("newAttr");
@@ -892,9 +899,11 @@ public class CoreFactory extends AbstractUmlModelFactory {
     }
 
     /**
-     * Builds an attribute owned by some classifier cls. I don't know if this is
-     * legal for an interface (purely UML speaking). In this method it is.
-     * @param cls
+     * Builds an attribute owned by some classifier cls. I don't know
+     * if this is legal for an interface (purely UML speaking). In
+     * this method it is.<p>
+     *
+     * @param handle
      * @return MAttribute
      */
     public MAttribute buildAttribute(Object handle) {
@@ -918,13 +927,13 @@ public class CoreFactory extends AbstractUmlModelFactory {
 
     /**
      * Builds a binding between a client modelelement and a supplier
-     * modelelement
+     * modelelement.<p>
+     *
      * @param client
      * @param supplier
      * @return MBinding
      */
-    public MBinding buildBinding(
-				 MModelElement client,
+    public MBinding buildBinding(MModelElement client,
 				 MModelElement supplier) {
 	// 2002-07-08
 	// Jaap Branderhorst
@@ -957,7 +966,8 @@ public class CoreFactory extends AbstractUmlModelFactory {
      */
     public MClass buildClass() {
 	MClass cl = createClass();
-	// cl.setNamespace(ProjectBrowser.getInstance().getProject().getModel());
+	// cl.setNamespace(ProjectBrowser.getInstance().getProject()
+	// .getModel());
 	cl.setName("");
 	cl.setStereotype(null);
 	cl.setAbstract(false);
@@ -971,6 +981,7 @@ public class CoreFactory extends AbstractUmlModelFactory {
 
     /**
      * Builds a class with a given namespace.
+     *
      * @param owner
      * @return MClass
      * @see #buildClass()
@@ -984,6 +995,7 @@ public class CoreFactory extends AbstractUmlModelFactory {
 
     /**
      * Builds a class with a given name.
+     *
      * @param name
      * @return MClass
      * @see #buildClass()
@@ -996,6 +1008,7 @@ public class CoreFactory extends AbstractUmlModelFactory {
 
     /**
      * Builds a class with a given name and namespace.
+     *
      * @param name
      * @param owner
      * @return MClass
@@ -1012,12 +1025,14 @@ public class CoreFactory extends AbstractUmlModelFactory {
     /**
      * Builds a default implementation for an interface. The interface
      * is not owned by any model element by default. Users should not
-     * forget to add ownership
+     * forget to add ownership.
+     *
      * @return MInterface
      */
     public Object buildInterface() {
 	MInterface cl = createInterface();
-	// cl.setNamespace(ProjectBrowser.getInstance().getProject().getModel());
+	// cl.setNamespace(ProjectBrowser.getInstance().getProject()
+	// .getModel());
 	cl.setName("");
 	cl.setStereotype(null);
 	cl.setAbstract(false);
@@ -1030,7 +1045,8 @@ public class CoreFactory extends AbstractUmlModelFactory {
 
     /**
      * Builds an interface with a given namespace.
-     * @param owner
+     *
+     * @param owner is the owner
      * @return MInterface
      * @see #buildInterface()
      */
@@ -1043,7 +1059,8 @@ public class CoreFactory extends AbstractUmlModelFactory {
 
     /**
      * Builds an interface with a given name.
-     * @param name
+     *
+     * @param name is the given name.
      * @return MInterface
      * @see #buildInterface()
      */
@@ -1055,8 +1072,9 @@ public class CoreFactory extends AbstractUmlModelFactory {
 
     /**
      * Builds an interface with a given name and namespace.
-     * @param name
-     * @param owner
+     *
+     * @param name is the given name
+     * @param owner is the namespace
      * @return MInterface
      * @see #buildInterface()
      */
@@ -1070,8 +1088,9 @@ public class CoreFactory extends AbstractUmlModelFactory {
 
     /**
      * Builds a datatype with a given name and namespace.
-     * @param name
-     * @param owner
+     *
+     * @param name is the name
+     * @param owner is the namespace
      * @return an initialized UML DataType instance.
      */
     public Object buildDataType(String name, Object owner) {
@@ -1083,13 +1102,13 @@ public class CoreFactory extends AbstractUmlModelFactory {
     }
 
     /**
-     * Builds a modelelement dependency between two modelelements.
-     * @param client
-     * @param supplier
+     * Builds a modelelement dependency between two modelelements.<p>
+     *
+     * @param clientObj is the client
+     * @param supplierObj is the supplier
      * @return MDependency
      */
-    public MDependency buildDependency(
-				       Object clientObj,
+    public MDependency buildDependency(Object clientObj,
 				       Object supplierObj) {
                     
 	MModelElement client = (MModelElement) clientObj;
@@ -1112,12 +1131,12 @@ public class CoreFactory extends AbstractUmlModelFactory {
 
     /**
      * Builds a modelelement permission between two modelelements.
-     * @param client
-     * @param supplier
+     *
+     * @param clientObj is the client
+     * @param supplierObj is the supplier
      * @return MPermission
      */
-    public MPermission buildPermission(
-				       Object clientObj,
+    public MPermission buildPermission(Object clientObj,
 				       Object supplierObj) {
                     
 	MModelElement client = (MModelElement) clientObj;
@@ -1142,9 +1161,10 @@ public class CoreFactory extends AbstractUmlModelFactory {
 
     /**
      * Builds a generalization between a parent and a child with a given name.
-     * @param child
-     * @param parent
-     * @param name
+     *
+     * @param child is the child
+     * @param parent is the parent
+     * @param name is the given name
      * @return generalization
      */
     public Object buildGeneralization(Object child, Object parent,
@@ -1164,8 +1184,9 @@ public class CoreFactory extends AbstractUmlModelFactory {
     /**
      * Builds a generalization between a parent and a child. Does not check if
      * multiple inheritance is allowed for the current notation.
-     * @param child
-     * @param parent
+     *
+     * @param child1 is the child
+     * @param parent1 is the parent
      * @return MGeneralization
      */
     public MGeneralization buildGeneralization(Object child1, Object parent1)
@@ -1174,8 +1195,8 @@ public class CoreFactory extends AbstractUmlModelFactory {
 	    || !(parent1 instanceof MGeneralizableElement))
             throw new IllegalArgumentException();
         
-        MGeneralizableElement child = (MGeneralizableElement)child1;
-        MGeneralizableElement parent = (MGeneralizableElement)parent1;
+        MGeneralizableElement child = (MGeneralizableElement) child1;
+        MGeneralizableElement parent = (MGeneralizableElement) parent1;
         
         if (parent.getParents().contains(child))
             return null;
@@ -1208,7 +1229,8 @@ public class CoreFactory extends AbstractUmlModelFactory {
      * Builds a default method belonging to a certain operation. The
      * language of the body is set to the selected Notation
      * language. The body of the method is set to an emtpy string.
-     * @param op
+     *
+     * @param op is the operation
      * @return MMethod
      */
     public MMethod buildMethod(MOperation op) {
@@ -1249,7 +1271,7 @@ public class CoreFactory extends AbstractUmlModelFactory {
     /**
      * Builds a method with a given name.
      *
-     * @param name
+     * @param name is the given name
      * @return method
      */
     public MMethod buildMethod(String name) {
@@ -1260,8 +1282,9 @@ public class CoreFactory extends AbstractUmlModelFactory {
     }
 
     /**
-     * Builds an operation for classifier cls.
-     * @param cls
+     * Builds an operation for a classifier.<p>
+     *
+     * @param handle is the classifier.
      * @return MOperation
      */
     public MOperation buildOperation(Object handle) {
@@ -1306,9 +1329,10 @@ public class CoreFactory extends AbstractUmlModelFactory {
     }
 
     /**
-     * Builds an operation with a given name for classifier cls.
-     * @param cls
-     * @param name
+     * Builds an operation with a given name for classifier.
+     *
+     * @param cls is the classifier.
+     * @param name is the given name.
      * @return MOperation
      */
     public Object buildOperation(Object cls, String name) {
@@ -1321,17 +1345,15 @@ public class CoreFactory extends AbstractUmlModelFactory {
     /**
      * Constructs a default parameter.
      *
-     * @param oper  The operation where it is added to.
-     *          If null, it is not added.
      * @return      The newly created parameter.
      */
     public MParameter buildParameter() {
 	// this should not be here via the ProjectBrowser but the CoreHelper
 	// should provide this functionality
 	Project p = ProjectManager.getManager().getCurrentProject();
-	MClassifier voidType = (MClassifier)p.findType("void");
+	MClassifier voidType = (MClassifier) p.findType("void");
 	if (voidType.getModel() != p.getModel()) {
-	    voidType.setNamespace((MModel)p.getModel());
+	    voidType.setNamespace((MModel) p.getModel());
 	}
 	MParameter res = UmlFactory.getFactory().getCore().createParameter();
 	res.setName("");
@@ -1387,11 +1409,11 @@ public class CoreFactory extends AbstractUmlModelFactory {
 
     /**
      * Constructs a default parameter, adds it to oper and sets its type
-     * (return etc.).
+     * (return etc.).<p>
      *
-     * @param oper  The operation where it is added to.
+     * @param feature The operation where it is added to.
      *          If null, it is not added.
-     * @param directionKind The directionkind. If null it is not set.
+     * @param dk The directionkind. If null it is not set.
      * @return      The newly created parameter.
      */
     public Object buildParameter(Object feature, Object dk) {
@@ -1427,8 +1449,9 @@ public class CoreFactory extends AbstractUmlModelFactory {
     /**
      * Builds a realization between some supplier (for example an
      * interface in Java) and a client who implements the realization.
-     * @param client
-     * @param supplier
+     *
+     * @param client is the client
+     * @param supplier is the supplier
      * @return Object the created abstraction
      */
     public Object buildRealization(MModelElement client,
@@ -1449,7 +1472,9 @@ public class CoreFactory extends AbstractUmlModelFactory {
 	if (nsc != null && nsc.equals(nss)) {
 	    ns = nsc;
 	} else {
-	    ns = (MModel)ProjectManager.getManager().getCurrentProject().getModel();
+	    ns =
+		(MModel) ProjectManager.getManager().getCurrentProject()
+		    .getModel();
 	}
 	ExtensionMechanismsFactory.getFactory().buildStereotype(realization,
 								"realize", ns);
@@ -1459,10 +1484,12 @@ public class CoreFactory extends AbstractUmlModelFactory {
     }
 
     /**
-     * Builds a usage between some client and a supplier. If client and supplier
-     * do not have the same model, an illegalargumentexception is thrown.
-     * @param client
-     * @param supplier
+     * Builds a usage between some client and a supplier. If client
+     * and supplier do not have the same model, an
+     * {@link IllegalArgumentException} is thrown.
+     *
+     * @param client is the client
+     * @param supplier is the supplier
      * @return MUsage
      */
     public MUsage buildUsage(MModelElement client, MModelElement supplier) {
@@ -1489,28 +1516,30 @@ public class CoreFactory extends AbstractUmlModelFactory {
      * Builds a comment inluding a reference to the given modelelement
      * to comment.  If the element is null, the comment is still build
      * since it is not mandatory to have an annotated element in the
-     * comment.
-     * @param elementToComment
+     * comment.<p>
+     *
+     * @param element is the model element
      * @return MComment
      */
     public MComment buildComment(Object/*MModelElement*/ element) {
-        MModelElement elementToComment = (MModelElement)element;
+        MModelElement elementToComment = (MModelElement) element;
 	MComment comment = createComment();
 	if (elementToComment != null) {
 	    comment.addAnnotatedElement(elementToComment);
 	    comment.setNamespace(elementToComment.getModel());
 	} else
-	    comment.setNamespace((MModel)ProjectManager.getManager()
+	    comment.setNamespace((MModel) ProjectManager.getManager()
 				 .getCurrentProject().getModel());
 
 	return comment;
     }
 
     /**
-     * Builds a constraint that constraints the given
-     * modelelement. The namespace of the constraint will be the same
-     * as the namespace of the given modelelement.
-     * @param constrainedElement
+     * Builds a constraint that constraints the given modelelement.
+     * The namespace of the constraint will be the same as the
+     * namespace of the given modelelement.<p>
+     *
+     * @param constrElement The constrained element.
      * @return MConstraint
      */
     public MConstraint buildConstraint(Object/*MModelElement*/ constrElement) {
@@ -1526,9 +1555,10 @@ public class CoreFactory extends AbstractUmlModelFactory {
     }
 
     /**
-     * Builds a constraint with a given name and boolean expression.
-     * @param name
-     * @param boolean expression
+     * Builds a constraint with a given name and boolean expression.<p>
+     *
+     * @param name is the given name
+     * @param bexpr boolean expression
      * @return constraint
      */
     public Object buildConstraint(String name, Object bexpr) {
@@ -1706,6 +1736,8 @@ public class CoreFactory extends AbstractUmlModelFactory {
 
     /**
      * A namespace deletes its owned elements.
+     *
+     * @param elem is the namespace.
      */
     public void deleteNamespace(MNamespace elem) {
 
@@ -1750,6 +1782,7 @@ public class CoreFactory extends AbstractUmlModelFactory {
      *
      * @param source is the class to copy.
      * @param ns is the namespace to put the copy in.
+     * @return a newly created class.
      */
     public MClass copyClass(MClass source, MNamespace ns) {
 	MClass c = createClass();
@@ -1764,6 +1797,7 @@ public class CoreFactory extends AbstractUmlModelFactory {
      *
      * @param source is the datatype to copy.
      * @param ns is the namespace to put the copy in.
+     * @return a newly created data type.
      */
     public MDataType copyDataType(MDataType source, MNamespace ns) {
 	MDataType i = createDataType();
@@ -1778,6 +1812,7 @@ public class CoreFactory extends AbstractUmlModelFactory {
      *
      * @param source is the interface to copy.
      * @param ns is the namespace to put the copy in.
+     * @return a newly created interface.
      */
     public MInterface copyInterface(MInterface source, MNamespace ns) {
 	MInterface i = createInterface();
@@ -1788,6 +1823,8 @@ public class CoreFactory extends AbstractUmlModelFactory {
 
     /**
      * Used by the copy functions. Do not call this function directly.
+     * TODO: Shouldn't this be private then? Linus thinks so.
+     * @deprecated by Linus Tolke as of 0.15.4. Will be made private.
      */
     public void doCopyElement(MElement source, MElement target) {
 	UmlFactory.getFactory().doCopyBase(source, target);
@@ -1864,12 +1901,10 @@ public class CoreFactory extends AbstractUmlModelFactory {
 	    // must also be allowed to copy other necessary
 	    // objects.
 	    MStereotype st = (MStereotype)
-		ModelManagementHelper
-		.getHelper()
-		.getCorrespondingElement(
-					 source.getStereotype(),
-					 target.getModel(),
-					 true);
+		ModelManagementHelper.getHelper()
+		    .getCorrespondingElement(source.getStereotype(),
+					     target.getModel(),
+					     true);
 	    target.setStereotype(st);
 	}
     }

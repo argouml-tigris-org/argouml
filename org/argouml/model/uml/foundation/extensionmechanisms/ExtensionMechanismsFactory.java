@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2003 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -44,7 +44,6 @@ import ru.novosoft.uml.model_management.MModel;
  * @author Thierry Lach
  * @stereotype singleton
  */
-
 public class ExtensionMechanismsFactory extends AbstractUmlModelFactory {
 
     /** Singleton instance.
@@ -52,7 +51,10 @@ public class ExtensionMechanismsFactory extends AbstractUmlModelFactory {
     private static ExtensionMechanismsFactory SINGLETON =
 	new ExtensionMechanismsFactory();
 
-    /** Singleton instance access method.
+    /**
+     * Singleton instance access method.
+     *
+     * @return the factory instance.
      */
     public static ExtensionMechanismsFactory getFactory() {
         return SINGLETON;
@@ -96,7 +98,7 @@ public class ExtensionMechanismsFactory extends AbstractUmlModelFactory {
         MNamespace ns = (MNamespace) nsObj;
     	if (m == null || text == null || ns == null)
 	    throw new IllegalArgumentException("one of the arguments is null");
-    	MStereotype stereo = (MStereotype)createStereotype();
+    	MStereotype stereo = (MStereotype) createStereotype();
     	stereo.setName(text);
     	stereo.setBaseClass(ExtensionMechanismsHelper.getHelper()
 			    .getMetaModelName(m));
@@ -116,23 +118,24 @@ public class ExtensionMechanismsFactory extends AbstractUmlModelFactory {
     /**
      * Builds an initialized stereotype.
      *
-     * @param text
-     * @param namespace
+     * @param text is the name of the stereotype
+     * @param ns namespace
      * @return an initialized stereotype.
      */
     public Object/*MStereotype*/ buildStereotype(String text, Object ns) {
-    	MStereotype stereo = (MStereotype)createStereotype();
+    	MStereotype stereo = (MStereotype) createStereotype();
     	stereo.setName(text);
     	if (ns != null && ns instanceof MNamespace)
     	    stereo.setNamespace((MNamespace) ns);
     	return stereo;
     }
 
-    public MStereotype buildStereotype(Object/*MModelElement*/ modelElement, String text) {
-        MModelElement m = (MModelElement)modelElement;
+    public MStereotype buildStereotype(Object/*MModelElement*/ modelElement,
+				       String text) {
+        MModelElement m = (MModelElement) modelElement;
         // if (m == null && text == null)
 	//  throw new IllegalArgumentException("one of the arguments is null");
-        MStereotype stereo = (MStereotype)createStereotype();
+        MStereotype stereo = (MStereotype) createStereotype();
         stereo.setName(text);
         stereo.setBaseClass(ExtensionMechanismsHelper.getHelper()
 			    .getMetaModelName(m));
@@ -143,17 +146,21 @@ public class ExtensionMechanismsFactory extends AbstractUmlModelFactory {
             UmlFactory.getFactory().delete(stereo);
             return stereo2;
         } else {
-            ((MModel)ProjectManager.getManager()
-		.getCurrentProject().getModel()).addOwnedElement(stereo);
+            ((MModel) ProjectManager.getManager().getCurrentProject()
+		    .getModel())
+		.addOwnedElement(stereo);
             if (m != null)
                 stereo.addExtendedElement(m);
             return stereo;
         }
     }
 
-    /** Build an initialized instance of a UML TaggedValue.
+    /**
+     * Build an initialized instance of a UML TaggedValue.
      *
-     *  @return an initialized UML TaggedValue instance.
+     * @param tag is the tag name (a String).
+     * @param value is the value (a String).
+     * @return an initialized UML TaggedValue instance.
      */
     public MTaggedValue buildTaggedValue(String tag, String value) {
         MTaggedValue tv = createTaggedValue();
@@ -171,9 +178,10 @@ public class ExtensionMechanismsFactory extends AbstractUmlModelFactory {
      *
      * @param source is the stereotype to copy.
      * @param ns is the namespace to put the copy in.
+     * @return a newly created stereotype
      */
     public MStereotype copyStereotype(MStereotype source, MNamespace ns) {
-	MStereotype st = (MStereotype)createStereotype();
+	MStereotype st = (MStereotype) createStereotype();
 	ns.addOwnedElement(st);
 	doCopyStereotype(source, st);
 	return st;
@@ -181,6 +189,8 @@ public class ExtensionMechanismsFactory extends AbstractUmlModelFactory {
 
     /**
      * Used by the copy functions. Do not call this function directly.
+     * TODO: Why is this public? I think it shouldn't be.
+     * @deprecated by Linus Tolke as of 0.15.4. Will be private.
      */
     public void doCopyStereotype(MStereotype source, MStereotype target) {
 	CoreFactory.getFactory().doCopyGeneralizableElement(source, target);

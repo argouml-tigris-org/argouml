@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -135,14 +135,15 @@ public class TabStyle
         _panels.put(FigRealization.class, spfeme);
     }
 
-    /** Adds a style panel to the internal list. This allows a plugin to
-     *  add and register a new style panel at run-time. This property style will
-     *  then be displayed in the detatils pane whenever an element of the given 
-     *  metaclass is selected.
+    /**
+     * Adds a style panel to the internal list. This allows a plugin
+     * to add and register a new style panel at run-time. This
+     * property style will then be displayed in the detatils pane
+     * whenever an element of the given metaclass is selected.
      *
-     * @param c the metaclass whose details show be displayed in the property panel p
+     * @param c the metaclass whose details show be displayed in the
+     * property panel p
      * @param s an instance of the style panel for the metaclass m
-     *
      */
     public void addPanel(Class c, StylePanel s) {
         _panels.put(c, s);
@@ -152,18 +153,19 @@ public class TabStyle
      * Sets the target of the style tab. 
      *
      * @deprecated As of ArgoUml version 0.13.5,
-     *             the visibility of this method will change in the future,
-     *             replaced by {@link org.argouml.ui.targetmanager.TargetManager}.
-     * @param Object the new target
+     * the visibility of this method will change in the future,
+     * replaced by {@link org.argouml.ui.targetmanager.TargetManager}.
+     * @param t is the new target
      */
     public void setTarget(Object t) {
         if (_target != null)
             _target.removePropertyChangeListener(this);
 
-        // the responsibility of determining if the given target is a correct one 
-        // for this tab has been moved from the DetailsPane to the member tabs of th
-        // detailpane. Reason for this is that the detailspane is configurable and
-        // cannot know what's the correct target for some tab.
+        // the responsibility of determining if the given target is a
+        // correct one for this tab has been moved from the
+        // DetailsPane to the member tabs of th detailpane. Reason for
+        // this is that the detailspane is configurable and cannot
+        // know what's the correct target for some tab.
         if (!(t instanceof Fig)) {
             if (ModelFacade.isABase(t)) {
                 Project p = ProjectManager.getManager().getCurrentProject();
@@ -330,7 +332,7 @@ public class TabStyle
     }
 
     /**
-     * @see org.argouml.ui.targetmanager.TargetListener#targetAdded(org.argouml.ui.targetmanager.TargetEvent)
+     * @see TargetListener#targetAdded(TargetEvent)
      */
     public void targetAdded(TargetEvent e) {
         setTarget(e.getNewTarget());
@@ -339,7 +341,7 @@ public class TabStyle
     }
 
     /**
-     * @see org.argouml.ui.targetmanager.TargetListener#targetRemoved(org.argouml.ui.targetmanager.TargetEvent)
+     * @see TargetListener#targetRemoved(TargetEvent)
      */
     public void targetRemoved(TargetEvent e) {
         // how to handle empty target lists?
@@ -350,7 +352,7 @@ public class TabStyle
     }
 
     /**
-     * @see org.argouml.ui.targetmanager.TargetListener#targetSet(org.argouml.ui.targetmanager.TargetEvent)
+     * @see TargetListener#targetSet(TargetEvent)
      */
     public void targetSet(TargetEvent e) {
         setTarget(e.getNewTarget());

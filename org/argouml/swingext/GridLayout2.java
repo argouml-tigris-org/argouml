@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2003 The Regents of the University of California. All
+// Copyright (c) 2003-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -330,9 +330,9 @@ public class GridLayout2 implements LayoutManager, java.io.Serializable {
      * Removes the specified component with the specified name from
      * the layout. This is included to satisfy the LayoutManager
      * interface but is not actually used in this layout
-     * implementation.
+     * implementation.<p>
      *
-     * @param name the name of the component
+     * @param comp the name of the component
      */    
     public void removeLayoutComponent(Component comp) {
     }
@@ -393,12 +393,10 @@ public class GridLayout2 implements LayoutManager, java.io.Serializable {
                     int i = r * actualCols + c;
                     if (i < componentCount) {
                         if (parent.getComponent(i).getPreferredSize().getWidth()
-			    > colWidth[c])
-			{
+			    > colWidth[c]) {
                             colWidth[c] =
-				(int)
-				parent.getComponent(i)
-				.getPreferredSize().getWidth();
+				(int) parent.getComponent(i)
+				    .getPreferredSize().getWidth();
                             if (colWidth[c] > largestPreferredWidth)
 				largestPreferredWidth = colWidth[c];
                         }
@@ -407,9 +405,8 @@ public class GridLayout2 implements LayoutManager, java.io.Serializable {
 			    > rowHeight[r])
 			{
                             rowHeight[r] =
-				(int)
-				parent.getComponent(i)
-				.getPreferredSize().getHeight();
+				(int) parent.getComponent(i)
+				    .getPreferredSize().getHeight();
                             if (rowHeight[r] > largestPreferredHeight)
 				largestPreferredHeight = rowHeight[r];
                         }
@@ -450,18 +447,16 @@ public class GridLayout2 implements LayoutManager, java.io.Serializable {
 			    > colWidth[c]) 
 			{
                             colWidth[c] =
-				(int)
-				parent.getComponent(i)
-				.getMinimumSize().getWidth();
+				(int) parent.getComponent(i)
+				    .getMinimumSize().getWidth();
                             if (colWidth[c] > largestMinimumWidth)
 				largestMinimumWidth = colWidth[c];
                         }
                         if (parent.getComponent(i).getMinimumSize().getHeight()
 			    > rowHeight[r]) {
                             rowHeight[r] =
-				(int)
-				parent.getComponent(i)
-				.getMinimumSize().getHeight();
+				(int) parent.getComponent(i)
+				    .getMinimumSize().getHeight();
                             if (rowHeight[r] > largestMinimumHeight)
 				largestMinimumHeight = rowHeight[r];
                         }
@@ -516,9 +511,8 @@ public class GridLayout2 implements LayoutManager, java.io.Serializable {
 				> colWidth[c])
 			    {
                                 colWidth[c] =
-				    (int)
-				    parent.getComponent(i)
-				    .getPreferredSize().getWidth();
+				    (int) parent.getComponent(i)
+				        .getPreferredSize().getWidth();
                                 if (colWidth[c] > largestWidth)
 				    largestWidth = colWidth[c];
                             }
@@ -527,9 +521,8 @@ public class GridLayout2 implements LayoutManager, java.io.Serializable {
 				> rowHeight[r])
 			    {
                                 rowHeight[r] =
-				    (int)
-				    parent.getComponent(i)
-				    .getPreferredSize().getHeight();
+				    (int) parent.getComponent(i)
+				        .getPreferredSize().getHeight();
                                 if (rowHeight[r] > largestHeight)
 				    largestHeight = rowHeight[r];
                             }

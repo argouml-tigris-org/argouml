@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2002 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -25,9 +25,9 @@
 package org.argouml.model.uml.foundation;
 
 /**
- * Helper class for UML Foundation Package.
+ * Helper class for UML Foundation Package.<p>
  *
- * Current implementation is a placeholder.
+ * Current implementation is a placeholder.<p>
  * 
  * @since ARGO0.11.2
  * @author Thierry Lach
@@ -35,18 +35,22 @@ package org.argouml.model.uml.foundation;
  */
 public class FoundationHelper {
 
-    /** Don't allow instantiation.
+    /** 
+     * Don't allow instantiation.
      */
     private FoundationHelper() {
     }
     
-     /** Singleton instance.
+    /**
+     * Singleton instance.
      */
     private static FoundationHelper SINGLETON =
                    new FoundationHelper();
 
     
-    /** Singleton instance access method.
+    /**
+     * Singleton instance access method.<p>
+     *
      * @return the singleton instance of the helper
      */
     public static FoundationHelper getHelper() {

@@ -22,11 +22,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// File: UMLComboBoxModel.java
-// Classes: UMLComboBoxModel
-// Original Author: 
-// $Id$
-
 package org.argouml.uml.ui;
 
 import org.argouml.uml.*;
@@ -41,31 +36,27 @@ import org.argouml.model.ModelFacade;
 import ru.novosoft.uml.MElementEvent;
 
 /**
- * <p>A model for use with drop down combo boxes. Used to supply the correct
- *   model for the "type" and "stereotype" drop downs used on several of the
- *   property panels, as well as others.</p>
+ * A model for use with drop down combo boxes. Used to supply the
+ * correct model for the "type" and "stereotype" drop downs used on
+ * several of the property panels, as well as others.<p>
  *
- * <p><em>Warning</em>. This is implemented by {@link TreeSet}, a set class,
- *   that therefore does not permit duplicates. If two entries in the drop down
- *   have the same fully qualified name, then they will appear only once in the
- *   list. This causes problems for example with lists of objects in diagrams,
- *   where default naming means newly created objects have the same name.</p>
+ * <em>Warning</em>. This is implemented by {@link TreeSet}, a set
+ * class, that therefore does not permit duplicates. If two entries in
+ * the drop down have the same fully qualified name, then they will
+ * appear only once in the list. This causes problems for example with
+ * lists of objects in diagrams, where default naming means newly
+ * created objects have the same name.<p>
  *
  * @deprecated as of ArgoUml 0.13.5 (10-may-2003),
  *             replaced by {@link org.argouml.uml.ui.UMLComboBoxModel2},
- *             this class is part of the 'old'(pre 0.13.*) implementation of proppanels
- *             that used reflection a lot.
+ *             this class is part of the 'old'(pre 0.13.*) implementation of
+ *             proppanels that used reflection a lot.
  */
-
 public class UMLComboBoxModel extends AbstractListModel implements
     ComboBoxModel, UMLUserInterfaceComponent, ActionListener {
 
     /** logger */
     private static Logger cat = Logger.getLogger(UMLComboBoxModel.class);
-//    protected static Logger cat = 
-//        Logger.getLogger(UMLComboBoxModel.class);
-        
-
 
     ///////////////////////////////////////////////////////////////////////////
     //
@@ -75,77 +66,70 @@ public class UMLComboBoxModel extends AbstractListModel implements
 
 
     /**
-     * <p>The container (PropPanel) in which we are used.</p>
+     * The container (PropPanel) in which we are used.<p>
      */
-
     protected UMLUserInterfaceContainer _container;
 
 
     /**
-     * <p>The name of the NSUML event that affects our data model.</p>
+     * The name of the NSUML event that affects our data model.<p>
      */
-
     protected String _property;
 
 
     /**
-     * <p>A method returning a boolean, to indicate whether a specific {@link
-     *   MModelElement} should be allowed in the combo box. If the method is
-     *   non-existent has the value <code>null</code>.</p>
+     * A method returning a boolean, to indicate whether a specific
+     * {@link ru.novosoft.uml.foundation.core.MModelElement} should be
+     * allowed in the combo box. If the method is non-existent has the
+     * value <code>null</code>.<p>
      */
-
     protected Method _filter = null;
 
 
     /**
-     * <p>A method which gets the specific value currently associated with
-     *   this combo box (the selected value) from the target NSUML object
-     *   associated with the container. Returns a {@link MModelElement}. If
-     *   the method is non-existent has the value <code>null</code>.</p> 
+     * A method which gets the specific value currently associated
+     * with this combo box (the selected value) from the target NSUML
+     * object associated with the container. Returns a {@link
+     * ru.novosoft.uml.foundation.core.MModelElement}. If the method
+     * is non-existent has the value <code>null</code>.<p>
      */
-
     protected Method _getMethod;
 
 
     /**
-     * <p>A method which sets the specific value currently associated with
-     *   this combo box (the selected value) in the target NSUML object
-     *   associated with the container. Takes a {@link MModelElement} as
-     *   argument. If the method is non-existent has the value
-     *   <code>null</code>.</p>
+     * A method which sets the specific value currently associated
+     * with this combo box (the selected value) in the target NSUML
+     * object associated with the container.  Takes a {@link
+     * ru.novosoft.uml.foundation.core.MModelElement} as argument.  If
+     * the method is non-existent has the value <code>null</code>.<p>
      */
-
     protected Method _setMethod;
 
 
     /**
-     * <p>The set of objects that are displayed in the drop down.</p>
+     * The set of objects that are displayed in the drop down.<p>
      */
-
     protected TreeSet _set;
 
 
     /**
-     * <p>The currently selected object in the combo box (displayed when the
-     *   drop-down is not being shown).</p>
+     * The currently selected object in the combo box (displayed when
+     * the drop-down is not being shown).<p>
      */
-
     protected Object _selectedItem;
 
 
     /**
-     * <p>Flag to indicate that an empty entry should be included (first) in
-     *   the drop down list.</p>
+     * Flag to indicate that an empty entry should be included (first)
+     * in the drop down list.<p>
      */
-
     protected boolean _allowVoid;
 
 
     /**
-     * </p>Flag to indicate that the drop down should include elements from the
-     *   model included within the profile.</p>
+     * Flag to indicate that the drop down should include elements
+     * from the model included within the profile.<p>
      */
-
     protected boolean _addElementsFromProfileModel;
 
 
@@ -156,52 +140,37 @@ public class UMLComboBoxModel extends AbstractListModel implements
     ///////////////////////////////////////////////////////////////////////////
 
     /**
-     * <p>This method creates a UMLComboBoxModel.</p>
+     * This method creates a UMLComboBoxModel.<p>
      *
-     * @param container                    The container (PropPanel) that
-     *                                     contains the ComboBox and provides
-     *                                     access to target, formatting etc.
+     * @param container The container (PropPanel) that contains the
+     * ComboBox and provides access to target, formatting etc.
      *
-     * @param filter                       Name of method on container that
-     *                                     takes a {@link MModelElement} and
-     *                                     returns <code>true</code> if the 
-     *                                     element should be in the combo box
-     *                                     list, <code>false</code>
-     *                                     otherwise. <em>Note</em>. The 
-     *                                     supplied model element may be
-     *                                     <code>null</code>.
+     * @param filter Name of method on container that takes a {@link
+     * ru.novosoft.uml.foundation.core.MModelElement} and returns
+     * <code>true</code> if the element should be in the combo box
+     * list, <code>false</code> otherwise. <em>Note</em>. The supplied
+     * model element may be <code>null</code>.
      *
-     * @param property                     Name of the NSUML event that would
-     *                                     indicate that the selected value for
-     *                                     the combo box has changed.
+     * @param property Name of the NSUML event that would indicate
+     * that the selected value for the combo box has changed.
      *
-     * @param getMethod                    Name of a method of the container
-     *                                     which will get the value associated
-     *                                     with this combo box. Returns an 
-     *                                     object of type
-     *                                     <code>elementType</code> (see
-     *                                     below).
+     * @param getMethod Name of a method of the container which will
+     * get the value associated with this combo box. Returns an object
+     * of type <code>elementType</code> (see below).
      *
-     * @param setMethod                    Name of a method of the container
-     *                                     which will set the value associated
-     *                                     with this combo box. Takes as 
-     *                                     argument an object of type
-     *                                     <code>elementType</code> (see
-     *                                     below). 
+     * @param setMethod Name of a method of the container which will
+     * set the value associated with this combo box. Takes as argument
+     * an object of type <code>elementType</code> (see below).
      *
-     * @param allowVoid                    A flag to indicate that the drop
-     *                                     down list should include (in first
-     *                                     position) an empty entry. 
+     * @param allowVoid A flag to indicate that the drop down list
+     * should include (in first position) an empty entry.
      *
-     * @param elementType                  The base type for all elements in
-     *                                     the combo box. 
+     * @param elementType The base type for all elements in the combo box.
      *
-     * @param addElementsFromProfileModel  A flag to indicate that elements
-     *                                     from the model associated with the
-     *                                     profile should be included in the
-     *                                     drop down list.
+     * @param addElementsFromProfileModel A flag to indicate that
+     * elements from the model associated with the profile should be
+     * included in the drop down list.
      */
-
     public UMLComboBoxModel(UMLUserInterfaceContainer container,
                             String filter, String property, String getMethod,
                             String setMethod, boolean allowVoid, Class
@@ -229,10 +198,12 @@ public class UMLComboBoxModel extends AbstractListModel implements
                 _filter = _container.getClass().getMethod(filter, args);
             }
             catch (Exception e) {
-                cat.error(e.toString() + ". " +
-                                   this.getClass().toString() +
-                                   ": invalid filter method " + filter, e);
-                cat.error("Need to rethrow this exception as RuntimeException.");
+                cat.error(e.toString() + ". "
+			  + this.getClass().toString()
+			  + ": invalid filter method " + filter,
+			  e);
+                cat.error("Need to rethrow this exception as "
+			  + "a RuntimeException.");
 		throw new RuntimeException(e.toString());
             }
         }
@@ -244,10 +215,12 @@ public class UMLComboBoxModel extends AbstractListModel implements
                 _getMethod = container.getClass().getMethod(getMethod, getArgs);
             }
             catch (Exception e) {
-                cat.error(e.toString() + ". " +
-                                   this.getClass().toString() +
-                                   ": invalid get method " + getMethod, e);
-                cat.error("Need to rethrow this exception as RuntimeException.");
+                cat.error(e.toString() + ". "
+			  + this.getClass().toString()
+			  + ": invalid get method " + getMethod,
+			  e);
+                cat.error("Need to rethrow this exception as "
+			  + "a RuntimeException.");
 		throw new RuntimeException(e.toString());
             }
         }
@@ -261,10 +234,12 @@ public class UMLComboBoxModel extends AbstractListModel implements
                 _setMethod = container.getClass().getMethod(setMethod, setArgs);
             }
             catch (Exception e) {
-                cat.error(e.toString() + ". " +
-                                   this.getClass().toString() +
-                                   ": invalid set method " + setMethod, e);
-		cat.error("Need to rethrow this exception as RuntimeException.");
+                cat.error(e.toString() + ". "
+			  + this.getClass().toString()
+			  + ": invalid set method " + setMethod,
+			  e);
+		cat.error("Need to rethrow this exception as "
+			  + "a RuntimeException.");
 		throw new RuntimeException(e.toString());
             }
         }
@@ -278,134 +253,124 @@ public class UMLComboBoxModel extends AbstractListModel implements
     ///////////////////////////////////////////////////////////////////////////
 
     /**
-     * <p>Return the sorted set of elements that are shown in the drop down of
-     *   the combo box.</p>
+     * Return the sorted set of elements that are shown in the drop
+     * down of the combo box.<p>
      *
      * @return  The set of elements shown in the drop down.
      */
-
     protected TreeSet getSet() {
 	return _set;
     }
 
 
     /**
-     * <p>Return a flag indicating if elements from the model associated with
-     * the profile are also to be used in the drop down.</p>
+     * Return a flag indicating if elements from the model associated with
+     * the profile are also to be used in the drop down.<p>
      *
      * @return  <code>true</code> if elements should be used from the model
      *          associated with the profile, <code>false</code> otherwise.
      */
-
     protected boolean addElementsFromProfileModel() {
 	return _addElementsFromProfileModel;
     }
 
 
     /**
-     * <p>Return the container (PropPanel) in which this combo box is used.</p>
+     * Return the container (PropPanel) in which this combo box is used.<p>
      *
      * @return  The container     
      */
-
     protected UMLUserInterfaceContainer getContainer() {
 	return _container;
     }
 
 
     /**
-     * <p>Return a flag indicating if the drop down should have an empty entry
-     *   (as first element).</p>
+     * Return a flag indicating if the drop down should have an empty
+     * entry (as first element).<p>
      *
      * @return  <code>true</code> if the drop down should have an empty entry,
      *          <code>false</code> otherwise.
      */
-
     protected boolean allowVoid() {
 	return _allowVoid;
     }
 
 
     /**
-     * <p>Return the method of the container, which is used to get the NSUML
-     *   element associated with this comb box.</p>
+     * Return the method of the container, which is used to get the
+     * NSUML element associated with this comb box.<p>
      *
      * @return  The method which will get the NSUML element, or
      *          <code>null</code> if no method is provided.
      */
-
     protected Method getGetMethod() {
 	return _getMethod;
     }
 
 
     /**
-     * <p>Return the method of the container, which is used to set the NSUML
-     *   element associated with this comb box.</p>
+     * Return the method of the container, which is used to set the
+     * NSUML element associated with this comb box.<p>
      *
      * @return  The method which will set the NSUML element, or
      *          <code>null</code> if no method is provided.
      */
-
     protected Method getSetMethod() {
 	return _setMethod;
     }
 
 
     /**
-     * <p>Set the given item as the selected item.</p>
+     * Set the given item as the selected item.<p>
      *
-     * <p>Provided to comply with the {@link ComboBoxModel} interface.</p>
+     * Provided to comply with the {@link ComboBoxModel} interface.<p>
      *
      * @param selection  The object that should be used as the selected item in
      *                   the combo box.
      */
-
     public void setSelectedItem(final java.lang.Object selection) {
         _selectedItem = selection;
     }
 
 
     /**
-     * <p>Get the selected item.</p>
+     * Get the selected item.<p>
      *
-     * <p>Provided to comply with the {@link ComboBoxModel} interface.</p>
+     * Provided to comply with the {@link ComboBoxModel} interface.<p>
      *
      * @return  The object that is currently to be used as the selected item in
      *          the combo box.
      */
-
     public Object getSelectedItem() {
         return _selectedItem;
     }
 
 
     /**
-     * <p>Return the number of elements in the drop down list.</p>
+     * Return the number of elements in the drop down list.<p>
      *
-     * <p>Provided to comply with the {@link ListModel} interface (the parent
-     *   of {@link ComboBoxModel}).</p>
+     * Provided to comply with the {@link ListModel} interface (the parent
+     *   of {@link ComboBoxModel}).<p>
      *
      * @return  The number of elements in the drop down list.
      */
-
     public int getSize() {
         return _set.size();
     }
 
 
     /**
-     * <p>Provide the element at a specific index in the drop down list.</p>
+     * Provide the element at a specific index in the drop down list.<p>
      *
-     * <p>Provided to comply with the {@link ListModel} interface (the parent
-     *   of {@link ComboBoxModel}).</p>
+     * Provided to comply with the {@link ListModel} interface (the
+     * parent of {@link ComboBoxModel}).<p>
      *
      * @param index  The index of the desired element.
      *
      * @return       The element at that index, or <code>null</code> if index
      *               exceeds the number of elements in the set.
      */
-
     public java.lang.Object getElementAt(int index) {
 
         // Loop through the desired number of elements (it might be quicker to
@@ -435,12 +400,12 @@ public class UMLComboBoxModel extends AbstractListModel implements
     ///////////////////////////////////////////////////////////////////////////
 
     /**
-     * <p>A method to run over the current model (or part thereof), collecting
-     *   all elements that meet the criteria of the filter method.</p>
+     * A method to run over the current model (or part thereof), collecting
+     *   all elements that meet the criteria of the filter method.<p>
      *
-     * <p>Find all the elements in the namespace supplied. Then recurse on any
+     * Find all the elements in the namespace supplied. Then recurse on any
      *   of those elements that are themselves namespaces. The result is built
-     *   up in <code>_set</code>.</p>
+     *   up in <code>_set</code>.<p>
      *
      * @param ns         The namespace of the model (or part of the model) we
      *                   are to examine.
@@ -456,7 +421,6 @@ public class UMLComboBoxModel extends AbstractListModel implements
      *                   added to the set if there is already an element with
      *                   the same "short" (i.e. formatted) name.
      */
-
     public void collectElements(Object/*MNamespace*/ ns, Profile profile,
                                 boolean isPhantom) {
 
@@ -523,15 +487,14 @@ public class UMLComboBoxModel extends AbstractListModel implements
 
 
     /**
-     * <p>Use the supplied filter method to identify if the supplied model
-     *   element should be included in the drop down list.</p>
+     * Use the supplied filter method to identify if the supplied
+     * model element should be included in the drop down list.<p>
      *
      * @param element  The model element to test.
      *
      * @return         <code>true</code> if the element should be included in
      *                 the drop down list, <code>false</code> otherwise.
      */
-
     private boolean isAcceptible(Object/*MModelElement*/ element) {
 
         boolean isAcceptible = false;
@@ -549,9 +512,10 @@ public class UMLComboBoxModel extends AbstractListModel implements
             }
         }
         catch (Exception e) {
-            cat.error(e.toString() + ". " +
-                               this.getClass().toString() +
-                               ": isAcceptible() - filter failed.", e);
+            cat.error(e.toString() + ". "
+		      + this.getClass().toString()
+		      + ": isAcceptible() - filter failed.",
+		      e);
         }
         return isAcceptible;
     }
@@ -563,19 +527,18 @@ public class UMLComboBoxModel extends AbstractListModel implements
     ///////////////////////////////////////////////////////////////////////////
 
     /**
-     * <p>Invoked when the target associated with the container is changed.</p>
+     * Invoked when the target associated with the container is changed.<p>
      *
-     * <p>Recompute the membership of the drop down and its selected
-     *   component.</p>
+     * Recompute the membership of the drop down and its selected
+     * component.<p>
      *
-     * <p>Provided to comply with the {@link UMLUserInterfaceComponent}
-     *   interface.</p>
+     * Provided to comply with the {@link UMLUserInterfaceComponent}
+     * interface.<p>
      *
-     * @author  psager@tigris.org  Oct. 13, 2001. Fixed problem with reload or
-     *   2nd project load where stereotype would be set to <code>null</code> on
-     *   first class selected after load.
+     * @author psager@tigris.org Oct. 13, 2001. Fixed problem with
+     * reload or 2nd project load where stereotype would be set to
+     * <code>null</code> on first class selected after load.
      */
-
     public void targetChanged() {
 
         // Give up if we don't have a target that is some sort of model
@@ -595,9 +558,9 @@ public class UMLComboBoxModel extends AbstractListModel implements
 
         if (model == null) {
         	// extra attempt
-            cat.error(this.getClass().toString() + " targetChanged() - " +
-                           "getModel() == null for " + 
-                           target.getClass().toString());
+            cat.error(this.getClass().toString() + " targetChanged() - "
+		      + "getModel() == null for "
+		      + target.getClass().toString());
             return;
         }
 
@@ -703,25 +666,29 @@ public class UMLComboBoxModel extends AbstractListModel implements
                 UMLComboBoxEntry entry = (UMLComboBoxEntry) iter2.next();
                 // 2002-07-13
                 // Jaap Branderhorst
-                // the next if statement doesn't work since the element from the model
-                // equals the currentObj but is not the same object in case of an abstraction
-                // with a stereotype.
-                // this is an error while constructing the abstraction probably.
+                // The next if statement doesn't work since the
+                // element from the model equals the currentObj but is
+                // not the same object in case of an abstraction with
+                // a stereotype.
+                // This is an error while constructing the abstraction
+                // probably.
 
-                if (!(entry.isPhantom()) &&
-		    (entry.getElement(model) == currentObj)) {
+                if (!(entry.isPhantom())
+		        && (entry.getElement(model) == currentObj)) {
                     _selectedItem = entry;
                     // 2002-07-15
                     // Jaap Branderhorst
-                    // probably good idea for performance to break out of the while loop
+                    // Probably good idea for performance to break out
+                    // of the while loop.
                     break;
                 }
             }
         }
         catch (Exception e) {
-            cat.error(e.toString() + ". " +
-                               this.getClass().toString() +
-                               ": targetChanged() - get method failed.", e);
+            cat.error(e.toString() + ". "
+		      + this.getClass().toString()
+		      + ": targetChanged() - get method failed.",
+		      e);
             _selectedItem = null;
         }
 
@@ -734,29 +701,27 @@ public class UMLComboBoxModel extends AbstractListModel implements
 
 
     /**
-     * <p>Called when navigation may have changed.</p>
+     * Called when navigation may have changed.<p>
      *
-     * <p>Null implementation provided here.</p>
+     * Null implementation provided here.<p>
      *
-     * <p>Provided to comply with the {@link UMLUserInterfaceComponent}
-     *   interface.</p>
+     * Provided to comply with the {@link UMLUserInterfaceComponent}
+     * interface.<p>
      */
-
     public void targetReasserted() {
     }
 
 
     /**
-     * <p>Check that an entry is in the set for the drop down, and add it if it
-     *   is not.</p>
+     * Check that an entry is in the set for the drop down, and add it
+     * if it is not.<p>
      *
-     * <p>Used to support the NSUML roleAdded event, where an element is added
-     *   to the namespace.</p>
+     * Used to support the NSUML roleAdded event, where an element is
+     * added to the namespace.<p>
      *
      * @param addedElement  The model element that should be in the set (if it
      *                      has an acceptable type).
      */
-
     public void updateElement(Object/*MModelElement*/ addedElement) {
 
         // Nothing to do if the element is not of the right type.
@@ -781,8 +746,8 @@ public class UMLComboBoxModel extends AbstractListModel implements
 
             if (existingEntry.isPhantom()) {
                 
-                if ((addedName != null) &&
-                    addedName.equals(existingEntry.getShortName())) {
+                if ((addedName != null)
+		    && addedName.equals(existingEntry.getShortName())) {
 
                     existingEntry.setElement(addedElement, false);
                     inSet = true;
@@ -805,15 +770,14 @@ public class UMLComboBoxModel extends AbstractListModel implements
 
 
     /**
-     * <p>Remove an entry if it is currently in the drop down.</p>
+     * Remove an entry if it is currently in the drop down.<p>
      *
-     * <p>Used to support the NSUML roleRemoved event, where an element is
-     *   removed from the namespace.</p>
+     * Used to support the NSUML roleRemoved event, where an element
+     * is removed from the namespace.<p>
      *
      * @param removedElement  The model element that should no longer be in the
      *                        set (if it is currently there).
      */
-
     public void deleteElement(Object/*MModelElement*/ removedElement) {
 
         // Nothing to do if the element is not of the right type.
@@ -847,18 +811,18 @@ public class UMLComboBoxModel extends AbstractListModel implements
 
 
     /**
-     * <p>Invoked if a listened to NSUML element has an entry added to a
-     *   component with multiplicity.</p>
+     * Invoked if a listened to NSUML element has an entry added to a
+     * component with multiplicity.<p>
      *
-     * <p>We are only interested in the "ownedElement" event name, which
-     *   indicates an object has been added to a namespace.</p>
-
-     * <p>Provided for compliance with the {@link MElementListener}
-     *   interface.</p>
+     * We are only interested in the "ownedElement" event name, which
+     * indicates an object has been added to a namespace.<p>
      *
-     * @param p1 The event which triggered this method.
+     * Provided for compliance with the 
+     * {@link ru.novosoft.uml.MElementListener}
+     * interface.<p>
+     *
+     * @param event The event which triggered this method.
      */
-
     public void roleAdded(final MElementEvent event) {
         String eventName = event.getName();
 
@@ -869,18 +833,16 @@ public class UMLComboBoxModel extends AbstractListModel implements
 
 
     /**
-     * <p>Invoked if a listened to NSUML element has an entry removed from a
-     *   component with multiplicity.</p>
+     * Invoked if  a listened  to NSUML element  has an  entry removed
+     * from a component with multiplicity.<p>
      *
-     * <p>We're only interested in the case where the name is "ownedElement",
-     *   indicating an element has been removed from the namespace.</p>
-     *
-     * <p>Provided for compliance with the {@link MElementListener}
-     *   interface.</p>
+     * We're only interested in the case where the name is
+     * "ownedElement", indicating an element has been removed from the
+     * namespace.<p>
      *
      * @param event  The event which triggered this method.
+     * @see ru.novosoft.uml.MElementListener#roleRemoved(MElementEvent)
      */
-
     public void roleRemoved(final MElementEvent event) {
         String eventName = event.getName();
 
@@ -892,48 +854,39 @@ public class UMLComboBoxModel extends AbstractListModel implements
 
 
     /**
-     * <p>Invoked if a listened to NSUML element has been restored (by an NSUML
-     *   internal method), having been removed.</p>
+     * Invoked if a listened to NSUML element has been restored (by an
+     * NSUML internal method), having been removed.<p>
      *
-     * <p>Null implementation in this case.</p>
-     *
-     * <p>Provided for compliance with the {@link MElementListener}
-     *   interface.</p>
+     * Null implementation in this case.<p>
      *
      * @param event  The event which triggered this method.
+     * @see ru.novosoft.uml.MElementListener#recovered(MElementEvent)
      */
-
     public void recovered(final MElementEvent event) {
     }
 
 
     /**
-     * <p>Invoked if a listened to NSUML element has an entry changed in a
-     *   component with multiplicity.</p>
+     * Invoked if a listened to NSUML element has an entry changed in
+     * a component with multiplicity.<p>
      *
-     * <p>Null implementation in this case.</p>
-     *
-     * <p>Provided for compliance with the {@link MElementListener}
-     *   interface.</p>
+     * Null implementation in this case.<p>
      *
      * @param event  The event which triggered this method.
+     * @see ru.novosoft.uml.MElementListener#listRoleItemSet(MElementEvent)
      */
-
     public void listRoleItemSet(final MElementEvent event) {
     }
 
 
     /**
-     * <p>Invoked if a listened to NSUML element is deleted.</p>
+     * Invoked if a listened to NSUML element is deleted.<p>
      *
-     * <p>We must remove it from the set if it is there.</p>
-     *
-     * <p>Provided for compliance with the {@link MElementListener}
-     *   interface.</p>
+     * We must remove it from the set if it is there.<p>
      *
      * @param event  The event which triggered this method.
+     * @see ru.novosoft.uml.MElementListener#removed(MElementEvent)
      */
-
     public void removed(final MElementEvent event) {
 
         // Loop round looking for a non-phantom entry that has the source of
@@ -954,30 +907,28 @@ public class UMLComboBoxModel extends AbstractListModel implements
 
 
     /**
-     * <p>Invoked if a listened to NSUML object has an entry without
-     *   multiplicity set (or an entry with multiplicity completely reset.</p>
+     * Invoked if a listened to NSUML object has an entry without
+     * multiplicity set (or an entry with multiplicity completely
+     * reset.<p>
      *
-     * <p>We are interested in changes to "name" fields, since they may appear
-     *   in our set.</p>
+     * We are interested in changes to "name" fields, since they may
+     * appear in our set.<p>
      *
-     * <p><em>Warning</em>. This only works if setNameEventListener is enabled
-     *   to listen for name changes on NSUML elements other than the
-     *   target.</p>
-     *
-     * <p>Provided for compliance with the {@link MElementListener}
-     *   interface.</p>
+     * <em>Warning</em>. This only works if setNameEventListener is
+     * enabled to listen for name changes on NSUML elements other than
+     * the target.<p>
      *
      * @param event The event which triggered this method.
+     * @see ru.novosoft.uml.MElementListener#propertySet(MElementEvent)
      */
-
     public void propertySet(final MElementEvent event) {
 
         // Reject any events other than "name"
 
         String eventName = event.getName();
 
-        if ((eventName == null) ||
-            (!(eventName.equals("name")))) {
+        if ((eventName == null)
+	    || (!(eventName.equals("name")))) {
             return;
         }
 
@@ -985,8 +936,8 @@ public class UMLComboBoxModel extends AbstractListModel implements
 
         Object source = event.getSource();
 
-        if ((!(ModelFacade.isAModelElement(source))) ||
-             (!(isAcceptible(source)))) {
+        if ((!(ModelFacade.isAModelElement(source)))
+	    || (!(isAcceptible(source)))) {
             return;
         }
 
@@ -1011,17 +962,17 @@ public class UMLComboBoxModel extends AbstractListModel implements
 
 
     /**
-     * <p>Called when an "action" is performed.</p>
+     * Called when an "action" is performed.<p>
      *
-     * <p>Called when a new selected item is chosen from the drop down
-     *   list. We try to set the associated model element accordingly.</p>
+     * Called when a new selected item is chosen from the drop down
+     * list. We try to set the associated model element
+     * accordingly.<p>
      *
-     * <p>Provided to comply with the {@link ActionListener} interface, which
-     *   provides for general listening support.</p>
+     * Provided to comply with the {@link ActionListener} interface,
+     * which provides for general listening support.<p>
      *
      * @param event  The event that triggered us.
      */
-
     public void actionPerformed(ActionEvent event) {
 
         // Only works if we actually have a selected item
@@ -1051,9 +1002,10 @@ public class UMLComboBoxModel extends AbstractListModel implements
         try {
             _setMethod.invoke(_container, args);
         } catch (Exception e) {
-            cat.error(e.toString() + ". " +
-                               this.getClass().toString() +
-                               ": actionPerformed() - set method failed.", e);
+            cat.error(e.toString() + ". "
+		      + this.getClass().toString()
+		      + ": actionPerformed() - set method failed.",
+		      e);
         }
 
         // Having set a property, mark as needing saving. Commented out for

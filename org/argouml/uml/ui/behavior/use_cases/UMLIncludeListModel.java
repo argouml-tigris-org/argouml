@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -21,28 +21,6 @@
 // PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
-
-// File: UMLIncludeListModel.java
-// Classes: UMLIncludeListModel
-// Original Author: not known
-// $$
-
-// 26 Mar 2002: Jeremy Bennett (mail@jeremybennett.com). Tidied up, as part of
-// getting the include stuff to work. add() method tidied up to put the new
-// relationship at the correct place in the list. buildPopup removed, since the
-// parent implementation is fine.
-
-// 3 Apr 2002: Jeremy Bennett (mail@jeremybennett.com). There is a bug in
-// NSUML, where the "include" and "include2" associations of a use case are
-// back to front, i.e "include" is used as the opposite end of "addition" to
-// point to an including use case, rather than an included use case. Fixed
-// within the include relationship, rather than the use case, by reversing the
-// use of access functions for the "base" and "addition" associations.
-
-// 3 May 2002: Jeremy Bennett (mail@jeremybennett.com). Extended to mark the
-// project as needing saving if an include relationship is added, deleted,
-// changed or moved.
-
 
 package org.argouml.uml.ui.behavior.use_cases;
 
@@ -74,65 +52,68 @@ import org.tigris.gef.graph.MutableGraphModel;
 import org.tigris.gef.presentation.Fig;
 
 import ru.novosoft.uml.foundation.core.MModelElement;
+
 /**
- * <p>A list model for the include relationship on use case property
- *   panels.</p>
+ * A list model for the include relationship on use case property
+ * panels.<p>
  *
- * <p>Supports the full menu (Open, Add, Delete, Move Up, Move Down). Provides
- *   its own formatElement routine, to use the name of the base use case (where
- *   the container is a use case) or the extension use case (where the
- *   container is an extension point, rather than name of the extend
- *   relationship itself.</p>
+ * Supports the full menu (Open, Add, Delete, Move Up, Move
+ * Down). Provides its own formatElement routine, to use the name of
+ * the base use case (where the container is a use case) or the
+ * extension use case (where the container is an extension point,
+ * rather than name of the extend relationship itself.<p>
  *
- * <p><em>Note</em>. There is a bug in NSUML, where the "include" and
- *   "include2" associations of a use case are back to front, i.e "include" is
- *   used as the opposite end of "addition" to point to an including use case,
- *   rather than an included use case. Fixed within the include relationship,
- *   rather than the use case, by reversing the use of access functions for the
- *   "base" and "addition" associations in the code.</p>
+ * <em>Note</em>. There is a bug in NSUML, where the "include" and
+ * "include2" associations of a use case are back to front, i.e
+ * "include" is used as the opposite end of "addition" to point to an
+ * including use case, rather than an included use case. Fixed within
+ * the include relationship, rather than the use case, by reversing
+ * the use of access functions for the "base" and "addition"
+ * associations in the code.<p>
  *
  * @deprecated as of ArgoUml 0.13.5 (10-may-2003),
- *             replaced by ?,
- *             this class is part of the 'old'(pre 0.13.*) implementation of proppanels
- *             that used reflection a lot.
+ * TODO: What is this replaced by?
+ * this class is part of the 'old'(pre 0.13.*) implementation of proppanels
+ * that used reflection a lot.
  */
-
 public class UMLIncludeListModel extends UMLModelElementListModel  {
+    /**
+     * @deprecated by Linus Tolke as of 0.15.4. Use your own logger in your
+     * class. This will be removed.
+     */
     protected static Logger cat = Logger.getLogger(UMLIncludeListModel.class);
 
     /**
-     * <p>The default text when there is no addition class for the include
-     *   relationship.</p>
+     * The default text when there is no addition class for the
+     * include relationship.<p>
      */
- 
-    private final static String _nullLabel = "(anon)";
+    private static final String _nullLabel = "(anon)";
     
 
     /**
-     * <p>Create a new list model.<p>
+     * Create a new list model.<p>
      *
-     * <p>Implementation is just an invocation of the parent constructor.</p>
+     * Implementation is just an invocation of the parent constructor.<p>
      *
-     * @param container  The container for this list - the use case property
-     *                   panel.
+     * @param container The container for this list - the use case
+     * property panel.
      *
-     * @param property   The name associated with the NSUML {@link
-     *                   MElementEvent} that we are tracking or
-     *                   <code>null</code> if we track them all. We 
-     *                   probably want to just track the "include" event.
+     * @param property The name associated with the NSUML {@link
+     * ru.novosoft.uml.MElementEvent} that we are tracking or
+     * <code>null</code> if we track them all. We probably want to
+     * just track the "include" event.
      *
-     * @param showNone   True if an empty list is represented by the keyword
-     *                   "none"
+     * @param showNone True if an empty list is represented by the
+     * keyword "none"
      */
-
     public UMLIncludeListModel(UMLUserInterfaceContainer container,
                                String property, boolean showNone) {
         super(container, property, showNone);
     }
     
     /**
-     * <p>Compute the size of the list model. This method must be provided to
-     *   override the abstract method in the parent.</p>
+     * Compute the size of the list model. This method must be provided to
+     *   override the abstract method in the parent.<p>
      *
      * @return the number of elements the list model (0 if there are none).
      */
@@ -149,38 +130,38 @@ public class UMLIncludeListModel extends UMLModelElementListModel  {
     }
     
     /**
-     * <p>Get the element at a given offset in the model This method must be
-     *   provided to override the abstract method in the parent.</p>
+     * Get the element at a given offset in the model This method must
+     * be provided to override the abstract method in the parent.<p>
      *
-     * <p>The implementation makes use of the {@link #elementAtUtil} method,
-     *   which takes care of all unusual cases.</p>
+     * The implementation makes use of the {@link #elementAtUtil}
+     * method, which takes care of all unusual cases.<p>
      *
-     * @param   the index of the desired element.
+     * @param index the index of the desired element.
      *
      * @return  the element at that index if there is one, otherwise
      *          <code>null</code>. a Model Element
      */
-
     protected MModelElement getModelElementAt(int index) {
-
-        return elementAtUtil(getIncludes(), index, (Class)ModelFacade.INCLUDE);
+        return elementAtUtil(getIncludes(),
+			     index,
+			     (Class) ModelFacade.INCLUDE);
     }
             
         
     /**
-     * <p>A private utility to get the list of extends relationships for this
-     *   use case.</p>
+     * A private utility to get the list of extends relationships for
+     * this use case.<p>
      *
-     * <p><em>Note</em>. There is a bug in NSUML, where the "include" and
-     *   "include2" associations of a use case are back to front, i.e "include"
-     *   is used as the opposite end of "addition" to point to an including use
-     *   case, rather than an included use case.  Fixed within the include
-     *   relationship, rather than the use case, by reversing the use of access
-     *   functions for the "base" and "addition" associations in the code.</p>
+     * <em>Note</em>. There is a bug in NSUML, where the "include" and
+     * "include2" associations of a use case are back to front, i.e
+     * "include" is used as the opposite end of "addition" to point to
+     * an including use case, rather than an included use case.  Fixed
+     * within the include relationship, rather than the use case, by
+     * reversing the use of access functions for the "base" and
+     * "addition" associations in the code.<p>
      *
      * @return  the list of includes relationships for this use case.
      */
-
     private Collection getIncludes() {
 
         Collection includes = null;
@@ -197,28 +178,29 @@ public class UMLIncludeListModel extends UMLModelElementListModel  {
     
     
     /**
-     * <p>Format a given model element.</p>
+     * Format a given model element.<p>
      *
-     * <p>If there is no addition use case, use the default text
-     *   ("(anon)"). Otherwise use the parent formatElement on the use case
-     *   attached as addition to the extend relationship , which will
-     *   ultimately invoke the format element method of {@link PropPanel}.</p>
+     * If there is no addition use case, use the default text
+     * ("(anon)"). Otherwise use the parent formatElement on the use
+     * case attached as addition to the extend relationship , which
+     * will ultimately invoke the format element method of {@link
+     * org.argouml.uml.ui.PropPanel}.<p>
      *
-     * <p>In this current implementation, more rigorously checks it is
-     *   formatting an extend relationship.</p>
+     * In this current implementation, more rigorously checks it is
+     * formatting an extend relationship.<p>
      *
-     * <p><em>Note</em>. There is a bug in NSUML, where the "include" and
-     *  "include2" associations of a use case are back to front, i.e "include"
-     *   is used as the opposite end of "addition" to point to an including
-     *   use case, rather than an included use case. Fixed within the include
-     *   relationship, rather than the use case, by reversing the meaning of
-     *   the "base" and "association" associations in the code.</p>
+     * <em>Note</em>. There is a bug in NSUML, where the "include" and
+     * "include2" associations of a use case are back to front, i.e
+     * "include" is used as the opposite end of "addition" to point to
+     * an including use case, rather than an included use case. Fixed
+     * within the include relationship, rather than the use case, by
+     * reversing the meaning of the "base" and "association"
+     * associations in the code.<p>
      *
      * @param element  the model element to format
      *
      * @return an object (typically a string) representing the element.
      */
-
     public Object formatElement(Object/*MModelElement*/ element) {
 
         Object value = _nullLabel;
@@ -236,9 +218,9 @@ public class UMLIncludeListModel extends UMLModelElementListModel  {
         }
         else {
             if (element != null) {
-                cat.warn("UMLIncludeListModel." +
-			 "formatElement(): Can't format " +
-			 element.getClass().toString());
+                cat.warn("UMLIncludeListModel."
+			 + "formatElement(): Can't format "
+			 + element.getClass().toString());
             }
         }
 
@@ -247,22 +229,22 @@ public class UMLIncludeListModel extends UMLModelElementListModel  {
 
 
     /**
-     * <p>Implement the "add" function of the pop up menu.</p>
+     * Implement the "add" function of the pop up menu.<p>
      *
-     * <p>Pops up the UMLAddDialog. The user can include existing usecases to 
+     * Pops up the UMLAddDialog. The user can include existing usecases to 
      * this model's target.
      *
-     * <p><em>Note</em>. There is a bug in NSUML, where the "include" and
-     *   "include2" associations of a use case are back to front, i.e "include"
-     *   is used as the opposite end of "addition" to point to an including use
-     *   case, rather than an included use case.  Fixed within the include
-     *   relationship, rather than the use case, by reversing the use of access
-     *   functions for the "base" and "addition" associations in the code.</p>
+     * <em>Note</em>. There is a bug in NSUML, where the "include" and
+     * "include2" associations of a use case are back to front, i.e
+     * "include" is used as the opposite end of "addition" to point to
+     * an including use case, rather than an included use case.  Fixed
+     * within the include relationship, rather than the use case, by
+     * reversing the use of access functions for the "base" and
+     * "addition" associations in the code.<p>
      *
      * @param index  Offset in the list of the element at which the pop-up was
      *               invoked.
      */
-
     public void add(int index) {
     	Object target = getTarget();
     	if (org.argouml.model.ModelFacade.isAUseCase(target)) {
@@ -271,8 +253,16 @@ public class UMLIncludeListModel extends UMLModelElementListModel  {
 	    Vector selected = new Vector();
 	    choices.addAll(UseCasesHelper.getHelper().getAllUseCases());
 	    choices.remove(usecase);
-	    selected.addAll(UseCasesHelper.getHelper().getIncludedUseCases(usecase));
-	    UMLAddDialog dialog = new UMLAddDialog(choices, selected, Translator.localize("UMLMenu", "dialog.title.add-included-usecases"), true, true);
+	    selected.addAll(UseCasesHelper.getHelper()
+			    .getIncludedUseCases(usecase));
+	    UMLAddDialog dialog =
+		new UMLAddDialog(choices,
+				 selected,
+				 Translator.localize(
+				     "UMLMenu",
+				     "dialog.title.add-included-usecases"),
+				 true,
+				 true);
 	    int returnValue = dialog.showDialog(ProjectBrowser.getInstance());
 	    if (returnValue == JOptionPane.OK_OPTION) {
 		Iterator it = dialog.getSelected().iterator();
@@ -280,16 +270,24 @@ public class UMLIncludeListModel extends UMLModelElementListModel  {
 		    Object includedusecase = /*(MUseCase)*/ it.next();
 		    if (!selected.contains(includedusecase)) {
 			ProjectBrowser pb = ProjectBrowser.getInstance();
-			ArgoDiagram diagram = ProjectManager.getManager().getCurrentProject().getActiveDiagram();
-			Fig figclass = diagram.getLayer().presentationFor(usecase);
-			Fig figeusecase = diagram.getLayer().presentationFor(includedusecase);
+			ArgoDiagram diagram =
+			    ProjectManager.getManager().getCurrentProject()
+			        .getActiveDiagram();
+			Fig figclass =
+			    diagram.getLayer().presentationFor(usecase);
+			Fig figeusecase =
+			    diagram.getLayer().presentationFor(includedusecase);
 			if (figclass != null && figeusecase != null) {
 			    GraphModel gm = diagram.getGraphModel();
 			    if (gm instanceof MutableGraphModel) {
-				((MutableGraphModel) gm).connect(usecase, includedusecase, (Class)ModelFacade.INCLUDE);
+				((MutableGraphModel) gm)
+				    .connect(usecase,
+					     includedusecase,
+					     (Class) ModelFacade.INCLUDE);
 			    }
 			} else {
-			    UseCasesFactory.getFactory().buildInclude(usecase, includedusecase);
+			    UseCasesFactory.getFactory()
+				.buildInclude(usecase, includedusecase);
 			}
 		    }
 		}
@@ -297,7 +295,9 @@ public class UMLIncludeListModel extends UMLModelElementListModel  {
 		while (it.hasNext()) {
 		    Object includedusecase = /*(MUseCase)*/ it.next();
 		    if (!dialog.getSelected().contains(includedusecase)) {
-			Object include = UseCasesHelper.getHelper().getIncludes(usecase, includedusecase);
+			Object include =
+			    UseCasesHelper.getHelper()
+			        .getIncludes(usecase, includedusecase);
 			Object pt = TargetManager.getInstance().getTarget();
 			TargetManager.getInstance().setTarget(include);
 			ActionEvent event = new ActionEvent(this, 1, "delete");
@@ -311,24 +311,25 @@ public class UMLIncludeListModel extends UMLModelElementListModel  {
     }
     
     /**
-     * <p>Implement the "delete" function of the pop up menu. Delete the
-     *   element at the given index.</p>
+     * Implement the "delete" function of the pop up menu. Delete the
+     * element at the given index.<p>
      *
-     * <p>Find the use cases at each end (note that NSUML uses the name
-     *   "include2" for the use case doing the included, since it is unnamed in
-     *   the standard). Delete their references to this include
-     *   relationship. Also remove from the namespace.</p>
+     * Find the use cases at each end (note that NSUML uses the name
+     * "include2" for the use case doing the included, since it is
+     * unnamed in the standard). Delete their references to this
+     * include relationship. Also remove from the namespace.<p>
      *
-     * <p><em>Note</em>. We don't actually need to check the target PropPanel
-     *   is a use case&mdash;given an include relationship we can delete
-     *   it.</p>
+     * <em>Note</em>. We don't actually need to check the target
+     * PropPanel is a use case&mdash;given an include relationship we
+     * can delete it.<p>
      *
-     * <p><em>Note</em>. There is a bug in NSUML, where the "include" and
-     *   "include2" associations of a use case are back to front, i.e "include"
-     *   is used as the opposite end of "addition" to point to an including use
-     *   case, rather than an included use case.  Fixed within the include
-     *   relationship, rather than the use case, by reversing the use of access
-     *   functions for the "base" and "addition" associations in the code.</p>
+     * <em>Note</em>. There is a bug in NSUML, where the "include" and
+     * "include2" associations of a use case are back to front, i.e
+     * "include" is used as the opposite end of "addition" to point to
+     * an including use case, rather than an included use case.  Fixed
+     * within the include relationship, rather than the use case, by
+     * reversing the use of access functions for the "base" and
+     * "addition" associations in the code.<p>
      *
      * @param index  Offset in the list of the element at which the pop-up was
      *               invoked and which is to be deleted.
@@ -338,8 +339,15 @@ public class UMLIncludeListModel extends UMLModelElementListModel  {
     	Object target = getTarget();
     	if (org.argouml.model.ModelFacade.isAUseCase(target)) {
 	    Object usecase = /*(MUseCase)*/ target;
-	    Object includedusecase = /*(MUseCase)*/ UMLModelElementListModel.elementAtUtil(UseCasesHelper.getHelper().getIncludedUseCases(usecase), index, null);
-	    Object include = UseCasesHelper.getHelper().getIncludes(includedusecase, usecase);
+	    Object includedusecase =
+		UMLModelElementListModel
+		    .elementAtUtil((UseCasesHelper.getHelper()
+				    .getIncludedUseCases(usecase)),
+				   index,
+				   null);
+	    Object include =
+		UseCasesHelper.getHelper().getIncludes(includedusecase,
+						       usecase);
 	    Object pt = TargetManager.getInstance().getTarget();
 	    TargetManager.getInstance().setTarget(include);
 	    ActionEvent event = new ActionEvent(this, 1, "delete");
@@ -410,23 +418,23 @@ public class UMLIncludeListModel extends UMLModelElementListModel  {
 
 
     /**
-     * <p>Implement the action that occurs with the "MoveUp" pop up.</p>
+     * Implement the action that occurs with the "MoveUp" pop up.<p>
      *
-     * <p>Move the include relationship at the given index in the list up one
-     *   (unless it is already at the top). Since we use {@link #moveUpUtil}
-     *   there is no need to test for unusual cases.</p>
+     * Move the include relationship at the given index in the list up
+     * one (unless it is already at the top). Since we use {@link
+     * #moveUpUtil} there is no need to test for unusual cases.<p>
      *
-     * <p><em>Note</em>. There is a bug in NSUML, where the "include" and
-     *   "include2" associations of a use case are back to front, i.e "include"
-     *   is used as the opposite end of "addition" to point to an including use
-     *   case, rather than an included use case.  Fixed within the include
-     *   relationship, rather than the use case, by reversing the use of access
-     *   functions for the "base" and "addition" associations in the code.</p>
+     * <em>Note</em>. There is a bug in NSUML, where the "include" and
+     * "include2" associations of a use case are back to front, i.e
+     * "include" is used as the opposite end of "addition" to point to
+     * an including use case, rather than an included use case.  Fixed
+     * within the include relationship, rather than the use case, by
+     * reversing the use of access functions for the "base" and
+     * "addition" associations in the code.<p>
      *
-     * @param index  the index in the list of the include relationship to move
-     *               up.
+     * @param index the index in the list of the include relationship
+     * to move up.
      */
-
     public void moveUp(int index) {
 
         // Only do this if we are a use case
@@ -453,23 +461,24 @@ public class UMLIncludeListModel extends UMLModelElementListModel  {
     
 
     /**
-     * <p>The action that occurs with the "MoveDown" pop up.</p>
+     * The action that occurs with the "MoveDown" pop up.<p>
      *
-     * <p>Move the include relationship at the given index in the list down one
-     *   (unless it is already at the bottom). Since we use {@link #moveUpUtil}
-     *   there is no need to test for unusual cases.</p>
+     * Move the include relationship at the given index in the list
+     * down one (unless it is already at the bottom). Since we use
+     * {@link #moveUpUtil} there is no need to test for unusual
+     * cases.<p>
      *
-     * <p><em>Note</em>. There is a bug in NSUML, where the "include" and
-     *   "include2" associations of a use case are back to front, i.e "include"
-     *   is used as the opposite end of "addition" to point to an including use
-     *   case, rather than an included use case.  Fixed within the include
-     *   relationship, rather than the use case, by reversing the use of access
-     *   functions for the "base" and "addition" associations in the code.</p>
+     * <em>Note</em>. There is a bug in NSUML, where the "include" and
+     * "include2" associations of a use case are back to front, i.e
+     * "include" is used as the opposite end of "addition" to point to
+     * an including use case, rather than an included use case.  Fixed
+     * within the include relationship, rather than the use case, by
+     * reversing the use of access functions for the "base" and
+     * "addition" associations in the code.<p>
      *
      * @param index  the index in the list of the include relationship to move
      *               down.
      */
-
     public void moveDown(int index) {
 
         // Only do this if we are a use case
@@ -481,7 +490,9 @@ public class UMLIncludeListModel extends UMLModelElementListModel  {
         }
 
         Object useCase = /*(MUseCase)*/ target;
-        ModelFacade.setIncludes(useCase, moveDownUtil(ModelFacade.getIncludes(useCase), index));
+        ModelFacade.setIncludes(useCase,
+				moveDownUtil(ModelFacade.getIncludes(useCase),
+					     index));
 
         // Having moved an include relationship, mark as needing saving
 
@@ -494,19 +505,25 @@ public class UMLIncludeListModel extends UMLModelElementListModel  {
     }
     
     /**
-     * @see org.argouml.uml.ui.UMLModelElementListModel#buildPopup(JPopupMenu, int)
+     * @see org.argouml.uml.ui.UMLModelElementListModel#buildPopup(
+     *          JPopupMenu, int)
      */
     public boolean buildPopup(JPopupMenu popup, int index) {
 	UMLUserInterfaceContainer container = getContainer();
-        UMLListMenuItem open = new UMLListMenuItem(container.localize("Open"), this, "open", index);
-        UMLListMenuItem delete = new UMLListMenuItem(container.localize("Delete"), this, "delete", index);
+        UMLListMenuItem open =
+	    new UMLListMenuItem(container.localize("Open"), this, "open",
+				index);
+        UMLListMenuItem delete =
+	    new UMLListMenuItem(container.localize("Delete"), this, "delete",
+				index);
         if (getModelElementSize() <= 0) {
             open.setEnabled(false);
             delete.setEnabled(false);
         }
 
         popup.add(open);
-        UMLListMenuItem add = new UMLListMenuItem(container.localize("Add"), this, "add", index);
+        UMLListMenuItem add =
+	    new UMLListMenuItem(container.localize("Add"), this, "add", index);
         if (_upper >= 0 && getModelElementSize() >= _upper) {
             add.setEnabled(false);
         }

@@ -30,8 +30,10 @@ import java.util.PropertyPermission;
 import java.security.Permission;
 
 import org.apache.log4j.Logger;
+import org.argouml.util.osdep.OsUtil;
 
-/** The Argo custom security manager.
+/**
+ * The Argo custom security manager.
  *
  *  Since Argo is an open-source product, the concept of a
  *  security manager may seem odd.  This class is not intended
@@ -43,7 +45,7 @@ import org.apache.log4j.Logger;
  *
  *  One of the areas this is necessary is to protect from the
  *  {@link java.lang.System#exit(int)} or
- *  {@java.lang.Runtime#exit(int)} calls.
+ *  {@link java.lang.Runtime#exit(int)} calls.
  *
  *  Another is to prevent modules from replacing the awt exception
  *  trapping hook so that we are able to properly catch any
@@ -56,7 +58,14 @@ import org.apache.log4j.Logger;
  */
 public final class ArgoSecurityManager extends SecurityManager
 {
+    /**
+     * @deprecated by Linus Tolke as of 0.15.4. Use your own logger in your
+     * class. This will be removed.
+     */
     protected static Logger cat =
+	Logger.getLogger(ArgoSecurityManager.class);
+
+    private static final Logger LOG =
 	Logger.getLogger(ArgoSecurityManager.class);
 
     /**
@@ -75,7 +84,9 @@ public final class ArgoSecurityManager extends SecurityManager
     private static final ArgoSecurityManager SINGLETON =
 	new ArgoSecurityManager();
 
-    /** Accessor for the instance. */
+    /**
+     * Accessor for the instance.
+     */
     public static final ArgoSecurityManager getInstance() {
         return SINGLETON;
     }
@@ -87,14 +98,14 @@ public final class ArgoSecurityManager extends SecurityManager
     public void checkPermission(Permission perm) {
         // TODO:  
 	// Don't allow write access to <code>sun.awt.exception.handler</code>
-	if (perm.getClass().equals(java.util.PropertyPermission.class)) {
+	if (perm.getClass().equals(PropertyPermission.class)) {
 	    if ("sun.awt.exception.handler".equals(perm.getName())) {
 	        PropertyPermission pp = (PropertyPermission) perm;
-		if ("write".equals(pp.getActions()) &&
-		    (!org.argouml.util.osdep.OsUtil.isMac())) {
+		if ("write".equals(pp.getActions())
+		    && (!OsUtil.isMac())) {
 		    // Don't allow this one to be trapped
 		    // by using ArgoSecurityException.
-		    cat.debug("Violating Permission Name: " + pp.getName());
+		    LOG.debug("Violating Permission Name: " + pp.getName());
 		    throw new SecurityException();
 		}
 	    }
@@ -103,7 +114,7 @@ public final class ArgoSecurityManager extends SecurityManager
 	else if (perm.getClass().equals(java.lang.RuntimePermission.class)) {
 	    RuntimePermission rp = (RuntimePermission) perm;
             // Uncomment for more information about what happens...
-	    cat.debug("RuntimePermission: " + rp.getName() 
+	    LOG.debug("RuntimePermission: " + rp.getName() 
 		      + " - '" + rp.getActions() + "'");
 	    if ("exitVM".equals(rp.getName())) {
 		if (!getInstance().getAllowExit()) {

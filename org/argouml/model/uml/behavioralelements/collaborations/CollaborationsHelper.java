@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2002 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -73,7 +73,8 @@ public class CollaborationsHelper {
 	new CollaborationsHelper();
 
     
-    /** Singleton instance access method.
+    /**
+     * Singleton instance access method.
      */
     public static CollaborationsHelper getHelper() {
         return SINGLETON;
@@ -86,12 +87,13 @@ public class CollaborationsHelper {
     // TODO: The ProjectManager shall not be reference from the model.
     public Collection getAllClassifierRoles() {
 	MNamespace model =
-	    (MModel)ProjectManager.getManager().getCurrentProject().getModel();
+	    (MModel) ProjectManager.getManager().getCurrentProject().getModel();
 	return getAllClassifierRoles(model);
     }
 	
     /**
-     * Returns all classifierroles found in this namespace and in its children
+     * Returns all classifierroles found in this namespace and in its children.
+     *
      * @return Collection
      */
     public Collection getAllClassifierRoles(MNamespace ns) {
@@ -113,7 +115,8 @@ public class CollaborationsHelper {
     /**
      * Returns all associations the bases of the classifierrole has,
      * thereby forming the set of associationroles the classifierrole
-     * can use. UML Spec 1.3 section 2.10.3.3
+     * can use. UML Spec 1.3 section 2.10.3.3.
+     *
      * @param role
      * @return Collection
      */
@@ -130,7 +133,8 @@ public class CollaborationsHelper {
 	
     /**
      * Returns all classifierroles associated via associationroles to some 
-     * classifierrole role
+     * classifierrole role.
+     *
      * @param role
      * @return Collection
      */
@@ -158,13 +162,15 @@ public class CollaborationsHelper {
     }
 	
     /**
-     * Returns the first found associationrole between two classifierroles.
-     * @param from
-     * @param to
+     * Returns the first found associationrole between two
+     * classifierroles.<p>
+     *
+     * @param afrom
+     * @param ato
      * @return MAssociationRole
      */
     public Object/*MAssociationRole*/ getAssocationRole(Object afrom,
-					      Object ato) {
+							Object ato) {
 	if (afrom == null || ato == null) return null;
         MClassifierRole from = (MClassifierRole) afrom;
         MClassifierRole to = (MClassifierRole) ato;
@@ -188,15 +194,16 @@ public class CollaborationsHelper {
     }
 	
     /**
-     * Returns all possible activators for some message mes. The possible
-     * activators are all messages in the same interaction as the given message
-     * that are not part of the predecessors of the message and that are
-     * not equal to the given message.
-     * @param mes
+     * Returns all possible activators for some message mes. The
+     * possible activators are all messages in the same interaction as
+     * the given message that are not part of the predecessors of the
+     * message and that are not equal to the given message.<p>
+     *
+     * @param ames
      * @return Collection
      */
     public Collection getAllPossibleActivators(Object ames) {
-        MMessage mes = (MMessage)ames;
+        MMessage mes = (MMessage) ames;
 	if (mes == null || mes.getInteraction() == null) return new ArrayList();
 	MInteraction inter = mes.getInteraction();                              
 	Collection predecessors = mes.getPredecessors();
@@ -246,9 +253,10 @@ public class CollaborationsHelper {
      * for the given message mes but also for the predecessors of
      * mes. This is done since it can not be the case that a list of
      * messages (defined by the predecessor) has a different
-     * activator.
-     * @param mes
-     * @param activator
+     * activator.<p>
+     *
+     * @param ames
+     * @param anactivator
      */
     public void setActivator(Object ames, Object anactivator) {
         MMessage mes = (MMessage) ames;
@@ -297,12 +305,13 @@ public class CollaborationsHelper {
     
     /**
      * Returns all possible predecessors for some message, taking into account
-     * the wellformednessrules as defined in section 2.10 of the UML spec.
-     * @param message
+     * the wellformednessrules as defined in section 2.10 of the UML spec.<p>
+     *
+     * @param amessage
      * @return Collection
      */
     public Collection getAllPossiblePredecessors(Object amessage) {
-        MMessage message = (MMessage)amessage;
+        MMessage message = (MMessage) amessage;
         if (message == null)
 	    throw new IllegalArgumentException("In getAllPossiblePredecessors: "
 					       + "argument message is null");
@@ -326,22 +335,26 @@ public class CollaborationsHelper {
      * the name of the classifierrole is set to the name of the given base
      * according to the wellformednessrules of section 2.10.3 of the UML 1.3 
      * spec.
-     * @param role
-     * @param base
+     *
+     * @param arole
+     * @param abase
      */
-    public void addBase(Object/*MClassifierRole*/ arole, Object/*MClassifier*/ abase) {
-        MClassifierRole role = (MClassifierRole)arole;
-        MClassifier base = (MClassifier)abase;
+    public void addBase(Object/*MClassifierRole*/ arole,
+			Object/*MClassifier*/ abase) {
+        MClassifierRole role = (MClassifierRole) arole;
+        MClassifier base = (MClassifier) abase;
         if (role == null || base == null)
 	    throw new IllegalArgumentException("In addBase: either the role "
 					       + "or the base is null");
         // wellformednessrule: if the role does not have a name, the role shall
         // be the only one with the particular base
-        if (ModelFacade.getName(role) == null || ModelFacade.getName(role).equals("")) {
+        if (ModelFacade.getName(role) == null
+	    || ModelFacade.getName(role).equals("")) {
+
             Object/*MCollaboration*/ collab = ModelFacade.getNamespace(role);
             Collection roles =
 		ModelManagementHelper.getHelper()
-		.getAllModelElementsOfKind(collab, MClassifierRole.class);
+		    .getAllModelElementsOfKind(collab, MClassifierRole.class);
             Iterator it = roles.iterator();
             while (it.hasNext()) {
                 if (((MClassifierRole) it.next()).getBases().contains(base)) 
@@ -376,7 +389,9 @@ public class CollaborationsHelper {
     }
     
     /**
-     * Sets the bases of the given classifierrole to the given collection bases.
+     * Sets the bases of the given classifierrole to the given
+     * collection bases.<p>
+     *
      * @param role
      * @param bases
      */
@@ -399,8 +414,9 @@ public class CollaborationsHelper {
      * Returns all available features for a given classifierrole as
      * defined in section 2.10.3.3 of the UML 1.3 spec. Does not use
      * the standard getAvailableFeatures method on ClassifierRole
-     * since this is derived information.
-     * @param role
+     * since this is derived information.<p>
+     *
+     * @param arole
      * @return Collection
      */
     public Collection allAvailableFeatures(Object arole) {
@@ -427,11 +443,12 @@ public class CollaborationsHelper {
      * defined in section 2.10.3.3 of the UML 1.3 spec. Does not use
      * the standard getAvailableContents method on ClassifierRole
      * since this is derived information.
-     * @param role
+     *
+     * @param arole
      * @return Collection
      */
     public Collection allAvailableContents(Object/*MClassifierRole*/ arole) {
-        MClassifierRole role = (MClassifierRole)arole;
+        MClassifierRole role = (MClassifierRole) arole;
         if (role == null) return new ArrayList();
         List returnList = new ArrayList();
         Iterator it = role.getParents().iterator();
@@ -451,9 +468,9 @@ public class CollaborationsHelper {
     
     public Collection getAllPossibleBases(Object role) {
         if (role instanceof MClassifierRole) {
-            return getAllPossibleBases((MClassifierRole)role);
+            return getAllPossibleBases((MClassifierRole) role);
         } else if (role instanceof MAssociationRole) {
-            return getAllPossibleBases((MAssociationRole)role);
+            return getAllPossibleBases((MAssociationRole) role);
         } else {
             throw new IllegalArgumentException("Illegal type " + role);
         }
@@ -462,7 +479,8 @@ public class CollaborationsHelper {
     /**
      * Returns all possible bases for some associationrole taking into
      * account the wellformednessrules as defined in section 2.10.3 of
-     * the UML 1.3 spec.
+     * the UML 1.3 spec.<p>
+     *
      * @param role
      * @return Collection
      */
@@ -528,7 +546,8 @@ public class CollaborationsHelper {
     /**
      * Returns all possible bases for some classifierrole taking into
      * account the wellformednessrules as defined in section 2.10.3 of
-     * the UML 1.3 spec.
+     * the UML 1.3 spec.<p>
+     *
      * @param role
      * @return Collection
      */
@@ -539,11 +558,13 @@ public class CollaborationsHelper {
         Object/*MNamespace*/ ns = ModelFacade.getNamespace(coll);
         Collection returnList =
 	    ModelManagementHelper.getHelper()
-	    .getAllModelElementsOfKind(ns, MClassifier.class);
+	        .getAllModelElementsOfKind(ns, MClassifier.class);
         returnList.removeAll(ModelManagementHelper.getHelper()
 			     .getAllModelElementsOfKind(ns,
 							MClassifierRole.class));
-        if (ModelFacade.getName(role) == null || ModelFacade.getName(role).equals("")) {
+        if (ModelFacade.getName(role) == null
+	    || ModelFacade.getName(role).equals("")) {
+
             List listToRemove = new ArrayList();
             Iterator it = returnList.iterator();
             while (it.hasNext()) {
@@ -559,6 +580,7 @@ public class CollaborationsHelper {
                 }
             }
             returnList.removeAll(listToRemove);
+
         }                        
         return returnList;
     }
@@ -566,12 +588,13 @@ public class CollaborationsHelper {
     /**
      * Sets the base of some associationrole, including the attached
      * assocationendroles.  Checks for wellformedness first.
-     * @param role
-     * @param base
+     *
+     * @param arole
+     * @param abase
      */
     public void setBase(Object arole, Object abase) {
-        MAssociationRole role = (MAssociationRole)arole;
-        MAssociation base = (MAssociation)abase;
+        MAssociationRole role = (MAssociationRole) arole;
+        MAssociation base = (MAssociation) abase;
         if (role == null) throw  new IllegalArgumentException("role is null");
         if (base != null && !getAllPossibleBases(role).contains(base)) { 
             throw new IllegalArgumentException("base is not allowed for "
@@ -609,17 +632,15 @@ public class CollaborationsHelper {
     /**
      * Returns true if a collaboration may be added to the given context. To
      * decouple ArgoUML as much as possible from the NSUML model, the parameter
-     * of the method is of type Object.
+     * of the method is of type Object.<p>
+     *
      * @param context
      * @return boolean
      */
     public boolean isAddingCollaborationAllowed(Object context) {
-        if (context instanceof MCollaboration ||
-            context instanceof MClassifier ||
-            context instanceof MModel)
-            return true;
-        else
-            return false;
+	return (context instanceof MCollaboration
+		|| context instanceof MClassifier
+		|| context instanceof MModel);
     }
 }
 

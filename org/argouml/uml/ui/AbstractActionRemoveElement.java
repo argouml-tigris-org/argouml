@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2002 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -27,17 +27,19 @@ package org.argouml.uml.ui;
 import org.argouml.i18n.Translator;
 
 /**
- * Base class for remove actions. Remove actions can remove an element from the 
- * model. This can either be a total remove ('erase from model') or just a
- * remove from a list of bases as in the case of classifierrole bases.
+ * Base class for remove actions. Remove actions can remove an element
+ * from the model. This can either be a total remove ('erase from
+ * model') or just a remove from a list of bases as in the case of
+ * classifierrole bases.<p>
+ *
  * @author jaap.branderhorst@xs4all.nl	
  * @since Jan 25, 2003
  */
 public class AbstractActionRemoveElement extends UMLChangeAction {
     
     /**
-     * The object that owns the object that must be removed (the object that is 
-     * the target of the projectbrowser in most cases).
+     * The object that owns the object that must be removed (the
+     * object that is the target of the projectbrowser in most cases).
      */
     private Object _target;
     
@@ -45,7 +47,6 @@ public class AbstractActionRemoveElement extends UMLChangeAction {
     
     /**
      * Constructor for AbstractActionRemoveElement.
-     * @param s
      */
     protected AbstractActionRemoveElement() {
         this(Translator.localize("Delete From Model"));
@@ -57,6 +58,7 @@ public class AbstractActionRemoveElement extends UMLChangeAction {
 
      /**
      * Returns the target.
+     *
      * @return MModelElement
      */
     public Object getTarget() {
@@ -65,6 +67,7 @@ public class AbstractActionRemoveElement extends UMLChangeAction {
 
     /**
      * Sets the target.
+     *
      * @param target The target to set
      */
     public void setTarget(Object target) {
@@ -73,6 +76,7 @@ public class AbstractActionRemoveElement extends UMLChangeAction {
     
     /**
      * Returns the objectToRemove.
+     *
      * @return Object
      */
     public Object getObjectToRemove() {
@@ -81,6 +85,7 @@ public class AbstractActionRemoveElement extends UMLChangeAction {
 
     /**
      * Sets the objectToRemove.
+     *
      * @param objectToRemove The objectToRemove to set
      */
     public void setObjectToRemove(Object objectToRemove) {

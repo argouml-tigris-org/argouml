@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -22,8 +22,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-//$Id$
-
 package org.argouml.uml.reveng.java;
 
 import org.apache.log4j.Logger;
@@ -38,19 +36,16 @@ import java.io.*;
  * This is the main class for Java reverse engineering. It's based
  * on the Antlr Java example.
  *
- * $Revision$
- * $Date$
- *
  * @author Andreas Rueckert <a_rueckert@gmx.net>
  */
 public class JavaImport extends FileImportSupport {
 
-	/** logger */
-	private static Logger cat = Logger.getLogger(JavaImport.class);
+    /** logger */
+    private static Logger cat = Logger.getLogger(JavaImport.class);
+
     /**
      * This method parses 1 Java file.
      *
-     * @param f The input file for the parser.
      * @exception Exception Parser exception.
      */
     public void parseFile( Project p, Object o, DiagramInterface diagram,
@@ -82,11 +77,14 @@ public class JavaImport extends FileImportSupport {
 
             modeller.setAttribute("level", _import.getAttribute("level"));
             
-            try{
-	    // start parsing at the compilationUnit rule
-	    parser.compilationUnit(modeller, lexer);
-            }catch(Exception e){
-                cat.error(e.getClass().getName()+" Exception in file: "+f.getCanonicalPath()+" "+f.getName());
+            try {
+		// start parsing at the compilationUnit rule
+		parser.compilationUnit(modeller, lexer);
+            } catch (Exception e) {
+                cat.error(e.getClass().getName()
+			  + " Exception in file: "
+			  + f.getCanonicalPath() + " "
+			  + f.getName());
                 throw e;
             }
 	}

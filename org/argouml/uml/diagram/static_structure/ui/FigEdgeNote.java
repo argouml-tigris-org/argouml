@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2001 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -22,13 +22,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-
-
-// File: FigEdgeNote.java
-// Classes: FigEdgeNote
-// Original Author: Andreas Rueckert <a_rueckert@gmx.net>
-// $Id$
-
 package org.argouml.uml.diagram.static_structure.ui;
 
 import java.awt.event.KeyListener;
@@ -48,7 +41,9 @@ import org.tigris.gef.presentation.FigPoly;
 
 /** 
  * Class to display a UML note connection to a
- * annotated model element.
+ * annotated model element.<p>
+ *
+ * @author Andreas Rueckert <a_rueckert@gmx.net>
  */
 public class FigEdgeNote
     extends FigEdgeModelElement
@@ -76,9 +71,10 @@ public class FigEdgeNote
     }
     
     /**
-     * Constructs a new figedgenote from some object to another object. The
-     * objects must have a representation on the given layer.
-     * @param lay
+     * Constructs a new figedgenote from some object to another
+     * object. The objects must have a representation on the given
+     * layer.<p>
+     *
      * @param fromNode
      * @param toNode
      */
@@ -86,7 +82,7 @@ public class FigEdgeNote
         this();
         Layer lay =
 	    ProjectManager.getManager().getCurrentProject()
-	    .getActiveDiagram().getLayer();
+	        .getActiveDiagram().getLayer();
         setLayer(lay);
         Fig destFig = lay.presentationFor(toNode);
         Fig sourceFig = lay.presentationFor(fromNode);

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2002-2003 The Regents of the University of California. All
+// Copyright (c) 2002-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -58,7 +58,6 @@ public abstract class UMLCheckBox2
     /**
      * Constructor for UMLCheckBox2.
      * @param text
-     * @param selected
      */
     public UMLCheckBox2(String text, Action a, String propertySetName) {
         super(text);
@@ -72,7 +71,8 @@ public abstract class UMLCheckBox2
     }
 
     /**
-     * @see ru.novosoft.uml.MElementListener#propertySet(ru.novosoft.uml.MElementEvent)
+     * @see ru.novosoft.uml.MElementListener#propertySet(
+     *          ru.novosoft.uml.MElementEvent)
      */
     public void propertySet(MElementEvent e) {
         if (e.getName().equals(_propertySetName))
@@ -80,39 +80,45 @@ public abstract class UMLCheckBox2
     }
 
     /**
-     * @see ru.novosoft.uml.MElementListener#roleAdded(ru.novosoft.uml.MElementEvent)
+     * @see ru.novosoft.uml.MElementListener#roleAdded(
+     *          ru.novosoft.uml.MElementEvent)
      */
     public void roleAdded(MElementEvent e) {
     }
 
     /**
-     * @see ru.novosoft.uml.MElementListener#roleRemoved(ru.novosoft.uml.MElementEvent)
+     * @see ru.novosoft.uml.MElementListener#roleRemoved(
+     *          ru.novosoft.uml.MElementEvent)
      */
     public void roleRemoved(MElementEvent e) {
     }
 
     /**
-     * @see ru.novosoft.uml.MElementListener#listRoleItemSet(ru.novosoft.uml.MElementEvent)
+     * @see ru.novosoft.uml.MElementListener#listRoleItemSet(
+     *          ru.novosoft.uml.MElementEvent)
      */
     public void listRoleItemSet(MElementEvent e) {
     }
 
     /**
-     * @see ru.novosoft.uml.MElementListener#removed(ru.novosoft.uml.MElementEvent)
+     * @see ru.novosoft.uml.MElementListener#removed(
+     *          ru.novosoft.uml.MElementEvent)
      */
     public void removed(MElementEvent e) {
     }
 
     /**
-     * @see ru.novosoft.uml.MElementListener#recovered(ru.novosoft.uml.MElementEvent)
+     * @see ru.novosoft.uml.MElementListener#recovered(
+     *          ru.novosoft.uml.MElementEvent)
      */
     public void recovered(MElementEvent e) {
     }
 
     /**
-     * Returns the target. The target is directly asked from the _target attribute
-     * and not from the _container attribute to make the move to a new targeting
-     * system as easy as possible.
+     * Returns the target. The target is directly asked from the
+     * _target attribute and not from the _container attribute to make
+     * the move to a new targeting system as easy as possible.
+     *
      * @return Object
      */
     public Object getTarget() {
@@ -127,27 +133,33 @@ public abstract class UMLCheckBox2
     public void setTarget(Object target) {
         target = target instanceof Fig ? ((Fig) target).getOwner() : target;
         if (ModelFacade.isABase(_target)) {
-            UmlModelEventPump.getPump().removeModelEventListener(this, _target, _propertySetName);
+            UmlModelEventPump.getPump()
+		.removeModelEventListener(this, _target, _propertySetName);
         }
        
         if (ModelFacade.isABase(target)) {
             _target = target;
-	    // UmlModelEventPump.getPump().removeModelEventListener(this, (MBase)_target, _propertySetName);
-	    UmlModelEventPump.getPump().addModelEventListener(this, _target, _propertySetName);
+	    // UmlModelEventPump.getPump()
+	    // .removeModelEventListener(this, (MBase)_target,
+	    // _propertySetName);
+	    UmlModelEventPump.getPump()
+		.addModelEventListener(this, _target, _propertySetName);
             buildModel();
         }
             
     }
     
     /**
-     * Builds the model. That is: it sets the checkbox to true or false. The name of this
-     * method is choosen to be compliant with for example UMLModelElementListModel2
+     * Builds the model. That is: it sets the checkbox to true or
+     * false. The name of this method is choosen to be compliant with
+     * for example UMLModelElementListModel2.
      */
-    abstract public void buildModel();
+    public abstract void buildModel();
        
 
     /**
-     * @see org.argouml.uml.ui.TargetChangedListener#targetChanged(java.lang.Object)
+     * TODO: Is this used? I cannot find the reference to
+     * org.argouml.uml.ui.TargetChangedListener#targetChanged(Object)
      */
     public void targetChanged(Object newTarget) {
         if (_target != newTarget)
@@ -155,7 +167,8 @@ public abstract class UMLCheckBox2
     }
 
     /**
-     * @see org.argouml.uml.ui.TargetChangedListener#targetReasserted(java.lang.Object)
+     * TODO: Is this used? I cannot find the reference to
+     * org.argouml.uml.ui.TargetChangedListener#targetReasserted(Object)
      */
     public void targetReasserted(Object newTarget) {
         if (newTarget != _target)
@@ -163,20 +176,20 @@ public abstract class UMLCheckBox2
     }
 
     /**
-     * @see org.argouml.ui.targetmanager.TargetListener#targetAdded(org.argouml.ui.targetmanager.TargetEvent)
+     * @see TargetListener#targetAdded(TargetEvent)
      */
     public void targetAdded(TargetEvent e) {
     }
 
     /**
-     * @see org.argouml.ui.targetmanager.TargetListener#targetRemoved(org.argouml.ui.targetmanager.TargetEvent)
+     * @see TargetListener#targetRemoved(TargetEvent)
      */
     public void targetRemoved(TargetEvent e) {
         setTarget(e.getNewTarget());
     }
 
-    /* (non-Javadoc)
-     * @see org.argouml.ui.targetmanager.TargetListener#targetSet(org.argouml.ui.targetmanager.TargetEvent)
+    /**
+     * @see TargetListener#targetSet(TargetEvent)
      */
     public void targetSet(TargetEvent e) {
         setTarget(e.getNewTarget());

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2003 The Regents of the University of California. All
+// Copyright (c) 2003-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -68,8 +68,6 @@ public class Horizontal extends Orientation {
     /**
      * Get an instance of a <code>Horizontal</code> object.
      *
-     * @param orientation value representing the type of
-     * orientation required, HORIZONTAL or VERTICAL.
      * @return An instance of <code>Orientation</code>.
      */
     public static Orientation getInstance() {
@@ -172,9 +170,9 @@ public class Horizontal extends Orientation {
     }
 
     /**
-     * Get the offset of a <code>Component</code>.
+     * Get the offset of a <code>Component</code>.<p>
      *
-     * @param comp The <code>Component</code> of which to
+     * @param point The <code>Component</code> of which to
      * determine the offset.
      * @return The position of the <code>Component</code>.
      */

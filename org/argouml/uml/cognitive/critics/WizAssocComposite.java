@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -22,14 +22,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// File: WizAssocComposite.java
-// Classes: WizAssocComposite
-// Original Author: jrobbins@ics.uci.edu
-// $Id$
-
-// 12 Mar 2002: Jeremy Bennett (mail@jeremybennett.com). Code corrected and
-// tidied up as part of fix to issue 619.
-
 package org.argouml.uml.cognitive.critics;
 
 import java.util.Iterator;
@@ -41,30 +33,34 @@ import org.argouml.cognitive.ui.WizStepChoice;
 import org.argouml.kernel.Wizard;
 import org.argouml.model.ModelFacade;
 import org.tigris.gef.util.VectorSet;
+
 /**
- * <p>A non-modal wizard to assist the user in changing aggregation of an
- *   association.</p>
+ * A non-modal wizard to assist the user in changing aggregation of an
+ * association.<p>
  *
- * <p>Earlier version always imposed composite aggregation. This version allows
- *   the user to choose.</p>
+ * Earlier version always imposed composite aggregation. This version
+ * allows the user to choose.<p>
  *
- * <p><em>Note</em>. This only applies to binary associations. A separate
- *   wizard is needed for 3-way (or more) associations.</p>
+ * <em>Note</em>. This only applies to binary associations. A separate
+ * wizard is needed for 3-way (or more) associations.<p>
  *
- * @see <a
- * href="http://argouml.tigris.org/documentation/snapshots/manual/argouml.html/#s2.ref.critics_multiple_agg">ArgoUML
- * User Manual: Two Aggregate ends (roles) in binary Association</a>
+ * @see <a href="http://argouml.tigris.org/documentation/printablehtml/manual/argouml.html/#s2.ref.critics_multiple_agg">
+ * ArgoUML User Manual: Two Aggregate ends (roles) in binary Association
+ * </a>
+ * @author jrobbins@ics.uci.edu
  */
-
-
 public class WizAssocComposite extends Wizard {
+    /**
+     * @deprecated by Linus Tolke as of 0.15.4. Use your own logger in your
+     * class. This will be removed.
+     */
     protected static Logger cat =
 	Logger.getLogger(WizAssocComposite.class);
     
 
     /**
-     * <p>The initial instructions on the Step 1 screen. May be set to a
-     * different string through the {@link #setInstructions} method.</p>
+     * The initial instructions on the Step 1 screen. May be set to a
+     * different string through the {@link #setInstructions} method.<p>
      */
 
     private String _instructions =
@@ -72,61 +68,54 @@ public class WizAssocComposite extends Wizard {
 
 
     /**
-     * <p>Contains the {@link WizStepChoice} that is used to get the user's
-     * desired options. Not created until we get to that step.</p>
+     * Contains the {@link WizStepChoice} that is used to get the user's
+     * desired options. Not created until we get to that step.<p>
      */
-
     private WizStepChoice _step1Choice = null;
 
 
     /**
-     * <p>The {@link ru.novosoft.uml.foundation.core.MAssociation
-     *   MAssociation}{@link WizStepChoice} that triggered the critic. Null
-     *   until set when it is first needed.</p>
+     * The {@link ru.novosoft.uml.foundation.core.MAssociation
+     * MAssociation} {@link WizStepChoice} that triggered the
+     * critic. Null until set when it is first needed.<p>
      */
-
     private Object _triggerAsc = null;
 
 
     /**
-     * <p>Constructor for the wizard. Currently does nothing.</p>
-     *
-     *  @return  Nothing, since this is a constructor
+     * Constructor for the wizard. Currently does nothing.<p>
      */
-
     public WizAssocComposite() { }
 
 
     /**
-     * <p>Returns the number of steps in this wizard.</p>
+     * Returns the number of steps in this wizard.<p>
      *
      * @return  The number of steps (excluding the initial explanation) in this
      *          wizard (1).
      *
      * @see Wizard
      */
-
     public int getNumSteps() { return 1; }
 
 
     /**
-     * <p>Tries to identify the 
-     *   {@link ru.novosoft.uml.foundation.core.MAssociation MAssociation} that
-     *   triggered the critic.</p> 
+     * Tries to identify the {@link
+     * ru.novosoft.uml.foundation.core.MAssociation MAssociation} that
+     * triggered the critic.<p>
      *
-     * <p>The first time it is called, it will initialise the trigger from the
-     *   ToDoItem. If there, it is assumed to be the first trigger of the
-     *   ToDoItem and to be an association. If found, the value is stored in
-     *   the private field {@link #_triggerAsc}.</p>
+     * The first time it is called, it will initialise the trigger
+     * from the ToDoItem. If there, it is assumed to be the first
+     * trigger of the ToDoItem and to be an association. If found, the
+     * value is stored in the private field {@link #_triggerAsc}.<p>
      *
-     * <p>On all subsequent calls, if a non-null value is found in {@link
-     *   #_triggerAsc} that is returned.</p>
+     * On all subsequent calls, if a non-null value is found in {@link
+     * #_triggerAsc} that is returned.<p>
      *
      * @return  the {@link ru.novosoft.uml.foundation.core.MAssociation
      *          MAssociation} that triggered the critic, or <code>null</code>
      *          if there was none.
      */
-
     private Object _getTriggerAsc() {
 
         // If we don't have it, find the trigger. If this fails it will keep
@@ -145,21 +134,21 @@ public class WizAssocComposite extends Wizard {
 
 
     /**
-     * <p>Returns a vector of options to be used in creating a {@link
-     *   WizStepChoice} that will exercise the options.</p>
+     * Returns a vector of options to be used in creating a {@link
+     * WizStepChoice} that will exercise the options.<p>
      *
-     * <p>We provide five options, shared aggregation in each direction,
-     *   composite aggregation in each direction and no aggregation at all.</p>
+     * We provide five options, shared aggregation in each direction,
+     * composite aggregation in each direction and no aggregation at
+     * all.<p>
      *
-     * <p>It is possible that a very malicious user could delete the triggering
-     *   association just before we get to this point. For now we don't bother
-     *   to trap this. It will raise an exception, and then everything will
-     *   carry on happily.</p>
+     * It is possible that a very malicious user could delete the
+     * triggering association just before we get to this point. For
+     * now we don't bother to trap this. It will raise an exception,
+     * and then everything will carry on happily.<p>
      *
      * @return  A {@link Vector} of the options or <code>null</code> if the
      *          association that triggered the critic is no longer there.
      */
-
     private Vector _buildOptions() {
 
         // The association that triggered the critic. Its just possible the
@@ -219,23 +208,23 @@ public class WizAssocComposite extends Wizard {
     }
 
     /**
-     * <p>Set the initial instruction string for the choice. May be called by
-     *   the creator of the wizard to override the default.</p>
+     * Set the initial instruction string for the choice. May be
+     * called by the creator of the wizard to override the default.<p>
      */
-
     public void setInstructions(String s) { _instructions = s; }
 
 
     /**
-     * <p>Create a {@link JPanel} for the given step.</p>
+     * Create a {@link JPanel} for the given step.<p>
      *
-     * <p>We use a {@link WizStepChoice} to handle the choice selection for the
-     *   user. We only create the panel once, saving it in a private field
-     *   (<code>_step1Choice</code>) for subsequent use.</p>
+     * We use a {@link WizStepChoice} to handle the choice selection
+     * for the user. We only create the panel once, saving it in a
+     * private field (<code>_step1Choice</code>) for subsequent
+     * use.<p>
      *
-     * <p><em>Note</em>. If the association has been deleted, then we may not
-     *   be able to create a vector of options. Under these circumstances we
-     *   also return null.</p>
+     * <em>Note</em>. If the association has been deleted, then we may
+     * not be able to create a vector of options. Under these
+     * circumstances we also return null.<p>
      *
      * @param  newStep  The index of the step for which a panel is needed.
      *
@@ -244,7 +233,6 @@ public class WizAssocComposite extends Wizard {
      *
      * @see Wizard
      */
-
     public JPanel makePanel(int newStep) {
 
         switch (newStep) {
@@ -274,26 +262,26 @@ public class WizAssocComposite extends Wizard {
 
 
     /**
-     * <p>Take action at the completion of a step.</p>
+     * Take action at the completion of a step.<p>
      *
-     * <p>The guideline for ArgoUML non-modal wizards is to act immediately,
-     *   not wait for the finish. This method may also be invoked when finish
-     *   is triggered for any steps whose panels didn't get created.</p>
+     * The guideline for ArgoUML non-modal wizards is to act
+     * immediately, not wait for the finish. This method may also be
+     * invoked when finish is triggered for any steps whose panels
+     * didn't get created.<p>
      *
-     * <p>The observation is that this seems to be trigged when there is any
-     *   change on the panel (e.g choosing an option), not just when "next" is
-     *   pressed. Coded accordingly</p>
+     * The observation is that this seems to be trigged when there is
+     * any change on the panel (e.g choosing an option), not just when
+     * "next" is pressed. Coded accordingly<p>
      *
-     * <p>We allow for the association that caused the problem having by now
-     *   been deleted, and hence an exception may be raised. We catch this
-     *   politely.</p>
+     * We allow for the association that caused the problem having by
+     * now been deleted, and hence an exception may be raised. We
+     * catch this politely.<p>
      *
      * @param  oldStep  The index of the step just completed (0 for the first
      *                  information panel)
      *
      * @see Wizard
      */
-
     public void doAction(int oldStep) {
 
         switch (oldStep) {
@@ -311,8 +299,8 @@ public class WizAssocComposite extends Wizard {
             }
 
             if (choice == -1) {
-                cat.warn("WizAssocComposite: nothing selected, " +
-                                   "should not get here");
+                cat.warn("WizAssocComposite: nothing selected, "
+			 + "should not get here");
                 return;
             }
 
@@ -324,7 +312,8 @@ public class WizAssocComposite extends Wizard {
 
                 // Set the appropriate aggregation on each end
 
-                Iterator iter = ModelFacade.getConnections(_getTriggerAsc()).iterator();
+                Iterator iter =
+		    ModelFacade.getConnections(_getTriggerAsc()).iterator();
 
                 Object ae0 = /*(MAssociationEnd)*/ iter.next();
                 Object ae1 = /*(MAssociationEnd)*/ iter.next();
@@ -335,38 +324,58 @@ public class WizAssocComposite extends Wizard {
 
                     // Start is a composite aggregation of end
 
-                    ModelFacade.setAggregation(ae0, ModelFacade.COMPOSITE_AGGREGATIONKIND);
-                    ModelFacade.setAggregation(ae1, ModelFacade.NONE_AGGREGATIONKIND);
+                    ModelFacade.setAggregation(
+			    ae0,
+			    ModelFacade.COMPOSITE_AGGREGATIONKIND);
+                    ModelFacade.setAggregation(
+			    ae1,
+			    ModelFacade.NONE_AGGREGATIONKIND);
                     break;
 
                 case 1:
 
                     // Start is a shared aggregation of end
 
-                    ModelFacade.setAggregation(ae0, ModelFacade.AGGREGATE_AGGREGATIONKIND);
-                    ModelFacade.setAggregation(ae1, ModelFacade.NONE_AGGREGATIONKIND);
+                    ModelFacade.setAggregation(
+			    ae0,
+			    ModelFacade.AGGREGATE_AGGREGATIONKIND);
+                    ModelFacade.setAggregation(
+			    ae1,
+			    ModelFacade.NONE_AGGREGATIONKIND);
                     break;
 
                 case 2:
 
                     // End is a composite aggregation of start
 
-                    ModelFacade.setAggregation(ae0, ModelFacade.NONE_AGGREGATIONKIND);
-                    ModelFacade.setAggregation(ae1, ModelFacade.COMPOSITE_AGGREGATIONKIND);
+                    ModelFacade.setAggregation(
+			    ae0,
+			    ModelFacade.NONE_AGGREGATIONKIND);
+                    ModelFacade.setAggregation(
+			    ae1,
+			    ModelFacade.COMPOSITE_AGGREGATIONKIND);
                     break;
 
                 case 3:
 
                     // End is a shared aggregation of start
-                    ModelFacade.setAggregation(ae0, ModelFacade.NONE_AGGREGATIONKIND);
-                    ModelFacade.setAggregation(ae1, ModelFacade.AGGREGATE_AGGREGATIONKIND);
+                    ModelFacade.setAggregation(
+			    ae0,
+			    ModelFacade.NONE_AGGREGATIONKIND);
+                    ModelFacade.setAggregation(
+			    ae1,
+			    ModelFacade.AGGREGATE_AGGREGATIONKIND);
                     break;
 
                 case 4:
 
                     // No aggregation
-                    ModelFacade.setAggregation(ae0, ModelFacade.NONE_AGGREGATIONKIND);
-                    ModelFacade.setAggregation(ae1, ModelFacade.NONE_AGGREGATIONKIND);
+                    ModelFacade.setAggregation(
+			    ae0,
+			    ModelFacade.NONE_AGGREGATIONKIND);
+                    ModelFacade.setAggregation(
+			    ae1,
+			    ModelFacade.NONE_AGGREGATIONKIND);
                     break;
                 }
             }
@@ -374,20 +383,20 @@ public class WizAssocComposite extends Wizard {
 
                 // Someone took our association away.
 
-                cat.error("WizAssocComposite: could not set " +
-                                   "aggregation.", pve); 
+                cat.error("WizAssocComposite: could not set "
+			  + "aggregation.", pve); 
             }
         }
     }
 
     /**
-     * <p>Determine if we have sufficient information to finish.</p>
+     * Determine if we have sufficient information to finish.<p>
      *
-     * <p>We can't finish if our parent {@link Wizard} can't finish.</p>
+     * We can't finish if our parent {@link Wizard} can't finish.<p>
      *
-     * <p>We can finish if we're on step 0.</p>
+     * We can finish if we're on step 0.<p>
      *
-     * <p>We can finish if we're on step 1 and have made a choice.</p>
+     * We can finish if we're on step 1 and have made a choice.<p>
      *
      * @return  <code>true</code> if we can finish, otherwise
      *          <code>false</code>.
@@ -411,9 +420,9 @@ public class WizAssocComposite extends Wizard {
 
         // Can finish if we're on step1 and have actually made a choice
 
-        if ((_step == 1) && 
-            (_step1Choice != null) &&
-            (_step1Choice.getSelectedIndex() != -1)) {
+        if ((_step == 1)
+	    && (_step1Choice != null)
+	    && (_step1Choice.getSelectedIndex() != -1)) {
             return true;
         }
 
