@@ -45,7 +45,7 @@ public class UMLClassifierRoleAvailableContentsListModel
         if (e.getName().equals("base") && e.getSource() == getTarget()) {
             MClassifier clazz = (MClassifier)getChangedElement(e);
             addAll(clazz.getOwnedElements());
-            UmlModelEventPump.getPump().removeModelEventListener(this, clazz, "ownedElement");
+            // UmlModelEventPump.getPump().removeModelEventListener(this, clazz, "ownedElement");
             UmlModelEventPump.getPump().addModelEventListener(this, clazz, "ownedElement");
         } else
         if (e.getName().equals("ownedElement") && ((MClassifierRole)getTarget()).getBases().contains(e.getSource())) {

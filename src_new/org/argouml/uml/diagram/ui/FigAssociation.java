@@ -184,10 +184,10 @@ public class FigAssociation extends FigEdgeModelElement {
 	MAssociation newAsc = (MAssociation)own;
 	for (int i = 0; i < newAsc.getConnections().size(); i++) {
             MAssociationEnd end = ((MAssociationEnd)((Object[]) newAsc.getConnections().toArray())[i]);
-            UmlModelEventPump.getPump().removeModelEventListener(this, end);
+            // UmlModelEventPump.getPump().removeModelEventListener(this, end);
             UmlModelEventPump.getPump().addModelEventListener(this, end);
         }
-        UmlModelEventPump.getPump().removeModelEventListener(this, newAsc);
+        // UmlModelEventPump.getPump().removeModelEventListener(this, newAsc);
         UmlModelEventPump.getPump().addModelEventListener(this, newAsc);
         MAssociationEnd ae0 = 
             (MAssociationEnd)((Object[])(newAsc.getConnections()).toArray())[0];

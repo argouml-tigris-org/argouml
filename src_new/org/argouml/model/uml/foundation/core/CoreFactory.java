@@ -619,7 +619,7 @@ public class CoreFactory extends AbstractUmlModelFactory {
         Iterator it = p.findFigsForMember(cls).iterator();
         while (it.hasNext()) {
             MElementListener listener = (MElementListener)it.next();
-            UmlModelEventPump.getPump().removeModelEventListener(listener, attr);
+            // UmlModelEventPump.getPump().removeModelEventListener(listener, attr);
             UmlModelEventPump.getPump().addModelEventListener(listener, attr);             
         }
        return attr;
@@ -830,7 +830,7 @@ public class CoreFactory extends AbstractUmlModelFactory {
         Iterator it = p.findFigsForMember(cls).iterator();
         while (it.hasNext()) {
             MElementListener listener = (MElementListener)it.next();
-            UmlModelEventPump.getPump().removeModelEventListener(listener, oper);
+            // UmlModelEventPump.getPump().removeModelEventListener(listener, oper);
             UmlModelEventPump.getPump().addModelEventListener(listener, oper);             
         }
         return oper;
@@ -894,7 +894,7 @@ public class CoreFactory extends AbstractUmlModelFactory {
         it = p.findFigsForMember(oper).iterator();
         while (it.hasNext()) {
             MElementListener listener = (MElementListener)it.next();
-            UmlModelEventPump.getPump().removeModelEventListener(listener, res);
+            // UmlModelEventPump.getPump().removeModelEventListener(listener, res);
             UmlModelEventPump.getPump().addModelEventListener(listener, res); 
         }
         

@@ -152,7 +152,7 @@ implements MElementListener, VetoableChangeListener {
 
   protected void addListenerToNode(Object node) {
     if (node instanceof MBase) {
-        UmlModelEventPump.getPump().removeModelEventListener(this, ((MBase)node));
+        // UmlModelEventPump.getPump().removeModelEventListener(this, ((MBase)node));
         UmlModelEventPump.getPump().addModelEventListener(this, ((MBase)node)); 
     }
     if (node instanceof Project) {
@@ -192,7 +192,7 @@ implements MElementListener, VetoableChangeListener {
     super.setModel(newModel);
     Object r = newModel.getRoot();
     if (r instanceof MBase) {
-      UmlModelEventPump.getPump().removeModelEventListener(this, (MBase)r);
+      // UmlModelEventPump.getPump().removeModelEventListener(this, (MBase)r);
       UmlModelEventPump.getPump().addModelEventListener(this, (MBase)r);
     }
     if (r instanceof Project)
@@ -204,7 +204,7 @@ implements MElementListener, VetoableChangeListener {
     for (int i = 0; i < childCount; i++) {
       Object child = newModel.getChild(r, i);
       if (child instanceof MBase) {
-	   UmlModelEventPump.getPump().removeModelEventListener(this, (MBase)child);
+	// UmlModelEventPump.getPump().removeModelEventListener(this, (MBase)child);
         UmlModelEventPump.getPump().addModelEventListener(this, (MBase)child);
       }
       if (child instanceof Diagram)

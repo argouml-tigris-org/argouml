@@ -1561,7 +1561,7 @@ nextProp:
                                     Iterator it = pr.findFigsForMember(op).iterator();
                                     while (it.hasNext()) {
                                         MElementListener listener = (MElementListener)it.next();
-                                        UmlModelEventPump.getPump().removeModelEventListener(listener, p);
+                                        // UmlModelEventPump.getPump().removeModelEventListener(listener, p);
                                         UmlModelEventPump.getPump().addModelEventListener(listener, p); 
                                     }
 			         }

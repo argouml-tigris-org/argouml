@@ -382,7 +382,7 @@ public class CoreHelper {
             Iterator it = p.findFigsForMember(operation).iterator();
             while (it.hasNext()) {
                 MElementListener listener = (MElementListener)it.next();
-                UmlModelEventPump.getPump().removeModelEventListener(listener, newReturnParameter);
+                // UmlModelEventPump.getPump().removeModelEventListener(listener, newReturnParameter);
                 UmlModelEventPump.getPump().addModelEventListener(listener, newReturnParameter);
             }
 	}

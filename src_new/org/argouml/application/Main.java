@@ -512,7 +512,7 @@ class StartCritics implements Runnable {
         java.util.Enumeration models = (p.getUserDefinedModels()).elements();
         while (models.hasMoreElements()) {
             Object o = models.nextElement();    
-            UmlModelEventPump.getPump().removeModelEventListener(dsgr, (MModel)o);
+            // UmlModelEventPump.getPump().removeModelEventListener(dsgr, (MModel)o);
             UmlModelEventPump.getPump().addModelEventListener(dsgr, (MModel)o); 
         }
         Argo.log.info("spawned critiquing thread");

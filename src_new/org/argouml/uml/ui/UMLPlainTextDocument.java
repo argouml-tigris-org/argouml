@@ -160,7 +160,7 @@ public abstract class UMLPlainTextDocument extends PlainDocument
             if (_target != null)
                 UmlModelEventPump.getPump().removeModelEventListener(this, (MBase)_target, getEventName());
             _target = target;
-            UmlModelEventPump.getPump().removeModelEventListener(this, (MBase)_target, getEventName());
+            // UmlModelEventPump.getPump().removeModelEventListener(this, (MBase)_target, getEventName());
             UmlModelEventPump.getPump().addModelEventListener(this, (MBase)_target, getEventName());
             handleEvent();
         }
