@@ -194,6 +194,7 @@ public class Project implements java.io.Serializable {
 		
 		// the "false" means that members should not be added,
 		// we want to do this by hand from the zipped stream.
+		ArgoParser.SINGLETON.setURL(url);
 		ArgoParser.SINGLETON.readProject(zis,false);
 		p = ArgoParser.SINGLETON.getProject();
 		

@@ -48,6 +48,8 @@ public class ArgoParser extends SAXParserBase {
 
     private boolean _addMembers = true;
 
+    private URL _url = null;
+
   ////////////////////////////////////////////////////////////////
   // constructors
 
@@ -64,6 +66,9 @@ public class ArgoParser extends SAXParserBase {
   }
 
   public synchronized void readProject(URL url, boolean addMembers) {
+      
+      _url = url;
+      
       try{
 	  readProject(url.openStream(), addMembers);
       } catch (IOException e) {
@@ -72,14 +77,24 @@ public class ArgoParser extends SAXParserBase {
       }
   }
 
+    public void setURL(URL url) {
+	_url = url;
+    }
+
   public synchronized void readProject(InputStream is, boolean addMembers) {
 
       _addMembers = addMembers;
 
+      if ((_url == null) && _addMembers) {
+	  System.out.println("URL not set! Won't be able to add members! Aborting...");
+	  return;
+      }
+	  
+
     try {
       System.out.println("=======================================");
-      System.out.println("== READING PROJECT");
-      _proj = new Project();
+      System.out.println("== READING PROJECT "+_url);
+      _proj = new Project(_url);
       parse(is);
     }
     catch(SAXException saxEx) {
