@@ -28,6 +28,7 @@ import java.awt.*;
 import javax.swing.*;
 import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.foundation.data_types.*;
+import ru.novosoft.uml.foundation.extension_mechanisms.*;
 import org.argouml.uml.ui.*;
 
 
@@ -40,6 +41,14 @@ public class PropPanelClass extends PropPanel {
     super("Class Properties",2);
 
     Class mclass = MClass.class;
+    
+    //
+    //   this will cause the components on this page to be notified
+    //      anytime a stereotype, namespace, operation, etc
+    //      has its name changed or is removed anywhere in the model
+    Class[] namesToWatch = { MStereotype.class,MNamespace.class,MOperation.class,
+        MParameter.class,MAttribute.class,MAssociation.class,MClassifier.class };        
+    setNameEventListening(namesToWatch);
     
     addCaption(new JLabel("Name:"),0,0,0);
     addField(new UMLTextField(this,new UMLTextProperty(mclass,"name","getName","setName")),0,0,0);
@@ -111,6 +120,28 @@ public class PropPanelClass extends PropPanel {
     innerList.setVisibleRowCount(1);
     addField(new JScrollPane(innerList),3,1,0.25);
     
+    //
+    //  just for decoration now
+    //
+    JButton createClass = new JButton("New");
+    createClass.setEnabled(false);
+    addButton(createClass);
+    
+    JButton addOperation = new JButton("Add Operation");
+    addOperation.setEnabled(false);
+    addButton(addOperation);
+    
+    JButton addAttribute = new JButton("Add Attribute");
+    addAttribute.setEnabled(false);
+    addButton(addAttribute);
+    
+    JButton addAssociation = new JButton("Add Association");
+    addAssociation.setEnabled(false);
+    addButton(addAssociation);
+    
+    JButton deleteClass = new JButton("Delete");
+    deleteClass.setEnabled(false);
+    addButton(deleteClass);
   }
 
   
