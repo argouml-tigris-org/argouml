@@ -24,6 +24,7 @@
 package org.argouml.util;
 import org.argouml.application.api.*;
 import java.io.*;
+import java.util.*;
 
 public class Tools {
 
@@ -111,10 +112,10 @@ String[]{"org.argouml.application","ru.novosoft.uml","org.tigris.gef.base","org.
 	sb.append(System.getProperty("os.version", "unknown"));
 	sb.append('\n');
 	sb.append("Language: ");
-	sb.append(System.getProperty("user.language", "unknown"));
+	sb.append(Locale.getDefault().getLanguage());
 	sb.append('\n');
 	sb.append("Country: ");
-	sb.append(System.getProperty("user.country", "unknown"));
+	sb.append(Locale.getDefault().getCountry());
 	sb.append('\n');
 	sb.append('\n');
 
