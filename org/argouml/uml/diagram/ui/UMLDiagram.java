@@ -188,7 +188,6 @@ public abstract class UMLDiagram
      * @see org.tigris.gef.base.Diagram#initToolBar()
      */
     public void initToolBar() {
-        super.initToolBar();
         _toolBar = new ToolBar();
         _toolBar.putClientProperty("JToolBar.isRollover", Boolean.TRUE);
         addActionsToToolbar(_toolBar, getActions());
