@@ -1032,10 +1032,10 @@ navigates to the generalization and opens its property tab.
 
           <listitem>
             <indexterm>
-              <primary>Use Case Extends relationships</primary>
+              <primary>Use Case Extend Relationships</primary>
             </indexterm>
             <indexterm>
-              <primary>Extends relationships</primary>
+              <primary>Extend Relationship</primary>
               <secondary>of Use Case</secondary>
             </indexterm>
 
@@ -1059,10 +1059,10 @@ will navigate to that relationship.
 
           <listitem>
             <indexterm>
-              <primary>Use Case Includes relationships</primary>
+              <primary>Use Case Include Relationships</primary>
             </indexterm>
             <indexterm>
-              <primary>Includes relationships</primary>
+              <primary>Include Relationship</primary>
               <secondary>of Use Case</secondary>
             </indexterm>
  
@@ -1418,7 +1418,18 @@ For this reason this tab is greyed out.
         <varlistentry>
           <term><literal>Name</literal></term>
 
-          <listitem><para>Text box. The name of the extension point.</para>
+          <listitem>
+            <indexterm>
+              <primary>Extension Point Name</primary>
+            </indexterm>
+            <indexterm>
+              <primary>Name</primary>
+              <secondary>of Extension Point</secondary>
+            </indexterm>
+
+            <para>Text box.
+The name of the extension point.
+</para>
 
           <tip><para>It is quite common to leave extension points
             unnamed in use case analysis, since they are always listed (within
@@ -1434,6 +1445,14 @@ For this reason this tab is greyed out.
           <term><literal>Stereotype</literal></term>
 
           <listitem>
+            <indexterm>
+              <primary>Extension Point Stereotype</primary>
+            </indexterm>
+            <indexterm>
+              <primary>Stereotype</primary>
+              <secondary>of Extension Point</secondary>
+            </indexterm>
+
             <para>Drop down selector.
 &argouml; does not provide any stereotypes for extension points.
 </para>
@@ -1461,7 +1480,17 @@ For this reason this tab is greyed out.
         <varlistentry>
           <term><literal>Location</literal></term>
 
-          <listitem><para>Text box. A description of the location of this
+          <listitem>
+            <indexterm>
+              <primary>Extension Point Location</primary>
+            </indexterm>
+            <indexterm>
+              <primary>Location</primary>
+              <secondary>of Extension Point</secondary>
+            </indexterm>
+
+            <para>Text box.
+A description of the location of this
             extension point within the owning use case.</para>
 
           <tip><para>Extension points are always listed (within
@@ -1476,6 +1505,14 @@ For this reason this tab is greyed out.
           <term><literal>Base Use Case</literal></term>
 
           <listitem>
+            <indexterm>
+              <primary>Extension Point Base Use Case</primary>
+            </indexterm>
+            <indexterm>
+              <primary>Base Use Case</primary>
+              <secondary>of Extension Point</secondary>
+            </indexterm>
+
             <para>Text box.
 Shows the base use case within which this extension point is defined. 
 &Button1; Double Click
@@ -1489,7 +1526,17 @@ will navigate to the use case.
         <varlistentry>
           <term><literal>Extend</literal></term>
 
-          <listitem><para>Text box. Lists all use cases which extend the base
+          <listitem>
+            <indexterm>
+              <primary>Extension Point Extending Use Cases</primary>
+            </indexterm>
+            <indexterm>
+              <primary>Extending Use Cases</primary>
+              <secondary>of Extension Point</secondary>
+            </indexterm>
+
+            <para>Text box.
+Lists all use cases which extend the base
             use case through this extension point.</para>
 
             <para>
@@ -1530,6 +1577,9 @@ An association on a use case diagram represents a relationship
 
   <sect1 id="s1.ref.dependency_use_case">
     <title>Dependency</title>
+    <indexterm>
+      <primary>Dependency</primary>
+    </indexterm>
 
     <para>Dependency is a relationship between two artifacts showing that one
       depends on the other.</para>
@@ -1550,6 +1600,14 @@ from the depending artifact to that which it is dependent upon
 
     <sect2>
       <title>Dependency Details Tabs</title>
+      <indexterm>
+        <primary>Dependency</primary>
+        <secondary>Details Tabs</secondary>
+      </indexterm>
+      <indexterm>
+        <primary>Details Tabs</primary>
+        <secondary>for Dependency</secondary>
+      </indexterm>
 
       <para>The details tabs that are active for dependencies are as
         follows.</para>
@@ -1699,7 +1757,18 @@ the UML metamodel so this is greyed out.
         <varlistentry>
           <term><literal>Name</literal></term>
 
-          <listitem><para>Text box. The name of the dependency.</para>
+          <listitem>
+            <indexterm>
+              <primary>Dependency Name</primary>
+            </indexterm>
+            <indexterm>
+              <primary>Name</primary>
+              <secondary>of Dependency</secondary>
+            </indexterm>
+
+            <para>Text box.
+The name of the dependency.
+</para>
 
           <tip><para>It is quite common to leave dependencies
             unnamed.</para></tip> 
@@ -1718,6 +1787,14 @@ the UML metamodel so this is greyed out.
 
 <!-- Issue: 2146 -->
           <listitem>
+            <indexterm>
+              <primary>Dependency Stereotype</primary>
+            </indexterm>
+            <indexterm>
+              <primary>Stereotype</primary>
+              <secondary>of Dependency</secondary>
+            </indexterm>
+
               <para>Drop down selector.
 Dependency has no standard stereotypes of its own under UML&nbsp;1.3.n
 so &argouml; does not provide any.
@@ -1745,7 +1822,17 @@ The stereotype is shown between
         <varlistentry>
           <term><literal>Namespace</literal></term>
 
-          <listitem><para>Text box. Records the namespace for the
+          <listitem>
+            <indexterm>
+              <primary>Dependency Namespace</primary>
+            </indexterm>
+            <indexterm>
+              <primary>Namespace</primary>
+              <secondary>of Dependency</secondary>
+            </indexterm>
+
+            <para>Text box.
+Records the namespace for the
             dependency. This is the package hierarchy.</para>
 
           </listitem>
@@ -1756,7 +1843,17 @@ The stereotype is shown between
         <varlistentry>
           <term><literal>Suppliers</literal></term>
 
-          <listitem><para>Text area. Lists the <quote>depending</quote> ends
+          <listitem>
+            <indexterm>
+              <primary>Dependency Suppliers</primary>
+            </indexterm>
+            <indexterm>
+              <primary>Suppliers</primary>
+              <secondary>of Dependency</secondary>
+            </indexterm>
+
+            <para>Text area.
+Lists the <quote>depending</quote> ends
             of the relationship, i.e. the end supplying what is needed by
             the other end.</para>
 
@@ -1772,7 +1869,17 @@ The stereotype is shown between
         <varlistentry>
           <term><literal>Clients</literal></term>
 
-          <listitem><para>Text area. Lists the <quote>depending</quote> ends
+          <listitem>
+            <indexterm>
+              <primary>Dependency Clients</primary>
+            </indexterm>
+            <indexterm>
+              <primary>Clients</primary>
+              <secondary>of Dependency</secondary>
+            </indexterm>
+
+            <para>Text area.
+Lists the <quote>depending</quote> ends
             of the relationship, i.e. the end supplying what is needed by
             the other end.</para>
 
@@ -1790,6 +1897,9 @@ The stereotype is shown between
 
   <sect1 id="s1.ref.generalization_use_case">
     <title>Generalization</title>
+    <indexterm>
+      <primary>Generalization</primary>
+    </indexterm>
 
     <para>Generalization is a relationship between two use cases or two
      actors. Where A is a generalization of B, it means A describes more
@@ -1822,6 +1932,14 @@ The stereotype is shown between
 
     <sect2>
       <title>Generalization Details Tabs</title>
+      <indexterm>
+        <primary>Generalization</primary>
+        <secondary>Details Tabs</secondary>
+      </indexterm>
+      <indexterm>
+        <primary>Details Tabs</primary>
+        <secondary>for Generalization</secondary>
+      </indexterm>
 
       <para>The details tabs that are active for associations are as
         follows.</para>
@@ -2033,7 +2151,18 @@ In the UML metamodel,
         <varlistentry>
           <term><literal>Name</literal></term>
 
-          <listitem><para>Text box. The name of the generalization.</para>
+          <listitem>
+            <indexterm>
+              <primary>Generalization Name</primary>
+            </indexterm>
+            <indexterm>
+              <primary>Name</primary>
+              <secondary>of Generalization</secondary>
+            </indexterm>
+
+            <para>Text box.
+The name of the generalization.
+</para>
 
           <tip><para>It is quite common to leave generalizations
             unnamed in use case analysis.</para></tip>
@@ -2055,7 +2184,17 @@ generalization on the diagram.
         <varlistentry>
           <term><literal>Stereotype</literal></term>
 
-          <listitem><para>Drop down selector. Generalization is provided by
+          <listitem>
+            <indexterm>
+              <primary>Generalization Stereotype</primary>
+            </indexterm>
+            <indexterm>
+              <primary>Stereotype</primary>
+              <secondary>of Generalization</secondary>
+            </indexterm>
+
+            <para>Drop down selector.
+Generalization is provided by
 default with the UML standard stereotype
 <literal>implementation</literal>.
 The stereotype is shown between
@@ -2086,7 +2225,17 @@ The stereotype is shown between
         <varlistentry>
           <term><literal>Discriminator</literal></term>
 
-          <listitem><para>Text box. The name of a discriminator for the
+          <listitem>
+            <indexterm>
+              <primary>Generalization Discriminator</primary>
+            </indexterm>
+            <indexterm>
+              <primary>Discriminator</primary>
+              <secondary>of Generalization</secondary>
+            </indexterm>
+
+            <para>Text box.
+The name of a discriminator for the
             specialization. UML&nbsp;1.3 allows grouping of specializations
             into a number of sets, on the basis of this value.</para>
 
@@ -2110,7 +2259,17 @@ There is little point in using this within a use case
         <varlistentry>
           <term><literal>Namespace</literal></term>
 
-          <listitem><para>Text box. Records the namespace for the
+          <listitem>
+            <indexterm>
+              <primary>Generalization Namespace</primary>
+            </indexterm>
+            <indexterm>
+              <primary>Namespace</primary>
+              <secondary>of Generalization</secondary>
+            </indexterm>
+
+            <para>Text box.
+Records the namespace for the
             generalization. This is the package hierarchy.</para>
 
           </listitem>
@@ -2122,6 +2281,14 @@ There is little point in using this within a use case
           <term><literal>Parent</literal></term>
 
           <listitem>
+            <indexterm>
+              <primary>Generalization Parent</primary>
+            </indexterm>
+            <indexterm>
+              <primary>Parent</primary>
+              <secondary>of Generalization</secondary>
+            </indexterm>
+
             <para>Text box.
 Shows the use case or actor that is the
 <emphasis>parent</emphasis> in this relationship,
@@ -2139,6 +2306,14 @@ i.e. the more general end of the relationship.
           <term><literal>Child</literal></term>
 
           <listitem>
+            <indexterm>
+              <primary>Generalization Child</primary>
+            </indexterm>
+            <indexterm>
+              <primary>Child</primary>
+              <secondary>of Generalization</secondary>
+            </indexterm>
+
             <para>Text box.
 Shows the use case or actor that is the
 <emphasis>child</emphasis> in this relationship,
@@ -2155,7 +2330,17 @@ i.e. the more specific end of the relationship.
         <varlistentry>
           <term><literal>Powertype</literal></term>
 
-          <listitem><para>Drop down selector providing access to all standard
+          <listitem>
+            <indexterm>
+              <primary>Generalization Powertype</primary>
+            </indexterm>
+            <indexterm>
+              <primary>Powertype</primary>
+              <secondary>of Generalization</secondary>
+            </indexterm>
+
+            <para>
+Drop down selector providing access to all standard
             UML types provided by &argouml; and all new classes created
             within the current model.</para>
 
@@ -2187,6 +2372,9 @@ i.e. the more specific end of the relationship.
 
   <sect1 id="s1.ref.extend">
     <title>Extend</title>
+    <indexterm>
+      <primary>Extend Relationship</primary>
+    </indexterm>
 
     <para>Extend is a relationship between two use cases. Where A extends B, it
       means A describes more specific behavior and B the general version of
@@ -2220,6 +2408,14 @@ i.e. the more specific end of the relationship.
 
     <sect2>
       <title>Extend Details Tabs</title>
+      <indexterm>
+        <primary>Extend Relationship</primary>
+        <secondary>Details Tabs</secondary>
+      </indexterm>
+      <indexterm>
+        <primary>Details Tabs</primary>
+        <secondary>for Extend Relationship</secondary>
+      </indexterm>
 
       <para>The details tabs that are active for extend relationships are as
         follows.</para>
@@ -2342,7 +2538,19 @@ constraints defined so this is greyed out.
           </imageobject></inlinemediaobject></guiicon> <literal>Add extension
             point</literal></term>
 
-          <listitem><para>This creates a new use case extension point within
+          <listitem>
+            <indexterm>
+              <primary>Add Extend Relationship</primary>
+            </indexterm>
+            <indexterm>
+              <primary>New Extend Relationship</primary>
+            </indexterm>
+            <indexterm>
+              <primary>Create a new Extend Relationship</primary>
+            </indexterm>
+
+            <para>
+This creates a new use case extension point within
             the namespace of the current extend relationship, with the current
 extend relationship as its first extending relationship.
 <!-- Issue: 2147 -->
@@ -2398,7 +2606,18 @@ model.</para>
         <varlistentry>
           <term><literal>Name</literal></term>
 
-          <listitem><para>Text box. The name of the extend relationship.</para>
+          <listitem>
+            <indexterm>
+              <primary>Extend Relationship Name</primary>
+            </indexterm>
+            <indexterm>
+              <primary>Name</primary>
+              <secondary>of Extend Relationship</secondary>
+            </indexterm>
+
+            <para>Text box.
+The name of the extend relationship.
+</para>
 
           <tip><para>It is quite common to leave extends
             unnamed in use case analysis.</para></tip>
@@ -2413,6 +2632,14 @@ model.</para>
           <term><literal>Stereotype</literal></term>
 
           <listitem>
+            <indexterm>
+              <primary>Extend Relationship Stereotype</primary>
+            </indexterm>
+            <indexterm>
+              <primary>Stereotype</primary>
+              <secondary>of Extend Relationship</secondary>
+            </indexterm>
+
             <para>Drop down selector.
 &argouml; does not provide any stereotypes by default.
 </para>
@@ -2443,7 +2670,17 @@ model.</para>
         <varlistentry>
           <term><literal>Namespace</literal></term>
 
-          <listitem><para>Text box. Records the namespace for the
+          <listitem>
+            <indexterm>
+              <primary>Extend Relationship Namespace</primary>
+            </indexterm>
+            <indexterm>
+              <primary>Namespace</primary>
+              <secondary>of Extend Relationship</secondary>
+            </indexterm>
+
+            <para>Text box.
+Records the namespace for the
 extend relationship.
 This is the package hierarchy.
 </para>
@@ -2461,6 +2698,14 @@ This is the package hierarchy.
           <term><literal>Base Usecase</literal></term>
 
           <listitem>
+            <indexterm>
+              <primary>Extend Relationship Base Usecase</primary>
+            </indexterm>
+            <indexterm>
+              <primary>Base Usecase</primary>
+              <secondary>of Extend Relationship</secondary>
+            </indexterm>
+
             <para>Drop down selector.
 Shows the use case that is
             being extended by this extend relationship.  &Button1; click
@@ -2476,6 +2721,14 @@ Shows the use case that is
           <term><literal>Extension</literal></term>
 
           <listitem>
+            <indexterm>
+              <primary>Extend Relationship Extension</primary>
+            </indexterm>
+            <indexterm>
+              <primary>Extension</primary>
+              <secondary>of Extend Relationship</secondary>
+            </indexterm>
+
             <para>Drop down selector.
 Show the use case that is
             doing the extending through this extend relationship.  &Button1;
@@ -2490,7 +2743,17 @@ Show the use case that is
         <varlistentry>
           <term><literal>Extension Points</literal></term>
 
-          <listitem><para>Text box. If this use case is, or can be extended,
+          <listitem>
+            <indexterm>
+              <primary>Extend Relationship Extension Points</primary>
+            </indexterm>
+            <indexterm>
+              <primary>Extension Points</primary>
+              <secondary>of Extend Relationship</secondary>
+            </indexterm>
+
+            <para>Text box.
+If this use case is, or can be extended,
             this field lists the extension points for the use case.</para>
 
           <note><para>Extension points are listed by their location point
@@ -2514,7 +2777,7 @@ In this window it is possible to select extension points.
 </para>
               </listitem>
 
-            <listitem>
+              <listitem>
                 <para><literal>New</literal>.
 Add a new extension point
               before the current extension point in the list and navigate to
@@ -2547,6 +2810,9 @@ attached to the extend relationship.
 
   <sect1 id="s1.ref.include">
     <title>Include</title>
+    <indexterm>
+      <primary>Include Relationship</primary>
+    </indexterm>
 
     <para>Include is a relationship between two use cases. Where A includes B,
       it means B described behavior that is to be included in the description
@@ -2567,6 +2833,14 @@ attached to the extend relationship.
 
     <sect2>
       <title>Include Details Tabs</title>
+      <indexterm>
+        <primary>Include Relationship</primary>
+        <secondary>Details Tabs</secondary>
+      </indexterm>
+      <indexterm>
+        <primary>Details Tabs</primary>
+        <secondary>for Include Relationship</secondary>
+      </indexterm>
 
       <para>The details tabs that are active for include relationships are as
         follows.</para>
@@ -2715,7 +2989,17 @@ See <xref linkend="s2.ref.documentation_tab"/>.
         <varlistentry>
           <term><literal>Name</literal></term>
 
-          <listitem><para>Text box. The name of the include
+          <listitem>
+            <indexterm>
+              <primary>Include Relationship Name</primary>
+            </indexterm>
+            <indexterm>
+              <primary>Name</primary>
+              <secondary>of Include Relationship</secondary>
+            </indexterm>
+
+            <para>Text box.
+The name of the include
             relationship.</para>
 
           <tip><para>It is quite common to leave include relationships unnamed
@@ -2733,6 +3017,14 @@ See <xref linkend="s2.ref.documentation_tab"/>.
           <term><literal>Stereotype</literal></term>
 
           <listitem>
+            <indexterm>
+              <primary>Include Relationship Stereotype</primary>
+            </indexterm>
+            <indexterm>
+              <primary>Stereotype</primary>
+              <secondary>of Include Relationship</secondary>
+            </indexterm>
+
             <para>Drop down selector.
 &argouml; does not provide any stereotypes for include relationships.
 </para>
@@ -2763,7 +3055,17 @@ See <xref linkend="s2.ref.documentation_tab"/>.
         <varlistentry>
           <term><literal>Namespace</literal></term>
 
-          <listitem><para>Text box. Records the namespace for the
+          <listitem>
+            <indexterm>
+              <primary>Include Relationship Namespace</primary>
+            </indexterm>
+            <indexterm>
+              <primary>Namespace</primary>
+              <secondary>of Include Relationship</secondary>
+            </indexterm>
+
+            <para>Text box.
+Records the namespace for the
             include. This is the package hierarchy.</para>
 
           <para>&Button1; click on the entry will navigate to the package
@@ -2776,7 +3078,17 @@ See <xref linkend="s2.ref.documentation_tab"/>.
         <varlistentry>
           <term><literal>Base</literal></term>
 
-          <listitem><para>Drop down selector. Records the use case that is
+          <listitem>
+            <indexterm>
+              <primary>Include Relationship Base</primary>
+            </indexterm>
+            <indexterm>
+              <primary>Base</primary>
+              <secondary>of Include Relationship</secondary>
+            </indexterm>
+
+            <para>Drop down selector.
+Records the use case that is
             doing the including in this include relationship.  &Button1; click
             on this entry will give a drop down menu of all available use cases
             (and an empty entry) which may be selected by &button1;
@@ -2798,7 +3110,17 @@ In the current version of &argouml; if you change the
         <varlistentry>
           <term><literal>Included Usecase</literal></term>
 
-          <listitem><para>Drop down selector. Records the use case that is
+          <listitem>
+            <indexterm>
+              <primary>Include Relationship Included Usecase</primary>
+            </indexterm>
+            <indexterm>
+              <primary>Included Usecase</primary>
+              <secondary>of Include Relationship</secondary>
+            </indexterm>
+
+            <para>Drop down selector.
+Records the use case that is
             being included by this include relationship.  &Button1;
             click on this entry will give a drop down menu of all available use
             cases (and an empty entry) which may be selected by &button1;
