@@ -26,6 +26,7 @@ package org.argouml.persistence;
 
 import java.io.InputStream;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.StringTokenizer;
 
@@ -603,6 +604,29 @@ public class PGMLParser extends org.tigris.gef.xml.pgml.PGMLParser {
 
         Map attributeMap = interpretStyle(st);
 
+            // TODO: This block should be replaced to use the factories
+            // in the Diagram subsystem. The model element type
+            // should be determined from the href attribute and then the
+            // diagram renderers called as described in issue 859
+        try {
+            Class nodeClass = Class.forName(translateClassName(clsName));
+            f = (Fig) nodeClass.newInstance();
+            setStyleAttributes(f, attributeMap);
+        } catch (IllegalAccessException e) {
+            // TODO Change to SAXException on next release of GEF
+            LOG.error("IllegalAccessException caught ", e);
+            throw new IllegalStateException();
+        } catch (InstantiationException e) {
+            // TODO Change to SAXException on next release of GEF
+            LOG.error("InstantiationException caught ", e);
+            throw new IllegalStateException();
+        } catch (ClassNotFoundException e) {
+            // TODO Change to SAXException on next release of GEF
+            LOG.error("ClassNotFoundException caught ", e);
+            throw new IllegalStateException();
+        }
+            // End block
+    /*
         Object modelElement = getModelElement(attrList);
         if (xStr != null) {
             // The only clue that we have a node is that we have bounds
@@ -625,6 +649,7 @@ public class PGMLParser extends org.tigris.gef.xml.pgml.PGMLParser {
                         attributeMap);
             }
         }
+     */
         
         if (xStr != null && !xStr.equals("")) {
             int x = Integer.parseInt(xStr);
@@ -659,6 +684,30 @@ public class PGMLParser extends org.tigris.gef.xml.pgml.PGMLParser {
 
         setAttrs(f, attrList);
         return f;
+    }
+    
+    /**
+     * Set the fig style attributes. This should move into
+     * the render factories as described in issue 859.
+     * @param fig the fig to style.
+     * @param attributeMap a map of name value pairs
+     */
+    private void setStyleAttributes(Fig fig, Map attributeMap) {
+        String name;
+        String value;
+        Iterator it = attributeMap.keySet().iterator();
+        while (it.hasNext()) {
+            name = (String) it.next();
+            value = (String) attributeMap.get(name);
+            
+            if ("operationsVisible".equals(name)) {
+                ((OperationsCompartmentContainer) fig)
+                    .setOperationsVisible(value.equalsIgnoreCase("true"));
+            } else if ("attributesVisible".equals(name)) {
+                ((AttributesCompartmentContainer) fig)
+                    .setAttributesVisible(value.equalsIgnoreCase("true"));
+            }
+        }
     }
     
     /**
