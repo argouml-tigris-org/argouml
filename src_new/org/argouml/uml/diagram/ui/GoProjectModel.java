@@ -38,7 +38,7 @@ import org.tigris.gef.util.Localizer;
 public class GoProjectModel implements TreeModelPrereqs {
 
   public String toString() {
-    return Localizer.localize ("Tree", "Project->Package");
+    return Localizer.localize ("Tree", "misc.project.package");
   }
 
   public Object getRoot() {

@@ -61,7 +61,7 @@ public class ActionAddExistingNode extends UMLAction implements GraphFactory
 
 	String instructions = null;
 	if(_object != null) {
-	    instructions =  Localizer.localize ("Tree", "Click on diagram to add ") + _object.toString();
+	    instructions =  Localizer.localize ("Tree", "misc.message.click-on-diagram-to-add") + _object.toString();
 	    Globals.showStatus(instructions);
 	}
 	ModePlace placeMode = new ModePlace(this,instructions);

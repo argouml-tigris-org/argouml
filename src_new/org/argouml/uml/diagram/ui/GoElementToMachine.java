@@ -38,7 +38,7 @@ import org.tigris.gef.util.Localizer;
 public class GoElementToMachine implements TreeModelPrereqs {
 
   public String toString() {
-    return Localizer.localize ("Tree", "Class->State Machine");
+    return Localizer.localize ("Tree", "misc.class.state-machine");
   }
   
   public Object getRoot() {
