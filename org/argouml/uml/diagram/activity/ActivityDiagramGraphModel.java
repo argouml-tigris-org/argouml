@@ -24,6 +24,7 @@
 
 package org.argouml.uml.diagram.activity;
 
+import org.argouml.model.ModelFacade;
 import org.argouml.uml.diagram.state.StateDiagramGraphModel;
 
 /**
