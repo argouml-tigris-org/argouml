@@ -1403,7 +1403,7 @@ and run the command
 	    <para>Check out a new copy of the source!</para>
 	    <para>
 This is done by checking out from the tag using the command
-<command>cvs co -r VERSION_<replaceable>X_Y_Z</replaceable>_F argouml/src_new argouml/lib argouml/tools argouml/modules</command> argouml/tests</command>
+<command>cvs co -r VERSION_<replaceable>X_Y_Z</replaceable>_F argouml/src_new argouml/lib argouml/tools argouml/modules argouml/tests</command>
 in a newly created directory.
 </para>
 	    <para>
