@@ -142,20 +142,15 @@ some external event to occur, or some dynamic activity
           <listitem><para>Standard tab.</para></listitem>
         </varlistentry>
 
-        <!-- Entry for Style tab -->
+        <!-- Entry for Presentation tab -->
 
         <varlistentry>
-          <term><literal>Style</literal></term>
+          <term><literal>Presentation</literal></term>
 
           <listitem><para>Standard tab. The values for the bounds of the state
             define the bounding box of the state.</para>
 
-          <caution><para>The <literal>Shadow</literal> field has no
-            effect&mdash; in the V0.14 release of ArgoUML. There are no
-            shadow effects provided for states on the
-            diagram.
-            <!-- TODO: Se enhancement issue ... -->
-          </para></caution></listitem>
+          </listitem>
         </varlistentry>
 
         <!-- Entry for Source tab -->
@@ -170,17 +165,6 @@ some external event to occur, or some dynamic activity
             implement the state (code for actions will be associated with
             the particular actions). This is not implemented in the current
             release of ArgoUML.</para></note></listitem>
-        </varlistentry>
-
-        <!-- Entry for Constraints tab -->
-
-        <varlistentry>
-          <term><literal>Constraints</literal></term>
-
-          <listitem>
-            <para>&constraintssupport;
-</para>
-          </listitem>
         </varlistentry>
 
         <!-- Entry for Tagged Values tab -->
@@ -220,6 +204,15 @@ ArgoUML
             </itemizedlist>
           </listitem>
         </varlistentry>
+
+        <!-- Entry for Checklist tab -->
+
+        <varlistentry>
+          <term><literal>Checklist</literal></term>
+
+          <listitem><para>Standard tab for a State. </para></listitem>
+        </varlistentry>
+
       </variablelist>
     </sect2>
 
@@ -241,6 +234,35 @@ ArgoUML
 
           <listitem><para>Navigate up through the package
             structure.</para></listitem>
+        </varlistentry>
+
+        <!-- Entry for New stereotype button -->
+
+        <varlistentry>
+          <term><guiicon><inlinemediaobject><imageobject><imagedata
+            format="GIF" align="center"
+            fileref="images/icons/stereotype.gif"/>
+            </imageobject></inlinemediaobject></guiicon> 
+	        <literal>New Stereotype</literal>
+        </term>
+          <listitem>
+            <indexterm>
+              <primary>Add Stereotype</primary>
+            </indexterm>
+            <indexterm>
+              <primary>New Stereotype</primary>
+            </indexterm>
+            <indexterm>
+              <primary>Create New</primary>
+              <secondary>Stereotype</secondary>
+            </indexterm>
+
+            <para>
+			  This creates a new Stereotype (see <xref
+              linkend="s1.ref.stereotype"/>) for the selected state, 
+              navigating immediately to the properties tab
+              for that stereotype.</para>
+		  </listitem>
         </varlistentry>
 
         <!-- Entry for Delete button -->
@@ -338,9 +360,14 @@ This is the state hierarchy.
             </para>
 
             <para>
-&Button1; double click on the entry will navigate to the composite state
-that contains this state (or the top-level state that is the root of the state
-containment hierarchy).
+			  &Button1; double click on the entry 
+			  will navigate to the composite state
+			  that contains this state. 
+			  All states are at least contained by 
+			  the otherwise hidden top-level state 
+			  (named <quote>top</quote>) 
+			  that is the root of the state
+			  containment hierarchy.
             </para>
           </listitem>
         </varlistentry>
@@ -355,6 +382,11 @@ containment hierarchy).
 Text box. Shows the name of the action (if any) to be executed 
 on entry to this state.
             </para>
+            
+            <note><para>
+              This field shows the name of the action, 
+              while on the diagram the expression of the action is shown.
+            </para></note>
 
             <para>
 &Button1; double-click navigates to the selected entry, 
@@ -443,7 +475,7 @@ Uninterpreted Action.
               state, including any internal transitions within the state
               (described below).</para>
 
-            <para>&Button1; click navigates to the selected entry.</para>
+            <para>&Button1; double click navigates to the selected entry.</para>
 
           </listitem>
         </varlistentry>
@@ -458,7 +490,7 @@ Uninterpreted Action.
               state, including any internal transitions within the state
               (described below).</para>
 
-            <para>&Button1; click navigates to the selected action.</para>
+            <para>&Button1; double click navigates to the selected action.</para>
 
           </listitem>
         </varlistentry>
@@ -476,6 +508,11 @@ Such transitions neither exit nor enter the state, so they
 do not cause a state change. 
 Which means that the Entry and Exit actions are not invoked.
             </para>
+            
+            <note><para>
+              This field shows the name of the transition, 
+              while on the diagram the name of the trigger is shown.
+            </para></note>
 
             <para>
 &Button1; double-click navigates to the selected transition,
@@ -507,14 +544,14 @@ UML metamodel it is a child of
 <!-- MVW: In the UML "V1.3 alpha R2" this was a ModelElement.
 In the (June 1999) UML1.3 standard, this is indeed a Model.
 This has been changed to ModelElement in UML1.4 & UML1.5 -->
-<literal>Model</literal> 
+<literal>Model</literal>. 
 Since in the metamodel an ActionSequence is itself an Action that is an 
 aggregation of other actions (i.e. the "composite" pattern),
 an ActionSequence may be used anywhere an 
 action may be.</para>
 
     <para>There are a number of different types of action that are children of
-      action within the UML metamodel.</para>
+      Action within the UML metamodel.</para>
 
     <itemizedlist>
       <listitem><para><literal>CreateAction</literal>. Associated with a
@@ -525,11 +562,11 @@ action may be.</para>
         operation of a class, this action calls the given
         operation.</para></listitem>
 
-      <listitem>
+      <!--listitem>
         <para><literal>AssignmentAction</literal>.
 An action used to assign a new value to a link or an attribute link.
 </para>
-      </listitem>
+      </listitem-->
 
       <listitem>
         <para><literal>ReturnAction</literal>.
@@ -608,17 +645,6 @@ An action is represented on the diagram by the text of its expression.
             release of ArgoUML.</para></note></listitem>
         </varlistentry>
 
-        <!-- Entry for Constraints tab -->
-
-        <varlistentry>
-          <term><literal>Constraints</literal></term>
-
-          <listitem>
-            <para>&constraintssupport;
-</para>
-          </listitem>
-        </varlistentry>
-
         <!-- Entry for Tagged Values tab -->
 
         <varlistentry>
@@ -677,6 +703,35 @@ An action is represented on the diagram by the text of its expression.
           </listitem>
         </varlistentry>
 
+        <!-- Entry for New stereotype button -->
+
+        <varlistentry>
+          <term><guiicon><inlinemediaobject><imageobject><imagedata
+            format="GIF" align="center"
+            fileref="images/icons/stereotype.gif"/>
+            </imageobject></inlinemediaobject></guiicon> 
+	        <literal>New Stereotype</literal>
+        </term>
+          <listitem>
+            <indexterm>
+              <primary>Add Stereotype</primary>
+            </indexterm>
+            <indexterm>
+              <primary>New Stereotype</primary>
+            </indexterm>
+            <indexterm>
+              <primary>Create New</primary>
+              <secondary>Stereotype</secondary>
+            </indexterm>
+
+            <para>
+			  This creates a new Stereotype (see <xref
+              linkend="s1.ref.stereotype"/>) for the selected action, 
+              navigating immediately to the properties tab
+              for that stereotype.</para>
+		  </listitem>
+        </varlistentry>
+
         <!-- Entry for Delete button -->
 
         <varlistentry>
@@ -722,7 +777,7 @@ An action is represented on the diagram by the text of its expression.
           <listitem><para>Text box. The expression that defines the
             action.</para>
 
-          <caution><para>The V0.14 release of ArgoUML only partially
+          <caution><para>The V0.18 release of ArgoUML only partially
             <!-- TODO: See enhancement issue ... -->
             implements actions. As a practical convention it is suggested
             that call actions are shown as the name of the operation
@@ -742,9 +797,8 @@ An action is represented on the diagram by the text of its expression.
         <varlistentry>
           <term><literal>Language</literal></term>
 
-          <listitem><para>Text box. This is not part of standard UML, but in
-            the partial implementation of actions currently available in
-            UML it may be useful to indicate that the expression is written
+          <listitem><para>Text box. This is 
+            to indicate that the expression is written
             in a particular programming language.</para></listitem>
         </varlistentry>
       </variablelist>
@@ -775,38 +829,13 @@ time in the editing pane.
 Alternatively, an existing state can be dragged onto a composite state.
     </para>
 
-    <!-- Modifier -->
     <para>
 The description of a composite state is almost identical to that of a
 state (see <xref linkend="s1.ref.state"/> and so is not duplicated here. 
-The only differences are two additional fields, 
-which are described as follows.</para>
+The only differences is one additional field, 
+which is described as follows.</para>
 
     <variablelist>
-      <varlistentry>
-        <term><literal>Modifiers</literal></term>
-
-        <listitem>
-          <para>
-Check box: "Concurrent". 
-If this value is true, then the composite state is decomposed into two or more 
-            <literal>regions</literal>
-(usually associated with concurrent execution).
-          </para>
-          <note>
-            <para>
-Currently, the support in ArgoUML for concurrency 
-(regions and swimlanes) is weak:
-The actual definition of regions is not yet implemented 
-in the V0.14 release of ArgoUML.
-<!-- TODO: See enhancement issue 2433. -->
-It is advised to draw the regions as composite states,
-hence follow the rule: 
-a concurrent state can only contain composite states (i.e. regions).
-            </para>
-          </note>
-        </listitem>
-      </varlistentry>
 
       <!-- Subvertices -->
       <varlistentry>
@@ -833,8 +862,10 @@ Final State, Submachine State.
               </para>
               <warning>
                 <para>
-Using this way of adding states to the model is not a good idea with 
-the current version of ArgoUML; the implementation is incomplete.
+Using this way of adding states to the model is not a good idea, since
+you will have to add the state to the diagram later. 
+This can be done by selecting it in the explorer, 
+and activating the pop-up menu, and selecting <quote>Add to Diagram</quote>.
 It is advisable to use the toolbar of the diagram instead.
                 </para>
               </warning>
@@ -842,7 +873,6 @@ It is advisable to use the toolbar of the diagram instead.
             <listitem>
               <para><literal>Delete From Model</literal>
 Delete the selected state from the model. 
-This feature is always downlighted in the current version of ArgoUML.
               </para>
             </listitem>
           </itemizedlist>
@@ -869,10 +899,11 @@ Within the UML metamodel, <literal>Transition</literal> is a sub-class of
     <para>
 A transition is represented on a statechart diagram in ArgoUML as a
 line with arrow connecting the source to the destination state. 
-Next to this line is a string containing the following parts:
-If the transition is named, then the name is shown alongside the line
-followed by a colon (<literal>:</literal>).
-Then follows (if any) the trigger action (e.g. a Call Event).
+Next to this line is a string containing the following three parts:
+<!--If the transition is named, then the name is shown alongside the line
+followed by a colon (<literal>:</literal>).-->
+The trigger action (e.g. a Call Event), which may have parameters between 
+brackets <literal>()</literal>.
 Next follows (if any) the guard in square brackets (<literal>[]</literal>).
 Finally, if there is an effect (e.g. Call Action) defined, a slash (<literal>/</literal>) 
 followed by the expression of the action.
@@ -915,13 +946,13 @@ followed by the expression of the action.
           <listitem><para>Standard tab.</para></listitem>
         </varlistentry>
 
-        <!-- Entry for Style tab -->
+        <!-- Entry for Presentation tab -->
 
         <varlistentry>
-          <term><literal>Style</literal></term>
+          <term><literal>Presentation</literal></term>
 
           <listitem><para>Standard tab. The values for the bounds of the
-            transition have no effect, since the position of the transition
+            transition are downlighted, since the position of the transition
             is defined by its end points.</para>
 
           </listitem>
@@ -941,17 +972,6 @@ followed by the expression of the action.
             will be associated with their artifacts). This is not
             implemented in the current release of
             ArgoUML.</para></note></listitem>
-        </varlistentry>
-
-        <!-- Entry for Constraints tab -->
-
-        <varlistentry>
-          <term><literal>Constraints</literal></term>
-
-          <listitem>
-            <para>&constraintssupport;
-</para>
-          </listitem>
         </varlistentry>
 
         <!-- Entry for Tagged Values tab -->
@@ -989,6 +1009,15 @@ followed by the expression of the action.
             </itemizedlist>
           </listitem>
         </varlistentry>
+
+        <!-- Entry for Checklist tab -->
+
+        <varlistentry>
+          <term><literal>Checklist</literal></term>
+
+          <listitem><para>Standard tab for a transition. </para></listitem>
+        </varlistentry>
+
       </variablelist>
     </sect2>
 
@@ -1013,6 +1042,34 @@ Navigate up in the hierarchy to the parent state machine.
           </para></listitem>
         </varlistentry>
 
+        <!-- Entry for New stereotype button -->
+
+        <varlistentry>
+          <term><guiicon><inlinemediaobject><imageobject><imagedata
+            format="GIF" align="center"
+            fileref="images/icons/stereotype.gif"/>
+            </imageobject></inlinemediaobject></guiicon> 
+	        <literal>New Stereotype</literal>
+        </term>
+          <listitem>
+            <indexterm>
+              <primary>Add Stereotype</primary>
+            </indexterm>
+            <indexterm>
+              <primary>New Stereotype</primary>
+            </indexterm>
+            <indexterm>
+              <primary>Create New</primary>
+              <secondary>Stereotype</secondary>
+            </indexterm>
+
+            <para>
+			  This creates a new Stereotype (see <xref
+              linkend="s1.ref.stereotype"/>) for the selected transition, 
+              navigating immediately to the properties tab
+              for that stereotype.</para>
+		  </listitem>
+        </varlistentry>
 
         <!-- Entry for Delete button -->
 
@@ -1164,7 +1221,7 @@ Text box. Shows the trigger event (if any) which invokes this transition.
             </para>
 
             <note><para>
-UML does not require there to be a trigger, if a guard is defined. 
+UML does not require there to be a trigger, e.g. when a guard is defined. 
 The transition is taken immediately if the guard is true.
             </para></note>
 
@@ -1266,13 +1323,13 @@ This feature is always downlighted in the current version of ArgoUML.
       event within the UML metamodel.</para>
 
     <itemizedlist>
-      <listitem><para><literal>SignalEvent</literal>. Associated with a signal,
-        this event is caused by the signal being raised.</para></listitem>
-
       <listitem><para><literal>CallEvent</literal>. Associated with an
         operation of a class, this event is caused by a call to the given
         operation. The expected effect is that the steps of the operation will
         be executed.</para></listitem>
+
+      <listitem><para><literal>SignalEvent</literal>. Associated with a signal,
+        this event is caused by the signal being raised.</para></listitem>
 
       <listitem><para><literal>TimeEvent</literal>. An event cause by
       expiration of a timing deadline.</para></listitem>
@@ -1285,21 +1342,6 @@ This feature is always downlighted in the current version of ArgoUML.
     <para>
 An event is represented by its name.
     </para>
-
-    <caution><para>
-The V0.14 release of ArgoUML does not allow entry of the
-<!-- TODO: See enhancement issue ... -->
-parameters of the event.
-    </para></caution>
-
-    <caution><para>
-The V0.14 release of ArgoUML has only partially implemented events. 
-In practice, only the name can be specified,
-there is no difference between the 4 kinds of events described above.
-The name field should be used to indicate that it is a 
-signal, call, timing or change event.
-<!-- See issue 2288 and maybe others... -->
-    </para></caution>
 
     <!-- Event details tabs -->
 
@@ -1339,9 +1381,6 @@ The details tabs that are active for events are as follows.
           <listitem><para>Standard tab.</para></listitem>
         </varlistentry>
 
-        <!-- Entry for Style tab -->
-        <!-- MVW: Always downlighted -->
-
         <!-- Entry for Source tab -->
 
         <varlistentry>
@@ -1354,20 +1393,9 @@ Standard tab.
 
             <note><para>
 In the fullness of time this tab will contain code to implement the event. 
-This is not implemented in the V0.14 release of ArgoUML.
+This is not implemented in the V0.18 release of ArgoUML.
 <!-- TODO: See enhancement issue ... -->
             </para></note>
-          </listitem>
-        </varlistentry>
-
-        <!-- Entry for Constraints tab -->
-
-        <varlistentry>
-          <term><literal>Constraints</literal></term>
-
-          <listitem>
-            <para>&constraintssupport;
-</para>
           </listitem>
         </varlistentry>
 
@@ -1427,13 +1455,42 @@ tagged values defined.
             structure.</para></listitem>
         </varlistentry>
 
-        <!-- Entry for Add parameter -->
+        <!-- Entry for New stereotype button -->
+
+        <varlistentry>
+          <term><guiicon><inlinemediaobject><imageobject><imagedata
+            format="GIF" align="center"
+            fileref="images/icons/stereotype.gif"/>
+            </imageobject></inlinemediaobject></guiicon> 
+	        <literal>New Stereotype</literal>
+        </term>
+          <listitem>
+            <indexterm>
+              <primary>Add Stereotype</primary>
+            </indexterm>
+            <indexterm>
+              <primary>New Stereotype</primary>
+            </indexterm>
+            <indexterm>
+              <primary>Create New</primary>
+              <secondary>Stereotype</secondary>
+            </indexterm>
+
+            <para>
+			  This creates a new Stereotype (see <xref
+              linkend="s1.ref.stereotype"/>) for the selected event, 
+              navigating immediately to the properties tab
+              for that stereotype.</para>
+		  </listitem>
+        </varlistentry>
+
+        <!-- Entry for New parameter -->
 
         <varlistentry>
           <term><guiicon><inlinemediaobject><imageobject><imagedata
             format="GIF" align="center"
             fileref="images/icons/parameter.gif"/>
-          </imageobject></inlinemediaobject></guiicon> <literal>Add
+          </imageobject></inlinemediaobject></guiicon> <literal>New
             parameter</literal></term>
 
           <listitem><para>This creates a new parameter for the event
@@ -1448,6 +1505,20 @@ and there is no way to enter parameters.
 
             </listitem>
         </varlistentry>
+
+        <!-- Entry for Delete button -->
+
+        <varlistentry>
+          <term><guiicon><inlinemediaobject><imageobject><imagedata
+            format="GIF" align="center"
+            fileref="images/icons/property_delete.gif"/>
+          </imageobject></inlinemediaobject></guiicon>
+            <literal>Delete</literal></term>
+
+          <listitem><para>This deletes the event from the
+            model.</para></listitem>
+        </varlistentry>
+
       </variablelist>
     </sect2>
 
@@ -1520,6 +1591,17 @@ stereotype property panel (see <xref linkend="s1.ref.stereotype"/>).
 
         <!-- Entry for Namespace -->
 
+        <varlistentry>
+          <term><literal>Namespace</literal></term>
+
+          <listitem>
+            <para>Text field.
+			  Shows the namespace for the event.
+			  This is the package hierarchy.
+		    </para>
+          </listitem>
+        </varlistentry>
+
         <!-- Entry for Parameters -->
 
         <varlistentry>
@@ -1534,27 +1616,30 @@ stereotype property panel (see <xref linkend="s1.ref.stereotype"/>).
 &Button1; double-click on any of the parameters
 navigates to that parameter, 
 &button2; click brings up a pop up
-menu with four entries.
+			  menu with one entry.
             </para>
 
             <itemizedlist>
-              <listitem><para><literal>New</literal>. 
+              <listitem><para><literal>New Parameter</literal>. 
                 Create a new parameter
                 and navigate to it.</para></listitem>
-  
-              <listitem><para><literal>Move Up</literal>. Only available where
-                there are two or more parameters, and the parameter selected is
-                not at the top. It is moved up one.</para></listitem>
+              </itemizedlist>
+          </listitem>
+        </varlistentry>
+        
+        <!-- Entry for Transition -->
+        <varlistentry>
+          <term><literal>Transition</literal></term>
 
-              <listitem><para><literal>Move Down</literal>. Only available where
-                there are two or more parameters listed, and the parameter
-                selected is not at the bottom. It is moved down
-                one.</para></listitem> 
-
-              <listitem><para><literal>Delete From Model</literal>. 
-Deletes the selected parameter from the model.
-              </para></listitem>
-            </itemizedlist>
+          <listitem>
+            <para>
+			  This shows the transition caused by the event.
+            </para>
+            
+            <para>
+			  &Button1; double-click on the transition
+			  navigates to that transition.
+            </para>
           </listitem>
         </varlistentry>
         
@@ -1564,9 +1649,9 @@ Deletes the selected parameter from the model.
 
           <listitem>
             <para>
-Only present for a Call Event.
-The V0.14 release of ArgoUML does not allow entry of the operation.
-<!-- TODO: See enhancement issue ... -->
+			  Drop-down selector. Only present for a Call Event.
+			  This allows specifying the operation that 
+			  causes the event when called.			  
             </para>
           </listitem>
         </varlistentry>
@@ -1627,9 +1712,6 @@ brackets (<literal>[]</literal>).
           <listitem><para>Standard tab.</para></listitem>
         </varlistentry>
 
-        <!-- Entry for Style tab -->
-        <!-- MVW: Always downlighted -->
-
         <!-- Entry for Source tab -->
 
         <varlistentry>
@@ -1641,17 +1723,6 @@ brackets (<literal>[]</literal>).
           <note><para>In the fullness of time this tab will contain code to
             implement the guard. This is not implemented in the current
             release of ArgoUML.</para></note></listitem>
-        </varlistentry>
-
-        <!-- Entry for Constraints tab -->
-
-        <varlistentry>
-          <term><literal>Constraints</literal></term>
-
-          <listitem>
-            <para>&constraintssupport;
-</para>
-          </listitem>
         </varlistentry>
 
         <!-- Entry for Tagged Values tab -->
@@ -1704,6 +1775,35 @@ brackets (<literal>[]</literal>).
 
           <listitem><para>Navigate up through the package
             structure.</para></listitem>
+        </varlistentry>
+
+        <!-- Entry for New stereotype button -->
+
+        <varlistentry>
+          <term><guiicon><inlinemediaobject><imageobject><imagedata
+            format="GIF" align="center"
+            fileref="images/icons/stereotype.gif"/>
+            </imageobject></inlinemediaobject></guiicon> 
+	        <literal>New Stereotype</literal>
+        </term>
+          <listitem>
+            <indexterm>
+              <primary>Add Stereotype</primary>
+            </indexterm>
+            <indexterm>
+              <primary>New Stereotype</primary>
+            </indexterm>
+            <indexterm>
+              <primary>Create New</primary>
+              <secondary>Stereotype</secondary>
+            </indexterm>
+
+            <para>
+			  This creates a new Stereotype (see <xref
+              linkend="s1.ref.stereotype"/>) for the selected guard, 
+              navigating immediately to the properties tab
+              for that stereotype.</para>
+		  </listitem>
         </varlistentry>
 
         <!-- Entry for Delete button -->
@@ -1824,8 +1924,9 @@ Text box, showing the transition that owns this guard.
           <term><literal>Language</literal></term>
 
           <listitem><para>Text box. 
-It may be useful to indicate that the expression is written
-in a particular interpretation language with which to evaluate the text.
+			This indicates that the expression is written
+			in a particular interpretation language 
+			with which to evaluate the text.
           </para></listitem>
         </varlistentry>
 
@@ -1833,7 +1934,7 @@ in a particular interpretation language with which to evaluate the text.
     </sect2>
   </sect1>
 
-  <!-- Pseudostate artifact. Can't be created directly. -->
+  <!-- Pseudostate artifact. -->
 
   <sect1 id="s1.ref.pseudostate">
     <title>Pseudostate</title>
@@ -1856,8 +1957,8 @@ Within the UML metamodel, <literal>Pseudostate</literal> is a sub-class of
     <para>
 The representation of a pseudostate on a statechart diagram in ArgoUML
 depends on the particular kind of pseudostate: initial, deepHistory,
-shallowHistory, join, fork, junction and choice. ArgoUML does not allow
-you to place a pseudostate directly, but only through tools for the
+shallowHistory, join, fork, junction and choice. ArgoUML lets
+you place any pseudostate directly by tools for the
 specific types of pseudostate. These are described in separate sections
 below (see
       <xref linkend="s1.ref.initial_state"/>,
@@ -1867,10 +1968,6 @@ below (see
       <xref linkend="s1.ref.join_state"/>,
       <xref linkend="s1.ref.shallow_history"/> and
       <xref linkend="s1.ref.deep_history"/>).</para>
-
-    <caution><para>The V0.14 release of ArgoUML does not provide support
-      <!-- TODO: See enhancement issue ... -->
-      for a junction pseudostate.</para></caution>
 
     <!-- Pseudostate details tabs -->
 
@@ -1909,18 +2006,13 @@ below (see
           <listitem><para>Standard tab.</para></listitem>
         </varlistentry>
 
-        <!-- Entry for Style tab -->
+        <!-- Entry for Presentation tab -->
 
         <varlistentry>
-          <term><literal>Style</literal></term>
+          <term><literal>Presentation</literal></term>
 
           <listitem><para>Standard tab.</para>
-
-          <caution><para>The <literal>Shadow</literal> field has no
-            effect&mdash; in the V0.14 release of ArgoUML. There are no
-            <!-- TODO: See enhancement issue ... -->
-            shadow effects provided for states on the
-            diagram.</para></caution></listitem>
+		  </listitem>
         </varlistentry>
 
         <!-- Entry for Source tab -->
@@ -1936,17 +2028,6 @@ below (see
             the V0.14 release of ArgoUML.
             <!-- TODO: See enhancement issue ... -->
           </para></note></listitem>
-        </varlistentry>
-
-        <!-- Entry for Constraints tab -->
-
-        <varlistentry>
-          <term><literal>Constraints</literal></term>
-
-          <listitem>
-            <para>&constraintssupport;
-</para>
-          </listitem>
         </varlistentry>
 
         <!-- Entry for Tagged Values tab -->
@@ -2001,6 +2082,35 @@ below (see
             structure.</para></listitem>
         </varlistentry>
 
+        <!-- Entry for New stereotype button -->
+
+        <varlistentry>
+          <term><guiicon><inlinemediaobject><imageobject><imagedata
+            format="GIF" align="center"
+            fileref="images/icons/stereotype.gif"/>
+            </imageobject></inlinemediaobject></guiicon> 
+	        <literal>New Stereotype</literal>
+        </term>
+          <listitem>
+            <indexterm>
+              <primary>Add Stereotype</primary>
+            </indexterm>
+            <indexterm>
+              <primary>New Stereotype</primary>
+            </indexterm>
+            <indexterm>
+              <primary>Create New</primary>
+              <secondary>Stereotype</secondary>
+            </indexterm>
+
+            <para>
+			  This creates a new Stereotype (see <xref
+              linkend="s1.ref.stereotype"/>) for the selected pseudostate, 
+              navigating immediately to the properties tab
+              for that stereotype.</para>
+		  </listitem>
+        </varlistentry>
+
         <!-- Entry for Delete button -->
 
         <varlistentry>
@@ -2016,9 +2126,6 @@ below (see
 
             <warning><para>
 This is a deletion from the model <emphasis>not</emphasis> just the diagram. 
-To remove a pseudostate from the diagram, but keep it within the model, 
-use the main menu <literal>Remove From Diagram</literal>
-(or press the Delete key).
             </para></warning>
           </listitem>
         </varlistentry>
@@ -2249,18 +2356,14 @@ which must have (at most) one outgoing transition.
           <listitem><para>Standard tab.</para></listitem>
         </varlistentry>
 
-        <!-- Entry for Style tab -->
+        <!-- Entry for Presentation tab -->
 
         <varlistentry>
-          <term><literal>Style</literal></term>
+          <term><literal>Presentation</literal></term>
 
           <listitem><para>Standard tab.</para>
 
-          <caution><para>The <literal>Shadow</literal> field has no
-            effect&mdash; in the V0.14 release of ArgoUML. There are no
-            <!-- TODO: See enhancement issue ... -->
-            shadow effects provided for states on the
-            diagram.</para></caution></listitem>
+          </listitem>
         </varlistentry>
 
         <!-- Entry for Source tab -->
@@ -2276,18 +2379,7 @@ Standard tab, containing just the name of the final state.
           <note><para>In the fullness of time this tab will contain any
             code to implement the final state. This is not implemented in
             <!-- TODO: See enhancement issue ... -->
-            the V0.14 release of ArgoUML.</para></note></listitem>
-        </varlistentry>
-
-        <!-- Entry for Constraints tab -->
-
-        <varlistentry>
-          <term><literal>Constraints</literal></term>
-
-          <listitem>
-            <para>&constraintssupport;
-</para>
-          </listitem>
+            the V0.18 release of ArgoUML.</para></note></listitem>
         </varlistentry>
 
         <!-- Entry for Tagged Values tab -->
@@ -2319,6 +2411,15 @@ Standard tab, containing just the name of the final state.
               the <emphasis>documentation tab</emphasis> under
               ArgoUML</para></note></listitem>
         </varlistentry>
+        
+        <!-- Entry for Checklist tab -->
+
+        <varlistentry>
+          <term><literal>Checklist</literal></term>
+
+          <listitem><para>Standard tab for a State. </para></listitem>
+        </varlistentry>
+
       </variablelist>
     </sect2>
 
@@ -2342,6 +2443,35 @@ Standard tab, containing just the name of the final state.
             structure.</para></listitem>
         </varlistentry>
 
+        <!-- Entry for New stereotype button -->
+
+        <varlistentry>
+          <term><guiicon><inlinemediaobject><imageobject><imagedata
+            format="GIF" align="center"
+            fileref="images/icons/stereotype.gif"/>
+            </imageobject></inlinemediaobject></guiicon> 
+	        <literal>New Stereotype</literal>
+        </term>
+          <listitem>
+            <indexterm>
+              <primary>Add Stereotype</primary>
+            </indexterm>
+            <indexterm>
+              <primary>New Stereotype</primary>
+            </indexterm>
+            <indexterm>
+              <primary>Create New</primary>
+              <secondary>Stereotype</secondary>
+            </indexterm>
+
+            <para>
+			  This creates a new Stereotype (see <xref
+              linkend="s1.ref.stereotype"/>) for the selected state, 
+              navigating immediately to the properties tab
+              for that stereotype.</para>
+		  </listitem>
+        </varlistentry>
+
         <!-- Entry for Delete button -->
 
         <varlistentry>
@@ -2353,11 +2483,10 @@ Standard tab, containing just the name of the final state.
 
           <listitem><para>This deletes the final state from the model</para>
 
-          <warning><para>This is a deletion from the model
-            <emphasis>not</emphasis> just the diagram. To delete a
-            final state from the diagram, but keep it within the model, use
-            the main menu <literal>Remove From Diagram</literal>
-            (or press the Delete key).</para></warning></listitem>
+            <warning><para>This is a deletion from the model
+              <emphasis>not</emphasis> just the diagram. 
+              </para></warning>
+          </listitem>
         </varlistentry>
       </variablelist>
     </sect2>
@@ -2475,13 +2604,10 @@ Delete the Entry-Action.
           <listitem><para>Text area. Lists any incoming transitions for the
             final state.</para>
 
-          <para>&Button1; click navigates to the selected transition,
-            &button2; gives a pop up menu with one entry.</para>
+          <para>&Button1; double-click navigates to the selected transition.
+          </para>
 
-          <itemizedlist>
-            <listitem><para><literal>Open</literal>. Navigate to the
-              selected transition.</para></listitem>
-          </itemizedlist></listitem>
+		  </listitem>
         </varlistentry>
 
         <!-- Entry for Internal Transitions -->
@@ -2499,27 +2625,18 @@ Which means that the Entry and Exit actions are not invoked.
             </para>
 
             <para>
-&Button1; double-click navigates to the selected transition,
-&button2; gives a pop up menu with one entry.
+			  &Button1; double-click navigates to the selected transition
             </para>
 
-            <itemizedlist>
-              <listitem>
-                <para><literal>New</literal>. 
-Add a new internal transition.
-                </para>
-              </listitem>
-            </itemizedlist>
           </listitem>
         </varlistentry>
-
 
       </variablelist>
     </sect2>
   </sect1>
 
   <!-- Junction. This is a pseudo state, which all have the same property
-       sheet. The pseudo states are Initial State, Junction, Branch, Fork, Join,
+       sheet. The pseudo states are Initial State, Junction, Choice, Fork, Join,
        Shallow History and Deep History but *NOT* Final State, which is a
        real state. -->
 
@@ -2551,20 +2668,20 @@ if all the guards labeling the other transitions are false.
     </para>
   </sect1>
 
-  <!-- Branch. This is a pseudo state, which all have the same property
-       sheet. The pseudo states are Initial State, Junction, Branch, Fork, Join,
+  <!-- Choice. This is a pseudo state, which all have the same property
+       sheet. The pseudo states are Initial State, Junction, Choice, Fork, Join,
        Shallow History and Deep History but *NOT* Final State, which is a
        real state. -->
 
   <sect1 id="s1.ref.branch_state">
-    <title>Branch</title>
+    <title>Choice</title>
 
     <para>
-Branch is a pseudostate (see <xref linkend="s1.ref.pseudostate"/>)
+Choice is a pseudostate (see <xref linkend="s1.ref.pseudostate"/>)
 which is used to split an incoming transition 
 into multiple outgoing transition segments 
 with different guard conditions.
-Hence, a Branch allows a dynamic choice of outgoing transitions. 
+Hence, a Choice allows a dynamic choice of outgoing transitions. 
 The chosen transition is that whose guard is true 
 at the time of the transition 
 (if more than one is true, one is selected at random).
@@ -2577,15 +2694,18 @@ This transition is enabled
 if all the guards labeling the other transitions are false.
     </para>
     
-    <note><para>UML calls this sort of branch a <literal>Choice</literal>. 
+    <note><para>This sort of pseudostate was formerly called a 
+      <literal>Branch</literal> by ArgoUML. 
     </para></note>
 
-    <para>A branch is represented on the diagram as a small solid (white by default)
-      circle (reminiscent of a small state icon).</para>
+    <para>A choice is represented on the diagram as 
+      a small solid (white by default)
+      circle (reminiscent of a small state icon).
+    </para>
   </sect1>
 
   <!-- Fork. This is a pseudo state, which all have the same property
-       sheet. The pseudo states are Initial State, Branch, Fork, Join,
+       sheet. The pseudo states are Initial State, Choice, Fork, Join,
        Shallow History and Deep History but *NOT* Final State, which is a
        real state. -->
 
@@ -2597,9 +2717,7 @@ which splits a transition into two or more concurrent
       transitions.</para>
 
     <caution><para>The outgoing transitions should not have
-      guards. However the V0.14 release of ArgoUML will not enforce
-      <!-- TODO: See enhancement issue ... -->
-      this.
+      guards. However ArgoUML will not enforce this.
     </para></caution>
 
     <para>A fork is represented on the diagram as a solid (black by default) 
@@ -2614,7 +2732,7 @@ and dragging with &button1; one of its corners.
 
 
   <!-- Join. This is a pseudo state, which all have the same property
-       sheet. The pseudo states are Initial State, Branch, Fork, Join,
+       sheet. The pseudo states are Initial State, Choice, Fork, Join,
        Shallow History and Deep History but *NOT* Final State, which is a
        real state. -->
 
@@ -2626,9 +2744,7 @@ and dragging with &button1; one of its corners.
       transition.</para>
 
     <caution><para>The incoming transitions should not have
-      guards. However the V0.14 release of ArgoUML will not enforce
-      this.
-      <!-- TODO: See enhancement issue ... -->
+      guards. However ArgoUML will not enforce this.
     </para></caution>
 
     <para>A join is represented on the diagram as a solid (black by default)
@@ -2643,7 +2759,7 @@ and dragging  with &button1; one of its corners.
 
 
   <!-- Shallow History. This is a pseudo state, which all have the same
-       property sheet. The pseudo states are Initial State, Branch, Fork,
+       property sheet. The pseudo states are Initial State, Choice, Fork,
        Join, Shallow History and Deep History but *NOT* Final State,
        which is a real state. -->
 
@@ -2677,7 +2793,7 @@ then the history pseudostate itself.
   </sect1>
 
   <!-- Deep History. This is a pseudo state, which all have the same
-       property sheet. The pseudo states are Initial State, Branch, Fork,
+       property sheet. The pseudo states are Initial State, Choice, Fork,
        Join, Shallow History and Deep History but *NOT* Final State,
        which is a real state. -->
 
