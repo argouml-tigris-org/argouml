@@ -46,6 +46,7 @@ public class PropPanelButton extends JButton
         Logger.getLogger(PropPanelButton.class);
 
     private PropPanel propPanel;
+
     /**
      * The action method to be executed.
      */
@@ -60,7 +61,9 @@ public class PropPanelButton extends JButton
     private Method enabledMethod;
     private static Object[] noArgs = {};
 
-    /** Constructor for a new button in the propertypanel.
+    /** 
+     * Constructor for a new button in the propertypanel.
+     * 
      * @param thePropPanel the property panel to use (usually this)
      * @param icon the icon of this button (choose one 
      *             from PropPanelModelElement)
@@ -73,7 +76,7 @@ public class PropPanelButton extends JButton
      *                  if actionMethod is filled.
      * @param toolTipText the text for the tooltip
      */
-    public PropPanelButton(
+    private PropPanelButton(
             PropPanel thePropPanel,
             Icon icon,
             String toolTipText,
@@ -125,7 +128,9 @@ public class PropPanelButton extends JButton
     
     /**
      * @deprecated as of 0.17.1. This constructor constructs 
-     *             a proppanel button using the old reflection method. 
+     * a proppanel button using the old reflection method. 
+     * Replaced by the other public constructor that uses an Action 
+     * instead of reflection. 
      *
      * @param pp the properties panel
      * @param icon the icon
@@ -234,8 +239,9 @@ public class PropPanelButton extends JButton
     public void propertySet(final MElementEvent event) {
     }
 
-    /** actionPerfomed invokes the defined action via reflection for this
-     *  button.
+    /** 
+     * ActionPerfomed invokes the defined action-method via reflection for this
+     * button (deprecated WOW), or the actionPerformed of the given Action. 
      *
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
