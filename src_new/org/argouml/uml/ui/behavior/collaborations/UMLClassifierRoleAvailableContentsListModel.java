@@ -31,6 +31,7 @@ import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.UmlModelEventPump;
 import org.argouml.uml.ui.UMLModelElementListModel2;
+import org.tigris.gef.base.Diagram;
 import org.tigris.gef.presentation.Fig;
 
 import ru.novosoft.uml.MElementEvent;
@@ -92,7 +93,7 @@ public class UMLClassifierRoleAvailableContentsListModel
         theNewTarget = theNewTarget instanceof Fig
             ? ((Fig) theNewTarget).getOwner() : theNewTarget;
         if (ModelFacade.isABase(theNewTarget)
-                || ModelFacade.isADiagram(theNewTarget)) {
+                || theNewTarget instanceof Diagram) {
             if (getTarget() != null) {
                 Collection bases = ModelFacade.getBases(getTarget());
                 Iterator it = bases.iterator();

@@ -7,7 +7,6 @@
 // documentation are copyrighted by The Regents of the University of
 // California. The software program and documentation are supplied "AS
 // IS", without any accompanying services from The Regents. The Regents
-// does not warrant that the operation of the program will be
 // uninterrupted or error-free. The end-user understands that the program
 // was developed for research purposes and is advised not to rely
 // exclusively on the program for any reason.  IN NO EVENT SHALL THE
@@ -34,7 +33,6 @@ import java.util.Set;
 import java.util.Vector;
 
 import org.apache.log4j.Logger;
-import org.tigris.gef.base.Diagram;
 
 import ru.novosoft.uml.MBase;
 import ru.novosoft.uml.MElementListener;
@@ -2372,15 +2370,15 @@ public class ModelFacade {
     ////////////////////////////////////////////////////////////////
     // Recognizer methods for the diagrams (in alphabetic order)
 
-    /**
-     * Recognizer for Diagram.
-     *
-     * @param handle candidate
-     * @return true if handle is a diagram.
-     */
-    public static boolean isADiagram(Object handle) {
-        return handle instanceof Diagram;
-    }
+//    /**
+//     * Recognizer for Diagram.
+//     *
+//     * @param handle candidate
+//     * @return true if handle is a diagram.
+//     */
+//    public static boolean isADiagram(Object handle) {
+//        return handle instanceof Diagram;
+//    }
 
     ////////////////////////////////////////////////////////////////
     // Getters for the UML model (in alphabetic order)
@@ -4787,8 +4785,8 @@ public class ModelFacade {
         String name = null;
         if (handle instanceof MModelElement) {
             name = ((MModelElement) handle).getName();
-        } else if (handle instanceof Diagram) {
-            name = ((Diagram) handle).getName();
+//        } else if (handle instanceof Diagram) {
+//            name = ((Diagram) handle).getName();
         } else if (handle instanceof MOrderingKind) {
             name = ((MOrderingKind) handle).getName();
         } else if (handle instanceof MAggregationKind) {

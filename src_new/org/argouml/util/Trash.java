@@ -28,6 +28,7 @@ import java.util.Vector;
 
 import org.apache.log4j.Logger;
 import org.argouml.model.ModelFacade;
+import org.tigris.gef.base.Diagram;
 
 /**
  * In the future this will be a trash can icon in the project
@@ -84,7 +85,7 @@ public final class Trash {
 	    // me.setNamespace(Trash_Model);
 	    LOG.debug("added " + obj + " to trash");
 	}
-	if (ModelFacade.isADiagram(obj)) {
+	if (obj instanceof Diagram) {
 	    TrashItem ti = new TrashItem(obj, places);
 	    contents.addElement(ti);
 	}

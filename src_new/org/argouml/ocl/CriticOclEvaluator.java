@@ -27,6 +27,7 @@ package org.argouml.ocl;
 import java.util.*;
 
 import org.argouml.model.ModelFacade;
+import org.tigris.gef.base.Diagram;
 import org.tigris.gef.ocl.ExpansionException;
 
 
@@ -70,11 +71,11 @@ public class CriticOclEvaluator extends org.tigris.gef.ocl.OCLEvaluator {
             res = ModelFacade.getName(self);
             if (res == null || "".equals(res)) res = "(anon)";
         }
-        if (GET_NAME_EXPR_1.equals(expr) && ModelFacade.isADiagram(self)) {
+        if (GET_NAME_EXPR_1.equals(expr) && self instanceof Diagram) {
             res = ModelFacade.getName(self);
             if (res == null || "".equals(res)) res = "(anon)";
         }
-        if (GET_NAME_EXPR_2.equals(expr) && ModelFacade.isADiagram(self)) {
+        if (GET_NAME_EXPR_2.equals(expr) && self instanceof Diagram) {
             res = ModelFacade.getName(self);
             if (res == null || "".equals(res)) res = "(anon)";
         }

@@ -259,7 +259,7 @@ public final class TargetManager {
         }
 
         private void removeHistoryTarget(Object o) {
-            if (ModelFacade.isADiagram(o)) {
+            if (o instanceof Diagram) {
                 Iterator it = ((Diagram) o).getEdges(null).iterator();
                 while (it.hasNext()) {
                     removeHistoryTarget(it.next());
