@@ -47,15 +47,18 @@ import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 /**
- * This class manages the projects loaded in argouml. It is a
- * singleton. Classes in Argouml can ask this class for the current
+ * This class manages the projects loaded in argouml.
+ *
+ * Classes in Argouml can ask this class for the current
  * project and set the current project.  Since we only have one
  * project in ArgoUML at the moment, this class does not manage a list
  * of projects like one would expect. This could be a nice extension
  * for the future of argouml.  As soon as the current project is
  * changed, a property changed event is fired.
+ *
  * @since Nov 17, 2002
  * @author jaap.branderhorst@xs4all.nl
+ * @stereotype singleton
  */
 public final class ProjectManager {
 
