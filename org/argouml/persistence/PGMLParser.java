@@ -22,7 +22,7 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.argouml.xml.pgml;
+package org.argouml.persistence;
 import java.io.InputStream;
 import java.util.*;
 
@@ -209,7 +209,7 @@ public class PGMLParser extends org.tigris.gef.xml.pgml.PGMLParser {
     }
 
     private String[] entityPaths = {
-        "/org/argouml/xml/dtd/",
+        "/org/argouml/persistence/",
         "/org/tigris/gef/xml/dtd/" 
     };
     

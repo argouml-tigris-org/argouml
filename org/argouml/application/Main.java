@@ -53,10 +53,10 @@ import org.argouml.application.security.ArgoSecurityManager;
 import org.argouml.cognitive.AbstractCognitiveTranslator;
 import org.argouml.cognitive.Designer;
 import org.argouml.i18n.Translator;
-import org.argouml.kernel.PersisterManager;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.moduleloader.ModuleLoader2;
+import org.argouml.persistence.PersistenceManager;
 import org.argouml.ui.Actions;
 import org.argouml.ui.LookAndFeelMgr;
 import org.argouml.ui.ProjectBrowser;
@@ -235,7 +235,7 @@ public class Main {
         URL urlToOpen = null;
 
         if (projectName != null) {
-            projectName = (new PersisterManager()).fixExtension(projectName);
+            projectName = (new PersistenceManager()).fixExtension(projectName);
             urlToOpen = projectUrl(projectName, urlToOpen);
         }
 

@@ -39,11 +39,11 @@ import org.argouml.cognitive.ResolvedCritic;
 import org.argouml.cognitive.ToDoItem;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectMember;
-import org.argouml.kernel.SaveException;
 import org.argouml.ocl.OCLExpander;
-import org.argouml.xml.todo.ResolvedCriticXMLHelper;
-import org.argouml.xml.todo.ToDoItemXMLHelper;
-import org.argouml.xml.todo.TodoParser;
+import org.argouml.persistence.ResolvedCriticXMLHelper;
+import org.argouml.persistence.SaveException;
+import org.argouml.persistence.ToDoItemXMLHelper;
+import org.argouml.persistence.TodoParser;
 import org.tigris.gef.ocl.ExpansionException;
 import org.tigris.gef.ocl.TemplateReader;
 
@@ -60,7 +60,7 @@ public class ProjectMemberTodoList extends ProjectMember {
     private static final Logger LOG =
         Logger.getLogger(ProjectMemberTodoList.class);
 
-    private static final String TO_DO_TEE = "/org/argouml/xml/dtd/todo.tee";
+    private static final String TO_DO_TEE = "/org/argouml/persistence/todo.tee";
     private static final String TO_DO_EXT = ".todo";
 
     /**

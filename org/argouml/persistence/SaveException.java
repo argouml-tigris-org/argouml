@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2003 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -22,57 +22,42 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.argouml.xml.argo;
+/*
+ * UMLException.java
+ *
+ * Created on 16 March 2003, 12:38
+ */
 
-import java.io.IOException;
-import java.io.InputStream;
-
-import org.apache.log4j.Logger;
-import org.argouml.kernel.OpenException;
-import org.argouml.kernel.Project;
-import org.argouml.ui.ArgoDiagram;
-import org.argouml.xml.pgml.PGMLParser;
+package org.argouml.persistence;
 
 /**
- * The file persister for the diagram members.
+ * An exception to be thrown during failure of a save
+ * to some medium.
  * @author Bob Tarling
  */
-public class DiagramMemberFilePersister extends MemberFilePersister {
-    
-    /** logger */
-    private static final Logger LOG =
-        Logger.getLogger(ModelMemberFilePersister.class);
-    
+public class SaveException extends PersistenceException {
     /**
-     * @see org.argouml.xml.argo.MemberFilePersister#load(org.argouml.kernel.Project,
-     * java.io.InputStream)
+     * The constructor.
+     * 
+     * @param message the message to be shown
+     * @param cause the cause of the exception
      */
-    public void load(Project project, InputStream inputStream)
-        throws OpenException {
-        
-        try {
-            PGMLParser parser = new PGMLParser();
-            parser.setOwnerRegistry(project.getUUIDRefs());
-            ArgoDiagram d =
-                    (ArgoDiagram) parser.readDiagram(
-                                  inputStream,
-                                  false);
-            inputStream.close();
-            if (d != null) {
-                project.addMember(d);
-            }
-            else {
-                LOG.error("An error occurred while loading PGML");
-            }
-        } catch (IOException e) {
-            throw new OpenException(e);
-        }
+    public SaveException(String message, Throwable cause) {
+        super(message, cause);
     }
     
     /**
-     * @see org.argouml.xml.argo.MemberFilePersister#getTag()
+     * @param message the message to be shown
      */
-    public String getMainTag() {
-        return "pgml";
+    public SaveException(String message) {
+        super(message);
+    }
+    
+    /**
+     * @param cause the cause of the exception
+     */
+    public SaveException(Throwable cause) {
+        super(cause);
     }
 }
+

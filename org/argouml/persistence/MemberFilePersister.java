@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2003 The Regents of the University of California. All
+// Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -22,42 +22,31 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-/*
- * UMLException.java
- *
- * Created on 16 March 2003, 12:38
- */
+package org.argouml.persistence;
 
-package org.argouml.kernel;
+import java.io.InputStream;
+
+import org.argouml.kernel.Project;
 
 /**
- * An exception to be thrown during failure of a save
- * to some medium.
+ * A base class file persister for project members.
  * @author Bob Tarling
  */
-public class SaveException extends PersistenceException {
+public abstract class MemberFilePersister {
     /**
-     * The constructor.
-     * 
-     * @param message the message to be shown
-     * @param cause the cause of the exception
+     * Load the member based on instance variables
+     * which should have been setup in the constructor.
+     *
+     * @param project the project to persist
+     * @param inputStream the inputStream to parse to load the member.
+     * @throws OpenException on any parsing errors.
      */
-    public SaveException(String message, Throwable cause) {
-        super(message, cause);
-    }
+    public abstract void load(Project project, InputStream inputStream)
+        throws OpenException;
     
     /**
-     * @param message the message to be shown
+     * Gets the tag name which is the root tag for this member.
+     * @return tag name.
      */
-    public SaveException(String message) {
-        super(message);
-    }
-    
-    /**
-     * @param cause the cause of the exception
-     */
-    public SaveException(Throwable cause) {
-        super(cause);
-    }
+    public abstract String getMainTag();
 }
-

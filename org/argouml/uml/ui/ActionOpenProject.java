@@ -36,9 +36,9 @@ import javax.swing.filechooser.FileFilter;
 import org.apache.log4j.Logger;
 import org.argouml.application.api.CommandLineInterface;
 import org.argouml.i18n.Translator;
-import org.argouml.kernel.PersisterManager;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
+import org.argouml.persistence.PersistenceManager;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.ui.cmd.GenericArgoMenuBar;
 import org.argouml.util.osdep.OsUtil;
@@ -79,7 +79,7 @@ public class ActionOpenProject extends ActionFileOperations
     public void actionPerformed(ActionEvent e) {
         ProjectBrowser pb = ProjectBrowser.getInstance();
         Project p = ProjectManager.getManager().getCurrentProject();
-        PersisterManager pm = new PersisterManager();
+        PersistenceManager pm = new PersistenceManager();
         
         if (!askConfirmationAndSave()) return;
         

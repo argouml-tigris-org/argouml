@@ -22,9 +22,8 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.argouml.xml.argo;
+package org.argouml.persistence;
 
-import org.argouml.xml.XMLTokenTableBase;
 
 /** this needs work,AFAIK none of these strings are
  * saved in the final output in a zargo.
@@ -79,7 +78,7 @@ public class ArgoTokenTable extends XMLTokenTableBase {
     // protected methods
 
     /**
-     * @see org.argouml.xml.XMLTokenTableBase#setupTokens()
+     * @see org.argouml.persistence.XMLTokenTableBase#setupTokens()
      */
     protected void setupTokens()
     {

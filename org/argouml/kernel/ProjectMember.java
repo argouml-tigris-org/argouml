@@ -32,6 +32,8 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.Writer;
 
+import org.argouml.persistence.SaveException;
+
 /**
  * A member of the project.
  *

@@ -22,7 +22,7 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.argouml.xml.todo;
+package org.argouml.persistence;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -35,8 +35,6 @@ import org.argouml.cognitive.ResolvedCritic;
 import org.argouml.cognitive.ToDoItem;
 import org.xml.sax.SAXException;
 
-import org.argouml.xml.SAXParserBase;
-import org.argouml.xml.XMLElement;
 import org.tigris.gef.util.VectorSet;
 
 // Needs-more-work: Reuse the offender Vector.

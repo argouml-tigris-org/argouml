@@ -33,9 +33,9 @@ import java.io.Writer;
 import org.apache.log4j.Logger;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectMember;
-import org.argouml.kernel.SaveException;
 import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.XmiWriter;
+import org.argouml.persistence.SaveException;
 import org.xml.sax.SAXException;
 
 /**

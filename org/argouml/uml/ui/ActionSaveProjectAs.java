@@ -32,10 +32,10 @@ import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileFilter;
 
 import org.argouml.i18n.Translator;
-import org.argouml.kernel.AbstractFilePersister;
-import org.argouml.kernel.PersisterManager;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
+import org.argouml.persistence.AbstractFilePersister;
+import org.argouml.persistence.PersistenceManager;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.util.osdep.OsUtil;
 
@@ -96,7 +96,7 @@ public class ActionSaveProjectAs extends ActionSaveProject {
     protected File getNewFile() {
         ProjectBrowser pb = ProjectBrowser.getInstance();
         Project p = ProjectManager.getManager().getCurrentProject();
-        PersisterManager pm = new PersisterManager();
+        PersistenceManager pm = new PersistenceManager();
 
         JFileChooser chooser = null;
         URL url = p.getURL();

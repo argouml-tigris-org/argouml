@@ -21,7 +21,7 @@
 // PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
-package org.argouml.kernel;
+package org.argouml.persistence;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -41,14 +41,14 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.log4j.Logger;
 import org.argouml.application.ArgoVersion;
+import org.argouml.kernel.Project;
+import org.argouml.kernel.ProjectMember;
 import org.argouml.model.uml.UmlHelper;
 import org.argouml.model.uml.XmiReader;
 import org.argouml.ui.ArgoDiagram;
 import org.argouml.uml.cognitive.ProjectMemberTodoList;
 import org.argouml.util.FileConstants;
 import org.argouml.util.SubInputStream;
-import org.argouml.xml.argo.ArgoParser;
-import org.argouml.xml.pgml.PGMLParser;
 import org.tigris.gef.ocl.OCLExpander;
 import org.tigris.gef.ocl.TemplateReader;
 import org.xml.sax.InputSource;
@@ -69,7 +69,7 @@ public class ZargoFilePersister extends AbstractFilePersister {
      * does not contain the detail of member elements.
      */
     private static final String ARGO_MINI_TEE =
-        "/org/argouml/xml/dtd/argo.tee";
+        "/org/argouml/persistence/argo.tee";
     
     /**
      * The constructor.
@@ -78,14 +78,14 @@ public class ZargoFilePersister extends AbstractFilePersister {
     }
 
     /**
-     * @see org.argouml.kernel.AbstractFilePersister#getExtension()
+     * @see org.argouml.persistence.AbstractFilePersister#getExtension()
      */
     public String getExtension() {
         return "zargo";
     }
     
     /**
-     * @see org.argouml.kernel.AbstractFilePersister#getDesc()
+     * @see org.argouml.persistence.AbstractFilePersister#getDesc()
      */
     protected String getDesc() {
         return "ArgoUML compressed project file";
@@ -100,7 +100,7 @@ public class ZargoFilePersister extends AbstractFilePersister {
      * @param project the project to save
      * @throws SaveException when anything goes wrong
      *
-     * @see org.argouml.kernel.ProjectFilePersister#save(
+     * @see org.argouml.persistence.ProjectFilePersister#save(
      * org.argouml.kernel.Project, java.io.File)
      */
     public void doSave(Project project, File file)
@@ -224,7 +224,7 @@ public class ZargoFilePersister extends AbstractFilePersister {
     }
 
     /**
-     * @see org.argouml.kernel.ProjectFilePersister#loadProject(java.net.URL)
+     * @see org.argouml.persistence.ProjectFilePersister#loadProject(java.net.URL)
      */
     public Project loadProject(URL url) throws OpenException {
         try {

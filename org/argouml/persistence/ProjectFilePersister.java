@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -21,33 +21,31 @@
 // PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+package org.argouml.persistence;
 
-package org.argouml.xml.argo;
+import java.io.File;
+import java.net.URL;
 
-import java.io.InputStream;
-
-import org.argouml.kernel.OpenException;
 import org.argouml.kernel.Project;
 
 /**
- * A base class file persister for project members.
+ * To persist a project to and from file storage.
+ * 
  * @author Bob Tarling
  */
-public abstract class MemberFilePersister {
-    /**
-     * Load the member based on instance variables
-     * which should have been setup in the constructor.
-     *
-     * @param project the project to persist
-     * @param inputStream the inputStream to parse to load the member.
-     * @throws OpenException on any parsing errors.
-     */
-    public abstract void load(Project project, InputStream inputStream)
-        throws OpenException;
+public interface ProjectFilePersister {
     
     /**
-     * Gets the tag name which is the root tag for this member.
-     * @return tag name.
+     * @param project the project to save
+     * @param file The file to write.
+     * @throws SaveException if anything goes wrong.
      */
-    public abstract String getMainTag();
+    public void save(Project project, File file) throws SaveException;
+    
+    /**
+     * @param url the url of the project to load
+     * @return the Project 
+     * @throws OpenException when we fail to open from this url
+     */
+    public Project loadProject(URL url) throws OpenException;
 }

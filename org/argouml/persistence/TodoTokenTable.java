@@ -22,9 +22,8 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.argouml.xml.todo;
+package org.argouml.persistence;
 
-import org.argouml.xml.XMLTokenTableBase;
 
 /**
  * An utility class that defines the strings required by the XML framework
@@ -90,7 +89,7 @@ public class TodoTokenTable extends XMLTokenTableBase {
     }
 
     /**
-     * @see org.argouml.xml.XMLTokenTableBase#setupTokens()
+     * @see org.argouml.persistence.XMLTokenTableBase#setupTokens()
      */
     protected void setupTokens()
     {

@@ -22,7 +22,7 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.argouml.xml;
+package org.argouml.persistence;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -285,7 +285,7 @@ public abstract class SAXParserBase extends DefaultHandler {
                     + " due to exception");
              
             String dtdName = systemId.substring(systemId.lastIndexOf('/') + 1);
-            String dtdPath = "/org/argouml/xml/dtd/" + dtdName;
+            String dtdPath = "/org/argouml/persistence/" + dtdName;
             InputStream is = SAXParserBase.class.getResourceAsStream(dtdPath);
             if (is == null) {
                 try {

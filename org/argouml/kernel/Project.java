@@ -42,6 +42,7 @@ import org.argouml.application.ArgoVersion;
 import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.ModelManagementHelper;
 import org.argouml.model.uml.UmlFactory;
+import org.argouml.persistence.PersistenceManager;
 import org.argouml.ui.ArgoDiagram;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.ui.explorer.ExplorerEventAdaptor;
@@ -157,7 +158,7 @@ public class Project implements java.io.Serializable, TargetListener {
      */
     public Project(URL theProjectUrl) {
         this();
-        url = (new PersisterManager()).fixUrlExtension(theProjectUrl);
+        url = (new PersistenceManager()).fixUrlExtension(theProjectUrl);
     }
 
     /**
@@ -240,7 +241,7 @@ public class Project implements java.io.Serializable, TargetListener {
      */
     public String getBaseName() {
         String n = getName();
-        n = (new PersisterManager()).getBaseName(n);
+        n = (new PersistenceManager()).getBaseName(n);
         return n;
     }
 
@@ -288,7 +289,7 @@ public class Project implements java.io.Serializable, TargetListener {
      */
     public void setURL(URL theUrl) {
         if (theUrl != null) {
-            theUrl = (new PersisterManager()).fixUrlExtension(theUrl);
+            theUrl = (new PersistenceManager()).fixUrlExtension(theUrl);
         }
 
         if (LOG.isDebugEnabled()) {
@@ -881,7 +882,7 @@ public class Project implements java.io.Serializable, TargetListener {
     /**
      * This is executed after a load.
      */
-    protected void postLoad() {
+    public void postLoad() {
         for (int i = 0; i < diagrams.size(); i++) {
             ((Diagram) diagrams.elementAt(i)).postLoad();
         }

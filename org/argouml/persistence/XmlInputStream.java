@@ -21,7 +21,7 @@
 // PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
-package org.argouml.xml.argo;
+package org.argouml.persistence;
 
 import java.io.BufferedInputStream;
 import java.io.IOException;
