@@ -1893,50 +1893,124 @@ nextProp:
     return trans;
   }
 
-  /** Parse a line of the form: "name: base" */
-  public void parseClassifierRole(MClassifierRole cls, String s) {
-    // strip any trailing semi-colons
-    s = s.trim();
-    if (s.length() == 0) return;
-    if (s.charAt(s.length()-1) == ';')
-      s = s.substring(0, s.length() - 2);
+  /**
+   * Parses a line on the form:
+   *
+   * <br>baselist := [base] [, base]*
+   * <br>classifierRole := [name] [/ role] [: baselist]
+   *
+   * <p><b>role</b> and <b>baselist</b> can be given in any order.
+   *
+   * <p>This syntax is compatible with the UML 1.3 specification.
+   *
+   * @param cls The MClassifierRole to apply any changes to.
+   * @param s The String to parse.
+   * @throws java.text.ParseException when it detects an error in the
+   *	attribute string. See also ParseError.getErrorOffset().
+   */
+  /* (formerly: "name: base" ) */
+  public void parseClassifierRole(MClassifierRole cls, String s)
+		throws ParseException {
+    String name = null;
+    String token;
+    String role = null;
+    String base = null;
+    Vector bases = null;
+    boolean hasColon = false;
+    boolean hasSlash = false;
 
-    String name = "";
-    String basefirst = "";
-    String bases = "";
-    StringTokenizer baseTokens = null;
+    try {
+	MyTokenizer st = new MyTokenizer(s, " ,\t,/,:,\\,");
 
-    if (s.indexOf(":", 0) > -1) {
-      name = s.substring(0, s.indexOf(":")).trim();
-      bases = s.substring(s.indexOf(":") + 1).trim();
-      baseTokens = new StringTokenizer(bases,",");
+	while (st.hasMoreTokens()) {
+	    token = st.nextToken();
+	    if (" ".equals(token) || "\t".equals(token)) {
+		; // Do nothing
+	    } else if ("/".equals(token)) {
+		hasSlash = true;
+		hasColon = false;
+
+		if (base != null)
+		    bases.add(base);
+		base = null;
+	    } else if (":".equals(token)) {
+		hasColon = true;
+		hasSlash = false;
+
+		if (bases == null)
+		    bases = new Vector();
+		if (base != null)
+		    bases.add(base);
+		base = null;
+	    } else if (",".equals(token)) {
+		if (base != null)
+		    bases.add(base);
+		base = null;
+	    } else if (hasColon) {
+		if (base != null)
+		    throw new ParseException("Extra text in Classifier Role",
+			st.getTokenIndex());
+
+		base = token;
+	    } else if (hasSlash) {
+		if (role != null)
+		    throw new ParseException("Extra text in Classifier Role",
+			st.getTokenIndex());
+
+		role = token;
+	    } else {
+		if (name != null)
+		    throw new ParseException("Extra text in Classifier Role",
+			st.getTokenIndex());
+
+		name = token;
+	    }
+	}
+    } catch (NoSuchElementException nsee) {
+	throw new ParseException("Unexpected end of attribute", s.length());
+    } catch (ParseException pre) {
+	System.out.println(pre);
+	throw pre;
     }
-    else {
-      name = s;
-    }
 
-    cls.setName(name);
+    if (base != null)
+	bases.add(base);
 
-    Collection col = cls.getBases();
-    if ((col != null) && (col.size()>0)) {
-      Iterator itcol = col.iterator();
-      while (itcol.hasNext()) {
-        MClassifier bse = (MClassifier) itcol.next();
-	if (bse!=null)
-	    cls.removeBase(bse);
-      }
-    }
+// Needs-more-work: What to do about object name???
+//    if (name != null)
+//	;
 
-    if (baseTokens!=null){
-	while(baseTokens.hasMoreElements()){
-	    String typeString = baseTokens.nextToken();
-	    MClassifier type = ProjectBrowser.TheInstance.getProject().findType(typeString);
-	    if (type!=null)
-		cls.addBase(type);
+    if (role != null)
+	cls.setName(role.trim());
+
+    if (bases != null) {
+	// Remove bases that aren't there anymore
+	Collection b = cls.getBases();
+	Iterator it = b.iterator();
+	MClassifier c;
+
+	while (it.hasNext()) {
+	    c = (MClassifier) it.next();
+	    if (!bases.contains(c.getName()))
+		cls.removeBase(c);
+	}
+
+	it = bases.iterator();
+addBases:
+	while (it.hasNext()) {
+	    String d = ((String) it.next()).trim();
+
+	    Iterator it2 = b.iterator();
+	    while (it2.hasNext()) {
+		c = (MClassifier) it2.next();
+		if (d.equals(c.getName()))
+		    continue addBases;
+	    }
+	    c = getType(d, cls.getNamespace());
+	    cls.addBase(c);
 	}
     }
-
-   }
+  }
 
   /** Parse a line of the form: "name: action" */
   public void parseMessage(MMessage mes, String s) {

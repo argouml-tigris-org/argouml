@@ -38,6 +38,7 @@ import java.awt.*;
 import java.util.*;
 import java.beans.*;
 import java.awt.event.*;
+import java.text.ParseException;
 import javax.swing.*;
 
 import ru.novosoft.uml.foundation.core.*;
@@ -460,7 +461,12 @@ public class FigClassifierRole extends FigNodeModelElement {
 
         if (ft == _name) {
             String s = ft.getText();
-            ParserDisplay.SINGLETON.parseClassifierRole(cls, s);
+	    try {
+		ParserDisplay.SINGLETON.parseClassifierRole(cls, s);
+		ProjectBrowser.TheInstance.getStatusBar().showStatus("");
+	    } catch (ParseException pe) {
+		ProjectBrowser.TheInstance.getStatusBar().showStatus("Error: " + pe + " at " + pe.getErrorOffset());
+	    }
         }
     }
 
@@ -510,7 +516,7 @@ public class FigClassifierRole extends FigNodeModelElement {
         // Build the final string and set it as the name text.
 
         if (_readyToEdit) {
-            if( nameStr == "" && baseString == "")
+            if( nameStr.length() == 0 && baseString.length() == 0)
                 _name.setText("");
             else
                 _name.setText("/" + nameStr.trim() + " : " + baseString);
