@@ -98,6 +98,7 @@ public class ActionNew extends UMLAction {
 	Designer.clearCritiquing();
 	// clean the history
 	TargetManager.getInstance().cleanHistory();
+        p.remove();
 	p = ProjectManager.getManager().makeEmptyProject();
 	FindDialog.getInstance().doClearTabs();
 	FindDialog.getInstance().doResetFields();

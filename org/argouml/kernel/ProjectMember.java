@@ -155,5 +155,10 @@ public abstract class ProjectMember {
       
     }
 
+    public void remove(){
+        
+        _name = null;
+        _project = null;
+    }
 } /* end class ProjectMember */
 

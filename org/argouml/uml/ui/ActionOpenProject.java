@@ -153,6 +153,7 @@ public class ActionOpenProject extends UMLAction {
                     Globals.setLastDirectory(path);
                     URL url = theFile.toURL();
                     if (url != null) {
+                        
 			loadProject(url);
                     }
 
@@ -258,6 +259,11 @@ public class ActionOpenProject extends UMLAction {
 			      + "These things cannot be restored. "
 			      + "You can continue working with what "
 			      + "was actually loaded.\n");
+            }
+            else if (oldProject != null){
+                
+                //prepare the old project for gc
+                ProjectManager.getManager().removeProject(oldProject);
             }
             ProjectManager.getManager().setCurrentProject(p);
             Designer.enableCritiquing();
