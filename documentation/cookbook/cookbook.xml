@@ -100,7 +100,7 @@ what requirements you need to fulfil in order to contribute.
 
       </sect2>
       <sect2>
-	<title>In this guide, you will not find...</title>
+	<title>In this Cookbook, you will not find...</title>
 	<para>
 Information on how to install and use ArgoUML.
 </para>
@@ -126,6 +126,302 @@ How to convince your project to use ArgoUML as a modelling tool.
      <para>
      The ArgoUML build process is driven by ant, and it is highly recommend that you stick to that. There are people known to build from JBuilder or Netbeans, but always make sure that your work compile with the plain vanilla build process.
      </para>
+      <para>
+Ant is a tool written in java developed for Apache that reads an xml-file
+with rules telling what to compile to what result and what files to include
+in what jar-file.
+</para>
+      <para>
+The rule file is named <filename>build.xml</filename>.
+There is one of those in every separately built directory
+(<filename class="directory">src_new</filename>,
+<filename class="directory">documentation</filename>, and
+<filename class="directory">modules/<replaceable>whatever</replaceable></filename>).
+</para>
+
+      <sect2>
+	<title>How ant is run from the ArgoUML development environment</title>
+	<para>
+For your convenience the ant tool of the correct version is present in the
+cvs repository of ArgoUML in the file 
+<filename class="libraryfile">argouml/lib/ant.jar</filename>.
+</para>
+	<para>
+Normally ant is started with the command
+<command>ant <replaceable>parameter</replaceable></command>
+but the ArgoUML cvs repository does not contain that convenience program
+so you would instead have to write:
+<command>java -Dant.home=<replaceable>/your/checked/out/copy/of/argouml</replaceable> -classpath <replaceable>a:complex:classpath</replaceable> -jar ant.jar <replaceable>parameter</replaceable></command>.
+</para>
+	<para>
+To help you there are instead two scripts (one for Unix and one for
+Windows) that are called <filename>build.sh</filename> and
+<filename>build.bat</filename> respectively present in most
+of the directories that contain a <filename>build.xml</filename> file.
+These contain some definitions of classpath to simplify the setup.
+All you have to do is to set the variables JAVA_HOME and ANT_HOME.
+</para>
+	<para>
+By setting JAVA_HOME to different values you can at different times
+build with different versions of jdk and java.
+</para>
+	<para>
+By setting ANT_HOME to different values you can at different times
+build with different versions of ant.
+This does however not work in the Windows case because of
+how <filename>build.bat</filename> is written.
+</para>
+	<sect3>
+	  <title>Compiling for Unix</title>
+	  <para>
+Here is what you need to do in order to compile and run 
+your checked out copy of ArgoUML under Unix.
+</para>
+	  <orderedlist>
+	    <listitem>
+	      <para><command>JAVA_HOME=<replaceable>/where/you/have/installed/jdk</replaceable></command></para>
+	    </listitem>
+	    <listitem>
+	      <para><command>export JAVA_HOME</command></para>
+	      <para>
+This is for sh-style shells like sh, ksh, zsh and bash. If you use
+csh-style shells like csh and tcsh you will instead have to write
+<command>setenv JAVA_HOME <replaceable>/where/you/have/installed/jdk</replaceable></command>.
+</para>
+	    </listitem>
+	    <listitem>
+	      <para>
+Change the current directory to the directory you are building
+</para>
+	      <para>
+<command>cd <replaceable>/your/checked/out/copy/of/argouml/src_new</replaceable></command>
+</para>
+	    </listitem>
+	    <listitem>
+	      <para>
+Modify the beginning of the <filename>build.sh</filename> file 
+by setting ARGO_HOME and ANT_HOME to the name
+<replaceable>/your/checked/out/copy/of/argouml</replaceable>
+</para>
+	    </listitem>
+	    <listitem>
+	      <para>Start ant using <command>./build.sh</command></para>
+	      <para>This gives you a list of targets with descriptions</para>
+	    </listitem>
+	    <listitem>
+	      <para>
+Compile and run Argouml using <command>./build.sh run</command>
+</para>
+	      <para>
+You can do this over and over again when you have modified something
+or want to compile and run again.
+</para>
+	    </listitem>
+	  </orderedlist>
+	</sect3>
+	<sect3>
+	  <title>Compiling for Windows</title>
+	  <orderedlist>
+	    <listitem>
+	      <para>
+<command>set JAVA_HOME=<replaceable>/where/you/have/installed/jdk</replaceable></command>
+</para>
+	    </listitem>
+	    <listitem>
+	      <para>
+<command>set ANT_HOME=<replaceable>/your/checked/out/copy/of/argouml</replaceable></command>
+</para>
+	    </listitem>
+	    <listitem>
+	      <para>Change the current directory to the directory you are building</para>
+	      <para>
+<command>chdir <replaceable>\your\checked\out\copy\of\argouml\src_new</replaceable></command>
+</para>
+	    </listitem>
+	    <listitem>
+	      <para>Start ant using <command>build</command></para>
+	      <para>This gives you a list of targets with descriptions</para>
+	    </listitem>
+	    <listitem>
+	      <para>
+Compile and run Argouml using <command>build run</command>
+</para>
+	      <para>
+You can do this over and over again when you have modified something
+or want to compile and run again.
+</para>
+	    </listitem>
+	  </orderedlist>
+	</sect3>
+      </sect2>
+      <sect2>
+	<title>How documentation is presented</title>
+	<para>
+This describes how the documentation arrives on the web site.
+</para>
+	<sect3>
+	  <title>How the ArgoUML web site works</title>
+	  <para>
+Tigris provides the ArgoUML site to be edited through cvs. Everything
+that is checked in under <filename>argouml/www</filename>
+becomes immediatly available at the url 
+<ulink url="http://argouml.tigris.org/">http://argouml.tigris.org/</ulink>
+with some added decorations left and up.
+</para>
+	  <para>
+Example: The file <filename>argouml/www/project.html</filename> is
+available at 
+<ulink url="http://argouml.tigris.org/project.html">http://argouml.tigris.org/project.html</ulink>.
+</para>
+	  <para>
+This is the way the site is maintained and updated.
+</para>
+	</sect3>
+	<sect3>
+	  <title>The ArgoUML documentation</title>
+	  <para>
+For the ArgoUML project the same documenation shall be available in both
+html, pdf and javahelp. To this end the documentation is written in
+docbook xml and generated into two versions of html 
+(one page per chapter and one page for the whole book),
+pdf and javahelp.
+</para>
+	  <para>
+We have tools that does the conversion from docbook xml to html and pdf.
+The conversion is done whenever you need to look at the result or when 
+you want to present the final result on the web site.
+</para>
+	  <para>
+There is currently four different books generated in this way, 
+each its own directory. They are cookbook (this document), faq, 
+manual and quick-guide. They are all generated and stored in the
+exact same way except for the name of the directory that is one
+of <filename class="directory">cookbook</filename>,
+<filename class="directory">faq</filename>, 
+<filename class="directory">manual</filename> or 
+<filename class="directory">quick-guide</filename>.
+Below I will reference this directory using 
+<filename class="directory"><replaceable>book</replaceable></filename>.
+</para>
+	  <para>
+When a new version of the documentation is to be made available on the
+web site the responsible document release person does the following:
+</para>
+	  <orderedlist>
+	    <listitem>
+	      <para>
+He checks out an updated copy of everything needed
+and a copy of the <filename class="directory">argouml/www</filename>.
+</para>
+	      <para>
+To be on the safe side, this could be the whole of ArgoUML.
+</para>
+	      <para>
+If wanted, the cvs repository could be tagged and then the tag
+can be checked out. This makes it possible to know exactly 
+how a certain version of the documentation was generated.
+</para>
+	    </listitem>
+	    <listitem>
+	      <para>
+The documentation is generated using <command>build docs</command>.
+</para>
+	      <para>
+This generates all four books and the result appears in 
+<filename class="directory">argouml/build/documentation/defaulthtml/<replaceable>book</replaceable></filename>,
+<filename class="directory">argouml/build/documentation/printablehtml/<replaceable>book</replaceable></filename>, and
+<filename class="directory">argouml/build/documentation/pdf/<replaceable>book</replaceable></filename>.
+</para>
+	      <para>
+This has been done several times before while preparing the release so
+no problems are expected. If there are problems then the preparations
+was not good enough and the process is best stopped right here.
+</para>
+	    </listitem>
+	    <listitem>
+	      <para>
+All the old files are removed from the checked out copy of 
+<filename class="directory">argouml/www/documentation/defaulthtml/<replaceable>book</replaceable></filename>, 
+<filename class="directory">argouml/www/documentation/printablehtml/<replaceable>book</replaceable></filename>, and
+<filename class="directory">argouml/www/documentation/pdf/<replaceable>book</replaceable></filename>.
+</para>
+	    </listitem>
+	    <listitem>
+	      <para>
+New files are copied into the checked out copy of www
+on top of the previous files there replacing them.
+</para>
+	      <para>
+All the files are copied from
+<filename class="directory">argouml/build/documentation/defaulthtml/<replaceable>book</replaceable></filename> to
+<filename class="directory">argouml/www/documentation/defaulthtml/<replaceable>book</replaceable></filename>. 
+The same for <filename class="directory">printablehtml</filename> and 
+<filename class="directory">pdf</filename>.
+</para>
+	    </listitem>
+	    <listitem>
+	      <para>
+No longer used files in 
+<filename class="directory">argouml/www/documentation</filename>
+are removed from cvs and new files are added.
+</para>
+	      <para><command>cvs -n update</command></para>
+	      <para>Watch for "Missing" and "Unknown" files.</para>
+	      <para>
+The missing files are scheduled to be removed by:
+<command>cvs remove <replaceable>each of the missing files</replaceable></command>
+</para>
+	      <para>
+The "Unknown" files are scheduled to be added by:
+<command>cvs add <replaceable>each of the added files</replaceable></command>
+</para>
+	      <para>
+This removing of missing files and adding of unknown files may seem
+backward but it is from the perspective of cvs.
+The missing files are the ones that were present in the previous
+version of the documentation and that does not have a replacement,
+either because that chapter does not exist anymore or that the tool
+generate filenames differently.
+The Unknown files are files with filenames that for the same reason
+appear from one version of the documentation to the next.
+</para>
+	    </listitem>
+	    <listitem>
+	      <para>
+Commit the changes thus publishing it on the web site.
+</para>
+	      <para>
+<command>cvs commit -m'New version of the documentation published'</command>
+</para>
+	    </listitem>
+	  </orderedlist>
+	  <sect4>
+	    <title>Tools that does the generation</title>
+	    <para>
+The tools and templates to do the conversion from docbook xml to html,
+pdf, and javahelp are developed by other open source projects and
+entered in the ArgoUML cvs as a convenience to the developer and
+quality responsible of the ArgoUML project.
+</para>
+	    <para>
+The quality responsible is mentioned because 
+this makes it possible to afterwards have access to exactly the tool 
+that was used to generate a certain version of the documentation.
+</para>
+	    <para>
+When a new release of that tool is provided
+and we have decided that we want to move to that version of the tool,
+possibly at the same time as doing the necessary tweaks
+for that new version in the documentation itself,
+the tool is updated in cvs.
+This means that ArgoUML cvs only contains released versions of that tool.
+If we find an unacceptable bug in any of these tools
+we either refrain from moving to that version or 
+revert to the previous version of the tool.
+</para>
+	  </sect4>
+	</sect3>
+      </sect2>
  </sect1>
  <sect1 id="mailing_lists">
      <title>Mailing Lists</title>
