@@ -64,6 +64,9 @@ public class GoStimulusToAction extends AbstractPerspectiveRule {
 	return null;
     }
 
+    /**
+     * @see org.argouml.ui.explorer.rules.PerspectiveRule#getRuleName()
+     */
     public String getRuleName() {
         return Translator.localize("misc.stimulus.action");
     }

@@ -47,6 +47,9 @@ public class GoSignalToReception extends AbstractPerspectiveRule {
     	return Translator.localize ("Signal->Reception");
     }
 
+    /**
+     * @see org.argouml.ui.explorer.rules.PerspectiveRule#getChildren(java.lang.Object)
+     */
     public Collection getChildren(Object parent) {
 	if (ModelFacade.isASignal(parent)) {
 	    return ModelFacade.getReceptions(parent);

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 2003-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -24,59 +24,53 @@
 
 package org.argouml.ui.explorer.rules;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Set;
-import java.util.Vector;
 
 import org.argouml.i18n.Translator;
-import org.argouml.kernel.Project;
-import org.argouml.kernel.ProjectManager;
 import org.argouml.model.ModelFacade;
-import org.argouml.uml.diagram.collaboration.ui.UMLCollaborationDiagram;
 
 /**
- * Rule for Collaboration->Diagram.
- *
+ * Go rule to navigate from some message to it's corresponding action
+ * @author jaap.branderhorst
  */
-public class GoCollaborationDiagram extends AbstractPerspectiveRule {
+public class GoMessageToAction extends AbstractPerspectiveRule {
 
     /**
      * @see org.argouml.ui.explorer.rules.PerspectiveRule#getRuleName()
      */
     public String getRuleName() {
-        return Translator.localize ("misc.collaboration.diagram");
+	return Translator.localize ("misc.message.action");
     }
 
     /**
      * @see org.argouml.ui.explorer.rules.PerspectiveRule#getChildren(java.lang.Object)
      */
     public Collection getChildren(Object parent) {
-        if (!ModelFacade.isACollaboration(parent))
-            return null;
+	if (ModelFacade.isAMessage(parent)) {
+	    Object action = ModelFacade.getAction(parent);
 
-        Project p = ProjectManager.getManager().getCurrentProject();
-        if (p == null)
-            return null;
+	    if (action != null) {
+		ArrayList children = new ArrayList();
+		children.add(action);
+		return children;
+	    }
+	}
 
-        Vector res = new Vector();
-        Vector diagrams = p.getDiagrams();
-        if (diagrams == null)
-            return null;
-        java.util.Enumeration elems = diagrams.elements();
-        while (elems.hasMoreElements()) {
-            Object d = elems.nextElement();
-            if (d instanceof UMLCollaborationDiagram
-                && ((UMLCollaborationDiagram) d).getNamespace() == parent)
-                res.addElement(d);
-        }
-        return res;
+	return null;
     }
 
     /**
      * @see org.argouml.ui.explorer.rules.PerspectiveRule#getDependencies(java.lang.Object)
      */
     public Set getDependencies(Object parent) {
-        // TODO: What?
+        if (ModelFacade.isAMessage(parent)) {
+	    Set set = new HashSet();
+	    set.add(parent);
+	    return set;
+	}
 	return null;
     }
 }

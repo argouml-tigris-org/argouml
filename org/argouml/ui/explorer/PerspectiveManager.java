@@ -255,12 +255,12 @@ public class PerspectiveManager {
         packagePerspective.addRule(new GoNamespaceToDiagram());
         packagePerspective.addRule(new GoUseCaseToExtensionPoint());
         packagePerspective.addRule(new GoClassifierToStructuralFeature());
-        packagePerspective.addRule(new GoClassifierToBeh());
-        packagePerspective.addRule(new GoCollaborationInteraction());
-        packagePerspective.addRule(new GoInteractionMessage());
-        packagePerspective.addRule(new GoMessageAction());
+        packagePerspective.addRule(new GoClassifierToBehavioralFeature());
+        packagePerspective.addRule(new GoCollaborationToInteraction());
+        packagePerspective.addRule(new GoInteractionToMessages());
+        packagePerspective.addRule(new GoMessageToAction());
         packagePerspective.addRule(new GoSignalToReception());
-        packagePerspective.addRule(new GoLinkStimuli());
+        packagePerspective.addRule(new GoLinkToStimuli());
         packagePerspective.addRule(new GoStimulusToAction());
         packagePerspective.addRule(new GoClassifierToCollaboration());
         packagePerspective.addRule(new GoOperationToCollaboration());
@@ -269,7 +269,7 @@ public class PerspectiveManager {
         packagePerspective.addRule(new GoBehavioralFeatureToStateDiagram());
         // works for both statediagram as activitygraph
         packagePerspective.addRule(new GoStatemachineToDiagram()); 
-        packagePerspective.addRule(new GoMachineToState());
+        packagePerspective.addRule(new GoStateMachineToState());
         packagePerspective.addRule(new GoCompositeStateToSubvertex());        
         packagePerspective.addRule(new GoStateToInternalTrans());
         packagePerspective.addRule(new GoStateToDoActivity());
@@ -289,26 +289,27 @@ public class PerspectiveManager {
         diagramPerspective.addRule(new GoDiagramToEdge());
         diagramPerspective.addRule(new GoUseCaseToExtensionPoint());
         diagramPerspective.addRule(new GoClassifierToStructuralFeature());
-        diagramPerspective.addRule(new GoClassifierToBeh());
+        diagramPerspective.addRule(new GoClassifierToBehavioralFeature());
         
         ExplorerPerspective inheritancePerspective = 
             new ExplorerPerspective("combobox.item.inheritance-centric");
         inheritancePerspective.addRule(new GoProjectToModel());
         inheritancePerspective.addRule(new GoModelToBaseElements());
-        inheritancePerspective.addRule(new GoGenElementToDerived());
+        inheritancePerspective.addRule(
+                new GoGeneralizableElementToSpecialized());
         
         ExplorerPerspective associationsPerspective = 
             new ExplorerPerspective("combobox.item.class-associations");
         associationsPerspective.addRule(new GoProjectToModel());
         associationsPerspective.addRule(new GoNamespaceToDiagram());
-        associationsPerspective.addRule(new GoModelToClass());
+        associationsPerspective.addRule(new GoPackageToClass());
         associationsPerspective.addRule(new GoClassToAssociatedClass());
         
         ExplorerPerspective statePerspective = 
             new ExplorerPerspective("combobox.item.state-centric");
         statePerspective.addRule(new GoProjectToStateMachine());
-        statePerspective.addRule(new GoMachineDiagram());
-        statePerspective.addRule(new GoMachineToState());
+        statePerspective.addRule(new GoStatemachineToDiagram());
+        statePerspective.addRule(new GoStateMachineToState());
         statePerspective.addRule(new GoCompositeStateToSubvertex());
         statePerspective.addRule(new GoStateToIncomingTrans());
         statePerspective.addRule(new GoStateToOutgoingTrans());
@@ -316,8 +317,8 @@ public class PerspectiveManager {
         ExplorerPerspective transitionsPerspective = 
             new ExplorerPerspective("combobox.item.transitions-centric");
         transitionsPerspective.addRule(new GoProjectToStateMachine());
-        transitionsPerspective.addRule(new GoMachineDiagram());
-        transitionsPerspective.addRule(new GoMachineToTrans());
+        transitionsPerspective.addRule(new GoStatemachineToDiagram());
+        transitionsPerspective.addRule(new GoStateMachineToTransition());
         transitionsPerspective.addRule(new GoTransitionToSource());
         transitionsPerspective.addRule(new GoTransitionToTarget());
         
@@ -338,10 +339,10 @@ public class PerspectiveManager {
     public void loadRules() {
         
         PerspectiveRule[] ruleNamesArray =
-	{new GoAssocRoleMessages(),
+	{new GoAssocRoleToMessages(),
 	 new GoBehavioralFeatureToStateDiagram(),
 	 new GoBehavioralFeatureToStateMachine(),
-	 new GoClassifierToBeh(),
+	 new GoClassifierToBehavioralFeature(),
 	 new GoClassifierToCollaboration(),
 	 new GoClassifierToInstance(),
 	 new GoClassifierToSequenceDiagram(),
@@ -350,23 +351,18 @@ public class PerspectiveManager {
 	 new GoClassToAssociatedClass(),
 	 new GoClassToNavigableClass(),
 	 new GoClassToSummary(),
-	 new GoCollaborationDiagram(),
-	 new GoCollaborationInteraction(),
+	 new GoCollaborationToDiagram(),
+	 new GoCollaborationToInteraction(),
 	 new GoCompositeStateToSubvertex(),
 	 new GoDiagramToEdge(),
 	 new GoDiagramToNode(),
 	 new GoElementToMachine(),
-	 new GoGenElementToDerived(),
-	 new GoInteractionMessage(),
-	 new GoInteractionMessages(),
-	 new GoLinkStimuli(),
-	 new GoMachineDiagram(),
-	 new GoMachineToState(),
-	 new GoMachineToTrans(),
-	 new GoMessageAction(),
+	 new GoGeneralizableElementToSpecialized(),
+	 new GoInteractionToMessages(),
+	 new GoLinkToStimuli(),
+	 new GoMessageToAction(),
 	 new GoModelElementToComment(),
 	 new GoModelToBaseElements(),
-	 new GoModelToClass(),
 	 new GoModelToCollaboration(),
 	 new GoModelToDiagrams(),
 	 new GoModelToElements(),
@@ -376,13 +372,16 @@ public class PerspectiveManager {
 	 new GoOperationToCollaborationDiagram(),
 	 new GoOperationToCollaboration(),
 	 new GoOperationToSequenceDiagram(),
+	 new GoPackageToClass(),
 	 new GoProjectToCollaboration(),
 	 new GoProjectToDiagram(),
 	 new GoProjectToModel(),
 	 new GoProjectToStateMachine(),
 	 new GoSignalToReception(),
 	 new GoStateMachineToTop(),
-	 new GoStateMachineToTransition(),
+	 new GoStatemachineToDiagram(),
+	 new GoStateMachineToState(),
+         new GoStateMachineToTransition(),
 	 new GoStateToDoActivity(),
 	 new GoStateToDownstream(),
 	 new GoStateToEntry(),

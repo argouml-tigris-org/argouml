@@ -21,45 +21,47 @@
 // PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
-
+// $Id$
 package org.argouml.ui.explorer.rules;
 
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Set;
 
 import org.argouml.i18n.Translator;
 import org.argouml.model.ModelFacade;
-import org.argouml.model.uml.ModelManagementHelper;
 
 /**
- * Rule for Package->Class.
+ * Rule for Link->Stimuli.
  *
  */
-public class GoModelToClass extends AbstractPerspectiveRule {
-
-    /**
-     * @see org.argouml.ui.explorer.rules.PerspectiveRule#getRuleName()
-     */
-    public String getRuleName() { 
-        return Translator.localize ("misc.package.class");
-    }
-  
+public class GoLinkToStimuli extends AbstractPerspectiveRule {
+    
     /**
      * @see org.argouml.ui.explorer.rules.PerspectiveRule#getChildren(java.lang.Object)
      */
     public Collection getChildren(Object parent) {
-	if (ModelFacade.isAPackage(parent)) {
-	    return ModelManagementHelper.getHelper()
-                .getAllModelElementsOfKind(parent, (Class) ModelFacade.CLASS);
-	}
-	return null;
+	if (!ModelFacade.isALink(parent))
+	    return null;
+	return ModelFacade.getStimuli(parent);
+    }
+
+    /**
+     * @see org.argouml.ui.explorer.rules.PerspectiveRule#getRuleName()
+     */
+    public String getRuleName() {
+        return Translator.localize ("misc.link.stimuli");
     }
 
     /**
      * @see org.argouml.ui.explorer.rules.PerspectiveRule#getDependencies(java.lang.Object)
      */
     public Set getDependencies(Object parent) {
-        // Todo: What?
+        if (ModelFacade.isALink(parent)) {
+	    Set set = new HashSet();
+	    set.add(parent);
+	    return set;
+	}
 	return null;
     }
 }

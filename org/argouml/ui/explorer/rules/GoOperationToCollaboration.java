@@ -32,7 +32,7 @@ import org.argouml.i18n.Translator;
 import org.argouml.model.ModelFacade;
 
 /**
- * Rule for Operation->Collaboration.
+ * Rule for Operation->Collaboration.<p>
  * Go rule for navigation in the navpane from an operation to the collaboration
  * representing it.
  * @since Oct 1, 2002
@@ -47,6 +47,9 @@ public class GoOperationToCollaboration extends AbstractPerspectiveRule {
         return Translator.localize ("misc.operation.collaboration");
     }
 
+    /**
+     * @see org.argouml.ui.explorer.rules.PerspectiveRule#getChildren(java.lang.Object)
+     */
     public Collection getChildren(Object parent) {
         if (ModelFacade.isAOperation(parent)) {
             return ModelFacade.getCollaborations(parent);

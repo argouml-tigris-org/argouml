@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2003-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -32,27 +32,26 @@ import org.argouml.i18n.Translator;
 import org.argouml.model.ModelFacade;
 
 /**
- * Rule for Interaction->Message.
- * TODO: There is something wrong here! 
- * There is another rule: Interaction->Messages. 
- * And this one shows the same string.
+ * Rule for Interaction->Messages.
  * 
- * Navrule to navigate from an interaction to a message
- * @author jaap.branderhorst@xs4all.nl
  */
-public class GoInteractionMessage extends AbstractPerspectiveRule {
+public class GoInteractionToMessages extends AbstractPerspectiveRule {
 
     /**
      * @see org.argouml.ui.explorer.rules.PerspectiveRule#getRuleName()
      */
     public String getRuleName() {
-	return Translator.localize ("misc.interaction.messages");
+        return Translator.localize("misc.interaction.messages");
     }
 
+    /**
+     * @see org.argouml.ui.explorer.rules.PerspectiveRule#getChildren(java.lang.Object)
+     */
     public Collection getChildren(Object parent) {
-	if (ModelFacade.isAInteraction(parent))
-	    return ModelFacade.getMessages(parent);
-	return null;
+        if (ModelFacade.isAInteraction(parent)) {
+            return ModelFacade.getMessages(parent);
+        }
+        return null;
     }
 
     /**

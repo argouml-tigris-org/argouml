@@ -21,7 +21,9 @@
 // PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
-// $Id$
+
+// $header$
+
 package org.argouml.ui.explorer.rules;
 
 import java.util.Collection;
@@ -32,31 +34,42 @@ import org.argouml.i18n.Translator;
 import org.argouml.model.ModelFacade;
 
 /**
- * Rule for Link->Stimuli.
- *
+ * PerspectiveRule to navigate from statemachine to the subvertices of
+ * its top state (1 level deep only).
+ * 
+ * @author jaap.branderhorst@xs4all.nl
  */
-public class GoLinkStimuli extends AbstractPerspectiveRule {
-    
+public class GoStateMachineToState extends AbstractPerspectiveRule {
+
+    /**
+     * @see org.argouml.ui.explorer.rules.PerspectiveRule#getRuleName()
+     */
+    public String getRuleName() { 
+        return Translator.localize ("misc.state-machine.state");
+    }
+
     /**
      * @see org.argouml.ui.explorer.rules.PerspectiveRule#getChildren(java.lang.Object)
      */
     public Collection getChildren(Object parent) {
-	if (!ModelFacade.isALink(parent))
-	    return null;
-	return ModelFacade.getStimuli(parent);
-    }
-
-    public String getRuleName() {
-        return Translator.localize ("misc.link.stimuli");
+        
+        if (ModelFacade.isAStateMachine(parent)) {
+            if (ModelFacade.getTop(parent) != null) { 
+                return ModelFacade.getSubvertices(ModelFacade.getTop(parent));
+            }
+        }
+        return null;
     }
 
     /**
      * @see org.argouml.ui.explorer.rules.PerspectiveRule#getDependencies(java.lang.Object)
      */
     public Set getDependencies(Object parent) {
-        if (ModelFacade.isALink(parent)) {
+        if (ModelFacade.isAStateMachine(parent)) {
 	    Set set = new HashSet();
 	    set.add(parent);
+	    if (ModelFacade.getTop(parent) != null)
+		set.add(ModelFacade.getTop(parent));
 	    return set;
 	}
 	return null;

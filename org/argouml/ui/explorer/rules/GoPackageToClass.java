@@ -25,31 +25,32 @@
 package org.argouml.ui.explorer.rules;
 
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.Set;
 
 import org.argouml.i18n.Translator;
 import org.argouml.model.ModelFacade;
+import org.argouml.model.uml.ModelManagementHelper;
 
 /**
- * Rule for Class->Subclass.
+ * Rule for Package->Class.
  *
  */
-public class GoGenElementToDerived extends AbstractPerspectiveRule {
+public class GoPackageToClass extends AbstractPerspectiveRule {
 
     /**
      * @see org.argouml.ui.explorer.rules.PerspectiveRule#getRuleName()
      */
-    public String getRuleName() {
-	return Translator.localize ("misc.class.subclass");
+    public String getRuleName() { 
+        return Translator.localize ("misc.package.class");
     }
-
+  
     /**
      * @see org.argouml.ui.explorer.rules.PerspectiveRule#getChildren(java.lang.Object)
      */
-    public Collection getChildren(Object parent) { 
-	if (ModelFacade.isAGeneralizableElement(parent)) {
-	    return ModelFacade.getChildren(parent);
+    public Collection getChildren(Object parent) {
+	if (ModelFacade.isAPackage(parent)) {
+	    return ModelManagementHelper.getHelper()
+                .getAllModelElementsOfKind(parent, (Class) ModelFacade.CLASS);
 	}
 	return null;
     }
@@ -58,13 +59,7 @@ public class GoGenElementToDerived extends AbstractPerspectiveRule {
      * @see org.argouml.ui.explorer.rules.PerspectiveRule#getDependencies(java.lang.Object)
      */
     public Set getDependencies(Object parent) {
-        if (ModelFacade.isAGeneralizableElement(parent)) {
-	    Set set = new HashSet();
-	    set.add(parent);
-	    return set;
-	}
+        // Todo: What?
 	return null;
     }
-} /* end class GoGenElementToDerived */
-
-
+}

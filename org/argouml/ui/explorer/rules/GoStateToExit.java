@@ -33,13 +33,16 @@ import org.argouml.i18n.Translator;
 import org.argouml.model.ModelFacade;
 
 /**
- * Rule for State->Exit.
+ * Rule for navigation from a State to its Exit action.
  * 
  * @author jaap.branderhorst@xs4all.nl	
  * @since Dec 25, 2002
  */
 public class GoStateToExit extends AbstractPerspectiveRule {
 
+    /**
+     * @see org.argouml.ui.explorer.rules.PerspectiveRule#getChildren(java.lang.Object)
+     */
     public Collection getChildren(Object parent) {
         if (ModelFacade.isAState(parent)
 	        && ModelFacade.getExit(parent) != null) {
@@ -62,6 +65,9 @@ public class GoStateToExit extends AbstractPerspectiveRule {
 	return null;
     }
 
+    /**
+     * @see org.argouml.ui.explorer.rules.PerspectiveRule#getRuleName()
+     */
     public String getRuleName() {
         return Translator.localize ("misc.state.exit");
     }

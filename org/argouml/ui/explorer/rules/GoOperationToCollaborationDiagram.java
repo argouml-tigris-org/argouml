@@ -39,11 +39,15 @@ import org.argouml.uml.diagram.collaboration.ui.UMLCollaborationDiagram;
 
 /**
  * Rule for Operation->Collaboration Diagram.
+ * 
  * @since Oct 7, 2002
  * @author jaap.branderhorst@xs4all.nl
  */
 public class GoOperationToCollaborationDiagram extends AbstractPerspectiveRule {
 
+    /**
+     * @see org.argouml.ui.explorer.rules.PerspectiveRule#getChildren(java.lang.Object)
+     */
     public Collection getChildren(Object parent) {
         if (ModelFacade.isAOperation(parent)) {
             Object operation = parent; //MOperation
@@ -74,6 +78,9 @@ public class GoOperationToCollaborationDiagram extends AbstractPerspectiveRule {
 	return null;
     }
 
+    /**
+     * @see org.argouml.ui.explorer.rules.PerspectiveRule#getRuleName()
+     */
     public String getRuleName() {
         return Translator.localize ("misc.operation.collaboration-diagram");
     }

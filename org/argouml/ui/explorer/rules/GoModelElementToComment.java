@@ -34,13 +34,18 @@ import org.argouml.model.ModelFacade;
 
 /**
  * Go rule for the package perspective to show the comments belonging to some
- * modelelement.
+ * modelelement. <p>
+ * ModelElement->Comment
+ * 
  * @author jaap.branderhorst@xs4all.nl	
  * @since Jan 21, 2003
  */
 public class GoModelElementToComment extends AbstractPerspectiveRule {
 
     
+    /**
+     * @see org.argouml.ui.explorer.rules.PerspectiveRule#getChildren(java.lang.Object)
+     */
     public Collection getChildren(Object parent) {
         if (ModelFacade.isAModelElement(parent)) {
             return ModelFacade.getComments(parent);
@@ -48,6 +53,9 @@ public class GoModelElementToComment extends AbstractPerspectiveRule {
         return null;
     }
 
+    /**
+     * @see org.argouml.ui.explorer.rules.PerspectiveRule#getRuleName()
+     */
     public String getRuleName() {
         return Translator.localize ("misc.model-element.comment");
     }
