@@ -94,15 +94,15 @@ public class UUIDManager {
      */
     public synchronized String getNewUUID() {
 	UID uid = new UID();
-	String s = "";
+	StringBuffer s = new StringBuffer();
 	if (address != null) {
 	    byte[] b = address.getAddress();
 	    for (int i = 0; i < b.length; i++)
-		s += (new Byte(b[i])).longValue() + "-";
+		s.append((new Byte(b[i])).longValue()).append("-");
 	}
-	s += uid.toString();
+	s.append(uid.toString());
 //	LOG.debug("new UUID: " + s);
-	return s;
+	return s.toString();
     }
 
     /**
