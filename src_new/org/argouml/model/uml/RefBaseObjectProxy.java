@@ -42,7 +42,8 @@ public class RefBaseObjectProxy implements InvocationHandler, RefBaseObject {
     private Object realObject;
 
     /**
-     * 
+     * Returns the actual object which was proxied.
+     *
      * @param o proxied object to extract from
      * @return the realObject behind the proxy
      */
