@@ -1185,7 +1185,7 @@ on to the current diagram in the drawing pane.
 
       <!-- Notation tab -->
 
-      <sect3 id="s3.ref.menu_settings_notation">
+      <sect3 id="s3.ref.menu_settings_notations">
         <title>Notation Tab</title>
 
         <para>This tab allows the user to specify certain notation
@@ -1193,12 +1193,12 @@ on to the current diagram in the drawing pane.
           It comprises the following check boxes.</para>
 
           <figure float="1">
-          <title>The dialog for <literal>Settings - Notation</literal>.</title>
+          <title>The dialog for <literal>Settings - Notations</literal>.</title>
 
           <screenshot><mediaobject>
             <imageobject>
               <imagedata format="PNG" align="center"
-                       fileref="images/reference/menu_settings_notation.png"/>
+                       fileref="images/reference/menu_settings_notations.png"/>
             </imageobject>
           </mediaobject></screenshot>
         </figure>
@@ -1231,29 +1231,29 @@ guillemots? -->
           </listitem>
           
           <listitem><para><literal>Show visibility</literal>
-<!-- TODO: fill in ...           (clear/set by default) -->
+<!-- TODO: fill in ...           (clear/set by default) -->(To be written)
           </para></listitem>
           
           <listitem><para><literal>Show multiplicity</literal>
-<!-- TODO: fill in ...           (clear/set by default) -->
+<!-- TODO: fill in ...           (clear/set by default) -->(To be written)
           </para></listitem>
           
           <listitem><para><literal>Show initial value</literal>
-<!-- TODO: fill in ...           (clear/set by default) -->
+<!-- TODO: fill in ...           (clear/set by default) -->(To be written)
           </para></listitem>
           
           <listitem><para><literal>Show properties</literal>
-<!-- TODO: fill in ...           (clear/set by default) -->
+<!-- TODO: fill in ...           (clear/set by default) -->(To be written)
           </para></listitem>
           
           <listitem><para><literal>Show stereotypes in navigator</literal>
 <!-- TODO: This is the old term "navigator". Should be "explorer". 
 See issue ... -->
-<!-- TODO: fill in ...           (clear/set by default) -->
+<!-- TODO: fill in ...           (clear/set by default) -->(To be written)
           </para></listitem>
           
           <listitem><para><literal>Default shadow width</literal>
-<!-- TODO: fill in ...           (clear/set by default) -->
+<!-- TODO: fill in ...           (clear/set by default) -->(To be written)
           </para></listitem>
         </itemizedlist>
       </sect3>
@@ -1303,8 +1303,6 @@ See issue ... -->
   <sect1>
     <title>The View Menu</title>
 
-    &notupdatedfor014disclaimer;
-
     <para>This menu is used for actions that affect how the various panes are
       viewed.</para>
 
@@ -1330,38 +1328,45 @@ See issue ... -->
         </mediaobject></screenshot>
       </figure>
 
-      <para>The dialog box is in the form of a tab containing a table with four
+      <para>The dialog box contains a table with four
         columns and one row for each diagram in the current project. A scroll
-        bar gives access if the list is too long for the box. Double
+        bar gives access if the table is too long for the box. Double
         &button1; click on any row will select that diagram in the editing
         pane. The four columns are as follows.</para> 
 
       <itemizedlist>
         <listitem><para><literal>Type</literal>. Lists the type of
           diagram.</para>
-
-        <caution><para>In the current release of &argouml; activity diagrams,
-          collaboration diagrams, sequence diagrams and deployment diagrams are
-          all listed as type
-          <literal>Diagram</literal>.</para></caution></listitem>
+        </listitem>
 
         <listitem><para><literal>Name</literal>. Lists the name given to the
           diagram.</para></listitem>
 
         <listitem><para><literal>In Diagram</literal>. This shows the diagram
-          in which the digram is contained. Since diagrams cannot be contained
+          in which the diagram is contained. Since diagrams cannot be contained
           within other diagrams, this always shows the entry
-          <literal>N/A</literal>.</para>
-
-        <tip><para>This column is present, because this menu item reuses the
+          <literal>N/A</literal>. 
+          This column is present, because this menu item reuses the
           code for the more general <literal>Find</literal>
-          menu.</para></tip></listitem>
+          menu.</para>
+        </listitem>
 
         <listitem><para><literal>Description</literal>. Shows how many nodes
-          and edges there are on the diagrams. The number of <quote>2-D</quote>
+          and edges there are on the diagrams. 
+          <!-- TODO: What does the next sentence mean?
+          The number of <quote>2-D</quote>
           artifacts and the number of connector artifacts
-          respectively.</para></listitem>
+          respectively. -->
+        </para></listitem>
       </itemizedlist>
+      
+      <caution><para>
+        This dialog box is not modal, which allows it to remain open while
+        editing the model for easy navigation. But the V0.14 imlementation of
+        &argouml; does not inmediately update the dialog box with changes made 
+        to diagrams: change of name, addition of diagrams, deletion of diagrams.
+        <!-- TODO: See issue ... -->
+      </para></caution>
     </sect2>
 
     <!-- Find an artifact -->
@@ -1371,11 +1376,11 @@ See issue ... -->
           format="GIF" align="center" fileref="images/icons/find.gif"/>
         </imageobject></inlinemediaobject></guiicon> Find&hellip;</title>
 
-      <para>This menu entry brings up a dialog box for the &argouml; search
-        engine (see
+      <para>This menu entry brings up a non-modal 
+        dialog box for the &argouml; search engine (see
         <xref linkend="fig.ref.menu_find"/>).</para>
 
-      <!-- Example of the goto diagram dialog -->
+      <!-- Example of the find dialog -->
 
       <figure id="fig.ref.menu_find" float="1">
         <title>The dialog for <literal>Find&hellip;</literal>.</title>
@@ -1384,57 +1389,89 @@ See issue ... -->
           <imageobject>
             <imagedata format="PNG" align="center"
                        fileref="images/reference/menu_find.png"/>
+<!-- TODO: the dialog box window title says "Search". Should be "Find". 
+See issue ... -->
           </imageobject>
         </mediaobject></screenshot>
       </figure>
 
-      <warning><para>In the current version of &argouml; this function is
-        largely broken. The only item that can ever be found is the model
-        itself, and it is not possible (or meaningful) to navigate to this
-        item's diagram.</para></warning>
+      <warning><para>In the V0.14 version of &argouml; some minor parts of 
+        this function are broken.
+<!-- TODO: And in V0.15 it doesn't find anything at all. See issue ... -->
+<!-- TODO: It does not find classes that are in a package, 
+but not on any diagram. See issue ... -->
+        </para>
+      </warning>
 
-      <para>At the top level, the dialog box has four tabs labeled
+      <para>At the top, the dialog box has four tabs labeled
         <literal>Name&nbsp;and&nbsp;Location</literal>,
         <literal>Last&nbsp;Modified</literal>,
         <literal>Tagged&nbsp;Values</literal> and
         <literal>Constraints</literal>. Of these all but the first are grayed
-        out, so the first tab is always selected.</para>
+        out in the V0.14 version of &argouml;
+<!-- TODO: See enhancement issue ... -->
+        (because they are not imlemented yet),
+        so the first tab is always selected.</para>
 
-      <para>The tab is split into three areas vertically. The top third
-        specifies the search to be made. A text box labeled
-        <literal>Element&nbsp;Name:</literal> specifies the name of the element
-        (or artifact) to search for. Wild cards (<literal>*</literal>,
-        <literal>?</literal>) may be used here. A drop down gives access to
-        search expressions previously used. A text box labeled
-        <literal>In&nbsp;Diagram:</literal> specifies which diagrams are to be
-        searched. Again wild cards may be used. Both these two text boxes have
-        a default entry of <literal>*</literal>, i.e. match anything.</para>
-
-      <para>To the right of these two text boxes, a selector labeled
-        <literal>Element&nbsp;Type:</literal> allows you to specify the UML
-        metaclass for which you are searching.</para>
-
-      <caution><para>The names in of the element types use the NovoSoft UML
-        convention, being the UML metaclass name preceded by
-        <literal>M</literal>. Not all metaclasses are
-        available.</para></caution>
-
-      <para>A selector labeled <literal>Entire Project</literal> allows the
-        search to be made over the entire project (the default) or as a
-        sub-search over the results of a previous search.</para>
-
-      <para>Beneath these boxes are two buttons.</para>
-
+      <para>The <literal>Name&nbsp;and&nbsp;Location</literal>
+        specifies the search to be made. It contains the following:
+      </para>
       <itemizedlist>
-        <listitem><para><literal>Clear Tabs</literal>. This clears the display
-          of tabs with the results from previous searches (see below). The
-          results are still available however for
-          sub-searching.</para></listitem>
+        <listitem>
+          <para>
+            A text box labeled
+            <literal>Element&nbsp;Name:</literal> specifies the name of the element
+            (or artifact) to search for. Wild cards (<literal>*</literal>,
+            <literal>?</literal>) may be used here. A drop down gives access to
+            find expressions previously used. 
+          </para>
+        </listitem>
+        <listitem>
+          <para>
+            A text box labeled
+            <literal>In&nbsp;Diagram:</literal> specifies which diagrams are to be
+            searched. Again wild cards may be used. Both these two text boxes have
+            a default entry of <literal>*</literal>, i.e. match anything.
+          </para>
+        </listitem>
+        <listitem>
+          <para>To the right of these two text boxes, a selector labeled
+            <literal>Element&nbsp;Type:</literal> allows you to specify the UML
+            metaclass for which you are searching.
+<!-- TODO: This list does not seem complete. Check and if wrong, enter issue. -->
+          </para>
+        </listitem>
+        <listitem>
+          <para>
+            A selector labeled <literal>Search in:</literal> allows the
+<!-- TODO: Should this not be "Find in:"? See issue ... -->
+            search to be made over the entire project (the default) or as a
+            sub-search over the results of a previous search. 
+            When opened, a list of all the search result tabs appears. 
+          </para>
+        </listitem>
+<!-- TODO: There is still an empty box at the right. See issue ... -->
+        <listitem>
+          <para>
+            Beneath these boxes is the button 
+            <literal>Clear Tabs</literal>. This clears the display
+            of tabs with the results from previous searches (see below).
+            This button is downlighted if there are no tabs but the
+            <literal>Help</literal> tab.
+          </para>
+        </listitem>
 
-        <listitem><para><literal>Search</literal>. This causes the search
-          specified in the text boxes and selectors above to be executed. The
-          results are displayed in a tab taking up the lower two thirds of the
-          page.</para></listitem>
+        <listitem>
+          <para>
+            And finally, there is the button
+            <literal>Search</literal>.
+<!-- TODO: Should this not be "Find"? See issue ... -->
+            This causes the search
+            specified in the text boxes and selectors above to be executed. The
+            results are displayed in a tab taking up the lower two thirds of the
+            page.
+          </para>
+        </listitem>
       </itemizedlist>
 
       <para>The lower two thirds of the dialog comprises an initial tab
@@ -1443,10 +1480,18 @@ See issue ... -->
         with a summary of the search
         <emphasis>element</emphasis>&nbsp;<literal>in</literal>&nbsp;<emphasis>diagram</emphasis>
         and are divided horizontally in two halves.</para>
+        
+      <para>
+        &Button1; double clicking on these tabs removes the tab, 
+        and spawns a new window that contains the tab contents, 
+        i.e. the search results. This window can be moved and sized at will.
+        This does not work for the help tab.
+      </para>
 
       <para>The top half is labeled <literal>Search Results:</literal>
         followed by a count of the number of items found. It comprises a table
-        with one row for each element (artifact) and four columns.</para>
+        with one row for each element (artifact) and four columns. 
+        The width of the columns can be adjusted. </para>
 
       <itemizedlist>
         <listitem><para><literal>Type</literal>. Lists the type of
@@ -1460,16 +1505,21 @@ See issue ... -->
           it shows
           <literal>N/A</literal>.</para>
 
-        <caution><para>The behavior when an item is on more than one diagram
-          is unknown.</para></caution></listitem>
+        <caution><para>The behavior of &argouml; V0.14 
+          when an item is on more than one diagram
+          is not completely correct.
+          <!-- TODO: It lists all diagrams, 
+          not only the ones that contain the item. See issue ... -->
+        </para></caution></listitem>
 
         <listitem><para><literal>Description</literal>. Contains a description
-          of the element (artifact). At present this seems to be restricted to
+          of the element (artifact). In &argouml; V0.14 this seems to be restricted to
+          <!-- TODO: What should this be? See issue ... -->
           the single entry <literal>docs</literal>.</para></listitem>
       </itemizedlist>
 
       <para>&Button1; click on any row will give more information on that
-        artifact and show related artifacts in the bottom half (see
+        artifact by showing related artifacts in the bottom half (see
         below). Double click on any row describing an artifact on a diagram and
         that item and diagram will be selected.</para>
 
@@ -1477,7 +1527,26 @@ See issue ... -->
         <literal>Related&nbsp;Elements:</literal> and is a table with the same
         columns as the top half. When an element (artifact) has been selected
         in the top half, this table shows the details of any related
-        elements.</para>
+        elements.
+        <!-- TODO: This does not seem to work too well either... See issue ... -->
+      </para>
+        <!-- TODO: Sizing the dialog shows that the "Related Items" part 
+        changes in size, but not the Search results part. 
+        They should size both equally. 
+        Also, when hovering over the line between these fields, 
+        the mouse pointer changes into a sizing icon, 
+        but the border between these 2 areas can not be moved. 
+        See issue ... -->
+        
+      <caution><para>
+        This dialog box is not modal, which allows it to remain open while
+        editing the model for easy navigation. But the V0.14 imlementation of
+        &argouml; does not inmediately update the dialog box with changes made 
+        to the found artifacts: change of artifact name, change of diagram name.
+        Deletion of a diagram does not stop the possibility to navigate to it.
+        <!-- TODO: See issue ... -->
+      </para></caution>
+
     </sect2>
 
     <!-- Sub-menu to zoom the diagram -->
@@ -1485,18 +1554,38 @@ See issue ... -->
     <sect2>
       <title>The Zoom Sub-Menu</title>
 
-      <para>This entry brings up a sub-entry, which scales the view of the
-      current diagram to a given percentage of its notional size.</para>
+      <para>This entry brings up a sub-entry, which allows scaling the view of
+      all diagrams to a factor of its normal size.</para>
+<!-- TODO: Is this setting saved per projct of for all projects? Or is it not
+saved at all? -->
+      <para>The sub-menu items that can be selected are:
+      </para>
 
-      <para>The sub-menu values that can be selected are
-        <literal>25%</literal>, <literal>50%</literal>, <literal>75%</literal>,
-        <literal>100%</literal>, <literal>125%</literal>,
-        <literal>150%</literal>.</para>
-
-      <para>When created all diagrams are at a zoom level of 100%.</para>
+      <itemizedlist>
+        <listitem><para>
+          <literal>Zoom Out</literal>. Shortcut (Ctrl-Minus). Gives more
+          <!-- TODO: The shortcut does not work with 
+          the Minus on the numeric keypad. See issue ...  -->
+          overview over the drawing.</para>
+        </listitem>
+        <listitem><para>
+          <literal>Zoom Reset</literal>. Returns to the default zoom
+          ratio.</para>
+        </listitem>
+        <listitem><para>
+          <literal>Zoom In</literal>. Shortcut (Ctrl-=). Makes the items on the
+          drawings bigger.
+          <!-- TODO: The shortcut does not work (on my keyboard 
+          where the '=' is Shift-Minus). See issue ...  --></para>
+        </listitem>
+      </itemizedlist>
 
       <warning><para>The current version of &argouml; has a known problem,
-        where zoom may not work on some diagrams.</para></warning>
+        where zoom may not work on some diagrams.
+        <!-- TODO: Is this still true? See issue ... -->
+        <!-- TODO: Also, zooming in very much makes many small drawing errors
+        visible. See issue ...-->
+      </para></warning>
     </sect2>
 
     <!-- Sub-menu to select editing presentation (largely irrelevant - there
@@ -1504,6 +1593,8 @@ See issue ... -->
 
     <sect2>
       <title>The Editor Tabs Sub-Menu</title>
+<!-- TODO: This menu should be removed completely ASAP. It has no use. 
+See issue 1788, statement of Bob. See issue 2321 &amp; 2322. -->
 
       <para>The editing pane is conceived as a multi-mode editor, allowing you
         to edit a UML diagram from a number of perspectives.</para>
@@ -1605,178 +1696,7 @@ the editing pane.</para>
     </sect2>
 
     <!-- Sub-menu to select which details tab you want. -->
-
-    <sect2>
-      <title>The Details Tabs Sub-Menu</title>
-
-      <para>This provides a sub-menu allowing selection of the various tabs on
-        the details pane for the currently selected artifact. The sub-menu has
-        nine entries.</para>
-
-      <itemizedlist>
-        <listitem>
-	  <para>
-<literal>Next Details Tab</literal> (shortcut F5).
-<indexterm>
-  <primary>Next Details Tab</primary>
-</indexterm>
-<indexterm>
-  <primary>Shortcut key</primary>
-  <secondary>F5</secondary>
-</indexterm>
-Selects the next available tab in the details pane.
-</para>
-
-        <note><para>If a tab is not available, it is skipped (for example a
-          diagram text box only has <literal>ToDoItem</literal>,
-          <literal>Properties</literal> and <literal>Source</literal>
-          tabs, with all other tabs grayed out).</para></note></listitem>
-
-        <listitem>
-	  <para>
-<literal>ToDoItem</literal> (shortcut Alt-1). 
-<indexterm>
-  <primary>ToDoItem</primary>
-</indexterm>
-<indexterm>
-  <primary>Shortcut key</primary>
-  <secondary>Alt-1</secondary>
-</indexterm>
-Selects the <literal>ToDoItem</literal> tab for the currently selected
-artifact.
-</para>
-	</listitem>
-
-        <listitem>
-	  <para>
-<literal>Properties</literal> (shortcut Alt-2).
-<indexterm>
-  <primary>Properties</primary>
-</indexterm>
-<indexterm>
-  <primary>Shortcut key</primary>
-  <secondary>Alt-2</secondary>
-</indexterm>
-Selects the <literal>Properties</literal> tab for the currently selected
-artifact.
-</para>
-
-        <caution><para>The <literal>Properties</literal> tab will be selected
-          even if it is not available for the current artifact, in which case
-          it will be completely blank.</para></caution></listitem>
-
-        <listitem>
-	  <para>
-<literal>Javadocs</literal> (shortcut Alt-3).
-<indexterm>
-  <primary>Javadocs</primary>
-</indexterm>
-<indexterm>
-  <primary>Shortcut key</primary>
-  <secondary>Alt-3</secondary>
-</indexterm>
-Selects the <literal>Javadocs</literal> tab for the currently selected
-artifact.
-</para>
-
-        <warning><para>The current version of &argouml; has no
-          <literal>Javadocs</literal> tab, so this entry is always grayed
-          out.</para></warning></listitem>
-
-        <listitem>
-	  <para>
-<literal>Source</literal> (shortcut Alt-4). 
-<indexterm>
-  <primary>Source</primary>
-</indexterm>
-<indexterm>
-  <primary>Shortcut key</primary>
-  <secondary>Alt-4</secondary>
-</indexterm>
-Selects the <literal>Source</literal> tab for the currently selected
-artifact.
-</para>
-
-        <caution><para>The <literal>Source</literal> tab will be selected
-          even if it is not available for the current artifact, in which case
-          it will just hold the grayed out text
-          <literal>Nothing&nbsp;selected</literal></para></caution></listitem>
-
-        <listitem>
-	  <para>
-<literal>Constraints</literal> (shortcut Alt-5). 
-<indexterm>
-  <primary>Constraints</primary>
-</indexterm>
-<indexterm>
-  <primary>Shortcut key</primary>
-  <secondary>Alt-5</secondary>
-</indexterm>
-Selects the <literal>Constraints</literal> tab for the
-currently selected artifact.
-</para>
-
-        <warning><para>The <literal>Constraints</literal> tab will be selected
-          even if it is not available for the current artifact, in which case
-          it will present a standard constraints tab with no entries. The side
-          effects of entering any data are unknown.</para></warning></listitem>
-
-        <listitem>
-	  <para>
-<literal>Tagged Values</literal> (shortcut Alt-6).
-<indexterm>
-  <primary>Tagged Values</primary>
-</indexterm>
-<indexterm>
-  <primary>Shortcut key</primary>
-  <secondary>Alt-6</secondary>
-</indexterm>
-Selects the <literal>Tagged Values</literal> tab for the
-currently selected artifact.
-</para>
-
-        <warning><para>The <literal>Tagged Values</literal> tab will be
-          selected even if it is not available for the current artifact, in
-          which case it will contain arbitrary data. The side effects of
-          altering this data are unknown.</para></warning></listitem>
-
-        <listitem>
-	  <para>
-<literal>Checklist</literal> (shortcut Alt-7). 
-<indexterm>
-  <primary>Checklist</primary>
-</indexterm>
-<indexterm>
-  <primary>Shortcut key</primary>
-  <secondary>Alt-7</secondary>
-</indexterm>
-Selects the <literal>Checklist</literal> tab for the currently selected
-artifact.
-</para>
-
-        <caution><para>The <literal>Checklist</literal> tab will be selected
-          even if it is not available for the current artifact, in which case
-          it will be completely blank.</para></caution></listitem>
-
-        <listitem>
-	  <para>
-<literal>History</literal> (shortcut Alt-8). 
-<indexterm>
-  <primary>History</primary>
-</indexterm>
-<indexterm>
-  <primary>Shortcut key</primary>
-  <secondary>Alt-8</secondary>
-</indexterm>
-Selects the <literal>History</literal> tab for the currently selected
-artifact.
-</para>
-
-        <warning><para>The current version of &argouml; has no
-          <literal>History</literal> tab, so this entry is always grayed
-          out.</para></warning></listitem>
-      </itemizedlist>
-    </sect2>
+    <!-- is removed -->
 
     <!-- Alter the grid spacing -->
 
@@ -1799,9 +1719,10 @@ artifact.
         <listitem><para>full grid at 8 pixel spacing.</para></listitem>
       </itemizedlist>
 
-      <warning><para>A known problem with the current version of &argouml;
+      <!--warning><para>A known problem with the current version of &argouml;
         means that altering the grid may cause problems with the display,
-        particularly if no grid is selected.</para></warning>
+        particularly if no grid is selected.</para></warning-->
+        <!-- TODO: I doubt this is this still true. Which issue nr? -->
     </sect2>
 
     <!-- Alter the rules for snapping to the grid -->
@@ -1826,29 +1747,41 @@ artifact.
       <note><para>There is no option to turn off snap to grid
         altogether</para></note>
 
-      <caution><para>In the current version of &argouml; this is not actually a
+      <caution><para>In the V0.14 version of &argouml; this is not actually a
         true snap to grid. It just defines the increments by which artifacts
         are moved around. Thus if an item has an X coordinate of 4 and Grid
         Snap is set to 8, moving will take it to X coordinates of 12, 20, 28
         etc, <emphasis>not</emphasis> 8, 16, 24 etc</para>
+        <!-- TODO: Improve this behaviour. Whenever an item is moved, 
+        move it onto the grid. See issue ... -->
 
       <para>If you wish to align on true grid snap boundaries, you can use the
         <literal>Arrange&nbsp;&gt;&nbsp;Align&nbsp;To&nbsp;Grid</literal> menu
         (see <xref linkend="s2.ref.menu_align"/>).</para></caution>
+        
+        <!-- TODO: The way all this works is very unclear to the user.
+        Proposal: to indicate grid size while choosing, and also snap: 
+        indicate the value. Work this out! 
+        And also offer: View ->Adjust Grid Snap -> "To Grid".
+        See issue ...
+        -->
     </sect2>
 
     <!-- Sort out pagination -->
 
     <sect2 >
-      <title>Adjust Page Breaks</title>
+      <title>Page Breaks</title>
 
       <para>This toggles whether page breaks are shown on the diagram (as white
         dotted lines).</para>
 
-      <caution><para>This is incorrectly named and implemented in the current
-        version of &argouml;, since there is no mechanism to alter the page
-        breaks. It should be a tick box toggle labeled
-        <literal>Page&nbsp;Breaks&nbsp;Visible</literal></para></caution>
+      <caution><para>This menu-item is incorrectly implemented in the V0.14
+        version of &argouml;, since it 
+        should be a tick box toggle<!--labeled
+        <literal>Page&nbsp;Breaks&nbsp;Visible</literal-->.</para></caution>
+        <!-- TODO: Change the menuitem into tick box. See issue ... -->
+        <!-- TODO: Changing the page size (e.g. from A4 to A5) does not move the
+        lines. Why not? -->
     </sect2>
 
     <!-- This controls whether handles are placed on artifacts -->
@@ -1857,12 +1790,32 @@ artifact.
       <title>Buttons on Selection</title>
 
       <para>If this menu option is enabled, certain artifacts on diagrams will
-        display graphic handles when selected that can be dragged to create
-        connections of various types (associations, generalizations) to other
-        artifacts.</para>
+        display graphic buttons (aka handles)
+        when selected and when the mouse is hovered over the artifact. 
+        These buttons can be clicked or dragged to create
+        connections of various types (e.g. 0associations, generalizations) to other
+        artifacts. See for an example of such buttons on selection 
+        <xref linkend="fig.ref.menu_buttons_on_selection"/>.
+      </para>
 
-      <caution><para>The label is somewhat misleading. It is better thought of
-        as <literal>Handles&nbsp;On&nbsp;Selection</literal>.</para></caution>
+        <figure id="fig.ref.menu_buttons_on_selection" float="1">
+        <title>An example of buttons on selection for a Class.</title>
+
+        <screenshot><mediaobject>
+          <imageobject>
+            <imagedata format="PNG" align="center"
+                       fileref="images/reference/menu_buttons_on_selection.png"/>
+          </imageobject>
+        </mediaobject></screenshot>
+      </figure>
+
+      <!--caution><para>The label is somewhat misleading. It is better thought of
+        as <literal>Handles&nbsp;On&nbsp;Selection</literal>. 
+      </para></caution-->
+      <!--TODO: Jason calls these: "toolbelt icons" or "selection-action-buttons".
+      I do not want to bother the user with our struggle to find the best name
+      for these things.
+        Maybe we should name them consistently according one of these...-->
     </sect2>
 
     <!-- Choose whether UML or Java notation -->
@@ -1870,14 +1823,11 @@ artifact.
     <sect2 id="s2.ref.menu_notation">
       <title>The Notation Sub-Menu</title>
 
-      <para>This sub-menu presents a radio box with two options.</para>
+      <para>This sub-menu presents a radio button selection for notation. 
+        See also <xref linkend="s3.ref.menu_settings_notations"/>).</para>
 
-      <note><para>This feature is not completely handled throughout &argouml;,
-        primarily because the multi-notation support is still rather new. See
-        also <xref linkend="s3.ref.menu_settings_notation"/>).</para></note>
-
-      <para>In the future, this feature will define the user's default
-        notation.  At some point &argouml; will allow defining a class in a
+      <para>This feature defines the user's default
+        notation.  &argouml; allows defining a class in a
         diagram as being represented using a specific notation.</para>
 
       <para>For example a class <literal>Able</literal> which is represented in
@@ -1909,6 +1859,30 @@ artifact.
           <literal>Java</literal>. Uses Java notation as the default notation
           for classes.</para></listitem> 
       </itemizedlist>
+      
+      <para>
+        The following choices are only  available if the corresponding plugin
+        languages are installed.
+        <!-- TODO: Are these plugins somewhere described? -->
+      </para>
+      
+      <itemizedlist>
+        <listitem>
+          <para>
+            <literal>Cpp</literal>.
+          </para>
+        </listitem>
+        <listitem>
+          <para>
+            <literal>CSharp</literal>.
+          </para>
+        </listitem>
+        <listitem>
+          <para>
+            <literal>PHP</literal>.
+          </para>
+        </listitem>
+      </itemizedlist>
     </sect2>
   </sect1>
 
@@ -1916,8 +1890,6 @@ artifact.
 
   <sect1 id="s1.ref.create.diagram.menu">
     <title>The Create Diagram Menu</title>
-
-    &notupdatedfor014disclaimer;
 
     <para>This menu provides for creating the various types of UML diagrams
       supported by &argouml;.</para>
@@ -1936,7 +1908,10 @@ artifact.
         class diagram will be created within that package, it will be shown
         within the package on the explorer hierarchy (under
         Package-centric view) and artifacts created on the diagram will be
-        created within the namespace of the package.</para>
+        created within the namespace of the package. 
+        This does not only apply to a package, but also to a class, 
+        interface, use case, etc.
+      </para>
 
       <tip><para>This does not prevent artifacts from other namespaces/packages
         appearing on the diagram. They can be added from the explorer
@@ -1958,7 +1933,10 @@ artifact.
         use case diagram will be created within that package, it will be shown
         within the package on the explorer hierarchy (under
         Package-centric view) and artifacts created on the diagram will be
-        created within the namespace of the package.</para>
+        created within the namespace of the package.
+        This does not only apply to a package, but also to a class, 
+        interface, use case, etc.
+      </para>
 
       <tip><para>This does not prevent artifacts from other namespaces/packages
         appearing on the diagram. They can be added from the explorer
@@ -1980,11 +1958,13 @@ artifact.
         pane. Artifacts created on the diagram will be created within the
         namespace of the owning class.</para>
 
-      <caution><para>State diagrams <emphasis>must</emphasis> be associated
-        with a class. In the current version of &argouml; the <literal>State
-        Diagram</literal> menu entry is not grayed out if a class is not
-        selected. However invoking the menu entry will have no
-        effect.</para></caution> 
+      <tip><para>State diagrams <emphasis>must</emphasis> be associated
+        with a class. The <literal>State
+        Diagram</literal> menu entry is grayed out if a class is not
+        selected. 
+        <!-- TODO: Not only a class. Also Interface, Use case, actor,
+        Classifierrole,... But not a package, model. Describe more exact.-->  
+      </para></tip> 
     </sect2>
 
     <!-- Create an Activity Diagram -->
@@ -2001,11 +1981,11 @@ artifact.
         pane. Artifacts created on the diagram will be created within the
         namespace of the owning class.</para>
 
-      <caution><para>Activity diagrams <emphasis>must</emphasis> be associated
-        with a class. In the current version of &argouml; the <literal>Activity
-        Diagram</literal> menu entry is not grayed out if a class is not
-        selected. However invoking the menu entry will have no
-        effect.</para></caution> 
+      <tip><para>Activity diagrams <emphasis>must</emphasis> be associated
+        with a class. The <literal>Activity
+        Diagram</literal> menu entry is  grayed out if a class is not
+        selected. 
+      </para></tip> 
     </sect2>
 
     <!-- Create a Collaboration Diagram -->
@@ -2044,7 +2024,10 @@ artifact.
         Diagram</title>
 
       <para>This menu entry creates a blank deployment diagram, and selects
-        that diagram in the editing pane. If a package is currently selected,
+        that diagram in the editing pane. 
+        <!-- TODO: The following does not seem to work. 
+        Check and refer to issue ... -->
+        If a package is currently selected,
         the deployment diagram will be created within that package, it will be
         shown within the package on the explorer hierarchy (under
         Package-centric view) and artifacts created on the diagram will be
@@ -2065,7 +2048,13 @@ artifact.
         </imageobject></inlinemediaobject></guiicon> Sequence
         Diagram</title> 
 
-      <para>This menu entry creates a blank sequence diagram, and selects that
+      <caution>
+        <para>
+          Sequence diagrams are not supported in &argouml; V0.14. hence this
+          menuitem is downlighted all the time.
+        </para>
+      </caution>
+      <!--para>This menu entry creates a blank sequence diagram, and selects that
         diagram in the editing pane. If a package is currently selected, the
         sequence diagram will be created within that package, it will be shown
         within the package on the explorer hierarchy (under
@@ -2075,7 +2064,7 @@ artifact.
       <tip><para>This does not prevent artifacts from other
         namespaces/packages appearing on the diagram. They can added from the
         explorer using <literal>Add to Diagram</literal> from the
-        &button2; pop-up menu.</para></tip>
+        &button2; pop-up menu.</para></tip-->
     </sect2>
   </sect1>
 
@@ -2083,8 +2072,6 @@ artifact.
 
   <sect1 id="s1.ref.menu_arrange">
     <title>The Arrange Menu</title>
-
-    &notupdatedfor014disclaimer;
 
     <para>This menu provides a range of functions to help in the alignment of
       artifacts on diagrams within the editing pane. In general the menu
@@ -2149,13 +2136,13 @@ artifact.
           edges are on the grid snap boundary (see
           <xref linkend="s2.ref.menu_grid_snap"/>) edge.</para>
 
-        <caution><para>The alignment is to the current <emphasis>grid
+        <tip><para>The alignment is to the current <emphasis>grid
           snap</emphasis> setting, which may be smaller, larger or the same as
           the displayed grid. Since items are aligned to the grid snap boundary
           any way when you place them, this menu entry has no effect unless you
           have either changed the grid snap to a larger value or used one of
           the other <literal>Arrange</literal> menu entries to push items off
-          their initial positions.</para></caution></listitem>
+          their initial positions.</para></tip></listitem>
       </itemizedlist>
     </sect2>
 
@@ -2219,18 +2206,12 @@ artifact.
       <itemizedlist>
         <listitem><para><guiicon><inlinemediaobject><imageobject><imagedata
             format="GIF" align="center"
-            fileref="images/icons/to_back.gif"/>
-          </imageobject></inlinemediaobject></guiicon> <literal>To
-          Back</literal>. The selected artifacts are moved to the back of any
+            fileref="images/icons/forward.gif"/>
+          </imageobject></inlinemediaobject></guiicon>
+          <literal>Forward</literal>. The selected artifacts are moved one
+          step forward in the ordering hierarchy with respect to 
           other artifacts they overlap.</para></listitem>
-
-        <listitem><para><guiicon><inlinemediaobject><imageobject><imagedata
-            format="GIF" align="center"
-            fileref="images/icons/to_front.gif"/>
-          </imageobject></inlinemediaobject></guiicon> <literal>To
-          Front</literal>. The selected artifacts are moved to the front of
-          any other artifacts they overlap.</para></listitem>
-
+        
         <listitem><para><guiicon><inlinemediaobject><imageobject><imagedata
             format="GIF" align="center"
             fileref="images/icons/backward.gif"/>
@@ -2239,12 +2220,18 @@ artifact.
           step back in the ordering hierarchy with respect to 
           other artifacts they overlap.</para></listitem>
 
+          <listitem><para><guiicon><inlinemediaobject><imageobject><imagedata
+            format="GIF" align="center"
+            fileref="images/icons/to_front.gif"/>
+          </imageobject></inlinemediaobject></guiicon> <literal>To
+          Front</literal>. The selected artifacts are moved to the front of
+          any other artifacts they overlap.</para></listitem>
+
         <listitem><para><guiicon><inlinemediaobject><imageobject><imagedata
             format="GIF" align="center"
-            fileref="images/icons/forward.gif"/>
-          </imageobject></inlinemediaobject></guiicon>
-          <literal>Forward</literal>. The selected artifacts are moved one
-          step forward in the ordering hierarchy with respect to 
+            fileref="images/icons/to_back.gif"/>
+          </imageobject></inlinemediaobject></guiicon> <literal>To
+          Back</literal>. The selected artifacts are moved to the back of any
           other artifacts they overlap.</para></listitem>
       </itemizedlist>
     </sect2>
@@ -2293,24 +2280,36 @@ artifact.
     <sect2>
       <title>The Layout Sub-Menu</title>
 
-      <para>This provides control of layout of items on class diagrams during
-        reverse engineering (see
-        <xref linkend="s3.ref.menu_import_sources"/>). It provides two
-        options.</para>
+      <para>This provides control of layout of items on class diagrams 
+      <!-- TODO: Huh? I think that is not what it does, 
+      because you can adjust that in the Import sources dialog -->
+      <!--during  reverse engineering (see
+        <xref linkend="s3.ref.menu_import_sources"/>)-->. 
+        It provides two options.
+      </para>
 
       <itemizedlist>
-        <listitem><para><literal>Automatic</literal>. Automated
-          layout.</para></listitem>
+        <listitem>
+          <para><literal>Automatic</literal>. Automated layout.
+          <!-- TODO: That is not a well chosen title. 
+          Because it acts as a "Arrange diagram" function, 
+          i.e. when activated, this menuitem simply rearranges 
+          everything on the current diagram. See issue ... -->
+          </para>
+          <caution><para>For all except class diagrams, this menu entry is
+            grayed out and unavailable. So the utility of
+            this menu entry is somewhat limited.</para></caution>
+        </listitem>
 
-        <listitem><para><literal>Incremental</literal>. Incremental
-          layout.</para></listitem>
+        <listitem>
+          <para><literal>Incremental</literal>. Incremental layout.
+          </para>
+          <!-- TODO: What should this menu-item do? -->
+          <caution><para>In V0.14 of &argouml;, this menu entry is always
+            grayed out and unavailable.</para></caution>
+        </listitem>
       </itemizedlist>
 
-      <caution><para>For all except class diagrams, the two menu entries are
-        grayed out and unavailable (since reverse engineering only creates a
-        class diagram). For class diagrams only the
-        <literal>Automatic</literal> option is available. So the utility of
-        this menu entry is somewhat limited.</para></caution>
     </sect2>
   </sect1>
 
