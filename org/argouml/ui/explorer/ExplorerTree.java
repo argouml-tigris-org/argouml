@@ -194,7 +194,10 @@ extends DisplayTextTree
             else if (ModelFacade.isAComment(value)) {
                 name = ModelFacade.getName(value);
                 
-                if (name != null && name.indexOf("\n") < 80) {
+                if (name != null &&
+                    name.indexOf("\n") < 80 &&
+                    name.indexOf("\n") > -1) {
+                        
                     name = name.substring(0, name.indexOf("\n")) + "...";
                 }
                 else if (name != null && name.length() > 80) {
