@@ -130,13 +130,22 @@ public class XMIReader extends ru.novosoft.uml.xmi.XMIReader {
 
 /*  Please do not delete this commented out code. Bob Tarling 3 Mar 2004.
 //  This is useful for discovering load problems with corrupt XMI
+//
 //  NSUML isn't particularly good at reporting detail of errors
 //  and unfortunately is a bit too protective of it's data to just extend.
-//  By refactoring this class to move and rename to 
-//  ru.novosoft.uml.xmi.NsumlXMIReader it can get access to the links
-//  attribute of the NSUML XMIReader and report on any corrupt data.
+//
+//  To make use of this code - 
+//   a) Refactor to rename this class to NsumlXMIReader
+//   b) Refactor to move this class to ru.novosoft.uml.xmi
+//   c) Uncomment the code.
+//
+//  By pretending to be part of the NSUML package this code can now get
+//  access to the links attribute of the NSUML XMIReader and report on
+//  (or ignore) any corrupt data.
+//
 //  This technique was used to fix 
-//  http://argouml.tigris.org/issues/show_bug.cgi?id=2547 and will no
+//  http://argouml.tigris.org/issues/show_bug.cgi?id=2547 and 
+//  http://argouml.tigris.org/issues/show_bug.cgi?id=2566 and will no
 //  doubt prove useful again.
 //
 */    
@@ -149,18 +158,32 @@ public class XMIReader extends ru.novosoft.uml.xmi.XMIReader {
 //                Class c = link.getClass();
 //                Field[] fields = c.getDeclaredFields();
 //                boolean methodType = fields[2].getBoolean(link);
-//                if (!methodType) {
-//                    String parameterXMIID =  (String)fields[3].get(link);
-//                    String parameterXMIUUID =  (String)fields[4].get(link);
-//                    Object objectParameter =  (String)getObject(parameterXMIID, parameterXMIUUID);
-//                    if (!(objectParameter instanceof MModelElement)) {
-//                        String sourceObject = (String)fields[0].get(link);
-//                        String methodName =  (String)fields[1].get(link);
-//                        LOG.error("Invalid link data from XMI " + sourceObject + " " + methodName + " " + parameterXMIID + " " + parameterXMIUUID + " " + objectParameter);
+//                Object sourceObject = fields[0].get(link);
+//                if (sourceObject instanceof MBase) {
+//                    if (methodType) {
+//                        String parameterXMIID =  (String)fields[3].get(link);
+//                        String parameterXMIUUID =  (String)fields[4].get(link);
+//                        Object objectParameter =  getObject(parameterXMIID, parameterXMIUUID);
+//                        Object methodName =  fields[1].get(link);
+//                        if (methodName.equals("type") && sourceObject instanceof MAssociationEnd && !(objectParameter instanceof MModelElement)) {
+//                            System.out.println("Link data from XMI " + sourceObject + " " + methodName + " " + parameterXMIID + " " + parameterXMIUUID + " " + objectParameter);
+//                            //i.remove();
+//                        }
+//                    } else {
+//                        String parameterXMIID =  (String)fields[3].get(link);
+//                        String parameterXMIUUID =  (String)fields[4].get(link);
+//                        Object objectParameter =  getObject(parameterXMIID, parameterXMIUUID);
+//                        if (!(objectParameter instanceof MModelElement)) {
+//                            Object methodName =  fields[1].get(link);
+//                            System.out.println("Invalid link data from XMI " + sourceObject + " " + methodName + " " + parameterXMIID + " " + parameterXMIUUID + " " + objectParameter);
+//                            //i.remove();
+//                        }
 //                    }
 //                }
 //            }
 //        } catch (Exception e) {
+//            System.out.println("Reflection failed");
+//            e.printStackTrace();
 //        }
 //        super.performLinking();
 //    }
