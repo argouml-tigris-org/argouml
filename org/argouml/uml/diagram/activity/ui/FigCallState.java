@@ -29,7 +29,10 @@
 package org.argouml.uml.diagram.activity.ui;
 
 
+import java.beans.PropertyVetoException;
+
 import org.tigris.gef.graph.GraphModel;
+import org.tigris.gef.presentation.FigText;
 
 
 /** Class to display graphics for a UML CallState in a diagram. 
@@ -77,4 +80,15 @@ public class FigCallState extends FigActionState {
         return figClone;
     }
         
+    /**
+     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#textEdited(org.tigris.gef.presentation.FigText)
+     */
+    protected void textEdited(FigText ft) throws PropertyVetoException {
+        /*if (ft == getNameFig() && this.getOwner() != null) {
+            //TODO: Write this function in ParserDisplay. Uncomment then. 
+            ParserDisplay.SINGLETON.parseCallActionState(ft.getText(), 
+                    this.getOwner());
+        } else*/
+        super.textEdited(ft);
+    } 
 } /* end class FigCallState */
