@@ -3557,7 +3557,7 @@ public class ModelFacade {
      * @param classifier the classifier you want to have the operations for
      * @return a collection of the operations
      */
-    public static Collection getOperations(MClassifier mclassifier) {
+    protected static Collection getOperations(MClassifier mclassifier) {
         Collection result = new ArrayList();
         Iterator features = mclassifier.getFeatures().iterator();
         while (features.hasNext()) {
