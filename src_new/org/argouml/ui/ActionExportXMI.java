@@ -212,7 +212,7 @@ public final class ActionExportXMI extends UMLAction implements PluggableMenu {
                 ProjectMember member = (ProjectMember) it.next();
                 if (member.getType().equalsIgnoreCase("xmi")) {
                     try {
-                        member.save(new FileWriter(selectedFile));
+                        member.save(new FileWriter(selectedFile), null);
                     } catch (Exception ex) {
                         String sMessage =
                             MessageFormat.format(Translator.localize(
