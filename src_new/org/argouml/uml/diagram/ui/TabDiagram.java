@@ -82,6 +82,11 @@ implements TabModelTarget, GraphSelectionListener, ModeChangeListener {
   ////////////////////////////////////////////////////////////////
   // accessors
   public void setTarget(Object t) {
+  	setTarget(t, true);
+  }
+  
+  public void setTarget(Object t, boolean visible) {
+    if (t == null) _shouldBeEnabled = false;
     if (t instanceof UMLDiagram) {
       _target = (UMLDiagram) t;
       _shouldBeEnabled = true;
@@ -91,6 +96,9 @@ implements TabModelTarget, GraphSelectionListener, ModeChangeListener {
       return;
     }
     // needs-more-work
+    // 2002-07-26
+    // Jaap Branderhorst
+    // Cool now we assume that's an UMLDiagram
     UMLDiagram d = (UMLDiagram) _target;
     _jgraph.setDiagram(d);
     if (_toolBar != null) {
@@ -100,7 +108,7 @@ implements TabModelTarget, GraphSelectionListener, ModeChangeListener {
     _toolBar = d.getToolBar();
     //System.out.println("setting toolbar in NORTH panel");
     add(_toolBar, BorderLayout.NORTH);
-    setVisible(true);
+    setVisible(visible);
     //layout();
     //invalidate();
     validate();
