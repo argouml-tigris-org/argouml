@@ -167,6 +167,10 @@ public class Init {
   // Pattern specific
   public static Critic crConsiderSingleton = new CrConsiderSingleton();
   public static Critic crSingletonViolated = new CrSingletonViolated();
+  public static Critic crSingletonViolatedMSA =
+      new CrSingletonViolatedMissingStaticAttr();
+  public static Critic crSingletonViolatedOPC =
+      new CrSingletonViolatedOnlyPrivateConstructors();
 
   // Presentation critics
   public static Critic crNodesOverlap = new CrNodesOverlap();
@@ -317,6 +321,8 @@ public class Init {
 
       Agency.register(crConsiderSingleton, classCls);
       Agency.register(crSingletonViolated, classCls);
+      Agency.register(crSingletonViolatedMSA, classCls);
+      Agency.register(crSingletonViolatedOPC, classCls);
 
       Agency.register(crNodeInsideElement, deploymentDiagramCls);
       Agency.register(crNodeInstanceInsideElement, deploymentDiagramCls);
