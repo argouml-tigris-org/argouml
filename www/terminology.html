@@ -36,6 +36,16 @@ the ArgoUML project.
 <dd>Add existing object to something.
 </dd>
 
+<dt>Delete</dt>
+<dd>
+Usually used as "Delete from Model". 
+The object will be destructed, and will 
+not be present any more on any diagram, nor in the model. 
+Additionally, all objects that can not exist without the deleted object 
+are deleted from the model, too. 
+E.g. deleting a class also deletes all its associations.
+</dd>
+
 <dt>Export</dt>
 <dd>Export everything or some part from an existing structure to some format.
 This implies some kind of conversion involved.
@@ -60,6 +70,18 @@ How does this relate to the Java GUI standards?
 <dd>Open an existing project or saved file.
 How does this relate to the Java GUI standards?
 (Don't use Load, Read, or Import for this).
+</dd>
+
+<dt>Remove</dt>
+<dd>
+Usually used as "Remove from Diagram". The object that will be removed is
+not deleted from the model, i.e. it still exists, but is simply not present
+anymore on the current diagram. It might still be present on other diagrams,
+or not, but it is surely present in the explorer.
+Additionally, all objects that can not be drawn without the removed object,
+are removed from the diagram, too. E.g. removing a class also removes all
+its associations.
+Once removed, an object can be "added" to a diagram (again).
 </dd>
 
 <dt>Save</dt>
