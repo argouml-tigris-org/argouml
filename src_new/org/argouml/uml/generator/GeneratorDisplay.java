@@ -127,14 +127,17 @@ implements PluggableNotation {
     // not in nsuml: if (attr.containsStereotype(MStereotype.DERIVED)) slash = "/";
 
     s += slash + generateName(attr.getName());
+
+    MClassifier type = attr.getType();
+    if (type != null) s += ": " + generateClassifierRef(type);
+
     MExpression init = attr.getInitialValue();
     if (init != null) {
       String initStr = generateExpression(init).trim();
       if (initStr.length() > 0)
 		  s += " = " + initStr;
     }
-    MClassifier type = attr.getType();
-    if (type != null) s += ": " + generateClassifierRef(type);
+
 
 //     String constraintStr = generateConstraints(attr);
 //     if (constraintStr.length() > 0)
