@@ -24,19 +24,20 @@
 
 package org.argouml.uml.ui;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+
 import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.PlainDocument;
 
 import org.apache.log4j.Logger;
+import org.argouml.model.Model;
+import org.argouml.model.ModelEventPump;
 import org.argouml.model.ModelFacade;
-import org.argouml.model.uml.UmlModelEventPump;
 import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.ui.targetmanager.TargetListener;
 import org.tigris.gef.presentation.Fig;
-
-import ru.novosoft.uml.MElementEvent;
-import ru.novosoft.uml.MElementListener;
 
 /**
  * A new model for a textproperty. This model does not use reflection to reach 
@@ -49,7 +50,7 @@ import ru.novosoft.uml.MElementListener;
  */
 public abstract class UMLPlainTextDocument
     extends PlainDocument
-    implements MElementListener, TargetListener {
+    implements PropertyChangeListener, TargetListener {
 
     private static final Logger LOG =
         Logger.getLogger(UMLPlainTextDocument.class);
@@ -87,36 +88,11 @@ public abstract class UMLPlainTextDocument
     }
 
     /**
-     * @see ru.novosoft.uml.MElementListener#propertySet(ru.novosoft.uml.MElementEvent)
+     * @see java.beans.PropertyChangeListener#propertyChange(java.beans.PropertyChangeEvent)
      */
-    public void propertySet(MElementEvent e) {
+    public void propertyChange(PropertyChangeEvent evt) {
         handleEvent();
     }
-
-    /**
-     * @see ru.novosoft.uml.MElementListener#roleAdded(ru.novosoft.uml.MElementEvent)
-     */
-    public void roleAdded(MElementEvent e) { }
-
-    /**
-     * @see ru.novosoft.uml.MElementListener#roleRemoved(ru.novosoft.uml.MElementEvent)
-     */
-    public void roleRemoved(MElementEvent e) { }
-
-    /**
-     * @see ru.novosoft.uml.MElementListener#listRoleItemSet(ru.novosoft.uml.MElementEvent)
-     */
-    public void listRoleItemSet(MElementEvent e) { }
-
-    /**
-     * @see ru.novosoft.uml.MElementListener#removed(ru.novosoft.uml.MElementEvent)
-     */
-    public void removed(MElementEvent e) { }
-
-    /**
-     * @see ru.novosoft.uml.MElementListener#recovered(ru.novosoft.uml.MElementEvent)
-     */
-    public void recovered(MElementEvent e) { }
 
     /**
      * Returns the target.
@@ -133,7 +109,7 @@ public abstract class UMLPlainTextDocument
     public final void setTarget(Object target) {
         target = target instanceof Fig ? ((Fig) target).getOwner() : target;
         if (ModelFacade.isABase(target)) {
-            UmlModelEventPump eventPump = UmlModelEventPump.getPump();
+            ModelEventPump eventPump = Model.getPump();
             if (panelTarget != null) {
                 eventPump.removeModelEventListener(this, panelTarget,
 						   getEventName());
@@ -184,7 +160,7 @@ public abstract class UMLPlainTextDocument
     protected abstract String getProperty();
 
     private final void setFiring(boolean f) {
-        UmlModelEventPump eventPump = UmlModelEventPump.getPump();
+        ModelEventPump eventPump = Model.getPump();
         if (f && panelTarget != null) {
             eventPump.addModelEventListener(this, panelTarget, eventName);
         }
