@@ -121,6 +121,64 @@ doesn't find it's own XML-libs. You need to set ANT_HOME in your shell.
 
 
   <!-- =================================================================== -->
+  <!-- Convenience target for locating property files.                     -->
+  <!-- =================================================================== -->
+
+ <target name="list-property-files" depends="init">
+
+    <!-- ====================================================== -->
+    <!-- System property path.separator is a simple way to tell -->
+    <!-- what operating system we are running on                -->
+    <!-- ====================================================== -->
+    <pathconvert pathsep="${path.separator}" property="lbp.path">
+        <path>
+            <pathelement location="${local.build.properties}"/>
+	</path>
+    </pathconvert>
+
+    <pathconvert pathsep="${path.separator}" property="ubp.path">
+        <path>
+            <pathelement location="${user.build.properties}"/>
+	</path>
+    </pathconvert>
+
+    <pathconvert pathsep="${path.separator}" property="dp.path">
+        <path>
+            <pathelement location="default.properties"/>
+	</path>
+    </pathconvert>
+
+    <!-- ====================================================== -->
+    <!-- Ant does not replace property values once they are     -->
+    <!-- set.  So only those which do not exist will get the    -->
+    <!-- property values set to "not present".                  -->
+    <!-- ====================================================== -->
+    <available property="lbp.exists" file="${lbp.path}" value="present"/>
+    <available property="ubp.exists" file="${ubp.path}" value="present"/>
+    <available property="dp.exists" file="${dp.path}" value="present"/>
+
+    <property name="lbp.exists" value="not present"/>
+    <property name="ubp.exists" value="not present"/>
+    <property name="dp.exists" value="not present"/>
+
+    <echo>
+
+Property files to be searched:
+
+1.  ${lbp.path}
+            File is ${lbp.exists}.
+
+2.  ${ubp.path}
+            File is ${ubp.exists}.
+
+3.  ${dp.path}
+            File is ${dp.exists}.
+
+    </echo>
+
+ </target>
+
+  <!-- =================================================================== -->
   <!-- Initialization target                                               -->
   <!-- =================================================================== -->
 
