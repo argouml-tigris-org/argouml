@@ -171,6 +171,15 @@ public class ProfileJava extends Profile {
     }
 
 
+    protected String defaultGeneralizationName(MGeneralization gen, MNamespace ns) {
+        MGeneralizableElement child = gen.getChild();
+        MGeneralizableElement parent = gen.getParent();
+        StringBuffer buf = new StringBuffer();
+        buf.append(formatElement(child,ns));
+        buf.append(" extends ");
+        buf.append(formatElement(parent,ns));
+        return buf.toString();
+    }
 
     protected String defaultName(MModelElement element,MNamespace namespace) {
         String name = null;
@@ -181,8 +190,11 @@ public class ProfileJava extends Profile {
             if(element instanceof MAssociation) {
                 name = defaultAssocName((MAssociation) element,namespace);
             }
-            name = "anon";
+            if(element instanceof MGeneralization) {
+                name = defaultGeneralizationName((MGeneralization) element,namespace);
+            }
         }
+        if(name == null) name = "anon";
         return name;
     }
 
