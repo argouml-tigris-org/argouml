@@ -6,12 +6,12 @@
     <para>
 If you are in a hurry:
 <programlisting>
-C:\Work>set CVSROOT=:pserver:guest@cvs.tigris.org:/cvs
-C:\Work>cvs login   (use guest as password)
-C:\Work>cvs checkout argouml_src
-C:\Work>set JAVA_HOME=<replaceable>C:\Programs\jdkwhatever</replaceable>
-C:\Work>cd argouml\src_new
-C:\Work\argouml\src_new>build run
+C:\Work&gt;set CVSROOT=:pserver:guest@cvs.tigris.org:/cvs
+C:\Work&gt;cvs login   (use guest as password)
+C:\Work&gt;cvs checkout argouml_src
+C:\Work&gt;set JAVA_HOME=<replaceable>C:\Programs\jdkwhatever</replaceable>
+C:\Work&gt;cd argouml\src_new
+C:\Work\argouml\src_new&gt;build run
 </programlisting>
 A window from the newly compiled ArgoUML opens after a while!
 </para>
@@ -1064,6 +1064,237 @@ public class TestUMLAction extends TestCase {
       </sect2>
     </sect1>
 
+    <sect1 id="manual_tests">
+      <title>Manual Test Cases</title>
+      <para>
+The manual test cases are here to help us test ArgoUML in order to 
+cover things that are not testable with the JUnit test cases.
+Since it is a little bit more cumbersome to run them, 
+a tester must 
+read the test cases, 
+understand what he is supposed to do,
+do it, and
+document the result,
+we try to go as far as possible with the JUnit test cases
+and have as few manual test cases as possible.
+I.e. If one of these tests can be converted into a JUnit test case
+we shall try to do so because it can save us a lot of time.
+On the other hand, 
+there are several things that cannot possibly be tested with JUnit tests,
+so there probably are a lot of Manual Test Cases to be written.
+</para>
+      <sect2>
+        <title>Running the manual tests</title>
+        <para>
+Anyone can run the manual tests on any version of ArgoUML.
+If it doesn't work, i.e. the expected result is not seen,
+then this is a defect in that version of ArgoUML and should
+be reported using Issuezilla.
+</para>
+        <para>
+At every release, 
+the ambition is to run through all manual tests.
+Initially, when the amount of manual tests is small, 
+this is done by the release responsible while testing the newly compiled
+release.
+Later on,
+when the amount of manual tests makes it unpractical
+to this during the release work,
+the work can be done by anyone,
+or any group of people within the project,
+after a development release is made and before a stable release is made.
+A signed statement with list of run tests including version number,
+a list (hopefully empty) of failed tests 
+together with their Issuezilla DEFECT number,
+the host type, OS, jdk version, ArgoUML version, ...
+shall be mailed to the dev list when these tests are completed.
+</para>
+      </sect2>
+
+      <sect2>
+        <title>Writing the manual tests</title>
+        <para>
+Adding a new manual test to the group of already existing manual tests
+or improving one of the existing tests helps the project forward.
+Remember that the first priority is to test things with the JUnit
+tests because they can be, to some extent, run automatically and
+have their result reported automatically but then manual tests
+are the next big improvement.
+</para>
+        <para>
+Every test has several attributes to make sure that we can identify
+the test and help the developers and testers.
+          <itemizedlist>
+            <listitem>
+              <para>A name</para>
+              <para>
+This name is the title of the subsection where the test is described.
+</para>
+            </listitem>
+
+            <listitem>
+              <para>A number</para>
+              <para>
+These start with TEST1 and are allocated in sequence
+and maintained manually in this document
+(TEST2, TEST3, TEST4, ...).
+They are never reused when made available by removing
+a test case.
+</para>
+            </listitem>
+
+            <listitem>
+              <para>A revision</para>
+              <para>
+Every test case has a revision.
+These start with REV1 and are increased with one every time
+the test case is changed.
+</para>
+            </listitem>
+
+            <listitem>
+              <para>A list of requirements tested</para>
+              <para>
+This list is references to the requirements as stated in
+<xref linkend="requirements"/>.
+</para>
+            </listitem>
+
+            <listitem>
+              <para>Preparations i.e. what to do before the test</para>
+              <para>
+This is Optional. The default is that you have just started ArgoUML.
+</para>
+            </listitem>
+
+            <listitem>
+              <para>A description on what to do an what to expect</para>
+              <para>
+This is a description in plain English telling the tester
+exactly what to do and what to expect.
+If this description doesn't work or is ambigous in any way the tester
+should consider the test to be DEFECT and report it in Issuezilla.
+</para>
+              <para>
+This is probably best written like this:
+</para>
+              <para>
+<emphasis>Do:</emphasis>
+whatever
+</para>
+              <para>
+<emphasis>Expected output:</emphasis>
+whatever
+</para>
+              <para>
+<emphasis>Do:</emphasis>
+whatever
+</para>
+              <para>
+<emphasis>Expected output:</emphasis>
+whatever
+</para>
+            </listitem>
+          </itemizedlist>
+</para>
+      </sect2>
+
+      <sect2>
+        <title>The list of tests</title>
+        <para>
+This section contains all the tests each in a subsection of its own.
+</para>
+        <sect3>
+          <title>Modules are enabled</title>
+          <para>
+TEST1 REV1 (Does not test any current requirements.)
+</para>
+          <para>
+<emphasis>Preparations:</emphasis>
+Download and install ArgoUML together with the modules.
+</para>
+          <para>
+<emphasis>Do:</emphasis>
+Start in a window that allows you to see the output on Stdout.
+</para>
+          <para>
+<emphasis>Expected output:</emphasis>
+<programlisting>
+Loaded Module: Java from classes
+Loaded Module: GeneratorCpp
+Loaded Module: GeneratorCSharp
+Loaded Module: GeneratorPHP
+</programlisting>
+</para>
+          <para>
+<emphasis>Do:</emphasis>
+Press F7 (or select menu Generation => Generate All Classes...)
+</para>
+          <para>
+<emphasis>Expected output:</emphasis>
+A window pops up with Class Name, Java, Cpp, CSharp, and PHP.
+</para>
+          <para>
+<emphasis>Do:</emphasis>
+Select menu File => Import sources, 
+then open the drop-down box Select language for import: to the far right.
+</para>
+          <para>
+<emphasis>Expected output:</emphasis>
+The drop-down box contains Java and Java from classes.
+</para>
+        </sect3>
+
+        <sect3>
+          <title>Class diagram</title>
+          <para>
+TEST2 REV1
+(Requirements tested: 
+<xref linkend="REQ5"/> and
+<xref linkend="REQ6"/>) 
+</para>
+          <para>
+<emphasis>Do:</emphasis>
+Select the Class Diagram.
+Click the Package symbol on the Edit pane toolbar.
+Click on the diagram.
+Click the Class symbol on the Edit pane toolbar.
+Click on the diagram.
+Click the Interface symbol on the Edit pane toolbar.
+Click on the diagram.
+</para>
+          <para>
+<emphasis>Expected output:</emphasis>
+The Class diagram and the explorer now contains
+one package,
+one class, and
+one interface.
+</para>
+          <para>
+<emphasis>Do:</emphasis>
+Select the class.
+Drag from the four quick-buttons located along the sides of the class
+and release somewhere on the diagram.
+Click on the fifth quick-button (buttom-left of the class).
+Select the interface.
+Drag from the quick-button located along the buttom of the interface symbol
+and release somewhere on the diagram.
+</para>
+          <para>
+<emphasis>Expected output:</emphasis>
+When releases on the diagram a new class is created 
+both on the diagram, where released
+and in the explorer.
+The type of the association corresponds with the quick-button type.
+The association created when clicking the fifth quick-button goes back
+to the class itself.
+</para>
+        </sect3>
+
+      </sect2>
+
+    </sect1>
+
 
     <sect1 id="release_process">
       <title>Making a release</title>
@@ -1483,7 +1714,6 @@ update your checked out copy and continue the release work.
 </para>
 	</sect3>
       </sect2>
-
 
 </sect1>
 
