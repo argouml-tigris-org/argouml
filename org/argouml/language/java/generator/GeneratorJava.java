@@ -156,7 +156,7 @@ implements PluggableNotation {
     /*
      * Replaced 2001-09-26 STEFFEN ZSCHALER
      *
-     * Was 
+     * Was
      *
     s += DocumentationManager.getDocs(op) + "\n" + INDENT;
      */
@@ -200,7 +200,7 @@ implements PluggableNotation {
 
   public String generateAttribute(MAttribute attr, boolean documented) {
     String s = "";
-    
+
     /*
      * Replaced 2001-09-26 STEFFEN ZSCHALER
      *
@@ -208,7 +208,7 @@ implements PluggableNotation {
      *
     s += DocumentationManager.getDocs(attr) + "\n" + INDENT;
      */
-    
+
       if (documented)
           s += generateConstraintEnrichedDocComment (attr) + "\n" + INDENT;
 
@@ -277,10 +277,10 @@ implements PluggableNotation {
     if (cls instanceof MClassImpl) classifierKeyword = "class";
     else if (cls instanceof MInterface) classifierKeyword = "interface";
     else return ""; // actors and use cases
-    
+
     StringBuffer sb = new StringBuffer(80);
     sb.append(DocumentationManager.getComments(cls));  // Add the comments for this classifier first.
-    
+
     /*
      * Replaced 2001-09-26 STEFFEN ZSCHALER
      *
@@ -289,7 +289,7 @@ implements PluggableNotation {
     sb.append(DocumentationManager.getDocs(cls)).append("\n");
      */
     sb.append (generateConstraintEnrichedDocComment (cls)).append ("\n");
-    
+
     sb.append(generateVisibility(cls.getVisibility()));
     if (cls.isAbstract() && !(cls instanceof MInterface)) sb.append("abstract ");
     if (cls.isLeaf()) sb.append("final ");
@@ -307,7 +307,7 @@ implements PluggableNotation {
 
     tv = generateTaggedValues(cls);
     if (tv != null && tv.length() > 0) sb.append(INDENT).append(tv);
-    
+
     // sb.append(generateConstraints(cls)); Removed 2001-09-26 STEFFEN ZSCHALER
 
     Collection strs = MMUtil.SINGLETON.getAttributes(cls);
@@ -335,9 +335,9 @@ implements PluggableNotation {
 		sb.append('\n').append(INDENT).append(generateAssociationFrom(a, ae));
 		tv = generateTaggedValues(a);
 		if (tv != null && tv.length() > 0) sb.append(INDENT).append(tv);
-    
+
 		// sb.append(generateConstraints(a));  Removed 2001-09-26 STEFFEN ZSCHALER Why was this not in generateAssociationFrom ?
-    
+
       }
     }
 
@@ -356,7 +356,7 @@ implements PluggableNotation {
 		sb.append('\n').append(INDENT).append(generate(bf)).append(terminator1);
 		tv = generateTaggedValues((MModelElement)bf);
 		if (tv.length() > 0) sb.append(INDENT).append(tv);
-    
+
 		// sb.append(generateConstraints((MModelElement)bf));  Removed 2001-09-26 STEFFEN ZSCHALER Why was this not in generateOperation / generateClassifier ?
 
 		// there is no ReturnType in behavioral feature (nsuml)
@@ -383,7 +383,10 @@ implements PluggableNotation {
           if (m != null) {
             //System.out.println(", BODY of "+m.getName());
             //System.out.println("|"+m.getBody().getBody()+"|");
-            return m.getBody().getBody();
+            if (m.getBody() != null)
+              return m.getBody().getBody();
+            else
+              return "";
           }
         }
       }
@@ -423,7 +426,7 @@ implements PluggableNotation {
 			if (first) {
         /*
          * Corrected 2001-09-26 STEFFEN ZSCHALER
-         * 
+         *
          * Was:
 				buf.append("// {");
          *
@@ -434,7 +437,7 @@ implements PluggableNotation {
          * list anyway...
          */
         buf.append ("/* {");
-        
+
 				first = false;
 			} else {
 				buf.append(", ");
@@ -451,7 +454,7 @@ implements PluggableNotation {
      * which caused problems with new-lines in tagged values.
      */
     if (!first) buf.append ("}*/\n");
-    
+
     return buf.toString();
   }
 
@@ -486,12 +489,12 @@ implements PluggableNotation {
   public String generateConstraintEnrichedDocComment (MModelElement me,
                                                       MAssociationEnd ae) {
     String sDocComment = generateConstraintEnrichedDocComment (me);
-    
+
     MMultiplicity m = ae.getMultiplicity();
     if (! (MMultiplicity.M1_1.equals(m) || MMultiplicity.M0_1.equals (m))) {
       // Multiplicity greater 1, that means we will generate some sort of
       // collection, so we need to specify the element type tag
-      
+
       // Prepare doccomment
       if (sDocComment != null) {
         // Just remove closing */
@@ -502,20 +505,20 @@ implements PluggableNotation {
                       INDENT + " * \n" +
                       INDENT + " *";
       }
-      
+
       // Build doccomment
       sDocComment += " @element-type " + ae.getType().getName();
-      
+
       sDocComment += "\n" +
                      INDENT + " */";
-      
+
       return sDocComment;
     }
     else {
       return ((sDocComment != null)?(sDocComment):(""));
     }
   }
-  
+
   /**
    * Enhance/Create the doccomment for the given model element, including tags
    * for any OCL constraints connected to the model element. The tags generated
@@ -536,25 +539,25 @@ implements PluggableNotation {
   public String generateConstraintEnrichedDocComment (MModelElement me) {
     // Retrieve any existing doccomment
     String sDocComment = DocumentationManager.getDocs (me);
-    
+
     if (sDocComment != null) {
       // Fix Bug in documentation manager.defaultFor --> look for current INDENT
       // and use it
       for (int i = sDocComment.indexOf ('\n');
            i >= 0 && i < sDocComment.length();
            i = sDocComment.indexOf ('\n', i + 1)) {
-        sDocComment = sDocComment.substring (0, i + 1) + 
+        sDocComment = sDocComment.substring (0, i + 1) +
                       INDENT + sDocComment.substring (i + 1);
       }
     }
-    
+
     // Extract constraints
     Collection cConstraints = me.getConstraints();
-    
+
     if (cConstraints.size() == 0) {
       return (sDocComment != null)?(sDocComment):("");
     }
-    
+
     // Prepare doccomment
     if (sDocComment != null) {
       // Just remove closing */
@@ -565,24 +568,24 @@ implements PluggableNotation {
                     INDENT + " * \n" +
                     INDENT + " *";
     }
-    
+
     // Add each constraint
-    
+
     class TagExtractor extends tudresden.ocl.parser.analysis.DepthFirstAdapter {
       private LinkedList m_llsTags = new LinkedList();
       private String m_sConstraintName;
       private int m_nConstraintID = 0;
-      
+
       public TagExtractor (String sConstraintName) {
         super();
-        
+
         m_sConstraintName = sConstraintName;
       }
-      
+
       public Iterator getTags() {
         return m_llsTags.iterator();
       }
-      
+
       public void caseAConstraintBody (tudresden.ocl.parser.node.AConstraintBody node) {
         // We don't care for anything below this node, so we do not use apply anymore.
         String sKind = (node.getStereotype() != null)?
@@ -594,12 +597,12 @@ implements PluggableNotation {
         String sName = (node.getName() != null)?
                        (node.getName().getText()):
                        (m_sConstraintName + "_" + (m_nConstraintID++));
-                       
+
         if ((sKind == null) ||
             (sExpression == null)) {
           return;
         }
-                       
+
         String sTag;
         if (sKind.equals ("inv ")) {
           sTag = "@invariant ";
@@ -613,25 +616,25 @@ implements PluggableNotation {
         else {
           return;
         }
-        
+
         sTag += sName + ": " + sExpression;
         m_llsTags.addLast (sTag);
       }
     }
-    
+
     tudresden.ocl.check.types.ModelFacade mf = new org.argouml.ocl.ArgoFacade (me);
     for (Iterator i = cConstraints.iterator(); i.hasNext();) {
       MConstraint mc = (MConstraint) i.next();
-      
+
       try {
         tudresden.ocl.OclTree otParsed = tudresden.ocl.OclTree.createTree (
             mc.getBody().getBody(),
             mf
           );
-        
+
         TagExtractor te = new TagExtractor (mc.getName());
         otParsed.apply (te);
-        
+
         for (Iterator j = te.getTags(); j.hasNext();) {
           sDocComment += " " + j.next() + "\n" + INDENT + " *";
         }
@@ -640,12 +643,12 @@ implements PluggableNotation {
         // Nothing to be done, should not happen anyway ;-)
       }
     }
-    
+
     sDocComment += "/";
-    
+
     return sDocComment;
   }
-  
+
   public String generateConstraints(MModelElement me) {
 
     // This method just adds comments to the generated java code. This should be code generated by ocl-argo int he future?
@@ -681,7 +684,7 @@ implements PluggableNotation {
   public String generateAssociationFrom(MAssociation a, MAssociationEnd ae) {
     // needs-more-work: does not handle n-ary associations
     String s = "";
-    
+
     /*
      * Moved into while loop 2001-09-26 STEFFEN ZSCHALER
      *
@@ -689,7 +692,7 @@ implements PluggableNotation {
      *
     s += DocumentationManager.getDocs(a) + "\n" + INDENT;
      */
-    
+
     Collection connections = a.getConnections();
     Iterator connEnum = connections.iterator();
     while (connEnum.hasNext()) {
@@ -700,11 +703,11 @@ implements PluggableNotation {
          *
          */
         s += generateConstraintEnrichedDocComment (a, ae2) + "\n";
-        
+
         s += generateAssociationEnd(ae2);
       }
     }
-    
+
     return s;
   }
 
