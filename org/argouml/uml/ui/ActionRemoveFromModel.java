@@ -145,14 +145,6 @@ public class ActionRemoveFromModel extends UMLChangeAction {
                 }
                 newTarget = getNewTarget(target);
                 p.moveToTrash(target);
-                /*
-                if (target instanceof Diagram) {
-                    Diagram firstDiagram = (Diagram) p.getDiagrams().get(0);
-                    if (target != firstDiagram)
-                        TargetManager.getInstance().setTarget(firstDiagram);
-                }
-                */
-
             }
         }
         
