@@ -43,7 +43,7 @@ import org.argouml.uml.ui.UMLAction;
 import org.tigris.toolbar.ToolBar;
 
 /**
- * The toDo Tab.
+ * The ToDo Tab.
  *
  */
 public class TabToDo extends TabSpawnable implements TabToDoTarget {
@@ -188,8 +188,9 @@ public class TabToDo extends TabSpawnable implements TabToDoTarget {
         return target;
     }
 
+
     /**
-     * @see org.argouml.cognitive.ui.TabToDoTarget#refresh()
+     * Set the target again to what it was before.
      */
     public void refresh() {
         setTarget(TargetManager.getInstance().getTarget());

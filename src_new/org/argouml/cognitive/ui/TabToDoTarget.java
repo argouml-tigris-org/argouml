@@ -28,22 +28,10 @@ package org.argouml.cognitive.ui;
 
 import org.argouml.ui.targetmanager.TargetListener;
 
+/**
+ * Empty interface used to tag Tabbed panels that accept a ToDo Element Target.
+ *
+ */
 public interface TabToDoTarget extends TargetListener {
-    /**
-     * Sets the target of the TabToDo
-     * @deprecated As of ArgoUml version 0.13.5,
-     *             the visibility of this method will change in the future,
-     *             replaced by 
-     * 		   {@link org.argouml.ui.targetmanager.TargetManager}.
-     *
-     * @param o
-     */
-    public void setTarget(Object o); //ToDoItem
-    /**
-     * Returns the target of the TabToDo
-     * @return The current target of the TabToDo
-     */
-    public Object getTarget();
-    
-    public void refresh();
+
 }
