@@ -60,7 +60,7 @@ implements ArgoNotationEventListener {
     }
 
     public void notationChanged(ArgoNotationEvent event) {
-        Argo.log.info("NotationComboBox.notationChanged(" + event + ")");
+        Notation.cat.debug("NotationComboBox.notationChanged(" + event + ")");
         refresh();
     }
     public void notationAdded(ArgoNotationEvent event) { }
