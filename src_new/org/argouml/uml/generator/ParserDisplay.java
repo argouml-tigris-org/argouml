@@ -312,25 +312,13 @@ public class ParserDisplay extends Parser {
             String retStr  = "";
 
             int i, len = s.length();
-            for (i = 0; ((i < len) && (i != equalIndex)); i++) {
-		typeStr = (i > 0) ? s.substring(0,i) : "";
+            for (i = 0; ((i <= len) && (i != equalIndex)); i++) {
+		typeStr = (i > 0) ? s.substring(0, i) : "";
 		retStr = (i < len) ? s.substring(i, len) : "";
             }
             Project p = ProjectBrowser.TheInstance.getProject();
-            MClassifier type = null; // = p.findType("int");
-            /*
-            int firstSpace = s.indexOf(" ");
-            int firstEq = s.indexOf("=");
-            if (firstEq != -1 && firstEq < firstSpace) firstSpace = firstEq;
-            if (firstSpace != -1) {
-                    String typeStr = s.substring(0, firstSpace);
-                    // System.out.println("Trying to find "+typeStr+" in project...");
-                    type = p.findType(typeStr);
-            }
-            */
-            // System.out.println("Trying to find "+typeStr+" in project...");
+            MClassifier type = null; 
             type = p.findType(typeStr);
-            // System.out.println("setting attribute type: " + type.getName());
             attr.setType(type);
 
             return retStr;
@@ -340,14 +328,12 @@ public class ParserDisplay extends Parser {
     public String parseOutInitValue(MAttribute attr, String s) {
         s = s.trim();
         int equalsIndex = s.indexOf("=");
-
-//        if (equalsIndex != 0) return s;
+        if (s.trim().length() == 0) return ""; // trim it here...pjs
+        
         String initStr = s.substring(1, s.length()); //move past "=" to end of "initvalue"--pjs--
-//        if (initStr.trim().length() == 0) return ""; // trim it here...pjs
         MExpression initExpr = new MExpression("Java", initStr);
-
-          attr.setInitialValue(initExpr);
-          return "";
+        attr.setInitialValue(initExpr);
+        return "";
   }
 
   private String parseOutColon(String s) {
