@@ -1,6 +1,26 @@
-/*
- * GridLayout2.java
- */
+// Copyright (c) 1996-2003 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied "AS
+// IS", without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
 package org.argouml.swingext;
 
 import java.awt.*;
@@ -8,11 +28,15 @@ import javax.swing.*;
 import java.util.*;
 
 /**
- * This layout manager attempts to line up all JLabels in the first column and any component
- * the JLabel is registered with in a second column next to its label.
- * The height of each row is the largest minimum height of the 2 components.
- * The width of the first column is the largest preferred width of the 2 components.
- * The width of the 2nd column is any left over space.
+ * This layout manager lines up components in 2 columns. All JLabels are the first column and
+ * any component the JLabel is registered with is in a second column next to the label. <br />
+ * The height of each row is the largest minimum height of the 2 components. <br />
+ * The width of the first column is the largest preferred width of the 2 components. <br />
+ * The width of the 2nd column is any left over space or the maximum width of the component,
+ * whichever is the least. <br />
+ * LabelledLayout can show multiple panels of label/component pairs. The seperation of these
+ * panels is indicated by adding a Seperator component to the parent component. Labelled layout
+ * starts a new panel when detecting this Seperator.
  *
  * @author Bob Tarling
  */
@@ -55,26 +79,26 @@ public class LabelledLayout implements LayoutManager, java.io.Serializable {
     private Orientation orientation;
 
     /**
-     * Construct a new GridLayout2 with a default of one column per component, in a single row.
+     * Construct a new LabelledLayout with a default of one column per component, in a single row.
      */
     public LabelledLayout() {
     }
 
     /**
-     * Construct a new GridLayout2 with a default of one column per component, in a single row.
+     * Construct a new LabelledLayout with the given orientation.
+     * The orientation determines how panels are layed out. A horizontal orientation
+     * has panels to the right of the previous. Vertical orientation has panels layed
+     * out below the previous
      */
     public LabelledLayout(Orientation orientation) {
         this.orientation = orientation;
     }
 
     /**
-     * Construct a new GridLayout2 with the specified number of rows and columns, cell
-     * spacing and cell sizing scheme.
-     *
-     * @param rows the number of rows in the layout
-     * @param cols the number of columns in the layout
+     * Construct a new horizontal LabelledLayout with the specified cell spacing.
      */
     public LabelledLayout(int hgap, int vgap) {
+        this.orientation = Horizontal.getInstance();
         this.hgap = hgap;
         this.vgap = vgap;
     }
