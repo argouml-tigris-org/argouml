@@ -53,16 +53,21 @@ import org.argouml.util.ConfigLoader;
  */
 public class PropPanelClass extends PropPanelClassifier {
 
-    private JScrollPane _attributeScroll;
+    private JScrollPane attributeScroll;
 
-    private JScrollPane _operationScroll;
+    private JScrollPane operationScroll;
 
-    private static UMLClassAttributeListModel attributeListModel = new UMLClassAttributeListModel();
+    private static UMLClassAttributeListModel attributeListModel = 
+        new UMLClassAttributeListModel();
 
-    private static UMLClassOperationListModel operationListModel = new UMLClassOperationListModel();
+    private static UMLClassOperationListModel operationListModel = 
+        new UMLClassOperationListModel();
 
     ////////////////////////////////////////////////////////////////
     // contructors
+    /**
+     * The constructor.
+     */
     public PropPanelClass() {
         super("Class", ConfigLoader.getTabPropsOrientation());
         Class mclass = (Class) ModelFacade.CLASS;
@@ -105,9 +110,11 @@ public class PropPanelClass extends PropPanelClassifier {
         buttonPanel.add(new PropPanelButton2(this,
                 new ActionNavigateNamespace()));
         buttonPanel
-                .add(new PropPanelButton2(this, ActionAddAttribute.SINGLETON));
+                .add(new PropPanelButton2(this, 
+                        ActionAddAttribute.getSingleton()));
         buttonPanel
-                .add(new PropPanelButton2(this, ActionAddOperation.SINGLETON));
+                .add(new PropPanelButton2(this, 
+                        ActionAddOperation.getSingleton()));
         buttonPanel.add(new PropPanelButton2(this, new ActionNewReception()));
         new PropPanelButton(this, buttonPanel, _innerClassIcon, Translator
                 .localize("UMLMenu", "button.new-inner-class"),
@@ -146,11 +153,11 @@ public class PropPanelClass extends PropPanelClassifier {
      * @return JScrollPane
      */
     public JScrollPane getOperationScroll() {
-        if (_operationScroll == null) {
+        if (operationScroll == null) {
             JList list = new UMLLinkedList(operationListModel);
-            _operationScroll = new JScrollPane(list);
+            operationScroll = new JScrollPane(list);
         }
-        return _operationScroll;
+        return operationScroll;
     }
 
     /**
@@ -159,11 +166,11 @@ public class PropPanelClass extends PropPanelClassifier {
      * @return JScrollPane
      */
     public JScrollPane getAttributeScroll() {
-        if (_attributeScroll == null) {
+        if (attributeScroll == null) {
             JList list = new UMLLinkedList(attributeListModel);
-            _attributeScroll = new JScrollPane(list);
+            attributeScroll = new JScrollPane(list);
         }
-        return _attributeScroll;
+        return attributeScroll;
     }
 
 } /* end class PropPanelClass */

@@ -66,15 +66,13 @@ public class ActionCompartmentDisplay extends UMLAction {
      * <p>A flag to indicate whether the action should show or hide the
      *   relevant compartment.</p>
      */
-
-    protected boolean _display = false;
+    private boolean display = false;
 
 
     /**
      * <p>A string indicating the action desired.</p>
      */
-
-    protected String _compartment = "";
+    private String compartment = "";
 
 
     ///////////////////////////////////////////////////////////////////////////
@@ -86,7 +84,6 @@ public class ActionCompartmentDisplay extends UMLAction {
     /**
      * <p>Static instance to show the attribute compartment of a class.</p>
      */
-
     public static UMLAction ShowAttrCompartment =
         new ActionCompartmentDisplay(true, "action.show-attribute-compartment");
 
@@ -96,7 +93,8 @@ public class ActionCompartmentDisplay extends UMLAction {
      */
 
     public static UMLAction HideAttrCompartment =
-        new ActionCompartmentDisplay(false, "action.hide-attribute-compartment");
+        new ActionCompartmentDisplay(false, 
+                "action.hide-attribute-compartment");
 
 
     /**
@@ -176,8 +174,8 @@ public class ActionCompartmentDisplay extends UMLAction {
 
         // Save copies of the parameters
 
-	_display = d;
-	_compartment = c;
+	display = d;
+	compartment = c;
     }
 
 
@@ -190,11 +188,11 @@ public class ActionCompartmentDisplay extends UMLAction {
     /**
      * <p>Action method invoked when an event triggers this action.</p>
      *
-     * <p>The {@link #_compartment} instance variable defines the action to
-     *   take, and the {@link #_display} instance variable whether it should
+     * <p>The {@link #compartment} instance variable defines the action to
+     *   take, and the {@link #display} instance variable whether it should
      *   set visibility or note.</p>
      *
-     * <p><em>Note</em>. The {@link #_display} instance variable is really
+     * <p><em>Note</em>. The {@link #display} instance variable is really
      *   redundant. Its value is implied by the operation.</p>
      *
      * @param ae  The event that triggered us.
@@ -213,32 +211,34 @@ public class ActionCompartmentDisplay extends UMLAction {
 
             // Perform the action
 
-	    if (_compartment.equals("action.show-attribute-compartment")) {
-		((FigClass) f).setAttributeVisible(_display);
+	    if (compartment.equals("action.show-attribute-compartment")) {
+		((FigClass) f).setAttributeVisible(display);
             }
-	    else if (_compartment.equals("action.hide-attribute-compartment")) {
-		((FigClass) f).setAttributeVisible(_display);
+	    else if (compartment.equals("action.hide-attribute-compartment")) {
+		((FigClass) f).setAttributeVisible(display);
             }
-	    else if (_compartment.equals("action.show-operation-compartment")
-		     || _compartment.equals("action.hide-operation-compartment")) {
+	    else if (compartment.equals("action.show-operation-compartment")
+		  || compartment.equals("action.hide-operation-compartment")) {
 		if (f instanceof FigClass)
-			((FigClass) f).setOperationVisible(_display);
+			((FigClass) f).setOperationVisible(display);
 		if (f instanceof FigInterface)
-			((FigInterface) f).setOperationVisible(_display);
+			((FigInterface) f).setOperationVisible(display);
             }
-	    else if (_compartment.equals("action.show-extension-point-compartment")) {
-		((FigUseCase) f).setExtensionPointVisible(_display);
+	    else if (compartment.equals(
+                "action.show-extension-point-compartment")) {
+		((FigUseCase) f).setExtensionPointVisible(display);
             }
-	    else if (_compartment.equals("action.hide-extension-point-compartment")) {
-		((FigUseCase) f).setExtensionPointVisible(_display);
+	    else if (compartment.equals(
+                "action.hide-extension-point-compartment")) {
+		((FigUseCase) f).setExtensionPointVisible(display);
             }
-	    else if (_compartment.equals("action.show-all-compartments")) {
-		((FigClass) f).setAttributeVisible(_display);
-		((FigClass) f).setOperationVisible(_display);
+	    else if (compartment.equals("action.show-all-compartments")) {
+		((FigClass) f).setAttributeVisible(display);
+		((FigClass) f).setOperationVisible(display);
 	    }
 	    else {
-		((FigClass) f).setAttributeVisible(_display);
-		((FigClass) f).setOperationVisible(_display);
+		((FigClass) f).setAttributeVisible(display);
+		((FigClass) f).setOperationVisible(display);
 	    }
 	}
     }

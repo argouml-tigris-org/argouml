@@ -209,7 +209,7 @@ public class UMLCollaborationDiagram extends UMLDiagram {
 	    _actionClassifierRole,
 	    null,
 	    getAssociationActions(),
-	    ActionAddMessage.SINGLETON,
+	    ActionAddMessage.getSingleton(),
 	    _actionGeneralize,
 	    _actionDepend,
 	    null,

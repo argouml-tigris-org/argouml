@@ -39,10 +39,16 @@ import org.argouml.uml.ui.UMLChangeAction;
  */
 public class ActionAddAttribute extends UMLChangeAction {
     
-    public static ActionAddAttribute SINGLETON = new ActionAddAttribute();    
+    private static ActionAddAttribute singleton = new ActionAddAttribute();    
 
+    /**
+     * The constructor for this class.
+     */
     public ActionAddAttribute() { super("button.new-attribute"); }    
 
+    /**
+     * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+     */
     public void actionPerformed(ActionEvent ae) {	
 	Object target = TargetManager.getInstance().getModelTarget();
 	Object/*MClassifier*/ cls = null;
@@ -55,11 +61,14 @@ public class ActionAddAttribute extends UMLChangeAction {
 	else
 	    return;
 
-	Object/*MAttribute*/ attr = UmlFactory.getFactory().getCore().buildAttribute(cls);
+	Object attr = UmlFactory.getFactory().getCore().buildAttribute(cls);
 	TargetManager.getInstance().setTarget(attr);
 	super.actionPerformed(ae);
     }
 
+    /**
+     * @see org.argouml.uml.ui.UMLAction#shouldBeEnabled()
+     */
     public boolean shouldBeEnabled() {
 	ProjectBrowser pb = ProjectBrowser.getInstance();
 	Object target =  TargetManager.getInstance().getModelTarget();
@@ -72,5 +81,11 @@ public class ActionAddAttribute extends UMLChangeAction {
 	       && (ModelFacade.isAClass(target)
 		   || (ModelFacade.isAFeature(target)
 		       && ModelFacade.isAClass(ModelFacade.getOwner(target))));
+    }
+    /**
+     * @return Returns the singleton.
+     */
+    public static ActionAddAttribute getSingleton() {
+        return singleton;
     }
 } /* end class ActionAddAttribute */

@@ -179,8 +179,8 @@ public class UMLClassDiagram extends UMLDiagram {
             _actionGeneralize, null,
             _actionInterface,
             _actionRealize, null,
-            ActionAddAttribute.SINGLETON,
-            ActionAddOperation.SINGLETON, null,
+            ActionAddAttribute.getSingleton(),
+            ActionAddOperation.getSingleton(), null,
             _actionComment,
             _actionCommentLink
         };
