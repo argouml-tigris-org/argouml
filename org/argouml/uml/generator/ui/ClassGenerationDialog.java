@@ -255,7 +255,6 @@ public class ClassGenerationDialog extends JDialog implements ActionListener {
               path = Generator.getCodePath((MClassifier)node);
               if (path == null) {
                 MNamespace parent = ((MClassifier)node).getNamespace();
-                parent = parent.getNamespace();
                 while (parent != null) {
                   path = Generator.getCodePath(parent);
                   if (path != null)

@@ -64,8 +64,17 @@ public class ActionGenerateProjectCode extends UMLAction {
 
     public void actionPerformed(ActionEvent ae) {
       Vector classes = new Vector();
-      Project p = ProjectManager.getManager().getCurrentProject();
-      Collection elems = ModelManagementHelper.getHelper().getAllModelElementsOfKind(MClassifier.class);
+      // The following lines should be substituted by the following 2 commented lines.
+      // (This is because getting the project still does not seem to work...)
+      ProjectBrowser pb = ProjectBrowser.TheInstance;
+      ArgoDiagram activeDiagram = pb.getActiveDiagram();
+      if (!(activeDiagram instanceof org.argouml.uml.diagram.ui.UMLDiagram)) return;
+      ru.novosoft.uml.foundation.core.MNamespace ns = ((org.argouml.uml.diagram.ui.UMLDiagram)activeDiagram).getNamespace();
+      if (ns == null) return;
+      while (ns.getNamespace() != null) ns = ns.getNamespace();
+      Collection elems = ModelManagementHelper.getHelper().getAllModelElementsOfKind(ns,MClassifier.class);
+      //Project p = ProjectManager.getManager().getCurrentProject();
+      //Collection elems = ModelManagementHelper.getHelper().getAllModelElementsOfKind(MClassifier.class);
       Iterator iter = elems.iterator();
       while (iter.hasNext()) {
         MClassifier cls = (MClassifier)iter.next();
@@ -89,7 +98,6 @@ public class ActionGenerateProjectCode extends UMLAction {
         return (path.length() > 0);
       }
       MNamespace parent = cls.getNamespace();
-      parent = parent.getNamespace();
       while (parent != null) {
         path = Generator.getCodePath(parent);
         if (path != null) {
