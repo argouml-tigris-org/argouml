@@ -1,4 +1,3 @@
-// $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -22,33 +21,43 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.argouml.uml.ui.model_management;
+// $Id$
+package org.argouml.uml.ui.foundation.core;
 
-import org.argouml.application.api.*;
-import org.argouml.util.ConfigLoader;
-import org.argouml.application.ArgoVersion;
+import org.argouml.uml.ui.UMLModelElementListModel2;
 
-import ru.novosoft.uml.model_management.*;
+import ru.novosoft.uml.MBase;
+import ru.novosoft.uml.foundation.core.MNamespace;
 
-public class PropPanelModel extends PropPanelPackage
-implements PluggablePropertyPanel {
-  ////////////////////////////////////////////////////////////////
-  // instance vars
+/**
+ * 
+ * @author jaap.branderhorst@xs4all.nl	
+ * @since Jan 2, 2003
+ */
+public class UMLNamespaceOwnedElementListModel extends UMLModelElementListModel2 {
 
-  ////////////////////////////////////////////////////////////////
-  // contructors
-  public PropPanelModel() {
-      super("Model", _modelIcon, ConfigLoader.getTabPropsOrientation());
-  }
-
-    public Class getClassForPanel() {
-        return MModelImpl.class;
+    /**
+     * Constructor for UMLNamespaceOwnedElementListModel.
+     * @param eventName
+     */
+    public UMLNamespaceOwnedElementListModel() {
+        super("ownedElement");
     }
 
-    public String getModuleName() { return "PropPanelModel"; }
-    public String getModuleDescription() { return "Property Panel for Model"; }
-    public String getModuleAuthor() { return "ArgoUML Core"; }
-    public String getModuleVersion() { return ArgoVersion.getVersion(); }
-    public String getModuleKey() { return "module.propertypanel.model"; }
+    /**
+     * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
+     */
+    protected void buildModelList() {
+        if (_target != null) {
+            setAllElements(((MNamespace) getTarget()).getOwnedElements());
+        }
+    }
 
-} /* end class PropPanelModel */
+    /**
+     * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(ru.novosoft.uml.MBase)
+     */
+    protected boolean isValidElement(MBase element) {
+        return ((MNamespace) getTarget()).getOwnedElements().contains(element);
+    }
+
+}

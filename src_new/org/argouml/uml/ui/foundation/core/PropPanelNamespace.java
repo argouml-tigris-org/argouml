@@ -24,31 +24,33 @@
 
 package org.argouml.uml.ui.foundation.core;
 
+import javax.swing.ImageIcon;
+import javax.swing.JList;
+import javax.swing.JScrollPane;
+
 import org.argouml.model.uml.foundation.core.CoreFactory;
 import org.argouml.model.uml.modelmanagement.ModelManagementFactory;
 import org.argouml.swingext.Orientation;
-import org.argouml.ui.ProjectBrowser;
-import org.argouml.uml.ui.*;
-import java.awt.*;
-import java.awt.event.*;
-import javax.swing.*;
+import org.argouml.uml.ui.UMLLinkedList;
 
-import ru.novosoft.uml.model_management.*;
-import ru.novosoft.uml.foundation.core.*;
-import ru.novosoft.uml.*;
+import ru.novosoft.uml.foundation.core.MModelElement;
+import ru.novosoft.uml.foundation.core.MNamespace;
 
 
 public abstract class PropPanelNamespace extends PropPanelModelElement {
 
+	protected JScrollPane ownedElementsScroll;
 
   ////////////////////////////////////////////////////////////////
   // contructors
     public PropPanelNamespace(String panelName, ImageIcon icon, int columns) {
         super(panelName,icon,columns);
+        initialize();
     }
     
     public PropPanelNamespace(String title, ImageIcon icon, Orientation orientation) {
     	super(title, icon, orientation);
+    	initialize();
     }
 
     public PropPanelNamespace(String panelName,int columns) {
@@ -83,6 +85,11 @@ public abstract class PropPanelNamespace extends PropPanelModelElement {
             ns.addOwnedElement(ownedElem);
             navigateTo(ownedElem);
         }
+    }
+    
+    private void initialize() {
+        JList ownedElementsList  = new UMLLinkedList(new UMLNamespaceOwnedElementListModel());
+        ownedElementsScroll = new JScrollPane(ownedElementsList);
     }
 
 } /* end class PropPanelClass */
