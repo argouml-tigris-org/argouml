@@ -69,14 +69,13 @@ import org.argouml.model.uml.UmlFactory;
 import org.argouml.model.uml.UmlModelEventPump;
 import org.argouml.model.uml.foundation.core.CoreHelper;
 import org.argouml.ui.ActionGoToCritique;
-import org.argouml.ui.ActionAutoResize;
 import org.argouml.ui.Clarifier;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.ui.cmd.CmdSetPreferredSize;
 import org.argouml.uml.UUIDManager;
 import org.argouml.uml.generator.ParserDisplay;
-import org.argouml.uml.ui.ActionProperties;
 import org.argouml.uml.ui.ActionDeleteFromDiagram;
+import org.argouml.uml.ui.ActionProperties;
 import org.argouml.util.Trash;
 import org.tigris.gef.base.Selection;
 import org.tigris.gef.graph.GraphModel;
@@ -85,6 +84,7 @@ import org.tigris.gef.presentation.FigGroup;
 import org.tigris.gef.presentation.FigNode;
 import org.tigris.gef.presentation.FigRect;
 import org.tigris.gef.presentation.FigText;
+
 import ru.novosoft.uml.MBase;
 import ru.novosoft.uml.MElementEvent;
 import ru.novosoft.uml.MElementListener;
@@ -586,12 +586,6 @@ public abstract class FigNodeModelElement
         // TODO: remove the damage, as soon as we migrated to a structure that takes
         // the modelevents into account
 
-        if (ActionAutoResize.isAutoResizable()) {
-            CmdSetPreferredSize cmdSPS = 
-                new CmdSetPreferredSize(CmdSetPreferredSize.MINIMUM_SIZE);
-            cmdSPS.setFigToResize(this);
-            cmdSPS.doIt();
-        }
         damage();
     }
 
