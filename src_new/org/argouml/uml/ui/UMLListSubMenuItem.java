@@ -1,4 +1,5 @@
-// Copyright (c) 1996-2001 The Regents of the University of California. All
+// $Id$
+// Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -24,12 +25,6 @@
 // File: UMLListSubMenuItem.java
 // Classes: UMLListSubMenuItem
 // Original Author: mail@jeremybennett.com
-// $$
-
-// 2 Apr 2002: Jeremy Bennett (mail@jeremybennett.com). Created to support
-// UMLModelElementListLinkModel. Based on Curt Arnold's implementation of
-// UMLListMenuItem.
-
 
 package org.argouml.uml.ui;
 
@@ -37,7 +32,7 @@ import javax.swing.event.*;
 import javax.swing.*;
 
 import org.apache.log4j.Category;
-import org.apache.log4j.Priority;
+import org.apache.log4j.Level;
 
 import java.lang.reflect.*;
 import ru.novosoft.uml.*;
@@ -178,7 +173,7 @@ public class UMLListSubMenuItem extends JMenuItem implements ActionListener {
             _action.invoke(_actionObj, argValue);
         }
         catch(InvocationTargetException ex) {
-            if (cat.getPriority() != null && cat.getPriority().equals(Priority.ERROR)) {
+            if (cat.isEnabledFor(Level.ERROR)) {
                 StringBuffer buf = new StringBuffer();
                 buf.append(this.getClass().toString() +
                                ": actionPerformed(). " + 

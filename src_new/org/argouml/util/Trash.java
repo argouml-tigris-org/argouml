@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -24,7 +25,6 @@
 package org.argouml.util;
 
 import org.apache.log4j.Category;
-import org.apache.log4j.Priority;
 import org.argouml.model.uml.UmlFactory;
 
 import java.util.*;
@@ -101,7 +101,7 @@ public class Trash {
 
   public void emptyTrash() {
     cat.debug("TODO: emptyTheTrash not implemented yet");
-    if (cat.getPriority() != null && cat.getPriority().equals(Priority.DEBUG)) {
+    if (cat.isDebugEnabled()) {
         StringBuffer buf = new StringBuffer("Trash contents:");
         buf.append("\n");
         java.util.Enumeration keys = _contents.elements();
