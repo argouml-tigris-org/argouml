@@ -39,6 +39,7 @@ import java.lang.*;
 import org.argouml.ui.*;
 import org.argouml.application.api.*;
 import org.argouml.util.logging.*;
+import org.argouml.cognitive.Designer;
 
 import org.apache.log4j.Category;
 
@@ -120,10 +121,15 @@ public class Import {
 
 	ProjectBrowser.TheInstance.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
         
+        //turn off critiquing for reverse engineering
+        boolean b = Designer.TheDesigner.getAutoCritique();
+        if (b)
+            Designer.TheDesigner.setAutoCritique(false);
+        
         ImportStatusScreen iss = new ImportStatusScreen("Importing",
 							"Splash");
 
-	SwingUtilities.invokeLater(new ImportRun(iss, p, _diagram, files));
+	SwingUtilities.invokeLater(new ImportRun(iss, p, _diagram, files, b));
 
 	iss.show();
     }
@@ -341,12 +347,14 @@ class ImportRun implements Runnable {
     Vector _nextPassFiles;
     SimpleTimer _st;
     boolean cancelled;
+    
+    boolean criticThreadWasOn;
 
     // log4j logging
     private static Category cat = Category.getInstance(org.argouml.uml.reveng.ImportRun.class);
     
     public ImportRun(ImportStatusScreen iss, Project p, DiagramInterface d,
-		     Vector f) {
+		     Vector f, boolean critic) {
 	_iss = iss;
         
         _iss.addCancelButtonListener(new ActionListener(){
@@ -363,6 +371,7 @@ class ImportRun implements Runnable {
 	_st = new SimpleTimer("ImportRun");
 	_st.mark("start");
         cancelled=false;
+        criticThreadWasOn = critic;
     }
 
     /**
@@ -449,6 +458,10 @@ class ImportRun implements Runnable {
 	_iss.done();
         ProjectBrowser.TheInstance.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 
+        // turn criticing on again
+        if(criticThreadWasOn)
+          Designer.TheDesigner.setAutoCritique(true);
+        
 	Argo.log.info(_st);
 	pb.getStatusBar().showProgress(0);
     }
