@@ -58,35 +58,40 @@ public class DesignIssuesDialog extends ArgoDialog implements ChangeListener {
     // constants
     ////////////////////////////////////////////////////////////////
     // instance variables
-    private JPanel  _mainPanel = new JPanel();
-    private Hashtable _slidersToDecisions = new Hashtable();
-    private Hashtable _slidersToDigits = new Hashtable();
+    private JPanel  mainPanel = new JPanel();
+    private Hashtable slidersToDecisions = new Hashtable();
+    private Hashtable slidersToDigits = new Hashtable();
 
     ////////////////////////////////////////////////////////////////
     // constructors
 
+    /**
+     * The constructor.
+     * 
+     * @param parent the parent frame for this dialog
+     */
     public DesignIssuesDialog(Frame parent) {
         super(parent, Translator.localize("dialog.title.design-issues"), false);
 
-        final int WIDTH = 320;
-        final int HEIGHT = 400;
+        final int width = 320;
+        final int height = 400;
 
         initMainPanel();
 
-        JScrollPane scroll = new JScrollPane(_mainPanel);
-        scroll.setPreferredSize(new Dimension(WIDTH, HEIGHT));
+        JScrollPane scroll = new JScrollPane(mainPanel);
+        scroll.setPreferredSize(new Dimension(width, height));
         
         setContent(scroll);
     }
 
 
-    public void initMainPanel() {
+    private void initMainPanel() {
         DecisionModel dm = Designer.TheDesigner.getDecisionModel();
         Vector decs = dm.getDecisions();
 
         GridBagLayout gb = new GridBagLayout();
-        _mainPanel.setLayout(gb);
-        _mainPanel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+        mainPanel.setLayout(gb);
+        mainPanel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 
         GridBagConstraints c = new GridBagConstraints();
         c.fill = GridBagConstraints.BOTH;
@@ -101,7 +106,7 @@ public class DesignIssuesDialog extends ArgoDialog implements ChangeListener {
         JLabel decTitleLabel = new JLabel(
             Translator.localize("label.decision"));
         gb.setConstraints(decTitleLabel, c);
-        _mainPanel.add(decTitleLabel);
+        mainPanel.add(decTitleLabel);
 
         c.gridy = 0;
         c.gridx = 2;
@@ -109,35 +114,35 @@ public class DesignIssuesDialog extends ArgoDialog implements ChangeListener {
         JLabel priLabel = new JLabel(
             Translator.localize("label.decision-priority"));
         gb.setConstraints(priLabel, c);
-        _mainPanel.add(priLabel);
+        mainPanel.add(priLabel);
 
         c.gridy = 1;
         c.gridx = 2;
         c.gridwidth = 2;
         JLabel offLabel = new JLabel(Translator.localize("label.off"));
         gb.setConstraints(offLabel, c);
-        _mainPanel.add(offLabel);
+        mainPanel.add(offLabel);
 
         c.gridy = 1;
         c.gridx = 4;
         c.gridwidth = 2;
         JLabel lowLabel = new JLabel(Translator.localize("label.low"));
         gb.setConstraints(lowLabel, c);
-        _mainPanel.add(lowLabel);
+        mainPanel.add(lowLabel);
 
         c.gridy = 1;
         c.gridx = 6;
         c.gridwidth = 2;
         JLabel mediumLabel = new JLabel(Translator.localize("label.medium"));
         gb.setConstraints(mediumLabel, c);
-        _mainPanel.add(mediumLabel);
+        mainPanel.add(mediumLabel);
 
         c.gridy = 1;
         c.gridx = 8;
         c.gridwidth = 2;
         JLabel highLabel = new JLabel(Translator.localize("label.high"));
         gb.setConstraints(highLabel, c);
-        _mainPanel.add(highLabel);
+        mainPanel.add(highLabel);
 
 
         c.gridy = 2;
@@ -162,28 +167,28 @@ public class DesignIssuesDialog extends ArgoDialog implements ChangeListener {
             decSlide.setSize(smallSize);
             decSlide.setPreferredSize(smallSize);
 
-            _slidersToDecisions.put(decSlide, d);
-            _slidersToDigits.put(decSlide, valueLabel);
+            slidersToDecisions.put(decSlide, d);
+            slidersToDigits.put(decSlide, valueLabel);
 
             c.gridx = 0;
             c.gridwidth = 1;
             c.weightx = 0.0;
             c.ipadx = 3;
             gb.setConstraints(decLabel, c);
-            _mainPanel.add(decLabel);
+            mainPanel.add(decLabel);
 
             c.gridx = 1;
             c.gridwidth = 1;
             c.weightx = 0.0;
             c.ipadx = 0;
             gb.setConstraints(valueLabel, c);
-            _mainPanel.add(valueLabel);
+            mainPanel.add(valueLabel);
 
             c.gridx = 2;
             c.gridwidth = 8;
             c.weightx = 1.0;
             gb.setConstraints(decSlide, c);
-            _mainPanel.add(decSlide);
+            mainPanel.add(decSlide);
 
             c.gridy++;
         }
@@ -192,16 +197,19 @@ public class DesignIssuesDialog extends ArgoDialog implements ChangeListener {
     ////////////////////////////////////////////////////////////////
     // event handlers
 
+    /**
+     * @see javax.swing.event.ChangeListener#stateChanged(javax.swing.event.ChangeEvent)
+     */
     public void stateChanged(ChangeEvent ce) {
         JSlider srcSlider = (JSlider) ce.getSource();
-        Decision d = (Decision) _slidersToDecisions.get(srcSlider);
-        JLabel valLab = (JLabel) _slidersToDigits.get(srcSlider);
+        Decision d = (Decision) slidersToDecisions.get(srcSlider);
+        JLabel valLab = (JLabel) slidersToDigits.get(srcSlider);
         int pri = srcSlider.getValue();
         d.setPriority((pri == 4) ? 0 : pri);
         valLab.setText(getValueText(pri));
     }
 
-    protected String getValueText(int priority) {
+    private String getValueText(int priority) {
         String label = "";
         switch(priority) {
         case 1:
