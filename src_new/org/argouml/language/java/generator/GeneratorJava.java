@@ -211,10 +211,89 @@ implements PluggableNotation, FileGenerator {
     StringBuffer sb = new StringBuffer(80);
     //TODO: add user-defined copyright
     if (VERBOSE_DOCS) sb.append("// FILE: ").append(pathname.replace('\\','/')).append("\n\n");
-    if (packagePath.length() > 0) sb.append("package ").append(packagePath).append(";\n");
-    sb.append("import java.util.*;\n");
+    if (packagePath.length() > 0) sb.append("package ").append(packagePath).append(";\n\n");
+    sb.append(generateImports(cls,packagePath));
     return sb.toString();
   }
+
+  public String generateImports(MClassifier cls, String packagePath) {
+    // TODO: check also generalizations
+    StringBuffer sb = new StringBuffer(80);
+    java.util.HashSet importSet = new java.util.HashSet();
+    String ftype;
+    Iterator j;
+    Collection c = cls.getFeatures();
+    if (c != null) {
+       // now check packages of all feature types
+       for(j = c.iterator(); j.hasNext(); ) {
+            MFeature mFeature = (MFeature)j.next();
+            if (mFeature instanceof MAttribute) {
+                if ((ftype = generateImportType(((MAttribute)mFeature).getType(),packagePath)) != null) {
+                    importSet.add(ftype);
+                }
+            }
+            else if (mFeature instanceof MOperation) {
+                // check the parameter types
+                Iterator it = ((MOperation)mFeature).getParameters().iterator();
+                while (it.hasNext()) {
+                    MParameter p = (MParameter)it.next();
+                    if ((ftype = generateImportType(p.getType(),packagePath)) != null) {
+                        importSet.add(ftype);
+                    }
+                }
+                // check the return parameter types
+                it = UmlHelper.getHelper().getCore().getReturnParameters((MOperation)mFeature).iterator();
+                while (it.hasNext()) {
+                    MParameter p = (MParameter)it.next();
+                    if ((ftype = generateImportType(p.getType(),packagePath)) != null) {
+                        importSet.add(ftype);
+                    }
+                }
+            }
+        }
+    }
+    c = cls.getAssociationEnds();
+    if (!c.isEmpty()) {
+        // check association end types
+        for(j = c.iterator(); j.hasNext(); ) {
+            MAssociationEnd ae = (MAssociationEnd) j.next();
+            MAssociation a = ae.getAssociation();
+            Iterator connEnum = a.getConnections().iterator();
+            while (connEnum.hasNext()) {
+                MAssociationEnd ae2 = (MAssociationEnd)connEnum.next();
+                if (ae2 != ae && ae2.isNavigable() && !ae2.getAssociation().isAbstract()) {
+                    // association end found
+                    MMultiplicity m = ae2.getMultiplicity();
+                    if (!MMultiplicity.M1_1.equals(m) && !MMultiplicity.M0_1.equals(m)) {
+                        importSet.add("java.util.Vector");
+                    }
+                    else if ((ftype = generateImportType(ae2.getType(),packagePath)) != null) {
+                        importSet.add(ftype);
+                    }
+                }
+            }
+        }
+    }
+    // finally generate the import statements
+    for (j = importSet.iterator(); j.hasNext(); ) {
+        ftype = (String)j.next();
+        sb.append("import ").append(ftype).append(";\n");
+    }
+    if (!importSet.isEmpty()) {
+        sb.append('\n');
+    }
+    return sb.toString();
+  }
+
+    public String generateImportType(MClassifier type, String exclude) {
+        String ret = null;
+       if (type != null && type.getNamespace() != null) {
+            String p = getPackageName(type.getNamespace());
+            if (p.length() > 0 && !p.equals(exclude))
+                ret = p + '.' + type.getName();
+        }
+        return ret;
+    }
 
     /**
      * <p>Generate code for an extension point.</p>
@@ -313,6 +392,14 @@ implements PluggableNotation, FileGenerator {
             sb.append(INDENT).append(s).append('\n');
     }
     sb.append(INDENT);
+    sb.append(generateCoreAttribute(attr));
+    sb.append(";\n");
+
+    return sb.toString();
+  }
+
+  public String generateCoreAttribute(MAttribute attr) {
+    StringBuffer sb = new StringBuffer(80);
     sb.append(generateVisibility(attr));
     sb.append(generateScope(attr));
     sb.append(generateChangability(attr));
@@ -354,8 +441,6 @@ implements PluggableNotation, FileGenerator {
       if (initStr.length() > 0)
 	      sb.append(" = ").append(initStr);
     }
-
-    sb.append(";\n");
 
     return sb.toString();
   }
@@ -1247,7 +1332,14 @@ implements PluggableNotation, FileGenerator {
     // must be public or generate public navigation method!
     //String s = INDENT + "public ";
     StringBuffer sb = new StringBuffer(80);
-    sb.append(INDENT).append(generateVisibility(ae.getVisibility()));
+    sb.append(INDENT).append(generateCoreAssociationEnd(ae));
+
+    return (sb.append(";\n")).toString();
+  }
+
+  public String generateCoreAssociationEnd(MAssociationEnd ae) {
+    StringBuffer sb = new StringBuffer(80);
+    sb.append(generateVisibility(ae.getVisibility()));
 
     if (MScopeKind.CLASSIFIER.equals(ae.getTargetScope()))
 	sb.append("static ");
@@ -1261,24 +1353,9 @@ implements PluggableNotation, FileGenerator {
     else
       sb.append("Vector "); //generateMultiplicity(m) + " ";
 
-    sb.append(' ');
+    sb.append(' ').append(generateAscEndName(ae));
 
-    String n = ae.getName();
-    MAssociation asc = ae.getAssociation();
-    String ascName = asc.getName();
-    if (n != null  &&
-	n != null && n.length() > 0) {
-      sb.append(generateName(n));
-    }
-    else if (ascName != null  &&
-	ascName != null && ascName.length() > 0) {
-      sb.append(generateName(ascName));
-    }
-    else {
-      sb.append("my").append(generateClassifierRef(ae.getType()));
-    }
-
-    return (sb.append(";\n")).toString();
+    return sb.toString();
   }
 
 //   public String generateConstraints(MModelElement me) {
@@ -1539,16 +1616,38 @@ implements PluggableNotation, FileGenerator {
 	    generateAction(m.getAction());
     }
 
-    public String getPackageName(MNamespace parent) {
-        if (parent == null)
+    public String generateAscEndName(MAssociationEnd ae) {
+        String n = ae.getName();
+        MAssociation asc = ae.getAssociation();
+        String ascName = asc.getName();
+        if (n != null  && n != null && n.length() > 0) {
+            n = generateName(n);
+        }
+        else if (ascName != null  && ascName != null && ascName.length() > 0) {
+            n = generateName(ascName);
+        }
+        else {
+            n = "my"+generateClassifierRef(ae.getType());
+        }
+        return n;
+    }
+
+
+    /**
+       Gets the Java package name for a given namespace,
+       ignoring the root namespace (which is the model).
+
+       @param namespace the namespace
+       @return the Java package name
+    */
+    public String getPackageName(MNamespace namespace) {
+        if (namespace == null || namespace.getNamespace() == null)
             return "";
-        String packagePath = parent.getName();
-        parent = parent.getNamespace();
-        while (parent != null) {
+        String packagePath = namespace.getName();
+        while ((namespace = namespace.getNamespace()) != null) {
             // ommit root package name; it's the model's root
-            if (parent.getNamespace() != null)
-            packagePath = parent.getName() + '.' + packagePath;
-            parent = parent.getNamespace();
+            if (namespace.getNamespace() != null)
+                packagePath = namespace.getName() + '.' + packagePath;
         }
         return packagePath;
     }

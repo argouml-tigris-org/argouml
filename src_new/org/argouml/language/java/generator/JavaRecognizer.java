@@ -434,57 +434,17 @@ public JavaRecognizer(ParserSharedInputState state) {
 		return codePiece;
 	}
 
-	public final CompositeCodePiece  identifierStar() throws RecognitionException, TokenStreamException {
-		CompositeCodePiece codePiece=null;
-
-		returnAST = null;
-		ASTPair currentAST = new ASTPair();
-		AST identifierStar_AST = null;
-		Token  t1 = null;
-		AST t1_AST = null;
-		Token  t2 = null;
-		AST t2_AST = null;
-		Token  t3 = null;
-		AST t3_AST = null;
-		Token  t4 = null;
-		AST t4_AST = null;
-		Token  t5 = null;
-		AST t5_AST = null;
-
-		t1 = LT(1);
-		if (inputState.guessing==0) {
-			t1_AST = (AST)astFactory.create(t1);
-			astFactory.addASTChild(currentAST, t1_AST);
-		}
+	public final void identifierStar() throws RecognitionException, TokenStreamException {
 		match(IDENT);
-		if ( inputState.guessing==0 ) {
-			codePiece = new CompositeCodePiece(new SimpleCodePiece(t1));
-		}
 		{
-		_loop31:
+		_loop29:
 		do {
 			if ((LA(1)==DOT) && (LA(2)==IDENT)) {
-				t2 = LT(1);
-				if (inputState.guessing==0) {
-					t2_AST = (AST)astFactory.create(t2);
-					astFactory.addASTChild(currentAST, t2_AST);
-				}
 				match(DOT);
-				if ( inputState.guessing==0 ) {
-					codePiece.add(new SimpleCodePiece(t2));
-				}
-				t3 = LT(1);
-				if (inputState.guessing==0) {
-					t3_AST = (AST)astFactory.create(t3);
-					astFactory.addASTChild(currentAST, t3_AST);
-				}
 				match(IDENT);
-				if ( inputState.guessing==0 ) {
-					codePiece.add(new SimpleCodePiece(t3));
-				}
 			}
 			else {
-				break _loop31;
+				break _loop29;
 			}
 
 		} while (true);
@@ -493,24 +453,8 @@ public JavaRecognizer(ParserSharedInputState state) {
 		switch ( LA(1)) {
 		case DOT:
 		{
-			t4 = LT(1);
-			if (inputState.guessing==0) {
-				t4_AST = (AST)astFactory.create(t4);
-				astFactory.addASTChild(currentAST, t4_AST);
-			}
 			match(DOT);
-			if ( inputState.guessing==0 ) {
-				codePiece.add(new SimpleCodePiece(t4));
-			}
-			t5 = LT(1);
-			if (inputState.guessing==0) {
-				t5_AST = (AST)astFactory.create(t5);
-				astFactory.addASTChild(currentAST, t5_AST);
-			}
 			match(STAR);
-			if ( inputState.guessing==0 ) {
-				codePiece.add(new SimpleCodePiece(t5));
-			}
 			break;
 		}
 		case SEMI:
@@ -523,9 +467,7 @@ public JavaRecognizer(ParserSharedInputState state) {
 		}
 		}
 		}
-		identifierStar_AST = (AST)currentAST.root;
-		returnAST = identifierStar_AST;
-		return codePiece;
+		return;
 	}
 
 	public final CompositeCodePiece  modifiers() throws RecognitionException, TokenStreamException {

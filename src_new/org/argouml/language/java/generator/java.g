@@ -242,25 +242,9 @@ identifier returns [CompositeCodePiece codePiece=null]
 		)*
 	;
 
-identifierStar returns [CompositeCodePiece codePiece=null]
-	:	t1:IDENT
-	{codePiece = new CompositeCodePiece(new SimpleCodePiece(t1));}
-
-		( t2:DOT
-	{codePiece.add(new SimpleCodePiece(t2));}
-		
-		t3:IDENT 
-	{codePiece.add(new SimpleCodePiece(t3));}
-		
-		)*
-
-		( t4:DOT 
-	{codePiece.add(new SimpleCodePiece(t4));}
-
-		t5:STAR
-	{codePiece.add(new SimpleCodePiece(t5));}
-		
-		)?
+identifierStar
+	:	IDENT ( DOT IDENT )*
+		( DOT STAR )?
 	;
 
 
