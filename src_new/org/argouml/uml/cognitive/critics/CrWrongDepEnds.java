@@ -30,7 +30,6 @@
 package org.argouml.uml.cognitive.critics;
 
 import java.util.*;
-import java.util.Enumeration; 
 
 import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.behavior.common_behavior.*;
