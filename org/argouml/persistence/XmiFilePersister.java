@@ -32,6 +32,7 @@ import java.net.URL;
 
 import org.apache.log4j.Logger;
 import org.argouml.kernel.Project;
+import org.argouml.kernel.ProjectManager;
 import org.argouml.kernel.ProjectMember;
 import org.argouml.model.uml.UmlHelper;
 import org.argouml.uml.cognitive.ProjectMemberTodoList;
@@ -173,7 +174,7 @@ public class XmiFilePersister extends AbstractFilePersister {
             p.setUUIDRefs(XMIParser.getSingleton().getUUIDRefs());
             p.addMember(new ProjectMemberTodoList("", p));
             p.addMember(model);
-            p.setNeedsSave(false);
+            ProjectManager.getManager().setNeedsSave(false);
             return p;
         } catch (IOException e) {
             throw new OpenException(e);

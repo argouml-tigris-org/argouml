@@ -85,7 +85,7 @@ public abstract class ActionFileOperations extends AbstractAction {
         Project p = ProjectManager.getManager().getCurrentProject();
 
 
-        if (p != null && p.needsSave()) {
+        if (p != null && ProjectManager.getManager().needsSave()) {
             String t = MessageFormat.format(Translator.localize(
                         "optionpane.open-project-save-changes-to"),
                         new Object[] {p.getName()});

@@ -41,7 +41,6 @@ import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.ui.StylePanelFigNodeModelElement;
 
@@ -167,10 +166,7 @@ public class StylePanelFigUseCase extends StylePanelFigNodeModelElement {
 
                 target.setExtensionPointVisible(epCheckBox.isSelected());
 
-                Project p = ProjectManager.getManager().getCurrentProject();
-                if (p != null) {
-                    p.setNeedsSave(true);
-                }
+                ProjectManager.getManager().setNeedsSave(true);
             } else {
                 super.itemStateChanged(e);
             }

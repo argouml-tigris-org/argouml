@@ -410,8 +410,7 @@ public class ProjectBrowser
             setTitle(getAppName());
         } else {
             // ask the Project if we are "dirty" - i.e. need to save
-            String changeIndicator = ProjectManager.getManager()
-                .getCurrentProject().needsSave()
+            String changeIndicator = ProjectManager.getManager().needsSave()
                 ? " *" : "";
             ArgoDiagram activeDiagram = ProjectManager.getManager()
                 .getCurrentProject().getActiveDiagram();

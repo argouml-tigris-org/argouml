@@ -59,7 +59,6 @@ import org.argouml.uml.diagram.static_structure.ui.UMLClassDiagram;
 import org.argouml.uml.diagram.ui.UMLDiagram;
 import org.argouml.uml.diagram.use_case.ui.UMLUseCaseDiagram;
 import org.argouml.uml.generator.GenerationPreferences;
-import org.argouml.uml.ui.ActionSaveProject;
 import org.argouml.util.Trash;
 import org.tigris.gef.base.Diagram;
 import org.tigris.gef.presentation.Fig;
@@ -101,7 +100,7 @@ public class Project implements java.io.Serializable, TargetListener {
 
     private Vector searchpath;
     
-    // TODO break into 3 main member types
+    // TODO: break into 3 main member types
     // model, diagram and other
     private ArrayList members;
     
@@ -179,7 +178,7 @@ public class Project implements java.io.Serializable, TargetListener {
         // depend on Java even more.
         setDefaultModel(ProfileJava.loadProfileModel());
         addSearchPath("PROJECT_DIR");
-        setNeedsSave(false);
+        ProjectManager.getManager().setNeedsSave(false);
         TargetManager.getInstance().addTargetListener(this);
 
     }
@@ -201,7 +200,7 @@ public class Project implements java.io.Serializable, TargetListener {
         addMember(new ProjectMemberTodoList("", this));
         addMember(new UMLClassDiagram(model));
         addMember(new UMLUseCaseDiagram(model));
-        setNeedsSave(false);       
+        ProjectManager.getManager().setNeedsSave(false);       
         setActiveDiagram((ArgoDiagram) getDiagrams().get(0));
     }
  
@@ -330,7 +329,8 @@ public class Project implements java.io.Serializable, TargetListener {
         ProjectMember pm = new ProjectMemberDiagram(d, this);
         addDiagram(d);
         // if diagram added successfully, add the member too
-        if (members.size() > 0 && members.get(0) instanceof ProjectMemberModel) {
+        if (members.size() > 0 
+                && members.get(0) instanceof ProjectMemberModel) {
             // if the first member is a model then add
             // this diagram after that
             members.add(1, pm);
@@ -388,7 +388,7 @@ public class Project implements java.io.Serializable, TargetListener {
             }
             // got past the veto, add the member
             ProjectMember pm = new ProjectMemberModel(m, this);
-            members.add(0,pm);
+            members.add(0, pm);
         }
     }
 
@@ -405,7 +405,7 @@ public class Project implements java.io.Serializable, TargetListener {
         if (!models.contains(m))
             models.addElement(m);
         setCurrentNamespace(m);
-        setNeedsSave(true);
+        ProjectManager.getManager().setNeedsSave(true);
     }
 
     /**
@@ -532,30 +532,6 @@ public class Project implements java.io.Serializable, TargetListener {
      */
     public void setHistoryFile(String s) {
         historyFile = s;
-    }
-
-    /**
-     * Set the needs-to-be-saved flag.
-     * 
-     * @param newValue The new value.
-     */
-    public void setNeedsSave(boolean newValue) {
-        boolean oldValue = ActionSaveProject.getInstance().isEnabled();
-        
-        if (oldValue != newValue) {
-            ActionSaveProject.getInstance().setEnabled(newValue);
-            // notify the gui to put a * on the title bar (swing gui):
-            ProjectManager.getManager().notifySavePropertyChanged(newValue);
-        }
-    }
-    
-    /**
-     * Test if the model needs to be saved.
-     * 
-     * @return <tt>true</tt> if the model needs to be saved.
-     */
-    public boolean needsSave() {
-        return ActionSaveProject.getInstance().isEnabled();
     }
     
     /**
@@ -761,8 +737,7 @@ public class Project implements java.io.Serializable, TargetListener {
     public void addDiagram(ArgoDiagram d) {
         // send indeterminate new value instead of making copy of vector
         diagrams.addElement(d);
-//        d.addChangeRegistryAsListener(saveRegistry);
-        setNeedsSave(true);
+        ProjectManager.getManager().setNeedsSave(true);
     }
 
     /**
@@ -788,7 +763,6 @@ public class Project implements java.io.Serializable, TargetListener {
                 this.moveToTrash(statediagram.getStateMachine());
             }
         }
-//        d.removeChangeRegistryAsListener(saveRegistry);
     }
 
     /**
@@ -870,7 +844,7 @@ public class Project implements java.io.Serializable, TargetListener {
             ((Diagram) diagrams.elementAt(i)).postSave();
         }
         // TODO: is postSave needed for models?
-        setNeedsSave(false);
+        ProjectManager.getManager().setNeedsSave(false);
     }
 
     /**
@@ -884,7 +858,7 @@ public class Project implements java.io.Serializable, TargetListener {
         // with displaying prop panels
         setRoot( getModel());
         
-        setNeedsSave(false);
+        ProjectManager.getManager().setNeedsSave(false);
         // we don't need this HashMap anymore so free up the memory
         uuidRefs = null;
     }
@@ -973,7 +947,7 @@ public class Project implements java.io.Serializable, TargetListener {
                 ((CommentEdge) obj).delete();
             }
         }        
-        setNeedsSave(needSave);
+        ProjectManager.getManager().setNeedsSave(needSave);
     }
 
     /**
