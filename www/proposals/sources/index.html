@@ -34,18 +34,21 @@ the names are decided in other suggestions.
                  /build (shared library location)
                  /component1
                          /build (not in cvs)
+                         /config/checkstyle.xml
                          /src/org/argouml/where/ever
                          /tests/org/argouml/where/ever
                          /lib/some-implementation.jar
 
                  /component2
                          /build (not in cvs)
+                         /config/checkstyle.xml
                          /src/org/argouml/where/ever2
                          /tests/org/argouml/where/ever2
                          /templates/some.template
 
                  /component3
                          /build (not in cvs)
+                         /config/checkstyle.xml
                          /src/org/argouml/where/ever3
                          /tests/org/argouml/where/ever3
 
@@ -65,6 +68,14 @@ the names are decided in other suggestions.
   <li>
     Each component directory would be built separately,
     starting with the most basic component.
+  </li>
+  <li>
+    Each component would contain a config directory
+    which would contain any component-specific configurations.
+    An example of a component-specific configuration would be
+    a checkstyle configuration file
+    containing an IllegalImport declaration for NSUML
+    in all components except the NSUML model component.
   </li>
   <li>
     Components would compile their classes
