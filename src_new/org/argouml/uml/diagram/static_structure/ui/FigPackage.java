@@ -53,7 +53,6 @@ import org.argouml.uml.ui.ActionModifier;
 import org.argouml.uml.ui.UMLAction;
 import org.tigris.gef.base.Globals;
 import org.tigris.gef.graph.GraphModel;
-import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigRect;
 import org.tigris.gef.presentation.FigText;
 
@@ -451,33 +450,6 @@ public class FigPackage extends FigNodeModelElement {
     ////////////////////////////////////////////////////////////////
     // user interaction methods
 
-    public void setEnclosingFig(Fig encloser) {
-        Fig oldEncloser = getEnclosingFig();
-        super.setEnclosingFig(encloser);
-        if (!(getOwner() instanceof MModelElement))
-            return;
-        MModelElement me = (MModelElement) getOwner();
-        MNamespace m = null;
-        try {
-            // If moved into an Package
-            if (encloser != null
-                && oldEncloser != encloser
-                && encloser.getOwner() instanceof MPackage) {
-                me.setNamespace((MNamespace) encloser.getOwner());
-            }
-
-            // If default Namespace is not already set
-            if (me.getNamespace() == null
-                && TargetManager.getInstance().getTarget() instanceof UMLDiagram) {
-                m = (MNamespace) ((UMLDiagram) TargetManager.getInstance().getTarget()).getNamespace();
-                me.setNamespace(m);
-            }
-        } catch (Exception e) {
-            cat.error(
-		      "could not set package due to:" + e + "' at " + encloser,
-		      e);
-        }
-    }
 
     ////////////////////////////////////////////////////////////////
     // accessor methods

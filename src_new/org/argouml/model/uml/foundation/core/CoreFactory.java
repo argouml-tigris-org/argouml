@@ -1532,7 +1532,7 @@ public class CoreFactory extends AbstractUmlModelFactory {
     public void deleteAbstraction(Object elem) {
     }
 
-    public void deleteAssociation(MAssociation elem) {
+    public void deleteAssociation(MAssociation elem) {       
     }
 
     public void deleteAssociationClass(MAssociationClass elem) {

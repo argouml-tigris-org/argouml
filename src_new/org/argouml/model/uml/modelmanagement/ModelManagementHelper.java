@@ -38,6 +38,7 @@ import org.argouml.kernel.ProjectManager;
 import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.CopyHelper;
 
+import ru.novosoft.uml.MBase;
 import ru.novosoft.uml.foundation.core.MModelElement;
 import ru.novosoft.uml.foundation.core.MNamespace;
 import ru.novosoft.uml.model_management.MModel;
@@ -365,5 +366,61 @@ public class ModelManagementHelper {
 		return false;
 	return corresponds(obj1.getNamespace(), obj2.getNamespace());
     }
+
+    /**
+    * Checks if a child for some ownershiprelationship (as in a namespace A is owned by
+    * a namespace B) is allready in the ownerhship relation.
+    * @param parent The current leaf for the ownership relation 
+    * @param child The child that should be owned by the parent
+    * @return true if the child is allready in the ownership relationship
+    */
+    public boolean isCyclicOwnership(Object parent, Object child) {
+        return getOwnerShipPath(child).contains(child);
+    }
+
+    /**
+    * Returns the first modelelement that owns both elem1 as elem2. If there is no
+    * such modelelement returns null.
+    * @param elem1 the first modelelement to evaluate the owners of
+    * @param elem2 the second modelelement
+    * @return the first modelelement owning both elem1 as elem2. If there is no 
+    * such modelelement returns null.
+    */
+    public Object getFirstCommonOwner(Object elem1, Object elem2) {
+        if (elem1 instanceof MBase && elem2 instanceof MBase) {
+            List ownersElem1 = getOwnerShipPath(elem1);
+            List ownersElem2 = getOwnerShipPath(elem2);
+            Iterator it = null;
+            if (ownersElem1.size() > ownersElem2.size())
+                it = ownersElem1.iterator();
+            else
+                it = ownersElem2.iterator();
+            while (it.hasNext()) {
+                Object o = it.next();
+                if (ownersElem2.contains(o)) {
+                    return o;
+                }
+            }
+            return null;
+        } else {
+            return null;
+        }
+    }
+
+    private List getOwnerShipPath(Object elem) {
+        if (elem instanceof MBase) {
+            List ownershipPath = new ArrayList();
+            Object parent = ModelFacade.getModelElementContainer(elem);
+            while (parent != null) {
+                ownershipPath.add(parent);
+                parent = ModelFacade.getModelElementContainer(parent);
+            }
+            return ownershipPath;
+        } else {
+            throw new IllegalArgumentException("Not a base");
+        }
+
+    }
 }
+
 
