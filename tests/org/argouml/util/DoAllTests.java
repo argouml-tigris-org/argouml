@@ -30,7 +30,15 @@ import java.util.*;
 import junit.framework.*;
 import junit.runner.*;
 
+/**
+ * A class to run all the tests.
+ *
+ */
 public class DoAllTests extends TestSuite {
+    
+    /**
+     * @return the test suite
+     */
     public static Test suite() {
         TestSuite suite = new TestSuite();
         int count = 0;

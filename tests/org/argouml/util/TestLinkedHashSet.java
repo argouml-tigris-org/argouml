@@ -41,16 +41,24 @@ import java.util.Arrays;
  */
 public class TestLinkedHashSet extends TestCase {
     
+    /**
+     * The constructor.
+     * 
+     * @param testName
+     */
     public TestLinkedHashSet(java.lang.String testName) {
         super(testName);
     }
     
+    /**
+     * @param args the arguments given on the commandline
+     */
     public static void main(java.lang.String[] args) {
         junit.textui.TestRunner.run(suite());
     }
     
-    LinkedHashSet linkedHashSet;
-    Object entity[] = {
+    private LinkedHashSet linkedHashSet;
+    private Object entity[] = {
 	"entity0",
 	"dsh1",
 	"hfdgh2",
@@ -63,6 +71,9 @@ public class TestLinkedHashSet extends TestCase {
 	"xdhgfd9"
     };
  
+    /**
+     * @see junit.framework.TestCase#setUp()
+     */
     public void setUp() {
         linkedHashSet = new LinkedHashSet();
         linkedHashSet.add(entity[0]);
@@ -77,25 +88,33 @@ public class TestLinkedHashSet extends TestCase {
         linkedHashSet.add(entity[9]);
     }
     
+    /**
+     * @return the test suite
+     */
     public static Test suite() {
         TestSuite suite = new TestSuite(TestLinkedHashSet.class);
         
         return suite;
     }
 
+    /**
+     * Test if the hashset is empty.
+     */
     public void testIsEmpty() {
         assertTrue(!linkedHashSet.isEmpty());
         assertTrue(new LinkedHashSet().isEmpty());
     }
     
-    /** Test of iterator method, of class uk.co.jbob.collections.LinkedHashSet. */
+    /** Test of iterator method, 
+     * of class uk.co.jbob.collections.LinkedHashSet. 
+     */
     public void testIterator() {
         System.out.println("testIterator");
      
         assertIteratorAgainstArray(linkedHashSet.iterator(), entity);
     }
     
-    public void testIterator_Remove() {
+    public void testIteratorRemove() {
         Object[] compare = {
 	    entity[0],
 	    entity[1],
@@ -119,7 +138,7 @@ public class TestLinkedHashSet extends TestCase {
         assertIteratorAgainstArray(linkedHashSet.iterator(), compare);
     }
     
-    public void testIterator_Remove2() {
+    public void testIteratorRemove2() {
         boolean exceptionCaught = false;
         
         Iterator it = linkedHashSet.iterator();
@@ -136,7 +155,7 @@ public class TestLinkedHashSet extends TestCase {
         assertTrue(exceptionCaught);
     }
     
-    public void testIterator_Remove3() {
+    public void testIteratorRemove3() {
         boolean exceptionCaught = false;
         Object[] compare = {
 	    entity[0],
@@ -195,11 +214,14 @@ public class TestLinkedHashSet extends TestCase {
         assertTrue(linkedHashSet.remove(entity[6]));
         assertTrue(linkedHashSet.remove(entity[8]));
         
-        Object[] remaining = {entity[1], entity[3], entity[5], entity[7], entity[9]};
+        Object[] remaining = {entity[1], entity[3], entity[5], 
+                              entity[7], entity[9]};
         assertIteratorAgainstArray(linkedHashSet.iterator(), remaining);
     }
     
-    /** Test of removeAll method, of class uk.co.jbob.collections.LinkedHashSet. */
+    /** Test of removeAll method, 
+     * of class uk.co.jbob.collections.LinkedHashSet. 
+     */
     public void testRemoveAll() {
         System.out.println("testRemoveAll");
         
@@ -239,7 +261,9 @@ public class TestLinkedHashSet extends TestCase {
         assertIteratorAgainstArray(linkedHashSet.iterator(), whatsleft);
     }
     
-    /** Test of retainAll method, of class uk.co.jbob.collections.LinkedHashSet. */
+    /** Test of retainAll method, 
+     * of class uk.co.jbob.collections.LinkedHashSet. 
+     */
     public void testRetainAll() {
         System.out.println("testRetainAll");
         
@@ -261,7 +285,9 @@ public class TestLinkedHashSet extends TestCase {
         assertIteratorAgainstArray(linkedHashSet.iterator(), whatsleft);
     }
     
-    /** Test of toArray method, of class uk.co.jbob.collections.LinkedHashSet. */
+    /** Test of toArray method, 
+     * of class uk.co.jbob.collections.LinkedHashSet. 
+     */
     public void testToArray() {
         System.out.println("testToArray");
 

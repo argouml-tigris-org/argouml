@@ -37,7 +37,8 @@ public class XmlXmiTestSuite {
 	 * @return the junit test suite
 	 */
     public static Test suite() {
-        TestSuite suite = new TestSuite("Tests for " + XmlXmiTestSuite.class.getPackage().getName());
+        TestSuite suite = new TestSuite("Tests for " 
+                + XmlXmiTestSuite.class.getPackage().getName());
         suite.addTestSuite(TestXMIReader.class);
         return suite;
     }

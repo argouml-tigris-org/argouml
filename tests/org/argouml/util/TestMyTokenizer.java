@@ -29,7 +29,17 @@ import java.util.Vector;
 
 import junit.framework.TestCase;
 
+/**
+ * Testing the MyTokenizer class.
+ *
+ */
 public class TestMyTokenizer extends TestCase {
+    
+    /**
+     * The constructor.
+     * 
+     * @param str
+     */
     public TestMyTokenizer(String str) {
 	super(str);
     }
@@ -325,7 +335,8 @@ public class TestMyTokenizer extends TestCase {
 
 	for (i = 0; i < res.length; i++) {
 	    assertTrue(
-		       "MyTokenizer(\"" + str + "\", \"" + delim + "\") lacks tokens",
+		       "MyTokenizer(\"" + str + "\", \"" + delim 
+		           + "\") lacks tokens",
 		       tokenizer.hasMoreTokens());
 	    tok = tokenizer.nextToken();
 	    assertTrue("tokenIndex broken", idx == tokenizer.getTokenIndex());
@@ -363,7 +374,8 @@ public class TestMyTokenizer extends TestCase {
 
 	for (i = 0; i < res.length; i++) {
 	    assertTrue(
-		       "MyTokenizer(\"" + str + "\", \"" + delim + "\") lacks tokens",
+		       "MyTokenizer(\"" + str + "\", \"" + delim 
+		           + "\") lacks tokens",
 		       tokenizer.hasMoreTokens());
 	    tok = tokenizer.nextToken();
 	    assertTrue("tokenIndex broken", idx == tokenizer.getTokenIndex());
@@ -401,7 +413,8 @@ public class TestMyTokenizer extends TestCase {
 
 	for (i = 0; i < res.length; i++) {
 	    assertTrue(
-		       "MyTokenizer(\"" + str + "\", \"" + delim + "\") lacks tokens",
+		       "MyTokenizer(\"" + str + "\", \"" + delim 
+		           + "\") lacks tokens",
 		       tokenizer.hasMoreTokens());
 	    tok = tokenizer.nextToken();
 	    assertTrue("tokenIndex broken", idx == tokenizer.getTokenIndex());

@@ -54,6 +54,9 @@ public class CheckResourceBundle {
 
     /**
      * check that no key is entered twice
+     *
+     * @param tc the testcase
+     * @param b the resourcebundle
      */
     public static void checkNoDuplicates(TestCase tc,
 					 ResourceBundle b) {
@@ -71,6 +74,11 @@ public class CheckResourceBundle {
         }
     }
 
+    /**
+     * @param tc the testcase
+     * @param b the resourcebundle
+     * @param tags the tags
+     */
     public static void checkContainsAllFrom(TestCase tc,
 					    ResourceBundle b,
 					    String[] tags) {
@@ -126,7 +134,7 @@ public class CheckResourceBundle {
     /**
      * Localizations that we do.
      */
-    private static final String[][] supportedLanguages = { 
+    private static final String[][] SUPPORTEDLANGUAGES = { 
 	{
 	    "fr", "", "" 
 	},
@@ -184,23 +192,23 @@ public class CheckResourceBundle {
 	Vector v = new Vector();
 	for (Enumeration ele = el.elements(); ele.hasMoreElements(); ) {
 	    Locale elel = (Locale) ele.nextElement();
-	    for (int j = 0; j < supportedLanguages.length; j++) {
-		if (supportedLanguages[j] == null)
+	    for (int j = 0; j < SUPPORTEDLANGUAGES.length; j++) {
+		if (SUPPORTEDLANGUAGES[j] == null)
 		    continue;
-		if (elel.equals(new Locale(supportedLanguages[j][0],
-					   supportedLanguages[j][1],
-					   supportedLanguages[j][2]))) {
+		if (elel.equals(new Locale(SUPPORTEDLANGUAGES[j][0],
+					   SUPPORTEDLANGUAGES[j][1],
+					   SUPPORTEDLANGUAGES[j][2]))) {
 		    v.add(elel);
 		    break;
 		}
 	    }
 	}
-	for (int j = 0; j < supportedLanguages.length; j++) {
-	    if (supportedLanguages[j] == null)
+	for (int j = 0; j < SUPPORTEDLANGUAGES.length; j++) {
+	    if (SUPPORTEDLANGUAGES[j] == null)
 		continue;
-	    v.add(new Locale(supportedLanguages[j][0],
-			     supportedLanguages[j][1],
-			     supportedLanguages[j][2]));
+	    v.add(new Locale(SUPPORTEDLANGUAGES[j][0],
+			     SUPPORTEDLANGUAGES[j][1],
+			     SUPPORTEDLANGUAGES[j][2]));
 	}
 	return v;
     }
@@ -215,7 +223,7 @@ public class CheckResourceBundle {
      * of these languages contains all tags.
      *
      * @param tc	The test case.
-     * @param b		The resource bundle we are looking at.
+     * @param bname     The name of the resource bundle we are looking at.
      * @param tags	The list of tags that shall exist. If the author of the
      *			test case doesn't have the patience to add it just
      *			leave it empty.
@@ -251,6 +259,10 @@ public class CheckResourceBundle {
 	}
     }
 
+    /**
+     * @param tc the testcase
+     * @param bname the name of the resourcebundle
+     */
     public static void checkResourceBundle(TestCase tc,
 					   String bname) {
 	String[] n = {

@@ -176,7 +176,9 @@ public class CheckUMLModelHelper {
             methods = f.getClass().getMethods();
         }
         catch (SecurityException se) {
-            TestCase.fail("SecurityException while retrieving all methods from " + f.getClass().getName());
+            TestCase.fail(
+                    "SecurityException while retrieving all methods from " 
+                    + f.getClass().getName());
             return;
         }
         for (int i = 0; i < names.length; i++) {
@@ -190,19 +192,26 @@ public class CheckUMLModelHelper {
                 }
             }
             if (testFailed) {
-                TestCase.fail("Method " + methodName + " not found in " + f.getClass().getName());
+                TestCase.fail("Method " + methodName + " not found in " 
+                        + f.getClass().getName());
             }
         }
     }
     
-    public static void metaModelNameCorrect(TestCase tc, AbstractUmlModelFactory f, String[] names) {
+    public static void metaModelNameCorrect(TestCase tc, 
+            AbstractUmlModelFactory f, String[] names) {
         try {
             for (int i = 0; i < names.length; i++) {
                 try {
-                    Method m = f.getClass().getMethod("create" + names[i], new Class[] {});
+                    Method m = f.getClass()
+                        .getMethod("create" + names[i], new Class[] {});
                     Object base = m.invoke(f, new Object[] {});
                     if (base instanceof MModelElement) {
-                        TestCase.assertTrue("not a valid metaModelName " + names[i], ExtensionMechanismsHelper.getHelper().getMetaModelName((MModelElement) base).equals(names[i]));
+                        TestCase.assertTrue(
+                            "not a valid metaModelName " + names[i], 
+                            ExtensionMechanismsHelper.getHelper()
+                                .getMetaModelName((MModelElement) base)
+                                    .equals(names[i]));
                     }
                 }
                 catch (NoSuchMethodException ns) { }
@@ -210,29 +219,55 @@ public class CheckUMLModelHelper {
         }
         catch (Exception ex) {
             ex.printStackTrace();
-            TestCase.fail("Exception during test metaModelnameCorrect. Message: " + ex.getMessage());
+            TestCase.fail(
+                    "Exception during test metaModelnameCorrect. Message: " 
+                    + ex.getMessage());
             
         }
     } 
     
-    public static void isValidStereoType(TestCase tc, AbstractUmlModelFactory f, String[] names) {
+    public static void isValidStereoType(TestCase tc, 
+            AbstractUmlModelFactory f, 
+            String[] names) {
         try {
             MNamespace ns = CoreFactory.getFactory().createNamespace();
             MClass clazz = CoreFactory.getFactory().buildClass(ns);
-            MStereotype stereo1 = ExtensionMechanismsFactory.getFactory().buildStereotype(clazz, "test1", ns);
+            MStereotype stereo1 = ExtensionMechanismsFactory.getFactory()
+                    .buildStereotype(clazz, "test1", ns);
 	    for (int i = 0; i < names.length; i++) {
                 try {
-                    Method m = f.getClass().getMethod("create" + names[i], new Class[] {});
+                    Method m = f.getClass()
+                        .getMethod("create" + names[i], new Class[] {});
                     Object base = m.invoke(f, new Object[] {});
                     if (base instanceof MModelElement) {
-                        MStereotype stereo2 = ExtensionMechanismsFactory.getFactory().buildStereotype((MModelElement) base, "test2", ns);
-                        TestCase.assertTrue("Unexpected invalid stereotype", ExtensionMechanismsHelper.getHelper().isValidStereoType((MModelElement) base, stereo2));
+                        MStereotype stereo2 = 
+                            ExtensionMechanismsFactory.getFactory()
+                                .buildStereotype((MModelElement) base, 
+                                                "test2", 
+                                                ns);
+                        TestCase.assertTrue(
+                            "Unexpected invalid stereotype", 
+                            ExtensionMechanismsHelper.getHelper()
+                                .isValidStereoType((MModelElement) base, 
+                                                    stereo2));
                         if (!(base instanceof MClass)) {
-                            TestCase.assertTrue("Unexpected invalid stereotype", !ExtensionMechanismsHelper.getHelper().isValidStereoType((MModelElement) base, stereo1));
+                            TestCase.assertTrue(
+                                "Unexpected invalid stereotype", 
+                                !ExtensionMechanismsHelper.getHelper()
+                                    .isValidStereoType((MModelElement) base, 
+                                                        stereo1));
                         } else {
-                            MInterface inter = CoreFactory.getFactory().createInterface();
-                            MStereotype stereo3 = ExtensionMechanismsFactory.getFactory().buildStereotype(inter, "test3", ns);
-                            TestCase.assertTrue("Unexpected invalid stereotype", !ExtensionMechanismsHelper.getHelper().isValidStereoType((MModelElement) base, stereo3));
+                            MInterface inter = 
+                                CoreFactory.getFactory().createInterface();
+                            MStereotype stereo3 = ExtensionMechanismsFactory
+                                .getFactory().buildStereotype(inter, 
+                                                              "test3", 
+                                                              ns);
+                            TestCase.assertTrue(
+                                "Unexpected invalid stereotype", 
+                                !ExtensionMechanismsHelper.getHelper()
+                                    .isValidStereoType((MModelElement) base, 
+                                                        stereo3));
                         }
                     }
                 }
@@ -241,7 +276,9 @@ public class CheckUMLModelHelper {
         }
         catch (Exception ex) {
             ex.printStackTrace();
-            TestCase.fail("Exception during test metaModelnameCorrect. Message: " + ex.getMessage());
+            TestCase.fail(
+                    "Exception during test metaModelnameCorrect. Message: " 
+                    + ex.getMessage());
             
         }
     }
