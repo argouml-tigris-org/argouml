@@ -49,8 +49,6 @@ import org.argouml.xml.xmi.XMIReader;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
-import ru.novosoft.uml.model_management.MModel;
-
 /**
  * This class manages the projects loaded in argouml. It is a
  * singleton. Classes in Argouml can ask this class for the current
@@ -249,11 +247,13 @@ public final class ProjectManager {
      * @param url
      * @return Project
      * @throws IOException
+     *
+     * @deprecated since 0.15.1, remove in 0.16
      */
     private Project loadProjectFromXMI(URL url) throws IOException {
         Project p = new Project();
         XMIParser.SINGLETON.readModels(p, url);
-        MModel model = XMIParser.SINGLETON.getCurModel();
+        Object model = XMIParser.SINGLETON.getCurModel();
         UmlHelper.getHelper().addListenersToModel(model);
         p.setUUIDRefs(XMIParser.SINGLETON.getUUIDRefs());
         p.addMember(new ProjectMemberTodoList("", p));
@@ -325,7 +325,7 @@ public final class ProjectManager {
                 cat.error(pc);
                 throw pc;
             }
-            MModel mmodel = null;
+            Object mmodel = null;
 
             InputSource source = new InputSource(zis);
             source.setEncoding("UTF-8");
