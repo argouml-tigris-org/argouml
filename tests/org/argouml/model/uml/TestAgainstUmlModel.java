@@ -320,9 +320,6 @@ public class TestAgainstUmlModel extends TestCase {
 
     /**
      * @return the test suite
-     * @throws SAXException when things go wrong with SAX
-     * @throws IOException when there's an IO error
-     * @throws ParserConfigurationException when the parser finds wrong syntax
      */
     public static Test suite() {
         TestSuite suite =
