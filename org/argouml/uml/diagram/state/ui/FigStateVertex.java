@@ -28,14 +28,11 @@
 
 package org.argouml.uml.diagram.state.ui;
 
-import org.argouml.ui.ProjectBrowser;
-import org.argouml.uml.diagram.state.StateDiagramGraphModel;
+import org.argouml.model.uml.behavioralelements.statemachines.StateMachinesHelper;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
-import org.argouml.uml.diagram.ui.UMLDiagram;
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.Fig;
 
-import ru.novosoft.uml.MElementEvent;
 import ru.novosoft.uml.behavior.state_machines.MCompositeState;
 import ru.novosoft.uml.behavior.state_machines.MStateVertex;
 
@@ -44,42 +41,37 @@ import ru.novosoft.uml.behavior.state_machines.MStateVertex;
 
 public abstract class FigStateVertex extends FigNodeModelElement {
 
-  ////////////////////////////////////////////////////////////////
-  // constructors
+    ////////////////////////////////////////////////////////////////
+    // constructors
 
-  public FigStateVertex() {  }
+    public FigStateVertex() {
+    }
 
-  public FigStateVertex(GraphModel gm, Object node) {
-    this();
-    setOwner(node);
-  }
+    public FigStateVertex(GraphModel gm, Object node) {
+        this();
+        setOwner(node);
+    }
 
-  ////////////////////////////////////////////////////////////////
-  // nestable nodes
+    ////////////////////////////////////////////////////////////////
+    // nestable nodes
 
-  public void setEnclosingFig(Fig encloser) {
-    super.setEnclosingFig(encloser);
-    if (!(getOwner() instanceof MStateVertex)) return;
-    MStateVertex sv = (MStateVertex) getOwner();
-    MCompositeState m = null;
-    if (encloser != null && (encloser.getOwner() instanceof MCompositeState)) {
-      m = (MCompositeState) encloser.getOwner();
-     }
-    else {
-      ProjectBrowser pb = ProjectBrowser.TheInstance;
-      if (pb.getTarget() instanceof UMLDiagram) {
-        try {
-	  GraphModel gm = ((UMLDiagram)pb.getTarget()).getGraphModel();
-	  StateDiagramGraphModel sdgm =  (StateDiagramGraphModel) gm;
-	  m = (MCompositeState) sdgm.getMachine().getTop();
+	/**
+	 * Overriden to make it possible to include a statevertex in a composite
+	 * state.
+	 */
+    public void setEnclosingFig(Fig encloser) {
+        super.setEnclosingFig(encloser);
+        if (!(getOwner() instanceof MStateVertex))
+            return;
+        MStateVertex sv = (MStateVertex) getOwner();
+        MCompositeState m = null;
+        if (encloser != null && (encloser.getOwner() instanceof MCompositeState)) {
+            m = (MCompositeState) encloser.getOwner();
+        } else {
+            m = (MCompositeState)StateMachinesHelper.getHelper().getTop(StateMachinesHelper.getHelper().getStateMachine(sv));
         }
-        catch(Exception ex) {
-          ex.printStackTrace();
-        }
-      }
-    }	
-    if (m!=null) 
-	sv.setContainer(m);
-  }
+        if (m != null)
+            sv.setContainer(m);
+    }
 
 } /* end class FigStateVertex */

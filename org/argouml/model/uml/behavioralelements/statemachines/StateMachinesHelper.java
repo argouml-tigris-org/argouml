@@ -28,6 +28,7 @@ import java.util.Collection;
 import org.argouml.model.uml.modelmanagement.ModelManagementHelper;
 
 import ru.novosoft.uml.behavior.common_behavior.MAction;
+import ru.novosoft.uml.behavior.state_machines.MCompositeState;
 import ru.novosoft.uml.behavior.state_machines.MEvent;
 import ru.novosoft.uml.behavior.state_machines.MState;
 import ru.novosoft.uml.behavior.state_machines.MStateMachine;
@@ -163,11 +164,11 @@ public class StateMachinesHelper {
      * @return MStateMachine The statemachine the state belongs too or null if 
      *  the given parameter is not a state or null itself.
      */
-    public MStateMachine getStateMachine(Object oState) {
-        if (oState instanceof MState) {
-            MState state = (MState) oState;
-            if (state.getStateMachine() != null) {
-                return state.getStateMachine();
+    public MStateMachine getStateMachine(Object oStateVertex) {
+        if (oStateVertex instanceof MStateVertex) {
+            MStateVertex state = (MStateVertex) oStateVertex;
+            if (state instanceof MState && ((MState)state).getStateMachine() != null) {
+                return ((MState)state).getStateMachine();
             } else
                 return getStateMachine(state.getContainer());
         }
@@ -234,6 +235,12 @@ public class StateMachinesHelper {
         if (oSubmachineState instanceof MSubmachineState && oStatemachine instanceof MStateMachine) {
             ((MSubmachineState)oSubmachineState).setSubmachine((MStateMachine)oStatemachine);
         }
+    }
+    
+    public MState getTop(MStateMachine sm) {
+        if (sm == null)
+        	return null;
+        return sm.getTop();
     }
     
     

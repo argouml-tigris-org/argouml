@@ -1,4 +1,4 @@
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -21,60 +21,65 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
+// $Id$
 package org.argouml.uml.diagram.ui;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.List;
+import java.util.Vector;
 
-import org.argouml.application.api.Argo;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.ui.AbstractGoRule;
+import org.argouml.ui.ArgoDiagram;
 import org.argouml.uml.diagram.state.ui.UMLStateDiagram;
 
 import ru.novosoft.uml.foundation.core.MBehavioralFeature;
-import ru.novosoft.uml.foundation.core.MNamespace;
+import ru.novosoft.uml.foundation.core.MOperation;
 
 /**
- * Shows the diagrams as children of their namespace. 
  * 
  * @author jaap.branderhorst@xs4all.nl	
  * @since Dec 30, 2002
  */
-public class GoModelToDiagram extends AbstractGoRule {
+public class GoBehavioralFeatureToStateDiagram extends AbstractGoRule {
 
-    public String getRuleName() {
-        return Argo.localize("Tree", "misc.package.diagram");
+    /**
+     * @see javax.swing.tree.TreeModel#isLeaf(java.lang.Object)
+     */
+    public boolean isLeaf(Object node) {
+        return !(node instanceof MOperation && getChildCount(node) > 0);
     }
 
+    /**
+     * @see org.argouml.ui.AbstractGoRule#getChildren(java.lang.Object)
+     */
     public Collection getChildren(Object parent) {
-        if (parent instanceof MNamespace) {
-            List returnList = new ArrayList();
-            MNamespace ns = (MNamespace)parent;
-            Project proj = ProjectManager.getManager().getCurrentProject();
-            Iterator it = proj.getDiagrams().iterator();
+        if (parent instanceof MBehavioralFeature) {
+            MBehavioralFeature operation = (MBehavioralFeature)parent;
+            Collection col = operation.getBehaviors();
+            Vector ret = new Vector();
+            Project p = ProjectManager.getManager().getCurrentProject();
+            Vector diagrams = p.getDiagrams();
+            Iterator it = diagrams.iterator();
             while (it.hasNext()) {
-                UMLDiagram d= (UMLDiagram)it.next();
-                if (d instanceof UMLStateDiagram) {
-                    UMLStateDiagram sd = (UMLStateDiagram)d;
-                    if (sd.getStateMachine().getContext() instanceof MBehavioralFeature)
-                    	continue;
+                ArgoDiagram diagram = (ArgoDiagram)it.next();
+                if (diagram instanceof UMLStateDiagram &&
+                    col.contains(((UMLStateDiagram)diagram).getStateMachine())) {
+                    ret.add(diagram);
                 }
-                if (d.getNamespace() == ns)
-                	returnList.add(d);                 
+                
             }
-            return returnList;
+            return ret;
         }
         return null;
     }
 
-    
-    public boolean isLeaf(Object node) {
-        return !(node instanceof MNamespace && getChildCount(node) > 0);
+    /**
+     * @see org.argouml.ui.AbstractGoRule#getRuleName()
+     */
+    public String getRuleName() {
+        return "Behavioral Feature -> State diagram";
     }
-
-    
 
 }
