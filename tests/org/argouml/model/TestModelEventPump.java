@@ -184,11 +184,10 @@ public class TestModelEventPump extends TestCase {
     }
 
     /**
-     * Tests if a non registred listener does not receive any events (never can
-     * be too sure :))
+     * Tests if a non registred listener does not receive any events. 
      */
     public void testFireNonRegistredListener() {
-        MClass elem2 = CoreFactory.getFactory().createClass();
+        CoreFactory.getFactory().createClass();
         elem.addParameter(new MParameterImpl());
         assertTrue(!eventcalled);
     }
