@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2002 The Regents of the University of California. All
+// Copyright (c) 2002-2003 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -24,6 +24,8 @@
 package org.argouml.ui.targetmanager;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 
 import org.argouml.application.security.ArgoSecurityManager;
@@ -40,8 +42,14 @@ import junit.framework.TestCase;
 public class TestTargetManager extends TestCase {
 
     private boolean targetAddedCalled;
+    private Object  targetAddedTarget;
+    private Object  targetAddedObjects[];
     private boolean targetSetCalled;
+    private Object  targetSetTarget;
+    private Object  targetSetObjects[];
     private boolean targetRemovedCalled;
+    private Object  targetRemovedTarget;
+    private Object  targetRemovedObjects[];
 
     private class TestTargetListener implements TargetListener {
 
@@ -50,6 +58,8 @@ public class TestTargetManager extends TestCase {
 	 */
 	public void targetAdded(TargetEvent e) {
 	    targetAddedCalled = true;
+	    targetAddedTarget = TargetManager.getInstance().getTarget();
+	    targetAddedObjects = e.getNewTargets();
 	}
 
 	/* (non-Javadoc)
@@ -57,6 +67,8 @@ public class TestTargetManager extends TestCase {
 	 */
 	public void targetRemoved(TargetEvent e) {
 	    targetRemovedCalled = true;
+	    targetRemovedTarget = TargetManager.getInstance().getTarget();
+	    targetRemovedObjects = e.getNewTargets();
 	}
 
 	/* (non-Javadoc)
@@ -64,6 +76,8 @@ public class TestTargetManager extends TestCase {
 	 */
 	public void targetSet(TargetEvent e) {
 	    targetSetCalled = true;
+	    targetSetTarget = TargetManager.getInstance().getTarget();
+	    targetSetObjects = e.getNewTargets();
 	}
 
     }
@@ -111,35 +125,141 @@ public class TestTargetManager extends TestCase {
 	assertEquals(null, TargetManager.getInstance().getTarget());
 	TargetListener listener = new TestTargetListener();
 	targetSetCalled = false;
+	targetSetObjects = null;
 	TargetManager.getInstance().addTargetListener(listener);
 	TargetManager.getInstance().setTarget(test);
 	assertTrue(targetSetCalled);
+	assertEquals(new Object[] {test}, targetSetObjects);
+
+	TargetManager.getInstance().removeTargetListener(listener);
     }
 
     public void testGetTarget() {
+	TargetListener listener = new TestTargetListener();
 	assertEquals(null, TargetManager.getInstance().getTarget());
 	Object test = new Object();
 	TargetManager.getInstance().setTarget(test);
 	assertEquals(test, TargetManager.getInstance().getTarget());
+
+	TargetManager.getInstance().addTargetListener(listener);
+
+	targetSetTarget = null;
+	TargetManager.getInstance().setTarget(null);
+	assertEquals(null, targetSetTarget);
+
+	targetSetTarget = null;
+	TargetManager.getInstance().setTarget(test);
+	assertEquals(test, targetSetTarget);
+
+	TargetManager.getInstance().setTarget(null);
+	targetAddedTarget = null;
+	TargetManager.getInstance().addTarget(test);
+	assertEquals(test, targetAddedTarget);
+	targetRemovedTarget = null;
+	TargetManager.getInstance().removeTarget(test);
+	assertEquals(null, targetRemovedTarget);
+
+	TargetManager.getInstance().removeTargetListener(listener);
+    }
+
+    public void testGetTargets() {
+	Collection coll, coll2;
+	Object test =  new Object();
+	Object test2 = new Object();
+	HashSet set1 = new HashSet();     set1.add(test);
+	HashSet set2 = new HashSet(set1); set2.add(test2);
+
+	TargetManager.getInstance().setTarget(null);
+	assertTrue(TargetManager.getInstance().getTargets().isEmpty());
+	TargetManager.getInstance().setTarget(test);
+	assertEquals(new HashSet(TargetManager.getInstance().getTargets()), set1);
+	TargetManager.getInstance().setTarget(null);
+	assertTrue(TargetManager.getInstance().getTargets().isEmpty());
+
+	TargetManager.getInstance().setTargets(set2);
+	coll = TargetManager.getInstance().getTargets();
+	coll2 = new HashSet(coll);
+	assertTrue(coll.size() == set2.size());
+	assertEquals(coll2, set2);
+
+	TargetManager.getInstance().setTargets(set1);
+	coll = TargetManager.getInstance().getTargets();
+	coll2 = new HashSet(coll);
+	assertTrue(coll.size() == set1.size());
+	assertEquals(coll2, set1);
+
+	TargetManager.getInstance().setTargets(new HashSet());
+	assertTrue(TargetManager.getInstance().getTargets().isEmpty());
+
+	TargetManager.getInstance().addTarget(null);
+	assertTrue(TargetManager.getInstance().getTargets().isEmpty());
+
+	TargetManager.getInstance().addTarget(test);
+	coll = TargetManager.getInstance().getTargets();
+	coll2 = new HashSet(coll);
+	assertTrue(coll.size() == set1.size());
+	assertEquals(coll2, set1);
+
+	TargetManager.getInstance().addTarget(test2);
+	coll = TargetManager.getInstance().getTargets();
+	coll2 = new HashSet(coll);
+	assertTrue(coll.size() == set2.size());
+	assertEquals(coll2, set2);
+
+	TargetManager.getInstance().removeTarget(null);
+	coll = TargetManager.getInstance().getTargets();
+	coll2 = new HashSet(coll);
+	assertTrue(coll.size() == set2.size());
+	assertEquals(coll2, set2);
+
+	TargetManager.getInstance().removeTarget(test2);
+	coll = TargetManager.getInstance().getTargets();
+	coll2 = new HashSet(coll);
+	assertTrue(coll.size() == set1.size());
+	assertEquals(coll2, set1);
+
+	TargetManager.getInstance().removeTarget(test);
+	assertTrue(TargetManager.getInstance().getTargets().isEmpty());
     }
 
     public void testSetTargets() {
+	List test2 = new ArrayList();
+	test2.add(new Object());
+	test2.add(null);
+	test2.add(new Object());
+	TargetManager.getInstance().setTargets(test2);
+	assertTrue(TargetManager.getInstance().getTargets().contains(test2.get(0)));
+	assertTrue(!TargetManager.getInstance().getTargets().contains(null));
+	assertTrue(TargetManager.getInstance().getTargets().contains(test2.get(2)));
+
+	List test3 = new ArrayList();
+	test3.add(new Object());
+	test3.add(test3.get(0));
+	TargetManager.getInstance().setTargets(test3);
+	assertTrue(TargetManager.getInstance().getTargets().contains(test3.get(0)));
+	assertTrue(TargetManager.getInstance().getTargets().size() == 1);
+
 	List test = new ArrayList();
 	for (int i = 0; i < 10; i++) {
 	    test.add(new Object());
 	}
 	TargetManager.getInstance().setTargets(test);
-	assertEquals(test, TargetManager.getInstance().getTargets());
+	assertEquals(test.toArray(), TargetManager.getInstance().getTargets().toArray());
 	TargetManager.getInstance().setTargets(null);
         List expectedValue = new ArrayList();
-        expectedValue.add(null);
 	assertEquals(expectedValue, TargetManager.getInstance().getTargets());
+
 	TargetListener listener = new TestTargetListener();
 	targetSetCalled = false;
+	targetSetTarget = null;
+	targetSetObjects = null;
 	TargetManager.getInstance().addTargetListener(listener);
 	TargetManager.getInstance().setTargets(test);
-	TargetManager.getInstance().removeTarget(new Object());
 	assertTrue(targetSetCalled);
+	assertEquals(test.get(0), targetSetTarget);
+	assertEquals(test.toArray(), targetSetObjects);
+
+	TargetManager.getInstance().removeTargetListener(listener);
     }
 
     public void testAddTarget() {
@@ -149,20 +269,34 @@ public class TestTargetManager extends TestCase {
 	}
 	Object testObject = new Object();
 	TargetManager.getInstance().addTarget(testObject);
-	assertTrue(
-		   TargetManager.getInstance().getTargets().contains(testObject));
+	assertTrue(TargetManager.getInstance().getTargets().contains(testObject));
 	TargetManager.getInstance().setTargets(testList);
-	assertTrue(
-		   !(TargetManager.getInstance().getTargets().contains(testObject)));
+	assertTrue(!TargetManager.getInstance().getTargets().contains(testObject));
 	TargetManager.getInstance().addTarget(testObject);
-	assertTrue(
-		   TargetManager.getInstance().getTargets().contains(testObject));
+	assertTrue(TargetManager.getInstance().getTargets().contains(testObject));
+	TargetManager.getInstance().addTarget(null);
+	assertTrue(TargetManager.getInstance().getTargets().contains(testObject));
+	assertTrue(!TargetManager.getInstance().getTargets().contains(null));
+
 	TargetListener listener = new TestTargetListener();
-	targetAddedCalled = false;
 	TargetManager.getInstance().addTargetListener(listener);
 	TargetManager.getInstance().setTargets(testList);
-	TargetManager.getInstance().addTarget(new Object());
+	Object oldTarget = TargetManager.getInstance().getTarget();
+	List newList = new ArrayList(testList);
+	newList.add(testObject);
+	targetAddedCalled = false;
+	targetAddedTarget = null;
+	targetAddedObjects = null;
+	TargetManager.getInstance().addTarget(testObject);
 	assertTrue(targetAddedCalled);
+	assertEquals(newList.toArray(), targetAddedObjects);
+	assertEquals(oldTarget, targetAddedTarget);
+	assertEquals(oldTarget, TargetManager.getInstance().getTarget());
+	targetAddedCalled = false;
+	TargetManager.getInstance().addTarget(testObject);
+	assertTrue(!targetAddedCalled);
+
+	TargetManager.getInstance().removeTargetListener(listener);
     }
 
     public void testRemoveTarget() {
@@ -172,24 +306,53 @@ public class TestTargetManager extends TestCase {
 	}
 	Object testObject = new Object();
 	TargetManager.getInstance().setTarget(testObject);
-	assertTrue(
-		   TargetManager.getInstance().getTargets().contains(testObject));
+	assertTrue(TargetManager.getInstance().getTargets().contains(testObject));
+	TargetManager.getInstance().removeTarget(null);
+	assertTrue(TargetManager.getInstance().getTargets().contains(testObject));
 	TargetManager.getInstance().removeTarget(testObject);
 	assertTrue(TargetManager.getInstance().getTargets().isEmpty());
+	TargetManager.getInstance().removeTarget(null);
+	assertTrue(TargetManager.getInstance().getTargets().isEmpty());
+
 	testList.add(testObject);
 	TargetManager.getInstance().setTargets(testList);
-	assertTrue(
-		   TargetManager.getInstance().getTargets().contains(testObject));
+	assertTrue(TargetManager.getInstance().getTargets().contains(testObject));
 	TargetManager.getInstance().removeTarget(testObject);
-	assertTrue(
-		   !TargetManager.getInstance().getTargets().contains(testObject));
+	assertTrue(!TargetManager.getInstance().getTargets().contains(testObject));
+
 	TargetListener listener = new TestTargetListener();
-	targetRemovedCalled = false;
-	testList.add(testObject);
 	TargetManager.getInstance().addTargetListener(listener);
 	TargetManager.getInstance().setTargets(testList);
+
+	Object oldTarget = TargetManager.getInstance().getTarget();
+	targetRemovedCalled = false;
+	targetRemovedTarget = null;
 	TargetManager.getInstance().removeTarget(testObject);
 	assertTrue(targetRemovedCalled);
+	assertEquals(oldTarget, TargetManager.getInstance().getTarget());
+	assertEquals(oldTarget, targetRemovedTarget);
+
+	TargetManager.getInstance().setTarget(testObject);
+	targetRemovedTarget = null;
+	targetRemovedObjects = null;
+	TargetManager.getInstance().removeTarget(testObject);
+	assertEquals(null, targetRemovedTarget);
+	assertEquals(new Object[] {}, targetRemovedObjects);
+
+	List testList2 = new ArrayList();
+	testList2.add(new Object());
+	testList2.add(testObject);
+	TargetManager.getInstance().setTargets(testList2);
+	targetRemovedTarget = null;
+	targetRemovedObjects = null;
+	TargetManager.getInstance().removeTarget(testObject);
+	assertEquals(testList2.get(0), targetRemovedTarget);
+	assertEquals(new Object[] {testList2.get(0)}, targetRemovedObjects);
+	targetRemovedCalled = false;
+	TargetManager.getInstance().removeTarget(testObject);
+	assertTrue(!targetRemovedCalled);
+
+	TargetManager.getInstance().removeTargetListener(listener);
     }
 
     public void testTransaction() {
