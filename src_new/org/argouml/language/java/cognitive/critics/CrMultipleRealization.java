@@ -28,6 +28,7 @@ import java.util.Collection;
 
 import org.argouml.cognitive.Designer;
 import org.argouml.model.Model;
+import org.argouml.uml.cognitive.UMLDecision;
 import org.argouml.uml.cognitive.critics.CrUML;
 
 // related to issue 570
@@ -44,8 +45,8 @@ public class CrMultipleRealization extends CrUML {
      */
     public CrMultipleRealization() {
         setupHeadAndDesc();;
-	addSupportedDecision(CrUML.DEC_INHERITANCE);
-	addSupportedDecision(CrUML.DEC_CODE_GEN);
+	addSupportedDecision(UMLDecision.INHERITANCE);
+	addSupportedDecision(UMLDecision.CODE_GEN);
 	addTrigger("generalization");
     }
 

@@ -30,6 +30,7 @@ import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.ToDoItem;
 import org.argouml.cognitive.ui.Wizard;
 import org.argouml.model.Model;
+import org.argouml.uml.cognitive.UMLDecision;
 import org.argouml.uml.cognitive.critics.CrUML;
 import org.argouml.uml.cognitive.critics.WizCueCards;
 
@@ -44,8 +45,8 @@ public class CrMultipleInheritance extends CrUML {
      */
     public CrMultipleInheritance() {
         setupHeadAndDesc();;
-	addSupportedDecision(CrUML.DEC_INHERITANCE);
-	addSupportedDecision(CrUML.DEC_CODE_GEN);
+	addSupportedDecision(UMLDecision.INHERITANCE);
+	addSupportedDecision(UMLDecision.CODE_GEN);
 	addTrigger("generalization");
     }
 
