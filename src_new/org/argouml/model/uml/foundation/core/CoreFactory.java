@@ -696,6 +696,9 @@ public class CoreFactory extends AbstractUmlModelFactory {
      * @return MDependency
      */
     public MDependency buildDependency(MModelElement client, MModelElement supplier) {
+        if (client == null || supplier == null ||
+            client.getNamespace() == null || supplier.getNamespace() == null )
+            throw new IllegalArgumentException("In buildDependency: client or supplier is null or their namespaces.");
         MDependency dep = createDependency();
         dep.addSupplier(supplier);
         dep.addClient(client);
@@ -716,6 +719,9 @@ public class CoreFactory extends AbstractUmlModelFactory {
      * @return MPermission
      */
     public MPermission buildPermission(MModelElement client, MModelElement supplier) {
+        if (client == null || supplier == null ||
+            client.getNamespace() == null || supplier.getNamespace() == null ) 
+            throw new IllegalArgumentException("In buildPermission: client or supplier is null or their namespaces.");
         MPermission per = createPermission();
         per.addSupplier(supplier);
         per.addClient(client);
