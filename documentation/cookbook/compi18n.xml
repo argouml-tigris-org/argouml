@@ -27,7 +27,14 @@ to administer the default (English U.S.) language;
 to administer all supported languages.
 </para>
       <para>
-The Internationalization is located in <classname>org.argouml.i18n</classname>.
+The Internationalization is located in <classname>org.argouml.i18n</classname>
+in the class path.
+In the checked out copy of ArgoUML it is located partly in
+<filename>argouml/src_new/org/argouml/i18n</filename> 
+- functionality, and non-localized default language (US english), 
+and partly in
+<filename>argouml/src/i18n/<replaceable>language</replaceable>/src/org/argouml</filename>
+- all files for a specific language.
 </para>
       <para>
 The Internationalization is a Layer 0 component. 
@@ -225,7 +232,19 @@ design documentation of included packages such as GEF, NSUML...
 	    <listitem>
 	      <para>...verify that all translations are up to date?</para>
 	      <para>
-Run checkstyle. Search for comments on keys.
+Run checkstyle on the i18n parts.
+This is done from
+<filename>argouml/src_new</filename>
+with the checkstyle-i18n target.
+</para>
+              <para>
+Search for comments on keys.
+</para>
+              <para>
+Observe that the reported filenames are in the
+<filename>argouml/build</filename>
+directory even if the changes are supposed to be made in
+<filename>argouml/src/i18n/<replaceable>language</replaceable>/src/org/argouml/i18n</filename>!
 </para>
 	    </listitem>
 	    <listitem>
@@ -266,7 +285,7 @@ Look at the files in
 under <filename class="directory">argouml/src_new</filename>.
 </para>
 	      <para>
-Translate all the texts in each of these classes of files.
+Translate all the texts in each of these files.
 </para>
 	      <para>
 This is a lot of extremely qualified work including searching well-known
@@ -277,10 +296,8 @@ same native language to get it right.
 </para>
 	      <para>
 Create the files with the translations and store them in
-<filename class="directory">argouml/src_new/org/argouml/i18n</filename>.
+<filename class="directory">argouml/src/i18n/<replaceable>language</replaceable>/src/org/argouml/i18n</filename>.
 They will have the names:
-<filename>UMLResourceBundle_<replaceable>language code</replaceable>.java</filename>,
-<filename>UMLCognitiveResourceBundle_<replaceable>language code</replaceable>.java</filename>,
 <filename>action_<replaceable>language code</replaceable>.properties</filename>,
 <filename>button_<replaceable>language code</replaceable>.properties</filename>,
 <filename>checkbox_<replaceable>language code</replaceable>.properties</filename>,
@@ -293,6 +310,16 @@ They will have the names:
 <filename>optionpane_<replaceable>language code</replaceable>.properties</filename>,
 <filename>statusmsg_<replaceable>language code</replaceable>.properties</filename>, and
 <filename>tab_<replaceable>language code</replaceable>.properties</filename>.
+</para>
+	      <para>
+The java files in
+<filename class="directory">argouml/src_new/org/argouml/i18n</filename>
+containing list resources instead of property files,
+are eventually to be converted to property files.
+Until then the java file for your language 
+<filename>UMLCognitiveResourceBundle_<replaceable>language code</replaceable>.java</filename>
+shall be stored in 
+<filename class="directory">argouml/src_new/org/argouml/i18n</filename>.
 </para>
 	      <para>
 This completes the first iteration of the Tool translation.

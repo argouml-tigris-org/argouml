@@ -678,6 +678,11 @@ ArgoUML.
 They will all compile and be tested with controlled dependencies
 to other components.
 </para>
+        <para>
+The upcoming structure is used for the different language part of the
+internationalization component under
+<filename class="directory">i18n/<replaceable>language</replaceable></filename>.
+</para>
       </listitem>
       <listitem>
 	<para><filename class="directory">src_new</filename></para>
