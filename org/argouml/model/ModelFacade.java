@@ -150,36 +150,39 @@ import ru.novosoft.uml.model_management.MPackage;
 import ru.novosoft.uml.model_management.MSubsystem;
 
 /**
- * Facade object for the Model component in ArgoUML.<p>
+ * Facade object for the Model subsystem in ArgoUML.<p>
  *
- * The purpose of this Facade object is to allow for decoupling other modules
- * from the insides of the model. For this purpose all of the methods in this
- * class give away and accept handles (of type java.lang.Object) to the
- * objects within the model.<p>
+ * The purpose of this Facade object is to allow for decoupling other
+ * subsystems from the insides of the model. For this purpose all of
+ * the methods in this class give away and accept handles (of type
+ * java.lang.Object) to the objects within the model.<p>
  *
- * This is just getters and recognizers. This is because the Model
- * component has an extremely complicated internal data structure
- * with lots of internal dependencies. To manipulate these there is
- * a whole set of factories and helpers within the Model that is to
- * be used but to use them you need knowledge of the internals of
- * the Model, specifically the NS-UML objects.<p>
+ * This is just getters, recognizers, and tokens.<p>
  *
- * All methods in this facade are static.<p>
+ * To manipulate the objects of the model there is a set of factories
+ * and helpers within the Model subsystem.<p>
  *
- * Signature for all recognizers in this Facade:
+ * Signatures for all recognizers are:
  * <ul>
- * <li>public static boolean isATYPE(Object handle)
- * <li>public static boolean isPROPERTY(Object handle)
+ * <li>public boolean isATYPE(Object handle)
+ * <li>public boolean isPROPERTY(Object handle)
  * </ul>
  *
- * Signature for all getters in this Facade:
+ * Signatures for all getters are:
  * <ul>
- * <li>public static Object getTYPE(Object handle) - 1..1
- * <li>public static Iterator/Collection getTYPES(Object handle) - 0..*
- * <li>public static String getName(Object handle) - Name
+ * <li>public Object getTYPE(Object handle) - 1..1
+ * <li>public Iterator/Collection getTYPES(Object handle) - 0..*
+ * <li>public String getName(Object handle) - Name
  * </ul>
  *
- * @stereotype utility
+ * Signature to get a token is:
+ * <ul>
+ * <li>public Object getTOKENNAME() (all capitals).
+ * </ul>
+ *
+ * The reason for having the tokens as methods is that it needs to be a
+ * method for the interface to work correctly.
+ *
  * @author Linus Tolke
  */
 public class ModelFacade {
@@ -190,42 +193,6 @@ public class ModelFacade {
      * Logger.
      */
     private static final Logger LOG = Logger.getLogger(ModelFacade.class);
-
-    // TODO: deprecate all of these constants in favor of a separate declaration
-
-    /**
-     * The constant ACC_PUBLIC determines visibility.
-     */
-    public static final short ACC_PUBLIC = 1;
-
-    /**
-     * The constant ACC_PRIVATE determines visibility.
-     */
-    public static final short ACC_PRIVATE = 2;
-
-    /**
-     * The constant ACC_PROTECTED determines visibility.
-     */
-    public static final short ACC_PROTECTED = 3;
-
-    /**
-     * The constant CLASSIFIER_SCOPE determines scope.
-     */
-    public static final short CLASSIFIER_SCOPE = 1;
-    /**
-     * The constant INSTANCE_SCOPE determines scope.
-     */
-    public static final short INSTANCE_SCOPE = 2;
-
-    /**
-     * The constant GUARDED determines concurrency.
-     */
-    public static final short GUARDED = 1;
-
-    /**
-     * The constant SEQUENTIAL determines concurrency.
-     */
-    public static final short SEQUENTIAL = 2;
 
     // Types of line
     /**
@@ -3719,7 +3686,7 @@ public class ModelFacade {
         }
         return illegalArgumentCollection(handle);
     }
-    
+
     /**
      * Get the list of operations.
      *
@@ -6514,28 +6481,6 @@ public class ModelFacade {
     }
 
     /**
-     * Set the visibility of some modelelement.
-     *
-     * @param handle is the model element
-     * @param v is the visibility
-     */
-    public static void setVisibility(Object handle, short v) {
-        if (handle instanceof MModelElement) {
-	    MModelElement me = (MModelElement) handle;
-
-            if (v == ACC_PRIVATE) {
-                me.setVisibility(MVisibilityKind.PRIVATE);
-            } else if (v == ACC_PROTECTED) {
-                me.setVisibility(MVisibilityKind.PROTECTED);
-            } else if (v == ACC_PUBLIC) {
-                me.setVisibility(MVisibilityKind.PUBLIC);
-            }
-            return;
-        }
-	illegalArgument(handle);
-    }
-
-    /**
      * Set the NodeInstance of a ComponentInstance.
      *
      * @param handle ComponentInstance
@@ -6596,25 +6541,6 @@ public class ModelFacade {
             return;
         }
 	illegalArgument(handle, ok);
-    }
-
-    /**
-     * Set the owner scope of some feature.
-     *
-     * @param handle is the feature
-     * @param os is the owner scope
-     */
-    public static void setOwnerScope(Object handle, short os) {
-        if (handle instanceof MFeature) {
-            if (os == CLASSIFIER_SCOPE) {
-                ((MFeature) handle).setOwnerScope(MScopeKind.CLASSIFIER);
-                return;
-            } else if (os == INSTANCE_SCOPE) {
-                ((MFeature) handle).setOwnerScope(MScopeKind.INSTANCE);
-                return;
-            }
-        }
-	illegalArgument(handle);
     }
 
     /**
@@ -6730,28 +6656,6 @@ public class ModelFacade {
     }
 
     /**
-     * Set the target scope of some association end.
-     *
-     * @param handle is the association end
-     * @param ts is the target scope
-     */
-    public static void setTargetScope(Object handle, short ts) {
-        if (handle instanceof MAssociationEnd) {
-	    MAssociationEnd ae = (MAssociationEnd) handle;
-
-            if (ts == CLASSIFIER_SCOPE) {
-		ae.setTargetScope(MScopeKind.CLASSIFIER);
-                return;
-            } else if (ts == INSTANCE_SCOPE) {
-		ae.setTargetScope(MScopeKind.INSTANCE);
-                return;
-            }
-            return;
-        }
-	illegalArgument(handle);
-    }
-
-    /**
      * @param handle Instance
      * @param c ComponentInstance or null
      */
@@ -6776,27 +6680,6 @@ public class ModelFacade {
             return;
         }
 	illegalArgument(handle, c);
-    }
-
-    /**
-     * Set the concurrency of some operation.
-     *
-     * @param handle is the operation
-     * @param c is the concurrency
-     */
-    public static void setConcurrency(Object handle, short c) {
-        if (handle instanceof MOperation) {
-            MOperation oper = (MOperation) handle;
-
-            if (c == GUARDED) {
-                oper.setConcurrency(MCallConcurrencyKind.GUARDED);
-                return;
-            } else if (c == SEQUENTIAL) {
-                oper.setConcurrency(MCallConcurrencyKind.SEQUENTIAL);
-            }
-            return;
-        }
-	illegalArgument(handle);
     }
 
     /**

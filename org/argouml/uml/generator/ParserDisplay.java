@@ -763,25 +763,22 @@ public class ParserDisplay extends Parser {
 
     /**
      * Parse a line of text and aligns the MOperation to the specification
-     * given. The line should be on the following form:
-     *
-     * <br>
-     * visibility name (parameter list) : return-type-expression
+     * given. The line should be on the following form:<ul>
+     * <li> visibility name (parameter list) : return-type-expression
      * {property-string}
+     * </ul>
      *
-     * <p>
      * All elements are optional and, if left unspecified, will preserve their
-     * old values. <br>
-     * A <b>stereotype </b> can be given between any element in the line on the
-     * form: &lt;&lt;stereotype&gt;&gt;
+     * old values.<p>
      *
-     * <p>
+     * A <em>stereotype</em> can be given between any element in the line on the
+     * form: &lt;&lt;stereotype&gt;&gt;<p>
+     *
      * The following properties are recognized to have special meaning:
      * abstract, concurrency, concurrent, guarded, leaf, query, root and
-     * sequential.
+     * sequential.<p>
      *
-     * <p>
-     * This syntax is compatible with the UML 1.3 spec.
+     * This syntax is compatible with the UML 1.3 spec.<p>
      *
      * (formerly visibility name (parameter list) : return-type-expression
      * {property-string} ) (formerly 2nd: [visibility] [keywords] returntype
@@ -951,8 +948,7 @@ public class ParserDisplay extends Parser {
         }
 
         if (visibility != null) {
-            short vis = getVisibility(visibility.trim());
-            ModelFacade.setVisibility(op, vis);
+            ModelFacade.setVisibility(op, getVisibility(visibility.trim()));
         }
 
         if (name != null)
@@ -1399,8 +1395,7 @@ public class ParserDisplay extends Parser {
         }
 
         if (visibility != null) {
-            short vis = getVisibility(visibility.trim());
-            ModelFacade.setVisibility(attr, vis);
+            ModelFacade.setVisibility(attr, getVisibility(visibility.trim()));
         }
 
         if (name != null)
@@ -1486,14 +1481,14 @@ public class ParserDisplay extends Parser {
      *            The Java name of the visibility.
      * @return A visibility corresponding to name.
      */
-    private short getVisibility(String name) {
+    private Object getVisibility(String name) {
         if ("+".equals(name) || "public".equals(name))
-            return ModelFacade.ACC_PUBLIC;
+            return ModelFacade.PUBLIC_VISIBILITYKIND;
         else if ("#".equals(name) || "protected".equals(name))
-            return ModelFacade.ACC_PROTECTED;
+            return ModelFacade.PROTECTED_VISIBILITYKIND;
         else
             /* if ("-".equals(name) || "private".equals(name)) */
-            return ModelFacade.ACC_PRIVATE;
+            return ModelFacade.PRIVATE_VISIBILITYKIND;
     }
 
     /**
@@ -2378,15 +2373,17 @@ public class ParserDisplay extends Parser {
             Iterator it = b.iterator();
             Object c;
             Object ns = ModelFacade.getNamespace(cls);
-            if (ns != null && ModelFacade.getNamespace(ns) != null)
+            if (ns != null && ModelFacade.getNamespace(ns) != null) {
                 ns = ModelFacade.getNamespace(ns);
-            else
+            } else {
                 ns = ModelFacade.getModel(cls);
+            }
 
             while (it.hasNext()) {
                 c = it.next();
-                if (!bases.contains(ModelFacade.getName(c)))
+                if (!bases.contains(ModelFacade.getName(c))) {
                     ModelFacade.removeBase(cls, c);
+                }
             }
 
             it = bases.iterator();
@@ -2397,12 +2394,14 @@ public class ParserDisplay extends Parser {
                 Iterator it2 = b.iterator();
                 while (it2.hasNext()) {
                     c = it2.next();
-                    if (d.equals(ModelFacade.getName(c)))
+                    if (d.equals(ModelFacade.getName(c))) {
                         continue addBases;
+                    }
                 }
                 c = getType(d, ns);
-                if (ModelFacade.isACollaboration(ModelFacade.getNamespace(c)))
+                if (ModelFacade.isACollaboration(ModelFacade.getNamespace(c))) {
                     ModelFacade.setNamespace(c, ns);
+                }
                 ModelFacade.addBase(cls, c);
             }
         }
@@ -2414,28 +2413,27 @@ public class ParserDisplay extends Parser {
      * TODO: - This method is too complex, lets break it up. Parses a message
      * line on the form:
      *
-     * <br>
-     * intno := integer|name <br>
-     * seq := intno ['.' intno]* <br>
+     * <pre>
+     * intno := integer|name
+     * seq := intno ['.' intno]*
      * recurrance := '*'['//'] | '*'['//']'[' <i>iteration </i>']' | '['
-     * <i>condition </i>']' <br>
-     * seqelem := {[intno] ['['recurrance']']} <br>
-     * seq2 := seqelem ['.' seqelem]* <br>
-     * ret_list := lvalue [',' lvalue]* <br>
-     * arg_list := rvalue [',' rvalue]* <br>
+     * <i>condition </i>']'
+     * seqelem := {[intno] ['['recurrance']']}
+     * seq2 := seqelem ['.' seqelem]*
+     * ret_list := lvalue [',' lvalue]*
+     * arg_list := rvalue [',' rvalue]*
      * message := [seq [',' seq]* '/'] seq2 ':' [ret_list :=] name ([arg_list])
+     * </pre>
      *
-     * <p>
-     * Which is rather complex, so a few examples: <br>
-     * 2: display(x, y)<br>
-     * 1.3.1: p := find(specs) <br>
-     * [x < 0] 4: invert(color) <br>
-     * A3, B4/ C3.1*: update()
+     * Which is rather complex, so a few examples:<ul>
+     * <li> 2: display(x, y)
+     * <li> 1.3.1: p := find(specs)
+     * <li> [x &lt; 0] 4: invert(color)
+     * <li> A3, B4/ C3.1*: update()
+     * </ul>
      *
-     * <p>
-     * This syntax is compatible with the UML 1.3 specification.
+     * This syntax is compatible with the UML 1.3 specification.<p>
      *
-     * <p>
      * Actually, only a subset of this syntax is currently supported, and some
      * is not even planned to be supported. The exceptions are intno, which
      * allows a number possibly followed by a sequence of letters in the range
