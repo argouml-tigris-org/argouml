@@ -23,21 +23,15 @@
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 package org.argouml.uml.ui;
-import org.apache.log4j.Logger;
+
 import org.argouml.model.Model;
 
 import ru.novosoft.uml.MElementEvent;
 
 /**
- *
- *
  * @author mkl
- *
  */
 public abstract class UMLExpressionModel2  {
-    private static final Logger LOG =
-            Logger.getLogger(UMLExpressionModel2.class);
-
     private UMLUserInterfaceContainer container;
     private String propertyName;
     private Object/*MExpression*/ expression;
@@ -103,20 +97,20 @@ public abstract class UMLExpressionModel2  {
         if (expression == null) {
             return EMPTYSTRING;
         }
-        return Model.getFacade().getLanguage(expression);
+        return Model.getDataTypesHelper().getLanguage(expression);
     }
 
     /**
-     * @return the body text of the expression
+     * @return The body text of the expression.
      */
-    public Object getBody() {
+    public String getBody() {
         if (mustRefresh) {
             expression = getExpression();
         }
         if (expression == null) {
             return EMPTYSTRING;
         }
-        return Model.getFacade().getBody(expression);
+        return Model.getDataTypesHelper().getBody(expression);
     }
 
     /**
@@ -126,17 +120,18 @@ public abstract class UMLExpressionModel2  {
 
         boolean mustChange = true;
         if (expression != null) {
-            String oldValue = Model.getFacade().getLanguage(expression);
+            String oldValue =
+                Model.getDataTypesHelper().getLanguage(expression);
             if (oldValue != null && oldValue.equals(lang)) {
                 mustChange = false;
             }
         }
         if (mustChange) {
-            Object body = null;
-            if (expression != null) {
-                body = Model.getFacade().getBody(expression);
+            String body = EMPTYSTRING;
+            if (expression != null
+                    && Model.getDataTypesHelper().getBody(expression) != null) {
+                body = Model.getDataTypesHelper().getBody(expression);
             }
-            if (body == null) body = EMPTYSTRING;
 
             setExpression(lang, body);
         }
@@ -145,10 +140,10 @@ public abstract class UMLExpressionModel2  {
     /**
      * @param body the body text of the expression
      */
-    public void setBody(Object body) {
+    public void setBody(String body) {
         boolean mustChange = true;
         if (expression != null) {
-            Object oldValue = Model.getFacade().getBody(expression);
+            Object oldValue = Model.getDataTypesHelper().getBody(expression);
             if (oldValue != null && oldValue.equals(body)) {
                 mustChange = false;
             }
@@ -156,9 +151,11 @@ public abstract class UMLExpressionModel2  {
         if (mustChange) {
             String lang = null;
             if (expression != null) {
-                lang = Model.getFacade().getLanguage(expression);
+                lang = Model.getDataTypesHelper().getLanguage(expression);
             }
-            if (lang == null) lang = EMPTYSTRING;
+            if (lang == null) {
+                lang = EMPTYSTRING;
+            }
 
             setExpression(lang, body);
         }
@@ -168,12 +165,12 @@ public abstract class UMLExpressionModel2  {
      * @param lang the language of the expression
      * @param body the body text of the expression
      */
-    private void setExpression(String lang, Object body) {
+    private void setExpression(String lang, String body) {
         if (expression == null) {
             expression = newExpression();
         }
-        Model.getDataTypesHelper().setLanguage(expression, lang);
-        Model.getCoreHelper().setBody(expression, body);
+        expression = Model.getDataTypesHelper().setLanguage(expression, lang);
+        expression = Model.getDataTypesHelper().setBody(expression, body);
         setExpression(expression);
     }
 

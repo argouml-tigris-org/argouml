@@ -99,7 +99,6 @@ import ru.novosoft.uml.foundation.data_types.MBooleanExpression;
 import ru.novosoft.uml.foundation.data_types.MCallConcurrencyKind;
 import ru.novosoft.uml.foundation.data_types.MChangeableKind;
 import ru.novosoft.uml.foundation.data_types.MExpression;
-import ru.novosoft.uml.foundation.data_types.MExpressionEditor;
 import ru.novosoft.uml.foundation.data_types.MMultiplicity;
 import ru.novosoft.uml.foundation.data_types.MOrderingKind;
 import ru.novosoft.uml.foundation.data_types.MParameterDirectionKind;
@@ -2428,10 +2427,8 @@ class CoreHelperImpl implements CoreHelper {
     }
 
     /**
-     * Sets a body of a given Method, Constraint or Expression.
-     *
-     * @param handle is the method, expression
-     * @param expr is the body string for the expression
+     * @see org.argouml.model.CoreHelper#setBody(
+     *         java.lang.Object, java.lang.Object)
      */
     public void setBody(Object handle, Object expr) {
         if (handle instanceof MMethod
@@ -2446,22 +2443,6 @@ class CoreHelperImpl implements CoreHelper {
             return;
         }
 
-        /*
-         * TODO: MVW: The next part is fooling the user of setBody()
-         * in thinking that the body of the object is changed.
-         * Instead, a new object is created and as a side-effect
-         * the language is lost.
-         * Maybe we should just copy the language?
-         */
-        if (handle instanceof MExpression) {
-            MExpressionEditor expressionEditor =
-                (MExpressionEditor) nsmodel.getDataTypesFactory()
-                	.createExpressionEditor(handle);
-            expressionEditor.setBody((String) expr);
-            expressionEditor.toExpression();
-            // this last step creates a new MExpression
-            return;
-        }
         throw new IllegalArgumentException("handle: " + handle
                 + " or expr: " + expr);
     }
@@ -3194,7 +3175,7 @@ class CoreHelperImpl implements CoreHelper {
      * eg ModelManagementHelper.getCorrespondingElement(...). Or if that had
      * been used here. This function could possibly assert that the caller had
      * got it right.
-     * 
+     *
      * TODO: For moving towards future version of UML we should instead
      * have addStereotype and removeStereotype.
      *
@@ -3202,14 +3183,14 @@ class CoreHelperImpl implements CoreHelper {
      * @param stereo stereotype
      */
     public void setStereotype(Object handle, Object stereo) {
-        if (handle instanceof MModelElement && 
-                (stereo instanceof MStereotype || stereo == null)) {
-            
+        if (handle instanceof MModelElement
+                && (stereo instanceof MStereotype || stereo == null)) {
+
             MModelElement me = (MModelElement) handle;
             MStereotype stereotype = (MStereotype) stereo;
-            
+
             MStereotype existingStereotype = me.getStereotype();
-            
+
             if (LOG.isInfoEnabled()) {
                 if (existingStereotype == null) {
                     LOG.info("About to give a stereotype to " + handle);
@@ -3218,12 +3199,12 @@ class CoreHelperImpl implements CoreHelper {
                             + " to <<" + existingStereotype.getName() + ">>");
                 }
             }
-            
+
             if (existingStereotype == stereotype) {
                 LOG.info("Stereotype is already set. Do nothing.");
                 return;
             }
-            
+
             if (LOG.isInfoEnabled()) {
                 if (stereotype == null) {
                     LOG.info("Removing any stereotype on " + handle);
@@ -3232,7 +3213,7 @@ class CoreHelperImpl implements CoreHelper {
                             + " to <<" + stereotype.getName() + ">>");
                 }
             }
-            
+
             // With this block in place save fails with an error
             // With this block removed save appears to work but
             // the save file does not record the stereotype
@@ -3243,9 +3224,9 @@ class CoreHelperImpl implements CoreHelper {
                 }
                 stereotype.setNamespace(me.getModel());
             }
-            
+
             me.setStereotype(stereotype);
-                
+
             return;
         }
         throw new IllegalArgumentException("handle: " + handle

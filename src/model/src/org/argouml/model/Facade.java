@@ -1250,8 +1250,12 @@ public interface Facade {
     Object getBehavioralFeature(Object handle);
 
     /**
-     * Get the body of an method/constraint/expression.
+     * Get the body of an method/constraint/expression.<p>
      *
+     * If the argument is an expression, the body returned is a
+     * {@link String} (or <code>null</code>). If you want a type-safe
+     * version of this version of the call,
+     * use {@link DataTypesHelper#getBody(Object)}.
      *
      * @param handle expression.
      * @return the body.
@@ -2580,10 +2584,12 @@ public interface Facade {
     ////////////////////////////////////////////////////////////////
 
     /**
-     * Gets the language attribute of an Expression.
+     * Gets the language attribute of an Expression.<p>
      *
      * @param handle is the Expression of which the language is retrieved
      * @return String the language
+     * @deprecated as of 0.18.beta1 by Linus Tolke.
+     *             Use {@link DataTypesHelper#getLanguage(Object)}.
      */
     String getLanguage(Object handle);
 

@@ -814,10 +814,12 @@ public interface CoreHelper {
     void setRaisedSignals(Object handle, Collection raisedSignals);
 
     /**
-     * Sets a body of a given Method, Constraint or Expression.
+     * Sets a body of a given Method or Constraint.
      *
-     * @param handle is the method, expression
-     * @param expr is the body string for the expression
+     * @param handle The method or constraint.
+     * @param expr The body of the expression.
+     *             If it is a method, this must be a ProcedureExpression.
+     *             If it is a Constraint, this must be a BooleanExpression.
      */
     void setBody(Object handle, Object expr);
 

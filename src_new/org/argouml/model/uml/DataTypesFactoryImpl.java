@@ -117,6 +117,8 @@ public class DataTypesFactoryImpl
      *
      * @param expr Object MExpression the given expression
      * @return an initialized ExpressionEditor instance.
+     * @deprecated as of 0.18.beta1 by Linus Tolke.
+     *             This is NSUML-implementation creaping out.
      */
     public Object createExpressionEditor(Object expr) {
         MExpressionEditor editor = new MExpressionEditor();
