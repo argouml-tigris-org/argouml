@@ -68,22 +68,38 @@ class TokenSep {
 
 class QuotedStringSeparator extends CustomSeparator {
 	private final char _escChr;
+	private final char _startChr;
 	private final char _stopChr;
 	private boolean _esced;
 	private int _tokLen;
+	private int _level;
 
 	public QuotedStringSeparator(char q, char esc) {
 		super(q);
 
 		_esced = false;
 		_escChr = esc;
+		_startChr = 0;
 		_stopChr = q;
 		_tokLen = 0;
+		_level = 1;
+	}
+
+	public QuotedStringSeparator(char sq, char eq, char esc) {
+		super(sq);
+
+		_esced = false;
+		_escChr = esc;
+		_startChr = sq;
+		_stopChr = eq;
+		_tokLen = 0;
+		_level = 1;
 	}
 
 	public void reset() {
 		super.reset();
 		_tokLen = 0;
+		_level = 1;
 	}
 
 	public int tokenLength() {
@@ -101,11 +117,15 @@ class QuotedStringSeparator extends CustomSeparator {
 			_esced = false;
 			return false;
 		}
-		if (c == _escChr) {
+		if (_escChr != 0 && c == _escChr) {
 			_esced = true;
 			return false;
 		}
-		return c == _stopChr;
+		if (_startChr != 0 && c == _startChr)
+			_level++;
+		if (c == _stopChr)
+			_level--;
+		return _level <= 0;
 	}
 }
 
@@ -116,6 +136,9 @@ public class MyTokenizer implements Enumeration
 
 	public final static CustomSeparator DOUBLE_QUOTED_SEPARATOR =
 		new QuotedStringSeparator('\"', '\\');
+
+	public final static CustomSeparator PAREN_EXPR_SEPARATOR =
+		new QuotedStringSeparator('(', ')', '\0');
 
 	private int _sIdx;
 	private final int _eIdx;
