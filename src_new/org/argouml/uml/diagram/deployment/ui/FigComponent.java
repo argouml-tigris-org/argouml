@@ -31,20 +31,18 @@ package org.argouml.uml.diagram.deployment.ui;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Rectangle;
-import java.awt.event.MouseEvent;
 import java.util.Vector;
 
 import org.apache.log4j.Category;
 import org.argouml.application.api.Notation;
 import org.argouml.uml.diagram.ui.FigEdgeModelElement;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
-import org.tigris.gef.base.Editor;
-import org.tigris.gef.base.Globals;
 import org.tigris.gef.base.Selection;
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigRect;
 import org.tigris.gef.presentation.FigText;
+
 import ru.novosoft.uml.foundation.core.MClassifier;
 import ru.novosoft.uml.foundation.core.MComponent;
 import ru.novosoft.uml.foundation.core.MModelElement;
@@ -176,6 +174,7 @@ public class FigComponent extends FigNodeModelElement {
   ////////////////////////////////////////////////////////////////
   // user interaction methods
 
+/*
   public void mouseClicked(MouseEvent me) {
     super.mouseClicked(me);
     setLineColor(Color.black);
@@ -189,7 +188,7 @@ public class FigComponent extends FigNodeModelElement {
       ((SelectionComponent) sel).hideButtons();
     }
   }
-
+*/
 
   public void setEnclosingFig(Fig encloser) {
     

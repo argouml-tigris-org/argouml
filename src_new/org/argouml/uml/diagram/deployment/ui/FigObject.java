@@ -170,7 +170,7 @@ public class FigObject extends FigNodeModelElement {
 
 
   public void setEnclosingFig(Fig encloser) {
-    super.setEnclosingFig(encloser);
+    // super.setEnclosingFig(encloser);
     if (!(getOwner() instanceof MModelElement)) return;
     if (getOwner() instanceof MObject) {
       MObject me = (MObject) getOwner();
