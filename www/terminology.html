@@ -60,6 +60,20 @@ An Export, New, Import cycle can lead to information loss because
 of the two conversions involved.
 </dd>
 
+<dt>Library</dt>
+<dd>
+A part of a <emph>subproduct</emph> that is installed and handled as 
+a unit in the ArgoUML building and installation set-up.
+</dd>
+
+<dt>Module</dt>
+<dd>
+A piece of software that is to be loaded into ArgoUML by the ModuleLoader.
+<p>
+Modules traditionally use the Plug-in interfaces and are for that
+reason also known as Plug-ins.
+</dd>
+
 <dt>New</dt>
 <dd>Create a new project or object.
 How does this relate to the Java GUI standards?
@@ -89,6 +103,16 @@ Once removed, an object can be "added" to a diagram (again).
 The Save operation save everything (it is a no-loss operation).
 A Save, Open cycle does not loose any information.
 (Don't use Export, or Write for this).
+</dd>
+
+<dt>Subproduct</dt>
+<dd>
+A piece of software that is developed by someone outside of the
+ArgoUML project and that the ArgoUML project is not responsible for.
+<p>
+The ArgoUML product, like almost any other software project, 
+use subproducts so that we don't have to do everything ourselves.
+Examples: jdk, NSUML, GEF, log4j, ...
 </dd>
 
 </dl>
