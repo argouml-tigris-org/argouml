@@ -30,12 +30,13 @@
 package org.argouml.ui;
 
 import javax.swing.*;
+import org.argouml.swingext.*;
 
 /**
  *
  * @author Bob Tarling
  */
-public class ToolButton extends javax.swing.JButton {
+public class ToolButton extends ActionButton {
     
     /** Creates a new instance of ToolButton */
     public ToolButton(Action a) {
