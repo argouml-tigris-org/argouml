@@ -32,6 +32,18 @@ Change to XXX.
       </tbody>
       -->
 
+      <tbody valign="top">
+        <row>
+          <entry>2004-10-29</entry>
+          <entry>
+Change to the description on how to generate documentation.
+Better explanation of how it works.
+(See <xref linkend="generating_documentation"/>).
+</entry>
+          <entry>Linus Tolke</entry>
+        </row>
+      </tbody>
+
 
       <tbody valign="top">
         <row>
