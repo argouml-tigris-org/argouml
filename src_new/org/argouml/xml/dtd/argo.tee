@@ -39,9 +39,11 @@
 
   <historyfile name="<ocl>self.historyFile</ocl>" />
 
+<!--
   <stats>
     <ocl>self.stats</ocl>
   </stats>
+ -->
 
 </argo>
 ]]>

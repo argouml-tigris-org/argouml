@@ -498,9 +498,12 @@ public class PGMLParser extends org.tigris.gef.xml.pgml.PGMLParser {
              FigNode fn = (FigNode)f;
              _currentNode = fn;
              _elementState = NODE_STATE;
-             _textBuf = new StringBuffer();
+             _textBuf = new StringBuffer();             
+         } 
+         if (f instanceof FigNode || f instanceof FigEdge) {
              _diagram.add(f);
-         } else {
+         }
+         else {
              // nested group flag is a flag to repair the ^*&(*^*& implementation of GEF's parser
              nestedGroupFlag = true;
              figGroup = f;
