@@ -2,7 +2,7 @@
 
 package uci.uml.xmi;
 
-public class ParseString {
+public class ParseString { 
   String _ps;  // Parse String
   int startPos = -1;
   int endPos = -1;
