@@ -41,9 +41,6 @@ import org.tigris.gef.util.ChildGenerator;
 import org.tigris.gef.util.EnumerationEmpty;
 import org.tigris.gef.util.VectorSet;
 
-import ru.novosoft.uml.MElementEvent;
-import ru.novosoft.uml.MElementListener;
-
 /** This class models the designer who is building a complex design in
  * some application domain and needs continuous feedback to aid in the
  * making of good design decisions.
@@ -66,7 +63,6 @@ public class Designer
      implements Poster,
          Runnable, // TODO: remove/refactor per issue 1024
          PropertyChangeListener,
-         MElementListener, // TODO: remove.
          java.io.Serializable
 {
     private static final Logger LOG = Logger.getLogger(Designer.class);
@@ -216,12 +212,6 @@ public class Designer
         
         lastCritique = 0;
     }
-    
-    
-    /**
-     * @param d the designer
-     */
-    //public static void theDesigner(Designer d) { TheDesigner = d; }
     
     /**
      * @return the designer singleton
@@ -429,56 +419,6 @@ public class Designer
         } else {
             critiqueASAP(pce.getSource(), pce.getPropertyName());
         }
-    }
-    
-    /** 
-     * TODO: remove this
-     * 
-     * @see ru.novosoft.uml.MElementListener#propertySet(ru.novosoft.uml.MElementEvent)
-     */
-    public void propertySet(MElementEvent mee) {
-        critiqueASAP(mee.getSource(),
-		     org.argouml.model.ModelFacade.getName(mee.getOldValue()));
-    }
-    
-    /** 
-     * TODO: remove this
-     *  
-     * @see ru.novosoft.uml.MElementListener#listRoleItemSet(ru.novosoft.uml.MElementEvent)
-     */
-    public void listRoleItemSet(MElementEvent mee) {
-    }
-    
-    /** 
-     * TODO: remove this
-     * 
-     * @see ru.novosoft.uml.MElementListener#recovered(ru.novosoft.uml.MElementEvent)
-     */
-    public void recovered(MElementEvent mee) {
-    }
-    
-    /** 
-     * TODO: remove this
-     * 
-     * @see ru.novosoft.uml.MElementListener#removed(ru.novosoft.uml.MElementEvent)
-     */
-    public void removed(MElementEvent mee) {
-    }
-    
-    /** 
-     * TODO: remove this
-     * 
-     * @see ru.novosoft.uml.MElementListener#roleAdded(ru.novosoft.uml.MElementEvent)
-     */
-    public void roleAdded(MElementEvent mee) {
-    }
-    
-    /** 
-     * TODO: remove this
-     * 
-     * @see ru.novosoft.uml.MElementListener#roleRemoved(ru.novosoft.uml.MElementEvent)
-     */
-    public void roleRemoved(MElementEvent mee) {
     }
     
     ////////////////////////////////////////////////////////////////

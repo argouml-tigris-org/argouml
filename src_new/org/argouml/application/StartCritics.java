@@ -31,11 +31,12 @@ import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.cognitive.Designer;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
-import org.argouml.model.uml.UmlModelEventPump;
+import org.argouml.model.Model;
 import org.argouml.uml.cognitive.critics.ChildGenUML;
 import org.argouml.uml.cognitive.critics.CrUML;
 
-/** StartCritics is a thread which helps to start the critiquing thread
+/** 
+ * StartCritics is a thread which helps to start the critiquing thread.
  */
 public class StartCritics implements Runnable {
     /** logger */
@@ -49,7 +50,7 @@ public class StartCritics implements Runnable {
         org.argouml.uml.cognitive.critics.Init.init();
         org.argouml.uml.cognitive.checklist.Init.init();
         Project p = ProjectManager.getManager().getCurrentProject();
-        dsgr.addListener(ProjectManager.getManager());
+        Designer.addListener(ProjectManager.getManager());
         // set the icon for this poster
         dsgr.setClarifier(ResourceLoaderWrapper.
             lookupIconResource("PostItD0"));
@@ -60,10 +61,7 @@ public class StartCritics implements Runnable {
         java.util.Enumeration models = (p.getUserDefinedModels()).elements();
         while (models.hasMoreElements()) {
             Object o = models.nextElement();    
-            // UmlModelEventPump.getPump()
-	    // .removeModelEventListener(dsgr, (MModel)o);
-            UmlModelEventPump.getPump().addModelEventListener(dsgr,
-							      o); 
+            Model.getPump().addModelEventListener(dsgr, o);
         }
         LOG.info("spawned critiquing thread");
 
