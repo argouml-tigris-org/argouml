@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<sect1 id="modules_and_plugins">
+<title>Modules and PlugIns</title>
+
+<para>Differences between modules and plugins</para>
+
+<sect2 id="modules">
+<title>Modules</title>
+
+<sect3 id="architecture_modules">
+<title>Module Architecture</title>
+<para>...</para>
+</sect3>
+
+<sect3 id="using_modules">
+<title>Using Modules</title>
+<para>...</para>
+</sect3>
+
+<sect3 id="howdoi_modules">
+<title>How do I ...?</title>
+<para>
+<itemizedlist>
+<listitem><para>...create a module?</para>
+<para>...</para>
+</listitem>
+</itemizedlist>
+</para>
+
+</sect3>
+
+</sect2>
+
+<sect2 id="plugins">
+<title>Plugins</title>
+
+<sect3 id="architecture_plugins">
+<title>Plugin Architecture</title>
+<para>...</para>
+</sect3>
+
+<sect3 id="using_plugins">
+<title>Using Plugins</title>
+<para>...</para>
+</sect3>
+
+<sect3 id="howdoi_plugins">
+<title>How do I ...?</title>
+
+<para>
+
+<itemizedlist>
+<listitem><para>...create a plugin project?</para>
+<para>...</para>
+</listitem>
+
+<listitem><para>...create a pluggable settings tab?</para>
+<para>...</para>
+</listitem>
+
+<listitem><para>...create a pluggable menu?</para>
+<para>...</para>
+</listitem>
+
+<listitem><para>...create a pluggable notation?</para>
+<para>...</para>
+</listitem>
+
+<listitem><para>...create a pluggable resource bundle?</para>
+<para>...</para>
+</listitem>
+
+<listitem><para>...create a new pluggable type?</para>
+<para>...</para>
+</listitem>
+
+</itemizedlist>
+
+</para>
+
+</sect3>
+
+</sect2>
+
+</sect1>
