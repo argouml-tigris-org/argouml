@@ -31,7 +31,6 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
 
@@ -113,9 +112,22 @@ public class FigObject extends FigNodeModelElement implements MouseListener {
     private LifeLinePort _lifeLinePort;
 
     /**
-     * A linked list where the positions of the links are stored
+     * The list where the nodes to which links can be attached are stored
      */
-    private LinkedList _linkPositions = new LinkedList();
+    private List _linkPositions = new ArrayList();
+
+    /**
+     * The list where the figrects are stored that are the activation boxes. The list is only here for
+     * performance issues. When removing a figrect, it should also be removed from this list, not only from
+     * the figs list. 
+     */
+    private List _figActivations = new ArrayList();
+
+    /**
+     * The list with the figLinkPorts. The list is only here for performance issues. When deleting a figLinkPort, 
+     * it should also be removed from this list, not only from the figs list.
+     */
+    private List _figFigLinkPorts = new ArrayList();
 
     /**
      * The comma seperated list of base names of the classifierRole(s) that this object
@@ -282,6 +294,22 @@ public class FigObject extends FigNodeModelElement implements MouseListener {
             0,
             h - _outerBox.getHeight());
         int factor = h / oldBounds.height;
+        for (int i = 0; i < _figActivations.size(); i++) {
+            FigRect fig = (FigRect) _figActivations.get(i);
+            fig.setBounds(
+                x - oldBounds.x + fig.getX(),
+                y - oldBounds.y + fig.getY(),
+                fig.getWidth(),
+                fig.getHeight());
+        }
+        for (int i = 0; i < _figFigLinkPorts.size(); i++) {
+            FigLinkPort fig = (FigLinkPort) _figFigLinkPorts.get(i);
+            fig.setBounds(
+                x - oldBounds.x + fig.getX(),
+                y - oldBounds.y + fig.getY(),
+                fig.getWidth(),
+                fig.getHeight());
+        }
         calcBounds(); //_x = x; _height = y; _w = w; _h = h;		
         firePropChange("bounds", oldBounds, getBounds());
     }
@@ -345,15 +373,11 @@ public class FigObject extends FigNodeModelElement implements MouseListener {
     }
 
     private void removeActivations() {
-        Iterator it = getFigs().iterator();
-        while (it.hasNext()) {
-            Fig fig = (Fig) it.next();
-            if (fig != _outerBox
-                && fig != _backgroundBox
-                && fig instanceof FigRect) {
-                removeFig(fig);
-            }
+        for (int i = 0; i < _figActivations.size(); i++) {
+            getFigs().remove(_figActivations.get(i));
         }
+        _figActivations = new ArrayList();
+        calcBounds();
     }
 
     private void addActivations() {
@@ -375,10 +399,13 @@ public class FigObject extends FigNodeModelElement implements MouseListener {
                 }
                 endActivationNode = (ActivationNode) node;
                 int startPos =
-                    getYCoordinateForActivationBox(startActivationNode);
+                    getYCoordinateForActivationBox(startActivationNode, true);
                 int endPos = 0;
                 if (!endActivationNode.isStart()) {
-                    endPos = getYCoordinateForActivationBox(endActivationNode);
+                    endPos =
+                        getYCoordinateForActivationBox(
+                            endActivationNode,
+                            false);
                 } else {
                     endPos = getYCoordinate(endActivationNode);
                     if (!endActivationNode.isCutOffBottom()) {
@@ -393,11 +420,17 @@ public class FigObject extends FigNodeModelElement implements MouseListener {
                         endPos - startPos,
                         _outerBox.getLineColor(),
                         _backgroundBox.getFillColor());
+                _figActivations.add(activation);
                 addFig(activation);
             }
         }
     }
 
+    /**
+     * First removes all current activation boxes, then add new ones to the figobject depending on the state
+     * of the nodes.
+     *
+     */
     public void updateActivations() {
         removeActivations();
         addActivations();
@@ -618,6 +651,8 @@ public class FigObject extends FigNodeModelElement implements MouseListener {
                         _lifeLine.getX() - WIDTH / 2,
                         getYCoordinate(foundNode),
                         _lifeLine.getX() + WIDTH / 2);
+                addFig(figLinkPort);
+                _figFigLinkPorts.add(figLinkPort);
                 LinkNode linkNode = new LinkNode(getOwner(), figLinkPort);
                 _linkPositions.add(
                     _linkPositions.indexOf(foundNode) + 1,
@@ -631,32 +666,36 @@ public class FigObject extends FigNodeModelElement implements MouseListener {
                             _lifeLine.getX() - WIDTH / 2,
                             getYCoordinate(foundNode),
                             _lifeLine.getX() + WIDTH / 2);
+                    addFig(figLinkPort);
+                    _figFigLinkPorts.add(figLinkPort);
                     LinkNode linkNode = new LinkNode(getOwner(), figLinkPort);
                     _linkPositions.set(
                         _linkPositions.indexOf(foundNode),
-                        foundNode);
+                        linkNode);
+                    foundNode = linkNode;
                 }
 
             }
             return foundNode;
         } else if (_outerBox.intersects(rect)) {
             ObjectNode objectNode = (ObjectNode) getObjectNode();
-            if (objectNode.getFigLinkPort() != null && getFigLink(objectNode.getFigLinkPort()) != null) {
-            	return null; // cannot connect here
+            if (objectNode.getFigLinkPort() != null
+                && getFigLink(objectNode.getFigLinkPort()) != null) {
+                return null; // cannot connect here
             }
-            if (objectNode.getFigLinkPort() == null) {            
-            FigLinkPort figLinkPort =
-                new FigLinkPort(
-                    _lifeLine.getX() - WIDTH / 2,
-                    getYCoordinate(foundNode),
-                    _lifeLine.getX() + WIDTH / 2);
-                    objectNode.setFigLinkPort(figLinkPort);
+            if (objectNode.getFigLinkPort() == null) {
+                FigLinkPort figLinkPort =
+                    new FigLinkPort(
+                        _lifeLine.getX() - WIDTH / 2,
+                        getYCoordinate(foundNode),
+                        _lifeLine.getX() + WIDTH / 2);
+                objectNode.setFigLinkPort(figLinkPort);
             }
             objectNode.setObject(getOwner());
             return objectNode;
         } else {
             return null;
-        }       
+        }
     }
 
     private int getYCoordinate(Node node) {
@@ -673,20 +712,22 @@ public class FigObject extends FigNodeModelElement implements MouseListener {
         return y;
     }
 
-    private int getYCoordinateForActivationBox(Node node) {
+    private int getYCoordinateForActivationBox(Node node, boolean start) {
         int y = getYCoordinate(node);
         if (node instanceof ActivationNode) {
             if (node instanceof ObjectNode) {
                 y = y + _outerBox.getHalfHeight();
             } else {
                 ActivationNode activationNode = (ActivationNode) node;
-                if (activationNode.isEnd()
-                    && !activationNode.isCutOffBottom()) {
-                    y += SequenceDiagramLayout.LINK_DISTANCE / 2;
-                } else if (
-                    activationNode.isStart()
-                        && !activationNode.isCutOffTop()) {
+                if (start
+                    && activationNode.isStart()
+                    && !activationNode.isCutOffTop()) {
                     y -= SequenceDiagramLayout.LINK_DISTANCE / 2;
+                } else if (
+                    !start
+                        && activationNode.isEnd()
+                        && !activationNode.isCutOffBottom()) {
+                    y += SequenceDiagramLayout.LINK_DISTANCE / 2;
                 }
             }
         }
@@ -730,8 +771,8 @@ public class FigObject extends FigNodeModelElement implements MouseListener {
      * @return
      */
     public List getActivationNodes(Node node) {
-        int start = 0;
-        int end = 0;
+        int start = -1;
+        int end = -1;
         if (node instanceof ActivationNode) {
             ActivationNode activationNode = (ActivationNode) node;
             if (activationNode.isStart()) {
@@ -777,7 +818,7 @@ public class FigObject extends FigNodeModelElement implements MouseListener {
                         break;
                     }
                 }
-                for (int i = getIndexOf(activationNode) - 1; i > 0; i--) {
+                for (int i = getIndexOf(activationNode) - 1; i >= 0; i--) {
                     Node node2 = (Node) _linkPositions.get(i);
                     if (node2 instanceof ActivationNode
                         && ((ActivationNode) node2).isStart()) {
@@ -785,10 +826,10 @@ public class FigObject extends FigNodeModelElement implements MouseListener {
                         break;
                     }
                 }
-                if (end == 0 || start == 0) {
-                    throw new IllegalStateException("There should be an activation");
-                }
 
+            }
+            if (end == -1 || start == -1) {
+                return new ArrayList();
             }
             return _linkPositions.subList(start, end);
 
@@ -796,16 +837,34 @@ public class FigObject extends FigNodeModelElement implements MouseListener {
         return new ArrayList();
     }
 
+    /**
+     * Returns the index of a given node.
+     * @param node
+     * @return
+     */
     public int getIndexOf(Node node) {
         return _linkPositions.indexOf(node);
     }
 
+    /**
+     * See makeActivation(int startIndex, int endIndex)
+     * @param startNode
+     * @param endNode
+     */
     public void makeActivation(Node startNode, Node endNode) {
         int startIndex = _linkPositions.indexOf(startNode);
         int endIndex = _linkPositions.indexOf(endNode);
         makeActivation(startIndex, endIndex);
     }
 
+    /**
+     * Makes an activation from the node with index startindex to the node with index endindex. An activation
+     * means in this context that the starting and ending node will be an activation node after a call to this method.
+     * The starting node is designated via the start property that's a starting node. The same is true for the ending
+     * node via the end property.
+     * @param startIndex
+     * @param endIndex
+     */
     public void makeActivation(int startIndex, int endIndex) {
         for (int i = startIndex; i <= endIndex; i++) {
             Object o = _linkPositions.get(i);
@@ -817,6 +876,11 @@ public class FigObject extends FigNodeModelElement implements MouseListener {
         ((ActivationNode) _linkPositions.get(endIndex)).setEnd(true);
     }
 
+    /**
+     * Returns the node that's next to the given node.
+     * @param node
+     * @return
+     */
     public Node nextNode(Node node) {
         if (getIndexOf(node) < _linkPositions.size())
             return (Node) _linkPositions.get(getIndexOf(node) + 1);
@@ -824,6 +888,11 @@ public class FigObject extends FigNodeModelElement implements MouseListener {
             return null;
     }
 
+    /**
+     * Returns the node that's before the given node in the nodes list.
+     * @param node
+     * @return
+     */
     public Node previousNode(Node node) {
         if (getIndexOf(node) > 0) {
             return (Node) _linkPositions.get(getIndexOf(node) - 1);
@@ -831,6 +900,11 @@ public class FigObject extends FigNodeModelElement implements MouseListener {
             return null;
     }
 
+    /**
+     * Returns true if this figobject has activations. An activation is in this case a start ActivationNode and
+     * an end ActivationNode in the Nodes list (_linkPositions).
+     * @return
+     */
     public boolean hasActivations() {
         for (int i = 0; i < _linkPositions.size(); i++) {
             Node node = (Node) _linkPositions.get(i);
@@ -853,10 +927,19 @@ public class FigObject extends FigNodeModelElement implements MouseListener {
         return null;
     }
 
+    /**
+     * Sets the given node on the given index in linkPositions
+     * @param index
+     * @param node
+     */
     public void setNode(int index, Node node) {
         _linkPositions.set(index, node);
     }
 
+    /**
+     * Returns the ObjectNode. This is the port that represents the object Figrect.
+     * @return
+     */
     public ObjectNode getObjectNode() {
         for (int i = 0; i < _linkPositions.size(); i++) {
             if (_linkPositions.get(i) instanceof ObjectNode) {
@@ -866,4 +949,29 @@ public class FigObject extends FigNodeModelElement implements MouseListener {
         return null;
     }
 
+    /**
+     * Removes the fig from both the figs list as from the _figActivations list and the _figLinkPorts. This 
+     * assures us that removal will indeed remove all 'pointers' to the object.
+     * @see org.tigris.gef.presentation.FigGroup#removeFig(org.tigris.gef.presentation.Fig)
+     */
+    public void removeFig(Fig f) {
+        super.removeFig(f);
+        _figActivations.remove(f);
+        _figFigLinkPorts.remove(f);
+    }
+
+    /**
+     * Returns a list with the start, end and all nodes in between them of the activation that is prior to the
+     * given node. If the node is part of an activation, that activation is returned. If the node is null
+     * an empty list is returned. 
+     * @param node
+     * @return
+     */
+    public List getPreviousActivation(Node node) {
+        List retList = getActivationNodes(node);
+        if (retList.isEmpty()) {
+            retList = getPreviousActivation(previousNode(node));
+        }
+        return retList;
+    }
 }

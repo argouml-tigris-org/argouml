@@ -92,6 +92,7 @@ public class SequenceDiagramLayout extends LayerPerspectiveMutable {
      */
     private void distributeFigObjects(Fig f) {
         int listPosition = _figObjectsX.indexOf(f);
+        if (listPosition < 0) return;
         if (listPosition < _figObjectsX.size() - 1) {
             Fig next = (Fig) _figObjectsX.get(listPosition + 1);
             if (next.getX() < f.getX()) {
@@ -119,6 +120,7 @@ public class SequenceDiagramLayout extends LayerPerspectiveMutable {
                 break;
             }
             fig.setX(positionX);
+            ((FigObject)fig).updateEdges();
             positionX += (fig.getWidth() + OBJECT_DISTANCE);
         }
         if (_heighestObjectHeight < f.getHeight()) {
