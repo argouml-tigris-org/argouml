@@ -43,12 +43,12 @@ public class FigClass extends FigNode {
   {
     super(new uci.gef.demo.SampleNode());
     setLocation(50,50);
-    setSize(100,50);
-    FigText foo = new FigText(0,0,20,10, Color.blue, "Times", 10);
+    setSize(100,70);
+    FigText foo = new FigText(5,5,100,20, Color.blue, "Times", 10);
     foo.setText("Class data");
-    FigText xyzzy = new FigText(0,10,20,10, Color.blue, "Times", 10);
+    FigText xyzzy = new FigText(5,25,100,20, Color.blue, "Times", 10);
     xyzzy.setText("Attrib data");
-    FigText bar = new FigText(0,20,20,10, Color.blue, "Times", 10);
+    FigText bar = new FigText(5,45,100,20, Color.blue, "Times", 10);
     bar.setText("Function data");
     addFig(foo);
     addFig(xyzzy);
@@ -57,18 +57,15 @@ public class FigClass extends FigNode {
 
   public FigClass(NetNode nn, Vector figs) {
     super(nn, figs);
-    setLocation(50,50);
-    setSize(100,50);
-    FigText foo = new FigText(0,0,20,10, Color.blue, "Times", 10);
+    FigText foo = new FigText(5,5,100,20, Color.blue, "Times", 10);
     foo.setText("Class data");
-    FigText xyzzy = new FigText(0,10,20,10, Color.blue, "Times", 10);
+    FigText xyzzy = new FigText(5,25,100,20, Color.blue, "Times", 10);
     xyzzy.setText("Attrib data");
-    FigText bar = new FigText(0,20,20,10, Color.blue, "Times", 10);
+    FigText bar = new FigText(5,45,100,20, Color.blue, "Times", 10);
     bar.setText("Function data");
     addFig(foo);
     addFig(xyzzy);
     addFig(bar);
-    setFigs(figs);
   }
 
 
