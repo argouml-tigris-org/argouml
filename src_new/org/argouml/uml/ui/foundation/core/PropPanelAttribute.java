@@ -178,4 +178,16 @@ public class PropPanelAttribute extends PropPanelModelElement {
       }
       return ns;
     }
+
+   public Class getClassForPanel() {
+        return MAttributeImpl.class;
+    }
+
+    public String getModuleName() { return "PropPanelAttribute"; }
+    public String getModuleDescription() { return "Property Panel for Attribute"; }
+    public String getModuleAuthor() { return "ArgoUML Core"; }
+    public String getModuleVersion() { return "0.9.4"; }
+    public String getModuleKey() { return "module.propertypanel.attribute"; }
+
+
 } /* end class PropPanelAttribute */

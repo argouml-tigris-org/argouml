@@ -73,4 +73,15 @@ public class PropPanelDiagram extends PropPanel  {
     }
 
 
+   public Class getClassForPanel() {
+        return ArgoDiagram.class;
+    }
+
+    public String getModuleName() { return "PropPanelDiagram"; }
+    public String getModuleDescription() { return "Property Panel for Diagram"; }
+    public String getModuleAuthor() { return "ArgoUML Core"; }
+    public String getModuleVersion() { return "0.9.4"; }
+    public String getModuleKey() { return "module.propertypanel.diagram"; }
+
+
 } /* end class PropPanelDiagram */

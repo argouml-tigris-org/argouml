@@ -108,5 +108,16 @@ public class PropPanelInterface extends PropPanelClassifier {
     }
 
 
+   public Class getClassForPanel() {
+        return MInterfaceImpl.class;
+    }
+
+    public String getModuleName() { return "PropPanelInterface"; }
+    public String getModuleDescription() { return "Property Panel for Interface"; }
+    public String getModuleAuthor() { return "ArgoUML Core"; }
+    public String getModuleVersion() { return "0.9.4"; }
+    public String getModuleKey() { return "module.propertypanel.interface"; }
+
+
 } /* end class PropPanelInterface */
 

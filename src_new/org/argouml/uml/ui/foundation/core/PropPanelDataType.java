@@ -1,4 +1,4 @@
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2001 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -146,4 +146,16 @@ public class PropPanelDataType extends PropPanelClassifier {
             navigateTo(newDt);
         }
     }
+
+   public Class getClassForPanel() {
+        return MDataTypeImpl.class;
+    }
+
+    public String getModuleName() { return "PropPanelDataType"; }
+    public String getModuleDescription() { return "Property Panel for DataType"; }
+    public String getModuleAuthor() { return "ArgoUML Core"; }
+    public String getModuleVersion() { return "0.9.4"; }
+    public String getModuleKey() { return "module.propertypanel.datatype"; }
+
+
 } /* end class PropPanelDataType */

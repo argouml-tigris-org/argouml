@@ -131,4 +131,15 @@ public class PropPanelUseCase extends PropPanelClassifier {
     }
 
 
+   public Class getClassForPanel() {
+        return MUseCaseImpl.class;
+    }
+
+    public String getModuleName() { return "PropPanelUseCase"; }
+    public String getModuleDescription() { return "Property Panel for Use Case"; }
+    public String getModuleAuthor() { return "ArgoUML Core"; }
+    public String getModuleVersion() { return "0.9.4"; }
+    public String getModuleKey() { return "module.propertypanel.usecase"; }
+
+
 } /* end class PropPanelUseCase */

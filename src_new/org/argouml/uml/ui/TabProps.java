@@ -101,16 +101,16 @@ implements TabModelTarget, NavigationListener, ArgoModuleEventListener {
    *  few seconds after the tool is launched. */
   protected void initPanels() {
 
-    _panels.put(MClassImpl.class, new PropPanelClass());
-    _panels.put(ArgoDiagram.class, new PropPanelDiagram());
-    // FigText has no owner, so we do it directly
-    _panels.put(FigText.class, new PropPanelString());
     // now a plugin
+    // _panels.put(MClassImpl.class, new PropPanelClass());
+    // _panels.put(ArgoDiagram.class, new PropPanelDiagram());
+    // FigText has no owner, so we do it directly
+    // _panels.put(FigText.class, new PropPanelString());
     // _panels.put(MModelImpl.class, new PropPanelModel());
-    _panels.put(MUseCaseImpl.class, new PropPanelUseCase());
+    // _panels.put(MUseCaseImpl.class, new PropPanelUseCase());
     //important: MStateImpl corresponds to PropPanelSimpleState not to PropPanelState!!
     //otherwise, spawing will not ne successful!!
-    _panels.put(MStateImpl.class, new PropPanelSimpleState());
+    // _panels.put(MStateImpl.class, new PropPanelSimpleState());
 
     org.argouml.application.Main.addPostLoadAction(new InitPanelsLater(_panels,this));
   }
@@ -256,10 +256,14 @@ implements TabModelTarget, NavigationListener, ArgoModuleEventListener {
     int lastDot = targetClassName.lastIndexOf(".");
 
     //remove "ru.novosoft.uml"
-    if (lastDot>0)
-        base=targetClassName.substring(16, lastDot+1);
-    else
-        base=targetClassName.substring(16);
+    if (targetClassName.startsWith("ru.novosoft.uml")) {
+        if (lastDot>0)
+            base=targetClassName.substring(16, lastDot+1);
+        else
+            base=targetClassName.substring(16);
+    }
+    else {
+    }
 
     if (lastDot > 0) targetClassName = targetClassName.substring(lastDot+1);
 
@@ -379,4 +383,7 @@ class InitPanelsLater implements Runnable {
 
     Argo.log.info("done preloading Property Panels");
   }
+
+
+
 } /* end class InitPanelsLater */

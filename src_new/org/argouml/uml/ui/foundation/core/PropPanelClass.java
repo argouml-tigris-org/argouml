@@ -126,5 +126,14 @@ public class PropPanelClass extends PropPanelClassifier {
             baseClass.equals("GeneralizableElement");
     }
 
+    public Class getClassForPanel() {
+        return MClassImpl.class;
+    }
+
+    public String getModuleName() { return "PropPanelClass"; }
+    public String getModuleDescription() { return "Property Panel for Class"; }
+    public String getModuleAuthor() { return "ArgoUML Core"; }
+    public String getModuleVersion() { return "0.9.4"; }
+    public String getModuleKey() { return "module.propertypanel.class"; }
 
 } /* end class PropPanelClass */

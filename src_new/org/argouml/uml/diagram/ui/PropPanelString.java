@@ -38,6 +38,7 @@ import ru.novosoft.uml.foundation.extension_mechanisms.*;
 import ru.novosoft.uml.model_management.*;
 
 import org.tigris.gef.base.Diagram;
+import org.tigris.gef.presentation.FigText;
 
 import org.argouml.ui.*;
 import org.argouml.uml.ui.*;
@@ -121,5 +122,16 @@ implements TabModelTarget, DocumentListener {
     System.out.println(getClass().getName() + " changed");
     // Apparently, this method is never called.
   }
+
+   public Class getClassForPanel() {
+        return FigText.class;
+    }
+
+    public String getModuleName() { return "PropPanelString"; }
+    public String getModuleDescription() { return "Property Panel for Text"; }
+    public String getModuleAuthor() { return "ArgoUML Core"; }
+    public String getModuleVersion() { return "0.9.4"; }
+    public String getModuleKey() { return "module.propertypanel.text"; }
+
 
 } /* end class PropPanelString */

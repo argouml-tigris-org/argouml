@@ -79,6 +79,15 @@ public class PropPanelSimpleState extends PropPanelState {
         return baseClass.equals("State");
     }
 
+   public Class getClassForPanel() {
+        return MStateImpl.class;
+    }
+
+    public String getModuleName() { return "PropPanelState"; }
+    public String getModuleDescription() { return "Property Panel for State"; }
+    public String getModuleAuthor() { return "ArgoUML Core"; }
+    public String getModuleVersion() { return "0.9.4"; }
+    public String getModuleKey() { return "module.propertypanel.state"; }
 
 
 } /* end class PropPanelSimpleState */
