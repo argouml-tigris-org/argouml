@@ -2135,14 +2135,19 @@ public class ParserDisplay extends Parser {
         this transition. 
         We can distinct between 4 cases:
         1. A trigger is given. None exists yet.
-        2. A trigger is given. One exists already.
+        2. The name of the trigger was present, but is altered.
         3. A trigger is not given. None exists yet.
-        4. A trigger is not given. One exists already.
+        4. The name of the trigger was present, but is removed.
         The reaction in these cases is:
         1. Create a new trigger, name it, and hook it to the transition.
         2. The trigger is renamed.
         3. Nop.
         4. The existing trigger is unhooked and erased.
+        
+        In fact it is even more complicated:
+        If a new/changed name is given for a trigger, and a trigger already
+        existed with that name, which was not yet hooked to this transition.
+        It would be necessary in these cases to use the existing object!
         */
         Object /*MEvent*/ evt = ModelFacade.getTrigger(trans);
 	if (trigger.length() > 0) {
