@@ -59,7 +59,7 @@ import org.tigris.gef.util.EnumerationEmpty;
  *
  * @author Jason Robbins
  */
-public class Designer
+public final class Designer
      implements Poster,
          Runnable, // TODO: remove/refactor per issue 1024
          PropertyChangeListener,
@@ -96,7 +96,7 @@ public class Designer
     private ToDoList toDoList;
 
     /**
-     * Preferences -- very ill defined
+     * Preferences -- very ill defined.
      */
     private Properties prefs;
 
@@ -183,17 +183,16 @@ public class Designer
 
     private int critiqueLock;
 
-    private long lastCritique;
-
     private static PropertyChangeSupport pcs;
 
     /**
-     * Property Names
+     * Property Names.
      */
     public static final String MODEL_TODOITEM_ADDED =
         "MODEL_TODOITEM_ADDED";
+
     /**
-     * Property Names
+     * Property Names.
      */
     public static final String MODEL_TODOITEM_DISMISSED =
         "MODEL_TODOITEM_DISMISSED";
@@ -235,8 +234,6 @@ public class Designer
         childGenerator = new ChildGenDMElements();
 
         critiqueLock = 0;
-
-        lastCritique = 0;
     }
 
     /**
@@ -320,25 +317,29 @@ public class Designer
                     }
 
                     size = removeQueue.size();
-                    for (int i = 0; i < size; i++)
+                    for (int i = 0; i < size; i++) {
                         warmQueue.removeElement(removeQueue.elementAt(i));
+                    }
                     removeQueue.removeAllElements();
 
-                    if (warmQueue.size() == 0)
+                    if (warmQueue.size() == 0) {
                         warmQueue.addElement(critiquingRoot);
+                    }
                     while (warmQueue.size() > 0
 			   && (System.currentTimeMillis() < cutoffTime
 			       || minWarmElements > 0)) {
-                        if (minWarmElements > 0)
+                        if (minWarmElements > 0) {
                             minWarmElements--;
+                        }
                         Object dm = warmQueue.elementAt(0);
                         warmQueue.removeElementAt(0);
                         Agency.applyAllCritics(dm, theDesigner());
                         java.util.Enumeration subDMs = childGenerator.gen(dm);
                         while (subDMs.hasMoreElements()) {
                             Object nextDM = subDMs.nextElement();
-                            if (!(warmQueue.contains(nextDM)))
+                            if (!(warmQueue.contains(nextDM))) {
                                 warmQueue.addElement(nextDM);
+                            }
                         }
                     }
                 }
@@ -352,8 +353,9 @@ public class Designer
 		Math.min(cycleDuration - critiqueDuration, 3000);
             sleepDuration = Math.max(sleepDuration, 1000);
             LOG.debug("sleepDuration= " + sleepDuration);
-            try { Thread.sleep(sleepDuration); }
-            catch (InterruptedException ignore) {
+            try {
+                Thread.sleep(sleepDuration);
+            } catch (InterruptedException ignore) {
                 LOG.error("InterruptedException!!!", ignore);
             }
         }
@@ -380,8 +382,7 @@ public class Designer
             addQueue.addElement(dm);
             Long reasonCodeObj = new Long(rCode);
             addReasonQueue.addElement(reasonCodeObj);
-        }
-        else {
+        } else {
             Long reasonCodeObj =
 		(Long) addReasonQueue.elementAt(addQueueIndex);
             long rc = reasonCodeObj.longValue() | rCode;
@@ -405,7 +406,7 @@ public class Designer
      * @param pcl
      *           The property change listener to add
      */
-    public static final void addListener(PropertyChangeListener pcl) {
+    public static void addListener(PropertyChangeListener pcl) {
         if (pcs == null) {
             pcs = new PropertyChangeSupport(theDesigner());
         }
@@ -419,7 +420,7 @@ public class Designer
      * @param p
      *           The class to remove as a property change listener.
      */
-    public static final void removeListener(PropertyChangeListener p) {
+    public static void removeListener(PropertyChangeListener p) {
         if (pcs != null) {
             LOG.debug("removePropertyChangeListener()");
             pcs.removePropertyChangeListener(p);
@@ -431,7 +432,7 @@ public class Designer
      * @param oldValue the old value
      * @param newValue the new value
      */
-    public static final void firePropertyChange(String property,
+    public static void firePropertyChange(String property,
             Object oldValue, Object newValue) {
         if (pcs != null) {
             pcs.firePropertyChange(property, oldValue, newValue);
@@ -643,10 +644,11 @@ public class Designer
     /**
      * Just returns the descr param.
      *
-     * @see org.argouml.cognitive.Poster#expand(java.lang.String,
-     * org.tigris.gef.util.VectorSet)
+     * @see org.argouml.cognitive.Poster#expand(java.lang.String, ListSet)
      */
-    public String expand(String desc, ListSet offs) { return desc; }
+    public String expand(String desc, ListSet offs) {
+        return desc;
+    }
 
     /**
      * Get the generic clarifier for this designer/poster.
@@ -835,10 +837,11 @@ public class Designer
      * @param item the todo item
      */
     public void inform(ToDoItem item) {
-        if (item.getPriority() >= disruptiveThreshold())
+        if (item.getPriority() >= disruptiveThreshold()) {
             disruptivelyWarn(item);
-        else
+        } else {
             nondisruptivelyWarn(item);
+        }
     }
 
     /**
@@ -938,12 +941,15 @@ public class Designer
 
 
     class ChildGenDMElements implements ChildGenerator {
-        /** Reply a Enumeration of the children of the given Object */
+        /**
+         * Reply a Enumeration of the children of the given Object.
+         */
         public Enumeration gen(Object o) {
-            if (o instanceof Design)
+            if (o instanceof Design) {
                 return ((Design) o).elements();
-            else
+            } else {
                 return EnumerationEmpty.theInstance();
+            }
         }
     } /* end class ChildGenDMElements */
 

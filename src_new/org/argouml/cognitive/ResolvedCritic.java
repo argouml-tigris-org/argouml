@@ -74,8 +74,7 @@ public class ResolvedCritic {
     }
 
     /**
-     * Same as {@link #ResolvedCritic(Critic,VectorSet,boolean)
-     * ResolvedCritic(c, offs, true)}.
+     * Same as {@link #ResolvedCritic(Critic,ListSet,boolean)}.
      *
      * @param c The Critic that has been resolved.
      * @param offs The set of objects that triggered the Critic.

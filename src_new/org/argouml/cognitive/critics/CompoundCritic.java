@@ -56,7 +56,9 @@ public class CompoundCritic extends Critic {
     ////////////////////////////////////////////////////////////////
     // instance variables
 
-    /**  The sub-critics that make up this CompoundCritic. */
+    /**
+     * The sub-critics that make up this CompoundCritic.
+     */
     private Vector critics = new Vector();
 
     ////////////////////////////////////////////////////////////////
@@ -227,8 +229,7 @@ public class CompoundCritic extends Critic {
     }
 
     /**
-     * @see org.argouml.cognitive.Poster#expand(java.lang.String,
-     * org.tigris.gef.util.VectorSet)
+     * @see org.argouml.cognitive.Poster#expand(java.lang.String, ListSet)
      */
     public String expand(String desc, ListSet offs) {
 	throw new UnsupportedOperationException();
