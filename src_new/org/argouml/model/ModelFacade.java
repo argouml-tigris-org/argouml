@@ -1622,11 +1622,13 @@ public class ModelFacade {
      * @param type
      */
     public static void setType(Object p, Object cls) {
-        if (p != null && cls != null && p instanceof MParameter && cls instanceof MClassifier) {
-            ((MParameter)p).setType((MClassifier)cls);
-        }
-        else if (p != null && cls != null && p instanceof MAssociationEnd && cls instanceof MClassifier) {
-            ((MAssociationEnd)p).setType((MClassifier)cls);
+        if (p != null && cls != null && cls instanceof MClassifier) {
+            if (p instanceof MParameter)
+                ((MParameter)p).setType((MClassifier)cls);
+            else if (p instanceof MAssociationEnd)
+                ((MAssociationEnd)p).setType((MClassifier)cls);
+            else if (p instanceof MAttribute)
+                ((MAttribute)p).setType((MClassifier)cls);
         }
     }
 
