@@ -256,6 +256,8 @@ doesn't find it's own XML-libs. You need to set ANT_HOME in your shell.
         <classpath>
             <fileset dir="${argo.build.dir}">
                 <include name="argouml.jar" />
+            </fileset>
+            <fileset dir="${argo.lib.dir}">
                 <include name="nsuml-0.4.19.jar" />
                 <include name="ocl-argo.jar" />
                 <include name="antlrall-2.7.2.jar" />
@@ -293,6 +295,8 @@ doesn't find it's own XML-libs. You need to set ANT_HOME in your shell.
 	    </fileset>
             <fileset dir="${argo.build.dir}">
                 <include name="argouml.jar" />
+            </fileset>
+            <fileset dir="${argo.lib.dir}">
                 <include name="nsuml-0.4.19.jar" />
                 <include name="ocl-argo.jar" />
                 <include name="antlrall-2.7.2.jar" />
