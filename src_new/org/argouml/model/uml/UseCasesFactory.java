@@ -24,8 +24,6 @@
 
 package org.argouml.model.uml;
 
-import org.argouml.kernel.ProjectManager;
-
 import ru.novosoft.uml.MFactory;
 import ru.novosoft.uml.behavior.use_cases.MActor;
 import ru.novosoft.uml.behavior.use_cases.MExtend;
@@ -34,7 +32,6 @@ import ru.novosoft.uml.behavior.use_cases.MInclude;
 import ru.novosoft.uml.behavior.use_cases.MUseCase;
 import ru.novosoft.uml.behavior.use_cases.MUseCaseInstance;
 import ru.novosoft.uml.foundation.core.MNamespace;
-import ru.novosoft.uml.model_management.MModel;
 
 /**
  * Factory to create UML classes for the UML
@@ -295,25 +292,13 @@ public class UseCasesFactory extends AbstractUmlModelFactory {
     }
      
     /**
-     * Builds an actor in the project's model namespace.
-     *
-     * @return MActor
-     */
-    public MActor buildActor() {
-	MNamespace ns =
-	    (MModel) ProjectManager.getManager().getCurrentProject()
-	        .getModel();
-	return buildActor(ns);
-    }
-     
-    /**
      * Builds an actor in the given namespace.
-     *
+     * @param model
      * @param ns the given namespace
      * @return MActor the newly build actor
      */
-    public MActor buildActor(MNamespace ns) {
-     	if (ns == null) return buildActor();
+    private MActor buildActor(MNamespace ns, Object model) {
+     	if (ns == null) ns = (MNamespace)model;
      	MActor actor = createActor();
      	actor.setNamespace(ns);
      	actor.setLeaf(false);
@@ -325,13 +310,13 @@ public class UseCasesFactory extends AbstractUmlModelFactory {
      * Builds an actor in the same namespace of the given actor. If
      * object is no actor nothing is build. Did not give MActor as an
      * argument but object to seperate argouml better from NSUML.<p>
-     *
+     * @param model
      * @param actor the given actor
      * @return MActor the newly build actor
      */
-    public MActor buildActor(Object actor) {
+    public MActor buildActor(Object actor, Object model) {
         if (actor instanceof MActor) {
-            return buildActor(((MActor) actor).getNamespace());
+            return buildActor(((MActor) actor).getNamespace(), model);
         }
         return null;
     }
