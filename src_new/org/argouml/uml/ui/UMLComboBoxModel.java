@@ -23,17 +23,23 @@
 
 package org.argouml.uml.ui;
 import org.argouml.uml.*;
+import org.argouml.application.api.*;
+
 import javax.swing.event.*;
 import javax.swing.*;
 import java.lang.reflect.*;
-import ru.novosoft.uml.*;
 import java.awt.event.*;
 import java.util.*;
+
+import ru.novosoft.uml.*;
 import ru.novosoft.uml.foundation.data_types.*;
 import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.model_management.*;
 import ru.novosoft.uml.foundation.core.*;
 
+/** Method to supply the correct model for the "type" and "stereotype" combo
+ *  boxes used on several of the property panels.
+ */
 public class UMLComboBoxModel extends AbstractListModel implements
     ComboBoxModel, UMLUserInterfaceComponent, ActionListener {
 
@@ -66,8 +72,8 @@ public class UMLComboBoxModel extends AbstractListModel implements
      *    @param elementType base type for all elements
      */
     public UMLComboBoxModel(UMLUserInterfaceContainer container,
-        String filter,String property,String getMethod,
-        String setMethod,boolean allowVoid,Class elementType,
+        String filter, String property, String getMethod,
+        String setMethod, boolean allowVoid, Class elementType,
         boolean addElementsFromProfileModel) {
         _container = container;
         _property = property;
@@ -76,7 +82,8 @@ public class UMLComboBoxModel extends AbstractListModel implements
         _set = new TreeSet();
         if(filter != null) {
             try {
-                _filter = _container.getClass().getMethod(filter,new Class[] { MModelElement.class });
+                _filter = _container.getClass().getMethod(filter,
+                          new Class[] { MModelElement.class });
             }
             catch(Exception e) {
                 e.printStackTrace();
@@ -89,7 +96,8 @@ public class UMLComboBoxModel extends AbstractListModel implements
             }
             catch(Exception e) {
                 _shouldBeEnabled = false;
-                System.out.println(getMethod + " not found in UMLComboBoxModel(): " + e.toString());
+                System.out.println(getMethod + " not found in UMLComboBoxModel(): " 
+                                    + e.toString());
                 e.printStackTrace();
             }
         }
@@ -177,23 +185,26 @@ public class UMLComboBoxModel extends AbstractListModel implements
         }
     }
 
-
+/** fixed problem with reload or 2nd project load where stereotype would be set
+ *  to null on first class selected after load.
+ *      psager@tigris.org   Oct. 13, 2001.  */
     public void targetChanged() {
         Object target = _container.getTarget();
+
         if(target instanceof MModelElement) {
             MModelElement element = (MModelElement) target;
             MModel model = element.getModel();
             //
-            //   should not need to do this
-            //
-	    
-	    //System.out.println("UMLComboBoxModel: "+element+" "+model);
+            //   needs_more_work. should not need to do this  (who ?? pjs)
 
             if(model == null) {
-                System.out.println("Error: getModel() == null for " + target.getClass().toString() + " in UMLComboBoxModel");
+                System.out.println("Error: getModel() == null for " + 
+                        target.getClass().toString() + " in UMLComboBoxModel");
                 return;
             }
 
+// this if statement does not seem to work, however the code works so I am going
+// to leave it...pjs...Oct. 13, 2001.          
             if(model != _model) {
                 _model = model;
                 _set.clear();
@@ -227,9 +238,14 @@ public class UMLComboBoxModel extends AbstractListModel implements
                     after = afterEntry.getShortName();
                     if(currentEntry != null) currentEntry.checkCollision(before,after);
                 }
-                if(afterEntry != null) afterEntry.checkCollision(current,null);
-
-                fireContentsChanged(this,0,_set.size());
+                if(afterEntry != null) {
+                    afterEntry.checkCollision(current,null);
+                }
+//      removing this statement solves a problem where on reload of a project or
+//      load of a new project the stereotype, attribute or parameter of the first
+//      class chosen would be changed to null (stereotype) or BigDecimal in the case
+//      of attribute/parameter. I can't think of a reason why this would be fired...pjs                
+//                fireContentsChanged(this,0,_set.size());
             }
 
             //
