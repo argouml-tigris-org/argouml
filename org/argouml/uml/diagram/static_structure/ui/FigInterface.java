@@ -632,6 +632,7 @@ public class FigInterface extends FigNodeModelElement {
             ft.setHighlighted(true);
             highlightedFigText = ft;
         }
+        ie.consume();
     }
 
     protected CompartmentFigText unhighlight() {

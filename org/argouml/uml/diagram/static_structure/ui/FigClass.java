@@ -731,6 +731,7 @@ public class FigClass extends FigNodeModelElement {
             ft.setHighlighted(true);
             highlightedFigText = ft;
         }
+        ie.consume();
     }
 
     protected CompartmentFigText unhighlight() {
