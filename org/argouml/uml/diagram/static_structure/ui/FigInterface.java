@@ -219,7 +219,7 @@ public class FigInterface extends FigNodeModelElement {
     //display op properties if necessary:
     Rectangle r = new Rectangle(me.getX() - 1, me.getY() - 1, 2, 2);
 	Fig f = hitFig(r);
-    if (f == _operVec) {
+    if (f == _operVec && _operVec.getHeight() > 0) {
 	  Vector v = _operVec.getFigs();
 	  i = (v.size()-1) * (me.getY() - f.getY() - 3) / _operVec.getHeight();
 	  if (i >= 0 && i < v.size()-1) {
@@ -446,7 +446,7 @@ public class FigInterface extends FigNodeModelElement {
   */
   public void setBounds(int x, int y, int w, int h) {
 	Rectangle oldBounds = getBounds();
-	Dimension aSize = getMinimumSize();
+	Dimension aSize = checkSize ? getMinimumSize() : new Dimension(w,h);
 	int newW = Math.max(w,aSize.width);
 	int newH = h;
 	int extra_each = 0; // extra height per displayed fig if requested height is greater than minimal
