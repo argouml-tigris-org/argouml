@@ -49,6 +49,7 @@ import org.argouml.uml.diagram.static_structure.ui.CommentEdge;
 import ru.novosoft.uml.MElementListener;
 import ru.novosoft.uml.MFactory;
 import ru.novosoft.uml.behavior.state_machines.MEvent;
+import ru.novosoft.uml.foundation.core.MAbstraction;
 import ru.novosoft.uml.foundation.core.MAssociation;
 import ru.novosoft.uml.foundation.core.MAssociationClass;
 import ru.novosoft.uml.foundation.core.MAssociationEnd;
@@ -146,10 +147,16 @@ public class CoreFactory extends AbstractUmlModelFactory {
      * @param name The name.
      * @return an initialized UML Abstraction instance.
      */
-    public Object buildAbstraction(String name) {
-        Object abstraction = createAbstraction();
+    public Object buildAbstraction(String name, Object parent, Object child) {
+        if (!(child instanceof MClassifier)
+                || !(parent instanceof MClassifier)) {
+            throw new IllegalArgumentException();
+        }
+        MAbstraction abstraction = (MAbstraction)createAbstraction();
         super.initialize(abstraction);
         ModelFacade.setName(abstraction, name);
+        abstraction.addClient((MClassifier)child);
+        abstraction.addSupplier((MClassifier)child);
         return abstraction;
     }
 
@@ -433,8 +440,7 @@ public class CoreFactory extends AbstractUmlModelFactory {
      * @param agg2 The aggregation type of the second Associaton end
      * @return MAssociation
      */
-    public MAssociation buildAssociation(
-					 MClassifier c1,
+    public MAssociation buildAssociation(MClassifier c1,
 					 boolean nav1,
 					 MAggregationKind agg1,
 					 MClassifier c2,

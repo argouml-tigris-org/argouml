@@ -1037,8 +1037,10 @@ public class Modeller
         }
 
         if (mAbstraction == null) {
-            mAbstraction =
-		UmlFactory.getFactory().getCore().buildAbstraction(name);
+            mAbstraction = UmlFactory.getFactory().getCore().buildAbstraction(
+                   name, 
+                   parent, 
+                   child);
         }
         return mAbstraction;
     }
