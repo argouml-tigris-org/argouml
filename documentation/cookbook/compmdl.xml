@@ -495,7 +495,7 @@ of making the transition easy.
 The plan is to move everything in the Model subsystem 
 (under <classname>org.argouml.model.*</classname>)
 from NS-UML to JMI/MDR and
-everything else within ArgoUML to the ModelFacade/ArgoUML solution.
+everything else within ArgoUML to use the Model subsystem.
 </para>
     <table>
       <title>How to work against the model</title>
@@ -503,9 +503,9 @@ everything else within ArgoUML to the ModelFacade/ArgoUML solution.
 	<thead>
 	  <row>
 	    <entry>What</entry>
-	    <entry>NS-UML</entry>
-	    <entry>JMI/MDR</entry>
-	    <entry>ModelFacade/ArgoUML</entry>
+	    <entry>NS-UML (use only within Model subsystem)</entry>
+	    <entry>JMI/MDR (use only within Model subsystem)</entry>
+	    <entry>Model subsystem</entry>
 	  </row>
 	</thead>
 
@@ -561,7 +561,10 @@ MFactory.getDefaultFactory().create<replaceable>Type</replaceable>()
 &rarr; RefObject 
 </entry>
 	    <entry>
-<replaceable>elementhierachyname</replaceable>Factory.getFactory().build<replaceable>modelelementtype</replaceable>(args)
+Model.get<replaceable>ModelElementDomain?</replaceable>Factory.build<replaceable>modelelementtype</replaceable>(args)
+or
+Model.get<replaceable>ModelElementDomain?</replaceable>Factory.create<replaceable>modelelementtype</replaceable>()
+to create them completely empty.
 </entry>
 	  </row>
 	  <row>
@@ -573,7 +576,7 @@ MFactory.getDefaultFactory().create<replaceable>Type</replaceable>()
         &nbsp;
   		</entry>
       <entry>
-        Model.getUmlFactory().delete(<replaceable>object</replaceable>) 
+Model.getUmlFactory().delete(<replaceable>object</replaceable>) 
       </entry>
 	  </row>
 	  <row>
@@ -593,7 +596,7 @@ Model.getPump().addModelEventListener((PropertyChangeListener) li,
 	  </row>
 	  <row>
 	    <entry>
-Register for notification on all model of a certain type Type:
+Register for notification on all model elements of a certain type Type:
 </entry>
 	    <entry>
 Not possible!
@@ -616,7 +619,7 @@ Model.getPump().addModelEventListener((PropertyChangeListener) li,
 new XMIWriter(???)
 </entry>
 	    <entry>
-Not currently in any Facade.
+Handled by the Persistence subsystem.
 </entry>
 	  </row>
 	</tbody>
