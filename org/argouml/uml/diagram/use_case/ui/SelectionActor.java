@@ -140,18 +140,18 @@ public class SelectionActor extends SelectionWButtons {
 	int newX = cx, newY = cy, newW = cw, newH = ch;
 	Dimension minSize = _content.getMinimumSize();
 	int minWidth = minSize.width, minHeight = minSize.height;
-	Class edgeClass = null;
-	Class nodeClass = (Class) Model.getMetaTypes().getUseCase();
+	Object edgeType = null;
+	Object nodeType = Model.getMetaTypes().getUseCase();
 	int bx = mX, by = mY;
 	boolean reverse = false;
 	switch (hand.index) {
 	case 12: //add assoc
-	    edgeClass = (Class) Model.getMetaTypes().getAssociation();
+	    edgeType = Model.getMetaTypes().getAssociation();
 	    by = cy + ch / 2;
 	    bx = cx + cw;
 	    break;
 	case 13: // add assoc
-	    edgeClass = (Class) Model.getMetaTypes().getAssociation();
+	    edgeType = Model.getMetaTypes().getAssociation();
 	    reverse = true;
 	    by = cy + ch / 2;
 	    bx = cx;
@@ -160,10 +160,10 @@ public class SelectionActor extends SelectionWButtons {
 	    LOG.warn("invalid handle number");
 	    break;
 	}
-	if (edgeClass != null && nodeClass != null) {
+	if (edgeType != null && nodeType != null) {
 	    Editor ce = Globals.curEditor();
 	    ModeCreateEdgeAndNode m = new
-		ModeCreateEdgeAndNode(ce, edgeClass, nodeClass, false);
+		ModeCreateEdgeAndNode(ce, edgeType, nodeType, false);
 	    m.setup((FigNode) _content, _content.getOwner(), bx, by, reverse);
 	    ce.pushMode(m);
 	}
@@ -187,7 +187,9 @@ public class SelectionActor extends SelectionWButtons {
      */
     protected Object createEdgeLeft(MutableGraphModel gm, Object newNode) {
         return gm.connect(newNode, _content.getOwner(),
-			  (Class) Model.getMetaTypes().getAssociation());
+            // TODO Remove when GEF with this fixed and incorporated
+            // http://gef.tigris.org/issues/show_bug.cgi?id=203
+			  (Class)Model.getMetaTypes().getAssociation());
     }
 
     /**
@@ -196,6 +198,8 @@ public class SelectionActor extends SelectionWButtons {
      */
     protected Object createEdgeRight(MutableGraphModel gm, Object newNode) {
         return gm.connect(_content.getOwner(), newNode ,
+            // TODO Remove when GEF with this fixed and incorporated
+            // http://gef.tigris.org/issues/show_bug.cgi?id=203
 			  (Class) Model.getMetaTypes().getAssociation());
     }
 

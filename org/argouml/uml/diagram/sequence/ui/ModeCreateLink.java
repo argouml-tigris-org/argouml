@@ -198,11 +198,12 @@ public class ModeCreateLink extends ModeCreate {
 
             if (foundPort != null && foundPort != startPort) {
                 Fig destPortFig = destFigNode.getPortFig(foundPort);
-                Class edgeClass = (Class) getArg("edgeClass");
-                if (edgeClass != null)
-                    newEdge = mgm.connect(startPort, foundPort, edgeClass);
-                else
+                Object edgeType = getArg("edgeClass");
+                if (edgeType != null) {
+                    newEdge = mgm.connect(startPort, foundPort, (Class) edgeType);
+                } else {
                     newEdge = mgm.connect(startPort, foundPort);
+                }
 
                 // Calling connect() will add the edge to the GraphModel and
                 // any LayerPersectives on that GraphModel will get a

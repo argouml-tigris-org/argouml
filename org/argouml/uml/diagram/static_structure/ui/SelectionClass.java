@@ -198,29 +198,29 @@ public class SelectionClass extends SelectionWButtons {
         int newX = cx, newY = cy, newW = cw, newH = ch;
         Dimension minSize = _content.getMinimumSize();
         int minWidth = minSize.width, minHeight = minSize.height;
-        Class edgeClass = null;
-        Class nodeClass = (Class) Model.getMetaTypes().getUMLClass();
+        Object edgeType = null;
+        Object nodeType = Model.getMetaTypes().getUMLClass();
         int bx = mX, by = mY;
         boolean reverse = false;
         switch (hand.index) {
         case 10: //add superclass
-            edgeClass = (Class) Model.getMetaTypes().getGeneralization();
+            edgeType = Model.getMetaTypes().getGeneralization();
             by = cy;
             bx = cx + cw / 2;
             break;
         case 11: //add subclass
-            edgeClass = (Class) Model.getMetaTypes().getGeneralization();
+            edgeType = Model.getMetaTypes().getGeneralization();
             reverse = true;
             by = cy + ch;
             bx = cx + cw / 2;
             break;
         case 12: //add assoc
-            edgeClass = (Class) Model.getMetaTypes().getAssociation();
+            edgeType = Model.getMetaTypes().getAssociation();
             by = cy + ch / 2;
             bx = cx + cw;
             break;
         case 13: // add assoc
-            edgeClass = (Class) Model.getMetaTypes().getAssociation();
+            edgeType = Model.getMetaTypes().getAssociation();
             reverse = true;
             by = cy + ch / 2;
             bx = cx;
@@ -232,11 +232,11 @@ public class SelectionClass extends SelectionWButtons {
             LOG.warn("invalid handle number");
             break;
         }
-        if (edgeClass != null && nodeClass != null) {
+        if (edgeType != null && nodeType != null) {
             Editor ce = Globals.curEditor();
             ModeCreateEdgeAndNode m =
                 new ModeCreateEdgeAndNode(ce,
-                        edgeClass, nodeClass, useComposite);
+                        edgeType, nodeType, useComposite);
             m.setup((FigNode) _content, _content.getOwner(), bx, by, reverse);
             ce.pushMode(m);
         }

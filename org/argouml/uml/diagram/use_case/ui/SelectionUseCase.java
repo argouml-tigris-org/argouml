@@ -158,35 +158,35 @@ public class SelectionUseCase extends SelectionWButtons {
         int newX = cx, newY = cy, newW = cw, newH = ch;
         Dimension minSize = _content.getMinimumSize();
         int minWidth = minSize.width, minHeight = minSize.height;
-        Class edgeClass = null;
-        Class nodeClass = null;
+        Object edgeType = null;
+        Object nodeType = null;
         if (hand.index == 10 || hand.index == 11) {
-            nodeClass = (Class) Model.getMetaTypes().getUseCase();
+            nodeType = Model.getMetaTypes().getUseCase();
         } else {
-            nodeClass = (Class) Model.getMetaTypes().getActor();
+            nodeType = Model.getMetaTypes().getActor();
         }
 
         int bx = mX, by = mY;
         boolean reverse = false;
         switch (hand.index) {
 	case 10 : //add superclass
-	    edgeClass = (Class) Model.getMetaTypes().getGeneralization();
+	    edgeType = Model.getMetaTypes().getGeneralization();
 	    by = cy;
 	    bx = cx + cw / 2;
 	    break;
 	case 11 : //add subclass
-	    edgeClass = (Class) Model.getMetaTypes().getGeneralization();
+	    edgeType = Model.getMetaTypes().getGeneralization();
 	    reverse = true;
 	    by = cy + ch;
 	    bx = cx + cw / 2;
 	    break;
 	case 12 : //add assoc
-	    edgeClass = (Class) Model.getMetaTypes().getAssociation();
+	    edgeType = Model.getMetaTypes().getAssociation();
 	    by = cy + ch / 2;
 	    bx = cx + cw;
 	    break;
 	case 13 : // add assoc
-	    edgeClass = (Class) Model.getMetaTypes().getAssociation();
+	    edgeType = Model.getMetaTypes().getAssociation();
 	    reverse = true;
 	    by = cy + ch / 2;
 	    bx = cx;
@@ -195,10 +195,10 @@ public class SelectionUseCase extends SelectionWButtons {
 	    LOG.warn("invalid handle number");
 	    break;
         }
-        if (edgeClass != null && nodeClass != null) {
+        if (edgeType != null && nodeType != null) {
             Editor ce = Globals.curEditor();
             ModeCreateEdgeAndNode m =
-                new ModeCreateEdgeAndNode(ce, edgeClass, nodeClass, false);
+                new ModeCreateEdgeAndNode(ce, edgeType, nodeType, false);
             m.setup((FigNode) _content, _content.getOwner(), bx, by, reverse);
             ce.pushMode(m);
         }
@@ -214,7 +214,9 @@ public class SelectionUseCase extends SelectionWButtons {
      */
     protected Object createEdgeAbove(MutableGraphModel gm, Object newNode) {
         return gm.connect(_content.getOwner(), newNode,
-			  (Class) Model.getMetaTypes().getGeneralization());
+                // TODO Remove when GEF with this fixed and incorporated
+                // http://gef.tigris.org/issues/show_bug.cgi?id=203
+               (Class) Model.getMetaTypes().getGeneralization());
     }
 
     /**
@@ -223,7 +225,9 @@ public class SelectionUseCase extends SelectionWButtons {
      */
     protected Object createEdgeLeft(MutableGraphModel gm, Object newNode) {
         return gm.connect(newNode, _content.getOwner(),
-			  (Class) Model.getMetaTypes().getAssociation());
+            // TODO Remove (Class) when GEF with this fixed and incorporated
+            // http://gef.tigris.org/issues/show_bug.cgi?id=203
+            (Class) Model.getMetaTypes().getAssociation());
     }
 
     /**
@@ -232,6 +236,8 @@ public class SelectionUseCase extends SelectionWButtons {
      */
     protected Object createEdgeRight(MutableGraphModel gm, Object newNode) {
         return gm.connect(_content.getOwner(), newNode,
+            // TODO Remove when GEF with this fixed and incorporated
+            // http://gef.tigris.org/issues/show_bug.cgi?id=203
 			  (Class) Model.getMetaTypes().getAssociation());
     }
 
@@ -241,6 +247,8 @@ public class SelectionUseCase extends SelectionWButtons {
      */
     protected Object createEdgeUnder(MutableGraphModel gm, Object newNode) {
         return gm.connect(newNode, _content.getOwner(),
+            // TODO Remove when GEF with this fixed and incorporated
+            // http://gef.tigris.org/issues/show_bug.cgi?id=203
 			  (Class) Model.getMetaTypes().getGeneralization());
     }
 

@@ -90,11 +90,11 @@ public class ActionSequenceDiagram extends UMLAction {
     public boolean shouldBeEnabled() {
         // TODO: Once the sequence diagrams are working again, they should
         //       be re-enabled.
-	//        Object target = TargetManager.getInstance().getModelTarget();
-	//        if (ModelFacade.isAClassifier(target)
-	//            || ModelFacade.isAOperation(target)) {
-	//            return true;
-	//        }
+	        Object target = TargetManager.getInstance().getModelTarget();
+	        if (ModelFacade.isAClassifier(target)
+	            || ModelFacade.isAOperation(target)) {
+	            return true;
+	        }
 
         return false;
     }

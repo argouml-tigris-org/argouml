@@ -175,8 +175,8 @@ public class SelectionClassifierRole extends SelectionWButtons {
 	int newX = cx, newY = cy, newW = cw, newH = ch;
 	Dimension minSize = _content.getMinimumSize();
 	int minWidth = minSize.width, minHeight = minSize.height;
-	Class edgeClass = null;
-	Class nodeClass = (Class) Model.getMetaTypes().getClassifierRole();
+	Object edgeType = null;
+	Object nodeType = Model.getMetaTypes().getClassifierRole();
 
 	Editor ce = Globals.curEditor();
 	GraphModel gm = ce.getGraphModel();
@@ -190,12 +190,12 @@ public class SelectionClassifierRole extends SelectionWButtons {
 	boolean reverse = false;
 	switch (hand.index) {
 	case 12 : //add outgoing
-	    edgeClass = (Class) Model.getMetaTypes().getAssociationRole();
+	    edgeType = Model.getMetaTypes().getAssociationRole();
 	    by = cy + ch / 2;
 	    bx = cx + cw;
 	    break;
 	case 13 : // add incoming
-	    edgeClass = (Class) Model.getMetaTypes().getAssociationRole();
+	    edgeType = Model.getMetaTypes().getAssociationRole();
 	    reverse = true;
 	    by = cy + ch / 2;
 	    bx = cx;
@@ -208,9 +208,9 @@ public class SelectionClassifierRole extends SelectionWButtons {
 	    LOG.warn("invalid handle number");
 	    break;
 	}
-	if (edgeClass != null && nodeClass != null) {
+	if (edgeType != null && nodeType != null) {
 	    ModeCreateEdgeAndNode m =
-		new ModeCreateEdgeAndNode(ce, edgeClass, nodeClass, false);
+		new ModeCreateEdgeAndNode(ce, edgeType, nodeType, false);
 	    m.setup((FigNode) _content, _content.getOwner(), bx, by, reverse);
 	    ce.pushMode(m);
 	}
