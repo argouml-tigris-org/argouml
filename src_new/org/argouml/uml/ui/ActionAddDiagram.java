@@ -31,7 +31,6 @@ import org.apache.log4j.Logger;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.ModelFacade;
-import org.argouml.ui.ProjectBrowser;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.ui.UMLDiagram;
 
@@ -56,15 +55,13 @@ public abstract class ActionAddDiagram extends UMLChangeAction {
     /**
      * @see java.awt.event.ActionListener#actionPerformed(ActionEvent)
      */
-    public void actionPerformed(ActionEvent e) {
-        ProjectBrowser pb = ProjectBrowser.getInstance();
+    public void actionPerformed(ActionEvent e) {       
         Project p = ProjectManager.getManager().getCurrentProject();
         // find the right namespace for the diagram
         Object target = TargetManager.getInstance().getModelTarget();
         Object ns = null;
         if (target == null || !ModelFacade.isABase(target)) {
-            target = p.getRoot();
-            ns = target;
+            target = p.getRoot();        
         }
         if (ModelFacade.isANamespace(target)) {
             ns = target;
