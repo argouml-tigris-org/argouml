@@ -208,10 +208,10 @@ public class WizBreakCircularComp extends UMLWizard {
 		try {
 		    Model.getCoreHelper().setAggregation(
 		            ae0,
-		            ModelFacade.getNoneAggregationKindToken());
+		            Model.getAggregationKind().getNone());
 		    Model.getCoreHelper().setAggregation(
 		            ae1,
-		            ModelFacade.getNoneAggregationKindToken());
+		            Model.getAggregationKind().getNone());
 		} catch (Exception pve) {
 		    LOG.error("could not set aggregation", pve);
 		}

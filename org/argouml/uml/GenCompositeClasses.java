@@ -28,6 +28,8 @@ import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.Vector;
+
+import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
 import org.tigris.gef.util.ChildGenerator;
 
@@ -70,7 +72,7 @@ public class GenCompositeClasses implements ChildGenerator {
 	Iterator assocEnds = ends.iterator();
 	while (assocEnds.hasNext()) {
 	    Object ae = /*(MAssociationEnd)*/ assocEnds.next();
-	    if (ModelFacade.getCompositeAggregationKindToken().equals(
+	    if (Model.getAggregationKind().getComposite().equals(
 	            ModelFacade.getAggregation(ae))) {
 		Object asc = ModelFacade.getAssociation(ae);
 		ArrayList conn = new ArrayList(ModelFacade.getConnections(asc));

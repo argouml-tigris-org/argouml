@@ -452,7 +452,7 @@ public class ModeCreateEdgeAndNode extends ModeCreate {
             Iterator iter = conns.iterator();
             Object associationEnd0 = iter.next();
             Model.getCoreHelper().setAggregation(associationEnd0,
-                    ModelFacade.getCompositeAggregationKindToken());
+                    Model.getAggregationKind().getComposite());
         }
     }
 

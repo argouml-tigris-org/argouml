@@ -25,7 +25,9 @@
 package org.argouml.uml.cognitive.critics;
 
 import java.util.Collection;
+
 import org.argouml.cognitive.Designer;
+import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
 
 /**
@@ -65,10 +67,10 @@ public class CrNoOutgoingTransitions extends CrUML {
 	}
 	if (ModelFacade.isAPseudostate(sv)) {
 	    Object k = ModelFacade.getPseudostateKind(sv);
-	    if (k.equals(ModelFacade.getBranchPseudostateKindToken())) {
+	    if (k.equals(Model.getPseudostateKind().getBranch())) {
 	        return NO_PROBLEM;
 	    }
-	    if (k.equals(ModelFacade.getJunctionPseudostateKindToken())) {
+	    if (k.equals(Model.getPseudostateKind().getJunction())) {
 	        return NO_PROBLEM;
 	    }
 	}

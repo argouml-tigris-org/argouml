@@ -297,7 +297,7 @@ public class UMLActivityDiagram extends UMLDiagram {
             actionForkPseudoState =
                 new RadioAction(
                         new ActionCreatePseudostate(
-                                ModelFacade.getForkPseudostateKindToken(),
+                                Model.getPseudostateKind().getFork(),
                         	"Fork"));
         }
         return actionForkPseudoState;
@@ -310,7 +310,7 @@ public class UMLActivityDiagram extends UMLDiagram {
             actionJoinPseudoState =
                 new RadioAction(
                         new ActionCreatePseudostate(
-                                ModelFacade.getJoinPseudostateKindToken(),
+                                Model.getPseudostateKind().getJoin(),
                         	"Join"));
         }
         return actionJoinPseudoState;
@@ -323,7 +323,7 @@ public class UMLActivityDiagram extends UMLDiagram {
             actionJunctionPseudoState =
                 new RadioAction(
                         new ActionCreatePseudostate(
-                                ModelFacade.getJunctionPseudostateKindToken(),
+                                Model.getPseudostateKind().getJunction(),
                                 "Junction"));
         }
         return actionJunctionPseudoState;
@@ -360,7 +360,7 @@ public class UMLActivityDiagram extends UMLDiagram {
             actionStartPseudoState =
                 new RadioAction(
                         new ActionCreatePseudostate(
-                                ModelFacade.getInitialPseudostateKindToken(),
+                                Model.getPseudostateKind().getInitial(),
                                 "Initial"));
         }
         return actionStartPseudoState;

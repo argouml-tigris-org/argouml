@@ -86,13 +86,13 @@ public class ActionSetParameterDirectionKind extends UMLAction {
                 Object m = /* (MModelElement) */target;
                 Object kind = null;
                 if (actionCommand.equals(IN_COMMAND)) {
-                    kind = ModelFacade.getInParameterDirectionKindToken();
+                    kind = Model.getDirectionKind().getInParameter();
                 } else if (actionCommand.equals(OUT_COMMAND)) {
-                    kind = ModelFacade.getOutParameterDirectionKindToken();
+                    kind = Model.getDirectionKind().getOutParameter();
                 } else if (actionCommand.equals(INOUT_COMMAND)) {
-                    kind = ModelFacade.getInOutParameterDirectionKindToken();
+                    kind = Model.getDirectionKind().getInOutParameter();
                 } else {
-                    kind = ModelFacade.getReturnParameterDirectionKindToken();
+                    kind = Model.getDirectionKind().getReturnParameter();
                 }
                 Model.getCoreHelper().setKind(m, kind);
             }

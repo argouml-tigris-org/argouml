@@ -309,10 +309,10 @@ public class WizAssocComposite extends UMLWizard {
 
                     Model.getCoreHelper().setAggregation(
 			    ae0,
-			    ModelFacade.getCompositeAggregationKindToken());
+			    Model.getAggregationKind().getComposite());
                     Model.getCoreHelper().setAggregation(
 			    ae1,
-			    ModelFacade.getNoneAggregationKindToken());
+			    Model.getAggregationKind().getNone());
                     break;
 
                 case 1:
@@ -321,10 +321,10 @@ public class WizAssocComposite extends UMLWizard {
 
                     Model.getCoreHelper().setAggregation(
 			    ae0,
-			    ModelFacade.getAggregateAggregationKindToken());
+			    Model.getAggregationKind().getAggregate());
                     Model.getCoreHelper().setAggregation(
 			    ae1,
-			    ModelFacade.getNoneAggregationKindToken());
+			    Model.getAggregationKind().getNone());
                     break;
 
                 case 2:
@@ -333,10 +333,10 @@ public class WizAssocComposite extends UMLWizard {
 
                     Model.getCoreHelper().setAggregation(
 			    ae0,
-			    ModelFacade.getNoneAggregationKindToken());
+			    Model.getAggregationKind().getNone());
                     Model.getCoreHelper().setAggregation(
 			    ae1,
-			    ModelFacade.getCompositeAggregationKindToken());
+			    Model.getAggregationKind().getComposite());
                     break;
 
                 case 3:
@@ -344,10 +344,10 @@ public class WizAssocComposite extends UMLWizard {
                     // End is a shared aggregation of start
                     Model.getCoreHelper().setAggregation(
 			    ae0,
-			    ModelFacade.getNoneAggregationKindToken());
+			    Model.getAggregationKind().getNone());
                     Model.getCoreHelper().setAggregation(
 			    ae1,
-			    ModelFacade.getAggregateAggregationKindToken());
+			    Model.getAggregationKind().getAggregate());
                     break;
 
                 case 4:
@@ -355,10 +355,10 @@ public class WizAssocComposite extends UMLWizard {
                     // No aggregation
                     Model.getCoreHelper().setAggregation(
 			    ae0,
-			    ModelFacade.getNoneAggregationKindToken());
+			    Model.getAggregationKind().getNone());
                     Model.getCoreHelper().setAggregation(
 			    ae1,
-			    ModelFacade.getNoneAggregationKindToken());
+			    Model.getAggregationKind().getNone());
                     break;
 
                 default:

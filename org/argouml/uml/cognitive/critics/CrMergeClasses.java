@@ -27,8 +27,10 @@ package org.argouml.uml.cognitive.critics;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+
 import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.ToDoItem;
+import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
 
 /**
@@ -78,9 +80,9 @@ public class CrMergeClasses extends CrUML {
 	    return NO_PROBLEM;
 	}
 	if (ModelFacade.getMultiplicity(ae0)
-            .equals(ModelFacade.getM11MultiplicityToken())
+            .equals(Model.getMultiplicities().get11())
                 && ModelFacade.getMultiplicity(ae1)
-                    .equals(ModelFacade.getM11MultiplicityToken())) {
+                    .equals(Model.getMultiplicities().get11())) {
 	    return PROBLEM_FOUND;
 	}
 	return NO_PROBLEM;

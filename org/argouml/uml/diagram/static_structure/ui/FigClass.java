@@ -1157,7 +1157,7 @@ public class FigClass extends FigNodeModelElement
                  */
 
                 // underline, if static
-                attr.setUnderline(ModelFacade.getClassifierScopeKindToken()
+                attr.setUnderline(Model.getScopeKind().getClassifier()
 				  .equals(ModelFacade.getOwnerScope(sf)));
                 acounter++;
             }
@@ -1225,7 +1225,7 @@ public class FigClass extends FigNodeModelElement
                  */
 
                 // underline, if static
-                oper.setUnderline(ModelFacade.getClassifierScopeKindToken()
+                oper.setUnderline(Model.getScopeKind().getClassifier()
 				  .equals(ModelFacade.getOwnerScope(bf)));
                 // italics, if abstract
                 //oper.setItalic(((MOperation)bf).isAbstract()); //

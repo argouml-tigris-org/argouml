@@ -30,6 +30,7 @@ import java.util.Iterator;
 import org.apache.log4j.Logger;
 import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.ToDoItem;
+import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
 import org.argouml.uml.cognitive.UMLToDoItem;
 import org.tigris.gef.util.VectorSet;
@@ -68,7 +69,7 @@ public class CrMultipleInitialStates extends CrUML {
         Object k = ModelFacade.getPseudostateKind(dm);
         if (!ModelFacade.equalsPseudostateKind(
                 k,
-                ModelFacade.getInitialPseudostateKindToken())) {
+                Model.getPseudostateKind().getInitial())) {
 	    return NO_PROBLEM;
         }
 
@@ -87,7 +88,7 @@ public class CrMultipleInitialStates extends CrUML {
                 && ModelFacade.
                 	equalsPseudostateKind(
                 	        ModelFacade.getPseudostateKind(sv),
-                	        ModelFacade.getInitialPseudostateKindToken())) {
+                	        Model.getPseudostateKind().getInitial())) {
                 initialStateCount++;
             }
         }
@@ -124,7 +125,7 @@ public class CrMultipleInitialStates extends CrUML {
             if (ModelFacade.isAPseudostate(sv)
                 && ModelFacade.equalsPseudostateKind(
                         ModelFacade.getPseudostateKind(sv),
-                        ModelFacade.getInitialPseudostateKindToken())) {
+                        Model.getPseudostateKind().getInitial())) {
                 offs.addElement(sv);
 	    }
         }

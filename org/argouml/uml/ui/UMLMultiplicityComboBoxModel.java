@@ -26,6 +26,8 @@ package org.argouml.uml.ui;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
 
 /**
@@ -39,10 +41,10 @@ public abstract class UMLMultiplicityComboBoxModel extends UMLComboBoxModel2 {
     private static List multiplicityList = new ArrayList();
 
     static {
-        multiplicityList.add(ModelFacade.getM0NMultiplicityToken());
-        multiplicityList.add(ModelFacade.getM01MultiplicityToken());
-        multiplicityList.add(ModelFacade.getM11MultiplicityToken());
-        multiplicityList.add(ModelFacade.getM1NMultiplicityToken());
+        multiplicityList.add(Model.getMultiplicities().get0N());
+        multiplicityList.add(Model.getMultiplicities().get01());
+        multiplicityList.add(Model.getMultiplicities().get11());
+        multiplicityList.add(Model.getMultiplicities().get1N());
     }
 
     /**
