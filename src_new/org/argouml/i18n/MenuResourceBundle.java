@@ -51,7 +51,7 @@ public class MenuResourceBundle extends ListResourceBundle {
         {"Paste", "Paste" },  
 	{"Settings...", "Settings..."},
         {"Remove From Diagram", "Remove From Diagram" },  
-        {"Delete From Model", "Delete From Model" },  
+        {"Delete From Model", "Delete" },  
         {"Empty Trash", "Empty Trash" },  
         {"Navigate Back", "Navigate Back" },  
         {"Navigate Forward", "Navigate Forward" },  
