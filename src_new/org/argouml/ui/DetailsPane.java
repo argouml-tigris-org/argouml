@@ -216,7 +216,7 @@ implements ChangeListener, MouseListener, QuadrantPanel {
   public Dimension getMinimumSize() { return new Dimension(100, 100); }
   /** There is no way through the GUI to set any preferences
    *
-   * @return
+   * @return the preferred size on initial creation
    */  
   public Dimension getPreferredSize() { return new Dimension(400, 150); }
 

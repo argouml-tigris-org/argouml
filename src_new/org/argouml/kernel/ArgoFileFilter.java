@@ -56,7 +56,7 @@ public class ArgoFileFilter extends FileFilter {
      * @see #getExtension
      * @see FileFilter#accept
      * @param f is the file name
-     * @return
+     * @return the extension of the file or null
      */
      public String getExtension(File f) {
        if (f == null) return null;
@@ -70,7 +70,7 @@ public class ArgoFileFilter extends FileFilter {
 
 
      /**
-      * @return  */     
+      * @return  a textual description of the file type */     
     public String getDescription() {
       return "Argo v0.5.2 file format (*.argo)";// shouldn't this be updated if in fact the user
       //gets this message, maybe getArgoVersion instead?
