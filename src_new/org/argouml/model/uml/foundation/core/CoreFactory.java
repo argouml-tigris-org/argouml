@@ -1465,7 +1465,6 @@ public class CoreFactory extends AbstractUmlModelFactory {
 								"realize", ns);
 	ModelFacade.addClientDependency(client, realization);
 	ModelFacade.addSupplierDependency(supplier, realization);
-	ModelFacade.addClientDependency(client, realization);         
 	return realization;
     }
 
