@@ -42,6 +42,6 @@ import uci.gef.Layer;
 
 public interface GraphNodeRenderer {
   /** Return a Fig that can be used to represent the given node */
-  FigNode getFigNodeFor(GraphModel graph, Layer lay, Object node);
+  FigNode getFigNodeFor(GraphModel gm, Layer lay, Object node);
 
 } /* end interface GraphNodeRenderer */

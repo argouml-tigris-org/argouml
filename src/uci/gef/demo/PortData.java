@@ -26,7 +26,9 @@ package uci.gef.demo;
 import java.awt.*;
 import java.util.Vector;
 import java.io.*;
+
 import uci.gef.*;
+import uci.graph.*;
 
 /** An example subclass of NetPort for the Example application. As
  *  part of the example I constrain the ports to only be on
@@ -44,9 +46,9 @@ public class PortData extends NetPort {
 
   /** Add the constraint that PortData's can only be connected to
    *  other ports of the same type. */
-  public boolean canConnectTo(NetPort anotherPort) {
-    return (super.canConnectTo(anotherPort)) &&
-      (anotherPort.getClass() == this.getClass()) &&
+  public boolean canConnectTo(GraphModel gm, NetPort otherPort) {
+    return (super.canConnectTo(gm, otherPort)) &&
+      (otherPort.getClass() == this.getClass()) &&
       _edges.size() == 0;
     // needs-more-work: should work with subclasses too. This is
     // really a java.lang.Class method that is missing: isSubclass()

@@ -26,9 +26,9 @@ public interface GeneralizableElement extends Namespace {
   public void addGeneralization(Generalization x) throws PropertyVetoException;
   public void removeGeneralization(Generalization x) throws PropertyVetoException;
   
-//-   public Vector getSpecialization();
-//-   public void setSpecialization(Vector x) throws PropertyVetoException;
-//-   public void addSpecialization(Generalization x) throws PropertyVetoException;
-//-   public void removeSpecialization(Generalization x) throws PropertyVetoException;
+  public Vector getSpecialization();
+  public void setSpecialization(Vector x) throws PropertyVetoException;
+  public void addSpecialization(Generalization x) throws PropertyVetoException;
+  public void removeSpecialization(Generalization x) throws PropertyVetoException;
 
 }

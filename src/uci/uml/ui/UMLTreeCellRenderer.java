@@ -42,6 +42,7 @@ public class UMLTreeCellRenderer extends BasicTreeCellRenderer {
       if (value instanceof uci.uml.Foundation.Core.Class) lab.setIcon(_ClassIcon);
       if (value instanceof Package) lab.setIcon(_PackageIcon);
       if (value instanceof Association) lab.setIcon(_AssociationIcon);
+      lab.setToolTipText(value.toString());
     }
     return r;
   }

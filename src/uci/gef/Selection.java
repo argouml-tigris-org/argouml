@@ -25,6 +25,8 @@ package uci.gef;
 
 import java.util.*;
 import java.awt.*;
+import java.awt.event.*;
+import java.io.Serializable;
 import uci.util.*;
 
 /** This class represents the "selection" object that is used when you
@@ -42,8 +44,8 @@ import uci.util.*;
  * @see Fig
  * @see Fig#drawSelected */
 
-public abstract class Selection extends EventHandler
-implements java.io.Serializable {
+public abstract class Selection extends Observable
+implements Serializable, MouseListener, MouseMotionListener, KeyListener {
 
   ////////////////////////////////////////////////////////////////
   // constants
@@ -103,7 +105,7 @@ implements java.io.Serializable {
 
   /** This selection object needs to be redrawn, register its damaged
    * area within the given Editor */
-  public void damagedIn(Editor ed) { _content.damagedIn(ed); }
+  public void damage() { _content.damage(); }
 
   /** reply true if the given point is inside this selection */
   public boolean contains(int x, int y) {
@@ -158,15 +160,8 @@ implements java.io.Serializable {
    * operations in Editor
    * @see Editor#deselect
    */
-  public void removeFrom(Editor ed) { _content.removeFrom(ed); }
-
-  /** If the selection is being disposed, the selected object is
-   * disposed also. This is different from just deselecting the
-   * selected Fig, to do that use one of the deselect
-   * operations in Editor
-   * @see Editor#deselect
-   */
-  public void dispose(Editor ed) { _content.dispose(ed); }
+  public void delete() { _content.delete(); }
+  public void dispose() { _content.dispose(); }
 
   /** Move one of the handles of a selected Fig. */
   public abstract void dragHandle(int mx, int my, int an_x,int an_y, Handle h);
@@ -182,22 +177,52 @@ implements java.io.Serializable {
    * Subclasses of Selection may reimplement this to add
    * functionality.
    */
-  public boolean keyDown(Event e,int key) { return _content.keyDown(e, key); }
-
-  public boolean mouseMove(Event e,int x,int y) {
-    return _content.mouseMove(e, x, y);
+  public void keyTyped(KeyEvent ke) {
+    if (_content instanceof KeyListener)
+      ((KeyListener)_content).keyTyped(ke);
   }
 
-  public boolean mouseDrag(Event e,int x,int y) {
-    return _content.mouseDrag(e, x, y);
+  public void keyPressed(KeyEvent ke) {
+    if (_content instanceof KeyListener)
+      ((KeyListener)_content).keyPressed(ke);
+  }
+  
+  public void keyReleased(KeyEvent ke) { }
+
+
+  public void mouseMoved(MouseEvent me) {
+    if (_content instanceof MouseMotionListener)
+      ((MouseMotionListener)_content).mouseMoved(me);
   }
 
-  public boolean mouseDown(Event e,int x,int y) {
-    return _content.mouseDown(e, x, y);
+  public void mouseDragged(MouseEvent me) {
+    if (_content instanceof MouseMotionListener)
+      ((MouseMotionListener)_content).mouseDragged(me);
   }
 
-  public boolean mouseUp(Event e,int x,int y) {
-    return _content.mouseUp(e, x, y);
+  public void mousePressed(MouseEvent me) {
+    if (_content instanceof MouseListener)
+      ((MouseListener)_content).mousePressed(me);
+  }
+
+  public void mouseReleased(MouseEvent me) {
+    if (_content instanceof MouseListener)
+      ((MouseListener)_content).mouseReleased(me);
+  }
+
+  public void mouseClicked(MouseEvent me) {
+    if (_content instanceof MouseListener)
+      ((MouseListener)_content).mouseClicked(me);
+  }
+
+  public void mouseEntered(MouseEvent me) {
+    if (_content instanceof MouseListener)
+      ((MouseListener)_content).mouseEntered(me);
+  }
+
+  public void mouseExited(MouseEvent me) {
+    if (_content instanceof MouseListener)
+      ((MouseListener)_content).mouseExited(me);
   }
 
 } /* end class Selection */

@@ -24,6 +24,7 @@
 package uci.gef;
 
 import java.awt.*;
+import java.awt.event.MouseEvent;
 
 /** A Mode to interpert user input while creating a FigImage. All of
  *  the actual event handling is inherited from ModeCreate. This class
@@ -60,10 +61,11 @@ public class ModeCreateFigImage extends ModeCreate {
 
   /** Create a new FigImage instance based on the given mouse down
    *  event and the state of the parent Editor. */
-  public Fig createNewItem(Event e, int snapX, int snapY) {
+  public Fig createNewItem(MouseEvent me, int snapX, int snapY) {
     if (null == _image) {
       String dURL = "http://www.ics.uci.edu/~jrobbins/banners/gef_banner.gif";
-      String urlString = _args.getProperty("imageURL", dURL);
+      String urlString = (String) _args.get("imageURL");
+      if (urlString == null) urlString = dURL;
       _image = Globals.getImage(urlString);
       Globals.waitForImages();
     }
@@ -75,42 +77,48 @@ public class ModeCreateFigImage extends ModeCreate {
 
   /** When the mouse enters an Editor, create the FigImage and place
    *  it at the mouse position. */
-  public boolean mouseEnter(Event e, int x, int y) {
+  public void mouseEntered(MouseEvent me) {
+    int x = me.getX(), y = me.getY();    
     start();
     anchorX = x;
     anchorY = y;
     Point snapPt = new Point(x, y);
     _editor.snap(snapPt);
-    if (null == _newItem) _newItem = createNewItem(e, snapPt.x, snapPt.y);
-    return true;
+    if (null == _newItem) _newItem = createNewItem(me, snapPt.x, snapPt.y);
+    me.consume();
   }
 
   /** When the mouse exits the editor, clean up the display a little. */
-  public boolean mouseExit(Event e, int x, int y) {
+  public void mouseExited(MouseEvent me) {
     _editor.damaged(_newItem);
-    return true;
+    me.consume();
   }
 
   /** On mouse down, do nothing. */
-  public boolean mouseDown(Event e, int x, int y) {
-    return true;
+  public void mousePressed(MouseEvent me) {
+    me.consume();
   }
 
   /** Whem the user drags or moves the mouse, move the FigImage to the
    *  current mouse position. */
-  public boolean mouseMove(Event evt,int x,int y) {
-    if (_newItem == null) {System.out.println("null _newItem"); return true; }
+  public void mouseMoved(MouseEvent me) {
+    int x = me.getX(), y = me.getY();
+    if (_newItem == null) {
+      System.out.println("null _newItem");
+      me.consume();
+      return;
+    }
     _editor.damaged(_newItem);
     Point snapPt = new Point(x, y);
     _editor.snap(snapPt);
     _newItem.setLocation(snapPt.x, snapPt.y);
     _editor.damaged(_newItem); /* needed? */
-    return true;
+    me.consume();
   }
 
   /** Exactly the same as mouseMove. */
-  public boolean mouseDrag(Event e, int x, int y) {
-    return mouseMove(e, x, y);
+  public void mouseDragged(MouseEvent me) {
+    mouseMoved(me);
   }
 
 } /* end class ModeCreateFigImage */

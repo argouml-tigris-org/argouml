@@ -24,9 +24,13 @@
 package uci.gef;
 
 import java.awt.*;
+import java.awt.event.*;
 import java.util.*;
+import java.beans.*;
+
 import uci.util.*;
 import uci.ui.*;
+import uci.graph.*;
 
 /** Class to display graphics for a NetNode in a diagram.
  *  <A HREF="../features.html#graph_visualization_nodes">
@@ -35,17 +39,11 @@ import uci.ui.*;
  *  <TT>FEATURE: graph_visualization_ports</TT></A>
  */
 
-public class FigNode extends FigGroup {
+public class FigNode extends FigGroup
+implements MouseListener, PropertyChangeListener {
 
   ////////////////////////////////////////////////////////////////
   // instance variables
-
-  /** Each FigNode keeps a collection of the NetPorts that are
-   *  shown in this FigNode.
-   *  <A HREF="../features.html#graph_visualization_ports">
-   *  <TT>FEATURE: graph_visualization_ports</TT></A>
-   */
-  public Vector _ports = new Vector(); //? final
 
   /** True if you want ports to show when the mouse moves in and
    *  be invisible otherwise. */
@@ -57,15 +55,16 @@ public class FigNode extends FigGroup {
   ////////////////////////////////////////////////////////////////
   // constructors
 
-  /** Constructs a new FigNode on the given NetNode with the
+  /** Constructs a new FigNode on the given node with the
    *  given Fig's. */
-  public FigNode(NetNode nn) {
-    setOwner(nn);
-    nn.addPersistantObserver(this);
+  public FigNode(Object node) {
+    setOwner(node);
+    if (node instanceof GraphNodeHooks)
+      ((GraphNodeHooks)node).addPropertyChangeListener(this);
   }
 
-  public FigNode(NetNode nn, Vector figs) {
-    this(nn);
+  public FigNode(Object node, Vector figs) {
+    this(node);
     setFigs(figs);
   }
 
@@ -77,72 +76,83 @@ public class FigNode extends FigGroup {
    *  <A HREF="../features.html#graph_visualization_ports">
    *  <TT>FEATURE: graph_visualization_ports</TT></A>
    */
-  public void setBlinkPorts(boolean b) { _blinkPorts = b; }
+  public void setBlinkPorts(boolean b) {
+    _blinkPorts = b;
+    hidePorts();
+  }
   public boolean getBlinkPorts() { return _blinkPorts; }
 
 
-  /** Reply a collection of FigEdge's for all the NetEdges that
-   *  are connected to NetPorts of the NetNode being
+  /** Reply a collection of FigEdge's for all the edges that
+   *  are connected to ports of the node being
    *  displayed. Needs-More-Work: this code is really slow. */
-  protected Vector figEdges(Editor ed) {
-    Vector arcs = new Vector();
+  protected Vector figEdges() {
     Vector figEdges = new Vector();
-    Enumeration curPort =  _ports.elements();
-    while (curPort.hasMoreElements()) {
-      NetPort p = (NetPort) curPort.nextElement();
-      Enumeration curArc = p.getEdges().elements();
-      while (curArc.hasMoreElements()) {
-	NetEdge a = (NetEdge) curArc.nextElement();
-	arcs.addElement(a);
-      }
+    if (!(_layer instanceof LayerPerspective)) return figEdges;
+    GraphModel gm = ((LayerPerspective)_layer).getGraphModel();
+    Vector edges = new Vector();
+    Enumeration figEnum =  elements();
+    while (figEnum.hasMoreElements()) {
+      Fig f = (Fig) figEnum.nextElement();
+      Object port = f.getOwner();
+      if (port == null) continue;
+      Enumeration ins = gm.getInEdges(port).elements();
+      while (ins.hasMoreElements()) edges.addElement(ins.nextElement());
+
+      Enumeration outs = gm.getInEdges(port).elements();
+      while (outs.hasMoreElements()) edges.addElement(outs.nextElement());
     }
-    Enumeration curDE = ed.figs();
-    while (curDE.hasMoreElements()) {
-      Fig f = (Fig) curDE.nextElement();
+    figEnum = _layer.elements();
+    while (figEnum.hasMoreElements()) {
+      Fig f = (Fig) figEnum.nextElement();
       Object owner = f.getOwner();
-      if (owner != null && arcs.contains(owner)) {
+      if (owner != null && edges.contains(owner)) {
 	figEdges.addElement(f);
       }
     }
     return figEdges;
   }
 
+  public void setOwner(Object own) {
+    Object oldOwner = getOwner();
+    if (oldOwner != null && oldOwner instanceof GraphNodeHooks) {
+      ((GraphNodeHooks)oldOwner).removePropertyChangeListener(this);
+    }
+    if (own instanceof GraphNodeHooks) {
+      ((GraphNodeHooks)own).addPropertyChangeListener(this);
+    }
+    super.setOwner(own);
+  }
 
   ////////////////////////////////////////////////////////////////
   // Editor API
 
   /** When a FigNode is damaged, all of its arcs may need repainting. */
-  public void damagedIn(Editor ed) {
-    Enumeration arcPers = figEdges(ed).elements();
+  public void startTrans() {
+    Enumeration arcPers = figEdges().elements();
     while (arcPers.hasMoreElements()) {
       Fig f = (Fig) arcPers.nextElement();
-      f.damagedIn(ed);
+      f.startTrans();
     }
-    super.damagedIn(ed);
+    super.startTrans();
   }
 
-  public void removeFrom(Editor ed) {
-    Object own = getOwner();
-    if (own instanceof NetNode) {
-      ((NetNode)own).deleteObserver(this);
-      own = null;
-    }
-    super.removeFrom(ed);
-  }
-
-  /** When a FigNode is removed, dispose all of the NetEdges and
-   * the underlying NetNode. Needs-More-Work: is this right? Doesn't
-   * ActionDelete call this method also? How is deletion of a
-   * FigNode handled without disposing the underlying model? */
-  public void dispose(Editor ed) {
-    Enumeration arcPers = figEdges(ed).elements();
+  public void endTrans() {
+    Enumeration arcPers = figEdges().elements();
     while (arcPers.hasMoreElements()) {
       Fig f = (Fig) arcPers.nextElement();
-      f.dispose(ed);
+      f.endTrans();
     }
-    Object own = getOwner();
-    if (own instanceof NetNode) ((NetNode)own).dispose();
-    super.dispose(ed);
+    super.endTrans();
+  }
+
+  public void delete() {
+    Enumeration arcPers = figEdges().elements();
+    while (arcPers.hasMoreElements()) {
+      Fig f = (Fig) arcPers.nextElement();
+      f.delete();
+    }
+    super.delete();
   }
 
 
@@ -153,11 +163,11 @@ public class FigNode extends FigGroup {
    *  <A HREF="../features.html#graph_visualization_ports">
    *  <TT>FEATURE: graph_visualization_ports</TT></A>
    */
-  public void bindPort(NetPort np, Fig f) {
-    Fig oldPortFig = getPortFig(np);
+  public void bindPort(Object port, Fig f) {
+    Fig oldPortFig = getPortFig(port);
     if (oldPortFig != null) oldPortFig.setOwner(null); //?
-    f.setOwner(np);
-    if (!_ports.contains(np)) _ports.addElement(np);
+    f.setOwner(port);
+    //if (!_ports.contains(port)) _ports.addElement(port);
   }
 
   /** Removes a port from the current FigNode.
@@ -166,7 +176,7 @@ public class FigNode extends FigGroup {
    */
   public void removePort(Fig rep) {
     if (rep.getOwner() != null) {
-      _ports.removeElement(rep.getOwner());
+      //_ports.removeElement(rep.getOwner());
       rep.setOwner(null);
     }
   }
@@ -232,29 +242,18 @@ public class FigNode extends FigGroup {
   ////////////////////////////////////////////////////////////////
   // notifications and updates
 
-  /** If I get a notification that I should be Highlighted or
-   *  Unhighlight, set a flag and mark my area as damaged. */
-  public void update(Observable o, Object arg) {
-    if (Globals.HIGHLIGHT.equals(arg)) {
-      startTrans();
-      _highlight = true;
-      endTrans();
-    }
-    else if (Globals.UNHIGHLIGHT.equals(arg)) {
-      startTrans();
-      _highlight = false;
-      endTrans();
-    }
-    else if (arg instanceof Vector) {
-      Vector v = (Vector) arg;
-      String s = (String) v.elementAt(0);
-      Object obj = v.elementAt(1);
-      if (s.equals(Globals.REMOVE) && obj == getOwner()) {
-	removeFrom(null);
-      }
+  public void propertyChange(PropertyChangeEvent pce) {
+    System.out.println("FigNode got a PropertyChangeEvent");
+    String pName = pce.getPropertyName();
+    Object src = pce.getSource();
+    if (pName.equals("Dispose") && src == getOwner()) { delete(); }
+    if (pName.equals("Highlight") && src == getOwner()) {
+      _highlight = ((Boolean)pce.getNewValue()).booleanValue();
+      damage();
     }
   }
 
+  
   /**  <A HREF="../features.html#graph_visualization_ports">
    *  <TT>FEATURE: graph_visualization_ports</TT></A>
    */
@@ -293,17 +292,19 @@ public class FigNode extends FigGroup {
 
   /** If the mouse enters this FigNode's bbox and the
    *  _blinkPorts flag is set, then display ports. */
-  public boolean mouseEnter(Event e, int x, int y) {
+  public void mouseEntered(MouseEvent me) {
     if (_blinkPorts) showPorts();
-    return super.mouseEnter(e, x, y);
   }
 
   /** If the mouse exits this FigNode's bbox and the
    *  _blinkPorts flag is set, then unhighlight ports. */
-  public boolean mouseExit(Event e, int x, int y) {
+  public void mouseExited(MouseEvent me) {
     if (_blinkPorts) hidePorts();
-    return super.mouseExit(e, x, y);
   }
+
+  public void mousePressed(MouseEvent me) { }
+  public void mouseReleased(MouseEvent me) { }
+  public void mouseClicked(MouseEvent me) { }
 
 } /* end class FigNode */
 

@@ -25,6 +25,7 @@ package uci.gef;
 
 import java.awt.*;
 import java.util.*;
+import com.sun.java.swing.*;
 
 /** A Palette that defines buttons to create lines, rectangles,
  *  rounded rectangles, circles, and text. Also a select button is
@@ -38,89 +39,63 @@ import java.util.*;
  * @see ModeCreateFigText
  * @see ModeCreateFigPoly */
 
-public class PaletteFig extends Palette {
+public class PaletteFig extends uci.ui.ToolBar {
 
-  /** The Editor Mode to enter when the user clicks on one of the
-   * above buttons. Clicking on a button sets the next global Mode in
-   * Globals. The next time an Editor gets a mouse entered event it
-   * will set its mode to the stored next global Mode. */
-  final String pack = "uci.gef.";
-  final String ModeCreateFigTextCLASS = pack + "ModeCreateFigText";
-  final String ModeCreateFigLineCLASS = pack + "ModeCreateFigLine";
-  final String ModeCreateFigRectCLASS = pack + "ModeCreateFigRect";
-  final String ModeCreateFigRRectCLASS = pack + "ModeCreateFigRRect";
-  final String ModeSelectCLASS = pack + "ModeSelect";
-  final String ModeCreateFigCircleCLASS = pack + "ModeCreateFigCircle";
-  final String ModeCreateFigPolyCLASS = pack + "ModeCreateFigPoly";
-  final String ModeCreateFigInkCLASS = pack + "ModeCreateFigInk";
-  final String ModeCreateFigImageCLASS = pack + "ModeCreateFigImage";
-
+  
+  
   /** Construct a new PaletteFig and set the name of the Frame to
    * "Shape" (if applicable). */
 
-  public PaletteFig() { super(1, 1, "Figs"); }
+  public PaletteFig() {
+    defineButtons();
+  }
 
   /** Defined the buttons in this palette. Each of these buttons is
-   * associated with an ActionSetMode, and that Action sets the next
+   * associated with an CmdSetMode, and that Cmd sets the next
    * global Mode to somethign appropriate. All the buttons can stick
    * except 'select'. If the user unclicks the sticky checkbox, the
    * 'select' button is automatically pressed. */
-  public Vector defineButtons() {
-    Vector v = new Vector();
-    Action setSelect = new ActionSetMode(ModeSelectCLASS);
-    Action addCircle = new ActionSetMode(ModeCreateFigCircleCLASS);
-    Action addRect = new ActionSetMode(ModeCreateFigRectCLASS);
-    Action addRRect = new ActionSetMode(ModeCreateFigRRectCLASS);
-    Action addLine = new ActionSetMode(ModeCreateFigLineCLASS);
-    Action addText = new ActionSetMode(ModeCreateFigTextCLASS);
-    Action addPoly = new ActionSetMode(ModeCreateFigPolyCLASS);
-    Action addInk = new ActionSetMode(ModeCreateFigInkCLASS);
-    Action addImage1 =
-      new ActionSetMode(ModeCreateFigImageCLASS,
-			"imageURL",
-			"http://www.ics.uci.edu/~jrobbins/images/new.gif");
-    Action addImage2 =
-      new ActionSetMode(ModeCreateFigImageCLASS,
-			"imageURL",
-			"http://www.ics.uci.edu/~jrobbins/images/gef_banner.gif");
+  public void defineButtons() {
+    add(new CmdSetMode(ModeSelect.class, "Select"));
+    addSeparator();
+    add(new CmdCreateNode(uci.gef.demo.SampleNode.class, "Node One"));
+    add(new CmdCreateNode(uci.gef.demo.SampleNode2.class, "Node Two"));
+    addSeparator();
+    add(new CmdSetMode(ModeCreateFigCircle.class, "Circle"));
+    add(new CmdSetMode(ModeCreateFigRect.class, "Rectangle"));
+    add(new CmdSetMode(ModeCreateFigRRect.class, "RRect"));
+    add(new CmdSetMode(ModeCreateFigLine.class, "Line"));
+    add(new CmdSetMode(ModeCreateFigText.class, "Text"));
+    add(new CmdSetMode(ModeCreateFigPoly.class, "Polygon"));
+    add(new CmdSetMode(ModeCreateFigInk.class, "Ink"));
+    Cmd image1 = new CmdSetMode(ModeCreateFigImage.class,
+				"imageURL",
+				"http://www.ics.uci.edu/~jrobbins/images/"+
+				"new.gif");
+    image1.putValue(Action.NAME, "Image1");
+    Cmd image2 = new CmdSetMode(ModeCreateFigImage.class,
+				"imageURL",
+				"http://www.ics.uci.edu/~jrobbins/images/"+
+				"gef_banner.gif");
+    image2.putValue(Action.NAME, "Image2");
 
-    ActiveButton selectButton = new ActiveButton("Select", setSelect);
-    ActiveButton circleButton = new ActiveButton("Circle", addCircle);
-    ActiveButton rectButton = new ActiveButton("Rect", addRect);
-    ActiveButton rRectButton = new ActiveButton("RoundRect", addRRect);
-    ActiveButton lineButton = new ActiveButton("Line", addLine);
-    ActiveButton textButton = new ActiveButton("Text", addText);
-    ActiveButton polyButton = new ActiveButton("Polygon", addPoly);
-    ActiveButton inkButton = new ActiveButton("Ink", addInk);
-    ActiveButton image1Button = new ActiveButton("Image1", addImage1);
-    ActiveButton image2Button = new ActiveButton("Image2", addImage2);
-
-    circleButton.canStick(true);
-    rectButton.canStick(true);
-    rRectButton.canStick(true);
-    lineButton.canStick(true);
-    textButton.canStick(true);
-    polyButton.canStick(true);
-    inkButton.canStick(true);
-    image1Button.canStick(true);
-    image2Button.canStick(true);
-
-    v.addElement(selectButton);
-    v.addElement(circleButton);
-    v.addElement(rectButton);
-    v.addElement(rRectButton);
-    v.addElement(lineButton);
-    v.addElement(polyButton);
-    v.addElement(inkButton);
-    v.addElement(textButton);
     if (Globals.getAppletContext() != null) {
-      v.addElement(image1Button);
-      v.addElement(image2Button);
+      add(image1);
+      add(image2);
     }
 
-    return v;
+//     circleButton.canStick(true);
+//     rectButton.canStick(true);
+//     rRectButton.canStick(true);
+//     lineButton.canStick(true);
+//     textButton.canStick(true);
+//     polyButton.canStick(true);
+//     inkButton.canStick(true);
+//     image1Button.canStick(true);
+//     image2Button.canStick(true);
   }
 
+  
 } /* end class PaletteFig */
 
 

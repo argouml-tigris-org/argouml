@@ -97,51 +97,58 @@ implements ListSelectionListener, ListCellRenderer, MouseMotionListener {
   ////////////////////////////////////////////////////////////////
   // inner classes
   
-  protected Icon _manuipIcon = new Icon() {
-    public void paintIcon(Component c, Graphics g, int x, int y) {
-      int w = getIconWidth(), h = getIconHeight();
-      g.setColor(Color.black);
-      Polygon p = new Polygon();
-      p.addPoint(x, y + h);
-      p.addPoint(x + w/2+1, y);
-      p.addPoint(x + w, y + h);
-      g.fillPolygon(p);
-    }
-    public int getIconWidth() { return 9; }
-    public int getIconHeight() { return 9; }
-  };
+  protected Icon _manuipIcon = new ManipIcon();
 
-  protected Icon _criticFiredIcon = new Icon() {
-    public void paintIcon(Component c, Graphics g, int x, int y) {
-      int w = getIconWidth(), h = getIconHeight();
-      g.setColor(Color.black);
-      Polygon p = new Polygon();
-      p.addPoint(x+1, y + h/2+1);
-      p.addPoint(x + w, y);
-      p.addPoint(x + w, y + h);
-      g.fillPolygon(p);
-    }
-    public int getIconWidth() { return 9; }
-    public int getIconHeight() { return 9; }
-  };
+  protected Icon _criticFiredIcon = new FiredIcon();
 
-  protected Icon _criticResolvedIcon = new Icon() {
-    public void paintIcon(Component c, Graphics g, int x, int y) {
-      int w = getIconWidth(), h = getIconHeight();
-      g.setColor(Color.black);
-      Polygon p = new Polygon();
-      p.addPoint(x+1, y + h/2+1);
-      p.addPoint(x + w, y);
-      p.addPoint(x + w, y + h);
-      g.fillPolygon(p);
-    }
-    public int getIconWidth() { return 9; }
-    public int getIconHeight() { return 9; }
-  };
+  protected Icon _criticResolvedIcon = new ResolvedIcon();
 
 } /* end class TabHistory */
 
 
+class ManipIcon implements Icon {
+  public void paintIcon(Component c, Graphics g, int x, int y) {
+    int w = getIconWidth(), h = getIconHeight();
+    g.setColor(Color.black);
+    Polygon p = new Polygon();
+    p.addPoint(x, y + h);
+    p.addPoint(x + w/2+1, y);
+    p.addPoint(x + w, y + h);
+    g.fillPolygon(p);
+  }
+  public int getIconWidth() { return 9; }
+  public int getIconHeight() { return 9; }
+}
+
+
+class FiredIcon implements Icon {
+  public void paintIcon(Component c, Graphics g, int x, int y) {
+    int w = getIconWidth(), h = getIconHeight();
+    g.setColor(Color.black);
+    Polygon p = new Polygon();
+    p.addPoint(x+1, y + h/2+1);
+    p.addPoint(x + w, y);
+    p.addPoint(x + w, y + h);
+    g.fillPolygon(p);
+  }
+  public int getIconWidth() { return 9; }
+  public int getIconHeight() { return 9; }
+}
+
+
+class ResolvedIcon implements Icon {
+  public void paintIcon(Component c, Graphics g, int x, int y) {
+    int w = getIconWidth(), h = getIconHeight();
+    g.setColor(Color.black);
+    Polygon p = new Polygon();
+    p.addPoint(x+1, y + h/2+1);
+    p.addPoint(x + w, y);
+    p.addPoint(x + w, y + h);
+    g.fillPolygon(p);
+  }
+  public int getIconWidth() { return 9; }
+  public int getIconHeight() { return 9; }
+}
 
 class HistoryListModel implements ListModel, HistoryListener {
   ////////////////////////////////////////////////////////////////

@@ -14,7 +14,7 @@ public class NavM_DE_F extends NavPerspective {
   public NavM_DE_F() { }
 
   public Object getChild(Object parent, int index) {
-    System.out.println("NavM_DE_F getChild");
+    //System.out.println("NavM_DE_F getChild");
     if (parent instanceof Project) {
       Vector diagrams = ((Project)parent).getDiagrams();
       Vector models = ((Project)parent).getModels();
@@ -42,7 +42,7 @@ public class NavM_DE_F extends NavPerspective {
   }
   
   public int getChildCount(Object parent) {
-    System.out.println("NavM_DE_F getChildCount");
+    //System.out.println("NavM_DE_F getChildCount");
     if (parent instanceof Project) {
       Project p = (Project) parent;
       return p.getDiagrams().size() + p.getModels().size();
@@ -91,8 +91,8 @@ public class NavM_DE_F extends NavPerspective {
   }
   
   public boolean isLeaf(Object node) {
-    if (node == null) System.out.println("NavM_DE_F isLeaf null");
-    else System.out.println("NavM_DE_F isLeaf" + node.toString());
+    //if (node == null) System.out.println("NavM_DE_F isLeaf null");
+    //else System.out.println("NavM_DE_F isLeaf" + node.toString());
     if (node instanceof Project) return false;
     else if (node instanceof Package) return false;
     else if (node instanceof Classifier) return false;

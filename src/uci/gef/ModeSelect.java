@@ -24,6 +24,7 @@
 package uci.gef;
 
 import java.awt.*;
+import java.awt.event.MouseEvent;
 import java.util.*;
 
 /** This class implements a Mode that interperts user input as
@@ -95,37 +96,39 @@ public class ModeSelect extends Mode {
    *  <A HREF="../bugs.html#shift_click">
    *  <FONT COLOR=660000><B>BUG: shift_click</B></FONT></A>
    */
-  public boolean mouseDown(Event e, int x, int y) {
-
+  public void mousePressed(MouseEvent me) {
+    int x = me.getX(), y = me.getY();
     /* If multiple things are selected and the user clicked one of them. */
     selectAnchor = new Point(x, y);
     selectRect.reshape(x, y, 0, 0);
-    toggleSelection = e.shiftDown();
+    toggleSelection = me.isShiftDown();
     SelectionManager sm = _editor.getSelectionManager();
     Rectangle hitRect = new Rectangle(x - 4, y - 4, 8, 8);
 
     Fig underMouse = _editor.hit(selectAnchor);
-    if (underMouse == null && !sm.hit(hitRect)) return true;
+    if (underMouse == null && !sm.hit(hitRect)) return;
 
     if (underMouse != null) {
       if (toggleSelection)
-	_editor.toggleItem(underMouse);
+	_editor.getSelectionManager().toggle(underMouse);
       else if (!_editor.getSelectionManager().containsFig(underMouse))
-	_editor.select(underMouse);
+	_editor.getSelectionManager().select(underMouse);
     }
 
     if (sm.hit(hitRect)) {
-      gotoModifyMode(e, x, y);
-      return true;
+      gotoModifyMode(me);
+      // do not consume?
+      return;
     }
-    return true;
+    me.consume();
   }
 
   /** On mouse dragging, modify the selection rectangle.
    *  <A HREF="../features.html#select_by_area">
    *  <TT>FEATURE: select_by_area</TT></A>
    */
-  public boolean mouseDrag(Event e, int x, int y) {
+  public void mouseDragged(MouseEvent me) {
+    int x = me.getX(), y = me.getY();
     showSelectRect = true;
     int bound_x = Math.min(selectAnchor.x, x);
     int bound_y = Math.min(selectAnchor.y, y);
@@ -135,12 +138,13 @@ public class ModeSelect extends Mode {
     _editor.damaged(selectRect);
     selectRect.reshape(bound_x, bound_y, bound_w, bound_h);
     _editor.damaged(selectRect);
-    return true;
+    me.consume();
   }
 
   /** On mouse up, select or toggle the selection of items under the
    *  mouse or in the selection rectangle. */
-  public boolean mouseUp(Event e, int x, int y) {
+  public void mouseReleased(MouseEvent me) {
+    int x = me.getX(), y = me.getY();
     showSelectRect = false;
     Vector selectList = new Vector();
 
@@ -154,12 +158,12 @@ public class ModeSelect extends Mode {
 	selectList.addElement(f);
       }
     }
-    if (toggleSelection) _editor.toggleItems(selectList);
-    else _editor.select(selectList);
+    if (toggleSelection) _editor.getSelectionManager().toggle(selectList);
+    else _editor.getSelectionManager().select(selectList);
 
     selectRect.grow(1,1); /* make sure it is not empty for redraw */
     _editor.damaged(selectRect);
-    return true;
+    me.consume();
   }
 
   ////////////////////////////////////////////////////////////////
@@ -182,10 +186,10 @@ public class ModeSelect extends Mode {
   /** Set the Editor's Mode to ModeModify.  Needs-More-Work: This
    *  should not be in ModeSelect, I wanted to move it to ModeModify,
    *  but it is too tighly integrated with ModeSelect. */
-  protected void gotoModifyMode(Event e, int x, int y) {
+  protected void gotoModifyMode(MouseEvent me) {
     Mode nextMode = new ModeModify(_editor);
     _editor.mode(nextMode);
-    nextMode.mouseDown(e, x, y);
+    nextMode.mousePressed(me);
   }
 
 } /* end class ModeSelect */

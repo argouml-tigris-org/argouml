@@ -88,20 +88,22 @@ implements ChangeListener, MouseListener {
   }
 
 
-  public void setTarget(Object t) {
-    if (_target == t) return;
-    _target = t;
+  public void setTarget(Object target) {
+    if (_target == target) return;
+    _target = target;
     for (int i = 0; i < _tabPanels.size(); i++) {
-      t = (JPanel) _tabPanels.elementAt(i);      
-      if (t instanceof TabModelTarget) 
-	((TabModelTarget)t).setTarget(t);
+      JPanel tab = (JPanel) _tabPanels.elementAt(i);      
+      if (tab instanceof TabModelTarget) {
+	TabModelTarget tabMT = (TabModelTarget) tab;
+	tabMT.setTarget(_target);
+	_tabs.setEnabledAt(i, tabMT.shouldBeEnabled());
+      }
     }
   }
   public Object getTarget() { return _target; }
 
   public Dimension getMinimumSize() { return new Dimension(100, 100); }
   public Dimension getPreferredSize() { return new Dimension(400, 150); }
-
   
   ////////////////////////////////////////////////////////////////
   // event handlers
@@ -144,35 +146,42 @@ implements ChangeListener, MouseListener {
     }
   }
 
-  ////////////////////////////////////////////////////////////////
-  // inner classes
   
-  protected Icon _upArrowIcon = new Icon() {
-    public void paintIcon(Component c, Graphics g, int x, int y) {
-      int w = getIconWidth(), h = getIconHeight();
-      g.setColor(Color.black);
-      Polygon p = new Polygon();
-      p.addPoint(x, y + h);
-      p.addPoint(x + w/2+1, y);
-      p.addPoint(x + w, y + h);
-      g.fillPolygon(p);
-    }
-    public int getIconWidth() { return 9; }
-    public int getIconHeight() { return 9; }
-  };
+  protected Icon _upArrowIcon = new UpArrowIcon();
 
-  protected Icon _leftArrowIcon = new Icon() {
-    public void paintIcon(Component c, Graphics g, int x, int y) {
-      int w = getIconWidth(), h = getIconHeight();
-      g.setColor(Color.black);
-      Polygon p = new Polygon();
-      p.addPoint(x+1, y + h/2+1);
-      p.addPoint(x + w, y);
-      p.addPoint(x + w, y + h);
-      g.fillPolygon(p);
-    }
-    public int getIconWidth() { return 9; }
-    public int getIconHeight() { return 9; }
-  };
-
+  protected Icon _leftArrowIcon = new LeftArrowIcon();
+  
 } /* end class DetailsPane */
+
+
+////////////////////////////////////////////////////////////////
+// related classes
+
+
+class UpArrowIcon implements Icon {
+  public void paintIcon(Component c, Graphics g, int x, int y) {
+    int w = getIconWidth(), h = getIconHeight();
+    g.setColor(Color.black);
+    Polygon p = new Polygon();
+    p.addPoint(x, y + h);
+    p.addPoint(x + w/2+1, y);
+    p.addPoint(x + w, y + h);
+    g.fillPolygon(p);
+    }
+  public int getIconWidth() { return 9; }
+  public int getIconHeight() { return 9; }
+}
+
+class LeftArrowIcon implements Icon {
+  public void paintIcon(Component c, Graphics g, int x, int y) {
+    int w = getIconWidth(), h = getIconHeight();
+    g.setColor(Color.black);
+    Polygon p = new Polygon();
+    p.addPoint(x+1, y + h/2+1);
+    p.addPoint(x + w, y);
+    p.addPoint(x + w, y + h);
+    g.fillPolygon(p);
+  }
+  public int getIconWidth() { return 9; }
+  public int getIconHeight() { return 9; }
+}

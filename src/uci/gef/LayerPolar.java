@@ -149,7 +149,7 @@ public class LayerPolar extends Layer {
       hidden(false);
       Editor ce = Globals.curEditor();
       if (ce != null) {
-	Dimension d = ce.size();
+	Dimension d = ce.getAwtComponent().size();
 	origin(d.width / 2, d.height / 2);
       }
       else origin(100,100);

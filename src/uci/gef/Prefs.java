@@ -57,7 +57,7 @@ public class Prefs {
   public Hashtable rubberbandAttrs() { return _rubberbandAttrs; }
 
   /** The color of the handles used to manipulate Fig's */
-  private Color _handleColor = new Color(0x33, 0x33, 0x99);
+  private Color _handleColor = new Color(0x55, 0x55, 0xaa);
   /** The color of the handles used to indicate locked Fig's */
   private Color _lockedHandleColor = new Color(0x55, 0x55, 0x55);
   /** The color of the handles used to manipulate Fig's */

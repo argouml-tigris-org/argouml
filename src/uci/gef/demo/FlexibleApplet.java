@@ -27,6 +27,7 @@ import java.applet.*;
 import java.awt.*;
 import java.util.*;
 import uci.util.*;
+
 import uci.gef.*;
 import uci.graph.*;
 
@@ -36,7 +37,7 @@ import uci.graph.*;
  *  minipulate them. Also it uses LayerGrid. It has an Arrange menu
  *  that allows the user to so some manipulations, and an Attributes
  *  menu that allows the user to set fonts and colors. It registers
- *  some actions for execution from the ExecuteActionWindow. <p>
+ *  some Cmds for execution from the ExecuteCmdWindow. <p>
  *
  *  For another example see Argo. Argo (in its current form) is a
  *  Design Environment for C2 style software architectures. An Argo
@@ -50,7 +51,7 @@ import uci.graph.*;
  *
  * @see Editor
  * @see Palette
- * @see Action
+ * @see Cmd
  * @see Mode
  * @see Layer
  * @see DiagramElement
@@ -100,9 +101,9 @@ public class FlexibleApplet extends Applet {
     System.out.println("making an example");
     gm = new DefaultGraphModel();
     //net.name("Sample Network");
-    palette = new SamplePalette();
-    shapePalette = new PaletteFig();
-    attrPalette = new PaletteAttr();
+//     palette = new SamplePalette();
+//     //shapePalette = new PaletteFig();
+//     attrPalette = new PaletteAttr();
   }
 
 
@@ -137,39 +138,37 @@ public class FlexibleApplet extends Applet {
   }
 
   public void setupWindows() {
-    Component awt_comp;
-    Dimension drawAreaSize = new Dimension(_drawAreaWidth, _drawAreaHeight);
-    awt_comp = new ForwardingPanel(drawAreaSize);
-    ed = new Editor(gm, awt_comp);
-    ((ForwardingComponent)awt_comp).setEventHandler(ed);
-    if (_spawnFrame) {
-      System.out.println("spawning frame");
-      Frame drawingFrame = new ForwardingFrame(ed, drawAreaSize);
-      ed.frame(drawingFrame);
-      drawingFrame.add("Center", awt_comp);
-      drawingFrame.pack();
-      drawingFrame.move(10, 10);
-      drawingFrame.show();
-    }
-    else add("Center", awt_comp);
-    Vector pals = new Vector();
-    pals.addElement(palette);
-    pals.addElement(shapePalette);
-    if (!_spawnPalette) pals.addElement(attrPalette);
-    masterPalette = new PaletteSticky(new PaletteCompound(pals));
-    topPalette = new PaletteTop(masterPalette);
-    topPalette.definePanel();
-    if (_spawnPalette) {
-      System.out.println("spawning palette");
-      Frame paletteFrame = new Frame();
-      paletteFrame.setTitle("Palette");
-      topPalette.frame(paletteFrame);
-      paletteFrame.add("Center", topPalette);
-      paletteFrame.pack();
-      paletteFrame.move(10 + drawAreaSize.width, 10);
-      paletteFrame.show();
-    }
-    else add("East", topPalette);
+//     Dimension drawAreaSize = new Dimension(_drawAreaWidth, _drawAreaHeight);
+//     JGraph jGraph = new JGraph(gm);
+//     jGraph.resize(drawAreaSize);
+//     if (_spawnFrame) {
+//       System.out.println("spawning frame");
+//       Frame drawingFrame = new ForwardingFrame(ed, drawAreaSize);
+//       ed.frame(drawingFrame);
+//       drawingFrame.add("Center", jGraph);
+//       drawingFrame.pack();
+//       drawingFrame.move(10, 10);
+//       drawingFrame.show();
+//     }
+//     else add("Center", jGraph);
+//     Vector pals = new Vector();
+//     pals.addElement(palette);
+//     pals.addElement(shapePalette);
+//     if (!_spawnPalette) pals.addElement(attrPalette);
+//     masterPalette = new PaletteSticky(new PaletteCompound(pals));
+//     topPalette = new PaletteTop(masterPalette);
+//     topPalette.definePanel();
+//     if (_spawnPalette) {
+//       System.out.println("spawning palette");
+//       Frame paletteFrame = new Frame();
+//       paletteFrame.setTitle("Palette");
+//       topPalette.frame(paletteFrame);
+//       paletteFrame.add("Center", topPalette);
+//       paletteFrame.pack();
+//       paletteFrame.move(10 + drawAreaSize.width, 10);
+//       paletteFrame.show();
+//     }
+//     else add("East", topPalette);
   }
 
   ////////////////////////////////////////////////////////////////
@@ -180,21 +179,21 @@ public class FlexibleApplet extends Applet {
 
   /** This is called when the Applet/Application starts up. It does
    *  preloading if the 'ShouldPreLoad' property is set to true. It
-   *  also registers some well known Action's as an example. */
+   *  also registers some well known Cmd's as an example. */
   public void init() {
     Globals.setApplet(this);
     parseParams(this);
     setupWindows();
-    Action.register(new ActionSave());
-    Action.register(new ActionLoad());
-    Action.register(new ActionDispose());
-    Action.register(new ActionDelete());
-    Action.register(new ActionSpawn());
-    Action.register(new ActionAdjustGrid());
-    Action.register(new ActionEditNode());
-    Action.register(new ActionCreateNode("uci.gef.demo.SampleNode",
-					 null, false));
-    Action.register(new ActionQuit());
+    Cmd.register(new CmdSave());
+    Cmd.register(new CmdOpen());
+    Cmd.register(new CmdDispose());
+    Cmd.register(new CmdDelete());
+    Cmd.register(new CmdSpawn());
+    Cmd.register(new CmdAdjustGrid());
+    Cmd.register(new CmdEditNode());
+    Cmd.register(new CmdCreateNode(uci.gef.demo.SampleNode.class,
+				   "Sample Node"));
+    Cmd.register(new CmdExit());
   }
 
   /** Part of the required Applet API. Does nothing. */
@@ -204,7 +203,7 @@ public class FlexibleApplet extends Applet {
    *  as possible. */
   public void destroy() {
     if (null != topPalette) topPalette.close();
-    if (null != ed) ed.close();
+    //if (null != ed) ed.close();
     masterPalette = null;
     topPalette = null;
     ed = null;

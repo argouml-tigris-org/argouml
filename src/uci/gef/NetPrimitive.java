@@ -24,6 +24,8 @@
 package uci.gef;
 
 import java.util.*;
+import java.beans.*;
+
 import uci.util.*;
 import uci.ui.*;
 
@@ -42,113 +44,50 @@ import uci.ui.*;
  * @see FigEdge
  */
 
-public class NetPrimitive extends EventHandler
-implements Observer { //, GEF { //, IProps
+public class NetPrimitive {
   ////////////////////////////////////////////////////////////////
   // instance variables
 
-  protected Vector _persistObservers = null;
-
+  protected PropertyChangeSupport _changeSup = new PropertyChangeSupport(this);
+  protected boolean _highlight = false;
+  
   /** Construct a new net-level object, currently does nothing */
   public NetPrimitive() { }
 
-  /** If a update notification is not understood in a subclass it
-   *  should call super.update() and this method will pass that
-   *  notification on to my Observer's */
-  public void update(Observable o, Object arg) {
-    /* If I dont handle it, maybe my observers do */
-    setChanged();
-    notifyObservers(arg);
-  }
-
   /** Draw the user's attention to any and all visualizations of this
    *  net-level object. */
-  public void highlight() {
-    notifyObservers(Globals.HIGHLIGHT);
-    notifyPersistantObservers(Globals.HIGHLIGHT);
+  public boolean setHighlight() { return _highlight; }
+  
+  public void setHighlight(boolean b) {
+    boolean old = _highlight;
+    _highlight = b;
+    firePropertyChange("Highlight", old, _highlight);
   }
 
-  /** Stop drawing the user's attention. */
-  public void unhighlight() {
-    notifyObservers(Globals.UNHIGHLIGHT);
-    notifyPersistantObservers(Globals.UNHIGHLIGHT);
-  }
-
-  ////////////////////////////////////////////////////////////////
-  // accessors
-  public Object get(String key) {
-    return null;
-  }
-
-  /** Get a property by name. If it is not defined, return def. */
-  public Object get(String key, Object def) {
-    Object res = get(key);
-    if (null != res) return res;
-    return def;
-  }
-
-  public boolean put(String key, Object value) {
-    return false;
-  }
-
-  /** Set multiple graphical attribute by repeatedly calling
-   *  put(String key, Object value) */
-  public void put(Hashtable newAttrs) {
-    Enumeration cur = newAttrs.keys();
-    while (cur.hasMoreElements()) {
-      String key = (String) cur.nextElement();
-      Object val = newAttrs.get(key);
-      put(key, val);
-    }
-  }
-
-  public Enumeration keysIn(String category) {
-    return EnumerationEmpty.theInstance();
-  }
-
-  public boolean canPut(String key) {
-    return false;
-  }
-
-  public boolean define(String key, Object value) {
-    if (null == get(key)) {
-      put(key, value);
-      return true;
-    }
-    return false;
-  }
 
   ////////////////////////////////////////////////////////////////
   // notifications and updates
 
-  public void addPersistantObserver(Observer o) {
-    if (_persistObservers == null) _persistObservers = new Vector();
-    _persistObservers.removeElement(o);
-    _persistObservers.addElement(o);
+  public void addPropertyChangeListener(PropertyChangeListener l) {
+    _changeSup.addPropertyChangeListener(l);
   }
 
-  public void removePersistObserver(Observer o) {
-    _persistObservers.removeElement(o);
+  public void removePropertyChangeListener(PropertyChangeListener l) {
+    _changeSup.removePropertyChangeListener(l);
   }
 
-  public void notifyPersistantObservers(Object arg) {
-    if (_persistObservers == null) return;
-    Enumeration eachObs = _persistObservers.elements();
-    while (eachObs.hasMoreElements()) {
-      Observer obs = (Observer) eachObs.nextElement();
-      obs.update(this, arg);
-    }
+  public void firePropertyChange(String pName, Object oldV, Object newV) {
+    _changeSup.firePropertyChange(pName, oldV, newV);
   }
 
-  public void notifyObservers(Object arg) {
-    super.notifyObservers(arg);
-    notifyPersistantObservers(arg);
+  public void firePropertyChange(String pName, boolean oldV, boolean newV) {
+    _changeSup.firePropertyChange(pName,
+				  oldV ? Boolean.TRUE : Boolean.FALSE,
+				  newV ? Boolean.TRUE : Boolean.FALSE);
   }
 
-  /** Notify observers that one of my properties has changed. */
-  public void changedProp(String key) {
-    setChanged();
-    notifyObservers(key);
+  public void firePropertyChange(String pName, int oldV, int newV) {
+    _changeSup.firePropertyChange(pName, new Integer(oldV), new Integer(newV));
   }
-
+  
 } /* end class NetPrimitive */

@@ -15,15 +15,6 @@ import com.sun.java.swing.tree.*;
 public class NavigatorPane extends JPanel
 implements ItemListener, TreeSelectionListener {
   ////////////////////////////////////////////////////////////////
-  // constants
-  
-  public static int WIDTH = 690;
-  public static int HEIGHT = 520;
-  public static int INITIAL_WIDTH = 400;
-  public static int INITIAL_HEIGHT = 200;
-  
-  
-  ////////////////////////////////////////////////////////////////
   // instance variables
 
   // vector of TreeModels
@@ -43,6 +34,7 @@ implements ItemListener, TreeSelectionListener {
     add(new JScrollPane(_tree), BorderLayout.CENTER);
     _combo.addItemListener(this);
     _tree.setRootVisible(false);
+    _tree.setShowsRootHandles(true);
     _tree.addTreeSelectionListener(this);
     _tree.addMouseListener(new NavigatorMouseListener());
   }
@@ -84,6 +76,7 @@ implements ItemListener, TreeSelectionListener {
     return _tree.getLastSelectedPathComponent();
   }
 
+  public Dimension getPreferredSize() { return new Dimension(200, 100); }
   public Dimension getMinimumSize() { return new Dimension(100, 100); }
 
   ////////////////////////////////////////////////////////////////

@@ -24,6 +24,7 @@
 package uci.gef;
 
 import java.awt.*;
+import java.awt.event.MouseEvent;
 import uci.util.*;
 import uci.graph.*;
 
@@ -69,7 +70,7 @@ public class ModeCreateArc extends ModeCreate {
   /** Create the new item that will be drawn. In this case I would
    *  rather create the FigEdge when I am done. Here I just
    *  create a rubberband line to show during the interaction. */
-  public Fig createNewItem(Event e, int snapX, int snapY) {
+  public Fig createNewItem(MouseEvent me, int snapX, int snapY) {
     return new FigLine(snapX, snapY, 0, 0, Globals.getPrefs().rubberbandAttrs());
   }
 
@@ -78,22 +79,24 @@ public class ModeCreateArc extends ModeCreate {
 
   /** On mouse down determine what port the user is dragging from. The
    *  mouse down event is passed in from ModeSelect. */
-  public boolean mouseDown(Event e, int x, int y) {
+  public void mousePressed(MouseEvent me) {
+    int x = me.getX(), y = me.getY();    
     Fig underMouse = _editor.hit(x, y);
-    if (underMouse == null) { done(); return true; }
-    if (!(underMouse instanceof FigNode)) { done(); return true; }
+    if (underMouse == null) { done(); me.consume(); return; }
+    if (!(underMouse instanceof FigNode)) { done(); me.consume(); return; }
     _sourceFigNode = (FigNode) underMouse;
     _startPort = _sourceFigNode.hitPort(x, y);
-    if (_startPort == null) { done(); return true; }
+    if (_startPort == null) { done(); me.consume(); return; }
     _startPortFig = _sourceFigNode.getPortFig(_startPort);
-    return super.mouseDown(e, x, y);
+    super.mousePressed(me);
   }
 
   /** On mouse up, find the destination port, ask the NetEdge
    *  (e.g., SampleArc) to connect the two ports. If that connection is
    *  allowed, then construct a new FigEdge and add it to the
    *  Layer and send it to the back. */
-  public boolean mouseUp(Event e, int x, int y) {
+  public void mouseReleased(MouseEvent me) {
+    int x = me.getX(), y = me.getY();
     Class arcClass;
 
     Fig f = _editor.hit(x, y);
@@ -118,23 +121,24 @@ public class ModeCreateArc extends ModeCreate {
 	    FigEdge pers = ((NetEdge)_newEdge).presentationFor(lm.getActiveLayer());
 	    if (Dbg.on) Dbg.assert(pers != null, "FigEdge not found");
 	    _editor.add(pers); // adds it to the property sheet's universe
-	    _newItem.damagedIn(_editor);
+	    _newItem.damage();
 	    _newItem = null;
 	    if (pers != null) {
-	      pers.reorder(ActionReorder.SEND_TO_BACK,
+	      pers.reorder(CmdReorder.SEND_TO_BACK,
 			   _editor.getLayerManager().getActiveLayer());
-	      _editor.select(pers);
+	      _editor.getSelectionManager().select(pers);
 	    }
 	    done();
-	    return true;
+	    me.consume();
+	    return;
 	  }
 	}
       }
     }
-    _newItem.damagedIn(_editor);
+    _newItem.damage();
     _newItem = null;
     done();
-    return true;
+    me.consume();
   }
 
 } /* end class ModeCreateArc */

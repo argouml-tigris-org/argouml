@@ -14,10 +14,12 @@ import uci.argo.kernel.*;
 
 
 public class ToDoPane extends JPanel
-implements ItemListener, TreeSelectionListener, MouseListener {
+implements ItemListener, TreeSelectionListener, MouseListener
+  //  ToDoListListener
+{
   ////////////////////////////////////////////////////////////////
   // constants
-
+  
   public static int WIDTH = 690;
   public static int HEIGHT = 520;
   public static int INITIAL_WIDTH = 400;
@@ -34,7 +36,7 @@ implements ItemListener, TreeSelectionListener, MouseListener {
   protected JComboBox _combo = new JComboBox();
   protected ToDoList _root = null;
   protected ToDoPerspective _curPerspective = null;
-  protected JTree _tree = new JTree();
+  protected JTree _tree = new DisplayTextTree();
 
   ////////////////////////////////////////////////////////////////
   // constructors
@@ -46,6 +48,7 @@ implements ItemListener, TreeSelectionListener, MouseListener {
     _combo.addItemListener(this);
     
     _tree.setRootVisible(false);
+    _tree.setShowsRootHandles(true);
     _tree.addTreeSelectionListener(this);
 
     _tree.addMouseListener(this);
@@ -54,7 +57,10 @@ implements ItemListener, TreeSelectionListener, MouseListener {
   ////////////////////////////////////////////////////////////////
   // accessors
 
-  public void setRoot(ToDoList r) { _root = r; }
+  public void setRoot(ToDoList r) {
+    _root = r;
+    updateTree();
+  }
   public ToDoList getRoot() { return _root; }
 
   public Vector getPerspectives() { return _perspectives; }
@@ -79,6 +85,7 @@ implements ItemListener, TreeSelectionListener, MouseListener {
     return _tree.getLastSelectedPathComponent();
   }
 
+  public Dimension getPreferredSize() { return new Dimension(200, 100); }
   public Dimension getMinimumSize() { return new Dimension(100, 100); }
 
   ////////////////////////////////////////////////////////////////
@@ -134,6 +141,11 @@ implements ItemListener, TreeSelectionListener, MouseListener {
     //should register a listener
     //System.out.println("2: " + getSelectedObject().toString());
   }
+
+//   public void toDoListChanged(ToDoListEvent tdle) {
+//     System.out.println("toDoListChanged in ToDoPane");
+//     updateTree();
+//   }
 
   ////////////////////////////////////////////////////////////////
   // internal methods

@@ -237,10 +237,21 @@ public class GeneratorDisplay extends Generator {
   // internal methods?
   
 
-  public String generateGeneralzation(Vector classifiers) {
-    return generateClassList(classifiers);
+  public String generateGeneralzation(Vector generalizations) {
+    if (generalizations == null) return "";
+    Vector classes = new Vector(generalizations.size());
+    java.util.Enumeration enum = generalizations.elements();
+    while (enum.hasMoreElements()) {
+      Generalization g = (Generalization) enum.nextElement();
+      GeneralizableElement ge = g.getSupertype();
+      // assert ge != null
+      if (ge != null) classes.addElement(ge);
+    }
+    return generateClassList(classes);
   }
   public String generateRealization(Vector classifiers) {
+    // Realization is much simplier than Generalization.
+    // There is no Realization class in UML metamodel
     return generateClassList(classifiers);
   }
 

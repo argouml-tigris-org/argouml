@@ -18,6 +18,8 @@ implements TabModelTarget, DocumentListener {
   // instance variables
   Object _target;
   JTextArea _text = new JTextArea();
+  boolean _parseChanges = true;
+  boolean _shouldBeEnabled = false;
   
 
   ////////////////////////////////////////////////////////////////
@@ -33,19 +35,34 @@ implements TabModelTarget, DocumentListener {
 
   ////////////////////////////////////////////////////////////////
   // accessors
+  
   public void setTarget(Object t) {
     _target = t;
+    _parseChanges = false;
     if (_target == null) {
       _text.setEnabled(false);
       _text.setText("Nothing selected");
+      _shouldBeEnabled = false;
     }
     else {
       _text.setEnabled(true);
-      _text.setText(genText());
+      String generatedText = genText();
+      if (generatedText != null) {
+	_text.setText(generatedText);
+	_shouldBeEnabled = true;
+      }
+      else {
+	_text.setEnabled(false);
+	_text.setText("N/A");
+	_shouldBeEnabled = false;
+      }
     }
+    _parseChanges = true;
   }
+
   public Object getTarget() { return _target; }
 
+  public boolean shouldBeEnabled() { return _shouldBeEnabled; }
 
   protected String genText() {
     if (_target == null) return "nothing selected";
@@ -63,21 +80,21 @@ implements TabModelTarget, DocumentListener {
     //needs-more-work: should fire its own event and ProjectBrowser
     //should register a listener
     System.out.println(getClass().getName() + " insert");
-    parseText(_text.getText());
+    if (_parseChanges) parseText(_text.getText());
   }
 
   public void removeUpdate(DocumentEvent e) {
     //needs-more-work: should fire its own event and ProjectBrowser
     //should register a listener
     System.out.println(getClass().getName() +  " remove");
-    parseText(_text.getText());
+    if (_parseChanges) parseText(_text.getText());
   }
 
   public void changedUpdate(DocumentEvent e) {
     //needs-more-work: should fire its own event and ProjectBrowser
     //should register a listener
     System.out.println(getClass().getName() + " changed");
-    parseText(_text.getText());
+    if (_parseChanges) parseText(_text.getText());
   }
 
 

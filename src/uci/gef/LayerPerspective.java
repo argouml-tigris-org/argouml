@@ -50,6 +50,8 @@ public class LayerPerspective extends LayerDiagram implements GraphListener {
   /** The underlying connected graph to be visualized. */
   //protected NetList _net;
   protected GraphModel _gm;
+  protected GraphNodeRenderer _nodeRenderer = new DefaultGraphNodeRenderer();
+  protected GraphEdgeRenderer _edgeRenderer = new DefaultGraphEdgeRenderer();
 
   /** Classes of NetNodes and NetEdges that are to be visualized in
    *  this perspective.
@@ -91,6 +93,15 @@ public class LayerPerspective extends LayerDiagram implements GraphListener {
   /** Reply the NetList of the underlying connected graph. */
   //public NetList net() { return _net; }
   public GraphModel getGraphModel() { return _gm; }
+  public void setGraphModel(GraphModel gm) { _gm = gm; }
+  public GraphNodeRenderer getGraphNodeRenderer() { return _nodeRenderer; }
+  public void setGraphNodeRenderer(GraphNodeRenderer rend) {
+    _nodeRenderer = rend;
+  }
+  public GraphEdgeRenderer getGraphEdgeRenderer() { return _edgeRenderer; }
+  public void setGraphEdgeRenderer(GraphEdgeRenderer rend) {
+    _edgeRenderer = rend;
+  }
 
   /** Add a node class of NetNodes or NetEdges to what will be shown in
    *  this perspective.
@@ -162,45 +173,48 @@ public class LayerPerspective extends LayerDiagram implements GraphListener {
   ////////////////////////////////////////////////////////////////
   // nofitications and updates
 
-  public void update(Observable o, Object arg) {
-    if (arg instanceof Vector) {
-      Vector varg = (Vector)arg;
-      String s = (String) varg.elementAt(0);
-      Object obj = varg.elementAt(1);
-      if (obj instanceof NetNode) {
-	NetNode node = (NetNode) obj;
-	  if (s.equals("add") && shouldShow(node)) {
-	  //System.out.println("NetNode added to net: " + node);
-	  Fig oldDE = presentationFor(obj);
-	  if (null == oldDE) {
-	    Fig newFig = node.presentationFor(this);
-	    if (newFig != null) {
-	      putInPosition(newFig);
-	      add(newFig);
-	    }
-	    else System.out.println("added node de is null");
-	  }
-	}
+  public void nodeAdded(GraphEvent ge) {
+    Object node = ge.getArg();
+    Fig oldDE = presentationFor(node);
+    if (null == oldDE) {
+      if (!shouldShow(node)) { System.out.println("node rejected"); return; }
+      FigNode newFigNode = _nodeRenderer.getFigNodeFor(_gm, this, node);
+      if (newFigNode != null) {
+	putInPosition(newFigNode);
+	add(newFigNode);
       }
-      if (obj instanceof NetEdge) {
-	NetEdge arc = (NetEdge) obj;
-	  if (s.equals("add") && shouldShow(arc)) {
-	  Fig oldDE = presentationFor(obj);
-	  if (null == oldDE) {
-	    Fig newFig = arc.presentationFor(this);
-	    if (newFig != null) {
-	      add(newFig);
-	      ((FigEdge)newFig).computeRoute();
-	      newFig.reorder(ActionReorder.SEND_TO_BACK, this);
-	      newFig.endTrans();
-	    }
-	    else System.out.println("added arc fig is null!!!!!!!!!!!!!!!!");
-	  }
-	}
-      }
+      else System.out.println("added node de is null");
     }
-    super.update(o, arg);
-  } /* end update */
+  }
+  
+  public void edgeAdded(GraphEvent ge) {
+    Object edge = ge.getArg();
+    Fig oldDE = presentationFor(edge);
+    if (null == oldDE) {
+      if (!shouldShow(edge)) { System.out.println("edge rejected"); return; }
+      FigEdge newFigEdge = _edgeRenderer.getFigEdgeFor(_gm, this, edge);
+      if (newFigEdge != null) {
+	insertAt(newFigEdge, 0);
+	newFigEdge.computeRoute();
+	//newFigEdge.reorder(CmdReorder.SEND_TO_BACK, this);
+	newFigEdge.endTrans();
+      }
+      else System.out.println("added arc fig is null!!!!!!!!!!!!!!!!");
+    }
+  }
+  
+  public void nodeRemoved(GraphEvent ge) {
+    // handled through NetNode subclasses
+  }
+  
+  public void edgeRemoved(GraphEvent ge) {
+    // handled through NetEdge subclasses
+  }
+  
+  public void graphChanged(GraphEvent ge) {
+    // needs-more-work 
+  }
+  
 
   /** Test to determine if a given NetNode should have a FigNode
    *  in this layer.  Normally checks NetNode class against a list of
@@ -238,14 +252,6 @@ public class LayerPerspective extends LayerDiagram implements GraphListener {
 //     return true;
 //   }
 
-  ////////////////////////////////////////////////////////////////
-  // GraphListener implementation
-
-  public void nodeAdded(GraphEvent e) { }
-  public void edgeAdded(GraphEvent e) { }
-  public void nodeRemoved(GraphEvent e) { }
-  public void edgeRemoved(GraphEvent e) { }
-  public void graphChanged(GraphEvent e) { }
 
   
 } /* end class LayerPerspective */

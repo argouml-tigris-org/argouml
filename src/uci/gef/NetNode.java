@@ -24,8 +24,13 @@
 package uci.gef;
 
 import java.awt.*;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.io.*;
 import java.util.*;
+import java.beans.*;
+
+import uci.graph.*;
 
 /** This class models a node in our underlying connected graph
  *  model. Nodes have ports that are their connection points to other
@@ -37,7 +42,8 @@ import java.util.*;
  * @see NetPort
  */
 
-public abstract class NetNode extends NetPrimitive {
+public abstract class NetNode extends NetPrimitive
+implements MouseListener, GraphNodeHooks  {
   ////////////////////////////////////////////////////////////////
   // instance variables
 
@@ -70,7 +76,7 @@ public abstract class NetNode extends NetPrimitive {
    *  information. <p>
    *
    * Needs-More-Work: what is the class protocol design here? */
-  public void initialize(NetNode default_node, Object model) { }
+  public void initialize(Hashtable args) { }
 
   ////////////////////////////////////////////////////////////////
   // accessors
@@ -99,11 +105,7 @@ public abstract class NetNode extends NetPrimitive {
     while (ps.hasMoreElements()) {
       ((NetPort)ps.nextElement()).dispose();
     }
-    Vector v = new Vector(2);
-    v.addElement(Globals.REMOVE);
-    v.addElement(this);
-    setChanged();
-    notifyObservers(v);
+    firePropertyChange("Disposed", false, true);
   }
 
   ////////////////////////////////////////////////////////////////
@@ -143,16 +145,21 @@ public abstract class NetNode extends NetPrimitive {
 
   /** This event handler is defined to call editNode when the user
    *  clicks the right-hand mouse button on a FigNode. */
-  public boolean mouseUp(Event e, int x, int y) {
-    if ((e.modifiers | Event.META_MASK) != 0) {
+  public void mouseReleased(MouseEvent me) {
+    if (me.isMetaDown()) {
       Editor ce = Globals.curEditor();
-      ActionEditNode act = new ActionEditNode(this);
-      ce.executeAction(act, e);
-      return true;
+      CmdEditNode act = new CmdEditNode(this);
+      ce.executeCmd(act, null);
+      me.consume();
+      return;
     }
-    return false;
   }
 
+  public void mousePressed(MouseEvent me) { }
+  public void mouseClicked(MouseEvent me) { }
+  public void mouseEntered(MouseEvent me) { }
+  public void mouseExited(MouseEvent me) { }
+  
   /** Pop up a meny showing a list of options/commands for this
    *  node. This is not currently availible because AWT 1.0.2 does not
    *  support pop up menus. */
@@ -175,14 +182,14 @@ public abstract class NetNode extends NetPrimitive {
   /** Do some application specific action just after this node is
    *  connected to another node. the arguments contain some info about
    *  what ports were connected. */
-  public void postConnect(NetNode anotherNode,
-			  NetPort myPort, NetPort otherPort) { }
+  public void postConnect(GraphModel gm, Object anotherNode,
+			  Object myPort, Object otherPort) { }
 
   /** Do some application specific action just after this node is
    *  disconnected from another node. the arguments contain some info
    *  about what ports were connected. */
-  public void postDisconnect(NetNode anotherNode,
-			     NetPort myPort, NetPort otherPort) { }
+  public void postDisconnect(GraphModel gm, Object anotherNode,
+			     Object myPort, Object otherPort) { }
 
   ////////////////////////////////////////////////////////////////
   // net-level constraints
@@ -193,8 +200,8 @@ public abstract class NetNode extends NetPrimitive {
    *  some other port. NetPort.canConnectTo() just calls
    *  NetNode.canConnectTo(). By default anything can be connected to
    *  anything. */
-  public boolean canConnectTo(NetNode otherNode,
-			      NetPort otherPort, NetPort myPort) {
+  public boolean canConnectTo(GraphModel gm, Object otherNode,
+			      Object otherPort, Object myPort) {
     return true;
   }
 
@@ -205,5 +212,16 @@ public abstract class NetNode extends NetPrimitive {
    *  a drawing area. */
   public void postPlacement(Editor ed) { }
 
+
+  ////////////////////////////////////////////////////////////////
+  // events
+
+  public void addPropertyChangeListener(PropertyChangeListener l) {
+  }
+  public void removePropertyChangeListener(PropertyChangeListener l) {
+  }
+
+
+  
 } /* end class NetNode */
 

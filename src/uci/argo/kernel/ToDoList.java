@@ -145,11 +145,11 @@ implements Runnable, java.io.Serializable {
     }
     _items.addElement(item);
     notifyObservers("addElement", item);
+    fireToDoItemAdded(item);
   }
 
   public synchronized void addElement(ToDoItem item) {
     addE(item);
-    sort();
   }
 
   public synchronized void addAll(ToDoList list) {
@@ -158,7 +158,7 @@ implements Runnable, java.io.Serializable {
       ToDoItem item = (ToDoItem) cur.nextElement();
       addElement(item);
     }
-    sort();
+    fireToDoListChanged();
   }
 
   public void removeAll(ToDoList list) {
@@ -167,11 +167,13 @@ implements Runnable, java.io.Serializable {
       ToDoItem item = (ToDoItem) cur.nextElement();
       removeE(item);
     }
+    fireToDoListChanged();
   }
 
   private synchronized boolean removeE(ToDoItem item) {
     boolean res = _items.removeElement(item);
     notifyObservers("removeElement", item);
+    fireToDoItemRemoved(item);
     return res;
   }
 
@@ -185,12 +187,14 @@ implements Runnable, java.io.Serializable {
     //System.out.println("reason=" + reason.toString());
     if ("explicit resolve".equals(reason))
       _resolvedItems.addElement(item);
+    fireToDoItemRemoved(item);
     return res;
   }
 
   public synchronized void removeAllElements() {
     _items.removeAllElements();
     notifyObservers("removeAllElements");
+    fireToDoListChanged();
   }
 
   public Enumeration elements() {
@@ -230,9 +234,38 @@ implements Runnable, java.io.Serializable {
     for (int i = listeners.length-2; i>=0; i-=2) {
       if (listeners[i]==ToDoListListener.class) {
 	// Lazily create the event:
-	if (e == null)
-	  e = new ToDoListEvent();
+	if (e == null) e = new ToDoListEvent();
 	((ToDoListListener)listeners[i+1]).toDoListChanged(e);
+      }          
+    }
+  }
+
+  protected void fireToDoItemAdded(ToDoItem item) {
+    // Guaranteed to return a non-null array
+    Object[] listeners = _listenerList.getListenerList();
+    ToDoListEvent e = null;
+    // Process the listeners last to first, notifying
+    // those that are interested in this event
+    for (int i = listeners.length-2; i>=0; i-=2) {
+      if (listeners[i]==ToDoListListener.class) {
+	// Lazily create the event:
+	if (e == null) e = new ToDoListEvent(item);
+	((ToDoListListener)listeners[i+1]).toDoItemAdded(e);
+      }          
+    }
+  }
+
+  protected void fireToDoItemRemoved(ToDoItem item) {
+    // Guaranteed to return a non-null array
+    Object[] listeners = _listenerList.getListenerList();
+    ToDoListEvent e = null;
+    // Process the listeners last to first, notifying
+    // those that are interested in this event
+    for (int i = listeners.length-2; i>=0; i-=2) {
+      if (listeners[i]==ToDoListListener.class) {
+	// Lazily create the event:
+	if (e == null) e = new ToDoListEvent(item);
+	((ToDoListListener)listeners[i+1]).toDoItemRemoved(e);
       }          
     }
   }

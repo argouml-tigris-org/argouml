@@ -129,6 +129,7 @@ public class Agency extends Observable { //implements java.io.Serialization
    * the design material class. But additional (after-market) critics
    * could added thorugh a menu command in some control panel...*/
   public static void register(Critic c, Class clazz) {
+    System.out.println("registering critic " + c.toString());
     Vector critics = (Vector) getCriticRegistry().get(clazz);
     if (critics == null) {
        critics = new Vector();

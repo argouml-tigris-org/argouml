@@ -24,6 +24,7 @@
 package uci.gef.demo;
 
 import java.awt.*;
+import com.sun.java.swing.*;
 import java.lang.*;
 import uci.gef.*;
 import uci.graph.*;
@@ -36,7 +37,7 @@ public class BasicApplication {
   ////////////////////////////////////////////////////////////////
   // instance variables
 
-  private Editor _ed;
+  private JGraphFrame _gf;
   private Frame _palFrame;
   private PaletteTop _pal;
 
@@ -44,19 +45,10 @@ public class BasicApplication {
   // constructors
 
   public BasicApplication() {
-    _ed = new Editor(new DefaultGraphModel());
-    _ed.setTitle("Untitled");
-    _ed.show();
-    _palFrame = new Frame();
-    _pal = new PaletteTop(new PaletteFig());
-    _pal.frame(_palFrame);
-    _pal.definePanel();
-    _palFrame.setLayout(new BorderLayout());
-    _palFrame.add("Center", _pal);
-    _palFrame.pack();
-    _palFrame.setTitle("Palette");
-    _palFrame.move(410, 10);
-    _palFrame.show();
+    _gf = new JGraphFrame();
+    _gf.reshape(10, 10, 200, 200);
+    _gf.show();
+    //_gf.setToolBar(new PaletteFig());
   }
 
   ////////////////////////////////////////////////////////////////

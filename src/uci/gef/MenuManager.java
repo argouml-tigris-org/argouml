@@ -226,7 +226,7 @@ public class MenuManager extends Object { //implements GEF {
     else if ("Rotate".equals(arg)) act = new ActionRotate();
     else return false;
 
-    _editor.executeAction(act, e);
+    _editor.executeAction(act, null);
     return true;
   }
 

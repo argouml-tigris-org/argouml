@@ -2,7 +2,7 @@
 package uci.uml.ui;
 
 import java.util.*;
-//import com.sun.java.swinq.ImageIcon;
+import com.sun.java.swing.ImageIcon;
 
 import uci.argo.kernel.*;
 import uci.util.*;
@@ -12,8 +12,9 @@ class ToDoPseudoNode {
   protected ToDoList _list;
   protected Vector _filteredItems = null;
   protected Predicate _pred;
-  protected String _label; //needs-more-work 
-  //protected ImageIcon _icon; //needs-more-work
+  protected String _label = "pseudonode";
+  protected String _description = "some kind of description";
+  protected ImageIcon _icon;
 
   public ToDoPseudoNode(ToDoList list, Predicate p) {
     _list = list;
@@ -21,6 +22,9 @@ class ToDoPseudoNode {
   }
   
   public ToDoList getToDoList() { return _list; }
+  public Predicate getPredicate() { return _pred; }
+
+  public String getDescription() { return _description; }
 
   public Vector getToDoItems() {
     if (_filteredItems == null) computeItems();
@@ -38,7 +42,11 @@ class ToDoPseudoNode {
     }
   }
 
-  //display logic
+  public void setLabel(String lab) { _label = lab; }
+  public String getLabel() { return _label; }
+
+  public void setIcon(ImageIcon ic) { _icon = ic; }
+  public ImageIcon getIcon() { return _icon; }
   
 } /* end class ToDoPseudoNode */
 
@@ -67,6 +75,8 @@ class PredicateDecision implements uci.util.Predicate {
     ToDoItem item = (ToDoItem) o;
     return item.getPoster().supports(_decision);
   }
+
+  public Decision getDecision() { return _decision; }
 } /* end class PredicateDecision */
 
 

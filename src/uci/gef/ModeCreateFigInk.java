@@ -23,7 +23,7 @@
 
 package uci.gef;
 
-import java.awt.Event;
+import java.awt.event.MouseEvent;
 
 /** A Mode to interpert user input while creating a FigInk.
  *  <A HREF="../features.html#basic_shapes_ink">
@@ -51,7 +51,7 @@ public class ModeCreateFigInk extends ModeCreate {
 
   /** Create a new FigRect instance based on the given mouse down
    *  event and the state of the parent Editor. */
-  public Fig createNewItem(Event e, int snapX, int snapY) {
+  public Fig createNewItem(MouseEvent me, int snapX, int snapY) {
     FigInk p = new FigInk(snapX, snapY, _editor.graphAttrs());
     _lastX = snapX; _lastY = snapY;
     return p;
@@ -61,18 +61,19 @@ public class ModeCreateFigInk extends ModeCreate {
   // Event handlers
 
   /** Mouse up means that the user is done. */
-  public boolean mouseUp(Event e, int x, int y) {
+  public void mouseReleased(MouseEvent me) {
     _editor.damaged(_newItem);
     // do not call creationDrag()
     _editor.add(_newItem);
-    _editor.select(_newItem);
+    _editor.getSelectionManager().select(_newItem);
     _newItem = null;
     done();
-    return true;
+    me.consume();
   }
 
   /** Dragging adds points to the ink. */
-  public boolean mouseDrag(Event e, int x, int y) {
+  public void mouseDragged(MouseEvent me) {
+    int x = me.getX(), y = me.getY();    
     FigInk ink = (FigInk)_newItem;
     if (!nearLast(x, y)) {
       _editor.damaged(_newItem); // startTrans?
@@ -80,7 +81,7 @@ public class ModeCreateFigInk extends ModeCreate {
       _editor.damaged(_newItem); // endTrans?
       _lastX = x; _lastY = y;
     }
-    return true;
+    me.consume();
   }
 
   /** Internal function to test if the current point is so close to

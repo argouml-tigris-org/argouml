@@ -24,8 +24,14 @@
 package uci.gef;
 
 import java.util.*;
-import uci.util.*;
 import java.awt.*;
+import java.awt.event.*;
+import java.io.Serializable;
+import com.sun.java.swing.event.EventListenerList;
+
+import uci.util.*;
+import uci.gef.event.*;
+
 
 /** This class handles Manager selections. It is basically a
  *  collection of Selection instances. Most of its operations
@@ -35,36 +41,49 @@ import java.awt.*;
  * @see Selection
  */
 
-public class SelectionManager extends EventHandler
-implements java.io.Serializable {
+public class SelectionManager extends Observable
+implements Serializable, KeyListener, MouseListener, MouseMotionListener {
 
   /** The collection of Selection instances */
   protected Vector _selections = new Vector();
   protected Editor _editor;
 
+  protected EventListenerList _listeners = new EventListenerList();
+
+  
   public SelectionManager(Editor ed) { _editor = ed; }
 
   /** Add a new selection to the collection of selections */
-  public void addSelection(Selection s) { _selections.addElement(s); }
-  public void addFig(Fig f) { _selections.addElement(makeSelectionFor(f)); }
-  public void addAllFigs(Vector v) {
+  protected void addSelection(Selection s) {
+    _selections.addElement(s);
+  }
+  protected void addFig(Fig f) {
+    _selections.addElement(makeSelectionFor(f));
+  }
+  protected void addAllFigs(Vector v) {
     Enumeration eles = v.elements();
     while(eles.hasMoreElements()) addFig((Fig) eles.nextElement());
   }
 
-  public void removeAllElements() { _selections.removeAllElements(); }
-  public void removeSelection(Selection s) {
+  protected void removeAllElements() {
+    _selections.removeAllElements();
+  }
+  protected void removeSelection(Selection s) {
     if (s != null) _selections.removeElement(s);
   }
-  public void removeFig(Fig f) { removeSelection(findSelectionFor(f)); }
+  protected void removeFig(Fig f) {
+    Selection s = findSelectionFor(f);
+    if (s != null) _selections.removeElement(s);
+  }
 
-  public void allDamaged() { _editor.damaged(this.getBounds()); }
+  protected void allDamaged() { _editor.damaged(this.getBounds()); }
 
   public void select(Fig f) {
     allDamaged();
     removeAllElements();
     addFig(f);
     _editor.damaged(f);
+    fireSelectionChanged();
   }
 
   /** Deselect the given Fig */
@@ -72,6 +91,7 @@ implements java.io.Serializable {
     if (containsFig(f)) {
       removeFig(f);
       _editor.damaged(f);
+      fireSelectionChanged();
     }
   }
 
@@ -80,6 +100,7 @@ implements java.io.Serializable {
     if (containsFig(f)) removeFig(f);
     else addFig(f);
     _editor.damaged(f);
+    fireSelectionChanged();
   }
 
 
@@ -87,6 +108,7 @@ implements java.io.Serializable {
     Rectangle damagedArea = this.getBounds(); // too much area
     removeAllElements();
     _editor.damaged(damagedArea);
+    fireSelectionChanged();
   }
 
   public void select(Vector items) {
@@ -94,6 +116,7 @@ implements java.io.Serializable {
     removeAllElements();
     addAllFigs(items);
     allDamaged();
+    fireSelectionChanged();
   }
 
 
@@ -106,6 +129,7 @@ implements java.io.Serializable {
       else addFig(f);
     }
     allDamaged();
+    fireSelectionChanged();
   }
 
   public Selection findSelectionFor(Fig f) {
@@ -171,9 +195,9 @@ implements java.io.Serializable {
 
   /** When the SelectionManager is damaged, that implies that each
   * Selection should be damaged. */
-  public void damagedIn(Editor ed) {
+  public void damage() {
     Enumeration ss = _selections.elements();
-    while (ss.hasMoreElements()) ((Selection)ss.nextElement()).damagedIn(ed);
+    while (ss.hasMoreElements()) ((Selection)ss.nextElement()).damage();
   }
 
   /** Reply true iff the given point is inside one of the selected Fig's */
@@ -268,58 +292,108 @@ implements java.io.Serializable {
     sel.dragHandle(mx, my, an_x, an_y, h);
   }
 
-  /** When a multiple selection is removed, each selection is removed */
-  public void removeFrom(Editor ed) {
+  /** When a multiple selection are deleted, each selection is deleted */
+  public void delete() {
     Enumeration ss = ((Vector)_selections.clone()).elements();
-    while (ss.hasMoreElements()) ((Selection)ss.nextElement()).removeFrom(ed);
+    while (ss.hasMoreElements()) ((Selection)ss.nextElement()).delete();
   }
 
-  /** When a multiple selection is disposed, each selection is disposed */
-  public void dispose(Editor ed) {
-    Enumeration sels = ((Vector)_selections.clone()).elements();
-    while (sels.hasMoreElements()) ((Selection)sels.nextElement()).dispose(ed);
+
+  /** When a multiple selection are deleted, each selection is deleted */
+  public void dispose() {
+    Enumeration ss = ((Vector)_selections.clone()).elements();
+    while (ss.hasMoreElements()) ((Selection)ss.nextElement()).dispose();
   }
 
+
+  ////////////////////////////////////////////////////////////////
+  // input events
+  
   /** When an event is passed to a multiple selection, try to pass it
    * off to the first selection that will handle it. */
   /* needs-more-work: maybe it should pass it to _all_ selections that
      will handle it */
-  public boolean keyDown(Event e,int key) {
+  public void keyTyped(KeyEvent ke) {
     Enumeration sels = ((Vector)_selections.clone()).elements();
-    while(sels.hasMoreElements())
-      if (((Selection) sels.nextElement()).keyDown(e, key)) return true;
-    return false;
+    while (sels.hasMoreElements() && !ke.isConsumed())
+      ((Selection) sels.nextElement()).keyTyped(ke);
   }
 
-  public boolean mouseMove(Event e,int x,int y) {
+  public void keyReleased(KeyEvent ke) { }
+
+  public void keyPressed(KeyEvent ke) {
+    Enumeration sels = ((Vector)_selections.clone()).elements();
+    while (sels.hasMoreElements() && !ke.isConsumed())
+      ((Selection) sels.nextElement()).keyPressed(ke);
+  }
+  
+  public void mouseMoved(MouseEvent me) {
     Enumeration sels = _selections.elements();
-    while(sels.hasMoreElements())
-      if (((Selection) sels.nextElement()).mouseMove(e, x, y)) return true;
-    return false;
+    while (sels.hasMoreElements() && !me.isConsumed())
+      ((Selection) sels.nextElement()).mouseMoved(me);
   }
 
-  public boolean mouseDrag(Event e,int x,int y) {
+  public void mouseDragged(MouseEvent me) {
     Enumeration sels = _selections.elements();
-    while(sels.hasMoreElements())
-      if (((Selection) sels.nextElement()).mouseDrag(e, x, y)) return true;
-    return false;
+    while (sels.hasMoreElements() && !me.isConsumed())
+      ((Selection) sels.nextElement()).mouseDragged(me);
   }
 
-  public boolean mouseDown(Event e,int x,int y) {
+  public void mouseClicked(MouseEvent me) {
     Enumeration sels = ((Vector)_selections.clone()).elements();
-    while(sels.hasMoreElements())
-      if (((Selection) sels.nextElement()).mouseDown(e, x, y)) return true;
-    return false;
+    while (sels.hasMoreElements() && !me.isConsumed())
+      ((Selection) sels.nextElement()).mouseClicked(me);
   }
 
-  public boolean mouseUp(Event e,int x,int y) {
+  public void mousePressed(MouseEvent me) {
     Enumeration sels = ((Vector)_selections.clone()).elements();
-    while(sels.hasMoreElements())
-      if (((Selection) sels.nextElement()).mouseUp(e, x, y)) return true;
-    return false;
+    while (sels.hasMoreElements() && !me.isConsumed())
+      ((Selection) sels.nextElement()).mousePressed(me);
   }
 
+  public void mouseReleased(MouseEvent me) {
+    Enumeration sels = ((Vector)_selections.clone()).elements();
+    while (sels.hasMoreElements() && !me.isConsumed())
+      ((Selection) sels.nextElement()).mouseReleased(me);
+  }
 
+  public void mouseExited(MouseEvent me) {
+    Enumeration sels = ((Vector)_selections.clone()).elements();
+    while (sels.hasMoreElements() && !me.isConsumed())
+      ((Selection) sels.nextElement()).mouseExited(me);
+  }
+
+  public void mouseEntered(MouseEvent me) {
+    Enumeration sels = ((Vector)_selections.clone()).elements();
+    while (sels.hasMoreElements() && !me.isConsumed())
+      ((Selection) sels.nextElement()).mouseEntered(me);
+  }
+
+  ////////////////////////////////////////////////////////////////
+  // graph events
+  
+  public void addGraphSelectionListener(GraphSelectionListener listener) {
+    _listeners.add(GraphSelectionListener.class, listener);
+  }
+
+  public void removeGraphSelectionListener(GraphSelectionListener listener) {
+    _listeners.remove(GraphSelectionListener.class, listener);
+  }
+
+  protected void fireSelectionChanged() {
+    Object[] listeners = _listeners.getListenerList();
+    GraphSelectionEvent e = null;
+    
+    for (int i = listeners.length - 2; i >= 0; i -= 2) {
+      if (listeners[i] == GraphSelectionListener.class) {
+	if (e == null) e = new GraphSelectionEvent(_editor, getFigs());
+	//needs-more-work: should copy vector, use JGraph as src?
+	((GraphSelectionListener)listeners[i+1]).selectionChanged(e);
+      }
+    }
+  }
+  
+  
   ////////////////////////////////////////////////////////////////
   // static methods
 

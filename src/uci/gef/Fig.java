@@ -24,10 +24,13 @@
 package uci.gef;
 
 import java.awt.*;
+import java.awt.event.*;
 import java.beans.*;
 import java.util.*;
+
 import uci.util.*;
 import uci.ui.*;
+import uci.graph.*;
 
 /** This class is the base class for basic drawing objects
  *  such as rectangles, lines, text, circles, etc. Also, class FigGroup
@@ -43,8 +46,8 @@ import uci.ui.*;
  * @see FigText
  * @see FigCircle */
 
-public class Fig extends EventHandler
-implements Observer, java.io.Serializable  {
+public class Fig extends Observable
+implements java.io.Serializable  {
 
   ////////////////////////////////////////////////////////
   // instance variables
@@ -68,9 +71,9 @@ implements Observer, java.io.Serializable  {
    *  owner. */
   private Object _owner;
 
-// //   transient protected PropertyChangeSupport _changes =
-// //   new PropertyChangeSupport(this);
-
+  // //   transient protected PropertyChangeSupport _changes =
+  // //   new PropertyChangeSupport(this);
+  
   protected int _x;
   protected int _y;
   protected int _w;
@@ -261,47 +264,39 @@ implements Observer, java.io.Serializable  {
   ////////////////////////////////////////////////////////////////
   // Editor API
 
-  /** When a graphical object needs to be redraw it is said to be
-   *  "damaged". This informs the editor that this object is damaged.
-   *  Subclasses may implement this method differently.  For example
-   *  FigNode damages each of its connected FigEdges. */
-  public void damagedIn(Editor ed) { ed.damaged(this); }
 
-  private static Vector _removeVector = null;
   /** Remove this Fig from the document being edited by the
    *  given editor.
    *  <A HREF="../features.html#removing_objects_delete">
    *  <TT>FEATURE: removing_objects_delete</TT></A>
    */
-  public void removeFrom(Editor ed) {
-    if (_removeVector == null) {
-      _removeVector = new Vector(2);
-      _removeVector.addElement(Globals.REMOVE);
-      _removeVector.addElement(this);
-    }
-    else _removeVector.setElementAt(this, 1);
-    setChanged();
-    notifyObservers(_removeVector);
-    if (_layer != null) _layer.notifyRemoved(this);
+  public void delete() {
+    if (_layer != null) { _layer.deleted(this); }
+    setOwner(null);
   }
 
-  /** Remove this object from view and from all underlying models. By
-   *  default it assumed that there are no underlying
-   *  models. Subclasses like FigNode and FigEdge make the
-   *  opposite assumption.
-   *  <A HREF="../features.html#removing_objects_dispose">
-   *  <TT>FEATURE: removing_objects_dispose</TT></A>
-   *
-   * @see FigNode
-   * @see FigEdge */
-  public void dispose(Editor ed) { removeFrom(ed); }
+  /** Simple Figs have no underlying model, so they are just
+   *  deleted. Figs that graphically present some part of an 
+   *  underlying model should NOT delete themselves, instead they 
+   *  should ask the model to dispose, and IF it does then the figs 
+   *  will be notified. */
+  public void dispose() {
+    Object own = getOwner();
+    if (own instanceof GraphNodeHooks) ((GraphNodeHooks)own).dispose();
+    if (own instanceof GraphEdgeHooks) ((GraphEdgeHooks)own).dispose();
+    if (own instanceof GraphPortHooks) ((GraphPortHooks)own).dispose();
+    else delete();
+  }
 
   public boolean isMovable() { return true; }
   public boolean isResizable() { return true; }
   public boolean isReshapable() { return false; }
   public boolean isRotatable() { return false; }
 
-  /** This indicates that some Action is starting a manipulation on
+  public void damage() { if (_layer != null) _layer.damaged(this); }
+
+  
+  /** This indicates that some Cmd is starting a manipulation on
    *  the receiving Fig and that redrawing must take place
    *  at the objects old location. This is implemented by notifying the
    *  Observer's of this object that it has changed. That will eventually
@@ -314,18 +309,18 @@ implements Observer, java.io.Serializable  {
    *  <TT>FEATURE: viewable_properties</TT></A>
    */
   public void startTrans() {
-    if (_layer != null) _layer.notifyChanged(this);
+    damage();
     RedrawManager.lock(); // helps avoid dirt
   }
 
-  /** This is called after an Action mondifies a Fig and
+  /** This is called after an Cmd mondifies a Fig and
    *  the Fig needs to be redrawn in its new position. Each
    *  endTrans shuold be paired with one startTrans(). <p>
    *  <A HREF="../features.html#visual_updates">
    *  <TT>FEATURE: visual_updates</TT></A>
    */
   public void endTrans() {
-    if (_layer != null) _layer.notifyChanged(this);
+    damage();
     RedrawManager.unlock();  // helps avoid dirt
   }
 
@@ -346,7 +341,7 @@ implements Observer, java.io.Serializable  {
    *  LayerDiagram. Should the Fig have any say in it?
    *
    * @see LayerDiagram#reorder
-   * @see ActionReorder */
+   * @see CmdReorder */
   public void reorder(int func, Layer lay) { lay.reorder(this, func); }
 
   /** Change the position of the object from were it is
@@ -431,29 +426,29 @@ implements Observer, java.io.Serializable  {
     Rectangle bbox = getBounds();
     int dx = 0, dy = 0;
     switch (direction) {
-    case ActionAlign.ALIGN_TOPS:
+    case CmdAlign.ALIGN_TOPS:
       dy = r.y - bbox.y;
       break;
-    case ActionAlign.ALIGN_BOTTOMS:
+    case CmdAlign.ALIGN_BOTTOMS:
       dy = r.y + r.height - (bbox.y + bbox.height);
       break;
-    case ActionAlign.ALIGN_LEFTS:
+    case CmdAlign.ALIGN_LEFTS:
       dx = r.x - bbox.x;
       break;
-    case ActionAlign.ALIGN_RIGHTS:
+    case CmdAlign.ALIGN_RIGHTS:
       dx = r.x + r.width - (bbox.x + bbox.width);
       break;
-    case ActionAlign.ALIGN_CENTERS:
+    case CmdAlign.ALIGN_CENTERS:
       dx = r.x + r.width/2 - (bbox.x + bbox.width/2);
       dy = r.y + r.height/2 - (bbox.y + bbox.height/2);
       break;
-    case ActionAlign.ALIGN_H_CENTERS:
+    case CmdAlign.ALIGN_H_CENTERS:
       dx = r.x + r.width/2 - (bbox.x + bbox.width/2);
       break;
-    case ActionAlign.ALIGN_V_CENTERS:
+    case CmdAlign.ALIGN_V_CENTERS:
       dy = r.y + r.height/2 - (bbox.y + bbox.height/2);
       break;
-    case ActionAlign.ALIGN_TO_GRID:
+    case CmdAlign.ALIGN_TO_GRID:
       Point loc = getLocation();
       Point snapPt = new Point(loc.x, loc.y);
       ed.snap(snapPt);
@@ -589,11 +584,5 @@ implements Observer, java.io.Serializable  {
 			   new Boolean(oldV), new Boolean(newV));
   }
 
-  public void update(Observable o, Object arg) {
-    /* If I dont handle it, maybe my observers do. */
-    setChanged();
-    notifyObservers(arg);
-    if (_layer != null) _layer.notifyChanged(this);
-  }
 
 } /* end class Fig */

@@ -29,6 +29,7 @@ import java.util.*;
 import uci.util.*;
 import uci.gef.*;
 import uci.graph.*;
+import com.sun.java.swing.*;
 
 /** An example application to show off <B>some</B> of the capabilities
  *  of the UCI Graph Editing Framework. This example is about
@@ -52,9 +53,6 @@ public class EquipmentApplet extends Applet {
   protected static boolean _spawnFrame = true;
   protected static int _drawAreaWidth = 400;
   protected static int _drawAreaHeight = 300;
-
-  /** The Editor window */
-  private Editor ed;
 
   /** The net-level model to edit */
   //private NetList net;
@@ -81,8 +79,8 @@ public class EquipmentApplet extends Applet {
     gm = new DefaultGraphModel();
     //net.name("Sample Network");
 
-    palette = new EquipmentPalette();
-    shapePalette = new PaletteFig();
+    //palette = new EquipmentPalette();
+    //shapePalette = new PaletteFig();
   }
 
   ////////////////////////////////////////////////////////////////
@@ -104,10 +102,10 @@ public class EquipmentApplet extends Applet {
   }
 
   public void setupWindows() {
-    ForwardingPanel awt_comp;
-    ed = new Editor(gm);
-    Globals.setStatusBar(ed);
-    ed.show();
+    JGraphFrame jgf = new JGraphFrame(gm);
+    Globals.setStatusBar(jgf);
+    jgf.setTitle("EquipmentApplet");
+    jgf.show();
     //
     Vector pals = new Vector();
     pals.addElement(palette);
@@ -145,10 +143,8 @@ public class EquipmentApplet extends Applet {
    * as possible. */
   public void destroy() {
     if (null != topPalette) topPalette.close();
-    if (null != ed) ed.close();
     masterPalette = null;
     topPalette = null;
-    ed = null;
     gm = null;
     palette = null;
     shapePalette = null;

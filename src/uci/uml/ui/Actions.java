@@ -13,10 +13,12 @@ class UMLAction extends AbstractAction {
 
   protected static Vector _allActions = new Vector(100);
   
-  public UMLAction(String name) {
+  public UMLAction(String name) { this(name, true); }
+  
+  public UMLAction(String name, boolean global) { 
     super(name, loadIconResource(imageName(name), name));
     putValue(Action.SHORT_DESCRIPTION, name);
-    _allActions.addElement(this);
+    if (global) _allActions.addElement(this);
   }
 
   protected static ImageIcon loadIconResource(String imgName, String desc) {
@@ -233,14 +235,14 @@ class ActionClassWizard extends UMLAction {
 } /* end class ActionClassWizard */
 
 class ActionClass extends UMLAction {
-  uci.gef.Action _actionCreateNode = new
-  uci.gef.ActionCreateNode("uci.gef.demo.SampleNode2", null, false);
+  uci.gef.Cmd _cmdCreateNode = new
+  uci.gef.CmdCreateNode(uci.gef.demo.SampleNode2.class, "SampleNode2");
   
   public ActionClass() { super("Class"); }
 
   public void actionPerformed(ActionEvent e) {
     System.out.println("making class...");
-    _actionCreateNode.doIt(null);
+    _cmdCreateNode.doIt();
   }
   public boolean shouldBeEnabled() {
     Project p = ProjectBrowser.TheInstance.getProject();
@@ -248,61 +250,6 @@ class ActionClass extends UMLAction {
   }
   
 } /* end class ActionClass */
-
-
-class ActionGEFSetMode extends UMLAction {
-  uci.gef.Action _setModeAction;
-
-  public ActionGEFSetMode(String name, String modeClassName) {
-    super(name);
-    _setModeAction = new uci.gef.ActionSetMode("uci.gef."+modeClassName);
-  }
-
-  public void actionPerformed(ActionEvent e) {
-    System.out.println("GEF set mode:" + _setModeAction.toString());
-    _setModeAction.doIt(null);
-  }
-  public boolean shouldBeEnabled() {
-    Project p = ProjectBrowser.TheInstance.getProject();
-    return super.shouldBeEnabled() && p != null;
-  }
-  
-} /* end class ActionGEFSetMode */
-
-class ActionSelect extends ActionGEFSetMode {
-  public ActionSelect() { super("Select", "ModeSelect"); }
-} /* end class ActionSelect */
-
-class ActionRectangle extends ActionGEFSetMode {
-  public ActionRectangle() { super("Rectangle", "ModeCreateFigRect"); }
-} /* end class ActionRectangle */
-
-class ActionRRectangle extends ActionGEFSetMode {
-  public ActionRRectangle() {
-    super("Rounded Rectangle", "ModeCreateFigRRect");
-  }
-} /* end class ActionRRectangle */
-
-class ActionCircle extends ActionGEFSetMode {
-  public ActionCircle() { super("Circle", "ModeCreateFigCircle"); }
-} /* end class ActionCircle */
-
-class ActionLine extends ActionGEFSetMode {
-  public ActionLine() { super("Line", "ModeCreateFigLine"); }
-} /* end class ActionLine */
-
-class ActionText extends ActionGEFSetMode {
-  public ActionText() { super("Text", "ModeCreateFigText"); }
-} /* end class ActionText */
-
-class ActionPoly extends ActionGEFSetMode {
-  public ActionPoly() { super("Polygon", "ModeCreateFigPoly"); }
-} /* end class ActionPoly */
-
-class ActionInk extends ActionGEFSetMode {
-  public ActionInk() { super("Ink", "ModeCreateFigInk"); }
-} /* end class ActionInk */
-
 
 class ActionAutoCritique extends UMLAction {
   public ActionAutoCritique() { super("Toggle Auto-Critique"); }
@@ -326,4 +273,58 @@ class ActionOpenGoals extends UMLAction {
 class ActionOpenCritics extends UMLAction {
   public ActionOpenCritics() { super("Open Critics..."); }
 } /* end class ActionOpenCritics */
+
+
+class ActionNewToDoItem extends UMLAction {
+  public ActionNewToDoItem() { super("New To Do Item..."); }
+  public void actionPerformed(ActionEvent e) {
+    AddToDoItemDialog dialog = new AddToDoItemDialog();
+    dialog.show();
+  }
+} /* end class ActionNewToDoItem */
+
+class ToDoItemAction extends UMLAction {
+  Object _target = null;
+  public ToDoItemAction(String name) { super(name, false); }
+
+  public void updateEnabled(Object target) {
+    _target = target;
+    setEnabled(shouldBeEnabled(target));
+  }
+  
+  public boolean shouldBeEnabled(Object target) {
+    return target instanceof ToDoItem;
+  }  
+}
+
+class ActionFixIt extends ToDoItemAction {
+  public ActionFixIt() { super("Fix It..."); }
+} /* end class ActionFixIt */
+
+class ActionResolve extends ToDoItemAction {
+  public ActionResolve() { super("Resolve Item..."); }
+  public void actionPerformed(ActionEvent e) {
+    DismissToDoItemDialog dialog = new DismissToDoItemDialog();
+    dialog.setTarget(_target);
+    dialog.show();
+  }
+} /* end class ActionResolve */
+
+class ActionEmailExpert extends ToDoItemAction {
+  public ActionEmailExpert() { super("Send Email To Expert..."); }
+  public void actionPerformed(ActionEvent e) {
+    EmailExpertDialog dialog = new EmailExpertDialog();
+    dialog.setTarget(_target);
+    dialog.show();
+  }
+  
+} /* end class ActionEmailExpert */
+
+class ActionMoreInfo extends ToDoItemAction {
+  public ActionMoreInfo() { super("Mode Info..."); }
+} /* end class ActionMoreInfo */
+
+class ActionHush extends ToDoItemAction {
+  public ActionHush() { super("Hush Critic"); }
+} /* end class ActionHush */
 

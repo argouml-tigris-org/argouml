@@ -23,8 +23,9 @@
 
 package uci.gef;
 
-import java.util.*;
 import java.awt.*;
+import java.awt.event.KeyEvent;
+import java.util.*;
 
 /** A Selection class to represent selections on Fig's that
  *  present handles. Needs-More-Work: in an early version of this graph
@@ -95,38 +96,43 @@ public class SelectionReshape extends Selection {
    *  selected, remove that point from the polygon. The 'n' and 'p'
    *  keys select the next and previous points. The 'i' key inserts a
    *  new point. */
-  public boolean keyDown(Event e, int key) {
+  public void keyTyped(KeyEvent ke) {
     Editor ce = Globals.curEditor();
+    char key = ke.getKeyChar();
     int npoints = _content.getNumPoints();
     if (_selectedHandle != -1 && (key == 127 || key == 8)) {
-      ce.executeAction(new ActionRemovePoint(_selectedHandle), e);
-      return true;
+      ce.executeCmd(new CmdRemovePoint(_selectedHandle), ke);
+      ke.consume();
+      return;
     }
     if (key == 'i') {
       if (_selectedHandle == -1) _selectedHandle = 0;
-      ce.executeAction(new ActionInsertPoint(_selectedHandle), e);
-      return true;
+      ce.executeCmd(new CmdInsertPoint(_selectedHandle), ke);
+      ke.consume();
+      return;
     }
     if (key == 'n') {
-      // Needs-More-Work: the following should be in an Action.
-      // ce.executeAction(new ActionSelectNextPoint(), e);
+      // Needs-More-Work: the following should be in an Cmd.
+      // ce.executeCmd(new CmdSelectNextPoint(), e);
       startTrans();
       if (_selectedHandle == -1) _selectedHandle = 0;
       else _selectedHandle = (_selectedHandle + 1) % npoints;
       endTrans();
-      return true;
+      ke.consume();
+      return;
     }
     if (key == 'p') {
-      // Needs-More-Work: the following should be in an Action.
-      // ce.executeAction(new ActionSelectPrevPoint(), e);
+      // Needs-More-Work: the following should be in an Cmd.
+      // ce.executeCmd(new CmdSelectPrevPoint(), e);
       startTrans();
       if (_selectedHandle == -1) _selectedHandle = npoints - 1;
       else _selectedHandle = (_selectedHandle + npoints - 1) % npoints;
       endTrans();
-      return true;
+      ke.consume();
+      return;
     }
-    return super.keyDown(e, key);
+    //super.keyTyped(ke);
   }
- 
+
 } /* end class SelectionReshape */
 

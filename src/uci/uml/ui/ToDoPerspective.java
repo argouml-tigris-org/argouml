@@ -14,7 +14,7 @@ implements Serializable, TreeModel, ToDoListListener {
   ////////////////////////////////////////////////////////////////
   // instance variables
 
-  protected Object _root;
+  protected ToDoList _root;
   protected Vector _pseudoNodes = new Vector();
 
   protected EventListenerList _listenerList = new EventListenerList();
@@ -27,14 +27,18 @@ implements Serializable, TreeModel, ToDoListListener {
   // TreeModel implementation
   
   public Object getRoot() { return _root; }
-  public void setRoot(ToDoList r) { _root = r; }
+  public void setRoot(ToDoList r) {
+    _root = r;
+    _root.addToDoListListener(this);
+    toDoListChanged(null);
+  }
 
 
   // needs-more-work: if there are absolutely no outstanding
   // ToDoItems, put a special pseudonode in the tree to say that.
   
   public Object getChild(Object parent, int index) {
-    System.out.println("ToDoPerspective getChild");
+    System.out.println(this + " getChild");
     if (parent instanceof ToDoList) {
       return _pseudoNodes.elementAt(index);
     }
@@ -46,8 +50,9 @@ implements Serializable, TreeModel, ToDoListListener {
   }
   
   public int getChildCount(Object parent) {
-    System.out.println("ToDoPerspective getChildCount");
+    System.out.println(this + " getChildCount");
     if (parent instanceof ToDoList) {
+      System.out.println("case ToDoList, returning " + _pseudoNodes.size());
       return _pseudoNodes.size();
     }
     else if (parent instanceof ToDoPseudoNode) {
@@ -91,16 +96,87 @@ implements Serializable, TreeModel, ToDoListListener {
   ////////////////////////////////////////////////////////////////
   // ToDoListListener implementation
 
+  public void toDoItemAdded(ToDoListEvent tde) {
+    System.out.println("toDoItemAdded");
+    ToDoItem item = tde.getToDoItem();
+    Vector newPseudos = addNewPseudoNodes(item);
+    Object path[] = new Object[1];
+    path[0] = _root;
+    int childIndices[] = new int[1];
+    Object children[] = new Object[1];
+
+    if (newPseudos != null) {
+      java.util.Enumeration newEnum = newPseudos.elements();
+      while (newEnum.hasMoreElements()) {
+	ToDoPseudoNode node = (ToDoPseudoNode) newEnum.nextElement();;
+	System.out.println("toDoItemAdded firing new pseudonode!");
+	childIndices[0] = _pseudoNodes.indexOf(node);
+	children[0] = node;
+	fireTreeNodesInserted(this, path, childIndices, children);
+      }
+    }
+    
+    path = new Object[2];
+    path[0] = _root;
+    java.util.Enumeration enum = _pseudoNodes.elements();
+    while (enum.hasMoreElements()) {
+      ToDoPseudoNode node = (ToDoPseudoNode) enum.nextElement();
+      node.computeItems();
+      Vector pseudoNodeItems = node.getToDoItems();
+      if (pseudoNodeItems.contains(item)) {
+	path[1] = node;
+	System.out.println("toDoItemAdded firing new item!");
+	childIndices[0] = pseudoNodeItems.indexOf(item);
+	children[0] = item;
+	fireTreeNodesInserted(this, path, childIndices, children);
+      }
+    }
+  }
+
+  public void toDoItemRemoved(ToDoListEvent tde) {
+    ToDoItem item = tde.getToDoItem();
+  }
+
   public void toDoListChanged(ToDoListEvent tde) {
-    computePseudoNodes();
-    // notify JTreePane
+    Vector removes = new Vector();
+    java.util.Enumeration enum = _pseudoNodes.elements();
+    while (enum.hasMoreElements()) {
+      ToDoPseudoNode node = (ToDoPseudoNode) enum.nextElement();
+      if (!isNeeded(node)) removes.addElement(node);
+    }
+    enum = removes.elements();
+    while (enum.hasMoreElements())
+      _pseudoNodes.removeElement(enum.nextElement());
+    enum = _root.elements();
+    while (enum.hasMoreElements()) {
+      ToDoItem item = (ToDoItem) enum.nextElement();
+      addNewPseudoNodes(item);
+    }
+    
+    Object path[] = new Object[2];
+    path[0] = _root;
+    enum = _pseudoNodes.elements();
+    while (enum.hasMoreElements()) {
+      ToDoPseudoNode node = (ToDoPseudoNode) enum.nextElement();
+      path[1] = node;
+      fireTreeStructureChanged(path);
+    }
+
+//     // notify JTreePane
+//     path[] = new Object[1];
+//     path[0] = _root;
+//     //     Enumeration enum = _pseudoNodes.elements();
+//     //     while (enum.hasMoreElements()) {
+//     //       path[1] = enum.nextElement();
+//     fireTreeStructureChanged(path);
+//     //    }
+
+//     //expand those nodes that were expanded before
   }
 
-  protected void computePseudoNodes() {
-    if (_pseudoNodes == null) _pseudoNodes = new Vector();
-    else _pseudoNodes.removeAllElements();
-  }
-
+  protected boolean isNeeded(ToDoPseudoNode node) { return true; }
+  protected Vector addNewPseudoNodes(ToDoItem item) { return null; }
+  
 
   /**
    * Messaged when the user has altered the value for the item identified
@@ -205,9 +281,7 @@ implements Serializable, TreeModel, ToDoListListener {
    * the fire method.
    * @see EventListenerList
    */
-  protected void fireTreeStructureChanged(Object source, Object[] path, 
-					  int[] childIndices, 
-					  Object[] children) {
+  protected void fireTreeStructureChanged(Object[] path) {
     // Guaranteed to return a non-null array
     Object[] listeners = _listenerList.getListenerList();
     TreeModelEvent e = null;
@@ -215,10 +289,8 @@ implements Serializable, TreeModel, ToDoListListener {
     // those that are interested in this event
     for (int i = listeners.length-2; i>=0; i-=2) {
       if (listeners[i]==TreeModelListener.class) {
-	// Lazily create the event:
-	if (e == null)
-	  e = new TreeModelEvent(source, path, 
-				 childIndices, children);
+	// Lazily create the event: only the path matters
+	if (e == null) e = new TreeModelEvent(this, path, null, null);
 	((TreeModelListener)listeners[i+1]).treeStructureChanged(e);
       }          
     }

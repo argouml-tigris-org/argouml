@@ -57,7 +57,7 @@ import uci.util.*;
  * @see LayerPolar */
 
 public abstract class Layer extends Observable
-implements Observer, java.io.Serializable  { 
+implements java.io.Serializable  { 
   //, GEF {
   ////////////////////////////////////////////////////////////////
   // instance variables
@@ -238,39 +238,18 @@ implements Observer, java.io.Serializable  {
   ////////////////////////////////////////////////////////////////
   // notifications and updates
 
-  /** When an object contained in a Layer changes state it notifies
-   *  the Layer. The Layer in turn notifies its parent Layer or some
-   *  Editor's.
-   *  <A HREF="../features.html#multiple_views">
-   *  <TT>FEATURE: multiple_views</TT></A>
-   */
-  public void update(Observable o, Object arg) {
-    setChanged();
-    notifyObservers(arg);
-    notifyEditors(arg);
+  public void damaged(Fig f) {
+    Enumeration eds = _editors.elements();
+    while (eds.hasMoreElements())
+      ((Editor)eds.nextElement()).damaged(f);
   }
 
-  /** <A HREF="../features.html#multiple_views">
-   *  <TT>FEATURE: multiple_views</TT></A> */
-  public void notifyRemoved(Fig f) {
+  public void deleted(Fig f) {
     Enumeration eds = _editors.elements();
-    while (eds.hasMoreElements()) ((Editor)eds.nextElement()).notifyRemoved(f);
+    while (eds.hasMoreElements())
+      ((Editor)eds.nextElement()).removed(f);
   }
 
-  /** <A HREF="../features.html#multiple_views">
-   *  <TT>FEATURE: multiple_views</TT></A> */
-  public void notifyChanged(Fig f) {
-    Enumeration eds = _editors.elements();
-    while (eds.hasMoreElements()) ((Editor)eds.nextElement()).notifyChanged(f);
-  }
-
-  /** <A HREF="../features.html#multiple_views">
-   *  <TT>FEATURE: multiple_views</TT></A>
-   */
-  public void notifyEditors(Object arg) {
-    Enumeration eds = _editors.elements();
-    while(eds.hasMoreElements()) ((Editor)eds.nextElement()).update(this,arg);
-  }
 
   /** <A HREF="../features.html#multiple_views">
    *  <TT>FEATURE: multiple_views</TT></A> */

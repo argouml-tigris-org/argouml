@@ -27,12 +27,14 @@ import java.awt.*;
 import java.util.*;
 import java.io.*;
 
+import uci.graph.*;
+
 /** This class models a port in our underlying connected graph model.
  *  <A HREF="../features.html#graph_representation_ports">
  *  <TT>FEATURE: graph_representation_ports</TT></A>
  */
 
-public class NetPort extends NetPrimitive {
+public class NetPort extends NetPrimitive implements GraphPortHooks {
 
   ////////////////////////////////////////////////////////////////
   // constants
@@ -53,13 +55,13 @@ public class NetPort extends NetPrimitive {
   protected Vector _edges;
 
   /** The NetNode that this port is a part of. */
-  protected NetPrimitive _parent;
+  protected Object _parent;
 
   ////////////////////////////////////////////////////////////////
   // constructors
 
   /** Construct a new NetPort with the given parent node and no arcs. */
-  public NetPort(NetPrimitive parent) {
+  public NetPort(Object parent) {
     _parent = parent;
     _edges = new Vector();
   }
@@ -70,7 +72,7 @@ public class NetPort extends NetPrimitive {
   /** Reply the NetNode that owns this port. */
   public NetNode getParentNode() { return (NetNode) _parent; }
   public NetEdge getParentEdge() { return (NetEdge) _parent; }
-  public NetPrimitive getParent() { return _parent; }
+  public Object getParent() { return _parent; }
 
   /** Reply a vector of NetEdges that are connected here. */
   public Vector getEdges() { return _edges; }
@@ -99,6 +101,7 @@ public class NetPort extends NetPrimitive {
       NetEdge e = (NetEdge) edges.nextElement();
       e.dispose();
     }
+    firePropertyChange("Disposed", false, true);
   }
 
   ////////////////////////////////////////////////////////////////
@@ -106,15 +109,19 @@ public class NetPort extends NetPrimitive {
 
   /** Application specific hook that is called after a successful
    *  connection. */
-  public void postConnect(NetPort anotherPort) {
-    getParentNode().postConnect(anotherPort.getParentNode(), this, anotherPort);
+  public void postConnect(GraphModel gm, Object otherPort) {
+    NetPort otherNetPort = (NetPort) otherPort;
+    NetNode parent = getParentNode();
+    parent.postConnect(gm, otherNetPort.getParentNode(), this, otherNetPort);
   }
 
   /** Application specific hook that is called after a
    *  disconnection. (for now, all disconnections are assumed
    *  legal). */
-  public void postDisconnect(NetPort anotherPort) {
-    getParentNode().postDisconnect(anotherPort.getParentNode(), this, anotherPort);
+  public void postDisconnect(GraphModel gm, Object otherPort) {
+    NetPort otherNetPort = (NetPort) otherPort;
+    NetNode parent = getParentNode();
+    parent.postDisconnect(gm, otherNetPort.getParentNode(), this, otherNetPort);
   }
 
   /** reply the java Class to be used to make new arcs. This is a
@@ -148,9 +155,10 @@ public class NetPort extends NetPrimitive {
    *  implementation should return false if super.canConnectTo() would
    *  return false (i.e., deeper subclasses get more constrained). I
    *  don't know if that is a good convention. */
-  public boolean canConnectTo(NetPort anotherPort) {
-    return getParentNode().canConnectTo(anotherPort.getParentNode(),
-					anotherPort, this);
+  public boolean canConnectTo(GraphModel gm, Object anotherPort) {
+    NetNode myNode = getParentNode();
+    NetNode otherNode = ((NetPort)anotherPort).getParentNode();
+    return myNode.canConnectTo(gm, otherNode, anotherPort, this);
   }
 
   ////////////////////////////////////////////////////////////////

@@ -23,7 +23,7 @@
 
 package uci.gef;
 
-import java.awt.Event;
+import java.awt.event.MouseEvent;
 import java.awt.Point;
 import java.awt.Rectangle;
 
@@ -96,13 +96,15 @@ public class ModeModify extends Mode {
    *  <A HREF="../bugs.html#arc_translate">
    *  <FONT COLOR=660000><B>BUG: arc_translate</B></FONT></A>
    */
-  public boolean mouseDrag(Event e, int x, int y) {
+  public void mouseDragged(MouseEvent me) {
+    int x = me.getX(), y = me.getY();    
     int dx, dy, snapX, snapY;
-    if (!checkMinDelta(x, y)) return true;
+    if (!checkMinDelta(x, y)) { me.consume(); return; }
     SelectionManager sm = getEditor().getSelectionManager();
     if (sm.getLocked()) {
       Globals.showStatus("Cannot Modify Locked Objects");
-      return true;
+      me.consume();
+      return;
     }
     synchronized (snapPt) {
       snapPt.move(x, y);
@@ -112,13 +114,13 @@ public class ModeModify extends Mode {
     }
     dx = snapX - _lastX;
     dy = snapY - _lastY;
-    if (e.controlDown() && _constraint == NO_CONSTRAINT) {
+    if (me.isControlDown() && _constraint == NO_CONSTRAINT) {
       if (dx != 0) _constraint = HORIZONTAL_CONSTRAINT;
       if (dy != 0) _constraint = VERTICAL_CONSTRAINT;
     }
     if (_constraint == HORIZONTAL_CONSTRAINT)  dy = 0;
     if (_constraint == VERTICAL_CONSTRAINT)  dx = 0;
-    if (dx == 0 && dy == 0) return true;
+    if (dx == 0 && dy == 0) { me.consume(); return; }
 
     sm.startTrans();
     if (_curHandle.index == -1)
@@ -130,19 +132,21 @@ public class ModeModify extends Mode {
     sm.endTrans();
 
     _lastX = snapX; _lastY = snapY;
-    return true;
+    me.consume();
   }
 
   /** When the user presses the mouse button on a Fig,
    *  this Mode starts preparing for future drag events by finding if
    *  a handle was clicked on. This event is passed from ModeSelect. */
-  public boolean mouseDown(Event e, int x, int y) {
+  public void mousePressed(MouseEvent me) {
+    int x = me.getX(), y = me.getY();
     start();
     SelectionManager sm = getEditor().getSelectionManager();
     if (sm.size() == 0) { done(); }
     if (sm.getLocked()) {
       Globals.showStatus("Cannot Modify Locked Objects");
-      return true;
+      me.consume();
+      return;
     }
     /* needs-more-work: _anchor point sign convention is backwards */
     _anchor.x = sm.getBounds().x - x;
@@ -155,13 +159,13 @@ public class ModeModify extends Mode {
       _startX = _lastX = snapPt.x;
       _startY = _lastY = snapPt.y;
     }
-    return true;
+    me.consume();
   }
 
   /** On mouse up the modification interaction is done. */
-  public boolean mouseUp(Event e, int x, int y) {
+  public void mouseReleased(MouseEvent me) {
     done();
-    return true;
+    me.consume();
   }
 
   public void start() {

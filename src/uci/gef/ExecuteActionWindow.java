@@ -127,7 +127,7 @@ public class ExecuteActionWindow extends Frame {
     Editor ce = Globals.curEditor();
     System.out.println("executing: " + _actionNames.getSelectedItem());
     Action act = Action.actionAtIndex(_actionNames.getSelectedIndex());
-    ce.executeAction(act, e);
+    ce.executeAction(act, null);
   }
 
   protected void describeCommand() {

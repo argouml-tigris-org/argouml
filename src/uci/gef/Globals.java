@@ -72,7 +72,6 @@ public class Globals {
   public static void showStatus(String s) {
     if (_StatusBar != null) _StatusBar.showStatus(s);
     else if (_appletContext != null) _appletContext.showStatus(s);
-    else if (curEditor() != null) curEditor().showStatus(s);
     //else System.out.println(s);
   }
 
@@ -157,7 +156,7 @@ public class Globals {
     if (_tabPropFrame.isVisible()) _tabPropFrame.toFront();
     else _tabPropFrame.show();
     if (curEditor() == null) return;
-    Vector selectedFigs = curEditor().selectedFigs();
+    Vector selectedFigs = curEditor().getSelectionManager().getFigs();
     if (selectedFigs.size() == 1)
       propertySheetSubject((Fig)selectedFigs.elementAt(0));
   }
@@ -171,7 +170,7 @@ public class Globals {
 
   static {
     if (_tabPropFrame == null) _tabPropFrame = new TabPropFrame();
-    _tabPropFrame.show();
+    //_tabPropFrame.show();
   }
 
   public static Frame someFrame() { return _tabPropFrame; }

@@ -116,9 +116,10 @@ public class LayerGrid extends Layer {
 	// this is a bad idea, but it works around a very awkward AWT
 	// requirement: that only frames can make Image instances
 	System.out.println("no editor");
-	Frame f = new Frame(); f.show();
-	_stamp = f.createImage(_stampWidth, _stampHeight);
-	f.dispose();
+	Frame frame = new Frame();
+	frame.show();
+	_stamp = frame.createImage(_stampWidth, _stampHeight);
+	frame.dispose();
       }
       else{ _stamp =Globals.curEditor().createImage(_stampWidth,_stampHeight);}
       if (_stamp != null) {

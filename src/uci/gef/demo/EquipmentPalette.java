@@ -32,28 +32,18 @@ import uci.gef.*;
  *
  * @see uci.gef.demo.FlexibleApplet */
 
-public class EquipmentPalette extends Palette {
-
-  /** The class for the NetNode's to make when the user clicks the
-   * SampleNode button. */
-  static final String CPU_CLASS = "uci.gef.demo.NodeCPU";
-  static final String PRINTER_CLASS = "uci.gef.demo.NodePrinter";
-  static final String WALL_CLASS = "uci.gef.demo.NodeWall";
+public class EquipmentPalette extends uci.ui.ToolBar {
 
   /** Construct a new palette of example nodes for the Example application */
-  public EquipmentPalette() { super(2, 1, "Equipment"); }
+  public EquipmentPalette() { defineButtons(); }
 
 
   /** Define a button to make for the Example application */
-  public Vector defineButtons() {
+  public void  defineButtons() {
     Vector v = new Vector();
-    Action addCPU = new ActionCreateNode(CPU_CLASS, null, false);
-    v.addElement(new ActiveButton("CPU", addCPU));
-    Action addPrinter = new ActionCreateNode(PRINTER_CLASS, null, false);
-    v.addElement(new ActiveButton("Printer", addPrinter));
-    Action addWall = new ActionCreateNode(WALL_CLASS, null, false);
-    v.addElement(new ActiveButton("Wall", addWall));
-    return v;
+    add(new CmdCreateNode(NodeCPU.class, "CPU"));
+    add(new CmdCreateNode(NodePrinter.class, "Printer"));
+    add(new CmdCreateNode(NodeWall.class, "Wall"));
   }
 
 

@@ -73,42 +73,6 @@ public class EdgeData extends NetEdge {
   public int getBitsPerSecond() { return _bitsPerSecond; }
   public void setBitsPerSecond(int bps) { _bitsPerSecond = bps; }
 
-  public Object get(String key) {
-    if (key.equals(pCABLE_TYPE))
-      return getCableType();
-    else if (key.equals(pBITS_PER_SECOND))
-      return new Integer(getBitsPerSecond());
-    else return super.get(key);
-  }
-
-  public boolean put(String key, Object value) {
-    if (key.equals(pCABLE_TYPE))
-      setCableType((String)value);
-    else if (key.equals(pBITS_PER_SECOND))
-      setBitsPerSecond(((Integer)value).intValue());
-    else return super.put(key, value);
-    return true;
-  }
-
-  public static Vector _ModelPropNames = null;
-
-  public Enumeration keysIn(String category) {
-    if (_ModelPropNames == null) {
-      _ModelPropNames = new Vector();
-      _ModelPropNames.addElement(pCABLE_TYPE);
-      _ModelPropNames.addElement(pBITS_PER_SECOND);
-    }
-    Enumeration modelKeys = _ModelPropNames.elements();
-    if (category.equals("Model"))
-      return new EnumerationComposite(super.keysIn(category), modelKeys);
-    else return super.keysIn(category);
-  }
-
-  public boolean canPut(String key) {
-    return key.equals(pCABLE_TYPE);
-    // note that pBITS_PER_SECONDis not editable
-  }
-
   public static Vector _PossibleCableTypes = null;
 
   static {

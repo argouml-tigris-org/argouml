@@ -23,7 +23,7 @@
 
 package uci.gef;
 
-import java.awt.Event;
+import java.awt.event.MouseEvent;
 
 /** A Mode to interpert user input while creating a FigText. All of
  *  the actual event handling is inherited from ModeCreate. This class
@@ -41,7 +41,7 @@ public class ModeCreateFigText extends ModeCreate {
 
   /** Create a new FigText instance based on the given mouse down
    *  event and the state of the parent Editor. */
-  public Fig createNewItem(Event e, int snapX, int snapY) {
+  public Fig createNewItem(MouseEvent e, int snapX, int snapY) {
     return new FigText(snapX, snapY, 0, 0, _editor.graphAttrs());
   }
 

@@ -3,6 +3,7 @@
 package uci.uml.Foundation.Core;
 
 import java.util.*;
+import java.beans.*;
 import uci.uml.Foundation.Data_Types.Name;
 
 public class Generalization extends ModelElementImpl {
@@ -11,6 +12,16 @@ public class Generalization extends ModelElementImpl {
   public GeneralizableElement _supertype;
     
   public Generalization() { }
+  public Generalization(Name name) { super(name); }
+  public Generalization(String nameStr) { super(new Name(nameStr)); }
+  public Generalization(GeneralizableElement sub, GeneralizableElement sup)
+  throws PropertyVetoException {
+    super();
+    setSubtype(sub);
+    setSupertype(sup);
+    sub.addGeneralization(this);
+    sup.addSpecialization(this);
+  }
 
   public Name getDiscriminator() { return _discriminator; }
   public void setDiscriminator(Name x) {

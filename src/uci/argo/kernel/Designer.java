@@ -185,6 +185,10 @@ public class Designer implements Poster, Runnable, java.io.Serializable {
    public ChildGenerator getChildGenerator() { return _cg; }
    public void setChildGenerator(ChildGenerator cg) { _cg = cg; }
 
+  public DecisionModel getDecisionModel() { return _decisions; }
+  public Vector getDecisions() { return _decisions.getDecisions(); }
+  public GoalModel getGoalModel() { return _goals; }
+  //public SkillsModel getSkillsModel() { return _skills; }
 
   /** ToDoItem's that are posted by the designer are assumed to be
    *  valid until the designer explicitly removes them. Perhaps in the
@@ -196,9 +200,10 @@ public class Designer implements Poster, Runnable, java.io.Serializable {
   public boolean stillValid(ToDoItem i, Designer d) { return true; }
 
 
-  public boolean supports(Decision d) { return true; }
+  public boolean supports(Decision d) { return d == Decision.UNSPEC; }
+  public Vector getSupportedDecisions() { return null; }
 
-  public boolean supports(Goal g) {return true; }
+  public boolean supports(Goal g) { return true; }
 
   public boolean includesKnowledgeType(int knowledgeType) { return true; }
 

@@ -18,12 +18,14 @@
 
 include ../Makefile.config
 
-#GEN = 	SERIALIZABLE.java
+GEN = 	SERIALIZABLE.java
 
-CLASSES = 	EventQueue.class \
+CLASSES = 	SERIALIZABLE.class \
+		UTIL.class \
+		EventQueue.class \
 		EventHandler.class \
 		IEventHandler.class \
-		Dbg.class \
+		DebugLog.class \
 		Set.class \
 		ChildGenerator.class \
 		Predicate.class \
@@ -42,6 +44,9 @@ all: $(GEN) $(CLASSES)
 gen: $(GEN)
 
 classes: $(CLASSES)
+
+
+SERIALIZABLE.java: SERIALIZABLE.m4 ../Makefile.config
 
 clean:
 	$(RM) *.class $(GEN)

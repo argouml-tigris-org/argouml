@@ -40,7 +40,7 @@ import uci.gef.Layer;
  *
  * @see uci.graph.demo.TranscriptionRenderer */
 
-public class DefaultGraphEdgeRenderer {
+public class DefaultGraphEdgeRenderer implements GraphEdgeRenderer {
   /** Return a Fig that can be used to represent the given Edge */
   public FigEdge getFigEdgeFor(GraphModel graph, Layer lay, Object edge) {
     if (edge instanceof NetEdge)

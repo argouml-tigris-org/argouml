@@ -24,10 +24,15 @@
 package uci.gef;
 
 import java.awt.*;
+import java.awt.event.*;
 import java.util.*;
+import java.io.Serializable;
+
 import uci.util.*;
 import uci.graph.*;
 import uci.ui.*;
+import uci.gef.event.*;
+
 
 /** This class provides an editor frame for manipulating graphical
  *  documents. The editor is the central class of the graph editing
@@ -58,9 +63,10 @@ import uci.ui.*;
  * @see Mode
  * @see Action */
 
-public class Editor extends EventHandler
-implements Observer, Runnable, IStatusBar, java.io.Serializable {
-  //, GEF { //, IProps
+
+public class Editor
+implements Serializable, MouseListener, MouseMotionListener, KeyListener {
+  //, GEF { //, IProps //Runnable, IStatusBar
 
   ////////////////////////////////////////////////////////////////
   // constants
@@ -85,7 +91,6 @@ implements Observer, Runnable, IStatusBar, java.io.Serializable {
    * @see ModeModify
    * @see ModeSelect
    * @see ModePlace */
-  protected Mode _curMode;
   protected ModeManager _modeManager = new ModeManager(this);
 
   /** This points to the document object that the user is working
@@ -97,8 +102,6 @@ implements Observer, Runnable, IStatusBar, java.io.Serializable {
    *  <TT>FEATURE: integration_with_exising_code</TT></A>
    */
   protected Object _document;
-  protected String _title;
-  protected transient Label _statusLabel;
 
   /** _selections holds the SelectionMultiple object that describes
    *  all the selection objects for what the user currently has
@@ -123,16 +126,12 @@ implements Observer, Runnable, IStatusBar, java.io.Serializable {
   /** Default graphical attributes for newly created objects. */
   protected Hashtable _graphAttrs;
 
-  /** Refers to an object that defines the editors menus and maps menu
-   *  events into Actions. */
-  protected transient MenuManager menu = null;
-
   /** <A HREF="../features.html#event_skipping">
    *  <TT>FEATURE: event_skipping</TT></A>
    */
-  private transient uci.util.EventQueue _eventQueue = null;
+  //private transient uci.util.EventQueue _eventQueue = null;
 
-  private transient  Thread _eventHandler = null;
+  //private transient  Thread _eventHandler = null;
 
   protected Object _curNode = null;
 
@@ -149,6 +148,7 @@ implements Observer, Runnable, IStatusBar, java.io.Serializable {
    *  <TT>FEATURE: redraw_minimal</TT></A>
    */
   protected transient RedrawManager _redrawer = new RedrawManager(this);
+
 
   ////////////////////////////////////////////////////////////////
   /// methods related to editor state: graphical attributes, modes, view
@@ -209,9 +209,6 @@ implements Observer, Runnable, IStatusBar, java.io.Serializable {
     Globals.clearStatus();
   }
 
-  public void showStatus(String msg) {
-    if (_statusLabel != null) _statusLabel.setText(msg);
-  }
 
   /** Return the LayerComposite that holds the diagram being edited. */
   public LayerManager getLayerManager() { return _layerManager; }
@@ -232,6 +229,38 @@ implements Observer, Runnable, IStatusBar, java.io.Serializable {
     if (active instanceof LayerPerspective)
       return ((LayerPerspective)active).getGraphModel();
     else return null;
+  }
+
+  public void setGraphModel(GraphModel gm) {
+    Layer active = _layerManager.getActiveLayer();
+    if (active instanceof LayerPerspective)
+      ((LayerPerspective)active).setGraphModel(gm);
+  }
+    
+  public GraphNodeRenderer getGraphNodeRenderer() {
+    Layer active = _layerManager.getActiveLayer();
+    if (active instanceof LayerPerspective)
+      return ((LayerPerspective)active).getGraphNodeRenderer();
+    else return null;
+  }
+
+  public void setGraphNodeRenderer(GraphNodeRenderer rend) {
+    Layer active = _layerManager.getActiveLayer();
+    if (active instanceof LayerPerspective)
+      ((LayerPerspective)active).setGraphNodeRenderer(rend);
+  }
+
+  public GraphEdgeRenderer getGraphEdgeRenderer() {
+    Layer active = _layerManager.getActiveLayer();
+    if (active instanceof LayerPerspective)
+      return ((LayerPerspective)active).getGraphEdgeRenderer();
+    else return null;
+  }
+
+  public void setGraphEdgeRenderer(GraphEdgeRenderer rend) {
+    Layer active = _layerManager.getActiveLayer();
+    if (active instanceof LayerPerspective)
+      ((LayerPerspective)active).setGraphEdgeRenderer(rend);
   }
 
   ////////////////////////////////////////////////////////////////
@@ -271,21 +300,29 @@ implements Observer, Runnable, IStatusBar, java.io.Serializable {
 
   /** Find the NetNode represented by the FigNode under the mouse,
    *  if any */
-  protected void setUnderMouse(Event e) {
-    if (e.id != Event.MOUSE_MOVE && e.id != Event.MOUSE_DRAG) return;
+
+  protected void setUnderMouse(MouseEvent me) {
+//     if (me.getID() != MouseEvent.MOUSE_MOVED &&
+// 	me.getID() != MouseEvent.MOUSE_DRAGGED)
+//       return;
+    //what about entered and exit?
+    
     Object node = null;
-    Fig f = hit(e.x, e.y);
+    int x = me.getX(), y = me.getY();
+    Fig f = hit(x, y);
     if (f != _curFig) {
-      if (_curFig != null) _curFig.mouseExit(e, e.x, e.y);
-      if (f != null) f.mouseEnter(e, e.x, e.y);
+      if (_curFig instanceof MouseListener)
+	((MouseListener)_curFig).mouseExited(me);
+      if (f instanceof MouseListener)
+	((MouseListener)f).mouseEntered(me);
     }
     _curFig = f;
     if (f instanceof FigNode) node = f.getOwner();
     if (node != _curNode) {
-      if (_curNode != null && _curNode instanceof EventHandler)
-	((EventHandler)_curNode).mouseExit(e, e.x, e.y);
-      if (node != null && node instanceof EventHandler)
-	((EventHandler)node).mouseEnter(e, e.x, e.y);
+      if (_curNode instanceof MouseListener)
+	((MouseListener)_curNode).mouseExited(me);
+      if (node instanceof MouseListener)
+	((MouseListener)node).mouseEntered(me);
     }
     _curNode = node;
   }
@@ -325,7 +362,6 @@ implements Observer, Runnable, IStatusBar, java.io.Serializable {
       ed.getLayerManager().addLayer(_layerManager.getActiveLayer());
       //needs-more-work: does not duplicate layer stack!
       ed.document(document());
-      ed.setTitle("Clone of " + _title);
       return ed;
     }
     catch (java.lang.IllegalAccessException ignore) { }
@@ -352,10 +388,8 @@ implements Observer, Runnable, IStatusBar, java.io.Serializable {
     defineLayers(gm, lay);
     _graphAttrs = new Hashtable();
 
-    /* Now set up the menu items */
-    setMenuBar(menuBar());
     // //_modeManager.setEditor(this);
-    mode(new ModeExampleKeys(this));
+    //mode(new ModeExampleKeys(this));
     mode(new ModeSelect(this));
     Globals.curEditor(this);
   }
@@ -363,7 +397,7 @@ implements Observer, Runnable, IStatusBar, java.io.Serializable {
   //protected void defineLayers(NetList net, Layer lay) {
   protected void defineLayers(GraphModel gm, Layer lay) {
     _layerManager.addLayer(new LayerGrid());
-    _layerManager.addLayer(new LayerPageBreaks());
+    //_layerManager.addLayer(new LayerPageBreaks());
     // the following line is an example of another "grid"
     // _layerManager.addLayer(new LayerPolar());
     if (lay != null) _layerManager.addLayer(lay);
@@ -425,7 +459,7 @@ implements Observer, Runnable, IStatusBar, java.io.Serializable {
    */
   public void damageAll() {
     if (_redrawer == null) _redrawer = new RedrawManager(this);
-    Dimension size = size();
+    Dimension size = getAwtComponent().size();
     _redrawer.add(new Rectangle(0, 0, size.width, size.height));
   }
 
@@ -442,14 +476,6 @@ implements Observer, Runnable, IStatusBar, java.io.Serializable {
   ////////////////////////////////////////////////////////////////
   // display methods
 
-  /** Paint anything that can be seen in the given Rectangle. */
-  public void paintRect(Rectangle r, Graphics g) {
-    // useful for debugging/learning redraw logic
-    //if (Boolean.getBoolean("DebugRedrawArea"))
-    //g.drawRect(r.x-1, r.y-1, r.width+2, r.height+2);
-    paint(g);
-  }
-
   /** Paints the graphs nodes by calling paint() on layers, selections,
    *  and mode.  Whenever their is a change to the screen, this method
    *  will eventually be called from the RedrawManager.
@@ -457,53 +483,15 @@ implements Observer, Runnable, IStatusBar, java.io.Serializable {
    * @see RedrawManager */
   public synchronized void paint(Graphics g) {
     getLayerManager().paint(g);
-    if (!(g instanceof PrintGraphics)) {
-      _selectionManager.paint(g);
-      _modeManager.paint(g);
-    }
+    _selectionManager.paint(g);
+    _modeManager.paint(g);
   }
 
-  public synchronized void print(Graphics g) { paint(g); }
+  public synchronized void print(Graphics g) {
+    getLayerManager().paint(g);
+    //does this work?
+  }
 
-  ////////////////////////////////////////////////////////////////
-  // selection methods
-
-  /** Add the given item to this editors selections.
-   *  <A HREF="../features.html#selections">
-   *  <TT>FEATURE: selections</TT></A>
-   */
-  public void select(Fig f) { _selectionManager.select(f); }
-
-  /** Remove the given item from this editors selections.
-   *  <A HREF="../features.html#selections">
-   *  <TT>FEATURE: selections</TT></A>
-   */
-  public void deselect(Fig f) { _selectionManager.deselect(f); }
-
-  /** Select the given item if it was not already selected, and
-   *  vis-a-versa.
-   *  <A HREF="../features.html#selections">
-   *  <TT>FEATURE: selections</TT></A>
-   */
-  public void toggleItem(Fig f) { _selectionManager.toggle(f); }
-
-  /** Deslect everything that is currently selected.
-   *  <A HREF="../features.html#selections">
-   *  <TT>FEATURE: selections</TT></A>
-   */
-  public void deselectAll() { _selectionManager.deselectAll(); }
-
-  /** Select a collection of Fig's.
-   *  <A HREF="../features.html#selections">
-   *  <TT>FEATURE: selections</TT></A>
-   */
-  public void select(Vector items) {_selectionManager.select(items);}
-
-  /** Toggle the selection of a collection of Fig's.
-   *  <A HREF="../features.html#selections">
-   *  <TT>FEATURE: selections</TT></A>
-   */
-  public void toggleItems(Vector items) {_selectionManager.toggle(items);}
 
   /** Reply the current selection objects of this editor.
    *  <A HREF="../features.html#selections">
@@ -511,10 +499,6 @@ implements Observer, Runnable, IStatusBar, java.io.Serializable {
    */
   public SelectionManager getSelectionManager() { return _selectionManager; }
 
-  /** <A HREF="../features.html#selections">
-   *  <TT>FEATURE: selections</TT></A>
-   */
-  public Vector selectedFigs() { return _selectionManager.getFigs(); }
 
   ////////////////////////////////////////////////////////////////
   // property sheet methods
@@ -523,7 +507,7 @@ implements Observer, Runnable, IStatusBar, java.io.Serializable {
     if (Globals.curEditor() != this) return;
     if (_selectionManager.size() != 1) Globals.propertySheetSubject(null);
     else {
-      Fig f = (Fig) selectedFigs().elementAt(0);
+      Fig f = (Fig) getSelectionManager().getFigs().elementAt(0);
       Globals.propertySheetSubject(f);
     }
   }
@@ -531,15 +515,8 @@ implements Observer, Runnable, IStatusBar, java.io.Serializable {
   ////////////////////////////////////////////////////////////////
   // Frame and panel related methods
 
-  /** Reply the Frame for the editor. */
-  public Frame frame() { return _frame; }
-  public void frame(Frame f) {
-    _frame = f;
-    f.setMenuBar(menuBar());
-  }
-
-  public Component awt_comp() { return _awt_component; }
-  public void awt_comp(Component c) {
+  public Component getAwtComponent() { return _awt_component; }
+  public void setAwtComponent(Component c) {
     _awt_component = c;
   }
 
@@ -547,65 +524,14 @@ implements Observer, Runnable, IStatusBar, java.io.Serializable {
     if (_awt_component == null) return null;
     return _awt_component.getGraphics();
   }
-
-  public void setMenuBar(MenuBar mb) {
-    if (_frame != null) _frame.setMenuBar(mb);
+    
+  public Frame findFrame() {
+    Component c = _awt_component;
+    while (c != null && !(c instanceof Frame)) 
+      c = c.getParent();
+    return (Frame) c;
   }
-
-  public MenuBar menuBar() {
-    if (menu == null) menu = new MenuManager(this);
-    return menu.menuBar;
-  }
-
-  public void addMenu(Menu m) {
-    menu.add(m);
-    setMenuBar(menuBar());
-  }
-
-  public void setTitleOnly(String title) { _title = title; }
-  public void setTitle(String title) {
-    setTitleOnly(title);
-    if (_frame != null) _frame.setTitle(title);
-  }
-
-  public Dimension size() { return _awt_component.size(); }
-
-  public void resize(int w, int h) { _awt_component.resize(w, h); }
-
-  public void hide() {
-    if (_frame != null) _frame.hide();
-  }
-
-  /** Show the editor. Use an existing frame and awt component if
-   *  they were supplied, otherwise make a new Panel and Frame.
-   *  <A HREF="../features.html#editor_frame">
-   *  <TT>FEATURE: editor_frame</TT></A>.
-   *  <A HREF="../features.html#editor_in_browser">
-   *  <TT>FEATURE: editor_in_browser</TT></A>.
-   */
-  public void show() {
-    if (_awt_component == null) {
-      ForwardingPanel fp = new ForwardingPanel(this, new Dimension(400, 300));
-      ForwardingFrame ff  = new ForwardingFrame(this, new Dimension(400, 350));
-      ff.setLayout(new BorderLayout());
-      ff.add("Center", fp);
-      if (Globals.getAppletContext() != null) {
-	_statusLabel = new Label("");
-	_statusLabel.setFont(new Font("Dialog", Font.PLAIN, 10));
-	ff.add("South", _statusLabel);
-      }
-      ff.pack();
-      frame(ff);
-      awt_comp(fp);
-      setTitle(_title);
-    }
-    if (_frame != null) _frame.show();
-  }
-
-  public void move(int x, int y) {
-    _awt_component.move(x, y);
-  }
-
+    
   public Image createImage(int w, int h) {
     if (_awt_component == null) return null;
     try { if (_awt_component.getPeer() == null) _awt_component.addNotify(); }
@@ -618,142 +544,171 @@ implements Observer, Runnable, IStatusBar, java.io.Serializable {
 
   public Color getBackground() { return _awt_component.getBackground(); }
 
-  /** close this editor window */
-  public void close() {
-    // needs-more-work
-    // if (!saved) { ... }
-    if (_frame != null) { _frame.hide(); _frame.dispose(); }
-  }
 
   ////////////////////////////////////////////////////////////////
   // event handlers
 
-  /** Pass any Menu events to my MenuManager object.
-   *
-   * @see MenuManager */
-  public boolean handleMenuEvent(Event e) {
-    if (menu == null) menu = new MenuManager(this);
-    return menu.handleMenuEvent(e) || super.handleMenuEvent(e);
+  public void addGraphSelectionListener(GraphSelectionListener listener) {
+    _selectionManager.addGraphSelectionListener(listener);
   }
 
-  /** The next several methods process user interface events.  There
-   *  are some events that the editor handles itself, but most useful
-   *  work is done by delegating events to the current mode, the
-   *  Fig under the mouse or the node under the mouse. Menu
-   *  events are always delegated to my MenuManager object. This scheme
-   *  could be improved by using another object that defines the
-   *  bindings of arbitrary UI events to Actions. <p>
-   *
-   *  Please always keep the number of built-in command and actions
-   *  to a minimum.
-   */
+  public void removeGraphSelectionListener(GraphSelectionListener listener) {
+    _selectionManager.removeGraphSelectionListener(listener);
+  }
+  
 
-  /** Before an event is handled by dispatchEvent(), lock the
-   *  redrawManager to avoid dirt. If the mouse entered this Editor,
-   *  set this Editor's mode to the next global mode. */
-  public void preHandleEvent(Event e) {
+
+    
+
+
+  ////////////////////////////////////////////////////////////////
+  // JDK 1.1 event handlers
+
+
+  /**
+   * Invoked when the mouse has been clicked on a component.
+   */
+  public void mouseClicked(MouseEvent me) { 
     RedrawManager.lock();
-    if (e.id == Event.MOUSE_ENTER) mode(Globals.mode());
-  }
-
-  /** After an event has been handled by dispatchEvent(), unlock the
-   *  RedrawManager so that damage can be repaired. */
-  public void postHandleEvent(Event e) {
-    RedrawManager.unlock();
-    //repairDamage();
-  }
-
-  /** Rather than handling user events immediately, store them in a
-   *  uci.util.EventQueue for later processing by dispatchEvent(). This
-   *  allows me to skip some events which is VERY important to
-   *  performance.
-   *  <A HREF="../features.html#event_skipping">
-   *  <TT>FEATURE: event_skipping</TT></A>
-   */
-  public boolean handleEvent(Event e) {
-    if (_eventQueue == null) {
-      _eventQueue = new uci.util.EventQueue();
-      _eventHandler = new Thread(this);
-      _eventHandler.start();
-    }
-    if (_redrawer == null) _redrawer = new RedrawManager(this);
-    synchronized (_eventQueue) {
-      _eventQueue.enqueue(e);
-      _eventQueue.notify();
-    }
-    return true; // assume every event gets handled
-  }
-
-  /** Each Editor has its own event processing thread that takes ALL
-   *  events that have been queued in handleEvent and processes them as
-   *  defined in uci.util.EventHandler (i.e. it passes them to
-   *  preHandleEvent, dispatchEvent, and postHandleEvent), then the
-   *  Editor repairs damaged regions of the screen. Note that events
-   *  are processed in batches: several are queued up, then they are
-   *  all processed at once, and only one (at most) repair is done and
-   *  the property sheet is updated once.
-   *  <A HREF="../features.html#event_skipping">
-   *  <TT>FEATURE: event_skipping</TT></A>
-   */
-  public void run()  {
-    while (true) {
-      // process all events that have been enqueued by handleEvent
-      while (!_eventQueue.isEmpty()) super.handleEvent(_eventQueue.dequeue());
-      if (_redrawer != null && _redrawer.pendingDamage()) {
-	repairDamage();
-	updatePropertySheet();
-      }
-      synchronized (_eventQueue) {
-      	try { _eventQueue.wait(); } // wait for one event to be enqueued
-      	catch (InterruptedException ignore) { }
-      }
-      // allow a few more events to build up, if they do it quickly
-      try { _eventHandler.sleep(10); }
-      catch (InterruptedException ignore) { }
-    }
-  }
-
-  /** Actually process events (i.e., take action to modify the
-   *  Figs presented by this Editor) */
-  public boolean dispatchEvent(Event e) {
-    if (e.x == -1 && e.y == -1) return false; // work-around a weird bug
-
-    //  Useful if you are customizing the redraw logic
-    //if (Boolean.getBoolean("MetaForcesRepair"))
-    //if (e.metaDown()) damaged(new Rectangle(e.x, e.y, 100, 100));
-
-    //if (Dbg.on)
-    //Dbg.log("DebugDispatch", "really handing an event: " + e.toString());
-
-    if (e.id == Event.MOUSE_MOVE || e.id == Event.MOUSE_DRAG)
-      if (_eventQueue.nextIsSameAs(e) && _eventQueue.size() > 2)
-	return false; // drop some useless events: this REALLY helps performance
-
     Globals.curEditor(this);
-    setUnderMouse(e);
-    try {
-      if (_selectionManager.handleEvent(e)) return true;
-      if (_modeManager.handleEvent(e)) return true;
-      if (_curNode != null && _curNode instanceof EventHandler)
-	if (((EventHandler)_curNode).handleEvent(e)) return true;
-    }
-    catch (java.lang.Throwable ex) {
-      System.out.println("While processing event " + e.toString() +
-			 " the following error occured:");
-      ex.printStackTrace();
-    }
-
-    switch(e.id) {
-    case Event.WINDOW_DESTROY:
-      if (e.target == _frame) {
-	close();
-	return true;
-      }
-      break;
-    }
-    return super.dispatchEvent(e);
+    //setUnderMouse(me);
+    _selectionManager.mouseClicked(me);
+    _modeManager.mouseClicked(me);  
+    RedrawManager.unlock();
+    _redrawer.repairDamage();
   }
 
+  /**
+   * Invoked when a mouse button has been pressed on a component.
+   */
+  public void mousePressed(MouseEvent me) {
+    RedrawManager.lock();
+    Globals.curEditor(this);
+    //setUnderMouse(me);
+    _selectionManager.mousePressed(me);
+    _modeManager.mousePressed(me);  
+    RedrawManager.unlock();
+    _redrawer.repairDamage();    
+  }
+
+  /**
+     * Invoked when a mouse button has been released on a component.
+     */
+  public void mouseReleased(MouseEvent me) {
+    RedrawManager.lock();
+    Globals.curEditor(this);
+    //setUnderMouse(me);
+    _selectionManager.mouseReleased(me);
+    _modeManager.mouseReleased(me);  
+    RedrawManager.unlock();
+    _redrawer.repairDamage();    
+  }
+
+  /**
+     * Invoked when the mouse enters a component.
+     */
+  public void mouseEntered(MouseEvent me) {
+    if (_awt_component != null) _awt_component.requestFocus();
+    RedrawManager.lock();
+    Globals.curEditor(this);
+    mode(Globals.mode());
+    setUnderMouse(me);
+    _modeManager.mouseEntered(me);  
+    RedrawManager.unlock();
+    _redrawer.repairDamage();
+  }
+
+  /**
+     * Invoked when the mouse exits a component.
+     */
+  public void mouseExited(MouseEvent me) {
+    RedrawManager.lock();
+//     Globals.curEditor(this);
+    setUnderMouse(me);
+    if (_curFig instanceof MouseListener)
+      ((MouseListener)_curFig).mouseExited(me);
+//     _selectionManager.mouseExited(me);
+//     _modeManager.mouseExited(me);  
+    RedrawManager.unlock();
+    _redrawer.repairDamage();
+  }
+
+  /**
+   * Invoked when a mouse button is pressed on a component and then 
+     * dragged.  Mouse drag events will continue to be delivered to
+     * the component where the first originated until the mouse button is
+     * released (regardless of whether the mouse position is within the
+     * bounds of the component).
+     */
+  public void mouseDragged(MouseEvent me) {
+    AWTEvent nextEvent = _awt_component.getToolkit().
+      getSystemEventQueue().peekEvent();
+    if (nextEvent != null && nextEvent.getID() == me.getID()) return; //needs-more-work 
+    RedrawManager.lock();
+    Globals.curEditor(this);
+    setUnderMouse(me);
+    _selectionManager.mouseDragged(me);
+    _modeManager.mouseDragged(me);  
+    RedrawManager.unlock();
+    if (nextEvent == null) _redrawer.repairDamage();
+  }
+
+  /**
+     * Invoked when the mouse button has been moved on a component
+     * (with no buttons no down).
+     */
+  public void mouseMoved(MouseEvent me) {
+    AWTEvent nextEvent = _awt_component.getToolkit().
+      getSystemEventQueue().peekEvent();
+    if (nextEvent != null && nextEvent.getID() == me.getID()) return; //needs-more-work 
+    RedrawManager.lock();
+    Globals.curEditor(this);
+    setUnderMouse(me);
+    _selectionManager.mouseMoved(me);
+    _modeManager.mouseMoved(me);  
+    RedrawManager.unlock();
+    if (nextEvent == null) _redrawer.repairDamage();
+  }
+  
+
+  /**
+   * Invoked when a key has been typed.
+   * This event occurs when a key press is followed by a key release.
+   */
+  public void keyTyped(KeyEvent ke) {
+    RedrawManager.lock();
+    Globals.curEditor(this);
+    _selectionManager.keyTyped(ke);
+    _modeManager.keyTyped(ke);  
+    RedrawManager.unlock();
+    _redrawer.repairDamage();    
+  }
+  
+  /**
+   * Invoked when a key has been pressed.
+     */
+  public void keyPressed(KeyEvent ke) {
+    RedrawManager.lock();
+    Globals.curEditor(this);
+    _selectionManager.keyPressed(ke);
+    _modeManager.keyPressed(ke);  
+    RedrawManager.unlock();
+    _redrawer.repairDamage();    
+  }
+  
+  /**
+   * Invoked when a key has been released.
+   */
+  public void keyReleased(KeyEvent ke) {
+//     RedrawManager.lock();
+//     Globals.curEditor(this);
+//     _selectionManager.keyReleased(ke);
+//     _modeManager.keyReleased(ke);  
+//     RedrawManager.unlock();
+  }
+  
+
+  
   ////////////////////////////////////////////////////////////////
   // Action methods
 
@@ -775,12 +730,12 @@ implements Observer, Runnable, IStatusBar, java.io.Serializable {
    *  <A HREF="../features.html#integrated_debugging_support">
    *  <TT>FEATURE: integrated_debugging_support</TT></A>
    * @see Action */
-  public void executeAction(Action act, Event e) {
-    if (act == null) return;
-    try { act.doIt(e); }
+  public void executeCmd(Cmd c, InputEvent ie) {
+    if (c == null) return;
+    try { c.doIt(); }
     catch (java.lang.Throwable ex) {
-      System.out.println("While executing " + act.toString() +
-			 " on event " + e.toString() +
+      System.out.println("While executing " + c +
+			 " on event " + ie +
 			 " the following error occured:");
       ex.printStackTrace();
     }
@@ -789,30 +744,11 @@ implements Observer, Runnable, IStatusBar, java.io.Serializable {
   ////////////////////////////////////////////////////////////////
   // notifications and updates
 
-  /** Process change notifications from objects that the Editor
-   *  observes. An editor observes its Layer's, which intern observe
-   *  their Fig's which inturn observe their net-level
-   *  models. When something changes state the notification is
-   *  propagated up and eventually cause a damaged region and a
-   *  redraw.  Needs-more-work: This is too complex, indirect, and
-   *  slow. But the concept is simple.  */
-  public void update(Observable o, Object arg) {
-    if (arg instanceof Vector) {
-      String s = (String) ((Vector)arg).elementAt(0);
-      Object obj = ((Vector)arg).elementAt(1);
-    }
-  }
 
-  public void notifyRemoved(Fig f) {
+  public void removed(Fig f) {
     _selectionManager.deselect(f);
     remove(f);
   }
 
-  public void notifyRemoved(Object np) {
-    Fig f = getLayerManager().presentationFor(np);
-    if (f != null) remove(f);
-  }
-
-  public void notifyChanged(Fig f) { f.damagedIn(this); }
 
 } /* end class Editor */

@@ -12,16 +12,16 @@ import uci.argo.kernel.*;
 
 public class ToDoByPriority extends ToDoPerspective {
 
-  protected void computePseudoNodes() {
-    super.computePseudoNodes();
-    ToDoList list = Designer.TheDesigner.getToDoList();
-    Predicate predHigh = new PredicatePriority(ToDoItem.HIGH_PRIORITY);
-    Predicate predMed = new PredicatePriority(ToDoItem.MED_PRIORITY);
-    Predicate predLow = new PredicatePriority(ToDoItem.LOW_PRIORITY);
-    _pseudoNodes.addElement(new ToDoPseudoNode(list, predHigh));
-    _pseudoNodes.addElement(new ToDoPseudoNode(list, predMed));
-    _pseudoNodes.addElement(new ToDoPseudoNode(list, predLow));
-  }
+//   protected void computePseudoNodes() {
+//     super.computePseudoNodes();
+//     ToDoList list = Designer.TheDesigner.getToDoList();
+//     Predicate predHigh = new PredicatePriority(ToDoItem.HIGH_PRIORITY);
+//     Predicate predMed = new PredicatePriority(ToDoItem.MED_PRIORITY);
+//     Predicate predLow = new PredicatePriority(ToDoItem.LOW_PRIORITY);
+//     _pseudoNodes.addElement(new ToDoPseudoNode(list, predHigh));
+//     _pseudoNodes.addElement(new ToDoPseudoNode(list, predMed));
+//     _pseudoNodes.addElement(new ToDoPseudoNode(list, predLow));
+//   }
   
 } /* end class ToDoByPriority */
 

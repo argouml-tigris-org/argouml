@@ -25,6 +25,7 @@ package uci.gef;
 
 import java.util.*;
 import java.awt.*;
+import java.awt.event.*;
 
 /** Mode to detect many common keystroke commands and execute the
  *  appropriate Action. For example, arrow keys cause the selected
@@ -55,40 +56,47 @@ public class ModeExampleKeys extends Mode {
   // key bindings
 
   public void bindKeys() {
-    bindKey(9, new ActionSelectNext()); // should this be here or ModeSelect
-    bindKey(9, Event.SHIFT_MASK, new ActionSelectNext());
-    bindKey('g', new ActionGroup());
-    bindKey('u', new ActionUngroup());
+     // should this be here or ModeSelect
+    bindKey(KeyEvent.VK_TAB, new ActionSelectNext());
+    bindKey(KeyEvent.VK_TAB, InputEvent.SHIFT_MASK, new ActionSelectNext());
+    bindKey(KeyEvent.VK_G, new ActionGroup());
+    bindKey(KeyEvent.VK_U, new ActionUngroup());
 
-    bindKey('f', new ActionReorder(ActionReorder.BRING_FORWARD));
-    bindKey('b', new ActionReorder(ActionReorder.SEND_BACKWARD));
-    bindKey('F', new ActionReorder(ActionReorder.BRING_TO_FRONT));
-    bindKey('B', new ActionReorder(ActionReorder.SEND_TO_BACK));
+    bindKey(KeyEvent.VK_F, new ActionReorder(ActionReorder.BRING_FORWARD));
+    bindKey(KeyEvent.VK_B, new ActionReorder(ActionReorder.SEND_BACKWARD));
+    bindKey(KeyEvent.VK_F, InputEvent.SHIFT_MASK,
+	    new ActionReorder(ActionReorder.BRING_TO_FRONT));
+    bindKey(KeyEvent.VK_B, InputEvent.SHIFT_MASK,
+	    new ActionReorder(ActionReorder.SEND_TO_BACK));
 
-    bindKey(8, new ActionDispose());
-    bindKey(8, Event.SHIFT_MASK, new ActionDispose());
-    bindKey(127, new ActionDispose());
-    bindKey(127, Event.SHIFT_MASK, new ActionDispose());
+    bindKey(KeyEvent.VK_BACK_SPACE, new ActionDispose());
+    bindKey(KeyEvent.VK_BACK_SPACE, InputEvent.SHIFT_MASK, new ActionDispose());
+    bindKey(KeyEvent.VK_DELETE, new ActionDispose());
+    bindKey(KeyEvent.VK_DELETE, Event.SHIFT_MASK, new ActionDispose());
 
-    bindKey('i', new ActionAlign(ActionAlign.ALIGN_TOPS));
-    bindKey('j', new ActionAlign(ActionAlign.ALIGN_LEFTS));
-    bindKey('k', new ActionAlign(ActionAlign.ALIGN_BOTTOMS));
-    bindKey('l', new ActionAlign(ActionAlign.ALIGN_RIGHTS));
+    bindKey(KeyEvent.VK_I, new ActionAlign(ActionAlign.ALIGN_TOPS));
+    bindKey(KeyEvent.VK_J, new ActionAlign(ActionAlign.ALIGN_LEFTS));
+    bindKey(KeyEvent.VK_K, new ActionAlign(ActionAlign.ALIGN_BOTTOMS));
+    bindKey(KeyEvent.VK_L, new ActionAlign(ActionAlign.ALIGN_RIGHTS));
 
-    bindKey(Event.LEFT, new ActionNudge(ActionNudge.LEFT));
-    bindKey(Event.RIGHT, new ActionNudge(ActionNudge.RIGHT));
-    bindKey(Event.UP, new ActionNudge(ActionNudge.UP));
-    bindKey(Event.DOWN, new ActionNudge(ActionNudge.DOWN));
+    bindKey(KeyEvent.VK_LEFT, new ActionNudge(ActionNudge.LEFT));
+    bindKey(KeyEvent.VK_RIGHT, new ActionNudge(ActionNudge.RIGHT));
+    bindKey(KeyEvent.VK_UP, new ActionNudge(ActionNudge.UP));
+    bindKey(KeyEvent.VK_DOWN, new ActionNudge(ActionNudge.DOWN));
 
-    bindKey(Event.LEFT, Event.SHIFT_MASK, new ActionNudge(ActionNudge.LEFT));
-    bindKey(Event.RIGHT, Event.SHIFT_MASK, new ActionNudge(ActionNudge.RIGHT));
-    bindKey(Event.UP, Event.SHIFT_MASK, new ActionNudge(ActionNudge.UP));
-    bindKey(Event.DOWN, Event.SHIFT_MASK, new ActionNudge(ActionNudge.DOWN));
+    bindKey(KeyEvent.VK_LEFT, InputEvent.SHIFT_MASK,
+	    new ActionNudge(ActionNudge.LEFT));
+    bindKey(KeyEvent.VK_RIGHT, InputEvent.SHIFT_MASK,
+	    new ActionNudge(ActionNudge.RIGHT));
+    bindKey(KeyEvent.VK_UP, InputEvent.SHIFT_MASK,
+	    new ActionNudge(ActionNudge.UP));
+    bindKey(KeyEvent.VK_DOWN, InputEvent.SHIFT_MASK,
+	    new ActionNudge(ActionNudge.DOWN));
 
-    bindCtrlKey(Event.LEFT, new ActionScroll(ActionScroll.LEFT));
-    bindCtrlKey(Event.RIGHT, new ActionScroll(ActionScroll.RIGHT));
-    bindCtrlKey(Event.UP, new ActionScroll(ActionScroll.UP));
-    bindCtrlKey(Event.DOWN, new ActionScroll(ActionScroll.DOWN));
+    bindCtrlKey(KeyEvent.VK_LEFT, new ActionScroll(ActionScroll.LEFT));
+    bindCtrlKey(KeyEvent.VK_RIGHT, new ActionScroll(ActionScroll.RIGHT));
+    bindCtrlKey(KeyEvent.VK_UP, new ActionScroll(ActionScroll.UP));
+    bindCtrlKey(KeyEvent.VK_DOWN, new ActionScroll(ActionScroll.DOWN));
   }
 
 } /* end class ModeExampleKeys */

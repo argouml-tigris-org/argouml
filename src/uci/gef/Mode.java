@@ -24,6 +24,7 @@
 package uci.gef;
 
 import java.awt.*;
+import java.awt.event.*;
 import java.util.*;
 import java.io.Serializable;
 import uci.util.*;
@@ -39,18 +40,19 @@ import uci.util.*;
  *  interactions without always modifying Editor and having to
  *  integrate ones modifications with other contributors
  *  modifications.  Mode's should interpert user input and ask the
- *  Editor to execute Action's.  Placing the logic to manipulate the
- *  document into Action's helps keep Mode's small and promotes
- *  sharing of Action code.<p>
+ *  Editor to execute Cmd's.  Placing the logic to manipulate the
+ *  document into Cmd's helps keep Mode's small and promotes
+ *  sharing of Cmd code.<p>
  *  <A HREF="../features.html#editing_modes">
  *  <TT>FEATURE: editing_modes</TT></A>
  *
  * @see Editor
- * @see Action
+ * @see Cmd
  * @see ModeSelect
  * @see ModeCreateArc */
 
-public abstract class Mode extends EventHandler implements Serializable  {
+public abstract class Mode
+implements Serializable, KeyListener, MouseListener, MouseMotionListener  {
   // implements GEF {
 
   ////////////////////////////////////////////////////////////////
@@ -62,7 +64,7 @@ public abstract class Mode extends EventHandler implements Serializable  {
 
   public Hashtable _keybindings = null;
 
-  protected Properties _args;
+  protected Hashtable _args;
 
   ////////////////////////////////////////////////////////////////
   // constructors
@@ -73,10 +75,10 @@ public abstract class Mode extends EventHandler implements Serializable  {
 
   /** Construct a new Mode instance without any Editor as its parent,
    * the parent must be filled in before the instance is actually
-   * used. This constructor is needed because ActionSetMode can only
+   * used. This constructor is needed because CmdSetMode can only
    * call Class.newInstance which does not pass constructor arguments.
    *
-   * @see ActionSetMode
+   * @see CmdSetMode
    * @see Class#newInstance */
   public Mode() { bindKeys(); }
 
@@ -92,8 +94,8 @@ public abstract class Mode extends EventHandler implements Serializable  {
   ////////////////////////////////////////////////////////////////
   // key bindings
 
-  public void args(Properties args) { _args = args; }
-  public Properties args() { return _args; }
+  public void setArgs(Hashtable args) { _args = args; }
+  public Hashtable getArgs() { return _args; }
 
   /** Set all keybindings */
   public void keybindings(Hashtable kb) { _keybindings = kb; }
@@ -101,11 +103,11 @@ public abstract class Mode extends EventHandler implements Serializable  {
   /** get the keybindings */
   public Hashtable keybindings() { return _keybindings; }
 
-  /** define a new keybinding (keystroke-action pair). Returns old
-   * Action if there was one, otherwise null. */
-  public Action bindKey(int key, Action act) { return bindKey(key, 0, act); }
+  /** define a new keybinding (keystroke-Cmd pair). Returns old
+   * Cmd if there was one, otherwise null. */
+  public Cmd bindKey(int key, Cmd act) { return bindKey(key, 0, act); }
 
-  public Action bindKey(char key, Action act) {
+  public Cmd bindKey(char key, Cmd act) {
     char modifiedKey = key;
     int mask = 0;
     if (Character.isUpperCase(key)) {
@@ -115,49 +117,49 @@ public abstract class Mode extends EventHandler implements Serializable  {
     return bindKey((int)key, mask, act);
   }
 
-  public Action bindCtrlKey(int key, Action act) {
+  public Cmd bindCtrlKey(int key, Cmd act) {
     return bindKey(key, Event.CTRL_MASK, act);
   }
 
-  public Action bindCtrlKey(char key, Action act) {
+  public Cmd bindCtrlKey(char key, Cmd act) {
     return bindKey((int)key, Event.CTRL_MASK, act);
   }
 
-  public Action bindKey(int key, int mask, Action act) {
+  public Cmd bindKey(int key, int mask, Cmd c) {
     Integer hashKey = new Integer(mask * 65335 + key);
-    Action oldAct = keybinding(key, mask);
+    Cmd oldCmd = keybinding(key, mask);
     if (_keybindings == null) _keybindings = new Hashtable();
-    _keybindings.put(hashKey, act);
-    return oldAct;
+    _keybindings.put(hashKey, c);
+    return oldCmd;
   }
 
-  /** Remove a keybinding (keystroke-action pair). Returns old
-   *  Action if there was one, otherwise null. */
-  public Action unbindKey(int key) { return unbindKey(key, 0); }
+  /** Remove a keybinding (keystroke-Cmd pair). Returns old
+   *  Cmd if there was one, otherwise null. */
+  public Cmd unbindKey(int key) { return unbindKey(key, 0); }
 
-  public Action unbindKey(int key, int mask) {
+  public Cmd unbindKey(int key, int mask) {
     if (_keybindings == null) return null;
     Integer hashKey = new Integer(mask * 65335 + key);
-    Action oldAct = keybinding(key, mask);
+    Cmd oldCmd = keybinding(key, mask);
     _keybindings.remove(hashKey);
-    return oldAct;
+    return oldCmd;
   }
 
   /** Subclasses should override bindKeys to define their key
    *  bindings. Needs-More-Work: there are some examples of _future_
    *  keybindings here that should be implemented. */
   public void bindKeys() {
-    // bind(escape, new ActionExitMode()); // Needs-More-Work: not implemented
-    // bind(Event.F1, new ActionHelp()); // Needs-More-Work: not implemented
+    // bind(escape, new CmdExitMode()); // Needs-More-Work: not implemented
+    // bind(Event.F1, new CmdHelp()); // Needs-More-Work: not implemented
   }
 
-  /** Lookup the Action bound to the given key code, or null of none. */
-  public Action keybinding(int key) { return keybinding(key, 0); }
+  /** Lookup the Cmd bound to the given key code, or null of none. */
+  public Cmd keybinding(int key) { return keybinding(key, 0); }
 
-  public Action keybinding(int key, int mask) {
+  public Cmd keybinding(int key, int mask) {
     if (_keybindings == null) return null;
     Integer hashKey = new Integer(mask * 65335 + key);
-    return (Action)_keybindings.get(hashKey);
+    return (Cmd)_keybindings.get(hashKey);
   }
 
   public void dumpKeys() { } //System.out.println(_keybindings.toString()); }
@@ -165,16 +167,26 @@ public abstract class Mode extends EventHandler implements Serializable  {
   ////////////////////////////////////////////////////////////////
   // event handlers
 
-  /** Check if the key that was pressed is bound to an Action, and
-   *  if so, execute that action. */
-  public boolean keyDown(Event e, int key) {
-    Action act = keybinding(key, e.modifiers);
-    if (act != null) {
-      _editor.executeAction(act, e);
-      return true;
+  /** Check if the key that was pressed is bound to an Cmd, and
+   *  if so, execute that Cmd. */
+  public void keyPressed(KeyEvent ke) {
+    Cmd c = keybinding(ke.getKeyCode(), ke.getModifiers());
+    if (c != null) {
+      _editor.executeCmd(c, ke);
+      ke.consume();
     }
-    return super.keyDown(e, key);
   }
+  public void keyReleased(KeyEvent ke) { }
+  public void keyTyped(KeyEvent ke) {  }
+
+  public void mouseMoved(MouseEvent me) { }
+  public void mouseDragged(MouseEvent me) { }
+  public void mouseClicked(MouseEvent me) { }
+  public void mousePressed(MouseEvent me) { }
+  public void mouseReleased(MouseEvent me) { }
+  public void mouseExited(MouseEvent me) { }
+  public void mouseEntered(MouseEvent me) { }
+
 
   ////////////////////////////////////////////////////////////////
   // methods related to transitions among modes

@@ -48,7 +48,7 @@ implements java.io.Serializable {
   ////////////////////////////////////////////////////////////////
   // instance variables
 
-  private Properties _decisions = new Properties();
+  private Vector _decisions = new Vector();
 
   ////////////////////////////////////////////////////////////////
   // constructor
@@ -58,27 +58,33 @@ implements java.io.Serializable {
   ////////////////////////////////////////////////////////////////
   // accessors
 
+  public Vector getDecisions() { return _decisions; }
 
   /** Reply true iff the Designer is considering the given decision. */
   public boolean isConsidering(String decision) {
-    String intStr = _decisions.getProperty(decision);
-    if 	(null == intStr) return false;
-    int priority = Integer.parseInt(intStr);
-    return priority >= 1;
+    Decision d = findDecision(decision);
+    if 	(null == d) return false;
+    return d.getPriority() > 0;
   }
 
   public synchronized void setDecisionPriority(String decision, int priority) {
-    String priStr = (new Integer(priority)).toString();
-    _decisions.put(decision, priStr);
+    Decision d = findDecision(decision);
+    if 	(null == d) {
+      d = new Decision(decision, priority);
+      _decisions.addElement(d);
+      return;
+    }
+    d.setPriority(priority);
     setChanged();
     notifyObservers(decision);
+    //decision model listener
   }
 
   /** If the given decision is already defined, do nothing. If it is
    * not already defined, set it to the given initial priority. */
   public void defineDecision(String decision, int priority) {
-    if (_decisions.get(decision) == null)
-      setDecisionPriority(decision, priority);
+    Decision d = findDecision(decision);
+    if (d == null) setDecisionPriority(decision, priority);
   }
 
   /** The Designer has indicated that he is now interested in the
@@ -91,6 +97,15 @@ implements java.io.Serializable {
    * given decision right now. */
   public void stopConsidering(String decision) {
     setDecisionPriority(decision, 0);
+  }
+
+  protected Decision findDecision(String decName) {
+    Enumeration enum = _decisions.elements();
+    while (enum.hasMoreElements()) {
+      Decision d = (Decision) enum.nextElement();
+      if (decName.equals(d.getName())) return d;
+    }
+    return null;
   }
 
 } /* end class DecisionModel */

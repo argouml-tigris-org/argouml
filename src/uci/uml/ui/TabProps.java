@@ -16,7 +16,8 @@ implements TabModelTarget {
   ////////////////////////////////////////////////////////////////
   // instance variables
   Object _target;
-
+  boolean _shouldBeEnabled = false;
+  
   ////////////////////////////////////////////////////////////////
   // constructor
   public TabProps() {
@@ -32,5 +33,8 @@ implements TabModelTarget {
     // needs-more-work
   }
   public Object getTarget() { return _target; }
+
+  public boolean shouldBeEnabled() { return _shouldBeEnabled; }
+
 
 } /* end class TabProps */

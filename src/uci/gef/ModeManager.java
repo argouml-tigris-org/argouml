@@ -24,7 +24,9 @@
 package uci.gef;
 
 import java.awt.*;
+import java.awt.event.*;
 import java.util.*;
+import java.io.Serializable;
 import uci.util.*;
 
 /** ModeManager is a composite Mode that is made up of several other
@@ -33,7 +35,8 @@ import uci.util.*;
  *  i.e., the last mode added gets the first chance to handle an
  *  Event.  */
 
-public class ModeManager extends EventHandler implements java.io.Serializable {
+public class ModeManager
+implements Serializable, MouseListener, MouseMotionListener, KeyListener {
 
   ////////////////////////////////////////////////////////////////
   // instance variables
@@ -111,40 +114,112 @@ public class ModeManager extends EventHandler implements java.io.Serializable {
 
   /** Pass the event to each mode in the stack until one handles it. */
   public boolean handleEvent(Event e) {
-    boolean res = super.handleEvent(e);
-    for (int i = _modes.size() - 1; i >= 0 && !res; --i) {
-      Mode m = ((Mode)_modes.elementAt(i));
-      if (Dbg.on) Dbg.log("DebugDispatch2", "passing event to mode #" + i);
-      try { res = m.handleEvent(e); }
-      catch (java.lang.Throwable ex) {
-	System.out.println("While passing event " + e.toString() +
-			   " to mode " + m.toString() +
-			   " the following error occured:");
-	ex.printStackTrace();
-      }
-    }
-    return res;
+    System.out.println("old handleEvent called in ModeManager");
+    return true;
+//     boolean res = super.handleEvent(e);
+//     for (int i = _modes.size() - 1; i >= 0 && !res; --i) {
+//       Mode m = ((Mode)_modes.elementAt(i));
+//       if (Dbg.on) Dbg.log("DebugDispatch2", "passing event to mode #" + i);
+//       try { res = m.handleEvent(e); }
+//       catch (java.lang.Throwable ex) {
+// 	System.out.println("While passing event " + e.toString() +
+// 			   " to mode " + m.toString() +
+// 			   " the following error occured:");
+// 	ex.printStackTrace();
+//       }
+//     }
+//     return res;
   }
 
   /** Give each Mode a chance to prehandle the event. */
   public void preHandleEvent(Event e) {
-    checkModeTransitions(e);
-    for (int i = 1; i < _modes.size(); ++i) {
-      //DebugLog.log("DebugDispatch2", "prehandeling event with mode #" + i);
-      ((Mode)_modes.elementAt(i)).preHandleEvent(e);
-    }
-    super.preHandleEvent(e);
+//     checkModeTransitions(e);
+//     for (int i = 1; i < _modes.size(); ++i) {
+//       //DebugLog.log("DebugDispatch2", "prehandeling event with mode #" + i);
+//       ((Mode)_modes.elementAt(i)).preHandleEvent(e);
+//     }
+//     super.preHandleEvent(e);
   }
 
   /** Give each Mode a chance to posthandle the event. */
   public void postHandleEvent(Event e) {
-    super.postHandleEvent(e);
-    for (int i = _modes.size() - 1; i >= 0; --i) {
-      //DebugLog.log("DebugDispatch2", "posthandeling event with mode #" + i);
-      ((Mode)_modes.elementAt(i)).postHandleEvent(e);
+//     super.postHandleEvent(e);
+//     for (int i = _modes.size() - 1; i >= 0; --i) {
+//       //DebugLog.log("DebugDispatch2", "posthandeling event with mode #" + i);
+//       ((Mode)_modes.elementAt(i)).postHandleEvent(e);
+//     }
+  }
+
+
+  public void keyTyped(KeyEvent ke) {
+    checkModeTransitions(ke);    
+    for (int i = _modes.size() - 1; i >= 0 && !ke.isConsumed(); --i) {
+      Mode m = ((Mode)_modes.elementAt(i));
+      m.keyTyped(ke);
     }
   }
 
+  public void keyReleased(KeyEvent ke) { }
+  public void keyPressed(KeyEvent ke) {
+    for (int i = _modes.size() - 1; i >= 0 && !ke.isConsumed(); --i) {
+      Mode m = ((Mode)_modes.elementAt(i));
+      m.keyPressed(ke);
+    }
+  }
+  
+  public void mouseMoved(MouseEvent me) {
+    for (int i = _modes.size() - 1; i >= 0 && !me.isConsumed(); --i) {
+      Mode m = ((Mode)_modes.elementAt(i));
+      m.mouseMoved(me);
+    }
+  }
+
+  public void mouseDragged(MouseEvent me) {
+    for (int i = _modes.size() - 1; i >= 0 && !me.isConsumed(); --i) {
+      Mode m = ((Mode)_modes.elementAt(i));
+      m.mouseDragged(me);
+    }
+  }
+
+  public void mouseClicked(MouseEvent me) {
+    checkModeTransitions(me);    
+    for (int i = _modes.size() - 1; i >= 0 && !me.isConsumed(); --i) {
+      Mode m = ((Mode)_modes.elementAt(i));
+      m.mouseClicked(me);
+    }
+  }
+
+  public void mousePressed(MouseEvent me) {
+    checkModeTransitions(me);
+    for (int i = _modes.size() - 1; i >= 0 && !me.isConsumed(); --i) {
+      Mode m = ((Mode)_modes.elementAt(i));
+      m.mousePressed(me);
+    }
+  }
+
+  public void mouseReleased(MouseEvent me) {
+    checkModeTransitions(me);    
+    for (int i = _modes.size() - 1; i >= 0 && !me.isConsumed(); --i) {
+      Mode m = ((Mode)_modes.elementAt(i));
+      m.mouseReleased(me);
+    }
+  }
+
+  public void mouseEntered(MouseEvent me) {
+    for (int i = _modes.size() - 1; i >= 0 && !me.isConsumed(); --i) {
+      Mode m = ((Mode)_modes.elementAt(i));
+      m.mouseEntered(me);
+    }
+  }
+
+  public void mouseExited(MouseEvent me) {
+    for (int i = _modes.size() - 1; i >= 0 && !me.isConsumed(); --i) {
+      Mode m = ((Mode)_modes.elementAt(i));
+      m.mouseExited(me);
+    }
+  }
+
+  
   ////////////////////////////////////////////////////////////////
   // mode transitions
 
@@ -155,14 +230,19 @@ public class ModeManager extends EventHandler implements java.io.Serializable {
    *  applications.  Needs-More-Work: I would like to put the
    *  transition from ModeSelect to ModeModify here, but there are too
    *  many interactions, so that code is still in ModeSelect. */
-  public void checkModeTransitions(Event e) {
-    if (top() instanceof ModeSelect && e.id == Event.MOUSE_DOWN) {
-      Fig underMouse = _editor.hit(e.x, e.y);
+  public void checkModeTransitions(InputEvent ie) {
+    if ((top() instanceof ModeSelect || top() instanceof ModeModify)
+	&& ie.getID() == MouseEvent.MOUSE_PRESSED) {
+      MouseEvent me = (MouseEvent) ie;
+      int x = me.getX(), y = me.getY();
+      Fig underMouse = _editor.hit(x, y);
       if (underMouse instanceof FigNode) {
-	NetPort startPort = ((FigNode) underMouse).hitPort(e.x, e.y);
+	NetPort startPort = ((FigNode) underMouse).hitPort(x, y);
 	if (startPort != null) {
-	  _editor.mode(new ModeCreateArc(_editor));
-	  return;
+	  //user clicked on a port, now drag an edge
+	  Mode createArc = new ModeCreateArc(_editor);
+	  push(createArc);
+	  createArc.mousePressed(me);
 	}
       }
     }

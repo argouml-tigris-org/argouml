@@ -22,7 +22,7 @@ implements ChangeListener, MouseListener {
   protected Object _target;
   protected JTabbedPane _tabs = new JTabbedPane(JTabbedPane.BOTTOM);
   protected Editor _ed;
-  protected ForwardingPanel _awt_comp;
+ // protected ForwardingPanel _awt_comp;
   protected Vector _tabPanels = new Vector();
 
   ////////////////////////////////////////////////////////////////
@@ -41,7 +41,7 @@ implements ChangeListener, MouseListener {
   // accessors
 
   public Dimension getMinimumSize() { return new Dimension(100, 100); }
-  public Dimension getPreferredSize() { return new Dimension(600, 400); }
+  public Dimension getPreferredSize() { return new Dimension(400, 400); }
 
   public void setTarget(Object t) {
     String prevSelectedTabTitle = "no editor";

@@ -89,16 +89,31 @@ public class LayerDiagram extends Layer {
     if (Dbg.on) Dbg.assert(f != null, "tried to add null Fig");
     _contents.removeElement(f); // act like a set
     _contents.addElement(f);
-    f.addObserver(this); // needs-more-work: old?
     f.setLayer(this);
     f.endTrans();
+  }
+
+  /** Add a Fig to the contents of this layer. Items are
+   *  added on top of all other items. */
+  public void insertAt(Fig f, int index) {
+    if (Dbg.on) Dbg.assert(f != null, "tried to insert null Fig");
+    _contents.removeElement(f); // act like a set
+    _contents.insertElementAt(f, index);
+    f.setLayer(this);
+    f.endTrans();
+  }
+
+  /** Add a Fig to the contents of this layer. Items are
+   *  added on top of all other items. */
+  public int indexOf(Fig f) {
+    if (Dbg.on) Dbg.assert(f != null, "tried to find null Fig");
+    return _contents.indexOf(f);
   }
 
   /** Remove the given Fig from this layer. */
   public void remove(Fig f) {
     _contents.removeElement(f);
     f.endTrans();
-    f.deleteObserver(this);
     f.setLayer(null);
   }
 
@@ -210,20 +225,21 @@ public class LayerDiagram extends Layer {
   /** Reorder the given Fig in this layer. */
   public void reorder(Fig f, int function) {
     switch (function) {
-    case ActionReorder.SEND_TO_BACK:
+    case CmdReorder.SEND_TO_BACK:
       sendToBack(f);
       break;
-    case ActionReorder.BRING_TO_FRONT:
+    case CmdReorder.BRING_TO_FRONT:
       bringToFront(f);
       break;
-    case ActionReorder.SEND_BACKWARD:
+    case CmdReorder.SEND_BACKWARD:
       sendBackward(f);
       break;
-    case ActionReorder.BRING_FORWARD:
+    case CmdReorder.BRING_FORWARD:
       bringForward(f);
       break;
     }
   }
 
+  
 } /* end class LayerDiagram */
 

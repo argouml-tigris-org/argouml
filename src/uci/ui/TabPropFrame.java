@@ -361,6 +361,7 @@ public class TabPropFrame extends Frame {
 // //   }
 
   public void updateTabs() {
+    try {
     int firstEnabled = -1;
     int numTabs = tabPanel.countTabs();
     for (int tab = 0; tab < numTabs; ++tab)
@@ -369,10 +370,13 @@ public class TabPropFrame extends Frame {
     int curTab = tabPanel.getCurrentPanelNdx();
     if (curTab < 0 && firstEnabled != -1)
       tabPanel.showTab(firstEnabled);
+    }
+    catch (Exception ex) { }
   }
 
   public boolean updateTabEnabled(int tab) {
     boolean canEdit;
+    try {
     Component c = tabPanel.getTabPanel(tab);
     if (c instanceof PropSheet)
       canEdit = ((PropSheet) c).canEdit(_selection);
@@ -380,7 +384,10 @@ public class TabPropFrame extends Frame {
     tabPanel.enableTabPanel(canEdit, tab);
     return canEdit;
     }
-
+    catch (Exception ex) { }
+    return false;
+  }
+    
 /** <A HREF="../bugs.html#win_prop_sheet_grabs_focus">
  *  <FONT COLOR=660000><B>BUG: win_prop_sheet_grabs_focus</B></FONT></A>
  */

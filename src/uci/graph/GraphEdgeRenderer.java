@@ -42,6 +42,6 @@ import uci.gef.Layer;
 
 public interface GraphEdgeRenderer {
   /** Return a Fig that can be used to represent the given edge */
-  FigEdge getFigEdgeFor(GraphModel graph, Layer lay, Object edge);
+  FigEdge getFigEdgeFor(GraphModel gm, Layer lay, Object edge);
 
 } /* end interface GraphEdgeRenderer */

@@ -24,6 +24,8 @@
 package uci.gef;
 
 import java.awt.*;
+import java.awt.event.KeyListener;
+import java.awt.event.KeyEvent;
 import java.util.*;
 import uci.ui.*;
 import uci.util.*;
@@ -35,7 +37,8 @@ import uci.util.*;
  *  <TT>FEATURE: basic_shapes_text</TT></A>
  */
 
-public class FigText extends Fig {
+public class FigText extends Fig
+implements KeyListener {
 
   ////////////////////////////////////////////////////////////////
   // constants
@@ -261,16 +264,17 @@ public class FigText extends Fig {
     chunkY = _y + _topMargin + chunkH;
     if (_textFilled) {
       g.setColor(_textFillColor);
-      lines = new StringTokenizer(_curText, "\n", true);
+      lines = new StringTokenizer(_curText, "\n\r", true);
       while (lines.hasMoreTokens()) {
 	String curLine = lines.nextToken();
+	//if (curLine.equals("\r")) continue;
 	int chunkW = _fm.stringWidth(curLine);
 	switch (_alignment) {
 	case JUSTIFY_LEFT: break;
 	case JUSTIFY_CENTER: chunkX = _x + (_w - chunkW) / 2; break;
 	case JUSTIFY_RIGHT: chunkX = _x + _w - chunkW - _rightMargin; break;
 	}
-	if (curLine.equals("\n")) chunkY += chunkH;
+	if (curLine.equals("\n") || curLine.equals("\r")) chunkY += chunkH;
 	else g.fillRect(chunkX, chunkY - chunkH, chunkW, chunkH);
       }
     }
@@ -278,16 +282,17 @@ public class FigText extends Fig {
     g.setColor(_textColor);
     chunkX = _x + _leftMargin;
     chunkY = _y + _topMargin + _lineHeight + _lineSpacing;
-    lines = new StringTokenizer(_curText, "\n", true);
+    lines = new StringTokenizer(_curText, "\n\r", true);
     while (lines.hasMoreTokens()) {
       String curLine = lines.nextToken();
+      //if (curLine.equals("\r")) continue;
       int chunkW = _fm.stringWidth(curLine);
       switch (_alignment) {
       case JUSTIFY_LEFT: break;
       case JUSTIFY_CENTER: chunkX = _x + ( _w - chunkW ) / 2; break;
       case JUSTIFY_RIGHT: chunkX = _x + _w  - chunkW; break;
       }
-      if (curLine.equals("\n")) chunkY += chunkH;
+      if (curLine.equals("\n")  || curLine.equals("\r")) chunkY += chunkH;
       else g.drawString(curLine, chunkX, chunkY);
     }
   }
@@ -302,14 +307,34 @@ public class FigText extends Fig {
    *  backspace, the last character is removed.  Needs-More-Work: Should
    *  also catch arrow keys and mouse clicks for full text
    *  editing... someday... */
-  public boolean keyDown(Event evt,int key) {
-    startTrans();
-    if ((key == 8) || (key == 127)) deleteLastChar();
-    else append((char)key);
-    endTrans();
-    return true; /* needs-more-work: not all keys are processed... */
+  public void keyTyped(KeyEvent ke) {
+    if (ke.getModifiers() != 0) return;
+    char c = ke.getKeyChar();
+    if (!Character.isISOControl(c)) {
+      startTrans();
+      append(c);
+      endTrans();
+      ke.consume();
+    }
   }
 
+  public void keyPressed(KeyEvent ke) {
+    if (ke.getKeyCode() == KeyEvent.VK_BACK_SPACE) {
+      startTrans();
+      deleteLastChar();
+      endTrans();
+      ke.consume();
+    }
+    if (ke.getKeyCode() == KeyEvent.VK_ENTER) {
+      startTrans();
+      append('\n');
+      endTrans();
+      ke.consume();
+    }
+  }
+  public void keyReleased(KeyEvent ke) { }
+
+  
   ////////////////////////////////////////////////////////////////
   // internal utility functions
 
@@ -322,11 +347,11 @@ public class FigText extends Fig {
     if (_fm == null) _fm = Toolkit.getDefaultToolkit().getFontMetrics(_font);
     int overallW = 0;
     int numLines = 1;
-    StringTokenizer lines = new StringTokenizer(_curText, "\n", true);
+    StringTokenizer lines = new StringTokenizer(_curText, "\n\r", true);
     while (lines.hasMoreTokens()) {
       String curLine = lines.nextToken();
       int chunkW = _fm.stringWidth(curLine);
-      if (curLine.equals("\n")) numLines++;
+      if (curLine.equals("\n") || curLine.equals("\r")) numLines++;
       else overallW = Math.max(chunkW, overallW);
     }
     _lineHeight = _fm.getHeight();

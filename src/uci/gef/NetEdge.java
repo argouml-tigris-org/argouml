@@ -26,6 +26,9 @@ package uci.gef;
 import java.awt.*;
 import java.io.*;
 import java.util.*;
+import java.beans.*;
+
+import uci.graph.*;
 
 /** This class models an arc in our underlying connected graph model.
  *  <A HREF="../features.html#graph_representation_arcs">
@@ -74,14 +77,21 @@ public abstract class NetEdge extends NetPrimitive {
    * instance is made. Maybe this behavior should be in a constructor,
    * but I want to use Class#newInstancel so constructors do not get
    * any arguments. */
-  public boolean connect(NetPort s, NetPort d) {
-    if (s.canConnectTo(d) && d.canConnectTo(s)) {
-      setSourcePort(s);		setDestPort(d);
-      s.addEdge(this); 		d.addEdge(this);
-      s.postConnect(d); 	d.postConnect(s);
-      return true;
-    }
-    return false;
+  public boolean connect(GraphModel gm, Object srcPort, Object destPort) {
+    NetPort srcNetPort = (NetPort) srcPort;
+    NetPort destNetPort = (NetPort) destPort;
+    if (!srcNetPort.canConnectTo(gm, destPort)) return false;
+    if (!destNetPort.canConnectTo(gm, srcPort)) return false;
+
+    setSourcePort(srcNetPort);
+    setDestPort(destNetPort);
+
+    srcNetPort.addEdge(this);
+    destNetPort.addEdge(this);
+    
+    srcNetPort.postConnect(gm, destPort);
+    destNetPort.postConnect(gm, srcPort);
+    return true;
   }
 
   ////////////////////////////////////////////////////////////////
@@ -92,15 +102,12 @@ public abstract class NetEdge extends NetPrimitive {
     if (getSourcePort() != null && getDestPort() != null) {
       _sourcePort.removeEdge(this);
       _destPort.removeEdge(this);
+      
       // needs-more-work: assumes no parallel edges!
-      _sourcePort.postDisconnect(getDestPort());
-      _destPort.postDisconnect(getSourcePort());
-      Vector v = new Vector(2);
-      v.addElement(Globals.REMOVE);
-      v.addElement(this);
-      setChanged();
-      System.out.println("NetEdge notifying:" + toString());
-      notifyObservers(v);
+      // needs-more-work: these nulls should be GraphModels
+      _sourcePort.postDisconnect(null, getDestPort());
+      _destPort.postDisconnect(null, getSourcePort());
+      firePropertyChange("Disposed", false, true);
     }
   }
 
@@ -129,6 +136,9 @@ public abstract class NetEdge extends NetPrimitive {
   /** Override this method if you want your Edge subclasses to have a
    * different look. */
   public abstract FigEdge makePresentation(Layer lay);
+
+
+
 
 } /* end class NetEdge */
 

@@ -4,22 +4,26 @@ package uci.uml.ui;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
-import uci.util.*;
-import uci.gef.JGraph;
+
 import com.sun.java.swing.*;
 import com.sun.java.swing.border.*;
 import com.sun.java.swing.event.*;
-// import com.sun.java.swing.text.*;
-// import com.sun.java.swing.border.*;
+
+import uci.ui.*;
+import uci.util.*;
+import uci.gef.*;
+import uci.gef.event.*;
+
 
 public class ClassDiagramEditor extends TabSpawnable
-implements TabModelTarget {
+implements TabModelTarget, GraphSelectionListener {
   ////////////////////////////////////////////////////////////////
   // instance variables
   protected Object _target;
   protected JGraph _graph;
   protected ToolBar _toolBar;
   protected ButtonGroup _lineModeBG;
+  protected boolean _shouldBeEnabled = true;
 
   ////////////////
   // actions
@@ -28,16 +32,16 @@ implements TabModelTarget {
   protected static Action _actionCopy = new ActionCopy();
   protected static Action _actionPaste = new ActionPaste();
 
-  protected static Action _actionSelect = new ActionSelect();
+  protected static Action _actionSelect = new CmdSetMode(ModeSelect.class, "Select");
   protected static Action _actionClassWizard = new ActionClassWizard();
   protected static Action _actionClass = new ActionClass();
-  protected static Action _actionRectangle = new ActionRectangle();
-  protected static Action _actionRRectangle = new ActionRRectangle();
-  protected static Action _actionCircle = new ActionCircle();
-  protected static Action _actionLine = new ActionLine();
-  protected static Action _actionText = new ActionText();
-  protected static Action _actionPoly = new ActionPoly();
-  protected static Action _actionInk = new ActionInk();
+  protected static Action _actionRectangle = new CmdSetMode(ModeCreateFigRect.class, "Rectangle");
+  protected static Action _actionRRectangle = new CmdSetMode(ModeCreateFigRRect.class, "RRect");
+  protected static Action _actionCircle = new CmdSetMode(ModeCreateFigCircle.class, "Circle");
+  protected static Action _actionLine = new CmdSetMode(ModeCreateFigLine.class, "Line");
+  protected static Action _actionText = new CmdSetMode(ModeCreateFigText.class, "Text");
+  protected static Action _actionPoly = new CmdSetMode(ModeCreateFigPoly.class, "Polygon");
+  protected static Action _actionInk = new CmdSetMode(ModeCreateFigInk.class, "Ink");
 
 
   ////////////////////////////////////////////////////////////////
@@ -50,23 +54,29 @@ implements TabModelTarget {
     setLayout(new BorderLayout());
     _graph = jg;
     uci.gef.Globals.setStatusBar(ProjectBrowser.TheInstance);
-    _toolBar = new ToolBar();
     initToolBar();
+    //_graph.setToolBar(_toolBar); //I wish this had worked...
     add(_toolBar, BorderLayout.NORTH);
     JPanel p = new JPanel();
     p.setLayout(new BorderLayout());
     p.setBorder(new EtchedBorder(EtchedBorder.LOWERED));
     p.add(_graph, BorderLayout.CENTER);
     add(p, BorderLayout.CENTER);
+    _graph.addGraphSelectionListener(this);
   }
 
   
   
-//   public ImageIcon loadImageIcon(String filename, String description) {
-//     // needs-more-work: use class resources
-//     String imageDir = "f:/jr/dev06/uci/uml/ui/images/";
-//     return new ImageIcon(imageDir + filename, description);  
-//   }
+  protected static ImageIcon loadIconResource(String imgName, String desc) {
+    ImageIcon res = null;
+    try {
+      java.net.URL imgURL = ClassDiagramEditor.class.getResource(imgName);
+      return new ImageIcon(imgURL, desc);
+    }
+    catch (Exception ex) {
+      return new ImageIcon(desc);
+    }
+  }
   
 
   public Object clone() {
@@ -82,14 +92,20 @@ implements TabModelTarget {
   }
   
   protected void initToolBar() {
+    _toolBar = new ToolBar();
     _toolBar.add(_actionCut);
     _toolBar.add(_actionCopy);
     _toolBar.add(_actionPaste);
     _toolBar.addSeparator();
     _toolBar.add(_actionSelect);
-    _toolBar.addSeparator();
-    _lineModeBG = _toolBar.addRadioGroup("Association", "Inheritance");
-    _toolBar.addSeparator();
+
+    ImageIcon assocUp = loadIconResource("Association.gif", "");
+    ImageIcon assocDown = loadIconResource("AssociationInverse.gif", "");
+    ImageIcon inherUp = loadIconResource("Inheritance.gif", "");
+    ImageIcon inherDown = loadIconResource("InheritanceInverse.gif", "");
+    _lineModeBG = _toolBar.addRadioGroup("Association", assocUp, assocDown,
+					 "Inheritance", inherUp, inherDown);
+
     _toolBar.add(_actionClass);
     _toolBar.add(_actionRectangle);
     _toolBar.add(_actionRRectangle);
@@ -108,6 +124,22 @@ implements TabModelTarget {
   }
   public Object getTarget() { return _target; }
 
+  public boolean shouldBeEnabled() { return _shouldBeEnabled; }
+
+  ////////////////////////////////////////////////////////////////
+  // events
+
+  public void selectionChanged(GraphSelectionEvent gse) {
+    System.out.println("ClassDiagramEditor got editor selection event");
+    Vector sels = gse.getSelections();
+    ProjectBrowser pb = ProjectBrowser.TheInstance;
+    if (sels.size() == 1) pb.setDetalsTarget(sels.elementAt(0));
+    else pb.setDetalsTarget(null);
+  }
   
+  public void removeGraphSelectionListener(GraphSelectionListener listener) {
+    _graph.removeGraphSelectionListener(listener);
+  }
+
 
 }

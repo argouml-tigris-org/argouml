@@ -7,6 +7,7 @@ import com.sun.java.swing.*;
 
 import uci.util.*;
 import uci.uml.ui.*;
+import uci.uml.critics.*;
 import uci.uml.Model_Management.Model;
 import uci.uml.test.omg.*;
 
@@ -19,8 +20,8 @@ public class Main {
 
   public static int WIDTH = 800;
   public static int HEIGHT = 600;
-  public static int INITIAL_WIDTH = 400; // for showing progress bar
-  public static int INITIAL_HEIGHT = 200;
+  public static int SPLASH_WIDTH = 400;
+  public static int SPLASH_HEIGHT = 200;
 
   ////////////////////////////////////////////////////////////////
   // class variables
@@ -50,7 +51,7 @@ public class Main {
     ProjectBrowser pb = new ProjectBrowser("ProjectBrowser");
     pb.addWindowListener(new WindowCloser());
     JOptionPane.setRootFrame(pb);
-    pb.setSize(INITIAL_WIDTH, INITIAL_HEIGHT);
+    //pb.setSize(INITIAL_WIDTH, INITIAL_HEIGHT);
     Dimension scrSize = Toolkit.getDefaultToolkit().getScreenSize();
     pb.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
     pb.setLocation(scrSize.width/2 - WIDTH/2,
@@ -65,6 +66,20 @@ public class Main {
     //pb.validate();
     //pb.repaint();
     //pb.requestDefaultFocus();
+
+    Designer dsgr = Designer.theDesigner();
+    uci.uml.critics.Init.init();
+
+
+    //should be done in ProjectBrowser.setProject();
+    Designer.theDesigner().spawnCritiquer(pb.getProject());
+    Designer.theDesigner().setChildGenerator(new ChildGenUML());
+    System.out.println("spawned");
+
+    // should be in logon wizard?
+    dsgr.startConsidering(uci.uml.critics.CrUML.decINHERITANCE);
+    dsgr.startConsidering(uci.uml.critics.CrUML.decCONTAINMENT);
+    
   }
 
 
@@ -88,16 +103,22 @@ class MockProject extends Project {
   public MockProject() {
     super("MockProject");
     _diagrams.addElement(makeDiagram());
-    _models.addElement(makeModel());
+    _models.addElement(makeModel1());
+    _models.addElement(makeModel2());
   }
 
   public uci.gef.LayerDiagram makeDiagram() {
     return new uci.gef.LayerDiagram();
   }
 
-  public Model makeModel() {
+  public Model makeModel1() {
     GraphicsExample ge = new GraphicsExample();
     return ge.model;
+  }
+
+  public Model makeModel2() {
+    ShapesExample she = new ShapesExample();
+    return she.model;
   }
 
 } /* end class MockProject */

@@ -249,7 +249,7 @@ public class RedrawManager implements Runnable {
       // offG.fillRect(r.x, r.y, r.width, r.height);
       offG.clearRect(r.x-F, r.y-F, r.width+F*2, r.height+F*2);
       offG.clipRect(r.x-F-1, r.y-F-1, r.width+F*2+2, r.height+F*2+2);
-      ed.paintRect(r, offG);
+      ed.paint(offG);
       offG.dispose();
     }
     removeAllElements();
@@ -284,7 +284,7 @@ public class RedrawManager implements Runnable {
       offG.fillRect(r.x, r.y, r.width, r.height);
       //offG.clearRect(r.x, r.y, r.width, r.height);
       offG.clipRect(r.x-1, r.y-1, r.width+2, r.height+2);
-      ed.paintRect(r, offG);
+      ed.paint(offG);
       // It is important that paintRect and the various Fig paint()
       // routines do not attempt to call add to register damage. There
       // should not be any reason to do that. It would cause deadlock...

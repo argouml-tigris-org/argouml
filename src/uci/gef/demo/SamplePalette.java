@@ -32,25 +32,17 @@ import uci.gef.*;
  *
  * @see uci.gef.demo.FlexibleApplet */
 
-public class SamplePalette extends Palette {
-
-  /** The class for the NetNode's to make when the user clicks the
-   * SampleNode button. */
-  static final String SampNode1CLASS = "uci.gef.demo.SampleNode";
-  static final String SampNode2CLASS = "uci.gef.demo.SampleNode2";
-  static final String SampNode3CLASS = "uci.gef.demo.SampleNode3";
+public class SamplePalette extends uci.ui.ToolBar {
 
   /** Construct a new palette of example nodes for the Example application */
-  public SamplePalette() { super(2, 1, "Example"); }
+  public SamplePalette() {
+    defineButtons();
+  }
 
   /** Define a button to make for the Example application */
-  public Vector defineButtons() {
-    Vector v = new Vector();
-    Action addSampNode1 = new ActionCreateNode(SampNode1CLASS, null, false);
-    v.addElement(new ActiveButton("Node One", addSampNode1));
-    Action addSampNode2 = new ActionCreateNode(SampNode2CLASS, null, false);
-    v.addElement(new ActiveButton("Node Two", addSampNode2));
-    return v;
+  public void defineButtons() {
+    add(new CmdCreateNode(SampleNode.class, "Node One"));
+    add(new CmdCreateNode(SampleNode2.class, "Node Two"));
   }
 
 } /* end class SamplePalette */

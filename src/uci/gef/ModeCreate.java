@@ -24,6 +24,7 @@
 package uci.gef;
 
 import java.awt.*;
+import java.awt.event.*;
 
 /** Abstract superclass for all Mode's that create new
  *  Fig's. This class factors our shared code that would
@@ -62,16 +63,16 @@ public abstract class ModeCreate extends Mode {
   private Point snapPt = new Point(0, 0);
 
   /** On mouse down, make a new Fig in memory. */
-  public boolean mouseDown(Event e, int x, int y) {
+  public void mousePressed(MouseEvent me) {
     start();
     synchronized (snapPt) {
-      snapPt.move(x, y);
+      snapPt.move(me.getX(), me.getY());
       _editor.snap(snapPt);
       anchorX = snapPt.x;
       anchorY = snapPt.y;
     }
-    _newItem = createNewItem(e, anchorX, anchorY);
-    return true;
+    _newItem = createNewItem(me, anchorX, anchorY);
+    me.consume();
   }
 
   /** On mouse drag, resize the new item as the user moves the
@@ -79,25 +80,25 @@ public abstract class ModeCreate extends Mode {
    *  and I should call dragHandle(). That would elimiate one method
    *  from each oif several classes, but dragging during creation is
    *  not really the same thing as dragging after creation... */
-  public boolean mouseDrag(Event e, int x, int y) {
+  public void mouseDragged(MouseEvent me) {
     _editor.damaged(_newItem);
-    creationDrag(x, y);
+    creationDrag(me.getX(), me.getY());
     _editor.damaged(_newItem);
-    return true;
+    me.consume();
   }
 
   /** On mouse up, officially add the new item to the parent Editor
    *  and select it. Then exit this mode. */
-  public boolean mouseUp(Event e, int x, int y) {
+  public void mouseReleased(MouseEvent me) {
     if (_newItem != null) {
       _editor.damaged(_newItem);
-      creationDrag(x, y);
+      creationDrag(me.getX(), me.getY());
       _editor.add(_newItem);
-      _editor.select(_newItem);
+      _editor.getSelectionManager().select(_newItem);
       _newItem = null;
     }
     done();
-    return true;
+    me.consume();
   }
 
   /** The default size of a Fig if the user simply clicks instead of
@@ -154,7 +155,7 @@ public abstract class ModeCreate extends Mode {
    *  Editor. Typically, subclasses will make a new instance of some Fig
    *  based on the given mouse down event and the state of the parent
    *  Editor (specifically, its default graphical attributes). */
-  public abstract Fig createNewItem(Event e, int snapX, int snapY);
+  public abstract Fig createNewItem(MouseEvent me, int snapX, int snapY);
 
 } /* end class ModeCreate */
 

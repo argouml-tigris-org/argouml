@@ -77,6 +77,7 @@ public class Critic implements Poster, java.io.Serializable {
    * @see GoalModel
    * @see ControlMech */
   private String _decisionCategory;
+  protected Vector _supportedDecisions;
 
   /** The decision type of this critic.  For example, correctness,
    *  completeness, consistency, alternative, presentation,
@@ -191,7 +192,20 @@ public class Critic implements Poster, java.io.Serializable {
     return false;
   }
 
-  public boolean supports(Decision d) { return true; }
+  public boolean supports(Decision d) {
+    if (_supportedDecisions == null) return false;
+    return _supportedDecisions.contains(d);
+  }
+
+  public Vector getSupportedDecisions() {
+    System.out.println("critic getSupportedDecisions");
+    return _supportedDecisions;
+  }
+
+  public void addSupportedDecision(Decision d) {
+    if (_supportedDecisions == null) _supportedDecisions = new Vector();
+    _supportedDecisions.addElement(d);
+  }
 
   public boolean supports(Goal g) { return true; }
 

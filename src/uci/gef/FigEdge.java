@@ -26,7 +26,10 @@ package uci.gef;
 import java.util.*;
 import java.awt.*;
 import java.io.*;
+import java.beans.*;
+
 import uci.util.*;
+import uci.graph.*;
 
 /** A Fig that paints arcs between ports.
  *  <A HREF="../features.html#graph_visualization_arcs">
@@ -35,21 +38,22 @@ import uci.util.*;
  *  <FONT COLOR=660000><B>BUG: arc_translate</B></FONT></A>
  */
 
-public abstract class FigEdge extends Fig {
+public abstract class FigEdge extends Fig implements PropertyChangeListener {
 
   ////////////////////////////////////////////////////////////////
   // instance variables
 
-  /** Fig presenting the NetEdge's from NetPort . */
+  /** Fig presenting the edge's from port . */
   protected Fig _sourcePortFig;
-  /** Fig presenting the NetEdge's to NetPort. */
+  /** Fig presenting the edge's to port. */
   protected Fig _destPortFig;
-  /** FigNode presenting the NetEdge's from NetPort's parent NetNode. */
+  /** FigNode presenting the edge's from port's parent node. */
   protected FigNode _sourceFigNode;
-  /** FigNode presenting the NetEdge's to NetPort's parent NetNode. */
+  /** FigNode presenting the edge's to port's parent node. */
   protected FigNode _destFigNode;
-  /** Fig that presents the NetEdge. */
+  /** Fig that presents the edge. */
   protected Fig _fig;
+  protected boolean _highlight = false;
   /** The ArrowHead at the start of the line */
   ArrowHead _arrowHeadStart = new ArrowHeadNone();
   /** The ArrowHead at the end of the line */
@@ -60,12 +64,12 @@ public abstract class FigEdge extends Fig {
   ////////////////////////////////////////////////////////////////
   // constructors
 
-  public FigEdge(Fig s, Fig d, FigNode sp, FigNode dp, NetEdge a) {
+  public FigEdge(Fig s, Fig d, FigNode sp, FigNode dp, Object edge) {
     _sourcePortFig = s;
     _destPortFig = d;
     _sourceFigNode = sp;
     _destFigNode = dp;
-    setOwner(a);
+    setOwner(edge);
     _fig = makeEdgeFig();
   }
 
@@ -86,11 +90,11 @@ public abstract class FigEdge extends Fig {
 
   public void setOwner(Object own) {
     Object oldOwner = getOwner();
-    if (oldOwner != null && oldOwner instanceof Observable) {
-      ((Observable)oldOwner).deleteObserver(this);
+    if (oldOwner != null && oldOwner instanceof GraphEdgeHooks) {
+      ((GraphEdgeHooks)oldOwner).removePropertyChangeListener(this);
     }
-    if (own instanceof Observable) {
-      ((NetEdge)own).addPersistantObserver(this);
+    if (own instanceof GraphEdgeHooks) {
+      ((GraphEdgeHooks)own).addPropertyChangeListener(this);
     }
     super.setOwner(own);
   }
@@ -99,9 +103,13 @@ public abstract class FigEdge extends Fig {
 
   public ArrowHead getDestArrowHead() { return _arrowHeadEnd; }
 
-  public void setSourceArrowHead(ArrowHead newArrow) { _arrowHeadStart = newArrow; }
+  public void setSourceArrowHead(ArrowHead newArrow) {
+    _arrowHeadStart = newArrow;
+  }
 
-  public void setDestArrowHead(ArrowHead newArrow) { _arrowHeadEnd = newArrow; }
+  public void setDestArrowHead(ArrowHead newArrow) {
+    _arrowHeadEnd = newArrow;
+  }
 
   public Vector getPathItemsRaw() { return _pathItems; }
 
@@ -110,13 +118,11 @@ public abstract class FigEdge extends Fig {
     return null;
   }
 
-  public void addPathItem(Fig newFig, PathConv newPath)
-  {
+  public void addPathItem(Fig newFig, PathConv newPath) {
     _pathItems.addElement(new PathItem(newFig, newPath));
   }
 
-  public void removePathItem(PathItem goneItem)
-  {
+  public void removePathItem(PathItem goneItem) {
     _pathItems.removeElement(goneItem);    
   }
 
@@ -177,26 +183,6 @@ public abstract class FigEdge extends Fig {
   public int[] getYs() { return _fig.getYs(); }
   public void setYs(int[] ys) { _fig.setYs(ys); calcBounds(); }
 
-
-  public void dispose(Editor ed) {
-    System.out.println("disposing: " + toString());
-
-    Vector pathVec = getPathItemsRaw();
-    for (int i = 0; i < pathVec.size(); i++)
-    {
-      Fig fig = ((PathItem)pathVec.elementAt(i)).getFig();
-      fig.dispose(ed);
-    } 
-
-    ((NetEdge)getOwner()).dispose();
-    super.dispose(ed);
-  }
-
-  public void removeFrom(Editor ed) {
-    super.removeFrom(ed);
-    setOwner(null);
-  }
-
   public boolean isResizable() { return _fig.isResizable(); }
   public boolean isReshapable() { return _fig.isReshapable(); }
   public boolean isRotatable() { return _fig.isRotatable(); }
@@ -208,27 +194,24 @@ public abstract class FigEdge extends Fig {
     _arrowHeadStart.setFillColor(Color.white);
     //System.out.println("p0= " + pointAlongPerimeter(0) + " len= " + getPerimeterLength() + " pE= " + pointAlongPerimeter(getPerimeterLength()));
     _arrowHeadStart.paint(g, pointAlongPerimeter(5), pointAlongPerimeter(0));
-    _arrowHeadEnd.paint(g, pointAlongPerimeter(getPerimeterLength() - 6), pointAlongPerimeter(getPerimeterLength() - 1));
+    _arrowHeadEnd.paint(g, pointAlongPerimeter(getPerimeterLength() - 6),
+			pointAlongPerimeter(getPerimeterLength() - 1));
   }
 
-  protected void drawPathItems(Graphics g)
-  {
+  protected void drawPathItems(Graphics g) {
     Vector pathVec = getPathItemsRaw();
 
-    for (int i = 0; i < pathVec.size(); i++)
-    {
+    for (int i = 0; i < pathVec.size(); i++) {
       PathItem element = (PathItem) pathVec.elementAt(i);
-
       PathConv path = element.getPath();
-      Fig fig = element.getFig();
-
-      fig.setLocation(path.getPoint().x, path.getPoint().y);
-
-      fig.paint(g);
+      Fig f = element.getFig();
+      f.setLocation(path.getPoint().x, path.getPoint().y);
+      f.paint(g);
     } 
   }
 
   /** Paint this object. */
+  // needs-more-work: take Highlight into account
   public void paint(Graphics g) {
     computeRoute();
     _fig.paint(g);
@@ -236,33 +219,37 @@ public abstract class FigEdge extends Fig {
     drawPathItems(g);
   }
 
+
+
+  
   ////////////////////////////////////////////////////////////////
   // notifications and updates
 
-  public void update(Observable o, Object arg) {
-    if (arg instanceof Vector) {
-      Vector v = (Vector) arg;
-      String s = (String) v.elementAt(0);
-      Object obj = v.elementAt(1);
-      if (s.equals(Globals.REMOVE) && obj == getOwner()) {
-	removeFrom(null);
-      }
+  public void propertyChange(PropertyChangeEvent pce) {
+    System.out.println("FigEdge got a PropertyChangeEvent");
+    String pName = pce.getPropertyName();
+    Object src = pce.getSource();
+    if (pName.equals("Dispose") && src == getOwner()) { delete(); }
+    if (pName.equals("Highlight") && src == getOwner()) {
+      _highlight = ((Boolean)pce.getNewValue()).booleanValue();
+      damage();
     }
   }
 
-  protected class PathItem
-  {
-    Fig theFig;
-    PathConv thePath;
+  
+  ////////////////////////////////////////////////////////////////
+  // inner classes
+  protected class PathItem {
+    Fig _fig;
+    PathConv _path;
 
-    PathItem(Fig inFig, PathConv inPath)
-    {
-        theFig = inFig;
-        thePath = inPath;
+    PathItem(Fig f, PathConv pc) {
+      _fig = f;
+      _path = pc;
     }
 
-    PathConv getPath() { return thePath; }
-    Fig getFig() { return theFig; }
+    PathConv getPath() { return _path; }
+    Fig getFig() { return _fig; }
   }
 
 } /* end class ArcFigNode */

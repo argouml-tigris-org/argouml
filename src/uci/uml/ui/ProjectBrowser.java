@@ -63,13 +63,13 @@ implements IStatusBar {
   protected static Action _actionCreateMultiple = new ActionCreateMultiple();
   // -----
   protected static Action _actionClass = new ActionClass();
-  protected static Action _actionRectangle = new ActionRectangle();
-  protected static Action _actionRRectangle = new ActionRRectangle();
-  protected static Action _actionCircle = new ActionCircle();
-  protected static Action _actionLine = new ActionLine();
-  protected static Action _actionText = new ActionText();
-  protected static Action _actionPoly = new ActionPoly();
-  protected static Action _actionInk = new ActionInk();
+  protected static Action _actionRectangle = new uci.gef.CmdSetMode(uci.gef.ModeCreateFigRect.class, "Rectangle");
+  protected static Action _actionRRectangle = new uci.gef.CmdSetMode(uci.gef.ModeCreateFigRRect.class, "RRect");
+  protected static Action _actionCircle = new uci.gef.CmdSetMode(uci.gef.ModeCreateFigCircle.class, "Circle");
+  protected static Action _actionLine = new uci.gef.CmdSetMode(uci.gef.ModeCreateFigLine.class, "Line");
+  protected static Action _actionText = new uci.gef.CmdSetMode(uci.gef.ModeCreateFigText.class, "Text");
+  protected static Action _actionPoly = new uci.gef.CmdSetMode(uci.gef.ModeCreateFigPoly.class, "Polygon");
+  protected static Action _actionInk = new uci.gef.CmdSetMode(uci.gef.ModeCreateFigInk.class, "Ink");
 
   // critique menu
   protected static Action _actionAutoCritique = new ActionAutoCritique();
@@ -85,7 +85,7 @@ implements IStatusBar {
   protected Project _project = null;
 
   protected NavigatorPane _navPane = new NavigatorPane();
-  protected ToDoPane _toDoPane = new ToDoPane();
+  public ToDoPane _toDoPane = new ToDoPane();
   protected MultiEditorPane _multiPane = new MultiEditorPane();
   protected DetailsPane _detailsPane = new DetailsPane();
   protected JMenuBar _menuBar = new JMenuBar();
@@ -208,9 +208,8 @@ implements IStatusBar {
     critique.addSeparator();
     critique.add(_actionOpenDecisions);
     critique.add(_actionOpenGoals);
-    critique.add(_actionOpenCritics);
-
-}
+    critique.add(_actionOpenCritics); 
+  }
 
 
 
@@ -222,6 +221,7 @@ implements IStatusBar {
     JSplitPane splitPane =
       new JSplitPane(JSplitPane.VERTICAL_SPLIT, top, bot);
     top.setDividerSize(2);
+    top.setDividerLocation(250);
     bot.setDividerSize(2);
     splitPane.setDividerSize(2);
     //bot.setOneTouchExpandable(true);
@@ -271,6 +271,10 @@ implements IStatusBar {
 
   public void setToDoItem(Object o) {
     _detailsPane.setToDoItem(o);
+  }
+
+  public void setDetalsTarget(Object o) {
+    _detailsPane.setTarget(o);
   }
 
   public StatusBar getStatusBar() { return _statusBar; }

@@ -24,8 +24,11 @@
 package uci.gef;
 
 import java.awt.*;
+import java.awt.event.MouseEvent;
 
-/** Mode to place new a FigNode on a NetNode in a diagram.
+import uci.graph.*;
+
+/** Mode to place new a FigNode on a node in a diagram.
  *  Normally invoked via ActionCreateNode.
  *
  * @see ActionCreateNode
@@ -36,15 +39,15 @@ public class ModePlace extends Mode {
 
   /** The (new) node being placed. It might be an existing node that
    *  is adding a new FigNode. */
-  private NetNode _node;
+  private Object _node;
 
   /** The (new) FigNode being placed. It might be an existing
    *  FigNode on an existing node being place in another diagram. */
   private FigNode _pers;
 
-  /** Construct a new instance of ModePlace and store the given NetNode. */
-  ModePlace(NetNode n) {
-    _node = n;
+  /** Construct a new instance of ModePlace and store the given node. */
+  ModePlace(Object node) {
+    _node = node;
     _pers = null;
   }
 
@@ -56,50 +59,56 @@ public class ModePlace extends Mode {
   }
 
   /** Move the perpective along with the mouse. */
-  public boolean mouseEnter(Event evt, int x, int y) {
+  public void mouseEntered(MouseEvent me) {
     start();
-    _pers = _node.presentationFor(_editor.getLayerManager().getActiveLayer());
-    return true;
+    _editor = Globals.curEditor();
+    GraphModel gm = _editor.getGraphModel();
+    GraphNodeRenderer renderer = _editor.getGraphNodeRenderer();
+    Layer lay = _editor.getLayerManager().getActiveLayer();
+    _pers = renderer.getFigNodeFor(gm, lay, _node);
+    me.consume();
   }
 
   /** Move the perpective along with the mouse. */
-  public boolean mouseExit(Event evt, int x, int y) {
+  public void mouseExited(MouseEvent me) {
     _editor.damaged(_pers);
     _pers = null;
-    return true;
+    me.consume();
   }
 
   /** Move the perpective along with the mouse. */
-  public boolean mouseMove(Event evt, int x, int y) {
-    if (_pers == null) {System.out.println("null pers"); return true; }
+  public void mouseMoved(MouseEvent me) {
+    int x = me.getX(), y = me.getY();
+    if (_pers == null) {System.out.println("null pers"); me.consume(); return; }
     _editor.damaged(_pers);
     Point snapPt = new Point(x, y);
     _editor.snap(snapPt);
     _pers.setLocation(snapPt.x, snapPt.y);
     _editor.damaged(_pers); /* needed? */
-    return true;
+    me.consume();
   }
 
   /** Eat this event and do nothing */
-  public boolean mouseDown(Event evt, int x, int y) {
-    return true;
+  public void mousePressed(MouseEvent me) {
+    me.consume();
   }
 
   /* Eactly the same as mouse move */
-  public boolean mouseDrag(Event evt, int x, int y) {
-    return mouseMove(evt, x, y);
+  public void mouseDragged(MouseEvent me) {
+    mouseMoved(me);
   }
 
   /** Actually add the Perpective to the diagram.
-   *  And give the NetNode a chance to do post processing.
+   *  And give the node a chance to do post processing.
    *
-   * @see NetNode#postPlacement */
-  public boolean mouseUp(Event evt, int x, int y) {
+   * @see uci.graph.GraphNodeHooks#postPlacement */
+  public void mouseReleased(MouseEvent me) {
     _editor.add(_pers);
-    _editor.select(_pers);
-    _node.postPlacement(_editor);
+    _editor.getSelectionManager().select(_pers);
+    if (_node instanceof GraphNodeHooks)
+      ((GraphNodeHooks)_node).postPlacement(_editor);
     done();
-    return true;
+    me.consume();
   }
 
   /** Paint the FigNode being dragged around. */
