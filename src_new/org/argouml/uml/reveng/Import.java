@@ -182,4 +182,18 @@ public class Import {
 	    JavaImport.parseFile( p, f, _diagram);
 	}
     }
+
+    /**
+     * If we have modified any diagrams, the project was modified and
+     * should be saved. I don't consider a import, that only modifies
+     * the metamodel, at this point (Andreas Rueckert <a_rueckert@gmx.net> ).
+     * Calling Project.setNeedsSave(true) doesn't work here, because
+     * Project.postLoad() is called after the import and it sets the
+     * _needsSave flag to false.
+     *
+     * @return true, if any diagrams where modified and the project should be saved before exit.
+     */
+    public static boolean needsSave() {
+	return (_diagram.getModifiedDiagrams().size() > 0);
+    }
 }
