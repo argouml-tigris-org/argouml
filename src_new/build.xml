@@ -195,7 +195,7 @@ Sometimes ant gives out this warnings, but the build is finished without any pro
     <echo message="Creating the jar file ${build.dir}/${name}.jar"/>
     <jar jarfile="${lib.dir}/${name}.jar"
          basedir="${build.dest}"
-         includes="uci/** Acme/**"
+         includes="org/argouml/**"
          manifest="${manifest}"/>
   </target>
 
