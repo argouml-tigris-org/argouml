@@ -340,7 +340,7 @@ implements IStatusBar, NavigationListener, ArgoModuleEventListener {
     file.addSeparator();
     // JMenuItem loadModelFromDBItem = file.add(ActionLoadModelFromDB.SINGLETON);
     // JMenuItem storeModelToDBItem = file.add(ActionStoreModelToDB.SINGLETON);
-    file.addSeparator();
+    // file.addSeparator();
     JMenuItem printItem = file.add(Actions.Print);
     setMnemonic(printItem,"Print",'P');
     setAccelerator(printItem,ctrlP);
