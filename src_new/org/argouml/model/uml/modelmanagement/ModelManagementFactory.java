@@ -32,9 +32,23 @@ import ru.novosoft.uml.model_management.*;
 /**
  * Factory to create UML classes for the UML
  * ModelManagement package.
+ * 
+ * This class contains all create, remove and build methods for ModelManagement 
+ * modelelements.
+ * Create methods create an empty modelelement. It is registred with the 
+ * eventpump however. Remove methods remove a modelelement including the listener.
+ * Build methods create a modelelement but also instantiate the modelelement, 
+ * for example with defaults.
+ * 
+ * Helper methods for ModelManagement should not be placed here. Helper methods are methods
+ * like getReturnParameters. These should be placed in ModelManagementHelper 
  *
  * @since ARGO0.11.2
  * @author Thierry Lach
+ * @author jaap.branderhorst@xs4all.nl
+ * 
+ * @see org.argouml.model.uml.modelmanagement.ModelManagementHelper
+ * @see org.argouml.model.uml.UmlFactory
  */
 
 public class ModelManagementFactory extends AbstractUmlModelFactory {
@@ -93,5 +107,29 @@ public class ModelManagementFactory extends AbstractUmlModelFactory {
         MSubsystem modelElement = MFactory.getDefaultFactory().createSubsystem();
 	super.initialize(modelElement);
 	return modelElement;
+    }
+    
+    /** Remove an instance of a UML Model
+     */
+    public void  removeModel(MModel modelelement) {
+    	modelelement.remove();
+    }
+    
+    /** Remove an instance of a UML ElementImport
+     */
+    public void  removeElementImport(MElementImport modelelement) {
+    	modelelement.remove();
+    }
+    
+    /** Remove an instance of a UML Package
+     */
+    public void  removePackage(MPackage modelelement) {
+    	modelelement.remove();
+    }
+    
+    /** Remove an instance of a UML Subsystem
+     */
+    public void  removeSubsystem(MSubsystem modelelement) {
+    	modelelement.remove();
     }
 }

@@ -38,8 +38,22 @@ import ru.novosoft.uml.behavior.use_cases.MUseCaseInstance;
  * Factory to create UML classes for the UML
  * BehaviorialElements::UseCases package.
  *
+ * This class contains all create, remove and build methods for UseCases 
+ * modelelements.
+ * Create methods create an empty modelelement. It is registred with the 
+ * eventpump however. Remove methods remove a modelelement including the listener.
+ * Build methods create a modelelement but also instantiate the modelelement, 
+ * for example with defaults.
+ * 
+ * Helper methods for UseCases should not be placed here. Helper methods are methods
+ * like getReturnParameters. These should be placed in UseCasesHelper 
+ *
  * @since ARGO0.11.2
  * @author Thierry Lach
+ * @author jaap.branderhorst@xs4all.nl
+ * 
+ * @see org.argouml.model.uml.behavioralelements.usecases.UseCasesHelper
+ * @see org.argouml.model.uml.UmlFactory
  */
 public class UseCasesFactory extends AbstractUmlModelFactory {
 
@@ -117,6 +131,42 @@ public class UseCasesFactory extends AbstractUmlModelFactory {
         MUseCaseInstance modelElement = MFactory.getDefaultFactory().createUseCaseInstance();
 	super.initialize(modelElement);
 	return modelElement;
+    }
+    
+    /** Remove an  instance of a UML Actor.
+     */
+    public void  removeActor(MActor modelelement) {
+        modelelement.remove();
+    }
+    
+    /** Remove an  instance of a UML Extend.
+     */
+    public void  removeExtend(MExtend modelelement) {
+        modelelement.remove();
+    }
+    
+    /** Remove an  instance of a UML ExtensionPoint.
+     */
+    public void  removeExtensionPoint(MExtensionPoint modelelement) {
+        modelelement.remove();
+    }
+    
+     /** Remove an  instance of a UML Include.
+     */
+    public void  removeInclude(MInclude modelelement) {
+        modelelement.remove();
+    }
+    
+    /** Remove an  instance of a UML UseCase.
+     */
+    public void  removeUseCase(MUseCase modelelement) {
+        modelelement.remove();
+    }
+    
+    /** Remove an  instance of a UML UseCaseInstance.
+     */
+    public void  removeUseCaseInstance(MUseCaseInstance modelelement) {
+        modelelement.remove();
     }
     
      /**

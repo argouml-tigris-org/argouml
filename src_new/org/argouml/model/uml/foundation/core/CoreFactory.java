@@ -84,9 +84,22 @@ import ru.novosoft.uml.foundation.extension_mechanisms.MStereotype;
  * do not have a create methods since
  * it is called an "abstract metaclass" in the
  * UML specifications.
+ * 
+ * This class contains all create, remove and build methods for Core 
+ * modelelements.
+ * Create methods create an empty modelelement. It is registred with the 
+ * eventpump however. Remove methods remove a modelelement including the listener.
+ * Build methods create a modelelement but also instantiate the modelelement, 
+ * for example with defaults.
+ * 
+ * Helper methods for Core should not be placed here. Helper methods are methods
+ * like getReturnParameters. These should be placed in CoreHelper 
  *
  * @since ARGO0.11.2
  * @author Thierry Lach
+ * @author jaap.branderhorst@xs4all.nl
+ * @see org.argouml.model.uml.foundation.core.CoreHelper
+ * @see org.argouml.model.uml.UmlFactory
  */
 
 public class CoreFactory extends AbstractUmlModelFactory {
@@ -367,6 +380,176 @@ public class CoreFactory extends AbstractUmlModelFactory {
         MUsage modelElement = MFactory.getDefaultFactory().createUsage();
 	super.initialize(modelElement);
 	return modelElement;
+    }
+    
+    /** Remove an instance of a UML Abstraction.
+     */
+    public void removeAbstraction(MAbstraction modelelement) {
+        modelelement.remove();
+    }
+    
+    /** Remove an instance of a UML Association.
+     */
+    public void removeAssociation(MAssociation modelelement) {
+        modelelement.remove();
+    }
+
+    /** Remove an instance of a UML AssociationClass.
+     */
+    public void removeAssociationClass(MAssociationClass modelelement) {
+        modelelement.remove();
+    }
+
+    /** Remove an instance of a UML AssociationEnd.
+     */
+    public void removeAssociationEnd(MAssociationEnd modelelement) {
+        modelelement.remove();
+    }
+
+    /** Remove an instance of a UML Attribute.
+     */
+    public void  removeAttribute(MAttribute modelelement) {
+        modelelement.remove();
+    }
+
+    /** Remove an instance of a UML Binding.
+     */
+    public void  removeBinding(MBinding modelelement) {
+        modelelement.remove();
+    }
+
+    /** Remove an instance of a UML Class.
+     */
+    public void  removeClass(MClass modelelement) {
+        modelelement.remove();
+    }
+
+    /** Remove an instance of a UML Classifier.
+     */
+    public void  removeClassifier(MClassifier modelelement) {
+        modelelement.remove();
+    }
+
+    /** Remove an instance of a UML Comment.
+     */
+    public void  removeComment(MComment modelelement) {
+       modelelement.remove();
+    }
+
+    /** Remove an instance of a UML Component.
+     */
+    public void  removeComponent(MComponent modelelement) {
+        modelelement.remove();
+    }
+
+    /** Remove an instance of a UML Constraint.
+     */
+    public void  removeConstraint(MConstraint modelelement) {
+        modelelement.remove();
+    }
+
+    /** Remove an instance of a UML DataType.
+     */
+    public void  removeDataType(MDataType modelelement) {
+        modelelement.remove();
+    }
+
+    /** Remove an instance of a UML Dependency.
+     */
+    public void  removeDependency(MDependency modelelement) {
+        modelelement.remove();
+    }
+
+    /** Remove an instance of a UML ElementResidence.
+     */
+    public void  removeElementResidence(MElementResidence modelelement) {
+        modelelement.remove();
+    }
+
+    /** 
+     * Remove an instance of a UML Flow.
+     */
+    public void  removeFlow(MFlow modelelement) {
+        modelelement.remove();
+    }
+
+    /** 
+     * Remove an instance of a UML Generalization.
+     */
+    public void  removeGeneralization(MGeneralization modelelement) {
+        modelelement.remove();
+    }
+
+    /** 
+     * Remove an instance of a UML Interface.
+     */
+    public void  removeInterface(MInterface modelelement) {
+        modelelement.remove();
+    }
+
+    /** 
+     * Remove an instance of a UML Method.
+     */
+    public void  removeMethod(MMethod modelelement) {
+        modelelement.remove();
+    }
+
+    /** 
+     * Remove an instance of a UML Namespace.
+     */
+    public void  removeNamespace(MNamespace modelelement) {
+        modelelement.remove();
+    }
+
+    /** 
+     * Remove an instance of a UML Node.
+     */
+    public void  removeNode(MNode modelelement) {
+        modelelement.remove();
+    }
+
+    /** 
+     * Remove an instance of a UML Operation.
+     */
+    public void  removeOperation(MOperation modelelement) {
+        modelelement.remove();
+    }
+
+    /** 
+     * Remove an instance of a UML Parameter.
+     */
+    public void  removeParameter(MParameter modelelement) {
+        modelelement.remove();
+    }
+
+    /** 
+     * Remove an instance of a UML Permission.
+     */
+    public void  removePermission(MPermission modelelement) {
+        modelelement.remove();
+    }
+
+
+    /** 
+     * Remove an instance of a UML Relationship.
+     */
+    public void  removeRelationship(MRelationship modelelement) {
+        modelelement.remove();
+    }
+
+
+    /** 
+     * Remove an instance of a UML TemplateParameter. 
+     */
+    public void  removeTemplateParameter(MTemplateParameter modelelement) {
+       modelelement.remove();
+    }
+
+    /** 
+     * Remove an instance of a UML Usage.
+     */
+    public void  removeUsage(MUsage modelelement) {
+        modelelement.remove();
     }
     
     /**
@@ -906,5 +1089,6 @@ public class CoreFactory extends AbstractUmlModelFactory {
         else if (client.getNamespace() != null) usage.setNamespace(client.getNamespace());
         return usage;
     }
+   
 }
 

@@ -38,9 +38,23 @@ import ru.novosoft.uml.behavior.activity_graphs.MSubactivityState;
 /**
  * Factory to create UML classes for the UML
  * BehaviorialElements::ActivityGraphs package.
+ * 
+ * This class contains all create, remove and build methods for ActivityGraphs 
+ * modelelements.
+ * Create methods create an empty modelelement. It is registred with the 
+ * eventpump however. Remove methods remove a modelelement including the listener.
+ * Build methods create a modelelement but also instantiate the modelelement, 
+ * for example with defaults.
+ * 
+ * Helper methods for ActivityGraphs should not be placed here. Helper methods are methods
+ * like getReturnParameters. These should be placed in ActivityGraphsHelper 
  *
  * @since ARGO0.11.2
  * @author Thierry Lach
+ * @author jaap.branderhorst@xs4all.nl
+ * 
+ * @see org.argouml.model.uml.behavioralelements.activitygraphs.ActivityGraphsHelper
+ * @see org.argouml.model.uml.UmlFactory
  */
 public class ActivityGraphsFactory extends AbstractUmlModelFactory {
 
@@ -128,6 +142,48 @@ public class ActivityGraphsFactory extends AbstractUmlModelFactory {
         MSubactivityState modelElement = MFactory.getDefaultFactory().createSubactivityState();
 	super.initialize(modelElement);
 	return modelElement;
+    }
+    
+    /** Remove an instance of a UML ActionState
+     */
+    public void  removeActionState(MActionState modelelement) {
+    	modelelement.remove();
+    }
+    
+    /** Remove an instance of a UML ActivityGraph
+     */
+    public void  removeActivityGraph(MActivityGraph modelelement) {
+    	modelelement.remove();
+    }
+    
+    /** Remove an instance of a UML CallState
+     */
+    public void  removeCallState(MCallState modelelement) {
+    	modelelement.remove();
+    }
+    
+    /** Remove an instance of a UML ClassifierInState
+     */
+    public void  removeClassifierInState(MClassifierInState modelelement) {
+    	modelelement.remove();
+    }
+    
+    /** Remove an instance of a UML ObjectFlowState
+     */
+    public void  removeObjectFlowState(MObjectFlowState modelelement) {
+    	modelelement.remove();
+    }
+    
+    /** Remove an instance of a UML Partition
+     */
+    public void  removePartition(MPartition modelelement) {
+    	modelelement.remove();
+    }
+    
+    /** Remove an instance of a UML SubactivityState
+     */
+    public void  removeSubactivityState(MSubactivityState modelelement) {
+    	modelelement.remove();
     }
 
 }

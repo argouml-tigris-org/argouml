@@ -52,8 +52,22 @@ import ru.novosoft.uml.behavior.state_machines.MTransition;
  * MEvent and MStateVertex do not have create methods
  * since they are abstract classes in the NSUML model.
  *
+ * This class contains all create, remove and build methods for CommonBehavior 
+ * modelelements.
+ * Create methods create an empty modelelement. It is registred with the 
+ * eventpump however. Remove methods remove a modelelement including the listener.
+ * Build methods create a modelelement but also instantiate the modelelement, 
+ * for example with defaults.
+ * 
+ * Helper methods for CommonBehavior should not be placed here. Helper methods are methods
+ * like getReturnParameters. These should be placed in CommonBehaviorHelper 
+ *
  * @since ARGO0.11.2
  * @author Thierry Lach
+ * @author jaap.branderhorst@xs4all.nl
+ * 
+ * @see org.argouml.model.uml.behavioralelements.statemachines.StateMachinesHelper
+ * @see org.argouml.model.uml.UmlFactory
  */
 public class StateMachinesFactory extends AbstractUmlModelFactory {
 
@@ -221,6 +235,96 @@ public class StateMachinesFactory extends AbstractUmlModelFactory {
         MTransition modelElement = MFactory.getDefaultFactory().createTransition();
 	super.initialize(modelElement);
 	return modelElement;
+    }
+    
+     /** Remove an  instance of a UML CallEvent.
+     */
+    public void  removeCallEvent(MCallEvent modelelement) {
+        modelelement.remove();
+    }
+
+    /** Remove an  instance of a UML ChangeEvent.
+     */
+    public void  removeChangeEvent(MChangeEvent modelelement) {
+        modelelement.remove();
+    }
+
+    /** Remove an  instance of a UML CompositeState.
+     */
+    public void  removeCompositeState(MCompositeState modelelement) {
+        modelelement.remove();
+    }
+
+    /** Remove an  instance of a UML FinalState.
+     */
+    public void  removeFinalState(MFinalState modelelement) {
+        modelelement.remove();
+    }
+
+    /** Remove an  instance of a UML Guard.
+     */
+    public void  removeGuard(MGuard modelelement) {
+        modelelement.remove();
+    }
+
+    /** Remove an  instance of a UML Pseudostate.
+     */
+    public void  removePseudostate(MPseudostate modelelement) {
+        modelelement.remove();
+    }
+
+    /** Remove an  instance of a UML SignalEvent.*  
+     */
+    public void  removeSignalEvent(MSignalEvent modelelement) {
+        modelelement.remove();
+    }
+
+    /** Remove an  instance of a UML SimpleState.
+     */
+    public void  removeSimpleState(MSimpleState modelelement) {
+        modelelement.remove();
+    }
+
+    /** Remove an  instance of a UML State.
+     */
+    public void  removeState(MState modelelement) {
+        modelelement.remove();
+    }
+
+    /** Remove an  instance of a UML StateMachine.
+     */
+    public void  removeStateMachine(MStateMachine modelelement) {
+        modelelement.remove();
+    }
+
+    /** Remove an  instance of a UML StubState.
+     */
+    public void  removeStubState(MStubState modelelement) {
+        modelelement.remove();
+    }
+
+    /** Remove an  instance of a UML SubmachineState.
+     */
+    public void  removeSubmachineState(MSubmachineState modelelement) {
+        modelelement.remove();
+    }
+
+    /** Remove an  instance of a UML SynchState.
+     */
+    public void  removeSynchState(MSynchState modelelement) {
+       modelelement.remove();
+    }
+
+    /** Remove an  instance of a UML TimeEvent.
+     */
+    public void  removeTimeEvent(MTimeEvent modelelement) {
+        modelelement.remove();
+    }
+
+    /** Remove an  instance of a UML Transition.
+     */
+    public void  removeTransition(MTransition modelelement) {
+        modelelement.remove();
     }
     
 	/**
