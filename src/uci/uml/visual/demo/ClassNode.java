@@ -52,7 +52,7 @@ public class ClassNode extends NetNode {
    }
 
   public FigNode makePresentation(Layer lay) {
-    Fig obj1 = new FigRect(-5, -5, 30, 30, Color.black, Color.green);
+    Fig obj1 = new FigRect(0, 0, 100, 70, Color.black, Color.green);
     Vector temp_list = new Vector();
     temp_list.addElement(obj1);
     FigClass fn = new FigClass(this, temp_list);
