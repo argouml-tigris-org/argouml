@@ -22,10 +22,9 @@
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 package org.argouml.application.helpers;
-import org.argouml.application.api.*;
+import java.util.Vector;
 
-import java.awt.*;
-import java.util.*;
+import org.argouml.application.api.ArgoModule;
 
 
 public abstract class ModuleHelper 
@@ -34,7 +33,7 @@ implements ArgoModule {
     protected boolean _enabled = false;
 
     public ModuleHelper() {
-        _enabled = false;
+        _enabled = false; 
     }
 
     public boolean isModuleEnabled() {
