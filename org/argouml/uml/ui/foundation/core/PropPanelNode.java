@@ -38,21 +38,17 @@
 package org.argouml.uml.ui.foundation.core;
 
 import java.awt.Color;
-import java.awt.GridLayout;
 import java.util.Collection;
 
 import javax.swing.JList;
-import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
 import org.argouml.i18n.Translator;
 import org.argouml.model.ModelFacade;
 
 import org.argouml.uml.ui.PropPanelButton;
-import org.argouml.uml.ui.UMLCheckBox;
 import org.argouml.uml.ui.UMLComboBoxNavigator;
 import org.argouml.uml.ui.UMLList;
-import org.argouml.uml.ui.UMLReflectionBooleanProperty;
 import org.argouml.uml.ui.UMLReflectionListModel;
 import org.argouml.util.ConfigLoader;
 
@@ -71,18 +67,18 @@ public class PropPanelNode extends PropPanelClassifier {
 
         addField(Translator.localize("UMLMenu", "label.name"), getNameTextField());
 
-        addField("Generalizations:", getGeneralizationScroll());
+        
 
         addField(Translator.localize("UMLMenu", "label.stereotype"), new UMLComboBoxNavigator(this, Translator.localize("UMLMenu", "tooltip.nav-stereo"), getStereotypeBox()));
 
-        JPanel modifiersPanel = new JPanel(new GridLayout(0, 3));
-        modifiersPanel.add(new UMLCheckBox(Translator.localize("UMLMenu", "checkbox.abstract-lc"), this, new UMLReflectionBooleanProperty("isAbstract", mclass, "isAbstract", "setAbstract")));
-        modifiersPanel.add(new UMLCheckBox(Translator.localize("UMLMenu", "checkbox.final-lc"), this, new UMLReflectionBooleanProperty("isLeaf", mclass, "isLeaf", "setLeaf")));
-        modifiersPanel.add(new UMLCheckBox(localize("root"), this, new UMLReflectionBooleanProperty("isRoot", mclass, "isRoot", "setRoot")));
-        addField(Translator.localize("UMLMenu", "label.modifiers"), modifiersPanel);
-
         addField(Translator.localize("UMLMenu", "label.namespace"), getNamespaceComboBox());
 
+        addField(Translator.localize("UMLMenu", "label.modifiers"), _modifiersPanel);
+        
+        addSeperator();
+        
+        addField("Generalizations:", getGeneralizationScroll());
+        
         addField("Specializations:", getSpecializationScroll());
 
         addSeperator();
