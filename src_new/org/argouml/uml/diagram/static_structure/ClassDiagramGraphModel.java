@@ -376,6 +376,13 @@ implements MutableGraphModel, VetoableChangeListener, MElementListener {
               addEdge(asc);
               return asc;
           }
+          else if (edgeClass == MDependencyImpl.class) {
+                  // nsuml: using Binding as default
+                  MDependency dep = 
+                      MMUtil.SINGLETON.buildDependency(fromCls, toIntf);
+                  addEdge(dep);
+                  return dep;
+              }
           else {
               System.out.println("Cannot make a "+ edgeClass.getName() +
                                  " between a " + fromPort.getClass().getName() +
@@ -397,6 +404,13 @@ implements MutableGraphModel, VetoableChangeListener, MElementListener {
                                                         toCls, false);
                   addEdge(asc);
                   return asc;
+              }
+              else if (edgeClass == MDependencyImpl.class) {
+                  // nsuml: using Binding as default
+                  MDependency dep = 
+                      MMUtil.SINGLETON.buildDependency(fromIntf, toCls);
+                  addEdge(dep);
+                  return dep;
               }
 
               // 	else if (edgeClass == MAbstractionImpl.class) {
