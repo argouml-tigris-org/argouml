@@ -72,12 +72,6 @@ public class ActionAddAttribute extends UMLChangeAction {
 	MAttribute attr = UmlFactory.getFactory().getCore().buildAttribute(cls);
 	pb.getNavigatorPane().addToHistory(attr);
 	pb.setTarget(attr);
-        Iterator it = pb.getEditorPane().findPresentationsFor(cls, p.getDiagrams()).iterator();
-        while (it.hasNext()) {
-            MElementListener listener = (MElementListener)it.next();
-            UmlModelEventPump.getPump().removeModelEventListener(listener, attr);
-            UmlModelEventPump.getPump().addModelEventListener(listener, attr);
-        }
 	super.actionPerformed(ae);
     }
 

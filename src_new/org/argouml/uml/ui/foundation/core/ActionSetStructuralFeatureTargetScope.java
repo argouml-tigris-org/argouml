@@ -1,4 +1,4 @@
-// Copyright (c) 1996-2002 The Regents of the University of California. All
+// Copyright (c) 1996-2003 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -21,63 +21,48 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// $header$
+// $Id$
 package org.argouml.uml.ui.foundation.core;
 
 import java.awt.event.ActionEvent;
 
 import org.argouml.application.api.Argo;
 import org.argouml.uml.ui.UMLChangeAction;
-import org.argouml.uml.ui.UMLComboBox2;
+import org.argouml.uml.ui.UMLCheckBox2;
 
-import ru.novosoft.uml.foundation.core.MClassifier;
-import ru.novosoft.uml.foundation.core.MGeneralization;
+import ru.novosoft.uml.foundation.core.MStructuralFeature;
+import ru.novosoft.uml.foundation.data_types.MScopeKind;
 
 /**
- * @since Nov 3, 2002
  * @author jaap.branderhorst@xs4all.nl
+ * @since Jan 29, 2003
  */
-public class ActionSetGeneralizationPowertype extends UMLChangeAction {
+public class ActionSetStructuralFeatureTargetScope extends UMLChangeAction {
 
-   
+	public static final ActionSetStructuralFeatureTargetScope SINGLETON =
+		new ActionSetStructuralFeatureTargetScope();
 
-    public static final ActionSetGeneralizationPowertype SINGLETON = new ActionSetGeneralizationPowertype();
-    
-    /**
-     * Constructor for ActionSetStructuralFeatureType.
-     * @param s
-     */
-    protected ActionSetGeneralizationPowertype() {
-        super(Argo.localize("CoreMenu", "Set"), true, NO_ICON);
-    }
+	/**
+	 * Constructor for ActionSetCompositeStateConcurrent.
+	 * @param s
+	 */
+	protected ActionSetStructuralFeatureTargetScope() {
+		super(Argo.localize("CoreMenu", "Set"), true, NO_ICON);
+	}
 
-    
-
-    /**
-     * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
-     */
-    public void actionPerformed(ActionEvent e) {
-        super.actionPerformed(e);
-        Object source = e.getSource();
-        MClassifier oldClassifier = null;
-        MClassifier newClassifier = null;
-        MGeneralization gen = null;
-        if (source instanceof UMLComboBox2) {
-            UMLComboBox2 box = (UMLComboBox2)source;
-            Object o = box.getTarget();
-            if (o instanceof MGeneralization) {
-                gen = (MGeneralization)o;
-                oldClassifier = gen.getPowertype();
-            }
-            o = box.getSelectedItem();
-            if (o instanceof MClassifier) {
-                newClassifier = (MClassifier)o;
-            }
-        }
-        if (newClassifier != oldClassifier && gen != null) {
-            gen.setPowertype(newClassifier);
-        }
-        
-    }
+	/**
+	 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+	 */
+	public void actionPerformed(ActionEvent e) {
+		super.actionPerformed(e);
+		if (e.getSource() instanceof UMLCheckBox2) {
+			UMLCheckBox2 source = (UMLCheckBox2)e.getSource();
+			Object target = source.getTarget();
+			if (target instanceof MStructuralFeature) {
+                MStructuralFeature m = (MStructuralFeature)target;
+				m.setTargetScope(source.isSelected() ? MScopeKind.CLASSIFIER : MScopeKind.INSTANCE);
+			}
+		}
+	}
 
 }

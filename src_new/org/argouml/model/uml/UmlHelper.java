@@ -200,5 +200,19 @@ public class UmlHelper {
     	return null;
     }
     
+    /**
+     * Returns the owner of some modelelement object. In most cases this will be
+     * the owning namespace but in some cases it will be null (the root model)
+     * or for instance the owning class with an attribute.
+     * @param handle
+     * @return Object
+     */
+    public Object getOwner(Object handle) {
+        if (handle instanceof MBase) {
+            return ((MBase)handle).getModelElementContainer();
+        }
+        return null;
+    }
+    
 }
 

@@ -24,9 +24,11 @@
 // $Id$
 package org.argouml.uml.ui.foundation.core;
 
+import org.argouml.application.api.Argo;
 import org.argouml.swingext.Orientation;
 import org.argouml.uml.ui.UMLCheckBox2;
-import org.argouml.uml.ui.UMLTextField2;
+import org.argouml.uml.ui.UMLComboBox2;
+import org.argouml.uml.ui.UMLRadioButtonPanel;
 
 /**
  * @since Nov 6, 2002
@@ -34,21 +36,83 @@ import org.argouml.uml.ui.UMLTextField2;
  */
 public class PropPanelStructuralFeature extends PropPanelFeature {
 
-    
-    protected UMLTextField2 _multiplicityTextField;
-    protected UMLCheckBox2 _targetScopeCheckBox;
+	private UMLComboBox2 _multiplicityComboBox;
+    private UMLComboBox2 _typeComboBox;
+    private UMLRadioButtonPanel _changeabilityRadioButtonPanel;
+    private UMLCheckBox2 _targetScopeCheckBox;
 
-    /**
-     * Constructor for PropPanelStructuralFeature.
-     * @param name
-     * @param icon
-     * @param orientation
-     */
-    protected PropPanelStructuralFeature(
-        String name,
-        Orientation orientation) {
-        super(name, orientation);
-        
-    }   
+	private static UMLStructuralFeatureMultiplicityComboBoxModel multiplicityComboBoxModel;
+    private static UMLStructuralFeatureTypeComboBoxModel typeComboBoxModel;
+
+	/**
+	 * Constructor for PropPanelStructuralFeature.
+	 * @param name
+	 * @param icon
+	 * @param orientation
+	 */
+	protected PropPanelStructuralFeature(
+		String name,
+		Orientation orientation) {
+		super(name, orientation);
+
+	}
+
+	/**
+	 * Returns the multiplicityComboBox.
+	 * @return UMLComboBox2
+	 */
+	public UMLComboBox2 getMultiplicityComboBox() {
+		if (_multiplicityComboBox == null) {
+			if (multiplicityComboBoxModel == null) {
+				multiplicityComboBoxModel =
+					new UMLStructuralFeatureMultiplicityComboBoxModel();
+			}
+			_multiplicityComboBox =
+				new UMLComboBox2(
+					multiplicityComboBoxModel,
+					ActionSetStructuralFeatureMultiplicity.SINGLETON);
+		}
+		return _multiplicityComboBox;
+	}
+
+	/**
+	 * Returns the typeComboBox.
+	 * @return UMLComboBox2
+	 */
+	public UMLComboBox2 getTypeComboBox() {
+        if (_typeComboBox == null) {
+                    if (typeComboBoxModel == null) {
+                        typeComboBoxModel =
+                            new UMLStructuralFeatureTypeComboBoxModel();
+                    }
+            _typeComboBox =
+                        new UMLComboBox2(
+                            typeComboBoxModel,
+                            ActionSetStructuralFeatureType.SINGLETON);
+                }
+		return _typeComboBox;
+	}
+
+	/**
+	 * Returns the changeabilityRadioButtonPanel.
+	 * @return UMLRadioButtonPanel
+	 */
+	public UMLRadioButtonPanel getChangeabilityRadioButtonPanel() {
+        if (_changeabilityRadioButtonPanel == null) {
+            _changeabilityRadioButtonPanel = new UMLStructuralFeatureChangeabilityRadioButtonPanel(Argo.localize("UMLMenu", "label.changeability"), true);
+        }
+		return _changeabilityRadioButtonPanel;        
+	}
+
+	/**
+	 * Returns the targetScopeCheckBox.
+	 * @return UMLCheckBox2
+	 */
+	public UMLCheckBox2 getTargetScopeCheckBox() {
+        if (_targetScopeCheckBox == null) {
+		  _targetScopeCheckBox = new UMLStructuralFeatureTargetScopeCheckBox();
+        }
+        return _targetScopeCheckBox;
+	}
 
 }

@@ -42,7 +42,7 @@ public class ActionSetFeatureOwner extends UMLChangeAction {
       public static final ActionSetFeatureOwner SINGLETON = new ActionSetFeatureOwner();
     
     /**
-     * Constructor for ActionSetAttributeType.
+     * Constructor for ActionSetStructuralFeatureType.
      * @param s
      */
     protected ActionSetFeatureOwner() {

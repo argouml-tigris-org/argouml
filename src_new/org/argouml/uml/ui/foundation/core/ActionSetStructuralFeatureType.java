@@ -21,63 +21,63 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// $Id$
+// $header$
 package org.argouml.uml.ui.foundation.core;
 
 import java.awt.event.ActionEvent;
 
-import javax.swing.JRadioButton;
-
 import org.argouml.application.api.Argo;
+import org.argouml.model.uml.modelmanagement.ModelManagementHelper;
 import org.argouml.uml.ui.UMLChangeAction;
-import org.argouml.uml.ui.UMLRadioButtonPanel;
-
-import ru.novosoft.uml.foundation.core.MAssociationEnd;
-import ru.novosoft.uml.foundation.data_types.MVisibilityKind;
+import org.argouml.uml.ui.UMLComboBox2;
+import ru.novosoft.uml.foundation.core.MAttribute;
+import ru.novosoft.uml.foundation.core.MClassifier;
+import ru.novosoft.uml.foundation.core.MStructuralFeature;
 
 /**
- * 
- * @author jaap.branderhorst@xs4all.nl	
- * @since Jan 4, 2003
+ * @since Nov 3, 2002
+ * @author jaap.branderhorst@xs4all.nl
  */
-public class ActionSetAssociationEndVisibility extends UMLChangeAction {
+public class ActionSetStructuralFeatureType extends UMLChangeAction {
 
-    public static final ActionSetAssociationEndVisibility SINGLETON = new ActionSetAssociationEndVisibility();
-
-    public final static String PUBLIC_COMMAND = "public";
-    public final static String PROTECTED_COMMAND = "protected";
-    public final static String PRIVATE_COMMAND = "private";
-
+    public static final ActionSetStructuralFeatureType SINGLETON = new ActionSetStructuralFeatureType();
+    
     /**
-     * Constructor for ActionSetElementOwnershipSpecification.
+     * Constructor for ActionSetStructuralFeatureType.
      * @param s
      */
-    protected ActionSetAssociationEndVisibility() {
+    protected ActionSetStructuralFeatureType() {
         super(Argo.localize("CoreMenu", "Set"), true, NO_ICON);
     }
+
+    
 
     /**
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent e) {
         super.actionPerformed(e);
-        if (e.getSource() instanceof JRadioButton) {
-            JRadioButton source = (JRadioButton) e.getSource();
-            String actionCommand = source.getActionCommand();
-            Object target = ((UMLRadioButtonPanel) source.getParent()).getTarget();
-            if (target instanceof MAssociationEnd) {
-                MAssociationEnd m = (MAssociationEnd) target;
-                MVisibilityKind kind = null;
-                if (actionCommand.equals(PUBLIC_COMMAND)) {
-                    kind = MVisibilityKind.PUBLIC;
-                } else if (actionCommand.equals(PROTECTED_COMMAND)) {
-                    kind = MVisibilityKind.PROTECTED;
-                } else
-                    kind = MVisibilityKind.PRIVATE;
-                m.setVisibility(kind);
-
+        Object source = e.getSource();
+        MClassifier oldClassifier = null;
+        MClassifier newClassifier = null;
+        MAttribute attr = null;
+        if (source instanceof UMLComboBox2) {
+            UMLComboBox2 box = (UMLComboBox2)source;
+            Object o = box.getTarget();
+            if (o instanceof MStructuralFeature) {
+                attr = (MAttribute)o;
+                oldClassifier = attr.getType();
+            }
+            o = box.getSelectedItem();
+            if (o instanceof MClassifier) {
+                newClassifier = (MClassifier)o;
             }
         }
+        if (newClassifier != oldClassifier && attr != null) {
+            ModelManagementHelper.getHelper().moveElement(newClassifier, attr.getModel());
+            attr.setType(newClassifier);
+        }
+        
     }
 
 }

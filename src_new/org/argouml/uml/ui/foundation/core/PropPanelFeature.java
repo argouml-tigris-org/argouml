@@ -24,10 +24,12 @@
 // $header$
 package org.argouml.uml.ui.foundation.core;
 
-import javax.swing.ImageIcon;
+import javax.swing.JList;
+import javax.swing.JScrollPane;
 
 import org.argouml.swingext.Orientation;
 import org.argouml.uml.ui.UMLComboBox2;
+import org.argouml.uml.ui.UMLLinkedList;
 
 /**
  * @since Nov 6, 2002
@@ -35,8 +37,12 @@ import org.argouml.uml.ui.UMLComboBox2;
  */
 public class PropPanelFeature extends PropPanelModelElement {
 
-    protected UMLFeatureOwnerScopeCheckBox _ownerScopeCheckbox;
-    protected UMLComboBox2 _ownerComboBox;     
+    private UMLFeatureOwnerScopeCheckBox _ownerScopeCheckbox;
+    private UMLComboBox2 _ownerComboBox;   
+    private JScrollPane _ownerScroll; 
+    
+    private static UMLFeatureOwnerListModel ownerListModel; 
+    private static UMLFeatureOwnerComboBoxModel ownerComboBoxModel;
 
     /**
      * Constructor for PropPanelFeature.
@@ -47,18 +53,49 @@ public class PropPanelFeature extends PropPanelModelElement {
     protected PropPanelFeature(
         String name,
         Orientation orientation) {
-        super(name, orientation);
-        initialize();
-    }
-    
-    private void initialize() {
-        _ownerScopeCheckbox = new UMLFeatureOwnerScopeCheckBox();
-        // according to the UML spec we need an attribute visibility here
-        // but it seems that NSUML thinks that elementownership visibility
-        // and feature visibility are the same
-        _ownerComboBox = new UMLComboBox2(new UMLFeatureOwnerComboBoxModel(), ActionSetFeatureOwner.SINGLETON); 
+        super(name, orientation);       
     }
 
 
+	/**
+	 * Returns the ownerComboBox.
+	 * @return UMLComboBox2
+	 */
+	public UMLComboBox2 getOwnerComboBox() {
+		if (_ownerComboBox == null) {
+			if (ownerComboBoxModel == null) {
+				ownerComboBoxModel = new UMLFeatureOwnerComboBoxModel();
+			}
+			_ownerComboBox = new UMLComboBox2(ownerComboBoxModel, ActionSetFeatureOwner.SINGLETON);
+		}
+		return _ownerComboBox;
+	}
+
+	/**
+	 * Returns the ownerScroll.
+	 * @return JScrollPane
+	 */
+	public JScrollPane getOwnerScroll() {
+        if (_ownerScroll == null) {
+            if (ownerListModel == null) {
+                ownerListModel = new UMLFeatureOwnerListModel();    	
+            }
+            JList list = new UMLLinkedList(ownerListModel);
+            list.setVisibleRowCount(1);
+            _ownerScroll = new JScrollPane(list);
+		}
+        return _ownerScroll;
+	}
+
+	/**
+	 * Returns the ownerScopeCheckbox.
+	 * @return UMLFeatureOwnerScopeCheckBox
+	 */
+	public UMLFeatureOwnerScopeCheckBox getOwnerScopeCheckbox() {
+        if (_ownerScopeCheckbox == null) {
+            _ownerScopeCheckbox = new UMLFeatureOwnerScopeCheckBox();
+        }    
+		return _ownerScopeCheckbox;       
+	}
 
 }

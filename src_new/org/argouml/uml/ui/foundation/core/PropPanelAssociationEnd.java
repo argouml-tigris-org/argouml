@@ -137,7 +137,7 @@ public class PropPanelAssociationEnd extends PropPanelModelElement {
         _targetScopeCheckBox = new UMLAssociationEndTargetScopeCheckbox();
         _aggregationRadioButtonpanel = new UMLAssociationEndAggregationRadioButtonPanel(Argo.localize("UMLMenu", "label.aggregation"), true);
         _changeabilityRadioButtonpanel = new UMLAssociationEndChangeabilityRadioButtonPanel(Argo.localize("UMLMenu", "label.changeability"), true);
-        _visibilityRadioButtonPanel = new UMLAssociationEndVisibilityRadioButtonPanel(Argo.localize("UMLMenu", "label.visibility"), true);
+        _visibilityRadioButtonPanel = new UMLModelElementVisibilityRadioButtonPanel(Argo.localize("UMLMenu", "label.visibility"), true);
         _specificationScroll = new JScrollPane(new UMLMutableLinkedList(new UMLAssociationEndSpecificationListModel(), ActionAddAssociationSpecification.SINGLETON, null, null, true));
         
     }
@@ -206,5 +206,6 @@ public class PropPanelAssociationEnd extends PropPanelModelElement {
             ProjectBrowser.TheInstance.setTarget(end.getOppositeEnd());           
         }
     }
+    
 
 } /* end class PropPanelAssociationEnd */

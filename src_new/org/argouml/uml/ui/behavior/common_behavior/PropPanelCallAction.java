@@ -77,7 +77,7 @@ public class PropPanelCallAction extends PropPanelModelElement {
             buttonPanel,
             _navUpIcon,
             Argo.localize("UMLMenu", "button.go-up"),
-            "navigateNamespace",
+            "navigateUp",
             null);
         new PropPanelButton(
             this,
