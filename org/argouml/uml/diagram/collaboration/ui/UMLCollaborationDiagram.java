@@ -189,12 +189,6 @@ public class UMLCollaborationDiagram extends UMLDiagram {
      */
     public void initialize(Object owner) {
         collaboration = owner;
-        Object ns = 
-            Model.getFacade().getRepresentedClassifier(collaboration);
-        if (ns == null)
-            ns = Model.getFacade().getRepresentedOperation(collaboration);
-        setNamespace(ns);
-        
         super.initialize(owner);
     }
 
