@@ -88,8 +88,8 @@ implements MElementListener, VetoableChangeListener {
       MElement e = (MElement) value;
       String ocl = "";
       if (e instanceof MModelElement)
-	ocl = ((MModelElementImpl)e).getUMLClassName();
-        String name = ((MModelElementImpl)e).getName();
+	ocl = ((MModelElement)e).getUMLClassName();
+        String name = ((MModelElement)e).getName();
       if (e instanceof MTransition) {
 		  name = GeneratorDisplay.Generate((MTransition)e);
       }

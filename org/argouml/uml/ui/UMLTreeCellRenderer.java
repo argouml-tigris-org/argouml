@@ -134,8 +134,8 @@ public class UMLTreeCellRenderer extends DefaultTreeCellRenderer {
 
           String tip;
           if (value instanceof MModelElement)
-              tip = ((MModelElementImpl)value).getUMLClassName() + ": " +
-                  ((MModelElementImpl)value).getName() + " ";
+              tip = ((MModelElement)value).getUMLClassName() + ": " +
+                  ((MModelElement)value).getName() + " ";
 	  else 
 	      tip = (value == null) ? "null " : value.toString() + " ";
           lab.setToolTipText(tip);

@@ -182,9 +182,8 @@ public class PropPanelOperation extends PropPanelModelElement {
                     }
                 }
                 if(retParam == null) {
-                    retParam = new MParameterImpl();
-                    retParam.setKind(MParameterDirectionKind.RETURN);
-                    oper.addParameter(retParam);
+                	retParam = UmlFactory.getFactory().getCore().buildParameter(oper, 
+                		MParameterDirectionKind.RETURN);
                 }
                 retParam.setType(type);
             }

@@ -107,7 +107,7 @@ public class FigBranchState extends FigStateVertex {
     bindPort(node, _bigPort);
     // if it is a UML meta-model object, register interest in any change events
     if (node instanceof MElement)
-      ((MElementImpl)node).addMElementListener(this);
+      ((MElement)node).addMElementListener(this);
   }
 
   /** Initial states are fixed size. */

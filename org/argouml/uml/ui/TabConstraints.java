@@ -65,7 +65,7 @@ public class TabConstraints extends TabSpawnable implements TabModelTarget {
     /**
       * The target element being edited.
       */
-    private MModelElementImpl m_mmeiTarget;
+    private MModelElement m_mmeiTarget;
     
     /**
       * A list of all the constraints in m_nmeiTarget. This is necessary to
@@ -81,7 +81,7 @@ public class TabConstraints extends TabSpawnable implements TabModelTarget {
     /**
       * Construct a new ConstraintModel.
       */
-    public ConstraintModel (MModelElementImpl mmeiTarget) {
+    public ConstraintModel (MModelElement mmeiTarget) {
       super();
 
       m_mmeiTarget = mmeiTarget;
@@ -492,7 +492,7 @@ public class TabConstraints extends TabSpawnable implements TabModelTarget {
   /**
     * The current target element.
     */
-  private MModelElementImpl m_mmeiTarget;
+  private MModelElement m_mmeiTarget;
   
   public TabConstraints() {
     super ("tab.constraints");
@@ -537,7 +537,7 @@ public class TabConstraints extends TabSpawnable implements TabModelTarget {
       return;
     }
 
-    m_mmeiTarget = (MModelElementImpl) oTarget;
+    m_mmeiTarget = (MModelElement) oTarget;
     
     // Set editor's model
     m_ocleEditor.setModel (new ConstraintModel (m_mmeiTarget));

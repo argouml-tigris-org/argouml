@@ -769,7 +769,7 @@ public class CoreFactory extends AbstractUmlModelFactory {
         return res;
     }
     
-     /**
+    /**
      * Constructs a default parameter and adds it to oper.
      *
      * @param oper  The operation where it is added to. 
@@ -783,6 +783,24 @@ public class CoreFactory extends AbstractUmlModelFactory {
             oper.addParameter(res);
         return res;
     }
+    
+    /**
+     * Constructs a default parameter, adds it to oper and sets its type 
+     * (return etc.).
+     *
+     * @param oper  The operation where it is added to. 
+     *          If null, it is not added.
+     * @param directionKind The directionkind. If null it is not set.
+     * @return      The newly created parameter.
+     */
+    public MParameter buildParameter(MBehavioralFeature oper, MParameterDirectionKind directionKind) {
+        MParameter res = buildParameter(oper);
+        if (directionKind != null) {
+        	res.setKind(directionKind);
+        }
+        return res;
+    }
+    
     
     /**
      * Adds a parameter initialized to default values to a given event 
