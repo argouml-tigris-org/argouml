@@ -4,8 +4,6 @@ ext
 src_new
 *.jar
 README.txt
-Fop.java
-Fop.class
 documentation
 doc
 javadocs
