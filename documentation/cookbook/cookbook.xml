@@ -1722,6 +1722,16 @@ for this release to ---.
 </para>
 	      </listitem>
 	      <listitem>
+	        <para>
+Move all issues reported on 'current' to this release.
+</para>
+                <para>
+These items were reported between the previous version and this version.
+Since 'current' will be reused for the next release, they need to be
+locked to the closest release to where they were found.
+</para>
+              </listitem>
+	      <listitem>
 		<para>Other stuff.</para>
 		<para>
 This can also be a good time to change all 
