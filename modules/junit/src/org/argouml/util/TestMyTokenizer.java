@@ -66,35 +66,63 @@ public class TestMyTokenizer extends TestCase {
 		String res6_1[] = {"newAttr", " ", "=", " ", "(", ":", " ", "()h)", " "};
 		String res6_2[] = {"newAttr", " ", "=", " ", "(: ()h)", " "};
 
+		String str7 = "newAttr = (\"\\\" )(\" () \'\\\' )(\')";
+		String delim7 = " ,\t,<<,>>,[,],:,=,{,},\\,";
+		String res7_1[] = {"newAttr", " ", "=", " ", "(\"\\\"", " ", ")(\"", " ", "()", " ", "\'\\\'", " ", ")(\')"};
+		String res7_2[] = {"newAttr", " ", "=", " ", "(\"\\\"", " ", ")(\"", " ", "()", " ", "\'\\\' )(\'", ")"};
+		String res7_3[] = {"newAttr", " ", "=", " ", "(", "\"\\\" )(\"", " ", "()", " ", "\'\\\'", " ", ")(\')"};
+		String res7_4[] = {"newAttr", " ", "=", " ", "(\"\\\" )", "(\" () \'\\\' )", "(\')"};
+		String res7_5[] = {"newAttr", " ", "=", " ", "(\"\\\" )(\" () \'\\\' )(\')"};
+		String res7_6[] = {"newAttr", " ", "=", " ", "(", "\"\\\" )(\"", " ", "()", " ", "\'\\\' )(\'", ")"};
+
 		checkConstr(str1, delim1, res1);
 		checkConstr(str1, delim1, res1, MyTokenizer.SINGLE_QUOTED_SEPARATOR);
 		checkConstr(str1, delim1, res1, MyTokenizer.DOUBLE_QUOTED_SEPARATOR);
 		checkConstr(str1, delim1, res1, MyTokenizer.PAREN_EXPR_SEPARATOR);
+		checkConstr(str1, delim1, res1, MyTokenizer.PAREN_EXPR_STRING_SEPARATOR);
 		checkConstr(str1, delim1, res1, seps);
 
 		checkConstr(str2, delim2, res2);
 		checkConstr(str2, delim2, res2, MyTokenizer.SINGLE_QUOTED_SEPARATOR);
 		checkConstr(str2, delim2, res2, MyTokenizer.DOUBLE_QUOTED_SEPARATOR);
 		checkConstr(str2, delim2, res2, MyTokenizer.PAREN_EXPR_SEPARATOR);
+		checkConstr(str2, delim2, res2, MyTokenizer.PAREN_EXPR_STRING_SEPARATOR);
 		checkConstr(str2, delim2, res2, seps);
 
 		checkConstr(str3, delim3, res3);
 		checkConstr(str3, delim3, res3, MyTokenizer.SINGLE_QUOTED_SEPARATOR);
 		checkConstr(str3, delim3, res3, MyTokenizer.DOUBLE_QUOTED_SEPARATOR);
 		checkConstr(str3, delim3, res3, MyTokenizer.PAREN_EXPR_SEPARATOR);
+		checkConstr(str3, delim3, res3, MyTokenizer.PAREN_EXPR_STRING_SEPARATOR);
 		checkConstr(str3, delim3, res3, seps);
 
 		checkConstr(str4, delim4, res4_1);
 		checkConstr(str4, delim4, res4_1, MyTokenizer.SINGLE_QUOTED_SEPARATOR);
 		checkConstr(str4, delim4, res4_2, MyTokenizer.DOUBLE_QUOTED_SEPARATOR);
 		checkConstr(str4, delim4, res4_1, MyTokenizer.PAREN_EXPR_SEPARATOR);
+		checkConstr(str4, delim4, res4_1, MyTokenizer.PAREN_EXPR_STRING_SEPARATOR);
 		checkConstr(str4, delim4, res4_2, seps);
 
 		checkConstr(str5, delim5, res5_1);
 		checkConstr(str5, delim5, res5_2, MyTokenizer.SINGLE_QUOTED_SEPARATOR);
 		checkConstr(str5, delim5, res5_1, MyTokenizer.DOUBLE_QUOTED_SEPARATOR);
 		checkConstr(str5, delim5, res5_1, MyTokenizer.PAREN_EXPR_SEPARATOR);
+		checkConstr(str5, delim5, res5_1, MyTokenizer.PAREN_EXPR_STRING_SEPARATOR);
 		checkConstr(str5, delim5, res5_2, seps);
+
+		checkConstr(str6, delim6, res6_1);
+		checkConstr(str6, delim6, res6_1, MyTokenizer.SINGLE_QUOTED_SEPARATOR);
+		checkConstr(str6, delim6, res6_1, MyTokenizer.DOUBLE_QUOTED_SEPARATOR);
+		checkConstr(str6, delim6, res6_2, MyTokenizer.PAREN_EXPR_SEPARATOR);
+		checkConstr(str6, delim6, res6_2, MyTokenizer.PAREN_EXPR_STRING_SEPARATOR);
+		checkConstr(str6, delim6, res6_1, seps);
+
+		checkConstr(str7, delim7, res7_1);
+		checkConstr(str7, delim7, res7_2, MyTokenizer.SINGLE_QUOTED_SEPARATOR);
+		checkConstr(str7, delim7, res7_3, MyTokenizer.DOUBLE_QUOTED_SEPARATOR);
+		checkConstr(str7, delim7, res7_4, MyTokenizer.PAREN_EXPR_SEPARATOR);
+		checkConstr(str7, delim7, res7_5, MyTokenizer.PAREN_EXPR_STRING_SEPARATOR);
+		checkConstr(str7, delim7, res7_6, seps);
 	}
 
 	private void checkConstr(String str, String delim, String res[]) {

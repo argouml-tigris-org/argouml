@@ -102,7 +102,7 @@ class TokenSep {
  * <pre>(a+(b*c)-15*eq(a, b))</pre>.
  *
  * <p>This is in fact the class currently used for the public separators in
- * MyTokenizer.
+ * MyTokenizer, except PAREN_EXPR_STRING_SEPARATOR.
  */
 class QuotedStringSeparator extends CustomSeparator {
 	private final char _escChr;
@@ -200,6 +200,105 @@ class QuotedStringSeparator extends CustomSeparator {
 }
 
 /**
+ * A descendent of CustomSeparator that recognizes tokens on the form:
+ *
+ * <br>( " \" ) " ' \' ) ' )
+ *
+ * <p>This is, an expression inside parentheses with proper consideration
+ * for quoted strings inside the the expression.
+ */
+class ExprSeparatorWithStrings extends CustomSeparator {
+	private boolean _isSQuot;
+	private boolean _isDQuot;
+	private boolean _isEsc;
+	private int _tokLevel;
+	private int _tokLen;
+
+	/**
+	 * The constructor. No choices available.
+	 */
+	public ExprSeparatorWithStrings() {
+		super('(');
+
+		_isEsc = false;
+		_isSQuot = false;
+		_isDQuot = false;
+		_tokLevel = 1;
+		_tokLen = 0;
+	}
+
+	public void reset() {
+		super.reset();
+
+		_isEsc = false;
+		_isSQuot = false;
+		_isDQuot = false;
+		_tokLevel = 1;
+		_tokLen = 0;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * Overridden to return the entire length of the token.
+	 */
+	public int tokenLength() {
+		return super.tokenLength() + _tokLen;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * Overridden to return true.
+	 *
+	 * @return true
+	 */
+	public boolean hasFreePart() {
+		return true;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * Overridden to find the end of the token.
+	 */
+	public boolean endChar(char c) {
+		_tokLen++;
+		if (_isSQuot) {
+			if (_isEsc) {
+				_isEsc = false;
+				return false;
+			}
+			if (c == '\\')
+				_isEsc = true;
+			else if (c == '\'')
+				_isSQuot = false;
+			return false;
+		} else if (_isDQuot) {
+			if (_isEsc) {
+				_isEsc = false;
+				return false;
+			}
+			if (c == '\\')
+				_isEsc = true;
+			else if (c == '\"')
+				_isDQuot = false;
+			return false;
+		} else {
+			if (c == '\'')
+				_isSQuot = true;
+			else if (c == '\"')
+				_isDQuot = true;
+			else if (c == '(')
+				_tokLevel++;
+			else if (c == ')')
+				_tokLevel--;
+			return _tokLevel <= 0;
+		}
+	}
+}
+
+/**
  * Class for dividing a String into any number of parts. Each part will be a
  * substring of the original String. The first part will at least contain the
  * first character in the string. All following parts will at least contain
@@ -265,9 +364,19 @@ public class MyTokenizer implements Enumeration
 
 	/** A custom separator for expressions enclosed in parentheses and
 	 *  matching lparams with rparams. There may not be proper matching
-	 *  if the tokenizer reaches the end of the String. */
+	 *  if the tokenizer reaches the end of the String. Do not use this
+	 *  together with PAREN_EXPR_STRING_SEPARATOR. */
 	public final static CustomSeparator PAREN_EXPR_SEPARATOR =
 		new QuotedStringSeparator('(', ')', '\0');
+
+	/** A custom separator for expressions enclosed in parentheses and
+	 *  matching lparams with rparams. There may not be proper matching
+	 *  if the tokenizer reaches the end of the String. It also takes
+	 *  quoted strings (either single or double quotes) in the expression
+	 *  into consideration, unlike PAREN_EXPR_SEPARATOR. Do not use this
+	 *  together with PAREN_EXPR_SEPARATOR. */
+	public final static CustomSeparator PAREN_EXPR_STRING_SEPARATOR =
+		new ExprSeparatorWithStrings();
 
 	private int _sIdx;
 	private final int _eIdx;
