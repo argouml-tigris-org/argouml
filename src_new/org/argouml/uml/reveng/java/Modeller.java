@@ -125,7 +125,7 @@ public class Modeller
 
         exception caught.*/
 
-    private Exception _exception; 
+    private Exception _exception;
 
 
 
@@ -375,7 +375,7 @@ public class Modeller
 
 		    .get(getClassifierName(superclassName));
 
-		
+
 
 		MGeneralization mGeneralization =
 
@@ -389,7 +389,7 @@ public class Modeller
 
 	    }
 
-	    
+
 
 	    for(Iterator i = interfaces.iterator(); i.hasNext(); ) {
 
@@ -399,7 +399,7 @@ public class Modeller
 
 		    .getInterface(getClassifierName(interfaceName));
 
-		
+
 
 		MAbstraction mAbstraction =
 
@@ -537,7 +537,7 @@ public class Modeller
 
 		    .getInterface(getClassifierName(interfaceName));
 
-		
+
 
 		MGeneralization mGeneralization =
 
@@ -665,11 +665,11 @@ public class Modeller
 
    */
 
-  
+
 
   addDocumentationTag (mClassifier, javadoc);
 
-  
+
 
 	return mClassifier;
 
@@ -782,7 +782,7 @@ public class Modeller
 
 
 
-      for(Iterator i = mOperation.getParameters().iterator(); 
+      for(Iterator i = mOperation.getParameters().iterator();
 
           i.hasNext(); ) {
 
@@ -809,8 +809,6 @@ public class Modeller
         // Constructor
 
         mOperation.setStereotype(getStereotype("create"));
-
-        setScope(mOperation, JavaRecognizer.ACC_STATIC);
 
           }
 
@@ -938,7 +936,7 @@ public class Modeller
 
 	    return;
 
-	
+
 
 	MOperation operation = (MOperation)op;
 
@@ -1152,7 +1150,7 @@ public class Modeller
 
             mAssociationEnd.setNavigable(true);
 
-            
+
 
             /*
 
@@ -2134,11 +2132,11 @@ public class Modeller
 
         (! "".equals (sJavaDocs))) {
 
-          
 
-      //System.out.println ("Modeller.addDocumentationTag: sJavaDocs = \"" + sJavaDocs + "\"");  
 
-        
+      //System.out.println ("Modeller.addDocumentationTag: sJavaDocs = \"" + sJavaDocs + "\"");
+
+
 
       StringBuffer sbPureDocs = new StringBuffer(80);
 
@@ -2148,13 +2146,13 @@ public class Modeller
 
       String sCurrentTagData = null;
 
-      
+
 
       int nStartPos = 3; // skip the leading /**
 
       boolean fHadAsterisk = true;
 
-      
+
 
       while (nStartPos < sJavaDocs.length()) {
 
@@ -2168,7 +2166,7 @@ public class Modeller
 
             break;
 
-            
+
 
           case ' ':   // all white space, hope I didn't miss any ;-)
 
@@ -2184,13 +2182,13 @@ public class Modeller
 
             }
 
-            
+
 
           default:
 
             // normal comment text or standard tag
 
-            
+
 
             // check ahead for tag
 
@@ -2214,7 +2212,7 @@ public class Modeller
 
                 // start standard tag
 
-                
+
 
                 // potentially add current tag to set of tagged values...
 
@@ -2224,7 +2222,7 @@ public class Modeller
 
                 }
 
-                
+
 
                 // open new tag
 
@@ -2236,7 +2234,7 @@ public class Modeller
 
                 }
 
-                
+
 
                 sCurrentTagName = sJavaDocs.substring (
 
@@ -2246,7 +2244,7 @@ public class Modeller
 
                   );
 
-                
+
 
                 //System.out.println (
 
@@ -2256,7 +2254,7 @@ public class Modeller
 
                 //  );
 
-                
+
 
                 int nTemp1 = sJavaDocs.indexOf ('\n', ++nTemp);
 
@@ -2284,7 +2282,7 @@ public class Modeller
 
                 //  );
 
-                
+
 
                 nStartPos = nTemp1;
 
@@ -2320,7 +2318,7 @@ public class Modeller
 
                   //  );
 
-                  sCurrentTagData += 
+                  sCurrentTagData +=
 
                       " " +
 
@@ -2352,7 +2350,7 @@ public class Modeller
 
             }
 
-            
+
 
             fHadAsterisk = false;
 
@@ -2360,7 +2358,7 @@ public class Modeller
 
       }
 
-      
+
 
       sJavaDocs = sbPureDocs.toString();
 
@@ -2374,7 +2372,7 @@ public class Modeller
 
        * we want to remove the complete line, otherwise we remove just the '/'.
 
-       * 
+       *
 
        * This will be either at the end of the actual comment text or at the end
 
@@ -2436,7 +2434,7 @@ public class Modeller
 
       }
 
-      
+
 
       // Now store documentation text
 
