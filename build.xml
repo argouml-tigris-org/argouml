@@ -31,11 +31,15 @@ Building instructions
 
 First, make sure your current working directory is where this very file is located. Then just type
 
+	ant
+
+or, if it doesn't work
+
 	build
 
 to create the settings for an environment to suit Ant.
 
-After the above command you should see a help screen decribing the usage of the Ant facility if everything is set up properly.
+After the above command you should see a help screen describing the usage of the Ant facility if everything is set up properly.
 
 
 Property Settings
