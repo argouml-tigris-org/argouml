@@ -53,7 +53,7 @@ public class TabDocumentation extends PropPanel {
     ////////////////////////////////////////////////////////////////
   // constructor
   public TabDocumentation() {
-    super("Documentation",2);
+    super("tab.documentation",2);
         addCaption(Argo.localize(BUNDLE, "docpane.label.author") + ":",1,0,0);
         addField(new UMLTextField(this,new UMLTaggedTextProperty("author")),1,0,0);
 //unknown where this information is stored; it does not go to myproject.argo (xml file)

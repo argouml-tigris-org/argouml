@@ -39,6 +39,7 @@ import ru.novosoft.uml.behavior.common_behavior.*;
 
 import javax.swing.*;
 
+import org.argouml.application.api.*;
 import org.argouml.uml.ui.*;
 import org.argouml.uml.ui.foundation.core.PropPanelModelElement;
 
@@ -58,13 +59,13 @@ public class PropPanelMessage extends PropPanelModelElement {
 
     Class mclass = MMessage.class;
 
-    addCaption("Name:",1,0,0);
+    addCaption(Argo.localize("UMLMenu", "label.name"),1,0,0);
     addField(nameField,1,0,0);
 
-    addCaption("Stereotype:",2,0,0);
+    addCaption(Argo.localize("UMLMenu", "label.stereotype"),2,0,0);
     addField(stereotypeBox,2,0,0);
 
-    addCaption("Namespace:",3,0,0);
+    addCaption(Argo.localize("UMLMenu", "label.namespace"),3,0,0);
     addField(namespaceScroll,3,0,0);
 
     addCaption("Sender:",4,0,0);
@@ -75,7 +76,7 @@ public class PropPanelMessage extends PropPanelModelElement {
     JScrollPane senderScroll = new JScrollPane(senderList,JScrollPane.VERTICAL_SCROLLBAR_NEVER,JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
     addField(senderScroll,4,0,0);
 
-    addCaption("Receiver:",5,0,1);
+    addCaption(Argo.localize("UMLMenu", "label.receiver"),5,0,1);
     UMLModelElementListModel receiverModel=new UMLReflectionListModel(this, "receiver",true,"getReceiver",null, null,null);
     JList receiverList = new UMLList(receiverModel,true);
     receiverList.setForeground(Color.blue);
@@ -107,9 +108,9 @@ public class PropPanelMessage extends PropPanelModelElement {
     JScrollPane actionScroll = new JScrollPane(actionList,JScrollPane.VERTICAL_SCROLLBAR_NEVER,JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
     addField(actionScroll,2,1,0);
 
-    new PropPanelButton(this,buttonPanel,_navUpIcon,localize("Go up"),"navigateNamespace",null);
-    new PropPanelButton(this,buttonPanel,_navBackIcon,localize("Go back"),"navigateBackAction","isNavigateBackEnabled");
-    new PropPanelButton(this,buttonPanel,_navForwardIcon,localize("Go forward"),"navigateForwardAction","isNavigateForwardEnabled");
+    new PropPanelButton(this,buttonPanel,_navUpIcon, Argo.localize("UMLMenu", "button.go-up"),"navigateNamespace",null);
+    new PropPanelButton(this,buttonPanel,_navBackIcon, Argo.localize("UMLMenu" ,"button.go-back"),"navigateBackAction","isNavigateBackEnabled");
+    new PropPanelButton(this,buttonPanel,_navForwardIcon, Argo.localize("UMLMenu", "button.go-forward"),"navigateForwardAction","isNavigateForwardEnabled");
     new PropPanelButton(this,buttonPanel,_deleteIcon,localize("Delete"),"removeElement",null);
  }
 

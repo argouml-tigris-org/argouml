@@ -24,15 +24,17 @@
 
 package org.argouml.uml.ui.foundation.core;
 
+import java.awt.*;
+import javax.swing.*;
+
 import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.foundation.data_types.*;
 import ru.novosoft.uml.model_management.*;
-import javax.swing.*;
 
+import org.argouml.application.api.*;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.*;
 import org.argouml.uml.ui.*;
-import java.awt.*;
 
 public class PropPanelParameter extends PropPanelModelElement {
 
@@ -41,21 +43,21 @@ public class PropPanelParameter extends PropPanelModelElement {
 
         Class mclass = MParameter.class;
 
-        addCaption("Name:",1,0,0);
+        addCaption(Argo.localize("UMLMenu", "label.name"),1,0,0);
         addField(nameField,1,0,0);
 
-        addCaption("Stereotype:",2,0,0);
-        addField(new UMLComboBoxNavigator(this,"NavStereo",stereotypeBox),2,0,0);
+        addCaption(Argo.localize("UMLMenu", "label.stereotype"),2,0,0);
+        addField(new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-stereo"),stereotypeBox),2,0,0);
 
-        addCaption("Owner:",3,0,1);
+        addCaption(Argo.localize("UMLMenu", "label.owner"),3,0,1);
         JList namespaceList = new UMLList(new UMLReflectionListModel(this,"behaviorialfeature",false,"getBehavioralFeature",null,null,null),true);
         addLinkField(new JScrollPane(namespaceList,JScrollPane.VERTICAL_SCROLLBAR_NEVER,JScrollPane.HORIZONTAL_SCROLLBAR_NEVER),3,0,0);
 
-        addCaption("Type:",0,1,0);
+        addCaption(Argo.localize("UMLMenu", "label.type"),0,1,0);
         UMLComboBoxModel typeModel = new UMLComboBoxModel(this,"isAcceptibleType",
             "type","getType","setType",false,MClassifier.class,true);
 	UMLComboBox typeComboBox=new UMLComboBox(typeModel);
-        addField(new UMLComboBoxNavigator(this,"NavClass",typeComboBox),0,1,0);
+        addField(new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-class"),typeComboBox),0,1,0);
 
         addCaption("Initial Value:",1,1,0);
         addField(new UMLInitialValueComboBox(this),1,1,0);
@@ -82,12 +84,12 @@ public class PropPanelParameter extends PropPanelModelElement {
 
         addField(kindPanel,2,1,0);
 
-	new PropPanelButton(this,buttonPanel,_navUpIcon,localize("Go up"),"navigateUp",null);
-	new PropPanelButton(this,buttonPanel,_navBackIcon,localize("Go back"),"navigateBackAction","isNavigateBackEnabled");
-	new PropPanelButton(this,buttonPanel,_navForwardIcon,localize("Go forward"),"navigateForwardAction","isNavigateForwardEnabled");
-	new PropPanelButton(this,buttonPanel,_parameterIcon,localize("Add parameter"),"addParameter",null);
-	//	new PropPanelButton(this,buttonPanel,_dataTypeIcon,localize("Add datatype"),"addDataType",null);
-	new PropPanelButton(this,buttonPanel,_deleteIcon,localize("Delete parameter"),"removeElement",null);
+	new PropPanelButton(this,buttonPanel,_navUpIcon, Argo.localize("UMLMenu", "button.go-up"),"navigateUp",null);
+	new PropPanelButton(this,buttonPanel,_navBackIcon, Argo.localize("UMLMenu", "button.go-back"),"navigateBackAction","isNavigateBackEnabled");
+	new PropPanelButton(this,buttonPanel,_navForwardIcon, Argo.localize("UMLMenu" ,"button.go-forward"),"navigateForwardAction","isNavigateForwardEnabled");
+	new PropPanelButton(this,buttonPanel,_parameterIcon, Argo.localize("UMLMenu", "button.add-parameter"),"addParameter",null);
+	//	new PropPanelButton(this,buttonPanel,_dataTypeIcon, Argo.localize("UMLMenu", "button.add-datatype"),"addDataType",null);
+	new PropPanelButton(this,buttonPanel,_deleteIcon, Argo.localize("UMLMenu", "button.delete-parameter"),"removeElement",null);
     }
 
     public MClassifier getType() {
@@ -133,8 +135,9 @@ public class PropPanelParameter extends PropPanelModelElement {
         if(target instanceof MParameter) {
             feature = ((MParameter) target).getBehavioralFeature();
             if(feature != null) {
-                MParameter newParam = MMUtil.SINGLETON.buildParameter(feature);
+                MParameter newParam = feature.getFactory().createParameter();
                 newParam.setKind(MParameterDirectionKind.INOUT);
+                feature.addParameter(newParam);
                 navigateTo(newParam);
                  // 2002-07-15
             	// Jaap Branderhorst

@@ -23,13 +23,16 @@
 
 package org.argouml.uml.ui.foundation.core;
 
+import java.awt.*;
+import java.util.*;
+import javax.swing.*;
+
 import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.foundation.data_types.*;
 import ru.novosoft.uml.model_management.*;
-import javax.swing.*;
+
+import org.argouml.application.api.*;
 import org.argouml.uml.ui.*;
-import java.awt.*;
-import java.util.*;
 
 public class PropPanelAssociationEnd extends PropPanelModelElement {
 
@@ -44,23 +47,23 @@ public class PropPanelAssociationEnd extends PropPanelModelElement {
   }
 
   protected void makeFields(Class mclass) {
-    addCaption("Name:",1,0,0);
+    addCaption(Argo.localize("UMLMenu", "label.name"),1,0,0);
     addField(nameField,1,0,0);
 
-    addCaption("Stereotype:",2,0,0);
-    addField(new UMLComboBoxNavigator(this,"NavStereo",stereotypeBox),2,0,0);
+    addCaption(Argo.localize("UMLMenu", "label.stereotype"),2,0,0);
+    addField(new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-stereo"),stereotypeBox),2,0,0);
 
-    addCaption("Type:",3,0,0);
+    addCaption(Argo.localize("UMLMenu", "label.type"),3,0,0);
     UMLComboBoxModel model = new UMLComboBoxModel(this,"isAcceptibleType",
         "type","getType","setType",false,MClassifier.class,true);
     UMLComboBox box = new UMLComboBox(model);
     box.setToolTipText("Warning: Do not use this to change an end that is already in a diagram.");
-    addField(new UMLComboBoxNavigator(this,"NavClass",box),3,0,0);
+    addField(new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-class"),box),3,0,0);
 
-    addCaption("Multiplicity:",4,0,0);
+    addCaption(Argo.localize("UMLMenu", "label.multiplicity"),4,0,0);
     addField(new UMLMultiplicityComboBox(this,mclass),4,0,0);
 
-    addCaption("Association:",5,0,1);
+    addCaption(Argo.localize("UMLMenu", "label.association"),5,0,1);
     JList namespaceList = new UMLList(new UMLReflectionListModel(this,"association",false,"getAssociation",null,null,null),true);
     namespaceList.setBackground(getBackground());
     namespaceList.setForeground(Color.blue);
@@ -72,7 +75,7 @@ public class PropPanelAssociationEnd extends PropPanelModelElement {
       new UMLReflectionBooleanProperty("navigable",mclass,
         "isNavigable","setNavigable")),0,1,0);
 
-    addCaption("Ordering:",1,1,0);
+    addCaption(Argo.localize("UMLMenu", "label.ordering"),1,1,0);
     JPanel orderingPanel = new JPanel(new GridLayout(0,1));
     ButtonGroup orderingGroup = new ButtonGroup();
 
@@ -91,7 +94,7 @@ public class PropPanelAssociationEnd extends PropPanelModelElement {
     orderingGroup.add(ordered);
     orderingPanel.add(ordered);
 
-    UMLRadioButton sorted = new UMLRadioButton(localize("sorted"),this,
+    UMLRadioButton sorted = new UMLRadioButton(Argo.localize("UMLMenu", "button.sorted"),this,
       new UMLEnumerationBooleanProperty("ordering",mclass,"getOrdering",
       "setOrdering",MOrderingKind.class,MOrderingKind.SORTED,null));
 
@@ -133,7 +136,7 @@ public class PropPanelAssociationEnd extends PropPanelModelElement {
     ButtonGroup changeabilityGroup = new ButtonGroup();
     JPanel changeabilityPanel = new JPanel(new GridLayout(0,1));
 
-    UMLRadioButton changeable = new UMLRadioButton(localize("changeable"),this,
+    UMLRadioButton changeable = new UMLRadioButton(Argo.localize("UMLMenu", "radiobutton.changeable"),this,
       new UMLEnumerationBooleanProperty("changeability",mclass,"getChangeability",
         "setChangeability",MChangeableKind.class,MChangeableKind.CHANGEABLE,null), true);
 
@@ -156,14 +159,14 @@ public class PropPanelAssociationEnd extends PropPanelModelElement {
     addField(changeabilityPanel,1,2,0);
 
 
-    addCaption("Visibility:",2,2,1);
+    addCaption(Argo.localize("UMLMenu", "label.visibility"),2,2,1);
     addField(new UMLVisibilityPanel(this,mclass,1,false),2,2,0);
 
-    //does this make sense?? new PropPanelButton(this,buttonPanel,_classIcon,localize("New class"),"newClass",null);
-    new PropPanelButton(this,buttonPanel,_navUpIcon,localize("Go up"),"navigateUp",null);
-    //does this amke sense?? new PropPanelButton(this,buttonPanel,_interfaceIcon,localize("New interface"),"newInterface",null);
-    new PropPanelButton(this,buttonPanel,_navBackIcon,localize("Go back"),"navigateBackAction","isNavigateBackEnabled");
-    new PropPanelButton(this,buttonPanel,_navForwardIcon,localize("Go forward"),"navigateForwardAction","isNavigateForwardEnabled");
+    //does this make sense?? new PropPanelButton(this,buttonPanel,_classIcon, Argo.localize("UMLMenu", "button.add-new-class"),"newClass",null);
+    new PropPanelButton(this,buttonPanel,_navUpIcon, Argo.localize("UMLMenu", "button.go-up"),"navigateUp",null);
+    //does this make sense?? new PropPanelButton(this,buttonPanel,_interfaceIcon, Argo.localize("UMLMenu", "button.add-new-interface"),"newInterface",null);
+    new PropPanelButton(this,buttonPanel,_navBackIcon, Argo.localize("UMLMenu", "button.go-back"),"navigateBackAction","isNavigateBackEnabled");
+    new PropPanelButton(this,buttonPanel,_navForwardIcon, Argo.localize("UMLMenu", "button.go-forward"),"navigateForwardAction","isNavigateForwardEnabled");
     new PropPanelButton(this,buttonPanel,_assocEndIcon,localize("Go to other end"),"gotoOther",null);
 
   }

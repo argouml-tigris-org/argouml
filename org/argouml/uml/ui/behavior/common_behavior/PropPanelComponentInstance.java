@@ -36,6 +36,7 @@ import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.foundation.data_types.*;
 import ru.novosoft.uml.behavior.common_behavior.*;
 
+import org.argouml.application.api.*;
 import org.argouml.uml.ui.*;
 import org.argouml.uml.ui.foundation.core.PropPanelModelElement;
 
@@ -49,23 +50,23 @@ public class PropPanelComponentInstance extends PropPanelModelElement {
 
     Class mclass = MComponentInstance.class;
 
-    addCaption("Name:",1,0,0);
+    addCaption(Argo.localize("UMLMenu", "label.name"),1,0,0);
     addField(nameField,1,0,0);
 
     addCaption("Classifier:",2,0,0);
    	UMLClassifierComboBoxModel classifierModel = new UMLClassifierComboBoxModel(this,"isAcceptibleClassifier","classifier","getClassifier","setClassifier",false,MClassifier.class,true);
 	UMLComboBox clsComboBox = new UMLComboBox(classifierModel);
-   	addField(new UMLComboBoxNavigator(this,"NavClass",clsComboBox),2,0,0);
+   	addField(new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-class"),clsComboBox),2,0,0);
 
-    addCaption("Stereotype:",3,0,0);
+    addCaption(Argo.localize("UMLMenu", "label.stereotype"),3,0,0);
     addField(stereotypeBox,3,0,0);
 
-    addCaption("Namespace:",4,0,1);
+    addCaption(Argo.localize("UMLMenu", "label.namespace"),4,0,1);
     addField(namespaceScroll,4,0,0);
 
-    new PropPanelButton(this,buttonPanel,_navUpIcon,localize("Go up"),"navigateUp",null);
-    new PropPanelButton(this,buttonPanel,_navBackIcon,localize("Go back"),"navigateBackAction","isNavigateBackEnabled");
-    new PropPanelButton(this,buttonPanel,_navForwardIcon,localize("Go forward"),"navigateForwardAction","isNavigateForwardEnabled");
+    new PropPanelButton(this,buttonPanel,_navUpIcon, Argo.localize("UMLMenu", "button.go-up"),"navigateUp",null);
+    new PropPanelButton(this,buttonPanel,_navBackIcon, Argo.localize("UMLMenu", "button.go-back"),"navigateBackAction","isNavigateBackEnabled");
+    new PropPanelButton(this,buttonPanel,_navForwardIcon, Argo.localize("UMLMenu", "button.go-forward"),"navigateForwardAction","isNavigateForwardEnabled");
     new PropPanelButton(this,buttonPanel,_deleteIcon,localize("Delete"),"removeElement",null);
 
   }

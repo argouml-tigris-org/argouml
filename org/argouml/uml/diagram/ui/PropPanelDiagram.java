@@ -29,6 +29,7 @@ import javax.swing.*;
 import org.tigris.gef.base.*;
 import org.tigris.gef.util.Util;
 
+import org.argouml.application.api.*;
 import org.argouml.ui.*;
 import org.argouml.uml.ui.*;
 import org.argouml.kernel.*;
@@ -38,14 +39,14 @@ public class PropPanelDiagram extends PropPanel  {
     public PropPanelDiagram() {
 	super("Diagram",null, 2);
 
-	addCaption("Name:",1,0,0);
+	addCaption(Argo.localize("UMLMenu", "label.name"),1,0,0);
 	addField(new UMLTextField(this,
 				  new UMLTextProperty(ArgoDiagram.class,"name","getName","setName")),1,0,0);
 	//
 	//   filler to take up rest of panel
 	addCaption(new JPanel(),1,0,1);
-	new PropPanelButton(this,buttonPanel,_navBackIcon,localize("Go back"),"navigateBackAction","isNavigateBackEnabled");
-	new PropPanelButton(this,buttonPanel,_navForwardIcon,localize("Go forward"),"navigateForwardAction","isNavigateForwardEnabled");
+	new PropPanelButton(this,buttonPanel,_navBackIcon, Argo.localize("UMLMenu", "button.go-back"),"navigateBackAction","isNavigateBackEnabled");
+	new PropPanelButton(this,buttonPanel,_navForwardIcon, Argo.localize("UMLMenu", "button.go-forward"),"navigateForwardAction","isNavigateForwardEnabled");
     }
 
     public void removeElement() {

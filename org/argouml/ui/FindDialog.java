@@ -39,6 +39,7 @@ import ru.novosoft.uml.model_management.*;
 
 import org.tigris.gef.util.*;
 
+import org.argouml.application.api.*;
 import org.argouml.uml.*;
 import org.argouml.uml.cognitive.*;
 
@@ -100,7 +101,7 @@ implements ActionListener, MouseListener {
     _tabs.setEnabledAt(2, false);
 
     initConstraintsTab();
-    _tabs.addTab("Constraints", _constraintsTab);
+    _tabs.addTab(Argo.localize("UMLMenu", "tab.constraints"), _constraintsTab);
     _tabs.setEnabledAt(3, false);
 
     //_tabs.addTab("Tagged Values", _tagValsTab);

@@ -62,7 +62,7 @@ implements TabModelTarget, ActionListener, ListSelectionListener {
   ////////////////////////////////////////////////////////////////
   // constructor
   public TabChecklist() {
-    super("Checklist");
+    super("tab.checklist");
 
     _tableModel = new TableModelChecklist(this);
     _table.setModel(_tableModel);

@@ -38,6 +38,7 @@ import ru.novosoft.uml.behavior.state_machines.*;
 import ru.novosoft.uml.behavior.common_behavior.*;
 import ru.novosoft.uml.behavior.activity_graphs.*;
 
+import org.argouml.application.api.*;
 import org.argouml.ui.*;
 import org.argouml.uml.ui.*;
 import org.argouml.uml.ui.behavior.state_machines.*;
@@ -58,24 +59,24 @@ public class PropPanelActionState extends PropPanelState {
 
     Class mclass = MActionState.class;
 
-    addCaption("Name:",1,0,0);
+    addCaption(Argo.localize("UMLMenu", "label.name"),1,0,0);
     addField(nameField,1,0,0);
 
-    addCaption("Stereotype:",2,0,0);
-    addField(new UMLComboBoxNavigator(this,"NavStereo",stereotypeBox),2,0,0);
+    addCaption(Argo.localize("UMLMenu", "label.stereotype"),2,0,0);
+    addField(new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-stereo"),stereotypeBox),2,0,0);
 
     addCaption("Entry-Action:",3,0,0);
     addField(entryScroll,3,0,0);
 
-    addCaption("Modifiers:",4,0,1);
+    addCaption(Argo.localize("UMLMenu", "label.modifiers"),4,0,1);
     JPanel modifiersPanel = new JPanel(new GridLayout(0,2));
     modifiersPanel.add(new UMLCheckBox(localize("dynamic"),this,new UMLReflectionBooleanProperty("isDynamic",mclass,"isDynamic","setDynamic")));
     addField(modifiersPanel,4,0,0);
 
-    addCaption("Incoming:",0,1,0.5);
+    addCaption(Argo.localize("UMLMenu", "label.incoming"),0,1,0.5);
     addField(incomingScroll,0,1,0.5);
     
-    addCaption("Outgoing:",1,1,0.5);
+    addCaption(Argo.localize("UMLMenu", "label.outgoing"),1,1,0.5);
     addField(outgoingScroll,1,1,0.5);
 
   }

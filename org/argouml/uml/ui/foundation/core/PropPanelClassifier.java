@@ -35,6 +35,7 @@ import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.foundation.data_types.*;
 import ru.novosoft.uml.foundation.extension_mechanisms.*;
 
+import org.argouml.application.api.*;
 import org.argouml.uml.ui.*;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.MMUtil;
@@ -81,8 +82,8 @@ abstract public class PropPanelClassifier extends PropPanelNamespace {
 
       _modifiersPanel = new JPanel(new GridLayout(0,2));
       _modifiersPanel.add(new UMLCheckBox(localize("public"),this,new UMLEnumerationBooleanProperty("visibility",mclass,"getVisibility","setVisibility",MVisibilityKind.class,MVisibilityKind.PUBLIC,null)));
-      _modifiersPanel.add(new UMLCheckBox(localize("abstract"),this,new UMLReflectionBooleanProperty("isAbstract",mclass,"isAbstract","setAbstract")));
-      _modifiersPanel.add(new UMLCheckBox(localize("final"),this,new UMLReflectionBooleanProperty("isLeaf",mclass,"isLeaf","setLeaf")));
+      _modifiersPanel.add(new UMLCheckBox(Argo.localize("UMLMenu", "checkbox.abstract-lc"),this,new UMLReflectionBooleanProperty("isAbstract",mclass,"isAbstract","setAbstract")));
+      _modifiersPanel.add(new UMLCheckBox(Argo.localize("UMLMenu", "checkbox.final-lc"),this,new UMLReflectionBooleanProperty("isLeaf",mclass,"isLeaf","setLeaf")));
       _modifiersPanel.add(new UMLCheckBox(localize("root"),this,new UMLReflectionBooleanProperty("isRoot",mclass,"isRoot","setRoot")));
 
       JList derivedList = new UMLList(new UMLSpecializationListModel(this,"specialization",true),true);

@@ -33,6 +33,8 @@ import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.foundation.data_types.*;
 import ru.novosoft.uml.model_management.*;
 import ru.novosoft.uml.behavior.common_behavior.*;
+
+import org.argouml.application.api.*;
 import org.argouml.uml.ui.*;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.MMUtil;
@@ -46,26 +48,26 @@ public class PropPanelOperation extends PropPanelModelElement {
 
         Class mclass = MOperation.class;
 
-        addCaption("Name:",1,0,0);
+        addCaption(Argo.localize("UMLMenu", "label.name"),1,0,0);
         addField(nameField,1,0,0);
 
-        addCaption("Stereotype:",2,0,0);
-        addField(new UMLComboBoxNavigator(this,"NavStereo",stereotypeBox),2,0,0);
+        addCaption(Argo.localize("UMLMenu", "label.stereotype"),2,0,0);
+        addField(new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-stereo"),stereotypeBox),2,0,0);
 
-        addCaption("Owner:",3,0,0);
+        addCaption(Argo.localize("UMLMenu", "label.owner"),3,0,0);
         JList ownerList = new UMLList(new UMLReflectionListModel(this,"owner",false,"getOwner",null,null,null),true);
         ownerList.setBackground(getBackground());
         ownerList.setForeground(Color.blue);
         JScrollPane ownerScroll=new JScrollPane(ownerList,JScrollPane.VERTICAL_SCROLLBAR_NEVER,JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         addField(ownerScroll,3,0,0);
 
-        addCaption("Visibility:",4,0,1);
+        addCaption(Argo.localize("UMLMenu", "label.visibility"),4,0,1);
         addField(new UMLVisibilityPanel(this,mclass,2,false),4,0,0);
 
-        addCaption("Modifiers:",0,1,0);
+        addCaption(Argo.localize("UMLMenu", "label.modifiers"),0,1,0);
         JPanel modPanel = new JPanel(new GridLayout(0,2));
-        modPanel.add(new UMLCheckBox(localize("abstract"),this,new UMLReflectionBooleanProperty("isAbstract",mclass,"isAbstract","setAbstract")));
-        modPanel.add(new UMLCheckBox(localize("final"),this,new UMLReflectionBooleanProperty("isLeaf",mclass,"isLeaf","setLeaf")));
+        modPanel.add(new UMLCheckBox(Argo.localize("UMLMenu", "checkbox.abstract-lc"),this,new UMLReflectionBooleanProperty("isAbstract",mclass,"isAbstract","setAbstract")));
+        modPanel.add(new UMLCheckBox(Argo.localize("UMLMenu", "checkbox.final-lc"),this,new UMLReflectionBooleanProperty("isLeaf",mclass,"isLeaf","setLeaf")));
         modPanel.add(new UMLCheckBox(localize("root"),this,new UMLReflectionBooleanProperty("isRoot",mclass,"isRoot","setRoot")));
         modPanel.add(new UMLCheckBox(localize("query"),this,new UMLReflectionBooleanProperty("isQuery",mclass,"isQuery","setQuery")));
         modPanel.add(new UMLCheckBox(localize("static"),this,new UMLEnumerationBooleanProperty("ownerscope",mclass,"getOwnerScope","setOwnerScope",MScopeKind.class,MScopeKind.CLASSIFIER,MScopeKind.INSTANCE)));
@@ -87,7 +89,7 @@ public class PropPanelOperation extends PropPanelModelElement {
         concurPanel.add(concur);
         addField(concurPanel,1,1,0);
 
-        addCaption("Parameters:",0,2,.5);
+        addCaption(Argo.localize("UMLMenu", "label.parameters"),0,2,.5);
         JList paramList = new UMLList(new UMLReflectionListModel(this,"parameter",true,"getParameters","setParameters","addParameter",null),true);
         paramList.setForeground(Color.blue);
         paramList.setVisibleRowCount(1);
@@ -101,14 +103,14 @@ public class PropPanelOperation extends PropPanelModelElement {
 	exceptList.setFont(smallFont);
         addField(new JScrollPane(exceptList),1,2,0.5);
 
-	new PropPanelButton(this,buttonPanel,_navUpIcon,localize("Go up"),"navigateUp",null);
-	new PropPanelButton(this,buttonPanel,_navBackIcon,localize("Go back"),"navigateBackAction","isNavigateBackEnabled");
-	new PropPanelButton(this,buttonPanel,_navForwardIcon,localize("Go forward"),"navigateForwardAction","isNavigateForwardEnabled");
-	new PropPanelButton(this,buttonPanel,_operationIcon,localize("New operation"),"buttonAddOperation",null);
+	new PropPanelButton(this,buttonPanel,_navUpIcon, Argo.localize("UMLMenu", "button.go-up"),"navigateUp",null);
+	new PropPanelButton(this,buttonPanel,_navBackIcon, Argo.localize("UMLMenu", "button.go-back"),"navigateBackAction","isNavigateBackEnabled");
+	new PropPanelButton(this,buttonPanel,_navForwardIcon, Argo.localize("UMLMenu" ,"button.go-forward"),"navigateForwardAction","isNavigateForwardEnabled");
+	new PropPanelButton(this,buttonPanel,_operationIcon, Argo.localize("UMLMenu", "button.add-new-operation"),"buttonAddOperation",null);
 // I uncommented this next line. I don't know why it was commented out, it seems to work just fine...--pjs--
-        new PropPanelButton(this,buttonPanel,_parameterIcon,localize("Add parameter"),"buttonAddParameter",null);
+        new PropPanelButton(this,buttonPanel,_parameterIcon, Argo.localize("UMLMenu", "button.add-parameter"),"buttonAddParameter",null);
 	//new PropPanelButton(this,buttonPanel,_signalIcon,localize("Add raised signal"),"buttonAddRaisedSignal",null);
-	new PropPanelButton(this,buttonPanel,_deleteIcon,localize("Delete operation"),"removeElement",null);
+	new PropPanelButton(this,buttonPanel,_deleteIcon, Argo.localize("UMLMenu", "button.delete-operation"),"removeElement",null);
     }
 
     public MClassifier getReturnType() {
@@ -166,8 +168,9 @@ public class PropPanelOperation extends PropPanelModelElement {
                     }
                 }
                 if(retParam == null) {
-                    retParam = MMUtil.SINGLETON.buildParameter(oper);
+                    retParam = new MParameterImpl();
                     retParam.setKind(MParameterDirectionKind.RETURN);
+                    oper.addParameter(retParam);
                 }
                 retParam.setType(type);
             }
@@ -239,8 +242,9 @@ public class PropPanelOperation extends PropPanelModelElement {
         Object target = getTarget();
         if(target instanceof MOperation) {
             MOperation oper = (MOperation) target;
-            MParameter newParam = MMUtil.SINGLETON.buildParameter(oper);
+            MParameter newParam = oper.getFactory().createParameter();
             newParam.setKind(MParameterDirectionKind.INOUT);
+            oper.addParameter(newParam);
             navigateTo(newParam);
             // 2002-07-15
             // Jaap Branderhorst

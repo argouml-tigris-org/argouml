@@ -22,6 +22,8 @@
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 package org.argouml.uml.ui.foundation.core;
+
+import org.argouml.application.api.*;
 import org.argouml.uml.ui.*;
 import ru.novosoft.uml.foundation.core.*;
 import javax.swing.*;
@@ -38,11 +40,11 @@ public class PropPanelModelElementImpl extends PropPanelModelElement {
 
     Class mclass = MModelElement.class;
 
-    addCaption("Name:",0,0,0);
+    addCaption(Argo.localize("UMLMenu", "label.name"),0,0,0);
     addField(nameField,0,0,0);
 
 
-    addCaption("Stereotype:",1,0,1);
+    addCaption(Argo.localize("UMLMenu", "label.stereotype"),1,0,1);
     addField(stereotypeBox,1,0,0);
 
   }

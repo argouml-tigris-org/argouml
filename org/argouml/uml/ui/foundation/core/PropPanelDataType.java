@@ -31,17 +31,19 @@
 
 package org.argouml.uml.ui.foundation.core;
 
-import ru.novosoft.uml.foundation.core.*;
-import ru.novosoft.uml.foundation.extension_mechanisms.*;
-import ru.novosoft.uml.foundation.data_types.*;
-import ru.novosoft.uml.model_management.*;
+import java.awt.*;
+import java.util.*;
 import javax.swing.*;
 
+import ru.novosoft.uml.foundation.core.*;
+import ru.novosoft.uml.foundation.data_types.*;
+import ru.novosoft.uml.foundation.extension_mechanisms.*;
+import ru.novosoft.uml.model_management.*;
+
+import org.argouml.application.api.*;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.*;
 import org.argouml.uml.ui.*;
-import java.awt.*;
-import java.util.*;
 
 public class PropPanelDataType extends PropPanelClassifier {
 
@@ -53,17 +55,17 @@ public class PropPanelDataType extends PropPanelClassifier {
 
     Class mclass = MDataType.class;
 
-    addCaption("Name:",1,0,0);
+    addCaption(Argo.localize("UMLMenu", "label.name"),1,0,0);
     addField(new UMLTextField(this,new UMLTextProperty(mclass,"name","getName","setName")),1,0,0);
 
 
-    addCaption("Stereotype:",2,0,0);
-    addField(new UMLComboBoxNavigator(this,"NavStereo",stereotypeBox),2,0,0);
+    addCaption(Argo.localize("UMLMenu", "label.stereotype"),2,0,0);
+    addField(new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-stereo"),stereotypeBox),2,0,0);
 
-    addCaption("Namespace:",3,0,0);
+    addCaption(Argo.localize("UMLMenu", "label.namespace"),3,0,0);
     addField(namespaceScroll, 3,0,0);
 
-    addCaption("Modifiers:",4,0,1);
+    addCaption(Argo.localize("UMLMenu", "label.modifiers"),4,0,1);
     addField(_modifiersPanel,4,0,0);
 
     addCaption("Generalizations:",0,1,1);
@@ -72,24 +74,24 @@ public class PropPanelDataType extends PropPanelClassifier {
     addCaption("Specializations:",1,1,1);
     addField(derivedScroll,1,1,1);
 
-    addCaption("Implements:",2,1,1);
+    addCaption(Argo.localize("UMLMenu", "label.implements"),2,1,1);
     addField(implementsScroll,2,1,1);
 
-    addCaption("Operations:",0,2,1);
+    addCaption(Argo.localize("UMLMenu", "label.operations"),0,2,1);
     addField(opsScroll,0,2,1);
 
-    addCaption("Literals:",1,2,1);
+    addCaption(Argo.localize("UMLMenu", "label.literals"),1,2,1);
     JList attrList = new UMLList(new UMLAttributesListModel(this,"feature",true),true);
     attrList.setForeground(Color.blue);
     attrList.setVisibleRowCount(1);
     JScrollPane attrScroll= new JScrollPane(attrList);
     addField(attrScroll,1,2,1);
 
-    new PropPanelButton(this,buttonPanel,_navUpIcon,localize("Go up"),"navigateNamespace",null);
-    new PropPanelButton(this,buttonPanel,_navBackIcon,localize("Go back"),"navigateBackAction","isNavigateBackEnabled");
-    new PropPanelButton(this,buttonPanel,_navForwardIcon,localize("Go forward"),"navigateForwardAction","isNavigateForwardEnabled");
-    new PropPanelButton(this,buttonPanel,_dataTypeIcon,localize("New data type"),"newDataType",null);
-    new PropPanelButton(this,buttonPanel,_addAttrIcon,localize("Add enumeration literal"),"addAttribute",null);
+    new PropPanelButton(this,buttonPanel,_navUpIcon, Argo.localize("UMLMenu", "button.go-up"),"navigateNamespace",null);
+    new PropPanelButton(this,buttonPanel,_navBackIcon, Argo.localize("UMLMenu", "button.go-back"),"navigateBackAction","isNavigateBackEnabled");
+    new PropPanelButton(this,buttonPanel,_navForwardIcon, Argo.localize("UMLMenu" ,"button.go-forward"),"navigateForwardAction","isNavigateForwardEnabled");
+    new PropPanelButton(this,buttonPanel,_dataTypeIcon, Argo.localize("UMLMenu", "button.add-new-data-type"),"newDataType",null);
+    new PropPanelButton(this,buttonPanel,_addAttrIcon, Argo.localize("UMLMenu", "button.add-enumeration-literal"),"addAttribute",null);
     new PropPanelButton(this,buttonPanel,_deleteIcon,localize("Delete datatype"),"removeElement",null);
   }
 
@@ -130,11 +132,12 @@ public class PropPanelDataType extends PropPanelClassifier {
                 }
             }
 
-            MAttribute attr = MMUtil.SINGLETON.buildAttribute(classifier);
+            MAttribute attr = classifier.getFactory().createAttribute();
             attr.setOwnerScope(MScopeKind.CLASSIFIER);
             attr.setChangeability(MChangeableKind.FROZEN);
             attr.setVisibility(MVisibilityKind.PUBLIC);
             attr.setType(classifier);
+            classifier.addFeature(attr);
             navigateTo(attr);
             // 2002-07-15
             // Jaap Branderhorst

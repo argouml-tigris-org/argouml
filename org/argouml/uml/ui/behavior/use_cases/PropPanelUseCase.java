@@ -37,6 +37,7 @@
 
 package org.argouml.uml.ui.behavior.use_cases;
 
+import org.argouml.application.api.*;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.ui.*;
 import org.argouml.uml.ui.foundation.core.*;
@@ -80,14 +81,14 @@ public class PropPanelUseCase extends PropPanelClassifier {
         // nameField, stereotypeBox and namespaceScroll are all set up by
         // PropPanelModelElement
 
-        addCaption("Name:", 1, 0, 0);
+        addCaption(Argo.localize("UMLMenu", "label.name"), 1, 0, 0);
         addField(nameField, 1, 0, 0);
 
-        addCaption("Stereotype:", 2, 0, 0);
-        addField(new UMLComboBoxNavigator(this,"NavStereo",stereotypeBox),
+        addCaption(Argo.localize("UMLMenu", "label.stereotype"), 2, 0, 0);
+        addField(new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-stereo"),stereotypeBox),
                  2, 0, 0);
 
-        addCaption("Namespace:", 3, 0, 0);
+        addCaption(Argo.localize("UMLMenu", "label.namespace"), 3, 0, 0);
         addField(namespaceScroll, 3, 0, 0);
 
         // For modifiers we create a grid with two columns. We really ought to
@@ -105,7 +106,7 @@ public class PropPanelUseCase extends PropPanelClassifier {
         mPanel.add("isRoot", mclass, "isRoot", "setRoot",
                    "Root", this);
 
-        addCaption("Modifiers:", 4, 0, 1);
+        addCaption(Argo.localize("UMLMenu", "label.modifiers"), 4, 0, 1);
         addField(mPanel, 4, 0, 0);
 
 
@@ -134,7 +135,7 @@ public class PropPanelUseCase extends PropPanelClassifier {
                             JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
                             JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 
-        addCaption("Extends:", 2, 1, 1);
+        addCaption(Argo.localize("UMLMenu", "label.extends"), 2, 1, 1);
         addField(extendScroll, 2, 1, 1);
 
         // Build up a panel for include relationships
@@ -177,28 +178,28 @@ public class PropPanelUseCase extends PropPanelClassifier {
         // inherited from PropPanelClassifier. Note that these last two ARE
         // allowed for use cases by the UML 1.3 standard.
 
-        addCaption("Associations:", 0, 2, 1);
+        addCaption(Argo.localize("UMLMenu", "label.associations"), 0, 2, 1);
         addField(connectScroll, 0, 2, 1);
 
-        addCaption("Operations:", 1, 2, 1);
+        addCaption(Argo.localize("UMLMenu", "label.operations"), 1, 2, 1);
         addField(opsScroll, 1, 2, 1);
 
-        addCaption("Attributes:", 2, 2, 1);
+        addCaption(Argo.localize("UMLMenu", "label.attributes"), 2, 2, 1);
         addField(attrScroll, 2, 2, 1);
 
         // The toolbar buttons that go at the top.
 
         new PropPanelButton(this, buttonPanel, _navUpIcon,
-                            localize("Go up"), "navigateNamespace",
+                            Argo.localize("UMLMenu", "button.go-up"), "navigateNamespace",
                             null);
         new PropPanelButton(this, buttonPanel, _navBackIcon,
-                            localize("Go back"), "navigateBackAction",
+                            Argo.localize("UMLMenu", "button.go-back"), "navigateBackAction",
                             "isNavigateBackEnabled");
         new PropPanelButton(this, buttonPanel, _navForwardIcon,
-                            localize("Go forward"), "navigateForwardAction",
+                            Argo.localize("UMLMenu", "button.go-forward"), "navigateForwardAction",
                             "isNavigateForwardEnabled");
         new PropPanelButton(this, buttonPanel, _useCaseIcon,
-                            localize("Add use case"), "newUseCase",
+                            Argo.localize("UMLMenu", "button.add-usecase"), "newUseCase",
                             null);
         new PropPanelButton(this, buttonPanel, _extensionPointIcon,
                             localize("Add extension point"),

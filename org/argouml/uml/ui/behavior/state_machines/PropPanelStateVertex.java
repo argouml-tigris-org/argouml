@@ -38,6 +38,7 @@ import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.behavior.state_machines.*;
 import ru.novosoft.uml.foundation.data_types.*;
 
+import org.argouml.application.api.*;
 import org.argouml.uml.ui.*;
 import org.argouml.uml.ui.foundation.core.*;
 import org.argouml.uml.MMUtil;
@@ -89,9 +90,9 @@ public abstract class PropPanelStateVertex extends PropPanelModelElement {
         outgoingScroll = new JScrollPane(outgoingList);
 
 
-	new PropPanelButton(this,buttonPanel,_navUpIcon,localize("Go up"),"navigateUp",null);
-	new PropPanelButton(this,buttonPanel,_navBackIcon,localize("Go back"),"navigateBackAction","isNavigateBackEnabled");
-	new PropPanelButton(this,buttonPanel,_navForwardIcon,localize("Go forward"),"navigateForwardAction","isNavigateForwardEnabled");
+	new PropPanelButton(this,buttonPanel,_navUpIcon, Argo.localize("UMLMenu", "button.go-up"),"navigateUp",null);
+	new PropPanelButton(this,buttonPanel,_navBackIcon, Argo.localize("UMLMenu", "button.go-back"),"navigateBackAction","isNavigateBackEnabled");
+	new PropPanelButton(this,buttonPanel,_navForwardIcon, Argo.localize("UMLMenu", "button.go-forward"),"navigateForwardAction","isNavigateForwardEnabled");
 	new PropPanelButton(this,buttonPanel,_deleteIcon,localize("Delete"),"removeElement",null);
     }
 

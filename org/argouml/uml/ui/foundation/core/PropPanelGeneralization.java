@@ -23,17 +23,20 @@
 
 package org.argouml.uml.ui.foundation.core;
 
-import org.argouml.ui.ProjectBrowser;
-import org.argouml.uml.ui.*;
+import java.awt.*;
+import javax.swing.*;
+import javax.swing.plaf.metal.MetalLookAndFeel;
+
+import ru.novosoft.uml.behavior.common_behavior.*;
+import ru.novosoft.uml.behavior.use_cases.*;
 import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.foundation.data_types.*;
-import ru.novosoft.uml.model_management.*;
 import ru.novosoft.uml.foundation.extension_mechanisms.*;
-import ru.novosoft.uml.behavior.use_cases.*;
-import ru.novosoft.uml.behavior.common_behavior.*;
-import javax.swing.*;
-import java.awt.*;
-import javax.swing.plaf.metal.MetalLookAndFeel;
+import ru.novosoft.uml.model_management.*;
+
+import org.argouml.application.api.*;
+import org.argouml.ui.ProjectBrowser;
+import org.argouml.uml.ui.*;
 
 public class PropPanelGeneralization extends PropPanelModelElement {
 
@@ -47,16 +50,16 @@ public class PropPanelGeneralization extends PropPanelModelElement {
     Class[] namesToWatch = {MStereotype.class,MNamespace.class,MClassifier.class };
     setNameEventListening(namesToWatch);
 
-    addCaption("Name:",1,0,0);
+    addCaption(Argo.localize("UMLMenu", "label.name"),1,0,0);
     addField(nameField,1,0,0);
 
-    addCaption("Stereotype:",2,0,0);
-    addField(new UMLComboBoxNavigator(this,"NavStereo",stereotypeBox),2,0,0);
+    addCaption(Argo.localize("UMLMenu", "label.stereotype"),2,0,0);
+    addField(new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-stereo"),stereotypeBox),2,0,0);
 
     addCaption("Discriminator:",3,0,0);
     addField(new UMLTextField(this,new UMLTextProperty(mclass,"discriminator","getDiscriminator","setDiscriminator")),3,0,0);
 
-    addCaption("Namespace:",4,0,1);
+    addCaption(Argo.localize("UMLMenu", "label.namespace"),4,0,1);
     addField(namespaceScroll,4,0,0);
 
     addCaption("Parent:",0,1,0);
@@ -72,11 +75,11 @@ public class PropPanelGeneralization extends PropPanelModelElement {
     addCaption("Powertype:",2,1,1);
     UMLComboBoxModel powerModel = new UMLComboBoxModel(this,"isAcceptiblePowertype",
         "powertype","getPowertype","setPowertype",false,MClassifier.class,true);
-    addField(new UMLComboBoxNavigator(this,"NavClass",new UMLComboBox(powerModel)),2,1,0);
+    addField(new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-class"),new UMLComboBox(powerModel)),2,1,0);
 
-    new PropPanelButton(this,buttonPanel,_navUpIcon,localize("Go up"),"navigateUp",null);
-    new PropPanelButton(this,buttonPanel,_navBackIcon,localize("Go back"),"navigateBackAction","isNavigateBackEnabled");
-    new PropPanelButton(this,buttonPanel,_navForwardIcon,localize("Go forward"),"navigateForwardAction","isNavigateForwardEnabled");
+    new PropPanelButton(this,buttonPanel,_navUpIcon, Argo.localize("UMLMenu", "button.go-up"),"navigateUp",null);
+    new PropPanelButton(this,buttonPanel,_navBackIcon, Argo.localize("UMLMenu", "button.go-back"),"navigateBackAction","isNavigateBackEnabled");
+    new PropPanelButton(this,buttonPanel,_navForwardIcon, Argo.localize("UMLMenu" ,"button.go-forward"),"navigateForwardAction","isNavigateForwardEnabled");
     new PropPanelButton(this,buttonPanel,_deleteIcon,localize("Delete generalization"),"removeElement",null);
     }
 

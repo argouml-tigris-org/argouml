@@ -35,6 +35,7 @@ import java.util.*;
 
 import javax.swing.*;
 
+import org.argouml.application.api.*;
 import org.argouml.uml.ui.*;
 
 import ru.novosoft.uml.MFactory;
@@ -50,13 +51,13 @@ public class PropPanelFinalState extends PropPanelState {
 
         Class mclass = MFinalState.class;
 
-        addCaption("Name:",1,0,0);
+        addCaption(Argo.localize("UMLMenu", "label.name"),1,0,0);
         addField(nameField,1,0,0);
 
-        addCaption("Stereotype:",2,0,1);
-	addField(new UMLComboBoxNavigator(this,"NavStereo",stereotypeBox),2,0,0);
+        addCaption(Argo.localize("UMLMenu", "label.stereotype"),2,0,1);
+	addField(new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-stereo"),stereotypeBox),2,0,0);
 
-        addCaption("Incoming:",0,1,1);
+        addCaption(Argo.localize("UMLMenu", "label.incoming"),0,1,1);
 	addField(incomingScroll,0,1,1);
 
  }

@@ -34,18 +34,19 @@
 
 package org.argouml.uml.ui.behavior.use_cases;
 
+import org.argouml.application.api.*;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.ui.*;
 import org.argouml.uml.ui.foundation.core.*;
-import ru.novosoft.uml.foundation.extension_mechanisms.*;
 
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 
+import ru.novosoft.uml.behavior.use_cases.*;
 import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.foundation.data_types.*;
-import ru.novosoft.uml.behavior.use_cases.*;
+import ru.novosoft.uml.foundation.extension_mechanisms.*;
 import ru.novosoft.uml.model_management.*;
 
 
@@ -74,14 +75,14 @@ public class PropPanelExtend extends PropPanelModelElement {
         // nameField, stereotypeBox and namespaceScroll are all set up by
         // PropPanelModelElement.
 
-        addCaption("Name:", 1, 0, 0);
+        addCaption(Argo.localize("UMLMenu", "label.name"), 1, 0, 0);
         addField(nameField, 1, 0, 0);
 
-        addCaption("Stereotype:", 2, 0, 0);
-        addField(new UMLComboBoxNavigator(this,"NavStereo",stereotypeBox),
+        addCaption(Argo.localize("UMLMenu", "label.stereotype"), 2, 0, 0);
+        addField(new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-stereo"),stereotypeBox),
                  2, 0, 0);
 
-        addCaption("Namespace:", 3, 0, 0);
+        addCaption(Argo.localize("UMLMenu", "label.namespace"), 3, 0, 0);
         addField(namespaceScroll, 3, 0, 0);
 
         // Our condition (ultimately a String). NSUML actually returns a
@@ -150,12 +151,12 @@ public class PropPanelExtend extends PropPanelModelElement {
         // Add the toolbar.
 
         new PropPanelButton(this, buttonPanel, _navUpIcon,
-                            localize("Go up"), "navigateNamespace", null);
+                            Argo.localize("UMLMenu", "button.go-up"), "navigateNamespace", null);
         new PropPanelButton(this, buttonPanel, _navBackIcon,
-                            localize("Go back"), "navigateBackAction",
+                            Argo.localize("UMLMenu", "button.go-back"), "navigateBackAction",
                             "isNavigateBackEnabled");
         new PropPanelButton(this, buttonPanel, _navForwardIcon,
-                            localize("Go forward"), "navigateForwardAction",
+                            Argo.localize("UMLMenu", "button.go-forward"), "navigateForwardAction",
                             "isNavigateForwardEnabled");
         new PropPanelButton(this, buttonPanel, _extensionPointIcon,
                             localize("Add extension point"),

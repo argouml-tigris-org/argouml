@@ -37,6 +37,7 @@
 
 package org.argouml.uml.ui.behavior.use_cases;
 
+import org.argouml.application.api.*;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.ui.*;
 import org.argouml.uml.ui.foundation.core.*;
@@ -86,14 +87,14 @@ public class PropPanelActor extends PropPanelClassifier {
         // nameField, stereotypeBox and namespaceScroll are all set up by
         // PropPanelModelElement
 
-        addCaption("Name:", 1, 0, 0);
+        addCaption(Argo.localize("UMLMenu", "label.name"), 1, 0, 0);
         addField(nameField, 1, 0, 0);
 
-        addCaption("Stereotype:", 2, 0, 0);
-        addField(new UMLComboBoxNavigator(this,"NavStereo",stereotypeBox),
+        addCaption(Argo.localize("UMLMenu", "label.stereotype"), 2, 0, 0);
+        addField(new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-stereo"),stereotypeBox),
                  2, 0, 0);
 
-        addCaption("Namespace:", 3, 0, 0);
+        addCaption(Argo.localize("UMLMenu", "label.namespace"), 3, 0, 0);
         addLinkField(namespaceScroll, 3, 0, 0);
 
         // For modifiers we create a grid with three columns. We really ought
@@ -111,7 +112,7 @@ public class PropPanelActor extends PropPanelClassifier {
         mPanel.add("isRoot", mclass, "isRoot", "setRoot",
                    "Root", this);
 
-        addCaption("Modifiers:", 4, 0, 1);
+        addCaption(Argo.localize("UMLMenu", "label.modifiers"), 4, 0, 1);
         addField(mPanel, 4, 0, 0);
 
         // The second column. These are all potentially multi-valued, so share
@@ -126,22 +127,22 @@ public class PropPanelActor extends PropPanelClassifier {
         addCaption("Specializations:", 1, 1, 1);
         addField(derivedScroll, 1, 1, 1);
 
-        addCaption("Associations:",2,1,1);
+        addCaption(Argo.localize("UMLMenu", "label.associations"),2,1,1);
         addField(connectScroll,2,1,1);
 
         // The toolbar buttons that go at the top.
 
         new PropPanelButton(this, buttonPanel, _navUpIcon,
-                            localize("Go up"), "navigateNamespace",
+                            Argo.localize("UMLMenu", "button.go-up"), "navigateNamespace",
                             null);
         new PropPanelButton(this, buttonPanel, _navBackIcon,
-                            localize("Go back"), "navigateBackAction",
+                            Argo.localize("UMLMenu", "button.go-back"), "navigateBackAction",
                             "isNavigateBackEnabled");
         new PropPanelButton(this, buttonPanel, _navForwardIcon,
-                            localize("Go forward"), "navigateForwardAction",
+                            Argo.localize("UMLMenu", "button.go-forward"), "navigateForwardAction",
                             "isNavigateForwardEnabled");
         new PropPanelButton(this, buttonPanel, _actorIcon,
-                            localize("Add actor"), "newActor",
+                            Argo.localize("UMLMenu", "button.add-actor"), "newActor",
                             null);
         new PropPanelButton(this, buttonPanel, _deleteIcon,
                             localize("Delete"), "removeElement",
