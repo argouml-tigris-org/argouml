@@ -293,4 +293,13 @@ public class FigMessage extends FigNodeModelElement {
 		super.paint(g);
 	}
 
+	/**
+	 * @see org.tigris.gef.presentation.Fig#setOwner(Object)
+	 */
+	public void setOwner(Object own) {
+		super.setOwner(own);
+		((MModelElement)own).removeMElementListener(this);
+		((MModelElement)own).addMElementListener(this);
+	}
+
 } /* end class FigMessage */
