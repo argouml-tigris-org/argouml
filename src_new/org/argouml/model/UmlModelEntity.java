@@ -24,37 +24,24 @@
 
 package org.argouml.model;
 
-
-/** An interface which all ArgoUML-recognized UML model types
+/**
+ * An interface which all ArgoUML-recognized UML model types
  * must implement.
- * 
+ *
  * @author Thierry Lach
  */
 public class UmlModelEntity extends AbstractModelEntity {
 
-    private boolean availableInFacade;
+    /**
+     * true if UmlFactory can create it using create().
+     */
     private boolean creatable;
 
     /**
      * @param string the entity name
      */
     public UmlModelEntity(String string) {
-        this(string, true, true);
-    }
-
-    /**
-     * @param string the entity name
-     * @param isCreatable true if UmlFactory can create it using create()
-     * @param isFacade if the entity can be identified using ModelFacade
-     * @deprecated as of 0.15.3. facade is to be removed.
-     * Replaced by public UmlModelEntity(String string, boolean isCreatable)
-     */
-    public UmlModelEntity(String string,
-                          boolean isCreatable,
-                          boolean isFacade) {
-        super(string);
-        availableInFacade = isFacade;
-        creatable = isCreatable;
+        this(string, true);
     }
 
     /**
@@ -64,16 +51,7 @@ public class UmlModelEntity extends AbstractModelEntity {
     public UmlModelEntity(String string,
                           boolean isCreatable) {
         super(string);
-        availableInFacade = true;
         creatable = isCreatable;
-    }
-
-    /**
-     * @return true if ModelFacade can identify
-     * @deprecated facade is to be removed
-     */
-    public boolean isAvailableInFacade() {
-        return availableInFacade;
     }
 
     /**
@@ -82,6 +60,5 @@ public class UmlModelEntity extends AbstractModelEntity {
     public boolean isCreatable() {
         return creatable;
     }
-
 }
 
