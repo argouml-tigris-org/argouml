@@ -81,8 +81,7 @@ public abstract class ActionAddDiagram extends UMLChangeAction {
         if (ns!= null && isValidNamespace(ns)) {
             UMLDiagram diagram = createDiagram(ns);
             p.addMember(diagram);
-            ProjectBrowser.getInstance().setTarget(diagram);
-            ProjectBrowser.getInstance().getNavigatorPane().forceUpdate();
+            TargetManager.getInstance().setTarget(diagram);       
             super.actionPerformed(e);
         } else {
             log.error("No valid namespace found");

@@ -136,10 +136,9 @@ public class ActionRemoveFromModel extends UMLChangeAction {
                 } else
                 if (target instanceof ArgoDiagram) {
                     newTarget = ProjectManager.getManager().getCurrentProject().getDiagrams().get(0);
-                }
-                ProjectBrowser.getInstance().getNavigatorPane().forceUpdate();
+                }              
                 if (newTarget != null) 
-                    ProjectBrowser.getInstance().setTarget(newTarget);
+                    TargetManager.getInstance().setTarget(newTarget);
                 
             } 
         }        
