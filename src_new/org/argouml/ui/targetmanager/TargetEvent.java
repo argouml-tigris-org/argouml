@@ -54,34 +54,34 @@ public class TargetEvent extends EventObject {
     /**
      * The name of the event
      */
-    private String _name;
+    private String theEventName;
 
     /**
      * The old targets before the change took place
      */
-    private Object[] _oldTargets;
+    private Object[] theOldTargets;
 
     /**
      * The new targets after the change took place
      */
-    private Object[] _newTargets;
+    private Object[] theNewTargets;
 
     /**
      * Constructs a new TargetEvent
      * @param source The source that fired the TargetEvent, will
      * allways be the TargetManager
-     * @param name The name of the TargetEvent, can be TARGET_SET,
+     * @param tEName The name of the TargetEvent, can be TARGET_SET,
      * TARGET_REMOVED or TARGET_ADDED
      * @param oldTargets The old targets before the change took place
      * @param newTargets The new targets after the change took place
      */
-    public TargetEvent(Object source, String name,
+    public TargetEvent(Object source, String tEName,
 		       Object[] oldTargets, Object[] newTargets)
     {
 	super(source);
-	_name = name;
-        _oldTargets = oldTargets;
-        _newTargets = newTargets;
+	theEventName = tEName;
+        theOldTargets = oldTargets;
+        theNewTargets = newTargets;
     }
 
     /**
@@ -89,7 +89,7 @@ public class TargetEvent extends EventObject {
      * @return the name of the event
      */
     public String getName() {
-	return _name;
+	return theEventName;
     }
 
     /**
@@ -97,7 +97,7 @@ public class TargetEvent extends EventObject {
      * @return an object array with the old targets
      */
     public Object[] getOldTargets() {
-	return _oldTargets == null ? new Object[] {} : _oldTargets;
+	return theOldTargets == null ? new Object[] {} : theOldTargets;
     }
 
     /**
@@ -105,7 +105,7 @@ public class TargetEvent extends EventObject {
      * @return an object array with the new targets
      */
     public Object[] getNewTargets() {
-        return _newTargets == null ? new Object[] {} : _newTargets;
+        return theNewTargets == null ? new Object[] {} : theNewTargets;
     }
 
     /**
@@ -113,7 +113,8 @@ public class TargetEvent extends EventObject {
      * @return the zero'th element in _newTargets, or null
      */
     public Object getNewTarget() {
-        return _newTargets == null || _newTargets.length < 1 ? null : _newTargets[0];
+        return theNewTargets == null 
+            || theNewTargets.length < 1 ? null : theNewTargets[0];
     }
     
     /**
@@ -122,8 +123,8 @@ public class TargetEvent extends EventObject {
      */
     public Object[] getRemovedTargets() {
         List removedTargets = new ArrayList();
-        List oldTargets = Arrays.asList(_oldTargets);
-        List newTargets = Arrays.asList(_newTargets);
+        List oldTargets = Arrays.asList(theOldTargets);
+        List newTargets = Arrays.asList(theNewTargets);
         Iterator it = oldTargets.iterator();
         while (it.hasNext()) {
             Object o = it.next();
@@ -140,8 +141,8 @@ public class TargetEvent extends EventObject {
      */
     public Object[] getAddedTargets() {
         List addedTargets = new ArrayList();
-        List oldTargets = Arrays.asList(_oldTargets);
-        List newTargets = Arrays.asList(_newTargets);
+        List oldTargets = Arrays.asList(theOldTargets);
+        List newTargets = Arrays.asList(theNewTargets);
         Iterator it = newTargets.iterator();
         while (it.hasNext()) {
             Object o = it.next();

@@ -34,13 +34,16 @@ import org.argouml.uml.ui.UMLAction;
  */
 public class NavigateTargetForwardAction extends UMLAction {
 
-    private static NavigateTargetForwardAction _instance;
+    private static NavigateTargetForwardAction instance;
     
+    /**
+     * @return the instance (singleton)
+     */
     public static NavigateTargetForwardAction getInstance() {
-        if (_instance == null) {
-            _instance = new NavigateTargetForwardAction();
+        if (instance == null) {
+            instance = new NavigateTargetForwardAction();
         }
-        return _instance;
+        return instance;
     }
     
     private NavigateTargetForwardAction() {
