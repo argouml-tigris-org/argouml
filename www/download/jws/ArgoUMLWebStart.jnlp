@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- JNLP File for launching ArgoUML with WebStart -->
+<jnlp spec="1.0+"
+      codebase="http://argouml.tigris.org/nonav/download/jws/"
+      href="http://argouml.tigris.org/nonav/download/jws/ArgoUMLWebStart.jnlp">
+  <information>
+    <title>ArgoUML 0.10</title>
+    <vendor>ArgoUML Open Source development group (hosted at Tigris.org)</vendor>
+    <homepage href="http://argouml.tigris.org/"/>
+    <description>ArgoUML 0.10</description>
+    <description kind="short">ArgoUML, a Swing based editor. Version 0.10.</description>
+    <icon href="images/notepad.gif"/>
+    <offline-allowed/>
+  </information>
+  <security>
+    <all-permissions/>
+  </security>
+  <resources>
+    <j2se version="1.4 1.4.0-beta3 1.4.0-beta2 1.3 1.2"/>
+    <jar href="http://argouml.tigris.org/files/documents/4/0/0100/argouml.jar" main="true" download="eager"/>
+    <jar href="http://argouml.tigris.org/files/documents/4/0/0100/xerces.jar"/>
+    <jar href="http://argouml.tigris.org/files/documents/4/0/0100/antlrall.jar"/>
+    <jar href="http://argouml.tigris.org/files/documents/4/0/0100/gef.jar"/>
+    <jar href="http://argouml.tigris.org/files/documents/4/0/0100/ocl-argo.jar"/>
+    <jar href="http://argouml.tigris.org/files/documents/4/0/0100/nsuml.jar"/>
+    <jar href="http://argouml.tigris.org/files/documents/4/0/0100/log4j.jar"/>
+  </resources>
+  <application-desc main-class="org.argouml.application.Main"/>
+</jnlp>
