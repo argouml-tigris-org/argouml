@@ -44,10 +44,8 @@ import javax.swing.JScrollPane;
 import org.argouml.i18n.Translator;
 import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.behavioralelements.usecases.UseCasesFactory;
-
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.PropPanelButton;
-import org.argouml.uml.ui.UMLComboBoxNavigator;
 import org.argouml.uml.ui.UMLLinkedList;
 import org.argouml.uml.ui.UMLMutableLinkedList;
 import org.argouml.uml.ui.foundation.core.PropPanelClassifier;
@@ -78,9 +76,9 @@ public class PropPanelUseCase extends PropPanelClassifier {
     	addField(Translator.localize("UMLMenu", "label.namespace"), getNamespaceComboBox());
 
 	
-	// Modifiers
+	// Modifiers - an abstract use case does not really make any sense
         _modifiersPanel.remove(0);
-        addField(Translator.localize("UMLMenu", "label.modifiers"), _modifiersPanel);
+        add(_modifiersPanel);
         
 
 	JList extensionPoints = new UMLMutableLinkedList(new UMLUseCaseExtensionPointListModel(), null, ActionNewUseCaseExtensionPoint.SINGLETON);
