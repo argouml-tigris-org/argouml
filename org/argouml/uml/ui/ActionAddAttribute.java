@@ -57,14 +57,13 @@ public class ActionAddAttribute extends UMLChangeAction {
     ////////////////////////////////////////////////////////////////
     // main methods
 
-    public void actionPerformed(ActionEvent ae) {
-	ProjectBrowser pb = ProjectBrowser.getInstance();
+    public void actionPerformed(ActionEvent ae) {	
 	Project p = ProjectManager.getManager().getCurrentProject();
 	Object target = TargetManager.getInstance().getModelTarget();
 	if (!(target instanceof MClassifier)) return;
 	MClassifier cls = (MClassifier) target;
 	MAttribute attr = UmlFactory.getFactory().getCore().buildAttribute(cls);
-	pb.setTarget(attr);
+	TargetManager.getInstance().setTarget(attr);
 	super.actionPerformed(ae);
     }
 

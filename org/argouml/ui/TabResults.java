@@ -42,6 +42,7 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.plaf.metal.MetalLookAndFeel;
 
 import org.apache.log4j.Category;
+import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.PredicateFind;
 import org.argouml.uml.TMResults;
 import org.argouml.uml.cognitive.ChildGenRelated;
@@ -182,10 +183,9 @@ implements Runnable, MouseListener, ActionListener, ListSelectionListener {
       sel = _related.elementAt(row);
     }
 
-    if (d != null) cat.debug("go " + sel + " in " + d.getName());
-    ProjectBrowser pb = ProjectBrowser.getInstance();
-    if (d != null) pb.setTarget(d);
-    pb.setTarget(sel);
+    if (d != null) cat.debug("go " + sel + " in " + d.getName());    
+    if (d != null) TargetManager.getInstance().setTarget(d);
+    TargetManager.getInstance().setTarget(sel);
   }
 
   ////////////////////////////////////////////////////////////////

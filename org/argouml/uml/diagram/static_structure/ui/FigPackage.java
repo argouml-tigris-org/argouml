@@ -46,6 +46,7 @@ import org.argouml.kernel.ProjectManager;
 import org.argouml.ui.ArgoDiagram;
 import org.argouml.ui.ArgoJMenu;
 import org.argouml.ui.ProjectBrowser;
+import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
 import org.argouml.uml.diagram.ui.UMLDiagram;
 import org.argouml.uml.ui.ActionModifier;
@@ -55,6 +56,7 @@ import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigRect;
 import org.tigris.gef.presentation.FigText;
+
 import ru.novosoft.uml.foundation.core.MModelElement;
 import ru.novosoft.uml.foundation.core.MNamespace;
 import ru.novosoft.uml.foundation.extension_mechanisms.MStereotype;
@@ -185,7 +187,7 @@ public class FigPackage extends FigNodeModelElement {
                                         lsDefaultName)) {
                                     me.consume();
                                     super.mouseClicked(me);                                   
-                                    lPB.setTarget(lDiagram);
+                                    TargetManager.getInstance().setTarget(lDiagram);
                                     return;
                                 }
                             }
@@ -196,7 +198,7 @@ public class FigPackage extends FigNodeModelElement {
                             me.consume();
                             super.mouseClicked(me);
                         
-                            lPB.setTarget(lFirst);
+                            TargetManager.getInstance().setTarget(lFirst);
                             return;
                         } else {
                             /* try to create a new class diagram */
@@ -226,7 +228,7 @@ public class FigPackage extends FigNodeModelElement {
 
                                     lP.addMember(lNew);
                                 
-                                    lPB.setTarget(lNew);
+                                    TargetManager.getInstance().setTarget(lNew);
                                     /* change prefix */
                                     lNew.setName(diagramName);
                                 }
@@ -450,8 +452,8 @@ public class FigPackage extends FigNodeModelElement {
 
             // If default Namespace is not already set
             if (me.getNamespace() == null
-                && pb.getTarget() instanceof UMLDiagram) {
-                m = (MNamespace) ((UMLDiagram) pb.getTarget()).getNamespace();
+                && TargetManager.getInstance().getTarget() instanceof UMLDiagram) {
+                m = (MNamespace) ((UMLDiagram) TargetManager.getInstance().getTarget()).getNamespace();
                 me.setNamespace(m);
             }
         } catch (Exception e) {

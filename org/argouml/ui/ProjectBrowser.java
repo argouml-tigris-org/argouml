@@ -388,6 +388,8 @@ public class ProjectBrowser
      * <p>The concept of a selection transaction is used to prevent a change
      * of target in one view creating a call back to this method, which 
      * would then change the target in all views again...
+     * </p>
+     * @deprecated replaced by TargetManager.getInstance().setTarget(Object target)
      */
     public void setTarget(Object o) {
         

@@ -54,6 +54,7 @@ import org.argouml.model.uml.UmlFactory;
 import org.argouml.model.uml.UmlModelEventPump;
 import org.argouml.ui.ArgoJMenu;
 import org.argouml.ui.ProjectBrowser;
+import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.ui.CompartmentFigText;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
 import org.argouml.uml.generator.ParserDisplay;
@@ -927,7 +928,7 @@ public class FigClass extends FigNodeModelElement {
                 f = (Fig) v.elementAt(i + 1);
                 ((CompartmentFigText) f).setHighlighted(true);
                 highlightedFigText = (CompartmentFigText) f;
-                ProjectBrowser.getInstance().setTarget(f);
+                TargetManager.getInstance().setTarget(f);
             }
         } else if (f == _operVec && _operVec.getHeight() > 0) {
             Vector v = _operVec.getFigs();
@@ -938,12 +939,12 @@ public class FigClass extends FigNodeModelElement {
                 f = (Fig) v.elementAt(i + 1);
                 ((CompartmentFigText) f).setHighlighted(true);
                 highlightedFigText = (CompartmentFigText) f;
-                ProjectBrowser.getInstance().setTarget(f);
+                TargetManager.getInstance().setTarget(f);
             }
         }
         
         if (targetIsSet == false)
-            ProjectBrowser.getInstance().setTarget(getOwner());
+        TargetManager.getInstance().setTarget(getOwner());
             
 
     }

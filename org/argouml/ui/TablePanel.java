@@ -23,28 +23,51 @@
 
 package org.argouml.ui;
 
-import java.awt.*;
-import java.awt.event.*;
-import java.util.*;
-import java.beans.*;
-import javax.swing.*;
-import javax.swing.event.*;
-import javax.swing.text.Document;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
+import java.util.Vector;
+
+import javax.swing.DefaultCellEditor;
+import javax.swing.DefaultListSelectionModel;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.JTextField;
+import javax.swing.border.EtchedBorder;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.plaf.metal.MetalLookAndFeel;
-import javax.swing.border.*;
-
-import ru.novosoft.uml.foundation.core.*;
-import ru.novosoft.uml.foundation.data_types.*;
-
-import org.tigris.gef.base.*;
-import org.tigris.gef.ui.*;
+import javax.swing.text.Document;
 
 import org.apache.log4j.Category;
 import org.argouml.ui.targetmanager.TargetEvent;
-import org.argouml.uml.*;
-import org.argouml.uml.ui.*;
-import org.argouml.uml.diagram.*;
-import org.argouml.uml.diagram.static_structure.*;
+import org.argouml.ui.targetmanager.TargetManager;
+import org.argouml.uml.AttrKeyword;
+import org.argouml.uml.OperKeyword;
+import org.argouml.uml.TableModelComposite;
+import org.argouml.uml.diagram.static_structure.MMClassKeyword;
+import org.argouml.uml.diagram.static_structure.MMClassVisibility;
+import org.argouml.uml.ui.TabModelTarget;
+import org.tigris.gef.base.Diagram;
+import org.tigris.gef.ui.JSortedTable;
+
+import ru.novosoft.uml.foundation.core.MElement;
+import ru.novosoft.uml.foundation.core.MModelElement;
+import ru.novosoft.uml.foundation.data_types.MVisibilityKind;
 
 public class TablePanel extends TabSpawnable
 implements TabModelTarget, ItemListener, DocumentListener, ListSelectionListener, ActionListener {
@@ -331,10 +354,8 @@ implements TabModelTarget, ItemListener, DocumentListener, ListSelectionListener
     objectSelected(null);
   }
 
-  public void objectSelected(Object sel) {
-    ProjectBrowser pb = ProjectBrowser.getInstance();
-    // pb.setDetailsTarget(sel);
-    pb.setTarget(sel);
+  public void objectSelected(Object sel) {   
+    TargetManager.getInstance().setTarget(sel);
   }
   
   /////////////////////////////////////////////////////////////////

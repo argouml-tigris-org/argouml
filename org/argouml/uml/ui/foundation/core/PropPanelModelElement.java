@@ -42,7 +42,6 @@ import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.model.uml.UmlHelper;
 import org.argouml.swingext.LabelledLayout;
 import org.argouml.swingext.Orientation;
-import org.argouml.ui.ProjectBrowser;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.PropPanel;
 import org.argouml.uml.ui.UMLButtonPanel;
@@ -198,7 +197,7 @@ abstract public class PropPanelModelElement extends PropPanel {
      */
     public void navigateUp() {
         Object target = getTarget();
-        ProjectBrowser.getInstance().setTarget(UmlHelper.getHelper().getOwner(getTarget()));
+        TargetManager.getInstance().setTarget(UmlHelper.getHelper().getOwner(getTarget()));
     }
 
     public void navigateNamespace() {

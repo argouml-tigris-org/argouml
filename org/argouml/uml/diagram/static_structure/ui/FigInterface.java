@@ -41,11 +41,12 @@ import javax.swing.JMenu;
 import org.apache.log4j.Category;
 import org.argouml.application.api.Notation;
 import org.argouml.language.helpers.NotationHelper;
-import org.argouml.model.uml.UmlFactory;
 import org.argouml.model.ModelFacade;
+import org.argouml.model.uml.UmlFactory;
 import org.argouml.model.uml.UmlModelEventPump;
 import org.argouml.ui.ArgoJMenu;
 import org.argouml.ui.ProjectBrowser;
+import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.ui.CompartmentFigText;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
 import org.argouml.uml.diagram.ui.UMLDiagram;
@@ -415,12 +416,12 @@ public class FigInterface extends FigNodeModelElement {
                 f = (Fig) v.elementAt(i + 1);
                 ((CompartmentFigText) f).setHighlighted(true);
                 highlightedFigText = (CompartmentFigText) f;
-                ProjectBrowser.getInstance().setTarget(f);
+                TargetManager.getInstance().setTarget(f);
             }
         }
         if (targetIsSet == false) {
             me.consume();
-            ProjectBrowser.getInstance().setTarget(getOwner());
+            TargetManager.getInstance().setTarget(getOwner());
         }
     }
 
@@ -472,8 +473,8 @@ public class FigInterface extends FigNodeModelElement {
             }
 
             // If default Namespace is not already set
-            if (me.getNamespace() == null && pb.getTarget() instanceof UMLDiagram) {
-                m = (MNamespace) ((UMLDiagram) pb.getTarget()).getNamespace();
+            if (me.getNamespace() == null && TargetManager.getInstance().getTarget() instanceof UMLDiagram) {
+                m = (MNamespace) ((UMLDiagram) TargetManager.getInstance().getTarget()).getNamespace();
                 me.setNamespace(m);
             }
         } catch (Exception e) {

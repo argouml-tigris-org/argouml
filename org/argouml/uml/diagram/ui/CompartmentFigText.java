@@ -34,7 +34,7 @@ package org.argouml.uml.diagram.ui;
 import java.awt.Color;
 
 import org.apache.log4j.Category;
-import org.argouml.ui.ProjectBrowser;
+import org.argouml.ui.targetmanager.TargetManager;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigText;
 
@@ -208,7 +208,7 @@ public class CompartmentFigText extends FigText
         super.setLineWidth(_isHighlighted ? 1 : 0);
 
         if (flag && (_modelElement != null)) {
-	    ProjectBrowser.getInstance().setTarget(_modelElement);
+            TargetManager.getInstance().setTarget(_modelElement);
         }
     }
 

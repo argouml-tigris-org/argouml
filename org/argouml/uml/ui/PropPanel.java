@@ -69,7 +69,6 @@ import org.argouml.swingext.GridLayout2;
 import org.argouml.swingext.LabelledLayout;
 import org.argouml.swingext.Orientation;
 import org.argouml.swingext.Vertical;
-import org.argouml.ui.ProjectBrowser;
 import org.argouml.ui.TabSpawnable;
 import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.ui.targetmanager.TargetListener;
@@ -687,11 +686,11 @@ abstract public class PropPanel extends TabSpawnable implements TabModelTarget, 
         if (target instanceof MBase) {
             MModelElement newTarget = ((MModelElement) target).getModelElementContainer();
             MBase base = (MBase) target;
-            ProjectBrowser.getInstance().setTarget(base);
+            TargetManager.getInstance().setTarget(base);
             ActionEvent event = new ActionEvent(this, 1, "delete");
             ActionRemoveFromModel.SINGLETON.actionPerformed(event);
             if (newTarget != null) {
-                ProjectBrowser.getInstance().setTarget(newTarget);
+                TargetManager.getInstance().setTarget(newTarget);
             }
         }
     }

@@ -27,7 +27,7 @@ package org.argouml.uml.diagram.static_structure.ui;
 import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 
-import org.argouml.ui.ProjectBrowser;
+import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.ui.CompartmentFigText;
 import org.tigris.gef.base.Selection;
 import org.tigris.gef.presentation.Fig;
@@ -81,11 +81,11 @@ public class FigFeature extends CompartmentFigText {
                         if (figs[i].equals(_content)) {
                             if (e.getKeyCode() == KeyEvent.VK_DOWN) {
                                 if (i < figs.length - 1) {
-                                    ProjectBrowser.getInstance().setTarget(
+                                    TargetManager.getInstance().setTarget(
                                         figs[i + 1]);
                                 }
                             } else if (i > 1) {
-                                ProjectBrowser.getInstance().setTarget(
+                                TargetManager.getInstance().setTarget(
                                     figs[i - 1]);
 
                             }
