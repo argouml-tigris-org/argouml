@@ -103,7 +103,8 @@ public class ExplorerPopup extends JPopupMenu {
                 final boolean nAryAssociationSelected =
                         Model.getFacade().isANaryAssociation(selectedItem);
                 final boolean classifierAndRelationShipSelected =
-                    Model.getFacade().isAClassifierAndARelationship(selectedItem);
+                    Model.getFacade()
+                        .isAClassifierAndARelationship(selectedItem);
                 final boolean classifierSelected =
                     Model.getFacade().isAClassifier(selectedItem);
                 final boolean dataTypeSelected =
