@@ -550,17 +550,17 @@ public class TabConstraints extends TabSpawnable implements TabModelTarget {
 
                         if (tree != null) {
                             tree.apply(new DepthFirstAdapter() {
-                                int name_ID = 0;
+                                int nameID = 0;
                                 public void caseAConstraintBody(
                                         AConstraintBody node) {
                                     // replace name
-                                    if (name_ID == 0) {
+                                    if (nameID == 0) {
                                         node.setName(new TName(sName));
                                     } else {
                                         node.setName(new TName(
-                                                sName + "_" + name_ID));
+                                                sName + "_" + nameID));
                                     }
-                                    name_ID++;
+                                    nameID++;
 				}
                             });
 

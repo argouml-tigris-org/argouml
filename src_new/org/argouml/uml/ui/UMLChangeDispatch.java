@@ -246,7 +246,7 @@ public class UMLChangeDispatch implements Runnable, UMLUserInterfaceComponent {
             	// Jaap Branderhorst
             	// added next statement to prevent PropPanel getting
             	// added again and again to the target's listeners
-		UmlModelEventPump.getPump().addModelEventListener(propPanel,t);
+		UmlModelEventPump.getPump().addModelEventListener(propPanel, t);
             }
             
         }

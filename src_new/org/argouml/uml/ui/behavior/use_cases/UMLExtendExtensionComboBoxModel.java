@@ -82,7 +82,7 @@ public class UMLExtendExtensionComboBoxModel extends UMLComboBoxModel2 {
      */
     public void targetRemoved(TargetEvent e) {
         // if (e.getNewTarget() != getTarget())
-            UmlModelEventPump.getPump().removeClassModelEventListener(this, 
+        UmlModelEventPump.getPump().removeClassModelEventListener(this, 
                     (Class) ModelFacade.NAMESPACE, "ownedElement");
         super.targetRemoved(e);
     }

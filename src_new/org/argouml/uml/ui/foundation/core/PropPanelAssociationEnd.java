@@ -24,7 +24,6 @@
 
 package org.argouml.uml.ui.foundation.core;
 
-import javax.swing.Icon;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
