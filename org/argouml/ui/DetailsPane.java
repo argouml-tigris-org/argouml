@@ -280,6 +280,7 @@ public class DetailsPane
                     }
                 }
                 if (tab instanceof TabToDo) {
+                    /* TODO: MVW:I suspect that this code never gets executed.*/
                     topLevelTabbedPane.setSelectedComponent(tab);
                     ((TabToDo) tab).setTarget(target);
                     lastNonNullTab = topLevelTabbedPane.getSelectedIndex();
