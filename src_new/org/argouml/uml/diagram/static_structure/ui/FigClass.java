@@ -383,7 +383,8 @@ public class FigClass extends FigNodeModelElement {
                 while (enum.hasMoreElements())
                      ((Fig) (enum.nextElement())).setDisplayed(false);
                 _attrVec.setDisplayed(false);
-                setBounds(rect.x, rect.y, rect.width, rect.height - h);
+                Dimension aSize = this.getMinimumSize();
+                setBounds(rect.x, rect.y, (int)aSize.getWidth(), (int)aSize.getHeight());
             }
         } else {
             if (isVisible) {
@@ -391,7 +392,8 @@ public class FigClass extends FigNodeModelElement {
                 while (enum.hasMoreElements())
                      ((Fig) (enum.nextElement())).setDisplayed(true);
                 _attrVec.setDisplayed(true);
-                setBounds(rect.x, rect.y, rect.width, rect.height + h);
+                Dimension aSize = this.getMinimumSize();
+                setBounds(rect.x, rect.y, (int)aSize.getWidth(), (int)aSize.getHeight());
                 damage();
             }
         }
@@ -407,7 +409,8 @@ public class FigClass extends FigNodeModelElement {
                 while (enum.hasMoreElements())
                      ((Fig) (enum.nextElement())).setDisplayed(false);
                 _operVec.setDisplayed(false);
-                setBounds(rect.x, rect.y, rect.width, rect.height - h);
+                Dimension aSize = this.getMinimumSize();
+                setBounds(rect.x, rect.y, (int)aSize.getWidth(), (int)aSize.getHeight());
             }
         } else {
             if (isVisible) {
@@ -415,7 +418,8 @@ public class FigClass extends FigNodeModelElement {
                 while (enum.hasMoreElements())
                      ((Fig) (enum.nextElement())).setDisplayed(true);
                 _operVec.setDisplayed(true);
-                setBounds(rect.x, rect.y, rect.width, rect.height + h);
+                Dimension aSize = this.getMinimumSize();
+                setBounds(rect.x, rect.y, (int)aSize.getWidth(), (int)aSize.getHeight());
                 damage();
             }
         }
