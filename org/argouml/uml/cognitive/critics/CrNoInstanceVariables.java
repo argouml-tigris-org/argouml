@@ -93,7 +93,7 @@ public class CrNoInstanceVariables extends CrUML {
     private boolean findChangeableInstanceAttributeInInherited(Object dm,
 							       int depth) {
 
-	Iterator enum = ModelFacade.getAttributes(dm);
+	Iterator enum = ModelFacade.getAttributes(dm).iterator();
 
 	while (enum.hasNext()) {
 	    Object attr = enum.next();

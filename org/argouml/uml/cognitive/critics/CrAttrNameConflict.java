@@ -79,7 +79,7 @@ public class CrAttrNameConflict extends CrUML {
 
 	Vector namesSeen = new Vector();
 
-	Iterator enum = ModelFacade.getAttributes(dm);
+	Iterator enum = ModelFacade.getAttributes(dm).iterator();
 	while (enum.hasNext()) {
 	    String name = ModelFacade.getName(enum.next());
 	    if (name == null || name.length() == 0) continue;

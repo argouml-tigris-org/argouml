@@ -115,7 +115,7 @@ public class CrConsiderSingleton extends CrUML {
 	}
 
 	// If there is an attribute with instance scope => no problem
-	Iterator iter = ModelFacade.getAttributes(dm);
+	Iterator iter = ModelFacade.getAttributes(dm).iterator();
 
 	while (iter.hasNext()) {
 	    if (ModelFacade.isInstanceScope(iter.next()))
