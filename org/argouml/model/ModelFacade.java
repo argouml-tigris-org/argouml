@@ -119,6 +119,7 @@ import ru.novosoft.uml.foundation.data_types.MCallConcurrencyKind;
 import ru.novosoft.uml.foundation.data_types.MChangeableKind;
 import ru.novosoft.uml.foundation.data_types.MExpression;
 import ru.novosoft.uml.foundation.data_types.MMultiplicity;
+import ru.novosoft.uml.foundation.data_types.MOrderingKind;
 import ru.novosoft.uml.foundation.data_types.MParameterDirectionKind;
 import ru.novosoft.uml.foundation.data_types.MProcedureExpression;
 import ru.novosoft.uml.foundation.data_types.MPseudostateKind;
@@ -2957,11 +2958,14 @@ public class ModelFacade {
             return me.getName();
         }
 
-        if (handle instanceof Diagram) {
-            Diagram d = (Diagram) handle;
+		if (handle instanceof Diagram) {
+			Diagram d = (Diagram) handle;
 
-            return d.getName();
-        }
+			return d.getName();
+		}
+		if (handle instanceof MOrderingKind) {
+			return ((MOrderingKind) handle).getName();
+		}
 
         // ...
         throw new IllegalArgumentException("Unrecognized object " + handle);
