@@ -109,6 +109,7 @@ import org.argouml.uml.diagram.use_case.ui.GoModelToActor;
 import org.argouml.uml.diagram.use_case.ui.GoModelToUseCase;
 import org.argouml.uml.diagram.use_case.ui.GoUseCaseToExtensionPoint;
 import org.argouml.uml.ui.behavior.common_behavior.GoSignalToReception;
+import org.argouml.uml.ui.foundation.core.GoModelElementToComment;
 
 import ru.novosoft.uml.behavior.collaborations.MCollaboration;
 import ru.novosoft.uml.behavior.common_behavior.MComponentInstance;
@@ -243,6 +244,7 @@ implements Serializable, TreeModel, Cloneable {
 
     packageCentric.addSubTreeModel(new GoProjectModel());
     packageCentric.addSubTreeModel(new GoModelToDiagram());
+    packageCentric.addSubTreeModel(new GoModelElementToComment());
     packageCentric.addSubTreeModel(modelToPackages);
     packageCentric.addSubTreeModel(modelToClassifiers);
     packageCentric.addSubTreeModel(modelToAssociations);
@@ -279,6 +281,7 @@ implements Serializable, TreeModel, Cloneable {
     packageCentric.addSubTreeModel(new GoStateToDoActivity());
     packageCentric.addSubTreeModel(new GoStateToEntry());
     packageCentric.addSubTreeModel(new GoStateToExit());
+
 	
     diagramCentric.addSubTreeModel(new GoProjectDiagram());
     diagramCentric.addSubTreeModel(new GoDiagramToNode());

@@ -36,27 +36,21 @@ import javax.swing.JMenu;
 
 import org.argouml.application.api.Notation;
 import org.argouml.model.uml.UmlModelEventPump;
-import org.argouml.model.uml.foundation.core.CoreHelper;
-import org.argouml.ui.ArgoDiagram;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.ui.ActionAggregation;
 import org.argouml.uml.ui.ActionMultiplicity;
 import org.argouml.uml.ui.ActionNavigability;
-import org.tigris.gef.base.Editor;
-import org.tigris.gef.base.Globals;
 import org.tigris.gef.base.Layer;
-import org.tigris.gef.base.PathConv;
 import org.tigris.gef.base.PathConvPercent;
 import org.tigris.gef.base.PathConvPercentPlusConst;
-import org.tigris.gef.base.Selection;
 import org.tigris.gef.presentation.ArrowHead;
 import org.tigris.gef.presentation.ArrowHeadComposite;
 import org.tigris.gef.presentation.ArrowHeadDiamond;
 import org.tigris.gef.presentation.ArrowHeadGreater;
 import org.tigris.gef.presentation.ArrowHeadNone;
-import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigNode;
 import org.tigris.gef.presentation.FigText;
+
 import ru.novosoft.uml.foundation.core.MAssociation;
 import ru.novosoft.uml.foundation.core.MAssociationEnd;
 import ru.novosoft.uml.foundation.core.MClassifier;
@@ -184,10 +178,10 @@ public class FigAssociation extends FigEdgeModelElement {
 	MAssociation newAsc = (MAssociation)own;
 	for (int i = 0; i < newAsc.getConnections().size(); i++) {
             MAssociationEnd end = ((MAssociationEnd)((Object[]) newAsc.getConnections().toArray())[i]);
-            // UmlModelEventPump.getPump().removeModelEventListener(this, end);
+            UmlModelEventPump.getPump().removeModelEventListener(this, end);
             UmlModelEventPump.getPump().addModelEventListener(this, end);
         }
-        // UmlModelEventPump.getPump().removeModelEventListener(this, newAsc);
+        UmlModelEventPump.getPump().removeModelEventListener(this, newAsc);
         UmlModelEventPump.getPump().addModelEventListener(this, newAsc);
         MAssociationEnd ae0 = 
             (MAssociationEnd)((Object[])(newAsc.getConnections()).toArray())[0];
@@ -205,7 +199,7 @@ public class FigAssociation extends FigEdgeModelElement {
         }
     }
    
-    // modelChanged();
+    modelChanged();
   }
 
   ////////////////////////////////////////////////////////////////

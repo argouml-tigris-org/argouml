@@ -23,18 +23,16 @@
 
 package org.argouml.uml.diagram.collaboration.ui;
 
+import java.util.Iterator;
+import java.util.Vector;
+
 import org.argouml.application.api.Notation;
-import org.argouml.uml.diagram.ui.*;
-import org.argouml.util.Trash;
+import org.argouml.uml.diagram.ui.FigAssociation;
+import org.argouml.uml.diagram.ui.FigMessage;
 import org.tigris.gef.base.Layer;
 import org.tigris.gef.base.PathConvPercent;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigGroup;
-
-import java.awt.Graphics;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.Vector;
 
 import ru.novosoft.uml.behavior.collaborations.MAssociationRole;
 
@@ -72,7 +70,8 @@ public class FigAssociationRole extends FigAssociation {
         //change the name
         MAssociationRole ar = (MAssociationRole) getOwner();
         if (ar == null) return;
-        String asNameStr = ((ar.getName() == null) && (ar.getBase() == null)) ? "" : Notation.generate(this, ar);
+        // String asNameStr = ((ar.getName() == null) && (ar.getBase() == null)) ? "" : Notation.generate(this, ar);
+        String asNameStr = Notation.generate(this, ar);
         _name.setText(asNameStr);
     }
     

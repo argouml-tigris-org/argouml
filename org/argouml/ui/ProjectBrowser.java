@@ -150,6 +150,10 @@ public class ProjectBrowser extends JFrame implements IStatusBar, NavigationList
     ////////////////////////////////////////////////////////////////
     // constructors
 
+    /**
+     * For testing purposes. In tests this constructor can be called so
+     * TheInstance is filled.
+     */
     public ProjectBrowser() {
         this("ArgoUML", false);
     }

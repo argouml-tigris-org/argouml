@@ -616,9 +616,9 @@ public class FigSeqObject extends FigNodeModelElement
   public void setForCreate(FigSeqLink linkFig, String connectTo, boolean isCreate) {
     Vector contents = getContents();   
     int portNumber = linkFig.getPortNumber(contents);   
-    FigDynPort fsp = (FigDynPort) linkFig.getSourcePortFig();
+    FigRect fsp = (FigRect) linkFig.getSourcePortFig();
     if (connectTo == "Dest") {
-      fsp = (FigDynPort) linkFig.getDestPortFig();
+      fsp = (FigRect) linkFig.getDestPortFig();
     }
    
     int firstPos = 10000;
