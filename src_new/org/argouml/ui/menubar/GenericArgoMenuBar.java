@@ -384,12 +384,12 @@ public class GenericArgoMenuBar extends JMenuBar
         setMnemonic(importFromSources, "Import");
         file.addSeparator();
     
-        JMenuItem pageSetupItem = file.add(Actions.PageSetup);
+        JMenuItem pageSetupItem = file.add(Actions.pageSetup);
 	setMnemonic(pageSetupItem, "PageSetup");
-        JMenuItem printItem = file.add(Actions.Print);
+        JMenuItem printItem = file.add(Actions.print);
         setMnemonic(printItem, "Print");
         setAccelerator(printItem, ctrlP);
-        fileToolbar.add((Actions.Print));
+        fileToolbar.add((Actions.print));
         JMenuItem saveGraphicsItem = file.add(new ActionSaveGraphics());
         setMnemonic(saveGraphicsItem, "SaveGraphics");
         file.addSeparator();
@@ -489,10 +489,10 @@ public class GenericArgoMenuBar extends JMenuBar
         view = (ArgoJMenu) add(new ArgoJMenu(menuLocalize("View")));
         setMnemonic(view, "View");
 
-        JMenuItem gotoDiagram = view.add(Actions.GotoDiagram);
+        JMenuItem gotoDiagram = view.add(Actions.gotoDiagram);
         setMnemonic(gotoDiagram, "Goto-Diagram");
         
-        JMenuItem findItem =  view.add(Actions.Find);
+        JMenuItem findItem =  view.add(Actions.find);
         setMnemonic(findItem, "Find");
         setAccelerator(findItem, f3);
 
@@ -528,7 +528,7 @@ public class GenericArgoMenuBar extends JMenuBar
         JMenuItem adjustPageBreaks = view.add(new CmdAdjustPageBreaks());
         setMnemonic(adjustPageBreaks, "Adjust Pagebreaks");
         JMenuItem buttonsOnSelection = 
-            view.addCheckItem(Actions.ShowRapidButtons);
+            view.addCheckItem(Actions.showRapidButtons);
         setMnemonic(buttonsOnSelection, "Buttons on Selection");
         //_view.addCheckItem(Actions.ShowDiagramList);
         //_view.addCheckItem(Actions.ShowToDoList);
@@ -645,14 +645,14 @@ public class GenericArgoMenuBar extends JMenuBar
         critique = (ArgoJMenu) add(new ArgoJMenu(menuLocalize("Critique")));
         setMnemonic(critique, "Critique");
         JMenuItem toggleAutoCritique =
-	    critique.addCheckItem(Actions.AutoCritique);
+	    critique.addCheckItem(Actions.autoCritique);
         setMnemonic(toggleAutoCritique, "Toggle Auto Critique");
         critique.addSeparator();
-        JMenuItem designIssues = critique.add(Actions.OpenDecisions);
+        JMenuItem designIssues = critique.add(Actions.openDecisions);
         setMnemonic(designIssues, "Design Issues");
-        JMenuItem designGoals = critique.add(Actions.OpenGoals);
+        JMenuItem designGoals = critique.add(Actions.openGoals);
         setMnemonic(designGoals, "Design Goals");
-        JMenuItem browseCritics = critique.add(Actions.OpenCritics);
+        JMenuItem browseCritics = critique.add(Actions.openCritics);
         setMnemonic(browseCritics, "Browse Critics");
 
 	// ------------------------------------- Tools Menu
@@ -728,7 +728,7 @@ public class GenericArgoMenuBar extends JMenuBar
             viewToolbar = new ToolBar("View Toolbar");
             viewToolbar.putClientProperty("JToolBar.isRollover",
 					   Boolean.TRUE);
-            viewToolbar.add((Actions.Find));
+            viewToolbar.add((Actions.find));
             viewToolbar.add(new ZoomSliderButton());
         }
         return viewToolbar;

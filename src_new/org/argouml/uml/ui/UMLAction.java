@@ -41,6 +41,10 @@ import org.argouml.ui.ProjectBrowser;
 import org.argouml.ui.StatusBar;
 import org.tigris.gef.util.Localizer;
 
+/**
+ * The prototype of all actions within ArgoUML.
+ *
+ */
 public class UMLAction extends AbstractAction {
 
     private static final Logger LOG = Logger.getLogger(UMLAction.class);
@@ -80,7 +84,8 @@ public class UMLAction extends AbstractAction {
      * The constructor.
      * 
      * @param name the (to be localized) description of the action
-     * @param global
+     * @param global if this is a global action, then it has to be added 
+     *               to the list of such actions in the class Actions
      * @param hasIcon true if an icon has to be shown
      */
     public UMLAction(String name, boolean global, boolean hasIcon) {
