@@ -330,26 +330,15 @@ public class ParserDisplay extends Parser {
     // parsing methods
 
     /**
-     * <p>
-     * Parse an extension point.
-     * <p>
+     * Parse an extension point.<p>
      * 
-     * <p>
      * The syntax is "name: location", "name:", "location" or "". The fields of
      * the extension point are updated appropriately.
-     * </p>
      * 
-     * @param useCase
-     *            The use case that owns this extension point
-     * 
-     * @param ep
-     *            The extension point concerned
-     * 
-     * @param text
-     *            The text to parse
-     *  
+     * @param useCase The use case that owns this extension point
+     * @param ep      The extension point concerned
+     * @param text    The text to parse
      */
-
     public void parseExtensionPointFig(Object useCase, Object ep, String text) {
 
         // We can do nothing if we don't have both the use case and extension
@@ -376,15 +365,13 @@ public class ParserDisplay extends Parser {
     }
 
     /**
-     * Parses a model element, ie reads a string on the format: <br>[ < <
-     * stereotype >>] [name] <br>
-     * and assigns the properties to the passed MModelElement.
+     * Parses a model element, ie reads a string on the format: <br>
+     *     [ << stereotype >>] [name] 
+     * <br> and assigns the properties to the passed MModelElement.
      * 
-     * @param me
-     *            The MModelElement <i>text </i> describes.
-     * @param text
-     *            A String on the above format.
-     * @throws java.text.ParseException
+     * @param me   The MModelElement <i>text </i> describes.
+     * @param text A String on the above format.
+     * @throws ParseException
      *             when it detects an error in the attribute string. See also
      *             ParseError.getErrorOffset().
      */
@@ -505,12 +492,9 @@ public class ParserDisplay extends Parser {
      * case that a String or char contains a ';' (e.g. in an initializer) is
      * handled, but not other occurences of ';'.
      * 
-     * @param cls
-     *            MClassifier The classifier the operation(s) belong to
-     * @param op
-     *            MOperation The operation on which the editing happened
-     * @param text
-     *            The string to parse
+     * @param cls  Classifier The classifier the operation(s) belong to
+     * @param op   Operation The operation on which the editing happened
+     * @param text The string to parse
      * @throws ParseException for invalid input
      */
     public void parseOperationFig(Object cls, Object op, String text)
@@ -571,12 +555,9 @@ public class ParserDisplay extends Parser {
      * case that a String or char contains a ';' (e.g. in an initializer) is
      * handled, but not other occurences of ';'.
      * 
-     * @param cls
-     *            MClassifier The classifier the attribute(s) belong to
-     * @param at
-     *            MAttribute The attribute on which the editing happened
-     * @param text
-     *            The string to parse
+     * @param cls  Classifier The classifier the attribute(s) belong to
+     * @param at   Attribute The attribute on which the editing happened
+     * @param text The string to parse
      * @throws ParseException for invalid input
      */
     public void parseAttributeFig(Object cls, Object at, String text)
@@ -633,34 +614,30 @@ public class ParserDisplay extends Parser {
     }
 
     /**
-     * <p>
      * Parse a string representing an extension point and return a new extension
-     * point.
-     * </p>
-     * 
-     * <p>
+     * point.<p>
+     *
      * The syntax is "name: location", "name:", "location" or "". <em>Note</em>.
      * If either field is blank, it will be set to null in the extension point.
-     * </p>
      * 
      * <p>
      * We break up the string into tokens at the ":". We must keep the ":" as a
      * token, so we can distinguish between "name:" and "location". The number
      * of tokens will distinguish our four cases.
-     * </p>
+     * <p>
      * 
      * TODO: This method needs to be replaced, since it by design cannot cope
      * with the current design of the model component.
      * 
-     * @param text
-     *            The string to parse
+     * @param text The string to parse
      * 
      * @return A new extension point, with fields set appropriately, or
      *         <code>null</code> if we are given <code>null</code> or a
      *         blank string. <em>Note</em>. The string ":" can be used to set
      *         both name and location to null.
+     *
+     * @see org.argouml.uml.generator.Parser#parseExtensionPoint(java.lang.String)
      */
-
     public Object parseExtensionPoint(String text) {
 
         // If we are given the null string, return immediately
@@ -766,15 +743,14 @@ public class ParserDisplay extends Parser {
      * {property-string} ) (formerly 2nd: [visibility] [keywords] returntype
      * name(params)[;] )
      * 
-     * @param s
-     *            The String to parse.
-     * @param op
-     *            The MOperation to adjust to the spcification in s.
-     * @throws java.text.ParseException
+     * @param s   The String to parse.
+     * @param op  The MOperation to adjust to the spcification in s.
+     * @throws ParseException
      *             when it detects an error in the attribute string. See also
      *             ParseError.getErrorOffset().
      *
-     * @see org.argouml.uml.generator.Parser#parseOperation(String, Object)
+     * @see org.argouml.uml.generator.Parser#parseOperation(java.lang.String, 
+     * java.lang.Object)
      */
     public void parseOperation(String s, Object op) throws ParseException {
         MyTokenizer st;
@@ -1151,13 +1127,13 @@ public class ParserDisplay extends Parser {
 
     /**
      * Parse a line on the form: <br>
-     * visibility name [: type-expression] [= initial-value]
+     *      visibility name [: type-expression] [= initial-value]
      * <ul>
      * <li>If only one of visibility and name is given, then it is assumed to
      * be the name and the visibility is left unchanged.
      * <li>Type and initial value can be given in any order.
-     * <li>Properties can be given between any element on the form {[name] [=
-     * [value]] [, ...]}.
+     * <li>Properties can be given between any element on the form<br>
+     *      {[name] [= [value]] [, ...]}
      * <li>Multiplicity can be given between any element except after the
      * initial-value and before the type or end (to allow java-style array
      * indexing in the initial value). It must be given on form [multiplicity]
@@ -1178,18 +1154,16 @@ public class ParserDisplay extends Parser {
      * initial-value {property-string} ) (2nd formerly: [visibility] [keywords]
      * type name [= init] [;] )
      * 
-     * @param s
-     *            The String to parse.
-     * @param attr
-     *            The attribute to modify to comply with the instructions in s.
-     * @throws java.text.ParseException
+     * @param s    The String to parse.
+     * @param attr The attribute to modify to comply with the instructions in s.
+     * @throws ParseException
      *             when it detects an error in the attribute string. See also
      *             ParseError.getErrorOffset().
      * 
-     * @see org.argouml.uml.generator.Parser#parseAttribute(String, Object)
+     * @see org.argouml.uml.generator.Parser#parseAttribute(java.lang.String, 
+     * java.lang.Object)
      */
     public void parseAttribute(String s, Object attr) throws ParseException {
-
         String multiplicity = null;
         String name = null;
         Vector properties = null;
@@ -1534,8 +1508,7 @@ public class ParserDisplay extends Parser {
             /* (MStereotype) */root))
                 return root;
             else
-                LOG
-                        .debug("Missed stereotype "
+                LOG.debug("Missed stereotype "
                                 + ModelFacade.getBaseClass(root));
         }
 
@@ -1610,42 +1583,48 @@ public class ParserDisplay extends Parser {
      * 
      * @param st  The State object.
      * @param s   The string to parse.
+     * @throws ParseException when there is a syntax problem, 
+     *         e.g. non-matching brackets () or []
      */
-    public void parseStateBody(Object st, String s) {
+    public void parseStateBody(Object st, String s) throws ParseException {
         boolean foundEntry = false;
         boolean foundExit = false;
         boolean foundDo = false;
 
-        Collection transitionList = new ArrayList();
-        java.util.StringTokenizer lines = new java.util.StringTokenizer(s,
-                "\n\r");
+        /* Generate all the existing internal transitions, 
+         * so that we can compare them as text with the newly entered ones.
+         */
+        ModelElementInfoList internalsInfo = 
+            new ModelElementInfoList(
+                    ModelFacade.getInternalTransitions(st));
+                
+        StringTokenizer lines = new StringTokenizer(s, "\n\r");
         while (lines.hasMoreTokens()) {
             String line = lines.nextToken().trim();
-            if (line.toLowerCase().startsWith("entry")) {
-                parseStateEntryAction(st, line);
-                foundEntry = true;
-            } else if (line.toLowerCase().startsWith("exit")) {
-                parseStateExitAction(st, line);
-                foundExit = true;
-            } else if (line.toLowerCase().startsWith("do")) {
-                parseStateDoAction(st, line);
-                foundDo = true;
-            } else {
-                Object t = UmlFactory.getFactory().getStateMachines()
-                        .createTransition();
-                //.buildInternalTransition(st);
-                /*
-                 * TODO: Why does buildInternalTransition() not work? (MVW) If I
-                 * try, then the Target and Source get reset to null before they
-                 * are displayed...
-                 */
-                if (t == null)
-                    continue;
-                ModelFacade.setTarget(t, st);
-                ModelFacade.setSource(t, st);
-                parseTransition(t, line);
-                //LOG.debug("just parsed:" + GeneratorDisplay.Generate(t));
-                transitionList.add(t);
+            /* Now let's check if the new line is already present in 
+             * the old list of internal transitions; if it is, then
+             * mark the old one to be retained (i.e. do not create a new one), 
+             * if it isn't, continue with parsing:
+             */
+            if (!internalsInfo.checkRetain(line)) {
+                if (line.toLowerCase().startsWith("entry")) {
+                    parseStateEntryAction(st, line);
+                    foundEntry = true;
+                } else if (line.toLowerCase().startsWith("exit")) {
+                    parseStateExitAction(st, line);
+                    foundExit = true;
+                } else if (line.toLowerCase().startsWith("do")) {
+                    parseStateDoAction(st, line);
+                    foundDo = true;
+                } else {
+                    Object t = UmlFactory.getFactory().getStateMachines()
+                        .buildInternalTransition(st);
+                    if (t == null)
+                        continue;
+                    parseTransition(t, line);
+                    /* Add this new one, and mark it to be retained: */
+                    internalsInfo.add(t, true);
+                }
             }
         }
 
@@ -1659,18 +1638,142 @@ public class ParserDisplay extends Parser {
             delete(ModelFacade.getDoActivity(st));
         }
 
-        Vector internals = new Vector(ModelFacade.getInternalTransitions(st));
-        Vector oldinternals = new Vector(ModelFacade
-                .getInternalTransitions(st));
-        internals.removeAll(oldinternals); //now the vector is empty
-
-        // don't forget to remove old internals!
-        for (int i = 0; i < oldinternals.size(); i++)
-            UmlFactory.getFactory().delete(
-                    /* (MTransition) */oldinternals.elementAt(i));
-        internals.addAll(transitionList);
-        ModelFacade.setInternalTransitions(st, transitionList);
+        /* Process the final list of internal transitions, 
+         * and hook it to the state: */
+        ModelFacade.setInternalTransitions(st, internalsInfo.finalisedList());
     }
+
+    /**
+     * This class manages a list of UML modelelements that existed 
+     * before and after the parseXxxxx() function was called.
+     * It has all the knowledge to deal with additions and removals.
+     * 
+     * @author MVW
+     */
+    class ModelElementInfoList {
+        /** the list that we maintain */
+        private Collection theList;
+
+        /**
+         * An item in a list, maintains all info about one UML object, 
+         * its generated version (i.e. textual representation), 
+         * and if it needs to be retained after parsing.<p>
+         * 
+         * @author MVW
+         */
+        class InfoItem {
+            private String generated;
+            private Object umlObject;
+            private boolean retainIt = false;
+            
+            InfoItem(Object obj) {
+                umlObject = obj;
+                generated = 
+                    GeneratorDisplay.getInstance().generate(obj); 
+            }
+            InfoItem(Object obj, boolean r) {
+                this(obj);
+                retainIt = r;
+            }
+
+            /**
+             * @return the generated string representation
+             */
+            String getGenerated() {
+                return generated;
+            }
+
+            /**
+             * @return the UML Object
+             */
+            Object getUmlObject() {
+                return umlObject;
+            }
+
+            /**
+             * Retain this UML object.
+             */
+            void retain() {
+                retainIt = true;
+            }
+
+            /**
+             * @return true if the UML object is to be retained, 
+             *         false if it is to be deleted
+             */
+            boolean isRetained() {
+                return retainIt;
+            }
+        }
+        
+        /**
+         * The constructor.
+         * 
+         * @param c the collection of the UML objects
+         *          that were present before
+         */
+        ModelElementInfoList(Collection c) {
+            theList = new ArrayList();
+            Iterator i = c.iterator();
+            while (i.hasNext()) {
+                theList.add(new InfoItem(i.next()));
+            }
+        }
+
+        /**
+         * @param obj the UML object 
+         * @param r true if this UML object needs to be retained
+         */
+        void add(Object obj, boolean r) {
+            theList.add(new InfoItem(obj, r));
+        }
+                    
+        /**
+         * Check the given textual description, 
+         * and if already present in the list, then retain it.
+         * @param line the given textual description 
+         * @return true if the item was already present in the list
+         */
+        boolean checkRetain(String line) {
+            Iterator i = theList.iterator();
+            while (i.hasNext()) {
+                InfoItem tInfo = 
+                    (InfoItem) i.next();
+                if (tInfo.getGenerated().equals(line)) {
+                    tInfo.retain();
+                    return true;
+                }
+            }
+            return false;
+        }
+        
+        /**
+         * Finish the procedure, by deleting the UML model items 
+         * that are not to be retained, and return a collection 
+         * of the ones to be retained. 
+         * This method should only be called once!
+         * @return the UML objects that survive.
+         */
+        Collection finalisedList() {
+            // don't forget to remove old internals!
+            Collection newModelElementsList = new ArrayList();
+            Iterator i = theList.iterator();
+            while (i.hasNext()) {
+                InfoItem tInfo = 
+                    (InfoItem) i.next();
+                if (tInfo.isRetained()) {
+                    newModelElementsList.add(tInfo.getUmlObject());
+                } else {
+                    delete(tInfo.getUmlObject());
+                }
+            }
+            // Make next accesses to this instance predictable:
+            theList.clear(); 
+            // and hook in the new ones:
+            return newModelElementsList;            
+        }
+    }
+
 
     /**
      * Parse a line of the form: "entry /action" and create an action. The word
@@ -1754,16 +1857,30 @@ public class ParserDisplay extends Parser {
      * then he may add them in the properties panels, but not on the diagram.<p>
      * 
      * An alternative solution would be to create a CallEvent by default, 
-     * and when editing an existing event, do not change the type.
+     * and when editing an existing event, do not change the type.<p>
+     * 
+     * TODO: This function fails when the event-signature contains a "[" 
+     * or a "/".
      * 
      * @param trans the transition object to which this string applies
      * @param s     the string to be parsed
      * @return      the transition object
-     * 
-     * @see org.argouml.uml.generator.Parser#parseTransition(Object, String)
+     * @throws ParseException when no matching [] are found
+     * @see org.argouml.uml.generator.Parser#parseTransition(java.lang.Object, 
+     *      java.lang.String)
      */
-    public Object parseTransition(Object trans, String s) {
+    public Object parseTransition(Object trans, String s) 
+        throws ParseException {
         s = s.trim();
+        
+        int a = s.indexOf("[");
+        int b = s.indexOf("]");
+        int c = s.indexOf("/");
+        if (((a < 0) && (b >= 0)) || ((b < 0) && (a >= 0)) || (b < a)) 
+            throw new ParseException("No matching brackets [] found.", 0);
+        if ((c >= 0) && (c < b))
+            throw new ParseException("Found a ']' after a '/'", 0);
+        
         StringTokenizer tokenizer = new StringTokenizer(s, "[/");
         String eventSignature = null;
         String guardCondition = null;
@@ -1784,12 +1901,8 @@ public class ParserDisplay extends Parser {
         }
            
         if (eventSignature != null) {
-            try {
-                // parseEventSignature(trans, eventSignature);
-                parseTrigger(trans, eventSignature);
-            } catch (ParseException e) {
-                LOG.warn(e);
-            }
+            // parseEventSignature(trans, eventSignature);
+            parseTrigger(trans, eventSignature);
         }
       
         if (guardCondition != null) {
@@ -1817,6 +1930,7 @@ public class ParserDisplay extends Parser {
         boolean changeEvent = false;
         boolean callEvent = false;
         boolean signalEvent = false;
+        trigger = trigger.trim();
         
         StringTokenizer tokenizer = new StringTokenizer(trigger, "()");
         String name = tokenizer.nextToken().trim();
@@ -1831,10 +1945,17 @@ public class ParserDisplay extends Parser {
                 s = tokenizer.nextToken().trim();
             }
         } else {
-            if (tokenizer.hasMoreTokens()) {
+            // the part after the || is for when there's nothing between the ()
+            if (tokenizer.hasMoreTokens() 
+                    || (trigger.indexOf("(") > 0) 
+                    || (trigger.indexOf(")") > 1)) {
                 callEvent = true;
-                s = tokenizer.nextToken().trim();
-                //parseParamList(event, s, 0);
+                if (!trigger.endsWith(")") || !(trigger.indexOf("(") > 0))
+                    throw new ParseException(
+                            "No matching brackets () found.", 0);
+                if (tokenizer.hasMoreTokens()) {
+                    s = tokenizer.nextToken().trim();
+                } // else the empty s will do
             } else {
                 signalEvent = true;
             }   
@@ -1868,8 +1989,11 @@ public class ParserDisplay extends Parser {
                         .buildChangeEvent(s);
                 }
                 if (callEvent) { // operation(paramlist)
+                    String triggerName = trigger.indexOf("(") > 0 
+                        ? trigger.substring(0, trigger.indexOf("(")).trim()
+                        : trigger;
                     evt = UmlFactory.getFactory().getStateMachines()
-                        .buildCallEvent(trans, trigger);
+                        .buildCallEvent(trans, triggerName);
                     // and parse the parameter list
                     parseParamList(evt, s, 0);
                 }
@@ -3133,6 +3257,11 @@ public class ParserDisplay extends Parser {
      * Finds the operations in Collection c with name name and params number of
      * parameters. If no operation is found, one is created. The applicable
      * operations are returned.
+     *
+     * @param c the collection of operations to be searched
+     * @param name the name of the operation to be found
+     * @param params the number of parameters of the operation to be found
+     * @return the sought operation
      */
     private Vector getOperation(Collection c, String name, int params) {
         Vector options = new Vector();
@@ -3283,87 +3412,6 @@ public class ParserDisplay extends Parser {
         ModelFacade.setName(act, action);
         ModelFacade.setName(sti, name);
     }
-
-    /**
-     * @deprecated Since 0.15.1, this is essentially a String constructor. It
-     *             breaks the idea that the parser is editing preexisting
-     *             objects, which is bad. It is not used within core ArgoUML.
-     *             d00mst.
-     *             It is used in {@link #parseTransition(Object, String)}
-     *             above.
-     *
-     * @param s the string to parse
-     * @return the created object
-     */
-//    public Object parseAction(String s) {
-//        Object a = UmlFactory.getFactory().getCommonBehavior()
-//                .createCallAction();
-//
-//        ModelFacade.setScript(a, UmlFactory.getFactory().getDataTypes()
-//                .createActionExpression("", s));
-//
-//        return a;
-//    }
-
-    /**
-     * Parses the event-signature. An event-signature has the following syntax:
-     * <table>
-     * <tr>
-     * <td>Event-type</td>
-     * <td>Event-signature</td>
-     * </tr>
-     * <tr>
-     * <td>Call-event</td>
-     * <td>name(parameter-list)</td>
-     * </tr>
-     * <tr>
-     * <td>Change-event</td>
-     * <td>when(expression-body)</td>
-     * </tr>
-     * <tr>
-     * <td>Time-event</td>
-     * <td>after(expression-body)</td>
-     * </tr>
-     * </table>
-     * 
-     * @param transition
-     *            the transition the event signature belongs to
-     * @param s
-     * @return
-     */
-//    private void parseEventSignature(Object transition, String s)
-//        throws ParseException {
-//        Object currentEvent = ModelFacade.getTrigger(transition);
-//        if (currentEvent != null 
-//                && !(ModelFacade.getTransitions(currentEvent).size() > 1 
-//                        || ModelFacade.getStates(currentEvent).size() > 0)) {
-//            Project p = ProjectManager.getManager().getCurrentProject();
-//            p.moveToTrash(currentEvent);
-//        }
-//        Object event = null;
-//        StringTokenizer tokenizer = new StringTokenizer(s, "()");
-//        String name = tokenizer.nextToken();
-//        if (name.equalsIgnoreCase("after")) {
-//            if (tokenizer.hasMoreTokens())
-//                event = StateMachinesFactory.getFactory().buildTimeEvent(
-//                        tokenizer.nextToken());
-//            else
-//                event = StateMachinesFactory.getFactory().buildTimeEvent();
-//        } else if (name.equalsIgnoreCase("when")) {
-//            if (tokenizer.hasMoreTokens()) {
-//                event = StateMachinesFactory.getFactory().buildChangeEvent(
-//                        tokenizer.nextToken());
-//            } else
-//                event = StateMachinesFactory.getFactory().buildChangeEvent();
-//        } else {
-//            event = StateMachinesFactory.getFactory().buildCallEvent();
-//            ModelFacade.setName(event, name);
-//            if (tokenizer.hasMoreTokens()) {
-//                parseParamList(event, tokenizer.nextToken(), 0);
-//            }
-//        }
-//        ModelFacade.setTrigger(transition, event);
-//    }
 
     /**
      * Parse a textual representatation of an Object, i.e. a line of the form:
@@ -3548,8 +3596,6 @@ public class ParserDisplay extends Parser {
         if (obj != null)
             UmlFactory.getFactory().delete(obj);
     }
-    
-    
 
     /**
      * An action state figure shows the action expression of the entry

@@ -1103,7 +1103,9 @@ public class GeneratorDisplay extends Generator2 {
      * given object.  The returned string will have the following
      * syntax:<p>
      * 
-     * (param1, param2, param3, ..., paramN)
+     * (param1, param2, param3, ..., paramN) 
+     * 
+     * <p> If there are no parameters, then "()" is returned.
      *
      * @param parameterListOwner the 'owner' of the parameters
      * @return the generated parameter list
@@ -1111,8 +1113,8 @@ public class GeneratorDisplay extends Generator2 {
     private String generateParameterList(Object parameterListOwner) {
         Iterator it = ModelFacade.getParameters(parameterListOwner).iterator();
         StringBuffer list = new StringBuffer();
+        list.append("(");
         if (it.hasNext()) {
-            list.append("(");
             while (it.hasNext()) {
                 Object param = it.next();
                 list.append(generateParameter(param));
@@ -1120,8 +1122,8 @@ public class GeneratorDisplay extends Generator2 {
                     list.append(", ");
                 }
             }
-            list.append(")");
         }        
+        list.append(")");
         return list.toString();
     }
     

@@ -514,11 +514,13 @@ public class StateMachinesFactory extends AbstractUmlModelFactory {
         return event;
     }
 
-    /** Create a initialized instance of a CallEvent with a name 
-     * as a trigger for a Transition.
+    /** 
+     * Create a initialized instance of a CallEvent with a name 
+     * as a trigger for a Transition. 
+     * If an operation with corresponding name can be found, it is linked.
      *  
      * @param trans Object MTransition for which the CallEvent is a trigger
-     * @param name String with the trigger name 
+     * @param name String with the trigger name - should not include "()"
      * @return an initialized UML CallEvent instance.
      */
     public MCallEvent buildCallEvent(Object trans, String name) {
@@ -527,8 +529,11 @@ public class StateMachinesFactory extends AbstractUmlModelFactory {
         MCallEvent evt = MFactory.getDefaultFactory().createCallEvent();
         evt.setNamespace((MModel) ProjectManager.getManager()
 			 .getCurrentProject().getModel());
-        ModelFacade.setName(evt, name);
-        String operationName = name.substring(0, name.indexOf("(")).trim();
+        
+        String operationName = name.indexOf("(") > 0 
+            ? name.substring(0, name.indexOf("(")).trim()
+            : name.trim(); 
+        ModelFacade.setName(evt, operationName);
         Object op = StateMachinesHelper.getHelper()
                                 .findOperationByName(trans, operationName);
         if (op != null) 

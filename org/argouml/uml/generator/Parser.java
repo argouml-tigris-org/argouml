@@ -59,8 +59,11 @@ public abstract class Parser {
      * @param trans the transition
      * @param s  the input string to be parsed
      * @return the transition
+     * @throws ParseException when there is a syntax error in the input text 
+     *                        so that it should be rejected
      */
-    public abstract Object parseTransition(Object trans, String s);
+    public abstract Object parseTransition(Object trans, String s)
+        throws ParseException;
     
     /**
      * Parse a given string s with the information given from 
