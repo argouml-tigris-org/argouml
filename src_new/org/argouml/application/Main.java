@@ -103,18 +103,6 @@ public class Main {
 
         org.argouml.util.Tools.logVersionInfo();
 
-        boolean doSplash = Configuration.getBoolean(Argo.KEY_SPLASH, true);
-        boolean useEDEM = Configuration.getBoolean(Argo.KEY_EDEM, true);
-        boolean preload = Configuration.getBoolean(Argo.KEY_PRELOAD, true);
-        boolean profileLoad = Configuration.getBoolean(Argo.KEY_PROFILE, false);
-        boolean reloadRecent =
-            Configuration.getBoolean(Argo.KEY_RELOAD_RECENT_PROJECT, false);
-
-        File projectFile = null;
-        Project p = null;
-        String projectName = null;
-        URL urlToOpen = null;
-
         SimpleTimer st = new SimpleTimer("Main.main");
         st.mark("arguments");
 
@@ -128,6 +116,16 @@ public class Main {
         System.setProperty(
             "com.apple.mrj.application.apple.menu.about.name",
             "ArgoUML");
+
+
+        boolean doSplash = Configuration.getBoolean(Argo.KEY_SPLASH, true);
+        boolean useEDEM = Configuration.getBoolean(Argo.KEY_EDEM, true);
+        boolean preload = Configuration.getBoolean(Argo.KEY_PRELOAD, true);
+        boolean profileLoad = Configuration.getBoolean(Argo.KEY_PROFILE, false);
+        boolean reloadRecent =
+            Configuration.getBoolean(Argo.KEY_RELOAD_RECENT_PROJECT, false);
+
+        String projectName = null;
 
         //--------------------------------------------
         // Parse command line args:
@@ -210,6 +208,9 @@ public class Main {
             }
         }
 
+        File projectFile = null;
+        URL urlToOpen = null;
+
         if (projectName != null) {
             if (!projectName.endsWith(Project.COMPRESSED_FILE_EXT))
                 projectName += Project.COMPRESSED_FILE_EXT;
@@ -218,7 +219,6 @@ public class Main {
                 System.err.println(
                     "Project file '" + projectFile + "' does not exist.");
                 /* this will cause an empty project to be created */
-                p = null;
             } else {
                 try {
                     urlToOpen = Util.fileToURL(projectFile);
@@ -233,7 +233,7 @@ public class Main {
         st.mark("projectbrowser");
 
         // Register the default notation.
-        Object dgd = org.argouml.uml.generator.GeneratorDisplay.getInstance();
+        org.argouml.uml.generator.GeneratorDisplay.getInstance();
 
         MFactoryImpl.setEventPolicy(MFactoryImpl.EVENT_POLICY_IMMEDIATE);
 
@@ -278,6 +278,8 @@ public class Main {
         }
 
         st.mark("make empty project");
+
+        Project p = null;
 
         if (urlToOpen == null) {
             p = ProjectManager.getManager().getCurrentProject();
@@ -343,10 +345,6 @@ public class Main {
         if (urlToOpen == null)
             pb.setTitle("Untitled");
 
-        //pb.validate();
-        //pb.repaint();
-        //pb.requestDefaultFocus();
-
         if (doSplash) {
             SplashScreen splash = pb.getSplashScreen();
             splash.getStatusBar().showStatus("Loading modules");
@@ -368,7 +366,6 @@ public class Main {
         pb.setVisible(true);
         Object model = p.getUserDefinedModels().elementAt(0);
         Object diag = p.getDiagrams().elementAt(0);
-        //pb.setTarget(diag);
         pb.getNavigatorPane().setSelection(model, diag);
 
         st.mark("close splash");
@@ -378,45 +375,6 @@ public class Main {
             splash.dispose();
             splash = null;
         }
-
-        Class c = null;
-        c = org.tigris.gef.base.ModePlace.class;
-        c = org.tigris.gef.base.ModeModify.class;
-        c = org.tigris.gef.base.SelectionResize.class;
-        c = org.tigris.gef.presentation.FigPoly.class;
-        c = org.tigris.gef.base.PathConvPercentPlusConst.class;
-        c = org.tigris.gef.presentation.ArrowHeadNone.class;
-        c = org.tigris.gef.base.Geometry.class;
-
-        c = org.tigris.gef.ui.ColorRenderer.class;
-
-        c = org.tigris.gef.util.EnumerationEmpty.class;
-        c = org.tigris.gef.util.EnumerationSingle.class;
-
-        c = ru.novosoft.uml.foundation.data_types.MScopeKind.class;
-        c = ru.novosoft.uml.foundation.data_types.MChangeableKind.class;
-
-        c = org.argouml.uml.diagram.static_structure.ui.FigClass.class;
-        c = org.argouml.uml.diagram.ui.SelectionNodeClarifiers.class;
-        c = org.argouml.uml.diagram.ui.SelectionWButtons.class;
-        c = org.argouml.uml.diagram.static_structure.ui.SelectionClass.class;
-        c = org.argouml.uml.diagram.ui.ModeCreateEdgeAndNode.class;
-        c = org.argouml.uml.diagram.static_structure.ui.FigPackage.class;
-        c = org.argouml.uml.diagram.static_structure.ui.FigInterface.class;
-
-        c = java.lang.ClassNotFoundException.class;
-        c = org.argouml.kernel.DelayedChangeNotify.class;
-        c = org.tigris.gef.graph.GraphEvent.class;
-        c = org.tigris.gef.graph.presentation.NetEdge.class;
-        c = org.tigris.gef.graph.GraphEdgeHooks.class;
-
-        c = org.argouml.uml.cognitive.critics.WizMEName.class;
-        c = org.argouml.kernel.Wizard.class;
-
-        //if (splash != null) {
-        //  splash.getStatusBar().showStatus("Setting up critics");
-        //  splash.getStatusBar().showProgress(70);
-        //}
 
         st.mark("start critics");
 
@@ -545,84 +503,71 @@ class PostLoad implements Runnable {
 
 class PreloadClasses implements Runnable {
     public void run() {
-        //if (splash != null) {
-        //splash.getStatusBar().showStatus("Preloading classes");
-        //splash.getStatusBar().showProgress(90);
-        //}
-
         Class c = null;
         Argo.log.info("preloading...");
+
+	// Alphabetic order
+        c = java.beans.BeanDescriptor.class;
+        c = java.beans.BeanInfo.class;
+        c = java.beans.EventSetDescriptor.class;
+        c = java.beans.FeatureDescriptor.class;
+        c = java.beans.IndexedPropertyDescriptor.class;
+        c = java.beans.Introspector.class;
+        c = java.beans.MethodDescriptor.class;
+        c = java.beans.PropertyDescriptor.class;
+        c = java.beans.PropertyVetoException.class;
+        c = java.beans.SimpleBeanInfo.class;
+        c = java.lang.ClassNotFoundException.class;
+        c = java.lang.CloneNotSupportedException.class;
+        c = java.lang.InterruptedException.class;
+        c = java.lang.NullPointerException.class;
+        c = java.lang.SecurityException.class;
+        c = java.lang.Void.class;
+        c = java.lang.reflect.Modifier.class;
+        c = java.util.TooManyListenersException.class;
+        c = org.argouml.kernel.DelayedChangeNotify.class;
+        c = org.argouml.kernel.HistoryItemResolve.class;
+        c = org.argouml.kernel.Wizard.class;
+        c = org.argouml.ui.Clarifier.class;
+        c = org.argouml.ui.StylePanelFig.class;
+        c = org.argouml.uml.GenCompositeClasses.class;
+        c = org.argouml.uml.cognitive.critics.ClAttributeCompartment.class;
+        c = org.argouml.uml.cognitive.critics.ClClassName.class;
+        c = org.argouml.uml.cognitive.critics.ClOperationCompartment.class;
+        c = org.argouml.uml.diagram.static_structure.ui.FigClass.class;
+        c = org.argouml.uml.diagram.static_structure.ui.FigInterface.class;
+        c = org.argouml.uml.diagram.static_structure.ui.FigPackage.class;
+        c = org.argouml.uml.diagram.static_structure.ui.SelectionClass.class;
+        c = org.argouml.uml.diagram.static_structure.ui.StylePanelFigClass.class;
+        c = org.argouml.uml.diagram.static_structure.ui.StylePanelFigInterface.class;
+        c = org.argouml.uml.diagram.ui.FigAssociation.class;
+        c = org.argouml.uml.diagram.ui.FigGeneralization.class;
+        c = org.argouml.uml.diagram.ui.FigRealization.class;
+        c = org.argouml.uml.diagram.ui.ModeCreateEdgeAndNode.class;
+        c = org.argouml.uml.diagram.ui.SPFigEdgeModelElement.class;
+        c = org.argouml.uml.diagram.ui.SelectionNodeClarifiers.class;
+        c = org.argouml.uml.diagram.ui.SelectionWButtons.class;
+        c = org.argouml.uml.ui.foundation.core.PropPanelAssociation.class;
+        c = org.argouml.uml.ui.foundation.core.PropPanelClass.class;
+        c = org.argouml.uml.ui.foundation.core.PropPanelInterface.class;
         c = org.tigris.gef.base.CmdSetMode.class;
-        c = org.tigris.gef.base.ModePlace.class;
+        c = org.tigris.gef.base.Geometry.class;
         c = org.tigris.gef.base.ModeModify.class;
+        c = org.tigris.gef.base.ModePlace.class;
+        c = org.tigris.gef.base.PathConvPercentPlusConst.class;
         c = org.tigris.gef.base.SelectionResize.class;
+        c = org.tigris.gef.event.ModeChangeEvent.class;
+        c = org.tigris.gef.graph.GraphEdgeHooks.class;
+        c = org.tigris.gef.graph.GraphEvent.class;
+        c = org.tigris.gef.graph.presentation.NetEdge.class;
+        c = org.tigris.gef.presentation.ArrowHeadNone.class;
+        c = org.tigris.gef.presentation.FigPoly.class;
         c = org.tigris.gef.ui.ColorRenderer.class;
         c = org.tigris.gef.ui.Swatch.class;
         c = org.tigris.gef.util.EnumerationEmpty.class;
         c = org.tigris.gef.util.EnumerationSingle.class;
-        c = org.argouml.uml.GenCompositeClasses.class;
-        c = org.argouml.uml.diagram.static_structure.ui.FigClass.class;
-        c = org.argouml.uml.diagram.static_structure.ui.FigPackage.class;
-        c = org.argouml.uml.diagram.static_structure.ui.FigInterface.class;
-        c = org.argouml.uml.diagram.ui.FigAssociation.class;
-        c = org.argouml.uml.diagram.ui.FigGeneralization.class;
-        c = org.argouml.uml.diagram.ui.FigRealization.class;
-        c = org.argouml.uml.ui.foundation.core.PropPanelClass.class;
-        c = org.argouml.uml.ui.foundation.core.PropPanelInterface.class;
-        c = org.argouml.uml.ui.foundation.core.PropPanelAssociation.class;
-        c = org.argouml.ui.StylePanelFig.class;
-        c =
-            org
-                .argouml
-                .uml
-                .diagram
-                .static_structure
-                .ui
-                .StylePanelFigClass
-                .class;
-        c =
-            org
-                .argouml
-                .uml
-                .diagram
-                .static_structure
-                .ui
-                .StylePanelFigInterface
-                .class;
-        c = org.argouml.uml.diagram.ui.SPFigEdgeModelElement.class;
-
-        c = java.lang.ClassNotFoundException.class;
-        c = org.argouml.kernel.DelayedChangeNotify.class;
-        c = org.tigris.gef.graph.GraphEvent.class;
-        c = org.tigris.gef.graph.presentation.NetEdge.class;
-        c = org.tigris.gef.graph.GraphEdgeHooks.class;
-
-        c = org.argouml.uml.cognitive.critics.WizMEName.class;
-        c = org.argouml.kernel.Wizard.class;
-
-        c = java.beans.Introspector.class;
-        c = java.beans.BeanInfo.class;
-        c = java.beans.BeanDescriptor.class;
-        c = java.beans.FeatureDescriptor.class;
-        c = java.lang.InterruptedException.class;
-        c = java.lang.CloneNotSupportedException.class;
-        c = java.lang.reflect.Modifier.class;
-        c = java.beans.EventSetDescriptor.class;
-        c = java.beans.PropertyDescriptor.class;
-        c = java.lang.Void.class;
-        c = java.beans.MethodDescriptor.class;
-        c = java.beans.SimpleBeanInfo.class;
-        c = java.util.TooManyListenersException.class;
-        c = java.beans.PropertyVetoException.class;
-        c = java.beans.IndexedPropertyDescriptor.class;
-        c = org.argouml.kernel.HistoryItemResolve.class;
-        c = org.tigris.gef.event.ModeChangeEvent.class;
-        c = org.argouml.uml.cognitive.critics.ClClassName.class;
-        c = org.argouml.ui.Clarifier.class;
-        c = org.argouml.uml.cognitive.critics.ClAttributeCompartment.class;
-        c = org.argouml.uml.cognitive.critics.ClOperationCompartment.class;
-        c = java.lang.SecurityException.class;
-        c = java.lang.NullPointerException.class;
+        c = ru.novosoft.uml.foundation.data_types.MChangeableKind.class;
+        c = ru.novosoft.uml.foundation.data_types.MScopeKind.class;
 
         Argo.log.info(" done preloading");
     }
