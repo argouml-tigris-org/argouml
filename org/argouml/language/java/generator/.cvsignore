@@ -1,1 +1,5 @@
 *.class
+JavaLexer.java
+JavaRecognizer.java
+JavaTokenTypes.java
+JavaTokenTypes.txt
