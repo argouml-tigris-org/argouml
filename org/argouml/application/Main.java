@@ -53,7 +53,7 @@ import org.argouml.kernel.ProjectManager;
 import org.argouml.ui.LookAndFeelMgr;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.ui.SplashScreen;
-import org.argouml.uml.ui.ActionLoadProject;
+import org.argouml.uml.ui.ActionOpenProject;
 import org.argouml.util.Trash;
 import org.argouml.util.logging.SimpleTimer;
 import org.tigris.gef.util.Util;
@@ -285,56 +285,8 @@ public class Main {
 
         if (urlToOpen != null) {
             
-            ActionLoadProject.SINGLETON.putValue(ActionLoadProject.URL_KEY, urlToOpen);
-            ActionLoadProject.SINGLETON.actionPerformed(
-                            new ActionEvent(Project.class, 0, "loadProject"));
-            
-                            /*
-            try {
-                p = Project.loadProject(urlToOpen);
-            } catch (FileNotFoundException fn) {
-                JOptionPane.showMessageDialog(
-                    pb,
-                    "Could not find the project file "
-                        + urlToOpen.toString()
-                        + "\n",
-                    "Error",
-                    JOptionPane.ERROR_MESSAGE);
-                Argo.log.error(
-                    "Could not load most recent project file: "
-                        + urlToOpen.toString());
-                Argo.log.error(fn);
-                Configuration.setString(Argo.KEY_MOST_RECENT_PROJECT_FILE, "");
-                urlToOpen = null;
-                p = ProjectManager.getManager().makeEmptyProject();
-            } catch (IOException io) {
-                JOptionPane.showMessageDialog(
-                    pb,
-                    "Could not load the project "
-                        + urlToOpen.toString()
-                        + "\n"
-                        + "Project file probably corrupted.\n"
-                        + "Please file a bug report at argouml.tigris.org including"
-                        + " the corrupted project file.",
-                    "Error",
-                    JOptionPane.ERROR_MESSAGE);
-                Argo.log.error(
-                    "Could not load most recent project file: "
-                        + urlToOpen.toString());
-                Argo.log.error(io);
-                Configuration.setString(Argo.KEY_MOST_RECENT_PROJECT_FILE, "");
-                urlToOpen = null;
-                p = ProjectManager.getManager().makeEmptyProject();
-            } catch (Exception ex) {
-                Argo.log.error(
-                    "Could not load most recent project file: "
-                        + urlToOpen.toString());
-                Argo.log.error(ex);
-                Configuration.setString(Argo.KEY_MOST_RECENT_PROJECT_FILE, "");
-                urlToOpen = null;
-                p = ProjectManager.getManager().makeEmptyProject();
-            }
-            */
+            ActionOpenProject.SINGLETON.loadProject(urlToOpen);
+
         }
         p = ProjectManager.getManager().getCurrentProject();
 

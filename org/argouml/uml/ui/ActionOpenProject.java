@@ -1,4 +1,5 @@
-// Copyright (c) 1996-2002 The Regents of the University of California. All
+// $Id$
+// Copyright (c) 1996-2003 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -34,6 +35,8 @@ import org.argouml.util.*;
 import org.argouml.util.osdep.*;
 
 import org.tigris.gef.base.*;
+import org.xml.sax.SAXException;
+import javax.xml.parsers.ParserConfigurationException;
 
 import java.io.*;
 import java.net.*;
@@ -146,113 +149,7 @@ public class ActionOpenProject extends UMLAction {
                     Globals.setLastDirectory(path);
                     URL url = theFile.toURL();
                     if (url != null) {
-                        // implemented call to new action to handle the GUI for 
-                        // loading of projects better.
-                        ActionLoadProject.SINGLETON.putValue(
-                            ActionLoadProject.URL_KEY,
-                            url);
-                        ActionLoadProject.SINGLETON.actionPerformed(
-                            new ActionEvent(this, 0, "loadProject"));
-                        // 2003-04-04
-                        // start of old code before refactoring the load procedure
-                        /*
-                        	// 2002-07-18
-                        // Jaap Branderhorst
-                        // changed the loading of the projectfiles to solve hanging 
-                        // of argouml if a project is corrupted. Issue 913
-                        // made it possible to return to the old project if loading went wrong
-                        Project oldProject = ProjectManager.getManager().getCurrentProject();
-                        // This is actually a hack! Some diagram types
-                        // (like the state diagrams) access the current
-                        // diagram to get some info. This might cause 
-                        // problems if there's another state diagram
-                        // active, so I remove the current project, before
-                        // loading the new one.
-                        // 2002-07-18
-                        // Jaap Branderhorst
-                        // changed the loading of the projectfiles to solve hanging 
-                        // of argouml if a project is corrupted. Issue 913
-                        // old code:
-                        
-                        // pb.setProject(Project.makeEmptyProject());
-                        
-                        // new code:
-                        Designer.disableCritiquing();
-                        Designer.clearCritiquing();
-                        
-                        // 2002-07-18
-                        // Jaap Branderhorst
-                        // changed the loading of the projectfiles to solve hanging 
-                        // of argouml if a project is corrupted. Issue 913
-                        // try catch block added
-                        try {
-                        	p = Project.loadProject (url);
-                        	ProjectManager.getManager().setCurrentProject(p);
-                        	pb.showStatus (MessageFormat.format (
-                            Argo.localize ("Actions", "template.open_project.status_read"),
-                            	new Object[] {url.toString()}
-                          	));
-                        }
-                        catch (java.io.FileNotFoundException ex) {
-                           JOptionPane.showMessageDialog(pb,
-                        		"Could not load the project " + url.toString() + "\n" +
-                        		"Exception message:\n" + ex,
-                        			"Error",
-                        		JOptionPane.ERROR_MESSAGE);
-                           // restore old state of the project browser
-                           ProjectManager.getManager().setCurrentProject(oldProject);
-                           Designer.enableCritiquing();
-                        return;
-                        }
-                        catch (IOException io) {
-                            // now we have to handle the case of a corrupted XMI file
-                            JOptionPane.showMessageDialog(pb,
-                                "Could not load the project " + url.toString() + "\n" +
-                                "Project file probably corrupted.\n" +
-                                "Please file a bug report at argouml.tigris.org including" +
-                                " the corrupted project file.",
-                                "Error",
-                                JOptionPane.ERROR_MESSAGE);
-                            ProjectManager.getManager().setCurrentProject(oldProject);
-                            Designer.enableCritiquing();
-                        return;
-                        }
-                        catch (Exception ex) {
-                        	// now show some errorpane
-                        	JOptionPane.showMessageDialog(pb,
-                        		"Could not load the project " + url.toString() + "\n" +
-                        		"Project file probably corrupted.\n" +
-                                "Exception message:\n" + ex,
-                        			"Error",
-                        		JOptionPane.ERROR_MESSAGE);
-                        
-                        	// lets restore the state of the projectbrowser
-                        	ProjectManager.getManager().setCurrentProject(oldProject);
-                            Designer.enableCritiquing();
-                        return;
-                        }
-                        if (ArgoParser.SINGLETON.getLastLoadStatus() != true) {
-                        	JOptionPane.
-                        showMessageDialog(pb,
-                        	      "Problem in loading the project " 
-                        	      + url.toString()
-                        	      + "\n" 
-                        	      + "Project file probably corrupt from "
-                        	      + "an earlier version or ArgoUML.\n"
-                        	      + "Error message:\n" 
-                        	      + ArgoParser.SINGLETON.getLastLoadMessage()
-                        	      + "\n"
-                        	      + "Since the project was incorrectly "
-                        	      + "saved some things might be missing "
-                        	      + "from before you saved it.\n"
-                        	      + "These things cannot be restored. "
-                        	      + "You can continue working with what "
-                        	      + "was actually loaded.\n",
-                        	      "Error",
-                        	      JOptionPane.ERROR_MESSAGE);
-                        }
-                        Designer.enableCritiquing();
-                        */
+			loadProject(url);
                     }
 
                 }
@@ -261,4 +158,117 @@ public class ActionOpenProject extends UMLAction {
             cat.error("got an IOException in ActionOpenProject", ignore);
         }
     }
+
+
+
+    /**
+     * Loads the project file and opens all kinds of error message windows
+     * if it doesn't work for some reason. In those cases it preserves
+     * the old project.
+     * 
+     * @param url the url to open.
+     */
+    public void loadProject(URL url) {
+
+        Project oldProject = ProjectManager.getManager().getCurrentProject();
+
+	// TODO:
+        // This is actually a hack! Some diagram types
+        // (like the state diagrams) access the current
+        // diagram to get some info. This might cause 
+        // problems if there's another state diagram
+        // active, so I remove the current project, before
+        // loading the new one.
+
+        Designer.disableCritiquing();
+        Designer.clearCritiquing();
+
+        Project p = null;
+        try {
+            p = ProjectManager.getManager().loadProject(url);
+
+            ProjectBrowser.TheInstance.showStatus(
+                MessageFormat.format(
+                    Argo.localize(
+                        "Actions",
+                        "template.open_project.status_read"),
+                    new Object[] { url.toString()}));
+        } catch (ParserConfigurationException ex) {
+            showErrorPane(
+                "Could not load the project "
+                    + url.toString()
+                    + " due to configuration errors.\n"
+                    + "Please read the instructions at www.argouml.org on the"
+                    + " requirements of argouml and how to install it.");
+            p = oldProject;
+        } catch (IllegalFormatException ex) {
+            showErrorPane(
+                "Could not load the project "
+                    + url.toString()
+                    + "\n"
+                    + "The format of the file is not supported.");
+            p = oldProject;
+        } catch (java.io.FileNotFoundException ex) {
+            showErrorPane(
+                "Could not load the project "
+                    + url.toString()
+                    + "\n"
+                    + "The file was not found.");
+            p = oldProject;
+        } catch (IOException io) {
+            // now we have to handle the case of a corrupted XMI file
+            showErrorPane(
+                "Could not load the project "
+                    + url.toString()
+                    + "\n"
+                    + "Project file probably corrupted.\n"
+                    + "Please file a bug report at argouml.tigris.org including"
+                    + " the corrupted project file.");
+            p = oldProject;
+        } catch (SAXException ex) {
+            showErrorPane(
+                "Could not load the project "
+                    + url.toString()
+                    + "\n"
+                    + "Project file probably corrupted.\n"
+                    + "If the problem keeps persisting, please file a bug report at www.argouml.org.\n");
+            p = oldProject;
+        } finally {
+            if (!ArgoParser.SINGLETON.getLastLoadStatus()) {
+                p = oldProject;
+                showErrorPane(
+                    "Problem in loading the project "
+                        + url.toString()
+                        + "\n"
+                        + "Project file probably corrupt from "
+                        + "an earlier version or ArgoUML.\n"
+                        + "Error message:\n"
+                        + ArgoParser.SINGLETON.getLastLoadMessage()
+                        + "\n"
+                        + "Since the project was incorrectly "
+                        + "saved some things might be missing "
+                        + "from before you saved it.\n"
+                        + "These things cannot be restored. "
+                        + "You can continue working with what "
+                        + "was actually loaded.\n");
+            }
+            ProjectManager.getManager().setCurrentProject(p);
+            Designer.enableCritiquing();
+        }
+    }
+
+
+    /**
+     * Open a Message Dialog with an error message.
+     *
+     * @param message the message to display.
+     */
+    private void showErrorPane(String message) {
+        JOptionPane.showMessageDialog(
+            ProjectBrowser.TheInstance,
+            message,
+            "Error",
+            JOptionPane.ERROR_MESSAGE);
+    }
+
 } /* end class ActionOpenProject */
