@@ -33,6 +33,7 @@ import ru.novosoft.uml.foundation.core.*;
 
 import org.tigris.gef.util.*;
 
+import org.argouml.application.api.Argo;
 import org.argouml.ui.*;
 
 public class GoFilteredChildren implements TreeModel {
@@ -46,7 +47,7 @@ public class GoFilteredChildren implements TreeModel {
   ////////////////////////////////////////////////////////////////
   // constructor
   public GoFilteredChildren(String name, TreeModel tm, Predicate pred) {
-    _name = Localizer.localize ("Tree", name);
+    _name = Argo.localize ("Tree", name);
     _tm = tm;
     _pred = pred;
   }

@@ -237,7 +237,7 @@ implements IStatusBar, NavigationListener, ArgoModuleEventListener {
    * through keyboard
    */
   static final protected void setMnemonic(JMenuItem item,String key,char defMnemonic) {
-    String localMnemonic = Localizer.localize("CoreMenu","Mnemonic_" + key);
+    String localMnemonic = Argo.localize("CoreMenu","Mnemonic_" + key);
     char mnemonic = defMnemonic;
     if(localMnemonic != null && localMnemonic.length() == 1) {
       mnemonic = localMnemonic.charAt(0);
@@ -246,7 +246,7 @@ implements IStatusBar, NavigationListener, ArgoModuleEventListener {
   }
 
   static final protected String menuLocalize(String key) {
-    return Localizer.localize("CoreMenu",key);
+    return Argo.localize("CoreMenu",key);
   }
 
   static final protected void setAccelerator(JMenuItem item,KeyStroke keystroke) {

@@ -31,14 +31,14 @@ import javax.swing.tree.*;
 import ru.novosoft.uml.model_management.*;
 import ru.novosoft.uml.foundation.core.*;
 
+import org.argouml.application.api.Argo;
 import org.argouml.ui.*;
-import org.tigris.gef.util.Localizer;
 import org.argouml.uml.MMUtil;
 
 public class GoClassifierToBeh implements TreeModel {
 
   public String toString() {
-    return Localizer.localize ("Tree", "misc.class.operation");
+    return Argo.localize ("Tree", "misc.class.operation");
   }
   
   public Object getRoot() {

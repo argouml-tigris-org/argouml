@@ -31,14 +31,14 @@ import javax.swing.tree.*;
 import ru.novosoft.uml.model_management.*;
 import ru.novosoft.uml.foundation.core.*;
 
+import org.argouml.application.api.Argo;
 import org.argouml.kernel.*;
 import org.argouml.ui.*;
-import org.tigris.gef.util.Localizer;
 
 public class GoProjectDiagram implements TreeModel {
 
   public String toString() {
-    return Localizer.localize ("Tree", "misc.project.diagram");
+    return Argo.localize ("Tree", "misc.project.diagram");
   }
   
   public Object getRoot() {

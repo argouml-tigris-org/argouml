@@ -294,15 +294,15 @@ implements ItemListener, TreeSelectionListener, MouseListener, ToDoListListener,
     private static String formatCountLabel(int size) {
 	switch (size) {
 	case 0:
-	    return Localizer.localize("Cognitive", "todopane.label.no-items");
+	    return Argo.localize("Cognitive", "todopane.label.no-items");
 	case 1:
 	    return MessageFormat.
-		format(Localizer.localize("Cognitive", "todopane.label.item"),
+		format(Argo.localize("Cognitive", "todopane.label.item"),
 		       new Object[] { new Integer(size) }
 		       );
 	default:
 	    return MessageFormat.
-		format(Localizer.localize("Cognitive", "todopane.label.items"),
+		format(Argo.localize("Cognitive", "todopane.label.items"),
 		       new Object[] { new Integer(size) }
 		       );
 	}

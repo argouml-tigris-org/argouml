@@ -50,7 +50,7 @@ public class ClassGenerationDialog extends JDialog implements ActionListener {
   // constants
   //private static final String BUNDLE = "Cognitive";
 
-  //static final String high = Localizer.localize(BUNDLE, "level.high");
+  //static final String high = Argo.localize(BUNDLE, "level.high");
   
   ////////////////////////////////////////////////////////////////
   // instance variables

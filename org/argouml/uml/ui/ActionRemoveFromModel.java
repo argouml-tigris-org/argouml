@@ -30,7 +30,6 @@ import org.argouml.application.api.*;
 
 import org.tigris.gef.base.*;
 import org.tigris.gef.presentation.*;
-import org.tigris.gef.util.*;
 
 import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.model_management.MModel;
@@ -67,7 +66,7 @@ public class ActionRemoveFromModel extends UMLChangeAction {
     
     public ActionRemoveFromModel() {
         super(
-        Localizer.localize("CoreMenu", "Delete From Model"),
+        Argo.localize("CoreMenu", "Delete From Model"),
         NO_ICON
         );
     }
@@ -161,11 +160,11 @@ public class ActionRemoveFromModel extends UMLChangeAction {
     		Vector edges = diagram.getNodes();
     		if ((nodes.size() + edges.size()) > 0) {
     			 // the diagram contains figs so lets ask the user if he/she is sure
-    			 String confirmStr = MessageFormat.format(Localizer.localize("Actions",
+    			 String confirmStr = MessageFormat.format(Argo.localize("Actions",
                                          "template.remove_from_model.confirm_delete"),
                                           new Object[] {diagram.getName(), ""});
                  int response = JOptionPane.showConfirmDialog(ProjectBrowser.TheInstance, confirmStr,
-                                            Localizer.localize("Actions", 
+                                            Argo.localize("Actions", 
                                             "text.remove_from_model.confirm_delete_title"),
                                             JOptionPane.YES_NO_OPTION);
         		sure = (response == JOptionPane.YES_OPTION);
@@ -192,14 +191,14 @@ public class ActionRemoveFromModel extends UMLChangeAction {
         boolean doAsk = false;
         String confirmStr = "";
         if (count > 1) {
-            confirmStr += Localizer.localize("Actions",
+            confirmStr += Argo.localize("Actions",
                                     "text.remove_from_model.will_remove_from_diagrams");
             doAsk = true;
         }
         
         Collection beh = me.getBehaviors();
         if (beh != null && beh.size() > 0) {
-            confirmStr += Localizer.localize("Actions",
+            confirmStr += Argo.localize("Actions",
                                     "text.remove_from_model.will_remove_subdiagram");
             doAsk = true;
         }
@@ -210,14 +209,14 @@ public class ActionRemoveFromModel extends UMLChangeAction {
         
         String name = me.getName();
         if (name == null || name.equals("")) {
-            name = Localizer.localize("Actions", "text.remove_from_model.anon_element_name");
+            name = Argo.localize("Actions", "text.remove_from_model.anon_element_name");
         }
         
-        confirmStr = MessageFormat.format(Localizer.localize("Actions",
+        confirmStr = MessageFormat.format(Argo.localize("Actions",
                                          "template.remove_from_model.confirm_delete"),
                                           new Object[] {name, confirmStr});
         int response = JOptionPane.showConfirmDialog(pb, confirmStr,
-                                            Localizer.localize("Actions", 
+                                            Argo.localize("Actions", 
                                             "text.remove_from_model.confirm_delete_title"),
                                             JOptionPane.YES_NO_OPTION);
         

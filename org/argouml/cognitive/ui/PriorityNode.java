@@ -27,16 +27,16 @@ import java.util.*;
 
 import org.argouml.cognitive.*;
 
-import org.tigris.gef.util.*;
+import org.argouml.application.api.*;
 
 
 public class PriorityNode {
     // Private members.
     private static final String BUNDLE = "Cognitive";
 
-    static final String high = Localizer.localize(BUNDLE, "level.high");
-    static final String medium = Localizer.localize(BUNDLE, "level.medium");
-    static final String low = Localizer.localize(BUNDLE, "level.low");
+    static final String high = Argo.localize(BUNDLE, "level.high");
+    static final String medium = Argo.localize(BUNDLE, "level.medium");
+    static final String low = Argo.localize(BUNDLE, "level.low");
 
   ////////////////////////////////////////////////////////////////
   // static variables and methods

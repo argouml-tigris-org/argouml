@@ -30,6 +30,7 @@ import javax.swing.*;
 import javax.swing.event.*;
 
 import org.tigris.gef.util.*;
+import org.argouml.application.api.*;
 
 import org.argouml.cognitive.*;
 import org.argouml.ui.ProjectBrowser;
@@ -40,9 +41,9 @@ public class AddToDoItemDialog extends JDialog implements ActionListener {
   // constants
   private static final String BUNDLE = "Cognitive";
 
-  static final String high = Localizer.localize(BUNDLE, "level.high");
-  static final String medium = Localizer.localize(BUNDLE, "level.medium");
-  static final String low = Localizer.localize(BUNDLE, "level.low");
+  static final String high = Argo.localize(BUNDLE, "level.high");
+  static final String medium = Argo.localize(BUNDLE, "level.medium");
+  static final String low = Argo.localize(BUNDLE, "level.low");
 
   public static final String PRIORITIES[] = { high, medium, low };
 

@@ -23,7 +23,7 @@
 
 package org.argouml.cognitive;
 
-import org.tigris.gef.util.*;
+import org.argouml.application.api.Argo;
 
 /** This is where the class makes the decision
  * to to fire critic.
@@ -44,7 +44,7 @@ public class Decision {
     ////////////////////////////////////////////////////////////////
     // constructor
     public Decision(String n, int p) {
-	setName(Localizer.localize("Cognitive", n));
+	setName(Argo.localize("Cognitive", n));
 	setPriority(p);
     }
 

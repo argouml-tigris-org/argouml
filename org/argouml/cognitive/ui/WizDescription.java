@@ -34,7 +34,6 @@ import java.text.*;
 import ru.novosoft.uml.foundation.core.*;
 
 import org.tigris.gef.ui.ToolBar;
-import org.tigris.gef.util.*;
 
 import org.argouml.application.api.*;
 import org.argouml.cognitive.*;
@@ -63,7 +62,7 @@ public class WizDescription extends WizStep {
     String message = "";
     super.setTarget(item);
     if (_target == null) {
-      _description.setText(Localizer.localize("Cognitive", "message.no-item-selected"));
+      _description.setText(Argo.localize("Cognitive", "message.no-item-selected"));
     }
     else if (_target instanceof ToDoItem) {
       ToDoItem tdi = (ToDoItem) _target;
@@ -73,7 +72,7 @@ public class WizDescription extends WizStep {
     }
     else if (_target instanceof PriorityNode) {
       message = MessageFormat. 
-                format(Localizer.localize("Cognitive", "message.branch-priority"),
+                format(Argo.localize("Cognitive", "message.branch-priority"),
                        new Object [] { _target.toString() });
       _description.setText(message);
 
@@ -81,7 +80,7 @@ public class WizDescription extends WizStep {
     }
     else if (_target instanceof Critic) {
       message = MessageFormat. 
-                format(Localizer.localize("Cognitive", "message.branch-critic"),
+                format(Argo.localize("Cognitive", "message.branch-critic"),
                        new Object [] { _target.toString() });
       _description.setText(message);
 
@@ -89,7 +88,7 @@ public class WizDescription extends WizStep {
     }
     else if (_target instanceof MModelElement) {
       message = MessageFormat. 
-                format(Localizer.localize("Cognitive", "message.branch-model"),
+                format(Argo.localize("Cognitive", "message.branch-model"),
                        new Object [] { _target.toString() });
       _description.setText(message);
 
@@ -97,7 +96,7 @@ public class WizDescription extends WizStep {
     }
     else if (_target instanceof Decision) {
       message = MessageFormat. 
-                format(Localizer.localize("Cognitive", "message.branch-decision"),
+                format(Argo.localize("Cognitive", "message.branch-decision"),
                        new Object [] { _target.toString() });
       _description.setText(message);
 
@@ -105,7 +104,7 @@ public class WizDescription extends WizStep {
     }
     else if (_target instanceof Goal) {
       message = MessageFormat. 
-                format(Localizer.localize("Cognitive", "message.branch-goal"),
+                format(Argo.localize("Cognitive", "message.branch-goal"),
                        new Object [] { _target.toString() });
       _description.setText(message);
 
@@ -113,7 +112,7 @@ public class WizDescription extends WizStep {
     }
     else if (_target instanceof KnowledgeTypeNode) {
       message = MessageFormat. 
-                format(Localizer.localize("Cognitive", "message.branch-knowledge"),
+                format(Argo.localize("Cognitive", "message.branch-knowledge"),
                        new Object [] { _target.toString() });
       _description.setText(message);
 
