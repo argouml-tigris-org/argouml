@@ -41,9 +41,16 @@ public abstract class FigStateVertex extends FigNodeModelElement {
     ////////////////////////////////////////////////////////////////
     // constructors
 
+    /**
+     * The main constructor
+     */
     public FigStateVertex() {
     }
 
+    /** The constructor which hooks the Fig into the UML element
+     * @param gm ignored
+     * @param node the UML elm
+     */
     public FigStateVertex(GraphModel gm, Object node) {
         this();
         setOwner(node);
@@ -55,6 +62,7 @@ public abstract class FigStateVertex extends FigNodeModelElement {
     /**
      * Overriden to make it possible to include a statevertex in a composite
      * state.
+     * @see org.tigris.gef.presentation.Fig#setEnclosingFig(org.tigris.gef.presentation.Fig)
      */
     public void setEnclosingFig(Fig encloser) {
         super.setEnclosingFig(encloser);
