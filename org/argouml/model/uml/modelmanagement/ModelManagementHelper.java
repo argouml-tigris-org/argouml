@@ -115,5 +115,35 @@ public class ModelManagementHelper {
 		}
 		return list;
 	}
+	
+	public Collection getAllModelElementsOfKind(Class kind) {
+		if (kind == null) return new ArrayList();
+		MNamespace model = ProjectBrowser.TheInstance.getProject().getModel();
+		return getAllModelElementsOfKind(model, kind);
+	}
+	
+	/**
+	 * Returns all modelelements found in this namespace and its children 
+	 * that are of some class kind. Does NOT return subtypes of the searched
+	 * kind. 
+	 * @param ns
+	 * @param kind
+	 * @return Collection
+	 */
+	public Collection getAllModelElementsOfKind(MNamespace ns, Class kind) {
+		if (ns == null || kind == null) return new ArrayList();
+		Iterator it = ns.getOwnedElements().iterator();
+		List list = new ArrayList();
+		while (it.hasNext()) {
+			Object o = it.next();
+			if (o instanceof MNamespace) {
+				list.addAll(getAllModelElementsOfKind((MNamespace)o, kind));
+			} 
+			if (o.getClass().equals(kind)) {
+				list.add(o);
+			}
+		}
+		return list;
+	}
 }
 

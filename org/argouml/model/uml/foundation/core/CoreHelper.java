@@ -533,18 +533,18 @@ public class CoreHelper {
 	}
 				
 	/**
-	 * Returns all classes some class clazz extends.
+	 * Returns all classes some generalizable element clazz extends.
 	 * @param clazz
 	 * @return Collection
 	 */
-	public Collection getExtendedClassifiers(MClassifier clazz) {
+	public Collection getExtendedClassifiers(MGeneralizableElement clazz) {
 		if (clazz == null) return new ArrayList();
 		Iterator it = clazz.getGeneralizations().iterator();
 		List list = new ArrayList();
 		while (it.hasNext()) {
 			MGeneralization gen = (MGeneralization)it.next();
 			MGeneralizableElement parent = gen.getParent();
-			if (parent instanceof MClassifier) {
+			if (parent != null) {
 				list.add(parent);
 			}
 		}
@@ -575,14 +575,14 @@ public class CoreHelper {
 	 * @param clazz
 	 * @return Collection
 	 */
-	public Collection getExtendingClasses(MClassifier clazz) {
+	public Collection getExtendingClasses(MGeneralizableElement clazz) {
 		if (clazz == null) return new ArrayList();
 		Iterator it = clazz.getSpecializations().iterator();
 		List list = new ArrayList();
 		while (it.hasNext()) {
 			MGeneralization gen = (MGeneralization)it.next();
 			MGeneralizableElement client = gen.getChild();
-			if (client instanceof MClassifier) {
+			if (client != null) {
 				list.add(client);
 			}
 		}

@@ -144,22 +144,6 @@ abstract public class PropPanelModelElement extends PropPanel {
         }
     }
 
-    public void addRealization() {
-        Object target = getTarget();
-        if(target instanceof MModelElement) {
-            MModelElement modelElement = (MModelElement) target;
-            MNamespace ns = modelElement.getNamespace();
-            if(ns != null) {
-//                MGeneralization newGen = ns.getFactory().createGeneralization();
-//                if(newGen != null) {
-//                    newGen.addSpecialization(genElem);
-//                    ns.addOwnedElement(newGen);
-//                    navigateTo(newGen);
-//                }
-            }
-        }
-    }
-
     public void addDataType() {
         Object target = getTarget();
         if(target instanceof MNamespace) {
