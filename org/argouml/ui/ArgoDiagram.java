@@ -30,6 +30,7 @@ import javax.swing.*;
 
 import org.tigris.gef.base.*;
 
+import org.argouml.kernel.Project;
 import org.argouml.util.*;
 
 public class ArgoDiagram extends Diagram {
@@ -44,11 +45,29 @@ public class ArgoDiagram extends Diagram {
     catch (PropertyVetoException pve) { }
   }
 
-
   ////////////////////////////////////////////////////////////////
   // accessors
 
   public void setName(String n) throws PropertyVetoException {
+  	// 2002-07-18
+  	// Jaap Branderhorst
+  	// check the new name if it does not exist as a diagram name
+  	// patch for issue 738
+  	Project project = ProjectBrowser.TheInstance.getProject();
+  	if (project != null) {
+  		Vector diagrams = project.getDiagrams();
+  		Iterator it = diagrams.iterator();
+  		while (it.hasNext()) {
+  			ArgoDiagram diagram = (ArgoDiagram)it.next();
+  			if ((diagram.getName() != null ) && 
+  				(diagram.getName().equals(n)) && 
+  				(!getName().equals(n))) {
+  				throw new PropertyVetoException(
+  					"Name of diagram may not exist allready" ,
+  					new PropertyChangeEvent(this, "name", getName(), n));
+  			}
+  		}
+  	}
     super.setName(n);
   }
 
