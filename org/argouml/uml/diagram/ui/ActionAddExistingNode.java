@@ -27,7 +27,7 @@ package org.argouml.uml.diagram.ui;
 
 import java.awt.event.ActionEvent;
 
-import org.argouml.application.api.Argo;
+import org.argouml.i18n.Translator;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.ui.ArgoDiagram;
 import org.argouml.ui.targetmanager.TargetManager;
@@ -84,7 +84,7 @@ public class ActionAddExistingNode extends UMLAction
         String instructions = null;
         if (_object != null) {
             instructions =
-		Argo.localize ("Tree", "misc.message.click-on-diagram-to-add") + _object.toString();
+		Translator.localize ("Tree", "misc.message.click-on-diagram-to-add") + _object.toString();
             Globals.showStatus(instructions);
         }
         ModePlace placeMode = new ModePlace(this, instructions);

@@ -34,10 +34,10 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 import org.apache.log4j.Logger;
-import org.argouml.application.api.Argo;
 import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.Poster;
 import org.argouml.cognitive.ToDoItem;
+import org.argouml.i18n.Translator;
 import org.argouml.swingext.LabelledLayout;
 
 /** The email expert dialog does not work and is in
@@ -55,14 +55,6 @@ public class EmailExpertDialog extends ArgoDialog {
     protected static Logger cat =
 	Logger.getLogger(EmailExpertDialog.class);
 
-    ////////////////////////////////////////////////////////////////
-    // constants
-    
-    // Resourcebundle's
-    private static final String BTNBUNDLE = "button";
-    private static final String DLGBUNDLE = "dialog";
-    private static final String LBLBUNDLE = "label";
-    
     ////////////////////////////////////////////////////////////////
     // instance variables
     /** This field sets the email of the recipient.
@@ -89,23 +81,22 @@ public class EmailExpertDialog extends ArgoDialog {
 
     public EmailExpertDialog() {
         super(ProjectBrowser.getInstance(), 
-	      Argo.localize(DLGBUNDLE, "dialog.title.send-email-to-expert"), 
+            Translator.localize("dialog.title.send-email-to-expert"), 
 	      ArgoDialog.OK_CANCEL_OPTION,
 	      true);
         
-        getOkButton().setText(Argo.localize(BTNBUNDLE, "button.send"));
-        getOkButton().setMnemonic(Argo.localize(BTNBUNDLE, 
-                                    "button.send.mnemonic").charAt(0));
+        getOkButton().setText(Translator.localize("button.send"));
+        getOkButton().setMnemonic(
+                Translator.localize("button.send.mnemonic").charAt(0));
         
         _to = new JTextField(30);
         _cc = new JTextField(30);
         _subject = new JTextField(30);
         _body = new JTextArea(10, 30);
     
-        JLabel toLabel = new JLabel(Argo.localize(LBLBUNDLE, "label.to"));
-        JLabel ccLabel = new JLabel(Argo.localize(LBLBUNDLE, "label.cc"));
-        JLabel subjectLabel = new JLabel(Argo.localize(LBLBUNDLE,
-						       "label.subject"));
+        JLabel toLabel = new JLabel(Translator.localize("label.to"));
+        JLabel ccLabel = new JLabel(Translator.localize("label.cc"));
+        JLabel subjectLabel = new JLabel(Translator.localize("label.subject"));
     
         JPanel panel = new JPanel(new LabelledLayout(labelGap, componentGap));
 

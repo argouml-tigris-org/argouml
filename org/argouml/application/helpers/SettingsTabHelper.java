@@ -24,6 +24,8 @@
 
 package org.argouml.application.helpers;
 import org.argouml.application.api.*;
+import org.argouml.i18n.Translator;
+
 import javax.swing.*;
 import java.util.*;
 
@@ -56,7 +58,7 @@ public abstract class SettingsTabHelper extends JPanel
      *  the constructor.
      */
     public String localize(String key) {
-        return Argo.localize(_bundle, key);
+        return Translator.localize(_bundle, key);
     }
 
     /** Create a localized JLabel.

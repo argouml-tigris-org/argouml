@@ -49,7 +49,7 @@ import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.EtchedBorder;
 
-import org.argouml.application.api.Argo;
+import org.argouml.i18n.Translator;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.ModelFacade;
 import org.argouml.uml.PredicateFind;
@@ -124,7 +124,7 @@ public class FindDialog extends ArgoDialog
         _tabs.setEnabledAt(2, false);
 
         initConstraintsTab();
-        _tabs.addTab(Argo.localize("UMLMenu", "tab.constraints"),
+        _tabs.addTab(Translator.localize("UMLMenu", "tab.constraints"),
 		     _constraintsTab);
         _tabs.setEnabledAt(3, false);
 

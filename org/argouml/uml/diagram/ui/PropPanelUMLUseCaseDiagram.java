@@ -25,7 +25,7 @@
 // $Id$
 package org.argouml.uml.diagram.ui;
 
-import org.argouml.application.api.Argo;
+import org.argouml.i18n.Translator;
 
 /**
  * 
@@ -39,7 +39,7 @@ public class PropPanelUMLUseCaseDiagram extends PropPanelDiagram {
      * @param diagramName
      */
     public PropPanelUMLUseCaseDiagram() {
-        super(Argo.localize("UMLMenu", "label.usecase-diagram"));
+        super(Translator.localize("UMLMenu", "label.usecase-diagram"));
     }
 
 }

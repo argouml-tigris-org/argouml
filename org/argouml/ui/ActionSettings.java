@@ -81,7 +81,7 @@ public class ActionSettings extends UMLAction
     /** Helper for localization.
      */
     protected String localize(String key) {
-        return Argo.localize("CoreSettings", key);
+        return Translator.localize("CoreSettings", key);
     }
 
     ////////////////////////////////////////////////////////////////
@@ -133,7 +133,7 @@ public class ActionSettings extends UMLAction
                             ((PluggableSettingsTab) o).getSettingsTabPanel();
 
                         tabs.addTab(
-				    Argo.localize(
+                                Translator.localize(
 						  stp.getTabResourceBundleKey(),
 						  stp.getTabKey()),
 				    stp.getTabPanel());

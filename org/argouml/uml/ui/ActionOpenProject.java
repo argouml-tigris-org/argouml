@@ -25,7 +25,7 @@
 package org.argouml.uml.ui;
 
 import org.apache.log4j.Logger;
-import org.argouml.application.api.Argo;
+import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.*;
 import org.argouml.cognitive.Designer;
@@ -86,7 +86,7 @@ public class ActionOpenProject extends UMLAction {
         if (p != null && p.needsSave()) {
             String t =
                 MessageFormat.format(
-				     Argo.localize(
+                        Translator.localize(
 						   "Actions",
 						   "optionpane.open-project-save-changes-to"),
 				     new Object[] {
@@ -136,7 +136,7 @@ public class ActionOpenProject extends UMLAction {
                 chooser = OsUtil.getFileChooser();
 
             chooser.setDialogTitle(
-				   Argo.localize("Actions",
+                    Translator.localize("Actions",
 						 "filechooser.open-project"));
             SuffixFilter filter = FileFilters.CompressedFileFilter;
             chooser.addChoosableFileFilter(filter);
@@ -193,7 +193,7 @@ public class ActionOpenProject extends UMLAction {
             p = ProjectManager.getManager().loadProject(url);
 
             ProjectBrowser.getInstance().showStatus(
-		    MessageFormat.format(Argo.localize("Actions",
+		    MessageFormat.format(Translator.localize("Actions",
 						       "label.open-project-status-read"),
 					 new Object[] {
 					     url.toString()

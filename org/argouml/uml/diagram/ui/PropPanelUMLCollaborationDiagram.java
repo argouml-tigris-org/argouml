@@ -24,7 +24,7 @@
 
 package org.argouml.uml.diagram.ui;
 
-import org.argouml.application.api.Argo;
+import org.argouml.i18n.Translator;
 
 /**
  * 
@@ -37,7 +37,7 @@ public class PropPanelUMLCollaborationDiagram extends PropPanelDiagram {
      * Constructor for PropPanelUMLCollaborationDiagram.
      */
     public PropPanelUMLCollaborationDiagram() {
-        super(Argo.localize("UMLMenu", "label.collaboration-diagram"));
+        super(Translator.localize("UMLMenu", "label.collaboration-diagram"));
     }
 
 }

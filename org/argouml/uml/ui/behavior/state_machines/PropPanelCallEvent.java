@@ -35,7 +35,7 @@ package org.argouml.uml.ui.behavior.state_machines;
 import javax.swing.JList;
 import javax.swing.JScrollPane;
 
-import org.argouml.application.api.Argo;
+import org.argouml.i18n.Translator;
 
 
 import org.argouml.uml.ui.UMLLinkedList;
@@ -55,7 +55,7 @@ public class PropPanelCallEvent extends PropPanelEvent {
        
         // TODO: make the next list into a scrollbox
         JList operationList = new UMLLinkedList(new UMLCallEventOperationListModel());
-        addField(Argo.localize("UMLMenu", "label.operations"), new JScrollPane(operationList));
+        addField(Translator.localize("UMLMenu", "label.operations"), new JScrollPane(operationList));
     }
 
 } /* end class PropPanelCallEvent */

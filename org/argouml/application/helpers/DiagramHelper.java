@@ -27,8 +27,8 @@ import java.util.Vector;
 
 import javax.swing.JMenuItem;
 
-import org.argouml.application.api.Argo;
 import org.argouml.application.api.PluggableDiagram;
+import org.argouml.i18n.Translator;
 import org.argouml.ui.ArgoDiagram;
 
 /** Helper object for Diagrams
@@ -60,7 +60,7 @@ public abstract class DiagramHelper extends ArgoDiagram
     public Vector getModulePopUpActions(Vector v, Object o) { return null; }
     public boolean shutdownModule() { return true; }
     public JMenuItem getDiagramMenuItem() {
-	return new JMenuItem(Argo.localize(_bundle, "menu.item.diagram-type"));
+	return new JMenuItem(Translator.localize("menu.item.diagram-type"));
     } // add icon if desired
 
     public String getDiagramResourceBundleKey() {

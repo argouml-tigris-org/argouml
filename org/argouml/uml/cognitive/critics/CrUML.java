@@ -30,10 +30,10 @@
 package org.argouml.uml.cognitive.critics;
 
 import org.apache.log4j.Logger;
-import org.argouml.application.api.Argo;
 import org.argouml.cognitive.Decision;
 import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.critics.Critic;
+import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.ocl.OCLEvaluator;
@@ -129,9 +129,9 @@ public class CrUML extends Critic {
     }
 
     public void setResource(String key) {
-        String head = Argo.localize("Cognitive", key + "_head");
+        String head = Translator.localize("Cognitive", key + "_head");
         super.setHeadline(head);
-        String desc = Argo.localize("Cognitive", key + "_desc");
+        String desc = Translator.localize("Cognitive", key + "_desc");
         super.setDescription(desc);
     }
 

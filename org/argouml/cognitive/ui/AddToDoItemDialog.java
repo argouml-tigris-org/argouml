@@ -33,9 +33,9 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
-import org.argouml.application.api.Argo;
 import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.ToDoItem;
+import org.argouml.i18n.Translator;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.swingext.LabelledLayout;
 import org.argouml.ui.ArgoDialog;
@@ -140,7 +140,7 @@ public class AddToDoItemDialog extends ArgoDialog {
      * @return the localized value.
      */
     private static String localize(String label) {
-	return Argo.localize(BUNDLE, label);
+	return Translator.localize(BUNDLE, label);
     }
 
 } /* end class AddToDoItemDialog */

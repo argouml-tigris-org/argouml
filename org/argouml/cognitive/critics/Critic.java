@@ -38,7 +38,6 @@ import java.util.Vector;
 import javax.swing.Icon;
 
 import org.apache.log4j.Logger;
-import org.argouml.application.api.Argo;
 import org.argouml.application.api.Configuration;
 import org.argouml.application.api.ConfigurationKey;
 import org.argouml.application.helpers.ResourceLoaderWrapper;
@@ -48,6 +47,7 @@ import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.Goal;
 import org.argouml.cognitive.Poster;
 import org.argouml.cognitive.ToDoItem;
+import org.argouml.i18n.Translator;
 import org.argouml.kernel.Wizard;
 import org.tigris.gef.util.VectorSet;
 
@@ -76,27 +76,27 @@ public class Critic implements Poster, Serializable {
 
     /** Types of knowledge that critics can deliver */
     public static String KT_DESIGNERS = 
-	Argo.localize(RESOURCE_BUNDLE, "knowledge.designers");
+	Translator.localize(RESOURCE_BUNDLE, "knowledge.designers");
     public static String KT_CORRECTNESS =
-	Argo.localize(RESOURCE_BUNDLE, "knowledge.correctness");
+    Translator.localize(RESOURCE_BUNDLE, "knowledge.correctness");
     public static String KT_COMPLETENESS =
-	Argo.localize(RESOURCE_BUNDLE, "knowledge.completeness");
+    Translator.localize(RESOURCE_BUNDLE, "knowledge.completeness");
     public static String KT_CONSISTENCY =
-	Argo.localize(RESOURCE_BUNDLE, "knowledge.consistency");
+    Translator.localize(RESOURCE_BUNDLE, "knowledge.consistency");
     public static String KT_SYNTAX = 
-	Argo.localize(RESOURCE_BUNDLE, "knowledge.syntax");
+    Translator.localize(RESOURCE_BUNDLE, "knowledge.syntax");
     public static String KT_SEMANTICS = 
-	Argo.localize(RESOURCE_BUNDLE, "knowledge.semantics");
+    Translator.localize(RESOURCE_BUNDLE, "knowledge.semantics");
     public static String KT_OPTIMIZATION =
-	Argo.localize(RESOURCE_BUNDLE, "knowledge.optimization");
+    Translator.localize(RESOURCE_BUNDLE, "knowledge.optimization");
     public static String KT_PRESENTATION =
-	Argo.localize(RESOURCE_BUNDLE, "knowledge.presentation");
+    Translator.localize(RESOURCE_BUNDLE, "knowledge.presentation");
     public static String KT_ORGANIZATIONAL =
-	Argo.localize(RESOURCE_BUNDLE, "knowledge.organizational");
+    Translator.localize(RESOURCE_BUNDLE, "knowledge.organizational");
     public static String KT_EXPERIENCIAL =
-	Argo.localize(RESOURCE_BUNDLE, "knowledge.experiential");
+    Translator.localize(RESOURCE_BUNDLE, "knowledge.experiential");
     public static String KT_TOOL = 
-	Argo.localize(RESOURCE_BUNDLE, "knowledge.tool");
+    Translator.localize(RESOURCE_BUNDLE, "knowledge.tool");
 
     /** This function calculates the default url to describe this critic.
      * This syntax is synchronized with:

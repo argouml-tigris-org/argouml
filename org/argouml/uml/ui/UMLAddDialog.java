@@ -50,8 +50,8 @@ import javax.swing.ListCellRenderer;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingUtilities;
 
-import org.argouml.application.api.Argo;
 import org.argouml.application.helpers.ResourceLoaderWrapper;
+import org.argouml.i18n.Translator;
 
 /**
  * UMLAddDialog allows the user to do a multiple select from a list of choices in a seperate dialog. The 
@@ -162,7 +162,7 @@ public class UMLAddDialog extends JPanel implements ActionListener {
 	}
 	_choicesList.setVisibleRowCount(15);
 	JScrollPane choicesScroll = new JScrollPane(_choicesList);
-	panelChoices.add(new JLabel(Argo.localize("UMLMenu", "label.choices")), BorderLayout.NORTH);
+	panelChoices.add(new JLabel(Translator.localize("UMLMenu", "label.choices")), BorderLayout.NORTH);
 	panelChoices.add(choicesScroll, BorderLayout.CENTER);
 		
 	_addButton = new JButton(ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource("NavigateForward"));
@@ -183,7 +183,7 @@ public class UMLAddDialog extends JPanel implements ActionListener {
 	_selectedList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 	_selectedList.setVisibleRowCount(15);
 	JScrollPane selectedScroll = new JScrollPane(_selectedList);
-	panelSelected.add(new JLabel(Argo.localize("UMLMenu", "label.selected")), BorderLayout.NORTH);
+	panelSelected.add(new JLabel(Translator.localize("UMLMenu", "label.selected")), BorderLayout.NORTH);
 	panelSelected.add(selectedScroll, BorderLayout.CENTER);
 		
 	upperPanel.add(panelChoices);	
@@ -198,9 +198,9 @@ public class UMLAddDialog extends JPanel implements ActionListener {
 		
 	JPanel okCancelPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
 		
-	_okButton = new JButton(Argo.localize("UMLMenu", "button.ok"));
+	_okButton = new JButton(Translator.localize("UMLMenu", "button.ok"));
 	_okButton.addActionListener(this);
-	_cancelButton = new JButton(Argo.localize("UMLMenu", "button.cancel"));
+	_cancelButton = new JButton(Translator.localize("UMLMenu", "button.cancel"));
 	_cancelButton.addActionListener(this);		
 	okCancelPanel.add(_okButton);
 	okCancelPanel.add(_cancelButton);

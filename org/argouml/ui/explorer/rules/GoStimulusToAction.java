@@ -29,7 +29,7 @@ package org.argouml.ui.explorer.rules;
 import java.util.Collection;
 import java.util.Vector;
 
-import org.argouml.application.api.Argo;
+import org.argouml.i18n.Translator;
 import org.argouml.model.ModelFacade;
 
 public class GoStimulusToAction implements PerspectiveRule {
@@ -49,6 +49,6 @@ public class GoStimulusToAction implements PerspectiveRule {
      * @see org.argouml.ui.AbstractGoRule#getRuleName()
      */
     public String getRuleName() {
-        return Argo.localize("Tree", "misc.stimulus.action");
+        return Translator.localize("Tree", "misc.stimulus.action");
     }
 }

@@ -26,8 +26,8 @@ package org.argouml.ui.explorer.rules;
 
 import java.util.Collection;
 
-import org.argouml.application.api.Argo;
 import org.argouml.model.ModelFacade;
+import org.argouml.i18n.Translator;
 import org.argouml.kernel.ProjectManager;
 
 /**
@@ -38,7 +38,7 @@ import org.argouml.kernel.ProjectManager;
 public class GoModelToDiagrams implements PerspectiveRule {
 
     public String getRuleName() {
-	return Argo.localize ("Tree", "misc.model-diagram");
+	return Translator.localize ("Tree", "misc.model-diagram");
     }
 
     public Collection getChildren(Object parent) {

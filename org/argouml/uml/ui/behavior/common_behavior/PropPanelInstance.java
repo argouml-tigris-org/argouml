@@ -36,7 +36,7 @@ import java.util.Iterator;
 
 import javax.swing.JTree;
 
-import org.argouml.application.api.Argo;
+import org.argouml.i18n.Translator;
 import org.argouml.model.ModelFacade;
 
 import org.argouml.uml.ui.PropPanelButton;
@@ -58,14 +58,14 @@ public class PropPanelInstance extends PropPanelModelElement {
 
         Class mclass = (Class)ModelFacade.INSTANCE;
 
-        addField(Argo.localize("UMLMenu", "label.name"), getNameTextField());
+        addField(Translator.localize("UMLMenu", "label.name"), getNameTextField());
 
         UMLClassifierComboBoxModel classifierModel = new UMLClassifierComboBoxModel(this, "isAcceptibleClassifier", "classifier", "getClassifier", "setClassifier", false, (Class)ModelFacade.CLASSIFIER, true);
         UMLComboBox clsComboBox = new UMLComboBox(classifierModel);
-        addField("Classifier:", new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-class"), clsComboBox));
+        addField("Classifier:", new UMLComboBoxNavigator(this, Translator.localize("UMLMenu", "tooltip.nav-class"), clsComboBox));
 
-        addField(Argo.localize("UMLMenu", "label.stereotype"), new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-stereo"), getStereotypeBox()));
-        addField(Argo.localize("UMLMenu", "label.namespace"), getNamespaceComboBox());
+        addField(Translator.localize("UMLMenu", "label.stereotype"), new UMLComboBoxNavigator(this, Translator.localize("UMLMenu", "tooltip.nav-stereo"), getStereotypeBox()));
+        addField(Translator.localize("UMLMenu", "label.namespace"), getNamespaceComboBox());
 
     //
     //   temporary
@@ -77,7 +77,7 @@ public class PropPanelInstance extends PropPanelModelElement {
         addField("Related Elements", tempTree);
     //
 
-        new PropPanelButton(this, buttonPanel, _navUpIcon, Argo.localize("UMLMenu", "button.go-up"), "navigateNamespace", null);
+        new PropPanelButton(this, buttonPanel, _navUpIcon, Translator.localize("UMLMenu", "button.go-up"), "navigateNamespace", null);
     }
 
 

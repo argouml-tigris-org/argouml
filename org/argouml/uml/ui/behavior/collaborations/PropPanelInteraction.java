@@ -27,7 +27,7 @@ package org.argouml.uml.ui.behavior.collaborations;
 import javax.swing.JList;
 import javax.swing.JScrollPane;
 
-import org.argouml.application.api.Argo;
+import org.argouml.i18n.Translator;
 import org.argouml.model.ModelFacade;
 
 import org.argouml.ui.targetmanager.TargetManager;
@@ -45,31 +45,31 @@ public class PropPanelInteraction extends PropPanelModelElement {
     public PropPanelInteraction() {
         super("Interaction", ConfigLoader.getTabPropsOrientation());
 
-    	addField(Argo.localize("UMLMenu", "label.name"), getNameTextField());
-    	addField(Argo.localize("UMLMenu", "label.stereotype"),
+    	addField(Translator.localize("UMLMenu", "label.name"), getNameTextField());
+    	addField(Translator.localize("UMLMenu", "label.stereotype"),
 		 getStereotypeBox());
-        addField(Argo.localize("UMLMenu", "label.namespace"),
+        addField(Translator.localize("UMLMenu", "label.namespace"),
 		 getNamespaceScroll());
 
         JList contextList =
 	    new UMLLinkedList(new UMLInteractionContextListModel());
         contextList.setVisibleRowCount(1);
         JScrollPane contextScroll = new JScrollPane(contextList);
-        addField(Argo.localize("UMLMenu", "label.context"), contextScroll);
+        addField(Translator.localize("UMLMenu", "label.context"), contextScroll);
 
         addSeperator();
 
         JList messagesList =
 	    new UMLLinkedList(new UMLInteractionMessagesListModel());
       	JScrollPane messagesScroll = new JScrollPane(messagesList);
-        addField(Argo.localize("UMLMenu", "label.messages"), messagesScroll);
+        addField(Translator.localize("UMLMenu", "label.messages"), messagesScroll);
 
     	new PropPanelButton(this, buttonPanel, _navUpIcon,
-			    Argo.localize("UMLMenu", "button.go-up"),
+    	        Translator.localize("UMLMenu", "button.go-up"),
 			    "navigateUp",
 			    null);
         new PropPanelButton(this, buttonPanel, _deleteIcon,
-			    Argo.localize("UMLMenu", "button.delete-attribute"),
+                Translator.localize("UMLMenu", "button.delete-attribute"),
 			    "removeElement",
 			    null);
 

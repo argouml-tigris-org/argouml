@@ -27,7 +27,7 @@ package org.argouml.uml.ui.behavior.collaborations;
 import javax.swing.JList;
 import javax.swing.JScrollPane;
 
-import org.argouml.application.api.Argo;
+import org.argouml.i18n.Translator;
 import org.argouml.model.ModelFacade;
 
 import org.argouml.uml.ui.UMLLinkedList;
@@ -42,7 +42,7 @@ public class PropPanelAssociationEndRole extends PropPanelAssociationEnd {
      */
     public PropPanelAssociationEndRole() {
         super("AssociationEndRoleRole", ConfigLoader.getTabPropsOrientation());
-        setAssociationLabel(Argo.localize("UMLMenu", "label.association-role"));
+        setAssociationLabel(Translator.localize("UMLMenu", "label.association-role"));
         createControls((Class)ModelFacade.ASSOCIATION_END_ROLE);
         positionStandardControls();
         positionControls();
@@ -53,7 +53,7 @@ public class PropPanelAssociationEndRole extends PropPanelAssociationEnd {
         JList baseList =
 	    new UMLLinkedList(new UMLAssociationEndRoleBaseListModel());
         baseList.setVisibleRowCount(1);
-        addField(Argo.localize("UMLMenu", "label.base"),
+        addField(Translator.localize("UMLMenu", "label.base"),
 		 new JScrollPane(baseList));
 
         super.positionControls();

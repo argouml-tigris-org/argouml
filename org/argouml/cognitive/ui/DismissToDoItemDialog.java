@@ -41,11 +41,11 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
 import org.apache.log4j.Logger;
-import org.argouml.application.api.Argo;
 import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.ToDoItem;
 import org.argouml.cognitive.ToDoList;
 import org.argouml.cognitive.UnresolvableException;
+import org.argouml.i18n.Translator;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.ui.ProjectBrowser;
 
@@ -57,19 +57,17 @@ public class DismissToDoItemDialog extends JDialog {
     // constants
     
     // Resource-Bundle's
-    private static final String BTNBUNDLE = "button";
     private static final String DLGBUNDLE = "dialog";
-    private static final String LBLBUNDLE = "label";
     private static final String OPTBUNDLE = "optionpane";
     
     // TODO: This relies on the fact that the l10n code is initiated
     // correctly when this class is loaded.
     private static final String BAD_GOAL_LABEL =
-	Argo.localize(BTNBUNDLE, "button.not-relevant-to-my-goals");
+    Translator.localize("button.not-relevant-to-my-goals");
     private static final String BAD_DECISION_LABEL = 
-	Argo.localize(BTNBUNDLE, "button.not-of-concern-at-moment");
+    Translator.localize("button.not-of-concern-at-moment");
     private static final String EXPLAIN_LABEL = 
-	Argo.localize(BTNBUNDLE, "button.reason-given-below");
+    Translator.localize("button.reason-given-below");
 
     ////////////////////////////////////////////////////////////////
     // instance variables
@@ -77,10 +75,8 @@ public class DismissToDoItemDialog extends JDialog {
     protected JRadioButton _badDecButton = new JRadioButton(BAD_DECISION_LABEL);
     protected JRadioButton _explainButton = new JRadioButton(EXPLAIN_LABEL);
     protected ButtonGroup _actionGroup = new ButtonGroup();
-    protected JButton _okButton = new JButton(Argo.localize(BTNBUNDLE,
-                                                            "button.ok"));
-    protected JButton _cancelButton = new JButton(Argo.localize(BTNBUNDLE,
-                                                            "button.cancel"));
+    protected JButton _okButton = new JButton(Translator.localize("button.ok"));
+    protected JButton _cancelButton = new JButton(Translator.localize("button.cancel"));
     protected JTextArea _explaination = new JTextArea();
     protected ToDoItem _target;
 
@@ -88,24 +84,23 @@ public class DismissToDoItemDialog extends JDialog {
     // constructors
   
     public DismissToDoItemDialog() {
-	super(ProjectBrowser.getInstance(), Argo.localize(DLGBUNDLE, 
+	super(ProjectBrowser.getInstance(), Translator.localize(DLGBUNDLE, 
                                             "dialog.title.dismiss-todo-item"));
-	JLabel instrLabel = new JLabel(Argo.localize(LBLBUNDLE, 
-                                                     "label.remove-item"));
+	JLabel instrLabel = new JLabel(Translator.localize("label.remove-item"));
 
         _okButton.setMnemonic(
-            Argo.localize(BTNBUNDLE, "button.ok.mnemonic").charAt(0));
+                Translator.localize("button.ok.mnemonic").charAt(0));
         _cancelButton.setMnemonic(
-            Argo.localize(BTNBUNDLE, "button.cancel.mnemonic").charAt(0));
+                Translator.localize("button.cancel.mnemonic").charAt(0));
         _badGoalButton.setMnemonic(
-            Argo.localize(BTNBUNDLE, 
-                "button.not-relevant-to-my-goals.mnemonic").charAt(0));
+                Translator.localize("button.not-relevant-to-my-goals.mnemonic")
+                    .charAt(0));
         _badDecButton.setMnemonic(
-            Argo.localize(BTNBUNDLE, 
-                "button.not-of-concern-at-moment.mnemonic").charAt(0));
+                Translator.localize("button.not-of-concern-at-moment.mnemonic")
+                    .charAt(0));
         _explainButton.setMnemonic(
-            Argo.localize(BTNBUNDLE, 
-                "button.reason-given-below.mnemonic").charAt(0));
+                Translator.localize("button.reason-given-below.mnemonic")
+                    .charAt(0));
 	setLocation(300, 200);
 	setSize(new Dimension(300, 250));
 	Container content = getContentPane();
@@ -180,8 +175,7 @@ public class DismissToDoItemDialog extends JDialog {
 	_actionGroup.add(_explainButton);
 	_actionGroup.setSelected(_explainButton.getModel(), true);
 
-	_explaination.setText(Argo.localize(LBLBUNDLE, 
-                                            "label.enter-rationale-here"));
+	_explaination.setText(Translator.localize("label.enter-rationale-here"));
     }
 
     public void setTarget(Object t) { _target = (ToDoItem) t; }
@@ -222,7 +216,7 @@ public class DismissToDoItemDialog extends JDialog {
 	    cat.error("Resolve failed (ure): " + ure);
 	    // TODO: Should be internationalized
 	    JOptionPane.showMessageDialog(this, ure.getMessage(),
-					  Argo.localize(OPTBUNDLE, 
+					  Translator.localize(OPTBUNDLE, 
                                             "optionpane.dismiss-failed"),
 					  JOptionPane.ERROR_MESSAGE);
 	}

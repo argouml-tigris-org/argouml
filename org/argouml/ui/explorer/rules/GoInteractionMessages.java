@@ -26,13 +26,13 @@ package org.argouml.ui.explorer.rules;
 
 import java.util.Collection;
 
-import org.argouml.application.api.Argo;
+import org.argouml.i18n.Translator;
 import org.argouml.model.ModelFacade;
 
 public class GoInteractionMessages implements PerspectiveRule {
 
     public String getRuleName() {
-        return Argo.localize("Tree", "misc.interaction.messages");
+        return Translator.localize("Tree", "misc.interaction.messages");
     }
 
     public Collection getChildren(Object parent) {

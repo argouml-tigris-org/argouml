@@ -32,7 +32,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.border.TitledBorder;
 
-import org.argouml.application.api.Argo;
+import org.argouml.i18n.Translator;
 import org.argouml.model.ModelFacade;
 import org.argouml.swingext.GridLayout2;
 
@@ -136,7 +136,7 @@ public class PropPanelAssociationEnd extends PropPanelModelElement {
      */
     public PropPanelAssociationEnd() {
         super("AssociationEnd", ConfigLoader.getTabPropsOrientation());
-        _associationLabel = Argo.localize("UMLMenu", "label.association");
+        _associationLabel = Translator.localize("UMLMenu", "label.association");
         Class mclass = (Class)ModelFacade.ASSOCIATION_END;
         createControls(mclass);
         positionStandardControls();
@@ -152,21 +152,21 @@ public class PropPanelAssociationEnd extends PropPanelModelElement {
         _navigabilityCheckBox = new UMLAssociationEndNavigableCheckBox();
         _orderingCheckBox = new UMLAssociationEndOrderingCheckBox();
         _targetScopeCheckBox = new UMLAssociationEndTargetScopeCheckbox();
-        _aggregationRadioButtonpanel = new UMLAssociationEndAggregationRadioButtonPanel(Argo.localize("UMLMenu", "label.aggregation"), true);
-        _changeabilityRadioButtonpanel = new UMLAssociationEndChangeabilityRadioButtonPanel(Argo.localize("UMLMenu", "label.changeability"), true);
-        _visibilityRadioButtonPanel = new UMLModelElementVisibilityRadioButtonPanel(Argo.localize("UMLMenu", "label.visibility"), true);
+        _aggregationRadioButtonpanel = new UMLAssociationEndAggregationRadioButtonPanel(Translator.localize("UMLMenu", "label.aggregation"), true);
+        _changeabilityRadioButtonpanel = new UMLAssociationEndChangeabilityRadioButtonPanel(Translator.localize("UMLMenu", "label.changeability"), true);
+        _visibilityRadioButtonPanel = new UMLModelElementVisibilityRadioButtonPanel(Translator.localize("UMLMenu", "label.visibility"), true);
         _specificationScroll = new JScrollPane(new UMLMutableLinkedList(new UMLAssociationEndSpecificationListModel(), ActionAddAssociationSpecification.SINGLETON, null, null, true));
     }
 
     protected void positionStandardControls() {
-        addField(Argo.localize("UMLMenu", "label.name"), getNameTextField());
-        addField(Argo.localize("UMLMenu", "label.stereotype"), new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-stereo"), getStereotypeBox()));
+        addField(Translator.localize("UMLMenu", "label.name"), getNameTextField());
+        addField(Translator.localize("UMLMenu", "label.stereotype"), new UMLComboBoxNavigator(this, Translator.localize("UMLMenu", "tooltip.nav-stereo"), getStereotypeBox()));
     }
 
     protected void positionControls() {
         addField(_associationLabel, _associationScroll);
-        addField(Argo.localize("UMLMenu", "label.type"), _typeCombobox);
-        addField(Argo.localize("UMLMenu", "label.multiplicity"), _multiplicityComboBox);
+        addField(Translator.localize("UMLMenu", "label.type"), _typeCombobox);
+        addField(Translator.localize("UMLMenu", "label.multiplicity"), _multiplicityComboBox);
 
         addSeperator();
 
@@ -174,10 +174,10 @@ public class PropPanelAssociationEnd extends PropPanelModelElement {
         panel.add(_navigabilityCheckBox);
         panel.add(_orderingCheckBox);
         panel.add(_targetScopeCheckBox);
-        panel.setBorder(new TitledBorder(Argo.localize("UMLMenu", "label.modifiers")));
+        panel.setBorder(new TitledBorder(Translator.localize("UMLMenu", "label.modifiers")));
         panel.setVisible(true);
         add(panel);
-        addField(Argo.localize("UMLMenu", "label.specification"), _specificationScroll);
+        addField(Translator.localize("UMLMenu", "label.specification"), _specificationScroll);
 
         addSeperator();
 
@@ -185,10 +185,10 @@ public class PropPanelAssociationEnd extends PropPanelModelElement {
         add(_changeabilityRadioButtonpanel);
         add(_visibilityRadioButtonPanel);
 
-        new PropPanelButton(this, buttonPanel, _navUpIcon, Argo.localize("UMLMenu", "button.go-up"), "navigateUp", null);
-        //does this make sense?? new PropPanelButton(this,buttonPanel,_interfaceIcon, Argo.localize("UMLMenu", "button.add-new-interface"),"newInterface",null);
+        new PropPanelButton(this, buttonPanel, _navUpIcon, Translator.localize("UMLMenu", "button.go-up"), "navigateUp", null);
+        //does this make sense?? new PropPanelButton(this,buttonPanel,_interfaceIcon, Translator.localize("UMLMenu", "button.add-new-interface"),"newInterface",null);
         new PropPanelButton(this, buttonPanel, _assocEndIcon, localize("Go to other end"), "gotoOther", null);
-        new PropPanelButton(this, buttonPanel, _deleteIcon, Argo.localize("UMLMenu", "button.delete-association-end"), "removeElement", "isDeleteEnabled");
+        new PropPanelButton(this, buttonPanel, _deleteIcon, Translator.localize("UMLMenu", "button.delete-association-end"), "removeElement", "isDeleteEnabled");
     }
 
     protected void setAssociationLabel(String label) {

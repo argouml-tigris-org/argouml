@@ -24,7 +24,7 @@
 
 package org.argouml.cognitive;
 
-import org.argouml.application.api.Argo;
+import org.argouml.i18n.Translator;
 
 public class Goal {
     
@@ -42,7 +42,7 @@ public class Goal {
     ////////////////////////////////////////////////////////////////
     // constructor
     public Goal(String n, int p) {
-	setName(Argo.localize("Cognitive", n));
+	setName(Translator.localize("Cognitive", n));
 	setPriority(p);
     }
 				   

@@ -26,13 +26,13 @@ package org.argouml.ui.explorer.rules;
 
 import java.util.Collection;
 
-import org.argouml.application.api.Argo;
+import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
 
 public class GoProjectToDiagram implements PerspectiveRule {
 
     public String getRuleName() {
-	return Argo.localize ("Tree", "misc.project.diagram");
+	return Translator.localize ("Tree", "misc.project.diagram");
     }
   
     public Collection getChildren(Object parent) { 

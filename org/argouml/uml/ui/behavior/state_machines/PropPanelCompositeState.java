@@ -35,7 +35,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JList;
 import javax.swing.JScrollPane;
 
-import org.argouml.application.api.Argo;
+import org.argouml.i18n.Translator;
 
 import org.argouml.swingext.Orientation;
 import org.argouml.uml.ui.UMLComboBoxNavigator;
@@ -60,23 +60,23 @@ public class PropPanelCompositeState extends PropPanelState {
         super("Composite State", _compositeStateIcon, ConfigLoader.getTabPropsOrientation());
         initialize();
 
-        addField(Argo.localize("UMLMenu", "label.name"), getNameTextField());
-        addField(Argo.localize("UMLMenu", "label.stereotype"), new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-stereo"), getStereotypeBox()));
-        addField(Argo.localize("UMLMenu", "label.container"), containerScroll);
-        addField(Argo.localize("UMLMenu", "label.modifiers"), new UMLCompositeStateConcurentCheckBox());
-        addField(Argo.localize("UMLMenu", "label.entry"), entryScroll);
-        addField(Argo.localize("UMLMenu", "label.exit"), exitScroll);
-        addField(Argo.localize("UMLMenu", "label.do-activity"), doScroll);
+        addField(Translator.localize("UMLMenu", "label.name"), getNameTextField());
+        addField(Translator.localize("UMLMenu", "label.stereotype"), new UMLComboBoxNavigator(this, Translator.localize("UMLMenu", "tooltip.nav-stereo"), getStereotypeBox()));
+        addField(Translator.localize("UMLMenu", "label.container"), containerScroll);
+        addField(Translator.localize("UMLMenu", "label.modifiers"), new UMLCompositeStateConcurentCheckBox());
+        addField(Translator.localize("UMLMenu", "label.entry"), entryScroll);
+        addField(Translator.localize("UMLMenu", "label.exit"), exitScroll);
+        addField(Translator.localize("UMLMenu", "label.do-activity"), doScroll);
 
         addSeperator();
 
-        addField(Argo.localize("UMLMenu", "label.incoming"), incomingScroll);
-        addField(Argo.localize("UMLMenu", "label.outgoing"), outgoingScroll);
-        addField(Argo.localize("UMLMenu", "label.internal-transitions"), internalTransitionsScroll);
+        addField(Translator.localize("UMLMenu", "label.incoming"), incomingScroll);
+        addField(Translator.localize("UMLMenu", "label.outgoing"), outgoingScroll);
+        addField(Translator.localize("UMLMenu", "label.internal-transitions"), internalTransitionsScroll);
 
         addSeperator();
 
-        addField(Argo.localize("UMLMenu", "label.subvertex"), new JScrollPane(subverticesList));
+        addField(Translator.localize("UMLMenu", "label.subvertex"), new JScrollPane(subverticesList));
 
     }
 

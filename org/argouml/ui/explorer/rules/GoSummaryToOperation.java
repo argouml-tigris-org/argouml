@@ -26,7 +26,7 @@ package org.argouml.ui.explorer.rules;
 
 import java.util.Collection;
 
-import org.argouml.application.api.Argo;
+import org.argouml.i18n.Translator;
 import org.argouml.model.ModelFacade;
 
 /**
@@ -40,7 +40,7 @@ import org.argouml.model.ModelFacade;
 public class GoSummaryToOperation implements PerspectiveRule {
 
     public String getRuleName() {
-	return Argo.localize ("Tree", "misc.class.operation");
+	return Translator.localize ("Tree", "misc.class.operation");
     }
 
     public Collection getChildren(Object parent) {

@@ -25,16 +25,16 @@
 package org.argouml.cognitive.ui;
 
 import java.util.Vector;
-import org.argouml.application.api.Argo;
 import org.argouml.cognitive.ToDoItem;
+import org.argouml.i18n.Translator;
 
 public class PriorityNode {
     // Private members.
     private static final String BUNDLE = "Cognitive";
 
-    static final String high = Argo.localize(BUNDLE, "level.high");
-    static final String medium = Argo.localize(BUNDLE, "level.medium");
-    static final String low = Argo.localize(BUNDLE, "level.low");
+    static final String high = Translator.localize(BUNDLE, "level.high");
+    static final String medium = Translator.localize(BUNDLE, "level.medium");
+    static final String low = Translator.localize(BUNDLE, "level.low");
 
     ////////////////////////////////////////////////////////////////
     // static variables and methods

@@ -29,7 +29,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
-import org.argouml.application.api.Argo;
+import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.ModelFacade;
@@ -45,7 +45,7 @@ import org.argouml.uml.diagram.ui.UMLDiagram;
 public class GoNamespaceToDiagram implements PerspectiveRule {
 
     public String getRuleName() {
-        return Argo.localize("Tree", "misc.package.diagram");
+        return Translator.localize("Tree", "misc.package.diagram");
     }
 
     public Collection getChildren(Object parent) {

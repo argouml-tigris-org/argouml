@@ -54,6 +54,7 @@ import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.ui.TabToDo;
 import org.argouml.cognitive.ui.ToDoPane;
+import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.swingext.BorderSplitPane;
@@ -176,7 +177,7 @@ public class ProjectBrowser
         if (doSplash) {
             _splash = SplashScreen.getInstance();
 	    _splash.getStatusBar().showStatus(
-		     Argo.localize(BUNDLE,
+	            Translator.localize(BUNDLE,
 				   "statusmsg.bar.making-project-browser"));
             _splash.getStatusBar().showProgress(10);
             _splash.setVisible(true);
@@ -226,7 +227,7 @@ public class ProjectBrowser
     protected Component createPanels(boolean doSplash) {
         if (doSplash) {
 	    _splash.getStatusBar().showStatus(
-		     Argo.localize(BUNDLE, 
+	            Translator.localize(BUNDLE, 
 			     "statusmsg.bar.making-project-browser-explorer"));
             _splash.getStatusBar().incProgress(5);
         }
@@ -294,7 +295,7 @@ public class ProjectBrowser
         _workarea = new BorderSplitPane();
         // create the todopane
         if (doSplash) {
-			_splash.getStatusBar().showStatus(Argo.localize(BUNDLE, 
+			_splash.getStatusBar().showStatus(Translator.localize(BUNDLE, 
 											  "statusmsg.bar.making-project-browser-to-do-pane"));
             _splash.getStatusBar().incProgress(5);
         }
@@ -586,7 +587,7 @@ public class ProjectBrowser
         Iterator it = detailsPanesByCompassPoint.values().iterator();
         while (it.hasNext()) {
             DetailsPane detailsPane = (DetailsPane) it.next();
-            if (detailsPane.selectTabNamed(Argo.localize("UMLMenu", tabName))) {
+            if (detailsPane.selectTabNamed(Translator.localize("UMLMenu", tabName))) {
                 return;
             }
         }

@@ -33,7 +33,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JList;
 import javax.swing.JScrollPane;
 
-import org.argouml.application.api.Argo;
+import org.argouml.i18n.Translator;
 import org.argouml.model.uml.foundation.core.CoreFactory;
 import org.argouml.swingext.Orientation;
 import org.argouml.ui.targetmanager.TargetManager;
@@ -70,21 +70,21 @@ public abstract class PropPanelEvent extends PropPanelModelElement {
             this,
             buttonPanel,
             _navUpIcon,
-            Argo.localize("UMLMenu", "button.go-up"),
+			Translator.localize("UMLMenu", "button.go-up"),
             "navigateUp",
             null);        
         new PropPanelButton(
             this,
             buttonPanel,
             _parameterIcon,
-            Argo.localize("UMLMenu", "button.add-parameter"),
+			Translator.localize("UMLMenu", "button.add-parameter"),
             "buttonAddParameter",
             null);
 
-        addField(Argo.localize("UMLMenu", "label.name"), getNameTextField());
-        addField(Argo.localize("UMLMenu", "label.stereotype"), new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-stereo"), getStereotypeBox()));
-        addField(Argo.localize("UMLMenu", "label.namespace"), getNamespaceScroll());
-        addField(Argo.localize("UMLMenu", "label.parameters"), getParameterScroll());
+        addField(Translator.localize("UMLMenu", "label.name"), getNameTextField());
+        addField(Translator.localize("UMLMenu", "label.stereotype"), new UMLComboBoxNavigator(this, Translator.localize("UMLMenu", "tooltip.nav-stereo"), getStereotypeBox()));
+        addField(Translator.localize("UMLMenu", "label.namespace"), getNamespaceScroll());
+        addField(Translator.localize("UMLMenu", "label.parameters"), getParameterScroll());
 
         addSeperator();
     }

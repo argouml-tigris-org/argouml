@@ -29,7 +29,7 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.Action;
 
-import org.argouml.application.api.Argo;
+import org.argouml.i18n.Translator;
 import org.argouml.model.uml.behavioralelements.statemachines.StateMachinesFactory;
 import org.argouml.uml.ui.AbstractActionNewModelElement;
 
@@ -46,7 +46,7 @@ public class ActionNewFinalState extends AbstractActionNewModelElement {
      */
     protected ActionNewFinalState() {
         super();
-        putValue(Action.NAME, Argo.localize("UMLMenu", "button.new-finalstate"));
+        putValue(Action.NAME, Translator.localize("UMLMenu", "button.new-finalstate"));
     }
     
     /**

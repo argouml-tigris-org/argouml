@@ -32,7 +32,7 @@ import javax.swing.JList;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
-import org.argouml.application.api.Argo;
+import org.argouml.i18n.Translator;
 import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.UmlFactory;
 import org.argouml.model.uml.behavioralelements.usecases.UseCasesFactory;
@@ -69,10 +69,10 @@ public class PropPanelExtend extends PropPanelModelElement {
     public PropPanelExtend() {
         super("Extend", ConfigLoader.getTabPropsOrientation());
 
-        addField(Argo.localize("UMLMenu", "label.name"), getNameTextField());
-        addField(Argo.localize("UMLMenu", "label.stereotype"),
-		 new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-stereo"), getStereotypeBox()));
-        addField(Argo.localize("UMLMenu", "label.namespace"), getNamespaceScroll());
+        addField(Translator.localize("UMLMenu", "label.name"), getNameTextField());
+        addField(Translator.localize("UMLMenu", "label.stereotype"),
+		 new UMLComboBoxNavigator(this, Translator.localize("UMLMenu", "tooltip.nav-stereo"), getStereotypeBox()));
+        addField(Translator.localize("UMLMenu", "label.namespace"), getNamespaceScroll());
 
         addSeperator();
 
@@ -80,14 +80,14 @@ public class PropPanelExtend extends PropPanelModelElement {
         // Link to the two ends. This is done as a drop down. First for the
         // base use case.
 
-        addField(Argo.localize("UMLMenu", "label.usecase-base"),
+        addField(Translator.localize("UMLMenu", "label.usecase-base"),
 		 new UMLComboBox2(new UMLExtendBaseComboBoxModel(), ActionSetExtendBase.SINGLETON));
 
-        addField(Argo.localize("UMLMenu", "label.extension"),
+        addField(Translator.localize("UMLMenu", "label.extension"),
 		 new UMLComboBox2(new UMLExtendExtensionComboBoxModel(), ActionSetExtendExtension.SINGLETON));
 
         JList extensionPointList = new UMLMutableLinkedList(new UMLExtendExtensionPointListModel(), ActionAddExtendExtensionPoint.SINGLETON, ActionNewExtendExtensionPoint.SINGLETON);
-        addField(Argo.localize("UMLMenu", "label.extension-points"),
+        addField(Translator.localize("UMLMenu", "label.extension-points"),
 		 new JScrollPane(extensionPointList));
 
         addSeperator();
@@ -111,7 +111,7 @@ public class PropPanelExtend extends PropPanelModelElement {
         // Add the toolbar.
 
         new PropPanelButton(this, buttonPanel, _navUpIcon,
-                            Argo.localize("UMLMenu", "button.go-up"), "navigateNamespace", null);
+                Translator.localize("UMLMenu", "button.go-up"), "navigateNamespace", null);
         new PropPanelButton(this, buttonPanel, _extensionPointIcon,
                             localize("Add extension point"),
                             "newExtensionPoint",

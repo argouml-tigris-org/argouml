@@ -31,7 +31,6 @@ import java.util.Vector;
 
 import javax.swing.JOptionPane;
 
-import org.argouml.application.api.Argo;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
@@ -189,7 +188,7 @@ public class ActionRemoveFromModel extends UMLChangeAction {
                 // he/she is sure
                 String confirmStr =
                     MessageFormat.format(
-					 Argo.localize(
+                            Translator.localize(
 						       "Actions",
 						       "optionpane.remove-from-model-confirm-delete"),
 					 new Object[] {
@@ -199,7 +198,7 @@ public class ActionRemoveFromModel extends UMLChangeAction {
                     JOptionPane.showConfirmDialog(
 						  ProjectBrowser.getInstance(),
 						  confirmStr,
-						  Argo.localize(
+						  Translator.localize(
 								"Actions",
 								"optionpane.remove-from-model-confirm-delete-title"),
 						  JOptionPane.YES_NO_OPTION);
@@ -234,7 +233,7 @@ public class ActionRemoveFromModel extends UMLChangeAction {
         String confirmStr = "";
         if (count > 1) {
             confirmStr
-                += Argo.localize(
+                += Translator.localize(
 				 "Actions",
 				 "optionpane.remove-from-model-will-remove-from-diagrams");
             doAsk = true;
@@ -243,7 +242,7 @@ public class ActionRemoveFromModel extends UMLChangeAction {
         Collection beh = ModelFacade.getBehaviors(me);
         if (beh != null && beh.size() > 0) {
             confirmStr
-                += Argo.localize(
+                += Translator.localize(
 				 "Actions",
 				 "optionpane.remove-from-model-will-remove-subdiagram");
             doAsk = true;
@@ -256,14 +255,14 @@ public class ActionRemoveFromModel extends UMLChangeAction {
         String name = ModelFacade.getName(me);
         if (name == null || name.equals("")) {
             name =
-                Argo.localize(
+            Translator.localize(
 			      "Actions",
 			      "optionpane.remove-from-model-anon-element-name");
         }
 
         confirmStr =
             MessageFormat.format(
-				 Argo.localize(
+                    Translator.localize(
 					       "Actions",
 					       "optionpane.remove-from-model-confirm-delete"),
 				 new Object[] {
@@ -273,7 +272,7 @@ public class ActionRemoveFromModel extends UMLChangeAction {
             JOptionPane.showConfirmDialog(
 					  pb,
 					  confirmStr,
-					  Argo.localize(
+					  Translator.localize(
 							"Actions",
 							"optionpane.remove-from-model-confirm-delete-title"),
 					  JOptionPane.YES_NO_OPTION);

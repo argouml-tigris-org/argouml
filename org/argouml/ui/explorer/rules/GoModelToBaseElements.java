@@ -27,7 +27,7 @@ package org.argouml.ui.explorer.rules;
 import java.util.Collection;
 
 import org.apache.log4j.Logger;
-import org.argouml.application.api.Argo;
+import org.argouml.i18n.Translator;
 import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.foundation.core.CoreHelper;
 
@@ -36,7 +36,7 @@ public class GoModelToBaseElements implements PerspectiveRule {
 	Logger.getLogger(GoModelToBaseElements.class);
 
     public String getRuleName() {
-	return Argo.localize ("Tree", "misc.package.base-class");
+	return Translator.localize ("Tree", "misc.package.base-class");
     }
   
     public Collection getChildren(Object parent) { 

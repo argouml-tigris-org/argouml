@@ -24,7 +24,7 @@
 
 package org.argouml.model.uml;
 
-import org.argouml.application.api.Argo;
+import org.argouml.i18n.Translator;
 
 /**
  * Rule definition for wellformedness of some modelelement. In the UML
@@ -55,7 +55,7 @@ public abstract class AbstractWellformednessRule {
      * Returns the localized user message
      */
     public String getUserMessage() {
-	return Argo.localize("UMLMenu", "wellformednessrule." + _key);
+	return Translator.localize("UMLMenu", "wellformednessrule." + _key);
     }
 	
     /**

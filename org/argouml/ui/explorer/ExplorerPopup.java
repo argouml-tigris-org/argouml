@@ -31,7 +31,7 @@ import java.util.Vector;
 import javax.swing.AbstractAction;
 import javax.swing.JPopupMenu;
 
-import org.argouml.application.api.Argo;
+import org.argouml.i18n.Translator;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.behavioralelements.statemachines.StateMachinesHelper;
@@ -172,7 +172,7 @@ public class ExplorerPopup extends JPopupMenu{
      * @return The localized string.
      */
     private final String menuLocalize(String key) {
-        return Argo.localize("Tree", key);
+        return Translator.localize("Tree", key);
     }
     
 }

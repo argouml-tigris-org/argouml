@@ -28,7 +28,7 @@ import javax.swing.JComboBox;
 import javax.swing.JList;
 import javax.swing.JScrollPane;
 
-import org.argouml.application.api.Argo;
+import org.argouml.i18n.Translator;
 
 import org.argouml.uml.ui.PropPanelButton;
 import org.argouml.uml.ui.UMLComboBox2;
@@ -47,15 +47,15 @@ public class PropPanelAssociationRole extends PropPanelAssociation {
     public PropPanelAssociationRole() {
         super("Association Role", ConfigLoader.getTabPropsOrientation());
 
-        addField(Argo.localize("UMLMenu", "label.name"), getNameTextField());
-        addField(Argo.localize("UMLMenu", "label.stereotype"),
+        addField(Translator.localize("UMLMenu", "label.name"), getNameTextField());
+        addField(Translator.localize("UMLMenu", "label.stereotype"),
 		 getStereotypeBox());
-        addField(Argo.localize("UMLMenu", "label.namespace"),
+        addField(Translator.localize("UMLMenu", "label.namespace"),
 		 getNamespaceScroll());
 
         JComboBox baseComboBox =
 	    new UMLComboBox2(new UMLAssociationRoleBaseComboBoxModel(), ActionSetAssociationRoleBase.SINGLETON);
-        addField(Argo.localize("UMLMenu", "label.base"), baseComboBox);
+        addField(Translator.localize("UMLMenu", "label.base"), baseComboBox);
 
         addSeperator();
 
@@ -63,16 +63,16 @@ public class PropPanelAssociationRole extends PropPanelAssociation {
 	    new UMLLinkedList(new UMLAssociationRoleAssociationEndRoleListModel());
 	// only binary associationroles are allowed
         assocEndList.setVisibleRowCount(2);
-        addField(Argo.localize("UMLMenu", "label.associationrole-ends"),
+        addField(Translator.localize("UMLMenu", "label.associationrole-ends"),
 		 new JScrollPane(assocEndList));
 
         JList messageList =
 	    new UMLLinkedList(new UMLAssociationRoleMessageListModel());
-        addField(Argo.localize("UMLMenu", "label.messages"),
+        addField(Translator.localize("UMLMenu", "label.messages"),
 		 new JScrollPane(messageList));
 
         new PropPanelButton(this, buttonPanel, _navUpIcon,
-			    Argo.localize("UMLMenu",
+                Translator.localize("UMLMenu",
 					  "button.go-up"),
 			    "navigateUp",
 			    null);

@@ -33,11 +33,11 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
 import org.apache.log4j.Logger;
-import org.argouml.application.api.Argo;
 import org.argouml.cognitive.Decision;
 import org.argouml.cognitive.Goal;
 import org.argouml.cognitive.ToDoItem;
 import org.argouml.cognitive.critics.Critic;
+import org.argouml.i18n.Translator;
 
 
 
@@ -148,7 +148,7 @@ public class WizDescription extends WizStep {
 
 
     private static String localize(String label) {
-	return Argo.localize("Cognitive", label);
+	return Translator.localize("Cognitive", label);
     }
 
 } /* end class WizDescription */

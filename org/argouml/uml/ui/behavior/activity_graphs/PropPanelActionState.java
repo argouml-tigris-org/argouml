@@ -29,7 +29,7 @@
 
 package org.argouml.uml.ui.behavior.activity_graphs;
 
-import org.argouml.application.api.Argo;
+import org.argouml.i18n.Translator;
 
 import org.argouml.uml.ui.UMLComboBoxNavigator;
 import org.argouml.uml.ui.behavior.state_machines.PropPanelState;
@@ -48,24 +48,24 @@ public class PropPanelActionState extends PropPanelState {
         super("Action State", _actionStateIcon,
 	      ConfigLoader.getTabPropsOrientation());
 
-        addField(Argo.localize("UMLMenu", "label.name"), getNameTextField());
-        addField(Argo.localize("UMLMenu", "label.stereotype"),
+        addField(Translator.localize("UMLMenu", "label.name"), getNameTextField());
+        addField(Translator.localize("UMLMenu", "label.stereotype"),
 		 new UMLComboBoxNavigator(this,
-					  Argo.localize("UMLMenu",
+					  Translator.localize("UMLMenu",
 							"tooltip.nav-stereo"),
 					  getStereotypeBox()));
-        addField(Argo.localize("UMLMenu", "label.namespace"),
+        addField(Translator.localize("UMLMenu", "label.namespace"),
 		 getNamespaceScroll());
 
-        addField(Argo.localize("UMLMenu", "label.entry"), entryScroll);
-        addField(Argo.localize("UMLMenu", "label.exit"), exitScroll);
-        addField(Argo.localize("UMLMenu", "label.do-activity"), doScroll);
+        addField(Translator.localize("UMLMenu", "label.entry"), entryScroll);
+        addField(Translator.localize("UMLMenu", "label.exit"), exitScroll);
+        addField(Translator.localize("UMLMenu", "label.do-activity"), doScroll);
 
         addSeperator();
 
-        addField(Argo.localize("UMLMenu", "label.incoming"), incomingScroll);
-        addField(Argo.localize("UMLMenu", "label.outgoing"), outgoingScroll);
-        addField(Argo.localize("UMLMenu", "label.internal-transitions"),
+        addField(Translator.localize("UMLMenu", "label.incoming"), incomingScroll);
+        addField(Translator.localize("UMLMenu", "label.outgoing"), outgoingScroll);
+        addField(Translator.localize("UMLMenu", "label.internal-transitions"),
 		 internalTransitionsScroll);
 
     }

@@ -27,7 +27,7 @@ package org.argouml.uml.ui.behavior.common_behavior;
 import javax.swing.ImageIcon;
 import javax.swing.JScrollPane;
 
-import org.argouml.application.api.Argo;
+import org.argouml.i18n.Translator;
 import org.argouml.model.ModelFacade;
 
 import org.argouml.uml.ui.PropPanelButton;
@@ -57,7 +57,7 @@ public abstract class PropPanelAction extends PropPanelModelElement {
 
     public void initialize() {
         
-        addField(Argo.localize("UMLMenu", "label.name"), getNameTextField());
+        addField(Translator.localize("UMLMenu", "label.name"), getNameTextField());
 
         UMLExpressionModel expressionModel =
             new UMLExpressionModel(
@@ -67,15 +67,15 @@ public abstract class PropPanelAction extends PropPanelModelElement {
                 (Class) ModelFacade.ACTION_EXPRESSION,
                 "getScript",
                 "setScript");
-        addField(Argo.localize("UMLMenu", "label.expression"), new JScrollPane(new UMLExpressionBodyField(expressionModel, true)));
+        addField(Translator.localize("UMLMenu", "label.expression"), new JScrollPane(new UMLExpressionBodyField(expressionModel, true)));
 
-        addField(Argo.localize("UMLMenu", "label.language"), new UMLExpressionLanguageField(expressionModel, true));
+        addField(Translator.localize("UMLMenu", "label.language"), new UMLExpressionLanguageField(expressionModel, true));
 
         new PropPanelButton(
             this,
             buttonPanel,
             _navUpIcon,
-            Argo.localize("UMLMenu", "button.go-up"),
+            Translator.localize("UMLMenu", "button.go-up"),
             "navigateUp",
             null);
         new PropPanelButton(

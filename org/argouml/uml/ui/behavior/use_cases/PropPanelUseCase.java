@@ -41,7 +41,7 @@ package org.argouml.uml.ui.behavior.use_cases;
 import javax.swing.JList;
 import javax.swing.JScrollPane;
 
-import org.argouml.application.api.Argo;
+import org.argouml.i18n.Translator;
 import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.behavioralelements.usecases.UseCasesFactory;
 
@@ -73,9 +73,9 @@ public class PropPanelUseCase extends PropPanelClassifier {
         // representation and requesting 3 columns
         super("UseCase", ConfigLoader.getTabPropsOrientation());
 
-        addField(Argo.localize("UMLMenu", "label.name"), getNameTextField());
-    	addField(Argo.localize("UMLMenu", "label.stereotype"), new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-stereo"), getStereotypeBox()));
-    	addField(Argo.localize("UMLMenu", "label.namespace"), getNamespaceComboBox());
+        addField(Translator.localize("UMLMenu", "label.name"), getNameTextField());
+    	addField(Translator.localize("UMLMenu", "label.stereotype"), new UMLComboBoxNavigator(this, Translator.localize("UMLMenu", "tooltip.nav-stereo"), getStereotypeBox()));
+    	addField(Translator.localize("UMLMenu", "label.namespace"), getNamespaceComboBox());
 
 	PropPanelModifiers mPanel = new PropPanelModifiers(3);
         Class mclass = (Class) ModelFacade.USE_CASE;
@@ -84,36 +84,36 @@ public class PropPanelUseCase extends PropPanelClassifier {
 	//    mPanel.add("isAbstract", mclass, "isAbstract", "setAbstract",
 	//               Argo.localize("UMLMenu", "checkbox.abstract-lc"), this);
         mPanel.add("isLeaf", mclass, "isLeaf", "setLeaf",
-                   Argo.localize("UMLMenu", "checkbox.final-lc"), this);
+                Translator.localize("UMLMenu", "checkbox.final-lc"), this);
         mPanel.add("isRoot", mclass, "isRoot", "setRoot",
                    localize("root"), this);
-	addField(Argo.localize("UMLMenu", "label.modifiers"), mPanel);
+	addField(Translator.localize("UMLMenu", "label.modifiers"), mPanel);
 
 	JList extensionPoints = new UMLMutableLinkedList(new UMLUseCaseExtensionPointListModel(), null, ActionNewUseCaseExtensionPoint.SINGLETON);
-	addField(Argo.localize("UMLMenu", "label.extension-points"),
+	addField(Translator.localize("UMLMenu", "label.extension-points"),
 		 new JScrollPane(extensionPoints));
 
 	addSeperator();
 
-	addField(Argo.localize("UMLMenu", "label.generalizations"), getGeneralizationScroll());
-	addField(Argo.localize("UMLMenu", "label.specializations"), getSpecializationScroll());
+	addField(Translator.localize("UMLMenu", "label.generalizations"), getGeneralizationScroll());
+	addField(Translator.localize("UMLMenu", "label.specializations"), getSpecializationScroll());
 
 	JList extendsList = new UMLLinkedList(new UMLUseCaseExtendListModel());
-	addField(Argo.localize("UMLMenu", "label.extends"),
+	addField(Translator.localize("UMLMenu", "label.extends"),
 		 new JScrollPane(extendsList));
 
 	JList includesList = new UMLLinkedList(new UMLUseCaseIncludeListModel());
-	addField(Argo.localize("UMLMenu", "label.includes"),
+	addField(Translator.localize("UMLMenu", "label.includes"),
 		 new JScrollPane(includesList));
 
 	addSeperator();
 
 
         new PropPanelButton(this, buttonPanel, _navUpIcon,
-                            Argo.localize("UMLMenu", "button.go-up"), "navigateNamespace",
+                Translator.localize("UMLMenu", "button.go-up"), "navigateNamespace",
                             null);
         new PropPanelButton(this, buttonPanel, _useCaseIcon,
-                            Argo.localize("UMLMenu", "button.add-usecase"), "newUseCase",
+                Translator.localize("UMLMenu", "button.add-usecase"), "newUseCase",
                             null);
         new PropPanelButton(this, buttonPanel, _extensionPointIcon,
                             localize("Add extension point"),

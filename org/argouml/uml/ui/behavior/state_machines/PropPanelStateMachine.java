@@ -28,7 +28,7 @@ package org.argouml.uml.ui.behavior.state_machines;
 import javax.swing.JList;
 import javax.swing.JScrollPane;
 
-import org.argouml.application.api.Argo;
+import org.argouml.i18n.Translator;
 
 import org.argouml.swingext.Orientation;
 import org.argouml.uml.ui.PropPanelButton;
@@ -58,31 +58,31 @@ public class PropPanelStateMachine extends PropPanelModelElement {
     }
 
     protected void initialize() {
-	addField(Argo.localize("UMLMenu", "label.name"), getNameTextField());
-        addField(Argo.localize("UMLMenu", "label.stereotype"), new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-stereo"), getStereotypeBox()));
-        addField(Argo.localize("UMLMenu", "label.namespace"), getNamespaceScroll());
+	addField(Translator.localize("UMLMenu", "label.name"), getNameTextField());
+        addField(Translator.localize("UMLMenu", "label.stereotype"), new UMLComboBoxNavigator(this, Translator.localize("UMLMenu", "tooltip.nav-stereo"), getStereotypeBox()));
+        addField(Translator.localize("UMLMenu", "label.namespace"), getNamespaceScroll());
 
         // the context in which the statemachine resides
         JList contextList = new UMLLinkedList(new UMLStateMachineContextListModel());
-        addField(Argo.localize("UMLMenu", "label.represented-modelelement"), new JScrollPane(contextList));
+        addField(Translator.localize("UMLMenu", "label.represented-modelelement"), new JScrollPane(contextList));
 
         // the top state
         JList topList = new UMLLinkedList(new UMLStateMachineTopListModel());
-        addField(Argo.localize("UMLMenu", "label.top-state"), new JScrollPane(topList));
+        addField(Translator.localize("UMLMenu", "label.top-state"), new JScrollPane(topList));
 
         addSeperator();
 
         // the transitions the statemachine has
         JList transitionList = new UMLLinkedList(new UMLStateMachineTransitionListModel());
-        addField(Argo.localize("UMLMenu", "label.transition"), new JScrollPane(transitionList));
+        addField(Translator.localize("UMLMenu", "label.transition"), new JScrollPane(transitionList));
 
         // the submachinestates
         // maybe this should be a mutable linked list but that's for the future to decide
         JList submachineStateList = new UMLLinkedList(new UMLStateMachineSubmachineStateListModel());
-        addField(Argo.localize("UMLMenu", "label.submachinestate"), new JScrollPane(submachineStateList));
+        addField(Translator.localize("UMLMenu", "label.submachinestate"), new JScrollPane(submachineStateList));
 
         new PropPanelButton(this, buttonPanel, _navUpIcon,
-                            Argo.localize("UMLMenu", "button.go-up"), "navigateNamespace",
+                Translator.localize("UMLMenu", "button.go-up"), "navigateNamespace",
                             null);
         new PropPanelButton(this, buttonPanel, _deleteIcon,
                             localize("Delete"), "removeElement",
