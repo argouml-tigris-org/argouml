@@ -363,13 +363,13 @@ run a development environment.
   </sect1>
 
   <sect1>
-    <title>Checklist for using subproducts</title>
     <sect1info>
       <author>
         <firstname>Linus</firstname>
         <surname>Tolke</surname>
       </author>
     </sect1info>
+    <title>Checklist for using subproducts</title>
 
     <para>
 In the ArgoUML project we use several subproducts to solve parts
@@ -775,7 +775,7 @@ separately depending on how much of the ArgoUML knowledge you would
 want to include in your Eclipse.
 </para>
     <para>
-If any of these instructions doesn't work or could be improved in some way,
+If any of these instructions don't work or could be improved in some way,
 please help in making them better.
 </para>
     <sect2>
