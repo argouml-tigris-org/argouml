@@ -1106,7 +1106,18 @@ you will have to resurrect them using cvs update.
   <!-- Creates the whole distribution                                      -->
   <!-- =================================================================== -->
   <target name="dist-all"
-          depends="dist,dist-src,dist-lib,dist-appbund,dist-modules"/>
+          depends="dist,dist-src,dist-lib,dist-appbund,dist-modules">
+     <copy file="${argo.src.dir}/templates/release_html.template"
+           tofile="${argo.dist.dir}/index.html">
+       <filterset>
+         <filter token="VERSION" 
+                 value="${argo.build.version}"/>
+         <filter token="URLROOT"
+                 value="http://argouml.tigris.org/files/documents/4/0/argouml-${argo.build.version}"/>
+       </filterset>
+     </copy>
+
+  </target>
 
   <!-- =================================================================== -->
   <!-- Creates the whole distribution with adjusted version number         -->
