@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2001 The Regents of the University of California. All
+// Copyright (c) 2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -22,10 +22,8 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// File: Generator2.java
-// Classes: Generator2
-
 package org.argouml.uml.generator;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Vector;
@@ -38,46 +36,58 @@ import org.argouml.application.api.PluggableNotation;
 import org.argouml.language.helpers.NotationHelper;
 import org.argouml.model.ModelFacade;
 
-/** This class is the abstract super class that defines a code
+/**
+ * This class is the abstract super class that defines a code
  * generation framework.  It is basically a depth-first traversal of
  * the UML model that generates strings as it goes.  This framework
  * should probably be redesigned to separate the traversal logic from
  * the generation logic.  See the <a href=
- * "http://hillside.net/patterns/">Vistor design
+ * "http://hillside.net/patterns/">Visitor design
  * pattern</a> in "Design Patterns", and the <a href=
- * "http://www.ccs.neu.edu/research/demeter/"> Demeter project</a>.
+ * "http://www.ccs.neu.edu/research/demeter/">Demeter project</a>.<p>
+ *
+ * This is created from the {@link Generator} class and has the exact same
+ * functions.
+ *
+ * @since 0.15.6
  */
 public abstract class Generator2
     implements NotationProvider2, PluggableNotation {
 
-    /**
-     * Special modus for testing using the JUnit module.
-     */
-    private boolean _testModus = false;
-
-    private NotationName _notationName = null;
-
-    /** Two spaces used for indenting code in classes. */
-    public static String INDENT = "  ";
-
-    private static Map s_generators = new HashMap();
+    private NotationName notationName = null;
 
     /**
-     * suffix placed behind the tag defining a testcase for an element
-     * to be generated
+     * Two spaces used for indenting code in classes.
      */
-    public final static String TEST_SUFFIX = "test";
+    public static final String INDENT = "  ";
+
+    private static Map generators = new HashMap();
+
+    /**
+     * Access method that finds the correct generator based on a name.
+     *
+     * @param n The name.
+     * @return a generator (or <tt>null</tt> if not found).
+     */
     public static Generator2 getGenerator(NotationName n) {
-        return (Generator2) s_generators.get(n);
+        return (Generator2) generators.get(n);
     }
 
-    public Generator2(NotationName notationName) {
-        _notationName = notationName;
-        s_generators.put(_notationName, this);
+    /**
+     * Constructor that sets the name of this notation.
+     *
+     * @param name The name.
+     */
+    public Generator2(NotationName name) {
+        notationName = name;
+        generators.put(notationName, this);
     }
 
+    /**
+     * @see NotationProvider2#getNotation()
+     */
     public NotationName getNotation() {
-        return _notationName;
+        return notationName;
     }
 
     /**
@@ -87,117 +97,208 @@ public abstract class Generator2
      * @return String the generated code
      */
     public String generate(Object o) {
-        if (o == null)
+        if (o == null) {
             return "";
-        if (ModelFacade.isAExtensionPoint(o))
+	}
+        if (ModelFacade.isAExtensionPoint(o)) {
             return generateExtensionPoint(o);
-        if (ModelFacade.isAOperation(o))
+	}
+        if (ModelFacade.isAOperation(o)) {
             return generateOperation(o, false);
-        if (ModelFacade.isAAttribute(o))
+	}
+        if (ModelFacade.isAAttribute(o)) {
             return generateAttribute(o, false);
-        if (ModelFacade.isAParameter(o))
+	}
+        if (ModelFacade.isAParameter(o)) {
             return generateParameter(o);
-        if (ModelFacade.isAPackage(o))
+	}
+        if (ModelFacade.isAPackage(o)) {
             return generatePackage(o);
-        if (ModelFacade.isAClassifier(o))
+	}
+        if (ModelFacade.isAClassifier(o)) {
             return generateClassifier(o);
-        if (ModelFacade.isAExpression(o))
+	}
+        if (ModelFacade.isAExpression(o)) {
             return generateExpression(o);
-        if (o instanceof String)
+	}
+        if (o instanceof String) {
             return generateName((String) o);
-        if (o instanceof String)
+	}
+        if (o instanceof String) {
             return generateUninterpreted((String) o);
-        if (ModelFacade.isAStereotype(o))
+	}
+        if (ModelFacade.isAStereotype(o)) {
             return generateStereotype(o);
+	}
         if (ModelFacade.isATaggedValue(o)) {
-            /*
-             * 2002-11-07 Jaap Branderhorst Added the if statement to
-             * test for the testtag. Did it here and not in (for
-             * example) GeneratorJava to have a single point of
-             * definition instead of all the generators.  If in the
-             * generation of an owner of a taggedvalue, the
-             * taggedvalue must be generated the method generating the
-             * owner should call generate(sometag) and not
-             * generateTaggedValue(sometag)
-             */
-            if (_testModus
-                && ModelFacade.getTag(o).equals(
-                    getNotation().getName() + TEST_SUFFIX)) {
-                return "";
-            }
             return generateTaggedValue(o);
         }
-        if (ModelFacade.isAAssociation(o))
+        if (ModelFacade.isAAssociation(o)) {
             return generateAssociation(o);
-        if (ModelFacade.isAAssociationEnd(o))
+	}
+        if (ModelFacade.isAAssociationEnd(o)) {
             return generateAssociationEnd(o);
-        if (ModelFacade.isAMultiplicity(o))
+	}
+        if (ModelFacade.isAMultiplicity(o)) {
             return generateMultiplicity(o);
-        if (ModelFacade.isAState(o))
+	}
+        if (ModelFacade.isAState(o)) {
             return generateState(o);
-        if (ModelFacade.isATransition(o))
+	}
+        if (ModelFacade.isATransition(o)) {
             return generateTransition(o);
-        if (ModelFacade.isAAction(o))
+	}
+        if (ModelFacade.isAAction(o)) {
             return generateAction(o);
-        if (ModelFacade.isACallAction(o))
+	}
+        if (ModelFacade.isACallAction(o)) {
             return generateAction(o);
-        if (ModelFacade.isAGuard(o))
+	}
+        if (ModelFacade.isAGuard(o)) {
             return generateGuard(o);
-        if (ModelFacade.isAMessage(o))
+	}
+        if (ModelFacade.isAMessage(o)) {
             return generateMessage(o);
-        if (ModelFacade.isAVisibilityKind(o))
+	}
+        if (ModelFacade.isAVisibilityKind(o)) {
             return generateVisibility(o);
+	}
 
-        if (ModelFacade.isAModelElement(o))
-            return generateName(org.argouml.model.ModelFacade.getName(o));
+        if (ModelFacade.isAModelElement(o)) {
+            return generateName(ModelFacade.getName(o));
+	}
 
-        if (o == null)
+        if (o == null) {
             return "";
+	}
 
         return o.toString();
     }
 
+    /**
+     * @see NotationProvider2#generateExtensionPoint(Object)
+     */
     public abstract String generateExtensionPoint(Object op);
+
+    /**
+     * @see NotationProvider2#generateOperation(Object, boolean)
+     */
     public abstract String generateOperation(Object op, boolean documented);
+
+    /**
+     * @see NotationProvider2#generateAttribute(Object, boolean)
+     */
     public abstract String generateAttribute(Object attr, boolean documented);
+
+    /**
+     * @see NotationProvider2#generateParameter(Object)
+     */
     public abstract String generateParameter(Object param);
+
+    /**
+     * @see NotationProvider2#generatePackage(Object)
+     */
     public abstract String generatePackage(Object p);
+
+    /**
+     * @see NotationProvider2#generateClassifier(Object)
+     */
     public abstract String generateClassifier(Object cls);
+
+    /**
+     * @see NotationProvider2#generateTaggedValue(Object)
+     */
     public abstract String generateTaggedValue(Object s);
+
+    /**
+     * @see NotationProvider2#generateAssociation(Object)
+     */
     public abstract String generateAssociation(Object a);
+
+    /**
+     * @see NotationProvider2#generateAssociationEnd(Object)
+     */
     public abstract String generateAssociationEnd(Object ae);
+
+    /**
+     * @see NotationProvider2#generateMultiplicity(Object)
+     */
     public abstract String generateMultiplicity(Object m);
+
+    /**
+     * @see NotationProvider2#generateState(Object)
+     */
     public abstract String generateState(Object m);
+
+    /**
+     * @see NotationProvider2#generateTransition(Object)
+     */
     public abstract String generateTransition(Object m);
+
+    /**
+     * @see NotationProvider2#generateAction(Object)
+     */
     public abstract String generateAction(Object m);
+
+    /**
+     * @see NotationProvider2#generateGuard(Object)
+     */
     public abstract String generateGuard(Object m);
+
+    /**
+     * @see NotationProvider2#generateMessage(Object)
+     */
     public abstract String generateMessage(Object m);
+
+    /**
+     * @see NotationProvider2#generateVisibility(Object)
+     */
     public abstract String generateVisibility(Object m);
 
+    /**
+     * @see NotationProvider2#generateExpression(Object)
+     */
     public String generateExpression(Object expr) {
         if (ModelFacade.isAExpression(expr))
-            return generateUninterpreted((String)ModelFacade.getBody(expr));
+            return generateUninterpreted((String) ModelFacade.getBody(expr));
         else if (ModelFacade.isAConstraint(expr))
             return generateExpression(ModelFacade.getBody(expr));
         return "";
     }
 
+    /**
+     * @see NotationProvider2#generateName(String)
+     */
     public String generateName(String n) {
         return n;
     }
 
+    /**
+     * Make a string non-null.<p>
+     *
+     * What is the purpose of this function? Shouldn't it be private static?
+     *
+     * @param un The String.
+     * @return a non-null string.
+     */
     public String generateUninterpreted(String un) {
         if (un == null)
             return "";
         return un;
     }
 
+    /**
+     * @see NotationProvider2#generateClassifierRef(Object)
+     */
     public String generateClassifierRef(Object cls) {
         if (cls == null)
             return "";
         return ModelFacade.getName(cls);
     }
 
+    /**
+     * @see NotationProvider2#generateStereotype(Object)
+     */
     public String generateStereotype(Object st) {
         if (st == null)
             return "";
@@ -214,7 +315,7 @@ public abstract class Generator2
             Object o;
             StringBuffer sb = new StringBuffer(10);
             boolean first = true;
-            Iterator iter = ((Collection)st).iterator();
+            Iterator iter = ((Collection) st).iterator();
             while (iter.hasNext()) {
                 if (!first)
                     sb.append(',');
@@ -224,59 +325,72 @@ public abstract class Generator2
                     first = false;
                 }
             }
-            if (!first)
+            if (!first) {
                 return NotationHelper.getLeftGuillemot()
-                + sb.toString()
-                + NotationHelper.getRightGuillemot();
+		    + sb.toString()
+		    + NotationHelper.getRightGuillemot();
+	    }
         }
         return "";
     }
 
-    // Module stuff
+    /**
+     * @see org.argouml.application.api.ArgoModule#getModulePopUpActions(
+     *         Vector, Object)
+     */
     public Vector getModulePopUpActions(Vector v, Object o) {
         return null;
     }
+
+    /**
+     * @see org.argouml.application.api.ArgoModule#shutdownModule()
+     */
     public boolean shutdownModule() {
         return true;
     }
+
+    /**
+     * @see org.argouml.application.api.ArgoModule#initializeModule()
+     */
     public boolean initializeModule() {
         return true;
     }
+
+    /**
+     * @see org.argouml.application.api.ArgoModule#setModuleEnabled(boolean)
+     */
     public void setModuleEnabled(boolean enabled) {
     }
+
+    
+    /**
+     * @see org.argouml.application.api.Pluggable#inContext(Object[])
+     */
     public boolean inContext(Object[] o) {
         return false;
     }
 
     /**
-     * Returns the _testModus.
-     * @return boolean
-     */
-    public boolean isTestModus() {
-        return _testModus;
-    }
-
-    /**
-     * Sets the _testModus.
-     * @param _testModus The _testModus to set
-     */
-    public void setTestModus(boolean _testModus) {
-        this._testModus = _testModus;
-    }
-
-    /**
-     * Gets the path of the code base for a model element, otherwise null.
+     * Gets the path of the code base for a model element.<p>
+     * If empty or not existing return <tt>null</tt>.
+     *
      * @param me The model element
-     * @return String representation of "src_path" tagged value or null if empty or not existing
+     * @return String representation of "src_path" tagged value.
      */
     public static String getCodePath(Object me) {
-        if (me == null) return null;
-        Object taggedValue = ModelFacade.getTaggedValue(me,"src_path");
+        if (me == null) {
+	    return null;
+	}
+
+        Object taggedValue = ModelFacade.getTaggedValue(me, "src_path");
         String s;
-        if (taggedValue == null) return null;
+        if (taggedValue == null) {
+	    return null;
+	}
         s =  ModelFacade.getValueOfTag(taggedValue);
-        if (s != null)
+        if (s != null) {
             return s.trim();
+	}
         return null;
     }
 
