@@ -112,7 +112,9 @@ public class ExtensionMechanismsHelper {
     	while (it.hasNext()) {
     		Object o = it.next();
     		if (o instanceof MStereotype &&
+                ((MStereotype)o).getName() != null &&
     			((MStereotype)o).getName().equals(name) &&
+                ((MStereotype)o).getBaseClass() != null &&
     			((MStereotype)o).getBaseClass().equals(baseClass)) {
     			return (MStereotype)o;
     		}
