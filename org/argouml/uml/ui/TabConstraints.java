@@ -44,7 +44,7 @@ import tudresden.ocl.check.OclTypeException;
 
 import org.argouml.kernel.*;
 import org.argouml.ui.*;
-import org.argouml.ocl.ArgoFacade;
+import org.argouml.ocl.*;
 
 /**
   * Tab for OCL constraint editing.
@@ -179,12 +179,7 @@ public class TabConstraints extends TabSpawnable implements TabModelTarget {
         */
       public String getData() {
         if (m_mcConstraint == null) {
-          MModelElement mmeContext = m_mmeiTarget;
-          while (! (mmeContext instanceof MClassifier)) {
-            mmeContext = mmeContext.getModelElementContainer();
-          }
-          
-          return "context " + mmeContext.getName();
+          return OCLUtil.getContextString (m_mmeiTarget);
         }
         else {
           return m_mcConstraint.getBody().getBody();
