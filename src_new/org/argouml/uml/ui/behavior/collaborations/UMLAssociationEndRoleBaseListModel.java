@@ -24,46 +24,43 @@
 // $header$
 package org.argouml.uml.ui.behavior.collaborations;
 
-import java.awt.event.ActionEvent;
+import org.argouml.uml.ui.UMLModelElementListModel2;
+import org.argouml.uml.ui.UMLUserInterfaceContainer;
 
-import org.argouml.application.api.Argo;
-import org.argouml.model.uml.behavioralelements.collaborations.CollaborationsHelper;
-import org.argouml.uml.ui.UMLChangeAction;
-import org.argouml.uml.ui.UMLComboBox2;
-
+import ru.novosoft.uml.behavior.collaborations.MAssociationEndRole;
 import ru.novosoft.uml.behavior.collaborations.MAssociationRole;
-import ru.novosoft.uml.foundation.core.MAssociation;
 import ru.novosoft.uml.foundation.core.MModelElement;
 
 /**
- * @since Oct 4, 2002
+ * @since Oct 5, 2002
  * @author jaap.branderhorst@xs4all.nl
  */
-public class ActionSetAssociationRoleBase extends UMLChangeAction {
-
-    public static final ActionSetAssociationRoleBase SINGLETON = new ActionSetAssociationRoleBase();
-    
-    /**
-     * Constructor for ActionSetAssociationRoleBase.
-     * @param s
-     */
-    protected ActionSetAssociationRoleBase() {
-        super(Argo.localize("CoreMenu", "Set"), true, NO_ICON);
-    }   
+public class UMLAssociationEndRoleBaseListModel
+    extends UMLModelElementListModel2 {
 
     /**
-     * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+     * Constructor for UMLAssociationEndRoleBaseListModel.
+     * @param container
      */
-    public void actionPerformed(ActionEvent e) {
-        super.actionPerformed(e);
-        Object selected = null;
-        if (e.getSource() instanceof UMLComboBox2) {
-            UMLComboBox2 source = (UMLComboBox2)e.getSource();
-            selected = source.getSelectedItem();
-            if (selected instanceof MAssociation && source.getTarget() instanceof MAssociationRole) {
-                CollaborationsHelper.getHelper().setBase((MAssociationRole)source.getTarget(), (MAssociation)selected);
-            }
-        }
+    public UMLAssociationEndRoleBaseListModel(UMLUserInterfaceContainer container) {
+        super(container);
+    }
+
+    /**
+     * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
+     */
+    protected void buildModelList() {
+        removeAllElements();
+        addElement(((MAssociationEndRole)getTarget()).getBase());
+    }
+
+    /**
+     * @see org.argouml.uml.ui.UMLModelElementListModel2#isValid(ru.novosoft.uml.foundation.core.MModelElement)
+     */
+    protected boolean isValid(MModelElement elem) {
+        return (elem instanceof MAssociationRole && ((MAssociationRole)elem).getAssociationRoles().contains(getTarget())) ||
+            contains(elem);
+            
     }
 
 }

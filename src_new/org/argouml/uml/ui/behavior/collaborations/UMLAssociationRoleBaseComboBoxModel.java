@@ -83,7 +83,9 @@ public class UMLAssociationRoleBaseComboBoxModel extends UMLComboBoxModel2 {
         setElements(CollaborationsHelper.getHelper().getAllPossibleBases(role));
         if (role != null && role.getBase() != null) {
             setSelectedItem(role.getBase());
-        }
+        } else
+            setSelectedItem("");
+        
     }
 
     /**
