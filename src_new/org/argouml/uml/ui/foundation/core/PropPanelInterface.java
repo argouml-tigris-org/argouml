@@ -30,21 +30,16 @@
 
 package org.argouml.uml.ui.foundation.core;
 
-import java.awt.*;
 import java.util.Vector;
 
-import javax.swing.*;
-
-import ru.novosoft.uml.foundation.core.*;
-import ru.novosoft.uml.foundation.data_types.*;
-
-import org.argouml.application.api.*;
+import org.argouml.application.api.Argo;
 import org.argouml.model.uml.foundation.core.CoreFactory;
 import org.argouml.model.uml.foundation.core.CoreHelper;
 import org.argouml.swingext.LabelledLayout;
-import org.argouml.ui.ProjectBrowser;
-import org.argouml.uml.ui.*;
+import org.argouml.uml.ui.PropPanelButton;
+import org.argouml.uml.ui.UMLComboBoxNavigator;
 import org.argouml.util.ConfigLoader;
+import ru.novosoft.uml.foundation.core.MInterface;
 
 public class PropPanelInterface extends PropPanelClassifier {
 
@@ -97,24 +92,6 @@ public class PropPanelInterface extends PropPanelClassifier {
         navigateTo(newInterface);
     }
   }
-
-
-
-    protected boolean isAcceptibleBaseMetaClass(String baseClass) {
-        return baseClass.equals("Interface") ||
-            baseClass.equals("Classifier") ||
-            baseClass.equals("GeneralizableElement");
-    }
-
-
-    /**
-     * @see org.argouml.model.uml.foundation.core.CoreHelper#getAllInterfaces()
-     */
-	protected Vector getGeneralizationChoices() {
-		Vector choices = new Vector();
-		choices.addAll(CoreHelper.getHelper().getAllInterfaces());
-		return choices;
-	}
-
+  
 } /* end class PropPanelInterface */
 

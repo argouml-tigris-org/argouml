@@ -54,6 +54,7 @@ import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigActivation;
 import org.tigris.gef.presentation.FigDynPort;
 import org.tigris.gef.presentation.FigLine;
+import org.tigris.gef.presentation.FigNode;
 import org.tigris.gef.presentation.FigRect;
 import org.tigris.gef.presentation.FigText;
 import ru.novosoft.uml.MElementEvent;

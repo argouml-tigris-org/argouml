@@ -37,25 +37,22 @@
 
 package org.argouml.uml.ui.behavior.use_cases;
 
-import org.argouml.application.api.*;
+import java.util.Vector;
+
+import javax.swing.JList;
+import javax.swing.JScrollPane;
+
+import org.argouml.application.api.Argo;
 import org.argouml.model.uml.behavioralelements.usecases.UseCasesFactory;
 import org.argouml.model.uml.behavioralelements.usecases.UseCasesHelper;
 import org.argouml.swingext.LabelledLayout;
-import org.argouml.ui.ProjectBrowser;
-import org.argouml.uml.ui.*;
-import org.argouml.uml.ui.foundation.core.*;
+import org.argouml.uml.ui.PropPanelButton;
+import org.argouml.uml.ui.UMLComboBoxNavigator;
+import org.argouml.uml.ui.UMLList;
+import org.argouml.uml.ui.foundation.core.PropPanelClassifier;
 import org.argouml.util.ConfigLoader;
-
-import java.awt.*;
-import java.awt.event.*;
-import java.util.Vector;
-
-import javax.swing.*;
-
-import ru.novosoft.uml.foundation.core.*;
-import ru.novosoft.uml.foundation.data_types.*;
-import ru.novosoft.uml.behavior.use_cases.*;
-import ru.novosoft.uml.model_management.*;
+import ru.novosoft.uml.behavior.use_cases.MActor;
+import ru.novosoft.uml.foundation.core.MNamespace;
 
 
 /**
@@ -124,45 +121,9 @@ public class PropPanelActor extends PropPanelClassifier {
      */
 
     public void newActor() {
-        Object target = getTarget();
-
-        if(target instanceof MActor) {
-            MNamespace ns = ((MActor) target).getNamespace();
-            navigateTo( UseCasesFactory.getFactory().buildActor(ns));
-        }
+        navigateTo(UseCasesFactory.getFactory().buildActor(getTarget()));
     }
 
-    /**
-     * <p>A predicate to test if a given base class (below ModelElement) is
-     *   appropriate to us. Used to determine the stereotypes we can use.</p>
-     *
-     * <p>For us this means Actor, Classifier, Namespace or
-     *   GeneralizableElement.</p>
-     *
-     * @param baseClass  a string with the name of a UML MetaClass (no leading
-     *                   M)
-     *
-     * @return           <code>true</code> if this is a suitable base class for
-     *                   us. <code>false</code> otherwise.
-     */
-
-    protected boolean isAcceptibleBaseMetaClass(String baseClass) {
-
-        return baseClass.equals("Actor") ||
-            baseClass.equals("Classifier") ||
-            baseClass.equals("GeneralizableElement") ||
-            baseClass.equals("Namespace");
-    }
-
-
-    /**
-     * @see org.argouml.model.uml.behavioralelements.usecases.UseCasesHelper#getAllActors()
-     */
-	protected Vector getGeneralizationChoices() {
-		Vector choices = new Vector();
-		choices.addAll(UseCasesHelper.getHelper().getAllActors());
-		return choices;
-	}
-	
+   
 
 } /* end class PropActor */

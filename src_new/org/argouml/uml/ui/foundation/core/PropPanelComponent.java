@@ -85,24 +85,7 @@ public class PropPanelComponent extends PropPanelClassifier {
     new PropPanelButton(this,buttonPanel,_deleteIcon,localize("Delete component"),"removeElement",null);
   }
 
-    protected boolean isAcceptibleBaseMetaClass(String baseClass) {
-        return (baseClass.equals("Component") || 
-                baseClass.equals("Classifier") ||
-                baseClass.equals("GeneralizableElement") ||
-                baseClass.equals("Namespace")
-                );
-    }
-
-
-    /**
-     * @see org.argouml.model.uml.foundation.core.CoreHelper#getAllComponents()
-     */
-	protected Vector getGeneralizationChoices() {
-		Vector choices = new Vector();
-		choices.addAll(CoreHelper.getHelper().getAllComponents());
-		return choices;
-	}
-
+    
 } /* end class PropPanelComponent */
 
 

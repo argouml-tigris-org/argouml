@@ -106,23 +106,9 @@ public class PropPanelNode extends PropPanelClassifier {
         }
     }
 
-    protected boolean isAcceptibleBaseMetaClass(String baseClass) {
-        return (baseClass.equals("Node") || 
-                baseClass.equals("Classifier") ||
-                baseClass.equals("GeneralizableElement") ||
-                baseClass.equals("Namespace")
-                );
-    }
     
-    /**
-     * @see org.argouml.model.uml.foundation.core.CoreHelper#getAllNodes()
-     */
-	protected Vector getGeneralizationChoices() {
-		Vector choices = new Vector();
-		choices.addAll(CoreHelper.getHelper().getAllNodes());
-		return choices;
-	}
-
+    
+    
 
 
 } /* end class PropPanelNode */
