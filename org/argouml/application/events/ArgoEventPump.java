@@ -23,9 +23,13 @@
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 package org.argouml.application.events;
-import org.argouml.application.api.*;
-import java.util.*;
-import org.apache.log4j.*;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.ListIterator;
+
+import org.apache.log4j.Logger;
+import org.argouml.application.api.ArgoEventListener;
 
 /** ArgoEventPump is an eventhandler which handles events regarding 
  *  the loading and unloading of modules.
@@ -53,7 +57,7 @@ public class ArgoEventPump {
      * @param listener the listener to be added
      */
     public static void addListener(ArgoEventListener listener) {
-        SINGLETON.doAddListener(ArgoEvent.ANY_EVENT, listener);
+        SINGLETON.doAddListener(ArgoEventTypes.ANY_EVENT, listener);
     }
 
     /**
@@ -68,7 +72,7 @@ public class ArgoEventPump {
      * @param listener the listener to be removed
      */
     public static void removeListener(ArgoEventListener listener) {
-        SINGLETON.doRemoveListener(ArgoEvent.ANY_EVENT, listener);
+        SINGLETON.doRemoveListener(ArgoEventTypes.ANY_EVENT, listener);
     }
 
     /**
@@ -103,7 +107,7 @@ public class ArgoEventPump {
             return;
         Iterator it = listeners.iterator();
         List removeList = new ArrayList();
-        if (event == ArgoEvent.ANY_EVENT) {
+        if (event == ArgoEventTypes.ANY_EVENT) {
 
             while (it.hasNext()) {
                 Pair p = (Pair) it.next();
@@ -127,19 +131,19 @@ public class ArgoEventPump {
         ArgoModuleEvent event,
         ArgoModuleEventListener listener) {
         switch (event.getEventType()) {
-	case ArgoEvent.MODULE_LOADED :
+	case ArgoEventTypes.MODULE_LOADED :
 	    listener.moduleLoaded(event);
 	    break;
 
-	case ArgoEvent.MODULE_UNLOADED :
+	case ArgoEventTypes.MODULE_UNLOADED :
 	    listener.moduleUnloaded(event);
 	    break;
 
-	case ArgoEvent.MODULE_ENABLED :
+	case ArgoEventTypes.MODULE_ENABLED :
 	    listener.moduleEnabled(event);
 	    break;
 
-	case ArgoEvent.MODULE_DISABLED :
+	case ArgoEventTypes.MODULE_DISABLED :
 	    listener.moduleDisabled(event);
 	    break;
 
@@ -153,23 +157,23 @@ public class ArgoEventPump {
         ArgoNotationEvent event,
         ArgoNotationEventListener listener) {
         switch (event.getEventType()) {
-	case ArgoEvent.NOTATION_CHANGED :
+	case ArgoEventTypes.NOTATION_CHANGED :
 	    listener.notationChanged(event);
 	    break;
 
-	case ArgoEvent.NOTATION_ADDED :
+	case ArgoEventTypes.NOTATION_ADDED :
 	    listener.notationAdded(event);
 	    break;
 
-	case ArgoEvent.NOTATION_REMOVED :
+	case ArgoEventTypes.NOTATION_REMOVED :
 	    listener.notationRemoved(event);
 	    break;
 
-	case ArgoEvent.NOTATION_PROVIDER_ADDED :
+	case ArgoEventTypes.NOTATION_PROVIDER_ADDED :
 	    listener.notationProviderAdded(event);
 	    break;
 
-	case ArgoEvent.NOTATION_PROVIDER_REMOVED :
+	case ArgoEventTypes.NOTATION_PROVIDER_REMOVED :
 	    listener.notationProviderRemoved(event);
 	    break;
 
@@ -180,7 +184,7 @@ public class ArgoEventPump {
     }
 
     private void handleFireEvent(ArgoEvent event, ArgoEventListener listener) {
-        if (event.getEventType() == ArgoEvent.ANY_EVENT) {
+        if (event.getEventType() == ArgoEventTypes.ANY_EVENT) {
             if (listener instanceof ArgoModuleEventListener) {
                 handleFireModuleEvent((ArgoModuleEvent) event,
 				      (ArgoModuleEventListener) listener);
@@ -190,15 +194,15 @@ public class ArgoEventPump {
 					(ArgoNotationEventListener) listener);
             }
         } else {
-            if (event.getEventType() >= ArgoEvent.ANY_MODULE_EVENT
-                && event.getEventType() < ArgoEvent.ANY_MODULE_EVENT + 100) {
+            if (event.getEventType() >= ArgoEventTypes.ANY_MODULE_EVENT
+                && event.getEventType() < ArgoEventTypes.ANY_MODULE_EVENT + 100) {
                 if (listener instanceof ArgoModuleEventListener) {
                     handleFireModuleEvent((ArgoModuleEvent) event,
 					  (ArgoModuleEventListener) listener);
                 }
             }
-            if (event.getEventType() >= ArgoEvent.ANY_NOTATION_EVENT
-                && event.getEventType() < ArgoEvent.ANY_NOTATION_EVENT + 100) {
+            if (event.getEventType() >= ArgoEventTypes.ANY_NOTATION_EVENT
+                && event.getEventType() < ArgoEventTypes.ANY_NOTATION_EVENT + 100) {
                 if (listener instanceof ArgoNotationEventListener) {
                     handleFireNotationEvent((ArgoNotationEvent) event,
 					(ArgoNotationEventListener) listener);
@@ -226,7 +230,7 @@ public class ArgoEventPump {
         ListIterator iterator = listeners.listIterator();
         while (iterator.hasNext()) {
             Pair pair = (Pair) iterator.next();
-            if (pair.getEventType() == ArgoEvent.ANY_EVENT) {
+            if (pair.getEventType() == ArgoEventTypes.ANY_EVENT) {
                 handleFireEvent(event, pair.getListener());
             } else if (
                 (pair.getEventType() >= event.getEventStartRange())
