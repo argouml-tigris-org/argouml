@@ -31,6 +31,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -204,12 +205,15 @@ public class ZargoFilePersister extends UmlFilePersister {
             File file = File.createTempFile("xxx", ".uml");
             file.deleteOnExit();
             
+            String encoding = "UTF-8";
             FileOutputStream stream =
                 new FileOutputStream(file);
             PrintWriter writer =
                 new PrintWriter(new BufferedWriter(new OutputStreamWriter(
-                        stream, "UTF-8")));
-            writer.println("<uml>");
+                        stream, encoding)));
+            
+            writer.println("<?xml version = \"1.0\" "
+                    + "encoding = \"" + encoding + "\" ?>");
             
             // first read the .argo file from Zip
             ZipInputStream zis;
@@ -221,6 +225,13 @@ public class ZargoFilePersister extends UmlFilePersister {
             // Skip 2 lines
             reader.readLine();
             reader.readLine();
+            
+            String firstLine = reader.readLine();
+            // TODO take the version attribute from first
+            // line if it's there.
+            // An unknown version becomes version 1.
+            writer.println("<uml version=\"2\">");
+            writer.println(firstLine);
             while((line = reader.readLine()) != null) {
                 writer.println(line);
             }
@@ -262,9 +273,9 @@ public class ZargoFilePersister extends UmlFilePersister {
             
             writer.println("</uml>");
             writer.close();
-            // Now call UmlFilePersister to load temp file.
-            
-            return super.doLoad(file.toURL());
+            Project p = super.doLoad(file.toURL());
+            p.setURL(url);
+            return p;
         } catch (IOException e) {
             throw new OpenException(e);
         }
