@@ -68,6 +68,10 @@ public interface ArgoSingletonModule extends ArgoModule {
      */
     public void activateSingleton();
 
+    /**
+     * TODO: Document this.
+     * @return class which identifies the singleton
+     */
     public Class getSingletonType();
 
 } /* end interface ArgoSingletonModule */
