@@ -212,6 +212,14 @@ public interface NotationProvider2 {
     public String generateMessage(Object m);
 
     /**
+     * Generate the String representation for an Event.
+     *
+     * @param m Object to generate representation for.
+     * @return The String representation of the object.
+     */
+    public String generateEvent(Object m);
+
+    /**
      * Generate the String representation for a ClassifierRef.
      *
      * @param m Object to generate representation for.

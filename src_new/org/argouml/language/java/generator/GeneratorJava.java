@@ -1744,6 +1744,17 @@ public class GeneratorJava
         return generateName(ModelFacade.getName(m)) + "::" + generateAction(ModelFacade.getAction(m));
     }
 
+    /**
+     * TODO: This is a dummy implementation. 
+     * Please, if you know what this function should do, implement it!
+     * @author MVW
+     */
+    public String generateEvent(Object m) {
+        if (m == null)
+            return "";
+        return generateName(ModelFacade.getName(m));
+    }
+
     public String generateAscEndName(Object ae) {
         String n = ModelFacade.getName(ae);
         Object/*MAssociation*/ asc = ModelFacade.getAssociation(ae);
