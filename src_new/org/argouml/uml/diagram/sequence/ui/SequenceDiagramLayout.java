@@ -98,7 +98,8 @@ public class SequenceDiagramLayout extends LayerPerspectiveMutable {
      */
     private void distributeFigObjects(Fig f) {
         int listPosition = _figObjectsX.indexOf(f);
-        if (listPosition < 0) return;
+        if (listPosition < 0)
+            return;
         if (listPosition < _figObjectsX.size() - 1) {
             Fig next = (Fig) _figObjectsX.get(listPosition + 1);
             if (next.getX() < f.getX()) {
@@ -126,7 +127,7 @@ public class SequenceDiagramLayout extends LayerPerspectiveMutable {
                 break;
             }
             fig.setX(positionX);
-            ((FigObject)fig).updateEdges();
+            ((FigObject) fig).updateEdges();
             positionX += (fig.getWidth() + OBJECT_DISTANCE);
         }
         if (_heighestObjectHeight < f.getHeight()) {
@@ -227,38 +228,39 @@ public class SequenceDiagramLayout extends LayerPerspectiveMutable {
             }
         }
     }
-    
+
     /**
      * Returns a list with all figLinks that intersect with the given y coordinate.
      * @param y
      * @return
      */
     public List getFigLinks(int y) {
-    	if (getContents().isEmpty() || getContentsEdgesOnly().isEmpty()) {
-    		return Collections.EMPTY_LIST;
-    	}
-    	List retList = new ArrayList();
-    	Iterator it = getContentsEdgesOnly().iterator();
-    	while (it.hasNext()) {		
-    		FigEdge fig = (FigEdge) it.next();
-    		if (fig instanceof FigLink && fig.hit(new Rectangle(fig.getX(), y, 8, 8))) {
-    			retList.add(fig);
-    		}
-    		
-    	}
-    	return retList;
-    	
+        if (getContents().isEmpty() || getContentsEdgesOnly().isEmpty()) {
+            return Collections.EMPTY_LIST;
+        }
+        List retList = new ArrayList();
+        Iterator it = getContentsEdgesOnly().iterator();
+        while (it.hasNext()) {
+            FigEdge fig = (FigEdge) it.next();
+            if (fig instanceof FigLink
+                && fig.hit(new Rectangle(fig.getX(), y, 8, 8))) {
+                retList.add(fig);
+            }
+
+        }
+        return retList;
+
     }
-    
+
     public void addNode(int position, Node node) {
-    	Iterator it = getContentsNoEdges().iterator();
-    	while (it.hasNext()) {
-    		Object o = it.next();
-    		if (o instanceof FigObject) {
-    			((FigObject)o).addNode(position, node);
-    			((FigObject)o).updateActivations();
-    		}
-    	}
+        Iterator it = getContentsNoEdges().iterator();
+        while (it.hasNext()) {
+            Object o = it.next();
+            if (o instanceof FigObject) {
+                ((FigObject) o).addNode(position, node);
+                ((FigObject) o).updateActivations();
+            }
+        }
     }
 
 }
