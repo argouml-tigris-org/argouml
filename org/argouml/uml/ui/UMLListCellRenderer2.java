@@ -46,7 +46,7 @@ import ru.novosoft.uml.foundation.data_types.MMultiplicity;
  */
 public class UMLListCellRenderer2 extends DefaultListCellRenderer {
 
-    private Category cat = Category.getInstance(UMLListCellRenderer.class);
+    private Category cat = Category.getInstance(UMLListCellRenderer2.class);
 
     /**
      * True if the icon for the modelelement should be shown. The icon is, for

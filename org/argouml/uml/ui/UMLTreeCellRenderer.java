@@ -111,8 +111,9 @@ public class UMLTreeCellRenderer extends DefaultTreeCellRenderer {
                 // TODO I18n
                 tip = (value == null) ? "empty" : value.toString() + " ";
                 
-            lab.setToolTipText(tip);
-            tree.setToolTipText(tip);
+            // lab.setToolTipText(tip);
+            if (tree.getToolTipText() != null && !tree.getToolTipText().equals(tip))
+                tree.setToolTipText(tip);
         }
         return r;
     }
