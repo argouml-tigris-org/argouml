@@ -25,12 +25,15 @@ package org.argouml.uml.ui;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.Vector;
 
+import javax.swing.AbstractListModel;
+import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
 
 import org.apache.log4j.Category;
@@ -47,17 +50,17 @@ import ru.novosoft.uml.foundation.core.MModelElement;
  * replaced with this implementation to improve performance.
  */
 public abstract class UMLComboBoxModel2
-    extends DefaultComboBoxModel
-    implements UMLUserInterfaceComponent {
+    extends AbstractListModel
+    implements UMLUserInterfaceComponent, ComboBoxModel {
         
     private static Category log = 
         Category.getInstance("org.argouml.uml.ui.UMLComboBoxModel2");
         
     private UMLUserInterfaceContainer _container = null;
     private Object _target = null;
-    private int selectedIndex = -1;
-    private List list = new ArrayList();
     
+    private List _objects = Collections.synchronizedList(new ArrayList());
+    private Object _selectedObject = null;
     private boolean _clearable = false;
     
 	
@@ -94,24 +97,20 @@ public abstract class UMLComboBoxModel2
      * @see ru.novosoft.uml.MElementListener#propertySet(MElementEvent)
      */
     public void propertySet(MElementEvent e) {
-        if (isValidPropertySet(e)  && getChangedElement(e) != getSelectedItem()) {
+        if (isValidRoleAdded(e)) { 
             Object o = getChangedElement(e);
-            if (getIndexOf(o) < 0) {
-                if (o instanceof Collection) {
-                    addAll((Collection)o);
-                } else {
+            if (o instanceof Collection) {
+                addAll((Collection)o);
+            } else {
+                if (getIndexOf(o) < 0) {
                     addElement(o);
                 }
             }
-            if (o instanceof Collection) {     
-                if (((Collection)o).size() == 1) {
-                    Iterator it = ((Collection)o).iterator();
-                    o = it.next();
-                }
-            }
-            
-            setSelectedItem(o);    
-        }   
+            setSelectedItem(getSelectedModelElement());
+        } else
+        if (isValidPropertySet(e)) {
+            setSelectedItem(getSelectedModelElement());
+        }
     }
 
     /**
@@ -134,13 +133,15 @@ public abstract class UMLComboBoxModel2
      * @see ru.novosoft.uml.MElementListener#roleAdded(MElementEvent)
      */
     public void roleAdded(MElementEvent e) {
-        if (isValidRoleAdded(e)) {
+        if (isValidRoleAdded(e)) { 
             Object o = getChangedElement(e);
             if (o instanceof Collection) {
                 addAll((Collection)o);
             } else {
-                addElement(o);
-            }      
+                if (getIndexOf(o) < 0) {
+                    addElement(o);
+                }
+            }
             setSelectedItem(getSelectedModelElement());
         }
     }
@@ -238,116 +239,8 @@ public abstract class UMLComboBoxModel2
      * target of the proppanel is changed.
      */
     protected abstract void buildModelList();
-    
-    /**
-     * @see javax.swing.MutableComboBoxModel#addElement(Object)
-     */
-    public void addElement(Object arg0) {
-        int index = getIndexOf(arg0);
-        if (index == -1) {
-            list.add(arg0);
-            int size = list.size();
-            fireIntervalAdded(this, size-1, size);
-        }
-    }
-
-    /**
-     * @see javax.swing.ListModel#getElementAt(int)
-     */
-    public Object getElementAt(int arg0) {
-        if (arg0 >= list.size()) return null;
-        return list.get(arg0);
-    }
-
-    /**
-     * @see javax.swing.DefaultComboBoxModel#getIndexOf(Object)
-     */
-    public int getIndexOf(Object arg0) {
-        return list.indexOf(arg0);
-    }
-
-    /**
-     * @see javax.swing.ComboBoxModel#getSelectedItem()
-     */
-    public Object getSelectedItem() {
-        if (selectedIndex >= 0 && selectedIndex < getSize()) {
-            return list.get(selectedIndex);
-        }
-        return null;
-    }
-
-    /**
-     * @see javax.swing.ListModel#getSize()
-     */
-    public int getSize() {
-        return list.size();
-    }
-
-    /**
-     * @see javax.swing.MutableComboBoxModel#insertElementAt(Object, int)
-     */
-    public void insertElementAt(Object arg0, int arg1) {
-        if (arg1 >= 0 && arg1 <= list.size()) {
-            list.add(arg1, arg0);
-            fireIntervalAdded(this, arg1, arg1);
-        }
-    }
-
-    /**
-     * @see javax.swing.DefaultComboBoxModel#removeAllElements()
-     */
-    public void removeAllElements() {
-        int size = list.size();
-        if (size > 0) {
-            list.removeAll(list);
-            fireIntervalRemoved(this, 0, size-1);
-        }
-    }
-
-    /**
-     * @see javax.swing.MutableComboBoxModel#removeElement(Object)
-     */
-    public void removeElement(Object arg0) {
-        int index = list.indexOf(arg0);
-        if (index >= 0) {
-            list.remove(arg0);
-            fireIntervalRemoved(this, index, index);
-        }
-    }
-
-    /**
-     * @see javax.swing.MutableComboBoxModel#removeElementAt(int)
-     */
-    public void removeElementAt(int arg0) {
-        if (arg0 >= 0 && arg0 < list.size()) {
-            list.remove(arg0);
-            fireIntervalRemoved(this, arg0, arg0);
-        }
-    }
-
-    /**
-     * @see javax.swing.ComboBoxModel#setSelectedItem(Object)
-     */
-    public void setSelectedItem(Object arg0) {
-        /*
-        if (arg0 instanceof Collection) {
-            Iterator it = ((Collection)arg0).iterator();
-            if (it.hasNext()) {
-                arg0 = it.next();
-            } else
-                return;
-        }
-        */
-        /*
-        int index = getIndexOf(arg0);
-        if (index == -1) {
-            addElement(arg0);
-        }
-        */
-        selectedIndex = list.indexOf(arg0);
-        fireContentsChanged(this, selectedIndex, selectedIndex);
-    }
-    
+ 
+ 
     /**
      * Utility method to change all elements in the list with modelelements
      * at once.
@@ -355,11 +248,8 @@ public abstract class UMLComboBoxModel2
      */
     protected void setElements(Collection elements) {
         if (elements != null) {
-            int size = list.size() > 0 ? list.size()-1 : 0;
-            list.clear();
-            fireIntervalRemoved(this, 0, size);
-            list.addAll(elements);
-            fireIntervalAdded(this, 0, elements.size());
+            removeAllElements();
+            addAll(elements);
         } else
             throw new IllegalArgumentException("In setElements: may not set " +
                 "elements to null collection");
@@ -396,10 +286,18 @@ public abstract class UMLComboBoxModel2
      */
     protected void addAll(Collection col) {
         Iterator it = col.iterator();
+        // addElement has side effects so we have to do something for that
+        Object o2 = getSelectedItem();
         while (it.hasNext()) {
-            addElement(it.next());
+            Object o = it.next();
+            if (getIndexOf(o) < 0) {
+                addElement(o);
+            }
         }
+        setSelectedItem(o2);
     }
+    
+    
     
     /**
      * Utility method to get the changed element from some event e
@@ -431,5 +329,54 @@ public abstract class UMLComboBoxModel2
     }
     
     protected abstract Object getSelectedModelElement();
+
+   
+
+    /**
+     * @see javax.swing.ListModel#getElementAt(int)
+     */
+    public Object getElementAt(int index) {
+        return _objects.get(index);
+    }
+
+    /**
+     * @see javax.swing.ListModel#getSize()
+     */
+    public int getSize() {
+        return _objects.size();
+    }
+    
+    public int getIndexOf(Object o) {
+        return _objects.indexOf(o);
+    }
+    
+    public void addElement(Object o) {
+        if (!_objects.contains(o)) {
+            _objects.add(o);
+        }
+    }
+    
+    public void setSelectedItem(Object o) {
+        if (_objects.contains(o)) {
+            _selectedObject = o;
+        } else
+            _selectedObject = null;
+    }
+    
+    public void removeElement(Object o) {
+        _objects.remove(o);
+        if (_selectedObject == o) {
+            _selectedObject = null;
+        } 
+    }
+    
+    public void removeAllElements() {
+        _objects.clear();
+        _selectedObject = null;
+    }
+    
+    public Object getSelectedItem() {
+        return _selectedObject;
+    }
 
 }
