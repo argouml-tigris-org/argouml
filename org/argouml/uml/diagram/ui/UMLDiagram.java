@@ -60,7 +60,7 @@ public class UMLDiagram extends ArgoDiagram {
   new CmdSetMode(ModeCreateFigLine.class, "Line");
 
   protected static Action _actionText =
-  new CmdSetMode(ModeCreateFigText.class, "Text");
+  new CmdSetMode(ModeCreateFigText.class, "Text"); 
 
   protected static Action _actionPoly =
   new CmdSetMode(ModeCreateFigPoly.class, "Polygon");

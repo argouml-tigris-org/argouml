@@ -38,16 +38,17 @@ import ru.novosoft.uml.foundation.extension_mechanisms.*;
 import ru.novosoft.uml.model_management.*;
 
 import org.tigris.gef.base.Diagram;
+import org.tigris.gef.presentation.Fig;
+import org.tigris.gef.presentation.FigText;
 
 import org.argouml.ui.*;
 import org.argouml.uml.ui.*;
 
-public class PropPanelString extends TabSpawnable
-implements TabModelTarget, DocumentListener {
+public class PropPanelString extends TabSpawnable implements TabModelTarget, PropertyChangeListener, DocumentListener {
   ////////////////////////////////////////////////////////////////
   // instance vars
-  Object _target;
-  JLabel _nameLabel = new JLabel("Owner: ");
+  FigText _target;
+  JLabel _nameLabel = new JLabel("Text: ");
   JTextField _nameField = new JTextField();
 
   ////////////////////////////////////////////////////////////////
@@ -70,13 +71,14 @@ implements TabModelTarget, DocumentListener {
 
     c.weightx = 1.0;
     c.gridx = 1;
-    //c.gridwidth = GridBagConstraints.REMAINDER;
+    c.gridwidth = GridBagConstraints.REMAINDER;
+    c.gridheight = GridBagConstraints.REMAINDER;
     c.gridy = 0;
     gb.setConstraints(_nameField, c);
     add(_nameField);
 
     _nameField.getDocument().addDocumentListener(this);
-    _nameField.setEditable(false);
+    _nameField.setEditable(true);
     // needs-more-work: set font?
 
   }
@@ -85,16 +87,19 @@ implements TabModelTarget, DocumentListener {
   // accessors
 
   public void setTarget(Object t) {
-    _target = t;
-    if (!(_target instanceof String)) return;
-    _nameField.setText((String)t);
+    if (t instanceof FigText) {
+    	_target = (FigText)t;
+    	_target.removePropertyChangeListener(this); // to circumvent to much registred listeners
+    	_target.addPropertyChangeListener(this);
+    }
+   
   }
 
   public Object getTarget() { return _target; }
 
   public void refresh() { setTarget(_target); }
 
-  public boolean shouldBeEnabled() { return _target instanceof Diagram; }
+  public boolean shouldBeEnabled() { return false; }
 
 
   protected void setTargetName() {
@@ -112,7 +117,10 @@ implements TabModelTarget, DocumentListener {
 
   public void insertUpdate(DocumentEvent e) {
     //System.out.println(getClass().getName() + " insert");
-    if (e.getDocument() == _nameField.getDocument()) setTargetName();
+    if (e.getDocument() == _nameField.getDocument() && _target != null) {
+    	_target.setText(_nameField.getText());
+    	_target.damage();
+    }
   }
 
   public void removeUpdate(DocumentEvent e) { insertUpdate(e); }
@@ -121,5 +129,15 @@ implements TabModelTarget, DocumentListener {
     System.out.println(getClass().getName() + " changed");
     // Apparently, this method is never called.
   }
+
+	/**
+	 * @see java.beans.PropertyChangeListener#propertyChange(PropertyChangeEvent)
+	 */
+	public void propertyChange(PropertyChangeEvent evt) {
+		if (evt.getPropertyName().equals("editing") && evt.getNewValue().equals(Boolean.FALSE)) { // ending editing
+			_nameField.setText(_target.getText());
+		}
+			
+	}
 
 } /* end class PropPanelString */
