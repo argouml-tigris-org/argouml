@@ -73,7 +73,8 @@ import ru.novosoft.uml.MElementEvent;
  */
 
 public class FigClass extends FigNodeModelElement 
-        implements AttributesCompartmentContainer, OperationsCompartmentContainer{
+        implements AttributesCompartmentContainer, 
+        OperationsCompartmentContainer {
 
 
     ////////////////////////////////////////////////////////////////
