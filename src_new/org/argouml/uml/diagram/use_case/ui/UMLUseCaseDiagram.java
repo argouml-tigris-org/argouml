@@ -41,6 +41,7 @@ package org.argouml.uml.diagram.use_case.ui;
 import java.beans.PropertyVetoException;
 
 import javax.swing.Action;
+import javax.swing.JToolBar;
 
 import org.apache.log4j.Category;
 import org.argouml.kernel.ProjectManager;
@@ -79,41 +80,35 @@ public class UMLUseCaseDiagram extends UMLDiagram {
     /**
      * <p>Tool to add an actor node.</p>
      */
-
     protected static Action _actionActor = new CmdCreateNode(MActor.class, "Actor");
 
     /**
      * <p>Tool to add a use case node.</p>
      */
-
     protected static Action _actionUseCase = new CmdCreateNode(MUseCase.class, "UseCase");
 
     /**
      * <p>Tool to create an association between UML artifacts using a
      *   polyedge.</p>
      */
-
     protected static Action _actionAssoc = new CmdSetMode(ModeCreatePolyEdge.class, "edgeClass", MAssociation.class, "Association");
 
     /**
      * <p>Tool to create a generalization between UML artifacts using a
      *   polyedge.</p>
      */
-
     protected static Action _actionGeneralize = new CmdSetMode(ModeCreatePolyEdge.class, "edgeClass", MGeneralization.class, "Generalization");
 
     /**
      * <p>Tool to create an extend relationship between UML use cases using a
      *   polyedge.</p>
      */
-
     protected static Action _actionExtend = new CmdSetMode(ModeCreatePolyEdge.class, "edgeClass", MExtend.class, "Extend");
 
     /**
      * <p>Tool to create an include relationship between UML use cases using a
      *   polyedge.</p>
      */
-
     protected static Action _actionInclude = new CmdSetMode(ModeCreatePolyEdge.class, "edgeClass", MInclude.class, "Include");
 
     /**
@@ -122,7 +117,6 @@ public class UMLUseCaseDiagram extends UMLDiagram {
      */
 
     protected static Action _actionDependency = new CmdSetMode(ModeCreatePolyEdge.class, "edgeClass", MDependency.class, "Dependency");
-
     /**
      * <p>A static counter of the use case index (used in constructing a unique
      *   name for each new diagram.</p>
@@ -161,7 +155,6 @@ public class UMLUseCaseDiagram extends UMLDiagram {
      *
      * @param m  the desired namespace for this diagram.
      */
-
     public UMLUseCaseDiagram(MNamespace m) {
         this();
         setNamespace(m);
@@ -218,67 +211,31 @@ public class UMLUseCaseDiagram extends UMLDiagram {
     }
 
     /**
-     * <p>Initialize the toolbar for a use case diagram.</p>
-     *
-     * <p>We follow the same format as other diagram types, with select and
-     *   broom to the left, and general graphics tools to the right, with
-     *   diagram specific tools in the middle, grouped appropriately.</p>
+     * <p>Initialize the toolbar with buttons required for a use case diagram.</p>
+     * @param toolBar The toolbar to which to add the buttons.
      */
-
-    public void initToolBar() {
-
-        cat.debug(this.getClass().toString() + ": making usecase toolbar");
-
-        // Create a toolbar
-
-        _toolBar = new ToolBar();
-        //_toolBar.setLayout(new FlowLayout(FlowLayout.LEFT, 0, 0));
-        _toolBar.putClientProperty("JToolBar.isRollover", Boolean.TRUE);
-
-        // Select and broom
-
-        _toolBar.add(_actionSelect);
-        _toolBar.add(_actionBroom);
-        _toolBar.addSeparator();
-
+    protected void initToolBar(JToolBar toolBar) {
         // Use case diagram specific nodes
 
-        _toolBar.add(_actionActor);
-        _toolBar.add(_actionUseCase);
+        toolBar.add(_actionActor);
+        toolBar.add(_actionUseCase);
 
-        _toolBar.addSeparator();
+        toolBar.addSeparator();
 
         // Use case diagram specific edges
 
-        _toolBar.add(_actionAssoc);
-        _toolBar.add(_actionDependency);
-        _toolBar.add(_actionGeneralize);
-        _toolBar.add(_actionExtend);
-        _toolBar.add(_actionInclude);
-        _toolBar.addSeparator();
+        toolBar.add(_actionAssoc);
+        toolBar.add(_actionDependency);
+        toolBar.add(_actionGeneralize);
+        toolBar.add(_actionExtend);
+        toolBar.add(_actionInclude);
+        toolBar.addSeparator();
 
         // The extension point button
 
-        _toolBar.add(ActionAddExtensionPoint.singleton());
-        _toolBar.addSeparator();
-        _toolBar.add(ActionAddNote.SINGLETON);
-        _toolBar.addSeparator();
-
-        // General graphics actions
-
-        _toolBar.add(_actionRectangle);
-        _toolBar.add(_actionRRectangle);
-        _toolBar.add(_actionCircle);
-        _toolBar.add(_actionLine);
-        _toolBar.add(_actionText);
-        _toolBar.add(_actionPoly);
-        _toolBar.add(_actionSpline);
-        _toolBar.add(_actionInk);
-        _toolBar.addSeparator();
-
-        // Finally the name of the diagram
-
-        _toolBar.add(_diagramName.getJComponent());
+        toolBar.add(ActionAddExtensionPoint.singleton());
+        toolBar.addSeparator();
+        toolBar.add(ActionAddNote.SINGLETON);
     }
 
     protected static String getNewDiagramName() {
@@ -290,5 +247,4 @@ public class UMLUseCaseDiagram extends UMLDiagram {
         }
         return name;
     }
-
 } /* end class UMLUseCaseDiagram */

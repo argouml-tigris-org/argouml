@@ -34,6 +34,7 @@ import java.util.Iterator;
 import java.util.Vector;
 
 import javax.swing.Action;
+import javax.swing.JToolBar;
 
 import org.apache.log4j.Category;
 import org.argouml.kernel.ProjectManager;
@@ -124,35 +125,16 @@ public class UMLCollaborationDiagram extends UMLDiagram {
         lay.setGraphEdgeRenderer(rend);
     }
 
-    /** initialize the toolbar for this diagram type */
-    public void initToolBar() {
-        _toolBar = new ToolBar();
-        _toolBar.putClientProperty("JToolBar.isRollover", Boolean.TRUE);
-        //_toolBar.setLayout(new FlowLayout(FlowLayout.LEFT, 0, 0));
-
-        _toolBar.add(_actionSelect);
-        _toolBar.add(_actionBroom);
-        _toolBar.addSeparator();
-
-        _toolBar.add(_actionClassifierRole);
-        _toolBar.addSeparator();
-        _toolBar.add(_actionAssoc);
-        _toolBar.add(ActionAddMessage.SINGLETON);
-        _toolBar.add(_actionGeneralize);
-        // other actions
-        _toolBar.addSeparator();
-
-        _toolBar.add(_actionRectangle);
-        _toolBar.add(_actionRRectangle);
-        _toolBar.add(_actionCircle);
-        _toolBar.add(_actionLine);
-        _toolBar.add(_actionText);
-        _toolBar.add(_actionPoly);
-        _toolBar.add(_actionSpline);
-        _toolBar.add(_actionInk);
-        _toolBar.addSeparator();
-
-        _toolBar.add(_diagramName.getJComponent());
+    /**
+     * <p>Initialize the toolbar with buttons required for a use case diagram.</p>
+     * @param toolBar The toolbar to which to add the buttons.
+     */
+    protected void initToolBar(JToolBar toolBar) {
+        toolBar.add(_actionClassifierRole);
+        toolBar.addSeparator();
+        toolBar.add(_actionAssoc);
+        toolBar.add(ActionAddMessage.SINGLETON);
+        toolBar.add(_actionGeneralize);
     }
 
     /**  After loading the diagram it?s necessary to connect
@@ -201,5 +183,4 @@ public class UMLCollaborationDiagram extends UMLDiagram {
         }
         return name;
     }
-
 } /* end class UMLCollaborationDiagram */

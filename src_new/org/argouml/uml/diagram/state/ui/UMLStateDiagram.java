@@ -31,6 +31,7 @@ package org.argouml.uml.diagram.state.ui;
 import java.beans.PropertyVetoException;
 
 import javax.swing.Action;
+import javax.swing.JToolBar;
 
 import org.apache.log4j.Category;
 import org.argouml.application.api.Argo;
@@ -212,47 +213,29 @@ public class UMLStateDiagram extends UMLDiagram {
         ((StateDiagramGraphModel) getGraphModel()).setMachine(sm);
     }
 
-    /** initialize the toolbar for this diagram type */
-    public void initToolBar() {
-        cat.debug("making state toolbar");
-        _toolBar = new ToolBar();
-        _toolBar.putClientProperty("JToolBar.isRollover", Boolean.TRUE);
-        //_toolBar.setLayout(new FlowLayout(FlowLayout.LEFT, 0, 0));
+    /**
+     * <p>Initialize the toolbar with buttons required for a use case diagram.</p>
+     * @param toolBar The toolbar to which to add the buttons.
+     */
+    protected void initToolBar(JToolBar toolBar) {
+        toolBar.add(_actionState);
+        toolBar.add(_actionCompositeState);
+        toolBar.add(_actionTransition);
+        toolBar.addSeparator();
 
-        _toolBar.add(_actionSelect);
-        _toolBar.add(_actionBroom);
-        _toolBar.addSeparator();
-
-        _toolBar.add(_actionState);
-        _toolBar.add(_actionCompositeState);
-        _toolBar.add(_actionTransition);
-        _toolBar.addSeparator();
-
-        _toolBar.add(_actionStartPseudoState);
-        _toolBar.add(_actionFinalPseudoState);
-        _toolBar.add(_actionBranchPseudoState);
-        _toolBar.add(_actionForkPseudoState);
-        _toolBar.add(_actionJoinPseudoState);
-        _toolBar.add(_actionShallowHistoryPseudoState);
-        _toolBar.add(_actionDeepHistoryPseudoState);
-        _toolBar.addSeparator();
-        _toolBar.add(ActionAddNote.SINGLETON);
-        _toolBar.addSeparator();
+        toolBar.add(_actionStartPseudoState);
+        toolBar.add(_actionFinalPseudoState);
+        toolBar.add(_actionBranchPseudoState);
+        toolBar.add(_actionForkPseudoState);
+        toolBar.add(_actionJoinPseudoState);
+        toolBar.add(_actionShallowHistoryPseudoState);
+        toolBar.add(_actionDeepHistoryPseudoState);
+        toolBar.addSeparator();
+        toolBar.add(ActionAddNote.SINGLETON);
+        toolBar.addSeparator();
 
         //_toolBar.add(Actions.AddInternalTrans);
         //_toolBar.addSeparator();
-
-        _toolBar.add(_actionRectangle);
-        _toolBar.add(_actionRRectangle);
-        _toolBar.add(_actionCircle);
-        _toolBar.add(_actionLine);
-        _toolBar.add(_actionText);
-        _toolBar.add(_actionPoly);
-        _toolBar.add(_actionSpline);
-        _toolBar.add(_actionInk);
-        _toolBar.addSeparator();
-
-        _toolBar.add(_diagramName.getJComponent());
     }
 
     protected static String getNewDiagramName() {
@@ -274,5 +257,4 @@ public class UMLStateDiagram extends UMLDiagram {
       UmlModelEventPump.getPump().removeModelEventListener(this,theStateMachine);
       super.removed(e);
   }
-
 } /* end class UMLStateDiagram */

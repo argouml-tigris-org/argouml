@@ -31,6 +31,7 @@ package org.argouml.uml.diagram.activity.ui;
 import java.beans.PropertyVetoException;
 
 import javax.swing.Action;
+import javax.swing.JToolBar;
 
 import org.apache.log4j.Category;
 import org.argouml.kernel.ProjectManager;
@@ -182,50 +183,29 @@ public class UMLActivityDiagram extends UMLDiagram {
     ((StateDiagramGraphModel)getGraphModel()).setMachine(sm);
   }
 
-
-
-  /** initialize the toolbar for this diagram type */
-  public void initToolBar() {
-    cat.debug("making state toolbar");
-    _toolBar = new ToolBar();
-    _toolBar.putClientProperty("JToolBar.isRollover", Boolean.TRUE);
-    //_toolBar.setLayout(new FlowLayout(FlowLayout.LEFT, 0, 0));
-
-    _toolBar.add(_actionSelect);
-    _toolBar.add(_actionBroom);
-    _toolBar.addSeparator();
-
-    _toolBar.add(_actionState);
-    _toolBar.add(_actionTransition);
-
-    _toolBar.addSeparator();
-
-    _toolBar.add(_actionStartPseudoState);
-    _toolBar.add(_actionFinalPseudoState);
-    _toolBar.add(_actionBranchPseudoState);
-    _toolBar.add(_actionForkPseudoState);
-    _toolBar.add(_actionJoinPseudoState);
-    _toolBar.addSeparator();
-    _toolBar.add(ActionAddNote.SINGLETON);
-    _toolBar.addSeparator();
-
-    _toolBar.add(_actionRectangle);
-    _toolBar.add(_actionRRectangle);
-    _toolBar.add(_actionCircle);
-    _toolBar.add(_actionLine);
-    _toolBar.add(_actionText);
-    _toolBar.add(_actionPoly);
-    _toolBar.add(_actionSpline);
-    _toolBar.add(_actionInk);
-    _toolBar.addSeparator();
-
-    _toolBar.add(_diagramName.getJComponent());
-  }
-  
-   /**
-     * Creates a new diagramname.
-     * @return String
+    /**
+     * <p>Initialize the toolbar with buttons required for a use case diagram.</p>
+     * @param toolBar The toolbar to which to add the buttons.
      */
+    protected void initToolBar(JToolBar toolBar) {
+        toolBar.add(_actionState);
+        toolBar.add(_actionTransition);
+
+        toolBar.addSeparator();
+
+        toolBar.add(_actionStartPseudoState);
+        toolBar.add(_actionFinalPseudoState);
+        toolBar.add(_actionBranchPseudoState);
+        toolBar.add(_actionForkPseudoState);
+        toolBar.add(_actionJoinPseudoState);
+        toolBar.addSeparator();
+        toolBar.add(ActionAddNote.SINGLETON);
+    }
+  
+    /**
+      * Creates a new diagramname.
+      * @return String
+      */
     protected static String getNewDiagramName() {
         String name = null;
         name = "Activity Diagram " + _ActivityDiagramSerial;
@@ -235,7 +215,4 @@ public class UMLActivityDiagram extends UMLDiagram {
         }
         return name;
     }
-  
-
-
 } /* end class UMLActivityDiagram */

@@ -29,9 +29,10 @@
 package org.argouml.uml.diagram.static_structure.ui;
 
 import javax.swing.Action;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JPopupMenu;
-import javax.swing.ImageIcon;
+import javax.swing.JToolBar;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -39,7 +40,6 @@ import java.awt.GridLayout;
 
 import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.kernel.ProjectManager;
-import org.argouml.swingext.UglyToolBox;
 import org.argouml.swingext.PopupToolBoxButton;
 import org.argouml.ui.CmdCreateNode;
 import org.argouml.ui.LookAndFeelMgr;
@@ -145,46 +145,36 @@ public class UMLClassDiagram extends UMLDiagram {
         lay.setGraphEdgeRenderer(rend);
     }
 
-    /** initialize the toolbar for this diagram type */
-    public void initToolBar() {
-        _toolBar = new ToolBar();
-        _toolBar.putClientProperty("JToolBar.isRollover", Boolean.TRUE);
-        _toolBar.add(_actionSelect);
-        _toolBar.add(_actionBroom);
-        _toolBar.addSeparator();
+    /**
+     * <p>Initialize the toolbar with buttons required for a use case diagram.</p>
+     * @param toolBar The toolbar to which to add the buttons.
+     */
+    protected void initToolBar(JToolBar toolBar) {
+        toolBar.add(_actionPackage);
+        toolBar.add(_actionClass);
 
-        _toolBar.add(_actionPackage);
-        _toolBar.add(_actionClass);
+        toolBar.add(buildAssociationPopup());
 
-        _toolBar.add(buildAssociationPopup());
+        toolBar.add(_actionDepend);
+        toolBar.add(_actionPermission);
+        toolBar.add(_actionUsage);
+        toolBar.add(_actionGeneralize);
+        toolBar.addSeparator();
 
-        _toolBar.add(_actionDepend);
-        _toolBar.add(_actionPermission);
-        _toolBar.add(_actionUsage);
-        _toolBar.add(_actionGeneralize);
-        _toolBar.addSeparator();
+        //     toolBar.add(_actionObject);
+        //     toolBar.add(_actionLink);
+        //     toolBar.addSeparator();
 
-        //     _toolBar.add(_actionObject);
-        //     _toolBar.add(_actionLink);
-        //     _toolBar.addSeparator();
+        toolBar.add(_actionInterface);
+        toolBar.add(_actionRealize);
+        toolBar.addSeparator();
 
-        _toolBar.add(_actionInterface);
-        _toolBar.add(_actionRealize);
-        _toolBar.addSeparator();
-
-        _toolBar.add(ActionAddAttribute.SINGLETON);
-        _toolBar.add(ActionAddOperation.SINGLETON);
+        toolBar.add(ActionAddAttribute.SINGLETON);
+        toolBar.add(ActionAddOperation.SINGLETON);
         // TODO: remove attribute and operation?
-        _toolBar.addSeparator();
+        toolBar.addSeparator();
 
-        _toolBar.add(ActionAddNote.SINGLETON);
-        _toolBar.addSeparator();
-
-        _toolBar.add(buildShapePopup());
-
-        _toolBar.addSeparator();
-
-        _toolBar.add(_diagramName.getJComponent());
+        toolBar.add(ActionAddNote.SINGLETON);
     }
 
     private PopupToolBoxButton buildAssociationPopup() {
@@ -197,18 +187,5 @@ public class UMLClassDiagram extends UMLDiagram {
         toolBox.add(_actionUniComposition);
         return toolBox;
     }
-
-    // TODO - add to ancestor (Bob)
-    private PopupToolBoxButton buildShapePopup() {
-        PopupToolBoxButton toolBox = new PopupToolBoxButton(_actionRectangle, 0, 2);
-        toolBox.add(_actionRectangle);
-        toolBox.add(_actionRRectangle);
-        toolBox.add(_actionCircle);
-        toolBox.add(_actionLine);
-        toolBox.add(_actionText);
-        toolBox.add(_actionPoly);
-        toolBox.add(_actionSpline);
-        toolBox.add(_actionInk);
-        return toolBox;
-    }
+    
 } /* end class UMLClassDiagram */
