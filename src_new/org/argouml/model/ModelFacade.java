@@ -4487,20 +4487,20 @@ public class ModelFacade {
 
     /**
      * Sets the guard of a transition.
-     * @param handle
-     * @param guard
+     * @param handle to the transition
+     * @param guard to be set
      */
     public static void setGuard(Object handle, Object guard) {
         if (handle instanceof MTransition
             && (guard == null || guard instanceof MGuard)) {
-            ((MTransition)handle).setGuard((MGuard)guard);
+            ((MTransition) handle).setGuard((MGuard) guard);
             return;
         }
         throw new IllegalArgumentException(
             "Object "
-                + guard.toString()
-                + " cannot be owned by "
-                + handle.toString());
+	    + getClassNull(guard)
+	    + " cannot be owned by "
+	    + getClassNull(handle));
     }
 
     public static void setTransition(Object handle, Object trans) {
