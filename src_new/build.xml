@@ -679,6 +679,67 @@ ${Name} Build file
   </target>
 
   <!-- =================================================================== -->
+  <!-- Creates the distribution as an Mac OS X Application Bundle          -->
+  <!-- =================================================================== -->
+  <target name="dist-appbund" depends="package"
+          description="Creates a MacOS X application bundle manually">
+     <property name="app.source.dir"
+	       location="${argo.src.dir}/bin/appbund"/>
+     <property name="app.bundle.dir"
+               location="${argo.build.dir}/AppBundle"/>
+     <property name="bundle.contents.dir"
+               location="${app.bundle.dir}/ArgoUML.app/Contents"/>
+     <property name="bundle.contents.macos.dir"
+               location="${bundle.contents.dir}/MacOS"/>
+     <property name="bundle.contents.resources.dir"
+               location="${bundle.contents.dir}/Resources"/>
+     <property name="bundle.contents.resources.java.dir"
+               location="${bundle.contents.resources.dir}/Java"/>
+
+     <mkdir dir="${app.bundle.dir}"/>
+     <mkdir dir="${bundle.contents.dir}"/>
+     <copy file="${app.source.dir}/Info.plist"
+         tofile="${bundle.contents.dir}/Info.plist">
+         <filterset>
+             <filter token="BUNDLE_NAME"        value="${Name}.app"/>
+             <filter token="BUNDLE_IDENTIFIER"  value="${name}"/>
+             <filter token="DISPLAY_NAME"       value="${Name}"/>
+             <filter token="BUILD_NUMBER"       value="${build.number}"/>
+             <filter token="VERSION_NUMBER"     value="${argo.build.version}"/>
+             <filter token="COMPANY_NAME"       value="${Name}"/>
+             <filter token="JAR_FILE"           value="${name}.jar"/>
+         </filterset>
+     </copy>
+     <mkdir dir="${bundle.contents.macos.dir}"/>
+     <copy file="${app.source.dir}/JavaApplicationStub"
+         todir="${bundle.contents.macos.dir}"
+         preservelastmodified="true"/>
+     <copy file="${app.source.dir}/PkgInfo"
+         tofile="${bundle.contents.dir}/PkgInfo">
+     </copy>
+     <mkdir dir="${bundle.contents.resources.dir}"/>
+     <copy file="${app.source.dir}/GenericJavaApp.icns"
+         tofile="${bundle.contents.resources.dir}/GenericJavaApp.icns"
+         preservelastmodified="true"/>
+     <mkdir dir="${bundle.contents.resources.java.dir}"/>
+     <copy todir="${bundle.contents.resources.java.dir}">
+       <fileset dir="${argo.build.dir}"
+         includes="${names.of.all.included.libs} argouml.jar README.txt"/>
+     </copy>
+
+     <tar tarfile="${argo.root.dir}/${Name}-${argo.build.version}.app.tar"
+          basedir="${app.bundle.dir}"/>
+     <gzip zipfile="${argo.root.dir}/${Name}-${argo.build.version}.app.tgz"
+           src="${argo.root.dir}/${Name}-${argo.build.version}.app.tar"/>
+     <delete file="${argo.root.dir}/${Name}-${argo.build.version}.app.tar"/>
+     <delete dir="${app.bundle.dir}"/>
+
+   </target>
+
+
+
+
+  <!-- =================================================================== -->
   <!-- Creates the whole distribution                                            -->
   <!-- =================================================================== -->
   <target name="dist-all" depends="dist,dist-src,dist-lib"/>
