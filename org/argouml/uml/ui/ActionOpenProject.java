@@ -27,8 +27,6 @@ package org.argouml.uml.ui;
 import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
 
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileFilter;
@@ -134,7 +132,8 @@ public class ActionOpenProject extends ActionFileOperations
                     // store last directory. We should rely on GEF
                     // only for Diagrams. Bob Tarling 15 Jan 2004.
                     Globals.setLastDirectory(path);
-                    if (loadProject(theFile)) {
+
+                    if (loadProject(theFile, true)) {
                         // notification of menu bar
                         GenericArgoMenuBar menuBar =
                             (GenericArgoMenuBar) pb.getJMenuBar();
@@ -155,7 +154,7 @@ public class ActionOpenProject extends ActionFileOperations
      * @return true if it is OK.
      */
     public boolean doCommand(String argument) {
-        return loadProject(new File(argument));
+        return loadProject(new File(argument), false);
     }
 
 } /* end class ActionOpenProject */
