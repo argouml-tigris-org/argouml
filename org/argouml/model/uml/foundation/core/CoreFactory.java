@@ -706,6 +706,29 @@ public class CoreFactory extends AbstractUmlModelFactory {
                 dep.setNamespace(client.getNamespace());
         return dep;
     }
+
+    
+    
+     /**
+     * Builds a modelelement permission between two modelelements. 
+     * @param client
+     * @param supplier
+     * @return MPermission
+     */
+    public MPermission buildPermission(MModelElement client, MModelElement supplier) {
+        MPermission per = createPermission();
+        per.addSupplier(supplier);
+        per.addClient(client);
+        if (supplier.getNamespace() != null) 
+            per.setNamespace(supplier.getNamespace());
+        else 
+            if (client.getNamespace() != null) 
+                per.setNamespace(client.getNamespace());
+        ExtensionMechanismsFactory.getFactory().
+             buildStereotype(per, "import", per.getNamespace());
+        return per;
+    }
+    
     
     /**
      * Builds a generalization between a parent and a child. Does not check if 
