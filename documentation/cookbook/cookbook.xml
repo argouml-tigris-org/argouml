@@ -905,9 +905,8 @@ or a newly generated project (see Project.makeEmptyProject()).
 
     <sect1 id="nsuml">
       <title>NS-UML</title>
-      <para>
-Tip for understanding NS-UML (from Jeremy Bennett):
-</para>
+      <sect2>
+	<title>Tip for understanding NS-UML (from Jeremy Bennett)</title>
       <para>
 I found that building a javadoc for the NSUML source was quite helpful.
 There are some comments in key places, and it allows you to see what
@@ -960,6 +959,14 @@ ru.novosoft.uml.undo
 ru.novosoft.uml.xmi
 </computeroutput>
 </para>
+      </sect2>
+      <sect2>
+	<title>Tip for understanding NS-UML (from Ryan Ismert)</title>
+	<para>
+The file docs/guide/NS_Uml_Api.html that comes in the NSUML source is
+very helpful.
+</para>
+      </sect2>
     </sect1>
 
 <sect1 id="small">
