@@ -299,7 +299,7 @@ The <emphasis>Help</emphasis> menu contains the usual "information" and "about".
 
     <!-- Save project -->
 
-    <sect2>
+    <sect2 id="s2.ref.menu_save_project">
       <title><guiicon><inlinemediaobject><imageobject><imagedata
           format="GIF" align="center" fileref="images/icons/save_project.gif"/>
         </imageobject></inlinemediaobject></guiicon> Save Project</title>
@@ -495,7 +495,7 @@ new datatypes in their own right (the default) or as their base
 
     <!-- Print out the model -->
 
-    <sect2>
+    <sect2 id="s2.ref.menu_print">
       <title><guiicon><inlinemediaobject><imageobject><imagedata
           format="GIF" align="center" fileref="images/icons/print.gif"/>
         </imageobject></inlinemediaobject></guiicon> Print&hellip;</title>
@@ -620,7 +620,7 @@ new datatypes in their own right (the default) or as their base
 
     <!-- The Select sub-menu entries -->
 
-    <sect2>
+    <sect2 id="s2.ref.menu_select">
       <title>The Select Sub-Menu</title>
 
       <para>This sub-menu provides for selection of items on the editing
@@ -628,23 +628,45 @@ new datatypes in their own right (the default) or as their base
 
       <itemizedlist>
         <listitem>
-	  <para>
-<literal>Select All</literal> (shortcut Ctrl-A). 
-<indexterm>
-  <primary>Select All</primary>
-</indexterm>
-<indexterm>
-  <primary>Shortcut key</primary>
-  <secondary>Ctrl-A</secondary>
-</indexterm>
-Selects all artifacts on the editing pane.</para></listitem>
+          <para>
+            <literal>Select All</literal> (shortcut Ctrl-A). 
+            <indexterm>
+              <primary>Select All</primary>
+            </indexterm>
+            <indexterm>
+              <primary>Shortcut key</primary>
+              <secondary>Ctrl-A</secondary>
+            </indexterm>
+              Selects all artifacts on the editing pane.
+          </para>
+        </listitem>
 
-        <listitem><para><literal>Select Previous</literal>. &argouml; has a
+        <listitem>
+          <para>
+            <literal>Navigate Back</literal>. &argouml; keeps a record of the
+            artifacts that you have been viewing while navigating the model. This
+            button moves you back to the previous one viewed. If there are no more
+            previous artifacts, the button is grayed out.
+          </para>
+        </listitem>
+        
+        <listitem>
+          <para>
+            <literal>Navigate Forward</literal>. &argouml; keeps a record of the
+            artifacts that you have been viewing while navigating the model. This
+            button moves you forward to the next one viewed (after you have used
+            the Navigate Back button to move back). If there are no more next
+            artifacts, the button is grayed out.
+          </para>
+        </listitem>
+
+        <listitem>
+          <para><literal>Select Previous</literal>. &argouml; has a
           concept of the ordering of artifacts on a diagram. This
           selects the item prior to the currently selected item in that
           ordering.</para>
 
-        <caution><para>The behavior of this menu function can be very
+          <caution><para>The behavior of this menu function can be very
           strange, selecting items that do not appear to be on any
           diagram. It is probably best avoided.</para></caution></listitem>
 
@@ -652,7 +674,7 @@ Selects all artifacts on the editing pane.</para></listitem>
           selects the item following the currently selected item in that
           ordering.</para>
 
-        <caution><para>Again the behavior of this menu function can be very
+          <caution><para>Again the behavior of this menu function can be very
           strange, selecting items that do not appear to be on any diagram. It
           is probably best avoided.</para></caution></listitem>
 
@@ -1075,7 +1097,7 @@ on to the current diagram in the drawing pane.
 
     <!-- Find an artifact -->
 
-    <sect2>
+    <sect2 id="s2.ref.menu_find">
       <title><guiicon><inlinemediaobject><imageobject><imagedata
           format="GIF" align="center" fileref="images/icons/find.gif"/>
         </imageobject></inlinemediaobject></guiicon> Find&hellip;</title>
@@ -1631,7 +1653,7 @@ artifact.
 
     <!-- Create a Class Diagram -->
 
-    <sect2>
+    <sect2 id="s2.ref.create.diagram.class_diagram">
       <title><guiicon><inlinemediaobject><imageobject><imagedata
           format="GIF" align="center"
           fileref="images/icons/class_diagram.gif"/> 
@@ -1653,7 +1675,7 @@ artifact.
 
     <!-- Create a Use Case Diagram -->
 
-    <sect2>
+    <sect2 id="s2.ref.create.diagram.use_case_diagram">
       <title><guiicon><inlinemediaobject><imageobject><imagedata
           format="GIF" align="center"
           fileref="images/icons/use_case_diagram.gif"/>
@@ -1675,7 +1697,7 @@ artifact.
 
     <!-- Create a State Diagram -->
 
-    <sect2>
+    <sect2 id="s2.ref.create.diagram.state_diagram">
       <title><guiicon><inlinemediaobject><imageobject><imagedata
           format="GIF" align="center"
           fileref="images/icons/state_diagram.gif"/>
@@ -1696,7 +1718,7 @@ artifact.
 
     <!-- Create an Activity Diagram -->
 
-    <sect2>
+    <sect2 id="s2.ref.create.diagram.activity_diagram">
       <title><guiicon><inlinemediaobject><imageobject><imagedata
           format="GIF" align="center"
           fileref="images/icons/activity_diagram.gif"/>
@@ -1717,7 +1739,7 @@ artifact.
 
     <!-- Create a Collaboration Diagram -->
 
-    <sect2>
+    <sect2 id="s2.ref.create.diagram.collaboration_diagram">
       <title><guiicon><inlinemediaobject><imageobject><imagedata
           format="GIF" align="center"
           fileref="images/icons/collaboration_diagram.gif"/>
@@ -1743,7 +1765,7 @@ artifact.
 
     <!-- Create a Deployment Diagram -->
 
-    <sect2>
+    <sect2 id="s2.ref.create.diagram.deployment_diagram">
       <title><guiicon><inlinemediaobject><imageobject><imagedata
           format="GIF" align="center"
           fileref="images/icons/deployment_diagram.gif"/>

@@ -103,12 +103,11 @@ in the 0.14 version.
 
     &refui;
     &reftoolbar;
-        &refmenu;
+    &refmenu;
     &refnavpane;
     &refeditpane;
     &refdetpane;
     &reftodopane;
-<!--    &refmenu; -->
     &refcritics;
 
     <!-- The reference chapters on the diagrams and artifacts -->

@@ -269,40 +269,6 @@ This chapter covers the Explorer.
     </itemizedlist>
   </sect1>
 
-  <!-- Navigating around with the buttons -->
-
-  <sect1>
-    <title>Navigating Backward and Forward</title>
-
-    <para>Two buttons are provided allowing the user to navigate back and
-      forward through diagrams in the model.</para>
-
-    <itemizedlist>
-      <listitem><para><guiicon><inlinemediaobject><imageobject><imagedata
-          format="GIF" align="center"
-          fileref="images/icons/navigate_back.gif"/>
-        </imageobject></inlinemediaobject></guiicon>
-        <literal>Navigate Back</literal>. &argouml; keeps a record of the
-        diagrams that you have been viewing while navigating the model. This
-        button moves you back to the previous one viewed. If there are no more
-        previous diagrams, the button is grayed out.</para></listitem>
-
-      <listitem><para><guiicon><inlinemediaobject><imageobject><imagedata
-          format="GIF" align="center"
-          fileref="images/icons/navigate_forward.gif"/>
-        </imageobject></inlinemediaobject></guiicon>
-        <literal>Navigate Forward</literal>. &argouml; keeps a record of the
-          diagrams that you have been viewing while navigating the model. This
-          button moves you forward to the next one viewed (after you have used
-          the Navigate Back button to move back). If there are no more next
-          diagrams, the button is grayed out.</para></listitem>
-    </itemizedlist>
-
-    <warning><para>In the current release of &argouml; there is believed to be
-      a problem, where the same diagram appears several times in a row so that
-      Navigate Back/Forward does not appear to work.</para></warning>
-  </sect1>
-
   <!-- Button for configuring perspectives-->
 
   <sect1>

@@ -127,6 +127,29 @@ so that it is easy to know if this problem has been fixed.
 </para>
       </listitem>
 
+      <listitem>
+        <para>
+Do not write "currently". Better write either
+"in version 0.14" if you mean in the stable version 0.14 of ArgoUML or "in
+version @VERSION@" if you mean in the current version of the manual. There
+are some old references to "current" or "currently" also. If you encounter
+them, try to remove them!
+        </para>
+      </listitem>
+      
+      <listitem>
+        <para>      
+Add indexterms while doing changes. 
+Creating the index is a good idea 
+and we eventually should have indexterms all over. 
+Initially, the manual was written without
+useing indexterms at all. 
+They have been added 
+generously on certain parts but that makes the index
+strangely biased.
+        </para>
+      </listitem>
+      
     </itemizedlist>
   </sect1>
 
@@ -221,7 +244,7 @@ Indent only the tags, not the text.
 The Docbook source is kept in cvs that is a line-oriented tool. 
 This means that reindentation will be a major thing in cvs making
 it hard to see if there were other things done to the code.
-Especielly if reindentation caused the paragraphs to be broken
+Especially if reindentation caused the paragraphs to be broken
 in a different way.
 Not indenting the text means that the text will be unchanged even
 if the heading level was changed.

@@ -49,7 +49,8 @@ own chapters.
     <para>At the top of screen is a <emphasis>menu bar</emphasis>, 
       which is described in
       <xref linkend="ch.ref.menu"/>. 
-      Below that is the <emphasis>toolbar</emphasis>, as described in ...
+      Below that is the <emphasis>toolbar</emphasis>, as described in 
+      <xref linkend="ch.ref.toolbar"/>...
     </para>
     <para>
       The bulk of the window comprises four
@@ -58,8 +59,11 @@ own chapters.
       linkend="ch.ref.navpane"/>), <emphasis>editing pane</emphasis> (see <xref
       linkend="ch.ref.editpane"/>), <emphasis>details pane</emphasis> (see
       <xref linkend="ch.ref.detpane"/>) and <emphasis>to-do pane</emphasis>
-      (see <xref linkend="ch.ref.todopane"/>). At the top of the editing pane
-      is a <emphasis>tool bar</emphasis>. An overview of the panes is given in
+      (see <xref linkend="ch.ref.todopane"/>). All 4 panes
+      have a <emphasis>tool bar</emphasis> at the top 
+      (in the <emphasis>details pane</emphasis> it is located 
+      under the <emphasis>properties</emphasis> tab).. 
+      An overview of the panes is given in
       <xref linkend="s1.ref.panes"/>. Finally at the bottom of the window is a
       <emphasis>status bar</emphasis> described in <xref
       linkend="s1.ref.status"/>.

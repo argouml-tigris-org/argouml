@@ -11,10 +11,315 @@ A description of all the toolbar entries
   <title>The Toolbar</title>
 
 
-  <sect1>
+  <section>
     <title>Introduction</title>
     <para>
       This chapter will in the near future describe the toolbar.
     </para>
-  </sect1>
+
+    <section>
+      <title>File operations</title>
+      <para>These buttons have identical functions as their counterparts in the
+      <literal>File</literal> menu. 
+      </para>
+
+      <itemizedlist>
+        <listitem>
+          <para>
+            <guiicon>
+              <inlinemediaobject>
+                <imageobject>
+                  <imagedata format="GIF" align="center" fileref="images/icons/new.gif"/>
+                </imageobject>
+              </inlinemediaobject>
+            </guiicon>
+            <literal>New</literal> See for a full description 
+            <xref linkend="s2.ref.menu_new"/>.
+          </para>
+        </listitem>
+
+        <listitem>
+          <para>
+            <guiicon>
+              <inlinemediaobject>
+                <imageobject>
+                  <imagedata format="GIF" align="center" fileref="images/icons/open_project.gif"/>
+                </imageobject>
+              </inlinemediaobject>
+            </guiicon>
+            <literal>Open Project...</literal> See for a full description 
+            <xref linkend="s2.ref.menu_open_project"/>.
+          </para>
+        </listitem>
+
+        <listitem>
+          <para>
+            <guiicon>
+              <inlinemediaobject>
+                <imageobject>
+                  <imagedata format="GIF" align="center" fileref="images/icons/open_project.gif"/>
+                </imageobject>
+              </inlinemediaobject>
+            </guiicon>
+            <literal>Save Project</literal> See for a full description 
+            <xref linkend="s2.ref.menu_save_project"/>.
+          </para>
+        </listitem>
+
+        <listitem>
+          <para>
+            <guiicon>
+              <inlinemediaobject>
+                <imageobject>
+                  <imagedata format="GIF" align="center" fileref="images/icons/print.gif"/>
+                </imageobject>
+              </inlinemediaobject>
+            </guiicon>
+            <literal>Print</literal> See for a full description 
+            <xref linkend="s2.ref.menu_print"/>.
+          </para>
+        </listitem>
+
+      </itemizedlist>
+    </section>
+    
+    <!-- Cut, Copy, Paste, Remove from diagram and Navigating around -->
+
+    <section>
+      <title>Edit operations</title>
+
+      <para>These buttons have identical functions as their counterparts in the
+        <literal>Edit</literal> menu.
+      </para>
+
+      <itemizedlist>
+        <listitem>
+          <para>
+            <guiicon>
+              <inlinemediaobject>
+                <imageobject>
+                  <imagedata format="GIF" align="center" fileref="images/icons/cut.gif"/>
+                </imageobject>
+              </inlinemediaobject>
+            </guiicon>
+            <literal>Cut</literal> See for a full description
+            <xref linkend="s2.ref.menu_cut"/>.
+          </para>
+        </listitem>
+
+        <listitem>
+          <para>
+            <guiicon>
+              <inlinemediaobject>
+                <imageobject>
+                  <imagedata format="GIF" align="center" fileref="images/icons/copy.gif"/>
+                </imageobject>
+              </inlinemediaobject>
+            </guiicon>
+            <literal>Copy</literal> See for a full description
+            <xref linkend="s2.ref.menu_copy"/>.
+          </para>
+        </listitem>
+
+        <listitem>
+          <para>
+            <guiicon>
+              <inlinemediaobject>
+                <imageobject>
+                  <imagedata format="GIF" align="center" fileref="images/icons/paste.gif"/>
+                </imageobject>
+              </inlinemediaobject>
+            </guiicon>
+            <literal>Paste</literal> See for a full description
+            <xref linkend="s2.ref.menu_paste"/>.
+          </para>
+        </listitem>
+
+        <listitem>
+          <para>
+            <guiicon>
+              <inlinemediaobject>
+                <imageobject>
+                  <imagedata format="GIF" align="center" fileref="images/icons/remove_from_diagram.gif"/>
+                </imageobject>
+              </inlinemediaobject>
+            </guiicon>
+            <literal>Remove From Diagram</literal> See for a full description
+            <xref linkend="s2.menu_edit_remove_from_diagram"/>.
+          </para>
+        </listitem>
+
+        <listitem>
+          <para>
+            <guiicon>
+              <inlinemediaobject>
+                <imageobject>
+                  <imagedata format="GIF" align="center" fileref="images/icons/navigate_back.gif"/>
+                </imageobject>
+              </inlinemediaobject>
+            </guiicon>
+            <literal>Navigate Back</literal> See for a full description
+            <xref linkend="s2.ref.menu_select"/>.
+          </para>
+        </listitem>
+
+        <listitem>
+          <para>
+            <guiicon>
+              <inlinemediaobject>
+                <imageobject>
+                  <imagedata format="GIF" align="center" fileref="images/icons/navigate_forward.gif"/>
+                </imageobject>
+              </inlinemediaobject>
+            </guiicon>
+            <literal>Navigate Forward</literal> See for a full description
+            <xref linkend="s2.ref.menu_select"/>.
+          </para>
+        </listitem>
+      </itemizedlist>
+
+    </section>
+
+    <!-- Find... -->
+
+    <section>
+      <title>Find operation</title>
+
+      <para>This button has identical behaviour as its counterpart in the
+        <literal>Edit</literal> menu.
+      </para>
+
+      <itemizedlist>
+        <listitem>
+          <para>
+            <guiicon>
+              <inlinemediaobject>
+                <imageobject>
+                  <imagedata format="GIF" align="center" fileref="images/icons/find.gif"/>
+                </imageobject>
+              </inlinemediaobject>
+            </guiicon>
+            <literal>Find</literal> See for a full description
+            <xref linkend="s2.ref.menu_find"/>.
+          </para>
+        </listitem>
+      </itemizedlist>
+    </section>
+    
+    <!-- the Diagrams -->
+
+    <section>
+      <title>Diagram creation operations</title>
+
+      <para>These buttons have identical functions as their counterparts in the
+        <literal>Create Diagram</literal> menu.
+        <!-- TODO: This name of this menu will change due to issue ... -->
+      </para>
+
+      <itemizedlist>
+        <listitem>
+          <para>
+            <guiicon>
+              <inlinemediaobject>
+                <imageobject>
+                  <imagedata format="GIF" align="center" fileref="images/icons/class_diagram.gif"/>
+                </imageobject>
+              </inlinemediaobject>
+            </guiicon>
+            <literal>Class Diagram</literal> See for a full description
+            <xref linkend="s2.ref.create.diagram.class_diagram"/>.
+          </para>
+        </listitem>
+
+        <listitem>
+          <para>
+            <guiicon>
+              <inlinemediaobject>
+                <imageobject>
+                  <imagedata format="GIF" align="center" fileref="images/icons/use_case_diagram.gif"/>
+                </imageobject>
+              </inlinemediaobject>
+            </guiicon>
+            <literal>Use Case Diagram</literal> See for a full description
+            <xref linkend="s2.ref.create.diagram.use_case_diagram"/>.
+          </para>
+        </listitem>
+
+        <listitem>
+          <para>
+            <guiicon>
+              <inlinemediaobject>
+                <imageobject>
+                  <imagedata format="GIF" align="center" fileref="images/icons/state_diagram.gif"/>
+                </imageobject>
+              </inlinemediaobject>
+            </guiicon>
+            <literal>State Diagram</literal> See for a full description
+            <xref linkend="s2.ref.create.diagram.state_diagram"/>.
+          </para>
+        </listitem>
+
+        <listitem>
+          <para>
+            <guiicon>
+              <inlinemediaobject>
+                <imageobject>
+                  <imagedata format="GIF" align="center" fileref="images/icons/class_diagram.gif"/>
+                </imageobject>
+              </inlinemediaobject>
+            </guiicon>
+            <literal>Class Diagram</literal> See for a full description
+            <xref linkend="s2.ref.create.diagram.class_diagram"/>.
+          </para>
+        </listitem>
+
+        <listitem>
+          <para>
+            <guiicon>
+              <inlinemediaobject>
+                <imageobject>
+                  <imagedata format="GIF" align="center" fileref="images/icons/activity_diagram.gif"/>
+                </imageobject>
+              </inlinemediaobject>
+            </guiicon>
+            <literal>Activity Diagram</literal> See for a full description
+            <xref linkend="s2.ref.create.diagram.activity_diagram"/>.
+          </para>
+        </listitem>
+
+        <listitem>
+          <para>
+            <guiicon>
+              <inlinemediaobject>
+                <imageobject>
+                  <imagedata format="GIF" align="center" fileref="images/icons/collaboration_diagram.gif"/>
+                </imageobject>
+              </inlinemediaobject>
+            </guiicon>
+            <literal>Collaboration Diagram</literal> See for a full description
+            <xref linkend="s2.ref.create.diagram.collaboration_diagram"/>.
+          </para>
+        </listitem>
+
+        <listitem>
+          <para>
+            <guiicon>
+              <inlinemediaobject>
+                <imageobject>
+                  <imagedata format="GIF" align="center" fileref="images/icons/deployment_diagram.gif"/>
+                </imageobject>
+              </inlinemediaobject>
+            </guiicon>
+            <literal>Deployment Diagram</literal> See for a full description
+            <xref linkend="s2.ref.create.diagram.deployment_diagram"/>.
+          </para>
+        </listitem>
+
+
+
+      </itemizedlist>
+    </section>
+    
+
+  </section>
 </chapter>
