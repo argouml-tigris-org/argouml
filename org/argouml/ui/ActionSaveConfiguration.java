@@ -37,15 +37,6 @@ import org.argouml.uml.ui.UMLAction;
  */
 public class ActionSaveConfiguration extends UMLAction {
     /**
-     * One and only instance.
-     *
-     * @deprecated by Linus Tolke as of 0.17.1. 
-     *             Create your own instance of this object instead.
-     */
-    public static final ActionSaveConfiguration SINGLETON =
-	new ActionSaveConfiguration();
-
-    /**
      * Constructor.
      */
     public ActionSaveConfiguration() {

@@ -96,12 +96,7 @@ public class ToDoPane extends JPanel
         MouseListener,
         ToDoListListener,
         QuadrantPanel {
-    
-    /**
-     * @deprecated by Linus Tolke as of 0.15.5. Use your own instance of
-     * Logger. This will become private.
-     */
-    protected static Logger cat = Logger.getLogger(ToDoPane.class);
+    private static final Logger LOG = Logger.getLogger(ToDoPane.class);
     
     ////////////////////////////////////////////////////////////////
     // constants
@@ -334,13 +329,13 @@ public class ToDoPane extends JPanel
      * @param e is the event.
      */
     public void valueChanged(TreeSelectionEvent e) {
-        cat.debug("ToDoPane valueChanged");
+        LOG.debug("ToDoPane valueChanged");
         //TODO: should fire its own event and ProjectBrowser
         //should register a listener
         Object sel = getSelectedObject();
         ProjectBrowser.getInstance().setToDoItem(sel);
-        cat.debug("lastselection: " + _lastSel);
-	cat.debug("sel: " + sel);
+        LOG.debug("lastselection: " + _lastSel);
+	LOG.debug("sel: " + sel);
         if (_lastSel instanceof ToDoItem) {
 	    ((ToDoItem) _lastSel).deselect();
 	}
@@ -352,15 +347,37 @@ public class ToDoPane extends JPanel
     
     // ------------- MouseListener implementation ---------------
     
-    /** empty implementation */
+    /**
+     * @see java.awt.event.MouseListener#mousePressed(java.awt.event.MouseEvent)
+     *
+     * Empty implementation.
+     */
     public void mousePressed(MouseEvent e) { }
-    /** empty implementation */
+
+    /**
+     * @see java.awt.event.MouseListener#mouseReleased(java.awt.event.MouseEvent)
+     *
+     * Empty implementation.
+     */
     public void mouseReleased(MouseEvent e) { }
-    /** empty implementation */
+
+    /**
+     * @see java.awt.event.MouseListener#mouseEntered(java.awt.event.MouseEvent)
+     *
+     * Empty implementation.
+     */
     public void mouseEntered(MouseEvent e) { }
-    /** empty implementation */
+
+    /**
+     * @see java.awt.event.MouseListener#mouseExited(java.awt.event.MouseEvent)
+     *
+     * Empty implementation.
+     */
     public void mouseExited(MouseEvent e) { }
     
+    /**
+     * @see java.awt.event.MouseListener#mouseClicked(java.awt.event.MouseEvent)
+     */
     public void mouseClicked(MouseEvent e) {
         int row = _tree.getRowForLocation(e.getX(), e.getY());
         TreePath path = _tree.getPathForLocation(e.getX(), e.getY());
@@ -377,12 +394,18 @@ public class ToDoPane extends JPanel
     ////////////////////////////////////////////////////////////////
     // ToDoListListener implementation
     
+    /**
+     * @see org.argouml.cognitive.ToDoListListener#toDoItemsChanged(org.argouml.cognitive.ToDoListEvent)
+     */
     public void toDoItemsChanged(ToDoListEvent tde) {
         if (_curPerspective instanceof ToDoListListener) {
             ((ToDoListListener) _curPerspective).toDoItemsChanged(tde);
 	}
     }
     
+    /**
+     * @see org.argouml.cognitive.ToDoListListener#toDoItemsAdded(org.argouml.cognitive.ToDoListEvent)
+     */
     public void toDoItemsAdded(ToDoListEvent tde) {
         if (_curPerspective instanceof ToDoListListener) {
             ((ToDoListListener) _curPerspective).toDoItemsAdded(tde);
@@ -390,6 +413,9 @@ public class ToDoPane extends JPanel
         updateCountLabel();
     }
     
+    /**
+     * @see org.argouml.cognitive.ToDoListListener#toDoItemsRemoved(org.argouml.cognitive.ToDoListEvent)
+     */
     public void toDoItemsRemoved(ToDoListEvent tde) {
         if (_curPerspective instanceof ToDoListListener) {
             ((ToDoListListener) _curPerspective).toDoItemsRemoved(tde);
@@ -397,6 +423,9 @@ public class ToDoPane extends JPanel
         updateCountLabel();
     }
     
+    /**
+     * @see org.argouml.cognitive.ToDoListListener#toDoListChanged(org.argouml.cognitive.ToDoListEvent)
+     */
     public void toDoListChanged(ToDoListEvent tde) {
         if (_curPerspective instanceof ToDoListListener) {
             ((ToDoListListener) _curPerspective).toDoListChanged(tde);
@@ -447,7 +476,7 @@ public class ToDoPane extends JPanel
         if (_curPerspective == null) {
 	    _tree.setVisible(false);
 	} else {
-            cat.debug("ToDoPane setting tree model");
+            LOG.debug("ToDoPane setting tree model");
             _curPerspective.setRoot(_root);
             _curPerspective.setFlat(_flat);
             if (_flat) {
@@ -460,6 +489,9 @@ public class ToDoPane extends JPanel
         }
     }
     
+    /**
+     * @see org.argouml.application.api.QuadrantPanel#getQuadrant()
+     */
     public int getQuadrant() { return Q_BOTTOM_LEFT; }
     
     
@@ -495,7 +527,7 @@ public class ToDoPane extends JPanel
         
         //TODO: should fire its own event and ProjectBrowser
         //should register a listener
-        cat.debug("2: " + getSelectedObject().toString());
+        LOG.debug("2: " + getSelectedObject().toString());
     }
     
     /**

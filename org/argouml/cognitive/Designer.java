@@ -72,10 +72,7 @@ public class Designer
          MElementListener, // TODO: remove.
          java.io.Serializable
 {
-    /**
-     * @deprecated by Linus Tolke as of 0.16. Will be private.
-     */
-    protected static Logger cat = Logger.getLogger(Designer.class);
+    private static Logger LOG = Logger.getLogger(Designer.class);
     
     /** the singleton of this class: TODO: needs to be made private.*/
     public static Designer TheDesigner = new Designer();
@@ -102,14 +99,14 @@ public class Designer
     
     /** ToDoList items that are on the designers ToDoList because of
      *  this material. */
-    private ToDoList _toDoList;
+    private ToDoList toDoList;
     
     /** Preferences -- very ill defined */
-    private Properties _prefs;
+    private Properties prefs;
     
     /** The email address where other designers can send this designer
      * email. This is not used yet. */
-    private String _emailAddr;
+    private String emailAddr;
     
     /** The decisions currently being considered by the designer.
      *
@@ -120,52 +117,52 @@ public class Designer
      *  explicit representation of what decisions the designer is
      *  interested in at a given moment allows the Agency to select
      *  relevant critics for execution. */
-    private DecisionModel _decisions;
+    private DecisionModel decisions;
     
     /** The goals of the designer are likewise used by the Agency to
      *  determine what critics are relevant. */
-    private GoalModel _goals;
+    private GoalModel goals;
     
     /** Each designer has their own Agency instance that is responsible
      *  for selecting and executing critics that are relevant to thid
      *  designer on an on going basis. */
-    private Agency _agency;
+    private Agency agency;
     
     /* the clarifying icon for this poster */
-    private Icon _clarifier = null;
+    private Icon clarifier = null;
     
     /** needs documenting */
-    private Thread _critiquer;
+    private Thread critiquerThread;
     /** needs documenting */
-    private int _critiquingInterval;
+    private int critiquingInterval;
     /** needs documenting */
-    private int _critiqueCPUPercent;
+    private int critiqueCPUPercent;
     /** needs documenting */
-    private boolean _autoCritique;
+    private boolean autoCritique;
     
     /** dm's that should be critiqued ASAP. */
-    private Vector _hotQueue;
+    private Vector hotQueue;
     /** needs documenting */
-    private Vector _hotReasonQueue;
+    private Vector hotReasonQueue;
     /** needs documenting */
-    private Vector _addQueue;
+    private Vector addQueue;
     /** needs documenting */
-    private Vector _addReasonQueue;
+    private Vector addReasonQueue;
     /** needs documenting */
-    private Vector _removeQueue;
+    private Vector removeQueue;
     /** needs documenting */
     public static int _longestAdd;
     /** needs documenting */
     public static int _longestHot;
     
     /** dm's that should be critiqued relatively soon. */
-    private Vector _warmQueue;
+    private Vector warmQueue;
     
     /** needs documenting */
-    private ChildGenerator _cg;
+    private ChildGenerator childGenerator;
     
     /** needs documenting */
-    private static Object _CritiquingRoot;
+    private static Object critiquingRoot;
     
     /** needs documenting */
     protected long _critiqueDuration;
@@ -183,34 +180,34 @@ public class Designer
      * a singleton class - make this private + getInstance methods...
      */
     private Designer() {
-        _decisions = new DecisionModel();
-        _goals = new GoalModel();
-        _agency = new Agency();
-        _prefs = new Properties();
+        decisions = new DecisionModel();
+        goals = new GoalModel();
+        agency = new Agency();
+        prefs = new Properties();
         
-        _toDoList = ToDoList.getInstance();
+        toDoList = ToDoList.getInstance();
         
-        _toDoList.spawnValidityChecker(this);
+        toDoList.spawnValidityChecker(this);
         // TODO: make this configurable
-        _emailAddr = "users@argouml.tigris.org";
+        emailAddr = "users@argouml.tigris.org";
         TheDesigner = this;
         _userWorking = false;
         
-        _critiquingInterval = 8000;
-        _critiqueCPUPercent = 10;
-        _autoCritique = true;
+        critiquingInterval = 8000;
+        critiqueCPUPercent = 10;
+        autoCritique = true;
         
-        _hotQueue = new Vector();
-        _hotReasonQueue = new Vector();
-        _addQueue = new Vector();
-        _addReasonQueue = new Vector();
-        _removeQueue = new Vector();
+        hotQueue = new Vector();
+        hotReasonQueue = new Vector();
+        addQueue = new Vector();
+        addReasonQueue = new Vector();
+        removeQueue = new Vector();
         _longestAdd = 0;
         _longestHot = 0;
         
-        _warmQueue = new Vector();
+        warmQueue = new Vector();
         
-        _cg = new ChildGenDMElements();
+        childGenerator = new ChildGenDMElements();
         
         _critiqueLock = 0;
         
@@ -230,11 +227,11 @@ public class Designer
      *  critics that are relevant to this designer's work. */
     public void spawnCritiquer(Object root) {
         /* TODO: really should be a separate class */
-        _critiquer = new Thread(this, "CritiquingThread");
-        _critiquer.setDaemon(true);
-        _critiquer.setPriority(Thread.currentThread().getPriority() - 1);
-        _critiquer.start();
-        _CritiquingRoot = root;
+        critiquerThread = new Thread(this, "CritiquingThread");
+        critiquerThread.setDaemon(true);
+        critiquerThread.setPriority(Thread.currentThread().getPriority() - 1);
+        critiquerThread.start();
+        critiquingRoot = root;
     }
     
     /** Continuously select and execute critics against this designer's
@@ -252,17 +249,17 @@ public class Designer
             
             // the critiquing thread should wait if disabled.
             synchronized (this) {
-                while (!_autoCritique) {
+                while (!autoCritique) {
                     try {
                         this.wait();
                     } catch (InterruptedException ignore) {
-                        cat.error("InterruptedException!!!", ignore);
+                        LOG.error("InterruptedException!!!", ignore);
                     }
                 }
             }
             
             // why?
-            if (_CritiquingRoot != null
+            if (critiquingRoot != null
 //		&& getAutoCritique()
 		&& _critiqueLock <= 0) {
                 
@@ -271,46 +268,46 @@ public class Designer
                     critiqueStartTime = System.currentTimeMillis();
                     cutoffTime = critiqueStartTime + 3000;
                     
-                    size = _addQueue.size();
+                    size = addQueue.size();
                     for (int i = 0; i < size; i++) {
-                        _hotQueue.addElement(_addQueue.elementAt(i));
-                        _hotReasonQueue.addElement(_addReasonQueue.elementAt(i));
+                        hotQueue.addElement(addQueue.elementAt(i));
+                        hotReasonQueue.addElement(addReasonQueue.elementAt(i));
                     }
-                    _addQueue.removeAllElements();
-                    _addReasonQueue.removeAllElements();
+                    addQueue.removeAllElements();
+                    addReasonQueue.removeAllElements();
                     
-                    _longestHot = Math.max(_longestHot, _hotQueue.size());
-                    _agency.determineActiveCritics(this);
+                    _longestHot = Math.max(_longestHot, hotQueue.size());
+                    agency.determineActiveCritics(this);
                     
-                    while (_hotQueue.size() > 0) {
-                        Object dm = _hotQueue.elementAt(0);
-                        Long reasonCode = (Long) _hotReasonQueue.elementAt(0);
-                        _hotQueue.removeElementAt(0);
-                        _hotReasonQueue.removeElementAt(0);
+                    while (hotQueue.size() > 0) {
+                        Object dm = hotQueue.elementAt(0);
+                        Long reasonCode = (Long) hotReasonQueue.elementAt(0);
+                        hotQueue.removeElementAt(0);
+                        hotReasonQueue.removeElementAt(0);
                         Agency.applyAllCritics(dm, theDesigner(),
 					       reasonCode.longValue());
                     }
                     
-                    size = _removeQueue.size();
+                    size = removeQueue.size();
                     for (int i = 0; i < size; i++)
-                        _warmQueue.removeElement(_removeQueue.elementAt(i));
-                    _removeQueue.removeAllElements();
+                        warmQueue.removeElement(removeQueue.elementAt(i));
+                    removeQueue.removeAllElements();
                     
-                    if (_warmQueue.size() == 0)
-                        _warmQueue.addElement(_CritiquingRoot);
-                    while (_warmQueue.size() > 0
+                    if (warmQueue.size() == 0)
+                        warmQueue.addElement(critiquingRoot);
+                    while (warmQueue.size() > 0
 			   && (System.currentTimeMillis() < cutoffTime
 			       || minWarmElements > 0)) {
                         if (minWarmElements > 0)
                             minWarmElements--;
-                        Object dm = _warmQueue.elementAt(0);
-                        _warmQueue.removeElementAt(0);
+                        Object dm = warmQueue.elementAt(0);
+                        warmQueue.removeElementAt(0);
                         Agency.applyAllCritics(dm, theDesigner());
-                        java.util.Enumeration subDMs = _cg.gen(dm);
+                        java.util.Enumeration subDMs = childGenerator.gen(dm);
                         while (subDMs.hasMoreElements()) {
                             Object nextDM = subDMs.nextElement();
-                            if (!(_warmQueue.contains(nextDM)))
-                                _warmQueue.addElement(nextDM);
+                            if (!(warmQueue.contains(nextDM)))
+                                warmQueue.addElement(nextDM);
                         }
                     }
                 }
@@ -319,14 +316,14 @@ public class Designer
             }
             _critiqueDuration = System.currentTimeMillis() - critiqueStartTime;
             long cycleDuration =
-		(_critiqueDuration * 100) / _critiqueCPUPercent;
+		(_critiqueDuration * 100) / critiqueCPUPercent;
             long sleepDuration =
 		Math.min(cycleDuration - _critiqueDuration, 3000);
             sleepDuration = Math.max(sleepDuration, 1000);
-            cat.debug("sleepDuration= " + sleepDuration);
+            LOG.debug("sleepDuration= " + sleepDuration);
             try { Thread.sleep(sleepDuration); }
             catch (InterruptedException ignore) {
-                cat.error("InterruptedException!!!", ignore);
+                LOG.error("InterruptedException!!!", ignore);
             }
         }
     }
@@ -339,22 +336,22 @@ public class Designer
     public synchronized void critiqueASAP(Object dm, String reason) {
         long rCode = Critic.reasonCodeFor(reason);
         if (!_userWorking) return;
-        cat.debug("critiqueASAP:" + dm);
-        int addQueueIndex = _addQueue.indexOf(dm);
+        LOG.debug("critiqueASAP:" + dm);
+        int addQueueIndex = addQueue.indexOf(dm);
         if (addQueueIndex == -1) {
-            _addQueue.addElement(dm);
+            addQueue.addElement(dm);
             Long reasonCodeObj = new Long(rCode);
-            _addReasonQueue.addElement(reasonCodeObj);
+            addReasonQueue.addElement(reasonCodeObj);
         }
         else {
             Long reasonCodeObj =
-		(Long) _addReasonQueue.elementAt(addQueueIndex);
+		(Long) addReasonQueue.elementAt(addQueueIndex);
             long rc = reasonCodeObj.longValue() | rCode;
             Long newReasonCodeObj = new Long(rc);
-            _addReasonQueue.setElementAt(newReasonCodeObj, addQueueIndex);
+            addReasonQueue.setElementAt(newReasonCodeObj, addQueueIndex);
         }
-        _removeQueue.addElement(dm);
-        _longestAdd = Math.max(_longestAdd, _addQueue.size());
+        removeQueue.addElement(dm);
+        _longestAdd = Math.max(_longestAdd, addQueue.size());
     }
     
     /** Look for potential problems or open issues in the given design. */
@@ -396,7 +393,7 @@ public class Designer
     
     /** Ask this designer's agency to select which critics should be active. */
     public void determineActiveCritics() {
-        _agency.determineActiveCritics(this);
+        agency.determineActiveCritics(this);
     }
     
     ////////////////////////////////////////////////////////////////
@@ -409,14 +406,14 @@ public class Designer
      *  executes. The concept of an interval between runs will become
      *  less important as Argo is redesigned to be more trigger
      *  driven. */
-    public boolean getAutoCritique() { return _autoCritique; }
+    public boolean getAutoCritique() { return autoCritique; }
     
     /** see getAutoCritique() */
     public void setAutoCritique(boolean b) {
-	_autoCritique = b; 
+	autoCritique = b; 
     
 	synchronized (this) {
-	    if (_autoCritique) {
+	    if (autoCritique) {
 		this.notifyAll();
 	    }
 	}
@@ -429,7 +426,7 @@ public class Designer
      */
     public int getCritiquingInterval() {
         
-        return _critiquingInterval;
+        return critiquingInterval;
     }
 
     /**
@@ -438,7 +435,7 @@ public class Designer
      * @param i The new interval.
      */
     public void setCritiquingInterval(int i) {
-	_critiquingInterval = i;
+	critiquingInterval = i;
     }
     
     /** needs documenting */
@@ -458,13 +455,13 @@ public class Designer
     /** needs documenting */
     public static void clearCritiquing() {
         synchronized (theDesigner()) {
-            theDesigner()._toDoList.removeAllElements(); //v71
-            theDesigner()._hotQueue.removeAllElements();
-            theDesigner()._hotReasonQueue.removeAllElements();
-            theDesigner()._addQueue.removeAllElements();
-            theDesigner()._addReasonQueue.removeAllElements();
-            theDesigner()._removeQueue.removeAllElements();
-            theDesigner()._warmQueue.removeAllElements();
+            theDesigner().toDoList.removeAllElements(); //v71
+            theDesigner().hotQueue.removeAllElements();
+            theDesigner().hotReasonQueue.removeAllElements();
+            theDesigner().addQueue.removeAllElements();
+            theDesigner().addReasonQueue.removeAllElements();
+            theDesigner().removeQueue.removeAllElements();
+            theDesigner().warmQueue.removeAllElements();
         }
         //clear out queues! @@@
     }
@@ -472,7 +469,7 @@ public class Designer
     /** needs documenting */
     public static void setCritiquingRoot(Object d) {
         synchronized (theDesigner()) {
-            _CritiquingRoot = d;
+            critiquingRoot = d;
         }
         /*  Don't clear everything here, breaks loading! */
     }
@@ -480,24 +477,24 @@ public class Designer
     /** needs documenting */
     public static Object getCritiquingRoot() {
         synchronized (theDesigner()) {
-            return _CritiquingRoot;
+            return critiquingRoot;
         }
     }
     
     /** needs documenting */
-    public ChildGenerator getChildGenerator() { return _cg; }
+    public ChildGenerator getChildGenerator() { return childGenerator; }
 
     /** needs documenting */
-    public void setChildGenerator(ChildGenerator cg) { _cg = cg; }
+    public void setChildGenerator(ChildGenerator cg) { childGenerator = cg; }
     
     /** needs documenting */
-    public DecisionModel getDecisionModel() { return _decisions; }
+    public DecisionModel getDecisionModel() { return decisions; }
     /** needs documenting */
-    public Vector getDecisions() { return _decisions.getDecisions(); }
+    public Vector getDecisions() { return decisions.getDecisions(); }
     /** needs documenting */
-    public GoalModel getGoalModel() { return _goals; }
+    public GoalModel getGoalModel() { return goals; }
     /** needs documenting */
-    public Vector getGoals() { return _goals.getGoals(); }
+    public Vector getGoals() { return goals.getGoals(); }
     
     /**
      * This method returns true.
@@ -534,40 +531,40 @@ public class Designer
     
     /** get the generic clarifier for this designer/poster */
     public Icon getClarifier() { 
-        return _clarifier;
+        return clarifier;
     }
     
     /** get the generic clarifier for this designer/poster */
-    public void setClarifier(Icon clarifier) {
-        _clarifier = clarifier;
+    public void setClarifier(Icon clar) {
+        clarifier = clar;
     }
     
     /** Reply this Designer's ToDoList, a list of pending problems and
      *  issues that the designer might be interested in.
      * @see ToDoList */
     public ToDoList getToDoList() {
-        return _toDoList;
+        return toDoList;
     }
     
     /** Add all the items in the given list to my list. */
     public void addToDoItems(ToDoList list) {
-        _toDoList.addAll(list);
+        toDoList.addAll(list);
     }
     
     /** Remove all the items in the given list from my list. */
     public void removeToDoItems(ToDoList list) {
-        _toDoList.removeAll(list);
+        toDoList.removeAll(list);
     }
     
     /** Reply the designers personal preferneces. */
     public Properties getPrefs() {
-        return _prefs;
+        return prefs;
     }
     
     /** Reply true iff the designer is currently considering the given
      *  decison. */
     public boolean isConsidering(String decision) {
-        return _decisions.isConsidering(decision);
+        return decisions.isConsidering(decision);
     }
     
     /** needs documenting */
@@ -578,53 +575,53 @@ public class Designer
     /** Record the extent to which the designer is considering the given
      *  decision. */
     public void setDecisionPriority(String decision, int priority) {
-        _decisions.setDecisionPriority(decision, priority);
+        decisions.setDecisionPriority(decision, priority);
     }
     
     /** needs documenting */
     public void defineDecision(String decision, int priority) {
-        _decisions.defineDecision(decision, priority);
+        decisions.defineDecision(decision, priority);
     }
     
     /** needs documenting */
     public void startConsidering(String decision) {
-        _decisions.startConsidering(decision);
+        decisions.startConsidering(decision);
     }
     
     /** needs documenting */
     public void startConsidering(Decision d) {
-        _decisions.startConsidering(d);
+        decisions.startConsidering(d);
     }
     
     /** needs documenting */
     public void stopConsidering(String decision) {
-        _decisions.stopConsidering(decision);
+        decisions.stopConsidering(decision);
     }
     
     /** needs documenting */
     public void stopConsidering(Decision d) {
-        _decisions.stopConsidering(d);
+        decisions.stopConsidering(d);
     }
     
     /** Record the extent to which the designer desires the given goal. */
-    public boolean hasGoal(String goal) { return _goals.hasGoal(goal); }
+    public boolean hasGoal(String goal) { return goals.hasGoal(goal); }
     
     /** needs documenting */
     public void setGoalPriority(String goal, int priority) {
-        _goals.setGoalPriority(goal, priority);
+        goals.setGoalPriority(goal, priority);
     }    
 
     /** needs documenting */
-    public void startDesiring(String goal) { _goals.startDesiring(goal); }
+    public void startDesiring(String goal) { goals.startDesiring(goal); }
 
     /** needs documenting */
-    public void stopDesiring(String goal) { _goals.stopDesiring(goal); }
+    public void stopDesiring(String goal) { goals.stopDesiring(goal); }
 
     /** needs documenting */
-    public String getExpertEmail() { return _emailAddr; }
+    public String getExpertEmail() { return emailAddr; }
 
     /** needs documenting */
-    public void setExpertEmail(String addr) { _emailAddr = addr; }
+    public void setExpertEmail(String addr) { emailAddr = addr; }
 
     /** empty */
     public void snooze() { /* do nothing */ }
@@ -633,7 +630,7 @@ public class Designer
     public void unsnooze() { /* do nothing */ }
     
     /** Reply the Agency object that is helping this Designer. */
-    public Agency getAgency() { return _agency; }
+    public Agency getAgency() { return agency; }
     
     ////////////////////////////////////////////////////////////////
     // user interface
@@ -663,7 +660,7 @@ public class Designer
      *  relevant to his design work, and allow him to consider it on his
      *  own initiative. */
     public synchronized void nondisruptivelyWarn(ToDoItem item) {
-        _toDoList.addElement(item);
+        toDoList.addElement(item);
     }
     
     /**
@@ -675,7 +672,9 @@ public class Designer
         return 9;
     }
     
-    /** needs documenting */
+    /**
+     * @see java.lang.Object#toString()
+     */
     public String toString() {
         //String printString = super.toString() + " [\n";
         //printString += "  " + "decisions: " + _decisions.toString() + "\n";

@@ -59,11 +59,8 @@ import org.argouml.cognitive.Designer;
  * @author Jason Robbins
  */
 public class Agency extends Observable { //implements java.io.Serialization
-    /**
-     * @deprecated by Linus Tolke as of 0.15.5. Use your own instance of
-     * Logger. This will become private.
-     */
-    protected static Logger cat = Logger.getLogger(Agency.class);
+    private static final Logger LOG = Logger.getLogger(Agency.class);
+
     ////////////////////////////////////////////////////////////////
     // instance variables
     
@@ -71,17 +68,17 @@ public class Agency extends Observable { //implements java.io.Serialization
      * A registery of all critics that are currently loaded into the
      * design environment.
      */
-    private static Hashtable _criticRegistry = new Hashtable(100);
-    private static Vector _critics = new Vector();
+    private static Hashtable criticRegistry = new Hashtable(100);
+    private static Vector critics = new Vector();
     
     //   private static boolean _hot = false;
     /**
      * The main control mechanism for determining which critics should
      * be active.
      */
-    private ControlMech _controlMech;
+    private ControlMech controlMech;
     public static int _numCriticsApplied = 0;
-    private static Hashtable _singletonCritics = new Hashtable(40);
+    private static Hashtable singletonCritics = new Hashtable(40);
     ////////////////////////////////////////////////////////////////
     // constructor and singleton methdos
     
@@ -91,7 +88,7 @@ public class Agency extends Observable { //implements java.io.Serialization
      * active.
      */
     public Agency(ControlMech cm) {
-        _controlMech = cm;
+        controlMech = cm;
     }
     
     /**
@@ -100,7 +97,7 @@ public class Agency extends Observable { //implements java.io.Serialization
      * active.
      */
     public Agency() {
-        _controlMech = new StandardCM();
+        controlMech = new StandardCM();
     }
     
     /**
@@ -126,22 +123,22 @@ public class Agency extends Observable { //implements java.io.Serialization
      * Reply the registery.
      */
     private static Hashtable getCriticRegistry() {
-        return _criticRegistry;
+        return criticRegistry;
     }
     
     public static Vector getCritics() {
-        return _critics;
+        return critics;
     }
     
     //   public static void setHot(boolean b) { _hot = b; }
     ////////////////////////////////////////////////////////////////
     // critic registration
     protected static void addCritic(Critic cr) {
-        if (_critics.contains(cr)) {
+        if (critics.contains(cr)) {
             return;
 	}
         if (!(cr instanceof CompoundCritic)) {
-            _critics.addElement(cr);
+            critics.addElement(cr);
 	} else {
             Vector subs = ((CompoundCritic) cr).getCritics();
             Enumeration subCritics = subs.elements();
@@ -157,28 +154,28 @@ public class Agency extends Observable { //implements java.io.Serialization
         try {
             dmClass = Class.forName(dmClassName);
         } catch (java.lang.ClassNotFoundException e) {
-            cat.error("Error loading dm " + dmClassName, e);
+            LOG.error("Error loading dm " + dmClassName, e);
             return;
         }
-        Critic cr = (Critic) _singletonCritics.get(crClassName);
+        Critic cr = (Critic) singletonCritics.get(crClassName);
         if (cr == null) {
             Class crClass;
             try {
                 crClass = Class.forName(crClassName);
             } catch (java.lang.ClassNotFoundException e) {
-                cat.error("Error loading cr " + crClassName, e);
+                LOG.error("Error loading cr " + crClassName, e);
                 return;
             }
             try {
                 cr = (Critic) crClass.newInstance();
             } catch (java.lang.IllegalAccessException e) {
-                cat.error("Error instancating cr " + crClassName, e);
+                LOG.error("Error instancating cr " + crClassName, e);
                 return;
             } catch (java.lang.InstantiationException e) {
-                cat.error("Error instancating cr " + crClassName, e);
+                LOG.error("Error instancating cr " + crClassName, e);
                 return;
             }
-            _singletonCritics.put(crClassName, cr);
+            singletonCritics.put(crClassName, cr);
             addCritic(cr);
         }
         register(cr, dmClass);
@@ -192,14 +189,14 @@ public class Agency extends Observable { //implements java.io.Serialization
      * could added thorugh a menu command in some control panel...
      */
     public static void register(Critic cr, Class clazz) {
-        Vector critics = (Vector) getCriticRegistry().get(clazz);
-        if (critics == null) {
-            critics = new Vector();
-            _criticRegistry.put(clazz, critics);
+        Vector theCritics = (Vector) getCriticRegistry().get(clazz);
+        if (theCritics == null) {
+            theCritics = new Vector();
+            criticRegistry.put(clazz, theCritics);
         }
-        critics.addElement(cr);
+        theCritics.addElement(cr);
         notifyStaticObservers(cr);
-        cat.debug("Registered: " + critics.toString());
+        LOG.debug("Registered: " + theCritics.toString());
         _cachedCritics.remove(clazz);
         addCritic(cr);
     }
@@ -241,12 +238,12 @@ public class Agency extends Observable { //implements java.io.Serialization
      * @return Vector
      */
     protected static Vector criticsForSpecificClass(Class clazz) {
-        Vector critics = (Vector) getCriticRegistry().get(clazz);
-        if (critics == null) {
-            critics = new Vector();
-            _criticRegistry.put(clazz, critics);
+        Vector theCritics = (Vector) getCriticRegistry().get(clazz);
+        if (theCritics == null) {
+            theCritics = new Vector();
+            criticRegistry.put(clazz, theCritics);
         }
-        return critics;
+        return theCritics;
     }
     
     ////////////////////////////////////////////////////////////////
@@ -288,7 +285,7 @@ public class Agency extends Observable { //implements java.io.Serialization
                 try {
                     c.critique(dm, d);
                 } catch (Exception ex) {
-                    cat.error("Disabling critique due to exception\n"
+                    LOG.error("Disabling critique due to exception\n"
 			      + c + "\n" + dm,
 			      ex);
                     c.setEnabled(false);
@@ -310,10 +307,10 @@ public class Agency extends Observable { //implements java.io.Serialization
         //     Enumeration clazzEnum = getCriticRegistry().keys();
         //     while (clazzEnum.hasMoreElements()) {
         //       Class clazz = (Class) (clazzEnum.nextElement());
-        Enumeration criticEnum = _critics.elements();
+        Enumeration criticEnum = critics.elements();
         while (criticEnum.hasMoreElements()) {
             Critic c = (Critic) (criticEnum.nextElement());
-            if (_controlMech.isRelevant(c, d)) {
+            if (controlMech.isRelevant(c, d)) {
                 c.beActive();
             } else {
                 c.beInactive();
