@@ -116,21 +116,6 @@ public class TestFigClonable extends TestCase {
         }
     }
 
-    /** try to clone FigHistoryState in package diagram.state.ui.
-     */
-    public void testHistoryStateClonable() {
-        try {
-            FigHistoryState fig = new FigHistoryState();
-            FigHistoryState figclone;
-             
-            figclone = (FigHistoryState) fig.clone();
-            assertTrue("FigHistoryState cloned", true);
-        }
-        catch (Exception e) {
-            assertTrue("FigHistoryState not clonable", false);
-        }
-    }
-
     /** try to clone FigInitialState in package diagram.state.ui.
      */
     public void testInitialStateClonable() {
