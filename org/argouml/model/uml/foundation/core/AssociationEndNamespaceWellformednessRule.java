@@ -57,7 +57,7 @@ public class AssociationEndNamespaceWellformednessRule
      * Checks that an associatonends namespace is the same as the
      * owning association has
      * 
-     * @see org.argouml.model.uml.AbstractWellformednessRule#isWellformed(MBase,Object)
+     * @see org.argouml.model.uml.AbstractWellformednessRule#isWellformed(Object,Object)
      */
     public boolean isWellformed(Object /*MBase*/ element, Object newValue) {
 	if (element instanceof MAssociationEnd && newValue instanceof MNamespace) {

@@ -52,7 +52,7 @@ public class AssociationEndNameWellformednessRule
     /**
      * Checks that all associationends have an unique name in an association
      * 
-     * @see org.argouml.model.uml.AbstractWellformednessRule#isWellformed(MBase,Object)
+     * @see org.argouml.model.uml.AbstractWellformednessRule#isWellformed(Object,Object)
      */
     public boolean isWellformed(Object/*MBase*/ element, Object newValue) {
 	if (element instanceof MAssociationEnd && newValue instanceof String) {

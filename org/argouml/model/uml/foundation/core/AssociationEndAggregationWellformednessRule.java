@@ -58,7 +58,7 @@ public class AssociationEndAggregationWellformednessRule
     /**
      * Checks that there is at most one associationend within an association an 
      * aggregation or composite.
-     * @see org.argouml.model.uml.AbstractWellformednessRule#isWellformed(MBase,Object)
+     * @see org.argouml.model.uml.AbstractWellformednessRule#isWellformed(Object,Object)
      */
     public boolean isWellformed(Object/*MBase*/ element, Object newValue) {
 	if (element instanceof MAssociationEnd && newValue instanceof MAggregationKind) {

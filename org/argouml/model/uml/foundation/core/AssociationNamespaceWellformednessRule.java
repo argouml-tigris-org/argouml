@@ -52,7 +52,7 @@ public class AssociationNamespaceWellformednessRule
     }
 
     /**
-     * @see org.argouml.model.uml.AbstractWellformednessRule#isWellformed(MBase,Object)
+     * @see org.argouml.model.uml.AbstractWellformednessRule#isWellformed(Object,Object)
      */
     public boolean isWellformed(Object/*MBase*/ element, Object newValue) {
 	if (element instanceof MAssociation && newValue instanceof MClassifier) {
