@@ -63,6 +63,7 @@ public final class ProjectManager {
     public final static String PROJECT_FILE_EXT = ".argo";
 
     public final static String CURRENT_PROJECT_PROPERTY_NAME = "currentProject";
+    public final static String SAVE_STATE_PROPERTY_NAME = "saveState";
 
     private Category cat = Category.getInstance(this.getClass());
 
@@ -124,7 +125,7 @@ public final class ProjectManager {
         _listenerList.remove(PropertyChangeListener.class, listener);
     }
 
-    private void firePropertyChanged(Project oldProject, Project newProject) {
+    private void firePropertyChanged(String propertyName, Object oldValue, Object newValue) {
         // Guaranteed to return a non-null array
         Object[] listeners = _listenerList.getListenerList();
         // Process the listeners last to first, notifying
@@ -136,9 +137,9 @@ public final class ProjectManager {
                     _event =
                         new PropertyChangeEvent(
                             this,
-                            CURRENT_PROJECT_PROPERTY_NAME,
-                            oldProject,
-                            newProject);
+                            propertyName,
+                            oldValue,
+                            newValue);
                 ((PropertyChangeListener)listeners[i + 1]).propertyChange(
                     _event);
             }
@@ -155,7 +156,7 @@ public final class ProjectManager {
     public void setCurrentProject(Project newProject) {
         Project oldProject = _currentProject;
         _currentProject = newProject;
-        firePropertyChanged(oldProject, newProject);
+        firePropertyChanged(CURRENT_PROJECT_PROPERTY_NAME, oldProject, newProject);
     }
 
     /**
@@ -343,6 +344,17 @@ public final class ProjectManager {
         p.loadAllMembers();
         p.postLoad();
         return p;
+    }
+    
+    /**
+     * notify the gui from the project manager that the
+     * current project's save state has changed.
+     */
+    public void notifySavePropertyChanged(boolean newValue){
+        
+        firePropertyChanged(SAVE_STATE_PROPERTY_NAME,
+                            new Boolean(!newValue),
+                            new Boolean(newValue));
     }
 
 }
