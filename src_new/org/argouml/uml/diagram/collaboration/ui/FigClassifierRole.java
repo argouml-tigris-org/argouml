@@ -488,10 +488,9 @@ public class FigClassifierRole extends FigNodeModelElement {
             else
                 _name.setText("/" + nameStr.trim() + " : " + baseString);
         }
-        
         Rectangle rect = getBounds();
         setBounds(rect.x, rect.y, rect.width, rect.height);
-        
+        damage();
     }
 
     /**

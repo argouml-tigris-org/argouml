@@ -1,4 +1,4 @@
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -21,44 +21,74 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// $header$
+// $Id$
 package org.argouml.uml.ui;
 
-import java.awt.event.ActionEvent;
-
-import org.argouml.kernel.Project;
-import org.argouml.kernel.ProjectManager;
+import org.argouml.application.api.Argo;
 
 /**
- * Action to delete modelelements from the model without navigating to/from them.
- * Used in UMLMutableList for deletion of modelelements from the list.
- * @since Oct 2, 2002
- * @author jaap.branderhorst@xs4all.nl
- * @stereotype singleton
+ * Base class for remove actions. Remove actions can remove an element from the 
+ * model. This can either be a total remove ('erase from model') or just a
+ * remove from a list of bases as in the case of classifierrole bases.
+ * @author jaap.branderhorst@xs4all.nl	
+ * @since Jan 25, 2003
  */
-public class ActionRemoveModelElement extends AbstractActionRemoveElement {
-    
-    public final static ActionRemoveModelElement SINGLETON = new ActionRemoveModelElement();
+public class AbstractActionRemoveElement extends UMLChangeAction {
     
     /**
-     * Constructor for ActionRemoveModelElement.
+     * The object that owns the object that must be removed (the object that is 
+     * the target of the projectbrowser in most cases).
      */
-    protected ActionRemoveModelElement() {
-        super();
+    private Object _target;
+    
+    private Object _objectToRemove;
+    
+    /**
+     * Constructor for AbstractActionRemoveElement.
+     * @param s
+     */
+    protected AbstractActionRemoveElement() {
+        this(Argo.localize("CoreMenu", "Delete From Model"));
+    }
+    
+    protected AbstractActionRemoveElement(String name) {
+        super(name, true, NO_ICON);
+    }
+
+     /**
+     * Returns the target.
+     * @return MModelElement
+     */
+    public Object getTarget() {
+        return _target;
     }
 
     /**
-     * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+     * Sets the target.
+     * @param target The target to set
      */
-    public void actionPerformed(ActionEvent e) {
-        super.actionPerformed(e);
-        Project p = ProjectManager.getManager().getCurrentProject();
-        if (getObjectToRemove() != null && ActionRemoveFromModel.sureRemove(getObjectToRemove()))
-            p.moveToTrash(getTarget());
-        setObjectToRemove(null);
+    public void setTarget(Object target) {
+        _target = target;
+    }
+    
+    /**
+     * Returns the objectToRemove.
+     * @return Object
+     */
+    public Object getObjectToRemove() {
+        return _objectToRemove;
     }
 
-   
+    /**
+     * Sets the objectToRemove.
+     * @param objectToRemove The objectToRemove to set
+     */
+    public void setObjectToRemove(Object objectToRemove) {
+        _objectToRemove = objectToRemove;
+    }
+    
+    
+
     /**
      * @see javax.swing.Action#isEnabled()
      */

@@ -66,7 +66,7 @@ public class UMLCompositeStateSubvertexList extends UMLMutableLinkedList {
             
             addSeparator();
             
-            ActionRemoveModelElement.SINGLETON.setElementToDelete(getSelectedValue());
+            ActionRemoveModelElement.SINGLETON.setTarget(getSelectedValue());
             add(ActionRemoveModelElement.SINGLETON);
         }
         

@@ -139,7 +139,7 @@ public class PropPanelAssociationEnd extends PropPanelModelElement {
         _aggregationRadioButtonpanel = new UMLAssociationEndAggregationRadioButtonPanel(Argo.localize("UMLMenu", "label.aggregation"), true);
         _changeabilityRadioButtonpanel = new UMLAssociationEndChangeabilityRadioButtonPanel(Argo.localize("UMLMenu", "label.changeability"), true);
         _visibilityRadioButtonPanel = new UMLAssociationEndVisibilityRadioButtonPanel(Argo.localize("UMLMenu", "label.visibility"), true);
-        _specificationScroll = new JScrollPane(new UMLMutableLinkedList(new UMLAssociationEndSpecificationListModel(), ActionAddAssociationSpecification.SINGLETON, null, true));
+        _specificationScroll = new JScrollPane(new UMLMutableLinkedList(new UMLAssociationEndSpecificationListModel(), ActionAddAssociationSpecification.SINGLETON, null, null, true));
         
     }
 
