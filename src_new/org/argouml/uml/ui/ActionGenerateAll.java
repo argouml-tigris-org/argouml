@@ -75,8 +75,8 @@ public class ActionGenerateAll extends UMLAction {
           if (name == null || name.length() == 0 || Character.isDigit(name.charAt(0))) continue;
             classes.addElement(owner);
       }
-      if (classes.size() == 0) {
-          TreePath[] paths = pb.getNavigatorPane().getTree().getSelectionPaths();
+	  TreePath[] paths = pb.getNavigatorPane().getTree().getSelectionPaths();
+      if (classes.size() == 0 && paths != null) {
           for (int i = 0; i < paths.length; i++ ) {
               Object selected = paths[i].getLastPathComponent();
               if (ModelFacade.isAPackage(selected)) {
