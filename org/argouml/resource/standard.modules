@@ -12,6 +12,7 @@ module.settings.notation=org.argouml.language.ui.SettingsTabNotation
 module.settings.fonts=org.argouml.ui.SettingsTabFonts
 module.language.uml.generator=org.argouml.uml.generator.GeneratorDisplay
 module.language.java.generator=org.argouml.language.java.generator.GeneratorJava
+module.import.java-files=org.argouml.uml.reveng.java.JavaImport
 #
 module.propertypanel.package=org.argouml.uml.ui.model_management.PropPanelPackage
 module.propertypanel.model=org.argouml.uml.ui.model_management.PropPanelModel
