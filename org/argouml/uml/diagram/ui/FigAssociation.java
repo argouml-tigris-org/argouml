@@ -345,14 +345,16 @@ public class FigAssociation extends FigEdgeModelElement {
             multMenu.add(ActionMultiplicity.SrcMultZeroToOne);
             multMenu.add(ActionMultiplicity.SrcMultOneToMany);
             multMenu.add(ActionMultiplicity.SrcMultZeroToMany);
-            popUpActions.insertElementAt(multMenu, popUpActions.size() - 2);
+            popUpActions.insertElementAt(multMenu, 
+                popUpActions.size() - POPUP_ADD_OFFSET);
 
             ArgoJMenu aggMenu = new ArgoJMenu(BUNDLE, "menu.popup.aggregation");
         
 	    aggMenu.add(ActionAggregation.SrcAggNone);
 	    aggMenu.add(ActionAggregation.SrcAgg);
 	    aggMenu.add(ActionAggregation.SrcAggComposite);
-	    popUpActions.insertElementAt(aggMenu, popUpActions.size() - 2);
+	    popUpActions.insertElementAt(aggMenu, 
+            popUpActions.size() - POPUP_ADD_OFFSET);
 	}
 	else if (destDeterminingFactor < rSquared) {
             ArgoJMenu multMenu = new ArgoJMenu(BUNDLE, "menu.popup.multiplicity");
@@ -360,13 +362,15 @@ public class FigAssociation extends FigEdgeModelElement {
 	    multMenu.add(ActionMultiplicity.DestMultZeroToOne);
 	    multMenu.add(ActionMultiplicity.DestMultOneToMany);
 	    multMenu.add(ActionMultiplicity.DestMultZeroToMany);
-	    popUpActions.insertElementAt(multMenu, popUpActions.size() - 2);
+	    popUpActions.insertElementAt(multMenu, 
+            popUpActions.size() - POPUP_ADD_OFFSET);
 
             ArgoJMenu aggMenu = new ArgoJMenu(BUNDLE, "menu.popup.aggregation");
 	    aggMenu.add(ActionAggregation.DestAggNone);
 	    aggMenu.add(ActionAggregation.DestAgg);
 	    aggMenu.add(ActionAggregation.DestAggComposite);
-	    popUpActions.insertElementAt(aggMenu, popUpActions.size() - 2);
+	    popUpActions.insertElementAt(aggMenu, 
+            popUpActions.size() - POPUP_ADD_OFFSET);
 	}
 	else {
 	    // No particular options for right click in middle of line
@@ -400,7 +404,8 @@ public class FigAssociation extends FigEdgeModelElement {
                     ascEnd,
                     ActionNavigability.ENDTOSTART));
 
-		popUpActions.insertElementAt(navMenu, popUpActions.size() - 2);
+		popUpActions.insertElementAt(navMenu, 
+            popUpActions.size() - POPUP_ADD_OFFSET);
 	    }
 	}
 
