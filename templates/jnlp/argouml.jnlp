@@ -30,6 +30,7 @@
     <jar href="i18n.jar"/>
     <jar href="toolbar.jar"/>
     <jar href="jmi.jar"/>
+    <jar href="commons-logging.jar"/>
 
   </resources>
   <application-desc main-class="org.argouml.application.Main"/>
