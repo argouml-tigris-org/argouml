@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2001 The Regents of the University of California. All
+// Copyright (c) 1996-2003 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -602,27 +602,45 @@ public abstract class FigEdgeModelElement
 
     /**
      * helper method for hit(Rectangle).
+     * 
+     * Checks if a point (x, y) is within maxDist units of a polygon poly.
+     * This is true if there is a point on some leg of the polygon such
+     * that the point is located orthogonally to it and the distance to the
+     * point is not greater than maxDist.
+     * 
+     * @param poly is the Polygon.
+     * @param x is the x-coordinate of the point.
+     * @param y is the y-coordinate of the point.
+     * @param maxDist is the longest acceptable distance.
+     * @return true if the point is not further than maxDist away from the
+     * polygon, otherwise false.
      */
-    private double polyDist(Polygon poly, int x, int y) {
-	int vx, vy, vl;
+    private boolean isPolyDistLessThan(Polygon poly, int x, int y, double maxDist) {
+	int vx, vy;
 	int px, py;
 	int dx, dy;
 	int tx, ty;
-	double pd, dd;
-	double dist = Double.POSITIVE_INFINITY;
+	double vk, pd, dd;
 
 	for (int i = 0; i + 1 < poly.npoints; i++) {
+	    // Ignore zero length legs, since these have no direction vector
 	    if (poly.xpoints[i] == poly.xpoints[i+1] &&
 		poly.ypoints[i] == poly.ypoints[i+1])
 		continue;
 
+	    // Translate origo to the beginning of the leg
 	    tx = x - poly.xpoints[i];
 	    ty = y - poly.ypoints[i];
+	    // Get the direction vector of the leg
 	    vx = poly.xpoints[i+1] - poly.xpoints[i];
 	    vy = poly.ypoints[i+1] - poly.ypoints[i];
-	    vl = vx * vx + vy * vy;
-	    px = (int) ((double) (tx * vx + ty * vy) * vx / vl);
-	    py = (int) ((double) (tx * vx + ty * vy) * vy / vl);
+	    // Projection constant, (t * v) / (v * v)
+	    vk = (double) (tx * vx + ty * vy) / (vx * vx + vy * vy);
+	    // Project the point on the direction vector
+	    px = (int) (vk * vx);
+	    py = (int) (vk * vy);
+	    // Get the remainder of the point vector, orthogonal to the
+	    // direction vector.
 	    dx = tx - px;
 	    dy = ty - py;
 
@@ -631,14 +649,16 @@ public abstract class FigEdgeModelElement
 	    else
 		pd = (double) py / vy;
 
+	    // Check that the point is orthogonal to some point on this leg
 	    if (pd >= 0. && pd <= 1.) {
-		dd = Math.sqrt(dx * dx + dy * dy);
-		if (dd < dist)
-		    dist = dd;
+		// Check if the length of the remainder vector, ie the
+		// orthogonal distance, is less than maxDist
+		if (Math.sqrt(dx * dx + dy * dy) <= maxDist)
+		    return true;
 	    }
 	}
 
-	return dist;
+	return false;
     }
 
     /**
@@ -651,6 +671,14 @@ public abstract class FigEdgeModelElement
 	Rectangle rb = poly.getBounds();
 	double MAX_EDGE_HIT_DIST = 6.;
 
+	// Check if labels etc have been hit
+	int size = _pathItems.size();
+	for (int i = 0; i < size; i++) {
+	    Fig f = getPathItemFig((FigEdge.PathItem) _pathItems.elementAt(i));
+	    if (f.hit(r))
+		return true;
+	}
+
 	rb.setBounds(
 		(int) (rb.x - MAX_EDGE_HIT_DIST),
 		(int) (rb.y - MAX_EDGE_HIT_DIST),
@@ -659,10 +687,10 @@ public abstract class FigEdgeModelElement
 	if (!rb.intersects(r))
 	    return false;
 
-	return (polyDist(poly, r.x, r.y) < MAX_EDGE_HIT_DIST)
-		|| (polyDist(poly, r.x + r.width, r.y) < MAX_EDGE_HIT_DIST)
-		|| (polyDist(poly, r.x, r.y + r.height) < MAX_EDGE_HIT_DIST)
-		|| (polyDist(poly, r.x + r.width, r.y + r.height) < MAX_EDGE_HIT_DIST);
+	return isPolyDistLessThan(poly,
+				  r.x + (r.width / 2),
+				  r.y + (r.height / 2),
+				  MAX_EDGE_HIT_DIST);
     }
 
     /**
