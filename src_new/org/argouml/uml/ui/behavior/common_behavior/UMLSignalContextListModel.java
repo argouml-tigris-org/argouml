@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -22,33 +22,42 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.argouml.uml.ui;
+package org.argouml.uml.ui.behavior.common_behavior;
 
-import ru.novosoft.uml.MElementListener;
+import org.argouml.model.ModelFacade;
+import org.argouml.uml.ui.UMLModelElementListModel2;
 
 /**
- * This interface accepts all notifications signaled by NSUML's
- * MElementListener interface plus accepts notification that a
- * container's target model element has been changed (typically due to
- * navigation).  This interface is implemented by 
- * UMLTextField, UMLMultiplicityComboBox, etc.
- *
- * @author Curt Arnold
- * @see UMLUserInterfaceContainer
- * @see UMLTextField
- * @see UMLMultiplicityComboBox2
+ * The model for the listbox showing the contexts of a signal.
+ * 
+ * @author mvw@tigris.org
  */
-public interface UMLUserInterfaceComponent extends MElementListener {
+public class UMLSignalContextListModel extends UMLModelElementListModel2 {
+
     /**
-     *  This method is called when the target of a UMLUserInterfaceContainer
-     *  has been changed.
+     * The constructor.
      */
-    public void targetChanged();
-        
-    /**  This method is called when the navigation history has been changed
-     *     (and navigation buttons may need to be updated).  targetChanged
-     *     implies navigationHistoryChanged, so this method will not
-     *     be called after a targetChange.
+    public UMLSignalContextListModel() {
+        /* The event to listen to is "context", so that model updates 
+         * get shown in the list. Reproduce this by adding a new operation, 
+         * and see the result displayed in the list. */
+        super("context"); 
+    }
+
+    /**
+     * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
      */
-    public void targetReasserted();
+    protected void buildModelList() {
+        if (getTarget() != null) 
+            setAllElements(ModelFacade.getContexts(getTarget()));
+    }
+
+    /**
+     * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(java.lang.Object)
+     */
+    protected boolean isValidElement(Object element) {
+        return ModelFacade.isABehavioralFeature(element) 
+        && ModelFacade.getContexts(getTarget()).contains(element);
+    }
+
 }

@@ -81,7 +81,7 @@ public abstract class UMLModelElementListModel2
      */
     public UMLModelElementListModel2(String name) {
         super();
-        setEventName(name);
+        eventName = name;
     }
 
     /**

@@ -24,39 +24,28 @@
 
 package org.argouml.uml.ui.behavior.common_behavior;
 
-import java.awt.Color;
 import java.awt.event.ActionEvent;
-import java.util.Collection;
-import java.util.Vector;
 
 import javax.swing.Action;
-import javax.swing.JList;
-import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 
 import org.argouml.i18n.Translator;
 import org.argouml.model.ModelFacade;
-import org.argouml.model.uml.CoreHelper;
 import org.argouml.model.uml.UmlFactory;
-import org.argouml.ui.ProjectBrowser;
 import org.argouml.ui.targetmanager.TargetManager;
+import org.argouml.uml.ui.AbstractActionAddModelElement;
 import org.argouml.uml.ui.AbstractActionNewModelElement;
 import org.argouml.uml.ui.ActionNavigateNamespace;
 import org.argouml.uml.ui.ActionRemoveFromModel;
 import org.argouml.uml.ui.PropPanelButton;
 import org.argouml.uml.ui.PropPanelButton2;
-import org.argouml.uml.ui.UMLAddDialog;
-import org.argouml.uml.ui.UMLList;
-import org.argouml.uml.ui.UMLModelElementListModel;
-import org.argouml.uml.ui.UMLReflectionListModel;
+import org.argouml.uml.ui.UMLMutableLinkedList;
 import org.argouml.uml.ui.foundation.core.PropPanelModelElement;
 import org.argouml.util.ConfigLoader;
 
 /**
  * The properties panel of a Signal.
  * 
- * TODO: this property panel needs refactoring to remove dependency on
- *       old gui components.
  */
 public class PropPanelSignal extends PropPanelModelElement {
 
@@ -77,16 +66,14 @@ public class PropPanelSignal extends PropPanelModelElement {
 
         addSeperator();
 
-        JList contextList = new UMLList(new UMLReflectionListModel(this, 
-                "contexts", false, "getContexts", null, "addContext", 
-                "deleteContext"), true);
-	contextList.setBackground(getBackground());
-        contextList.setForeground(Color.blue);
-        JScrollPane contextScroll = new JScrollPane(
-                contextList, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, 
-                JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        AbstractActionAddModelElement action = 
+            new ActionAddContextSignal();
+        JScrollPane operationScroll = new JScrollPane(
+                new UMLMutableLinkedList(
+                        new UMLSignalContextListModel(), 
+                        action, null, null, true));
         addField(Translator.localize("label.contexts"), 
-                contextScroll);        
+                operationScroll);
 
         addButton(new PropPanelButton2(this, 
                 new ActionNavigateNamespace()));
@@ -131,73 +118,5 @@ public class PropPanelSignal extends PropPanelModelElement {
         }
     }   
 
-
-    /**
-     * Gets all behavioralfeatures that form the contexts that 
-     * can send the signal.
-     * 
-     * @return Collection
-     */
-    public Collection getContexts() {
-    	Collection contexts = new Vector();
-    	Object target = getTarget();
-    	if (org.argouml.model.ModelFacade.isASignal(target)) {
-	    contexts = ModelFacade.getContexts(target);
-    	}
-    	return contexts;
-    }
-
-
-    /**
-     * Opens a new window where existing behavioral features can be added 
-     * to the signal as context.
-     * 
-     * @param index the location of the context
-     */
-    public void addContext(Integer index) {
-    	Object target = getTarget();
-    	if (org.argouml.model.ModelFacade.isASignal(target)) {
-	    Object signal = /*(MSignal)*/ target;
-	    Vector choices = new Vector();
-	    Vector selected = new Vector();
-	    choices.addAll(CoreHelper.getHelper().getAllBehavioralFeatures());
-	    selected.addAll(ModelFacade.getContexts(signal));
-	    UMLAddDialog dialog = new UMLAddDialog(choices, selected, 
-                Translator.localize("dialog.title.add-contexts"), 
-                true, true);
-	    int returnValue = dialog.showDialog(ProjectBrowser.getInstance());
-	    if (returnValue == JOptionPane.OK_OPTION) {
-		ModelFacade.setContexts(signal, dialog.getSelected());
-	    }
-    	}
-    }
-
-    /**
-     * Deletes the context at index from the list with contexts.
-     * @param index the location of the context
-     */
-    public void deleteContext(Integer index) {
-    	Object target = getTarget();
-    	if (ModelFacade.isASignal(target)) {
-	    Object signal = /*(MSignal)*/ target;
-	    Object feature = /*(MBehavioralFeature)*/ 
-	        UMLModelElementListModel.elementAtUtil(ModelFacade
-                    .getContexts(signal), index.intValue(), null);
-	    ModelFacade.removeContext(signal, feature);
-    	}
-    }
-
-    /**
-     * Returns all behavioral features that can recept this signal.
-     * @return Collection
-     */
-    public Collection getReceptions() {
-    	Collection receptions = new Vector();
-    	Object target = getTarget();
-    	if (ModelFacade.isASignal(target)) {
-	    receptions = ModelFacade.getReceptions(target);
-    	}
-    	return receptions;
-    }    
-
+    
 } /* end class PropPanelSignal */

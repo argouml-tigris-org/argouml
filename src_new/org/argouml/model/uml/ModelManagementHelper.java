@@ -303,6 +303,37 @@ public class ModelManagementHelper {
     }
 
     /**
+     * @return a collection of all behavioralfeatures in the current project
+     */
+    public Collection getAllBehavioralFeatures() {
+        Object model = ProjectManager.getManager().getCurrentProject()
+            .getModel();
+        return getAllBehavioralFeatures(model);
+    }
+    
+    /**
+     * @param ns the given namespace
+     * @return a collection of all behavioralfeatures in the given namespace
+     */
+    public Collection getAllBehavioralFeatures(Object ns) {
+        Collection classifiers = getAllModelElementsOfKind(ns,
+                (Class) ModelFacade.CLASSIFIER);
+        ArrayList features = new ArrayList();
+        Iterator i = classifiers.iterator();
+        while (i.hasNext()) {
+            features.addAll(ModelFacade.getFeatures(i.next()));
+        }
+        ArrayList behavioralfeatures = new ArrayList();
+        Iterator ii = features.iterator();
+        while (ii.hasNext()) {
+            Object f = ii.next();  
+            if (ModelFacade.isABehavioralFeature(f))
+                behavioralfeatures.add(f);
+        }
+        return behavioralfeatures;
+    }
+    
+    /**
      * Get the modelelement a given path below a given root-namespace.
      * 
      * @param path the given path
