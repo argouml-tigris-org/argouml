@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2002 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -26,7 +26,9 @@ package org.argouml.ui.explorer.rules;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Set;
 
 import org.argouml.model.ModelFacade;
 
@@ -44,94 +46,98 @@ public class GoClassToSummary extends AbstractPerspectiveRule{
 	return "Class->Summary";
     }
 
-
     public Collection getChildren(Object parent) {
 	if (ModelFacade.isAClass(parent)) {
-          
 	    ArrayList list = new ArrayList();
-          
+
 	    if (ModelFacade.getAttributes(parent).size() > 0)
                 list.add(new AttributesNode(parent));
-          
+
 	    if (ModelFacade.getAssociationEnds(parent).size() > 0)
                 list.add(new AssociationsNode(parent));
-          
+
 	    if (ModelFacade.getOperations(parent).size() > 0)
                 list.add(new OperationsNode(parent));
-          
+
 	    if (hasIncomingDependencies( parent))
 		list.add(new IncomingDependencyNode(parent));
-          
+
 	    if (hasOutGoingDependencies( parent))
                 list.add(new OutgoingDependencyNode(parent));
-          
+
 	    if (hasInheritance( parent))
                 list.add(new InheritanceNode(parent));
-          
+
 	    return list;
 	}
+
+	return null;
+    }
+
+    public Set getDependencies(Object parent) {
+        if (ModelFacade.isAClass(parent)) {
+	    Set set = new HashSet();
+	    set.add(parent);
+	    return set;
+	}
+
 	return null;
     }
 
     private boolean hasIncomingDependencies(Object parent) {
-      
 	Iterator incomingIt =
 	    ModelFacade.getSupplierDependencies(parent).iterator();
-          
+
 	while (incomingIt.hasNext()) {
-              
 	    // abstractions are represented in the Inheritance Node.
 	    if (!ModelFacade.isAAbstraction(incomingIt.next()))
                 return true;
 	}
+
 	return false;
     }
   
     private boolean hasOutGoingDependencies(Object parent) {
-      
 	Iterator incomingIt =
 	    ModelFacade.getClientDependencies(parent).iterator();
-          
+
 	while (incomingIt.hasNext()) {
-              
 	    // abstractions are represented in the Inheritance Node.
 	    if (!ModelFacade.isAAbstraction(incomingIt.next()))
                 return true;
 	}
+
 	return false;
     }
  
     private boolean hasInheritance(Object parent) {
-      
         Iterator incomingIt =
             ModelFacade.getSupplierDependencies(parent).iterator();
         Iterator outgoingIt =
             ModelFacade.getClientDependencies(parent).iterator();
         Iterator generalizationsIt = ModelFacade.getGeneralizations(parent).iterator();
         Iterator specializationsIt = ModelFacade.getSpecializations(parent).iterator();
-          
+
 	if (generalizationsIt.hasNext())
 	    return true;
-          
+
 	if (specializationsIt.hasNext())
 	    return true;
-          
+
 	while (incomingIt.hasNext()) {
-              
 	    // abstractions are represented in the Inheritance Node.
 	    if (ModelFacade.isAAbstraction(incomingIt.next())) {
                 return true;
             }
 	}
-          
+
 	while (outgoingIt.hasNext()) {
 	    // abstractions are represented in the Inheritance Node.
 	    if (ModelFacade.isAAbstraction(outgoingIt.next())) {
                 return true;
             }
 	}
-          
+
 	return false;
     }
-
 }

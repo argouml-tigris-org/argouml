@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -25,8 +25,11 @@
 package org.argouml.ui.explorer.rules;
 
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.argouml.model.ModelFacade;
+
 /**
  * PerspectiveRule to navigate from behavioral
  * feature to statemachine.  Causes statemachine to be shown as child
@@ -34,7 +37,7 @@ import org.argouml.model.ModelFacade;
  * 
  * @author jaap.branderhorst@xs4all.nl
  */
-public class GoBehavioralFeatureToStateMachine extends AbstractPerspectiveRule{
+public class GoBehavioralFeatureToStateMachine extends AbstractPerspectiveRule {
 
     public String getRuleName() { return "Behavioral Feature->Statemachine"; }
 
@@ -47,4 +50,12 @@ public class GoBehavioralFeatureToStateMachine extends AbstractPerspectiveRule{
 	return null;
     }
 
+    public Set getDependencies(Object parent) {
+        if (ModelFacade.isABehavioralFeature(parent)) {
+	    Set set = new HashSet();
+	    set.add(parent);
+	    return set;
+	}
+	return null;
+    }
 }
