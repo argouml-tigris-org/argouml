@@ -326,6 +326,12 @@ implements MutableGraphModel, VetoableChangeListener, MElementListener {
  	        addEdge(asc);
 		    return asc;
 	    }
+	    else {
+	  		System.out.println("Cannot make a "+ edgeClass.getName() +
+			     " between a " + fromPort.getClass().getName() +
+			     " and a " + toPort.getClass().getName());
+	  		return null;
+		}
       }
       else if ((fromPort instanceof MNodeInstance) && (toPort instanceof MNodeInstance)) {
 		MNodeInstance fromNoI = (MNodeInstance) fromPort;
@@ -335,6 +341,12 @@ implements MutableGraphModel, VetoableChangeListener, MElementListener {
     		addEdge(link);
     		return link;
     	}
+    	else {
+	  		System.out.println("Cannot make a "+ edgeClass.getName() +
+			     " between a " + fromPort.getClass().getName() +
+			     " and a " + toPort.getClass().getName());
+	  		return null;
+		}
       }
       else if ((fromPort instanceof MComponent) && (toPort instanceof MComponent)) {
 		MComponent fromCom = (MComponent) fromPort;
@@ -343,7 +355,13 @@ implements MutableGraphModel, VetoableChangeListener, MElementListener {
 	    	MDependency dep = UmlFactory.getFactory().getCore().buildDependency(fromCom, toCom);
 	    	addEdge(dep);
 	    	return dep;
-	  	}	
+	  	}
+	  	else {
+	  		System.out.println("Cannot make a "+ edgeClass.getName() +
+			     " between a " + fromPort.getClass().getName() +
+			     " and a " + toPort.getClass().getName());
+	  		return null;
+		}	
       }
       else if ((fromPort instanceof MComponentInstance) && (toPort instanceof MComponentInstance)) {
 		MComponentInstance fromComI = (MComponentInstance) fromPort;
@@ -442,6 +460,12 @@ implements MutableGraphModel, VetoableChangeListener, MElementListener {
 	  		MDependency dep = UmlFactory.getFactory().getCore().buildDependency(fromObj, toObj);
 	  		addEdge(dep);
 	  		return dep;
+		}
+		else {
+	  		System.out.println("Cannot make a "+ edgeClass.getName() +
+			     " between a " + fromPort.getClass().getName() +
+			     " and a " + toPort.getClass().getName());
+	  		return null;
 		}
 	
       }
