@@ -69,7 +69,6 @@ public class UMLInitialValueComboBox extends JComboBox
         addActionListener(new ActionListener(){
             public void actionPerformed(final ActionEvent event) {
                 String item = (String) getSelectedItem();
-//                item.trim();
                 Object target = _container.getTarget();
                 if (target instanceof MAttribute){
                     MExpression itemExpr = new MExpression("Java", item);
@@ -86,9 +85,13 @@ public class UMLInitialValueComboBox extends JComboBox
         
     }   //...end of constructor...
     
-/** on change of target we set the initial value of the attribute into the
- *  UMLInitialValueComboBox.
- *  @author psager@tigris.org Aug. 31, 2001
+/** on change of target (when we display the Parameter or Attribute property panel)
+ *  we set the initial value of the attribute into the UMLInitialValueComboBox.
+ *
+ *  if the target is a parameter and the parameter has no value, then clear the
+ *  initialValue combobox of residual junk..this is done to keep from setting
+ *  residual values into the return parameter.
+ *  @author psager@tigris.org Aug. 31, 2001. Modified Sept. 05, 2001
  */ 
     public void targetChanged() {
         Object target = _container.getTarget();
@@ -97,10 +100,22 @@ public class UMLInitialValueComboBox extends JComboBox
             if (initExpr != null){
                 String init = initExpr.getBody();
                 setSelectedItem(init);
+                update();
             }
-        }        
-//        update();
+        } 
+        else if (target instanceof MParameter){
+            MExpression initExpr = (MExpression)((MParameter)target).getDefaultValue();
+            if (initExpr != null){
+                String init = initExpr.getBody();
+                setSelectedItem(init);
+                update();
+            }
+            else if (initExpr == null){
+                setSelectedItem(null);
+            }
+        }
     }
+    
 
     public void targetReasserted() {
     }
