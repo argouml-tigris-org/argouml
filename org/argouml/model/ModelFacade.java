@@ -2270,6 +2270,21 @@ public class ModelFacade {
     }
 
     /**
+     * Returns the target scope of some model element
+     * @param handle
+     * @return Object
+     */
+    public static Object getTargetScope(Object handle) {
+        if (handle instanceof MStructuralFeature) {
+            return ((MStructuralFeature) handle).getTargetScope();
+        }
+        if (handle instanceof MAssociationEnd) {
+            return ((MAssociationEnd) handle).getTargetScope();
+        }
+        throw new IllegalArgumentException("Unrecognized object " + handle);
+    }
+
+    /**
      * Returns the targetflows of a model element
      * @param handle
      * @return a collection of targetflows
