@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -152,13 +153,6 @@ implements PluggableMenu {
     public String getModuleAuthor() { return "Andreas Rueckert"; }
     public String getModuleVersion() { return "0.9.4"; }
     public String getModuleKey() { return "module.menu.tools.junit"; }
-
-    /** 
-     * @deprecated Use @link #getMenuItem(Object[])
-     */
-    public JMenuItem getMenuItem(JMenuItem mi, String s) {
-        return getMenuItem(buildContext(mi, s));
-    }
 
     public JMenuItem getMenuItem(Object [] context) {
         if (! inContext(context)) {

@@ -70,19 +70,6 @@ public interface PluggableMenu extends Pluggable {
      */
     public static String KEY_HELP = "Help";
 
-    /** Return the JMenuItem controlled by the plugin under the specific
-     *  context.  One menu plugin may control multiple menu items.
-     *
-     *  @param parentMenuItem The menuitem which this menuitem would attach to.
-     *
-     *  @param menuType The type of the parentMenu.
-     *
-     *  @return A JMenuItem object controlled by the plug-in.
-     *
-     *  @deprecated use the Object[] format as returned by
-     *              {@link #buildContext(JMenuItem, String) } 
-     */
-    public JMenuItem getMenuItem(JMenuItem parentMenuItem, String menuType);
 
     /** Return the JMenuItem controlled by the plugin under the specific
      *  context.  One menu plugin may control multiple menu items.
