@@ -51,8 +51,7 @@ import org.argouml.uml.ui.*;
  *  the user to edit the properties of the selected UML model
  *  element. */
 
-public class PropPanelPseudostate extends PropPanel
-implements DocumentListener, ItemListener {
+public class PropPanelPseudostate extends PropPanel {
 
   ////////////////////////////////////////////////////////////////
   // constants
@@ -89,27 +88,5 @@ implements DocumentListener, ItemListener {
 
   ////////////////////////////////////////////////////////////////
   // event handlers
-
-
-  /** The user typed some text */
-  public void insertUpdate(DocumentEvent e) {
-    //System.out.println(getClass().getName() + " insert");
-    // check if it was one of my text fields
-    super.insertUpdate(e);
-  }
-
-  public void removeUpdate(DocumentEvent e) { insertUpdate(e); }
-
-  public void changedUpdate(DocumentEvent e) {
-    System.out.println(getClass().getName() + " changed");
-    // Apparently, this method is never called.
-  }
-
-  /** The user modified one of the widgets */
-  public void itemStateChanged(ItemEvent e) {
-    Object src = e.getSource();
-    // check for each widget, and update the model with new value
-  }
-
 
 } /* end class PropPanelPseudostate */

@@ -45,7 +45,7 @@ import org.argouml.uml.ui.*;
 // needs-more-work: setting base class
 
 public class PropPanelClass extends PropPanel
-implements ItemListener, DocumentListener {
+implements ItemListener {
 
   ////////////////////////////////////////////////////////////////
   // constants
@@ -84,9 +84,8 @@ implements ItemListener, DocumentListener {
     _extendsField.setEditable(true);
     _extendsField.getEditor().getEditorComponent().setBackground(Color.white);
 
-    Component ed = _extendsField.getEditor().getEditorComponent();
-    Document extendsDoc = ((JTextField)ed).getDocument();
-    extendsDoc.addDocumentListener(this);
+    _extendsField.addKeyListener(this);
+    _extendsField.addFocusListener(this);
     _visField.addItemListener(this);
     _keywordsField.addItemListener(this);
     _extendsField.addItemListener(this);
@@ -253,21 +252,11 @@ implements ItemListener, DocumentListener {
   ////////////////////////////////////////////////////////////////
   // event handling
 
-  public void insertUpdate(DocumentEvent e) {
-    //System.out.println(getClass().getName() + " insert");
-    Component ed = _extendsField.getEditor().getEditorComponent();
-    Document extendsDoc = ((JTextField)ed).getDocument();
-    if (e.getDocument() == extendsDoc) setTargetExtends();
-    super.insertUpdate(e);
-  }
-
-  public void removeUpdate(DocumentEvent e) { insertUpdate(e); }
-
-  public void changedUpdate(DocumentEvent e) {
-    System.out.println(getClass().getName() + " changed");
-    // Apparently, this method is never called.
-  }
-
+    public void focusLost(FocusEvent e){
+	super.focusLost(e);
+	if (e.getComponent() == _extendsField)
+	    setTargetExtends();
+    }
 
   public void itemStateChanged(ItemEvent e) {
     Object src = e.getSource();

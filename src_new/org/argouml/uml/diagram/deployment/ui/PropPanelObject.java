@@ -56,8 +56,7 @@ import org.argouml.uml.diagram.deployment.*;
  *  the user to edit the properties of the selected UML model
  *  element. */
 
-public class PropPanelObject extends PropPanel
-implements DocumentListener, ItemListener {
+public class PropPanelObject extends PropPanel {
 
   ////////////////////////////////////////////////////////////////
   // constants
@@ -108,19 +107,18 @@ implements DocumentListener, ItemListener {
     _baseField.setMinimumSize(new Dimension(120, 20));
     gb.setConstraints(_baseField, c);
     add(_baseField);
-    _baseField.getDocument().addDocumentListener(this);
+    _baseField.addKeyListener(this);
+    _baseField.addFocusListener(this);
     _baseField.setFont(_stereoField.getFont());
     c.gridy = 2;
     _componentField.setMinimumSize(new Dimension(120, 20));
     gb.setConstraints(_componentField, c);
     add(_componentField);
-    _componentField.getDocument().addDocumentListener(this);
     _componentField.setFont(_stereoField.getFont());
     c.gridy = 3;
     _componentField.setMinimumSize(new Dimension(120, 20));
     gb.setConstraints(_componentInstanceField, c);
     add(_componentInstanceField);
-    _componentInstanceField.getDocument().addDocumentListener(this);
     _componentInstanceField.setFont(_stereoField.getFont());
   }
 
@@ -238,32 +236,11 @@ implements DocumentListener, ItemListener {
   // event handlers
 
 
-  /** The user typed some text */
-  public void insertUpdate(DocumentEvent e) {
-    //System.out.println(getClass().getName() + " insert");
-    // check if it was one of my text fields
-    super.insertUpdate(e);
-
-    if (e.getDocument() == _baseField.getDocument()) {
-      setTargetBase();
+    public void focusLost(FocusEvent e){
+	super.focusLost(e);
+	if (e.getComponent() == _baseField)
+	    setTargetBase();
     }
-
-  }
-
-  public void removeUpdate(DocumentEvent e) { insertUpdate(e); }
-
-  public void changedUpdate(DocumentEvent e) {
-    // Apparently, this method is never called.
-  }
-
-  /** The user modified one of the widgets */
-  public void itemStateChanged(ItemEvent e) {
-    Object src = e.getSource();
-    // check for each widget, and update the model with new value
-    if (src == _baseField) {
-      setTargetBase();
-    }
-  }
 
 
 } /* end class PropPanelObject */

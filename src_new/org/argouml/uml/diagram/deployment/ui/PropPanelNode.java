@@ -50,8 +50,7 @@ import org.argouml.uml.ui.*;
  *  the user to edit the properties of the selected UML model
  *  element. */
 
-public class PropPanelNode extends PropPanel
-implements ItemListener, DocumentListener {
+public class PropPanelNode extends PropPanel {
 
   ////////////////////////////////////////////////////////////////
   // constants
@@ -77,26 +76,6 @@ implements ItemListener, DocumentListener {
 
   protected void setTargetInternal(Object t) {
     super.setTargetInternal(t);
-  }
-
-
-
-  ////////////////////////////////////////////////////////////////
-  // event handling
-
-  public void insertUpdate(DocumentEvent e) {
-    super.insertUpdate(e);
-  }
-
-  public void removeUpdate(DocumentEvent e) { insertUpdate(e); }
-
-  public void changedUpdate(DocumentEvent e) {
-    System.out.println(getClass().getName() + " changed");
-    // Apparently, this method is never called.
-  }
-
-
-  public void itemStateChanged(ItemEvent e) {
   }
 
   static final long serialVersionUID = 5574833923466612432L;

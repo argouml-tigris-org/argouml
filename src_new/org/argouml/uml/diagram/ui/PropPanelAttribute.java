@@ -55,7 +55,7 @@ import org.argouml.uml.ui.*;
  *  element. */
 
 public class PropPanelAttribute extends PropPanel
-implements DocumentListener, ItemListener {
+implements ItemListener {
 
   ////////////////////////////////////////////////////////////////
   // constants
@@ -144,11 +144,9 @@ implements DocumentListener, ItemListener {
     gb.setConstraints(initScroll, c);
     add(initScroll);
 
-    // Component ed = _typeField.getEditor().getEditorComponent();
-    // Document typeDoc = ((JTextField)ed).getDocument();
-    // typeDoc.addDocumentListener(this);
+    _initText.addKeyListener(this);
+    _initText.addFocusListener(this);
 
-    // _initText.getDocument().addDocumentListener(this);
 
     _visField.addItemListener(this);
     _keywordsField.addItemListener(this);
@@ -270,26 +268,11 @@ implements DocumentListener, ItemListener {
   ////////////////////////////////////////////////////////////////
   // event handlers
 
-
-  public void insertUpdate(DocumentEvent e) {
-    //System.out.println(getClass().getName() + " insert");
-    Component ed = _typeField.getEditor().getEditorComponent();
-    Document typeDoc = ((JTextField)ed).getDocument();
-
-    Document initDoc = _initText.getDocument();
-
-    if (e.getDocument() == typeDoc) setTargetType();
-    else if (e.getDocument() == initDoc) setTargetInit();
-    super.insertUpdate(e);
-  }
-
-  public void removeUpdate(DocumentEvent e) { insertUpdate(e); }
-
-  public void changedUpdate(DocumentEvent e) {
-    System.out.println(getClass().getName() + " changed");
-    // Apparently, this method is never called.
-  }
-
+    public void focusLost(FocusEvent e){
+	super.focusLost(e);
+	if (e.getComponent() == _initText)
+	    setTargetInit();
+    }
 
   public void itemStateChanged(ItemEvent e) {
 	  if (e.getStateChange() == ItemEvent.SELECTED) {

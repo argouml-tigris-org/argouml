@@ -58,8 +58,7 @@ import org.argouml.uml.ui.*;
  *  the user to edit the properties of the selected UML model
  *  element. */
 
-public class PropPanelState extends PropPanel
-implements DocumentListener, ItemListener {
+public class PropPanelState extends PropPanel {
 
   ////////////////////////////////////////////////////////////////
   // constants
@@ -157,10 +156,10 @@ implements DocumentListener, ItemListener {
     add(scroll);
     _internalTable.setTableHeader(null);
 
-    _entryField.getDocument().addDocumentListener(this);
-    _entryField.setFont(_stereoField.getFont());
-    _exitField.getDocument().addDocumentListener(this);
-    _exitField.setFont(_stereoField.getFont());
+    _entryField.addKeyListener(this);
+    _entryField.addFocusListener(this);
+    _exitField.addKeyListener(this);
+    _exitField.addFocusListener(this);
 
     resizeColumns();
   }
@@ -213,28 +212,13 @@ implements DocumentListener, ItemListener {
   ////////////////////////////////////////////////////////////////
   // event handlers
 
-  /** The user typed some text */
-  public void insertUpdate(DocumentEvent e) {
-    //System.out.println(getClass().getName() + " insert");
-    // check if it was one of my text fields
-    if (e.getDocument() == _entryField.getDocument()) setTargetEntry();
-    if (e.getDocument() == _exitField.getDocument()) setTargetExit();
-    super.insertUpdate(e);
-  }
-
-  public void removeUpdate(DocumentEvent e) { insertUpdate(e); }
-
-  public void changedUpdate(DocumentEvent e) {
-    System.out.println(getClass().getName() + " changed");
-    // Apparently, this method is never called.
-  }
-
-  /** The user modified one of the widgets */
-  public void itemStateChanged(ItemEvent e) {
-    Object src = e.getSource();
-    // check for each widget, and update the model with new value
-  }
-
+    public void focusLost(FocusEvent e){
+	super.focusLost(e);
+	if (e.getComponent() == _entryField)
+	    setTargetEntry();
+	else if (e.getComponent() == _exitField)
+	    setTargetExit();
+    }
 
 } /* end class PropPanelState */
 

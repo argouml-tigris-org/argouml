@@ -49,14 +49,14 @@ import org.tigris.gef.graph.*;
 
 import org.argouml.ui.*;
 import org.argouml.uml.ui.*;
+import org.argouml.uml.generator.*;
 import org.argouml.uml.diagram.deployment.*;
 
 /** User interface panel shown at the bottom of the screen that allows
  *  the user to edit the properties of the selected UML model
  *  element. */
 
-public class PropPanelNodeInstance extends PropPanel
-implements ItemListener, DocumentListener {
+public class PropPanelNodeInstance extends PropPanel {
 
   ////////////////////////////////////////////////////////////////
   // constants
@@ -91,7 +91,8 @@ implements ItemListener, DocumentListener {
     _baseField.setMinimumSize(new Dimension(120, 20)); 
     gb.setConstraints(_baseField, c); 
     add(_baseField); 
-    _baseField.getDocument().addDocumentListener(this); 
+    _baseField.addKeyListener(this); 
+    _baseField.addFocusListener(this); 
     _baseField.setFont(_stereoField.getFont()); 
 
   }
@@ -104,23 +105,20 @@ implements ItemListener, DocumentListener {
   protected void setTargetInternal(Object t) { 
     super.setTargetInternal(t); 
     MNodeInstance noi = (MNodeInstance) t; 
-    if (noi.getClassifiers() != null) { 
-      String base = ""; 
-      Collection classifiers = noi.getClassifiers(); 
-      Iterator it = classifiers.iterator(); 
-      while (it.hasNext()) { 
-        Object o = it.next(); 
-        if (o != null && (o instanceof MClassifier)) { 
-          MClassifier cls = (MClassifier) o; 
-          if (cls != null) { 
-            base = cls.getName(); 
-          } 
-        } 
-      } 
-      _baseField.setText(base);         
-    }  
+    // construct bases string (comma separated)
+    String baseStr = "";
+    Collection col = noi.getClassifiers(); 
+    if (col != null && col.size() > 0){
+	Iterator it = col.iterator();
+	baseStr = ((MClassifier)it.next()).getName(); 
+	while (it.hasNext()) { 
+	    baseStr += ", "+((MClassifier)it.next()).getName(); 
+	} 
+	_baseField.setText(baseStr);
+    } 
+      
     else { 
-      _baseField.setText(null); 
+	_baseField.setText(null); 
     } 
     
     // set the values to be shown in all widgets based on model 
@@ -132,80 +130,19 @@ implements ItemListener, DocumentListener {
     if (_inChange) return; 
   
     MNodeInstance noi = (MNodeInstance) _target; 
-    MNode classifier = new MNodeImpl();  
-    String base = _baseField.getText(); 
-    Collection col = noi.getClassifiers(); 
-    if ((col != null) && (col.size()>0)) {  
-      Iterator itcol = col.iterator();  
-      while (itcol.hasNext()) {  
-        MClassifier cls = (MClassifier) itcol.next();  
-        noi.removeClassifier(cls);  
-      }  
-    }  
- 
-    Vector diagrams = ProjectBrowser.TheInstance.getProject().getDiagrams(); 
-    GraphModel model = null; 
-    Vector v = new Vector(); 
-    int size = diagrams.size(); 
-    for (int i=0; i<size; i++) { 
-      Object o = diagrams.elementAt(i); 
-      if (!(o instanceof Diagram)) continue; 
-      if (o instanceof MModel) continue; 
-      Diagram d = (Diagram) o; 
-      model = d.getGraphModel();  
- 
-      if (!(model instanceof DeploymentDiagramGraphModel)) continue; 
-        
-      Vector nodes = model.getNodes(); 
-      int s = nodes.size(); 
-      for (int j=0; j<s; j++) { 
-        MModelElement node = (MModelElement) nodes.elementAt(j); 
-        if (node != null && (node instanceof MNodeImpl)) { 
-          MNode mnode = (MNode) node; 
-          if (mnode.getNamespace() != noi.getNamespace()) continue;
-          String node_name = mnode.getName(); 
-          if (node_name != null && (node_name.equals(base))) { 
-            v.addElement(mnode); 
-            noi.setClassifiers(v); 
-            return;  
-          }       
-        } 
-      } 
-    } 
- 
-    classifier.setName(base); 
-    v.addElement(classifier); 
-    noi.setClassifiers(v); 
- 
-    //System.out.println("needs-more-work: baseClass = " + base);  
-    // needs-more-work: this could involve changes to the graph model  
+    // use ParserDisplay instead of reimplementiong
+    ParserDisplay.SINGLETON.parseNodeInstance(noi, noi.getName() + ":" + _baseField.getText());
+
   }  
 
   ////////////////////////////////////////////////////////////////
   // event handling
 
-  public void insertUpdate(DocumentEvent e) {
-    super.insertUpdate(e);
-    if (e.getDocument() == _baseField.getDocument()) { 
-      setTargetBase(); 
-    } 
-  }
-
-  public void removeUpdate(DocumentEvent e) { insertUpdate(e); }
-
-  public void changedUpdate(DocumentEvent e) {
-    System.out.println(getClass().getName() + " changed");
-    // Apparently, this method is never called.
-  }
-
-
-  public void itemStateChanged(ItemEvent e) {
-    Object src = e.getSource(); 
-    // check for each widget, and update the model with new value 
-    if (src == _baseField) { 
-      setTargetBase();
-    } 
-  }
+    public void focusLost(FocusEvent e){
+	super.focusLost(e);
+	if (e.getComponent() == _baseField)
+	    setTargetBase();
+    }
 
   static final long serialVersionUID = 5574833923466612432L;
   

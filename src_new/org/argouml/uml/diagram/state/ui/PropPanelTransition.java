@@ -110,7 +110,9 @@ public class PropPanelTransition extends PropPanelTwoEnds {
     gb.setConstraints(_effectField, c);
     add(_effectField);
 
-    _triggerField.getDocument().addDocumentListener(this);
+    // _triggerField.getDocument().addDocumentListener(this);
+    _triggerField.addFocusListener(this);
+    _triggerField.addKeyListener(this);
     _triggerField.setFont(_stereoField.getFont());
     _guardField.getDocument().addDocumentListener(this);
     _guardField.setFont(_stereoField.getFont());
@@ -183,28 +185,13 @@ public class PropPanelTransition extends PropPanelTwoEnds {
   // event handlers
 
 
-  /** The user typed some text */
-  public void insertUpdate(DocumentEvent e) {
-    //System.out.println(getClass().getName() + " insert");
-    // check if it was one of my text fields
-    if (e.getDocument() == _triggerField.getDocument()) setTargetTrigger();
-    if (e.getDocument() == _guardField.getDocument()) setTargetGuard();
-    if (e.getDocument() == _effectField.getDocument()) setTargetEffect();
-    super.insertUpdate(e);
-  }
+    /** focus listener implementation, overrides from PropPanel */
 
-  public void removeUpdate(DocumentEvent e) { insertUpdate(e); }
-
-  public void changedUpdate(DocumentEvent e) {
-    //System.out.println(getClass().getName() + " changed");
-    // Apparently, this method is never called.
-  }
-
-  /** The user modified one of the widgets */
-  public void itemStateChanged(ItemEvent e) {
-    Object src = e.getSource();
-    // check for each widget, and update the model with new value
-  }
+    public void focusLost(FocusEvent e){
+	super.focusLost(e);
+	if (e.getComponent() == _triggerField)
+	    setTargetTrigger();
+    }
 
 
 } /* end class PropPanelState */
