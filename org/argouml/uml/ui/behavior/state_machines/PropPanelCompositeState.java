@@ -80,7 +80,7 @@ public class PropPanelCompositeState extends PropPanelState {
   }
   
   protected void initialize() {
-      subverticesList = new UMLCompositeStateSubvertexList(this, new UMLCompositeStateSubvertexListModel());
+      subverticesList = new UMLCompositeStateSubvertexList(new UMLCompositeStateSubvertexListModel());
   }
 
 } /* end class PropPanelCompositeState */

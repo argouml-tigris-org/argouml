@@ -70,12 +70,12 @@ public class PropPanelMessage extends PropPanelModelElement {
     addField(Argo.localize("UMLMenu", "label.stereotype"), stereotypeBox);
     addField(Argo.localize("UMLMenu", "label.namespace"), namespaceScroll);
 
-    JList senderList = new UMLLinkedList(this, new UMLMessageSenderListModel());
+    JList senderList = new UMLLinkedList(new UMLMessageSenderListModel());
     senderList.setVisibleRowCount(1);
     JScrollPane senderScroll = new JScrollPane(senderList);
     addField(Argo.localize("UMLMenu", "label.sender"), senderScroll);
 
-    JList receiverList = new UMLLinkedList(this, new UMLMessageReceiverListModel());
+    JList receiverList = new UMLLinkedList(new UMLMessageReceiverListModel());
     receiverList.setVisibleRowCount(1);
     JScrollPane receiverScroll = new JScrollPane(receiverList);
     addField(Argo.localize("UMLMenu", "label.receiver"), receiverScroll);
@@ -84,12 +84,12 @@ public class PropPanelMessage extends PropPanelModelElement {
 
     addField(Argo.localize("UMLMenu", "label.activator"), new UMLMessageActivatorComboBox(this, new UMLMessageActivatorComboBoxModel()));
 
-    JList actionList = new UMLMutableLinkedList(this, new UMLMessageActionListModel(), null, ActionNewAction.SINGLETON);
+    JList actionList = new UMLMutableLinkedList(new UMLMessageActionListModel(), null, ActionNewAction.SINGLETON);
     actionList.setVisibleRowCount(1);
     JScrollPane actionScroll = new JScrollPane(actionList);
     addField(Argo.localize("UMLMenu", "label.action"), actionScroll);
     
-    JScrollPane predecessorScroll = new JScrollPane(new UMLMutableLinkedList(this, new UMLMessagePredecessorListModel(), ActionAddMessagePredecessor.SINGLETON, null));
+    JScrollPane predecessorScroll = new JScrollPane(new UMLMutableLinkedList(new UMLMessagePredecessorListModel(), ActionAddMessagePredecessor.SINGLETON, null));
     addField(Argo.localize("UMLMenu", "label.predecessor"), predecessorScroll);
 
     new PropPanelButton(this,buttonPanel,_navUpIcon, Argo.localize("UMLMenu", "button.go-up"),"navigateInteraction",null);

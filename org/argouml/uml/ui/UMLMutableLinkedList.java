@@ -67,11 +67,11 @@ public class UMLMutableLinkedList extends UMLLinkedList {
         public PopupMenu() {
             super();
             if (isAdd()) {
-                _addAction.setTarget((MModelElement)getContainer().getTarget());
+                _addAction.setTarget((MModelElement)getTarget());
                 add(_addAction);
             }
             if (isNew()) {
-                _newAction.setTarget((MModelElement)getContainer().getTarget());
+                _newAction.setTarget((MModelElement)getTarget());
                 add(_newAction);
             }
             if (isNew() || isAdd()) addSeparator();
@@ -93,11 +93,10 @@ public class UMLMutableLinkedList extends UMLLinkedList {
      * @param dataModel
      */
     public UMLMutableLinkedList(
-        UMLUserInterfaceContainer container,
         UMLModelElementListModel2 dataModel,
         AbstractActionAddModelElement addAction,
         AbstractActionNewModelElement newAction) {
-        super(container, dataModel);
+        super(dataModel);
         setAddAction(addAction);
         setNewAction(newAction);
     }
@@ -110,8 +109,8 @@ public class UMLMutableLinkedList extends UMLLinkedList {
      * @param dataModel
      * @param popup
      */
-    public UMLMutableLinkedList(UMLUserInterfaceContainer container, UMLModelElementListModel2 dataModel, JPopupMenu popup) {
-        super(container, dataModel);
+    public UMLMutableLinkedList(UMLModelElementListModel2 dataModel, JPopupMenu popup) {
+        super(dataModel);
         setPopupMenu(popup);
     }
     

@@ -36,16 +36,14 @@ import ru.novosoft.uml.MElementListener;
  * @author jaap.branderhorst@xs4all.nl
  */
 public abstract class UMLList2 extends JList implements TargetChangedListener, MElementListener, ListSelectionListener {
-
-    private UMLUserInterfaceContainer _container;
     
+   
     /**
      * Constructor for UMLList2.
      * @param dataModel
      */
-    public UMLList2(UMLUserInterfaceContainer container, UMLModelElementListModel2 dataModel) {
+    public UMLList2(UMLModelElementListModel2 dataModel) {
         super(dataModel);
-        setContainer(container);
         getSelectionModel().addListSelectionListener(this);
     }
 
@@ -86,21 +84,6 @@ public abstract class UMLList2 extends JList implements TargetChangedListener, M
     public void recovered(MElementEvent e) {
     }
 
-    /**
-     * Returns the container.
-     * @return UMLUserInterfaceContainer
-     */
-    protected UMLUserInterfaceContainer getContainer() {
-        return _container;
-    }
-
-    /**
-     * Sets the container.
-     * @param container The container to set
-     */
-    protected void setContainer(UMLUserInterfaceContainer container) {
-        _container = container;
-    }
 
     /**
      * @see javax.swing.event.ListSelectionListener#valueChanged(javax.swing.event.ListSelectionEvent)
@@ -123,8 +106,9 @@ public abstract class UMLList2 extends JList implements TargetChangedListener, M
      * @return Object
      */
     public Object getTarget() {
-        return getContainer().getTarget();
+        return ((UMLModelElementListModel2)getModel()).getTarget();
     }
+    
     /**
      * @see org.argouml.uml.ui.TargetChangedListener#targetChanged(java.lang.Object)
      */

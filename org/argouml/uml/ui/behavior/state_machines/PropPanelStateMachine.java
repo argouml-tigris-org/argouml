@@ -52,22 +52,22 @@ public class PropPanelStateMachine extends PropPanelModelElement {
         addField(Argo.localize("UMLMenu", "label.namespace"), namespaceScroll);
         
         // the context in which the statemachine resides
-        JList contextList = new UMLLinkedList(this, new UMLStateMachineContextListModel());
+        JList contextList = new UMLLinkedList(new UMLStateMachineContextListModel());
         addField(Argo.localize("UMLMenu", "label.representedModelelement"), new JScrollPane(contextList));
         
         // the top state
-        JList topList = new UMLLinkedList(this, new UMLStateMachineTopListModel());
+        JList topList = new UMLLinkedList(new UMLStateMachineTopListModel());
         addField(Argo.localize("UMLMenu", "label.topState"), new JScrollPane(topList));
         
         add(LabelledLayout.getSeperator());
         
         // the transitions the statemachine has
-        JList transitionList = new UMLLinkedList(this, new UMLStateMachineTransitionListModel());
+        JList transitionList = new UMLLinkedList(new UMLStateMachineTransitionListModel());
         addField(Argo.localize("UMLMenu", "label.transition"), new JScrollPane(transitionList));
         
         // the submachinestates
         // maybe this should be a mutable linked list but that's for the future to decide
-        JList submachineStateList = new UMLLinkedList(this, new UMLStateMachineSubmachineStateListModel());
+        JList submachineStateList = new UMLLinkedList(new UMLStateMachineSubmachineStateListModel());
         addField(Argo.localize("UMLMenu", "label.submachinestate"), new JScrollPane(submachineStateList));
         
         new PropPanelButton(this, buttonPanel, _navUpIcon,

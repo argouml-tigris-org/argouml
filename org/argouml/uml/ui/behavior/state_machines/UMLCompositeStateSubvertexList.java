@@ -49,20 +49,20 @@ public class UMLCompositeStateSubvertexList extends UMLMutableLinkedList {
             
             JMenu newMenu = new JMenu();
             newMenu.setText(Argo.localize("CoreMenu", "New"));
-            ActionNewPseudoState.SINGLETON.setTarget(getContainer().getTarget());
+            ActionNewPseudoState.SINGLETON.setTarget(getTarget());
             newMenu.add(ActionNewPseudoState.SINGLETON);
             newMenu.add(ActionNewSynchState.SINGLETON);
-            ActionNewSynchState.SINGLETON.setTarget(getContainer().getTarget());
+            ActionNewSynchState.SINGLETON.setTarget(getTarget());
             newMenu.add(ActionNewStubState.SINGLETON);
-            ActionNewStubState.SINGLETON.setTarget(getContainer().getTarget());
+            ActionNewStubState.SINGLETON.setTarget(getTarget());
             newMenu.add(ActionNewCompositeState.SINGLETON);
-            ActionNewCompositeState.SINGLETON.setTarget(getContainer().getTarget());
+            ActionNewCompositeState.SINGLETON.setTarget(getTarget());
             newMenu.add(ActionNewSimpleState.SINGLETON);
-            ActionNewSimpleState.SINGLETON.setTarget(getContainer().getTarget());
+            ActionNewSimpleState.SINGLETON.setTarget(getTarget());
             newMenu.add(ActionNewFinalState.SINGLETON);
-            ActionNewFinalState.SINGLETON.setTarget(getContainer().getTarget());
+            ActionNewFinalState.SINGLETON.setTarget(getTarget());
             newMenu.add(ActionNewSubmachineState.SINGLETON);
-            ActionNewSubmachineState.SINGLETON.setTarget(getContainer().getTarget());
+            ActionNewSubmachineState.SINGLETON.setTarget(getTarget());
             add(newMenu);
             
             addSeparator();
@@ -81,9 +81,8 @@ public class UMLCompositeStateSubvertexList extends UMLMutableLinkedList {
      * @param popup
      */
     public UMLCompositeStateSubvertexList(
-        UMLUserInterfaceContainer container,
         UMLModelElementListModel2 dataModel) {
-        super(container, dataModel, null);
+        super(dataModel, null);
     }
 
     /**

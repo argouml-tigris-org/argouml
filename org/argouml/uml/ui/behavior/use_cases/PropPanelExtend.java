@@ -85,7 +85,7 @@ public class PropPanelExtend extends PropPanelModelElement {
         addField(Argo.localize("UMLMenu", "label.extension"), 
             new UMLComboBox2(new UMLExtendExtensionComboBoxModel(), ActionSetExtendExtension.SINGLETON));
             
-        JList extensionPointList = new UMLMutableLinkedList(this, new UMLExtendExtensionPointListModel(), ActionAddExtendExtensionPoint.SINGLETON, ActionNewExtendExtensionPoint.SINGLETON);
+        JList extensionPointList = new UMLMutableLinkedList(new UMLExtendExtensionPointListModel(), ActionAddExtendExtensionPoint.SINGLETON, ActionNewExtendExtensionPoint.SINGLETON);
         addField(Argo.localize("UMLMenu", "label.extensionpoints"), 
             new JScrollPane(extensionPointList));
             

@@ -62,7 +62,7 @@ public class PropPanelClassifierRole extends PropPanelClassifier {
     
     addField(Argo.localize("UMLMenu", "label.multiplicity"),new UMLMultiplicityComboBox(this,mclass));
     
-    JList baseList = new UMLMutableLinkedList(this, new UMLClassifierRoleBaseListModel(), ActionAddClassifierRoleBase.SINGLETON, null);
+    JList baseList = new UMLMutableLinkedList(new UMLClassifierRoleBaseListModel(), ActionAddClassifierRoleBase.SINGLETON, null);
     addField(Argo.localize("UMLMenu", "label.base"), new JScrollPane(baseList));
    
 
@@ -77,11 +77,11 @@ public class PropPanelClassifierRole extends PropPanelClassifier {
     
     add(LabelledLayout.getSeperator());
      
-    JList availableContentsList = new UMLLinkedList(this, new UMLClassifierRoleAvailableContentsListModel());
+    JList availableContentsList = new UMLLinkedList(new UMLClassifierRoleAvailableContentsListModel());
     addField(Argo.localize("UMLMenu", "label.available-contents"), 
         new JScrollPane(availableContentsList));   
         
-    JList availableFeaturesList = new UMLLinkedList(this, new UMLClassifierRoleAvailableFeaturesListModel());
+    JList availableFeaturesList = new UMLLinkedList(new UMLClassifierRoleAvailableFeaturesListModel());
     addField(Argo.localize("UMLMenu", "label.available-features"), 
         new JScrollPane(availableFeaturesList));   
     /* 
