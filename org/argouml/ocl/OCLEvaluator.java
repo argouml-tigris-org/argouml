@@ -1,4 +1,4 @@
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2003 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -24,58 +24,77 @@
 package org.argouml.ocl;
 
 import java.util.*;
-import ru.novosoft.uml.foundation.core.MModelElement;
-import ru.novosoft.uml.foundation.core.MFeature;
-import ru.novosoft.uml.foundation.data_types.MExpression;
 
-// stereotype <<utility>>
+import org.argouml.model.ModelFacade;
+
+
+/** OCLEvaluator is responsible for evaluating simple OCL expressions.
+ *  Such expressions are for example used in the critiques.
+ *  @stereotype singleton
+ */
 public class OCLEvaluator extends org.tigris.gef.ocl.OCLEvaluator {
 
-  protected OCLEvaluator() {
-  }
+    protected OCLEvaluator() {
+    }
 
-  public static OCLEvaluator SINGLETON = new OCLEvaluator();
+    public static OCLEvaluator SINGLETON = new OCLEvaluator();
 
-  public synchronized String evalToString(Object self, String expr) {
-    String res = null;
-    if (GET_NAME_EXPR_1.equals(expr) && self instanceof MModelElement) {
-      res = ((MModelElement)self).getName();
-      if (res == null || "".equals(res)) res = "(anon)";
+    public synchronized String evalToString(Object self, String expr) {
+        String res = null;
+        if (GET_NAME_EXPR_1.equals(expr) && ModelFacade.isAModelElement(self)) 
+        {
+            res = ModelFacade.getName(self);
+            if (res == null || "".equals(res)) res = "(anon)";
+        }
+        if (GET_NAME_EXPR_2.equals(expr) && ModelFacade.isAModelElement(self))
+        {
+            res = ModelFacade.getName(self);
+            if (res == null || "".equals(res)) res = "(anon)";
+        }
+        if (GET_OWNER_EXPR.equals(expr) && ModelFacade.isAFeature(self)) {
+            res = ModelFacade.getName(self);
+            if (res == null || "".equals(res)) res = "(anon)";
+        }
+        if (GET_NAME_EXPR_1.equals(expr) && ModelFacade.isADiagram(self)) {
+            res = ModelFacade.getName(self);
+            if (res == null || "".equals(res)) res = "(anon)";
+        }
+        if (GET_NAME_EXPR_2.equals(expr) && ModelFacade.isADiagram(self)) {
+            res = ModelFacade.getName(self);
+            if (res == null || "".equals(res)) res = "(anon)";
+        }
+    /*
+        if (GET_OWNER_EXPR.equals(expr) && self instanceof Diagram) {
+            res = ((Diagram)self).getOwner().getName();
+            if (res == null || "".equals(res)) res = "(anon)";
+        }
+    */
+        if (res == null) res = evalToString(self, expr, ", ");
+        return res;
     }
-    if (GET_NAME_EXPR_2.equals(expr) && self instanceof MModelElement) {
-      res = ((MModelElement)self).getName();
-      if (res == null || "".equals(res)) res = "(anon)";
-    }
-    if (GET_OWNER_EXPR.equals(expr) && self instanceof MFeature) {
-      res = ((MFeature)self).getOwner().getName();
-      if (res == null || "".equals(res)) res = "(anon)";
-    }
-    if (res == null) res = evalToString(self, expr, ", ");
-    return res;
-  }
 
-  public synchronized String evalToString(Object self,
-						 String expr, String sep) {
-    _scratchBindings.put("self", self);
-    java.util.List values = eval(_scratchBindings, expr);
-    _strBuf.setLength(0);
-    Iterator iter = values.iterator();
-    while(iter.hasNext()) {
-      Object v = iter.next();
-      if (v instanceof MModelElement) {
-	v = ((MModelElement)v).getName();
-	if ("".equals(v)) v = "(anon)";
-      }
-      if (v instanceof MExpression) {
-	v = ((MExpression)v).getBody();
-	if ("".equals(v)) v = "(unspecified)";
-      }
-      if (! "".equals(v)) {
-	_strBuf.append(v);
-	if (iter.hasNext()) _strBuf.append(sep);
-      }
+    public synchronized String evalToString(Object self,
+                                            String expr, String sep) {
+        _scratchBindings.put("self", self);
+        java.util.List values = eval(_scratchBindings, expr);
+        _strBuf.setLength(0);
+        Iterator iter = values.iterator();
+        while(iter.hasNext()) {
+            Object v = iter.next();
+            if (ModelFacade.isAModelElement(v)) {
+                v = ModelFacade.getName(v);
+                if ("".equals(v)) v = "(anon)";
+            }
+            if (ModelFacade.isAExpression(v)) {
+                v = ModelFacade.getBody(v);
+                if ("".equals(v)) v = "(unspecified)";
+            }
+            if (! "".equals(v)) {
+                _strBuf.append(v);
+                if (iter.hasNext()) _strBuf.append(sep);
+            }
+        }
+        return _strBuf.toString();
     }
-    return _strBuf.toString();
-  }
 
 }  // end of OCLEvaluator
