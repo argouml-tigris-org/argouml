@@ -73,7 +73,7 @@ public class PropPanelInteraction extends PropPanelModelElement {
     	
     	/*
     	addCaption("Messages:",0,1,0);
-    	JList messageList = new UMLList(new UMLMessagesListModel(this,"message",true), true);
+    	JList messageList = new UMLList(new UMLAssociationRoleMessageListModel(this,"message",true), true);
     	messageList.setBackground(getBackground());
     	messageList.setForeground(Color.blue);
     	addField(new JScrollPane(messageList),0,1,1);

@@ -53,7 +53,6 @@ public class PropPanelAssociationRole extends PropPanelModelElement {
   public PropPanelAssociationRole() {
     super("Association Role",_associationRoleIcon, ConfigLoader.getTabPropsOrientation());
 
-   //
     //   this will cause the components on this page to be notified
     //      anytime a stereotype, namespace, operation, etc
     //      has its name changed or is removed anywhere in the model
@@ -72,9 +71,10 @@ public class PropPanelAssociationRole extends PropPanelModelElement {
     add(LabelledLayout.getSeperator());
        
     JList assocEndList = new UMLLinkedList(this, new UMLAssociationRoleAssociationEndRoleListModel(this));
+    assocEndList.setVisibleRowCount(2); // only binary associationroles are allowed
     addField(Argo.localize("UMLMenu", "label.associationrole-ends"), new JScrollPane(assocEndList));
 
-    JList messageList = new UMLList(new UMLMessagesListModel(this,"message",true), true);
+    JList messageList = new UMLLinkedList(this, new UMLAssociationRoleMessageListModel(this));
     addField(Argo.localize("UMLMenu", "label.messages"), 
         new JScrollPane(messageList));
 
@@ -87,98 +87,10 @@ public class PropPanelAssociationRole extends PropPanelModelElement {
 
   }
 
-    public Collection getAssociationEnds() {
-        Collection ends = null;
-        Object target = getTarget();
-        if(target instanceof MAssociationRole) {
-            ends = ((MAssociationRole) target).getConnections();
-        }
-        return ends;
-    }
-
-    public void setAssociationEnds(Collection ends) {
-        Object target = getTarget();
-        if(target instanceof MAssociationRole) {
-            java.util.List list = null;
-            if(ends instanceof java.util.List) {
-                list = (java.util.List) ends;
-            }
-            else {
-                list = new ArrayList(ends);
-            }
-            ((MAssociationRole) target).setConnections(list);
-        }
-    }
-
     protected boolean isAcceptibleBaseMetaClass(String baseClass) {
         return (baseClass.equals("AssociationRole") || 
                 baseClass.equals("Association"));
     }
     
-    /**
-     * <p> sets the base association of the associationRole </p>
-     * @param the association to set as the base
-     **/
-    public void setAssociation(MAssociation association){
-        Object target=getTarget();
-        if(target instanceof MAssociationRole){
-            MAssociationRole role=(MAssociationRole) target;
-            role.setBase(association);
-        }
-    }
-    /**
-     * @return the base association of the association role
-     **/
-    public MAssociation getAssociation(){
-        MAssociation assoc=null;
-        Object target=getTarget();
-        if(target instanceof MAssociationRole){
-            MAssociationRole role=(MAssociationRole) target;
-            assoc=role.getBase();
-        }
-        return assoc;
-    }
-    /**
-     * <p> tests if the association is acceptible in this list: </p>
-     * <p> it tests if all the classifier of the given association are included 
-     * in the list of classifierRoles' classifiers from the current associationRole </p>
-     *
-     * @param element the association to test
-     * @return true if the association can be put in the list
-     **/
-    public boolean isAcceptibleAssociation(MModelElement element){
-        boolean isAcceptible = false;
-        if(element instanceof MAssociation) {
-            MAssociation assoc=(MAssociation) element;
-            Vector classifiers=new Vector();
-            //get the classifiers from the associationEndRoles
-            Object target=getTarget();
-            if(target instanceof MAssociationRole){
-                MAssociationRole role=(MAssociationRole) target;
-                java.util.List list=role.getConnections();
-                Iterator it=list.iterator();
-                while(it.hasNext()){
-                    MAssociationEndRole endRole=(MAssociationEndRole) it.next();
-                    MClassifierRole clRole=(MClassifierRole) endRole.getType();
-                    Collection col=clRole.getBases();
-                    classifiers.addAll(col);
-                }
-                //compare with the base association classifiers
-                Vector assocClassifiers=new Vector();
-                java.util.List list2=assoc.getConnections();
-                if(list2!=null){
-                    Iterator it2=list2.iterator();
-                    while(it2.hasNext()){
-                        MAssociationEnd end=(MAssociationEnd) it2.next();
-                        MClassifier type=end.getType();
-                        assocClassifiers.add(type);
-                        }
-                }
-                if(classifiers.containsAll(assocClassifiers))
-                isAcceptible=true;
-            }
-        }
-        return isAcceptible;
-    }
 
 } /* end class PropPanelAssociationRole */
