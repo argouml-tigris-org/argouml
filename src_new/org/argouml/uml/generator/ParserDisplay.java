@@ -40,7 +40,6 @@ import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ProfileJava;
-import org.argouml.uml.generator.GeneratorDisplay.MsgPtr;
 import org.argouml.util.MyTokenizer;
 
 
@@ -375,7 +374,8 @@ public class ParserDisplay extends Parser {
             TargetManager.getInstance().setTarget(useCase);
         } else {
             Model.getCoreHelper().setName(ep, ModelFacade.getName(newEp));
-            Model.getUseCasesHelper().setLocation(ep, ModelFacade.getLocation(newEp));
+            Model.getUseCasesHelper().setLocation(ep, 
+                    ModelFacade.getLocation(newEp));
         }
     }
 
@@ -948,7 +948,8 @@ public class ParserDisplay extends Parser {
         }
 
         if (visibility != null) {
-            Model.getCoreHelper().setVisibility(op, getVisibility(visibility.trim()));
+            Model.getCoreHelper().setVisibility(op, 
+                    getVisibility(visibility.trim()));
         }
 
         if (name != null)
@@ -1395,7 +1396,8 @@ public class ParserDisplay extends Parser {
         }
 
         if (visibility != null) {
-            Model.getCoreHelper().setVisibility(attr, getVisibility(visibility.trim()));
+            Model.getCoreHelper().setVisibility(attr, 
+                    getVisibility(visibility.trim()));
         }
 
         if (name != null)
@@ -1700,7 +1702,8 @@ public class ParserDisplay extends Parser {
 
         /* Process the final list of internal transitions,
          * and hook it to the state: */
-        Model.getStateMachinesHelper().setInternalTransitions(st, internalsInfo.finalisedList());
+        Model.getStateMachinesHelper().setInternalTransitions(st, 
+                internalsInfo.finalisedList());
     }
 
     /**
@@ -1890,7 +1893,8 @@ public class ParserDisplay extends Parser {
             s = s.substring(s.indexOf("/") + 1).trim();
         Object oldDo = ModelFacade.getDoActivity(st);
         if (oldDo == null) {
-            Model.getStateMachinesHelper().setDoActivity(st, buildNewCallAction(s));
+            Model.getStateMachinesHelper().setDoActivity(st, 
+                    buildNewCallAction(s));
         } else {
             updateAction(oldDo, s);
         }
@@ -2763,8 +2767,8 @@ public class ParserDisplay extends Parser {
         if (ModelFacade.getAction(mes) == null) {
             Object a = Model.getCommonBehaviorFactory()
                     .createCallAction();
-            Model.getCoreHelper().addOwnedElement(ModelFacade.getContext(ModelFacade
-                    .getInteraction(mes)), a);
+            Model.getCoreHelper().addOwnedElement(ModelFacade.getContext(
+                    ModelFacade.getInteraction(mes)), a);
             Model.getCollaborationsHelper().setAction(mes, a);
         }
 
@@ -2779,7 +2783,8 @@ public class ParserDisplay extends Parser {
             Object expr =
                 Model.getDataTypesFactory().createIterationExpression(
                         Notation.getDefaultNotation().toString(), guard);
-            Model.getCommonBehaviorHelper().setRecurrence(ModelFacade.getAction(mes), expr);
+            Model.getCommonBehaviorHelper().setRecurrence(
+                    ModelFacade.getAction(mes), expr);
         }
 
         if (fname == null) {
@@ -2834,7 +2839,8 @@ public class ParserDisplay extends Parser {
                         .createActionExpression(
                                 Notation.getDefaultNotation().toString(),
                                 expr.trim());
-                Model.getCommonBehaviorHelper().setScript(ModelFacade.getAction(mes), e);
+                Model.getCommonBehaviorHelper().setScript(
+                        ModelFacade.getAction(mes), e);
                 refindOperation = true;
             }
         }
@@ -2848,8 +2854,8 @@ public class ParserDisplay extends Parser {
                 if (arg == null) {
                     arg = Model.getCommonBehaviorFactory()
                             .createArgument();
-                    Model.getCommonBehaviorHelper().addActualArgument(ModelFacade.getAction(mes),
-                            arg);
+                    Model.getCommonBehaviorHelper().addActualArgument(
+                            ModelFacade.getAction(mes), arg);
                     refindOperation = true;
                 }
                 if (ModelFacade.getValue(arg) == null
@@ -2945,7 +2951,8 @@ public class ParserDisplay extends Parser {
 
                 it = c2.iterator();
                 while (it.hasNext()) {
-                    Model.getCollaborationsHelper().removeMessage3(mes, /* (MMessage) */it.next());
+                    Model.getCollaborationsHelper().removeMessage3(mes, 
+                            /* (MMessage) */it.next());
                 }
 
                 it = c.iterator();
@@ -2954,7 +2961,8 @@ public class ParserDisplay extends Parser {
                     Object pre = /* (MMessage) */it.next();
                     Model.getCollaborationsHelper().removePredecessor(mes, pre);
                     while (it2.hasNext()) {
-                        Model.getCollaborationsHelper().addPredecessor(it2.next(), pre);
+                        Model.getCollaborationsHelper().addPredecessor(
+                                it2.next(), pre);
                     }
                 }
 
@@ -2962,7 +2970,8 @@ public class ParserDisplay extends Parser {
                 Model.getCollaborationsHelper().setActivator(mes, root);
                 if (swapRoles) {
                     Object/* MClassifierRole */r = ModelFacade.getSender(mes);
-                    Model.getCollaborationsHelper().setSender(mes, ModelFacade.getReceiver(mes));
+                    Model.getCollaborationsHelper().setSender(mes, 
+                            ModelFacade.getReceiver(mes));
                     Model.getCommonBehaviorHelper().setReceiver(mes, r);
                 }
 
@@ -2980,14 +2989,17 @@ public class ParserDisplay extends Parser {
                 // crappy, but we'll just use one of them anyway
                 if (majval <= 0) {
                     while (it.hasNext())
-                        Model.getCollaborationsHelper().addMessage3(mes, /* (MMessage) */it.next());
+                        Model.getCollaborationsHelper().addMessage3(mes, 
+                                /* (MMessage) */it.next());
                 } else if (it.hasNext()) {
                     Object/* MMessage */pre = walk(/* (MMessage) */it.next(),
                             majval - 1, false);
                     Object/* MMessage */post = successor(pre, minval);
                     if (post != null) {
-                        Model.getCollaborationsHelper().removePredecessor(post, pre);
-                        Model.getCollaborationsHelper().addPredecessor(post, mes);
+                        Model.getCollaborationsHelper()
+                            .removePredecessor(post, pre);
+                        Model.getCollaborationsHelper()
+                            .addPredecessor(post, mes);
                     }
                     insertSuccessor(pre, mes, minval);
                 }
@@ -3006,7 +3018,8 @@ public class ParserDisplay extends Parser {
             if (ModelFacade.isACallAction(ModelFacade.getAction(mes))) {
                 Object a = /* (MCallAction) */ModelFacade.getAction(mes);
                 if (ops.size() > 0)
-                    Model.getCommonBehaviorHelper().setOperation(a, /* (MOperation) */ops.get(0));
+                    Model.getCommonBehaviorHelper().setOperation(a, 
+                            /* (MOperation) */ops.get(0));
                 else
                     Model.getCommonBehaviorHelper().setOperation(a, null);
             }
