@@ -41,6 +41,7 @@ public class Toolbar extends JToolBar {
     
     /** Creates a new instance of Toolbar */
     public Toolbar(String title) {
+        super(title);
         this.setFloatable(true);
         this.putClientProperty("JToolBar.isRollover", Boolean.TRUE);
         this.setMargin(new Insets(0,0,0,0));
