@@ -1,4 +1,4 @@
-// Copyright (c) 1996-2001 The Regents of the University of California. All
+// Copyright (c) 1996-2003 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -466,26 +466,22 @@ public class UMLCognitiveResourceBundle extends ListResourceBundle {
           "You have not yet defined a constructor for class " +
           "<ocl>self</ocl>. Constructors initialize new instances such that " +
           "their attributes have valid values.  This class probably needs a " +
-          "constructor because not all of its attributes have initial" +
-          "values. \n" +
+          "constructor because not all of its attributes have initial " +
+          "values.\n" +
           "\n" +
           "Defining good constructors is key to establishing class " +
           "invariants, and class invariants are a powerful aid in writing " +
-          "solid code. \n" +
+          "solid code.\n" +
           "\n" +
           "To fix this, add a constructor manually by clicking on " +
           "<ocl>self</ocl> in the navigator pane and adding an operation " +
-          "using the context sensitive pop-up menu in the property tab, or" +
+          "using the context sensitive pop-up menu in the property tab, or " +
           "select <ocl>self</ocl> where it appears on a class diagram and " +
-          "use the \"Add Operation\" tool.\n" +
+          "use the \"Add Operation\" tool. Then use the Properties tab on " +
+          "the Details Pane to select the <<create>> stereotype on the " +
+          "operation.\n" +
           "\n" +
-          "A constructor is an operation with the stereotype <<create>>.\n" +
-          "\n" +
-          "By convention (Java, C++) a constructor has the same name as the" +
-          "class, is not static, and returns no value (which means you must" +
-          "remove the return parameter that ArgoUML adds by default)." +
-          "ArgoUML will accept any operation that follows these conventions" +
-          "as a constructor even if it is not stereotyped <<create>>."},
+          "A constructor is an operation with the stereotype <<create>>."},
 
         { "CrNameConfusion_head" ,
                 "Revise Name to Avoid Confusion" },
