@@ -37,6 +37,8 @@ import org.tigris.gef.util.*;
 
 import org.argouml.kernel.*;
 
+import org.argouml.util.logging.*;
+
 /** Implements a list of ToDoItem's.  If desired it can also
  * spawn a "sweeper" thread that periodically goes through the list
  * and elimiates ToDoItem's that are no longer valid.
@@ -75,7 +77,6 @@ implements Runnable, java.io.Serializable {
 
     // These are computed when needed.
   private VectorSet _allOffenders = null;
-  private VectorSet _allKnowledgeTypes = null;
   private VectorSet _allPosters = null;
   
   /** ToDoItems that the designer has explicitly indicated that (s)he
@@ -163,7 +164,6 @@ implements Runnable, java.io.Serializable {
       //notifyObservers("removeElement", item);
     }
     recomputeAllOffenders();
-    recomputeAllKnowledgeTypes();
     recomputeAllPosters();
     fireToDoItemsRemoved(removes);
   }
@@ -197,12 +197,18 @@ implements Runnable, java.io.Serializable {
     // needs-more-work: not implemented
     public VectorSet getOffenders() {
 	if (_allOffenders == null) {
+	    SimpleTimer st = new SimpleTimer();
+	    st.mark("getOffenders");
+
 	    int size = _items.size();
 	    _allOffenders = new VectorSet(size*2);
 	    for (int i = 0; i < size; i++) {
 		ToDoItem item = (ToDoItem) _items.elementAt(i);
 		_allOffenders.addAllElements(item.getOffenders());
 	    }
+	    st.mark();
+	    for (Enumeration e = st.result(); e.hasMoreElements();)
+		System.out.println(e.nextElement());
 	}
 	return _allOffenders; 
     }
@@ -211,32 +217,20 @@ implements Runnable, java.io.Serializable {
 	    _allOffenders.addAllElements(newoffs);
     }
 
-    public VectorSet getKnowledgeTypes() { 
-	if (_allKnowledgeTypes == null) {
-	    _allKnowledgeTypes = new VectorSet();
-	    Enumeration enum = _items.elements();
-	    while (enum.hasMoreElements()) {
-		ToDoItem item = (ToDoItem) enum.nextElement();
-		_allKnowledgeTypes.addAllElements(item.getPoster().
-						  getKnowledgeTypes());
-	    }
-	}
-	return _allKnowledgeTypes;
-    }
-    private void addKnowledgeTypes(VectorSet newkt) {
-	if (_allKnowledgeTypes != null) {
-	    _allKnowledgeTypes.addAllElements(newkt);
-	}
-    }
-
     public VectorSet getPosters() { 
 	if (_allPosters == null) {
+	    SimpleTimer st = new SimpleTimer();
+	    st.mark("getPosters");
+
 	    _allPosters = new VectorSet();
 	    int size = _items.size();
 	    for (int i = 0; i < size; i++) {
 		ToDoItem item = (ToDoItem) _items.elementAt(i);
 		_allPosters.addElement(item.getPoster());
 	    }
+	    st.mark();
+	    for (Enumeration e = st.result(); e.hasMoreElements();)
+		System.out.println(e.nextElement());
 	}
 	return _allPosters;
     }
@@ -258,7 +252,6 @@ implements Runnable, java.io.Serializable {
     _items.addElement(item);
     _longestToDoList = Math.max(_longestToDoList, _items.size());
     addOffenders(item.getOffenders());
-    addKnowledgeTypes(item.getPoster().getKnowledgeTypes());
     addPosters(item.getPoster());
     if (item.getPoster() instanceof Designer)
       History.TheHistory.addItem(item, "note: ");
@@ -288,7 +281,6 @@ implements Runnable, java.io.Serializable {
       removeE(item);
     }
     recomputeAllOffenders();
-    recomputeAllKnowledgeTypes();
     recomputeAllPosters();
     fireToDoItemsRemoved(list.getToDoItems());
   }
@@ -301,7 +293,6 @@ implements Runnable, java.io.Serializable {
   public boolean removeElement(ToDoItem item) {
     boolean res = removeE(item);
     recomputeAllOffenders();
-    recomputeAllKnowledgeTypes();
     recomputeAllPosters();
     fireToDoItemRemoved(item);
     notifyObservers("removeElement", item);
@@ -329,7 +320,6 @@ implements Runnable, java.io.Serializable {
       removeE((ToDoItem)oldItems.elementAt(i));
 
     recomputeAllOffenders();
-    recomputeAllKnowledgeTypes();
     recomputeAllPosters();
     notifyObservers("removeAllElements");
     fireToDoItemsRemoved(oldItems);
@@ -366,10 +356,6 @@ implements Runnable, java.io.Serializable {
 	_allOffenders = null;
     }
 
-    protected void recomputeAllKnowledgeTypes() {
-	_allKnowledgeTypes = null;
-    }
-  
     protected void recomputeAllPosters() {
 	_allPosters = null;
     }

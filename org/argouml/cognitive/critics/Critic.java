@@ -371,7 +371,6 @@ public class Critic implements Poster, Serializable {
   public void addKnowledgeType(String type) {
     _knowledgeTypes.addElement(type);
   }
-  public VectorSet getKnowledgeTypes() { return _knowledgeTypes; }
 
   public void setKnowledgeTypes(VectorSet kt) { _knowledgeTypes = kt; }
   public void setKnowledgeTypes(String t1) {
