@@ -54,41 +54,38 @@ public class ActionCollaborationDiagram extends ActionAddDiagram {
     /**
      * @see org.argouml.uml.ui.ActionAddDiagram#createDiagram(Object)
      */
-    public UMLDiagram createDiagram(Object handle) {
-        if (!ModelFacade.isANamespace(handle)) {
+    public UMLDiagram createDiagram(Object namespace) {
+        if (!ModelFacade.isANamespace(namespace)) {
             LOG.error("No namespace as argument");
-            LOG.error(handle);
+            LOG.error(namespace);
             throw new IllegalArgumentException(
-                "The argument " + handle + "is not a namespace.");
+                "The argument " + namespace + "is not a namespace.");
         }
-        Object/*MNamespace*/ namespace = handle;
-        Object target = TargetManager.getInstance().getTarget();
+        Object target = TargetManager.getInstance().getModelTarget();
         Object collaboration = null;
         if (ModelFacade.isAOperation(target)) {
             collaboration = Model.getUmlFactory().getCollaborations()
-                            .buildCollaboration(namespace);
-            ModelFacade.setRepresentedOperation(collaboration, target);
+                            .buildCollaboration(namespace, target);
         } else if (ModelFacade.isAClassifier(target)) {
             collaboration = Model.getUmlFactory().getCollaborations()
-                            .buildCollaboration(target);
-            ModelFacade.setRepresentedClassifier(collaboration, target);
-        } else if (ModelFacade.isAModel(target)) {
-            collaboration = Model.getUmlFactory().getCollaborations()
-                            .buildCollaboration(target);
-        } else if (ModelFacade.isAInteraction(target)) {
-            collaboration = ModelFacade.getContext(target);
-        } else if (target instanceof UMLCollaborationDiagram) {
-            Object owner = ((UMLCollaborationDiagram) target).getOwner();
-            if (ModelFacade.isACollaboration(owner)) {
-                //preventing backward compat problems
-                collaboration = owner;
-            }
-        } else if (ModelFacade.isACollaboration(target)) {
-            collaboration = target;
-        } else {
-            collaboration =
-                Model.getUmlFactory().getCollaborations().buildCollaboration(
-                    namespace);
+                            .buildCollaboration(namespace, target);
+//        } else if (ModelFacade.isAModel(target)) {
+//            collaboration = Model.getUmlFactory().getCollaborations()
+//                            .buildCollaboration(target);
+//        } else if (ModelFacade.isAInteraction(target)) {
+//            collaboration = ModelFacade.getContext(target);
+//        } else if (target instanceof UMLCollaborationDiagram) {
+//            Object owner = ((UMLCollaborationDiagram) target).getOwner();
+//            if (ModelFacade.isACollaboration(owner)) {
+//                //preventing backward compat problems
+//                collaboration = owner;
+//            }
+//        } else if (ModelFacade.isACollaboration(target)) {
+//            collaboration = target;
+//        } else {
+//            collaboration =
+//                Model.getUmlFactory().getCollaborations().buildCollaboration(
+//                    namespace);
         }
         UMLCollaborationDiagram d = new UMLCollaborationDiagram(collaboration);
         return d;
@@ -110,17 +107,17 @@ public class ActionCollaborationDiagram extends ActionAddDiagram {
     }
 
     /**
-     * Just calls isValidNamespace(...) on the nav pane target.
      * @see org.argouml.uml.ui.UMLAction#shouldBeEnabled()
      */
     public boolean shouldBeEnabled() {
-
         Object target = TargetManager.getInstance().getModelTarget();
-        if (ModelFacade.isANamespace(target)) {
-            return super.shouldBeEnabled() && isValidNamespace(target);
-        } else {
-            return false;
-        }
+        if (ModelFacade.isAOperation(target))
+            return super.shouldBeEnabled() 
+                && Model.getCollaborationsHelper()
+                    .isAddingCollaborationAllowed(target);
+        else if (ModelFacade.isANamespace(target))
+                return super.shouldBeEnabled() && isValidNamespace(target);
+        return false;
     }
 
 } /* end class ActionCollaborationDiagram */

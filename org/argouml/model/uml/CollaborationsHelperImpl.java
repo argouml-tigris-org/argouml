@@ -48,7 +48,7 @@ import ru.novosoft.uml.foundation.core.MFeature;
 import ru.novosoft.uml.foundation.core.MGeneralizableElement;
 import ru.novosoft.uml.foundation.core.MModelElement;
 import ru.novosoft.uml.foundation.core.MNamespace;
-import ru.novosoft.uml.model_management.MModel;
+import ru.novosoft.uml.foundation.core.MOperation;
 
 
 /**
@@ -642,14 +642,25 @@ public class CollaborationsHelperImpl implements CollaborationsHelper {
      * Returns true if a collaboration may be added to the given context. To
      * decouple ArgoUML as much as possible from the NSUML model, the parameter
      * of the method is of type Object.<p>
+     * 
+     * TODO: MVW: Removed the MCollaboration and MModel. Why were they 
+     * included in the test below?
+     * <p>
+     * - MCollaboration: this allows a 2nd diagram for the same collaboration.
+     * According to my interpretation of the UML spec, this is not alowed; 
+     * a collaboration diagram  maps on a collaboration. <p>
+     * - MModel: this allowed a collaboration diagram without a 
+     * represented classifier/operation. But there is no way 
+     * to correct this later...
      *
      * @param context the given context
      * @return boolean true if a collaboration may be added
      */
     public boolean isAddingCollaborationAllowed(Object context) {
-	return (context instanceof MCollaboration
-		|| context instanceof MClassifier
-		|| context instanceof MModel);
+	return (/*context instanceof MCollaboration || */
+		   context instanceof MClassifier
+		|| context instanceof MOperation
+		/*|| context instanceof MModel*/);
     }
 }
 

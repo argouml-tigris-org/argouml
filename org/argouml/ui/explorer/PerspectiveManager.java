@@ -269,7 +269,8 @@ public class PerspectiveManager {
         packagePerspective.addRule(new GoStimulusToAction());
         packagePerspective.addRule(new GoClassifierToCollaboration());
         packagePerspective.addRule(new GoOperationToCollaboration());
-        packagePerspective.addRule(new GoOperationToCollaborationDiagram());
+        /* Removed the next one due to issue 2165.
+        packagePerspective.addRule(new GoOperationToCollaborationDiagram());*/
         packagePerspective.addRule(new GoBehavioralFeatureToStateMachine());
         packagePerspective.addRule(new GoBehavioralFeatureToStateDiagram());
         // works for both statediagram as activitygraph

@@ -7076,13 +7076,13 @@ public class ModelFacade {
      * Sets the represented classifier of some collaboration.
      *
      * @param handle the collaboration
-     * @param classifier is the classifier
+     * @param classifier is the classifier or null
      */
     public static void setRepresentedClassifier(
         Object handle,
         Object classifier) {
         if (handle instanceof MCollaboration
-            && classifier instanceof MClassifier) {
+            && ((classifier == null) || classifier instanceof MClassifier)) {
             ((MCollaboration) handle).setRepresentedClassifier(
                 (MClassifier) classifier);
             return;
@@ -7094,13 +7094,13 @@ public class ModelFacade {
      * Sets the represented operation of some collaboration.
      *
      * @param handle the collaboration
-     * @param operation is the operation
+     * @param operation is the operation or null
      */
     public static void setRepresentedOperation(
         Object handle,
         Object operation) {
         if (handle instanceof MCollaboration
-            && operation instanceof MOperation) {
+            && ((operation == null) || operation instanceof MOperation)) {
             ((MCollaboration) handle).setRepresentedOperation(
                 (MOperation) operation);
             return;
