@@ -116,99 +116,110 @@ public class OperationCodePiece extends NamedCodePiece
        Write the code this piece represents to file. Remove this
        feature from the top vector in the stack newFeaturesStack.
     */
-    public void write(Writer writer,
-                      Stack parseStateStack,
-                      int column)
-	throws Exception
-    {
-	ParseState parseState = (ParseState)parseStateStack.peek();
-	Vector features = parseState.getNewFeatures();
+    public void write (Writer writer,
+                       Stack parseStateStack,
+                       int column)
+  	    throws Exception {
+      ParseState parseState = (ParseState)parseStateStack.peek();
+      Vector features = parseState.getNewFeatures();
 
-	boolean found = false;
-	for(Iterator j=features.iterator(); j.hasNext() && !found; ) {
-	    MFeature feature = (MFeature)j.next();
-	    if(feature.getName().equals(name)) {
-		found = true;
-		parseState.newFeature(feature);
-		MOperation mOperation = (MOperation)feature;
+      boolean found = false;
+      
+	    for(Iterator j=features.iterator(); j.hasNext() && !found; ) {
+  	    MFeature feature = (MFeature)j.next();
+        
+	      if(feature.getName().equals(name)) {
+		      found = true;
+		      parseState.newFeature(feature);
+		      MOperation mOperation = (MOperation)feature;
 
-		if((new CodeGenerator()).generateJavadoc(mOperation, writer)) {
-		    for(int k=0; k<column; k++) {
-			writer.write(" ");
-		    }
-		}
+          writer.write (
+              GeneratorJava.getInstance()
+                           .generateOperation (mOperation, true)
+            );
+    
+          /*
+          if ((new CodeGenerator()).generateJavadoc(mOperation, writer)) {
+            for(int k=0; k<column; k++) {
+              writer.write(" ");
+            }
+          }
 
-		if(mOperation.isAbstract()) {
-		    writer.write("abstract ");
-		    column += 9;
-		}
-		if(mOperation.isLeaf()) {
-		    writer.write("final ");
-		    column += 6;
-		}
-		if(mOperation.getOwnerScope() == MScopeKind.CLASSIFIER) {
-		    writer.write("static ");
-		    column += 7;
-		}
-		if(mOperation.getVisibility() ==
-		   MVisibilityKind.PUBLIC) {
-		    writer.write("public ");
-		    column += 7;
-		}
-		else if(mOperation.getVisibility() ==
-			MVisibilityKind.PROTECTED) {
-		    writer.write("protected ");
-		    column += 10;
-		}
-		else if(mOperation.getVisibility() ==
-			MVisibilityKind.PRIVATE) {
-		    writer.write("private ");
-		    column += 8;
-		}
+          if (mOperation.isAbstract()) {
+            writer.write("abstract ");
+            column += 9;
+          }
+          if (mOperation.isLeaf()) {
+            writer.write("final ");
+            column += 6;
+          }
+          if (mOperation.getOwnerScope() == MScopeKind.CLASSIFIER) {
+            writer.write("static ");
+            column += 7;
+          }
+          if (mOperation.getVisibility() == MVisibilityKind.PUBLIC) {
+            writer.write("public ");
+            column += 7;
+          }
+          else if (mOperation.getVisibility() == MVisibilityKind.PROTECTED) {
+            writer.write("protected ");
+            column += 10;
+          }
+          else if (mOperation.getVisibility() == MVisibilityKind.PRIVATE) {
+            writer.write("private ");
+            column += 8;
+          }
 
-		Collection parameters = mOperation.getParameters();
-		for(Iterator i = parameters.iterator(); i.hasNext(); ) {
-		    MParameter mParameter = (MParameter)i.next();
-		    if(mParameter.getKind() ==
-		       MParameterDirectionKind.RETURN) {
-			if(fullyQualifiedTypeNames) {
-			    writer.write(mParameter.getType()
-					 .getNamespace().getName() + ".");
-			}
-			writer.write(mParameter.getType().getName() + " ");
-			column += mParameter.getType().getName().length() + 1;
-		    }
-		}
+          Collection parameters = mOperation.getParameters();
+          for(Iterator i = parameters.iterator(); i.hasNext(); ) {
+            MParameter mParameter = (MParameter)i.next();
+           
+            if (mParameter.getKind() == MParameterDirectionKind.RETURN) {
+              if (fullyQualifiedTypeNames) {
+                writer.write (mParameter.getType().getNamespace().getName()
+                              + ".");
+              }
+           
+              writer.write(mParameter.getType().getName() + " ");
+              column += mParameter.getType().getName().length() + 1;
+            }
+          }
 
-		writer.write(mOperation.getName() + "(");
-		column += mOperation.getName().length() + 1;
+          writer.write(mOperation.getName() + "(");
+          column += mOperation.getName().length() + 1;
 
-		boolean first = true;
-		for(Iterator i = parameters.iterator(); i.hasNext(); ) {
-		    MParameter mParameter = (MParameter)i.next();
-		    if(mParameter.getKind() != MParameterDirectionKind.RETURN) {
-			if(first) {
-			    first = false;
-			}
-			else {
-			    writer.write(",\n");
-			    for(int k=0; k<column; k++) {
-				writer.write(" ");
-			    }
-			}
-			if(fullyQualifiedTypeNames) {
-			    writer.write(mParameter.getType()
-					 .getNamespace().getName() + ".");
-			}
-			writer.write(mParameter.getType().getName() + " " +
-					 mParameter.getName());
-		    }
-		}
-		writer.write(")");
-	    }
-	}
-	if(!found) {
-	    writer.write("REMOVED");
-	}
+          boolean first = true;
+          for (Iterator i = parameters.iterator(); i.hasNext(); ) {
+            MParameter mParameter = (MParameter)i.next();
+            
+            if (mParameter.getKind() != MParameterDirectionKind.RETURN) {
+              if(first) {
+                first = false;
+              }
+              else {
+                writer.write(",\n");
+                for(int k=0; k<column; k++) {
+                  writer.write(" ");
+                }
+              }
+           
+              if (fullyQualifiedTypeNames) {
+                writer.write (mParameter.getType().getNamespace().getName()
+                              + ".");
+              }
+           
+              writer.write (mParameter.getType().getName() + " " +
+                            mParameter.getName());
+            }
+          }
+           
+          writer.write(")");
+          */
+        }
+      }
+      
+      if(!found) {
+        writer.write("REMOVED");
+      }
     }
 }

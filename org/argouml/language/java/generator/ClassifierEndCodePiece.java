@@ -96,44 +96,46 @@ public class ClassifierEndCodePiece extends NamedCodePiece
        layer from the stack and adds new inner classes and features
        to the class or interface.
     */
-    public void write(Writer writer,
-                      Stack parseStateStack,
-                      int column)
-	throws Exception
-    {
-	ParseState parseState = (ParseState)parseStateStack.pop();
-	MClassifier mClassifier = parseState.getClassifier();
-	Vector newFeatures = parseState.getNewFeatures();
-	Vector newInnerClasses = parseState.getNewInnerClasses();
+    public void write (Writer writer,
+                       Stack parseStateStack,
+                       int column)
+	    throws Exception {
+        ParseState parseState = (ParseState)parseStateStack.pop();
+        MClassifier mClassifier = parseState.getClassifier();
+        Vector newFeatures = parseState.getNewFeatures();
+        Vector newInnerClasses = parseState.getNewInnerClasses();
 
-	// Insert new features
-	for(Iterator i=newFeatures.iterator(); i.hasNext(); ) {
-	    MFeature mFeature = (MFeature)i.next();
-	    if(mFeature instanceof MOperation) {
-		(new CodeGenerator()).generateOperation((MOperation)mFeature,
-							mClassifier,
-							writer);
-	    }
-	    else if(mFeature instanceof MAttribute) {
-		(new CodeGenerator()).generateAttribute((MAttribute)mFeature,
-							mClassifier,
-							writer);
-	    }
-	}
+        // Insert new features
+        for(Iterator i=newFeatures.iterator(); i.hasNext(); ) {
+            MFeature mFeature = (MFeature)i.next();
+            if(mFeature instanceof MOperation) {
+          (new CodeGenerator()).generateOperation((MOperation)mFeature,
+                    mClassifier,
+                    writer);
+            }
+            else if(mFeature instanceof MAttribute) {
+          (new CodeGenerator()).generateAttribute((MAttribute)mFeature,
+                    mClassifier,
+                    writer);
+            }
+        }
 
-	// Insert new inner classes
-	for(Iterator i = newInnerClasses.iterator(); i.hasNext(); ) {
-	    MModelElement element = (MModelElement)i.next();
-	    if(element instanceof MClass) {
-		(new CodeGenerator()).generateClass((MClass)element,
-						    writer);
-	    }
-	    else if(element instanceof MInterface) {
-		(new CodeGenerator()).generateInterface((MInterface)element,
-							writer);
-	    }
-	}
+        // Insert new inner classes
+        for(Iterator i = newInnerClasses.iterator(); i.hasNext(); ) {
+            MModelElement element = (MModelElement)i.next();
+            if(element instanceof MClass) {
+          (new CodeGenerator()).generateClass((MClass)element,
+                      writer);
+            }
+            else if(element instanceof MInterface) {
+          (new CodeGenerator()).generateInterface((MInterface)element,
+                    writer);
+            }
+        }
 
-	writer.write("}");
+      StringBuffer sb = GeneratorJava.getInstance()
+          .appendClassifierEnd (new StringBuffer (2), mClassifier, true);
+      writer.write (sb.toString());
+    	/*writer.write("}");*/
     }
 }

@@ -118,7 +118,12 @@ public class ClassCodePiece extends NamedCodePiece
 
 	parseStateStack.push(new ParseState(mClass));
 
-	if((new CodeGenerator()).generateJavadoc(mClass, writer)) {
+  StringBuffer sbText = GeneratorJava.getInstance().generateClassifierStart (mClass);
+  
+  if (sbText != null) {
+    writer.write (sbText.toString());
+  }
+/*	if((new CodeGenerator()).generateJavadoc(mClass, writer)) {
 	    for(int k=0; k<column; k++) {
 		writer.write(" ");
 	    }
@@ -162,6 +167,6 @@ public class ClassCodePiece extends NamedCodePiece
 	    }
 	    writer.write(((MModelElement)((MDependency)i.next()).
 			      getSuppliers().toArray()[0]).getName());
-	}
+	}*/
     }
 }

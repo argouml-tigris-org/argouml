@@ -118,7 +118,13 @@ public class InterfaceCodePiece extends NamedCodePiece
 
 	parseStateStack.push(new ParseState(mInterface));
 
-	if((new CodeGenerator()).generateJavadoc(mInterface, writer)) {
+  StringBuffer sbText = GeneratorJava.getInstance().generateClassifierStart (mInterface);
+  
+  if (sbText != null) {
+    writer.write (sbText.toString());
+  }
+  
+/*	if((new CodeGenerator()).generateJavadoc(mInterface, writer)) {
 	    for(int k=0; k<column; k++) {
 		writer.write(" ");
 	    }
@@ -148,6 +154,6 @@ public class InterfaceCodePiece extends NamedCodePiece
 	    writer.write(((MInterface)
 			      ((MGeneralization)i.next()).getParent()).
 			     getName());
-	}
+	}*/
     }
 }
