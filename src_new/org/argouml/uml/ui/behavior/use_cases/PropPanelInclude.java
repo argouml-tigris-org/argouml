@@ -32,10 +32,8 @@ import javax.swing.JComboBox;
 
 import org.argouml.i18n.Translator;
 import org.argouml.model.ModelFacade;
-
 import org.argouml.uml.ui.PropPanelButton;
 import org.argouml.uml.ui.UMLComboBox2;
-import org.argouml.uml.ui.UMLComboBoxNavigator;
 import org.argouml.uml.ui.foundation.core.PropPanelModelElement;
 import org.argouml.util.ConfigLoader;
 

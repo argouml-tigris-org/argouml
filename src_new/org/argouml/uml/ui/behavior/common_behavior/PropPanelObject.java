@@ -32,10 +32,9 @@ import java.util.Vector;
 import javax.swing.JList;
 import javax.swing.JScrollPane;
 
-import org.argouml.model.ModelFacade;
 import org.argouml.i18n.Translator;
+import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.UmlFactory;
-
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.PropPanelButton;
 import org.argouml.uml.ui.UMLClassifierComboBoxModel;
