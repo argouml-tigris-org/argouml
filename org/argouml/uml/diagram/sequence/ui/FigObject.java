@@ -374,8 +374,17 @@ public class FigObject extends FigNodeModelElement implements MouseListener {
                     throw new IllegalStateException("End activation node without start activation node");
                 }
                 endActivationNode = (ActivationNode) node;
-                int startPos = getYCoordinateForActivationBox(startActivationNode);
-                int endPos = getYCoordinateForActivationBox(endActivationNode);                
+                int startPos =
+                    getYCoordinateForActivationBox(startActivationNode);
+                int endPos = 0;
+                if (!endActivationNode.isStart()) {
+                    endPos = getYCoordinateForActivationBox(endActivationNode);
+                } else {
+                    endPos = getYCoordinate(endActivationNode);
+                    if (!endActivationNode.isCutOffBottom()) {
+                        endPos += SequenceDiagramLayout.LINK_DISTANCE / 2;
+                    }
+                }
                 FigRect activation =
                     new FigRect(
                         x,
@@ -580,7 +589,9 @@ public class FigObject extends FigNodeModelElement implements MouseListener {
         Rectangle rect = new Rectangle(getX(), y - 16, getWidth(), 32);
         Node foundNode = null;
         if (_lifeLine.intersects(rect)) {
-            for (int i = 1; i < _linkPositions.size(); i++) {
+            for (int i = _linkPositions.indexOf(getObjectNode());
+                i < _linkPositions.size();
+                i++) {
                 Node node = (Node) _linkPositions.get(i);
                 int position = getYCoordinate(node);
                 if (i < _linkPositions.size() - 1) {
@@ -600,32 +611,52 @@ public class FigObject extends FigNodeModelElement implements MouseListener {
                     break;
                 }
             }
-        } else if (_outerBox.intersects(rect)) {
-            foundNode = (Node) _linkPositions.get(0);
-        }
-        if (!(foundNode instanceof LinkPort)) {
-            int index = _linkPositions.indexOf(foundNode);
-            FigLinkPort figLinkPort = null;
-            Node linkNode = null;
-            if (index > 0) {
-                figLinkPort =
+            if (foundNode instanceof LinkPort
+                && !(foundNode instanceof ObjectNode)) {
+                FigLinkPort figLinkPort =
                     new FigLinkPort(
                         _lifeLine.getX() - WIDTH / 2,
                         getYCoordinate(foundNode),
                         _lifeLine.getX() + WIDTH / 2);
-                linkNode = new LinkNode(getOwner(), figLinkPort);
+                LinkNode linkNode = new LinkNode(getOwner(), figLinkPort);
+                _linkPositions.add(
+                    _linkPositions.indexOf(foundNode) + 1,
+                    linkNode);
+                foundNode = linkNode;
             } else {
-                figLinkPort =
-                    new FigLinkPort(
-                        _outerBox.getX(),
-                        _outerBox.getHalfHeight(),
-                        _outerBox.getX() + _outerBox.getWidth());
-                linkNode = new ObjectNode(getOwner(), figLinkPort);
+                if (!(foundNode instanceof LinkPort)
+                    && !(foundNode instanceof ObjectNode)) {
+                    FigLinkPort figLinkPort =
+                        new FigLinkPort(
+                            _lifeLine.getX() - WIDTH / 2,
+                            getYCoordinate(foundNode),
+                            _lifeLine.getX() + WIDTH / 2);
+                    LinkNode linkNode = new LinkNode(getOwner(), figLinkPort);
+                    _linkPositions.set(
+                        _linkPositions.indexOf(foundNode),
+                        foundNode);
+                }
+
             }
-            _linkPositions.set(index, linkNode);
-            foundNode = linkNode;
-        }
-        return foundNode;
+            return foundNode;
+        } else if (_outerBox.intersects(rect)) {
+            ObjectNode objectNode = (ObjectNode) getObjectNode();
+            if (objectNode.getFigLinkPort() != null && getFigLink(objectNode.getFigLinkPort()) != null) {
+            	return null; // cannot connect here
+            }
+            if (objectNode.getFigLinkPort() == null) {            
+            FigLinkPort figLinkPort =
+                new FigLinkPort(
+                    _lifeLine.getX() - WIDTH / 2,
+                    getYCoordinate(foundNode),
+                    _lifeLine.getX() + WIDTH / 2);
+                    objectNode.setFigLinkPort(figLinkPort);
+            }
+            objectNode.setObject(getOwner());
+            return objectNode;
+        } else {
+            return null;
+        }       
     }
 
     private int getYCoordinate(Node node) {
@@ -668,29 +699,6 @@ public class FigObject extends FigNodeModelElement implements MouseListener {
     public void setOwner(Object own) {
         super.setOwner(own);
         bindPort(own, _outerBox);
-    }
-
-    public void createTopActivation() {
-        Node startNode = new ActivationNode();
-        Node endNode = new ActivationNode();
-        _linkPositions.set(1, startNode);
-        _linkPositions.set(2, endNode);
-        makeActivation(startNode, endNode);
-        ((ActivationNode) _linkPositions.get(1)).setCutOffTop(true);
-    }
-
-    public void createTopActivation(ActivationNode node) {
-        createTopActivation();
-        int index = getIndexOf(node);
-        if (index != 2) {
-            _linkPositions.set(2, node);
-            node.setCutOffBottom(false);
-            node.setEnd(true);
-        }
-        _linkPositions.set(index, new EmptyNode());
-        if (node instanceof LinkPort) {
-            ((LinkPort) node).getFigLinkPort().setY(getYCoordinate(node));
-        }
     }
 
     /**
@@ -754,8 +762,8 @@ public class FigObject extends FigNodeModelElement implements MouseListener {
                 }
             } else {
                 // node is in between activations or does not belong to activation (yet)
-                if (!(getNextNode(activationNode) instanceof ActivationNode)
-                    || !(getPreviousNode(activationNode)
+                if (!(nextNode(activationNode) instanceof ActivationNode)
+                    || !(previousNode(activationNode)
                         instanceof ActivationNode)) {
                     return new ArrayList();
                 }
@@ -809,14 +817,14 @@ public class FigObject extends FigNodeModelElement implements MouseListener {
         ((ActivationNode) _linkPositions.get(endIndex)).setEnd(true);
     }
 
-    public Node getNextNode(Node node) {
+    public Node nextNode(Node node) {
         if (getIndexOf(node) < _linkPositions.size())
             return (Node) _linkPositions.get(getIndexOf(node) + 1);
         else
             return null;
     }
 
-    public Node getPreviousNode(Node node) {
+    public Node previousNode(Node node) {
         if (getIndexOf(node) > 0) {
             return (Node) _linkPositions.get(getIndexOf(node) - 1);
         } else

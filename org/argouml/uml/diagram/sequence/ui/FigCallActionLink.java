@@ -62,16 +62,12 @@ public class FigCallActionLink extends FigLink {
             ((ActivationNode)getSrcLinkPort()).setCutOffBottom(false);
 			((ActivationNode)getSrcLinkPort()).setCutOffTop(false);
         } else {
-        }        
-        int srcIndex = getSrcFigObject().getIndexOf((Node)getSrcLinkPort());
-        int destIndex = getDestFigObject().getIndexOf((Node)getDestLinkPort());
-        if (srcIndex != destIndex) {
-        	
-        }
+        }                
         getDestFigObject().makeActivation(
             (Node) getDestLinkPort(),
             (Node) getDestLinkPort());
         ((ActivationNode) getDestLinkPort()).setCutOffTop(true);
+        ((ActivationNode) getDestLinkPort()).setCutOffBottom(false);
 
     }
 }
