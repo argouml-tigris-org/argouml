@@ -24,14 +24,23 @@
 
 package org.argouml.uml.diagram.ui;
 
+import java.awt.event.ActionEvent;
+
+import javax.swing.Action;
 import javax.swing.JTextField;
 
+import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
+import org.argouml.model.ModelFacade;
 import org.argouml.ui.ArgoDiagram;
 import org.argouml.ui.targetmanager.TargetManager;
+import org.argouml.uml.ui.AbstractActionNavigate;
+import org.argouml.uml.ui.ActionRemoveFromModel;
 import org.argouml.uml.ui.PropPanel;
+import org.argouml.uml.ui.PropPanelButton;
+import org.argouml.uml.ui.UMLAction;
 import org.argouml.util.ConfigLoader;
 
 /**
@@ -53,6 +62,16 @@ public class PropPanelDiagram extends PropPanel {
         field.getDocument().addDocumentListener(new DiagramNameDocument(field));
         
         addField(Translator.localize("label.name"), field);
+        
+
+        new PropPanelButton(this,
+                ResourceLoaderWrapper.lookupIconResource("NavigateUp"), 
+                Translator.localize("button.go-up"), 
+                new ActionNavigateUpFromDiagram());
+        new PropPanelButton(this,
+                ResourceLoaderWrapper.lookupIconResource("Delete"), 
+                Translator.localize("button.delete"), 
+                new ActionRemoveFromModel());       
     }
     
     /**
@@ -87,3 +106,34 @@ public class PropPanelDiagram extends PropPanel {
     }
 
 } /* end class PropPanelDiagram */
+
+class ActionNavigateUpFromDiagram extends AbstractActionNavigate {
+
+    /**
+     * @see org.argouml.uml.ui.AbstractActionNavigate#navigateTo(java.lang.Object)
+     */
+    protected Object navigateTo(Object source) {
+        if (source instanceof UMLDiagram) {
+            return ((UMLDiagram) source).getNamespace();
+        }
+        return null;
+    }
+    /**
+     * @see javax.swing.Action#isEnabled()
+     */
+    public boolean isEnabled() {
+        return true;
+    }
+
+    /**
+     * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+     */
+    public void actionPerformed(ActionEvent e) {
+        Object target = TargetManager.getInstance().getTarget();
+        Object destination = navigateTo(target);
+        if (destination != null) {
+            TargetManager.getInstance().setTarget(destination);
+        }
+    }
+}
+
