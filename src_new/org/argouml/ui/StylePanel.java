@@ -179,6 +179,7 @@ public class StylePanel extends TabSpawnable implements TabFigTarget,
      *      TargetEvent)
      */
     public void targetAdded(TargetEvent e) {
+	setTarget(e.getNewTarget());
     }
 
     /**
@@ -187,7 +188,6 @@ public class StylePanel extends TabSpawnable implements TabFigTarget,
      */
     public void targetRemoved(TargetEvent e) {
 	setTarget(e.getNewTarget());
-
     }
 
     /**
@@ -195,7 +195,6 @@ public class StylePanel extends TabSpawnable implements TabFigTarget,
      */
     public void targetSet(TargetEvent e) {
 	setTarget(e.getNewTarget());
-
     }
 
 } /* end class StylePanel */

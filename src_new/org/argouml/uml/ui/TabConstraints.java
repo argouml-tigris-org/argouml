@@ -681,6 +681,7 @@ public class TabConstraints extends TabSpawnable implements TabModelTarget {
      *         org.argouml.ui.targetmanager.TargetEvent)
      */
     public void targetAdded(TargetEvent e) {
+	setTarget(e.getNewTarget());
     }
 
     /**
@@ -688,7 +689,7 @@ public class TabConstraints extends TabSpawnable implements TabModelTarget {
      *         org.argouml.ui.targetmanager.TargetEvent)
      */
     public void targetRemoved(TargetEvent e) {
-        setTarget(e.getNewTarget());
+	setTarget(e.getNewTarget());
     }
 
     /**
@@ -696,6 +697,6 @@ public class TabConstraints extends TabSpawnable implements TabModelTarget {
      *         org.argouml.ui.targetmanager.TargetEvent)
      */
     public void targetSet(TargetEvent e) {
-        setTarget(e.getNewTarget());
+	setTarget(e.getNewTarget());
     }
 }

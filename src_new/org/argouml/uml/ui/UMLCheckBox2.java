@@ -178,20 +178,21 @@ public abstract class UMLCheckBox2
      * @see TargetListener#targetAdded(TargetEvent)
      */
     public void targetAdded(TargetEvent e) {
+	setTarget(e.getNewTarget());
     }
 
     /**
      * @see TargetListener#targetRemoved(TargetEvent)
      */
     public void targetRemoved(TargetEvent e) {
-        setTarget(e.getNewTarget());
+	setTarget(e.getNewTarget());
     }
 
     /**
      * @see TargetListener#targetSet(TargetEvent)
      */
     public void targetSet(TargetEvent e) {
-        setTarget(e.getNewTarget());
+	setTarget(e.getNewTarget());
     }
 
 }

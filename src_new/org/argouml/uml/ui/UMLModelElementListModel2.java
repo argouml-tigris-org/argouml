@@ -248,15 +248,16 @@ public abstract class UMLModelElementListModel2
      * @param target
      */
     public void setTarget(Object target) {
+	if (ModelFacade.isABase(_target)) {
+	    UmlModelEventPump.getPump().removeModelEventListener(this,
+								 /*(MBase)*/_target,
+								 _eventName);
+	    _target = null;
+	    removeAllElements();
+	}
+
         target = target instanceof Fig ? ((Fig) target).getOwner() : target;
         if (ModelFacade.isABase(target) || ModelFacade.isADiagram(target)) {
-            if (ModelFacade.isABase(_target)) {
-                UmlModelEventPump.getPump()
-		    .removeModelEventListener(this,
-					      /*(MBase)*/_target,
-					      _eventName);
-            }
-
             if (ModelFacade.isABase(target)) {
                 _target = target;
                 // UmlModelEventPump.getPump()
@@ -278,7 +279,6 @@ public abstract class UMLModelElementListModel2
                 _target = null;
                 removeAllElements();
             }
-
         }
     }
 
@@ -362,20 +362,22 @@ public abstract class UMLModelElementListModel2
     /**
      * @see TargetListener#targetAdded(TargetEvent)
      */
-    public void targetAdded(TargetEvent e) { }
+    public void targetAdded(TargetEvent e) {
+	setTarget(e.getNewTarget());
+    }
 
     /**
      * @see TargetListener#targetRemoved(TargetEvent)
      */
     public void targetRemoved(TargetEvent e) {
-        setTarget(e.getNewTarget());
+	setTarget(e.getNewTarget());
     }
 
     /**
      * @see TargetListener#targetSet(TargetEvent)
      */
     public void targetSet(TargetEvent e) {
-        setTarget(e.getNewTarget());
+	setTarget(e.getNewTarget());
     }
 
     /**
