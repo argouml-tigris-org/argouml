@@ -25,9 +25,11 @@
 package org.argouml.uml.ui.behavior.common_behavior;
 
 import java.awt.Color;
+import java.awt.event.ActionEvent;
 import java.util.Collection;
 import java.util.Vector;
 
+import javax.swing.Action;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
@@ -38,6 +40,7 @@ import org.argouml.model.uml.CoreHelper;
 import org.argouml.model.uml.UmlFactory;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.ui.targetmanager.TargetManager;
+import org.argouml.uml.ui.AbstractActionNewModelElement;
 import org.argouml.uml.ui.ActionNavigateNamespace;
 import org.argouml.uml.ui.ActionRemoveFromModel;
 import org.argouml.uml.ui.PropPanelButton;
@@ -90,7 +93,7 @@ public class PropPanelSignal extends PropPanelModelElement {
         new PropPanelButton(this, 
                 lookupIcon("SignalSending"), 
                 Translator.localize("button.new-signal"), 
-                "newSignal", null);
+                new ActionNewSignal());
         addButton(new PropPanelButton2(this, 
                 new ActionRemoveFromModel()));   
     }
@@ -98,20 +101,35 @@ public class PropPanelSignal extends PropPanelModelElement {
     /**
      * Create a new Signal. 
      */
-    public void newSignal() {
-        Object target = getTarget();
-        if (ModelFacade.isASignal(target)) {
-            Object ns = /*(MNamespace)*/ ModelFacade.getNamespace(target);
-            if (ns != null) {
-                Object newSig = UmlFactory.getFactory().getCommonBehavior()
-                    .createSignal(); 
-                //((MNamespace)ns).getFactory().createSignal();
-                ModelFacade.addOwnedElement(ns, newSig);
-                TargetManager.getInstance().setTarget(newSig);
+    private class ActionNewSignal 
+        extends AbstractActionNewModelElement {
+        
+        /**
+         * The constructor.
+         */
+        public ActionNewSignal() {
+            super("button.new-signal");
+            putValue(Action.NAME, 
+                    Translator.localize("button.new-signal"));
+        }
+        
+        /**
+         * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+         */
+        public void actionPerformed(ActionEvent e) {
+            Object target = TargetManager.getInstance().getModelTarget();
+            if (ModelFacade.isASignal(target)) {
+                Object ns = ModelFacade.getNamespace(target);
+                if (ns != null) {
+                    Object newSig = UmlFactory.getFactory().getCommonBehavior()
+                        .createSignal(); 
+                    ModelFacade.addOwnedElement(ns, newSig);
+                    TargetManager.getInstance().setTarget(newSig);
+                    super.actionPerformed(e);
+                }
             }
         }
-    }
-   
+    }   
 
 
     /**

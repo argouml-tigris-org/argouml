@@ -24,10 +24,9 @@
 
 package org.argouml.uml.ui.foundation.core;
 
-import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.i18n.Translator;
+import org.argouml.uml.ui.ActionNavigateNamespace;
 import org.argouml.uml.ui.ActionRemoveFromModel;
-import org.argouml.uml.ui.PropPanelButton;
 import org.argouml.uml.ui.PropPanelButton2;
 import org.argouml.util.ConfigLoader;
 
@@ -58,11 +57,8 @@ public class PropPanelAbstraction extends PropPanelDependency {
         addField(Translator.localize("label.clients"), 
                 getClientScroll());
 
-        // TODO: add Mapping
-        new PropPanelButton(this, 
-                ResourceLoaderWrapper.lookupIconResource("NavigateUp"), 
-                Translator.localize("button.go-up"), 
-                "navigateUp", null);
+        addButton(new PropPanelButton2(this, 
+                new ActionNavigateNamespace()));
         addButton(new PropPanelButton2(this, new ActionRemoveFromModel()));
     }
 

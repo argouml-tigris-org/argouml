@@ -24,6 +24,9 @@
 
 package org.argouml.uml.ui.model_management;
 
+import java.awt.event.ActionEvent;
+
+import javax.swing.Action;
 import javax.swing.JList;
 import javax.swing.JScrollPane;
 
@@ -31,6 +34,7 @@ import org.argouml.i18n.Translator;
 import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.UmlFactory;
 import org.argouml.ui.targetmanager.TargetManager;
+import org.argouml.uml.ui.AbstractActionNewModelElement;
 import org.argouml.uml.ui.PropPanelButton;
 import org.argouml.uml.ui.UMLLinkedList;
 import org.argouml.uml.ui.foundation.core.UMLClassifierFeatureListModel;
@@ -59,19 +63,35 @@ public class PropPanelSubsystem extends PropPanelPackage {
 
         new PropPanelButton(this, lookupIcon("NewOperation"), 
                 Translator.localize("button.new-operation"), 
-                "addOperation", null);
+                new ActionNewOperation());
     }
 
-  
     /**
      * Add a new operation to this classifier.
+     * 
+     * @author Michiel
      */
-    public void addOperation() {
-        Object target = getTarget();
-        if (ModelFacade.isAClassifier(target)) {
-            Object/* MOperation */newOper = UmlFactory.getFactory().getCore()
-                    .buildOperation(target);
-            TargetManager.getInstance().setTarget(newOper);
+    private class ActionNewOperation extends AbstractActionNewModelElement {
+
+        /**
+         * The constructor.
+         */
+        public ActionNewOperation() {
+            super("button.new-operation");
+            putValue(Action.NAME, Translator.localize("button.new-operation"));
+        }
+
+        /**
+         * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+         */
+        public void actionPerformed(ActionEvent e) {
+            Object target = TargetManager.getInstance().getModelTarget();
+            if (ModelFacade.isAClassifier(target)) {
+                Object newOper = UmlFactory.getFactory().getCore()
+                        .buildOperation(target);
+                TargetManager.getInstance().setTarget(newOper);
+                super.actionPerformed(e);
+            }
         }
     }
 

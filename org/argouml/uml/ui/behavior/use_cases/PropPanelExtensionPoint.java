@@ -24,15 +24,21 @@
 
 package org.argouml.uml.ui.behavior.use_cases;
 
+import java.awt.event.ActionEvent;
+
+import javax.swing.Action;
 import javax.swing.JList;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 
 import org.argouml.i18n.Translator;
 import org.argouml.model.ModelFacade;
+import org.argouml.model.uml.UseCasesFactory;
 import org.argouml.ui.targetmanager.TargetManager;
+import org.argouml.uml.ui.AbstractActionNewModelElement;
 import org.argouml.uml.ui.ActionNavigateContainerElement;
 import org.argouml.uml.ui.ActionRemoveFromModel;
+import org.argouml.uml.ui.PropPanelButton;
 import org.argouml.uml.ui.PropPanelButton2;
 import org.argouml.uml.ui.UMLLinkedList;
 import org.argouml.uml.ui.UMLTextField2;
@@ -91,8 +97,15 @@ public class PropPanelExtensionPoint extends PropPanelModelElement {
         addField(Translator.localize("label.extend"),
                 new JScrollPane(extendList));
 
+        
         addButton(new PropPanelButton2(this,
                 new ActionNavigateContainerElement()));
+        
+        new PropPanelButton(this, 
+                lookupIcon("ExtensionPoint"),
+                Translator.localize("button.new-extension-point"),
+                new ActionNewExtensionPoint());
+
         addButton(new PropPanelButton2(this, new ActionRemoveFromModel()));
     }
 
@@ -118,6 +131,32 @@ public class PropPanelExtensionPoint extends PropPanelModelElement {
 
         if (owner != null) {
             TargetManager.getInstance().setTarget(owner);
+        }
+    }
+    
+    private class ActionNewExtensionPoint 
+        extends AbstractActionNewModelElement {
+    
+        /**
+         * The constructor.
+         */
+        public ActionNewExtensionPoint() {
+            super("button.new-extension-point");
+            putValue(Action.NAME, 
+                    Translator.localize("button.new-extension-point"));
+        }
+        
+        /**
+         * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+         */
+        public void actionPerformed(ActionEvent e) {
+            Object target = TargetManager.getInstance().getModelTarget();
+            if (ModelFacade.isAExtensionPoint(target)) {
+                TargetManager.getInstance().setTarget(
+                    UseCasesFactory.getFactory().buildExtensionPoint(
+                            ModelFacade.getUseCase(target)));
+                super.actionPerformed(e);
+            }
         }
     }
 

@@ -24,6 +24,9 @@
 
 package org.argouml.uml.ui.behavior.use_cases;
 
+import java.awt.event.ActionEvent;
+
+import javax.swing.Action;
 import javax.swing.JList;
 import javax.swing.JScrollPane;
 
@@ -31,6 +34,7 @@ import org.argouml.i18n.Translator;
 import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.UseCasesFactory;
 import org.argouml.ui.targetmanager.TargetManager;
+import org.argouml.uml.ui.AbstractActionNewModelElement;
 import org.argouml.uml.ui.ActionNavigateNamespace;
 import org.argouml.uml.ui.ActionRemoveFromModel;
 import org.argouml.uml.ui.PropPanelButton;
@@ -98,12 +102,11 @@ public class PropPanelUseCase extends PropPanelClassifier {
                 new ActionNavigateNamespace()));
         new PropPanelButton(this, lookupIcon("UseCase"),
                 Translator.localize("button.new-usecase"), 
-                "newUseCase", null);
+                new ActionNewUseCase());
         new PropPanelButton(this, 
                 lookupIcon("ExtensionPoint"),
-                localize("New Extension Point"),
-                "newExtensionPoint",
-                null);
+                Translator.localize("button.new-extension-point"),
+                new ActionNewExtensionPoint());
         new PropPanelButton(this, lookupIcon("Reception"), 
                 Translator.localize("button.new-reception"), 
                 getActionNewReception());
@@ -118,21 +121,33 @@ public class PropPanelUseCase extends PropPanelClassifier {
      * <p>This code uses getFactory and adds the use case explicitly to the
      *   namespace. Extended to actually navigate to the new use case.</p>
      */
+    private class ActionNewUseCase extends AbstractActionNewModelElement {
 
-    public void newUseCase() {
-        Object target = getTarget();
+        /**
+         * The constructor.
+         */
+        public ActionNewUseCase() {
+            super("button.new-usecase");
+            putValue(Action.NAME, Translator.localize("button.new-usecase"));
+        }
 
-        if (ModelFacade.isAUseCase(target)) {
-            Object ns = ModelFacade.getNamespace(target);
-
-            if (ns != null) {
-                Object useCase = UseCasesFactory.getFactory().createUseCase();
-                ModelFacade.addOwnedElement(ns, useCase);
-                TargetManager.getInstance().setTarget(useCase);
+        /**
+         * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+         */
+        public void actionPerformed(ActionEvent e) {
+            Object target = TargetManager.getInstance().getModelTarget();
+            if (ModelFacade.isAUseCase(target)) {
+                Object ns = ModelFacade.getNamespace(target);
+                if (ns != null) {
+                    Object useCase = UseCasesFactory.getFactory()
+                        .createUseCase();
+                    ModelFacade.addOwnedElement(ns, useCase);
+                    TargetManager.getInstance().setTarget(useCase);
+                    super.actionPerformed(e);
+                }
             }
         }
     }
-
 
     /**
      * <p>Invoked by the "New Extension Point" toolbar button to create a new
@@ -142,12 +157,29 @@ public class PropPanelUseCase extends PropPanelClassifier {
      * <p>This code uses getFactory and adds the extension point explicitly to
      *   the, making its associated use case the current use case.</p>
      */
-    public void newExtensionPoint() {
-        Object target = getTarget();
-
-        if (ModelFacade.isAUseCase(target)) {
-            TargetManager.getInstance().setTarget(UseCasesFactory.getFactory()
-                    .buildExtensionPoint(target));
+    private class ActionNewExtensionPoint 
+        extends AbstractActionNewModelElement {
+        
+        /**
+         * The constructor.
+         */
+        public ActionNewExtensionPoint() {
+            super("button.new-extension-point");
+            putValue(Action.NAME, 
+                    Translator.localize("button.new-extension-point"));
+        }
+        
+        /**
+         * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+         */
+        public void actionPerformed(ActionEvent e) {
+            Object target = TargetManager.getInstance().getModelTarget();
+            if (ModelFacade.isAUseCase(target)) {
+                TargetManager.getInstance().setTarget(
+                    UseCasesFactory.getFactory().buildExtensionPoint(target));
+                super.actionPerformed(e);
+            }
         }
     }
+    
 } /* end class PropPanelUseCase */
