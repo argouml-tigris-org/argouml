@@ -52,7 +52,7 @@ import org.argouml.language.php.PHPDocumentor;
 import org.argouml.model.ModelFacade;
 
 import org.argouml.uml.generator.FileGenerator;
-import org.argouml.uml.generator.Generator;
+import org.argouml.uml.generator.Generator2;
 
 import ru.novosoft.uml.behavior.collaborations.MAssociationRole;
 import ru.novosoft.uml.behavior.collaborations.MMessage;
@@ -84,7 +84,7 @@ import ru.novosoft.uml.model_management.MPackage;
  * @since  ArgoUML 0.15.5
  */
 public class GeneratorPHP4
-    extends Generator
+    extends Generator2
     implements PluggableNotation, FileGenerator {
 
     /**
@@ -163,7 +163,7 @@ public class GeneratorPHP4
      *
      * @return Generated notation for model element.
      */
-    public String generateExtensionPoint(MExtensionPoint modelElement) {
+    public String generateExtensionPoint(Object modelElement) {
         // TODO: Auto-generated method stub
         LOG.debug("generateExtensionPoint(MExtensionPoint modelElement)");
 
@@ -183,7 +183,7 @@ public class GeneratorPHP4
      *
      * @return Generated notation for model element.
      */
-    public String generateOperation(MOperation modelElement, boolean bAddDocs) {
+    public String generateOperation(Object modelElement, boolean bAddDocs) {
         if (!ModelFacade.isAOperation(modelElement)) {
             throw new ClassCastException(modelElement.getClass()
                     + " has wrong object type, Operation required");
@@ -262,7 +262,7 @@ public class GeneratorPHP4
      *
      * @return Generated notation for model element.
      */
-    public String generateAttribute(MAttribute modelElement, boolean bAddDocs) {
+    public String generateAttribute(Object modelElement, boolean bAddDocs) {
         if (!ModelFacade.isAAttribute(modelElement)) {
             throw new ClassCastException(modelElement.getClass()
                     + " has wrong object type, Attribute required");
@@ -339,7 +339,7 @@ public class GeneratorPHP4
      *
      * @return Generated notation for model element.
      */
-    public String generateParameter(MParameter modelElement) {
+    public String generateParameter(Object modelElement) {
         if (!ModelFacade.isAParameter(modelElement)) {
             throw new ClassCastException(modelElement.getClass()
                     + " has wrong object type, Parameter required");
@@ -372,7 +372,7 @@ public class GeneratorPHP4
                 }
             }
 
-            sParameter += "$" + modelElement.getName();
+            sParameter += "$" + ModelFacade.getName(modelElement);
 
             String sDefaultValue =
                 generate(ModelFacade.getDefaultValue(modelElement));
@@ -420,7 +420,7 @@ public class GeneratorPHP4
      *
      * TODO: fix org.argouml.model.ModelFacade#getType
      */
-    public String generatePackage(MPackage modelElement) {
+    public String generatePackage(Object modelElement) {
         String sPackage = "";
 
         if (!ModelFacade.isAPackage(modelElement)) {
@@ -481,7 +481,7 @@ public class GeneratorPHP4
      *
      * @return Generated notation for model element.
      */
-    public String generateClassifier(MClassifier modelElement) {
+    public String generateClassifier(Object modelElement) {
         if (!ModelFacade.isAClassifier(modelElement)) {
             throw new ClassCastException(modelElement.getClass()
                     + " has wrong object type, Classifier required");
@@ -554,7 +554,7 @@ public class GeneratorPHP4
      *
      * @return Generated notation for model element.
      */
-    public String generateTaggedValue(MTaggedValue modelElement) {
+    public String generateTaggedValue(Object modelElement) {
         // TODO: Auto-generated method stub
         LOG.debug("generateTaggedValue(MTaggedValue modelElement)");
 
@@ -573,7 +573,7 @@ public class GeneratorPHP4
      *
      * @return Generated notation for model element.
      */
-    public String generateAssociation(MAssociation modelElement) {
+    public String generateAssociation(Object modelElement) {
         // TODO: Auto-generated method stub
         LOG.debug("generateExtensionPoint(MExtensionPoint modelElement)");
 
@@ -592,7 +592,7 @@ public class GeneratorPHP4
      *
      * @return Generated notation for model element.
      */
-    public String generateAssociationEnd(MAssociationEnd modelElement) {
+    public String generateAssociationEnd(Object modelElement) {
         // TODO: Auto-generated method stub
         LOG.debug("generateAssociationEnd(MAssociationEnd modelElement)");
 
@@ -611,7 +611,7 @@ public class GeneratorPHP4
      *
      * @return Generated notation for model element.
      */
-    public String generateMultiplicity(MMultiplicity modelElement) {
+    public String generateMultiplicity(Object modelElement) {
         // TODO: Auto-generated method stub
         LOG.debug("generateMultiplicity(MMultiplicity modelElement)");
 
@@ -630,7 +630,7 @@ public class GeneratorPHP4
      *
      * @return Generated notation for model element.
      */
-    public String generateState(MState modelElement) {
+    public String generateState(Object modelElement) {
         // TODO: Auto-generated method stub
         LOG.debug("generateState(MState modelElement)");
 
@@ -649,7 +649,7 @@ public class GeneratorPHP4
      *
      * @return Generated notation for model element.
      */
-    public String generateTransition(MTransition modelElement) {
+    public String generateTransition(Object modelElement) {
         // TODO: Auto-generated method stub
         LOG.debug("generateTransition(MTransition modelElement)");
 
@@ -687,7 +687,7 @@ public class GeneratorPHP4
      *
      * @return Generated notation for model element.
      */
-    public String generateGuard(MGuard modelElement) {
+    public String generateGuard(Object modelElement) {
         // TODO: Auto-generated method stub
         LOG.debug("generateGuard(MGuard modelElement)");
 
@@ -706,7 +706,7 @@ public class GeneratorPHP4
      *
      * @return Generated notation for model element.
      */
-    public String generateMessage(MMessage modelElement) {
+    public String generateMessage(Object modelElement) {
         // TODO: Auto-generated method stub
         LOG.debug("generateMessage(MMessage modelElement)");
 
@@ -725,7 +725,7 @@ public class GeneratorPHP4
      *
      * @return Generated notation for model element.
      */
-    public String generateVisibility(MVisibilityKind modelElement) {
+    public String generateVisibility(Object modelElement) {
         if (!ModelFacade.isAVisibilityKind(modelElement)) {
             throw new ClassCastException(modelElement.getClass()
                     + " has wrong object type, VisibilityKind required");
@@ -885,7 +885,7 @@ public class GeneratorPHP4
      *
      * @return Generated notation for model element.
      */
-    public String generateStateBody(MState modelElement) {
+    public String generateStateBody(Object modelElement) {
         // TODO: Auto-generated method stub
         LOG.debug("generateStateBody(MState modelElement)");
 
@@ -904,7 +904,7 @@ public class GeneratorPHP4
      *
      * @return Generated notation for model element.
      */
-    public String generateAssociationRole(MAssociationRole modelElement) {
+    public String generateAssociationRole(Object modelElement) {
         // TODO: Auto-generated method stub
         LOG.debug("generateAssociationRole(MAssociationRole modelElement)");
 

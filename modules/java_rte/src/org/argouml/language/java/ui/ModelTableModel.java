@@ -36,7 +36,7 @@ import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.foundation.extension_mechanisms.MTaggedValue;
 
 import org.argouml.kernel.*;
-import org.argouml.uml.generator.Generator;
+import org.argouml.uml.generator.Generator2;
 import org.argouml.model.uml.modelmanagement.ModelManagementHelper;
 
 /**
@@ -100,16 +100,16 @@ public class ModelTableModel extends DefaultTableModel implements Runnable {
 	else if (cls instanceof MInterface) {
 	    type = "Interface";
 	}
-	String codePath = Generator.getCodePath(cls);
+	String codePath = Generator2.getCodePath(cls);
 	MNamespace parent = cls.getNamespace();
 	if (codePath == null) {
-	    codePath = Generator.getCodePath(parent);
+	    codePath = Generator2.getCodePath(parent);
 	}
 	String packagePath = parent.getName();
 	parent = parent.getNamespace();
 	while (parent != null) {
 	    if (codePath == null) {
-		codePath = Generator.getCodePath(parent);
+		codePath = Generator2.getCodePath(parent);
 	    }
 	    // ommit root package name; it's the model's root
 	    if (parent.getNamespace() != null) {

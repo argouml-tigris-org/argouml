@@ -48,7 +48,7 @@ import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.UmlHelper;
 import org.argouml.uml.DocumentationManager;
 import org.argouml.uml.generator.FileGenerator;
-import org.argouml.uml.generator.Generator;
+import org.argouml.uml.generator.Generator2;
 
 import ru.novosoft.uml.behavior.collaborations.MAssociationRole;
 import ru.novosoft.uml.behavior.collaborations.MMessage;
@@ -88,7 +88,7 @@ import ru.novosoft.uml.foundation.extension_mechanisms.MTaggedValue;
 import ru.novosoft.uml.model_management.MPackage;
 
 /**
- * Generator subclass to generate text for display in diagrams in in
+ * Generator2 subclass to generate text for display in diagrams in in
  * text fields in the Argo/UML user interface.  The generated code
  * looks a lot like (invalid) Java.  The idea is that other generators
  * could be written for outher languages.  This code is just a
@@ -98,8 +98,8 @@ import ru.novosoft.uml.model_management.MPackage;
 
 // TODO: always check for null!!!
 
-public class GeneratorCpp extends Generator
-    implements PluggableNotation, FileGenerator 
+public class GeneratorCpp extends Generator2
+    implements PluggableNotation, FileGenerator
 {
 
     /** logger */
@@ -216,7 +216,7 @@ public class GeneratorCpp extends Generator
      */
     public static GeneratorCpp getInstance() { return SINGLETON; }
 
-    
+
     protected GeneratorCpp() {
 	super (Notation.makeNotation ("Cpp",
 				      null,
@@ -1017,11 +1017,11 @@ public class GeneratorCpp extends Generator
      * @return    The generated code string. Always empty in this
      *            implementation.
      */
-    public String generateExtensionPoint (MExtensionPoint ep) {
+    public String generateExtensionPoint (Object ep) {
 	return null;
     }
 
-    public String generateAssociationRole(MAssociationRole m) {
+    public String generateAssociationRole(Object m) {
 	return "";
     }
 
@@ -1097,7 +1097,8 @@ public class GeneratorCpp extends Generator
      * -> generateOperation is language independent and seperates
      *    different tasks
      */
-    public String generateOperation(MOperation op, boolean documented) {
+    public String generateOperation(Object handle, boolean documented) {
+	MOperation op = (MOperation)handle;
 	// generate nothing for abstract functions, if we generate the
 	// source .cpp file at the moment
 	if ((generatorPass != header_pass) && (op.isAbstract())) {
@@ -1212,7 +1213,8 @@ public class GeneratorCpp extends Generator
 	return sb.toString();
     }
 
-    public String generateAttribute (MAttribute attr, boolean documented) {
+    public String generateAttribute (Object handle, boolean documented) {
+	MAttribute attr = (MAttribute)handle;
 	StringBuffer sb = new StringBuffer(80);
 	sb.append('\n'); // begin with a blank line
 
@@ -1280,7 +1282,8 @@ public class GeneratorCpp extends Generator
     }
 
 
-    public String generateParameter(MParameter param) {
+    public String generateParameter(Object handle) {
+	MParameter param = (MParameter)handle;
 	StringBuffer sb = new StringBuffer(20);
 	//TODO: qualifiers (e.g., const)
 	// generate const for references or pointers which are
@@ -1302,7 +1305,8 @@ public class GeneratorCpp extends Generator
     }
 
 
-    public String generatePackage(MPackage p) {
+    public String generatePackage(Object handle) {
+	MPackage p =(MPackage)handle;
 	String s = "";
 	String packName = generateName(p.getName());
 	s += "// package " + packName + " {\n";
@@ -1426,8 +1430,9 @@ public class GeneratorCpp extends Generator
      * @see org.argouml.application.api.NotationProvider#generateClassifier(
      *          MClassifier)
      */
-    public String generateClassifier(MClassifier cls)
+    public String generateClassifier(Object handle)
     {
+  	MClassifier cls = (MClassifier)handle;
   	StringBuffer returnValue = new StringBuffer();
 	StringBuffer start = generateClassifierStart(cls);
   	if (((start != null) && (start.length() > 0))
@@ -2076,7 +2081,8 @@ public class GeneratorCpp extends Generator
 	return INDENT + "return null;\n";
     }
 
-    public String generateTaggedValues(MModelElement e, int tagSelection) {
+    public String generateTaggedValues(Object handle, int tagSelection) {
+	MModelElement e = (MModelElement)handle;
 	// cat.info("generateTaggedValues for element: " + e.getName()
 	// + " und selection " + tagSelection);
 
@@ -2174,7 +2180,8 @@ public class GeneratorCpp extends Generator
 	return buf.toString();
     }
 
-    public String generateTaggedValue(MTaggedValue tv, int tagSelection) {
+    public String generateTaggedValue(Object handle, int tagSelection) {
+	MTaggedValue tv = (MTaggedValue)handle;
 	// cat.info("generateTaggedValue: " +
 	// generateName(tv.getTag()) + " mit selection: " +
 	// tagSelection);
@@ -2282,7 +2289,8 @@ public class GeneratorCpp extends Generator
 	else return "";
     }
 
-    public String generateTaggedValues(MModelElement e) {
+    public String generateTaggedValues(Object handle) {
+	MModelElement e = (MModelElement)handle;
 	Collection tvs = e.getTaggedValues();
 	if (tvs == null || tvs.size() == 0) return "";
 	boolean first = true;
@@ -2339,7 +2347,8 @@ public class GeneratorCpp extends Generator
 	return buf.toString();
     }
 
-    public String generateTaggedValue(MTaggedValue tv) {
+    public String generateTaggedValue(Object handle) {
+	MTaggedValue tv = (MTaggedValue)handle;
 	if (tv == null) return "";
 	String s = generateUninterpreted(tv.getValue());
 	if (s == null || s.length() == 0 || s.equals("/** */")) return "";
@@ -2410,7 +2419,8 @@ public class GeneratorCpp extends Generator
 	}
     }
 
-    public String generateConstraints(MModelElement me) {
+    public String generateConstraints(Object handle) {
+	MModelElement me = (MModelElement)handle;
 	// This method just adds comments to the generated java
 	// code. This should be code generated by ocl-argo int he
 	// future?
@@ -2433,7 +2443,8 @@ public class GeneratorCpp extends Generator
 	return s;
     }
 
-    public String generateConstraint(MConstraint c) {
+    public String generateConstraint(Object handle) {
+	MConstraint c = (MConstraint)handle;
 	if (c == null) return "";
 	String s = "";
 	if (c.getName() != null && c.getName().length() != 0)
@@ -2478,7 +2489,7 @@ public class GeneratorCpp extends Generator
 	return sb.toString();
     }
 
-    public String generateAssociation(MAssociation a) {
+    public String generateAssociation(Object handle) {
 	//    String s = "";
 	//     String generatedName = generateName(a.getName());
 	//     s += "MAssociation " + generatedName + " {\n";
@@ -2494,7 +2505,8 @@ public class GeneratorCpp extends Generator
 	return "";
     }
 
-    public String generateAssociationEnd(MAssociationEnd ae) {
+    public String generateAssociationEnd(Object handle) {
+	MAssociationEnd ae = (MAssociationEnd)handle;
 	if (!ae.isNavigable()) return "";
 	if (ae.getAssociation().isAbstract()) return "";
 	//String s = INDENT + "protected ";
@@ -2611,17 +2623,11 @@ public class GeneratorCpp extends Generator
 	return sb.toString();
     }
 
-    public String generateVisibility(MVisibilityKind vis) {
-	if (MVisibilityKind.PUBLIC.equals(vis)) return "public ";
-	if (MVisibilityKind.PRIVATE.equals(vis)) return "private ";
-	if (MVisibilityKind.PROTECTED.equals(vis)) return "protected ";
-	return "";
-    }
-
-    public String generateVisibility(MFeature f) {
-	// cat.info("generate Visibility for MFeature");
-	if (f instanceof MAttribute) return "";
-	MVisibilityKind vis = f.getVisibility();
+    public String generateVisibility(Object handle) {
+	if (handle instanceof MAttribute) return "";
+	if (ModelFacade.isAFeature(handle))
+	    handle = ((MFeature)handle).getVisibility();
+	MVisibilityKind vis = (MVisibilityKind)handle;
 	if (MVisibilityKind.PUBLIC.equals(vis)) return "public ";
 	if (MVisibilityKind.PRIVATE.equals(vis)) return "private ";
 	if (MVisibilityKind.PROTECTED.equals(vis)) return "protected ";
@@ -2644,7 +2650,7 @@ public class GeneratorCpp extends Generator
 
     /**
      * Generate "abstract" keyword for an abstract operation.
-     * In C++, since it does not have an explicit "interface" keyword, we must 
+     * In C++, since it does not have an explicit "interface" keyword, we must
      * check against this and set the operation to abstract if so.
      */
     public String generateAbstractness (MOperation op) {
@@ -2706,7 +2712,8 @@ public class GeneratorCpp extends Generator
 	return "";
     }
 
-    public String generateMultiplicity(MMultiplicity m) {
+    public String generateMultiplicity(Object handle) {
+	MMultiplicity m = (MMultiplicity)handle;
 	if (m == null) { return ""; }
 	if (MMultiplicity.M0_N.equals(m)) return ANY_RANGE;
 	String s = "";
@@ -2822,15 +2829,16 @@ public class GeneratorCpp extends Generator
 
     }
 
-    public String generateState(MState m) {
-	return m.getName();
+    public String generateState(Object handle) {
+	return ModelFacade.getName(handle);
     }
 
-    public String generateStateBody(MState m) {
+    public String generateStateBody(Object handle) {
+	MState m = (MState)handle;
 	// cat.info("GeneratorCpp: generating state body");
 	String s = "";
 	Object entry = ModelFacade.getEntry(m);
-	Object exit = ModelFacade.getExit(m);   
+	Object exit = ModelFacade.getExit(m);
 	if (entry != null) {
 	    String entryStr = Generate(entry);
 	    if (entryStr.length() > 0) s += "entry / " + entryStr;
@@ -2861,7 +2869,8 @@ public class GeneratorCpp extends Generator
 	return s;
     }
 
-    public String generateTransition(MTransition m) {
+    public String generateTransition(Object handle) {
+	MTransition m = (MTransition)handle;
 	String s = generate(m.getName());
 	String t = generate(m.getTrigger());
 	String g = generate(m.getGuard());
@@ -2897,14 +2906,16 @@ public class GeneratorCpp extends Generator
 	return "";
     }
 
-    public String generateGuard(MGuard m) {
+    public String generateGuard(Object handle) {
+	MGuard m = (MGuard)handle;
 	//return generateExpression(m.getExpression());
 	if (m.getExpression() != null)
 	    return generateExpression(m.getExpression());
 	return "";
     }
 
-    public String generateMessage(MMessage m) {
+    public String generateMessage(Object handle) {
+    	MMessage m = (MMessage)handle;
     	if (m == null) return "";
 	return generateName(m.getName()) + "::"
 	    + generateAction(m.getAction());

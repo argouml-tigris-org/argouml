@@ -27,26 +27,18 @@ package org.argouml.language.dummylanguage.generator;
 
 import java.util.*;
 
-import ru.novosoft.uml.foundation.core.*;
-import ru.novosoft.uml.foundation.data_types.*;
-import ru.novosoft.uml.foundation.extension_mechanisms.*;
-import ru.novosoft.uml.behavior.common_behavior.*;
-import ru.novosoft.uml.behavior.use_cases.*;
-import ru.novosoft.uml.behavior.collaborations.*;
-import ru.novosoft.uml.behavior.state_machines.*;
-import ru.novosoft.uml.model_management.*;
-
 import org.argouml.application.api.*;
+import org.argouml.model.ModelFacade;
 import org.argouml.uml.generator.*;
 
-/** Generator subclass to generate text for display in diagrams in in
+/** Generator2 subclass to generate text for display in diagrams in in
  * text fields in the ArgoUML user interface.
  * The generated code is a dummy language. The purpose is to help other
  * on how the Genetaror mechanism is supposed to work.
  *
  * @author Linus Tolke
  */
-public class GeneratorDummy extends Generator implements PluggableNotation {
+public class GeneratorDummy extends Generator2 implements PluggableNotation {
     private static GeneratorDummy SINGLETON = new GeneratorDummy();
     public static GeneratorDummy getInstance() { return SINGLETON; }
 
@@ -66,60 +58,65 @@ public class GeneratorDummy extends Generator implements PluggableNotation {
      * @return    The generated code string. Always null in this
      *            implementation.
      */
-    public String generateExtensionPoint(MExtensionPoint ep) {
-        return "ExtensionPoint(" + ep.getName() + ")";
+    public String generateExtensionPoint(/*MExtensionPoint*/Object handle) {
+        return "ExtensionPoint(" + ModelFacade.getName(handle) + ")";
     }
 
-    public String generateOperation(MOperation op, boolean documented) {
-	return "Operation(" + op.getName() + ")";
+    public String generateOperation(/*MOperation*/Object handle, boolean documented) {
+	return "Operation(" + ModelFacade.getName(handle) + ")";
     }
-    public String generateAttribute(MAttribute attr, boolean documented) {
-	return "Attribute(" + attr.getName() + ")";
+    public String generateAttribute(/*MAttribute*/Object handle, boolean documented) {
+	return "Attribute(" + ModelFacade.getName(handle) + ")";
     }
-    public String generateParameter(MParameter param) {
-	return "Parameter(" + param.getName() + ")";
+    public String generateParameter(/*MParameter*/Object handle) {
+	return "Parameter(" + ModelFacade.getName(handle) + ")";
     }
-    public String generatePackage(MPackage p) {
-	return "Package(" + p.getName() + ")";
+    public String generatePackage(/*MPackage*/Object handle) {
+	return "Package(" + ModelFacade.getName(handle) + ")";
     }
-    public String generateClassifier(MClassifier cls) {
-	return "Classifier(" + cls.getName() + ")";
+    public String generateClassifier(/*MClassifier*/Object handle) {
+	return "Classifier(" + ModelFacade.getName(handle) + ")";
     }
-    public String generateTaggedValue(MTaggedValue s) {
-	return "TaggedValue(" + s.getTag() + ")";
+    public String generateTaggedValue(/*MTaggedValue*/Object handle) {
+	return "TaggedValue(" + ModelFacade.getTag(handle) + ")";
     }
-    public String generateAssociation(MAssociation a) {
-	return "Association(" + a.getName() + ")";
+    public String generateAssociation(/*MAssociation*/Object handle) {
+	return "Association(" + ModelFacade.getName(handle) + ")";
     }
-    public String generateAssociationEnd(MAssociationEnd ae) {
-	return "AssociationEnd(" + ae.getName() + ")";
+    public String generateAssociationEnd(/*MAssociationEnd*/Object handle) {
+	return "AssociationEnd(" + ModelFacade.getName(handle) + ")";
     }
-    public String generateAssociationRole(MAssociationRole ar) {
-	return "AssociationRole(" + ar.getName() + ")";
+    public String generateAssociationRole(/*MAssociationRole*/Object handle) {
+	return "AssociationRole(" + ModelFacade.getName(handle) + ")";
     }
-    public String generateMultiplicity(MMultiplicity m) {
-	return "Multiplicity(" + m + ")";
+    public String generateMultiplicity(/*MMultiplicity*/Object handle) {
+	return "Multiplicity(" + handle.toString() + ")";
     }
-    public String generateState(MState m) {
-	return "State(" + m.getName() + ")";
+    public String generateVisibility(/*MVisibilityKind*/Object handle) {
+        if (ModelFacade.isAVisibilityKind(handle)) {
+            return "Visibility(" + ModelFacade.getValue(handle) + ")";
+        }
+        return "Visibility(" + ModelFacade.getName(handle) + ")";
     }
-    public String generateStateBody(MState m) {
-	return "StateBody(" + m.getName() + ")";
+    public String generateState(/*MState*/Object handle) {
+	return "State(" + ModelFacade.getName(handle) + ")";
     }
-    public String generateTransition(MTransition m) {
-	return "Transition(" + m.getName() + ")";
+    public String generateStateBody(/*MState*/Object handle) {
+	return "StateBody(" + ModelFacade.getName(handle) + ")";
     }
-    public String generateAction(MAction m) {
-		return "Action(" + m.getName() + ")";
+    public String generateTransition(/*MTransition*/Object handle) {
+	return "Transition(" + ModelFacade.getName(handle) + ")";
     }
-	public String generateAction(Object m) {
-		return "Action(" + m.toString() + ")";
-	}
-    public String generateGuard(MGuard m) {
-	return "Guard(" + m.getName() + ")";
+    public String generateAction(/*MAction*/Object handle) {
+		if (ModelFacade.isAAction(handle))
+		    return "Action(" + ModelFacade.getName(handle) + ")";
+		return "Action(" + handle.toString() + ")";
     }
-    public String generateMessage(MMessage m) {
-	return "Message(" + m.getName() + ")";
+    public String generateGuard(/*MGuard*/Object handle) {
+	return "Guard(" + ModelFacade.getName(handle) + ")";
+    }
+    public String generateMessage(/*MMessage*/Object handle) {
+	return "Message(" + ModelFacade.getName(handle) + ")";
     }
     public boolean canParse() { return false; }
     public boolean canParse(Object o) { return false; }
@@ -130,8 +127,8 @@ public class GeneratorDummy extends Generator implements PluggableNotation {
     }
     public String getModuleAuthor() { return "ArgoUML Dummy Language addition"; }
     public String getModuleVersion() { return "0.9.9"; }
-    public String getModuleKey() { 
-	return "module.language.generator.dummylanguage"; 
+    public String getModuleKey() {
+	return "module.language.generator.dummylanguage";
     }
 
 
