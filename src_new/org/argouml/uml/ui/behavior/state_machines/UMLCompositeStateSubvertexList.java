@@ -31,7 +31,6 @@ import org.argouml.application.api.Argo;
 import org.argouml.uml.ui.ActionRemoveModelElement;
 import org.argouml.uml.ui.UMLModelElementListModel2;
 import org.argouml.uml.ui.UMLMutableLinkedList;
-import org.argouml.uml.ui.UMLUserInterfaceContainer;
 
 /**
  * @since Dec 14, 2002

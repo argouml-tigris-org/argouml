@@ -43,6 +43,7 @@ public abstract class UMLList2 extends JList implements TargetChangedListener, L
      */
     public UMLList2(UMLModelElementListModel2 dataModel, boolean showIcon) {
         super(dataModel);
+        setDoubleBuffered(true);
         getSelectionModel().addListSelectionListener(this);
         setCellRenderer(new UMLListCellRenderer2(showIcon));
     }
@@ -59,6 +60,7 @@ public abstract class UMLList2 extends JList implements TargetChangedListener, L
 	 */
     protected UMLList2(UMLModelElementListModel2 dataModel, ListCellRenderer renderer) {
         super(dataModel);
+        setDoubleBuffered(true);
         getSelectionModel().addListSelectionListener(this);
         if (renderer != null)
             setCellRenderer(renderer);

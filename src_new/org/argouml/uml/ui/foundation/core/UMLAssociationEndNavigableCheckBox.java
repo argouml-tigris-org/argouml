@@ -21,38 +21,39 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// $header$
-package org.argouml.uml.ui.behavior.state_machines;
+// $Id$
+package org.argouml.uml.ui.foundation.core;
 
 import org.argouml.application.api.Argo;
 import org.argouml.uml.ui.UMLCheckBox2;
 
-import ru.novosoft.uml.behavior.state_machines.MCompositeState;
+import ru.novosoft.uml.foundation.core.MAssociationEnd;
 
 /**
- * @since Dec 14, 2002
- * @author jaap.branderhorst@xs4all.nl
+ * 
+ * @author jaap.branderhorst@xs4all.nl	
+ * @since Jan 4, 2003
  */
-public class UMLCompositeStateConcurentCheckBox extends UMLCheckBox2 {
+public class UMLAssociationEndNavigableCheckBox extends UMLCheckBox2 {
 
     /**
-     * Constructor for UMLCompositeStateConcurentCheckBox.
+     * Constructor for UMLAssociationEndNavigableCheckBox.
      * @param container
      * @param text
      * @param a
      * @param propertySetName
      */
-    public UMLCompositeStateConcurentCheckBox() {
-         super(Argo.localize("UMLMenu", "label.concurrent"), 
-            ActionSetCompositeStateConcurrent.SINGLETON, 
-            "isConcurent");
+    public UMLAssociationEndNavigableCheckBox() {
+        super(Argo.localize("UMLMenu", "label.navigable"), ActionSetAssociationEndNavigable.SINGLETON, "isNavigable");
     }
 
     /**
      * @see org.argouml.uml.ui.UMLCheckBox2#buildModel()
      */
     public void buildModel() {
-        setSelected(((MCompositeState)getTarget()).isConcurent());
+        if (getTarget() != null)
+            setSelected(((MAssociationEnd)getTarget()).isNavigable());
+            
     }
 
 }

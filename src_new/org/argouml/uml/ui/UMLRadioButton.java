@@ -23,18 +23,18 @@
 
 package org.argouml.uml.ui;
 
-import java.awt.event.*;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.beans.PropertyVetoException;
-import javax.swing.*;
-import javax.swing.event.*;
+
+import javax.swing.ButtonGroup;
+import javax.swing.JRadioButton;
+import javax.swing.SwingUtilities;
 
 import org.apache.log4j.Category;
 import org.argouml.ui.ProjectBrowser;
-import java.lang.reflect.*;
 
-import ru.novosoft.uml.*;
-import ru.novosoft.uml.foundation.core.*;
-import ru.novosoft.uml.foundation.data_types.*;
+import ru.novosoft.uml.MElementEvent;
 
 public class UMLRadioButton extends JRadioButton implements ItemListener, 
                                                             UMLUserInterfaceComponent {

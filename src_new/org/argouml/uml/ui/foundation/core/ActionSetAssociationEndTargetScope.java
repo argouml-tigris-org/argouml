@@ -21,38 +21,47 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// $header$
-package org.argouml.uml.ui.behavior.state_machines;
+// $Id$
+package org.argouml.uml.ui.foundation.core;
+
+import java.awt.event.ActionEvent;
 
 import org.argouml.application.api.Argo;
+import org.argouml.uml.ui.UMLChangeAction;
 import org.argouml.uml.ui.UMLCheckBox2;
 
-import ru.novosoft.uml.behavior.state_machines.MCompositeState;
+import ru.novosoft.uml.foundation.core.MAssociationEnd;
+import ru.novosoft.uml.foundation.data_types.MScopeKind;
 
 /**
- * @since Dec 14, 2002
- * @author jaap.branderhorst@xs4all.nl
+ * 
+ * @author jaap.branderhorst@xs4all.nl	
+ * @since Jan 4, 2003
  */
-public class UMLCompositeStateConcurentCheckBox extends UMLCheckBox2 {
+public class ActionSetAssociationEndTargetScope extends UMLChangeAction {
+
+    public static final ActionSetAssociationEndTargetScope SINGLETON = new ActionSetAssociationEndTargetScope();
 
     /**
-     * Constructor for UMLCompositeStateConcurentCheckBox.
-     * @param container
-     * @param text
-     * @param a
-     * @param propertySetName
+     * Constructor for ActionSetElementOwnershipSpecification.
+     * @param s
      */
-    public UMLCompositeStateConcurentCheckBox() {
-         super(Argo.localize("UMLMenu", "label.concurrent"), 
-            ActionSetCompositeStateConcurrent.SINGLETON, 
-            "isConcurent");
+    protected ActionSetAssociationEndTargetScope() {
+        super(Argo.localize("CoreMenu", "Set"), true, NO_ICON);
     }
-
+    
     /**
-     * @see org.argouml.uml.ui.UMLCheckBox2#buildModel()
+     * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
-    public void buildModel() {
-        setSelected(((MCompositeState)getTarget()).isConcurent());
+    public void actionPerformed(ActionEvent e) {
+        super.actionPerformed(e);
+        if (e.getSource() instanceof UMLCheckBox2) {
+            UMLCheckBox2 source = (UMLCheckBox2)e.getSource();
+            Object target = source.getTarget();
+            if (target instanceof MAssociationEnd) {
+                MAssociationEnd m = (MAssociationEnd)target;
+                m.setTargetScope(source.isSelected() ? MScopeKind.CLASSIFIER : MScopeKind.INSTANCE);               
+            }
+        }
     }
-
 }

@@ -21,38 +21,44 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// $header$
-package org.argouml.uml.ui.behavior.state_machines;
+// $Id$
+package org.argouml.uml.ui.foundation.core;
 
-import org.argouml.application.api.Argo;
-import org.argouml.uml.ui.UMLCheckBox2;
+import org.argouml.uml.ui.UMLModelElementListModel2;
 
-import ru.novosoft.uml.behavior.state_machines.MCompositeState;
+import ru.novosoft.uml.MBase;
+import ru.novosoft.uml.foundation.core.MAssociation;
+import ru.novosoft.uml.foundation.core.MAssociationEnd;
 
 /**
- * @since Dec 14, 2002
- * @author jaap.branderhorst@xs4all.nl
+ * 
+ * @author jaap.branderhorst@xs4all.nl	
+ * @since Jan 4, 2003
  */
-public class UMLCompositeStateConcurentCheckBox extends UMLCheckBox2 {
-
+public class UMLAssociationEndAssociationListModel extends UMLModelElementListModel2 {
+    
     /**
-     * Constructor for UMLCompositeStateConcurentCheckBox.
-     * @param container
-     * @param text
-     * @param a
-     * @param propertySetName
+     * Constructor for UMLAssociationEndAssociationListModel.
      */
-    public UMLCompositeStateConcurentCheckBox() {
-         super(Argo.localize("UMLMenu", "label.concurrent"), 
-            ActionSetCompositeStateConcurrent.SINGLETON, 
-            "isConcurent");
+    public UMLAssociationEndAssociationListModel() {
+        super("association");
     }
 
     /**
-     * @see org.argouml.uml.ui.UMLCheckBox2#buildModel()
+     * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
      */
-    public void buildModel() {
-        setSelected(((MCompositeState)getTarget()).isConcurent());
+    protected void buildModelList() {
+        removeAllElements();
+        if (_target != null) {
+            addElement(((MAssociationEnd)_target).getAssociation());
+        }
+    }
+
+    /**
+     * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(ru.novosoft.uml.MBase)
+     */
+    protected boolean isValidElement(MBase element) {
+        return element instanceof MAssociation && ((MAssociationEnd)_target).getAssociation().equals(element);
     }
 
 }

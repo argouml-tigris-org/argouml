@@ -52,6 +52,7 @@ import java.util.Vector;
 
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
+import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
@@ -293,7 +294,7 @@ abstract public class PropPanel extends TabSpawnable implements TabModelTarget, 
      *   @param label the required string label
      *   @param component Component to be added
      */
-    public final void addLinkField(String label, Component component) {
+    public final void addLinkField(String label, JComponent component) {
         component.setBackground(getBackground());
         component.setForeground(Color.blue);
         addField(label, component);

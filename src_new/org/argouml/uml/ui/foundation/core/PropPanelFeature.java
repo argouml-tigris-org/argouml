@@ -77,7 +77,7 @@ public class PropPanelFeature extends PropPanelModelElement {
     }
     
     private void initialize() {
-        ownerScopeCheckbox = new UMLFeatureOwnerScopeCheckBox(this);
+        ownerScopeCheckbox = new UMLFeatureOwnerScopeCheckBox();
         // according to the UML spec we need an attribute visibility here
         // but it seems that NSUML thinks that elementownership visibility
         // and feature visibility are the same
