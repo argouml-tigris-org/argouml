@@ -166,8 +166,11 @@ public abstract class UMLModelElementListModel2
     }
 
     /**
-     * Builds the list of elements. Called from targetChanged every time the 
-     * target of the proppanel is changed. 
+     * Implement this method to make the list of elements that this
+     * ComboBoxModel should contain. It will be called whenever the target
+     * has changed. There is no need to clear the list of elements since it
+     * will always be empty upon entry to this method. Should the current
+     * target not be suitable for your model then you should simply return.
      */
     protected abstract void buildModelList();
 
@@ -252,7 +255,12 @@ public abstract class UMLModelElementListModel2
 	    UmlModelEventPump.getPump().removeModelEventListener(this,
 								 /*(MBase)*/_target,
 								 _eventName);
-	    _target = null;
+	}
+
+	_target = null;
+
+	if (!isEmpty()) {
+	    // It is imperative that _target is null here!
 	    removeAllElements();
 	}
 
@@ -268,7 +276,6 @@ public abstract class UMLModelElementListModel2
 					   /*(MBase)*/_target,
 					   _eventName);
 
-                removeAllElements();
                 _buildingModel = true;
                 buildModelList();
                 _buildingModel = false;
@@ -277,7 +284,6 @@ public abstract class UMLModelElementListModel2
                 }
             } else {
                 _target = null;
-                removeAllElements();
             }
         }
     }
