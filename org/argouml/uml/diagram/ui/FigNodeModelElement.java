@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2002 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -176,7 +176,7 @@ public abstract class FigNodeModelElement
         for (int i = 0; i < blur.length; ++i) {
             blur[i] = 1 / 12f;
         }
-        _shadowLookupOp = new LookupOp(new ByteLookupTable(0, data), null);        
+        _shadowLookupOp = new LookupOp(new ByteLookupTable(0, data), null);
         _shadowConvolveOp = new ConvolveOp(new Kernel(3, 3, blur));            
     }
 
@@ -189,12 +189,15 @@ public abstract class FigNodeModelElement
     protected FigRect _bigPort;
     /**
      * @deprecated 0.15.3 visibility will change use getter/setter
+     * TODO: Where is the setter?
      */
-    public FigText _name; // TODO - public!! Make private!
+    public FigText _name; // TODO: - public!! Make private!
     /**
      * @deprecated 0.15.3 visibility will change use getter/setter
+     * TODO: What is the getters name?
+     * TODO: Where is the setter?
      */
-    public FigText _stereo; // TODO - public!! Make private!
+    public FigText _stereo; // TODO: - public!! Make private!
     protected Vector _enclosedFigs = new Vector();
     protected Fig _encloser = null;
     protected boolean _readyToEdit = true;
@@ -339,8 +342,8 @@ public abstract class FigNodeModelElement
 		    ProjectManager.getManager().getCurrentProject();
                 ArgoDiagram diagram = currentProject.getActiveDiagram();
                 if (diagram instanceof UMLDiagram
-			&& ((UMLDiagram)diagram).getNamespace() != null) {
-                    owningModelelement = ((UMLDiagram)diagram).getNamespace();
+			&& ((UMLDiagram) diagram).getNamespace() != null) {
+                    owningModelelement = ((UMLDiagram) diagram).getNamespace();
                 } else {
                     owningModelelement = currentProject.getRoot();
                 }
@@ -483,7 +486,7 @@ public abstract class FigNodeModelElement
                 ((Clarifier) icon).setFig(this);
                 ((Clarifier) icon).setToDoItem(item);
             }
-            if (icon!=null) {
+            if (icon != null) {
                 icon.paintIcon(null, g, iconX, iconY);
                 iconX += icon.getIconWidth();
             }
@@ -610,7 +613,8 @@ public abstract class FigNodeModelElement
                 endTrans();
             } catch (PropertyVetoException ex) {
                 cat.error(
-			  "could not parse the text entered. PropertyVetoException",
+			  "could not parse the text entered. "
+			  + "PropertyVetoException",
 			  ex);
             }
         } else
@@ -627,12 +631,13 @@ public abstract class FigNodeModelElement
                 return;
             try {
                 ParserDisplay.SINGLETON.parseModelElement(
-							  getOwner(), ft.getText().trim());
+							  getOwner(),
+							  ft.getText().trim());
                 ProjectBrowser.getInstance().getStatusBar().showStatus("");
                 updateNameText();
             } catch (ParseException pe) {
-                ProjectBrowser.getInstance().getStatusBar().showStatus(
-								       "Error: " + pe + " at " + pe.getErrorOffset());
+                ProjectBrowser.getInstance().getStatusBar()
+		    .showStatus("Error: " + pe + " at " + pe.getErrorOffset());
                 // if there was a problem parsing,
                 // then reset the text in the fig - because the model was not
                 // updated.
@@ -718,7 +723,8 @@ public abstract class FigNodeModelElement
      */
     protected void modelChanged(MElementEvent mee) {
         if (mee == null)
-            throw new IllegalArgumentException("event may never be null with modelchanged");
+            throw new IllegalArgumentException("event may never be null "
+					       + "with modelchanged");
         if (getOwner() == null)
             return;
         if ("name".equals(mee.getName()) && mee.getSource() == getOwner()) {
@@ -834,18 +840,20 @@ public abstract class FigNodeModelElement
      * Updates the text of the sterotype FigText. Override in subclasses to get
      * wanted behaviour.
      *
-     * TODO remove all 'misuses' of the stereotype figtexts (like in
+     * TODO: remove all 'misuses' of the stereotype figtexts (like in
      * FigInterface)
      */
     protected void updateStereotypeText() {
         Object stereotype = null;
         if (getOwner() == null) {
-                cat.warn("Owner of [" + this.toString() + "/" + this.getClass() + "] is null.");
-                cat.warn("I return...");
-                return;
+	    cat.warn("Owner of [" + this.toString() + "/"
+		     + this.getClass() + "] is null.");
+	    cat.warn("I return...");
+	    return;
         }
         if (ModelFacade.getStereotypes(getOwner()).size() > 0) {
-            stereotype = ModelFacade.getStereotypes(getOwner()).iterator().next();
+            stereotype =
+		ModelFacade.getStereotypes(getOwner()).iterator().next();
         }
         _stereo.setText(Notation.generate(this, stereotype));
     }
@@ -858,7 +866,7 @@ public abstract class FigNodeModelElement
             if (getOwner() == null)
                 return;
             String nameStr =
-                Notation.generate(this, org.argouml.model.ModelFacade.getName(getOwner()));
+                Notation.generate(this, ModelFacade.getName(getOwner()));
             _name.setText(nameStr);
             updateBounds();
         }
@@ -875,9 +883,10 @@ public abstract class FigNodeModelElement
     protected void updateListeners(Object newOwner) {
         Object oldOwner = getOwner();
         if (oldOwner != null)
-            UmlModelEventPump.getPump().removeModelEventListener(this,oldOwner);
+            UmlModelEventPump.getPump().removeModelEventListener(this,
+								 oldOwner);
         if (newOwner != null) {
-            UmlModelEventPump.getPump().addModelEventListener(this,newOwner);
+            UmlModelEventPump.getPump().addModelEventListener(this, newOwner);
         }
 
     }
@@ -1001,8 +1010,9 @@ public abstract class FigNodeModelElement
             Iterator it = ModelFacade.getFeatures(own).iterator();
             while (it.hasNext()) {
                 Object feature = it.next();
-                if (org.argouml.model.ModelFacade.isAOperation(feature)) {
-                    Iterator it2 = ModelFacade.getParameters(feature).iterator();
+                if (ModelFacade.isAOperation(feature)) {
+                    Iterator it2 =
+			ModelFacade.getParameters(feature).iterator();
                     while (it2.hasNext()) {
                         UmlModelEventPump.getPump().removeModelEventListener(
                                                         	    this,
@@ -1015,7 +1025,7 @@ public abstract class FigNodeModelElement
             }
         }
         if (org.argouml.model.ModelFacade.isABase(own)) {
-            UmlModelEventPump.getPump().removeModelEventListener(this,own);
+            UmlModelEventPump.getPump().removeModelEventListener(this, own);
         }
         super.delete();
     }
@@ -1079,15 +1089,17 @@ public abstract class FigNodeModelElement
     
 
     /**
-     * Adds a fig to this FigNodeModelElement and removes it from the group it belonged to if any. 
-     * Correction to the GEF implementation that does not handle the double association correctly.
+     * Adds a fig to this FigNodeModelElement and removes it from the
+     * group it belonged to if any.  Correction to the GEF
+     * implementation that does not handle the double association
+     * correctly.
      * @see org.tigris.gef.presentation.FigGroup#addFig(org.tigris.gef.presentation.Fig)
      * TODO remove this once GEF0.10 is in place and tested
      */
     public void addFig(Fig f) {
         Fig group = f.getGroup();
         if (group != null) {
-            ((FigGroup)group).removeFig(f);
+            ((FigGroup) group).removeFig(f);
         }
         super.addFig(f);
     }

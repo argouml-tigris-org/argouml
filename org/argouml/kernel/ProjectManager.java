@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2002 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -36,6 +36,7 @@ import javax.swing.event.EventListenerList;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.log4j.Logger;
+import org.argouml.application.Main;
 import org.argouml.cognitive.ProjectMemberTodoList;
 import org.argouml.model.uml.UmlHelper;
 import org.argouml.ui.ArgoDiagram;
@@ -264,7 +265,7 @@ public final class ProjectManager {
         p.addMember(new ProjectMemberTodoList("", p));
         p.addMember(model);
         p.setNeedsSave(false);
-        org.argouml.application.Main.addPostLoadAction(new ResetStatsLater());
+        Main.addPostLoadAction(new ResetStatsLater());
         return p;
     }
 

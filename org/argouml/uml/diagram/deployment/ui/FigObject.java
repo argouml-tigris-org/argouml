@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2002 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -65,16 +65,16 @@ public class FigObject extends FigNodeModelElement {
     public FigObject() {
 	_bigPort = new FigRect(10, 10, 90, 50, Color.cyan, Color.cyan);
 	_cover = new FigRect(10, 10, 90, 50, Color.black, Color.white);
-	_name.setLineWidth(0);
-	_name.setFilled(false);
-	_name.setUnderline(true);
-	Dimension nameMin = _name.getMinimumSize();
-	_name.setBounds(10, 10, nameMin.width + 20, nameMin.height);
+	getNameFig().setLineWidth(0);
+	getNameFig().setFilled(false);
+	getNameFig().setUnderline(true);
+	Dimension nameMin = getNameFig().getMinimumSize();
+	getNameFig().setBounds(10, 10, nameMin.width + 20, nameMin.height);
 
 	// add Figs to the FigNode in back-to-front order
 	addFig(_bigPort);
 	addFig(_cover);
-	addFig(_name);
+	addFig(getNameFig());
 
 	Rectangle r = getBounds();
 	setBounds(r.x, r.y, nameMin.width, nameMin.height);
@@ -120,7 +120,7 @@ public class FigObject extends FigNodeModelElement {
     public Dimension getMinimumSize() {
 	Dimension bigPortMin = _bigPort.getMinimumSize();
 	Dimension coverMin = _cover.getMinimumSize();
-	Dimension nameMin = _name.getMinimumSize();
+	Dimension nameMin = getNameFig().getMinimumSize();
 
 	int w = nameMin.width + 10;
 	int h = nameMin.height + 5;
@@ -129,15 +129,17 @@ public class FigObject extends FigNodeModelElement {
 
     /* Override setBounds to keep shapes looking right */
     public void setBounds(int x, int y, int w, int h) {
-	if (_name == null) return;
+	if (getNameFig() == null) {
+	    return;
+	}
 
 	Rectangle oldBounds = getBounds();
 
-	Dimension nameMin = _name.getMinimumSize();
+	Dimension nameMin = getNameFig().getMinimumSize();
 
 	_bigPort.setBounds(x, y, w, h);
 	_cover.setBounds(x, y, w, h);
-	_name.setBounds(x, y, nameMin.width + 10, nameMin.height + 4);
+	getNameFig().setBounds(x, y, nameMin.width + 10, nameMin.height + 4);
 
 	//_bigPort.setBounds(x+1, y+1, w-2, h-2);
 	_x = x; _y = y; _w = w; _h = h;
@@ -153,7 +155,7 @@ public class FigObject extends FigNodeModelElement {
 
     protected void textEdited(FigText ft) throws PropertyVetoException {
 	Object obj = /*(MObject)*/ getOwner();
-	if (ft == _name) {
+	if (ft == getNameFig()) {
 	    String s = ft.getText().trim();
 	    if (s.length() > 0 && (s.endsWith(":"))) {
 		s = s.substring(0, (s.length() - 1));
@@ -172,7 +174,7 @@ public class FigObject extends FigNodeModelElement {
 	    Object mcomp = null;
 
 	    if (encloser != null
-                    && (ModelFacade.isAComponentInstance(encloser.getOwner()))) {
+		    && (ModelFacade.isAComponentInstance(encloser.getOwner()))) {
 		mcompInst = /*(MComponentInstance)*/ encloser.getOwner();
 		ModelFacade.setComponentInstance(me, mcompInst);
 	    }
@@ -212,7 +214,8 @@ public class FigObject extends FigNodeModelElement {
  
 	String baseString = "";
 
-	if (ModelFacade.getClassifiers(obj) != null && ModelFacade.getClassifiers(obj).size() > 0) {
+	if (ModelFacade.getClassifiers(obj) != null
+	        && ModelFacade.getClassifiers(obj).size() > 0) {
 
 	    baseString += ModelFacade.getName(bases.elementAt(0));
 	    for (int i = 1; i < bases.size(); i++)
@@ -221,12 +224,13 @@ public class FigObject extends FigNodeModelElement {
 	}
 
 	if (_readyToEdit) {
-	    if ( nameStr == "" && baseString == "")
-		_name.setText("");
-	    else
-		_name.setText(nameStr.trim() + " : " + baseString);
+	    if ( nameStr == "" && baseString == "") {
+		getNameFig().setText("");
+	    } else {
+		getNameFig().setText(nameStr.trim() + " : " + baseString);
+	    }
 	}
-	Dimension nameMin = _name.getMinimumSize();
+	Dimension nameMin = getNameFig().getMinimumSize();
 	Rectangle r = getBounds();
 	setBounds(r.x, r.y, nameMin.width + 10, nameMin.height + 4);
     }

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2002 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -180,8 +180,8 @@ public class FigClass extends FigNodeModelElement {
 
         // Set name box. Note the upper line will be blanked out if there is
         // eventually a stereotype above.
-        _name.setLineWidth(1);
-        _name.setFilled(true);
+        getNameFig().setLineWidth(1);
+        getNameFig().setFilled(true);
 
         // this rectangle marks the attribute section; all attributes
         // are inside it
@@ -218,7 +218,7 @@ public class FigClass extends FigNodeModelElement {
         _stereo.setLineWidth(1);
         _stereo.setEditable(false);
         _stereo.setHeight(STEREOHEIGHT + 1);
-        // +1 to have 1 pixel overlap with _name
+        // +1 to have 1 pixel overlap with getNameFig()
         _stereo.setDisplayed(false);
 
         // A thin rectangle to overlap the boundary line between stereotype
@@ -245,9 +245,9 @@ public class FigClass extends FigNodeModelElement {
         enableSizeChecking(false);
         suppressCalcBounds = true;
         addFig(_bigPort);
-        // addFig(_namespace);
+        // addFig(getNameFig()space);
         addFig(_stereo);
-        addFig(_name);
+        addFig(getNameFig());
         addFig(_stereoLineBlinder);
         addFig(_attrVec);
         addFig(_operVec);
@@ -277,7 +277,7 @@ public class FigClass extends FigNodeModelElement {
         setOwner(node);
         if ((ModelFacade.isAClassifier(node))
 	        && (ModelFacade.getName(node) != null)) {
-            _name.setText(org.argouml.model.ModelFacade.getName(node));
+            getNameFig().setText(ModelFacade.getName(node));
         }
     }
 
@@ -350,8 +350,8 @@ public class FigClass extends FigNodeModelElement {
 		new ActionModifier("Public",
 				   "visibility", "getVisibility",
 				   "setVisibility",
-				   (MClass)mclass,
-				   (Class)ModelFacade.VISIBILITYKIND,
+				   (MClass) mclass,
+				   (Class) ModelFacade.VISIBILITYKIND,
 				   ModelFacade.PUBLIC_VISIBILITYKIND,
 				   null));
         modifierMenu.addCheckItem(
@@ -482,7 +482,7 @@ public class FigClass extends FigNodeModelElement {
         // Use "aSize" to build up the minimum size. Start with the size of the
         // name compartment and build up.
 
-        Dimension aSize = _name.getMinimumSize();
+        Dimension aSize = getNameFig().getMinimumSize();
         int h = aSize.height;
         int w = aSize.width;
 
@@ -664,7 +664,7 @@ public class FigClass extends FigNodeModelElement {
         if (fgVec == null || i < 1)
             return null;
         FigText ft2 = null;
-        // TODO come GEF V 0.12 use getFigs returning an array
+        // TODO: come GEF V 0.12 use getFigs returning an array
         Vector v = new Vector(fgVec.getFigs(null));
         if (i >= v.size() || !((FigText) v.elementAt(i)).isDisplayed())
             return null;
@@ -688,7 +688,7 @@ public class FigClass extends FigNodeModelElement {
         if (fgVec == null || i < 1)
             return null;
         FigText ft2 = null;
-        // TODO come GEF V 0.12 use getFigs returning an array
+        // TODO: come GEF V 0.12 use getFigs returning an array
         Vector v = new Vector(fgVec.getFigs(null));
         if (i >= v.size() || !((FigText) v.elementAt(i)).isDisplayed())
             return null;
@@ -716,7 +716,7 @@ public class FigClass extends FigNodeModelElement {
             ActionAddAttribute.SINGLETON.actionPerformed(null);
         else
             ActionAddOperation.SINGLETON.actionPerformed(null);
-        // TODO When available use getFigs() returning array
+        // TODO: When available use getFigs() returning array
         ft = (CompartmentFigText) new Vector(fg.getFigs(null)).lastElement();
         if (ft != null) {
             ft.startTextEditor(ie);
@@ -727,7 +727,7 @@ public class FigClass extends FigNodeModelElement {
 
     protected CompartmentFigText unhighlight() {
         CompartmentFigText ft;
-        // TODO in future version of GEF call getFigs returning array
+        // TODO: in future version of GEF call getFigs returning array
         Vector v = new Vector(_attrVec.getFigs(null));
         int i;
         for (i = 1; i < v.size(); i++) {
@@ -738,7 +738,7 @@ public class FigClass extends FigNodeModelElement {
                 return ft;
             }
         }
-        // TODO in future version of GEF call getFigs returning array
+        // TODO: in future version of GEF call getFigs returning array
         v = new Vector(_operVec.getFigs(null));
         for (i = 1; i < v.size(); i++) {
             ft = (CompartmentFigText) v.elementAt(i);
@@ -889,8 +889,8 @@ public class FigClass extends FigNodeModelElement {
         int newW = Math.max(w, aSize.width);
         int newH = h;
 
-        int extra_each = 0;
-        int height_correction = 0;
+        int extraEach = 0;
+        int heightCorrection = 0;
 
         // First compute all nessessary height data. Easy if we want less than
         // the minimum
@@ -905,7 +905,7 @@ public class FigClass extends FigNodeModelElement {
 
             // Split the extra amongst the number of displayed compartments
 
-            int displayedFigs = 1; //this is for _name
+            int displayedFigs = 1; //this is for getNameFig()
 
             if (_attrVec.isDisplayed()) {
                 displayedFigs++;
@@ -918,9 +918,9 @@ public class FigClass extends FigNodeModelElement {
             // Calculate how much each, plus a correction to put in the name
             // comparment if the result is rounded
 
-            extra_each = (newH - aSize.height) / displayedFigs;
-            height_correction =
-		(newH - aSize.height) - (extra_each * displayedFigs);
+            extraEach = (newH - aSize.height) / displayedFigs;
+            heightCorrection =
+		(newH - aSize.height) - (extraEach * displayedFigs);
         }
 
         // Now resize all sub-figs, including not displayed figs. Start by the
@@ -928,13 +928,13 @@ public class FigClass extends FigNodeModelElement {
         // pixels hardcoded!). Add in the shared extra, plus in this case the
         // correction.
 
-        int height = _name.getMinimumSize().height;
+        int height = getNameFig().getMinimumSize().height;
 
         if (height < 21) {
             height = 21;
         }
 
-        height += extra_each + height_correction;
+        height += extraEach + heightCorrection;
 
         // Now sort out the stereotype display. If the stereotype is displayed,
         // move the upper boundary of the name compartment up and set new
@@ -947,7 +947,7 @@ public class FigClass extends FigNodeModelElement {
             currentY += STEREOHEIGHT;
         }
 
-        _name.setBounds(x, currentY, newW, height);
+        getNameFig().setBounds(x, currentY, newW, height);
         _stereo.setBounds(x, y, newW, STEREOHEIGHT + 1);
         _stereoLineBlinder.setBounds(x + 1, y + STEREOHEIGHT, newW - 2, 2);
 
@@ -967,7 +967,7 @@ public class FigClass extends FigNodeModelElement {
 	    ? Math.max(1, _operVec.getFigs(null).size() - 1)
 	    : 0;
         if (checkSize) {
-            height = ROWHEIGHT * na + 2 + extra_each;
+            height = ROWHEIGHT * na + 2 + extraEach;
         } else if (newH > currentY - y && na + no > 0) {
             height = (newH + y - currentY) * na / (na + no) + 1;
         } else {
@@ -1021,7 +1021,7 @@ public class FigClass extends FigNodeModelElement {
         Rectangle r = new Rectangle(me.getX() - 1, me.getY() - 1, 2, 2);
         Fig f = hitFig(r);
         if (f == _attrVec && _attrVec.getHeight() > 0) {
-            // TODO in future version of GEF call getFigs returning array
+            // TODO: in future version of GEF call getFigs returning array
             Vector v = new Vector(_attrVec.getFigs(null));
             i = (v.size() - 1)
 		* (me.getY() - f.getY() - 3)
@@ -1033,7 +1033,7 @@ public class FigClass extends FigNodeModelElement {
                 TargetManager.getInstance().setTarget(f);
             }
         } else if (f == _operVec && _operVec.getHeight() > 0) {
-            // TODO in future version of GEF call getFigs returning array
+            // TODO: in future version of GEF call getFigs returning array
             Vector v = new Vector(_operVec.getFigs(null));
             i = (v.size() - 1)
 		* (me.getY() - f.getY() - 3)
@@ -1060,7 +1060,7 @@ public class FigClass extends FigNodeModelElement {
         Collection strs = ModelFacade.getStructuralFeatures(cls);
         if (strs != null) {
             Iterator iter = strs.iterator();
-            // TODO in future version of GEF call getFigs returning array
+            // TODO: in future version of GEF call getFigs returning array
             Vector figs = new Vector(_attrVec.getFigs(null));
             CompartmentFigText attr;
             while (iter.hasNext()) {
@@ -1102,7 +1102,7 @@ public class FigClass extends FigNodeModelElement {
         Rectangle rect = getBounds();
         getUpdatedSize(_attrVec, xpos, ypos, 0, 0);
         // ouch ugly but that's for a next refactoring
-        // TODO make setBounds, calcBounds and updateBounds consistent
+        // TODO: make setBounds, calcBounds and updateBounds consistent
         setBounds(rect.x, rect.y, rect.width, rect.height);
         damage();
     }
@@ -1120,7 +1120,7 @@ public class FigClass extends FigNodeModelElement {
         Collection behs = ModelFacade.getOperations(cls);
         if (behs != null) {
             Iterator iter = behs.iterator();
-            // TODO in future version of GEF call getFigs returning array
+            // TODO: in future version of GEF call getFigs returning array
             Vector figs = new Vector(_operVec.getFigs(null));
             CompartmentFigText oper;
             while (iter.hasNext()) {
@@ -1169,7 +1169,7 @@ public class FigClass extends FigNodeModelElement {
         Rectangle rect = getBounds();
         getUpdatedSize(_operVec, xpos, ypos, 0, 0);
         // ouch ugly but that's for a next refactoring
-        // TODO make setBounds, calcBounds and updateBounds consistent
+        // TODO: make setBounds, calcBounds and updateBounds consistent
         setBounds(rect.x, rect.y, rect.width, rect.height);
         damage();
     }
@@ -1206,10 +1206,11 @@ public class FigClass extends FigNodeModelElement {
         if (getOwner() == null)
             return;
         Object cls = /*(MClass)*/ getOwner();
-        if (ModelFacade.isAbstract(cls))
-            _name.setFont(ITALIC_LABEL_FONT);
-        else
-            _name.setFont(LABEL_FONT);
+        if (ModelFacade.isAbstract(cls)) {
+            getNameFig().setFont(ITALIC_LABEL_FONT);
+	} else {
+            getNameFig().setFont(LABEL_FONT);
+	}
         super.updateNameText();
         setBounds(rect.x, rect.y, rect.width, rect.height);
     }

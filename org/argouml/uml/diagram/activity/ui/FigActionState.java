@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -32,7 +32,6 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.util.Iterator;
-import java.util.Vector;
 
 import org.argouml.uml.diagram.state.ui.FigStateVertex;
 import org.tigris.gef.base.Selection;
@@ -69,15 +68,15 @@ public class FigActionState extends FigStateVertex {
 	_cover = new FigRRect(10, 10, 90, 25, Color.black, Color.white);
 
 	_bigPort.setLineWidth(0);
-	_name.setLineWidth(0);
-	_name.setBounds(10 + PADDING, 10, 90 - PADDING * 2, 25);
-	_name.setFilled(false);
-	_name.setMultiLine(true);
+	getNameFig().setLineWidth(0);
+	getNameFig().setBounds(10 + PADDING, 10, 90 - PADDING * 2, 25);
+	getNameFig().setFilled(false);
+	getNameFig().setMultiLine(true);
 
 	// add Figs to the FigNode in back-to-front order
 	addFig(_bigPort);
 	addFig(_cover);
-	addFig(_name);
+	addFig(getNameFig());
 
 	//setBlinkPorts(false); //make port invisble unless mouse enters
 	Rectangle r = getBounds();
@@ -113,7 +112,7 @@ public class FigActionState extends FigStateVertex {
     }
 
     public Dimension getMinimumSize() {
-	Dimension nameDim = _name.getMinimumSize();
+	Dimension nameDim = getNameFig().getMinimumSize();
 	int w = nameDim.width + PADDING * 2;
 	int h = nameDim.height; // + PADDING*2;
 	return new Dimension(w, h);
@@ -121,10 +120,10 @@ public class FigActionState extends FigStateVertex {
 
     /* Override setBounds to keep shapes looking right */
     public void setBounds(int x, int y, int w, int h) {
-	if (_name == null) return;
+	if (getNameFig() == null) return;
 	Rectangle oldBounds = getBounds();
 
-	_name.setBounds(x + PADDING, y, w - PADDING * 2, h);
+	getNameFig().setBounds(x + PADDING, y, w - PADDING * 2, h);
 	_bigPort.setBounds(x + 1, y + 1, w - 2, h - 2);
 	_cover.setBounds(x, y, w, h);
 	_bigPort.setCornerRadius(h / 3 * 2);

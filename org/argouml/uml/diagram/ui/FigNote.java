@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -39,7 +39,7 @@ import org.tigris.gef.presentation.FigRect;
 
 /** Renders a Comment in a diagram.
  *
- * @deprecated as of 0.15.1, but don't remove becuase it is need for loading
+ * @deprecated as of 0.15.1, but don't remove because it is need for loading
  *             'old' .zargo project files, replaced by 
  *             {@link org.argouml.uml.diagram.static_structure.ui.FigComment 
  *             FigComment}
@@ -65,13 +65,13 @@ public class FigNote extends FigNodeModelElement {
     public FigNote() {
 	Color handleColor = Globals.getPrefs().getHandleColor();
 	_bigPort = new FigRect(10, 10, 90, 20, handleColor, Color.lightGray);
-	_name.setExpandOnly(true);
-	_name.setText("FigNote");
+	getNameFig().setExpandOnly(true);
+	getNameFig().setText("FigNote");
 	// initialize any other Figs here
 
 	// add Figs to the FigNode in back-to-front order
 	addFig(_bigPort);
-	addFig(_name);
+	addFig(getNameFig());
 
 
 	setBlinkPorts(true); //make port invisble unless mouse enters
@@ -86,7 +86,7 @@ public class FigNote extends FigNodeModelElement {
 
 
     public Dimension getMinimumSize() {
-	Dimension nameDim = _name.getMinimumSize();
+	Dimension nameDim = getNameFig().getMinimumSize();
 	int w = nameDim.width;
 	int h = nameDim.height;
 	return new Dimension(w, h);
@@ -94,7 +94,7 @@ public class FigNote extends FigNodeModelElement {
 
     public void setBounds(int x, int y, int w, int h) {
 	Rectangle oldBounds = getBounds();
-	_name.setBounds(x, y, w, h);
+	getNameFig().setBounds(x, y, w, h);
 	_x = x; _y = y; _w = w; _h = h;
 	firePropChange("bounds", oldBounds, getBounds());
 	updateEdges();

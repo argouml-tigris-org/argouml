@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -74,14 +74,14 @@ public class FigComponentInstance extends FigNodeModelElement {
         _upperRect = new FigRect(0, 20, 20, 10, Color.black, Color.white);
         _lowerRect = new FigRect(0, 40, 20, 10, Color.black, Color.white);
 
-        _name.setLineWidth(0);
-        _name.setFilled(false);
-        _name.setUnderline(true);
+        getNameFig().setLineWidth(0);
+        getNameFig().setFilled(false);
+        getNameFig().setUnderline(true);
 
         addFig(_bigPort);
         addFig(_cover);
         addFig(_stereo);
-        addFig(_name);
+        addFig(getNameFig());
         addFig(_upperRect);
         addFig(_lowerRect);
     }
@@ -90,8 +90,9 @@ public class FigComponentInstance extends FigNodeModelElement {
         this();
         setOwner(node);
         if (org.argouml.model.ModelFacade.isAClassifier(node)
-            && (org.argouml.model.ModelFacade.getName(node) != null))
-            _name.setText(org.argouml.model.ModelFacade.getName(node));
+	        && (org.argouml.model.ModelFacade.getName(node) != null)) {
+            getNameFig().setText(org.argouml.model.ModelFacade.getName(node));
+	}
         updateBounds();
     }
 
@@ -120,8 +121,8 @@ public class FigComponentInstance extends FigNodeModelElement {
         _cover.setLineColor(c);
         _stereo.setFilled(false);
         _stereo.setLineWidth(0);
-        _name.setFilled(false);
-        _name.setLineWidth(0);
+        getNameFig().setFilled(false);
+        getNameFig().setLineWidth(0);
         _upperRect.setLineColor(c);
         _lowerRect.setLineColor(c);
     }
@@ -132,7 +133,7 @@ public class FigComponentInstance extends FigNodeModelElement {
 
     public Dimension getMinimumSize() {
         Dimension stereoDim = _stereo.getMinimumSize();
-        Dimension nameDim = _name.getMinimumSize();
+        Dimension nameDim = getNameFig().getMinimumSize();
 
         int h = stereoDim.height + nameDim.height - OVERLAP;
         int w = Math.max(stereoDim.width, nameDim.width);
@@ -140,15 +141,16 @@ public class FigComponentInstance extends FigNodeModelElement {
     }
 
     public void setBounds(int x, int y, int w, int h) {
-        if (_name == null)
+        if (getNameFig() == null) {
             return;
+	}
 
         Rectangle oldBounds = getBounds();
         _bigPort.setBounds(x, y, w, h);
         _cover.setBounds(x, y, w, h);
 
         Dimension stereoDim = _stereo.getMinimumSize();
-        Dimension nameDim = _name.getMinimumSize();
+        Dimension nameDim = getNameFig().getMinimumSize();
 
         if (h < 50) {
             _upperRect.setBounds(x - 10, y + h / 6, 20, 10);
@@ -159,11 +161,10 @@ public class FigComponentInstance extends FigNodeModelElement {
         }
 
         _stereo.setBounds(x + 1, y + 1, w - 2, stereoDim.height);
-        _name.setBounds(
-			x + 1,
-			y + stereoDim.height - OVERLAP + 1,
-			w - 2,
-			nameDim.height);
+        getNameFig().setBounds(x + 1,
+			       y + stereoDim.height - OVERLAP + 1,
+			       w - 2,
+			       nameDim.height);
         _x = x;
         _y = y;
         _w = w;
@@ -296,7 +297,7 @@ public class FigComponentInstance extends FigNodeModelElement {
     protected void textEdited(FigText ft) throws PropertyVetoException {
         //super.textEdited(ft);
         Object coi = /*(MComponentInstance)*/ getOwner();
-        if (ft == _name) {
+        if (ft == getNameFig()) {
             String s = ft.getText().trim();
             //why this???
             //       if (s.length()>0) {
@@ -349,11 +350,11 @@ public class FigComponentInstance extends FigNodeModelElement {
         }
         if (_readyToEdit) {
             if (nameStr == "" && baseStr == "")
-                _name.setText("");
+                getNameFig().setText("");
             else
-                _name.setText(nameStr.trim() + " : " + baseStr);
+                getNameFig().setText(nameStr.trim() + " : " + baseStr);
         }
-        Dimension nameMin = _name.getMinimumSize();
+        Dimension nameMin = getNameFig().getMinimumSize();
         Rectangle r = getBounds();
         setBounds(r.x, r.y, r.width, r.height);
     }

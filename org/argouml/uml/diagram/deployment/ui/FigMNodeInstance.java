@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -68,15 +68,15 @@ public class FigMNodeInstance extends FigNodeModelElement {
         _cover = new FigCube(10, 10, 200, 180, Color.black, Color.white);
         _test = new FigRect(10, 10, 1, 1, Color.black, Color.white);
 
-        _name.setLineWidth(0);
-        _name.setFilled(false);
-        _name.setJustification(0);
-        _name.setUnderline(true);
+        getNameFig().setLineWidth(0);
+        getNameFig().setFilled(false);
+        getNameFig().setJustification(0);
+        getNameFig().setUnderline(true);
 
         addFig(_bigPort);
         addFig(_cover);
         addFig(_stereo);
-        addFig(_name);
+        addFig(getNameFig());
         addFig(_test);
 
     }
@@ -84,9 +84,10 @@ public class FigMNodeInstance extends FigNodeModelElement {
     public FigMNodeInstance(GraphModel gm, Object node) {
         this();
         setOwner(node);
-        if (org.argouml.model.ModelFacade.isAClassifier(node)
-            && (org.argouml.model.ModelFacade.getName(node) != null))
-            _name.setText(org.argouml.model.ModelFacade.getName(node));
+        if (ModelFacade.isAClassifier(node)
+	        && (ModelFacade.getName(node) != null)) {
+            getNameFig().setText(ModelFacade.getName(node));
+	}
     }
 
     public String placeString() {
@@ -112,8 +113,8 @@ public class FigMNodeInstance extends FigNodeModelElement {
         _cover.setLineColor(c);
         _stereo.setFilled(false);
         _stereo.setLineWidth(0);
-        _name.setFilled(false);
-        _name.setLineWidth(0);
+        getNameFig().setFilled(false);
+        getNameFig().setLineWidth(0);
         _test.setLineColor(c);
     }
 
@@ -123,23 +124,25 @@ public class FigMNodeInstance extends FigNodeModelElement {
 
     public Dimension getMinimumSize() {
         Dimension stereoDim = _stereo.getMinimumSize();
-        Dimension nameDim = _name.getMinimumSize();
+        Dimension nameDim = getNameFig().getMinimumSize();
         int w = Math.max(stereoDim.width, nameDim.width + 1) + 20;
         int h = stereoDim.height + nameDim.height + 20;
         return new Dimension(w, h);
     }
 
     public void setBounds(int x, int y, int w, int h) {
-        if (_name == null)
+        if (getNameFig() == null) {
             return;
+	}
 
         Rectangle oldBounds = getBounds();
         _bigPort.setBounds(x, y, w, h);
         _cover.setBounds(x, y, w, h);
 
         Dimension stereoDim = _stereo.getMinimumSize();
-        Dimension nameDim = _name.getMinimumSize();
-        _name.setBounds(x + 1, y + stereoDim.height + 1, w - 1, nameDim.height);
+        Dimension nameDim = getNameFig().getMinimumSize();
+        getNameFig().setBounds(x + 1, y + stereoDim.height + 1,
+			       w - 1, nameDim.height);
         _stereo.setBounds(x + 1, y + 1, w - 2, stereoDim.height);
         _x = x;
         _y = y;
@@ -158,10 +161,10 @@ public class FigMNodeInstance extends FigNodeModelElement {
             stereo = ModelFacade.getStereotypes(me).iterator().next();
         }
         if (stereo == null
-            || ModelFacade.getName(stereo) == null
-            || ModelFacade.getName(stereo).length() == 0)
+                || ModelFacade.getName(stereo) == null
+                || ModelFacade.getName(stereo).length() == 0) {
             _stereo.setText("");
-        else {
+	} else {
             _stereo.setText(Notation.generateStereotype(this, stereo));
         }
     }
@@ -195,7 +198,7 @@ public class FigMNodeInstance extends FigNodeModelElement {
     protected void textEdited(FigText ft) throws PropertyVetoException {
         // super.textEdited(ft);
         Object noi = /*(MNodeInstance)*/ getOwner();
-        if (ft == _name) {
+        if (ft == getNameFig()) {
             String s = ft.getText().trim();
             // why ever...
             //       if (s.length()>0) {
@@ -234,12 +237,13 @@ public class FigMNodeInstance extends FigNodeModelElement {
         }
 
         if (_readyToEdit) {
-            if (nameStr == "" && baseStr == "")
-                _name.setText("");
-            else
-                _name.setText(nameStr.trim() + " : " + baseStr);
+            if (nameStr == "" && baseStr == "") {
+                getNameFig().setText("");
+	    } else {
+                getNameFig().setText(nameStr.trim() + " : " + baseStr);
+	    }
         }
-        Dimension nameMin = _name.getMinimumSize();
+        Dimension nameMin = getNameFig().getMinimumSize();
         Rectangle r = getBounds();
         setBounds(r.x, r.y, r.width, r.height);
     }

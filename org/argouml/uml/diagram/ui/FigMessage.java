@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -68,11 +68,11 @@ public class FigMessage extends FigNodeModelElement {
     // constructors
 
     public FigMessage() {
-	_name.setLineWidth(0);
-	_name.setMultiLine(true);
-	_name.setFilled(false);
-	Dimension nameMin = _name.getMinimumSize();
-	_name.setBounds(10, 10, 90, nameMin.height);
+	getNameFig().setLineWidth(0);
+	getNameFig().setMultiLine(true);
+	getNameFig().setFilled(false);
+	Dimension nameMin = getNameFig().getMinimumSize();
+	getNameFig().setBounds(10, 10, 90, nameMin.height);
 
 	_figPoly = new FigPoly(Color.black, Color.black);
 	int[] xpoints = {75, 75, 77, 75, 73, 75};
@@ -87,7 +87,7 @@ public class FigMessage extends FigNodeModelElement {
 	ARROW_DIRECTIONS.addElement("West");
 
 	// add Figs to the FigNode in back-to-front order
-	addFig(_name);
+	addFig(getNameFig());
 	addFig(_figPoly);
 
 	Rectangle r = getBounds();
@@ -118,13 +118,13 @@ public class FigMessage extends FigNodeModelElement {
 
     public void setLineColor(Color col) {
 	_figPoly.setLineColor(col);
-	_name.setLineColor(col);
+	getNameFig().setLineColor(col);
     }
     public Color getLineColor() { return _figPoly.getLineColor(); }
 
     public void setFillColor(Color col) {
 	_figPoly.setFillColor(col);
-	_name.setFillColor(col);
+	getNameFig().setFillColor(col);
     }
     public Color getFillColor() { return _figPoly.getFillColor(); }
 
@@ -176,7 +176,7 @@ public class FigMessage extends FigNodeModelElement {
     public int getArrow() { return _arrowDirection; }
 
     public Dimension getMinimumSize() {
-	Dimension nameMin = _name.getMinimumSize();
+	Dimension nameMin = getNameFig().getMinimumSize();
 	Dimension figPolyMin = _figPoly.getSize();
 
 	int h = Math.max(figPolyMin.height, nameMin.height);
@@ -186,19 +186,21 @@ public class FigMessage extends FigNodeModelElement {
 
     /* Override setBounds to keep shapes looking right */
     public void setBounds(int x, int y, int w, int h) {
-	if (_name == null) return;
+	if (getNameFig() == null) {
+	    return;
+	}
 
 	Rectangle oldBounds = getBounds();
 
-	Dimension nameMin = _name.getMinimumSize();
+	Dimension nameMin = getNameFig().getMinimumSize();
 
 	int ht = 0;
 
 	if (nameMin.height > _figPoly.getHeight()) 
 	    ht = (nameMin.height - _figPoly.getHeight()) / 2;
 
-	_name.setBounds(x, y, w - _figPoly.getWidth(), nameMin.height);
-	_figPoly.setBounds(x + _name.getWidth(), y + ht,
+	getNameFig().setBounds(x, y, w - _figPoly.getWidth(), nameMin.height);
+	_figPoly.setBounds(x + getNameFig().getWidth(), y + ht,
 			   _figPoly.getWidth(), _figPoly.getHeight());
 
 	firePropChange("bounds", oldBounds, getBounds());
@@ -208,7 +210,7 @@ public class FigMessage extends FigNodeModelElement {
 
     protected void textEdited(FigText ft) throws PropertyVetoException {
 	Object message = getOwner();
-	if (message != null && ft == _name) {
+	if (message != null && ft == getNameFig()) {
 	    String s = ft.getText();
 	    try {
 		ParserDisplay.SINGLETON.parseMessage(message, s);
@@ -229,10 +231,10 @@ public class FigMessage extends FigNodeModelElement {
      * type of arrow happens in modelchanged
      */
     protected void updateArrow() {
-  	Object mes = getOwner();// MMessage
+  	Object mes = getOwner(); // MMessage
 	if (mes == null || getLayer() == null) return;
-	Object sender = ModelFacade.getSender(mes);// MClassifierRole
-	Object receiver = ModelFacade.getReceiver(mes);// MClassifierRole
+	Object sender = ModelFacade.getSender(mes); // MClassifierRole
+	Object receiver = ModelFacade.getReceiver(mes); // MClassifierRole
 	Fig senderPort = getLayer().presentationFor(sender);
 	Fig receiverPort = getLayer().presentationFor(receiver);
 	if (senderPort == null || receiverPort == null) return;
@@ -289,7 +291,7 @@ public class FigMessage extends FigNodeModelElement {
     protected void updateNameText() {
         Object mes =  getOwner();
         if (mes == null) return;
-        _name.setText(Notation.generate(this, mes));
+        getNameFig().setText(Notation.generate(this, mes));
     }
 
     /**

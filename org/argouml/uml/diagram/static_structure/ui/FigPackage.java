@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -111,103 +111,12 @@ public class FigPackage extends FigNodeModelElement {
         //
         // Create a Body that reacts to double-clicks and jumps to a diagram.
         //
-        _body = new FigText(x, y + textH, width, height - textH) 
-	    {
-		public void mouseClicked(MouseEvent me) {
-
-		    String lsDefaultName = "main";
-
-		    if (me.getClickCount() >= 2) {
-			Object lPkg = /*(MPackage)*/ FigPackage.this.getOwner();
-			if (lPkg != null) {
-			    Object lNS = lPkg;
-
-			    Project lP =
-				ProjectManager.getManager().getCurrentProject();
-
-			    Vector diags = lP.getDiagrams();
-			    Enumeration diagEnum = diags.elements();
-			    UMLDiagram lFirst = null;
-			    while (diagEnum.hasMoreElements()) {
-				UMLDiagram lDiagram =
-				    (UMLDiagram) diagEnum.nextElement();
-				Object lDiagramNS = /*(MNamespace)*/lDiagram.getNamespace();
-				if ((lNS == null && lDiagramNS == null)
-				    || (lNS.equals(lDiagramNS))) {
-				    /* save first */
-				    if (lFirst == null) {
-					lFirst = lDiagram;
-				    }
-
-				    if (lDiagram.getName() != null
-					&& lDiagram.getName().startsWith(
-									 lsDefaultName)) {
-					me.consume();
-					super.mouseClicked(me);                                   
-					TargetManager.getInstance().setTarget(lDiagram);
-					return;
-				    }
-				}
-			    } /*while*/
-
-			    /* if we get here then we didnt get the
-			     * default diagram*/
-			    if (lFirst != null) {
-				me.consume();
-				super.mouseClicked(me);
-                        
-				TargetManager.getInstance().setTarget(lFirst);
-				return;
-			    } else {
-				/* try to create a new class diagram */
-				me.consume();
-				super.mouseClicked(me);
-				try {
-				    String nameSpace;
-				    if (lNS != null && ModelFacade.getName(lNS) != null)
-					nameSpace = ModelFacade.getName(lNS);
-				    else
-					nameSpace = "(anon)";
-
-				    String dialogText =
-					"Add new class diagram to "
-                                        + nameSpace
-                                        + "?";
-				    int option =
-					JOptionPane.showConfirmDialog(
-								      null,
-								      dialogText,
-								      "Add new class diagram?",
-								      JOptionPane.YES_NO_OPTION);
-				    if (option == JOptionPane.YES_OPTION) {
-					ArgoDiagram lNew =
-					    new UMLClassDiagram(lNS);
-					String diagramName =
-					    lsDefaultName + "_" + lNew.getName();
-
-					lP.addMember(lNew);
-                                
-					TargetManager.getInstance().setTarget(lNew);
-					/* change prefix */
-					lNew.setName(diagramName);
-				    }
-				} catch (Exception ex) {
-                                    cat.error(ex);
-				}
-
-				return;
-			    } /*if new*/
-
-			} /*if package */
-		    } /* if doubleclicks */
-		    super.mouseClicked(me);
-		}
-	    };
+        _body = new FigPackageFigText(x, y + textH, width, height - textH);
 
         _body.setEditable(false);
 
-        _name.setBounds(x, y, width - indentX, textH + 2);
-        _name.setJustification(FigText.JUSTIFY_LEFT);
+        getNameFig().setBounds(x, y, width - indentX, textH + 2);
+        getNameFig().setJustification(FigText.JUSTIFY_LEFT);
 
         _bigPort.setFilled(false);
         _bigPort.setLineWidth(0);
@@ -247,7 +156,7 @@ public class FigPackage extends FigNodeModelElement {
         // add Figs to the FigNode in back-to-front order
         addFig(_bigPort);
         addFig(_stereo);
-        addFig(_name);
+        addFig(getNameFig());
         addFig(_stereoLineBlinder);
         addFig(_body);
 
@@ -267,8 +176,10 @@ public class FigPackage extends FigNodeModelElement {
         // Don't know if this should rather be done in one of the super
         // classes, since similar code is used in FigClass.java etc.
         // Andreas Rueckert <a_rueckert@gmx.net>
-        if (org.argouml.model.ModelFacade.isAPackage(node) && (org.argouml.model.ModelFacade.getName(node) != null))
-            _name.setText(org.argouml.model.ModelFacade.getName(node));
+        if (ModelFacade.isAPackage(node)
+	        && ModelFacade.getName(node) != null) {
+            getNameFig().setText(ModelFacade.getName(node));
+	}
     }
 
     public String placeString() {
@@ -292,7 +203,7 @@ public class FigPackage extends FigNodeModelElement {
     public void setLineColor(Color col) {
         super.setLineColor(col);
         _stereo.setLineColor(col);
-        _name.setLineColor(col);
+        getNameFig().setLineColor(col);
         _body.setLineColor(col);
         _stereoLineBlinder.setLineColor(_stereoLineBlinder.getFillColor());
     }
@@ -303,7 +214,7 @@ public class FigPackage extends FigNodeModelElement {
     public void setFillColor(Color col) {
         super.setFillColor(col);
         _stereo.setFillColor(col);
-        _name.setFillColor(col);
+        getNameFig().setFillColor(col);
         _body.setFillColor(col);
         _stereoLineBlinder.setLineColor(col);
     }
@@ -313,7 +224,7 @@ public class FigPackage extends FigNodeModelElement {
 
     public void setFilled(boolean f) {
         _stereo.setFilled(f);
-        _name.setFilled(f);
+        getNameFig().setFilled(f);
         _body.setFilled(f);
     }
     public boolean getFilled() {
@@ -322,7 +233,7 @@ public class FigPackage extends FigNodeModelElement {
 
     public void setLineWidth(int w) {
         _stereo.setLineWidth(w);
-        _name.setLineWidth(w);
+        getNameFig().setLineWidth(w);
         _body.setLineWidth(w);
     }
     public int getLineWidth() {
@@ -411,7 +322,7 @@ public class FigPackage extends FigNodeModelElement {
         // Use "aSize" to build up the minimum size. Start with the size of the
         // name compartment and build up.
 
-        Dimension aSize = _name.getMinimumSize();
+        Dimension aSize = getNameFig().getMinimumSize();
 
         int w = aSize.width + indentX;
         int h = aSize.height + height - textH;
@@ -472,9 +383,6 @@ public class FigPackage extends FigNodeModelElement {
         int newW = Math.max(w, aSize.width);
         int newH = h;
 
-        int extra_each = 0;
-        int height_correction = 0;
-
         // First compute all nessessary height data. Easy if we want less than
         // the minimum
 
@@ -488,7 +396,7 @@ public class FigPackage extends FigNodeModelElement {
         // pixels hardcoded!). Add in the shared extra, plus in this case the
         // correction.
 
-        int height = _name.getMinimumSize().height;
+        int height = getNameFig().getMinimumSize().height;
 
         if (height < 21) {
             height = 21;
@@ -505,7 +413,7 @@ public class FigPackage extends FigNodeModelElement {
             currentY += STEREOHEIGHT;
         }
 
-        _name.setBounds(x, currentY, newW - indentX, height);
+        getNameFig().setBounds(x, currentY, newW - indentX, height);
         _stereo.setBounds(x, y, newW - indentX, STEREOHEIGHT + 1);
         _stereoLineBlinder.setBounds(
 				     x + 1,
@@ -562,22 +470,22 @@ public class FigPackage extends FigNodeModelElement {
 
         if (!_showStereotype) {
             showMenu.add(new UMLAction("Show Stereotype", UMLAction.NO_ICON) 
-		{
-		    public void actionPerformed(ActionEvent ae) {
-			_showStereotype = true;
-			renderingChanged();
-			damage();
-		    }
-		});
+	    {
+		public void actionPerformed(ActionEvent ae) {
+		    _showStereotype = true;
+		    renderingChanged();
+		    damage();
+		}
+	    });
         } else {
             showMenu.add(new UMLAction("Hide Stereotype", UMLAction.NO_ICON) 
-		{
-		    public void actionPerformed(ActionEvent ae) {
-			_showStereotype = false;
-			renderingChanged();
-			damage();
-		    }
-		});
+	    {
+		public void actionPerformed(ActionEvent ae) {
+		    _showStereotype = false;
+		    renderingChanged();
+		    damage();
+		}
+	    });
         }
 
         popUpActions.insertElementAt(showMenu, 
@@ -585,5 +493,104 @@ public class FigPackage extends FigNodeModelElement {
 
         return popUpActions;
     }
+
+
+    class FigPackageFigText extends FigText {
+	public FigPackageFigText(int x, int y, int w, int h) {
+	    super(x, y, w, h);
+	}
+
+	public void mouseClicked(MouseEvent me) {
+
+	    String lsDefaultName = "main";
+
+	    if (me.getClickCount() >= 2) {
+		Object lPkg = /*(MPackage)*/ FigPackage.this.getOwner();
+		if (lPkg != null) {
+		    Object lNS = lPkg;
+
+		    Project lP =
+			ProjectManager.getManager().getCurrentProject();
+
+		    Vector diags = lP.getDiagrams();
+		    Enumeration diagEnum = diags.elements();
+		    UMLDiagram lFirst = null;
+		    while (diagEnum.hasMoreElements()) {
+			UMLDiagram lDiagram =
+			    (UMLDiagram) diagEnum.nextElement();
+			Object lDiagramNS =
+			    /*(MNamespace)*/lDiagram.getNamespace();
+			if ((lNS == null && lDiagramNS == null)
+			    || (lNS.equals(lDiagramNS))) {
+			    /* save first */
+			    if (lFirst == null) {
+				lFirst = lDiagram;
+			    }
+
+			    if (lDiagram.getName() != null
+				&& lDiagram.getName().startsWith(
+								 lsDefaultName)) {
+				me.consume();
+				super.mouseClicked(me);                                   
+				TargetManager.getInstance().setTarget(lDiagram);
+				return;
+			    }
+			}
+		    } /*while*/
+
+		    /* if we get here then we didnt get the
+		     * default diagram*/
+		    if (lFirst != null) {
+			me.consume();
+			super.mouseClicked(me);
+                        
+			TargetManager.getInstance().setTarget(lFirst);
+			return;
+		    } else {
+			/* try to create a new class diagram */
+			me.consume();
+			super.mouseClicked(me);
+			try {
+			    String nameSpace;
+			    if (lNS != null
+				    && ModelFacade.getName(lNS) != null)
+				nameSpace = ModelFacade.getName(lNS);
+			    else
+				nameSpace = "(anon)";
+
+			    String dialogText =
+				"Add new class diagram to "
+				+ nameSpace
+				+ "?";
+			    int option =
+				JOptionPane.showConfirmDialog(
+							      null,
+							      dialogText,
+							      "Add new class diagram?",
+							      JOptionPane.YES_NO_OPTION);
+			    if (option == JOptionPane.YES_OPTION) {
+				ArgoDiagram lNew =
+				    new UMLClassDiagram(lNS);
+				String diagramName =
+				    lsDefaultName + "_" + lNew.getName();
+
+				lP.addMember(lNew);
+                                
+				TargetManager.getInstance().setTarget(lNew);
+				/* change prefix */
+				lNew.setName(diagramName);
+			    }
+			} catch (Exception ex) {
+			    cat.error(ex);
+			}
+
+			return;
+		    } /*if new*/
+
+		} /*if package */
+	    } /* if doubleclicks */
+	    super.mouseClicked(me);
+	}
+    };
 
 } /* end class FigPackage */

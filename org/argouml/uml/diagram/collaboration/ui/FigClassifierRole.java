@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -134,21 +134,21 @@ public class FigClassifierRole extends FigNodeModelElement {
         // the stereotype is not displayed. Being a classifier role it is
         // underlined
 
-        Dimension nameMin = _name.getMinimumSize();
+        Dimension nameMin = getNameFig().getMinimumSize();
 
-        _name.setLineWidth(0);
-        _name.setMultiLine(true);
-        _name.setFilled(false);
-        _name.setUnderline(true);
+        getNameFig().setLineWidth(0);
+        getNameFig().setMultiLine(true);
+        getNameFig().setFilled(false);
+        getNameFig().setUnderline(true);
 
-        _name.setBounds(10, 10, 90, nameMin.height);
+        getNameFig().setBounds(10, 10, 90, nameMin.height);
 
         // add Figs to the FigNode in back-to-front order
 
         addFig(_bigPort);
         addFig(_cover);
         addFig(_stereo);
-        addFig(_name);
+        addFig(getNameFig());
 
         // Set our bounds to those we are given.
 
@@ -318,7 +318,7 @@ public class FigClassifierRole extends FigNodeModelElement {
         Dimension bigPortMin = _bigPort.getMinimumSize();
         Dimension coverMin   = _cover.getMinimumSize();
         Dimension stereoMin  = _stereo.getMinimumSize();
-        Dimension nameMin    = _name.getMinimumSize();
+        Dimension nameMin    = getNameFig().getMinimumSize();
 
         Dimension newMin    = new Dimension(nameMin.width, nameMin.height);
 
@@ -368,7 +368,7 @@ public class FigClassifierRole extends FigNodeModelElement {
 
         // In the rather unlikely case that we have no name, we give up.
 
-        if (_name == null) {
+        if (getNameFig() == null) {
             return;
         }
 
@@ -382,22 +382,22 @@ public class FigClassifierRole extends FigNodeModelElement {
         int newH = (minSize.height > h) ? minSize.height : h;
 
         Dimension stereoMin = _stereo.getMinimumSize();
-        Dimension nameMin   = _name.getMinimumSize();
+        Dimension nameMin   = getNameFig().getMinimumSize();
 
         // Work out the padding each side, depending on whether the stereotype
         // is displayed and set bounds accordingly
 
         if (_stereo.isDisplayed()) {
-            int extra_each = (h - nameMin.height - stereoMin.height) / 2;
+            int extraEach = (h - nameMin.height - stereoMin.height) / 2;
 
-            _stereo.setBounds(x, y + extra_each, w, stereoMin.height);
-            _name.setBounds(x, y + stereoMin.height + extra_each, w,
-                            nameMin.height); 
+            _stereo.setBounds(x, y + extraEach, w, stereoMin.height);
+            getNameFig().setBounds(x, y + stereoMin.height + extraEach, w,
+				   nameMin.height); 
         }
         else {
-            int extra_each = (h - nameMin.height) / 2;
+            int extraEach = (h - nameMin.height) / 2;
 
-            _name.setBounds(x, y + extra_each, w, nameMin.height);
+            getNameFig().setBounds(x, y + extraEach, w, nameMin.height);
         }
 
         // Set the bounds of the bigPort and cover
@@ -434,7 +434,7 @@ public class FigClassifierRole extends FigNodeModelElement {
 
         Object cls = /*(MClassifierRole)*/ getOwner();
 
-        if (ft == _name) {
+        if (ft == getNameFig()) {
             String s = ft.getText();
 	    try {
 		ParserDisplay.SINGLETON.parseClassifierRole(cls, s);
@@ -461,27 +461,28 @@ public class FigClassifierRole extends FigNodeModelElement {
         // We only use the notation generator for the name itself. We ought to
         // do the whole thing.
 
-        String nameStr    = Notation.generate(this, ModelFacade.getName(cr)).trim();
+        String nameStr =
+	    Notation.generate(this, ModelFacade.getName(cr)).trim();
         String baseString = "";
 
         // Loop through all base classes, building a comma separated list
 
-        if (ModelFacade.getBases(cr) != null && ModelFacade.getBases(cr).size() > 0) {
+        if (ModelFacade.getBases(cr) != null
+	        && ModelFacade.getBases(cr).size() > 0) {
             Vector bases = new Vector(ModelFacade.getBases(cr));
             baseString += ModelFacade.getName(bases.elementAt(0));
 
             for (int i = 1; i < bases.size(); i++)
-                baseString += ", "  +
-                              org.argouml.model.ModelFacade.getName(bases.elementAt(i));
+                baseString += ", " + ModelFacade.getName(bases.elementAt(i));
         }
 
         // Build the final string and set it as the name text.
 
         if (_readyToEdit) {
             if ( nameStr.length() == 0 && baseString.length() == 0)
-                _name.setText("");
+                getNameFig().setText("");
             else
-                _name.setText("/" + nameStr.trim() + " : " + baseString);
+                getNameFig().setText("/" + nameStr.trim() + " : " + baseString);
         }
         Rectangle rect = getBounds();
         setBounds(rect.x, rect.y, rect.width, rect.height);

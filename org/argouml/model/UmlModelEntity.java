@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2003 The Regents of the University of California. All
+// Copyright (c) 2003-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -46,7 +46,8 @@ public class UmlModelEntity extends AbstractModelEntity {
      * @param string the entity name
      * @param isCreatable true if UmlFactory can create it using create()
      * @param isFacade if the entity can be identified using ModelFacade
-     * @deprecated facade is to be removed
+     * @deprecated as of 0.15.3. facade is to be removed.
+     * TODO: Why? What is it replaced by?
      */
     public UmlModelEntity(String string,
                           boolean isCreatable,
