@@ -37,5 +37,17 @@ public class StateMachinesHelper {
      */
     private StateMachinesHelper() {
     }
+    
+     /** Singleton instance.
+     */
+    private static StateMachinesHelper SINGLETON =
+                   new StateMachinesHelper();
+
+    
+    /** Singleton instance access method.
+     */
+    public static StateMachinesHelper getHelper() {
+        return SINGLETON;
+    }
 }
 

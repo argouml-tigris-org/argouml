@@ -37,5 +37,17 @@ public class FoundationHelper {
      */
     private FoundationHelper() {
     }
+    
+     /** Singleton instance.
+     */
+    private static FoundationHelper SINGLETON =
+                   new FoundationHelper();
+
+    
+    /** Singleton instance access method.
+     */
+    public static FoundationHelper getHelper() {
+        return SINGLETON;
+    }
 }
 

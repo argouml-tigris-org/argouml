@@ -214,7 +214,7 @@ public class Project implements java.io.Serializable {
             p = new Project();
             XMIParser.SINGLETON.readModels(p,url);
             MModel model = XMIParser.SINGLETON.getCurModel();
-            UmlHelper.addListenersToModel(model);
+            UmlHelper.getHelper().addListenersToModel(model);
             p._UUIDRefs = XMIParser.SINGLETON.getUUIDRefs();
             try {
                 p.addMember(model);
@@ -311,7 +311,7 @@ public class Project implements java.io.Serializable {
         // the NSUML XMIReader.  When Argo XMIReader is used
         // consistently, it can be responsible for loading
         // the listener.  Until then, do it here.
-        UmlHelper.addListenersToModel(mmodel);
+        UmlHelper.getHelper().addListenersToModel(mmodel);
 
         // if (mmodel != null && !xmiReader.getErrors()) {
             try {

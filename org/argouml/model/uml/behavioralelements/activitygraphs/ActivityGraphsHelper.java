@@ -37,5 +37,17 @@ public class ActivityGraphsHelper {
      */
     private ActivityGraphsHelper() {
     }
+    
+    /** Singleton instance.
+     */
+    private static ActivityGraphsHelper SINGLETON =
+                   new ActivityGraphsHelper();
+
+    
+    /** Singleton instance access method.
+     */
+    public static ActivityGraphsHelper getHelper() {
+        return SINGLETON;
+    }
 }
 
