@@ -23,22 +23,11 @@
 
 package org.argouml.ui;
 
-import java.util.*;
-import java.beans.*;
-import java.awt.event.*;
-import javax.swing.*;
-import javax.swing.event.*;
-import javax.swing.tree.*;
+import java.awt.event.ActionEvent;
 
-import ru.novosoft.uml.foundation.core.*;
-import ru.novosoft.uml.foundation.data_types.*;
-import ru.novosoft.uml.behavior.common_behavior.*;
-import ru.novosoft.uml.behavior.state_machines.*;
-import ru.novosoft.uml.behavior.use_cases.*;
-import ru.novosoft.uml.model_management.*;
+import javax.swing.JTabbedPane;
 
-import org.argouml.kernel.*;
-import org.argouml.uml.ui.*;
+import org.argouml.uml.ui.UMLAction;
 
 public class ActionGoToDetails extends UMLAction {
 
