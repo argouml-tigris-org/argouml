@@ -55,7 +55,7 @@ abstract class AbstractModelEventPump implements ModelEventPump {
             Object modelelement, String eventName) {
         addModelEventListener(listener, 
                 	      modelelement, 
-                	      new String[] { eventName });
+                	      new String[] {eventName });
     }
 
     /**
@@ -84,7 +84,7 @@ abstract class AbstractModelEventPump implements ModelEventPump {
             				 String eventName) {
         removeModelEventListener(listener, 
                 		 modelelement, 
-                		 new String[] { eventName, });
+                		 new String[] {eventName, });
     }
 
     /**
@@ -115,7 +115,7 @@ abstract class AbstractModelEventPump implements ModelEventPump {
             				   String eventName) {
         addClassModelEventListener(listener, 
                 		   modelClass, 
-                		   new String[] { eventName, });
+                		   new String[] {eventName, });
     }
 
     /**
@@ -138,7 +138,7 @@ abstract class AbstractModelEventPump implements ModelEventPump {
             				      String eventName) {
         removeClassModelEventListener(listener, 
                 		      modelClass, 
-                		      new String[] { eventName, });
+                		      new String[] {eventName, });
 
     }
 }
