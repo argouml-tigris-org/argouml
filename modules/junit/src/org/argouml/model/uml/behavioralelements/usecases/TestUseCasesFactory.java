@@ -50,18 +50,4 @@ public class TestUseCasesFactory extends TestCase {
 	    UseCasesFactory.getFactory(), objs);
     }
     
-    public void testRemoves() {
-    	String [] objs = {
-	    "Actor",
-	    "Extend",
-	    "ExtensionPoint",
-	    "Include",
-	    "UseCase",
-	    "UseCaseInstance"
-	};
-
-	CheckUMLModelHelper.testRemove(this, 
-	    UseCasesFactory.getFactory(), objs);
-    }
-
 }

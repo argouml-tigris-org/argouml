@@ -603,7 +603,7 @@ implements TabModelTarget, MElementListener, UMLUserInterfaceContainer {
                     newTarget = ((MModelElement) base).getNamespace();
                 }
             }
-            UmlFactory.getFactory().remove(base);
+            base.remove();
             if(newTarget != null) {
                 navigateTo(newTarget);
             }

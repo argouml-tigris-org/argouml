@@ -197,7 +197,7 @@ class ParseState
 	for(Iterator i = obsoleteInnerClasses.iterator(); i.hasNext(); ) {
 	    MModelElement element = (MModelElement)i.next();
 	    if(element instanceof MClassifier) {
-	    	UmlFactory.getFactory().getCore().removeClassifier((MClassifier)element);
+	    	((MClassifier)element).remove();
 	    }
 	}	
     }

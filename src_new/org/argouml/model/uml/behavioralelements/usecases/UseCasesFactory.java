@@ -23,8 +23,6 @@
 
 package org.argouml.model.uml.behavioralelements.usecases;
 
-import java.util.Iterator;
-
 import org.argouml.model.uml.AbstractUmlModelFactory;
 import org.argouml.model.uml.UmlFactory;
 
@@ -40,22 +38,8 @@ import ru.novosoft.uml.behavior.use_cases.MUseCaseInstance;
  * Factory to create UML classes for the UML
  * BehaviorialElements::UseCases package.
  *
- * This class contains all create, remove and build methods for UseCases 
- * modelelements.
- * Create methods create an empty modelelement. It is registred with the 
- * eventpump however. Remove methods remove a modelelement including the listener.
- * Build methods create a modelelement but also instantiate the modelelement, 
- * for example with defaults.
- * 
- * Helper methods for UseCases should not be placed here. Helper methods are methods
- * like getReturnParameters. These should be placed in UseCasesHelper 
- *
  * @since ARGO0.11.2
  * @author Thierry Lach
- * @author jaap.branderhorst@xs4all.nl
- * 
- * @see org.argouml.model.uml.behavioralelements.usecases.UseCasesHelper
- * @see org.argouml.model.uml.UmlFactory
  */
 public class UseCasesFactory extends AbstractUmlModelFactory {
 
@@ -133,62 +117,6 @@ public class UseCasesFactory extends AbstractUmlModelFactory {
         MUseCaseInstance modelElement = MFactory.getDefaultFactory().createUseCaseInstance();
 	super.initialize(modelElement);
 	return modelElement;
-    }
-    
-    /** Remove an  instance of a UML Actor.
-     */
-    public void  removeActor(MActor modelelement) {
-        modelelement.remove();
-    }
-    
-    /** Remove an  instance of a UML Extend.
-     */
-    public void  removeExtend(MExtend modelelement) {
-        modelelement.remove();
-    }
-    
-    /** Remove an  instance of a UML ExtensionPoint.
-     */
-    public void  removeExtensionPoint(MExtensionPoint modelelement) {
-        modelelement.remove();
-    }
-    
-     /** Remove an  instance of a UML Include.
-     */
-    public void  removeInclude(MInclude modelelement) {
-        modelelement.remove();
-    }
-    
-    /** Remove an  instance of a UML UseCase.
-     */
-    public void  removeUseCase(MUseCase modelelement) {     
-        // Get rid of extends
-        Iterator extendIterator = (modelelement.getExtends()).iterator();
-        while (extendIterator.hasNext()) {
-            ((MExtend) extendIterator.next()).remove();
-        }
-        extendIterator = (modelelement.getExtends2()).iterator();
-        while (extendIterator.hasNext()) {
-            ((MExtend) extendIterator.next()).remove();
-        }
-        // Get rid of includes
-        Iterator includeIterator = (modelelement.getIncludes()).iterator();
-        while (includeIterator.hasNext()) {
-            ((MInclude) includeIterator.next()).remove();
-        }
-        includeIterator = (modelelement.getIncludes2()).iterator();
-        while (includeIterator.hasNext()) {
-            ((MInclude) includeIterator.next()).remove();
-        }
-        // Use the classifier version to get rid of everything else (including
-        // our very own good selves).
-        UmlFactory.getFactory().getCore().removeClassifier(modelelement);
-    }
-    
-    /** Remove an  instance of a UML UseCaseInstance.
-     */
-    public void  removeUseCaseInstance(MUseCaseInstance modelelement) {
-        modelelement.remove();
     }
     
      /**

@@ -222,7 +222,7 @@ implements PluggablePropertyPanel {
     }
 
     public void deleteElement(MModelElement element) {
-        UmlFactory.getFactory().remove(element);
+        element.remove();
         // 2002-07-15
         // Jaap Branderhorst
         // Force an update of the navigation pane to solve issue 323

@@ -43,22 +43,8 @@ import ru.novosoft.uml.behavior.common_behavior.MCallAction;
  * Factory to create UML classes for the UML
  * BehaviorialElements::Collaborations package.
  *
- * This class contains all create, remove and build methods for Collaborations 
- * modelelements.
- * Create methods create an empty modelelement. It is registred with the 
- * eventpump however. Remove methods remove a modelelement including the listener.
- * Build methods create a modelelement but also instantiate the modelelement, 
- * for example with defaults.
- * 
- * Helper methods for Collaborations should not be placed here. Helper methods are methods
- * like getReturnParameters. These should be placed in CollaborationsHelper 
- *
  * @since ARGO0.11.2
  * @author Thierry Lach
- * @author jaap.branderhorst@xs4all.nl
- * 
- * @see org.argouml.model.uml.behavioralelements.collaborations.CollaborationsHelper
- * @see org.argouml.model.uml.UmlFactory
  */
 public class CollaborationsFactory extends AbstractUmlModelFactory {
 
@@ -137,44 +123,6 @@ public class CollaborationsFactory extends AbstractUmlModelFactory {
 	super.initialize(modelElement);
 	return modelElement;
     }
-    
-    /** Remove an instance of a UML AssociationEndRole
-     */
-    public void  removeAssociationEndRole(MAssociationEndRole modelelement) {
-    	modelelement.remove();
-    }
-    
-    /** Remove an instance of a UML AssociationRole
-     */
-    public void  removeAssociationRole(MAssociationRole modelelement) {
-    	modelelement.remove();
-    }
-    
-    /** Remove an instance of a UML ClassifierRole
-     */
-    public void  removeClassifierRole(MClassifierRole modelelement) {
-    	modelelement.remove();
-    }
-    
-    /** Remove an instance of a UML Collaboration
-     */
-    public void  removeCollaboration(MCollaboration modelelement) {
-    	modelelement.remove();
-    }
-    
-    /** Remove an instance of a UML Interaction
-     */
-    public void  removeInteraction(MInteraction modelelement) {
-    	modelelement.remove();
-    }
-    
-    /** Remove an instance of a UML Interaction
-     */
-    public void  removeMessage(MMessage modelelement) {
-    	modelelement.remove();
-    }
-
-
     
     /**
      * Builds a message with an empty string as sequence number.

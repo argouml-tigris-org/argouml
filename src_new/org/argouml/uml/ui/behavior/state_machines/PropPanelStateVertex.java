@@ -143,7 +143,7 @@ public abstract class PropPanelStateVertex extends PropPanelModelElement {
 
             Object newTarget = sv.getContainer();
 
-            UmlFactory.getFactory().getStateMachines().removeStateVertex(sv);
+            sv.remove();
 
             if(newTarget != null) {
                 navigateTo(newTarget);

@@ -35,18 +35,11 @@ import org.argouml.model.uml.modelmanagement.*;
 
 import java.io.IOException;
 import java.io.Writer;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.List;
-import java.util.Vector;
-
 import javax.xml.parsers.ParserConfigurationException;
 
 import ru.novosoft.uml.MBase;
-import ru.novosoft.uml.foundation.core.MModelElement;
 import ru.novosoft.uml.model_management.MModel;
 
 import org.apache.log4j.Category;
@@ -163,55 +156,4 @@ public class UmlFactory extends AbstractUmlModelFactory {
     public ModelManagementFactory getModelManagement() {
         return ModelManagementFactory.getFactory();
     }
-    
-	/**
-	 * Removes a modelelement from the model using the remove methods defined 
-	 * in the uml factories.
-	 * @param modelelement
-	 */
-    public void remove(MBase modelelement) {
-	    try {
-			Vector factoryMethods = new Vector();
-			Method[] methodArray = UmlFactory.class.getMethods();
-			for (int i = 0 ; i<methodArray.length; i++) {
-				if (methodArray[i].getName().startsWith("get") && 
-					!methodArray[i].getName().equals("getFactory") && 
-					!methodArray[i].getName().equals("getClass")) {
-						factoryMethods.add(methodArray[i]);
-				}
-			}
-			Iterator it = factoryMethods.iterator();
-			while (it.hasNext()) {
-				Object factory = ((Method) it.next()).invoke(UmlFactory.getFactory(), new Object[] {});
-				List removeMethods = Arrays.asList(factory.getClass().getMethods());
-				Iterator it2 = removeMethods.iterator();
-				String classname = getCreateClassName(modelelement);
-				while (it2.hasNext()) {
-					Method method = (Method)it2.next();
-					String methodname = method.getName();
-					if (methodname.endsWith(classname) && methodname.substring(0, methodname.lastIndexOf(classname)).equals("remove")) {	
-						method.invoke(factory, new Object[] {modelelement});
-						return;
-					}
-				}
-			}					
-		} catch (IllegalAccessException e2) {
-		} catch (InvocationTargetException e3) {
-		}
-		logger.error("The modelelement " + modelelement.toString() + " cannot be removed. ");
-    }
-    
-    /**
-	 * returns the name of the uml modelelement without impl, M or the fullname
-	 * @param modelelement the modelelement we want to know the name of
-	 * @return String
-	 */
-	private String getCreateClassName(MBase modelelement) {
-		String name = modelelement.getClass().getName();
-		name = name.substring(name.lastIndexOf('.')+2, name.length());
-		if (name.endsWith("Impl")) {
-			name = name.substring(0, name.lastIndexOf("Impl"));
-		}
-		return name;
-	}
 }

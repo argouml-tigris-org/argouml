@@ -172,7 +172,7 @@ public class PropPanelObject extends PropPanelModelElement {
         MObject target = (MObject) getTarget();        
 	MModelElement newTarget = (MModelElement) target.getNamespace();
                 
-        UmlFactory.getFactory().getCommonBehavior().removeObject(target);
+        target.remove();
 	if(newTarget != null) navigateTo(newTarget);
     }
 

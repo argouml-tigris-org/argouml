@@ -218,7 +218,7 @@ abstract public class PropPanelClassifier extends PropPanelNamespace {
 
             Object newTarget = cls.getNamespace();
 
-            UmlFactory.getFactory().getCore().removeClassifier(cls);
+            cls.remove();
 
             if(newTarget != null) {
                 navigateTo(newTarget);

@@ -49,15 +49,4 @@ public class TestModelManagementFactory extends TestCase {
 	    objs);
     }
     
-    public void testRemoves() {
-    	String [] objs = {
-	    "ElementImport",
-	    "Model",
-	    "Package",
-	    "Subsystem"
-	};
-
-	CheckUMLModelHelper.testRemove(this, 
-	    ModelManagementFactory.getFactory(), objs);
-    }
 }

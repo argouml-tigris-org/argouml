@@ -236,7 +236,7 @@ public class PropPanelStimulus extends PropPanelModelElement {
         MStimulus target = (MStimulus) getTarget();        
 	MModelElement newTarget = (MModelElement) target.getNamespace();
                 
-        UmlFactory.getFactory().getCommonBehavior().removeStimulus(target);
+        target.remove();
 		if(newTarget != null) { 
 			navigateTo(newTarget);
 		}
