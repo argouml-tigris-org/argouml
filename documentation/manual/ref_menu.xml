@@ -488,7 +488,7 @@ Selecting <literal>Yes</literal> reloads the last saved file.
           and is selected by &button1; click on its tab. 
           It provides a combo box for the language selection 
           (in V0.18 of &argouml; only Java can be chosen), 
-          and the following check boxes and radio buttons:
+          and the following selections:
         </para>
         
         <itemizedlist>
@@ -532,6 +532,14 @@ Selecting <literal>Yes</literal> reloads the last saved file.
               <literal>Level of import detail: Classifiers only / 
               Classifiers plus feature specifications /
               Full import</literal>. The latter is the default.</para>
+          </listitem>
+          <listitem>
+            <para>
+              <literal>Import source file encoding: </literal>. 
+              The value <literal>Cp1252</literal> is often the default.
+              This string represents the 
+              <literal>coded character set identifier (CCSID)<literal>.
+              </para>
           </listitem>
         </itemizedlist>
         
@@ -689,8 +697,8 @@ it should match the invoking command, in casu: "Print".  See issue 2465. -->
       <para>The PNG format is the default.</para>
       
       <caution><para>The PNG graphics does not support shadows very well, 
-      so maybe it is better to switch shadows off before saving graphics 
-      in PNG format.
+      so maybe it is better to either save in GIF format, or 
+      switch shadows off before saving in PNG format.
       <!-- See issue 3109.  -->
       </para></caution>
     </sect2>
@@ -706,7 +714,7 @@ it should match the invoking command, in casu: "Print".  See issue 2465. -->
         <xref linkend="s2.ref.menu_settings"/>) 
         or directly on the various
         panes. 
-        Also the main window size and location are such settings.
+        Also the main window size and location is such a setting.
         Activating this menu entry causes the information to be saved 
         in the file
         <literal>argo.user.properties</literal>.
@@ -828,16 +836,20 @@ it should match the invoking command, in casu: "Print".  See issue 2465. -->
             </indexterm>
               Selects all artifacts on the current pane or in the current field. 
               The exact behaviour depends on the <literal>current
-              pane</literal>: explorer pane, editing pane, to-do pane, details
-              pane. One rule applies in all cases though: the selection on the
+              pane</literal> (i.e. the last one you clicked in): 
+              explorer pane, editing pane, to-do pane, details pane. 
+              One rule applies in all cases though: the selection on the
               diagram (editing pane) and in the explorer are always
-              synchronised.
+              synchronised. 
+              <!-- And how can we see which is selected? Issue 2765. -->
           </para>
           <para> If the editing pane is the <literal>current pane</literal>:
             First everything in the explorer and 
             on the current diagram is deselected,
             and then everything that is on the current diagram is selected 
-            (on both panes, because they are always synchronised).
+            (and if the same items apear in the explorer, 
+            then they are also there indicated as selected, 
+            because they are always synchronised).
           </para>
           <para>
             If the explorer pane is the <literal>current pane</literal>: 
@@ -848,12 +860,13 @@ it should match the invoking command, in casu: "Print".  See issue 2465. -->
             If the to-do pane is the <literal>current pane</literal>:
             All visible items in the to-do pane
             are selected, and non-visible items are deselected.
-            in fact, this works the same as for the explorer pane, because both
+            In fact, this works the same as for the explorer pane, because both
             are tree structures.
           </para>
           <para>
             If the details pane is the <literal>current pane</literal>:
-            The function only works in certain fields, where selecting is
+            The function only works when the cursor is in 
+            certain fields, where selecting is
             possible, e.g. a Name field. In such a case, the Select All function
             extends the current selection to the whole field contents.
           </para>
@@ -892,35 +905,14 @@ it should match the invoking command, in casu: "Print".  See issue 2465. -->
           </para>
         </listitem>
 
-        <listitem>
-          <para><literal>Select Previous</literal>. &argouml; has a
-          concept of the ordering of artifacts on a diagram. 
-          <!--visible in the "Package-centric" view in the explorer ??? -->. 
-          This selects the item prior to the currently selected item in that
-          ordering.</para></listitem>
-
-        <listitem><para><literal>Select Next</literal>. Similarly this
-          selects the item following the currently selected item in that
-          ordering.</para></listitem>
-
         <listitem><para><literal>Invert Selection</literal>. This inverts the
-          current selection. More exact: everything that was selected is de-selected
+          current selection on the <literal>current pane</literal>. 
+          More exact: everything that was selected is de-selected
           and everything that was not selected 
-          within the current diagram is selected.
+          within the current pane is selected.
           </para>
         </listitem>
       </itemizedlist>  
-      <warning>
-        <para>
-          The behavior of the <literal>Select Next</literal> 
-          and <literal>Select Previous</literal> menu functions can be very
-          strange, selecting items that do not appear to be on any
-          diagram. It is probably best avoided.
-          <!-- TODO: This feature should best be removed from the menu. See
-          issue 2470. -->
-        </para>
-      </warning>
-
     </sect2>
 
     <!-- Undo -->
@@ -969,7 +961,7 @@ it should match the invoking command, in casu: "Print".  See issue 2465. -->
       <para>This takes the currently selected items, remove them from the
         diagram, and place them on the clipboard for subsequent pasting.</para>
 
-      <warning><para>In the V0.14 implementation of &argouml; there are
+      <warning><para>In the V0.18 implementation of &argouml; there are
         some difficulties with clipboard based functions. This menu option is
         best avoided.</para></warning>
         <!-- TODO: See issue ... -->
@@ -994,7 +986,7 @@ it should match the invoking command, in casu: "Print".  See issue 2465. -->
       <para>This takes the currently selected items and make a copy of
         them on the clipboard for subsequent pasting.</para>
 
-      <warning><para>In the V0.14 implementation of &argouml; there are
+      <warning><para>In the V0.18 implementation of &argouml; there are
         some difficulties with clipboard based functions. This menu option is
         best avoided.</para></warning>
         <!-- TODO: See issue ... -->
@@ -1020,18 +1012,18 @@ it should match the invoking command, in casu: "Print".  See issue 2465. -->
 on to the current diagram in the drawing pane.
       </para>
 
-      <warning><para>In the V0.14 implementation of &argouml; there are
+      <warning><para>In the V0.18 implementation of &argouml; there are
         some difficulties with clipboard based functions. This menu option is
         best avoided.</para></warning>
         <!-- TODO: See issue ... -->
     </sect2>
 
-    <!-- Remove artifact from the diagram -->
+    <!-- Remove from the diagram -->
 
     <sect2 id="s2.menu_edit_remove_from_diagram">
       <title><guiicon><inlinemediaobject><imageobject><imagedata
           format="GIF" align="center" fileref="images/icons/remove_from_diagram.gif"/>
-        </imageobject></inlinemediaobject></guiicon>Remove From Diagram</title>
+        </imageobject></inlinemediaobject></guiicon> Remove From Diagram</title>
 
       <indexterm>
 	<primary>Remove From Diagram</primary>
@@ -1052,12 +1044,12 @@ on to the current diagram in the drawing pane.
 
     </sect2>
 
-    <!-- Remove artifact from the model -->
+    <!-- Delete from the model -->
 
     <sect2>
       <title><guiicon><inlinemediaobject><imageobject><imagedata
           format="GIF" align="center" fileref="images/icons/delete_from_model.gif"/>
-        </imageobject></inlinemediaobject></guiicon>Delete From Model</title>
+        </imageobject></inlinemediaobject></guiicon> Delete From Model</title>
 
       <indexterm>
 	<primary>Delete From Model</primary>
