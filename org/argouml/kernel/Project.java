@@ -80,6 +80,7 @@ public class Project implements java.io.Serializable {
 
   //needs-more-work should just be the directory to write
   private URL _url = null;
+  protected ChangeRegistry _saveRegistry;
 
   public String _authorname = "";
   public String _description = "";
@@ -107,12 +108,16 @@ public class Project implements java.io.Serializable {
 
   public Project(URL url) {
     _url = Util.fixURLExtension(url, FILE_EXT);
+    _saveRegistry = new UMLChangeRegistry();
   }
 
-  public Project() { }
+  public Project() {
+    _saveRegistry = new UMLChangeRegistry();
+  }
 
   public Project (MModel model) {
     System.out.println("making empty project with model: "+model.getName());
+    _saveRegistry = new UMLChangeRegistry();
 
     defineType(JavaUML.VOID_TYPE);     //J.101
     defineType(JavaUML.CHAR_TYPE);     //J.102
@@ -251,7 +256,7 @@ public class Project implements java.io.Serializable {
 		    System.out.println("Now going to load "+currentEntry.getName()+" from ZipInputStream");
 
 		    // "false" means the stream shall not be closed, but it doesn't seem to matter...
-		    Diagram d = PGMLParser.SINGLETON.readDiagram(sub,false);
+		    ArgoDiagram d = (ArgoDiagram)PGMLParser.SINGLETON.readDiagram(sub,false);
 		    addMember(d);
 		    // sub.closeEntry();
 		    System.out.println("Finished loading "+currentEntry.getName());
@@ -476,7 +481,7 @@ public class Project implements java.io.Serializable {
       //}
   }
 
-  public void addMember(Diagram d) throws PropertyVetoException {
+  public void addMember(ArgoDiagram d) throws PropertyVetoException {
     ProjectMember pm = new ProjectMemberDiagram(d, this);
     addDiagram(d);
     // if diagram added successfully, add the member too
@@ -512,7 +517,7 @@ public class Project implements java.io.Serializable {
     getVetoSupport().fireVetoableChange("Models", _models, null);
     if (! _models.contains(m)) _models.addElement(m);
     setCurrentNamespace(m);
-    _needsSave = true;
+    setNeedsSave(true);
   }
 
 //   public void removeMember(Diagram d) {
@@ -529,7 +534,7 @@ public class Project implements java.io.Serializable {
 //   }
 
 
-  public void removeMember(Diagram d) throws PropertyVetoException {
+  public void removeMember(ArgoDiagram d) throws PropertyVetoException {
     removeDiagram(d);
     _members.removeElement(d);
   }
@@ -655,9 +660,8 @@ public class Project implements java.io.Serializable {
   public String getHistoryFile() { return _historyFile; }
   public void setHistoryFile(String s) { _historyFile = s; }
 
-  public boolean getNeedsSave() { return _needsSave; }
-  public void setNeedsSave(boolean ns) { _needsSave = ns; }
-  public void needsSave() { setNeedsSave(true); }
+  public void setNeedsSave(boolean newValue) { _saveRegistry.setChangeFlag(newValue); }
+  public boolean needsSave() { return _saveRegistry.hasChanged(); }
 
   public Vector getModels() { return _models; }
 
@@ -724,16 +728,18 @@ public class Project implements java.io.Serializable {
   public MNamespace getCurrentNamespace() { return _curModel; }
 
   public Vector getDiagrams() { return _diagrams; }
-  public void addDiagram(Diagram d) throws PropertyVetoException {
+  public void addDiagram(ArgoDiagram d) throws PropertyVetoException {
     // send indeterminate new value instead of making copy of vector
     getVetoSupport().fireVetoableChange("Diagrams", _diagrams, null);
     _diagrams.addElement(d);
-    _needsSave = true;
+    d.addChangeRegistryAsListener( _saveRegistry );
+    setNeedsSave(true);
   }
-  public void removeDiagram(Diagram d) throws PropertyVetoException {
+  public void removeDiagram(ArgoDiagram d) throws PropertyVetoException {
     getVetoSupport().fireVetoableChange("Diagrams", _diagrams, null);
     _diagrams.removeElement(d);
-    _needsSave = true;
+    d.removeChangeRegistryAsListener( _saveRegistry );
+    setNeedsSave(true);
   }
 
   public int getPresentationCountFor(MModelElement me) {
@@ -782,14 +788,14 @@ public class Project implements java.io.Serializable {
     for (int i = 0; i < _diagrams.size(); i++)
       ((Diagram)_diagrams.elementAt(i)).postSave();
     // needs-more-work: is postSave needed for models?
-    _needsSave = false;
+    setNeedsSave(false);
   }
 
   public void postLoad() {
     for (int i = 0; i < _diagrams.size(); i++)
       ((Diagram)_diagrams.elementAt(i)).postLoad();
     // needs-more-work: is postLoad needed for models?
-    _needsSave = false;
+    setNeedsSave(false);
     // we don't need this HashMap anymore so free up the memory
     _UUIDRefs = null;
   }

@@ -270,7 +270,7 @@ class ActionNew extends UMLAction {
   public void actionPerformed(ActionEvent e) {
     ProjectBrowser pb = ProjectBrowser.TheInstance;
     Project p = pb.getProject();
-    if (p != null) { // && p.getNeedsSave()) {
+    if (p != null && p.needsSave()) {
       String t = "Save changes to " + p.getName();
       int response =
 	JOptionPane.showConfirmDialog(pb, t, t,
@@ -298,7 +298,7 @@ class ActionOpenProject extends UMLAction {
   public void actionPerformed(ActionEvent e) {
     ProjectBrowser pb = ProjectBrowser.TheInstance;
     Project p = pb.getProject();
-    if (p != null) { // && p.getNeedsSave()) {
+    if (p != null && p.needsSave()) {
       String t = "Save changes to " + p.getName();
       int response =
 	JOptionPane.showConfirmDialog(pb, t, t,
@@ -937,7 +937,7 @@ class ActionExit extends UMLAction {
   public void actionPerformed(ActionEvent ae) {
     ProjectBrowser pb = ProjectBrowser.TheInstance;
     Project p = pb.getProject();
-    if (p != null) { // && p.getNeedsSave()) {
+    if (p != null && p.needsSave()) {
       String t = "Save changes to " + p.getName();
       int response =
         JOptionPane.showConfirmDialog(pb, t, t,
@@ -1306,7 +1306,7 @@ class ActionClassDiagram extends UMLChangeAction {
     MNamespace ns = p.getCurrentNamespace();
     if (target instanceof MPackage) ns = (MNamespace) target;
     try {
-      Diagram d = new UMLClassDiagram(ns);
+      ArgoDiagram d = new UMLClassDiagram(ns);
       p.addMember(d);
       ProjectBrowser.TheInstance.getNavPane().addToHistory(d);
       ProjectBrowser.TheInstance.setTarget(d);
@@ -1326,7 +1326,7 @@ class ActionUseCaseDiagram extends UMLChangeAction {
       Object target = ProjectBrowser.TheInstance.getDetailsTarget();
       MNamespace ns = p.getCurrentNamespace();
       if (target instanceof MPackage) ns = (MNamespace) target;
-      Diagram d  = new UMLUseCaseDiagram(ns);
+      ArgoDiagram d  = new UMLUseCaseDiagram(ns);
       p.addMember(d);
       ProjectBrowser.TheInstance.getNavPane().addToHistory(d);
       ProjectBrowser.TheInstance.setTarget(d);
@@ -1447,7 +1447,7 @@ class ActionDeploymentDiagram extends UMLChangeAction {
       Object target = ProjectBrowser.TheInstance.getDetailsTarget();
       MNamespace ns = p.getCurrentNamespace();
       if (target instanceof MPackage) ns = (MNamespace) target;
-      Diagram d  = new UMLDeploymentDiagram(ns);
+      ArgoDiagram d  = new UMLDeploymentDiagram(ns);
       p.addMember(d);
       ProjectBrowser.TheInstance.getNavPane().addToHistory(d);
       ProjectBrowser.TheInstance.setTarget(d);
@@ -1467,12 +1467,7 @@ class ActionSequenceDiagram extends UMLChangeAction {
       Object target = ProjectBrowser.TheInstance.getDetailsTarget();
       MNamespace ns = p.getCurrentNamespace();
       if (target instanceof MModel) ns = (MNamespace) target;
-      /*
-	while (ns.getNamespace() != null) {
-	  ns = ns.getNamespace();
-      }
-      */
-      Diagram d  = new UMLSequenceDiagram(ns);
+      ArgoDiagram d  = new UMLSequenceDiagram(ns);
       p.addMember(d);
       ProjectBrowser.TheInstance.getNavPane().addToHistory(d);
       ProjectBrowser.TheInstance.setTarget(d);
