@@ -69,7 +69,6 @@ public class MenuResourceBundle extends ListResourceBundle {
         {"Import", "Import" },
         {"action.import-sources", "Import sources..." },
         {"action.print", "Print..." },
-        {"Save GIF...", "Save GIF..." },
         {"action.as-diagram", "As Diagram"},
         {"action.as-metrics", "As Metrics"},
         {"action.as-table", "As Table"},

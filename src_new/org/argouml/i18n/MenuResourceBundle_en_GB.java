@@ -45,7 +45,6 @@ public class MenuResourceBundle_en_GB extends ListResourceBundle {
         {"action.save-project", "Save Project" },
         {"action.save-project-as", "Save Project As..." },
         {"action.print", "Print..." },
-        {"Save GIF...", "Save GIF..." },
         {"action.save-graphics", "Save Graphics..." },
         {"action.exit", "Exit" },
         {"action.undo", "Undo" },
