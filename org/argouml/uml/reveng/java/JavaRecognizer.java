@@ -524,9 +524,13 @@ public JavaRecognizer(ParserSharedInputState state) {
 		match(IDENT);
 		ie=interfaceExtends();
 		if ( inputState.guessing==0 ) {
-			getModeller().addInterface(interfaceName.getText(), modifiers, ie, javadoc);
+			getModeller().addInterface(interfaceName.getText(), modifiers,
+			ie, javadoc);
 		}
 		classBlock();
+		if ( inputState.guessing==0 ) {
+			getModeller().popClassifier();
+		}
 	}
 	
 /** A declaration is the creation of a reference or primitive-type variable

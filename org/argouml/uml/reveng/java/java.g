@@ -350,13 +350,15 @@ superClassClause returns [String superClassName = null]
 // Definition of a Java Interface
 interfaceDefinition![String javadoc, short modifiers]
 {Vector ie=null;}
-	:	"interface" interfaceName:IDENT
-		// it might extend some other interfaces
-		ie=interfaceExtends
-		{getModeller().addInterface(interfaceName.getText(), modifiers, ie, javadoc);}
-		// now parse the body of the interface (looks like a class...)
-		cb:classBlock
-	;
+        :       "interface" interfaceName:IDENT
+                // it might extend some other interfaces
+                ie=interfaceExtends
+                {getModeller().addInterface(interfaceName.getText(), modifiers,
+ie, javadoc);}
+                // now parse the body of the interface (looks like a class...)
+                cb:classBlock
+                {getModeller().popClassifier();}
+        ;
 
 
 // This is the body of a class.  You can have fields and extra semicolons,
