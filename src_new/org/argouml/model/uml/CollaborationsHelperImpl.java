@@ -387,7 +387,7 @@ class CollaborationsHelperImpl implements CollaborationsHelper {
         if (ModelFacade.getName(role) == null
 	    || ModelFacade.getName(role).equals("")) {
 
-            Object/*MCollaboration*/ collab = ModelFacade.getNamespace(role);
+            MCollaboration collab = (MCollaboration) role.getNamespace();
             Collection roles =
 		nsmodel.getModelManagementHelper()
 		    .getAllModelElementsOfKind(collab, MClassifierRole.class);
@@ -523,7 +523,7 @@ class CollaborationsHelperImpl implements CollaborationsHelper {
     }
 
     /**
-     * Returns all possible bases for some associationrole taking into
+     * Returns all possible bases for some AssociationRole taking into
      * account the wellformednessrules as defined in section 2.10.3 of
      * the UML 1.3 spec.<p>
      *
@@ -535,7 +535,6 @@ class CollaborationsHelperImpl implements CollaborationsHelper {
         if (role == null || role.getNamespace() == null) {
             return ret;
         }
-	MCollaboration coll = (MCollaboration) role.getNamespace();
 
         // find the bases of the connected classifierroles so that we can see
         // what associations are between them. If there are bases then the
@@ -552,7 +551,8 @@ class CollaborationsHelperImpl implements CollaborationsHelper {
             }
         }
         if (bases.isEmpty()) {
-            MNamespace ns = coll.getNamespace();
+            MNamespace ns =
+                ((MCollaboration) role.getNamespace()).getNamespace();
             ret.addAll(nsmodel.getModelManagementHelper()
 		       .getAllModelElementsOfKind(ns, MAssociation.class));
             ret.removeAll(nsmodel.getModelManagementHelper()
@@ -580,7 +580,7 @@ class CollaborationsHelperImpl implements CollaborationsHelper {
                     Iterator it2 = assoc.getAssociationRoles().iterator();
                     while (it2.hasNext()) {
                         MAssociationRole role2 = (MAssociationRole) it2.next();
-                        if (role2.getNamespace() == coll) {
+                        if (role2.getNamespace() == role.getNamespace()) {
                             listToRemove.add(assoc);
                         }
                     }
@@ -603,8 +603,8 @@ class CollaborationsHelperImpl implements CollaborationsHelper {
         if (role == null || ModelFacade.getNamespace(role) == null) {
             return new ArrayList();
         }
-        Object/*MCollaboration*/ coll = ModelFacade.getNamespace(role);
-        Object/*MNamespace*/ ns = ModelFacade.getNamespace(coll);
+        MCollaboration coll = (MCollaboration) role.getNamespace();
+        MNamespace ns = coll.getNamespace();
         Collection returnList =
 	    nsmodel.getModelManagementHelper()
 	        .getAllModelElementsOfKind(ns, MClassifier.class);
@@ -642,11 +642,16 @@ class CollaborationsHelperImpl implements CollaborationsHelper {
      * @param abase all possible bases
      */
     public void setBase(Object arole, Object abase) {
+        if (arole == null) {
+            throw new IllegalArgumentException("role is null");
+        }
+        if (!(arole instanceof MAssociationRole)) {
+            throw new IllegalArgumentException("role");
+        }
         MAssociationRole role = (MAssociationRole) arole;
         MAssociation base = (MAssociation) abase;
-        if (role == null) {
-            throw  new IllegalArgumentException("role is null");
-        }
+
+        // TODO: Must we calculate the whole list?
         if (base != null && !getAllPossibleBases(role).contains(base)) {
             throw new IllegalArgumentException("base is not allowed for "
 					       + "this role");
@@ -803,8 +808,7 @@ class CollaborationsHelperImpl implements CollaborationsHelper {
      * @param handle The collaboration to add a constraint to.
      * @param constraint The constraint to add.
      */
-    public void addConstrainingElement(Object handle,
-            				      Object constraint) {
+    public void addConstrainingElement(Object handle, Object constraint) {
         if (handle instanceof MCollaboration
                 && constraint instanceof MModelElement) {
             ((MCollaboration) handle).addConstrainingElement(
