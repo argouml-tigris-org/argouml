@@ -1,5 +1,4 @@
-
-// $ANTLR 2.7.2a2 (20020112-1): "../src_new/org/argouml/uml/reveng/java/java.g" -> "JavaLexer.java"$
+// $ANTLR 2.7.2a2 (20020112-1): "java.g" -> "JavaLexer.java"$
 
 package org.argouml.uml.reveng.java;
 
@@ -11,7 +10,7 @@ import antlr.TokenStreamIOException;
 import antlr.TokenStreamRecognitionException;
 import antlr.CharStreamException;
 import antlr.CharStreamIOException;
-
+import antlr.ANTLRException;
 import java.io.Reader;
 import java.util.Hashtable;
 import antlr.CharScanner;
@@ -19,15 +18,15 @@ import antlr.InputBuffer;
 import antlr.ByteBuffer;
 import antlr.CharBuffer;
 import antlr.Token;
-
+import antlr.CommonToken;
 import antlr.RecognitionException;
 import antlr.NoViableAltForCharException;
-
+import antlr.MismatchedCharException;
 import antlr.TokenStream;
 import antlr.ANTLRHashString;
 import antlr.LexerSharedInputState;
 import antlr.collections.impl.BitSet;
-
+import antlr.SemanticException;
 
 public class JavaLexer extends antlr.CharScanner implements JavaTokenTypes, TokenStream
  {
@@ -254,25 +253,6 @@ tryAgain:
 					theRetToken=_returnToken;
 					break;
 				}
-				case '$':  case 'A':  case 'B':  case 'C':
-				case 'D':  case 'E':  case 'F':  case 'G':
-				case 'H':  case 'I':  case 'J':  case 'K':
-				case 'L':  case 'M':  case 'N':  case 'O':
-				case 'P':  case 'Q':  case 'R':  case 'S':
-				case 'T':  case 'U':  case 'V':  case 'W':
-				case 'X':  case 'Y':  case 'Z':  case '_':
-				case 'a':  case 'b':  case 'c':  case 'd':
-				case 'e':  case 'f':  case 'g':  case 'h':
-				case 'i':  case 'j':  case 'k':  case 'l':
-				case 'm':  case 'n':  case 'o':  case 'p':
-				case 'q':  case 'r':  case 's':  case 't':
-				case 'u':  case 'v':  case 'w':  case 'x':
-				case 'y':  case 'z':
-				{
-					mIDENT(true);
-					theRetToken=_returnToken;
-					break;
-				}
 				case '.':  case '0':  case '1':  case '2':
 				case '3':  case '4':  case '5':  case '6':
 				case '7':  case '8':  case '9':
@@ -428,6 +408,10 @@ tryAgain:
 					}
 					else if ((LA(1)=='&') && (true)) {
 						mBAND(true);
+						theRetToken=_returnToken;
+					}
+					else if ((_tokenSet_1.member(LA(1)))) {
+						mIDENT(true);
 						theRetToken=_returnToken;
 					}
 				else {
@@ -1106,9 +1090,9 @@ tryAgain:
 		{
 		_loop250:
 		do {
-			if ((_tokenSet_1.member(LA(1)))) {
+			if ((_tokenSet_2.member(LA(1)))) {
 				{
-				match(_tokenSet_1);
+				match(_tokenSet_2);
 				}
 			}
 			else {
@@ -1161,15 +1145,15 @@ tryAgain:
 		{
 		_loop256:
 		do {
-			if ((LA(1)=='\r') && (LA(2)=='\n') && ((LA(3) >= '\u0003' && LA(3) <= '\u0451')) && ((LA(4) >= '\u0003' && LA(4) <= '\u0451'))) {
+			if ((LA(1)=='\r') && (LA(2)=='\n') && ((LA(3) >= '\u0003' && LA(3) <= '\ufffe')) && ((LA(4) >= '\u0003' && LA(4) <= '\ufffe'))) {
 				match('\r');
 				match('\n');
 				newline();
 			}
-			else if (((LA(1)=='*') && ((LA(2) >= '\u0003' && LA(2) <= '\u0451')) && ((LA(3) >= '\u0003' && LA(3) <= '\u0451')))&&( LA(2)!='/' )) {
+			else if (((LA(1)=='*') && ((LA(2) >= '\u0003' && LA(2) <= '\ufffe')) && ((LA(3) >= '\u0003' && LA(3) <= '\ufffe')))&&( LA(2)!='/' )) {
 				match('*');
 			}
-			else if ((LA(1)=='\r') && ((LA(2) >= '\u0003' && LA(2) <= '\u0451')) && ((LA(3) >= '\u0003' && LA(3) <= '\u0451')) && (true)) {
+			else if ((LA(1)=='\r') && ((LA(2) >= '\u0003' && LA(2) <= '\ufffe')) && ((LA(3) >= '\u0003' && LA(3) <= '\ufffe')) && (true)) {
 				match('\r');
 				newline();
 			}
@@ -1177,9 +1161,9 @@ tryAgain:
 				match('\n');
 				newline();
 			}
-			else if ((_tokenSet_2.member(LA(1)))) {
+			else if ((_tokenSet_3.member(LA(1)))) {
 				{
-				match(_tokenSet_2);
+				match(_tokenSet_3);
 				}
 			}
 			else {
@@ -1205,12 +1189,12 @@ tryAgain:
 		
 		match("/*");
 		{
-		if ((LA(1)=='\r') && (LA(2)=='\n') && ((LA(3) >= '\u0003' && LA(3) <= '\u0451')) && ((LA(4) >= '\u0003' && LA(4) <= '\u0451'))) {
+		if ((LA(1)=='\r') && (LA(2)=='\n') && ((LA(3) >= '\u0003' && LA(3) <= '\ufffe')) && ((LA(4) >= '\u0003' && LA(4) <= '\ufffe'))) {
 			match('\r');
 			match('\n');
 			newline();
 		}
-		else if ((LA(1)=='\r') && ((LA(2) >= '\u0003' && LA(2) <= '\u0451')) && ((LA(3) >= '\u0003' && LA(3) <= '\u0451')) && (true)) {
+		else if ((LA(1)=='\r') && ((LA(2) >= '\u0003' && LA(2) <= '\ufffe')) && ((LA(3) >= '\u0003' && LA(3) <= '\ufffe')) && (true)) {
 			match('\r');
 			newline();
 		}
@@ -1218,9 +1202,9 @@ tryAgain:
 			match('\n');
 			newline();
 		}
-		else if ((_tokenSet_2.member(LA(1)))) {
+		else if ((_tokenSet_3.member(LA(1)))) {
 			{
-			match(_tokenSet_2);
+			match(_tokenSet_3);
 			}
 		}
 		else {
@@ -1231,15 +1215,15 @@ tryAgain:
 		{
 		_loop262:
 		do {
-			if ((LA(1)=='\r') && (LA(2)=='\n') && ((LA(3) >= '\u0003' && LA(3) <= '\u0451')) && ((LA(4) >= '\u0003' && LA(4) <= '\u0451'))) {
+			if ((LA(1)=='\r') && (LA(2)=='\n') && ((LA(3) >= '\u0003' && LA(3) <= '\ufffe')) && ((LA(4) >= '\u0003' && LA(4) <= '\ufffe'))) {
 				match('\r');
 				match('\n');
 				newline();
 			}
-			else if (((LA(1)=='*') && ((LA(2) >= '\u0003' && LA(2) <= '\u0451')) && ((LA(3) >= '\u0003' && LA(3) <= '\u0451')))&&( LA(2)!='/' )) {
+			else if (((LA(1)=='*') && ((LA(2) >= '\u0003' && LA(2) <= '\ufffe')) && ((LA(3) >= '\u0003' && LA(3) <= '\ufffe')))&&( LA(2)!='/' )) {
 				match('*');
 			}
-			else if ((LA(1)=='\r') && ((LA(2) >= '\u0003' && LA(2) <= '\u0451')) && ((LA(3) >= '\u0003' && LA(3) <= '\u0451')) && (true)) {
+			else if ((LA(1)=='\r') && ((LA(2) >= '\u0003' && LA(2) <= '\ufffe')) && ((LA(3) >= '\u0003' && LA(3) <= '\ufffe')) && (true)) {
 				match('\r');
 				newline();
 			}
@@ -1247,9 +1231,9 @@ tryAgain:
 				match('\n');
 				newline();
 			}
-			else if ((_tokenSet_2.member(LA(1)))) {
+			else if ((_tokenSet_3.member(LA(1)))) {
 				{
-				match(_tokenSet_2);
+				match(_tokenSet_3);
 				}
 			}
 			else {
@@ -1278,7 +1262,7 @@ tryAgain:
 		if ((LA(1)=='\\')) {
 			mESC(false);
 		}
-		else if ((_tokenSet_3.member(LA(1)))) {
+		else if ((_tokenSet_4.member(LA(1)))) {
 			matchNot('\'');
 		}
 		else {
@@ -1370,15 +1354,15 @@ tryAgain:
 			matchRange('0','3');
 			}
 			{
-			if (((LA(1) >= '0' && LA(1) <= '7')) && ((LA(2) >= '\u0003' && LA(2) <= '\u0451')) && (true) && (true)) {
+			if (((LA(1) >= '0' && LA(1) <= '7')) && ((LA(2) >= '\u0003' && LA(2) <= '\ufffe')) && (true) && (true)) {
 				{
 				matchRange('0','7');
 				}
 				{
-				if (((LA(1) >= '0' && LA(1) <= '7')) && ((LA(2) >= '\u0003' && LA(2) <= '\u0451')) && (true) && (true)) {
+				if (((LA(1) >= '0' && LA(1) <= '7')) && ((LA(2) >= '\u0003' && LA(2) <= '\ufffe')) && (true) && (true)) {
 					matchRange('0','7');
 				}
-				else if (((LA(1) >= '\u0003' && LA(1) <= '\u0451')) && (true) && (true) && (true)) {
+				else if (((LA(1) >= '\u0003' && LA(1) <= '\ufffe')) && (true) && (true) && (true)) {
 				}
 				else {
 					throw new NoViableAltForCharException((char)LA(1), getFilename(), getLine(), getColumn());
@@ -1386,7 +1370,7 @@ tryAgain:
 				
 				}
 			}
-			else if (((LA(1) >= '\u0003' && LA(1) <= '\u0451')) && (true) && (true) && (true)) {
+			else if (((LA(1) >= '\u0003' && LA(1) <= '\ufffe')) && (true) && (true) && (true)) {
 			}
 			else {
 				throw new NoViableAltForCharException((char)LA(1), getFilename(), getLine(), getColumn());
@@ -1401,12 +1385,12 @@ tryAgain:
 			matchRange('4','7');
 			}
 			{
-			if (((LA(1) >= '0' && LA(1) <= '9')) && ((LA(2) >= '\u0003' && LA(2) <= '\u0451')) && (true) && (true)) {
+			if (((LA(1) >= '0' && LA(1) <= '9')) && ((LA(2) >= '\u0003' && LA(2) <= '\ufffe')) && (true) && (true)) {
 				{
 				matchRange('0','9');
 				}
 			}
-			else if (((LA(1) >= '\u0003' && LA(1) <= '\u0451')) && (true) && (true) && (true)) {
+			else if (((LA(1) >= '\u0003' && LA(1) <= '\ufffe')) && (true) && (true) && (true)) {
 			}
 			else {
 				throw new NoViableAltForCharException((char)LA(1), getFilename(), getLine(), getColumn());
@@ -1440,9 +1424,9 @@ tryAgain:
 			if ((LA(1)=='\\')) {
 				mESC(false);
 			}
-			else if ((_tokenSet_4.member(LA(1)))) {
+			else if ((_tokenSet_5.member(LA(1)))) {
 				{
-				match(_tokenSet_4);
+				match(_tokenSet_5);
 				}
 			}
 			else {
@@ -1551,7 +1535,10 @@ tryAgain:
 			break;
 		}
 		default:
-		{
+			if (((LA(1) >= '\u0080' && LA(1) <= '\ufffe'))) {
+				matchRange('\u0080','\uFFFE');
+			}
+		else {
 			throw new NoViableAltForCharException((char)LA(1), getFilename(), getLine(), getColumn());
 		}
 		}
@@ -1600,7 +1587,10 @@ tryAgain:
 				break;
 			}
 			default:
-			{
+				if (((LA(1) >= '\u0080' && LA(1) <= '\ufffe'))) {
+					matchRange('\u0080','\uFFFE');
+				}
+			else {
 				break _loop286;
 			}
 			}
@@ -1650,7 +1640,7 @@ tryAgain:
 				
 				}
 				{
-				if ((_tokenSet_5.member(LA(1)))) {
+				if ((_tokenSet_6.member(LA(1)))) {
 					mFLOAT_SUFFIX(false);
 				}
 				else {
@@ -1701,7 +1691,7 @@ tryAgain:
 					int _cnt297=0;
 					_loop297:
 					do {
-						if ((_tokenSet_6.member(LA(1))) && (true) && (true) && (true)) {
+						if ((_tokenSet_7.member(LA(1))) && (true) && (true) && (true)) {
 							mHEX_DIGIT(false);
 						}
 						else {
@@ -1788,7 +1778,7 @@ tryAgain:
 				}
 				}
 			}
-			else if (((_tokenSet_7.member(LA(1))))&&(isDecimal)) {
+			else if (((_tokenSet_8.member(LA(1))))&&(isDecimal)) {
 				{
 				switch ( LA(1)) {
 				case '.':
@@ -1815,7 +1805,7 @@ tryAgain:
 					
 					}
 					{
-					if ((_tokenSet_5.member(LA(1)))) {
+					if ((_tokenSet_6.member(LA(1)))) {
 						mFLOAT_SUFFIX(false);
 					}
 					else {
@@ -1828,7 +1818,7 @@ tryAgain:
 				{
 					mEXPONENT(false);
 					{
-					if ((_tokenSet_5.member(LA(1)))) {
+					if ((_tokenSet_6.member(LA(1)))) {
 						mFLOAT_SUFFIX(false);
 					}
 					else {
@@ -1976,75 +1966,85 @@ tryAgain:
 	
 	
 	private static final long[] mk_tokenSet_0() {
-		long[] data = new long[64];
+		long[] data = new long[2048];
 		data[0]=-4398046511112L;
-		for (int i = 1; i<=16; i++) { data[i]=-1L; }
-		data[17]=262143L;
-		for (int i = 18; i<=63; i++) { data[i]=0L; }
+		for (int i = 1; i<=1022; i++) { data[i]=-1L; }
+		data[1023]=9223372036854775807L;
+		for (int i = 1024; i<=2047; i++) { data[i]=0L; }
 		return data;
 	}
 	public static final BitSet _tokenSet_0 = new BitSet(mk_tokenSet_0());
 	private static final long[] mk_tokenSet_1() {
-		long[] data = new long[64];
-		data[0]=-9224L;
-		for (int i = 1; i<=16; i++) { data[i]=-1L; }
-		data[17]=262143L;
-		for (int i = 18; i<=63; i++) { data[i]=0L; }
+		long[] data = new long[3072];
+		data[0]=68719476736L;
+		data[1]=576460745995190270L;
+		for (int i = 2; i<=1022; i++) { data[i]=-1L; }
+		data[1023]=9223372036854775807L;
+		for (int i = 1024; i<=3071; i++) { data[i]=0L; }
 		return data;
 	}
 	public static final BitSet _tokenSet_1 = new BitSet(mk_tokenSet_1());
 	private static final long[] mk_tokenSet_2() {
-		long[] data = new long[64];
-		data[0]=-4398046520328L;
-		for (int i = 1; i<=16; i++) { data[i]=-1L; }
-		data[17]=262143L;
-		for (int i = 18; i<=63; i++) { data[i]=0L; }
+		long[] data = new long[2048];
+		data[0]=-9224L;
+		for (int i = 1; i<=1022; i++) { data[i]=-1L; }
+		data[1023]=9223372036854775807L;
+		for (int i = 1024; i<=2047; i++) { data[i]=0L; }
 		return data;
 	}
 	public static final BitSet _tokenSet_2 = new BitSet(mk_tokenSet_2());
 	private static final long[] mk_tokenSet_3() {
-		long[] data = new long[64];
-		data[0]=-549755813896L;
-		data[1]=-268435457L;
-		for (int i = 2; i<=16; i++) { data[i]=-1L; }
-		data[17]=262143L;
-		for (int i = 18; i<=63; i++) { data[i]=0L; }
+		long[] data = new long[2048];
+		data[0]=-4398046520328L;
+		for (int i = 1; i<=1022; i++) { data[i]=-1L; }
+		data[1023]=9223372036854775807L;
+		for (int i = 1024; i<=2047; i++) { data[i]=0L; }
 		return data;
 	}
 	public static final BitSet _tokenSet_3 = new BitSet(mk_tokenSet_3());
 	private static final long[] mk_tokenSet_4() {
-		long[] data = new long[64];
-		data[0]=-17179869192L;
+		long[] data = new long[2048];
+		data[0]=-549755813896L;
 		data[1]=-268435457L;
-		for (int i = 2; i<=16; i++) { data[i]=-1L; }
-		data[17]=262143L;
-		for (int i = 18; i<=63; i++) { data[i]=0L; }
+		for (int i = 2; i<=1022; i++) { data[i]=-1L; }
+		data[1023]=9223372036854775807L;
+		for (int i = 1024; i<=2047; i++) { data[i]=0L; }
 		return data;
 	}
 	public static final BitSet _tokenSet_4 = new BitSet(mk_tokenSet_4());
 	private static final long[] mk_tokenSet_5() {
-		long[] data = new long[33];
-		data[0]=0L;
-		data[1]=343597383760L;
-		for (int i = 2; i<=32; i++) { data[i]=0L; }
+		long[] data = new long[2048];
+		data[0]=-17179869192L;
+		data[1]=-268435457L;
+		for (int i = 2; i<=1022; i++) { data[i]=-1L; }
+		data[1023]=9223372036854775807L;
+		for (int i = 1024; i<=2047; i++) { data[i]=0L; }
 		return data;
 	}
 	public static final BitSet _tokenSet_5 = new BitSet(mk_tokenSet_5());
 	private static final long[] mk_tokenSet_6() {
-		long[] data = new long[33];
-		data[0]=287948901175001088L;
-		data[1]=541165879422L;
-		for (int i = 2; i<=32; i++) { data[i]=0L; }
+		long[] data = new long[1025];
+		data[0]=0L;
+		data[1]=343597383760L;
+		for (int i = 2; i<=1024; i++) { data[i]=0L; }
 		return data;
 	}
 	public static final BitSet _tokenSet_6 = new BitSet(mk_tokenSet_6());
 	private static final long[] mk_tokenSet_7() {
-		long[] data = new long[33];
-		data[0]=70368744177664L;
-		data[1]=481036337264L;
-		for (int i = 2; i<=32; i++) { data[i]=0L; }
+		long[] data = new long[1025];
+		data[0]=287948901175001088L;
+		data[1]=541165879422L;
+		for (int i = 2; i<=1024; i++) { data[i]=0L; }
 		return data;
 	}
 	public static final BitSet _tokenSet_7 = new BitSet(mk_tokenSet_7());
+	private static final long[] mk_tokenSet_8() {
+		long[] data = new long[1025];
+		data[0]=70368744177664L;
+		data[1]=481036337264L;
+		for (int i = 2; i<=1024; i++) { data[i]=0L; }
+		return data;
+	}
+	public static final BitSet _tokenSet_8 = new BitSet(mk_tokenSet_8());
 	
 	}
