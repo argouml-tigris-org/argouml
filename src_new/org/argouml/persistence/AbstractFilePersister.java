@@ -48,13 +48,44 @@ public abstract class AbstractFilePersister extends FileFilter
         Logger.getLogger(AbstractFilePersister.class);
 
     /**
-     * The PERSISTENCE_VERSION is increased every time a new version of
-     * ArgoUML is released, which uses an forwards incompatible file format.
-     * This allows conversion of old persistence version files
-     * to be converted to the current one.
+     * The PERSISTENCE_VERSION is increased every time the persistence format
+     * changes.
+     * This controls conversion of old persistence version files to be
+     * converted to the current one, keeping ArgoUML backwards compatible.
      */
     protected static final int PERSISTENCE_VERSION = 2;
+    
+    /**
+     * Supply the encoding to be used throughout the persistence
+     * mechanism.
+     * @return the encoding.
+     */
+    protected String getEncoding() {
+        return "UTF-8";
+    }
 
+    /**
+     * Create a temporary copy of the existing file.
+     * @param file the file to copy.
+     * @return the temp file or null if none copied.
+     * @throws FileNotFoundException if file not found
+     * @throws IOException if error reading or writing
+     */
+    protected File createTempFile(File file)
+        throws FileNotFoundException, IOException {
+        File tempFile = new File(file.getAbsolutePath() + "#");
+        
+        if (tempFile.exists()) {
+            tempFile.delete();
+        }
+        
+        if (file.exists()) {
+            copyFile(file, tempFile);
+        }
+        
+        return tempFile;
+    }
+    
     /**
      * Copies one file src to another, raising file exceptions
      * if there are some problems.
@@ -65,13 +96,8 @@ public abstract class AbstractFilePersister extends FileFilter
      * @throws IOException if there is some problems with the files.
      * @throws FileNotFoundException if any of the files cannot be found.
      */
-    protected File copyFile(File dest, File src)
+    private File copyFile(File src, File dest)
         throws FileNotFoundException, IOException {
-
-        // first delete dest file
-        if (dest.exists()) {
-            dest.delete();
-        }
 
         FileInputStream fis  = new FileInputStream(src);
         FileOutputStream fos = new FileOutputStream(dest);
