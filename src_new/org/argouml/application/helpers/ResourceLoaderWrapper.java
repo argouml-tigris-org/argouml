@@ -45,19 +45,22 @@ import ru.novosoft.uml.foundation.data_types.MPseudostateKind;
  * @author jaap.branderhorst@xs4all.nl
  */
 public final class ResourceLoaderWrapper {
+    static {
+        initResourceLoader();
+    }
 
-    protected ImageIcon _ActionStateIcon = ResourceLoader.lookupIconResource("ActionState");
-    protected ImageIcon _StateIcon = ResourceLoader.lookupIconResource("State");
-    protected ImageIcon _InitialStateIcon = ResourceLoader.lookupIconResource("Initial");
-    protected ImageIcon _DeepIcon = ResourceLoader.lookupIconResource("DeepHistory");
-    protected ImageIcon _ShallowIcon = ResourceLoader.lookupIconResource("ShallowHistory");
-    protected ImageIcon _ForkIcon = ResourceLoader.lookupIconResource("Fork");
-    protected ImageIcon _JoinIcon = ResourceLoader.lookupIconResource("Join");
-    protected ImageIcon _BranchIcon = ResourceLoader.lookupIconResource("Branch");
-    protected ImageIcon _FinalStateIcon = ResourceLoader.lookupIconResource("FinalState");
-    protected ImageIcon _RealizeIcon = ResourceLoader.lookupIconResource("Realization");
-    protected ImageIcon _SignalIcon = ResourceLoader.lookupIconResource("SignalSending");
-    protected ImageIcon _CommentIcon = ResourceLoader.lookupIconResource("Note");
+    protected static ImageIcon _ActionStateIcon = ResourceLoader.lookupIconResource("ActionState");
+    protected static ImageIcon _StateIcon = ResourceLoader.lookupIconResource("State");
+    protected static ImageIcon _InitialStateIcon = ResourceLoader.lookupIconResource("Initial");
+    protected static ImageIcon _DeepIcon = ResourceLoader.lookupIconResource("DeepHistory");
+    protected static ImageIcon _ShallowIcon = ResourceLoader.lookupIconResource("ShallowHistory");
+    protected static ImageIcon _ForkIcon = ResourceLoader.lookupIconResource("Fork");
+    protected static ImageIcon _JoinIcon = ResourceLoader.lookupIconResource("Join");
+    protected static ImageIcon _BranchIcon = ResourceLoader.lookupIconResource("Branch");
+    protected static ImageIcon _FinalStateIcon = ResourceLoader.lookupIconResource("FinalState");
+    protected static ImageIcon _RealizeIcon = ResourceLoader.lookupIconResource("Realization");
+    protected static ImageIcon _SignalIcon = ResourceLoader.lookupIconResource("SignalSending");
+    protected static ImageIcon _CommentIcon = ResourceLoader.lookupIconResource("Note");
 
     protected Hashtable _iconCache = new Hashtable();
 
@@ -91,7 +94,7 @@ public final class ResourceLoaderWrapper {
      * the resource loader. Originally, this method was placed within Main but
      * this coupled Main and the resourceLoader to much.
      */
-    private void initResourceLoader() {
+    private static void initResourceLoader() {
         String lookAndFeelClassName;
         if ("true".equals(System.getProperty("force.nativelaf", "false"))) {
             lookAndFeelClassName = UIManager.getSystemLookAndFeelClassName();
