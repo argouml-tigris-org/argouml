@@ -18,16 +18,7 @@
 
 include ../Makefile.config
 
-GEN = 	GEF.java \
-	Compat.java  \
-	ActionLoad.java  \
-	ActionSave.java  \
-	ActionPrint.java  
-
 CLASSES = \
-	Compat.class \
-	GEF.class \
-	PackageGraphEdit.class\
 	Action.class \
 	ActionAdjustGrid.class \
 	ActionAdjustGuide.class \
@@ -37,12 +28,12 @@ CLASSES = \
 	ActionDispose.class \
 	ActionEditNode.class \
 	ActionGroup.class \
-	ActionInsertVertex.class \
+	ActionInsertPoint.class \
 	ActionNudge.class \
 	ActionNull.class \
 	ActionOpenWindow.class \
 	ActionPrint.class \
-	ActionRemoveVertex.class \
+	ActionRemovePoint.class \
 	ActionReorder.class \
 	ActionScroll.class \
 	ActionSequence.class \
@@ -59,35 +50,37 @@ CLASSES = \
 	ActiveButton.class \
 	ActiveChoice.class \
 	ActiveList.class \
-	ArcPerspective.class \
-	ArcPerzRectiline.class \
-	ArcPerzLine.class \
-	DiagramElement.class \
+	ArrowHead.class \
+	ArrowHeadTriangle.class \
+	ArrowHeadNone.class \
+	FigEdgeRectiline.class \
+	FigEdgeLine.class \
 	Editor.class \
-	EditorMenus.class \
+	MenuManager.class \
 	EditorFrame.class \
 	ExecuteActionWindow.class \
 	Fig.class \
 	FigCircle.class \
+	FigEdge.class \
 	FigInk.class \
 	FigImage.class \
 	FigLine.class \
-	FigList.class \
+	FigGroup.class \
 	FigPoly.class \
 	FigRect.class \
 	FigRRect.class \
 	FigText.class \
+	FigNode.class \
 	ForwardingPanel.class \
 	ForwardingFrame.class \
 	ForwardingComponent.class \
-	GEF.class \
 	Geometry.class \
 	Globals.class \
 	Guide.class \
 	GuideGrid.class \
 	Handle.class \
 	Layer.class \
-	LayerComposite.class \
+	LayerManager.class \
 	LayerDiagram.class \
 	LayerGrid.class \
 	LayerPageBreaks.class \
@@ -108,8 +101,8 @@ CLASSES = \
 	ModeModify.class \
 	ModePlace.class \
 	ModeSelect.class \
-	ModeStack.class \
-	NetArc.class \
+	ModeManager.class \
+	NetEdge.class \
 	NetList.class \
 	NetNode.class \
 	NetPort.class \
@@ -121,16 +114,15 @@ CLASSES = \
 	PaletteFig.class \
 	PaletteSticky.class \
 	PaletteTop.class \
-	Perspective.class \
 	Prefs.class \
 	PrefsEditor.class \
-	PredDEInRect.class \
+	PredFigInRect.class \
 	RedrawManager.class \
+	SelectionManager.class \
 	Selection.class \
-	SelectionBox.class \
-	SelectionHandles.class \
-	SelectionMultiple.class \
-	SelectionSingle.class \
+	SelectionResize.class \
+	SelectionReshape.class \
+	SelectionRotate.class \
 	ActionSave.class \
 	ActionLoad.class 
 
@@ -141,11 +133,11 @@ gen: $(GEN)
 classes: $(CLASSES)
 
 
-GEF.java: GEF.m4 ../Makefile.config
-Compat.java: Compat.m4 ../Makefile.config
-ActionLoad.java: ActionLoad.m4 ../Makefile.config
-ActionSave.java: ActionSave.m4 ../Makefile.config
-ActionPrint.java: ActionPrint.m4 ../Makefile.config
+#GEF.java: GEF.m4 ../Makefile.config
+#Compat.java: Compat.m4 ../Makefile.config
+#ActionLoad.java: ActionLoad.m4 ../Makefile.config
+#ActionSave.java: ActionSave.m4 ../Makefile.config
+#ActionPrint.java: ActionPrint.m4 ../Makefile.config
 
 
 clean:

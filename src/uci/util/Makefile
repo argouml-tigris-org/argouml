@@ -18,17 +18,12 @@
 
 include ../Makefile.config
 
-GEN = 	SERIALIZABLE.java
+#GEN = 	SERIALIZABLE.java
 
-CLASSES = 	SERIALIZABLE.class \
-		UTIL.class \
-		Package.class \
-		Progress.class \
-		Preloader.class \
-		EventQueue.class \
+CLASSES = 	EventQueue.class \
 		EventHandler.class \
 		IEventHandler.class \
-		DebugLog.class \
+		Dbg.class \
 		Set.class \
 		ChildGenerator.class \
 		Predicate.class \

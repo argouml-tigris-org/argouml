@@ -18,16 +18,16 @@
 
 include ../Makefile.config
 
-GEN = TabPropFrame.java 
+#GEN = TabPropFrame.java 
 
 CLASSES = TabPropFrame.class \
-	IProps.class \
 	PropsGridLayout.class \
 	PropSheet.class \
+	PropertyText.class \
+	PropertyCanvas.class \
+	PropertySelector.class \
 	PropSheetCategory.class \
-	PropEditorRect.class \
-	PropEditorColor.class \
-	ColorPickerGrid.class \
+	PropCategoryManager.class \
 	IStatusBar.class
 
 all: $(GEN) $(CLASSES)
@@ -36,7 +36,7 @@ gen: $(GEN)
 
 classes: $(CLASSES)
 
-TabPropFrame.java: TabPropFrame.m4 ../Makefile.config
+#TabPropFrame.java: TabPropFrame.m4 ../Makefile.config
 
 clean:
 	$(RM) *.class $(GEN)
