@@ -373,29 +373,53 @@ public class Designer
         critiqueASAP(pce.getSource(), pce.getPropertyName());
     }
     
-    /** TODO: remove this */
+    /** 
+     * TODO: remove this
+     * 
+     * @see ru.novosoft.uml.MElementListener#propertySet(ru.novosoft.uml.MElementEvent)
+     */
     public void propertySet(MElementEvent mee) {
         critiqueASAP(mee.getSource(),
 		     org.argouml.model.ModelFacade.getName(mee.getOldValue()));
     }
     
-    /** TODO: remove this */
+    /** 
+     * TODO: remove this
+     *  
+     * @see ru.novosoft.uml.MElementListener#listRoleItemSet(ru.novosoft.uml.MElementEvent)
+     */
     public void listRoleItemSet(MElementEvent mee) {
     }
     
-    /** TODO: remove this */
+    /** 
+     * TODO: remove this
+     * 
+     * @see ru.novosoft.uml.MElementListener#recovered(ru.novosoft.uml.MElementEvent)
+     */
     public void recovered(MElementEvent mee) {
     }
     
-    /** TODO: remove this */
+    /** 
+     * TODO: remove this
+     * 
+     * @see ru.novosoft.uml.MElementListener#removed(ru.novosoft.uml.MElementEvent)
+     */
     public void removed(MElementEvent mee) {
     }
     
-    /** TODO: remove this */
+    /** 
+     * TODO: remove this
+     * 
+     * @see ru.novosoft.uml.MElementListener#roleAdded(ru.novosoft.uml.MElementEvent)
+     */
     public void roleAdded(MElementEvent mee) {
     }
     
-    /** TODO: remove this */
+    /** 
+     * TODO: remove this
+     * 
+     * @see ru.novosoft.uml.MElementListener#roleRemoved(ru.novosoft.uml.MElementEvent)
+     */
     public void roleRemoved(MElementEvent mee) {
     }
     

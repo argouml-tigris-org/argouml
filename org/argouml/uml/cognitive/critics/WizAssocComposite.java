@@ -119,8 +119,8 @@ public class WizAssocComposite extends Wizard {
         // If we don't have it, find the trigger. If this fails it will keep
         // its default value of null
 
-        if ((triggerAssociation == null) && (_item != null)) {
-            VectorSet offs = _item.getOffenders();
+        if ((triggerAssociation == null) && (item != null)) {
+            VectorSet offs = item.getOffenders();
 
             if (offs.size() >= 1) {
                 triggerAssociation = offs.elementAt(0);
@@ -250,7 +250,7 @@ public class WizAssocComposite extends Wizard {
                 if (opts != null) {
                     step1Choice = new WizStepChoice(this, instructions,
                                                      opts);
-                    step1Choice.setTarget(_item);
+                    step1Choice.setTarget(item);
                 }
             }
 
@@ -422,13 +422,13 @@ public class WizAssocComposite extends Wizard {
 
         // Can finish if it's step 0
 
-        if (_step == 0) {
+        if (step == 0) {
             return true;
         }
 
         // Can finish if we're on step1 and have actually made a choice
 
-        if ((_step == 1)
+        if ((step == 1)
 	    && (step1Choice != null)
 	    && (step1Choice.getSelectedIndex() != -1)) {
             return true;

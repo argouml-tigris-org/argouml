@@ -806,7 +806,8 @@ public class Project implements java.io.Serializable, TargetListener {
 
     /**
      * @param me the given modelelement
-     * @return 
+     * @return the total number of presentation 
+     *         for the given modelelement in the project
      */
     public int getPresentationCountFor(Object me) {
         
@@ -1304,9 +1305,9 @@ public class Project implements java.io.Serializable, TargetListener {
     }
     
     /**
-     * @param persistenceVersion The persistenceVersion to set.
+     * @param pv The persistenceVersion to set.
      */
-    public void setPersistenceVersion(int persistenceVersion) {
-        this.persistenceVersion = persistenceVersion;
+    public void setPersistenceVersion(int pv) {
+        this.persistenceVersion = pv;
     }
 } /* end class Project */

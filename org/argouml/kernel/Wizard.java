@@ -62,17 +62,17 @@ public abstract class Wizard implements java.io.Serializable {
     // instance variables
 
     /** User interface panels displayed so far. */
-    protected Vector _panels = new Vector();
+    protected Vector panels = new Vector();
 
     /** The current step that the Wizard is on.  Zero indicates that the
      *  wizard has not yet begun. */
-    protected int _step = 0;
+    protected int step = 0;
 
     /** True when the wizard has done everything it can. */
     private boolean finished = false;
     private boolean started = false;
 
-    protected ToDoItem _item = null;
+    protected ToDoItem item = null;
 
     ////////////////////////////////////////////////////////////////
     // constructors
@@ -83,16 +83,16 @@ public abstract class Wizard implements java.io.Serializable {
     ////////////////////////////////////////////////////////////////
     // accessors
 
-    public void setToDoItem(ToDoItem item) { _item = item; }
+    public void setToDoItem(ToDoItem i) { item = i; }
 
-    public ToDoItem getToDoItem() { return _item; }
+    public ToDoItem getToDoItem() { return item; }
 
     /** An integer between 0 and 100, shows percent done. The current
      *  ArgoUML user interface shows different PostIt note icons for
      *  0, 1-25, 26-50. 51-75, and 76-100.
      *  @return the percentage done.
      */
-    public int getProgress() { return _step * 100 / getNumSteps(); }
+    public int getProgress() { return step * 100 / getNumSteps(); }
 
     /** Get the number of steps in this wizard.  Subclasses should
      *  override to return a constant, or compute based on context. 
@@ -107,7 +107,7 @@ public abstract class Wizard implements java.io.Serializable {
      *  then returns his or her attention to the wizard. 
      *  @return the panel that should be displayed now.
      */
-    public JPanel getCurrentPanel() { return getPanel(_step); }
+    public JPanel getCurrentPanel() { return getPanel(step); }
 
 
     /** Get the exising panel at step s. Step 1 is the first wizard
@@ -116,8 +116,8 @@ public abstract class Wizard implements java.io.Serializable {
      * @return the panel for step s or null if none.
      */
     public JPanel getPanel(int s) {
-	if (s > 0 && s <= _panels.size())
-	    return (JPanel) _panels.elementAt(s - 1);
+	if (s > 0 && s <= panels.size())
+	    return (JPanel) panels.elementAt(s - 1);
 	return null;
     }
 
@@ -129,33 +129,33 @@ public abstract class Wizard implements java.io.Serializable {
      *  and then check for legal context values. 
      *  @return <code>true</code> iff the "Next&gt;" button should be enabled.
      */
-    public boolean canGoNext() { return _step < getNumSteps(); }
+    public boolean canGoNext() { return step < getNumSteps(); }
 
     /**
      * The next step of the wizard. 
      */
     public void next() {
-	doAction(_step);
-	_step++;
-	JPanel p = makePanel(_step);
-	if (p != null) _panels.addElement(p);
+	doAction(step);
+	step++;
+	JPanel p = makePanel(step);
+	if (p != null) panels.addElement(p);
 	started = true;
-	if (_item != null) _item.changed();
+	if (item != null) item.changed();
     }
 
     /**
      * @return true if we can step back
      */
-    public boolean canGoBack() { return _step > 0; }
+    public boolean canGoBack() { return step > 0; }
 
     /**
      * Step back.
      */
     public void back() {
-	_step--;
-	if (_step < 0) _step = 0;
-	undoAction(_step);
-	if (_item != null) _item.changed();
+	step--;
+	if (step < 0) step = 0;
+	undoAction(step);
+	if (item != null) item.changed();
     }
 
     /**
@@ -179,9 +179,9 @@ public abstract class Wizard implements java.io.Serializable {
     public void finish() {
 	started = true;
 	int numSteps = getNumSteps();
-	for (int i = _step; i <= numSteps; i++) {
+	for (int i = step; i <= numSteps; i++) {
 	    doAction(i);
-	    if (_item != null) _item.changed();
+	    if (item != null) item.changed();
 	}
 	// TODO: do all following steps
 	// TODO: resolve item from ToDoList
@@ -217,7 +217,7 @@ public abstract class Wizard implements java.io.Serializable {
     /**
      * Do the action of this wizard.
      */
-    public void doAction() { doAction(_step); }
+    public void doAction() { doAction(step); }
 
     /** Undo the action done after the given step. For example, when the
      *  given step is 0, nothing was done, so nothing can be undone; and
@@ -232,5 +232,5 @@ public abstract class Wizard implements java.io.Serializable {
     /**
      * Undo the action.
      */
-    public void undoAction() { undoAction(_step); }
+    public void undoAction() { undoAction(step); }
 } /* end class Wizard */

@@ -65,7 +65,7 @@ public class WizManyNames extends Wizard {
     public int getNumSteps() { return 1; }
 								      
     /**
-     * @param m
+     * @param m the offenders
      */
     public void setMEs(Vector m) { mes = m; }
 									  

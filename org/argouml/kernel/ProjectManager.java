@@ -49,9 +49,15 @@ import org.argouml.ui.ArgoDiagram;
  */
 public final class ProjectManager {
 
+    /**
+     * The name of the property that defines the current project.
+     */
     public static final String CURRENT_PROJECT_PROPERTY_NAME =
         "currentProject";
     
+    /**
+     * The name of the property that defines the save state.
+     */
     public static final String SAVE_STATE_PROPERTY_NAME = "saveState";
 
     /** logger */

@@ -27,6 +27,10 @@ package org.argouml.cognitive;
 
 import java.util.Vector;
 
+/**
+ * Event issued when the todo list changes.
+ *
+ */
 public class ToDoListEvent {
 
     private Vector items;

@@ -32,6 +32,10 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.Writer;
 
+/**
+ * A member of the project.
+ *
+ */
 public abstract class ProjectMember {
 
     ////////////////////////////////////////////////////////////////
@@ -43,9 +47,15 @@ public abstract class ProjectMember {
     ////////////////////////////////////////////////////////////////
     // constructors
 
-    public ProjectMember(String name, Project theProject) {
+    /**
+     * The constructor.
+     * 
+     * @param theName the name of the member
+     * @param theProject the owning project
+     */
+    public ProjectMember(String theName, Project theProject) {
         project = theProject;
-        setName(name);
+        setName(theName);
     }
 
 
@@ -96,6 +106,9 @@ public abstract class ProjectMember {
         return s;
     }
   
+    /**
+     * @param s the name of the member
+     */
     public void setName(String s) { 
         name = s;
         
@@ -123,9 +136,20 @@ public abstract class ProjectMember {
         }
     }
 
+    /**
+     * @return the project that owns this member
+     */
     public Project getProject() { return project; }
 
+    /**
+     * @return a short string defining the member type. 
+     * Usually equals the file extension.
+     */
     public abstract String getType();
+    
+    /**
+     * @return the file extension string
+     */
     public abstract String getFileExtension();
 
     ////////////////////////////////////////////////////////////////
@@ -135,9 +159,10 @@ public abstract class ProjectMember {
      * Save the projectmember as XML to the given writer.
      * @param writer The Writer to which appen the save.
      * @param indent The offset to which to indent the XML
-     * @throws Exception
+     * @throws SaveException if the save fails
      */
-    public abstract void save(Writer writer, Integer indent) throws SaveException;
+    public abstract void save(Writer writer, Integer indent) 
+        throws SaveException;
 
     /**
      * Send an existing file of XML to the PrintWriter.
@@ -146,17 +171,18 @@ public abstract class ProjectMember {
      * @param indent How far to indent in the writer.
      * @throws SaveException on any errors.
      */
-    protected void addXmlFileToWriter(PrintWriter writer, File file, int indent) 
-            throws SaveException {
+    protected void addXmlFileToWriter(PrintWriter writer, File file, int indent)
+        throws SaveException {
         try {
-            String padding =
-                "                                          ".substring(0,indent);
+            String padding = "                                          "
+                .substring(0, indent);
             BufferedReader reader = 
                 new BufferedReader(new FileReader(file));
             
             // Skip the <?xml... first line
             String line = reader.readLine();
-            while (line != null && (line.startsWith("<?xml ") || line.startsWith("<!DOCTYPE "))) {
+            while (line != null && (line.startsWith("<?xml ") 
+                    || line.startsWith("<!DOCTYPE "))) {
                 line = reader.readLine();
             }
             
@@ -173,6 +199,9 @@ public abstract class ProjectMember {
         }
     }
     
+    /**
+     * Remove this member from its project.
+     */
     public void remove() {
         name = null;
         project = null;

@@ -94,7 +94,8 @@ public class GoListToPosterToItem implements TreeModel {
      * @return the children
      */
     public Vector getChildren(Object parent) {
-	VectorSet allPosters = Designer.theDesigner().getToDoList().getPosters();
+	VectorSet allPosters = 
+	    Designer.theDesigner().getToDoList().getPosters();
 	if (parent instanceof ToDoList) {
 	    return allPosters.asVector();
 	}

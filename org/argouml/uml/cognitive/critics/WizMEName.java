@@ -46,7 +46,7 @@ import org.tigris.gef.util.VectorSet;
 public class WizMEName extends Wizard {
     private static final Logger LOG = Logger.getLogger(WizMEName.class);
 					   
-    protected String instructions =
+    private String instructions =
 	"Please change the name of the offending model element.";
     private String label = Translator.localize("UMLMenu", "label.name");
     private String suggestion = "suggestion";
@@ -70,8 +70,8 @@ public class WizMEName extends Wizard {
      * @return the offending modelelement
      */
     public Object getModelElement() {
-	if (_item != null) {
-	    VectorSet offs = _item.getOffenders();
+	if (item != null) {
+	    VectorSet offs = item.getOffenders();
 	    if (offs.size() >= 1) {
 		Object me = /*(MModelElement)*/ offs.elementAt(0);
 		return me;
@@ -106,6 +106,10 @@ public class WizMEName extends Wizard {
      */
     public void setInstructions(String s) { instructions = s; }
 
+    /**
+     * @param b if true, then the wizard step needs userinput, 
+     *          i.e. it must be edited
+     */
     public void setMustEdit(boolean b) { mustEdit = b; }
 
     /** 
@@ -163,5 +167,12 @@ public class WizMEName extends Wizard {
 		LOG.error("could not set name", pve);
 	    }
 	}
+    }
+
+    /**
+     * @return Returns the instructions.
+     */
+    protected String getInstructions() {
+        return instructions;
     }
 } /* end class WizMEName */

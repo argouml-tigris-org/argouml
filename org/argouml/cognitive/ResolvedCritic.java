@@ -136,11 +136,11 @@ public class ResolvedCritic
      * related objects that that object has.
      *
      * <p>Formally that is inconsistent with equals as specified in
-     * java.lang.Object, but it was probably practical somehow.
+     * java.lang.Object, but it was probably practical somehow.<p>
      *
-     * @param	obj	Object to compare to.
-     * @return	True if equal according to the description, false
-     *		otherwise.
+     * The param obj is the Object to compare to.
+     * Returns true if equal according to the description, false
+     * otherwise.
      *
      * @see java.lang.Object#equals(java.lang.Object)
      */
