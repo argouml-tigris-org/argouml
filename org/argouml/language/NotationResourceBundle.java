@@ -52,7 +52,7 @@ implements PluggableResourceBundle {
 
     /** This should call on the version number from a central xml file
      * me thinks...
-     * @return
+     * @return the version number of the module
      */    
     public String getModuleVersion() {
         return "0.9.4";
