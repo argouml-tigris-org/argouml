@@ -117,7 +117,7 @@ public class UmlModelListener implements MElementListener {
 	// Should this be a property change event?
 	//
 
-	if (mee.getAddedValue() != null || mee.getRemovedValue() != null || !mee.getNewValue().equals(mee.getOldValue())) {
+	if (mee.getAddedValue() != null || mee.getRemovedValue() != null || mee.getNewValue() == null || !mee.getNewValue().equals(mee.getOldValue())) {
 		ProjectBrowser.TheInstance.getNavPane().forceUpdate();
 		ProjectBrowser.TheInstance.getProject().setNeedsSave(true);
 	}
