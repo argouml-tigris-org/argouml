@@ -116,7 +116,7 @@ public class AboutBox extends JDialog {
 	// Not localized:
 	versionBuf.append("* GEF (gef.tigris.org)\n");
 	versionBuf.append("* Xerces-J 1.2.3\n");
-	versionBuf.append("* NSUML 0.4.19 (nsuml.sourceforge.net)\n");
+	versionBuf.append("* NSUML (nsuml.sourceforge.net)\n");
 	versionBuf.append("* TU-Dresden OCL-Compiler " 
 	        	  + "(dresden-ocl.sourceforge.net)\n");
 	versionBuf.append("* ANTLR 2.7.2 (www.antlr.org)\n");
@@ -128,7 +128,7 @@ public class AboutBox extends JDialog {
 	versionBuf.append("\n");
 
         /* MVW: Added the inset JPanel, so that the image width is also
-        applied to the "ArgoUML Vx,xx.x" part */
+        applied to the "ArgoUML Vx.xx.x" part */
         JPanel myInsetPanel = new JPanel(); 
         /* top, left, bottom, right */
         myInsetPanel.setBorder(new EmptyBorder(30, 40, 40, 40));
