@@ -56,11 +56,11 @@ public class PropPanelParameter extends PropPanelModelElement {
 	      "Parameter",
 	      lookupIcon("Parameter"),
 	      ConfigLoader.getTabPropsOrientation());
-        Class[] namesToWatch = {
-	    (Class) ModelFacade.STEREOTYPE,
-	    (Class) ModelFacade.OPERATION,
-	    (Class) ModelFacade.PARAMETER,
-	    (Class) ModelFacade.CLASSIFIER 
+        Object[] namesToWatch = {
+	    ModelFacade.STEREOTYPE,
+	    ModelFacade.OPERATION,
+	    ModelFacade.PARAMETER,
+	    ModelFacade.CLASSIFIER 
 	};
         setNameEventListening(namesToWatch);
 

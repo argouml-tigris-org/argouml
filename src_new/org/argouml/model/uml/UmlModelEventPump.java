@@ -127,15 +127,16 @@ public final class UmlModelEventPump implements MElementListener {
      * "remove".<p>
      *
      * @param listener is the listener to add.
-     * @param modelClass is the given model class
+     * @param metaType is the given model class
      * @param eventNames is a array of strings with event names.
      * @throws IllegalArgumentException if one of the arguments is null or if
      * the modelClass is not a subclass of MBase.
      * @throws IllegalStateException if the listener is allready registred
      */
     public void addClassModelEventListener(MElementListener listener,
-					   Class modelClass,
+					   Object metaType,
 					   String[] eventNames) {
+        Class modelClass = (Class) metaType;
 //      We don't support non-NSUML modeleventlisteners yet, 
 //      so we return without addition.
         if (!MBase.class.isAssignableFrom(modelClass)) {
@@ -162,16 +163,17 @@ public final class UmlModelEventPump implements MElementListener {
      * event.
      *
      * @param listener The listener to add
-     * @param modelClass The listener should listen to instances of this class
+     * @param metaType The listener should listen to instances of this class
      * @param eventName The name of the event the listener wants to listen 
      * too.
      */
-    public void addClassModelEventListener(
-					   MElementListener listener,
-					   Class modelClass,
+    public void addClassModelEventListener(MElementListener listener,
+					   Object metaType,
 					   String eventName) {
+        Class modelClass = (Class) metaType;
         // We don't support non-NSUML modeleventlisteners yet, 
         // so we return without addition.
+        
         if (!MBase.class.isAssignableFrom(modelClass)) {
             return;
         }

@@ -57,10 +57,10 @@ public class PropPanelMessage extends PropPanelModelElement {
     public PropPanelMessage() {
 	super("Message", ConfigLoader.getTabPropsOrientation());
 
-	Class[] namesToWatch = {
-	    (Class) ModelFacade.STEREOTYPE,
-	    (Class) ModelFacade.CLASSIFIER_ROLE,
-	    (Class) ModelFacade.ACTION 
+	Object[] namesToWatch = {
+	    ModelFacade.STEREOTYPE,
+	    ModelFacade.CLASSIFIER_ROLE,
+	    ModelFacade.ACTION 
 	};
 	setNameEventListening(namesToWatch);
 
