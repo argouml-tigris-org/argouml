@@ -110,6 +110,10 @@ public class CrConsiderSingleton extends CrUML {
             return NO_PROBLEM;
         }
 
+	if (ModelFacade.isUtility(dm)) {
+	    return NO_PROBLEM;
+	}
+
 	// If there is an attribute with instance scope => no problem
 	Iterator iter = ModelFacade.getAttributes(dm);
 
