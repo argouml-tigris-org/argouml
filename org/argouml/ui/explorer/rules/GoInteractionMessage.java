@@ -32,12 +32,19 @@ import org.argouml.i18n.Translator;
 import org.argouml.model.ModelFacade;
 
 /**
+ * Rule for Interaction->Message.
+ * TODO: There is something wrong here! 
+ * There is another rule: Interaction->Messages. 
+ * And this one shows the same string.
  * 
  * Navrule to navigate from an interaction to a message
  * @author jaap.branderhorst@xs4all.nl
  */
-public class GoInteractionMessage extends AbstractPerspectiveRule{
+public class GoInteractionMessage extends AbstractPerspectiveRule {
 
+    /**
+     * @see org.argouml.ui.explorer.rules.PerspectiveRule#getRuleName()
+     */
     public String getRuleName() {
 	return Translator.localize ("Tree", "misc.interaction.messages");
     }
@@ -51,6 +58,9 @@ public class GoInteractionMessage extends AbstractPerspectiveRule{
 	return null;
     }
 
+    /**
+     * @see org.argouml.ui.explorer.rules.PerspectiveRule#getDependencies(java.lang.Object)
+     */
     public Set getDependencies(Object parent) {
         if (ModelFacade.isAInteraction(parent)) {
 	    Set set = new HashSet();

@@ -53,6 +53,9 @@ public class GoClassifierToInstance extends AbstractPerspectiveRule {
         return ModelFacade.getInstances(parent);
     }
 
+    /**
+     * @see org.argouml.ui.explorer.rules.PerspectiveRule#getDependencies(java.lang.Object)
+     */
     public Set getDependencies(Object parent) {
         if (ModelFacade.isAClassifier(parent)) {
 	    Set set = new HashSet();

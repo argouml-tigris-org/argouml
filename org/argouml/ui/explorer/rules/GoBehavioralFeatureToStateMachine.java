@@ -39,6 +39,9 @@ import org.argouml.model.ModelFacade;
  */
 public class GoBehavioralFeatureToStateMachine extends AbstractPerspectiveRule {
 
+    /**
+     * @see org.argouml.ui.explorer.rules.PerspectiveRule#getRuleName()
+     */
     public String getRuleName() { return "Behavioral Feature->Statemachine"; }
 
     /**
@@ -50,6 +53,9 @@ public class GoBehavioralFeatureToStateMachine extends AbstractPerspectiveRule {
 	return null;
     }
 
+    /**
+     * @see org.argouml.ui.explorer.rules.PerspectiveRule#getDependencies(java.lang.Object)
+     */
     public Set getDependencies(Object parent) {
         if (ModelFacade.isABehavioralFeature(parent)) {
 	    Set set = new HashSet();

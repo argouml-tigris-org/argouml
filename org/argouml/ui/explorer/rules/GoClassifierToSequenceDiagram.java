@@ -64,8 +64,10 @@ public class GoClassifierToSequenceDiagram extends AbstractPerspectiveRule {
 
 	    while (it.hasNext()) {
 		ArgoDiagram diagram = (ArgoDiagram) it.next();
-		if (diagram instanceof UMLSequenceDiagram &&
-		    col.contains(((SequenceDiagramGraphModel)((UMLSequenceDiagram)diagram).getGraphModel()).getCollaboration())) {
+		if (diagram instanceof UMLSequenceDiagram 
+		    && col.contains(((SequenceDiagramGraphModel)
+		            ((UMLSequenceDiagram) diagram).getGraphModel())
+		                            .getCollaboration())) {
 		    ret.add(diagram);
 		}
 	    }
@@ -76,6 +78,9 @@ public class GoClassifierToSequenceDiagram extends AbstractPerspectiveRule {
 	return null;
     }
 
+    /**
+     * @see org.argouml.ui.explorer.rules.PerspectiveRule#getDependencies(java.lang.Object)
+     */
     public Set getDependencies(Object parent) {
         // TODO: What?
 	return null;

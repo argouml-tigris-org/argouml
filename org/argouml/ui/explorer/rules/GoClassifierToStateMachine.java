@@ -39,6 +39,9 @@ import org.argouml.model.ModelFacade;
  */
 public class GoClassifierToStateMachine extends AbstractPerspectiveRule {
 
+    /**
+     * @see org.argouml.ui.explorer.rules.PerspectiveRule#getRuleName()
+     */
     public String getRuleName() {
 	return "Classifier->Statemachine";
     }
@@ -52,6 +55,9 @@ public class GoClassifierToStateMachine extends AbstractPerspectiveRule {
 	return null;
     }
 
+    /**
+     * @see org.argouml.ui.explorer.rules.PerspectiveRule#getDependencies(java.lang.Object)
+     */
     public Set getDependencies(Object parent) {
         if (ModelFacade.isAClassifier(parent)) {
 	    Set set = new HashSet();

@@ -56,6 +56,9 @@ public class GoModelElementToComment extends AbstractPerspectiveRule {
         return "ModelElement->Comment";
     }
 
+    /**
+     * @see org.argouml.ui.explorer.rules.PerspectiveRule#getDependencies(java.lang.Object)
+     */
     public Set getDependencies(Object parent) {
         if (ModelFacade.isAModelElement(parent)) {
 	    Set set = new HashSet();
