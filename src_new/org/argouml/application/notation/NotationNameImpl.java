@@ -35,13 +35,14 @@ import javax.swing.*;
  *   @author Thierry Lach
  *   @since 0.9.4
  */
-public class NotationNameImpl implements NotationName {
+public class NotationNameImpl 
+implements NotationName, ArgoModuleEventListener {
 
     String _name = null;
     String _version = null;
     Icon _icon = null;
     
-    private static ArrayList _notations = null;
+    private static ArrayList _notations = new ArrayList();
 
     /** A notation without a version or icon.
      */
@@ -114,7 +115,6 @@ public class NotationNameImpl implements NotationName {
     /** Create a notation name with or without a version.
      */
     public static NotationName makeNotation(String k1, String k2, Icon icon) {
-        if (_notations == null) _notations = new ArrayList();
 	NotationName nn = null;
 	nn = findNotation(getNotationNameString(k1, k2));
 	if (nn == null) {
@@ -176,13 +176,23 @@ public class NotationNameImpl implements NotationName {
         return "{NotationNameImpl:" + _name + " version " + _version + "}";
     }
 
+    public void moduleLoaded(ArgoModuleEvent event) {
+        Argo.log.info ("notation.moduleLoaded(" + event + ")");
+    }
+
+    public void moduleUnloaded(ArgoModuleEvent event) {
+    }
+
+    public void moduleEnabled(ArgoModuleEvent event) {
+    }
+
+    public void moduleDisabled(ArgoModuleEvent event) {
+    }
 
     /** Pre-populate the notation list with the internal notations.
      */
     static {
         makeNotation("Default", null, null);
-        makeNotation("UML", "1.3", Argo.lookupIconResource("UmlNotation"));
-        makeNotation("Java", null, Argo.lookupIconResource("JavaNotation"));
     }
 }
 
