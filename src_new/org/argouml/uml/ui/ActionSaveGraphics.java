@@ -1,4 +1,4 @@
-// Copyright (c) 1996-01 The Regents of the University of California. All
+// Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -26,6 +26,7 @@ package org.argouml.uml.ui;
 import org.argouml.kernel.*;
 import org.argouml.ui.*;
 import org.argouml.util.*;
+import org.argouml.util.osdep.*;
 import org.tigris.gef.base.*;
 import org.tigris.gef.util.*;
 import java.awt.event.*;
@@ -78,7 +79,7 @@ public class ActionSaveGraphics extends UMLAction {
 			 p.getURL().getFile().length() > 0 ) {
 			String filename = p.getURL().getFile();
 			if( !filename.startsWith( "/FILE1/+/" ) )
-			    chooser  = new JFileChooser( p.getURL().getFile() );
+			    chooser  = OsUtil.getFileChooser( p.getURL().getFile() );
 		    }
 		}
 		catch( Exception ex ) {
@@ -86,7 +87,7 @@ public class ActionSaveGraphics extends UMLAction {
 		    ex.printStackTrace();
 		}
 
-		if( chooser == null ) chooser = new JFileChooser();
+		if( chooser == null ) chooser = OsUtil.getFileChooser();
 
 		chooser.setDialogTitle( "Save Diagram as Graphics: " + defaultName );
 		chooser.addChoosableFileFilter( FileFilters.GIFFilter );
