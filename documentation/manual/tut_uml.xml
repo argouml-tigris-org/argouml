@@ -755,10 +755,13 @@ Modifications
               url="http://argouml.tigris.org">home
             page</ulink>.</para></listitem>
 
-          <listitem><para>Click on the
-            <literal>Launch&nbsp;&argouml;&nbsp;&argoversion;</literal> link on
-            the &argouml; <ulink url="http://argouml.tigris.org">home
-            page</ulink>.</para></listitem>
+          <listitem><para>
+Click on the
+<literal>Launch latest stable release</literal> 
+link on the &argouml; 
+<ulink url="http://argouml.tigris.org">home page</ulink>.
+</para>
+          </listitem>
         </orderedlist>
 
         <para>Java Web Start will download ArgoUML, cache it and start it the
