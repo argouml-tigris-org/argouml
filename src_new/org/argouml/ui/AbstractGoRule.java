@@ -90,7 +90,8 @@ public abstract class AbstractGoRule implements TreeModel {
      */
     public final boolean isLeaf(Object node) {
 
-        return (getChildCount(node) < 1);
+        //return (getChildCount(node) < 1);
+        return false;
     }
 
     /**
