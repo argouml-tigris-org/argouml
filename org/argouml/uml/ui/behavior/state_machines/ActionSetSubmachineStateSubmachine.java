@@ -24,39 +24,38 @@
 // $header$
 package org.argouml.uml.ui.behavior.state_machines;
 
-import org.argouml.uml.ui.UMLModelElementListModel2;
-import org.argouml.uml.ui.UMLUserInterfaceContainer;
-import ru.novosoft.uml.MBase;
-import ru.novosoft.uml.behavior.state_machines.MEvent;
+import java.awt.event.ActionEvent;
+
+import org.argouml.application.api.Argo;
+import org.argouml.model.uml.behavioralelements.statemachines.StateMachinesHelper;
+import org.argouml.uml.ui.UMLChangeAction;
+import org.argouml.uml.ui.UMLComboBox2;
 
 /**
- * A list model for the parameters belonging to an event
- * @since Dec 14, 2002
+ * @since Dec 15, 2002
  * @author jaap.branderhorst@xs4all.nl
  */
-public class UMLEventParameterListModel extends UMLModelElementListModel2 {
+public class ActionSetSubmachineStateSubmachine extends UMLChangeAction {
 
-    
+    public static final ActionSetSubmachineStateSubmachine SINGLETON = new ActionSetSubmachineStateSubmachine();
+
     /**
-     * Constructor for UMLEventParameterListModel.
-     * @param container
+     * Constructor for ActionSetModelElementStereotype.
+     * @param s
      */
-    public UMLEventParameterListModel(UMLUserInterfaceContainer container) {
-        super(container, "parameter"); 
+    protected ActionSetSubmachineStateSubmachine() {
+        super(Argo.localize("CoreMenu", "Set"), true, NO_ICON);
     }
 
     /**
-     * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
+     * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
-    protected void buildModelList() {
-        setAllElements(((MEvent)getTarget()).getParameters());
-    }
-
-    /**
-     * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(ru.novosoft.uml.MBase)
-     */
-    protected boolean isValidElement(MBase element) {
-        return ((MEvent)getTarget()).getParameters().contains(element);
+    public void actionPerformed(ActionEvent e) {
+        super.actionPerformed(e);
+        if (e.getSource() instanceof UMLComboBox2) {
+            UMLComboBox2 box = (UMLComboBox2)e.getSource();
+            StateMachinesHelper.getHelper().setStatemachineAsSubmachine(box.getTarget(), box.getSelectedItem());
+        }
     }
 
 }

@@ -1,4 +1,4 @@
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -21,69 +21,45 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-
-
-// File: PropPanelCompositeState.java
-// Classes: PropPanelCompositeState
-// Original Author: 5heyden
-// $Id:
-
+// $header$
 package org.argouml.uml.ui.behavior.state_machines;
 
-import javax.swing.ImageIcon;
-import javax.swing.JList;
+import javax.swing.JComboBox;
 import javax.swing.JScrollPane;
 
 import org.argouml.application.api.Argo;
 import org.argouml.swingext.LabelledLayout;
-import org.argouml.swingext.Orientation;
+import org.argouml.uml.ui.UMLComboBox2;
 import org.argouml.uml.ui.UMLComboBoxNavigator;
+import org.argouml.uml.ui.UMLMutableLinkedList;
 import org.argouml.util.ConfigLoader;
 
-public class PropPanelCompositeState extends PropPanelState {
-    
-    protected JList subverticesList = null;
+/**
+ * @since Dec 15, 2002
+ * @author jaap.branderhorst@xs4all.nl
+ */
+public class PropPanelSubmachineState extends PropPanelCompositeState {
 
     /**
-     * Constructor for PropPanelCompositeState.
-     * @param name
-     * @param icon
-     * @param orientation
+     * Constructor for PropPanelSubmachineState.
      */
-    public PropPanelCompositeState(String name, ImageIcon icon, Orientation orientation) {
-        super(name, icon, orientation);
-        initialize();
-    }
-
-    public PropPanelCompositeState() {
-        super("Composite State",_compositeStateIcon, ConfigLoader.getTabPropsOrientation());
-        initialize();
-
+    public PropPanelSubmachineState() {
+        // TODO: get the submachine state it's own icon
+        super("Submachine State", _compositeStateIcon, ConfigLoader.getTabPropsOrientation());
         addField(Argo.localize("UMLMenu", "label.name"), nameField);
-        addField(Argo.localize("UMLMenu", "label.stereotype"), new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-stereo"),stereotypeBox));
+        addField(Argo.localize("UMLMenu", "label.stereotype"), new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-stereo"), stereotypeBox));
         addField(Argo.localize("UMLMenu", "label.container"), containerScroll);
-        addField(Argo.localize("UMLMenu", "label.modifiers"), new UMLCompositeStateConcurentCheckBox(this)); 
-        addField(Argo.localize("UMLMenu", "label.entry"), entryScroll);
-        addField(Argo.localize("UMLMenu", "label.exit"), exitScroll);
-        addField(Argo.localize("UMLMenu", "label.do-activity"), doScroll);
-    
+        JComboBox submachineBox = new UMLComboBox2(new UMLSubmachineStateComboBoxModel(), ActionSetSubmachineStateSubmachine.SINGLETON);
+        addField(Argo.localize("UMLMenu", "label.submachine"), new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-submachine"), submachineBox));
+
         add(LabelledLayout.getSeperator());
 
         addField(Argo.localize("UMLMenu", "label.incoming"), incomingScroll);
         addField(Argo.localize("UMLMenu", "label.outgoing"), outgoingScroll);
-        addField(Argo.localize("UMLMenu", "label.internal-transitions"), internalTransitionsScroll);
 
         add(LabelledLayout.getSeperator());
-        
-        addField(Argo.localize("UMLMenu", "label.subvertex"), new JScrollPane(subverticesList));
-	        
-  }
-  
-  protected void initialize() {
-      subverticesList = new UMLCompositeStateSubvertexList(this, new UMLCompositeStateSubvertexListModel(this));
-  }
 
-} /* end class PropPanelCompositeState */
+        addField(Argo.localize("UMLMenu", "label.subvertex"), new JScrollPane(new UMLMutableLinkedList(this, new UMLCompositeStateSubvertexListModel(this), null, ActionNewStubState.SINGLETON)));
+    }
 
-
-
+}

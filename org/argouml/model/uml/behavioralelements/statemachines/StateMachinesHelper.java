@@ -23,11 +23,16 @@
 
 package org.argouml.model.uml.behavioralelements.statemachines;
 
+import java.util.Collection;
+
+import org.argouml.model.uml.modelmanagement.ModelManagementHelper;
+
 import ru.novosoft.uml.behavior.common_behavior.MAction;
 import ru.novosoft.uml.behavior.state_machines.MEvent;
 import ru.novosoft.uml.behavior.state_machines.MState;
 import ru.novosoft.uml.behavior.state_machines.MStateMachine;
 import ru.novosoft.uml.behavior.state_machines.MStateVertex;
+import ru.novosoft.uml.behavior.state_machines.MSubmachineState;
 import ru.novosoft.uml.behavior.state_machines.MTransition;
 import ru.novosoft.uml.foundation.core.MBehavioralFeature;
 import ru.novosoft.uml.foundation.core.MClassifier;
@@ -196,6 +201,38 @@ public class StateMachinesHelper {
         if (context instanceof MBehavioralFeature || context instanceof MClassifier)
             return true;
         return false;
+    }
+    
+    /**
+     * Returns all statemachines that can be the statemachine the given
+     * submachinestate represents. To decouple ArgoUML as much as possible from
+     * the NSUML model, the parameter of the method is of type Object.
+     * @param oSubmachineState The submachinestate we are searching the
+     * statemachines for.
+     * @return Collection The collection with found statemachines.
+     */
+    public Collection getAllPossibleStatemachines(Object oSubmachineState) {
+        if (oSubmachineState instanceof MSubmachineState) {
+            Collection statemachines = ModelManagementHelper.getHelper().getAllModelElementsOfKind(MStateMachine.class);
+            statemachines.remove(getStateMachine(oSubmachineState));
+            return statemachines;
+        }
+        return null;
+    }
+    
+    /**
+     * Connects a given statemachine to a submachinestate as being the
+     * statemachine the submachinestate represents. To decouple ArgoUML as much
+     * as possible from the NSUML model, the parameters of the method are of
+     * type Object.
+     * @param oSubmachineState The submachinestate for which we want to set the
+     * property submachine
+     * @param oStatemachine The statemachine
+     */
+    public void setStatemachineAsSubmachine(Object oSubmachineState, Object oStatemachine) {
+        if (oSubmachineState instanceof MSubmachineState && oStatemachine instanceof MStateMachine) {
+            ((MSubmachineState)oSubmachineState).setSubmachine((MStateMachine)oStatemachine);
+        }
     }
 
 }

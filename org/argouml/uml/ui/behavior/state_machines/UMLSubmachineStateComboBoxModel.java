@@ -24,39 +24,48 @@
 // $header$
 package org.argouml.uml.ui.behavior.state_machines;
 
-import org.argouml.uml.ui.UMLModelElementListModel2;
-import org.argouml.uml.ui.UMLUserInterfaceContainer;
+import org.argouml.model.uml.behavioralelements.statemachines.StateMachinesHelper;
+import org.argouml.uml.ui.UMLComboBoxModel2;
 import ru.novosoft.uml.MBase;
-import ru.novosoft.uml.behavior.state_machines.MEvent;
+import ru.novosoft.uml.behavior.state_machines.MStateMachine;
+import ru.novosoft.uml.behavior.state_machines.MSubmachineState;
 
 /**
- * A list model for the parameters belonging to an event
- * @since Dec 14, 2002
+ * @since Dec 15, 2002
  * @author jaap.branderhorst@xs4all.nl
  */
-public class UMLEventParameterListModel extends UMLModelElementListModel2 {
+public class UMLSubmachineStateComboBoxModel extends UMLComboBoxModel2 {
 
-    
     /**
-     * Constructor for UMLEventParameterListModel.
-     * @param container
+     * Constructor for UMLSubmachineStateComboBoxModel.
      */
-    public UMLEventParameterListModel(UMLUserInterfaceContainer container) {
-        super(container, "parameter"); 
+    public UMLSubmachineStateComboBoxModel() {
+        super("submachine", true);
     }
 
     /**
-     * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
-     */
-    protected void buildModelList() {
-        setAllElements(((MEvent)getTarget()).getParameters());
-    }
-
-    /**
-     * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(ru.novosoft.uml.MBase)
+     * @see org.argouml.uml.ui.UMLComboBoxModel2#isValidElement(ru.novosoft.uml.MBase)
      */
     protected boolean isValidElement(MBase element) {
-        return ((MEvent)getTarget()).getParameters().contains(element);
+        return (element instanceof MStateMachine && element != StateMachinesHelper.getHelper().getStateMachine(getTarget()));
+    }
+
+    /**
+     * @see org.argouml.uml.ui.UMLComboBoxModel2#buildModelList()
+     */
+    protected void buildModelList() {
+        removeAllElements();
+        setElements(StateMachinesHelper.getHelper().getAllPossibleStatemachines(getTarget()));
+    }
+
+    /**
+     * @see org.argouml.uml.ui.UMLComboBoxModel2#getSelectedModelElement()
+     */
+    protected Object getSelectedModelElement() {
+        if (getTarget() != null) {
+            return ((MSubmachineState)getTarget()).getSubmachine();
+        }
+        return null;
     }
 
 }
