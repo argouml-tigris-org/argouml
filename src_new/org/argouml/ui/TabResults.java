@@ -33,6 +33,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.Enumeration;
 import java.util.Vector;
 
 import javax.swing.JLabel;
@@ -143,10 +144,12 @@ public class TabResults
     {
 	_pred = p;
     }
+    
     public void setRoot(Object root)
     {
 	_root = root;
     }
+    
     public void setGenerator(ChildGenerator gen)
     {
 	_cg = gen;
@@ -162,6 +165,9 @@ public class TabResults
 	_relatedLabel.setText("Related Elements: ");
     }
 
+    /**
+     * @see org.argouml.ui.TabSpawnable#spawn()
+     */
     public TabSpawnable spawn()
     {
 	TabResults newPanel = (TabResults) super.spawn();
@@ -187,6 +193,9 @@ public class TabResults
     ////////////////////////////////////////////////////////////////
     // ActionListener implementation
 
+    /**
+     * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+     */
     public void actionPerformed(ActionEvent ae)
     {
     }
@@ -194,20 +203,39 @@ public class TabResults
     ////////////////////////////////////////////////////////////////
     // MouseListener implementation
 
+    /**
+     * @see java.awt.event.MouseListener#mousePressed(java.awt.event.MouseEvent)
+     */
     public void mousePressed(MouseEvent me)
     {
     }
+
+    /**
+     * @see java.awt.event.MouseListener#mouseReleased(java.awt.event.MouseEvent)
+     */
     public void mouseReleased(MouseEvent me)
     {
     }
+
+    /**
+     * @see java.awt.event.MouseListener#mouseClicked(java.awt.event.MouseEvent)
+     */
     public void mouseClicked(MouseEvent me)
     {
 	if (me.getClickCount() >= 2)
 	    myDoubleClick(me.getSource());
     }
+
+    /**
+     * @see java.awt.event.MouseListener#mouseEntered(java.awt.event.MouseEvent)
+     */
     public void mouseEntered(MouseEvent me)
     {
     }
+    
+    /**
+     * @see java.awt.event.MouseListener#mouseExited(java.awt.event.MouseEvent)
+     */
     public void mouseExited(MouseEvent me)
     {
     }
@@ -240,6 +268,9 @@ public class TabResults
     ////////////////////////////////////////////////////////////////
     // KeyListener implementation
 
+    /**
+     * @see java.awt.event.KeyListener#keyPressed(java.awt.event.KeyEvent)
+     */
     public void keyPressed(KeyEvent e)
     {
 	if (e.getKeyCode() == KeyEvent.VK_ENTER) {
@@ -248,10 +279,16 @@ public class TabResults
 	}
     }
 
+    /**
+     * @see java.awt.event.KeyListener#keyReleased(java.awt.event.KeyEvent)
+     */
     public void keyReleased(KeyEvent e)
     {
     }
 
+    /**
+     * @see java.awt.event.KeyListener#keyTyped(java.awt.event.KeyEvent)
+     */
     public void keyTyped(KeyEvent e)
     {
     }
@@ -259,17 +296,20 @@ public class TabResults
     ////////////////////////////////////////////////////////////////
     // ListSelectionListener implementation
 
+    /**
+     * @see javax.swing.event.ListSelectionListener#valueChanged(javax.swing.event.ListSelectionEvent)
+     */
     public void valueChanged(ListSelectionEvent lse)
     {
-	if (lse.getValueIsAdjusting())
+	if (lse.getValueIsAdjusting()) {
 	    return;
-	Object src = lse.getSource();
+	}
 	if (_showRelated) {
 	    int row = lse.getFirstIndex();
 	    Object sel = _results.elementAt(row);
 	    cat.debug("selected " + sel);
 	    _related.removeAllElements();
-	    java.util.Enumeration elems =
+	    Enumeration elems =
 		ChildGenRelated.SINGLETON.gen(sel);
 	    if (elems != null) {
 		while (elems.hasMoreElements()) {
@@ -286,6 +326,9 @@ public class TabResults
     ////////////////////////////////////////////////////////////////
     // actions
 
+    /**
+     * @see java.lang.Runnable#run()
+     */
     public void run()
     {
 	_resultsLabel.setText("Searching...");
@@ -304,9 +347,9 @@ public class TabResults
 		return;
 	    // diagrams are not placed in search results
 	}
-	java.util.Enumeration enum = _cg.gen(node);
-	while (enum.hasMoreElements()) {
-	    Object c = enum.nextElement();
+	Enumeration elems = _cg.gen(node);
+	while (elems.hasMoreElements()) {
+	    Object c = elems.nextElement();
 	    if (_pred.predicate(c)) {
 		_results.addElement(c);
 		_diagrams.addElement(lastDiagram);
