@@ -27,9 +27,6 @@ Modifications
       anywhere a class may be selected in the properties tab. The most common
       use is for types of methods and parameters.</para>
 
-    <note><para>These built in stereotypes and classes can be disabled through
-      the menu <literal>Edit>Settings</literal>.</para></note>
-
     <sect2>
       <title>Package Structure</title>
 
@@ -89,79 +86,35 @@ Modifications
       subpackage of the model, and you can navigate back down (but only to the
       type you came up from).</para></note>
 
-    <!-- boolean -->
+    <caution><para>You should be aware that these are Java datatypes. They are
+      not mandated by the UML standard.</para></caution>
 
-    <sect2>
-      <title><literal>boolean</literal></title>
+    <para>These are the standard datatypes. For their definition refer to the
+      Java standard.</para>
 
-      <remark>To be written&hellip;</remark>
-    </sect2>
+    <itemizedlist>
+      <listitem><para><literal>boolean</literal></para></listitem>
 
-    <!-- byte -->
+      <listitem><para><literal>byte</literal></para></listitem>
 
-    <sect2>
-      <title><literal>byte</literal></title>
+      <listitem><para><literal>char</literal></para></listitem>
 
-      <remark>To be written&hellip;</remark>
-    </sect2>
+      <listitem><para><literal>double</literal></para></listitem>
 
-    <!-- char -->
+      <listitem><para><literal>float</literal></para></listitem>
 
-    <sect2>
-      <title><literal>char</literal></title>
+      <listitem><para><literal>int</literal></para></listitem>
 
-      <remark>To be written&hellip;</remark>
-    </sect2>
+      <listitem><para><literal>long</literal></para></listitem>
 
-    <!-- double -->
+      <listitem><para><literal>short</literal></para></listitem>
 
-    <sect2>
-      <title><literal>double</literal></title>
+      <listitem><para><literal>void</literal></para></listitem>
+    </itemizedlist>
 
-      <remark>To be written&hellip;</remark>
-    </sect2>
-
-    <!-- float -->
-
-    <sect2>
-      <title><literal>float</literal></title>
-
-      <remark>To be written&hellip;</remark>
-    </sect2>
-
-    <!-- int -->
-
-    <sect2>
-      <title><literal>int</literal></title>
-
-      <remark>To be written&hellip;</remark>
-    </sect2>
-
-    <!-- long -->
-
-    <sect2>
-      <title><literal>long</literal></title>
-
-      <remark>To be written&hellip;</remark>
-    </sect2>
-
-    <!-- short -->
-
-    <sect2>
-      <title><literal>short</literal></title>
-
-      <remark>To be written&hellip;</remark>
-    </sect2>
-
-    <!-- void -->
-
-    <sect2>
-      <title><literal>void</literal></title>
-
-      <para>Not strictly speaking a type, but the absence of type. &argouml;
-        knows about void and allows it as an option where a datatype may be
-        selected.</para>
-    </sect2>
+    <note><para><literal>void</literal> is not strictly speaking a type, but
+      the absence of type. &argouml; knows about void and allows it as an
+      option where a datatype may be selected.</para></note>
   </sect1>
 
   <!-- Built in classes -->
@@ -183,90 +136,39 @@ Modifications
       has appeared as a subpackage of the model, and you can navigate back down
       (but only to the type you came up from).</para></note>
 
+    <para>For a definition of these classes see the Java language and library
+      defintions.</para>
+
     <!-- Classes in java.lang -->
 
     <sect2>
       <title>Built In Classes Within <literal>java.lang</literal></title>
 
-      <!-- Boolean -->
+      <para>These are the classes within the <literal>java.lang</literal>
+        package.</para>
 
-      <sect3>
-        <title><literal>Boolean</literal></title>
+      <itemizedlist>
+        <listitem><para><literal>Boolean</literal></para></listitem>
 
-        <remark>To be written&hellip;</remark>
-      </sect3>
+        <listitem><para><literal>Byte</literal></para></listitem>
 
-      <!-- Byte -->
+        <listitem><para><literal>Char</literal></para></listitem>
 
-      <sect3>
-        <title><literal>Byte</literal></title>
+        <listitem><para><literal>Double</literal></para></listitem>
 
-        <remark>To be written&hellip;</remark>
-      </sect3>
+        <listitem><para><literal>Float</literal></para></listitem>
 
-      <!-- Char -->
+        <listitem><para><literal>Integer</literal></para></listitem>
 
-      <sect3>
-        <title><literal>Char</literal></title>
+        <listitem><para><literal>Long</literal></para></listitem>
 
-        <remark>To be written&hellip;</remark>
-      </sect3>
+        <listitem><para><literal>Object</literal></para></listitem>
 
-      <!-- Double -->
+        <listitem><para><literal>Short</literal></para></listitem>
 
-      <sect3>
-        <title><literal>Double</literal></title>
+        <listitem><para><literal>String</literal></para></listitem>
+      </itemizedlist>
 
-        <remark>To be written&hellip;</remark>
-      </sect3>
-
-      <!-- Float -->
-
-      <sect3>
-        <title><literal>Float</literal></title>
-
-        <remark>To be written&hellip;</remark>
-      </sect3>
-
-      <!-- Integer -->
-
-      <sect3>
-        <title><literal>Integer</literal></title>
-
-        <remark>To be written&hellip;</remark>
-      </sect3>
-
-      <!-- Long -->
-
-      <sect3>
-        <title><literal>Long</literal></title>
-
-        <remark>To be written&hellip;</remark>
-      </sect3>
-
-      <!-- Object -->
-
-      <sect3>
-        <title><literal>Object</literal></title>
-
-        <remark>To be written&hellip;</remark>
-      </sect3>
-
-      <!-- Short -->
-
-      <sect3>
-        <title><literal>Short</literal></title>
-
-        <remark>To be written&hellip;</remark>
-      </sect3>
-
-      <!-- String -->
-
-      <sect3>
-        <title><literal>String</literal></title>
-
-        <remark>To be written&hellip;</remark>
-      </sect3>
     </sect2>
 
     <!-- Classes in java.math -->
@@ -274,21 +176,15 @@ Modifications
     <sect2>
       <title>Built In Classes Within <literal>java.math</literal></title>
 
-      <!-- Big Decimal -->
+      <para>These are the classes within the <literal>java.math</literal>
+        package.</para>
 
-      <sect3>
-        <title><literal>BigDecimal</literal></title>
+      <itemizedlist>
+        <listitem><para><literal>Big Decimal</literal></para></listitem>
 
-        <remark>To be written&hellip;</remark>
-      </sect3>
+        <listitem><para><literal>Big Integer</literal></para></listitem>
+      </itemizedlist>
 
-      <!-- Big Integer -->
-
-      <sect3>
-        <title><literal>BigInteger</literal></title>
-
-        <remark>To be written&hellip;</remark>
-      </sect3>
     </sect2>
 
     <!-- Classes in java.net -->
@@ -296,13 +192,13 @@ Modifications
     <sect2>
       <title>Built In Classes Within <literal>java.net</literal></title>
 
-      <!-- URL -->
+      <para>These are the classes within the <literal>java.net</literal>
+        package.</para>
 
-      <sect3>
-        <title><literal>URL</literal></title>
+      <itemizedlist>
+        <listitem><para><literal>URL</literal></para></listitem>
+      </itemizedlist>
 
-        <remark>To be written&hellip;</remark>
-      </sect3>
     </sect2>
 
     <!-- Classes in java.util -->
@@ -310,29 +206,16 @@ Modifications
     <sect2>
       <title>Built In Classes Within <literal>java.util</literal></title>
 
-      <!-- Vector -->
+      <para>These are the classes within the <literal>java.util</literal>
+        package.</para>
 
-      <sect3>
-        <title><literal>Vector</literal></title>
+      <itemizedlist>
+        <listitem><para><literal>Vector</literal></para></listitem>
 
-        <remark>To be written&hellip;</remark>
-      </sect3>
+        <listitem><para><literal>Date</literal></para></listitem>
 
-      <!-- Date -->
-
-      <sect3>
-        <title><literal>Date</literal></title>
-
-        <remark>To be written&hellip;</remark>
-      </sect3>
-
-      <!-- Time -->
-
-      <sect3>
-        <title><literal>Time</literal></title>
-
-        <remark>To be written&hellip;</remark>
-      </sect3>
+        <listitem><para><literal>Time</literal></para></listitem>
+      </itemizedlist>
     </sect2>
   </sect1>
 
@@ -356,45 +239,22 @@ Modifications
       subpackage of the model, and you can navigate back down (but only to the
       type you came up from).</para></note>
 
-    <!-- Collection -->
+    <para>These are the interfaces defined within the
+      <literal>java.util</literal> package. For their definition consult the
+      Java language and library references.</para>
 
-    <sect2>
-      <title><literal>Collection</literal></title>
+    <itemizedlist>
+      <listitem><para><literal>Collection</literal></para></listitem>
 
-      <remark>To be written&hellip;</remark>
-    </sect2>
+      <listitem><para><literal>Iterator</literal></para></listitem>
 
-    <!-- Iterator -->
+      <listitem><para><literal>List</literal></para></listitem>
 
-    <sect2>
-      <title><literal>Iterator</literal></title>
+      <listitem><para><literal>Set</literal></para></listitem>
 
-      <remark>To be written&hellip;</remark>
-    </sect2>
+      <listitem><para><literal>Sorted Set</literal></para></listitem>
+    </itemizedlist>
 
-    <!-- List -->
-
-    <sect2>
-      <title><literal>List</literal></title>
-
-      <remark>To be written&hellip;</remark>
-    </sect2>
-
-    <!-- Set -->
-
-    <sect2>
-      <title><literal>Set</literal></title>
-
-      <remark>To be written&hellip;</remark>
-    </sect2>
-
-    <!-- Sorted Set -->
-
-    <sect2>
-      <title><literal>SortedSet</literal></title>
-
-      <remark>To be written&hellip;</remark>
-    </sect2>
   </sect1>
 
   <!-- Built in stereotypes. -->
@@ -402,836 +262,27 @@ Modifications
   <sect1>
     <title>Built In Stereotypes</title>
 
-    <para>&argouml; has a large number of stereotypes built in. Stereotypes are
-      themselves objects, and derive from base classes used within the
-      &argouml; system itself. The actual stereotypes available to use with any
-      particular artifact will depend ultimately how that artifact is derived from
-      one of these base classes.</para>
-
-    <para>In this section, the stereotypes are organised by their base
-      classes.</para>
-
-    <!-- Stereotypes derived from the top level object -->
-
-    <sect2>
-      <title>Top Level Stereotypes</title>
-
-      <remark>To be written&hellip;</remark>
-
-      <!-- machine -->
-
-      <sect3>
-        <title><literal>machine</literal></title>
-
-        <remark>To be written&hellip;</remark>
-      </sect3>
-
-      <!-- person -->
-
-      <sect3>
-        <title><literal>person</literal></title>
-
-        <remark>To be written&hellip;</remark>
-      </sect3>
-    </sect2>
-
-    <!-- Stereotypes derived from base class Abstraction -->
-
-    <sect2>
-      <title>Stereotypes Derived from the <literal>Abstraction</literal> Base
-        Class</title>
-
-      <remark>To be written&hellip;</remark>
-
-      <!-- derive -->
-
-      <sect3>
-        <title><literal>derive</literal></title>
-
-        <remark>To be written&hellip;</remark>
-      </sect3>
-
-      <!-- realize -->
-
-      <sect3>
-        <title><literal>realize</literal></title>
-
-        <remark>To be written&hellip;</remark>
-      </sect3>
-
-      <!-- refine -->
-
-      <sect3>
-        <title><literal>refine</literal></title>
-
-        <remark>To be written&hellip;</remark>
-      </sect3>
-
-      <!-- trace -->
-
-      <sect3>
-        <title><literal>trace</literal></title>
-
-        <remark>To be written&hellip;</remark>
-      </sect3>
-    </sect2>
-
-    <!-- Stereotypes derived from base class Association -->
-
-    <sect2>
-      <title>Stereotypes Derived from the <literal>Association</literal> Base
-        Class</title>
-
-      <remark>To be written&hellip;</remark>
-
-      <!-- communicate -->
-
-      <sect3>
-        <title><literal>communicate</literal></title>
-
-        <remark>To be written&hellip;</remark>
-      </sect3>
-
-      <!-- implicit -->
-
-      <sect3>
-        <title><literal>implicit</literal></title>
-
-        <remark>To be written&hellip;</remark>
-      </sect3>
-
-      <!-- offstage actor -->
-
-      <sect3>
-        <title><literal>offstage actor</literal></title>
-
-        <remark>To be written&hellip;</remark>
-      </sect3>
-
-      <!-- primary actor -->
-
-      <sect3>
-        <title><literal>primary actor</literal></title>
-
-        <remark>To be written&hellip;</remark>
-      </sect3>
-
-      <!-- stakeholder -->
-
-      <sect3>
-        <title><literal>stakeholder</literal></title>
-
-        <remark>To be written&hellip;</remark>
-      </sect3>
-
-      <!-- subscribe -->
-
-      <sect3>
-        <title><literal>subscribe</literal></title>
-
-        <remark>To be written&hellip;</remark>
-      </sect3>
-
-      <!-- supporting actor -->
-
-      <sect3>
-        <title><literal>supporting actor</literal></title>
-
-        <remark>To be written&hellip;</remark>
-      </sect3>
-    </sect2>
-
-    <!-- Stereotypes derived from base class AssociationEnd -->
-
-    <sect2>
-      <title>Stereotypes Derived from the <literal>AssociationEnd</literal>
-        Base Class</title>
-
-      <remark>To be written&hellip;</remark>
-
-      <!-- association -->
-
-      <sect3>
-        <title><literal>association</literal></title>
-
-        <remark>To be written&hellip;</remark>
-      </sect3>
-
-      <!-- global -->
-
-      <sect3>
-        <title><literal>global</literal></title>
-
-        <remark>To be written&hellip;</remark>
-      </sect3>
-
-      <!-- local -->
-
-      <sect3>
-        <title><literal>local</literal></title>
-
-        <remark>To be written&hellip;</remark>
-      </sect3>
-
-      <!-- parameter -->
-
-      <sect3>
-        <title><literal>parameter</literal></title>
-
-        <remark>To be written&hellip;</remark>
-      </sect3>
-
-      <!-- self -->
-
-      <sect3>
-        <title><literal>self</literal></title>
-
-        <remark>To be written&hellip;</remark>
-      </sect3>
-    </sect2>
-
-    <!-- Stereotypes derived from base class BehavioralFeature -->
-
-    <sect2>
-      <title>Stereotypes Derived from the <literal>BehavioralFeature</literal>
-        Base Class</title>
-
-      <remark>To be written&hellip;</remark>
-
-      <!-- create -->
-
-      <sect3>
-        <title><literal>create</literal></title>
-
-        <remark>To be written&hellip;</remark>
-      </sect3>
-
-      <!-- destroy -->
-
-      <sect3>
-        <title><literal>destroy</literal></title>
-
-        <remark>To be written&hellip;</remark>
-      </sect3>
-    </sect2>
-
-    <!-- Stereotypes derived from base class CallEvent -->
-
-    <sect2>
-      <title>Stereotypes Derived from the <literal>CallEvent</literal> Base
-        Class</title>
-
-      <remark>To be written&hellip;</remark>
-
-      <!-- create -->
-
-      <sect3>
-        <title><literal>create</literal></title>
-
-        <remark>To be written&hellip;</remark>
-      </sect3>
-
-      <!-- destroy -->
-
-      <sect3>
-        <title><literal>destroy</literal></title>
-
-        <remark>To be written&hellip;</remark>
-      </sect3>
-    </sect2>
-
-    <!-- Stereotypes derived from base class Class -->
-
-    <sect2>
-      <title>Stereotypes Derived from the <literal>Class</literal> Base
-        Class</title>
-
-      <remark>To be written&hellip;</remark>
-
-      <!-- boundary -->
-
-      <sect3>
-        <title><literal>boundary</literal></title>
-
-        <remark>To be written&hellip;</remark>
-      </sect3>
-
-      <!-- case worker -->
-
-      <sect3>
-        <title><literal>case worker</literal></title>
-
-        <remark>To be written&hellip;</remark>
-      </sect3>
-
-      <!-- control -->
-
-      <sect3>
-        <title><literal>control</literal></title>
-
-        <remark>To be written&hellip;</remark>
-      </sect3>
-
-      <!-- artifact -->
-
-      <sect3>
-        <title><literal>artifact</literal></title>
-
-        <remark>To be written&hellip;</remark>
-      </sect3>
-
-      <!-- implementationClass -->
-
-      <sect3>
-        <title><literal>implementationClass</literal></title>
-
-        <remark>To be written&hellip;</remark>
-      </sect3>
-
-      <!-- internal worker -->
-
-      <sect3>
-        <title><literal>internal worker</literal></title>
-
-        <remark>To be written&hellip;</remark>
-      </sect3>
-
-      <!-- type -->
-
-      <sect3>
-        <title><literal>type</literal></title>
-
-        <remark>To be written&hellip;</remark>
-      </sect3>
-
-      <!-- worker -->
-
-      <sect3>
-        <title><literal>worker</literal></title>
-
-        <remark>To be written&hellip;</remark>
-      </sect3>
-    </sect2>
-
-    <!-- Stereotypes derived from base class Classifier -->
-
-    <sect2>
-      <title>Stereotypes Derived from the <literal>Classifier</literal> Base
-        Class</title>
-
-      <remark>To be written&hellip;</remark>
-
-      <!-- metaclass -->
-
-      <sect3>
-        <title><literal>metaclass</literal></title>
-
-        <remark>To be written&hellip;</remark>
-      </sect3>
-
-      <!-- powertype -->
-
-      <sect3>
-        <title><literal>powertype</literal></title>
-
-        <remark>To be written&hellip;</remark>
-      </sect3>
-
-      <!-- process -->
-
-      <sect3>
-        <title><literal>process</literal></title>
-
-        <remark>To be written&hellip;</remark>
-      </sect3>
-
-      <!-- thread -->
-
-      <sect3>
-        <title><literal>thread</literal></title>
-
-        <remark>To be written&hellip;</remark>
-      </sect3>
-
-      <!-- utility -->
-
-      <sect3>
-        <title><literal>utility</literal></title>
-
-        <remark>To be written&hellip;</remark>
-      </sect3>
-    </sect2>
-
-    <!-- Stereotypes derived from base class Collaboration -->
-
-    <sect2>
-      <title>Stereotypes Derived from the <literal>Collaboration</literal> Base
-        Class</title>
-
-      <remark>To be written&hellip;</remark>
-
-      <!-- use-case realization -->
-
-      <sect3>
-        <title><literal>use-case realization</literal></title>
-
-        <remark>To be written&hellip;</remark>
-      </sect3>
-    </sect2>
-
-    <!-- Stereotypes derived from base class Comment -->
-
-    <sect2>
-      <title>Stereotypes Derived from the <literal>Comment</literal> Base
-        Class</title>
-
-      <remark>To be written&hellip;</remark>
-
-      <!-- requirement -->
-
-      <sect3>
-        <title><literal>requirement</literal></title>
-
-        <remark>To be written&hellip;</remark>
-      </sect3>
-
-      <!-- responsibility -->
-
-      <sect3>
-        <title><literal>responsibility</literal></title>
-
-        <remark>To be written&hellip;</remark>
-      </sect3>
-    </sect2>
-
-    <!-- Stereotypes derived from base class Component -->
-
-    <sect2>
-      <title>Stereotypes Derived from the <literal>Component</literal> Base
-        Class</title>
-
-      <remark>To be written&hellip;</remark>
-
-      <!-- document -->
-
-      <sect3>
-        <title><literal>document</literal></title>
-
-        <remark>To be written&hellip;</remark>
-      </sect3>
-
-      <!-- executable -->
-
-      <sect3>
-        <title><literal>executable</literal></title>
-
-        <remark>To be written&hellip;</remark>
-      </sect3>
-
-      <!-- file -->
-
-      <sect3>
-        <title><literal>file</literal></title>
-
-        <remark>To be written&hellip;</remark>
-      </sect3>
-
-      <!-- library -->
-
-      <sect3>
-        <title><literal>library</literal></title>
-
-        <remark>To be written&hellip;</remark>
-      </sect3>
-
-      <!-- table -->
-
-      <sect3>
-        <title><literal>table</literal></title>
-
-        <remark>To be written&hellip;</remark>
-      </sect3>
-    </sect2>
-
-    <!-- Stereotypes derived from base class Constraint -->
-
-    <sect2>
-      <title>Stereotypes Derived from the <literal>Constraint</literal> Base
-        Class</title>
-
-      <remark>To be written&hellip;</remark>
-
-      <!-- invariant -->
-
-      <sect3>
-        <title><literal>invariant</literal></title>
-
-        <remark>To be written&hellip;</remark>
-      </sect3>
-
-      <!-- postcondition -->
-
-      <sect3>
-        <title><literal>postcondition</literal></title>
-
-        <remark>To be written&hellip;</remark>
-      </sect3>
-
-      <!-- precondition -->
-
-      <sect3>
-        <title><literal>precondition</literal></title>
-
-        <remark>To be written&hellip;</remark>
-      </sect3>
-    </sect2>
-
-    <!-- Stereotypes derived from base class DataType -->
-
-    <sect2>
-      <title>Stereotypes Derived from the <literal>DataType</literal> Base
-        Class</title>
-
-      <remark>To be written&hellip;</remark>
-
-      <!-- enumeration -->
-
-      <sect3>
-        <title><literal>enumeration</literal></title>
-
-        <remark>To be written&hellip;</remark>
-      </sect3>
-    </sect2>
-
-    <!-- Stereotypes derived from base class Dependency -->
-
-    <sect2>
-      <title>Stereotypes Derived from the <literal>Dependency</literal> Base
-        Class</title>
-
-      <remark>To be written&hellip;</remark>
-
-      <!-- extend -->
-
-      <sect3>
-        <title><literal>extend</literal></title>
-
-        <remark>To be written&hellip;</remark>
-      </sect3>
-
-      <!-- include -->
-
-      <sect3>
-        <title><literal>include</literal></title>
-
-        <remark>To be written&hellip;</remark>
-      </sect3>
-    </sect2>
-
-    <!-- Stereotypes derived from base class Flow -->
-
-    <sect2>
-      <title>Stereotypes Derived from the <literal>Flow</literal> Base
-        Class</title>
-
-      <remark>To be written&hellip;</remark>
-
-      <!-- become -->
-
-      <sect3>
-        <title><literal>become</literal></title>
-
-        <remark>To be written&hellip;</remark>
-      </sect3>
-
-      <!-- copy -->
-
-      <sect3>
-        <title><literal>copy</literal></title>
-
-        <remark>To be written&hellip;</remark>
-      </sect3>
-
-      <!-- create -->
-
-      <sect3>
-        <title><literal>create</literal></title>
-
-        <remark>To be written&hellip;</remark>
-      </sect3>
-    </sect2>
-
-    <!-- Stereotypes derived from base class Generalization -->
-
-    <sect2>
-      <title>Stereotypes Derived from the <literal>Generalization</literal>
-        Base Class</title>
-
-      <remark>To be written&hellip;</remark>
-
-      <!-- implementation -->
-
-      <sect3>
-        <title><literal>implementation</literal></title>
-
-        <remark>To be written&hellip;</remark>
-      </sect3>
-    </sect2>
-
-    <!-- Stereotypes derived from base class Model -->
-
-    <sect2>
-      <title>Stereotypes Derived from the <literal>Model</literal> Base
-        Class</title>
-
-      <remark>To be written&hellip;</remark>
-
-      <!-- analysis model -->
-
-      <sect3>
-        <title><literal>analysis model</literal></title>
-
-        <remark>To be written&hellip;</remark>
-      </sect3>
-
-      <!-- use-case model -->
-
-      <sect3>
-        <title><literal>use-case model</literal></title>
-
-        <remark>To be written&hellip;</remark>
-      </sect3>
-    </sect2>
-
-    <!-- Stereotypes derived from base class ModelElement -->
-
-    <sect2>
-      <title>Stereotypes Derived from the <literal>ModelElement</literal> Base
-        Class</title>
-
-      <remark>To be written&hellip;</remark>
-
-      <!-- organization -->
-
-      <sect3>
-        <title><literal>organization</literal></title>
-
-        <remark>To be written&hellip;</remark>
-      </sect3>
-    </sect2>
-
-    <!-- Stereotypes derived from base class ObjectFlowState -->
-
-    <sect2>
-      <title>Stereotypes Derived from the <literal>ObjectFlowState</literal>
-        Base Class</title>
-
-      <remark>To be written&hellip;</remark>
-
-      <!-- signalFlow -->
-
-      <sect3>
-        <title><literal>signalFlow</literal></title>
-
-        <remark>To be written&hellip;</remark>
-      </sect3>
-    </sect2>
-
-    <!-- Stereotypes derived from base class Package -->
-
-    <sect2>
-      <title>Stereotypes Derived from the <literal>Package</literal> Base
-        Class</title>
-
-      <remark>To be written&hellip;</remark>
-
-      <!-- facade -->
-
-      <sect3>
-        <title><literal>facade</literal></title>
-
-        <remark>To be written&hellip;</remark>
-      </sect3>
-
-      <!-- framework -->
-
-      <sect3>
-        <title><literal>framework</literal></title>
-
-        <remark>To be written&hellip;</remark>
-      </sect3>
-
-      <!-- metamodel -->
-
-      <sect3>
-        <title><literal>metamodel</literal></title>
-
-        <remark>To be written&hellip;</remark>
-      </sect3>
-
-      <!-- stub -->
-
-      <sect3>
-        <title><literal>stub</literal></title>
-
-        <remark>To be written&hellip;</remark>
-      </sect3>
-
-      <!-- systemModel -->
-
-      <sect3>
-        <title><literal>systemModel</literal></title>
-
-        <remark>To be written&hellip;</remark>
-      </sect3>
-
-      <!-- use-case package -->
-
-      <sect3>
-        <title><literal>use-case package</literal></title>
-
-        <remark>To be written&hellip;</remark>
-      </sect3>
-
-      <!-- analysis service package -->
-
-      <sect3>
-        <title><literal>analysis service package</literal></title>
-
-        <remark>To be written&hellip;</remark>
-      </sect3>
-    </sect2>
-
-    <!-- Stereotypes derived from base class Permission -->
-
-    <sect2>
-      <title>Stereotypes Derived from the <literal>Permission</literal> Base
-        Class</title>
-
-      <remark>To be written&hellip;</remark>
-
-      <!-- access -->
-
-      <sect3>
-        <title><literal>access</literal></title>
-
-        <remark>To be written&hellip;</remark>
-      </sect3>
-
-      <!-- friend -->
-
-      <sect3>
-        <title><literal>friend</literal></title>
-
-        <remark>To be written&hellip;</remark>
-      </sect3>
-
-      <!-- import -->
-
-      <sect3>
-        <title><literal>import</literal></title>
-
-        <remark>To be written&hellip;</remark>
-      </sect3>
-    </sect2>
-
-    <!-- Stereotypes derived from base class Subsystem -->
-
-    <sect2>
-      <title>Stereotypes Derived from the <literal>Subsystem</literal> Base
-        Class</title>
-
-      <remark>To be written&hellip;</remark>
-
-      <!-- design system -->
-
-      <sect3>
-        <title><literal>design system</literal></title>
-
-        <remark>To be written&hellip;</remark>
-      </sect3>
-
-      <!-- implementation system -->
-
-      <sect3>
-        <title><literal>implementation system</literal></title>
-
-        <remark>To be written&hellip;</remark>
-      </sect3>
-
-      <!-- implementation subsystem -->
-
-      <sect3>
-        <title><literal>implementation subsystem</literal></title>
-
-        <remark>To be written&hellip;</remark>
-      </sect3>
-
-      <!-- design service subsystem -->
-
-      <sect3>
-        <title><literal>design service subsystem</literal></title>
-
-        <remark>To be written&hellip;</remark>
-      </sect3>
-
-      <!-- object system -->
-
-      <sect3>
-        <title><literal>object system</literal></title>
-
-        <remark>To be written&hellip;</remark>
-      </sect3>
-
-      <!-- organization unit -->
-
-      <sect3>
-        <title><literal>organization unit</literal></title>
-
-        <remark>To be written&hellip;</remark>
-      </sect3>
-
-      <!-- work unit -->
-
-      <sect3>
-        <title><literal>work unit</literal></title>
-
-        <remark>To be written&hellip;</remark>
-      </sect3>
-    </sect2>
-
-    <!-- Stereotypes derived from base class Usage -->
-
-    <sect2>
-      <title>Stereotypes Derived from the <literal>Usage</literal> Base
-        Class</title>
-
-      <remark>To be written&hellip;</remark>
-
-      <!-- call -->
-
-      <sect3>
-        <title><literal>call</literal></title>
-
-        <remark>To be written&hellip;</remark>
-      </sect3>
-
-      <!-- instantiate -->
-
-      <sect3>
-        <title><literal>instantiate</literal></title>
-
-        <remark>To be written&hellip;</remark>
-      </sect3>
-
-      <!-- send -->
-
-      <sect3>
-        <title><literal>send</literal></title>
-
-        <remark>To be written&hellip;</remark>
-      </sect3>
-    </sect2>
+    <para>UML defines a large number of stereotypes which are (mostly)
+      supported by &argouml;. In addition &argouml; defines three additional
+      stereotypes that may be of use.</para>
+
+    <itemizedlist>
+      <listitem><para><literal>machine</literal>. Available to artifacts
+        derived from the top level UML metaclass,
+        <literal>Element</literal>.</para></listitem>
+
+      <listitem><para><literal>person</literal>. Available to artifacts
+        derived from the top level UML metaclass,
+        <literal>Element</literal>.</para></listitem>
+
+      <listitem><para><literal>organization</literal>. Available to artifacts
+        derived from the UML metaclass
+        <literal>ModelElement</literal>.</para></listitem>
+    </itemizedlist>
+
+    <caution><para>Not all stereotypes defined by UML&nbsp;1.3 appear in
+      &argouml;, due to limitations in the current implementation of some
+      artifacts.</para></caution>
   </sect1>
 
 </chapter>

@@ -16,6 +16,7 @@ Modifications
 
 29 Jan 2001:  Jeremy Bennett. Updated info on interfaces to reflect bug fix.
 
+ 7 Feb 2002:  Jeremy Bennett. Added pop-up menus for Associations.
 -->
 
 <chapter id="ch.ref.editpane">
@@ -130,6 +131,12 @@ Modifications
         generally be used to define the size of the new artifact. Its
         dimensions (line ends, diagonal corners of a rectangular artifact etc)
         are defined by &button1; down and &button1; up.</para>
+
+      <para>Where the artifact being added is some form of connector its
+        termination point is shown with &button1; up over the terminating
+        artifact. &button1; click may be used in the space between artifacts to
+        create articulation points in the connector. This is particularly
+        useful where connectors must loopback on themselves.</para>
 
       <para>Over graphical artifacts &button1; motion will move the artifact to
         a new position. Graphical artifacts that are selected show handles, and
@@ -1173,6 +1180,105 @@ Modifications
           appears when the operation compartment is hidden. Displays the
           compartment.</para></listitem>
       </itemizedlist>
+    </sect2>
+
+    <!-- Multiplicity sub-menu -->
+
+    <sect2>
+      <title>Multiplicity</title>
+
+      <para>This sub-menu only appears with association artifacts. It is
+        used to control the multiplicity at the end of the association nearest
+        the mouse click point. There are only four entries, a sub-set of the
+        range of multiplicities that are available through the property sheet
+        of a association end (see
+        <xref linkend="s1.ref.association_end_use_case"/>).</para>
+
+      <itemizedlist>
+        <listitem><para><literal>1</literal></para></listitem>
+
+        <listitem><para><literal>0..1</literal></para></listitem>
+
+        <listitem><para><literal>1..*</literal></para></listitem>
+
+        <listitem><para><literal>0..*</literal></para></listitem>
+      </itemizedlist>
+    </sect2>
+
+    <!-- Aggregatio sub-menu -->
+
+    <sect2>
+      <title>Aggregation</title>
+
+      <para>This sub-menu only appears with association artifacts. It is
+        used to control the aggregation at the end of the association nearest
+        the mouse click point. There are three entries.</para>
+
+      <itemizedlist>
+        <listitem><para><literal>none</literal>. Remove any
+          aggregation.</para></listitem>
+
+        <listitem><para><literal>aggregate</literal>. Make this end a shared
+          aggregation (loosely known as an
+          <quote>aggregation</quote>).</para></listitem>
+
+        <listitem><para><literal>composite</literal>. Make this end a composite
+          aggregation (loosely known as a
+          <quote>composition</quote>).</para></listitem>
+      </itemizedlist>
+
+      <warning><para>UML requires that at most one end of an association has
+        any aggregation relationship. The current release of &argouml; has a
+        known problem where it believes any end whose aggregation has not been
+        explicity set is in some form of aggregation (although this is not
+        shown on the diagram or property sheet). This will trigger a
+        critic. The solution is to change the aggregation to one of the
+        aggregate forms and then back to none to explicitly set no
+        aggregation.</para></warning>
+
+      <caution><para>UML requires that an end with a composition relationship
+        must have a multiplicity of 1 (the default).</para></caution>
+    </sect2>
+
+    <!-- Navigability sub-menu -->
+
+    <sect2>
+      <title>Navigability</title>
+
+      <para>This sub-menu only appears with association artifacts. It is used
+        to control the navigability of the association. There are three
+        entries.</para>
+
+      <itemizedlist>
+        <listitem><para><literal>bidirectional</literal>. Make the association
+          navigable in both directions.</para></listitem>
+
+        <listitem><para><literal>&lt;class1&gt; to
+          &lt;class2&gt;</literal>. Make the association navigable
+          only from &lt;class1&gt; to
+          &lt;class2&gt;. In other words
+          &lt;class1&gt; can reference &lt;class2&gt;
+          but not the other way round.</para></listitem>
+
+        <listitem><para><literal>&lt;class2&gt; to
+          &lt;class1&gt;</literal>. Make the association navigable
+          only from &lt;class2&gt; to
+          &lt;class1&gt;. In other words
+          &lt;class2&gt; can reference &lt;class1&gt;
+          but not the other way round.</para></listitem>
+      </itemizedlist>
+
+      <note><para>UML does permit an association to be non-navigable in both
+        directions. If you want this, you will have to set each of the
+        association ends navigation property, reached from the property tab of
+        the association.</para>
+
+      <para>This is considered bad design practice (it will trigger a critic in
+        &argouml;), so is only of theorertical interest.</para></note>
+
+      <caution><para>UML does not permit navigability from an interface to a
+        class. However this drop down will allow you to set this up (and then
+        trigger a critic to complain).</para></caution>
     </sect2>
 
     <!-- Properties sub-menu -->

@@ -334,21 +334,34 @@ Modifications
     <sect2 id="s2.ref.critics_constructor_needed">
       <title>Add Constructor to &lt;class&gt;</title>
 
-      <para>Suggestion that you have not yet added a constructor to this
-        class. This critic assumes a constructor is an operation of the class,
-        with the same name as the class, in the same namespace as the class,
-        with a return type of <literal>void</literal>.</para>
+      <para>You have not yet defined a constructor for class
+        <emphasis>class</emphasis>. Constructors initialize new instances such
+        that their attributes have valid values.  This class probably needs a
+        constructor because not all of its attributes have initial
+        values.</para>
 
-      <note><para>Good practice would also suggest that constructors
-        ought to have the stereotype
-        <literal>&laquo;create&raquo;</literal>, but this critic does not
-        check for this.</para></note>
+      <para>Defining good constructors is key to establishing class invariants,
+        and class invariants are a powerful aid in writing solid code.</para>
 
-      <caution><para>The current release of &argouml; has a known defect in
-        this critic, whereby a constructor will only be recognised if it
-        has no return parameter at all. This will be fixed in the near
-        future to accept return paramters with no type or type
-        <literal>void</literal></para></caution>
+      <para>To fix this, add a constructor manually by clicking on
+        <emphasis>class</emphasis> in the navigator pane and adding an
+        operation using the context sensitive pop-up menu in the property tab,
+        or select <emphasis>class</emphasis> where it appears on a class
+        diagram and use the <literal>Add Operation</literal> tool.</para>
+
+      <para>In the UML 1.3 standard, a constructor is an operation with the
+        stereotype &laquo;create&raquo;. Although not strictly standard,
+        &argouml; will also accept &laquo;Create&raquo; as a stereotype for
+        constructors.</para>
+
+      <para>By convention in Java and C++ a constructor has the same name as
+        the class, is not static, and returns no value.  &argouml; will also
+        accept any operation that follows these conventions as a constructor
+        even if it is not stereotyped &laquo;create&raquo;.</para>
+
+      <caution><para>Operators are created in &argouml; with a default return
+        parameter (named <literal>return</literal>). You will need to remove
+        this parameter to meet the Java/C++ convention.</para></caution>
     </sect2>
 
     <sect2 id="s2.ref.critics_too_many_attr">
@@ -539,34 +552,80 @@ Modifications
       version of &argouml; has 16 critics in this category.</para>
 
     <sect2 id="s2.ref.critics_consider_singleton">
-      <title>Consider using Singleton Pattern for &lt;artifact&gt;</title>
+      <title>Consider using Singleton Pattern for &lt;class&gt;</title>
 
-      <para>Suggestion that the class has many of the characteristics of a
-        singleton class (i.e. only private constructors, static attribute to
-        hold the instance, at least one constructor). Good design practice
-        would suggest making this explicit by stereotyping with the
-        <literal>&laquo;singleton&raquo;</literal> stereotype.</para>
+      <para><emphasis>class</emphasis> has no non-static attributes nor any
+        associations that are navigable away from instances of this class.
+        This means that every instance of this class will be identical to every
+        other instance, since there will be nothing about the instances that
+        can differentiate them.</para>
 
-      <caution><para>By default &argouml; does not define the
-        <literal>&laquo;singleton&raquo;</literal>. You will need to
-        define the stereotype before use (see
-        <xref linkend="s1.ref.stereotype"/>).</para></caution>
+      <para>Under these circumstances you should consider making explicit that
+        you have exactly one instance of this class, by using the Singleton
+        Pattern. Using the Singleton Pattern can save time and memory
+        space. Within &argouml; this can be done by using the
+        &laquo;Singleton&raquo; stereotype on this class.</para>
+
+      <para>If it is not your intent to have a single instance, you should
+        define instance variables (i.e. non-static attributes) and/or outgoing
+        associations that will represent differences bewteen instances.</para>
+
+      <para>Having specified <emphasis>class</emphasis> as a Singleton, you
+        need to define the class so there can only be a single instance. This
+        will complete the information representation part of your design. To
+        achieve this you need to do the following.</para>
+
+      <orderedlist>
+        <listitem><para>You must define a static attribute (a class variable)
+          holding the instance. This must therefore have
+          <emphasis>class</emphasis> as its type.</para></listitem>
+
+        <listitem><para>You must have only private constructors so that new
+          instances cannot be made by other code. The creation of the single
+          instance could be through a suitable helper operation, which invokes
+          this private constructor just once.</para></listitem>
+
+        <listitem><para>You must have at least one constructor to override the
+          default constructor, so that the default constructor is not used to
+          create multiple instances.</para></listitem>
+      </orderedlist>
+
+      <para>For the definition of a constructor under the UML 1.3 standard, and
+        extensions to that definition accepted by &argouml; see
+        <xref linkend="s2.ref.critics_constructor_needed"/>.</para>
+
+      <note><para> &laquo;Singleton&raquo; does not exist as a stereotype by
+        default in &argouml; so you will need to create it the first time you
+        use it. This can be done through the <literal>Stereotype</literal>
+        property tab, reached using the <literal>NavStereo</literal> button on
+        the class property sheet (see <xref linkend="s1.ref.stereotype"/> and
+        <xref linkend="s1.ref.class_class"/> for more details). The
+        <literal>Base&nbsp;Class</literal> should be
+        <literal>Class</literal>.</para></note>
     </sect2>
 
     <sect2 id="s2.ref.critics_singleton_violated">
-      <title>Singleton Stereotype Violated in &lt;artifact&gt;</title>
+      <title>Singleton Stereotype Violated in &lt;class&gt;</title>
 
-      <para>Suggestion that the specified class, although declared with
-        stereotype <literal>&laquo;singleton&raquo;</literal>, does not have
-        all the characteristics of a singleton class (i.e. only private
-        constructors, static attribute to hold the instance, at least one
-        constructor).</para>
+      <para>This class is marked with the &laquo;Singleton&raquo; stereotype,
+        but it does not satisfy the constraints imposed on Singletons
+        (&argouml; will also accept &laquo;singleton&raquo; stereotype as
+        defining a Singleton). A Singleton class can have at most one instance.
+        This means that the class must meet the design criteria for a singleton
+        (see <xref linkend="s2.ref.critics_consider_singleton"/>).</para>
 
-      <warning><para>In the current version of &argouml; this critic is
-        always triggered for classes declared as
-        <literal>&laquo;singleton&raquo;</literal>, even if they meet all
-        the required criteria. This is a known defect in the
-        code.</para></warning>
+      <para>Whenever you mark a class with a stereotype, the class should
+        satisfy all constraints of the stereotype.  This is an important part
+        of making a self-consistent and understangle design. Using the
+        Singleton Pattern can save time and memory space.</para>
+
+      <para>If you no longer want this class to be a Singleton, remove the
+        &laquo;Singleton&raquo; stereotype by clicking on the class and
+        selecting the blank selection on the stereotype drop-down within the
+        properties tab.</para>
+
+      <para>To apply the Singleton Pattern you should follow the directions in
+        <xref linkend="s2.ref.critics_consider_singleton"/>.</para>
     </sect2>
 
     <sect2 id="s2.ref.critics_node_inside_element">
@@ -719,11 +778,28 @@ Modifications
     </sect2>
 
     <sect2 id="s2.ref.critics_nav_from_interface">
-      <title>Remove Navigation from Interface &lt;interface&gt;</title>
+      <title>Remove Navigation from Interface via &lt;association&gt;</title>
 
-      <para>Suggestion that the interface referred to, which connected by an
-        association to a class, is navigable from the interface. This is not
-        permitted in the UML standard.</para>
+      <para>Associations involving an interface can be not be navigable in the
+        direction from the interface.  This is because interfaces contain only
+        operation declarations and cannot hold pointers to other
+        objects.</para>
+
+      <para>This part of the design should be changed before you can generate
+        code from this design.  If you do generate code before fixing this
+        problem, the code will not match the design.</para>
+
+      <para>To fix this, select the association and use the
+        <literal>Properties</literal> tab to select in turn each association
+        end that is <emphasis>not</emphasis> connected to the
+        interface. Uncheck <literal>Navigable</literal> for each of these
+        ends.</para>
+
+      <para>The association should then appear with a stick arrowhead pointed
+        towards the interface</para>
+
+      <note><para>In an ideal world, &argouml; would not permit associations to
+        be created that were navigable from interfaces.</para></note>
 
       <warning><para>The current version of &argouml; has a known defect
         where it creates an association between a class and interface that

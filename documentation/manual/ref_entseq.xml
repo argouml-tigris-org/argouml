@@ -2,7 +2,7 @@
 
 <!--
 
-Desription of all the artifacts associated with Sequence Diagrams within
+Description of all the artifacts associated with Sequence Diagrams within
 Argo/UML.
 
 
@@ -10,6 +10,8 @@ Modifications
 =============
 
  5 Dec 2001:  Jeremy Bennett. Created as a new chapter.
+
+ 8 Feb 2002:  Jeremy Bennett. Contents written.
 
 -->
 
@@ -20,36 +22,40 @@ Modifications
     <title>Introduction</title>
 
     <para>This chapter describes each artifact that can be created within a
-      Sequence Diagram. Note that some sub-artifacts of artifacts on the diagram
-      may not actually themselves appear on the diagram.</para>
+      sequence diagram. Note that some sub-artifacts of artifacts on the
+      diagram may not actually themselves appear on the diagram.</para>
 
     <para>There is a close relationship between this material and the
-      Properties Tab of the Details Pane (see
-      <xref linkend="s1.ref.proptab"/>). That section covers Properties in
+      <literal>Properties</literal> tab of the details pane (see
+      <xref linkend="s1.ref.proptab"/>). That section covers properties in
       general, in this chapter they are linked to specific artifacts.</para>
+
+    <caution><para>Sequence diagrams are not fully developed yet in
+      &argouml;. Many aspects are not fully implemented, or may not behave as
+      expected.</para></caution>
 
     <!-- A diagram to show all things visible on the diagram -->
 
-    <para><xref linkend="fig.ref.entseq"/> shows a Sequence Diagram with all
-      possible artifacts displayed.</para>
+    <para><xref linkend="fig.ref.sequence_diagram"/> shows a sequence diagram
+      with all possible artifacts displayed.</para>
 
-    <!-- This should be a comprehensive picture. In fact its just the minimum
-         at the moment. It would be good to put some bubbles on this one
-         pointing things out as well. -->
+    <!-- Diagram with everything in -->
 
-    <figure id="fig.ref.entseq" float="1">
-      <title>Possible artifacts on a Sequence Diagram.</title>
+    <figure id="fig.ref.sequence_diagram" float="1">
+      <title>Possible artifacts on a sequence diagram.</title>
 
       <screenshot><mediaobject>
         <imageobject>
-          <imagedata format="PNG" align="center"
-                     fileref="images/tobeprovided.png"/>
+          <imagedata format="GIF" align="center"
+                     fileref="images/reference/sequence_diagram.gif"/>
         </imageobject>
 
         <textobject>
-          <para>A Sequence Diagram, showing (from left to right and top to
-            bottom) two Objects, a Stimulus Call, a Stimulus Create, a Stimulus
-            Destroy, a Stimulus Send and a Stimulus Return.</para>
+          <para>A Sequence Diagram, showing (from left to right three anonymous
+            objects of three classes. A sequence of stimulus calls are
+            shown. From top to bottom they are examples of stimulus call,
+            stimulus create stimulus return, stimulus send (x2) and stimulus
+            destroy.</para>
         </textobject>
       </mediaobject></screenshot>
     </figure>
@@ -57,10 +63,928 @@ Modifications
 
   <!-- Artifacts specific to Sequence Diagrams. Object Artifact -->
 
-  <sect1>
+  <sect1 id="s1.ref.object_sequence">
     <title>Object</title>
 
-    <remark>To be written&hellip;</remark>
+    <para>An object is an instance of a class. In the UML metamodel
+      <literal>Object</literal> is a sub-class of 
+      <literal>Instance</literal>. Within a sequence diagram objects may be
+      used to represent a specific instance of a class. Unlike collaboration
+      diagrams (see <xref linkend="ch.ref.entcollab"/>), sequence diagrams
+      cannot show generic behavior between classifier roles.</para>
+
+    <para>An object is represented on a sequence diagram in &argouml; as a
+      plain box labeled with the object name (if any) and class, separated by a
+      colon (:). As links with stimuli to and from other objects are added, a
+      time line grows down from the object. This is thin where the object does
+      not have control and thick where it does.</para>
+
+    <caution><para>The current release of &argouml; shows interactions between
+      objects, although the UML standard for sequence diagrams is for
+      interaction between instances of any classifier).</para>
+
+    <para>However the actual implementation in &argouml; permits any classifier
+      to be used with the object, and so the diagram can successfully represent
+      instances of actors for example as well as classes.</para></caution>
+
+    <!-- Object details tabs -->
+
+    <sect2>
+      <title>Object Details Tabs</title>
+
+      <para>The details tabs that are active for objects  are described in
+        <xref linkend="tab.ref.object_details_tabs"/>.</para>
+
+      <table id="tab.ref.object_details_tabs" frame="all" colsep="1"
+             rowsep="1" pgwide="1">
+        <title>Details tabs for object</title>
+
+        <tgroup cols='2' align='left' colsep='0' rowsep='0'>
+          <colspec align="left" colwidth="*3"/>
+          <colspec align="left" colwidth="*9"/>
+          <thead>
+            <row>
+              <entry align="left">Tab</entry>
+              <entry align="left">Meaning</entry>
+            </row>
+          </thead>
+
+          <tbody valign="top">
+
+            <!-- Entry for ToDoItem tab -->
+
+            <row>
+              <entry>ToDoItem</entry>
+
+              <entry><para>Standard tab.</para></entry>
+            </row>
+
+            <!-- Entry for Properties tab -->
+
+            <row>
+              <entry>Properties</entry>
+
+              <entry><para>See <xref
+                  linkend="tab.ref.object_property_toolbar"/> and <xref
+                  linkend="tab.ref.object_property_fields"/>
+                below.</para></entry>
+            </row>
+
+            <!-- Entry for Documentation tab -->
+
+            <row>
+              <entry>Documentation</entry>
+
+              <entry><para>Standard tab.</para></entry>
+            </row>
+
+            <!-- Entry for Style tab -->
+
+            <row>
+              <entry>Style</entry>
+
+              <entry><para>Standard tab. The values for the bounds of the
+                object notionally define the bounding box of the object and its
+                time line. However if you change them it will have no effect,
+                and the original values will be reset when you next revisit the
+                tab.</para>
+
+              <caution><para>In the current release of &argouml; changing the
+                values of this field is possible, but will make a (temporary)
+                mess of the screen display. Selecting the object on the screen
+                causes the original values to be restored and the screen
+                refreshed.</para></caution></entry>
+            </row>
+
+            <!-- Entry for Source tab -->
+
+            <row>
+              <entry>Source</entry>
+
+              <entry><para>Standard tab, but with no contents.</para>
+
+                <caution><para>An object should not generate any code, so
+                  having this tab active is probably a
+                  mistake.</para></caution></entry>
+            </row>
+
+            <!-- Entry for Constraints tab -->
+
+            <row>
+              <entry>Constraints</entry>
+
+              <entry><para>Standard tab. In the UML metamodel,
+                <literal>Object</literal> has the following standard
+                constraints defined (through its parent,
+                <literal>Instance</literal>).</para>
+
+                <itemizedlist>
+                  <listitem><para><literal>destroyed</literal>. Applied to an
+                    object that is destroyed during the
+                    execution.</para></listitem>
+
+                  <listitem><para><literal>new</literal>. Applied to an object
+                    that is created during the execution.</para></listitem>
+
+                  <listitem><para><literal>transient</literal>. Applied to an
+                    object that is both created and destroyed during the
+                    execution.</para></listitem>
+                </itemizedlist></entry>
+            </row>
+
+            <!-- Entry for Tagged Values tab -->
+
+            <row>
+              <entry>Tagged Values</entry>
+
+              <entry><para>Standard tab. In the UML metamodel,
+                <literal>Object</literal> has the following standard
+                tagged values defined.</para>
+
+                <itemizedlist>
+                  <listitem><para><literal>persistence</literal> (from the
+                    superclass, <literal>Instance</literal>. Showing the
+                    permanence of the state information associated with the
+                    object. Values <literal>transitory</literal> (state is
+                    destroyed when the object is destroyed) and
+                    <literal>persistent</literal> (state is preserved when the
+                    object is destroyed).</para></listitem>
+
+                  <listitem><para><literal>derived</literal> (from the
+                    superclass, <literal>ModelElement</literal>). Values
+                    <literal>true</literal>, meaning the object is
+                    redundant&mdash;it can be formally derived from other
+                    elements, or <literal>false</literal> meaning it
+                    cannot.</para>
+
+                  <note><para>Derived objects still have their value in
+                    analysis and design to introduce useful names or concepts,
+                    and in design to avoid
+                    re-computation.</para></note></listitem>
+                </itemizedlist>
+
+                <note><para>The UML <literal>Element</literal> metaclass from
+                  which all other artifacts are derived includes the tagged
+                  element <literal>documentation</literal> which is handled by
+                  the <emphasis>documentation tab</emphasis> under
+                  &argouml;</para></note></entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+    </sect2>
+
+    <!-- Object properties -->
+
+    <sect2>
+      <title>Object Properties</title>
+
+      <!-- The properties tool bar -->
+
+      <para>The property tab tool bar for objects is described in <xref
+        linkend="tab.ref.object_property_toolbar"/>.</para>
+
+      <table id="tab.ref.object_property_toolbar" frame="all" colsep="1"
+             rowsep="1" pgwide="1">
+        <title>Property tool bar for object</title>
+
+        <tgroup cols='3' colsep='0' rowsep='0'>
+          <colspec align="left"   colwidth="*2"/>
+          <colspec align="center" colwidth="*1"/>
+          <colspec align="left"   colwidth="*9"/>
+          <thead>
+            <row>
+              <entry align="left">Button</entry>
+              <entry align="center">Icon</entry>
+              <entry align="left">Meaning</entry>
+            </row>
+          </thead>
+
+          <tbody valign="top">
+
+            <!-- Entry for Go up button -->
+
+            <row>
+              <entry>Go up</entry>
+
+              <entry><guiicon><inlinemediaobject><imageobject><imagedata
+                format="GIF" align="center"
+                fileref="images/icons/navigate_up.gif"/>
+              </imageobject></inlinemediaobject></guiicon></entry>
+
+              <entry><para>Navigate up through the package
+                structure.</para></entry>
+            </row>
+
+            <!-- Entry for Go back button -->
+
+            <row>
+              <entry>Go back</entry>
+
+              <entry><guiicon><inlinemediaobject><imageobject><imagedata
+                format="GIF" align="center"
+                fileref="images/icons/navigate_back.gif"/>
+              </imageobject></inlinemediaobject></guiicon></entry>
+
+              <entry><para>Navigate back to the previous
+                artifact.</para>
+
+              <warning><para>This feature is currently broken within &argouml;
+                and there is no guarantee where (if anywhere) this button will
+                take you.</para></warning></entry>
+            </row>
+
+            <!-- Entry for Go forward button -->
+
+            <row>
+              <entry>Go forward</entry>
+
+              <entry><guiicon><inlinemediaobject><imageobject><imagedata
+                format="GIF" align="center"
+                fileref="images/icons/navigate_forward.gif"/>
+              </imageobject></inlinemediaobject></guiicon></entry>
+
+              <entry><para>Navigate forward to the next
+                artifact.</para>
+
+              <warning><para>This feature is currently broken within &argouml;
+                and there is no guarantee where (if anywhere) this button will
+                take you.</para></warning></entry>
+            </row>
+
+            <!-- Entry for Delete button -->
+
+            <row>
+              <entry>Delete</entry>
+
+              <entry><guiicon><inlinemediaobject><imageobject><imagedata
+                format="GIF" align="center"
+                fileref="images/icons/property_delete.gif"/>
+              </imageobject></inlinemediaobject></guiicon></entry>
+
+              <entry><para>This deletes the object from the model</para>
+
+              <warning><para>This is a deletion from the model
+                <emphasis>not</emphasis> just the diagram. To delete an
+                object from the diagram, but keep it within the model, use
+                the main menu <literal>Edit/Remove From Diagram</literal>
+                (Ctrl-R).</para></warning></entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+  
+      <!-- Fields in the properties tab -->
+
+      <para>The fields on the property tab for objects are described in
+        <xref linkend="tab.ref.object_property_fields"/>.</para>
+
+      <table id="tab.ref.object_property_fields" frame="all" colsep="1"
+             rowsep="1" pgwide="1">
+        <title>Property fields for object</title>
+
+        <tgroup cols='2' align='left' colsep='0' rowsep='0'>
+          <colspec align="left" colwidth="*3"/>
+          <colspec align="left" colwidth="*9"/>
+          <thead>
+            <row>
+              <entry align="left">Field</entry>
+              <entry align="left">Meaning</entry>
+            </row>
+          </thead>
+
+          <tbody valign="top">
+
+            <!-- Entry for Name -->
+
+            <row>
+              <entry>Name</entry>
+
+              <entry><para>Text box. The name of the object. By convention
+                object names start with a lower case letter and use bumpy caps
+                to divide words within the name.</para>
+
+              <note><para>&argouml; does not enforce this naming
+                convention.</para></note></entry>
+            </row>
+
+            <!-- Entry for Classifier -->
+
+            <row>
+              <entry>Classifier</entry>
+
+              <entry><para>Drop down selector. The name of the classifier
+                of which this is an object.</para>
+
+              <caution><para>In the current release of &argouml; the drop down
+                selector will include <emphasis>all</emphasis> classifiers
+                (i.e. interfaces, actors, use cases and datatypes as well),
+                which is what is wanted on the diagram, although it should
+                properly be called an instance, rather than an object. In
+                practice only instances of classes and actors make much
+                sense.</para></caution>
+
+              <note><para>In the current release of &argouml; the same
+                graphical presentation is used, even if the object is actually
+                representing an instance of an actor (when a stick-man would be
+                more usual).</para></note></entry>
+            </row>
+
+            <!-- Entry for Stereotype -->
+
+            <row>
+              <entry>Stereotype</entry>
+
+              <entry><para>Drop down selector. Object has no stereotypes by
+                default in the UML standard, but &argouml; provides the
+                stereotypes, <literal>machine</literal>,
+                <literal>organization</literal> and
+                <literal>person</literal>.</para>
+
+              <caution><para>&argouml; also provides the stereotype
+                <literal>realize</literal> for objects. This appears to be an
+                error, since this stereotype properly belongs to the
+                <literal>Abstraction</literal>
+                metaclass.</para></caution></entry>
+            </row>
+
+            <!-- Entry for NavStereo -->
+
+            <row>
+              <entry>Navigate Stereotype</entry>
+
+              <entry><para><guiicon><inlinemediaobject><imageobject><imagedata
+                  format="GIF" align="center"
+                  fileref="images/icons/navigate_stereotype.gif"/>
+                </imageobject></inlinemediaobject></guiicon> icon. If a
+                  stereotype has been selected, this will navigate you to the
+                  stereotype property panel (see <xref
+                    linkend="s1.ref.stereotype_class"/>).</para></entry>
+            </row>
+
+            <!-- Entry for Namespace -->
+
+            <row>
+              <entry>Namespace</entry>
+
+              <entry><para>Text box. Records the namespace for the
+                object. This is the package hierarchy.</para>
+
+              <para>&Button1; click on the entry will take you to the package
+                defining this namespace (or the model for the top level
+                namespace).</para></entry>
+            </row>
+
+            <!-- Entry for Stimuli Sent -->
+
+            <row>
+              <entry>Stimuli Sent</entry>
+
+              <entry><para>Text area. Lists the stimuli sent to this
+                object.</para>
+
+              <para>&Button1; click takes you to the selected entry, &button2;
+                gives a pop up menu with five entries.</para>
+
+              <itemizedlist>
+                <listitem><para><literal>Open</literal>. Navigate to the
+                  selected stimulus.</para></listitem>
+
+                <listitem><para><literal>Add</literal>. Add a new
+                  stimulus.</para>
+
+                <caution><para>In the current release of &argouml; this entry
+                  is always grayed out. Stimuli can only be added from the
+                  diagram.</para></caution></listitem>
+
+                <listitem><para><literal>Delete</literal>. Delete the selected
+                  stimulus.</para>
+
+                <caution><para>In the current release of &argouml; this entry
+                  is always grayed out. Stimuli can only be deleted from the
+                  diagram.</para></caution></listitem>
+
+                <listitem><para><literal>Move Up</literal>. Only available
+                  where there are two or more stimuli, and the stimulus
+                  selected is not at the top. It is moved one up the
+                  list.</para>
+
+                <caution><para>In the current release of &argouml; this entry
+                  is always grayed out. Stimuli can not be moved in the
+                  order. To change the order a stimulus must be deleted and
+                  then recreated on the diagram.</para></caution></listitem>
+
+                <listitem><para><literal>Move Down</literal>. Only available
+                  where there are two or more stimuli listed, and the stimulus
+                  selected is not at the bottom. It is moved one down the
+                  list.</para>
+
+                <caution><para>In the current release of &argouml; this entry
+                  is always grayed out. Stimuli can not be moved in the
+                  order. To change the order a stimulus must be deleted and
+                  then recreated on the diagram.</para></caution></listitem>
+                  </itemizedlist></entry>
+            </row>
+
+            <!-- Entry for Stimuli Received -->
+
+            <row>
+              <entry>Stimuli Received</entry>
+
+              <entry><para>Text area. Lists the stimuli received by this
+                object.</para>
+
+              <warning><para>In the current release of &argouml; this field is
+                completely broken. No entries are every shown.</para></warning>
+
+              <para>&Button1; click takes you to the selected entry, &button2;
+                gives a pop up menu with five entries.</para>
+
+              <itemizedlist>
+                <listitem><para><literal>Open</literal>. Navigate to the
+                  selected stimulus.</para></listitem>
+
+                <listitem><para><literal>Add</literal>. Add a new
+                  stimulus.</para>
+
+                <caution><para>In the current release of &argouml; this entry
+                  is always grayed out. Stimuli can only be added from the
+                  diagram.</para></caution></listitem>
+
+                <listitem><para><literal>Delete</literal>. Delete the selected
+                  stimulus.</para>
+
+                <caution><para>In the current release of &argouml; this entry
+                  is always grayed out. Stimuli can only be deleted from the
+                  diagram.</para></caution></listitem>
+
+                <listitem><para><literal>Move Up</literal>. Only available
+                  where there are two or more stimuli, and the stimulus
+                  selected is not at the top. It is moved one up the
+                  list.</para>
+
+                <caution><para>In the current release of &argouml; this entry
+                  is always grayed out. Stimuli can not be moved in the
+                  order. To change the order a stimulus must be deleted and
+                  then recreated on the diagram.</para></caution></listitem>
+
+                <listitem><para><literal>Move Down</literal>. Only available
+                  where there are two or more stimuli listed, and the stimulus
+                  selected is not at the bottom. It is moved one down the
+                  list.</para>
+
+                <caution><para>In the current release of &argouml; this entry
+                  is always grayed out. Stimuli can not be moved in the
+                  order. To change the order a stimulus must be deleted and
+                  then recreated on the diagram.</para></caution></listitem>
+                  </itemizedlist></entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+    </sect2>
+  </sect1>
+
+  <!-- Stimulus artifact. This is generic, since the diagram actually allows
+       you to add the various graphical stereotypes for different stimuli -->
+
+  <sect1 id="s1.ref.stimulus">
+    <title>Stimulus</title>
+
+    <para>A stimulus is a communication between two instances and is generated
+      by an action. On a sequence diagram is associated with a link&mdash;an
+      instance of an association linking two object instances. In the UML
+      metamodel <literal>Stimulus</literal> is a sub-class of
+      <literal>ModelElement</literal>.</para>
+
+    <para>The link (see <xref linkend="s1.ref.link_sequence"/>) associated with
+      a stimulus is represented on a sequence diagram in &argouml; as an arrow
+      between the time lines of the object instances (or the object head in the
+      case of stimulus create, described below) labeled with the name of the
+      action (if any), and the action, separated by a colon (:). The type of
+      line and arrowhead depends on the type of action that generated the
+      stimulus:</para>
+
+    <itemizedlist>
+      <listitem><para><literal>Stimulus Call</literal>. Generated by a call
+        action, itself the result of an operation of a class. Shown as a solid
+        line with a solid arrowhead to the time line of the object instance
+        receiving the stimulus.</para></listitem>
+
+      <listitem><para><literal>Stimulus Create</literal>. Generated by a create
+        action for the class for which an instance is to be created Shown as a
+        solid line with a solid arrowhead to the object head of the object
+        instance being created.</para></listitem>
+
+      <listitem><para><literal>Stimulus Destroy</literal>. Generated by a
+        destroy action of the originating object. Shown as a solid line with an
+        open arrowhead terminating in a diagonal cross at the end of the
+        time line of the receiving (destroyed) object
+        instance.</para></listitem>
+
+      <listitem><para><literal>Stimulus Send</literal>. Generated by a send
+        action, the result of a signal raised by an operation of the sending
+        object instance and handled by the receiving object instance. Shown as
+        a solid line with half an open arrowhead.</para></listitem>
+
+      <listitem><para><literal>Stimulus Return</literal>. Generated by an
+        object instance that has received an earlier call stimulus and is
+        returning a result to the calling object instance. Shown as a dotted
+        line with an open arrowhead.</para></listitem>
+    </itemizedlist>
+
+    <note><para>&argouml; does not allow you to create stimuli directly, but
+      instead provides tools to create stimuli of each of the five types
+      above.</para></note>
+
+    <caution><para>In the current release of &argouml; there is no way to show
+      a terminate action where an object instance destroys itself. One way is
+      to draw a destroy action that loops back to the object itself, give it an
+      action with no name and use the style tab to set an invisible line, but
+      this still leaves the arrow head showing, which is unsightly. It is also
+      semantically incorrect anyway to use a destroy action to represent a
+      terminate action.</para></caution>
+
+    <!-- Stimulus details tabs -->
+
+    <sect2>
+      <title>Stimulus Details Tabs</title>
+
+      <para>The details tabs that are active for stimuli are described in
+        <xref linkend="tab.ref.stimulus_details_tabs"/>.</para>
+
+      <table id="tab.ref.stimulus_details_tabs" frame="all" colsep="1"
+             rowsep="1" pgwide="1">
+        <title>Details tabs for stimulus of all forms</title>
+
+        <tgroup cols='2' align='left' colsep='0' rowsep='0'>
+          <colspec align="left" colwidth="*3"/>
+          <colspec align="left" colwidth="*9"/>
+          <thead>
+            <row>
+              <entry align="left">Tab</entry>
+              <entry align="left">Meaning</entry>
+            </row>
+          </thead>
+
+          <tbody valign="top">
+
+            <!-- Entry for ToDoItem tab -->
+
+            <row>
+              <entry>ToDoItem</entry>
+
+              <entry><para>Standard tab.</para></entry>
+            </row>
+
+            <!-- Entry for Properties tab -->
+
+            <row>
+              <entry>Properties</entry>
+
+              <entry><para>See <xref
+                  linkend="tab.ref.stimulus_property_toolbar"/> and <xref
+                  linkend="tab.ref.stimulus_property_fields"/>
+                below.</para></entry>
+            </row>
+
+            <!-- Entry for Documentation tab -->
+
+            <row>
+              <entry>Documentation</entry>
+
+              <entry><para>Standard tab.</para></entry>
+            </row>
+
+            <!-- Entry for Style tab -->
+
+            <row>
+              <entry>Style</entry>
+
+              <entry><para>Standard tab. The values for the bounds of the
+                stimulus notionally define the bounding box of the stimulus and
+                its time line. However if you change them it will have no
+                effect, and the original values will be reset when you next
+                revisit the tab.</para>
+
+              <para>Altering the <literal>Fill</literal> and
+                <literal>Shadow</literal> entries has no effect. Rather
+                bizarrely you can set the <literal>Line</literal> entry and it
+                will draw a line around the signal, which is not a standard UML
+                representation.</para>
+
+              <tip><para>To change the color of the line, you should select
+                the associated link (click on it a little way from the
+                stimulus) and use its style tab (see
+                <xref linkend="s1.ref.link_sequence"/>).</para></tip>
+
+              <caution><para>In the current release of &argouml; changing the
+                values of the <literal>Bounds</literal> field is possible, but
+                will make only a temporary change to the position of the
+                stimulus. Selecting any artifact on the screen causes the
+                stimulus to return to its original position and the original
+                values to be restored.</para></caution></entry>
+            </row>
+
+            <!-- Entry for Source tab -->
+
+            <row>
+              <entry>Source</entry>
+
+              <entry><para>Standard tab, but with no contents.</para>
+
+                <caution><para>A stimulus should not generate any code, so
+                  having this tab active is probably a
+                  mistake.</para></caution></entry>
+            </row>
+
+            <!-- Entry for Constraints tab -->
+
+            <row>
+              <entry>Constraints</entry>
+
+              <entry><para>Standard tab. There are no standard constraints
+                defined for <literal>Stimulus</literal> within the UML
+                metamodel.</para></entry>
+            </row>
+
+            <!-- Entry for Tagged Values tab -->
+
+            <row>
+              <entry>Tagged Values</entry>
+
+              <entry><para>Standard tab. In the UML metamodel,
+                <literal>Stimulus</literal> has the following standard
+                tagged values defined.</para>
+
+                <itemizedlist>
+                  <listitem><para><literal>derived</literal> (from the
+                    superclass, <literal>ModelElement</literal>). Values
+                    <literal>true</literal>, meaning the stimulus is
+                    redundant&mdash;it can be formally derived from other
+                    elements, or <literal>false</literal> meaning it
+                    cannot.</para>
+
+                  <note><para>Derived stimuli still have their value in
+                    analysis and design to introduce useful names or concepts,
+                    and in design to avoid
+                    re-computation.</para></note></listitem>
+                </itemizedlist>
+
+                <note><para>The UML <literal>Element</literal> metaclass from
+                  which all other artifacts are derived includes the tagged
+                  element <literal>documentation</literal> which is handled by
+                  the <emphasis>documentation tab</emphasis> under
+                  &argouml;</para></note></entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+    </sect2>
+
+    <!-- Stimulus properties -->
+
+    <sect2>
+      <title>Stimulus Properties</title>
+
+      <!-- The properties tool bar -->
+
+      <para>The property tab tool bar for stimuli is described in <xref
+        linkend="tab.ref.stimulus_property_toolbar"/>.</para>
+
+      <table id="tab.ref.stimulus_property_toolbar" frame="all" colsep="1"
+             rowsep="1" pgwide="1">
+        <title>Property tool bar for stimulus</title>
+
+        <tgroup cols='3' colsep='0' rowsep='0'>
+          <colspec align="left"   colwidth="*2"/>
+          <colspec align="center" colwidth="*1"/>
+          <colspec align="left"   colwidth="*9"/>
+          <thead>
+            <row>
+              <entry align="left">Button</entry>
+              <entry align="center">Icon</entry>
+              <entry align="left">Meaning</entry>
+            </row>
+          </thead>
+
+          <tbody valign="top">
+
+            <!-- Entry for Go up button -->
+
+            <row>
+              <entry>Go up</entry>
+
+              <entry><guiicon><inlinemediaobject><imageobject><imagedata
+                format="GIF" align="center"
+                fileref="images/icons/navigate_up.gif"/>
+              </imageobject></inlinemediaobject></guiicon></entry>
+
+              <entry><para>Navigate up through the package
+                structure.</para></entry>
+            </row>
+
+            <!-- Entry for Go back button -->
+
+            <row>
+              <entry>Go back</entry>
+
+              <entry><guiicon><inlinemediaobject><imageobject><imagedata
+                format="GIF" align="center"
+                fileref="images/icons/navigate_back.gif"/>
+              </imageobject></inlinemediaobject></guiicon></entry>
+
+              <entry><para>Navigate back to the previous
+                artifact.</para>
+
+              <warning><para>This feature is currently broken within &argouml;
+                and there is no guarantee where (if anywhere) this button will
+                take you.</para></warning></entry>
+            </row>
+
+            <!-- Entry for Go forward button -->
+
+            <row>
+              <entry>Go forward</entry>
+
+              <entry><guiicon><inlinemediaobject><imageobject><imagedata
+                format="GIF" align="center"
+                fileref="images/icons/navigate_forward.gif"/>
+              </imageobject></inlinemediaobject></guiicon></entry>
+
+              <entry><para>Navigate forward to the next
+                artifact.</para>
+
+              <warning><para>This feature is currently broken within &argouml;
+                and there is no guarantee where (if anywhere) this button will
+                take you.</para></warning></entry>
+            </row>
+
+            <!-- Entry for Delete button -->
+
+            <row>
+              <entry>Delete</entry>
+
+              <entry><guiicon><inlinemediaobject><imageobject><imagedata
+                format="GIF" align="center"
+                fileref="images/icons/property_delete.gif"/>
+              </imageobject></inlinemediaobject></guiicon></entry>
+
+              <entry><para>This deletes the stimulus from the model</para>
+
+              <warning><para>This is a deletion from the model
+                <emphasis>not</emphasis> just the diagram. To delete an
+                stimulus from the diagram, but keep it within the model, use
+                the main menu <literal>Edit/Remove From Diagram</literal>
+                (Ctrl-R).</para></warning></entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+  
+      <!-- Fields in the properties tab -->
+
+      <para>The fields on the property tab for stimuli are described in
+        <xref linkend="tab.ref.stimulus_property_fields"/>.</para>
+
+      <table id="tab.ref.stimulus_property_fields" frame="all" colsep="1"
+             rowsep="1" pgwide="1">
+        <title>Property fields for stimulus</title>
+
+        <tgroup cols='2' align='left' colsep='0' rowsep='0'>
+          <colspec align="left" colwidth="*3"/>
+          <colspec align="left" colwidth="*9"/>
+          <thead>
+            <row>
+              <entry align="left">Field</entry>
+              <entry align="left">Meaning</entry>
+            </row>
+          </thead>
+
+          <tbody valign="top">
+
+            <!-- Entry for Name -->
+
+            <row>
+              <entry>Name</entry>
+
+              <entry><para>Text box. There is no convention for naming stimuli,
+                and it is quite normal to leave them unnamed. The action is
+                sufficient identification.</para>
+
+              <tip><para>It is sometimes useful to give simple names to
+                stimuli, so they can be referred to in attached notes giving
+                timing constraints.</para></tip></entry>
+            </row>
+
+            <!-- Entry for Action -->
+
+            <row>
+              <entry>Action</entry>
+
+              <entry><para>Text box. This is used to identify the action that
+                generated the stimulus.</para>
+
+              <caution><para>The current release of &argouml; only implements
+                actions as textual descriptions.</para>
+
+              <para>As a practical convention it is suggested that call actions
+                are shown as the name of the operation generating the action
+                with any arguments in parentheses and that send actions are
+                shown as the name of the signal generating the action with any
+                arguments in parentheses. Return actions should be shown as the
+                expression for the value they return, or empty
+                otherwise. Create and destroy actions should be left empty,
+                since they are implied by their
+                representation.</para></caution></entry>
+            </row>
+
+            <!-- Entry for Stereotype -->
+
+            <row>
+              <entry>Stereotype</entry>
+
+              <entry><para>Drop down selector. Stimulus has no stereotypes by
+                default in the UML standard, but &argouml; provides the
+                stereotypes, <literal>machine</literal>,
+                <literal>organization</literal> and
+                <literal>person</literal>.</para>
+
+              <caution><para>&argouml; also provides the stereotype
+                <literal>realize</literal> for stimuli. This appears to be an
+                error, since this stereotype properly belongs to the
+                <literal>Abstraction</literal>
+                metaclass.</para></caution></entry>
+            </row>
+
+            <!-- Entry for NavStereo -->
+
+            <row>
+              <entry>Navigate Stereotype</entry>
+
+              <entry><para><guiicon><inlinemediaobject><imageobject><imagedata
+                  format="GIF" align="center"
+                  fileref="images/icons/navigate_stereotype.gif"/>
+                </imageobject></inlinemediaobject></guiicon> icon. If a
+                  stereotype has been selected, this will navigate you to the
+                  stereotype property panel (see <xref
+                    linkend="s1.ref.stereotype_class"/>).</para></entry>
+            </row>
+
+            <!-- Entry for Sender -->
+
+            <row>
+              <entry>Sender</entry>
+
+              <entry><para>Text box. Identifies the instance which sent this
+                stimulus.</para>
+
+              <para>&Button1; click takes you to the sender instance, &button2;
+                gives a pop up menu with one entry.</para>
+
+              <itemizedlist>
+                <listitem><para><literal>Open</literal>. Navigate to the
+                  selected sender instance.</para></listitem>
+              </itemizedlist></entry>
+            </row>
+
+            <!-- Entry for Receiver -->
+
+            <row>
+              <entry>Receiver</entry>
+
+              <entry><para>Text box. Identifies the instance which receives
+                this stimulus.</para>
+
+              <para>&Button1; click takes you to the receiver instance,
+                &button2; gives a pop up menu with one entry.</para>
+
+              <itemizedlist>
+                <listitem><para><literal>Open</literal>. Navigate to the
+                  selected receiver instance.</para></listitem>
+              </itemizedlist>
+
+              <warning><para>In the current release of &argouml; this field is
+                broken. It always shows the entry <literal>none</literal> and
+                the pop-up menu is grayed out.</para></warning></entry>
+            </row>
+
+            <!-- Entry for Namespace -->
+
+            <row>
+              <entry>Namespace</entry>
+
+              <entry><para>Text box. Records the namespace for the
+                stimulus. This is the package hierarchy.</para>
+
+              <para>&Button1; click on the entry will take you to the package
+                defining this namespace (or the model for the top level
+                namespace).</para></entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+    </sect2>
   </sect1>
 
   <!-- Stimulus Call artifact. Note properties are all the same for Stimulus
@@ -69,7 +993,18 @@ Modifications
   <sect1>
     <title>Stimulus Call</title>
 
-    <remark>To be written&hellip;</remark>
+    <para>This tool creates a stimulus associated with a call action on the
+      diagram, creating at the same time the associated link between sender and
+      receiving instances.</para>
+
+    <para>All details tabs and properties are identical to to that of stimulus
+      in general (see <xref linkend="s1.ref.stimulus"/>). Its graphical
+      representation on the diagram is that of a stimulus associated with a
+      call action, i.e. a solid line with a solid arrow head.</para>
+
+    <note><para>Because the current release of &argouml; does not fully
+      implement actions, there is no enforcement of the relationship to a call
+      action.</para></note>
   </sect1>
 
   <!-- Stimulus Create artifact. Note properties are all the same for Stimulus
@@ -78,7 +1013,19 @@ Modifications
   <sect1>
     <title>Stimulus Create</title>
 
-    <remark>To be written&hellip;</remark>
+    <para>This tool creates a stimulus associated with a create action on the
+      diagram, creating at the same time the associated link between sender and
+      receiving instances.</para>
+
+    <para>All details tabs and properties are identical to to that of stimulus
+      in general (see <xref linkend="s1.ref.stimulus"/>). Its graphical
+      representation on the diagram is that of a stimulus associated with a
+      create action, i.e. a solid line with a solid arrow head terminating at
+      the head of the created instance.</para>
+
+    <note><para>Because the current release of &argouml; does not fully
+      implement actions, there is no enforcement of the relationship to a
+      create action.</para></note>
   </sect1>
 
   <!-- Stimulus Destroy artifact. Note properties are all the same for Stimulus
@@ -87,7 +1034,19 @@ Modifications
   <sect1>
     <title>Stimulus Destroy</title>
 
-    <remark>To be written&hellip;</remark>
+    <para>This tool creates a stimulus associated with a destroy action on the
+      diagram, creating at the same time the associated link between sender and
+      receiving instances.</para>
+
+    <para>All details tabs and properties are identical to to that of stimulus
+      in general (see <xref linkend="s1.ref.stimulus"/>). Its graphical
+      representation on the diagram is that of a stimulus associated with a
+      destroy action, i.e. a solid line with an open arrow head terminating at
+      a cross at the bottom of the destroyed instance's time line.</para>
+
+    <note><para>Because the current release of &argouml; does not fully
+      implement actions, there is no enforcement of the relationship to a
+      destroy action.</para></note>
   </sect1>
 
   <!-- Stimulus Send artifact. Note properties are all the same for Stimulus
@@ -96,7 +1055,18 @@ Modifications
   <sect1>
     <title>Stimulus Send</title>
 
-    <remark>To be written&hellip;</remark>
+    <para>This tool creates a stimulus associated with a send action on the
+      diagram, creating at the same time the associated link between sender and
+      receiving instances.</para>
+
+    <para>All details tabs and properties are identical to to that of stimulus
+      in general (see <xref linkend="s1.ref.stimulus"/>). Its graphical
+      representation on the diagram is that of a stimulus associated with a
+      send action, i.e. a solid line with half an open arrow head.</para>
+
+    <note><para>Because the current release of &argouml; does not fully
+      implement actions, there is no enforcement of the relationship to a send
+      action.</para></note>
   </sect1>
 
   <!-- Stimulus Return artifact. Note properties are all the same for Stimulus
@@ -105,8 +1075,363 @@ Modifications
   <sect1>
     <title>Stimulus Return</title>
 
-    <remark>To be written&hellip;</remark>
+    <para>This tool creates a stimulus associated with a return action on the
+      diagram, creating at the same time the associated link between sender and
+      receiving instances.</para>
+
+    <para>All details tabs and properties are identical to to that of stimulus
+      in general (see <xref linkend="s1.ref.stimulus"/>). Its graphical
+      representation on the diagram is that of a stimulus associated with a
+      return action, i.e. a dotted line with an open arrow head.</para>
+
+    <note><para>Because the current release of &argouml; does not fully
+      implement actions, there is no enforcement of the relationship to a
+      return action.</para></note>
   </sect1>
+
+  <!-- Link Artifact -->
+
+  <sect1 id="s1.ref.link_sequence">
+    <title>Link</title>
+
+    <para>A link is an instance of an association. In the UML metamodel
+      <literal>Link</literal> is a sub-class of
+      <literal>Instance</literal>. Within a sequence diagram links are created
+        indirectly when an associated stimulus is created.</para>
+
+    <para>An link is represented on a sequence diagram in &argouml; as a line
+      connecting the instances concerned. However on a sequence diagram
+      the representation is modified to reflect the type of action associated
+      with the stimulus carried on the link (see
+      <xref linkend="s1.ref.stimulus"/>).</para>
+
+    <!-- Link details tabs -->
+
+    <sect2>
+      <title>Link Details Tabs</title>
+
+      <para>The details tabs that are active for links  are described in
+        <xref linkend="tab.ref.link_details_tabs"/>.</para>
+
+      <table id="tab.ref.link_details_tabs" frame="all" colsep="1"
+             rowsep="1" pgwide="1">
+        <title>Details tabs for link</title>
+
+        <tgroup cols='2' align='left' colsep='0' rowsep='0'>
+          <colspec align="left" colwidth="*3"/>
+          <colspec align="left" colwidth="*9"/>
+          <thead>
+            <row>
+              <entry align="left">Tab</entry>
+              <entry align="left">Meaning</entry>
+            </row>
+          </thead>
+
+          <tbody valign="top">
+
+            <!-- Entry for ToDoItem tab -->
+
+            <row>
+              <entry>ToDoItem</entry>
+
+              <entry><para>Standard tab.</para></entry>
+            </row>
+
+            <!-- Entry for Properties tab -->
+
+            <row>
+              <entry>Properties</entry>
+
+              <entry><para>See <xref
+                  linkend="tab.ref.link_property_toolbar"/> and <xref
+                  linkend="tab.ref.link_property_fields"/>
+                below.</para></entry>
+            </row>
+
+            <!-- Entry for Documentation tab -->
+
+            <row>
+              <entry>Documentation</entry>
+
+              <entry><para>Standard tab.</para></entry>
+            </row>
+
+            <!-- Entry for Style tab -->
+
+            <row>
+              <entry>Style</entry>
+
+              <entry><para>Standard tab. The values for the bounds of the link
+                notionally define the bounding box of the link. However if you
+                change them it will have no effect.</para>
+
+              <caution><para>In the current release of &argouml; changing the
+                values of the line field will alter the color of the line, but
+                <emphasis>not</emphasis> the arrow
+                head.</para></caution></entry>
+            </row>
+
+            <!-- Entry for Source tab -->
+
+            <row>
+              <entry>Source</entry>
+
+              <entry><para>Standard tab, but with no contents.</para>
+
+              <caution><para>A link should not generate any code, so having
+                this tab active is probably a mistake.</para></caution></entry>
+            </row>
+
+            <!-- Entry for Constraints tab -->
+
+            <row>
+              <entry>Constraints</entry>
+
+              <entry><para>Standard tab. In the UML metamodel,
+                <literal>Link</literal> has the following standard
+                constraints defined (through its parent,
+                <literal>Instance</literal>).</para>
+
+                <itemizedlist>
+                  <listitem><para><literal>destroyed</literal>. Applied to a
+                    link that is destroyed during the
+                    execution.</para></listitem>
+
+                  <listitem><para><literal>new</literal>. Applied to a link
+                    that is created during the execution.</para></listitem>
+
+                  <listitem><para><literal>transient</literal>. Applied to a
+                    link that is both created and destroyed during the
+                    execution.</para></listitem>
+                </itemizedlist></entry>
+            </row>
+
+            <!-- Entry for Tagged Values tab -->
+
+            <row>
+              <entry>Tagged Values</entry>
+
+              <entry><para>Standard tab. In the UML metamodel,
+                <literal>Link</literal> has the following standard
+                tagged values defined.</para>
+
+                <itemizedlist>
+                  <listitem><para><literal>persistence</literal> (from the
+                    superclass, <literal>Instance</literal>. Showing the
+                    permanence of the state information associated with the
+                    link. Values <literal>transitory</literal> (state is
+                    destroyed when the link is destroyed) and
+                    <literal>persistent</literal> (state is preserved when the
+                    link is destroyed).</para></listitem>
+
+                  <listitem><para><literal>derived</literal> (from the
+                    superclass, <literal>ModelElement</literal>). Values
+                    <literal>true</literal>, meaning the link is
+                    redundant&mdash;it can be formally derived from other
+                    elements, or <literal>false</literal> meaning it
+                    cannot.</para>
+
+                  <note><para>Derived links still have their value in
+                    analysis and design to introduce useful names or concepts,
+                    and in design to avoid
+                    re-computation.</para></note></listitem>
+                </itemizedlist>
+
+                <note><para>The UML <literal>Element</literal> metaclass from
+                  which all other artifacts are derived includes the tagged
+                  element <literal>documentation</literal> which is handled by
+                  the <emphasis>documentation tab</emphasis> under
+                  &argouml;</para></note></entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+    </sect2>
+
+    <!-- Link properties -->
+
+    <sect2>
+      <title>Link Properties</title>
+
+      <!-- The properties tool bar -->
+
+      <para>The property tab tool bar for links is described in <xref
+        linkend="tab.ref.link_property_toolbar"/>.</para>
+
+      <table id="tab.ref.link_property_toolbar" frame="all" colsep="1"
+             rowsep="1" pgwide="1">
+        <title>Property tool bar for link</title>
+
+        <tgroup cols='3' colsep='0' rowsep='0'>
+          <colspec align="left"   colwidth="*2"/>
+          <colspec align="center" colwidth="*1"/>
+          <colspec align="left"   colwidth="*9"/>
+          <thead>
+            <row>
+              <entry align="left">Button</entry>
+              <entry align="center">Icon</entry>
+              <entry align="left">Meaning</entry>
+            </row>
+          </thead>
+
+          <tbody valign="top">
+
+            <!-- Entry for Go up button -->
+
+            <row>
+              <entry>Go up</entry>
+
+              <entry><guiicon><inlinemediaobject><imageobject><imagedata
+                format="GIF" align="center"
+                fileref="images/icons/navigate_up.gif"/>
+              </imageobject></inlinemediaobject></guiicon></entry>
+
+              <entry><para>Navigate up through the package
+                structure.</para></entry>
+            </row>
+
+            <!-- Entry for Go back button -->
+
+            <row>
+              <entry>Go back</entry>
+
+              <entry><guiicon><inlinemediaobject><imageobject><imagedata
+                format="GIF" align="center"
+                fileref="images/icons/navigate_back.gif"/>
+              </imageobject></inlinemediaobject></guiicon></entry>
+
+              <entry><para>Navigate back to the previous
+                artifact.</para>
+
+              <warning><para>This feature is currently broken within &argouml;
+                and there is no guarantee where (if anywhere) this button will
+                take you.</para></warning></entry>
+            </row>
+
+            <!-- Entry for Go forward button -->
+
+            <row>
+              <entry>Go forward</entry>
+
+              <entry><guiicon><inlinemediaobject><imageobject><imagedata
+                format="GIF" align="center"
+                fileref="images/icons/navigate_forward.gif"/>
+              </imageobject></inlinemediaobject></guiicon></entry>
+
+              <entry><para>Navigate forward to the next
+                artifact.</para>
+
+              <warning><para>This feature is currently broken within &argouml;
+                and there is no guarantee where (if anywhere) this button will
+                take you.</para></warning></entry>
+            </row>
+
+            <!-- Entry for Delete button -->
+
+            <row>
+              <entry>Delete</entry>
+
+              <entry><guiicon><inlinemediaobject><imageobject><imagedata
+                format="GIF" align="center"
+                fileref="images/icons/property_delete.gif"/>
+              </imageobject></inlinemediaobject></guiicon></entry>
+
+              <entry><para>This deletes the link from the model</para>
+
+              <warning><para>This is a deletion from the model
+                <emphasis>not</emphasis> just the diagram. To delete an
+                link from the diagram, but keep it within the model, use
+                the main menu <literal>Edit/Remove From Diagram</literal>
+                (Ctrl-R).</para></warning></entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+  
+      <!-- Fields in the properties tab -->
+
+      <para>The fields on the property tab for links are described in
+        <xref linkend="tab.ref.link_property_fields"/>.</para>
+
+      <table id="tab.ref.link_property_fields" frame="all" colsep="1"
+             rowsep="1" pgwide="1">
+        <title>Property fields for link</title>
+
+        <tgroup cols='2' align='left' colsep='0' rowsep='0'>
+          <colspec align="left" colwidth="*3"/>
+          <colspec align="left" colwidth="*9"/>
+          <thead>
+            <row>
+              <entry align="left">Field</entry>
+              <entry align="left">Meaning</entry>
+            </row>
+          </thead>
+
+          <tbody valign="top">
+
+            <!-- Entry for Name -->
+
+            <row>
+              <entry>Name</entry>
+
+              <entry><para>Text box. The name of the link. By convention
+                link names start with a lower case letter and use bumpy caps
+                to divide words within the name.</para>
+
+              <note><para>&argouml; does not enforce this naming
+                convention.</para></note></entry>
+            </row>
+
+            <!-- Entry for Stereotype -->
+
+            <row>
+              <entry>Stereotype</entry>
+
+              <entry><para>Drop down selector. Link has no stereotypes by
+                default in the UML standard, but &argouml; provides the
+                stereotypes, <literal>machine</literal>,
+                <literal>organization</literal> and
+                <literal>person</literal>.</para>
+
+              <caution><para>&argouml; also provides the stereotype
+                <literal>realize</literal> for links. This appears to be an
+                error, since this stereotype properly belongs to the
+                <literal>Abstraction</literal>
+                metaclass.</para></caution></entry>
+            </row>
+
+            <!-- Entry for NavStereo -->
+
+            <row>
+              <entry>Navigate Stereotype</entry>
+
+              <entry><para><guiicon><inlinemediaobject><imageobject><imagedata
+                  format="GIF" align="center"
+                  fileref="images/icons/navigate_stereotype.gif"/>
+                </imageobject></inlinemediaobject></guiicon> icon. If a
+                  stereotype has been selected, this will navigate you to the
+                  stereotype property panel (see <xref
+                    linkend="s1.ref.stereotype_class"/>).</para></entry>
+            </row>
+
+            <!-- Entry for Namespace -->
+
+            <row>
+              <entry>Namespace</entry>
+
+              <entry><para>Text box. Records the namespace for the
+                link. This is the package hierarchy.</para>
+
+              <para>&Button1; click on the entry will take you to the package
+                defining this namespace (or the model for the top level
+                namespace).</para></entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+    </sect2>
+  </sect1>
+
 
 </chapter>
 

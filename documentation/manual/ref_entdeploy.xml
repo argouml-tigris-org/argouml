@@ -2,7 +2,7 @@
 
 <!--
 
-Desription of all the artifacts associated with Deplopyment Diagrams within
+Description of all the artifacts associated with Deplopyment Diagrams within
 Argo/UML.
 
 
@@ -10,6 +10,8 @@ Modifications
 =============
 
  5 Dec 2001:  Jeremy Bennett. Created as a new chapter.
+
+20 Feb 2002:  Jeremy Bennett. Chapter written.
 
 -->
 
@@ -20,36 +22,68 @@ Modifications
     <title>Introduction</title>
 
     <para>This chapter describes each artifact that can be created within a
-      Deployment Diagram. Note that some sub-artifacts of artifacts on the diagram
-      may not actually themselves appear on the diagram.</para>
+      Deployment Diagram. Note that some sub-artifacts of artifacts on the
+      diagram may not actually themselves appear on the diagram.</para>
 
     <para>There is a close relationship between this material and the
       Properties Tab of the Details Pane (see
       <xref linkend="s1.ref.proptab"/>). That section covers Properties in
       general, in this chapter they are linked to specific artifacts.</para>
 
-    <!-- A diagram to show all things visible on the diagram -->
+    <para>Within &argouml;, the deployment diagram is also used for both
+      component diagrams (i.e. without instances, showing static dependencies
+      of components) and deployment diagrams (showing how instances of
+      components are handled by instances of nodes at run-time).</para>
 
-    <para><xref linkend="fig.ref.entdeploy"/> shows a Deployment Diagram with all
-      possible artifacts displayed.</para>
+    <caution><para>Deployment diagrams are not fully developed yet in
+      &argouml;. Some aspects are not fully implemented or may not behave as
+      expected. Notable omissions are a correct representation for interfaces
+      and proper stereotyping of the various dependency
+      relationships.</para></caution>
 
-    <!-- This should be a comprehensive picture. In fact its just the minimum
-         at the moment. It would be good to put some bubbles on this one
-         pointing things out as well. -->
+    <!-- A diagram to show all things visible on the diagram. Need one for
+         component and one for deployment. -->
 
-    <figure id="fig.ref.entdeploy" float="1">
-      <title>Possible artifacts on a Deployment Diagram.</title>
+    <para><xref linkend="fig.ref.component_diagram"/> shows a component diagram
+      with all possible artifacts displayed.</para>
+
+    <!-- This has everything, but is a little thin on the ground. -->
+
+    <figure id="fig.ref.component_diagram" float="1">
+      <title>Possible artifacts on a component diagram.</title>
 
       <screenshot><mediaobject>
         <imageobject>
-          <imagedata format="PNG" align="center"
-                     fileref="images/tobeprovided.png"/>
+          <imagedata format="GIF" align="center"
+                     fileref="images/reference/component_diagram.gif"/>
         </imageobject>
 
         <textobject>
-          <para>A Deployment Diagram, showing (from left to right and top to
-            bottom) a Node, Node Instance, Component and Component
-            Instance.</para>
+          <para>A component diagram showing two nodes connected by an
+            association, within them two components connected by a dependency
+            and an interface.</para>
+        </textobject>
+      </mediaobject></screenshot>
+    </figure>
+
+    <para><xref linkend="fig.ref.deployment_diagram"/> shows a deployment
+      diagram with all possible artifacts displayed.</para>
+
+    <!-- This too has everything, but is a little thin on the ground -->
+
+    <figure id="fig.ref.deployment_diagram" float="1">
+      <title>Possible artifacts on a deployment diagram.</title>
+
+      <screenshot><mediaobject>
+        <imageobject>
+          <imagedata format="GIF" align="center"
+                     fileref="images/reference/deployment_diagram.gif"/>
+        </imageobject>
+
+        <textobject>
+          <para>A deployment diagram, showing three node instances connected by
+            a link and within each a component instance connected by a
+            dependency.</para>
         </textobject>
       </mediaobject></screenshot>
     </figure>
@@ -60,7 +94,429 @@ Modifications
   <sect1>
     <title>Node</title>
 
-    <remark>To be written&hellip;</remark>
+    <para>A node is a run-time physical object on which components may be
+      deployed. In the UML metamodel it is a sub-class of
+      <literal>Classifier</literal>.</para>
+
+    <para>A node is represented on a class diagram as a 3-D box, labeled with
+      its name.</para>
+
+    <!-- Node details tabs -->
+
+    <sect2>
+      <title>Node Details Tabs</title>
+
+      <para>The details tabs that are active for nodes  are described in
+        <xref linkend="tab.ref.node_details_tabs"/>.</para>
+
+      <table id="tab.ref.node_details_tabs" frame="all" colsep="1"
+             rowsep="1" pgwide="1">
+        <title>Details tabs for node</title>
+
+        <tgroup cols='2' align='left' colsep='0' rowsep='0'>
+          <colspec align="left" colwidth="*3"/>
+          <colspec align="left" colwidth="*9"/>
+          <thead>
+            <row>
+              <entry align="left">Tab</entry>
+              <entry align="left">Meaning</entry>
+            </row>
+          </thead>
+
+          <tbody valign="top">
+
+            <!-- Entry for ToDoItem tab -->
+
+            <row>
+              <entry>ToDoItem</entry>
+
+              <entry><para>Standard tab.</para></entry>
+            </row>
+
+            <!-- Entry for Properties tab -->
+
+            <row>
+              <entry>Properties</entry>
+
+              <entry><para>See <xref
+                  linkend="tab.ref.node_property_toolbar"/> and <xref
+                  linkend="tab.ref.node_property_fields"/>
+                below.</para></entry>
+            </row>
+
+            <!-- Entry for Documentation tab -->
+
+            <row>
+              <entry>Documentation</entry>
+
+              <entry><para>Standard tab.</para></entry>
+            </row>
+
+            <!-- Entry for Style tab -->
+
+            <row>
+              <entry>Style</entry>
+
+              <entry><para>Standard tab. The <literal>Bounds:</literal> field
+                defines the bounding box for the node on the diagram.</para>
+
+              <warning><para>There are some bugs remaining in entering data in
+                the <literal>Bounds:</literal> field. Take care when typing
+                that you do get the values you want in
+                place.</para>
+
+              <para>Altering the <literal>Shadow</literal> entry has no
+                effect.</para></warning></entry>
+            </row>
+
+            <!-- Entry for Source tab -->
+
+            <row>
+              <entry>Source</entry>
+
+              <entry><para>Standard tab, but with no contents.</para>
+
+              <caution><para>A node should not generate any code, so having
+                this tab active is probably a mistake.</para></caution></entry>
+            </row>
+
+            <!-- Entry for Constraints tab -->
+
+            <row>
+              <entry>Constraints</entry>
+
+              <entry><para>Standard tab. There are no standard constraints
+                defined for <literal>Node</literal> within the UML
+                metamodel.</para></entry>
+            </row>
+
+            <!-- Entry for Tagged Values tab -->
+
+            <row>
+              <entry>Tagged Values</entry>
+
+              <entry><para>Standard tab. In the UML metamodel,
+                <literal>Node</literal> has the following standard tagged
+                values defined.</para>
+
+                <itemizedlist>
+                  <listitem><para><literal>persistence</literal> (from the
+                    supernode, <literal>Classifier</literal>). Values
+                    <literal>transitory</literal>, indicating state is
+                    destroyed when an instance is destroyed or
+                    <literal>persistent</literal>, marking state is
+                    preserved when an instance is destroyed.</para></listitem>
+
+                  <listitem><para><literal>semantics</literal> (from the
+                    supernode, <literal>Classifier</literal>). The value is a
+                    specification of the semantics of the
+                    node.</para></listitem>
+
+                  <listitem><para><literal>derived</literal> (from the
+                    supernode, <literal>ModelElement</literal>). Values
+                    <literal>true</literal>, meaning the node is
+                    redundant&mdash;it can be formally derived from other
+                    elements, or <literal>false</literal> meaning it
+                    cannot.</para>
+
+                  <note><para>Derived nodes still have their value in
+                    analysis to introduce useful names or concepts, and in
+                    design to avoid re-computation.</para></note></listitem>
+                </itemizedlist>
+
+                <note><para>The UML <literal>Element</literal> metanode from
+                  which all other artifacts are derived includes the tagged
+                  element <literal>documentation</literal> which is handled by
+                  the <emphasis>documentation tab</emphasis> under
+                  &argouml;</para></note></entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+    </sect2>
+
+    <!-- Node properties -->
+
+    <sect2>
+      <title>Node Properties</title>
+
+      <!-- The properties tool bar -->
+
+      <para>The property tab tool bar for nodes is described in <xref
+        linkend="tab.ref.node_property_toolbar"/>.</para>
+
+      <table id="tab.ref.node_property_toolbar" frame="all" colsep="1"
+             rowsep="1" pgwide="1">
+        <title>Property tool bar for node</title>
+
+        <tgroup cols='3' colsep='0' rowsep='0'>
+          <colspec align="left"   colwidth="*2"/>
+          <colspec align="center" colwidth="*1"/>
+          <colspec align="left"   colwidth="*9"/>
+          <thead>
+            <row>
+              <entry align="left">Button</entry>
+              <entry align="center">Icon</entry>
+              <entry align="left">Meaning</entry>
+            </row>
+          </thead>
+
+          <tbody valign="top">
+
+            <!-- Entry for Go up button -->
+
+            <row>
+              <entry>Go up</entry>
+
+              <entry><guiicon><inlinemediaobject><imageobject><imagedata
+                format="GIF" align="center"
+                fileref="images/icons/navigate_up.gif"/>
+              </imageobject></inlinemediaobject></guiicon></entry>
+
+              <entry><para>Navigate up through the package
+                structure.</para></entry>
+            </row>
+
+            <!-- Entry for Go back button -->
+
+            <row>
+              <entry>Go back</entry>
+
+              <entry><guiicon><inlinemediaobject><imageobject><imagedata
+                format="GIF" align="center"
+                fileref="images/icons/navigate_back.gif"/>
+              </imageobject></inlinemediaobject></guiicon></entry>
+
+              <entry><para>Navigate back to the previous
+                artifact.</para>
+
+              <warning><para>This feature is currently broken within &argouml;
+                and there is no guarantee where (if anywhere) this button will
+                take you.</para></warning></entry>
+            </row>
+
+            <!-- Entry for Go forward button -->
+
+            <row>
+              <entry>Go forward</entry>
+
+              <entry><guiicon><inlinemediaobject><imageobject><imagedata
+                format="GIF" align="center"
+                fileref="images/icons/navigate_forward.gif"/>
+              </imageobject></inlinemediaobject></guiicon></entry>
+
+              <entry><para>Navigate forward to the next
+                artifact.</para>
+
+              <warning><para>This feature is currently broken within &argouml;
+                and there is no guarantee where (if anywhere) this button will
+                take you.</para></warning></entry>
+            </row>
+
+            <!-- Entry for Delete button -->
+
+            <row>
+              <entry>Delete</entry>
+
+              <entry><guiicon><inlinemediaobject><imageobject><imagedata
+                format="GIF" align="center"
+                fileref="images/icons/property_delete.gif"/>
+              </imageobject></inlinemediaobject></guiicon></entry>
+
+              <entry><para>This deletes the node from the model</para>
+
+              <warning><para>This is a deletion from the model
+                <emphasis>not</emphasis> just the diagram. To delete a node
+                from the diagram, but keep it within the model, use the main
+                menu <literal>Edit/Remove From Diagram</literal>
+                (Ctrl-R).</para></warning></entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+  
+      <!-- Fields in the properties tab -->
+
+      <para>The fields on the property tab for nodes are described in
+        <xref linkend="tab.ref.node_property_fields"/>.</para>
+
+      <table id="tab.ref.node_property_fields" frame="all" colsep="1"
+             rowsep="1" pgwide="1">
+        <title>Property fields for node</title>
+
+        <tgroup cols='2' align='left' colsep='0' rowsep='0'>
+          <colspec align="left" colwidth="*3"/>
+          <colspec align="left" colwidth="*9"/>
+          <thead>
+            <row>
+              <entry align="left">Field</entry>
+              <entry align="left">Meaning</entry>
+            </row>
+          </thead>
+
+          <tbody valign="top">
+
+            <!-- Entry for Name -->
+
+            <row>
+              <entry>Name</entry>
+
+              <entry><para>Text box. The name of the node. The name of a node
+                has a leading capital letter, with words separated by
+                <quote>bumpy caps</quote>.</para>
+
+              <note><para>The &argouml; critics will complain about node names
+                that do not have an initial capital.</para></note></entry>
+            </row>
+
+            <!-- Entry for Extends -->
+
+            <row>
+              <entry>Extends</entry>
+
+              <entry><para>Text box. Lists any node that generalizes this
+                node.</para>
+
+              <caution><para>&argouml; is incorrect in using the designation
+                <quote>Extends</quote> for this field. It should correctly be
+                called <quote>Generalizations</quote>.</para></caution>
+
+              <para>&Button1; click takes you to the selected entry, &button2;
+                gives a pop up menu with five entries.</para>
+
+              <itemizedlist>
+                <listitem><para><literal>Open</literal>. Navigate to the
+                  selected generalization.</para>
+
+                <caution><para>In the current release of &argouml;
+                  generalizations of nodes are not implemented, and this button
+                  is always grayed out.</para></caution></listitem>
+
+                <listitem><para><literal>Add</literal>. Add a new
+                  generalization.</para>
+
+                <caution><para>In the current release of &argouml;
+                  generalizations of nodes are not implemented, and this button
+                  is always grayed out.</para></caution></listitem>
+
+                <listitem><para><literal>Delete</literal>. Removes the link to
+                  the selected generalization.</para>
+
+                <caution><para>In the current release of &argouml;
+                  generalizations of nodes are not implemented, and this button
+                  is always grayed out.</para></caution></listitem>
+
+                <listitem><para><literal>Move Up</literal>. Only available
+                  where there are two or more generalizations, and the
+                  generalization selected is not at the top. It is moved one up
+                  the list.</para>
+
+                <caution><para>In the current release of &argouml;
+                  generalizations of nodes are not implemented, and this button
+                  is always grayed out.</para></caution></listitem>
+
+                <listitem><para><literal>Move Down</literal>. Only available
+                  where there are two or more generalizations listed, and the
+                  generalization selected is not at the bottom. It is moved
+                  one down the list.</para>
+
+                <caution><para>In the current release of &argouml;
+                  generalizations of nodes are not implemented, and this button
+                  is always grayed out.</para></caution></listitem>
+              </itemizedlist></entry>
+            </row>
+
+            <!-- Entry for Modifiers -->
+
+            <row>
+              <entry>Modifiers</entry>
+
+              <entry><para>Check box, with entries <literal>abstract</literal>,
+                <literal>final</literal> and <literal>root</literal>.</para>
+
+              <itemizedlist>
+                <listitem><para><literal>abstract</literal> is used to declare
+                  that this node cannot be instantiated, but must always be
+                  specialized. The name of an abstract node is displayed in
+                  italics on the diagram.</para></listitem>
+
+                <listitem><para><literal>final</literal> indicates that this
+                  node cannot be further specialized.</para></listitem>
+
+                <listitem><para><literal>root</literal> indicates the ndoe can
+                  have no generalization.</para></listitem>
+              </itemizedlist></entry>
+            </row>
+
+            <!-- Entry for Namespace -->
+
+            <row>
+              <entry>Namespace</entry>
+
+              <entry><para>Text box. Records the namespace for the
+                node. This is the package hierarchy.</para>
+
+              <para>&Button1; click on the entry will take you to the package
+                defining this namespace (or the model for the top level
+                namespace).</para></entry>
+            </row>
+
+            <!-- Entry for Derived -->
+
+            <row>
+              <entry>Derived</entry>
+
+              <entry><para>Text area. Lists any derived nodes, i.e those for
+                which this node is a generalization.</para>
+
+              <caution><para>&argouml; is incorrect in using the designation
+                <quote>Derived</quote> for this field. It should correctly be
+                called <quote>Specializations</quote>.</para></caution>
+
+              <para>&Button1; click takes you to the selected entry, &button2;
+                gives a pop up menu with one entry.</para>
+
+              <itemizedlist>
+                <listitem><para><literal>Open</literal>. Navigate to the
+                  selected specialization.</para>
+
+                <caution><para>In the current release of &argouml;
+                  generalizations of nodes are not implemented, and this button
+                  is always grayed out.</para></caution></listitem>
+              </itemizedlist></entry>
+            </row>
+
+            <!-- Entry for Components -->
+
+            <row>
+              <entry>Components</entry>
+
+              <entry><para>Text box. Lists any components (see
+                <xref linkend="s1.ref.component"/>) designed to be deployed on
+                this type of node.</para>
+
+              <para>&Button1; click takes you to the selected entry, &button2;
+                gives a pop up menu with three entries.</para>
+
+              <itemizedlist>
+                <listitem><para><literal>Open</literal>. Navigate to the
+                  selected component.</para></listitem>
+
+                <listitem><para><literal>Move Up</literal>. Only available
+                  where there are two or more components, and the
+                  component selected is not at the top. It is moved one up
+                  the list.</para></listitem>
+
+                <listitem><para><literal>Move Down</literal>. Only available
+                  where there are two or more components listed, and the
+                  component selected is not at the bottom. It is moved
+                  one down the list.</para></listitem>
+              </itemizedlist></entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+    </sect2>
   </sect1>
 
   <!-- Node Instance artifact -->
@@ -73,7 +529,7 @@ Modifications
 
   <!-- Component artifact -->
 
-  <sect1>
+  <sect1 id="s1.ref.component">
     <title>Component</title>
 
     <remark>To be written&hellip;</remark>
@@ -85,6 +541,84 @@ Modifications
     <title>Component Instance</title>
 
     <remark>To be written&hellip;</remark>
+  </sect1>
+
+  <!-- Dependency artifact -->
+
+  <sect1>
+    <title>Dependency</title>
+
+    <para>A key part of any component or deployment diagram is to show
+      dependencies. For details see
+      <xref linkend="s1.ref.dependency_use_case"/>.</para>
+
+    <caution><para>UML relies on stereotyping of dependencies on component and
+      deployment diagrams to characterise the types of relationship. In the
+      current release of &argouml; there are limitations in the implementation
+      of dependencies which limit this functionality.</para></caution>
+  </sect1>
+
+  <!-- Class artifact -->
+
+  <sect1>
+    <title>Class</title>
+
+    <para>A component diagram may show the key internal structure of
+      components, including classes within the component. For details see
+      <xref linkend="s1.ref.class_class"/>.</para>
+  </sect1>
+
+  <!-- Interface artifact -->
+
+  <sect1>
+    <title>Interface</title>
+
+    <para>A component or deployment diagram may show components or component
+      instances which implement interfaces. For details see
+      <xref linkend="s1.ref.interface_class"/>.</para>
+
+    <caution><para>The current release of &argouml; uses the same
+      representation of an interface as a class diagram. The UML standard
+      suggests that an interface on a component or deployment diagram should
+      just be shown as a small open circle, connected to the component which
+      realizes that interface.</para></caution>
+
+    <warning><para>There is no way to show the linking of an interface to a
+      component or component instance in the current release of
+      &argouml;.</para></warning>
+  </sect1>
+
+  <!-- Association artifact -->
+
+  <sect1>
+    <title>Association</title>
+
+    <para>Where classes or interfaces are shown within components on component
+      diagrams, they may be shown linked by associations. For details see
+      <xref linkend="s1.ref.association_use_case"/>.</para>
+  </sect1>
+
+  <!-- Object artifact -->
+
+  <sect1>
+    <title>Object</title>
+
+    <para>Just as components may show the classifiers that make up their
+      internal structure, component instances on deployment diagrams may show
+      the classifier instances that make up their internal structure. In
+      practice the only instance that is of use is an object (an instance of a
+      class). For details see <xref linkend="s1.ref.object_sequence"/>.</para>
+  </sect1>
+
+  <!-- Link artifact -->
+
+  <sect1>
+    <title>Link</title>
+
+    <para>Where objects are shown within component instances on deployment
+      diagrams, their inter-relationships may be shown as links (an instance of
+      an association). See <xref linkend="s1.ref.link_sequence"/> for
+      details.</para>
   </sect1>
 
 </chapter>

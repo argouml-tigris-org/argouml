@@ -16,6 +16,9 @@ Modifications
 29 Jan 2002:  Jeremy Bennett. Updated to reflect bug fix preventing attributes
               being added to classes.
 
+ 7 Feb 2002:  Jeremy Bennett. Updated fix for stereotypes not appearing in the
+              drop-down after creation.
+
 -->
 
 <chapter id="ch.ref.entities">
@@ -263,9 +266,9 @@ Modifications
               </imageobject></inlinemediaobject></guiicon></entry>
 
               <entry><para>This creates a new class (see <xref
-                  linkend="s1.ref.class"/>) within the model (which appears on
-                no diagram), navigating immediately to the properties tab for
-                that class.</para>
+                  linkend="s1.ref.class_class"/>) within the model (which
+                  appears on no diagram), navigating immediately to the
+                  properties tab for that class.</para>
 
               <tip><para>Whilst it can make sense to create classes this way,
                 it is usually a lot clearer to  create them within diagrams
@@ -283,9 +286,9 @@ Modifications
               </imageobject></inlinemediaobject></guiicon></entry>
 
               <entry><para>This creates a new interface (see <xref
-                  linkend="s1.ref.interface"/>) within the model (which appears
-                on no diagram), navigating immediately to the properties tab
-                for that interface.</para>
+                  linkend="s1.ref.interface_class"/>) within the model (which
+                  appears on no diagram), navigating immediately to the
+                  properties tab for that interface.</para>
 
               <tip><para>Whilst it can make sense to create interfaces this
                 way, it is usually a lot clearer to create them within diagrams
@@ -946,8 +949,8 @@ Modifications
               </imageobject></inlinemediaobject></guiicon></entry>
 
               <entry><para>This creates a new datatype (see <xref
-                  linkend="s1.ref.class"/>) within the same package as the
-                  current datatype.</para>
+                  linkend="s1.ref.class_class"/>) within the same package as
+                  the current datatype.</para>
 
               <tip><para>Whilst it can make sense to create datatypes this way,
                 it can be clearer to create them within the package or model
@@ -1305,8 +1308,10 @@ Modifications
         tab.</para>
 
     <note><para>Due to a bug in &argouml; newly created stereotypes do not
-      appear in stereotype drop down menus. The solution is to save and reload
-      the model.</para></note>
+      appear in stereotype drop down menus. Where the stereotypes apply to a
+      class, it is sufficient to select a new class and then select the
+      original class back. However this does not work for other artifacts. The
+      solution is to save and reload the model.</para></note>
 
     <!-- Stereotype details tabs -->
 
@@ -1642,8 +1647,8 @@ Modifications
 
                 <listitem><para><literal>final</literal> indicates that
                   artifacts that use this stereotype can have no further
-                  sub-types, while <literal>root</literal> indicates it is a top
-                  level artifact.</para></listitem>
+                  sub-types, while <literal>root</literal> indicates it is a
+                  top level artifact.</para></listitem>
               </itemizedlist>
 
               <caution><para>Remember that these modifiers apply to the

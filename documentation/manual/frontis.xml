@@ -15,6 +15,8 @@ Modifications
               in error from earlier versions).
 
 31 Jan 2002:  Jeremy Bennett. Updated for draft G.
+
+20 Feb 2002:  Jeremy Bennett. Updated for issue 0.9.6.
 -->
 
 <bookinfo>
@@ -87,6 +89,34 @@ Modifications
   </legalnotice>
 
   <revhistory>
+    <revision>
+      <revnumber>0.9.6</revnumber> <date>20 Feb 2002</date>
+      <revdescription><para>Full issue to support the release of &argouml;
+        0.9.6. With the exception of 3 sections in Chapter 20, the reference
+        part of the manual (chapters 7 through 21) is now completed. Chapter 1
+        (introduction), tutorial chapter 2 (UML based &ooad;) and reference
+        chapters 7 (user interface), 8 (navigation pane), 9 (editing pane), 10
+        (details pane), 11 (to-do pane), 12 (menu bar), 13 (critics), 14 (top
+        level artifacts), 15 (use case diagrams), 16 (class diagrams), 17
+        (sequence diagrams), 18 (state diagrams), 19 (collaboration diagrams)
+        and 21 (built-in datatypes, classes, interfaces and stereotypes) are
+        now largely complete. Chapter 20 (deployment diagrams) is complete
+        apart from the description of node instances, components and component
+        instances.</para>
+
+      <para>Updated to correct description of pop-up menus for associations on
+        class and use case diagrams; updated fix for newly created stereotypes
+        not appearing in the drop down. Correct description of snooze
+        button. Added pop-up menu descriptions for aggregation, multiplicity
+        and navigability of associations on class diagrams. Completed chapters
+        17 (sequence diagrams), 18 (state diagrams), 19 (collaboration
+        diagrams) and 21 (built-in datatypes, classes, interfaces and
+        stereotypes). Chapter 20 (deployment diagrams) has example diagrams,
+        description of nodes and all artifacts that are used on other diagrams
+        as well, but omits description of node instances, components and
+        component instances.</para></revdescription>
+    </revision>
+
     <revision>
       <revnumber>0.9.5, draft G</revnumber> <date>1 Feb 2002</date>
       <revdescription><para>Update by Jeremy Bennett. Chapter 1 (introduction),

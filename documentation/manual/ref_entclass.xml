@@ -326,9 +326,9 @@ Modifications
               </imageobject></inlinemediaobject></guiicon></entry>
 
               <entry><para>This creates a new class (see <xref
-                  linkend="s1.ref.class"/>) within the package (which appears
-                  on no diagram), navigating immediately to the properties tab
-                  for that class.</para>
+                  linkend="s1.ref.class_class"/>) within the package (which
+                  appears on no diagram), navigating immediately to the
+                  properties tab for that class.</para>
 
               <tip><para>Whilst it can make sense to create classes this way,
                 it can be clearer to create them within diagrams where you want
@@ -346,7 +346,7 @@ Modifications
               </imageobject></inlinemediaobject></guiicon></entry>
 
               <entry><para>This creates a new interface (see <xref
-                  linkend="s1.ref.interface"/>) within the package (which
+                  linkend="s1.ref.interface_class"/>) within the package (which
                   appears on no diagram), navigating immediately to the
                   properties tab for that interface.</para>
 
@@ -574,7 +574,7 @@ Modifications
               <caution><para>&argouml; provides the stereotype
                 <literal>realize</literal> for models and packages. This
                 appears to be an error, since this stereotype properly belongs
-                to the <literal>Association</literal> metaclass.</para>
+                to the <literal>Abstraction</literal> metaclass.</para>
 
               <para>In addition the stereotypes <literal>systemModel</literal>
                 and <literal>metamodel</literal> are provided, although they
@@ -787,7 +787,7 @@ Modifications
        sub-artifacts. Operations itself has Signal and Parameters as
        sub-artifacts -->
 
-  <sect1 id="s1.ref.class">
+  <sect1 id="s1.ref.class_class">
     <title>Class</title>
 
     <para>The class is the dominant artifact on a class diagram. In
@@ -1053,7 +1053,7 @@ Modifications
               </imageobject></inlinemediaobject></guiicon></entry>
 
               <entry><para>This creates a new interface (see <xref
-                  linkend="s1.ref.interface"/>) within the package (which
+                  linkend="s1.ref.interface_class"/>) within the package (which
                   appears on no diagram), navigating immediately to the
                   properties tab for that interface.</para>
 
@@ -1171,7 +1171,7 @@ Modifications
               <caution><para>&argouml; provides the stereotype
                 <literal>realize</literal> for classes. This appears to be an
                 error, since this stereotype properly belongs to the
-                <literal>Association</literal>
+                <literal>Abstraction</literal>
                 metaclass.</para></caution>
 
               <tip><para>One stereotype that is not part of the UML standard,
@@ -1906,7 +1906,7 @@ Modifications
               <caution><para>&argouml; provides the stereotype
                 <literal>realize</literal> for attributes. This appears to be
                 an error, since this stereotype properly belongs to the
-                <literal>Association</literal>
+                <literal>Abstraction</literal>
                 metaclass.</para></caution></entry>
             </row>
 
@@ -1964,9 +1964,9 @@ Modifications
                   fileref="images/icons/navigate_type.gif"/>
                 </imageobject></inlinemediaobject></guiicon> icon. This will
                 navigate you to the property panel for the currently selected
-                type. (see <xref linkend="s1.ref.class"/>, <xref
+                type. (see <xref linkend="s1.ref.class_class"/>, <xref
                   linkend="s1.ref.datatype_class"/> and <xref
-                  linkend="s1.ref.interface"/>).</para></entry>
+                  linkend="s1.ref.interface_class"/>).</para></entry>
             </row>
 
             <!-- Entry for Initial Value -->
@@ -2444,7 +2444,7 @@ Modifications
               <caution><para>&argouml; provides the stereotype
                 <literal>realize</literal> for operations. This appears to be
                 an error, since this stereotype properly belongs to the
-                <literal>Association</literal>
+                <literal>Abstraction</literal>
                 metaclass.</para></caution></entry>
             </row>
 
@@ -2972,7 +2972,7 @@ Modifications
               <caution><para>&argouml; provides the stereotype
                 <literal>realize</literal> for parameters. This appears to be
                 an error, since this stereotype properly belongs to the
-                <literal>Association</literal>
+                <literal>Abstraction</literal>
                 metaclass.</para></caution></entry>
             </row>
 
@@ -3033,9 +3033,9 @@ Modifications
                   fileref="images/icons/navigate_type.gif"/>
                 </imageobject></inlinemediaobject></guiicon> icon. This will
                 navigate you to the property panel for the currently selected
-                type. (see <xref linkend="s1.ref.class"/>, <xref
+                type. (see <xref linkend="s1.ref.class_class"/>, <xref
                   linkend="s1.ref.datatype_class"/> and <xref
-                  linkend="s1.ref.interface"/>).</para></entry>
+                  linkend="s1.ref.interface_class"/>).</para></entry>
             </row>
 
             <!-- Entry for Initial Value -->
@@ -3476,7 +3476,7 @@ Modifications
               <caution><para>&argouml; provides the stereotype
                 <literal>realize</literal> for parameters. This appears to be
                 an error, since this stereotype properly belongs to the
-                <literal>Association</literal>
+                <literal>Abstraction</literal>
                 metaclass.</para></caution></entry>
             </row>
 
@@ -3871,7 +3871,7 @@ Modifications
 
   <!-- Interface artifact -->
 
-  <sect1 id="s1.ref.interface">
+  <sect1 id="s1.ref.interface_class">
     <title>Interface</title>
 
     <para>An interface is a set of operations characterizing the behavior of
@@ -4191,7 +4191,7 @@ Modifications
               <caution><para>&argouml; provides the stereotype
                 <literal>realize</literal> for interfaces. This appears to be
                 an error, since this stereotype properly belongs to the
-                <literal>Association</literal>
+                <literal>Abstraction</literal>
                 metaclass.</para></caution></entry>
             </row>
 

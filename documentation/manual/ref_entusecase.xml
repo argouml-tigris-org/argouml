@@ -1199,7 +1199,7 @@ Modifications
               <entry><para>Text area. Listing the operations that are available
                 on this use case. As a sub-class of the UML classifier
                 metaclass, a use case has many of the properties of a
-                class (see <xref linkend="s1.ref.class"/>).</para>
+                class (see <xref linkend="s1.ref.class_class"/>).</para>
 
               <para>In some &ooad; processes it might be useful to treat use
                 cases as classes as well, and give them operations and
@@ -1226,7 +1226,7 @@ Modifications
               <entry><para>Text area. Listing the attributes that are available
                 on this use case. As a sub-class of the UML classifier
                 metaclass, a use case has many of the properties of a
-                class (see <xref linkend="s1.ref.class"/>).</para>
+                class (see <xref linkend="s1.ref.class_class"/>).</para>
 
               <para>In some &ooad; processes it might be useful to treat use
                 cases as classes as well, and give them operations and
@@ -2064,8 +2064,8 @@ Modifications
                   datatype, interface or class has been selected, this will
                   navigate you to its property sheet, (see <xref
                     linkend="s1.ref.datatype"/>, <xref
-                    linkend="s1.ref.interface"/> and <xref
-                   linkend="s1.ref.class"/>) .</para></entry>
+                    linkend="s1.ref.interface_class"/> and <xref
+                   linkend="s1.ref.class_class"/>) .</para></entry>
             </row>
 
             <!-- Entry for Multiplicity -->

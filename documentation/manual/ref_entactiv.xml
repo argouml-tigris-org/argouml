@@ -2,7 +2,7 @@
 
 <!--
 
-Desription of all the artifacts associated with Activity Diagrams within
+Description of all the artifacts associated with Activity Diagrams within
 Argo/UML.
 
 
@@ -10,6 +10,8 @@ Modifications
 =============
 
  6 Dec 2001:  Jeremy Bennett. Created as a new chapter.
+
+19 Feb 2002:  Jeremy Bennett. Chapter written.
 
 -->
 
@@ -20,66 +22,479 @@ Modifications
     <title>Introduction</title>
 
     <para>This chapter describes each artifact that can be created within an
-      Activity Diagram. Note that some sub-artifacts of artifacts on the diagram
-      may not actually themselves appear on the diagram.</para>
+      Activity diagram. Note that some sub-artifacts of artifacts on the
+      diagram may not actually themselves appear on the diagram.</para>
 
     <para>There is a close relationship between this material and the
-      Properties Tab of the Details Pane (see
-      <xref linkend="s1.ref.proptab"/>). That section covers Properties in
-      general, in this chapter they are linked to specific artifacts.</para>
+      Properties Tab of the Details Pane (see <xref
+      linkend="s1.ref.proptab"/>). That section covers Properties in general,
+      in this chapter they are linked to specific artifacts.</para>
+
+    <caution><para>Activity diagrams are not fully developed yet in
+      &argouml;. Many aspects are not fully implemented, or may not behave as
+      expected. In particular swim lanes, action-object flows, control icons
+      (signals), sub-activities and interactions with other classifiers are not
+      provided. In practice there is little in the current implementation of
+      the activity diagram to distinguish it from the state diagram (see <xref
+      linkend="ch.ref.entstate"/>).</para></caution>
 
     <!-- A diagram to show all things visible on the diagram -->
 
-    <para><xref linkend="fig.ref.entactivity"/> shows an Activity Diagram with
-      all possible artifacts displayed.</para>
+    <para><xref linkend="fig.ref.activity_diagram"/> shows an Activity Diagram
+      with all possible artifacts displayed.</para>
 
-    <!-- This should be a comprehensive picture. In fact its just the minimum
-         at the moment. It would be good to put some bubbles on this one
-         pointing things out as well. -->
+    <!-- This picture more or less maps to the one used for State Diagram. -->
 
-    <figure id="fig.ref.entactivity" float="1">
-      <title>Possible artifacts on an Activity Diagram.</title>
+    <figure id="fig.ref.activity_diagram" float="1">
+      <title>Possible artifacts on an activity diagram.</title>
 
       <screenshot><mediaobject>
         <imageobject>
-          <imagedata format="PNG" align="center"
-                     fileref="images/tobeprovided.png"/>
+          <imagedata format="GIF" align="center"
+                     fileref="images/reference/activity_diagram.gif"/>
         </imageobject>
 
         <textobject>
-          <para>An Activity Diagram, showing (from left to right and top to
-            bottom) an Action State, Transition, Trigger and second Action
-            State.</para>
+          <para>An activity diagram, showing (from top to bottom and left to
+            right) an initial pseudostate, transition, action state, transition
+            with guard and action, action state, fork, two transitions, two
+            action states, two transitions, join, transition, branch, two
+            transitions with guards and a final state.</para>
         </textobject>
       </mediaobject></screenshot>
     </figure>
   </sect1>
 
-  <!-- Artifacts specific to Activity Diagrams. Action State artifact. Has Action
-       as sub-artifact -->
+  <!-- Artifacts specific to Activity Diagrams. Action State artifact. Has
+       Action as sub-artifact -->
 
   <sect1>
     <title>Action State</title>
 
-    <remark>To be written&hellip;</remark>
+    <para>An action state represents execution of an atomic action, usually the
+      invocation of an action. Within the UML metamodel,
+      <literal>ActionState</literal> is a sub-class of 
+      <literal>SimpleState</literal>. It is a specialized simple state that
+      only has an entry action, and with an implicit trigger as soon as that
+      action is completed.</para>
+
+    <caution><para>As a consequence any outgoing transitions from an action
+      state should not have explicit triggers defined (&argouml; will not
+      currently check for this). They may have guards to provide a choice where
+      there is more than one transition.</para></caution>
+
+    <para>An action state is represented on an activity diagram in &argouml; as
+      a rectangle with rounded corners containing the name of the action
+      state.</para>
+
+    <caution><para>The UML standard expects that the activity diagram should
+      contain the expression associated with the entry action, rather than the
+      action state name.</para></caution>
+
+    <!-- Action state details tabs -->
+
+    <sect2>
+      <title>Action State Details Tabs</title>
+
+      <para>The details tabs that are active for action states are described in
+        <xref linkend="tab.ref.action_state_details_tabs"/>.</para>
+
+      <table id="tab.ref.action_state_details_tabs" frame="all" colsep="1"
+             rowsep="1" pgwide="1">
+        <title>Details tabs for action state</title>
+
+        <tgroup cols='2' align='left' colsep='0' rowsep='0'>
+          <colspec align="left" colwidth="*3"/>
+          <colspec align="left" colwidth="*9"/>
+          <thead>
+            <row>
+              <entry align="left">Tab</entry>
+              <entry align="left">Meaning</entry>
+            </row>
+          </thead>
+
+          <tbody valign="top">
+
+            <!-- Entry for ToDoItem tab -->
+
+            <row>
+              <entry>ToDoItem</entry>
+
+              <entry><para>Standard tab.</para></entry>
+            </row>
+
+            <!-- Entry for Properties tab -->
+
+            <row>
+              <entry>Properties</entry>
+
+              <entry><para>See <xref
+                  linkend="tab.ref.action_state_property_toolbar"/> and <xref
+                  linkend="tab.ref.action_state_property_fields"/>
+                below.</para></entry>
+            </row>
+
+            <!-- Entry for Documentation tab -->
+
+            <row>
+              <entry>Documentation</entry>
+
+              <entry><para>Standard tab.</para></entry>
+            </row>
+
+            <!-- Entry for Style tab -->
+
+            <row>
+              <entry>Style</entry>
+
+              <entry><para>Standard tab. The values for the bounds of the
+                action state define the bounding box of the action
+                state.</para>
+
+              <caution><para>In the current release of &argouml; there are
+                known problems with typing in the <literal>Bounds</literal>
+                box, with the cursor jumping about. Take care that you enter
+                the changes you intend when changing
+                values</para></caution>
+
+              <caution><para>The <literal>Shadow</literal> field has no
+                effect&mdash; in the current release of &argouml;. There are no
+                shadow effects provided for action states on the
+                diagram.</para></caution></entry>
+            </row>
+
+            <!-- Entry for Source tab -->
+
+            <row>
+              <entry>Source</entry>
+
+              <entry><para>Standard tab that is empty.</para>
+
+              <note><para>In the fullness of time this tab will contain code to
+                implement the action state (code for actions will be associated
+                with the particular actions). This is not implemented in the
+                current release of &argouml;.</para></note></entry>
+            </row>
+
+            <!-- Entry for Constraints tab -->
+
+            <row>
+              <entry>Constraints</entry>
+
+              <entry><para>Standard tab. There are no standard constraints
+                defined for <literal>ActionState</literal> within the UML
+                metamodel.</para></entry>
+            </row>
+
+            <!-- Entry for Tagged Values tab -->
+
+            <row>
+              <entry>Tagged Values</entry>
+
+              <entry><para>Standard tab. In the UML metamodel,
+                <literal>ActionState</literal> has the following standard
+                tagged values defined.</para>
+
+                <itemizedlist>
+                  <listitem><para><literal>derived</literal> (from the
+                    superclass, <literal>ModelElement</literal>). Values
+                    <literal>true</literal>, meaning the action state is
+                    redundant&mdash;it can be formally derived from other
+                    elements, or <literal>false</literal> meaning it
+                    cannot.</para>
+
+                  <note><para>Derived action states still have their value in
+                    analysis and design to introduce useful names or concepts,
+                    and in design to avoid
+                    re-computation.</para></note></listitem>
+                </itemizedlist>
+
+                <note><para>The UML <literal>Element</literal> metaclass from
+                  which all other artifacts are derived includes the tagged
+                  element <literal>documentation</literal> which is handled by
+                  the <emphasis>documentation tab</emphasis> under
+                  &argouml;</para></note></entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+    </sect2>
+
+    <!-- Action state properties -->
+
+    <sect2>
+      <title>Action State Properties</title>
+
+      <!-- The properties tool bar -->
+
+      <para>The property tab tool bar for action states is described in
+        <xref linkend="tab.ref.action_state_property_toolbar"/>.</para>
+
+      <table id="tab.ref.action_state_property_toolbar" frame="all" colsep="1"
+             rowsep="1" pgwide="1">
+        <title>Property tool bar for action state</title>
+
+        <tgroup cols='3' colsep='0' rowsep='0'>
+          <colspec align="left"   colwidth="*2"/>
+          <colspec align="center" colwidth="*1"/>
+          <colspec align="left"   colwidth="*9"/>
+          <thead>
+            <row>
+              <entry align="left">Button</entry>
+              <entry align="center">Icon</entry>
+              <entry align="left">Meaning</entry>
+            </row>
+          </thead>
+
+          <tbody valign="top">
+
+            <!-- Entry for Go up button -->
+
+            <row>
+              <entry>Go up</entry>
+
+              <entry><guiicon><inlinemediaobject><imageobject><imagedata
+                format="GIF" align="center"
+                fileref="images/icons/navigate_up.gif"/>
+              </imageobject></inlinemediaobject></guiicon></entry>
+
+              <entry><para>Navigate up through the package
+                structure.</para></entry>
+            </row>
+
+            <!-- Entry for Go back button -->
+
+            <row>
+              <entry>Go back</entry>
+
+              <entry><guiicon><inlinemediaobject><imageobject><imagedata
+                format="GIF" align="center"
+                fileref="images/icons/navigate_back.gif"/>
+              </imageobject></inlinemediaobject></guiicon></entry>
+
+              <entry><para>Navigate back to the previous
+                artifact.</para>
+
+              <warning><para>This feature is currently broken within &argouml;
+                and there is no guarantee where (if anywhere) this button will
+                take you.</para></warning></entry>
+            </row>
+
+            <!-- Entry for Go forward button -->
+
+            <row>
+              <entry>Go forward</entry>
+
+              <entry><guiicon><inlinemediaobject><imageobject><imagedata
+                format="GIF" align="center"
+                fileref="images/icons/navigate_forward.gif"/>
+              </imageobject></inlinemediaobject></guiicon></entry>
+
+              <entry><para>Navigate forward to the next
+                artifact.</para>
+
+              <warning><para>This feature is currently broken within &argouml;
+                and there is no guarantee where (if anywhere) this button will
+                take you.</para></warning></entry>
+            </row>
+
+            <!-- Entry for Delete button -->
+
+            <row>
+              <entry>Delete</entry>
+
+              <entry><guiicon><inlinemediaobject><imageobject><imagedata
+                format="GIF" align="center"
+                fileref="images/icons/property_delete.gif"/>
+              </imageobject></inlinemediaobject></guiicon></entry>
+
+              <entry><para>This deletes the action state from the model</para>
+
+              <warning><para>This is a deletion from the model
+                <emphasis>not</emphasis> just the diagram. To delete an
+                action state from the diagram, but keep it within the model, use
+                the main menu <literal>Edit/Remove From Diagram</literal>
+                (Ctrl-R).</para></warning></entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+  
+      <!-- Fields in the properties tab -->
+
+      <para>The fields on the property tab for action states are described in
+        <xref linkend="tab.ref.action_state_property_fields"/>.</para>
+
+      <table id="tab.ref.action_state_property_fields" frame="all" colsep="1"
+             rowsep="1" pgwide="1">
+        <title>Property fields for action state</title>
+
+        <tgroup cols='2' align='left' colsep='0' rowsep='0'>
+          <colspec align="left" colwidth="*3"/>
+          <colspec align="left" colwidth="*9"/>
+          <thead>
+            <row>
+              <entry align="left">Field</entry>
+              <entry align="left">Meaning</entry>
+            </row>
+          </thead>
+
+          <tbody valign="top">
+
+            <!-- Entry for Name -->
+
+            <row>
+              <entry>Name</entry>
+
+              <entry><para>Text box. The name of the action state. By
+                convention action state names start with a lower case letter
+                and use bumpy caps to divide words within the name.</para>
+
+              <note><para>&argouml; does not enforce this naming
+                convention.</para></note></entry>
+            </row>
+
+            <!-- Entry for Stereotype -->
+
+            <row>
+              <entry>Stereotype</entry>
+
+              <entry><para>Drop down selector. Action state has no stereotypes
+                by default in the UML standard, but &argouml; provides the
+                stereotypes, <literal>machine</literal>,
+                <literal>organization</literal> and
+                <literal>person</literal>.</para>
+
+              <caution><para>&argouml; also provides the stereotype
+                <literal>realize</literal> for action states. This appears to
+                be an error, since this stereotype properly belongs to the
+                <literal>Abstraction</literal>
+                metaclass.</para></caution></entry>
+            </row>
+
+            <!-- Entry for NavStereo -->
+
+            <row>
+              <entry>Navigate Stereotype</entry>
+
+              <entry><para><guiicon><inlinemediaobject><imageobject><imagedata
+                  format="GIF" align="center"
+                  fileref="images/icons/navigate_stereotype.gif"/>
+                </imageobject></inlinemediaobject></guiicon> icon. If a
+                  stereotype has been selected, this will navigate you to the
+                  stereotype property panel (see <xref
+                    linkend="s1.ref.stereotype_class"/>).</para></entry>
+            </row>
+
+            <!-- Entry for Entry Action -->
+
+            <row>
+              <entry>Entry-Action</entry>
+
+              <entry><para>Text box. Lists the action (if any) to be invoked on
+                entry to this action state.</para>
+
+              <para>&Button1; click takes you to the selected entry, &button2;
+                gives a pop up menu with three entries.</para>
+
+              <itemizedlist>
+                <listitem><para><literal>Open</literal>. Navigate to the
+                  selected action.</para></listitem>
+
+                <listitem><para><literal>Delete</literal>. Delete the selected
+                  action.</para></listitem>
+
+                <listitem><para><literal>Add</literal>. Add a new
+                  action.</para></listitem>
+              </itemizedlist></entry>
+            </row>
+
+            <!-- Entry for Modifiers -->
+
+            <row>
+              <entry>Modifiers</entry>
+
+              <entry><para>Check box. Indicates whether the action state's
+                actions may be executed concurrently if there are parallel
+                executions invoked.</para>
+
+              <caution><para>This field is of limited value in the current
+                release of &argouml; in the absence of fields specifying
+                dynamic arguments and dynamic
+                multiplicity.</para></caution></entry>
+            </row>
+
+            <!-- Entry for Incoming -->
+
+            <row>
+              <entry>Incoming</entry>
+
+              <entry><para>Text area. Lists the transitions that enter this
+                action state.</para>
+
+              <note><para>Unlike an ordinary state, internal transitions are
+                not permitted for action states.</para></note>
+
+              <para>&Button1; click takes you to the selected entry, &button2;
+                gives a pop up menu with one entry.</para>
+
+              <itemizedlist>
+                <listitem><para><literal>Open</literal>. Navigate to the
+                  selected transition.</para></listitem>
+              </itemizedlist></entry>
+            </row>
+
+            <!-- Entry for Outgoing -->
+
+            <row>
+              <entry>Outgoing</entry>
+
+              <entry><para>Text area. Lists the transitions that leave this
+                action state.</para>
+
+              <note><para>Unlike an ordinary state, internal transitions are
+                not permitted for action states.</para></note>
+
+              <para>&Button1; click takes you to the selected action, &button2;
+                gives a pop up menu with one entry.</para>
+
+              <itemizedlist>
+                <listitem><para><literal>Open</literal>. Navigate to the
+                  selected transition.</para></listitem>
+              </itemizedlist></entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+    </sect2>
   </sect1>
 
-  <!-- Action artifact (subsidiary of Action State), cross refer to State
+  <!-- Action artifact (subsidiary of Action state), cross refer to State
        Diagram -->
 
   <sect1>
     <title>Action</title>
 
-    <remark>To be written&hellip;</remark>
+    <para>This artifact is described in the context of state diagrams (see
+      <xref linkend="s1.ref.action_state"/>).</para>
   </sect1>
 
-  <!-- Transition artifact. Has Call Event and Guard as sub-artifacts. Cross refer
-       to State Diagram -->
+  <!-- Transition artifact. Has Call Event and Guard as sub-artifacts. Cross
+       refer to State Diagram -->
 
   <sect1>
     <title>Transition</title>
 
-    <remark>To be written&hellip;</remark>
+    <para>This artifact is described in the context of state diagrams (see
+      <xref linkend="s1.ref.transition_state"/>).</para>
+
+    <caution><para>Remember that action states do not have explicit triggers.
+      The transition is implicitly triggered as soon as the entry event of the
+      action state is complete. An explicit trigger should not therefore be
+      set.</para>
+
+    <para>The current release of &argouml; will not check that this constraint
+      is met.</para></caution>
   </sect1>
 
   <!-- Call Event artifact (subsidiary of Transition) -->
@@ -87,7 +502,17 @@ Modifications
   <sect1>
     <title>Call Event</title>
 
-    <remark>To be written&hellip;</remark>
+    <para>This artifact is described in the context of state diagrams (see
+      <xref linkend="s1.ref.call_event_state"/>).</para>
+
+    <caution><para>The only place this is used is for the trigger of a
+      transition. However remember that action states do not have explicit
+      triggers.  The transition is implicitly triggered as soon as the entry
+      event of the action state is complete. An explicit trigger should not
+      therefore be set.</para>
+
+    <para>The current release of &argouml; will not check that this constraint
+      is met.</para></caution>
   </sect1>
 
   <!-- Guard artifact (subsidiary of Transition) -->
@@ -95,18 +520,20 @@ Modifications
   <sect1>
     <title>Guard</title>
 
-    <remark>To be written&hellip;</remark>
+    <para>This artifact is described in the context of state diagrams (see
+      <xref linkend="s1.ref.guard_state"/>).</para>
   </sect1>
 
   <!-- Initial State. This is a pseudo state, which all have the same
        property sheet. The pseudo states are Initial State, Branch, Fork,
-       Join, Shallow History and Deep Histroy but *NOT* Final State,
+       Join, Shallow History and Deep History but *NOT* Final State,
        which is a real state. Cross refer to State Diagram -->
 
   <sect1>
     <title>Initial State</title>
 
-    <remark>To be written&hellip;</remark>
+    <para>This artifact is described in the context of state diagrams (see
+      <xref linkend="s1.ref.initial_state"/>).</para>
   </sect1>
 
   <!-- Final State - cross refer to State Diagram-->
@@ -114,67 +541,51 @@ Modifications
   <sect1>
     <title>Final State</title>
 
-    <remark>To be written&hellip;</remark>
+    <para>This artifact is described in the context of state diagrams (see
+      <xref linkend="s1.ref.final_state"/>).</para>
   </sect1>
 
   <!-- Branch. This is a pseudo state, which all have the same property
        sheet. The pseudo states are Initial State, Branch, Fork, Join,
-       Shallow History and Deep Histroy but *NOT* Final State, which is a
+       Shallow History and Deep History but *NOT* Final State, which is a
        real state. Cross refer to State Diagram -->
 
   <sect1>
     <title>Branch</title>
 
-    <remark>To be written&hellip;</remark>
-  </sect1>
+    <para>This artifact is described in the context of state diagrams (see
+      <xref linkend="s1.ref.branch_state"/>).</para>
 
+    <caution><para>As a detailed technicality, a branch on an activity diagram
+      should be static, i.e. implemented as a <literal>junction</literal>
+      pseudostate, rather than a <literal>choice</literal> pseudostate. The
+      current release of &argouml; uses <literal>choice</literal> which is
+      wrong.</para></caution>
+  </sect1>
 
   <!-- Fork. This is a pseudo state, which all have the same property
        sheet. The pseudo states are Initial State, Branch, Fork, Join,
-       Shallow History and Deep Histroy but *NOT* Final State, which is a
+       Shallow History and Deep History but *NOT* Final State, which is a
        real state. Cross refer to State Diagram -->
 
   <sect1>
     <title>Fork</title>
 
-    <remark>To be written&hellip;</remark>
+    <para>This artifact is described in the context of state diagrams (see
+      <xref linkend="s1.ref.fork_state"/>).</para>
   </sect1>
-
 
   <!-- Join. This is a pseudo state, which all have the same property
        sheet. The pseudo states are Initial State, Branch, Fork, Join,
-       Shallow History and Deep Histroy but *NOT* Final State, which is a
+       Shallow History and Deep History but *NOT* Final State, which is a
        real state. Cross refer to State Diagram -->
 
   <sect1>
     <title>Join</title>
 
-    <remark>To be written&hellip;</remark>
+    <para>This artifact is described in the context of state diagrams (see
+      <xref linkend="s1.ref.join_state"/>).</para>
   </sect1>
-
-
-  <!-- Shallow History. This is a pseudo state, which all have the same
-       property sheet. The pseudo states are Initial State, Branch, Fork,
-       Join, Shallow History and Deep Histroy but *NOT* Final State,
-       which is a real state. Cross refer to State Diagram -->
-
-  <sect1>
-    <title>Shallow History</title>
-
-    <remark>To be written&hellip;</remark>
-  </sect1>
-
-  <!-- Deep History. This is a pseudo state, which all have the same
-       property sheet. The pseudo states are Initial State, Branch, Fork,
-       Join, Shallow History and Deep Histroy but *NOT* Final State,
-       which is a real state. Cross refer to State Diagram -->
-
-  <sect1>
-    <title>Deep History</title>
-
-    <remark>To be written&hellip;</remark>
-  </sect1>
-
 </chapter>
 
 <!-- Local stuff for Emacs - please do not delete
