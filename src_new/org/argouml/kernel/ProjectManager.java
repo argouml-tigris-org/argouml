@@ -241,7 +241,9 @@ public final class ProjectManager {
         Project p = new Project();
         XMIParser.SINGLETON.readModels(p, url);
         MModel model = XMIParser.SINGLETON.getCurModel();
-        UmlHelper.getHelper().addListenersToModel(model);
+
+		// TODO Redo listeners
+//        UmlHelper.getHelper().addListenersToModel(model);
         p.setUUIDRefs(XMIParser.SINGLETON.getUUIDRefs());
         p.addMember(new ProjectMemberTodoList("", p));
         p.addMember(model);

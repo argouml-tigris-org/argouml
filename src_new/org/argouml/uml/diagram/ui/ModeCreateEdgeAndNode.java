@@ -220,7 +220,9 @@ public class ModeCreateEdgeAndNode extends ModeCreate {
 
             if (newNode instanceof GraphNodeHooks)
                  ((GraphNodeHooks) newNode).initialize(_args);
-            UmlFactory.getFactory().addListenersToModelElement(newNode);
+
+			// TODO Redo listeners
+//            UmlFactory.getFactory().addListenersToModelElement(newNode);
             if (mgm.canAddNode(newNode)) {
                 GraphNodeRenderer renderer = editor.getGraphNodeRenderer();
                 Layer lay = editor.getLayerManager().getActiveLayer();

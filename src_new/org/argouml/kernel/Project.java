@@ -285,7 +285,9 @@ public class Project implements java.io.Serializable, TargetListener {
         // the NSUML XMIReader.  When Argo XMIReader is used
         // consistently, it can be responsible for loading
         // the listener.  Until then, do it here.
-        UmlHelper.getHelper().addListenersToModel(mmodel);
+
+		// TODO Redo listeners
+//        UmlHelper.getHelper().addListenersToModel(mmodel);
 
         // if (mmodel != null && !xmiReader.getErrors()) {
 
