@@ -87,6 +87,11 @@ implements PropertyChangeListener {
   public static final ConfigurationKey KEY_DEFAULT_NOTATION =
          Configuration.makeKey("notation", "default");
 
+  /** The configuration key that indicates whether to show stereotypes
+   *  in the navigation panel
+   */
+  public static final ConfigurationKey KEY_SHOW_STEREOTYPES = Configuration.makeKey("notation", "navigation", "show", "stereotypes");
+
   /** The configuration key that indicates whether to use guillemots
    *  or greater/lessthan characters in stereotypes.
    */
