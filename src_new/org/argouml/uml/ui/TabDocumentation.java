@@ -65,7 +65,7 @@ import org.tigris.gef.presentation.Fig;
  */
 public class TabDocumentation extends PropPanel {
 
-    private static final String BUNDLE = "Cognitive";
+    private static final String BUNDLE = "label";
     ////////////////////////////////////////////////////////////////
 
     /**
@@ -77,50 +77,60 @@ public class TabDocumentation extends PropPanel {
         //TODO: the title of the prop panel is localized using the localisation of documentation
         //- should this change? (Raphael)
         super(
-	      Argo.localize(BUNDLE, "docpane.label.documentation"),
-	      (Configuration.getString(Configuration.makeKey("layout", "tabdocumentation")).equals("West") ||
-	       Configuration.getString(Configuration.makeKey("layout", "tabdocumentation")).equals("East"))
+	      Argo.localize(BUNDLE, "label.documentation"),
+	      (Configuration.getString(
+                    Configuration.makeKey("layout", "tabdocumentation"))
+                    .equals("West") ||
+	       Configuration.getString(
+                    Configuration.makeKey("layout", "tabdocumentation"))
+                    .equals("East"))
 	      ? Vertical.getInstance() : Horizontal.getInstance());
-        //        super("tab.documentation", null, 2); // Change this to call labelled layout constructor
+
+	// Change this to call labelled layout constructor:
+        //        super("tab.documentation", null, 2); 
 
         addField(
-		 Argo.localize(BUNDLE, "docpane.label.author") + ":",
-		 new UMLTextField2(
-				   new UMLModelElementTaggedValueDocument("author")));
+		 Argo.localize(BUNDLE, "label.author"),
+		 new UMLTextField2(new UMLModelElementTaggedValueDocument(
+                    Configuration.getString(Argo.KEY_USER_FULLNAME, 
+                                            System.getProperty("user.name")))));
 
         //unknown where this information is stored; it does not go to myproject.argo (xml file)
         addField(
-		 Argo.localize(BUNDLE, "docpane.label.version") + ":",
-		 new UMLTextField2(
-				   new UMLModelElementTaggedValueDocument("version")));
+		 Argo.localize(BUNDLE, "label.version"),
+		 new UMLTextField2(new UMLModelElementTaggedValueDocument(
+                    Argo.localize(BUNDLE, "label.version-p"))));
 
         addField(
-		 Argo.localize(BUNDLE, "docpane.label.since") + ":",
-		 new UMLTextField2(new UMLModelElementTaggedValueDocument("since")));
+		 Argo.localize(BUNDLE, "label.since"),
+		 new UMLTextField2(new UMLModelElementTaggedValueDocument(
+                    Argo.localize(BUNDLE, "label.since-p"))));
 
         //TODO: change UMLCheckBox to UMLCheckBox2 (Raphael)
         addField(
-		 Argo.localize(BUNDLE, "docpane.label.deprecated") + ":",
+		 Argo.localize(BUNDLE, "label.deprecated"),
 		 new UMLCheckBox(
 				 "",
 				 this,
-				 new UMLTaggedBooleanProperty("deprecated")));
+				 new UMLTaggedBooleanProperty(
+                                 Argo.localize(BUNDLE, "label.deprecated-p"))));
 
         UMLTextArea2 _see =
-            new UMLTextArea2(new UMLModelElementTaggedValueDocument("see"));
+            new UMLTextArea2(new UMLModelElementTaggedValueDocument(
+                Argo.localize(BUNDLE, "label.see-p")));
         _see.setRows(2);
         _see.setLineWrap(true);
         _see.setWrapStyleWord(true);
         JScrollPane spSee = new JScrollPane();
         spSee.getViewport().add(_see);
-        addField(Argo.localize(BUNDLE, "docpane.label.see") + ":", spSee);
+        addField(Argo.localize(BUNDLE, "label.see"), spSee);
 
         //make new column with LabelledLayout
         add(LabelledLayout.getSeperator());
 
         UMLTextArea2 _doc =
-            new UMLTextArea2(
-			     new UMLModelElementTaggedValueDocument("documentation"));
+            new UMLTextArea2(new UMLModelElementTaggedValueDocument(
+                Argo.localize(BUNDLE, "label.documentation-p")));
 
         _doc.setRows(2);
         _doc.setLineWrap(true);
@@ -128,7 +138,7 @@ public class TabDocumentation extends PropPanel {
         JScrollPane spDocs = new JScrollPane();
         spDocs.getViewport().add(_doc);
         addField(
-		 Argo.localize(BUNDLE, "docpane.label.documentation") + ":",
+		 Argo.localize(BUNDLE, "label.documentation"),
 		 spDocs);
     }
 
