@@ -1917,6 +1917,21 @@ public class ModelFacade {
     }
 
     /**
+     * Recognizer for ConcurrentRegion
+     *
+     * @param handle candidate
+     * @return true if handle is a ConcurrentRegion
+     */
+    public static boolean isAConcurrentRegion(Object handle) {
+        if ((handle instanceof MCompositeState)
+                && (getContainer(handle)!=null)) {
+            return (isConcurrent(getContainer(handle)));
+        }
+        return illegalArgumentBoolean(handle);
+    }
+
+    
+    /**
      * Recognizer for constructor.
      *
      * @param handle candidate

@@ -49,6 +49,7 @@ import java.text.ParseException;
 import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.Vector;
+import java.util.Collection;
 
 import javax.swing.Icon;
 import javax.swing.JSeparator;
@@ -80,17 +81,16 @@ import org.argouml.ui.ArgoJMenu;
 import org.argouml.ui.Clarifier;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.UUIDHelper;
+import org.argouml.uml.diagram.state.ui.FigStateVertex;
 import org.argouml.uml.generator.ParserDisplay;
 import org.argouml.uml.ui.UMLAction;
 import org.argouml.util.Trash;
 import org.tigris.gef.base.Globals;
 import org.tigris.gef.base.Selection;
+import org.tigris.gef.base.Editor;
+import org.tigris.gef.base.LayerDiagram;
 import org.tigris.gef.graph.GraphModel;
-import org.tigris.gef.presentation.Fig;
-import org.tigris.gef.presentation.FigGroup;
-import org.tigris.gef.presentation.FigNode;
-import org.tigris.gef.presentation.FigRect;
-import org.tigris.gef.presentation.FigText;
+import org.tigris.gef.presentation.*;
 
 /**
  * Abstract class to display diagram icons for UML ModelElements that
@@ -547,7 +547,8 @@ public abstract class FigNodeModelElement
          * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
          */
         public void actionPerformed(ActionEvent e) {
-            Model.getCoreHelper().setAbstract(owner, !ModelFacade.isAbstract(owner));
+            Model.getCoreHelper().setAbstract(owner, 
+                    !ModelFacade.isAbstract(owner));
         }
     }
 
@@ -610,7 +611,8 @@ public abstract class FigNodeModelElement
          * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
          */
         public void actionPerformed(ActionEvent e) {
-            Model.getCoreHelper().setActive(owner, !ModelFacade.isActive(owner));
+            Model.getCoreHelper().setActive(owner, 
+                    !ModelFacade.isActive(owner));
         }
     }
 
@@ -1223,7 +1225,8 @@ public abstract class FigNodeModelElement
         super.setOwner(own);
         if (ModelFacade.isAModelElement(own)
                 && UUIDHelper.getInstance().getUUID(own) == null) {
-            Model.getCoreHelper().setUUID(own, UUIDHelper.getInstance().getNewUUID());
+            Model.getCoreHelper().setUUID(own, 
+                    UUIDHelper.getInstance().getNewUUID());
         }
         readyToEdit = true;
         if (own != null) {
@@ -1452,7 +1455,6 @@ public abstract class FigNodeModelElement
         if (this instanceof ArgoEventListener) {
             ArgoEventPump.removeListener(this);
         }
-
         Object own = getOwner();
         if (org.argouml.model.ModelFacade.isAClassifier(own)) {
             Iterator it = ModelFacade.getFeatures(own).iterator();
@@ -1630,5 +1632,49 @@ public abstract class FigNodeModelElement
     protected void setSuppressCalcBounds(boolean scb) {
         this.suppressCalcBounds = scb;
     }
+
+    /**
+     * Method to draw a StateVertex Fig's enclosed figs.
+     */
+    public void redrawEnclosedFigs() {
+        if (!(org.argouml.model.ModelFacade.isAStateVertex(getOwner())))
+            return;
+        Editor editor = Globals.curEditor();
+        LayerDiagram lay = 
+            ((LayerDiagram) editor.getLayerManager().getActiveLayer());
+        if (!enclosedFigs.isEmpty()) {
+            for (int i = 0; i < enclosedFigs.size(); i++) {
+                FigStateVertex f = ((FigStateVertex) enclosedFigs.elementAt(i));
+                lay.bringInFrontOf(f, this);
+                Collection col = null;
+                Iterator it = f.getFigEdges(col).iterator();
+                while (it.hasNext()) {
+                    lay.bringInFrontOf(((FigEdge) it.next()), this);
+                }
+                f.redrawEnclosedFigs();
+            }
+        }
+    }
+
+    /**
+     * To redrawn each element correctly when changing his location 
+     * with X and U additions
+     *
+     * @param xInc the increment in the x direction
+     * @param yInc the increment in the y direction
+     */
+    public void displace (int xInc, int yInc) {
+        Vector figsVector;
+        Rectangle rFig = getBounds();
+        setLocation(rFig.x + xInc, rFig.y + yInc);
+        figsVector = ((Vector) getEnclosedFigs().clone());
+        if (!figsVector.isEmpty()) {
+            for (int i = 0; i < figsVector.size(); i++)
+                ((FigNodeModelElement) figsVector.elementAt(i))
+                            .displace(xInc, yInc);
+        }
+    }
+
+
 } /* end class FigNodeModelElement */
 

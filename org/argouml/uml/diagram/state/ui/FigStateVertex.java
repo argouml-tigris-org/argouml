@@ -72,15 +72,15 @@ public abstract class FigStateVertex extends FigNodeModelElement {
         if (encloser != null
                 && (ModelFacade.isACompositeState(encloser.getOwner()))) {
             compositeState = encloser.getOwner();
+            ((FigStateVertex) encloser).redrawEnclosedFigs();
         } else {
             compositeState = Model.getStateMachinesHelper().getTop(
                     Model.getStateMachinesHelper()
                             .getStateMachine(stateVertex));
         }
-        if (compositeState != null) {
-            Model.getStateMachinesHelper().setContainer(stateVertex,
+        if (compositeState != null)
+            Model.getStateMachinesHelper().setContainer(stateVertex, 
                     compositeState);
-        }
     }
 
     /**
