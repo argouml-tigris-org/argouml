@@ -57,8 +57,19 @@ public class UMLTextField extends JTextField implements DocumentListener, UMLUse
     public void removed(final MElementEvent p1) {
     }
     public void propertySet(final MElementEvent event) {
-        if(_property.isAffected(event))
-            update();
+        if(_property.isAffected(event)) {
+            //
+            //   check the possibility that this is a promiscuous event
+            Object eventSource = event.getSource();
+            Object target = _container.getTarget();
+            //
+            //    if event source is unknown or 
+            //       the event source is the container's target
+            //          then update the field
+            if(eventSource == null || eventSource == target) {
+                update();
+            }
+        }
     }
     
     private void update() {
