@@ -57,6 +57,7 @@ import org.argouml.model.uml.foundation.core.CoreFactory;
 import org.argouml.model.uml.foundation.core.CoreHelper;
 import org.argouml.model.uml.foundation.extensionmechanisms.ExtensionMechanismsFactory;
 import org.argouml.model.uml.foundation.extensionmechanisms.ExtensionMechanismsHelper;
+import org.argouml.model.uml.behavioralelements.statemachines.StateMachinesHelper;
 import org.argouml.model.uml.modelmanagement.ModelManagementHelper;
 import org.argouml.uml.ProfileJava;
 import org.argouml.util.MyTokenizer;
@@ -2057,14 +2058,7 @@ public class ParserDisplay extends Parser {
 		 * However, we should set the statemachine 
 		 * attribute for the transition, isn't it?
 		 */
-		// only the top state usually has the statemachine defined
-		/*Object container = ModelFacade.getContainer(st);
-		Object sm = null;
-		while ((null != container) && (sm == null)) { 
-		    sm = ModelFacade.getStateMachine(container);
-		    container = ModelFacade.getContainer(container);
-		}		
-		if (sm != null) ModelFacade.setStateMachine(t, sm); */
+		ModelFacade.setStateMachine(t, StateMachinesHelper.getHelper().getStateMachine(st));
 	
 		ModelFacade.setTarget(t, st);
 		ModelFacade.setSource(t, st);
@@ -2262,12 +2256,15 @@ public class ParserDisplay extends Parser {
 	if (guard.length() > 0) {
 	    if (g == null) {
                 // case 1
+	        /*TODO: In the next line, I should use buildGuard(), 
+	         * but it doesn't show the guard on the diagram... 
+	         * Why?  (MVW)*/
 		g = UmlFactory.getFactory().getStateMachines().createGuard();
 		if (g != null) {
 		    ModelFacade.setExpression(g, UmlFactory.getFactory()
 		    	.getDataTypes().createBooleanExpression("Java", guard));
 		    ModelFacade.setName(g, "anon");
-		    ModelFacade.setTransition(g, trans);
+		    ModelFacade.setTransition(g, trans); 
 		    ModelFacade.setGuard(trans, g);
 		}
 	    } else {
