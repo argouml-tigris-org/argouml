@@ -680,6 +680,16 @@ which is used as follows:
 
 </sect2>
 
+<sect2>
+	<title>Tip for creating new modules (from Florent de Lamotte)</title>
+	<indexterm>
+	  <primary>NSUML</primary>
+	  <secondary>understanding</secondary>
+	</indexterm>
+	<para>Florent wrote a small tutorial for creating modules. It can be found on the <ulink url="http://argopno.tigris.org/documentation/tutoriel/new_module.html">ArgoPNO website</ulink>.
+</para>
+</sect2>
+
 </sect1>
 
 <!-- Local stuff for Emacs - please do not delete
