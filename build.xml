@@ -48,9 +48,8 @@ Compilation instructions for ArgoUML
 If you want to compile ArgoUML, you need to have following:
 - JAVA_HOME correctly set to where Java2 jdk is installed
 - the additional libraries (nsuml.jar, ocl-argo.jar, xml4j.jar,
-  gef.jar, i18n.jar, antlrall.jar, toolbutton.jar
-  toolbar.jar) in argouml/lib
-when these are right the command
+  gef.jar, i18n.jar, antlrall.jar, toolbar.jar) in argouml/lib
+  when these are right the command
      build compile
 will do the job.
   -->
@@ -169,7 +168,6 @@ Property files to be searched:
       <pathelement location="${gef.jar.path}"/>
       <pathelement location="${i18n.jar.path}"/>
       <pathelement location="${log4j.jar.path}"/>
-      <pathelement location="${toolbutton.jar.path}"/>
       <pathelement location="${toolbar.jar.path}"/>
       <path refid="antlr.runtime.classpath"/>
     </path>
@@ -181,7 +179,6 @@ Property files to be searched:
       <pathelement location="${gef.jar.path}"/>
       <pathelement location="${i18n.jar.path}"/>
       <pathelement location="${log4j.jar.path}"/>
-      <pathelement location="${toolbutton.jar.path}"/>
       <pathelement location="${toolbar.jar.path}"/>
       <path refid="antlr.runtime.classpath"/>
     </path>
@@ -225,9 +222,6 @@ Property files to be searched:
     <available classname="org.apache.log4j.Category"
                classpathref="argo.compile.classpath"
                property="has.log4j"/>
-    <available classname="org.tigris.toolbutton.ToolButton"
-               classpathref="argo.compile.classpath"
-               property="has.toolbutton"/>
     <available classname="org.tigris.toolbar.ToolBar"
                classpathref="argo.compile.classpath"
                property="has.toolbar"/>
@@ -377,11 +371,7 @@ Property files to be searched:
   <!-- =================================================================== -->
 
   <target name="prerequisites"
-          depends="prepare,check.gef.localizer,check.gef,check.toolbar,check.toolbutton,check.log4j,check.antlr" >
-  </target>
-
-  <target depends="prepare" name="check.toolbutton" unless="has.toolbutton">
-    <fail message="toolbutton library does not appear to be in the classpath."/>
+          depends="prepare,check.gef.localizer,check.gef,check.toolbar,check.log4j,check.antlr" >
   </target>
 
   <target depends="prepare" name="check.toolbar" unless="has.toolbar">
@@ -485,14 +475,13 @@ Property files to be searched:
   <!-- =================================================================== -->
   <target name="package" depends="jar"
           description="Prepare all jar files, both built and just delivered.">
-    <property name="names.of.all.included.libs" value="antlrall.jar gef.jar i18n.jar log4j.jar nsuml.jar ocl-argo.jar toolbar.jar toolbutton.jar xerces.jar jmi.jar"/>
+    <property name="names.of.all.included.libs" value="antlrall.jar gef.jar i18n.jar log4j.jar nsuml.jar ocl-argo.jar toolbar.jar xerces.jar jmi.jar"/>
     <copy file="${antlrall.jar.path}" tofile="${argo.build.dir}/antlrall.jar"/>
     <copy file="${gef.jar.path}" tofile="${argo.build.dir}/gef.jar"/>
     <copy file="${i18n.jar.path}" tofile="${argo.build.dir}/i18n.jar"/>
     <copy file="${log4j.jar.path}" tofile="${argo.build.dir}/log4j.jar"/>
     <copy file="${nsuml.jar.path}" tofile="${argo.build.dir}/nsuml.jar"/>
     <copy file="${jmi.jar.path}" tofile="${argo.build.dir}/jmi.jar"/>
-    <copy file="${toolbutton.jar.path}" tofile="${argo.build.dir}/toolbutton.jar"/>
     <copy file="${toolbar.jar.path}" tofile="${argo.build.dir}/toolbar.jar"/>
     <copy file="${ocl-argo.jar.path}" tofile="${argo.build.dir}/ocl-argo.jar"/>
     <copy file="${xerces.jar.path}" tofile="${argo.build.dir}/xerces.jar"/>
@@ -1198,7 +1187,6 @@ you will have to resurrect them using cvs update.
     <signjar jar="${jwsdir}/nsuml.jar"     alias="argouml" storepass="secret"/>
     <signjar jar="${jwsdir}/ocl-argo.jar"  alias="argouml" storepass="secret"/>
     <signjar jar="${jwsdir}/toolbar.jar"   alias="argouml" storepass="secret"/>
-    <signjar jar="${jwsdir}/toolbutton.jar" alias="argouml" storepass="secret"/>
     <signjar jar="${jwsdir}/xerces.jar"    alias="argouml" storepass="secret"/>
 
     <copy todir="${argo.dist.dir}/jws/">

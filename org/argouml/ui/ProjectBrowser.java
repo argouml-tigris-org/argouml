@@ -58,7 +58,6 @@ import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.swingext.BorderSplitPane;
-import org.argouml.swingext.DockLayout;
 import org.argouml.swingext.Horizontal;
 import org.argouml.swingext.Orientation;
 import org.argouml.swingext.Vertical;
@@ -72,6 +71,7 @@ import org.argouml.uml.ui.TabProps;
 import org.tigris.gef.base.Diagram;
 import org.tigris.gef.ui.IStatusBar;
 import org.tigris.gef.util.VectorSet;
+import org.tigris.toolbar.layouts.DockBorderLayout;
 
 /** The main window of the ArgoUML application.
  *
@@ -325,7 +325,7 @@ public class ProjectBrowser
         // bar. It contains the workarea at centre and the toolbar
         // position north, south, east or west.
         JPanel toolbarBoundry = new JPanel();
-        toolbarBoundry.setLayout(new DockLayout());
+        toolbarBoundry.setLayout(new DockBorderLayout());
         // TODO - should save and restore the last positions of the toolbars
         toolbarBoundry.add(_menuBar.getFileToolbar(), BorderLayout.NORTH);
         toolbarBoundry.add(_menuBar.getEditToolbar(), BorderLayout.NORTH);

@@ -304,6 +304,7 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
         fireEdgeAdded(edge);
     }
 
+    
     /**
      * Adds the edges from the given node. For example, this method lets you add
      * an allready existing massociation between two figclassifiers.
