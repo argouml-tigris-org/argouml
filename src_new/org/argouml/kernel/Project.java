@@ -289,6 +289,8 @@ public class Project implements java.io.Serializable {
         catch (ParserConfigurationException pc) {}
         MModel mmodel = null;
         
+        InputSource source = new InputSource(zis);
+        source.setEncoding("UTF-8");
         mmodel = xmiReader.parse(new InputSource(zis));
         if (mmodel != null && !xmiReader.getErrors()) {
             try {
