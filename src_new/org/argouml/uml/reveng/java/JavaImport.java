@@ -54,9 +54,10 @@ public class JavaImport extends FileImportSupport {
 	if (o instanceof File ) {
 	    File f = (File) o;
 	    // Create a scanner that reads from the input stream passed to us
+	    String encoding = _import.getInputSourceEncoding();
+	    FileInputStream in = new FileInputStream(f);
 	    JavaLexer lexer =
-		new JavaLexer(new BufferedReader(new FileReader(f)));
-
+		new JavaLexer(new BufferedReader(new InputStreamReader(in, encoding)));
 	    // We use a special Argo token, that stores the preceding
 	    // whitespaces.
 	    lexer.setTokenObjectClass( "org.argouml.uml.reveng.java.ArgoToken");
