@@ -32,6 +32,7 @@ package org.argouml.ui;
 
 import java.awt.Font;
 
+import javax.swing.AbstractAction;
 import javax.swing.LookAndFeel;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
@@ -358,7 +359,11 @@ public class LookAndFeelMgr {
     }
     
     public Font getStandardFont() {
-        return UIManager.getDefaults().getFont("TextField.font");
+        Font font = UIManager.getDefaults().getFont("TextField.font");
+        if (font == null) {
+            font = (new javax.swing.JTextField()).getFont();
+        }
+        return font;
     }
 
     public Font getSmallFont() {
