@@ -122,68 +122,55 @@ public class AttributeCodePiece extends NamedCodePiece
     }
 
     /**
-       Write the code this piece represents to file. Remove this
-       feature from the top vector in newFeaturesStack.
+       Write the code this piece represents to file.
+       (Does not check for uniqueness of names.)
     */
     public void write(Writer writer,
                       Stack parseStateStack,
                       int column)
 	throws Exception
     {
-	ParseState parseState = (ParseState)parseStateStack.peek();
-	Vector features = parseState.getNewFeatures();
-
-	for(Iterator i = attributeNames.iterator(); i.hasNext(); ) {
-	    String name = (String)i.next();
-	    for(Iterator j = features.iterator(); j.hasNext(); ) {
-		MFeature mFeature = (MFeature)j.next();
-		if(mFeature.getName().equals(name)) {
-		    parseState.newFeature(mFeature);
-		    MAttribute mAttribute = (MAttribute)mFeature;
-		    /*
-		     * 2002-11-07
-		     * Jaap Branderhorst
-		     * Made the static reference to generateConstraintEnrichedDocComment a non-static one.
-		     * Reason: the method generateConstraintEnrichedDocComment has become a non-static method.
-		     */
-		    String docComment = GeneratorJava.getInstance().generateConstraintEnrichedDocComment(mAttribute,false,GeneratorJava.INDENT);
-		    if(docComment != null) {
-              writer.write (docComment);
-              writer.write ("\n");
-			  for(int k=0; k<column; k++) {
-			    writer.write(" ");
-			  }
-		    }
-
-		    if(mAttribute.getChangeability() ==
-		       MChangeableKind.FROZEN) {
-			writer.write("final ");
-		    }
-		    if(mAttribute.getOwnerScope() ==
-		       MScopeKind.CLASSIFIER) {
-			writer.write("static ");
-		    }
-		    if(mAttribute.getVisibility() ==
-		       MVisibilityKind.PUBLIC) {
-			writer.write("public ");
-		    }
-		    else if(mAttribute.getVisibility() ==
-			    MVisibilityKind.PROTECTED) {
-			writer.write("protected ");
-		    }
-		    else if(mAttribute.getVisibility() ==
-			    MVisibilityKind.PRIVATE) {
-			writer.write("private ");
-		    }
-
-		    if(typeFullyQualified) {
-			writer.write(mAttribute.getType()
-				     .getNamespace().getName() + ".");
-		    }
-		    writer.write(mAttribute.getType().getName() + " " +
-				     mAttribute.getName());
-		}
-	    }
-	}
+    ParseState parseState = (ParseState)parseStateStack.peek();
+    Vector features = parseState.getNewFeatures();
+    // there might be multiple variable declarations in one line, so loop:
+    for(Iterator i = attributeNames.iterator(); i.hasNext(); ) {
+        boolean checkAssociations = true;
+        String name = (String)i.next();
+        Iterator j;
+        // now find the matching feature
+        for(j = features.iterator(); j.hasNext(); ) {
+            MFeature mFeature = (MFeature)j.next();
+            if(mFeature instanceof MAttribute && mFeature.getName().equals(name)) {
+                // feature found, so it's an attribute (and no association end)
+                checkAssociations = false;
+                parseState.newFeature(mFeature); // deletes feature from current ParseState
+                writer.write(GeneratorJava.getInstance().generateCoreAttribute((MAttribute)mFeature));
+                break;
+            }
+        }
+        if (checkAssociations) {
+            // feature not found: we need to check associations,
+            // because the parser can't distinguish between attributes
+            // and associations represented as class variables:
+            Vector ends = parseState.getAssociationEnds();
+            if (!ends.isEmpty()) {
+                // now find the first matching association end
+                for(j = ends.iterator(); j.hasNext(); ) {
+                    MAssociationEnd ae = (MAssociationEnd) j.next();
+                    MAssociation a = ae.getAssociation();
+                    Iterator connEnum = a.getConnections().iterator();
+                    while (connEnum.hasNext()) {
+                        MAssociationEnd ae2 = (MAssociationEnd)connEnum.next();
+                        if (ae2 != ae && ae2.isNavigable() && !ae2.getAssociation().isAbstract()
+                            && GeneratorJava.getInstance().generateAscEndName(ae2).equals(name)) {
+                            // association end found
+                            writer.write(GeneratorJava.getInstance().generateCoreAssociationEnd(ae2));
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+    }
     }
 }
