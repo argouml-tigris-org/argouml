@@ -62,6 +62,7 @@ import org.argouml.cognitive.ui.DesignIssuesDialog;
 import org.argouml.cognitive.ui.GoalsDialog;
 import org.argouml.cognitive.ui.TabToDo;
 import org.argouml.cognitive.ui.ToDoPane;
+import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.UmlFactory;
 import org.argouml.model.uml.UmlHelper;
 import org.argouml.model.uml.modelmanagement.ModelManagementHelper;
@@ -72,6 +73,9 @@ import org.argouml.ui.NavigatorPane;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.ui.TabResults;
 import org.argouml.ui.UsageStatistic;
+import org.argouml.ui.targetmanager.TargetEvent;
+import org.argouml.ui.targetmanager.TargetListener;
+import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ProfileJava;
 import org.argouml.uml.ProjectMemberModel;
 import org.argouml.uml.UMLChangeRegistry;
@@ -80,6 +84,7 @@ import org.argouml.uml.diagram.state.ui.UMLStateDiagram;
 import org.argouml.uml.diagram.static_structure.ui.UMLClassDiagram;
 import org.argouml.uml.diagram.ui.ModeCreateEdgeAndNode;
 import org.argouml.uml.diagram.ui.SelectionWButtons;
+import org.argouml.uml.diagram.ui.UMLDiagram;
 import org.argouml.uml.diagram.use_case.ui.UMLUseCaseDiagram;
 import org.argouml.uml.generator.GenerationPreferences;
 import org.argouml.util.ChangeRegistry;
@@ -105,7 +110,7 @@ import ru.novosoft.uml.model_management.MModel;
 /** A datastructure that represents the designer's current project.  A
  *  Project consists of diagrams and UML models. */
 
-public class Project implements java.io.Serializable {
+public class Project implements java.io.Serializable, TargetListener {
     ////////////////////////////////////////////////////////////////
     // constants
     public static final String SEPARATOR = "/";
@@ -189,6 +194,7 @@ public class Project implements java.io.Serializable {
         setDefaultModel(ProfileJava.loadProfileModel());
         addSearchPath("PROJECT_DIR");
         setNeedsSave(false);
+        TargetManager.getInstance().addTargetListener(this);
 
     }
 
@@ -1346,6 +1352,52 @@ public class Project implements java.io.Serializable {
      */
     public void setActiveDiagram(ArgoDiagram diagram) {
         _activeDiagram = diagram;
+    }
+
+    /** 
+     * @see org.argouml.ui.targetmanager.TargetListener#targetAdded(org.argouml.ui.targetmanager.TargetEvent)
+     */
+    public void targetAdded(TargetEvent e) {       
+    }
+
+    /** 
+     * @see org.argouml.ui.targetmanager.TargetListener#targetRemoved(org.argouml.ui.targetmanager.TargetEvent)
+     */
+    public void targetRemoved(TargetEvent e) {
+        setTarget(e.getNewTargets()[0]);
+
+    }
+
+    /** 
+     * @see org.argouml.ui.targetmanager.TargetListener#targetSet(org.argouml.ui.targetmanager.TargetEvent)
+     */
+    public void targetSet(TargetEvent e) {
+        setTarget(e.getNewTargets()[0]);
+
+    }
+    
+    /**
+     * Called to update the current namespace and active diagram after the target 
+     * has changed.
+     * @param target
+     */
+    private void setTarget(Object target) {
+        Object currentNamespace = null;
+        if (target instanceof UMLDiagram) {
+            currentNamespace = ((UMLDiagram)target).getNamespace();
+        } else
+        if (target instanceof MNamespace)
+            currentNamespace = target;
+        else 
+        if (target instanceof MModelElement) 
+            currentNamespace = ModelFacade.getNamespace(target);
+        else
+            currentNamespace = getRoot();
+        setCurrentNamespace((MNamespace)currentNamespace);
+               
+        if (target instanceof ArgoDiagram) {
+            setActiveDiagram((ArgoDiagram)target);
+        }                  
     }
 
 } /* end class Project */

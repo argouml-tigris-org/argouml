@@ -293,8 +293,9 @@ public class PropPanelOperation extends PropPanelModelElement {
            addRaisedSignal(new Integer(1));
         }
     }
-
+/*
     public void navigateUp() {
+        
         Object target = getTarget();
         if(target instanceof MOperation) {
             MOperation oper = (MOperation) target;
@@ -304,7 +305,7 @@ public class PropPanelOperation extends PropPanelModelElement {
             }
         }
     }
-
+*/
     /**
      *   Appropriate namespace is the namespace of our class,
      *      not the class itself
