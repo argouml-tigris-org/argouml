@@ -34,12 +34,10 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-
 import java.awt.image.BufferedImage;
 
 import javax.swing.ImageIcon;
-
-import javax.swing.plaf.metal.MetalLookAndFeel;
+import javax.swing.UIManager;
 
 /**
  * The base class for adding simple decorations to existing icons.
@@ -100,9 +98,9 @@ public abstract class DecoratedIcon extends ImageIcon {
         // Initialize the color array
         Color[] colors = {
                 c.getBackground(),
-                MetalLookAndFeel.getPrimaryControlDarkShadow(),
-                MetalLookAndFeel.getPrimaryControlInfo(),
-                MetalLookAndFeel.getPrimaryControlHighlight()};
+                UIManager.getColor("controlDkShadow"),
+                UIManager.getColor("infoText"),
+                UIManager.getColor("controlHighlight")};
 
         for (int i = 0; i < _popupIconWidth; i++) {
             for (int j = 0; j < _popupIconHeight; j++) {

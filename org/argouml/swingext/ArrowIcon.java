@@ -30,10 +30,15 @@
 
 package org.argouml.swingext;
 
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Graphics;
 import java.io.Serializable;
-import javax.swing.*;
-import java.awt.*;
-import javax.swing.plaf.metal.MetalLookAndFeel;
+
+import javax.swing.ButtonModel;
+import javax.swing.Icon;
+import javax.swing.SwingConstants;
+import javax.swing.UIManager;
 
 /**
  * A metal look and feel arrow icon that can be created to point to a
@@ -96,9 +101,9 @@ public class ArrowIcon implements Icon, Serializable, SwingConstants {
         // Initialize the color array
         Color[] colors = {
 	    c.getBackground(),
-	    MetalLookAndFeel.getPrimaryControlDarkShadow(),
-	    MetalLookAndFeel.getPrimaryControlInfo(),
-	    MetalLookAndFeel.getPrimaryControlHighlight()};
+	    UIManager.getColor("controlDkShadow"),
+	    UIManager.getColor("infoText"),
+	    UIManager.getColor("controlHighlight")};
 
         // Fill the background first ...
         g.setColor(c.getBackground());
