@@ -23,16 +23,20 @@
 
 package org.argouml.model.uml.foundation.core;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.List;
 
 import org.argouml.application.api.Notation;
 import org.argouml.application.api.NotationName;
 import org.argouml.kernel.Project;
+import org.argouml.model.ModelHelper;
 import org.argouml.model.uml.AbstractUmlModelFactory;
 import org.argouml.model.uml.UmlFactory;
 import org.argouml.model.uml.UmlHelper;
 import org.argouml.model.uml.foundation.extensionmechanisms.ExtensionMechanismsFactory;
+import org.argouml.model.uml.modelmanagement.ModelManagementHelper;
 import org.argouml.ui.ProjectBrowser;
 
 import ru.novosoft.uml.MFactory;
@@ -381,17 +385,24 @@ public class CoreFactory extends AbstractUmlModelFactory {
      * @return MAssociation
      */
     public MAssociation buildAssociation(MClassifier c1, boolean nav1, MClassifier c2, boolean nav2) {
-        MAssociation assoc = UmlFactory.getFactory().getCore().createAssociation();
-        assoc.setName("");
-        assoc.setNamespace(c1.getNamespace());
-        if (new AssociationNamespaceWellformednessRule().isWellformed(assoc, c2)) {
+        if (c1 == null || c2 == null) throw new IllegalArgumentException("In buildAssociation: one of the classifiers to be connected is null");
+        MNamespace ns1 = c1.getNamespace();
+        MNamespace ns2 = c2.getNamespace();
+        if (ns1 == null || ns2 == null) throw new IllegalArgumentException("In buildAssociation: one of the classifiers does not belong to a namespace");
+        boolean ns1Owner = ModelManagementHelper.getHelper().getAllNamespaces(ns1).contains(ns2);
+        boolean ns2Owner = ModelManagementHelper.getHelper().getAllNamespaces(ns2).contains(ns1);
+        if (ns1 == ns2 || ns1Owner || ns2Owner) {
+        	MAssociation assoc = UmlFactory.getFactory().getCore().createAssociation();
+        	assoc.setName("");     
+        	if (ns1Owner)
+        		assoc.setNamespace(ns1);
+        	else
+        		assoc.setNamespace(ns2);
         	buildAssociationEnd(assoc, null, c1,null, null, nav1, null, null, null, null, null);
         	buildAssociationEnd(assoc, null, c2,null, null, nav2, null, null, null, null, null);
         	return assoc;
         } else {
-        	assoc.remove();
-        	logger.fatal("Tried to construct association not in one namespace with connected classifiers!");
-        	return null;
+        	throw new IllegalArgumentException("In buildAssociation: the classifiers belong to namespaces that are no children of eachother");
         }
         
     }
@@ -448,41 +459,27 @@ public class CoreFactory extends AbstractUmlModelFactory {
         MChangeableKind changeable,
         MVisibilityKind visibility) 
     {
-        MAssociationEnd end = UmlFactory.getFactory().getCore().createAssociationEnd();
-        if (assoc != null && type != null) {
-        	end.setAssociation(assoc);
-        	if (new AssociationEndNamespaceWellformednessRule().isWellformed(end, type.getNamespace())) {
-	            end.setAssociation(assoc);
-	            assoc.addConnection(end);
-	            end.setType(type);
-        	} else {
-        		// this should never happen
-        		end.remove();
-            	logger.fatal("Tried to create associationend to a non valid classifier");
-            	return null;
+        // wellformednessrules and preconditions
+        if (assoc == null || type == null) throw new IllegalArgumentException("In buildAssociationend: either type or association are null");
+        if (type instanceof MDataType || type instanceof MInterface) {
+        	if (!navigable) throw new IllegalArgumentException("In buildAssocationend: type is either datatype or interface and is navigable to");
+        	List ends = new ArrayList();
+        	ends.addAll(assoc.getConnections());
+        	Iterator it = ends.iterator();
+        	while (it.hasNext()) {
+        		MAssociationEnd end = (MAssociationEnd)it.next();
+        		if (end.isNavigable()) throw new IllegalArgumentException("In buildAssocationend: type is either datatype or interface and is navigable to");
         	}
-        } else {
-            // this should never happen
-            end.remove();
-            logger.fatal("Tried to create associationend without association");
-            return null;
-            
         }
-        /*
-        // wellformdnessrule
-        // removed since not all developers do not aggree with this
-        if (name == null || name.equals("")) {
-        	name = "newAssociationEnd";
-        }   
+        if (aggregation != null && aggregation.equals(MAggregationKind.COMPOSITE)) {
+        	if (multi != null && multi.getUpper() > 1) {
+        		throw new IllegalArgumentException("In buildAssociationend: aggregation is composite and multiplicity > 1");
+        	}
+        }
         
-        String tempname = name;
-        int counter = 0;
-        while (!(new AssociationEndNameWellformednessRule().isWellformed(end, tempname))) {
-        	tempname = name + counter;
-        	counter++;
-        }
-        name = tempname;
-        */
+        MAssociationEnd end = UmlFactory.getFactory().getCore().createAssociationEnd();		
+        end.setAssociation(assoc);
+        end.setType(type);	
         end.setName(name);
         if (multi != null) {
             end.setMultiplicity(multi);
@@ -499,13 +496,7 @@ public class CoreFactory extends AbstractUmlModelFactory {
             end.setOrdering(MOrderingKind.UNORDERED);
         }
         if (aggregation != null) {
-        	if (new AssociationEndAggregationWellformednessRule().isWellformed(end, aggregation)) {
-            	end.setAggregation(aggregation);
-        	} else {
-        		end.remove();
-            	logger.fatal("Tried to create associationend with a non valid aggregation");
-            	return null;
-        	}
+        	end.setAggregation(aggregation);
         } else { 
             end.setAggregation(MAggregationKind.NONE);
         }

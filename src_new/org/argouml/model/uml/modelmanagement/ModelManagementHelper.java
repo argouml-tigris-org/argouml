@@ -88,5 +88,32 @@ public class ModelManagementHelper {
 		}
 		return list;
 	}
+	
+	/**
+	 * Returns all namespaces found in the projectbrowser model
+	 * @return Collection
+	 */
+	public Collection getAllNamespaces() {
+		MNamespace model = ProjectBrowser.TheInstance.getProject().getModel();
+		return getAllNamespaces(model);
+	}
+	
+	/**
+	 * Returns all namespaces found in this namespace and in its children
+	 * @return Collection
+	 */
+	public Collection getAllNamespaces(MNamespace ns) {
+		if (ns == null) return new ArrayList();
+		Iterator it = ns.getOwnedElements().iterator();
+		List list = new ArrayList();
+		while (it.hasNext()) {
+			Object o = it.next();
+			if (o instanceof MNamespace) {
+				list.add(o);
+				list.addAll(getAllNamespaces((MNamespace)o));	
+			} 
+		}
+		return list;
+	}
 }
 
