@@ -729,6 +729,15 @@ public class Project implements java.io.Serializable, TargetListener {
     }
 
     /**
+     * Get the number of diagrams in this project.
+     * Used by argo2.tee!!
+     * @return the number of diagrams in this project.
+     */
+    public int getDiagramCount() {
+        return diagrams.size();
+    }
+
+    /**
      * Finds a diagram with a specific name or UID.
      *
      * @return the diagram object (if found). Otherwize null.

@@ -32,8 +32,8 @@
       <ocl>self.description</ocl>
     </description>
   </documentation>
-  
   <searchpath href="<ocl>self.searchPath</ocl>" />
+  <diagramcount><ocl>self.diagramCount.intValue</ocl></diagramcount>
 
   <ocl>self.members</ocl>
 

@@ -194,6 +194,9 @@ public class ArgoParser extends SAXParserBase {
             LOG.debug("NOTE: ArgoParser handleStartTag:" + e.getName());
         }
         switch (tokens.toToken(e.getName(), true)) {
+        case ArgoTokenTable.TOKEN_MEMBER:
+            handleMember(e);
+            break;
         case ArgoTokenTable.TOKEN_ARGO:
             handleArgo(e);
             break;
@@ -227,9 +230,6 @@ public class ArgoParser extends SAXParserBase {
             break;
         case ArgoTokenTable.TOKEN_SEARCHPATH:
             handleSearchpath(e);
-            break;
-        case ArgoTokenTable.TOKEN_MEMBER:
-            handleMember(e);
             break;
         case ArgoTokenTable.TOKEN_HISTORYFILE:
             handleHistoryfile(e);
@@ -299,6 +299,7 @@ public class ArgoParser extends SAXParserBase {
      * @throws SAXException on any error parsing the member XML.
      */
     protected void handleMember(XMLElement e) throws SAXException {
+        LOG.info("Handle member");
         if (addMembers) {
             loadProjectMember(e);
         }
@@ -363,15 +364,20 @@ public class ArgoParser extends SAXParserBase {
         
         HashMap attributeMap = new HashMap();
         if (type.equals("xmi")) {
+            LOG.info("Creating XML loader");
             memberParser = new ModelMemberFilePersister(url, project);
         } else if (type.equals("pgml")) {
-            String value = name.substring(4, name.length() - 5);
-            attributeMap.put("name", value);
+            LOG.info("Creating PGML loader");
+            attributeMap.put("name", name);
+            attributeMap.put("type", "pgml");
             memberParser = new DiagramMemberFilePersister(url, project);
         } else if (type.equals("todo")) {
+            LOG.info("Creating todo loader");
             memberParser = new TodoListMemberFilePersister();
         }
+        LOG.info("Loading member");
         memberParser.load(attributeMap);
+        LOG.info("Member loaded");
     }
 
 } /* end class ArgoParser */

@@ -30,12 +30,15 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+import org.apache.log4j.Logger;
+
 
 /**
  * A BufferInputStream that is aware of XML structure.
  * It can searches for the first occurence of a named tag
  * and reads only the data (inclusively) from that tag
- * to the matching end tag.
+ * to the matching end tag or it can search for the first
+ * occurence of a named tag and read on the child tags.
  * The tag is not expected to be an empty tag.
  * @author Bob Tarling
  */
@@ -48,27 +51,86 @@ class XmlInputStream extends BufferedInputStream {
     private String tagName;
     private String endTagName;
     private Map attributes;
+    private boolean childOnly;
+    private int instanceRequired;
+    private int instanceCount;
+    
+    private static final Logger LOG = 
+        Logger.getLogger(XmlInputStream.class);
     
     /**
-     * Construct a new XmiInputStream
+     * Construct a new XmlInputStream
+     * @param in the input stream to wrap.
+     * @param tag the tag name from which to start reading
+     */
+    public XmlInputStream(InputStream in, String theTag, int instance) {
+        this(in, theTag, null, false);
+    }
+    
+    /**
+     * Construct a new XmlInputStream
      * @param in the input stream to wrap.
      * @param tag the tag name from which to start reading
      */
     public XmlInputStream(InputStream in, String theTag) {
-        this(in, theTag, null);
+        this(in, theTag, null, false);
     }
     
     /**
-     * Construct a new XmiInputStream
+     * Construct a new XmlInputStream
      * @param in the input stream to wrap.
      * @param tag the tag name from which to start reading
      * @param instanceNo the instance of the tag required (starting at zero)
      */
     public XmlInputStream(InputStream in, String theTag, Map attribs) {
+        this(in, theTag, attribs, false);
+    }
+    
+    /**
+     * Construct a new XmlInputStream
+     * @param in the input stream to wrap.
+     * @param tag the tag name from which to start reading
+     * @param instanceNo the instance of the tag required (starting at zero)
+     */
+    public XmlInputStream(InputStream in, String theTag, Map attribs, int instance) {
+        this(in, theTag, attribs, false);
+    }
+    
+    /**
+     * Construct a new XmlInputStream
+     * @param in the input stream to wrap.
+     * @param tag the tag name from which to start reading
+     * @param child if true this will read only the children
+     *              of the named tag otherwise the named tag
+     *              and children are read.
+     */
+    public XmlInputStream(InputStream in, String theTag, boolean child) {
+        this(in, theTag, null, child);
+    }
+    
+    /**
+     * Construct a new XmlInputStream
+     * @param in the input stream to wrap.
+     * @param tag the tag name from which to start reading
+     * @param instanceNo the instance of the tag required (starting at zero)
+     * @param child if true this will read only the children
+     *              of the named tag otherwise the named tag
+     *              and children are read.
+     */
+    public XmlInputStream(InputStream in,
+                          String theTag,
+                          Map attribs,
+                          boolean child) {
         super(in);
         this.tagName = theTag;
         this.endTagName = '/' + theTag;
         this.attributes = attribs;
+        this.childOnly = child;
+        if (child) {
+            LOG.info("Reading input stream after tag " + theTag + " with attributes " + attribs);
+        } else {
+            LOG.info("Reading input stream from tag " + theTag + " with attributes " + attribs);
+        }
     }
     
     /**
@@ -187,10 +249,10 @@ class XmlInputStream extends BufferedInputStream {
         int i;
         boolean found;
         while (true) {
-            mark(1000);
+            if (!childOnly) mark(1000);
             // Keep reading till we get the left bracket of an opening tag
             while (realRead() != '<') {
-                mark(1000);
+                if (!childOnly) mark(1000);
             }
             found = true;
             // Compare each following character to see
@@ -231,6 +293,28 @@ class XmlInputStream extends BufferedInputStream {
             }
             
             if (found) {
+                if (instanceCount < instanceRequired) {
+                    found = false;
+                    ++instanceCount;
+                }
+            }
+            
+            if (found) {
+                if (childOnly) {
+                    // Read the name of the child tag
+                    // and then reset read position
+                    // back to that child tag.
+                    mark(1000);
+                    while (realRead() != '<');
+                    tagName = "";
+                    char ch;
+                    while (!isNameTerminator(ch = (char) realRead())) {
+                        tagName += ch;
+                    }
+                    endTagName = "/" + tagName;
+                    LOG.info("Start tag = " + tagName);
+                    LOG.info("End tag = " + endTagName);
+                }
                 reset();
                 return;
             }

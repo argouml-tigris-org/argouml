@@ -72,7 +72,7 @@ class DiagramMemberFilePersister extends MemberFilePersister {
         this.attributes = attribs;
         try {
             inputStream =
-                new XmlInputStream(url.openStream(), "pgml", attribs);
+                new XmlInputStream(url.openStream(), "member", attribs, true);
             PGMLParser.getInstance().setOwnerRegistry(project.getUUIDRefs());
             ArgoDiagram d =
                     (ArgoDiagram) PGMLParser.getInstance().readDiagram(
