@@ -45,7 +45,10 @@ import org.argouml.util.ConfigLoader;
 
 import ru.novosoft.uml.behavior.collaborations.MClassifierRole;
 
-
+/**
+ * @todo this property panel needs refactoring to remove dependency on
+ *       old gui components.
+ */
 public class PropPanelClassifierRole extends PropPanelClassifier {
 
 

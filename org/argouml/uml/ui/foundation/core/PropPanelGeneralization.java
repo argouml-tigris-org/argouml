@@ -53,6 +53,10 @@ import ru.novosoft.uml.foundation.core.MNamespace;
 import ru.novosoft.uml.foundation.extension_mechanisms.MStereotype;
 import ru.novosoft.uml.model_management.MPackage;
 
+/**
+ * @todo this property panel needs refactoring to remove dependency on
+ *       old gui components.
+ */
 public class PropPanelGeneralization extends PropPanelModelElement {
      protected static Category cat = 
         Category.getInstance(PropPanelGeneralization.class);

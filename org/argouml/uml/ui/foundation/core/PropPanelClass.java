@@ -48,6 +48,10 @@ import ru.novosoft.uml.foundation.core.MClass;
 import ru.novosoft.uml.foundation.core.MClassifier;
 import ru.novosoft.uml.foundation.core.MNamespace;
 
+/**
+ * @todo this property panel needs refactoring to remove dependency on
+ *       old gui components.
+ */
 public class PropPanelClass extends PropPanelClassifier {
 
     private JScrollPane _attributeScroll;

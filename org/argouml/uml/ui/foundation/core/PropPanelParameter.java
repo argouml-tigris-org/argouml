@@ -53,6 +53,10 @@ import ru.novosoft.uml.foundation.core.MParameter;
 import ru.novosoft.uml.foundation.data_types.MParameterDirectionKind;
 import ru.novosoft.uml.foundation.extension_mechanisms.MStereotype;
 
+/**
+ * @todo this property panel needs refactoring to remove dependency on
+ *       old gui components.
+ */
 public class PropPanelParameter extends PropPanelModelElement {
 
     public PropPanelParameter() {

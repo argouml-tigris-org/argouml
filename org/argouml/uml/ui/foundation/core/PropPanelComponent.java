@@ -42,6 +42,9 @@ import ru.novosoft.uml.foundation.core.MComponent;
  *
  * <p>$Id$
  *
+ * @todo this property panel needs refactoring to remove dependency on
+ *       old gui components.
+ *
  * @author 5eichler@informatik.uni-hamburg.de
  */
 public class PropPanelComponent extends PropPanelClassifier {

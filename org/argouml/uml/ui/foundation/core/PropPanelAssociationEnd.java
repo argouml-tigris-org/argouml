@@ -49,6 +49,10 @@ import org.argouml.util.ConfigLoader;
 import ru.novosoft.uml.foundation.core.MAssociation;
 import ru.novosoft.uml.foundation.core.MAssociationEnd;
 
+/**
+ * @todo this property panel needs refactoring to remove dependency on
+ *       old gui components.
+ */
 public class PropPanelAssociationEnd extends PropPanelModelElement {
 
     protected JLabel associationsLabel;

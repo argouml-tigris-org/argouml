@@ -51,6 +51,10 @@ import ru.novosoft.uml.behavior.common_behavior.MSignal;
 import ru.novosoft.uml.foundation.core.MBehavioralFeature;
 import ru.novosoft.uml.foundation.core.MNamespace;
 
+/**
+ * @todo this property panel needs refactoring to remove dependency on
+ *       old gui components.
+ */
 public class PropPanelSignal extends PropPanelModelElement {
 
 

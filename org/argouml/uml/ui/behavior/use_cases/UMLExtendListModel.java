@@ -72,6 +72,11 @@ import org.argouml.model.uml.modelmanagement.ModelManagementHelper;
  *   the container is a use case) or the extension use case (where the
  *   container is an extension point, rather than name of the extend
  *   relationship itself.</p>
+ *
+ * @deprecated as of ArgoUml 0.13.5 (10-may-2003),
+ *             replaced by ?,
+ *             this class is part of the 'old'(pre 0.13.*) implementation of proppanels
+ *             that used reflection a lot.
  */
 
 public class UMLExtendListModel extends UMLBinaryRelationListModel  {

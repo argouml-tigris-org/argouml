@@ -57,6 +57,9 @@ import ru.novosoft.uml.foundation.data_types.MBooleanExpression;
  * <p>This is a type of Relationship, but, since Relationship has no semantic
  *   meaning of its own, we derive directly from PropPanelModelElement (as
  *   other children of Relationship do).</p>
+ *
+ * @todo this property panel needs refactoring to remove dependency on
+ *       old gui components.
  */
 
 public class PropPanelExtend extends PropPanelModelElement {

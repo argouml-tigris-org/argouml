@@ -46,6 +46,9 @@ import ru.novosoft.uml.foundation.core.MModelElement;
 
 /**
  * @author Jaap
+ *
+ * @todo this property panel needs refactoring to remove dependency on
+ *       old gui components.
  */
 public class PropPanelReception extends PropPanelModelElement {
 	
