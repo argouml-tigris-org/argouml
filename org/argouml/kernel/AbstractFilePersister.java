@@ -38,9 +38,11 @@ import org.tigris.gef.ocl.OCLExpander;
  * 
  * @author Bob Tarling
  */
-public abstract class AbstractFilePersister extends FileFilter implements ProjectFilePersister {
+public abstract class AbstractFilePersister extends FileFilter 
+    implements ProjectFilePersister {
     
-    private static final Logger LOG = Logger.getLogger(AbstractFilePersister.class);
+    private static final Logger LOG = 
+        Logger.getLogger(AbstractFilePersister.class);
     
     protected static final String ARGO_TEE = "/org/argouml/xml/dtd/argo.tee";
 
@@ -51,6 +53,10 @@ public abstract class AbstractFilePersister extends FileFilter implements Projec
      */
     protected static OCLExpander expander;
     
+    /**
+     * The extension valid for this type of file.
+     * (Just the chars, not the dot: e.g. "zargo".)
+     */
     protected String extension;
     protected String desc;
     
@@ -65,7 +71,7 @@ public abstract class AbstractFilePersister extends FileFilter implements Projec
      * @throws FileNotFoundException if any of the files cannot be found.
      */
     protected File copyFile(File dest, File src)
-            throws FileNotFoundException, IOException {
+        throws FileNotFoundException, IOException {
         
         // first delete dest file
         if (dest.exists()) {
@@ -92,6 +98,9 @@ public abstract class AbstractFilePersister extends FileFilter implements Projec
     ////////////////////////////////////////////////////////////////
     // FileFilter API
 
+    /**
+     * @see javax.swing.filechooser.FileFilter#accept(java.io.File)
+     */
     public boolean accept(File f) {
         if (f == null) return false;
         if (f.isDirectory()) return true;
@@ -101,6 +110,9 @@ public abstract class AbstractFilePersister extends FileFilter implements Projec
         return false;
     }
     
+    /**
+     * @return the extension valid for this type of file
+     */
     public String getExtension() {
         return extension;
     }
@@ -118,6 +130,9 @@ public abstract class AbstractFilePersister extends FileFilter implements Projec
         return null;
     }
 
+    /**
+     * @see javax.swing.filechooser.FileFilter#getDescription()
+     */
     public String getDescription() {
         return desc + " (*." + extension + ")";
     }
