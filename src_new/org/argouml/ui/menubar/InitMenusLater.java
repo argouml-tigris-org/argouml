@@ -31,8 +31,8 @@ import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.KeyStroke;
 
-import org.argouml.ui.ActionGoToEdit;
-import org.argouml.ui.Actions;
+//import org.argouml.ui.ActionGoToEdit;
+//import org.argouml.ui.Actions;
 import org.argouml.uml.ui.ActionLayout;
 import org.tigris.gef.base.CmdAlign;
 import org.tigris.gef.base.CmdDistribute;
@@ -62,7 +62,7 @@ import org.tigris.gef.base.CmdReorder;
  */
 class InitMenusLater implements Runnable {
     JMenu align, distribute, reorder, nudge, setPreferredSize, layout;
-    JMenu /*editTabs,*/ detailsTabs;  //MVW
+    JMenu /*editTabs,*/ detailsTabs; 
 
     /**
      * Constructs this new runnable to initialize the submenus.
@@ -76,14 +76,14 @@ class InitMenusLater implements Runnable {
     public InitMenusLater(JMenu align, JMenu distribute,
 			  JMenu reorder, JMenu nudge,
 			  JMenu layout
-                          //, JMenu editTabs  //MVW  Issue 2321 and 2322
+                          //, JMenu editTabs  // Issue 2321 and 2322
                           ) {
 	this.align = align;
 	this.distribute = distribute;
 	this.reorder = reorder;
 	this.nudge = nudge;
 	this.layout = layout;
-	//this.editTabs = editTabs;  //MVW
+	//this.editTabs = editTabs;  
     }
 
     /**

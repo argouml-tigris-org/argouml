@@ -29,7 +29,7 @@ import java.util.Collection;
 import java.util.List;
 import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.ToDoItem;
-import org.argouml.uml.cognitive.UMLToDoItem;
+//import org.argouml.uml.cognitive.UMLToDoItem;
 import org.argouml.model.ModelFacade;
 
 /** A critic to check whether to classes sharing a 1..1 association can or

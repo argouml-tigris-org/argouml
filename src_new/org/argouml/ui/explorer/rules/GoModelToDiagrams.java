@@ -27,7 +27,7 @@ package org.argouml.ui.explorer.rules;
 import java.util.Collection;
 
 import org.argouml.model.ModelFacade;
-import org.argouml.i18n.Translator;
+//import org.argouml.i18n.Translator;
 import org.argouml.kernel.ProjectManager;
 
 /**
