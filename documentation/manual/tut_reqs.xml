@@ -903,7 +903,7 @@ Modifications
         on the association icon on the editing pane toolbar
         (<guiicon><inlinemediaobject><imageobject><imagedata format="GIF"
         align="center" fileref="images/icons/association.gif"/>
-        </imageobject></inlinemediaobject></guiicon>). then old &button1; down
+        </imageobject></inlinemediaobject></guiicon>). then hold &button1; down
         at the use case, move to the actor and release &button1; (or
         alternatively start at the actor and finish at the use case).</para>
 
