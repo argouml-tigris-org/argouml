@@ -98,7 +98,15 @@ public class UMLClassDiagram extends UMLDiagram {
 
 
   public UMLClassDiagram() {
-    try { setName("class diagram " + _ClassDiagramSerial++); }
+  	String name = null;
+  	Object[] args = {name};
+  	do {
+        name = "class diagram " + _ClassDiagramSerial;
+        _ClassDiagramSerial++;
+        args[0] = name;
+    }
+    while (vetoCheck("name", args));
+    try { setName(name); }
     catch (PropertyVetoException pve) { }
   }
 
