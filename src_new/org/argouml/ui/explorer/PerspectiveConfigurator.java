@@ -275,20 +275,19 @@ public class PerspectiveConfigurator extends ArgoDialog {
         configPanel.add(rulesScroll);
         
         // add action listeners:
-        newPerspectiveButton
-        .addActionListener(new NewPerspectiveListener());
-        removePerspectiveButton
-        .addActionListener(new RemovePerspectiveListener());
+        newPerspectiveButton.addActionListener(new NewPerspectiveListener());
+        removePerspectiveButton.addActionListener(
+                new RemovePerspectiveListener());
         dupPersButton.addActionListener(new DuplicatePerspectiveListener());
         addRuleButton.addActionListener(new RuleListener());
         removeRuleButton.addActionListener(new RuleListener());
-        perspectiveList
-        .addListSelectionListener(new PerspectiveListSelectionListener());
-        perspectiveRulesList
-        .addListSelectionListener(new RulesListSelectionListener());
+        perspectiveList.addListSelectionListener(
+                new PerspectiveListSelectionListener());
+        perspectiveRulesList.addListSelectionListener(
+                new RulesListSelectionListener());
         perspectiveRulesList.addMouseListener(new RuleListMouseListener());
-        ruleLibraryList
-        .addListSelectionListener(new LibraryListSelectionListener());
+        ruleLibraryList.addListSelectionListener(
+                new LibraryListSelectionListener());
         ruleLibraryList.addMouseListener(new RuleListMouseListener());
         
         removePerspectiveButton.setEnabled(false);
