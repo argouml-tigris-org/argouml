@@ -87,7 +87,7 @@ public class TestUMLElementOwnershipSpecificationCheckBox extends TestCase {
 	// there is no GUI available.
 	// If so, all tests are inconclusive.
 	try {
-	    box = new UMLElementOwnershipSpecificationCheckBox(mockcomp);
+	    box = new UMLElementOwnershipSpecificationCheckBox();
 	} catch (java.lang.InternalError e1) {
 	    return;
 	} catch (java.lang.NoClassDefFoundError e2) {

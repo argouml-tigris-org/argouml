@@ -64,7 +64,7 @@ public class TestUMLFeatureOwnerScopeCheckBox extends TestCase {
 	// there is no GUI available.
 	// If so, all tests are inconclusive.
 	try {
-	    box = new UMLFeatureOwnerScopeCheckBox(mockcomp);
+	    box = new UMLFeatureOwnerScopeCheckBox();
 	} catch (java.lang.InternalError e1) {
 	    return;
 	} catch (java.lang.NoClassDefFoundError e2) {
