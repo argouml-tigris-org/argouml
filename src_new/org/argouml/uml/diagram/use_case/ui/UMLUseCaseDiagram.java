@@ -308,7 +308,7 @@ public class UMLUseCaseDiagram extends UMLDiagram {
 
     protected static String getNewDiagramName() {
         String name = null;
-        name = "Usecase Diagram " + _UseCaseDiagramSerial;
+        name = "Use Case Diagram " + _UseCaseDiagramSerial;
         _UseCaseDiagramSerial++;
         if (!(ProjectManager.getManager().getCurrentProject()
 	      .isValidDiagramName(name))) {
