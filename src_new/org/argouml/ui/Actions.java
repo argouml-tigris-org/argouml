@@ -150,6 +150,7 @@ public class Actions {
   //public static UMLAction MInstance = new ActionInstance();
   public static UMLAction AddAttribute = new ActionAddAttribute();
   public static UMLAction AddOperation = new ActionAddOperation();
+  public static UMLAction AddNote = new ActionAddNote();
   public static UMLAction AddMessage = new ActionAddMessage();
   public static UMLAction AddInternalTrans = new ActionAddInternalTrans();
 
@@ -335,7 +336,7 @@ class ActionOpenProject extends UMLAction {
 	        Globals.setLastDirectory(path);
                 URL url = theFile.toURL();
                 if(url != null) {
-                     p = Project.loadProject(url);
+		    p = Project.loadProject(url);
                     pb.setProject(p);
                     pb.showStatus("Read " + url.toString());
                 }
@@ -1666,6 +1667,102 @@ class ActionAddOperation extends UMLChangeAction {
 	return super.shouldBeEnabled() && target instanceof MClassifier;
     }
 } /* end class ActionAddOperation */
+
+class ActionAddNote extends UMLChangeAction {
+
+    public ActionAddNote() { super("Note"); }
+
+    public void actionPerformed(ActionEvent ae) {	
+	ProjectBrowser pb = ProjectBrowser.TheInstance;
+	Object target = pb.getDetailsTarget();
+	Object d = pb.getTarget();
+	
+	if (!(target instanceof MClassifier)) return;
+	MClassifier cls = (MClassifier)target;
+    
+	Editor ce = Globals.curEditor();
+	GraphModel gm = ce.getGraphModel();
+	GraphNodeRenderer renderer = ce.getGraphNodeRenderer();
+	Layer lay = ce.getLayerManager().getActiveLayer();
+
+	// There are 2 FigNote classes in the project now, so I have to
+	// use the fully qualified typename here.
+	org.argouml.uml.diagram.static_structure.ui.FigNote note = new org.argouml.uml.diagram.static_structure.ui.FigNote(cls);
+
+	// place the note a few pixels right of the selected figure
+	Fig f = null;  // The figure for the associated object.
+	Rectangle targetBounds=null;  // The bounds of this figure.
+        Vector figs = ce.getSelectionManager().getFigs();  // Get all the figures of the current diagram.
+        int size = figs.size();
+        for (int i = 0; i < size; i++) {  // Now search the figure for the active element
+	    f = (Fig)figs.elementAt(i);  
+	    Object owner = f.getOwner();  // Get the owner of the current figure.
+	    if((owner instanceof MModelElement) && (owner == target)) {  // If this is the figure,
+		targetBounds = f.getBounds();   // get the bounds of it.
+
+		// Place the note right of the figure,
+		note.setLocation(targetBounds.x + targetBounds.width + 80, targetBounds.y);
+
+		// And finish the search.
+		break;
+	    }
+        }
+	lay.add(note);  // Add the figure for for the note to the current layer.
+
+	// Add a link from note to associated figure
+	//
+
+	Rectangle noteBounds = note.getBounds();  // Get the bounds of the note.
+
+	// Simulate a mouseclick in the middle of the figure to get a port to connect
+	// the link to.
+	Object startPort = note.deepHitPort( noteBounds.x + noteBounds.width/2, noteBounds.y + noteBounds.height/2);      
+	Fig startPortFigure = note.getPortFig(startPort);
+
+	MutableGraphModel mgm = (MutableGraphModel)gm;
+
+	if (f instanceof FigNode) {
+	    FigNode destFigNode = (FigNode)f;
+
+	    // Place the port in the middle of the figure.
+	    Object foundPort = destFigNode.deepHitPort(targetBounds.x + targetBounds.width/2, targetBounds.y + targetBounds.height/2);
+
+	    if (foundPort != null) {
+		Fig destPortFig = destFigNode.getPortFig(foundPort);
+
+		FigEdgeNote fe = new FigEdgeNote();
+
+		fe.setSourcePortFig( startPortFigure);
+		fe.setSourceFigNode( note);
+		fe.setDestPortFig( destPortFig);
+		fe.setDestFigNode( (FigNode)f);
+
+		// Compute the route for this edge. That methods basically adds a snap point at
+		// the edge of the figures, so you can mode the edge at the edge of the figures.
+		fe.computeRoute();
+
+		lay.add(fe);  // Add the edge to the current layer.
+		lay.sendToBack(fe);
+
+		// set the new edge in place
+		note.addFigEdge(fe);
+		destFigNode.addFigEdge(fe);
+		note.updateEdges();
+		destFigNode.updateEdges();   
+		ce.damaged(fe);
+		note.damage();
+		f.damage();
+	    }
+	}
+	super.actionPerformed(ae);
+    }
+
+    public boolean shouldBeEnabled() {
+	ProjectBrowser pb = ProjectBrowser.TheInstance;
+	Object target = pb.getDetailsTarget();
+	return super.shouldBeEnabled() && target instanceof MClassifier;
+    }
+} /* end class ActionAddNote */
 
 class ActionAddMessage extends UMLChangeAction {
 	public ActionAddMessage() { super("Add Message"); }
