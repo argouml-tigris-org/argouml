@@ -510,10 +510,10 @@ class ActionLoadModelFromDB extends UMLAction {
 		String modelName = JOptionPane.showInputDialog("What is the name of the model?");
 		if ((modelName == null)|| (modelName.equals(""))) return;
 		DBLoader loader = new DBLoader();
-		
-		MModel newModel = loader.read(modelName);
-		ProjectBrowser.TheInstance.setProject(new Project(newModel));
-		
+		if (loader.hasConnection()) {
+		    MModel newModel = loader.read(modelName);
+		    ProjectBrowser.TheInstance.setProject(new Project(newModel));
+		}
 	}
 	public boolean shouldBeEnabled() {
 
@@ -552,15 +552,17 @@ class ActionStoreModelToDB extends UMLAction {
 
 	  DBWriter writer = new DBWriter();
 	  
-      ProjectBrowser pb = ProjectBrowser.TheInstance;
-      Project p =  pb.getProject();
-	  
-	  MNamespace nm = p.getCurrentNamespace();
-	  if (!(nm instanceof MModel)) {
+	  if (writer.hasConnection()) {
+	      ProjectBrowser pb = ProjectBrowser.TheInstance;
+	      Project p =  pb.getProject();
+	      
+	      MNamespace nm = p.getCurrentNamespace();
+	      if (!(nm instanceof MModel)) {
 		  JOptionPane.showMessageDialog(null, "Error", "Current Namespace is not a Model", JOptionPane.ERROR_MESSAGE);
 		  return;
+	      }
+	      writer.store((MModel)nm);
 	  }
-	  writer.store((MModel)nm);
 
 	  // one could also store all models of the project,
 	  //don't know which is better.

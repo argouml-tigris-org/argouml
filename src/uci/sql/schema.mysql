@@ -1,0 +1,299 @@
+\u uml;
+# This is a database scheme to represent UML models in a relational
+# database. It is written for mySQL (www.mysql.com), but should work 
+# with any DB that understands ANSI sql. Maybe you have to change the
+# datatype BIT to BOOL or BOOLEAN, though. BTW, BIT is not mentioned
+# in mySQL documentation, but works.
+# Right now this scheme only covers elements from following UML packages:
+#
+# foundation/core
+# foundation/data_types
+# foundation/extension_mechanisms
+# behavior/use_cases
+# model_management
+#
+# but it is enough to store information from class diagrams and use case
+# diagrams
+#
+# technical:
+# multiple relationships are handled in the direction 1-many, i.e. since
+# a ModelElement can have multiple features, there's no field "features"
+# in tModelElement, but a field "modelElement" in tFeature.
+
+#----------------
+# data types
+#----------------
+
+DROP TABLE tChangeableKind;
+CREATE TABLE tChangeableKind(
+    uuid VARCHAR(50) NOT NULL,
+    PRIMARY KEY(uuid));
+ 
+DROP TABLE tExpression;
+CREATE TABLE tExpression(
+    language VARCHAR(20),
+    body VARCHAR(100),
+    uuid VARCHAR(50) NOT NULL,
+    PRIMARY KEY(uuid));
+
+DROP TABLE tBooleanExpression;
+CREATE TABLE tBooleanExpression(
+    uuid VARCHAR(50) NOT NULL,
+    PRIMARY KEY(uuid));
+
+DROP TABLE tProcedureExpression;
+CREATE TABLE tProcedureExpression(
+    uuid VARCHAR(50) NOT NULL,
+    PRIMARY KEY(uuid));
+
+DROP TABLE tMappingExpression;
+CREATE TABLE tMappingExpression(
+    uuid VARCHAR(50) NOT NULL,
+    PRIMARY KEY(uuid));
+
+DROP TABLE tMultiplicityRange;
+CREATE TABLE tMultiplicityRange(
+    lower INTEGER,
+    upper INTEGER,
+    MultiplicityId VARCHAR(50), # REFERENCES tMultiplicity(uuid),
+    uuid VARCHAR(50) NOT NULL,
+    PRIMARY KEY(uuid));
+ 
+DROP TABLE tMultiplicity;
+CREATE TABLE tMultiplicity(
+    range VARCHAR(50), # REFERENCES tMultiplicityRange(uuid),
+    uuid VARCHAR(50) NOT NULL,
+    PRIMARY KEY(uuid));
+ 
+DROP TABLE tMapping;
+CREATE TABLE tMapping(
+    body VARCHAR(100),
+    uuid VARCHAR(50) NOT NULL,
+    PRIMARY KEY(uuid));
+ 
+#---------------------
+# extension mechanisms
+#---------------------
+DROP TABLE tStereotype;
+CREATE TABLE tStereotype(
+    uuid VARCHAR(50) NOT NULL,
+    PRIMARY KEY(uuid),
+    icon VARCHAR(100),
+    baseClass VARCHAR(100));
+#    taggedValue VARCHAR(50) , # REFERENCES tTaggedValue(uuid),
+#    extendedElement VARCHAR(50) , # REFERENCES tModelElement(uuid),
+#    constraint VARCHAR(50)); # REFERENCES tConstraint(uuid));
+ 
+DROP TABLE tTaggedValue;
+CREATE TABLE tTaggedValue(
+    uuid VARCHAR(50) NOT NULL,
+    PRIMARY KEY(uuid),
+    tag VARCHAR(100),
+    value VARCHAR(100),
+    modelElement VARCHAR(50) , # REFERENCES tModelElement(uuid),
+    stereotype VARCHAR(50) ); # REFERENCES tStereotype(uuid));
+
+#------------------
+# core
+#-----------------
+
+DROP TABLE tAttribute;
+CREATE TABLE tAttribute(
+    uuid VARCHAR(50) NOT NULL,
+    PRIMARY KEY(uuid),
+    initialValue VARCHAR(100));
+ 
+DROP TABLE tOperation;
+CREATE TABLE tOperation(
+    uuid VARCHAR(50) NOT NULL,
+    PRIMARY KEY(uuid),
+    concurrency VARCHAR(100),
+    isRoot BIT,
+    isLeaf BIT,
+    isAbstract BIT,
+    specification VARCHAR(100),
+    method VARCHAR(50) ); # REFERENCES tMethod(uuid)); # NOT USED IN ARGO!!!
+ 
+DROP TABLE tMethod;
+CREATE TABLE tMethod(
+    uuid VARCHAR(50) NOT NULL,
+    PRIMARY KEY(uuid),
+    body VARCHAR(100),
+    specification VARCHAR(50) ); # REFERENCES tOperation(uuid)); 
+ 
+DROP TABLE tStructuralFeature;
+CREATE TABLE tStructuralFeature(
+    uuid VARCHAR(50) NOT NULL,
+    PRIMARY KEY(uuid),
+    multiplicity VARCHAR(50), # as MMultiplicityKind.toString(),
+    changeability  VARCHAR(50), # as MChangeabilityKindgetValue(),
+    targetScope VARCHAR(50), # as MScopeKind.getValue(),
+    type VARCHAR(50) ); # REFERENCES tClassifier(uuid));
+
+DROP TABLE tBehavioralFeature;
+CREATE TABLE tBehavioralFeature(
+    uuid VARCHAR(50) NOT NULL,
+    PRIMARY KEY(uuid),
+    isQuery BIT);
+#    parameter VARCHAR(50) ); # REFERENCES tParameter(uuid));
+ 
+DROP TABLE tClassifier;
+CREATE TABLE tClassifier(
+    uuid VARCHAR(50) NOT NULL,
+    PRIMARY KEY(uuid),
+    feature VARCHAR(50) ); # REFERENCES tFeature(uuid)); # NOT USED!!!
+ 
+DROP TABLE tFeature;
+CREATE TABLE tFeature(
+    uuid VARCHAR(50) NOT NULL,
+    PRIMARY KEY(uuid),
+    ownerScope VARCHAR(50), # as MOwnerScopeKind.getValue()
+    visibility VARCHAR(50), # as MVisibilityKind.getValue()
+    owner VARCHAR(50) ); # REFERENCES tClassifier(uuid));
+
+DROP TABLE tNamespace;
+CREATE TABLE tNamespace(
+    uuid VARCHAR(50) NOT NULL,
+    PRIMARY KEY(uuid),
+    ownedElement VARCHAR(50) ); # REFERENCES tModelElement(uuid)); # NOT USED!!!
+
+DROP TABLE tGeneralizableElement;
+CREATE TABLE tGeneralizableElement(
+    uuid VARCHAR(50) NOT NULL,
+    PRIMARY KEY(uuid),
+    isRoot BIT,
+    isLeaf BIT,
+    isAbstract BIT);
+
+DROP TABLE tParameter;
+CREATE TABLE tParameter(
+    uuid VARCHAR(50) NOT NULL,
+    PRIMARY KEY(uuid),
+    defaultValue VARCHAR(100),
+    kind VARCHAR(50),  # REFERENCES tParameterDirectionKind(uuid),
+    behavioralFeature VARCHAR(50), # REFERENCES tBehavioralFeature(uuid),
+    type VARCHAR(50)); # REFERENCES tClassifier(uuid));
+
+DROP TABLE tConstraint;
+CREATE TABLE tConstraint(
+    uuid VARCHAR(50) NOT NULL,
+    PRIMARY KEY(uuid),
+    body VARCHAR(100),
+    constrainedElement VARCHAR(50) ); # REFERENCES tModelElement(uuid));
+
+DROP TABLE tModelElement;
+CREATE TABLE tModelElement(
+    uuid VARCHAR(50) NOT NULL,
+    PRIMARY KEY(uuid),
+    name VARCHAR(100),
+    namespace VARCHAR(50), # REFERENCES tNamespace(uuid),
+    stereotype VARCHAR(50), # REFERENCES tStereotype(uuid),
+    constraint VARCHAR(50), # REFERENCES tConstraint(uuid),
+    package VARCHAR(50), # REFERENCES tPackage(uuid));
+    UMLClassName VARCHAR(20)); # not in UML spec, this is for easier loading
+
+DROP TABLE tAssociation;
+CREATE TABLE tAssociation(
+    uuid VARCHAR(50) NOT NULL,
+    PRIMARY KEY(uuid),
+#    classifier1 VARCHAR(50), # REFERENCES tClassifier(uuid));
+#    classifier2 VARCHAR(50), # REFERENCES tClassifier(uuid));
+    connection1 VARCHAR(50), # REFERENCES tAssociationEnd(uuid));
+    connection2 VARCHAR(50)); # REFERENCES tAssociationEnd(uuid));
+
+DROP TABLE tAssociationEnd;
+CREATE TABLE tAssociationEnd(
+    uuid VARCHAR(50) NOT NULL,
+    PRIMARY KEY(uuid),
+    isNavigable BIT,
+    ordering INTEGER,
+    aggregation INTEGER,
+    targetScope INTEGER,
+    multiplicity VARCHAR(4),
+    changeability INTEGER,
+    visibility INTEGER,
+    type VARCHAR(50), # REFERENCES tClassifier(uuid),
+    association VARCHAR(50) ); # REFERENCES tAssociation(uuid));
+
+DROP TABLE tClass;
+CREATE TABLE tClass(
+    uuid VARCHAR(50) NOT NULL,
+    PRIMARY KEY(uuid),
+    isActive BIT);
+
+DROP TABLE tDataType;
+CREATE TABLE tDataType(
+    uuid VARCHAR(50) NOT NULL,
+    PRIMARY KEY(uuid));
+
+DROP TABLE tDependency;
+CREATE TABLE tDependency(
+    uuid VARCHAR(50) NOT NULL,
+    PRIMARY KEY(uuid),
+    supplier VARCHAR(50), # REFERENCES tModelElement(uuid),
+    client VARCHAR(50)); # REFERENCES tModelElement(uuid));
+
+DROP TABLE tBinding;
+CREATE TABLE tBinding(
+    uuid VARCHAR(50) NOT NULL,
+    PRIMARY KEY(uuid),
+    argument VARCHAR(50)); # REFERENCES tModelElement(uuid));
+
+DROP TABLE tUsage;
+CREATE TABLE tUsage(
+    uuid VARCHAR(50) NOT NULL,
+    PRIMARY KEY(uuid));
+
+DROP TABLE tPermission;
+CREATE TABLE tPermission(
+    uuid VARCHAR(50) NOT NULL,
+    PRIMARY KEY(uuid));
+
+DROP TABLE tAbstraction;
+CREATE TABLE tAbstraction(
+    uuid VARCHAR(50) NOT NULL,
+    PRIMARY KEY(uuid),
+#    mapping VARCHAR(50)); # REFERENCES tMappingExpression(uuid));
+    mapping VARCHAR(100)); # don't use MappinExpression, avoiding unnecessary overhead
+
+DROP TABLE tInterface;
+CREATE TABLE tInterface(
+    uuid VARCHAR(50) NOT NULL,
+    PRIMARY KEY(uuid));
+
+DROP TABLE tGeneralization;
+CREATE TABLE tGeneralization(
+    uuid VARCHAR(50) NOT NULL,
+    PRIMARY KEY(uuid),
+    discriminator VARCHAR(60),
+    parent VARCHAR(50), # REFERENCES tGeneralizableElement(uuid),
+    child VARCHAR(50)); # REFERENCES tGeneralizableElement(uuid));
+
+#------------------------
+# behavior.use_cases
+#------------------------
+
+DROP TABLE tUseCase;
+CREATE TABLE tUseCase(
+    uuid VARCHAR(50) NOT NULL,
+    PRIMARY KEY(uuid));
+
+DROP TABLE tActor;
+CREATE TABLE tActor(
+    uuid VARCHAR(50) NOT NULL,
+    PRIMARY KEY(uuid));
+
+#------------------------
+# model management
+#------------------------
+
+DROP TABLE tModel;
+CREATE TABLE tModel(
+    uuid VARCHAR(50) NOT NULL,
+    PRIMARY KEY(uuid));
+
+DROP TABLE tPackage;
+CREATE TABLE tPackage(
+    uuid VARCHAR(50) NOT NULL	,
+    PRIMARY KEY(uuid));
+

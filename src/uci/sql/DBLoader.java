@@ -3,6 +3,13 @@ package uci.sql;
 import java.sql.*;
 import java.io.*;
 import java.util.Properties;
+import javax.swing.*;
+import javax.swing.event.*;
+import javax.swing.tree.*;
+import javax.swing.text.*;
+import javax.swing.table.*;
+import javax.swing.border.*;
+import javax.swing.plaf.metal.MetalLookAndFeel;
 
 import com.sun.java.util.collections.*;
 
@@ -48,6 +55,7 @@ public class DBLoader
 	catch (IOException e) {
 	    System.out.println("Could not load DB properties from /db.ini");
 	    System.out.println(e);
+	    errorMessage("Could not load DB properties from /db.ini", e);
 	}
 
 	DBName = props.getProperty("db");
@@ -62,15 +70,25 @@ public class DBLoader
 	catch (Exception e) {
 	    System.out.println("Could not load the database driver!");
 	    System.out.println(e);
+	    errorMessage("Could not load the database driver!",e);
 	}
 	try {Conn = DriverManager.getConnection(DBUrl);}
 	catch (SQLException e) {
 	    System.out.println("Could not connect to database!");
 	    System.out.println(e.getMessage());
 	    System.out.println(e.getSQLState());
+	    errorMessage("Could not connect to database!",e);
 	}
     }
+
+    /** test whether we can use this DBLoader */
+    public boolean hasConnection() {
+	return (Conn != null);
+    }
 	
+    private void errorMessage(String msg, Exception e) {
+	JOptionPane.showMessageDialog(null, msg, "Database error", JOptionPane.ERROR_MESSAGE);
+    }
 	/**
 	 * This method is called from ActionLoadModelFromDb. It's the only 
 	 * public method, the only one you actually need to call to get a MModel
@@ -96,6 +114,7 @@ public class DBLoader
 		catch (SQLException E) {
 			System.out.println("error while executing!");
 			System.out.println(E);
+			errorMessage("Error while loading the model from the database!",E);
 		}
 		finally {
 			if (rs != null) { try {rs.close();} catch (SQLException SQLE) {} }	    

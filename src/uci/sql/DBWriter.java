@@ -11,7 +11,6 @@ import javax.swing.table.*;
 import javax.swing.border.*;
 import javax.swing.plaf.metal.MetalLookAndFeel;
 
-
 import com.sun.java.util.collections.*;
 
 import uci.uml.util.*;
@@ -32,10 +31,8 @@ import ru.novosoft.uml.behavior.use_cases.*;
 
 public class DBWriter
 {
-    String DBUrl = "jdbc:mysql://";
-    String DBName = "";
     String configFile = null;
-	String stmtString = "";
+    String stmtString = "";
     Properties props = null;
     static Connection Conn = null;
 
@@ -45,6 +42,13 @@ public class DBWriter
 
     public DBWriter ()
     {
+
+// 	DBName = props.getProperty("db");
+// 	DBUrl += props.getProperty("host") + "/";
+// 	DBUrl += DBName;
+// 	DBUrl += "?" + "user=" + props.getProperty("user");
+// 	DBUrl += "&" + "password=" + props.getProperty("password");
+
 	props = new Properties();
 	configFile =  System.getProperty("argo.dbconfig", "/db.ini");
 	try {
@@ -52,16 +56,10 @@ public class DBWriter
 	    props.load(is);
 	}	
 	catch (IOException e) {
-	    errorMessage("Could not load DB properties from /db.ini", e);
-	    System.out.println("Could not load DB properties from /db.ini");
+	    System.out.println("Could not load DB properties from " + configFile);
 	    System.out.println(e);
+	    errorMessage("Could not load DB properties from " + configFile, e);
 	}
-
-	DBName = props.getProperty("db");
-	DBUrl += props.getProperty("host") + "/";
-	DBUrl += DBName;
-	DBUrl += "?" + "user=" + props.getProperty("user");
-	DBUrl += "&" + "password=" + props.getProperty("password");
 
 	try {
 	    Class.forName(props.getProperty("driver")).newInstance();	    
@@ -69,20 +67,53 @@ public class DBWriter
 	catch (Exception e) {
 	    System.out.println("Could not load the database driver!");
 	    System.out.println(e);
+	    errorMessage("Could not load the database driver!",e);
 	}
+
+	String dbURL = "jdbc:mysql://";
+	dbURL += props.getProperty("host") + ":";
+	dbURL += props.getProperty("port") + "/";
+	dbURL += props.getProperty("db");
+	String dbUser = props.getProperty("user");
+	String dbPassword = props.getProperty("password");
+	String dbConnectFormat = props.getProperty("dbConnectFormat");
+
+
+ 
 	try {
-	    Conn = DriverManager.getConnection(DBUrl);
+	    if (dbConnectFormat.equals("1")) {
+		Conn = DriverManager.getConnection(dbURL, dbUser, dbPassword);
+	    } else if (dbConnectFormat.equals("2")) {
+		Conn = DriverManager.getConnection(dbURL + "?user=" + dbUser + ";password=" + dbPassword);
+	    } else if (dbConnectFormat.equals("3")) {
+		Properties connprops = new Properties();
+		connprops.put("user", dbUser);
+		connprops.put("password", dbPassword);
+		Conn = DriverManager.getConnection(dbURL, connprops);
+	    } else if (dbConnectFormat.equals("4")) {
+		Conn = DriverManager.getConnection(dbURL + "?user="
+                                                + dbUser + "&password=" + dbPassword);
+	    } else {
+		errorMessage("Unknown dbConnectFormat choice:" + dbConnectFormat, null);
+	    }
 	}
+
 	catch (Exception e) {
 	    System.out.println("Could not connect to database!");
 	    System.out.println(e);
+	    errorMessage("Could not connect to database!",e);
 	}
     }
 
+    /** test whether we can use this DBWriter */
+    public boolean hasConnection() {
+	return (Conn != null);
+    }
 
-//     private void errorMessage(String msg, Exception e) {
-// 	JOptionPane.showMessageDialog(null, null, msg, JOptionPane.ERROR_MESSAGE);
-//     }
+
+    private void errorMessage(String msg, Exception e) {
+	JOptionPane.showMessageDialog(null, msg, "Database error", JOptionPane.ERROR_MESSAGE);
+    }
 
 	/**
 	 * This method is called from uci.uml.ui.ActionStoreProjectToDb to store the current namespace (which should be a MModel) into the database.
@@ -101,10 +132,10 @@ public class DBWriter
 	    stmt = Conn.createStatement();
 		store(model,stmt);
 	}
-	catch (SQLException E) {
+	catch (Exception E) {
 	    System.out.println("error while executing!");
-	    System.out.println(E.getSQLState());
 	    System.out.println(E);
+	    errorMessage("Error while storing the model to the database!",E);
 	}
 
 	finally {
