@@ -46,6 +46,8 @@ public class ArgoParser extends SAXParserBase {
 
   private   ArgoTokenTable _tokens = new ArgoTokenTable();
 
+    private boolean _addMembers = true;
+
   ////////////////////////////////////////////////////////////////
   // constructors
 
@@ -58,11 +60,27 @@ public class ArgoParser extends SAXParserBase {
   // the current one.
 
   public synchronized void readProject(URL url) {
+      readProject(url, true);
+  }
+
+  public synchronized void readProject(URL url, boolean addMembers) {
+      try{
+	  readProject(url.openStream(), addMembers);
+      } catch (IOException e) {
+	  System.out.println("Couldn't open InputStream in ArgoParser.load("+url+") "+e);
+	  e.printStackTrace();
+      }
+  }
+
+  public synchronized void readProject(InputStream is, boolean addMembers) {
+
+      _addMembers = addMembers;
+
     try {
       System.out.println("=======================================");
-      System.out.println("== READING PROJECT: " + url);
-      _proj = new Project(url);
-      parse(url);
+      System.out.println("== READING PROJECT");
+      _proj = new Project();
+      parse(is);
     }
     catch(SAXException saxEx) {
         System.out.println("Exception reading project================");
@@ -152,9 +170,11 @@ public class ArgoParser extends SAXParserBase {
   }
 
   protected void handleMember(XMLElement e) {
-    String name = e.getAttribute("name").trim();
-    String type = e.getAttribute("type").trim();
-    _proj.addMember(name, type);
+      if(_addMembers) {
+	  String name = e.getAttribute("name").trim();
+	  String type = e.getAttribute("type").trim();
+	  _proj.addMember(name, type);
+      }
   }
 
   protected void handleHistoryfile(XMLElement e) {

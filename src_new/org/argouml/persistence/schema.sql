@@ -211,7 +211,8 @@ CREATE TABLE tModelElement(
     name VARCHAR(100),
     namespace INTEGER(5), # REFERENCES tNamespace(NamespaceId),
     stereotype INTEGER(5), # REFERENCES tStereotype(StereotypeId),
-    PackageId INTEGER(5)); # REFERENCES tPackage(PackageId));
+    PackageId INTEGER(5)); # REFERENCES tPackage(PackageId),
+    UMLClassName VARCHAR(100));
 
 DROP TABLE tAssociation;
 CREATE TABLE tAssociation(
