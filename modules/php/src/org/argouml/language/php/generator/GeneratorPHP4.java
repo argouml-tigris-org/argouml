@@ -176,6 +176,15 @@ public class GeneratorPHP4
     }
 
     /**
+     * @see org.argouml.application.api.NotationProvider2#generateObjectFlowState(java.lang.Object)
+     */
+    public String generateObjectFlowState(Object m) {
+        Object c = ModelFacade.getType(m);
+        if (c == null) return "";
+        return ModelFacade.getName(c);
+    }
+    
+    /**
      * Generates operation
      *
      * @param modelElement Model element to generate notation for.

@@ -284,6 +284,11 @@ public final class Notation implements PropertyChangeListener {
         return getProvider(notation).generateState(m);
     }
 
+    private static String generateObjectFlowState(NotationName notation,
+          Object/*MObjectFlowState*/ m) {
+        return getProvider(notation).generateObjectFlowState(m);
+    }
+
     private static String generateStateBody(NotationName notation,
                                         Object/*MState*/ stt) {
         return getProvider(notation).generateStateBody(stt);
@@ -726,6 +731,9 @@ public final class Notation implements PropertyChangeListener {
 	}
         if (ModelFacade.isAActionState(o)) {
             return generateActionState(nn, o);
+        }
+        if (ModelFacade.isAObjectFlowState(o)) {
+            return generateObjectFlowState(nn, o);
         }
         if (ModelFacade.isAState(o)) {
             return generateState(nn, o);

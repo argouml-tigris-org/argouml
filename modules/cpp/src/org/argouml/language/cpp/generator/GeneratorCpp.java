@@ -924,6 +924,15 @@ public class GeneratorCpp extends Generator2
 	return "";
     }
 
+    /**
+     * @see org.argouml.application.api.NotationProvider2#generateObjectFlowState(java.lang.Object)
+     */
+    public String generateObjectFlowState(Object m) {
+        Object c = ModelFacade.getType(m);
+        if (c == null) return "";
+        return ModelFacade.getName(c);
+    }
+    
     /** 2002-11-28 Achim Spangler
      * seperate generation of Operation Prefix from generateOperation
      * so that generateOperation is language independent

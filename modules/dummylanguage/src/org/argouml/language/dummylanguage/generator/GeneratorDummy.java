@@ -119,6 +119,16 @@ public class GeneratorDummy extends Generator2 implements PluggableNotation {
     public String generateMessage(/*MMessage*/Object handle) {
 	return "Message(" + ModelFacade.getName(handle) + ")";
     }
+
+    /**
+     * @see org.argouml.application.api.NotationProvider2#generateObjectFlowState(java.lang.Object)
+     */
+    public String generateObjectFlowState(Object m) {
+        Object c = ModelFacade.getType(m);
+        if (c == null) return "";
+        return ModelFacade.getName(c);
+    }
+    
     public boolean canParse() { return false; }
     public boolean canParse(Object o) { return false; }
 

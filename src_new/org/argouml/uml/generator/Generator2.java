@@ -229,6 +229,11 @@ public abstract class Generator2
     public abstract String generateMultiplicity(Object m);
 
     /**
+     * @see NotationProvider2#generateObjectFlowState(Object)
+     */
+    public abstract String generateObjectFlowState(Object m);
+    
+    /**
      * @see NotationProvider2#generateState(Object)
      */
     public abstract String generateState(Object m);
