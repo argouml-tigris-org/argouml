@@ -37,6 +37,9 @@ import org.argouml.uml.ui.UMLComboBox2;
  */
 public class ActionSetMetaClass extends UMLChangeAction {
 
+    /**
+     * The Singleton.
+     */
     public static final ActionSetMetaClass SINGLETON =
 	new ActionSetMetaClass();
 
@@ -47,6 +50,9 @@ public class ActionSetMetaClass extends UMLChangeAction {
         super("Set");
     }
 
+    /**
+     * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+     */
     public void actionPerformed(ActionEvent e) {
         super.actionPerformed(e);
         Object source = e.getSource();

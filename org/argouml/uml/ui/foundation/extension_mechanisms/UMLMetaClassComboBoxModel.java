@@ -41,17 +41,17 @@ import org.argouml.uml.ui.UMLComboBoxModel2;
 public class UMLMetaClassComboBoxModel extends UMLComboBoxModel2 {
 
     private Collection metaClasses = new ArrayList(Arrays.asList(new String[] {
-            "ModelElement", "Classifier", "Class", "Interface", "DataType",
-            "Exception", "Signal",
-
-            "Association", "AssociationEnd", "Attribute", "Operation",
-            "Generalization", "Flow", "Usage", "BehavioralFeature",
-
-            "CallEvent", "Abstraction", "Component", "Package", "Constraint",
-            "Comment", "ObjectFlowState",
-
-            "Model", "Subsystem", "Collaboration", "Permission", "Actor",
-            "Node", "NodeInstance", "Link" }));
+        "ModelElement", "Classifier", "Class", "Interface", "DataType",
+        "Exception", "Signal",
+        
+        "Association", "AssociationEnd", "Attribute", "Operation",
+        "Generalization", "Flow", "Usage", "BehavioralFeature",
+        
+        "CallEvent", "Abstraction", "Component", "Package", "Constraint",
+        "Comment", "ObjectFlowState",
+        
+        "Model", "Subsystem", "Collaboration", "Permission", "Actor",
+        "Node", "NodeInstance", "Link" }));
 
     /**
      * Constructor.
@@ -64,7 +64,9 @@ public class UMLMetaClassComboBoxModel extends UMLComboBoxModel2 {
      * @see org.argouml.uml.ui.UMLComboBoxModel2#getSelectedModelElement()
      */
     protected Object getSelectedModelElement() {
-        if (getTarget() != null) { return ModelFacade.getBaseClass(getTarget()); }
+        if (getTarget() != null) { 
+            return ModelFacade.getBaseClass(getTarget()); 
+        }
         return null;
     }
 
