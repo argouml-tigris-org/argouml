@@ -31,7 +31,6 @@ import org.argouml.uml.ui.UMLComboBoxModel2;
 
 /**
  * A model for a namespace combo box,
- * $Id$
  *
  * @since Oct 10, 2002
  * @author jaap.branderhorst@xs4all.nl, alexb
@@ -53,7 +52,9 @@ public class UMLModelElementNamespaceComboBoxModel extends UMLComboBoxModel2 {
      * @see org.argouml.uml.ui.UMLComboBoxModel2#isValidElement(Object)
      */
     protected boolean isValidElement(Object o) {
-        return org.argouml.model.ModelFacade.isANamespace(o) && CoreHelper.getHelper().isValidNamespace(/*(MModelElement)*/ getTarget(), /*(MNamespace)*/ o);
+        return org.argouml.model.ModelFacade.isANamespace(o) 
+        && CoreHelper.getHelper().isValidNamespace(
+                /*(MModelElement)*/ getTarget(), /*(MNamespace)*/ o);
     }
     
     /**  
