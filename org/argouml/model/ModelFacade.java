@@ -6492,12 +6492,8 @@ public class ModelFacade {
     /**
      * The empty set.
      *
-     * @return an empty iterator.
+     * @return an empty collection.
      */
-    private static Iterator emptyIterator() {
-        return Collections.EMPTY_SET.iterator();
-    }
-
     private static Collection emptyCollection() {
         return Collections.EMPTY_LIST;
     }
