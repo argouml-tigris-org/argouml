@@ -64,7 +64,7 @@ public class ActionLayout extends UMLAction {
     public boolean shouldBeEnabled() {
 	return (super.shouldBeEnabled() 
 		&& (ProjectBrowser.TheInstance.getActiveDiagram() instanceof UMLClassDiagram)
-        && "Automatic".equals(_tabName));
+        && "action.layout-automatic".equals(_tabName));
     }
 
     /** This action performs the layout and triggers a redraw

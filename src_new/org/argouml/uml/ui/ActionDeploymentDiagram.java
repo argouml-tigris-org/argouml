@@ -45,7 +45,7 @@ public class ActionDeploymentDiagram extends ActionAddDiagram {
     // constructors
 
     private ActionDeploymentDiagram() {
-        super("DeploymentDiagram");
+        super("action.deployment-diagram");
     }
 
     ////////////////////////////////////////////////////////////////

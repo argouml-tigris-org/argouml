@@ -51,7 +51,7 @@ public class ActionSequenceDiagram extends ActionAddDiagram {
     // constructors
 
     private ActionSequenceDiagram() {
-        super("SequenceDiagram");
+        super("action.sequence-diagram");
     }
 
 

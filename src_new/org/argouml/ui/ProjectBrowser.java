@@ -543,7 +543,7 @@ public class ProjectBrowser
         Iterator it = detailsPanesByCompassPoint.values().iterator();
         while (it.hasNext()) {
             DetailsPane detailsPane = (DetailsPane)it.next();
-            if (detailsPane.selectTabNamed(tabName))
+            if (detailsPane.selectTabNamed(Argo.localize("UMLMenu", tabName)))
                 return;
         }
         throw new IllegalArgumentException("No such tab named " + tabName);

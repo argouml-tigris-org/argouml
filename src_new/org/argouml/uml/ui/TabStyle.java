@@ -81,7 +81,7 @@ implements TabFigTarget, PropertyChangeListener, DelayedVChangeListener {
   }
 
   public TabStyle() {
-    this("Style", "style.StylePanel", "style.SP");
+    this("tab.style", "style.StylePanel", "style.SP");
   }
 
   protected void initPanels() {

@@ -45,7 +45,7 @@ public class ActionAddTopLevelPackage extends UMLChangeAction {
     // constructors
 
     public ActionAddTopLevelPackage() {
-	super("Add Top-Level Package", NO_ICON);
+	super("action.add-top-level-package", NO_ICON);
     }
 
 

@@ -46,7 +46,7 @@ public class ActionCollaborationDiagram extends ActionAddDiagram {
     public static ActionCollaborationDiagram SINGLETON = new ActionCollaborationDiagram();
 
     private ActionCollaborationDiagram() {
-        super("CollaborationDiagram");
+        super("action.collaboration-diagram");
     }
 
     /**

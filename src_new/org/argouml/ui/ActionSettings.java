@@ -64,7 +64,7 @@ implements ArgoModuleEventListener {
     protected JDialog dlg = null;
 
     protected ActionSettings() {
-        super(Argo.localize(Argo.MENU_BUNDLE,"Settings..."), false);
+        super(Argo.localize(Argo.MENU_BUNDLE,"action.settings"), false);
     }
 
     /** Helper for localization.

@@ -40,7 +40,7 @@ public class ActionSaveConfiguration extends UMLAction {
     // constructors
 
     protected ActionSaveConfiguration() {
-        super(Argo.localize(Argo.MENU_BUNDLE,"Save Configuration"), false);
+        super(Argo.localize(Argo.MENU_BUNDLE,"action.save-configuration"), false);
     }
 
     ////////////////////////////////////////////////////////////////

@@ -52,7 +52,7 @@ public class ActionExit extends UMLAction {
   // constructors
   
   protected ActionExit() {
-    super ("Exit", NO_ICON);
+    super ("action.exit", NO_ICON);
     active = false;
   }
   

@@ -50,7 +50,7 @@ public class ActionClassDiagram extends ActionAddDiagram {
     // constructors
 
     private ActionClassDiagram() {
-        super("ClassDiagram");
+        super("action.class-diagram");
     }
 
     /**

@@ -50,7 +50,7 @@ public class ActionSaveProject extends UMLAction {
   // constructors
 
   public ActionSaveProject() {
-    super("Save Project");
+    super("action.save-project");
   }
 
   public ActionSaveProject(String title, boolean icon) {
