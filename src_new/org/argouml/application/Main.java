@@ -56,9 +56,6 @@ public class Main {
   ////////////////////////////////////////////////////////////////
   // constants
 
-  public static int WIDTH = 1024;
-  public static int HEIGHT = 768;
-
   ////////////////////////////////////////////////////////////////
   // static variables
 
@@ -160,7 +157,7 @@ public class Main {
 	        projectName = s;
             }
             else {
-                Argo.log.warn("Cannot not re-open " + s +
+                    Argo.log.warn("Cannot re-open " + s +
 		              " because it does not exist");
             }
 	}
@@ -235,10 +232,10 @@ public class Main {
     Dimension scrSize = Toolkit.getDefaultToolkit().getScreenSize();
     pb.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 
-    int w = Math.min(Configuration.getInteger(Argo.KEY_SCREEN_WIDTH, WIDTH), scrSize.width);
-    int h = Math.min(Configuration.getInteger(Argo.KEY_SCREEN_HEIGHT, HEIGHT), scrSize.height);
-    int x = Configuration.getInteger(Argo.KEY_SCREEN_LEFT_X, scrSize.width/2 - w/2);
-    int y = Configuration.getInteger(Argo.KEY_SCREEN_TOP_Y, scrSize.height/2 - h/2);
+        int w = Math.min(Configuration.getInteger(Argo.KEY_SCREEN_WIDTH, (int)(0.95 * scrSize.width)), scrSize.width);
+        int h = Math.min(Configuration.getInteger(Argo.KEY_SCREEN_HEIGHT, (int)(0.95 * scrSize.height)), scrSize.height);
+        int x = Configuration.getInteger(Argo.KEY_SCREEN_LEFT_X, 0);
+        int y = Configuration.getInteger(Argo.KEY_SCREEN_TOP_Y, 0);
     pb.setLocation(x, y);
     pb.setSize(w, h);
 
@@ -451,8 +448,7 @@ class StartCritics implements Runnable {
     dsgr.spawnCritiquer(p);
     dsgr.setChildGenerator(new ChildGenUML());
 	java.util.Enumeration models = (p.getModels()).elements();
-	while (models.hasMoreElements())
-	{
+        while (models.hasMoreElements()) {
 		((ru.novosoft.uml.model_management.MModel)models.nextElement()).addMElementListener(dsgr);
 	}
     Argo.log.info("spawned critiquing thread");
