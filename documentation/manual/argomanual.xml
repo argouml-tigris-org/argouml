@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE book SYSTEM "../docbook-setup/docbookx/docbookx.dtd" [
+<!ENTITY tutbuild SYSTEM "tut_build.xml">
+<!ENTITY reftoolbar SYSTEM "ref_toolbar.xml">
+<!ENTITY refdetpane SYSTEM "ref_detpane.xml">
+<!ENTITY tutdesign SYSTEM "tut_design.xml">
+<!ENTITY refentbuiltin SYSTEM "ref_entbuiltin.xml">
+<!ENTITY refui SYSTEM "ref_ui.xml">
+<!ENTITY tutuml SYSTEM "tut_uml.xml">
+<!ENTITY refentstate SYSTEM "ref_entstate.xml">
+<!ENTITY appcasestudy SYSTEM "app_casestudy.xml">
+<!ENTITY refentactiv SYSTEM "ref_entactiv.xml">
+<!ENTITY refmenu SYSTEM "ref_menu.xml">
+<!ENTITY appumlcase SYSTEM "app_umlcase.xml">
+<!--ENTITY appdocstand SYSTEM "app_docstand.xml"-->
+<!ENTITY refentcollab SYSTEM "ref_entcollab.xml">
+<!ENTITY refnavpane SYSTEM "ref_navpane.xml">
+<!ENTITY refentclass SYSTEM "ref_entclass.xml">
+<!ENTITY refentdeploy SYSTEM "ref_entdeploy.xml">
+<!ENTITY reftodopane SYSTEM "ref_todopane.xml">
+<!ENTITY refeditpane SYSTEM "ref_editpane.xml">
+<!ENTITY refentusecase SYSTEM "ref_entusecase.xml">
+<!ENTITY intro SYSTEM "intro.xml">
+<!ENTITY tutanalysis SYSTEM "tut_analysis.xml">
+<!ENTITY glossary SYSTEM "glossary.xml">
+<!--ENTITY appdocplan SYSTEM "app_docplan.xml"-->
+<!ENTITY preface SYSTEM "preface.xml">
+<!ENTITY refentities SYSTEM "ref_entities.xml">
+<!ENTITY apphardlimits SYSTEM "app_hardlimits.xml">
+<!ENTITY applegal SYSTEM "app_legal.xml">
+<!ENTITY appumlres SYSTEM "app_umlres.xml">
+<!ENTITY refentseq SYSTEM "ref_entseq.xml">
+<!ENTITY tutreqs SYSTEM "tut_reqs.xml">
+<!ENTITY frontis SYSTEM "frontis.xml">
+<!ENTITY refcritics SYSTEM "ref_critics.xml">
+
+<!ENTITY ooad "OOA&amp;D">
+<!ENTITY Button2 "Button&nbsp;2">
+<!ENTITY Button1 "Button&nbsp;1">
+<!ENTITY argouml "ArgoUML">
+<!ENTITY button2 "button&nbsp;2">
+<!ENTITY button1 "button&nbsp;1">
+<!ENTITY argoversion "@VERSION@">
+<!ENTITY notupdatedfor016disclaimer "<caution>
+      <para>
+This chapter is not fully gone through and updated to fit the 0.16
+release of &argouml; but describes the version 0.14 instead.
+This means that some of the functions might not work exactly
+as described and icons and screen-shots does not look exactly like
+in the 0.16 version.
+</para>
+    </caution>">
+<!ENTITY minimumjavaversion "1.3">
+<!ENTITY constraintssupport "Standard tab.
+&argouml; only supports constraints on Classes and Features (Attributes,
+Operations, Receptions, and Methods),
+<!-- According issue 1805 -->
+so this tab is grayed out.">
+]>
+
+<book>
+  <!-- The frontispiece, table of contents and overall introduction for the
+       book -->
+  &frontis;
+  <toc/>
+  &preface;
+  &intro;
+  <!-- The tutorial chapters -->
+  <part>
+    <title>&argouml; Tutorial Manual</title>
+    &tutuml;
+    &tutreqs;
+    &tutanalysis;
+    &tutdesign;
+    &tutbuild;
+  </part>
+  <!-- The reference chapters -->
+  <part>
+    <title>&argouml; Reference Manual</title>
+    <!-- The reference chapters on the user interface -->
+    &refui;
+    &reftoolbar;
+    &refmenu;
+    &refnavpane;
+    &refeditpane;
+    &refdetpane;
+    &reftodopane;
+    &refcritics;
+    <!-- The reference chapters on the diagrams and artifacts -->
+    &refentities;
+    &refentusecase;
+    &refentclass;
+    &refentseq;
+    &refentstate;
+    &refentcollab;
+    &refentactiv;
+    &refentdeploy;
+    &refentbuiltin;
+  </part>
+  <!-- The glossary -->
+  &glossary;
+  <!-- Appendices cover supplementary material for the case study, the document
+       plan, coding standards and the legal stuff. -->
+  &appcasestudy;
+  &appumlres;
+  &appumlcase;
+  &apphardlimits;
+  <!-- &appdocplan;  Moved to the cookbook! -->
+  <!-- &appdocstand;  Moved to the cookbook! -->
+  &applegal;
+  <index>
+    <para>
+The use of the index in the document is done a little at random
+and cannot be trusted.
+Please help in suggesting new index entries!
+</para>
+  </index>
+</book>

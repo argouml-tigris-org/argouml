@@ -34,6 +34,19 @@ Change to XXX.
 
       <tbody valign="top">
         <row>
+          <entry>2004-11-01</entry>
+          <entry>
+Change to the way we generate documentation.
+The FILENAME.id files are no longer used.
+(See <xref linkend="generating_documentation"/>).
+</entry>
+          <entry>Linus Tolke</entry>
+        </row>
+      </tbody>
+
+
+      <tbody valign="top">
+        <row>
           <entry>2004-10-29</entry>
           <entry>
 Change to the description on how to generate documentation.

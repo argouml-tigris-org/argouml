@@ -321,17 +321,18 @@ To get it, call ant with the docbook-xsl-get target.
   <!--   that the user invoked.                                            -->
   <!--                                                                     -->
   <!--   This target does the following:                                   -->
-  <!--     a. sets up relevant properties                                  -->
-  <!--     b. copies the 'images' dir to 'source' dir                      -->
+  <!--     a. copies the file xxx.in to xxx.xml                            -->
+  <!--     b. copies the used 'images' dir to 'source' dir                 -->
   <!--     c. calls 'create-XXXX' targets sequentially                     -->
   <!--     d. removes the previously copied 'images' dir                   -->
+  <!--     e. removes the generated file                                   -->
   <!-- =================================================================== -->
 
   <target name="internal-dispatcher">
 
     <!-- We generate a property file. -->
-    <copy file="${documentation.dir}/${doc.subdir}/${doc.prefix}.in"
-          tofile="${documentation.dir}/${doc.subdir}/${doc.prefix}.xml">
+    <copy file="${documentation.dir}/${doc.subdir}/${doc.prefix}.xml"
+          tofile="${documentation.dir}/${doc.subdir}/${doc.prefix}-generated.xml">
       <filterset>
         <filter token="VERSION" value="${argo.core.version}"/>
       </filterset>
@@ -354,7 +355,7 @@ To get it, call ant with the docbook-xsl-get target.
       <classpath>
         <path refid="saxon.classpath"/>
       </classpath>
-      <arg value="${doc.prefix}.xml"/>
+      <arg value="${doc.prefix}-generated.xml"/>
       <arg value="${imglist.xsl}"/>
     </java>
 
@@ -374,14 +375,14 @@ To get it, call ant with the docbook-xsl-get target.
 
     <antcall target="create-defaulthtml">     
       <param name="source.dir"  value="${documentation.dir}/${doc.subdir}"/>
-      <param name="source.xml"  value="${doc.prefix}.xml"/>
+      <param name="source.xml"  value="${doc.prefix}-generated.xml"/>
       <param name="source.xsl"  value="${chunked.xsl}"/>
       <param name="target.dir"  value="${defaulthtml.dir}/${doc.subdir}"/>
     </antcall>
 
     <antcall target="create-printablehtml">   
       <param name="source.dir"  value="${documentation.dir}/${doc.subdir}"/>
-      <param name="source.xml"  value="${doc.prefix}.xml"/>
+      <param name="source.xml"  value="${doc.prefix}-generated.xml"/>
       <param name="source.xsl"  value="${printable.xsl}"/>
       <param name="target.dir"  value="${printablehtml.dir}/${doc.subdir}"/>
       <param name="target.html" value="${doc.prefix}.html"/>
@@ -389,7 +390,7 @@ To get it, call ant with the docbook-xsl-get target.
 
     <antcall target="create-pdf">     
       <param name="source.dir"  value="${documentation.dir}/${doc.subdir}"/>
-      <param name="source.xml"  value="${doc.prefix}.xml"/>
+      <param name="source.xml"  value="${doc.prefix}-generated.xml"/>
       <param name="source.xsl"  value="${pdf.xsl}"/>
       <param name="source.fo"   value="${doc.prefix}.fo"/>
       <param name="target.dir"  value="${pdf.dir}/${doc.subdir}"/>
@@ -398,7 +399,7 @@ To get it, call ant with the docbook-xsl-get target.
 
     <antcall target="create-javahelp">        
       <param name="source.dir"  value="${documentation.dir}/${doc.subdir}"/>
-      <param name="source.xml"  value="${doc.prefix}.xml"/>
+      <param name="source.xml"  value="${doc.prefix}-generated.xml"/>
       <param name="source.xsl"  value="${javahelp.xsl}"/>
       <param name="source.fo"   value="${doc.prefix}.fo"/>
       <param name="target.dir"  value="${javahelp.dir}/${doc.subdir}"/>
@@ -412,6 +413,7 @@ To get it, call ant with the docbook-xsl-get target.
 
     <delete dir="${documentation.dir}/${doc.subdir}/images"/>
     <delete file="${documentation.dir}/${doc.subdir}/imglist.txt" quiet="true"/>
+    <delete file="${documentation.dir}/${doc.subdir}/${doc.prefix}-generated.xml"/>
   </target>
   
   <!-- =================================================================== -->
