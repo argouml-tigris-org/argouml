@@ -278,7 +278,7 @@ the chapter on diagrams.
           dialog.
         </para></tip>
 
-        <warning><para>The V0.14 version of &argouml; implementation is
+        <warning><para>The V0.18 version of &argouml; implementation is
           incomplete:
           The reason given is not stored when the project is saved. 
           And there is no way to retrieve todo items that were resolved.
@@ -301,19 +301,11 @@ the chapter on diagrams.
                    fileref="images/icons/send_email.gif"/> 
         </imageobject></inlinemediaobject></guiicon>
         <literal>Send Email To Expert&hellip;</literal>
-        This pops up a dialog allowing the user to send Email to an expert
-        asking for advice.
+        Activating this tool allows the user to send an Email to an expert
+        asking for advice. This works like clicking a 
+        "mailto:users@argouml.tigris.org?subject=[critic header]" link in 
+        your webbrowser.
         </para>
-        <warning>
-          <para>
-            This feature does not send an email in the V0.14 version of &argouml;. 
-            A box opens, to
-            enter the email, but the <literal>Send</literal> button does not work.
-            <!-- TODO: See enhancement issue 1875. -->  
-            The default destination address is
-            <literal>users@argouml.tigris.org</literal>.
-          </para>
-        </warning>
       </listitem>
 
       <!-- Snooze the current critic -->
