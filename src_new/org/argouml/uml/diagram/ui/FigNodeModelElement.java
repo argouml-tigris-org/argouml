@@ -680,7 +680,7 @@ public abstract class FigNodeModelElement
         }
         // TODO remove the modelchanged call since it is only needed for rendering
         // the fig.
-        modelChanged(null);
+        // modelChanged(null);
         _readyToEdit = true;        
         bindPort(own, _bigPort);
         renderingChanged();
