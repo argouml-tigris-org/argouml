@@ -71,7 +71,6 @@ import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.uml.UmlModelEventPump;
-import org.argouml.ui.FileChooserFactory;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.ui.explorer.ExplorerEventAdaptor;
 import org.argouml.uml.diagram.static_structure.ClassDiagramGraphModel;
@@ -176,7 +175,8 @@ public class Import {
 				       + "Default import module not found");
         JComponent chooser = module.getChooser(this);
         dialog =
-            new JDialog(ProjectBrowser.getInstance(), "Import sources", true);
+            new JDialog(ProjectBrowser.getInstance(), 
+                    Translator.localize("action.import-sources"), true);
 
         dialog.getContentPane().add(chooser, BorderLayout.WEST);
         dialog.getContentPane().add(getConfigPanel(this), BorderLayout.EAST);
@@ -329,14 +329,13 @@ public class Import {
             general.add(fullImport);
 
 	    general.add(new JLabel("Input source file encoding:"));
-	    if (Configuration.getString(Argo.KEY_INPUT_SOURCE_ENCODING) == null
-		|| Configuration.getString(Argo.KEY_INPUT_SOURCE_ENCODING)
-		    .trim().equals("")) {
+	    String enc = 
+	        Configuration.getString(Argo.KEY_INPUT_SOURCE_ENCODING);
+	    if (enc == null || enc.trim().equals("")) {
 		inputSourceEncoding =
 		    new JTextField(System.getProperty("file.encoding"));
 	    } else {
-		inputSourceEncoding = new JTextField(Configuration
-		        .getString(Argo.KEY_INPUT_SOURCE_ENCODING));
+		inputSourceEncoding = new JTextField(enc);
 	    }
 	    general.add(inputSourceEncoding);
 
@@ -1001,8 +1000,8 @@ class ImportClasspathDialog extends JDialog {
         public void actionPerformed(ActionEvent e) {
 
 	    String directory = Globals.getLastDirectory();
-	    JFileChooser ch = FileChooserFactory.getFileChooser(directory);
-	    if (ch == null) ch = FileChooserFactory.getFileChooser();
+	    JFileChooser ch = new JFileChooser(directory);
+	    if (ch == null) ch = new JFileChooser();
 
 	    final JFileChooser chooser = ch;
 
