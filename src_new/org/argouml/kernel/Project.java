@@ -93,7 +93,7 @@ import org.xml.sax.SAXException;
 public class Project implements java.io.Serializable, TargetListener {
 
     /** logger */
-    private static Logger cat = Logger.getLogger(Project.class);
+    private static final Logger LOG = Logger.getLogger(Project.class);
     
     ////////////////////////////////////////////////////////////////
     // constants
@@ -188,7 +188,7 @@ public class Project implements java.io.Serializable, TargetListener {
         _defaultModelCache = new HashMap();
         
         _saveRegistry = new UMLChangeRegistry();
-        cat.info("making empty project with empty model");
+        LOG.info("making empty project with empty model");
         // Jaap Branderhorst 2002-12-09
         // load the default model
         // this is NOT the way how it should be since this makes argo
@@ -227,7 +227,7 @@ public class Project implements java.io.Serializable, TargetListener {
             throw new IllegalArgumentException();
 	}
         
-        cat.info("making empty project with model: "
+        LOG.info("making empty project with model: "
 		 + ModelFacade.getName(model));
         setRoot(model);
         setCurrentNamespace(model);
@@ -258,7 +258,7 @@ public class Project implements java.io.Serializable, TargetListener {
         while (!name.endsWith(".xmi")) {
             name = zis.getNextEntry().getName();
         }
-        cat.info("Loading Model from " + url);
+        LOG.info("Loading Model from " + url);
         // 2002-07-18
         // Jaap Branderhorst
         // changed the loading of the projectfiles to solve hanging 
@@ -266,13 +266,13 @@ public class Project implements java.io.Serializable, TargetListener {
         // Created xmireader with method getErrors to check if parsing went well
         XMIReader xmiReader = null;
         try {
-            xmiReader = new org.argouml.xml.xmi.XMIReader();
+            xmiReader = new XMIReader();
         } catch (SAXException se) { // duh, this must be catched and handled
-            cat.error(se);
+            LOG.error(se);
             throw se;
         } catch (ParserConfigurationException pc) { 
 	    // duh, this must be catched and handled
-            cat.error(pc);
+            LOG.error(pc);
             throw pc;
         }
         Object mmodel = null;
@@ -284,7 +284,7 @@ public class Project implements java.io.Serializable, TargetListener {
             ArgoParser.SINGLETON.setLastLoadStatus(false);
             ArgoParser.SINGLETON.setLastLoadMessage("XMI file " + url
 						    + " could not be parsed.");
-            cat.error("XMI file " + url + " could not be parsed.");
+            LOG.error("XMI file " + url + " could not be parsed.");
             throw new SAXException("XMI file " + url + " could not be parsed.");
         }
 
@@ -326,7 +326,7 @@ public class Project implements java.io.Serializable, TargetListener {
             ZipEntry currentEntry = null;
             while ((currentEntry = sub.getNextEntry()) != null) {
                 if (currentEntry.getName().endsWith(".pgml")) {
-                    cat.info(
+                    LOG.info(
 				  "Now going to load "
 				  + currentEntry.getName()
 				  + " from ZipInputStream");
@@ -341,11 +341,11 @@ public class Project implements java.io.Serializable, TargetListener {
                         addMember(d);
                     }
                     else {
-                        cat.error("An error occurred while loading " 
+                        LOG.error("An error occurred while loading " 
                             + currentEntry.getName());
                     }
                     // sub.closeEntry();
-                    cat.info("Finished loading " + currentEntry.getName());
+                    LOG.info("Finished loading " + currentEntry.getName());
                 }
                 if (currentEntry.getName().endsWith(".todo")) {
                     ProjectMemberTodoList pm =
@@ -363,7 +363,7 @@ public class Project implements java.io.Serializable, TargetListener {
 	} catch (IOException e) {
             ArgoParser.SINGLETON.setLastLoadStatus(false);
             ArgoParser.SINGLETON.setLastLoadMessage(e.toString());
-            cat.error("Something went wrong in "
+            LOG.error("Something went wrong in "
 		      + "Project.loadZippedProjectMembers()",
 		      e);
             throw e;
@@ -416,7 +416,7 @@ public class Project implements java.io.Serializable, TargetListener {
             url = Util.fixURLExtension(url, FileConstants.COMPRESSED_FILE_EXT);
         }
 
-        cat.debug("Setting project URL from \"" + _url 
+        LOG.debug("Setting project URL from \"" + _url 
 		  + "\" to \"" + url + "\".");
 
         _url = url;
@@ -426,7 +426,7 @@ public class Project implements java.io.Serializable, TargetListener {
         try {
             URL url = Util.fileToURL(file);
 
-            cat.debug(
+            LOG.debug(
 		      "Setting project file name from \""
 		      + _url
 		      + "\" to \""
@@ -435,9 +435,9 @@ public class Project implements java.io.Serializable, TargetListener {
 
             _url = url;
         } catch (MalformedURLException murle) {
-            cat.error("problem in setFile:" + file, murle);
+            LOG.error("problem in setFile:" + file, murle);
         } catch (IOException ex) {
-            cat.error("problem in setFile:" + file, ex);
+            LOG.error("problem in setFile:" + file, ex);
 
         }
     }
@@ -459,7 +459,7 @@ public class Project implements java.io.Serializable, TargetListener {
         try {
             url = new URL(u + name);
         } catch (MalformedURLException murle) {
-            cat.error(
+            LOG.error(
 		      "MalformedURLException in findMemberURLInSearchPath:"
 		      + u
 		      + name,
@@ -476,10 +476,10 @@ public class Project implements java.io.Serializable, TargetListener {
         
         URL memberURL = findMemberURLInSearchPath(name);
         if (memberURL == null) {
-            cat.debug("null memberURL");
+            LOG.debug("null memberURL");
             return;
         } else
-            cat.debug("memberURL = " + memberURL);
+            LOG.debug("memberURL = " + memberURL);
         ProjectMember pm = findMemberByName(name);
         if (pm != null)
             return;
@@ -588,13 +588,13 @@ public class Project implements java.io.Serializable, TargetListener {
     }
 
     public ProjectMember findMemberByName(String name) {
-        cat.debug("findMemberByName called for \"" + name + "\".");
+        LOG.debug("findMemberByName called for \"" + name + "\".");
         for (int i = 0; i < _members.size(); i++) {
             ProjectMember pm = (ProjectMember) _members.elementAt(i);
             if (name.equals(pm.getPlainName()))
                 return pm;
         }
-        cat.debug("Member \"" + name + "\" not found.");
+        LOG.debug("Member \"" + name + "\" not found.");
         return null;
     }
 
@@ -610,9 +610,9 @@ public class Project implements java.io.Serializable, TargetListener {
                     pm.load();
             }
         } catch (IOException ignore) {
-            cat.error("IOException in makeEmptyProject", ignore);
+            LOG.error("IOException in makeEmptyProject", ignore);
         } catch (org.xml.sax.SAXException ignore) {
-            cat.error("SAXException in makeEmptyProject", ignore);
+            LOG.error("SAXException in makeEmptyProject", ignore);
         }
     }
 
@@ -699,7 +699,7 @@ public class Project implements java.io.Serializable, TargetListener {
         stream.closeEntry();
 
         String path = file.getParent();
-        cat.info("Dir ==" + path);
+        LOG.info("Dir ==" + path);
         int size = _members.size();
 
         try {
@@ -712,7 +712,7 @@ public class Project implements java.io.Serializable, TargetListener {
             for (int i = 0; i < size; i++) {
                 ProjectMember p = (ProjectMember) _members.elementAt(i);
                 if (!(p.getType().equalsIgnoreCase("xmi"))) {
-                    cat.info("Saving member of type: "
+                    LOG.info("Saving member of type: "
 				  + ((ProjectMember) _members.elementAt(i))
 				        .getType());
                     String name = p.getName();
@@ -731,7 +731,7 @@ public class Project implements java.io.Serializable, TargetListener {
             for (int i = 0; i < size; i++) {
                 ProjectMember p = (ProjectMember) _members.elementAt(i);
                 if (p.getType().equalsIgnoreCase("xmi")) {
-                    cat.info("Saving member of type: "
+                    LOG.info("Saving member of type: "
 				  + ((ProjectMember) _members.elementAt(i))
 				        .getType());
                     stream.putNextEntry(new ZipEntry(p.getName()));
@@ -753,7 +753,7 @@ public class Project implements java.io.Serializable, TargetListener {
 	    }
 
         } catch (IOException e) {
-            cat.debug("hat nicht geklappt: " + e);
+            LOG.debug("hat nicht geklappt: " + e);
             // frank: deleted it because we are propagating the exception
             //e.printStackTrace();
             
@@ -773,7 +773,6 @@ public class Project implements java.io.Serializable, TargetListener {
         
         //TODO: in future allow independent saving
         writer.close();
-        // zos.close();
 
         postSave();
     }
@@ -877,7 +876,7 @@ public class Project implements java.io.Serializable, TargetListener {
                 getHelper().getCorrespondingElement(cls, getRoot());
         }
         if (cls == null && defineNew) {
-            cat.debug("new Type defined!");
+            LOG.debug("new Type defined!");
             cls =
                 UmlFactory.getFactory().getCore()
 		    .buildClass(getCurrentNamespace());
@@ -1145,7 +1144,7 @@ public class Project implements java.io.Serializable, TargetListener {
     }
 
     public void moveFromTrash(Object obj) {
-        cat.debug("TODO: not restoring " + obj);
+        LOG.debug("TODO: not restoring " + obj);
     }
 
     public boolean isInTrash(Object dm) {
