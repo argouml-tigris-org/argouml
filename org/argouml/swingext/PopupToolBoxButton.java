@@ -41,20 +41,21 @@ public class PopupToolBoxButton extends JButton {
 
     //private JLabel _arrowLabel;
     private JButton _button;
-    private Toolbox _toolBox;
+    private PopupToolBox _popupToolBox;
     private DecoratedIcon _standardIcon;
     private DecoratedIcon _rolloverIcon;
     private int _division;
     
-    /** Creates a new instance of PopupToolbox
+    /** Creates a new instance of PopupToolboxButton
      * @param a The default action when pressing this button
      * @param rows The number of rows of buttons to display in the popup toolbox
      * @param cols The number of columns of buttons to display in the popup toolbox
      */
     public PopupToolBoxButton(Action a, int rows, int cols) {
         super(a);
-        _toolBox = new Toolbox(rows, cols);
         setAction(a);
+        
+        _popupToolBox = new PopupToolBox(rows, cols);
         
         MyMouseListener myMouseListener = new MyMouseListener();
         addMouseMotionListener(myMouseListener);
@@ -107,10 +108,10 @@ public class PopupToolBoxButton extends JButton {
                 }
             }
         });
-        _toolBox.setButtonMouseListener(m);
+        _popupToolBox.setButtonMouseListener(m);
         
-        _toolBox.rebuild();
-        popup.add(_toolBox);
+        _popupToolBox.rebuild();
+        popup.add(_popupToolBox);
         popup.show(this, 0, getHeight());
     }
 
@@ -120,7 +121,7 @@ public class PopupToolBoxButton extends JButton {
      * @return The button generated to trigger the action
      */    
     public JButton add(Action a) {
-        return _toolBox.add(a);
+        return _popupToolBox.add(a);
     }
     
     void setDivision(int division) {

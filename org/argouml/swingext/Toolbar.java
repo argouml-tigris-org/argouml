@@ -61,4 +61,23 @@ public class Toolbar extends JToolBar {
         this.putClientProperty("JToolBar.isRollover", Boolean.TRUE);
         this.setMargin(new Insets(0,0,0,0));
     }
+
+    public JButton add(Action action) {
+        JButton button = new JButton(action);
+
+        String tooltip = button.getToolTipText();
+        if (tooltip == null || tooltip.trim().length() == 0) {
+            tooltip = button.getName();
+        }
+        if (tooltip == null || tooltip.trim().length() == 0) {
+            tooltip = button.getText();
+        }
+
+        button = super.add(action);
+        button.setToolTipText(tooltip);
+        
+        return button;
+    }
+    
+    
 }
