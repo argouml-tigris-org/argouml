@@ -612,6 +612,14 @@ Property files to be searched:
   </target>
 
   <!-- =================================================================== -->
+  <!-- Get the uml 1.3 model and dtd if necessary                          -->
+  <!-- =================================================================== -->
+  <target name="junit-get-model"
+          depends="junit-get-011202-xml,junit-get-991015-dtd"
+          description="Gets the model and dtd for testing."/>
+
+
+  <!-- =================================================================== -->
   <!-- Compiles the tests                                                  -->
   <!-- =================================================================== -->
 
@@ -682,7 +690,7 @@ Property files to be searched:
   <!-- Run the junit tests.                                                -->
   <!-- =================================================================== -->
   <target name="tests"
-          depends="compile,junit-fetch-init,junit-setup,junit-get-011202-xml,junit-get-991015-dtd,junit-report-clean,ant.optional.init"
+          depends="compile,junit-fetch-init,junit-setup,junit-report-clean,ant.optional.init"
           description="Run all tests that doesn't require any GUI components in headleass mode.">
     <!-- ant 1.4 uses printsummary="true"                          -->
     <!-- ant 1.5 allows printsummary="withOutAndErr"               -->
