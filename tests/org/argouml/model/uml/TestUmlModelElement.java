@@ -32,38 +32,40 @@ import org.argouml.model.ModelFacade;
  */
 public class TestUmlModelElement extends GenericUmlObjectTestFixture
 {
-	/**
-	 * Constructor for FakeUmlModelFacadeTest.
-	 * @param arg0 test name
-	 */
-	public TestUmlModelElement(String arg0)
-	{
-		super(arg0, Uml.MODEL_ELEMENT);
-		validateTestClassIsGeneric(this);
-	}
+    /**
+     * Constructor for FakeUmlModelFacadeTest.
+     * @param arg0 test name
+     */
+    public TestUmlModelElement(String arg0)
+    {
+	super(arg0, Uml.MODEL_ELEMENT);
+	validateTestClassIsGeneric(this);
+    }
 
-	public void testModelElementLegacy() {
-		UmlFactory.getFactory().setJmiProxyCreated(false);
-		Object me = ModelFacade.create(Uml.OBJECT);
-		assertNotNull("Didn't create object", me);
-		assertTrue("Should be a base", ModelFacade.isABase(me));
-		assertTrue("Should be a model element", ModelFacade.isAModelElement(me));
-		runTruthTests(me);
-	}
+    public void testModelElementLegacy() {
+	UmlFactory.getFactory().setJmiProxyCreated(false);
+	Object me = ModelFacade.create(Uml.OBJECT);
+	assertNotNull("Didn't create object", me);
+	assertTrue("Should be a base", ModelFacade.isABase(me));
+	assertTrue("Should be a model element",
+		   ModelFacade.isAModelElement(me));
+	runTruthTests(me);
+    }
 
-	public void testModelElement() {
-		UmlFactory.getFactory().setJmiProxyCreated(true);
-		Object me = ModelFacade.create(Uml.OBJECT);
-		assertNotNull("Didn't create object", me);
-		assertTrue("Should be a base", ModelFacade.isABase(me));
-		assertTrue("Should be a model element", ModelFacade.isAModelElement(me));
-		runTestRefBaseObject(me);
-		runTruthTests(me);
-	}
+    public void testModelElement() {
+	UmlFactory.getFactory().setJmiProxyCreated(true);
+	Object me = ModelFacade.create(Uml.OBJECT);
+	assertNotNull("Didn't create object", me);
+	assertTrue("Should be a base", ModelFacade.isABase(me));
+	assertTrue("Should be a model element",
+		   ModelFacade.isAModelElement(me));
+	runTestRefBaseObject(me);
+	runTruthTests(me);
+    }
 
-	protected void initializeTruth() {
-		setShouldBe(Uml.ELEMENT);
-		setShouldBe(Uml.MODEL_ELEMENT);
+    protected void initializeTruth() {
+	setShouldBe(Uml.ELEMENT);
+	setShouldBe(Uml.MODEL_ELEMENT);
     }
 
 }

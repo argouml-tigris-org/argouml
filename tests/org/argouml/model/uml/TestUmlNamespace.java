@@ -32,39 +32,39 @@ import org.argouml.model.ModelFacade;
  */
 public class TestUmlNamespace extends GenericUmlObjectTestFixture
 {
-	/**
-	 * Constructor for FakeUmlModelFacadeTest.
-	 * @param arg0
-	 */
-	public TestUmlNamespace(String arg0)
-	{
-		super(arg0, Uml.NAMESPACE);
-		validateTestClassIsGeneric(this);
-	}
+    /**
+     * Constructor for FakeUmlModelFacadeTest.
+     * @param arg0 test name
+     */
+    public TestUmlNamespace(String arg0)
+    {
+	super(arg0, Uml.NAMESPACE);
+	validateTestClassIsGeneric(this);
+    }
 
-	public void testNamespaceLegacy() {
-		UmlFactory.getFactory().setJmiProxyCreated(false);
-		Object o = ModelFacade.create(Uml.NAMESPACE);
-		assertNotNull("Didn't create object", o);
-		assertTrue("Should be a base", ModelFacade.isABase(o));
-		assertTrue("Should be a namespace", ModelFacade.isANamespace(o));
-		runTruthTests(o);
-	}
+    public void testNamespaceLegacy() {
+	UmlFactory.getFactory().setJmiProxyCreated(false);
+	Object o = ModelFacade.create(Uml.NAMESPACE);
+	assertNotNull("Didn't create object", o);
+	assertTrue("Should be a base", ModelFacade.isABase(o));
+	assertTrue("Should be a namespace", ModelFacade.isANamespace(o));
+	runTruthTests(o);
+    }
 
-	public void testNamespace() {
-		UmlFactory.getFactory().setJmiProxyCreated(true);
-		Object o = ModelFacade.create(Uml.NAMESPACE);
-		assertNotNull("Didn't create object", o);
-		assertTrue("Should be a base", ModelFacade.isABase(o));
-		assertTrue("Should be a namespace", ModelFacade.isANamespace(o));
-		runTestRefBaseObject(o);
-		runTruthTests(o);
-	}
+    public void testNamespace() {
+	UmlFactory.getFactory().setJmiProxyCreated(true);
+	Object o = ModelFacade.create(Uml.NAMESPACE);
+	assertNotNull("Didn't create object", o);
+	assertTrue("Should be a base", ModelFacade.isABase(o));
+	assertTrue("Should be a namespace", ModelFacade.isANamespace(o));
+	runTestRefBaseObject(o);
+	runTruthTests(o);
+    }
 
     protected void initializeTruth() {
-		setTruth(Uml.ELEMENT, true);
-		setTruth(Uml.MODEL_ELEMENT, true);
-		setTruth(Uml.NAMESPACE, true);
+	setTruth(Uml.ELEMENT, true);
+	setTruth(Uml.MODEL_ELEMENT, true);
+	setTruth(Uml.NAMESPACE, true);
     }
 
 }
