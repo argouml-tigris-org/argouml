@@ -1384,7 +1384,7 @@ protected String parseOutMultiplicity(MAttribute f, String s) {
     MClassifier type = null;
     Project p = ProjectManager.getManager().getCurrentProject();
     // Should we be getting this from the GUI? BT 11 aug 2002
-    type = p.findType(name);
+    type = p.findType(name, false);
     if (type == null) { // no type defined yet
 	type = UmlFactory.getFactory().getCore().buildClass(name, defaultSpace);
     }
