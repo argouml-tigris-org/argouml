@@ -52,7 +52,7 @@ public class CrNameConfusion extends CrUML {
      */
     public CrNameConfusion() {
 	setHeadline("Revise Name to Avoid Confusion");
-	addSupportedDecision(CrUML.decNAMING);
+	addSupportedDecision(CrUML.DEC_NAMING);
 	setKnowledgeTypes(Critic.KT_PRESENTATION);
 	setKnowledgeTypes(Critic.KT_SYNTAX);
 	addTrigger("name");

@@ -55,17 +55,28 @@ public class MultipleSplitPane extends JComponent {
     /**
      * The constructor. 
      * 
-     * @param componentArray
+     * @param componentArray the panes to be seperated by the splitter
      */
     public MultipleSplitPane(Component componentArray[]) {
         this(componentArray.length);
     }
 
+    /**
+     * The constructor.
+     * 
+     * @param componentArray the panes to be seperated by the splitter
+     * @param orientation the orientation
+     */
     public MultipleSplitPane(Component componentArray[],
 			     Orientation orientation) {
         this(componentArray.length, orientation);
     }
 
+    /**
+     * The constructor.
+     * 
+     * @param paneCount the number of panels to be split
+     */
     public MultipleSplitPane(int paneCount) {
         this(paneCount, HORIZONTAL_SPLIT);
     }

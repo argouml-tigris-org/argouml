@@ -47,7 +47,7 @@ public class CrTooManyOper extends CrUML {
      */
     public CrTooManyOper() {
 	setHeadline("Reduce Operations on <ocl>self</ocl>");
-	addSupportedDecision(CrUML.decMETHODS);
+	addSupportedDecision(CrUML.DEC_METHODS);
 	setArg(THRESHOLD, new Integer(20));
 	addTrigger("behavioralFeature");
     }

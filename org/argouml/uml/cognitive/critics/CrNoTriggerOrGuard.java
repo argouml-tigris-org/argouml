@@ -46,7 +46,7 @@ public class CrNoTriggerOrGuard extends CrUML {
      */
     public CrNoTriggerOrGuard() {
 	setHeadline("Add Trigger or Guard to Transistion");
-	addSupportedDecision(CrUML.decSTATE_MACHINES);
+	addSupportedDecision(CrUML.DEC_STATE_MACHINES);
 	setKnowledgeTypes(Critic.KT_COMPLETENESS);
 	addTrigger("trigger");
 	addTrigger("guard");

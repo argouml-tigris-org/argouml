@@ -68,7 +68,7 @@ public class CrNavFromInterface extends CrUML {
 
         // Specify design issue category and knowledge type
 
-        addSupportedDecision(CrUML.decRELATIONSHIPS);
+        addSupportedDecision(CrUML.DEC_RELATIONSHIPS);
         setKnowledgeTypes(Critic.KT_SYNTAX);
 
         // This may not actually make any difference at present (the code

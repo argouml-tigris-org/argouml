@@ -48,9 +48,9 @@ public class CrOppEndVsAttr extends CrUML {
      */
     public CrOppEndVsAttr() {
         setHeadline("Rename Role or MAttribute");
-        addSupportedDecision(CrUML.decINHERITANCE);
-        addSupportedDecision(CrUML.decRELATIONSHIPS);
-        addSupportedDecision(CrUML.decNAMING);
+        addSupportedDecision(CrUML.DEC_INHERITANCE);
+        addSupportedDecision(CrUML.DEC_RELATIONSHIPS);
+        addSupportedDecision(CrUML.DEC_NAMING);
         setKnowledgeTypes(Critic.KT_SYNTAX);
         addTrigger("associationEnd");
         addTrigger("structuralFeature");

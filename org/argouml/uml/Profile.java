@@ -52,7 +52,7 @@ public abstract class Profile {
     public abstract String formatCollection(Iterator iter,
 					    Object namespace);
     /**
-     * @return
+     * @return the UML Model that contains the profile model
      */
     public abstract Object/*MModel*/ getProfileModel();
 }

@@ -47,7 +47,7 @@ public class CrInvalidJoin extends CrUML {
      */
     public CrInvalidJoin() {
 	setHeadline("Change Join Transitions");
-	addSupportedDecision(CrUML.decSTATE_MACHINES);
+	addSupportedDecision(CrUML.DEC_STATE_MACHINES);
 	addTrigger("outgoing");
     }
 

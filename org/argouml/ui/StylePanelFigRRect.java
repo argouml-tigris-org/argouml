@@ -81,7 +81,8 @@ public class StylePanelFigRRect extends StylePanelFig {
      */
     public void refresh() {
         super.refresh();
-        String roundingStr = ((FigRRect) _target).getCornerRadius() + "";
+        String roundingStr = 
+            ((FigRRect) getPanelTarget()).getCornerRadius() + "";
         roundingField.setText(roundingStr);
     }
 
@@ -89,12 +90,12 @@ public class StylePanelFigRRect extends StylePanelFig {
      * Set the corner rounding.
      */
     protected void setTargetRounding() {
-        if (_target == null) return;
+        if (getPanelTarget() == null) return;
         String roundingStr = roundingField.getText();
         if (roundingStr.length() == 0) return;
         int r = Integer.parseInt(roundingStr);
-        ((FigRRect) _target).setCornerRadius(r);
-        _target.endTrans();
+        ((FigRRect) getPanelTarget()).setCornerRadius(r);
+        getPanelTarget().endTrans();
     }
 
     /**

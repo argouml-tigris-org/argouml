@@ -73,7 +73,7 @@ public class ExplorerTreeNode extends DefaultMutableTreeNode {
     }
 
     /**
-     * @param set
+     * @param set the given set
      */
     public void setModifySet(Set set) {
 	if (set == null || set.size() == 0)

@@ -51,7 +51,7 @@ public class CrClassWithoutComponent extends CrUML {
      */
     public CrClassWithoutComponent() {
 	setHeadline("Classes normally are inside components");
-	addSupportedDecision(CrUML.decPATTERNS);
+	addSupportedDecision(CrUML.DEC_PATTERNS);
     }
 
     /**

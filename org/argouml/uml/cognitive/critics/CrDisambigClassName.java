@@ -50,7 +50,7 @@ public class CrDisambigClassName extends CrUML {
      */
     public CrDisambigClassName() {
 	setHeadline("Choose a Unique Name for <ocl>self</ocl>");
-	addSupportedDecision(CrUML.decNAMING);
+	addSupportedDecision(CrUML.DEC_NAMING);
 	setKnowledgeTypes(Critic.KT_SYNTAX);
 	addTrigger("name");
 	addTrigger("elementOwnership");

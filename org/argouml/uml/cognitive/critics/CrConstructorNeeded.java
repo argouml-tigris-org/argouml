@@ -64,7 +64,7 @@ public class CrConstructorNeeded extends CrUML {
 
         setResource("CrConstructorNeeded");
 
-        addSupportedDecision(CrUML.decSTORAGE);
+        addSupportedDecision(CrUML.DEC_STORAGE);
         addKnowledgeType(Critic.KT_CORRECTNESS);
 
         // These may not actually make any difference at present (the code
@@ -147,6 +147,9 @@ public class CrConstructorNeeded extends CrUML {
     }
 
     
+    /**
+     * @see org.argouml.cognitive.critics.Critic#initWizard(org.argouml.kernel.Wizard)
+     */
     public void initWizard(Wizard w) {
 	if (w instanceof WizAddConstructor) {
 	    ToDoItem item = w.getToDoItem();
@@ -162,6 +165,9 @@ public class CrConstructorNeeded extends CrUML {
 	}
     }
     
+    /**
+     * @see org.argouml.cognitive.critics.Critic#getWizardClass(org.argouml.cognitive.ToDoItem)
+     */
     public Class getWizardClass(ToDoItem item) {
 	return WizAddConstructor.class;
     }

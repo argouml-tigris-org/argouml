@@ -48,7 +48,7 @@ public class CrTooManyAttr extends CrUML {
      */
     public CrTooManyAttr() {
 	setHeadline("Reduce Attributes on <ocl>self</ocl>");
-	addSupportedDecision(CrUML.decSTORAGE);
+	addSupportedDecision(CrUML.DEC_STORAGE);
 	setArg(THRESHOLD, new Integer(7));
 	addTrigger("structuralFeature");
     }

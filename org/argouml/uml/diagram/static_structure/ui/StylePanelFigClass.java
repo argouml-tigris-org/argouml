@@ -117,7 +117,7 @@ public class StylePanelFigClass extends StylePanelFigNodeModelElement {
     public void refresh() {
         refreshTransaction = true;
         super.refresh();
-        FigClass tc = (FigClass) _target;
+        FigClass tc = (FigClass) getPanelTarget();
         attrCheckBox.setSelected(tc.isAttributesVisible());
         operCheckBox.setSelected(tc.isOperationsVisible());
         refreshTransaction = false;
@@ -148,11 +148,11 @@ public class StylePanelFigClass extends StylePanelFigNodeModelElement {
             Object src = e.getSource();
 
             if (src == attrCheckBox) {
-                ((FigClass) _target).setAttributesVisible(attrCheckBox
+                ((FigClass) getPanelTarget()).setAttributesVisible(attrCheckBox
                         .isSelected());
                 markNeedsSave();
             } else if (src == operCheckBox) {
-                ((FigClass) _target).setOperationsVisible(operCheckBox
+                ((FigClass) getPanelTarget()).setOperationsVisible(operCheckBox
                         .isSelected());
                 markNeedsSave();
             } else

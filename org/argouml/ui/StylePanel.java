@@ -54,8 +54,13 @@ public class StylePanel extends TabSpawnable implements TabFigTarget,
                 ActionListener {
     private static final Logger LOG = Logger.getLogger(StylePanel.class);
 
-    protected Fig _target;
+    private Fig panelTarget;
 
+    /**
+     * The constructor.
+     * 
+     * @param title the panel title
+     */
     public StylePanel(String title) {
 	super(title);
 	GridBagLayout gb = new GridBagLayout();
@@ -101,7 +106,7 @@ public class StylePanel extends TabSpawnable implements TabFigTarget,
 	    }
 
 	}
-	_target = (Fig) t;
+	panelTarget = (Fig) t;
 	refresh();
     }
 
@@ -109,7 +114,7 @@ public class StylePanel extends TabSpawnable implements TabFigTarget,
      * @see org.argouml.ui.TabTarget#getTarget()
      */
     public Object getTarget() {
-	return _target;
+	return panelTarget;
     }
 
     /**
@@ -122,6 +127,8 @@ public class StylePanel extends TabSpawnable implements TabFigTarget,
 
     /**
      * Style panels ony apply when a Fig is selected.
+     *
+     * @see org.argouml.ui.TabTarget#shouldBeEnabled(java.lang.Object)
      */
     public boolean shouldBeEnabled(Object target) {
 	ArgoDiagram diagram = ProjectManager.getManager()
@@ -194,6 +201,13 @@ public class StylePanel extends TabSpawnable implements TabFigTarget,
     public void targetSet(TargetEvent e) {
 	setTarget(e.getNewTarget());
 
+    }
+
+    /**
+     * @return Returns the _target.
+     */
+    protected Fig getPanelTarget() {
+        return panelTarget;
     }
 
 } /* end class StylePanel */

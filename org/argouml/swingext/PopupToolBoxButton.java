@@ -55,19 +55,19 @@ public class PopupToolBoxButton extends JButton {
     private PopupToolBox popupToolBox;
     private DecoratedIcon standardIcon;
     private String tooltip;
-    private PopupToolBoxButton _this; // TODO: Never used. Remove?
+    //private PopupToolBoxButton _this; // TODO: Never used. Remove?
     private boolean showSplitter;
     
     /** Creates a new instance of PopupToolboxButton
      * @param a The default action when pressing this button
      * @param rows The number of rows of buttons to display in the
-     * popup toolbox
+     *             popup toolbox
      * @param cols The number of columns of buttons to display in the
-     * popup toolbox
+     *             popup toolbox
      */
     public PopupToolBoxButton(Action a, int rows, int cols) {
         super(a);
-        _this = this;
+        //_this = this;
         setAction(a);
         
         popupToolBox = new PopupToolBox(rows, cols);

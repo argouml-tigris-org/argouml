@@ -49,21 +49,21 @@ public class ClassdiagramAssociationEdge extends ClassdiagramEdge {
     public void layout() {
         // self associations are special cases. No need to let the maze
         // runner find the way.
-        if (destFigNode == sourceFigNode) {
-            Point centerRight = getCenterRight((FigNode) sourceFigNode);
-            int yoffset = (int) ((sourceFigNode.getSize().getHeight() / 2));
+        if (getDestFigNode() == getSourceFigNode()) {
+            Point centerRight = getCenterRight((FigNode) getSourceFigNode());
+            int yoffset = (int) ((getSourceFigNode().getSize().getHeight() / 2));
             yoffset = java.lang.Math.min(30, yoffset);
-            underlyingFig.addPoint(centerRight.x, centerRight.y);
+            getUnderlyingFig().addPoint(centerRight.x, centerRight.y);
             // move more right
-            underlyingFig.addPoint(centerRight.x + 30, centerRight.y);
+            getUnderlyingFig().addPoint(centerRight.x + 30, centerRight.y);
             // move down
-            underlyingFig.addPoint(centerRight.x + 30, centerRight.y + yoffset);
+            getUnderlyingFig().addPoint(centerRight.x + 30, centerRight.y + yoffset);
             // move left
-            underlyingFig.addPoint(centerRight.x, centerRight.y + yoffset);
+            getUnderlyingFig().addPoint(centerRight.x, centerRight.y + yoffset);
             
-            underlyingFig.setFilled(false);
-            underlyingFig.setSelfLoop(true);
-            currentEdge.setFig(underlyingFig);  
+            getUnderlyingFig().setFilled(false);
+            getUnderlyingFig().setSelfLoop(true);
+            getCurrentEdge().setFig(getUnderlyingFig());  
         }
         else {
             ;// brute force rectangular layout

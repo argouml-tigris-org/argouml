@@ -44,7 +44,7 @@ public class CrIllegalName extends CrUML {
      */
     public CrIllegalName() {
 	setHeadline("Choose a Legal Name");
-	addSupportedDecision(CrUML.decNAMING);
+	addSupportedDecision(CrUML.DEC_NAMING);
 	addTrigger("name");
     }
 

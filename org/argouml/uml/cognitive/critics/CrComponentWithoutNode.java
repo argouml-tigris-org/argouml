@@ -54,7 +54,7 @@ public class CrComponentWithoutNode extends CrUML {
      */
     public CrComponentWithoutNode() {
 	setHeadline("Components normally are inside nodes");
-	addSupportedDecision(CrUML.decPATTERNS);
+	addSupportedDecision(CrUML.DEC_PATTERNS);
     }
 
     /**

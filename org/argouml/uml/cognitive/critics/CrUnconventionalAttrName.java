@@ -57,7 +57,7 @@ public class CrUnconventionalAttrName extends CrUML {
      */
     public CrUnconventionalAttrName() {
 	setHeadline("Choose a Better MAttribute Name");
-	addSupportedDecision(CrUML.decNAMING);
+	addSupportedDecision(CrUML.DEC_NAMING);
 	setKnowledgeTypes(Critic.KT_SYNTAX);
 	addTrigger("feature_name");
     }

@@ -53,74 +53,122 @@ import org.tigris.gef.util.VectorSet;
 public class CrUML extends Critic {
     private static final Logger LOG = Logger.getLogger(CrUML.class);
     
-    public static final Decision decINHERITANCE = new
+    /**
+     * Decision type: INHERITANCE
+     */
+    public static final Decision DEC_INHERITANCE = new
 	Decision("misc.decision.inheritance", 1);
 
-    public static final Decision decCONTAINMENT = new
+    /**
+     * Decision type: CONTAINMENT
+     */
+    public static final Decision DEC_CONTAINMENT = new
 	Decision("misc.decision.containment", 1);
 
-    public static final Decision decPATTERNS = new
+    /**
+     * Decision type: PATTERNS
+     */
+    public static final Decision DEC_PATTERNS = new
 	Decision("misc.decision.design-patterns", 1); //??
 
-    public static final Decision decRELATIONSHIPS = new
+    /**
+     * Decision type: RELATIONSHIPS
+     */
+    public static final Decision DEC_RELATIONSHIPS = new
 	Decision("misc.decision.relationships", 1);
 
-    public static final Decision decSTORAGE = new
+    /**
+     * Decision type: STORAGE
+     */
+    public static final Decision DEC_STORAGE = new
 	Decision("misc.decision.storage", 1);
 
-    public static final Decision decBEHAVIOR = new
+    /**
+     * Decision type: BEHAVIOR
+     */
+    public static final Decision DEC_BEHAVIOR = new
 	Decision("misc.decision.behavior", 1);
 
-    public static final Decision decINSTANCIATION = new
+    /**
+     * Decision type: INSTANCIATION
+     */
+    public static final Decision DEC_INSTANCIATION = new
 	Decision("misc.decision.instantiation", 1);
 
-    public static final Decision decNAMING = new
+    /**
+     * Decision type: NAMING
+     */
+    public static final Decision DEC_NAMING = new
 	Decision("misc.decision.naming", 1);
 
-    public static final Decision decMODULARITY = new
+    /**
+     * Decision type: MODULARITY
+     */
+    public static final Decision DEC_MODULARITY = new
 	Decision("misc.decision.modularity", 1);
 
-    public static final Decision decCLASS_SELECTION = new
+    /**
+     * Decision type: CLASS_SELECTION
+     */
+    public static final Decision DEC_CLASS_SELECTION = new
 	Decision("misc.decision.class-selection", 1);
 
-    public static final Decision decEXPECTED_USAGE = new
+    /**
+     * Decision type: EXPECTED_USAGE
+     */
+    public static final Decision DEC_EXPECTED_USAGE = new
 	Decision("misc.decision.expected-usage", 1);
 
-    public static final Decision decMETHODS = new
+    /**
+     * Decision type: METHODS
+     */
+    public static final Decision DEC_METHODS = new
 	Decision("misc.decision.methods", 1); //??
 
-    public static final Decision decCODE_GEN = new
+    /**
+     * Decision type: CODE_GEN
+     */
+    public static final Decision DEC_CODE_GEN = new
 	Decision("misc.decision.code-generation", 1); //??
 
-    public static final Decision decPLANNED_EXTENSIONS = new
+    /**
+     * Decision type: PLANNED_EXTENSIONS
+     */
+    public static final Decision DEC_PLANNED_EXTENSIONS = new
 	Decision("misc.decision.planned-extensions", 1);
 
-    public static final Decision decSTEREOTYPES = new
+    /**
+     * Decision type: STEREOTYPES
+     */
+    public static final Decision DEC_STEREOTYPES = new
 	Decision("misc.decision.stereotypes", 1);
 
-    public static final Decision decSTATE_MACHINES = new
+    /**
+     * Decision type: STATE_MACHINES
+     */
+    public static final Decision DEC_STATE_MACHINES = new
 	Decision("misc.decision.mstate-machines", 1);
 
     /** Static initializer for this class. Called when the class is
      *  loaded (which is before any subclass instances are instanciated). */
     static {
 	Designer d = Designer.theDesigner();
-	d.startConsidering(decCLASS_SELECTION);
-        d.startConsidering(decBEHAVIOR);
-	d.startConsidering(decNAMING);
-	d.startConsidering(decSTORAGE);
-	d.startConsidering(decINHERITANCE);
-	d.startConsidering(decCONTAINMENT);
-	d.startConsidering(decPLANNED_EXTENSIONS);
-	d.startConsidering(decSTATE_MACHINES);
-	d.startConsidering(decPATTERNS);
-	d.startConsidering(decRELATIONSHIPS);
-	d.startConsidering(decINSTANCIATION);
-	d.startConsidering(decMODULARITY);
-	d.startConsidering(decEXPECTED_USAGE);
-	d.startConsidering(decMETHODS);
-	d.startConsidering(decCODE_GEN);
-	d.startConsidering(decSTEREOTYPES);
+	d.startConsidering(DEC_CLASS_SELECTION);
+        d.startConsidering(DEC_BEHAVIOR);
+	d.startConsidering(DEC_NAMING);
+	d.startConsidering(DEC_STORAGE);
+	d.startConsidering(DEC_INHERITANCE);
+	d.startConsidering(DEC_CONTAINMENT);
+	d.startConsidering(DEC_PLANNED_EXTENSIONS);
+	d.startConsidering(DEC_STATE_MACHINES);
+	d.startConsidering(DEC_PATTERNS);
+	d.startConsidering(DEC_RELATIONSHIPS);
+	d.startConsidering(DEC_INSTANCIATION);
+	d.startConsidering(DEC_MODULARITY);
+	d.startConsidering(DEC_EXPECTED_USAGE);
+	d.startConsidering(DEC_METHODS);
+	d.startConsidering(DEC_CODE_GEN);
+	d.startConsidering(DEC_STEREOTYPES);
     }
 
 
@@ -225,7 +273,8 @@ public class CrUML extends Critic {
             String expr = res.substring(matchPos + OCL_START.length(), endExpr);
             String evalStr = null;
             try {
-                evalStr = CriticOclEvaluator.getInstance().evalToString(off1, expr);
+                evalStr = CriticOclEvaluator.getInstance()
+                    .evalToString(off1, expr);
             } catch (ExpansionException e) {
                 // Really ought to have a CriticException to throw here.
                 LOG.error("Failed to evaluate critic expression", e);

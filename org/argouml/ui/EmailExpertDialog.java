@@ -99,7 +99,8 @@ public class EmailExpertDialog extends ArgoDialog {
         JLabel ccLabel = new JLabel(Translator.localize("label.cc"));
         JLabel subjectLabel = new JLabel(Translator.localize("label.subject"));
     
-        JPanel panel = new JPanel(new LabelledLayout(labelGap, componentGap));
+        JPanel panel = new JPanel(new LabelledLayout(getLabelGap(), 
+                getComponentGap()));
 
         toLabel.setLabelFor(emailTo);
         panel.add(toLabel);

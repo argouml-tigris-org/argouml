@@ -47,18 +47,18 @@ public abstract class ClassdiagramInheritanceEdge extends ClassdiagramEdge {
         super(edge);
         
 	// calculate the higher and lower Figs
-        LOG.debug("sourceFigNode: " + sourceFigNode.classNameAndBounds());
-        LOG.debug("destFigNode: " + destFigNode.classNameAndBounds());
-        if (sourceFigNode.getLocation().getY()
-	    <= destFigNode.getLocation().getY())
+        LOG.debug("sourceFigNode: " + getSourceFigNode().classNameAndBounds());
+        LOG.debug("destFigNode: " + getDestFigNode().classNameAndBounds());
+        if (getSourceFigNode().getLocation().getY()
+	    <= getDestFigNode().getLocation().getY())
 	{
-            high = destFigNode;
-            low = sourceFigNode;
+            high = getDestFigNode();
+            low = getSourceFigNode();
             LOG.debug("high is sourcenode, " + "is low destnode");
         }
         else {
-            high = destFigNode;
-            low = sourceFigNode;
+            high = getDestFigNode();
+            low = getSourceFigNode();
             LOG.debug("high is destnode, " + "low is sourcenode");
         }
         LOG.debug("High: " + high.classNameAndBounds());
@@ -94,7 +94,7 @@ public abstract class ClassdiagramInheritanceEdge extends ClassdiagramEdge {
      * @since 0.9.6
      */
     public void layout() {
-        LOG.debug("underlyingFig: " + underlyingFig.classNameAndBounds());
+        LOG.debug("underlyingFig: " + getUnderlyingFig().classNameAndBounds());
 	
         // now we construct the zig zag inheritance line
         int centerHigh =  getCenterHigh();
@@ -107,7 +107,7 @@ public abstract class ClassdiagramInheritanceEdge extends ClassdiagramEdge {
         // the amount of the "sidestep"
         int difference = centerHigh - centerLow;
         
-        underlyingFig.addPoint(centerLow, (int)
+        getUnderlyingFig().addPoint(centerLow, (int)
 			       (low.getLocation().getY()));
         LOG.debug("Point: x: " + centerLow + " y: "
                   + (int) (low.getLocation().getY()));
@@ -115,27 +115,27 @@ public abstract class ClassdiagramInheritanceEdge extends ClassdiagramEdge {
         // if the Figs are directly under each other we
         // do not need to add these points
         if (difference != 0) { 
-            underlyingFig.addPoint(centerHigh - difference,
+            getUnderlyingFig().addPoint(centerHigh - difference,
 				   getDownGap());
             LOG.debug("Point: x: "
                       + (centerHigh - difference)
                       + " y: " + getDownGap());
-            underlyingFig.addPoint(centerHigh,
+            getUnderlyingFig().addPoint(centerHigh,
 				   getDownGap());
             LOG.debug("Point: x: " + centerHigh + " y: "
                       + getDownGap());
             
         }
         
-        underlyingFig.addPoint(centerHigh,
+        getUnderlyingFig().addPoint(centerHigh,
 			       (int) (high.getLocation().getY() 
 			              + high.getSize().getHeight()));
         LOG.debug("Point x: " + centerHigh + " y: "
                   + (int) (high.getLocation().getY()
                            + high.getSize().getHeight()));
         
-        underlyingFig.setFilled(false);
-        currentEdge.setFig(underlyingFig);
+        getUnderlyingFig().setFilled(false);
+        getCurrentEdge().setFig(getUnderlyingFig());
         // currentEdge.setBetweenNearestPoints(false);
     }   
 }

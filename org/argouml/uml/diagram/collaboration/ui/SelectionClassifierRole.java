@@ -49,6 +49,10 @@ import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigNode;
 import org.tigris.gef.presentation.Handle;
 
+/**
+ * The selection buttons for a classifier role.
+ *
+ */
 public class SelectionClassifierRole extends SelectionWButtons {
 
     private static final Logger LOG =

@@ -43,7 +43,7 @@ public class CrMergeClasses extends CrUML {
     public CrMergeClasses() {
 	setHeadline("Consider Combining Classes");
 	setPriority(ToDoItem.LOW_PRIORITY);
-	addSupportedDecision(CrUML.decCLASS_SELECTION); 
+	addSupportedDecision(CrUML.DEC_CLASS_SELECTION); 
 	addTrigger("associationEnd");
     }
 

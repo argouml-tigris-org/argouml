@@ -50,8 +50,8 @@ public class CrMultipleInheritance extends CrUML {
      */
     public CrMultipleInheritance() {
 	setHeadline("Change Multiple Inheritance to Interfaces");
-	addSupportedDecision(CrUML.decINHERITANCE);
-	addSupportedDecision(CrUML.decCODE_GEN);
+	addSupportedDecision(CrUML.DEC_INHERITANCE);
+	addSupportedDecision(CrUML.DEC_CODE_GEN);
 	addTrigger("generalization");
     }
 

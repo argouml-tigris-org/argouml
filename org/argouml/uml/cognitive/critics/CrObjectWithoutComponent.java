@@ -49,7 +49,7 @@ public class CrObjectWithoutComponent extends CrUML {
      */
     public CrObjectWithoutComponent() {
 	setHeadline("Objects normally are inside components");
-	addSupportedDecision(CrUML.decPATTERNS);
+	addSupportedDecision(CrUML.DEC_PATTERNS);
     }
 
     /**

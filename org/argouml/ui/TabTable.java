@@ -27,6 +27,11 @@ package org.argouml.ui;
 import org.argouml.uml.ui.TabProps;
 
 
+/**
+ * This class is not used any more - it is part of the model presentation 
+ * in table form.
+ *
+ */
 public class TabTable extends TabProps {
 
     /**

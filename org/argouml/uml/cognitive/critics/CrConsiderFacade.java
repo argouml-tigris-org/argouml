@@ -41,7 +41,7 @@ public class CrConsiderFacade extends CrUML {
     public CrConsiderFacade() {
 	setHeadline("Consider using facade stereotype for <ocl>self</ocl>");
        
-	addSupportedDecision(CrUML.decMODULARITY);
+	addSupportedDecision(CrUML.DEC_MODULARITY);
 	addTrigger("ownedElement");
     }
 

@@ -53,6 +53,10 @@ import org.argouml.uml.cognitive.ChildGenRelated;
 import org.tigris.gef.base.Diagram;
 import org.tigris.gef.util.ChildGenerator;
 
+/**
+ * The results tab for the find dialog.
+ *
+ */
 public class TabResults
         extends TabSpawnable
         implements
@@ -163,11 +167,18 @@ public class TabResults
 	root = r;
     }
     
+    /**
+     * @param gen the generator
+     */
     public void setGenerator(ChildGenerator gen)
     {
 	cg = gen;
     }
 
+    /**
+     * @param res the results
+     * @param dia the diagrams
+     */
     public void setResults(Vector res, Vector dia)
     {
 	results = res;
@@ -190,11 +201,19 @@ public class TabResults
 	return newPanel;
     }
 
+    /**
+     * Handle a doubleclick on the results tab.
+     */
     public void doDoubleClick()
     {
 	myDoubleClick(resultsTable);
     }
 
+    /**
+     * Select the result at the given index.
+     * 
+     * @param index the given index 
+     */
     public void selectResult(int index)
     {
 	if (index < resultsTable.getRowCount()) {
@@ -253,7 +272,7 @@ public class TabResults
     {
     }
 
-    public void myDoubleClick(Object src)
+    private void myDoubleClick(Object src)
     {
 	Object sel = null;
 	Diagram d = null;
@@ -352,7 +371,7 @@ public class TabResults
 	resultsModel.setTarget(results, diagrams);
     }
 
-    public void depthFirst(Object node, Diagram lastDiagram)
+    private void depthFirst(Object node, Diagram lastDiagram)
     {
 	if (node instanceof Diagram) {
 	    lastDiagram = (Diagram) node;

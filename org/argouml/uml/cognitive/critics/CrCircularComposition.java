@@ -47,7 +47,7 @@ public class CrCircularComposition extends CrUML {
      */
     public CrCircularComposition() {
 	setHeadline("Remove Circular Composition");
-	addSupportedDecision(CrUML.decCONTAINMENT);
+	addSupportedDecision(CrUML.DEC_CONTAINMENT);
 	setKnowledgeTypes(Critic.KT_SYNTAX);
 	// no good trigger
     }

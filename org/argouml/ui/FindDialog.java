@@ -286,14 +286,19 @@ public class FindDialog extends ArgoDialog
         JTextArea helpText = new JTextArea();
         String s; // TODO: i18n
         s = "Please follow these steps to find model elements:\n\n" 
-            + "1. Enter search information in the tabs at the top of this window.\n\n" 
+            + "1. Enter search information in the tabs " 
+                    + "at the top of this window.\n\n" 
             + "2. Press the \"Find\" button.  This will produce a new tab.\n\n" 
             + "3. The top half of each result tab lists each results.\n" 
-            + "   + Single clicking on a result shows more information about it,\n" 
+            + "   + Single clicking on a result shows more " 
+                    + "information about it,\n" 
             + "     including a list of related objects.\n" 
-            + "   + Double clicking on a result jumps to the selected diagram.\n\n" 
-            + "You can \"tear-off\" a results tab by double clicking on the tab name.\n" 
-            + "If you accumulate too many tabs, press \"Clear Tabs\" to remove " 
+            + "   + Double clicking on a result jumps to the " 
+                    + "selected diagram.\n\n" 
+            + "You can \"tear-off\" a results tab by double clicking " 
+                    + "on the tab name.\n" 
+            + "If you accumulate too many tabs, press \"Clear " 
+                    + "Tabs\" to remove " 
             + "them all.";
     
         helpText.setText(s);

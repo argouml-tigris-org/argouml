@@ -48,7 +48,7 @@ import org.tigris.gef.presentation.FigNode;
 import org.tigris.gef.presentation.Handle;
 
 /**
- * 
+ * The selection buttons for a component. 
  *
  */
 public class SelectionComponent extends SelectionWButtons {
@@ -189,10 +189,12 @@ public class SelectionComponent extends SelectionWButtons {
     }
 
     /**
-     * @param mgm
-     * @param component
-     * @param newComponent
-     * @return
+     * Contruct and add a new edge of the given kind: DEPENDENCY.
+     * 
+     * @param mgm the graphmodel
+     * @param component the source component
+     * @param newComponent the destination component
+     * @return the added dependency
      */
     public Object addCompClassAbove(MutableGraphModel mgm, Object component,
 				    Object newComponent) {
@@ -205,10 +207,10 @@ public class SelectionComponent extends SelectionWButtons {
     }
 
     /**
-     * @param mgm
-     * @param component
-     * @param newComponent
-     * @return
+     * @param mgm the graphmodel
+     * @param component the source component
+     * @param newComponent the destination component
+     * @return the added dependency
      */
     public Object addCompClassBelow(MutableGraphModel mgm, Object component,
 				    Object newComponent) {
@@ -221,10 +223,10 @@ public class SelectionComponent extends SelectionWButtons {
     }
         
     /**
-     * @param mgm
-     * @param component
-     * @param newComponent
-     * @return
+     * @param mgm the graphmodel
+     * @param component the source component
+     * @param newComponent the destination component
+     * @return the added dependency
      */
     public Object addCompClassRight(MutableGraphModel mgm, Object component,
 				    Object newComponent) {
@@ -237,10 +239,10 @@ public class SelectionComponent extends SelectionWButtons {
     }
 
     /**
-     * @param mgm
-     * @param component
-     * @param newComponent
-     * @return
+     * @param mgm the graphmodel
+     * @param component the source component
+     * @param newComponent the destination component
+     * @return the added dependency
      */
     public Object addCompClassLeft(MutableGraphModel mgm, Object component,
 				    Object newComponent) {

@@ -53,7 +53,7 @@ public class CrMultipleInitialStates extends CrUML {
      */
     public CrMultipleInitialStates() {
         setHeadline("Remove Extra Initial States");
-        addSupportedDecision(CrUML.decSTATE_MACHINES);
+        addSupportedDecision(CrUML.DEC_STATE_MACHINES);
         addTrigger("parent");
         addTrigger("kind");
     }

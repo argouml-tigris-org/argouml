@@ -51,7 +51,7 @@ public class CrComponentInstanceWithoutClassifier extends CrUML {
      */
     public CrComponentInstanceWithoutClassifier() {
 	setHeadline("Set ComponentInstance-classifier");
-	addSupportedDecision(CrUML.decPATTERNS);
+	addSupportedDecision(CrUML.DEC_PATTERNS);
     }
 
     /**

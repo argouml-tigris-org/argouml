@@ -45,7 +45,7 @@ public class CrTooManyStates extends CrUML {
      */
     public CrTooManyStates() {
 	setHeadline("Reduce States in machine <ocl>self</ocl>");
-	addSupportedDecision(CrUML.decSTATE_MACHINES);
+	addSupportedDecision(CrUML.DEC_STATE_MACHINES);
 	setArg(THRESHOLD, new Integer(20));
 	addTrigger("substate");
     }

@@ -46,7 +46,7 @@ public class CrNoGuard extends CrUML {
      */
     public CrNoGuard() {
 	setHeadline("Add MGuard to Transistion");
-	addSupportedDecision(CrUML.decSTATE_MACHINES);
+	addSupportedDecision(CrUML.DEC_STATE_MACHINES);
 	setKnowledgeTypes(Critic.KT_COMPLETENESS);
 	addTrigger("guard");
     }

@@ -152,42 +152,39 @@ public class NewspaperLayout extends GridLayout2 {
             }
 
             // Determine the width for each column and the height for each row.
-            colWidth = new int[ncols];
-            rowHeight = new int[nrows];
-            largestWidth = 0;
-            largestHeight = 0;
+            setColWidth(new int[ncols]);
+            setRowHeight(new int[nrows]);
+            setLargestWidth(0);
+            setLargestHeight(0);
 
-            if (cellSizing == FITPARENT) {
+            if (getCellSizing() == FITPARENT) {
                 int availableWidth =
 		    parent.getWidth()
 		    - (insets.left + insets.right + (ncols - 1) * getHgap());
                 int availableHeight =
 		    parent.getHeight()
 		    - (insets.top + insets.bottom + (nrows - 1) * getVgap());
-                largestWidth = availableWidth / ncols;
-                largestHeight = availableHeight / nrows;
+                setLargestWidth(availableWidth / ncols);
+                setLargestHeight(availableHeight / nrows);
             }
             else {
 
                 for (int c = 0; c < ncols; ++c) {
                     for (int r = 0; r < nrows; ++r) {
                         int i = r * ncols + c;
-                        if (parent.getComponent(i).getPreferredSize().getWidth()
-			    > colWidth[c]) {
-                            colWidth[c] =
-				(int) parent.getComponent(i)
+                        if (parent.getComponent(i).getPreferredSize()
+                                .getWidth() > getColWidth()[c]) {
+                            getColWidth()[c] = (int) parent.getComponent(i)
 				    .getPreferredSize().getWidth();
-                            if (colWidth[c] > largestWidth)
-				largestWidth = colWidth[c];
+                            if (getColWidth()[c] > getLargestWidth())
+				setLargestWidth(getColWidth()[c]);
                         }
-                        if ((parent.getComponent(i)
-			     .getPreferredSize().getHeight())
-			    > rowHeight[r]) {
-                            rowHeight[r] =
-				(int) parent.getComponent(i)
+                        if ((parent.getComponent(i).getPreferredSize()
+                                .getHeight()) > getRowHeight()[r]) {
+                            getRowHeight()[r] = (int) parent.getComponent(i)
 				    .getPreferredSize().getHeight();
-                            if (rowHeight[r] > largestHeight) {
-				largestHeight = rowHeight[r];
+                            if (getRowHeight()[r] > getLargestHeight()) {
+                                setLargestHeight(getRowHeight()[r]);
 			    }
                         }
                     }
@@ -197,22 +194,21 @@ public class NewspaperLayout extends GridLayout2 {
             // Calculate width
             gridWidth = (ncols - 1) * getHgap();
             for (int c = 0; c < ncols; ++c) {
-                gridWidth += colWidth[c];
+                gridWidth += getColWidth()[c];
             }
 
             // Calculate Height
             int gridHeight = (nrows - 1) * getVgap();
             for (int r = 0; r < nrows; ++r) {
-                gridHeight += rowHeight[r];
+                gridHeight += getRowHeight()[r];
             }
 
             int numberOfGrids =
-		positionComponentsInternal(parent, colWidth, rowHeight,
-					   gridHeight, nrows, ncols);
+		positionComponentsInternal(parent, getColWidth(), 
+		    getRowHeight(), gridHeight, nrows, ncols);
             if (numberOfGrids > 0) {
-                positionComponentsExternal(parent, colWidth, rowHeight,
-					   gridHeight, nrows, ncols,
-					   numberOfGrids);
+                positionComponentsExternal(parent, getColWidth(), 
+                    getRowHeight(), gridHeight, nrows, ncols, numberOfGrids);
             }
         }
     }
@@ -279,14 +275,14 @@ public class NewspaperLayout extends GridLayout2 {
         int componentCellHeight;
         int componentCellWidth;
         for (int r = 0; r < nrows; ++r) {
-            if (cellSizing != ROWCOLPREFERRED)
-		componentCellHeight = largestHeight;
+            if (getCellSizing() != ROWCOLPREFERRED)
+		componentCellHeight = getLargestHeight();
             else componentCellHeight = rowHeight[r];
 
             int x = insets.left + newsColumn * (gridWidth + gridGap);
             for (int c = 0; c < ncols; ++c) {
-                if (cellSizing != ROWCOLPREFERRED)
-		    componentCellWidth = largestWidth;
+                if (getCellSizing() != ROWCOLPREFERRED)
+		    componentCellWidth = getLargestWidth();
                 else componentCellWidth = colWidth[c];
 
                 int i = r * ncols + c;
