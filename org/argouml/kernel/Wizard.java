@@ -120,18 +120,12 @@ public abstract class Wizard implements java.io.Serializable {
   public boolean canGoNext() { return _step < getNumSteps(); }
 
   public void next() {
-    if (_step - 1 < _panels.size() - 1) {
-      redoAction(_step);
-      _step++;
-    }
-    else {
       doAction(_step);
       _step++;
       JPanel p = makePanel(_step);
       if (p != null) _panels.addElement(p);
-    }
-    _started = true;
-    if (_item != null) _item.changed();
+      _started = true;
+      if (_item != null) _item.changed();
   }
 
   public boolean canGoBack() { return _step > 0; }
@@ -145,7 +139,7 @@ public abstract class Wizard implements java.io.Serializable {
 
   public boolean canFinish() { return true; }
   public boolean isStarted() { return _started; }
-  public boolean isFinsished() { return _finished; }
+  public boolean isFinished() { return _finished; }
 
   public void finish() {
     _started = true;
@@ -188,13 +182,4 @@ public abstract class Wizard implements java.io.Serializable {
   public void undoAction(int oldStep) { }
 
   public void undoAction() { undoAction(_step); }
-
-  /** Redo the action at the completion of a step. For example, when
-   *  the given step is 0, nothing was done, so redo nothing; and when
-   *  the given step is 1, redo the first action.  This implementation
-   *  simply calls doAction(). */
-  public void redoAction(int oldStep) { doAction(oldStep); }
-
-  public void redoAction() { doAction(_step); }
-
 } /* end class Wizard */
