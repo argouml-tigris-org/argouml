@@ -3609,12 +3609,19 @@ public class ParserDisplay extends Parser {
      * 
      * @param s the string to be parsed
      * @param objectFlowState the input object
+     * @throws ParseException when the input should be rejected 
+     *         (i.e. when the classifier does not exist)
      */
-    public void parseObjectFlowState1(String s, Object objectFlowState) {
+    public void parseObjectFlowState1(String s, Object objectFlowState)
+        throws ParseException {
         
         Object c = ActivityGraphsHelper.getHelper()
                     .findClassifierByName(objectFlowState, s);
-        if (c != null) ModelFacade.setType(objectFlowState, c);
+        if (c != null) {
+            ModelFacade.setType(objectFlowState, c);
+        } else {
+            throw new ParseException("Classifier not found", 0);
+        }
     }
     
     /**
@@ -3625,8 +3632,31 @@ public class ParserDisplay extends Parser {
      * 
      * @param s the string to be parsed
      * @param objectFlowState the input object
+     * @throws ParseException when the input should be rejected 
+     *         (i.e. when the classifier or the state do not exist)
      */
-    public void parseObjectFlowState2(String s, Object objectFlowState) {
+    public void parseObjectFlowState2(String s, Object objectFlowState) 
+        throws ParseException {
         
+        Object c = ModelFacade.getType(objectFlowState);
+        if (c != null) {
+            if (ModelFacade.isAClassifierInState(c)) {
+                Collection states = ModelFacade.getInStates(c);
+                Iterator i = states.iterator();
+                while (i.hasNext()) { 
+                    Object state = i.next();
+                    if (ModelFacade.getName(state) == s) {
+                        // nothing changed - the state already exists
+                        return;
+                    }
+                }
+                /* Now we have to see if any state in any statemachine 
+                of c is named s. 
+                If so, then we only have to link the state to c. */
+            } else { // then it is a "normal" Classifier
+                
+            }
+        }
+        //...
     }
 } /* end class ParserDisplay */

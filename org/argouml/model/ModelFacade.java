@@ -654,6 +654,16 @@ public class ModelFacade {
     }
 
     /**
+     * Recognizer for ClassifierInState
+     *
+     * @param handle candidate
+     * @return true if handle is a ClassifierInState
+     */
+    public static boolean isAClassifierInState(Object handle) {
+        return handle instanceof MClassifierInState;
+    }
+
+    /**
      * Recognizer for ClassifierRole
      *
      * @param handle candidate
@@ -2565,6 +2575,19 @@ public class ModelFacade {
     }
 
     /**
+     * Returns the collection of States for some ClasifierInState
+     *
+     * @param handle is the classifierInState
+     * @return Collection
+     */
+    public static Collection getInStates(Object handle) {
+        if (handle instanceof MClassifierInState) {
+            return ((MClassifierInState) handle).getInStates();
+        }
+    return illegalArgumentCollection(handle);
+    }
+
+    /**
      * Returns the interaction for some message
      *
      * @param handle is the message
@@ -3819,9 +3842,11 @@ public class ModelFacade {
     }
 
     /**
-     * The type of an attribute
+     * The type of a StructuralFeature, AssociationEnd, Parameter or
+     *  ObjectFlowState
      *
-     * @param handle the attribute
+     * @param handle the StructuralFeature, AssociationEnd, Parameter or
+     *  ObjectFlowState
      * @return the type
      */
     public static Object getType(Object handle) {
@@ -3834,7 +3859,10 @@ public class ModelFacade {
         if (handle instanceof MParameter) {
             return ((MParameter) handle).getType();
         }
-
+        if(handle instanceof MObjectFlowState) {
+            return ((MObjectFlowState) handle).getType();
+        }
+        
         // ...
 	return illegalArgumentObject(handle);
     }
