@@ -90,6 +90,7 @@ implements GraphNodeRenderer, GraphEdgeRenderer {
       ascFig.setSourceFigNode(fromFN);
       ascFig.setDestPortFig(toFN);
       ascFig.setDestFigNode(toFN);
+      ascFig.getFig().setLayer(lay);
       return ascFig;
     }
     if (edge instanceof MLink) {
@@ -108,6 +109,7 @@ implements GraphNodeRenderer, GraphEdgeRenderer {
       lnkFig.setSourceFigNode(fromFN);
       lnkFig.setDestPortFig(toFN);
       lnkFig.setDestFigNode(toFN);
+      lnkFig.getFig().setLayer(lay);
       return lnkFig;
     }
     if (edge instanceof MGeneralization) {
@@ -121,6 +123,7 @@ implements GraphNodeRenderer, GraphEdgeRenderer {
       genFig.setSourceFigNode(subTypeFN);
       genFig.setDestPortFig(superTypeFN);
       genFig.setDestFigNode(superTypeFN);
+      genFig.getFig().setLayer(lay);
       return genFig;
     }
 	/*    if (edge instanceof Realization) {
@@ -134,6 +137,7 @@ implements GraphNodeRenderer, GraphEdgeRenderer {
       realFig.setSourceFigNode(subTypeFN);
       realFig.setDestPortFig(superTypeFN);
       realFig.setDestFigNode(superTypeFN);
+      realFig.getFig().setLayer(lay);
       return realFig;
 	  }*/
     if (edge instanceof MDependency) {
@@ -151,6 +155,8 @@ implements GraphNodeRenderer, GraphEdgeRenderer {
 		  realFig.setSourceFigNode(cliFN);
 		  realFig.setDestPortFig(supFN);
 		  realFig.setDestFigNode(supFN);
+		  realFig.getFig().setLayer(lay);
+		  realFig.getFig().setDashed(true);
 		  return realFig;
 	  }
 	  else {
@@ -166,6 +172,8 @@ implements GraphNodeRenderer, GraphEdgeRenderer {
 		  depFig.setSourceFigNode(cliFN);
 		  depFig.setDestPortFig(supFN);
 		  depFig.setDestFigNode(supFN);
+		  depFig.getFig().setLayer(lay);
+		  depFig.getFig().setDashed(true);
 		  return depFig;
 	  }
 	}
