@@ -38,7 +38,6 @@ import java.util.Vector;
 
 import org.apache.log4j.Logger;
 import org.argouml.application.api.Notation;
-import org.argouml.i18n.Translator;
 import org.argouml.language.helpers.NotationHelper;
 import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.UmlFactory;
@@ -49,7 +48,6 @@ import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.ui.ActionAddNote;
 import org.argouml.uml.diagram.ui.ActionAddOperation;
 import org.argouml.uml.diagram.ui.ActionCompartmentDisplay;
-import org.argouml.uml.diagram.ui.ActionModifier;
 import org.argouml.uml.diagram.ui.CompartmentFigText;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
 import org.argouml.uml.diagram.ui.FigOperationsCompartment;
