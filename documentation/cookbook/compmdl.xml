@@ -481,21 +481,20 @@ Eventually we will change that to JMI/MDR that is newer and better and
 will take us into UML 1.4, UML 1.5 and UML 2.0.
 Working directly against NS-UML or JMI/MDR will make changes in the
 NS-UML or JMI/MDR affect large portions of the code.
-For this reason we have in the Model subsystem
+For this reason we have in the Model subsystem,
 a set of classes that lay between the NS-UML and JMI/MDR that
 hides the APIs of NS-UML or JMI/MDR between something that will not
 change while moving between them.
-This is the Facade classes of the Model subsystem i.e. the ModelFacade.
-There are also other classes that hides the internals of NS-UML like the
-Factories and the UMLEventPump.
+This is the API classes of the Model subsystem i.e.
+Factories, Helpers, Event Pump (where to register for changes).
 </para>
     <para>
 Here follows a list of how different things are done for the purpose
 of making the transition easy.
-The plan is to move everything in the Model subsystem 
-(under <classname>org.argouml.model.*</classname>)
-from NS-UML to JMI/MDR and
-everything else within ArgoUML to use the Model subsystem.
+Everything within ArgoUML should access the Model subsystem through the
+interfaces in the <classname>org.argouml.model</classname> package.
+The NS-UML or JMI/MDR and whatever other implementation we could eventually
+come up with would provide the implementation of those interfaces.
 </para>
     <table>
       <title>How to work against the model</title>
@@ -519,7 +518,7 @@ o instanceof M<replaceable>modelelementtype</replaceable> &rarr; boolean
 ???CLASSNAME???.isInstanceOf(RefObject toTest, String className) &rarr; boolean
 </entry>
 	    <entry>
-ModelFacade.isA<replaceable>modelelementtype</replaceable>(o) &rarr; boolean
+Model.getFacade().isA<replaceable>modelelementtype</replaceable>(o) &rarr; boolean
 </entry>
 	  </row>
 
@@ -533,7 +532,7 @@ ModelFacade.isA<replaceable>modelelementtype</replaceable>(o) &rarr; boolean
 ((RefFeatured) obj).refGetValue(String propName) &rarr; ???Type???
 </entry>
 	    <entry>
-ModelFacade.get<replaceable>property</replaceable>(o) &rarr; Object
+Model.getFacade().get<replaceable>property</replaceable>(o) &rarr; Object
 </entry>
 	  </row>
 	  <row>
@@ -546,7 +545,7 @@ ModelFacade.get<replaceable>property</replaceable>(o) &rarr; Object
 ((RefFeatured) obj).refGetValue(String propName) &rarr; Collection
 </entry>
 	    <entry>
-ModelFacade.get<replaceable>property</replaceable>(o)
+Model.getFacade().get<replaceable>property</replaceable>(o)
 &rarr; Iterator or Collection (total confusion!)
 </entry>
 	  </row>
@@ -606,7 +605,7 @@ Not possible!
 </entry>
 	    <entry>
 Model.getPump().addModelEventListener((PropertyChangeListener) li,
-                                      (Object) ModelFacade.getMODELELEMENTTYPE(),
+                                      (Object) Model.getMetaTypes().getMODELELEMENTTYPE(),
                                       String[] eventnames)
 </entry>
 	  </row>

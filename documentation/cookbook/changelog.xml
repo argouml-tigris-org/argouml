@@ -46,7 +46,7 @@
 
       <tbody valign="top">
         <row>
-          <entry>2005-01-01</entry>
+          <entry>2005-02-01</entry>
           <entry>
 Change to XXX.
 (See <xref linkend="xxx"/>).
@@ -55,6 +55,18 @@ Change to XXX.
         </row>
       </tbody>
       -->
+
+      <tbody valign="top">
+        <row>
+          <entry>2005-01-30</entry>
+          <entry>
+Change to the description on how to use the Model subsystem,
+the ModelFacade does not exist anymore.
+(See <xref linkend="working-with-the-model"/>).
+</entry>
+          <entry>Linus Tolke</entry>
+        </row>
+      </tbody>
 
       <tbody valign="top">
         <row>
