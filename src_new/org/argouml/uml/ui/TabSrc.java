@@ -85,7 +85,6 @@ implements ArgoNotationEventListener, NotationContext, ItemListener {
     if (modelObject == null) return null;
     cat.debug("TabSrc getting src for " + modelObject);
     //return Notation.generate(this, modelObject, true);
-    Argo.log.info("TabSrc getting src for " + modelObject);
     NotationName nn = (NotationName)(NotationComboBox.getInstance().getSelectedItem());
     String fileName = getSourceFileFor(modelObject,nn);
     if (fileName != null) {
