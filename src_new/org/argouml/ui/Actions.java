@@ -636,7 +636,7 @@ class ActionImportFromSources extends UMLAction {
     public static final String separator = "/"; //System.getProperty("file.separator");
 
     public ActionImportFromSources() {
-        super("Import sources");
+        super("Import sources...");
     }
 
     public void actionPerformed(ActionEvent event) {

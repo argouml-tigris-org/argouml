@@ -113,6 +113,28 @@ tokens {
 	// This one is not(!) in the JVM specs, but required
 	public static final short ACC_SYNCHRONIZED  = 0x0800;
 
+	/**
+         * To get direct access to the lexer (for the javadoc
+	 * comments), we store a reference to it.
+         */
+	private JavaLexer _lexer = null;
+
+	/**
+	 * Set the lexer for this parser.
+	 * 
+	 * @param lexer The lexer for this parser.
+	 */
+	private void setLexer(JavaLexer lexer) {
+	    _lexer = lexer;
+	}
+	
+	/**
+	 * Get the last parsed javadoc comment from the lexer.
+         */
+	private String getJavadocComment() {
+	    return _lexer.getJavadocComment();
+	}
+	
         private Modeller _modeller;
 
 	Modeller getModeller() {
@@ -168,8 +190,9 @@ tokens {
 
 // Compilation Unit: In Java, this is a single file.  This is the start
 //   rule for this parser
-compilationUnit[ Modeller modeller]
-{ setModeller(modeller); }
+compilationUnit[ Modeller modeller, JavaLexer lexer]
+{ setModeller(modeller); 
+  setLexer(lexer); }
 	:	// A compilation unit starts with an optional package definition
 		(	packageDefinition
 		|	/* nothing */
@@ -206,11 +229,10 @@ importDefinition
 // A type definition in a file is either a class or interface definition.
 typeDefinition
 	options {defaultErrorHandler = true;}
-{String javadoc = null; short m = 0;}
-	:	(c:JAVADOC! {javadoc = c.getText();})*
-		m=modifiers
-		( classDefinition[javadoc, m]
-		| interfaceDefinition[javadoc, m]
+{short m = 0;}
+	:	m=modifiers
+		( classDefinition[getJavadocComment(), m]
+		| interfaceDefinition[getJavadocComment(), m]
 		)
 	|	SEMI!
 	;
@@ -367,9 +389,8 @@ implementsClause returns [Vector names=new Vector()]
 //   for example), and if this grammar were used for a compiler there would
 //   need to be some semantic checks to make sure we're doing the right thing...
 field!
-{short mods=0; String t=null; Vector param=null; String javadocComment = null;}
+{short mods=0; String t=null; Vector param=null; }
 	:	// method, constructor, or variable declaration
-		(javadoc:JAVADOC {javadocComment = javadoc.getText();})*
 		mods=modifiers
 		(	ctorHead[mods] s:compoundStatement // constructor
 		|	cd:classDefinition["", mods]       // inner class
@@ -386,8 +407,8 @@ field!
 				  (tc:throwsClause)?
 
 				  ( s2:compoundStatement | SEMI )
-				) { getModeller().addOperation(mods, t, name.getText(), param, javadocComment); }
-			|	v:classVariableDefinitions[javadocComment, mods, t] SEMI
+				) { getModeller().addOperation(mods, t, name.getText(), param, getJavadocComment()); }
+			|	v:classVariableDefinitions[getJavadocComment(), mods, t] SEMI
 			)
 		)
 
@@ -1045,6 +1066,33 @@ options {
 
         return tok;
     }
+
+    /**
+     * A buffer to hold the last parsed javadoc comment.
+     */
+    String _javadocComment = null;
+
+    /**
+     * Store a parsed javadoc comment.
+     *
+     * @param comment The parsed javadoc comment.
+     */
+    protected void setJavadocComment(String comment) {
+	_javadocComment = comment;
+    }
+
+    /**
+     * Return (and consume) the last available Javadoc Comment.
+     *
+     * @return The last parsed javadoc comment.
+     */
+    protected String getJavadocComment() {
+	String result = _javadocComment;
+
+	_javadocComment = null;  // Since we consume the comment, the buffer is reset.
+
+	return result;
+    }
 }     
 
 // OPERATORS
@@ -1138,6 +1186,8 @@ JAVADOC
 		|	~('*'|'\n'|'\r')
 		)*
 		"*/"
+		{ setJavadocComment($getText);
+		  $setType(Token.SKIP); }
 	;
 
 // multiple-line comments
@@ -1299,4 +1349,8 @@ protected
 FLOAT_SUFFIX
 	:	'f'|'F'|'d'|'D'
 	;
+
+
+
+
 

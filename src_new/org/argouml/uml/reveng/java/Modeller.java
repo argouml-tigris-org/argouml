@@ -24,6 +24,7 @@
 package org.argouml.uml.reveng.java;
 
 import java.util.*;
+import org.argouml.ui.*;
 import org.argouml.uml.reveng.*;
 import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.foundation.extension_mechanisms.*;
@@ -80,9 +81,30 @@ public class Modeller
     */
     public void addPackage(String name)
     {
+	// Since getPackage will generate the package quietly, I have
+	// to check here if a figure has to be created.
+	//boolean createFigure = (searchPackageInModel(name) == null);
+	
 	MPackage mPackage = getPackage(name);
 	currentPackage = mPackage;
 	parseState.addPackageContext(mPackage);
+
+	/*
+	if(createFigure) {
+	    // Add a package figure to the owners class diagram
+	    String ownerPackage = getPackageName(name);
+	    System.out.println("Trying to add package " + name + " with owner " + ownerPackage);
+	    if(! "".equals(ownerPackage)) {
+		getDiagram().selectClassDiagram( searchPackageInModel(ownerPackage),
+						 ownerPackage);
+		getDiagram().addPackage(mPackage);
+	    }
+	}
+	*/
+
+	// Select the class diagram for the current package,
+	// so all succeeding objects are added to it.
+	getDiagram().selectClassDiagram(mPackage, name);
     }
 
     /**
@@ -498,16 +520,42 @@ public class Modeller
 	    return new MPackageImpl();
 	}
 	else {
-	    MPackage mPackage = (MPackage)model.lookup(name);
+	    MPackage mPackage = searchPackageInModel(name);
 	    if(mPackage == null) {
+
 		mPackage = new MPackageImpl();
-		mPackage.setName(name);
+		mPackage.setName(getRelativePackageName(name));
 		mPackage.setNamespace(model);
+
+		// Find the owner for this package.
+		if("".equals(getPackageName(name))) {
+		    model.addOwnedElement(mPackage);
+		} else {
+		    getPackage(getPackageName(name)).addOwnedElement(mPackage);
+		}	
 	    }
 	    if(mPackage.getUUID() == null) {
 		mPackage.setUUID(name);
 	    }		
 	    return mPackage;
+	}
+    }
+
+    /**
+     * Search recursivly for nested packages in the model. So if you
+     * pass a package org.argouml.kernel , this method searches for a package
+     * kernel, that is owned by a package argouml, which is owned by a 
+     * package org. This method is required to nest the parsed packages.
+     * 
+     * @param name The fully qualified package name of the package we are searching for.
+     * @return The found package or null, if it is not in the model.
+     */
+    private MPackage searchPackageInModel(String name) {
+	if("".equals(getPackageName(name))) {
+	    return (MPackage)model.lookup(name);
+	} else {
+	    MPackage owner = (MPackage)searchPackageInModel(getPackageName(name));
+	    return owner == null ? null : (MPackage)owner.lookup(getRelativePackageName(name));
 	}
     }
 
@@ -605,6 +653,22 @@ public class Modeller
 	else {
 	    return name.substring(0, lastDot);
 	}
+    }
+    
+    /**
+     * Get the relative package name from a fully qualified
+     * package name. So if the parameter is 'org.argouml.kernel'
+     * the method is supposed to return 'kernel' (the package
+     * kernel is in package 'org.argouml').
+     *
+     * @param packageName A fully qualified package name.
+     * @return The relative package name.
+     */
+    private String getRelativePackageName(String packageName) {
+	// Since the relative package name corresponds
+	// to the classifier name of a fully qualified
+	// classifier, we simply use this method.
+	return getClassifierName(packageName);
     }
 
     /**
