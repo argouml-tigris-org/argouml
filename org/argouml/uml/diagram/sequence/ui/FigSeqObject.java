@@ -49,7 +49,10 @@ import org.tigris.gef.graph.GraphEdgeRenderer;
 import org.tigris.gef.base.Editor;
 import org.tigris.gef.base.Layer;
 import org.tigris.gef.base.Globals;
+import org.tigris.gef.base.Selection;
+import org.tigris.gef.base.SelectionManager;
 
+import org.tigris.gef.base.ModeSelect;
 
 import org.argouml.kernel.*;
 import org.argouml.ui.*;
@@ -79,12 +82,14 @@ public class FigSeqObject extends FigNodeModelElement
   int _terminateHeight = 0;
   int _terminatePortsSize = 0;
   public Vector _dynVector;
-  // add other Figs here aes needed
-    //
+  // add other Figs here as needed
+
+  // termination symbol consisting of two lines
   FigLine _terminateLine1;
   FigLine _terminateLine2;
 
-
+  // actual mouse position , needed for dynamically placed  rapid buttons
+  int _yPos;
 
 
   ////////////////////////////////////////////////////////////////
@@ -103,51 +108,51 @@ public class FigSeqObject extends FigNodeModelElement
 
     _lifeline = new FigRect(50, 10+nameMin.height, 10, 40, Color.black, Color.white);
 
-
     //object's termination symbol
     _terminateLine1 = new FigLine(10,49,19,49, Color.black);
     _terminateLine2 = new FigLine(19,49,10,49, Color.black);
-
-
-
 
 
     _ports = new Vector();
     _activations = new Vector();
     _dynObjects = "";
     _dynVector = new Vector();
-
-    // set default create attributes , always  at the first position of the_dynVector
-    /*
-    _dynVector = new Vector();
-    String createdStr="false";
-    if (_created==true) createdStr="true";
-    String dynStr="c|" + createdStr + "|" + _createHeight;
-    _dynVector.addElement(dynStr);
-    _dynObjects = _dynVector.toString();
-      */
     
-   
-
     // add Figs to the FigNode in back-to-front order
+    // bigPort,cover,name,lifeline
     addFig(_bigPort);
     addFig(_cover);
     addFig(_name);
     addFig(_lifeline);
-
-
-    // add terminate symbol
+   
+    // add termination symbol
     addFig(_terminateLine1);
     addFig(_terminateLine2);
 
     Rectangle r = getBounds();
 
     setBounds(r.x, r.y, r.width, r.height, 0);
+    
+    // default y position of rapid buttons
+    _yPos = r.y + r.height /2;
+
   }
 
   public FigSeqObject(GraphModel gm, Object node) {
     this();
     setOwner(node);
+  }
+
+  public Selection makeSelection() {
+    return new SelectionSeqObject(this);
+  }
+
+  public void translate(int dx, int dy) {
+    super.translate(dx, dy);
+    Editor ce = Globals.curEditor();
+    Selection sel = ce.getSelectionManager().findSelectionFor(this);
+    if (sel instanceof SelectionSeqObject)
+      ((SelectionSeqObject)sel).hideButtons();
   }
 
   public String ownerName() {
@@ -157,6 +162,10 @@ public class FigSeqObject extends FigNodeModelElement
 
 
 
+  /**
+   * If the object is terminated , the termination symbol will appear as  a cross.
+   * If not, the termination symbol is hidden.
+   */
   public void terminateSymbolSetBounds( int x1, int y1, int x2, int y2) {
     _terminateLine1.setX1( x1);
     _terminateLine1.setY1( y1);
@@ -181,7 +190,7 @@ public class FigSeqObject extends FigNodeModelElement
     figClone._name = (FigText) v.elementAt(2);
     figClone._lifeline = (FigRect) v.elementAt(3);
 
-    // clone terminate symbol
+    // clone termination symbol
     figClone._terminateLine1 = (FigLine) v.elementAt(4);
     figClone._terminateLine2 = (FigLine) v.elementAt(5);
 
@@ -190,7 +199,7 @@ public class FigSeqObject extends FigNodeModelElement
     int i=0;
     while (e1.hasMoreElements()) {
       fr = (FigDynPort) e1.nextElement();
-      //  index:4->6
+    
       figClone.fr = (FigDynPort) v.elementAt(i+6);
       i++;
     }
@@ -198,7 +207,7 @@ public class FigSeqObject extends FigNodeModelElement
     int j=0;
     while (e2.hasMoreElements()) {
       _activation = (FigActivation) e2.nextElement();
-      // index 4->6
+     
       figClone._activation = (FigActivation) v.elementAt(j+i+6);
       j++;
     }
@@ -223,21 +232,7 @@ public class FigSeqObject extends FigNodeModelElement
 
     while (st.hasMoreTokens()) {
       String next = st.nextToken().trim();
-      /*
-      if (next.equals("c")) {
-        // create attributes ["c" | _created| _createHeight]
-        String createStr = st.nextToken();
-        String createHeightStr = st.nextToken();
-
-        if (createStr.equals("true")) { _created=true; }
-        else _created=false;
-
-        Integer createHeightInt = new Integer(createHeightStr);
-        _createHeight = createHeightInt.intValue();
-        System.out.println("createHeight:" + _createHeight);
-      }
-      */
-
+    
       if (next.equals("a")) {
         // next token is an activation fig ["a"| _FromPos| _toPos| _fromBegin| end]
         FigActivation fa = new FigActivation(10, 10, 21, 10, 0, 0);
@@ -281,19 +276,55 @@ public class FigSeqObject extends FigNodeModelElement
 
         fsp.setDynVectorPos(count);
         count++;
-      }      
+      }
 
     }
 
   }
 
   public void setOwner(Object node) {
-
     super.setOwner(node);
     Object onlyPort = node;
     bindPort(onlyPort, _lifeline);
   }
 
+  /** Sets the port (some object in an underlying model) for Fig f.  f
+   *  must already be contained in the FigNode. f will now represent
+   *  the given port. Overrides the implementation of FigNode.
+  */
+    
+  public void bindPort(Object port, Fig f) {
+    Fig oldPortFig = getPortFig(port);
+    //if (oldPortFig != null) oldPortFig.setOwner(null);
+    f.setOwner(port);
+  }
+
+
+  /** Reply the port that "owns" the topmost Fig under the given point, or
+   *  null if none. 
+   *  Overrides the implementation of FigNode.
+   *  If the hit port has an owner, hitPort() returns that owner object. 
+   *  The mode manageer tries to create an arc, even in the select mode.
+   *  Because the user shall select the FigSeqObject with its lifeline, 
+   *  which is binded to the underlying object,  a special handling is needed 
+   *  to make it selectable.
+   */
+
+  public Object hitPort(int x, int y) {
+    Fig f = hitFig(new Rectangle(x, y, 1, 1));
+   
+    if (Globals.mode() instanceof ModeSelect )   {
+      /* if we are in the select mode  and the hit fig is tho object's lifeline, 
+       *  return null, so the object can be selected 
+       */ 
+      return null;
+    }
+ 
+    if (f != null) return f.getOwner();
+    else return null;
+      
+  }
+    
   public Dimension getMinimumSize() {
     Dimension bigPortMin = _bigPort.getMinimumSize();
     Dimension coverMin = _cover.getMinimumSize();
@@ -309,7 +340,7 @@ public class FigSeqObject extends FigNodeModelElement
 
     if (_name == null) return;
 
-   
+
     Rectangle oldBounds = getBounds();
 
     Dimension nameMin = _name.getMinimumSize();
@@ -368,7 +399,7 @@ public class FigSeqObject extends FigNodeModelElement
 
     // the dynamci ports are invisible
     portH=0;
-
+   
      _bigPort.setBounds(mainX, mainY, mainW, mainH);
      _cover.setBounds(mainX, mainY, mainW, mainH);
     _name.setBounds(mainX, mainY, mainW, mainH);
@@ -447,7 +478,7 @@ public class FigSeqObject extends FigNodeModelElement
     int termY2=termY1;
 
     if  ( _terminated ) {
-      // make terminate symbol visible
+      // make terminate symbol visible as a cross 
       termX1=lifeX-lifeW;
       //termY1=lifeY+lifeH-1;
       termX2=lifeX+2*lifeW;
@@ -467,7 +498,7 @@ public class FigSeqObject extends FigNodeModelElement
   // event handlers
 
   protected void textEdited(FigText ft) throws PropertyVetoException {
-	  // super.textEdited(ft);
+    // super.textEdited(ft);
     MObject obj = (MObject) getOwner();
     if (ft == _name) {
        String s = ft.getText();
@@ -477,9 +508,8 @@ public class FigSeqObject extends FigNodeModelElement
     }
   }
 
-  protected void modelChanged() {
- 
 
+  protected void modelChanged() {
     super.modelChanged();
     MObject obj = (MObject) getOwner();
     if (obj == null) return;
@@ -498,19 +528,13 @@ public class FigSeqObject extends FigNodeModelElement
 	_name.setText(nameStr.trim() + " : " + baseString);
     }
     setEnclosingFig(this);
-  
+
     if ( getLayer() != null )((SequenceDiagramLayout)getLayer()).placeAllFigures();
-       
+
   }
 
 
-  /** Sets the port (some object in an underlying model) for Fig f.  f
-   *  must already be contained in the FigNode. f will now represent
-   *  the given port. */
-  public void bindPort(Object port, Fig f) {
-    Fig oldPortFig = getPortFig(port);
-    f.setOwner(port);
-  }
+ 
 
   /** This method is called, when the FigSeqObject is
    *    moving around. Changes the position of the
@@ -546,7 +570,7 @@ public class FigSeqObject extends FigNodeModelElement
 
 
   /** Count the edges that are in this diagram */
- public int edgesCount(Vector contents) {
+  public int edgesCount(Vector contents) {
     int size = contents.size();
     int countEdges = 0;
     if (contents != null && size > 0) {
@@ -562,15 +586,13 @@ public class FigSeqObject extends FigNodeModelElement
   /** If the FigSeqLink linkFig is connected to a create-action
    *    this FigSeqObject will be updated with the right values */
   public void setForCreate(FigSeqLink linkFig, String connectTo, boolean isCreate) {
-  
-    Vector contents = getContents();
-    int portNumber = linkFig.getPortNumber(contents);
-    
+    Vector contents = getContents();   
+    int portNumber = linkFig.getPortNumber(contents);   
     FigDynPort fsp = (FigDynPort) linkFig.getSourcePortFig();
     if (connectTo == "Dest") {
       fsp = (FigDynPort) linkFig.getDestPortFig();
     }
-
+   
     int firstPos = 10000;
     Vector edges = getFigEdges();
     for (int i=0; i<edges.size(); i++) {
@@ -594,60 +616,41 @@ public class FigSeqObject extends FigNodeModelElement
         _createHeight = 0;
       }
     }
-
-    // set changed create attributes in _dynVector
-    /*
-    if (_dynVector != null && _dynVector.size()>0 &&
-       _dynVector.elementAt(0).toString().startsWith("c") ) _dynVector.removeElementAt(0);
-    String createdStr="false";
-    if (_created==true) createdStr="true";
-    String dynStr="c|" + createdStr + "|" + _createHeight;
-    _dynVector.insertElementAt(dynStr,0);
-    _dynObjects = _dynVector.toString();
-    */
-     
-
   }
 
   /** If the FigSeqLink linkFig is connected to a destroy-action
    *    this FigSeqObject will be updated with the right values */
   public void setForDestroy(FigSeqLink linkFig, String connectTo, boolean isTerminate) {
-
-  
     Vector contents = getContents();
-    int portNumber = linkFig.getPortNumber(contents);
-    //boolean canDestroy1 = canDo(false, linkFig, portNumber);
-    //boolean canDestroy2 = canDo(true, linkFig, portNumber);
-
+    int portNumber = linkFig.getPortNumber(contents);   
     FigDynPort fsp = (FigDynPort) linkFig.getSourcePortFig();
     if (connectTo == "Dest") fsp = (FigDynPort) linkFig.getDestPortFig();
     int lastPos = 0;
     Vector edges = getFigEdges();
-   
+
     for (int i=0; i<edges.size(); i++) {
       FigSeqLink fsl = (FigSeqLink) edges.elementAt(i);
       int fslNumber = fsl.getPortNumber(contents);
-     
+
       if (fslNumber > lastPos) { lastPos = fslNumber; }
     }
     if (isTerminate == true) {
-      
+
       if (lastPos == portNumber) {
-        
+
         _terminated = isTerminate;
         _terminateHeight = lastPos;
       }
       else {
         linkFig.setDefaultAction();
       }
-     
+
     }
     else if (isTerminate == false) {
       if (lastPos == portNumber) {
         _terminated = isTerminate;
         _terminateHeight = 0;
       }
-      
     }
   }
 
@@ -745,10 +748,10 @@ public class FigSeqObject extends FigNodeModelElement
   /** Get the Vector of all figures, that are shown in
    *    the diagram, is important because in sequence-
    *    diagrams often you have to update all figures */
-  public Vector getContents() {  
+  public Vector getContents() {
     if (getLayer() != null ) {
       return getLayer().getContents();
-    } else {  
+    } else {
       Editor _editor = Globals.curEditor();
       Layer lay = _editor.getLayerManager().getActiveLayer();
       Vector contents = lay.getContents();
@@ -816,25 +819,56 @@ public class FigSeqObject extends FigNodeModelElement
     _nearest.addElement(new Integer(high));
     return _nearest;
   }
+   
 
+  public void mousePressed(MouseEvent me) {
+    
+    super.mousePressed(me);
+    Editor ce = Globals.curEditor();
+    Selection sel = ce.getSelectionManager().findSelectionFor(this);
+    if (sel instanceof SelectionSeqObject)
+      ((SelectionSeqObject)sel).hideButtons();
+     
+  }
+  
+  public void mouseClicked(MouseEvent me) {
+   
+    /* by clicking on the object's lifeline or activation bar, the rapid buttons are painted
+     *  at this position */
+      
+    Fig f = hitFig( new Rectangle(me.getX(),me.getY(),1,1) );
+    if ( (f==_lifeline ||  f instanceof FigActivation) && (me.getY() != _yPos)) {
+      _yPos = me.getY();
+      Editor ce = Globals.curEditor();
+      SelectionManager selManager = ce.getSelectionManager();
+      Selection sel = selManager.findSelectionFor(this);
+      if (sel instanceof SelectionSeqObject) {
+	  selManager.select(this);
+      }
+    }
+    super.mouseClicked(me);   
+  }
 
-///////////////////////////////////////////////////////////////////////////////
+   
+  public void mouseReleased(MouseEvent me) {
+    super.mouseReleased(me);
+   
+    if (getLayer()!= null  &&  getLayer() instanceof SequenceDiagramLayout) {
+         ((SequenceDiagramLayout)getLayer()).placeAllFigures();
+    }
+    
+  }
+
+  ///////////////////////////////////////////////////////////////////////////////
 // MouseMotionListener-implementation
 
   public void mouseDragged(MouseEvent me) {
     changePosition(getContents());
   }
 
+    
   public void mouseMoved(MouseEvent me) {
-  }
-
-
-  // MouseListener
-
-  public void mouseReleased(MouseEvent me) {
-      super.mouseReleased(me);
-   if (getLayer()!= null) ((SequenceDiagramLayout)getLayer()).placeAllFigures();
-
+   
   }
 
 

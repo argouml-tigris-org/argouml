@@ -63,23 +63,18 @@ public class UMLSequenceDiagram extends UMLDiagram {
 
   protected static Action _actionLinkWithStimulusCall =
   new ActionAddLink(MCallActionImpl.class, "StimulusCall");
-  //new ActionAddLink(new MCallActionImpl(), "StimulusCall");
 
   protected static Action _actionLinkWithStimulusCreate =
   new ActionAddLink(MCreateActionImpl.class, "StimulusCreate");
-  //new ActionAddLink(new MCreateActionImpl(), "StimulusCreate");
 
   protected static Action _actionLinkWithStimulusDestroy =
   new ActionAddLink(MDestroyActionImpl.class, "StimulusDestroy");
-  //new ActionAddLink(new MDestroyActionImpl(), "StimulusDestroy");
 
   protected static Action _actionLinkWithStimulusSend =
   new ActionAddLink(MSendActionImpl.class, "StimulusSend");
-  //new ActionAddLink(new MSendActionImpl(), "StimulusSend");
 
   protected static Action _actionLinkWithStimulusReturn =
   new ActionAddLink(MReturnActionImpl.class, "StimulusReturn");
-   //new ActionAddLink(new MReturnActionImpl(), "StimulusReturn");
 
 
 
@@ -99,6 +94,7 @@ public class UMLSequenceDiagram extends UMLDiagram {
     setNamespace(m);
   }
 
+ 
 
   public int getNumStimuluss() {
     Layer lay = getLayer();
@@ -114,17 +110,14 @@ public class UMLSequenceDiagram extends UMLDiagram {
 
   public void setNamespace(MNamespace m) {
     super.setNamespace(m);
-    
     SequenceDiagramGraphModel gm = new SequenceDiagramGraphModel();
     gm.setNamespace(m);
     setGraphModel(gm);
-    //LayerPerspective lay = new LayerPerspective(m.getName(), gm);
-    SequenceDiagramLayout lay = new SequenceDiagramLayout(m.getName(), gm);
+    LayerPerspective lay = new SequenceDiagramLayout(m.getName(), gm);
     setLayer(lay);
     SequenceDiagramRenderer rend = new SequenceDiagramRenderer(); // singleton
     lay.setGraphNodeRenderer(rend);
     lay.setGraphEdgeRenderer(rend);
-   
   }
 
   /** initialize the toolbar for this diagram type */
@@ -180,11 +173,20 @@ public class UMLSequenceDiagram extends UMLDiagram {
     if (ownedElements != null) oeIterator = ownedElements.iterator();
     Layer lay = getLayer();
     if (oeIterator != null && lay != null) {
-     
+      Vector contents = new Vector();
+      boolean objFound=false;
+      FigSeqObject figSeqObj=null;
+      FigSeqLink figLink=null;
+      FigSeqStimulus figStim=null;
+
+      Vector createdObjs = new Vector();
+      Vector createLinks = new Vector();
+      FigSeqObject dest=null;
 
       while(oeIterator.hasNext()) {
         MModelElement me = (MModelElement)oeIterator.next();
-   
+     
+
         if (me instanceof MLink) {
           stimuli = ((MLink) me).getStimuli();
           stimuliIterator= stimuli.iterator();
@@ -198,11 +200,11 @@ public class UMLSequenceDiagram extends UMLDiagram {
         }
       }
     }
-
+   
   }
 
-   
-     
+ 
+
 
 
 } /* end class UMLSequenceDiagram */

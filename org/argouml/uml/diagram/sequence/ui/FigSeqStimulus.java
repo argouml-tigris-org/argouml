@@ -218,11 +218,9 @@ public class FigSeqStimulus extends FigNodeModelElement {
     super.dispose();
   }
 
-  public void mouseClicked(MouseEvent me) {
-  
-   super.mouseClicked(me);
+ 
 
-  }
+  
 
   public void delete() {
     // a stimulus can only be removed from the link
@@ -237,7 +235,7 @@ public class FigSeqStimulus extends FigNodeModelElement {
 
   public void addPathItemToLink(Layer lay) {
 
-     // 15/09/00 AK
+    // 15/09/00 AK
     // the new stimulus becomes a pathItem of its link
    
     MLink mlink = ((MStimulus) getOwner()).getCommunicationLink();
@@ -258,6 +256,16 @@ public class FigSeqStimulus extends FigNodeModelElement {
         figSeqLink.updatePathItemLocations();
         lay.bringToFront(this);
       }
+    }
+  }
+
+  /* if you move a FigSeqObject around and place it onto  a FigSeqStimulus
+     not the FigSeqObject gets the mouseReleased event but the FigSeqStimulus.
+     For this case, the diagram has to be replaced, too. */
+  public void mouseReleased(MouseEvent me) {
+    super.mouseReleased(me);
+    if (getLayer()!= null  &&  getLayer() instanceof SequenceDiagramLayout) {
+         ((SequenceDiagramLayout)getLayer()).placeAllFigures();
     }
   }
 
