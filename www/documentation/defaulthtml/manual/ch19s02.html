@@ -10,7 +10,7 @@ some external event to occur, or some dynamic activity
       rectangle with rounded corners, with a horizontal line separating the
       name at the top from the description of the behavior below. The
       description of the behavior includes the entry and exit actions and any
-      internal transitions.</p><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e21971"></a>19.2.1.&nbsp;State Details Tabs</h3></div></div><div></div></div><p>The details tabs that are active for states are as
+      internal transitions.</p><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e22509"></a>19.2.1.&nbsp;State Details Tabs</h3></div></div><div></div></div><p>The details tabs that are active for states are as
         follows.</p><div class="variablelist"><dl><dt><span class="term"><tt class="literal">ToDoItem</tt></span></dt><dd><p>Standard tab.</p></dd><dt><span class="term"><tt class="literal">Properties</tt></span></dt><dd><p>See <a href="ch19s02.html#s2.ref.state_property_toolbar" title="19.2.2.&nbsp;State Property Toolbar">Section&nbsp;19.2.2, &#8220;State Property Toolbar&#8221;</a> and <a href="ch19s02.html#s2.ref.state_property_fields" title="19.2.3.&nbsp;Property Fields For State">Section&nbsp;19.2.3, &#8220;Property Fields For State&#8221;</a>
             below.</p></dd><dt><span class="term"><tt class="literal">Documentation</tt></span></dt><dd><p>Standard tab.</p></dd><dt><span class="term"><tt class="literal">Style</tt></span></dt><dd><p>Standard tab. The values for the bounds of the state
             define the bounding box of the state.</p><div class="caution" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Caution"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Caution]" src="images/caution.png"></td><th align="left">Caution</th></tr><tr><td colspan="2" align="left" valign="top"><p>The <tt class="literal">Shadow</tt> field has no
@@ -23,8 +23,10 @@ some external event to occur, or some dynamic activity
             implement the state (code for actions will be associated with
             the particular actions). This is not implemented in the current
             release of ArgoUML.</p></td></tr></table></div></dd><dt><span class="term"><tt class="literal">Constraints</tt></span></dt><dd><p>Standard tab.
-This tab is downlighted, since constraints are not defined for 
-<tt class="literal">State</tt> within the ArgoUML metamodel.
+ArgoUML only supports constraints on Classes and Features (Attributes,
+Operations, Receptions, and Methods),
+
+so this tab is grayed out.
 </p></dd><dt><span class="term"><tt class="literal">Tagged Values</tt></span></dt><dd><p>Standard tab. 
 In the UML metamodel,
             <tt class="literal">State</tt> has the following standard
@@ -60,7 +62,7 @@ default in the UML standard.
 
 </p></dd><dt><span class="term"><tt class="literal">Navigate Stereotype</tt></span></dt><dd><p><span class="guiicon"><span class="inlinemediaobject"><img src="images/icons/navigate_stereotype.gif" align="middle"></span></span> icon. If a
               stereotype has been selected, this will navigate to the
-stereotype property panel (see <a href="ch15s04.html" title="15.4.&nbsp;Stereotypes">Section&nbsp;15.4, &#8220;Stereotypes&#8221;</a>).
+stereotype property panel (see <a href="ch15s04.html" title="15.4.&nbsp;Stereotype">Section&nbsp;15.4, &#8220;Stereotype&#8221;</a>).
             </p></dd><dt><span class="term"><tt class="literal">Container</tt></span></dt><dd><p>
 Text box. Shows the container of the state. 
 This is the state hierarchy.

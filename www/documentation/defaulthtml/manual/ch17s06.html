@@ -1,6 +1,6 @@
 <html><head>
       <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-   <title>17.6.&nbsp;Attribute</title><link rel="stylesheet" href="look-and-feel.css" type="text/css"><meta name="generator" content="DocBook XSL Stylesheets V1.60.1"><link rel="home" href="index.html" title="ArgoUML User Manual"><link rel="up" href="ch17.html" title="Chapter&nbsp;17.&nbsp;Class Diagram Artifact Reference"><link rel="previous" href="ch17s05.html" title="17.5.&nbsp;Class"><link rel="next" href="ch17s07.html" title="17.7.&nbsp;Operation"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">17.6.&nbsp;Attribute</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch17s05.html">Prev</a>&nbsp;</td><th width="60%" align="center">Chapter&nbsp;17.&nbsp;Class Diagram Artifact Reference</th><td width="20%" align="right">&nbsp;<a accesskey="n" href="ch17s07.html">Next</a></td></tr></table><hr></div><div class="sect1" lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="s1.ref.attribute"></a>17.6.&nbsp;Attribute</h2></div></div><div></div></div><p>Attribute is a named slot within a class (or other
+   <title>17.6.&nbsp;Attribute</title><link rel="stylesheet" href="look-and-feel.css" type="text/css"><meta name="generator" content="DocBook XSL Stylesheets V1.60.1"><link rel="home" href="index.html" title="ArgoUML User Manual"><link rel="up" href="ch17.html" title="Chapter&nbsp;17.&nbsp;Class Diagram Artifact Reference"><link rel="previous" href="ch17s05.html" title="17.5.&nbsp;Class"><link rel="next" href="ch17s07.html" title="17.7.&nbsp;Operation"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">17.6.&nbsp;Attribute</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch17s05.html">Prev</a>&nbsp;</td><th width="60%" align="center">Chapter&nbsp;17.&nbsp;Class Diagram Artifact Reference</th><td width="20%" align="right">&nbsp;<a accesskey="n" href="ch17s07.html">Next</a></td></tr></table><hr></div><div class="sect1" lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="s1.ref.attribute"></a>17.6.&nbsp;Attribute</h2></div></div><div></div></div><a class="indexterm" name="d0e17529"></a><p>Attribute is a named slot within a class (or other
       <tt class="literal">Classifier</tt>) describing a range of values that may be
       held by instances of the class. In the UML metamodel it is a sub-class of
       <tt class="literal">StructuralFeature</tt> which is itself a sub-class of
@@ -17,14 +17,18 @@
       attribute being declared.</p><p><span class="emphasis"><em>type</em></span> is the type (UML datatype, class or
       interface) declared for the attribute.</p><p><span class="emphasis"><em>initialValue</em></span> is any initial value to be given to
       the attribute when an instance of the class is created. This may be
-      overridden by any constructor operation.</p><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="s2.ref.attribute_details_tabs"></a>17.6.1.&nbsp;Attribute Details Tabs</h3></div></div><div></div></div><p>The details tabs that are active for attributes are as
+      overridden by any constructor operation.</p><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="s2.ref.attribute_details_tabs"></a>17.6.1.&nbsp;Attribute Details Tabs</h3></div></div><div></div></div><a class="indexterm" name="d0e17608"></a><a class="indexterm" name="d0e17611"></a><p>The details tabs that are active for attributes are as
         follows.</p><div class="variablelist"><dl><dt><span class="term"><tt class="literal">ToDoItem</tt></span></dt><dd><p>Standard tab.</p></dd><dt><span class="term"><tt class="literal">Properties</tt></span></dt><dd><p>See <a href="ch17s06.html#s2.ref.attribute_property_toolbar" title="17.6.2.&nbsp;Attribute Property Toolbar">Section&nbsp;17.6.2, &#8220;Attribute Property Toolbar&#8221;</a> and <a href="ch17s06.html#s2.ref.attribute_property_fields" title="17.6.3.&nbsp;Property Fields For Attribute">Section&nbsp;17.6.3, &#8220;Property Fields For Attribute&#8221;</a>
-            below.</p></dd><dt><span class="term"><tt class="literal">Documentation</tt></span></dt><dd><p>Standard tab.</p></dd><dt><span class="term"><tt class="literal">Source</tt></span></dt><dd><p>Standard tab. This contains a declaration for the
+            below.</p></dd><dt><span class="term"><tt class="literal">Documentation</tt></span></dt><dd><p>Standard tab.
+See <a href="ch12s05.html" title="12.5.&nbsp;Documentation Tab">Section&nbsp;12.5, &#8220;Documentation Tab&#8221;</a>.
+</p></dd><dt><span class="term"><tt class="literal">Source</tt></span></dt><dd><p>Standard tab. This contains a declaration for the
             attribute.</p></dd><dt><span class="term"><tt class="literal">Constraints</tt></span></dt><dd><p>Standard tab. There are no standard constraints
             defined for <tt class="literal">Attribute</tt> within the UML
-            metamodel.</p></dd><dt><span class="term"><tt class="literal">Tagged Values</tt></span></dt><dd><p>Standard tab. In the UML metamodel,
-            <tt class="literal">Attribute</tt> has the following standard tagged
-            values defined.</p><div class="itemizedlist"><ul type="disc"><li><p><tt class="literal">transient</tt>. 
+            metamodel.</p></dd><dt><span class="term"><tt class="literal">Tagged Values</tt></span></dt><dd><a class="indexterm" name="d0e17677"></a><a class="indexterm" name="d0e17680"></a><p>Standard tab.
+In the UML metamodel,
+<tt class="literal">Attribute</tt> has the following standard tagged
+values defined.
+</p><div class="itemizedlist"><ul type="disc"><li><p><tt class="literal">transient</tt>. 
                 </p></li><li><p><tt class="literal">volatile</tt>.
                   This is an ArgoUML extension to the UML 1.3 standard 
                   to indicate that this attribute is realized in 
@@ -34,7 +38,7 @@
               which all other artifacts are derived includes the tagged
               element <tt class="literal">documentation</tt> which is handled by
               the <span class="emphasis"><em>documentation tab</em></span> under
-              ArgoUML</p></td></tr></table></div></dd></dl></div></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="s2.ref.attribute_property_toolbar"></a>17.6.2.&nbsp;Attribute Property Toolbar</h3></div></div><div></div></div><div class="variablelist"><dl><dt><span class="term"><span class="guiicon"><span class="inlinemediaobject"><img src="images/icons/navigate_up.gif" align="middle"></span></span> <tt class="literal">Go
+              ArgoUML</p></td></tr></table></div></dd></dl></div></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="s2.ref.attribute_property_toolbar"></a>17.6.2.&nbsp;Attribute Property Toolbar</h3></div></div><div></div></div><a class="indexterm" name="d0e17719"></a><a class="indexterm" name="d0e17722"></a><div class="variablelist"><dl><dt><span class="term"><span class="guiicon"><span class="inlinemediaobject"><img src="images/icons/navigate_up.gif" align="middle"></span></span> <tt class="literal">Go
             up</tt></span></dt><dd><p>Navigate up through the package
             structure.</p></dd><dt><span class="term"><span class="guiicon"><span class="inlinemediaobject"><img src="images/icons/attribute.gif" align="middle"></span></span> <tt class="literal">New
             attribute</tt></span></dt><dd><p>This creates a new attribute within the owning class
@@ -48,40 +52,57 @@
             attribute compartment can be hidden on the diagram using the
             <span class="emphasis"><em>style</em></span> tab (see <a href="ch17s06.html#s2.ref.attribute_property_toolbar" title="17.6.2.&nbsp;Attribute Property Toolbar">Section&nbsp;17.6.2, &#8220;Attribute Property Toolbar&#8221;</a>) or the
             button&nbsp;2 pop up menu for the class on the
-            diagram.</p></td></tr></table></div></dd></dl></div></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="s2.ref.attribute_property_fields"></a>17.6.3.&nbsp;Property Fields For Attribute</h3></div></div><div></div></div><div class="variablelist"><dl><dt><span class="term"><tt class="literal">Name</tt></span></dt><dd><p>Text box. The name of the attribute. The name of a
-            attribute has a leading lower case letter, with words separated
-            by &#8220;<span class="quote">bumpy caps</span>&#8221;.</p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="images/note.png"></td><th align="left">Note</th></tr><tr><td colspan="2" align="left" valign="top"><p>The ArgoUML critics will complain about attribute
+            diagram.</p></td></tr></table></div></dd></dl></div></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="s2.ref.attribute_property_fields"></a>17.6.3.&nbsp;Property Fields For Attribute</h3></div></div><div></div></div><a class="indexterm" name="d0e17785"></a><a class="indexterm" name="d0e17788"></a><div class="variablelist"><dl><dt><span class="term"><tt class="literal">Name</tt></span></dt><dd><a class="indexterm" name="d0e17800"></a><a class="indexterm" name="d0e17803"></a><p>Text box.
+The name of the attribute.
+The name of a attribute has a leading lower case letter, with words
+separated by &#8220;<span class="quote">bumpy caps</span>&#8221;.
+</p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="images/note.png"></td><th align="left">Note</th></tr><tr><td colspan="2" align="left" valign="top"><p>The ArgoUML critics will complain about attribute
             names that do not have an initial
             lower case letter.</p></td></tr></table></div></dd><dt><span class="term"><tt class="literal">Stereotype</tt></span></dt><dd><p>Drop down selector. There are no UML standard
               stereotypes for <tt class="literal">Attribute</tt>. 
             </p></dd><dt><span class="term"><tt class="literal">Navigate Stereotype</tt></span></dt><dd><p><span class="guiicon"><span class="inlinemediaobject"><img src="images/icons/navigate_stereotype.gif" align="middle"></span></span> icon. If a
               stereotype has been selected, this will navigate to the
-              stereotype property panel (see <a href="ch15s04.html" title="15.4.&nbsp;Stereotypes">Section&nbsp;15.4, &#8220;Stereotypes&#8221;</a>).</p></dd><dt><span class="term"><tt class="literal">Owner</tt></span></dt><dd><p>Text box. Records the class which contains this
+              stereotype property panel (see <a href="ch15s04.html" title="15.4.&nbsp;Stereotype">Section&nbsp;15.4, &#8220;Stereotype&#8221;</a>).</p></dd><dt><span class="term"><tt class="literal">Owner</tt></span></dt><dd><p>Text box. Records the class which contains this
             attribute.</p><p>Button&nbsp;1 double click on the entry will navigate to the
               class. 
-            </p></dd><dt><span class="term"><tt class="literal">Multiplicity</tt></span></dt><dd><p>Drop down selector. The default (empty) value is
-            that there is one instance of this attribute for each instance
-            of the class, i.e. it is a scalar. The drop down provides a
-            number of specifications for non-scalar attributes.</p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="images/note.png"></td><th align="left">Note</th></tr><tr><td colspan="2" align="left" valign="top"><p>The selection <tt class="literal">1..1</tt> is equivalent
+            </p></dd><dt><span class="term"><tt class="literal">Multiplicity</tt></span></dt><dd><a class="indexterm" name="d0e17857"></a><a class="indexterm" name="d0e17860"></a><p>Drop down selector.
+
+The default (empty) value is that there is one instance of this
+attribute for each instance of the class, i.e. it is a scalar.
+
+The drop down provides a number of specifications for non-scalar
+attributes.
+</p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="images/note.png"></td><th align="left">Note</th></tr><tr><td colspan="2" align="left" valign="top"><p>The selection <tt class="literal">1..1</tt> is equivalent
             to the default (exactly one scalar instance). The selection
             <tt class="literal">0..1</tt> indicates an optional scalar
             attribute.</p></td></tr></table></div><div class="caution" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Caution"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Caution]" src="images/caution.png"></td><th align="left">Caution</th></tr><tr><td colspan="2" align="left" valign="top"><p>ArgoUML restricts you to a number of predefined
             ranges for multiplicity. There is no way to give a user defined
             range.
             
-          </p></td></tr></table></div></dd><dt><span class="term"><tt class="literal">Type</tt></span></dt><dd><p>Drop down selector. The type of this attribute. This
-            can be any UML <tt class="literal">Classifier</tt>, although in
-            practice only <tt class="literal">Class</tt>,
-            <tt class="literal">DataType</tt> or <tt class="literal">Interface</tt>
-            make any sense.</p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="images/note.png"></td><th align="left">Note</th></tr><tr><td colspan="2" align="left" valign="top"><p>A type must be declared (it can be
+          </p></td></tr></table></div></dd><dt><span class="term"><tt class="literal">Type</tt></span></dt><dd><a class="indexterm" name="d0e17887"></a><a class="indexterm" name="d0e17890"></a><p>Drop down selector.
+The type of this attribute.
+
+This can be any UML <tt class="literal">Classifier</tt>, although in
+practice only
+<tt class="literal">Class</tt>,
+<tt class="literal">DataType</tt>, or
+<tt class="literal">Interface</tt>
+make any sense.
+</p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="images/note.png"></td><th align="left">Note</th></tr><tr><td colspan="2" align="left" valign="top"><p>A type must be declared (it can be
             <tt class="literal">void</tt>). By default ArgoUML supplies
             <tt class="literal">int</tt> as the type.</p></td></tr></table></div></dd><dt><span class="term"><tt class="literal">Navigate Type</tt></span></dt><dd><p><span class="guiicon"><span class="inlinemediaobject"><img src="images/icons/navigate_type.gif" align="middle"></span></span> icon. This will
             navigate to the property panel for the currently selected
-            type. (see <a href="ch17s05.html" title="17.5.&nbsp;Class">Section&nbsp;17.5, &#8220;Class&#8221;</a>, <a href="ch17s03.html" title="17.3.&nbsp;Datatype">Section&nbsp;17.3, &#8220;Datatype&#8221;</a> and <a href="ch17s14.html" title="17.14.&nbsp;Interface">Section&nbsp;17.14, &#8220;Interface&#8221;</a>).</p></dd><dt><span class="term"><tt class="literal">Initial Value</tt></span></dt><dd><p>Text box with drop down. This allows you to set an
-            initial value for the attribute if desired (this is
-            optional). The drop down menu provides access to the common
-            values <tt class="literal">0</tt>, <tt class="literal">1</tt>,
-            <tt class="literal">2</tt> and <tt class="literal">null</tt>.</p><div class="caution" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Caution"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Caution]" src="images/caution.png"></td><th align="left">Caution</th></tr><tr><td colspan="2" align="left" valign="top"><p>Any constructor operation may ignore this initial
+            type. (see <a href="ch17s05.html" title="17.5.&nbsp;Class">Section&nbsp;17.5, &#8220;Class&#8221;</a>, <a href="ch17s03.html" title="17.3.&nbsp;Datatype">Section&nbsp;17.3, &#8220;Datatype&#8221;</a> and <a href="ch17s15.html" title="17.15.&nbsp;Interface">Section&nbsp;17.15, &#8220;Interface&#8221;</a>).</p></dd><dt><span class="term"><tt class="literal">Initial Value</tt></span></dt><dd><a class="indexterm" name="d0e17942"></a><a class="indexterm" name="d0e17945"></a><p>Text box with drop down.
+
+This allows you to set an initial value for the attribute if desired
+(this is optional).
+
+The drop down menu provides access to the common values
+<tt class="literal">0</tt>,
+<tt class="literal">1</tt>,
+<tt class="literal">2</tt>, and
+<tt class="literal">null</tt>.
+</p><div class="caution" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Caution"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Caution]" src="images/caution.png"></td><th align="left">Caution</th></tr><tr><td colspan="2" align="left" valign="top"><p>Any constructor operation may ignore this initial
               value.</p></td></tr></table></div><div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Warning"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Warning]" src="images/warning.png"></td><th align="left">Warning</th></tr><tr><td colspan="2" align="left" valign="top"><p>
                 This function is broken in V0.14 of ArgoUML. The textbox is
                 not editable, and if an initial value is given in the diagram
@@ -90,17 +111,22 @@
                 &#8220;<span class="quote">ru.novosoft.uml.foundation.data_types.MExpression@1b6484c</span>&#8221;
                 appears.
                 
-              </p></td></tr></table></div></dd><dt><span class="term"><tt class="literal">Visibility</tt></span></dt><dd><p>Radio box, with entries <tt class="literal">public</tt>,
-            <tt class="literal">protected</tt> and
-            <tt class="literal">private</tt>.</p><div class="itemizedlist"><ul type="disc"><li><p><tt class="literal">public</tt>. The attribute is
+              </p></td></tr></table></div></dd><dt><span class="term"><tt class="literal">Visibility</tt></span></dt><dd><a class="indexterm" name="d0e17981"></a><a class="indexterm" name="d0e17984"></a><p>
+Radio box, with entries
+<tt class="literal">public</tt>,
+<tt class="literal">protected</tt>, and
+<tt class="literal">private</tt>.
+</p><div class="itemizedlist"><ul type="disc"><li><p><tt class="literal">public</tt>. The attribute is
               available to any artifact that can see the owning
               class.</p></li><li><p><tt class="literal">private</tt>. The attribute is
               available only to the owning class (and any inner
               classes).</p></li><li><p><tt class="literal">protected</tt>. The attribute is
               available only to the owning class, or artifacts that are
-              subclasses of the owning class.</p></li></ul></div></dd><dt><span class="term"><tt class="literal">Changability</tt></span></dt><dd><p>Radio box, with entries <tt class="literal">changeable</tt>,
-            <tt class="literal">add only</tt> and
-            <tt class="literal">frozen</tt>.</p><div class="itemizedlist"><ul type="disc"><li><p><tt class="literal">changeable</tt>. 
+              subclasses of the owning class.</p></li></ul></div></dd><dt><span class="term"><tt class="literal">Changeability</tt></span></dt><dd><a class="indexterm" name="d0e18022"></a><a class="indexterm" name="d0e18025"></a><p>Radio box, with entries
+<tt class="literal">changeable</tt>,
+<tt class="literal">add only</tt>, and
+<tt class="literal">frozen</tt>.
+</p><div class="itemizedlist"><ul type="disc"><li><p><tt class="literal">changeable</tt>. 
               There are no restrictions of modification.
             </p></li><li><p><tt class="literal">add only</tt>. 
               Meaningful only if the multiplicity is not fixed to a

@@ -1,6 +1,6 @@
 <html><head>
       <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-   <title>20.2.&nbsp;Classifier Role</title><link rel="stylesheet" href="look-and-feel.css" type="text/css"><meta name="generator" content="DocBook XSL Stylesheets V1.60.1"><link rel="home" href="index.html" title="ArgoUML User Manual"><link rel="up" href="ch20.html" title="Chapter&nbsp;20.&nbsp;Collaboration Diagram Artifact Reference"><link rel="previous" href="ch20.html" title="Chapter&nbsp;20.&nbsp;Collaboration Diagram Artifact Reference"><link rel="next" href="ch20s03.html" title="20.3.&nbsp;Association Role"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">20.2.&nbsp;Classifier Role</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch20.html">Prev</a>&nbsp;</td><th width="60%" align="center">Chapter&nbsp;20.&nbsp;Collaboration Diagram Artifact Reference</th><td width="20%" align="right">&nbsp;<a accesskey="n" href="ch20s03.html">Next</a></td></tr></table><hr></div><div class="sect1" lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="d0e24100"></a>20.2.&nbsp;Classifier Role</h2></div></div><div></div></div><p>A classifier role is a specialization of a classifier, used to show
+   <title>20.2.&nbsp;Classifier Role</title><link rel="stylesheet" href="look-and-feel.css" type="text/css"><meta name="generator" content="DocBook XSL Stylesheets V1.60.1"><link rel="home" href="index.html" title="ArgoUML User Manual"><link rel="up" href="ch20.html" title="Chapter&nbsp;20.&nbsp;Collaboration Diagram Artifact Reference"><link rel="previous" href="ch20.html" title="Chapter&nbsp;20.&nbsp;Collaboration Diagram Artifact Reference"><link rel="next" href="ch20s03.html" title="20.3.&nbsp;Association Role"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">20.2.&nbsp;Classifier Role</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch20.html">Prev</a>&nbsp;</td><th width="60%" align="center">Chapter&nbsp;20.&nbsp;Collaboration Diagram Artifact Reference</th><td width="20%" align="right">&nbsp;<a accesskey="n" href="ch20s03.html">Next</a></td></tr></table><hr></div><div class="sect1" lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="d0e24612"></a>20.2.&nbsp;Classifier Role</h2></div></div><div></div></div><p>A classifier role is a specialization of a classifier, used to show
       its behavior in a particular context. In the UML metamodel
       <tt class="literal">Classifier Role</tt> is a sub-class of
       <tt class="literal">Classifier</tt>. Within a collaboration diagram classifier
@@ -18,7 +18,7 @@
       (<tt class="literal">/</tt>). This allows classifier roles in a specification
       level diagram to be distinguished from instances in an instance level
       diagram.</p><p>This distinction is not implemented in the current release of
-      ArgoUML.</p></td></tr></table></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e24142"></a>20.2.1.&nbsp;Classifier Role Details Tabs</h3></div></div><div></div></div><p>The details tabs that are active for classifier roles are as
+      ArgoUML.</p></td></tr></table></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e24654"></a>20.2.1.&nbsp;Classifier Role Details Tabs</h3></div></div><div></div></div><p>The details tabs that are active for classifier roles are as
         follows.</p><div class="variablelist"><dl><dt><span class="term"><tt class="literal">ToDoItem</tt></span></dt><dd><p>Standard tab.</p></dd><dt><span class="term"><tt class="literal">Properties</tt></span></dt><dd><p>See
             <a href="ch20s02.html#s2.ref.classifier_role_property_toolbar" title="20.2.2.&nbsp;Classifier Role Property Toolbar">Section&nbsp;20.2.2, &#8220;Classifier Role Property Toolbar&#8221;</a> and
             <a href="ch20s02.html#s2.ref.classifier_role_property_fields" title="20.2.3.&nbsp;Property Fields For Classifier Role">Section&nbsp;20.2.3, &#8220;Property Fields For Classifier Role&#8221;</a>
@@ -26,14 +26,12 @@
               so having this tab active is probably a
               mistake.
               
-            </p></td></tr></table></div></dd><dt><span class="term"><tt class="literal">Constraints</tt></span></dt><dd><p>Standard tab. There are no standard constraints
-            defined for <tt class="literal">ClassifierRole</tt> within the UML
-            metamodel.</p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="images/note.png"></td><th align="left">Note</th></tr><tr><td colspan="2" align="left" valign="top"><p>This is an important distinction from
-            <tt class="literal">Instance</tt> used in sequence diagrams, which is
-            able to talk about creation and destruction. Where a
-            collaboration is being used at instance level, it may be
-            appropriate to create these constraints for use on
-            collaboration diagrams.</p></td></tr></table></div></dd><dt><span class="term"><tt class="literal">Tagged Values</tt></span></dt><dd><p>Standard tab. In the UML metamodel,
+            </p></td></tr></table></div></dd><dt><span class="term"><tt class="literal">Constraints</tt></span></dt><dd><p>Standard tab.
+ArgoUML only supports constraints on Classes and Features (Attributes,
+Operations, Receptions, and Methods),
+
+so this tab is grayed out.
+</p></dd><dt><span class="term"><tt class="literal">Tagged Values</tt></span></dt><dd><p>Standard tab. In the UML metamodel,
             <tt class="literal">Classifier Role</tt> has the following standard
             tagged values defined.</p><div class="itemizedlist"><ul type="disc"><li><p><tt class="literal">persistence</tt> (from the
                 superclass, <tt class="literal">Classifier</tt>. Showing the
@@ -75,7 +73,7 @@
             <tt class="literal">thread</tt> and <tt class="literal">utility</tt>).
             </p></dd><dt><span class="term"><tt class="literal">Navigate Stereotype</tt></span></dt><dd><p><span class="guiicon"><span class="inlinemediaobject"><img src="images/icons/navigate_stereotype.gif" align="middle"></span></span> icon. If a
               stereotype has been selected, this will navigate to the
-              stereotype property panel (see <a href="ch15s04.html" title="15.4.&nbsp;Stereotypes">Section&nbsp;15.4, &#8220;Stereotypes&#8221;</a>).</p></dd><dt><span class="term"><tt class="literal">Namespace</tt></span></dt><dd><p>Text box. Records the namespace for the
+              stereotype property panel (see <a href="ch15s04.html" title="15.4.&nbsp;Stereotype">Section&nbsp;15.4, &#8220;Stereotype&#8221;</a>).</p></dd><dt><span class="term"><tt class="literal">Namespace</tt></span></dt><dd><p>Text box. Records the namespace for the
               classifier role, which is always the containing Collaboration.
             </p><p>Button&nbsp;1 double click on the entry will navigate to the
               collaboration.

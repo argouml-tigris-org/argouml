@@ -6,15 +6,17 @@
       <tt class="literal">ModelElement</tt>.</p><p>
 A guard is shown on the diagram by the text of its expression in square
 brackets (<tt class="literal">[]</tt>).
-    </p><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e23170"></a>19.7.1.&nbsp;Guard Details Tabs</h3></div></div><div></div></div><p>The details tabs that are active for guards are as
+    </p><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e23704"></a>19.7.1.&nbsp;Guard Details Tabs</h3></div></div><div></div></div><p>The details tabs that are active for guards are as
         follows.</p><div class="variablelist"><dl><dt><span class="term"><tt class="literal">ToDoItem</tt></span></dt><dd><p>Standard tab.</p></dd><dt><span class="term"><tt class="literal">Properties</tt></span></dt><dd><p>See <a href="ch19s07.html#s2.ref.guard_property_toolbar" title="19.7.2.&nbsp;Guard Property Toolbar">Section&nbsp;19.7.2, &#8220;Guard Property Toolbar&#8221;</a> and <a href="ch19s07.html#s2.ref.guard_property_fields" title="19.7.3.&nbsp;Property Fields For Guard">Section&nbsp;19.7.3, &#8220;Property Fields For Guard&#8221;</a>
             below.</p></dd><dt><span class="term"><tt class="literal">Documentation</tt></span></dt><dd><p>Standard tab.</p></dd><dt><span class="term"><tt class="literal">Source</tt></span></dt><dd><p>Standard tab, containing the expression for the
             guard.</p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="images/note.png"></td><th align="left">Note</th></tr><tr><td colspan="2" align="left" valign="top"><p>In the fullness of time this tab will contain code to
             implement the guard. This is not implemented in the current
-            release of ArgoUML.</p></td></tr></table></div></dd><dt><span class="term"><tt class="literal">Constraints</tt></span></dt><dd><p>Standard tab. 
-This tab is downlighted, since constraints are not defined for an 
-<tt class="literal">Guard</tt> within the ArgoUML metamodel.
-          </p></dd><dt><span class="term"><tt class="literal">Tagged Values</tt></span></dt><dd><p>Standard tab. In the UML metamodel,
+            release of ArgoUML.</p></td></tr></table></div></dd><dt><span class="term"><tt class="literal">Constraints</tt></span></dt><dd><p>Standard tab.
+ArgoUML only supports constraints on Classes and Features (Attributes,
+Operations, Receptions, and Methods),
+
+so this tab is grayed out.
+</p></dd><dt><span class="term"><tt class="literal">Tagged Values</tt></span></dt><dd><p>Standard tab. In the UML metamodel,
             <tt class="literal">Guard</tt> has the following standard
             tagged values defined.</p><div class="itemizedlist"><ul type="disc"><li><p><tt class="literal">derived</tt> (from the
                 superclass, <tt class="literal">ModelElement</tt>). Values
@@ -45,7 +47,7 @@ Drop down selector. Guard has no stereotypes by
 default in the UML standard.
             </p></dd><dt><span class="term"><tt class="literal">Navigate Stereotype</tt></span></dt><dd><p><span class="guiicon"><span class="inlinemediaobject"><img src="images/icons/navigate_stereotype.gif" align="middle"></span></span> icon. 
 If a stereotype has been selected, this will navigate to the
-stereotype property panel (see <a href="ch15s04.html" title="15.4.&nbsp;Stereotypes">Section&nbsp;15.4, &#8220;Stereotypes&#8221;</a>).
+stereotype property panel (see <a href="ch15s04.html" title="15.4.&nbsp;Stereotype">Section&nbsp;15.4, &#8220;Stereotype&#8221;</a>).
             </p></dd><dt><span class="term"><tt class="literal">Namespace</tt></span></dt><dd><p>
 Text box.
 The namespace in which the guard is defined.

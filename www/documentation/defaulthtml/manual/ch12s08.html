@@ -3,15 +3,42 @@
    <title>12.8.&nbsp;Constraints Tab</title><link rel="stylesheet" href="look-and-feel.css" type="text/css"><meta name="generator" content="DocBook XSL Stylesheets V1.60.1"><link rel="home" href="index.html" title="ArgoUML User Manual"><link rel="up" href="ch12.html" title="Chapter&nbsp;12.&nbsp;The Details Pane"><link rel="previous" href="ch12s07.html" title="12.7.&nbsp;Source tab"><link rel="next" href="ch12s09.html" title="12.9.&nbsp;Tagged Values Tab"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">12.8.&nbsp;Constraints Tab</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch12s07.html">Prev</a>&nbsp;</td><th width="60%" align="center">Chapter&nbsp;12.&nbsp;The Details Pane</th><td width="20%" align="right">&nbsp;<a accesskey="n" href="ch12s09.html">Next</a></td></tr></table><hr></div><div class="sect1" lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="s1.ref.details_constraints"></a>12.8.&nbsp;Constraints Tab</h2></div></div><div></div></div><p>Constraints are one of the extension mechanisms provided for
       UML. ArgoUML is equipped with a powerful constraint editor based on
       the <span class="emphasis"><em>Object Constraint Language (OCL)</em></span> defined in the
-      UML&nbsp;1.3 standard.</p><p>The standard pre-defines a small number of constraints (for example
+      UML&nbsp;1.3 standard.</p><div class="caution" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Caution"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Caution]" src="images/caution.png"></td><th align="left">Caution</th></tr><tr><td colspan="2" align="left" valign="top"><p>
+        The OCL editor implementation for ArgoUML V0.14
+        doesn't support OCL constraints for elements other than
+        Classes and Features.
+        
+      </p><p>
+        This is something of a general restriction of OCL. Although the UML
+        specification claims that there may be a constraint for every model
+        element, the OCL specification only defines classes/interfaces and
+        operations as allowable contexts. 
+      </p><p>
+        It is not before OCL 2.0 that a more general definition of allowable
+        contexts is introduced. The key issue is that for each context
+        definition you need to define what is the contextualClassifier, i.e.,
+        the classifier that will be associated with the self keyword. The
+        creators of the OCL specification claim that this is not an issue for
+        the OCL specification, but rather for UML or some integration task
+        force. Conversely, it seems that the UML specification people seem to
+        expect this to be defined in the OCL specification (which is why we
+        did a first step in that direction in OCL 2.0).
+      </p><p>
+        So, to cut a long story short, it appeared that the simplest solution
+        for ArgoUML at the moment
+        would be to enable the OCL property panel only for those
+        model elements for which there actually exists a definition of the
+        contextualClassifier in OCL 1.4. These are (s. above) Class/Interface
+        and Feature.
+      </p></td></tr></table></div><p>The standard pre-defines a small number of constraints (for example
       the <tt class="literal">xor</tt> constraint over a set of associations
       indicating that only one may be manifest for any particular
       instance).</p><p>The standard also envisages a number of circumstances where general
       purpose constraints may be useful:</p><div class="itemizedlist"><ul type="disc"><li><p>To specify invariants on classes and types in the class
         model;</p></li><li><p>To specify type invariants for
         stereotypes;</p></li><li><p>To describe pre- and post-conditions on operations and
-        methods;</p></li><li><p>To describe guards;</p></li><li><p>As a navigation language; and</p></li><li><p>To specify constraints on operations.</p></li></ul></div><p><a href="ch12s08.html#fig.ref.details_constraints" title="Figure&nbsp;12.11.&nbsp;A typical Constraints tab on the details&#xA;        pane">Figure&nbsp;12.11</a> shows a typical
-     constraint tab for a artifact in ArgoUML (in this case a class).</p><div class="figure-float"><div class="figure"><a name="fig.ref.details_constraints"></a><p class="title"><b>Figure&nbsp;12.11.&nbsp;A typical <tt class="literal">Constraints</tt> tab on the details
+        methods;</p></li><li><p>To describe guards;</p></li><li><p>As a navigation language; and</p></li><li><p>To specify constraints on operations.</p></li></ul></div><p><a href="ch12s08.html#fig.ref.details_constraints" title="Figure&nbsp;12.12.&nbsp;A typical Constraints tab on the details&#xA;        pane">Figure&nbsp;12.12</a> shows a typical
+     constraint tab for a artifact in ArgoUML (in this case a class).</p><div class="figure-float"><div class="figure"><a name="fig.ref.details_constraints"></a><p class="title"><b>Figure&nbsp;12.12.&nbsp;A typical <tt class="literal">Constraints</tt> tab on the details
         pane</b></p><div class="screenshot"><div class="mediaobject" align="center"><img src="images/reference/details_constraints.png" align="middle" alt="A typical Constraints tab on the details pane"></div></div><p></p></div></div><p>Along the top of the tab are a series of icons.</p><div class="itemizedlist"><ul type="disc"><li><p><span class="guiicon"><span class="inlinemediaobject"><img src="images/icons/new_constraint.gif" align="middle"></span></span>
         <tt class="literal">New Constraint</tt>. This creates a new constraint and
         launches the constraint editor in the <tt class="literal">Constraints
@@ -56,7 +83,7 @@
           </p></td></tr></table></div></li><li><p><span class="guiicon"><span class="inlinemediaobject"><img src="images/icons/configure_constraints.gif" align="middle"></span></span>
         <tt class="literal">Configure Constraint Editor</tt>. This a dialog to
         configure options in the constraint editor (see
-        <a href="ch12s08.html#fig.ref.details_constraints_dialog" title="Figure&nbsp;12.12.&nbsp;Dialog box for configuring constraints">Figure&nbsp;12.12</a>).</p><div class="figure-float"><div class="figure"><a name="fig.ref.details_constraints_dialog"></a><p class="title"><b>Figure&nbsp;12.12.&nbsp;Dialog box for configuring constraints</b></p><div class="screenshot"><div class="mediaobject" align="center"><img src="images/reference/details_constraints_dialog.png" align="middle" alt="Dialog box for configuring constraints"></div></div><p></p></div></div><p>
+        <a href="ch12s08.html#fig.ref.details_constraints_dialog" title="Figure&nbsp;12.13.&nbsp;Dialog box for configuring constraints">Figure&nbsp;12.13</a>).</p><div class="figure-float"><div class="figure"><a name="fig.ref.details_constraints_dialog"></a><p class="title"><b>Figure&nbsp;12.13.&nbsp;Dialog box for configuring constraints</b></p><div class="screenshot"><div class="mediaobject" align="center"><img src="images/reference/details_constraints_dialog.png" align="middle" alt="Dialog box for configuring constraints"></div></div><p></p></div></div><p>
         The dialog box has a check box for the following option.
       </p><div class="itemizedlist"><ul type="circle"><li><p><tt class="literal">Check type conformance of OCL
           constraints</tt>. OCL is strictly typed. At the early stages of
@@ -87,7 +114,7 @@
         <tt class="literal">Edit&nbsp;Constraint</tt> button on the main
         <tt class="literal">Constraints</tt> tab. The constraint editor takes up the
         whole tab (see 
-        <a href="ch12s08.html#fig.ref.details_constraint_editor" title="Figure&nbsp;12.13.&nbsp;Dialog box for configuring constraints">Figure&nbsp;12.13</a>).</p><div class="figure-float"><div class="figure"><a name="fig.ref.details_constraint_editor"></a><p class="title"><b>Figure&nbsp;12.13.&nbsp;Dialog box for configuring constraints</b></p><div class="screenshot"><div class="mediaobject" align="center"><img src="images/reference/details_constraint_editor.png" align="middle" alt="Dialog box for configuring constraints"></div></div><p></p></div></div><p>Along the top of the tab are a series of icons.</p><div class="itemizedlist"><ul type="disc"><li><p><span class="guiicon"><span class="inlinemediaobject"><img src="images/icons/cancel_edit_constraint.gif" align="middle"></span></span>
+        <a href="ch12s08.html#fig.ref.details_constraint_editor" title="Figure&nbsp;12.14.&nbsp;Dialog box for configuring constraints">Figure&nbsp;12.14</a>).</p><div class="figure-float"><div class="figure"><a name="fig.ref.details_constraint_editor"></a><p class="title"><b>Figure&nbsp;12.14.&nbsp;Dialog box for configuring constraints</b></p><div class="screenshot"><div class="mediaobject" align="center"><img src="images/reference/details_constraint_editor.png" align="middle" alt="Dialog box for configuring constraints"></div></div><p></p></div></div><p>Along the top of the tab are a series of icons.</p><div class="itemizedlist"><ul type="disc"><li><p><span class="guiicon"><span class="inlinemediaobject"><img src="images/icons/cancel_edit_constraint.gif" align="middle"></span></span>
           <tt class="literal">Cancel Edit Constraint</tt>. This exits the constraint
           editor without saving any changes and returns to the main
           <tt class="literal">Constraints</tt> tab.</p></li><li><p><span class="guiicon"><span class="inlinemediaobject"><img src="images/icons/check_constraint.gif" align="middle"></span></span>
@@ -165,7 +192,7 @@
             <tt class="literal">subSequence</tt>.</p></li></ul></div></li></ul></div><p>The remainder of the tab comprises a writable text area containing
         the text to be edited. The mouse buttons have their standard behavior
         within an editable text area (see
-        <a href="ch07s04.html" title="7.4.&nbsp;General Mouse Behavior in ArgoUML">Section&nbsp;7.4, &#8220;General Mouse Behavior in ArgoUML&#8221;</a>).</p><p>In addition, cut, copy and paste operations may be invoked through
+        <a href="ch07s03.html" title="7.3.&nbsp;General Mouse Behavior in ArgoUML">Section&nbsp;7.3, &#8220;General Mouse Behavior in ArgoUML&#8221;</a>).</p><p>In addition, cut, copy and paste operations may be invoked through
         the keyboard shortcuts <tt class="literal">Ctrl-X</tt>,
         <tt class="literal">Ctrl-C</tt> and <tt class="literal">Ctrl-V</tt>
         respectively.</p><div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Warning"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Warning]" src="images/warning.png"></td><th align="left">Warning</th></tr><tr><td colspan="2" align="left" valign="top"><p>There is a known problem with the V0.14 release of

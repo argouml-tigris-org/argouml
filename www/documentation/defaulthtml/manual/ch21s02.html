@@ -1,6 +1,6 @@
 <html><head>
       <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-   <title>21.2.&nbsp;Action State</title><link rel="stylesheet" href="look-and-feel.css" type="text/css"><meta name="generator" content="DocBook XSL Stylesheets V1.60.1"><link rel="home" href="index.html" title="ArgoUML User Manual"><link rel="up" href="ch21.html" title="Chapter&nbsp;21.&nbsp;Activity Diagram Artifact Reference"><link rel="previous" href="ch21.html" title="Chapter&nbsp;21.&nbsp;Activity Diagram Artifact Reference"><link rel="next" href="ch21s03.html" title="21.3.&nbsp;Action"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">21.2.&nbsp;Action State</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch21.html">Prev</a>&nbsp;</td><th width="60%" align="center">Chapter&nbsp;21.&nbsp;Activity Diagram Artifact Reference</th><td width="20%" align="right">&nbsp;<a accesskey="n" href="ch21s03.html">Next</a></td></tr></table><hr></div><div class="sect1" lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="d0e25394"></a>21.2.&nbsp;Action State</h2></div></div><div></div></div><p>An action state represents execution of an atomic action, usually the
+   <title>21.2.&nbsp;Action State</title><link rel="stylesheet" href="look-and-feel.css" type="text/css"><meta name="generator" content="DocBook XSL Stylesheets V1.60.1"><link rel="home" href="index.html" title="ArgoUML User Manual"><link rel="up" href="ch21.html" title="Chapter&nbsp;21.&nbsp;Activity Diagram Artifact Reference"><link rel="previous" href="ch21.html" title="Chapter&nbsp;21.&nbsp;Activity Diagram Artifact Reference"><link rel="next" href="ch21s03.html" title="21.3.&nbsp;Action"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">21.2.&nbsp;Action State</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch21.html">Prev</a>&nbsp;</td><th width="60%" align="center">Chapter&nbsp;21.&nbsp;Activity Diagram Artifact Reference</th><td width="20%" align="right">&nbsp;<a accesskey="n" href="ch21s03.html">Next</a></td></tr></table><hr></div><div class="sect1" lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="d0e25896"></a>21.2.&nbsp;Action State</h2></div></div><div></div></div><p>An action state represents execution of an atomic action, usually the
       invocation of an action. Within the UML metamodel,
       <tt class="literal">ActionState</tt> is a sub-class of 
       <tt class="literal">SimpleState</tt>. It is a specialized simple state that
@@ -20,7 +20,7 @@ an exit action and a Do activity are not permitted for action states.
       contain the expression associated with the entry action, rather than the
       action state name (which is shown by the current version on ArgoUML).
       
-      </p></td></tr></table></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e25423"></a>21.2.1.&nbsp;Action State Details Tabs</h3></div></div><div></div></div><p>The details tabs that are active for action states are as
+      </p></td></tr></table></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e25925"></a>21.2.1.&nbsp;Action State Details Tabs</h3></div></div><div></div></div><p>The details tabs that are active for action states are as
         follows.</p><div class="variablelist"><dl><dt><span class="term"><tt class="literal">ToDoItem</tt></span></dt><dd><p>Standard tab.</p></dd><dt><span class="term"><tt class="literal">Properties</tt></span></dt><dd><p>See <a href="ch21s02.html#s2.ref.action_state_property_toolbar" title="21.2.2.&nbsp;Action State Property ToolBar">Section&nbsp;21.2.2, &#8220;Action State Property ToolBar&#8221;</a> and <a href="ch21s02.html#s2.ref.action_state_property_fields" title="21.2.3.&nbsp;Property fields for action state">Section&nbsp;21.2.3, &#8220;Property fields for action state&#8221;</a>
             below.</p></dd><dt><span class="term"><tt class="literal">Documentation</tt></span></dt><dd><p>Standard tab.</p></dd><dt><span class="term"><tt class="literal">Style</tt></span></dt><dd><p>Standard tab. The values for the bounds of the
             action state define the bounding box of the action
@@ -28,9 +28,12 @@ an exit action and a Do activity are not permitted for action states.
           </p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="images/note.png"></td><th align="left">Note</th></tr><tr><td colspan="2" align="left" valign="top"><p>In the fullness of time this tab will contain code to
             implement the action state (code for actions will be associated
             with the particular actions). This is not implemented in the
-            current release of ArgoUML.</p></td></tr></table></div></dd><dt><span class="term"><tt class="literal">Constraints</tt></span></dt><dd><p>Standard tab. There are no standard constraints
-            defined for <tt class="literal">ActionState</tt> within the UML
-            metamodel.</p></dd><dt><span class="term"><tt class="literal">Tagged Values</tt></span></dt><dd><p>Standard tab. In the UML metamodel,
+            current release of ArgoUML.</p></td></tr></table></div></dd><dt><span class="term"><tt class="literal">Constraints</tt></span></dt><dd><p>Standard tab.
+ArgoUML only supports constraints on Classes and Features (Attributes,
+Operations, Receptions, and Methods),
+
+so this tab is grayed out.
+</p></dd><dt><span class="term"><tt class="literal">Tagged Values</tt></span></dt><dd><p>Standard tab. In the UML metamodel,
             <tt class="literal">ActionState</tt> has the following standard
             tagged values defined.</p><div class="itemizedlist"><ul type="disc"><li><p><tt class="literal">derived</tt> (from the
                 superclass, <tt class="literal">ModelElement</tt>). Values
@@ -62,7 +65,7 @@ an exit action and a Do activity are not permitted for action states.
             by default in the UML standard.</p></dd><dt><span class="term"><tt class="literal">Navigate Stereotype</tt></span></dt><dd><p><span class="guiicon"><span class="inlinemediaobject"><img src="images/icons/navigate_stereotype.gif" align="middle"></span></span> icon. If a
               stereotype has been selected, this will navigate to the
               stereotype property panel (see
-              <a href="ch15s04.html" title="15.4.&nbsp;Stereotypes">Section&nbsp;15.4, &#8220;Stereotypes&#8221;</a>).</p></dd><dt><span class="term"><tt class="literal">Namespace</tt></span></dt><dd><p>
+              <a href="ch15s04.html" title="15.4.&nbsp;Stereotype">Section&nbsp;15.4, &#8220;Stereotype&#8221;</a>).</p></dd><dt><span class="term"><tt class="literal">Namespace</tt></span></dt><dd><p>
 Text box.
 The namespace in which the action state is defined.
             </p></dd><dt><span class="term"><tt class="literal">Entry-Action</tt></span></dt><dd><p>Text box. 

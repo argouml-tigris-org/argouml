@@ -22,7 +22,7 @@ there is no difference between the 4 kinds of events described above.
 The name field should be used to indicate that it is a 
 signal, call, timing or change event.
 
-    </p></td></tr></table></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e22915"></a>19.6.1.&nbsp;Event Details Tabs</h3></div></div><div></div></div><p>
+    </p></td></tr></table></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e23450"></a>19.6.1.&nbsp;Event Details Tabs</h3></div></div><div></div></div><p>
 The details tabs that are active for events are as follows.
       </p><div class="variablelist"><dl><dt><span class="term"><tt class="literal">ToDoItem</tt></span></dt><dd><p>Standard tab.</p></dd><dt><span class="term"><tt class="literal">Properties</tt></span></dt><dd><p>See <a href="ch19s06.html#s2.ref.call_event_property_toolbar" title="19.6.2.&nbsp;Event Property Toolbar">Section&nbsp;19.6.2, &#8220;Event Property Toolbar&#8221;</a> and <a href="ch19s06.html#s2.ref.call_event_property_fields" title="19.6.3.&nbsp;Property Fields For Event">Section&nbsp;19.6.3, &#8220;Property Fields For Event&#8221;</a>
             below.</p></dd><dt><span class="term"><tt class="literal">Documentation</tt></span></dt><dd><p>Standard tab.</p></dd><dt><span class="term"><tt class="literal">Source</tt></span></dt><dd><p>
@@ -31,10 +31,12 @@ Standard tab.
 In the fullness of time this tab will contain code to implement the event. 
 This is not implemented in the V0.14 release of ArgoUML.
 
-            </p></td></tr></table></div></dd><dt><span class="term"><tt class="literal">Constraints</tt></span></dt><dd><p>Standard tab. 
-This tab is downlighted, since constraints are not defined for an 
-<tt class="literal">Event</tt> within the ArgoUML metamodel.
-          </p></dd><dt><span class="term"><tt class="literal">Tagged Values</tt></span></dt><dd><p>
+            </p></td></tr></table></div></dd><dt><span class="term"><tt class="literal">Constraints</tt></span></dt><dd><p>Standard tab.
+ArgoUML only supports constraints on Classes and Features (Attributes,
+Operations, Receptions, and Methods),
+
+so this tab is grayed out.
+</p></dd><dt><span class="term"><tt class="literal">Tagged Values</tt></span></dt><dd><p>
 Standard tab. 
 In the UML metamodel,
 an <tt class="literal">Event</tt> has the following standard
@@ -83,7 +85,7 @@ For a Call Event, the following stereotypes are defined:
               icon. 
 If a stereotype has been selected, 
 this will navigate to the
-stereotype property panel (see <a href="ch15s04.html" title="15.4.&nbsp;Stereotypes">Section&nbsp;15.4, &#8220;Stereotypes&#8221;</a>).
+stereotype property panel (see <a href="ch15s04.html" title="15.4.&nbsp;Stereotype">Section&nbsp;15.4, &#8220;Stereotype&#8221;</a>).
             </p></dd><dt><span class="term"><tt class="literal">Parameters</tt></span></dt><dd><p>Text area, with entries for all the actual parameter
             values of
             the event (see <a href="ch17s08.html" title="17.8.&nbsp;Parameter">Section&nbsp;17.8, &#8220;Parameter&#8221;</a>).</p><p>

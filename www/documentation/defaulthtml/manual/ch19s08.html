@@ -21,13 +21,14 @@ you to place a pseudostate directly, but only through tools for the
 specific types of pseudostate. These are described in separate sections
 below (see
       <a href="ch19s09.html" title="19.9.&nbsp;Initial State">Section&nbsp;19.9, &#8220;Initial State&#8221;</a>,
-      <a href="ch19s11.html" title="19.11.&nbsp;Branch">Section&nbsp;19.11, &#8220;Branch&#8221;</a>,
-      <a href="ch19s12.html" title="19.12.&nbsp;Fork">Section&nbsp;19.12, &#8220;Fork&#8221;</a>,
-      <a href="ch19s13.html" title="19.13.&nbsp;Join">Section&nbsp;19.13, &#8220;Join&#8221;</a>,
-      <a href="ch19s14.html" title="19.14.&nbsp;Shallow History">Section&nbsp;19.14, &#8220;Shallow History&#8221;</a> and
-      <a href="ch19s15.html" title="19.15.&nbsp;Deep History">Section&nbsp;19.15, &#8220;Deep History&#8221;</a>).</p><div class="caution" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Caution"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Caution]" src="images/caution.png"></td><th align="left">Caution</th></tr><tr><td colspan="2" align="left" valign="top"><p>The V0.14 release of ArgoUML does not provide support
+      <a href="ch19s11.html" title="19.11.&nbsp;Junction">Section&nbsp;19.11, &#8220;Junction&#8221;</a>,
+      <a href="ch19s12.html" title="19.12.&nbsp;Branch">Section&nbsp;19.12, &#8220;Branch&#8221;</a>,
+      <a href="ch19s13.html" title="19.13.&nbsp;Fork">Section&nbsp;19.13, &#8220;Fork&#8221;</a>,
+      <a href="ch19s14.html" title="19.14.&nbsp;Join">Section&nbsp;19.14, &#8220;Join&#8221;</a>,
+      <a href="ch19s15.html" title="19.15.&nbsp;Shallow History">Section&nbsp;19.15, &#8220;Shallow History&#8221;</a> and
+      <a href="ch19s16.html" title="19.16.&nbsp;Deep History">Section&nbsp;19.16, &#8220;Deep History&#8221;</a>).</p><div class="caution" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Caution"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Caution]" src="images/caution.png"></td><th align="left">Caution</th></tr><tr><td colspan="2" align="left" valign="top"><p>The V0.14 release of ArgoUML does not provide support
       
-      for a junction pseudostate.</p></td></tr></table></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e23411"></a>19.8.1.&nbsp;Pseudostate Details Tabs</h3></div></div><div></div></div><p>The details tabs that are active for pseudostates are as
+      for a junction pseudostate.</p></td></tr></table></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e23946"></a>19.8.1.&nbsp;Pseudostate Details Tabs</h3></div></div><div></div></div><p>The details tabs that are active for pseudostates are as
         follows.</p><div class="variablelist"><dl><dt><span class="term"><tt class="literal">ToDoItem</tt></span></dt><dd><p>Standard tab.</p></dd><dt><span class="term"><tt class="literal">Properties</tt></span></dt><dd><p>See <a href="ch19s08.html#s2.ref.pseudostate_property_toolbar" title="19.8.2.&nbsp;Pseudostate Property Toolbar">Section&nbsp;19.8.2, &#8220;Pseudostate Property Toolbar&#8221;</a> and <a href="ch19s08.html#s2.ref.pseudostate_property_fields" title="19.8.3.&nbsp;Property Fields For Pseudostate">Section&nbsp;19.8.3, &#8220;Property Fields For Pseudostate&#8221;</a>
             below.</p></dd><dt><span class="term"><tt class="literal">Documentation</tt></span></dt><dd><p>Standard tab.</p></dd><dt><span class="term"><tt class="literal">Style</tt></span></dt><dd><p>Standard tab.</p><div class="caution" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Caution"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Caution]" src="images/caution.png"></td><th align="left">Caution</th></tr><tr><td colspan="2" align="left" valign="top"><p>The <tt class="literal">Shadow</tt> field has no
             effect&#8212; in the V0.14 release of ArgoUML. There are no
@@ -38,10 +39,12 @@ below (see
             code to implement the pseudostate. This is not implemented in
             the V0.14 release of ArgoUML.
             
-          </p></td></tr></table></div></dd><dt><span class="term"><tt class="literal">Constraints</tt></span></dt><dd><p>Standard tab. 
-This tab is downlighted, since constraints are not defined for an 
-<tt class="literal">Pseudostate</tt> within the ArgoUML metamodel.
-          </p></dd><dt><span class="term"><tt class="literal">Tagged Values</tt></span></dt><dd><p>Standard tab. In the UML metamodel,
+          </p></td></tr></table></div></dd><dt><span class="term"><tt class="literal">Constraints</tt></span></dt><dd><p>Standard tab.
+ArgoUML only supports constraints on Classes and Features (Attributes,
+Operations, Receptions, and Methods),
+
+so this tab is grayed out.
+</p></dd><dt><span class="term"><tt class="literal">Tagged Values</tt></span></dt><dd><p>Standard tab. In the UML metamodel,
             <tt class="literal">Pseudostate</tt> has the following standard
             tagged values defined.</p><div class="itemizedlist"><ul type="disc"><li><p><tt class="literal">derived</tt> (from the
                 superclass, <tt class="literal">ModelElement</tt>). Values
@@ -76,7 +79,7 @@ A Pseudostate has no stereotypes by default in the UML standard.
 If a stereotype has been selected, 
 this will navigate to the
 stereotype property panel (see 
-<a href="ch15s04.html" title="15.4.&nbsp;Stereotypes">Section&nbsp;15.4, &#8220;Stereotypes&#8221;</a>).
+<a href="ch15s04.html" title="15.4.&nbsp;Stereotype">Section&nbsp;15.4, &#8220;Stereotype&#8221;</a>).
             </p></dd><dt><span class="term"><tt class="literal">Container</tt></span></dt><dd><p>
 Text box. Shows the container of the pseudostate. 
 This is the state hierarchy.
@@ -84,19 +87,7 @@ This is the state hierarchy.
 Button&nbsp;1 double click on the entry will navigate to the composite state
 that contains this state (or the top-level state that is the root of the state
 containment hierarchy).
-            </p></dd><dt><span class="term"><tt class="literal">Kind</tt></span></dt><dd><p>Radio buttons. Radio button indicating the type of
-            pseudostate: <tt class="literal">junction</tt>,
-            <tt class="literal">branch</tt>, <tt class="literal">fork</tt>,
-            <tt class="literal">join</tt>, <tt class="literal">deep history</tt>, 
-            <tt class="literal">shallow history</tt> and
-            <tt class="literal">initial</tt>.
-            </p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="images/note.png"></td><th align="left">Note</th></tr><tr><td colspan="2" align="left" valign="top"><p>In ArgoUML these buttons are defined by the type of
-              pseudostate created and cannot be changed. As a consequence
-              they are shown grayed out.</p></td></tr></table></div><div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Warning"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Warning]" src="images/warning.png"></td><th align="left">Warning</th></tr><tr><td colspan="2" align="left" valign="top"><p>
-This feature is currently broken within ArgoUML
-and in certain circumstances these radio-buttons are not downlighted. 
-Changing the initial setting has no predictable effect!.
-            </p></td></tr></table></div></dd><dt><span class="term"><tt class="literal">Incoming</tt></span></dt><dd><p>Text area. Lists any incoming transitions for the
+            </p></dd><dt><span class="term"><tt class="literal">Incoming</tt></span></dt><dd><p>Text area. Lists any incoming transitions for the
             pseudostate.</p><p>
 Button&nbsp;1 double-click navigates to the selected transition.
             </p></dd><dt><span class="term"><tt class="literal">Outgoing</tt></span></dt><dd><p>Text area. Lists any outgoing transitions for the

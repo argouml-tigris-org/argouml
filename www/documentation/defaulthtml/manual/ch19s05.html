@@ -17,7 +17,7 @@ Then follows (if any) the trigger action (e.g. a Call Event).
 Next follows (if any) the guard in square brackets (<tt class="literal">[]</tt>).
 Finally, if there is an effect (e.g. Call Action) defined, a slash (<tt class="literal">/</tt>) 
 followed by the expression of the action.
-</p><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e22584"></a>19.5.1.&nbsp;Transition Details Tabs</h3></div></div><div></div></div><p>The details tabs that are active for transitions are as
+</p><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e23120"></a>19.5.1.&nbsp;Transition Details Tabs</h3></div></div><div></div></div><p>The details tabs that are active for transitions are as
         follows.</p><div class="variablelist"><dl><dt><span class="term"><tt class="literal">ToDoItem</tt></span></dt><dd><p>Standard tab.</p></dd><dt><span class="term"><tt class="literal">Properties</tt></span></dt><dd><p>See <a href="ch19s05.html#s2.ref.transition_property_toolbar" title="19.5.2.&nbsp;Transition Property Toolbar">Section&nbsp;19.5.2, &#8220;Transition Property Toolbar&#8221;</a> and <a href="ch19s05.html#s2.ref.transition_property_fields" title="19.5.3.&nbsp;Property Fields For Transition">Section&nbsp;19.5.3, &#8220;Property Fields For Transition&#8221;</a>
             below.</p></dd><dt><span class="term"><tt class="literal">Documentation</tt></span></dt><dd><p>Standard tab.</p></dd><dt><span class="term"><tt class="literal">Style</tt></span></dt><dd><p>Standard tab. The values for the bounds of the
             transition have no effect, since the position of the transition
@@ -28,9 +28,11 @@ followed by the expression of the action.
             will be associated with their artifacts). This is not
             implemented in the current release of
             ArgoUML.</p></td></tr></table></div></dd><dt><span class="term"><tt class="literal">Constraints</tt></span></dt><dd><p>Standard tab.
-This tab is downlighted, since constraints are not defined for an 
-<tt class="literal">Transition</tt> within the ArgoUML metamodel.
-          </p></dd><dt><span class="term"><tt class="literal">Tagged Values</tt></span></dt><dd><p>Standard tab. In the UML metamodel,
+ArgoUML only supports constraints on Classes and Features (Attributes,
+Operations, Receptions, and Methods),
+
+so this tab is grayed out.
+</p></dd><dt><span class="term"><tt class="literal">Tagged Values</tt></span></dt><dd><p>Standard tab. In the UML metamodel,
             <tt class="literal">Transition</tt> has the following standard
             tagged values defined.</p><div class="itemizedlist"><ul type="disc"><li><p><tt class="literal">derived</tt> (from the
                   superclass, <tt class="literal">ModelElement</tt>). Values
@@ -63,7 +65,7 @@ Transition has no stereotypes by default in the UML standard.
               <span class="guiicon"><span class="inlinemediaobject"><img src="images/icons/navigate_stereotype.gif" align="middle"></span></span> icon. If a
               stereotype has been selected, this will navigate to the
               stereotype property panel (see 
-              <a href="ch15s04.html" title="15.4.&nbsp;Stereotypes">Section&nbsp;15.4, &#8220;Stereotypes&#8221;</a>).
+              <a href="ch15s04.html" title="15.4.&nbsp;Stereotype">Section&nbsp;15.4, &#8220;Stereotype&#8221;</a>).
             </p></dd><dt><span class="term"><tt class="literal">StateMachine</tt></span></dt><dd><p>
 Text box. Shows the name of the parent StateMachine for the transition.
             </p><p>

@@ -10,7 +10,7 @@
       side labeled with the component instance name (if any) and component
       type, separated by a colon (<tt class="literal">:</tt>).</p><div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Tip"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Tip]" src="images/tip.png"></td><th align="left">Tip</th></tr><tr><td colspan="2" align="left" valign="top"><p>It is the presence of the colon (<tt class="literal">:</tt>) 
       and the underlining of the name and type that
-      distinguishes a component instance from a component.</p></td></tr></table></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e26739"></a>22.5.1.&nbsp;Component Instance Details Tabs</h3></div></div><div></div></div><p>The details tabs that are active for component instances are as
+      distinguishes a component instance from a component.</p></td></tr></table></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e27233"></a>22.5.1.&nbsp;Component Instance Details Tabs</h3></div></div><div></div></div><p>The details tabs that are active for component instances are as
         follows.</p><div class="variablelist"><dl><dt><span class="term"><tt class="literal">ToDoItem</tt></span></dt><dd><p>Standard tab.</p></dd><dt><span class="term"><tt class="literal">Properties</tt></span></dt><dd><p>See <a href="ch22s05.html#s2.ref.component_instance_property_toolbar" title="22.5.2.&nbsp;Component Instance Property Toolbar">Section&nbsp;22.5.2, &#8220;Component Instance Property Toolbar&#8221;</a> and
               <a href="ch22s05.html#s2.ref.component_instance_property_fields" title="22.5.3.&nbsp;Property Fields For Component Instance">Section&nbsp;22.5.3, &#8220;Property Fields For Component Instance&#8221;</a>
               below.</p></dd><dt><span class="term"><tt class="literal">Documentation</tt></span></dt><dd><p>Standard tab.</p></dd><dt><span class="term"><tt class="literal">Style</tt></span></dt><dd><p>Standard tab. The <tt class="literal">Bounds:</tt> field
@@ -19,10 +19,12 @@
             component instance.</p><div class="caution" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Caution"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Caution]" src="images/caution.png"></td><th align="left">Caution</th></tr><tr><td colspan="2" align="left" valign="top"><p>A component instance should not generate any code,
             so having this tab active is probably a
             
-            mistake.</p></td></tr></table></div></dd><dt><span class="term"><tt class="literal">Constraints</tt></span></dt><dd><p>Standard tab. 
-This tab is downlighted, since constraints are not defined for an 
-<tt class="literal">NodeInstance</tt> within the ArgoUML metamodel.
-            </p></dd><dt><span class="term"><tt class="literal">Tagged Values</tt></span></dt><dd><p>Standard tab. 
+            mistake.</p></td></tr></table></div></dd><dt><span class="term"><tt class="literal">Constraints</tt></span></dt><dd><p>Standard tab.
+ArgoUML only supports constraints on Classes and Features (Attributes,
+Operations, Receptions, and Methods),
+
+so this tab is grayed out.
+</p></dd><dt><span class="term"><tt class="literal">Tagged Values</tt></span></dt><dd><p>Standard tab. 
             
             
             </p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="images/note.png"></td><th align="left">Note</th></tr><tr><td colspan="2" align="left" valign="top"><p>The UML <tt class="literal">Element</tt> metaclass from
@@ -52,6 +54,6 @@ This tab is downlighted, since constraints are not defined for an
           </p></td></tr></table></div></dd><dt><span class="term"><tt class="literal">Stereotype</tt></span></dt><dd><p>Drop down selector. Component instance has no
             stereotypes by default in the UML standard.</p></dd><dt><span class="term"><tt class="literal">Navigate Stereotype</tt></span></dt><dd><p><span class="guiicon"><span class="inlinemediaobject"><img src="images/icons/navigate_stereotype.gif" align="middle"></span></span> icon. If a
               stereotype has been selected, this will navigate to the
-              stereotype property panel (see <a href="ch15s04.html" title="15.4.&nbsp;Stereotypes">Section&nbsp;15.4, &#8220;Stereotypes&#8221;</a>).</p></dd><dt><span class="term"><tt class="literal">Namespace</tt></span></dt><dd><p>Drop down selector. Records and allows to change 
+              stereotype property panel (see <a href="ch15s04.html" title="15.4.&nbsp;Stereotype">Section&nbsp;15.4, &#8220;Stereotype&#8221;</a>).</p></dd><dt><span class="term"><tt class="literal">Namespace</tt></span></dt><dd><p>Drop down selector. Records and allows to change 
             the namespace for the
             component instance. This is the package hierarchy.</p></dd></dl></div></div></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch22s04.html">Prev</a>&nbsp;</td><td width="20%" align="center"><a accesskey="u" href="ch22.html">Up</a></td><td width="40%" align="right">&nbsp;<a accesskey="n" href="ch22s06.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">22.4.&nbsp;Component&nbsp;</td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top">&nbsp;22.6.&nbsp;Dependency</td></tr></table></div></body></html>

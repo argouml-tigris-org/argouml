@@ -1,6 +1,6 @@
 <html><head>
       <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-   <title>20.5.&nbsp;Message</title><link rel="stylesheet" href="look-and-feel.css" type="text/css"><meta name="generator" content="DocBook XSL Stylesheets V1.60.1"><link rel="home" href="index.html" title="ArgoUML User Manual"><link rel="up" href="ch20.html" title="Chapter&nbsp;20.&nbsp;Collaboration Diagram Artifact Reference"><link rel="previous" href="ch20s04.html" title="20.4.&nbsp;Association End Role"><link rel="next" href="ch21.html" title="Chapter&nbsp;21.&nbsp;Activity Diagram Artifact Reference"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">20.5.&nbsp;Message</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch20s04.html">Prev</a>&nbsp;</td><th width="60%" align="center">Chapter&nbsp;20.&nbsp;Collaboration Diagram Artifact Reference</th><td width="20%" align="right">&nbsp;<a accesskey="n" href="ch21.html">Next</a></td></tr></table><hr></div><div class="sect1" lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="d0e25047"></a>20.5.&nbsp;Message</h2></div></div><div></div></div><p>A message is a communication between two instances of an association
+   <title>20.5.&nbsp;Message</title><link rel="stylesheet" href="look-and-feel.css" type="text/css"><meta name="generator" content="DocBook XSL Stylesheets V1.60.1"><link rel="home" href="index.html" title="ArgoUML User Manual"><link rel="up" href="ch20.html" title="Chapter&nbsp;20.&nbsp;Collaboration Diagram Artifact Reference"><link rel="previous" href="ch20s04.html" title="20.4.&nbsp;Association End Role"><link rel="next" href="ch21.html" title="Chapter&nbsp;21.&nbsp;Activity Diagram Artifact Reference"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">20.5.&nbsp;Message</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch20s04.html">Prev</a>&nbsp;</td><th width="60%" align="center">Chapter&nbsp;20.&nbsp;Collaboration Diagram Artifact Reference</th><td width="20%" align="right">&nbsp;<a accesskey="n" href="ch21.html">Next</a></td></tr></table><hr></div><div class="sect1" lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="d0e25550"></a>20.5.&nbsp;Message</h2></div></div><div></div></div><p>A message is a communication between two instances of an association
       role on a specification level collaboration diagram. It describes an
       action which will generate the stimulus associated with the message. On a
       collaboration diagram a message is associated with an association
@@ -19,7 +19,7 @@
       message positioning after reloading the project, i.e. as if the positions
       were not stored in the project file.
       
-    </p></td></tr></table></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e25072"></a>20.5.1.&nbsp;Message Details Tabs</h3></div></div><div></div></div><p>The details tabs that are active for messages are as
+    </p></td></tr></table></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e25575"></a>20.5.1.&nbsp;Message Details Tabs</h3></div></div><div></div></div><p>The details tabs that are active for messages are as
         follows.</p><div class="variablelist"><dl><dt><span class="term"><tt class="literal">ToDoItem</tt></span></dt><dd><p>Standard tab.</p></dd><dt><span class="term"><tt class="literal">Properties</tt></span></dt><dd><p>See <a href="ch20s05.html#s2.ref.message_property_toolbar" title="20.5.2.&nbsp;Message Property Toolbar">Section&nbsp;20.5.2, &#8220;Message Property Toolbar&#8221;</a> and <a href="ch20s05.html#s2.ref.message_property_fields" title="20.5.3.&nbsp;Property Fields For Message">Section&nbsp;20.5.3, &#8220;Property Fields For Message&#8221;</a>
             below.</p></dd><dt><span class="term"><tt class="literal">Documentation</tt></span></dt><dd><p>Standard tab.</p></dd><dt><span class="term"><tt class="literal">Style</tt></span></dt><dd><p>Standard tab. The values for the bounds of the
             message define the bounding box of the message. The
@@ -36,9 +36,12 @@
             </p><div class="caution" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Caution"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Caution]" src="images/caution.png"></td><th align="left">Caution</th></tr><tr><td colspan="2" align="left" valign="top"><p>A message probably should not generated any code
             of itself. That should be left to the action and possibly
             stimulus associated with it. In any case changes to this tab
-            are ignored.</p></td></tr></table></div></dd><dt><span class="term"><tt class="literal">Constraints</tt></span></dt><dd><p>Standard tab. There are no  constraints
-            for <tt class="literal">Message</tt> within the ArgoUML
-            metamodel.</p></dd><dt><span class="term"><tt class="literal">Tagged Values</tt></span></dt><dd><p>Standard tab. In the UML metamodel,
+            are ignored.</p></td></tr></table></div></dd><dt><span class="term"><tt class="literal">Constraints</tt></span></dt><dd><p>Standard tab.
+ArgoUML only supports constraints on Classes and Features (Attributes,
+Operations, Receptions, and Methods),
+
+so this tab is grayed out.
+</p></dd><dt><span class="term"><tt class="literal">Tagged Values</tt></span></dt><dd><p>Standard tab. In the UML metamodel,
             <tt class="literal">Message</tt> has the following standard
             tagged values defined.</p><div class="itemizedlist"><ul type="disc"><li><p><tt class="literal">derived</tt> (from the
                 superclass, <tt class="literal">ModelElement</tt>). Values
@@ -69,7 +72,7 @@
             default in the UML standard.
             </p></dd><dt><span class="term"><tt class="literal">Navigate Stereotype</tt></span></dt><dd><p><span class="guiicon"><span class="inlinemediaobject"><img src="images/icons/navigate_stereotype.gif" align="middle"></span></span> icon. If a
               stereotype has been selected, this will navigate to the
-              stereotype property panel (see <a href="ch15s04.html" title="15.4.&nbsp;Stereotypes">Section&nbsp;15.4, &#8220;Stereotypes&#8221;</a>).</p></dd><dt><span class="term"><tt class="literal">Interaction</tt></span></dt><dd><p>Text box. Records the Interaction of which the
+              stereotype property panel (see <a href="ch15s04.html" title="15.4.&nbsp;Stereotype">Section&nbsp;15.4, &#8220;Stereotype&#8221;</a>).</p></dd><dt><span class="term"><tt class="literal">Interaction</tt></span></dt><dd><p>Text box. Records the Interaction of which the
             message is a part. </p><p>Button&nbsp;1 double click on the entry will navigate to the
             interaction.
           </p></dd><dt><span class="term"><tt class="literal">Sender</tt></span></dt><dd><p>Text box. Identifies the classifier role which sent

@@ -10,16 +10,18 @@
       In the UML metamodel it is a sub-class of
       <tt class="literal">Classifier</tt>.
     </p><p>A component is represented on a class diagram as a box with two small
-      rectangles protruding from its left side, labeled with its name.</p><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e26415"></a>22.4.1.&nbsp;Component Details Tabs</h3></div></div><div></div></div><p>The details tabs that are active for components are as
+      rectangles protruding from its left side, labeled with its name.</p><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e26910"></a>22.4.1.&nbsp;Component Details Tabs</h3></div></div><div></div></div><p>The details tabs that are active for components are as
         follows.</p><div class="variablelist"><dl><dt><span class="term"><tt class="literal">ToDoItem</tt></span></dt><dd><p>Standard tab.</p></dd><dt><span class="term"><tt class="literal">Properties</tt></span></dt><dd><p>See <a href="ch22s04.html#s2.ref.component_property_toolbar" title="22.4.2.&nbsp;Component Property Toolbar">Section&nbsp;22.4.2, &#8220;Component Property Toolbar&#8221;</a> and <a href="ch22s04.html#s2.ref.component_property_fields" title="22.4.3.&nbsp;Property Fields For Component">Section&nbsp;22.4.3, &#8220;Property Fields For Component&#8221;</a>
             below.</p></dd><dt><span class="term"><tt class="literal">Documentation</tt></span></dt><dd><p>Standard tab.</p></dd><dt><span class="term"><tt class="literal">Style</tt></span></dt><dd><p>Standard tab. The <tt class="literal">Bounds:</tt> field
             defines the bounding box for the component on the
             diagram.</p></dd><dt><span class="term"><tt class="literal">Source</tt></span></dt><dd><p>Standard tab, but with no contents.</p><div class="caution" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Caution"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Caution]" src="images/caution.png"></td><th align="left">Caution</th></tr><tr><td colspan="2" align="left" valign="top"><p>A component should not generate any code, so
             having this tab active is probably a
-            mistake.</p></td></tr></table></div></dd><dt><span class="term"><tt class="literal">Constraints</tt></span></dt><dd><p>Standard tab. 
-            This tab is downlighted, since constraints are not defined for an 
-            <tt class="literal">Component</tt> within the ArgoUML metamodel.
-          </p></dd><dt><span class="term"><tt class="literal">Tagged Values</tt></span></dt><dd><p>Standard tab. 
+            mistake.</p></td></tr></table></div></dd><dt><span class="term"><tt class="literal">Constraints</tt></span></dt><dd><p>Standard tab.
+ArgoUML only supports constraints on Classes and Features (Attributes,
+Operations, Receptions, and Methods),
+
+so this tab is grayed out.
+</p></dd><dt><span class="term"><tt class="literal">Tagged Values</tt></span></dt><dd><p>Standard tab. 
           
           
 
@@ -51,7 +53,7 @@
             <tt class="literal">thread</tt> and
             <tt class="literal">utility</tt>.</p></dd><dt><span class="term"><tt class="literal">Navigate Stereotype</tt></span></dt><dd><p><span class="guiicon"><span class="inlinemediaobject"><img src="images/icons/navigate_stereotype.gif" align="middle"></span></span> icon. If a
               stereotype has been selected, this will navigate to the
-              stereotype property panel (see <a href="ch15s04.html" title="15.4.&nbsp;Stereotypes">Section&nbsp;15.4, &#8220;Stereotypes&#8221;</a>).</p></dd><dt><span class="term"><tt class="literal">Namespace</tt></span></dt><dd><p>Drop down selector. Records and allows altering 
+              stereotype property panel (see <a href="ch15s04.html" title="15.4.&nbsp;Stereotype">Section&nbsp;15.4, &#8220;Stereotype&#8221;</a>).</p></dd><dt><span class="term"><tt class="literal">Namespace</tt></span></dt><dd><p>Drop down selector. Records and allows altering 
             the namespace for the
             component. This is the package hierarchy.</p></dd><dt><span class="term"><tt class="literal">Modifiers</tt></span></dt><dd><p>Check box, with entries <tt class="literal">abstract</tt>,
             <tt class="literal">leaf</tt> and <tt class="literal">root</tt>.</p><div class="itemizedlist"><ul type="disc"><li><p><tt class="literal">Abstract</tt> is used to declare

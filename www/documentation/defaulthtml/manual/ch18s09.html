@@ -7,22 +7,19 @@
       connecting the instances concerned. However on a sequence diagram
       the representation is modified to reflect the type of action associated
       with the stimulus carried on the link (see
-      <a href="ch18s03.html" title="18.3.&nbsp;Stimulus">Section&nbsp;18.3, &#8220;Stimulus&#8221;</a>).</p><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e21661"></a>18.9.1.&nbsp;Link Details Tabs</h3></div></div><div></div></div><p>The details tabs that are active for links are as follows.</p><div class="variablelist"><dl><dt><span class="term"><tt class="literal">ToDoItem</tt></span></dt><dd><p>Standard tab.</p></dd><dt><span class="term"><tt class="literal">Properties</tt></span></dt><dd><p>See <a href="ch18s09.html#s2.ref.link_property_toolbar" title="18.9.2.&nbsp;Link Property Toolbar">Section&nbsp;18.9.2, &#8220;Link Property Toolbar&#8221;</a> and <a href="ch18s09.html#s2.ref.link_property_fields" title="18.9.3.&nbsp;Property Fields For Link">Section&nbsp;18.9.3, &#8220;Property Fields For Link&#8221;</a>
+      <a href="ch18s03.html" title="18.3.&nbsp;Stimulus">Section&nbsp;18.3, &#8220;Stimulus&#8221;</a>).</p><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e22219"></a>18.9.1.&nbsp;Link Details Tabs</h3></div></div><div></div></div><p>The details tabs that are active for links are as follows.</p><div class="variablelist"><dl><dt><span class="term"><tt class="literal">ToDoItem</tt></span></dt><dd><p>Standard tab.</p></dd><dt><span class="term"><tt class="literal">Properties</tt></span></dt><dd><p>See <a href="ch18s09.html#s2.ref.link_property_toolbar" title="18.9.2.&nbsp;Link Property Toolbar">Section&nbsp;18.9.2, &#8220;Link Property Toolbar&#8221;</a> and <a href="ch18s09.html#s2.ref.link_property_fields" title="18.9.3.&nbsp;Property Fields For Link">Section&nbsp;18.9.3, &#8220;Property Fields For Link&#8221;</a>
             below.</p></dd><dt><span class="term"><tt class="literal">Documentation</tt></span></dt><dd><p>Standard tab.</p></dd><dt><span class="term"><tt class="literal">Style</tt></span></dt><dd><p>Standard tab. The values for the bounds of the link
             notionally define the bounding box of the link. However if you
             change them it will have no effect.</p><div class="caution" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Caution"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Caution]" src="images/caution.png"></td><th align="left">Caution</th></tr><tr><td colspan="2" align="left" valign="top"><p>In the current release of ArgoUML changing the
             values of the line field will alter the color of the line, but
             <span class="emphasis"><em>not</em></span> the arrow
             head.</p></td></tr></table></div></dd><dt><span class="term"><tt class="literal">Source</tt></span></dt><dd><p>Standard tab, but with no contents.</p><div class="caution" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Caution"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Caution]" src="images/caution.png"></td><th align="left">Caution</th></tr><tr><td colspan="2" align="left" valign="top"><p>A link should not generate any code, so having
-            this tab active is probably a mistake.</p></td></tr></table></div></dd><dt><span class="term"><tt class="literal">Constraints</tt></span></dt><dd><p>Standard tab. In the UML metamodel,
-            <tt class="literal">Link</tt> has the following standard
-            constraints defined (through its parent,
-            <tt class="literal">Instance</tt>).</p><div class="itemizedlist"><ul type="disc"><li><p><tt class="literal">destroyed</tt>. Applied to a
-                link that is destroyed during the
-                execution.</p></li><li><p><tt class="literal">new</tt>. Applied to a link
-                that is created during the execution.</p></li><li><p><tt class="literal">transient</tt>. Applied to a
-                link that is both created and destroyed during the
-                execution.</p></li></ul></div></dd><dt><span class="term"><tt class="literal">Tagged Values</tt></span></dt><dd><p>Standard tab. In the UML metamodel,
+            this tab active is probably a mistake.</p></td></tr></table></div></dd><dt><span class="term"><tt class="literal">Constraints</tt></span></dt><dd><p>Standard tab.
+ArgoUML only supports constraints on Classes and Features (Attributes,
+Operations, Receptions, and Methods),
+
+so this tab is grayed out.
+</p></dd><dt><span class="term"><tt class="literal">Tagged Values</tt></span></dt><dd><p>Standard tab. In the UML metamodel,
             <tt class="literal">Link</tt> has the following standard
             tagged values defined.</p><div class="itemizedlist"><ul type="disc"><li><p><tt class="literal">persistence</tt> (from the
                 superclass, <tt class="literal">Instance</tt>. Showing the

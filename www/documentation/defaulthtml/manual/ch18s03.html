@@ -34,7 +34,7 @@
       action with no name and use the style tab to set an invisible line, but
       this still leaves the arrow head showing, which is unsightly. It is also
       semantically incorrect anyway to use a destroy action to represent a
-      terminate action.</p></td></tr></table></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e21295"></a>18.3.1.&nbsp;Stimulus Details Tabs</h3></div></div><div></div></div><p>The details tabs that are active for stimuli are as
+      terminate action.</p></td></tr></table></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e21854"></a>18.3.1.&nbsp;Stimulus Details Tabs</h3></div></div><div></div></div><p>The details tabs that are active for stimuli are as
         follows.</p><div class="variablelist"><dl><dt><span class="term"><tt class="literal">ToDoItem</tt></span></dt><dd><p>Standard tab.</p></dd><dt><span class="term"><tt class="literal">Properties</tt></span></dt><dd><p>See <a href="ch18s03.html#s2.ref.stimulus_property_toolbar" title="18.3.2.&nbsp;Stimulus Property Toolbar">Section&nbsp;18.3.2, &#8220;Stimulus Property Toolbar&#8221;</a> and <a href="ch18s03.html#s2.ref.stimulus_property_fields" title="18.3.3.&nbsp;Property Fields For Stimulus">Section&nbsp;18.3.3, &#8220;Property Fields For Stimulus&#8221;</a>
             below.</p></dd><dt><span class="term"><tt class="literal">Documentation</tt></span></dt><dd><p>Standard tab.</p></dd><dt><span class="term"><tt class="literal">Style</tt></span></dt><dd><p>Standard tab. The values for the bounds of the
             stimulus notionally define the bounding box of the stimulus and
@@ -54,9 +54,12 @@
             stimulus to return to its original position and the original
             values to be restored.</p></td></tr></table></div></dd><dt><span class="term"><tt class="literal">Source</tt></span></dt><dd><p>Standard tab, but with no contents.</p><div class="caution" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Caution"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Caution]" src="images/caution.png"></td><th align="left">Caution</th></tr><tr><td colspan="2" align="left" valign="top"><p>A stimulus should not generate any code, so
               having this tab active is probably a
-              mistake.</p></td></tr></table></div></dd><dt><span class="term"><tt class="literal">Constraints</tt></span></dt><dd><p>Standard tab. There are no standard constraints
-            defined for <tt class="literal">Stimulus</tt> within the UML
-            metamodel.</p></dd><dt><span class="term"><tt class="literal">Tagged Values</tt></span></dt><dd><p>Standard tab. In the UML metamodel,
+              mistake.</p></td></tr></table></div></dd><dt><span class="term"><tt class="literal">Constraints</tt></span></dt><dd><p>Standard tab.
+ArgoUML only supports constraints on Classes and Features (Attributes,
+Operations, Receptions, and Methods),
+
+so this tab is grayed out.
+</p></dd><dt><span class="term"><tt class="literal">Tagged Values</tt></span></dt><dd><p>Standard tab. In the UML metamodel,
             <tt class="literal">Stimulus</tt> has the following standard
             tagged values defined.</p><div class="itemizedlist"><ul type="disc"><li><p><tt class="literal">derived</tt> (from the
                 superclass, <tt class="literal">ModelElement</tt>). Values
