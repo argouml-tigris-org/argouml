@@ -60,10 +60,6 @@ public class PropPanelInclude extends PropPanelModelElement {
      */
 
     public PropPanelInclude() {
-
-        // Invoke the ModelElement constructor, but passing in our name and
-        // representation and requesting 2 columns
-
         super("Include", ConfigLoader.getTabPropsOrientation());
 
         addField(Argo.localize("UMLMenu", "label.name"), getNameTextField());
@@ -71,19 +67,23 @@ public class PropPanelInclude extends PropPanelModelElement {
             new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-stereo"),getStereotypeBox()));
         addField(Argo.localize("UMLMenu", "label.namespace"), getNamespaceScroll());
     
-    JComboBox baseBox = new UMLComboBox2(new UMLIncludeBaseComboBoxModel(), ActionSetIncludeBase.SINGLETON);
-    addField(Argo.localize("UMLMenu", "label.usecase-base"), baseBox);
+        add(LabelledLayout.getSeperator());
     
-    JComboBox additionBox = new UMLComboBox2(new UMLIncludeAdditionComboBoxModel(), ActionSetIncludeAddition.SINGLETON);
-    addField(Argo.localize("UMLMenu", "label.addition"), additionBox);
-    
-    add(LabelledLayout.getSeperator());
-    
+        JComboBox baseBox = new UMLComboBox2(new UMLIncludeBaseComboBoxModel(), ActionSetIncludeBase.SINGLETON);
+        addField(Argo.localize("UMLMenu", "label.usecase-base"), baseBox);
+
+        JComboBox additionBox = new UMLComboBox2(new UMLIncludeAdditionComboBoxModel(), ActionSetIncludeAddition.SINGLETON);
+        addField(Argo.localize("UMLMenu", "label.addition"), additionBox);
+
    /*
+        // FIXME - Why is this code commented out - is there work to do here - Bob Tarling
+    *
         // The addition use case (reuse earlier variables). Note that because
         // of the NSUML bug we look for the "base" event, rather than the
         // "addition" event" here.
 
+        add(LabelledLayout.getSeperator());
+    
         model = new UMLComboBoxModel(this, "isAcceptableUseCase",
                                      "base", "getAddition",
                                      "setAddition", true, MUseCase.class,
@@ -118,7 +118,6 @@ public class PropPanelInclude extends PropPanelModelElement {
      *          type {@link MUseCase} to fit in with the type specified for
      *          the {@link UMLComboBoxModel}.
      */
-
     public MUseCase getBase() {
         MUseCase base   = null;
         Object      target = getTarget();
