@@ -25,30 +25,31 @@
 package org.argouml.uml.util.namespace;
 
 import java.util.Iterator;
+import java.util.Stack;
 
 /**
  * A StringNamespace is a string based namespace (StringNamespaceElement)
  * object. It faciliates creation of these objects via a number of helper
  * methods.
  * 
- * @author mkl
- *  
+ * @author mkl 
  */
 public class StringNamespace implements Namespace, Cloneable {
 
-    private java.util.Stack ns = new java.util.Stack();
+    private Stack ns = new Stack();
 
     private String token = JAVA_NS_TOKEN;
 
     /**
-     * empty namespace with java token by default.
-     *  
+     * Constructor.
+     * 
+     * The empty namespace with java token by default.
      */
     public StringNamespace() {
     }
 
     /**
-     * empty namespace with given default token
+     * empty namespace with given default token.
      * 
      * @param theToken
      *            the scope seperator to use
@@ -84,7 +85,7 @@ public class StringNamespace implements Namespace, Cloneable {
     }
 
     /**
-     * construct a namespace from NamespaceElements with given scope token
+     * Construct a namespace from NamespaceElements with given scope token.
      * 
      * @param elements
      *            array of NamespaceElements
@@ -101,7 +102,7 @@ public class StringNamespace implements Namespace, Cloneable {
     }
 
     /**
-     * construct a namespace from NamespaceElements with default scope token
+     * Construct a namespace from NamespaceElements with default scope token.
      * 
      * @param elements
      *            array of NamespaceElements
@@ -125,7 +126,10 @@ public class StringNamespace implements Namespace, Cloneable {
     }
 
     /**
+     * Store the next namespace element.
+     *
      * @see org.argouml.uml.util.namespace.Namespace#popNamespaceElement()
+     * @param element The element to store.
      */
     public void pushNamespaceElement(String element) {
         ns.push(new StringNamespaceElement(element));
@@ -165,10 +169,11 @@ public class StringNamespace implements Namespace, Cloneable {
         for (; i.hasNext() && j.hasNext();) {
             NamespaceElement elem1 = (NamespaceElement) i.next();
             NamespaceElement elem2 = (NamespaceElement) j.next();
-            if (elem1.toString().equals(elem2.toString()))
-                    result.pushNamespaceElement(elem1);
+            if (elem1.toString().equals(elem2.toString())) {
+                result.pushNamespaceElement(elem1);
+            }
         }
-        ;
+
         return result;
     }
 
@@ -212,8 +217,10 @@ public class StringNamespace implements Namespace, Cloneable {
             myFqn = myFqn.substring(i + token.length());
             i = myFqn.indexOf(token);
         }
-        if (myFqn.length() > 0) sns.pushNamespaceElement(myFqn);
-        return (Namespace) sns;
+        if (myFqn.length() > 0) {
+            sns.pushNamespaceElement(myFqn);
+        }
+        return sns;
     }
 
     /**
@@ -228,8 +235,15 @@ public class StringNamespace implements Namespace, Cloneable {
     }
 
     /**
-     * two namespaces are equal when they are namespaces and have the same
-     * string representation
+     * @see java.lang.Object#hashCode()
+     */
+    public int hashCode() {
+        return toString(JAVA_NS_TOKEN).hashCode();
+    }
+
+    /**
+     * Two namespaces are equal when they are namespaces and have the same
+     * string representation.
      * 
      * @param namespace
      *            the namespace to compare with
@@ -253,8 +267,10 @@ public class StringNamespace implements Namespace, Cloneable {
         StringBuffer result = new StringBuffer();
         Iterator i = ns.iterator();
         while (i.hasNext()) {
-            result.append((NamespaceElement) i.next());
-            if (i.hasNext()) result.append(theToken);
+            result.append(i.next());
+            if (i.hasNext()) {
+                result.append(theToken);
+            }
         }
         return result.toString();
     }

@@ -25,6 +25,7 @@
 package org.argouml.cognitive;
 
 import java.util.Enumeration;
+import java.util.List;
 import java.util.Vector;
 
 import org.tigris.gef.util.VectorSet;
@@ -33,7 +34,7 @@ import org.argouml.cognitive.critics.Critic;
 
 import org.apache.log4j.Logger;
 
-// Needs-more-work: Maybe the exception strings should be internationalized
+// TODO: Maybe the exception strings should be internationalized
 
 /**
  * This class is responsible for identifying one critic that has been resolved
@@ -41,16 +42,15 @@ import org.apache.log4j.Logger;
  *
  * @author	Michael Stockman
  */
-public class ResolvedCritic
-{
-    /** The logger */
+public class ResolvedCritic {
+    /** The logger. */
     private static final Logger LOG = Logger.getLogger(ResolvedCritic.class);
 
     /** The name of the critic. */
     private String critic;
 
     /** The IDs of the objects that define the context of the critic. */
-    private Vector offenders;
+    private List offenders;
 
     /**
      * Creates a new ResolvedCritic using the name of the Critic and the
@@ -59,13 +59,13 @@ public class ResolvedCritic
      * @param	cr	The name of the Critic that has been resolved
      * @param	offs	The Vector of related objects.
      */
-    public ResolvedCritic(String cr, Vector offs)
-    {
-	this.critic = cr;
-	if (offs != null && offs.size() > 0)
-	    this.offenders = new Vector(offs);
-	else
-	    this.offenders = null;
+    public ResolvedCritic(String cr, Vector offs) {
+	critic = cr;
+	if (offs != null && offs.size() > 0) {
+	    offenders = new Vector(offs);
+	} else {
+	    offenders = null;
+	}
     }
 
     /**
@@ -78,8 +78,9 @@ public class ResolvedCritic
      *			not have a ItemUID and does not accept a new
      *			one.
      */
-    public ResolvedCritic(Critic c, VectorSet offs) throws UnresolvableException
-    {
+    public ResolvedCritic(Critic c, VectorSet offs)
+    	throws UnresolvableException {
+
 	this(c, offs, true);
     }
 
@@ -95,31 +96,24 @@ public class ResolvedCritic
      *			one.
      */
     public ResolvedCritic(Critic c, VectorSet offs, boolean canCreate)
-	throws UnresolvableException
-    {
-	if (c == null)
+	throws UnresolvableException {
+	if (c == null) {
 	    throw new NullPointerException();
+	}
 
 	//LOG.debug("Adding resolution for: " + c.getClass() + " " + canCreate);
 
-	try
-	{
-	    if (offs != null && offs.size() > 0)
-	    {
+	try {
+	    if (offs != null && offs.size() > 0) {
 		offenders = new Vector(offs.size());
 		importOffenders(offs, canCreate);
+	    } else {
+	        offenders = null;
 	    }
-	    else
-		offenders = null;
-	}
-	catch (UnresolvableException ure)
-	{
-	    try
-	    {
+	} catch (UnresolvableException ure) {
+	    try {
 		getCriticString(c);
-	    }
-	    catch (UnresolvableException ure2)
-	    {
+	    } catch (UnresolvableException ure2) {
 		throw new UnresolvableException(ure2.getMessage() + "\n"
 						+ ure.getMessage());
 	    }
@@ -130,13 +124,27 @@ public class ResolvedCritic
     }
 
     /**
+     * @see java.lang.Object#hashCode()
+     *
+     * This is a rather bad hash solution but with the {@link #equals(Object)}
+     * defined as below, it is not possible to do better.
+     */
+    public int hashCode() {
+        if (critic == null) {
+            return 0;
+        }
+        return critic.hashCode();
+    }
+
+    /**
      * equals returns true if and only if obj also is a ResolvedCritic,
      * has the same critic name, and has all related objects that this
      * object has. Note that it is not required that this object has all
      * related objects that that object has.
      *
-     * <p>Formally that is inconsistent with equals as specified in
-     * java.lang.Object, but it was probably practical somehow.<p>
+     * <p>Formally that is inconsistent with {@link Object#equals(Object) 
+     * equals as specified in java.lang.Object}, 
+     * but it was probably practical somehow.<p>
      *
      * The param obj is the Object to compare to.
      * Returns true if equal according to the description, false
@@ -144,41 +152,46 @@ public class ResolvedCritic
      *
      * @see java.lang.Object#equals(java.lang.Object)
      */
-    public boolean equals(Object obj)
-    {
+    public boolean equals(Object obj) {
 	ResolvedCritic rc;
 	int i, j;
 
-	if (obj == null || !(obj instanceof ResolvedCritic))
+	if (obj == null || !(obj instanceof ResolvedCritic)) {
 	    return false;
+	}
 
 	rc = (ResolvedCritic) obj;
 
-	if (critic == null)
-	{
-	    if (rc.critic != null)
-		return false;
+	if (critic == null) {
+	    if (rc.critic != null) {
+	        return false;
+	    }
+	} else if (!critic.equals(rc.critic)) {
+	    return false;
 	}
-	else if (!critic.equals(rc.critic))
-	    return false;
 
-	if (offenders == null)
+	if (offenders == null) {
 	    return true;
+	}
 
-	if (rc.offenders == null)
+	if (rc.offenders == null) {
 	    return false;
+	}
 
-	for (i = 0; i < offenders.size(); i++)
-	{
-	    if (offenders.elementAt(i) == null)
-		continue;
+	for (i = 0; i < offenders.size(); i++) {
+	    if (offenders.get(i) == null) {
+	        continue;
+	    }
 
-	    for (j = 0; j < rc.offenders.size(); j++)
-		if (offenders.elementAt(i).equals(rc.offenders.elementAt(j)))
-		    break;
+	    for (j = 0; j < rc.offenders.size(); j++) {
+	        if (offenders.get(i).equals(rc.offenders.get(j))) {
+	            break;
+	        }
+	    }
 
-	    if (j >= rc.offenders.size())
-		return false;
+	    if (j >= rc.offenders.size()) {
+	        return false;
+	    }
 	}
 
 	return true;
@@ -191,11 +204,10 @@ public class ResolvedCritic
      * @throws	UnresolvableException	Not implemented.
      * @return	A identifying name of the critic.
      */
-    protected String getCriticString(Critic c) throws UnresolvableException
-    {
+    protected String getCriticString(Critic c) throws UnresolvableException {
 	String s = c.getClass().toString();
 
-	// Needs-more-work: Should throw if the string is not good?
+	// TODO: Should throw if the string is not good?
 
 	return s;
     }
@@ -213,17 +225,15 @@ public class ResolvedCritic
      *		imported.
      */
     protected void importOffenders(VectorSet set, boolean canCreate)
-	throws UnresolvableException
-    {
+	throws UnresolvableException {
+
 	Enumeration elems = set.elements();
 	String fail = null;
 
-	while (elems.hasMoreElements())
-	{
+	while (elems.hasMoreElements()) {
 	    Object obj = elems.nextElement();
 	    String id = ItemUID.getIDOfObject(obj, canCreate);
-	    if (id == null)
-	    {
+	    if (id == null) {
 		if (!canCreate) {
 		    throw new UnresolvableException("ItemUID missing or "
 						    + "unable to "
@@ -231,10 +241,11 @@ public class ResolvedCritic
 						    + obj.getClass());
 		}
 
-		if (fail == null)
+		if (fail == null) {
 		    fail = obj.getClass().toString();
-		else
+		} else {
 		    fail = fail + ", " + obj.getClass().toString();
+		}
 
 		LOG.warn("Offender " + obj.getClass() + " unresolvable");
 
@@ -243,15 +254,16 @@ public class ResolvedCritic
 		//throw new UnresolvableException(
 		//	"Unable to create ItemUID for class: "
 		//	+ obj.getClass());
+	    } else {
+	        offenders.add(id);
 	    }
-	    else
-		offenders.add(id);
 	}
 
-	if (fail != null)
+	if (fail != null) {
 	    throw new UnresolvableException("Unable to create ItemUID for "
 					    + "some class(es): "
 					    + fail);
+	}
     }
 
     /**
@@ -259,8 +271,7 @@ public class ResolvedCritic
      *
      * @return The critic this instance resolves.
      */
-    public String getCritic()
-    {
+    public String getCritic() {
 	return critic;
     }
 
@@ -269,25 +280,23 @@ public class ResolvedCritic
      *
      * @return The list of offenders of the critic this instance resolved.
      */
-    public Vector getOffenderList()
-    {
+    public List getOffenderList() {
 	return offenders;
     }
 
     /**
-     * {@inheritDoc}
+     * @see java.lang.Object#toString()
      */
-    public String toString()
-    {
+    public String toString() {
 	StringBuffer sb =
 	    new StringBuffer("ResolvedCritic: " + critic + " : ");
 	int i;
 
-	for (i = 0; i < offenders.size(); i++)
-	{
-	    if (i > 0)
-		sb.append(", ");
-	    sb.append(offenders.elementAt(i));
+	for (i = 0; i < offenders.size(); i++) {
+	    if (i > 0) {
+	        sb.append(", ");
+	    }
+	    sb.append(offenders.get(i));
 	}
 
 	return sb.toString();
