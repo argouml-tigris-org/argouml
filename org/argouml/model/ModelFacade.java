@@ -1784,6 +1784,20 @@ public class ModelFacade {
         throw new IllegalArgumentException("Unrecognized object " + handle);
     }
 
+    /** Get the comments of an element.
+     *
+     * @param handle the model element that we are getting the comments of
+     * @returns the comment (or null)
+     */
+    public static Collection getCollaborations(Object handle) {
+        if (handle instanceof MOperation)
+            return ((MOperation) handle).getCollaborations();
+        if (handle instanceof MClassifier)
+            return ((MClassifier) handle).getCollaborations();
+        // ...
+        throw new IllegalArgumentException("Unrecognized object " + handle);
+    }
+
     /**
      * Add a new comment to a model element
      * @param element the element to which the comment is to be added
@@ -1885,18 +1899,18 @@ public class ModelFacade {
         throw new IllegalArgumentException("Unrecognized object " + handle);
     }
 
-    /** Get the nodeInstance of a MComponentInstance.
+    /** Get the node instance of a component instance.
      *
-     * @param handle the MComponentInstance
-     * @returns the dispatchaction (or null)
+     * @param handle the model element that we are getting the node instance of
+     * @returns the node instance
      */
     public static Object getNodeInstance(Object handle) {
-        if (handle instanceof MComponentInstance) {
+        if (handle instanceof MComponentInstance)
             return ((MComponentInstance) handle).getNodeInstance();
-        }
+        // ...
         throw new IllegalArgumentException("Unrecognized object " + handle);
     }
-    
+
     /** The list of operations
      *
      * @param handle classifier to examine.
