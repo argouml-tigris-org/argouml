@@ -64,13 +64,13 @@ public class OsUtil {
      * 
      * @return true if this is a Sun Java
      */
-    static boolean isSunJdk() {
+    public static boolean isSunJdk() {
         return (System.getProperty("java.vendor")
                 .equals("Sun Microsystems Inc."));
     }
 
     /** check whether we deal with a JDK 1.3.x */
-    static boolean isJdk131() {
+    public static boolean isJdk131() {
         return (System.getProperty("java.version").startsWith("1.3.")); 
     }
 

@@ -178,11 +178,6 @@ public class Import {
 				       + "Default import module not found");
         JComponent chooser = module.getChooser(this);
         dialog = new JDialog(ProjectBrowser.getInstance(), "Import sources");
-        dialog.addWindowListener(new WindowAdapter() {
-            public void windowClosing(WindowEvent evt) {
-                disposeDialog();
-            }
-        });
 
         dialog.setModal(true);
         dialog.getParent().setEnabled(false);
