@@ -312,8 +312,8 @@ public class ProjectBrowser
         _workarea.add(_navPane, BorderSplitPane.WEST);
         
         TabToDo todo = (TabToDo)getTab(TabToDo.class);
-        todo.setTree(_todoPane);
-        //_workarea.add(_todoPane, BorderSplitPane.SOUTHWEST);
+        //todo.setTree(_todoPane);
+        _workarea.add(_todoPane, BorderSplitPane.SOUTHWEST);
         _workarea.add(_editorPane);
         // Toolbar boundry is the area between the menu and the status bar. It contains
         // the workarea at centre and the toolbar position north, south, east or west.
