@@ -143,8 +143,7 @@ public abstract class UMLDiagram
     ////////////////////////////////////////////////////////////////
     // instance variables
     private Object namespace;
-    private DiagramInfo diagramName = new DiagramInfo(this);
-
+    
     private JToolBar toolBar;
 
     ////////////////////////////////////////////////////////////////
@@ -243,14 +242,6 @@ public abstract class UMLDiagram
      */
     public Object getOwner() {
         return getNamespace();
-    }
-
-    /**
-     * @see org.tigris.gef.base.Diagram#setName(java.lang.String)
-     */
-    public void setName(String n) throws PropertyVetoException {
-        super.setName(n);
-        diagramName.updateName();
     }
 
     static final long serialVersionUID = -401219134410459387L;
