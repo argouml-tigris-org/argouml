@@ -22,6 +22,7 @@
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 package org.argouml.ui;
+import org.argouml.application.ArgoVersion;
 import org.argouml.application.api.*;
 import org.argouml.application.helpers.*;
 import org.argouml.kernel.*;
@@ -128,7 +129,7 @@ implements SettingsTabPanel {
     public String getModuleName() { return "SettingsTabFonts"; }
     public String getModuleDescription() { return "Settings of font"; }
     public String getModuleAuthor() { return "ArgoUML Core"; }
-    public String getModuleVersion() { return "0.9.8"; }
+    public String getModuleVersion() { return ArgoVersion.VERSION; }
     public String getModuleKey() { return "module.settings.fonts"; }
 
     public String getTabKey() { return "tab.fonts"; }

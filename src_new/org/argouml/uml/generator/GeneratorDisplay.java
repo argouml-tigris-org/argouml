@@ -36,6 +36,7 @@
 
 package org.argouml.uml.generator;
 import org.argouml.application.api.*;
+import org.argouml.application.ArgoVersion;
 
 //import java.util.*;
 import java.io.*;
@@ -731,7 +732,7 @@ public String generateConcurrency(MCallConcurrencyKind concurrency) {
         return "Uml 1.3 Notation Generator";
     }
     public String getModuleAuthor() { return "ArgoUML Core"; }
-    public String getModuleVersion() { return "0.9.4"; }
+    public String getModuleVersion() { return ArgoVersion.VERSION; }
     public String getModuleKey() { return "module.language.uml.generator"; }
 
 } /* end class GeneratorDisplay */

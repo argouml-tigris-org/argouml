@@ -22,6 +22,7 @@
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 package org.argouml.ui;
+import org.argouml.application.ArgoVersion;
 import org.argouml.application.api.*;
 import org.argouml.application.helpers.*;
 import org.argouml.kernel.*;
@@ -161,7 +162,7 @@ implements SettingsTabPanel {
     /** This should call on a global config file somewhere
      * .9.4 is the last version of argo
      */    
-    public String getModuleVersion() { return "0.9.4"; }
+    public String getModuleVersion() { return ArgoVersion.VERSION; }
 
     public String getModuleKey() { return "module.settings.environment"; }
 
