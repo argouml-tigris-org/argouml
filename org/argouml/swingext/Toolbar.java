@@ -90,9 +90,14 @@ public class Toolbar extends JToolBar implements MouseListener {
     }
 
     public void setRollover(boolean rollover) {
-        super.setRollover(rollover);
+        // TODO Check for JDK1.4 before calling super class setRollover
+        //super.setRollover(rollover);
         this._rollover = rollover;
-        this.putClientProperty("JToolBar.isRollover", Boolean.valueOf(rollover));
+        // TODO Check for JDK1.4 before using Boolean.valueOf(rollover)
+        //this.putClientProperty("JToolBar.isRollover", Boolean.valueOf(rollover));
+        Boolean showRollover = Boolean.FALSE;
+        if (rollover) showRollover = Boolean.TRUE;
+        this.putClientProperty("JToolBar.isRollover",  showRollover);
     }
     
     public JButton add(Action action) {
