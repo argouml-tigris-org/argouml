@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -22,13 +22,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-
-
-// File: Poster.java
-// Classes: Poster
-// Original Author: jrobbins@ics.uci.edu
-// $Id$
-
 package org.argouml.cognitive;
 
 import java.util.Vector;
@@ -37,40 +30,42 @@ import javax.swing.Icon;
 
 import org.tigris.gef.util.VectorSet;
 
-/** Interface that defines methods required on any object that can
- *  post a ToDoItem to the Designer's ToDoList. Basically requires that
- *  the poster (1) have contact information, (2) be able to snooze
- *  and unsnooze itself, and (3) be able to determine if a ToDoItem it
- *  posted previously should still be on the Designer's ToDoList. <p>
+/**
+ * Interface that defines methods required on any object that can
+ * post a ToDoItem to the Designer's ToDoList. Basically requires that
+ * the poster (1) have contact information, (2) be able to snooze
+ * and unsnooze itself, and (3) be able to determine if a ToDoItem it
+ * posted previously should still be on the Designer's ToDoList. <p>
  *
- *  Currently Critic and Designer implement this interface.
+ * Currently Critic and Designer implement this interface.
  *
  * @see org.argouml.cognitive.critics.Critic
- * @see Designer */
-
+ * @see Designer
+ * @author Jason Robbins
+ */
 public interface Poster {
 
     ////////////////////////////////////////////////////////////////
     // accessors
 
-    /** 
+    /**
      * Get some contact information on the Poster.
-     *  
+     *
      * @return the email address of the poster
      */
     String getExpertEmail();
 
-    /** 
+    /**
      * Update the Poster's contact info. Is this needed?
-     * 
+     *
      * @param addr the emailaddress
      */
     void setExpertEmail(String addr);
 
-    /** 
+    /**
      * Reply true if the given item should be kept on the Designer's
-     * ToDoList, false if it is no longer valid. 
-     * 
+     * ToDoList, false if it is no longer valid.
+     *
      * @param i the todo item
      * @param d the designer
      * @return true if thisitem is still valid
@@ -82,32 +77,32 @@ public interface Poster {
      * @return true if the decision is still supported
      */
     boolean supports(Decision d);
-    
+
     /**
      * @return the list of supported decisions
      */
     Vector getSupportedDecisions();
-    
+
     /**
      * @param g the goal
      * @return true if the goal is still supported
      */
     boolean supports(Goal g);
-    
+
     /**
      * @return the list of supported goals
      */
     Vector getSupportedGoals();
-    
+
     /**
      * @param knowledgeType the knowledge type
      * @return true if it is valid
      */
     boolean containsKnowledgeType(String knowledgeType);
 
-    /** 
-     * Customize the description string just before it is displayed. 
-     * 
+    /**
+     * Customize the description string just before it is displayed.
+     *
      * @param desc the description
      * @param offs the offenders
      * @return the customized/expanded string
@@ -117,16 +112,20 @@ public interface Poster {
     /**
      * @return the icon shown on the todo item to show the wizard's progress
      */
-    public Icon getClarifier();
+    Icon getClarifier();
 
     ////////////////////////////////////////////////////////////////
     // criticism control
 
-    /** temporarily disable this Poster. */
+    /**
+     * Temporarily disable this Poster.
+     */
     void snooze();
 
-    /** Unsnooze this Poster, it may resume posting without further
-     * delay. */
+    /**
+     * Unsnooze this Poster, it may resume posting without further
+     * delay.
+     */
     void unsnooze();
 
     ////////////////////////////////////////////////////////////////
@@ -137,7 +136,7 @@ public interface Poster {
      * be fixed automatically, and the user wants that to happen, then do
      * it. Obviously, this depends on the specific Critic and
      * problem. By default this method does nothing.
-     * 
+     *
      * @param item the todo item
      * @param arg the design material (?)
      */

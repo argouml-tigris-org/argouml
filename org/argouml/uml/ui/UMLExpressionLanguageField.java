@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -66,37 +66,37 @@ public class UMLExpressionLanguageField
      */
     public void targetReasserted() {
     }
-    
+
     /**
      * @see ru.novosoft.uml.MElementListener#roleAdded(ru.novosoft.uml.MElementEvent)
      */
     public void roleAdded(final MElementEvent p1) {
     }
-    
+
     /**
      * @see ru.novosoft.uml.MElementListener#recovered(ru.novosoft.uml.MElementEvent)
      */
     public void recovered(final MElementEvent p1) {
     }
-    
+
     /**
      * @see ru.novosoft.uml.MElementListener#roleRemoved(ru.novosoft.uml.MElementEvent)
      */
     public void roleRemoved(final MElementEvent p1) {
     }
-    
+
     /**
      * @see ru.novosoft.uml.MElementListener#listRoleItemSet(ru.novosoft.uml.MElementEvent)
      */
     public void listRoleItemSet(final MElementEvent p1) {
     }
-    
+
     /**
      * @see ru.novosoft.uml.MElementListener#removed(ru.novosoft.uml.MElementEvent)
      */
     public void removed(final MElementEvent p1) {
     }
-    
+
     /**
      * @see ru.novosoft.uml.MElementListener#propertySet(ru.novosoft.uml.MElementEvent)
      */
@@ -105,7 +105,7 @@ public class UMLExpressionLanguageField
             update();
         }
     }
-    
+
     private void update() {
         String oldText = getText();
         String newText = model.getLanguage();
@@ -115,21 +115,21 @@ public class UMLExpressionLanguageField
             }
         }
     }
-    
+
     /**
      * @see javax.swing.event.DocumentListener#changedUpdate(javax.swing.event.DocumentEvent)
      */
     public void changedUpdate(final DocumentEvent p1) {
         model.setLanguage(getText());
     }
-    
+
     /**
      * @see javax.swing.event.DocumentListener#removeUpdate(javax.swing.event.DocumentEvent)
      */
     public void removeUpdate(final DocumentEvent p1) {
         model.setLanguage(getText());
     }
-    
+
     /**
      * @see javax.swing.event.DocumentListener#insertUpdate(javax.swing.event.DocumentEvent)
      */

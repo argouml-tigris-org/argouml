@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -22,16 +22,16 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// Original author: Linus Tolke
-
 package org.argouml.util.logging;
 
 import java.util.Enumeration;
 import java.util.Vector;
 
 /**
- * This class makes it easy to get the time between two or several 
+ * This class makes it easy to get the time between two or several
  * points in the code.
+ *
+ * @author Linus Tolke
  */
 public class SimpleTimer {
     private String name = null;
@@ -40,7 +40,7 @@ public class SimpleTimer {
 
     /**
      * The constructor. Creates a simple timer with given name.
-     * 
+     *
      * @param n the name
      */
     public SimpleTimer(String n) {
@@ -57,7 +57,7 @@ public class SimpleTimer {
 
     /**
      * Mark (Store) the current time.
-     * 
+     *
      * @param label the mark will be labelled with this string
      */
     public void mark(String label) {

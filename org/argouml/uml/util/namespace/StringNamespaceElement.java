@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2003-2004 The Regents of the University of California. All
+// Copyright (c) 2003-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -27,41 +27,37 @@ package org.argouml.uml.util.namespace;
 
 /**
  * A StringNamespaceElement wraps a string around a NamespaceElement.
- * 
+ *
  * @author mkl
  */
-public class StringNamespaceElement implements NamespaceElement
-{
+public class StringNamespaceElement implements NamespaceElement {
 
     private final String element;
     /* {transient=false, volatile=false} */
 
     /**
      * Construct an element using the string.
-     * 
+     *
      * @param strelement
      *            the element
      */
-    public StringNamespaceElement(String strelement)
-    {
+    public StringNamespaceElement(String strelement) {
         this.element = strelement;
     }
 
     /**
      * @see org.argouml.uml.util.namespace.NamespaceElement#getNamespaceElement()
      */
-    public Object getNamespaceElement()
-    {
+    public Object getNamespaceElement() {
         return element;
     }
 
     /**
      * returns the plain string object.
-     * 
+     *
      * @see java.lang.Object#toString()
      */
-    public String toString()
-    {
+    public String toString() {
         return element;
     }
 

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2003 The Regents of the University of California. All
+// Copyright (c) 2003-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -41,9 +41,8 @@ public class UMLModelElementTaggedValueDocument extends UMLPlainTextDocument {
      * an MModelElement object
      * @param taggedValue the tagged value
      */
-    public UMLModelElementTaggedValueDocument(String taggedValue)
-    {
-        //stores the action command into the UMLPlainTextDocument 
+    public UMLModelElementTaggedValueDocument(String taggedValue) {
+        //stores the action command into the UMLPlainTextDocument
         //class which is also used
         //for setProperty and getProperty
         super(taggedValue);

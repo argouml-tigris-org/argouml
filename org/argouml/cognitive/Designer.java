@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -41,140 +41,167 @@ import org.tigris.gef.util.ChildGenerator;
 import org.tigris.gef.util.EnumerationEmpty;
 import org.tigris.gef.util.VectorSet;
 
-/** This class models the designer who is building a complex design in
+/**
+ * This class models the designer who is building a complex design in
  * some application domain and needs continuous feedback to aid in the
- * making of good design decisions.
+ * making of good design decisions.<p>
  *
- * <p><strong>This area needs work, especially as it is a
- * central idea of Argo.</strong>
+ * <strong>This area needs work, especially as it is a
+ * central idea of Argo.</strong><p>
  *
- * <p>Currently (almost) everything is hardcoded. What can be configurable??
+ * Currently (almost) everything is hardcoded. What can be configurable??<p>
  *
- * <p>The ToDoList is dependent on this class.
+ * The ToDoList is dependent on this class.<p>
  *
- * <p>This class listens to property changes from ...?
+ * This class listens to property changes from ...?<p>
  *
- * <p>A Designer can as well create ToDO Items, such as critics do. Hence he 
+ * A Designer can as well create ToDO Items, such as critics do. Hence he
  * implements the Poster interface.
- * 
+ *
  * @author Jason Robbins
  */
 public class Designer
      implements Poster,
          Runnable, // TODO: remove/refactor per issue 1024
          PropertyChangeListener,
-         java.io.Serializable
-{
+         java.io.Serializable {
+    /**
+     * Logger.
+     */
     private static final Logger LOG = Logger.getLogger(Designer.class);
-    
-    /** the singleton of this class.*/
+
+    /**
+     * the singleton of this class.
+     */
     private static Designer theDesignerSingleton = new Designer();
-    
+
     private static boolean userWorking;
-    
+
     private static Vector unspecDecisionVector;
     private static Vector unspecGoalVector;
-    
+
     static {
         unspecDecisionVector = new Vector();
         unspecDecisionVector.addElement(Decision.UNSPEC);
         unspecGoalVector = new Vector();
         unspecGoalVector.addElement(Goal.getUnspecifiedGoal());
     }
-    
+
     ////////////////////////////////////////////////////////////////
     // instance variables
-    
-    /** ToDoList items that are on the designers ToDoList because of
-     *  this material. */
-    private ToDoList toDoList;
-    
-    /** Preferences -- very ill defined */
-    private Properties prefs;
-    
-    /** The email address where other designers can send this designer
-     * email. This is not used yet. */
-    private String emailAddr;
-    
+
     /**
-     * The designerName is the name of the current user, as he can enter in the 
+     * ToDoList items that are on the designers ToDoList because of
+     * this material.
+     */
+    private ToDoList toDoList;
+
+    /**
+     * Preferences -- very ill defined
+     */
+    private Properties prefs;
+
+    /**
+     * The email address where other designers can send this designer
+     * email. This is not used yet.
+     */
+    private String emailAddr;
+
+    /**
+     * The designerName is the name of the current user, as he can enter in the
      * menuitem Edit->Settings...->User->Full Name.<p>
-     * The designerName gets updated when the user enters a new name. 
+     *
+     * The designerName gets updated when the user enters a new name.
      */
     private String designerName;
-    
-    /** The decisions currently being considered by the designer.
+
+    /**
+     * The decisions currently being considered by the designer.<p>
      *
-     *  <p>Decisions are currently modeled as simple descriptive strings.
+     * Decisions are currently modeled as simple descriptive strings.<p>
      *
-     *  <p>Each decision also has a priority number which is ill defined,
-     *  but positive Ints mean that the designer is considering it. This
-     *  explicit representation of what decisions the designer is
-     *  interested in at a given moment allows the Agency to select
-     *  relevant critics for execution. */
+     * Each decision also has a priority number which is ill defined,
+     * but positive Ints mean that the designer is considering it. This
+     * explicit representation of what decisions the designer is
+     * interested in at a given moment allows the Agency to select
+     * relevant critics for execution.
+     */
     private DecisionModel decisions;
-    
-    /** The goals of the designer are likewise used by the Agency to
-     *  determine what critics are relevant. */
+
+    /**
+     * The goals of the designer are likewise used by the Agency to
+     * determine what critics are relevant.
+     */
     private GoalModel goals;
-    
-    /** Each designer has their own Agency instance that is responsible
-     *  for selecting and executing critics that are relevant to this
-     *  designer on an on going basis. */
+
+    /**
+     * Each designer has their own Agency instance that is responsible
+     * for selecting and executing critics that are relevant to this
+     * designer on an on going basis.
+     */
     private Agency agency;
-    
-    /* the clarifying icon for this poster */
+
+    /* the clarifying icon for this poster
+     */
     private Icon clarifier = null;
-    
+
 
     private Thread critiquerThread;
 
     private int critiquingInterval;
 
     private int critiqueCPUPercent;
-    
+
     private boolean autoCritique;
-    
-    /** dm's that should be critiqued ASAP. */
+
+    /**
+     * dm's that should be critiqued ASAP.
+     */
     private Vector hotQueue;
-    
+
     private Vector hotReasonQueue;
-    
+
     private Vector addQueue;
-    
+
     private Vector addReasonQueue;
-    
+
     private Vector removeQueue;
-    
+
     private static int longestAdd;
 
     private static int longestHot;
-    
-    /** dm's that should be critiqued relatively soon. */
+
+    /**
+     * dm's that should be critiqued relatively soon.
+     */
     private Vector warmQueue;
-    
+
     private ChildGenerator childGenerator;
-    
+
     private static Object critiquingRoot;
-    
+
     private long critiqueDuration;
-    
+
     private int critiqueLock;
-    
+
     private long lastCritique;
-    
+
     private static PropertyChangeSupport pcs;
-    
-    /** Property Names */
-    public static final String MODEL_TODOITEM_ADDED = 
+
+    /**
+     * Property Names
+     */
+    public static final String MODEL_TODOITEM_ADDED =
         "MODEL_TODOITEM_ADDED";
-    /** Property Names */
-    public static final String MODEL_TODOITEM_DISMISSED = 
+    /**
+     * Property Names
+     */
+    public static final String MODEL_TODOITEM_DISMISSED =
         "MODEL_TODOITEM_DISMISSED";
-    
+
     ////////////////////////////////////////////////////////////////
     // constructor and singeton methods
-    
+
     /**
      * The constructor.
      */
@@ -183,19 +210,19 @@ public class Designer
         goals = new GoalModel();
         agency = new Agency();
         prefs = new Properties();
-        
+
         toDoList = ToDoList.getInstance();
-        
+
         toDoList.spawnValidityChecker(this);
         // TODO: make this configurable
         emailAddr = "users@argouml.tigris.org";
         //TheDesigner = this; // already done above
         userWorking = false;
-        
+
         critiquingInterval = 8000;
         critiqueCPUPercent = 10;
         autoCritique = true;
-        
+
         hotQueue = new Vector();
         hotReasonQueue = new Vector();
         addQueue = new Vector();
@@ -203,29 +230,29 @@ public class Designer
         removeQueue = new Vector();
         longestAdd = 0;
         longestHot = 0;
-        
+
         warmQueue = new Vector();
-        
+
         childGenerator = new ChildGenDMElements();
-        
+
         critiqueLock = 0;
-        
+
         lastCritique = 0;
     }
-    
+
     /**
      * @return the designer singleton
      */
     public static Designer theDesigner() { return theDesignerSingleton; }
-    
-    
+
+
     ////////////////////////////////////////////////////////////////
     // critiquing
-    
-    /** 
+
+    /**
      * Start a separate thread to continually select and execute
-     * critics that are relevant to this designer's work. 
-     * 
+     * critics that are relevant to this designer's work.
+     *
      * @param root the rootobject the critiques will check
      */
     public void spawnCritiquer(Object root) {
@@ -236,20 +263,22 @@ public class Designer
         critiquerThread.start();
         critiquingRoot = root;
     }
-    
-    /** Continuously select and execute critics against this designer's
-     *  design. spawnCritiquer is used to start a Thread that runs
-     *  this. */
+
+    /**
+     * Continuously select and execute critics against this designer's
+     * design. spawnCritiquer is used to start a Thread that runs
+     * this.
+     */
     public void run() {
-        
+
         while (true) {
-            
+
             // local variables - what do they do?
             long critiqueStartTime;
             long cutoffTime;
             int minWarmElements = 5;
             int size;
-            
+
             // the critiquing thread should wait if disabled.
             synchronized (this) {
                 while (!autoCritique) {
@@ -260,17 +289,17 @@ public class Designer
                     }
                 }
             }
-            
+
             // why?
             if (critiquingRoot != null
 //		&& getAutoCritique()
 		&& critiqueLock <= 0) {
-                
+
                 // why?
                 synchronized (this) {
                     critiqueStartTime = System.currentTimeMillis();
                     cutoffTime = critiqueStartTime + 3000;
-                    
+
                     size = addQueue.size();
                     for (int i = 0; i < size; i++) {
                         hotQueue.addElement(addQueue.elementAt(i));
@@ -278,10 +307,10 @@ public class Designer
                     }
                     addQueue.removeAllElements();
                     addReasonQueue.removeAllElements();
-                    
+
                     longestHot = Math.max(longestHot, hotQueue.size());
                     agency.determineActiveCritics(this);
-                    
+
                     while (hotQueue.size() > 0) {
                         Object dm = hotQueue.elementAt(0);
                         Long reasonCode = (Long) hotReasonQueue.elementAt(0);
@@ -290,12 +319,12 @@ public class Designer
                         Agency.applyAllCritics(dm, theDesigner(),
 					       reasonCode.longValue());
                     }
-                    
+
                     size = removeQueue.size();
                     for (int i = 0; i < size; i++)
                         warmQueue.removeElement(removeQueue.elementAt(i));
                     removeQueue.removeAllElements();
-                    
+
                     if (warmQueue.size() == 0)
                         warmQueue.addElement(critiquingRoot);
                     while (warmQueue.size() > 0
@@ -330,11 +359,11 @@ public class Designer
             }
         }
     }
-    
+
     /**
-     * A modelelement has been changed. 
+     * A modelelement has been changed.
      * Now we give it priority to be checked by the critics ASAP.
-     * 
+     *
      * TODO: why is is synchronised?
      * TODO: what about when objects are first created?
      *
@@ -343,7 +372,9 @@ public class Designer
      */
     public synchronized void critiqueASAP(Object dm, String reason) {
         long rCode = Critic.reasonCodeFor(reason);
-        if (!userWorking) return; 
+        if (!userWorking) {
+	    return;
+	}
         LOG.debug("critiqueASAP:" + dm);
         int addQueueIndex = addQueue.indexOf(dm);
         if (addQueueIndex == -1) {
@@ -361,19 +392,19 @@ public class Designer
         removeQueue.addElement(dm);
         longestAdd = Math.max(longestAdd, addQueue.size());
     }
-    
-    /** 
+
+    /**
      * Look for potential problems or open issues in the given design.
-     * 
+     *
      * @param des the design to be checked
      */
     public void critique(Design des) { des.critique(this); }
-    
+
     /**
      * Adds a property change listener.
-     * 
+     *
      * @param pcl
-     *            The property change listener to add
+     *           The property change listener to add
      */
     public static final void addListener(PropertyChangeListener pcl) {
         if (pcs == null) {
@@ -382,12 +413,12 @@ public class Designer
         LOG.debug("addPropertyChangeListener(" + pcl + ")");
         pcs.addPropertyChangeListener(pcl);
     }
-    
+
     /**
      * Removes a property change listener.
-     * 
+     *
      * @param p
-     *            The class to remove as a property change listener.
+     *           The class to remove as a property change listener.
      */
     public static final void removeListener(PropertyChangeListener p) {
         if (pcs != null) {
@@ -395,22 +426,22 @@ public class Designer
             pcs.removePropertyChangeListener(p);
         }
     }
-    
+
     /**
      * @param property the property name
      * @param oldValue the old value
      * @param newValue the new value
      */
-    public static final void firePropertyChange(String property, 
+    public static final void firePropertyChange(String property,
             Object oldValue, Object newValue) {
         if (pcs != null) {
             pcs.firePropertyChange(property, oldValue, newValue);
         }
     }
-    
-    /** 
+
+    /**
      * Performs critique asap.
-     * 
+     *
      * @see java.beans.PropertyChangeListener#propertyChange(java.beans.PropertyChangeEvent)
      */
     public void propertyChange(PropertyChangeEvent pce) {
@@ -420,52 +451,54 @@ public class Designer
             critiqueASAP(pce.getSource(), pce.getPropertyName());
         }
     }
-    
+
     ////////////////////////////////////////////////////////////////
     // criticism control
-    
-    /** Ask this designer's agency to select which critics should be active. */
+
+    /**
+     * Ask this designer's agency to select which critics should be active.
+     */
     public void determineActiveCritics() {
         agency.determineActiveCritics(this);
     }
-    
+
     ////////////////////////////////////////////////////////////////
     // accessors
-    
-    /** 
+
+    /**
      * autoCritique and critiquingInterval are two prameters that
      * control how the critiquing thread operates. If autoCritique is
      * false then now critiquing is done in the background. The
      * critiquingInterval determines how often the critiquing thread
      * executes. The concept of an interval between runs will become
      * less important as Argo is redesigned to be more trigger
-     * driven. 
-     * 
+     * driven.
+     *
      * @return autoCritique
      */
     public boolean getAutoCritique() { return autoCritique; }
-    
-    /** 
+
+    /**
      * @see #getAutoCritique()
      * @param b
      */
     public void setAutoCritique(boolean b) {
-	autoCritique = b; 
-    
+	autoCritique = b;
+
 	synchronized (this) {
 	    if (autoCritique) {
 		this.notifyAll();
 	    }
 	}
     }
-    
+
     /**
      * Get the Critiquing interval.
      *
      * @return The interval.
      */
     public int getCritiquingInterval() {
-        
+
         return critiquingInterval;
     }
 
@@ -477,7 +510,7 @@ public class Designer
     public void setCritiquingInterval(int i) {
 	critiquingInterval = i;
     }
-    
+
     /**
      * Disable critiquing.
      */
@@ -486,7 +519,7 @@ public class Designer
             theDesigner().critiqueLock++;
         }
     }
-    
+
     /**
      * Enable critiquing.
      */
@@ -495,7 +528,7 @@ public class Designer
             theDesigner().critiqueLock--;
         }
     }
-    
+
     /**
      * Clear all critiquing results.
      */
@@ -511,7 +544,7 @@ public class Designer
         }
         //clear out queues! @@@
     }
-    
+
     /**
      * @param d the critiquing root
      */
@@ -519,7 +552,7 @@ public class Designer
         synchronized (theDesigner()) {
             critiquingRoot = d;
         }
-        /*  Don't clear everything here, breaks loading! */
+        /* Don't clear everything here, breaks loading! */
     }
 
     /**
@@ -530,7 +563,7 @@ public class Designer
             return critiquingRoot;
         }
     }
-    
+
     /**
      * @return the childgenerator
      */
@@ -540,17 +573,17 @@ public class Designer
      * @param cg the childgenerator
      */
     public void setChildGenerator(ChildGenerator cg) { childGenerator = cg; }
-    
+
     /**
      * @return the decisions
      */
     public DecisionModel getDecisionModel() { return decisions; }
-    
+
     /**
      * @return the decisions
      */
     public Vector getDecisions() { return decisions.getDecisions(); }
-    
+
     /**
      * @return the goals
      */
@@ -560,27 +593,27 @@ public class Designer
      * @return the goals
      */
     public Vector getGoals() { return goals.getGoals(); }
-    
+
     /**
-     * This method returns true.
+     * This method returns true.<p>
      *
-     * <p>ToDoItem's that are posted by the designer are assumed to be
-     *  valid until the designer explicitly removes them. Perhaps in the
-     *  future the designer could specify a condition to determine when
-     *  his items expire.
+     * ToDoItem's that are posted by the designer are assumed to be
+     * valid until the designer explicitly removes them. Perhaps in the
+     * future the designer could specify a condition to determine when
+     * his items expire.
      *
      * @see ToDoItem
      * @see org.argouml.cognitive.critics.Critic#stillValid
      *
      * @see org.argouml.cognitive.Poster#stillValid(
      * org.argouml.cognitive.ToDoItem, org.argouml.cognitive.Designer)
-     * 
+     *
      * @param i the todo item
      * @param d the designer
      * @return true if still valid
      */
     public boolean stillValid(ToDoItem i, Designer d) { return true; }
-    
+
     /**
      * @see org.argouml.cognitive.Poster#supports(org.argouml.cognitive.Decision)
      */
@@ -590,7 +623,7 @@ public class Designer
      * @see org.argouml.cognitive.Poster#getSupportedDecisions()
      */
     public Vector getSupportedDecisions() { return unspecDecisionVector; }
-    
+
     /**
      * @see org.argouml.cognitive.Poster#supports(org.argouml.cognitive.Goal)
      */
@@ -600,86 +633,89 @@ public class Designer
      * @see org.argouml.cognitive.Poster#getSupportedGoals()
      */
     public Vector getSupportedGoals() { return unspecGoalVector; }
-    
+
     /**
      * @see org.argouml.cognitive.Poster#containsKnowledgeType(java.lang.String)
      */
     public boolean containsKnowledgeType(String type) {
         return type.equals("Designer's");
     }
-    
-    /** 
+
+    /**
      * Just returns the descr param.
-     * 
-     * @see org.argouml.cognitive.Poster#expand(java.lang.String, 
+     *
+     * @see org.argouml.cognitive.Poster#expand(java.lang.String,
      * org.tigris.gef.util.VectorSet)
      */
     public String expand(String desc, VectorSet offs) { return desc; }
-    
-    /** 
+
+    /**
      * Get the generic clarifier for this designer/poster.
-     * 
+     *
      * @see org.argouml.cognitive.Poster#getClarifier()
      */
-    public Icon getClarifier() { 
+    public Icon getClarifier() {
         return clarifier;
     }
-    
-    /** 
+
+    /**
      * Get the generic clarifier for this designer/poster.
-     * 
+     *
      * @param clar the clarifier icon
      */
     public void setClarifier(Icon clar) {
         clarifier = clar;
     }
-    
-    /** Reply this Designer's ToDoList, a list of pending problems and
-     *  issues that the designer might be interested in.
-     * @see ToDoList */
+
+    /**
+     * Reply this Designer's ToDoList, a list of pending problems and
+     * issues that the designer might be interested in.
+     *
+     * @see ToDoList
+     */
     public ToDoList getToDoList() {
         return toDoList;
     }
-    
-    /** 
+
+    /**
      * Add all the items in the given list to my list.
-     * 
+     *
      * @param list the items to be added
      */
     public void addToDoItems(ToDoList list) {
         toDoList.addAll(list);
     }
-    
-    /** 
+
+    /**
      * Remove all the items in the given list from my list.
-     *  
+     *
      * @param list the items to be removed
      */
     public void removeToDoItems(ToDoList list) {
         toDoList.removeAll(list);
     }
-    
-    /** 
+
+    /**
      * Reply the designers personal preferneces.
      * Currently not used (?).
-     * 
+     *
      * @return the preferences
      */
     public Properties getPrefs() {
         return prefs;
     }
-    
-    /** 
+
+    /**
      * Reply true iff the designer is currently considering the given
-     * decison. 
-     * 
+     * decison.
+     *
      * @param decision the decision
      * @return true if considered
      */
     public boolean isConsidering(String decision) {
         return decisions.isConsidering(decision);
     }
-    
+
     /**
      * @param d the decision
      * @return true if the given decision is considered
@@ -687,18 +723,18 @@ public class Designer
     public boolean isConsidering(Decision d) {
         return d.getPriority() > 0;
     }
-    
-    /** 
+
+    /**
      * Record the extent to which the designer is considering the given
-     * decision. 
-     * 
+     * decision.
+     *
      * @param decision the decision
      * @param priority the priority
      */
     public void setDecisionPriority(String decision, int priority) {
         decisions.setDecisionPriority(decision, priority);
     }
-    
+
     /**
      * @param decision the decision
      * @param priority the priority
@@ -706,50 +742,50 @@ public class Designer
     public void defineDecision(String decision, int priority) {
         decisions.defineDecision(decision, priority);
     }
-    
+
     /**
      * @param decision the decision
      */
     public void startConsidering(String decision) {
         decisions.startConsidering(decision);
     }
-    
+
     /**
      * @param d the decision
      */
     public void startConsidering(Decision d) {
         decisions.startConsidering(d);
     }
-    
+
     /**
-     * @param decision the decision 
+     * @param decision the decision
      */
     public void stopConsidering(String decision) {
         decisions.stopConsidering(decision);
     }
-    
+
     /**
      * @param d the decision
      */
     public void stopConsidering(Decision d) {
         decisions.stopConsidering(d);
     }
-    
-    /** 
-     * Record the extent to which the designer desires the given goal. 
-     * 
+
+    /**
+     * Record the extent to which the designer desires the given goal.
+     *
      * @param goal the given goal
      * @return true if this goal is desired
      */
     public boolean hasGoal(String goal) { return goals.hasGoal(goal); }
-    
+
     /**
      * @param goal the given goal
      * @param priority the priority
      */
     public void setGoalPriority(String goal, int priority) {
         goals.setGoalPriority(goal, priority);
-    }    
+    }
 
     /**
      * @param goal the goal I (me, the designer) desire
@@ -771,28 +807,26 @@ public class Designer
      */
     public void setExpertEmail(String addr) { emailAddr = addr; }
 
-    /** empty */
     public void snooze() { /* do nothing */ }
 
-    /** empty */
     public void unsnooze() { /* do nothing */ }
-    
-    /** 
+
+    /**
      * Reply the Agency object that is helping this Designer.
-     * 
+     *
      * @return my agancy
      */
     public Agency getAgency() { return agency; }
-    
+
     ////////////////////////////////////////////////////////////////
     // user interface
-    
-    /** 
+
+    /**
      * Inform the human designer using this system that the given
      * ToDoItem should be considered. This can be disruptive if the item
      * is urgent, or (more commonly) it is added to his ToDoList so that
      * he can consider it at his leisure.
-     * 
+     *
      * @param item the todo item
      */
     public void inform(ToDoItem item) {
@@ -801,39 +835,39 @@ public class Designer
         else
             nondisruptivelyWarn(item);
     }
-    
+
     /**
      * Inform the human designer that there is an urgent ToDoItem that
      * (s)he must consider before doing any more work.  Currently not
-     * implemented. 
+     * implemented.
      *
      * @param item the todoitem
      */
     public synchronized void disruptivelyWarn(ToDoItem item) {
         // open a window or do something with item
     }
-    
-    /** 
+
+    /**
      * Inform the human designer that there is a ToDoItem that is
      * relevant to his design work, and allow him to consider it on his
      * own initiative.
-     * 
+     *
      * @param item the todo item
      */
     public synchronized void nondisruptivelyWarn(ToDoItem item) {
         toDoList.addElement(item);
     }
-    
+
     /**
-     * Used to determine which ToDoItems are urgent. Just returns the value 9. 
-     * 
+     * Used to determine which ToDoItems are urgent. Just returns the value 9.
+     *
      * @return from this priority, we warn disruptively
      */
     public int disruptiveThreshold() {
         // TODO: check prefs
         return 9;
     }
-    
+
     /**
      * set the name of this designer.
      * @param name the designer name
@@ -841,7 +875,7 @@ public class Designer
     public void setDesignerName(String name) {
         designerName = name;
     }
-    
+
     /**
      * query the name of the designer.
      * @return the designer name
@@ -849,39 +883,39 @@ public class Designer
     public String getDesignerName() {
         return designerName;
     }
-    
+
     /**
-     * This is used in the todo panel, when "By Poster" is chosen for a 
+     * This is used in the todo panel, when "By Poster" is chosen for a
      * manually created todo item.
-     * 
+     *
      * @see java.lang.Object#toString()
      */
     public String toString() {
-        //TODO: This should be the name of the designer that created 
+        //TODO: This should be the name of the designer that created
         //      the todoitem, not the current username!
         return getDesignerName();
     }
-    
+
     ////////////////////////////////////////////////////////////////
     // issue resolution
-    
-    /** 
+
+    /**
      * Does not do anything.
-     * 
-     * @see org.argouml.cognitive.Poster#fixIt(org.argouml.cognitive.ToDoItem, 
+     *
+     * @see org.argouml.cognitive.Poster#fixIt(org.argouml.cognitive.ToDoItem,
      * java.lang.Object)
      */
     public void fixIt(ToDoItem item, Object arg) { }
-    
-    /** 
+
+    /**
      * Just returns false.
-     * 
+     *
      * @see org.argouml.cognitive.Poster#canFixIt(org.argouml.cognitive.ToDoItem)
      */
     public boolean canFixIt(ToDoItem item) { return false; }
-    
+
     /**
-     * @param working true if the user is working 
+     * @param working true if the user is working
      * (i.e. this is not the startup phase of ArgoUML)
      */
     public static void setUserWorking(boolean working) {
@@ -889,14 +923,14 @@ public class Designer
     }
 
     /**
-     * @return true if the user is working 
+     * @return true if the user is working
      * (i.e. this is not the startup phase of ArgoUML)
      */
     public static boolean isUserWorking() {
         return userWorking;
     }
-    
-    
+
+
 
     class ChildGenDMElements implements ChildGenerator {
         /** Reply a Enumeration of the children of the given Object */
@@ -907,5 +941,5 @@ public class Designer
                 return EnumerationEmpty.theInstance();
         }
     } /* end class ChildGenDMElements */
-    
+
 } /* end class Designer */

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -59,11 +59,11 @@ public class ExplorerTreeModel extends DefaultTreeModel
 	Logger.getLogger(ExplorerTreeModel.class);
 
     /**
-     * an array of 
+     * an array of
      * {@link org.argouml.ui.explorer.rules.PerspectiveRule PerspectiveRules},
      * that determine the tree view.
      */
-    private Object rules[];
+    private Object[] rules;
 
     /**
      * a map used to resolve model elements to tree nodes when determining
@@ -134,9 +134,9 @@ public class ExplorerTreeModel extends DefaultTreeModel
 	/**
 	 * Call updateChildren for some pending nodes. Will call at most
 	 * MAX_UPDATES_PER_RUN each time. Should there still be pending
-	 * updates after that then it will reschedule itself.
+	 * updates after that then it will reschedule itself.<p>
 	 *
-	 * <p>This method should not be called explicitly, instead schedule
+	 * This method should not be called explicitly, instead schedule
 	 * should be called and this method will be called automatically.
 	 */
 	public void run() {
@@ -163,9 +163,9 @@ public class ExplorerTreeModel extends DefaultTreeModel
 	}
     }
 
-    /** 
-     * Creates a new instance of ExplorerTreeModel. 
-     * 
+    /**
+     * Creates a new instance of ExplorerTreeModel.
+     *
      * @param root an object to place at the root
      */
     public ExplorerTreeModel(Object root) {
@@ -180,7 +180,7 @@ public class ExplorerTreeModel extends DefaultTreeModel
 
 	order = new TypeThenNameOrder();
     }
-    
+
     /**
      * a model element has changed in some way.
      *
@@ -189,7 +189,7 @@ public class ExplorerTreeModel extends DefaultTreeModel
     public void modelElementChanged(Object node) {
 	traverseModified((TreeNode) getRoot(), node);
     }
-    
+
     /**
      * a model element has been added to the model.
      *
@@ -223,10 +223,10 @@ public class ExplorerTreeModel extends DefaultTreeModel
     public void modelElementRemoved(Object node) {
         Collection nodes = this.findNodes(node);
         Object[] nodesArray = nodes.toArray();
-        
+
         for (int x = 0; x < nodesArray.length; x++) {
             ExplorerTreeNode changeNode = (ExplorerTreeNode) nodesArray[x];
-            
+
             if (changeNode.getParent() != null) {
                 removeNodeFromParent(changeNode);
             }
@@ -264,7 +264,7 @@ public class ExplorerTreeModel extends DefaultTreeModel
 
     /**
      * updates next level of the explorer tree for a given tree path.
-     * 
+     *
      * @param path the path to the node whose children to update.
      * @throws IllegalArgumentException if node has a child that is not a
      *         (descendant of) DefaultMutableTreeNode.
@@ -298,9 +298,9 @@ public class ExplorerTreeModel extends DefaultTreeModel
     }
 
     /**
-     * Sorts the child nodes of node using the current ordering.
+     * Sorts the child nodes of node using the current ordering.<p>
      *
-     * <p>Note: UserObject is only available from descendants of
+     * Note: UserObject is only available from descendants of
      * DefaultMutableTreeNode, so any other children couldn't be sorted.
      * Thus these are currently forbidden. But currently no such node is
      * ever inserted into the tree.
@@ -366,9 +366,9 @@ public class ExplorerTreeModel extends DefaultTreeModel
 
     /**
      * Collects the set of children modelElement should have at this point in
-     * time. The children are added to newChildren
+     * time. The children are added to newChildren.<p>
      *
-     * <p>Note: Both newChildren and deps are modified by this function, it
+     * Note: Both newChildren and deps are modified by this function, it
      * is in fact it's primary purpose to modify these collections. It is your
      * responsibility to make sure that they are empty when it is called, or
      * to know what you are doing if they are not.
@@ -425,11 +425,11 @@ public class ExplorerTreeModel extends DefaultTreeModel
     /**
      * Returns a Set of current children to remove and modifies newChildren
      * to only contain the children not already in children and not subsumed
-     * by any WeakExplorerNode in children.
+     * by any WeakExplorerNode in children.<p>
      *
-     * <p>Note: newChildren will be modified by this call.
+     * Note: newChildren will be modified by this call.<p>
      *
-     * <p>Note: It is expected that a WeakExplorerNode will not be reused and
+     * Note: It is expected that a WeakExplorerNode will not be reused and
      * thus they will always initially be slated for removal, and only those
      * nodes are in fact used to check subsumption of new nodes. New nodes
      * are not checked among themselves for subsumtion.
@@ -557,9 +557,9 @@ public class ExplorerTreeModel extends DefaultTreeModel
      * Invoked this to insert newChild at location index in parents children.
      * This will then message nodesWereInserted to create the appropriate
      * event. This is the preferred way to add children as it will create the
-     * appropriate event.
+     * appropriate event.<p>
      *
-     * <p>Also performs subclass specific initialization.
+     * Also performs subclass specific initialization.
      *
      * @param newChild The new child node.
      * @param parent The parent node.
@@ -576,9 +576,9 @@ public class ExplorerTreeModel extends DefaultTreeModel
      * Message this to remove node from its parent. This will message
      * nodesWereRemoved to create the appropriate event. This is the
      * preferred way to remove a node as it handles the event creation
-     * for you.
+     * for you.<p>
      *
-     * <p>Also performs subclass specific uninitialization.
+     * Also performs subclass specific uninitialization.
      *
      * @param node The node to remove.
      */
@@ -656,7 +656,7 @@ public class ExplorerTreeModel extends DefaultTreeModel
      */
     private Collection findNodes(Object modelElement) {
 	Collection nodes = (Collection) modelElementMap.get(modelElement);
-        
+
 	if (nodes == null) {
 	    return Collections.EMPTY_LIST;
 	} else {

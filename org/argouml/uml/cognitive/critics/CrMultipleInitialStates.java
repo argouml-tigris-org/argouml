@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -22,11 +22,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// File: CrMultipleInitialStates.java
-// Classes: CrMultipleInitialStates
-// Original Author: jrobbins@ics.uci.edu
-// $Id$
-
 package org.argouml.uml.cognitive.critics;
 
 import java.util.Collection;
@@ -40,16 +35,19 @@ import org.argouml.cognitive.ToDoItem;
 import org.argouml.uml.cognitive.UMLToDoItem;
 import org.argouml.model.ModelFacade;
 
-/** A critic to detect when a state has no outgoing transitions. */
+/**
+ * A critic to detect when a state has no outgoing transitions.
+ *
+ * @author jrobbins
+ */
+public class CrMultipleInitialStates extends CrUML {
 
-public class CrMultipleInitialStates extends CrUML {    
-
-    private static final Logger LOG = 
+    private static final Logger LOG =
         Logger.getLogger(CrMultipleInitialStates.class);
 
     /**
      * The constructor.
-     * 
+     *
      */
     public CrMultipleInitialStates() {
         setHeadline("Remove Extra Initial States");
@@ -72,18 +70,18 @@ public class CrMultipleInitialStates extends CrUML {
 
         // container state / composite state
         Object cs = ModelFacade.getModelElementContainer(dm);
-        if (cs == null) { 
-            LOG.debug("null parent state"); 
-            return NO_PROBLEM; 
+        if (cs == null) {
+            LOG.debug("null parent state");
+            return NO_PROBLEM;
         }
         Collection peers = ModelFacade.getSubvertices(cs);
         int initialStateCount = 0;
         int size = peers.size();
         for (Iterator iter = peers.iterator(); iter.hasNext();) {
             Object sv = iter.next();
-            if (ModelFacade.isAPseudostate(sv) 
+            if (ModelFacade.isAPseudostate(sv)
                 && ModelFacade.
-		    equalsPseudostateKind(ModelFacade.getPseudostateKind(sv), 
+		    equalsPseudostateKind(ModelFacade.getPseudostateKind(sv),
 					  ModelFacade.INITIAL_PSEUDOSTATEKIND))
                 initialStateCount++;
         }
@@ -107,19 +105,18 @@ public class CrMultipleInitialStates extends CrUML {
     protected VectorSet computeOffenders(Object ps) {
         VectorSet offs = new VectorSet(ps);
         Object cs = ModelFacade.getModelElementContainer(ps);
-        if (cs == null) { 
-            LOG.debug("null parent in still valid"); 
-            return offs; 
+        if (cs == null) {
+            LOG.debug("null parent in still valid");
+            return offs;
 	}
         Collection peers = ModelFacade.getSubvertices(cs);
 
         for (Iterator iter = peers.iterator(); iter.hasNext();) {
             Object sv = iter.next();
-            if (ModelFacade.isAPseudostate(sv) 
+            if (ModelFacade.isAPseudostate(sv)
                 && ModelFacade.
-                    equalsPseudostateKind(ModelFacade.getPseudostateKind(sv), 
-					  ModelFacade.INITIAL_PSEUDOSTATEKIND))
-	    {
+                    equalsPseudostateKind(ModelFacade.getPseudostateKind(sv),
+					  ModelFacade.INITIAL_PSEUDOSTATEKIND)) {
                 offs.addElement(sv);
 	    }
         }

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -34,24 +34,24 @@ import org.argouml.model.ModelFacade;
 /**
  * A non-modal wizard to help the user change the name of a
  * MModelElement to a better name.
- * 
+ *
  * @author jrobbins
  */
 public class WizMEName extends UMLWizard {
     private static final Logger LOG = Logger.getLogger(WizMEName.class);
-					   
+
     private String instructions =
 	"Please change the name of the offending model element.";
     private String label = Translator.localize("label.name");
     private boolean mustEdit = false;
-							       
+
     private WizStepTextField step1 = null;
-    
+
     private String origSuggest;
-								   
+
     /**
      * The constructor.
-     * 
+     *
      */
     public WizMEName() { }
 
@@ -61,14 +61,14 @@ public class WizMEName extends UMLWizard {
     public void setInstructions(String s) { instructions = s; }
 
     /**
-     * @param b if true, then the wizard step needs userinput, 
+     * @param b if true, then the wizard step needs userinput,
      *          i.e. it must be edited
      */
     public void setMustEdit(boolean b) { mustEdit = b; }
 
-    /** 
+    /**
      * Create a new panel for the given step.
-     * 
+     *
      * @see org.argouml.cognitive.ui.Wizard#makePanel(int)
      */
     public JPanel makePanel(int newStep) {
@@ -82,7 +82,7 @@ public class WizMEName extends UMLWizard {
 	}
 	return null;
     }
-    
+
     /**
      * @see org.argouml.uml.cognitive.critics.UMLWizard#setSuggestion(java.lang.String)
      */
@@ -95,7 +95,7 @@ public class WizMEName extends UMLWizard {
     /**
      * Return false if the user has not edited the text and they were required
      * to.
-     * 
+     *
      * @see org.argouml.cognitive.ui.Wizard#canGoNext()
      */
     public boolean canGoNext() {
@@ -107,13 +107,13 @@ public class WizMEName extends UMLWizard {
 	return true;
     }
 
-    /** 
+    /**
      * Take action at the completion of a step. For example, when the
      * given step is 0, do nothing; and when the given step is 1, do
      * the first action.  Argo non-modal wizards should take action as
      * they do along, as soon as possible, they should not wait until
-     * the final step. 
-     * 
+     * the final step.
+     *
      * @see org.argouml.cognitive.ui.Wizard#doAction(int)
      */
     public void doAction(int oldStep) {

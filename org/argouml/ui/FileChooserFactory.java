@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2004 The Regents of the University of California. All
+// Copyright (c) 2004-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -33,15 +33,15 @@ import org.argouml.util.osdep.win32.Win32FileSystemView;
  * Factory class to return a JFileChooser configured
  * according to JRE requirements.
  * TODO Remove when JRE1.3 no longer supported.
- * 
+ *
  * @author Bob Tarling
  */
 public class FileChooserFactory {
 
-    /** 
+    /**
      * Return a proper FileChooser. This replaces the normal FileChooser with a
-     * system-dependent one, but solely in case of Sun Java 1.3.1 on Windows. 
-     * 
+     * system-dependent one, but solely in case of Sun Java 1.3.1 on Windows.
+     *
      * @return <code>JFileChooser</code>
      */
     public static JFileChooser getFileChooser() {
@@ -53,15 +53,15 @@ public class FileChooserFactory {
 
     /**
      * Return a proper FileChooser. This replaces the normal FileChooser with a
-     * system-dependent one, but solely in case of Sun Java 1.3.1 on Windows. 
-     * 
-     * @param directory a <code>String</code> giving the path to a file 
+     * system-dependent one, but solely in case of Sun Java 1.3.1 on Windows.
+     *
+     * @param directory a <code>String</code> giving the path to a file
      * or directory. Passing in a <code>null</code>
      * string causes the file chooser to point to the user's default directory.
      * This default depends on the operating system. It is
      * typically the "My Documents" folder on Windows, and the user's
      * home directory on Unix.
-     * 
+     *
      * @return <code>JFileChooser</code>
      */
     public static JFileChooser getFileChooser(String directory) {

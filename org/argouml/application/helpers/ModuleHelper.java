@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2001 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -32,18 +32,17 @@ import org.argouml.application.api.ArgoModule;
  * This class serves as a template of modules external to ArgoUML.
  *
  */
-public abstract class ModuleHelper 
-    implements ArgoModule
-{
+public abstract class ModuleHelper
+    implements ArgoModule {
 
     private boolean enabled = false;
 
     /**
      * The constructor.
-     * 
+     *
      */
     public ModuleHelper() {
-        enabled = false; 
+        enabled = false;
     }
 
     /**

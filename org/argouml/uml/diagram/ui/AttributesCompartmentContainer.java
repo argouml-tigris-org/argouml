@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2001 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -37,16 +37,16 @@ public interface AttributesCompartmentContainer {
      * @return true if the attributes compartment is visible.
      */
     boolean isAttributesVisible();
-    
+
     /**
      * Set the visibility of the attributes compartment.
      * @param visible the new visibility status.
      */
     void setAttributesVisible(boolean visible);
-    
+
     /**
-     * @return The vector of graphics for operations (if any). 
+     * @return The vector of graphics for operations (if any).
      * First one is the rectangle for the entire attributes box.
      */
-    FigGroup getAttributesFig(); 
+    FigGroup getAttributesFig();
 }

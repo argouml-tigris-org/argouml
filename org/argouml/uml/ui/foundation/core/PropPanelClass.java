@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -46,10 +46,10 @@ public class PropPanelClass extends PropPanelClassifier {
 
     private JScrollPane operationScroll;
 
-    private static UMLClassAttributeListModel attributeListModel = 
+    private static UMLClassAttributeListModel attributeListModel =
         new UMLClassAttributeListModel();
 
-    private static UMLClassOperationListModel operationListModel = 
+    private static UMLClassOperationListModel operationListModel =
         new UMLClassOperationListModel();
 
     ////////////////////////////////////////////////////////////////
@@ -96,19 +96,19 @@ public class PropPanelClass extends PropPanelClassifier {
         addButton(new PropPanelButton2(new ActionAddAttribute()));
         addButton(new PropPanelButton2(new ActionAddOperation()));
         addButton(new PropPanelButton2(getActionNewReception()));
-        addButton(new PropPanelButton2(new ActionNewInnerClass(), 
+        addButton(new PropPanelButton2(new ActionNewInnerClass(),
                 lookupIcon("InnerClass")));
-        addButton(new PropPanelButton2(new ActionNewClass(), 
+        addButton(new PropPanelButton2(new ActionNewClass(),
                 lookupIcon("Class")));
-        addButton(new PropPanelButton2(new ActionNewStereotype(), 
+        addButton(new PropPanelButton2(new ActionNewStereotype(),
                 lookupIcon("Stereotype")));
-        addButton(new PropPanelButton2(new ActionRemoveFromModel(), 
+        addButton(new PropPanelButton2(new ActionRemoveFromModel(),
                 lookupIcon("Delete")));
     }
 
     /**
      * Returns the operationScroll.
-     * 
+     *
      * @return JScrollPane
      */
     public JScrollPane getOperationScroll() {
@@ -121,7 +121,7 @@ public class PropPanelClass extends PropPanelClassifier {
 
     /**
      * Returns the attributeScroll.
-     * 
+     *
      * @return JScrollPane
      */
     public JScrollPane getAttributeScroll() {

@@ -22,9 +22,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// File: StateDiagramGraphModel.java
-// Classes: StateDiagramGraphModel
-// Original Author: your email address here
 package org.argouml.uml.diagram.state;
 
 import java.beans.PropertyChangeEvent;
@@ -45,11 +42,10 @@ import org.argouml.uml.diagram.static_structure.ui.CommentEdge;
  * design and the GraphModel interface used by GEF. This class handles only UML
  * MState Digrams.
  */
-
 public class StateDiagramGraphModel extends UMLMutableGraphSupport implements
         VetoableChangeListener {
 
-    private static final Logger LOG = 
+    private static final Logger LOG =
         Logger.getLogger(StateDiagramGraphModel.class);
     /**
      * The "home" UML model of this diagram, not all ModelElements in
@@ -134,8 +130,8 @@ public class StateDiagramGraphModel extends UMLMutableGraphSupport implements
         return port;
     }
 
-    /** Return all edges going to given port 
-     * 
+    /** Return all edges going to given port
+     *
      * @see org.tigris.gef.graph.GraphModel#getInEdges(java.lang.Object)
      */
     public List getInEdges(Object port) {
@@ -147,7 +143,7 @@ public class StateDiagramGraphModel extends UMLMutableGraphSupport implements
     }
 
     /** Return all edges going from given port
-     * 
+     *
      * @see org.tigris.gef.graph.GraphModel#getOutEdges(java.lang.Object)
      */
     public List getOutEdges(Object port) {
@@ -159,7 +155,7 @@ public class StateDiagramGraphModel extends UMLMutableGraphSupport implements
     }
 
     /** Return one end of an edge
-     * 
+     *
      * @see org.tigris.gef.graph.BaseGraphModel#getSourcePort(java.lang.Object)
      */
     public Object getSourcePort(Object edge) {
@@ -171,7 +167,7 @@ public class StateDiagramGraphModel extends UMLMutableGraphSupport implements
         return null;
     }
 
-    /** Return the other end of an edge 
+    /** Return the other end of an edge
      *
      * @see org.tigris.gef.graph.BaseGraphModel#getDestPort(java.lang.Object)
      */
@@ -188,19 +184,19 @@ public class StateDiagramGraphModel extends UMLMutableGraphSupport implements
     // MutableGraphModel implementation
 
     /** Return true if the given object is a valid node in this graph
-     * 
+     *
      * @see org.tigris.gef.graph.MutableGraphModel#canAddNode(java.lang.Object)
      */
     public boolean canAddNode(Object node) {
         if (node == null) return false;
         if (containsNode(node)) return false;
-        return (ModelFacade.isAStateVertex(node) 
-                || ModelFacade.isAPartition(node) 
+        return (ModelFacade.isAStateVertex(node)
+                || ModelFacade.isAPartition(node)
                 || ModelFacade.isAComment(node));
     }
 
     /** Return true if the given object is a valid edge in this graph
-     * 
+     *
      * @see org.tigris.gef.graph.MutableGraphModel#canAddEdge(java.lang.Object)
      */
     public boolean canAddEdge(Object edge) {
@@ -215,9 +211,9 @@ public class StateDiagramGraphModel extends UMLMutableGraphSupport implements
             state = ModelFacade.getState(edge);
             end0 = ModelFacade.getSource(edge);
             end1 = ModelFacade.getTarget(edge);
-            // it's not allowed to directly draw a transition 
+            // it's not allowed to directly draw a transition
             // from a composite state to one of it's substates.
-            if (ModelFacade.isACompositeState(end0) 
+            if (ModelFacade.isACompositeState(end0)
                     && Model.getStateMachinesHelper().getAllSubStates(end0)
                                                         .contains(end1)) {
                 return false;
@@ -229,12 +225,12 @@ public class StateDiagramGraphModel extends UMLMutableGraphSupport implements
         if ((state == end0) && (state == end1)) return false;
         if (!containsNode(end0)) return false;
         if (!containsNode(end1)) return false;
-        
+
         return true;
     }
 
     /** Add the given node to the graph, if valid.
-     * 
+     *
      * @see org.tigris.gef.graph.MutableGraphModel#addNode(java.lang.Object)
      */
     public void addNode(Object node) {
@@ -263,7 +259,9 @@ public class StateDiagramGraphModel extends UMLMutableGraphSupport implements
         fireNodeAdded(node);
     }
 
-    /** Add the given edge to the graph, if valid.     
+    /**
+     * Add the given edge to the graph, if valid.
+     *
      * @see org.tigris.gef.graph.MutableGraphModel#addEdge(java.lang.Object)
      */
     public void addEdge(Object edge) {
@@ -294,7 +292,7 @@ public class StateDiagramGraphModel extends UMLMutableGraphSupport implements
      * Return true if the two given ports can be connected by a kind of edge to
      * be determined by the ports.
      *
-     * @see org.tigris.gef.graph.MutableGraphModel#canConnect(java.lang.Object, 
+     * @see org.tigris.gef.graph.MutableGraphModel#canConnect(java.lang.Object,
      * java.lang.Object)
      */
     public boolean canConnect(Object fromPort, Object toPort) {
@@ -311,13 +309,13 @@ public class StateDiagramGraphModel extends UMLMutableGraphSupport implements
         if (ModelFacade.isAPseudostate(toPort)) {
             if ((ModelFacade.INITIAL_PSEUDOSTATEKIND).equals(ModelFacade
                     .getKind(toPort))) { return false; }
-        }        
+        }
         return true;
     }
 
     /** Contruct and add a new edge of the given kind
-     * 
-     * @see org.tigris.gef.graph.MutableGraphModel#connect(java.lang.Object, 
+     *
+     * @see org.tigris.gef.graph.MutableGraphModel#connect(java.lang.Object,
      * java.lang.Object, java.lang.Class)
      */
     public Object connect(Object fromPort, Object toPort,
@@ -326,7 +324,7 @@ public class StateDiagramGraphModel extends UMLMutableGraphSupport implements
         if (ModelFacade.isAFinalState(fromPort)) {
 	    return null;
 	}
-        
+
         if (ModelFacade.isAPseudostate(toPort)
                 && ModelFacade.INITIAL_PSEUDOSTATEKIND.equals(
 			ModelFacade.getKind(toPort))) {
@@ -353,11 +351,11 @@ public class StateDiagramGraphModel extends UMLMutableGraphSupport implements
                 addEdge(connection);
                 return connection;
             } catch (Exception ex) {
-                // fail silently                
+                // fail silently
             }
             return null;
         }
-        
+
         else {
             LOG.debug("wrong kind of edge in StateDiagram connect3 "
                     + edgeClass);
@@ -417,7 +415,7 @@ public class StateDiagramGraphModel extends UMLMutableGraphSupport implements
 
     /**
      * Reroutes the connection to the old node to be connected to the new node.
-     * 
+     *
      * @param newNode
      *            this is the new node that one of the ends is dragged to.
      * @param oldNode

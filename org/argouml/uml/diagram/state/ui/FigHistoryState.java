@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -22,10 +22,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// File: FigHistoryState.java
-// Classes: FigHistoryState
-// Original Author: jrobbins@ics.uci.edu
-
 package org.argouml.uml.diagram.state.ui;
 
 import java.awt.Color;
@@ -38,9 +34,12 @@ import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.FigCircle;
 import org.tigris.gef.presentation.FigText;
 
-/** Class to display graphics for a UML HistoryState in a diagram. 
- * 
- * This abstract class is used for both a DeepHistory and a ShallowHistory. 
+/**
+ * Class to display graphics for a UML HistoryState in a diagram.
+ *
+ * This abstract class is used for both a DeepHistory and a ShallowHistory.
+ *
+ * @author jrobbins
  */
 public abstract class FigHistoryState extends FigStateVertex {
 
@@ -90,7 +89,7 @@ public abstract class FigHistoryState extends FigStateVertex {
      * @return the text at the center (H or H*)
      */
     protected abstract String getH();
-    
+
     /**
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#placeString()
      */
@@ -197,7 +196,7 @@ public abstract class FigHistoryState extends FigStateVertex {
 
     /**
      * Block any textentry on the diagram - there is nothing to edit!
-     * 
+     *
      * @see java.awt.event.KeyListener#keyPressed(java.awt.event.KeyEvent)
      */
     public void keyPressed(KeyEvent ke) {

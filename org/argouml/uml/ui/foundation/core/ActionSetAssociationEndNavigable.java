@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2002 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -32,13 +32,13 @@ import org.argouml.uml.ui.UMLAction;
 import org.argouml.uml.ui.UMLCheckBox2;
 
 /**
- * 
- * @author jaap.branderhorst@xs4all.nl	
+ *
+ * @author jaap.branderhorst@xs4all.nl
  * @since Jan 4, 2003
  */
 public class ActionSetAssociationEndNavigable extends UMLAction {
 
-    private static final ActionSetAssociationEndNavigable SINGLETON = 
+    private static final ActionSetAssociationEndNavigable SINGLETON =
 	new ActionSetAssociationEndNavigable();
 
     /**
@@ -47,7 +47,7 @@ public class ActionSetAssociationEndNavigable extends UMLAction {
     protected ActionSetAssociationEndNavigable() {
         super(Translator.localize("action.set"), true, NO_ICON);
     }
-    
+
     /**
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */

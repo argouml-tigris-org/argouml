@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -22,17 +22,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-
-
-// File: CrNWayAgg.java
-// Classes: CrNWayAgg
-// Original Author: jrobbins@ics.uci.edu
-// $Id$
-
-// 12 Mar 2002: Jeremy Bennett (mail@jeremybennett.com). Code corrected as part
-// of fix to issue 619.
-
-
 package org.argouml.uml.cognitive.critics;
 
 import java.util.Collection;
@@ -40,6 +29,7 @@ import java.util.Iterator;
 import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.critics.Critic;
 import org.argouml.model.ModelFacade;
+
 /**
  * <p> A critic to check that no end of a 3-way (or more) association is an
  *   aggregation.</p>
@@ -56,8 +46,10 @@ import org.argouml.model.ModelFacade;
  * "http://argouml.tigris.org/documentation/snapshots/manual/argouml.html/
  * #s2.ref.critics_multiple_agg">
  * ArgoUML User Manual: Two Aggregate ends (roles) in binary
- * Association</a> */
-
+ * Association</a>
+ *
+ * @author jrobbins
+ */
 public class CrNWayAgg extends CrUML {
 
     /**
@@ -112,9 +104,9 @@ public class CrNWayAgg extends CrUML {
      *               development of ArgoUML.
      *
      * @return       {@link #PROBLEM_FOUND PROBLEM_FOUND} if the critic is
-     *               triggered, otherwise {@link #NO_PROBLEM NO_PROBLEM}.  
+     *               triggered, otherwise {@link #NO_PROBLEM NO_PROBLEM}.
      */
-    
+
     public boolean predicate2(Object dm, Designer dsgr) {
 
         // Only work for associatins

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -35,13 +35,13 @@ import org.argouml.uml.cognitive.critics.WizCueCards;
 
 /**
  * Well-formedness rule [2] for MAssociationEnd. See page 28 of UML 1.1
- * Semantics. OMG document ad/97-08-04. 
+ * Semantics. OMG document ad/97-08-04.
  */
 public class CrMultipleInheritance extends CrUML {
 
     /**
      * The constructor.
-     * 
+     *
      */
     public CrMultipleInheritance() {
 	setHeadline("Change Multiple Inheritance to Interfaces");
@@ -72,23 +72,23 @@ public class CrMultipleInheritance extends CrUML {
 	if (w instanceof WizCueCards) {
 	    WizCueCards wcc = (WizCueCards) w;
 	    ToDoItem item = (ToDoItem) w.getToDoItem();
-	    Object modelElement = /*(MModelElement)*/ 
+	    Object modelElement = /*(MModelElement)*/
 	        item.getOffenders().elementAt(0);
 	    String nameStr = ModelFacade.getName(modelElement);
 	    wcc.addCue("Remove the generalization arrow to one of the base "
 		   + "classes of {name}.");
-	    wcc.addCue("Optionally, use the MInterface tool to create a new " 
+	    wcc.addCue("Optionally, use the MInterface tool to create a new "
 		   + "MInterface for {name} to implement.");
-	    wcc.addCue("Use the Realization tool to add a dashed arrow from " 
+	    wcc.addCue("Use the Realization tool to add a dashed arrow from "
 		   + "{name} to the new MInterface.");
-	    wcc.addCue("Move method declarations from the unused base class " 
+	    wcc.addCue("Move method declarations from the unused base class "
 		   + "to the new MInterface and move method bodies down into "
 		   + "{name}.");
 	    wcc.addCue("If the unused base class is not used by anything else "
 		   + "then it can be removed.");
 	}
     }
-    
+
     /**
      * @see org.argouml.cognitive.critics.Critic#getWizardClass(org.argouml.cognitive.ToDoItem)
      */

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2002-2004 The Regents of the University of California. All
+// Copyright (c) 2002-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -40,9 +40,9 @@ import ru.novosoft.uml.MElementEvent;
 import ru.novosoft.uml.MElementListener;
 
 /**
- * The model for a list that contains Mbases. The state of the MBase is still 
- * kept in the Mbase itself. This list is only to be used as the model for some 
- * GUI element like UMLLinkedList 
+ * The model for a list that contains Mbases. The state of the MBase is still
+ * kept in the Mbase itself. This list is only to be used as the model for some
+ * GUI element like UMLLinkedList
  * @since Oct 2, 2002
  * @author jaap.branderhorst@xs4all.nl
  */
@@ -52,7 +52,7 @@ public abstract class UMLModelElementListModel2
 
     private String eventName = null;
     private Object listTarget = null;
-    
+
     /**
      * Flag to indicate wether list events should be fired
      */
@@ -65,18 +65,18 @@ public abstract class UMLModelElementListModel2
 
 
     /**
-     * Constructor to be used if the subclass does not depend on the 
+     * Constructor to be used if the subclass does not depend on the
      * MELementListener methods and setTarget method implemented in this
      * class.
      */
     public UMLModelElementListModel2() {
         super();
     }
-    
+
     /**
      * Constructor for UMLModelElementListModel2.
      *
-     * @param name the name of the event to listen to, which triggers us 
+     * @param name the name of the event to listen to, which triggers us
      *             to update the list model from the UML data
      */
     public UMLModelElementListModel2(String name) {
@@ -90,7 +90,7 @@ public abstract class UMLModelElementListModel2
     protected void setBuildingModel(boolean building) {
         this.buildingModel = building;
     }
-    
+
     /**
      * @param t the list target to set
      */
@@ -185,8 +185,8 @@ public abstract class UMLModelElementListModel2
     }
 
     /**
-     * Builds the list of elements. Called from targetChanged every time the 
-     * target of the proppanel is changed. 
+     * Builds the list of elements. Called from targetChanged every time the
+     * target of the proppanel is changed.
      */
     protected abstract void buildModelList();
 
@@ -263,14 +263,14 @@ public abstract class UMLModelElementListModel2
     /**
      * Sets the target. If the old target is instanceof MBase, it also removes
      * the model from the element listener list of the target. If the new target
-     * is instanceof MBase, the model is added as element listener to the new 
+     * is instanceof MBase, the model is added as element listener to the new
      * target.
      * @param theNewTarget the new target
      */
     public void setTarget(Object theNewTarget) {
-        theNewTarget = theNewTarget instanceof Fig 
+        theNewTarget = theNewTarget instanceof Fig
             ? ((Fig) theNewTarget).getOwner() : theNewTarget;
-        if (ModelFacade.isABase(theNewTarget) 
+        if (ModelFacade.isABase(theNewTarget)
                 || ModelFacade.isADiagram(theNewTarget)) {
             if (ModelFacade.isABase(listTarget)) {
                 UmlModelEventPump.getPump()
@@ -305,7 +305,7 @@ public abstract class UMLModelElementListModel2
     }
 
     /**
-     * Returns true if the given element is valid, i.e. it may be added to the 
+     * Returns true if the given element is valid, i.e. it may be added to the
      * list of elements.
      *
      * @param element the element to be tested
@@ -433,9 +433,9 @@ public abstract class UMLModelElementListModel2
     /**
      * Override this if you want a popup menu.
      * See for an example UMLModelElementOrderedListModel2.
-     * 
+     *
      * @param popup the popup menu
-     * @param index the selected item in the list at the moment 
+     * @param index the selected item in the list at the moment
      *              the mouse was clicked
      * @return true if a popup menu is created, and needs to be shown
      */

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2004 The Regents of the University of California. All
+// Copyright (c) 2004-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -35,7 +35,7 @@ public interface ModuleInterface {
     /**
      * Method to enable the module.<p>
      *
-     * If it cannot enable the module because some other module is 
+     * If it cannot enable the module because some other module is
      * not enabled it can either return false or throw an exception.
      * In that case the module loader will defer this attempt until
      * all other modules are loaded (or until some more of ArgoUML is loaded
@@ -43,7 +43,7 @@ public interface ModuleInterface {
      * that is not loaded and they will then be listed as having problems.
      *
      * @return true if all went well
-     * @throws Exception if there is a problem 
+     * @throws Exception if there is a problem
      */
     boolean enable() throws Exception;
 
@@ -62,7 +62,7 @@ public interface ModuleInterface {
      * The name of the module.<p>
      *
      * This should be a short string. For the purpose of having the GUI
-     * that turns on and off the module look nice there is no whitespace in 
+     * that turns on and off the module look nice there is no whitespace in
      * this string (no spaces, tabs or newlines).<p>
      *
      * This name is also used as the key internally when modules checks for
@@ -77,14 +77,14 @@ public interface ModuleInterface {
      *
      * This returns texts with information about the module.<p>
      *
-     * The possible informations are retrieved by giving any of the 
+     * The possible informations are retrieved by giving any of the
      * arguments:<ul>
      * <li>{@link #DESCRIPTION}
      * <li>{@link #AUTHOR}
      * <li>{@link #VERSION}
      * </ul>
      *
-     * If a module does not provide a specific piece of information, 
+     * If a module does not provide a specific piece of information,
      * <tt>null</tt> can be returned. Hence the normal implementation
      * should be:<pre>
      * public String getInfo(int type) {
@@ -102,7 +102,7 @@ public interface ModuleInterface {
      * @return The description. A String.
      */
     String getInfo(int type);
-    
+
     /**
      * The description of the module.
      */

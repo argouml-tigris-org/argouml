@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -45,7 +45,7 @@ public class ActionLayout extends UMLAction {
 
     ////////////////////////////////////////////////////////////////
     // constructors
-    
+
     /**
      * The constructor.
      */
@@ -56,8 +56,8 @@ public class ActionLayout extends UMLAction {
     ////////////////////////////////////////////////////////////////
     // main methods
 
-    /** 
-     * Check whether we deal with a supported diagram type 
+    /**
+     * Check whether we deal with a supported diagram type
      * (currently only UMLClassDiagram).
      * Incremental Layout is not implemented for any diagram type,
      * so it is greyed out.
@@ -69,7 +69,7 @@ public class ActionLayout extends UMLAction {
                     .getActiveDiagram() instanceof UMLClassDiagram));
     }
 
-    /** 
+    /**
      * This action performs the layout and triggers a redraw
      * of the editor pane.
      *

@@ -44,7 +44,7 @@ import ru.novosoft.uml.MElementEvent;
 
 /**
  * The properties panel for a Stimulus.
- * 
+ *
  * TODO: this property panel needs refactoring to remove dependency on
  *       old gui components.
  *
@@ -54,22 +54,22 @@ public class PropPanelStimulus extends PropPanelModelElement {
 
     /**
      * The constructor.
-     * 
+     *
      */
     public PropPanelStimulus() {
-        super("Stimulus Properties", lookupIcon("Stimulus"), 
+        super("Stimulus Properties", lookupIcon("Stimulus"),
                 ConfigLoader.getTabPropsOrientation());
 
         Object[] namesToWatch = {
-	    ModelFacade.ACTION
+	    ModelFacade.ACTION,
 	};
         setNameEventListening(namesToWatch);
 
-        addField(Translator.localize("label.name"), 
+        addField(Translator.localize("label.name"),
                 getNameTextField());
-        addField("Action:", new UMLStimulusActionTextField(this, 
+        addField("Action:", new UMLStimulusActionTextField(this,
                 new UMLStimulusActionTextProperty("name")));
-        addField(Translator.localize("label.stereotype"), 
+        addField(Translator.localize("label.stereotype"),
                 getStereotypeBox());
 
         JList senderList = new UMLLinkedList(new UMLStimulusSenderListModel());
@@ -81,14 +81,14 @@ public class PropPanelStimulus extends PropPanelModelElement {
 	    new UMLLinkedList(new UMLStimulusReceiverListModel());
 	receiverList.setVisibleRowCount(1);
 	JScrollPane receiverScroll = new JScrollPane(receiverList);
-	addField(Translator.localize("label.receiver"), 
+	addField(Translator.localize("label.receiver"),
             receiverScroll);
-        
-        addField(Translator.localize("label.namespace"), 
+
+        addField(Translator.localize("label.namespace"),
                 getNamespaceComboBox());
 
-        addButton(new PropPanelButton2(new ActionNavigateNamespace()));  
-        addButton(new PropPanelButton2(new ActionNewStereotype(), 
+        addButton(new PropPanelButton2(new ActionNavigateNamespace()));
+        addButton(new PropPanelButton2(new ActionNewStereotype(),
                 lookupIcon("Stereotype")));
         addButton(new PropPanelButton2(new ActionRemoveFromModel()));
     }

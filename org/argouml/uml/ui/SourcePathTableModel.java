@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2004 The Regents of the University of California. All
+// Copyright (c) 2004-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -35,11 +35,11 @@ import org.argouml.i18n.Translator;
 import org.argouml.model.ModelFacade;
 
 /**
- * The table model for source path settings. This class contains functionality 
+ * The table model for source path settings. This class contains functionality
  * to load the source path settings from the model.
  */
 class SourcePathTableModel extends DefaultTableModel {
-    
+
     /**
      * Index of the column where model element objects are placed.
      */
@@ -53,29 +53,29 @@ class SourcePathTableModel extends DefaultTableModel {
      */
     static final int TYPE_COLUMN = 2;
     /**
-     * Index of the column where the source paths for the model elements are 
+     * Index of the column where the source paths for the model elements are
      * placed.
      */
     static final int SOURCE_PATH_COLUMN = 3;
-    
-    private static final Logger LOG = 
+
+    private static final Logger LOG =
         Logger.getLogger(SourcePathTableModel.class);
 
     /** Creates a new instance of SourcePathTableModel */
     public SourcePathTableModel(SourcePathController srcPathCtrl) {
         super(new Object[][] {
         }, new String[] {
-            " ", Translator.localize("misc.name"), 
-            Translator.localize("misc.type"), 
-            Translator.localize("misc.source-path")
+            " ", Translator.localize("misc.name"),
+            Translator.localize("misc.type"),
+            Translator.localize("misc.source-path"),
         });
         String strModel = Translator.localize("misc.model");
         String strPackage = Translator.localize("misc.package");
         String strClass = Translator.localize("misc.class");
         String strInterface = Translator.localize("misc.interface");
-        
+
         Collection elems = srcPathCtrl.getAllModelElementsWithSourcePath();
-        
+
         Iterator iter = elems.iterator();
         while (iter.hasNext()) {
             Object me = iter.next();
@@ -99,11 +99,11 @@ class SourcePathTableModel extends DefaultTableModel {
                 } else if (ModelFacade.isAInterface(me)) {
                     type = strInterface;
                 } else {
-                    LOG.warn("Can't assign a type to this model element: " 
+                    LOG.warn("Can't assign a type to this model element: "
                             + me);
                 }
                 addRow(new Object[] {
-                    me, name, type, path.toString()
+                    me, name, type, path.toString(),
                 });
             } else {
                 LOG.warn("Unexpected: the source path for " + me + " is null!");
@@ -111,14 +111,14 @@ class SourcePathTableModel extends DefaultTableModel {
         }
     }
 
-    /** 
+    /**
      * The only editable cells are the ones in the source path column.
      * @see javax.swing.table.DefaultTableModel#isCellEditable(int, int)
      */
     public boolean isCellEditable(int rowIndex, int columnIndex) {
         return columnIndex == SOURCE_PATH_COLUMN;
     }
-    
+
     /**
      * For the specified row, get the model element (ME).
      * @param rowIndex the row index where the ME data is located
@@ -127,7 +127,7 @@ class SourcePathTableModel extends DefaultTableModel {
     public Object getModelElement(int rowIndex) {
         return getValueAt(rowIndex, MODEL_ELEMENT_COLUMN);
     }
-    
+
     /**
      * For the specified row, get the model element (ME) name.
      * @param rowIndex the row index where the ME data is located
@@ -136,7 +136,7 @@ class SourcePathTableModel extends DefaultTableModel {
     public String getMEName(int rowIndex) {
         return (String) getValueAt(rowIndex, NAME_COLUMN);
     }
-    
+
     /**
      * For the specified row, get the ME type.
      * @param rowIndex the row index where the ME data is located
@@ -145,7 +145,7 @@ class SourcePathTableModel extends DefaultTableModel {
     public String getMEType(int rowIndex) {
         return (String) getValueAt(rowIndex, TYPE_COLUMN);
     }
-    
+
     /**
      * For the specified row get the, get the source path.
      * @param rowIndex the row index where the ME data is located

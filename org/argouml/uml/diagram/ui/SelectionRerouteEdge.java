@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -56,19 +56,19 @@ import org.tigris.gef.presentation.FigEdge;
  * @since 0.13.2
  */
 public class SelectionRerouteEdge extends SelectionEdgeClarifiers {
-    
+
     /**
      * used to determine if the association is now to self,
      * in which case The association needs automatic layout.
      */
     private FigNodeModelElement sourceFig;
-    
+
     /**
      * used to determine if the association is now to self,
      * in which case The association needs automatic layout.
      */
     private FigNodeModelElement destFig;
-    
+
     /**
      * <p>the re-routing capability it armed if the mouse was previously
      * dragged.
@@ -76,39 +76,39 @@ public class SelectionRerouteEdge extends SelectionEdgeClarifiers {
      * else on the diagram,
      */
     private boolean armed;
-    
+
     /**
      * <p>the index of the point on the line of the message.
      * <p>0 = sender end
      * <p>1..* = receiver end
      */
     private int pointIndex;
-    
-    /** Creates a new instance of SelectionRerouteEdge 
-     * 
+
+    /** Creates a new instance of SelectionRerouteEdge
+     *
      * @param feme the given Fig
      */
     public SelectionRerouteEdge(FigEdgeModelElement feme) {
-        
+
         super(feme);
 
         // set it to an invalid number by default
         // to make sure it is set correctly.
         pointIndex = -1;
     }
-    
+
     /**
      * set up for re-routing.
      *
      * @see java.awt.event.MouseListener#mousePressed(java.awt.event.MouseEvent)
      */
     public void mousePressed(MouseEvent me) {
-        
+
         // calculate the source and dest figs for to self assoc
         sourceFig =
 	    (FigNodeModelElement) ((FigEdge) _content).getSourceFigNode();
         destFig = (FigNodeModelElement) ((FigEdge) _content).getDestFigNode();
-        
+
         Rectangle mousePosition =
 	    new Rectangle(me.getX() - 5, me.getY() - 5, 10, 10);
         //reset the pointIndex
@@ -123,10 +123,10 @@ public class SelectionRerouteEdge extends SelectionEdgeClarifiers {
                 return;
             }
         }
-        
+
         super.mousePressed(me);
     }
-    
+
     /**
      * <p>need to 'arm' the rerouting capability with mouseDragged().
      * <p>don't arm if the edtior's current mode is a figedge create mode,
@@ -136,17 +136,17 @@ public class SelectionRerouteEdge extends SelectionEdgeClarifiers {
      * @see java.awt.event.MouseMotionListener#mouseDragged(java.awt.event.MouseEvent)
      */
     public void mouseDragged(MouseEvent me) {
-        
+
         Editor editor = Globals.curEditor();
         ModeManager modeMgr = editor.getModeManager();
         FigModifyingMode fMode = modeMgr.top();
-        
-        if ( !(fMode instanceof ModeCreatePolyEdge)) {
+
+        if (!(fMode instanceof ModeCreatePolyEdge)) {
             armed = true;
         }
         super.mouseDragged(me);
     }
-    
+
     /**
      * <p>perform re-routing if src/dest nodes have changed.
      *
@@ -166,7 +166,7 @@ public class SelectionRerouteEdge extends SelectionEdgeClarifiers {
             super.mouseReleased(me);
             return;
         }
-               
+
         //Set-up:
         int x = me.getX(), y = me.getY();
         // the fig that was under the mouse when it was released
@@ -191,7 +191,7 @@ public class SelectionRerouteEdge extends SelectionEdgeClarifiers {
             super.mouseReleased(me);
             return;
         }
-        
+
         UMLMutableGraphSupport mgm =
 	    (UMLMutableGraphSupport) editor.getGraphModel();
         FigNodeModelElement oldFig = null;
@@ -203,12 +203,11 @@ public class SelectionRerouteEdge extends SelectionEdgeClarifiers {
         else {
             oldFig = destFig;
         }
-        
+
         // delegate the re-routing to graphmodels.
         if (mgm.canChangeConnectedNode(newFig.getOwner(),
 				       oldFig.getOwner(),
-				       this._content.getOwner()))
-	{
+				       this._content.getOwner())) {
 	    mgm.changeConnectedNode(newFig.getOwner(),
 				    oldFig.getOwner(),
 				    this._content.getOwner(),
@@ -221,6 +220,6 @@ public class SelectionRerouteEdge extends SelectionEdgeClarifiers {
         super.mouseReleased(me);
         return;
     }
-    
+
 
 }

@@ -153,7 +153,7 @@ public class Import {
     private ImportStatusScreen iss;
 
     private StringBuffer problems = new StringBuffer();
-    
+
     private Hashtable attributes = new Hashtable();
 
     /**
@@ -176,7 +176,7 @@ public class Import {
 	    throw new RuntimeException("Internal error. "
 				       + "Default import module not found");
         JComponent chooser = module.getChooser(this);
-        dialog = 
+        dialog =
             new JDialog(ProjectBrowser.getInstance(), "Import sources", true);
 
         dialog.getContentPane().add(chooser, BorderLayout.WEST);
@@ -391,7 +391,7 @@ public class Import {
         boolean b = Designer.theDesigner().getAutoCritique();
         if (b)  Designer.theDesigner().setAutoCritique(false);
         UmlModelEventPump.getPump().stopPumpingEvents();
-        
+
         // now start importing (with an empty problem list)
         problems = new StringBuffer();
         iss = new ImportStatusScreen("Importing", "Splash");
@@ -427,10 +427,10 @@ public class Import {
     public void parseFile(Project project, Object f) throws Exception {
 
         // Is this file a Java source file?
-        if ( module.isParseable(f)) {
+        if (module.isParseable(f)) {
             ProjectBrowser.getInstance()
                 .showStatus("Parsing " + f.toString() + "...");
-            module.parseFile( project, f, diagramInterface, this);
+            module.parseFile(project, f, diagramInterface, this);
         }
     }
 
@@ -528,7 +528,7 @@ public class Import {
 
         /**
          * The constructor.
-         * 
+         *
          * @param f the files left to parse/import
          * @param critic true if the critics thread was on
          * @param layout do a autolayout afterwards
@@ -586,7 +586,7 @@ public class Import {
 
                     int tot = countFiles;
                     if (diagramInterface != null) {
-                        tot += 
+                        tot +=
                             diagramInterface.getModifiedDiagrams().size() / 10;
                     }
                     iss.setMaximum(tot);
@@ -617,8 +617,8 @@ public class Import {
                         sb.append(", so some elements are not"
                                 + " created in the model\n");
                         StringWriter sw = new StringWriter();
-                        PrintWriter pw = new java.io.PrintWriter( sw );
-                        e1.printStackTrace( pw );
+                        PrintWriter pw = new java.io.PrintWriter(sw);
+                        e1.printStackTrace(pw);
                         sb.append(sw.getBuffer());
                         LOG.error(sb.toString(), e1);
                     }
@@ -629,14 +629,14 @@ public class Import {
                         sb.append(", so some elements are not "
                                 + "created in the model\n");
                         StringWriter sw = new StringWriter();
-                        PrintWriter pw = new java.io.PrintWriter( sw );
-                        e1.printStackTrace( pw );
+                        PrintWriter pw = new java.io.PrintWriter(sw);
+                        e1.printStackTrace(pw);
                         sb.append(sw.getBuffer());
                         LOG.warn(sb.toString(), e1);
                     }
                     problems.append(sb);
                 }
-                
+
                 if (!isCancelled()) {
                     SwingUtilities.invokeLater(this);
                     return;
@@ -652,7 +652,7 @@ public class Import {
                 SwingUtilities.invokeLater(this);
                 return;
             }
-            
+
             // Do post load processings.
             st.mark("postprocessings");
 
@@ -674,7 +674,7 @@ public class Import {
                         UMLDiagram diagram =
                             (UMLDiagram) diagramInterface.getModifiedDiagrams()
                                 .elementAt(i);
-                        ClassdiagramLayouter layouter = 
+                        ClassdiagramLayouter layouter =
                             module.getLayout(diagram);
 
                         layouter.layout();
@@ -694,7 +694,7 @@ public class Import {
                 ProblemsDialog pd = new ProblemsDialog();
                 pd.setVisible(true);
             }
-            
+
             // turn criticing on again
             if (criticThreadWasOn) Designer.theDesigner().setAutoCritique(true);
 
@@ -804,7 +804,7 @@ public class Import {
             setResizable(true);
             setModal(false);
             setTitle(Translator.localize("dialog.title.import-problems"));
-            
+
             Dimension scrSize = Toolkit.getDefaultToolkit().getScreenSize();
             getContentPane().setLayout(new BorderLayout(0, 0));
 
@@ -820,13 +820,13 @@ public class Import {
             centerPanel.add(new JScrollPane(textArea));
             centerPanel.setPreferredSize(new Dimension(300, 200));
             getContentPane().add(centerPanel);
-            
+
             // close button
             closeButton = new JButton(Translator.localize("button.close"));
             JPanel bottomPanel = new JPanel();
             bottomPanel.add(closeButton);
             getContentPane().add(bottomPanel, BorderLayout.SOUTH);
-            
+
             // listeners
             closeButton.addActionListener(this);
             addWindowListener(new WindowAdapter() {
@@ -834,7 +834,7 @@ public class Import {
                     disposeDialog();
                 }
             });
-            
+
             Dimension contentPaneSize = getContentPane().getPreferredSize();
             setLocation(scrSize.width / 2 - contentPaneSize.width / 2,
                     scrSize.height / 2 - contentPaneSize.height / 2);
@@ -950,7 +950,7 @@ class ImportClasspathDialog extends JDialog {
     class OkListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
 
-            URL urls[] = new URL[pathsModel.size()];
+            URL[] urls = new URL[pathsModel.size()];
             for (int i = 0; i < urls.length; i++) {
                 try {
                     urls[i] = new File((String) pathsModel.get(i)).toURL();

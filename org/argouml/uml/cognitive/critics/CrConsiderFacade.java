@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -28,7 +28,7 @@ import org.apache.log4j.Logger;
 import org.argouml.cognitive.Designer;
 
 /**
- * A critic to suggest using the facade stereotype. 
+ * A critic to suggest using the facade stereotype.
  * TODO: at the moment only a dummy implementation
 */
 public class CrConsiderFacade extends CrUML {
@@ -40,7 +40,7 @@ public class CrConsiderFacade extends CrUML {
      */
     public CrConsiderFacade() {
 	setHeadline("Consider using facade stereotype for <ocl>self</ocl>");
-       
+
 	addSupportedDecision(CrUML.DEC_MODULARITY);
 	addTrigger("ownedElement");
     }

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2003-2004 The Regents of the University of California. All
+// Copyright (c) 2003-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -21,10 +21,6 @@
 // PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
-
-// File: UMLDeploymentDiagram.java
-// Classes: UmlDeploymentDiagram
-// Author: Clemens Eichler (5eichler@informatik.uni-hamburg.de)
 
 package org.argouml.uml.diagram.deployment.ui;
 
@@ -53,10 +49,11 @@ import org.tigris.gef.base.ModeCreatePolyEdge;
  * constructors for a top level diagram and one within a defined
  * namespace.<p>
  *
+ * @author Clemens Eichler
  */
 public class UMLDeploymentDiagram extends UMLDiagram {
-    
-    private static final Logger LOG = 
+
+    private static final Logger LOG =
         Logger.getLogger(UMLDeploymentDiagram.class);
 
     ////////////////
@@ -100,10 +97,10 @@ public class UMLDeploymentDiagram extends UMLDiagram {
         setNamespace(namespace);
     }
 
-    /** 
+    /**
      * Method to perform a number of important initializations of a
      * <I>Deployment Diagram</I>.<p>
-     * 
+     *
      * Each diagram type has a similar <I>UMLxxxDiagram</I> class.<p>
      *
      * Changed <I>lay</I> from <I>LayerPerspective</I> to
@@ -145,7 +142,7 @@ public class UMLDeploymentDiagram extends UMLDiagram {
      * @see org.argouml.uml.diagram.ui.UMLDiagram#getUmlActions()
      */
     protected Object[] getUmlActions() {
-        Object actions[] = {
+        Object[] actions = {
             getActionMNode(),
             getActionMNodeInstance(),
             getActionMComponent(),
@@ -153,7 +150,8 @@ public class UMLDeploymentDiagram extends UMLDiagram {
 	    getActionMDependency(),
 	    getAssociationActions(),
 	    getActionMObject(),
-	    getActionMLink()};
+	    getActionMLink(),
+	};
         return actions;
     }
 
@@ -161,7 +159,7 @@ public class UMLDeploymentDiagram extends UMLDiagram {
         Object actions[][] = {
 	    {getActionAssociation(), getActionUniAssociation() },
 	    {getActionAggregation(), getActionUniAggregation() },
-	    {getActionComposition(), getActionUniComposition() }
+	    {getActionComposition(), getActionUniComposition() },
         };
 
         return actions;
@@ -181,18 +179,18 @@ public class UMLDeploymentDiagram extends UMLDiagram {
         }
         return name;
     }
-        
+
     /**
      * @see org.argouml.uml.diagram.ui.UMLDiagram#getLabelName()
      */
     public String getLabelName() {
         return Translator.localize("label.deployment-diagram");
     }
-    
+
     //////////////////////////////
     // Getters for plugin modules:
     //////////////////////////////
-    
+
     /**
      * @return Returns the actionAggregation.
      */
@@ -206,7 +204,7 @@ public class UMLDeploymentDiagram extends UMLDiagram {
         }
         return actionAggregation;
     }
-    
+
     /**
      * @return Returns the actionAssociation.
      */
@@ -220,7 +218,7 @@ public class UMLDeploymentDiagram extends UMLDiagram {
         }
         return actionAssociation;
     }
-    
+
     /**
      * @return Returns the actionComposition.
      */
@@ -234,7 +232,7 @@ public class UMLDeploymentDiagram extends UMLDiagram {
         }
         return actionComposition;
     }
-    
+
     /**
      * @return Returns the actionMAssociation.
      */
@@ -246,7 +244,7 @@ public class UMLDeploymentDiagram extends UMLDiagram {
         }
         return actionMAssociation;
     }
-    
+
     /**
      * @return Returns the actionMClass.
      */
@@ -257,7 +255,7 @@ public class UMLDeploymentDiagram extends UMLDiagram {
         }
         return actionMClass;
     }
-    
+
     /**
      * @return Returns the actionMComponent.
      */
@@ -268,7 +266,7 @@ public class UMLDeploymentDiagram extends UMLDiagram {
         }
         return actionMComponent;
     }
-    
+
     /**
      * @return Returns the actionMComponentInstance.
      */
@@ -279,7 +277,7 @@ public class UMLDeploymentDiagram extends UMLDiagram {
         }
         return actionMComponentInstance;
     }
-    
+
     /**
      * @return Returns the actionMDependency.
      */
@@ -291,7 +289,7 @@ public class UMLDeploymentDiagram extends UMLDiagram {
         }
         return actionMDependency;
     }
-    
+
     /**
      * @return Returns the actionMInterface.
      */
@@ -302,7 +300,7 @@ public class UMLDeploymentDiagram extends UMLDiagram {
         }
         return actionMInterface;
     }
-    
+
     /**
      * @return Returns the actionMLink.
      */
@@ -314,7 +312,7 @@ public class UMLDeploymentDiagram extends UMLDiagram {
         }
         return actionMLink;
     }
-    
+
     /**
      * @return Returns the actionMNode.
      */
@@ -325,7 +323,7 @@ public class UMLDeploymentDiagram extends UMLDiagram {
         }
         return actionMNode;
     }
-    
+
     /**
      * @return Returns the actionMNodeInstance.
      */
@@ -336,7 +334,7 @@ public class UMLDeploymentDiagram extends UMLDiagram {
         }
         return actionMNodeInstance;
     }
-    
+
     /**
      * @return Returns the actionMObject.
      */
@@ -347,7 +345,7 @@ public class UMLDeploymentDiagram extends UMLDiagram {
         }
         return actionMObject;
     }
-    
+
     /**
      * @return Returns the actionUniAggregation.
      */
@@ -360,7 +358,7 @@ public class UMLDeploymentDiagram extends UMLDiagram {
         }
         return actionUniAggregation;
     }
-    
+
     /**
      * @return Returns the actionUniAssociation.
      */
@@ -373,7 +371,7 @@ public class UMLDeploymentDiagram extends UMLDiagram {
         }
         return actionUniAssociation;
     }
-    
+
     /**
      * @return Returns the actionUniComposition.
      */

@@ -36,26 +36,26 @@ import org.argouml.uml.ui.AbstractActionNewModelElement;
 
 /**
  * Action to create a new reception
- * 
+ *
  * @since Jul 12, 2004
  * @author jaap.branderhorst@xs4all.nl
  */
 public class ActionNewReception extends AbstractActionNewModelElement {
 
     /**
-     * CLASSIFIER is the name of the property that 
+     * CLASSIFIER is the name of the property that
      * holds the Classifier of this reception.
      */
-    public static final String CLASSIFIER = "classifier";   
+    public static final String CLASSIFIER = "classifier";
 
     /**
      * The constructor.
      */
-    public ActionNewReception() { 
+    public ActionNewReception() {
         super("button.new-reception");
         putValue(Action.NAME, Translator.localize("button.new-reception"));
     }
-    
+
     /**
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
@@ -65,7 +65,7 @@ public class ActionNewReception extends AbstractActionNewModelElement {
         if (!ModelFacade.isAClassifier(classifier))
             throw new IllegalArgumentException(
                     "Argument classifier is null or not a classifier");
-        Object reception = 
+        Object reception =
             Model.getCommonBehaviorFactory().buildReception(classifier);
         TargetManager.getInstance().setTarget(reception);
     }

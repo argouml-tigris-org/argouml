@@ -81,10 +81,10 @@ public class ActionGenerateProjectCode extends UMLAction {
 	    ProjectManager.getManager().getCurrentProject().getActiveDiagram();
 	if (!(activeDiagram instanceof org.argouml.uml.diagram.ui.UMLDiagram))
 	    return;
-	Object/*MNamespace*/ ns = ((org.argouml.uml.diagram.ui.UMLDiagram) 
+	Object/*MNamespace*/ ns = ((org.argouml.uml.diagram.ui.UMLDiagram)
             activeDiagram).getNamespace();
 	if (ns == null) return;
-	while (ModelFacade.getNamespace(ns) != null) 
+	while (ModelFacade.getNamespace(ns) != null)
 	    ns = ModelFacade.getNamespace(ns);
 	Collection elems = Model.getModelManagementHelper()
 	    .getAllModelElementsOfKind(ns, ModelFacade.CLASSIFIER);
@@ -116,8 +116,8 @@ public class ActionGenerateProjectCode extends UMLAction {
     private boolean isCodeRelevantClassifier(Object/*MClassifier*/ cls) {
 	String path = Generator2.getCodePath(cls);
 	String name = ModelFacade.getName(cls);
-	if (name == null 
-            || name.length() == 0 
+	if (name == null
+            || name.length() == 0
             || Character.isDigit(name.charAt(0))) {
 	    return false;
 	}

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -21,9 +21,6 @@
 // PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
-
-// File: FigMessage.java
-// Original Author: agauthie@ics.uci.edu
 
 package org.argouml.uml.diagram.ui;
 
@@ -48,8 +45,10 @@ import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigPoly;
 import org.tigris.gef.presentation.FigText;
 
-/** Class to display graphics for a UML message in a diagram. 
- * 
+/** Class to display graphics for a UML message in a diagram.
+ *
+ *
+ * @author agauthie
  */
 public class FigMessage extends FigNodeModelElement {
 
@@ -62,7 +61,7 @@ public class FigMessage extends FigNodeModelElement {
     // instance variables
 
     private FigPoly figPoly;
-    
+
     /**
      * The <code>arrowDirection</code> values are:
      * 1: South
@@ -147,7 +146,7 @@ public class FigMessage extends FigNodeModelElement {
 	figPoly.setLineColor(col);
 	getNameFig().setLineColor(col);
     }
-    
+
     /**
      * @see org.tigris.gef.presentation.Fig#getLineColor()
      */
@@ -179,14 +178,14 @@ public class FigMessage extends FigNodeModelElement {
      * @see org.tigris.gef.presentation.Fig#setLineWidth(int)
      */
     public void setLineWidth(int w) { figPoly.setLineWidth(w); }
-    
+
     /**
      * @see org.tigris.gef.presentation.Fig#getLineWidth()
      */
     public int getLineWidth() { return figPoly.getLineWidth(); }
 
     /**
-     * @param direction for the arrow 
+     * @param direction for the arrow
      * 1: South
      * 2: East
      * 3: West
@@ -194,7 +193,7 @@ public class FigMessage extends FigNodeModelElement {
      */
     public void setArrow(int direction) {
 	Rectangle bbox = getBounds();
-    
+
 	arrowDirection = direction;
 	switch (direction) {
 	    // south
@@ -231,7 +230,7 @@ public class FigMessage extends FigNodeModelElement {
 	}
 	setBounds(bbox);
     }
-    
+
     /**
      * @return the arrow direction
      */
@@ -249,7 +248,7 @@ public class FigMessage extends FigNodeModelElement {
 	return new Dimension(w, h);
     }
 
-    /** Override setBounds to keep shapes looking right 
+    /** Override setBounds to keep shapes looking right
      * @see org.tigris.gef.presentation.Fig#setBounds(int, int, int, int)
      */
     public void setBounds(int x, int y, int w, int h) {
@@ -263,7 +262,7 @@ public class FigMessage extends FigNodeModelElement {
 
 	int ht = 0;
 
-	if (nameMin.height > figPoly.getHeight()) 
+	if (nameMin.height > figPoly.getHeight())
 	    ht = (nameMin.height - figPoly.getHeight()) / 2;
 
 	getNameFig().setBounds(x, y, w - figPoly.getWidth(), nameMin.height);
@@ -295,7 +294,7 @@ public class FigMessage extends FigNodeModelElement {
     }
 
     /**
-     * Determines the direction of the message arrow. Deetermination of the 
+     * Determines the direction of the message arrow. Deetermination of the
      * type of arrow happens in modelchanged
      */
     protected void updateArrow() {
@@ -312,10 +311,10 @@ public class FigMessage extends FigNodeModelElement {
 	int ry = receiverPort.getY();
 	if (sx < rx && Math.abs(sy - ry) <= Math.abs(sx - rx)) { // east
 	    setArrow(2);
-	} else 
+	} else
 	    if (sx > rx && Math.abs(sy - ry) <= Math.abs(sx - rx)) { // west
 		setArrow(3);
-	    } else 
+	    } else
 		if (sy < ry) { // south
 		    setArrow(1);
 		} else
@@ -349,7 +348,7 @@ public class FigMessage extends FigNodeModelElement {
 	super.paint(g);
     }
 
-    
+
 
     /**
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#updateNameText()

@@ -101,7 +101,7 @@ public class ProjectBrowser
 
     private MultiEditorPane editorPane;
 
-    /* Work in progress here to allow multiple details panes with 
+    /* Work in progress here to allow multiple details panes with
     ** different contents - Bob Tarling
     */
     private DetailsPane northEastPane;
@@ -117,7 +117,7 @@ public class ProjectBrowser
 
     private GenericArgoMenuBar menuBar;
 
-    /** 
+    /**
      * Partially implemented. Needs work to display
      * import of source and saving of zargo.
      */
@@ -136,7 +136,7 @@ public class ProjectBrowser
     private SplashScreen splashScreen;
 
     /**
-     * The explorer (formerly called navigator) pane 
+     * The explorer (formerly called navigator) pane
      * containing the modelstructure.
      */
     private NavigatorPane explorerPane;
@@ -156,9 +156,9 @@ public class ProjectBrowser
 
     /**
      * The constructor.
-     * 
+     *
      * @param applicationName  the title of the frame
-     * @param doSplash determines if we have to show 
+     * @param doSplash determines if we have to show
      *                 the splash screen at startup
      */
     private ProjectBrowser(String applicationName, boolean doSplash) {
@@ -192,12 +192,12 @@ public class ProjectBrowser
         ImageIcon argoImage =
             ResourceLoaderWrapper.lookupIconResource("ArgoIcon");
         this.setIconImage(argoImage.getImage());
-        // 
+        //
 
-        // adds this as listener to projectmanager so it gets updated when the 
+        // adds this as listener to projectmanager so it gets updated when the
         // project changes
         ProjectManager.getManager().addPropertyChangeListener(this);
-        
+
         // adds this as listener to TargetManager so gets notified
         // when the active diagram changes
         TargetManager.getInstance().addTargetListener(this);
@@ -215,7 +215,7 @@ public class ProjectBrowser
      * Creates the panels in the working area
      *
      * @param doSplash true if we show  the splashscreen during startup
-     * @return Component the area between the menu and the statusbar. 
+     * @return Component the area between the menu and the statusbar.
      *                   It contains the workarea at centre and the toolbar
      *                   position north, south, east or west.
      *
@@ -229,7 +229,7 @@ public class ProjectBrowser
         }
         //_navPane = new NavigatorPane(doSplash);
         explorerPane = NavigatorPane.getInstance();
-        /* Work in progress here to allow multiple details panes with 
+        /* Work in progress here to allow multiple details panes with
         ** different contents - Bob Tarling
         */
         eastPane  =
@@ -247,7 +247,7 @@ public class ProjectBrowser
         northEastPane =
 	    makeDetailsPane(BorderSplitPane.NORTHEAST,
 			    Horizontal.getInstance());
-        
+
         if (southPane != null) {
             detailsPanesByCompassPoint.put(BorderSplitPane.SOUTH, southPane);
         }
@@ -312,8 +312,8 @@ public class ProjectBrowser
             workAreaPane.add((Component) entry.getValue(), position);
         }
         workAreaPane.add(explorerPane, BorderSplitPane.WEST);
-        
-        getTab(TabToDo.class); // TODO: If this doesn't have side effects, 
+
+        getTab(TabToDo.class); // TODO: If this doesn't have side effects,
                                //       it can be removed alltogether.
         //todo.setTree(_todoPane);
         workAreaPane.add(todoPane, BorderSplitPane.SOUTHWEST);
@@ -425,21 +425,21 @@ public class ProjectBrowser
     }
 
     /**
-     * Updates the window title to contain the latest values for 
+     * Updates the window title to contain the latest values for
      * project name, active diagram, and save status.
      */
     protected void updateTitle() {
         if (ProjectManager.getManager().getCurrentProject() != null)
             setTitle(ProjectManager.getManager().getCurrentProject().getName());
     }
-    
+
     /**
      * @return the application name as shown in the titlebar
      */
     public String getAppName() {
         return appName;
     }
-    
+
     /**
      * @param n the application name as shown in the titlebar
      */
@@ -449,16 +449,16 @@ public class ProjectBrowser
 
     /**
      * The method used by the NavigatorPane, MultiEditor and DetailsPane
-     * to set the target of the application.
+     * to set the target of the application.<p>
      *
-     * <p>the target is either a Model Element (usually selected in
+     * the target is either a Model Element (usually selected in
      * the Navigation pane or Properties panel) or a Fig (selected in
-     * a diagram).
+     * a diagram).<p>
      *
-     * <p>The concept of a selection transaction is used to prevent a change
-     * of target in one view creating a call back to this method, which 
-     * would then change the target in all views again...
-     * </p>
+     * The concept of a selection transaction is used to prevent a change
+     * of target in one view creating a call back to this method, which
+     * would then change the target in all views again...<p>
+     *
      * @deprecated As of ArgoUml version 0.13.5,replaced by {@link
      * org.argouml.ui.targetmanager.TargetManager#setTarget(Object)
      * TargetManager.getInstance().setTarget(Object)}
@@ -470,7 +470,7 @@ public class ProjectBrowser
         TargetManager.getInstance().setTarget(o);
     }
 
-    /** 
+    /**
      * return the current target in the editor pane
      * @deprecated As of ArgoUml version 0.13.5,replaced by {@link
      * org.argouml.ui.targetmanager.TargetManager#getTarget()
@@ -520,7 +520,7 @@ public class ProjectBrowser
 
     /**
      * Get the tab page instance of the given class
-     * 
+     *
      * @param tabClass the given class
      * @return the tabpage
      */
@@ -648,8 +648,7 @@ public class ProjectBrowser
         }
         // making it possible to jump to the modelroot
         if (first.equals(ProjectManager.getManager().getCurrentProject()
-			 .getRoot()))
-	{
+			 .getRoot())) {
             setTarget(first);
         }
     }
@@ -675,17 +674,17 @@ public class ProjectBrowser
         statusBar.showStatus(s);
     }
 
-    /**    
+    /**
      * Called by a user interface element when a request to
      * navigate to a model element has been received.
      *
      * @param element the navigation target
      */
-    public void navigateTo(Object element) {  
+    public void navigateTo(Object element) {
         setTarget(element);
     }
 
-    /**   
+    /**
      * Called by a user interface element when a request to
      * open a model element in a new window has been recieved.
      *
@@ -758,8 +757,7 @@ public class ProjectBrowser
      *         compass point.
      */
     private DetailsPane makeDetailsPane(String compassPoint,
-					Orientation orientation)
-    {
+					Orientation orientation) {
         DetailsPane detailsPane =
 	    new DetailsPane(compassPoint.toLowerCase(), orientation);
         if (detailsPane.getTabCount() == 0)
@@ -786,7 +784,7 @@ public class ProjectBrowser
             .equals(ProjectManager.CURRENT_PROJECT_PROPERTY_NAME)) {
             Project p = (Project) evt.getNewValue();
             if (p != null) {
-                setTitle(p.getName());             
+                setTitle(p.getName());
                 //Designer.TheDesigner.getToDoList().removeAllElements();
                 Designer.setCritiquingRoot(p);
                 // update all panes
@@ -796,8 +794,7 @@ public class ProjectBrowser
 
         // the save state changed
         else if (evt.getPropertyName()
-            .equals(ProjectManager.SAVE_STATE_PROPERTY_NAME))
-        {
+            .equals(ProjectManager.SAVE_STATE_PROPERTY_NAME)) {
             updateTitle();
         }
     }
@@ -805,7 +802,7 @@ public class ProjectBrowser
     /////////////////////////////////////////////////////////////////////////
     // TargetListener methods implemented so notified when selected
     // diagram changes. Uses this to update the window title.
-    
+
     /**
      * @see org.argouml.ui.targetmanager.TargetListener#targetAdded(org.argouml.ui.targetmanager.TargetEvent)
      */
@@ -840,11 +837,11 @@ public class ProjectBrowser
 	    // setActiveDiagram((ArgoDiagram) target);
             updateTitle();
         }
-    }    
+    }
     // End TargetListener methods
 
     /**
-     * Returns the todopane. 
+     * Returns the todopane.
      * @return ToDoPane
      */
     public ToDoPane getTodoPane() {
@@ -853,7 +850,7 @@ public class ProjectBrowser
 
     /**
      * Sets the splashscreen. Sets the current splashscreen to invisible
-     * 
+     *
      * @param ss the new splashscreen
      */
     public void setSplashScreen(SplashScreen ss) {
@@ -865,7 +862,7 @@ public class ProjectBrowser
 
     /**
      * Singleton retrieval method for the projectbrowser. Lazely instantiates
-     * the projectbrowser. 
+     * the projectbrowser.
      * @return the singleton instance of the projectbrowser
      */
     public static synchronized ProjectBrowser getInstance() {
@@ -888,5 +885,5 @@ public class ProjectBrowser
     public Font getDefaultFont() {
         return defaultFont;
     }
-    
+
 } /* end class ProjectBrowser */

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2002-2004 The Regents of the University of California. All
+// Copyright (c) 2002-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -43,13 +43,19 @@ import org.apache.log4j.Logger;
  * @author	Michael Stockman
  */
 public class ResolvedCritic {
-    /** The logger. */
+    /**
+     * The logger.
+     */
     private static final Logger LOG = Logger.getLogger(ResolvedCritic.class);
 
-    /** The name of the critic. */
+    /**
+     * The name of the critic.
+     */
     private String critic;
 
-    /** The IDs of the objects that define the context of the critic. */
+    /**
+     * The IDs of the objects that define the context of the critic.
+     */
     private List offenders;
 
     /**
@@ -140,10 +146,10 @@ public class ResolvedCritic {
      * equals returns true if and only if obj also is a ResolvedCritic,
      * has the same critic name, and has all related objects that this
      * object has. Note that it is not required that this object has all
-     * related objects that that object has.
+     * related objects that that object has.<p>
      *
-     * <p>Formally that is inconsistent with {@link Object#equals(Object) 
-     * equals as specified in java.lang.Object}, 
+     * Formally that is inconsistent with {@link Object#equals(Object)
+     * equals as specified in java.lang.Object},
      * but it was probably practical somehow.<p>
      *
      * The param obj is the Object to compare to.
@@ -237,7 +243,7 @@ public class ResolvedCritic {
 		if (!canCreate) {
 		    throw new UnresolvableException("ItemUID missing or "
 						    + "unable to "
-						    + "create for class: " 
+						    + "create for class: "
 						    + obj.getClass());
 		}
 

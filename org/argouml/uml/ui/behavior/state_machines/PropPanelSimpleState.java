@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -41,13 +41,13 @@ public class PropPanelSimpleState extends PropPanelState {
      * Constructor
      */
     public PropPanelSimpleState() {
-        this("Simple State", lookupIcon("SimpleState"), 
+        this("Simple State", lookupIcon("SimpleState"),
                 ConfigLoader.getTabPropsOrientation());
     }
 
     /**
-     * Constructor 
-     * 
+     * Constructor
+     *
      * @param name the name of the properties panel, shown at the top
      * @param icon the icon shown at the top
      * @param orientation the orientation of the panel
@@ -62,11 +62,11 @@ public class PropPanelSimpleState extends PropPanelState {
                 getStereotypeBox());
         addField(Translator.localize("label.container"),
                 getContainerScroll());
-        addField(Translator.localize("label.entry"), 
+        addField(Translator.localize("label.entry"),
                 getEntryScroll());
-        addField(Translator.localize("label.exit"), 
+        addField(Translator.localize("label.exit"),
                 getExitScroll());
-        addField(Translator.localize("label.do-activity"), 
+        addField(Translator.localize("label.do-activity"),
                 getDoScroll());
 
         addSeperator();

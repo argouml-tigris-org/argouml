@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -45,10 +45,10 @@ import org.argouml.ui.SplashScreen;
  *
  */
 public class ConfigLoader {
-	
-    private static final Logger LOG = 
-        Logger.getLogger(ConfigLoader.class); 
-	
+
+    private static final Logger LOG =
+        Logger.getLogger(ConfigLoader.class);
+
     ////////////////////////////////////////////////////////////////
     // static utility functions
 
@@ -64,23 +64,23 @@ public class ConfigLoader {
 
     /**
      * Load the tab panels as defined in the configuration file.
-     * 
+     *
      * @param tabs the list of tabs in the panel
      * @param panelName the panel name
      * @param orientation the orientation
      */
-    public static void loadTabs(Vector tabs, String panelName, 
+    public static void loadTabs(Vector tabs, String panelName,
             Orientation orientation) {
-        
+
         String position = null;
-        if (panelName.equals("north") || panelName.equals("south")  
-	    || panelName.equals("west") || panelName.equals("east") 
-	    || panelName.equals("northwest") || panelName.equals("northeast")  
+        if (panelName.equals("north") || panelName.equals("south")
+	    || panelName.equals("west") || panelName.equals("east")
+	    || panelName.equals("northwest") || panelName.equals("northeast")
 	    || panelName.equals("southwest") || panelName.equals("southeast")) {
             position = panelName;
             panelName = "detail";
         }
-        
+
         InputStream is = null;
 	LineNumberReader lnr = null;
 	String configFile = System.getProperty("argo.config");
@@ -95,8 +95,8 @@ public class ConfigLoader {
             catch (FileNotFoundException e) {
                 is = ConfigLoader.class.getResourceAsStream(configFile);
                 if (is != null) {
-                    LOG.info("Value of argo.config (" + configFile 
-                        + 
+                    LOG.info("Value of argo.config (" + configFile
+                        +
                         ") could not be loaded.\nLoading default configuration."
                     );
                 }
@@ -114,12 +114,12 @@ public class ConfigLoader {
                     String line = lnr.readLine();
                     while (line != null) {
                         Class tabClass =
-                            parseConfigLine(line, panelName, 
+                            parseConfigLine(line, panelName,
                                     lnr.getLineNumber(), configFile);
                         if (tabClass != null) {
                             try {
                                 String className = tabClass.getName();
-                                String shortClassName = 
+                                String shortClassName =
                                     className.substring(className
                                         .lastIndexOf('.') + 1).toLowerCase();
                                 ConfigurationKey key = Configuration
@@ -136,15 +136,15 @@ public class ConfigLoader {
                                 }
                             }
                             catch (InstantiationException ex) {
-                                LOG.error("Could not make instance of " 
+                                LOG.error("Could not make instance of "
 					   + tabClass.getName());
                             }
                             catch (IllegalAccessException ex) {
-                                LOG.error("Could not make instance of " 
+                                LOG.error("Could not make instance of "
 					   + tabClass.getName());
                             }
                         }
-                        line = lnr.readLine();                     
+                        line = lnr.readLine();
                     }
                 }
                 catch (IOException io) {
@@ -158,9 +158,9 @@ public class ConfigLoader {
     }
 
     /**
-     * Parse a line in the text file containing 
+     * Parse a line in the text file containing
      * the configuration of ArgoUML, "/org/argouml/argo.ini".
-     * 
+     *
      * @param line the given line
      * @param panelName the name of the panel
      * @param lineNum the number of the current line
@@ -176,18 +176,19 @@ public class ConfigLoader {
 	}
 	else if (line.startsWith(panelName + ":")) {
 	    String tabNames = stripBeforeColon(line).trim();
-	    StringTokenizer tabAlternatives = 
+	    StringTokenizer tabAlternatives =
 	        new StringTokenizer(tabNames, "|");
 	    Class res = null;
 	    while (tabAlternatives.hasMoreElements()) {
 		String tabSpec = tabAlternatives.nextToken().trim();
 		String tabName = tabSpec;  //TODO: arguments
 		String tabClassName;
-                                
-		if ( tabName.indexOf('.') > 0 )
+
+		if (tabName.indexOf('.') > 0) {
 		    tabClassName = tabName;
-		else
+		} else {
 		    tabClassName = tabPath + "." + tabName;
+		}
 
 		try {
 		    res = Class.forName(tabClassName);
@@ -201,11 +202,11 @@ public class ConfigLoader {
 		    if (SplashScreen.getDoSplash()) {
 		    	SplashScreen splash = SplashScreen.getInstance();
 			Object[] msgArgs = {
-			    tabName
+			    tabName,
 			};
 			splash.getStatusBar().showStatus(Translator.
 				messageFormat(
-				    "statusmsg.bar.making-project-browser", 
+				    "statusmsg.bar.making-project-browser",
 				    msgArgs));
 			splash.getStatusBar().incProgress(2);
 		    }
@@ -222,9 +223,9 @@ public class ConfigLoader {
 		}
 	    }
 	    if (Boolean.getBoolean("dbg")) {
-		LOG.warn("\nCould not find any of these classes:\n" 
-			  + "TabPath=" + tabPath + "\n" 
-			  + "Config file=" + configFile + "\n" 
+		LOG.warn("\nCould not find any of these classes:\n"
+			  + "TabPath=" + tabPath + "\n"
+			  + "Config file=" + configFile + "\n"
 			  + "Config line #" + lineNum + ":" + line);
 	    }
 	}

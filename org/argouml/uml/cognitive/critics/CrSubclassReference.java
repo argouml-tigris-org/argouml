@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -22,11 +22,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// File: CrSubclassReference.javoa
-// Classes: CrSubclassReference
-// Original Author: jrobbins@ics.uci.edu
-// $Id$
-
 package org.argouml.uml.cognitive.critics;
 
 import java.util.ArrayList;
@@ -42,14 +37,18 @@ import org.argouml.model.ModelFacade;
 import org.argouml.uml.GenDescendantClasses;
 
 import org.tigris.gef.util.VectorSet;
-/** A critic to detect when a class can never have instances (of
- *  itself of any subclasses). */
 
+/**
+ * A critic to detect when a class can never have instances (of
+ * itself of any subclasses).
+ *
+ * @author jrobbins
+ */
 public class CrSubclassReference extends CrUML {
 
     /**
      * The constructor.
-     * 
+     *
      */
     public CrSubclassReference() {
 	setHeadline("Remove Reference to Specific Subclass");
@@ -73,7 +72,7 @@ public class CrSubclassReference extends CrUML {
     }
 
     /**
-     * @see org.argouml.cognitive.critics.Critic#toDoItem(java.lang.Object, 
+     * @see org.argouml.cognitive.critics.Critic#toDoItem(java.lang.Object,
      * org.argouml.cognitive.Designer)
      */
     public ToDoItem toDoItem(Object dm, Designer dsgr) {

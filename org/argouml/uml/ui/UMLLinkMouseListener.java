@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -33,43 +33,43 @@ import javax.swing.SwingUtilities;
 import org.argouml.ui.targetmanager.TargetManager;
 
 /**
- * A mouselistener that implements behaviour 
+ * A mouselistener that implements behaviour
  * to navigate to a selected modelelement
  * on double click of the left mousebutton
  * for a JList.
- * 
+ *
  * @since Juli 9, 2004
  * @author jaap.branderhorst@xs4all.nl
  */
 public class UMLLinkMouseListener implements MouseListener {
-    
+
     /**
      * The graphical object for which this mouselistener is registrated.
      */
     private JList owner = null;
-    
+
     /**
-     * The total amount of mouseclicks the user has to do, 
+     * The total amount of mouseclicks the user has to do,
      * to go to the selected element.
      */
     private int numberOfMouseClicks;
-    
+
     /**
      * The constructor.
-     * 
-     * @param theOwner the graphical object for which 
+     *
+     * @param theOwner the graphical object for which
      *                 this mouselistener is registered
      */
     public UMLLinkMouseListener(JList theOwner) {
         this(theOwner, 2);
     }
-    
+
     /**
      * The constructor.
-     * 
-     * @param theOwner the graphical object for which 
+     *
+     * @param theOwner the graphical object for which
      *                 this mouselistener is registered
-     * @param numberOfmouseClicks the total amount of mouseclicks the user 
+     * @param numberOfmouseClicks the total amount of mouseclicks the user
      *                            has to do, to go to the selected element
      */
     private UMLLinkMouseListener(JList theOwner, int numberOfmouseClicks) {
@@ -81,17 +81,17 @@ public class UMLLinkMouseListener implements MouseListener {
      * @see java.awt.event.MouseListener#mouseClicked(
      *          java.awt.event.MouseEvent)
      */
-    public void mouseClicked(MouseEvent e) {       
+    public void mouseClicked(MouseEvent e) {
         if (e.getClickCount() >= numberOfMouseClicks
                 && SwingUtilities.isLeftMouseButton(e)) {
-            
+
             Object o = owner.getSelectedValue();
             if (org.argouml.model.ModelFacade.isAModelElement(o)) {
                 TargetManager.getInstance().setTarget(o);
             }
-            e.consume();       
-        }         
-            
+            e.consume();
+        }
+
     }
 
     /**

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -70,51 +70,50 @@ import org.argouml.ui.ProjectBrowser;
 
 /**
  * Dialog box to list all critics and allow editing of some of their
- * properties. <p> 
- * 
+ * properties. <p>
+ *
  * TODO: knowledge type, supported goals,
  * supported decisions, critic network, localize labels.
  */
 public class CriticBrowserDialog extends ArgoDialog
-    implements ActionListener, 
-	       ListSelectionListener, 
-	       ItemListener, 
-	       DocumentListener 
-{
+    implements ActionListener,
+	       ListSelectionListener,
+	       ItemListener,
+	       DocumentListener {
     private static final Logger LOG =
 	Logger.getLogger(CriticBrowserDialog.class);
-    
+
     private static int numCriticBrowser = 0;
 
     ////////////////////////////////////////////////////////////////
     // constants
-    private static final String DESC_WIDTH_TEXT = 
+    private static final String DESC_WIDTH_TEXT =
 	"This is Sample Text for determining Column Width";
-  
+
     private static final int NUM_COLUMNS = 25;
 
-    private static final String HIGH = 
+    private static final String HIGH =
         Translator.localize("misc.level.high");
-    private static final String MEDIUM = 
+    private static final String MEDIUM =
         Translator.localize("misc.level.medium");
-    private static final String LOW = 
+    private static final String LOW =
         Translator.localize("misc.level.low");
-    private static final String PRIORITIES[] = {
-	HIGH, MEDIUM, LOW 
+    private static final String[] PRIORITIES = {
+	HIGH, MEDIUM, LOW,
     };
 
-    private static final String ALWAYS = 
+    private static final String ALWAYS =
         Translator.localize("dialog.browse.use-clarifier.always");
-    private static final String IF_ONLY_ONE = 
+    private static final String IF_ONLY_ONE =
         Translator.localize("dialog.browse.use-clarifier.if-only-one");
-    private static final String NEVER = 
+    private static final String NEVER =
         Translator.localize("dialog.browse.use-clarifier.never");
-    private static final String USE_CLAR[] = {
-	ALWAYS, IF_ONLY_ONE, NEVER 
+    private static final String[] USE_CLAR = {
+	ALWAYS, IF_ONLY_ONE, NEVER,
     };
 
     private static final int INSET_PX = 3;
-    
+
     ////////////////////////////////////////////////////////////////
     // instance variables
 
@@ -152,15 +151,15 @@ public class CriticBrowserDialog extends ArgoDialog
             Translator.localize("dialog.browse.button.go"));
 
     private Critic target;
-    
+
     private List   critics;
 
     /**
      * The constructor.
-     * 
+     *
      */
     public CriticBrowserDialog() {
-	super(ProjectBrowser.getInstance(), 
+	super(ProjectBrowser.getInstance(),
             Translator.localize("dialog.browse.label.critics"), true);
 
 	JPanel mainContent = new JPanel();
@@ -168,7 +167,7 @@ public class CriticBrowserDialog extends ArgoDialog
 
 	// Critics Table
 	JPanel tablePanel = new JPanel(new BorderLayout(5, 5));
-    
+
 	critics = new ArrayList(Agency.getCritics());
 	Collections.sort(critics, new Comparator() {
 	    public int compare(Object o1, Object o2) {
@@ -206,13 +205,13 @@ public class CriticBrowserDialog extends ArgoDialog
 					       + descCol.getWidth()
 					       + actCol.getWidth() + 20,
 					       0));
-	
+
 	mainContent.add(tablePanel, BorderLayout.CENTER);
 
 	// Critic Details panel
 
 	JPanel detailsPanel = new JPanel(new GridBagLayout());
-	
+
 	GridBagConstraints labelConstraints = new GridBagConstraints();
 	labelConstraints.anchor = GridBagConstraints.EAST;
 	labelConstraints.gridy = 0;
@@ -230,14 +229,14 @@ public class CriticBrowserDialog extends ArgoDialog
 	fieldConstraints.gridheight = 1;
 	fieldConstraints.weightx = 1.0;
 	fieldConstraints.insets = new Insets(0, 4, 5, 10);
-	
+
 	className.setEditable(false);
 	className.setBorder(null);
 	labelConstraints.gridy = 0;
 	fieldConstraints.gridy = 0;
 	detailsPanel.add(clsNameLabel, labelConstraints);
 	detailsPanel.add(className, fieldConstraints);
-	
+
 	labelConstraints.gridy = 1;
 	fieldConstraints.gridy = 1;
 	detailsPanel.add(headlineLabel, labelConstraints);
@@ -266,7 +265,7 @@ public class CriticBrowserDialog extends ArgoDialog
 	desc.setLineWrap(true);
 	desc.setWrapStyleWord(true);
 	desc.setMargin(new Insets(INSET_PX, INSET_PX, INSET_PX, INSET_PX));
-        
+
 	labelConstraints.anchor = GridBagConstraints.EAST;
 	labelConstraints.gridy = 5;
 	fieldConstraints.gridy = 5;
@@ -287,8 +286,8 @@ public class CriticBrowserDialog extends ArgoDialog
 	detailsContainer.setBorder(BorderFactory.createTitledBorder(
             Translator.localize("dialog.browse.titled-border.critic-details")));
 	detailsContainer.add(detailsPanel);
-	mainContent.add(detailsContainer, BorderLayout.EAST);	
-    
+	mainContent.add(detailsContainer, BorderLayout.EAST);
+
 	goButton.addActionListener(this);
 	networkButton.addActionListener(this);
 	wakeButton.addActionListener(this);
@@ -323,12 +322,13 @@ public class CriticBrowserDialog extends ArgoDialog
 	headline.setText(target.getHeadline());
 
 	int p = target.getPriority();
-	if (p == ToDoItem.HIGH_PRIORITY)
+	if (p == ToDoItem.HIGH_PRIORITY) {
 	    priority.setSelectedItem(HIGH);
-	else if (p == ToDoItem.MED_PRIORITY)
+	} else if (p == ToDoItem.MED_PRIORITY) {
 	    priority.setSelectedItem(MEDIUM);
-	else
+	} else {
 	    priority.setSelectedItem(LOW);
+	}
 	priority.repaint();
 
 	moreInfo.setText(target.getMoreInfoURL());
@@ -451,8 +451,9 @@ public class CriticBrowserDialog extends ArgoDialog
 	}
 	else if (src == useClar) {
 	    setTargetUseClarifiers();
+	} else {
+	    LOG.debug("unknown itemStateChanged src: " + src);
 	}
-	else LOG.debug("unknown itemStateChanged src: " + src);
     }
 
 } /* end class CriticBrowserDialog */
@@ -461,8 +462,7 @@ public class CriticBrowserDialog extends ArgoDialog
 
 
 class TableModelCritics extends AbstractTableModel
-    implements VetoableChangeListener
-{
+    implements VetoableChangeListener {
     private static final Logger LOG =
 	Logger.getLogger(TableModelCritics.class);
 
@@ -492,11 +492,11 @@ class TableModelCritics extends AbstractTableModel
      * @see javax.swing.table.TableModel#getColumnName(int)
      */
     public String getColumnName(int c) {
-	if (c == 0) 
+	if (c == 0)
 	    return Translator.localize("dialog.browse.column-name.active");
-	if (c == 1) 
+	if (c == 1)
 	    return Translator.localize("dialog.browse.column-name.headline");
-	if (c == 2) 
+	if (c == 2)
 	    return Translator.localize("dialog.browse.column-name.snoozed");
 	return "XXX";
     }

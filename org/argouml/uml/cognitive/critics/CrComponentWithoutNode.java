@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -22,11 +22,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// File: CrComponentWithoutNode.java
-// Classes: CrComponentWithoutNode
-// Original Author: 5eichler@informatik.uni-hamburg.de
-// $Id$
-
 package org.argouml.uml.cognitive.critics;
 
 import java.util.Collection;
@@ -44,13 +39,14 @@ import org.tigris.gef.util.VectorSet;
 /**
  * A critic to detect when there are components that
  * are not inside a node
- **/
-
+ *
+ * @author 5eichler
+ */
 public class CrComponentWithoutNode extends CrUML {
 
     /**
      * The constructor.
-     * 
+     *
      */
     public CrComponentWithoutNode() {
 	setHeadline("Components normally are inside nodes");
@@ -64,34 +60,34 @@ public class CrComponentWithoutNode extends CrUML {
     public boolean predicate2(Object dm, Designer dsgr) {
 	if (!(dm instanceof UMLDeploymentDiagram)) return NO_PROBLEM;
 	UMLDeploymentDiagram dd = (UMLDeploymentDiagram) dm;
-	VectorSet offs = computeOffenders(dd); 
-	if (offs == null) return NO_PROBLEM; 
-	return PROBLEM_FOUND; 
+	VectorSet offs = computeOffenders(dd);
+	if (offs == null) return NO_PROBLEM;
+	return PROBLEM_FOUND;
     }
 
     /**
      * @see org.argouml.cognitive.critics.Critic#toDoItem(
      * java.lang.Object, org.argouml.cognitive.Designer)
      */
-    public ToDoItem toDoItem(Object dm, Designer dsgr) { 
+    public ToDoItem toDoItem(Object dm, Designer dsgr) {
 	UMLDeploymentDiagram dd = (UMLDeploymentDiagram) dm;
-	VectorSet offs = computeOffenders(dd); 
-	return new UMLToDoItem(this, offs, dsgr); 
-    } 
- 
+	VectorSet offs = computeOffenders(dd);
+	return new UMLToDoItem(this, offs, dsgr);
+    }
+
     /**
      * @see org.argouml.cognitive.Poster#stillValid(
      * org.argouml.cognitive.ToDoItem, org.argouml.cognitive.Designer)
      */
-    public boolean stillValid(ToDoItem i, Designer dsgr) { 
-	if (!isActive()) return false; 
-	VectorSet offs = i.getOffenders(); 
+    public boolean stillValid(ToDoItem i, Designer dsgr) {
+	if (!isActive()) return false;
+	VectorSet offs = i.getOffenders();
 	UMLDeploymentDiagram dd = (UMLDeploymentDiagram) offs.firstElement();
-	//if (!predicate(dm, dsgr)) return false; 
-	VectorSet newOffs = computeOffenders(dd); 
-	boolean res = offs.equals(newOffs); 
-	return res; 
-    } 
+	//if (!predicate(dm, dsgr)) return false;
+	VectorSet newOffs = computeOffenders(dd);
+	boolean res = offs.equals(newOffs);
+	return res;
+    }
 
 
     /**
@@ -103,7 +99,7 @@ public class CrComponentWithoutNode extends CrUML {
      * @param dd the diagram to check
      * @return the set of offenders
      */
-    public VectorSet computeOffenders(UMLDeploymentDiagram dd) { 
+    public VectorSet computeOffenders(UMLDeploymentDiagram dd) {
 
 	Collection figs = dd.getLayer().getContents(null);
 	VectorSet offs = null;
@@ -137,11 +133,11 @@ public class CrComponentWithoutNode extends CrUML {
 		}
 		offs.addElement(fc);
 	    }
-     
+
 	}
 
-	return offs; 
-    } 
+	return offs;
+    }
 
 } /* end class CrComponentWithoutNode.java */
 

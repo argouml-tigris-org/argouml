@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2003 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -31,12 +31,12 @@ import org.argouml.model.ModelFacade;
 import org.argouml.uml.ui.UMLModelElementOrderedListModel2;
 
 /**
- * This is the model for the list of parameters for a classifier, 
+ * This is the model for the list of parameters for a classifier,
  * as e.g. present on the operation properties panel. <p>
- * 
- * This is an ordered list, and hence it supports reordering functions. 
- * 
- * @author jaap.branderhorst@xs4all.nl	
+ *
+ * This is an ordered list, and hence it supports reordering functions.
+ *
+ * @author jaap.branderhorst@xs4all.nl
  * @since Jan 26, 2003
  */
 public class UMLClassifierParameterListModel
@@ -72,10 +72,10 @@ public class UMLClassifierParameterListModel
     public void swap(int index1, int index2) {
         Object classifier = getTarget();
         List c = new ArrayList(ModelFacade.getParameters(classifier));
-        /* The following does not work, because NSUML does not 
-         * fire an update event, since no parameters were added or removed... 
+        /* The following does not work, because NSUML does not
+         * fire an update event, since no parameters were added or removed...
         Collections.swap(c, index1, index2);
-        ModelFacade.setParameters(classifier, c); 
+        ModelFacade.setParameters(classifier, c);
         ... So, lets delete them first, then add them in reverse: */
         Object mem1 = c.get(index1);
         Object mem2 = c.get(index2);
@@ -83,7 +83,7 @@ public class UMLClassifierParameterListModel
         cc.remove(mem1);
         cc.remove(mem2);
         ModelFacade.setParameters(classifier, cc);
-        // TODO: If we stop supporting java 1.3 ... 
+        // TODO: If we stop supporting java 1.3 ...
         // the next line will replace the following 2
         // Collections.swap(c, index1, index2);
         c.set(index1, mem2);

@@ -37,29 +37,29 @@ import org.argouml.uml.ui.UMLComboBoxModel2;
  * @author jaap.branderhorst@xs4all.nl, alexb
  */
 public class UMLModelElementNamespaceComboBoxModel extends UMLComboBoxModel2 {
-    
+
     private static UMLModelElementNamespaceComboBoxModel theInstance;
-    
-    
+
+
     /**
      * Constructor for UMLModelElementNamespaceComboBoxModel.
      */
     public UMLModelElementNamespaceComboBoxModel() {
         super("namespace", false);
-        UmlModelEventPump.getPump().addClassModelEventListener(this, 
+        UmlModelEventPump.getPump().addClassModelEventListener(this,
                 ModelFacade.NAMESPACE, "ownedElement");
     }
-    
+
     /**
      * @see org.argouml.uml.ui.UMLComboBoxModel2#isValidElement(Object)
      */
     protected boolean isValidElement(Object o) {
-        return org.argouml.model.ModelFacade.isANamespace(o) 
+        return org.argouml.model.ModelFacade.isANamespace(o)
         && Model.getCoreHelper().isValidNamespace(
                 /*(MModelElement)*/ getTarget(), /*(MNamespace)*/ o);
     }
-    
-    /**  
+
+    /**
      * @see org.argouml.uml.ui.UMLComboBoxModel2#buildModelList()
      */
     protected void buildModelList() {
@@ -68,7 +68,7 @@ public class UMLModelElementNamespaceComboBoxModel extends UMLComboBoxModel2 {
         setElements(Model.getCoreHelper().getAllPossibleNamespaces(
                 /*(MModelElement)*/ getTarget(), model));
     }
-    
+
     /**
      * @see org.argouml.uml.ui.UMLComboBoxModel2#getSelectedModelElement()
      */
@@ -78,5 +78,5 @@ public class UMLModelElementNamespaceComboBoxModel extends UMLComboBoxModel2 {
         }
         return null;
     }
-       
+
 }

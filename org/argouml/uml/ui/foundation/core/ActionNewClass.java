@@ -35,8 +35,8 @@ import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.AbstractActionNewModelElement;
 
 /**
- * Action to create a new class. 
- * 
+ * Action to create a new class.
+ *
  * @author Michiel
  */
 public class ActionNewClass extends AbstractActionNewModelElement {

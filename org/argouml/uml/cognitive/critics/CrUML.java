@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -22,11 +22,7 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// File: CrUML.java
-// Classes: CrUML
-// Original Author: jrobbins@ics.uci.edu
 // $Id$
-
 package org.argouml.uml.cognitive.critics;
 
 import org.apache.log4j.Logger;
@@ -49,10 +45,12 @@ import org.tigris.gef.util.VectorSet;
  *
  * @see org.argouml.cognitive.Designer
  * @see org.argouml.cognitive.DecisionModel
+ *
+ * @author jrobbins
  */
 public class CrUML extends Critic {
     private static final Logger LOG = Logger.getLogger(CrUML.class);
-    
+
     /**
      * Decision type: INHERITANCE
      */
@@ -173,7 +171,7 @@ public class CrUML extends Critic {
 
 
     /**
-     * The constructor for this class. 
+     * The constructor for this class.
      */
     public CrUML() {
     }
@@ -193,14 +191,14 @@ public class CrUML extends Critic {
     }
 
     /**
-     * Set up the locale specific text for the critic headline 
-     * (the one liner that appears in the to-do pane) 
-     * and the critic description (the detailed explanation that 
-     * appears in the to-do tab of the details pane). 
-     *   
+     * Set up the locale specific text for the critic headline
+     * (the one liner that appears in the to-do pane)
+     * and the critic description (the detailed explanation that
+     * appears in the to-do tab of the details pane).
+     *
      * TODO: Since the parameter is ignored, will be deprecated in good time.
      * MVW: Maybe we can make it part of the constructor CrUML()?
-     * 
+     *
      * @param s the english headline, but ignored!
      */
     public final void setHeadline(String s) {
@@ -225,11 +223,11 @@ public class CrUML extends Critic {
 	}
     }
 
-    /** This is the decision routine for the critic. 
-     * 
-     * @param dm is the UML entity (an NSUML object) that is being checked. 
+    /** This is the decision routine for the critic.
+     *
+     * @param dm is the UML entity (an NSUML object) that is being checked.
      * @param dsgr is for future development and can be ignored.
-     * 
+     *
      * @return boolean problem found
      */
     public boolean predicate2(Object dm, Designer dsgr) {
@@ -250,22 +248,22 @@ public class CrUML extends Critic {
      * @param offs is the elements to replace
      */
     public String expand(String res, VectorSet offs) {
-        
+
         if (offs.size() == 0) return res;
-        
+
         Object off1 = offs.firstElement();
-        
+
         StringBuffer beginning = new StringBuffer("");
         int matchPos = res.indexOf(OCL_START);
-        
+
         // replace all occurances of OFFENDER with the name of the
         // first offender
         while (matchPos != -1) {
             int endExpr = res.indexOf(OCL_END, matchPos + 1);
-            // check if there is no OCL_END; if so, the critic expression 
+            // check if there is no OCL_END; if so, the critic expression
             // is not correct and can not be expanded
             if (endExpr == -1) {
-                break; 
+                break;
             }
             if (matchPos > 0) {
                 beginning.append(res.substring(0, matchPos));
@@ -293,7 +291,7 @@ public class CrUML extends Critic {
             return beginning.append(res).toString();
         }
     }
-    
+
     /** create a new UMLToDoItem.
      * @see org.argouml.uml.cognitive.UMLToDoItem
      */

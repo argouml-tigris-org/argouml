@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -66,63 +66,63 @@ import org.tigris.gef.presentation.Fig;
  */
 public class ExplorerTree
     extends DisplayTextTree {
-    
+
     /**
      * Holds state info about whether to display stereotypes in the
      * explorer pane.
      */
     private boolean showStereotype;
-    
+
     /**
      * Prevents target event cycles between this and the TargetManager.
      */
     private boolean updatingSelection;
-    
+
     /**
-     * Prevents target event cycles between this and the Targetmanager 
+     * Prevents target event cycles between this and the Targetmanager
      * for tree selection events.
      */
     private boolean updatingSelectionViaTreeSelection;
-    
+
     /** Creates a new instance of ExplorerTree. */
     public ExplorerTree() {
         super();
-        
+
         // issue 2261: we must add this project property change first
         // in order to receive the new project event after
-        // the ExplorerEventAdaptor 
+        // the ExplorerEventAdaptor
         //(which is initialised in the ExplorerTreeModel).
         ProjectManager.getManager()
             .addPropertyChangeListener(new ProjectPropertyChangeListener());
-        
+
         this.setModel(new ExplorerTreeModel(ProjectManager.getManager()
 					        .getCurrentProject()));
         this.addMouseListener(new NavigatorMouseListener(this));
         this.addTreeSelectionListener(new NavigationTreeSelectionListener());
         this.addTreeWillExpandListener(new ExplorerTreeWillExpandListener());
         this.addTreeExpansionListener(new ExplorerTreeExpansionListener());
-        
+
         TargetManager.getInstance()
 	    .addTargetListener(new ExplorerTargetListener());
-        
+
         showStereotype =
 	    Configuration.getBoolean(Notation.KEY_SHOW_STEREOTYPES, false);
-        
+
     }
-    
-    /** 
+
+    /**
      * Listens to mouse events coming from the *JTree*,
      * on right click, brings up the pop-up menu.
      */
     class NavigatorMouseListener extends MouseAdapter {
-        
+
         private JTree mLTree;
-        
+
         public NavigatorMouseListener(JTree newtree) {
             super();
             mLTree = newtree;
         }
-        
+
         /** brings up the pop-up menu */
         public void mousePressed(MouseEvent me) {
             if (me.isPopupTrigger()) {
@@ -130,12 +130,13 @@ public class ExplorerTree
                 showPopupMenu(me);
             }
         }
-        
-        /** brings up the pop-up menu
+
+        /**
+	 * Brings up the pop-up menu.
          *
-         * <p>On Windows and Motif platforms, the user brings up a popup menu
-         *    by releasing the right mouse button while the cursor is over a
-         *    component that is popup-enabled.
+         * On Windows and Motif platforms, the user brings up a popup menu
+         * by releasing the right mouse button while the cursor is over a
+         * component that is popup-enabled.
          */
         public void mouseReleased(MouseEvent me) {
             if (me.isPopupTrigger()) {
@@ -143,7 +144,7 @@ public class ExplorerTree
                 showPopupMenu(me);
             }
         }
-        
+
         /** brings up the pop-up menu */
         public void mouseClicked(MouseEvent me) {
             if (me.isPopupTrigger()) {
@@ -151,32 +152,32 @@ public class ExplorerTree
                 showPopupMenu(me);
             }
         }
-        
+
         /** builds a pop-up menu for extra functionality for the Tree*/
         public void showPopupMenu(MouseEvent me) {
-            
+
             if (getLastSelectedPathComponent() == null) {
                 return;
 	    }
-            
-            Object selectedItem = 
+
+            Object selectedItem =
                 ((DefaultMutableTreeNode) getLastSelectedPathComponent())
                         .getUserObject();
             JPopupMenu popup = new ExplorerPopup(selectedItem, me);
-            
+
             if (popup.getComponentCount() > 0) {
                 popup.show(mLTree, me.getX(), me.getY());
             }
         }
-        
+
     } /* end class NavigatorMouseListener */
-    
+
     /**
      * Override default JTree implementation to display the
      * appropriate text for any object that will be displayed in
      * the Nav pane.
      *
-     * @see javax.swing.JTree#convertValueToText(java.lang.Object, 
+     * @see javax.swing.JTree#convertValueToText(java.lang.Object,
      * boolean, boolean, boolean, int, boolean)
      */
     public String convertValueToText(Object value,
@@ -185,12 +186,12 @@ public class ExplorerTree
 				     boolean leaf,
 				     int row,
 				     boolean hasFocus) {
-        
+
         // do model elements first
         if (ModelFacade.isAModelElement(value)) {
-            
+
             String name = null;
-            
+
             // Jeremy Bennett patch
             if (ModelFacade.isATransition(value)
 		    || ModelFacade.isAExtensionPoint(value)) {
@@ -202,11 +203,11 @@ public class ExplorerTree
             // displayed in the perspective
             else if (ModelFacade.isAComment(value)) {
                 name = ModelFacade.getName(value);
-                
+
                 if (name != null
 		    && name.indexOf("\n") < 80
 		    && name.indexOf("\n") > -1) {
-                        
+
                     name = name.substring(0, name.indexOf("\n")) + "...";
                 }
                 else if (name != null && name.length() > 80) {
@@ -215,11 +216,11 @@ public class ExplorerTree
             } else {
                 name = ModelFacade.getName(value);
             }
-            
+
             if (name == null || name.equals("")) {
                 name = "(anon " + ModelFacade.getUMLClassName(value) + ")";
             }
-            
+
             // Look for stereotype
             if (showStereotype) {
                 Object stereo = null;
@@ -232,17 +233,17 @@ public class ExplorerTree
                         .generate(stereo);
                 }
             }
-            
+
             return name;
         }
-        
+
         if (ModelFacade.isATaggedValue(value)) {
             String tagName = ModelFacade.getTagOfTag(value);
             if (tagName == null || tagName.equals(""))
                 tagName = "(anon)";
             return ("1-" + tagName);
         }
-        
+
         if (value instanceof Diagram) {
             return ((Diagram) value).getName();
         }
@@ -251,62 +252,62 @@ public class ExplorerTree
         else
             return "-";
     }
-    
+
     /**
      * Helps prepare state before a node is expanded.
      */
     class ExplorerTreeWillExpandListener implements TreeWillExpandListener {
-        
+
         /** Does nothing. **/
         public void treeWillCollapse(TreeExpansionEvent tee) {
 	}
-        
+
         /**
          * Updates stereotype setting,
          * adds all children per treemodel 'build on demand' design.
          */
         public void treeWillExpand(TreeExpansionEvent tee) {
-            
+
             showStereotype =
 		Configuration.getBoolean(Notation.KEY_SHOW_STEREOTYPES, false);
-            
+
             if (getModel() instanceof ExplorerTreeModel) {
-                
+
                 ((ExplorerTreeModel) getModel()).updateChildren(tee.getPath());
             }
-            
+
         }
     }
-    
+
     /**
      * Helps react to tree expansion events.
      */
     class ExplorerTreeExpansionListener implements TreeExpansionListener {
-        
+
         /**
          * Does nothing.
          */
         public void treeCollapsed(TreeExpansionEvent event) {
         }
-        
+
         /**
          * Updates the selection state.
          */
         public void treeExpanded(TreeExpansionEvent event) {
-            
+
             // need to update the selection state.
             setSelection(TargetManager.getInstance().getTargets().toArray());
         }
-        
+
     }
-    
+
     /**
      * Sets the selection state for a given set of targets.
      */
     private void setSelection(Object[] targets) {
-        
+
         this.clearSelection();
-        
+
         int rows = getRowCount();
         for (int i = 0; i < targets.length; i++) {
             Object target = targets[i];
@@ -321,36 +322,36 @@ public class ExplorerTree
                 }
             }
         }
-        
+
         if (this.getSelectionCount() > 0) {
             scrollRowToVisible(this.getSelectionRows()[0]);
         }
     }
-    
+
     /**
      * Manages selecting the item to show in Argo's other
      * views based on the highlighted row.
      */
     class NavigationTreeSelectionListener implements TreeSelectionListener {
-        
+
         /**
          * Change in nav tree selection -> set target in target manager.
          */
         public void valueChanged(TreeSelectionEvent e) {
-            
+
             if (!updatingSelectionViaTreeSelection) {
                 updatingSelectionViaTreeSelection = true;
-                
-                // get the elements                               
-                TreePath[] addedOrRemovedPaths = e.getPaths();                
+
+                // get the elements
+                TreePath[] addedOrRemovedPaths = e.getPaths();
                 TreePath[] selectedPaths = getSelectionPaths();
-                List elementsAsList = new ArrayList();                
-                for (int i = 0; 
+                List elementsAsList = new ArrayList();
+                for (int i = 0;
                     selectedPaths != null && i < selectedPaths.length; i++) {
                     Object element = ((DefaultMutableTreeNode) selectedPaths[i]
                                    .getLastPathComponent()).getUserObject();
                     elementsAsList.add(element);
-//                  // scan the visible rows for duplicates of 
+//                  // scan the visible rows for duplicates of
                     // this elem and select them
                     int rows = getRowCount();
                     for (int row = 0; row < rows; row++) {
@@ -364,14 +365,14 @@ public class ExplorerTree
                         }
                     }
                 }
-               
+
                 // check which targetmanager method to call
-                
-                
+
+
                 boolean callSetTarget = true;
                 List addedElements = new ArrayList();
                 for (int i = 0; i < addedOrRemovedPaths.length; i++) {
-                    Object element = ((DefaultMutableTreeNode) 
+                    Object element = ((DefaultMutableTreeNode)
                             addedOrRemovedPaths[i].getLastPathComponent())
                             .getUserObject();
                     if (!e.isAddedPath(i)) {
@@ -381,18 +382,18 @@ public class ExplorerTree
                         addedElements.add(element);
                     }
                 }
-                
-                if (callSetTarget && addedElements.size() 
-                        == elementsAsList.size() 
+
+                if (callSetTarget && addedElements.size()
+                        == elementsAsList.size()
                         && elementsAsList.containsAll(addedElements)) {
                     TargetManager.getInstance().setTargets(elementsAsList);
                 } else {
-                    // we must call the correct method on targetmanager 
+                    // we must call the correct method on targetmanager
                     // for each added or removed target
                     List removedTargets = new ArrayList();
                     List addedTargets = new ArrayList();
                     for (int i = 0; i < addedOrRemovedPaths.length; i++) {
-                        Object element = ((DefaultMutableTreeNode) 
+                        Object element = ((DefaultMutableTreeNode)
                                 addedOrRemovedPaths[i]
                              .getLastPathComponent()).getUserObject();
                         if (e.isAddedPath(i)) {
@@ -401,7 +402,7 @@ public class ExplorerTree
                             removedTargets.add(element);
                         }
                     }
-                    // we can't remove the targets one by one, we have to 
+                    // we can't remove the targets one by one, we have to
                     // do it in one go.
                     if (!removedTargets.isEmpty()) {
                         Iterator it = removedTargets.iterator();
@@ -415,20 +416,20 @@ public class ExplorerTree
                             TargetManager.getInstance().addTarget(it.next());
                         }
                     }
-                }                                                
-                
+                }
+
                 updatingSelectionViaTreeSelection = false;
             }
         }
     }
-    
+
     class ExplorerTargetListener implements TargetListener {
-    
+
         /**
          * Actions a change in targets received from the TargetManager.
          */
         private void setTargets(Object[] targets) {
-            
+
             if (!updatingSelection) {
                 updatingSelection = true;
                 if (targets.length <= 0) {
@@ -439,7 +440,7 @@ public class ExplorerTree
                 updatingSelection = false;
             }
         }
-        
+
         /**
          * @see org.argouml.ui.targetmanager.TargetListener#targetAdded(
 	 *         org.argouml.ui.targetmanager.TargetEvent)
@@ -455,7 +456,7 @@ public class ExplorerTree
                     target = target instanceof Fig ? ((Fig) target).getOwner()
                             : target;
                     for (int j = 0; j < rows; j++) {
-                        Object rowItem = ((DefaultMutableTreeNode) 
+                        Object rowItem = ((DefaultMutableTreeNode)
                             getPathForRow(j).getLastPathComponent())
                             .getUserObject();
                         if (rowItem == target) {
@@ -471,7 +472,7 @@ public class ExplorerTree
             }
             // setTargets(e.getNewTargets());
         }
-        
+
         /**
          * @see org.argouml.ui.targetmanager.TargetListener#targetRemoved(
 	 *         org.argouml.ui.targetmanager.TargetEvent)
@@ -488,7 +489,7 @@ public class ExplorerTree
                     target = target instanceof Fig ? ((Fig) target).getOwner()
                             : target;
                     for (int j = 0; j < rows; j++) {
-                        Object rowItem = ((DefaultMutableTreeNode) 
+                        Object rowItem = ((DefaultMutableTreeNode)
                             getPathForRow(j).getLastPathComponent())
                                 .getUserObject();
                         if (rowItem == target) {
@@ -504,35 +505,35 @@ public class ExplorerTree
             }
             // setTargets(e.getNewTargets());
         }
-        
+
         /**
          * @see org.argouml.ui.targetmanager.TargetListener#targetSet(
 	 *         org.argouml.ui.targetmanager.TargetEvent)
          */
         public void targetSet(TargetEvent e) {
             setTargets(e.getNewTargets());
-            
+
         }
     }
-    
+
     class ProjectPropertyChangeListener implements PropertyChangeListener {
-        
+
         /**
          * Listens to events coming from the project manager,
          * in order to expand the root node by default.
          */
         public void propertyChange(java.beans.PropertyChangeEvent pce) {
-            
+
             // project events
             if (pce.getPropertyName()
                     .equals(ProjectManager.CURRENT_PROJECT_PROPERTY_NAME)) {
-                        
+
                 TreeModel model = getModel();
-                
+
                 if (model != null && model.getRoot() != null) {
-                    
+
                     expandPath(getPathForRow(0));
-                    
+
                 }
             }
         }

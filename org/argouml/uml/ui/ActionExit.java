@@ -40,25 +40,25 @@ import org.argouml.ui.ProjectBrowser;
 /**
  * Action to exit ArgoUML.
  */
-public class ActionExit extends UMLAction 
+public class ActionExit extends UMLAction
     implements CommandLineInterface {
-  
+
     ////////////////////////////////////////////////////////////////
     // static variables
-  
+
     /**
      * The singleton.
      */
     public static final ActionExit SINGLETON = new ActionExit();
- 
+
     /** remember if this form is already active, so that it does
         not popup twice.
     */
     private boolean active = false;
-  
+
     ////////////////////////////////////////////////////////////////
     // constructors
-  
+
     /**
      * The constructor.
      */
@@ -66,35 +66,35 @@ public class ActionExit extends UMLAction
 	super ("action.exit", NO_ICON);
 	active = false;
     }
-  
+
     ////////////////////////////////////////////////////////////////
     // main methods
-  
+
     /**
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed (ActionEvent ae) {
 	ProjectBrowser pb = ProjectBrowser.getInstance();
 	Project p = ProjectManager.getManager().getCurrentProject();
-    
+
 	if (p != null && ProjectManager.getManager().needsSave() && !active) {
 	    active = true;
-	    String t = 
+	    String t =
 		MessageFormat.format(Translator.localize(
 			"optionpane.exit-save-changes-to"),
-			new Object[] {p.getName()} );
-	    int response = 
-		JOptionPane.showConfirmDialog(pb, t, t, 
+			new Object[] {p.getName()});
+	    int response =
+		JOptionPane.showConfirmDialog(pb, t, t,
 					      JOptionPane.YES_NO_CANCEL_OPTION);
-      
-	    if (response == JOptionPane.CANCEL_OPTION 
+
+	    if (response == JOptionPane.CANCEL_OPTION
             	|| response == JOptionPane.CLOSED_OPTION) {
 		active = false;
 		return;
 	    }
 	    if (response == JOptionPane.YES_OPTION) {
 		boolean safe = false;
-        
+
 		if (ActionSaveProject.getInstance().isEnabled()) {
 		    safe = ActionSaveProject.getInstance().trySave (true);
 		}

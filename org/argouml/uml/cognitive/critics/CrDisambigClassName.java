@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -60,7 +60,7 @@ public class CrDisambigClassName extends CrUML {
 	String myName = ModelFacade.getName(cls);
 	//@ if (myName.equals(Name.UNSPEC)) return NO_PROBLEM;
 	String myNameString = myName;
-    
+
 	if (myNameString != null && myNameString.length() == 0)
 	    return NO_PROBLEM;
 
@@ -107,7 +107,7 @@ public class CrDisambigClassName extends CrUML {
 	    ((WizMEName) w).setMustEdit(true);
 	}
     }
-    
+
     /**
      * @see org.argouml.cognitive.critics.Critic#getWizardClass(org.argouml.cognitive.ToDoItem)
      */

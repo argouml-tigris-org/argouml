@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -45,7 +45,7 @@ public class CrObjectWithoutComponent extends CrUML {
 
     /**
      * The constructor.
-     * 
+     *
      */
     public CrObjectWithoutComponent() {
 	setHeadline("Objects normally are inside components");
@@ -97,7 +97,7 @@ public class CrObjectWithoutComponent extends CrUML {
      * @param dd the diagram to check
      * @return the set of offenders
      */
-    public VectorSet computeOffenders(UMLDeploymentDiagram dd) { 
+    public VectorSet computeOffenders(UMLDeploymentDiagram dd) {
 	Collection figs = dd.getLayer().getContents(null);
         Iterator figIter = figs.iterator();
 	VectorSet offs = null;
@@ -117,6 +117,6 @@ public class CrObjectWithoutComponent extends CrUML {
 	    }
 	}
 	return offs;
-    } 
- 
+    }
+
 } /* end class CrObjectWithoutComponent.java */

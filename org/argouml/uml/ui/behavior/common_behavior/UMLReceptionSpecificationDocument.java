@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2003-2004 The Regents of the University of California. All
+// Copyright (c) 2003-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -28,9 +28,9 @@ import org.argouml.model.ModelFacade;
 import org.argouml.uml.ui.UMLPlainTextDocument;
 
 /**
- * 
+ *
  * @author mkl
- *  
+ *
  */
 public class UMLReceptionSpecificationDocument extends UMLPlainTextDocument {
 
@@ -56,7 +56,7 @@ public class UMLReceptionSpecificationDocument extends UMLPlainTextDocument {
      */
     protected String getProperty() {
         if (ModelFacade.isAReception(getTarget())) { return ModelFacade
-                .getSpecification(getTarget()); 
+                .getSpecification(getTarget());
         }
         return null;
     }

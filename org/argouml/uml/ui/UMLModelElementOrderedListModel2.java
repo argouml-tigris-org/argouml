@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2004 The Regents of the University of California. All
+// Copyright (c) 2004-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -30,17 +30,17 @@ import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 
 /**
- * This class resembles UMLModelElementListModel2, but is for those 
+ * This class resembles UMLModelElementListModel2, but is for those
  * associations in the metamodel (see UML standard) that have a {ordered}
  * constraint. <p>
- * 
- * This adds the functionality of a popup menu with the items "Move Up" 
+ *
+ * This adds the functionality of a popup menu with the items "Move Up"
  * and "Move Down".
- * 
+ *
  * @author mvw@tigris.org
  *
  */
-public abstract class UMLModelElementOrderedListModel2 
+public abstract class UMLModelElementOrderedListModel2
     extends UMLModelElementListModel2 {
 
     /**
@@ -52,7 +52,7 @@ public abstract class UMLModelElementOrderedListModel2
 
     /**
      * The constructor.
-     * 
+     *
      * @param name the name
      */
     public UMLModelElementOrderedListModel2(String name) {
@@ -70,14 +70,14 @@ public abstract class UMLModelElementOrderedListModel2
     protected abstract boolean isValidElement(Object element);
 
     /**
-     * This function should swap two elements in the UML model. 
+     * This function should swap two elements in the UML model.
      * The list will then be updated by the events/listener mechanism.
-     * 
+     *
      * @param index1 the 1st element
      * @param index2 the 2nd element
      */
     public abstract void swap(int index1, int index2);
-    
+
     /**
      * @see org.argouml.uml.ui.UMLModelElementListModel2#buildPopup(
      * javax.swing.JPopupMenu, int)
@@ -96,27 +96,27 @@ public abstract class UMLModelElementOrderedListModel2
 
 
 /**
- * TODO: Once finished, this class may be extracted in a seperate file, 
+ * TODO: Once finished, this class may be extracted in a seperate file,
  * for use in other places.
- * 
+ *
  * @author mvw@tigris.org
  */
 class MoveUpAction extends UMLAction {
     private UMLModelElementOrderedListModel2 model;
     private int index;
-    
+
     /**
      * The constructor.
-     * 
+     *
      * @param name the (to be localized) description of the action
      */
-    public MoveUpAction(UMLModelElementOrderedListModel2 theModel, 
+    public MoveUpAction(UMLModelElementOrderedListModel2 theModel,
             int theIndex) {
         super("menu.popup.moveup", NO_ICON);
         model = theModel;
         index = theIndex;
     }
-    
+
     /**
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
@@ -132,27 +132,27 @@ class MoveUpAction extends UMLAction {
 }
 
 /**
- * TODO: Once finished, this class may be extracted in a seperate file, 
+ * TODO: Once finished, this class may be extracted in a seperate file,
  * for use in other places.
- * 
+ *
  * @author mvw@tigris.org
  */
 class MoveDownAction extends UMLAction {
     private UMLModelElementOrderedListModel2 model;
     private int index;
-    
+
     /**
      * The constructor.
-     * 
+     *
      * @param name the (to be localized) description of the action
      */
-    public MoveDownAction(UMLModelElementOrderedListModel2 theModel, 
+    public MoveDownAction(UMLModelElementOrderedListModel2 theModel,
             int theIndex) {
         super("menu.popup.movedown", NO_ICON);
         model = theModel;
         index = theIndex;
     }
-    
+
     /**
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */

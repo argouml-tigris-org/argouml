@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -22,10 +22,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// File: FigSimpleState.java
-// Classes: FigSimpleState
-// Original Author: ics 125b silverbullet team
-
 package org.argouml.uml.diagram.state.ui;
 
 import java.awt.Color;
@@ -43,8 +39,11 @@ import org.tigris.gef.presentation.FigRRect;
 import org.tigris.gef.presentation.FigRect;
 import org.tigris.gef.presentation.FigText;
 
-/** Class to display graphics for a UML MState in a diagram. */
-
+/**
+ * Class to display graphics for a UML MState in a diagram.
+ *
+ * @author ics 125b silverbullet team
+ */
 public class FigSimpleState extends FigState {
 
     ////////////////////////////////////////////////////////////////
@@ -86,7 +85,7 @@ public class FigSimpleState extends FigState {
 			getInitialY() + 2 + getNameFig().getBounds().height + 1,
 			getInitialWidth() - 1,
 			getInitialY() + 2 + getNameFig().getBounds().height + 1,
-			Color.black);   
+			Color.black);
 
 	// add Figs to the FigNode in back-to-front order
 	addFig(getBigPort());
@@ -144,7 +143,7 @@ public class FigSimpleState extends FigState {
 	return new Dimension(w, h);
     }
 
-    /** Override setBounds to keep shapes looking right 
+    /** Override setBounds to keep shapes looking right
      * @see org.tigris.gef.presentation.Fig#setBounds(int, int, int, int)
      */
     public void setBounds(int x, int y, int w, int h) {
@@ -180,7 +179,7 @@ public class FigSimpleState extends FigState {
 	cover.setLineColor(col);
 	divider.setLineColor(col);
     }
-    
+
     /**
      * @see org.tigris.gef.presentation.Fig#getLineColor()
      */
@@ -190,7 +189,7 @@ public class FigSimpleState extends FigState {
      * @see org.tigris.gef.presentation.Fig#setFillColor(java.awt.Color)
      */
     public void setFillColor(Color col) { cover.setFillColor(col); }
-        
+
     /**
      * @see org.tigris.gef.presentation.Fig#getFillColor()
      */
@@ -200,7 +199,7 @@ public class FigSimpleState extends FigState {
      * @see org.tigris.gef.presentation.Fig#setFilled(boolean)
      */
     public void setFilled(boolean f) { cover.setFilled(f); }
-    
+
     /**
      * @see org.tigris.gef.presentation.Fig#getFilled()
      */
@@ -213,7 +212,7 @@ public class FigSimpleState extends FigState {
 	cover.setLineWidth(w);
 	divider.setLineWidth(w);
     }
-    
+
     /**
      * @see org.tigris.gef.presentation.Fig#getLineWidth()
      */
@@ -221,7 +220,7 @@ public class FigSimpleState extends FigState {
 
 
     ////////////////////////////////////////////////////////////////
-    // event processing  
+    // event processing
 
     /**
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#textEdited(org.tigris.gef.presentation.FigText)
@@ -241,7 +240,7 @@ public class FigSimpleState extends FigState {
 	    }
 	}
     }
-   
+
 
     /**
      * @see org.argouml.uml.diagram.state.ui.FigState#getInitialHeight()

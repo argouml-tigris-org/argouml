@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -30,18 +30,18 @@ package org.argouml.uml.diagram.ui;
  * @author Bob Tarling
  */
 public class FigNameCompartment extends FigCompartment {
-    
+
     private FigStereotype stereotype;
     private FigName name;
-    
+
     /**
      * The constructor.
-     * 
+     *
      * @param x horizontal distance to the left
-     * @param y vertical distance from the top 
+     * @param y vertical distance from the top
      * @param w width
      * @param h heigth
-     * @param expandOnly true if the fig can grow if the text changes, 
+     * @param expandOnly true if the fig can grow if the text changes,
      *                   but not shrink
      */
     public FigNameCompartment(int x, int y, int w, int h, boolean expandOnly) {
@@ -50,35 +50,35 @@ public class FigNameCompartment extends FigCompartment {
         addFig(stereotype);
         addFig(name);
     }
-    
+
     /**
      * @param s the stereotype name string
      */
     public void setStereotype(String s) {
         this.stereotype.setText(s);
     }
-    
+
     /**
      * @return the stereotype name string
      */
     public String getStereotype() {
         return stereotype.getText();
     }
-    
+
     /**
      * @param n the name string
      */
     public void setName(String n) {
         this.name.setText(n);
     }
-    
+
     /**
      * @return the name string
      */
     public String getName() {
         return name.getText();
     }
-    
+
     /**
      * @see java.lang.Object#clone()
      */

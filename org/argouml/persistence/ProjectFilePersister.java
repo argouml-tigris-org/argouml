@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -30,30 +30,30 @@ import org.argouml.kernel.Project;
 
 /**
  * To persist a project to and from file storage.
- * 
+ *
  * @author Bob Tarling
  */
 public interface ProjectFilePersister {
-    
+
     /**
      * @param project the project to save
      * @param file The file to write.
      * @throws SaveException if anything goes wrong.
      */
     public void save(Project project, File file) throws SaveException;
-    
+
     /**
      * @param file the file of the project to load
-     * @return the Project 
+     * @return the Project
      * @throws OpenException when we fail to open from this url
      */
     public Project doLoad(File file) throws OpenException;
-    
+
     /**
      * @param url the url of the project to load
-     * @return the Project 
+     * @return the Project
      * @throws OpenException when we fail to open from this url
      */
     public Project doLoad(URL url) throws OpenException;
-    
+
 }

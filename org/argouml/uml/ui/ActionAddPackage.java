@@ -30,7 +30,7 @@ import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
 import org.argouml.ui.targetmanager.TargetManager;
 
-/** 
+/**
  * Action to add a package to the selected model element in the
  * nav pane. This is a shortcut that helps build model
  * structures quickly.
@@ -39,24 +39,24 @@ import org.argouml.ui.targetmanager.TargetManager;
  * @stereotype singleton
  */
 public class ActionAddPackage  extends UMLAction {
-    
+
     ////////////////////////////////////////////////////////////////
     // static variables
-    
+
     /**
      * The singleton.
      */
     public static final ActionAddPackage SINGLETON = new ActionAddPackage();
-    
+
     ////////////////////////////////////////////////////////////////
     // constructors
-    
+
     /** Creates a new instance of ActionAddPackage */
     public ActionAddPackage() {
-        
+
         super("Add package", NO_ICON);
     }
-    
+
     /**
      * adds a package to the selected object in the nav pane.
      *
@@ -68,5 +68,5 @@ public class ActionAddPackage  extends UMLAction {
         ModelFacade.addOwnedElement(namespace,
             Model.getModelManagementFactory().createPackage());
     }
-    
+
 }

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2002 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -38,39 +38,39 @@ import org.argouml.uml.ui.UMLMutableLinkedList;
  * @author jaap.branderhorst@xs4all.nl
  */
 public class UMLCompositeStateSubvertexList extends UMLMutableLinkedList {
-    
+
     private class PopupMenu extends JPopupMenu {
-        
+
         /**
          * Constructor for PopupMenu.
          */
         public PopupMenu() {
             super();
-            
+
             JMenu pMenu = new JMenu();
             pMenu.setText(Translator.localize("button.new-pseudostate"));
             pMenu.add(new ActionNewPseudoState(
-                    ModelFacade.BRANCH_PSEUDOSTATEKIND, 
+                    ModelFacade.BRANCH_PSEUDOSTATEKIND,
                     "label.pseudostate.choice"));
             pMenu.add(new ActionNewPseudoState(
-                    ModelFacade.INITIAL_PSEUDOSTATEKIND, 
+                    ModelFacade.INITIAL_PSEUDOSTATEKIND,
                     "label.pseudostate.initial"));
             pMenu.add(new ActionNewPseudoState(
-                    ModelFacade.DEEPHISTORY_PSEUDOSTATEKIND, 
+                    ModelFacade.DEEPHISTORY_PSEUDOSTATEKIND,
                     "label.pseudostate.deephistory"));
             pMenu.add(new ActionNewPseudoState(
-                    ModelFacade.JUNCTION_PSEUDOSTATEKIND, 
+                    ModelFacade.JUNCTION_PSEUDOSTATEKIND,
                     "label.pseudostate.junction"));
             pMenu.add(new ActionNewPseudoState(
-                    ModelFacade.SHALLOWHISTORY_PSEUDOSTATEKIND, 
+                    ModelFacade.SHALLOWHISTORY_PSEUDOSTATEKIND,
                     "label.pseudostate.shallowhistory"));
             pMenu.add(new ActionNewPseudoState(
-                    ModelFacade.FORK_PSEUDOSTATEKIND, 
+                    ModelFacade.FORK_PSEUDOSTATEKIND,
                     "label.pseudostate.fork"));
             pMenu.add(new ActionNewPseudoState(
-                    ModelFacade.JOIN_PSEUDOSTATEKIND, 
+                    ModelFacade.JOIN_PSEUDOSTATEKIND,
                     "label.pseudostate.join"));
-            
+
             JMenu newMenu = new JMenu();
             newMenu.setText(Translator.localize("action.new"));
             newMenu.add(pMenu);
@@ -88,18 +88,18 @@ public class UMLCompositeStateSubvertexList extends UMLMutableLinkedList {
             newMenu.add(ActionNewSubmachineState.getInstance());
             ActionNewSubmachineState.getInstance().setTarget(getTarget());
             add(newMenu);
-            
+
             addSeparator();
-            
+
             ActionRemoveModelElement.SINGLETON.setTarget(getSelectedValue());
             ActionRemoveModelElement.SINGLETON.setObjectToRemove(
                     getSelectedValue());
             add(ActionRemoveModelElement.SINGLETON);
         }
-        
+
 
     }
-    
+
     /**
      * Constructor for UMLCompositeStateSubvertexList.
      * @param dataModel the data model

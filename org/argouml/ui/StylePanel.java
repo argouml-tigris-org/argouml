@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -58,7 +58,7 @@ public class StylePanel extends TabSpawnable implements TabFigTarget,
 
     /**
      * The constructor.
-     * 
+     *
      * @param title the panel title
      */
     public StylePanel(String title) {
@@ -76,9 +76,8 @@ public class StylePanel extends TabSpawnable implements TabFigTarget,
     /**
      * This method must be overriden by implementors if they don't want to
      * refresh the whole stylepanel every time a property change events is
-     * fired.
-     * <p>
-     * 
+     * fired.<p>
+     *
      * @since 8 june 2003, 0.13.6
      * @see org.argouml.ui.TabTarget#refresh()
      */

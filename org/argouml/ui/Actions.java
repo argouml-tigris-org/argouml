@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -36,27 +36,27 @@ import org.argouml.uml.ui.UMLAction;
 
 
 /**
- * Collects ArgoUML's global actions, and takes care of the 
+ * Collects ArgoUML's global actions, and takes care of the
  * "enabled" status of all these actions.<p>
- * 
+ *
  * Which means: <br>
- * Any instance of UMLAction may (at construction time) 
- * tell Actions by calling addAction() 
- * about UMLActions of which the availability depends on the currently 
+ * Any instance of UMLAction may (at construction time)
+ * tell Actions by calling addAction()
+ * about UMLActions of which the availability depends on the currently
  * selected Target or the state of ArgoUML. <p>
- * 
- * From here on, Actions will check the availability 
+ *
+ * From here on, Actions will check the availability
  * of all enlisted UMLActions after every Target change and
- * after every ArgoUML state change (i.e. every user action), 
- * and downlight or enable the corresponding UI element, 
+ * after every ArgoUML state change (i.e. every user action),
+ * and downlight or enable the corresponding UI element,
  * e.g. menu item or toolbar item. <p>
- * 
+ *
  * Once UMLActions are enlisted, they can never be removed!<p>
  *
  * This class is a Singleton.
  */
 public class Actions implements TargetListener {
-    
+
     private static final Logger LOG = Logger.getLogger(Actions.class);
 
     private static final Actions INSTANCE = new Actions();
@@ -73,7 +73,7 @@ public class Actions implements TargetListener {
     }
 
     /**
-     * <code>allActions</code> is the list of global UMLActions in ArgoUML. 
+     * <code>allActions</code> is the list of global UMLActions in ArgoUML.
      * All these are UMLActions!
      */
     private static Vector allActions = new Vector(100);
@@ -103,9 +103,9 @@ public class Actions implements TargetListener {
     }
 
     /**
-     * Add actions to the global actions list. 
+     * Add actions to the global actions list.
      * Only done at construction time for UMLActions.
-     * 
+     *
      * @param newAction the new action to be added
      */
     public static void addAction(UMLAction newAction) {

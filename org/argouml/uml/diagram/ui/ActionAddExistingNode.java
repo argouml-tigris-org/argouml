@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2003 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -45,9 +45,8 @@ import org.tigris.gef.graph.MutableGraphModel;
 * @author Eugenio Alvarez
 * Data Access Technologies.
 */
-public class ActionAddExistingNode extends UMLAction 
-    implements GraphFactory
-{
+public class ActionAddExistingNode extends UMLAction
+    implements GraphFactory {
 
     ////////////////////////////////////////////////////////////////
     // instance variables
@@ -58,7 +57,7 @@ public class ActionAddExistingNode extends UMLAction
 
     /**
      * The Constructor.
-     *  
+     *
      * @param name the name of the action
      * @param o the node object to be added
      */
@@ -70,7 +69,7 @@ public class ActionAddExistingNode extends UMLAction
     /**
      * @see org.argouml.uml.ui.UMLAction#shouldBeEnabled()
      */
-    public boolean shouldBeEnabled() {	
+    public boolean shouldBeEnabled() {
         Object target = TargetManager.getInstance().getTarget();
         ArgoDiagram dia = ProjectManager.getManager().
             getCurrentProject().getActiveDiagram();
@@ -90,19 +89,19 @@ public class ActionAddExistingNode extends UMLAction
         String instructions = null;
         if (object != null) {
             instructions =
-		Translator.localize("misc.message.click-on-diagram-to-add") 
+		Translator.localize("misc.message.click-on-diagram-to-add")
                     + object.toString();
             Globals.showStatus(instructions);
         }
         ModePlace placeMode = new ModePlace(this, instructions);
         placeMode.setAddRelatedEdges(true);
-	
+
         //
         //   This only occurs when an diagram is entered
         //
         //
 
-        Globals.mode(placeMode, false );
+        Globals.mode(placeMode, false);
     }
 
     ////////////////////////////////////////////////////////////////
@@ -112,7 +111,7 @@ public class ActionAddExistingNode extends UMLAction
      * @see org.tigris.gef.graph.GraphFactory#makeGraphModel()
      */
     public GraphModel makeGraphModel() { return null; }
-    
+
     /**
      * @see org.tigris.gef.graph.GraphFactory#makeEdge()
      */

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2002 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -453,8 +453,7 @@ class LineSeparator extends CustomSeparator {
  * @since 0.11.2
  * @see CustomSeparator
  */
-public class MyTokenizer implements Enumeration
-{
+public class MyTokenizer implements Enumeration {
     /** A custom separator for quoted strings enclosed in single quotes
      *  and using \ as escape character. There may not be an end quote
      *  if the tokenizer reaches the end of the String. */
@@ -560,7 +559,7 @@ public class MyTokenizer implements Enumeration
      * @return true if another token can be fetched with nextToken.
      */
     public boolean hasMoreTokens() {
-	return sIdx < eIdx || savedToken != null 
+	return sIdx < eIdx || savedToken != null
 	    || putToken != null;
     }
 
@@ -603,7 +602,7 @@ public class MyTokenizer implements Enumeration
 	for (i = sIdx; i < eIdx; i++) {
 	    char c = source.charAt(i);
 
-	    for (j = 0; customSeps != null 
+	    for (j = 0; customSeps != null
 	            && j < customSeps.size(); j++) {
 		csep = (CustomSeparator) customSeps.get(j);
 
@@ -639,8 +638,7 @@ public class MyTokenizer implements Enumeration
 	    for (sep = delims; sep != null; sep = sep.getNext())
 		if (sep.addChar(c))
 		    break;
-	    if (sep != null)
-	    {
+	    if (sep != null) {
 		if (i - sIdx + 1 > sep.length()) {
 		    s = source.substring(sIdx,
 					  i - sep.length() + 1);
@@ -730,7 +728,7 @@ public class MyTokenizer implements Enumeration
 	char c;
 
 	length = str.length();
-	for (idx0 = 0; idx0 < length; ) {
+	for (idx0 = 0; idx0 < length;) {
 	    for (idx1 = idx0; idx1 < length; idx1++) {
 		c = str.charAt(idx1);
 		if (c == '\\') {

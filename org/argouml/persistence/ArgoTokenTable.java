@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -34,7 +34,7 @@ public class ArgoTokenTable extends XMLTokenTableBase {
 
     /**
      * The constructor.
-     * 
+     *
      */
     public ArgoTokenTable() {
 	super(32);
@@ -44,7 +44,7 @@ public class ArgoTokenTable extends XMLTokenTableBase {
     // constants
     private static final String STRING_ARGO                   = "argo";
     /** doesn't work
-     */  
+     */
     private static final String STRING_AUTHORNAME            = "authorname";
     private static final String STRING_VERSION               = "version";
     private static final String STRING_DESCRIPTION           = "description";
@@ -68,7 +68,7 @@ public class ArgoTokenTable extends XMLTokenTableBase {
     /** The token for history file. */
     public static final int    TOKEN_HISTORYFILE             = 7;
     /** This can be saved successfully however there is no
-     * way to output this information.   
+     * way to output this information.
      * The token for argo. */
     public static final int    TOKEN_DOCUMENTATION           = 8;
     /** The token for undefined. */
@@ -80,8 +80,7 @@ public class ArgoTokenTable extends XMLTokenTableBase {
     /**
      * @see org.argouml.persistence.XMLTokenTableBase#setupTokens()
      */
-    protected void setupTokens()
-    {
+    protected void setupTokens() {
 	addToken(STRING_ARGO, new Integer(TOKEN_ARGO));
 	addToken(STRING_AUTHORNAME, new Integer(TOKEN_AUTHORNAME));
 	addToken(STRING_VERSION, new Integer(TOKEN_VERSION));

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -22,11 +22,7 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// File: CrNoGuard.java
-// Classes: CrNoGuard.java
-// Original Author: jrobbins@ics.uci.edu
 // $Id$
-
 package org.argouml.uml.cognitive.critics;
 
 import org.argouml.cognitive.Designer;
@@ -37,12 +33,14 @@ import org.argouml.model.ModelFacade;
 /**
  * Critic that fires when there is no guard.
  *
+ *
+ * @author jrobbins
  */
 public class CrNoGuard extends CrUML {
 
     /**
      * The constructor.
-     * 
+     *
      */
     public CrNoGuard() {
 	setHeadline("Add MGuard to Transistion");
@@ -64,9 +62,9 @@ public class CrNoGuard extends CrUML {
 				  ModelFacade.BRANCH_PSEUDOSTATEKIND))
 	    return NO_PROBLEM;
 	Object g = /*(MGuard)*/ ModelFacade.getGuard(dm);
-	boolean noGuard = (g == null 
-            || ModelFacade.getExpression(g) == null 
-            || ModelFacade.getBody(ModelFacade.getExpression(g)) == null 
+	boolean noGuard = (g == null
+            || ModelFacade.getExpression(g) == null
+            || ModelFacade.getBody(ModelFacade.getExpression(g)) == null
             || ((String) ModelFacade.getBody(ModelFacade.getExpression(g)))
                                                     .length() == 0);
 	if (noGuard) return PROBLEM_FOUND;

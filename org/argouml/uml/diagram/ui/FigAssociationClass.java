@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -21,10 +21,6 @@
 // PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
-
-// File: FigAssociationClass.java
-// Classes: FigAssociationClass
-// Original Author: pepargouml@yahoo.es
 
 package org.argouml.uml.diagram.ui;
 
@@ -51,23 +47,25 @@ import java.util.Iterator;
 
 /**
  * Class to display an association edge in an Association Class.
- * It is considered the main Fig in the group of Figs that composes 
- * an Association Class. It must be associated with a FigEdgeAssociationClass 
+ * It is considered the main Fig in the group of Figs that composes
+ * an Association Class. It must be associated with a FigEdgeAssociationClass
  * and a FigClassAssociationClass. <p>
  *
- * This implementation is GEF-independent: Without changing GEF features, 
+ * This implementation is GEF-independent: Without changing GEF features,
  * it is an edge and a node at the same time.
- * The Association Class is composed of a FigAssociationClass (edge), 
+ * The Association Class is composed of a FigAssociationClass (edge),
  * a FigEdgeAssociationClass (linking edge) and
- * a FigClassAssociationClass (node). 
- * The whole fig is built as an edge but is handled as a node 
- * to allow for example that an Association Class is bound to 
+ * a FigClassAssociationClass (node).
+ * The whole fig is built as an edge but is handled as a node
+ * to allow for example that an Association Class is bound to
  * a Class with a simple association. The three Figs have the same rank. <p>
  *
- * To handle it, the restriction that must be fulfilled is 
+ * To handle it, the restriction that must be fulfilled is
  * that the FigClassAssociationClass must be always the first
- * in the Editor's layer, and several methods are overridden and implemented: 
+ * in the Editor's layer, and several methods are overridden and implemented:
  * removeFromDiagram, damage, figdamaged, etc.
+ *
+ * @author pepargouml
  */
 public class FigAssociationClass
         extends FigAssociation
@@ -75,8 +73,7 @@ public class FigAssociationClass
         DelayedVChangeListener,
         MouseListener,
         KeyListener,
-        PropertyChangeListener
-{
+        PropertyChangeListener {
 
     ////////////////////////////////////////////////////////////////
     // constants
@@ -129,8 +126,7 @@ public class FigAssociationClass
                     while (nodes.hasNext()) {
                         Fig auxFig = (Fig) nodes.next();
                         if (auxFig.getOwner().equals(currentFig.getOwner())
-                                && auxFig instanceof FigClassAssociationClass)
-                        {
+                                && auxFig instanceof FigClassAssociationClass) {
                             fig = (FigClassAssociationClass) auxFig;
                             fig.setMainFig(currentFig);
                             break;
@@ -152,8 +148,7 @@ public class FigAssociationClass
                     while (edges.hasNext()) {
                         Fig auxFig = (Fig) edges.next();
                         if (auxFig instanceof FigEdgeAssociationClass
-                                && auxFig.getOwner() == null)
-                        {
+                                && auxFig.getOwner() == null) {
                             lay.remove(auxFig);
                             break;
                         }
@@ -170,7 +165,7 @@ public class FigAssociationClass
     /**
      * Construct a new AssociationClass. Use the same layout as for
      * other edges.
-     * 
+     *
      * @param ed the edge
      * @param lay the layer
      */
@@ -219,9 +214,9 @@ public class FigAssociationClass
     }
 
     /**
-     * This method should be called whenever a FigAssociationClass 
+     * This method should be called whenever a FigAssociationClass
      * or a FigClassAssociationClass or a
-     * FigEdgeAssociationClass is damaged. It changes the position 
+     * FigEdgeAssociationClass is damaged. It changes the position
      * of these three Figs so that the
      * FigClassAssociationClass is the first in the Editor's layer.
      * Then the FigAssociationClass and finally the FigEdgeAssociationClass.
@@ -232,19 +227,18 @@ public class FigAssociationClass
 
             Editor editor = Globals.curEditor();
             Layer lay = editor.getLayerManager().getActiveLayer();
-            if (!lay.equals(null) 
-                    && lay instanceof LayerPerspective 
-                    && fig != null && edge != null 
-                    && lay.equals(fig.getLayer()) 
-                    && lay.equals(edge.getLayer()))
-            {
+            if (!lay.equals(null)
+                    && lay instanceof LayerPerspective
+                    && fig != null && edge != null
+                    && lay.equals(fig.getLayer())
+                    && lay.equals(edge.getLayer())) {
                 LayerPerspective layP = (LayerPerspective) lay;
                 int classFigIndex = layP.indexOf(fig);
                 int myIndex = layP.indexOf(this);
                 int edgeFigIndex = layP.indexOf(edge);
-                int minIndex = Math.min(Math.min(myIndex, classFigIndex), 
+                int minIndex = Math.min(Math.min(myIndex, classFigIndex),
                         edgeFigIndex);
-                int maxIndex = Math.max(Math.max(myIndex, classFigIndex), 
+                int maxIndex = Math.max(Math.max(myIndex, classFigIndex),
                         edgeFigIndex);
                 /* The figs have been just created */
                 if (oldMin == -1 && oldMax == -1) {
@@ -253,7 +247,7 @@ public class FigAssociationClass
                     oldMax = minIndex + 2;
                 } else if (myIndex == -1
                         || edgeFigIndex == -1
-                        || classFigIndex == -1) { 
+                        || classFigIndex == -1) {
                     ;
                 }
                 /* Everything is fine*/
@@ -265,8 +259,7 @@ public class FigAssociationClass
                 /* Class is lower but one of the edges has been moved up */
                 else if (classFigIndex < myIndex
                         && classFigIndex < edgeFigIndex
-                        && classFigIndex == oldMin)
-                {
+                        && classFigIndex == oldMin) {
                     int aux = Math.max(myIndex, edgeFigIndex);
                     if (aux == (layP.getContents().size() - 1))
                         layP.add(edge);
@@ -280,8 +273,7 @@ public class FigAssociationClass
                 /* Class has been moved down */
                 else if (classFigIndex < myIndex
                         && classFigIndex < edgeFigIndex
-                        && classFigIndex < oldMin)
-                {
+                        && classFigIndex < oldMin) {
                     layP.insertAt(edge, classFigIndex + 1);
                     layP.insertAt(this, classFigIndex + 1);
                     oldMin = classFigIndex;
@@ -291,8 +283,7 @@ public class FigAssociationClass
                 else if ((classFigIndex > myIndex
                         || classFigIndex > edgeFigIndex)
                         && minIndex == oldMin
-                        && classFigIndex <= oldMax)
-                {
+                        && classFigIndex <= oldMax) {
                     layP.insertAt(edge, minIndex);
                     layP.insertAt(this, minIndex);
                     layP.insertAt(fig, minIndex);
@@ -301,8 +292,7 @@ public class FigAssociationClass
                 else if ((classFigIndex > myIndex
                         || classFigIndex > edgeFigIndex)
                         && minIndex == oldMin
-                        && classFigIndex > oldMax)
-                {
+                        && classFigIndex > oldMax) {
                     if (classFigIndex == (layP.getContents().size() - 1))
                         layP.add(edge);
                     else
@@ -314,8 +304,7 @@ public class FigAssociationClass
                 /* Any edge has been moved deeper than the class */
                 else if ((classFigIndex > myIndex
                         || classFigIndex > edgeFigIndex)
-                        && minIndex < oldMin)
-                {
+                        && minIndex < oldMin) {
                     layP.insertAt(edge, minIndex);
                     layP.insertAt(this, minIndex);
                     layP.insertAt(fig, minIndex);

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2003 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -37,7 +37,7 @@ import org.argouml.uml.ui.UMLComboBoxModel2;
 /**
  * A model for stereotypes to handle their base class, or as it is a class from
  * the UML metamodel its metaclass.
- * 
+ *
  * @author mkl
  */
 public class UMLMetaClassComboBoxModel extends UMLComboBoxModel2 {
@@ -45,15 +45,16 @@ public class UMLMetaClassComboBoxModel extends UMLComboBoxModel2 {
     private Collection metaClasses = new ArrayList(Arrays.asList(new String[] {
         "ModelElement", "Classifier", "Class", "Interface", "DataType",
         "Exception", "Signal",
-        
+
         "Association", "AssociationEnd", "Attribute", "Operation",
         "Generalization", "Flow", "Usage", "BehavioralFeature",
-        
+
         "CallEvent", "Abstraction", "Component", "Package", "Constraint",
         "Comment", "ObjectFlowState",
-        
+
         "Model", "Subsystem", "Collaboration", "Permission", "Actor",
-        "Node", "NodeInstance", "Link" }));
+        "Node", "NodeInstance", "Link",
+    }));
 
     /**
      * Constructor.
@@ -67,8 +68,8 @@ public class UMLMetaClassComboBoxModel extends UMLComboBoxModel2 {
      * @see org.argouml.uml.ui.UMLComboBoxModel2#getSelectedModelElement()
      */
     protected Object getSelectedModelElement() {
-        if (getTarget() != null) { 
-            return ModelFacade.getBaseClass(getTarget()); 
+        if (getTarget() != null) {
+            return ModelFacade.getBaseClass(getTarget());
         }
         return null;
     }
@@ -86,5 +87,5 @@ public class UMLMetaClassComboBoxModel extends UMLComboBoxModel2 {
     protected boolean isValidElement(Object element) {
         return metaClasses.contains(element);
     }
-    
+
 }

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2003-2004 The Regents of the University of California. All
+// Copyright (c) 2003-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -31,8 +31,8 @@ import java.util.Stack;
  * A StringNamespace is a string based namespace (StringNamespaceElement)
  * object. It faciliates creation of these objects via a number of helper
  * methods.
- * 
- * @author mkl 
+ *
+ * @author mkl
  */
 public class StringNamespace implements Namespace, Cloneable {
 
@@ -42,7 +42,7 @@ public class StringNamespace implements Namespace, Cloneable {
 
     /**
      * Constructor.
-     * 
+     *
      * The empty namespace with java token by default.
      */
     public StringNamespace() {
@@ -50,7 +50,7 @@ public class StringNamespace implements Namespace, Cloneable {
 
     /**
      * empty namespace with given default token.
-     * 
+     *
      * @param theToken
      *            the scope seperator to use
      */
@@ -61,7 +61,7 @@ public class StringNamespace implements Namespace, Cloneable {
 
     /**
      * construct a namespace from an array of strings with default scope token.
-     * 
+     *
      * @param elements
      *            an array of strings which represent the namespace.
      */
@@ -71,7 +71,7 @@ public class StringNamespace implements Namespace, Cloneable {
 
     /**
      * construct a namespace from strings with given scope token.
-     * 
+     *
      * @param elements
      *            an array of strings which represent the namespace.
      * @param theToken
@@ -86,7 +86,7 @@ public class StringNamespace implements Namespace, Cloneable {
 
     /**
      * Construct a namespace from NamespaceElements with given scope token.
-     * 
+     *
      * @param elements
      *            array of NamespaceElements
      * @param theToken
@@ -103,7 +103,7 @@ public class StringNamespace implements Namespace, Cloneable {
 
     /**
      * Construct a namespace from NamespaceElements with default scope token.
-     * 
+     *
      * @param elements
      *            array of NamespaceElements
      */
@@ -200,7 +200,7 @@ public class StringNamespace implements Namespace, Cloneable {
 
     /**
      * parse a fully qualified namespace to create a Namespace object.
-     * 
+     *
      * @param fqn
      *            string representation of namespace
      * @param token
@@ -225,7 +225,7 @@ public class StringNamespace implements Namespace, Cloneable {
 
     /**
      * parse the name of a (java) class.
-     * 
+     *
      * @param c
      *            the class
      * @return the namespace object
@@ -244,7 +244,7 @@ public class StringNamespace implements Namespace, Cloneable {
     /**
      * Two namespaces are equal when they are namespaces and have the same
      * string representation.
-     * 
+     *
      * @param namespace
      *            the namespace to compare with
      * @return true if equal

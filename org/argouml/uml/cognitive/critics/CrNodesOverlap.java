@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -22,11 +22,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// File: CrNodesOverlap.java
-// Classes: CrNodesOverlap
-// Original Author: jrobbins@ics.uci.edu
-// $Id$
-
 package org.argouml.uml.cognitive.critics;
 
 import java.awt.Rectangle;
@@ -44,16 +39,17 @@ import org.tigris.gef.base.Diagram;
 import org.tigris.gef.presentation.FigNode;
 import org.tigris.gef.util.VectorSet;
 
-
-
-/** A critic to detect when a class can never have instances (of
- *  itself of any subclasses). */
-
+/**
+ * A critic to detect when a class can never have instances (of
+ * itself of any subclasses).
+ *
+ * @author jrobbins
+ */
 public class CrNodesOverlap extends CrUML {
 
     /**
      * The constructor.
-     * 
+     *
      */
     public CrNodesOverlap() {
 	// TODO: {name} is not expanded for diagram objects
@@ -75,9 +71,9 @@ public class CrNodesOverlap extends CrUML {
 	if (!(dm instanceof Diagram)) return NO_PROBLEM;
 	Diagram d = (Diagram) dm;
 
-	// fixes bug #669. Sequencediagrams always overlap, so there is 
+	// fixes bug #669. Sequencediagrams always overlap, so there is
 	// always a problem
-	if (dm 
+	if (dm
 	    instanceof UMLSequenceDiagram)
 	    return NO_PROBLEM;
 
@@ -88,7 +84,7 @@ public class CrNodesOverlap extends CrUML {
 
 
     /**
-     * @see org.argouml.cognitive.critics.Critic#toDoItem(java.lang.Object, 
+     * @see org.argouml.cognitive.critics.Critic#toDoItem(java.lang.Object,
      * org.argouml.cognitive.Designer)
      */
     public ToDoItem toDoItem(Object dm, Designer dsgr) {
@@ -131,14 +127,14 @@ public class CrNodesOverlap extends CrUML {
 		if (!(oj instanceof FigNode)) continue;
 		FigNode fnj = (FigNode) oj;
 		if (fnj.intersects(boundsi)) {
-		    if (!(d instanceof UMLDeploymentDiagram)) {   
+		    if (!(d instanceof UMLDeploymentDiagram)) {
 			if (fni instanceof FigNodeModelElement) {
 			    if (((FigNodeModelElement) fni).getEnclosingFig()
 				== fnj)
 				continue;
 			}
 			if (fnj instanceof FigNodeModelElement) {
-			    if (((FigNodeModelElement) fnj).getEnclosingFig() 
+			    if (((FigNodeModelElement) fnj).getEnclosingFig()
 				== fni)
 				continue;
 			}
@@ -150,13 +146,13 @@ public class CrNodesOverlap extends CrUML {
 		    // have to prouve only these elements.
 		    else {
 			if ((!((fni instanceof  FigClass)
-			       || (fni instanceof FigInterface) 
-			       || (fni instanceof FigObject))) 
+			       || (fni instanceof FigInterface)
+			       || (fni instanceof FigObject)))
 			    || (!((fnj instanceof  FigClass)
-				  || (fnj instanceof FigInterface) 
-				  || (fnj instanceof FigObject)))) 
+				  || (fnj instanceof FigInterface)
+				  || (fnj instanceof FigObject))))
 			    continue;
-		    }            
+		    }
 		    if (offs == null) {
 			offs = new VectorSet();
 			offs.addElement(d);

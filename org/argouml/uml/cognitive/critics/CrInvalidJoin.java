@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -22,11 +22,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// File: CrInvalidJoin.java
-// Classes: CrInvalidJoin
-// Original Author: jrobbins@ics.uci.edu
-// $Id$
-
 package org.argouml.uml.cognitive.critics;
 
 import java.util.Collection;
@@ -34,16 +29,18 @@ import org.argouml.cognitive.Designer;
 import org.argouml.model.ModelFacade;
 
 
-/** A critic to detect when a join state has the wrong number of
- *  transitions.  Implements constraint [4] on MPseudostate in the UML
- *  Semantics v1.1, pp. 104. */
-
-
+/**
+ * A critic to detect when a join state has the wrong number of
+ * transitions.  Implements constraint [4] on MPseudostate in the UML
+ * Semantics v1.1, pp. 104.
+ *
+ * @author jrobbins
+ */
 public class CrInvalidJoin extends CrUML {
 
     /**
      * The constructor.
-     * 
+     *
      */
     public CrInvalidJoin() {
 	setHeadline("Change Join Transitions");

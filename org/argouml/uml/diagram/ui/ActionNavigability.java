@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2001 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -40,12 +40,12 @@ public class ActionNavigability extends UMLAction {
      * Enumeration constant for <code>BIDIRECTIONAL</code> navigability.
      */
     public static final int BIDIRECTIONAL = 0;
-    
+
     /**
      * Enumeration constant for <code>STARTTOEND</code> navigability.
      */
     public static final int STARTTOEND = 1;
-    
+
     /**
      * Enumeration constant for <code>ENDTOSTART</code> navigability.
      */
@@ -78,13 +78,13 @@ public class ActionNavigability extends UMLAction {
     }
 
     /**
-     * Build a description string from the given association ends, 
+     * Build a description string from the given association ends,
      * and the navigability.
-     * 
+     *
      * @param assocStart association end 1
      * @param assocEnd   association end 2
      * @param nav        the navigability
-     * @return           the string containing a human-readible indication 
+     * @return           the string containing a human-readible indication
      *                   of the navigability
      */
     private static String getDescription(Object assocStart,
@@ -108,12 +108,12 @@ public class ActionNavigability extends UMLAction {
     }
 
     /**
-     * The constructor. 
-     * 
+     * The constructor.
+     *
      * @param label   the description as build in <code>getDescription</code>
      * @param theAssociationStart association end 1
      * @param theAssociationEnd   association end 2
-     * @param theNavigability     the navigability: one of 
+     * @param theNavigability     the navigability: one of
      *                            BIDIRECTIONAL, STARTTOEND, ENDTOSTART
      */
     protected ActionNavigability(String label,
@@ -133,9 +133,9 @@ public class ActionNavigability extends UMLAction {
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent ae) {
-	ModelFacade.setNavigable(assocStart, 
+	ModelFacade.setNavigable(assocStart,
 	        (nav == BIDIRECTIONAL || nav == ENDTOSTART));
-        ModelFacade.setNavigable(assocEnd,   
+        ModelFacade.setNavigable(assocEnd,
                 (nav == BIDIRECTIONAL || nav == STARTTOEND));
     }
 

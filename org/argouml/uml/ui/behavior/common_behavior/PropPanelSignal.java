@@ -45,59 +45,59 @@ import org.argouml.util.ConfigLoader;
 
 /**
  * The properties panel of a Signal.
- * 
+ *
  */
 public class PropPanelSignal extends PropPanelModelElement {
 
     /**
      * The constructor.
-     * 
+     *
      */
     public PropPanelSignal() {
-        super("Signal", lookupIcon("SignalSending"), 
+        super("Signal", lookupIcon("SignalSending"),
                 ConfigLoader.getTabPropsOrientation());
 
-        addField(Translator.localize("label.name"), 
+        addField(Translator.localize("label.name"),
                 getNameTextField());
-        addField(Translator.localize("label.stereotype"), 
+        addField(Translator.localize("label.stereotype"),
                 getStereotypeBox());
-        addField(Translator.localize("label.namespace"), 
+        addField(Translator.localize("label.namespace"),
                 getNamespaceComboBox());
 
         addSeperator();
 
-        AbstractActionAddModelElement action = 
+        AbstractActionAddModelElement action =
             new ActionAddContextSignal();
         JScrollPane operationScroll = new JScrollPane(
                 new UMLMutableLinkedList(
-                        new UMLSignalContextListModel(), 
+                        new UMLSignalContextListModel(),
                         action, null, null, true));
-        addField(Translator.localize("label.contexts"), 
+        addField(Translator.localize("label.contexts"),
                 operationScroll);
 
         addButton(new PropPanelButton2(new ActionNavigateNamespace()));
-        addButton(new PropPanelButton2(new ActionNewSignal(), 
+        addButton(new PropPanelButton2(new ActionNewSignal(),
                 lookupIcon("SignalSending")));
-        addButton(new PropPanelButton2(new ActionNewStereotype(), 
+        addButton(new PropPanelButton2(new ActionNewStereotype(),
                 lookupIcon("Stereotype")));
-        addButton(new PropPanelButton2(new ActionRemoveFromModel()));   
+        addButton(new PropPanelButton2(new ActionRemoveFromModel()));
     }
 
     /**
-     * Create a new Signal. 
+     * Create a new Signal.
      */
-    private class ActionNewSignal 
+    private class ActionNewSignal
         extends AbstractActionNewModelElement {
-        
+
         /**
          * The constructor.
          */
         public ActionNewSignal() {
             super("button.new-signal");
-            putValue(Action.NAME, 
+            putValue(Action.NAME,
                     Translator.localize("button.new-signal"));
         }
-        
+
         /**
          * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
          */
@@ -107,14 +107,14 @@ public class PropPanelSignal extends PropPanelModelElement {
                 Object ns = ModelFacade.getNamespace(target);
                 if (ns != null) {
                     Object newSig = Model.getCommonBehaviorFactory()
-                        .createSignal(); 
+                        .createSignal();
                     ModelFacade.addOwnedElement(ns, newSig);
                     TargetManager.getInstance().setTarget(newSig);
                     super.actionPerformed(e);
                 }
             }
         }
-    }   
+    }
 
-    
+
 } /* end class PropPanelSignal */

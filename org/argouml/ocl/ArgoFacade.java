@@ -40,9 +40,9 @@ import tudresden.ocl.check.types.Type;
 import tudresden.ocl.check.types.Type2;
 
 /**
- * Provides a facade of the ArgoUml uml model for the OCL compiler.
+ * Provides a facade of the ArgoUml uml model for the OCL compiler.<p>
  *
- * <p>Note: 
+ * Note:
  * In this file we have two different Collections active:
  * java.util.Collection and tudresden.ocl.check.types.Collection. Be
  * sure to explicitly specify what you mean every time.
@@ -169,15 +169,15 @@ class ArgoAny implements Any, Type2 {
 	    Object ae = asciter.next(); //MAssociationEnd
 	    if (ModelFacade.getName(ae) != null
 		&& name.equals(ModelFacade.getName(ae))) {
-                    
+
 		foundAssocType = ModelFacade.getType(ae);
 	    } else if (ModelFacade.getName(ae) == null
 		       || ModelFacade.getName(ae).equals("")) {
-                           
+
 		String oppositeName =
 		    ModelFacade.getName(ModelFacade.getType(ae));
 		if (oppositeName != null) {
-                    
+
 		    String lowerOppositeName =
 			oppositeName.substring(0, 1).toLowerCase();
 		    lowerOppositeName += oppositeName.substring(1);
@@ -190,13 +190,13 @@ class ArgoAny implements Any, Type2 {
 		Object multiplicity = ModelFacade.getMultiplicity(ae);
 		if (multiplicity != null
 		    && (ModelFacade.getUpper(multiplicity) > 1
-			|| ModelFacade.getUpper(multiplicity) 
+			|| ModelFacade.getUpper(multiplicity)
                            == -1)) {
 		    // to do: think about the condition of this if-statement
 		    // ordered association end -> Sequence; otherwise -> Set
                     Object stereotype = null;
                     if (ModelFacade.getStereotypes(ae).size() > 0) {
-                        stereotype = 
+                        stereotype =
                             ModelFacade.getStereotypes(ae).iterator().next();
                     }
 		    if (stereotype != null
@@ -211,7 +211,7 @@ class ArgoAny implements Any, Type2 {
 	}
 
 	if (foundAssocType != null && foundAttribType != null) {
-	    throw new OclTypeException("cannot access feature " + name 
+	    throw new OclTypeException("cannot access feature " + name
 				       + " of classifier " + toString()
 				       + " because both an attribute and "
 				       + "an association end of this name "
@@ -291,9 +291,9 @@ class ArgoAny implements Any, Type2 {
 	}
 
 	if (foundOp == null) {
-	    throw new OclTypeException("operation " + name 
+	    throw new OclTypeException("operation " + name
 				       + " not found in classifier "
-				       + toString()); 
+				       + toString());
 	}
 
 	if (fCheckIsQuery) {

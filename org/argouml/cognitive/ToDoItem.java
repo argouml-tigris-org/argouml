@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -36,19 +36,19 @@ import org.tigris.gef.util.VectorSet;
 
 
 /**
- *  This class defines the feedback items that can be placed on the
- *  Designer's ToDoList.  The main point of a ToDoItem is to inform
- *  the Designer of some problem or open design issue.  Additional
- *  information in the ToDoItem helps put the designer in a mental
- *  context suitable for resolving the issue: ToDoItem's are well tied
- *  into the design and design process so that the Designer can see
- *  which design material's are the subject of this ToDoItem, and which
- *  Critic raised it.  The expert email address helps connect the
- *  designer with the organizational context.  The more info URL helps
- *  provide background knowledge of the domain. In the future
- *  ToDoItems will include ties back to the design rationale log.
- *  Also the run-time system needs to know who posted each ToDoItem so
- *  that it can automatically remove it if it is no longer valid. 
+ * This class defines the feedback items that can be placed on the
+ * Designer's ToDoList.  The main point of a ToDoItem is to inform
+ * the Designer of some problem or open design issue.  Additional
+ * information in the ToDoItem helps put the designer in a mental
+ * context suitable for resolving the issue: ToDoItem's are well tied
+ * into the design and design process so that the Designer can see
+ * which design material's are the subject of this ToDoItem, and which
+ * Critic raised it.  The expert email address helps connect the
+ * designer with the organizational context.  The more info URL helps
+ * provide background knowledge of the domain. In the future
+ * ToDoItems will include ties back to the design rationale log.
+ * Also the run-time system needs to know who posted each ToDoItem so
+ * that it can automatically remove it if it is no longer valid.
  */
 public class ToDoItem implements Serializable, WizardItem {
 
@@ -58,12 +58,12 @@ public class ToDoItem implements Serializable, WizardItem {
      * The highest priority todoitem of 3 levels.
      */
     public static final int HIGH_PRIORITY = 1;
-    
+
     /**
      * The medium priority todoitem of 3 levels.
      */
     public static final int MED_PRIORITY = 2;
-    
+
     /**
      * The lowest priority todoitem of 3 levels.
      */
@@ -87,10 +87,14 @@ public class ToDoItem implements Serializable, WizardItem {
      */
     private int thePriority;
 
-    /** One paragraph description of the issue. */
+    /**
+     * One paragraph description of the issue.
+     */
     private String theDescription;
 
-    /** URL for background (textbook?) knowledge about the domain. */
+    /**
+     * URL for background (textbook?) knowledge about the domain.
+     */
     private String theMoreInfoURL;
 
     /**
@@ -108,7 +112,7 @@ public class ToDoItem implements Serializable, WizardItem {
     // constructors
     /**
      * The constructor.
-     * 
+     *
      * @param poster the poster
      * @param h the headline
      * @param p the priority
@@ -116,7 +120,7 @@ public class ToDoItem implements Serializable, WizardItem {
      * @param m the more info url
      * @param offs the offenders
      */
-    public ToDoItem(Poster poster, String h, int p, String d, String m, 
+    public ToDoItem(Poster poster, String h, int p, String d, String m,
 		    VectorSet offs) {
 	thePoster = poster;
 	theHeadline = h;
@@ -128,7 +132,7 @@ public class ToDoItem implements Serializable, WizardItem {
 
     /**
      * The constructor.
-     * 
+     *
      * @param poster the poster
      * @param h the headline
      * @param p the priority
@@ -146,7 +150,7 @@ public class ToDoItem implements Serializable, WizardItem {
 
     /**
      * The constructor.
-     * 
+     *
      * @param c the poster (critic)
      * @param dm the offenders
      * @param dsgr the designer
@@ -163,7 +167,7 @@ public class ToDoItem implements Serializable, WizardItem {
 
     /**
      * The constructor.
-     * 
+     *
      * @param c the poster (critic)
      * @param offs the offenders
      * @param dsgr the designer
@@ -182,7 +186,7 @@ public class ToDoItem implements Serializable, WizardItem {
 
     /**
      * The constructor.
-     * 
+     *
      * @param c the poster (critic)
      */
     public ToDoItem(Critic c) {
@@ -208,17 +212,17 @@ public class ToDoItem implements Serializable, WizardItem {
      */
     public String getHeadline() {
 	if (cachedExpandedHeadline == null) {
-	    cachedExpandedHeadline = 
+	    cachedExpandedHeadline =
 	        thePoster.expand(theHeadline, theOffenders);
 	}
 	return cachedExpandedHeadline;
     }
 
     /**
-     * @param h the headline 
+     * @param h the headline
      */
-    public void setHeadline(String h) { 
-	theHeadline = h; 
+    public void setHeadline(String h) {
+	theHeadline = h;
 	cachedExpandedHeadline = null;
     }
 
@@ -227,12 +231,12 @@ public class ToDoItem implements Serializable, WizardItem {
      */
     public String getDescription() {
 	if (cachedExpandedDescription == null) {
-	    cachedExpandedDescription = 
+	    cachedExpandedDescription =
 		thePoster.expand(theDescription, theOffenders);
 	}
 	return cachedExpandedDescription;
     }
-  
+
     /**
      * @param d the description
      */
@@ -245,7 +249,7 @@ public class ToDoItem implements Serializable, WizardItem {
      * @return the more-info-url
      */
     public String getMoreInfoURL() { return theMoreInfoURL; }
-  
+
     /**
      * @param m the more-info-url
      */
@@ -262,7 +266,7 @@ public class ToDoItem implements Serializable, WizardItem {
     public void setPriority(int p) { thePriority = p; }
 
     /**
-     * @return the wizard progress. An integer between 0 and 100, 
+     * @return the wizard progress. An integer between 0 and 100,
      *         shows percent done.
      */
     public int getProgress() {
@@ -272,41 +276,41 @@ public class ToDoItem implements Serializable, WizardItem {
 	return 0;
     }
 
-    /** 
+    /**
      * Reply a Set of design material's that are the subject of this ToDoItem.
-     * 
+     *
      * @return the offenders
      */
-    public VectorSet getOffenders() { 
+    public VectorSet getOffenders() {
         return theOffenders;
     }
-    
-    /** 
+
+    /**
      * Set the designmatial that is subject of this ToDoItem.
-     * 
+     *
      * @param offenders the offenders
      */
     public void setOffenders(VectorSet offenders) {
         theOffenders = offenders;
     }
 
-    /** 
+    /**
      * Reply the Critic or Designer that posted this ToDoItem.
-     * 
+     *
      * @return the poster
      */
     public Poster getPoster() { return thePoster; }
 
-    /** 
+    /**
      * Find the email address of the poster.
-     * 
+     *
      * @return the email address
      */
     public String getExpertEmail() { return thePoster.getExpertEmail(); }
 
-    /** 
+    /**
      * Return a clarifier object that can graphical highlight this
-     * error in a design diagram. Return a clarifier for this todoitem, 
+     * error in a design diagram. Return a clarifier for this todoitem,
      * if not found by the poster, or null.
      *
      * @return an Icon or null if none found.
@@ -350,7 +354,7 @@ public class ToDoItem implements Serializable, WizardItem {
     public boolean supports(Goal g) {
 	return getPoster().supports(g);
     }
-  
+
     /**
      * @see java.lang.Object#hashCode()
      */
@@ -397,8 +401,10 @@ public class ToDoItem implements Serializable, WizardItem {
     ////////////////////////////////////////////////////////////////
     // user interface
 
-    /** When a ToDoItem is selected in the UiToDoList window, highlight
-     *  the "offending" design material's. */
+    /**
+     * When a ToDoItem is selected in the UiToDoList window, highlight
+     * the "offending" design material's.
+     */
     public void select() {
 	Enumeration offs = getOffenders().elements();
 	while (offs.hasMoreElements()) {
@@ -409,8 +415,10 @@ public class ToDoItem implements Serializable, WizardItem {
 	}
     }
 
-    /** When a ToDoItem is deselected in the UiToDoList window,
-     *  unhighlight the "offending" design material's. */
+    /**
+     * When a ToDoItem is deselected in the UiToDoList window,
+     * unhighlight the "offending" design material's.
+     */
     public void deselect() {
 	Enumeration offs = getOffenders().elements();
 	while (offs.hasMoreElements()) {
@@ -421,14 +429,18 @@ public class ToDoItem implements Serializable, WizardItem {
 	}
     }
 
-    /** The user has double-clicked or otherwise indicated that they
-     *  want to do something active with this item. By default, just
-     *  re-select it, subclasses may choose to do more (e.g., navigate to
-     *  the offending item if it is not visible). */
+    /**
+     * The user has double-clicked or otherwise indicated that they
+     * want to do something active with this item. By default, just
+     * re-select it, subclasses may choose to do more (e.g., navigate to
+     * the offending item if it is not visible).
+     */
     public void action() { deselect(); select(); }
 
-    /** Notify the user interface that this ToDoItem has
-     *  changed. Currently, this is used to update the progress bar. */
+    /**
+     * Notify the user interface that this ToDoItem has
+     * changed. Currently, this is used to update the progress bar.
+     */
     public void changed() {
 	ToDoList list = Designer.theDesigner().getToDoList();
 	list.fireToDoItemChanged(this);
@@ -438,31 +450,35 @@ public class ToDoItem implements Serializable, WizardItem {
     ////////////////////////////////////////////////////////////////
     // issue resolutions
 
-    /** Some problems can be automatically fixed, ask the Critic to do
-     *  it if it can. <p> */
+    /**
+     * Some problems can be automatically fixed, ask the Critic to do
+     * it if it can. <p>
+     */
     public void fixIt() { thePoster.fixIt(this, null); }
 
-    /** 
+    /**
      * Some problems can be automatically fixed, ask the Critic to do
-     * it if it can. 
-     * 
+     * it if it can.
+     *
      * @return true if the critic can automatically fix the problem
      */
     public boolean canFixIt() { return thePoster.canFixIt(this); }
 
-    /** TODO: this is not done yet. Eventually this will also
-     *  feed the rational log. */
+    /**
+     * TODO: this is not done yet. Eventually this will also
+     * feed the rational log.
+     */
     //   public void resolve(Object reason) {
     //     ToDoList list = Designer.theDesigner().getToDoList();
     //     list.resolve(this, reason);
     //   }
 
-    /** 
+    /**
      * Reply true iff this ToDoItem should be kept on the Designer's
      * ToDoList. This should return false if the poster has been
      * deactivated, or if it can be determined that the problem that
      * raised this issue is no longer present.
-     *  
+     *
      * @param d the given designer
      * @return true if the todoitem is still valid
      */
@@ -470,20 +486,20 @@ public class ToDoItem implements Serializable, WizardItem {
 	if (thePoster == null) {
 	    return true;
 	}
-	if (theWizard != null && theWizard.isStarted() 
+	if (theWizard != null && theWizard.isStarted()
 	        && !theWizard.isFinished()) {
 	    return true;
 	}
 	return thePoster.stillValid(this, d);
     }
 
-    /** 
+    /**
      * Reply a string for debugging.
-     * 
+     *
      * @see java.lang.Object#toString()
      */
     public String toString() {
-	return this.getClass().getName() 
+	return this.getClass().getName()
 	    + "(" + getHeadline() + ") on " + getOffenders().toString();
     }
 

@@ -37,24 +37,24 @@ import org.argouml.uml.ui.AbstractActionNewModelElement;
 public class ActionNewModelElementConstraint
     extends AbstractActionNewModelElement {
 
-    private static final ActionNewModelElementConstraint SINGLETON = 
+    private static final ActionNewModelElementConstraint SINGLETON =
         new ActionNewModelElementConstraint();
-    
+
     /**
      * Constructor for ActionNewModelElementConstraint.
      */
     protected ActionNewModelElementConstraint() {
         super();
     }
-    
-    
+
+
 
     /**
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent e) {
         super.actionPerformed(e);
-        Model.getCoreFactory().buildConstraint(/*(MModelElement)*/ 
+        Model.getCoreFactory().buildConstraint(/*(MModelElement)*/
                 getTarget());
     }
 

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -39,11 +39,11 @@ import org.argouml.cognitive.ToDoList;
  *
  */
 public class GoListToDecisionsToItems extends AbstractGoList {
-  
+
     ////////////////////////////////////////////////////////////////
     // TreeModel implementation
-  
- 
+
+
     /**
      * @see javax.swing.tree.TreeModel#getChild(java.lang.Object, int)
      */
@@ -67,7 +67,7 @@ public class GoListToDecisionsToItems extends AbstractGoList {
 	throw new IndexOutOfBoundsException("getChild shouldn't get here "
 					    + "GoListToDecisionsToItems");
     }
-  
+
     private int getChildCountCond(Object parent, boolean stopafterone) {
 	if (parent instanceof ToDoList) {
 	    return getDecisions().size();
@@ -86,14 +86,14 @@ public class GoListToDecisionsToItems extends AbstractGoList {
 	}
 	return 0;
     }
-  
+
     /**
      * @see javax.swing.tree.TreeModel#getChildCount(java.lang.Object)
      */
     public int getChildCount(Object parent) {
         return getChildCountCond(parent, false);
     }
-    
+
     /**
      * @param parent the object to check its offspring
      * @return the nr of children
@@ -101,10 +101,10 @@ public class GoListToDecisionsToItems extends AbstractGoList {
     private boolean hasChildren(Object parent) {
         return getChildCountCond(parent, true) > 0;
     }
-      
-  
+
+
     /**
-     * @see javax.swing.tree.TreeModel#getIndexOfChild(java.lang.Object, 
+     * @see javax.swing.tree.TreeModel#getIndexOfChild(java.lang.Object,
      * java.lang.Object)
      */
     public int getIndexOfChild(Object parent, Object child) {
@@ -141,12 +141,12 @@ public class GoListToDecisionsToItems extends AbstractGoList {
      * javax.swing.tree.TreePath, java.lang.Object)
      */
     public void valueForPathChanged(TreePath path, Object newValue) { }
-    
+
     /**
      * @see javax.swing.tree.TreeModel#addTreeModelListener(javax.swing.event.TreeModelListener)
      */
     public void addTreeModelListener(TreeModelListener l) { }
-    
+
     /**
      * @see javax.swing.tree.TreeModel#removeTreeModelListener(javax.swing.event.TreeModelListener)
      */
@@ -161,8 +161,8 @@ public class GoListToDecisionsToItems extends AbstractGoList {
     public Vector getDecisions() {
 	return Designer.theDesigner().getDecisionModel().getDecisions();
     }
-  
 
 
-  
+
+
 } /* end class GoListToDecisionsToItems */

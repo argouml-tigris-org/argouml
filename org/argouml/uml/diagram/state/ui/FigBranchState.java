@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2004 The Regents of the University of California. All
+// Copyright (c) 2004-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -22,10 +22,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-//File: FigBranchState.java
-//Classes: FigBranchState
-//Author: pepargouml@yahoo.es
-
 package org.argouml.uml.diagram.state.ui;
 
 import java.awt.Color;
@@ -37,9 +33,10 @@ import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.FigCircle;
 //import org.tigris.gef.presentation.FigPoly;
 
-/** 
- * Class to display graphics for a UML Choice State in a diagram. 
- * 
+/**
+ * Class to display graphics for a UML Choice State in a diagram.
+ *
+ * @author pepargouml
  */
 public class FigBranchState extends FigStateVertex {
 
@@ -98,7 +95,7 @@ public class FigBranchState extends FigStateVertex {
     ////////////////////////////////////////////////////////////////
     // Fig accessors
 
-    /** Choice states are fixed size. 
+    /** Choice states are fixed size.
      * @see org.tigris.gef.presentation.Fig#isResizable()
      */
     public boolean isResizable() {
@@ -171,7 +168,7 @@ public class FigBranchState extends FigStateVertex {
 
     /**
      * Block any textentry on the diagram - there is nothing to edit!
-     * 
+     *
      * @see java.awt.event.KeyListener#keyPressed(java.awt.event.KeyEvent)
      */
     public void keyPressed(KeyEvent ke) {

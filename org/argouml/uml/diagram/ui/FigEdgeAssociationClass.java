@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -22,10 +22,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// File: FigEdgeAssociationClass.java
-// Classes: FigEdgeAssociationClass
-// Original Author: pepargouml@yahoo.es
-
 package org.argouml.uml.diagram.ui;
 
 import java.awt.event.KeyListener;
@@ -45,6 +41,8 @@ import org.tigris.gef.presentation.FigPoly;
  * Class to display a connection linking the class and the
  * association in a Association Class
  * It must be used only from a FigAssociationClass
+ *
+ * @author pepargouml
  */
 public class FigEdgeAssociationClass
         extends FigEdgeModelElement
@@ -66,13 +64,13 @@ public class FigEdgeAssociationClass
      */
     public FigEdgeAssociationClass() {
         setBetweenNearestPoints(true);
-        ( (FigPoly) _fig).setRectilinear(false);
+        ((FigPoly) _fig).setRectilinear(false);
         setDashed(true);
     }
 
     /**
      * The constructor for the AssociationClass fig.
-     * 
+     *
      * @param fromFig the fig where we started
      * @param toFig the fig where we ended
      * @param ownerFig the owner fig
@@ -85,7 +83,7 @@ public class FigEdgeAssociationClass
                     + "creating FigEdgeAssociationClass");
         }
         mainFig = ownerFig;
-        setDestFigNode( (FigNode) toFig);
+        setDestFigNode((FigNode) toFig);
         setDestPortFig(toFig);
         setSourcePortFig(fromFig);
         computeRoute();

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -33,14 +33,14 @@ import org.argouml.uml.ui.UMLCheckBox2;
  * @since Jan 29, 2003
  */
 public class UMLStructuralFeatureTargetScopeCheckBox extends UMLCheckBox2 {
-    
+
 
     /**
      * Constructor for UMLStructuralFeatureTargetScopeCheckBox.
      */
     public UMLStructuralFeatureTargetScopeCheckBox() {
-        super(Translator.localize("label.classifier"), 
-	      ActionSetStructuralFeatureTargetScope.getInstance(), 
+        super(Translator.localize("label.classifier"),
+	      ActionSetStructuralFeatureTargetScope.getInstance(),
 	      "targetScope");
     }
 
@@ -50,7 +50,7 @@ public class UMLStructuralFeatureTargetScopeCheckBox extends UMLCheckBox2 {
     public void buildModel() {
         // repair action for possible NP after load
         if (ModelFacade.getTargetScope(getTarget()) == null) {
-            ModelFacade.setTargetScope(getTarget(), 
+            ModelFacade.setTargetScope(getTarget(),
                     ModelFacade.INSTANCE_SCOPEKIND);
         }
         setSelected(ModelFacade.getTargetScope(getTarget()).equals(

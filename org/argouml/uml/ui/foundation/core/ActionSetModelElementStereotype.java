@@ -39,7 +39,7 @@ import org.argouml.uml.ui.UMLComboBox2;
  */
 public class ActionSetModelElementStereotype extends UMLAction {
 
-    private static final ActionSetModelElementStereotype SINGLETON = 
+    private static final ActionSetModelElementStereotype SINGLETON =
         new ActionSetModelElementStereotype();
 
     /**
@@ -48,7 +48,7 @@ public class ActionSetModelElementStereotype extends UMLAction {
     protected ActionSetModelElementStereotype() {
         super(Translator.localize("Set"), true, NO_ICON);
     }
-   
+
     /**
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
@@ -59,7 +59,7 @@ public class ActionSetModelElementStereotype extends UMLAction {
         Object target = null;
         if (source instanceof UMLComboBox2) {
             UMLComboBox2 combo = (UMLComboBox2) source;
-            if (ModelFacade.isAStereotype(combo.getSelectedItem())) 
+            if (ModelFacade.isAStereotype(combo.getSelectedItem()))
                 newStereo = /*(MStereotype)*/ combo.getSelectedItem();
             if (ModelFacade.isAModelElement(combo.getTarget())) {
                 target = /*(MModelElement)*/ combo.getTarget();
@@ -91,7 +91,7 @@ public class ActionSetModelElementStereotype extends UMLAction {
     public static ActionSetModelElementStereotype getInstance() {
         return SINGLETON;
     }
-            
-    
+
+
 
 }

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -36,8 +36,7 @@ import org.argouml.model.ModelFacade;
    This class handles information during the replacement of code
    pieces. One parse state for each classifier handled.
 */
-public class ParseState
-{
+public class ParseState {
     /** The current namespace. */
     private Object namespace;
 
@@ -60,7 +59,7 @@ public class ParseState
             this.mClassifier = handle;
             namespace = handle;
             newFeatures = new Vector(ModelFacade.getFeatures(mClassifier));
-            newInnerClasses = 
+            newInnerClasses =
                 new Vector(ModelFacade.getOwnedElements(mClassifier));
         } else {
             this.mClassifier = null;
@@ -76,8 +75,7 @@ public class ParseState
        @param name The name of the classifier.
        @return The new classifier.
      */
-    public Object newClassifier(String name)
-    {
+    public Object newClassifier(String name) {
 	Object mc = ModelFacade.lookupIn(namespace, name);
 	if (mc != null) {
 	    newInnerClasses.remove(mc);
@@ -109,8 +107,7 @@ public class ParseState
      *
      * @return all features not in the source
      */
-    public Vector getNewFeatures()
-    {
+    public Vector getNewFeatures() {
 	return new Vector(newFeatures);
     }
 
@@ -119,8 +116,7 @@ public class ParseState
      *
      * @return all inner classes not in the source
      */
-    public Vector getNewInnerClasses()
-    {
+    public Vector getNewInnerClasses() {
 	return new Vector(newInnerClasses);
     }
 
@@ -138,8 +134,7 @@ public class ParseState
      *
      * @return the association ends
      */
-    public Vector getAssociationEnds()
-    {
+    public Vector getAssociationEnds() {
         Vector result = new Vector();
         if (mClassifier == null)
             return result;

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -44,7 +44,7 @@ import org.argouml.i18n.Translator;
 import org.tigris.gef.base.CmdPaste;
 import org.tigris.gef.base.Globals;
 
-/** 
+/**
  * Action to paste the content of either the GEF clipboard or the
  * system clipboard.  The action is enabled if there is content on
  * either clipboard AND either the mouse hovers over the JGraph (the
@@ -119,10 +119,10 @@ public class ActionPaste
                 textSource.paste();
             }
         }
-              
+
     }
 
-    
+
 
     private boolean isSystemClipBoardEmpty() {
         //      if there is a selection on the clipboard
@@ -136,12 +136,12 @@ public class ActionPaste
 	} catch (UnsupportedFlavorException ignorable) {
 	}
 	return true;
-    }    
+    }
 
     /**
      * @see java.awt.event.FocusListener#focusLost(java.awt.event.FocusEvent)
      */
-    public void focusLost(FocusEvent e) {        
+    public void focusLost(FocusEvent e) {
         if (e.getSource() == textSource) textSource = null;
     }
 

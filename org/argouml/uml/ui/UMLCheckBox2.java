@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2002-2004 The Regents of the University of California. All
+// Copyright (c) 2002-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -39,12 +39,12 @@ import ru.novosoft.uml.MElementListener;
 
 /**
  * The checkbox to be used to show boolean attributes in the GUI's. Mostly used
- * on proppanels. The other new GUI elements (like UMLLinkedList) divide the 
- * responsibility of showing an attribute and maintaining the state of the 
- * attribute between a GUI element and a model. This is not the case for the 
+ * on proppanels. The other new GUI elements (like UMLLinkedList) divide the
+ * responsibility of showing an attribute and maintaining the state of the
+ * attribute between a GUI element and a model. This is not the case for the
  * UMLCheckBox2. Reason for this is that the model is just to simple to allow
- * extra classes for the model. 
- * 
+ * extra classes for the model.
+ *
  * @since Oct 12, 2002
  * @author jaap.branderhorst@xs4all.nl
  */
@@ -54,7 +54,7 @@ public abstract class UMLCheckBox2
 
     private Object checkBoxTarget;
     private String propertySetName;
-    
+
     /**
      * Constructor for UMLCheckBox2.
      * @param text the text of the check box
@@ -133,10 +133,10 @@ public abstract class UMLCheckBox2
     public void setTarget(Object target) {
         target = target instanceof Fig ? ((Fig) target).getOwner() : target;
         if (ModelFacade.isABase(checkBoxTarget)) {
-            UmlModelEventPump.getPump().removeModelEventListener(this, 
+            UmlModelEventPump.getPump().removeModelEventListener(this,
                     checkBoxTarget, propertySetName);
         }
-       
+
         if (ModelFacade.isABase(target)) {
             checkBoxTarget = target;
 	    // UmlModelEventPump.getPump()
@@ -146,16 +146,16 @@ public abstract class UMLCheckBox2
 		.addModelEventListener(this, checkBoxTarget, propertySetName);
             buildModel();
         }
-            
+
     }
-    
+
     /**
      * Builds the model. That is: it sets the checkbox to true or
      * false. The name of this method is choosen to be compliant with
      * for example UMLModelElementListModel2.
      */
     public abstract void buildModel();
-       
+
 
     /**
      * @see TargetListener#targetAdded(TargetEvent)

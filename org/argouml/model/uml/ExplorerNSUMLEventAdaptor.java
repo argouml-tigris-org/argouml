@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -24,7 +24,6 @@
 
 package org.argouml.model.uml;
 
-
 import ru.novosoft.uml.MElementEvent;
 import ru.novosoft.uml.MElementListener;
 
@@ -41,9 +40,9 @@ import org.argouml.model.ModelFacade;
 public class ExplorerNSUMLEventAdaptor
     extends PropertyChangeSupport
     implements MElementListener {
-    
+
     private static ExplorerNSUMLEventAdaptor instance;
-    
+
     /**
      * @return the ExplorerNSUMLEventAdaptor
      */
@@ -53,13 +52,13 @@ public class ExplorerNSUMLEventAdaptor
 	}
 	return instance;
     }
-    
+
     /** Creates a new instance of ExplorerUMLEventAdaptor */
     private ExplorerNSUMLEventAdaptor() {
         // PropertyChangeSupport needs a source object
         super(UmlModelEventPump.getPump());
     }
-    
+
     /**
      * fires a umlModelStructureChanged event.
      *
@@ -91,7 +90,7 @@ public class ExplorerNSUMLEventAdaptor
             || e.getRemovedValue() != null
             || (e.getNewValue() != null
                 && !e.getNewValue().equals(e.getOldValue()))) {
-            
+
 	    firePropertyChanged("modelElementChanged", e.getSource());
         }
 
@@ -181,15 +180,14 @@ public class ExplorerNSUMLEventAdaptor
         }
 
     }
-    
+
     // ------- property change events ----------
 
     /**
      * source of the model element changed translates to the new value.
      */
     private void firePropertyChanged(String propertyName,
-				     Object source) 
-    {
+				     Object source) {
         PropertyChangeEvent pce = new PropertyChangeEvent(
                             this,
                             propertyName,

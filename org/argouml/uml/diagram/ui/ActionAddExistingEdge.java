@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -37,7 +37,7 @@ import org.tigris.gef.graph.MutableGraphModel;
 * ActionAddExistingEdge enables pasting of an existing edge into a Diagram.
 */
 public class ActionAddExistingEdge extends UMLAction {
-    
+
     private Object edge = null;
 
     /**
@@ -49,10 +49,10 @@ public class ActionAddExistingEdge extends UMLAction {
     public ActionAddExistingEdge(String name, Object edgeObject) {
         super(name, true, NO_ICON);
         edge = edgeObject;
-        
+
     }
 
-    
+
 
     /**
      * @see java.awt.event.ActionListener#actionPerformed(ActionEvent)

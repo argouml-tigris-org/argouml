@@ -70,12 +70,13 @@ public class DeploymentDiagramGraphModel extends UMLMutableGraphSupport
      */
     public Object getNamespace() { return model; }
 
-    /** set the homemodel. 
-     * 
+    /**
+     * Set the homemodel.
+     *
      * @param namespace the namespace
      */
     public void setNamespace(Object namespace) {
-        
+
         if (!ModelFacade.isANamespace(namespace))
             throw new IllegalArgumentException();
 	model = namespace;
@@ -85,7 +86,8 @@ public class DeploymentDiagramGraphModel extends UMLMutableGraphSupport
     // GraphModel implementation
 
 
-    /** Return all ports on node or edge 
+    /**
+     * Return all ports on node or edge.
      *
      * @see org.tigris.gef.graph.GraphModel#getPorts(java.lang.Object)
      */
@@ -95,19 +97,19 @@ public class DeploymentDiagramGraphModel extends UMLMutableGraphSupport
         if (ModelFacade.isANodeInstance(nodeOrEdge)) {
 	    res.addElement(nodeOrEdge);
         }
-    
+
 	if (ModelFacade.isAComponent(nodeOrEdge)) res.addElement(nodeOrEdge);
 	if (ModelFacade.isAComponentInstance(nodeOrEdge)) {
 	    res.addElement(nodeOrEdge);
         }
-        if (ModelFacade.isAClass(nodeOrEdge)) res.addElement(nodeOrEdge);    
+        if (ModelFacade.isAClass(nodeOrEdge)) res.addElement(nodeOrEdge);
         if (ModelFacade.isAInterface(nodeOrEdge)) res.addElement(nodeOrEdge);
         if (ModelFacade.isAObject(nodeOrEdge)) res.addElement(nodeOrEdge);
         return res;
     }
 
-    /** Return the node or edge that owns the given port 
-     *    
+    /** Return the node or edge that owns the given port
+     *
      * @see org.tigris.gef.graph.BaseGraphModel#getOwner(java.lang.Object)
      */
     public Object getOwner(Object port) {
@@ -115,8 +117,9 @@ public class DeploymentDiagramGraphModel extends UMLMutableGraphSupport
     }
 
 
-    /** Return all edges going to given port 
-     * 
+    /**
+     * Return all edges going to given port.
+     *
      * @see org.tigris.gef.graph.GraphModel#getInEdges(java.lang.Object)
      */
     public List getInEdges(Object port) {
@@ -151,7 +154,7 @@ public class DeploymentDiagramGraphModel extends UMLMutableGraphSupport
 	}
 	if (ModelFacade.isAClass(port)) {
 	    Collection ends = ModelFacade.getAssociationEnds(port);
-	    if (ends == null) return res; // empty Vector 
+	    if (ends == null) return res; // empty Vector
 	    Iterator endEnum = ends.iterator();
 	    while (endEnum.hasNext()) {
 		Object ae = /*(MAssociationEnd)*/ endEnum.next();
@@ -160,7 +163,7 @@ public class DeploymentDiagramGraphModel extends UMLMutableGraphSupport
 	}
 	if (ModelFacade.isAInterface(port)) {
 	    Collection ends = ModelFacade.getAssociationEnds(port);
-	    if (ends == null) return res; // empty Vector 
+	    if (ends == null) return res; // empty Vector
 	    Iterator endEnum = ends.iterator();
 	    while (endEnum.hasNext()) {
 		Object ae = /*(MAssociationEnd)*/ endEnum.next();
@@ -177,8 +180,8 @@ public class DeploymentDiagramGraphModel extends UMLMutableGraphSupport
 	return res;
     }
 
-    /** Return all edges going from given port 
-     * 
+    /** Return all edges going from given port
+     *
      * @see org.tigris.gef.graph.GraphModel#getOutEdges(java.lang.Object)
      */
     public List getOutEdges(Object port) {
@@ -186,8 +189,9 @@ public class DeploymentDiagramGraphModel extends UMLMutableGraphSupport
     }
 
 
-    /** Return one end of an edge 
-     * 
+    /**
+     * Return one end of an edge.
+     *
      * @see org.tigris.gef.graph.BaseGraphModel#getSourcePort(java.lang.Object)
      */
     public Object getSourcePort(Object edge) {
@@ -199,7 +203,7 @@ public class DeploymentDiagramGraphModel extends UMLMutableGraphSupport
 	    if (ModelFacade.isALink(edge)) {
 		return Model.getCommonBehaviorHelper().getSource(edge);
 	    }
-    
+
 	LOG.debug("TODO: getSourcePort");
 
 	return null;
@@ -207,7 +211,7 @@ public class DeploymentDiagramGraphModel extends UMLMutableGraphSupport
 
 
     /** Return  the other end of an edge
-     * 
+     *
      * @see org.tigris.gef.graph.BaseGraphModel#getDestPort(java.lang.Object)
      */
     public Object getDestPort(Object edge) {
@@ -219,7 +223,7 @@ public class DeploymentDiagramGraphModel extends UMLMutableGraphSupport
 	    return Model.getCommonBehaviorHelper()
 		.getDestination(/*(MLink)*/ edge);
 	}
-    
+
 	LOG.debug("TODO: getDestPort");
 
 	return null;
@@ -230,25 +234,27 @@ public class DeploymentDiagramGraphModel extends UMLMutableGraphSupport
     ////////////////////////////////////////////////////////////////
     // MutableGraphModel implementation
 
-    /** Return true if the given object is a valid node in this graph 
-     * 
+    /**
+     * Return true if the given object is a valid node in this graph.
+     *
      * @see org.tigris.gef.graph.MutableGraphModel#canAddNode(java.lang.Object)
      */
     public boolean canAddNode(Object node) {
 	if (node == null) return false;
 	if (containsNode(node)) return false;
-	return (ModelFacade.isANode(node))  
-	    || (ModelFacade.isAComponent(node)) 
+	return (ModelFacade.isANode(node))
+	    || (ModelFacade.isAComponent(node))
 	    || (ModelFacade.isAClass(node))
-	    || (ModelFacade.isAInterface(node)) 
-	    || (ModelFacade.isAObject(node)) 
-	    || (ModelFacade.isANodeInstance(node))  
-	    || (ModelFacade.isAComponentInstance(node) 
+	    || (ModelFacade.isAInterface(node))
+	    || (ModelFacade.isAObject(node))
+	    || (ModelFacade.isANodeInstance(node))
+	    || (ModelFacade.isAComponentInstance(node)
 	    || (ModelFacade.isAComment(node)));
     }
 
-    /** Return true if the given object is a valid edge in this graph 
-     * 
+    /**
+     * Return true if the given object is a valid edge in this graph.
+     *
      * @see org.tigris.gef.graph.MutableGraphModel#canAddEdge(java.lang.Object)
      */
     public boolean canAddEdge(Object edge)  {
@@ -273,9 +279,10 @@ public class DeploymentDiagramGraphModel extends UMLMutableGraphSupport
 	return true;
     }
 
- 
-    /** Add the given node to the graph, if valid. 
-     * 
+
+    /**
+     * Add the given node to the graph, if valid.
+     *
      * @see org.tigris.gef.graph.MutableGraphModel#addNode(java.lang.Object)
      */
     public void addNode(Object node) {
@@ -284,15 +291,16 @@ public class DeploymentDiagramGraphModel extends UMLMutableGraphSupport
 	getNodes().add(node);
 	// TODO: assumes public, user pref for default visibility?
 	//do I have to check the namespace here? (Toby)
-	if (ModelFacade.isAModelElement(node) 
+	if (ModelFacade.isAModelElement(node)
             && (ModelFacade.getNamespace(node) == null)) {
 	    ModelFacade.addOwnedElement(model, node);
 	}
 	fireNodeAdded(node);
     }
 
-    /** Add the given edge to the graph, if valid. 
-     * 
+    /**
+     * Add the given edge to the graph, if valid.
+     *
      * @see org.tigris.gef.graph.MutableGraphModel#addEdge(java.lang.Object)
      */
     public void addEdge(Object edge) {
@@ -310,7 +318,7 @@ public class DeploymentDiagramGraphModel extends UMLMutableGraphSupport
      * @see org.tigris.gef.graph.MutableGraphModel#addNodeRelatedEdges(java.lang.Object)
      */
     public void addNodeRelatedEdges(Object node) {
-	if (ModelFacade.isAClassifier(node) ) {
+	if (ModelFacade.isAClassifier(node)) {
 	    Collection ends = ModelFacade.getAssociationEnds(node);
 	    Iterator iter = ends.iterator();
 	    while (iter.hasNext()) {
@@ -320,7 +328,7 @@ public class DeploymentDiagramGraphModel extends UMLMutableGraphSupport
 		return;
 	    }
 	}
-	if ( ModelFacade.isAInstance(node) ) {
+	if (ModelFacade.isAInstance(node)) {
 	    Collection ends = ModelFacade.getLinkEnds(node);
 	    Iterator iter = ends.iterator();
 	    while (iter.hasNext()) {
@@ -330,7 +338,7 @@ public class DeploymentDiagramGraphModel extends UMLMutableGraphSupport
 		return;
 	    }
 	}
-	if ( ModelFacade.isAGeneralizableElement(node) ) {
+	if (ModelFacade.isAGeneralizableElement(node)) {
 	    Iterator iter = ModelFacade.getGeneralizations(node).iterator();
 	    while (iter.hasNext()) {
 		// g contains a Generalization
@@ -348,7 +356,7 @@ public class DeploymentDiagramGraphModel extends UMLMutableGraphSupport
 		return;
 	    }
 	}
-	if ( ModelFacade.isAModelElement(node) ) {
+	if (ModelFacade.isAModelElement(node)) {
 	    Vector specs =
 		new Vector(ModelFacade.getClientDependencies(node));
 	    specs.addAll(ModelFacade.getSupplierDependencies(node));

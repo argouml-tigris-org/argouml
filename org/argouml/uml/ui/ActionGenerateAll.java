@@ -81,18 +81,18 @@ public class ActionGenerateAll extends UMLAction {
 	    if (name == null
 		|| name.length() == 0
 		|| Character.isDigit(name.charAt(0))) {
-		
+
 		continue;
 
 	    }
             classes.addElement(owner);
 	}
-	 
+
 	if (classes.size() == 0) {
-            
-            Iterator selectedObjects = 
+
+            Iterator selectedObjects =
                 TargetManager.getInstance().getTargets().iterator();
-       
+
 	    while (selectedObjects.hasNext()) {
 		Object selected = selectedObjects.next();
 		if (ModelFacade.isAPackage(selected)) {
@@ -126,7 +126,7 @@ public class ActionGenerateAll extends UMLAction {
 	return super.shouldBeEnabled()
 	    && (activeDiagram instanceof UMLClassDiagram);
     }
-    
+
     /**
      *Adds elements from collection without duplicates
      */

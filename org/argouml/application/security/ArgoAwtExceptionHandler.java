@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -25,13 +25,13 @@
 package org.argouml.application.security;
 
 
-/** 
+/**
  * Argo Awt Exception handler.
  *
  * This allows us to manage and hide exceptions which occur
  * in the AWT event queue.
  * Refer to {@link java.awt.EventDispatchThread} for details.
- * 
+ *
  * @author Thierry Lach
  * @since 0.9.4
  */
@@ -39,12 +39,12 @@ public final class ArgoAwtExceptionHandler {
 
     /**
      * The constructor.
-     * 
+     *
      */
     public ArgoAwtExceptionHandler() {
     }
 
-    /** 
+    /**
      * Called from within {@link java.awt.EventDispatchThread}
      * when an unhandled exception occurs in the Awt event queue.
      *

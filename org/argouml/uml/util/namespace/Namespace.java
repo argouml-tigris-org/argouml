@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2003-2004 The Regents of the University of California. All
+// Copyright (c) 2003-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -29,12 +29,11 @@ import java.util.Iterator;
 /**
  * The Namespace interface provides methods and constants which any class
  * dealing with namespaces needs to implement.
- * 
+ *
  * @author mkl
- *  
+ *
  */
-public interface Namespace
-{
+public interface Namespace {
 
     /**
      * the scope token for java.
@@ -52,11 +51,11 @@ public interface Namespace
     public static final String CPP_NS_TOKEN = "::";
 
     /**
-     * returns the namespace which is common to both namespaces, e.g. 
+     * returns the namespace which is common to both namespaces, e.g.
      * <code>org.argouml.model</code>
      * and <code>org.argouml.util</code> have <code>org.argouml</code> in
      * common.
-     * 
+     *
      * @param namespace
      *            a namespace
      * @return the common or empty namespace
@@ -64,34 +63,34 @@ public interface Namespace
     Namespace getCommonNamespace(Namespace namespace);
 
     /**
-     * returns the base of a namespace, e.g. the base of 
+     * returns the base of a namespace, e.g. the base of
      * <code>org.argouml.util</code>
      * is <code>org.argouml</code>.
-     * 
+     *
      * @return base namespace
      */
     Namespace getBaseNamespace();
 
     /**
      * add another element to a namespace.
-     * 
+     *
      * @param element the element to add
      */
     void pushNamespaceElement(NamespaceElement element);
 
     /**
-     * reduces the innermost namespace element, 
+     * reduces the innermost namespace element,
      * e.g. <code>org.argouml.model</code>
-     * will return <code>model</code>, and change the namespace 
+     * will return <code>model</code>, and change the namespace
      * to <code>org.argouml</code>.
-     * 
+     *
      * @return the popped element.
      */
     NamespaceElement popNamespaceElement();
 
     /**
      * return the innermost namespace element without removing it.
-     * 
+     *
      * @return the innermost namespace element
      */
     NamespaceElement peekNamespaceElement();
@@ -99,7 +98,7 @@ public interface Namespace
     /**
      * namespaces usually have a scope operator when used in representational
      * form. see also the predifined constants.
-     * 
+     *
      * @param token
      *            the token to use from now on.
      */
@@ -107,14 +106,14 @@ public interface Namespace
 
     /**
      * return an iterator to the namespace elements.
-     * 
+     *
      * @return an iterator of NamespaceElements.
      */
     Iterator iterator();
 
     /**
      * check if the namespace is empty.
-     * 
+     *
      * @return true if empty
      */
     boolean isEmpty();
@@ -123,7 +122,7 @@ public interface Namespace
      * return a string representation of the namespace with the given token.
      * The existence of the method implies that classes also must implement
      * toString() in a reasonable manner using the default token.
-     * 
+     *
      * @param token the token to be converted
      * @return a string representation of the namespace
      */

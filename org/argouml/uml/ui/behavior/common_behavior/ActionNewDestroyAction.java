@@ -36,9 +36,9 @@ import org.argouml.model.Model;
  */
 public class ActionNewDestroyAction extends ActionNewAction {
 
-    private static final ActionNewDestroyAction SINGLETON = 
+    private static final ActionNewDestroyAction SINGLETON =
         new ActionNewDestroyAction();
-    
+
     /**
      * Constructor for ActionNewDestroyAction.
      */
@@ -46,8 +46,8 @@ public class ActionNewDestroyAction extends ActionNewAction {
         super();
         putValue(Action.NAME, Translator.localize("button.new-destroyaction"));
     }
-    
-    
+
+
     /**
      * @see org.argouml.uml.ui.behavior.common_behavior.ActionNewAction#createAction()
      */

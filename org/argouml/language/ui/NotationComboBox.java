@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2001 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -92,13 +92,13 @@ public class NotationComboBox
      */
     public void notationRemoved(ArgoNotationEvent event) {
     }
-    
+
     /**
      * @see org.argouml.application.events.ArgoNotationEventListener#notationProviderAdded(org.argouml.application.events.ArgoNotationEvent)
      */
     public void notationProviderAdded(ArgoNotationEvent event) {
     }
-    
+
     /**
      * @see org.argouml.application.events.ArgoNotationEventListener#notationProviderRemoved(org.argouml.application.events.ArgoNotationEvent)
      */
@@ -106,7 +106,7 @@ public class NotationComboBox
     }
 
     /**
-     * Refresh the combobox contents. 
+     * Refresh the combobox contents.
      */
     public void refresh() {
         if (Configuration.getBoolean(Notation.KEY_UML_NOTATION_ONLY, false)) {

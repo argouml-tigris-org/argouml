@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2001 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -36,38 +36,37 @@ import org.argouml.application.api.Configuration;
 import org.argouml.application.api.SettingsTabPanel;
 import org.argouml.application.helpers.SettingsTabHelper;
 
-/** 
+/**
  * Action object for handling Argo settings.
  *
  * @author Thierry Lach
  * @since  0.9.4
  */
 public class SettingsTabUser extends SettingsTabHelper
-    implements SettingsTabPanel 
-{
-    /** 
+    implements SettingsTabPanel {
+    /**
      * This is where the user enters full name in settings tab.
      * This information is stored
      * in the argo.user.properties file.
-     */    
+     */
     private JTextField userFullname = null;
 
-    /** 
+    /**
      * This is where the user enters email in settings tab.
      * This information is stored
      * in the argo.user.properties file.
-     */    
+     */
     private JTextField userEmail = null;
 
     /**
      * The constructor.
-     * 
+     *
      */
     public SettingsTabUser() {
         super();
         setLayout(new BorderLayout());
 	JPanel top = new JPanel();
-    	top.setLayout(new GridBagLayout()); 
+    	top.setLayout(new GridBagLayout());
 
 	GridBagConstraints labelConstraints = new GridBagConstraints();
 	labelConstraints.anchor = GridBagConstraints.WEST;
@@ -129,27 +128,27 @@ public class SettingsTabUser extends SettingsTabHelper
      * @see org.argouml.application.api.ArgoModule#getModuleName()
      */
     public String getModuleName() { return "SettingsTabUser"; }
-    
+
     /**
      * @see org.argouml.application.api.ArgoModule#getModuleDescription()
      */
     public String getModuleDescription() { return "Settings Tab for User"; }
-    
+
     /**
      * @see org.argouml.application.api.ArgoModule#getModuleAuthor()
      */
     public String getModuleAuthor() { return "ArgoUML Core"; }
-    
+
     /**
      * @see org.argouml.application.api.ArgoModule#getModuleVersion()
      */
     public String getModuleVersion() { return ArgoVersion.getVersion(); }
-    
+
     /**
      * @see org.argouml.application.api.ArgoModule#getModuleKey()
      */
     public String getModuleKey() { return "module.settings.user"; }
-    
+
     /**
      * @see org.argouml.application.api.SettingsTabPanel#getTabKey()
      */

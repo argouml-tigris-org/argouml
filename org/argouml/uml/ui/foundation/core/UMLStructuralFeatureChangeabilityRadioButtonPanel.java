@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -42,13 +42,13 @@ public class UMLStructuralFeatureChangeabilityRadioButtonPanel
 
     static {
         labelTextsAndActionCommands.put(Translator.localize(
-                "label.changeability-addonly"), 
+                "label.changeability-addonly"),
                 ActionSetChangeability.ADDONLY_COMMAND);
         labelTextsAndActionCommands.put(Translator.localize(
-                "label.changeability-changeable"), 
+                "label.changeability-changeable"),
                 ActionSetChangeability.CHANGEABLE_COMMAND);
         labelTextsAndActionCommands.put(Translator.localize(
-                "label.changeability-frozen"), 
+                "label.changeability-frozen"),
                 ActionSetChangeability.FROZEN_COMMAND);
     }
 
@@ -59,7 +59,7 @@ public class UMLStructuralFeatureChangeabilityRadioButtonPanel
      */
     public UMLStructuralFeatureChangeabilityRadioButtonPanel(
             String title, boolean horizontal) {
-        super(title, labelTextsAndActionCommands, "changeability", 
+        super(title, labelTextsAndActionCommands, "changeability",
                 ActionSetChangeability.getInstance(), horizontal);
     }
 
@@ -69,13 +69,13 @@ public class UMLStructuralFeatureChangeabilityRadioButtonPanel
     public void buildModel() {
         if (getTarget() != null) {
             Object target = /*(MStructuralFeature)*/ getTarget();
-            Object/*MChangeableKind*/ kind = 
+            Object/*MChangeableKind*/ kind =
                 ModelFacade.getChangeability(target);
-            if (kind == null 
+            if (kind == null
                     || kind.equals(ModelFacade.ADD_ONLY_CHANGEABLEKIND)) {
                 setSelected(ActionSetChangeability.ADDONLY_COMMAND);
             } else if (kind.equals(ModelFacade.CHANGEABLE_CHANGEABLEKIND)) {
-                setSelected(ActionSetChangeability.CHANGEABLE_COMMAND); 
+                setSelected(ActionSetChangeability.CHANGEABLE_COMMAND);
             } else if (kind.equals(ModelFacade.FROZEN_CHANGEABLEKIND)) {
                 setSelected(ActionSetChangeability.FROZEN_COMMAND);
             } else {

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2002 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -33,11 +33,11 @@ import org.argouml.uml.ui.UMLCheckBox2;
 
 /**
  * @stereotype singleton
- * @author mkl	
+ * @author mkl
  */
 public class ActionSetBehavioralFeatureQuery extends UMLAction {
 
-    private static final ActionSetBehavioralFeatureQuery SINGLETON = 
+    private static final ActionSetBehavioralFeatureQuery SINGLETON =
         new ActionSetBehavioralFeatureQuery();
 
     /**
@@ -46,7 +46,7 @@ public class ActionSetBehavioralFeatureQuery extends UMLAction {
     protected ActionSetBehavioralFeatureQuery() {
         super(Translator.localize("Set"), true, NO_ICON);
     }
-    
+
     /**
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
@@ -57,7 +57,7 @@ public class ActionSetBehavioralFeatureQuery extends UMLAction {
             Object target = source.getTarget();
             if (org.argouml.model.ModelFacade.isABehavioralFeature(target)) {
                 Object m = /*(MGeneralizableElement)*/ target;
-                ModelFacade.setQuery(m, source.isSelected());                
+                ModelFacade.setQuery(m, source.isSelected());
             }
         }
     }

@@ -40,7 +40,7 @@ public class UMLAssociationRoleBaseComboBoxModel extends UMLComboBoxModel2 {
      */
     public UMLAssociationRoleBaseComboBoxModel() {
         super("base", true);
-        UmlModelEventPump.getPump().addClassModelEventListener(this, 
+        UmlModelEventPump.getPump().addClassModelEventListener(this,
                 ModelFacade.NAMESPACE, "ownedElement");
     }
 
@@ -49,7 +49,7 @@ public class UMLAssociationRoleBaseComboBoxModel extends UMLComboBoxModel2 {
      */
     protected void buildModelList() {
         setElements(Model.getCollaborationsHelper().getAllPossibleBases(
-                /*(MAssociationRole)*/ getTarget())); 
+                /*(MAssociationRole)*/ getTarget()));
     }
 
     /**

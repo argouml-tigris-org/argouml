@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -41,7 +41,7 @@ public abstract class AbstractProjectMember implements ProjectMember {
 
     /**
      * The constructor.
-     * 
+     *
      * @param theUniqueName the name of the member, this must
      *                      be different for all members. Note
      *                      that for diagram members this is
@@ -64,13 +64,13 @@ public abstract class AbstractProjectMember implements ProjectMember {
      */
     public String getUniqueDiagramName() {
         String s = uniqueName;
-        
+
         if (s != null) {
             if (!s.endsWith (getZipFileExtension())) {
                 s += getZipFileExtension();
             }
         }
-        
+
         return s;
     }
 
@@ -84,19 +84,19 @@ public abstract class AbstractProjectMember implements ProjectMember {
     public String getZipName() {
         if (uniqueName == null)
             return null;
-        
+
         String s = project.getBaseName();
-        
+
         if (uniqueName.length() > 0)
             s += "_" + uniqueName;
-        
+
         if (!s.endsWith(getZipFileExtension())) {
             s += getZipFileExtension();
         }
 
         return s;
     }
-  
+
     /**
      * Makes a unique name for this member.
      * Note this is not the diagram name and this appears
@@ -106,11 +106,11 @@ public abstract class AbstractProjectMember implements ProjectMember {
      */
     protected void makeUniqueName(String s) {
         uniqueName = s;
-        
+
         if (uniqueName == null) {
             return;
         }
-        
+
         if (uniqueName.startsWith (project.getBaseName())) {
             uniqueName = uniqueName.substring (project.getBaseName().length());
             int i = 0;
@@ -123,20 +123,20 @@ public abstract class AbstractProjectMember implements ProjectMember {
                 uniqueName = uniqueName.substring(i);
             }
         }
-        
+
         if (uniqueName.endsWith(getZipFileExtension())) {
-            uniqueName = 
+            uniqueName =
                 uniqueName.substring(0,
                         uniqueName.length() - getZipFileExtension().length());
         }
     }
 
     /**
-     * @return a short string defining the member type. 
+     * @return a short string defining the member type.
      * Usually equals the file extension.
      */
     public abstract String getType();
-    
+
     /**
      * @return the file extension string
      */

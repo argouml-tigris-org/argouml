@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -53,11 +53,11 @@ import org.tigris.swidgets.LabelledLayout;
 public class AddToDoItemDialog extends ArgoDialog {
 
     ////////////////////////////////////////////////////////////////
-    // constants    
-    private static final String PRIORITIES[] = {
+    // constants
+    private static final String[] PRIORITIES = {
         Translator.localize("misc.level.high"),
         Translator.localize("misc.level.medium"),
-        Translator.localize("misc.level.low")
+        Translator.localize("misc.level.low"),
     };
     private static final int TEXT_ROWS = 8;
     private static final int TEXT_COLUMNS = 30;
@@ -72,47 +72,47 @@ public class AddToDoItemDialog extends ArgoDialog {
     private JList offenderList;
     private JTextArea  descriptionTextArea;
 
-    
+
     /**
      * Create a new AddToDoItemDialog
-     * @param renderer the ListCellRenderer to use in order 
+     * @param renderer the ListCellRenderer to use in order
      *                 to display the offenders
      */
     public AddToDoItemDialog(ListCellRenderer renderer) {
-        super(ProjectBrowser.getInstance(), 
-	      Translator.localize("dialog.title.add-todo-item"), 
+        super(ProjectBrowser.getInstance(),
+	      Translator.localize("dialog.title.add-todo-item"),
 	      ArgoDialog.OK_CANCEL_OPTION, true);
-        
+
         headLineTextField = new JTextField(TEXT_COLUMNS);
         priorityComboBox = new JComboBox(PRIORITIES);
         moreinfoTextField = new JTextField(TEXT_COLUMNS);
         descriptionTextArea = new JTextArea(TEXT_ROWS, TEXT_COLUMNS);
-        
+
         DefaultListModel dlm = new DefaultListModel();
-        Object[] offObj = 
+        Object[] offObj =
             TargetManager.getInstance().getModelTargets().toArray();
         for (int i = 0; i < offObj.length; i++) {
             if (offObj[i] != null) {
                 dlm.addElement(offObj[i]);
             }
         }
-        
+
         offenderList = new JList(dlm);
         offenderList.setCellRenderer(renderer);
         JScrollPane offenderScroll = new JScrollPane(offenderList);
         offenderScroll.setOpaque(true);
 
-        JLabel headlineLabel = 
+        JLabel headlineLabel =
             new JLabel(Translator.localize("label.headline"));
-        JLabel priorityLabel = 
+        JLabel priorityLabel =
             new JLabel(Translator.localize("label.priority"));
-        JLabel moreInfoLabel = 
+        JLabel moreInfoLabel =
             new JLabel(Translator.localize("label.more-info-url"));
-        JLabel offenderLabel = 
+        JLabel offenderLabel =
             new JLabel(Translator.localize("label.offenders"));
         priorityComboBox.setSelectedItem(PRIORITIES[0]);
 
-        JPanel panel = new JPanel(new LabelledLayout(getLabelGap(), 
+        JPanel panel = new JPanel(new LabelledLayout(getLabelGap(),
                 getComponentGap()));
 
         headlineLabel.setLabelFor(headLineTextField);
@@ -126,25 +126,25 @@ public class AddToDoItemDialog extends ArgoDialog {
         moreInfoLabel.setLabelFor(moreinfoTextField);
         panel.add(moreInfoLabel);
         panel.add(moreinfoTextField);
-    
+
         offenderLabel.setLabelFor(offenderScroll);
         panel.add(offenderLabel);
         panel.add(offenderScroll);
-        
+
         descriptionTextArea.setLineWrap(true);  //MVW - Issue 2422
         descriptionTextArea.setWrapStyleWord(true);   //MVW - Issue 2422
         descriptionTextArea.setText(Translator.localize("label.enter-todo-item")
                 	    + "\n");
-        descriptionTextArea.setMargin(new Insets(INSET_PX, INSET_PX, 
+        descriptionTextArea.setMargin(new Insets(INSET_PX, INSET_PX,
                 INSET_PX, INSET_PX));
         JScrollPane descriptionScroller = new JScrollPane(descriptionTextArea);
         descriptionScroller.setPreferredSize(
                 descriptionTextArea.getPreferredSize());
         panel.add(descriptionScroller);
-        
+
         setContent(panel);
     }
-    
+
     ////////////////////////////////////////////////////////////////
     // event handlers
 
@@ -152,25 +152,25 @@ public class AddToDoItemDialog extends ArgoDialog {
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent e) {
-        super.actionPerformed(e);      
+        super.actionPerformed(e);
         if (e.getSource() == getOkButton()) {
             doAdd();
         }
     }
-    
+
     private void doAdd() {
         Designer designer = Designer.theDesigner();
         String headline = headLineTextField.getText();
         int priority = ToDoItem.HIGH_PRIORITY;
         switch (priorityComboBox.getSelectedIndex()) {
-	case 0: 
-	    priority = ToDoItem.HIGH_PRIORITY; 
+	case 0:
+	    priority = ToDoItem.HIGH_PRIORITY;
 	    break;
-	case 1: 
-	    priority = ToDoItem.MED_PRIORITY; 
+	case 1:
+	    priority = ToDoItem.MED_PRIORITY;
 	    break;
 	case 2:
-	    priority = ToDoItem.LOW_PRIORITY; 
+	    priority = ToDoItem.LOW_PRIORITY;
 	    break;
         }
         String desc = descriptionTextArea.getText();
@@ -180,7 +180,7 @@ public class AddToDoItemDialog extends ArgoDialog {
         VectorSet newOffenders = new VectorSet();
         for (int i = 0; i < offenderList.getModel().getSize(); i++) {
             newOffenders.addElement(offenderList.getModel().getElementAt(i));
-        }  
+        }
         item.setOffenders(newOffenders);
         designer.getToDoList().addElement(item); //? inform()
         Designer.firePropertyChange(Designer.MODEL_TODOITEM_ADDED, null, item);

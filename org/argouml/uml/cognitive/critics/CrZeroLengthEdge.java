@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -22,11 +22,7 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// File: CrZeroLengthEdge.java
-// Classes: CrZeroLengthEdge
-// Original Author: jrobbins@ics.uci.edu
 // $Id$
-
 package org.argouml.uml.cognitive.critics;
 
 import org.argouml.cognitive.Designer;
@@ -35,6 +31,8 @@ import org.tigris.gef.presentation.FigEdge;
 
 /** A critic to detect when an edge is very short in order to suggest to
  *  improve the layout of the diagram.
+ *
+ * @author jrobbins
  */
 public class CrZeroLengthEdge extends CrUML {
     ////////////////////////////////////////////////////////////////
@@ -43,7 +41,7 @@ public class CrZeroLengthEdge extends CrUML {
 
     /**
      * The constructor.
-     * 
+     *
      */
     public CrZeroLengthEdge() {
 	// TODO: {name} is not expanded for diagram objects
@@ -51,12 +49,12 @@ public class CrZeroLengthEdge extends CrUML {
 	addSupportedDecision(CrUML.DEC_RELATIONSHIPS);
 	addSupportedDecision(CrUML.DEC_INHERITANCE);
 	addSupportedDecision(CrUML.DEC_STATE_MACHINES);
-	setKnowledgeTypes(Critic.KT_PRESENTATION);    
+	setKnowledgeTypes(Critic.KT_PRESENTATION);
     }
 
     ////////////////////////////////////////////////////////////////
     // critiquing API
-    
+
     /**
      * @see org.argouml.uml.cognitive.critics.CrUML#predicate2(
      * java.lang.Object, org.argouml.cognitive.Designer)

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -56,49 +56,49 @@ public class EmailExpertDialog extends ArgoDialog {
 
     ////////////////////////////////////////////////////////////////
     // instance variables
-    
+
     /** This field sets the email of the recipient.
      * As yet, the
      * user can not access a list of contributors to a
      * particular argo project.
-     */    
+     */
     private JTextField emailTo;
     private JTextField emailCc;
     /** The subject line should be automatically
      * generated based on the class or the
      * diagram.
-     */  
+     */
     private JTextField emailSubject;
     private JTextArea  emailBody;
-    
+
     /**
      * The target todo item.
-     */  
+     */
     private ToDoItem target;
 
     /**
      * The constructor.
      */
     public EmailExpertDialog() {
-        super(ProjectBrowser.getInstance(), 
-            Translator.localize("dialog.title.send-email-to-expert"), 
+        super(ProjectBrowser.getInstance(),
+            Translator.localize("dialog.title.send-email-to-expert"),
 	      ArgoDialog.OK_CANCEL_OPTION,
 	      true);
-        
+
         getOkButton().setText(Translator.localize("button.send"));
         getOkButton().setMnemonic(
                 Translator.localize("button.send.mnemonic").charAt(0));
-        
+
         emailTo = new JTextField(30);
         emailCc = new JTextField(30);
         emailSubject = new JTextField(30);
         emailBody = new JTextArea(10, 30);
-    
+
         JLabel toLabel = new JLabel(Translator.localize("label.to"));
         JLabel ccLabel = new JLabel(Translator.localize("label.cc"));
         JLabel subjectLabel = new JLabel(Translator.localize("label.subject"));
-    
-        JPanel panel = new JPanel(new LabelledLayout(getLabelGap(), 
+
+        JPanel panel = new JPanel(new LabelledLayout(getLabelGap(),
                 getComponentGap()));
 
         toLabel.setLabelFor(emailTo);
@@ -108,7 +108,7 @@ public class EmailExpertDialog extends ArgoDialog {
         ccLabel.setLabelFor(emailCc);
         panel.add(ccLabel);
         panel.add(emailCc);
-    
+
         subjectLabel.setLabelFor(emailSubject);
         panel.add(subjectLabel);
         panel.add(emailSubject);
@@ -116,10 +116,10 @@ public class EmailExpertDialog extends ArgoDialog {
         JScrollPane bodyScroller = new JScrollPane(emailBody);
         bodyScroller.setPreferredSize(new Dimension(100, 50));
         panel.add(bodyScroller);
-        
+
         setContent(panel);
     }
-    
+
     /**
      * @param t the target object
      */
@@ -132,11 +132,11 @@ public class EmailExpertDialog extends ArgoDialog {
 
     /**
      * Event handler.
-     * 
+     *
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent e) {
-	super.actionPerformed(e);   
+	super.actionPerformed(e);
 	if (e.getSource() == getOkButton()) {
 	    String to = emailTo.getText();
 	    String cc = emailCc.getText();
@@ -147,5 +147,5 @@ public class EmailExpertDialog extends ArgoDialog {
 	        LOG.debug("cancel");
 	    }
 	}
-    }  
+    }
 } /* end class EmailExpertDialog */

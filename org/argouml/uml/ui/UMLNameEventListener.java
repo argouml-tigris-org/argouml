@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -30,33 +30,33 @@ import ru.novosoft.uml.MElementEvent;
 import ru.novosoft.uml.MElementListener;
 
 /**
- * This class is used to dispatch a NSUML change event 
+ * This class is used to dispatch a NSUML change event
  * (which may occur on a non-UI)
- * thread) to user interface components.  
- * The class is created in response to a 
- * NSUML change event being captures by a 
+ * thread) to user interface components.
+ * The class is created in response to a
+ * NSUML change event being captures by a
  * UMLUserInterfaceContainer and then
- * is passed as an argument to InvokeLater 
+ * is passed as an argument to InvokeLater
  * to be run on the user interface thread.
  */
 public class UMLNameEventListener implements MElementListener {
     private Container container;
     private Class[] metaClasses;
-    
+
     /**
-     *  Creates a UMLChangeDispatch.  eventType is overriden if a call to 
+     *  Creates a UMLChangeDispatch.  eventType is overriden if a call to
      *  one of the event functions is called.
      *  @param c user interface container to which changes are dispatched.
      *  @param mc an array of classes (possibly null) whose names should
      *      monitored.  For example, passing MClassifier.class will monitor name
      *      changes on classifiers.
-     *      
+     *
      */
     public UMLNameEventListener(Container c, Class[] mc) {
         container = c;
         metaClasses = mc;
     }
-    
+
     /**
      *   configures this instance to dispatch a propertySet event.
      *   @param mee NSUML event
@@ -64,8 +64,8 @@ public class UMLNameEventListener implements MElementListener {
     public void propertySet(MElementEvent mee) {
         boolean dispatchEvent = false;
         String eventName = mee.getName();
-        
-        if (eventName != null && (eventName.equals("name") 
+
+        if (eventName != null && (eventName.equals("name")
                 || eventName.equals("baseClass"))) {
             Object target = mee.getSource();
             if (target != null) {
@@ -81,15 +81,15 @@ public class UMLNameEventListener implements MElementListener {
                 dispatchEvent = isMatch;
             }
         }
-        
+
         if (dispatchEvent) {
             UMLChangeDispatch dispatch = new UMLChangeDispatch(container, 1);
             dispatch.propertySet(mee);
             SwingUtilities.invokeLater(dispatch);
         }
-        
+
     }
-           
+
     /**
      *   configures this instance to dispatch a listRoleItemSet event.
      *   @param mee NSUML event
@@ -103,8 +103,8 @@ public class UMLNameEventListener implements MElementListener {
      */
     public void recovered(MElementEvent mee) {
     }
-    
-    /**  
+
+    /**
      *    configures this instance to dispatch a removed event.
      *    @param mee NSUML event.
      */
@@ -120,14 +120,14 @@ public class UMLNameEventListener implements MElementListener {
                 isMatch = metaClasses[i].isAssignableFrom(target.getClass());
             }
             if (isMatch) {
-                UMLChangeDispatch dispatch = 
+                UMLChangeDispatch dispatch =
                     new UMLChangeDispatch(container, 0);
                 dispatch.removed(mee);
                 SwingUtilities.invokeLater(dispatch);
-            }        
+            }
         }
     }
-	
+
     /**
      *    configures this instance to dispatch a roleAdded event.
      *    @param mee NSUML event.
@@ -147,22 +147,22 @@ public class UMLNameEventListener implements MElementListener {
                             target.getClass());
                 }
                 if (isMatch) {
-                    UMLChangeDispatch dispatch = 
+                    UMLChangeDispatch dispatch =
                         new UMLChangeDispatch(container, 0);
                     dispatch.removed(mee);
                     SwingUtilities.invokeLater(dispatch);
-                }        
+                }
             }
-        }                
+        }
     }
-	
+
     /**
      *    configures this instance to dispatch a roleRemoved event.
      *    @param mee NSUML event
      */
     public void roleRemoved(MElementEvent mee) {
     }
-    
-    
+
+
 }
 

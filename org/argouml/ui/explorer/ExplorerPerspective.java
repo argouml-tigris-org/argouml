@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -44,55 +44,55 @@ import org.argouml.i18n.Translator;
  * @since 0.15.2, Created on 27 September 2003, 09:32
  */
 public class ExplorerPerspective {
-    
+
     private List rules;
     private String name;
-    
-    /** 
+
+    /**
      * Creates a new instance of ExplorerPerspective.
-     * 
+     *
      * @param newName the to be localized name for the perspective
      */
     public ExplorerPerspective(String newName) {
         name = Translator.localize(newName);
         rules = new ArrayList();
     }
-    
+
     /**
      * @param rule the rule to add
      */
     public void addRule(PerspectiveRule rule) {
         rules.add(rule);
     }
-    
+
     /**
      * @param rule the rule to remove
      */
     public void removeRule(PerspectiveRule rule) {
         rules.remove(rule);
     }
-    
+
     /**
      * @return the array with all the rules
      */
     public Object[] getRulesArray() {
         return rules.toArray();
     }
-    
+
     /**
      * @return the List with all the rules
      */
     public List getList() {
         return rules;
     }
-    
+
     /**
      * @see java.lang.Object#toString()
      */
     public String toString() {
         return name;
     }
-    
+
     /**
      * Make a clone of this ExplorerPerspective with a different given name.
      * @param newName the given name

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -22,11 +22,7 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// File: FigComponentInstance.java
-// Classes: FigComponentInstance
-// Original Author: 5eichler@informatik.uni-hamburg.de
 // $Id$
-
 package org.argouml.uml.diagram.deployment.ui;
 
 import java.awt.Color;
@@ -52,8 +48,10 @@ import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigRect;
 import org.tigris.gef.presentation.FigText;
 
-/** 
+/**
  * Class to display graphics for a UML ComponentInstance in a diagram.
+ *
+ * @author 5eichler
  */
 public class FigComponentInstance extends FigNodeModelElement {
     private static final int OVERLAP = 4;
@@ -243,12 +241,12 @@ public class FigComponentInstance extends FigNodeModelElement {
                     Object o = it.next();
                     if (o instanceof FigEdgeModelElement) {
                         bringToFrontList.add(o);
-                        
+
                     }
                 }
                 Iterator bringToFrontIter = bringToFrontList.iterator();
                 while (bringToFrontIter.hasNext()) {
-                    FigEdgeModelElement figEdge = 
+                    FigEdgeModelElement figEdge =
                         (FigEdgeModelElement) bringToFrontIter.next();
                     figEdge.getLayer().bringToFront(figEdge);
                 }
@@ -263,9 +261,9 @@ public class FigComponentInstance extends FigNodeModelElement {
         }
         /*
 	  super.setEnclosingFig(encloser);
-        
+
 	  Vector figures = getEnclosedFigs();
-        
+
 	  if (getLayer() != null) {
           // elementOrdering(figures);
           Vector contents = getLayer().getContents();
@@ -278,12 +276,12 @@ public class FigComponentInstance extends FigNodeModelElement {
 	  }
           }
 	  }
-        
+
 	  if (!(getOwner() instanceof MModelElement)) return;
 	  if (getOwner() instanceof MComponentInstance) {
           MComponentInstance me = (MComponentInstance) getOwner();
           MNodeInstance mnode = null;
-        
+
           if (encloser != null
 	  && (encloser.getOwner() instanceof MNodeInstance)) {
 	  mnode = (MNodeInstance) encloser.getOwner();
@@ -306,7 +304,7 @@ public class FigComponentInstance extends FigNodeModelElement {
           }
           catch (Exception e) {
 	  cat.error("could not set package", e);
-           
+
           }
 	  }
         */

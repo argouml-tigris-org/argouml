@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -63,7 +63,7 @@ public class Translator {
 		new Locale("en", ""));
         org.workingfrog.i18n.util.Translator.setBundlesPath("org.argouml.i18n");
         org.workingfrog.i18n.util.Translator.setLogLevel("none");
-  
+
         Localizer.addResource("GefBase",
 			      "org.tigris.gef.base.BaseResourceBundle");
         Localizer.addResource(
@@ -92,7 +92,7 @@ public class Translator {
         org.workingfrog.i18n.util.Translator.setLocale(locale);
     }
 
-    /**   
+    /**
      * Loads image bindings from a File.
      *
      * @param file the properties file
@@ -115,7 +115,7 @@ public class Translator {
         return properties;
     }
 
-    /**   
+    /**
      * Provide a "gef compliant" image file name.
      *
      * @param name the new i18n key
@@ -138,7 +138,7 @@ public class Translator {
         }
     }
 
-    /** 
+    /**
      * Helper for localization to eliminate the need to import
      * the gef util library.<p>
      *
@@ -160,7 +160,7 @@ public class Translator {
      *
      * <em>Note:</em> This one argument <code>key</code>
      * doesn't seem to work for tags that aren't prefixed with the
-     * property file name. We get a NullPointerException. 
+     * property file name. We get a NullPointerException.
      *
      * @param key The key to localize.
      * @return The localized String.
@@ -168,8 +168,8 @@ public class Translator {
     public static String localize(String key) {
         return org.workingfrog.i18n.util.Translator.localize(key, key);
     }
-    
-    
+
+
     /**
      * Generates an localized String with arguments.<p>
      *
@@ -183,14 +183,14 @@ public class Translator {
      * @param args the args as Objects, inserted in the localized String
      * @return the localized String with inserted arguments
      */
-    public static String messageFormat(String bundle, 
+    public static String messageFormat(String bundle,
 				       String key, Object[] args)
     {
     	MessageFormat msgFmt = new MessageFormat(localize(bundle, key));
 	return msgFmt.format(args);
     }
-    
-   
+
+
     /**
      * Generates an localized String with arguments.<p>
      *

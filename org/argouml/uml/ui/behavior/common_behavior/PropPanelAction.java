@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -41,7 +41,7 @@ import org.argouml.util.ConfigLoader;
 
 /**
  * An abstract representatation of the properties panel of an Action.
- * 
+ *
  * TODO: this property panel needs refactoring to remove dependency on
  *       old gui components.
  */
@@ -49,7 +49,7 @@ public abstract class PropPanelAction extends PropPanelModelElement {
 
     /**
      * The constructor.
-     * 
+     *
      */
     public PropPanelAction() {
         this("Action", null);
@@ -57,12 +57,12 @@ public abstract class PropPanelAction extends PropPanelModelElement {
 
     /**
      * The constructor.
-     * 
+     *
      * @param name the name of the properties panel
      * @param icon the icon to be shown next to the name
      */
     public PropPanelAction(String name, ImageIcon icon) {
-        super(name, icon, 
+        super(name, icon,
               ConfigLoader.getTabPropsOrientation());
         initialize();
     }
@@ -71,23 +71,23 @@ public abstract class PropPanelAction extends PropPanelModelElement {
      * The initialization of the panel with its fields and stuff.
      */
     public void initialize() {
-        
-        addField(Translator.localize("label.name"), 
+
+        addField(Translator.localize("label.name"),
                 getNameTextField());
 
-        UMLExpressionModel2 expressionModel = 
+        UMLExpressionModel2 expressionModel =
             new UMLScriptExpressionModel(this, "script");
-        addField(Translator.localize("label.expression"), 
+        addField(Translator.localize("label.expression"),
                 new JScrollPane(
                         new UMLExpressionBodyField(expressionModel, true)));
 
-        addField(Translator.localize("label.language"), 
+        addField(Translator.localize("label.language"),
                 new UMLExpressionLanguageField(expressionModel, true));
 
         addButton(new PropPanelButton2(new ActionNavigateContainerElement()));
-        addButton(new PropPanelButton2(new ActionNewStereotype(), 
+        addButton(new PropPanelButton2(new ActionNewStereotype(),
                 lookupIcon("Stereotype")));
-        addButton(new PropPanelButton2(new ActionRemoveFromModel(), 
+        addButton(new PropPanelButton2(new ActionRemoveFromModel(),
                 lookupIcon("Delete")));
     }
 

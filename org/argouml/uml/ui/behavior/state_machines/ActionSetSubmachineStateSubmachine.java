@@ -37,7 +37,7 @@ import org.argouml.uml.ui.UMLComboBox2;
  */
 public class ActionSetSubmachineStateSubmachine extends UMLAction {
 
-    private static final ActionSetSubmachineStateSubmachine SINGLETON = 
+    private static final ActionSetSubmachineStateSubmachine SINGLETON =
         new ActionSetSubmachineStateSubmachine();
 
     /**

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2004 The Regents of the University of California. All
+// Copyright (c) 2004-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -44,16 +44,16 @@ import org.tigris.gef.util.UnexpectedException;
  * concentrated in the constructor... <p>
  *
  * The PersisterManager manages the list of persisters. <p>
- * 
- * This class is a singleton, since this allows external modules to 
+ *
+ * This class is a singleton, since this allows external modules to
  * add extra persisters to the ArgoUML application.
  *
  * @author mvw@tigris.org
  */
 public class PersistenceManager {
-    private static final PersistenceManager SINGLETON = 
+    private static final PersistenceManager SINGLETON =
         new PersistenceManager();
-    
+
     private AbstractFilePersister defaultPersister;
     private List otherPersisters = new ArrayList();
     private UmlFilePersister quickViewDump;
@@ -64,7 +64,7 @@ public class PersistenceManager {
     public static PersistenceManager getInstance() {
         return SINGLETON;
     }
-    
+
     /**
      * The constructor.
      */

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -49,7 +49,7 @@ public class ActionNew extends ActionFileOperations {
     /**
      * The singleton.
      */
-    public static final ActionNew SINGLETON = new ActionNew(); 
+    public static final ActionNew SINGLETON = new ActionNew();
 
     ////////////////////////////////////////////////////////////////
     // constructors
@@ -57,7 +57,7 @@ public class ActionNew extends ActionFileOperations {
     /**
      * The constructor.
      */
-    protected ActionNew() { 
+    protected ActionNew() {
         super(Translator.localize("action.new"), ResourceLoaderWrapper
                 .lookupIconResource(Translator.getImageBinding("New"),
                         Translator.localize("New")));
@@ -71,9 +71,9 @@ public class ActionNew extends ActionFileOperations {
      */
     public void actionPerformed(ActionEvent e) {
         Project p = ProjectManager.getManager().getCurrentProject();
-        
+
         if (!askConfirmationAndSave()) return;
-        
+
         // TODO: yuk! Why is this needed? In fact how can anyone select
         // the new action if there is a dialog?
 	// We should remove all open dialogs. They have as parent the

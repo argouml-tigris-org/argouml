@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -31,12 +31,12 @@ import org.argouml.model.ModelFacade;
 import org.tigris.gef.util.ChildGenerator;
 /** Utility class to generate the subclasses of a class.  It
  *  recursively moves down the class hierarchy.  But it does that in a
- *  safe way that will nothang in case of cyclic inheritance. 
+ *  safe way that will nothang in case of cyclic inheritance.
  *  @stereotype singleton
  */
 
 public class GenDescendantClasses implements ChildGenerator {
-    private static final GenDescendantClasses SINGLETON = 
+    private static final GenDescendantClasses SINGLETON =
         new GenDescendantClasses();
 
     /**
@@ -45,7 +45,7 @@ public class GenDescendantClasses implements ChildGenerator {
     public static GenDescendantClasses getSINGLETON() {
         return SINGLETON;
     }
-    
+
     /**
      * @see org.tigris.gef.util.ChildGenerator#gen(java.lang.Object)
      */
@@ -65,7 +65,7 @@ public class GenDescendantClasses implements ChildGenerator {
      * @param cls the starting class (in fact GeneralizableElement)
      * @param accum the accumulated list of descendents
      */
-    public void accumulateDescendants(Object/*MGeneralizableElement*/ cls, 
+    public void accumulateDescendants(Object/*MGeneralizableElement*/ cls,
             Vector accum) {
 	Vector gens = new Vector(ModelFacade.getSpecializations(cls));
 	if (gens == null) return;

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -29,8 +29,8 @@ import org.argouml.cognitive.ToDoItem;
 import org.tigris.gef.presentation.Fig;
 
 /**
- * This interface represents a "Clarifier", i.e. the red wavy line over e.g.  
- * a class name, attribute or operation compartiment, to indicate the 
+ * This interface represents a "Clarifier", i.e. the red wavy line over e.g.
+ * a class name, attribute or operation compartiment, to indicate the
  * existence of a critic.
  *
  */
@@ -39,15 +39,15 @@ public interface Clarifier extends Icon {
      * @param f the Fig on which the clarifier is to be painted
      */
     public void setFig(Fig f);
-    
+
     /**
      * @param i the todo item that is visualised by this clarifier
      */
     public void setToDoItem(ToDoItem i);
-    
+
     /**
      * Reply true if the given point is inside the given Fig.
-     * 
+     *
      * @param x the x of the given point
      * @param y the y of the given point
      * @return true if hit

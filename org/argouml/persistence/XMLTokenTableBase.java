@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -40,8 +40,8 @@ public abstract class XMLTokenTableBase {
 
     private  Hashtable tokens       = null;
     private  boolean   dbg          = false;
-    private  String    openTags[]   = new String[100];
-    private  int       openTokens[] = new int[100];
+    private  String[]  openTags   = new String[100];
+    private  int[]     openTokens = new int[100];
     private  int       numOpen      = 0;
 
 
@@ -50,7 +50,7 @@ public abstract class XMLTokenTableBase {
 
     /**
      * The constructor.
-     * 
+     *
      * @param tableSize the size of the table
      */
     public XMLTokenTableBase(int tableSize) {
@@ -84,7 +84,7 @@ public abstract class XMLTokenTableBase {
      * @param d true if debugging
      */
     public void    setDbg(boolean d)       { dbg = d; }
-    
+
     /**
      * @return true if debugging is turned on
      */
@@ -110,7 +110,7 @@ public abstract class XMLTokenTableBase {
             LOG.debug("NOTE: added '" + s + "' to token table");
         }
     }
-    
+
     /**
      * @param token the given token
      * @return true if the token is present

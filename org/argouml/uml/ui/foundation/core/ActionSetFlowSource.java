@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -39,7 +39,7 @@ import org.argouml.uml.ui.UMLComboBox2;
  */
 public class ActionSetFlowSource extends UMLAction {
 
-    private static final ActionSetFlowSource SINGLETON = 
+    private static final ActionSetFlowSource SINGLETON =
         new ActionSetFlowSource();
 
     /**
@@ -47,7 +47,7 @@ public class ActionSetFlowSource extends UMLAction {
      */
     protected ActionSetFlowSource() {
         super(Translator.localize("Set"), true, NO_ICON);
-    }   
+    }
 
     /**
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
@@ -61,7 +61,7 @@ public class ActionSetFlowSource extends UMLAction {
                 Object flow = /*(MFlow)*/ target;
                 Object old = null;
                 if (!ModelFacade.getSources(flow).isEmpty()) {
-                    old = /*(MModelElement)*/ 
+                    old = /*(MModelElement)*/
                         ModelFacade.getSources(flow).toArray()[0];
                 }
                 if (old != source.getSelectedItem()) {

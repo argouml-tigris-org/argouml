@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -43,9 +43,9 @@ public interface NotationName {
 
     /**
      * Returns the version of the language if applicable, otherwise
-     * <tt>null</tt>.
+     * <code>null</code>.
      *
-     * @return The language version or <tt>null</tt>.
+     * @return The language version or <code>null</code>.
      */
     String getVersion();
 
@@ -57,10 +57,10 @@ public interface NotationName {
     String getTitle();
 
     /**
-     * Returns an icon for the notation, or <tt>null</tt> if no icon 
+     * Returns an icon for the notation, or <code>null</code> if no icon
      * is available.
      *
-     * @return An {@link Icon} for the language or <tt>null</tt>.
+     * @return An {@link Icon} for the language or <code>null</code>.
      */
     Icon getIcon();
 
@@ -71,7 +71,7 @@ public interface NotationName {
      *
      * This should incorporate both the name and the version if one
      * exists.
-     * 
+     *
      * @return the value for this notation to be stored in the configuration.
      */
     String getConfigurationValue();

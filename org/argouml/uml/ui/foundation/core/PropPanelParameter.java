@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -46,10 +46,10 @@ public class PropPanelParameter extends PropPanelModelElement {
     private JScrollPane behFeatureScroll;
 
     private static UMLParameterBehavioralFeatListModel behFeatureModel;
-    
+
     /**
      * The constructor.
-     * 
+     *
      */
     public PropPanelParameter() {
         super(
@@ -60,45 +60,45 @@ public class PropPanelParameter extends PropPanelModelElement {
 	    ModelFacade.STEREOTYPE,
 	    ModelFacade.OPERATION,
 	    ModelFacade.PARAMETER,
-	    ModelFacade.CLASSIFIER 
+	    ModelFacade.CLASSIFIER,
 	};
         setNameEventListening(namesToWatch);
 
-        addField(Translator.localize("label.name"), 
+        addField(Translator.localize("label.name"),
                 getNameTextField());
- 
-        addField(Translator.localize("label.stereotype"), 
+
+        addField(Translator.localize("label.stereotype"),
                 getStereotypeBox());
 
-        addField(Translator.localize("label.owner"), 
+        addField(Translator.localize("label.owner"),
                 getBehavioralFeatureScroll());
-        
+
         addSeperator();
 
-        addField(Translator.localize("label.type"), 
-                new UMLComboBox2(new UMLParameterTypeComboBoxModel(), 
+        addField(Translator.localize("label.type"),
+                new UMLComboBox2(new UMLParameterTypeComboBoxModel(),
                         ActionSetParameterType.getInstance()));
 
-        addField(Translator.localize("label.parameter.default-value"), 
+        addField(Translator.localize("label.parameter.default-value"),
                 new UMLInitialValueComboBox(this));
-        
+
         add(new UMLParameterDirectionKindRadioButtonPanel(
                 Translator.localize("label.parameter.kind"), true));
 
         addButton(new PropPanelButton2(new ActionNavigateContainerElement()));
-        addButton(new PropPanelButton2(new ActionAddParameter(), 
+        addButton(new PropPanelButton2(new ActionAddParameter(),
                 lookupIcon("Parameter")));
-        addButton(new PropPanelButton2(new ActionAddDataType(), 
+        addButton(new PropPanelButton2(new ActionAddDataType(),
                 lookupIcon("DataType")));
-        addButton(new PropPanelButton2(new ActionNewStereotype(), 
+        addButton(new PropPanelButton2(new ActionNewStereotype(),
                 lookupIcon("Stereotype")));
-        addButton(new PropPanelButton2(new ActionRemoveFromModel(), 
+        addButton(new PropPanelButton2(new ActionRemoveFromModel(),
                 lookupIcon("Delete")));
     }
-    
+
     /**
      * Returns the behavioral Feature Scroll.
-     * 
+     *
      * @return JScrollPane
      */
     public JScrollPane getBehavioralFeatureScroll() {

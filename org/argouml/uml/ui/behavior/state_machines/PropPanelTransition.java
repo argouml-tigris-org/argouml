@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -46,7 +46,7 @@ public class PropPanelTransition extends PropPanelModelElement {
 
     /**
      * The constructor.
-     * 
+     *
      */
     public PropPanelTransition() {
         super("Transition", ConfigLoader.getTabPropsOrientation());
@@ -67,12 +67,12 @@ public class PropPanelTransition extends PropPanelModelElement {
 
         addSeperator();
 
-        JList sourceList = 
+        JList sourceList =
             new UMLLinkedList(new UMLTransitionSourceListModel());
         sourceList.setVisibleRowCount(1);
         addField(Translator.localize("label.source"),
                 new JScrollPane(sourceList));
-        JList targetList = 
+        JList targetList =
             new UMLLinkedList(new UMLTransitionTargetListModel());
         targetList.setVisibleRowCount(1);
         addField(Translator.localize("label.target"),
@@ -95,9 +95,9 @@ public class PropPanelTransition extends PropPanelModelElement {
                 new JScrollPane(effectList));
 
         addButton(new PropPanelButton2(new ActionNavigateContainerElement()));
-        addButton(new PropPanelButton2(new ActionNewStereotype(), 
+        addButton(new PropPanelButton2(new ActionNewStereotype(),
                 lookupIcon("Stereotype")));
-        addButton(new PropPanelButton2(new ActionRemoveFromModel(), 
+        addButton(new PropPanelButton2(new ActionRemoveFromModel(),
                 lookupIcon("Delete")));;
     }
 

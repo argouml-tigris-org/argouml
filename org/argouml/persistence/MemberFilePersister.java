@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -51,13 +51,13 @@ public abstract class MemberFilePersister {
      */
     public abstract void load(Project project, InputStream inputStream)
         throws OpenException;
-    
+
     /**
      * Gets the tag name which is the root tag for this member.
      * @return tag name.
      */
     public abstract String getMainTag();
-    
+
     /**
      * Save the projectmember as XML to the given writer.
      * @param member The project member to save.
@@ -66,10 +66,10 @@ public abstract class MemberFilePersister {
      * @throws SaveException if the save fails
      */
     abstract public void save(
-            ProjectMember member, 
-            Writer writer, 
+            ProjectMember member,
+            Writer writer,
             Integer indent) throws SaveException;
-        
+
     /**
      * Send an existing file of XML to the PrintWriter.
      * @param writer the PrintWriter.
@@ -82,16 +82,16 @@ public abstract class MemberFilePersister {
         try {
             String padding = "                                          "
                 .substring(0, indent);
-            BufferedReader reader = 
+            BufferedReader reader =
                 new BufferedReader(new FileReader(file));
-            
+
             // Skip the <?xml... first line
             String line = reader.readLine();
-            while (line != null && (line.startsWith("<?xml ") 
+            while (line != null && (line.startsWith("<?xml ")
                     || line.startsWith("<!DOCTYPE "))) {
                 line = reader.readLine();
             }
-            
+
             while (line != null) {
                 (writer).print(padding);
                 (writer).println(line);
@@ -104,5 +104,5 @@ public abstract class MemberFilePersister {
             throw new SaveException(e);
         }
     }
-    
+
 }

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -72,7 +72,7 @@ public class DismissToDoItemDialog extends ArgoDialog {
 
     /**
      * The constructor.
-     * 
+     *
      * @param owner the parent frame
      */
     public DismissToDoItemDialog(Frame owner) {
@@ -84,14 +84,14 @@ public class DismissToDoItemDialog extends ArgoDialog {
 
         JLabel instrLabel =
             new JLabel(Translator.localize("label.remove-item"));
-            
+
         badGoalButton = new JRadioButton(Translator.localize(
-            "button.not-relevant-to-my-goals"));            
+            "button.not-relevant-to-my-goals"));
         badDecButton = new JRadioButton(Translator.localize(
             "button.not-of-concern-at-moment"));
         explainButton = new JRadioButton(Translator.localize(
             "button.reason-given-below"));
-        
+
         badGoalButton.setMnemonic(
             Translator.localize(
                 "button.not-relevant-to-my-goals.mnemonic")
@@ -103,7 +103,7 @@ public class DismissToDoItemDialog extends ArgoDialog {
         explainButton.setMnemonic(
             Translator.localize("button.reason-given-below.mnemonic").charAt(
                 0));
-                
+
         JPanel content = new JPanel();
 
         GridBagLayout gb = new GridBagLayout();
@@ -127,7 +127,7 @@ public class DismissToDoItemDialog extends ArgoDialog {
         content.add(instrLabel);
 
         c.gridy = 1;
-        c.insets = new Insets(5, 0, 0, 0);        
+        c.insets = new Insets(5, 0, 0, 0);
 
         gb.setConstraints(badGoalButton, c);
         content.add(badGoalButton);
@@ -138,16 +138,16 @@ public class DismissToDoItemDialog extends ArgoDialog {
         content.add(badDecButton);
 
         c.gridy = 3;
-        
+
         gb.setConstraints(explainButton, c);
         content.add(explainButton);
 
         c.gridy = 4;
         c.weighty = 1.0;
-                
+
         gb.setConstraints(explain, c);
         content.add(explain);
-        
+
         setContent(content);
 
         getOkButton().addActionListener(new ActionListener() {
@@ -175,24 +175,24 @@ public class DismissToDoItemDialog extends ArgoDialog {
 
         explanation.setText(
             Translator.localize("label.enter-rationale-here"));
-            
+
         badGoalButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 explanation.setEnabled(false);
             }
-        });                
+        });
         badDecButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 explanation.setEnabled(false);
             }
-        });                
+        });
         explainButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 explanation.setEnabled(true);
                 explanation.requestFocus();
                 explanation.selectAll();
             }
-        });                
+        });
     }
 
     /**
@@ -202,9 +202,9 @@ public class DismissToDoItemDialog extends ArgoDialog {
         target = (ToDoItem) t;
     }
 
-    /** 
+    /**
      * Prepare for typing in rationale field when window is opened.
-     * 
+     *
      * @see java.awt.Component#setVisible(boolean)
      */
     public void setVisible(boolean b) {

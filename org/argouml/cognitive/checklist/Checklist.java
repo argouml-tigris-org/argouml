@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -22,41 +22,38 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-
-
-// File: Checklist.java
-// Class: Checklist
-// Original Author: jrobbins@ics.uci.edu
-
-
 package org.argouml.cognitive.checklist;
 
 import java.io.Serializable;
 import java.util.Enumeration;
 import java.util.Vector;
 
-/** A Checklist is basically a list of CheckItems.  It also provides
- *  some convience functions for adding trivial CheckItems (ones that
- *  have no predicate).
+/**
+ * A Checklist is basically a list of CheckItems.  It also provides
+ * some convience functions for adding trivial CheckItems (ones that
+ * have no predicate).
  *
- *  In ArgoUML, Checklists are shown in the TabChecklist panel.
+ * In ArgoUML, Checklists are shown in the TabChecklist panel.
  *
- *  @see org.argouml.cognitive.checklist.ui.TabChecklist
+ * @see org.argouml.cognitive.checklist.ui.TabChecklist
+ *
+ * @author Jason Robbins
  */
-
 public class Checklist implements Serializable {
 
     ////////////////////////////////////////////////////////////////
     // instance variables
 
-    /** Pending CheckItems for the designer to consider. */
+    /**
+     * Pending CheckItems for the designer to consider.
+     */
     private Vector items = new Vector();
 
     private String nextCategory = "General";
 
     /**
      * The constructor.
-     * 
+     *
      */
     public Checklist() { }
 
@@ -92,8 +89,8 @@ public class Checklist implements Serializable {
 
     /**
      * Replace the list by the given new list.
-     * 
-     * @param list the given new list 
+     *
+     * @param list the given new list
      */
     public synchronized void addAll(Checklist list) {
 	Enumeration cur = list.elements();
@@ -125,7 +122,7 @@ public class Checklist implements Serializable {
      * @param cat the category
      */
     public void setNextCategory(String cat) { nextCategory = cat; }
-    
+
 
     /**
      * @see java.lang.Object#toString()

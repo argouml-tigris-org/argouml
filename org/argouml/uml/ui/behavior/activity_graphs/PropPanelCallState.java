@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2003-2004 The Regents of the University of California. All
+// Copyright (c) 2003-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -30,15 +30,15 @@ import org.tigris.swidgets.Orientation;
 import org.argouml.util.ConfigLoader;
 
 /**
- * 
+ *
  * @author mkl
- *  
+ *
  */
 public class PropPanelCallState extends PropPanelActionState {
 
     /**
      * The constructor.
-     * 
+     *
      */
     public PropPanelCallState() {
         this("CallState", lookupIcon("CallState"), ConfigLoader
@@ -53,7 +53,7 @@ public class PropPanelCallState extends PropPanelActionState {
     public PropPanelCallState(String name, ImageIcon icon,
             Orientation orientation) {
         super(name, icon, orientation);
-        
+
     }
 
 }

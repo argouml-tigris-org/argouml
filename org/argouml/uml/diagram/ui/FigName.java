@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -33,19 +33,19 @@ import org.tigris.gef.presentation.FigText;
 public class FigName extends FigText {
     /**
      * The constructor.
-     * 
+     *
      * @param x horizontal distance to the left
-     * @param y vertical distance from the top 
+     * @param y vertical distance from the top
      * @param w width
      * @param h heigth
-     * @param expandOnly true if the fig can grow if the text changes, 
+     * @param expandOnly true if the fig can grow if the text changes,
      *                   but not shrink
      */
     public FigName(int x, int y, int w, int h, boolean expandOnly) {
         super (x, y, w, h, expandOnly);
     }
-    
-    
+
+
     /**
      * @see org.tigris.gef.presentation.Fig#setLineWidth(int)
      */

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2003 The Regents of the University of California. All
+// Copyright (c) 2003-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -44,9 +44,9 @@ import ru.novosoft.uml.model_management.MPackage;
  */
 public class RefBaseObjectProxy implements InvocationHandler, RefBaseObject {
 
-    private static final Logger LOG = 
+    private static final Logger LOG =
         Logger.getLogger(RefBaseObjectProxy.class);
-            
+
     private Object realObject;
 
     /**
@@ -55,18 +55,16 @@ public class RefBaseObjectProxy implements InvocationHandler, RefBaseObject {
      * @param o proxied object to extract from
      * @return the realObject behind the proxy
      */
-    public static Object getProxiedObject(RefBaseObjectProxy o)
-    {
+    public static Object getProxiedObject(RefBaseObjectProxy o) {
         return o.realObject;
     }
 
     /** Creates a new instance of the proxied object.
-     * 
+     *
      * @param obj to proxy
      * @return a proxy object if obj does not already implement the interface.
      */
-    public static Object newInstance(Object obj)
-    {
+    public static Object newInstance(Object obj) {
         Class[] newInterfaces = null;
         if (obj instanceof RefBaseObject) {
             // We don't need to add the interface
@@ -93,13 +91,12 @@ public class RefBaseObjectProxy implements InvocationHandler, RefBaseObject {
     /**
      * @param obj The object to proxy
      */
-    public RefBaseObjectProxy(Object obj)
-    {
+    public RefBaseObjectProxy(Object obj) {
         realObject = obj;
     }
 
     /**
-      * @see java.lang.reflect.InvocationHandler#invoke(java.lang.Object, 
+      * @see java.lang.reflect.InvocationHandler#invoke(java.lang.Object,
       * java.lang.reflect.Method, java.lang.Object[])
       */
     public Object invoke(Object proxy, Method method, Object[] args)
@@ -135,16 +132,14 @@ public class RefBaseObjectProxy implements InvocationHandler, RefBaseObject {
     /**
      * @see javax.jmi.reflect.RefBaseObject#refMetaObject()
      */
-    public RefObject refMetaObject()
-    {
+    public RefObject refMetaObject() {
         return null;
     }
 
     /**
      * @see javax.jmi.reflect.RefBaseObject#refImmediatePackage()
      */
-    public RefPackage refImmediatePackage()
-    {
+    public RefPackage refImmediatePackage() {
         if (realObject instanceof MBase) {
             MBase base = (MBase) realObject;
             Object container = base.getModelElementContainer();
@@ -160,8 +155,7 @@ public class RefBaseObjectProxy implements InvocationHandler, RefBaseObject {
     /**
      * @see javax.jmi.reflect.RefBaseObject#refOutermostPackage()
      */
-    public RefPackage refOutermostPackage()
-    {
+    public RefPackage refOutermostPackage() {
         Object outermost = null;
         if (realObject instanceof MBase) {
             MBase base = (MBase) realObject;
@@ -178,8 +172,7 @@ public class RefBaseObjectProxy implements InvocationHandler, RefBaseObject {
     /**
      * @see javax.jmi.reflect.RefBaseObject#refMofId()
      */
-    public String refMofId()
-    {
+    public String refMofId() {
         if (realObject instanceof MBase) {
             MBase base = (MBase) realObject;
             return base.getUUID();
@@ -190,8 +183,7 @@ public class RefBaseObjectProxy implements InvocationHandler, RefBaseObject {
     /**
      * @see javax.jmi.reflect.RefBaseObject#refVerifyConstraints(boolean)
      */
-    public Collection refVerifyConstraints(boolean arg0)
-    {
+    public Collection refVerifyConstraints(boolean arg0) {
         throw new RuntimeException("Not yet implemented");
     }
 

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2003 The Regents of the University of California. All
+// Copyright (c) 2003-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -46,7 +46,7 @@ import org.apache.log4j.Logger;
 public class RefPackageProxy extends RefBaseObjectProxy
     implements InvocationHandler, RefPackage {
 
-    private static final Logger LOG = 
+    private static final Logger LOG =
         Logger.getLogger(RefBaseObjectProxy.class);
 
     /**
@@ -57,12 +57,11 @@ public class RefPackageProxy extends RefBaseObjectProxy
     }
 
     /** Creates a new instance of the proxied object.
-     * 
+     *
      * @param obj to proxy
      * @return a proxy object if obj does not already implement the interface.
      */
-    public static Object newInstance(Object obj)
-    {
+    public static Object newInstance(Object obj) {
         Class[] newInterfaces = null;
         if (obj instanceof RefBaseObject) {
             // We don't need to add the interface
@@ -88,7 +87,7 @@ public class RefPackageProxy extends RefBaseObjectProxy
     }
 
     /**
-      * @see java.lang.reflect.InvocationHandler#invoke(java.lang.Object, 
+      * @see java.lang.reflect.InvocationHandler#invoke(java.lang.Object,
       * java.lang.reflect.Method, java.lang.Object[])
       */
     public Object invoke(Object proxy, Method method, Object[] args)
@@ -189,7 +188,7 @@ public class RefPackageProxy extends RefBaseObjectProxy
     }
 
     /**
-     * @see javax.jmi.reflect.RefPackage#refCreateStruct(java.lang.String, 
+     * @see javax.jmi.reflect.RefPackage#refCreateStruct(java.lang.String,
      * java.util.List)
      */
     public RefStruct refCreateStruct(String arg0, List arg1) {
@@ -197,7 +196,7 @@ public class RefPackageProxy extends RefBaseObjectProxy
     }
 
     /**
-     *@see javax.jmi.reflect.RefPackage#refGetEnum(javax.jmi.reflect.RefObject, 
+     *@see javax.jmi.reflect.RefPackage#refGetEnum(javax.jmi.reflect.RefObject,
      * java.lang.String)
      */
     public RefEnum refGetEnum(RefObject arg0, String arg1) {
@@ -205,7 +204,7 @@ public class RefPackageProxy extends RefBaseObjectProxy
     }
 
     /**
-     * @see javax.jmi.reflect.RefPackage#refGetEnum(java.lang.String, 
+     * @see javax.jmi.reflect.RefPackage#refGetEnum(java.lang.String,
      * java.lang.String)
      */
     public RefEnum refGetEnum(String arg0, String arg1) {

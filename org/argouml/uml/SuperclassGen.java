@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -32,10 +32,10 @@ import org.argouml.model.ModelFacade;
 import org.tigris.gef.util.ChildGenerator;
 
 /** Utility class to generate the children of a class.  In this case
- *  the "children" of a class are it's base classes. 
+ *  the "children" of a class are it's base classes.
  */
 public class SuperclassGen implements ChildGenerator {
-    
+
     /**
      * @see org.tigris.gef.util.ChildGenerator#gen(java.lang.Object)
      */

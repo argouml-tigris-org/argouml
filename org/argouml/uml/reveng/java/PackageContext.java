@@ -22,10 +22,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// File: PackageContext.java
-// Classes: PackageContext
-// Original Author: Marcus Andersson andersson@users.sourceforge.net
-
 package org.argouml.uml.reveng.java;
 
 import org.argouml.model.Model;
@@ -33,10 +29,11 @@ import org.argouml.model.ModelFacade;
 import org.argouml.uml.reveng.ImportClassLoader;
 
 /**
-   This context is a package.
-*/
-class PackageContext extends Context
-{
+ * This context is a package.
+ *
+ * @author Marcus Andersson
+ */
+class PackageContext extends Context {
     /** The package this context represents. */
     private Object mPackage;
 
@@ -49,16 +46,14 @@ class PackageContext extends Context
        @param base Based on this context.
        @param thePackage Represents this package.
     */
-    public PackageContext(Context base, Object thePackage)
-    {
+    public PackageContext(Context base, Object thePackage) {
 	super(base);
 	this.mPackage = thePackage;
 	javaName = getJavaName(thePackage);
     }
 
     public Object getInterface(String name)
-	throws ClassifierNotFoundException
-    {
+	throws ClassifierNotFoundException {
         // Search in model
         Object mInterface = ModelFacade.lookupIn(mPackage, name);
 
@@ -136,8 +131,7 @@ class PackageContext extends Context
      * @return Found classifier.
      */
     public Object get(String name)
-	throws ClassifierNotFoundException
-    {
+	throws ClassifierNotFoundException {
 	// Search in model
 	Object mClassifier = ModelFacade.lookupIn(mPackage, name);
 
@@ -172,7 +166,7 @@ class PackageContext extends Context
 	    catch (ClassNotFoundException e) {
 		// No class or interface found
                 // try USER classpath
-                
+
                 try {
                     // Special case for model
                     if (ModelFacade.isAModel(mPackage)) {
@@ -220,8 +214,7 @@ class PackageContext extends Context
 		    || name.equals("boolean")
 		    || name.equals("void")
 		    // How do I represent arrays in UML?
-		    || name.indexOf("[]") != -1)
-		{
+		    || name.indexOf("[]") != -1) {
 		    mClassifier =
 			Model.getCoreFactory()
 			    .buildDataType(name, mPackage);

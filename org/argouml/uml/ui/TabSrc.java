@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2001 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -85,18 +85,18 @@ public class TabSrc
      * @see org.argouml.ui.TabText#genText(java.lang.Object)
      */
     protected String genText(Object modelObject) {
-        modelObject = (modelObject instanceof Fig) 
-            ? ((Fig) modelObject).getOwner() : modelObject;       
+        modelObject = (modelObject instanceof Fig)
+            ? ((Fig) modelObject).getOwner() : modelObject;
         if (!ModelFacade.isAElement(modelObject))
             return null;
-        
+
         LOG.debug("TabSrc getting src for " + modelObject);
         //return Notation.generate(this, modelObject, true);
         NotationName nn =
             (NotationName) (NotationComboBox.getInstance().getSelectedItem());
         String fileName = getSourceFileFor(modelObject, nn);
         if (fileName != null) {
-            ;// get file content, scroll to the line where modelObject begins, 
+            ;// get file content, scroll to the line where modelObject begins,
             // and set background color to white
         }
         return Notation.generate(nn, modelObject, true);
@@ -119,7 +119,7 @@ public class TabSrc
     }
 
     /**
-     * Sets the target of this tab. 
+     * Sets the target of this tab.
      *
      * @see org.argouml.ui.TabTarget#setTarget(java.lang.Object)
      */
@@ -155,8 +155,8 @@ public class TabSrc
     }
 
     /**
-     * Determines if the current tab should be enabled with the given target. 
-     * Returns true if the given target is either 
+     * Determines if the current tab should be enabled with the given target.
+     * Returns true if the given target is either
      * a modelelement or is a fig with as owner a modelelement.
      *
      * @see org.argouml.ui.TabTarget#shouldBeEnabled(java.lang.Object)
@@ -181,33 +181,33 @@ public class TabSrc
         refresh();
     }
 
-    /** 
+    /**
      * Ignored.
-     * 
+     *
      * @see org.argouml.application.events.ArgoNotationEventListener#notationAdded(org.argouml.application.events.ArgoNotationEvent)
      */
     public void notationAdded(ArgoNotationEvent e) {
     }
 
-    /** 
+    /**
      * Ignored.
-     * 
+     *
      * @see org.argouml.application.events.ArgoNotationEventListener#notationRemoved(org.argouml.application.events.ArgoNotationEvent)
      */
     public void notationRemoved(ArgoNotationEvent e) {
     }
 
-    /** 
+    /**
      * Ignored.
-     * 
+     *
      * @see org.argouml.application.events.ArgoNotationEventListener#notationProviderAdded(org.argouml.application.events.ArgoNotationEvent)
      */
     public void notationProviderAdded(ArgoNotationEvent e) {
     }
 
-    /** 
+    /**
      * Ignored.
-     * 
+     *
      * @see org.argouml.application.events.ArgoNotationEventListener#notationProviderRemoved(org.argouml.application.events.ArgoNotationEvent)
      */
     public void notationProviderRemoved(ArgoNotationEvent e) {

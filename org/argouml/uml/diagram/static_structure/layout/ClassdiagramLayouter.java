@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -97,7 +97,7 @@ public class ClassdiagramLayouter implements Layouter {
 
     /**
      * Add a object to layout.
-     * 
+     *
      * @param obj
      *            represents the object to layout.
      */
@@ -107,7 +107,7 @@ public class ClassdiagramLayouter implements Layouter {
 
     /**
      * Add a ClassdiagramNode to layout.
-     * 
+     *
      * @param obj
      *            represents the object to layout.
      */
@@ -117,7 +117,7 @@ public class ClassdiagramLayouter implements Layouter {
 
     /**
      * Remove a object from the layout process.
-     * 
+     *
      * @param obj
      *            represents the object to remove.
      */
@@ -128,7 +128,7 @@ public class ClassdiagramLayouter implements Layouter {
     /**
      * Operation getObjects returns all the objects currently participating in
      * the layout process.
-     * 
+     *
      * @return An array holding all the object in the layouter.
      */
     public LayoutedObject[] getObjects() {
@@ -143,7 +143,7 @@ public class ClassdiagramLayouter implements Layouter {
     /**
      * Operation getObject returns a object with a given index from the
      * layouter.
-     * 
+     *
      * @param index
      *            represents the index of this object in the layouter.
      * @return The LayoutedObject for the given index.
@@ -154,7 +154,7 @@ public class ClassdiagramLayouter implements Layouter {
 
     /**
      * Get a ClassdiagramNode from the layouted objects.
-     * 
+     *
      * @param index
      *            represents the index of this ClassdiagramNode.
      * @return The ClassdiagramNode for this index.
@@ -220,7 +220,7 @@ public class ClassdiagramLayouter implements Layouter {
                                             Object me2 = iter3.next();
                                             if (ModelFacade.isAClassifier(me2))
                                             {
-                                                ClassdiagramNode superNode = 
+                                                ClassdiagramNode superNode =
                                                     getClassdiagramNode4owner(
                                                             me2);
 
@@ -236,7 +236,7 @@ public class ClassdiagramLayouter implements Layouter {
                                 // Or the implemented interface?
                                 Collection suppliers = ModelFacade
                                         .getSuppliers(abstr);
-                                for (Iterator iter2 = suppliers.iterator(); 
+                                for (Iterator iter2 = suppliers.iterator();
                                     iter2.hasNext();) {
                                     Object me =
                                     /* (MModelElement) */iter2.next();
@@ -247,7 +247,7 @@ public class ClassdiagramLayouter implements Layouter {
                                             Object me2 = iter3.next();
                                             if (ModelFacade.isAClassifier(me2))
                                             {
-                                                ClassdiagramNode subNode = 
+                                                ClassdiagramNode subNode =
                                                     getClassdiagramNode4owner(
                                                             me2);
 
@@ -270,7 +270,7 @@ public class ClassdiagramLayouter implements Layouter {
 
                     while (iter.hasNext()) {
                         Object g = iter.next();
-                        ClassdiagramNode superNode = 
+                        ClassdiagramNode superNode =
                             getClassdiagramNode4owner(ModelFacade.getParent(g));
 
                         if (superNode != null) {
@@ -281,7 +281,7 @@ public class ClassdiagramLayouter implements Layouter {
                     iter = ModelFacade.getSpecializations(node).iterator();
                     while (iter.hasNext()) {
                         Object s = iter.next();
-                        ClassdiagramNode subNode = 
+                        ClassdiagramNode subNode =
                             getClassdiagramNode4owner(ModelFacade.getChild(s));
 
                         if (subNode != null) {
@@ -360,13 +360,13 @@ public class ClassdiagramLayouter implements Layouter {
                     Iterator iter = assocClasses.iterator();
                     while (iter.hasNext()) {
                         Object me = iter.next();
-                        ClassdiagramNode curNode = 
+                        ClassdiagramNode curNode =
                             getClassdiagramNode4owner(me);
                         if (curNode != null && curNode != node
                                 && curNode.isMovable()) {
                             LOG.debug("Moving:" + me);
-                            int rank = (curNode.getRealRank() 
-                                    == ClassdiagramNode.NORANK) 
+                            int rank = (curNode.getRealRank()
+                                    == ClassdiagramNode.NORANK)
                                     ? node.getRank()
                                     : curNode.getRank();
                             LOG.debug("rank: " + rank);
@@ -573,7 +573,7 @@ public class ClassdiagramLayouter implements Layouter {
 
     /**
      * Search the nodes in this classdiagram for a node with a given owner.
-     * 
+     *
      * @return The classdiagram node for this owner, if it's in this diagram, or
      *         null if not.
      */
@@ -589,7 +589,7 @@ public class ClassdiagramLayouter implements Layouter {
     /**
      * Operation getMinimumDiagramSize returns the minimum diagram size after
      * the layout process.
-     * 
+     *
      * @return The minimum diagram size after the layout process.
      */
     public Dimension getMinimumDiagramSize() {
@@ -598,12 +598,12 @@ public class ClassdiagramLayouter implements Layouter {
         for (int i = 0; i < layoutedObjects.size(); i++) {
             ClassdiagramNode node = getClassdiagramNode(i);
 
-            if ((node.getLocation().x + node.getSize().getWidth() + getHGap() 
+            if ((node.getLocation().x + node.getSize().getWidth() + getHGap()
                     / 2) >= width)
                     width = (int) (node.getLocation().x
                             + node.getSize().getWidth() + getHGap() / 2);
 
-            if ((node.getLocation().y + node.getSize().getHeight() + getVGap() 
+            if ((node.getLocation().y + node.getSize().getHeight() + getVGap()
                     / 2) >= height)
                     height = (int) (node.getLocation().y
                             + node.getSize().getHeight() + getVGap() / 2);
@@ -613,7 +613,7 @@ public class ClassdiagramLayouter implements Layouter {
 
     /**
      * Get the number of rows in this diagram.
-     * 
+     *
      * @return The number of rows in this layout.
      */
     private int getRows() {
@@ -629,7 +629,7 @@ public class ClassdiagramLayouter implements Layouter {
 
     /**
      * calculate the height of the row
-     * 
+     *
      * @param row
      *            the row to calculate
      * @return the height
@@ -642,7 +642,7 @@ public class ClassdiagramLayouter implements Layouter {
             if ((getClassdiagramNode(i)).getRank() == row) {
                 // If the object is in this row
                 if ((getClassdiagramNode(i)).getSize().height > currentHeight)
-                        currentHeight = 
+                        currentHeight =
                             (getClassdiagramNode(i)).getSize().height;
             }
         }
@@ -652,7 +652,7 @@ public class ClassdiagramLayouter implements Layouter {
 
     /**
      * Get the number of elements in a given row
-     * 
+     *
      * @param row
      *            The row to check.
      * @return The number of elements in the given row.
@@ -671,7 +671,7 @@ public class ClassdiagramLayouter implements Layouter {
 
     /**
      * Operation getObject InRow returns all the objects for a given row.
-     * 
+     *
      * @param row
      *            represents the row of the returned objects.
      */
@@ -697,7 +697,7 @@ public class ClassdiagramLayouter implements Layouter {
 
     /**
      * Get the vertical gap between nodes.
-     * 
+     *
      * @return The vertical gap between nodes.
      */
     protected int getVGap() {
@@ -706,7 +706,7 @@ public class ClassdiagramLayouter implements Layouter {
 
     /**
      * Get the horizontal gap between nodes.
-     * 
+     *
      * @return The horizontal gap between nodes.
      */
     protected int getHGap() {

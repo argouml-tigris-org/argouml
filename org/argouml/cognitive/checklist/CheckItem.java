@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -29,22 +29,23 @@ import org.tigris.gef.util.Predicate;
 import org.tigris.gef.util.PredicateTrue;
 
 
-/** This class defines an item that can be placed on a Checklist.
- *  This is a short piece of text to prompt the designer to think of a
- *  specific design issue.  CheckItems are similiar to critics in that
- *  they are categorized to be relevant to issues the designer is
- *  interested in, they have a guarding condition that returns true if
- *  the CheckItem should be presented, and they have a piece of text
- *  as design feedback. They are different in that their predicate is
- *  almost always the constant 'true', and the feedback they provide
- *  is much simpler.
+/**
+ * This class defines an item that can be placed on a Checklist.
+ * This is a short piece of text to prompt the designer to think of a
+ * specific design issue.  CheckItems are similiar to critics in that
+ * they are categorized to be relevant to issues the designer is
+ * interested in, they have a guarding condition that returns true if
+ * the CheckItem should be presented, and they have a piece of text
+ * as design feedback. They are different in that their predicate is
+ * almost always the constant 'true', and the feedback they provide
+ * is much simpler.
  *
  * CheckItems are part of Checklists.  And Checklists are registered
  * with the CheckManager.
  *
- *  If you have a piece of advice you would like to give a designer,
- *  you can implement it as a CheckItem _very_ easily.  If you can
- *  formalize the advice more, you can implement it as a Critic.
+ * If you have a piece of advice you would like to give a designer,
+ * you can implement it as a CheckItem _very_ easily.  If you can
+ * formalize the advice more, you can implement it as a Critic.
  *
  * @see Checklist
  * @see CheckManager
@@ -56,15 +57,19 @@ public class CheckItem implements Serializable {
 
     private String category;
 
-    /** One sentence description of the issue. usually in the form of a
-     *  question. */
+    /**
+     * One sentence description of the issue. usually in the form of a
+     * question.
+     */
     private String description;
 
-    /** URL for background (textbook?) knowledge about the domain. */
+    /**
+     * URL for background (textbook?) knowledge about the domain.
+     */
     private String moreInfoURL = "http://argouml.tigris.org/";
 
     /**
-     * The predicate is the condition under which 
+     * The predicate is the condition under which
      * the checkitem should be listed.
      */
     private Predicate pred = PredicateTrue.theInstance();
@@ -74,7 +79,7 @@ public class CheckItem implements Serializable {
 
     /**
      * The constructor.
-     * 
+     *
      * @param c the category
      * @param d the description
      */
@@ -85,7 +90,7 @@ public class CheckItem implements Serializable {
 
     /**
      * The constructor.
-     * 
+     *
      * @param c the category
      * @param d the description
      * @param m the more-info-url
@@ -104,7 +109,7 @@ public class CheckItem implements Serializable {
      * @return the category
      */
     public String getCategory() { return category; }
-    
+
     /**
      * @param c the category
      */
@@ -114,7 +119,7 @@ public class CheckItem implements Serializable {
      * @return the description
      */
     public String getDescription() { return description; }
-    
+
     /**
      * @param dm the design material
      * @return the description
@@ -131,7 +136,7 @@ public class CheckItem implements Serializable {
      * @return the more-info-url
      */
     public String getMoreInfoURL() { return moreInfoURL; }
-    
+
     /**
      * @param m  the more-info-url
      */
@@ -141,7 +146,7 @@ public class CheckItem implements Serializable {
      * @return the predicate
      */
     public Predicate getPredicate() { return pred; }
-    
+
     /**
      * @param p the predicate
      */
@@ -154,7 +159,7 @@ public class CheckItem implements Serializable {
         return getDescription().hashCode();
     }
 
-    /** 
+    /**
      * @see java.lang.Object#equals(java.lang.Object)
      */
     public boolean equals(Object o) {
@@ -172,13 +177,13 @@ public class CheckItem implements Serializable {
 
     /**
      * Customize/expand the description string just before it is displayed.
-     * I.e. add offender specific information to the description string 
-     * (e.g. its name). 
-     * 
+     * I.e. add offender specific information to the description string
+     * (e.g. its name).
+     *
      * @param desc       the description
      * @param dm         the design material
      * @return           the description
      */
     public String expand(String desc, Object dm) { return desc; }
-  
+
 } /* end class CheckItem */

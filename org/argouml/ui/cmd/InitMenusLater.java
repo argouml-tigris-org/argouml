@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2003 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -39,21 +39,21 @@ import org.tigris.gef.base.CmdReorder;
 /**
  * Thread to initialize the submenus of the main menu of argouml (only
  * third level, so the ones with the triangle on windows systems).
- * 
- *  Menu's and the mnemonics of menu's and the menuitems are separated 
+ *
+ *  Menu's and the mnemonics of menu's and the menuitems are separated
  *  in the PropertyResourceBundle <b>menu.properties</b>.
- * 
- *  menuitems are separated in the PropertyResourceBundle 
+ *
+ *  menuitems are separated in the PropertyResourceBundle
  *  <b>action.properties</b>.
- * 
+ *
  *  The key's in menu.properties have the following structure:
- * 
+ *
  *  menu:                    [file].[name of menu]
  *   e.g:                    menu.file
- * 
+ *
  *  mnemonics of menu's:     [file].[name of menu].mnemonic
  *   e.g:                    menu.file.mnemonic
- * 
+ *
  *  mnemonics of menuitems:  [file].[flag for item].[name of menuitem].mnemonic
  *   e.g:                    menu.item.new.mnemonic
  */
@@ -78,7 +78,7 @@ class InitMenusLater implements Runnable {
 
     /**
      * The submenus of argouml are created on startup in a seperate thread.
-     *  
+     *
      * @see java.lang.Runnable#run()
      */
     public void run() {
@@ -129,69 +129,69 @@ class InitMenusLater implements Runnable {
 	// ---------------------------------------------- Arrange Menu
         JMenuItem alignTops = align.add(new CmdAlign(CmdAlign.ALIGN_TOPS));
 	GenericArgoMenuBar.setMnemonic(alignTops, "align tops");
-		
-        JMenuItem alignBottoms = 
+
+        JMenuItem alignBottoms =
 	    align.add(new CmdAlign(CmdAlign.ALIGN_BOTTOMS));
 	GenericArgoMenuBar.setMnemonic(alignBottoms, "align bottoms");
-		
+
 	JMenuItem alignRights = align.add(new CmdAlign(CmdAlign.ALIGN_RIGHTS));
 	GenericArgoMenuBar.setMnemonic(alignRights, "align rights");
 	GenericArgoMenuBar.setAccelerator(alignRights, ctrlR);
-		
+
 	JMenuItem alignLefts = align.add(new CmdAlign(CmdAlign.ALIGN_LEFTS));
 	GenericArgoMenuBar.setMnemonic(alignLefts, "align lefts");
 	GenericArgoMenuBar.setAccelerator(alignLefts, ctrlL);
 
-	JMenuItem alignHCenters = 
+	JMenuItem alignHCenters =
 	    align.add(new CmdAlign(CmdAlign.ALIGN_H_CENTERS));
-	GenericArgoMenuBar.setMnemonic(alignHCenters, 
+	GenericArgoMenuBar.setMnemonic(alignHCenters,
                                        "align horizontal centers");
-			
-	JMenuItem alignVCenters = 
+
+	JMenuItem alignVCenters =
 	    align.add(new CmdAlign(CmdAlign.ALIGN_V_CENTERS));
 	GenericArgoMenuBar.setMnemonic(alignVCenters,
 				       "align vertical centers");
 
-	JMenuItem alignToGrid = 
+	JMenuItem alignToGrid =
 	    align.add(new CmdAlign(CmdAlign.ALIGN_TO_GRID));
 	GenericArgoMenuBar.setMnemonic(alignToGrid, "align to grid");
 
-        JMenuItem distributeHSpacing = 
+        JMenuItem distributeHSpacing =
 	    distribute.add(new CmdDistribute(CmdDistribute.H_SPACING));
 	GenericArgoMenuBar.setMnemonic(distributeHSpacing,
 				       "distribute horizontal spacing");
-			
-        JMenuItem distributeHCenters = 
+
+        JMenuItem distributeHCenters =
 	    distribute.add(new CmdDistribute(CmdDistribute.H_CENTERS));
 	GenericArgoMenuBar.setMnemonic(distributeHCenters,
 				       "distribute horizontal centers");
-			
-        JMenuItem distributeVSpacing = 
+
+        JMenuItem distributeVSpacing =
 	    distribute.add(new CmdDistribute(CmdDistribute.V_SPACING));
 	GenericArgoMenuBar.setMnemonic(distributeVSpacing,
 				       "distribute vertical spacing");
-			
-        JMenuItem distributeVCenters = 
+
+        JMenuItem distributeVCenters =
 	    distribute.add(new CmdDistribute(CmdDistribute.V_CENTERS));
 	GenericArgoMenuBar.setMnemonic(distributeVCenters,
 				       "distribute vertical centers");
-			
-        JMenuItem reorderBringForward = 
+
+        JMenuItem reorderBringForward =
 	    reorder.add(new CmdReorder(CmdReorder.BRING_FORWARD));
 	GenericArgoMenuBar.setMnemonic(reorderBringForward,
 				       "reorder bring forward");
-			
-        JMenuItem reorderSendBackward = 
+
+        JMenuItem reorderSendBackward =
 	    reorder.add(new CmdReorder(CmdReorder.SEND_BACKWARD));
 	GenericArgoMenuBar.setMnemonic(reorderSendBackward,
 				       "reorder send backward");
-			
-        JMenuItem reorderBringToFront = 
+
+        JMenuItem reorderBringToFront =
 	    reorder.add(new CmdReorder(CmdReorder.BRING_TO_FRONT));
 	GenericArgoMenuBar.setMnemonic(reorderBringToFront,
 				       "reorder bring to front");
-			
-        JMenuItem reorderSendToBack = 
+
+        JMenuItem reorderSendToBack =
 	    reorder.add(new CmdReorder(CmdReorder.SEND_TO_BACK));
 	GenericArgoMenuBar.setMnemonic(reorderSendToBack,
 				       "reorder send to back");

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -184,27 +184,27 @@ public class SettingsTabNotation extends SettingsTabHelper {
      * @see org.argouml.application.api.ArgoModule#getModuleName()
      */
     public String getModuleName() { return "SettingsTabNotation"; }
-    
+
     /**
      * @see org.argouml.application.api.ArgoModule#getModuleDescription()
      */
     public String getModuleDescription() { return "Settings Tab for Notation"; }
-    
+
     /**
      * @see org.argouml.application.api.ArgoModule#getModuleAuthor()
      */
     public String getModuleAuthor() { return "ArgoUML Core"; }
-    
+
     /**
      * @see org.argouml.application.api.ArgoModule#getModuleVersion()
      */
     public String getModuleVersion() { return ArgoVersion.getVersion(); }
-    
+
     /**
      * @see org.argouml.application.api.ArgoModule#getModuleKey()
      */
     public String getModuleKey() { return "module.settings.notation"; }
-    
+
     /**
      * @see org.argouml.application.api.SettingsTabPanel#getTabKey()
      */

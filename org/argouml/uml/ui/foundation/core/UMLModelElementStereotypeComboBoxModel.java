@@ -54,12 +54,12 @@ public class UMLModelElementStereotypeComboBoxModel extends UMLComboBoxModel2 {
 					"ownedElement");
     }
 
-    
+
     /**
      * @see org.argouml.uml.ui.UMLComboBoxModel2#isValidElement(Object)
      */
     protected boolean isValidElement(Object o) {
-        return org.argouml.model.ModelFacade.isAStereotype(o) 
+        return org.argouml.model.ModelFacade.isAStereotype(o)
             && Model.getExtensionMechanismsHelper().isValidStereoType(
 		   /*(MModelElement)*/ getTarget(), /*(MStereotype)*/ o);
     }
@@ -117,9 +117,9 @@ public class UMLModelElementStereotypeComboBoxModel extends UMLComboBoxModel2 {
 	    paths,
 	    Model.getExtensionMechanismsHelper()
 	        .getAllPossibleStereotypes(models, elem));
-        setElements( Model.getExtensionMechanismsHelper()
+        setElements(Model.getExtensionMechanismsHelper()
 	        .getAllPossibleStereotypes(models, elem));
-    }   
+    }
 
     /**
      * @see org.argouml.uml.ui.UMLComboBoxModel2#getSelectedModelElement()

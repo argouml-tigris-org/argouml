@@ -37,11 +37,11 @@ import org.argouml.uml.ui.AbstractActionNewModelElement;
 
 /**
  * This action creates a new datatype.
- * 
+ *
  * @author mvw@tigris.org
  */
 public class ActionAddDataType extends AbstractActionNewModelElement {
-    
+
     /**
      * The constructor.
      */
@@ -49,26 +49,26 @@ public class ActionAddDataType extends AbstractActionNewModelElement {
         super("button.new-datatype");
         putValue(Action.NAME, Translator.localize("button.new-datatype"));
     }
-    
+
     /**
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent e) {
         Object target = TargetManager.getInstance().getModelTarget();
         Object ns = null;
-        if (ModelFacade.isANamespace(target)) 
-            ns = target; 
+        if (ModelFacade.isANamespace(target))
+            ns = target;
         if (ModelFacade.isAParameter(target))
-            if (ModelFacade.getModelElementContainer(target) != null) 
+            if (ModelFacade.getModelElementContainer(target) != null)
                 target = ModelFacade.getModelElementContainer(target);
-        if (ModelFacade.isAFeature(target)) 
-            if (ModelFacade.getOwner(target) != null) 
-                target = ModelFacade.getOwner(target); 
-        if (ModelFacade.isAEvent(target)) 
+        if (ModelFacade.isAFeature(target))
+            if (ModelFacade.getOwner(target) != null)
+                target = ModelFacade.getOwner(target);
+        if (ModelFacade.isAEvent(target))
             ns = ModelFacade.getNamespace(target);
-        if (ModelFacade.isAClassifier(target)) 
+        if (ModelFacade.isAClassifier(target))
             ns = ModelFacade.getNamespace(target);
-        
+
         Object newDt = Model.getCoreFactory().buildDataType("", ns);
         TargetManager.getInstance().setTarget(newDt);
         super.actionPerformed(e);

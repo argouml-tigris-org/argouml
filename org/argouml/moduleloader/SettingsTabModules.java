@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2004 The Regents of the University of California. All
+// Copyright (c) 2004-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -44,7 +44,7 @@ import javax.swing.table.AbstractTableModel;
 import org.argouml.application.helpers.SettingsTabHelper;
 
 /**
- * Tab for the settings dialog that makes it possible to 
+ * Tab for the settings dialog that makes it possible to
  * select the modules that are to be enabled.
  *
  * TODO: Header for the table.
@@ -52,7 +52,7 @@ import org.argouml.application.helpers.SettingsTabHelper;
  * @author Linus Tolke
  */
 public class SettingsTabModules extends SettingsTabHelper {
-    
+
     private JTable table;
     private JPanel notYetLoadedPanel = null;
 
@@ -60,7 +60,7 @@ public class SettingsTabModules extends SettingsTabHelper {
 	"Module", "Enabled",
     };
     private Object[][] elements;
-	
+
     /**
      * The constructor.
      */
@@ -68,7 +68,7 @@ public class SettingsTabModules extends SettingsTabHelper {
         super();
 
         setLayout(new BorderLayout());
-	
+
         table = new JTable(new ModuleTableModel());
         table.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);
 	table.setShowVerticalLines(false);
@@ -120,7 +120,7 @@ public class SettingsTabModules extends SettingsTabHelper {
 	public Object getValueAt(int row, int col) {
 	    return elements[row][col];
 	}
-	
+
 	/**
 	 * @see javax.swing.table.TableModel#setValueAt(
 	 *         java.lang.Object, int, int)
@@ -197,7 +197,7 @@ public class SettingsTabModules extends SettingsTabHelper {
 	    box.add(button);
 	    notYetLoadedPanel.add(box);
 	}
-	
+
 	add(notYetLoadedPanel, BorderLayout.SOUTH);
     }
 
@@ -216,7 +216,7 @@ public class SettingsTabModules extends SettingsTabHelper {
         if (elements != null) {
             for (int i = 0; i < elements.length; i++) {
                 ModuleLoader2.setSelected(
-                        (String) elements[i][0], 
+                        (String) elements[i][0],
                         ((Boolean) elements[i][1]).booleanValue());
             }
             ModuleLoader2.doLoad(false);
@@ -234,30 +234,30 @@ public class SettingsTabModules extends SettingsTabHelper {
 
 
 
-    // TODO: This is rather ironic. We use the old moduleloader mechanism  
-    //       to get a settings tab that will allow us to turn on an off 
+    // TODO: This is rather ironic. We use the old moduleloader mechanism
+    //       to get a settings tab that will allow us to turn on an off
     //       the new moduleloader.
 
     /**
      * @see org.argouml.application.api.ArgoModule#getModuleName()
      */
     public String getModuleName() { return "SettingsTabModules"; }
-    
+
     /**
      * @see org.argouml.application.api.ArgoModule#getModuleDescription()
      */
     public String getModuleDescription() { return "Selecting Modules"; }
-    
+
     /**
      * @see org.argouml.application.api.ArgoModule#getModuleAuthor()
      */
     public String getModuleAuthor() { return "ArgoUML Core"; }
-    
+
     /**
      * @see org.argouml.application.api.ArgoModule#getModuleVersion()
      */
     public String getModuleVersion() { return "1.0"; }
-    
+
     /**
      * @see org.argouml.application.api.ArgoModule#getModuleKey()
      */

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -193,7 +193,7 @@ public class WizAssocComposite extends UMLWizard {
     /**
      * Set the initial instruction string for the choice. May be
      * called by the creator of the wizard to override the default.<p>
-     * 
+     *
      * @param s The new instructions.
      */
     public void setInstructions(String s) {
@@ -240,7 +240,7 @@ public class WizAssocComposite extends UMLWizard {
             }
 
             return step1Choice;
-            
+
         default:
         }
 
@@ -375,7 +375,7 @@ public class WizAssocComposite extends UMLWizard {
                 // Someone took our association away.
 
                 LOG.error("WizAssocComposite: could not set "
-			  + "aggregation.", pve); 
+			  + "aggregation.", pve);
             }
 
         default:

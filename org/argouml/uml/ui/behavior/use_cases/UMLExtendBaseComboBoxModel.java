@@ -35,16 +35,16 @@ import org.argouml.uml.ui.UMLComboBoxModel2;
  */
 public class UMLExtendBaseComboBoxModel extends UMLComboBoxModel2 {
 
-    
 
-    
+
+
 
     /**
      * Constructor for UMLExtendBaseComboBoxModel.
      */
     public UMLExtendBaseComboBoxModel() {
         super("base", false);
-        UmlModelEventPump.getPump().addClassModelEventListener(this, 
+        UmlModelEventPump.getPump().addClassModelEventListener(this,
                 (Class) ModelFacade.NAMESPACE, "ownedElement");
     }
 

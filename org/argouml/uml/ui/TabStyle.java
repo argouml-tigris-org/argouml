@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -21,12 +21,6 @@
 // PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
-
-// File: TabStyle.java
-// Classes: TabStyle
-
-// 12 Apr 2002: Jeremy Bennett (mail@jeremybennett.com). Extended to support
-// use case style panel that handles optional display of extension points.
 
 package org.argouml.uml.ui;
 
@@ -85,20 +79,20 @@ import org.tigris.gef.presentation.Fig;
  * </ul>
  * If a stylepanel had been found, it will be stored in a cache, which can also
  * be initialized in <code>initPanels()</code> <p>
- * 
+ *
  * According the decision taken in issue 502, this tab is renamed "Presentation"
- * for the user. And the Presentation tab shall contain presentation options, 
- * and no semantic UML properties (which belong inthe "Properties" panel). 
- * In contrast, the diagram pop-up menu for a model element 
+ * for the user. And the Presentation tab shall contain presentation options,
+ * and no semantic UML properties (which belong inthe "Properties" panel).
+ * In contrast, the diagram pop-up menu for a model element
  * may access both presentation options as well as semantic UML properties. <p>
- * 
- * Note also that the semantic properties of a UML model element exist in one 
- * copy only but the presentation options exist in one copy per diagram 
- * that the model element is showing in. E.g. a class could have 
- * attributes hidden in one diagram and showing in another. So, for the user 
- * it would be very logical to seperate these 2 kinds of settings 
+ *
+ * Note also that the semantic properties of a UML model element exist in one
+ * copy only but the presentation options exist in one copy per diagram
+ * that the model element is showing in. E.g. a class could have
+ * attributes hidden in one diagram and showing in another. So, for the user
+ * it would be very logical to seperate these 2 kinds of settings
  * on different tabs.
- *  
+ *
  */
 public class TabStyle extends TabSpawnable implements TabFigTarget,
         PropertyChangeListener, DelayedVChangeListener {
@@ -126,7 +120,7 @@ public class TabStyle extends TabSpawnable implements TabFigTarget,
 
     /**
      * The constructor.
-     * 
+     *
      * @param tabName the name of the tab
      * @param spn style panel names
      */
@@ -147,7 +141,7 @@ public class TabStyle extends TabSpawnable implements TabFigTarget,
 
     /**
      * Initialize the hashtable of pre lookup panels.
-     *  
+     *
      */
     protected void initPanels() {
 
@@ -158,7 +152,7 @@ public class TabStyle extends TabSpawnable implements TabFigTarget,
      * register a new style panel at run-time. This property style will then be
      * displayed in the details pane whenever an element of the given metaclass
      * is selected.
-     * 
+     *
      * @param c
      *            the metaclass whose details show be displayed in the property
      *            panel p
@@ -171,7 +165,7 @@ public class TabStyle extends TabSpawnable implements TabFigTarget,
 
     /**
      * Sets the target of the style tab.
-     * 
+     *
      * @deprecated As of ArgoUml version 0.13.5, the visibility of this method
      *             will change in the future, replaced by
      *             {@link org.argouml.ui.targetmanager.TargetManager}.
@@ -253,7 +247,7 @@ public class TabStyle extends TabSpawnable implements TabFigTarget,
 
     /**
      * Find the stylepanel for a given target class.
-     * 
+     *
      * @param targetClass
      *            the target class
      * @return a Stylepanel object or <code>null</code> on error
@@ -287,7 +281,7 @@ public class TabStyle extends TabSpawnable implements TabFigTarget,
 
     /**
      * Get the class for the required stylepanel.
-     * 
+     *
      * @param targetClass the class of the current seelcted target.
      * @return the panel class for the class given or
      * null if none available.
@@ -303,7 +297,7 @@ public class TabStyle extends TabSpawnable implements TabFigTarget,
         StringNamespace baseNs = (StringNamespace) StringNamespace.parse(
                 "org.argouml.ui.", Namespace.JAVA_NS_TOKEN);
 
-        StringNamespaceElement targetClassElement = 
+        StringNamespaceElement targetClassElement =
         	(StringNamespaceElement) classNs.peekNamespaceElement();
 
         LOG.debug("Attempt to find style panel for: " + classNs);
@@ -344,7 +338,7 @@ public class TabStyle extends TabSpawnable implements TabFigTarget,
 
     /**
      * Return the current target for this stylepanel.
-     * 
+     *
      * @see org.argouml.ui.TabTarget#getTarget()
      */
     public Object getTarget() {
@@ -364,7 +358,7 @@ public class TabStyle extends TabSpawnable implements TabFigTarget,
                     shouldBeEnabled = false;
                     return false;
                 }
-                
+
                 Fig f = diagram.presentationFor(targetItem);
                 if (f == null) {
                     shouldBeEnabled = false;
@@ -472,7 +466,7 @@ public class TabStyle extends TabSpawnable implements TabFigTarget,
 
     /**
      * Adds a listener.
-     * 
+     *
      * @param listener
      *            the listener to add
      */
@@ -482,7 +476,7 @@ public class TabStyle extends TabSpawnable implements TabFigTarget,
 
     /**
      * Removes a target listener.
-     * 
+     *
      * @param listener
      *            the listener to remove
      */

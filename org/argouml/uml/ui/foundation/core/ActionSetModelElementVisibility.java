@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -34,25 +34,25 @@ import org.argouml.uml.ui.UMLAction;
 import org.argouml.uml.ui.UMLRadioButtonPanel;
 
 /**
- * 
- * @author jaap.branderhorst@xs4all.nl	
+ *
+ * @author jaap.branderhorst@xs4all.nl
  * @since Jan 4, 2003
  */
 public class ActionSetModelElementVisibility extends UMLAction {
 
-    private static final ActionSetModelElementVisibility SINGLETON = 
+    private static final ActionSetModelElementVisibility SINGLETON =
         new ActionSetModelElementVisibility();
 
     /**
      * PUBLIC_COMMAND determines the visibility.
      */
     public static final String PUBLIC_COMMAND = "public";
-    
+
     /**
      * PROTECTED_COMMAND determines the visibility.
      */
     public static final String PROTECTED_COMMAND = "protected";
-    
+
     /**
      * PRIVATE_COMMAND determines the visibility.
      */
@@ -73,7 +73,7 @@ public class ActionSetModelElementVisibility extends UMLAction {
         if (e.getSource() instanceof JRadioButton) {
             JRadioButton source = (JRadioButton) e.getSource();
             String actionCommand = source.getActionCommand();
-            Object target = ((UMLRadioButtonPanel) 
+            Object target = ((UMLRadioButtonPanel)
                     source.getParent()).getTarget();
             if (org.argouml.model.ModelFacade.isAModelElement(target)) {
                 Object m = /*(MModelElement)*/ target;

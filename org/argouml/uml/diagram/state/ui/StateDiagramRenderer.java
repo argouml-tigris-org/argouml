@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -22,10 +22,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// File: StateDiagramRenderer.java
-// Classes: StateDiagramRenderer
-// Original Author: ics125b spring 1998
-
 package org.argouml.uml.diagram.state.ui;
 
 import org.apache.log4j.Logger;
@@ -36,7 +32,6 @@ import org.argouml.uml.diagram.activity.ui.FigActionState;
 import org.argouml.uml.diagram.static_structure.ui.CommentEdge;
 import org.argouml.uml.diagram.static_structure.ui.FigComment;
 import org.argouml.uml.diagram.static_structure.ui.FigEdgeNote;
-
 
 import org.tigris.gef.base.Layer;
 import org.tigris.gef.graph.GraphEdgeRenderer;
@@ -66,19 +61,19 @@ import org.tigris.gef.presentation.FigNode;
  *  Transition         ---  FigTransition
  *  more...
  *  </pre>
+ *
+ * @author ics125b spring 1998
  */
-
 public class StateDiagramRenderer
-    implements GraphNodeRenderer, GraphEdgeRenderer
-{
-    private static final Logger LOG = 
+    implements GraphNodeRenderer, GraphEdgeRenderer {
+    private static final Logger LOG =
         Logger.getLogger(StateDiagramRenderer.class);
 
-    /** 
-     * Return a Fig that can be used to represent the given node 
+    /**
+     * Return a Fig that can be used to represent the given node
      *
      * @see org.tigris.gef.graph.GraphNodeRenderer#getFigNodeFor(
-     * org.tigris.gef.graph.GraphModel, org.tigris.gef.base.Layer, 
+     * org.tigris.gef.graph.GraphModel, org.tigris.gef.base.Layer,
      * java.lang.Object)
      */
     public FigNode getFigNodeFor(GraphModel gm, Layer lay, Object node) {
@@ -96,7 +91,7 @@ public class StateDiagramRenderer
         }
         else if (ModelFacade.isAComment(node)) {
             return new FigComment(gm, node);
-        }      
+        }
         else if (org.argouml.model.ModelFacade.isAPseudostate(node)) {
             Object pState = node;
             Object kind = ModelFacade.getKind(pState);
@@ -111,7 +106,7 @@ public class StateDiagramRenderer
             }
             else if (kind.equals(ModelFacade.JUNCTION_PSEUDOSTATEKIND)) {
                 return new FigJunctionState(gm, node);
-            } 
+            }
             else if (kind.equals(ModelFacade.FORK_PSEUDOSTATEKIND)) {
                 return new FigForkState(gm, node);
             }
@@ -122,7 +117,7 @@ public class StateDiagramRenderer
                 return new FigShallowHistoryState(gm, node);
             }
             else if (kind.equals(ModelFacade.DEEPHISTORY_PSEUDOSTATEKIND)) {
-                return new FigDeepHistoryState(gm, node);     
+                return new FigDeepHistoryState(gm, node);
             }
             else {
                 LOG.warn("found a type not known");
@@ -132,9 +127,9 @@ public class StateDiagramRenderer
         return null;
     }
 
-    /** Return a Fig that can be used to represent the given edge 
+    /** Return a Fig that can be used to represent the given edge
      * @see org.tigris.gef.graph.GraphEdgeRenderer#getFigEdgeFor(
-     * org.tigris.gef.graph.GraphModel, org.tigris.gef.base.Layer, 
+     * org.tigris.gef.graph.GraphModel, org.tigris.gef.base.Layer,
      * java.lang.Object)
      */
     public FigEdge getFigEdgeFor(GraphModel gm, Layer lay, Object edge) {

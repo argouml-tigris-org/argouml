@@ -62,26 +62,26 @@ public class PropPanelUseCase extends PropPanelClassifier {
         // representation and requesting 3 columns
         super("UseCase", ConfigLoader.getTabPropsOrientation());
 
-        addField(Translator.localize("label.name"), 
+        addField(Translator.localize("label.name"),
                 getNameTextField());
-        addField(Translator.localize("label.stereotype"), 
+        addField(Translator.localize("label.stereotype"),
                 getStereotypeBox());
-    	addField(Translator.localize("label.namespace"), 
+    	addField(Translator.localize("label.namespace"),
                 getNamespaceComboBox());
 
         add(getModifiersPanel());
-        
+
 	JList extensionPoints = new UMLMutableLinkedList(
-            new UMLUseCaseExtensionPointListModel(), null, 
+            new UMLUseCaseExtensionPointListModel(), null,
             ActionNewUseCaseExtensionPoint.SINGLETON);
 	addField(Translator.localize("label.extension-points"),
 		 new JScrollPane(extensionPoints));
 
 	addSeperator();
 
-	addField(Translator.localize("label.generalizations"), 
+	addField(Translator.localize("label.generalizations"),
             getGeneralizationScroll());
-	addField(Translator.localize("label.specializations"), 
+	addField(Translator.localize("label.specializations"),
             getSpecializationScroll());
 
 	JList extendsList = new UMLLinkedList(new UMLUseCaseExtendListModel());
@@ -95,19 +95,19 @@ public class PropPanelUseCase extends PropPanelClassifier {
 
 	addSeperator();
 
-        addField(Translator.localize("label.association-ends"), 
+        addField(Translator.localize("label.association-ends"),
             getAssociationEndScroll());
 
         addButton(new PropPanelButton2(new ActionNavigateNamespace()));
-        addButton(new PropPanelButton2(new ActionNewUseCase(), 
+        addButton(new PropPanelButton2(new ActionNewUseCase(),
                 lookupIcon("UseCase")));
-        addButton(new PropPanelButton2(new ActionNewExtensionPoint(), 
+        addButton(new PropPanelButton2(new ActionNewExtensionPoint(),
                 lookupIcon("ExtensionPoint")));
-        addButton(new PropPanelButton2(getActionNewReception(), 
+        addButton(new PropPanelButton2(getActionNewReception(),
                 lookupIcon("Reception")));
-        addButton(new PropPanelButton2(new ActionNewStereotype(), 
+        addButton(new PropPanelButton2(new ActionNewStereotype(),
                 lookupIcon("Stereotype")));
-        addButton(new PropPanelButton2(new ActionRemoveFromModel(), 
+        addButton(new PropPanelButton2(new ActionRemoveFromModel(),
                 lookupIcon("Delete")));
     }
 
@@ -155,18 +155,18 @@ public class PropPanelUseCase extends PropPanelClassifier {
      * <p>This code uses getFactory and adds the extension point explicitly to
      *   the, making its associated use case the current use case.</p>
      */
-    private class ActionNewExtensionPoint 
+    private class ActionNewExtensionPoint
         extends AbstractActionNewModelElement {
-        
+
         /**
          * The constructor.
          */
         public ActionNewExtensionPoint() {
             super("button.new-extension-point");
-            putValue(Action.NAME, 
+            putValue(Action.NAME,
                     Translator.localize("button.new-extension-point"));
         }
-        
+
         /**
          * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
          */
@@ -179,5 +179,5 @@ public class PropPanelUseCase extends PropPanelClassifier {
             }
         }
     }
-    
+
 } /* end class PropPanelUseCase */

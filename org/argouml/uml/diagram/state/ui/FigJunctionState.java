@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2004 The Regents of the University of California. All
+// Copyright (c) 2004-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -22,10 +22,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// File: FigJunctionState.java
-// Classes: FigJunctionState
-// Original Author: pepargouml@yahoo.es
-
 package org.argouml.uml.diagram.state.ui;
 
 import java.awt.Color;
@@ -36,7 +32,9 @@ import java.util.Iterator;
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.FigPoly;
 
-/** Class to display graphics for a UML Junction State in a diagram. 
+/** Class to display graphics for a UML Junction State in a diagram.
+ *
+ * @author pepargouml
  */
 public class FigJunctionState extends FigStateVertex {
 
@@ -58,7 +56,7 @@ public class FigJunctionState extends FigStateVertex {
     /** constructor
      */
     public FigJunctionState() {
-	setBigPort(new FigPoly( Color.cyan, Color.cyan));
+	setBigPort(new FigPoly(Color.cyan, Color.cyan));
 	head = new FigPoly(Color.black, Color.white);
 	getBigPort().addPoint(X, Y);
 	getBigPort().addPoint(X + WIDTH / 2, Y + HEIGHT / 2);
@@ -70,7 +68,7 @@ public class FigJunctionState extends FigStateVertex {
 	head.addPoint(X, Y + HEIGHT);
 	head.addPoint(X - WIDTH / 2, Y + HEIGHT / 2);
 	head.addPoint(X, Y);
-	
+
 	// Add the following to allow name editing on the diagram
 /*        setNameFig(new FigText(X + 10, Y + 22, 0, 21, true));
         getNameFig().setFilled(false);
@@ -79,8 +77,8 @@ public class FigJunctionState extends FigStateVertex {
         getNameFig().setTextColor(Color.black);
         getNameFig().setMultiLine(false);
         getNameFig().setAllowsTab(false);
-        getNameFig().setJustificationByName("center");    
-*/    
+        getNameFig().setJustificationByName("center");
+*/
 	// add Figs to the FigNode in back-to-front order
 	addFig(getBigPort());
 	addFig(head);
@@ -92,7 +90,7 @@ public class FigJunctionState extends FigStateVertex {
 
     /**
      * constructor
-     * 
+     *
      * @param gm ignored
      * @param node the owner
      */
@@ -115,7 +113,7 @@ public class FigJunctionState extends FigStateVertex {
     ////////////////////////////////////////////////////////////////
     // Fig accesors
 
-    /** Initial states are fixed size. 
+    /** Initial states are fixed size.
      * @see org.tigris.gef.presentation.Fig#isResizable()
      */
     public boolean isResizable() { return false; }
@@ -182,10 +180,10 @@ public class FigJunctionState extends FigStateVertex {
      * @see java.awt.event.MouseListener#mouseClicked(java.awt.event.MouseEvent)
      */
     public void mouseClicked(MouseEvent me) { }
-    
+
     /**
      * Block any textentry on the diagram - there is nothing to edit!
-     * 
+     *
      * @see java.awt.event.KeyListener#keyPressed(java.awt.event.KeyEvent)
      */
     public void keyPressed(KeyEvent ke) { }

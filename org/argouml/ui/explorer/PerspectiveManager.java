@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -44,18 +44,18 @@ import org.apache.log4j.Logger;
  * @since 0.15.2
  */
 public class PerspectiveManager {
-    
+
     private static final Logger LOG =
 	Logger.getLogger(PerspectiveManager.class);
-    
+
     private static PerspectiveManager instance;
-    
+
     private List perspectiveListeners;
-    
+
     private List perspectives;
-    
+
     private List rules;
-    
+
     /**
      * @return the instance (singleton)
      */
@@ -68,27 +68,27 @@ public class PerspectiveManager {
 
     /** Creates a new instance of PerspectiveManager */
     private PerspectiveManager() {
-        
+
         perspectiveListeners = new ArrayList();
         perspectives = new ArrayList();
         rules = new ArrayList();
         loadRules();
     }
-    
+
     /**
      * @param listener the listener to be added
      */
     public void addListener(PerspectiveManagerListener listener) {
         perspectiveListeners.add(listener);
     }
-    
+
     /**
      * @param listener the listener to be removed
      */
     public void removeListener(PerspectiveManagerListener listener) {
         perspectiveListeners.remove(listener);
     }
-    
+
     /**
      * @param perspective the perspective to be added
      */
@@ -96,109 +96,109 @@ public class PerspectiveManager {
         perspectives.add(perspective);
         Iterator listenerIt = perspectiveListeners.iterator();
         while (listenerIt.hasNext()) {
-            
-            PerspectiveManagerListener listener = 
+
+            PerspectiveManagerListener listener =
                 (PerspectiveManagerListener) listenerIt.next();
-            
+
             listener.addPerspective(perspective);
         }
     }
-    
+
     /**
      * @param newPerspectives the collection of perspectives to be added
      */
     public void addAllPerspectives(Collection newPerspectives) {
-        
+
         Iterator newPerspectivesIt = newPerspectives.iterator();
         while (newPerspectivesIt.hasNext()) {
-            
+
             Object newPerspective = newPerspectivesIt.next();
             addPerspective(newPerspective);
         }
     }
-    
+
     /**
      * @param perspective the perspective to be removed
      */
     public void removePerspective(Object perspective) {
-        
+
         perspectives.remove(perspective);
         Iterator listenerIt = perspectiveListeners.iterator();
         while (listenerIt.hasNext()) {
-            
-            PerspectiveManagerListener listener = 
+
+            PerspectiveManagerListener listener =
                 (PerspectiveManagerListener) listenerIt.next();
-            
+
             listener.removePerspective(perspective);
         }
     }
-    
+
     /**
      * Remove all perspectives.
      */
     public void removeAllPerspectives() {
-        
+
         List pers = new ArrayList();
         pers.addAll(getPerspectives());
         for (int i = 0; i < pers.size(); i++) {
             removePerspective(pers.get(i));
         }
     }
-    
+
     /**
      * @return the list of all persppectives
      */
     public List getPerspectives() {
         return perspectives;
     }
-    
+
     /**
      * Tries to load user defined perspectives, if it can't it
      * loads the (predefined) default perspectives.
      */
     public void loadUserPerspectives() {
-        
+
         try {
-	    String userPerspectives = 
+	    String userPerspectives =
 		Configuration.getString(Argo.KEY_USER_EXPLORER_PERSPECTIVES,
 					"");
-        
+
 	    StringTokenizer pst =
 		new StringTokenizer(userPerspectives, ";");
-        
+
 	    if (pst.hasMoreTokens()) {
-            
+
 		// load user perspectives
 		while (pst.hasMoreTokens()) {
 		    String perspective = pst.nextToken();
 		    StringTokenizer perspectiveDetails =
 			new StringTokenizer(perspective, ",");
-                
+
 		    //get the perspective name
 		    String perspectiveName = perspectiveDetails.nextToken();
-                
+
 		    ExplorerPerspective userDefinedPerspective =
 			new ExplorerPerspective(perspectiveName);
-                
+
 		    // make sure there are some rules...
 		    if (perspectiveDetails.hasMoreTokens()) {
-                    
+
 			//get the rules
 			while (perspectiveDetails.hasMoreTokens()) {
-                        
+
 			    //get the rule name
 			    String ruleName = perspectiveDetails.nextToken();
-                        
+
 			    // create the rule:
 			    try {
-				Class ruleClass = 
+				Class ruleClass =
 				    Class.forName(ruleName);
-                            
+
 				PerspectiveRule rule =
 				    (PerspectiveRule) ruleClass.newInstance();
-                            
+
 				userDefinedPerspective.addRule(rule);
-                            
+
 			    } catch (Exception ex) {
 				LOG.error("could not create rule ", ex);
 			    }
@@ -208,7 +208,7 @@ public class PerspectiveManager {
 		    else {
 			continue;
 		    }
-                
+
 		    // add the perspective
 		    addPerspective(userDefinedPerspective);
 		}
@@ -217,7 +217,7 @@ public class PerspectiveManager {
 	    else {
 		loadDefaultPerspectives();
 	    }
-        
+
 	    // one last check that some loaded.
 	    if (getPerspectives().size() == 0) {
 		loadDefaultPerspectives();
@@ -226,21 +226,21 @@ public class PerspectiveManager {
             int i = 0;
         }
     }
-        
+
     /**
      * Loads a pre-defined default set of perspectives.
      */
     public void loadDefaultPerspectives() {
         Collection c = getDefaultPerspectives();
-        
+
         addAllPerspectives(c);
     }
-    
+
     /**
      * @return a collection of default perspectives (i.e. the predefined ones)
      */
     public Collection getDefaultPerspectives() {
-        ExplorerPerspective classPerspective = 
+        ExplorerPerspective classPerspective =
             new ExplorerPerspective("combobox.item.class-centric");
         classPerspective.addRule(new GoProjectToModel());
         classPerspective.addRule(new GoNamespaceToClassifierAndPackage());
@@ -252,8 +252,8 @@ public class PerspectiveManager {
         classPerspective.addRule(new GoSummaryToInheritance());
         classPerspective.addRule(new GoSummaryToIncomingDependency());
         classPerspective.addRule(new GoSummaryToOutgoingDependency());
-        
-        ExplorerPerspective packagePerspective = 
+
+        ExplorerPerspective packagePerspective =
             new ExplorerPerspective("combobox.item.package-centric");
         packagePerspective.addRule(new GoProjectToModel());
         packagePerspective.addRule(new GoNamespaceToOwnedElements());
@@ -274,9 +274,9 @@ public class PerspectiveManager {
         packagePerspective.addRule(new GoBehavioralFeatureToStateMachine());
         packagePerspective.addRule(new GoBehavioralFeatureToStateDiagram());
         // works for both statediagram as activitygraph
-        packagePerspective.addRule(new GoStatemachineToDiagram()); 
+        packagePerspective.addRule(new GoStatemachineToDiagram());
         packagePerspective.addRule(new GoStateMachineToState());
-        packagePerspective.addRule(new GoCompositeStateToSubvertex());        
+        packagePerspective.addRule(new GoCompositeStateToSubvertex());
         packagePerspective.addRule(new GoStateToInternalTrans());
         packagePerspective.addRule(new GoStateToDoActivity());
         packagePerspective.addRule(new GoStateToEntry());
@@ -286,8 +286,8 @@ public class PerspectiveManager {
 	packagePerspective.addRule(new GoClassifierToInstance());
 	packagePerspective.addRule(new GoStateToIncomingTrans());
 	packagePerspective.addRule(new GoStateToOutgoingTrans());
-        
-        ExplorerPerspective diagramPerspective = 
+
+        ExplorerPerspective diagramPerspective =
             new ExplorerPerspective("combobox.item.diagram-centric");
         diagramPerspective.addRule(new GoProjectToModel());
         diagramPerspective.addRule(new GoModelToDiagrams());
@@ -296,22 +296,22 @@ public class PerspectiveManager {
         diagramPerspective.addRule(new GoUseCaseToExtensionPoint());
         diagramPerspective.addRule(new GoClassifierToStructuralFeature());
         diagramPerspective.addRule(new GoClassifierToBehavioralFeature());
-        
-        ExplorerPerspective inheritancePerspective = 
+
+        ExplorerPerspective inheritancePerspective =
             new ExplorerPerspective("combobox.item.inheritance-centric");
         inheritancePerspective.addRule(new GoProjectToModel());
         inheritancePerspective.addRule(new GoModelToBaseElements());
         inheritancePerspective.addRule(
                 new GoGeneralizableElementToSpecialized());
-        
-        ExplorerPerspective associationsPerspective = 
+
+        ExplorerPerspective associationsPerspective =
             new ExplorerPerspective("combobox.item.class-associations");
         associationsPerspective.addRule(new GoProjectToModel());
         associationsPerspective.addRule(new GoNamespaceToDiagram());
         associationsPerspective.addRule(new GoPackageToClass());
         associationsPerspective.addRule(new GoClassToAssociatedClass());
-        
-        ExplorerPerspective statePerspective = 
+
+        ExplorerPerspective statePerspective =
             new ExplorerPerspective("combobox.item.state-centric");
         statePerspective.addRule(new GoProjectToStateMachine());
         statePerspective.addRule(new GoStatemachineToDiagram());
@@ -319,15 +319,15 @@ public class PerspectiveManager {
         statePerspective.addRule(new GoCompositeStateToSubvertex());
         statePerspective.addRule(new GoStateToIncomingTrans());
         statePerspective.addRule(new GoStateToOutgoingTrans());
-        
-        ExplorerPerspective transitionsPerspective = 
+
+        ExplorerPerspective transitionsPerspective =
             new ExplorerPerspective("combobox.item.transitions-centric");
         transitionsPerspective.addRule(new GoProjectToStateMachine());
         transitionsPerspective.addRule(new GoStatemachineToDiagram());
         transitionsPerspective.addRule(new GoStateMachineToTransition());
         transitionsPerspective.addRule(new GoTransitionToSource());
         transitionsPerspective.addRule(new GoTransitionToTarget());
-        
+
         Collection c = new ArrayList();
         c.add(packagePerspective);
         c.add(classPerspective);
@@ -341,15 +341,15 @@ public class PerspectiveManager {
 
     /**
      * Get the predefined rules. <p>
-     * 
-     * This is a hard coded rules library for now, 
-     * since it is quite a lot of work to 
+     *
+     * This is a hard coded rules library for now,
+     * since it is quite a lot of work to
      * get all possible rule names in "org.argouml.ui.explorer.rules" from
-     * the classpath 
-     * (which would also not allow adding rules from other locations). 
+     * the classpath
+     * (which would also not allow adding rules from other locations).
      */
     public void loadRules() {
-        
+
         PerspectiveRule[] ruleNamesArray =
 	{new GoAssocRoleToMessages(),
 	 new GoBehavioralFeatureToStateDiagram(),
@@ -412,43 +412,43 @@ public class PerspectiveManager {
 	 new GoTransitionToTarget(),
 	 new GoUseCaseToExtensionPoint(),
 	};
-         
+
 	rules = Arrays.asList(ruleNamesArray);
     }
-    
+
     /**
      * Add a rule to the list of rules.
-     * 
+     *
      * @param rule the PerspectiveRule to be added
      */
     public void addRule(PerspectiveRule rule) {
         rules.add(rule);
     }
-    
+
     /**
      * Remove a rule from the list.
-     * 
+     *
      * @param rule the PerspectiveRule to be removed
      */
     public void removeRule(PerspectiveRule rule) {
         rules.remove(rule);
     }
-    
+
     /**
      * @return the collection of rules
      */
     public Collection getRules() {
         return rules;
     }
-    
+
     /**
      * save the user perspectives in the ArgoUML configuration
      */
     public void saveUserPerspectives() {
-        Configuration.setString(Argo.KEY_USER_EXPLORER_PERSPECTIVES, 
+        Configuration.setString(Argo.KEY_USER_EXPLORER_PERSPECTIVES,
             this.toString());
     }
-    
+
     /**
      * string representation of the perspectives in the same format as
      * saved in the user properties.
@@ -456,35 +456,35 @@ public class PerspectiveManager {
      * @see java.lang.Object#toString()
      */
     public String toString() {
-        
+
         String p = "";
-        
+
         Iterator perspectivesIt = getPerspectives().iterator();
         while (perspectivesIt.hasNext()) {
-            
-            ExplorerPerspective perspective = 
+
+            ExplorerPerspective perspective =
                 (ExplorerPerspective) perspectivesIt.next();
-            
+
             String name = perspective.toString();
-            
+
             p += name + ",";
-            
+
             Object[] rulesArray = perspective.getRulesArray();
-            
+
             for (int x = 0; x < rulesArray.length; x++) {
-                
+
                 PerspectiveRule rule = (PerspectiveRule) rulesArray[x];
                 p += rule.getClass().getName();
-                
+
                 if (x < rulesArray.length - 1)
                     p += ",";
             }
-            
+
             if (perspectivesIt.hasNext()) {
                 p += ";";
             }
         }
-        
+
         return p;
     }
 }

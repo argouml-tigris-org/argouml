@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2003-2004 The Regents of the University of California. All
+// Copyright (c) 2003-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -37,7 +37,7 @@ public class ObjectNode extends ActivationNode implements LinkPort {
 
     /**
      * The constructor.
-     * 
+     *
      * @param owner the owner object
      * @param flp the figlinkport
      */
@@ -45,40 +45,40 @@ public class ObjectNode extends ActivationNode implements LinkPort {
         super();
         this.figLinkPort = flp;
         if (flp != null)
-        	flp.setOwner(this);     
-        setStart(true);       
+        	flp.setOwner(this);
+        setStart(true);
     }
 
     /**
      * The constructor.
-     * 
+     *
      * @param owner the owner object
      */
     public ObjectNode(Object owner) {
         this(owner, null);
     }
 
-    /** 
+    /**
      * @see LinkPort#getFigLinkPort()
      */
     public FigLinkPort getFigLinkPort() {
         return figLinkPort;
     }
 
-    /** 
+    /**
      * @see LinkPort#setFigLinkPort(FigLinkPort)
      */
     public void setFigLinkPort(FigLinkPort flp) {
         figLinkPort = flp;
-    }   
-    
+    }
+
     /**
      * @see org.argouml.uml.diagram.sequence.LinkPort#getObject()
      */
     public Object getObject() {
     	return ownerObject;
     }
-    
+
     /**
      * @param object the owner object
      */

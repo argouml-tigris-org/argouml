@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -58,7 +58,7 @@ public class CrNameConflict extends CrUML {
     public boolean predicate2(Object dm, Designer dsgr) {
         return computeOffenders(dm).size() > 1;
     }
-    
+
     /**
      * @see org.argouml.cognitive.critics.Critic#toDoItem(
      * java.lang.Object, org.argouml.cognitive.Designer)
@@ -76,8 +76,8 @@ public class CrNameConflict extends CrUML {
         VectorSet offs = new VectorSet();
         if (ModelFacade.isANamespace(dm)) {
             Iterator it = ModelFacade.getOwnedElements(dm).iterator();
-            HashMap names = new HashMap(); 
-            while (it.hasNext()) { 
+            HashMap names = new HashMap();
+            while (it.hasNext()) {
                 Object name1Object = it.next();
                 String name = ModelFacade.getName(name1Object);
 		if (name == null)
@@ -90,13 +90,13 @@ public class CrNameConflict extends CrUML {
                     offs.addElement(name1Object);
                     break;
                 }
-                names.put(name, name1Object); 
-            } 
-        } 
+                names.put(name, name1Object);
+            }
+        }
         return offs;
     }
 
-    
+
     /**
      * @see org.argouml.cognitive.Poster#stillValid(
      * org.argouml.cognitive.ToDoItem, org.argouml.cognitive.Designer)
@@ -104,7 +104,7 @@ public class CrNameConflict extends CrUML {
     public boolean stillValid(ToDoItem i, Designer dsgr) {
 	if (!isActive()) return false;
 	VectorSet offs = i.getOffenders();
-        
+
         // first element is e.g. the class, but we need to have its namespace
         // to recompute the offenders.
 	Object f = offs.firstElement();
@@ -114,7 +114,7 @@ public class CrNameConflict extends CrUML {
 	boolean res = offs.equals(newOffs);
 	return res;
     }
- 
+
     /**
      * @see org.argouml.cognitive.critics.Critic#initWizard(
      *         org.argouml.cognitive.ui.Wizard)

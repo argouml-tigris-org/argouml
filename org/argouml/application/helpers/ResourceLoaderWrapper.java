@@ -38,19 +38,21 @@ import org.argouml.uml.util.namespace.StringNamespace;
 import org.tigris.gef.util.ResourceLoader;
 
 /**
- * Wrapper around org.tigris.gef.util.ResourceLoader.
- * <p>
- * 
+ * Wrapper around org.tigris.gef.util.ResourceLoader.<p>
+ *
  * Necessary since ArgoUML needs some extra init.
- * 
+ *
  * @since Nov 24, 2002
  * @author jaap.branderhorst@xs4all.nl @stereotype singleton
  */
 public final class ResourceLoaderWrapper {
 
-    private static final Logger LOG = 
+    /**
+     * Logger.
+     */
+    private static final Logger LOG =
         Logger.getLogger(ResourceLoaderWrapper.class);
-    
+
     private static ImageIcon actionStateIcon =
         ResourceLoader.lookupIconResource("ActionState");
     private static ImageIcon stateIcon =
@@ -68,7 +70,7 @@ public final class ResourceLoaderWrapper {
     private static ImageIcon branchIcon =
         ResourceLoader.lookupIconResource("Choice");
     private static ImageIcon junctionIcon =
-        ResourceLoader.lookupIconResource("Junction"); 
+        ResourceLoader.lookupIconResource("Junction");
     private static ImageIcon finalStateIcon =
         ResourceLoader.lookupIconResource("FinalState");
     private static ImageIcon realizeIcon =
@@ -95,8 +97,8 @@ public final class ResourceLoaderWrapper {
 
 
     /**
-     * Returns the singleton instance
-     * 
+     * Returns the singleton instance.
+     *
      * @return ResourceLoaderWrapper
      */
     public static ResourceLoaderWrapper getInstance() {
@@ -112,7 +114,7 @@ public final class ResourceLoaderWrapper {
 
     /**
      * Calculate the path to a look and feel object.
-     * 
+     *
      * @param classname
      *            The look and feel classname
      * @param element
@@ -128,7 +130,7 @@ public final class ResourceLoaderWrapper {
 
     /**
      * Initializes the resourceloader.
-     * 
+     *
      * LookupIconResource checks if there are locations and extensions known.
      * If there are none, this method is called to initialize the resource
      * loader. Originally, this method was placed within Main but this coupled
@@ -258,11 +260,11 @@ public final class ResourceLoaderWrapper {
             throw new IllegalArgumentException(
                     "Attempted to get an icon given a null key");
         }
-        
+
 	Icon icon = (Icon) iconCache.get(value.getClass());
-        
+
         if (ModelFacade.isAPseudostate(value)) {
-        
+
             Object kind = ModelFacade.getKind(value);
             DataTypesHelper helper = Model.getUmlHelper().getDataTypes();
             if (helper.equalsINITIALKind(kind)) {
@@ -285,11 +287,11 @@ public final class ResourceLoaderWrapper {
             }
             if (helper.equalsJUNCTIONKind(kind)) {
                 icon = junctionIcon;
-            } 
+            }
             // if (MPseudostateKind.FINAL.equals(kind))
             // icon = _FinalStateIcon;
         }
-        
+
         if (ModelFacade.isAAbstraction(value)) {
             icon = realizeIcon;
         }
@@ -297,23 +299,23 @@ public final class ResourceLoaderWrapper {
         if (ModelFacade.isASignal(value)) {
             icon = signalIcon;
         }
-    
+
         if (ModelFacade.isAComment(value)) {
             icon = commentIcon;
         }
 
         if (icon == null) {
-        
+
             StringNamespace sns =
                 (StringNamespace) StringNamespace.parse(value.getClass());
             StringNamespace org =
                 new StringNamespace(new String[] {"org"});
             StringNamespace ru = new StringNamespace(new String[] {"ru"});
-            
+
             String cName = sns.popNamespaceElement().toString();
             if (ru.equals(sns.getCommonNamespace(ru))
                     || org.equals(sns.getCommonNamespace(org))) {
-            
+
                 if (cName.startsWith("UML")) {
                     cName = cName.substring(3);
                 }
@@ -332,7 +334,7 @@ public final class ResourceLoaderWrapper {
                     iconCache.put(value.getClass(), icon);
                 }
             }
-            
+
         }
 	return icon;
     }

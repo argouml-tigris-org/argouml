@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2003-2004 The Regents of the University of California. All
+// Copyright (c) 2003-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -54,16 +54,16 @@ import org.tigris.gef.presentation.FigNode;
  *  SubactivityState    ---  FigSubactivityState
  *  more...
  *  </pre>
- * 
+ *
  * @author mkl
  *
  */
 public class ActivityDiagramRenderer extends StateDiagramRenderer {
 
     /** Return a Fig that can be used to represent the given node
-     *  
+     *
      * @see org.tigris.gef.graph.GraphNodeRenderer#getFigNodeFor(
-     * org.tigris.gef.graph.GraphModel, 
+     * org.tigris.gef.graph.GraphModel,
      * org.tigris.gef.base.Layer, java.lang.Object)
      */
     public FigNode getFigNodeFor(GraphModel gm, Layer lay, Object node) {

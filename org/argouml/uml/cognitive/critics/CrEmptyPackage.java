@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2003 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -22,10 +22,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// File: CrEmptyPackage.java
-// Classes: CrEmptyPackage
-// Original Author: jrobbins@ics.uci.edu
-
 package org.argouml.uml.cognitive.critics;
 
 import java.util.Collection;
@@ -36,7 +32,11 @@ import org.argouml.cognitive.Designer;
 import org.argouml.model.ModelFacade;
 
 
-/** A critic whether a package/subsystem/model is empty. */
+/**
+ * A critic whether a package/subsystem/model is empty.
+ *
+ * @author Jason Robbins
+ */
 
 //TODO: different critic for packages consisting only
 //of references to elements of other packages?
@@ -46,11 +46,11 @@ public class CrEmptyPackage extends CrUML {
 
     /**
      * The constructor.
-     * 
+     *
      */
     public CrEmptyPackage() {
 	setHeadline("Add Elements to Package <ocl>self</ocl>");
-       
+
 	addSupportedDecision(CrUML.DEC_MODULARITY);
 	addTrigger("ownedElement");
     }

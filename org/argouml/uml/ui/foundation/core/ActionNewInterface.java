@@ -37,7 +37,7 @@ import org.argouml.uml.ui.AbstractActionNewModelElement;
 
 /**
  * This action will create a new interface "next to" an existing interface.
- * 
+ *
  * @author mvw@tigris.org
  *
  */
@@ -60,7 +60,7 @@ class ActionNewInterface extends AbstractActionNewModelElement {
             Object iface = /*(MInterface)*/ target;
             Object newInterface = Model.getCoreFactory()
                 .createInterface();
-            ModelFacade.addOwnedElement(ModelFacade.getNamespace(iface), 
+            ModelFacade.addOwnedElement(ModelFacade.getNamespace(iface),
                     newInterface);
             TargetManager.getInstance().setTarget(newInterface);
             super.actionPerformed(e);

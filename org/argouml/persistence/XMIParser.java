@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2002 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -37,15 +37,16 @@ import org.argouml.model.uml.XmiReader;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
-/** XMI is an XML based exchange format between UML tools. 
- *ArgoUML uses this as standard saving mechanism so that easy interchange 
- *with other tools and compliance with open standards are secured. 
- *XMI version 1.0 for UML 1.3 is used. To convert older models in XMI 
- *(Argo 0.7 used XMI 1.0 for UML1.1) to the latest version, 
- *Meta Integration provides a free key to their Model Bridge. 
- *This also permits you to convert Rational Rose models to ArgoUML! 
- *This currently only includes model information, but no graphical 
- *information (like layout of diagrams).
+/**
+ * XMI is an XML based exchange format between UML tools.
+ * ArgoUML uses this as standard saving mechanism so that easy interchange
+ * with other tools and compliance with open standards are secured.
+ * XMI version 1.0 for UML 1.3 is used. To convert older models in XMI
+ * (Argo 0.7 used XMI 1.0 for UML1.1) to the latest version,
+ * Meta Integration provides a free key to their Model Bridge.
+ * This also permits you to convert Rational Rose models to ArgoUML!
+ * This currently only includes model information, but no graphical
+ * information (like layout of diagrams).
  *
  */
 public class XMIParser {
@@ -67,7 +68,7 @@ public class XMIParser {
 
     /**
      * The constructor.
-     * 
+     *
      */
     protected XMIParser() { /* super(); */
     }
@@ -81,16 +82,16 @@ public class XMIParser {
     public Object/*MModel*/ getCurModel() {
         return curModel;
     }
-    
+
     /**
      * @param p the project
      */
     public void setProject(Project p) {
         proj = p;
     }
-    
+
     /**
-     * @return the UUID 
+     * @return the UUID
      */
     public HashMap getUUIDRefs() {
         return uUIDRefs;
@@ -101,7 +102,7 @@ public class XMIParser {
 
     /**
      * The main parsing method.
-     * 
+     *
      * @param p the project
      * @param url the URL
      * @throws IOException when there is an IO error
@@ -118,7 +119,7 @@ public class XMIParser {
             source.setSystemId(url.toString());
             curModel = reader.parseToModel(source);
             if (reader.getErrors()) {
-            	throw new IOException("XMI file " + url.toString() 
+            	throw new IOException("XMI file " + url.toString()
                         + " could not be parsed.");
             }
             uUIDRefs = new HashMap(reader.getXMIUUIDToObjectMap());
@@ -143,9 +144,9 @@ public class XMIParser {
         }
         LOG.info("=======================================");
 
-        
+
 	proj.addModel(curModel);
-        
+
 
         Collection ownedElements = ModelFacade.getOwnedElements(curModel);
         Iterator oeIterator = ownedElements.iterator();

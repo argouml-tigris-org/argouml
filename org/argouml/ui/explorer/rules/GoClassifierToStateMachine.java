@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -35,7 +35,7 @@ import org.argouml.model.ModelFacade;
  * PerspectiveRule to navigate from behavioral
  * feature to statemachine.  Causes statemachine to be shown as child
  * of behavioral feature.
- * 
+ *
  * @author jaap.branderhorst@xs4all.nl
  */
 public class GoClassifierToStateMachine extends AbstractPerspectiveRule {
@@ -51,7 +51,7 @@ public class GoClassifierToStateMachine extends AbstractPerspectiveRule {
      * @see org.argouml.ui.explorer.rules.PerspectiveRule#getChildren(java.lang.Object)
      */
     public Collection getChildren(Object parent) {
-	if (ModelFacade.isAClassifier(parent)) 
+	if (ModelFacade.isAClassifier(parent))
 	    return ModelFacade.getBehaviors(parent);
 	return null;
     }

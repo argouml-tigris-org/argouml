@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -22,12 +22,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// File: ChildGenFind.java
-// Classes: ChildGenFind
-// Original Author: jrobbins
-// $Id$
-
-
 package org.argouml.uml.cognitive;
 
 import java.util.Enumeration;
@@ -39,22 +33,23 @@ import org.argouml.model.ModelFacade;
 import org.tigris.gef.base.Diagram;
 import org.tigris.gef.util.ChildGenerator;
 
-/** This class gives critics access to parts of the UML model of the
- *  design.  It defines a gen() function that returns the "children"
- *  of any given part of the UML model.  Basically, it goes from
- *  Project, to Models, to ModelElements.  Argo's critic Agency uses
- *  this to apply critics where appropriate.
+/**
+ * This class gives critics access to parts of the UML model of the
+ * design.  It defines a gen() function that returns the "children"
+ * of any given part of the UML model.  Basically, it goes from
+ * Project, to Models, to ModelElements.  Argo's critic Agency uses
+ * this to apply critics where appropriate.
  *
- * @see org.argouml.cognitive.critics.Agency 
+ * @see org.argouml.cognitive.critics.Agency
  * @stereotype singleton
+ * @author jrobbins
  */
-
 public class ChildGenFind implements ChildGenerator {
     private static final ChildGenFind SINGLETON = new ChildGenFind();
 
-    /** 
+    /**
      * Reply a Collection of the children of the given Object
-     * 
+     *
      * @see org.tigris.gef.util.ChildGenerator#gen(java.lang.Object)
      */
     public Enumeration gen(Object o) {
@@ -123,7 +118,7 @@ public class ChildGenFind implements ChildGenerator {
 
 	if (o instanceof Diagram) {
 	    Diagram d = (Diagram) o;
-	  
+
 	    Vector res = new Vector();
 	    res.addAll(d.getGraphModel().getNodes());
 	    res.addAll(d.getGraphModel().getEdges());

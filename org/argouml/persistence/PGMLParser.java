@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -588,24 +588,24 @@ public class PGMLParser extends org.tigris.gef.xml.pgml.PGMLParser {
             if (privateTextDepth == 1) {
                 String str = privateText.toString();
                 StringTokenizer st = new StringTokenizer(str, "\n");
-                
+
                 while (st.hasMoreElements()) {
                     str = st.nextToken();
                     NameVal nval = splitNameVal(str);
-                
+
                     if (nval != null) {
                         if (LOG.isDebugEnabled()) {
                             LOG.debug("Private Element: \"" + nval.getName()
                                       + "\" \"" + nval.getValue() + "\"");
                         }
-                        if ("ItemUID".equals(nval.getName()) 
+                        if ("ItemUID".equals(nval.getName())
                                 && nval.getValue().length() > 0) {
                             setElementItemUID(nval.getValue());
                         }
                     }
                 }
             }
-        
+
             privateTextDepth--;
             if (privateTextDepth == 0) {
                 privateText = new StringBuffer();
@@ -626,7 +626,7 @@ public class PGMLParser extends org.tigris.gef.xml.pgml.PGMLParser {
             }
             break;
         case POLY_EDGE_STATE:
-            if ("path".equals(name) 
+            if ("path".equals(name)
                     && _currentPoly != null
                     && _currentPoly.getPointsList().size() == 1) {
                 LOG.warn("An edge has been detected with only one point");
@@ -647,7 +647,7 @@ public class PGMLParser extends org.tigris.gef.xml.pgml.PGMLParser {
      * not a FigNode AND if they are not part of a FigNode.
      */
     protected Fig handleGroup(Attributes attrList) {
-        
+
         Fig f = null;
         String clsNameBounds = attrList.getValue("description");
         if (LOG.isInfoEnabled()) {
@@ -712,7 +712,7 @@ public class PGMLParser extends org.tigris.gef.xml.pgml.PGMLParser {
         setAttrs(f, attrList);
         return f;
     }
-    
+
     /**
      * @see org.tigris.gef.xml.pgml.PGMLParser#handlePGML(org.xml.sax.Attributes)
      */

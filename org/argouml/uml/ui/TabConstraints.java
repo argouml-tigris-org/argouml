@@ -405,7 +405,7 @@ public class TabConstraints extends TabSpawnable implements TabModelTarget {
                             removeConstraintAt(theMNIdx);
 
                             for (Iterator i = lConstraints.iterator();
-				 i.hasNext(); ) {
+				 i.hasNext();) {
                                 OclTree ocltCurrent = (OclTree) i.next();
 
                                 Object/*MConstraint*/ mc =
@@ -485,7 +485,7 @@ public class TabConstraints extends TabSpawnable implements TabModelTarget {
                                 	.createBooleanExpression("OCL", sData));
                     }
 
-                    fireConstraintDataChanged(theMNIdx, mcOld, 
+                    fireConstraintDataChanged(theMNIdx, mcOld,
                             theMMcConstraint);
 
                 } catch (OclTypeException pe) {

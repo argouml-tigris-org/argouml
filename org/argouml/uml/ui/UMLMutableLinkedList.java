@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -35,25 +35,25 @@ import javax.swing.JPopupMenu;
  * This class is the GUI front for a mutable linked list. The user can add,
  * delete or create modelelements to the model. He can do that via a popup menu.
  * <p>
- * 
+ *
  * The developer using this class can turn on and off the actions the user can
  * do via various configuration switches. To turn on/off the add option for
  * example, he can call the method setAddOption. Default the options for delete
  * and add are on. The option for new is off, since this is much less used.
  * <p>
- * 
+ *
  * The implementation of the three actions, are delegated to several other
  * ActionClasses. ActionRemoveFromModel for the delete, the other actionclasses
  * need to be provided when constructing this object.
  * <p>
- * 
+ *
  * Since december 14th, an option is added to configure the popupmenu that
  * should be shown.
- * 
+ *
  * @since Oct 2, 2002
  * @author jaap.branderhorst@xs4all.nl
  */
-public class UMLMutableLinkedList extends UMLLinkedList 
+public class UMLMutableLinkedList extends UMLLinkedList
     implements MouseListener {
 
     private boolean deletePossible = true;
@@ -99,7 +99,7 @@ public class UMLMutableLinkedList extends UMLLinkedList
      * Constructor that should be used if the developer wishes the popupmenu to
      * be constructed via the actions (as described in the javadoc of this class
      * itself).
-     * 
+     *
      * @param dataModel the data model
      * @param theAddAction the action for adding
      * @param theNewAction the action for new
@@ -110,7 +110,7 @@ public class UMLMutableLinkedList extends UMLLinkedList
             AbstractActionAddModelElement theAddAction,
             AbstractActionNewModelElement theNewAction,
             AbstractActionRemoveElement theDeleteAction, boolean showIcon) {
-        super(dataModel, showIcon);          
+        super(dataModel, showIcon);
         setAddAction(theAddAction);
         setNewAction(theNewAction);
         if (theDeleteAction != null)
@@ -120,7 +120,7 @@ public class UMLMutableLinkedList extends UMLLinkedList
 
     /**
      * The constructor.
-     * 
+     *
      * @param dataModel the data model
      * @param theAddAction the action for adding
      * @param theNewAction the action for new
@@ -130,32 +130,32 @@ public class UMLMutableLinkedList extends UMLLinkedList
             AbstractActionNewModelElement theNewAction) {
         this(dataModel, theAddAction, theNewAction, null, false);
     }
-    
+
     /**
      * The constructor.
-     * 
+     *
      * @param dataModel the data model
      * @param theAddAction the action for adding
      */
-    public UMLMutableLinkedList(UMLModelElementListModel2 dataModel, 
+    public UMLMutableLinkedList(UMLModelElementListModel2 dataModel,
             AbstractActionAddModelElement theAddAction) {
         this(dataModel, theAddAction, null, null, false);
     }
-    
+
     /**
      * The constructor.
-     * 
+     *
      * @param dataModel the data model
      * @param theNewAction the action for new
      */
-    public UMLMutableLinkedList(UMLModelElementListModel2 dataModel, 
+    public UMLMutableLinkedList(UMLModelElementListModel2 dataModel,
             AbstractActionNewModelElement theNewAction) {
         this(dataModel, null, theNewAction, null, false);
     }
-    
+
     /**
      * The constructor.
-     * 
+     *
      * @param dataModel the data model
      */
     protected UMLMutableLinkedList(UMLModelElementListModel2 dataModel) {
@@ -167,7 +167,7 @@ public class UMLMutableLinkedList extends UMLLinkedList
     /**
      * Constructor that should be used if the developer wishes a customized
      * popupmenu.
-     * 
+     *
      * @param dataModel the data model
      * @param popup the popup menu
      * @param showIcon true if an icon should be shown
@@ -181,7 +181,7 @@ public class UMLMutableLinkedList extends UMLLinkedList
     /**
      * Constructor that should be used if the developer wishes a customized
      * popupmenu, without icons.
-     * 
+     *
      * @param dataModel the data model
      * @param popup the popup menu
      */
@@ -192,7 +192,7 @@ public class UMLMutableLinkedList extends UMLLinkedList
 
     /**
      * Returns the add.
-     * 
+     *
      * @return boolean
      */
     public boolean isAdd() {
@@ -201,7 +201,7 @@ public class UMLMutableLinkedList extends UMLLinkedList
 
     /**
      * Returns the delete.
-     * 
+     *
      * @return boolean
      */
     public boolean isDelete() {
@@ -210,7 +210,7 @@ public class UMLMutableLinkedList extends UMLLinkedList
 
     /**
      * Returns the new.
-     * 
+     *
      * @return boolean
      */
     public boolean isNew() {
@@ -219,7 +219,7 @@ public class UMLMutableLinkedList extends UMLLinkedList
 
     /**
      * Sets the delete.
-     * 
+     *
      * @param delete
      *            The delete to set
      */
@@ -229,7 +229,7 @@ public class UMLMutableLinkedList extends UMLLinkedList
 
     /**
      * Returns the addAction.
-     * 
+     *
      * @return UMLChangeAction
      */
     public AbstractActionAddModelElement getAddAction() {
@@ -238,7 +238,7 @@ public class UMLMutableLinkedList extends UMLLinkedList
 
     /**
      * Returns the newAction.
-     * 
+     *
      * @return UMLChangeAction
      */
     public AbstractActionNewModelElement getNewAction() {
@@ -247,7 +247,7 @@ public class UMLMutableLinkedList extends UMLLinkedList
 
     /**
      * Sets the addAction.
-     * 
+     *
      * @param action
      *            The addAction to set
      */
@@ -259,7 +259,7 @@ public class UMLMutableLinkedList extends UMLLinkedList
 
     /**
      * Sets the newAction.
-     * 
+     *
      * @param action
      *            The newAction to set
      */
@@ -280,7 +280,7 @@ public class UMLMutableLinkedList extends UMLLinkedList
                 getPopupMenu().show(this, e.getX(), e.getY());
             }
             e.consume();
-        } 
+        }
     }
 
     /**
@@ -293,12 +293,12 @@ public class UMLMutableLinkedList extends UMLLinkedList
                 getPopupMenu().show(this, e.getX(), e.getY());
             }
             e.consume();
-        } 
+        }
     }
 
     /**
      * Returns the popupMenu.
-     * 
+     *
      * @return JPopupMenu
      */
     public JPopupMenu getPopupMenu() {
@@ -307,7 +307,7 @@ public class UMLMutableLinkedList extends UMLLinkedList
 
     /**
      * Sets the popupMenu.
-     * 
+     *
      * @param menu
      *            The popupMenu to set
      */
@@ -317,7 +317,7 @@ public class UMLMutableLinkedList extends UMLLinkedList
 
     /**
      * Returns the deleteAction.
-     * 
+     *
      * @return AbstractActionRemoveElement
      */
     public AbstractActionRemoveElement getDeleteAction() {
@@ -326,7 +326,7 @@ public class UMLMutableLinkedList extends UMLLinkedList
 
     /**
      * Sets the deleteAction.
-     * 
+     *
      * @param action
      *            The deleteAction to set
      */
@@ -344,13 +344,13 @@ public class UMLMutableLinkedList extends UMLLinkedList
                 getPopupMenu().show(this, e.getX(), e.getY());
             }
             e.consume();
-        } 
-    }  
-    
+        }
+    }
+
     /**
      * @see java.awt.event.MouseListener#mouseEntered(java.awt.event.MouseEvent)
      */
-    public void mouseEntered(MouseEvent e) {  
+    public void mouseEntered(MouseEvent e) {
         setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
     }
     /**

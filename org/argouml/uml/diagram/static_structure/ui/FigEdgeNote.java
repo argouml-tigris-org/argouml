@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -42,7 +42,7 @@ import org.tigris.gef.presentation.FigNode;
 import org.tigris.gef.presentation.FigPoly;
 
 
-/** 
+/**
  * Class to display a UML note connection to a
  * annotated model element.<p>
  * <p>
@@ -58,12 +58,11 @@ public class FigEdgeNote
 	       DelayedVChangeListener,
 	       MouseListener,
 	       KeyListener,
-	       PropertyChangeListener
-{
+	       PropertyChangeListener {
     private Object owner;
 
-    
-    /** 
+
+    /**
      * Construct a new note connection. Use the same layout as for
      * other edges.
      */
@@ -71,20 +70,20 @@ public class FigEdgeNote
         super();
 	setBetweenNearestPoints(true);
 	((FigPoly) _fig).setRectilinear(false);
-	setDashed(true);	
-    }      
-    
+	setDashed(true);
+    }
+
     /**
      * Constructor that hooks the Fig to a CommentEdge
      * @param theOwner the CommentEdge
      * @param theLayer the layer (ignored)
      */
     public FigEdgeNote(Object theOwner, Layer theLayer) {
-        this(((CommentEdge) theOwner).getSource(), 
+        this(((CommentEdge) theOwner).getSource(),
                 ((CommentEdge) theOwner).getDestination());
         setOwner(theOwner);
     }
-    
+
     /**
      * Constructs a new figedgenote from some object to another
      * object. The objects must have a representation on the given
@@ -120,13 +119,13 @@ public class FigEdgeNote
     public void setFig(Fig f) {
 	super.setFig(f);
 	_fig.setDashed(true);
-    }    
+    }
 
     /**
      * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#canEdit(org.tigris.gef.presentation.Fig)
      */
     protected boolean canEdit(Fig f) { return false; }
-    
+
     /**
      * @see java.lang.Object#toString()
      */
@@ -137,13 +136,13 @@ public class FigEdgeNote
     /**
      * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#modelChanged(java.beans.PropertyChangeEvent)
      */
-    protected void modelChanged(PropertyChangeEvent e) {        
+    protected void modelChanged(PropertyChangeEvent e) {
     }
     /**
      * @see org.tigris.gef.presentation.Fig#setOwner(java.lang.Object)
      */
     public void setOwner(Object newOwner) {
-        // hack to avoid loading problems since we cannot store 
+        // hack to avoid loading problems since we cannot store
         // the whole model yet in XMI
         if (newOwner == null) {
             newOwner = new CommentEdge(getSourceFigNode(), getDestFigNode());
@@ -154,19 +153,19 @@ public class FigEdgeNote
 				UUIDHelper.getInstance().getNewUUID());
 	}
     }
-    
+
     /**
      * @see org.tigris.gef.presentation.Fig#getOwner()
      */
     public Object getOwner() {
         return owner;
     }
-    
-    
+
+
     /**
      * @see org.tigris.gef.presentation.Fig#postLoad()
      */
-    public void postLoad() {       
+    public void postLoad() {
         super.postLoad();
         CommentEdge o = (CommentEdge) getOwner();
         o.setDestination(getDestFigNode().getOwner());

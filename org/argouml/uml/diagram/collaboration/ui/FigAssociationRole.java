@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -40,19 +40,19 @@ import org.tigris.gef.presentation.FigGroup;
 
 
 /**
- * This class represents the Fig of an AssociationRole 
+ * This class represents the Fig of an AssociationRole
  * for a collaboration diagram.
- * 
+ *
  */
 public class FigAssociationRole extends FigAssociation {
- 
+
     private FigMessageGroup messages = new FigMessageGroup();
- 
+
     ////////////////////////////////////////////////////////////////
     // constructors
- 
+
     /**
-     * Main Constructor  
+     * Main Constructor
      */
     public FigAssociationRole() {
 	super(); // this really is questionable
@@ -72,7 +72,7 @@ public class FigAssociationRole extends FigAssociation {
 
     ////////////////////////////////////////////////////////////////
     // event handlers
-    
+
     /**
      * Calls the method on the "super" (FigAssociation)
      * and then changes the name to take care of the
@@ -90,7 +90,7 @@ public class FigAssociationRole extends FigAssociation {
         String asNameStr = Notation.generate(this, ar);
         getNameFig().setText(asNameStr);
     }
-    
+
     /**
      * @param message the message to be added
      */
@@ -115,7 +115,7 @@ public class FigAssociationRole extends FigAssociation {
  *
  */
 class FigMessageGroup extends FigGroup {
-	
+
     /**
      * Constructor for FigMessageGroup.
      */
@@ -151,8 +151,8 @@ class FigMessageGroup extends FigGroup {
 	    }
     	}
     }
-    
-    
+
+
 
     /**
      * @see org.tigris.gef.presentation.Fig#calcBounds()
@@ -170,15 +170,15 @@ class FigMessageGroup extends FigGroup {
             int size = figs.size();
 	    for (int i = 0; i < size; i++) {
                 Fig fig = (Fig) it.next();
-                
+
                 if (i == 0) {
                     first = fig;
                 }
                 if (i == size - 1) {
                     last = fig;
                 }
-                
-		if (fig.getWidth() > _w) { 
+
+		if (fig.getWidth() > _w) {
 		    _w = fig.getWidth();
 		}
 	    }
@@ -188,8 +188,8 @@ class FigMessageGroup extends FigGroup {
 	    _h = 0;
 	}
     }
-	
-	
+
+
 
     /**
      * @see org.tigris.gef.presentation.FigGroup#addFig(Fig)
@@ -203,8 +203,8 @@ class FigMessageGroup extends FigGroup {
 
     /**
      * @see org.tigris.gef.presentation.Fig#removeFromDiagram()
-     */ 
-    public void removeFromDiagram() { 
+     */
+    public void removeFromDiagram() {
         Collection figs = getFigs(null);
         if (figs != null) {
             Iterator it = figs.iterator();
@@ -212,7 +212,7 @@ class FigMessageGroup extends FigGroup {
                 Fig fig = (Fig) it.next();
                 fig.removeFromDiagram();
             }
-        } 
+        }
         removeAll();
         super.removeFromDiagram();
     }

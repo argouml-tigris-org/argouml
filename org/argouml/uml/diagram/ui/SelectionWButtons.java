@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -21,11 +21,6 @@
 // PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
-
-// File: SelectionWButtons.java
-// Classes: SelectionWButtons
-// Original Author: jrobbins@ics.uci.edu
-// $Id$
 
 package org.argouml.uml.diagram.ui;
 
@@ -52,8 +47,8 @@ import org.tigris.gef.presentation.FigPoly;
 import org.tigris.gef.presentation.Handle;
 
 /**
- * 
  *
+ * @author jrobbins
  */
 public abstract class SelectionWButtons extends SelectionNodeClarifiers {
     ////////////////////////////////////////////////////////////////
@@ -78,7 +73,7 @@ public abstract class SelectionWButtons extends SelectionNodeClarifiers {
     private int pressedButton = -1;
 
     /**
-     * Counter for counting the number of times there has been a try to place 
+     * Counter for counting the number of times there has been a try to place
      * a fig.
      */
     private int placeCounter = 0;
@@ -114,7 +109,7 @@ public abstract class SelectionWButtons extends SelectionNodeClarifiers {
      * @param y y of the selection button icon
      * @param w width of the selection button icon
      * @param h height of the selection button icon
-     * @param r outer rectangle of the fig 
+     * @param r outer rectangle of the fig
      * @return true if the selection button above the fig was clicked
      */
     public boolean hitAbove(int x, int y, int w, int h, Rectangle r) {
@@ -335,7 +330,7 @@ public abstract class SelectionWButtons extends SelectionNodeClarifiers {
         LayerPerspective lay =
             (LayerPerspective) ce.getLayerManager().getActiveLayer();
         Fig newFC = renderer.getFigNodeFor(gm, lay, newNode);
-        
+
         // calculate the position of the newly created fig.
         Rectangle outputRect =
             new Rectangle(
@@ -363,12 +358,12 @@ public abstract class SelectionWButtons extends SelectionNodeClarifiers {
                 y = _content.getY();
 
             }
-            // place the fig if it is not a selfassociation       
+            // place the fig if it is not a selfassociation
             if (!placeFig(newFC, lay, x, y, outputRect))
                 return;
         }
 
-        // add the new node only if required, e.g. not when we add a 
+        // add the new node only if required, e.g. not when we add a
         // self association
         if (buttonCode != 14) {
             ce.add(newFC);
@@ -405,7 +400,7 @@ public abstract class SelectionWButtons extends SelectionNodeClarifiers {
         else if (buttonCode == 12) newEdge = createEdgeRight(mgm, newNode);
         else if (buttonCode == 13) newEdge = createEdgeLeft(mgm, newNode);
         else if (buttonCode == 14) newEdge = createEdgeToSelf(mgm);
-        
+
         // place the edge on the layer and update the diagram
         FigEdge fe = (FigEdge) lay.presentationFor(newEdge);
         fe.setBetweenNearestPoints(true);
@@ -414,7 +409,7 @@ public abstract class SelectionWButtons extends SelectionNodeClarifiers {
         edgeShape._isComplete = true;
         fe.setFig(edgeShape);
         newFC.damage();
-        
+
         ce.getSelectionManager().select(fe);
         ce.getSelectionManager().select(_content);
 
@@ -546,12 +541,12 @@ public abstract class SelectionWButtons extends SelectionNodeClarifiers {
     /**
      * Implementors should return a new node for adding via the buttons.
      *
-     * @param buttonCode the code (identifier) for the selection button 
+     * @param buttonCode the code (identifier) for the selection button
      *                   that was hit
      * @return a newly created UML element
      */
     protected abstract Object getNewNode(int buttonCode);
-    
+
     /**
      * Subclasses should override this method if they want to provide
      * a quickbutton above the _content fig. This method returns the
@@ -565,7 +560,7 @@ public abstract class SelectionWButtons extends SelectionNodeClarifiers {
     protected Object createEdgeAbove(MutableGraphModel gm, Object newNode) {
         return null;
     }
-    
+
     /**
      * Subclasses should override this method if they want to provide
      * a quickbutton at the left of the _content fig. This method
@@ -579,7 +574,7 @@ public abstract class SelectionWButtons extends SelectionNodeClarifiers {
     protected Object createEdgeLeft(MutableGraphModel gm, Object newNode) {
         return null;
     }
-    
+
     /**
      * Subclasses should override this method if they want to provide
      * a quickbutton at the right of the _content fig. This method
@@ -593,7 +588,7 @@ public abstract class SelectionWButtons extends SelectionNodeClarifiers {
     protected Object createEdgeRight(MutableGraphModel gm, Object newNode) {
         return null;
     }
-    
+
     /**
      * Subclasses should override this method if they want to provide
      * a quickbutton under the _content fig. This method returns the
@@ -607,7 +602,7 @@ public abstract class SelectionWButtons extends SelectionNodeClarifiers {
     protected Object createEdgeUnder(MutableGraphModel gm, Object newNode) {
         return null;
     }
-    
+
     /**
      * Subclasses should override this method if they want to provide
      * a quickbutton for selfassociation. This method returns the edge

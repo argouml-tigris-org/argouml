@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2002 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -38,19 +38,19 @@ import org.argouml.util.ConfigLoader;
 
 /**
  * Proppanel for interactions.
- * 
+ *
  * @author jaap.branderhorst@xs4all.nl
  */
 public class PropPanelInteraction extends PropPanelModelElement {
 
     /**
      * The constructor.
-     * 
+     *
      */
     public PropPanelInteraction() {
         super("Interaction", ConfigLoader.getTabPropsOrientation());
 
-    	addField(Translator.localize("label.name"), 
+    	addField(Translator.localize("label.name"),
                 getNameTextField());
     	addField(Translator.localize("label.stereotype"),
 		 getStereotypeBox());
@@ -61,7 +61,7 @@ public class PropPanelInteraction extends PropPanelModelElement {
 	    new UMLLinkedList(new UMLInteractionContextListModel());
         contextList.setVisibleRowCount(1);
         JScrollPane contextScroll = new JScrollPane(contextList);
-        addField(Translator.localize("label.context"), 
+        addField(Translator.localize("label.context"),
                 contextScroll);
 
         addSeperator();
@@ -69,13 +69,13 @@ public class PropPanelInteraction extends PropPanelModelElement {
         JList messagesList =
 	    new UMLLinkedList(new UMLInteractionMessagesListModel());
       	JScrollPane messagesScroll = new JScrollPane(messagesList);
-        addField(Translator.localize("label.messages"), 
+        addField(Translator.localize("label.messages"),
                 messagesScroll);
 
         addButton(new PropPanelButton2(new ActionNavigateContext()));
-        addButton(new PropPanelButton2(new ActionNewStereotype(), 
+        addButton(new PropPanelButton2(new ActionNewStereotype(),
                 lookupIcon("Stereotype")));
-        addButton(new PropPanelButton2(new ActionRemoveFromModel(), 
+        addButton(new PropPanelButton2(new ActionRemoveFromModel(),
                 lookupIcon("Delete")));;
     }
 

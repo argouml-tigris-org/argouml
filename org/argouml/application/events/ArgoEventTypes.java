@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -32,37 +32,80 @@ package org.argouml.application.events;
  */
 public interface ArgoEventTypes {
 
-    /** Id which matches any event. */
+    /**
+     * Id which matches any event.
+     */
     int ANY_EVENT                 =  1000;
-		  		 
-    /** Id which matches any module event. */
+
+    /**
+     * Id which matches any module event.
+     */
     int ANY_MODULE_EVENT          =  1100;
-    /** Id indicating a module was loaded. */
+
+    /**
+     * Id indicating a module was loaded.
+     */
     int MODULE_LOADED             =  1101;
-    /** Id indicating a module was unloaded. */
+
+    /**
+     * Id indicating a module was unloaded.
+     */
     int MODULE_UNLOADED           =  1102;
-    /** Id indicating a module was enabled. */
+
+    /**
+     * Id indicating a module was enabled.
+     */
     int MODULE_ENABLED            =  1103;
-    /** Id indicating a module was disabled. */
+
+    /**
+     * Id indicating a module was disabled.
+     */
     int MODULE_DISABLED           =  1104;
-    /** Last module event. */
+
+    /**
+     * Last module event.
+     */
     int LAST_MODULE_EVENT         =  1199;
-		  		 
-    /** Id indicating any notation event. */
+
+
+    /**
+     * Id indicating any notation event.
+     */
     int ANY_NOTATION_EVENT        =  1200;
-    /** Id indicating the default notation was changed. */
+
+    /**
+     * Id indicating the default notation was changed.
+     */
     int NOTATION_CHANGED          =  1201;
-    /** Id indicating a notation was added. */
+
+    /**
+     * Id indicating a notation was added.
+     */
     int NOTATION_ADDED            =  1202;
-    /** Id indicating a notation was removed. */
+
+    /**
+     * Id indicating a notation was removed.
+     */
     int NOTATION_REMOVED          =  1203;
-    /** Id indicating a notation provider was added. */
+
+    /**
+     * Id indicating a notation provider was added.
+     */
     int NOTATION_PROVIDER_ADDED   =  1204;
-    /** Id indicating a notation provider was removed. */
+
+    /**
+     * Id indicating a notation provider was removed.
+     */
     int NOTATION_PROVIDER_REMOVED =  1205;
-    /** Last module event. */
+
+    /**
+     * Last module event.
+     */
     int LAST_NOTATION_EVENT       =  1299;
-		  		 
-    /** Id marker for the last Argo event. */
+
+
+    /**
+     * Id marker for the last Argo event.
+     */
     int ARGO_EVENT_END            = 99999;
 }

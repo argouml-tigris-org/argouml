@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -75,7 +75,7 @@ public class FindDialog extends ArgoDialog
     private static int nextResultNum = 1;
 
     private static int numFinds = 0;
-    
+
     /** Insets in pixels  */
     private static final int INSET_PX = 3;
 
@@ -105,7 +105,7 @@ public class FindDialog extends ArgoDialog
     // constructors
 
     /**
-     * @return the instance of this dialog 
+     * @return the instance of this dialog
      */
     public static FindDialog getInstance() {
         if (instance == null) {
@@ -113,29 +113,29 @@ public class FindDialog extends ArgoDialog
         }
         return instance;
     }
-    
+
     /**
      * The constructor.
-     * 
+     *
      */
     public FindDialog() {
-        super(ProjectBrowser.getInstance(), 
-                Translator.localize("dialog.find.title"), 
+        super(ProjectBrowser.getInstance(),
+                Translator.localize("dialog.find.title"),
                 ArgoDialog.OK_CANCEL_OPTION, false);
-        
+
         JPanel mainPanel = new JPanel(new BorderLayout());
 
         initNameLocTab();
-        tabs.addTab(Translator.localize("dialog.find.tab.name-and-location"), 
+        tabs.addTab(Translator.localize("dialog.find.tab.name-and-location"),
                 nameLocTab);
 
         initModifiedTab();
-        tabs.addTab(Translator.localize("dialog.find.tab.last-modified"), 
+        tabs.addTab(Translator.localize("dialog.find.tab.last-modified"),
                 modifiedTab);
         tabs.setEnabledAt(1, false);
 
         initTagValsTab();
-        tabs.addTab(Translator.localize("dialog.find.tab.tagged-values"), 
+        tabs.addTab(Translator.localize("dialog.find.tab.tagged-values"),
                 tagValsTab);
         tabs.setEnabledAt(2, false);
 
@@ -175,9 +175,9 @@ public class FindDialog extends ArgoDialog
         //     _go.addActionListener(this);
         //     _close.addActionListener(this);
         //setSize(new Dimension(480, 550));
-        
+
         setContent(mainPanel);
-        
+
         getOkButton().setEnabled(false);
     }
 
@@ -210,9 +210,9 @@ public class FindDialog extends ArgoDialog
 
         location.addItem(
                 Translator.localize("dialog.find.comboboxitem.entire-project"));
-        /*      MVW: The following panel is not used at all. 
-         *      So let's not show it. 
-         *      See issue 2502. 
+        /*      MVW: The following panel is not used at all.
+         *      So let's not show it.
+         *      See issue 2502.
          */
         // _typeDetails.setBorder(new EtchedBorder(EtchedBorder.LOWERED));
         initTypes();
@@ -317,7 +317,7 @@ public class FindDialog extends ArgoDialog
      * TODO: This tab does not work currently.
      */
     public void initModifiedTab() { }
-    
+
     /**
      * Init the Constraints tab.
      * TODO: This tab does not work currently.
@@ -361,7 +361,7 @@ public class FindDialog extends ArgoDialog
         nameButton(getOkButton(), "button.go-to-selection");
         nameButton(getCancelButton(), "button.close");
     }
-    
+
     ////////////////////////////////////////////////////////////////
     // event handlers
     /**
@@ -371,10 +371,10 @@ public class FindDialog extends ArgoDialog
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == search) {
             doSearch();
-        } 
+        }
         else if (e.getSource() == clearTabs) {
             doClearTabs();
-        } 
+        }
         else if (e.getSource() == getOkButton()) {
             doGoToSelection();
         }
@@ -409,7 +409,7 @@ public class FindDialog extends ArgoDialog
             diagramName.setSelectedItem(dName);
         }
         String name = eName;
-        if (dName.length() > 0) { 
+        if (dName.length() > 0) {
             Object[] msgArgs = {name, dName };
             name = Translator.messageFormat(
                     "dialog.find.comboboxitem.element-in-diagram", msgArgs);
@@ -418,7 +418,7 @@ public class FindDialog extends ArgoDialog
         String typeName = type.getSelectedItem().toString();
         if (!typeName.equals("Any Type")) name += " " + typeName;
         if (name.length() == 0)
-            name = Translator.localize("dialog.find.tabname") 
+            name = Translator.localize("dialog.find.tabname")
                 + (nextResultNum++);
         if (name.length() > 15)
             name = name.substring(0, 12) + "...";
@@ -470,11 +470,11 @@ public class FindDialog extends ArgoDialog
     }
 
 
-    
+
     /**
      * Reset the fields.
-     * 
-     * @param complete if true, reset all 3 fields, otherwise only the latter 
+     *
+     * @param complete if true, reset all 3 fields, otherwise only the latter
      */
     private void doResetFields(boolean complete) {
         if (complete) {
@@ -494,7 +494,7 @@ public class FindDialog extends ArgoDialog
     public void doResetFields() {
         doResetFields(true);
     }
-    
+
     /**
      * Execute the GoTo selection command.
      */
@@ -503,7 +503,7 @@ public class FindDialog extends ArgoDialog
             ((TabResults) results.getSelectedComponent()).doDoubleClick();
         }
     }
-  
+
     //   public void doSpawn() { }
 
     //   public void doGo() { }
@@ -517,22 +517,22 @@ public class FindDialog extends ArgoDialog
      * @see java.awt.event.MouseListener#mousePressed(java.awt.event.MouseEvent)
      */
     public void mousePressed(MouseEvent me) { }
-    
+
     /**
      * @see java.awt.event.MouseListener#mouseReleased(java.awt.event.MouseEvent)
      */
     public void mouseReleased(MouseEvent me) { }
-    
+
     /**
      * @see java.awt.event.MouseListener#mouseEntered(java.awt.event.MouseEvent)
      */
     public void mouseEntered(MouseEvent me) { }
-    
+
     /**
      * @see java.awt.event.MouseListener#mouseExited(java.awt.event.MouseEvent)
      */
     public void mouseExited(MouseEvent me) { }
-    
+
     /**
      * @see java.awt.event.MouseListener#mouseClicked(java.awt.event.MouseEvent)
      */
@@ -548,9 +548,9 @@ public class FindDialog extends ArgoDialog
 
     /**
      * React on a double-click on a given tab.
-     * 
+     *
      * MVW: This is the only place where spawning is still enabled.
-     * 
+     *
      * @param tab the given tab
      */
     public void myDoubleClick(int tab) {
@@ -572,13 +572,12 @@ public class FindDialog extends ArgoDialog
  *  are MThings. Thus they are more human readable when displayed
  *  in the Find dialog
  */
-class PredicateMType extends PredicateType
-{
-    protected PredicateMType(Class pats[]) {
+class PredicateMType extends PredicateType {
+    protected PredicateMType(Class[] pats) {
         super(pats, pats.length);
     }
-  
-    protected PredicateMType(Class pats[], int numPats) {
+
+    protected PredicateMType(Class[] pats, int numPats) {
         super(pats, numPats);
     }
 
@@ -587,20 +586,20 @@ class PredicateMType extends PredicateType
     }
 
     public static PredicateType create(Object c0) {
-        Class classes[] = new Class[1];
+        Class[] classes = new Class[1];
         classes[0] = (Class) c0;
         return new PredicateMType(classes);
     }
 
     public static PredicateType create(Object c0, Object c1) {
-        Class classes[] = new Class[2];
+        Class[] classes = new Class[2];
         classes[0] = (Class) c0;
         classes[1] = (Class) c1;
         return new PredicateMType(classes);
     }
 
     public static PredicateType create(Object c0, Object c1, Object c2) {
-        Class classes[] = new Class[3];
+        Class[] classes = new Class[3];
         classes[0] = (Class) c0;
         classes[1] = (Class) c1;
         classes[2] = (Class) c2;

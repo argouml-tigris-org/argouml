@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -35,13 +35,13 @@ public abstract class FigCompartment extends FigGroup {
      * @see org.tigris.gef.presentation.Fig#getLineWidth()
      */
     public int getLineWidth() {
-        // For the moment we access deprecated variables in GEF 
+        // For the moment we access deprecated variables in GEF
         // in order to get over a nasty
         // side effect in the getLineWidth() method of GEF.
         // This will be resolved in GEF 0.10.9
         return _lineWidth;
     }
-    
+
     /**
      * @see org.tigris.gef.presentation.Fig#setLineWidth(int)
      */

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2002-2003 The Regents of the University of California. All
+// Copyright (c) 2002-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -30,7 +30,7 @@ import java.util.Iterator;
 import java.util.List;
 
 /**
- * A targetevent indicating that the target of ArgoUML has changed 
+ * A targetevent indicating that the target of ArgoUML has changed
  * from the _oldTargets to _newTargets.
  * @author jaap.branderhorst@xs4all.nl
  */
@@ -76,8 +76,7 @@ public class TargetEvent extends EventObject {
      * @param newTargets The new targets after the change took place
      */
     public TargetEvent(Object source, String tEName,
-		       Object[] oldTargets, Object[] newTargets)
-    {
+		       Object[] oldTargets, Object[] newTargets) {
 	super(source);
 	theEventName = tEName;
         theOldTargets = oldTargets;
@@ -113,10 +112,10 @@ public class TargetEvent extends EventObject {
      * @return the zero'th element in _newTargets, or null
      */
     public Object getNewTarget() {
-        return theNewTargets == null 
+        return theNewTargets == null
             || theNewTargets.length < 1 ? null : theNewTargets[0];
     }
-    
+
     /**
      * Gets the targets that are removed from the selection
      * @return the removed targets
@@ -134,7 +133,7 @@ public class TargetEvent extends EventObject {
         }
         return removedTargets.toArray();
     }
-    
+
     /**
      * Returns the targets that are added to the selection
      * @return the added targets

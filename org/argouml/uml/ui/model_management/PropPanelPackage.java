@@ -60,19 +60,19 @@ public class PropPanelPackage extends PropPanelNamespace  {
     private JScrollPane generalizationScroll;
     private JScrollPane specializationScroll;
 
-    private static UMLGeneralizableElementGeneralizationListModel 
+    private static UMLGeneralizableElementGeneralizationListModel
         generalizationListModel =
         new UMLGeneralizableElementGeneralizationListModel();
-    private static UMLGeneralizableElementSpecializationListModel 
+    private static UMLGeneralizableElementSpecializationListModel
         specializationListModel =
         new UMLGeneralizableElementSpecializationListModel();
 
     /**
      * The constructor.
-     * 
+     *
      */
     public PropPanelPackage() {
-        this("Package", lookupIcon("Package"), 
+        this("Package", lookupIcon("Package"),
                 ConfigLoader.getTabPropsOrientation());
     }
 
@@ -82,7 +82,7 @@ public class PropPanelPackage extends PropPanelNamespace  {
      * @param orientation the orientation
      * @param icon the icon to show next to the title
      */
-    public PropPanelPackage(String title, ImageIcon icon, 
+    public PropPanelPackage(String title, ImageIcon icon,
             Orientation orientation) {
         super(title, icon, orientation);
         placeElements();
@@ -93,48 +93,48 @@ public class PropPanelPackage extends PropPanelNamespace  {
      * should override to place the elements the way they want.
      */
     protected void placeElements() {
-        addField(Translator.localize("label.name"), 
+        addField(Translator.localize("label.name"),
                 getNameTextField());
-        addField(Translator.localize("label.stereotype"), 
+        addField(Translator.localize("label.stereotype"),
                 getStereotypeBox());
-        addField(Translator.localize("label.namespace"), 
+        addField(Translator.localize("label.namespace"),
                 getNamespaceComboBox());
 
         add(getNamespaceVisibilityPanel());
 
         // TODO: facilitate importedElements.
-        
+
         modifiersPanel =
-            new JPanel(new GridLayout2()); 
+            new JPanel(new GridLayout2());
         modifiersPanel.setBorder(
-            new TitledBorder(Translator.localize( 
+            new TitledBorder(Translator.localize(
                     "label.modifiers")));
-        
+
         modifiersPanel.add(
                             new UMLGeneralizableElementAbstractCheckBox());
         modifiersPanel.add(
                             new UMLGeneralizableElementLeafCheckBox());
         modifiersPanel.add(
                             new UMLGeneralizableElementRootCheckBox());
-        
+
         add(modifiersPanel);
         addSeperator();
         addField(Translator.localize("label.generalizations"),
                 getGeneralizationScroll());
-        addField(Translator.localize("label.specializations"), 
+        addField(Translator.localize("label.specializations"),
                 getSpecializationScroll());
         addSeperator();
-        addField(Translator.localize("label.owned-elements"), 
+        addField(Translator.localize("label.owned-elements"),
                 getOwnedElementsScroll());
 
         addButton(new PropPanelButton2(new ActionNavigateNamespace()));
-        addButton(new PropPanelButton2(new ActionAddPackage(), 
+        addButton(new PropPanelButton2(new ActionAddPackage(),
                 lookupIcon("Package")));
-        addButton(new PropPanelButton2(new ActionAddDataType(), 
+        addButton(new PropPanelButton2(new ActionAddDataType(),
                 lookupIcon("DataType")));
-        addButton(new PropPanelButton2(new ActionNewStereotype(), 
+        addButton(new PropPanelButton2(new ActionNewStereotype(),
                 lookupIcon("Stereotype")));
-        addButton(new PropPanelButton2(new ActionRemoveFromModel(), 
+        addButton(new PropPanelButton2(new ActionRemoveFromModel(),
                 lookupIcon("Delete")));
     }
 

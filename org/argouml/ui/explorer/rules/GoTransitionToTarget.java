@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -41,14 +41,14 @@ public class GoTransitionToTarget extends AbstractPerspectiveRule {
     /**
      * @see org.argouml.ui.explorer.rules.PerspectiveRule#getRuleName()
      */
-    public String getRuleName() { 
+    public String getRuleName() {
         return Translator.localize ("misc.transition.target-state");
     }
 
     /**
      * @see org.argouml.ui.explorer.rules.PerspectiveRule#getChildren(java.lang.Object)
      */
-    public Collection getChildren(Object parent) { 
+    public Collection getChildren(Object parent) {
 	if (ModelFacade.isATransition(parent)) {
 	    Collection col = new ArrayList();
 	    col.add(ModelFacade.getTarget(parent));

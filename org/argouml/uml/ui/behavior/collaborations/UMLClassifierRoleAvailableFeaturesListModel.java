@@ -58,7 +58,7 @@ public class UMLClassifierRoleAvailableFeaturesListModel
 
     /**
      * TODO: Why this function that the other models do not need?
-     * 
+     *
      * @see
      * ru.novosoft.uml.MElementListener#roleAdded(ru.novosoft.uml.MElementEvent)
      */
@@ -82,7 +82,7 @@ public class UMLClassifierRoleAvailableFeaturesListModel
 
     /**
      * TODO: Why this function that the other models do not need?
-     * 
+     *
      * @see
      * org.argouml.uml.ui.UMLModelElementListModel2#setTarget(java.lang.Object)
      */
@@ -140,7 +140,7 @@ public class UMLClassifierRoleAvailableFeaturesListModel
 
     /**
      * TODO: Why this function that the other models do not need?
-     * 
+     *
      * @see ru.novosoft.uml.MElementListener#roleRemoved(ru.novosoft.uml.MElementEvent)
      */
     public void roleRemoved(MElementEvent e) {

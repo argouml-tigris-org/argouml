@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -40,15 +40,15 @@ public class UMLExpressionBodyField
     extends JTextArea
     implements DocumentListener, UMLUserInterfaceComponent {
 
-    private static final Logger LOG = 
+    private static final Logger LOG =
         Logger.getLogger(UMLExpressionBodyField.class);
 
     private UMLExpressionModel2 model;
     private boolean notifyModel;
-    
+
     /**
      * The constructor.
-     * 
+     *
      * @param m Expression model, should be shared between
      * Language and Body fields
      * @param n Only one of Language and Body fields should
@@ -58,7 +58,7 @@ public class UMLExpressionBodyField
 				  boolean n) {
         model = m;
         notifyModel = n;
-        getDocument().addDocumentListener(this);       
+        getDocument().addDocumentListener(this);
     }
 
     /**
@@ -75,7 +75,7 @@ public class UMLExpressionBodyField
      */
     public void targetReasserted() {
     }
-    
+
     /**
      * @see ru.novosoft.uml.MElementListener#roleAdded(ru.novosoft.uml.MElementEvent)
      */
@@ -112,7 +112,7 @@ public class UMLExpressionBodyField
     public void propertySet(final MElementEvent event) {
        	LOG.debug("UMLExpressionBodyField: propertySet" + event);
     }
-    
+
     private void update() {
         String oldText = getText();
         Object newText = model.getBody();
@@ -125,21 +125,21 @@ public class UMLExpressionBodyField
             }
         }
     }
-    
+
     /**
      * @see javax.swing.event.DocumentListener#changedUpdate(javax.swing.event.DocumentEvent)
      */
     public void changedUpdate(final DocumentEvent p1) {
         model.setBody(getText());
     }
-    
+
     /**
      * @see javax.swing.event.DocumentListener#removeUpdate(javax.swing.event.DocumentEvent)
      */
     public void removeUpdate(final DocumentEvent p1) {
         model.setBody(getText());
     }
-    
+
     /**
      * @see javax.swing.event.DocumentListener#insertUpdate(javax.swing.event.DocumentEvent)
      */

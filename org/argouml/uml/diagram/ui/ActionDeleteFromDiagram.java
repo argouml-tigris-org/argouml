@@ -42,9 +42,9 @@ import org.tigris.gef.presentation.Connecter;
 import org.tigris.gef.presentation.Fig;
 
 
-/** 
+/**
  * Removes an modelelement from the diagram, but not from the model.
- * 
+ *
  * @stereotype singleton
  */
 public class ActionDeleteFromDiagram extends UMLAction {
@@ -53,7 +53,7 @@ public class ActionDeleteFromDiagram extends UMLAction {
     // static variables
 
     /** logger */
-    private static final Logger LOG = 
+    private static final Logger LOG =
         Logger.getLogger(ActionDeleteFromDiagram.class);
 
     private static ActionDeleteFromDiagram singleton =
@@ -69,7 +69,7 @@ public class ActionDeleteFromDiagram extends UMLAction {
         if (localMnemonic != null && localMnemonic.length() == 1) {
             putValue(Action.MNEMONIC_KEY,
 		     new Integer(localMnemonic.charAt(0)));
-        }                
+        }
     }
 
     ////////////////////////////////////////////////////////////////
@@ -77,20 +77,20 @@ public class ActionDeleteFromDiagram extends UMLAction {
 
     /**
      * Tells if this action shall be enabled or not.
-     * 
-     * Remove from diagram is not allowed when the diagram 
+     *
+     * Remove from diagram is not allowed when the diagram
      * is a statechart. This because the diagram = the
-     * statemachine according UML. Use a submachinestate 
+     * statemachine according UML. Use a submachinestate
      * to split a big diagram in parts instead.
-     * And because it leads to unsolvable problems with 
-     * concurrency. 
+     * And because it leads to unsolvable problems with
+     * concurrency.
      *
      * @return true if it shall be enabled.
      */
     public boolean shouldBeEnabled() {
         super.shouldBeEnabled();
         int size = 0;
-        // return false if current diagram is a statechart diagram 
+        // return false if current diagram is a statechart diagram
         Object targetP = ProjectManager.getManager()
             .getCurrentProject().getActiveDiagram();
         if (targetP instanceof UMLStateDiagram)

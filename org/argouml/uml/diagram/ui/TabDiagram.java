@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -69,8 +69,8 @@ import org.tigris.toolbar.ToolBarFactory;
 
 
 /**
- * The TabDiagram is the tab in the multieditorpane that holds a diagram. The 
- * TabDiagram consists of a JGraph (with the figs) and a toolbar. 
+ * The TabDiagram is the tab in the multieditorpane that holds a diagram. The
+ * TabDiagram consists of a JGraph (with the figs) and a toolbar.
  * It used to be possible (in past versions of ArgoUML)
  * to spawn objects of this class into a dialog via the spawn method of its
  * parent.
@@ -96,7 +96,7 @@ public class TabDiagram
      * The GEF JGraph in where the figs are painted.
      */
     private JGraph graph;
-    
+
     /**
      * Prevents target event cycles between this and the TargetManager.
      */
@@ -288,7 +288,7 @@ public class TabDiagram
                         while (it.hasNext()) {
                             TargetManager.getInstance().removeTarget(it.next());
                         }
-                    } else {                        
+                    } else {
                         TargetManager.getInstance().setTargets(sels);
                     }
                 }
@@ -317,7 +317,7 @@ public class TabDiagram
         }
     }
 
-    
+
     /**
      * @param listener the listener to be removed
      */
@@ -412,7 +412,7 @@ class ArgoJGraph extends JGraph {
      * @see Object#hashCode()
      *
      * TODO: Investigate further:<p>
-     * 
+     *
      * According to a mail from GZ (6th November 2004) on the dev list,
      * {@link javax.swing.RepaintManager} puts these objects in
      * some kind of data structure that uses this function.
@@ -422,7 +422,7 @@ class ArgoJGraph extends JGraph {
      * org.tigris.gef.base.Diagram)} actually removes this object from
      * the {@link javax.swing.RepaintManager} and registers it again
      * when resetting the diagram id.<p>
-     * 
+     *
      * This is based on the assumption that the function
      * {@link #equals(Object)} must work as it does. I (Linus) have not
      * understood why it must. Could someone please explain that in the
@@ -445,7 +445,7 @@ class ArgoJGraph extends JGraph {
     }
 
     /**
-     * Make a new {@link JGraph} with a the {@link GraphModel} and 
+     * Make a new {@link JGraph} with a the {@link GraphModel} and
      * {@link org.tigris.gef.base.Layer} from the given Diagram.
      *
      * @param d The Diagram.
@@ -466,16 +466,16 @@ class ArgoJGraph extends JGraph {
     }
 
     /**
-     * Make a new {@link JGraph} with the given {@link Editor}.  
+     * Make a new {@link JGraph} with the given {@link Editor}.
      * All {@link JGraph} contructors eventually call this contructor.
      *
      * @param ed The given {@link Editor}.
-     * @deprecated as of 0.17.2 by Linus Tolke. This function will be 
+     * @deprecated as of 0.17.2 by Linus Tolke. This function will be
      *             made private.
      *             Use one of the other constructors instead.
      */
     public ArgoJGraph(Editor ed) {
-        super(ed); 
+        super(ed);
     }
 }
 
@@ -483,7 +483,7 @@ class ArgoJGraph extends JGraph {
  * The ArgoUML editor.
  */
 class ArgoEditor extends Editor {
-    
+
     private RenderingHints  argoRenderingHints;
 
     /**
@@ -512,7 +512,7 @@ class ArgoEditor extends Editor {
      */
     public void mouseEntered(MouseEvent me) {
 	if (getActiveTextEditor() != null) {
-            getActiveTextEditor().requestFocus();         
+            getActiveTextEditor().requestFocus();
         }
 	translateMouseEvent(me);
 	Globals.curEditor(this);
@@ -520,7 +520,7 @@ class ArgoEditor extends Editor {
 	setUnderMouse(me);
 	_modeManager.mouseEntered(me);
     }
-        
+
     /**
      * Invoked when the mouse button has been moved (with no buttons
      * no down).
@@ -538,7 +538,7 @@ class ArgoEditor extends Editor {
 	    String tip = currentFig.getTipString(me);
 	    if (tip != null && (getJComponent() != null)) {
 	        JComponent c = getJComponent();
-	        if (c.getToolTipText() == null 
+	        if (c.getToolTipText() == null
 		    || !(c.getToolTipText().equals(tip))) {
 	            c.setToolTipText(tip);
 	        }
@@ -553,7 +553,7 @@ class ArgoEditor extends Editor {
 	//- RedrawManager.unlock();
 	//- _redrawer.repairDamage();
     }
-    
+
     /**
      * Overridden to set Argo-specific RenderingHints to determine whether
      * or not antialiasing should be turned on.
@@ -576,9 +576,9 @@ class ArgoEditor extends Editor {
         if (_canSelectElements) {
             _selectionManager.paint(g);
             _modeManager.paint(g);
-        }        
+        }
     }
-    
+
     /**
      * Construct a new set of RenderingHints to reflect current user
      * settings.
@@ -586,23 +586,23 @@ class ArgoEditor extends Editor {
     private void setupRenderingHints() {
         argoRenderingHints = new RenderingHints(null);
 
-        argoRenderingHints.put(RenderingHints.KEY_FRACTIONALMETRICS, 
+        argoRenderingHints.put(RenderingHints.KEY_FRACTIONALMETRICS,
             RenderingHints.VALUE_FRACTIONALMETRICS_ON);
-        
+
         if (Configuration.getBoolean(Argo.KEY_SMOOTH_EDGES, false)) {
-            argoRenderingHints.put(RenderingHints.KEY_RENDERING, 
+            argoRenderingHints.put(RenderingHints.KEY_RENDERING,
                 RenderingHints.VALUE_RENDER_QUALITY);
-            argoRenderingHints.put(RenderingHints.KEY_ANTIALIASING, 
+            argoRenderingHints.put(RenderingHints.KEY_ANTIALIASING,
                 RenderingHints.VALUE_ANTIALIAS_ON);
-            argoRenderingHints.put(RenderingHints.KEY_TEXT_ANTIALIASING, 
-                RenderingHints.VALUE_TEXT_ANTIALIAS_ON);        
+            argoRenderingHints.put(RenderingHints.KEY_TEXT_ANTIALIASING,
+                RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
         } else {
-            argoRenderingHints.put(RenderingHints.KEY_RENDERING, 
+            argoRenderingHints.put(RenderingHints.KEY_RENDERING,
                 RenderingHints.VALUE_RENDER_SPEED);
-            argoRenderingHints.put(RenderingHints.KEY_ANTIALIASING, 
+            argoRenderingHints.put(RenderingHints.KEY_ANTIALIASING,
                 RenderingHints.VALUE_ANTIALIAS_OFF);
-            argoRenderingHints.put(RenderingHints.KEY_TEXT_ANTIALIASING, 
-                RenderingHints.VALUE_TEXT_ANTIALIAS_OFF);        
+            argoRenderingHints.put(RenderingHints.KEY_TEXT_ANTIALIASING,
+                RenderingHints.VALUE_TEXT_ANTIALIAS_OFF);
         }
     }
 }

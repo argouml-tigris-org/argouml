@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -42,8 +42,8 @@ import org.tigris.swidgets.Orientation;
  * A subclass of JPanel that can act as a tab in the DetailsPane or
  * MultiEditorPane. When the tab is double-clicked, this JPanel will generate a
  * separate window of the same size and with the same contents. This is almost
- * like "tearing off" a tab.
- * <p>
+ * like "tearing off" a tab.<p>
+ *
  * TODO: Spawning of windows disabled in spawn()
  */
 public class TabSpawnable extends JPanel implements Cloneable, Orientable {
@@ -72,7 +72,7 @@ public class TabSpawnable extends JPanel implements Cloneable, Orientable {
 
     /**
      * The constructor.
-     * 
+     *
      */
     public TabSpawnable() {
         this("untitled", false);
@@ -80,7 +80,7 @@ public class TabSpawnable extends JPanel implements Cloneable, Orientable {
 
     /**
      * The constructor.
-     * 
+     *
      * @param tag the name
      */
     public TabSpawnable(String tag) {
@@ -89,7 +89,7 @@ public class TabSpawnable extends JPanel implements Cloneable, Orientable {
 
     /**
      * The constructor.
-     * 
+     *
      * @param tag the name
      * @param t if true, remove tab from parent JTabbedPane
      */
@@ -101,10 +101,10 @@ public class TabSpawnable extends JPanel implements Cloneable, Orientable {
     /**
      * This is not a real clone since it doesn't copy anything from the object
      * it is cloning. The
-     * 
+     *
      * @see #spawn method copies the title and in some cases when we are a
      * @see TabModelTarget also the Target.
-     * 
+     *
      * @return the new object or null if not possible.
      */
     public Object clone() {
@@ -146,14 +146,13 @@ public class TabSpawnable extends JPanel implements Cloneable, Orientable {
     // actions
 
     /**
-     * this should take its inspiration from org.tigris.gef.base.CmdSpawn
-     * 
-     * <p>
+     * this should take its inspiration from org.tigris.gef.base.CmdSpawn<p>
+     *
      * The spawned/cloned tab will be a JFrame. Currently this feature is
-     * disabled for ArgoUML, except for the find dialog. 
+     * disabled for ArgoUML, except for the find dialog.
      * Code should behave though as if spawning might work at a
      * later stage.
-     * 
+     *
      * @return a copy of the frame or null if not clone-able.
      */
     public TabSpawnable spawn() {
@@ -195,7 +194,7 @@ public class TabSpawnable extends JPanel implements Cloneable, Orientable {
                 ((JTabbedPane) getParent()).remove(this);
 
         return newPanel;
-   
+
     }
 
 } /* end class TabSpawnable */

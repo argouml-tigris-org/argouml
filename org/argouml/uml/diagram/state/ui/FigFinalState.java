@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -22,10 +22,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// File: FigFinalState.java
-// Classes: FigFinalState
-// Original Author: ics125b spring 98
-
 package org.argouml.uml.diagram.state.ui;
 
 import java.awt.Color;
@@ -42,7 +38,10 @@ import org.tigris.gef.base.Selection;
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.FigCircle;
 
-/** Class to display graphics for a UML FinalState in a diagram. 
+/**
+ * Class to display graphics for a UML FinalState in a diagram.
+ *
+ * @author ics125b spring 98
  */
 public class FigFinalState extends FigStateVertex {
 
@@ -78,14 +77,14 @@ public class FigFinalState extends FigStateVertex {
         		  HEIGHT - 10,
         		  handleColor,
         		  Color.black);
-        
+
         bigPort.setLineWidth(1);
         inCircle.setLineWidth(0);
-        
+
         addFig(bigPort);
         addFig(inCircle);
         setBigPort(bigPort);
-        
+
         setBlinkPorts(false); //make port invisble unless mouse enters
         Rectangle r = getBounds();
     }
@@ -108,7 +107,7 @@ public class FigFinalState extends FigStateVertex {
         Iterator it = figClone.getFigs(null).iterator();
         figClone.setBigPort((FigCircle) it.next());
         figClone.inCircle = (FigCircle) it.next();
-        
+
         return figClone;
     }
 
@@ -135,7 +134,7 @@ public class FigFinalState extends FigStateVertex {
         return sel;
     }
 
-    /** Final states are fixed size. 
+    /** Final states are fixed size.
      * @see org.tigris.gef.presentation.Fig#isResizable()
      */
     public boolean isResizable() {
@@ -152,7 +151,7 @@ public class FigFinalState extends FigStateVertex {
     public void setLineColor(Color col) {
         getBigPort().setLineColor(col);
     }
-    
+
     /**
      * @see org.tigris.gef.presentation.Fig#getLineColor()
      */
@@ -166,7 +165,7 @@ public class FigFinalState extends FigStateVertex {
     public void setFillColor(Color col) {
         inCircle.setFillColor(col);
     }
-    
+
     /**
      * @see org.tigris.gef.presentation.Fig#getFillColor()
      */
@@ -179,7 +178,7 @@ public class FigFinalState extends FigStateVertex {
      */
     public void setFilled(boolean f) {
     }
-    
+
     /**
      * @see org.tigris.gef.presentation.Fig#getFilled()
      */
@@ -193,7 +192,7 @@ public class FigFinalState extends FigStateVertex {
     public void setLineWidth(int w) {
         getBigPort().setLineWidth(w);
     }
-    
+
     /**
      * @see org.tigris.gef.presentation.Fig#getLineWidth()
      */
@@ -209,10 +208,10 @@ public class FigFinalState extends FigStateVertex {
      */
     public void mouseClicked(MouseEvent me) {
     }
-    
+
     /**
      * Block any textentry on the diagram - there is nothing to edit!
-     * 
+     *
      * @see java.awt.event.KeyListener#keyPressed(java.awt.event.KeyEvent)
      */
     public void keyPressed(KeyEvent ke) {
@@ -223,7 +222,7 @@ public class FigFinalState extends FigStateVertex {
 
     /**
      * TODO: MVW: I do not see any reason for this. Can we remove it?
-     * 
+     *
      * @see org.tigris.gef.presentation.Fig#setBounds(int, int, int, int)
      */
     /*public void setBounds(int boundX, int boundY, int boundW, int boundH) {
@@ -238,9 +237,9 @@ public class FigFinalState extends FigStateVertex {
     /**
      * Makes sure that edges stick to the outer circle and not to the name or
      * stereobox.
-     * 
+     *
      * TODO: MVW: I do not see any reason for this. Can we remove it?
-     * 
+     *
      * @see org.tigris.gef.presentation.Fig#getGravityPoints()
      */
     /*public Vector getGravityPoints() {
@@ -258,7 +257,7 @@ public class FigFinalState extends FigStateVertex {
             ret.add(point);
         }
         return ret;
-        	
+
     }*/
 
 } /* end class FigFinalState */

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2003-2004 The Regents of the University of California. All
+// Copyright (c) 2003-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -27,7 +27,7 @@ package org.argouml.cognitive.ui;
 
 
 /**
- * A WizardItem is a type wizards know how to deal with. 
+ * A WizardItem is a type wizards know how to deal with.
  * It only requires that it
  * is notified to have been changed.
  * @author mkl
@@ -36,7 +36,7 @@ package org.argouml.cognitive.ui;
 public interface WizardItem {
 
     /** notify this wizarditem that it has been changed.
-     * 
+     *
      *
      */
     void changed();

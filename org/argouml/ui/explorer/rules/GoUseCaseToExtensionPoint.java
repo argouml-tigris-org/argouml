@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -39,10 +39,10 @@ import org.argouml.model.ModelFacade;
  */
 public class GoUseCaseToExtensionPoint extends AbstractPerspectiveRule {
     /**
-     * <p>Give a name to this rule.</p>
+     * Give a name to this rule.<p>
      *
      * @return  The name of the rule ("<code>Use Case->Extension
-     *          Point</code>"). 
+     *          Point</code>").
      */
     public String getRuleName() {
         return Translator.localize ("misc.use-case.extension-point");
@@ -51,7 +51,7 @@ public class GoUseCaseToExtensionPoint extends AbstractPerspectiveRule {
     /**
      * @see org.argouml.ui.explorer.rules.PerspectiveRule#getChildren(java.lang.Object)
      */
-    public Collection getChildren(Object parent) { 
+    public Collection getChildren(Object parent) {
         if (ModelFacade.isAUseCase(parent)) {
             return ModelFacade.getExtensionPoints(parent);
         }

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2003-2004 The Regents of the University of California. All
+// Copyright (c) 2003-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -35,9 +35,9 @@ import org.argouml.model.ModelFacade;
 import org.argouml.ui.targetmanager.TargetManager;
 
 /**
- * 
+ *
  * @author mkl
- *  
+ *
  */
 public abstract class AbstractActionNavigate extends UMLAction {
 
@@ -57,25 +57,25 @@ public abstract class AbstractActionNavigate extends UMLAction {
         putValue(Action.SMALL_ICON,
                  ResourceLoaderWrapper.lookupIconResource("NavigateUp"));
     }
-    
+
     /**
      * @param newIcon the icon for this action
      * @return this action
      */
     public AbstractActionNavigate setIcon(Icon newIcon) {
-        putValue(Action.SMALL_ICON, newIcon);        
+        putValue(Action.SMALL_ICON, newIcon);
         return this;
     }
     /**
      * Abstract method to do the navigation. The actual navigation is performed
      * by actionPerformed.
-     * 
+     *
      * @param source
      *            the object to navigate from
      * @return the object to navigate to
      */
     protected abstract Object navigateTo(Object source);
-    
+
     /**
      * @see javax.swing.Action#isEnabled()
      */
@@ -85,7 +85,7 @@ public abstract class AbstractActionNavigate extends UMLAction {
     }
 
     /** Perform the work the action is supposed to do.
-     * 
+     *
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent e) {

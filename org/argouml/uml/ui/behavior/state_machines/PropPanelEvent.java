@@ -55,12 +55,12 @@ public abstract class PropPanelEvent extends PropPanelModelElement {
 
     /**
      * Constructor for PropPanelEvent.
-     * 
+     *
      * @param name the name string of the properties panel
      * @param icon the icon to be shown next to the name
      * @param orientation the orientation
      */
-    public PropPanelEvent(String name, ImageIcon icon, 
+    public PropPanelEvent(String name, ImageIcon icon,
             Orientation orientation) {
         super(name, icon, orientation);
         initialize();
@@ -86,7 +86,7 @@ public abstract class PropPanelEvent extends PropPanelModelElement {
 
 
         addButton(new PropPanelButton2(new ActionNavigateContainerElement()));
-        addButton(new PropPanelButton2(new ActionNewStereotype(), 
+        addButton(new PropPanelButton2(new ActionNewStereotype(),
                 lookupIcon("Stereotype")));
     }
 
@@ -100,7 +100,7 @@ public abstract class PropPanelEvent extends PropPanelModelElement {
             .getCurrentProject().findType("void");
         Collection propertyChangeListeners = ProjectManager.getManager()
             .getCurrentProject().findFigsForMember(getTarget());
-        Object param = Model.getCoreFactory().buildParameter(getTarget(), 
+        Object param = Model.getCoreFactory().buildParameter(getTarget(),
                 model, voidType, propertyChangeListeners);
         TargetManager.getInstance().setTarget(param);
     }

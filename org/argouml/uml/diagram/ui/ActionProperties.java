@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2001 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -40,7 +40,7 @@ public class ActionProperties extends UMLAction {
     ////////////////////////////////////////////////////////////////
     // static variables
 
-    private static ActionProperties singleton = new ActionProperties(); 
+    private static ActionProperties singleton = new ActionProperties();
 
 
     ////////////////////////////////////////////////////////////////
@@ -49,13 +49,13 @@ public class ActionProperties extends UMLAction {
     /**
      * The constructor.
      */
-    protected ActionProperties() { 
+    protected ActionProperties() {
         super(Translator.localize("action.properties"), true, HAS_ICON);
-        String localMnemonic = 
+        String localMnemonic =
             Translator.localize("action.properties.mnemonic");
         if (localMnemonic != null && localMnemonic.length() == 1) {
             putValue(Action.MNEMONIC_KEY, new Integer(localMnemonic.charAt(0)));
-        }        
+        }
     }
 
 
@@ -74,8 +74,8 @@ public class ActionProperties extends UMLAction {
     /**
      * @see org.argouml.uml.ui.UMLAction#shouldBeEnabled()
      */
-    public boolean shouldBeEnabled() { 
-	return true; 
+    public boolean shouldBeEnabled() {
+	return true;
     }
 
 

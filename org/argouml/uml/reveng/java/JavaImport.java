@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -48,13 +48,13 @@ public class JavaImport extends FileImportSupport {
      * Throws a Parser exception.
      *
      * @see org.argouml.application.api.PluggableImport#parseFile(
-     * org.argouml.kernel.Project, java.lang.Object, 
+     * org.argouml.kernel.Project, java.lang.Object,
      * org.argouml.uml.reveng.DiagramInterface, org.argouml.uml.reveng.Import)
      */
     public void parseFile(Project p, Object o, DiagramInterface diagram,
 			  Import theImport)
 	throws Exception {
-	if (o instanceof File ) {
+	if (o instanceof File) {
 	    File f = (File) o;
 	    // Create a scanner that reads from the input stream passed to us
 	    String encoding = theImport.getInputSourceEncoding();
@@ -64,10 +64,10 @@ public class JavaImport extends FileImportSupport {
 		    new BufferedReader(new InputStreamReader(in, encoding)));
 	    // We use a special Argo token, that stores the preceding
 	    // whitespaces.
-	    lexer.setTokenObjectClass( "org.argouml.uml.reveng.java.ArgoToken");
+	    lexer.setTokenObjectClass("org.argouml.uml.reveng.java.ArgoToken");
 
 	    // Create a parser that reads from the scanner
-	    JavaRecognizer parser = new JavaRecognizer( lexer);
+	    JavaRecognizer parser = new JavaRecognizer(lexer);
 
 	    // Create a modeller for the parser
 	    Modeller modeller = new Modeller(p.getModel(),
@@ -81,7 +81,7 @@ public class JavaImport extends FileImportSupport {
 	    LOG.info("Parsing " + f.getAbsolutePath());
 
             modeller.setAttribute("level", theImport.getAttribute("level"));
-            
+
             try {
 		// start parsing at the compilationUnit rule
 		parser.compilationUnit(modeller, lexer);
@@ -96,7 +96,7 @@ public class JavaImport extends FileImportSupport {
 	}
     }
 
-    /** 
+    /**
      * Provides an array of suffix filters for the module.
      * @return SuffixFilter[] files with these suffixes will be processed.
      */
@@ -104,19 +104,19 @@ public class JavaImport extends FileImportSupport {
 	SuffixFilter[] result = {FileFilters.JAVA_FILE_FILTER};
 	return result;
     }
-	
-    /** 
+
+    /**
      * Display name of the module.
-     * 
+     *
      * @see org.argouml.application.api.ArgoModule#getModuleName()
      */
     public String getModuleName() {
 	return "Java";
     }
 
-    /** 
+    /**
      * Textual description of the module.
-     * 
+     *
      * @see org.argouml.application.api.ArgoModule#getModuleDescription()
      */
     public String getModuleDescription() {

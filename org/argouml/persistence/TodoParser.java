@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2002 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -35,7 +35,7 @@ import org.xml.sax.SAXException;
 
 import org.tigris.gef.util.VectorSet;
 
-// Needs-more-work: Reuse the offender Vector.
+// TODO: Reuse the offender Vector.
 
 /**
  * Class that reads a todo list from a todo xml file.
@@ -84,7 +84,7 @@ public class TodoParser extends SAXParserBase {
      */
     public synchronized void readTodoList(
             InputStream is) throws SAXException {
-        
+
         LOG.info("=======================================");
         LOG.info("== READING TO DO LIST");
         parse(is);
@@ -96,14 +96,11 @@ public class TodoParser extends SAXParserBase {
      *
      * @param	e	The entity being started.
      */
-    public void handleStartElement(XMLElement e)
-    {
+    public void handleStartElement(XMLElement e) {
 	//cat.debug("NOTE: TodoParser handleStartTag:" + e.getName());
 
-	try
-	{
-	    switch (tokens.toToken(e.getName(), true))
-	    {
+	try {
+	    switch (tokens.toToken(e.getName(), true)) {
 	    case TodoTokenTable.TOKEN_HEADLINE:
 	    case TodoTokenTable.TOKEN_DESCRIPTION:
 	    case TodoTokenTable.TOKEN_PRIORITY:
@@ -138,8 +135,7 @@ public class TodoParser extends SAXParserBase {
 		break;
 	    }
 	}
-	catch (Exception ex)
-        {
+	catch (Exception ex) {
 	    LOG.error("Exception in startelement", ex);
 	}
     }
@@ -160,39 +156,39 @@ public class TodoParser extends SAXParserBase {
             case TodoTokenTable.TOKEN_TO_DO_LIST:
         	// NOP
         	break;
-        
+
             case TodoTokenTable.TOKEN_TO_DO_ITEM:
         	handleTodoItemEnd(e);
         	break;
-        
+
             case TodoTokenTable.TOKEN_HEADLINE:
         	handleHeadline(e);
         	break;
-        
+
             case TodoTokenTable.TOKEN_DESCRIPTION:
         	handleDescription(e);
         	break;
-        
+
             case TodoTokenTable.TOKEN_PRIORITY:
         	handlePriority(e);
         	break;
-        
+
             case TodoTokenTable.TOKEN_MOREINFOURL:
         	handleMoreInfoURL(e);
         	break;
-        
+
             case TodoTokenTable.TOKEN_ISSUE:
         	handleIssueEnd(e);
         	break;
-        
+
             case TodoTokenTable.TOKEN_POSTER:
         	handlePoster(e);
         	break;
-        
+
             case TodoTokenTable.TOKEN_OFFENDER:
         	handleOffender(e);
         	break;
-        
+
             default:
         	LOG.warn("WARNING: unknown end tag:"
         		 + e.getName());
@@ -208,8 +204,7 @@ public class TodoParser extends SAXParserBase {
      *
      * @param e the element
      */
-    protected void handleTodo(XMLElement e)
-    {
+    protected void handleTodo(XMLElement e) {
 	/* do nothing */
     }
 
@@ -218,8 +213,7 @@ public class TodoParser extends SAXParserBase {
      *
      * @param e the element
      */
-    protected void handleTodoList(XMLElement e)
-    {
+    protected void handleTodoList(XMLElement e) {
 	/* do nothing */
     }
 
@@ -228,8 +222,7 @@ public class TodoParser extends SAXParserBase {
      *
      * @param e the element
      */
-    protected void handleResolvedCritics(XMLElement e)
-    {
+    protected void handleResolvedCritics(XMLElement e) {
 	/* do nothing */
     }
 
@@ -253,11 +246,11 @@ public class TodoParser extends SAXParserBase {
     protected void handleTodoItemEnd(XMLElement e) {
         ToDoItem item;
         Designer dsgr;
-        
+
         /* This is expected to be safe, don't add a try block here */
-        
+
         dsgr = Designer.theDesigner();
-        item = new ToDoItem(dsgr, headline, priority, description, moreinfourl, 
+        item = new ToDoItem(dsgr, headline, priority, description, moreinfourl,
                             new VectorSet());
         dsgr.getToDoList().addElement(item);
         //cat.debug("Added ToDoItem: " + _headline);
@@ -268,8 +261,7 @@ public class TodoParser extends SAXParserBase {
      *
      * @param e the element
      */
-    protected void handleHeadline(XMLElement e)
-    {
+    protected void handleHeadline(XMLElement e) {
 	headline = decode(e.getText()).trim();
     }
 
@@ -281,14 +273,13 @@ public class TodoParser extends SAXParserBase {
     protected void handlePriority(XMLElement e) {
         String prio = decode(e.getText()).trim();
         int np;
-        
+
         try {
             np = Integer.parseInt(prio);
         }
-        catch (NumberFormatException nfe)
-        {
+        catch (NumberFormatException nfe) {
             np = ToDoItem.HIGH_PRIORITY;
-        
+
             if (TodoTokenTable.STRING_PRIO_HIGH.equalsIgnoreCase(prio))
         	np = ToDoItem.HIGH_PRIORITY;
             else if (TodoTokenTable.STRING_PRIO_MED.equalsIgnoreCase(prio))
@@ -296,7 +287,7 @@ public class TodoParser extends SAXParserBase {
             else if (TodoTokenTable.STRING_PRIO_LOW.equalsIgnoreCase(prio))
         	np = ToDoItem.LOW_PRIORITY;
         }
-        
+
         priority = np;
     }
 
@@ -305,8 +296,7 @@ public class TodoParser extends SAXParserBase {
      *
      * @param e the element
      */
-    protected void handleMoreInfoURL(XMLElement e)
-    {
+    protected void handleMoreInfoURL(XMLElement e) {
 	moreinfourl = decode(e.getText()).trim();
     }
 
@@ -315,8 +305,7 @@ public class TodoParser extends SAXParserBase {
      *
      * @param e the element
      */
-    protected void handleDescription(XMLElement e)
-    {
+    protected void handleDescription(XMLElement e) {
 	description = decode(e.getText()).trim();
     }
 
@@ -325,8 +314,7 @@ public class TodoParser extends SAXParserBase {
      *
      * @param e the element
      */
-    protected void handleIssueStart(XMLElement e)
-    {
+    protected void handleIssueStart(XMLElement e) {
 	critic = null;
 	offenders = null;
     }
@@ -336,8 +324,7 @@ public class TodoParser extends SAXParserBase {
      *
      * @param e the element
      */
-    protected void handleIssueEnd(XMLElement e)
-    {
+    protected void handleIssueEnd(XMLElement e) {
 	Designer dsgr;
 	ResolvedCritic item;
 
@@ -355,8 +342,7 @@ public class TodoParser extends SAXParserBase {
      *
      * @param e the element
      */
-    protected void handlePoster(XMLElement e)
-    {
+    protected void handlePoster(XMLElement e) {
 	critic = decode(e.getText()).trim();
     }
 
@@ -384,11 +370,11 @@ public class TodoParser extends SAXParserBase {
         if (str == null) {
             return null;
         }
-        
+
         StringBuffer sb;
         int i1, i2;
         char c;
-        
+
         sb = new StringBuffer();
         for (i1 = 0, i2 = 0; i2 < str.length(); i2++) {
             c = str.charAt(i2);
@@ -405,7 +391,7 @@ public class TodoParser extends SAXParserBase {
                     i1 = i2;
                     break;
                 }
-                
+
                 if (i2 > i1) {
                     String ent = str.substring(i1, i2);
                     if ("proc".equals(ent)) {
@@ -414,8 +400,7 @@ public class TodoParser extends SAXParserBase {
                         try {
                             sb.append((char) Integer.parseInt(ent));
                         }
-                        catch (NumberFormatException nfe)
-                        {
+                        catch (NumberFormatException nfe) {
                         }
                     }
                 }
@@ -436,8 +421,7 @@ public class TodoParser extends SAXParserBase {
      * @param	str	The String to encode.
      * @return	The encoded String.
      */
-    public static String encode(String str)
-    {
+    public static String encode(String str) {
 	StringBuffer sb;
 	int i1, i2;
 	char c;
@@ -445,21 +429,18 @@ public class TodoParser extends SAXParserBase {
 	if (str == null)
 	    return null;
 	sb = new StringBuffer();
-	for (i1 = 0, i2 = 0; i2 < str.length(); i2++)
-	{
+	for (i1 = 0, i2 = 0; i2 < str.length(); i2++) {
 	    c = str.charAt(i2);
-	    if (c == '%')
-	    {
+	    if (c == '%') {
 		if (i2 > i1)
 		    sb.append(str.substring(i1, i2));
 		sb.append("%proc;");
 		i1 = i2 + 1;
 	    }
-	    else if (c < 0x28 
-                ||  (c >= 0x3C && c <= 0x40 && c != 0x3D && c != 0x3F) 
-                ||  (c >= 0x5E && c <= 0x60 && c != 0x5F) 
-                ||   c >= 0x7B)
-	    {
+	    else if (c < 0x28
+                ||  (c >= 0x3C && c <= 0x40 && c != 0x3D && c != 0x3F)
+                ||  (c >= 0x5E && c <= 0x60 && c != 0x5F)
+                ||   c >= 0x7B) {
 		if (i2 > i1)
 		    sb.append(str.substring(i1, i2));
 		sb.append("%" + Integer.toString(c) + ";");

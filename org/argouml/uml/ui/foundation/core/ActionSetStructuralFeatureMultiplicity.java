@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2002 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -30,7 +30,7 @@ import org.argouml.uml.ui.ActionSetMultiplicity;
 
 /**
  * Action to set the multiplicity of a structural feature.
- * @author jaap.branderhorst@xs4all.nl	
+ * @author jaap.branderhorst@xs4all.nl
  * @since Jan 6, 2003
  */
 public class ActionSetStructuralFeatureMultiplicity
@@ -51,7 +51,7 @@ public class ActionSetStructuralFeatureMultiplicity
      * java.lang.Object, java.lang.Object)
      */
     public void setSelectedItem(Object item, Object target) {
-        if (target != null 
+        if (target != null
                 && org.argouml.model.ModelFacade.isAStructuralFeature(target)) {
             if (org.argouml.model.ModelFacade.isAMultiplicity(item)) {
                 ModelFacade.setMultiplicity(target, item);

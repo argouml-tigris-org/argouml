@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -41,7 +41,7 @@ import org.tigris.gef.util.VectorSet;
 public class CrCircularComposition extends CrUML {
     private static final Logger LOG =
 	Logger.getLogger(CrCircularComposition.class);
-						      
+
     /**
      * The constructor.
      */
@@ -52,7 +52,7 @@ public class CrCircularComposition extends CrUML {
 	setPriority(ToDoItem.LOW_PRIORITY);
 	// no good trigger
     }
-							  
+
     /**
      * @see org.argouml.uml.cognitive.critics.CrUML#predicate2(
      * java.lang.Object, org.argouml.cognitive.Designer)
@@ -64,17 +64,17 @@ public class CrCircularComposition extends CrUML {
 	if (reach.contains(dm)) return PROBLEM_FOUND;
 	return NO_PROBLEM;
     }
-							      
+
     /**
-     * @see org.argouml.cognitive.critics.Critic#toDoItem(java.lang.Object, 
+     * @see org.argouml.cognitive.critics.Critic#toDoItem(java.lang.Object,
      * org.argouml.cognitive.Designer)
      */
     public ToDoItem toDoItem(Object dm, Designer dsgr) {
-	
+
         VectorSet offs = computeOffenders(dm);
 	return new UMLToDoItem(this, offs, dsgr);
     }
-								  
+
     /**
      * @param dm is the UML entity (an NSUML object) that is being checked
      * @return the list of offenders
@@ -91,7 +91,7 @@ public class CrCircularComposition extends CrUML {
 	}
 	return offs;
     }
-								      
+
     /**
      * @see org.argouml.cognitive.Poster#stillValid(
      * org.argouml.cognitive.ToDoItem, org.argouml.cognitive.Designer)
@@ -108,12 +108,12 @@ public class CrCircularComposition extends CrUML {
 		  + " res = " + res);
 	return res;
     }
-									  
+
     /**
      * @see org.argouml.cognitive.critics.Critic#getWizardClass(org.argouml.cognitive.ToDoItem)
      */
     public Class getWizardClass(ToDoItem item) {
 	return WizBreakCircularComp.class;
     }
-									      
+
 } /* end class CrCircularComposition.java */

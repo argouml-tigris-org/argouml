@@ -66,8 +66,7 @@ class ParseState {
        @param model The model.
        @param javaLangPackage The default package java.lang.
      */
-    public ParseState(Object model, Object javaLangPackage)
-    {
+    public ParseState(Object model, Object javaLangPackage) {
 	obsoleteInnerClasses = new Vector();
 	classifier = null;
 	context =
@@ -85,8 +84,7 @@ class ParseState {
      */
     public ParseState(ParseState previousState,
                       Object mClassifier,
-                      Object currentPackage)
-    {
+                      Object currentPackage) {
 	classnamePrefix =
 	    previousState.classnamePrefix
 	    + ModelFacade.getName(mClassifier)
@@ -107,8 +105,7 @@ class ParseState {
 
        @param mPackage The package to add.
      */
-    public void addPackageContext(Object mPackage)
-    {
+    public void addPackageContext(Object mPackage) {
 	context = new PackageContext(context, mPackage);
     }
 
@@ -117,8 +114,7 @@ class ParseState {
 
        @param mClassifier The classifier to add.
      */
-    public void addClassifierContext(Object mClassifier)
-    {
+    public void addClassifierContext(Object mClassifier) {
 	context = new ClassifierContext(context, mClassifier);
     }
 
@@ -128,21 +124,20 @@ class ParseState {
     public void addComponent(Object c) {
         this.component = c;
     }
-    
+
     /**
      * @return the source file being parsed
      */
     public Object getComponent() {
         return component;
     }
-    
+
     /**
        Get the current context.
 
        @return The current context.
      */
-    public Context getContext()
-    {
+    public Context getContext() {
 	return context;
     }
 
@@ -151,8 +146,7 @@ class ParseState {
 
        @return The current classifier.
      */
-    public Object getClassifier()
-    {
+    public Object getClassifier() {
 	return classifier;
     }
 
@@ -161,8 +155,7 @@ class ParseState {
 
        @return The name of the anonymous class.
      */
-    public String anonymousClass()
-    {
+    public String anonymousClass() {
 	classnamePrefix =
 	    classnamePrefix.substring(0, classnamePrefix.indexOf("$") + 1);
 	anonymousClassCounter++;
@@ -172,8 +165,7 @@ class ParseState {
     /**
        Tell the parse state that an outer class is being parsed.
      */
-    public void outerClassifier()
-    {
+    public void outerClassifier() {
 	classnamePrefix = "";
 	anonymousClassCounter = 0;
     }
@@ -183,8 +175,7 @@ class ParseState {
 
        @return The current classname prefix.
      */
-    public String getClassnamePrefix()
-    {
+    public String getClassnamePrefix() {
 	return classnamePrefix;
     }
 
@@ -194,8 +185,7 @@ class ParseState {
 
        @param mClassifier The inner classifier.
     */
-    public void innerClassifier(Object mClassifier)
-    {
+    public void innerClassifier(Object mClassifier) {
 	obsoleteInnerClasses.remove(mClassifier);
     }
 
@@ -207,7 +197,7 @@ class ParseState {
     	if (obsoleteFeatures == null) {
 	    return;
 	}
-    	for (Iterator i = obsoleteFeatures.iterator(); i.hasNext(); ) {
+    	for (Iterator i = obsoleteFeatures.iterator(); i.hasNext();) {
 	    ModelFacade.removeFeature(classifier, i.next());
     	}
     }
@@ -220,7 +210,7 @@ class ParseState {
     	if (obsoleteInnerClasses == null) {
 	    return;
 	}
-	for (Iterator i = obsoleteInnerClasses.iterator(); i.hasNext(); ) {
+	for (Iterator i = obsoleteInnerClasses.iterator(); i.hasNext();) {
 	    Object element = i.next();
 	    if (ModelFacade.isAClassifier(element)) {
 		Model.getCoreFactory().deleteClassifier(element);
@@ -234,8 +224,7 @@ class ParseState {
 
        @param feature The feature.
     */
-    public void feature(Object feature)
-    {
+    public void feature(Object feature) {
 	obsoleteFeatures.remove(feature);
     }
 
@@ -245,9 +234,8 @@ class ParseState {
        @param name The name of the feature.
        @return The found feature, null if not found.
      */
-    public Object getFeature(String name)
-    {
-	for (Iterator i = obsoleteFeatures.iterator(); i.hasNext(); ) {
+    public Object getFeature(String name) {
+	for (Iterator i = obsoleteFeatures.iterator(); i.hasNext();) {
 	    Object mFeature = i.next();
 	    if (name.equals(ModelFacade.getName(mFeature))) {
 		return mFeature;
@@ -262,10 +250,9 @@ class ParseState {
        @param name The name of the feature.
        @return The collection of found features
      */
-    public Collection getFeatures(String name)
-    {
+    public Collection getFeatures(String name) {
     	ArrayList list = new ArrayList();
-	for (Iterator i = obsoleteFeatures.iterator(); i.hasNext(); ) {
+	for (Iterator i = obsoleteFeatures.iterator(); i.hasNext();) {
 	    Object mFeature = i.next();
 	    if (name.equals(ModelFacade.getName(mFeature))) {
 		list.add(mFeature);
@@ -280,13 +267,11 @@ class ParseState {
        @param name The name of the method.
        @return The found method, null if not found.
      */
-    public Object getMethod(String name)
-    {
-	for (Iterator i = obsoleteFeatures.iterator(); i.hasNext(); ) {
+    public Object getMethod(String name) {
+	for (Iterator i = obsoleteFeatures.iterator(); i.hasNext();) {
 	    Object mFeature = i.next();
 	    if (ModelFacade.isAMethod(mFeature)
-		&& name.equals(ModelFacade.getName(mFeature)))
-	    {
+		&& name.equals(ModelFacade.getName(mFeature))) {
 		return mFeature;
 	    }
 	}
@@ -299,13 +284,11 @@ class ParseState {
        @param name The name of the operation.
        @return The found operation, null if not found.
      */
-    public Object getOperation(String name)
-    {
-	for (Iterator i = obsoleteFeatures.iterator(); i.hasNext(); ) {
+    public Object getOperation(String name) {
+	for (Iterator i = obsoleteFeatures.iterator(); i.hasNext();) {
 	    Object mFeature = i.next();
 	    if (ModelFacade.isAOperation(mFeature)
-		&& name.equals(ModelFacade.getName(mFeature)))
-	    {
+		&& name.equals(ModelFacade.getName(mFeature))) {
 		return mFeature;
 	    }
 	}

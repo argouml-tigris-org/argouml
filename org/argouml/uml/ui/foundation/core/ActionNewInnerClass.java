@@ -35,7 +35,7 @@ import org.argouml.uml.ui.AbstractActionNewModelElement;
 
 /**
  * Action to create a new inner Class.
- * 
+ *
  * @author Michiel
  */
 public class ActionNewInnerClass extends AbstractActionNewModelElement {
@@ -47,7 +47,7 @@ public class ActionNewInnerClass extends AbstractActionNewModelElement {
         super("button.new-inner-class");
         putValue(Action.NAME, Translator.localize("button.new-inner-class"));
     }
-    
+
     /**
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */

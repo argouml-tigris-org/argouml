@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -49,38 +49,43 @@ import org.argouml.model.ModelFacade;
  */
 public final class Notation implements PropertyChangeListener {
 
-    /** 
+    /**
      * Define a static log4j category variable for ArgoUML notation.
      */
-    private static final Logger LOG = 
+    private static final Logger LOG =
         Logger.getLogger(Notation.class);
-    
-    /** The name of the default Argo notation.  This notation is
-     *  part of Argo core distribution.
+
+    /**
+     * The name of the default Argo notation.  This notation is
+     * part of Argo core distribution.
      */
     private static NotationName notationArgo =
         org.argouml.uml.generator.GeneratorDisplay.getInstance().getNotation();
 
-    /** The name of the Argo java-like notation.  This notation is
-     *  part of Argo core distribution.
+    /**
+     * The name of the Argo java-like notation.  This notation is
+     * part of Argo core distribution.
      */
     // public static final NotationName NOTATION_JAVA =
     // org.argouml.language.java.generator.GeneratorJava
     // .getInstance().getNotation();
 
-    /** The configuration key for the preferred notation
+    /**
+     * The configuration key for the preferred notation
      */
     public static final ConfigurationKey KEY_DEFAULT_NOTATION =
         Configuration.makeKey("notation", "default");
 
-    /** The configuration key that indicates whether to show stereotypes
-     *  in the navigation panel
+    /**
+     * The configuration key that indicates whether to show stereotypes
+     * in the navigation panel
      */
     public static final ConfigurationKey KEY_SHOW_STEREOTYPES =
         Configuration.makeKey("notation", "navigation", "show", "stereotypes");
 
-    /** The configuration key that indicates whether to use guillemots
-     *  or greater/lessthan characters in stereotypes.
+    /**
+     * The configuration key that indicates whether to use guillemots
+     * or greater/lessthan characters in stereotypes.
      */
     public static final ConfigurationKey KEY_USE_GUILLEMOTS =
         Configuration.makeKey("notation", "guillemots");
@@ -93,26 +98,27 @@ public final class Notation implements PropertyChangeListener {
 
     /**
      * Indicates if the user wants to see visibility signs (public,
-     * private, protected or # + -)
+     * private, protected or # + -).
      */
     public static final ConfigurationKey KEY_SHOW_VISIBILITY =
         Configuration.makeKey("notation", "show", "visibility");
 
     /**
-     * Indicates if the user wants to see multiplicity in attributes and classes
+     * Indicates if the user wants to see multiplicity in attributes
+     * and classes.
      */
     public static final ConfigurationKey KEY_SHOW_MULTIPLICITY =
         Configuration.makeKey("notation", "show", "multiplicity");
 
     /**
-     * Indicates if the user wants to see the initial value
+     * Indicates if the user wants to see the initial value.
      */
     public static final ConfigurationKey KEY_SHOW_INITIAL_VALUE =
         Configuration.makeKey("notation", "show", "initialvalue");
 
     /**
      * Indicates if the user wants to see the properties (everything
-     * between braces), that is for example the concurrency
+     * between braces), that is for example the concurrency.
      */
     public static final ConfigurationKey KEY_SHOW_PROPERTIES =
         Configuration.makeKey("notation", "show", "properties");
@@ -136,8 +142,9 @@ public final class Notation implements PropertyChangeListener {
         Configuration.addListener(KEY_UML_NOTATION_ONLY, this);
     }
 
-    /** Remove the notation change listener.
-     *  <code>finalize</code> should never happen, but play it safe.
+    /**
+     * Remove the notation change listener.
+     * <code>finalize</code> should never happen, but play it safe.
      */
     public void finalize() {
         Configuration.removeListener(KEY_DEFAULT_NOTATION, this);
@@ -195,7 +202,7 @@ public final class Notation implements PropertyChangeListener {
     // class accessors
 
     /**
-     * <p>General accessor for an extension point.</p>
+     * General accessor for an extension point.<p>
      *
      * @param notation    Name of the notation to be used.
      *
@@ -294,7 +301,7 @@ public final class Notation implements PropertyChangeListener {
     private static String generateClassifierInState(NotationName notation,
             Object/*MObjectFlowState*/ m) {
         Collection c = ModelFacade.getInStates(m);
-        // MVW: I have no idea how to handle multiple states, 
+        // MVW: I have no idea how to handle multiple states,
         // so we go for the 1st one..
         Iterator i = c.iterator();
         if (i.hasNext()) {
@@ -321,7 +328,7 @@ public final class Notation implements PropertyChangeListener {
     private static String generateAction(NotationName notation, Object m) {
         return getProvider(notation).generateAction(m);
     }
-    
+
     private static String generateActionState(NotationName notation, Object m) {
         return getProvider(notation).generateActionState(m);
     }
@@ -380,7 +387,7 @@ public final class Notation implements PropertyChangeListener {
      * Static accessor for operation generation.  Invokes our protected
      * accessor from the singleton instance with the "documented" flag set
      * false.<p>
-     * 
+     *
      * @param ctx  Context used to identify the notation
      * @param op   The operation to generate for.
      * @return     The generated text.
@@ -394,7 +401,7 @@ public final class Notation implements PropertyChangeListener {
     /**
      * @param ctx  Context used to identify the notation
      * @param op   The operation to generate for.
-     * @param documented <tt>true</tt> if documentation shall be generated.
+     * @param documented <code>true</code> if documentation shall be generated.
      * @return     The generated text.
      */
     public static String generateOperation(
@@ -418,7 +425,7 @@ public final class Notation implements PropertyChangeListener {
     /**
      * @param ctx  Context used to identify the notation
      * @param attr   The attribute to generate for.
-     * @param documented <tt>true</tt> if documentation shall be generated.
+     * @param documented <code>true</code> if documentation shall be generated.
      * @return     The generated text.
      */
     public static String generateAttribute(
@@ -945,8 +952,10 @@ public final class Notation implements PropertyChangeListener {
     ////////////////////////////////////////////////////////////////
     // Static workers for dealing with notation names.
 
-    /** Get list of available notations.
-     *  @return list of available notations
+    /**
+     * Get list of available notations.
+     *
+     * @return list of available notations
      */
     public static ArrayList getAvailableNotations() {
         return NotationNameImpl.getAvailableNotations();
@@ -970,7 +979,7 @@ public final class Notation implements PropertyChangeListener {
     }
 
     /**
-     * @return <tt>true</tt> if guillemots (&laquo; and &raquo;) are used 
+     * @return <code>true</code> if guillemots (&laquo; and &raquo;) are used
      * instead of &lt;&lt; and &gt;&gt;.
      */
     public static boolean getUseGuillemots() {
@@ -978,22 +987,26 @@ public final class Notation implements PropertyChangeListener {
     }
 
     /**
-     * @param useGuillemots <tt>true</tt> if guillemots (&laquo; and &raquo;) 
-     * shall be used instead of &lt;&lt; and &gt;&gt;.
+     * @param useGuillemots <code>true</code> if guillemots (&laquo;
+     * and &raquo;) shall be used instead of &lt;&lt; and &gt;&gt;.
      */
     public static void setUseGuillemots(boolean useGuillemots) {
         Configuration.setBoolean(KEY_USE_GUILLEMOTS, useGuillemots);
     }
 
-    /** get the default width for Fig shadows.
-     *  @return the default width for Fig shadows
+    /**
+     * Get the default width for Fig shadows.
+     *
+     * @return the default width for Fig shadows
      */
     public static int getDefaultShadowWidth() {
         return Configuration.getInteger(KEY_DEFAULT_SHADOW_WIDTH, 1);
     }
 
-    /** set the default width for Fig Shadow.
-     *  @param width    the Fig shadow width
+    /**
+     * Set the default width for Fig Shadow.
+     *
+     * @param width    the Fig shadow width
      */
     public static void setDefaultShadowWidth(int width) {
         Configuration.setInteger(KEY_DEFAULT_SHADOW_WIDTH, width);

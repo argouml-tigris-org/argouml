@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -45,8 +45,7 @@ import org.tigris.gef.presentation.FigText;
  */
 public class PropPanelString
     extends TabSpawnable
-    implements TabModelTarget, PropertyChangeListener, DocumentListener
-{
+    implements TabModelTarget, PropertyChangeListener, DocumentListener {
     ////////////////////////////////////////////////////////////////
     // instance vars
     private FigText target;
@@ -55,7 +54,7 @@ public class PropPanelString
 
     /**
      * The constructor.
-     * 
+     *
      */
     public PropPanelString() {
 	super("String");
@@ -99,7 +98,7 @@ public class PropPanelString
 	    target.removePropertyChangeListener(this);
 	    target.addPropertyChangeListener(this);
 	}
-   
+
     }
 
     /**
@@ -154,12 +153,11 @@ public class PropPanelString
      */
     public void propertyChange(PropertyChangeEvent evt) {
 	if (evt.getPropertyName().equals("editing")
-	    && evt.getNewValue().equals(Boolean.FALSE))
-	{
+	    && evt.getNewValue().equals(Boolean.FALSE)) {
 	    // ending editing
 	    nameField.setText(target.getText());
 	}
-			
+
     }
 
     /**

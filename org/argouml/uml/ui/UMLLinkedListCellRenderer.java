@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2002 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -33,7 +33,7 @@ import javax.swing.JList;
 /**
  * Renderer for linked lists. Should underline the cell but this does not work
  * yet.
- * @author jaap.branderhorst@xs4all.nl	
+ * @author jaap.branderhorst@xs4all.nl
  * @since Jan 2, 2003
  */
 public class UMLLinkedListCellRenderer extends UMLListCellRenderer2 {
@@ -50,23 +50,23 @@ public class UMLLinkedListCellRenderer extends UMLListCellRenderer2 {
      * @see javax.swing.ListCellRenderer#getListCellRendererComponent(
      * javax.swing.JList, java.lang.Object, int, boolean, boolean)
      */
-    public Component getListCellRendererComponent(JList list, Object value, 
+    public Component getListCellRendererComponent(JList list, Object value,
             int index, boolean isSelected, boolean cellHasFocus) {
         JLabel label = (JLabel) super.getListCellRendererComponent(
                 list, value, index, isSelected, cellHasFocus);
-        /*       
+        /*
         label.setBackground(list.getBackground());
         label.setForeground(list.getForeground());
         label.setBorder(BorderFactory.createEmptyBorder());
         if (isSelected) {
             Font font = label.getFont();
             Map textattributes = font.getAttributes();
-            textattributes.put(TextAttribute.WEIGHT, 
+            textattributes.put(TextAttribute.WEIGHT,
                 TextAttribute.WEIGHT_EXTRABOLD);
-            label.setFont(font.deriveFont(textattributes));            
-        } 
+            label.setFont(font.deriveFont(textattributes));
+        }
         */
-        return label;        
+        return label;
     }
 
 }

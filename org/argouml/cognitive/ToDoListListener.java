@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -27,27 +27,27 @@ package org.argouml.cognitive;
 
 
 /**
- * These are the methods you have to implement if you want 
+ * These are the methods you have to implement if you want
  * to get notified when the todo list changes.
  *
  */
 public interface ToDoListListener extends java.util.EventListener {
-    
+
     /**
      * @param tde the todo list event
      */
     void toDoListChanged(ToDoListEvent tde);
-    
+
     /**
      * @param tde the todo list event
      */
     void toDoItemsChanged(ToDoListEvent tde);
-    
+
     /**
      * @param tde the todo list event
      */
     void toDoItemsAdded(ToDoListEvent tde);
-    
+
     /**
      * @param tde the todo list event
      */

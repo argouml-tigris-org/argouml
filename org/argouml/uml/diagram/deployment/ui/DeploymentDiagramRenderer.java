@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2003 The Regents of the University of California. All
+// Copyright (c) 2003-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -46,20 +46,19 @@ import org.tigris.gef.presentation.FigEdge;
 import org.tigris.gef.presentation.FigNode;
 
 /**
- * This class defines a renderer object for UML Deployment Diagrams. 
+ * This class defines a renderer object for UML Deployment Diagrams.
  *
  */
 public class DeploymentDiagramRenderer
-    implements GraphNodeRenderer, GraphEdgeRenderer 
-{
+    implements GraphNodeRenderer, GraphEdgeRenderer {
     private static final Logger LOG =
 	Logger.getLogger(DeploymentDiagramRenderer.class);
 
-    /** 
-     * Return a Fig that can be used to represent the given node. 
-     * 
+    /**
+     * Return a Fig that can be used to represent the given node.
+     *
      * @see org.tigris.gef.graph.GraphNodeRenderer#getFigNodeFor(
-     * org.tigris.gef.graph.GraphModel, org.tigris.gef.base.Layer, 
+     * org.tigris.gef.graph.GraphModel, org.tigris.gef.base.Layer,
      * java.lang.Object)
      */
     public FigNode getFigNodeFor(GraphModel gm, Layer lay, Object node) {
@@ -67,12 +66,12 @@ public class DeploymentDiagramRenderer
 	else if (ModelFacade.isANodeInstance(node))
 	    return new FigMNodeInstance(gm, node);
 	else if (ModelFacade.isAComponent(node))
-	    return new FigComponent(gm, node); 
+	    return new FigComponent(gm, node);
 	else if (ModelFacade.isAComponentInstance(node))
 	    return new FigComponentInstance(gm, node);
-	else if (ModelFacade.isAClass(node)) return new FigClass(gm, node); 
+	else if (ModelFacade.isAClass(node)) return new FigClass(gm, node);
 	else if (ModelFacade.isAInterface(node))
-	    return new FigInterface(gm, node); 
+	    return new FigInterface(gm, node);
 	else if (ModelFacade.isAObject(node)) return new FigObject(gm, node);
 	else if (ModelFacade.isAComment(node)) {
 	            return new FigComment(gm, node);
@@ -81,11 +80,11 @@ public class DeploymentDiagramRenderer
 	return null;
     }
 
-    /** 
+    /**
      * Return a Fig that can be used to represent the given edge.
-     * 
+     *
      * @see org.tigris.gef.graph.GraphEdgeRenderer#getFigEdgeFor(
-     * org.tigris.gef.graph.GraphModel, org.tigris.gef.base.Layer, 
+     * org.tigris.gef.graph.GraphModel, org.tigris.gef.base.Layer,
      * java.lang.Object)
      */
     public FigEdge getFigEdgeFor(GraphModel gm, Layer lay, Object edge) {

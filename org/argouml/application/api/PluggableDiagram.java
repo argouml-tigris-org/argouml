@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2001 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -23,16 +23,20 @@
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 package org.argouml.application.api;
+
 import javax.swing.JMenuItem;
 
-/**  An module interface which identifies an ArgoUML plug-in used
- *   as a diagram type.
+/**
+ * An module interface which identifies an ArgoUML plug-in used
+ * as a diagram type.
  *
- *   @author Thomas Neustupny
- *   @since 0.9.5
+ * @author Thomas Neustupny
+ * @since 0.9.5
  */
 public interface PluggableDiagram extends Pluggable {
-    /** Returns the settings tab panel for the plugin.
+    /**
+     * Returns the settings tab panel for the plugin.
+     *
      * @return the menu item.
      */
     JMenuItem getDiagramMenuItem();

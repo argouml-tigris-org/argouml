@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -48,11 +48,11 @@ import org.tigris.toolbar.ToolBar;
 
 /**
  * The upper-left pane of the main ArgoUML window, contains a tree view
- * of the UML model. Currently named "Explorer" instead of "Navigator".
+ * of the UML model. Currently named "Explorer" instead of "Navigator".<p>
  *
- * <p>The model can be viewed from different tree "Perspectives".
+ * The model can be viewed from different tree "Perspectives".<p>
  *
- * <p>Perspectives are now built in the Perspective Manager.
+ * Perspectives are now built in the Perspective Manager.<p>
  *
  * @stereotype singleton
  */
@@ -63,16 +63,16 @@ public class NavigatorPane
     // constructors
 
     /**
-     * The NavigatorPane instance. This can be a NavigatorPane or 
+     * The NavigatorPane instance. This can be a NavigatorPane or
      * <tt>null</tt>.
      */
     private static NavigatorPane theInstance = null;
     private static boolean theInstanceIsSet = false;
 
-    /** 
+    /**
      * Don't automatically instantiate the instance.
-     * 
-     * @return the singleton or <tt>null</tt> if the NavigatorPane was 
+     *
+     * @return the singleton or <tt>null</tt> if the NavigatorPane was
      * 	       explicitly set to <tt>null</tt>.
      */
     public static NavigatorPane getInstance() {
@@ -82,12 +82,12 @@ public class NavigatorPane
 	}
 	return theInstance;
     }
-    
+
     /**
      * Allow setting of the navigator pane instance.
-     * Currently this is only applicable for unit tests that sets it to 
+     * Currently this is only applicable for unit tests that sets it to
      * <tt>null</tt>.
-     * 
+     *
      * @param pane A new NavigatorPane or <tt>null</tt>.
      * @deprecated without replacement - this is a temporary hack
      * until the model is cleaned up
@@ -96,11 +96,11 @@ public class NavigatorPane
 	theInstance = pane;
 	theInstanceIsSet = true;
     }
-    
+
     /**
-     * Constructs a new navigator panel.
-     * 
-     * <p>This panel consists of a Combobox to select a navigation
+     * Constructs a new navigator panel.<p>
+     *
+     * This panel consists of a Combobox to select a navigation
      * perspective, a JTree to display the UML model, some history
      * (back and forward arrows) buttons that are currently disabled,
      * and a configuration dialog to tailor the perspectives (but this
@@ -109,32 +109,32 @@ public class NavigatorPane
     private NavigatorPane() {
         this(SplashScreen.getDoSplash());
     }
-    
+
     /**
-     * Constructs a new navigator panel.
-     * 
-     * <p>This panel consists of a Combobox to select a navigation
+     * Constructs a new navigator panel.<p>
+     *
+     * This panel consists of a Combobox to select a navigation
      * perspective, a combobox to select ordering,
-     * a JTree to display the UML model, 
+     * a JTree to display the UML model,
      * and a configuration dialog to tailor the perspectives.
      */
     private NavigatorPane(boolean doSplash) {
-        
+
         JComboBox combo = new PerspectiveComboBox();
         JComboBox orderByCombo = new JComboBox();
         ExplorerTree tree = new ExportExplorer(); //DnDExplorerTree();
         ToolBar toolbar = new ToolBar();
-        
+
         toolbar.putClientProperty("JToolBar.isRollover",  Boolean.TRUE);
         toolbar.setFloatable(false);
         toolbar.add(new ActionPerspectiveConfig());
         toolbar.add(combo);
-        
+
         ToolBar toolbar2 = new ToolBar();
-        
+
         toolbar2.putClientProperty("JToolBar.isRollover",  Boolean.TRUE);
         toolbar2.setFloatable(false);
-        
+
         orderByCombo.addItem(new TypeThenNameOrder());
         orderByCombo.addItem(new NameOrder());
 
@@ -144,7 +144,7 @@ public class NavigatorPane
         toolbarpanel.setLayout(new BorderLayout());
         toolbarpanel.add(toolbar, BorderLayout.NORTH);
         toolbarpanel.add(toolbar2, BorderLayout.SOUTH);
-        
+
         setLayout(new BorderLayout());
         add(toolbarpanel, BorderLayout.NORTH);
         add(new JScrollPane(tree), BorderLayout.CENTER);
@@ -155,7 +155,7 @@ public class NavigatorPane
 		    "statusmsg.bar.making-navigator-pane-perspectives"));
             splash.getStatusBar().showProgress(25);
         }
-        
+
         combo.addItemListener((ExplorerTreeModel) tree.getModel());
         orderByCombo.addItemListener((ExplorerTreeModel) tree.getModel());
         PerspectiveManager.getInstance().loadUserPerspectives();
@@ -179,20 +179,20 @@ public class NavigatorPane
     public int getQuadrant() {
         return Q_TOP_LEFT;
     }
-    
+
     class ActionPerspectiveConfig extends UMLAction {
-        
+
         public ActionPerspectiveConfig() {
             // this is not a "global" action, since it is never downlighted...
 	    super("action.configure-perspectives", HAS_ICON);
 	}
-        
+
         public void actionPerformed(ActionEvent ae) {
-            
+
             PerspectiveConfigurator ncd =
 		new PerspectiveConfigurator(ProjectBrowser.getInstance());
             ncd.setVisible(true);
         }
     }
-    
+
 } /* end class NavigatorPane */

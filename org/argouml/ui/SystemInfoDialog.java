@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2003-2004 The Regents of the University of California. All
+// Copyright (c) 2003-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -67,7 +67,7 @@ public class SystemInfoDialog extends ArgoDialog {
 
     /**
      * The constructor.
-     * 
+     *
      */
     public SystemInfoDialog() {
 	this((Frame) null, false);
@@ -75,7 +75,7 @@ public class SystemInfoDialog extends ArgoDialog {
 
     /**
      * The constructor.
-     * 
+     *
      * @param owner the parent frame
      */
     public SystemInfoDialog(Frame owner) {
@@ -84,7 +84,7 @@ public class SystemInfoDialog extends ArgoDialog {
 
     /**
      * The constructor.
-     * 
+     *
      * @param owner the parent frame
      * @param modal true if the dialog is modal
      */
@@ -94,7 +94,7 @@ public class SystemInfoDialog extends ArgoDialog {
 
 	info.setEditable(false);
 	info.setMargin(new Insets(INSET_PX, INSET_PX, INSET_PX, INSET_PX));
-    
+
 	runGCButton.addActionListener(new ActionListener() {
 	    public void actionPerformed(ActionEvent e) {
 		runGCActionPerformed(e);
@@ -105,9 +105,9 @@ public class SystemInfoDialog extends ArgoDialog {
 		copyActionPerformed(e);
 	    }
 	});
-    
-	nameButton(copyButton, "button.copy-to-clipboard");    
-	nameButton(runGCButton, "button.run-gc");    
+
+	nameButton(copyButton, "button.copy-to-clipboard");
+	nameButton(runGCButton, "button.run-gc");
 	addButton(copyButton, 0);
 	addButton(runGCButton, 0);
 	setContent(new JScrollPane(info));
@@ -141,32 +141,32 @@ public class SystemInfoDialog extends ArgoDialog {
     void updateInfo() {
 	StringBuffer s = new StringBuffer();
 	s.append("Java Version		: ");
-	s.append(System.getProperty("java.version", "") + "\n" );
+	s.append(System.getProperty("java.version", "") + "\n");
 	s.append("Java Vendor		: ");
-	s.append(System.getProperty("java.vendor", "") + "\n" );
+	s.append(System.getProperty("java.vendor", "") + "\n");
 	s.append("Java Vendor URL	: ");
-	s.append(System.getProperty("java.vendor.url", "") + "\n" );
+	s.append(System.getProperty("java.vendor.url", "") + "\n");
 	s.append("Java Home Directory	: ");
-	s.append(System.getProperty("java.home", "") + "\n" );
+	s.append(System.getProperty("java.home", "") + "\n");
 	s.append("Java Classpath		: ");
-	s.append(System.getProperty("java.class.path", "") + "\n" );
+	s.append(System.getProperty("java.class.path", "") + "\n");
 	s.append("Operation System	: ");
 	s.append(System.getProperty("os.name", ""));
 	s.append(", Version ");
-	s.append(System.getProperty("os.version", "") + "\n" );
+	s.append(System.getProperty("os.version", "") + "\n");
 	s.append("Architecture		: ");
-	s.append(System.getProperty("os.arch", "") + "\n" );
+	s.append(System.getProperty("os.arch", "") + "\n");
 	s.append("User Name		: ");
-	s.append(System.getProperty("user.name", "") + "\n" );
+	s.append(System.getProperty("user.name", "") + "\n");
 	s.append("User Home Directory	: ");
-	s.append(System.getProperty("user.home", "") + "\n" );
+	s.append(System.getProperty("user.home", "") + "\n");
 	s.append("Current Directory	: ");
-	s.append(System.getProperty("user.dir", "") + "\n" );
+	s.append(System.getProperty("user.dir", "") + "\n");
 	s.append("JVM Total Memory	: ");
-	s.append(String.valueOf(Runtime.getRuntime().totalMemory()) + "\n" );
+	s.append(String.valueOf(Runtime.getRuntime().totalMemory()) + "\n");
 	s.append("JVM Free Memory	: ");
-	s.append(String.valueOf(Runtime.getRuntime().freeMemory()) + "\n" );
-    
+	s.append(String.valueOf(Runtime.getRuntime().freeMemory()) + "\n");
+
 	info.setText(s.toString());
     } //end updateInfo()
 

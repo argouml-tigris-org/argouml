@@ -33,21 +33,21 @@ import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
 
 /**
- * Implements the source path controller. 
- * NOTE: If requested in the future this could be returned from the language 
+ * Implements the source path controller.
+ * NOTE: If requested in the future this could be returned from the language
  * modules.
  *
  * @author euluis
  * @since 0.17.1
  */
 public class SourcePathControllerImpl implements SourcePathController {
-    
-    /** 
+
+    /**
      * The string used to store source path string as tagged value.
      * [Shouldn't this be in ModelFacade?]
      */
     private static final String SRC_PATH_TAG = "src_path";
-    
+
     /**
      * @see org.argouml.uml.ui.SourcePathController#getSourcePath(java.lang.Object)
      */
@@ -61,47 +61,47 @@ public class SourcePathControllerImpl implements SourcePathController {
         }
         return null;
     }
-    
+
     /**
      * @see org.argouml.uml.ui.SourcePathController#getSourcePathSettings()
      */
     public SourcePathTableModel getSourcePathSettings() {
         return new SourcePathTableModel(this);
     }
-    
+
     /**
      * @see org.argouml.uml.ui.SourcePathController#setSourcePath(org.argouml.uml.ui.SourcePathTableModel)
      */
     public void setSourcePath(SourcePathTableModel srcPaths) {
         for (int i = 0; i < srcPaths.getRowCount(); i++) {
-            setSourcePath(srcPaths.getModelElement(i), 
+            setSourcePath(srcPaths.getModelElement(i),
                 new File(srcPaths.getMESourcePath(i)));
         }
     }
-    
+
     /**
      * @see org.argouml.uml.ui.SourcePathController#setSourcePath(
      * java.lang.Object, java.io.File)
      */
     public void setSourcePath(Object modelElement, File sourcePath) {
-        ModelFacade.setTaggedValue(modelElement, SRC_PATH_TAG, 
+        ModelFacade.setTaggedValue(modelElement, SRC_PATH_TAG,
             sourcePath.toString());
     }
-    
+
     /**
      * @see java.lang.Object#toString()
      */
     public String toString() {
         return "ArgoUML default source path controller.";
     }
-    
+
     /**
      * @see org.argouml.uml.ui.SourcePathController#deleteSourcePath(java.lang.Object)
      */
     public void deleteSourcePath(Object modelElement) {
         ModelFacade.removeTaggedValue(modelElement, SRC_PATH_TAG);
     }
-    
+
     /**
      * @see org.argouml.uml.ui.SourcePathController#getAllModelElementsWithSourcePath()
      */
@@ -109,9 +109,9 @@ public class SourcePathControllerImpl implements SourcePathController {
         Collection elems =
             Model.getModelManagementHelper().getAllModelElementsOfKind(
                 ModelFacade.MODELELEMENT);
-        
+
         ArrayList mElemsWithSrcPath = new ArrayList();
-        
+
         Iterator iter = elems.iterator();
         while (iter.hasNext()) {
             Object me = iter.next();
@@ -121,5 +121,5 @@ public class SourcePathControllerImpl implements SourcePathController {
         }
         return mElemsWithSrcPath;
     }
-    
+
 } /* end of SourcePathControllerImpl class definition */

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -22,13 +22,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-
-
-// File: WizCueCards.java
-// Classes: WizCueCards
-// Original Author: jrobbins@ics.uci.edu
-// $Id$
-
 package org.argouml.uml.cognitive.critics;
 
 import java.util.Vector;
@@ -39,13 +32,15 @@ import org.argouml.cognitive.ui.WizStepCue;
 
 /**
  *  A cue card wizard presents the user with a deck of instructions.
- * 
+ *
  * @see org.argouml.cognitive.ui.WizStepCue
+ *
+ * @author jrobbins
  */
 public class WizCueCards extends UMLWizard {
 
     private Vector cues = new Vector();
-    private WizStepCue steps[] = null;
+    private WizStepCue[] steps = null;
 
     /**
      * The constructor.
@@ -62,7 +57,7 @@ public class WizCueCards extends UMLWizard {
      */
     public void addCue(String s) { cues.addElement(s); }
 
-    /** 
+    /**
      * Create a new panel for the given step.
      * Returns a newly created panel or null if there isn't that many steps.
      *
@@ -79,15 +74,15 @@ public class WizCueCards extends UMLWizard {
     /**
      * This wizard never takes action, it just displays step by step
      * instructions.
-     * 
+     *
      * @see org.argouml.cognitive.ui.Wizard#doAction(int)
      */
     public void doAction(int oldStep) {  }
 
-    /** 
+    /**
      * This wizard cannot automatically finish the task. It can only be
-     * finished when the user is on the last step. 
-     * 
+     * finished when the user is on the last step.
+     *
      * @see org.argouml.cognitive.ui.Wizard#canFinish()
      */
     public boolean canFinish() {

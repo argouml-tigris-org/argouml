@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2001 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -24,47 +24,52 @@
 
 package org.argouml.application.api;
 
-/**  An interface which identifies an ArgoUML plug-in which behaves
- *   as a singleton, but may be swapped with another plugin singleton
- *   of the same type.  Only one singleton module can be considered
- *   active at the same time.
- *   
- *   @author Will Howery
- *   @author Thierry Lach
- *   @since  0.9.4
+/**
+ * An interface which identifies an ArgoUML plug-in which behaves
+ * as a singleton, but may be swapped with another plugin singleton
+ * of the same type.  Only one singleton module can be considered
+ * active at the same time.
+ *
+ * @author Will Howery
+ * @author Thierry Lach
+ * @since  0.9.4
  */
 public interface ArgoSingletonModule extends ArgoModule {
 
-    /** Allows verification that the current singleton can be
-     *  activated.  This is useful for determining menu entry
-     *  availability, among other things.
-     *  @return <code>true</code> if the singleton can be activated
-     *          <code>false</code> otherwise.
+    /**
+     * Allows verification that the current singleton can be
+     * activated.  This is useful for determining menu entry
+     * availability, among other things.
+     * @return <code>true</code> if the singleton can be activated
+     *         <code>false</code> otherwise.
      */
     boolean canActivateSingleton();
 
-    /** Allows verification that the current singleton can be
-     *  deactivated.  This is useful for determining menu entry
-     *  availability, among other things.
-     *  @return <code>true</code> if the singleton can be deactivated
-                <code>false</code> otherwise.
+    /**
+     * Allows verification that the current singleton can be
+     * deactivated.  This is useful for determining menu entry
+     * availability, among other things.
+     * @return <code>true</code> if the singleton can be deactivated
+     *         <code>false</code> otherwise.
      */
     boolean canDeactivateSingleton();
 
-    /** Callback by which the active singleton is notified that it
-     *  is being deactivated.  This is called prior to calling
-     *  activateSingleton() on the new singleton.
+    /**
+     * Callback by which the active singleton is notified that it
+     * is being deactivated.  This is called prior to calling
+     * activateSingleton() on the new singleton.
      *
-     *  After the call to deactivateSingleton() and
-     *  before the call to activateSingleton(), the previously
-     *  active singleton is considered to be the active singleton
-     *  even though it is not marked as active.
+     * After the call to deactivateSingleton() and
+     * before the call to activateSingleton(), the previously
+     * active singleton is considered to be the active singleton
+     * even though it is not marked as active.
      */
     void deactivateSingleton();
 
-    /** Callback by which the singleton being activated is notified that it
-     *  is being activated.  This is called after calling
-     *  deactivateSingleton() on the previous singleton.
+    /**
+     * Callback by which the singleton being activated is notified that it
+     * is being activated.  This is called after calling
+     * deactivateSingleton() on the previous singleton.
      */
     void activateSingleton();
 

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -22,13 +22,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-
-
-// File: CrAttrNameConflict.java
-// Classes: CrAttrNameConflict
-// Original Author: jrobbins@ics.uci.edu
-// $Id$
-
 package org.argouml.uml.cognitive.critics;
 
 import java.util.Iterator;
@@ -39,26 +32,25 @@ import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.critics.Critic;
 import org.argouml.model.ModelFacade;
 
-
 // Using Model through Facade
 
-
-/** Check the:
- *  Well-formedness rule [2] for MClassifier. 
- *  See page 29 of UML 1.1, Semantics. OMG document ad/97-08-04.
- *  See page 2-49 in UML V1.3
+/**
+ * Check the:
+ * Well-formedness rule [2] for MClassifier.
+ * See page 29 of UML 1.1, Semantics. OMG document ad/97-08-04.
+ * See page 2-49 in UML V1.3<p>
  *
- *  <p>In the process of modifying this to use the new Facade object 
- *  (Jan 2003) this was changed to no longer detect StructuralFeatures 
- *  with the same name but instead attributes with the same name.
- *  This is in fact a more to the letter adherance to the UML 
- *  well-formedness rule but it is however a change.
+ * In the process of modifying this to use the new Facade object
+ * (Jan 2003) this was changed to no longer detect StructuralFeatures
+ * with the same name but instead attributes with the same name.
+ * This is in fact a more to the letter adherance to the UML
+ * well-formedness rule but it is however a change.
  */
 public class CrAttrNameConflict extends CrUML {
 
     /**
      * The constructor.
-     * 
+     *
      */
     public CrAttrNameConflict() {
 	setHeadline("Revise MAttribute Names to Avoid Conflict");

@@ -34,13 +34,13 @@ import org.argouml.uml.ui.AbstractActionNewModelElement;
 
 /**
  * Action to add a parameter to the selected target.
- * 
+ *
  * @since Juli 11, 2004
  * @author jaap.branderhorst@xs4all.nl
  */
 public class ActionNewParameter extends AbstractActionNewModelElement {
 
-    private static final ActionNewParameter SINGLETON = 
+    private static final ActionNewParameter SINGLETON =
         new ActionNewParameter();
 
     /**
@@ -52,7 +52,7 @@ public class ActionNewParameter extends AbstractActionNewModelElement {
 
     /**
      * On event, a parameter is build and added to the target.
-     * 
+     *
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent e) {
@@ -72,7 +72,7 @@ public class ActionNewParameter extends AbstractActionNewModelElement {
 
     /**
      * @return Returns the SINGLETON.
-     * @deprecated singleton use will be removed in 0.18.0. 
+     * @deprecated singleton use will be removed in 0.18.0.
      * Use the constructor instead.
      */
     public static ActionNewParameter getInstance() {

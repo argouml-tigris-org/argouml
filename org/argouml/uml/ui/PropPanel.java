@@ -81,8 +81,7 @@ import ru.novosoft.uml.MElementListener;
  */
 public abstract class PropPanel
     extends TabSpawnable
-    implements TabModelTarget, MElementListener, UMLUserInterfaceContainer
-{
+    implements TabModelTarget, MElementListener, UMLUserInterfaceContainer {
     ////////////////////////////////////////////////////////////////
     // instance vars
     private Object target;
@@ -132,7 +131,7 @@ public abstract class PropPanel
         setLayout(new LabelledLayout(orientation == Vertical.getInstance()));
 
         if (icon != null) {
-            titleLabel = new JLabel(localize(title), icon, 
+            titleLabel = new JLabel(localize(title), icon,
                     SwingConstants.LEFT);
         } else {
             titleLabel = new JLabel(localize(title));
@@ -167,14 +166,14 @@ public abstract class PropPanel
      * @param button the button to be added to the button panel
      */
     protected void addButton(Component button) {
-        // TODO: (MVW) The next line works! 
-        // Add it when we require Java 1.4, 
-        // and stop supporting earlier versions... 
+        // TODO: (MVW) The next line works!
+        // Add it when we require Java 1.4,
+        // and stop supporting earlier versions...
         // I do not find a way to do this for Java 1.3.  :(
         //button.setFocusable(false); //MVW
         buttonPanel.add(button);
     }
-    
+
     /**
      * Add a component with the specified label.<p>
      *
@@ -250,9 +249,9 @@ public abstract class PropPanel
      * Adds a component to the fields of the specified panel
      * and sets the background and color to indicate
      * the field is a link.<p>
-     * 
+     *
      * This method is never used.
-     * 
+     *
      * @param label the required string label
      * @param component Component to be added
      * @deprecated replaced by according widgets as of version 0.17.1
@@ -292,7 +291,7 @@ public abstract class PropPanel
 
     /**
      * TODO: Do we need this?
-     * 
+     *
      * @return null
      */
     private ResourceBundle getResourceBundle() {
@@ -313,9 +312,9 @@ public abstract class PropPanel
 //     * This method (and addMElementListener) can be overriden if the
 //     * prop panel wants to monitor additional objects.
 //     * ONLY use it if the target is a NSUML modelelement.<p>
-//     * 
+//     *
 //     * TODO: This method is never used. Remove?
-//     * 
+//     *
 //     * @param theTarget target of prop panel
 //     */
 //    protected void removeMElementListener(Object theTarget) {
@@ -326,7 +325,7 @@ public abstract class PropPanel
 //     * This method (and removeMElementListener) can be overriden if the
 //     * prop panel wants to monitor additional objects.  This method
 //     * is public only since it is called from a Runnable object.<p>
-//     * 
+//     *
 //     * TODO: This method is never used. Remove?
 //     *
 //     * @param theTarget target of prop panel
@@ -661,7 +660,7 @@ public abstract class PropPanel
         // probably the TabProps should only show an empty pane in that case
         fireTargetRemoved(e);
         // setTarget(e.getNewTarget());
-        
+
 
     }
 
@@ -724,23 +723,23 @@ public abstract class PropPanel
 
     /**
      * @return Returns the buttonPanel.
-     * 
-     * @deprecated As of V0.17.1. Reason: Nobody has any business 
-     * poking around in my Panels. 
+     *
+     * @deprecated As of V0.17.1. Reason: Nobody has any business
+     * poking around in my Panels.
      * Use {@link #addButton(Component)} instead.
      */
     protected JToolBar getButtonPanel() {
         return buttonPanel;
     }
-    
+
     /**
      * Look up an icon.
-     * 
+     *
      * @param name the resource name.
      * @return an ImageIcon corresponding to the given resource name
      */
     protected static ImageIcon lookupIcon(String name) {
         return ResourceLoaderWrapper.lookupIconResource(name);
     }
-    
+
 } /* end class PropPanel */

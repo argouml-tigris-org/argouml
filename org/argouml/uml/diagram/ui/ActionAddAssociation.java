@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -33,7 +33,7 @@ package org.argouml.uml.diagram.ui;
 import org.argouml.model.ModelFacade;
 import org.argouml.ui.CmdSetMode;
 
-/** 
+/**
  * The ActionAddAssociation class is for creating a dummy link with a
  * stimulus and a given action type. This is done in one step when a
  * new edge between two nodes is instanciated
@@ -42,12 +42,12 @@ import org.argouml.ui.CmdSetMode;
  */
 
 public class ActionAddAssociation extends CmdSetMode {
-    
+
     /**
      * Construct a new ActionAddAssociation.<p>
      *
      * @param aggregationKind the required aggregation for the association.
-     * @param unidirectional true if this is to create a unidirectional 
+     * @param unidirectional true if this is to create a unidirectional
      *        association
      * @param name the action description
      */

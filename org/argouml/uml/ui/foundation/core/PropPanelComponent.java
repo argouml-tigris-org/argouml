@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -43,38 +43,38 @@ public class PropPanelComponent extends PropPanelClassifier {
 
     /**
      * The constructor.
-     * 
+     *
      */
     public PropPanelComponent() {
 	super("Component", ConfigLoader.getTabPropsOrientation());
-	addField(Translator.localize("label.name"), 
+	addField(Translator.localize("label.name"),
             getNameTextField());
-	addField(Translator.localize("label.stereotype"), 
+	addField(Translator.localize("label.stereotype"),
             getStereotypeBox());
-	addField(Translator.localize("label.namespace"), 
+	addField(Translator.localize("label.namespace"),
             getNamespaceComboBox());
 	add(getModifiersPanel());
 
 	addSeperator();
 
-	addField(Translator.localize("label.generalizations"), 
+	addField(Translator.localize("label.generalizations"),
             getGeneralizationScroll());
-	addField(Translator.localize("label.specializations"), 
+	addField(Translator.localize("label.specializations"),
             getSpecializationScroll());
 
 	addSeperator();
 
-	addField(Translator.localize("label.client-dependencies"), 
+	addField(Translator.localize("label.client-dependencies"),
             getClientDependencyScroll());
-	addField(Translator.localize("label.supplier-dependencies"), 
+	addField(Translator.localize("label.supplier-dependencies"),
             getSupplierDependencyScroll());
 
         addButton(new PropPanelButton2(new ActionNavigateNamespace()));
-	addButton(new PropPanelButton2(getActionNewReception(), 
+	addButton(new PropPanelButton2(getActionNewReception(),
                 lookupIcon("Reception")));
-	addButton(new PropPanelButton2(new ActionNewStereotype(), 
+	addButton(new PropPanelButton2(new ActionNewStereotype(),
 	        lookupIcon("Stereotype")));
-	addButton(new PropPanelButton2(new ActionRemoveFromModel(), 
+	addButton(new PropPanelButton2(new ActionRemoveFromModel(),
                 lookupIcon("Delete")));
 
 	//    addCaption(Translator.localize("label.name"),1,0,0);
@@ -111,7 +111,7 @@ public class PropPanelComponent extends PropPanelClassifier {
 	//    addCaption("Specializations:",1,1,1);
 	//    addField(getSpecializationScroll(),1,1,1);
 	//
-	//    new PropPanelButton(this,buttonPanel,_navUpIcon, 
+	//    new PropPanelButton(this,buttonPanel,_navUpIcon,
         //        Translator.localize("button.go-up"),
         //        "navigateUp",null);
 	//    new PropPanelButton(this,buttonPanel,_deleteIcon,localize(

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -46,12 +46,12 @@ import org.xml.sax.SAXException;
  * @author Bob Tarling
  */
 public class TodoListMemberFilePersister extends MemberFilePersister {
-    
+
     private static final Logger LOG =
         Logger.getLogger(ProjectMemberTodoList.class);
 
     private static final String TO_DO_TEE = "/org/argouml/persistence/todo.tee";
-    
+
     /**
      * Load the todo member.
      * @see org.argouml.persistence.MemberFilePersister#load(org.argouml.kernel.Project,
@@ -69,19 +69,19 @@ public class TodoListMemberFilePersister extends MemberFilePersister {
             throw new OpenException(e);
         }
     }
-    
+
     /**
      * @see org.argouml.persistence.MemberFilePersister#getMainTag()
      */
     public final String getMainTag() {
         return "todo";
     }
-    
+
     /**
-     * 
+     *
      * Throws InvalidArgumentException if no writer specified.
      *
-     * @see org.argouml.kernel.ProjectMember#save(org.argouml.kernel.ProjectMember, java.io.Writer, 
+     * @see org.argouml.kernel.ProjectMember#save(org.argouml.kernel.ProjectMember, java.io.Writer,
      * java.lang.Integer)
      */
     public void save(ProjectMember member, Writer writer, Integer indent) throws SaveException {
@@ -91,7 +91,7 @@ public class TodoListMemberFilePersister extends MemberFilePersister {
             throw new IllegalArgumentException(
                     "No writer specified to save todo list");
         }
-        
+
         OCLExpander expander;
         try {
             expander = new OCLExpander(TemplateReader.getInstance()
@@ -99,7 +99,7 @@ public class TodoListMemberFilePersister extends MemberFilePersister {
         } catch (FileNotFoundException e) {
             throw new SaveException(e);
         }
-        
+
         if (indent == null) {
             try {
                 expander.expand(writer, member);
@@ -123,7 +123,7 @@ public class TodoListMemberFilePersister extends MemberFilePersister {
                 throw new SaveException(e);
             }
         }
-        
+
         LOG.debug("Done saving TO DO LIST!!!");
     }
 }

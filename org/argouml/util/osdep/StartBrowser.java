@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2002 The Regents of the University of California. All
+// Copyright (c) 2002-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -45,8 +45,7 @@ public class StartBrowser {
      *
      * @param url the given URL
      */
-    public static void openUrl(String url)
-    {
+    public static void openUrl(String url) {
 	try {
 	    if (OsUtil.isWin32()) {
 		Runtime.getRuntime()
@@ -57,18 +56,18 @@ public class StartBrowser {
 		    ClassLoader cl = ClassLoader.getSystemClassLoader();
 		    Class c = cl.loadClass("com.apple.mrj.MRJFileUtils");
 		    Class[] argtypes = {
-			String.class 
+			String.class,
 		    };
 		    Method m = c.getMethod("openURL", argtypes);
 		    Object[] args = {
-			url 
+			url,
 		    };
 		    m.invoke(c.newInstance(), args);
 		} catch (Exception cnfe) {
 		    LOG.error(cnfe);
 		    LOG.info("Trying a default browser (netscape)");
 		    String[] commline = {
-			"netscape", url 
+			"netscape", url,
 		    };
 		    Runtime.getRuntime().exec(commline);
 		}
@@ -88,7 +87,7 @@ public class StartBrowser {
 	catch (IOException ioe) {
 	    // Didn't work.
             LOG.error(ioe);
-	}	    
+	}
 
 	LOG.error("Could not open url: " + url);
     }

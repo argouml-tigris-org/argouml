@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -35,12 +35,12 @@ import org.xml.sax.SAXException;
 /**
  * A wrapper around the genuine XmiReader that provides public
  * access with no knowledge of actual UML implementation.
- * 
+ *
  * @author Bob Tarling
  */
 public class XmiReader {
     private static final Logger LOG = Logger.getLogger(XmiReader.class);
-    
+
     private NsumlXmiReader nsumlXmiReader;
 
     /**
@@ -54,16 +54,15 @@ public class XmiReader {
     }
 
     /**
-     * Parses a given inputsource to a model. Does not override the novosoft 
+     * Parses a given inputsource to a model. Does not override the novosoft
      * parse method since that does not have the right signature.
      * @param pIs the input source for parsing
      * @return MModel the UML model
      * @throws SAXException if there is an XML problem
      * @throws IOException if there is a file I/O problem
      */
-    public Object parseToModel(InputSource pIs) 
-        throws SAXException, IOException
-    {        
+    public Object parseToModel(InputSource pIs)
+        throws SAXException, IOException {
 	return nsumlXmiReader.parseToModel(pIs);
     }
 
@@ -73,7 +72,7 @@ public class XmiReader {
     public boolean getErrors() {
         return nsumlXmiReader.getErrors();
     }
-    
+
     /**
      * @return the map
      */

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -51,16 +51,16 @@ import org.tigris.gef.base.ModeCreatePolyEdge;
  * namespace.<p>
  */
 public class UMLUseCaseDiagram extends UMLDiagram {
-    
+
     private static final Logger LOG = Logger.getLogger(UMLUseCaseDiagram.class);
-    
+
     // Actions specific to the use case diagram toolbar
 
     /**
      * Tool to add an actor node.<p>
      */
     private Action actionActor;
-    
+
     /**
      * Tool to add a use case node.<p>
      */
@@ -100,7 +100,7 @@ public class UMLUseCaseDiagram extends UMLDiagram {
      * polyedge.<p>
      */
     private Action actionDependency;
-    
+
     private Action actionExtensionPoint;
 
     // constructors
@@ -145,7 +145,7 @@ public class UMLUseCaseDiagram extends UMLDiagram {
     }
 
     /**
-     * Constructor 
+     * Constructor
      * @param name the name for the diagram
      * @param namespace the namespace for the diagram
      */
@@ -213,7 +213,7 @@ public class UMLUseCaseDiagram extends UMLDiagram {
      * @see org.argouml.uml.diagram.ui.UMLDiagram#getUmlActions()
      */
     protected Object[] getUmlActions() {
-        Object actions[] =
+        Object[] actions =
         {
             getActionActor(),
             getActionUseCase(),
@@ -224,13 +224,13 @@ public class UMLUseCaseDiagram extends UMLDiagram {
 	    getActionExtend(),
 	    getActionInclude(),
 	    null,
-	    getActionExtensionPoint()
+	    getActionExtensionPoint(),
 	};
         return actions;
     }
 
     private Object[] getAssociationActions() {
-        Object actions[][] = {
+        Object[][] actions = {
 	    {getActionAssociation(), getActionUniAssociation() },
 	    {getActionAggregation(), getActionUniAggregation() },
 	    {getActionComposition(), getActionUniComposition() },
@@ -250,14 +250,14 @@ public class UMLUseCaseDiagram extends UMLDiagram {
         }
         return name;
     }
-    
+
     /**
      * @see org.argouml.uml.diagram.ui.UMLDiagram#getLabelName()
      */
     public String getLabelName() {
         return Translator.localize("label.usecase-diagram");
     }
-    
+
     /**
      * @return Returns the actionActor.
      */
@@ -412,7 +412,7 @@ public class UMLUseCaseDiagram extends UMLDiagram {
         }
         return actionUseCase;
     }
-    
+
     /**
      * @return the action to create an extension point
      */

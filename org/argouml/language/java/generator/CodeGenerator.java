@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -37,7 +37,7 @@ import org.argouml.model.ModelFacade;
  * This helper class generates CodePiece based code.
  * It needs some work. See issue
  * http://argouml.tigris.org/issues/show_bug.cgi?id=435
- * 
+ *
  * JavaRE - Code generation and reverse engineering for UML and Java.
  *
  * @author Marcus Andersson andersson@users.sourceforge.net
@@ -64,7 +64,7 @@ class CodeGenerator {
 
 	// Features
 	Collection features = ModelFacade.getFeatures(mClass);
-	for (Iterator i = features.iterator(); i.hasNext(); ) {
+	for (Iterator i = features.iterator(); i.hasNext();) {
 	    Object feature = /*(MFeature)*/ i.next();
 	    if (ModelFacade.isAOperation(feature)) {
 		generateOperation(/*(MOperation)*/ feature, mClass,
@@ -78,7 +78,7 @@ class CodeGenerator {
 
 	// Inner classes
 	Collection elements = ModelFacade.getOwnedElements(mClass);
-	for (Iterator i = elements.iterator(); i.hasNext(); ) {
+	for (Iterator i = elements.iterator(); i.hasNext();) {
 	    Object element = /*(MModelElement)*/ i.next();
 	    if (ModelFacade.isAClass(element)) {
 		generateClass(element, reader, writer);
@@ -111,7 +111,7 @@ class CodeGenerator {
 
 	// Features
 	Collection features = ModelFacade.getFeatures(mInterface);
-	for (Iterator i = features.iterator(); i.hasNext(); ) {
+	for (Iterator i = features.iterator(); i.hasNext();) {
 	    Object feature = /*(MFeature)*/ i.next();
 	    if (ModelFacade.isAOperation(feature)) {
 		generateOperation(/*(MOperation)*/ feature,
@@ -125,7 +125,7 @@ class CodeGenerator {
 
 	// Inner classes
 	Collection elements = ModelFacade.getOwnedElements(mInterface);
-	for (Iterator i = elements.iterator(); i.hasNext(); ) {
+	for (Iterator i = elements.iterator(); i.hasNext();) {
 	    Object element = /*(MModelElement)*/ i.next();
 	    if (ModelFacade.isAClass(element)) {
 		generateClass(element, reader, writer);

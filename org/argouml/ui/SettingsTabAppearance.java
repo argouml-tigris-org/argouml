@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2001 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -51,17 +51,16 @@ import org.tigris.swidgets.LabelledLayout;
  */
 public class SettingsTabAppearance
     extends SettingsTabHelper
-    implements SettingsTabPanel
-{
+    implements SettingsTabPanel {
 
     private JComboBox	lookAndFeel;
     private JComboBox	metalTheme;
     private JLabel      metalLabel;
     private JCheckBox   smoothEdges;
-    
+
     /**
      * The constructor.
-     * 
+     *
      */
     public SettingsTabAppearance() {
         super();
@@ -77,8 +76,7 @@ public class SettingsTabAppearance
 	    new JComboBox(LookAndFeelMgr.getInstance()
 			  .getAvailableLookAndFeelNames());
         lookAndFeel.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e)
-            {
+            public void actionPerformed(ActionEvent e) {
                 setMetalThemeState();
             }
         });
@@ -93,14 +91,14 @@ public class SettingsTabAppearance
         metalLabel.setLabelFor(metalTheme);
         top.add(metalLabel);
         top.add(metalTheme);
-        
+
         smoothEdges = createCheckBox("label.smooth-edges");
         JLabel emptyLabel = new JLabel();
         emptyLabel.setLabelFor(smoothEdges);
-        
+
         top.add(emptyLabel);
         top.add(smoothEdges);
-        
+
         top.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         add(top, BorderLayout.CENTER);
 
@@ -112,13 +110,12 @@ public class SettingsTabAppearance
 
         setMetalThemeState();
     }
-    
+
     /**
      * Enables or disables the metal theme controls depending on whether
      * or not themes are supported by the selected look and feel.
     **/
-    private void setMetalThemeState()
-    {
+    private void setMetalThemeState() {
         String lafName = (String) lookAndFeel.getSelectedItem();
         boolean enabled =
 	    LookAndFeelMgr.getInstance().isThemeCompatibleLookAndFeel(
@@ -136,8 +133,8 @@ public class SettingsTabAppearance
     	String theme = LookAndFeelMgr.getInstance().getCurrentThemeName();
 
         lookAndFeel.setSelectedItem(laf);
-        metalTheme.setSelectedItem(theme);		
-        
+        metalTheme.setSelectedItem(theme);
+
         smoothEdges.setSelected(Configuration.getBoolean(
             Argo.KEY_SMOOTH_EDGES, false));
     }
@@ -149,12 +146,12 @@ public class SettingsTabAppearance
         LookAndFeelMgr.getInstance().setCurrentLookAndFeel(
             LookAndFeelMgr.getInstance().getLookAndFeelFromName(
                 (String) lookAndFeel.getSelectedItem()));
-    
+
         LookAndFeelMgr.getInstance().setCurrentTheme(
             LookAndFeelMgr.getInstance().getThemeFromName(
                 (String) metalTheme.getSelectedItem()));
-    
-        Configuration.setBoolean(Argo.KEY_SMOOTH_EDGES, 
+
+        Configuration.setBoolean(Argo.KEY_SMOOTH_EDGES,
             smoothEdges.isSelected());
     }
 
@@ -162,32 +159,32 @@ public class SettingsTabAppearance
      * @see org.argouml.application.api.SettingsTabPanel#handleSettingsTabCancel()
      */
     public void handleSettingsTabCancel() { }
-    
+
     /**
      * @see org.argouml.application.api.ArgoModule#getModuleName()
      */
     public String getModuleName() { return "SettingsTabAppearance"; }
-    
+
     /**
      * @see org.argouml.application.api.ArgoModule#getModuleDescription()
      */
     public String getModuleDescription() { return "Appearance Settings"; }
-    
+
     /**
      * @see org.argouml.application.api.ArgoModule#getModuleAuthor()
      */
     public String getModuleAuthor() { return "ArgoUML Core"; }
-    
+
     /**
      * @see org.argouml.application.api.ArgoModule#getModuleVersion()
      */
     public String getModuleVersion() { return ArgoVersion.getVersion(); }
-    
+
     /**
      * @see org.argouml.application.api.ArgoModule#getModuleKey()
      */
     public String getModuleKey() { return "module.settings.appearance"; }
-    
+
     /**
      * @see org.argouml.application.api.SettingsTabPanel#getTabKey()
      */

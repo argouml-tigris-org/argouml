@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -44,32 +44,32 @@ public class PropPanelLink extends PropPanelModelElement {
 
     /**
      * The constructor.
-     * 
+     *
      */
     public PropPanelLink() {
-        super("Link", lookupIcon("Link"), 
+        super("Link", lookupIcon("Link"),
                 ConfigLoader.getTabPropsOrientation());
 
-        addField(Translator.localize("label.name"), 
+        addField(Translator.localize("label.name"),
                 getNameTextField());
-        addField(Translator.localize("label.stereotype"), 
+        addField(Translator.localize("label.stereotype"),
                 getStereotypeBox());
-        addField(Translator.localize("label.namespace"), 
+        addField(Translator.localize("label.namespace"),
                 getNamespaceComboBox());
         addSeperator();
-        
+
         JList connectionList =
             new UMLLinkedList(new UMLLinkConnectionListModel());
         JScrollPane connectionScroll = new JScrollPane(connectionList);
-        addField(Translator.localize("label.connections"), 
+        addField(Translator.localize("label.connections"),
                 connectionScroll);
 
         addButton(new PropPanelButton2(new ActionNavigateNamespace()));
-        addButton(new PropPanelButton2(new ActionNewStereotype(), 
+        addButton(new PropPanelButton2(new ActionNewStereotype(),
                 lookupIcon("Stereotype")));
-        addButton(new PropPanelButton2(new ActionRemoveFromModel(), 
+        addButton(new PropPanelButton2(new ActionRemoveFromModel(),
                 lookupIcon("Delete")));;
-	
+
     }
 
 } /* end class PropPanelLink */

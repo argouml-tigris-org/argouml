@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2002 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -41,7 +41,7 @@ import org.tigris.gef.presentation.FigText;
  * this. This resulted in a number of issues (issue 1430 for example). Therefore
  * introduced a FigState and made FigCompositeState and FigSimpleState
  * subclasses of this state.
- * 
+ *
  * @author jaap.branderhorst@xs4all.nl
  * @since Dec 30, 2002
  */
@@ -71,7 +71,7 @@ public abstract class FigState extends FigStateVertex {
 
     /**
      * Constructor for FigState, used when an UML elm already exists.
-     * 
+     *
      * @param gm ignored
      * @param node the UML element
      */

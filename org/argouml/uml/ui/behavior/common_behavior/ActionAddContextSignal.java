@@ -34,7 +34,7 @@ import org.argouml.uml.ui.AbstractActionAddModelElement;
 
 /**
  * This action adds a context to a signal.
- * 
+ *
  * @author mvw@tigris.org
  */
 public class ActionAddContextSignal extends AbstractActionAddModelElement {

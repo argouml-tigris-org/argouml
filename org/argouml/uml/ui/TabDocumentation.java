@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2003 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -36,34 +36,34 @@ import org.tigris.gef.presentation.Fig;
 
 /**
  * This the tab in the details pane for documentation.<p>
- * 
+ *
  * This prop panel now uses the new (0.13.*) event implementation.<p>
- * 
- * All data in this tab is stored as Tagged Values, 
+ *
+ * All data in this tab is stored as Tagged Values,
  * and saved and reloaded correctly.<p>
- * 
- * Selecting the menu Edit>Settings... and setting the user name 
+ *
+ * Selecting the menu Edit>Settings... and setting the user name
  * does not affect the author field
  * in the documentation tab. <p>
- * 
+ *
  * Enabling output from the documentation fields when generating code as
  * embedded in javadocs and for html/diagram creation is considered important
  * by users.<p>
- * 
+ *
  * When importing sources, already saved javadoc statements are not
  * automatically added to the documenation Jtext window. When Adding notes to
  * classes the notes are not included in the documentation text window.<p>
- * 
+ *
  * Since: field is not validated for real date. Change to DateField?<p>
- * 
- * Note that all fields in the TabDocumentation are added automatically 
+ *
+ * Note that all fields in the TabDocumentation are added automatically
  * to the tagged value tab view.<p>
- * 
- * Refactored by: raphael-langerhorst@gmx.at; 5th April 03<p> 
+ *
+ * Refactored by: raphael-langerhorst@gmx.at; 5th April 03<p>
  * Changes: <ul>
- * <li>uses LabelledLayout instead of GridBagLayout 
+ * <li>uses LabelledLayout instead of GridBagLayout
  * <li>uses the new event pump introduced late 2002 by Jaap</ul><p>
- * 
+ *
  * UMLModelElementTaggedValueDocument is used to access the tagged values of an
  * MModelElement.
  */
@@ -119,7 +119,7 @@ public class TabDocumentation extends PropPanel {
      * Checks if the tab should be enabled. Returns true if the target
      * returned by getTarget is a modelelement or if that target shows up as Fig
      * on the active diagram and has a modelelement as owner.
-     * 
+     *
      * @return true if this tab should be enabled, otherwise false.
      */
     public boolean shouldBeEnabled() {

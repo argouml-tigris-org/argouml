@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2004 The Regents of the University of California. All
+// Copyright (c) 2004-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -36,13 +36,13 @@ abstract class ToDoItemAction extends UMLAction {
     public ToDoItemAction(String name, boolean hasIcon) {
 	super(name, hasIcon);
     }
-    
+
     /**
      * @return returns the rememberedTarget
      */
     protected Object getRememberedTarget() {
         return rememberedTarget;
-    }    
+    }
 
     /**
      * @see org.argouml.uml.ui.UMLAction#updateEnabled(java.lang.Object)

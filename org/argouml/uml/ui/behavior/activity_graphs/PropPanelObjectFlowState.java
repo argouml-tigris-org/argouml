@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2003-2004 The Regents of the University of California. All
+// Copyright (c) 2003-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -34,25 +34,25 @@ import org.argouml.uml.ui.behavior.state_machines.PropPanelState;
 import org.argouml.util.ConfigLoader;
 
 /**
- * 
+ *
  * @author mkl
- *  
+ *
  */
 public class PropPanelObjectFlowState extends PropPanelState {
 
     private JComboBox classifierComboBox;
-    
+
     private UMLObjectFlowStateClassifierComboBoxModel classifierComboBoxModel =
         new UMLObjectFlowStateClassifierComboBoxModel();
-    
+
     /**
      * Constructor
      */
     public PropPanelObjectFlowState() {
         this("ObjectFlowState", lookupIcon("ObjectFlowState"), ConfigLoader
-                .getTabPropsOrientation());    
+                .getTabPropsOrientation());
     }
-    
+
     /**
      * Constructor
      *
@@ -74,9 +74,9 @@ public class PropPanelObjectFlowState extends PropPanelState {
         // field for Classifier(InState)
         addField(Translator.localize("label.type"),
                 getClassifierComboBox());
-        
+
         //TODO: Add field for State
-        
+
         addSeperator();
 
         addField(Translator.localize("label.incoming"),

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -22,12 +22,7 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-//File: FigSubactivityState.java
-//Classes: FigSubactivityState
-//Original Author: MVW
-
 package org.argouml.uml.diagram.activity.ui;
-
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -47,21 +42,22 @@ import org.tigris.gef.presentation.FigRRect;
 import org.tigris.gef.presentation.FigText;
 
 
-/** Class to display graphics for a UML SubactivityState in a diagram. 
-* 
-*/
+/** Class to display graphics for a UML SubactivityState in a diagram.
+ *
+ * @author MVW
+ */
 public class FigSubactivityState extends FigStateVertex {
     ////////////////////////////////////////////////////////////////
     // constants
 
     private static final int MARGIN = 2;
     private static final int PADDING = 8;
-    
+
     private static final int X = 10;
     private static final int Y = 10;
     private static final int W = 90;
     private static final int H = 25;
-    
+
     private static final int SX = 3;
     private static final int SY = 3;
     private static final int SW = 9;
@@ -72,7 +68,7 @@ public class FigSubactivityState extends FigStateVertex {
 
     private FigRRect cover;
     private FigGroup icon;
-    
+
     private FigRRect s1;
     private FigRRect s2;
     private FigLine s3;
@@ -84,16 +80,16 @@ public class FigSubactivityState extends FigStateVertex {
      * Main Constructor (called from file loading)
      */
     public FigSubactivityState() {
-        FigRRect bigPort = new FigRRect(X, Y, W, H, 
+        FigRRect bigPort = new FigRRect(X, Y, W, H,
                 Color.cyan, Color.cyan);
         bigPort.setCornerRadius(bigPort.getHalfHeight());
         cover = new FigRRect(X, Y, W, H, Color.black, Color.white);
         cover.setCornerRadius(getHalfHeight());
 
         bigPort.setLineWidth(0);
-        
+
         //icon = makeSubStatesIcon(X + W, Y); // the substate icon in the corner
-        
+
         getNameFig().setLineWidth(0);
         getNameFig().setBounds(10 + PADDING, 10, 90 - PADDING * 2, 25);
         getNameFig().setFilled(false);
@@ -104,7 +100,7 @@ public class FigSubactivityState extends FigStateVertex {
         addFig(cover);
         addFig(getNameFig());
         //addFig(icon);
-        
+
         makeSubStatesIcon(X + W, Y);
 
         setBigPort(bigPort);
@@ -113,13 +109,13 @@ public class FigSubactivityState extends FigStateVertex {
     }
 
     /**
-     * @param x the x-coordinate of the right corner 
+     * @param x the x-coordinate of the right corner
      * @param y the y coordinate of the bottom corner
      */
     private void makeSubStatesIcon(int x, int y) {
-        s1 = new FigRRect(x - 22, y + 3, 8, 6, 
+        s1 = new FigRRect(x - 22, y + 3, 8, 6,
                 Color.black, Color.white);
-        s2 = new FigRRect(x - 11, y + 9, 8, 6, 
+        s2 = new FigRRect(x - 11, y + 9, 8, 6,
                 Color.black, Color.white);
         s1.setFilled(true);
         s2.setFilled(true);
@@ -128,14 +124,14 @@ public class FigSubactivityState extends FigStateVertex {
         s1.setCornerRadius(SH);
         s2.setCornerRadius(SH);
         s3 = new FigLine(x - 18, y + 6, x - 7, y + 12, Color.black);
-        
+
         addFig(s3); // add them back to front
         addFig(s1);
         addFig(s2);
     }
-    
+
     /**
-     * Constructor that hooks the Fig into 
+     * Constructor that hooks the Fig into
      * an existing UML model element
      * @param gm ignored!
      * @param node owner, i.e. the UML element
@@ -144,14 +140,14 @@ public class FigSubactivityState extends FigStateVertex {
         this();
         setOwner(node);
     }
-    
+
     /**
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#placeString()
      */
     public String placeString() {
         return "new SubactivityState";
     }
-    
+
     /**
      * @see java.lang.Object#clone()
      */
@@ -190,13 +186,13 @@ public class FigSubactivityState extends FigStateVertex {
         cover.setBounds(x, y, w, h);
         ((FigRRect) getBigPort()).setCornerRadius(h);
         cover.setCornerRadius(h);
-        
+
         s1.setBounds(x + w - 2 * (SX + SW), y + h - 1 * (SY + SH), SW, SH);
-        s2.setBounds(x + w - 1 * (SX + SW), y + h - 2 * (SY + SH), SW, SH); 
-        s3.setShape(x + w - (SX * 2 + SW + SW / 2), y + h - (SY + SH / 2), 
+        s2.setBounds(x + w - 1 * (SX + SW), y + h - 2 * (SY + SH), SW, SH);
+        s3.setShape(x + w - (SX * 2 + SW + SW / 2), y + h - (SY + SH / 2),
                 x + w - (SX + SW / 2), y + h - (SY * 2 + SH + SH / 2));
 
-        calcBounds(); 
+        calcBounds();
         updateEdges();
         firePropChange("bounds", oldBounds, getBounds());
     }
@@ -260,16 +256,16 @@ public class FigSubactivityState extends FigStateVertex {
     /**
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#modelChanged(java.beans.PropertyChangeEvent)
      */
-    protected void modelChanged(PropertyChangeEvent mee) {        
+    protected void modelChanged(PropertyChangeEvent mee) {
         super.modelChanged(mee);
-        if (mee.getSource() == getOwner() 
+        if (mee.getSource() == getOwner()
                 && mee.getPropertyName().equals("entry")) {
             if (mee.getNewValue() != null) {
-                Model.getPump().addModelEventListener(this, 
+                Model.getPump().addModelEventListener(this,
                                             mee.getNewValue(), "script");
             } else
                 if (mee.getOldValue() != null) {
-                    Model.getPump().removeModelEventListener(this, 
+                    Model.getPump().removeModelEventListener(this,
                                             mee.getOldValue(), "script");
                 }
             updateNameText();
@@ -278,8 +274,8 @@ public class FigSubactivityState extends FigStateVertex {
             if (ModelFacade.getEntry(getOwner()) == mee.getSource()) {
                 updateNameText();
                 damage();
-            } 
-        
+            }
+
     }
 
     /**
@@ -297,10 +293,10 @@ public class FigSubactivityState extends FigStateVertex {
      */
     protected void textEdited(FigText ft) throws PropertyVetoException {
         /*if (ft == getNameFig() && this.getOwner() != null) {
-            //TODO: Write this function in ParserDisplay. Uncomment then. 
-            ParserDisplay.SINGLETON.parseSubactionState(ft.getText(), 
+            //TODO: Write this function in ParserDisplay. Uncomment then.
+            ParserDisplay.SINGLETON.parseSubactionState(ft.getText(),
                     this.getOwner());
         } else*/
         super.textEdited(ft);
-    }    
+    }
 } /* end class FigSubactivityState */

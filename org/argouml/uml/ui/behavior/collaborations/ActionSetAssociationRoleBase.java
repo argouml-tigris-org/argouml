@@ -42,13 +42,13 @@ public class ActionSetAssociationRoleBase extends UMLAction {
 
     private static final ActionSetAssociationRoleBase SINGLETON =
 	new ActionSetAssociationRoleBase();
-    
+
     /**
      * Constructor for ActionSetAssociationRoleBase.
      */
     protected ActionSetAssociationRoleBase() {
         super(Translator.localize("Set"), false, NO_ICON);
-    }   
+    }
 
     /**
      * @see
@@ -60,7 +60,7 @@ public class ActionSetAssociationRoleBase extends UMLAction {
         if (e.getSource() instanceof UMLComboBox2) {
             UMLComboBox2 source = (UMLComboBox2) e.getSource();
             selected = source.getSelectedItem();
-            if (ModelFacade.isAAssociation(selected) 
+            if (ModelFacade.isAAssociation(selected)
                     && ModelFacade.isAAssociationRole(source.getTarget())) {
                 Model.getCollaborationsHelper()
                     .setBase(source.getTarget(), selected);

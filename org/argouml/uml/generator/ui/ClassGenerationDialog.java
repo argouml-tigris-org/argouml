@@ -89,7 +89,7 @@ public class ClassGenerationDialog
     private JTable classTable;
     private JComboBox outputDirectoryComboBox;
 
-    /** 
+    /**
      * Used to select the next language column in case
      * the "Select All" button is pressed.
      */

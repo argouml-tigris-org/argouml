@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2003-2004 The Regents of the University of California. All
+// Copyright (c) 2003-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -30,7 +30,7 @@ import java.io.File;
 import org.apache.log4j.Logger;
 
 /**
- * Reopens a project with respect of the calling event handler - should be 
+ * Reopens a project with respect of the calling event handler - should be
  * used with menu item.
  *
  * @author  Frank Jelinek
@@ -41,7 +41,7 @@ public class ActionReopenProject extends ActionFileOperations {
 	Logger.getLogger(ActionReopenProject.class);
 
     private String filename;
-    
+
     ////////////////////////////////////////////////////////////////
     // constructors
 
@@ -66,8 +66,8 @@ public class ActionReopenProject extends ActionFileOperations {
     public String getFilename() {
         return filename;
     }
-    
-    /** 
+
+    /**
      * Performs the save and reload of a project.
      *
      * @param e e should old the event and the eventsource. Event
@@ -76,14 +76,14 @@ public class ActionReopenProject extends ActionFileOperations {
      */
     public void actionPerformed(ActionEvent e) {
         if (!askConfirmationAndSave()) return;
-        
+
         File toOpen = new File(filename);;
         try {
             // load of the new project
             // just reuse of the ActionOpen object
             loadProject(toOpen.toURL());
         }
-        catch ( java.net.MalformedURLException ex) {
+        catch (java.net.MalformedURLException ex) {
             LOG.error("got an URLException in ActionReopenProject", ex);
         }
     }

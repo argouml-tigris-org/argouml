@@ -49,15 +49,15 @@ import org.xml.sax.SAXException;
  * @author Bob Tarling
  */
 public class ModelMemberFilePersister extends MemberFilePersister {
-    
+
     /** logger */
     private static final Logger LOG =
         Logger.getLogger(ModelMemberFilePersister.class);
-    
+
     /**
      * Loads a model (XMI only) from an input source. BE ADVISED this
      * method has a side effect. It sets _UUIDREFS to the model.<p>
-     * 
+     *
      * If there is a problem with the xmi file, an error is set in the
      * getLastLoadStatus() field. This needs to be examined by the
      * calling function.<p>
@@ -67,24 +67,24 @@ public class ModelMemberFilePersister extends MemberFilePersister {
      */
     public void load(Project project, InputStream inputStream)
         throws OpenException {
-        
+
         InputSource source = new InputSource(inputStream);
         Object mmodel = null;
 
         // 2002-07-18
         // Jaap Branderhorst
-        // changed the loading of the projectfiles to solve hanging 
+        // changed the loading of the projectfiles to solve hanging
         // of argouml if a project is corrupted. Issue 913
         // Created xmireader with method getErrors to check if parsing went well
         XmiReader xmiReader = null;
         try {
             xmiReader = new XmiReader();
             source.setEncoding("UTF-8");
-            mmodel = xmiReader.parseToModel(source);        
+            mmodel = xmiReader.parseToModel(source);
         } catch (SAXException e) { // duh, this must be caught and handled
             LOG.error("SAXException caught", e);
             throw new OpenException(e);
-        } catch (ParserConfigurationException e) { 
+        } catch (ParserConfigurationException e) {
             LOG.error("ParserConfigurationException caught", e);
             throw new OpenException(e);
         } catch (IOException e) {
@@ -113,14 +113,14 @@ public class ModelMemberFilePersister extends MemberFilePersister {
 
         project.setUUIDRefs(new HashMap(xmiReader.getXMIUUIDToObjectMap()));
     }
-    
+
     /**
      * @see org.argouml.persistence.MemberFilePersister#getTag()
      */
     public String getMainTag() {
         return "XMI";
     }
-    
+
     /**
      * Save the project model to XMI.
      * @see org.argouml.kernel.ProjectMember#save(org.argouml.kernel.ProjectMember, java.io.Writer, Integer)
@@ -130,9 +130,9 @@ public class ModelMemberFilePersister extends MemberFilePersister {
             throw new IllegalArgumentException("No Writer specified!");
         }
 
-        ProjectMemberModel pmm = (ProjectMemberModel)member;
+        ProjectMemberModel pmm = (ProjectMemberModel) member;
         Object model = pmm.getModel();
-        
+
         File tempFile = null;
         Writer writer = null;
         if (indent != null) {

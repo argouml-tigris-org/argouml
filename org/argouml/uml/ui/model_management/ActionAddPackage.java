@@ -37,7 +37,7 @@ import org.argouml.uml.ui.AbstractActionNewModelElement;
 
 /**
  * Action to create a new Package inside a package.
- * 
+ *
  * @author Michiel
  */
 class ActionAddPackage extends AbstractActionNewModelElement {

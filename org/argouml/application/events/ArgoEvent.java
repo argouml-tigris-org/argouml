@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2001 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -25,11 +25,12 @@
 package org.argouml.application.events;
 import java.util.EventObject;
 
-/** The root class from which all event state objects within Argo are derived. 
+/**
+ * The root class from which all event state objects within Argo are derived.
  *
- *  All ArgoEvents are constructed with a reference to the object,
- *  the "source", that is logically deemed to be the object
- *  upon which the Event in question initially occurred upon.
+ * All ArgoEvents are constructed with a reference to the object,
+ * the "source", that is logically deemed to be the object
+ * upon which the Event in question initially occurred upon.
  */
 public abstract class ArgoEvent extends EventObject
     implements ArgoEventTypes {
@@ -38,6 +39,7 @@ public abstract class ArgoEvent extends EventObject
 
     /**
      * The constructor.
+     *
      * @param eT the event type
      * @param src the sourc, that triggered the event
      */
@@ -51,13 +53,17 @@ public abstract class ArgoEvent extends EventObject
      */
     public int getEventType() { return eventType; }
 
-    /** Indicates the start of the range for any events.
-     * @return the first id reserved for events. 
+    /**
+     * Indicates the start of the range for any events.
+     *
+     * @return the first id reserved for events.
      */
     public int getEventStartRange() { return ANY_EVENT; }
 
-    /** Indicates the end of the range for notation events.
-     * @return the last id reserved for events. 
+    /**
+     * Indicates the end of the range for notation events.
+     *
+     * @return the last id reserved for events.
      */
     public int getEventEndRange() {
         return (getEventStartRange() == 0
@@ -65,12 +71,14 @@ public abstract class ArgoEvent extends EventObject
 	       : getEventStartRange() + 99);
     }
 
-    /** Provides formatted description of the event
+    /**
+     * Provides formatted description of the event.
+     *
      * @return the formatted information.
      */
     public String toString() {
-        return "{" + getClass().getName() + ":" + eventType 
-            + "(" + getEventStartRange() + "-" + getEventEndRange() + ")" 
+        return "{" + getClass().getName() + ":" + eventType
+            + "(" + getEventStartRange() + "-" + getEventEndRange() + ")"
             + "/" + super.toString() + "}";
     }
 

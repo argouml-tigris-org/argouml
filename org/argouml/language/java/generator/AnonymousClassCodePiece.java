@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -31,12 +31,11 @@ import java.util.Stack;
 
 /**
  * This code piece represents an anonymous class.
- * 
+ *
  * JavaRE - Code generation and reverse engineering for UML and Java
  * @author Marcus Andersson andersson@users.sourceforge.net
  */
-public class AnonymousClassCodePiece extends NamedCodePiece
-{
+public class AnonymousClassCodePiece extends NamedCodePiece {
     /** The code piece this class represents. */
     private CodePiece classDef;
 

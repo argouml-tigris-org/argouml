@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -22,12 +22,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-
-
-// File: CrDupRoleNames.java
-// Classes: CrDupRoleNames
-// Original Author: jrobbins@ics.uci.edu
-
 package org.argouml.uml.cognitive.critics;
 
 import java.util.Iterator;
@@ -39,18 +33,19 @@ import org.argouml.model.ModelFacade;
 // Use Model through Facade
 
 /**
- * <p> A critic to check that the ends of an association all have distinct
- *   names.</p>
+ * A critic to check that the ends of an association all have distinct
+ * names.<p>
  *
- * <p>This is the first well-formedness rule for associations in the UML 1.3
- *   standard (see section 2.5.3 of the standard).</p>
+ * This is the first well-formedness rule for associations in the UML 1.3
+ * standard (see section 2.5.3 of the standard).<p>
  *
  * @see <a href=
  * "http://argouml.tigris.org/documentation/snapshots/manual/argouml.html/
  * #s2.ref.critics_dup_role_names">
  * ArgoUML User Manual: Duplicate end (role) names for &lt;association&gt;</a>
+ *
+ * @author Jason Robbins
  */
-
 public class CrDupRoleNames extends CrUML {
 
     /**
@@ -102,9 +97,9 @@ public class CrDupRoleNames extends CrUML {
      *               development of ArgoUML.
      *
      * @return       {@link #PROBLEM_FOUND PROBLEM_FOUND} if the critic is
-     *               triggered, otherwise {@link #NO_PROBLEM NO_PROBLEM}.  
+     *               triggered, otherwise {@link #NO_PROBLEM NO_PROBLEM}.
      */
-    
+
     public boolean predicate2(Object dm, Designer dsgr) {
 
         // Only work for associations

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -35,22 +35,26 @@ import org.argouml.application.api.ConfigurationKey;
  *   @author Thierry Lach
  *   @since ARGO0.9.4
  */
-public class ConfigurationKeyImpl 
-    implements ConfigurationKey
-{
+public class ConfigurationKeyImpl
+    implements ConfigurationKey {
 
-    /** The string value for the key.
+    /**
+     * The string value for the key.
      */
     private String key = null;
 
-    /** Create a single component configuration key.
+    /**
+     * Create a single component configuration key.
+     *
      * @param k1 key component.
      */
     public ConfigurationKeyImpl(String k1) {
 	key = "argo." + k1;
     }
 
-    /** Create a sub-component of an existing configuration key.
+    /**
+     * Create a sub-component of an existing configuration key.
+     *
      * @param ck configuration key
      * @param k1 additional key component.
      */
@@ -58,7 +62,9 @@ public class ConfigurationKeyImpl
 	key = ck.getKey() + "." + k1;
     }
 
-    /** Create a two-component configuration key.
+    /**
+     * Create a two-component configuration key.
+     *
      * @param k1 key component 1.
      * @param k2 key component 2.
      */
@@ -66,7 +72,9 @@ public class ConfigurationKeyImpl
 	key = "argo." + k1 + "." + k2;
     }
 
-    /** Create a three-component configuration key.
+    /**
+     * Create a three-component configuration key.
+     *
      * @param k1 key component 1.
      * @param k2 key component 2.
      * @param k3 key component 3.
@@ -75,7 +83,9 @@ public class ConfigurationKeyImpl
 	key = "argo." + k1 + "." + k2 + "." + k3;
     }
 
-    /** Create a four-component configuration key.
+    /**
+     * Create a four-component configuration key.
+     *
      * @param k1 key component 1.
      * @param k2 key component 2.
      * @param k3 key component 3.
@@ -85,32 +95,39 @@ public class ConfigurationKeyImpl
 	key = "argo." + k1 + "." + k2 + "." + k3 + "." + k4;
     }
 
-    /** Create a five-component configuration key.
+    /**
+     * Create a five-component configuration key.
+     *
      * @param k1 key component 1.
      * @param k2 key component 2.
      * @param k3 key component 3.
      * @param k4 key component 4.
      * @param k5 key component 5.
      */
-    public ConfigurationKeyImpl(String k1, String k2, 
-				String k3, String k4, String k5) 
-    {
+    public ConfigurationKeyImpl(String k1, String k2,
+				String k3, String k4, String k5) {
 	key = "argo." + k1 + "." + k2 + "." + k3 + "." + k4 + "." + k5;
     }
 
-    /** Return the actual key used to access the configuration.
+    /**
+     * Return the actual key used to access the configuration.
+     *
      * @return the key
-     */ 
+     */
     public final String getKey() {
 	return key;
     }
 
-    /** Compare the configuration key to a string.
+    /**
+     * Compare the configuration key to a string.
+     *
      * @param pce PropertyChangeEvent to check
      * @return true if the changed property is for the key.
      */
     public boolean isChangedProperty(PropertyChangeEvent pce) {
-	if (pce == null) return false;
+	if (pce == null) {
+	    return false;
+	}
 	return pce.getPropertyName().equals(key);
     }
 

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2001 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -28,7 +28,7 @@ package org.argouml.uml.diagram.layout;
  * This is a layouted edge in a diagram.
  */
 public interface LayoutedEdge extends LayoutedObject {
-    
+
     /**
      * Abstract method to layout the edge.
      */

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -52,13 +52,12 @@ import org.argouml.ui.ArgoDialog;
  * The dialog to set the user's goals.
  *
  */
-public class GoalsDialog extends ArgoDialog implements ChangeListener
-{
+public class GoalsDialog extends ArgoDialog implements ChangeListener {
     ////////////////////////////////////////////////////////////////
     // constants
     private final int width = 320;
     private final int height = 400;
-  
+
     ////////////////////////////////////////////////////////////////
     // instance variables
     private JPanel  mainPanel = new JPanel();
@@ -70,7 +69,7 @@ public class GoalsDialog extends ArgoDialog implements ChangeListener
 
     /**
      * The constructor.
-     * 
+     *
      * @param parent the parent frame
      */
     public GoalsDialog(Frame parent) {
@@ -80,7 +79,7 @@ public class GoalsDialog extends ArgoDialog implements ChangeListener
 
 	JScrollPane scroll = new JScrollPane(mainPanel);
 	scroll.setPreferredSize(new Dimension(width, height));
-        
+
 	setContent(scroll);
     }
 
@@ -100,7 +99,7 @@ public class GoalsDialog extends ArgoDialog implements ChangeListener
 	c.ipadx = 3; c.ipady = 3;
 
 
-    
+
 	//     c.gridy = 0;
 	//     c.gridx = 0;
 	//     JLabel priLabel = new JLabel("Priority:");
@@ -187,10 +186,10 @@ public class GoalsDialog extends ArgoDialog implements ChangeListener
 	    c.gridy++;
 	}
     }
-  
+
     ////////////////////////////////////////////////////////////////
     // event handlers
-  
+
     /**
      * @see javax.swing.event.ChangeListener#stateChanged(javax.swing.event.ChangeEvent)
      */
@@ -200,10 +199,13 @@ public class GoalsDialog extends ArgoDialog implements ChangeListener
 	JLabel valLab = (JLabel) slidersToDigits.get(srcSlider);
 	int pri = srcSlider.getValue();
 	d.setPriority(pri);
-	if (pri == 0) valLab.setText(Translator.localize("label.off"));
-	else valLab.setText("    " + pri);
+	if (pri == 0) {
+	    valLab.setText(Translator.localize("label.off"));
+	} else {
+	    valLab.setText("    " + pri);
+	}
     }
-  
+
 } /* end class DesignIssuesDialog */
 
 

@@ -38,19 +38,19 @@ import org.argouml.ui.targetmanager.TargetManager;
 /**
  * This is the model for the diagram name text box (JTextField)
  * shown on the property panel of a Diagram. <p>
- * 
- * It handles changes by the user in the text-entry field, 
+ *
+ * It handles changes by the user in the text-entry field,
  * by updating the name of the diagram.
- * And it handles target changes (i.e. when the user selects another diagram) 
+ * And it handles target changes (i.e. when the user selects another diagram)
  * by updating the name shown in the namefield.
- * 
+ *
  * @author Michiel
  */
 class DiagramNameDocument implements DocumentListener, TargetListener {
 
     private JTextField field;
     private boolean stopEvents = false;
-    
+
     /**
      * The constructor.
      */
@@ -58,14 +58,14 @@ class DiagramNameDocument implements DocumentListener, TargetListener {
         TargetManager.getInstance().addTargetListener(this);
         field = theField;
     }
-    
+
     /**
-     * If the currently selected object is a diagram, 
+     * If the currently selected object is a diagram,
      * then update the name-field. <p>
-     * 
-     * MVW: I added the stopEvents mechanism, because otherwise 
+     *
+     * MVW: I added the stopEvents mechanism, because otherwise
      * updating the field causes the UML model to be adapted!
-     * 
+     *
      * @param t the currently selected object
      */
     private void setTarget(Object t) {
@@ -75,26 +75,26 @@ class DiagramNameDocument implements DocumentListener, TargetListener {
             stopEvents = false;
         }
     }
-    
+
     /**
      * @see org.argouml.ui.targetmanager.TargetListener#targetAdded(org.argouml.ui.targetmanager.TargetEvent)
      */
     public void targetAdded(TargetEvent e) {
         setTarget(e.getNewTarget());
     }
-    
+
     /**
      * @see org.argouml.ui.targetmanager.TargetListener#targetRemoved(org.argouml.ui.targetmanager.TargetEvent)
      */
     public void targetRemoved(TargetEvent e) {
-        setTarget(e.getNewTarget());    
+        setTarget(e.getNewTarget());
     }
 
     /**
      * @see org.argouml.ui.targetmanager.TargetListener#targetSet(org.argouml.ui.targetmanager.TargetEvent)
      */
     public void targetSet(TargetEvent e) {
-        setTarget(e.getNewTarget());    
+        setTarget(e.getNewTarget());
     }
 
     /**
@@ -110,18 +110,18 @@ class DiagramNameDocument implements DocumentListener, TargetListener {
     public void removeUpdate(DocumentEvent e) {
         update(e);
     }
-    
+
     /**
      * @see javax.swing.event.DocumentListener#changedUpdate(javax.swing.event.DocumentEvent)
      */
     public void changedUpdate(DocumentEvent e) {
         update(e);
     }
-    
+
     /**
-     * If a new name has been typed by the user, then 
+     * If a new name has been typed by the user, then
      * let's update the name of the diagram.
-     * 
+     *
      * @param e the documentevent from the Documentlistener interface
      */
     private void update(DocumentEvent e) {
@@ -134,7 +134,7 @@ class DiagramNameDocument implements DocumentListener, TargetListener {
                     String newName = e.getDocument().getText(0, documentLength);
                     String oldName = d.getName();
                     /* Prevent triggering too many events by setName(). */
-                    if (!oldName.equals(newName)) { 
+                    if (!oldName.equals(newName)) {
                         d.setName(newName);
                     }
                 } catch (PropertyVetoException pe) {

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2004 The Regents of the University of California. All
+// Copyright (c) 2004-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -27,27 +27,27 @@ package org.argouml.model;
 import java.beans.PropertyChangeListener;
 
 /**
- * This is the interface for registering interest in events sent from 
+ * This is the interface for registering interest in events sent from
  * the model component.<p>
- * 
+ *
  * Neither the registration or unregistration, nor the events themselves
  * contain any reference to the model implementation (NSUML).  Instead they
  * use the {@link java.beans.PropertyChangeListener},
  * {@link java.beans.PropertyChangeEvent} to
  * deliver events.<p>
- * 
- * The reference to the listener is a WeakReference so you don't need to 
+ *
+ * The reference to the listener is a WeakReference so you don't need to
  * call remove<whatever>Listener, you can just forget about your listener
- * and it is eventually finalized and removed. This also means that you 
- * will have to keep a reference to your listener while it is active. 
+ * and it is eventually finalized and removed. This also means that you
+ * will have to keep a reference to your listener while it is active.
  * Since the garbage collecting mechanism is not really deterministic
  * a forgotten about listener might still receive events. Unless it can
  * handle them in a harmless way, this approach should not be used.<p>
- * 
- * The event names generated are {@link String}s and their values and 
+ *
+ * The event names generated are {@link String}s and their values and
  * meanings are not really well documented. For a full list you will have
- * to dig down in the NSUML implementation and eventtree.xml.<p> 
- * 
+ * to dig down in the NSUML implementation and eventtree.xml.<p>
+ *
  * Here are some highlights:<ul>
  * <li>"remove" - event sent when the element is removed.
  * </ul>
@@ -56,24 +56,24 @@ import java.beans.PropertyChangeListener;
  */
 public interface ModelEventPump {
     // Operations that work on elements:
-    
+
     /**
-     * Adds a listener to modelevents that are fired by some given modelelement 
+     * Adds a listener to modelevents that are fired by some given modelelement
      * and that have any of the names in eventNames.<p>
-     * 
+     *
      * @param listener The listener to add
      * @param modelelement The modelelement the listener should be added too
-     * @param eventNames The array of eventnames the listener should listen 
+     * @param eventNames The array of eventnames the listener should listen
      * to.
      */
     public void addModelEventListener(PropertyChangeListener listener,
 				      Object modelelement,
 				      String[] eventNames);
-    
+
     /**
-     * Adds a listener to modelevents that are fired by some given modelelement 
+     * Adds a listener to modelevents that are fired by some given modelelement
      * and that have the name in eventName.<p>
-     * 
+     *
      * @param listener The listener to add
      * @param modelelement The modelelement the listener should be added too
      * @param eventName The eventname the listener should listen to.
@@ -81,16 +81,16 @@ public interface ModelEventPump {
     public void addModelEventListener(PropertyChangeListener listener,
 				      Object modelelement,
 				      String eventName);
-    
+
     /**
      * Adds a listener to all events fired by some modelelement.
      *
      * @param listener is the listener to add
      * @param modelelement is the model element
      */
-    public void addModelEventListener(PropertyChangeListener listener, 
+    public void addModelEventListener(PropertyChangeListener listener,
             			      Object modelelement);
-    
+
     /**
      * Removes a listener that listens to modelevents with name
      * eventNames that are fired by the given modelelement.<p>
@@ -127,9 +127,9 @@ public interface ModelEventPump {
      */
     public void removeModelEventListener(PropertyChangeListener listener,
 					 Object modelelement);
-    
+
     // Operations that work on classes of objects:
-    
+
     /**
      * Adds a listener that listens to all events that are named
      * eventNames and that occur to instances of the given
@@ -161,13 +161,13 @@ public interface ModelEventPump {
     public void addClassModelEventListener(PropertyChangeListener listener,
 					   Object modelClass,
 					   String eventName);
-    
+
     /**
      * Removes a listener that listens to all modelevents fired by instances of
      * modelClass and that have the original name eventNames.
-     * 
+     *
      * @param listener The listener to remove
-     * @param modelClass The class the listener does not want to listen to 
+     * @param modelClass The class the listener does not want to listen to
      * instances anymore
      * @param eventNames The eventnames the listener does not want to listen to
      * anymore
@@ -179,9 +179,9 @@ public interface ModelEventPump {
     /**
      * Removes a listener that listens to all modelevents fired by instances of
      * modelClass and that have the name eventName.
-     * 
+     *
      * @param listener The listener to remove
-     * @param modelClass The class the listener does not want to listen to 
+     * @param modelClass The class the listener does not want to listen to
      * instances anymore.
      * @param eventName The eventname the listener does not want to listen to
      * anymore.

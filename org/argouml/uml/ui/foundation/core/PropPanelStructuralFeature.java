@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -37,12 +37,12 @@ import org.argouml.uml.ui.UMLRadioButtonPanel;
  */
 public class PropPanelStructuralFeature extends PropPanelFeature {
 
-    private UMLComboBox2 multiplicityComboBox; 
+    private UMLComboBox2 multiplicityComboBox;
     private UMLComboBox2 typeComboBox;
     private UMLRadioButtonPanel changeabilityRadioButtonPanel;
     private UMLCheckBox2 targetScopeCheckBox;
 
-    private static UMLStructuralFeatureMultiplicityComboBoxModel 
+    private static UMLStructuralFeatureMultiplicityComboBoxModel
         multiplicityComboBoxModel;
     private static UMLStructuralFeatureTypeComboBoxModel typeComboBoxModel;
 
@@ -99,12 +99,12 @@ public class PropPanelStructuralFeature extends PropPanelFeature {
      */
     public UMLRadioButtonPanel getChangeabilityRadioButtonPanel() {
         if (changeabilityRadioButtonPanel == null) {
-            changeabilityRadioButtonPanel = 
+            changeabilityRadioButtonPanel =
                 new UMLStructuralFeatureChangeabilityRadioButtonPanel(
-                        Translator.localize("label.changeability"), 
+                        Translator.localize("label.changeability"),
                         true);
         }
-	return changeabilityRadioButtonPanel;        
+	return changeabilityRadioButtonPanel;
     }
 
     /**

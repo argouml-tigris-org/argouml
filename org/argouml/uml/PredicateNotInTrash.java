@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -31,14 +31,14 @@ import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.tigris.gef.util.Predicate;
 
-/** 
+/**
  * A Predicate to determine if a given object is in the Project Trash or not.
  * Required so that the GoListToOfffenderItem does not display offenders,
  * which are already in the trash bin.
  **/
 public class PredicateNotInTrash implements Predicate {
-    private Project p; 
-    
+    private Project p;
+
     /**
      * @see org.tigris.gef.util.Predicate#predicate(java.lang.Object)
      */

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -22,11 +22,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// File: FigComponent.java
-// Classes: FigComponent
-// Original Author: 5eichler@informatik.uni-hamburg.de
-// $Id$
-
 package org.argouml.uml.diagram.deployment.ui;
 
 import java.awt.Color;
@@ -48,8 +43,11 @@ import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigRect;
 import org.tigris.gef.presentation.FigText;
 
-/** Class to display graphics for a UML Component in a diagram. */
-
+/**
+ * Class to display graphics for a UML Component in a diagram.
+ *
+ * @author 5eichler
+ */
 public class FigComponent extends FigNodeModelElement {
     /** The distance between the left edge of the fig and the left edge of the
 	main rectangle. */
@@ -75,7 +73,7 @@ public class FigComponent extends FigNodeModelElement {
 
 	getNameFig().setLineWidth(0);
 	getNameFig().setFilled(false);
-	getNameFig().setText( placeString() );
+	getNameFig().setText(placeString());
 
 	addFig(getBigPort());
 	addFig(cover);
@@ -126,7 +124,7 @@ public class FigComponent extends FigNodeModelElement {
 
     ////////////////////////////////////////////////////////////////
     // acessors
-    
+
     /**
      * Build a collection of menu items relevant for a right-click popup menu.
      *
@@ -142,7 +140,7 @@ public class FigComponent extends FigNodeModelElement {
                 buildModifierPopUp(ABSTRACT | LEAF | ROOT),
                 popUpActions.size() - POPUP_ADD_OFFSET);
         return popUpActions;
-    }    
+    }
 
     /**
      * @param b switch underline on or off
@@ -243,18 +241,17 @@ public class FigComponent extends FigNodeModelElement {
      * @see org.tigris.gef.presentation.Fig#setEnclosingFig(org.tigris.gef.presentation.Fig)
      */
     public void setEnclosingFig(Fig encloser) {
-    
+
 	if (encloser != null
 	    && org.argouml.model.ModelFacade.isANode(encloser.getOwner())
-	    && getOwner() != null)
-	{
+	    && getOwner() != null) {
 	    Object node = /*(MNode)*/ encloser.getOwner();
 	    Object comp = /*(MComponent)*/ getOwner();
 	    if (!ModelFacade.getDeploymentLocations(comp).contains(node)) {
 		ModelFacade.addDeploymentLocation(comp, node);
 	    }
 	    super.setEnclosingFig(encloser);
-        
+
 	    if (getLayer() != null) {
 	            // elementOrdering(figures);
 	        Collection contents = getLayer().getContents(null);
@@ -264,12 +261,12 @@ public class FigComponent extends FigNodeModelElement {
 	            Object o = it.next();
 	            if (o instanceof FigEdgeModelElement) {
 	                bringToFrontList.add(o);
-	                
+
 	            }
 	        }
 	        Iterator bringToFrontIter = bringToFrontList.iterator();
 	        while (bringToFrontIter.hasNext()) {
-	            FigEdgeModelElement figEdge = 
+	            FigEdgeModelElement figEdge =
 	                (FigEdgeModelElement) bringToFrontIter.next();
 	            figEdge.getLayer().bringToFront(figEdge);
 	        }
@@ -384,16 +381,16 @@ public class FigComponent extends FigNodeModelElement {
 
   	Rectangle r = getBounds();
   	return new Rectangle(r.x + BIGPORT_X, r.y, r.width - BIGPORT_X,
-			     r.height );
+			     r.height);
 
     }
 
     /**
      * @see org.tigris.gef.presentation.Fig#setHandleBox(int, int, int, int)
      */
-    public void setHandleBox( int x, int y, int w, int h ) {
+    public void setHandleBox(int x, int y, int w, int h) {
 
-  	setBounds( x - BIGPORT_X, y, w + BIGPORT_X, h );
+  	setBounds(x - BIGPORT_X, y, w + BIGPORT_X, h);
 
     }
 

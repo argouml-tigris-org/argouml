@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2002 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -35,23 +35,23 @@ import org.argouml.uml.ui.AbstractActionNewModelElement;
  * @author jaap.branderhorst@xs4all.nl
  */
 public abstract class ActionNewAction extends AbstractActionNewModelElement {
-    
+
     /**
-     * The constant defining the role the action 
-     * to be created plays for its parent. 
-     * For example, if one wishes to create 
-     * an entry action for a state, this is 
-     * filled with "entry". The values are defined 
+     * The constant defining the role the action
+     * to be created plays for its parent.
+     * For example, if one wishes to create
+     * an entry action for a state, this is
+     * filled with "entry". The values are defined
      * in the interface Roles
      */
     public static final String ROLE = "role";
-    
+
     /**
      * Contains the roles definitions for UML actions.
      *
      */
     public static interface Roles {
-        
+
         /**
          * The entry activity for some state
          */
@@ -63,27 +63,27 @@ public abstract class ActionNewAction extends AbstractActionNewModelElement {
         /**
          * The doactivity with some state
          */
-        public static final String DO = "do"; 
+        public static final String DO = "do";
         /**
          * The action with some message
          */
         public static final String ACTION = "action";
-        
+
         /**
          * The effect of some transition
          */
         public static final String EFFECT = "effect";
-    }    
-    
+    }
+
     /**
      * Constructor for ActionNewAction.
      */
     protected ActionNewAction() {
         super();
     }
-    
+
     /**
-     * Implementors should create a concrete action like 
+     * Implementors should create a concrete action like
      * a CallAction in this method.
      * @return Object
      */
@@ -99,7 +99,7 @@ public abstract class ActionNewAction extends AbstractActionNewModelElement {
             ModelFacade.setExit(getTarget(), action);
         } else
 	    if (getValue(ROLE).equals(Roles.ENTRY)) {
-		ModelFacade.setEntry(getTarget(), action);          
+		ModelFacade.setEntry(getTarget(), action);
 	    } else
 		if (getValue(ROLE).equals(Roles.DO)) {
 		    ModelFacade.setDoActivity(getTarget(), action);
@@ -110,7 +110,7 @@ public abstract class ActionNewAction extends AbstractActionNewModelElement {
 			if (getValue(ROLE).equals(Roles.EFFECT)) {
 			    ModelFacade.setEffect(getTarget(), action);
 			}
-        
+
     }
 
     /**
@@ -123,7 +123,7 @@ public abstract class ActionNewAction extends AbstractActionNewModelElement {
             return ModelFacade.getExit(t);
         } else
             if (role.equals(Roles.ENTRY)) {
-                return ModelFacade.getEntry(t);          
+                return ModelFacade.getEntry(t);
             } else
                 if (role.equals(Roles.DO)) {
                     return ModelFacade.getDoActivity(t);
@@ -133,7 +133,7 @@ public abstract class ActionNewAction extends AbstractActionNewModelElement {
                     } else
                         if (role.equals(Roles.EFFECT)) {
                             return ModelFacade.getEffect(t);
-                        } 
+                        }
         return null;
     }
 }

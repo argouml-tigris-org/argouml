@@ -41,7 +41,7 @@ public class UMLExtendExtensionComboBoxModel extends UMLComboBoxModel2 {
      */
     public UMLExtendExtensionComboBoxModel() {
         super("extension", false);
-        
+
     }
 
     /**
@@ -74,15 +74,15 @@ public class UMLExtendExtensionComboBoxModel extends UMLComboBoxModel2 {
     protected boolean isValidElement(Object element) {
         return org.argouml.model.ModelFacade.isAUseCase(element);
     }
-    
-    
+
+
 
     /**
      * @see org.argouml.ui.targetmanager.TargetListener#targetRemoved(org.argouml.ui.targetmanager.TargetEvent)
      */
     public void targetRemoved(TargetEvent e) {
         // if (e.getNewTarget() != getTarget())
-        UmlModelEventPump.getPump().removeClassModelEventListener(this, 
+        UmlModelEventPump.getPump().removeClassModelEventListener(this,
                     ModelFacade.NAMESPACE, "ownedElement");
         super.targetRemoved(e);
     }
@@ -90,7 +90,7 @@ public class UMLExtendExtensionComboBoxModel extends UMLComboBoxModel2 {
      * @see org.argouml.ui.targetmanager.TargetListener#targetSet(org.argouml.ui.targetmanager.TargetEvent)
      */
     public void targetSet(TargetEvent e) {
-        UmlModelEventPump.getPump().addClassModelEventListener(this, 
+        UmlModelEventPump.getPump().addClassModelEventListener(this,
                 ModelFacade.NAMESPACE, "ownedElement");
         super.targetSet(e);
     }

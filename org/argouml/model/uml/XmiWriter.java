@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -38,12 +38,12 @@ import ru.novosoft.uml.xmi.XMIWriter;
 /**
  * A wrapper around the genuine XmiReader that provides public
  * access with no knowledge of actual UML implementation.
- * 
+ *
  * @author Bob Tarling
  */
 public class XmiWriter {
     private static final Logger LOG = Logger.getLogger(XmiWriter.class);
-    
+
     private XMIWriter xmiWriter;
 
     /**
@@ -77,7 +77,7 @@ public class XmiWriter {
             logNotContainedElements();
         }
     }
-    
+
     private void logNotContainedElements() {
         if (xmiWriter != null) {
             Iterator it = xmiWriter.getNotContainedElements().iterator();

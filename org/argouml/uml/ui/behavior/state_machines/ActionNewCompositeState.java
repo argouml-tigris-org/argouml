@@ -38,18 +38,18 @@ import org.argouml.uml.ui.AbstractActionNewModelElement;
  */
 public class ActionNewCompositeState extends AbstractActionNewModelElement {
 
-    private static ActionNewCompositeState singleton = 
+    private static ActionNewCompositeState singleton =
             new ActionNewCompositeState();
-    
+
     /**
      * Constructor for ActionNewCompositeState.
      */
     protected ActionNewCompositeState() {
         super();
-        putValue(Action.NAME, 
+        putValue(Action.NAME,
                  Translator.localize("button.new-compositestate"));
     }
-    
+
     /**
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2004 The Regents of the University of California. All
+// Copyright (c) 2004-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -32,51 +32,51 @@ import java.util.Collection;
  * @author euluis
  */
 public interface SourcePathController {
-    /** 
-     * From a model element retrieve its source path or null if it 
-     * does not have a direct one (if that happens, you must use 
+    /**
+     * From a model element retrieve its source path or null if it
+     * does not have a direct one (if that happens, you must use
      * recursively its parent or the parent's parent)
-     * @param modelElement model element 
+     * @param modelElement model element
      * @return The file reference that represents the source file.
      */
     public File getSourcePath(final Object modelElement);
-    
-    /** 
-     * Provide the complete list of existing source path settings for a model 
+
+    /**
+     * Provide the complete list of existing source path settings for a model
      * on request.
      * @return The source path settings table - @see SourcePathTableModel.
      */
     public SourcePathTableModel getSourcePathSettings();
-    
-    /** 
+
+    /**
      * Set the source path for a specific model element (package or
      * classifier) based on a given File object
      * @param modelElement the model element
      * @param sourcePath its source path
      */
     public void setSourcePath(Object modelElement, File sourcePath);
-    
-    /** 
+
+    /**
      * Set the source path of the model from the specified settings.
-     * @param srcPaths the source path settings to be set in the model. Note, 
-     * these are used in a resetting way, use the object retrieved with 
+     * @param srcPaths the source path settings to be set in the model. Note,
+     * these are used in a resetting way, use the object retrieved with
      * @see getSourcePathSettings!
      */
     public void setSourcePath(SourcePathTableModel srcPaths);
-    
-    /** 
+
+    /**
      * Delete the source path settings of the model element.
-     * @param modelElement the model element for which the source path settings 
+     * @param modelElement the model element for which the source path settings
      * are going to be removed
      */
     public void deleteSourcePath(Object modelElement);
-    
+
     /**
-     * Retrieve a collection of all model elements that have source path 
+     * Retrieve a collection of all model elements that have source path
      * settings.
      *
      * @return the collection
      */
     public Collection getAllModelElementsWithSourcePath();
-    
+
 }

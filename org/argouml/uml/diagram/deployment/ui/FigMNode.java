@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -21,11 +21,6 @@
 // PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
-
-// File: FigMNode.java
-// Classes: FigMNode
-// Original Author: 5eichler@informatik.uni-hamburg.de
-// $Id$
 
 package org.argouml.uml.diagram.deployment.ui;
 
@@ -49,8 +44,11 @@ import org.tigris.gef.presentation.FigCube;
 import org.tigris.gef.presentation.FigRect;
 import org.tigris.gef.presentation.FigText;
 
-/** Class to display graphics for a UML Node in a diagram. */
-
+/**
+ * Class to display graphics for a UML Node in a diagram.
+ *
+ * @author 5eichler
+ */
 public class FigMNode extends FigNodeModelElement {
 
     ////////////////////////////////////////////////////////////////
@@ -117,7 +115,7 @@ public class FigMNode extends FigNodeModelElement {
     ////////////////////////////////////////////////////////////////
     // acessors
 
-    
+
     /**
      * Build a collection of menu items relevant for a right-click popup menu.
      *
@@ -133,7 +131,7 @@ public class FigMNode extends FigNodeModelElement {
                 buildModifierPopUp(ABSTRACT | LEAF | ROOT),
                 popUpActions.size() - POPUP_ADD_OFFSET);
         return popUpActions;
-    }    
+    }
 
     /**
      * @see org.tigris.gef.presentation.Fig#setLineColor(java.awt.Color)
@@ -218,12 +216,12 @@ public class FigMNode extends FigNodeModelElement {
                 Object o = it.next();
                 if (o instanceof FigEdgeModelElement) {
                     bringToFrontList.add(o);
-                    
+
                 }
             }
             Iterator bringToFrontIter = bringToFrontList.iterator();
             while (bringToFrontIter.hasNext()) {
-                FigEdgeModelElement figEdge = 
+                FigEdgeModelElement figEdge =
                     (FigEdgeModelElement) bringToFrontIter.next();
                 figEdge.getLayer().bringToFront(figEdge);
             }

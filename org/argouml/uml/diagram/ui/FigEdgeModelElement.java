@@ -95,12 +95,12 @@ public abstract class FigEdgeModelElement
 
     private static final Logger LOG =
         Logger.getLogger(FigEdgeModelElement.class);
-        
+
     /**
      * <code>BUNDLE</code>
      */
     protected static final String BUNDLE = "UMLMenu";
-        
+
     ////////////////////////////////////////////////////////////////
     // constants
 
@@ -132,9 +132,9 @@ public abstract class FigEdgeModelElement
      * Use getStereotypeFig(), no setter should be required.
      */
     private FigText stereo = new FigText(10, 30, 90, 20);
-    
+
     private ItemUID id;
-    
+
     /**
      * The current notation for this fig. The notation is for example
      * UML 1.3 or Java
@@ -174,8 +174,8 @@ public abstract class FigEdgeModelElement
 
     /**
      * the constructor that hooks the Fig into the UML model element
-     * 
-     * @param edge the UML element 
+     *
+     * @param edge the UML element
      */
     public FigEdgeModelElement(Object edge) {
         this();
@@ -215,7 +215,7 @@ public abstract class FigEdgeModelElement
     public String getTipString(MouseEvent me) {
         ToDoItem item = hitClarifier(me.getX(), me.getY());
         String tip = "";
-        if (item != null 
+        if (item != null
             && Globals.curEditor().getSelectionManager().containsFig(this))
             tip = item.getHeadline();
         else if (getOwner() != null)
@@ -258,10 +258,10 @@ public abstract class FigEdgeModelElement
         return popUpActions;
     }
 
-    
+
     /**
      * distance formula: (x-h)^2 + (y-k)^2 = distance^2
-     * 
+     *
      * @param p1 point
      * @param p2 point
      * @return the square of the distance
@@ -315,7 +315,7 @@ public abstract class FigEdgeModelElement
 
     /**
      * The user clicked on the clarifier.
-     * 
+     *
      * @param x the x of the point clicked
      * @param y the y of the point clicked
      * @return the todo item clicked
@@ -394,7 +394,7 @@ public abstract class FigEdgeModelElement
     public FigText getNameFig() {
         return name;
     }
-    
+
     /**
      * Getter for stereo, the stereotype Fig
      * @return the stereo Fig
@@ -442,11 +442,11 @@ public abstract class FigEdgeModelElement
         } else
             super.propertyChange(pve);
         if (ModelFacade.isABase(src)) {
-            /* If the source of the event is an UML object, 
+            /* If the source of the event is an UML object,
              * then the UML model has been changed.*/
             modelChanged(pve);
         }
-        damage();  // TODO: (MVW) Is this required? 
+        damage();  // TODO: (MVW) Is this required?
         // After all these events? I doubt it...
     }
 
@@ -555,7 +555,7 @@ public abstract class FigEdgeModelElement
      */
     protected void modelChanged(PropertyChangeEvent e) {
         if (e == null
-            || (e.getSource() == getOwner() 
+            || (e.getSource() == getOwner()
                     && "name".equals(e.getPropertyName()))) {
             updateNameText();
         }
@@ -570,12 +570,12 @@ public abstract class FigEdgeModelElement
         if (!updateClassifiers())
             return;
     }
-    
+
     /**
      * generate the notation for the modelelement and stuff it into the text Fig
      */
     protected void updateNameText() {
-        
+
         if (getOwner() == null)
             return;
         String nameStr =
@@ -622,7 +622,7 @@ public abstract class FigEdgeModelElement
             }
             if (org.argouml.model.ModelFacade.isAModelElement(newOwner)) {
                 Model.getPump().addModelEventListener(this, oldOwner);
-                
+
                 if (UUIDHelper.getInstance().getUUID(newOwner) == null) {
                     ModelFacade.setUUID(newOwner,
 					UUIDHelper.getInstance().getNewUUID());
@@ -746,7 +746,7 @@ public abstract class FigEdgeModelElement
         }
 
         // GEF does not take into account the multiple diagrams we have
-        // therefore we loop through our diagrams and delete each and every 
+        // therefore we loop through our diagrams and delete each and every
         // occurence on our own
         it =
 	    ProjectManager.getManager().getCurrentProject()
@@ -871,7 +871,7 @@ public abstract class FigEdgeModelElement
         Object owner = getOwner();
         if (owner != null) {
             if (owner instanceof CommentEdge) {
-                return ((CommentEdge)owner).getSource();
+                return ((CommentEdge) owner).getSource();
             } else {
                 return Model.getCoreHelper().getSource(owner);
             }
@@ -889,7 +889,7 @@ public abstract class FigEdgeModelElement
         Object owner = getOwner();
         if (owner != null) {
             if (owner instanceof CommentEdge) {
-                return ((CommentEdge)owner).getDestination();
+                return ((CommentEdge) owner).getDestination();
             } else {
                 return Model.getCoreHelper().getDestination(owner);
             }
@@ -901,7 +901,7 @@ public abstract class FigEdgeModelElement
      * @see org.tigris.gef.presentation.Fig#postLoad()
      */
     public void postLoad() {
-        super.postLoad();        
+        super.postLoad();
         if (this instanceof ArgoEventListener) {
             ArgoEventPump.removeListener(this);
             ArgoEventPump.addListener(this);

@@ -48,10 +48,10 @@ import org.tigris.gef.presentation.Fig;
  * Action for removing (moving to trash) objects from the model. Objects can be:
  * - Modelelements (NSUML)
  * - Diagrams (argodiagram and it's children)
- * The root model and the last diagram in the project can not be removed. The 
- * reason for this is to prevent problems updating the detailspane and the 
+ * The root model and the last diagram in the project can not be removed. The
+ * reason for this is to prevent problems updating the detailspane and the
  * navpane. Besides that, it is not possible to make a new root model.
- * 
+ *
  * @author original author not known.
  * @author jaap.branderhorst@xs4all.nl extensions
  */
@@ -66,8 +66,8 @@ public class ActionRemoveFromModel extends UMLAction {
 
 
     /**
-     * Only disabled when nothing is selected. Necessary to use since this 
-     * option works via the menu too. A user cannot delete the last diagram. 
+     * Only disabled when nothing is selected. Necessary to use since this
+     * option works via the menu too. A user cannot delete the last diagram.
      * A user cannot delete the root model.
      * @see org.argouml.uml.ui.UMLAction#shouldBeEnabled()
      */
@@ -100,7 +100,7 @@ public class ActionRemoveFromModel extends UMLAction {
             return ModelFacade.getOtherAssociationEnds(target).size() > 1;
         }
         if (Model.getStateMachinesHelper().isTopState(target)) {
-            /* we can not delete a "top" state, 
+            /* we can not delete a "top" state,
              * it comes and goes with the statemachine. Issue 2655.
              */
             return false;
@@ -109,9 +109,9 @@ public class ActionRemoveFromModel extends UMLAction {
     }
 
     /**
-     * Moves the selected target to the trash bin. Moves the selected target 
+     * Moves the selected target to the trash bin. Moves the selected target
      * after the remove to the parent of the selected target (that is: the next
-     * level up in the navpane). In case of a diagram the selected target will 
+     * level up in the navpane). In case of a diagram the selected target will
      * be the next diagram in the list with diagrams.
      * @see java.awt.event.ActionListener#actionPerformed(ActionEvent)
      */
@@ -121,7 +121,7 @@ public class ActionRemoveFromModel extends UMLAction {
         if (ae.getSource() instanceof PropPanel) {
             targets =
                 new Object[] {
-		    TargetManager.getInstance().getModelTarget()
+		    TargetManager.getInstance().getModelTarget(),
 		};
         } else {
             targets = getTargets();
@@ -139,13 +139,13 @@ public class ActionRemoveFromModel extends UMLAction {
                 p.moveToTrash(target);
             }
         }
-        
+
         if (newTarget != null) {
             TargetManager.getInstance().setTarget(newTarget);
         }
         super.actionPerformed(ae);
     }
-    
+
     /**
      * Gets the object that should be target after the given target is
      * deleted from the model.
@@ -174,7 +174,7 @@ public class ActionRemoveFromModel extends UMLAction {
             }
         } else {
             newTarget = p.getRoot();
-        }      
+        }
         return newTarget;
     }
 
@@ -203,7 +203,7 @@ public class ActionRemoveFromModel extends UMLAction {
                     MessageFormat.format(Translator.localize(
 			    "optionpane.remove-from-model-confirm-delete"),
 					 new Object[] {
-					     diagram.getName(), "" 
+					     diagram.getName(), "",
 					 });
 		String text =
 		    Translator.localize(
@@ -229,7 +229,7 @@ public class ActionRemoveFromModel extends UMLAction {
     }
 
     /**
-     * An utility method that asks the user if he is sure to remove a selected 
+     * An utility method that asks the user if he is sure to remove a selected
      * modelement.<p>
      *
      * @see ActionRemoveFromModel#sureRemove(Object)
@@ -275,7 +275,7 @@ public class ActionRemoveFromModel extends UMLAction {
                     Translator.localize(
 			    "optionpane.remove-from-model-confirm-delete"),
 		    new Object[] {
-			name, confirmStr 
+			name, confirmStr,
 		    });
         int response =
             JOptionPane.showConfirmDialog(

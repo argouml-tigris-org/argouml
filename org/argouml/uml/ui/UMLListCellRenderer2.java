@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2002 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -39,15 +39,15 @@ import org.argouml.application.helpers.ResourceLoaderWrapper;
 /**
  * The default cell renderer for uml model elements. Used by UMLList2 and its
  * children.
- * 
+ *
  * This class must be efficient as it is called many 1000's of times.
- * 
+ *
  * @author jaap.branderhorst@xs4all.nl
  * @since Jan 2, 2003
  */
 public class UMLListCellRenderer2 extends DefaultListCellRenderer {
 
-    private static final Logger LOG = 
+    private static final Logger LOG =
         Logger.getLogger(UMLListCellRenderer2.class);
 
     /**
@@ -125,11 +125,11 @@ public class UMLListCellRenderer2 extends DefaultListCellRenderer {
 
     /**
      * Makes the text that must be placed on the label that is returned.
-     * If there is no name for the given modelelement, then 
+     * If there is no name for the given modelelement, then
      * (anon xxx) is shown, with xxx the type name.
-     * 
+     *
      * @param value the given modelelement
-     * @return String the text to be shown 
+     * @return String the text to be shown
      */
     public String makeText(Object value) {
         String name = null;
@@ -149,8 +149,8 @@ public class UMLListCellRenderer2 extends DefaultListCellRenderer {
     }
 
     private String makeTypeName(Object elem) {
-        if (org.argouml.model.ModelFacade.isABase(elem)) { 
-            return ModelFacade.getUMLClassName(elem); 
+        if (org.argouml.model.ModelFacade.isABase(elem)) {
+            return ModelFacade.getUMLClassName(elem);
         }
         return null;
     }

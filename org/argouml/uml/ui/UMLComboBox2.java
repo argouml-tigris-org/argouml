@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -35,15 +35,15 @@ import org.argouml.ui.targetmanager.TargettableModelView;
 
 /**
  * ComboBox for UML modelelements. <p>
- * 
- * This implementation does not use 
+ *
+ * This implementation does not use
  * reflection and seperates Model, View and Controller better then does
  * UMLComboBox. The ancient UMLComboBoxModel and UMLComboBox are
  * replaced with this implementation to improve performance.
  */
 public class UMLComboBox2
-    extends JComboBox implements TargettableModelView, TargetListener {    
-    
+    extends JComboBox implements TargettableModelView, TargetListener {
+
     /**
      * Constructor for UMLMessageActivatorComboBox.
      * @deprecated As of ArgoUml version unknown (before 0.13.5),
@@ -55,9 +55,9 @@ public class UMLComboBox2
         setFont(LookAndFeelMgr.getInstance().getSmallFont());
         addActionListener(this);
     }
-    
+
     /**
-     * Constructor for UMLMessageActivatorComboBox. Via the given action, the 
+     * Constructor for UMLMessageActivatorComboBox. Via the given action, the
      * action for this combobox is done.
      * @param arg0 the ComboBoxModel
      * @param action the action
@@ -69,12 +69,12 @@ public class UMLComboBox2
         setFont(LookAndFeelMgr.getInstance().getSmallFont());
         addActionListener(action);
         // setDoubleBuffered(true);
-        setRenderer(new UMLListCellRenderer2(showIcon));      
+        setRenderer(new UMLListCellRenderer2(showIcon));
     }
-           
+
     /**
      * The constructor.
-     * 
+     *
      * @param arg0 the ComboBoxModel
      * @param action the action
      */
@@ -85,21 +85,21 @@ public class UMLComboBox2
     /**
      * @see java.awt.event.ActionListener#actionPerformed(ActionEvent)
      */
-    public void actionPerformed(ActionEvent arg0) {        
+    public void actionPerformed(ActionEvent arg0) {
         int i = getSelectedIndex();
-        if ( i >= 0) {
+        if (i >= 0) {
             doIt(arg0);
         }
     }
-    
+
     /**
      * The 'body' of the actionPerformed method. Is only called if there is
      * actually a selection made.
-     * 
+     *
      * @param event the event
      */
     protected void doIt(ActionEvent event) { }
-    
+
     /**
      * Utility method to get the current target
      * @return Object
@@ -107,8 +107,8 @@ public class UMLComboBox2
     public Object getTarget() {
         return ((UMLComboBoxModel2) getModel()).getTarget();
     }
-    
-    
+
+
     /**
      * @see TargettableModelView#getTargettableModel()
      */
@@ -124,14 +124,14 @@ public class UMLComboBox2
             removeActionListener(this);
         }
     }
-    
+
     /**
      * @see org.argouml.ui.targetmanager.TargetListener#targetRemoved(org.argouml.ui.targetmanager.TargetEvent)
      */
     public void targetRemoved(TargetEvent e) {
-        removeActionListener(this);  
+        removeActionListener(this);
     }
-    
+
     /**
      * @see org.argouml.ui.targetmanager.TargetListener#targetSet(org.argouml.ui.targetmanager.TargetEvent)
      */

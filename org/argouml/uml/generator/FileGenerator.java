@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2002 The Regents of the University of California. All
+// Copyright (c) 2002-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -34,7 +34,7 @@ public interface FileGenerator {
      */
     public static final String FILE_SEPARATOR =
 	System.getProperty("file.separator");
-    
+
     /** Generates a file for this classifier.
      * TODO:
      * This will only work for languages that have each node

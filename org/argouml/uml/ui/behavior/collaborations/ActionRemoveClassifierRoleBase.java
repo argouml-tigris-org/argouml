@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2002 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -32,7 +32,7 @@ import org.argouml.uml.ui.AbstractActionRemoveElement;
 
 /**
  * Action to remove a base from a classifierrole.
- * @author jaap.branderhorst@xs4all.nl	
+ * @author jaap.branderhorst@xs4all.nl
  * @since Jan 25, 2003
  */
 public class ActionRemoveClassifierRoleBase
@@ -40,7 +40,7 @@ public class ActionRemoveClassifierRoleBase
 
     private static final ActionRemoveClassifierRoleBase SINGLETON =
 	new ActionRemoveClassifierRoleBase();
-    
+
     /**
      * Constructor for ActionRemoveClassifierRoleBase.
      */
@@ -48,7 +48,7 @@ public class ActionRemoveClassifierRoleBase
         super(Translator.localize("menu.popup.remove"));
     }
 
-    
+
 
     /**
      * @see

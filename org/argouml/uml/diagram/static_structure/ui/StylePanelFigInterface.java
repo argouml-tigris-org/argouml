@@ -40,7 +40,7 @@ import org.argouml.ui.StylePanelFigNodeModelElement;
 /**
  * Stylepanel which adds an operation checkbox and depends on FigInterface.
  * @see FigInterface
- * 
+ *
  * @author mkl
  *
  */

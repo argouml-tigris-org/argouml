@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -56,7 +56,7 @@ import org.tigris.gef.ocl.TemplateReader;
 
 /**
  * To persist to and from zargo (zipped file) storage.
- * 
+ *
  * @author Bob Tarling
  */
 public class ZargoFilePersister extends UmlFilePersister {
@@ -70,7 +70,7 @@ public class ZargoFilePersister extends UmlFilePersister {
      * This is the old version of the ArgoUML tee file which does not contain
      * the detail of member elements.
      */
-    private static final String ARGO_MINI_TEE = 
+    private static final String ARGO_MINI_TEE =
         "/org/argouml/persistence/argo.tee";
 
     /**
@@ -96,14 +96,14 @@ public class ZargoFilePersister extends UmlFilePersister {
     /**
      * It is being considered to save out individual xmi's from individuals
      * diagrams to make it easier to modularize the output of Argo.
-     * 
+     *
      * @param file
      *            The file to write.
      * @param project
      *            the project to save
      * @throws SaveException
      *             when anything goes wrong
-     * 
+     *
      * @see org.argouml.persistence.ProjectFilePersister#save(
      *      org.argouml.kernel.Project, java.io.File)
      */
@@ -292,9 +292,9 @@ public class ZargoFilePersister extends UmlFilePersister {
             reader = new BufferedReader(new InputStreamReader(zis, encoding));
             // Skip 1 lines
             reader.readLine();
-        
+
             readerToWriter(reader, writer);
-            
+
             zis.close();
             reader.close();
 
@@ -333,7 +333,7 @@ public class ZargoFilePersister extends UmlFilePersister {
     private void readerToWriter(
             Reader reader,
             Writer writer) throws IOException {
-        
+
         int ch;
         while ((ch = reader.read()) != -1) {
             if (ch != 0xFFFF) {
@@ -343,10 +343,10 @@ public class ZargoFilePersister extends UmlFilePersister {
             }
         }
     }
-    
+
     /**
      * Open a ZipInputStream to the first file found with a given extension.
-     * 
+     *
      * @param url
      *            The URL of the zip file.
      * @param ext
@@ -373,7 +373,7 @@ public class ZargoFilePersister extends UmlFilePersister {
 
         /**
          * The constructor.
-         * 
+         *
          * @param z
          *            the zip input stream
          */
@@ -392,7 +392,7 @@ public class ZargoFilePersister extends UmlFilePersister {
         /**
          * Reads the next ZIP file entry and positions stream at the beginning
          * of the entry data.
-         * 
+         *
          * @return the ZipEntry just read
          * @throws IOException
          *             if an I/O error has occurred

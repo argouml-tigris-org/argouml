@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -39,11 +39,11 @@ import org.argouml.ui.targetmanager.TargettableModelView;
 
 /**
  * This class is derived from a Swing JList, and adds:<p>
- * 
- * Mouselistener for the implementation of a popup menu. 
+ *
+ * Mouselistener for the implementation of a popup menu.
  * The popup menu itself is to be created by the model.<p>
- * 
- * TargettableModelView: Which determines that the model of this list 
+ *
+ * TargettableModelView: Which determines that the model of this list
  * listens to target changes, i.e. implements the TargetListener interface.
  *
  * @since Oct 2, 2002
@@ -78,7 +78,7 @@ public abstract class UMLList2
         return ((UMLModelElementListModel2) getModel()).getTarget();
     }
 
-    /** 
+    /**
      * @see TargettableModelView#getTargettableModel()
      */
     public TargetListener getTargettableModel() {
@@ -125,7 +125,7 @@ public abstract class UMLList2
             showPopup(e);
         }
     }
-    
+
     private final void showPopup(MouseEvent event) {
         Point point = event.getPoint();
         int index = locationToIndex(point);

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -53,7 +53,7 @@ import ru.novosoft.uml.MElementListener;
  * pressed. Via the name of the button (settext), the action can find
  * out which button is pressed.
  *
- * @author jaap.branderhorst@xs4all.nl	
+ * @author jaap.branderhorst@xs4all.nl
  * @since Jan 4, 2003
  */
 public abstract class UMLRadioButtonPanel
@@ -77,7 +77,7 @@ public abstract class UMLRadioButtonPanel
     private ButtonGroup buttonGroup = new ButtonGroup();
 
     /**
-     * Constructs a new UMLRadioButtonPanel. 
+     * Constructs a new UMLRadioButtonPanel.
      * @param isDoubleBuffered @see JPanel
      * @param title The title of the titledborder around the buttons. If the
      * title is null, there is no border shown.
@@ -107,7 +107,7 @@ public abstract class UMLRadioButtonPanel
     }
 
     /**
-     * Constructs a new UMLRadioButtonPanel. 
+     * Constructs a new UMLRadioButtonPanel.
      * @param title The title of the titledborder around the buttons.
      * @param labeltextsActioncommands A map of keys containing the texts for
      * the buttons and values containing the actioncommand that permits the
@@ -123,7 +123,7 @@ public abstract class UMLRadioButtonPanel
 			       String thePropertySetName,
 			       Action setAction,
 			       boolean horizontal) {
-        this(true, title, labeltextsActioncommands, 
+        this(true, title, labeltextsActioncommands,
 	     thePropertySetName, setAction, horizontal);
     }
 
@@ -211,7 +211,7 @@ public abstract class UMLRadioButtonPanel
         target = target instanceof Fig ? ((Fig) target).getOwner() : target;
         UmlModelEventPump eventPump = UmlModelEventPump.getPump();
         if (ModelFacade.isABase(panelTarget)) {
-            eventPump.removeModelEventListener(this, panelTarget, 
+            eventPump.removeModelEventListener(this, panelTarget,
                     propertySetName);
         }
         panelTarget = target;

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -49,7 +49,7 @@ public class UMLChangeDispatch implements Runnable, UMLUserInterfaceComponent {
     private MElementEvent event;
     private int eventType;
     private Container container;
-    
+
     /**
      * The target of the proppanel that constructs this umlchangedispatch.
      */
@@ -118,7 +118,7 @@ public class UMLChangeDispatch implements Runnable, UMLUserInterfaceComponent {
 
 
     /**
-     * Creates a UMLChangeDispatch.  eventType is overriden if a call to 
+     * Creates a UMLChangeDispatch.  eventType is overriden if a call to
      * one of the event functions is called.
      *
      * @param uic user interface container to which changes are dispatched.
@@ -129,11 +129,11 @@ public class UMLChangeDispatch implements Runnable, UMLUserInterfaceComponent {
 	    container = uic;
 	    eventType = et;
 	    if (uic instanceof PropPanel) {
-		target = ((PropPanel) uic).getTarget();              
+		target = ((PropPanel) uic).getTarget();
 	    }
 	}
     }
-    
+
     /**
      * Configures this instance to dispatch a targetChanged event.
      */
@@ -147,7 +147,7 @@ public class UMLChangeDispatch implements Runnable, UMLUserInterfaceComponent {
     public void targetReasserted() {
         eventType = 7;
     }
-    
+
     /**
      * Configures this instance to dispatch a propertySet event.
      * @param mee NSUML event
@@ -156,7 +156,7 @@ public class UMLChangeDispatch implements Runnable, UMLUserInterfaceComponent {
         event = mee;
         eventType = 1;
     }
-           
+
     /**
      * Configures this instance to dispatch a listRoleItemSet event.
      * @param mee NSUML event
@@ -174,8 +174,8 @@ public class UMLChangeDispatch implements Runnable, UMLUserInterfaceComponent {
         event = mee;
         eventType = 3;
     }
-    
-    /**  
+
+    /**
      * Configures this instance to dispatch a removed event.
      * @param mee NSUML event.
      */
@@ -183,7 +183,7 @@ public class UMLChangeDispatch implements Runnable, UMLUserInterfaceComponent {
         event = mee;
         eventType = 4;
     }
-	
+
     /**
      * Configures this instance to dispatch a roleAdded event.
      * @param mee NSUML event.
@@ -192,7 +192,7 @@ public class UMLChangeDispatch implements Runnable, UMLUserInterfaceComponent {
         event = mee;
         eventType = 5;
     }
-	
+
     /**
      * Configures this instance to dispatch a roleRemoved event.
      * @param mee NSUML event
@@ -201,8 +201,8 @@ public class UMLChangeDispatch implements Runnable, UMLUserInterfaceComponent {
         event = mee;
         eventType = 6;
     }
-    
-    
+
+
     /**
      * Called by InvokeLater on user interface thread.  Dispatches
      * event to all contained objects implementing
@@ -213,22 +213,22 @@ public class UMLChangeDispatch implements Runnable, UMLUserInterfaceComponent {
         if (target != null) {
             synchronizedDispatch(container);
         } else
-	    dispatch(container); 
+	    dispatch(container);
         //
         //   now that we have finished all the UI updating
         //
         //   if we were doing an object change then
         //      add a listener to our new target
         //
-        if (eventType == -1 && container instanceof PropPanel 
-	    && !((container instanceof PropPanelObject) 
-		 || (container instanceof PropPanelNodeInstance) 
+        if (eventType == -1 && container instanceof PropPanel
+	    && !((container instanceof PropPanelObject)
+		 || (container instanceof PropPanelNodeInstance)
 		 || (container instanceof PropPanelComponentInstance))) {
 	    PropPanel propPanel = (PropPanel) container;
             Object t = propPanel.getTarget();
 
             if (org.argouml.model.ModelFacade.isABase(t)) {
-            	
+
             	// 2002-07-15
             	// Jaap Branderhorst
             	// added next statement to prevent PropPanel getting
@@ -237,17 +237,17 @@ public class UMLChangeDispatch implements Runnable, UMLUserInterfaceComponent {
             }
         }
     }
-    
+
     /**
      * Iterates through all children of this container.  If a child
      * is another container then calls dispatch iteratively, if
      * a child supports UMLUserInterfaceComponent then calls the
      * appropriate method.
-     * 
+     *
      * @param theAWTContainer AWT container
      */
     private void dispatch(Container theAWTContainer) {
-       
+
         int count = theAWTContainer.getComponentCount();
         Component component;
         UMLUserInterfaceComponent uiComp;
@@ -264,27 +264,27 @@ public class UMLChangeDispatch implements Runnable, UMLUserInterfaceComponent {
                     case 0:
                         uiComp.targetChanged();
                         break;
-                    
+
                     case 1:
                         uiComp.propertySet(event);
                         break;
-                    
+
                     case 2:
                         uiComp.listRoleItemSet(event);
                         break;
-                    
+
                     case 3:
                         uiComp.recovered(event);
                         break;
-                    
+
                     case 4:
                         uiComp.removed(event);
                         break;
-                        
+
                     case 5:
                         uiComp.roleAdded(event);
                         break;
-                        
+
                     case 6:
                         uiComp.roleRemoved(event);
                         break;
@@ -294,10 +294,10 @@ public class UMLChangeDispatch implements Runnable, UMLUserInterfaceComponent {
                         break;
 		    }
 		}
-            } 
+            }
         }
     }
-    
+
     private void synchronizedDispatch(Container cont) {
         if (target == null) {
 	    throw new IllegalStateException("Target may not be null in "

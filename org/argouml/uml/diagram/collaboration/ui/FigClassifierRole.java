@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -21,10 +21,6 @@
 // PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
-
-// File: FigClassifierRole.java
-// Classes: FigClassifierRole
-// Original Author: agauthie@ics.uci.edu
 
 package org.argouml.uml.diagram.collaboration.ui;
 
@@ -57,6 +53,8 @@ import org.tigris.gef.presentation.FigText;
  *
  * @author 10 Apr 2002. Jeremy Bennett (mail@jeremybennett.com). Modifications
  *         to ensure stereotypes are handled correctly.
+ *
+ * @author agauthie
  */
 public class FigClassifierRole extends FigNodeModelElement {
 
@@ -292,7 +290,7 @@ public class FigClassifierRole extends FigNodeModelElement {
      * @see org.tigris.gef.presentation.Fig#setLineColor(java.awt.Color)
      */
     public void setLineColor(Color col) { cover.setLineColor(col); }
-    
+
     /**
      * @see org.tigris.gef.presentation.Fig#getLineColor()
      */
@@ -302,7 +300,7 @@ public class FigClassifierRole extends FigNodeModelElement {
      * @see org.tigris.gef.presentation.Fig#setFillColor(java.awt.Color)
      */
     public void setFillColor(Color col) { cover.setFillColor(col); }
-    
+
     /**
      * @see org.tigris.gef.presentation.Fig#getFillColor()
      */
@@ -312,7 +310,7 @@ public class FigClassifierRole extends FigNodeModelElement {
      * @see org.tigris.gef.presentation.Fig#setFilled(boolean)
      */
     public void setFilled(boolean f) { cover.setFilled(f); }
-    
+
     /**
      * @see org.tigris.gef.presentation.Fig#getFilled()
      */
@@ -322,7 +320,7 @@ public class FigClassifierRole extends FigNodeModelElement {
      * @see org.tigris.gef.presentation.Fig#setLineWidth(int)
      */
     public void setLineWidth(int w) { cover.setLineWidth(w); }
-    
+
     /**
      * @see org.tigris.gef.presentation.Fig#getLineWidth()
      */
@@ -506,7 +504,7 @@ public class FigClassifierRole extends FigNodeModelElement {
         // Build the final string and set it as the name text.
 
         if (isReadyToEdit()) {
-            if ( nameStr.length() == 0 && baseString.length() == 0)
+            if (nameStr.length() == 0 && baseString.length() == 0)
                 getNameFig().setText("");
             else
                 getNameFig().setText("/" + nameStr.trim() + " : " + baseString);
@@ -524,8 +522,7 @@ public class FigClassifierRole extends FigNodeModelElement {
         // TODO: remove the mee == null as soon as everything is migrated
         if (mee == null
 	    || mee.getPropertyName().equals("base")
-	    && mee.getSource() == getOwner())
-	{
+	    && mee.getSource() == getOwner()) {
             updateNameText();
         } else
             super.modelChanged(mee);

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2002 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -43,8 +43,7 @@ import org.argouml.application.helpers.SettingsTabHelper;
  *  @since  0.9.4
  */
 public class SettingsTabPreferences extends SettingsTabHelper
-    implements SettingsTabPanel 
-{
+    implements SettingsTabPanel {
 
     private JCheckBox chkSplash = null;
     private JCheckBox chkPreload = null;
@@ -54,13 +53,13 @@ public class SettingsTabPreferences extends SettingsTabHelper
 
     /**
      * The constructor.
-     * 
+     *
      */
     public SettingsTabPreferences() {
         super();
         setLayout(new BorderLayout());
 	JPanel top = new JPanel();
-    	top.setLayout(new GridBagLayout()); 
+    	top.setLayout(new GridBagLayout());
 
 	GridBagConstraints checkConstraints = new GridBagConstraints();
 	checkConstraints.anchor = GridBagConstraints.WEST;
@@ -120,10 +119,10 @@ public class SettingsTabPreferences extends SettingsTabHelper
      */
     public void handleSettingsTabRefresh() {
         chkSplash.setSelected(Configuration.getBoolean(Argo.KEY_SPLASH, true));
-        chkPreload.setSelected(Configuration.getBoolean(Argo.KEY_PRELOAD, 
+        chkPreload.setSelected(Configuration.getBoolean(Argo.KEY_PRELOAD,
                 true));
         chkEdem.setSelected(Configuration.getBoolean(Argo.KEY_EDEM, true));
-        chkProfile.setSelected(Configuration.getBoolean(Argo.KEY_PROFILE, 
+        chkProfile.setSelected(Configuration.getBoolean(Argo.KEY_PROFILE,
                 false));
         chkReloadRecent.setSelected(
 		Configuration.getBoolean(Argo.KEY_RELOAD_RECENT_PROJECT,
@@ -153,24 +152,24 @@ public class SettingsTabPreferences extends SettingsTabHelper
      * @see org.argouml.application.api.ArgoModule#getModuleName()
      */
     public String getModuleName() { return "SettingsTabPreferences"; }
-    
+
     /**
      * @see org.argouml.application.api.ArgoModule#getModuleDescription()
      */
     public String getModuleDescription() {
 	return "Settings Tab for Preferences";
     }
-    
+
     /**
      * @see org.argouml.application.api.ArgoModule#getModuleAuthor()
      */
     public String getModuleAuthor() { return "ArgoUML Core"; }
-    
+
     /**
      * @see org.argouml.application.api.ArgoModule#getModuleVersion()
      */
     public String getModuleVersion() { return ArgoVersion.getVersion(); }
-    
+
     /**
      * @see org.argouml.application.api.ArgoModule#getModuleKey()
      */

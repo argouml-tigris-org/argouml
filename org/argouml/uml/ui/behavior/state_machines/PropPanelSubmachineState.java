@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -47,7 +47,7 @@ public class PropPanelSubmachineState extends PropPanelCompositeState {
      * @param icon the icon to be shown next to the name
      * @param orientation the orientation of the panel
      */
-    public PropPanelSubmachineState(String name, ImageIcon icon, 
+    public PropPanelSubmachineState(String name, ImageIcon icon,
             Orientation orientation) {
         super(name, icon, orientation);
         initialize();
@@ -57,33 +57,33 @@ public class PropPanelSubmachineState extends PropPanelCompositeState {
      * Constructor for PropPanelSubmachineState.
      */
     public PropPanelSubmachineState() {
-        super("Submachine State", lookupIcon("SubmachineState"), 
+        super("Submachine State", lookupIcon("SubmachineState"),
                 ConfigLoader.getTabPropsOrientation());
-        addField(Translator.localize("label.name"), 
+        addField(Translator.localize("label.name"),
                 getNameTextField());
-        addField(Translator.localize("label.stereotype"), 
+        addField(Translator.localize("label.stereotype"),
                 getStereotypeBox());
-        addField(Translator.localize("label.container"), 
+        addField(Translator.localize("label.container"),
                 getContainerScroll());
         JComboBox submachineBox = new UMLComboBox2(
-                new UMLSubmachineStateComboBoxModel(), 
+                new UMLSubmachineStateComboBoxModel(),
                 ActionSetSubmachineStateSubmachine.getInstance());
-        addField(Translator.localize("label.submachine"), 
+        addField(Translator.localize("label.submachine"),
                 new UMLComboBoxNavigator(this, Translator.localize(
                         "tooltip.nav-submachine"), submachineBox));
 
         addSeperator();
 
-        addField(Translator.localize("label.incoming"), 
+        addField(Translator.localize("label.incoming"),
                 getIncomingScroll());
-        addField(Translator.localize("label.outgoing"), 
+        addField(Translator.localize("label.outgoing"),
                 getOutgoingScroll());
 
         addSeperator();
 
-        addField(Translator.localize("label.subvertex"), 
+        addField(Translator.localize("label.subvertex"),
                 new JScrollPane(new UMLMutableLinkedList(
-                        new UMLCompositeStateSubvertexListModel(), null, 
+                        new UMLCompositeStateSubvertexListModel(), null,
                         ActionNewStubState.getInstance())));
     }
 

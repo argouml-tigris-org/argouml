@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -22,11 +22,7 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// File: CrFinalSubclassed.java
-// Classes: CrFinalSubclassed
-// Original Author: jrobbins@ics.uci.edu
 // $Id$
-
 package org.argouml.uml.cognitive.critics;
 
 import java.util.Iterator;
@@ -37,14 +33,16 @@ import org.argouml.model.ModelFacade;
 // Use model through ModelFacade
 
 /** Well-formedness rule [2] for MGeneralizableElement. See page 31 of UML 1.1
- *  Semantics. OMG document ad/97-08-04. 
+ *  Semantics. OMG document ad/97-08-04.
  *  In UML 1.3 it is rule [2] in section 2.5.3.18 page 2-54.
+ *
+ * @author jrobbins
  */
 public class CrFinalSubclassed extends CrUML {
 
     /**
      * The constructor.
-     * 
+     *
      */
     public CrFinalSubclassed() {
 	setHeadline("Remove final keyword or remove subclasses");

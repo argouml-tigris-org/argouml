@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -66,7 +66,7 @@ public class ModeCreateLink extends ModeCreate {
 
     /**
      * The constructor.
-     * 
+     *
      */
     public ModeCreateLink() {
         super();
@@ -74,7 +74,7 @@ public class ModeCreateLink extends ModeCreate {
 
     /**
      * The constructor.
-     * 
+     *
      * @param par the editor
      */
     public ModeCreateLink(Editor par) {
@@ -101,10 +101,10 @@ public class ModeCreateLink extends ModeCreate {
         return "Drag to define a link to another port";
     }
 
-    /** 
+    /**
      * On mousePressed determine what port the user is dragging from.
      * The mousePressed event is sent via ModeSelect.
-     * 
+     *
      * @see java.awt.event.MouseListener#mousePressed(java.awt.event.MouseEvent)
      */
     public void mousePressed(MouseEvent me) {
@@ -149,7 +149,7 @@ public class ModeCreateLink extends ModeCreate {
         setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
     }
 
-    /** 
+    /**
      * On mouseReleased, find the port in the destination node that's
      * on the same height as the source port fig, ask the GraphModel
      * to connect the two ports.  If that connection is allowed, then
@@ -186,10 +186,10 @@ public class ModeCreateLink extends ModeCreate {
         }
         if (f instanceof FigNode) {
             FigNode destFigNode = (FigNode) f;
-            // If its a FigNode, then check within the  
-            // FigNode to see if a port exists 
+            // If its a FigNode, then check within the
+            // FigNode to see if a port exists
             Object foundPort = null;
-            if (destFigNode != sourceFigNode) {            	
+            if (destFigNode != sourceFigNode) {
                 y = startPortFig.getY();
                 foundPort = destFigNode.deepHitPort(x, y);
             } else {

@@ -41,7 +41,7 @@ public class UMLIncludeAdditionComboBoxModel extends UMLComboBoxModel2 {
     public UMLIncludeAdditionComboBoxModel() {
 //      there is a bug in NSUML so this model listens for base modelevents
         super("base", false);
-        UmlModelEventPump.getPump().addClassModelEventListener(this, 
+        UmlModelEventPump.getPump().addClassModelEventListener(this,
                 ModelFacade.NAMESPACE, "ownedElement");
     }
 
@@ -52,7 +52,7 @@ public class UMLIncludeAdditionComboBoxModel extends UMLComboBoxModel2 {
         Object inc = /*(MInclude)*/ getTarget();
         if (inc == null) return;
         Object ns = ModelFacade.getNamespace(inc);
-        addAll(Model.getModelManagementHelper().getAllModelElementsOfKind(ns, 
+        addAll(Model.getModelManagementHelper().getAllModelElementsOfKind(ns,
                 ModelFacade.USE_CASE));
         if (contains(ModelFacade.getAddition(inc)))
             removeElement(ModelFacade.getAddition(inc));
@@ -72,8 +72,8 @@ public class UMLIncludeAdditionComboBoxModel extends UMLComboBoxModel2 {
      * @see org.argouml.uml.ui.UMLComboBoxModel2#isValidElement(Object)
      */
     protected boolean isValidElement(Object element) {
-        return ModelFacade.isAUseCase(element) 
-            && ModelFacade.getNamespace(getTarget()) 
+        return ModelFacade.isAUseCase(element)
+            && ModelFacade.getNamespace(getTarget())
                 == ModelFacade.getNamespace(element);
     }
 

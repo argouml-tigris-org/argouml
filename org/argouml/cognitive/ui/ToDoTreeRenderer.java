@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -52,7 +52,7 @@ import org.argouml.uml.ui.UMLTreeCellRenderer;
 public class ToDoTreeRenderer extends DefaultTreeCellRenderer {
     ////////////////////////////////////////////////////////////////
     // class variables
-    
+
     // general icons for poster
     private final ImageIcon postIt0     = lookupIconResource("PostIt0");
     private final ImageIcon postIt25    = lookupIconResource("PostIt25");
@@ -60,7 +60,7 @@ public class ToDoTreeRenderer extends DefaultTreeCellRenderer {
     private final ImageIcon postIt75    = lookupIconResource("PostIt75");
     private final ImageIcon postIt99    = lookupIconResource("PostIt99");
     private final ImageIcon postIt100   = lookupIconResource("PostIt100");
-    
+
     // specialised icons for designer
     private final ImageIcon postItD0    = lookupIconResource("PostItD0");
     private final ImageIcon postItD25   = lookupIconResource("PostItD25");
@@ -68,19 +68,19 @@ public class ToDoTreeRenderer extends DefaultTreeCellRenderer {
     private final ImageIcon postItD75   = lookupIconResource("PostItD75");
     private final ImageIcon postItD99   = lookupIconResource("PostItD99");
     private final ImageIcon postItD100  = lookupIconResource("PostItD100");
-    
+
     private UMLTreeCellRenderer treeCellRenderer = new UMLTreeCellRenderer();
-    
+
     private static ImageIcon lookupIconResource(String name) {
         return ResourceLoaderWrapper.lookupIconResource(name);
     }
-    
+
     ////////////////////////////////////////////////////////////////
     // TreeCellRenderer implementation
-    
+
     /**
      * @see javax.swing.tree.TreeCellRenderer#getTreeCellRendererComponent(
-     * javax.swing.JTree, java.lang.Object, boolean, boolean, boolean, int, 
+     * javax.swing.JTree, java.lang.Object, boolean, boolean, boolean, int,
      * boolean)
      */
     public Component getTreeCellRendererComponent(JTree tree, Object value,
@@ -88,17 +88,17 @@ public class ToDoTreeRenderer extends DefaultTreeCellRenderer {
     boolean expanded,
     boolean leaf, int row,
     boolean hasFocus) {
-        
+
         Component r = super.getTreeCellRendererComponent(tree, value, sel,
 							 expanded, leaf,
 							 row, hasFocus);
-        
+
         if (r instanceof JLabel) {
             JLabel lab = (JLabel) r;
             if (value instanceof ToDoItem) {
                 ToDoItem item = (ToDoItem) value;
                 Poster post = item.getPoster();
-                if ( post instanceof Designer) {
+                if (post instanceof Designer) {
                     if (item.getProgress() == 0) lab.setIcon(postItD0);
                     else if (item.getProgress() <= 25) lab.setIcon(postItD25);
                     else if (item.getProgress() <= 50) lab.setIcon(postItD50);
@@ -113,7 +113,7 @@ public class ToDoTreeRenderer extends DefaultTreeCellRenderer {
                     else if (item.getProgress() <= 100) lab.setIcon(postIt99);
                     else lab.setIcon(postIt100);
                 }
-                
+
             }
             else if (value instanceof Decision) {
                 lab.setIcon(MetalIconFactory.getTreeFolderIcon());
@@ -153,13 +153,13 @@ public class ToDoTreeRenderer extends DefaultTreeCellRenderer {
 								     hasFocus);
                 }
             }
-            
-            
-            
+
+
+
             String tip = lab.getText() + " ";
             lab.setToolTipText(tip);
             tree.setToolTipText(tip);
-            
+
             if (!sel)
                 lab.setBackground(getBackgroundNonSelectionColor());
             else {
@@ -171,6 +171,6 @@ public class ToDoTreeRenderer extends DefaultTreeCellRenderer {
         }
         return r;
     }
-    
-    
+
+
 } /* end class ToDoTreeRenderer */

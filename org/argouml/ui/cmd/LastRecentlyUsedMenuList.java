@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2003 The Regents of the University of California. All
+// Copyright (c) 2003-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -34,9 +34,9 @@ import java.io.File;
 
 /**
  * menu extension for last recently used files menu
- * 
+ *
  * functionality:
- * it is created with a link to the (file-)menu, 
+ * it is created with a link to the (file-)menu,
  * if it is created it is reading its content from config information
  * the add entry method adds a specific filename to the list, ensures that it
  * bubbles at top of list if it is already member of list
@@ -48,7 +48,7 @@ import java.io.File;
  * @since 9. November 2003 (0.15.2)
  */
 public class LastRecentlyUsedMenuList {
-    
+
     /**
      * default value for maxcount if there is no configuration
      */
@@ -74,7 +74,7 @@ public class LastRecentlyUsedMenuList {
      * -1 to be sure (adds at end)
      */
     private int menuIndex = -1;
-    
+
     /**     * menuitems actually created and added to menu
      */
     private JMenuItem[] menuItems;
@@ -83,26 +83,26 @@ public class LastRecentlyUsedMenuList {
      * Array of conf keys for accessing the stored entries
      */
     private ConfigurationKey[] confKeys;
-    
+
     /**
      * Adds the eventhandler to the menu and renames the entry
      */
-    private JMenuItem addEventHandler( String filename, int addAt) {
+    private JMenuItem addEventHandler(String filename, int addAt) {
         // the text is used by the event handler for opening the project
-        File f = new File( filename);
+        File f = new File(filename);
         //JMenuItem item = _fileMenu.add(new ActionReopenProject(filename));
-        JMenuItem item = 
+        JMenuItem item =
             fileMenu.insert(new ActionReopenProject(filename), addAt);
 
         // set maximum length of menu entry
         String entryName = f.getName();
-        if (entryName.length() > 40) 
+        if (entryName.length() > 40)
             entryName = entryName.substring(0, 40) + "...";
 
         // text is short, tooltip is long
         item.setText(entryName);
         item.setToolTipText(filename);
-        
+
         return item;
     }
 
@@ -113,15 +113,15 @@ public class LastRecentlyUsedMenuList {
      * it is added with a separator
      *
      */
-    public LastRecentlyUsedMenuList( JMenu filemenu) {
+    public LastRecentlyUsedMenuList(JMenu filemenu) {
         String newName;
         int i;
-        
+
         // holds file menu
         fileMenu = filemenu;
         lruCount = 0;
         menuIndex = filemenu.getItemCount();
-        
+
         // init from config
         // read number, write result as new default and prepare keys
         maxCount = Configuration.getInteger(Argo.KEY_NUMBER_LAST_RECENT_USED,
@@ -129,15 +129,15 @@ public class LastRecentlyUsedMenuList {
         Configuration.setInteger(Argo.KEY_NUMBER_LAST_RECENT_USED, maxCount);
         confKeys = new ConfigurationKey[maxCount];
         menuItems = new JMenuItem[maxCount];
-        
+
         // create all nessessary configuration keys for lru
         for (i = 0; i < maxCount; i++) {
-            confKeys[i] = 
-		Configuration.makeKey("project", 
-				      "mostrecent", 
+            confKeys[i] =
+		Configuration.makeKey("project",
+				      "mostrecent",
 				      "filelist".concat(Integer.toString(i)));
         }
-        
+
         // read existing file names from configuration
         i = 0;
         boolean readOK = true;
@@ -150,54 +150,54 @@ public class LastRecentlyUsedMenuList {
             else
                 readOK = false; // empty entry stops reading --> last line!
         }
-        
+
         // this is the recent count
         lruCount = i;
     }
-    
-    /** 
+
+    /**
      * Adds a new entry to lru list and removes the last one if
      * if it increases maxCount
      *
      * @param filename name of link which is to be used to represent
      * _and_ reopen the file
      */
-    public void addEntry( String filename) {
+    public void addEntry(String filename) {
         // get already existing names from menu actions
         // real file names, not action names !
 
-        String tempNames[] = new String[maxCount];
+        String[] tempNames = new String[maxCount];
         for (int i = 0; i < lruCount; i++) {
-            ActionReopenProject action = 
+            ActionReopenProject action =
                 (ActionReopenProject) menuItems[i].getAction();
             tempNames[i] = action.getFilename();
         }
-        
+
         // delete all existing entries
         for (int i = 0; i < lruCount; i++)
             fileMenu.remove(menuItems[i]);
-        
+
         // add new entry as first entry
         menuItems[0] = addEventHandler(filename, menuIndex);
 
         // add other existing entries, but filter the just added one
         int i, j;
-        i = 0; 
+        i = 0;
 	j = 1;
-        while ( i < lruCount && j < maxCount) {
-            if ( !(tempNames[i].equals(filename))) {
+        while (i < lruCount && j < maxCount) {
+            if (!(tempNames[i].equals(filename))) {
                 menuItems[j] = addEventHandler(tempNames[i], menuIndex + j);
                 j++;
             }
             i++;
         }
-        
+
         // save count
         lruCount = j;
-        
+
         // and store configuration props
-        for ( int k = 0; k < lruCount; k++) {
-            ActionReopenProject action = 
+        for (int k = 0; k < lruCount; k++) {
+            ActionReopenProject action =
                 (ActionReopenProject) menuItems[k].getAction();
             Configuration.setString(confKeys[k], action.getFilename());
         }

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -38,14 +38,14 @@ import org.tigris.gef.util.VectorSet;
  * Represents a perspective for ToDo items: grouping by offender type.
  *
  */
-public class ToDoByOffender extends ToDoPerspective 
+public class ToDoByOffender extends ToDoPerspective
         implements ToDoListListener {
 
     private static final Logger LOG = Logger.getLogger(ToDoByOffender.class);
 
     /**
      * The constructor.
-     * 
+     *
      */
     public ToDoByOffender() {
         super("combobox.todo-perspective-offender");
@@ -62,7 +62,7 @@ public class ToDoByOffender extends ToDoPerspective
         LOG.debug("toDoItemsChanged");
         Vector items = tde.getToDoItems();
         int nItems = items.size();
-        Object path[] = new Object[2];
+        Object[] path = new Object[2];
         path[0] = Designer.theDesigner().getToDoList();
 
         VectorSet allOffenders = Designer.theDesigner().getToDoList()
@@ -79,8 +79,8 @@ public class ToDoByOffender extends ToDoPerspective
                 nMatchingItems++;
             }
             if (nMatchingItems == 0) continue;
-            int childIndices[] = new int[nMatchingItems];
-            Object children[] = new Object[nMatchingItems];
+            int[] childIndices = new int[nMatchingItems];
+            Object[] children = new Object[nMatchingItems];
             nMatchingItems = 0;
             for (int i = 0; i < nItems; i++) {
                 ToDoItem item = (ToDoItem) items.elementAt(i);
@@ -101,7 +101,7 @@ public class ToDoByOffender extends ToDoPerspective
         LOG.debug("toDoItemAdded");
         Vector items = tde.getToDoItems();
         int nItems = items.size();
-        Object path[] = new Object[2];
+        Object[] path = new Object[2];
         path[0] = Designer.theDesigner().getToDoList();
 
         VectorSet allOffenders = Designer.theDesigner().getToDoList()
@@ -118,8 +118,8 @@ public class ToDoByOffender extends ToDoPerspective
                 nMatchingItems++;
             }
             if (nMatchingItems == 0) continue;
-            int childIndices[] = new int[nMatchingItems];
-            Object children[] = new Object[nMatchingItems];
+            int[] childIndices = new int[nMatchingItems];
+            Object[] children = new Object[nMatchingItems];
             nMatchingItems = 0;
             for (int i = 0; i < nItems; i++) {
                 ToDoItem item = (ToDoItem) items.elementAt(i);
@@ -140,7 +140,7 @@ public class ToDoByOffender extends ToDoPerspective
         LOG.debug("toDoItemRemoved");
         Vector items = tde.getToDoItems();
         int nItems = items.size();
-        Object path[] = new Object[2];
+        Object[] path = new Object[2];
         path[0] = Designer.theDesigner().getToDoList();
 
         VectorSet allOffenders = Designer.theDesigner().getToDoList()

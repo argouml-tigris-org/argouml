@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2003 The Regents of the University of California. All
+// Copyright (c) 2003-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -39,8 +39,6 @@ import java.io.IOException;
  * This source was taken primarily from <a
  * href="http://java.sun.com/docs/books/tutorial/jar/api/jarclassloader.html">
  * Sun's tutorial</a>
- *
- *  @author Unascribed
  */
 public class ArgoJarClassLoader extends URLClassLoader {
     private URL url;
@@ -52,7 +50,7 @@ public class ArgoJarClassLoader extends URLClassLoader {
      */
     public ArgoJarClassLoader(URL u) {
 	super(new URL[] {
-	    u 
+	    u,
 	});
 	this.url = u;
     }
@@ -89,21 +87,20 @@ public class ArgoJarClassLoader extends URLClassLoader {
     public void invokeClass(String name, String[] args)
 	throws ClassNotFoundException,
 	       NoSuchMethodException,
-	       InvocationTargetException
-    {
+	       InvocationTargetException {
 	Class c = loadClass(name);
 	Method m = c.getMethod("main", new Class[] {
-		args.getClass() 
+	    args.getClass(),
 	});
 	m.setAccessible(true);
 	int mods = m.getModifiers();
-	if (m.getReturnType() != void.class || !Modifier.isStatic(mods) 
+	if (m.getReturnType() != void.class || !Modifier.isStatic(mods)
             || !Modifier.isPublic(mods)) {
 	    throw new NoSuchMethodException("main");
 	}
 	try {
 	    m.invoke(null, new Object[] {
-		args 
+		args,
 	    });
 	} catch (IllegalAccessException e) {
 	    // This should not happen, as we have disabled access checks

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -41,8 +41,8 @@ import org.argouml.uml.ui.foundation.extension_mechanisms.ActionNewStereotype;
 import org.argouml.util.ConfigLoader;
 
 /**
- * A property panel for Guards. Rewrote this class to comply to 
- * Bob Tarling's layout mechanism and to include all valid 
+ * A property panel for Guards. Rewrote this class to comply to
+ * Bob Tarling's layout mechanism and to include all valid
  * properties as defined in the UML 1.3 spec.
  * @since Dec 14, 2002
  * @author jaap.branderhorst@xs4all.nl
@@ -51,41 +51,41 @@ public class PropPanelGuard extends PropPanelModelElement {
 
     /**
      * The constructor.
-     * 
+     *
      */
     public PropPanelGuard() {
         super("Guard", ConfigLoader.getTabPropsOrientation());
 
-        addField(Translator.localize("label.name"), 
+        addField(Translator.localize("label.name"),
                 getNameTextField());
-        addField(Translator.localize("label.stereotype"), 
+        addField(Translator.localize("label.stereotype"),
                 getStereotypeBox());
-        addField(Translator.localize("label.namespace"), 
+        addField(Translator.localize("label.namespace"),
                 getNamespaceScroll());
 
         JList transitionList = new UMLLinkedList(
                 new UMLGuardTransitionListModel());
         // MVW: TODO: Why is this is list? There's only one!
-        addField(Translator.localize("label.transition"), 
+        addField(Translator.localize("label.transition"),
                 new JScrollPane(transitionList));
 
         addSeperator();
 
-        UMLExpressionModel2 expressionModel = 
+        UMLExpressionModel2 expressionModel =
             new UMLExpressionExpressionModel(this, "expression");
-        addField(Translator.localize("label.expression"), 
+        addField(Translator.localize("label.expression"),
             new JScrollPane(new UMLExpressionBodyField(expressionModel, true),
-            JScrollPane.VERTICAL_SCROLLBAR_NEVER, 
+            JScrollPane.VERTICAL_SCROLLBAR_NEVER,
             JScrollPane.HORIZONTAL_SCROLLBAR_NEVER));
-        addField(Translator.localize("label.language"), 
+        addField(Translator.localize("label.language"),
                 new UMLExpressionLanguageField(expressionModel, true));
 
-	
-	addButton(new PropPanelButton2(new ActionNavigateTransition(), 
+
+	addButton(new PropPanelButton2(new ActionNavigateTransition(),
                 lookupIcon("NavigateUp")));
-	addButton(new PropPanelButton2(new ActionNewStereotype(), 
+	addButton(new PropPanelButton2(new ActionNewStereotype(),
 	        lookupIcon("Stereotype")));
-	addButton(new PropPanelButton2(new ActionRemoveFromModel(), 
+	addButton(new PropPanelButton2(new ActionRemoveFromModel(),
                 lookupIcon("Delete")));
     }
 

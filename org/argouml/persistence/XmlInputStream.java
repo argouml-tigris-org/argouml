@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -54,9 +54,9 @@ public class XmlInputStream extends BufferedInputStream {
     private boolean childOnly;
     private int instanceRequired;
     private int instanceCount;
-    private byte buffer[];
-    
-    private static final Logger LOG = 
+    private byte[] buffer;
+
+    private static final Logger LOG =
         Logger.getLogger(XmlInputStream.class);
 
     /**
@@ -69,7 +69,7 @@ public class XmlInputStream extends BufferedInputStream {
         this(in, theTag, null, false);
         instanceRequired = instance;
     }
-    
+
     /**
      * Construct a new XmlInputStream
      * @param in the input stream to wrap.
@@ -78,7 +78,7 @@ public class XmlInputStream extends BufferedInputStream {
     public XmlInputStream(InputStream in, String theTag) {
         this(in, theTag, null, false);
     }
-    
+
     /**
      * Construct a new XmlInputStream
      * @param in the input stream to wrap.
@@ -88,7 +88,7 @@ public class XmlInputStream extends BufferedInputStream {
     public XmlInputStream(InputStream in, String theTag, Map attribs) {
         this(in, theTag, attribs, false);
     }
-    
+
     /**
      * Construct a new XmlInputStream
      * @param in the input stream to wrap.
@@ -103,7 +103,7 @@ public class XmlInputStream extends BufferedInputStream {
         this(in, theTag, attribs, false);
         instanceRequired = instance;
     }
-    
+
     /**
      * Construct a new XmlInputStream
      * @param in the input stream to wrap.
@@ -115,7 +115,7 @@ public class XmlInputStream extends BufferedInputStream {
     public XmlInputStream(InputStream in, String theTag, boolean child) {
         this(in, theTag, null, child);
     }
-    
+
     /**
      * Construct a new XmlInputStream
      * @param in the input stream to wrap.
@@ -141,7 +141,7 @@ public class XmlInputStream extends BufferedInputStream {
      * of an XML fragment.
      *
      * @param theTag the tag name
-     * @param attribs the attributes 
+     * @param attribs the attributes
      * @param child child only
      */
     public void reopen(
@@ -177,7 +177,7 @@ public class XmlInputStream extends BufferedInputStream {
      * @see java.io.InputStream#read()
      */
     public synchronized int read() throws IOException {
-        
+
         if (!xmlStarted) {
             skipToTag();
             xmlStarted = true;
@@ -189,13 +189,13 @@ public class XmlInputStream extends BufferedInputStream {
         endStream = isLastTag(ch);
         return ch;
     }
-    
+
     /**
      * @see java.io.InputStream#read(byte[], int, int)
      */
     public synchronized int read(byte[] b, int off, int len)
         throws IOException {
-        
+
         if (!xmlStarted) {
             skipToTag();
             xmlStarted = true;
@@ -210,21 +210,21 @@ public class XmlInputStream extends BufferedInputStream {
             if (read == -1) break;
             b[readCount + off] = (byte) read;
         }
-        
+
         if (readCount > 0) {
             return readCount;
         } else {
             return -1;
         }
     }
-    
-    
-    
+
+
+
 //    /**
 //     * @see java.io.InputStream#read(byte[])
 //     */
 //    public int read(byte[] b) throws IOException {
-//        
+//
 //        if (!xmlStarted) {
 //            skipToTag();
 //            xmlStarted = true;
@@ -254,13 +254,13 @@ public class XmlInputStream extends BufferedInputStream {
 //        }
 //        return read;
 //    }
-//    
+//
     /**
      * Determines if the character is the last character of the last tag of
      * interest.
      * Every character read after the first tag of interest should be passed
      * through this method in order.
-     * 
+     *
      * @param ch the character to test.
      * @return true if this is the end of the last tag.
      */
@@ -311,7 +311,7 @@ public class XmlInputStream extends BufferedInputStream {
             if (found && !isNameTerminator((char) terminator)) {
                 found = false;
             }
-            
+
             if (found) {
                 // We've found the matching tag but do we have
                 // the correct instance with matching attributes?
@@ -333,14 +333,14 @@ public class XmlInputStream extends BufferedInputStream {
                     }
                 }
             }
-            
+
             if (found) {
                 if (instanceCount < instanceRequired) {
                     found = false;
                     ++instanceCount;
                 }
             }
-            
+
             if (found) {
                 if (childOnly) {
                     // Read the name of the child tag
@@ -415,9 +415,9 @@ public class XmlInputStream extends BufferedInputStream {
         }
         return attributesFound;
     }
-    
-    
-                    
+
+
+
     /**
      * The close method is overridden to prevent some class out of
      * our control from closing the stream (such as a SAX parser).
@@ -426,7 +426,7 @@ public class XmlInputStream extends BufferedInputStream {
      */
     public void close() throws IOException {
     }
-    
+
     /**
      * Really close the input
      * @throws IOException if an I/O error occurs.
@@ -434,7 +434,7 @@ public class XmlInputStream extends BufferedInputStream {
     public void realClose() throws IOException {
         super.close();
     }
-    
+
     private int realRead() throws IOException {
         int read = super.read();
         if (read == -1) {

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -22,13 +22,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-
-
-// File: CompoundCritic.java
-// Classes: CompoundCritic
-// Original Author: jrobbins@ics.uci.edu
-// $Id$
-
 package org.argouml.cognitive.critics;
 
 import java.util.Vector;
@@ -39,19 +32,21 @@ import org.argouml.cognitive.Goal;
 import org.argouml.cognitive.ToDoItem;
 import org.tigris.gef.util.VectorSet;
 
-
-
-/** A CompoundCritic acts like a regular critic in that it checks the
- *  design and produces design feedback.  However, a CompoundCritic is
- *  composed of several regular critics that are applied in order.
- *  The first one that produces feedback ends the application.  This is
- *  useful when criticism can be ordered from specific to general:
- *  general feedback should not be produced if specific feedback is
- *  available.  For example, one critic might check for the legality
- *  of the name of a design element, and another might check for the
- *  presence of any name.  If a given design element has no name, both
- *  critics could produce feedback, but it would be more useful if
- *  only the first one did.  */
+/**
+ * A CompoundCritic acts like a regular critic in that it checks the
+ * design and produces design feedback.  However, a CompoundCritic is
+ * composed of several regular critics that are applied in order.
+ * The first one that produces feedback ends the application.  This is
+ * useful when criticism can be ordered from specific to general:
+ * general feedback should not be produced if specific feedback is
+ * available.  For example, one critic might check for the legality
+ * of the name of a design element, and another might check for the
+ * presence of any name.  If a given design element has no name, both
+ * critics could produce feedback, but it would be more useful if
+ * only the first one did.
+ *
+ * @author Jason Robbins
+ */
 
 // TODO: maybe should stop at first, or find highest priority.
 
@@ -69,14 +64,14 @@ public class CompoundCritic extends Critic {
 
     /**
      * The constructor of a compound critic.
-     * 
+     *
      */
     public CompoundCritic() {
     }
 
     /**
      * The constructor.
-     * 
+     *
      * @param c1 the first critic that makes up the compound critic
      * @param c2 the 2nd critic that makes up the compound critic
      */
@@ -88,7 +83,7 @@ public class CompoundCritic extends Critic {
 
     /**
      * The constructor.
-     * 
+     *
      * @param c1 the first critic that makes up the compound critic
      * @param c2 the 2nd critic that makes up the compound critic
      * @param c3 the 3rd critic that makes up the compound critic
@@ -100,7 +95,7 @@ public class CompoundCritic extends Critic {
 
     /**
      * The constructor.
-     * 
+     *
      * @param c1 the first critic that makes up the compound critic
      * @param c2 the 2nd critic that makes up the compound critic
      * @param c3 the 3rd critic that makes up the compound critic
@@ -115,31 +110,31 @@ public class CompoundCritic extends Critic {
     // accessors
 
     /**
-     * @param c the new list of critics that completely 
+     * @param c the new list of critics that completely
      *                replaces the old list
      */
     public void setCritics(Vector c) { critics = c; }
-    
+
     /**
      * @return the complete list of critics
      */
     public Vector getCritics() { return critics; }
-    
+
     /**
      * @param c the critic to be added at the end of the current list
      */
     public void addCritic(Critic c) { critics.addElement(c); }
-    
+
     /**
      * @param c the critic to be removed
      */
     public void removeCritic(Critic c) { critics.removeElement(c); }
-  
+
     ////////////////////////////////////////////////////////////////
     // critiquing
 
     /**
-     * @see org.argouml.cognitive.critics.Critic#critique(java.lang.Object, 
+     * @see org.argouml.cognitive.critics.Critic#critique(java.lang.Object,
      * org.argouml.cognitive.Designer)
      */
     public void critique(Object dm, Designer dsgr) {
@@ -161,7 +156,9 @@ public class CompoundCritic extends Critic {
 	int size = critics.size();
 	for (int i = 0; i < size; ++i) {
 	    Critic c = (Critic) critics.elementAt(i);
-	    if (c.supports(d)) return true;
+	    if (c.supports(d)) {
+		return true;
+	    }
 	}
 	return false;
     }
@@ -187,7 +184,9 @@ public class CompoundCritic extends Critic {
 	int size = critics.size();
 	for (int i = 0; i < size; ++i) {
 	    Critic c = (Critic) critics.elementAt(i);
-	    if (c.supports(g)) return true;
+	    if (c.supports(g)) {
+		return true;
+	    }
 	}
 	return false;
     }
@@ -213,7 +212,9 @@ public class CompoundCritic extends Critic {
 	int size = critics.size();
 	for (int i = 0; i < size; ++i) {
 	    Critic c = (Critic) critics.elementAt(i);
-	    if (c.containsKnowledgeType(type)) return true;
+	    if (c.containsKnowledgeType(type)) {
+		return true;
+	    }
 	}
 	return false;
     }
@@ -224,9 +225,9 @@ public class CompoundCritic extends Critic {
     public void addKnowledgeType(String type) {
 	throw new UnsupportedOperationException();
     }
-  
+
     /**
-     * @see org.argouml.cognitive.Poster#expand(java.lang.String, 
+     * @see org.argouml.cognitive.Poster#expand(java.lang.String,
      * org.tigris.gef.util.VectorSet)
      */
     public String expand(String desc, VectorSet offs) {
@@ -239,7 +240,7 @@ public class CompoundCritic extends Critic {
     public Icon getClarifier() {
 	throw new UnsupportedOperationException();
     }
-  
+
 
     /**
      * @see org.argouml.cognitive.critics.Critic#isActive()
@@ -248,14 +249,16 @@ public class CompoundCritic extends Critic {
 	int size = critics.size();
 	for (int i = 0; i < size; ++i) {
 	    Critic c = (Critic) critics.elementAt(i);
-	    if (c.isActive()) return true;
+	    if (c.isActive()) {
+		return true;
+	    }
 	}
 	return false;
     }
 
     ////////////////////////////////////////////////////////////////
     // criticism control
-  
+
     /**
      * @see org.argouml.cognitive.critics.Critic#isEnabled()
      */
@@ -267,7 +270,7 @@ public class CompoundCritic extends Critic {
     // design feedback
 
     /**
-     * @see org.argouml.cognitive.critics.Critic#toDoItem(java.lang.Object, 
+     * @see org.argouml.cognitive.critics.Critic#toDoItem(java.lang.Object,
      * org.argouml.cognitive.Designer)
      */
     public ToDoItem toDoItem(Object dm, Designer dsgr) {

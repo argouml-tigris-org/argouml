@@ -58,13 +58,13 @@ public final class ProjectManager implements PropertyChangeListener {
      */
     public static final String CURRENT_PROJECT_PROPERTY_NAME =
         "currentProject";
-    
+
     /**
      * The name of the property that there is no project.
      */
     public static final String NO_PROJECT =
         "noProject";
-    
+
     /**
      * The name of the property that defines the save state.
      */
@@ -95,9 +95,9 @@ public final class ProjectManager implements PropertyChangeListener {
 
     /**
      * The event to fire.
-     * 
+     *
      * TODO: Investigate! Is the purpose really to let the next call to
-     * {@link #firePropertyChanged(String, Object, Object)} fire the old 
+     * {@link #firePropertyChanged(String, Object, Object)} fire the old
      * event again if the previous invocation resulted in an exception?
      * If so, please document why. If not, fix it.
      */
@@ -105,7 +105,7 @@ public final class ProjectManager implements PropertyChangeListener {
 
     /**
      * The singleton accessor method of this class.
-     * 
+     *
      * @return The singleton.
      */
     public static ProjectManager getManager() {
@@ -126,7 +126,7 @@ public final class ProjectManager implements PropertyChangeListener {
 
     /**
      * Adds a listener to the listener list.
-     * 
+     *
      * @param listener The listener to add.
      */
     public void addPropertyChangeListener(PropertyChangeListener listener) {
@@ -135,7 +135,7 @@ public final class ProjectManager implements PropertyChangeListener {
 
     /**
      * Removes a listener from the listener list.
-     * 
+     *
      * @param listener The listener to remove.
      */
     public void removePropertyChangeListener(PropertyChangeListener listener) {
@@ -144,13 +144,13 @@ public final class ProjectManager implements PropertyChangeListener {
 
     /**
      * Fire an event to all members of the listener list.
-     * 
+     *
      * @param propertyName The name of the event.
      * @param oldValue The old value.
      * @param newValue The new value.
      */
     private void firePropertyChanged(String propertyName,
-				     Object oldValue, Object newValue) 
+				     Object oldValue, Object newValue)
     {
         // Guaranteed to return a non-null array
         Object[] listeners = listenerList.getListenerList();
@@ -174,17 +174,17 @@ public final class ProjectManager implements PropertyChangeListener {
     }
 
     /**
-     * Sets the current project (the project that is viewable in the 
+     * Sets the current project (the project that is viewable in the
      * projectbrowser).
      * This method fires a propertychanged event.<p>
      *
-     * If the argument is null, then the current project will be forgotten 
+     * If the argument is null, then the current project will be forgotten
      * about.
-     * 
+     *
      * @param newProject The new project.
      */
     public void setCurrentProject(Project newProject) {
-        Project oldProject = currentProject;        
+        Project oldProject = currentProject;
         currentProject = newProject;
         if (currentProject != null
 	    && currentProject.getActiveDiagram() == null) {
@@ -201,9 +201,9 @@ public final class ProjectManager implements PropertyChangeListener {
 
     /**
      * Returns the current project.<p>
-     * 
+     *
      * If there is no project, a new one is created.
-     * 
+     *
      * @return Project The current project.
      */
     public Project getCurrentProject() {
@@ -230,26 +230,26 @@ public final class ProjectManager implements PropertyChangeListener {
         creatingCurrentProject = false;
         return p;
     }
-    
+
     /**
      * Test if the model needs to be saved.
-     * 
+     *
      * @return <tt>true</tt> if the model needs to be saved.
      */
     public boolean needsSave() {
         return ActionSaveProject.getInstance().isEnabled();
     }
-    
+
     /**
      * Notify the gui that the
      * current project's save state has changed. There are 2 receivers:
-     * the SaveProject tool icon and the title bar (for showing a *). 
-     * 
+     * the SaveProject tool icon and the title bar (for showing a *).
+     *
      * @param newValue The new state.
      */
     public void setNeedsSave(boolean newValue) {
         boolean oldValue = ActionSaveProject.getInstance().isEnabled();
-        
+
         if (oldValue != newValue) {
             ActionSaveProject.getInstance().setEnabled(newValue);
             firePropertyChanged(SAVE_STATE_PROPERTY_NAME,
@@ -257,18 +257,18 @@ public final class ProjectManager implements PropertyChangeListener {
                             new Boolean(newValue));
         }
     }
-    
+
     /**
      * Remove the project.
-     * 
+     *
      * @param oldProject The project to be removed.
      */
     public void removeProject(Project oldProject) {
-        
+
         if (currentProject == oldProject) {
             currentProject = null;
         }
-        
+
         oldProject.remove();
     }
 
@@ -288,6 +288,6 @@ public final class ProjectManager implements PropertyChangeListener {
                 UmlModelListener.SAVE_STATE_PROPERTY_NAME)) {
             setNeedsSave(true);
         }
-        
+
     }
 }

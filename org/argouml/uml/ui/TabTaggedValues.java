@@ -144,7 +144,7 @@ public class TabTaggedValues extends TabSpawnable
             }
         }
 
-        Object t = (theTarget instanceof Fig) 
+        Object t = (theTarget instanceof Fig)
                     ? ((Fig) theTarget).getOwner() : theTarget;
         if (!(org.argouml.model.ModelFacade.isAModelElement(t))) {
             target = null;

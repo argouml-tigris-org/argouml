@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2003-2004 The Regents of the University of California. All
+// Copyright (c) 2003-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -22,8 +22,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// File: RadioAction.java
-// Classes: RadioAction
 // Created on 20 July 2003, 02:12
 
 package org.argouml.uml.diagram.ui;
@@ -38,8 +36,8 @@ import org.tigris.toolbar.toolbutton.AbstractButtonAction;
 
 /**
  * A wrapper around a standard action to indicate that any buttons created
- * from this actions should act like radio buttons, i.e. that when the 
- * toolbar buttons are double-clicked, they remain active, and every click 
+ * from this actions should act like radio buttons, i.e. that when the
+ * toolbar buttons are double-clicked, they remain active, and every click
  * on the diagram will place a new modelelement.
  *
  * @author Bob Tarling
@@ -54,7 +52,7 @@ public class RadioAction extends AbstractButtonAction {
     public RadioAction(Action action) {
         super((String) action.getValue(Action.NAME),
 		(Icon) action.getValue(Action.SMALL_ICON));
-        putValue(Action.SHORT_DESCRIPTION, 
+        putValue(Action.SHORT_DESCRIPTION,
                 action.getValue(Action.SHORT_DESCRIPTION));
         realAction = action;
     }
@@ -66,7 +64,7 @@ public class RadioAction extends AbstractButtonAction {
         super.actionPerformed(actionEvent);
         realAction.actionPerformed(actionEvent);
         // TODO: Change this to ArgoDiagram
-        UMLDiagram diagram = (UMLDiagram) 
+        UMLDiagram diagram = (UMLDiagram)
             ProjectManager.getManager().getCurrentProject().getActiveDiagram();
         diagram.deselectOtherTools(this);
         Globals.setSticky(isDoubleClick());

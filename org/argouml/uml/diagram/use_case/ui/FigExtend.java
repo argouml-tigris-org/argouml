@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -95,7 +95,7 @@ public class FigExtend extends FigEdgeModelElement {
         label.setMultiLine(false);
         label.setAllowsTab(false);
         label.setText("<<extend>>");
-        
+
 
         label.calcBounds();
 
@@ -213,7 +213,7 @@ public class FigExtend extends FigEdgeModelElement {
         if (extend == null) {
             return;
         }
-        
+
         // Let the superclass sort itself out, and then tell GEF we are going
         // to start something
         super.modelChanged(e);
@@ -236,8 +236,8 @@ public class FigExtend extends FigEdgeModelElement {
         fg.calcBounds();
         endTrans();
     }
-    
-    
+
+
     /**
      * @see org.tigris.gef.presentation.Fig#paint(java.awt.Graphics)
      */
@@ -245,6 +245,6 @@ public class FigExtend extends FigEdgeModelElement {
         endArrow.setLineColor(getLineColor());
         super.paint(g);
     }
-    
+
 
 } /* end class FigExtend */

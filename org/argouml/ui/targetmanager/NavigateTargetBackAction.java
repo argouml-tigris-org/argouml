@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2002 The Regents of the University of California. All
+// Copyright (c) 2002-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -29,7 +29,7 @@ import org.argouml.uml.ui.UMLAction;
 
 /**
  * Navigates the target one target back in history.
- * 
+ *
  * @author jaap.branderhorst@xs4all.nl
  */
 public class NavigateTargetBackAction extends UMLAction {
@@ -53,7 +53,7 @@ public class NavigateTargetBackAction extends UMLAction {
      * @see
      * java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
-    public void actionPerformed(ActionEvent e) {    
+    public void actionPerformed(ActionEvent e) {
         TargetManager.getInstance().navigateBackward();
     }
 
@@ -63,7 +63,7 @@ public class NavigateTargetBackAction extends UMLAction {
      * @see org.argouml.uml.ui.UMLAction#shouldBeEnabled()
      */
     public boolean shouldBeEnabled() {
-        return super.shouldBeEnabled()  
+        return super.shouldBeEnabled()
             && TargetManager.getInstance().navigateBackPossible();
     }
 }

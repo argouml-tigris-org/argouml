@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -55,7 +55,7 @@ public class WizDescription extends WizStep {
 
     /**
      * The constructor.
-     * 
+     *
      */
     public WizDescription() {
 	super();
@@ -88,10 +88,10 @@ public class WizDescription extends WizStep {
 	    description.setCaretPosition(0);
 	}
 	else if (target instanceof PriorityNode) {
-	    message = MessageFormat. 
+	    message = MessageFormat.
                 format(Translator.localize("message.item.branch-priority"),
                        new Object [] {
-			   target.toString() 
+			   target.toString(),
 		       });
 	    description.setEditable(false);
 	    description.setText(message);
@@ -99,10 +99,10 @@ public class WizDescription extends WizStep {
 	    return;
 	}
 	else if (target instanceof Critic) {
-	    message = MessageFormat. 
+	    message = MessageFormat.
                 format(Translator.localize("message.item.branch-critic"),
                        new Object [] {
-			   target.toString() 
+			   target.toString(),
 		       });
 	    description.setEditable(false);
 	    description.setText(message);
@@ -110,10 +110,10 @@ public class WizDescription extends WizStep {
 	    return;
 	}
 	else if (org.argouml.model.ModelFacade.isAModelElement(target)) {
-	    message = MessageFormat. 
+	    message = MessageFormat.
                 format(Translator.localize("message.item.branch-model"),
                        new Object [] {
-			   target.toString() 
+			   target.toString(),
 		       });
 	    description.setEditable(false);
 	    description.setText(message);
@@ -121,30 +121,30 @@ public class WizDescription extends WizStep {
 	    return;
 	}
 	else if (target instanceof Decision) {
-	    message = MessageFormat. 
+	    message = MessageFormat.
                 format(Translator.localize("message.item.branch-decision"),
                        new Object [] {
-			   target.toString() 
+			   target.toString(),
 		       });
 	    description.setText(message);
 
 	    return;
 	}
 	else if (target instanceof Goal) {
-	    message = MessageFormat. 
+	    message = MessageFormat.
                 format(Translator.localize("message.item.branch-goal"),
                        new Object [] {
-			   target.toString() 
+			   target.toString(),
 		       });
 	    description.setText(message);
 
 	    return;
 	}
 	else if (target instanceof KnowledgeTypeNode) {
-	    message = MessageFormat. 
+	    message = MessageFormat.
                 format(Translator.localize("message.item.branch-knowledge"),
                        new Object [] {
-			   target.toString() 
+			   target.toString(),
 		       });
 	    description.setText(message);
 

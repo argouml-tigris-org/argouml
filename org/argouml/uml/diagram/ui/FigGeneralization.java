@@ -42,7 +42,7 @@ import org.tigris.gef.presentation.FigText;
  * @author abonner@ics.uci.edu, jaap.branderhorst@xs4all.nl
  */
 public class FigGeneralization extends FigEdgeModelElement {
-	
+
     /**
      * Text box for discriminator
      */
@@ -72,12 +72,12 @@ public class FigGeneralization extends FigEdgeModelElement {
 	endArrow.setFillColor(Color.white);
 	setDestArrowHead(endArrow);
 	setBetweenNearestPoints(true);
-    
+
 	if (getLayer() == null) {
 	    setLayer(ProjectManager.getManager()
 		     .getCurrentProject().getActiveDiagram().getLayer());
 	}
-    
+
     }
 
     /**
@@ -89,9 +89,9 @@ public class FigGeneralization extends FigEdgeModelElement {
 	this();
 	setLayer(lay);
 	setOwner(edge);
-    
+
     }
-  
+
     /**
      * The constructor that hooks the Fig into the UML element
      * @param edge the UML element
@@ -109,10 +109,10 @@ public class FigGeneralization extends FigEdgeModelElement {
     ////////////////////////////////////////////////////////////////
     // event handlers
 
-    /** 
+    /**
      * This is called aftern any part of the UML MModelElement has
-     * changed. 
-     * 
+     * changed.
+     *
      * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#modelChanged(java.beans.PropertyChangeEvent)
      */
     protected void modelChanged(PropertyChangeEvent e) {
@@ -120,7 +120,7 @@ public class FigGeneralization extends FigEdgeModelElement {
 	updateStereotypeText();
 	updateDiscriminatorText();
     }
-  
+
     /**
      * Updates the discriminator text. Called if the model is changed
      * and on construction time.
@@ -170,8 +170,8 @@ public class FigGeneralization extends FigEdgeModelElement {
 	    setSourceFigNode(subTypeFN);
 	    setDestPortFig(superTypeFN);
 	    setDestFigNode(superTypeFN);
-      
-	} else 
+
+	} else
 	    if (own != null) {
 		throw new IllegalStateException("FigGeneralization "
 						+ "has an illegal owner");

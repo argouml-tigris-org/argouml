@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -49,7 +49,7 @@ public class TreeModelComposite extends TreeModelSupport implements TreeModel {
 
     /**
      * The constructor.
-     * 
+     *
      * @param name the name that will be localized
      */
     public TreeModelComposite(String name) {
@@ -77,11 +77,11 @@ public class TreeModelComposite extends TreeModelSupport implements TreeModel {
 
         int nSubs = getGoRules().size();
         for (int i = 0; i < nSubs; i++) {
-            TreeModel tm = (TreeModel) getGoRules().elementAt(i);     
+            TreeModel tm = (TreeModel) getGoRules().elementAt(i);
             int childCount = tm.getChildCount(parent);
-            if (index < childCount) {              
+            if (index < childCount) {
                 return tm.getChild(parent, index);
-            }          
+            }
             index -= childCount;
         }
         return null;
@@ -102,7 +102,7 @@ public class TreeModelComposite extends TreeModelSupport implements TreeModel {
     }
 
     /**
-     * @see javax.swing.tree.TreeModel#getIndexOfChild(java.lang.Object, 
+     * @see javax.swing.tree.TreeModel#getIndexOfChild(java.lang.Object,
      * java.lang.Object)
      */
     public int getIndexOfChild(Object parent, Object child) {
@@ -110,12 +110,12 @@ public class TreeModelComposite extends TreeModelSupport implements TreeModel {
         int childCount = 0;
         int nSubs = getGoRules().size();
         for (int i = 0; i < nSubs; i++) {
-            TreeModel tm = (TreeModel) getGoRules().elementAt(i);           
+            TreeModel tm = (TreeModel) getGoRules().elementAt(i);
             int childIndex = tm.getIndexOfChild(parent, child);
-            if (childIndex != -1) {               
+            if (childIndex != -1) {
                 return childIndex + childCount;
             }
-            childCount += tm.getChildCount(parent);          
+            childCount += tm.getChildCount(parent);
         }
         LOG.debug("child not found!");
 
@@ -145,12 +145,12 @@ public class TreeModelComposite extends TreeModelSupport implements TreeModel {
     }
 
     /**
-     * Empty implementation - not used.
+     * Empty implementation - not used.<p>
      *
-     * <p>Messaged when the user has altered the value for the item identified
+     * Messaged when the user has altered the value for the item identified
      * by <I>path</I> to <I>newValue</I>.  If <I>newValue</I> signifies
      * a truly new value the model should post a treeNodesChanged
-     * event.
+     * event.<p>
      *
      * @param path path to the node that the user has altered.
      * @param newValue the new value from the TreeCellEditor.

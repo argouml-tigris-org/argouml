@@ -40,7 +40,7 @@ public class UMLFeatureOwnerComboBoxModel extends UMLComboBoxModel2 {
      */
     public UMLFeatureOwnerComboBoxModel() {
         super("owner", false);
-        UmlModelEventPump.getPump().addClassModelEventListener(this, 
+        UmlModelEventPump.getPump().addClassModelEventListener(this,
                 ModelFacade.NAMESPACE, "ownedElement");
     }
 

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -22,13 +22,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-
-
-// File: DecisionModel.java
-// Classes: DecisionModel
-// Original Author: jrobbins@ics.uci.edu
-// $Id$
-
 package org.argouml.cognitive;
 
 import java.io.Serializable;
@@ -36,27 +29,29 @@ import java.util.Enumeration;
 import java.util.Observable;
 import java.util.Vector;
 
-/** The DecisionModel is part of the state of the Designer.  It
- *  describes what types of decisions, or design issues, the Designer
- *  is thinking about at the current time.  Critics that are relevant to
- *  those decisions are made active, Critics that are not relevant are
- *  made inactive.
+/**
+ * The DecisionModel is part of the state of the Designer.  It
+ * describes what types of decisions, or design issues, the Designer
+ * is thinking about at the current time.  Critics that are relevant to
+ * those decisions are made active, Critics that are not relevant are
+ * made inactive.
  *
- *  TODO: There is some notion that each decision has a
- *  certain importanance at a certain time, but I have not followed
- *  through on that because I don't have good examples of how to
- *  quantify the importance of a decision.
+ * TODO: There is some notion that each decision has a
+ * certain importanance at a certain time, but I have not followed
+ * through on that because I don't have good examples of how to
+ * quantify the importance of a decision.
  *
- *  TODO: Right now the individual decisions are just
- *  Strings, maybe they should have some non-atomic structure? */
-
-public class DecisionModel extends Observable implements Serializable 
-{
+ * TODO: Right now the individual decisions are just
+ * Strings, maybe they should have some non-atomic structure?
+ *
+ * @author Jason Robbins
+ */
+public class DecisionModel extends Observable implements Serializable {
     private Vector decisions = new Vector();
 
     /**
      * The constructor.
-     * 
+     *
      */
     public DecisionModel() {
 	decisions.addElement(Decision.UNSPEC);
@@ -70,15 +65,17 @@ public class DecisionModel extends Observable implements Serializable
      */
     public Vector getDecisions() { return decisions; }
 
-    /** 
+    /**
      * Reply true iff the Designer is considering the given decision.
-     * 
+     *
      * @param decision the given decision
      * @return true if considered
      */
     public boolean isConsidering(String decision) {
 	Decision d = findDecision(decision);
-	if 	(null == d) return false;
+	if (null == d) {
+	    return false;
+	}
 	return d.getPriority() > 0;
     }
 
@@ -86,7 +83,7 @@ public class DecisionModel extends Observable implements Serializable
     /**
      * This function sets the priority of an existing decision, or
      * if the decision does not exist yet, it creates a new one.
-     * 
+     *
      * @param decision the given decision
      * @param priority the new priority
      */
@@ -94,7 +91,7 @@ public class DecisionModel extends Observable implements Serializable
 						 int priority)
     {
 	Decision d = findDecision(decision);
-	if 	(null == d) {
+	if (null == d) {
 	    d = new Decision(decision, priority);
 	    decisions.addElement(d);
 	    return;
@@ -105,22 +102,24 @@ public class DecisionModel extends Observable implements Serializable
 	//decision model listener
     }
 
-    /** 
+    /**
      * If the given decision is already defined, do nothing. If it is
-     * not already defined, set it to the given initial priority. 
-     * 
+     * not already defined, set it to the given initial priority.
+     *
      * @param decision the existing decision
      * @param priority the priority
      */
     public void defineDecision(String decision, int priority) {
 	Decision d = findDecision(decision);
-	if (d == null) setDecisionPriority(decision, priority);
+	if (d == null) {
+	    setDecisionPriority(decision, priority);
+	}
     }
 
-    /** 
+    /**
      * The Designer has indicated that he is now interested in the
-     * given decision. 
-     * 
+     * given decision.
+     *
      * @param decision the interesting decision
      */
     public void startConsidering(String decision) {
@@ -129,8 +128,8 @@ public class DecisionModel extends Observable implements Serializable
 
     /**
      * The Designer has indicated that he is now interested in the
-     * given decision. 
-     * 
+     * given decision.
+     *
      * @param d the interesting decision
      */
     public void startConsidering(Decision d) {
@@ -138,10 +137,10 @@ public class DecisionModel extends Observable implements Serializable
 	decisions.addElement(d);
     }
 
-    /** 
+    /**
      * The Designer has indicated that he is not interested in the
      * given decision right now.
-     * 
+     *
      * @param decision the uninteresting decision
      */
     public void stopConsidering(String decision) {
@@ -151,14 +150,14 @@ public class DecisionModel extends Observable implements Serializable
     /**
      * The Designer has indicated that he is not interested in the
      * given decision right now.
-     * 
+     *
      * @param d the uninteresting decision
      */
     public void stopConsidering(Decision d) {
 	decisions.removeElement(d);
     }
 
-    /** 
+    /**
      * Finds a decision with a specific name.
      *
      * @param decName the decision name
@@ -168,7 +167,9 @@ public class DecisionModel extends Observable implements Serializable
 	Enumeration elems = decisions.elements();
 	while (elems.hasMoreElements()) {
 	    Decision d = (Decision) elems.nextElement();
-	    if (decName.equals(d.getName())) return d;
+	    if (decName.equals(d.getName())) {
+		return d;
+	    }
 	}
 	return null;
     }

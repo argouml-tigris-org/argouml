@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -22,10 +22,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// File: SequenceDiagramRenderer.java
-// Classes: SequenceDiagramRenderer
-// Original Author: 5eichler@inormatik.uni-hamburg.de
-
 // $Id$
 
 
@@ -43,17 +39,19 @@ import org.tigris.gef.presentation.FigNode;
 /**
  * This class renders a sequence diagram.
  *
+ *
+ * @author 5eichler
  */
 public class SequenceDiagramRenderer
 	implements GraphNodeRenderer, GraphEdgeRenderer {
     private static final Logger LOG =
 	Logger.getLogger(SequenceDiagramRenderer.class);
 
-    /** 
+    /**
      * Return a Fig that can be used to represent the given node.
-     * 
+     *
      * @see org.tigris.gef.graph.GraphNodeRenderer#getFigNodeFor(
-     * org.tigris.gef.graph.GraphModel, org.tigris.gef.base.Layer, 
+     * org.tigris.gef.graph.GraphModel, org.tigris.gef.base.Layer,
      * java.lang.Object)
      */
     public FigNode getFigNodeFor(GraphModel gm, Layer lay, Object node) {
@@ -65,11 +63,11 @@ public class SequenceDiagramRenderer
 	return null;
     }
 
-    /** 
+    /**
      * Return a Fig that can be used to represent the given edge.
-     * 
+     *
      * @see org.tigris.gef.graph.GraphEdgeRenderer#getFigEdgeFor(
-     * org.tigris.gef.graph.GraphModel, org.tigris.gef.base.Layer, 
+     * org.tigris.gef.graph.GraphModel, org.tigris.gef.base.Layer,
      * java.lang.Object)
      */
     public FigEdge getFigEdgeFor(GraphModel gm, Layer lay, Object edge) {
@@ -88,7 +86,7 @@ public class SequenceDiagramRenderer
 			if (ModelFacade.isACreateAction(edge)) {
 			    return new FigCreateActionLink(edge);
 			}
-	}		
+	}
 	// TODO: Something here.
 	LOG.debug("SequenceDiagramRenderer getFigEdgeFor");
 	return null;

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -35,13 +35,13 @@ import org.argouml.model.ModelFacade;
  * @author  alexb
  * @since 0.15.2, Created on 28 September 2003, 10:02
  */
-public class NameOrder 
+public class NameOrder
     implements Comparator {
-    
+
     /** Creates a new instance of NameOrder */
     public NameOrder() {
     }
-    
+
     /**
      * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
      */
@@ -55,23 +55,23 @@ public class NameOrder
 	    DefaultMutableTreeNode node = (DefaultMutableTreeNode) obj2;
 	    obj2 = node.getUserObject();
 	}
-        
+
         return compareUserObjects(obj1, obj2);
     }
-    
+
     /**
      * alphabetic ordering of user object names instead of type names
      *
      * @param obj Diagram or Base
      * @param obj1 Diagram or Base
-     * @return 0 if invalid params. 0 if the objects are equally named. 
+     * @return 0 if invalid params. 0 if the objects are equally named.
      *         A positive or negative int if the names differ.
      */
     protected int compareUserObjects(Object obj, Object obj1) {
         if ((ModelFacade.isADiagram(obj)
-	     || ModelFacade.isABase(obj) )
+	     || ModelFacade.isABase(obj))
 	    && (ModelFacade.isADiagram(obj1)
-		|| ModelFacade.isABase(obj1) )) {
+		|| ModelFacade.isABase(obj1))) {
 	    String name =
 		ModelFacade.getName(obj) == null
 		? "" : ModelFacade.getName(obj);
@@ -85,7 +85,7 @@ public class NameOrder
 
 	return 0;
     }
-    
+
     /**
      * @see java.lang.Object#toString()
      */

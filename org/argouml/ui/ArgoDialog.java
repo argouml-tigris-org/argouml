@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2003-2004 The Regents of the University of California. All
+// Copyright (c) 2003-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -37,12 +37,12 @@ import org.tigris.swidgets.Dialog;
  * @author Bob Tarling
  */
 public class ArgoDialog extends Dialog {
-    
+
     /**
      * Suffix to calculate the mnemonic key from the key.
      */
     private static final String MNEMONIC_KEY_SUFFIX = ".mnemonic";
-    
+
     /**
      * @see Dialog#Dialog(Frame, String, boolean)
      *
@@ -58,15 +58,14 @@ public class ArgoDialog extends Dialog {
      * Creates a new ArgoDialog with the specified optionType.
      */
     public ArgoDialog(Frame owner,
-		      String title, int optionType, boolean modal)
-    {
+		      String title, int optionType, boolean modal) {
         super(owner, title, optionType, modal);
     }
-        
+
     /**
      * @see org.argouml.swingext.Dialog#nameButtons()
      */
-    protected void nameButtons() {  
+    protected void nameButtons() {
         nameButton(getOkButton(), "button.ok");
         nameButton(getCancelButton(), "button.cancel");
         nameButton(getCloseButton(), "button.close");
@@ -74,7 +73,7 @@ public class ArgoDialog extends Dialog {
         nameButton(getNoButton(), "button.no");
         nameButton(getHelpButton(), "button.help");
     }
-    
+
     /**
      * Allocates names for a button.
      *

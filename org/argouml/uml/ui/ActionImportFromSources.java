@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2002 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -35,7 +35,7 @@ import org.argouml.uml.reveng.Import;
  * @stereotype singleton
  */
 public class ActionImportFromSources extends UMLAction {
-    
+
     private static final Logger LOG =
         Logger.getLogger(ActionImportFromSources.class);
 
@@ -46,7 +46,7 @@ public class ActionImportFromSources extends UMLAction {
      * The singleton.
      */
     private static final ActionImportFromSources SINGLETON =
-        new ActionImportFromSources(); 
+        new ActionImportFromSources();
 
 
     ////////////////////////////////////////////////////////////////
@@ -79,4 +79,4 @@ public class ActionImportFromSources extends UMLAction {
         return SINGLETON;
     }
 }
-/* end class ActionImportFromSources */   
+/* end class ActionImportFromSources */

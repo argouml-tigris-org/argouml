@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -38,7 +38,7 @@ import org.argouml.uml.ui.UMLComboBox2;
  */
 public class ActionSetIncludeBase extends UMLAction {
 
-    private static final ActionSetIncludeBase SINGLETON = 
+    private static final ActionSetIncludeBase SINGLETON =
         new ActionSetIncludeBase();
 
     /**
@@ -48,7 +48,7 @@ public class ActionSetIncludeBase extends UMLAction {
         super(Translator.localize("action.set"), false, NO_ICON);
     }
 
-    
+
     /**
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */

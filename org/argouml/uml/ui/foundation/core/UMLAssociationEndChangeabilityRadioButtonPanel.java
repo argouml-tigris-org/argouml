@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -32,24 +32,24 @@ import org.argouml.model.ModelFacade;
 import org.argouml.uml.ui.UMLRadioButtonPanel;
 
 /**
- * 
- * @author jaap.branderhorst@xs4all.nl	
+ *
+ * @author jaap.branderhorst@xs4all.nl
  * @since Jan 4, 2003
  */
-public class UMLAssociationEndChangeabilityRadioButtonPanel 
+public class UMLAssociationEndChangeabilityRadioButtonPanel
     extends UMLRadioButtonPanel {
 
     private static Map labelTextsAndActionCommands = new HashMap();
 
     static {
-        labelTextsAndActionCommands.put(Translator.localize( 
-                "label.changeability-addonly"), 
+        labelTextsAndActionCommands.put(Translator.localize(
+                "label.changeability-addonly"),
                 ActionSetChangeability.ADDONLY_COMMAND);
-        labelTextsAndActionCommands.put(Translator.localize( 
-                "label.changeability-changeable"), 
+        labelTextsAndActionCommands.put(Translator.localize(
+                "label.changeability-changeable"),
                 ActionSetChangeability.CHANGEABLE_COMMAND);
-        labelTextsAndActionCommands.put(Translator.localize( 
-                "label.changeability-frozen"), 
+        labelTextsAndActionCommands.put(Translator.localize(
+                "label.changeability-frozen"),
                 ActionSetChangeability.FROZEN_COMMAND);
     }
 
@@ -60,7 +60,7 @@ public class UMLAssociationEndChangeabilityRadioButtonPanel
      */
     public UMLAssociationEndChangeabilityRadioButtonPanel(
             String title, boolean horizontal) {
-        super(title, labelTextsAndActionCommands, "changeability", 
+        super(title, labelTextsAndActionCommands, "changeability",
                 ActionSetChangeability.getInstance(), horizontal);
     }
 
@@ -71,12 +71,12 @@ public class UMLAssociationEndChangeabilityRadioButtonPanel
         if (getTarget() != null) {
             Object target = /*(MAssociationEnd)*/ getTarget();
             Object kind = ModelFacade.getChangeability(target);
-            if (kind == null 
+            if (kind == null
                 || kind.equals(ActionSetChangeability.CHANGEABLE_COMMAND)) {
                 setSelected(ActionSetChangeability.CHANGEABLE_COMMAND);
             } else
 		if (kind.equals(ActionSetChangeability.ADDONLY_COMMAND)) {
-		    setSelected(ActionSetChangeability.ADDONLY_COMMAND); 
+		    setSelected(ActionSetChangeability.ADDONLY_COMMAND);
 		} else
 		    if (kind.equals(ActionSetChangeability.FROZEN_COMMAND)) {
 			setSelected(ActionSetChangeability.FROZEN_COMMAND);

@@ -38,9 +38,9 @@ import org.argouml.uml.ui.AbstractActionNewModelElement;
  */
 public class ActionNewSynchState extends AbstractActionNewModelElement {
 
-    private static final ActionNewSynchState SINGLETON = 
+    private static final ActionNewSynchState SINGLETON =
         new ActionNewSynchState();
-    
+
     /**
      * Constructor for ActionNewPseudoState.
      */
@@ -48,7 +48,7 @@ public class ActionNewSynchState extends AbstractActionNewModelElement {
         super();
         putValue(Action.NAME, Translator.localize("button.new-synchstate"));
     }
-    
+
     /**
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */

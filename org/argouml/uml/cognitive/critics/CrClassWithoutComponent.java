@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -22,11 +22,7 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// File: CrClassWithoutComponent.java
-// Classes: CrClassWithoutComponent
-// Original Author: 5eichler@informatik.uni-hamburg.de
 // $Id$
-
 package org.argouml.uml.cognitive.critics;
 
 import java.util.Collection;
@@ -42,12 +38,14 @@ import org.tigris.gef.util.VectorSet;
 /**
  * A critic to detect when a class in a deployment-diagram
  * is not inside a component
- **/
+ *
+ * @author 5eichler
+ */
 public class CrClassWithoutComponent extends CrUML {
 
     /**
      * The constructor.
-     * 
+     *
      */
     public CrClassWithoutComponent() {
 	setHeadline("Classes normally are inside components");
@@ -99,7 +97,7 @@ public class CrClassWithoutComponent extends CrUML {
      * @param dd the deployment diagram
      * @return the set of effenders
      */
-    public VectorSet computeOffenders(UMLDeploymentDiagram dd) { 
+    public VectorSet computeOffenders(UMLDeploymentDiagram dd) {
 	Collection figs = dd.getLayer().getContents(null);
 	VectorSet offs = null;
 	Iterator figIter = figs.iterator();
@@ -109,8 +107,7 @@ public class CrClassWithoutComponent extends CrUML {
 	    FigClass fc = (FigClass) obj;
 	    if (fc.getEnclosingFig() == null
 		|| (!(ModelFacade.isAComponent(fc.getEnclosingFig()
-		                                        .getOwner()))))
-	    {
+		                                        .getOwner())))) {
 		if (offs == null) {
 		    offs = new VectorSet();
 		    offs.addElement(dd);
@@ -119,6 +116,6 @@ public class CrClassWithoutComponent extends CrUML {
 	    }
 	}
 	return offs;
-    }  
+    }
 
 } /* end class CrClassWithoutComponent.java */

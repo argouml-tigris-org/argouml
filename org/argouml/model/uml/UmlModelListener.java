@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -33,25 +33,25 @@ import javax.swing.event.EventListenerList;
 import org.argouml.model.Model;
 
 /**
- * This class captures the information about the "change flag" of 
- * the current project. Initially, the "change flag" is clear, 
- * which means that there is nothing in the project to save. 
- * The "change flag" is set by every change made to its UML model, 
+ * This class captures the information about the "change flag" of
+ * the current project. Initially, the "change flag" is clear,
+ * which means that there is nothing in the project to save.
+ * The "change flag" is set by every change made to its UML model,
  * which means that the project becomes 'dirty', i.e. it needs saving. <p>
- * 
- * The UmlModelListener is a single listener that listens to all 
+ *
+ * The UmlModelListener is a single listener that listens to all
  * UML ModelElement events and on its turn, sends
  * events out that indicate that the "change flag" of the Save action
  * needs to be set. <p>
- * 
- * This class only keeps an eye on changes to the UML model - i.e. 
- * it does not notice changes done to e.g. the graph like moving an edge 
+ *
+ * This class only keeps an eye on changes to the UML model - i.e.
+ * it does not notice changes done to e.g. the graph like moving an edge
  * (when they do not also change the UML model), settings, todo items
  * or the diagrams. <p>
- * 
- * The UmlModelListener only transfers information when the flag needs 
+ *
+ * The UmlModelListener only transfers information when the flag needs
  * to be set - it does not know its current status. That is a task for the
- * listeners in the <code>listenerList</code>. 
+ * listeners in the <code>listenerList</code>.
  *
  * @since ARGO0.11.2
  * @author Thierry Lach
@@ -73,12 +73,12 @@ public class UmlModelListener implements PropertyChangeListener {
      * The name of the property that defines the save state.
      */
     public static final String SAVE_STATE_PROPERTY_NAME = "saveState";
-    
+
     /**
      * The action to enable when the model changes.
      */
     private Action saveAction;
-    
+
     /**
      * Singleton instance access method.
      *
@@ -93,7 +93,7 @@ public class UmlModelListener implements PropertyChangeListener {
      */
     private UmlModelListener() {
     }
-    
+
     /**
      * Register the Action that will be enabled whenever a model
      * change takes place.
@@ -112,31 +112,31 @@ public class UmlModelListener implements PropertyChangeListener {
             fireNeedsSavePropertyChanged();
         }
     }
-    
+
     /**
-     * For every new ModelElement that has been created, we want 
+     * For every new ModelElement that has been created, we want
      * to register for updation events.
-     * 
+     *
      * @param elm the UML modelelement that has been created
      */
     public void newElement(Object elm) {
         Model.getPump().addModelEventListener(this, elm);
     }
-    
+
     /**
-     * For every ModelElement that has been deleted, we want to 
+     * For every ModelElement that has been deleted, we want to
      * remove its listener.
-     * 
+     *
      * @param elm the UML modelelement that has been deleted
      */
     public void deleteElement(Object elm) {
         Model.getPump().removeModelEventListener(this, elm);
     }
-    
-    
+
+
     /**
      * Adds a listener to the listener list.
-     * 
+     *
      * @param listener The listener to add.
      */
     public void addPropertyChangeListener(PropertyChangeListener listener) {
@@ -145,7 +145,7 @@ public class UmlModelListener implements PropertyChangeListener {
 
     /**
      * Removes a listener from the listener list.
-     * 
+     *
      * @param listener The listener to remove.
      */
     public void removePropertyChangeListener(PropertyChangeListener listener) {
@@ -154,13 +154,12 @@ public class UmlModelListener implements PropertyChangeListener {
 
     /**
      * Fire an event to all members of the listener list.
-     * 
+     *
      * @param propertyName the name of the event
      * @param oldValue the old value - which we do not really know
      * @param newValue the new value - which is <code>true</code>
      */
-    private void fireNeedsSavePropertyChanged() 
-    {
+    private void fireNeedsSavePropertyChanged() {
         // Guaranteed to return a non-null array
         Object[] listeners = listenerList.getListenerList();
         // Process the listeners last to first, notifying

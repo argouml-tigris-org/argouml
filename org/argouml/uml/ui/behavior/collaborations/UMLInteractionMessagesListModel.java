@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2002-2003 The Regents of the University of California. All
+// Copyright (c) 2002-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -30,8 +30,8 @@ import java.util.Iterator;
 import org.argouml.uml.ui.UMLModelElementListModel2;
 
 /**
- * List model for messages on the interaction proppanel. 
- * 
+ * List model for messages on the interaction proppanel.
+ *
  * @author jaap.branderhorst@xs4all.nl
  */
 public class UMLInteractionMessagesListModel extends UMLModelElementListModel2 {
@@ -58,7 +58,7 @@ public class UMLInteractionMessagesListModel extends UMLModelElementListModel2 {
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(Object)
      */
     protected boolean isValidElement(Object/*MBase*/ elem) {
-        return org.argouml.model.ModelFacade.isAMessage(elem)  
+        return org.argouml.model.ModelFacade.isAMessage(elem)
             && ModelFacade.getInteraction(elem) == getTarget();
     }
 

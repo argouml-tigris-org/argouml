@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2003 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -40,7 +40,7 @@ public class PersistenceException extends Exception {
     }
 
     /**
-     * Constructor 
+     * Constructor
      * @param message the message
      */
     public PersistenceException(String message) {
@@ -85,8 +85,7 @@ public class PersistenceException extends Exception {
     /**
      * @see java.lang.Throwable#printStackTrace(java.io.PrintStream)
      */
-    public void printStackTrace(java.io.PrintStream ps)
-    {
+    public void printStackTrace(java.io.PrintStream ps) {
         super.printStackTrace(ps);
         if (cause != null) {
             ps.println("Caused by:");
@@ -97,8 +96,7 @@ public class PersistenceException extends Exception {
     /**
      * @see java.lang.Throwable#printStackTrace(java.io.PrintWriter)
      */
-    public void printStackTrace(java.io.PrintWriter pw)
-    {
+    public void printStackTrace(java.io.PrintWriter pw) {
         super.printStackTrace(pw);
         if (cause != null) {
             pw.println("Caused by:");

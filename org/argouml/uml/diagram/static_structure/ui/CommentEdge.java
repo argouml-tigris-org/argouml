@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -31,8 +31,8 @@ import org.argouml.model.UUIDManager;
 /**
  * An object tagged as being the owner of a FigEdgeNote. Has knowledge
  * about the source and destination of the FigEdgeNote. <p>
- * 
- * The source and destination are ModelElements. 
+ *
+ * The source and destination are ModelElements.
  * At least one of them is a Comment - but they may be both Comments.
  *
  * @since Jul 17, 2004
@@ -42,7 +42,7 @@ public class CommentEdge {
     private Object source;
     private Object dest;
     private Object uuid;
-    
+
     /**
      * Constructor
      * @param s the source
@@ -53,15 +53,15 @@ public class CommentEdge {
         dest = d;
         uuid = UUIDManager.getInstance().getNewUUID();
     }
-    
+
     /**
      * The source of this CommentEdge
      * @return the source
      */
     public Object getSource() {
-        return source;            
+        return source;
     }
-    
+
     /**
      * The destination of this CommentEdge
      * @return the destination
@@ -69,15 +69,15 @@ public class CommentEdge {
     public Object getDestination() {
         return dest;
     }
-    
+
     /**
      * @return the uuid
      */
     public Object getUUID() {
         return uuid;
     }
-    
-    
+
+
     /**
      * @param d The destination to set.
      */
@@ -90,7 +90,7 @@ public class CommentEdge {
     public void setSource(Object s) {
         source = s;
     }
-    
+
     /**
      * Commit suicide. Adapt the UML model.
      */
