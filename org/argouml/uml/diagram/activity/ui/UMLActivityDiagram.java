@@ -54,10 +54,7 @@ import org.tigris.gef.base.ModeCreatePolyEdge;
  * valuable as well.<p>
  */
 public class UMLActivityDiagram extends UMLDiagram {
-    /**
-     * @deprecated by Linus Tolke as of 0.15.4. Use your own logger in your
-     * class. This will be removed.
-     */
+
     private static final Logger LOG = Logger.
                                     getLogger(UMLActivityDiagram.class);
 
