@@ -932,7 +932,10 @@ public class Project implements java.io.Serializable {
         setNeedsSave(false);
     }
 
-    protected void postLoad() {
+    /**
+     * @deprecated 28 Apr 2003 (ver 0.13.5). Will be protected in future.
+     */
+    public void postLoad() {
         for (int i = 0; i < _diagrams.size(); i++)
              ((Diagram)_diagrams.elementAt(i)).postLoad();
         // issue 1725: the root is not set, which leads to problems with displaying prop panels
