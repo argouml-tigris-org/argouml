@@ -265,7 +265,7 @@ public class ZargoFilePersister extends AbstractFilePersister {
      * @return the zip stream positioned at the required location.
      */
     private ZipInputStream openZipStreamAt(URL url, String ext)
-            throws IOException {
+        throws IOException {
         ZipInputStream zis = new ZipInputStream(url.openStream());
         ZipEntry entry = zis.getNextEntry();
         while (entry != null && !entry.getName().endsWith(ext)) {
@@ -278,12 +278,12 @@ public class ZargoFilePersister extends AbstractFilePersister {
      * Loads all the members from a zipped input stream.
      *
      * @param theUrl The URL to the input stream.
-     * @throws IOException if there is something wrong with the zipped archive
+     * @throws OpenException if there is something wrong with the zipped archive
      *                     or with the model.
-     * @throws ParserConfigurationException if the parser is misconfigured.
-     * @throws SAXException if the input is not correctly formatted XML.
+     * @param project the project to load into
      */
-    protected void loadProjectMembers(Project project, URL theUrl) throws OpenException {
+    protected void loadProjectMembers(Project project, URL theUrl) 
+        throws OpenException {
 
         try {
             loadModel(project, theUrl);
@@ -325,18 +325,19 @@ public class ZargoFilePersister extends AbstractFilePersister {
                 }
                 if (currentEntry.getName().endsWith(".todo")) {
                     ProjectMemberTodoList pm =
-                        new ProjectMemberTodoList(currentEntry.getName(), project);
+                        new ProjectMemberTodoList(currentEntry.getName(), 
+                                project);
                     pm.load(sub);
                     project.addMember(pm);
                 }
             }
             zis.close();
 
-    } catch (SAXException e) {
+        } catch (SAXException e) {
         throw new OpenException(e);
-    } catch (ParserConfigurationException e) {
+        } catch (ParserConfigurationException e) {
         throw new OpenException(e);
-    } catch (IOException e) {
+        } catch (IOException e) {
             ArgoParser.SINGLETON.setLastLoadStatus(false);
             ArgoParser.SINGLETON.setLastLoadMessage(e.toString());
             LOG.error("Failure in Project.loadProjectMembers()", e);
@@ -353,6 +354,7 @@ public class ZargoFilePersister extends AbstractFilePersister {
      * examined by the calling function.
      *
      * @param theUrl The url with the .zargo file
+     * @param project the project to load into
      * @return The model loaded
      * @throws IOException Thrown if the model or the .zargo file is corrupted.
      * @throws SAXException If the parser template is syntactically incorrect. 
@@ -360,7 +362,7 @@ public class ZargoFilePersister extends AbstractFilePersister {
      *         the parser fails.
      */
     protected Object loadModel(Project project, URL theUrl)
-            throws IOException, SAXException, ParserConfigurationException {
+        throws IOException, SAXException, ParserConfigurationException {
         if (LOG.isInfoEnabled()) {
             LOG.info("Loading Model from " + theUrl);
         }
@@ -377,15 +379,17 @@ public class ZargoFilePersister extends AbstractFilePersister {
      * ArgoParser.SINGLETON.getLastLoadStatus() field. This needs to be
      * examined by the calling function.
      *
-     * @param theUrl The url with the .zargo file
+     * @param project the project to load into
+     * @param source the source to load from
      * @return The model loaded
      * @throws IOException Thrown if the model or the .zargo file is corrupted.
      * @throws SAXException If the parser template is syntactically incorrect. 
      * @throws ParserConfigurationException If the initialization of 
      *         the parser fails.
+     *
      */
     protected Object loadModel(Project project, InputSource source)
-            throws IOException, SAXException, ParserConfigurationException {
+        throws IOException, SAXException, ParserConfigurationException {
         // 2002-07-18
         // Jaap Branderhorst
         // changed the loading of the projectfiles to solve hanging 

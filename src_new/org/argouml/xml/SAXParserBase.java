@@ -142,7 +142,8 @@ public abstract class SAXParserBase extends DefaultHandler {
      * @throws ParserConfigurationException in case of a parser problem
      * @throws SAXException when parsing xml
      */
-    public void parse(InputStream is) throws SAXException, IOException, ParserConfigurationException {
+    public void parse(InputStream is) 
+        throws SAXException, IOException, ParserConfigurationException {
 
         long start, end;
         
@@ -168,8 +169,10 @@ public abstract class SAXParserBase extends DefaultHandler {
     ////////////////////////////////////////////////////////////////
     // abstract methods
 
-    protected abstract void handleStartElement(XMLElement e) throws SAXException;
-    protected abstract void handleEndElement(XMLElement e) throws SAXException;
+    protected abstract void handleStartElement(XMLElement e) 
+        throws SAXException;
+    protected abstract void handleEndElement(XMLElement e) 
+        throws SAXException;
 
     ////////////////////////////////////////////////////////////////
     // non-abstract methods
@@ -190,7 +193,7 @@ public abstract class SAXParserBase extends DefaultHandler {
                 StringBuffer buf = new StringBuffer();
                 buf.append("START: " + name + " " + e);
                 for (int i = 0; i < atts.getLength(); i++) {
-            	buf.append("   ATT: " + atts.getLocalName(i) + " " 
+            	    buf.append("   ATT: " + atts.getLocalName(i) + " " 
             		   + atts.getValue(i));
                 }
                 LOG.debug(buf.toString());
@@ -224,7 +227,7 @@ public abstract class SAXParserBase extends DefaultHandler {
      * java.lang.String, java.lang.String)
      */
     public void endElement(String uri, String localname, String name) 
-            throws SAXException {
+        throws SAXException {
         if (isElementOfInterest(name)) {
             XMLElement e = elements[--nElements];
             if (LOG.isDebugEnabled()) {
@@ -249,7 +252,7 @@ public abstract class SAXParserBase extends DefaultHandler {
      * @see org.xml.sax.ContentHandler#characters(char[], int, int)
      */
     public void characters(char[] ch, int start, int length) 
-            throws SAXException {
+        throws SAXException {
         for (int i = 0; i < nElements; i++) {
             XMLElement e = elements[i];
             String test = e.getText();
@@ -265,7 +268,8 @@ public abstract class SAXParserBase extends DefaultHandler {
      * @see org.xml.sax.EntityResolver#resolveEntity(java.lang.String, 
      * java.lang.String)
      */
-    public InputSource resolveEntity (String publicId, String systemId) throws SAXException {
+    public InputSource resolveEntity (String publicId, String systemId) 
+        throws SAXException {
         try {
 	    URL testIt = new URL(systemId);
             InputSource s = new InputSource(testIt.openStream());
