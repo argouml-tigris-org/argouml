@@ -50,8 +50,8 @@ import org.tigris.swidgets.Horizontal;
 /**
  * The upper right pane in the ArgoUML user interface.  It may have several
  * tabs with different kinds of "major" editors that allow the user to
- * edit whatever is selected in the NavigatorPane.
- * Currently, there is only the diagram tab.
+ * edit whatever is selected in the ExplorerPane. <p>
+ * Currently, there is only the Diagram tab.
  */
 public class MultiEditorPane
     extends JPanel

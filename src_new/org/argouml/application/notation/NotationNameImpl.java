@@ -163,11 +163,6 @@ public class NotationNameImpl
         return getTitle();
     }
 
-    /*public String toString() {
-        if (_version == null) return "{NotationNameImpl:" + _name + "}";
-        return "{NotationNameImpl:" + _name + " version " + _version + "}";
-    }*/
-
     /**
      * @param k1 first part of the given name
      * @param k2 2nd part of the given name
@@ -180,7 +175,7 @@ public class NotationNameImpl
         if (k2.equals("")) {
             return k1;
         }
-	return k1 + "." + k2;
+	return k1 + " " + k2;
     }
 
     private static void fireEvent(int eventType, NotationName nn) {
@@ -217,11 +212,11 @@ public class NotationNameImpl
     }
 
     /**
-     * Finds a NotationName matching the configuration string.
-     * Returns null if no match.
+     * Finds a NotationName matching the string matching 
+     * the name of the notation. Returns null if no match.
      *
-     * @param s the configuration string
-     * @return the name of the notation or null
+     * @param s the name string
+     * @return the notationName or null
      */
     public static NotationName findNotation(String s) {
         ListIterator iterator = notations.listIterator();

@@ -85,7 +85,6 @@ import org.argouml.uml.generator.ParserDisplay;
 import org.argouml.uml.ui.UMLAction;
 import org.tigris.gef.base.Editor;
 import org.tigris.gef.base.Globals;
-import org.tigris.gef.base.Layer;
 import org.tigris.gef.base.LayerDiagram;
 import org.tigris.gef.base.Selection;
 import org.tigris.gef.graph.GraphModel;
@@ -229,7 +228,7 @@ public abstract class FigNodeModelElement
     private FigText stereo;
 
     /**
-     * enclosedFigs are the Figs that are enclosed by this figure. Say that
+     * EnclosedFigs are the Figs that are enclosed by this figure. Say that
      * it is a Package then these are the Classes, Interfaces, Packages etc
      * that are on this figure. This is not the same as the figures in the
      * FigGroup that this FigNodeModelElement "is", since these are the
@@ -283,6 +282,7 @@ public abstract class FigNodeModelElement
 
         readyToEdit = false;
         ArgoEventPump.addListener(ArgoEvent.ANY_NOTATION_EVENT, this);
+        currentNotationName = Notation.getDefaultNotation();
     }
 
     /**
@@ -1359,13 +1359,26 @@ public abstract class FigNodeModelElement
     }
 
     /**
+     * @see org.argouml.application.api.NotationContext#setContextNotation(org.argouml.application.api.NotationName)
+     */
+    public void setContextNotation(NotationName nn) {
+        currentNotationName = nn;
+    }
+
+    /**
      * @see org.argouml.application.events.ArgoNotationEventListener#notationChanged(org.argouml.application.events.ArgoNotationEvent)
      */
     public void notationChanged(ArgoNotationEvent event) {
         PropertyChangeEvent changeEvent =
 	    (PropertyChangeEvent) event.getSource();
-        currentNotationName =
-	    Notation.findNotation((String) changeEvent.getNewValue());
+        if (changeEvent.getPropertyName().equals("argo.notation.only.uml")) {
+            if (changeEvent.getNewValue().equals("true")) { 
+                setContextNotation(Notation.getDefaultNotation());
+            }
+        } else {
+            setContextNotation(
+                Notation.findNotation((String) changeEvent.getNewValue()));
+        }
         renderingChanged();
     }
 
