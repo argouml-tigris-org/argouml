@@ -218,6 +218,24 @@ Can I reverse engineer a .jar file with Argo .9.4?
 		</qandaset>
 	</chapter>
 	-->
+  <chapter>
+    <title>Operating System related features</title>
+    <qandaset defaultlabel="none">
+      <qandadiv>
+	<title>OS X</title>
+	<qandaentry>
+	  <question>
+            <para>How can I access the context sensitive menus?
+            </para>
+	  </question>
+	  <answer>
+            <para>Press the Apple Key together with the mouse button</para>
+	  </answer>
+	</qandaentry>
+      </qandadiv>
+    </qandaset>
+  </chapter>
+
 	<chapter>
 		<title>User Interface:navigation panes</title>
 		<qandaset>
