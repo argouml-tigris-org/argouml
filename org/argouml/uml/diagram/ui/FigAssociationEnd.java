@@ -198,7 +198,7 @@ public class FigAssociationEnd extends FigEdgeModelElement {
      */
     protected void modelChanged(PropertyChangeEvent e) {
         super.modelChanged(e);
-        updateEnd(srcMult, srcRole, srcOrdering);
+        if (e != null) updateEnd(srcMult, srcRole, srcOrdering);
         srcMult.calcBounds();
         computeRoute();
     }
