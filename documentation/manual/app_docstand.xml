@@ -77,8 +77,22 @@ We allow for the manual being other than as html on the &argouml; web site.
 	<para>
 Don't include lists of what changes that has been done.
 This information is kept by cvs, the version control tool.
+This is changed since Jeremy Bennet made the work for 0.9/0.10
+so there are still such lists.
+Remove them while changing the files!
 </para>
       </listitem>
+
+      <listitem>
+	<para>
+If a problem in the current implementation of &argouml; is mentioned
+or perhaps even emphasized using 
+<sgmltag>warning</sgmltag>
+include the issue number in a sgml-comment in the source 
+so that it is easy to know if this problem has been fixed.
+</para>
+      </listitem>
+
     </itemizedlist>
   </sect1>
 
@@ -88,7 +102,11 @@ This information is kept by cvs, the version control tool.
     <title>&docbook; Conventions</title>
 
     <itemizedlist>
-      <listitem><para>The top level document is argouml.xml. Each chapter (or
+      <listitem>
+	<para>
+The top level document is argouml.xml (actually in argouml.in 
+and copied to argouml.xml by the build script). 
+Each chapter (or
         preface, glossary, appendix etc) is a separate file, defined as a
         system entity and included from this top level
         file.</para></listitem>
@@ -96,7 +114,7 @@ This information is kept by cvs, the version control tool.
       <listitem><para>There are some useful entities defined for common terms
         at the top of argouml.xml. Of these, use of
         <sgmltag>argouml</sgmltag> will ensure consistent naming of the
-        project (Argo/UML) and allow us to change it later (to ArgoUML,
+product (ArgoUML) and allow us to change it later (to Argo/UML,
         Argouml or whatever).</para></listitem>
 
       <listitem><para>XML comments are used throughout to explain what various
