@@ -162,5 +162,18 @@ public class CustomSeparator {
     public boolean endChar(char c) {
 	return true;
     }
+
+    /**
+     * Called to how many characters the CustomSeparator read after
+     * the end of the separator. This allows them to see beyond the
+     * end, but these characters will be fed to the separators again
+     * when looking for the next token so be careful.
+     *
+     * @return the number of characters that were read after the end
+     * of the token had been read.
+     */
+    public int getPeekCount() {
+	return 0;
+    }
 }
 

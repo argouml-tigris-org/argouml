@@ -103,7 +103,7 @@ class TokenSep {
  * <pre>(a+(b*c)-15*eq(a, b))</pre>.
  *
  * <p>This is in fact the class currently used for the public separators in
- * MyTokenizer, except PAREN_EXPR_STRING_SEPARATOR.
+ * MyTokenizer, except PAREN_EXPR_STRING_SEPARATOR and LINE_SEPARATOR.
  */
 class QuotedStringSeparator extends CustomSeparator {
     private final char _escChr;
@@ -300,6 +300,93 @@ class ExprSeparatorWithStrings extends CustomSeparator {
 }
 
 /**
+ * A descendent of CustomSeparator that recognizes "the tree line ends":
+ * <ul>
+ * <li>UNIX: &lt;lf&gt;</li>
+ * <li>DOS: &lt;cr&gt; &lt;lf&gt;</li>
+ * <li>MAC: &lt;cr&gt;</li>
+ * </ul>
+ *
+ * <p>This is in fact the class currently used LINE_SEPARATOR in MyTokenizer.
+ */
+class LineSeparator extends CustomSeparator {
+    private boolean hasCr;
+    private boolean hasLf;
+    private boolean hasPeeked;
+
+    /**
+     * Creates a LineSeparator.
+     */
+    public LineSeparator() {
+	hasCr = false;
+	hasLf = false;
+	hasPeeked = false;
+    }
+
+    public void reset() {
+	super.reset();
+	hasCr = false;
+	hasLf = false;
+	hasPeeked = false;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public int tokenLength() {
+	return hasCr && hasLf ? 2 : 1;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public int getPeekCount() {
+	return hasPeeked ? 1 : 0;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public boolean hasFreePart() {
+	return !hasLf;
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * Overridden to find the start of a line-end.
+     */
+    public boolean addChar(char c) {
+	if (c == '\n') {
+	    hasLf = true;
+	    return true;
+	}
+
+	if (c == '\r') {
+	    hasCr = true;
+	    return true;
+	}
+
+	return false;
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * Overridden to find the end of a line-end.
+     */
+    public boolean endChar(char c) {
+	if (c == '\n') {
+	    hasLf = true;
+	} else {
+	    hasPeeked = true;
+	}
+
+	return true;
+    }
+}
+
+/**
  * Class for dividing a String into any number of parts. Each part will be a
  * substring of the original String. The first part will at least contain the
  * first character in the string. All following parts will at least contain
@@ -378,6 +465,12 @@ public class MyTokenizer implements Enumeration
      *  together with PAREN_EXPR_SEPARATOR. */
     public final static CustomSeparator PAREN_EXPR_STRING_SEPARATOR =
 	new ExprSeparatorWithStrings();
+
+    /** A custom separator for texts. Singles out the line ends,
+     *  and consequently the lines, if they are in either dos, mac
+     *  or unix format. */
+    public final static CustomSeparator LINE_SEPARATOR =
+	new LineSeparator();
 
     private int _sIdx;
     private final int _eIdx;
@@ -506,6 +599,7 @@ public class MyTokenizer implements Enumeration
 		while (csep.hasFreePart() && i + 1 < _eIdx)
 		    if (csep.endChar(_source.charAt(++i)))
 			break;
+		i -= Math.min(csep.getPeekCount(), i);
 
 		int clen = Math.min(i + 1, _source.length());
 
