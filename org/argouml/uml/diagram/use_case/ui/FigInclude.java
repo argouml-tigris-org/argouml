@@ -32,19 +32,15 @@
 
 package org.argouml.uml.diagram.use_case.ui;
 
-import java.awt.*;
-import java.beans.*;
+import java.awt.Color;
 
-import org.argouml.application.api.*;
-import org.argouml.uml.diagram.ui.*;
-import org.argouml.model.uml.UmlFactory;
+import org.argouml.uml.diagram.ui.FigEdgeModelElement;
+import org.tigris.gef.base.PathConvPercent;
+import org.tigris.gef.presentation.ArrowHeadGreater;
+import org.tigris.gef.presentation.Fig;
+import org.tigris.gef.presentation.FigText;
 
-import ru.novosoft.uml.*;
-import ru.novosoft.uml.foundation.core.*;
-import ru.novosoft.uml.foundation.extension_mechanisms.*;
-
-import org.tigris.gef.base.*;
-import org.tigris.gef.presentation.*;
+import ru.novosoft.uml.MElementEvent;
 
 
 /**
@@ -70,9 +66,9 @@ public class FigInclude extends FigEdgeModelElement {
 
     public FigInclude() {
 
-        // We need a FigText to hold the <<include>> label. Details are the
-        // same as a stereotype, and we use the stereotype notation generator
-        // to give us the text.
+        // We need a FigText to hold the <<include>> label. We DO NOT use the
+        // stereotype generator for it since it's not a stereotype and using
+        // the sterotype generator may cluther the model.
 
         label = new FigText(10, 30, 90, 20);
 
@@ -84,6 +80,7 @@ public class FigInclude extends FigEdgeModelElement {
         label.setExpandOnly(false);
         label.setMultiLine(false);
         label.setAllowsTab(false);
+        label.setText("<<include>>");
 
         addPathItem(label, new PathConvPercent(this, 50, 10));
 

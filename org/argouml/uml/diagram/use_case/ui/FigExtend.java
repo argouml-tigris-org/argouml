@@ -32,21 +32,19 @@
 
 package org.argouml.uml.diagram.use_case.ui;
 
-import java.awt.*;
-import java.beans.*;
+import java.awt.Color;
 
-import org.argouml.application.api.*;
-import org.argouml.uml.diagram.ui.*;
-import org.argouml.model.uml.UmlFactory;
+import org.argouml.application.api.Notation;
+import org.argouml.uml.diagram.ui.FigEdgeModelElement;
+import org.tigris.gef.base.PathConvPercent;
+import org.tigris.gef.presentation.ArrowHeadGreater;
+import org.tigris.gef.presentation.Fig;
+import org.tigris.gef.presentation.FigGroup;
+import org.tigris.gef.presentation.FigText;
 
-import ru.novosoft.uml.*;
-import ru.novosoft.uml.foundation.core.*;
-import ru.novosoft.uml.foundation.data_types.*;
-import ru.novosoft.uml.foundation.extension_mechanisms.*;
-import ru.novosoft.uml.behavior.use_cases.*;
-
-import org.tigris.gef.base.*;
-import org.tigris.gef.presentation.*;
+import ru.novosoft.uml.MElementEvent;
+import ru.novosoft.uml.behavior.use_cases.MExtend;
+import ru.novosoft.uml.foundation.data_types.MBooleanExpression;
 
 
 /**
@@ -109,6 +107,7 @@ public class FigExtend extends FigEdgeModelElement {
         _label.setExpandOnly(false);
         _label.setMultiLine(false);
         _label.setAllowsTab(false);
+        _label.setText("<<extend>>");
         
 
         _label.calcBounds();
