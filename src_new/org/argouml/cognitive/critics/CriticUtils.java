@@ -49,6 +49,7 @@ import java.util.*;
 import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.foundation.data_types.*;
 import ru.novosoft.uml.foundation.extension_mechanisms.*;
+import ru.novosoft.uml.model_management.*;
 
 
 /** 
@@ -1055,31 +1056,51 @@ public abstract class CriticUtils {
 
 
     /**
-     * <p>Checks if the given model element is in the given namespace.</p>
+     * <p>Checks if the two hierarchical namespace strings have a common root
+     *   (i.e. references could be made from one to the other).</p>
      *
-     * @param me  A {@link ru.novosoft.foundation.core.MModelElement
+     * <p>If either is null (namespace therefore undefined), we fail. Otherwise
+     *   we navigate until we have found the subsystem or model of each and see
+     *   if they are the same.</p>
+     *
+     * @param me1 A {@link ru.novosoft.uml.foundation.core.MModelElement
      *            MModelElement} to be looked for in the namespace.
      *
-     * @param clf A {@link ru.novosoft.foundation.core.MNamespace MNamespace}
-     *            in which the model element should be looked up.
+     * @param me2 A {@link ru.novosoft.uml.foundation.core.MModelElement
+     *            MModelElement} to be looked for in the namespace.
      *
-     * @return    <code>true</code> if the model element is found,
-     *            <code>false</code> otherwise.
+     * @return    <code>true</code> if the model elements are in the same
+     *            sub-system or model, <code>false</code> otherwise.
      */
 
-    public static boolean inNamespace(MModelElement me, MNamespace ns) {
+    public static boolean sameNamespace(MModelElement me1, MModelElement me2) {
 
-        // I think we can just do this by a straight comparison of
-        // namespaces. We assume if either is null, then its a failure.
+        // Find the nearest model or namespace, failing if either ends up as
+        // null
 
-        MNamespace meNs = me.getNamespace();
+        while ((me1 != null) &&
+               (!(me1 instanceof MModel)) &&
+               (!(me1 instanceof MSubsystem))) {
+            me1 = me1.getNamespace();
+        }
 
-        if ((ns == null) || (meNs == null)) {
+        if (me1 == null) {
             return false;
         }
-        else {
-            return ns.equals(meNs);
+
+        while ((me2 != null) &&
+               (!(me2 instanceof MModel)) &&
+               (!(me2 instanceof MSubsystem))) {
+            me2 = me2.getNamespace();
         }
+
+        if (me2 == null) {
+            return false;
+        }
+
+        // Are they the same?
+
+        return me1.equals(me2);
     }
 
 
