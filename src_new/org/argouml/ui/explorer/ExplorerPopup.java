@@ -32,6 +32,7 @@ import javax.swing.AbstractAction;
 import javax.swing.JPopupMenu;
 
 import org.argouml.i18n.Translator;
+import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.behavioralelements.statemachines.StateMachinesHelper;
@@ -65,90 +66,114 @@ public class ExplorerPopup extends JPopupMenu{
         
         if (selectedItem instanceof PopupGenerator) {
             Vector actions = ((PopupGenerator) selectedItem).getPopUpActions(me);
-            for (Enumeration e = actions.elements();
-            e.hasMoreElements();
-            ) {
+            for (Enumeration e = actions.elements(); e.hasMoreElements();) {
                 this.add((AbstractAction) e.nextElement());
             }
         } else {
-	    // TODO: explain which selectedItems should satisfy this condition
-            if ((ModelFacade.isAClassifier(selectedItem) &&
-            !(ModelFacade.isADataType(selectedItem)))
-            || ((ModelFacade.isAPackage(selectedItem))
-            && (selectedItem
-            != ProjectManager
-            .getManager()
-            .getCurrentProject()
-            .getModel()))
-            || ((ModelFacade.isAStateVertex(selectedItem))
-            && ((ProjectManager
-            .getManager()
-            .getCurrentProject()
-            .getActiveDiagram()
-            instanceof UMLStateDiagram)
-            && (((UMLStateDiagram) ProjectManager
-            .getManager()
-            .getCurrentProject()
-            .getActiveDiagram())
-            .getStateMachine()
-            == StateMachinesHelper
-            .getHelper()
-            .getStateMachine(
-            selectedItem))))
-            || (ModelFacade.isAInstance(selectedItem)
-            && !(ModelFacade.isADataValue(selectedItem))
-            && !(ProjectManager
-            .getManager()
-            .getCurrentProject()
-            .getActiveDiagram()
-            instanceof UMLSequenceDiagram))) {
-                UMLAction action =
-                new ActionAddExistingNode(
-                menuLocalize("menu.popup.add-to-diagram"),
-                selectedItem);
-                action.setEnabled(action.shouldBeEnabled());
-                this.add(action);
-            }
-
-	    // TODO: explain which selectedItems should satisfy this condition
-            if ((ModelFacade.isARelationship(selectedItem) &&
-            !(ModelFacade.isAFlow(selectedItem)))
-            || ((ModelFacade.isALink(selectedItem))
-            && !(ProjectManager
-            .getManager()
-            .getCurrentProject()
-            .getActiveDiagram()
-            instanceof UMLSequenceDiagram))
-            || (ModelFacade.isATransition(selectedItem))) {
-                UMLAction action =
-                new ActionAddExistingEdge(
-                menuLocalize("menu.popup.add-to-diagram"),
-                selectedItem);
-                action.setEnabled(action.shouldBeEnabled());
-                this.add(action);
-            }
+            final Project currentProject = 
+                ProjectManager.getManager().getCurrentProject();
+            final Diagram activeDiagram = currentProject.getActiveDiagram();
             
-	    // TODO: explain which selectedItems should satisfy this condition
-            if ((ModelFacade.isAModelElement(selectedItem)
-            && (selectedItem
-            != ProjectManager
-            .getManager()
-            .getCurrentProject()
-            .getModel()))
-            || selectedItem instanceof Diagram) {
-                this.add(ActionRemoveFromModel.SINGLETON);
+            // TODO I've made some attempt to rationalize the conditions here
+            // and make them more readable. However I'd suggest that the
+            // conditions should move to each diagram.
+            // Break up one complex method into a few simple ones and give
+            // the diagrams more knowledge of themselelves (although the diagrams
+            // may in fact delegate this in turn to the Model component).
+            // Bob Tarling 31 Jan 2004
+            // eg the code here should be something like -
+            //if (activeDiagram.canAdd(selectedItem)) {
+            //    UMLAction action =
+            //        new ActionAddExistingNode(
+            //            menuLocalize("menu.popup.add-to-diagram"),
+            //            selectedItem);
+            //    action.setEnabled(action.shouldBeEnabled());
+            //    this.add(action);
+            //}
+            
+            final Object projectModel = currentProject.getModel();
+            final boolean modelElementSelected = 
+                ModelFacade.isAModelElement(selectedItem);
+
+            if (modelElementSelected) {
+                final boolean classifierSelected = 
+                    ModelFacade.isAClassifier(selectedItem);
+                final boolean dataTypeSelected = 
+                    ModelFacade.isADataType(selectedItem);
+                final boolean packageSelected = 
+                    ModelFacade.isAPackage(selectedItem);
+                final boolean stateVertexSelected = 
+                    ModelFacade.isAStateVertex(selectedItem);
+                final boolean instanceSelected = 
+                    ModelFacade.isAInstance(selectedItem);
+                final boolean dataValueSelected = 
+                    ModelFacade.isADataValue(selectedItem);
+                final boolean relationshipSelected = 
+                    ModelFacade.isARelationship(selectedItem);
+                final boolean flowSelected = 
+                    ModelFacade.isAFlow(selectedItem);
+                final boolean linkSelected = 
+                    ModelFacade.isALink(selectedItem);
+                final boolean transitionSelected = 
+                    ModelFacade.isATransition(selectedItem);
+                final boolean diagramSelected = 
+                    selectedItem instanceof Diagram;
+                    
+                final boolean sequenceDiagramActive = 
+                    activeDiagram instanceof UMLSequenceDiagram;
+                final boolean stateDiagramActive = 
+                    activeDiagram instanceof UMLStateDiagram;
+                    
+                final Object selectedStateMachine
+                    = (stateVertexSelected)
+                    ? StateMachinesHelper.getHelper().getStateMachine(selectedItem)
+                    : null;
+                
+                final Object diagramStateMachine 
+                    = (stateDiagramActive)
+                    ? ((UMLStateDiagram) activeDiagram).getStateMachine()
+                    : null;
+                
+                if ((classifierSelected && !dataTypeSelected)
+                        || (packageSelected && selectedItem != projectModel)
+                        || (stateVertexSelected && stateDiagramActive
+                            && diagramStateMachine == selectedStateMachine)
+                        || (instanceSelected && !dataValueSelected 
+                            && !sequenceDiagramActive)) {
+                    UMLAction action =
+                        new ActionAddExistingNode(
+                            menuLocalize("menu.popup.add-to-diagram"),
+                            selectedItem);
+                    action.setEnabled(action.shouldBeEnabled());
+                    this.add(action);
+                }
+    
+                if ((relationshipSelected && !flowSelected)
+                        || (linkSelected && !sequenceDiagramActive)
+                        || transitionSelected) {
+                    UMLAction action = new ActionAddExistingEdge(
+                        menuLocalize("menu.popup.add-to-diagram"), selectedItem);
+                    action.setEnabled(action.shouldBeEnabled());
+                    this.add(action);
+                }
+                
+                if (selectedItem != projectModel || diagramSelected) {
+                    this.add(ActionRemoveFromModel.SINGLETON);
+                }
+    
+                if (ModelFacade.isAClassifier(selectedItem) ||
+                        ModelFacade.isAPackage(selectedItem)) {
+                    this.add(ActionSetSourcePath.SINGLETON);
+                }
+    
+                if (ModelFacade.isAPackage(selectedItem)
+                        || ModelFacade.isAModel(selectedItem)) {
+                    this.add(ActionAddPackage.SINGLETON);
+                }
             }
 
-            if (ModelFacade.isAClassifier(selectedItem) ||
-            ModelFacade.isAPackage(selectedItem)) {
-                this.add(ActionSetSourcePath.SINGLETON);
-            }
-
-            if (ModelFacade.isAPackage(selectedItem) || ModelFacade.isAModel(selectedItem)) {
-                this.add(ActionAddPackage.SINGLETON);
-            }
-
-	    // TODO: Make sure this shouldn't go into a previous condition -tml
+	    // TODO: Make sure this shouldn't go into a previous
+            // condition -tml
 	    if (selectedItem instanceof UMLClassDiagram) {
                 UMLAction action =
                 new ActionAddAllClassesFromModel(
@@ -159,8 +184,9 @@ public class ExplorerPopup extends JPopupMenu{
 	    }
 
             if (selectedItem != null) {
-                this.add(new ActionGoToDetails(
-                menuLocalize("action.properties")));
+                this.add(
+                    new ActionGoToDetails(menuLocalize("action.properties"))
+                );
             }
         }
     }
