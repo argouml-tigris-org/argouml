@@ -121,6 +121,14 @@ public class DataTypesHelper {
         
         return MPseudostateKind.BRANCH.equals(kind);
     }
+    
+    public boolean equalsJUNCTIONKind(Object kind) {
+    
+        if (!(kind instanceof MPseudostateKind)) {
+            throw new IllegalArgumentException();
+        }
+        return MPseudostateKind.JUNCTION.equals(kind);
+    } 
 
     /**
      * Converts a Multiplicity to a String.

@@ -22,10 +22,9 @@
 //CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 //UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// File: FigBranchState.java
-// Classes: FigBranchState
-// Author: pepargouml@yahoo.es
-
+// File: FigJunctionState.java
+// Classes: FigJunctionState
+// Original Author: pepargouml@yahoo.es
 
 package org.argouml.uml.diagram.state.ui;
 
@@ -33,43 +32,48 @@ import java.awt.Color;
 import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
-import java.util.Iterator;
+import java.util.Vector;
 
-//import org.argouml.uml.diagram.activity.ui.SelectionActionState;
 import org.argouml.uml.diagram.ui.SelectionMoveClarifiers;
-
 import org.tigris.gef.base.Selection;
 import org.tigris.gef.graph.GraphModel;
-import org.tigris.gef.presentation.FigCircle;
+import org.tigris.gef.presentation.FigPoly;
 
-/** Class to display graphics for a UML Choice State in a diagram. */
+/** Class to display graphics for a UML Junction State in a diagram. */
 
-public class FigBranchState extends FigStateVertex {
+public class FigJunctionState extends FigStateVertex {
 
     ////////////////////////////////////////////////////////////////
     // constants
 
-    public final int MARGIN = 2;
-    public int x = 10;
-    public int y = 10;
-    public int width = 20;
-    public int height = 20;
+    public static final int MARGIN = 2;
+    public static final int X = 0;
+    public static final int Y = 0;
+    public static final int WIDTH = 32;
+    public static final int HEIGHT = 32;
 
     ////////////////////////////////////////////////////////////////
     // instance variables
 
-    /** UML does not really use ports, so just define one big one so
-     *  that users can drag edges to or from any point in the icon. */
-
-    protected FigCircle _bigPort;
-    protected FigCircle _head;
+    FigPoly _bigPort;
+    FigPoly _head;
 
     ////////////////////////////////////////////////////////////////
     // constructors
+    public FigJunctionState() {
+	_bigPort = new FigPoly( Color.cyan, Color.cyan);
+	_head = new FigPoly(Color.black, Color.white);
+	_bigPort.addPoint(X, Y);
+	_bigPort.addPoint(X + WIDTH / 2, Y + HEIGHT / 2);
+	_bigPort.addPoint(X, Y + HEIGHT);
+	_bigPort.addPoint(X - WIDTH / 2, Y + HEIGHT / 2);
 
-    public FigBranchState() {
-	_bigPort = new FigCircle(x, y, width, height, Color.cyan, Color.cyan);
-	_head = new FigCircle(x, y, width, height, Color.black, Color.white);
+	_head.addPoint(X, Y);
+	_head.addPoint(X + WIDTH / 2, Y + HEIGHT / 2);
+	_head.addPoint(X, Y + HEIGHT);
+	_head.addPoint(X - WIDTH / 2, Y + HEIGHT / 2);
+	_head.addPoint(X, Y);
+
 	// add Figs to the FigNode in back-to-front order
 	addFig(_bigPort);
 	addFig(_head);
@@ -78,25 +82,21 @@ public class FigBranchState extends FigStateVertex {
 	Rectangle r = getBounds();
     }
 
-    public FigBranchState(GraphModel gm, Object node) {
+    public FigJunctionState(GraphModel gm, Object node) {
 	this();
 	setOwner(node);
     }
 
     public Object clone() {
-	FigInitialState figClone = (FigInitialState) super.clone();
-	Iterator it = figClone.getFigs(null).iterator();
-	figClone._bigPort = (FigCircle) it.next();
-	figClone._head = (FigCircle) it.next();
+	FigJunctionState figClone = (FigJunctionState) super.clone();
+	Vector v = figClone.getFigs();
+	figClone._bigPort = (FigPoly) v.elementAt(0);
+	figClone._head = (FigPoly) v.elementAt(1);
 	return figClone;
     }
 
     ////////////////////////////////////////////////////////////////
-    // Fig accessors
-
-    public Selection makeSelection() {
-	return new SelectionMoveClarifiers(this);
-    }
+    // Fig accesors
 
     public void setOwner(Object node) {
 	super.setOwner(node);
@@ -105,6 +105,10 @@ public class FigBranchState extends FigStateVertex {
 
     /** Initial states are fixed size. */
     public boolean isResizable() { return false; }
+
+    public Selection makeSelection() {
+	return new SelectionMoveClarifiers(this);
+    }
 
     public void setLineColor(Color col) { _head.setLineColor(col); }
     public Color getLineColor() { return _head.getLineColor(); }
@@ -124,6 +128,5 @@ public class FigBranchState extends FigStateVertex {
     public void mouseClicked(MouseEvent me) { }
     public void keyPressed(KeyEvent ke) { }
 
-    static final long serialVersionUID = 6572261327347541373L;
 
-} /* end class FigBranchState */
+} /* end class FigJunctionState */
