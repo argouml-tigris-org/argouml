@@ -62,15 +62,11 @@ public class FigMessage extends FigNodeModelElement {
 
     private FigPoly figPoly;
 
-    /**
-     * The <code>arrowDirection</code> values are:
-     * 1: South
-     * 2: East
-     * 3: West
-     * 4: North
-     */
-    private int arrowDirection = 0;
-
+    public static final int SOUTH = 1;
+    public static final int EAST = 2;
+    public static final int WEST = 3;
+    public static final int NORTH = 4;
+    public int arrowDirection = 0;
 
     ////////////////////////////////////////////////////////////////
     // constructors
@@ -186,10 +182,10 @@ public class FigMessage extends FigNodeModelElement {
 
     /**
      * @param direction for the arrow
-     * 1: South
-     * 2: East
-     * 3: West
-     * 4: North
+     * FigMessage.SOUTH
+     * FigMessage.EAST
+     * FigMessage.WEST
+     * FigMessage.NORTH
      */
     public void setArrow(int direction) {
 	Rectangle bbox = getBounds();
@@ -200,37 +196,30 @@ public class FigMessage extends FigNodeModelElement {
 
 	arrowDirection = direction;
 	switch (direction) {
-	    // south
-	case 1: {
-	    int[] xpoints = {75, 75, 77, 75, 73, 75};
-	    int[] ypoints = {15, 24, 24, 33, 24, 24};
-	    Polygon polygon = new Polygon(xpoints, ypoints, 6);
-	    figPoly.setPolygon(polygon);
-	    break;
-	}
-	    // east
-	case 2: {
-	    int[] xpoints = {66, 75, 75, 84, 75, 75};
-	    int[] ypoints = {24, 24, 26, 24, 22, 24};
-	    Polygon polygon = new Polygon(xpoints, ypoints, 6);
-	    figPoly.setPolygon(polygon);
-	    break;
-	}
-	    // west
-	case 3: {
-	    int[] xpoints = {84, 75, 75, 66, 75, 75};
-	    int[] ypoints = {24, 24, 26, 24, 22, 24};
-	    Polygon polygon = new Polygon(xpoints, ypoints, 6);
-	    figPoly.setPolygon(polygon);
-	    break;
-	}
-	    // north
-	default: {
-	    int[] xpoints = {75, 75, 77, 75, 73, 75};
-	    int[] ypoints = {33, 24, 24, 15, 24, 24};
-	    Polygon polygon = new Polygon(xpoints, ypoints, 6);
-	    figPoly.setPolygon(polygon);
-	}
+            case SOUTH: {
+                int[] xpoints = {75, 75, 77, 75, 73, 75};
+                int[] ypoints = {15, 24, 24, 33, 24, 24};
+                Polygon polygon = new Polygon(xpoints, ypoints, 6);
+                figPoly.setPolygon(polygon);
+                break;
+            } case EAST: {
+                int[] xpoints = {66, 75, 75, 84, 75, 75};
+                int[] ypoints = {24, 24, 26, 24, 22, 24};
+                Polygon polygon = new Polygon(xpoints, ypoints, 6);
+                figPoly.setPolygon(polygon);
+                break;
+            } case WEST: {
+                int[] xpoints = {84, 75, 75, 66, 75, 75};
+                int[] ypoints = {24, 24, 26, 24, 22, 24};
+                Polygon polygon = new Polygon(xpoints, ypoints, 6);
+                figPoly.setPolygon(polygon);
+                break;
+            } default: { // north
+                int[] xpoints = {75, 75, 77, 75, 73, 75};
+                int[] ypoints = {33, 24, 24, 15, 24, 24};
+                Polygon polygon = new Polygon(xpoints, ypoints, 6);
+                figPoly.setPolygon(polygon);
+            }
 	}
 	setBounds(bbox);
     }
@@ -314,13 +303,13 @@ public class FigMessage extends FigNodeModelElement {
 	int rx = receiverPort.getX();
 	int ry = receiverPort.getY();
 	if (sx < rx && Math.abs(sy - ry) <= Math.abs(sx - rx)) { // east
-	    setArrow(2);
+	    setArrow(EAST);
 	} else if (sx > rx && Math.abs(sy - ry) <= Math.abs(sx - rx)) { // west
-	    setArrow(3);
+	    setArrow(WEST);
 	} else if (sy < ry) { // south
-	    setArrow(1);
+	    setArrow(SOUTH);
 	} else {
-	    setArrow(4);
+	    setArrow(NORTH);
 	}
     }
 
