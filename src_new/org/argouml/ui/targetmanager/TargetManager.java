@@ -35,7 +35,6 @@ import org.apache.log4j.Logger;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.ModelFacade;
-import org.argouml.ui.Actions;
 import org.argouml.uml.diagram.ui.UMLDiagram;
 import org.tigris.gef.presentation.Fig;
 
@@ -298,9 +297,7 @@ public final class TargetManager {
                 _modelTarget = determineModelTarget(_newTarget);
                 fireTargetSet(targets);
                 _targets = new Object[] { o };
-                _newTarget = null;
-                Actions.updateAllEnabled();
-
+                _newTarget = null;         
             }
             endTargetTransaction();
         }
@@ -346,7 +343,6 @@ public final class TargetManager {
                 _modelTarget = null;
                 _figTarget = null;
             }
-            Actions.updateAllEnabled();
             endTargetTransaction();
         }
     }
