@@ -1,4 +1,3 @@
-
 // $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -29,6 +28,7 @@
 
 package org.argouml.uml.ui.behavior.use_cases;
 
+import org.argouml.model.ModelFacade;
 import javax.swing.JList;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
@@ -43,7 +43,6 @@ import org.argouml.uml.ui.UMLTextField2;
 import org.argouml.uml.ui.foundation.core.PropPanelModelElement;
 import org.argouml.util.ConfigLoader;
 
-import ru.novosoft.uml.behavior.use_cases.MExtensionPoint;
 import ru.novosoft.uml.behavior.use_cases.MUseCase;
 
 
@@ -126,7 +125,7 @@ public class PropPanelExtensionPoint extends PropPanelModelElement {
 
         // Get the owning use case and navigate to it if it exists.
 
-        MUseCase owner = ((MExtensionPoint) target).getUseCase();
+        Object owner = ModelFacade.getUseCase(target);
 
         if (owner != null) {
             TargetManager.getInstance().setTarget(owner);

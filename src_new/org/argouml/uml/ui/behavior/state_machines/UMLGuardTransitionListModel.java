@@ -25,11 +25,10 @@
 // $header$
 package org.argouml.uml.ui.behavior.state_machines;
 
+import org.argouml.model.ModelFacade;
 import org.argouml.uml.ui.UMLModelElementListModel2;
 
 import ru.novosoft.uml.MBase;
-import ru.novosoft.uml.behavior.state_machines.MGuard;
-
 /**
  * The listmodel behind the transition property for a Guard on the Guard's 
  * property panel.
@@ -51,14 +50,14 @@ public class UMLGuardTransitionListModel extends UMLModelElementListModel2 {
      */
     protected void buildModelList() {
         removeAllElements();
-        addElement(((MGuard) getTarget()).getTransition());
+        addElement(ModelFacade.getTransition(getTarget()));
     }
 
     /**
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(ru.novosoft.uml.MBase)
      */
     protected boolean isValidElement(MBase element) {
-        return element == ((MGuard) getTarget()).getTransition();
+        return element == ModelFacade.getTransition(getTarget());
     }
 
 }

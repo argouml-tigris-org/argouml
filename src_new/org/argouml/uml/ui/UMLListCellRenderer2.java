@@ -1,6 +1,3 @@
-
-
-
 // $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -28,6 +25,7 @@
 // $Id$
 package org.argouml.uml.ui;
 
+import org.argouml.model.ModelFacade;
 import java.awt.Component;
 
 import javax.swing.DefaultListCellRenderer;
@@ -119,7 +117,7 @@ public class UMLListCellRenderer2 extends DefaultListCellRenderer {
 
     private String makeTypeName(Object elem) {
         if (org.argouml.model.ModelFacade.isABase(elem)) {
-            return ((MBase) elem).getUMLClassName();
+            return ModelFacade.getUMLClassName(elem);
         }
         return null;
     }

@@ -1095,20 +1095,25 @@ public class ModelFacade {
      * @returns true if handle is a constructor.
      */
     public static boolean isConstructor(Object handle) {
+        Object stereo = null;
 	if (isAOperation(handle)) {
+            if (ModelFacade.getStereotypes(handle).size() > 0) {
+                stereo = ModelFacade.getStereotypes(handle).iterator().next();
+            }
 	    if (ExtensionMechanismsHelper.getHelper()
-		.isStereotypeInh(getStereoType(handle),
-				 "create",
-				 "BehavioralFeature"))
+                    .isStereotypeInh(stereo, "create", "BehavioralFeature")) {
 		return true;
+            }
 	}
 	if (isAMethod(handle)) {
+            Object specification = CoreHelper.getHelper().getSpecification(handle);
+            if (ModelFacade.getStereotypes(specification).size() > 0) {
+                stereo = ModelFacade.getStereotypes(specification).iterator().next();
+            }
 	    if (ExtensionMechanismsHelper.getHelper()
-		.isStereotypeInh(getStereoType(CoreHelper.getHelper()
-					       .getSpecification(handle)),
-				 "create",
-				 "BehavioralFeature"))
+                    .isStereotypeInh(stereo, "create", "BehavioralFeature")) {
 		return true;
+            }
 	}
 	return false;
     }
@@ -2709,6 +2714,8 @@ public class ModelFacade {
      * Returns the stereotype belonging to some given modelelement
      * @param handle
      * @return Object
+     * @deprecated 0.15 in favor of getStereotypes will be removed
+     * in 0.16
      */
     public static Object getStereoType(Object handle) {
         if (isAModelElement(handle)) {
@@ -2717,14 +2724,19 @@ public class ModelFacade {
         throw new IllegalArgumentException("Unrecognized object " + handle);
     }
 
+
     /**
-     * Returns the stereotype belonging to some given modelelement
+     * Returns the stereotypes belonging to some given modelelement
      * @param handle
-     * @return Object
+     * @return stereotype collection
      */
-    public static Object getStereotype(Object handle) {
+    public static Collection getStereotypes(Object handle) {
         if (isAModelElement(handle)) {
-            return ((MModelElement) handle).getStereotype();
+            // This returns a collection as we have an eye on the future
+            // and multiple stereotypes in UML1.5
+            ArrayList list = new ArrayList(1);
+            list.add(((MModelElement) handle).getStereotype());
+            return list;
         }
         throw new IllegalArgumentException("Unrecognized object " + handle);
     }
@@ -2790,6 +2802,47 @@ public class ModelFacade {
         }
 
         // ...
+        throw new IllegalArgumentException("Unrecognized object " + handle);
+    }
+
+    /** The top of a state machine
+     *
+     * @param handle the state machine
+     * @returns the top
+     */
+    public static Object getTop(Object handle) {
+        if (handle instanceof MStateMachine) {
+            return ((MStateMachine) handle).getTop();
+        }
+
+        // ...
+        throw new IllegalArgumentException("Unrecognized object " + handle);
+    }
+
+    /** Get the transition of a guard or action
+     *
+     * @param handle the guard or action
+     * @returns the transition
+     */
+    public static Object getTransition(Object handle) {
+        if (handle instanceof MGuard) {
+            return ((MGuard) handle).getTransition();
+        }
+        if (handle instanceof MAction) {
+            return ((MAction) handle).getTransition();
+        }
+        throw new IllegalArgumentException("Unrecognized object " + handle);
+    }
+
+    /** Get the trigger of a transition
+     *
+     * @param handle the transition
+     * @returns the trigger
+     */
+    public static Object getTrigger(Object handle) {
+        if (handle instanceof MTransition) {
+            return ((MTransition) handle).getTrigger();
+        }
         throw new IllegalArgumentException("Unrecognized object " + handle);
     }
 
@@ -2865,6 +2918,18 @@ public class ModelFacade {
             if (end.getMultiplicity() != null)
                 upper = end.getMultiplicity().getUpper();
             return upper;
+        }
+        throw new IllegalArgumentException("Unrecognized object " + handle);
+    }
+
+    /**
+     * Returns the use case of an extension point
+     * @param handle
+     * @return a use case
+     */
+    public static Object getUseCase(Object handle) {
+        if (handle instanceof MExtensionPoint) {
+            return ((MExtensionPoint) handle).getUseCase();
         }
         throw new IllegalArgumentException("Unrecognized object " + handle);
     }
@@ -3101,6 +3166,20 @@ public class ModelFacade {
     }
 
     /**
+     *  Return the tag of a tagged value
+     *
+     *  @param handle The tagged value belongs to this.
+     *  @param name The tag.
+     *   @return The found tag, null if not found
+     */
+    public static Object getTag(Object handle) {
+        if (handle instanceof MTaggedValue) {
+            return ((MTaggedValue)handle).getTag();
+        }
+        throw new IllegalArgumentException("Unrecognized object " + handle);
+    }
+    
+    /**
        Return the tagged values iterator of a model element.
 
        @param element The tagged values belong to this.
@@ -3114,12 +3193,12 @@ public class ModelFacade {
     }
 
     /**
-       Return the tagged value with a specific tag.
-
-       @param element The tagged value belongs to this.
-       @param name The tag.
-       @return The found tag, null if not found
-    */
+     *  Return the tagged value with a specific tag.
+     *
+     *  @param element The tagged value belongs to this.
+     *  @param name The tag.
+     *   @return The found tag, null if not found
+     */
     public static Object getTaggedValue(Object modelElement, String name) {
         if (modelElement != null && modelElement instanceof MModelElement) {
 	    MModelElement me = ((MModelElement) modelElement);

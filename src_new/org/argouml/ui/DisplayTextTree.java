@@ -147,9 +147,12 @@ public class DisplayTextTree extends JTree implements TargetListener {
 
             // Look for stereotype
             if (showStereotype) {
-                Object st =  ModelFacade.getStereoType(value);
-                if (st != null) {
-                    name += " " + GeneratorDisplay.Generate(st);
+                Object stereo = null;
+                if (ModelFacade.getStereotypes(value).size() > 0) {
+                    stereo = ModelFacade.getStereotypes(value).iterator().next();
+                }
+                if (stereo != null) {
+                    name += " " + GeneratorDisplay.Generate(stereo);
                 }
             }
 

@@ -164,9 +164,9 @@ public class UseCasesHelper {
 	return list;
     }
     
-    public Collection getExtendingUseCases(MUseCase usecase) {
+    public Collection getExtendingUseCases(Object usecase) {
         if (usecase == null) return new ArrayList();
-        Iterator it = usecase.getExtends2().iterator();
+        Iterator it = ((MUseCase)usecase).getExtends2().iterator();
         List list = new ArrayList();
         while (it.hasNext()) {
             MExtend ext = (MExtend) it.next();

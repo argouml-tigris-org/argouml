@@ -1,5 +1,3 @@
-
-
 // $Id$
 // Copyright (c) 2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -26,12 +24,10 @@
 
 package org.argouml.uml.ui.behavior.use_cases;
 
+import org.argouml.model.ModelFacade;
 import org.argouml.uml.ui.UMLModelElementListModel2;
 
 import ru.novosoft.uml.MBase;
-import ru.novosoft.uml.behavior.use_cases.MExtensionPoint;
-
-
 /**
  * @since Oct 6, 2002
  * @author jaap.branderhorst@xs4all.nl
@@ -50,14 +46,14 @@ public class UMLExtensionPointUseCaseListModel extends UMLModelElementListModel2
      * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
      */
     protected void buildModelList() {
-        addElement(((MExtensionPoint) getTarget()).getUseCase());
+        addElement(ModelFacade.getUseCase(getTarget()));
     }
 
     /**
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(MBase)
      */
     protected boolean isValidElement(MBase o) {
-        return org.argouml.model.ModelFacade.isAUseCase(o) && ((MExtensionPoint) getTarget()).getUseCase() == o;
+        return org.argouml.model.ModelFacade.isAUseCase(o) && ModelFacade.getUseCase(getTarget()) == o;
     }
 
 }
