@@ -164,7 +164,14 @@ public class GeneratorJava extends Generator {
     String nameStr = generateName(op.getName());
     String clsName = generateName(op.getOwner().getName());
 
+    /*
+     * Replaced 2001-09-26 STEFFEN ZSCHALER
+     *
+     * Was 
+     *
     s += DocumentationManager.getDocs(op) + "\n" + INDENT;
+     */
+    s += generateConstraintEnrichedDocComment (op) + "\n" + INDENT;
     s += generateVisibility(op);
     s += generateScope(op);
 
@@ -201,7 +208,16 @@ public class GeneratorJava extends Generator {
 
   public String generateAttribute(MAttribute attr) {
     String s = "";
+    
+    /*
+     * Replaced 2001-09-26 STEFFEN ZSCHALER
+     *
+     * Was:
+     *
     s += DocumentationManager.getDocs(attr) + "\n" + INDENT;
+     */
+    s += generateConstraintEnrichedDocComment (attr) + "\n" + INDENT;
+    
     s += generateVisibility(attr);
     s += generateScope(attr);
     s += generateChangability(attr);
@@ -223,7 +239,7 @@ public class GeneratorJava extends Generator {
     }
 
     s += ";\n";
-    s += generateConstraints(attr);
+    // s += generateConstraints(attr);  Removed 2001-09-26 STEFFEN ZSCHALER
 
     return s;
   }
@@ -267,9 +283,19 @@ public class GeneratorJava extends Generator {
     if (cls instanceof MClassImpl) classifierKeyword = "class";
     else if (cls instanceof MInterface) classifierKeyword = "interface";
     else return ""; // actors and use cases
+    
     StringBuffer sb = new StringBuffer(80);
     sb.append(DocumentationManager.getComments(cls));  // Add the comments for this classifier first.
+    
+    /*
+     * Replaced 2001-09-26 STEFFEN ZSCHALER
+     *
+     * Was:
+     *
     sb.append(DocumentationManager.getDocs(cls)).append("\n");
+     */
+    sb.append (generateConstraintEnrichedDocComment (cls)).append ("\n");
+    
     sb.append(generateVisibility(cls.getVisibility()));
     if (cls.isAbstract() && !(cls instanceof MInterface)) sb.append("abstract ");
     if (cls.isLeaf()) sb.append("final ");
@@ -287,7 +313,8 @@ public class GeneratorJava extends Generator {
 
     tv = generateTaggedValues(cls);
     if (tv != null && tv.length() > 0) sb.append(INDENT).append(tv);
-    sb.append(generateConstraints(cls));
+    
+    // sb.append(generateConstraints(cls)); Removed 2001-09-26 STEFFEN ZSCHALER
 
     Collection strs = MMUtil.SINGLETON.getAttributes(cls);
     if (strs != null) {
@@ -314,7 +341,9 @@ public class GeneratorJava extends Generator {
 		sb.append('\n').append(INDENT).append(generateAssociationFrom(a, ae));
 		tv = generateTaggedValues(a);
 		if (tv != null && tv.length() > 0) sb.append(INDENT).append(tv);
-		sb.append(generateConstraints(a));
+    
+		// sb.append(generateConstraints(a));  Removed 2001-09-26 STEFFEN ZSCHALER Why was this not in generateAssociationFrom ?
+    
       }
     }
 
@@ -333,7 +362,8 @@ public class GeneratorJava extends Generator {
 		sb.append('\n').append(INDENT).append(generate(bf)).append(terminator1);
 		tv = generateTaggedValues((MModelElement)bf);
 		if (tv.length() > 0) sb.append(INDENT).append(tv);
-		sb.append(generateConstraints((MModelElement)bf));
+    
+		// sb.append(generateConstraints((MModelElement)bf));  Removed 2001-09-26 STEFFEN ZSCHALER Why was this not in generateOperation / generateClassifier ?
 
 		// there is no ReturnType in behavioral feature (nsuml)
 		if (cls instanceof MClassImpl && bf instanceof MOperation) {
@@ -401,7 +431,20 @@ public class GeneratorJava extends Generator {
         s = generateTaggedValue((MTaggedValue)iter.next());
         if (s != null && s.length() > 0) {
 			if (first) {
+        /*
+         * Corrected 2001-09-26 STEFFEN ZSCHALER
+         * 
+         * Was:
 				buf.append("// {");
+         *
+         * which caused problems with new lines characters in tagged values
+         * (e.g. comments...). The new version still has some problems with
+         * tagged values containing "*"+"/" as this closes the comment
+         * prematurely, but comments should be taken out of the tagged values
+         * list anyway...
+         */
+        buf.append ("/* {");
+        
 				first = false;
 			} else {
 				buf.append(", ");
@@ -409,7 +452,16 @@ public class GeneratorJava extends Generator {
 			buf.append(s);
 		}
     }
+    /*
+     * Corrected 2001-09-26 STEFFEN ZSCHALER
+     *
+     * Was:
     if (!first) buf.append("}\n");
+     *
+     * which caused problems with new-lines in tagged values.
+     */
+    if (!first) buf.append ("}*/\n");
+    
     return buf.toString();
   }
 
@@ -420,6 +472,190 @@ public class GeneratorJava extends Generator {
     return generateName(tv.getTag()) + "=" + s;
   }
 
+  /**
+   * Enhance/Create the doccomment for the given model element, including tags
+   * for any OCL constraints connected to the model element. The tags generated
+   * are suitable for use with the ocl injector which is part of the Dresden OCL
+   * Toolkit and are in detail:
+   *
+   * &nbsp;@invariant for each invariant specified
+   * &nbsp;@precondition for each precondition specified
+   * &nbsp;@postcondition for each postcondition specified
+   * &nbsp;@key-type specifying the class of the keys of a mapped association
+   * &nbsp; Currently mapped associations are not supported yet...
+   * &nbsp;@element-type specifying the class referenced in an association
+   *
+   * @since 2001-09-26 ArgoUML 0.9.3
+   * @author Steffen Zschaler
+   *
+   * @param me the model element for which the documentation comment is needed
+   * @param ae the association end which is represented by the model element
+   * @return the documentation comment for the specified model element, either
+   * enhanced or completely generated
+   */
+  public String generateConstraintEnrichedDocComment (MModelElement me,
+                                                      MAssociationEnd ae) {
+    String sDocComment = generateConstraintEnrichedDocComment (me);
+    
+    MMultiplicity m = ae.getMultiplicity();
+    if (! (MMultiplicity.M1_1.equals(m) || MMultiplicity.M0_1.equals (m))) {
+      // Multiplicity greater 1, that means we will generate some sort of
+      // collection, so we need to specify the element type tag
+      
+      // Prepare doccomment
+      if (sDocComment != null) {
+        // Just remove closing */
+        sDocComment = sDocComment.substring (0, sDocComment.indexOf ("*/") + 1);
+      }
+      else {
+        sDocComment = INDENT + "/**\n" +
+                      INDENT + " * \n" +
+                      INDENT + " *";
+      }
+      
+      // Build doccomment
+      sDocComment += " @element-type " + ae.getType().getName();
+      
+      sDocComment += "\n" +
+                     INDENT + " */";
+      
+      return sDocComment;
+    }
+    else {
+      return ((sDocComment != null)?(sDocComment):(""));
+    }
+  }
+  
+  /**
+   * Enhance/Create the doccomment for the given model element, including tags
+   * for any OCL constraints connected to the model element. The tags generated
+   * are suitable for use with the ocl injector which is part of the Dresden OCL
+   * Toolkit and are in detail:
+   *
+   * &nbsp;@invariant for each invariant specified
+   * &nbsp;@precondition for each precondition specified
+   * &nbsp;@postcondition for each postcondition specified
+   *
+   * @since 2001-09-26 ArgoUML 0.9.3
+   * @author Steffen Zschaler
+   *
+   * @param me the model element for which the documentation comment is needed
+   * @return the documentation comment for the specified model element, either
+   * enhanced or completely generated
+   */
+  public String generateConstraintEnrichedDocComment (MModelElement me) {
+    // Retrieve any existing doccomment
+    String sDocComment = DocumentationManager.getDocs (me);
+    
+    if (sDocComment != null) {
+      // Fix Bug in documentation manager.defaultFor --> look for current INDENT
+      // and use it
+      for (int i = sDocComment.indexOf ('\n');
+           i >= 0 && i < sDocComment.length();
+           i = sDocComment.indexOf ('\n', i + 1)) {
+        sDocComment = sDocComment.substring (0, i + 1) + 
+                      INDENT + sDocComment.substring (i + 1);
+      }
+    }
+    
+    // Extract constraints
+    Collection cConstraints = me.getConstraints();
+    
+    if (cConstraints.size() == 0) {
+      return (sDocComment != null)?(sDocComment):("");
+    }
+    
+    // Prepare doccomment
+    if (sDocComment != null) {
+      // Just remove closing */
+      sDocComment = sDocComment.substring (0, sDocComment.indexOf ("*/") + 1);
+    }
+    else {
+      sDocComment = INDENT + "/**\n" +
+                    INDENT + " * \n" +
+                    INDENT + " *";
+    }
+    
+    // Add each constraint
+    
+    class TagExtractor extends tudresden.ocl.parser.analysis.DepthFirstAdapter {
+      private LinkedList m_llsTags = new LinkedList();
+      private String m_sConstraintName;
+      private int m_nConstraintID = 0;
+      
+      public TagExtractor (String sConstraintName) {
+        super();
+        
+        m_sConstraintName = sConstraintName;
+      }
+      
+      public Iterator getTags() {
+        return m_llsTags.iterator();
+      }
+      
+      public void caseAConstraintBody (tudresden.ocl.parser.node.AConstraintBody node) {
+        // We don't care for anything below this node, so we do not use apply anymore.
+        String sKind = (node.getStereotype() != null)?
+                       (node.getStereotype().toString()):
+                       (null);
+        String sExpression = (node.getExpression() != null)?
+                             (node.getExpression().toString()):
+                             (null);
+        String sName = (node.getName() != null)?
+                       (node.getName().getText()):
+                       (m_sConstraintName + "_" + (m_nConstraintID++));
+                       
+        if ((sKind == null) ||
+            (sExpression == null)) {
+          return;
+        }
+                       
+        String sTag;
+        if (sKind.equals ("inv ")) {
+          sTag = "@invariant ";
+        }
+        else if (sKind.equals ("post ")) {
+          sTag = "@post-condition ";
+        }
+        else if (sKind.equals ("pre ")) {
+          sTag = "@pre-condition ";
+        }
+        else {
+          return;
+        }
+        
+        sTag += sName + ": " + sExpression;
+        m_llsTags.addLast (sTag);
+      }
+    }
+    
+    tudresden.ocl.check.types.ModelFacade mf = new org.argouml.ocl.ArgoFacade (me);
+    for (Iterator i = cConstraints.iterator(); i.hasNext();) {
+      MConstraint mc = (MConstraint) i.next();
+      
+      try {
+        tudresden.ocl.OclTree otParsed = tudresden.ocl.OclTree.createTree (
+            mc.getBody().getBody(),
+            mf
+          );
+        
+        TagExtractor te = new TagExtractor (mc.getName());
+        otParsed.apply (te);
+        
+        for (Iterator j = te.getTags(); j.hasNext();) {
+          sDocComment += " " + j.next() + "\n" + INDENT + " *";
+        }
+      }
+      catch (java.io.IOException ioe) {
+        // Nothing to be done, should not happen anyway ;-)
+      }
+    }
+    
+    sDocComment += "/";
+    
+    return sDocComment;
+  }
+  
   public String generateConstraints(MModelElement me) {
 
     // This method just adds comments to the generated java code. This should be code generated by ocl-argo int he future?
@@ -455,13 +691,30 @@ public class GeneratorJava extends Generator {
   public String generateAssociationFrom(MAssociation a, MAssociationEnd ae) {
     // needs-more-work: does not handle n-ary associations
     String s = "";
+    
+    /*
+     * Moved into while loop 2001-09-26 STEFFEN ZSCHALER
+     *
+     * Was:
+     *
     s += DocumentationManager.getDocs(a) + "\n" + INDENT;
+     */
+    
     Collection connections = a.getConnections();
     Iterator connEnum = connections.iterator();
     while (connEnum.hasNext()) {
       MAssociationEnd ae2 = (MAssociationEnd) connEnum.next();
-      if (ae2 != ae) s += generateAssociationEnd(ae2);
+      if (ae2 != ae) {
+        /**
+         * Added generation of doccomment 2001-09-26 STEFFEN ZSCHALER
+         *
+         */
+        s += generateConstraintEnrichedDocComment (a, ae2) + "\n";
+        
+        s += generateAssociationEnd(ae2);
+      }
     }
+    
     return s;
   }
 
