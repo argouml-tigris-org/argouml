@@ -58,18 +58,16 @@
 <!ENTITY tutreqs SYSTEM "tut_reqs.xml">
 <!ENTITY frontis SYSTEM "frontis.xml">
 <!ENTITY refcritics SYSTEM "ref_critics.xml">
-
 <!ENTITY ooad "OOA&amp;D">
 <!ENTITY Button2 "Button&nbsp;2">
 <!ENTITY Button1 "Button&nbsp;1">
-<!ENTITY argouml "ArgoUML">
 <!ENTITY button2 "button&nbsp;2">
 <!ENTITY button1 "button&nbsp;1">
 <!ENTITY argoversion "@VERSION@">
 <!ENTITY notupdatedfor016disclaimer "<caution>
       <para>
 This chapter is not fully gone through and updated to fit the 0.18
-release of &argouml; but describes the version 0.14 instead.
+release of ArgoUML but describes the version 0.14 instead.
 This means that some of the functions might not work exactly
 as described and icons and screen-shots does not look exactly like
 in the 0.18 version.
@@ -77,7 +75,7 @@ in the 0.18 version.
     </caution>">
 <!ENTITY minimumjavaversion "1.4">
 <!ENTITY constraintssupport "Standard tab.
-&argouml; only supports constraints on Classes and Features (Attributes,
+ArgoUML only supports constraints on Classes and Features (Attributes,
 Operations, Receptions, and Methods),
 <!-- According issue 1805 -->
 so this tab is grayed out.">
@@ -92,7 +90,7 @@ so this tab is grayed out.">
   &intro;
   <!-- The tutorial chapters -->
   <part>
-    <title>&argouml; Tutorial Manual</title>
+    <title>ArgoUML Tutorial Manual</title>
     &tutuml;
     &tutreqs;
     &tutanalysis;
@@ -101,7 +99,7 @@ so this tab is grayed out.">
   </part>
   <!-- The reference chapters -->
   <part>
-    <title>&argouml; Reference Manual</title>
+    <title>ArgoUML Reference Manual</title>
     <!-- The reference chapters on the user interface -->
     &refui;
     &reftoolbar;

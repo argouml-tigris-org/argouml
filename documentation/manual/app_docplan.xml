@@ -47,7 +47,7 @@ TODO: Remove this from the user manual.
 
     <itemizedlist>
       <listitem><para>Experienced users of UML in &ooad; (perhaps with other
-        tools) who wish to transfer to &argouml;.</para></listitem>
+        tools) who wish to transfer to ArgoUML.</para></listitem>
 
       <listitem><para>Designers who know &ooad;, and wish to adopt a UML
         based process.</para></listitem>
@@ -75,7 +75,7 @@ TODO: Remove this from the user manual.
       are two goals (in priority order).</para>
 
     <orderedlist>
-      <listitem><para>A comprehensive tutorial style explanation of &argouml;
+      <listitem><para>A comprehensive tutorial style explanation of ArgoUML
         in the context of an &ooad; process.</para></listitem>
 
       <listitem><para><emphasis>Descriptive</emphasis> reference material on
@@ -121,7 +121,7 @@ TODO: Remove this from the user manual.
     <para>I suggest that the tutorial book be based around an &ooad; process
       (any preferences), and that each UML concept is introduced with each step
       of the process, followed by an explanation of how to do it under
-      &argouml;. A <emphasis>simple</emphasis>case study will be needed
+      ArgoUML. A <emphasis>simple</emphasis>case study will be needed
       throughout. A lot of this material can come from existing Tutorial 
       Chapters, with some additional material from the Cookbook,
       answers in the FAQ and Jason Robbins dissertation.</para>
@@ -135,11 +135,11 @@ TODO: Remove this from the user manual.
 
         <listitem><para>Introduction</para>
           <orderedlist>
-            <listitem><para>Origins and overview of &argouml;</para></listitem>
+            <listitem><para>Origins and overview of ArgoUML</para></listitem>
             <listitem><para>Scope of the User Manual. Include cross-reference
               to other documentation (Cookbook, FAQ, Quick Guide, online help,
-              &argouml; website etc).</para></listitem>
-            <listitem><para>Overview of the User Manual. Explains that &argouml;
+              ArgoUML website etc).</para></listitem>
+            <listitem><para>Overview of the User Manual. Explains that ArgoUML
               will be explained in the context of an &ooad; process, and
               with an example running through.</para></listitem>
             <listitem><para>Assumptions. At this stage assume the user knows
@@ -147,7 +147,7 @@ TODO: Remove this from the user manual.
           </orderedlist>
         </listitem>
 
-        <!-- Need to explain how we're going to go about learning &argouml; -->
+        <!-- Need to explain how we're going to go about learning ArgoUML -->
 
         <listitem><para>UML Based &ooad;</para>
           <orderedlist>
@@ -156,7 +156,7 @@ TODO: Remove this from the user manual.
             <listitem><para>UML based processes for &ooad;</para></listitem>
             <listitem><para>ArgoUML Basics&mdash;projects, drawing, exploring,
               details</para></listitem>
-            <listitem><para>What &argouml; has that other tools are missing
+            <listitem><para>What ArgoUML has that other tools are missing
               (critics, to-do list, based in cognitive psychology
               theory).</para></listitem>
             <listitem><para>The Case Study</para></listitem>
@@ -164,7 +164,7 @@ TODO: Remove this from the user manual.
         </listitem>
 
         <!-- Diagrams associated with requirements capture. This will include
-             a lot of &argouml; stuff, since you hit this at the first
+             a lot of ArgoUML stuff, since you hit this at the first
              diagram.-->
 
         <listitem><para>Requirements Capture</para>
@@ -216,7 +216,7 @@ Realization
         <listitem><para>Build</para>
           <orderedlist>
             <listitem><para>Deployment Diagrams</para></listitem>
-            <listitem><para>Code Generation in &argouml;</para></listitem>
+            <listitem><para>Code Generation in ArgoUML</para></listitem>
           </orderedlist>
         </listitem>
       </orderedlist>
@@ -273,7 +273,7 @@ Realization
           are:</para>
 
           <orderedlist>
-            <listitem><para>User Manual sections relating to &argouml; diagrams
+            <listitem><para>User Manual sections relating to ArgoUML diagrams
               and artifacts (assume the reader knows UML already, and allows a
               quick advance by pulling together a lot of existing
               material).</para></listitem>
@@ -281,7 +281,7 @@ Realization
             <listitem><para>User Manual examples</para></listitem>
 
             <listitem><para>User Manual sections relating to additional
-              &argouml; cognitive design features.</para></listitem>
+              ArgoUML cognitive design features.</para></listitem>
 
             <listitem><para>User Manual sections relating to UML (for readers
               who don't know UML).</para></listitem>

@@ -37,14 +37,14 @@ within ArgoUML
   <sect1>
     <title>Introduction</title>
     <para>This chapter describes the datatypes, classes, interfaces and
-      stereotypes, which by default, are built in to &argouml;.</para>
+      stereotypes, which by default, are built in to ArgoUML.</para>
     <para>Datatypes, classes and interfaces are generally available for use
       anywhere a class may be selected in the properties tab. The most common
 use is for return type and parameter types in method signatures.
 </para>
     <sect2>
       <title>Package Structure</title>
-      <para>&argouml; datatypes, classes and interfaces are effectively
+      <para>ArgoUML datatypes, classes and interfaces are effectively
         organized as a hierarchy beneath the overall model itself. They are 
         grouped in
         four packages, <literal>lang</literal>, <literal>math</literal>,
@@ -55,7 +55,7 @@ use is for return type and parameter types in method signatures.
       <!-- This diagram shows the package hierarchy. -->
       <figure float="1" id="fig.ref.entclasshier">
         <title>Hierarchy of datatypes, classes and interfaces within
-          &argouml;</title>
+          ArgoUML</title>
         <screenshot>
           <mediaobject>
             <imageobject>
@@ -125,7 +125,7 @@ use is for return type and parameter types in method signatures.
     </itemizedlist>
     <note>
       <para><literal>void</literal> is not strictly speaking a type, but
-      the absence of type. &argouml; knows about void and allows it as an
+      the absence of type. ArgoUML knows about void and allows it as an
       option where a datatype may be selected.</para>
     </note>
   </sect1>
@@ -254,13 +254,13 @@ use is for return type and parameter types in method signatures.
   <sect1>
     <title>Built In Stereotypes</title>
     <para>UML 1.3 defines a large number of stereotypes which are 
-      all supported by &argouml;. 
+      all supported by ArgoUML. 
     </para>
     <caution>
       <para>Not all stereotypes defined by UML&nbsp;1.3 appear in
-      &argouml; due to limitations in the current implementation of some
+      ArgoUML due to limitations in the current implementation of some
       artifacts. The table below lists all stereotypes defined in 
-      UML 1.3 and if their base elements are supported in &argouml; or not.</para>
+      UML 1.3 and if their base elements are supported in ArgoUML or not.</para>
     </caution>
     <caution>
       <para>The UML&nbsp;1.3 standard also specifies many stereotypes in the
@@ -272,7 +272,7 @@ use is for return type and parameter types in method signatures.
       </para>
     </caution>
     <table frame="all">
-      <title>Stereotypes defined in UML 1.3 and &argouml;</title>
+      <title>Stereotypes defined in UML 1.3 and ArgoUML</title>
       <tgroup cols="3">
         <thead>
           <row>
@@ -283,7 +283,7 @@ use is for return type and parameter types in method signatures.
               <para><emphasis>Base Element</emphasis></para>
             </entry>
             <entry>
-              <para><emphasis>&argouml; support</emphasis></para>
+              <para><emphasis>ArgoUML support</emphasis></para>
             </entry>
           </row>
         </thead>

@@ -39,7 +39,7 @@ the chapter on diagrams.
   <sect1>
     <title>Introduction</title>
 
-    <para><xref linkend="fig.ref.details_pane"/> shows the &argouml; window,
+    <para><xref linkend="fig.ref.details_pane"/> shows the ArgoUML window,
       with the details pane highlighted.</para>
 
     <!-- A picture of the ArgoUML window with all except the details pane
@@ -154,7 +154,7 @@ the chapter on diagrams.
 
     <para>This tab provides control over the various to-do items 
       created by the user, or raised automatically by the
-      &argouml; critics (discussed in more detail in the section on the
+      ArgoUML critics (discussed in more detail in the section on the
       <literal>Critique</literal> menu&mdash;see
       <xref linkend="s1.ref.menu_critique"/>). 
       <xref linkend="fig.ref.details_to_do"/> shows a typical 
@@ -278,7 +278,7 @@ the chapter on diagrams.
           dialog.
         </para></tip>
 
-        <warning><para>The V0.18 version of &argouml; implementation is
+        <warning><para>The V0.18 version of ArgoUML implementation is
           incomplete:
           The reason given is not stored when the project is saved. 
           And there is no way to retrieve todo items that were resolved.
@@ -395,7 +395,7 @@ Initially this
         <literal>Help</literal>. This will fire up a browser to a URL with
         further help.</para>
   
-      <warning><para>In the V0.18 release of &argouml; 
+      <warning><para>In the V0.18 release of ArgoUML 
         the URLs are generally invalid. 
         <!-- TODO: How do I know? See issue ... -->
         The few that are valid have no information.
@@ -440,7 +440,7 @@ Initially this
     </orderedlist>
 
     <para><xref linkend="fig.ref.details_properties"/> shows a typical
-     properties tab for an artifact in &argouml; (in this case a class).</para>
+     properties tab for an artifact in ArgoUML (in this case a class).</para>
 
     <figure id="fig.ref.details_properties" float="1">
       <title>A typical <literal>Properties</literal> tab on the details
@@ -484,7 +484,7 @@ Initially this
       entered. The remaining fields vary depending on the artifact
       selected.</para>
 
-    <para>The detailed property sheets for all &argouml; artifacts are
+    <para>The detailed property sheets for all ArgoUML artifacts are
       discussed in separate chapters for each of the diagram types
       (use case diagram (<xref linkend="ch.ref.entusecase"/>,
       class diagram (<xref linkend="ch.ref.entclass"/>,
@@ -496,7 +496,7 @@ Initially this
       for artifacts that are common to all diagram types have their own chapter
       (<xref linkend="ch.ref.entities"/>).</para>
 
-    <caution><para>&argouml; will always try to squeeze all fields on to the
+    <caution><para>ArgoUML will always try to squeeze all fields on to the
       property sheet. If the size of the property tab is too small, it may
       become unusable. The solution is to either enlarge the property tab by
       enlarging the main window, or by
@@ -517,7 +517,7 @@ Initially this
       <literal>Tagged&nbsp;Values</literal> tab.</para>
   
     <para><xref linkend="fig.ref.details_documentation"/> shows a typical
-     documentation tab for an artifact in &argouml;.</para>
+     documentation tab for an artifact in ArgoUML.</para>
 
     <figure id="fig.ref.details_documentation" float="1">
       <title>A typical <literal>Documentation</literal> tab on the details
@@ -554,7 +554,7 @@ Initially this
         documentation.</para></listitem>
     </itemizedlist>
 
-    <tip><para>&argouml; is not primarily a documentation system. For artifacts
+    <tip><para>ArgoUML is not primarily a documentation system. For artifacts
       that require heavy documentation, notably use cases, the use of the
       <literal>See:</literal> field to point to external documents is more
       practical.</para></tip>
@@ -577,7 +577,7 @@ Initially this
 
     <para>Style sheets vary a little from artifact to artifact, but <xref
      linkend="fig.ref.details_style"/> shows a typical style tab for an
-     artifact in &argouml; 
+     artifact in ArgoUML 
      (in this case a package).
    </para>
 
@@ -674,11 +674,11 @@ Initially this
     <title>Source tab</title>
 
     <para>This tab is a single box, containing the source code that will be
-      generated for this artifact. &argouml; generates a template of the code
+      generated for this artifact. ArgoUML generates a template of the code
       required (most specifically for classes). The intention is that you will
       add artifact specific code here, and it will be incorporated.</para>
 
-    <warning><para>This part of &argouml; is under
+    <warning><para>This part of ArgoUML is under
       development. At this stage any code you add will be lost.
       </para>
     </warning>
@@ -690,13 +690,13 @@ Initially this
     <title>Constraints Tab</title>
 
     <para>Constraints are one of the extension mechanisms provided for
-      UML. &argouml; is equipped with a powerful constraint editor based on
+      UML. ArgoUML is equipped with a powerful constraint editor based on
       the <emphasis>Object Constraint Language (OCL)</emphasis> defined in the
       UML&nbsp;1.3 standard.</para>
 
     <caution>
       <para>
-        The OCL editor implementation for &argouml; V0.18
+        The OCL editor implementation for ArgoUML V0.18
         doesn't support OCL constraints for elements other than
         Classes and Features.
         <!-- See issue 1805 -->
@@ -720,7 +720,7 @@ Initially this
       </para>
       <para>
         So, to cut a long story short, it appeared that the simplest solution
-        for &argouml; at the moment
+        for ArgoUML at the moment
         would be to enable the OCL property panel only for those
         model elements for which there actually exists a definition of the
         contextualClassifier in OCL 1.4. These are (s. above) Class/Interface
@@ -754,7 +754,7 @@ Initially this
     </itemizedlist>
 
     <para><xref linkend="fig.ref.details_constraints"/> shows a typical
-     constraint tab for a artifact in &argouml; (in this case a class).</para>
+     constraint tab for a artifact in ArgoUML (in this case a class).</para>
 
     <figure id="fig.ref.details_constraints" float="1">
       <title>A typical <literal>Constraints</literal> tab on the details
@@ -787,7 +787,7 @@ Initially this
         <warning>
           <para>
             It seems logical, that when a new constraint is created, 
-            it needs to be edited. But &argouml; V0.18
+            it needs to be edited. But ArgoUML V0.18
             fails to start the OCL editor 
             upon creation; you have to do this by 
             primo selecting the new constraint first, 
@@ -818,7 +818,7 @@ Initially this
         
         <caution>
           <para>
-            In V0.18 of &argouml; this button is not downlighted when 
+            In V0.18 of ArgoUML this button is not downlighted when 
             it is not functional, i.e. when
             no constraint is selected.
             <!-- TODO: See issue ... -->
@@ -841,7 +841,7 @@ Initially this
         
         <caution>
           <para>
-            In V0.18 of &argouml; this button is not downlighted when 
+            In V0.18 of ArgoUML this button is not downlighted when 
             it is not functional, i.e. when
             no constraint is selected.
             <!-- TODO: See issue ... -->
@@ -858,7 +858,7 @@ Initially this
         <literal>Check OCL Syntax</literal>. This button is intended to check
         the syntax of the selected constraint.</para>
 
-      <caution><para>In the current release of &argouml; this button is always
+      <caution><para>In the current release of ArgoUML this button is always
         grayed out on the main <literal>Constraints</literal> tab. It may only
         be invoked from within the constraint editor (see
         <xref linkend="s2.ref.details_constraint_editor"/>).
@@ -908,7 +908,7 @@ Initially this
       assistant in the constraint editor (see
       <xref linkend="s2.ref.details_constraint_editor"/>).</para>
 
-    <caution><para>In the current release of &argouml; this check box is always
+    <caution><para>In the current release of ArgoUML this check box is always
       grayed out on the main <literal>Constraints</literal> tab. It may only be
       changed from within the constraint editor.</para></caution-->
 
@@ -985,7 +985,7 @@ Initially this
           <literal>New Constraint</literal>. This is intended to create a new
           constraint for editing.</para>
 
-        <caution><para>In the current release of &argouml; this button is
+        <caution><para>In the current release of ArgoUML this button is
           always grayed out in the constraints editor. It can only be invoked
           from the main <literal>Constraints</literal> tab (see
           <xref linkend="s1.ref.details_constraints"/>).
@@ -1016,7 +1016,7 @@ Initially this
           <warning>
             <para>Whether type checking is included should be configurable with the
               <literal>Configure&nbsp;Constraint&nbsp;Editor</literal> button (see
-              below). But &argouml; V0.18 does always check, and refuses to
+              below). But ArgoUML V0.18 does always check, and refuses to
               accept any constraint with the slightest error.
               <!-- TODO: See issue ... -->
             </para>
@@ -1141,7 +1141,7 @@ Initially this
         respectively.</para>
 
       <warning><para>There is a known problem with the V0.18 release of
-        &argouml;. The <literal>Cut</literal>, <literal>Copy</literal> and
+        ArgoUML. The <literal>Cut</literal>, <literal>Copy</literal> and
         <literal>Paste</literal> functions on the <literal>Edit</literal> menu
         cannot be used within the constraint editor. If used they will work on
         the currently selected artifact in the editing pane.</para>
@@ -1162,11 +1162,11 @@ Initially this
 
     <note><para>The tag <literal>documentation</literal> is defined for the top
       UML metaclass, <literal>Element</literal> and is so available to all
-      artifacts. In &argouml; documentation values are provided through the
+      artifacts. In ArgoUML documentation values are provided through the
       <literal>Documentation</literal> tab, rather than by using the
       <literal>Tagged&nbsp;Values</literal> tab.</para></note>
 
-    <para>The <literal>Tagged&nbsp;Values</literal> tab in &argouml; comprises
+    <para>The <literal>Tagged&nbsp;Values</literal> tab in ArgoUML comprises
       a simple two column table, with an editable box on the left for the tag
       name and an editable box on the right for the associated value. There is
       always at least one empty row available for any new tag. The mouse
@@ -1179,7 +1179,7 @@ Initially this
       respectively.</para>
 
     <warning><para>There is a known problem with the V0.18 release of
-      &argouml;. The <literal>Cut</literal>, <literal>Copy</literal> and
+      ArgoUML. The <literal>Cut</literal>, <literal>Copy</literal> and
       <literal>Paste</literal> functions on the <literal>Edit</literal> menu
       cannot be used within the constraint editor. If used they will work on
       the currently selected artifact in the editing pane.</para>
@@ -1204,13 +1204,13 @@ Initially this
       are just as effective as design review meetings.
     </para>
     <para>
-      Hence, a checklist feature has been added to &argouml;, 
+      Hence, a checklist feature has been added to ArgoUML, 
       that is much in the spirit of design review checklists. 
-      However, &argouml;'s checklists are integrated 
+      However, ArgoUML's checklists are integrated 
       into the design tool user interface and the design task.
     </para>
     
-    <para>A software designer using &argouml; can see 
+    <para>A software designer using ArgoUML can see 
       a review checklist for any design element. 
       The <quote>Checklist</quote> tab presents a list of check-off items 
       that is appropriate to the currently selected design element. 
@@ -1221,7 +1221,7 @@ Initially this
       Checked items are kept in the list to show 
       what has already been considered, 
       while unchecked items prompt the designer to consider new design issues. 
-      &argouml; supplies many different checklists 
+      ArgoUML supplies many different checklists 
       with many possible items.
     </para>
 
@@ -1237,7 +1237,7 @@ Initially this
       </screenshot>
     </figure>
     
-    <caution><para>In the V0.18 release of &argouml;, this tab is not
+    <caution><para>In the V0.18 release of ArgoUML, this tab is not
       completely implemented. E.g. the checks are not saved.
     </para></caution>
     

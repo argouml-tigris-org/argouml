@@ -27,7 +27,7 @@
 
 <!--
 
-This section covers requirements capture and how &argouml; supports such
+This section covers requirements capture and how ArgoUML supports such
 activity.
 
 -->
@@ -1055,9 +1055,9 @@ The checklist provided by Ian Sommerville
   <!-- Now show how to do in in Argo/UML. -->
 
   <sect1 id="s1.argo_use_cases">
-    <title>Using Use Cases in &argouml;</title>
+    <title>Using Use Cases in ArgoUML</title>
 
-    <para>&argouml; allows you to draw use case diagrams. When you create a new
+    <para>ArgoUML allows you to draw use case diagrams. When you create a new
       project it has a use case diagram created by default, named <literal>use
       case diagram 1</literal>. Select this by &button1; click on the diagram
       name in the explorer (the upper left quadrant of the user
@@ -1144,7 +1144,7 @@ will stop adding actors.
         align="center" fileref="images/icons/use_case.gif"/>
         </imageobject></inlinemediaobject></guiicon>).</para>
 
-      <para>By default use cases in &argouml; do not display their extension
+      <para>By default use cases in ArgoUML do not display their extension
         points (for use in extend relationships). You can show the extension
         point compartment in one of two ways.</para>
 
@@ -1390,7 +1390,7 @@ cause a context-sensitive pop-up menu to appear with a sub-menu
         </orderedlist>
 
         <para>The second of these two approaches has a wider range of options,
-          although &argouml; does not currently allow the user to set an
+          although ArgoUML does not currently allow the user to set an
           arbitrary multiplicity.</para>
       </sect3>
     </sect2>
@@ -1567,7 +1567,7 @@ It is possible to name generalization relationships using the property
 and the user may define more stereotypes of his own.
 </para>
 
-      <para>You will see that &argouml; has a drop down selector,
+      <para>You will see that ArgoUML has a drop down selector,
         <literal>Stereotype</literal> on every property tab. This is populated
         with the standard stereotypes, to which you may add your own user
         defined ones.</para>
@@ -1576,9 +1576,9 @@ and the user may define more stereotypes of his own.
 The details of stereotyping are beyond the scope of this
         tutorial. The reference manual (see <xref
         linkend="s1.ref.stereotype"/>) documents the support provided in
-        &argouml;.</para>
+        ArgoUML.</para>
 
-      <warning><para>&argouml; is missing a few of the standard UML
+      <warning><para>ArgoUML is missing a few of the standard UML
         stereotypes. In addition not all artifacts will actually display the
         stereotype on the diagram. At present this includes use cases and
         actors.</para></warning>
@@ -1591,7 +1591,7 @@ The details of stereotyping are beyond the scope of this
         <primary>Documentation in Use Case Diagrams</primary>
       </indexterm>
 
-      <para>&argouml; has some simple documentation facilities associated with
+      <para>ArgoUML has some simple documentation facilities associated with
         artifacts on a diagram. In general these should be used only to record
         the location of material in documents that can be handled by a
         mainstream editor or word processor, not the actual documentation
@@ -1626,7 +1626,7 @@ The details of stereotyping are beyond the scope of this
 <literal>Deprecated</literal> check box.
 The state of this flag is not
         preserved over save and load in the current release of
-        &argouml;</para></warning>
+        ArgoUML</para></warning>
     </sect2>
 
     <!-- How to add other annotation -->
@@ -1638,7 +1638,7 @@ The state of this flag is not
         <primary>System Boundary Box in Use Case Diagram</primary>
       </indexterm>
 
-      <para>&argouml; provides a series of tools to provide arbitrary graphical
+      <para>ArgoUML provides a series of tools to provide arbitrary graphical
         annotation on diagrams (we have already mentioned the text tool). These
         are found at the right hand end of the editing pane toolbar and are
         fully documented in the reference manual (see <xref
@@ -1651,7 +1651,7 @@ The state of this flag is not
         the boundary box as four lines. This is the method used for the
         diagrams in this chapter.</para>
 
-      <note><para>The editing pane in &argouml; has a grid to which objects
+      <note><para>The editing pane in ArgoUML has a grid to which objects
         snap to aid in drawing. The size of this grid and its effect may be
         altered through the <literal>View</literal> menu (using <literal>Adjust
         Grid</literal> and <literal>Adjust Grid Snap</literal>). This is

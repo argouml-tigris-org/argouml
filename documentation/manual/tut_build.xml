@@ -47,12 +47,12 @@ We now have our design fully specified.
 
 With the right simulator we could actually execute the design
 and see if it works.
-(&argouml; does not provide such functionality, but this functionality
+(ArgoUML does not provide such functionality, but this functionality
 has been provided in alternative tools.)
 </para>
 
     <para>
-&argouml; does allow you to generate code from the design
+ArgoUML does allow you to generate code from the design
 in several different programming languages.
 We, most likely, already in the design had a programming language in mind
 because some of the design considerations are to care for a specific language.
@@ -340,7 +340,7 @@ An Action is generated as a function call.
   <!-- Now show how to do in in ArgoUML. -->
 
   <sect1>
-    <title>Code Generation in &argouml;</title>
+    <title>Code Generation in ArgoUML</title>
 
     <!-- Code for classes -->
 
@@ -361,7 +361,7 @@ that need to be filled in by the actual code.
       <title>Interactions and state diagrams</title>
 
       <para>
-There is currently no support for this in &argouml;, not for any language.
+There is currently no support for this in ArgoUML, not for any language.
 </para>
     </sect2>
   </sect1>
@@ -418,7 +418,7 @@ Move the operations from one class to another in the class diagram...
 </para>
 
     <para>
-&argouml; currently does not support this for any language.
+ArgoUML currently does not support this for any language.
 </para>
   </sect1>
 

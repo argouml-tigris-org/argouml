@@ -148,7 +148,7 @@ This is the Analysis tutorial chapter of the User Manual.
   <!-- Now show how to do in in Argo/UML. -->
 
   <sect1 id="s1.argoclassdiags">
-    <title>Creating Class Diagrams in &argouml;</title>
+    <title>Creating Class Diagrams in ArgoUML</title>
 
     <sect2>
       <title>Classes</title>
@@ -272,7 +272,7 @@ This is the Analysis tutorial chapter of the User Manual.
   <!-- Now show how to do in in Argo/UML. -->
 
   <sect1 id="s1.argoseqdiags">
-    <title>Creating Sequence Diagrams in &argouml;</title>
+    <title>Creating Sequence Diagrams in ArgoUML</title>
 
     <sect2>
       <title>Sequence Diagrams</title>
@@ -346,7 +346,7 @@ are not working.
   <!-- Now show how to do in in Argo/UML. -->
 
   <sect1 id="s1.argostatediags">
-    <title>Creating Statechart Diagrams in &argouml;</title>
+    <title>Creating Statechart Diagrams in ArgoUML</title>
 
     <sect2>
       <title>Statechart Diagrams (To be written)</title>
@@ -426,7 +426,7 @@ are not working.
   <!-- Now show how to do in in Argo/UML. -->
 
   <sect1>
-    <title>Creating Realization Use Cases in &argouml; (To be written)</title>
+    <title>Creating Realization Use Cases in ArgoUML (To be written)</title>
 
     <remark>To be written&hellip;</remark>
   </sect1>

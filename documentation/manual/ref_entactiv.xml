@@ -68,10 +68,10 @@ Argo/UML.
     <!-- Limitations in Argo/UML relating to support for swimlanes -->
 
     <sect2>
-      <title>Limitations Concerning Activity Diagrams in &argouml;</title>
+      <title>Limitations Concerning Activity Diagrams in ArgoUML</title>
 
     <para>Activity diagrams are not fully developed yet in
-      &argouml;. Many aspects are not fully implemented, or may not behave as
+      ArgoUML. Many aspects are not fully implemented, or may not behave as
       expected. In particular swim lanes, action-object flows, control icons
       (signals), sub-activities, object flows, control icons and interactions 
       with other classifiers are not provided. 
@@ -96,7 +96,7 @@ Argo/UML.
       action is completed.</para>
 
     <caution><para>As a consequence any outgoing transitions from an action
-      state should not have explicit triggers defined (&argouml; will not
+      state should not have explicit triggers defined (ArgoUML will not
       currently check for this). <!-- TODO: See issue ... --> 
       They may have guards to provide a choice where
       there is more than one transition. 
@@ -108,13 +108,13 @@ Unlike an ordinary state, an internal transition,
 an exit action and a Do activity are not permitted for action states.
     </para></note>
 
-    <para>An action state is represented on an activity diagram in &argouml; as
+    <para>An action state is represented on an activity diagram in ArgoUML as
       a rectangle with rounded corners containing the name of the action
       state.</para>
 
     <caution><para>The UML standard expects that the activity diagram should
       contain the expression associated with the entry action, rather than the
-      action state name (which is shown by the current version on &argouml;).
+      action state name (which is shown by the current version on ArgoUML).
       <!-- TODO: See issue ...-->
       </para></caution>
 
@@ -177,7 +177,7 @@ an exit action and a Do activity are not permitted for action states.
           <note><para>In the fullness of time this tab will contain code to
             implement the action state (code for actions will be associated
             with the particular actions). This is not implemented in the
-            current release of &argouml;.</para></note></listitem>
+            current release of ArgoUML.</para></note></listitem>
         </varlistentry>
 
         <!-- Entry for Constraints tab -->
@@ -221,7 +221,7 @@ an exit action and a Do activity are not permitted for action states.
               which all other artifacts are derived includes the tagged
               element <literal>documentation</literal> which is handled by
               the <emphasis>documentation tab</emphasis> under
-              &argouml;</para></note></listitem>
+              ArgoUML</para></note></listitem>
         </varlistentry>
       </variablelist>
     </sect2>
@@ -262,7 +262,7 @@ an exit action and a Do activity are not permitted for action states.
             action state from the diagram, but keep it within the model, use
             the main menu <literal>Remove From Diagram</literal>
             (or press the Delete key).</para>
-            <para>But beware!. Currently, &argouml; does not show the 
+            <para>But beware!. Currently, ArgoUML does not show the 
             <literal>Add to Diagram</literal> 
             pop-up menu for action states.</para>
             <!-- TODO: See issue ... -->
@@ -287,7 +287,7 @@ an exit action and a Do activity are not permitted for action states.
             convention action state names start with a lower case letter
             and use bumpy caps to divide words within the name.</para>
 
-          <note><para>&argouml; does not enforce this naming
+          <note><para>ArgoUML does not enforce this naming
             convention.</para></note></listitem>
             <!-- TODO: See enhancement issue ... -->
         </varlistentry>
@@ -384,7 +384,7 @@ See issue ... -->
             executions invoked.</para>
 
           <caution><para>This field is of limited value in the current
-            release of &argouml; in the absence of fields specifying
+            release of ArgoUML in the absence of fields specifying
             dynamic arguments and dynamic
             multiplicity.</para></caution></listitem>
         </varlistentry-->
@@ -449,7 +449,7 @@ but should not be according UML standard. See issue ... -->
       action state is complete. An explicit trigger should not therefore be
       set.</para>
 
-    <para>The current release of &argouml; will not check that this constraint
+    <para>The current release of ArgoUML will not check that this constraint
       is met.</para></caution>
 <!-- TODO: See enhancement issue ... -->
   </sect1>
@@ -469,7 +469,7 @@ but should not be according UML standard. See issue ... -->
       event of the action state is complete. An explicit trigger should not
       therefore be set.</para>
 
-    <para>The current release of &argouml; will not check that this constraint
+    <para>The current release of ArgoUML will not check that this constraint
       is met.</para></caution>
   </sect1>
 -->

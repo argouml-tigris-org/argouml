@@ -28,7 +28,7 @@
 <!--
 
 Description of all the artifacts associated with Class Diagrams within
-&argouml;.
+ArgoUML.
 
 -->
 
@@ -50,9 +50,9 @@ Description of all the artifacts associated with Class Diagrams within
 
     <para>Class diagrams are used for only one of the UML static structure
       diagrams, the class diagram itself. Object diagrams are represented on
-      the &argouml; deployment diagram.</para>
+      the ArgoUML deployment diagram.</para>
 
-    <para>In addition, &argouml; uses the class diagram to show model structure
+    <para>In addition, ArgoUML uses the class diagram to show model structure
       through the use of packages.</para>
 
     <para>There is a close relationship between this material and the
@@ -98,10 +98,10 @@ Description of all the artifacts associated with Class Diagrams within
       </mediaobject></screenshot>
     </figure>
 
-    <!-- Limitations in &argouml; relating to datatypes, objects and links -->
+    <!-- Limitations in ArgoUML relating to datatypes, objects and links -->
 
     <sect2>
-      <title>Limitations Concerning Class Diagrams in &argouml;</title>
+      <title>Limitations Concerning Class Diagrams in ArgoUML</title>
 
       <para>The current implementation does not allow datatypes to be shown on
         class diagrams.</para>
@@ -109,8 +109,8 @@ Description of all the artifacts associated with Class Diagrams within
       <para>A variant of the class diagram within the UML standard is the
 <emphasis>object diagram</emphasis>.
 There is currently no support for objects or links 
-within &argouml; Class diagrams;.
-Instead the &argouml; deployment diagram does have both objects and links, 
+within ArgoUML Class diagrams;.
+Instead the ArgoUML deployment diagram does have both objects and links, 
 and can be used to draw object diagrams.
 </para>
     </sect2>
@@ -125,18 +125,18 @@ and can be used to draw object diagrams.
       <primary>Package</primary>
     </indexterm>
 
-    <para>The package is the main organizational artifact within &argouml;. In
+    <para>The package is the main organizational artifact within ArgoUML. In
       the UML metamodel it is a sub-class of both <literal>Namespace</literal>
       and <literal>GeneralizableElement</literal>.</para>
 
-    <note><para>&argouml; also implements the UML <literal>Model</literal>
+    <note><para>ArgoUML also implements the UML <literal>Model</literal>
       artifact as a sub-class of package,
       but <emphasis>not</emphasis> the
       <literal>Subsystem</literal> artifact.
       <!-- TODO: See enhancement issue ... --> 
     </para></note>
 
-    <para>&argouml; also implements some less common aspects of UML model
+    <para>ArgoUML also implements some less common aspects of UML model
       management. In particular the relationship UML&nbsp;1.3 defines as
       <literal>Generalization</literal> and the sub-class dependency
       <literal>Permission</literal> for use between packages.
@@ -479,7 +479,7 @@ Check box, with entries
               
               <tip>
                 <para>
-                  Within &argouml; <literal>Root</literal> only
+                  Within ArgoUML <literal>Root</literal> only
                   meaningfully applies to the Model, since all packages sit
                   within the model. 
                   This could be used to
@@ -742,7 +742,7 @@ standard tagged values defined.
               which all other artifacts are derived includes the tagged
               element <literal>documentation</literal> which is handled by
               the <emphasis>documentation tab</emphasis> under
-              &argouml;</para></note></listitem>
+              ArgoUML</para></note></listitem>
         </varlistentry>
       </variablelist>
     </sect2>
@@ -901,7 +901,7 @@ The name of a class has a leading capital letter, with words separated
 by <quote>bumpy caps</quote>.
 </para>
 
-          <note><para>The &argouml; critics will complain about class names
+          <note><para>The ArgoUML critics will complain about class names
             that do not have an initial capital.</para></note></listitem>
         </varlistentry>
 
@@ -935,7 +935,7 @@ development process</emphasis> (<literal>boundary</literal>,
 <literal>internal&nbsp;worker</literal> and <literal>entity</literal>
 (again)).
  
-&argouml; also provides the additional stereotypes,
+ArgoUML also provides the additional stereotypes,
 <literal>machine</literal>, <literal>organization</literal>,
 <literal>person</literal> and <literal>singleton</literal>, and rather
 strangely <literal>realize</literal> (a stereotype of
@@ -947,7 +947,7 @@ strangely <literal>realize</literal> (a stereotype of
           <tip><para>One stereotype that is not part of the UML standard,
             but is widely used is <literal>Singleton</literal>, used to
             distinguish classes which have a single static instance, and no
-            public constructor. Although not part of &argouml; by default,
+            public constructor. Although not part of ArgoUML by default,
             this stereotype is understood by the critics. You may find it
             useful to create this stereotype for yourself (see <xref
               linkend="s1.ref.stereotype"/>).</para></tip></listitem>
@@ -1012,7 +1012,7 @@ strangely <literal>realize</literal> (a stereotype of
               italics on the diagram.</para>
 
             <caution><para>If a class has any abstract operations, then it
-              should be declared abstract. &argouml; will not enforce
+              should be declared abstract. ArgoUML will not enforce
               this.
               <!-- TODO: Enter an enhancement issue. -->
               </para></caution></listitem>
@@ -1331,7 +1331,7 @@ values defined.
               </listitem>
               <listitem>
                 <para><literal>volatile</literal>.
-                  This is an &argouml; extension to the UML 1.3 standard 
+                  This is an ArgoUML extension to the UML 1.3 standard 
                   to indicate that this attribute is realized in 
                   some volatile form 
                   (for example it will be a memory mapped control register).
@@ -1359,7 +1359,7 @@ values defined.
               which all other artifacts are derived includes the tagged
               element <literal>documentation</literal> which is handled by
               the <emphasis>documentation tab</emphasis> under
-              &argouml;</para></note></listitem>
+              ArgoUML</para></note></listitem>
         </varlistentry>
       </variablelist>
     </sect2>
@@ -1468,7 +1468,7 @@ The name of a attribute has a leading lower case letter, with words
 separated by <quote>bumpy caps</quote>.
 </para>
 
-          <note><para>The &argouml; critics will complain about attribute
+          <note><para>The ArgoUML critics will complain about attribute
             names that do not have an initial
             lower case letter.</para></note></listitem>
         </varlistentry>
@@ -1541,7 +1541,7 @@ attributes.
             <literal>0..1</literal> indicates an optional scalar
             attribute.</para></note>
 
-          <caution><para>&argouml; restricts you to a number of predefined
+          <caution><para>ArgoUML restricts you to a number of predefined
             ranges for multiplicity. There is no way to give a user defined
             range.
             <!-- TODO: See issue ... -->
@@ -1574,7 +1574,7 @@ make any sense.
 </para>
 
           <note><para>A type must be declared (it can be
-            <literal>void</literal>). By default &argouml; supplies
+            <literal>void</literal>). By default ArgoUML supplies
             <literal>int</literal> as the type.</para></note></listitem>
         </varlistentry>
 
@@ -1624,7 +1624,7 @@ The drop down menu provides access to the common values
               
             <warning>
               <para>
-                This function is broken in V0.14 of &argouml;. The textbox is
+                This function is broken in V0.14 of ArgoUML. The textbox is
                 not editable, and if an initial value is given in the diagram
                 (by editing the attribute definition string), then something 
                 like: 
@@ -1922,7 +1922,7 @@ values defined.
               which all other artifacts are derived includes the tagged
               element <literal>documentation</literal> which is handled by
               the <emphasis>documentation tab</emphasis> under
-              &argouml;</para></note></listitem>
+              ArgoUML</para></note></listitem>
         </varlistentry>
       </variablelist>
     </sect2>
@@ -2059,7 +2059,7 @@ The name of an operation has a leading lower case letter, with words
 separated by <quote>bumpy caps</quote>.
 </para>
 
-          <note><para>The &argouml; critics will complain about operation
+          <note><para>The ArgoUML critics will complain about operation
             names that do not have an initial
             lower case letter.</para></note>
 
@@ -2091,7 +2091,7 @@ There are two UML standard stereotypes for
 <literal>BehavioralFeature</literal>), <literal>create</literal> and
 <literal>destroy</literal>.
 
-<!--&argouml; provides the additional
+<!--ArgoUML provides the additional
 stereotypes, <literal>machine</literal>,
 <literal>organization</literal> and <literal>person</literal>,
 and rather strangely <literal>realize</literal> (a stereotype
@@ -2354,7 +2354,7 @@ with entries for all the signals (see <xref linkend="s1.ref.signal"/>)
 that can be raised by the operation.
 </para>
 
-          <caution><para>&argouml; at present (V0.14) has limited support for
+          <caution><para>ArgoUML at present (V0.14) has limited support for
             signals. In particular they are not linked to signal events
             that could drive state machines.</para></caution>
 
@@ -2526,7 +2526,7 @@ standard tagged values defined.
               which all other artifacts are derived includes the tagged
               element <literal>documentation</literal> which is handled by
               the <emphasis>documentation tab</emphasis> under
-              &argouml;</para></note></listitem>
+              ArgoUML</para></note></listitem>
         </varlistentry>
       </variablelist>
     </sect2>
@@ -2633,7 +2633,7 @@ By convention, the name of a parameter has a leading lower case
 letter, with words separated by <quote>bumpy caps</quote>.
 </para>
 
-          <note><para>The &argouml; critics do not complain about parameter
+          <note><para>The ArgoUML critics do not complain about parameter
             names that do not have an initial lower case
             letter.</para></note></listitem>
         </varlistentry>
@@ -2716,7 +2716,7 @@ make any sense.
 
           <note><para>A type must be declared (it can be
             <literal>void</literal>, but this only makes sense for a return
-            parameter). By default &argouml; supplies
+            parameter). By default ArgoUML supplies
             <literal>int</literal> as the type the first time a parameter
             is created, and thereafter the type of the most recently
             created parameter.</para></note></listitem>
@@ -2839,14 +2839,14 @@ with entries
       between instances. In the UML metamodel it is a sub-class of
       <literal>Classifier</literal>.</para>
 
-    <para>Within &argouml; signals are not fully handled. Their value is when
+    <para>Within ArgoUML signals are not fully handled. Their value is when
       they are received as <emphasis>signal events</emphasis> driving the
       asynchronous behavior of state machines and when associated with
       <emphasis>send actions</emphasis> in state machines and messages for
       collaboration diagrams.</para>
 
     <tip><para>In general there is limited value at present in defining signals
-      within &argouml;. It may prove more useful to define signals as classes,
+      within ArgoUML. It may prove more useful to define signals as classes,
       with a (user defined) stereotype of
       <literal>&laquo;signal&raquo;</literal> as suggested in the UML 1.3
       standard. This allows any dependency relationships between signals to be
@@ -2969,7 +2969,7 @@ standard tagged values defined.
               which all other artifacts are derived includes the tagged
               element <literal>documentation</literal> which is handled by
               the <emphasis>documentation tab</emphasis> under
-              &argouml;</para></note></listitem>
+              ArgoUML</para></note></listitem>
         </varlistentry>
       </variablelist>
     </sect2>
@@ -3097,7 +3097,7 @@ has a leading upper case letter, with words separated by <quote>bumpy
 caps</quote>.
 </para>
 
-          <note><para>The &argouml; critics do not complain about signal
+          <note><para>The ArgoUML critics do not complain about signal
             names that do not have an initial upper case
             letter.</para></note></listitem>
         </varlistentry>
@@ -3154,7 +3154,7 @@ its parent in the UML meta-model,
             class (see <xref
               linkend="s1.ref.generalization_class"/>).</para>
 
-          <caution><para>&argouml; is incorrect in using the designation
+          <caution><para>ArgoUML is incorrect in using the designation
             <quote>Extends</quote> for this field. It should correctly be
             called <quote>Generalizations</quote>.</para></caution>
 
@@ -3171,7 +3171,7 @@ its parent in the UML meta-model,
               generalization and navigate to that new
               generalization.</para>
 
-            <caution><para>&argouml; creates the generalization with the
+            <caution><para>ArgoUML creates the generalization with the
               signal as child, but no parent, and no menu for adding a
               parent. The name will always appear as
               <literal>null</literal>.</para></caution></listitem>
@@ -3194,7 +3194,7 @@ its parent in the UML meta-model,
               one.</para></listitem>
           </itemizedlist>
 
-          <caution><para>&argouml; allows you to create generalizations,
+          <caution><para>ArgoUML allows you to create generalizations,
             but not to specify parents, so they are of no use at
             all.</para></caution>
 
@@ -3212,7 +3212,7 @@ its parent in the UML meta-model,
             realized by this signal. (see <xref
               linkend="s1.ref.abstraction"/>).</para>
 
-          <caution><para>&argouml; is incorrect in using the designation
+          <caution><para>ArgoUML is incorrect in using the designation
             <quote>Extends</quote> for this field. It should correctly be
             called <quote>Realizes</quote>.</para></caution>
 
@@ -3228,7 +3228,7 @@ its parent in the UML meta-model,
             <listitem><para><literal>Add</literal>. Add a new
               abstraction.</para>
 
-            <caution><para>&argouml; creates the abstraction with the
+            <caution><para>ArgoUML creates the abstraction with the
               signal as client, but no supplier, and no menu for adding a
               supplier. The name will always appear as
               <literal>[empty]</literal>.</para></caution></listitem>
@@ -3251,7 +3251,7 @@ its parent in the UML meta-model,
               one.</para></listitem>
           </itemizedlist>
 
-          <caution><para>&argouml; allows you to create abstractions, but
+          <caution><para>ArgoUML allows you to create abstractions, but
             not to specify suppliers, so they are of no use at all. Since
             signals should not have operations or attributes, abstraction
             seems a meaningless concept.</para></caution></listitem>
@@ -3286,14 +3286,14 @@ its parent in the UML meta-model,
               anyone.</para>
 
             <caution><para>With the limited support for signals within
-              &argouml;, signals are effectively tied to their owning
+              ArgoUML, signals are effectively tied to their owning
               operation anyway.</para></caution></listitem>
 
             <listitem><para><literal>abstract</literal> is used to declare
               that this signal cannot be instantiated, but must always be
               specialized.</para>
 
-            <caution><para>&argouml; provides no mechanism for defining
+            <caution><para>ArgoUML provides no mechanism for defining
               specialization between signals.</para></caution></listitem>
 
             <listitem><para><literal>final</literal> indicates that this
@@ -3301,7 +3301,7 @@ its parent in the UML meta-model,
               <literal>root</literal> indicates it can have no
               generalization.</para>
 
-            <caution><para>&argouml; provides no mechanism for defining
+            <caution><para>ArgoUML provides no mechanism for defining
               specialization between signals, so all should be declared
               both <literal>final</literal> and
               <literal>root.</literal></para></caution></listitem>
@@ -3606,21 +3606,21 @@ Lists all the receptions defined for this signal.
       the association and any stereotype appear above the line.
     </para>
 
-    <caution><para>&argouml; is restricted to binary associations at
+    <caution><para>ArgoUML is restricted to binary associations at
       present. See <xref linkend="s2.ref.association_multiway"/> for more on
       this.</para></caution>
 
     <para>Associations are permitted between interfaces and classes, but
       UML&nbsp;1.3 specifies they must only be navigable toward the
       interface&mdash;in other words the interface cannot see the
-      class. &argouml; will draw such associations with the appropriate
+      class. ArgoUML will draw such associations with the appropriate
       navigation.</para>
 
     <para>Associations are often not named, since their meaning is obvious from
       the context.</para>
 
     <note>
-      <para>&argouml; provides no specific way of showing the direction of
+      <para>ArgoUML provides no specific way of showing the direction of
 the association as described in the UML 1.3 standard.
 
 The naming should attempt to make this clear.
@@ -3643,7 +3643,7 @@ See enhancement issue ... -->
       <para>UML&nbsp;1.3 provides for N-ary associations and
         associations that are governed by a third
         <emphasis>associative class</emphasis>. 
-        However, &argouml; provides no support
+        However, ArgoUML provides no support
         for neither at this stage.
         <!-- The association classes are requested by issue 393. -->
       </para>
@@ -3779,7 +3779,7 @@ standard tagged values defined.
               which all other artifacts are derived includes the tagged
               element <literal>documentation</literal> which is handled by
               the <emphasis>documentation tab</emphasis> under
-              &argouml;</para></note></listitem>
+              ArgoUML</para></note></listitem>
         </varlistentry>
       </variablelist>
     </sect2>
@@ -3874,7 +3874,7 @@ By convention association names start with a lower case letter, with
 thus: <literal>salesHandling</literal>.
 </para>
 
-          <note><para>&argouml; does not enforce any naming convention for
+          <note><para>ArgoUML does not enforce any naming convention for
             associations.</para></note>
 
           <tip><para>Although the design critics will advise otherwise, it is
@@ -3904,7 +3904,7 @@ for Association ((<literal>implicit)</literal>)
 <!-- and the additional Association stereotypes for the Software
 Engineering Process and Business Modeling in the UML standard
 (<literal>communicate</literal> and
-<literal>subscribe</literal>). &argouml; also provides the additional
+<literal>subscribe</literal>). ArgoUML also provides the additional
 stereotypes, <literal>machine</literal>,
 <literal>organization</literal> and <literal>person</literal> and four
 additional stereotypes suggested by some writers using patterns
@@ -3965,9 +3965,9 @@ actor</literal>)-->.
             <para>Text area.
 Lists the ends of this association.
 
-An association can have any number of ends, but in &argouml; two is
+An association can have any number of ends, but in ArgoUML two is
 the only useful number (associative classes can lead to a third end on
-class diagrams, but this is not supported by &argouml;).
+class diagrams, but this is not supported by ArgoUML).
 
 For more on association ends see
 <xref linkend="s1.ref.association_end_class"/>.
@@ -4014,7 +4014,7 @@ association.
 </para>
 
           <caution><para>It is possible to create generalizations using the
-            pop-up menu from here, but there is no way within &argouml; to give
+            pop-up menu from here, but there is no way within ArgoUML to give
             them a parent, so the entry has no use.</para></caution>
 
           <para>&Button1; click navigates to the generalization and opens
@@ -4077,7 +4077,7 @@ a generalization.
 </para>
 
           <caution><para>It is possible to create generalizations using the
-            pop-up menu from here, but there is no way within &argouml; to give
+            pop-up menu from here, but there is no way within ArgoUML to give
             them a parent, so the entry has no use.</para></caution>
 
           <para>&button1; click navigates to the generalization and opens
@@ -4141,7 +4141,7 @@ a generalization.
 
     <para>Two or more association ends are associated with each association
       (see <xref linkend="s1.ref.association_use_case"/>), although for
-      &argouml;, the number of ends can only be two.</para>
+      ArgoUML, the number of ends can only be two.</para>
 
     <para>Within the UML metamodel, <literal>AssociationEnd</literal> is a
       sub-class of <literal>ModelElement</literal>.</para>
@@ -4160,7 +4160,7 @@ a generalization.
       consider altering are the name (used as the role name) and the
       multiplicity.</para></tip>
 
-    <note><para>&argouml; does not currently support qualifiers, as described
+    <note><para>ArgoUML does not currently support qualifiers, as described
         in the UML&nbsp;1.3 standard.
         <!-- TODO: See enhancement issue ... -->
       </para>
@@ -4275,7 +4275,7 @@ following standard tagged values defined.
               which all other artifacts are derived includes the tagged
               element <literal>documentation</literal> which is handled by
               the <emphasis>documentation tab</emphasis> under
-              &argouml;</para></note></listitem>
+              ArgoUML</para></note></listitem>
         </varlistentry>
       </variablelist>
     </sect2>
@@ -4369,7 +4369,7 @@ reference the target end.
           It is the association that gets named, not the AssociationEnd.
           Test this when V0.15.2 will be released. See issue ... -->
 
-          <note><para>&argouml; does not enforce any naming convention for
+          <note><para>ArgoUML does not enforce any naming convention for
             association ends.</para></note></listitem>
         </varlistentry>
 
@@ -4397,7 +4397,7 @@ stereotypes for AssociationEnd
  <literal>parameter</literal>,
  <literal>self</literal>).
 
-However &argouml; does not provide any of these by default.
+However ArgoUML does not provide any of these by default.
 
 Only the stereotype <literal>implicit</literal> is present.
 <!-- TODO: See enhancement issue ... -->
@@ -4446,7 +4446,7 @@ Only the stereotype <literal>implicit</literal> is present.
             </indexterm>
 
             <para>Drop down selector providing access to all standard
-UML types provided by &argouml; and all new classes created within the
+UML types provided by ArgoUML and all new classes created within the
 current model.
 </para>
 
@@ -4455,7 +4455,7 @@ current model.
 
             <tip>
               <para>
-                By default &argouml; will select the class of the
+                By default ArgoUML will select the class of the
                 artifact to which the linkend is connected. 
                 However, an association can be moved to another class 
                 by selecting another entry here.
@@ -4526,7 +4526,7 @@ association.
 The UML 1.3 standard provides a number of options for
 how navigation is displayed on an association end.
 
-&argouml; uses
+ArgoUML uses
 <!-- TODO: Check if this is true, and if it is good. -->
 option 3, which means that arrow heads are shown at the end of
 an association, when navigation is enabled at only one end, to
@@ -4634,12 +4634,12 @@ and adding or removing them to the selected list.
             <note>
               <para>
                 You may not have aggregation at both ends of an
-                association. &argouml; does not enforce this constraint.
+                association. ArgoUML does not enforce this constraint.
               </para>
               <para>
                 The <quote>whole</quote> end of a composite
                 aggregation should have a multiplicity of
-                one. &argouml; does not enforce this constraint.
+                one. ArgoUML does not enforce this constraint.
               </para>
             </note>
           </listitem>
@@ -4898,7 +4898,7 @@ The name of the dependency.
           <tip><para>It is quite common to leave dependencies
             unnamed.</para></tip> 
 
-          <note><para>&argouml; does not enforce any naming convention for
+          <note><para>ArgoUML does not enforce any naming convention for
             associations.</para></note>
 
           <note><para>There is no representation of the name of a
@@ -4922,7 +4922,7 @@ The name of the dependency.
 
               <para>Drop down selector.
 Dependency has no standard stereotypes of its own under UML&nbsp;1.3. and
-so &argouml; does not provide any.
+so ArgoUML does not provide any.
 The stereotype is shown between
             &laquo; and &raquo; above or across the
             generalization.</para></listitem>
@@ -5170,7 +5170,7 @@ See <xref linkend="s2.ref.documentation_tab"/>.
               which all other artifacts are derived includes the tagged
               element <literal>documentation</literal> which is handled by
               the <emphasis>documentation tab</emphasis> under
-              &argouml;</para></note></listitem>
+              ArgoUML</para></note></listitem>
         </varlistentry>
       </variablelist>
     </sect2>
@@ -5249,7 +5249,7 @@ See <xref linkend="s2.ref.documentation_tab"/>.
             interface has a leading capital letter, with words separated by
             <quote>bumpy caps</quote>.</para>
 
-          <note><para>Unlike classes, the &argouml; critics will not
+          <note><para>Unlike classes, the ArgoUML critics will not
             complain about interface names that do not have an initial
             capital.
             <!-- TODO: See enhancement issue ... -->
@@ -5382,7 +5382,7 @@ connected to this interface.
             <note><para>Associations between classes and interfaces
               <emphasis>must</emphasis> be navigable
               <emphasis>only</emphasis> from the class to the
-              interface. &argouml; will create associations between classes
+              interface. ArgoUML will create associations between classes
               and interfaces with the correct navigability, 
               but does not prevent the user from altering this.
             </para></note>
@@ -5408,7 +5408,7 @@ connected to this interface.
 
             <caution>
               <para>All operations on an interface
-                <emphasis>must</emphasis> be public. The &argouml; critics will
+                <emphasis>must</emphasis> be public. The ArgoUML critics will
                 complain if this is not the case.
               </para>
             </caution>
@@ -5425,7 +5425,7 @@ connected to this interface.
     <title>Abstraction</title>
 
     <para>An abstraction is a dependency relationship joining two artifacts
-      within the model at different levels of abstraction. Within &argouml; it
+      within the model at different levels of abstraction. Within ArgoUML it
       is principally used through its specific stereotype
       <literal>realize</literal> to define realization dependencies, which link
       artifacts that <emphasis>specify</emphasis> behavior to the
@@ -5442,7 +5442,7 @@ connected to this interface.
 
     <caution><para>All other stereotypes of abstraction
       should be represented using an open arrow head, but this is not supported
-      by &argouml;</para></caution>
+      by ArgoUML</para></caution>
 
     <!-- Abstraction details tabs -->
 
@@ -5547,7 +5547,7 @@ See <xref linkend="s2.ref.documentation_tab"/>.
               which all other artifacts are derived includes the tagged
               element <literal>documentation</literal> which is handled by
               the <emphasis>documentation tab</emphasis> under
-              &argouml;</para></note></listitem>
+              ArgoUML</para></note></listitem>
         </varlistentry>
       </variablelist>
     </sect2>
@@ -5623,11 +5623,11 @@ See <xref linkend="s2.ref.documentation_tab"/>.
             <literal>refine</literal> and <literal>trace</literal>.
             </para>
 
-          <caution><para>&argouml; automatically selects the stereotype
+          <caution><para>ArgoUML automatically selects the stereotype
             realize when an abstraction is created. The user is free to
             change the stereotype to use the abstraction to indicate for
             example a <literal>trace</literal> relationship. However
-            &argouml; will not alter the representation on the diagram
+            ArgoUML will not alter the representation on the diagram
             accordingly.
             <!-- TODO: See enhancement issue ... -->
           </para></caution></listitem>

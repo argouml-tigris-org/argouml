@@ -49,7 +49,7 @@ own chapters.
   <sect1>
     <title>Overview of the Window</title>
 
-    <para><xref linkend="fig.ref.gui_overview"/> shows the main &argouml;
+    <para><xref linkend="fig.ref.gui_overview"/> shows the main ArgoUML
       window.</para>
       
     <para>
@@ -71,7 +71,7 @@ own chapters.
       </listitem>
       <listitem>
         <para>
-          The name <quote>&argouml;</quote>.
+          The name <quote>ArgoUML</quote>.
         </para>
       </listitem>
       <listitem>
@@ -90,7 +90,7 @@ own chapters.
          pointing out things. -->
 
     <figure id="fig.ref.gui_overview" float="1">
-      <title>Overview of the &argouml; window</title>
+      <title>Overview of the ArgoUML window</title>
 
       <screenshot><mediaobject>
         <imageobject>
@@ -128,14 +128,14 @@ own chapters.
   <!-- The central explanation of how the mouse behaves -->
 
   <sect1 id="s1.ref.mouse">
-    <title>General Mouse Behavior in &argouml;</title>
+    <title>General Mouse Behavior in ArgoUML</title>
 
-    <para>Mouse behavior that is specific to the various panes of &argouml;
+    <para>Mouse behavior that is specific to the various panes of ArgoUML
       (see <xref linkend="s1.ref.panes"/>) or the menu bar, is discussed in the
       chapters covering those panes and the menu bar. In this section we cover
-      behavior that is general across all of &argouml;.</para>
+      behavior that is general across all of ArgoUML.</para>
 
-    <para>In a number of places in &argouml; text may be directly edited
+    <para>In a number of places in ArgoUML text may be directly edited
       (for example the constraint editor&mdash;see
       <xref linkend="s2.ref.details_constraint_editor"/>). The behavior of the
       mouse when handling text is discussed in the sections that follow.</para>
@@ -143,7 +143,7 @@ own chapters.
     <sect2>
       <title>Mouse Button Terminology</title>
 
-      <para>&argouml; assumes a two button mouse. We will refer to the buttons
+      <para>ArgoUML assumes a two button mouse. We will refer to the buttons
         as <quote>&button1;</quote> and <quote>&button2;</quote>. &Button1; is
         the leftmost button on a right-handed mouse, and sometimes referred to
         as the <emphasis>select</emphasis> button. &Button2; is the rightmost
@@ -168,7 +168,7 @@ own chapters.
         establish many different things. Most of the behaviour is experienced 
         quite intuitive by the user, mainly because the high degree of 
         standardisation, even spanning different computer platforms (Macintosh, 
-        PC, UNIX,...). &argouml; follows the <emphasis>Java Look and Feel 
+        PC, UNIX,...). ArgoUML follows the <emphasis>Java Look and Feel 
         Design Guidelines</emphasis> by Sun. 
         See <ulink url="http://java.sun.com/products/jlf/"/>.
         Hence, behaviour of common 
@@ -177,7 +177,7 @@ own chapters.
         
       <para>
         On the other hand, mouse actions in a diagram may not seem so intuitive
-        to the user, since it is specific for &argouml;. 
+        to the user, since it is specific for ArgoUML. 
         Hence they are explained here.
         In short, clicking selects or activates the object beneath the mouse-pointer, 
         and moves the focus (i.e. navigation). 
@@ -336,7 +336,7 @@ own chapters.
           of SHIFT-CONTROL-Click 
           (i.e. holding both the Shift and Control key down when clicking), 
           to add sub-lists to an existing
-          selection. &argouml; does not support this. SHIFT-CONTROL-Click will behave
+          selection. ArgoUML does not support this. SHIFT-CONTROL-Click will behave
           as CONTROL-Click.</para></caution>
       </sect3>
 
@@ -345,7 +345,7 @@ own chapters.
       <sect3>
         <title>General Behavior When Editing Text</title>
 
-        <para>In a number of places in &argouml; text may be directly edited
+        <para>In a number of places in ArgoUML text may be directly edited
           (for example
           when naming a model&mdash;element in the properties pane, 
           or when typing a UML note / comment).
@@ -396,7 +396,7 @@ own chapters.
   <sect1 id="s1.ref.panes">
     <title>General Information About Panes</title>
 
-    <para>The four sub-windows of the main &argouml; window are called
+    <para>The four sub-windows of the main ArgoUML window are called
       <emphasis>panes</emphasis>. Clockwise from top left these are the
       <emphasis>explorer</emphasis> (see <xref
       linkend="ch.ref.navpane"/>), <emphasis>editing pane</emphasis> (see <xref
@@ -446,7 +446,7 @@ own chapters.
   <sect1 id="s1.ref.status">
     <title>The status bar</title>
 
-    <para>The status bar is at the very bottom of the &argouml; window and is 
+    <para>The status bar is at the very bottom of the ArgoUML window and is 
       used to display short advisory messages. In general such messages are 
       self explanatory. It is e.g. used for displaying parsing error messages 
       in case a text entered on the diagram can not be interpreted.</para>

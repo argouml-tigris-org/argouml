@@ -48,7 +48,7 @@ you change that class at the same time (and think through the deployment).
   <sect1>
     <title>Introduction</title>
 
-    <para>The key feature that distinguishes &argouml; from other UML CASE
+    <para>The key feature that distinguishes ArgoUML from other UML CASE
       tools is its use of concepts from cognitive psychology. The theory behind
       this is well described in Jason Robbins' PhD dissertation <ulink
       url="http://argouml.tigris.org/docs/robbins_dissertation/">
@@ -60,7 +60,7 @@ you change that class at the same time (and think through the deployment).
       <emphasis>impose</emphasis> a decision on the designer.</para>
 
     <note><para>The critics are asynchronous processes that run in parallel
-      with the main &argouml; tool. Changes typically take a second or two to
+      with the main ArgoUML tool. Changes typically take a second or two to
       propagate as the critics wake up.</para></note>
 
     <!-- What we mean by Critic, Critique and To-do item -->
@@ -86,7 +86,7 @@ you change that class at the same time (and think through the deployment).
     <sect2>
       <title>Design Issues</title>
 
-      <para>&argouml; categorizes critics according the the design issue they
+      <para>ArgoUML categorizes critics according the the design issue they
         address (some critics may be in more than one category). At present
         there are 16 such categories.</para>
 
@@ -101,7 +101,7 @@ you change that class at the same time (and think through the deployment).
     <para>These are critics that do not fit into any other category.</para>
 
     <para>
-      &argouml; has no critics in this category. Maybe some will be added in
+      ArgoUML has no critics in this category. Maybe some will be added in
       later versions.
     </para>
   </sect1>
@@ -115,7 +115,7 @@ you change that class at the same time (and think through the deployment).
       used.</para>
 
     <para>
-      &argouml; has the following critics in this category.
+      ArgoUML has the following critics in this category.
     </para>
 
     <sect2 id="critics.CrNonAggDataType">
@@ -173,7 +173,7 @@ you change that class at the same time (and think through the deployment).
     <title>Naming</title>
 
     <para>These are critics concerning the naming of artifacts. The current
-      version of &argouml; has 18 critics in this category.</para>
+      version of ArgoUML has 18 critics in this category.</para>
 
     <sect2 id="critics.CrAssocNameConflict">
       <title>Resolve Association Name Conflict</title>
@@ -315,7 +315,7 @@ you change that class at the same time (and think through the deployment).
         <literal>var1</literal>, <literal>var2</literal> etc.</para>
 
       <para>It is important to remember that critics offer guidance, and
-        are not always correct. &argouml; lets you dismiss the resulting
+        are not always correct. ArgoUML lets you dismiss the resulting
         to-do items through the to-do pane (see
         <xref linkend="ch.ref.todopane"/>).</para></caution>
     </sect2>
@@ -323,7 +323,7 @@ you change that class at the same time (and think through the deployment).
     <sect2 id="critics.CrIllegalName">
       <title>Choose a Legal Name</title>
 
-      <para>All artifact names in &argouml; must use only letters, digits and
+      <para>All artifact names in ArgoUML must use only letters, digits and
         underscore characters. This critic suggests an entity has not met this
         requirement.</para>
     </sect2>
@@ -344,12 +344,12 @@ you change that class at the same time (and think through the deployment).
 
       <caution><para>Following the Java and C++ convention most designers
         give their constructors the same name as the class, which begins
-        with an upper case character. In V0.14 &argouml;, this
+        with an upper case character. In V0.14 ArgoUML, this
         will trigger this critic, unless the constructor is stereotyped
         <literal>&laquo;create&raquo;</literal>.</para>
 
       <para>It is important to remember that critics offer guidance, and
-        are not always correct. &argouml; lets you dismiss the resulting
+        are not always correct. ArgoUML lets you dismiss the resulting
         to-do items through the to-do pane (see
         <xref linkend="ch.ref.todopane"/>).</para></caution>
     </sect2>
@@ -389,7 +389,7 @@ you change that class at the same time (and think through the deployment).
 
     <para>Critics concerning attributes of classes.</para>
 
-    <para>The current version of &argouml; has the following critics in this
+    <para>The current version of ArgoUML has the following critics in this
       category.</para>
 
     <sect2>
@@ -429,15 +429,15 @@ you change that class at the same time (and think through the deployment).
 
       <para>In the UML 1.3 standard, a constructor is an operation with the
         stereotype &laquo;create&raquo;. Although not strictly standard,
-        &argouml; will also accept &laquo;Create&raquo; as a stereotype for
+        ArgoUML will also accept &laquo;Create&raquo; as a stereotype for
         constructors.</para>
 
       <para>By convention in Java and C++ a constructor has the same name as
-        the class, is not static, and returns no value.  &argouml; will also
+        the class, is not static, and returns no value.  ArgoUML will also
         accept any operation that follows these conventions as a constructor
         even if it is not stereotyped &laquo;create&raquo;.</para>
 
-      <caution><para>Operators are created in &argouml; with a default return
+      <caution><para>Operators are created in ArgoUML with a default return
         parameter (named <literal>return</literal>). You will need to remove
         this parameter to meet the Java/C++ convention.</para></caution>
     </sect2>
@@ -462,7 +462,7 @@ you change that class at the same time (and think through the deployment).
     <note><para>It is not clear why this category has the name <quote>Planned
       Extensions</quote>.</para></note>
 
-    <para>The current version of &argouml; has three critics in this
+    <para>The current version of ArgoUML has three critics in this
       category.</para>
 
     <sect2 id="critics.CrIntefaceAllPublic">
@@ -480,9 +480,9 @@ you change that class at the same time (and think through the deployment).
         standard defines interfaces to have operations.</para>
 
       <caution><para>
-        &argouml; does not allow you
+        ArgoUML does not allow you
         to add attributes to interfaces, so this should never occur in the
-        &argouml; model. It might trigger if a project has been loaded with
+        ArgoUML model. It might trigger if a project has been loaded with
         XMI created by another tool.
       </para></caution>
     </sect2>
@@ -506,9 +506,9 @@ you change that class at the same time (and think through the deployment).
     <!-- What is this about? Why was the title "MState machines"? -->
     <!--note><para>The correct title for this category should be
       <literal>State&nbsp;Machines</literal>. This is raised as an issue to be
-      fixed in a future version of &argouml;</para></note-->
+      fixed in a future version of ArgoUML</para></note-->
 
-    <para>The current version of &argouml; has the following critics in this
+    <para>The current version of ArgoUML has the following critics in this
       category.</para>
 
     <sect2 id="critics.CrTooManyTransitions">
@@ -627,12 +627,12 @@ you change that class at the same time (and think through the deployment).
   <sect1 id="s1.ref.design_issues_design_patterns">
     <title>Design Patterns</title>
 
-    <para>Critics concerning design pattern usage in &argouml;.</para>
+    <para>Critics concerning design pattern usage in ArgoUML.</para>
 
     <para>These relate to the use of patterns as described by the so called
-      <quote>Gang of Four</quote>. &argouml; also uses this category for
+      <quote>Gang of Four</quote>. ArgoUML also uses this category for
       critics associated with deployment and sequence diagrams. The current
-      version of &argouml; has the following critics in this category.
+      version of ArgoUML has the following critics in this category.
     </para>
 
     <sect2 id="critics.CrConsiderSingleton">
@@ -647,7 +647,7 @@ you change that class at the same time (and think through the deployment).
       <para>Under these circumstances you should consider making explicit that
         you have exactly one instance of this class, by using the singleton
         Pattern. Using the singleton pattern can save time and memory
-        space. Within &argouml; this can be done by using the
+        space. Within ArgoUML this can be done by using the
         &laquo;singleton&raquo; stereotype on this class.</para>
 
       <para>If it is not your intent to have a single instance, you should
@@ -675,7 +675,7 @@ you change that class at the same time (and think through the deployment).
       </orderedlist>
 
       <para>For the definition of a constructor under the UML 1.3 standard, and
-        extensions to that definition accepted by &argouml; see
+        extensions to that definition accepted by ArgoUML see
         <xref linkend="critics.CrConstructorNeeded"/>.</para>
     </sect2>
 
@@ -684,7 +684,7 @@ you change that class at the same time (and think through the deployment).
 
       <para>This class is marked with the &laquo;singleton&raquo; stereotype,
         but it does not satisfy the constraints imposed on singletons
-        (&argouml; will also accept &laquo;Singleton&raquo; stereotype as
+        (ArgoUML will also accept &laquo;Singleton&raquo; stereotype as
         defining a singleton). A singleton class can have at most one instance.
         This means that the class must meet the design criteria for a singleton
         (see <xref linkend="critics.CrConsiderSingleton"/>).</para>
@@ -798,11 +798,11 @@ you change that class at the same time (and think through the deployment).
         meaningless).</para>
 
       <warning><para>Triggering this critic indicates a serious problem,
-        since &argouml; provides no mechanism for creating a link without a
+        since ArgoUML provides no mechanism for creating a link without a
         stimulus. It probably indicates that the diagram was created by
         loading a corrupt project, with an XMI file describing a link
         without a stimulus, possibly created by a tool other than
-        &argouml;.</para></warning>
+        ArgoUML.</para></warning>
     </sect2>
 
     <sect2 id="critics.CrSeqInstanceWithoutClassifier">
@@ -827,9 +827,9 @@ you change that class at the same time (and think through the deployment).
     <title>Relationships</title>
 
     <para>Critics concerning
-      associations in &argouml;.</para>
+      associations in ArgoUML.</para>
 
-    <para>The current version of &argouml; has the following critics in this
+    <para>The current version of ArgoUML has the following critics in this
       category.</para>
 
     <sect2 id="critics.CrCircularAssocClass">
@@ -839,7 +839,7 @@ you change that class at the same time (and think through the deployment).
         directly to itself, which is not permitted.</para>
 
       <warning><para>This critic is meaningless in the V0.14 version of
-        &argouml; which does not support association classes. <!--In addition
+        ArgoUML which does not support association classes. <!--In addition
         the current code would never trigger, even if an association
         class were created.-->
       </para></warning>
@@ -874,16 +874,16 @@ you change that class at the same time (and think through the deployment).
       <para>The association should then appear with a stick arrowhead pointed
         towards the interface</para>
 
-      <!--note><para>In an ideal world, &argouml; would not permit associations to
+      <!--note><para>In an ideal world, ArgoUML would not permit associations to
         be created that were navigable from interfaces.</para></note-->
         <!-- MVW: No! That's what critics are all about...-->
 
       <para>
         When an association between a class and interface is created 
-        in &argouml;, it is by default 
+        in ArgoUML, it is by default 
         navigable only from the
         class to the interface.
-        However, &argouml; does not prevent to change the navigability 
+        However, ArgoUML does not prevent to change the navigability 
         afterwards into a
         wrong situation. 
         Which will cause this critic to be
@@ -928,9 +928,9 @@ you change that class at the same time (and think through the deployment).
     <title>Instantiation</title>
 
     <para>Critics concerning instantiation of classifiers in
-      &argouml;.</para>
+      ArgoUML.</para>
 
-    <para>The current version of &argouml; has no critics in this
+    <para>The current version of ArgoUML has no critics in this
       category.</para>
   </sect1>
 
@@ -939,9 +939,9 @@ you change that class at the same time (and think through the deployment).
   <sect1 id="s1.ref.design_issues_modularity">
     <title>Modularity</title>
 
-    <para>Critics concerning modular development in &argouml;.</para>
+    <para>Critics concerning modular development in ArgoUML.</para>
 
-    <para>The current version of &argouml; has the following critics in this
+    <para>The current version of ArgoUML has the following critics in this
       category.</para>
 
     <sect2 id="critics.CrCrossNamespaceAssoc">
@@ -959,7 +959,7 @@ you change that class at the same time (and think through the deployment).
         on a diagram, whose namespace includes those of all the attached
         classifiers.</para>
 
-      <caution><para>In the current implementation of &argouml; this critic
+      <caution><para>In the current implementation of ArgoUML this critic
         does not handle hierarchical namespaces. As a consequence it will
         trigger for associations where the immediate namespaces of the attached
         classifiers is different, even though they are part of the same
@@ -986,9 +986,9 @@ you change that class at the same time (and think through the deployment).
     <title>Expected Usage</title>
 
     <para>Critics concerning generally accepted good practice in
-      &argouml;.</para>
+      ArgoUML.</para>
 
-    <para>The current version of &argouml; has one critic in this
+    <para>The current version of ArgoUML has one critic in this
       category.</para>
 
     <sect2>
@@ -1005,9 +1005,9 @@ you change that class at the same time (and think through the deployment).
   <sect1 id="s1.ref.design_issues_methods">
     <title>Methods</title>
 
-    <para>Critics concerning operations in &argouml;.</para>
+    <para>Critics concerning operations in ArgoUML.</para>
 
-    <para>The current version of &argouml; has the following critics in this
+    <para>The current version of ArgoUML has the following critics in this
       category.</para>
 
     <sect2>
@@ -1045,9 +1045,9 @@ you change that class at the same time (and think through the deployment).
   <sect1 id="s1.ref.design_issues_code_generation">
     <title>Code Generation</title>
 
-    <para>Critics concerning code generation in &argouml;.</para>
+    <para>Critics concerning code generation in ArgoUML.</para>
 
-    <para>The current version of &argouml; has one critic in this
+    <para>The current version of ArgoUML has one critic in this
       category.</para>
 
     <sect2 id="critics.CrMultipleInheritance">
@@ -1064,9 +1064,9 @@ you change that class at the same time (and think through the deployment).
   <sect1 id="s1.ref.design_issues_stereotypes">
     <title>Stereotypes</title>
 
-    <para>Critics concerning stereotypes in &argouml;.</para>
+    <para>Critics concerning stereotypes in ArgoUML.</para>
 
-    <para>The current version of &argouml; has no critics in this
+    <para>The current version of ArgoUML has no critics in this
       category.</para>
   </sect1>
 
@@ -1076,9 +1076,9 @@ you change that class at the same time (and think through the deployment).
     <title>Inheritance</title>
 
     <para>Critics concerning generalization and specialization in
-      &argouml;.</para>
+      ArgoUML.</para>
 
-    <para>The current version of &argouml; has the following critics in this
+    <para>The current version of ArgoUML has the following critics in this
       category.</para>
 
     <sect2>
@@ -1095,7 +1095,7 @@ you change that class at the same time (and think through the deployment).
         generalizations, which is not permitted.</para>
 
       <caution><para>This critic is marked inactive by default in the
-        current release of &argouml; (the only one so marked). It will not
+        current release of ArgoUML (the only one so marked). It will not
         trigger unless made active.
         <!-- TODO: Check if this is still true! -->
       </para></caution>
@@ -1122,10 +1122,10 @@ you change that class at the same time (and think through the deployment).
         different UML metaclasses, which is not permitted.</para>
 
       <caution><para>It is not clear that such a generalization can be
-        created within &argouml;. It probably indicates that the diagram
+        created within ArgoUML. It probably indicates that the diagram
         was created by loading a corrupt project, with an XMI file
         describing such a generalization, possibly created by a tool
-        other than &argouml;.</para></caution>
+        other than ArgoUML.</para></caution>
     </sect2>
 
     <sect2 id="critics.CrAlreadyRealizes">
@@ -1172,10 +1172,10 @@ you change that class at the same time (and think through the deployment).
   <sect1 id="s1.ref.design_issues_containment">
     <title>Containment</title>
 
-    <para>Critics concerning containment in &argouml;, that is where one
+    <para>Critics concerning containment in ArgoUML, that is where one
       artifact forms a component part of another.</para>
 
-    <para>The current version of &argouml; has the following critics in this
+    <para>The current version of ArgoUML has the following critics in this
       category.</para>
 
     <sect2 id="critics.CrCircularComposition">
@@ -1261,8 +1261,8 @@ you change that class at the same time (and think through the deployment).
         a class is not visible.</para>
 
       <warning><para>It is not clear how this can ever be caused within
-        &argouml;. In any case this critic can never trigger in the
-        current implementation of &argouml;.</para></warning>
+        ArgoUML. In any case this critic can never trigger in the
+        current implementation of ArgoUML.</para></warning>
     </sect2>
   </sect1>
 

@@ -47,13 +47,13 @@ ArgoUML.
       <xref linkend="s1.ref.proptab"/>). That section covers Properties in
       general, in this chapter they are linked to specific artifacts.</para>
 
-    <para>Within &argouml;, the deployment diagram is used for both
+    <para>Within ArgoUML, the deployment diagram is used for both
       component diagrams (i.e. without instances, showing static dependencies
       of components) and deployment diagrams (showing how instances of
       components are handled by instances of nodes at run-time).</para>
 
     <caution><para>Deployment diagrams are not fully developed yet in
-      &argouml;. Some aspects are not fully implemented or may not behave as
+      ArgoUML. Some aspects are not fully implemented or may not behave as
       expected. Notable omissions are the possibility to draw interfaces
       and proper stereotyping of the various dependency
       relationships.
@@ -104,7 +104,7 @@ ArgoUML.
     <!-- Limitations in Argo/UML relating to lack of relationships -->
 
     <sect2>
-      <title>Limitations Concerning Deployment Diagrams in &argouml;</title>
+      <title>Limitations Concerning Deployment Diagrams in ArgoUML</title>
 
       <para>The deployment diagram is generally well drawn, but there are only
         a subset of the relationships that should be shown available, which
@@ -176,7 +176,7 @@ ArgoUML.
           <listitem><para>Standard tab. The <literal>Bounds:</literal> field
             defines the bounding box for the node on the diagram.</para>
 
-          <warning><para>Beware that in the 0.14 release of &argouml;, the
+          <warning><para>Beware that in the 0.14 release of ArgoUML, the
             bounding box just refers to the front face of the cube. This
             means that the three dimensional top and side may be ignored, for example
             when determining the limits of a diagram for saving
@@ -251,7 +251,7 @@ ArgoUML.
               which all other artifacts are derived includes the tagged
               element <literal>documentation</literal> which is handled by
               the <emphasis>documentation tab</emphasis> under
-              &argouml;</para></note></listitem>
+              ArgoUML</para></note></listitem>
         </varlistentry>
       </variablelist>
     </sect2>
@@ -312,7 +312,7 @@ ArgoUML.
             has a leading capital letter, with words separated by
             <quote>bumpy caps</quote>.</para>
 
-          <note><para>&argouml; does not enforce this naming
+          <note><para>ArgoUML does not enforce this naming
             convention.</para></note></listitem>
         </varlistentry>
 
@@ -324,7 +324,7 @@ ArgoUML.
           <listitem><para>Text area. Lists any node that
             <emphasis>generalizes</emphasis> this node.</para>
 
-            <!-- TODO: MVW: Version 0.14 of &argouml; does not seem to support this. 
+            <!-- TODO: MVW: Version 0.14 of ArgoUML does not seem to support this. 
             How do I create a dependency between nodes? See issue ... -->
             
           <para>&Button1; double click navigates to the generalization and opens
@@ -377,7 +377,7 @@ ArgoUML.
             <para>Drop down selector. Node is a type of classifier, 
             and so it has the default stereotypes of a classifier 
             as defined in the UML standard.
-            &argouml; provides the
+            ArgoUML provides the
             standard
             stereotypes
             for a classifier: 
@@ -443,7 +443,7 @@ ArgoUML.
           <listitem><para>Text box. Lists any specialized node (i.e. for which
             this node is a generalization.</para>
 
-<!-- TODO: MVW: Version 0.14 of &argouml; does not seem to support this. 
+<!-- TODO: MVW: Version 0.14 of ArgoUML does not seem to support this. 
 How do I create a generalisation between nodes? See issue ... -->
 
 <!--          <para>&button1; double click navigates to the generalization and opens
@@ -532,7 +532,7 @@ How do I create a generalisation between nodes? See issue ... -->
       <literal>Instance</literal> and is specifically an instance that is
       derived from a node.</para>
 
-    <para>A node instance is represented on a deployment diagram in &argouml; as
+    <para>A node instance is represented on a deployment diagram in ArgoUML as
       a three dimensional box labeled with the node instance name (if any) and node type,
       separated by a colon (<literal>:</literal>).</para>
 
@@ -586,7 +586,7 @@ How do I create a generalisation between nodes? See issue ... -->
             defines the bounding box for the node instance on the
             diagram.</para>
 
-          <warning><para>Beware that in the current release of &argouml;, the
+          <warning><para>Beware that in the current release of ArgoUML, the
             bounding box just refers to the front face of the cube. This means
             that the three dimensional top and side may be ignored, for example
             when determining the limits of a diagram for saving
@@ -669,7 +669,7 @@ How do I create a generalisation between nodes? See issue ... -->
               which all other artifacts are derived includes the tagged
               element <literal>documentation</literal> which is handled by
               the <emphasis>documentation tab</emphasis> under
-              &argouml;</para></note></listitem>
+              ArgoUML</para></note></listitem>
         </varlistentry>
       </variablelist>
     </sect2>
@@ -730,7 +730,7 @@ How do I create a generalisation between nodes? See issue ... -->
             convention node instance names start with a lower case letter
             and use bumpy caps to divide words within the name.</para>
 
-            <note><para>&argouml; does not enforce this naming
+            <note><para>ArgoUML does not enforce this naming
               convention.</para></note>
 
           </listitem>
@@ -744,7 +744,7 @@ How do I create a generalisation between nodes? See issue ... -->
           <listitem><para>Drop down selector. 
           A Node instance type can be selected here.</para>
 
-          <caution><para>&argouml; V0.14 
+          <caution><para>ArgoUML V0.14 
           lists many more items in the dropdown list 
           then solely Nodes. Beware to select Nodes only.
           <!-- TODO: see enhancement issue ... -->
@@ -924,7 +924,7 @@ How do I create a generalisation between nodes? See issue ... -->
               which all other artifacts are derived includes the tagged
               element <literal>documentation</literal> which is handled by
               the <emphasis>documentation tab</emphasis> under
-              &argouml;</para></note></listitem>
+              ArgoUML</para></note></listitem>
         </varlistentry>
       </variablelist>
     </sect2>
@@ -985,7 +985,7 @@ How do I create a generalisation between nodes? See issue ... -->
             component has a leading capital letter, with words separated by
             <quote>bumpy caps</quote>.</para>
 
-          <note><para>&argouml; does not enforce this naming
+          <note><para>ArgoUML does not enforce this naming
             convention.
             <!-- TODO: See enhancement issue ... -->
           </para></note></listitem>
@@ -1000,7 +1000,7 @@ How do I create a generalisation between nodes? See issue ... -->
             with the UML standard stereotypes
             <literal>document</literal>, <literal>executable</literal>,
             <literal>file</literal>, <literal>library</literal> and
-            <literal>table</literal>. &argouml; also provides the 
+            <literal>table</literal>. ArgoUML also provides the 
             standard Classifier
             stereotypes, <literal>metaclass</literal>,
             <literal>powertype</literal>,
@@ -1080,7 +1080,7 @@ How do I create a generalisation between nodes? See issue ... -->
             <listitem><para><literal>Add</literal>. Add a new
               generalization.</para>
 
-            <caution><para>In the current release of &argouml;
+            <caution><para>In the current release of ArgoUML
               generalizations of components are not properly
               implemented. This button will add a generalization, named
               null with no parent, that can not be added to the
@@ -1119,7 +1119,7 @@ How do I create a generalisation between nodes? See issue ... -->
             <listitem><para><literal>Open</literal>. Navigate to the
               selected specialization.</para>
 
-            <caution><para>In the current release of &argouml;
+            <caution><para>In the current release of ArgoUML
               generalizations of components are not properly implemented,
               and this button is always grayed
               out.</para></caution></listitem> </itemizedlist>
@@ -1173,7 +1173,7 @@ How do I create a generalisation between nodes? See issue ... -->
       rectangles protruding from its left side, labeled with its name.</para>
 
     <para>A component instance is represented on a sequence diagram in
-      &argouml; as a box with two small rectangles protruding from its left
+      ArgoUML as a box with two small rectangles protruding from its left
       side labeled with the component instance name (if any) and component
       type, separated by a colon (<literal>:</literal>).</para>
 
@@ -1293,7 +1293,7 @@ How do I create a generalisation between nodes? See issue ... -->
               which all other artifacts are derived includes the tagged
               element <literal>documentation</literal> which is handled by
               the <emphasis>documentation tab</emphasis> under
-              &argouml;</para></note></listitem>
+              ArgoUML</para></note></listitem>
         </varlistentry>
       </variablelist>
     </sect2>
@@ -1356,7 +1356,7 @@ How do I create a generalisation between nodes? See issue ... -->
             letter and use bumpy caps to divide words within the
             name.</para>
 
-          <note><para>&argouml; does not enforce this naming
+          <note><para>ArgoUML does not enforce this naming
             convention.
             <!-- TODO: See enhancement issue ... -->
           </para></note>
@@ -1372,7 +1372,7 @@ How do I create a generalisation between nodes? See issue ... -->
           <listitem><para>Drop down selector. 
           A Component instance type can be selected here.</para>
 
-          <caution><para>&argouml; V0.14 
+          <caution><para>ArgoUML V0.14 
           lists many more items in the dropdown list 
           then solely Components. Beware to select Components only.
           <!-- TODO: see enhancement issue ... -->
@@ -1430,7 +1430,7 @@ How do I create a generalisation between nodes? See issue ... -->
 
     <caution><para>UML relies on stereotyping of dependencies on component and
       deployment diagrams to characterize the types of relationship. In the
-      current release of &argouml; there are limitations in the implementation
+      current release of ArgoUML there are limitations in the implementation
       of dependencies which limit this functionality.</para></caution>
   </sect1>
 
@@ -1466,7 +1466,7 @@ How do I create a generalisation between nodes? See issue ... -->
       instances which implement interfaces. For details see
       <xref linkend="s1.ref.interface_class"/>.</para>
 
-    <caution><para>The V0.14 release of &argouml; uses the same
+    <caution><para>The V0.14 release of ArgoUML uses the same
       representation of an interface as a class diagram. The UML standard
       suggests that an interface on a component or deployment diagram should
       just be shown as a small open circle, connected to the component which
@@ -1476,7 +1476,7 @@ How do I create a generalisation between nodes? See issue ... -->
 
     <warning><para>There is no way to show the linking of an interface to a
       component or component instance in the V0.14 release of
-      &argouml;.
+      ArgoUML.
       <!-- TODO: See issue ... -->
     </para></warning>
   </sect1>

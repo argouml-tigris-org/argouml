@@ -38,10 +38,10 @@ Top level description of all the artifacts within ArgoUML.
     <title>Introduction</title>
 
     <para>This chapter describes each artifact that can be created within
-      &argouml;. The chapter covers top-level <quote>general</quote>
+      ArgoUML. The chapter covers top-level <quote>general</quote>
       artifacts. The following chapters (see <xref
         linkend="ch.ref.entusecase"/> through <xref
-        linkend="ch.ref.entdeploy"/>) cover each of the &argouml;
+        linkend="ch.ref.entdeploy"/>) cover each of the ArgoUML
       diagrams.</para> 
 
     <para>There is a close relationship between this material and the
@@ -59,12 +59,12 @@ Top level description of all the artifacts within ArgoUML.
       <primary>Model, The</primary>
     </indexterm>
 
-    <para>The model is the top level artifact within &argouml;. In the UML
+    <para>The model is the top level artifact within ArgoUML. In the UML
       meta-model it is a sub-class of package. In many respects within
-      &argouml; it behaves similarly to a package (see <xref
+      ArgoUML it behaves similarly to a package (see <xref
       linkend="s1.ref.package"/>).</para>
 
-    <note><para>&argouml; is restricted to one model within the
+    <note><para>ArgoUML is restricted to one model within the
       tool.</para></note>
 
     <para>Standard data types, classes and packages are loaded (the
@@ -332,8 +332,8 @@ The name of a
             case.</para>
 
           <note><para>The default name supplied to a new model by
-            &argouml;, <literal>untitledModel</literal>, is thus erroneous
-            and guarantees that &argouml; always starts up with at least
+            ArgoUML, <literal>untitledModel</literal>, is thus erroneous
+            and guarantees that ArgoUML always starts up with at least
             one problem being reported by the design
             critics.</para></note></listitem>
         </varlistentry>
@@ -370,12 +370,12 @@ as well as the stereotypes for models
             <literal>implementation&nbsp;model</literal>,
             <literal>use&nbsp;case&nbsp;package</literal> and
             <literal>analysis&nbsp;service&nbsp;package</literal>).
-            &argouml; also provides the additional stereotypes,
+            ArgoUML also provides the additional stereotypes,
             <literal>machine</literal>, <literal>organization</literal> and
             <literal>person</literal>.</para>
 
           <note><para>A number of standard stereotypes are currently
-            missing from &argouml;: <literal>topLevel</literal> (from
+            missing from ArgoUML: <literal>topLevel</literal> (from
             package), <literal>use&nbsp;case&nbsp;system</literal>,
             <literal>analysis&nbsp;system</literal>,
             <literal>analysis&nbsp;package</literal> (all three from the
@@ -383,7 +383,7 @@ as well as the stereotypes for models
             profile).</para></note>
  -->
           <para>Stereotyping models is a useful thing, although it is of
-            limited value in &argouml; where you have only a single
+            limited value in ArgoUML where you have only a single
             model.</para></listitem>
         </varlistentry>
 
@@ -417,7 +417,7 @@ as well as the stereotypes for models
 
             <para>Text box. Records the namespace for the model. This
             is the package hierarchy. However since the model is at the top
-            of the hierarchy in &argouml;, this box is always
+            of the hierarchy in ArgoUML, this box is always
             empty.</para></listitem>
 <!-- ArgoUML V0.14 does should a non-relevent icon, though. See issue ... -->
         </varlistentry>
@@ -445,7 +445,7 @@ with entries
 
             <para>
 Records the visibility for the model.
-Since &argouml; only permits one model,
+Since ArgoUML only permits one model,
 this has no meaningful use.
 </para>
           </listitem>
@@ -484,7 +484,7 @@ It might mean that the model contains
 interfaces or
 abstract classes 
 without realizations.
-Since &argouml; only permits one model, 
+Since ArgoUML only permits one model, 
 this is not a meaningful box to check.
 </para>
               </listitem>
@@ -496,7 +496,7 @@ while <literal>root</literal> indicates it is the top level model.
 </para>
 
                 <para>
-Within &argouml; <literal>root</literal> only
+Within ArgoUML <literal>root</literal> only
 meaningfully applies to the Model,
 since all packages sit within the model.
 In the absence of the <literal>topLevel</literal> stereotype, 
@@ -616,10 +616,10 @@ navigating to that artifact.
       and user defined <emphasis>enumeration types</emphasis>.</para>
 
     <note><para>Also <literal>void</literal> is implemented as a 
-      datatype within &argouml;</para></note>
+      datatype within ArgoUML</para></note>
 
     <para>
-      Within &argouml; new datatypes may be created using the <literal>New
+      Within ArgoUML new datatypes may be created using the <literal>New
       datatype</literal> button on the property tabs of the model and packages
       (in which case the new datatype is restricted in scope to the
       package), as well as the properties tab for datatype.</para>
@@ -627,7 +627,7 @@ navigating to that artifact.
     <note>
       <para>
 UML&nbsp;1.3 allows user defined datatypes to be placed on
-class diagrams. This is not permitted in &argouml;.
+class diagrams. This is not permitted in ArgoUML.
 </para>
     </note>
 
@@ -815,7 +815,7 @@ In the UML metamodel,
             datatype, navigating immediately to the properties tab for that
             literal.</para>
 
-          <caution><para>&argouml; does not actually have a separate
+          <caution><para>ArgoUML does not actually have a separate
             concept of a literal. The navigation will navigate to the
             property sheet for an attribute of a class (see <xref
             linkend="s1.ref.attribute"/>). When defining a literal, all
@@ -960,7 +960,7 @@ in the explorer.
 </para>
 
 <!-- Issue 2112
-          <para>Most important of all, &argouml; provides the stereotype
+          <para>Most important of all, ArgoUML provides the stereotype
             <literal>enumeration</literal> for use with user defined
             enumeration data types.</para>
  -->
@@ -972,7 +972,7 @@ in the explorer.
             <caution>
               <para>
 				<!-- Issue 2112 -->
-				In &argouml; version 0.18 the stereotype 
+				In ArgoUML version 0.18 the stereotype 
 				<literal>enumeration</literal> must be created
 			    before it can be used.
 			    However, by creating an Enumeration Literal, the stereotype 
@@ -1039,7 +1039,7 @@ but must always be specialized.
 
                 <note>
                   <para>
-&argouml; provides no mechanism for specializing
+ArgoUML provides no mechanism for specializing
 datatypes, so this check box is of little use.
 </para>
                 </note>
@@ -1054,7 +1054,7 @@ while <literal>Root</literal> indicates it is a top level datatype.
                 <tip>
                   <para>
 In the absence of specialization of datatypes within
-&argouml; these have little value.
+ArgoUML these have little value.
 In effect all datatypes are both
 <literal>Root</literal> and
 <literal>Final</literal>
@@ -1264,7 +1264,7 @@ one.
           <para>See <xref linkend="s1.ref.operation"/> for details of
             operations.</para>
 
-          <caution><para>&argouml; treats all operations as equivalent. Any
+          <caution><para>ArgoUML treats all operations as equivalent. Any
             operations created here will use the same mechanism as
             operations for classes. Remember that operations on datatypes
             must have no side effects (they are read-only). This means the
@@ -1307,7 +1307,7 @@ one.
 
           </itemizedlist>
 
-          <caution><para>&argouml; does not actually have a separate
+          <caution><para>ArgoUML does not actually have a separate
             concept of a literal. The navigations listed above will all
             navigate to a property sheet equal to an attribute of a class (see
             <xref linkend="s1.ref.attribute"/>). When defining a literal,
@@ -1541,7 +1541,7 @@ There is no
             bumpy caps (e.g. <literal>systemModel</literal>) and space
             separated (e.g. <literal>object model</literal>).</para>
 
-          <note><para>&argouml; does not enforce any naming convention for
+          <note><para>ArgoUML does not enforce any naming convention for
             stereotypes</para></note></listitem>
         </varlistentry>
 
@@ -1660,7 +1660,7 @@ Records the namespace for the
             artifacts using the stereotype, not just the
             stereotype.</para></caution>
 
-          <warning><para>&argouml; neither imposes, nor checks that artifacts
+          <warning><para>ArgoUML neither imposes, nor checks that artifacts
             using a stereotype adopt the stereotype's
             modifiers.</para></warning></listitem>
         </varlistentry>
@@ -1705,13 +1705,13 @@ Records the namespace for the
     </indexterm>
 
     <para>The UML standard specifies eight principle diagrams, all of which are
-      supported by &argouml; 
+      supported by ArgoUML 
       (except currently in V0.18 the sequence diagram).</para>
 
     <itemizedlist>
       <listitem><para><emphasis>Use case diagram</emphasis>. Used to capture
         and analyse the requirements for any &ooad; project. See <xref
-        linkend="ch.ref.entusecase"/> for details of the &argouml; use case
+        linkend="ch.ref.entusecase"/> for details of the ArgoUML use case
         diagram and the artifacts it supports.</para></listitem>
 
       <listitem><para><emphasis>Class diagram</emphasis>. This diagram captures
@@ -1721,7 +1721,7 @@ Records the namespace for the
         <emphasis>package diagram</emphasis>) and the relationships between
         particular instances (the <emphasis>object diagram</emphasis>).</para>
 
-      <para>The &argouml; class diagram provides support for class and package
+      <para>The ArgoUML class diagram provides support for class and package
         diagrams. See <xref linkend="ch.ref.entclass"/> for details of the
         artifacts it supports. 
         The object diagram is suported on the Deployment diagram.
@@ -1737,14 +1737,14 @@ Records the namespace for the
           dynamic behavior of a single object (class instance). This diagram is
           of particular use in systems using complex communication protocols,
           such as in telecommunications. See <xref linkend="ch.ref.entstate"/>
-          for details of the &argouml; statechart diagram and the artifacts it
+          for details of the ArgoUML statechart diagram and the artifacts it
           supports.</para></listitem>
 
         <listitem><para><emphasis>Activity diagram</emphasis>. Used to show the
           dynamic behavior of groups of objects (class instance). This diagram
           is an alternative to the statechart diagram, and is better suited to
           systems with a great deal of user interaction. See <xref
-          linkend="ch.ref.entactiv"/> for details of the &argouml; activity
+          linkend="ch.ref.entactiv"/> for details of the ArgoUML activity
           diagram and the artifacts it supports.</para></listitem>
 
         <listitem><para><emphasis>Interaction diagrams</emphasis>. There are
@@ -1757,7 +1757,7 @@ Records the namespace for the
             instances of classes (objects) and actors against a
             timeline. Particularly useful where the timing relationships
             between interactions are important. See <xref
-            linkend="ch.ref.entseq"/> for details of the &argouml; sequence
+            linkend="ch.ref.entseq"/> for details of the ArgoUML sequence
             diagram and the artifacts it supports.</para></listitem>
       
           <listitem><para><emphasis>Collaboration diagram</emphasis>. Shows the
@@ -1767,7 +1767,7 @@ Records the namespace for the
             Particularly suitable where it
             is useful to relate interactions to the static structure of the
             system. See <xref linkend="ch.ref.entcollab"/> for details of the
-            &argouml; collaboration diagram and the artifacts it
+            ArgoUML collaboration diagram and the artifacts it
             supports.</para></listitem>
         </itemizedlist></listitem>
       </itemizedlist></listitem>
@@ -1779,7 +1779,7 @@ Records the namespace for the
         hardware on which it is deployed at run-time (the <emphasis>deployment
         diagram</emphasis>.</para>
 
-      <para>The &argouml; deployment diagram provides support for both
+      <para>The ArgoUML deployment diagram provides support for both
         component and deployment diagrams, and additionally for object diagrams. 
         See <xref
         linkend="ch.ref.entdeploy"/> for details of the diagram and the
@@ -1792,7 +1792,7 @@ Records the namespace for the
       or with the tools on the toolbar 
       (see <xref linkend="ch.ref.toolbar.create"/>).</para>
 
-    <note><para>&argouml; uses its deployment diagram to create the UML 1.3
+    <note><para>ArgoUML uses its deployment diagram to create the UML 1.3
       component, deployment and object diagrams.</para></note>
 
     <caution><para>Statechart and activity diagrams are associated with a 
@@ -1800,15 +1800,15 @@ Records the namespace for the
       and can only be created when this modelelement has been selected. 
     </para></caution>
 
-    <warning><para>In &argouml; version 0.18, the UML 1.3 object diagram
+    <warning><para>In ArgoUML version 0.18, the UML 1.3 object diagram
       as a variant of the class diagram is not directly supported. 
       However, it is possible to create simple object
-      diagrams within the &argouml; deployment diagram.</para>
+      diagrams within the ArgoUML deployment diagram.</para>
     </warning>
 
     <caution>
       <para>
-        Up until the &argouml; version 0.14 the sequence diagrams were implemented 
+        Up until the ArgoUML version 0.14 the sequence diagrams were implemented 
         incorrectly w.r.t. the UML model.
         For this reason it is in 0.18 no longer possible to create sequence
         diagrams.
@@ -1927,7 +1927,7 @@ Records the namespace for the
             <para>
 The name of the diagram. 
 There are no
-            conventions for naming diagrams. By default, &argouml; uses
+            conventions for naming diagrams. By default, ArgoUML uses
             the (space separated) diagram name and a sequence number,
             thus <literal>Use&nbsp;Case&nbsp;Diagram&nbsp;1</literal>.
             </para>

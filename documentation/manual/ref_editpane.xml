@@ -38,7 +38,7 @@ Diagram Pane or the Drawing Pane of the Multi-Editor Pane.
   <sect1>
     <title>Introduction</title>
 
-    <para><xref linkend="fig.ref.editing_pane"/> shows the &argouml; window
+    <para><xref linkend="fig.ref.editing_pane"/> shows the ArgoUML window
       with the editing pane highlighted.</para>
 
     <!-- An example of the editing pane in action. -->
@@ -58,14 +58,14 @@ Diagram Pane or the Drawing Pane of the Multi-Editor Pane.
          Pane or the Drawing Pane of the Multi-Editor Pane. -->
 
     <para>This is where all the diagrams are drawn. In earlier versions of
-      &argouml; this pane went under a variety of names. You may encounter
+      ArgoUML this pane went under a variety of names. You may encounter
       <quote>drawing pane</quote>, <quote>diagram pane</quote> or
       <quote>multi-editor pane</quote> in other documentation that is still
       being updated.</para>
 
     <para>The pane has a tool bar at the top, and a single tab labeled
       <literal>As&nbsp;Diagram</literal> at the bottom, 
-      which has no function in the 0.18 version of &argouml;. 
+      which has no function in the 0.18 version of ArgoUML. 
       The main area shows the currently selected diagram, of which the
       name is shown in the window title bar.
     </para>
@@ -263,7 +263,7 @@ outside of the menu area.
       <para>In case multiple elements are selected, the  
         pop-up menu only appears if all the items are of the same kind.
         The functions apply to all selected elements, 
-        but in the V0.18 implementation of &argouml;, 
+        but in the V0.18 implementation of ArgoUML, 
         many work only on one element,
         or even misbehave.
         <!-- TODO: See issue ... -->
@@ -415,7 +415,7 @@ graphic artifacts to diagrams.</para></listitem>
 
       <tip><para>These drawing tools provide a useful way to partially support
         some of the UML features (such as general purpose notes) that are
-        missing from the current release of &argouml;.
+        missing from the current release of ArgoUML.
       <!-- TODO: Remove this tip when ArgoUML finally supports all of UML ;-) -->
       </para></tip>
 
@@ -749,9 +749,9 @@ graphic artifacts to diagrams.</para></listitem>
 
       <warning>
         <para>
-          Sequence diagrams are not implemented in V0.18 of &argouml;. Hence the
+          Sequence diagrams are not implemented in V0.18 of ArgoUML. Hence the
           description below will (might) only become correct in future versions of
-          &argouml;.
+          ArgoUML.
         </para>
       </warning>
       
@@ -963,8 +963,8 @@ graphic artifacts to diagrams.</para></listitem>
           diagram.</para>
 
           <!--caution><para>A well formed junction should have one incoming transition
-            and two or more outgoing. &argouml; does not enforce this, but an
-            &argouml; critic will complain about any junction that does not follow
+            and two or more outgoing. ArgoUML does not enforce this, but an
+            ArgoUML critic will complain about any junction that does not follow
             this rule.
           </para></caution-->
           <!-- TODO: Is that so? Check which critic. -->
@@ -978,8 +978,8 @@ graphic artifacts to diagrams.</para></listitem>
           diagram.</para>
 
           <caution><para>A well formed branch should have one incoming transition
-            and two or more outgoing. &argouml; does not enforce this, but an
-            &argouml; critic will complain about any branch that does not follow
+            and two or more outgoing. ArgoUML does not enforce this, but an
+            ArgoUML critic will complain about any branch that does not follow
             this rule.
             <!-- TODO: Is that so? Check which critic. -->
           </para></caution>
@@ -993,8 +993,8 @@ graphic artifacts to diagrams.</para></listitem>
           diagram.</para>
 
         <caution><para>A well formed fork should have one incoming transition
-          and two or more outgoing. &argouml; does not enforce this, but an
-          &argouml; critic will complain about any fork that does not follow
+          and two or more outgoing. ArgoUML does not enforce this, but an
+          ArgoUML critic will complain about any fork that does not follow
           this rule.
           <!-- TODO: Is that so? Check which critic. -->
         </para></caution></listitem>
@@ -1007,8 +1007,8 @@ graphic artifacts to diagrams.</para></listitem>
           diagram.</para>
 
         <caution><para>A well formed join should have one outgoing transition
-          and two or more incoming. &argouml; does not enforce this, but an
-          &argouml; critic will complain about any join that does not follow
+          and two or more incoming. ArgoUML does not enforce this, but an
+          ArgoUML critic will complain about any join that does not follow
           this rule.
           <!-- TODO: Is that so? Check which critic. -->
         </para></caution></listitem>
@@ -1082,8 +1082,8 @@ graphic artifacts to diagrams.</para></listitem>
           diagram.</para>
 
         <caution><para>A well formed junction should have one incoming transition
-          and two or more outgoing. &argouml; does not enforce this, but an
-          &argouml; critic will complain about any junction that does not follow
+          and two or more outgoing. ArgoUML does not enforce this, but an
+          ArgoUML critic will complain about any junction that does not follow
           this rule.</para></caution></listitem>
 
         <listitem><para><guiicon><inlinemediaobject><imageobject>
@@ -1094,8 +1094,8 @@ graphic artifacts to diagrams.</para></listitem>
           diagram.</para>
 
         <caution><para>A well formed fork should have one incoming transition
-          and two or more outgoing. &argouml; does not enforce this, but an
-          &argouml; critic will complain about any fork that does not follow
+          and two or more outgoing. ArgoUML does not enforce this, but an
+          ArgoUML critic will complain about any fork that does not follow
           this rule.</para></caution></listitem>
 
         <listitem><para><guiicon><inlinemediaobject><imageobject>
@@ -1106,8 +1106,8 @@ graphic artifacts to diagrams.</para></listitem>
           diagram.</para>
 
         <caution><para>A well formed join should have one outgoing transition
-          and two or more incoming. &argouml; does not enforce this, but an
-          &argouml; critic will complain about any join that does not follow
+          and two or more incoming. ArgoUML does not enforce this, but an
+          ArgoUML critic will complain about any join that does not follow
           this rule.</para></caution></listitem>
           
         <listitem><para><guiicon><inlinemediaobject><imageobject>
@@ -1131,7 +1131,7 @@ graphic artifacts to diagrams.</para></listitem>
         the section on deployment diagram artifacts (see
         <xref linkend="ch.ref.entdeploy"/>).</para>
 
-      <note><para>Remember that &argouml;'s deployment diagrams are also used
+      <note><para>Remember that ArgoUML's deployment diagrams are also used
         for component diagrams.</para></note>
 
       <itemizedlist>
@@ -1242,7 +1242,7 @@ graphic artifacts to diagrams.</para></listitem>
   <sect1 id="s1.ref.edit_pane_broom">
     <title>The Broom</title>
     
-    <para>&argouml;'s broom alignment tool is specialized to support the needs 
+    <para>ArgoUML's broom alignment tool is specialized to support the needs 
       of designers in achieving the kind of alignment used in UML diagrams. 
       It is common for designers to roughly align objects as they are created 
       or by using simple movement commands. 
@@ -1258,7 +1258,7 @@ graphic artifacts to diagrams.</para></listitem>
       from left-alignment to right-alignment.
     </para>
     
-    <para>The T-shaped icon in &argouml;'s diagram toolbar 
+    <para>The T-shaped icon in ArgoUML's diagram toolbar 
       invokes the broom alignment tool. 
       <!-- TODO: Rewrite this para into something better explaining what to do
       as user to operate the broom. -->
@@ -1328,7 +1328,7 @@ graphic artifacts to diagrams.</para></listitem>
 
     <para>If the designer presses the space bar while using the broom, 
       objects on the face of the broom are distributed (i.e., spaced evenly). 
-      &argouml;'s broom supports three distribution modes: 
+      ArgoUML's broom supports three distribution modes: 
       objects can be spaced evenly across the space that they use, 
       objects can be packed together with only a small gap between them, 
       or objects can be distributed evenly over the entire length 
@@ -1349,7 +1349,7 @@ graphic artifacts to diagrams.</para></listitem>
     <para>When the user selects an artifact in a UML diagram, 
       several handles are drawn on it to indicate that it is selected 
       and to provide user interface affordances to resize the node. 
-      &argouml; also displays some <quote>selection-action buttons</quote> 
+      ArgoUML also displays some <quote>selection-action buttons</quote> 
       around the selected artifact. 
       See the figure below for some examples of the handles and 
       <quote>selection-action buttons</quote>. 
@@ -1430,7 +1430,7 @@ graphic artifacts to diagrams.</para></listitem>
       only the generalization or association; 
       and, a drag to an empty space in the diagram creates a new class 
       at the mouse position and the generalization or association. 
-      &argouml; provides some automated layout support so that clicking 
+      ArgoUML provides some automated layout support so that clicking 
       the subclass button will position the new classes so 
       that they do not overlap.
     </para>
@@ -1456,8 +1456,8 @@ graphic artifacts to diagrams.</para></listitem>
   <sect1>
     <title>Clarifiers</title>
 
-    <para>A key feature of &argouml; are the critics, which run in parallel
-      with the main &argouml; tool. When they find a problem, they typically
+    <para>A key feature of ArgoUML are the critics, which run in parallel
+      with the main ArgoUML tool. When they find a problem, they typically
       raise a to-do item, and also highlight the problem on the editing
       pane. The graphical techniques used for highlighting are called
       <emphasis>Clarifiers</emphasis></para>
@@ -1516,7 +1516,7 @@ graphic artifacts to diagrams.</para></listitem>
       table. Each representation would have its own tab and be selected by
       &button1; click on the tab.</para>
 
-    <para>Earlier versions of &argouml; did implement a tabular representation,
+    <para>Earlier versions of ArgoUML did implement a tabular representation,
       but the current release only supports a diagram representation, so this
       tab does not have any function.</para>
   </sect1>
@@ -1807,19 +1807,19 @@ graphic artifacts to diagrams.</para></listitem>
       </itemizedlist>
 
       <note><para>UML does permit an association to be non-navigable in both
-        directions. &argouml; will allow this, but you will have to set each of the
+        directions. ArgoUML will allow this, but you will have to set each of the
         association ends navigation property, reached from the property tab of
         the association - and the diagram does not show any arrows in this case.
         </para>
 
       <para>This is considered bad design practice (it will trigger a critic in
-        &argouml;), so is only of theoretical interest.</para></note>
+        ArgoUML), so is only of theoretical interest.</para></note>
 
       <note><para>UML does not permit navigability from an interface to a
         class.
         <!-- TODO: The next statement is not working for V0.14. See issue ... -->
         <!--This drop down is disabled for associations between interfaces
-        and classes.--> &argouml; does not prevent this.
+        and classes.--> ArgoUML does not prevent this.
       </para></note>
     </sect2>
 

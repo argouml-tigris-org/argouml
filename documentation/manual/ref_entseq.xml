@@ -45,7 +45,7 @@ they did not follow the UML specification correctly.
 </para>
     <para>
 This chapter is left in the manual for those that might
-need it because they are still working with &argouml; 0.10.1.
+need it because they are still working with ArgoUML 0.10.1.
 </para>
   </caution>
 
@@ -62,7 +62,7 @@ need it because they are still working with &argouml; 0.10.1.
       general, in this chapter they are linked to specific artifacts.</para>
 
     <caution><para>Sequence diagrams are not fully developed yet in
-      &argouml;. Many aspects are not fully implemented, or may not behave as
+      ArgoUML. Many aspects are not fully implemented, or may not behave as
       expected.</para></caution>
 
     <!-- A diagram to show all things visible on the diagram -->
@@ -86,10 +86,10 @@ need it because they are still working with &argouml; 0.10.1.
     <!-- Limitations in Argo/UML relating to support in general -->
 
     <sect2>
-      <title>Limitations Concerning Sequence Diagrams in &argouml;</title>
+      <title>Limitations Concerning Sequence Diagrams in ArgoUML</title>
 
       <para>The sequence diagram is still rather under-developed in
-        &argouml;.</para>
+        ArgoUML.</para>
 
       <para>The biggest difficulties are with the actions behind the
         stimuli. These are purely textual in implementation, and there is no
@@ -109,17 +109,17 @@ need it because they are still working with &argouml; 0.10.1.
       diagrams (see <xref linkend="ch.ref.entcollab"/>), sequence diagrams
       cannot show generic behavior between classifier roles.</para>
 
-    <para>An object is represented on a sequence diagram in &argouml; as a
+    <para>An object is represented on a sequence diagram in ArgoUML as a
       plain box labeled with the object name (if any) and class name, separated
       by a colon (:). As links with stimuli to and from other objects are
       added, a time line grows down from the object. This is thin where the
       object does not have control and thick where it does.</para>
 
-    <caution><para>The current release of &argouml; shows interactions between
+    <caution><para>The current release of ArgoUML shows interactions between
       objects, although the UML standard for sequence diagrams is for
       interaction between instances of any classifier).</para>
 
-    <para>However the actual implementation in &argouml; permits any classifier
+    <para>However the actual implementation in ArgoUML permits any classifier
       to be used with the object, and so the diagram can successfully represent
       instances of actors for example as well as classes.</para></caution>
 
@@ -171,7 +171,7 @@ need it because they are still working with &argouml; 0.10.1.
             and the original values will be reset when you next revisit the
             tab.</para>
 
-          <caution><para>In the current release of &argouml; changing the
+          <caution><para>In the current release of ArgoUML changing the
             values of this field is possible, but will make a (temporary)
             mess of the screen display. Selecting the object on the screen
             causes the original values to be restored and the screen
@@ -236,7 +236,7 @@ need it because they are still working with &argouml; 0.10.1.
               which all other artifacts are derived includes the tagged
               element <literal>documentation</literal> which is handled by
               the <emphasis>documentation tab</emphasis> under
-              &argouml;</para></note></listitem>
+              ArgoUML</para></note></listitem>
         </varlistentry>
       </variablelist>
     </sect2>
@@ -297,7 +297,7 @@ need it because they are still working with &argouml; 0.10.1.
             object names start with a lower case letter and use bumpy caps
             to divide words within the name.</para>
 
-          <note><para>&argouml; does not enforce this naming
+          <note><para>ArgoUML does not enforce this naming
             convention.</para></note></listitem>
         </varlistentry>
 
@@ -309,7 +309,7 @@ need it because they are still working with &argouml; 0.10.1.
           <listitem><para>Drop down selector. The name of the classifier
             of which this is an object.</para>
 
-          <caution><para>In the current release of &argouml; the drop down
+          <caution><para>In the current release of ArgoUML the drop down
             selector will include <emphasis>all</emphasis> classifiers
             (i.e. interfaces, actors, use cases and datatypes as well),
             which is what is wanted on the diagram, although it should
@@ -317,7 +317,7 @@ need it because they are still working with &argouml; 0.10.1.
             practice only instances of classes and actors make much
             sense.</para></caution>
 
-          <note><para>In the current release of &argouml; the same
+          <note><para>In the current release of ArgoUML the same
             graphical presentation is used, even if the object is actually
             representing an instance of an actor (when a stick-man would be
             more usual).</para></note></listitem>
@@ -329,12 +329,12 @@ need it because they are still working with &argouml; 0.10.1.
           <term><literal>Stereotype</literal></term>
 
           <listitem><para>Drop down selector. Object has no stereotypes by
-            default in the UML standard, but &argouml; provides the
+            default in the UML standard, but ArgoUML provides the
             stereotypes, <literal>machine</literal>,
             <literal>organization</literal> and
             <literal>person</literal>.</para>
 
-          <caution><para>&argouml; also provides the stereotype
+          <caution><para>ArgoUML also provides the stereotype
             <literal>realize</literal> for objects. This appears to be an
             error, since this stereotype properly belongs to the
             <literal>Abstraction</literal>
@@ -386,14 +386,14 @@ need it because they are still working with &argouml; 0.10.1.
             <listitem><para><literal>Add</literal>. Add a new
               stimulus.</para>
 
-            <caution><para>In the current release of &argouml; this entry
+            <caution><para>In the current release of ArgoUML this entry
               is always grayed out. Stimuli can only be added from the
               diagram.</para></caution></listitem>
 
             <listitem><para><literal>Delete</literal>. Delete the selected
               stimulus.</para>
 
-            <caution><para>In the current release of &argouml; this entry
+            <caution><para>In the current release of ArgoUML this entry
               is always grayed out. Stimuli can only be deleted from the
               diagram.</para></caution></listitem>
 
@@ -401,7 +401,7 @@ need it because they are still working with &argouml; 0.10.1.
               there are two or more stimuli, and the stimulus selected is not
               at the top. It is moved up one.</para>
 
-            <caution><para>In the current release of &argouml; this entry
+            <caution><para>In the current release of ArgoUML this entry
               is always grayed out. Stimuli can not be moved in the
               order. To change the order a stimulus must be deleted and
               then recreated on the diagram.</para></caution></listitem>
@@ -410,7 +410,7 @@ need it because they are still working with &argouml; 0.10.1.
               there are two or more stimuli listed, and the stimulus selected
               is not at the bottom. It is moved down one.</para>
 
-            <caution><para>In the current release of &argouml; this entry
+            <caution><para>In the current release of ArgoUML this entry
               is always grayed out. Stimuli can not be moved in the
               order. To change the order a stimulus must be deleted and
               then recreated on the diagram.</para></caution></listitem>
@@ -425,7 +425,7 @@ need it because they are still working with &argouml; 0.10.1.
           <listitem><para>Text area. Lists the stimuli received by this
             object.</para>
 
-          <warning><para>In the current release of &argouml; this field is
+          <warning><para>In the current release of ArgoUML this field is
             completely broken. No entries are every shown.</para></warning>
 
           <para>&Button1; click navigates to the selected entry, &button2;
@@ -438,14 +438,14 @@ need it because they are still working with &argouml; 0.10.1.
             <listitem><para><literal>Add</literal>. Add a new
               stimulus.</para>
 
-            <caution><para>In the current release of &argouml; this entry
+            <caution><para>In the current release of ArgoUML this entry
               is always grayed out. Stimuli can only be added from the
               diagram.</para></caution></listitem>
 
             <listitem><para><literal>Delete</literal>. Delete the selected
               stimulus.</para>
 
-            <caution><para>In the current release of &argouml; this entry
+            <caution><para>In the current release of ArgoUML this entry
               is always grayed out. Stimuli can only be deleted from the
               diagram.</para></caution></listitem>
 
@@ -453,7 +453,7 @@ need it because they are still working with &argouml; 0.10.1.
               there are two or more stimuli, and the stimulus selected is not
               at the top. It is moved up one.</para>
 
-            <caution><para>In the current release of &argouml; this entry
+            <caution><para>In the current release of ArgoUML this entry
               is always grayed out. Stimuli can not be moved in the
               order. To change the order a stimulus must be deleted and
               then recreated on the diagram.</para></caution></listitem>
@@ -462,7 +462,7 @@ need it because they are still working with &argouml; 0.10.1.
               there are two or more stimuli listed, and the stimulus selected
               is not at the bottom. It is moved down one.</para>
 
-            <caution><para>In the current release of &argouml; this entry
+            <caution><para>In the current release of ArgoUML this entry
               is always grayed out. Stimuli can not be moved in the
               order. To change the order a stimulus must be deleted and
               then recreated on the diagram.</para></caution></listitem>
@@ -485,7 +485,7 @@ need it because they are still working with &argouml; 0.10.1.
       <literal>ModelElement</literal>.</para>
 
     <para>The link (see <xref linkend="s1.ref.link_sequence"/>) associated with
-      a stimulus is represented on a sequence diagram in &argouml; as an arrow
+      a stimulus is represented on a sequence diagram in ArgoUML as an arrow
       between the time lines of the object instances (or the object head in the
       case of stimulus create, described below) labeled with the name of the
       action (if any), and the action, separated by a colon (:). The type of
@@ -520,11 +520,11 @@ need it because they are still working with &argouml; 0.10.1.
         line with an open arrowhead.</para></listitem>
     </itemizedlist>
 
-    <note><para>&argouml; does not allow you to create stimuli directly, but
+    <note><para>ArgoUML does not allow you to create stimuli directly, but
       instead provides tools to create stimuli of each of the five types
       above.</para></note>
 
-    <caution><para>In the current release of &argouml; there is no way to show
+    <caution><para>In the current release of ArgoUML there is no way to show
       a terminate action where an object instance destroys itself. One way is
       to draw a destroy action that loops back to the object itself, give it an
       action with no name and use the style tab to set an invisible line, but
@@ -591,7 +591,7 @@ need it because they are still working with &argouml; 0.10.1.
             stimulus) and use its style tab (see
             <xref linkend="s1.ref.link_sequence"/>).</para></tip>
 
-          <caution><para>In the current release of &argouml; changing the
+          <caution><para>In the current release of ArgoUML changing the
             values of the <literal>Bounds</literal> field is possible, but
             will make only a temporary change to the position of the
             stimulus. Selecting any artifact on the screen causes the
@@ -649,7 +649,7 @@ need it because they are still working with &argouml; 0.10.1.
               which all other artifacts are derived includes the tagged
               element <literal>documentation</literal> which is handled by
               the <emphasis>documentation tab</emphasis> under
-              &argouml;</para></note></listitem>
+              ArgoUML</para></note></listitem>
         </varlistentry>
       </variablelist>
     </sect2>
@@ -724,7 +724,7 @@ need it because they are still working with &argouml; 0.10.1.
           <listitem><para>Text box. This is used to identify the action that
             generated the stimulus.</para>
 
-          <caution><para>The current release of &argouml; only implements
+          <caution><para>The current release of ArgoUML only implements
             actions as textual descriptions.</para>
 
           <para>As a practical convention it is suggested that call actions
@@ -744,12 +744,12 @@ need it because they are still working with &argouml; 0.10.1.
           <term><literal>Stereotype</literal></term>
 
           <listitem><para>Drop down selector. Stimulus has no stereotypes by
-            default in the UML standard, but &argouml; provides the
+            default in the UML standard, but ArgoUML provides the
             stereotypes, <literal>machine</literal>,
             <literal>organization</literal> and
             <literal>person</literal>.</para>
 
-          <caution><para>&argouml; also provides the stereotype
+          <caution><para>ArgoUML also provides the stereotype
             <literal>realize</literal> for stimuli. This appears to be an
             error, since this stereotype properly belongs to the
             <literal>Abstraction</literal>
@@ -803,7 +803,7 @@ need it because they are still working with &argouml; 0.10.1.
               selected receiver instance.</para></listitem>
           </itemizedlist>
 
-          <warning><para>In the current release of &argouml; this field is
+          <warning><para>In the current release of ArgoUML this field is
             broken. It always shows the entry <literal>none</literal> and
             the pop-up menu is grayed out.</para></warning></listitem>
         </varlistentry>
@@ -839,7 +839,7 @@ need it because they are still working with &argouml; 0.10.1.
       representation on the diagram is that of a stimulus associated with a
       call action, i.e. a solid line with a solid arrow head.</para>
 
-    <note><para>Because the current release of &argouml; does not fully
+    <note><para>Because the current release of ArgoUML does not fully
       implement actions, there is no enforcement of the relationship to a call
       action.</para></note>
   </sect1>
@@ -860,7 +860,7 @@ need it because they are still working with &argouml; 0.10.1.
       create action, i.e. a solid line with a solid arrow head terminating at
       the head of the created instance.</para>
 
-    <note><para>Because the current release of &argouml; does not fully
+    <note><para>Because the current release of ArgoUML does not fully
       implement actions, there is no enforcement of the relationship to a
       create action.</para></note>
   </sect1>
@@ -881,7 +881,7 @@ need it because they are still working with &argouml; 0.10.1.
       destroy action, i.e. a solid line with an open arrow head terminating at
       a cross at the bottom of the destroyed instance's time line.</para>
 
-    <note><para>Because the current release of &argouml; does not fully
+    <note><para>Because the current release of ArgoUML does not fully
       implement actions, there is no enforcement of the relationship to a
       destroy action.</para></note>
   </sect1>
@@ -901,7 +901,7 @@ need it because they are still working with &argouml; 0.10.1.
       representation on the diagram is that of a stimulus associated with a
       send action, i.e. a solid line with half an open arrow head.</para>
 
-    <note><para>Because the current release of &argouml; does not fully
+    <note><para>Because the current release of ArgoUML does not fully
       implement actions, there is no enforcement of the relationship to a send
       action.</para></note>
   </sect1>
@@ -921,7 +921,7 @@ need it because they are still working with &argouml; 0.10.1.
       representation on the diagram is that of a stimulus associated with a
       return action, i.e. a dotted line with an open arrow head.</para>
 
-    <note><para>Because the current release of &argouml; does not fully
+    <note><para>Because the current release of ArgoUML does not fully
       implement actions, there is no enforcement of the relationship to a
       return action.</para></note>
   </sect1>
@@ -936,7 +936,7 @@ need it because they are still working with &argouml; 0.10.1.
       <literal>Instance</literal>. Within a sequence diagram links are created
         indirectly when an associated stimulus is created.</para>
 
-    <para>An link is represented on a sequence diagram in &argouml; as a line
+    <para>An link is represented on a sequence diagram in ArgoUML as a line
       connecting the instances concerned. However on a sequence diagram
       the representation is modified to reflect the type of action associated
       with the stimulus carried on the link (see
@@ -987,7 +987,7 @@ need it because they are still working with &argouml; 0.10.1.
             notionally define the bounding box of the link. However if you
             change them it will have no effect.</para>
 
-          <caution><para>In the current release of &argouml; changing the
+          <caution><para>In the current release of ArgoUML changing the
             values of the line field will alter the color of the line, but
             <emphasis>not</emphasis> the arrow
             head.</para></caution></listitem>
@@ -1050,7 +1050,7 @@ need it because they are still working with &argouml; 0.10.1.
               which all other artifacts are derived includes the tagged
               element <literal>documentation</literal> which is handled by
               the <emphasis>documentation tab</emphasis> under
-              &argouml;</para></note></listitem>
+              ArgoUML</para></note></listitem>
         </varlistentry>
       </variablelist>
     </sect2>
@@ -1111,7 +1111,7 @@ need it because they are still working with &argouml; 0.10.1.
             link names start with a lower case letter and use bumpy caps
             to divide words within the name.</para>
 
-          <note><para>&argouml; does not enforce this naming
+          <note><para>ArgoUML does not enforce this naming
             convention.</para></note></listitem>
         </varlistentry>
 
@@ -1121,12 +1121,12 @@ need it because they are still working with &argouml; 0.10.1.
           <term><literal>Stereotype</literal></term>
 
           <listitem><para>Drop down selector. Link has no stereotypes by
-            default in the UML standard, but &argouml; provides the
+            default in the UML standard, but ArgoUML provides the
             stereotypes, <literal>machine</literal>,
             <literal>organization</literal> and
             <literal>person</literal>.</para>
 
-          <caution><para>&argouml; also provides the stereotype
+          <caution><para>ArgoUML also provides the stereotype
             <literal>realize</literal> for links. This appears to be an
             error, since this stereotype properly belongs to the
             <literal>Abstraction</literal>

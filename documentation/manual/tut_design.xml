@@ -178,7 +178,7 @@ Sequence Diagrams and Collaboration Diagrams (To be written)
   <!-- Now show how to do in in Argo/UML. -->
 
   <sect1>
-    <title>Creating Package Diagrams in &argouml;</title>
+    <title>Creating Package Diagrams in ArgoUML</title>
 
     <!-- How do we identify what goes in packages -->
 
@@ -287,7 +287,7 @@ Sequence Diagrams and Collaboration Diagrams (To be written)
   <!-- Now show how to do in in Argo/UML. -->
 
   <sect1>
-    <title>More on Class Diagrams in &argouml; (To be written)</title>
+    <title>More on Class Diagrams in ArgoUML (To be written)</title>
 
     <sect2>
       <title>Classes (To be written)</title>
@@ -479,7 +479,7 @@ Sequence diagrams does not work in ArgoUML version 0.14.
   <!-- Now show how to do in in Argo/UML. -->
 
   <sect1>
-    <title>Creating Collaboration Diagrams in &argouml; (To be written)</title>
+    <title>Creating Collaboration Diagrams in ArgoUML (To be written)</title>
 
     <sect2>
       <title>Collaboration Diagrams (To be written)</title>
@@ -615,7 +615,7 @@ Sequence diagrams does not work in ArgoUML version 0.14.
   <!-- Now show how to do in in Argo/UML. -->
 
   <sect1>
-    <title>Creating Statechart Diagrams in &argouml; (To be written)</title>
+    <title>Creating Statechart Diagrams in ArgoUML (To be written)</title>
 
     <!-- A bit more detail this time -->
 
@@ -748,7 +748,7 @@ Sequence diagrams does not work in ArgoUML version 0.14.
   <!-- Now show how to do in in Argo/UML. Relate to Statechart Diagrams -->
 
   <sect1>
-    <title>Creating Activity Diagrams in &argouml; (To be written)</title>
+    <title>Creating Activity Diagrams in ArgoUML (To be written)</title>
 
     <sect2>
       <title>Activity Diagrams (To be written)</title>
@@ -791,7 +791,7 @@ Sequence diagrams does not work in ArgoUML version 0.14.
   <!-- Now show how to do in in Argo/UML. -->
 
   <sect1>
-    <title>Creating Deployment Diagrams in &argouml; (To be written)</title>
+    <title>Creating Deployment Diagrams in ArgoUML (To be written)</title>
 
     <!-- How do we work all this out -->
 

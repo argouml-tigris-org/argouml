@@ -87,7 +87,7 @@ ArgoUML up and running.
       standard. A first proposal, 1.0 was published in early 1997, with an
       improved version 1.1 approved that autumn.</para>
 
-    <para>&argouml; is based on UML v1.3, which was adopted by OMG in November
+    <para>ArgoUML is based on UML v1.3, which was adopted by OMG in November
       1999. The current official version is UML v1.5 dated March 2003. A 
       major revision, UML v2.0, was adopted and posted in late 2003 and planned
       to be voted through in late 2004.</para>
@@ -371,7 +371,7 @@ ArgoUML up and running.
 
       <para>Within that first iteration, we will tackle each of the
         requirements capture, analysis, design and build activities in
-        turn. Not all parts of the process are based on UML or &argouml;. We
+        turn. Not all parts of the process are based on UML or ArgoUML. We
         will look at what other material is needed outside.</para>
 
       <para>Within this process we will have an opportunity to see the various
@@ -443,7 +443,7 @@ ArgoUML up and running.
         <title>Build</title>
 
         <para>UML is not really concerned with code writing. However at this
-          stage we will show how &argouml; can be used for code
+          stage we will show how ArgoUML can be used for code
           generation.</para>
 
         <para>We will also look at how the UML Use Case Diagram and Use Case
@@ -455,10 +455,10 @@ ArgoUML up and running.
   <!-- What Argo/UML is different to other UML CASE tools -->
 
   <sect1>
-    <title>Why &argouml; is Different</title>
+    <title>Why ArgoUML is Different</title>
 
     <para>In the introduction, we listed the four key things that make
-    &argouml; different: i) it makes use of ideas from cognitive psychology,
+    ArgoUML different: i) it makes use of ideas from cognitive psychology,
     ii) it is based on open standards; iii) it is 100% pure Java; and iv) it is
     an open source project.</para>
 
@@ -470,7 +470,7 @@ ArgoUML up and running.
       <sect3>
         <title>Theory</title>
 
-        <para>&argouml; is particularly inspired by three theories within
+        <para>ArgoUML is particularly inspired by three theories within
         cognitive psychology: i) reflection-in-action, ii) opportunistic design
         iii) and comprehension and problem solving.</para>
 
@@ -534,9 +534,9 @@ ArgoUML up and running.
       <!-- The practice -->
 
       <sect3>
-        <title>Practical Application in &argouml;</title>
+        <title>Practical Application in ArgoUML</title>
 
-        <para>The implementation of these theories within &argouml; is through
+        <para>The implementation of these theories within ArgoUML is through
          a number of techniques.</para>
 
         <orderedlist>
@@ -566,7 +566,7 @@ ArgoUML up and running.
     <sect2>
       <title>Open Standards</title>
 
-      <para>UML is itself an open standard. &argouml; throughout has tried to
+      <para>UML is itself an open standard. ArgoUML throughout has tried to
         use open standards for all its interfaces.</para>
 
       <para>The key advantage of open standards is that it permits easy
@@ -583,7 +583,7 @@ ArgoUML up and running.
 
       <para>The open source movement, is inherently about avoiding monopolistic
         control of software. Open standards are a natural direction for such
-        software&mdash;including &argouml;.</para>
+        software&mdash;including ArgoUML.</para>
 
       <!-- XMI -->
 
@@ -593,15 +593,15 @@ ArgoUML up and running.
         <para><emphasis>XML Metadata Interchange (XMI)</emphasis> is the
           standard for saving the meta-data that make up a particular UML
           model. In principle this will allow you to take the model you have
-          created in &argouml; and import it into another tool.</para>
+          created in ArgoUML and import it into another tool.</para>
 
         <para>This clearly has advantages in allowing UML to meet its goal of
           being a standard for communication between designers.</para>
 
         <para>The reality is not quite this good. XMI is a recent standard, and
-          &argouml; is one of the few tools to implement it. Furthermore it
+          ArgoUML is one of the few tools to implement it. Furthermore it
           says nothing about the graphical representation of the models, so
-          diagram layout is lost. &argouml; gets round this by saving graphical
+          diagram layout is lost. ArgoUML gets round this by saving graphical
           information with the model (see <xref
             linkend="s3.tut.loadsave"/>).</para>
       </sect3>
@@ -619,7 +619,7 @@ ArgoUML up and running.
           data that is based on vectors (i.e. lines) rather than
           bitmaps.</para>
 
-        <para>For now &argouml; saves diagrams using an earlier proposed
+        <para>For now ArgoUML saves diagrams using an earlier proposed
           standard, <emphasis>Portable Graphics Markup Language
           (PGML)</emphasis>. However it has the option to export graphical data
           as SVG for those who can make use of it.</para>
@@ -634,7 +634,7 @@ ArgoUML up and running.
           UML standard for expressing constraints within diagrams that express
           the dynamic behavior of a design.</para>
 
-        <para>At present OCL is quite new and not widely available. &argouml;
+        <para>At present OCL is quite new and not widely available. ArgoUML
           is one of the few CASE tools to provide comprehensive support.</para>
       </sect3>
     </sect2>
@@ -662,7 +662,7 @@ ArgoUML up and running.
         interpreted languages, which produce denser code, may actually not be
         that much slower anyway.)</para>
 
-      <para>By choosing to write &argouml; in pure Java, it is immediately made
+      <para>By choosing to write ArgoUML in pure Java, it is immediately made
         available to the maximum number of users with the minimum amount of
         effort.</para>
     </sect2>
@@ -672,33 +672,33 @@ ArgoUML up and running.
     <sect2>
       <title>Open Source</title>
 
-      <para>&argouml; is an <emphasis>open source</emphasis> project. That
+      <para>ArgoUML is an <emphasis>open source</emphasis> project. That
         means anyone can have a free copy of the source code, change it, use it
         for new purposes and so on. The only (major) obligation is that you
         pass your code on in the same way to others. The precise nature of what
         you can and can't do varies from project to project, but the principle
         is the same.</para>
 
-      <para>The advantage is that a small project like &argouml; suddenly is
+      <para>The advantage is that a small project like ArgoUML suddenly is
         open to a lot of additional help from those who can chip in their ideas
         for how the program might be improved. At any one time their may be 10,
-        15, 20 or more people making significant contributions to &argouml;. To
+        15, 20 or more people making significant contributions to ArgoUML. To
         do that commercially would cost $1m+ per year.</para>
 
       <para>Its not just a spirit of pure altruism. Contributing is a way of
         learning <quote>hands-on</quote> about leading edge software. Its a way
         of getting a lot of visibility (over 100,000 people had downloaded
-        &argouml; by the spring of 2001). That's a lot of good experience on a
+        ArgoUML by the spring of 2001). That's a lot of good experience on a
         resum&eacute; and a lot of potential employers seeing you!</para>
 
       <para>And its great for the ego!</para>
 
       <para>Open Source doesn't preclude making money. Gentleware <ulink
         url="http://www.gentleware.com">www.gentleware.com</ulink> sell a
-        commercial version of &argouml;, Poseidon. Their value proposition is
+        commercial version of ArgoUML, Poseidon. Their value proposition is
         not a piece of private code. Its the commercial polish and support that
-        take risk out of using &argouml; in a commercial development, allowing
-        customers to take advantage of &argouml;'s leading edge
+        take risk out of using ArgoUML in a commercial development, allowing
+        customers to take advantage of ArgoUML's leading edge
         technology.</para>
     </sect2>
   </sect1>
@@ -706,9 +706,9 @@ ArgoUML up and running.
   <!-- Get started with Argo/UML -->
 
   <sect1>
-    <title>&argouml; Basics</title>
+    <title>ArgoUML Basics</title>
 
-    <para>The aim of this section is to get you started with &argouml;. It
+    <para>The aim of this section is to get you started with ArgoUML. It
       takes you through obtaining the code and getting it running.</para>
 
     <sect2>
@@ -717,7 +717,7 @@ ArgoUML up and running.
       <!-- System requirements -->
       <sect3>
         <title>System requirements</title>
-        <para>Since &argouml; is written in 100% pure Java, it should run on
+        <para>Since ArgoUML is written in 100% pure Java, it should run on
           any machine with a Java Engine. Java2, version 1.3 or later is
           needed. You may have this in place, but if not it can be downloaded
           free from Sun MicroSystems
@@ -725,7 +725,7 @@ ArgoUML up and running.
           only need the Java Runtime Environment (JRE), there is no need to
           download the whole Java Development Kit (JDK).</para>
 
-        <para>&argouml; needs a reasonable amount of computing resource. A PC
+        <para>ArgoUML needs a reasonable amount of computing resource. A PC
           with 200MHz processor, 64Mb RAM and 10Mb of space available on a harddisk should be
           adequate. Download the code from Download section of the project
           website
@@ -738,19 +738,19 @@ ArgoUML up and running.
       <sect3>
         <title>Downloading options</title>
 
-        <para>You have three options for obtaining &argouml;.</para>
+        <para>You have three options for obtaining ArgoUML.</para>
 
         <orderedlist>
-          <listitem><para>Run &argouml; directly from the Web Site using Java
+          <listitem><para>Run ArgoUML directly from the Web Site using Java
             Web Start. This is the easiest option.</para></listitem>
 
           <listitem><para>Download the binary executable code. This is the right option if
-            you intend using &argouml; regularly and is not that
+            you intend using ArgoUML regularly and is not that
             difficult.</para></listitem>
 
           <listitem><para>Download the source code using CVS and build your own
             version. Choose this option if you want to look at the internal
-            workings of &argouml;, or want to join in as a
+            workings of ArgoUML, or want to join in as a
             developer.</para></listitem>
         </orderedlist>
 
@@ -762,7 +762,7 @@ ArgoUML up and running.
       <!-- Using Java Web Start -->
 
       <sect3>
-        <title>&argouml; using Java Web Start</title>
+        <title>ArgoUML using Java Web Start</title>
 
         <para>There are two steps to this.</para>
 
@@ -771,22 +771,22 @@ ArgoUML up and running.
             available from <ulink
             url="http://java.sun.com/products/javawebstart">
             java.sun.com/products/javawebstart</ulink>, or via the
-            <literal>Java Web Start</literal> link on the &argouml; <ulink
+            <literal>Java Web Start</literal> link on the ArgoUML <ulink
               url="http://argouml.tigris.org">home
             page</ulink>.</para></listitem>
 
           <listitem><para>
 Click on the <literal>Launch latest stable release</literal> 
-link on the &argouml; <ulink url="http://argouml.tigris.org">home page</ulink>.
+link on the ArgoUML <ulink url="http://argouml.tigris.org">home page</ulink>.
             </para>
           </listitem>
         </orderedlist>
 
         <para>Java Web Start will download ArgoUML, cache it and start it the
           first time, then on subsequent starts, check if ArgoUML is updated
-          and only download any updated parts and then start it. The &argouml;
+          and only download any updated parts and then start it. The ArgoUML
           <ulink url="http://argouml.tigris.org">home page</ulink> also
-          provides details on starting &argouml; from the Java Web Start
+          provides details on starting ArgoUML from the Java Web Start
           console.
         </para>
       </sect3>
@@ -802,7 +802,7 @@ link on the &argouml; <ulink url="http://argouml.tigris.org">home page</ulink>.
         (which will be less reliable, but have more features). Choose according
         to your own situation.</para>
 
-        <para>&argouml; comes in <literal>.zip</literal> or
+        <para>ArgoUML comes in <literal>.zip</literal> or
           <literal>tar.gz</literal> flavors. Choose the former if you are a
           Microsoft Windows user, and the latter if you are running some
           flavor of Unix. Unpacking is as follows.</para>
@@ -840,7 +840,7 @@ link on the &argouml; <ulink url="http://argouml.tigris.org">home page</ulink>.
           <ulink
             url="http://argouml.tigris.org/faqs/users.html">
             FAQ</ulink>. If this still doesn't solve the problem, try the
-          &argouml; users' mailing list.</para>
+          ArgoUML users' mailing list.</para>
 
           <para>You can subscribe through the mailing lists section of the
             project web site
@@ -862,17 +862,17 @@ link on the &argouml; <ulink url="http://argouml.tigris.org">home page</ulink>.
       <!-- Running -->
 
       <sect3>
-        <title>Running &argouml;</title>
+        <title>Running ArgoUML</title>
 
           <para>
-To run &argouml; depends on whether
+To run ArgoUML depends on whether
 you use Microsoft Windows or some flavor of Unix.
           </para>
 
         <itemizedlist>
           <listitem><para>On Windows. Start a MSDOS shell window by e.g. useing Start/Run
             with the default <quote>command</quote>. In the window change to
-            the directory holding your &argouml; files and type
+            the directory holding your ArgoUML files and type
             <literal>java&nbsp;-jar&nbsp;argouml.jar</literal></para>
           <para>
 The above method has the advantage that progress and debugging information 
@@ -891,7 +891,7 @@ or simply (double) clicking on the <literal>argouml.jar</literal> file works on 
         <!-- Possible Problems running -->
 
         <sect3>
-          <title>Problems Running &argouml;</title>
+          <title>Problems Running ArgoUML</title>
 
           <para>It's unusual to encounter problems if you have made a
             successful download. Most common issue is not having a new enough
@@ -904,15 +904,15 @@ or simply (double) clicking on the <literal>argouml.jar</literal> file works on 
             <listitem>
 				<para>
 Wrong language. 
-&argouml; attempts to find the language from the environment of the operating system 
+ArgoUML attempts to find the language from the environment of the operating system 
 and uses that. 
 If this language is not desired, 
-another language can be chosen at startup of &argouml;.
-you will have to force &argouml; to think that the environment is set to another language.
-Normally &argouml; is started with: <literal>java&nbsp;-jar&nbsp;argouml.jar</literal>
+another language can be chosen at startup of ArgoUML.
+you will have to force ArgoUML to think that the environment is set to another language.
+Normally ArgoUML is started with: <literal>java&nbsp;-jar&nbsp;argouml.jar</literal>
             	</para>
 				<para>
-&argouml; can be forced into thinking that the environment is set to another language as follows:
+ArgoUML can be forced into thinking that the environment is set to another language as follows:
             	</para>
 				<para><literal>java&nbsp;-Duser.language=en&nbsp;-jar&nbsp;argouml.jar</literal>
 				</para>
@@ -932,9 +932,9 @@ Selecting any other language will lead to the default language English.
     <!-- Now give an outline of the User Interface -->
 
     <sect2>
-      <title>The &argouml; User Interface</title>
+      <title>The ArgoUML User Interface</title>
 
-      <para><xref linkend="fig.tut.guioverview"/> shows the main &argouml;
+      <para><xref linkend="fig.tut.guioverview"/> shows the main ArgoUML
         window.</para>
 
       <!-- A big diagram with all the bits pointed out. At the moment its
@@ -942,7 +942,7 @@ Selecting any other language will lead to the default language English.
            bubbles pointing out things. -->
 
       <figure id="fig.tut.guioverview" float="1">
-        <title>Overview of the &argouml; window</title>
+        <title>Overview of the ArgoUML window</title>
 
         <screenshot><mediaobject>
           <imageobject>
@@ -1083,7 +1083,7 @@ of the tree.
 
         <para>
 The menu bar and toolbars gives access to all the main features of
-&argouml;. 
+ArgoUML. 
 As is conventional, menu options and toolbar options that are not available
           are grayed out and menu items that invoke a dialog box are followed
           by an ellipsis (&hellip;).</para>
@@ -1099,7 +1099,7 @@ This allows you to
             create a new project, save and open projects, import sources from
             elsewhere, load and save the model to and from a database, print
             the model, save the graphics of the model, save the configuration
-            of the model and exit &argouml;</para></listitem>
+            of the model and exit ArgoUML</para></listitem>
 
           <listitem>
 	    <indexterm>
@@ -1134,7 +1134,7 @@ This allows you to
 This allows
             you to create any one of the seven UML diagram types (class, use
             case, state, activity, collaboration, deployment and sequence)
-            supported by &argouml;.</para>
+            supported by ArgoUML.</para>
 
 	    <para>
 State and activity diagrams can only be created when
@@ -1183,7 +1183,7 @@ This allows you
 	    <para>
 <emphasis>Tools</emphasis> menu. 
 This menu is permanently grayed out unless there is some tool available
-in your version of &argouml;.
+in your version of ArgoUML.
 </para>
 	  </listitem>
 
@@ -1250,7 +1250,7 @@ This toolbar contains some of the tools from the Create Diagram menu.
           tracking devices) are used in a wide variety of ways. In this section
           we look at the common modes of use. </para>
 
-        <para>&argouml; assumes a two button mouse. We will refer to the
+        <para>ArgoUML assumes a two button mouse. We will refer to the
           buttons as <quote>&button1;</quote> and <quote>button
           2</quote>. &Button1; is the leftmost button on a right-handed
           mouse, and sometimes referred to as the <quote>select</quote>
@@ -1387,13 +1387,13 @@ Move your mouse to
         <sect4>
           <title>The Start-up Window</title>
 
-          <para><xref linkend="fig.tut.startup"/> shows the &argouml; main window
+          <para><xref linkend="fig.tut.startup"/> shows the ArgoUML main window
             as it appears as right after start-up</para>
 
           <!-- A figure of the Argo/UML start-up window -->
 
           <figure id="fig.tut.startup" float="1">
-            <title>&argouml; window at start-up</title>
+            <title>ArgoUML window at start-up</title>
 
             <screenshot><mediaobject>
               <imageobject>
@@ -1420,14 +1420,14 @@ at the top of the pane.
 <!-- The title bar does not seem to contain the project name anymore.
      Where is it? Issue: 493
           <para>Notice that the title bar says
-            <literal>&argouml;&nbsp;-&nbsp;Untitled</literal>. The
+            <literal>ArgoUML&nbsp;-&nbsp;Untitled</literal>. The
             <quote>Untitled</quote> means that the current project has not yet
             been saved. After saving the current project, the
             <quote>Untitled</quote> will be replaced by the file name of the
             current project.</para>
  -->
 
-          <para>Each time &argouml; is started up without a project file as an
+          <para>Each time ArgoUML is started up without a project file as an
             argument, a new blank project is created. This project contains a
             model called <literal>untitledModel</literal>. This model contains
             a blank Class Diagram, called
@@ -1480,7 +1480,7 @@ for saving the
             holding down the <quote>Ctrl</quote> key, and pressing
             <quote>N</quote>, will create a new project.</para>
 
-          <para>In the current version, &argouml; can only contain one active
+          <para>In the current version, ArgoUML can only contain one active
             project at a time. In addition, a project can only contain one UML
             model. Since an UML model can contain an unlimited number of
             elements and diagrams, this should not present any serious
@@ -1530,7 +1530,7 @@ If everything fits the window is not scrollable as seen in the picture.
 
           <para>Notice that only folder names, and no file names are displayed
             in the scrollable area. Indeed, the dialog is currently set up in
-            order to show only &argouml; project files with an extension of
+            order to show only ArgoUML project files with an extension of
 <literal>.zargo</literal>, as can be seen on the lower drop-down
 control labeled <literal>Files&nbsp;of&nbsp;Type:</literal>.
 </para>
@@ -1600,7 +1600,7 @@ The Folders Presentation Icon.
 
           <para>
 OK, now we navigate to the directory where we want to save our
-            &argouml; project, fill in the <literal>File&nbsp;name:</literal>
+            ArgoUML project, fill in the <literal>File&nbsp;name:</literal>
             with an appropriate name, such as <quote>FirstProject</quote> and
             click on the <literal>Save</literal> button.</para>
 
@@ -1627,7 +1627,7 @@ OK, now we navigate to the directory where we want to save our
         <sect4>
           <title>Saving XMI files in ArgoUML</title>
 
-          <para>&argouml; saves the diagram information in a PGML file (with
+          <para>ArgoUML saves the diagram information in a PGML file (with
             extension <literal>.pgml</literal>, the model information in an XMI
             file (with extension <literal>.xmi</literal> and information about
             the project in a file with extension <literal>.argo</literal>. See
@@ -1679,7 +1679,7 @@ Like ArgoUML it is an open source project available via
           <title>Precision Graphics Markup Language (PGML)</title>
 
           <para>PGML is the saving format for diagram information used in
-            &argouml;. Although this is outdated a little, it shows why we
+            ArgoUML. Although this is outdated a little, it shows why we
             chose PGML in the first place. In the future, PGML will be replaced
             by an extended XMI format which will include graphical
             representation.</para>
@@ -1774,7 +1774,7 @@ PGML.
         <para>There is now a tool available which supports various dialects of
           XMI and their interconversion. This should make portability of
 different models in to ArgoUML considerably easier.
-Any work on using this with &argouml; would be much appreciated.
+Any work on using this with ArgoUML would be much appreciated.
 </para>
 
         <para>There is also a tool that converts XMI to HTML. For more
@@ -1789,7 +1789,7 @@ Any work on using this with &argouml; would be much appreciated.
           <title>Using XMI from Rational Rose</title>
 
           <para>It is probably not possible to take a model generated by
-            Rational Rose in XMI format and put it into &argouml;
+            Rational Rose in XMI format and put it into ArgoUML
             directly.</para>
 
           <para>The conversion tool identified above will probably solve the
@@ -1802,12 +1802,12 @@ Any work on using this with &argouml; would be much appreciated.
         <sect4>
           <title>Using Models Created by Gentleware</title>
 
-          <para>Gentleware is a commercial development based on &argouml;. It
+          <para>Gentleware is a commercial development based on ArgoUML. It
             diverged a little while ago and the XMI representations are no
             longer full compatible.</para>
 
           <para>Eugenio Alvarez suggests the following procedure to convert a
-            Gentleware project for use with &argouml;. It works if there are no
+            Gentleware project for use with ArgoUML. It works if there are no
             sequence diagrams in the project.</para>
 
           <orderedlist>
@@ -1837,13 +1837,13 @@ UMLTool (Contact Eugenio Alvarez to get this tool).
         <!-- Interchangeability of Argo/UML XMI between versions -->
 
         <sect4>
-          <title>XMI Interchangeability between &argouml; 0.8.1a and
+          <title>XMI Interchangeability between ArgoUML 0.8.1a and
 0.10, 0.12, and 0.14
 </title>
 
           <para>
 This depends on the version of NSUML 
-(the UML engine underlying &argouml;) you are using. 
+(the UML engine underlying ArgoUML) you are using. 
 Look in the start-up messages on the console for 
 the entry for Novosoft UML Library for the version number.
 Using version 0.4.19 is OK, and the XMI files should
@@ -1854,11 +1854,11 @@ be interchangeable.
         <!-- Importing XMI into ArgoUML -->
 
         <sect4>
-          <title>Importing Other XMI Formats into &argouml;</title>
+          <title>Importing Other XMI Formats into ArgoUML</title>
 
           <para>Because of the variety of XMI formats being generated you will
             encounter problems using XMI files generated from other
-            applications.  &argouml;'s native storage format is another
+            applications.  ArgoUML's native storage format is another
             implementation of XMI (Curt Arnold believes that it has been hacked
             so it can also read the Unisys variant).  He recommends that if you
             are comfortable with XSLT, you can typically transform one variant
@@ -1891,9 +1891,9 @@ and choose a filename.
         <!-- What sort of code is generated -->
 
         <sect4>
-          <title>Code Generated by &argouml;</title>
+          <title>Code Generated by ArgoUML</title>
 
-          <para>It is possible to compile your generated code with &argouml;,
+          <para>It is possible to compile your generated code with ArgoUML,
             you still need to implement method bodies, though, to get usable
             results.</para>
         </sect4>
@@ -1904,7 +1904,7 @@ and choose a filename.
           <title>Generating Code for Methods</title>
 
           <para>At the moment you cannot write code for methods (operations)
-            within &argouml;. The source pane is editable, but the changes are
+            within ArgoUML. The source pane is editable, but the changes are
             ignored.  ArgoUML is a pure design tool for now, no IDE
             functionality but the desire is there. You might consider using
             Forte and ArgoUML together&mdash;it's a good work around!</para>
@@ -1925,13 +1925,13 @@ and choose a filename.
 
         <para>Where do we stand now? A new project has been created, and is
           connected to the file <literal>FirstProject.argo</literal>.
-          <xref linkend="fig.tut.critstart"/> shows how your &argouml; window
+          <xref linkend="fig.tut.critstart"/> shows how your ArgoUML window
           should look at this stage.</para>
 
         <!-- A figure of the Argo/UML window having saved the project. -->
 
         <figure id="fig.tut.critstart" float="1">
-          <title>&argouml; window having saved
+          <title>ArgoUML window having saved
             <literal>FirstProject.argo</literal></title>
 
           <screenshot><mediaobject>
@@ -1968,7 +1968,7 @@ The project contains a top-level package, called
         items originate.</para>
 
         <para>The answer is simple, and is at the same time one of the strong
-          points of &argouml;. While you are working on your UML model, your
+          points of ArgoUML. While you are working on your UML model, your
           work is monitored continuously and invisibly by a piece of code
           called a <emphasis>design critic</emphasis>. This is like a personal
           mentor that watches over your shoulder and notifies you each time he
@@ -1990,7 +1990,7 @@ The project contains a top-level package, called
         <!-- A figure of the Argo/UML showing a critic item. -->
 
         <figure id="fig.tut.critrevname" float="1">
-          <title>&argouml; window showing the critic item
+          <title>ArgoUML window showing the critic item
             <literal>Revise&nbsp;Package&nbsp;Name&nbsp;UntitledModel</literal>
           </title>
 
@@ -2008,11 +2008,11 @@ The project contains a top-level package, called
           to scroll down in order to see the full message as displayed in our
           example.</para>
 
-        <para>What &argouml; is trying to tell you is that usually, package
+        <para>What ArgoUML is trying to tell you is that usually, package
           names are written in lower cases. The default top level package
-          created by &argouml; is called <literal>untitledModel</literal> and
+          created by ArgoUML is called <literal>untitledModel</literal> and
           therefore violates a sound design principle. (Actually, this could be
-          considered as a bug within &argouml;, but it comes in handy to
+          considered as a bug within ArgoUML, but it comes in handy to
           demonstrate the working of critics).</para>
 
         <para>At this point, you can choose to change the package name
@@ -2038,12 +2038,12 @@ The project contains a top-level package, called
         <para>Replace the name <literal>untitledmodel</literal> with
           <literal>purchasingmodel</literal>, and click on the
           <literal>Finish</literal> button. <xref linkend="fig.tut.critwiz"/>
-          shows how the &argouml; window will now look.</para>
+          shows how the ArgoUML window will now look.</para>
 
         <!-- A figure of the Argo/UML showing a critic wizard -->
 
         <figure id="fig.tut.critwiz" float="1">
-          <title>&argouml; window showing the critic wizard to rename the
+          <title>ArgoUML window showing the critic wizard to rename the
             package</title>
 
           <screenshot><mediaobject>
@@ -2059,14 +2059,14 @@ The project contains a top-level package, called
           <literal>Add&nbsp;Elements&nbsp;to&nbsp;Package&nbsp;purchasingmodel
           </literal> note in the To-Do list.</para>
 
-        <para>If this doesn't happen at once, wait for a few seconds. &argouml;
+        <para>If this doesn't happen at once, wait for a few seconds. ArgoUML
           makes heavy use of several threads of execution that execute in
           parallel. This can cause delays of a few seconds before the
           information gets updated on the screen.</para>
 
         <para>
 The package name change should also be reflected in the
-          explorer, in the top left corner of your &argouml;
+          explorer, in the top left corner of your ArgoUML
           window.</para>
 
         <para>We are now ready to create our first UML diagram, a Use Case
@@ -2074,7 +2074,7 @@ The package name change should also be reflected in the
 
         <para>Click on the <literal>File</literal> menu item, and select
           <literal>Save&nbsp;Project</literal>. You can now safely exit
-          &argouml; without losing your work so far, or go on creating your
+          ArgoUML without losing your work so far, or go on creating your
           first diagram.</para>
       </sect3>
     </sect2>

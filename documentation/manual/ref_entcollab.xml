@@ -48,7 +48,7 @@ Argo/UML.
       general, in this chapter they are linked to specific artifacts.</para>
 
     <caution><para>Collaboration diagrams are not fully developed yet in
-      &argouml;. Many aspects are not fully implemented, or may not behave as
+      ArgoUML. Many aspects are not fully implemented, or may not behave as
       expected. In particular there are some serious problems with layout of
       the collaboration roles and messages.</para></caution>
 
@@ -74,10 +74,10 @@ Argo/UML.
     <!-- Limitations in ArgoUML relating to support in general -->
 
     <sect2>
-      <title>Limitations Concerning Collaboration Diagrams in &argouml;</title>
+      <title>Limitations Concerning Collaboration Diagrams in ArgoUML</title>
 
       <para>The collaboration diagram is still rather under-developed in
-        &argouml;. In particular there is no way to show instance
+        ArgoUML. In particular there is no way to show instance
         collaborations (based on objects and links) rather than specification
         collaborations.</para>
 
@@ -118,7 +118,7 @@ Argo/UML.
     <caution><para>A collaboration diagram should not mix classifier roles used
       as the specifier level and the instance level.</para></caution>
 
-    <para>A classifier role is represented on a sequence diagram in &argouml;
+    <para>A classifier role is represented on a sequence diagram in ArgoUML
       as a plain box labeled with the classifier role name (if any) and
       classifier, separated by a colon (:).</para>
 
@@ -129,7 +129,7 @@ Argo/UML.
       diagram.</para>
 
     <para>This distinction is not implemented in the current release of
-      &argouml;.</para></caution>
+      ArgoUML.</para></caution>
 
     <!-- Classifier Role details tabs -->
 
@@ -242,7 +242,7 @@ Argo/UML.
               which all other artifacts are derived includes the tagged
               element <literal>documentation</literal> which is handled by
               the <emphasis>documentation tab</emphasis> under
-              &argouml;</para></note></listitem>
+              ArgoUML</para></note></listitem>
         </varlistentry>
       </variablelist>
     </sect2>
@@ -304,7 +304,7 @@ Argo/UML.
             convention classifier role names start with a lower case letter
             and use bumpy caps to divide words within the name.</para>
 
-          <note><para>&argouml; does not enforce this naming
+          <note><para>ArgoUML does not enforce this naming
             convention. <!-- TODO: See enhancement issue ... -->
           </para></note>
           </listitem>
@@ -369,7 +369,7 @@ Argo/UML.
               mean that only one instance plays a role in this collaboration.
             </para>
 
-          <caution><para>&argouml; restricts you to a number of predefined
+          <caution><para>ArgoUML restricts you to a number of predefined
             ranges for multiplicity. There is no way to give a user defined
             range: typing something different seems to work, 
             but the entered value is not remembered.
@@ -469,7 +469,7 @@ Argo/UML.
             
             <caution>
               <para>
-                &argouml; V0.14 does not seem to provide a way to add anything 
+                ArgoUML V0.14 does not seem to provide a way to add anything 
                 in the list here.
                 <!-- TODO: See issue ... -->
               </para>
@@ -494,7 +494,7 @@ Argo/UML.
             
             <caution>
               <para>
-                &argouml; V0.14 does not seem to provide a way to add anything 
+                ArgoUML V0.14 does not seem to provide a way to add anything 
                 in the list here.
                 <!-- TODO: See issue ... -->
               </para>
@@ -518,7 +518,7 @@ Argo/UML.
       metamodel <literal>Association Role</literal> is a sub-class of
       <literal>Association</literal>.</para>
 
-    <para>An association role is represented on a collaboration diagram in &argouml;
+    <para>An association role is represented on a collaboration diagram in ArgoUML
       as a line connecting the instances concerned. However on a sequence
       diagram the representation is modified to reflect the type of action
       associated with the stimulus carried on the link (see <xref
@@ -645,7 +645,7 @@ Argo/UML.
               which all other artifacts are derived includes the tagged
               element <literal>documentation</literal> which is handled by
               the <emphasis>documentation tab</emphasis> under
-              &argouml;</para></note></listitem>
+              ArgoUML</para></note></listitem>
         </varlistentry>
       </variablelist>
     </sect2>
@@ -710,7 +710,7 @@ Argo/UML.
             letter and use bumpy caps to divide words within the
             name.</para>
 
-          <note><para>&argouml; does not enforce this naming
+          <note><para>ArgoUML does not enforce this naming
             convention.</para></note></listitem>
         </varlistentry>
 
@@ -788,7 +788,7 @@ Argo/UML.
             role. An association role can have any number of ends, but two
             is generally the only useful number (link objects can led to a
             third end on instance level diagrams, but this is not supported
-            by &argouml;). For more on association end roles see <xref
+            by ArgoUML). For more on association end roles see <xref
             linkend="s1.ref.association_end_role"/>.</para>
 
             <para>The names are listed, unless the association end role has
@@ -832,7 +832,7 @@ Argo/UML.
     <para>Two or more association end roles are associated with each
       association role
       (see <xref linkend="s1.ref.association_role"/>), although for
-      &argouml;, the number of ends can only be two.</para>
+      ArgoUML, the number of ends can only be two.</para>
 
     <para>The association end role has no direct access on any diagram,
       although its stereotype, name and multiplicity is shown at the relevant
@@ -844,7 +844,7 @@ Argo/UML.
       shown as a solid diamond (composite aggregation) or hollow diamond
       (shared aggregation).</para>
 
-    <note><para>&argouml; does not currently (V0.14) support qualifiers, as described
+    <note><para>ArgoUML does not currently (V0.14) support qualifiers, as described
       in the UML&nbsp;1.3 standard.
       <!-- TODO: See enhancement issue ... -->
     </para></note>
@@ -852,7 +852,7 @@ Argo/UML.
     <caution><para>An association end role should  have the same, or
       <quote>stricter</quote> attribute values than its base association
       end. In particular its navigability should be no more general. There is
-      as yet no critic in &argouml; to offer advice on this
+      as yet no critic in ArgoUML to offer advice on this
       rule.</para></caution>
 
     <!-- The details tabs -->
@@ -943,7 +943,7 @@ Argo/UML.
               which all other artifacts are derived includes the tagged
               element <literal>documentation</literal> which is handled by
               the <emphasis>documentation tab</emphasis> under
-              &argouml;</para></note></listitem>
+              ArgoUML</para></note></listitem>
         </varlistentry>
       </variablelist>
     </sect2>
@@ -1003,7 +1003,7 @@ Argo/UML.
             an implementation context, provides a name by which the source end
             of an association role can reference the target end.</para>
 
-          <note><para>&argouml; does not enforce any naming convention for
+          <note><para>ArgoUML does not enforce any naming convention for
             association end roles.</para></note></listitem>
         </varlistentry>
 
@@ -1066,7 +1066,7 @@ Argo/UML.
           <term><literal>Type</literal></term>
 
           <listitem><para>Drop down selector providing access to all standard
-            UML types provided by &argouml; and all new classes created
+            UML types provided by ArgoUML and all new classes created
             within the current model.</para>
             <!-- TODO: Do we need this? Is the choice not really be far more
             limited? -->
@@ -1137,7 +1137,7 @@ Argo/UML.
       instances are shown on the links, rather than the messages that describe
       the communication channel.</para></note-->
 
-    <para>The message is represented on a collaboration diagram in &argouml; 
+    <para>The message is represented on a collaboration diagram in ArgoUML 
       by its sequence number
       separated by a colon from the expression defining the associated
       <!-- TODO: Bug: the expression of the action is only updated on the 
@@ -1162,7 +1162,7 @@ Argo/UML.
       messages, since they are actions (create, terminate, destroy) of the
       associated classifier roles, not communications.</para></caution-->
 
-    <warning><para>The current release of &argouml; does not retaining 
+    <warning><para>The current release of ArgoUML does not retaining 
       message positioning after reloading the project, i.e. as if the positions
       were not stored in the project file.
       <!-- TODO: See issue ... -->
@@ -1217,7 +1217,7 @@ Argo/UML.
             arrow line. Altering the <literal>Shadow</literal> field has no
             effect.</para>
 
-          <caution><para>In the V0.14 release of &argouml; changing the
+          <caution><para>In the V0.14 release of ArgoUML changing the
             position of the message by editing the
             values of the <literal>Bounds</literal> field is possible, but
             will make only a temporary change to the position of the
@@ -1284,7 +1284,7 @@ Argo/UML.
               which all other artifacts are derived includes the tagged
               element <literal>documentation</literal> which is handled by
               the <emphasis>documentation tab</emphasis> under
-              &argouml;</para></note></listitem>
+              ArgoUML</para></note></listitem>
         </varlistentry>
       </variablelist>
     </sect2>
@@ -1348,7 +1348,7 @@ Argo/UML.
         <listitem><para>Text box. The name of a message is usually its
           sequence number, either an integer, or a decimal (allowing
           alternative message hierarchies to be clearly
-          described). &argouml; will supply an integer sequence number by
+          described). ArgoUML will supply an integer sequence number by
           default.</para></listitem>
         </varlistentry>
 

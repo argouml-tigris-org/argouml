@@ -363,7 +363,7 @@ See <xref linkend="s1.umlcollabdiags"/> for more information.
         <primary>Critic</primary>
       </indexterm>
 
-        <para>A process within &argouml; that provides suggestions as to how
+        <para>A process within ArgoUML that provides suggestions as to how
           the design might be improved. Suggestions are based on principles
           within three theories of cognitive psychology,
           <emphasis>reflection-in action</emphasis>, <emphasis>opportunistic
@@ -566,7 +566,7 @@ the <emphasis>generalizing</emphasis> Use Case.
           into web browsers, allowing code (Applets) to be download and run
           over the web.</para>
 
-        <para>&argouml; is written in Java.</para>
+        <para>ArgoUML is written in Java.</para>
       </glossdef>
     </glossentry>
   </glossdiv>
@@ -799,7 +799,7 @@ Best known for CORBA and UML.
       </indexterm>
 
         <para>
-A sub-window within the main window of the &argouml; user interface.
+A sub-window within the main window of the ArgoUML user interface.
 </para>
       </glossdef>
     </glossentry>
@@ -1053,7 +1053,7 @@ defined in terms of the solution domain.
         <para>
 Scalable Vector Graphics format.
 A standard representation of graphics diagrams that use vectors.
-&argouml; can export diagrams in SVG.
+ArgoUML can export diagrams in SVG.
 </para>
       </glossdef>
     </glossentry>
@@ -1124,7 +1124,7 @@ See <xref linkend="ch.tut.analysis"/> for more information.
         <primary>To-Do List</primary>
       </indexterm>
 
-        <para>A feature of &argouml; allowing the user to record activities
+        <para>A feature of ArgoUML allowing the user to record activities
           that are yet to be completed.</para>
       </glossdef>
     </glossentry>
@@ -1166,7 +1166,7 @@ See <xref linkend="ch.tut.analysis"/> for more information.
         <para>
 Universal Modeling Language.
 A graphical notation for &ooad; processes, standardized by the
-OMG. &argouml; follows UML v1.3. Version 1.4 was released during 2001,
+OMG. ArgoUML follows UML v1.3. Version 1.4 was released during 2001,
 with v2.0 planned for 2002.
 </para>
 

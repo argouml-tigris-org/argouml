@@ -34,13 +34,13 @@ The frontispiece information about the book.
 <bookinfo>
   <date>5/17/2002</date>
 
-  <title>&argouml; User Manual</title>
+  <title>ArgoUML User Manual</title>
   <subtitle>A tutorial and reference description</subtitle>
 
   <abstract>
     <para>
 This version of the manual is intended to describe 
-the version &argoversion; of &argouml;.
+the version &argoversion; of ArgoUML.
 </para>
   </abstract>
   <authorgroup>

@@ -28,7 +28,7 @@
 <!--
 
 Description of all the artifacts associated with use case diagrams within
-&argouml;.
+ArgoUML.
 
 -->
 
@@ -70,13 +70,13 @@ Description of all the artifacts associated with use case diagrams within
       </mediaobject></screenshot>
     </figure>
 
-    <!-- Limitations in &argouml; relating to display of extension points. -->
+    <!-- Limitations in ArgoUML relating to display of extension points. -->
 
     <sect2>
-      <title>&argouml; Limitations Concerning Use Case Diagrams</title>
+      <title>ArgoUML Limitations Concerning Use Case Diagrams</title>
 
       <para>
-		Use case diagrams are now well supported within &argouml;. 
+		Use case diagrams are now well supported within ArgoUML. 
 		There still are some minor limitations though.
 		One is that extension points may be shown in a
         separate compartment on the use case, 
@@ -86,7 +86,7 @@ Description of all the artifacts associated with use case diagrams within
 
       <note>
         <para>
-Earlier versions of &argouml; (0.9 and earlier) implemented extend and
+Earlier versions of ArgoUML (0.9 and earlier) implemented extend and
         include relationships by using a stereotyped dependency
         relationship. Although such diagrams will show correctly on the
         diagram, they will not link correctly to the use cases, and should be
@@ -360,7 +360,7 @@ This creates a new actor within the model, (but not
             letter (and initial letters of any component words),
             e.g. <literal>RemoteSensor</literal>.</para>
 
-          <note><para>&argouml; does not enforce any naming convention for
+          <note><para>ArgoUML does not enforce any naming convention for
             actors</para></note></listitem>
         </varlistentry>
 
@@ -391,7 +391,7 @@ The stereotypes
 <literal>person</literal> and
 <literal>singleton</literal>
 are probably of most use.
-However, they are not provided by default with &argouml;.
+However, they are not provided by default with ArgoUML.
 </para>
           </listitem>
         </varlistentry>
@@ -573,7 +573,7 @@ Lists any association ends of associations connected to this actor.
       linkend="fig.ref.use_case_diagram"/>). It may be split in two, with the
       lower compartment showing extension points</para>
 
-    <caution><para>By default &argouml; does not show the extension point
+    <caution><para>By default ArgoUML does not show the extension point
       compartment. It may be revealed by the context sensitive
       <literal>Show</literal> menu (using &button2; click), or from the 
       Presentation tab.</para></caution>
@@ -581,7 +581,7 @@ Lists any association ends of associations connected to this actor.
     <warning>
       <para>
 <!-- Issue: 2140 -->
-The current release of &argouml; (V0.18) does not preserve
+The current release of ArgoUML (V0.18) does not preserve
 information about whether the extension point compartment is showing on save.
 On reload, no compartments will be visible.
 </para>
@@ -851,7 +851,7 @@ Since a use case
             The name is shown inside the oval representation 
             of the use case on the diagram.</para>
 
-          <note><para>&argouml; does not enforce any naming convention for
+          <note><para>ArgoUML does not enforce any naming convention for
             use cases</para></note></listitem>
         </varlistentry>
 
@@ -1467,7 +1467,7 @@ The name of the extension point.
             unnamed in use case analysis, since they are always listed (within
             use cases and extend relationships) by their location.</para></tip>
 
-          <note><para>&argouml; does not enforce any naming convention for
+          <note><para>ArgoUML does not enforce any naming convention for
             extension points.</para></note></listitem>
         </varlistentry>
 
@@ -1486,7 +1486,7 @@ The name of the extension point.
             </indexterm>
 
             <para>Drop down selector.
-&argouml; does not provide any stereotypes for extension points.
+ArgoUML does not provide any stereotypes for extension points.
 </para>
 
           <tip><para>Stereotyping does not have great value on an extension
@@ -1615,7 +1615,7 @@ An association on a use case diagram represents a relationship
       
     <caution>
       <para>Dependency has little use in use case diagrams. It is
-        provided, because earlier versions of &argouml; used it (incorrectly) to
+        provided, because earlier versions of ArgoUML used it (incorrectly) to
         implement include and extends relationships.
       </para>
     </caution>
@@ -1859,7 +1859,7 @@ The name of the generalization.
           <tip><para>It is quite common to leave generalizations
             unnamed in use case analysis.</para></tip>
 
-          <note><para>&argouml; does not enforce any naming convention for
+          <note><para>ArgoUML does not enforce any naming convention for
             associations.</para></note>
 
           <note>
@@ -2033,7 +2033,7 @@ i.e. the more specific end of the relationship.
 
             <para>
 Drop down selector providing access to all standard
-            UML types provided by &argouml; and all new classes created
+            UML types provided by ArgoUML and all new classes created
             within the current model.</para>
 
           <para>This is the type of the child entity of the
@@ -2342,7 +2342,7 @@ The name of the extend relationship.
           <tip><para>It is quite common to leave extends
             unnamed in use case analysis.</para></tip>
 
-          <note><para>&argouml; does not enforce any naming convention for
+          <note><para>ArgoUML does not enforce any naming convention for
             extend relationships.</para></note></listitem>
         </varlistentry>
 
@@ -2361,7 +2361,7 @@ The name of the extend relationship.
             </indexterm>
 
             <para>Drop down selector.
-&argouml; does not provide any stereotypes by default.
+ArgoUML does not provide any stereotypes by default.
 </para>
 
           <tip><para>Stereotyping does not have great value on an extend
@@ -2746,7 +2746,7 @@ The name of the include
           <tip><para>It is quite common to leave include relationships unnamed
             in use case analysis.</para></tip>
 
-          <note><para>&argouml; does not enforce any naming convention for
+          <note><para>ArgoUML does not enforce any naming convention for
             include relationships.</para></note>
 
           </listitem>
@@ -2767,7 +2767,7 @@ The name of the include
             </indexterm>
 
             <para>Drop down selector.
-&argouml; does not provide any stereotypes for include relationships.
+ArgoUML does not provide any stereotypes for include relationships.
 </para>
 
           <tip><para>Stereotyping does not have great value on an include

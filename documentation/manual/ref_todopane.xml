@@ -37,7 +37,7 @@ The To-Do Pane. Need to decide if it is To-Do, To&nbsp;Do or ToDo.
   <sect1>
     <title>Introduction</title>
 
-    <para><xref linkend="fig.ref.todo_pane"/> shows the &argouml; window with
+    <para><xref linkend="fig.ref.todo_pane"/> shows the ArgoUML window with
       the to-do pane highlighted.</para>
 
     <!-- ArgoUML highlighting the to-do pane -->
@@ -54,7 +54,7 @@ The To-Do Pane. Need to decide if it is To-Do, To&nbsp;Do or ToDo.
     </figure>
 
     <para>This pane provides access to the advice that comes from the critics
-      processes running within &argouml;.</para>
+      processes running within ArgoUML.</para>
 
     <para>A selector box at the top allows a choice of how the data is
       presented, a button allows the display of the hierarchy to be changed,
@@ -145,7 +145,7 @@ The To-Do Pane. Need to decide if it is To-Do, To&nbsp;Do or ToDo.
       to-do items are presented. The to-do items may be presented in six
       different ways. 
       This setting is not stored persistently, <!-- TODO: See issue ... -->
-      i.e. it is on its default vallue when &argouml; is started.
+      i.e. it is on its default vallue when ArgoUML is started.
     </para>
 
     <itemizedlist>
@@ -183,11 +183,11 @@ The To-Do Pane. Need to decide if it is To-Do, To&nbsp;Do or ToDo.
         category are discussed in <xref linkend="s2.ref.menu_design_issues"/>.
       </para></listitem>
 
-      <listitem><para><literal>By Goal</literal>. &argouml; has a concept that
+      <listitem><para><literal>By Goal</literal>. ArgoUML has a concept that
         critics may be grouped according to the user goals they affect. This
         presentation groups the to-do items into hierarchies by goal.</para>
 
-      <caution><para>In the current release of &argouml; there is only one
+      <caution><para>In the current release of ArgoUML there is only one
         goal, <literal>Unspecified</literal> and all to-do items will appear
         under this heading.</para></caution></listitem>
 
@@ -201,7 +201,7 @@ The To-Do Pane. Need to decide if it is To-Do, To&nbsp;Do or ToDo.
 
         <!--caution>
           <para>
-            In the V0.12 release of &argouml; collaboration and
+            In the V0.12 release of ArgoUML collaboration and
             sequence diagrams which generate to-do items sometimes appear with
             internal package reference names, rather than their given
             name.
@@ -227,7 +227,7 @@ The To-Do Pane. Need to decide if it is To-Do, To&nbsp;Do or ToDo.
       </listitem>
 
       <listitem>
-        <para><literal>By Knowledge Type</literal>. &argouml; has the
+        <para><literal>By Knowledge Type</literal>. ArgoUML has the
           concept that a critic reflects a deficiency in a category of
           knowledge. This presentation option groups the critics according to
           their knowledge category: 
