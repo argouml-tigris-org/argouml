@@ -188,41 +188,43 @@ public class FigAssociation extends FigEdgeModelElement {
     /**
      * @see org.tigris.gef.presentation.Fig#setOwner(java.lang.Object)
      */
-    public void setOwner(Object association) {
-	super.setOwner(association);
-
-	if (Model.getFacade().isAAssociation(association)) {
-	    Collection connections = 
-	        Model.getFacade().getConnections(association);
-	    for (int i = 0; i < connections.size(); i++) {
-		Object assEnd = (connections.toArray())[i];
-		Model.getPump()
-		    .removeModelEventListener(this, assEnd);
-		Model.getPump()
-		    .addModelEventListener(this, assEnd);
-	    }
-	    Model.getPump()
-		.removeModelEventListener(this, association);
-	    Model.getPump()
-		.addModelEventListener(this, association);
-	    Object assEnd1 = (connections.toArray())[0];
-	    FigNode destNode =
-		(FigNode) getLayer()
-		    .presentationFor(Model.getFacade().getType(assEnd1));
-	    FigNode srcNode =
-		(FigNode) getLayer()
-		    .presentationFor(Model.getFacade().getType(assEnd1));
-	    if (destNode != null) {
-		setDestFigNode(destNode);
-		setDestPortFig(destNode);
-	    }
-	    if (srcNode != null) {
-		setSourceFigNode(srcNode);
-		setSourcePortFig(srcNode);
-	    }
-	}
-
-	modelChanged(null);
+    public void setOwner(Object newOwner) {
+        Object oldOwner = getOwner();
+        if (newOwner != oldOwner) {
+            if (Model.getFacade().isAAssociation(oldOwner)) {
+                Collection oldConns = 
+                    Model.getFacade().getConnections(oldOwner);
+                for (int i = 0; i < oldConns.size(); i++) {
+                    Object assEnd = (oldConns.toArray())[i];
+                    Model.getPump().removeModelEventListener(this, assEnd);
+                }
+            }
+            if (Model.getFacade().isAAssociation(newOwner)) {
+                Collection newConns = 
+                    Model.getFacade().getConnections(newOwner);
+                for (int i = 0; i < newConns.size(); i++) {
+                    Object assEnd = (newConns.toArray())[i];
+                    Model.getPump().addModelEventListener(this, assEnd);
+                }
+                Object assEnd1 = (newConns.toArray())[0];
+                Object assEnd2 = (newConns.toArray())[1];
+                FigNode destNode =
+                    (FigNode) getLayer()
+                        .presentationFor(Model.getFacade().getType(assEnd1));
+                FigNode srcNode =
+                    (FigNode) getLayer()
+                        .presentationFor(Model.getFacade().getType(assEnd2));
+                if (destNode != null) {
+                    setDestFigNode(destNode);
+                    setDestPortFig(destNode);
+                }
+                if (srcNode != null) {
+                    setSourceFigNode(srcNode);
+                    setSourcePortFig(srcNode);
+                }
+            }
+        }
+	super.setOwner(newOwner);
     }
 
     ////////////////////////////////////////////////////////////////
@@ -322,8 +324,8 @@ public class FigAssociation extends FigEdgeModelElement {
      */
     protected void modelChanged(PropertyChangeEvent e) {
 	super.modelChanged(e);
-	Object associationEnd = getOwner(); //MAssociation
-	if (associationEnd == null || getLayer() == null) {
+	Object association = getOwner(); //MAssociation
+	if (association == null || getLayer() == null) {
 	    return;
 	}
 
@@ -334,10 +336,10 @@ public class FigAssociation extends FigEdgeModelElement {
 
 	//MAssociationEnd
 	Object ae0 =
-	    ((Model.getFacade().getConnections(associationEnd)).toArray())[0];
+	    ((Model.getFacade().getConnections(association)).toArray())[0];
 	//MAssociationEnd
 	Object ae1 =
-	    ((Model.getFacade().getConnections(associationEnd)).toArray())[1];
+	    ((Model.getFacade().getConnections(association)).toArray())[1];
 	updateEnd(srcMult, srcRole, srcOrdering, ae0);
 	updateEnd(destMult, destRole, destOrdering, ae1);
 
