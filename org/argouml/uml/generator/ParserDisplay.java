@@ -83,25 +83,43 @@ public class ParserDisplay extends Parser {
 	}
   }
 
-  public void parseOperationFig(MClassifier cls, MOperation op, String s) {
-	if (cls == null || op == null)
-	  return;
-	int i = cls.getFeatures().indexOf(op);
-	if (s != null && s.length() > 0) {
-	  MOperation newOp = parseOperation(s);
-	  if (newOp != null) {
-		newOp.setAbstract(op.isAbstract());
-		newOp.setOwnerScope(op.getOwnerScope());
-		if (i != -1) {
-		  cls.removeFeature(i);
-		  cls.addFeature(i,newOp);
-	    } else {
-		  cls.addFeature(newOp);
-	    }
-	  }
+  public void parseOperationFig(MClassifier cls, MOperation op, String text) {
+    if (cls == null || op == null)
+      return;
+    StringTokenizer st = new StringTokenizer(text,";");
+    String s = st.hasMoreTokens() ? st.nextToken().trim() : null;
+    int i = cls.getFeatures().indexOf(op);
+    if (s != null && s.length() > 0) {
+      MOperation newOp = parseOperation(s);
+      if (newOp != null) {
+        newOp.setAbstract(op.isAbstract());
+        newOp.setOwnerScope(op.getOwnerScope());
+        if (i != -1) {
+          cls.removeFeature(i);
+          cls.addFeature(i,newOp);
+        } else {
+          cls.addFeature(newOp);
+        }
+      }
     } else {
-	  cls.removeFeature(i);
-	}
+      cls.removeFeature(i);
+    }
+    // more operations entered:
+    while (st.hasMoreTokens()) {
+      s = st.nextToken().trim();
+      if (s != null && s.length() > 0) {
+        MOperation newOp = parseOperation(s);
+        if (newOp != null) {
+          newOp.setAbstract(op.isAbstract());
+          newOp.setOwnerScope(op.getOwnerScope());
+          if (i != -1) {
+            cls.addFeature(++i,newOp);
+          } else {
+            cls.addFeature(newOp);
+          }
+        }
+      }
+    }
   }
 
   public void parseAttributeCompartment(MClassifier cls, String s) {
@@ -132,26 +150,41 @@ public class ParserDisplay extends Parser {
 
   }
 
-  public void parseAttributeFig(MClassifier cls, MAttribute at, String s) {
-	if (cls == null || at == null)
-	  return;
-	int i = cls.getFeatures().indexOf(at);
-	if (s != null && s.length() > 0) {
-            MAttribute newAt = parseAttribute(s);
-            if (newAt != null) {
-		newAt.setOwnerScope(at.getOwnerScope());
-		if (i != -1) {
-                    cls.removeFeature(i);
-                    cls.addFeature(i,newAt);
-                } 
-            else {
-		  cls.addFeature(newAt);
-            }
-            }
-        }   
-        else {
-            cls.removeFeature(i);
-	}
+  public void parseAttributeFig(MClassifier cls, MAttribute at, String text) {
+    if (cls == null || at == null)
+      return;
+    StringTokenizer st = new StringTokenizer(text,";");
+    String s = st.hasMoreTokens() ? st.nextToken().trim() : null;
+    int i = cls.getFeatures().indexOf(at);
+    if (s != null && s.length() > 0) {
+      MAttribute newAt = parseAttribute(s);
+      if (newAt != null) {
+        newAt.setOwnerScope(at.getOwnerScope());
+        if (i != -1) {
+          cls.removeFeature(i);
+          cls.addFeature(i,newAt);
+        } else {
+          cls.addFeature(newAt);
+        }
+      }
+    } else {
+      cls.removeFeature(i);
+    }
+    // more attributes entered:
+    while (st.hasMoreTokens()) {
+      s = st.nextToken().trim();
+      if (s != null && s.length() > 0) {
+        MAttribute newAt = parseAttribute(s);
+        if (newAt != null) {
+          newAt.setOwnerScope(at.getOwnerScope());
+          if (i != -1) {
+            cls.addFeature(++i,newAt);
+          } else {
+            cls.addFeature(newAt);
+          }
+        }
+      }
+    }
   }
 
   /** Parse a line of the form:
@@ -317,7 +350,7 @@ public class ParserDisplay extends Parser {
 		retStr = (i < len) ? s.substring(i, len) : "";
             }
             Project p = ProjectBrowser.TheInstance.getProject();
-            MClassifier type = null; 
+            MClassifier type = null;
             type = p.findType(typeStr);
             attr.setType(type);
 
@@ -329,7 +362,7 @@ public class ParserDisplay extends Parser {
         s = s.trim();
         int equalsIndex = s.indexOf("=");
         if (s.trim().length() == 0) return ""; // trim it here...pjs
-        
+
         String initStr = s.substring(1, s.length()); //move past "=" to end of "initvalue"--pjs--
         MExpression initExpr = new MExpression("Java", initStr);
         attr.setInitialValue(initExpr);
@@ -345,7 +378,7 @@ public class ParserDisplay extends Parser {
 
   public MParameter parseParameter(String s) {
     java.util.StringTokenizer st = new java.util.StringTokenizer(s, ": = \t");
-    String typeStr = "int"; 
+    String typeStr = "int";
     String paramNameStr = "parameterName?";
 
     if (st.hasMoreTokens()) paramNameStr = st.nextToken();
