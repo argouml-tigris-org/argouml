@@ -40,10 +40,8 @@ package org.argouml.uml.ui.behavior.use_cases;
 
 import org.argouml.i18n.Translator;
 import org.argouml.model.uml.behavioralelements.usecases.UseCasesFactory;
-
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.PropPanelButton;
-import org.argouml.uml.ui.UMLComboBoxNavigator;
 import org.argouml.uml.ui.foundation.core.PropPanelClassifier;
 import org.argouml.util.ConfigLoader;
 
@@ -77,8 +75,7 @@ public class PropPanelActor extends PropPanelClassifier {
     	// addField(Translator.localize("UMLMenu", "label.stereotype"), new UMLComboBoxNavigator(this, Translator.localize("UMLMenu", "tooltip.nav-stereo"), getStereotypeBox()));
     	addField(Translator.localize("UMLMenu", "label.stereotype"), getStereotypeBox());
 
-        addField(Translator.localize("UMLMenu", "label.modifiers"),
-                 _modifiersPanel);
+        add(_modifiersPanel);
 
     	addField(Translator.localize("UMLMenu", "label.namespace"), getNamespaceComboBox());
 
