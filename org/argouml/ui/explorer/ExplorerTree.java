@@ -29,6 +29,8 @@ import java.awt.event.ItemListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.Arrays;
+import java.util.List;
+import java.util.ArrayList;
 
 import javax.swing.JPopupMenu;
 import javax.swing.JTree;
@@ -65,10 +67,15 @@ import org.tigris.gef.presentation.Fig;
  */
 public class ExplorerTree
 extends DisplayTextTree
-implements TargetListener {
+{
     
     /** holds state info about whether to display stereotypes in the nav pane.*/
     private boolean showStereotype;
+    
+    /**
+     * prevents target event cycles between this and the TargetManager.
+     */
+    private boolean updatingSelection;
     
     /** Creates a new instance of ExplorerTree */
     public ExplorerTree() {
@@ -78,7 +85,7 @@ implements TargetListener {
         this.addMouseListener(new NavigatorMouseListener(this));
         this.addTreeSelectionListener(new NavigationTreeSelectionListener());
         
-        TargetManager.getInstance().addTargetListener(this);
+        TargetManager.getInstance().addTargetListener(new ExplorerTargetListener());
         
         showStereotype =
         Configuration.getBoolean(Notation.KEY_SHOW_STEREOTYPES, false);
@@ -139,39 +146,6 @@ implements TargetListener {
         }
         
     } /* end class NavigatorMouseListener */
-    
-    /**
-     * manages selecting the item to show in Argo's other
-     * views based on the highlighted row.
-     */
-    class NavigationTreeSelectionListener implements TreeSelectionListener {
-        
-        /**
-         * change in nav tree selection -> set target in project browser.
-         */
-        public void valueChanged(TreeSelectionEvent e) {
-            Object[] selections = getSelectedObjects();
-            TargetManager.getInstance().setTargets(Arrays.asList(selections));
-        }
-    }
-    
-    /**
-     * Gets all selected objects (for multiselect)
-     * @return all selected objects (for multiselect)
-     */
-    public Object[] getSelectedObjects() {
-        TreePath[] paths = getSelectionPaths();
-        if (paths != null) {
-            Object[] objects = new Object[paths.length];
-            for (int i = 0; i < paths.length; i++) {
-                objects[i] = 
-                    ((DefaultMutableTreeNode)paths[i].getLastPathComponent())
-                        .getUserObject();
-            }
-            return objects;
-        }
-        return new Object[0];
-    }
     
     /**
      * override default JTree implementation to display the
@@ -259,54 +233,118 @@ implements TargetListener {
         }
     }
     
-    private void setTargets(Object[] targets) {
+    /**
+     * manages selecting the item to show in Argo's other
+     * views based on the highlighted row.
+     */
+    class NavigationTreeSelectionListener implements TreeSelectionListener {
         
-            clearSelection();
-            int rowToSelect = 0;
-            for (int i = 0; i < targets.length; i++) {
-                Object target = targets[i];
-                target =
-                    target instanceof Fig ? ((Fig) target).getOwner() : target;
-                int rows = getRowCount();
-                for (int j = 0; j < rows; j++) {
-                    Object rowItem = 
-                        ((DefaultMutableTreeNode)getPathForRow(j)
-                            .getLastPathComponent())
-                                .getUserObject();
-                    if (rowItem == target) {
-                        addSelectionRow(j);
-                        if (rowToSelect == 0) {
-                            rowToSelect = j;
-                        }
+        /**
+         * change in nav tree selection -> set target in project browser.
+         */
+        public void valueChanged(TreeSelectionEvent e) {
+            
+            if(!updatingSelection){
+                updatingSelection = true;
+                
+                TreePath[] paths = e.getPaths();
+                List targets = new ArrayList();
+                if (paths != null) {
+                    for (int i = 0; i < paths.length; i++) {
+                        if (e.isAddedPath(paths[i]))
+                            targets.add(
+                                ((DefaultMutableTreeNode)paths[i]
+                                    .getLastPathComponent())
+                                        .getUserObject()
+                                );
                     }
                 }
-                
+                TargetManager.getInstance().setTargets(targets);
+
+                updatingSelection = false;
             }
-            scrollRowToVisible(rowToSelect);
+        }
     }
-
-    /**
-     * @see
-     * org.argouml.ui.targetmanager.TargetListener#targetAdded(org.argouml.ui.targetmanager.TargetEvent)
-     */
-    public void targetAdded(TargetEvent e) {
-        setTargets(e.getNewTargets());
-    }
-
-    /**
-     * @see
-     * org.argouml.ui.targetmanager.TargetListener#targetRemoved(org.argouml.ui.targetmanager.TargetEvent)
-     */
-    public void targetRemoved(TargetEvent e) {
-        setTargets(e.getNewTargets());
-    }
-
-    /**
-     * @see
-     * org.argouml.ui.targetmanager.TargetListener#targetSet(org.argouml.ui.targetmanager.TargetEvent)
-     */
-    public void targetSet(TargetEvent e) {
-        setTargets(e.getNewTargets());
-
+    
+    class ExplorerTargetListener implements TargetListener{
+    
+        /**
+         * actions a change in targets received from the TargetManager.
+         */
+        private void setTargets(Object[] targets) {
+            
+            if(!updatingSelection){
+                updatingSelection = true;
+                
+                if (targets == null
+                || (targets.length == 1 && targets[0] == null)) {
+                    clearSelection();
+                } else {
+                    
+                    int rowToSelect = 0;
+                    int[] rowIndexes = new int[targets.length];
+                    int rowIndexCounter = 0;
+                    int rows = getRowCount();
+                    for (int i = 0; i < targets.length; i++) {
+                        Object target = targets[i];
+                        target =
+                            target instanceof Fig
+                                ? ((Fig)target).getOwner()
+                                    : target;
+                        for (int j = 0; j < rows; j++) {
+                            Object rowItem =
+                            ((DefaultMutableTreeNode)getPathForRow(j)
+                                .getLastPathComponent())
+                                    .getUserObject();
+                            if (rowItem == target) {
+                                rowIndexes[rowIndexCounter] = j;
+                                rowIndexCounter++;
+                                if (rowToSelect == 0) {
+                                    rowToSelect = j;
+                                }
+                                break;
+                            }
+                        }
+                        
+                    }
+                    if (rowIndexCounter < targets.length) {
+                        int[] rowIndexestmp = rowIndexes;
+                        rowIndexes = new int[rowIndexCounter];
+                        for (int i = 0 ; i < rowIndexCounter; i++) {
+                            rowIndexes[i] = rowIndexestmp[i];
+                        }
+                    }
+                    setSelectionRows(rowIndexes);
+                    scrollRowToVisible(rowToSelect);
+                }
+                repaint();
+                updatingSelection = false;
+            }
+        }
+        
+        /**
+         * @see
+         * org.argouml.ui.targetmanager.TargetListener#targetAdded(org.argouml.ui.targetmanager.TargetEvent)
+         */
+        public void targetAdded(TargetEvent e) {
+            setTargets(e.getNewTargets());
+        }
+        
+        /**
+         * @see
+         * org.argouml.ui.targetmanager.TargetListener#targetRemoved(org.argouml.ui.targetmanager.TargetEvent)
+         */
+        public void targetRemoved(TargetEvent e) {
+            setTargets(e.getNewTargets());
+        }
+        
+        /**
+         * @see
+         * org.argouml.ui.targetmanager.TargetListener#targetSet(org.argouml.ui.targetmanager.TargetEvent)
+         */
+        public void targetSet(TargetEvent e) {
+            setTargets(e.getNewTargets());
+            
+        }
     }
 }

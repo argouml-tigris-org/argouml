@@ -76,11 +76,11 @@ public class UMLTreeCellRenderer extends DefaultTreeCellRenderer {
                 value = ((DefaultMutableTreeNode)value).getUserObject();
             }
             
-        if (TargetManager.getInstance().getTargets().contains(value)) {
-            sel = true;           
-        } else {
-            sel = false;          
-        }
+//        if (TargetManager.getInstance().getTargets().contains(value)) {
+//            sel = true;           
+//        } else {
+//            sel = false;          
+//        }
         
         Component r =
             super.getTreeCellRendererComponent(
