@@ -496,17 +496,7 @@ but sometimes users don't want to work with so many separate windows.
     <para>&Button2; Click over any selected artifact in the main area of the
       explorer will cause a pop-up menu to appear.</para>
 
-     <!-- Properties -->
-
-    <sect2>
-      <title>Properties Pop-Up</title>
-
-      <para>This entry on the pop-up menu causes the properties tab of the
-        selected artifact or diagram to be displayed in the details
-        pane.</para>
-    </sect2>
-
-    <!-- Add artifact to diagram -->
+     <!-- Add artifact to diagram -->
 
     <sect2>
       <title>Add to Diagram</title>
@@ -540,6 +530,8 @@ but sometimes users don't want to work with so many separate windows.
       <caution><para>A separate known limitation is that the current release of
         &argouml; will not let you place more than one copy of any particular
         artifact on a diagram.</para></caution>
+        <!-- TODO: check if an issue exists for this defect-->
+
     </sect2>
 
     <!-- Delete From Model -->
@@ -555,16 +547,67 @@ but sometimes users don't want to work with so many separate windows.
         use the edit menu (see <xref
         linkend="s2.menu_edit_remove_from_diagram"/>).</para></warning>
 
-      <caution><para>You cannot delete a diagram from the model. This function
-        will just delete all the items on the diagram.</para>
+      <caution>
+        <para>
+You can delete a diagram from the model. Depending on the type of diagram, 
+that might delete all artifacts shown on the diagram. 
+To illustrate the differences, consider the following examples:
+        </para>
 
-      <para>The only way to delete a diagram is to remove it from the saved
-        project file (a project file with the suffix <literal>.zargo</literal>
-        is just a ZIP archive of all the files that describe the project. There
-        is one <literal>.pgml</literal> file for each diagram that must be
-        removed from the archive to delete the diagram. Use this technique with
-        caution!</para></caution>
+        <itemizedlist>
+          <listitem><para>
+Deleting a class diagram does not delete any artifact drawn on it. 
+All artifacts that were shown on the diagram remain present in the model.
+<!-- This because a class diagram does not "map" on any artifact according the UML standard V1.3, chapter 3.19.3 -->
+          </para></listitem>
+          <listitem><para>
+Deleting a statechart diagram also deletes the statemachine it represents, 
+and hence also all the artifacts owned by the statemachine.
+<!-- This because a statechart diagram does "map" into a StateMachine according the UML standard V1.3, chapter 3.74.3 -->
+          </para></listitem>
+        </itemizedlist>
+      </caution>
+
     </sect2>
+
+    <!-- Set Source Path... -->
+
+    <sect2>
+      <title>Set Source Path ... (To be written)</title>
+      <para>This entry on the pop-up menu ...</para>
+    </sect2>
+
+    <!-- Add Package -->
+
+    <sect2>
+      <title>Add Package</title>
+      <para>
+This entry on the pop-up menu is available 
+whenever an artifact is selected that may contain a package, 
+e.g. a package. 
+
+After activating this menu the artifact will own a new package.
+      </para>
+    </sect2>
+
+    <!-- Properties -->
+
+    <sect2>
+      <title>Properties Pop-Up</title>
+
+      <para>
+This entry on the pop-up menu causes the properties tab of the selected artifact or diagram 
+to be displayed in the details pane.
+      </para>
+      <para>
+The use of this function is limited, 
+since the same effect can be obtained by 
+clicking on the tab for the properties in the details pane directly.
+Besides, &argouml; currently always downlights this menu-item. 
+      </para>
+
+    </sect2>
+
   </sect1>
 
 </chapter>
