@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2001 The Regents of the University of California. All
+// Copyright (c) 1996-2003 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -39,6 +39,7 @@ import org.argouml.application.api.Configuration;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.ui.ProjectBrowser;
+import org.argouml.ui.menubar.GenericArgoMenuBar;
 
 /**
  * Action that saves the project.
@@ -129,6 +130,13 @@ public class ActionSaveProject extends UMLAction {
 	    pb.showStatus (sStatus);
 	    cat.debug ("setting most recent project file to " +
 			    file.getCanonicalPath());
+            
+            /* 
+             * notification of menu bar
+             */
+            GenericArgoMenuBar menuBar = (GenericArgoMenuBar) pb.getJMenuBar();
+            menuBar.addFileSaved( file.getCanonicalPath());
+            
 	    Configuration.setString(Argo.KEY_MOST_RECENT_PROJECT_FILE, file.getCanonicalPath());
       
 	    return true;

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2002 The Regents of the University of California. All
+// Copyright (c) 1996-2003 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -95,13 +95,16 @@ public class GenericArgoMenuBar extends JMenuBar
 
     private static final String BUNDLE = "menu";
     private static final String MENU = "menu.";
-    private static final String MENUITEM ="menu.item.";
+    private static final String MENUITEM = "menu.item.";
 
     private JToolBar _fileToolbar;
     private JToolBar _editToolbar;
     private JToolBar _viewToolbar;
     private JToolBar _createDiagramToolbar;
     
+    /** lru project list */
+    private LastRecentlyUsedMenuList _lruList = null;
+
     /** Edit menu
      */
     protected JMenu _edit = null;
@@ -161,7 +164,7 @@ public class GenericArgoMenuBar extends JMenuBar
 					    String key, char defMnemonic)
     {
 	String propertykey = new String();
-	if(item instanceof JMenu) {
+	if (item instanceof JMenu) {
 	    propertykey = MENU + prepareKey(key) + ".mnemonic";
 	}
 	else {
@@ -361,6 +364,9 @@ public class GenericArgoMenuBar extends JMenuBar
         setMnemonic(exitItem, "Exit", 'x');
         setAccelerator(exitItem, altF4);
 
+        // add last recently used list
+        _lruList = new LastRecentlyUsedMenuList( _file);
+
 	// ------------------------------------- Edit Menu
 		
         _edit = add(new JMenu(menuLocalize("Edit")));
@@ -439,7 +445,7 @@ public class GenericArgoMenuBar extends JMenuBar
         setMnemonic(_view, "View", 'V');
 
         JMenuItem gotoDiagram = _view.add(Actions.GotoDiagram);
-        setMnemonic(gotoDiagram, "Goto-Diagram",'G');
+        setMnemonic(gotoDiagram, "Goto-Diagram", 'G');
         
         JMenuItem findItem =  _view.add(Actions.Find);
         setMnemonic(findItem, "Find", 'F');
@@ -672,11 +678,21 @@ public class GenericArgoMenuBar extends JMenuBar
     
     private static String prepareKey(String str) {
     	StringBuffer strb = new StringBuffer(str.toLowerCase());
-    	for(int i=0; i < (strb.length()-1); i++) {
+    	for (int i = 0; i < (strb.length() - 1); i++) {
 	    if (strb.charAt(i) == ' ') {
 		strb.setCharAt(i, '-');
 	    }
     	}
     	return strb.toString();
     }
+    
+    /**
+     * Adds the entry to the lru list.
+     * 
+     * @param filename of the project
+     */
+    public void addFileSaved(String filename) {
+        _lruList.addEntry(filename);
+    }
+    
 }
