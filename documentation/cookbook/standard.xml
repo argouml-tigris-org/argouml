@@ -35,6 +35,13 @@ Like this:
 // Original Author: who ever
 </programlisting>
         </para>
+        <para>
+This is in violation with the Sun Code Conventions that 
+requires the initial comment to be a c-style comment.
+</para>
+        <para>
+This is checked by checkstyle.
+</para>
       </listitem>
       <listitem>
         <para>
@@ -47,11 +54,22 @@ For example:
 <methodname>setLineWidth()</methodname>, and 
 <methodname>getLineWidth()</methodname>.
 </para>
+        <para>
+This is in violation with the Sun Code Conventions that 
+forbids variables starting with _ (underscore).
+</para>
+        <para>
+This is checked by checkstyle.
+</para>
       </listitem>
       <listitem>
         <para>
 In general, write short code.
 If a method will fit comfortably on one line, then put it on one line.
+</para>
+        <para>
+This is in not exactly like the intention of the Sun Code Conventions that 
+emphasizes on clearity.
 </para>
       </listitem>
       <listitem>
@@ -61,6 +79,15 @@ In general do not put comments in the body of a method.
 If you are doing something complex enough to need a comment, consider
 breaking it out into its own private commented method.
 </para>
+        <para>
+This is not required by the Sun Code Conventions but
+an additional requirement for ArgoUML.
+</para>
+        <para>
+This is partly checked by checkstyle.
+Checkstyle does currently only warn if a javadoc comment is omitted for
+a public, protected or default visibility variable or method.
+</para>
       </listitem>
       <listitem>
         <para>
@@ -69,6 +96,10 @@ Indicate places of future modifications with
 // TODO: reason
 </programlisting>
         </para>
+        <para>
+This is in violation with the Sun Code Conventions that 
+uses either XXX or FIXME depending on if it works or not.
+</para>
       </listitem>
       <listitem>
         <para>
@@ -79,6 +110,13 @@ Name static variables with an underscore and an inital capital letter,
 e.g., <varname>_PossibleLanguages</varname>.
 Name constants with all upper case and underscores, e.g., 
 <constant>GRIP_MARGIN</constant>.
+</para>
+        <para>
+This is in violation with the Sun Code Conventions that
+doesn't allow names with _ underscore.
+</para>
+        <para>
+This is checked by checkstyle.
 </para>
       </listitem>
       <listitem>
@@ -94,6 +132,13 @@ It is also very nice when you have to look at an alphabetical list
 of classes. I try to name class clusters so that they are not lexigraphically close others (e.g., the Net cluster
 used to be named Model, but that lexigraphically overlapped the Mode cluster).
 </para>
+        <para>
+This is in violation with the Sun Code Conventions that
+suggests written out names.
+</para>
+        <para>
+This is checked by checkstyle.
+</para>
       </listitem>
       <listitem>
         <para>
@@ -104,6 +149,9 @@ Tabs must be set exactly every 8 spaces (not 4) and represent 2 indents.
 This is exactly as it is stated in the Sun Code Conventions.
 It is here just for the emphasis.
 </para>
+        <para>
+This is checked by checkstyle.
+</para>
       </listitem>
       <listitem>
         <para>
@@ -112,6 +160,9 @@ If possible use lines shorter than 80 characters wide.
         <para>
 This is exactly as it is stated in the Sun Code Conventions.
 It is here just for the emphasis.
+</para>
+        <para>
+This is checked by checkstyle.
 </para>
       </listitem>
       <listitem>
@@ -206,15 +257,17 @@ when actually trying to upgrade the subtool.
 For everything else follow
 <ulink url="http://java.sun.com/docs/codeconv/html/CodeConvTOC.doc.html">
 Code Conventions for the Java Programming Language
-</ulink>!
+</ulink>
+(called Sun Code Conventions)!
 </para>
       </listitem>
 
     </itemizedlist>
 
     <para>
-Some of these rules are checked by a tool named checkstyle.
-Checkstyle is available with the ArgoUML development environment
+Some of these rules are marked with a comment that they are 
+checked by a checkstyle.
+Checkstyle is a tool available with the ArgoUML development environment
 preconfigured for these rules.
 The current configuration can be found in
 <filename>argouml/tools/checkstyle/checkstyle_argouml.xml</filename>.
@@ -232,6 +285,13 @@ This requires you to have checked out the directories
     <para>
 The last couple of checkstyle result are also available in 
 the Xenofarm result.
+</para>
+    <para>
+Checkstyle will also check some of the rules from the
+Sun Code Conventions that are not stated here.
+Furthermore checkstyle nags about when the order of modifiers does
+not conform to the suggestions in the
+Java Language Specification, Section 8.1.1, 8.3.1, 8.4.3.
 </para>
   </sect1>
 
