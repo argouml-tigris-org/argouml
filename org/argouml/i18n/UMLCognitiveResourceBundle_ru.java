@@ -23,7 +23,6 @@
 
 package org.argouml.i18n;
 import java.util.*;
-import org.argouml.util.*;
 
 /**
  *   This class is the Russian member of a resource bundle that
@@ -91,8 +90,6 @@ public class UMLCognitiveResourceBundle_ru extends ListResourceBundle {
         {"taggedvaluespane.label.tag", "\u042f\u0440\u043b\u044b\u043a"},
         {"taggedvaluespane.label.value", "\u0417\u043d\u0430\u0447\u0435\u043d\u0438\u0435"},
 
-        {"button.ok", "OK"},
-        {"button.cancel", "\u041e\u0442\u043c\u0435\u043d\u0438\u0442\u044c"},
         {"button.open", "\u041e\u0442\u043a\u0440\u044b\u0442\u044c"},
         {"button.back", "\u041d\u0430\u0437\u0430\u0434"},
         {"button.next", "\u0421\u043b\u0435\u0434\u0443\u044e\u0449\u0438\u0439"},
