@@ -45,7 +45,7 @@ import org.argouml.language.ui.*;
 import org.apache.log4j.*;
 
 public class TabSrc extends TabText
-implements NotationContext {
+implements ArgoNotationEventListener, NotationContext, ItemListener {
   ////////////////////////////////////////////////////////////////
   // constructor
   private final Category cat = Category.getInstance(TabSrc.class);
@@ -59,9 +59,15 @@ implements NotationContext {
     super("Source", true);
     _notationName = null;
     _toolbar.add(NotationComboBox.getInstance());
+    NotationComboBox.getInstance().addItemListener(this);
     _toolbar.addSeparator();
+    ArgoEventPump.addListener(ArgoEventTypes.ANY_NOTATION_EVENT, this);
   }
 
+  public void finalize() {
+    ArgoEventPump.removeListener(ArgoEventTypes.ANY_NOTATION_EVENT, this);
+    NotationComboBox.getInstance().removeItemListener(this); 
+  }
   ////////////////////////////////////////////////////////////////
   // accessors
 
@@ -75,7 +81,7 @@ implements NotationContext {
       modelObject = ((FigEdge)_target).getOwner();
     if (modelObject == null) return null;
     cat.debug("TabSrc getting src for " + modelObject);
-    return Notation.generate(this, modelObject);
+    return Notation.generate(this, modelObject, true);
   }
 
   protected void parseText(String s) {
@@ -91,8 +97,8 @@ implements NotationContext {
   }
 
   public void setTarget(Object t) {
-    super.setTarget(t);
 
+    cat.debug ("TabSrc.setTarget()");
     _notationName = null;
     _shouldBeEnabled = false;
     if (t instanceof MModelElement) _shouldBeEnabled = true;
@@ -103,11 +109,42 @@ implements NotationContext {
     // If the target is a notation context, use its notation.
     if (t instanceof NotationContext) {
         _notationName = ((NotationContext)t).getContextNotation();
+        cat.debug ("Target is notation context with notation name: " +
+	          _notationName);
     }
     else {
         // needs-more-work:  Get it from the combo box
-	_notationName = null;
+	cat.debug ("ComboBox.getSelectedItem() '" + NotationComboBox.getInstance().getSelectedItem() + "'");
+	_notationName = Notation.findNotation((String)(NotationComboBox.getInstance().getSelectedItem()));
     }
+    cat.debug ("Going to set target(" + t + "), notation name:" +
+               _notationName); 
+    super.setTarget(t);
+  }
+
+  /**
+   * Invoked when any aspect of the notation has been changed.
+   */
+  public void notationChanged(ArgoNotationEvent e) {
+      refresh();
+  }
+
+  /** Ignored. */
+  public void notationAdded(ArgoNotationEvent e) { }
+
+  /** Ignored. */
+  public void notationRemoved(ArgoNotationEvent e) { }
+
+  /** Ignored. */
+  public void notationProviderAdded(ArgoNotationEvent e) { }
+
+  /** Ignored. */
+  public void notationProviderRemoved(ArgoNotationEvent e) { }
+
+  public void itemStateChanged(ItemEvent event) {
+      if (event.getStateChange() == ItemEvent.SELECTED) {
+	  refresh();
+      }
   }
 
   public void refresh() { setTarget(_target); }

@@ -148,7 +148,7 @@ implements PluggableNotation {
     return s;
   }
 
-  public String generateOperation(MOperation op) {
+  public String generateOperation(MOperation op, boolean documented) {
     String s = "";
     String nameStr = generateName(op.getName());
     String clsName = generateName(op.getOwner().getName());
@@ -160,7 +160,9 @@ implements PluggableNotation {
      *
     s += DocumentationManager.getDocs(op) + "\n" + INDENT;
      */
-    s += generateConstraintEnrichedDocComment (op) + "\n" + INDENT;
+    if (documented)
+        s += generateConstraintEnrichedDocComment (op) + "\n" + INDENT;
+
     s += generateVisibility(op);
     s += generateScope(op);
 
@@ -195,7 +197,8 @@ implements PluggableNotation {
     return s;
   }
 
-  public String generateAttribute(MAttribute attr) {
+
+  public String generateAttribute(MAttribute attr, boolean documented) {
     String s = "";
     
     /*
@@ -205,8 +208,10 @@ implements PluggableNotation {
      *
     s += DocumentationManager.getDocs(attr) + "\n" + INDENT;
      */
-    s += generateConstraintEnrichedDocComment (attr) + "\n" + INDENT;
     
+      if (documented)
+          s += generateConstraintEnrichedDocComment (attr) + "\n" + INDENT;
+
     s += generateVisibility(attr);
     s += generateScope(attr);
     s += generateChangability(attr);

@@ -67,9 +67,9 @@ implements NotationProvider {
     if (o == null)
       return "";
     if (o instanceof MOperation)
-      return generateOperation((MOperation) o);
+      return generateOperation((MOperation) o, false);
     if (o instanceof MAttribute)
-      return generateAttribute((MAttribute) o);
+      return generateAttribute((MAttribute) o, false);
     if (o instanceof MParameter)
       return generateParameter((MParameter) o);
     if (o instanceof MPackage)
@@ -113,8 +113,8 @@ implements NotationProvider {
     return o.toString();
   }
 
-  public abstract String generateOperation(MOperation op);
-  public abstract String generateAttribute(MAttribute attr);
+  public abstract String generateOperation(MOperation op, boolean documented);
+  public abstract String generateAttribute(MAttribute attr, boolean documented);
   public abstract String generateParameter(MParameter param);
   public abstract String generatePackage(MPackage p);
   public abstract String generateClassifier(MClassifier cls);

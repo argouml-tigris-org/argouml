@@ -60,6 +60,16 @@ implements ArgoModuleEventListener {
 
   private NotationProviderFactory() {
       _providers = new ArrayList();
+      ListIterator iterator = Argo.getPlugins(PluggableNotation.class).listIterator();
+      while (iterator.hasNext()) {
+            Object o = iterator.next();
+            if (o instanceof NotationProvider) {
+	        NotationProvider np = (NotationProvider)o;
+                Notation.cat.debug ("added provider:" + np);
+                _providers.add(np);
+                fireEvent(ArgoEventTypes.NOTATION_PROVIDER_ADDED, np);
+	    }
+      }
       ArgoEventPump.addListener(ArgoEventTypes.ANY_NOTATION_EVENT, this);
   }
 
@@ -72,6 +82,18 @@ implements ArgoModuleEventListener {
 
 
     public NotationProvider getProvider(NotationName nn) {
+        NotationName n = (nn == null) ? Notation.getDefaultNotation() : nn;
+
+	Notation.cat.debug ("looking for " + n);
+        ListIterator iterator = _providers.listIterator();
+        while (iterator.hasNext()) {
+            NotationProvider np = (NotationProvider)iterator.next();
+	    Notation.cat.debug ("Checking " + np + ", " + np.getNotation());
+	    if (np.getNotation().equals(n)) {
+	        Notation.cat.debug ("found provider " + np);
+	        return np;
+	    }
+	}
         return getDefaultProvider();
     }
 
@@ -98,8 +120,10 @@ implements ArgoModuleEventListener {
     }
  
   public void moduleLoaded(ArgoModuleEvent event) {
+    Notation.cat.debug (event);
     if(event.getSource() instanceof NotationProvider) {
         NotationProvider np = (NotationProvider)event.getSource();
+        Notation.cat.debug ("added:" + np);
         _providers.add(np);
         fireEvent(ArgoEventTypes.NOTATION_PROVIDER_ADDED, np);
     }

@@ -67,12 +67,6 @@ implements PropertyChangeListener {
   public static final NotationName NOTATION_JAVA =
          org.argouml.language.java.generator.GeneratorJava.getInstance().getNotation();
 
-  /** The name of the default notation.  The actual notation to use is
-   *  taken from the configuration using {@link #KEY_DEFAULT_NOTATION}.
-   *  If there is not a value there, then {@link #NOTATION_ARGO} is used.
-   */
-  public static final NotationName NOTATION_DEFAULT = NotationNameImpl.getNotation("Default");
-
   /** The configuration key for the preferred notation
    */
   public static final ConfigurationKey KEY_DEFAULT_NOTATION =
@@ -110,28 +104,36 @@ implements PropertyChangeListener {
   }
 
   private NotationProvider getProvider(NotationName notation) {
-      return getDefaultProvider();
+      NotationProvider np = null;
+      np = NotationProviderFactory.getInstance().getProvider(notation);
+      cat.debug ("getProvider(" + notation + ") returns " + np);
+      return np;
   }
 
   public static void setDefaultNotation(NotationName n) {
-      Argo.log.info ("default notation set to " + n.getConfigurationValue());
+      cat.info ("default notation set to " + n.getConfigurationValue());
       Configuration.setString(KEY_DEFAULT_NOTATION, n.getConfigurationValue());
   }
 
+  public static NotationName findNotation(String s) {
+      return NotationNameImpl.findNotation(s);
+  }
+
   public static NotationName getDefaultNotation() {
-      NotationName n = NotationNameImpl.findNotation(Configuration.getString(KEY_DEFAULT_NOTATION, NOTATION_DEFAULT.getConfigurationValue()));
-      if (n == null) n = NOTATION_DEFAULT;
-      Argo.log.info ("default notation is " + n.getConfigurationValue());
+      NotationName n = NotationNameImpl.findNotation(Configuration.getString(KEY_DEFAULT_NOTATION, NOTATION_ARGO.getConfigurationValue()));
+      cat.debug ("default notation is " + n.getConfigurationValue());
       return n;
   }
   ////////////////////////////////////////////////////////////////
   // class accessors
 
-  protected String generateOperation(NotationName notation, MOperation op) {
-      return getProvider(notation).generateOperation(op);
+  protected String generateOperation(NotationName notation, MOperation op,
+                                     boolean documented) {
+      return getProvider(notation).generateOperation(op, documented);
   }
-  protected String generateAttribute(NotationName notation, MAttribute attr) {
-      return getProvider(notation).generateAttribute(attr);
+  protected String generateAttribute(NotationName notation, MAttribute attr,
+                                     boolean documented) {
+      return getProvider(notation).generateAttribute(attr, documented);
   }
   protected String generateParameter(NotationName notation, MParameter param) {
       return getProvider(notation).generateParameter(param);
@@ -191,10 +193,23 @@ implements PropertyChangeListener {
   public static Notation getInstance() { return SINGLETON; }
 
   public static String generateOperation(NotationContext ctx, MOperation op) {
-      return SINGLETON.generateOperation(Notation.getNotation(ctx), op);
+      return SINGLETON.generateOperation(Notation.getNotation(ctx), op, false);
+  }
+  public static String generateOperation(NotationContext ctx,
+                                         MOperation op,
+					 boolean documented) {
+      return SINGLETON.generateOperation(Notation.getNotation(ctx), op,
+                                         documented);
   }
   public static String generateAttribute(NotationContext ctx, MAttribute attr) {
-      return SINGLETON.generateAttribute(Notation.getNotation(ctx), attr);
+      return SINGLETON.generateAttribute(Notation.getNotation(ctx), attr,
+                                         false);
+  }
+  public static String generateAttribute(NotationContext ctx,
+                                               MAttribute attr,
+					       boolean documented) {
+      return SINGLETON.generateAttribute(Notation.getNotation(ctx), attr,
+                                         documented);
   }
   public static String generateParameter(NotationContext ctx, MParameter param) {
       return SINGLETON.generateParameter(Notation.getNotation(ctx), param);
@@ -243,13 +258,32 @@ implements PropertyChangeListener {
       return SINGLETON.generateClassifierRef(Notation.getNotation(ctx), cls);
   }
  
+  public static String generate(NotationContext ctx, Object o,
+                                boolean documented) {
+    if (o == null)
+      return "";
+    if (o instanceof MOperation)
+      return SINGLETON.generateOperation(Notation.getNotation(ctx),
+                                         (MOperation) o,
+					 documented);
+    if (o instanceof MAttribute)
+      return SINGLETON.generateAttribute(Notation.getNotation(ctx),
+                                         (MAttribute) o,
+					 documented);
+    return generate(ctx, o);
+  }
+
   public static String generate(NotationContext ctx, Object o) {
     if (o == null)
       return "";
     if (o instanceof MOperation)
-      return SINGLETON.generateOperation(Notation.getNotation(ctx),(MOperation) o);
+      return SINGLETON.generateOperation(Notation.getNotation(ctx),
+                                         (MOperation) o,
+					 false);
     if (o instanceof MAttribute)
-      return SINGLETON.generateAttribute(Notation.getNotation(ctx),(MAttribute) o);
+      return SINGLETON.generateAttribute(Notation.getNotation(ctx),
+                                         (MAttribute) o,
+					 false);
     if (o instanceof MParameter)
       return SINGLETON.generateParameter(Notation.getNotation(ctx),(MParameter) o);
     if (o instanceof MPackage)
@@ -302,15 +336,13 @@ implements PropertyChangeListener {
 	if (Configuration.getBoolean(Notation.KEY_UML_NOTATION_ONLY, false)) {
             return NOTATION_ARGO;
 	}
-	else {
-	    return context.getContextNotation();
-	}
+	return context.getContextNotation();
     }
 
     /** Called after the notation default property gets changed.
      */
     public void propertyChange(PropertyChangeEvent pce) {
-	Argo.log.info ("Notation change:" + pce.getOldValue() + " to " + pce.getNewValue());
+	cat.info ("Notation change:" + pce.getOldValue() + " to " + pce.getNewValue());
         ArgoEventPump.getInstance().fireEvent(
 	             new ArgoNotationEvent(ArgoEvent.NOTATION_CHANGED, pce));
     }

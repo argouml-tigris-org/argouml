@@ -70,7 +70,7 @@ implements PluggableNotation {
     return SINGLETON.generate(o);
   }
 
-  public String generateOperation(MOperation op) {
+  public String generateOperation(MOperation op, boolean documented) {
     boolean isConstructor = false;
     if(op.getStereotype() != null) {
 	isConstructor = "create".equals(op.getStereotype().getName());
@@ -113,7 +113,7 @@ implements PluggableNotation {
     return s;
   }
 
-  public String generateAttribute(MAttribute attr) {
+  public String generateAttribute(MAttribute attr, boolean documented) {
     String s = "";
     s += generateVisibility(attr);
     s += generateScope(attr);
@@ -497,9 +497,9 @@ implements PluggableNotation {
       return "";
   }
 
-  public NotationName getNotation() {
-      return Notation.NOTATION_DEFAULT;
-  }
+  // public NotationName getNotation() {
+      // return Notation.NOTATION_ARGO;
+  // }
 
   public boolean canParse() { return true; }
 
