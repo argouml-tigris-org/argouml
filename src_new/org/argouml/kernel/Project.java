@@ -917,10 +917,17 @@ public class Project implements java.io.Serializable, TargetListener {
      */
     protected void removeDiagram(ArgoDiagram d) {
         _diagrams.removeElement(d);
+        // if the diagram is a statechart,
+        // remove its associated statemachine model elements
         if (d instanceof UMLStateDiagram) {
             UMLStateDiagram statediagram = (UMLStateDiagram) d;
+            // if the statemachine has already been deleted,
+            // and is now null,
+            // don't attempt to delete it!
+            if(statediagram.getStateMachine().getTop() != null){
             ProjectManager.getManager().getCurrentProject()
 		.moveToTrash(statediagram.getStateMachine());
+            }
         }
         d.removeChangeRegistryAsListener(_saveRegistry);
         setNeedsSave(true);
