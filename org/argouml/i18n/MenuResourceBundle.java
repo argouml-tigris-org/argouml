@@ -51,6 +51,7 @@ public class MenuResourceBundle extends ListResourceBundle {
         {"Mnemonic_Open", "O" },
         {"Mnemonic_Save", "S" },
         {"Mnemonic_SaveAs", "A" },
+        {"Mnemonic_RevertToSaved", "R" },
         {"Mnemonic_Print", "P" },
         {"Mnemonic_SaveGraphics", "G" },
         {"Mnemonic_Exit", "X" },
