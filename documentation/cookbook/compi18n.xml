@@ -37,8 +37,8 @@ and partly in
 - all files for a specific language.
 </para>
       <para>
-The Internationalization is a Layer 0 subsystem. 
-See <xref linkend="layer0"></xref>.
+The Internationalization is an Infrastructure subsystem. 
+See <xref linkend="infrastructure_subsystems"></xref>.
 </para>
 
       <indexterm>

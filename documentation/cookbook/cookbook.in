@@ -453,9 +453,6 @@ to be removed in the cases where we have circular dependencies.
 This will also allow us to know which other subsystems that are involved
 when testing a subsystem.
 </para>
-    <para>
-TODO: Insert UML diagram describing the relation between subsystems and layers.
-</para>
 
     <sect1>
       <title>Definition of subsystem</title>
@@ -645,38 +642,11 @@ in the list of used subsystems.
 </para>
     </sect1>
 
-    <sect1>
-      <title>Definition of layer</title>
-
-      <indexterm>
-        <primary>layer</primary>
-      </indexterm>
+    <sect1 id="infrastructure_subsystems">
+      <title>Low-level subsystems</title>
       <para>
-Layers are used to organize and 
-clarify the relationships between the different subsystems
-within ArgoUML.
-</para>
-
-      <para>
-ArgoUML is built from the bottom and up.
-Subsystems on a higher level depend on subsystems
-on a lower level and never the other way around.
-Subsystems don't depend on a subsystem in the same layer.
-</para>
-
-      <para>
-This means that when testing a subsystem,
-it can always be tested with just that subsystem and
-subsystems on lower levels.
-</para>
-
-    </sect1>
-
-    <sect1 id="layer0">
-      <title>Layer 0 - Description of subsystems</title>
-      <para>
-Layer 0 contains some infrastructure subsystems that
-just are there for every other layer to use.
+These subsystems are infrastructure subsystems that
+just are there for every other subsystem to use.
 </para>
       <para>
 They are all insignificant enough not to be mentioned when
@@ -735,13 +705,11 @@ Every other subsystem can use the classes available with the JRE.
 
     </sect1>
 
-    <sect1 id="layer1">
-      <title>Layer 1 - Description of subsystems</title>
+    <sect1 id="model_subsystems">
+      <title>Model subsystems</title>
       <para>
-Layer 1 is the lowest layer.
-The subsystems in this layer do not rely on any other part
-(except layer 0)
-of ArgoUML to do their work.
+These subsystems do not rely on any other part
+of ArgoUML to do their work (except the infrastructure).
 They can all be tested in full individually 
 i.e. independent of any other subsystem.
 </para>
@@ -828,10 +796,10 @@ The Help System Subsystem is described in detail in
 </para>
     </sect1>
 
-    <sect1 id="layer2">
-      <title>Layer 2 - Description of subsystems</title>
+    <sect1 id="view_control_subsystems">
+      <title>View and Control subsystems</title>
       <para>
-These subsystems rely on subsystems of layer 1 in order to do their
+These subsystems rely on model subsystems in order to do their
 work.
 </para>
 
@@ -932,7 +900,7 @@ The Reverse Engineering Subsystem is described in detail in
 	      <primary>Pluggable interface</primary>
 	    </indexterm>
 	    <para>
-This is the load mechanism for loading all Layer 3 subsystems and
+This is the load mechanism for loading all loadable subsystems and
 other modules into ArgoUML.
 </para>
 	    <para>
@@ -964,12 +932,15 @@ The Application subsystem is  described in detail in
 </para>
     </sect1>
 
-    <sect1 id="layer3">
-      <title>Layer 3 - Description of subsystems</title>
+    <sect1 id="loadable_subsystems">
+      <title>Loadable subsystems</title>
       <para>
-These subsystems are primarily connected through the 
-pluggable interfaces meaning that they can be
-individually disabled using the module loader.
+These subsystems are eventually connected through the 
+pluggable interfaces provided by the control subsystems.
+This means that they can be
+individually enabled and disabled using the module loader.
+Note: The module loader does not really have this possibility currently
+(August 2004).
 </para>
 
       <para>
@@ -1258,8 +1229,8 @@ The Reverse Engineering is located in
 <classname>org.argouml.uml.reveng</classname>.
 </para>
       <para>
-The Reverse Engineering Subsystem is a Layer 2 subsystem.
-See <xref linkend="layer2"></xref>.
+The Reverse Engineering Subsystem is a Control subsystem.
+See <xref linkend="view_control_subsystems"></xref>.
 </para>
     </sect1>
 
@@ -1279,8 +1250,8 @@ The Code Generation is located in
 <classname>org.argouml.language</classname>.
 </para>
       <para>
-The Code Generation subsystem is a Layer 2 subsystem.
-See <xref linkend="layer2"></xref>.
+The Code Generation subsystem is a Control subsystem.
+See <xref linkend="view_control_subsystems"></xref>.
 </para>
 
       <para>
@@ -1378,7 +1349,7 @@ The java things are located in
 <classname>org.argouml.language.java</classname>.
 </para>
       <para>
-The Java subsystem is a Layer 3 subsystem. See <xref linkend="layer3"></xref>.
+The Java subsystem is a Loadable subsystem. See <xref linkend="loadable_subsystems"></xref>.
 </para> 
 
 <sect2 id="howdoi_reverse">
@@ -1583,9 +1554,6 @@ This subsystem has no knowledge of UML, Critics, Diagrams, or Model.
 The GUI Framework is located in <classname>org.argouml.???</classname>.
 </para>
       <para>
-The GUI Framework is a Layer 1 subsystem. See <xref linkend="layer1"></xref>.
-</para>
-      <para>
 This is implemented directly on top of Swing and Java2.
 </para>
       <para>
@@ -1734,7 +1702,7 @@ The Help System is not yet implemented.
 The Help System will be located in <classname>org.argouml.help</classname>.
 </para>
       <para>
-The Help System is a Layer 1 subsystem. See <xref linkend="layer1"></xref>.
+The Help System is a Model subsystem. See <xref linkend="model_subsystems"></xref>.
 <!--
 TODO: It however violates the layer concept by providing menu items that fit
 into the GUI Framework.
@@ -1756,7 +1724,7 @@ Javahelp or some other help function will probably be used.
 Purpose - to provide the infrastructure to run everything.
 </para>
       <para>
-The JRE is a Layer 0 subsystem. See <xref linkend="layer1"></xref>.
+The JRE is an infrastructure subsystem. See <xref linkend="model_subsystems"></xref>.
 It is not distributed with ArgoUML but considered to be 
 a precondition in the same respect as the user's host.
 </para>
@@ -1781,7 +1749,7 @@ The To do items are located in
 <classname>org.argouml.?</classname>
 </para>
       <para>
-The To do items is a Layer 1 subsystem. See <xref linkend="layer1"></xref>.
+The To do items is a Model subsystem. See <xref linkend="model_subsystems"></xref>.
 </para>
     </sect1>
 
@@ -1797,7 +1765,7 @@ The Explorer is located in
 <classname>org.argouml.ui.explorer</classname> and sub-packages.
 </para>
       <para>
-The Explorer is a Layer 2 subsystem. See <xref linkend="layer2"></xref>.
+The Explorer is a Layer 2 subsystem. See <xref linkend="view_control_subsystems"></xref>.
 </para>
 
       <sect2>
@@ -2156,7 +2124,7 @@ The Module loader will be located in
 <classname>org.argouml.?</classname>.
 </para>
       <para>
-The Module loader is a Layer 2 subsystem. See <xref linkend="layer2"></xref>.
+The Module loader is a Layer 2 subsystem. See <xref linkend="view_control_subsystems"></xref>.
 </para>
       <para>
 Currently the module loader is located in
@@ -2327,7 +2295,7 @@ The OCL is located in
 <classname>org.argouml.ocl</classname>.
 </para>
       <para>
-The OCL is a Layer 3 subsystem. See <xref linkend="layer3"></xref>.
+The OCL is a Layer 3 subsystem. See <xref linkend="loadable_subsystems"></xref>.
 </para>
       <para>
 The OCL editor GUI interface is 

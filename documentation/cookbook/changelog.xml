@@ -33,6 +33,30 @@ Change to XXX.
 
       <tbody valign="top">
         <row>
+          <entry>2004-08-17</entry>
+          <entry>
+Deemphasized the layers and instead describe the subsystems in
+groups according to the MVC-pattern.
+(See <xref linkend="subsystems"/> and <xref linkend="inside_subsystems"/>).
+</entry>
+          <entry>Linus Tolke</entry>
+        </row>
+      </tbody>
+
+      <tbody valign="top">
+        <row>
+          <entry>2004-08-17</entry>
+          <entry>
+Change to the definition of the priorities.
+Now they are defined in terms of how much release blocker they are.
+(See <xref linkend="issue_priorities"/>).
+</entry>
+          <entry>Linus Tolke</entry>
+        </row>
+      </tbody>
+
+      <tbody valign="top">
+        <row>
           <entry>2004-08-02</entry>
           <entry>
 Added rationale for not using RESOLVED/REMIND or RESOLVED/LATER

@@ -18,7 +18,7 @@ TODO: Notation!
 The Diagrams will be located in <classname>org.argouml.uml.diagram</classname>.
 </para>
       <para>
-The Diagrams is a Layer 2 subsystem. <xref linkend="layer2"></xref>.
+The Diagrams is a View subsystem. <xref linkend="view_control_subsystems"></xref>.
 </para>
       <para>
 The Diagrams are depending on the Model and the GUI framework.

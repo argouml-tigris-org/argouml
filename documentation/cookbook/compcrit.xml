@@ -20,7 +20,7 @@ This help is based on the current model that the User works with.
 The Critics are located in <classname>org.argouml.cognitive</classname>.
 </para>
       <para>
-The Critics is a Layer 3 subsystem. See <xref linkend="layer3"></xref>.
+The Critics is a Loadable subsystem. See <xref linkend="loadable_subsystems"></xref>.
 </para>
       <para>
 The Critics subsystem depends on the Model that it works against to take

@@ -12,7 +12,7 @@ The Property panels will be located in
 <classname>org.argouml.?</classname>.
 </para>
       <para>
-The Property panels is a Layer 2 subsystem. See <xref linkend="layer2"></xref>.
+The Property panels is a View subsystem. See <xref linkend="view_control_subsystems"></xref>.
 </para>
       <para>
 Currently the PropPanels for the diagrams are in

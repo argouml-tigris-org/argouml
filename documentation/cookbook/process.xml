@@ -44,7 +44,7 @@ Tigris definition of the resolutions
 </ulink>
 and for that reason it is not a complete list.
 </para>
-      <sect2>
+      <sect2 id="issue_priorities">
         <title>Priorities</title>
         <indexterm>
           <primary>Priorities</primary>
@@ -54,43 +54,59 @@ and for that reason it is not a complete list.
           <primary>Issue</primary>
           <secondary>Priority</secondary>
         </indexterm>
+
         <para>
 The priorities are used in the following manner in ArgoUML:
 <itemizedlist>
             <listitem>
               <para>P1 - Fatal error</para>
+
               <para>
-ArgoUML cannot start.
-Crashes program, jvm or computer.
+These issues are blockers for all releases.
+</para>
+
+              <para>
+Examples:
+ArgoUML cannot start;
+Crashes program, jvm or computer; and
 Significant loss of user data.
 </para>
             </listitem>
             <listitem>
               <para>P2 - Serious error</para>
+
               <para>
+These issues are blockers for stable releases.
+</para>
+
+              <para>
+Examples:
 Information lost.
 </para>
             </listitem>
             <listitem>
               <para>P3 - Not so serious error</para>
               <para>
-Functions not working.
-Strange behavior.
+Examples:
+Functions not working;
+Strange behavior; and
 Exceptions logged.
 </para>
             </listitem>
             <listitem>
               <para>P4 - Confusing behavior</para>
               <para>
-Incorrect help texts and documentation.
-Inconsistant behavior.
-UI not updated.
+Examples:
+Incorrect help texts and documentation;
+Inconsistant behavior;
+UI not updated; and
 Incorrect javadoc.
 </para>
             </listitem>
             <listitem>
               <para>P5 - Small problems</para>
               <para>
+Examples:
 Spelling errors.
 Ugly icons.
 Excessive logging.

@@ -13,7 +13,7 @@ and register interest in changes to the model.
 The Model is located in <classname>org.argouml.model</classname>.
 </para>
       <para>
-The Model is a Layer 1 subsystem. See <xref linkend="layer1"></xref>.
+The Model is a Model subsystem. See <xref linkend="model_subsystems"></xref>.
 </para>
       <para>
 This is currently implemented using NSUML internally to implement 
