@@ -124,6 +124,13 @@ or perhaps even emphasized using
 <sgmltag>warning</sgmltag>
 include the issue number in a sgml-comment in the source 
 so that it is easy to know if this problem has been fixed.
+The issue should be mentioned in the format <quote>issue xxx</quote>, i.e.
+there should only be a space between 
+the word <quote>issue</quote> 
+and the issue number. 
+This allows the tigris web site to 
+generate links when viewing
+the manual source.
 </para>
       </listitem>
 
