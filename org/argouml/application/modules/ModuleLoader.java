@@ -33,6 +33,7 @@ import org.argouml.application.api.*;
 import org.argouml.application.events.*;
 
 import java.io.*;
+import java.lang.reflect.*;
 import java.util.*;
 import java.util.jar.*;
 import java.net.*;
@@ -318,7 +319,15 @@ public class ModuleLoader {
 	Object obj = null;
 	try {
             Class moduleClass = classloader.loadClass(classname);
-            obj = moduleClass.newInstance();
+	    //
+	    // Allow us to load classes with private constructors
+	    //
+	    // First get the zero-argument constructor
+	    Constructor c = moduleClass.getDeclaredConstructor(new Class[]{});
+	    // Tell jre we can get at it even though it may not be public
+	    c.setAccessible(true);
+	    // Instantiate it
+	    obj = c.newInstance(new Object[]{});
 	}
 	catch (Exception e) {
 	    obj = null;
