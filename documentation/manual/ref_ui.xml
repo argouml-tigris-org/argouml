@@ -46,8 +46,13 @@ own chapters.
       </mediaobject></screenshot>
     </figure>
 
-    <para>At the top of screen is a <emphasis>menu bar</emphasis> described in
-      <xref linkend="ch.ref.menu"/>. The bulk of the window comprises four
+    <para>At the top of screen is a <emphasis>menu bar</emphasis>, 
+      which is described in
+      <xref linkend="ch.ref.menu"/>. 
+      Below that is the <emphasis>toolbar</emphasis>, as described in ...
+    </para>
+    <para>
+      The bulk of the window comprises four
       sub-windows or <emphasis>panes</emphasis>. Clockwise from top left these
       are the <emphasis>explorer</emphasis> (see <xref
       linkend="ch.ref.navpane"/>), <emphasis>editing pane</emphasis> (see <xref
@@ -57,7 +62,8 @@ own chapters.
       is a <emphasis>tool bar</emphasis>. An overview of the panes is given in
       <xref linkend="s1.ref.panes"/>. Finally at the bottom of the window is a
       <emphasis>status bar</emphasis> described in <xref
-      linkend="s1.ref.status"/>.</para>
+      linkend="s1.ref.status"/>.
+    </para>
 
   </sect1>
 

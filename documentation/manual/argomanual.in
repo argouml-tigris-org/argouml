@@ -22,11 +22,12 @@ declarations.
   <!ENTITY tutbuild      SYSTEM "tut_build.xml">
 
   <!ENTITY refui         SYSTEM "ref_ui.xml">
+  <!ENTITY reftoolbar    SYSTEM "ref_toolbar.xml">
+  <!ENTITY refmenu       SYSTEM "ref_menu.xml">
   <!ENTITY refnavpane    SYSTEM "ref_navpane.xml">
   <!ENTITY refeditpane   SYSTEM "ref_editpane.xml">
   <!ENTITY refdetpane    SYSTEM "ref_detpane.xml">
   <!ENTITY reftodopane   SYSTEM "ref_todopane.xml">
-  <!ENTITY refmenu       SYSTEM "ref_menu.xml">
   <!ENTITY refcritics    SYSTEM "ref_critics.xml">
 
   <!ENTITY refentities   SYSTEM "ref_entities.xml">
@@ -101,11 +102,13 @@ in the 0.14 version.
     <!-- The reference chapters on the user interface -->
 
     &refui;
+    &reftoolbar;
+        &refmenu;
     &refnavpane;
     &refeditpane;
     &refdetpane;
     &reftodopane;
-    &refmenu;
+<!--    &refmenu; -->
     &refcritics;
 
     <!-- The reference chapters on the diagrams and artifacts -->
