@@ -1108,8 +1108,6 @@ Argo/UML.
   <sect1>
     <title>Message</title>
 
-  &notupdatedfor014disclaimer;
-
     <para>A message is a communication between two instances of an association
       role on a specification level collaboration diagram. It describes an
       action which will generate the stimulus associated with the message. On a
@@ -1117,33 +1115,41 @@ Argo/UML.
       role. In the UML metamodel <literal>Message</literal> is a sub-class of
       <literal>ModelElement</literal>.</para>
 
-    <note><para>On an instance level collaboration diagram, the stimuli between
+    <!-- TODO: We do not support these, so why talk about it? -->
+    <!--note><para>On an instance level collaboration diagram, the stimuli between
       instances are shown on the links, rather than the messages that describe
-      the communication channel.</para></note>
+      the communication channel.</para></note-->
 
-    <para>The message is represented on a sequence diagram in &argouml; by its
-      name separated by a colon from the expression defining the associated
-      action, followed by an upward pointing arrow. By convention the name is
+    <para>The message is represented on a collaboration diagram in &argouml; 
+      by its sequence number
+      separated by a colon from the expression defining the associated
+      <!-- TODO: Bug: the expression of the action is only updated on the 
+      diagram when the name of the action (or message?) is altered. 
+      See issue ...  -->
+      action. It is accompagnied by an arrow pointing in the direction of the
+      communication, i.e. the direction of the  AssociationRole. 
+      By convention the name of a message is
+      not shown on the diagram. Instead the diagram displays
       the message sequence number, either as an integer or as a decimal number
-      to show hierarchy.</para>
+      to show hierarchy.
+    </para>
 
-    <note><para>&argouml; will provide a sequence number as the default name
-      for a newly created message.</para></note>
-
-    <caution><para>The arrow should show the direction of the communication,
-      but in the current release of &argouml; is always shown pointing
-      upwards. It should also be stereotyped to indicate whether the associated
+    <!-- TODO: Is any of this true? It doesn't make sense to me... -->
+    <!--caution><para>The message 
+      should also be stereotyped to indicate whether the associated
       action is call, synchronous send, asynchronous send or return (usually
       just implied). The association role may be constrained as
       <literal>new</literal>, <literal>destroyed</literal> or
       <literal>transient</literal> if it is created, destroyed or both
       respectively during the interaction. However these are not shown as
       messages, since they are actions (create, terminate, destroy) of the
-      associated classifier roles, not communications.</para></caution>
+      associated classifier roles, not communications.</para></caution-->
 
-    <warning><para>The current release of &argouml; has problems with message
-      positioning and will tend to place them on top of each other, refusing to
-      accept moved positions as permanent.</para></warning>
+    <warning><para>The current release of &argouml; does not retaining 
+      message positioning after reloading the project, i.e. as if the positions
+      were not stored in the project file.
+      <!-- TODO: See issue ... -->
+    </para></warning>
 
     <!-- Message details tabs -->
 
@@ -1194,13 +1200,11 @@ Argo/UML.
             arrow line. Altering the <literal>Shadow</literal> field has no
             effect.</para>
 
-          <caution><para>In the current release of &argouml; changing the
+          <caution><para>In the V0.14 release of &argouml; changing the
+            position of the message by editing the
             values of the <literal>Bounds</literal> field is possible, but
             will make only a temporary change to the position of the
-            message. Selecting any artifact on the screen causes the
-            message to return to its original position and the original
-            values to be restored. This means messages end up on top of
-            each other.</para></caution></listitem>
+            message, as described above.</para></caution></listitem>
         </varlistentry>
 
         <!-- Entry for Source tab -->
@@ -1208,10 +1212,17 @@ Argo/UML.
         <varlistentry>
           <term><literal>Source</literal></term>
 
-          <listitem><para>Standard tab, showing the message name and action
-            expression separated by a double colon
-            (<literal>::</literal>).</para>
+          <listitem><para>Standard tab, showing the message number and action
+            expression separated by a colon (when UML 1.3 is selected in the
+            drop-down).
+            </para>
 
+          <!-- TODO: Selecting "Java" in the drop-down causes an exception.
+          java.lang.IllegalArgumentException: Unrecognized object null
+          at org.argouml.model.ModelFacade.getScript(ModelFacade.java:1624)
+          at org.argouml.language.java.generator.GeneratorJava.generateAction(GeneratorJava.java:1756)
+          See issue ... -->
+        
           <caution><para>A message probably should not generated any code
             of itself. That should be left to the action and possibly
             stimulus associated with it. In any case changes to this tab
@@ -1223,8 +1234,8 @@ Argo/UML.
         <varlistentry>
           <term><literal>Constraints</literal></term>
 
-          <listitem><para>Standard tab. There are no standard constraints
-            defined for <literal>Message</literal> within the UML
+          <listitem><para>Standard tab. There are no  constraints
+            for <literal>Message</literal> within the &argouml;
             metamodel.</para></listitem>
         </varlistentry>
 
@@ -1295,7 +1306,11 @@ Argo/UML.
             <emphasis>not</emphasis> just the diagram. To delete an
             message from the diagram, but keep it within the model, use
             the main menu <literal>Remove From Diagram</literal>
-            (or press the Delete key).</para></warning></listitem>
+            (or press the Delete key).
+            <!-- TODO: After which it can not be added to the diagram any more.
+            A message does not show "Add to diagram" in its explorer Button2 pop-up.
+            See issue ... -->
+          </para></warning></listitem>
         </varlistentry>
       </variablelist>
     </sect2>
@@ -1325,16 +1340,10 @@ Argo/UML.
           <term><literal>Stereotype</literal></term>
 
           <listitem><para>Drop down selector. Message has no stereotypes by
-            default in the UML standard, but &argouml; provides the
-            stereotypes, <literal>machine</literal>,
-            <literal>organization</literal> and
-            <literal>person</literal>.</para>
+            default in the UML standard.
+            </para>
 
-          <caution><para>&argouml; also provides the stereotype
-            <literal>realize</literal> for messages. This appears to be an
-            error, since this stereotype properly belongs to the
-            <literal>Abstraction</literal>
-            metaclass.</para></caution></listitem>
+          </listitem>
         </varlistentry>
 
         <!-- Entry for NavStereo -->
@@ -1348,20 +1357,20 @@ Argo/UML.
             </imageobject></inlinemediaobject></guiicon> icon. If a
               stereotype has been selected, this will navigate to the
               stereotype property panel (see <xref
-                linkend="s1.ref.stereotype_class"/>).</para></listitem>
+                linkend="s1.ref.stereotype"/>).</para></listitem>
         </varlistentry>
 
-        <!-- Entry for Namespace -->
+        <!-- Entry for Interaction -->
 
         <varlistentry>
-          <term><literal>Namespace</literal></term>
+          <term><literal>Interaction</literal></term>
 
-          <listitem><para>Text box. Records the namespace for the
-            message. This is the package hierarchy.</para>
+          <listitem><para>Text box. Records the Interaction of which the
+            message is a part. </para>
 
-          <para>&Button1; click on the entry will navigate to the package
-            defining this namespace (or the model for the top level
-            namespace).</para></listitem>
+          <para>&Button1; double click on the entry will navigate to the
+            interaction.
+          </para></listitem>
         </varlistentry>
 
         <!-- Entry for Sender -->
@@ -1372,13 +1381,9 @@ Argo/UML.
           <listitem><para>Text box. Identifies the classifier role which sent
             this message.</para>
 
-          <para>&Button1; click navigates to the sender classifier role,
-            &button2; gives a pop up menu with one entry.</para>
-
-          <itemizedlist>
-            <listitem><para><literal>Open</literal>. Navigate to the
-              selected sender classifier role.</para></listitem>
-          </itemizedlist></listitem>
+            <para>&Button1; double click navigates to the sender classifier role.
+            </para>
+          </listitem>
         </varlistentry>
 
         <!-- Entry for Receiver -->
@@ -1389,33 +1394,9 @@ Argo/UML.
           <listitem><para>Text box. Identifies the classifier role which
             receives this message.</para>
 
-          <para>&Button1; click navigates to the receiver classifier role,
-            &button2; gives a pop up menu with one entry.</para>
-
-          <itemizedlist>
-            <listitem><para><literal>Open</literal>. Navigate to the
-              selected receiver classifier role.</para></listitem>
-          </itemizedlist></listitem>
-        </varlistentry>
-
-        <!-- Entry for Predecessor -->
-
-        <varlistentry>
-          <term><literal>Predecessor</literal></term>
-
-          <listitem><para>Text area. Identifies the messages, the completion
-            of whose execution enables this message.</para>
-
-          <para>&Button1; click navigates to the selected message,
-            &button2; gives a pop up menu with one entry.</para>
-
-          <itemizedlist>
-            <listitem><para><literal>Open</literal>. Navigate to the
-              selected message.</para>
-
-            <warning><para>This entry is always grayed out in the current
-              release of &argouml;</para></warning></listitem>
-          </itemizedlist></listitem>
+            <para>&Button1; click navigates to the receiver classifier role.
+            </para>
+          </listitem>
         </varlistentry>
 
         <!-- Entry for Activator -->
@@ -1423,19 +1404,13 @@ Argo/UML.
         <varlistentry>
           <term><literal>Activator</literal></term>
 
-          <listitem><para>Text area. Identifies the message which invokes the
+          <listitem><para>Drop down selector. 
+            Identifies the message which invokes the
             behavior that causes the sending of this message.</para>
 
-          <para>&Button1; click navigates to the selected message,
-            &button2; gives a pop up menu with one entry.</para>
-
-          <itemizedlist>
-            <listitem><para><literal>Open</literal>. Navigate to the
-              selected message.</para>
-
-            <warning><para>This entry is always grayed out in the current
-              release of &argouml;</para></warning></listitem>
-          </itemizedlist></listitem>
+            <para>&Button1; click allows selecting the message.
+            </para>
+          </listitem>
         </varlistentry>
 
         <!-- Entry for Action -->
@@ -1447,26 +1422,54 @@ Argo/UML.
             <xref linkend="s1.ref.action_state"/>) this message invokes to
             raise a stimulus.</para>
 
-          <para>&Button1; click navigates to the selected action, &button2;
-            gives a pop up menu with three entries.</para>
+          <para>&Button1; double click navigates to the selected action, &button2;
+            gives a pop up menu with the following entry.</para>
 
           <itemizedlist>
-            <listitem><para><literal>Open</literal>. Navigate to the
-              selected action.</para></listitem>
+            <listitem>
+              <para><literal>New</literal>. Add a new
+                action.
+              </para>
 
-            <listitem><para><literal>Delete</literal>. Delete the selected
-              action.</para></listitem>
-
-            <listitem><para><literal>Add</literal>. Add a new
-              action.</para>
-
-            <warning><para>The current release of &argouml; seems to have
-              some problems in this area. Adding actions seems to replace
-              any existing action, and also causes message graphics to
-              become tangled together. Use with considerable
-              care.</para></warning></listitem>
+              <para>This item is downlighted if an action already exists.
+              </para>
+            </listitem>
           </itemizedlist></listitem>
         </varlistentry>
+
+        <!-- Entry for Predecessors -->
+
+        <varlistentry>
+          <term><literal>Predecessors</literal></term>
+
+          <listitem><para>Text area. Identifies the messages, the completion
+            of whose execution enables this message.</para>
+
+          <para>&Button1; double click navigates to the selected message,
+            &button2; gives a pop up menu with one entry.</para>
+
+          <itemizedlist>
+            <listitem>
+              <para><literal>Add</literal>. 
+                Opens a dialog box that allows to select any number of messages.
+                See figure below.
+              </para>
+
+              <figure id="fig.ref.message_add_predecessors" float="1">
+                <title>The <quote>add predecessors</quote> dialog box</title>
+                <screenshot><mediaobject><imageobject>
+                  <imagedata format="PNG" align="center"
+                     fileref="images/reference/message_add_predecessors.png"/>
+                   </imageobject>
+                 </mediaobject></screenshot>
+               </figure>
+
+            <para>This entry is grayed out 
+              when no messages exist.</para>
+            </listitem>
+          </itemizedlist></listitem>
+        </varlistentry>
+
       </variablelist>
     </sect2>
   </sect1>
