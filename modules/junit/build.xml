@@ -261,7 +261,7 @@ doesn't find it's own XML-libs. You need to set ANT_HOME in your shell.
     <copy file="${manifest.src}" tofile="${module.build.dest}/${manifest}" filtering="on" overwrite="on" />
     <jar jarfile="${module.jarfile}"
          basedir="${module.build.dest}"
-         includes="org/argouml/**"
+         includes="**"
          excludes="*.txt,*.bat,*.xml,*.sh,${manifest}"
          manifest="${module.build.dest}/${manifest}"/>
   </target>
