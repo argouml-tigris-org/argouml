@@ -34,31 +34,55 @@ import org.argouml.cognitive.Designer;
 import org.argouml.model.ModelFacade;
 
 
-/** A critic to detect when a Branch state has the wrong number of
- *  transitions.  Implements constraint [6] on MPseudostate in the UML
- *  Semantics v1.1, pp. 104. */
+/** 
+ * A critic to detect when a Branch (i.e. Choice or Junction) 
+ * state has the wrong number of transitions.  
+ * Implements constraint [5] and [6] on PseudoState in the UML
+ * Semantics v1.3, p. 2-140: 
+ * 
+ * [5] A junction vertex must have at least one incoming and 
+ * one outgoing transition.
+ * (self.kind = #junction) implies
+ *     ((self.incoming->size >= 1) and (self.outgoing->size >= 1))
+ * 
+ * [6] A choice vertex must have at least one incoming and 
+ * one outgoing transition.
+ * (self.kind = #choice) implies
+ *     ((self.incoming->size >= 1) and (self.outgoing->size >= 1))
+ * 
+ * */
 
 public class CrInvalidBranch extends CrUML {
 
+    /** the constructor
+     */
     public CrInvalidBranch() {
-	setHeadline("Change Branch Transitions");
+	setHeadline(""); // parameter ignored, so "" suffices.
 	addSupportedDecision(CrUML.decSTATE_MACHINES);
 	addTrigger("incoming");
     }
 
+    /** This is the decision routine for the critic. 
+     * 
+     * @param dm is the UML entity (an NSUML object) that is being checked. 
+     * @param dsgr is for future development and can be ignored.
+     * 
+     * @return boolean problem found
+     */
     public boolean predicate2(Object dm, Designer dsgr) {
 	if (!(ModelFacade.isAPseudostate(dm))) return NO_PROBLEM;
 	Object k = ModelFacade.getPseudostateKind(dm);
-	if (!ModelFacade.
-	    equalsPseudostateKind(k,
-				  ModelFacade.BRANCH_PSEUDOSTATEKIND))
+	if ((!ModelFacade.equalsPseudostateKind(k,
+				ModelFacade.BRANCH_PSEUDOSTATEKIND))
+            && (!ModelFacade.equalsPseudostateKind(k,
+                                ModelFacade.JUNCTION_PSEUDOSTATEKIND)))
 	    return NO_PROBLEM;
 	Collection outgoing = ModelFacade.getOutgoings(dm);
 	Collection incoming = ModelFacade.getIncomings(dm);
 	int nOutgoing = outgoing == null ? 0 : outgoing.size();
 	int nIncoming = incoming == null ? 0 : incoming.size();
-	if (nIncoming > 1) return PROBLEM_FOUND;
-	if (nOutgoing == 1) return PROBLEM_FOUND;
+	if (nIncoming < 1) return PROBLEM_FOUND;
+	if (nOutgoing < 1) return PROBLEM_FOUND;
 	return NO_PROBLEM;
     }
 
