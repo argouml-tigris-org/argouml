@@ -39,14 +39,16 @@ import org.argouml.application.api.*;
 import org.tigris.gef.util.*;
 
 /**
- * Control look and feel and theme of Argo
+ * Control look and feel and theme of ArgoUML.
+ * @todo currently we still rely heavily on the Metal Theme and on
+ *       jasons theme classes to get the theme right.
  *
  * @author Bob Tarling
  */
 public class LookAndFeelMgr {
     
     protected static Category cat = 
-        Category.getInstance(ProjectBrowser.class);
+        Category.getInstance(LookAndFeelMgr.class);
 
     public static final LookAndFeelMgr SINGLETON = new LookAndFeelMgr();
     
@@ -56,7 +58,7 @@ public class LookAndFeelMgr {
     private static final int THEME_BIG = 2;
     private static final int THEME_HUGE = 3;
 
-    /** Creates a new instance of LookAndFeelMgr */
+    /** Creates a new instance of LookAndFeelMgr. */
     private LookAndFeelMgr() {
     }
     
@@ -80,6 +82,7 @@ public class LookAndFeelMgr {
     
     private int getCurrentTheme() { return currentTheme; }
     
+    /** set the theme to use according to the configuration information. */
     public void setCurrentTheme(int t) {
         if (t == THEME_DEFAULT) t = Configuration.getInteger(Argo.KEY_SCREEN_THEME, THEME_NORMAL);
         if (currentTheme == t) return;
@@ -135,11 +138,14 @@ public class LookAndFeelMgr {
         else if ("huge".equals(arg))
             setCurrentTheme(THEME_HUGE);
         else {
-            cat.error("ProjectBrowser.setCurrentTheme: "
+            cat.error("LookAndFeelMgr.setCurrentTheme: "
                       + "Incorrect theme: " + arg);
         }
     }
-    
+
+    /** check whether the currently set theme equals the argument.
+     *  @param arg one of normal, big or huge.
+     */
     public boolean isCurrentTheme(String arg) {
         if ("normal".equals(arg))
             return getCurrentTheme() == THEME_NORMAL;
@@ -148,7 +154,7 @@ public class LookAndFeelMgr {
         else if ("huge".equals(arg))
             return getCurrentTheme() == THEME_HUGE;
         else {
-            cat.error("ProjectBrowser.isCurrentTheme: "
+            cat.error("LookAndFeelMgr.isCurrentTheme: "
                       + "Incorrect theme: " + arg);
             return false;
         }
