@@ -41,12 +41,18 @@ public class ActionExit extends UMLAction {
   // static variables
   
   public static ActionExit SINGLETON = new ActionExit();
+ 
+  /** remember if this form is already active, so that it does
+        not popup twice.
+  */
+  private boolean active = false;
   
   ////////////////////////////////////////////////////////////////
   // constructors
   
   protected ActionExit() {
     super ("Exit", NO_ICON);
+    active = false;
   }
   
   ////////////////////////////////////////////////////////////////
@@ -56,7 +62,8 @@ public class ActionExit extends UMLAction {
     ProjectBrowser pb = ProjectBrowser.TheInstance;
     Project p = pb.getProject();
     
-    if (p != null && p.needsSave()) {
+    if (p != null && p.needsSave() && !active) {
+      active = true;
       String t = MessageFormat.format (
           Localizer.localize (
             "Actions",
@@ -71,7 +78,10 @@ public class ActionExit extends UMLAction {
           JOptionPane.YES_NO_CANCEL_OPTION
         );
       
-      if (response == JOptionPane.CANCEL_OPTION) return;
+      if (response == JOptionPane.CANCEL_OPTION) {
+          active = false;
+          return;
+      }
       if (response == JOptionPane.YES_OPTION) {
         boolean safe = false;
         
@@ -82,13 +92,16 @@ public class ActionExit extends UMLAction {
           safe = ActionSaveProjectAs.SINGLETON.trySave (false);
         }
         if (!safe) {
+          active = false;
           return;
         }
       }
+      active = false;
     }
-    
-    Configuration.save();
-    ArgoSecurityManager.getInstance().setAllowExit (true);
-    System.exit (0);
+    if (!active) {
+        Configuration.save();
+        ArgoSecurityManager.getInstance().setAllowExit (true);
+        System.exit (0);
+    }
   }
 } /* end class ActionExit */
