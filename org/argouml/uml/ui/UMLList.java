@@ -34,16 +34,25 @@ import ru.novosoft.uml.MElementEvent;
 /**
  * @deprecated as of ArgoUml 0.13.5 (10-may-2003),
  *             replaced by {@link org.argouml.uml.ui.UMLList2},
- *             this class is part of the 'old'(pre 0.13.*) implementation of proppanels
+ *             this class is part of the 'old'(pre 0.13.*) 
+ *             implementation of proppanels
  *             that used reflection a lot.
  */
-public class UMLList extends JList implements UMLUserInterfaceComponent, MouseListener {
+public class UMLList extends JList 
+    implements UMLUserInterfaceComponent, MouseListener {
 
-    private UMLModelElementListModel _umlListModel;
+    private UMLModelElementListModel umlListModel;
 
+    /**
+     * The constructor.
+     * 
+     * @param listModel the listmodel 
+     * @param navigate true if doubleclicking it causes 
+     *                 navigation to the clicked element
+     */
     public UMLList(UMLModelElementListModel listModel, boolean navigate) {
         super(listModel);
-        _umlListModel = listModel;
+        umlListModel = listModel;
         setFont(LookAndFeelMgr.getInstance().getSmallFont());
         setBackground(Color.green.brighter());
 
@@ -52,57 +61,91 @@ public class UMLList extends JList implements UMLUserInterfaceComponent, MouseLi
         }
     }
 
+    /**
+     * @see org.argouml.uml.ui.UMLUserInterfaceComponent#targetChanged()
+     */
     public void targetChanged() {
-        _umlListModel.targetChanged();
+        umlListModel.targetChanged();
         updateUI();
     }
 
+    /**
+     * @see org.argouml.uml.ui.UMLUserInterfaceComponent#targetReasserted()
+     */
     public void targetReasserted() {
-        _umlListModel.targetReasserted();
+        umlListModel.targetReasserted();
         updateUI();
     }
 
+    /**
+     * @see ru.novosoft.uml.MElementListener#roleAdded(ru.novosoft.uml.MElementEvent)
+     */
     public void roleAdded(final MElementEvent event) {
-        _umlListModel.roleAdded(event);
+        umlListModel.roleAdded(event);
         updateUI();
     }
 
+    /**
+     * @see ru.novosoft.uml.MElementListener#recovered(ru.novosoft.uml.MElementEvent)
+     */
     public void recovered(final MElementEvent event) {
-        _umlListModel.recovered(event);
+        umlListModel.recovered(event);
         updateUI();
     }
 
+    /**
+     * @see ru.novosoft.uml.MElementListener#roleRemoved(ru.novosoft.uml.MElementEvent)
+     */
     public void roleRemoved(final MElementEvent event) {
-        _umlListModel.roleRemoved(event);
+        umlListModel.roleRemoved(event);
         updateUI();
     }
 
+    /**
+     * @see ru.novosoft.uml.MElementListener#listRoleItemSet(ru.novosoft.uml.MElementEvent)
+     */
     public void listRoleItemSet(final MElementEvent event) {
-        _umlListModel.listRoleItemSet(event);
+        umlListModel.listRoleItemSet(event);
         updateUI();
     }
 
+    /**
+     * @see ru.novosoft.uml.MElementListener#removed(ru.novosoft.uml.MElementEvent)
+     */
     public void removed(final MElementEvent event) {
-        _umlListModel.removed(event);
+        umlListModel.removed(event);
         updateUI();
     }
+    
+    /**
+     * @see ru.novosoft.uml.MElementListener#propertySet(ru.novosoft.uml.MElementEvent)
+     */
     public void propertySet(final MElementEvent event) {
-	_umlListModel.propertySet(event);
+	umlListModel.propertySet(event);
 	updateUI();
     }
 
+    /**
+     * @see java.awt.event.MouseListener#mouseReleased(java.awt.event.MouseEvent)
+     */
     public void mouseReleased(final MouseEvent event) {
         if (event.isPopupTrigger()) {
             showPopup(event);
         }
     }
 
+    /**
+     * @see java.awt.event.MouseListener#mouseEntered(java.awt.event.MouseEvent)
+     */
     public void mouseEntered(final MouseEvent event) {
         if (event.isPopupTrigger()) {
             showPopup(event);
         }
     }
 
+    /**
+     * @see java.awt.event.MouseListener#mouseClicked(java.awt.event.MouseEvent)
+     */
     public void mouseClicked(final MouseEvent event) {
         if (event.isPopupTrigger()) {
             showPopup(event);
@@ -111,26 +154,34 @@ public class UMLList extends JList implements UMLUserInterfaceComponent, MouseLi
             int mods = event.getModifiers();
             if (mods == InputEvent.BUTTON1_MASK) {
                 int index = locationToIndex(event.getPoint());
-                _umlListModel.open(index);
+                umlListModel.open(index);
             }
         }
     }
 
+    /**
+     * @see java.awt.event.MouseListener#mousePressed(java.awt.event.MouseEvent)
+     */
     public void mousePressed(final MouseEvent event) {
         if (event.isPopupTrigger()) {
             showPopup(event);
         }
     }
 
+    /**
+     * @see java.awt.event.MouseListener#mouseExited(java.awt.event.MouseEvent)
+     */
     public void mouseExited(final MouseEvent event) {
         if (event.isPopupTrigger()) {
             showPopup(event);
         }
     }
 
-/**
- *  modified July, 21, 2001 -  psager...
- */
+    /**
+     * modified July, 21, 2001 -  psager...
+     * 
+     * @param event the mouse event
+     */
     private final void showPopup(MouseEvent event) {
         Point point = event.getPoint();
         int index = locationToIndex(point);
@@ -139,11 +190,11 @@ public class UMLList extends JList implements UMLUserInterfaceComponent, MouseLi
        // that has no list item, such as when the JList is not full. This code
        // compensates for the user not clicking over a list item. pjs.
         if (index == -1) {
-            index = _umlListModel.getModelElementSize();
+            index = umlListModel.getModelElementSize();
         }
 
         JPopupMenu popup = new JPopupMenu();
-        if (_umlListModel.buildPopup(popup, index)) {
+        if (umlListModel.buildPopup(popup, index)) {
             popup.show(this, point.x, point.y);
         }
     }

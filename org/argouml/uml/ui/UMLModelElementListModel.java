@@ -78,42 +78,42 @@ public abstract class UMLModelElementListModel
     /**
      *   The container that provides the "target" model element.
      */
-    private UMLUserInterfaceContainer _container;
+    private UMLUserInterfaceContainer theContainer;
 
     /**
      *  If "true" then a list entry (typically labelled "none") will
      *  be displayed when there are no actual entries in the list.
      */
-    private boolean _showNone;
+    private boolean showNoneForEmptyList;
 
     /**
      * The number of actual entries in the list.
      */
-    private int _currentModelElementSize = 0;
+    private int currentModelElementSize = 0;
 
     /**
      * Set to true when an event suggests that the size needs to be
      * recalculated.
      */
-    private boolean _recalcSize;
+    private boolean recalcSize;
 
     /**
      *  A string indicating an NSUML event name that indicates that list may
      *  need to be updated.
      */
-    private String _property;
+    private String theProperty;
 
     /**
      *  The string used to indicate no actual entries in the list.  Eventually,
      *    should be part of the profile or localization.
      */
-    private String _none = "none";
+    private String noneString = "none";
 
     /**
      *  upper bound of length of list.
      */
-    protected int _upper;
-    public final int NO_LIMIT = -1;
+    private int upper;
+    private static final int NO_LIMIT = -1;
 
     /**
      * Creates a new list model.<p>
@@ -133,22 +133,28 @@ public abstract class UMLModelElementListModel
         UMLUserInterfaceContainer container,
         String property,
         boolean showNone) {
-        _container = container;
-        _showNone = showNone;
-        _property = property;
-        _recalcSize = true;
-        _upper = NO_LIMIT;
-        _none = _container.localize("none");
-        if (_none == null)
-            _none = "none";
+        theContainer = container;
+        showNoneForEmptyList = showNone;
+        theProperty = property;
+        recalcSize = true;
+        upper = NO_LIMIT;
+        noneString = theContainer.localize("none");
+        if (noneString == null)
+            noneString = "none";
     }
 
+    /**
+     * @return the upper bound of the length of the list
+     */
     public int getUpperBound() {
-        return _upper;
+        return upper;
     }
 
+    /**
+     * @param newBound the upper bound of the length of the list
+     */
     public void setUpperBound(int newBound) {
-        _upper = newBound;
+        upper = newBound;
     }
 
     /**
@@ -156,14 +162,14 @@ public abstract class UMLModelElementListModel
      *  to force recalculation of list size.
      */
     public void resetSize() {
-        _recalcSize = true;
+        recalcSize = true;
     }
 
     /**
-     *  Returns NSUML event name that is monitored, may be null.
+     *  @return NSUML event name that is monitored, may be null.
      */
     public final String getProperty() {
-        return _property;
+        return theProperty;
     }
 
     /**
@@ -174,13 +180,13 @@ public abstract class UMLModelElementListModel
      */
     protected final int getModelElementSize() {
         // if(_recalcSize) {
-        _currentModelElementSize = recalcModelElementSize();
-        if (_currentModelElementSize < 0) {
+        currentModelElementSize = recalcModelElementSize();
+        if (currentModelElementSize < 0) {
             return 0;
         }
         //    _recalcSize = false;
         // }
-        return _currentModelElementSize;
+        return currentModelElementSize;
     }
 
     /**
@@ -203,17 +209,21 @@ public abstract class UMLModelElementListModel
 
     /**
      * This method returns the current "target" of the container.
+     *
+     * @return the current "target" of the container
      */
     protected final Object getTarget() {
-        return _container.getTarget();
+        return theContainer.getTarget();
     }
 
     /**
      * This method returns the container passed as an argument
      * to the constructor
+     *
+     * @return the container
      */
     protected final UMLUserInterfaceContainer getContainer() {
-        return _container;
+        return theContainer;
     }
 
     /**
@@ -224,7 +234,7 @@ public abstract class UMLModelElementListModel
      */
     public int getSize() {
         int size = getModelElementSize();
-        if (size == 0 && _showNone) {
+        if (size == 0 && showNoneForEmptyList) {
             size = 1;
         }
         return size;
@@ -252,8 +262,8 @@ public abstract class UMLModelElementListModel
             }
             value = formatElement(element);
         } else {
-            if (index == 0 && _showNone) {
-                value = _none;
+            if (index == 0 && showNoneForEmptyList) {
+                value = noneString;
             }
         }
         return value;
@@ -269,15 +279,15 @@ public abstract class UMLModelElementListModel
      * @return rendering of the ModelElement
      */
     public Object formatElement(Object/*MModelElement*/ element) {
-        return _container.formatElement(/*(MModelElement)*/ element);
+        return theContainer.formatElement(/*(MModelElement)*/ element);
     }
 
     /**
      * @see org.argouml.uml.ui.UMLUserInterfaceComponent#targetChanged()
      */
     public void targetChanged() {
-        int oldSize = _currentModelElementSize;
-        if (_showNone && oldSize == 0)
+        int oldSize = currentModelElementSize;
+        if (showNoneForEmptyList && oldSize == 0)
             oldSize = 1;
         resetSize();
         int newSize = getSize();
@@ -297,6 +307,9 @@ public abstract class UMLModelElementListModel
         }
     }
 
+    /**
+     * @see org.argouml.uml.ui.UMLUserInterfaceComponent#targetReasserted()
+     */
     public void targetReasserted() {
         resetSize();
         fireContentsChanged(this, 0, getSize() - 1);
@@ -307,9 +320,9 @@ public abstract class UMLModelElementListModel
      */
     public void roleAdded(final MElementEvent event) {
         String eventName = event.getName();
-        if (_property == null
+        if (theProperty == null
             || eventName == null
-            || eventName.equals(_property)) {
+            || eventName.equals(theProperty)) {
             resetSize();
             Object addedValue = event.getAddedValue();
             boolean found = false;
@@ -345,15 +358,19 @@ public abstract class UMLModelElementListModel
      */
     public void roleRemoved(final MElementEvent event) {
         String eventName = event.getName();
-        if (_property == null
+        if (theProperty == null
             || eventName == null
-            || eventName.equals(_property)) {
+            || eventName.equals(theProperty)) {
             resetSize();
             fireContentsChanged(this, 0, getSize() - 1);
         }
     }
-
-    //      documented in UMLUserInterfaceComponent
+     
+    /**
+     * Documented in UMLUserInterfaceComponent.
+     * 
+     * @see ru.novosoft.uml.MElementListener#recovered(ru.novosoft.uml.MElementEvent)
+     */
     public void recovered(final MElementEvent p1) {
         resetSize();
         fireContentsChanged(this, 0, getSize() - 1);
@@ -401,7 +418,7 @@ public abstract class UMLModelElementListModel
      *   @param index index of item to open (zero-based).
      */
     public void open(int index) {
-        if (index >= 0 && index < _currentModelElementSize) {
+        if (index >= 0 && index < currentModelElementSize) {
             Object/*MModelElement*/ modelElement = getModelElementAt(index);
             if (modelElement != null) {
                 navigateTo(modelElement);
@@ -432,7 +449,7 @@ public abstract class UMLModelElementListModel
                 this,
                 "delete",
                 index);
-        if (_currentModelElementSize <= 0) {
+        if (currentModelElementSize <= 0) {
             open.setEnabled(false);
             delete.setEnabled(false);
         }
@@ -440,7 +457,7 @@ public abstract class UMLModelElementListModel
         popup.add(open);
         UMLListMenuItem add =
             new UMLListMenuItem(container.localize("Add"), this, "add", index);
-        if (_upper >= 0 && _currentModelElementSize >= _upper) {
+        if (upper >= 0 && currentModelElementSize >= upper) {
             add.setEnabled(false);
         }
         popup.add(add);
@@ -585,7 +602,8 @@ public abstract class UMLModelElementListModel
      * brute iteration through a collection if necessary.
      *
      * @param collection old collection
-     * @param index index of element to move down.
+     * @param index index of element to move down
+     * @param requiredClass (ignored)
      * @return new collection
      */
     public static Object/*MModelElement*/ elementAtUtil(Collection collection,
@@ -627,7 +645,7 @@ public abstract class UMLModelElementListModel
     /**
      * Standard delete method.<p>
      *
-     * @param index
+     * @param index refers to the element to be deleted
      */
     public void delete(int index) {
         Object/*MModelElement*/ modElem = getModelElementAt(index);
@@ -639,5 +657,12 @@ public abstract class UMLModelElementListModel
         if (!target.equals(modElem)) {
             TargetManager.getInstance().setTarget(target);
         }
+    }
+
+    /**
+     * @return Returns the _upper.
+     */
+    protected int getUpper() {
+        return upper;
     }
 }

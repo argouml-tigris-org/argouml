@@ -42,13 +42,11 @@ public class UMLMetaclassComboBox
     extends JComboBox 
     implements UMLUserInterfaceComponent, ItemListener 
 {
-    /**
-     * @deprecated by Linus Tolke as of 0.15.4. Use your own logger in your
-     * class. This will be removed.
-     */
-    protected static Logger cat = Logger.getLogger(UMLMetaclassComboBox.class);
 
-    private String[] _metaclasses = {
+    private static final Logger LOG = 
+        Logger.getLogger(UMLMetaclassComboBox.class);
+
+    private String[] metaclasses = {
 	"ModelElement",
 	"Classifier",
 	"Class",
@@ -84,74 +82,107 @@ public class UMLMetaclassComboBox
 	"Link"
     };
 
-    private Method _getMethod;
-    private Method _setMethod;
-    private String _property;
-    private UMLUserInterfaceContainer _container;
-    private Object[] _noArgs = {};
+    private Method theGetMethod;
+    private Method theSetMethod;
+    private String theProperty;
+    private UMLUserInterfaceContainer theContainer;
+    private Object[] noArgs = {};
 
+    /**
+     * The constructor.
+     * 
+     * @param container the container
+     * @param property the property
+     * @param getMethod the getmethod
+     * @param setMethod the setmethod
+     */
     public UMLMetaclassComboBox(UMLUserInterfaceContainer container,
 				String property,
 				String getMethod, String setMethod) {
-	setModel(new DefaultComboBoxModel(_metaclasses));
-	_container = container;
-	_property = property;
+	setModel(new DefaultComboBoxModel(metaclasses));
+	theContainer = container;
+	theProperty = property;
 	addItemListener(this);
 	try {
-	    _getMethod = container.getClass().getMethod(getMethod,
+	    theGetMethod = container.getClass().getMethod(getMethod,
 							new Class[] { 
 							});
 	}
 	catch (Exception e) {
-	    cat.error("Error in UMLMetaclassComboBox:" + getMethod, e);
+	    LOG.error("Error in UMLMetaclassComboBox:" + getMethod, e);
 	}
 	try {
-	    _setMethod = container.getClass().getMethod(setMethod, new Class[] {
-		String.class 
-	    });
+	    theSetMethod = container.getClass()
+	        .getMethod(setMethod, new Class[] {
+	            String.class 
+	        });
 	}
 	catch (Exception e) {
-	    cat.error("Error in UMLMetaclassComboBox:" + setMethod, e);
+	    LOG.error("Error in UMLMetaclassComboBox:" + setMethod, e);
 	}
     }
 
+    /**
+     * @see ru.novosoft.uml.MElementListener#propertySet(ru.novosoft.uml.MElementEvent)
+     */
     public void propertySet(MElementEvent e) {
 	String eventName = e.getName();
 	if (eventName == null
-	    || _property == null
-	    || eventName.equals(_property)) {
+	    || theProperty == null
+	    || eventName.equals(theProperty)) {
 
 	    update();
 
 	}
     }
 
+    /**
+     * @see ru.novosoft.uml.MElementListener#roleAdded(ru.novosoft.uml.MElementEvent)
+     */
     public void roleAdded(MElementEvent e) {
     }
 
+    /**
+     * @see ru.novosoft.uml.MElementListener#roleRemoved(ru.novosoft.uml.MElementEvent)
+     */
     public void roleRemoved(MElementEvent e) {
     }
 
+    /**
+     * @see ru.novosoft.uml.MElementListener#listRoleItemSet(ru.novosoft.uml.MElementEvent)
+     */
     public void listRoleItemSet(MElementEvent e) {
     }
 
+    /**
+     * @see ru.novosoft.uml.MElementListener#removed(ru.novosoft.uml.MElementEvent)
+     */
     public void removed(MElementEvent e) {
     }
 
+    /**
+     * @see ru.novosoft.uml.MElementListener#recovered(ru.novosoft.uml.MElementEvent)
+     */
     public void recovered(MElementEvent e) {
     }
 
+    /**
+     * @see org.argouml.uml.ui.UMLUserInterfaceComponent#targetChanged()
+     */
     public void targetChanged() {
 	update();
     }
 
+    /**
+     * @see org.argouml.uml.ui.UMLUserInterfaceComponent#targetReasserted()
+     */
     public void targetReasserted() {
     }
 
     private void update() {
 	String meta = "ModelElement";
 	try {
-	    meta = (String) _getMethod.invoke(_container, _noArgs);
+	    meta = (String) theGetMethod.invoke(theContainer, noArgs);
 	}
 	catch (Exception e) {
 	}
@@ -171,11 +202,14 @@ public class UMLMetaclassComboBox
 	}
     }
 
+    /**
+     * @see java.awt.event.ItemListener#itemStateChanged(java.awt.event.ItemEvent)
+     */
     public void itemStateChanged(ItemEvent event) {
 	if (event.getStateChange() == ItemEvent.SELECTED) {
 	    Object selectedItem = event.getItem();
 	    try {
-		_setMethod.invoke(_container, new Object[] {
+		theSetMethod.invoke(theContainer, new Object[] {
 		    selectedItem.toString() 
 		});
 	    }

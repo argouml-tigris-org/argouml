@@ -37,40 +37,43 @@ import java.awt.event.*;
  *
  * @deprecated as of ArgoUml 0.13.5 (10-may-2003),
  *             replaced by nothing?,
- *             this class is part of the 'old'(pre 0.13.*) implementation of proppanels
+ *             this class is part of the 'old'(pre 0.13.*) 
+ *             implementation of proppanels
  *             that used reflection a lot.
  */
 public class UMLListMenuItem extends JMenuItem implements ActionListener {
-    protected static Logger cat = Logger.getLogger(UMLListMenuItem.class);
+    private static final Logger LOG = Logger.getLogger(UMLListMenuItem.class);
 
-    private Object _actionObj;
-    private int _index;
-    private Method _action;
-    static final Class[] _argClass = {
+    private Object actionObj;
+    private int index;
+    private Method action;
+    static final Class[] ARGCLASS = {
 	int.class 
     };
     
     /**
      *   Creates a new menu item.
      *   @param caption Caption for menu item.
-     *   @param actionObj object on which method will be invoked.
-     *   @param action name of method.
-     *   @param index integer value passed to method, typically position in list.
+     *   @param theActionObj object on which method will be invoked.
+     *   @param theAction name of method.
+     *   @param theIndex integer value passed to method, 
+     *                   typically position in list.
      */
-    public UMLListMenuItem(String caption, Object actionObj, String action, int index) {
+    public UMLListMenuItem(String caption, Object theActionObj, 
+            String theAction, int theIndex) {
         super(caption);
-        _actionObj = actionObj;
-        _index = index;
+        actionObj = theActionObj;
+        index = theIndex;
 
         //
         //  it would be a little more efficient to resolve the
         //     action only when the popup was invoked, however
         //     this will identify bad "actions" more readily
         try {
-            _action = _actionObj.getClass().getMethod(action, _argClass);
+            action = actionObj.getClass().getMethod(theAction, ARGCLASS);
         }
         catch (Exception e) {
-            cat.error("Exception in " + _action + " popup.", e);
+            LOG.error("Exception in " + action + " popup.", e);
             setEnabled(false);
         }
         
@@ -79,20 +82,23 @@ public class UMLListMenuItem extends JMenuItem implements ActionListener {
 
     /**
      *   This method is invoked when the menu item is selected.
-     *   @param event
+     *   @param event the event that invoked the menu
      */
     public void actionPerformed(final java.awt.event.ActionEvent event) {
         try {
 	    Object[] argValue = {
-		new Integer(_index)
+		new Integer(index)
 	    };
-            _action.invoke(_actionObj, argValue);
+            action.invoke(actionObj, argValue);
         }
         catch (InvocationTargetException ex) {
-            cat.error(ex.getTargetException().toString() + " is InvocationTargetException in UMLListMenuItem.actionPerformed()", ex);
+            LOG.error(ex.getTargetException().toString() 
+                + " is InvocationTargetException in " 
+                + "UMLListMenuItem.actionPerformed()", ex);
         }
         catch (Exception e) {
-            cat.error(e.toString() + " in UMLListMenuItem.actionPerformed()", e);
+            LOG.error(e.toString() 
+                + " in UMLListMenuItem.actionPerformed()", e);
         }
     }
 }

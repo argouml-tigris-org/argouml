@@ -25,7 +25,6 @@
 package org.argouml.uml.ui;
 
 import org.argouml.model.ModelFacade;
-import org.argouml.uml.ui.UMLModelElementListModel2;
 
 /**
  * @since Oct 12, 2002
@@ -52,7 +51,8 @@ public class UMLModelElementElementResidenceListModel
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(Object)
      */
     protected boolean isValidElement(Object/*MBase*/ o) {
-        return ModelFacade.isAElementResidence(o) && ModelFacade.getElementResidences(getTarget()).contains(o);
+        return ModelFacade.isAElementResidence(o) 
+            && ModelFacade.getElementResidences(getTarget()).contains(o);
     }
 
 }
