@@ -44,7 +44,7 @@ import org.tigris.gef.util.VectorSet;
 /** A CompoundCritic acts like a regular critic in that it checks the
  *  design and produces design feedback.  However, a CompoundCritic is
  *  composed of several regular critics that are applied in order.
- *  The first one the produces feedback ends the application.  This is
+ *  The first one that produces feedback ends the application.  This is
  *  useful when criticism can be ordered from specific to general:
  *  general feedback should not be produced if specific feedback is
  *  available.  For example, one critic might check for the legality
