@@ -26,6 +26,8 @@ package org.argouml.persistence;
 
 import java.io.InputStream;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 import java.util.StringTokenizer;
 
 import javax.xml.parsers.SAXParser;
@@ -592,8 +594,17 @@ public class PGMLParser extends org.tigris.gef.xml.pgml.PGMLParser {
         }
 
         try {
+            Map attributeMap = interpretStyle(st);
+
+            // TODO: This block should be replaced to use the factories
+            // in the Diagram subsystem. The model element type
+            // should be determined from the href attribute and then the
+            // diagram renderers called as described in issue 859
             Class nodeClass = Class.forName(translateClassName(clsName));
             f = (Fig) nodeClass.newInstance();
+            setStyleAttributes(f, attributeMap);
+            // End block
+            
             if (xStr != null && !xStr.equals("")) {
                 int x = Integer.parseInt(xStr);
                 int y = Integer.parseInt(yStr);
@@ -601,8 +612,6 @@ public class PGMLParser extends org.tigris.gef.xml.pgml.PGMLParser {
                 int h = Integer.parseInt(hStr);
                 f.setBounds(x, y, w, h);
             }
-
-            interpretStyle(st, f);
 
             if (f instanceof FigNode) {
                 FigNode fn = (FigNode) f;
@@ -638,6 +647,30 @@ public class PGMLParser extends org.tigris.gef.xml.pgml.PGMLParser {
     }
 
     /**
+     * Set the fig style attributes. This should move into
+     * the render factories as described in issue 859.
+     * @param fig the fig to style.
+     * @param attributeMap a map of name value pairs
+     */
+    private void setStyleAttributes(Fig fig, Map attributeMap) {
+        String name;
+        String value;
+        Iterator it = attributeMap.keySet().iterator();
+        while (it.hasNext()) {
+            name = (String) it.next();
+            value = (String) attributeMap.get(name);
+            
+            if ("operationsVisible".equals(name)) {
+                ((OperationsCompartmentContainer) fig)
+                    .setOperationsVisible(value.equalsIgnoreCase("true"));
+            } else if ("attributesVisible".equals(name)) {
+                ((AttributesCompartmentContainer) fig)
+                    .setAttributesVisible(value.equalsIgnoreCase("true"));
+            }
+        }
+    }
+    
+    /**
      * The StringTokenizer is expected to be positioned at the start a a string
      * of style identifiers in the format name=value;name=value;name=value....
      * Each name value pair is interpreted and the Fig configured accordingly.
@@ -647,33 +680,27 @@ public class PGMLParser extends org.tigris.gef.xml.pgml.PGMLParser {
      * and are used to show or hide the compartments within Class and Interface.
      * The default values are true.
      * @param st The StrinkTokenizer positioned at the first style identifier
-     * @param f The fig to style.
+     * @return a map of attributes
      */
-    private void interpretStyle(StringTokenizer st, Fig f) {
+    private Map interpretStyle(StringTokenizer st) {
+        Map map = new HashMap();
         String name;
         String value;
-        boolean bvalue;
+        Boolean bvalue;
         while (st.hasMoreElements()) {
             String namevaluepair = st.nextToken();
             int equalsPos = namevaluepair.indexOf('=');
             if (equalsPos < 0) {
                 name = namevaluepair;
                 value = "true";
-                bvalue = true;
             } else {
                 name = namevaluepair.substring(0, equalsPos);
                 value = namevaluepair.substring(equalsPos + 1);
-                bvalue = "true".equalsIgnoreCase(value);
             }
             
-            if ("operationsVisible".equals(name)) {
-                ((OperationsCompartmentContainer) f)
-                    .setOperationsVisible(bvalue);
-            } else if ("attributesVisible".equals(name)) {
-                ((AttributesCompartmentContainer) f)
-                    .setAttributesVisible(bvalue);
-            }
+            map.put(name, value);
         }
+        return map;
     }
 
     /**
