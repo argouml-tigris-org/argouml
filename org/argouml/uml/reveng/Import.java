@@ -328,7 +328,10 @@ public class Import {
 	 * @return true, if "Create diagrams from imported code" is selected
 	 */
 	public static boolean isCreateDiagramsChecked() {
+            if(create_diagrams != null)
 		return create_diagrams.isSelected();
+            else
+                return true;
 	}
 	
     /**
