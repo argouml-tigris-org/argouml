@@ -104,7 +104,7 @@ abstract public class PropPanelClassifier extends PropPanelNamespace {
       JList implementsList = new UMLList(new UMLClientDependencyListModel(this,null,true),true);
       implementsList.setBackground(getBackground());
       implementsList.setForeground(Color.blue);
-      implementsScroll= new JScrollPane(implementsList);
+      implementsScroll= new JScrollPane(implementsList,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 
       _modifiersPanel = new JPanel(new GridLayout(0,2));
       _modifiersPanel.add(new UMLCheckBox(localize("public"),this,new UMLEnumerationBooleanProperty("visibility",mclass,"getVisibility","setVisibility",MVisibilityKind.class,MVisibilityKind.PUBLIC,null)));
@@ -120,22 +120,22 @@ abstract public class PropPanelClassifier extends PropPanelNamespace {
       JList opsList = new UMLList(new UMLOperationsListModel(this,"feature",true),true);
       opsList.setForeground(Color.blue);
       opsList.setVisibleRowCount(1);
-      opsScroll = new JScrollPane(opsList);
+      opsScroll = new JScrollPane(opsList,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 
       JList attrList = new UMLList(new UMLAttributesListModel(this,"feature",true),true);
       attrList.setForeground(Color.blue);
       attrList.setVisibleRowCount(1);
-      attrScroll= new JScrollPane(attrList);
+      attrScroll= new JScrollPane(attrList,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 
       JList connectList = new UMLList(new UMLConnectionListModel(this,null,true),true);
       connectList.setForeground(Color.blue);
       connectList.setVisibleRowCount(1);
-      connectScroll= new JScrollPane(connectList);
+      connectScroll= new JScrollPane(connectList,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 
       JList innerList = new UMLList(new UMLClassifiersListModel(this,"ownedElement",true),true);
       innerList.setForeground(Color.blue);
       innerList.setVisibleRowCount(1);
-      innerScroll= new JScrollPane(innerList);
+      innerScroll= new JScrollPane(innerList,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 
   }
 
