@@ -33,19 +33,20 @@
       </indexterm>
 
       <para>
-Purpose - to generate a graphical view of the diagrams in the model with
-tools.
-The contents of the diagrams and model is modifiable.
+Purpose - to keep the information of objects in diagrams and to
+generate a graphical view.
+The contents of the diagrams and also the Uml elements that are
+represented are modifiable from the diagrams.
 TODO: Notation!
 </para>
       <para>
-The Diagrams will be located in <classname>org.argouml.uml.diagram</classname>.
+The Diagrams are be located in <classname>org.argouml.uml.diagram</classname>.
 </para>
       <para>
 The Diagrams is a View subsystem. <xref linkend="view_control_subsystems"></xref>.
 </para>
       <para>
-The Diagrams are depending on the Model and the GUI framework.
+The Diagrams are depending on the Model subsystem and the GUI framework.
 </para>
 
       <sect2>

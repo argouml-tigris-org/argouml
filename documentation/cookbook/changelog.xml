@@ -58,6 +58,20 @@ Change to XXX.
 
       <tbody valign="top">
         <row>
+          <entry>2005-02-01</entry>
+          <entry>
+Change to Model subsystem.
+(See <xref linkend="comp-model-purpose"/>,
+<xref linkend="diagrams"/>).
+Added the Persistence subsystem. More work is needed.
+(See <xref linkend="subsystem-persistence"/>).
+</entry>
+          <entry>Linus Tolke</entry>
+        </row>
+      </tbody>
+
+      <tbody valign="top">
+        <row>
           <entry>2005-01-30</entry>
           <entry>
 Change to the description on how to use the Model subsystem,

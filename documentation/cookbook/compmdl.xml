@@ -28,8 +28,8 @@
     <sect1 id="model">
       <title>Model</title>
       <para id="comp-model-purpose">
-Purpose - to provide the data structures that keep track of the model
-and the diagrams. 
+Purpose - to provide the data structures that keep track of the
+element in the UML model.
 This comes with a complete set of methods to modify the model
 and register interest in changes to the model.
 </para>
@@ -54,78 +54,43 @@ ArgoUML uses several factories and helper classes to manipulate the NSUML
 model. 
 The NSUML model itself does not define enough 'business' logic
 to be directly used and the factories and helper classes provide a
-centralized place for accessing this 'business' logic.
+set of interfaces that wraps all functions of NSUML.
 Per section of chapter 2 of the UML 1.3 specification there is one factory
-and one helper. They are placed in their own packages. The package name
-convention is:
-<classname>org.argouml.model.uml.<replaceable>SECTIONNAME</replaceable></classname>
-where <replaceable>SECTIONNAME</replaceable> is one of the following:
-<itemizedlist>
-	  <listitem>
-	    <para>foundation</para>
-	  </listitem>
-	  <listitem>
-	    <para>foundation.core</para>
-	  </listitem>
-	  <listitem>
-	    <para>foundation.extensionmechanisms</para>
-	  </listitem>
-	  <listitem>
-	    <para>foundation.datatypes</para>
-	  </listitem>
-	  <listitem>
-	    <para>behavioralelements</para>
-	  </listitem>
-	  <listitem>
-	    <para>behavioralelements.commonbehavior</para>
-	  </listitem>
-	  <listitem>
-	    <para>behavioralelements.statemachines</para>
-	  </listitem>
-	  <listitem>
-	    <para>behavioralelements.usecases</para>
-	  </listitem>
-	  <listitem>
-	    <para>behavioralelements.collaborations</para>
-	  </listitem>
-	  <listitem>
-	    <para>behavioralelements.activitygraphs</para>
-	  </listitem>
-	  <listitem>
-	    <para>modelmanagement</para>
-	  </listitem>
-	</itemizedlist>
+and one helper. 
 </para>
       <para>
-Each package has at least a helper and a factory in it.
 The factories contain all methods that deal with
 creating and building model elements.
 The helpers contain all utility methods needed to manipulate
 the model elements.
 </para>
       <para>
-Both helpers and factories are singletons.
-The static method to access them is
-<methodname>getFactory</methodname> for the factory
-and <methodname>getHelper</methodname> for the helper.
+Both helpers and factories (and the Facade and ModelEventPump)
+are interfaces that are fetched through static methods in the Model object.
+Each implementation must provide objects for each of these interfaces.
+</para>
+      <para>
+In the NSUML implementation factories also contain delete methods
+but they are only used internally within the Model subsystem.
 </para>
       <sect2 id="model_factories">
 	<title>Factories</title>
 	<para>
-The factories contain at least for each model element a create method.
+The factories contain in most cases a create method for each model element.
 Example: <methodname>createClass</methodname>
-resides in <classname>CoreFactory</classname> in the package
-<classname>org.argouml.model.uml.foundation.core</classname>.
+resides in <classname>CoreFactory</classname>-interface.
+</para>
+    <para>
 Besides that, there are several build methods to build classes.
 The build methods have a signature like
 <methodsynopsis>
-	    <modifier>public</modifier>
-	    <type><replaceable>MODELELEMENT</replaceable></type>
-	    <methodname>build<replaceable>MODELELEMENTNAME</replaceable></methodname>
-	    <methodparam>
-	      <parameter><replaceable>params</replaceable></parameter>
-	    </methodparam>
-	  </methodsynopsis>.
+	<modifier>public</modifier>
+	<type>Object</type>
+	<methodname>build<replaceable>MODELELEMENTNAME</replaceable></methodname>
+	<methodparam>
+	  <parameter><replaceable>params</replaceable></parameter>
+	</methodparam>
+      </methodsynopsis>.
 </para>
 	<para>
 Each build method verifies the wellformedness rules
@@ -136,16 +101,18 @@ non-well-formed XMI which leads to saving/loading issues and
 all kinds of illegal states of ArgoUML.
 </para>
 	<para>
-If you want to create an element you shall use the create methods
+If you want to create an element you shall use the build or create methods
 in the factories.
 You are strongly advised to use a build method or, if there is
 none that suits your needs, to write a new one reusing the already
 existing build methods and utility methods in the helpers.
-One reason for this is that the event listeners for
+The reason for this is that the event listeners for
 the newly created model element are setup correctly.
 </para>
         <para>
-TODO: Am I allowed to call the factories from any thread?
+Question: Am I allowed to call the factories from any thread?
+Answer: The current checks are not written to allow for multiple threads
+so don't!
 </para>
       </sect2>
       <sect2 id="model_helpers">
@@ -155,7 +122,7 @@ The helpers contain all utility methods for manipulating model elements.
 For example, they contain methods to get all model elements
 of a certain class out of the model
 (see <methodname>getAllModelelementsOfKind</methodname> in 
-<classname>ModelmanagementHelper</classname>).
+<classname>ModelManagementHelper</classname>).
 </para>
 	<para>
 To find a utility method you need to know where it is.
@@ -174,7 +141,9 @@ Then you have to look in both corresponding helpers and you
 will probably find what you are searching for.
 </para>
         <para>
-TODO: Am I allowed to call the helpers from any thread?
+Question: Am I allowed to call the helpers from any thread?
+Answer: The current checks are not written to allow for multiple threads
+so don't!
 </para>
       </sect2>
 
