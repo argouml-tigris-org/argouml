@@ -76,7 +76,7 @@ public class ActionGenerationSettings extends UMLAction {
     /**
      * @return Returns the SINGLETON.
      */
-    public static ActionGenerationSettings getSingleton() {
+    public static ActionGenerationSettings getInstance() {
         return SINGLETON;
     }
 } /* end class ActionGenerationSettings */
