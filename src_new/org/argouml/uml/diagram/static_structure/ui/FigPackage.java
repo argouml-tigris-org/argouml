@@ -431,6 +431,7 @@ public class FigPackage extends FigNodeModelElement {
   // user interaction methods
 
   public void setEnclosingFig(Fig encloser) {
+    Fig oldEncloser = getEnclosingFig();
     super.setEnclosingFig(encloser);
     if (!(getOwner() instanceof MModelElement)) return;
     MModelElement me = (MModelElement) getOwner();
@@ -438,8 +439,9 @@ public class FigPackage extends FigNodeModelElement {
     ProjectBrowser pb = ProjectBrowser.TheInstance;
     try {
        // If moved into an Package
-        if (encloser != null && encloser.getOwner() instanceof MPackage) {
-             me.setNamespace((MNamespace) encloser.getOwner());
+        if (encloser != null && oldEncloser != encloser &&
+	    encloser.getOwner() instanceof MPackage) {
+            me.setNamespace((MNamespace) encloser.getOwner());
         }
 
         // If default Namespace is not already set
