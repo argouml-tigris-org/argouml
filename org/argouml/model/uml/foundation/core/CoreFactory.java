@@ -243,16 +243,7 @@ public class CoreFactory extends AbstractUmlModelFactory {
 	return modelElement;
 	}
 
-	/** Create an empty but initialized instance of a UML ComponentInstance.
-	 *
-	 *  @return an initialized UML Component instance.
-	 */
-	public MComponentInstance createComponentInstance() {
-	MComponentInstance modelElement =
-		MFactory.getDefaultFactory().createComponentInstance();
-	super.initialize(modelElement);
-	return modelElement;
-	}
+	
 
     /** Create an empty but initialized instance of a UML Constraint.
      *
