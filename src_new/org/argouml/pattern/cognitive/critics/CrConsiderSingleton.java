@@ -51,6 +51,7 @@ public class CrConsiderSingleton extends CrUML {
     addTrigger("stereotype");
     addTrigger("structuralFeature");
     addTrigger("associationEnd");
+    setResource("CrConsiderSingleton");
   }
 
   protected void sd(String s) { setDescription(s); }
