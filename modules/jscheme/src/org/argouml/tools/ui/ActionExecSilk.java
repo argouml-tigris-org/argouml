@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2002 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -24,43 +24,43 @@
 
 package org.argouml.tools.ui;
 
-import org.argouml.application.api.*;
-import org.argouml.uml.ui.*;
-import org.argouml.kernel.*;
-import org.argouml.ui.*;
-import org.argouml.uml.reveng.*;
+import java.awt.event.ActionEvent;
+import java.io.File;
+import java.util.Vector;
 
-import org.tigris.gef.base.*;
+import javax.swing.JFileChooser;
+import javax.swing.JMenuItem;
 
-import ru.novosoft.uml.foundation.core.*;
+import org.apache.log4j.Logger;
+import org.argouml.application.api.PluggableMenu;
+import org.argouml.i18n.Translator;
+import org.argouml.ui.ProjectBrowser;
+import org.argouml.uml.ui.UMLAction;
+import org.tigris.gef.base.Globals;
 
-import java.awt.event.*;
-import java.io.*;
-import java.util.*;
+import silk.Pair;
+import silk.Symbol;
 
-import javax.swing.*;
-
-import silk.*;
-
-/* class ActionExecSilk */
+/** class ActionExecSilk */
 public class ActionExecSilk extends UMLAction
-    implements PluggableMenu 
-{
+    implements PluggableMenu {
 
     ////////////////////////////////////////////////////////////////
     // static variables
+    
+    private static final Logger LOG =
+        Logger.getLogger(ActionExecSilk.class);
 
-    public static ActionExecSilk SINGLETON = new ActionExecSilk(); 
+    private static JMenuItem menuItem = null;
 
-    private static JMenuItem _menuItem = null;
-
-    public static final String separator = "/"; //System.getProperty("file.separator");
-
-    private final static String SILK_CLASS = "silk.Scheme";
+    private static final String SILK_CLASS = "silk.Scheme";
 
     ////////////////////////////////////////////////////////////////
     // constructors
 
+    /**
+     * Constructor.
+     */
     public ActionExecSilk() {
         super("Exec SILK script...", NO_ICON);
     }
@@ -69,17 +69,18 @@ public class ActionExecSilk extends UMLAction
     ////////////////////////////////////////////////////////////////
     // main methods
 
+    /**
+     * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+     */
     public void actionPerformed(ActionEvent event) {
         ProjectBrowser pb = ProjectBrowser.getInstance();
-	Object target = pb.getDetailsTarget();
-	
-	// if (!(target instanceof MClassifier)) return;
-
-        try {
+	try {
             String directory = Globals.getLastDirectory();
             JFileChooser chooser = new JFileChooser(directory);
 
-            if (chooser == null) chooser = new JFileChooser();
+            if (chooser == null) {
+                chooser = new JFileChooser();
+            }
 
             //chooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
             chooser.setDialogTitle("Exec SILK script");
@@ -96,78 +97,119 @@ public class ActionExecSilk extends UMLAction
 
 		    Symbol init = Symbol.intern("main");      
 		    if (init != null) {
-			silk.Scheme.eval(new Pair(init, new Pair(this, Pair.EMPTY)));
+			silk.Scheme.eval(
+			        new Pair(init,
+			                new Pair(this, Pair.EMPTY)));
 		    }
                 }
             }
         } catch (Exception exception) {
-            Argo.log.error("Exception in ActionExecSilk", exception);
+            LOG.error("Exception in ActionExecSilk", exception);
         }
     }
 
 
 
+    /**
+     * @see org.argouml.application.api.ArgoModule#initializeModule()
+     */
     public boolean initializeModule() {
         boolean initialized = false;
 	try {
             Class c = Class.forName(SILK_CLASS);
 	    // Make sure we can instantiate it also.
-	    Object o = c.newInstance();
-            Argo.log.info ("+----------------------------+");
-            Argo.log.info ("| JScheme scripting enabled! |");
-            Argo.log.info ("+----------------------------+");
+	    c.newInstance();
+            LOG.info("JScheme scripting enabled!");
 	    initialized = true;
-	}
-	catch (Exception e) {
-	    Argo.log.error("JScheme does not appear to be in the classpath.");
-	    Argo.log.error("Unable to initialize JScheme scripting plugin.");
+	} catch (Exception e) {
+	    LOG.error("JScheme does not appear to be in the classpath.");
+	    LOG.error("Unable to initialize JScheme scripting plugin.");
 	}
         return initialized;
     }
 
+    /**
+     * @see org.argouml.application.api.PluggableMenu#buildContext(
+     *          javax.swing.JMenuItem, java.lang.String)
+     */
     public Object[] buildContext(JMenuItem a, String b) {
         return new Object[] {
 	    a, b
 	};
     }
 
+    /**
+     * @see org.argouml.application.api.ArgoModule#setModuleEnabled(boolean)
+     */
     public void setModuleEnabled(boolean enabled) { }
+
+    /**
+     * @see org.argouml.application.api.ArgoModule#isModuleEnabled()
+     */
     public boolean isModuleEnabled() { return true; }
+
+    /**
+     * @see org.argouml.application.api.ArgoModule#getModulePopUpActions(
+     *         java.util.Vector, java.lang.Object)
+     */
     public Vector getModulePopUpActions(Vector v, Object o) { return null; }
+
+    /**
+     * @see org.argouml.application.api.ArgoModule#shutdownModule()
+     */
     public boolean shutdownModule() { return true; }
 
+    /**
+     * @see org.argouml.application.api.ArgoModule#getModuleName()
+     */
     public String getModuleName() { return "ActionExecSilk"; }
+    /**
+     * @see org.argouml.application.api.ArgoModule#getModuleDescription()
+     */
     public String getModuleDescription() { return "JScheme Scripting"; }
+    /**
+     * @see org.argouml.application.api.ArgoModule#getModuleAuthor()
+     */
     public String getModuleAuthor() { return "Andreas Rueckert"; }
+    /**
+     * @see org.argouml.application.api.ArgoModule#getModuleVersion()
+     */
     public String getModuleVersion() { return "0.9.4"; }
+    /**
+     * @see org.argouml.application.api.ArgoModule#getModuleKey()
+     */
     public String getModuleKey() { return "module.tools.scripting.jscheme"; }
 
+    /**
+     * @see org.argouml.application.api.Pluggable#inContext(java.lang.Object[])
+     */
     public boolean inContext(Object[] o) {
-        if (o.length < 2) return false;
+        if (o.length < 2) {
+            return false;
+        }
 	// Allow ourselves on the "Tools" menu.
-	if ((o[0] instanceof JMenuItem) &&
-	    (PluggableMenu.KEY_TOOLS.equals(o[1]))) {
+	if ((o[0] instanceof JMenuItem)
+	        && (PluggableMenu.KEY_TOOLS.equals(o[1]))) {
 	    return true;
 	}
         return false;
     }
 
-    public JMenuItem getMenuItem(JMenuItem mi, String s) {
-        return getMenuItem(buildContext(mi, s));
-    }
-
+    /**
+     * @see org.argouml.application.api.PluggableMenu#getMenuItem(java.lang.Object[])
+     */
     public JMenuItem getMenuItem(Object[]  context) {
 
         if (!inContext(context)) {
 	    return null;
 	}
 
-        if (_menuItem == null) {
-            _menuItem = new JMenuItem(Argo.localize(Argo.MENU_BUNDLE,
-	                                            "Exec Silk Script..."));
-	    _menuItem.addActionListener(this);
+        if (menuItem == null) {
+            menuItem =
+                new JMenuItem(Translator.localize("Exec Silk Script..."));
+	    menuItem.addActionListener(this);
 	}
-        return _menuItem;
+        return menuItem;
     }
 
 }
