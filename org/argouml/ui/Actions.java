@@ -2010,13 +2010,13 @@ class ActionCompartmentDisplay extends UMLAction {
     if( sels.size() == 1 ) {
       Selection sel = (Selection) sels.firstElement();
       Fig f = sel.getContent();
-      if (compartment.equals("Show MAttribute Compartment"))
+      if (compartment.equals("Show Attribute Compartment"))
         ((FigClass)f).setAttributeVisible(display);
-      else if (compartment.equals("Hide MAttribute Compartment"))
+      else if (compartment.equals("Hide Attribute Compartment"))
         ((FigClass)f).setAttributeVisible(display);
-      else if (compartment.equals("Show MOperation Compartment"))
+      else if (compartment.equals("Show Operation Compartment"))
         ((FigClass)f).setOperationVisible(display);
-      else if (compartment.equals("Hide MOperation Compartment"))
+      else if (compartment.equals("Hide Operation Compartment"))
         ((FigClass)f).setOperationVisible(display);
       else if (compartment.equals("Show All Compartments")) {
         ((FigClass)f).setAttributeVisible(display);
