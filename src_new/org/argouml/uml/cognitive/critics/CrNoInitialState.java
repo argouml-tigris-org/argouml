@@ -36,7 +36,9 @@ import ru.novosoft.uml.behavior.state_machines.*;
 
 import org.argouml.cognitive.*;
 
-/** A critic to detect when a state has no outgoing transitions. */
+/** A critic to detect whether the Compositestate attached to a 
+ *  Statemachine has no initial state. 
+ */
 
 public class CrNoInitialState extends CrUML {
 
@@ -49,6 +51,10 @@ public class CrNoInitialState extends CrUML {
   public boolean predicate2(Object dm, Designer dsgr) {
     if (!(dm instanceof MCompositeState)) return NO_PROBLEM;
     MCompositeState cs = (MCompositeState) dm;
+    
+    // if this composite state is not attached to a statemachine
+    // it is not the toplevel composite state.
+    if (cs.getStateMachine() == null) return NO_PROBLEM;
     Collection peers = cs.getSubvertices();
     int initialStateCount = 0;
     if (peers == null) return PROBLEM_FOUND;
