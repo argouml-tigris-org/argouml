@@ -80,39 +80,42 @@ public class CrConsiderSingleton extends CrUML {
   public boolean predicate2(Object dm, Designer dsgr) {
     if (!(dm instanceof MClass)) return NO_PROBLEM;
     MClass cls = (MClass) dm;
-    Vector str = new Vector(MMUtil.SINGLETON.getAttributes(cls));
-    Vector ends = new Vector(cls.getAssociationEnds());
+    Collection str = MMUtil.SINGLETON.getAttributes(cls);
+    Collection ends = cls.getAssociationEnds();
 
     //if it is already a Singleton, nevermind
     MStereotype st = cls.getStereotype();
     if (st != null) {
  	if (st.getName().equals("Singleton")) return NO_PROBLEM;
-     
+
     }
 
     // if it has instance vars, no specific reason for Singleton
     if (str != null) {
-      java.util.Enumeration strEnum = str.elements();
-      while (strEnum.hasMoreElements()) {
-	MStructuralFeature sf = (MStructuralFeature) strEnum.nextElement();
-	if (MScopeKind.INSTANCE.equals(sf.getTargetScope())) return NO_PROBLEM;
-      }
+        Iterator strEnum = str.iterator();
+        while (strEnum.hasNext()) {
+	    MStructuralFeature sf = (MStructuralFeature) strEnum.next();
+	    if (MScopeKind.INSTANCE.equals(sf.getTargetScope())) return NO_PROBLEM;
+        }
     }
 
     // if it has outgoing assocs, no specific reason for Singleton
     if (ends != null) {
-      java.util.Enumeration endEnum = ends.elements();
-      while (endEnum.hasMoreElements()) {
-	MAssociationEnd ae = (MAssociationEnd) endEnum.nextElement();
-	MAssociation a = ae.getAssociation();
-	Vector connections = new Vector(a.getConnections());
-	java.util.Enumeration connEnum = connections.elements();
-	while (connEnum.hasMoreElements()) {
-	  MAssociationEnd ae2 = (MAssociationEnd) connEnum.nextElement();
-	  if (ae2 == ae) continue;
-	  if (ae2.isNavigable()) return NO_PROBLEM;
-	}
-      }
+        Iterator endEnum = ends.iterator();
+        while (endEnum.hasNext()) {
+	    MAssociationEnd ae = (MAssociationEnd) endEnum.next();
+	    MAssociation a = ae.getAssociation();
+            Collection connections = a.getConnections();
+            if(connections != null) {
+                Iterator iter = connections.iterator();
+                Object end = null;
+                while(iter.hasNext()) {
+                    end = iter.next();
+                    if(end == ae) continue;
+                    if(((MAssociationEnd) end).isNavigable()) return NO_PROBLEM;
+                }
+            }
+        }
     }
     // if it has no ivars, suggest the designer consider the Singleton Pattern
     return PROBLEM_FOUND;

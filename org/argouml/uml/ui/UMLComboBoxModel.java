@@ -38,7 +38,7 @@ public class UMLComboBoxModel extends AbstractListModel implements
     ComboBoxModel, UMLUserInterfaceComponent, ActionListener {
 
     private UMLUserInterfaceContainer _container;
-    private String _property;
+    private String _property;fi
     //
     //   this method returns a boolean indicating
     //      whether the specific element should be allowed in the combo box
