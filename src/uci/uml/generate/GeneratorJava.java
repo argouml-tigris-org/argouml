@@ -150,9 +150,14 @@ public class GeneratorJava extends Generator {
 
     // pick out return type
     MParameter rp = MMUtil.SINGLETON.getReturnParameter(op);
-    MClassifier returnType = rp.getType();
-    if (returnType == null && !nameStr.equals(clsName)) s += "void ";
-    else if (returnType != null) s += generateClassifierRef(returnType) + " ";
+	if ( rp != null) {
+		MClassifier returnType = rp.getType();
+		if (returnType == null && !nameStr.equals(clsName)) s += "void ";
+		else if (returnType != null) s += generateClassifierRef(returnType) + " ";
+	} else {
+		if (nameStr.equals(clsName)) s += " "; // this is a constructor!
+	}
+		
 
     // name and params
     Vector params = new Vector(op.getParameters());
