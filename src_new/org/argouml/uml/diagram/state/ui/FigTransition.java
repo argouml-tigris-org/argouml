@@ -123,10 +123,14 @@ public class FigTransition extends FigEdgeModelElement {
         MStateVertex destOwner = (MStateVertex)dest.getOwner();
         MStateVertex sourceOwner = (MStateVertex)source.getOwner();
         Set set = new HashSet();
-        set.addAll(destOwner.getOutgoings());
-        set.addAll(destOwner.getIncomings());
-        set.addAll(sourceOwner.getOutgoings());
-        set.addAll(sourceOwner.getIncomings());
+        if (destOwner != null) {
+        	set.addAll(destOwner.getOutgoings());
+        	set.addAll(destOwner.getIncomings());
+        }
+        if (sourceOwner != null) {
+        	set.addAll(sourceOwner.getOutgoings());
+        	set.addAll(sourceOwner.getIncomings());
+        }
         Vector retVector = new Vector();
         retVector.addAll(set);
         return retVector;                  
