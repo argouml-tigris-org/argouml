@@ -34,7 +34,7 @@ public class PropPanelNodeInstance extends PropPanelInstance {
         super();
     }
 
-    protected boolean isAcceptibleBaseMetaClass(String baseClass) {
+    public boolean isAcceptibleBaseMetaClass(String baseClass) {
         return baseClass.equals("NodeInstance") ||
             baseClass.equals("Instance");
     }

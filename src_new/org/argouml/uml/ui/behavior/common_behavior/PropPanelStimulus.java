@@ -57,12 +57,12 @@ public class PropPanelStimulus extends PropPanel {
 
     addCaption(new JLabel("Sender:"),3,0,0);
     UMLComboBoxModel senderModel = new UMLComboBoxModel(this,"isAcceptibleSender",
-        "sender","getSender","setSender",false,MClassifier.class,true);
+        "sender","getSender","setSender",false,MInstance.class,true);
     addField(new UMLComboBox(senderModel),3,0,0);
 
     addCaption(new JLabel("Receiver:"),4,0,1);
-    UMLComboBoxModel senderModel = new UMLComboBoxModel(this,"isAcceptibleReceiver",
-        "receiver","getReceiver","setReceiver",false,MClassifier.class,true);
+    UMLComboBoxModel receiverModel = new UMLComboBoxModel(this,"isAcceptibleReceiver",
+        "receiver","getReceiver","setReceiver",false,MInstance.class,true);
     addField(new UMLComboBox(receiverModel),4,0,1);
 
     //
@@ -85,16 +85,16 @@ public class PropPanelStimulus extends PropPanel {
 
   }
 
-    protected boolean isAcceptibleBaseMetaClass(String baseClass) {
+    public boolean isAcceptibleBaseMetaClass(String baseClass) {
         return baseClass.equals("Stimulus");
     }
 
-    protected boolean isAcceptibleSender(MModelElement classifier) {
+    public boolean isAcceptibleSender(MModelElement classifier) {
         return classifier instanceof MClassifier;
     }
 
-    protected MClassifier getSender() {
-        MClassifier sender = null;
+    public MInstance getSender() {
+        MInstance sender = null;
         Object target = getTarget();
         if(target instanceof MStimulus) {
             sender =  ((MStimulus) target).getSender();
@@ -102,45 +102,45 @@ public class PropPanelStimulus extends PropPanel {
         return sender;
     }
 
-    protected void setSender(MModelElement element) {
+    public void setSender(MInstance element) {
         Object target = getTarget();
-        if(target instanceof MStimulus && element instanceof MClassifier) {
-            ((MStimulus) target).setSender((MClassifier) element);
+        if(target instanceof MStimulus) {
+            ((MStimulus) target).setSender(element);
         }
     }
 
 
 
 
-    protected boolean isAcceptibleReceiver(MModelElement classifier) {
+    public boolean isAcceptibleReceiver(MModelElement classifier) {
         return classifier instanceof MClassifier;
     }
 
-    protected MClassifier getReceiver() {
-        MClassifier receiver = null;
+    public MInstance getReceiver() {
+        MInstance receiver = null;
         Object target = getTarget();
         if(target instanceof MStimulus) {
-            receiver =  ((MStimulus) target).getReciever();
+            receiver =  ((MStimulus) target).getReceiver();
         }
         return receiver;
     }
 
-    protected void setReceiver(MModelElement element) {
+    public void setReceiver(MInstance element) {
         Object target = getTarget();
-        if(target instanceof MStimulus && element instanceof MClassifier) {
-            ((MStimulus) target).setReceiver((MClassifier) element);
+        if(target instanceof MStimulus) {
+            ((MStimulus) target).setReceiver(element);
         }
     }
 
-    protected boolean isAcceptibleAssociation(MModelElement classifier) {
+    public boolean isAcceptibleAssociation(MModelElement classifier) {
         return classifier instanceof MAssociation;
     }
 
-    protected MAssociation getAssociation() {
+    public MAssociation getAssociation() {
         MAssociation association = null;
         Object target = getTarget();
         if(target instanceof MStimulus) {
-            MLink link = ((MStimulus) target).getLink();
+            MLink link = ((MStimulus) target).getCommunicationLink();
             if(link != null) {
                 association = link.getAssociation();
             }
@@ -148,24 +148,25 @@ public class PropPanelStimulus extends PropPanel {
         return association;
     }
 
-    protected void setAssociation(MModelElement element) {
+    public void setAssociation(MAssociation element) {
         Object target = getTarget();
-        if(target instanceof MStimulus && element instanceof MAssociation) {
+        if(target instanceof MStimulus) {
             MStimulus stimulus = (MStimulus) target;
-            MLink link = stimulus.getLink();
+            MLink link = stimulus.getCommunicationLink();
             if(link == null) {
                 link = stimulus.getFactory().createLink();
                 if(link != null) {
                     link.addStimulus(stimulus);
-                    stimulus.setCommunication(link);
+                    stimulus.setCommunicationLink(link);
                 }
             }
             MAssociation oldAssoc = link.getAssociation();
             if(oldAssoc != element) {
-                link.setAssociation((MAssociation) element);
-                link.setConnections(ne
-            link.
-            ((MStimulus) target).setReceiver((MClassifier) element);
+                link.setAssociation(element);
+                //
+                //  TODO: more needs to go here
+                //
+            }
         }
     }
 
