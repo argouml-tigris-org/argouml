@@ -64,8 +64,6 @@ public class UMLCognitiveResourceBundle_de extends ListResourceBundle {
         {"decision.storage", "Speicher"},
         {"decision.uncategorized", "Nicht kategorisiert"},
 
-        {"goal.unspecified", "Nicht spezifiziert"},
-
         {"knowledge.completeness", "Vollst\u00e4ndigkeit"},
         {"knowledge.consistency", "Konsistenz"},
         {"knowledge.correctness", "Fehlerfreiheit"},
@@ -77,35 +75,6 @@ public class UMLCognitiveResourceBundle_de extends ListResourceBundle {
         {"knowledge.semantics", "Semantik"},
         {"knowledge.syntax", "Syntax"},
         {"knowledge.tool", "Werkzeug"},
-
-        {"todopane.label.no-items", " Keine Elemente "},
-        {"todopane.label.item", " {0} Element "},
-        {"todopane.label.items", " {0} Elemente "},
-
-//        {"docpane.label.documentation", "Dokumentation"},
-//        {"docpane.label.author", "Autor"},
-//        {"docpane.label.version", "Version"},
-//        {"docpane.label.since", "Seit"},
-//        {"docpane.label.deprecated", "Veraltet"},
-//        {"docpane.label.see", "Siehe"},
-
-//        {"stylepane.label.bounds", "Grenzen"},
-//        {"stylepane.label.fill", "F\u00fcllen"},
-//        {"stylepane.label.no-fill", "Nicht f\u00fcllen"},
-//        {"stylepane.label.line", "Linie"},
-//        {"stylepane.label.no-line", "Keine Linie"},
-//        {"stylepane.label.shadow", "Schatten"},
-//        {"stylepane.label.no-shadow", "Kein Schatten"},
-//        {"stylepane.label.custom", "Angepasst"},
-
-        {"taggedvaluespane.label.tag", "Markierung"},
-        {"taggedvaluespane.label.value", "Wert"},
-
-        {"button.open", "\u00d6ffnen"},
-        {"button.back", "<< Vorheriges"},
-        {"button.next", "N\u00e4chstes >>"},
-        {"button.finish", "Fertig"},
-        {"button.help", "Hilfe"},
 
         {"mnemonic.button.back", "V"},
         {"mnemonic.button.next", "N"},

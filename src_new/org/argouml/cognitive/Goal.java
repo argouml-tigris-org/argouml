@@ -32,7 +32,7 @@ public class Goal {
     
     ////////////////////////////////////////////////////////////////
     // constants
-    public static final Goal UNSPEC = new Goal("goal.unspecified", 1);
+    public static final Goal UNSPEC = new Goal("label.goal.unspecified", 1);
 		       
     ////////////////////////////////////////////////////////////////
     // instance variables
@@ -42,7 +42,7 @@ public class Goal {
     ////////////////////////////////////////////////////////////////
     // constructor
     public Goal(String n, int p) {
-	setName(Translator.localize("Cognitive", n));
+	setName(Translator.localize(n));
 	setPriority(p);
     }
 				   

@@ -194,7 +194,6 @@ class TableModelTaggedValues extends AbstractTableModel
 	       DelayedVChangeListener,
 	       MElementListener
 {
-    private static final String BUNDLE = "Cognitive";
 
     ////////////////
     // instance varables
@@ -225,8 +224,8 @@ class TableModelTaggedValues extends AbstractTableModel
     public int getColumnCount() { return 2; }
 
     public String  getColumnName(int c) {
-	if (c == 0) return Translator.localize(BUNDLE, "taggedvaluespane.label.tag");
-	if (c == 1) return Translator.localize(BUNDLE, "taggedvaluespane.label.value");
+	if (c == 0) return Translator.localize("label.taggedvaluespane.tag");
+	if (c == 1) return Translator.localize("label.taggedvaluespane.value");
 	return "XXX";
     }
 

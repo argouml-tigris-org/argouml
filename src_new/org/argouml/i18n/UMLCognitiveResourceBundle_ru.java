@@ -53,8 +53,6 @@ public class UMLCognitiveResourceBundle_ru extends ListResourceBundle {
         {"decision.storage", "\u0425\u0440\u0430\u043d\u0438\u043b\u0438\u0449\u0435"},
         {"decision.uncategorized", "\u041d\u0435\u043a\u0430\u0442\u0435\u0433\u043e\u0440\u0438\u0437\u0438\u0440\u043e\u0432\u0430\u043d\u043d\u043e"},
 
-        {"goal.unspecified", "\u041d\u0435\u0441\u043f\u0435\u0446\u0438\u0444\u0438\u0446\u0438\u0440\u043e\u0432\u0430\u043d\u043d\u043e"},
-
         {"knowledge.completeness", "\u041f\u043e\u043b\u043d\u043e\u0442\u0430"},
         {"knowledge.consistency", "\u041a\u043e\u043d\u0441\u0438\u0441\u0442\u0435\u043d\u0442\u043d\u043e\u0441\u0442\u044c"},
         {"knowledge.correctness", "\u041a\u043e\u0440\u0440\u0435\u043a\u0442\u043d\u043e\u0441\u0442\u044c"},
@@ -66,35 +64,6 @@ public class UMLCognitiveResourceBundle_ru extends ListResourceBundle {
         {"knowledge.semantics", "\u0421\u0435\u043c\u0430\u043d\u0442\u0438\u043a\u0430"},
         {"knowledge.syntax", "\u0421\u0438\u043d\u0442\u0430\u043a\u0441"},
         {"knowledge.tool", "\u0418\u043d\u0441\u0442\u0440\u0443\u043c\u0435\u043d\u0442"},
-
-        {"todopane.label.no-items", " No Items "},
-        {"todopane.label.item", " {0} Item "},
-        {"todopane.label.items", " {0} Items "},
-
-        {"docpane.label.documentation", "\u0414\u043e\u043a\u0443\u043c\u0435\u043d\u0442\u0430\u0446\u0438\u044f"},
-        {"docpane.label.author", "\u0410\u0432\u0442\u043e\u0440"},
-        {"docpane.label.version", "\u0412\u0435\u0440\u0441\u0438\u044f"},
-        {"docpane.label.since", "\u0441"},
-        {"docpane.label.deprecated", "\u041d\u0435 \u0440\u0435\u043a\u043e\u043c\u0435\u043d\u0434\u043e\u0432\u0430\u043d\u043e"},
-        {"docpane.label.see", "\u0421\u043c."},
-
-        {"stylepane.label.bounds", "\u0413\u0440\u0430\u043d\u0438\u0446\u044b"},
-        {"stylepane.label.fill", "\u0417\u0430\u043f\u043e\u043b\u043d\u0438\u0442\u044c"},
-        {"stylepane.label.no-fill", "\u041d\u0435 \u0437\u0430\u043f\u043e\u043b\u043d\u044f\u0442\u044c"},
-        {"stylepane.label.line", "\u041b\u0438\u043d\u0438\u044f"},
-        {"stylepane.label.no-line", "\u041d\u0435 \u043b\u0438\u043d\u0438\u044f"},
-        {"stylepane.label.shadow", "\u0422\u0435\u043d\u044c"},
-        {"stylepane.label.no-shadow", "\u041d\u0435 \u0442\u0435\u043d\u044c"},
-        {"stylepane.label.custom", "\u041a\u043b\u0438\u0435\u043d\u0442\u0441\u043a\u0438\u0439"},
-
-        {"taggedvaluespane.label.tag", "\u042f\u0440\u043b\u044b\u043a"},
-        {"taggedvaluespane.label.value", "\u0417\u043d\u0430\u0447\u0435\u043d\u0438\u0435"},
-
-        {"button.open", "\u041e\u0442\u043a\u0440\u044b\u0442\u044c"},
-        {"button.back", "\u041d\u0430\u0437\u0430\u0434"},
-        {"button.next", "\u0421\u043b\u0435\u0434\u0443\u044e\u0449\u0438\u0439"},
-        {"button.finish", "\u0417\u0430\u043a\u043e\u043d\u0447\u0438\u0442\u044c"},
-        {"button.help", "\u041f\u043e\u043c\u043e\u0449\u044c"},
 
         {"mnemonic.button.back", "B"},
         {"mnemonic.button.next", "N"},

@@ -64,7 +64,6 @@ public class WizStep extends JPanel
 
     ////////////////////////////////////////////////////////////////
     // constants
-    private static final String BUNDLE = "Cognitive";
     public static final ImageIcon WIZ_ICON =
 	ResourceLoaderWrapper.getResourceLoaderWrapper()
 	    .lookupIconResource("Wiz", "Wiz");
@@ -73,10 +72,10 @@ public class WizStep extends JPanel
     // instance variables
 
     JPanel  _mainPanel = new JPanel();
-    JButton _backButton = new JButton(Translator.localize(BUNDLE, "button.back"));
-    JButton _nextButton = new JButton(Translator.localize(BUNDLE, "button.next"));
-    JButton _finishButton = new JButton(Translator.localize(BUNDLE, "button.finish"));
-    JButton _helpButton = new JButton(Translator.localize(BUNDLE, "button.help"));
+    JButton _backButton = new JButton(Translator.localize("button.back"));
+    JButton _nextButton = new JButton(Translator.localize("button.next"));
+    JButton _finishButton = new JButton(Translator.localize("button.finish"));
+    JButton _helpButton = new JButton(Translator.localize("button.help"));
     JPanel  _buttonPanel = new JPanel();
   
     /**
@@ -85,7 +84,7 @@ public class WizStep extends JPanel
     private Object _target;
 
     protected static final void setMnemonic(JButton b, String key) {
-	String m = Translator.localize(BUNDLE, key);
+	String m = Translator.localize("Cognitive", key);
 	if (m == null)
 	    return;
 	if (m.length() == 1) {

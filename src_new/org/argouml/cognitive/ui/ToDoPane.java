@@ -210,8 +210,7 @@ public class ToDoPane extends JPanel
         if (doSplash) {
             SplashScreen splash = SplashScreen.getInstance();
 	    splash.getStatusBar().showStatus(
-	            Translator.localize(BUNDLE, 
-				  "statusmsg.bar.making-todopane"));
+	            Translator.localize("statusmsg.bar.making-todopane"));
             splash.getStatusBar().showProgress(25);
         }
         
@@ -394,16 +393,16 @@ public class ToDoPane extends JPanel
     private static String formatCountLabel(int size) {
         switch (size) {
 	case 0:
-	    return Translator.localize("Cognitive", "todopane.label.no-items");
+	    return Translator.localize("label.todopane.no-items");
 	case 1:
 	    return MessageFormat.
-		format(Translator.localize("Cognitive", "todopane.label.item"),
+		format(Translator.localize("label.todopane.item"),
 		       new Object[] {
 			   new Integer(size) 
 		       });
 	default:
 	    return MessageFormat.
-		format(Translator.localize("Cognitive", "todopane.label.items"),
+		format(Translator.localize("label.todopane.items"),
 		       new Object[] {
 			   new Integer(size) 
 		       });

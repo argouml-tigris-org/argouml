@@ -58,8 +58,6 @@ public class UMLCognitiveResourceBundle_fr extends ListResourceBundle {
         {"decision.storage", "Stockage"},
         {"decision.uncategorized", "Non class\u00e9es"},
 
-        {"goal.unspecified", "ind\u00e9termin\u00e9"},
-
         {"knowledge.completeness", "Compl\u00e9tude"},
         {"knowledge.consistency", "Coh\u00e9rence"},
         {"knowledge.correctness", "Justesse"},
@@ -71,35 +69,6 @@ public class UMLCognitiveResourceBundle_fr extends ListResourceBundle {
         {"knowledge.semantics", "S\u00e9mantique"},
         {"knowledge.syntax", "Syntaxe"},
         {"knowledge.tool", "Outil"},
-
-        {"todopane.label.no-items", " Pas d'\u00c9l\u00e9ments"},
-        {"todopane.label.item", " {0} \u00c9l\u00e9ment "},
-        {"todopane.label.items", " {0} \u00c9l\u00e9ments "},
-
-        {"docpane.label.documentation", "Documentation"},
-        {"docpane.label.author", "Auteur"},
-        {"docpane.label.version", "Version"},
-        {"docpane.label.since", "Depuis"},
-        {"docpane.label.deprecated", "D\u00e9conseill\u00e9"},
-        {"docpane.label.see", "Voir"},
-
-        {"stylepane.label.bounds", "Limites"},
-        {"stylepane.label.fill", "Remplissage"},
-        {"stylepane.label.no-fill", "Pas de remplissage"},
-        {"stylepane.label.line", "Trait"},
-        {"stylepane.label.no-line", "Pas de trait"},
-        {"stylepane.label.shadow", "Ombrage"},
-        {"stylepane.label.no-shadow", "Pas d'ombrage"},
-        {"stylepane.label.custom", "Personnaliser"},
-
-        {"taggedvaluespane.label.tag", "Marqueur"},
-        {"taggedvaluespane.label.value", "Valeur"},
-
-        {"button.open", "Ouvrir"},
-        {"button.back", "Pr\u00e9c\u00e9dent"},
-        {"button.next", "Suivant"},
-        {"button.finish", "Fin"},
-        {"button.help", "Aide"},
 
         {"mnemonic.button.back", "P"},
         {"mnemonic.button.next", "S"},
