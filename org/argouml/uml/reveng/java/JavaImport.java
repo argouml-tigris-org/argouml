@@ -21,6 +21,8 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
+//$Id$
+
 package org.argouml.uml.reveng.java;
 
 import org.argouml.kernel.*;
@@ -29,6 +31,8 @@ import org.argouml.application.api.*;
 import org.argouml.util.osdep.OsUtil;
 import org.argouml.util.FileFilters;
 import org.argouml.util.SuffixFilter;
+import org.argouml.uml.diagram.static_structure.layout.ClassdiagramLayouter;
+import org.argouml.uml.diagram.ui.UMLDiagram;
 
 import org.tigris.gef.base.Globals;
 
@@ -48,7 +52,7 @@ import java.util.Vector;
  *
  * @author Andreas Rueckert <a_rueckert@gmx.net>
  */
-public class JavaImport {
+public class JavaImport implements PluggableImport {
 
     private JPanel configPanel = null;
 
@@ -296,7 +300,63 @@ public class JavaImport {
 	return false;
 	}
 
+	/**
+	 * Provide layout for modified class diagram.
+	 */
+	public ClassdiagramLayouter getLayout(UMLDiagram diagram) {
+		return	new ClassdiagramLayouter(diagram);
+	}
+
+	public boolean inContext(Object[] context) {
+		return true;
+	}
 	
+	public boolean initializeModule() {
+		 // called when loading module
+		 return true;
+	}
+
+		public boolean shutdownModule() {
+			   // called when the module is shutdown
+			   return true;
+		}
+
+		public void setModuleEnabled(boolean tf) {
+			  // called to enable-disable
+		}
+
+		public boolean isModuleEnabled() {
+			 // determines if enabled-disabled
+			 return true;
+		}
+
+		/** Display name of the module. */
+		public String getModuleName() {
+			return "Java";
+		}
+
+		/** Textual description of the module. */
+		public String getModuleDescription() {
+			return "Java import from files";
+		}
+
+		public String getModuleVersion() {
+			return "0.1";
+		}
+
+		public String getModuleAuthor() {
+			return "";
+		}
+
+		// calls all modules to let them add to a popup menu
+		public Vector getModulePopUpActions(Vector popUpActions, Object context) {
+			return null;
+		}
+
+		public String getModuleKey() {
+			return "module.import.java-files";
+		}
+
 }
 
 
