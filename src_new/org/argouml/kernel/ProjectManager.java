@@ -41,6 +41,7 @@ import org.argouml.application.api.Argo;
 import org.argouml.cognitive.ProjectMemberTodoList;
 import org.argouml.model.uml.UmlHelper;
 import org.argouml.ui.ArgoDiagram;
+import org.argouml.util.FileConstants;
 import org.argouml.xml.argo.ArgoParser;
 import org.argouml.xml.xmi.XMIParser;
 import org.argouml.xml.xmi.XMIReader;
@@ -60,10 +61,6 @@ import ru.novosoft.uml.model_management.MModel;
  * @author jaap.branderhorst@xs4all.nl
  */
 public final class ProjectManager {
-
-    public final static String COMPRESSED_FILE_EXT = ".zargo";
-    public final static String UNCOMPRESSED_FILE_EXT = ".argo";
-    public final static String PROJECT_FILE_EXT = ".argo";
 
     public final static String CURRENT_PROJECT_PROPERTY_NAME = "currentProject";
     public final static String SAVE_STATE_PROPERTY_NAME = "saveState";
@@ -222,9 +219,9 @@ public final class ProjectManager {
         }
         if (suffix.equals(".xmi")) {
             p = loadProjectFromXMI(url);
-        } else if (suffix.equals(COMPRESSED_FILE_EXT)) { // normal case, .zargo
+        } else if (suffix.equals(FileConstants.COMPRESSED_FILE_EXT)) { // normal case, .zargo
             p = loadProjectFromZargo(url);
-        } else if (suffix.equals(".argo")) { // the old argo format probably
+        } else if (suffix.equals(FileConstants.UNCOMPRESSED_FILE_EXT)) { // the old argo format probably
             p = loadProjectFromZargo(url);
         } else {
             throw new IllegalFormatException(
@@ -270,7 +267,7 @@ public final class ProjectManager {
             // first read the .argo file from Zip
             ZipEntry entry = zis.getNextEntry();
             String name = null;
-            while (entry != null && !entry.getName().endsWith(PROJECT_FILE_EXT)) {                            
+            while (entry != null && !entry.getName().endsWith(FileConstants.PROJECT_FILE_EXT)) {                            
                 entry = zis.getNextEntry();
             }
 

@@ -34,6 +34,7 @@ import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.util.FileFilters;
+import org.argouml.util.FileConstants;
 import org.argouml.util.osdep.OsUtil;
 
 /** Action to save project under name.
@@ -102,11 +103,11 @@ public class ActionSaveProjectAs extends ActionSaveProject {
             File file = chooser.getSelectedFile();
             if (file != null) {
                 String name = file.getName();
-                if (!name.endsWith(Project.COMPRESSED_FILE_EXT)) {
+                if (!name.endsWith(FileConstants.COMPRESSED_FILE_EXT)) {
                     file =
                         new File(
                             file.getParent(),
-                            name + Project.COMPRESSED_FILE_EXT);
+                            name + FileConstants.COMPRESSED_FILE_EXT);
                 }
             }
             return file;
