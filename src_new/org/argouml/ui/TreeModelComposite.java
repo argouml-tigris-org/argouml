@@ -51,19 +51,22 @@ public class TreeModelComposite
     ////////////////////////////////////////////////////////////////
     // instance variables
     
-    /** needs documenting */
-    protected Vector _subTreeModels;
+    /** The go rules that this Tree model uses to build child nodes.
+     *
+     * nav perspective specific.
+     */
+    protected Vector _goRules;
     
     /** needs documenting */
     protected Object _root;
     
-    /** needs documenting */
+    /** todoList specific */
     protected boolean _flat;
     
-    /** needs documenting */
+    /** todoList specific */
     protected Vector _flatChildren;
     
-    /** needs documenting */
+    /** name- needed? */
     protected String _name;
     
     ////////////////////////////////////////////////////////////////
@@ -73,14 +76,14 @@ public class TreeModelComposite
     public TreeModelComposite(String name) {
         
         setName(Argo.localize("Tree", name));
-        _subTreeModels = new Vector();
+        _goRules = new Vector();
         _flatChildren = new Vector();
     }
     
     /** needs documenting */
     public TreeModelComposite(String name, Vector subs) {
         this(name);
-        _subTreeModels = subs;
+        _goRules = subs;
     }
     
     ////////////////////////////////////////////////////////////////
@@ -100,9 +103,9 @@ public class TreeModelComposite
         if (_flat && parent == _root) {
             return _flatChildren.elementAt(index);
         }
-        int nSubs = _subTreeModels.size();
+        int nSubs = _goRules.size();
         for (int i = 0; i < nSubs; i++) {
-            TreeModel tm = (TreeModel) _subTreeModels.elementAt(i);
+            TreeModel tm = (TreeModel) _goRules.elementAt(i);
             int childCount = tm.getChildCount(parent);
             if (index < childCount) return tm.getChild(parent, index);
             index -= childCount;
@@ -116,9 +119,9 @@ public class TreeModelComposite
             return _flatChildren.size();
         }
         int childCount = 0;
-        int nSubs = _subTreeModels.size();
+        int nSubs = _goRules.size();
         for (int i = 0; i < nSubs; i++) {
-            TreeModel tm = (TreeModel) _subTreeModels.elementAt(i);
+            TreeModel tm = (TreeModel) _goRules.elementAt(i);
             childCount += tm.getChildCount(parent);
         }
         return childCount;
@@ -130,9 +133,9 @@ public class TreeModelComposite
             return _flatChildren.indexOf(child);
         }
         int childCount = 0;
-        int nSubs = _subTreeModels.size();
+        int nSubs = _goRules.size();
         for (int i = 0; i < nSubs; i++) {
-            TreeModel tm = (TreeModel) _subTreeModels.elementAt(i);
+            TreeModel tm = (TreeModel) _goRules.elementAt(i);
             int childIndex = tm.getIndexOfChild(parent, child);
             if (childIndex != -1) return childIndex + childCount;
             childCount += tm.getChildCount(parent);
@@ -155,16 +158,18 @@ public class TreeModelComposite
      * @return  true if <I>node</I> is a leaf
      */
     public boolean isLeaf(Object node) {
-        int nSubs = _subTreeModels.size();
+        int nSubs = _goRules.size();
         for (int i = 0; i < nSubs; i++) {
-            TreeModel tm = (TreeModel) _subTreeModels.elementAt(i);
+            TreeModel tm = (TreeModel) _goRules.elementAt(i);
             if (!tm.isLeaf(node)) return false;
         }
         return true;
     }
     
     /**
-     * Messaged when the user has altered the value for the item identified
+     * Empty implementation - not used.
+     *
+     * <p>Messaged when the user has altered the value for the item identified
      * by <I>path</I> to <I>newValue</I>.  If <I>newValue</I> signifies
      * a truly new value the model should post a treeNodesChanged
      * event.
@@ -176,11 +181,15 @@ public class TreeModelComposite
         cat.debug("valueForPathChanged TreeModelComposite");
     }
     
-    /** empty implementation */
+    /** re-factor up into a new events support class
+     * eg TreeSupport.
+     */
     public void addTreeModelListener(TreeModelListener l) {
     }
     
-    /** empty implementation */
+    /** re-factor up into a new events support class
+     * eg TreeSupport.
+     */
     public void removeTreeModelListener(TreeModelListener l) {
     }
     
@@ -194,46 +203,58 @@ public class TreeModelComposite
      *  "empty folder" */
     public boolean isAlwaysLeaf(Object node) { return false; }
     
-    /** empty implementation */
+    /** re-factor up into a new events support class
+     * eg TreeSupport.
+     */
     public void fireTreeStructureChanged() {
     }
     
-    /** empty implementation */
+    /** re-factor up into a new events support class
+     * eg TreeSupport.
+     */
     public void fireTreeStructureChanged(TreePath path) {
     }
     
-    /** needs documenting */
+    // ------------ nav perspective specific ------------
+    
+    /** nav perspective specific */
+    public void addSubTreeModel(TreeModel tm) {
+        if (_goRules.contains(tm)) return;
+        _goRules.addElement(tm);
+    }
+    
+    /** nav perspective specific
+     *
+     * TODO: check for dangling prereqs ???
+     */
+    public void removeSubTreeModel(TreeModel tm) {
+        _goRules.removeElement(tm);
+    }
+    
+    /** nav perspective config dialog specific */
+    public Vector getSubTreeModels() {
+        return _goRules;
+    }
+    
+    // ------------ todo list specific ------------
+
+    /** todoList specific */
     public void setFlat(boolean b) {
         _flat = false;
         if (b) calcFlatChildren();
         _flat = b;
     }
     
-    /** needs documenting */
+    /** todoList specific */
     public boolean getFlat() { return _flat; }
     
-    /** needs documenting */
-    public void addSubTreeModel(TreeModel tm) {
-        if (_subTreeModels.contains(tm)) return;
-        _subTreeModels.addElement(tm);
-    }
-    
-    /** needs documenting */
-    public void removeSubTreeModel(TreeModel tm) {
-        // TODO: check for dangling prereqs
-        _subTreeModels.removeElement(tm);
-    }
-    
-    /** needs documenting */
-    public Vector getSubTreeModels() { return _subTreeModels; }
-    
-    /** needs documenting */
+    /** todoList specific */
     public void calcFlatChildren() {
         _flatChildren.removeAllElements();
         addFlatChildren(_root);
     }
     
-    /** needs documenting */
+    /** todoList specific */
     public void addFlatChildren(Object node) {
         if (node == null) return;
         cat.debug("addFlatChildren");
@@ -247,6 +268,8 @@ public class TreeModelComposite
             addFlatChildren(getChild(node, i));
         }
     }
+    
+    // ----------- name -------------------------
     
     /** needs documenting */
     public String getName() { return _name; }
