@@ -103,8 +103,8 @@ public class ProjectMemberDiagram extends ProjectMember {
     PGMLParser.SINGLETON.setOwnerRegistry(getProject()._UUIDRefs);
     ArgoDiagram d = (ArgoDiagram)PGMLParser.SINGLETON.readDiagram(getURL());
     setDiagram(d);
-    try { getProject().addDiagram(d); }
-    catch (PropertyVetoException pve) { }
+    getProject().addDiagram(d);
+    
   }
 
   public void save(String path, boolean overwrite) {

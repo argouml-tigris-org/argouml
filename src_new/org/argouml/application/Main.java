@@ -47,6 +47,7 @@ import org.argouml.application.api.Configuration;
 import org.argouml.application.security.ArgoAwtExceptionHandler;
 import org.argouml.application.security.ArgoSecurityManager;
 import org.argouml.cognitive.Designer;
+import org.argouml.cognitive.ui.ToDoPane;
 import org.argouml.cognitive.ui.ToDoPerspective;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
@@ -297,7 +298,7 @@ public class Main {
                 Argo.log.error(fn);
                 Configuration.setString(Argo.KEY_MOST_RECENT_PROJECT_FILE, "");
                 urlToOpen = null;
-                p = Project.makeEmptyProject();
+                p = ProjectManager.getManager().makeEmptyProject();
             }
             catch (IOException io) {
                 JOptionPane.showMessageDialog(pb,
@@ -312,7 +313,7 @@ public class Main {
                 Argo.log.error(io);
                 Configuration.setString(Argo.KEY_MOST_RECENT_PROJECT_FILE, "");
                 urlToOpen = null;
-                p = Project.makeEmptyProject();
+                p = ProjectManager.getManager().makeEmptyProject();
             }   
             catch (Exception ex) {
                 Argo.log.error("Could not load most recent project file: " + 
@@ -320,7 +321,7 @@ public class Main {
                 Argo.log.error(ex);
                 Configuration.setString(Argo.KEY_MOST_RECENT_PROJECT_FILE, "");
                 urlToOpen = null;
-                p = Project.makeEmptyProject();
+                p = ProjectManager.getManager().makeEmptyProject();
             }
         }
 
@@ -342,7 +343,7 @@ public class Main {
 
 
         NavigatorPane.getNavigatorPane().setPerspectives(NavPerspective.getRegisteredPerspectives());
-        pb.setToDoPerspectives(ToDoPerspective.getRegisteredPerspectives());
+        ToDoPane.getToDoPane().setPerspectives(ToDoPerspective.getRegisteredPerspectives());
 
         pb.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
         //pb.validate();

@@ -383,9 +383,7 @@ class ActionOpenCritics extends UMLAction {
 class ActionFlatToDo extends UMLAction {
   public ActionFlatToDo() { super("Toggle Flat View", NO_ICON); }
   public void actionPerformed(ActionEvent ae) {
-    ProjectBrowser pb = ProjectBrowser.TheInstance;
-    ToDoPane pane = pb.getToDoPane();
-    pane.toggleFlat();
+    ToDoPane.getToDoPane().toggleFlat();
   }
 } /* end class ActionFlatToDo */
 

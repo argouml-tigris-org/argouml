@@ -77,10 +77,7 @@ public abstract class ActionAddDiagram extends UMLChangeAction {
         }      
         if (ns == null || !isValidNamespace(ns)) ns = ProjectManager.getManager().getCurrentProject().getModel();
         ArgoDiagram diagram = createDiagram(ns, realTarget);
-        try {
-            p.addMember(diagram);
-        } 
-        catch (PropertyVetoException pv) {}
+        p.addMember(diagram);
         NavigatorPane.getNavigatorPane().addToHistory(diagram);
         ProjectBrowser.TheInstance.setTarget(diagram);
         super.actionPerformed(e);

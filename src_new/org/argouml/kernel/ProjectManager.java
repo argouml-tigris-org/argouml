@@ -78,12 +78,6 @@ public final class ProjectManager {
     private PropertyChangeEvent _event;
     
     /**
-     * Flag to indicate a project is being created. Set by makeEmptyProject to
-     * circumvent problems with vetoableChange. In the near future this will
-     * be refactored so it will go out.
-     */
-    private boolean _creatingProject = false;
-    /**
      * The singleton accessor method of this class
      */
     public static ProjectManager getManager() {
@@ -155,24 +149,21 @@ public final class ProjectManager {
      * @return Project
      */
     public Project getCurrentProject() {
-        if (_currentProject == null && !_creatingProject) {
+        if (_currentProject == null) {
             _currentProject = makeEmptyProject();
         }
         return _currentProject;
     }
     
+    /**
+     * Makes an empty project with two standard diagrams.
+     * @return Project
+     */
     public Project makeEmptyProject() {
         Argo.log.info("making empty project");
-        _creatingProject = true;
-        MModel m1 = UmlFactory.getFactory().getModelManagement().createModel();
-        m1.setName("untitledModel");
-        Project p = new Project(m1);
-         setCurrentProject(p);
-
-        p.addSearchPath("PROJECT_DIR");
-        _creatingProject = false;
-       
-
+        Project p = new Project();
+        p.makeUntitledProject();
+        setCurrentProject(p);
         return p;
     }
 

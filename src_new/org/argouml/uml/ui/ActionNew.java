@@ -83,8 +83,6 @@ public class ActionNew extends UMLAction {
       // return false in that case...
     }
 
-    p = Project.makeEmptyProject();
-    ProjectManager.getManager().setCurrentProject(p);
-    ProjectBrowser.TheInstance.setTitle ("Untitled");
+    p = ProjectManager.getManager().makeEmptyProject();
   }
 } /* end class ActionNew */

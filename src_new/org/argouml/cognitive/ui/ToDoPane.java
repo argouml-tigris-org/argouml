@@ -87,10 +87,27 @@ implements ItemListener, TreeSelectionListener, MouseListener, ToDoListListener,
   public static int _dblClicksInToDoPane = 0;
   public static int _toDoPerspectivesChanged = 0;
 
+    /**
+     * Singleton implementation to seperate ProjectBrowser from the todopane as
+     * much as possible
+     */
+    private static ToDoPane _instance;
+    
+    /**
+     * Singleton implementation
+     * @return ToDoPane
+     */
+    public static ToDoPane getToDoPane() {
+        if (_instance == null) {
+            _instance = new ToDoPane();
+        }
+        return _instance;
+    }
+    
   ////////////////////////////////////////////////////////////////
   // constructors
 
-  public ToDoPane() {
+  protected ToDoPane() {
     _toolbar = new ToolBar();
     _toolbar.putClientProperty("JToolBar.isRollover", Boolean.TRUE);
 
@@ -117,7 +134,13 @@ implements ItemListener, TreeSelectionListener, MouseListener, ToDoListListener,
 
     _tree.addMouseListener(this);
 
+    // next line coming from projectbrowser
+    setRoot(Designer.TheDesigner.getToDoList());
     Designer.TheDesigner.getToDoList().addToDoListListener(this);
+    setPreferredSize(new Dimension(
+                                   Configuration.getInteger(Argo.KEY_SCREEN_SOUTHWEST_WIDTH, ProjectBrowser.DEFAULT_COMPONENTWIDTH),
+                                   Configuration.getInteger(Argo.KEY_SCREEN_SOUTH_HEIGHT, ProjectBrowser.DEFAULT_COMPONENTHEIGHT)
+                                   ));
   }
 
   ////////////////////////////////////////////////////////////////

@@ -75,11 +75,6 @@ public class ProjectBrowser extends JFrame
 
     protected String _appName = "ProjectBrowser";
 
-    /** The toDoPane currently does not remember todos
-     * nor is there a way of exporting todos to anothter
-     * format
-     */
-    public ToDoPane _toDoPane;
     protected MultiEditorPane _editorPane;
     protected DetailsPane _northEastPane;
     protected DetailsPane _northPane;
@@ -125,7 +120,8 @@ public class ProjectBrowser extends JFrame
         NavigatorPane.getNavigatorPane();
         sb.showStatus("Making Project Browser: To Do Pane");
         sb.incProgress(5);
-        _toDoPane = new ToDoPane();
+        // init todopane
+        ToDoPane.getToDoPane();        
         _editorPane = new MultiEditorPane(sb);
         _editorPane.addNavigationListener(this);
         
@@ -160,7 +156,6 @@ public class ProjectBrowser extends JFrame
         //p.add(_toolBar, BorderLayout.NORTH);
         getContentPane().add(createPanels(), BorderLayout.CENTER);
         getContentPane().add(_statusBar, BorderLayout.SOUTH);
-        _toDoPane.setRoot(Designer.TheDesigner.getToDoList());
 
         // allows me to ask "Do you want to save first?"
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
@@ -229,11 +224,6 @@ public class ProjectBrowser extends JFrame
 
     protected Component createPanels() {
         // Set preferred sizes from config file
-        _toDoPane.setPreferredSize(new Dimension(
-                                   Configuration.getInteger(Argo.KEY_SCREEN_SOUTHWEST_WIDTH, DEFAULT_COMPONENTWIDTH),
-                                   Configuration.getInteger(Argo.KEY_SCREEN_SOUTH_HEIGHT, DEFAULT_COMPONENTHEIGHT)
-                                   ));
-
         if (_southPane != null) {
             _southPane.setPreferredSize(new Dimension(
                                         0, Configuration.getInteger(Argo.KEY_SCREEN_SOUTH_HEIGHT, DEFAULT_COMPONENTHEIGHT)
@@ -244,7 +234,7 @@ public class ProjectBrowser extends JFrame
         // Workarea is layed out as a BorderSplitPane where the various components that make
         // up the argo application can be positioned.
         _workarea = new BorderSplitPane();
-        _workarea.add(_toDoPane, BorderSplitPane.SOUTHWEST);
+        _workarea.add(ToDoPane.getToDoPane(), BorderSplitPane.SOUTHWEST);
         _workarea.add(NavigatorPane.getNavigatorPane(), BorderSplitPane.WEST);
         //_workarea.add(_northPane, BorderSplitPane.NORTH);
     
@@ -282,16 +272,6 @@ public class ProjectBrowser extends JFrame
 
     public String getAppName() { return _appName; }
     public void setAppName(String n) { _appName = n; }
-
-    public void setToDoPerspectives(Vector v) {
-        _toDoPane.setPerspectives(v);
-    }
-    public Vector getToDoPerspectives() {
-        return _toDoPane.getPerspectives();
-    }
-    public void setToDoCurPerspective(TreeModel tm) {
-        _toDoPane.setCurPerspective(tm);
-    }
 
     public void select(Object o) {
         _editorPane.select(o);
@@ -403,7 +383,6 @@ public class ProjectBrowser extends JFrame
 
     public JMenuBar getJMenuBar() { return _menuBar; }
 
-    public ToDoPane getToDoPane() { return _toDoPane; }
     public MultiEditorPane getEditorPane() { return _editorPane; }
 
     /**
@@ -555,7 +534,7 @@ public class ProjectBrowser extends JFrame
      */
     public void saveScreenConfiguration() {
         Configuration.setInteger(Argo.KEY_SCREEN_WEST_WIDTH, NavigatorPane.getNavigatorPane().getWidth());
-        Configuration.setInteger(Argo.KEY_SCREEN_SOUTHWEST_WIDTH, _toDoPane.getWidth());
+        Configuration.setInteger(Argo.KEY_SCREEN_SOUTHWEST_WIDTH, ToDoPane.getToDoPane().getWidth());
         Configuration.setInteger(Argo.KEY_SCREEN_SOUTH_HEIGHT, _southPane.getHeight());
         Configuration.setInteger(Argo.KEY_SCREEN_WIDTH, getWidth());
         Configuration.setInteger(Argo.KEY_SCREEN_HEIGHT, getHeight());

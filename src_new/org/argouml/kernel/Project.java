@@ -160,55 +160,40 @@ public class Project implements java.io.Serializable {
 
     public Project() {
         _saveRegistry = new UMLChangeRegistry();
+         Argo.log.info("making empty project with empty model");
          // Jaap Branderhorst 2002-12-09
         // load the default model
         // this is NOT the way how it should be since this makes argo depend on Java even more.
-       setDefaultModel(ProfileJava.loadProfileModel());
+       setDefaultModel(ProfileJava.loadProfileModel());       
+       addSearchPath("PROJECT_DIR");      
+       setNeedsSave(false);
+       
+    }
+    
+    /**
+     * Makes a just created project to an untitled project with a class diagram and 
+     * a usecase diagram and an untitled model.
+     */
+    public void makeUntitledProject() {
+        if (getRoot() != null) throw new IllegalStateException("Tried to make a non-empty project to an untitled project");
+        MModel model = UmlFactory.getFactory().getModelManagement().createModel();
+        model.setName("untitledModel");
+        setRoot(model);
+        setCurrentNamespace(model);
+        addMember(new UMLClassDiagram("class diagram 1", model));
+        addMember(new UMLUseCaseDiagram("use case diagram 1", model));
     }
 
-    public Project (MModel model) {
+    public Project(MModel model) {
     	this();
         Argo.log.info("making empty project with model: "+model.getName());
-        _saveRegistry = new UMLChangeRegistry();
-		/*
-        defineType(JavaUML.VOID_TYPE);     //J.101
-        defineType(JavaUML.CHAR_TYPE);     //J.102
-        defineType(JavaUML.INT_TYPE);      //J.103
-        defineType(JavaUML.BOOLEAN_TYPE);  //J.104
-        defineType(JavaUML.BYTE_TYPE);     //J.105
-        defineType(JavaUML.LONG_TYPE);     //J.106
-        defineType(JavaUML.FLOAT_TYPE);    //J.107
-        defineType(JavaUML.DOUBLE_TYPE);   //J.108
-        defineType(JavaUML.STRING_CLASS);  //J.109
-        defineType(JavaUML.CHAR_CLASS);    //J.110
-        defineType(JavaUML.INT_CLASS);     //J.111
-        defineType(JavaUML.BOOLEAN_CLASS); //J.112
-        defineType(JavaUML.BYTE_CLASS);    //J.113
-        defineType(JavaUML.LONG_CLASS);    //J.114
-        defineType(JavaUML.FLOAT_CLASS);   //J.115
-        defineType(JavaUML.DOUBLE_CLASS);  //J.116
-
-        defineType(JavaUML.RECTANGLE_CLASS); //J.201
-        defineType(JavaUML.POINT_CLASS);     //J.202
-        defineType(JavaUML.COLOR_CLASS);     //J.203
-
-        defineType(JavaUML.VECTOR_CLASS);    //J.301
-        defineType(JavaUML.HASHTABLE_CLASS); //J.302
-        defineType(JavaUML.STACK_CLASS);     //J.303
-		*/
-        addSearchPath("PROJECT_DIR");
-
-        try {
-            addMember(new UMLClassDiagram("class diagram 1", model));
-            addMember(new UMLUseCaseDiagram("use case diagram 1", model));
-            setRoot(model);
-            setNeedsSave(false);
-        }
-        catch (PropertyVetoException pve) { }
-
+        setRoot(model);
+        setCurrentNamespace(model);
+        setNeedsSave(false);
+        /*
         Runnable resetStatsLater = new ResetStatsLater();
         org.argouml.application.Main.addPostLoadAction(resetStatsLater);
-        setCurrentNamespace(model);
+        */
         
     }
 
@@ -415,21 +400,6 @@ public class Project implements java.io.Serializable {
         }
     }
 
-    public static Project makeEmptyProject() {
-        Argo.log.info("making empty project");
-        _creatingProject = true;
-        MModel m1 = UmlFactory.getFactory().getModelManagement().createModel();
-        m1.setName("untitledModel");
-        Project p = new Project(m1);
-         setCurrentProject(p);
-
-        p.addSearchPath("PROJECT_DIR");
-        _creatingProject = false;
-       
-
-        return p;
-    }
-
     ////////////////////////////////////////////////////////////////
     // accessors
     // TODO
@@ -542,7 +512,7 @@ public class Project implements java.io.Serializable {
         //}
     }
 
-    public void addMember(ArgoDiagram d) throws PropertyVetoException {
+    public void addMember(ArgoDiagram d) {
         ProjectMember pm = new ProjectMemberDiagram(d, this);
         addDiagram(d);
         // if diagram added successfully, add the member too
@@ -866,7 +836,7 @@ public class Project implements java.io.Serializable {
     public MNamespace getCurrentNamespace() { return _currentNamespace; }
 
     public Vector getDiagrams() { return _diagrams; }
-    public void addDiagram(ArgoDiagram d) throws PropertyVetoException {
+    public void addDiagram(ArgoDiagram d)  {
         // send indeterminate new value instead of making copy of vector
         _diagrams.addElement(d);
         d.addChangeRegistryAsListener( _saveRegistry );
