@@ -224,7 +224,7 @@ public class DocumentationManager {
 	  if (!comments.isEmpty()) {
 	    for(Iterator iter = comments.iterator(); iter.hasNext(); ) {
 		  MComment c = (MComment)iter.next();
-		  String s = c.getName().trim();
+		  String s = (c.getName()!=null) ? c.getName().trim() : null;
 		  if (s != null && s.length() > 0) {
 		    if(result.length() > 0) {
 		       result.append("\n");
