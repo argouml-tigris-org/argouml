@@ -24,14 +24,13 @@
 
 package org.argouml.i18n;
 
-import java.io.InputStream;
 import java.io.IOException;
-import java.text.MessageFormat;				
+import java.io.InputStream;
+import java.text.MessageFormat;
 import java.util.Locale;
 import java.util.Properties;
 
 import org.apache.log4j.Logger;
-import org.argouml.cognitive.AbstractCognitiveTranslator;
 import org.tigris.gef.util.Localizer;
 
 /**
@@ -40,7 +39,7 @@ import org.tigris.gef.util.Localizer;
  *
  * @author Jean-Hugues de Raigniac
  */
-public class Translator extends AbstractCognitiveTranslator {
+public class Translator {
     /** logger */
     private static final Logger LOG = Logger.getLogger(Translator.class);
 
@@ -170,12 +169,6 @@ public class Translator extends AbstractCognitiveTranslator {
         return org.workingfrog.i18n.util.Translator.localize(key, key);
     }
     
-    /**
-     * @see org.argouml.cognitive.AbstractCognitiveTranslator#i18nlocalize(java.lang.String)
-     */
-    public String i18nlocalize(String key) {
-        return localize(key, key);
-    }
     
     /**
      * Generates an localized String with arguments.<p>
@@ -197,14 +190,7 @@ public class Translator extends AbstractCognitiveTranslator {
 	return msgFmt.format(args);
     }
     
-    /**
-     * @see org.argouml.cognitive.AbstractCognitiveTranslator#i18nmessageFormat(
-     * java.lang.String, java.lang.Object[])
-     */
-    public String i18nmessageFormat(String key, Object[] args) {
-        return messageFormat(key, args);
-    }
-
+   
     /**
      * Generates an localized String with arguments.<p>
      *
