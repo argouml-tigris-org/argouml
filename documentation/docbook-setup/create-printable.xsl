@@ -9,4 +9,13 @@
 
 	<xsl:import href="docbook-xsl-1.60.1/html/docbook.xsl"/>
 	<xsl:import href="commonsettings.xsl"/>
+  
+  <!-- Added by MVW -->
+
+  <xsl:variable name="generate.toc">
+book toc
+part nop
+chapter nop
+  </xsl:variable>
+
 </xsl:stylesheet>

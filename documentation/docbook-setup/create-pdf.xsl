@@ -18,5 +18,13 @@
         <xsl:variable name="default.table.width" select="'15cm'"/>
         <xsl:variable name="draft.watermark.image"
                       select="docbook-xsl-1.60.1/images/draft.png"/>
+                      
+  <!-- Added by MVW -->
+
+  <xsl:variable name="generate.toc">
+book toc
+part nop
+chapter nop
+  </xsl:variable>
 
 </xsl:stylesheet>
