@@ -124,7 +124,8 @@ public class GeneratorDisplay extends Generator2 {
      *          Object, boolean)
      */
     public String generateOperation(Object op, boolean documented) {
-        String stereoStr = generateStereotype(Model.getFacade().getStereotypes(op));
+        String stereoStr = 
+            generateStereotype(Model.getFacade().getStereotypes(op));
         String visStr =
 	    generateVisibility(op);
         String nameStr = generateName(Model.getFacade().getName(op));
@@ -244,7 +245,8 @@ public class GeneratorDisplay extends Generator2 {
      */
     public String generateAttribute(Object attr, boolean documented) {
         String visibility = generateVisibility(attr);
-        String stereo = generateStereotype(Model.getFacade().getStereotypes(attr));
+        String stereo = 
+            generateStereotype(Model.getFacade().getStereotypes(attr));
         //cat.debug("Stereotype: " + stereo);
         String name = Model.getFacade().getName(attr);
         String multiplicity =
@@ -321,7 +323,8 @@ public class GeneratorDisplay extends Generator2 {
         s.append(generateKind(Model.getFacade().getKind(parameter)));
         s.append(" ");
         s.append(generateName(Model.getFacade().getName(parameter)));
-        String classRef = generateClassifierRef(Model.getFacade().getType(parameter));
+        String classRef = 
+            generateClassifierRef(Model.getFacade().getType(parameter));
         if (classRef.length() > 0) {
             s.append(" : ");
             s.append(classRef);
@@ -394,8 +397,8 @@ public class GeneratorDisplay extends Generator2 {
             s += "final ";
         }
         s += classifierKeyword + " " + generatedName + " ";
-        String baseClass =
-            generateGeneralization(Model.getFacade().getGeneralizations(cls), false);
+        String baseClass = generateGeneralization(Model.getFacade()
+                .getGeneralizations(cls), false);
         if (!baseClass.equals("")) {
             s += "extends " + baseClass + " ";
         }
@@ -917,7 +920,8 @@ public class GeneratorDisplay extends Generator2 {
         if (Model.getChangeableKind().getFrozen().equals(ck)) {
             return "final ";
         }
-        //if (Model.getFacade().ADD_ONLY_CHANGEABLEKIND.equals(ck)) return "final ";
+        //if (Model.getFacade().ADD_ONLY_CHANGEABLEKIND.equals(ck)) 
+        //    return "final ";
         return "";
     }
 
@@ -1154,11 +1158,13 @@ public class GeneratorDisplay extends Generator2 {
         StringBuffer event = new StringBuffer();
         if (Model.getFacade().isAChangeEvent(m)) {
             event.append("when(");
-            event.append(generateExpression(Model.getFacade().getExpression(m)));
+            event.append(
+                    generateExpression(Model.getFacade().getExpression(m)));
             event.append(")");
         } else if (Model.getFacade().isATimeEvent(m)) {
             event.append("after(");
-            event.append(generateExpression(Model.getFacade().getExpression(m)));
+            event.append(
+                    generateExpression(Model.getFacade().getExpression(m)));
             event.append(")");
         } else if (Model.getFacade().isASignalEvent(m)) {
             event.append(generateName(Model.getFacade().getName(m)));
@@ -1182,7 +1188,8 @@ public class GeneratorDisplay extends Generator2 {
      * @return the generated parameter list
      */
     private String generateParameterList(Object parameterListOwner) {
-        Iterator it = Model.getFacade().getParameters(parameterListOwner).iterator();
+        Iterator it = 
+            Model.getFacade().getParameters(parameterListOwner).iterator();
         StringBuffer list = new StringBuffer();
         list.append("(");
         if (it.hasNext()) {

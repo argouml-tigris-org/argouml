@@ -120,14 +120,17 @@ public class GeneratorCSharp extends Generator2
 	}
 
         String packagePath = "";
-        Object parent = Model.getFacade().getNamespace(Model.getFacade().getNamespace(cls));
+        Object parent = 
+            Model.getFacade().getNamespace(Model.getFacade().getNamespace(cls));
         if (parent != null) {
-            packagePath = Model.getFacade().getName(Model.getFacade().getNamespace(cls));
+            packagePath = 
+                Model.getFacade().getName(Model.getFacade().getNamespace(cls));
         }
 	while (parent != null) {
 	    // ommit root package name; it's the model's root
 	    if (Model.getFacade().getNamespace(parent) != null) {
-	        packagePath = Model.getFacade().getName(parent) + "." + packagePath;
+	        packagePath = 
+	            Model.getFacade().getName(parent) + "." + packagePath;
 	    }
 	    parent = Model.getFacade().getNamespace(parent);
 	}
@@ -327,8 +330,8 @@ public class GeneratorCSharp extends Generator2
 	Object cls = Model.getFacade().getOwner(op);
 
 	String nameStr = generateName(Model.getFacade().getName(op));
-	String clsName =
-	    generateName(Model.getFacade().getName(Model.getFacade().getOwner(op)));
+	String clsName = generateName(Model.getFacade().getName(
+            Model.getFacade().getOwner(op)));
 
 	/*
 	 * Replaced 2001-09-26 STEFFEN ZSCHALER
@@ -482,17 +485,20 @@ public class GeneratorCSharp extends Generator2
 	    s += "\n";
 
 	    s += INDENT + generateVisibility(attr) + " ";
-	    s += generateClassifierRef(type) + " " + Model.getFacade().getName(attr);
+	    s += generateClassifierRef(type) + " " 
+	        + Model.getFacade().getName(attr);
 	    s += " {\n";
 
 	    if ((makeSet != null) && (makeSet.equals("true"))) {
-	        s += INDENT + INDENT + "set { m_" + Model.getFacade().getName(attr);
+	        s += INDENT + INDENT 
+	            + "set { m_" + Model.getFacade().getName(attr);
 	        s += " = value; } \n";
 	    }
 
 	    if ((makeGet != null) && (makeGet.equals("true"))) {
 	        s += INDENT + INDENT;
-	        s += "get { return m_" + Model.getFacade().getName(attr) + "; } \n";
+	        s += "get { return m_" 
+	            + Model.getFacade().getName(attr) + "; } \n";
 	    }
 
 	    s += INDENT + "}\n";
@@ -573,11 +579,11 @@ public class GeneratorCSharp extends Generator2
 
 	// Add the comments for this classifier first.
 	sb.append(DocumentationManager.getComments(cls));
-
 	sb.append(generateConstraintEnrichedDocComment (cls)).append ("\n");
 
 	sb.append(generateVisibility(Model.getFacade().getVisibility(cls)));
-	if (Model.getFacade().isAbstract(cls) && !(Model.getFacade().isAInterface(cls))) {
+	if (Model.getFacade().isAbstract(cls) 
+            && !(Model.getFacade().isAInterface(cls))) {
 	    if (VERBOSE) {
 	        sb.append("/* abstract */ ");
 	    }
@@ -889,7 +895,8 @@ public class GeneratorCSharp extends Generator2
 
 	    // Build doccomment
 	    sDocComment += " @element-type ";
-	    sDocComment += Model.getFacade().getName(Model.getFacade().getType(ae));
+	    sDocComment += 
+	        Model.getFacade().getName(Model.getFacade().getType(ae));
 
 	    sDocComment += "\n" + INDENT + " */";
 
@@ -1146,9 +1153,8 @@ public class GeneratorCSharp extends Generator2
 	//         || Model.getFacade().M0_1_MULTIPLICITY.equals(m)) {
 	// }
 	if (VERBOSE) {
-	    tempS += "/*"
-	        + generateClassifierRef(Model.getFacade().getType(associationEnd))
-	        + "*/";
+	    tempS += "/*" + generateClassifierRef(Model.getFacade()
+                .getType(associationEnd)) + "*/";
 	} else {
 	    if (VERBOSE) {
 	        tempS += "/* Vector */ "; //generateMultiplicity(m) + " ";
@@ -1164,7 +1170,8 @@ public class GeneratorCSharp extends Generator2
         Object multi = Model.getFacade().getMultiplicity(associationEnd);
         if ((multi.equals(Model.getMultiplicities().get11()))
                 || multi.equals(Model.getMultiplicities().get01())) {
-            s += generateClassifierRef(Model.getFacade().getType(associationEnd))
+            s += generateClassifierRef(Model.getFacade()
+                    .getType(associationEnd))
                 + " ";
         } else if ((multi.equals(Model.getMultiplicities().get1N()))
                 || multi.equals(Model.getMultiplicities().get0N())) {
@@ -1179,7 +1186,8 @@ public class GeneratorCSharp extends Generator2
 	    s += "var $" + generateName(associationName);
 	} else {
 	    s += "var $my";
-	    s += generateClassifierRef(Model.getFacade().getType(associationEnd));
+	    s += generateClassifierRef(Model.getFacade()
+                .getType(associationEnd));
 	}
 
 	return s + ";\n";
@@ -1215,7 +1223,8 @@ public class GeneratorCSharp extends Generator2
 	Iterator iter = generalizations.iterator();
 	while (iter.hasNext()) {
 	    Object generalization = iter.next();
-	    Object generalizableElement = Model.getFacade().getParent(generalization);
+	    Object generalizableElement = 
+	        Model.getFacade().getParent(generalization);
 	    // assert ge != null
 	    if (generalizableElement != null) {
 	        classes.add(generalizableElement);
@@ -1282,7 +1291,8 @@ public class GeneratorCSharp extends Generator2
 	    return "public ";
 	} else if (Model.getVisibilityKind().getPrivate().equals(visibility)) {
 	    return  "private ";
-	} else if (Model.getVisibilityKind().getProtected().equals(visibility)) {
+	} else if (Model.getVisibilityKind().getProtected()
+            .equals(visibility)) {
 	    return  "protected ";
 	} else {
 	    return "";
@@ -1367,8 +1377,10 @@ public class GeneratorCSharp extends Generator2
     // TODO: user preference between "*" and "0..*"
 
     private String generateMultiplicityRange(Object multiplicityRange) {
-	Integer lower = new Integer(Model.getFacade().getLower(multiplicityRange));
-	Integer upper = new Integer(Model.getFacade().getUpper(multiplicityRange));
+	Integer lower = 
+	    new Integer(Model.getFacade().getLower(multiplicityRange));
+	Integer upper = 
+	    new Integer(Model.getFacade().getUpper(multiplicityRange));
 	if (lower == null && upper == null) {
 	    return ANY_RANGE;
 	}
@@ -1592,9 +1604,8 @@ public class GeneratorCSharp extends Generator2
             for (j = c.iterator(); j.hasNext();) {
                 Object mFeature = /*(MFeature)*/ j.next();
                 if (Model.getFacade().isAAttribute(mFeature)) {
-                    if ((ftype =
-                            generateImportType(Model.getFacade().getType(mFeature),
-                                               packagePath))
+                    if ((ftype = generateImportType(Model.getFacade()
+                            .getType(mFeature), packagePath))
                             != null) {
                         importSet.add(ftype);
                     }
@@ -1604,9 +1615,8 @@ public class GeneratorCSharp extends Generator2
 			Model.getFacade().getParameters(mFeature).iterator();
                     while (it.hasNext()) {
                         Object parameter = it.next();
-			ftype =
-			    generateImportType(Model.getFacade().getType(parameter),
-					       packagePath);
+			ftype = generateImportType(Model.getFacade()
+			        .getType(parameter), packagePath);
 			if (ftype != null) {
                             importSet.add(ftype);
                         }
@@ -1619,25 +1629,24 @@ public class GeneratorCSharp extends Generator2
 			            .iterator();
                     while (it.hasNext()) {
                         Object parameter = it.next();
-			ftype =
-			    generateImportType(Model.getFacade().getType(parameter),
-					       packagePath);
+			ftype = generateImportType(Model.getFacade()
+			        .getType(parameter), packagePath);
                         if (ftype != null) {
                             importSet.add(ftype);
                         }
                     }
 
 		    // check raised signals
-		    it = Model.getFacade().getRaisedSignals(mFeature).iterator();
+		    it = 
+		        Model.getFacade().getRaisedSignals(mFeature).iterator();
 		    while (it.hasNext()) {
 			Object signal = it.next();
 			if (!Model.getFacade().isAException(signal)) {
 			    continue;
 			}
 
-			ftype =
-			    generateImportType(Model.getFacade().getType(signal),
-					       packagePath);
+			ftype = generateImportType(Model.getFacade()
+			        .getType(signal), packagePath);
 			if (ftype != null) {
 			    importSet.add(ftype);
 			}
@@ -1681,7 +1690,8 @@ public class GeneratorCSharp extends Generator2
             // check association end types
             for (j = c.iterator(); j.hasNext();) {
                 Object associationEnd = /*(MAssociationEnd)*/ j.next();
-                Object association = Model.getFacade().getAssociation(associationEnd);
+                Object association = 
+                    Model.getFacade().getAssociation(associationEnd);
                 Iterator connEnum =
 		    Model.getFacade().getConnections(association).iterator();
                 while (connEnum.hasNext()) {
@@ -1695,7 +1705,8 @@ public class GeneratorCSharp extends Generator2
                         // association end found
                         Object multiplicity =
 			    Model.getFacade().getMultiplicity(associationEnd2);
-                        if (!Model.getMultiplicities().get11().equals(multiplicity)
+                        if (!Model.getMultiplicities().get11()
+                                .equals(multiplicity)
                                 && !Model.getMultiplicities().get01().equals(
                                         multiplicity)) {
                             importSet.add("System.Collections");
@@ -1753,7 +1764,8 @@ public class GeneratorCSharp extends Generator2
             return "";
         }
         String packagePath = Model.getFacade().getName(namespace);
-        while ((namespace = Model.getFacade().getNamespace(namespace)) != null) {
+        while ((namespace = Model.getFacade().getNamespace(namespace)) 
+                != null) {
             // ommit root package name; it's the model's root
             if (Model.getFacade().getNamespace(namespace) != null) {
                 packagePath =

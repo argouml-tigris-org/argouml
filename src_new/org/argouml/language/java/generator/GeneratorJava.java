@@ -274,9 +274,8 @@ public class GeneratorJava
             for (j = c.iterator(); j.hasNext();) {
                 Object mFeature = /*(MFeature)*/ j.next();
                 if (Model.getFacade().isAAttribute(mFeature)) {
-                    if ((ftype =
-                            generateImportType(Model.getFacade().getType(mFeature),
-                                               packagePath))
+                    if ((ftype = generateImportType(Model.getFacade()
+                            .getType(mFeature), packagePath))
                             != null) {
                         importSet.add(ftype);
                     }
@@ -286,9 +285,8 @@ public class GeneratorJava
 			Model.getFacade().getParameters(mFeature).iterator();
                     while (it.hasNext()) {
                         Object parameter = it.next();
-			ftype =
-			    generateImportType(Model.getFacade().getType(parameter),
-					       packagePath);
+			ftype = generateImportType(Model.getFacade()
+			        .getType(parameter), packagePath);
 			if (ftype != null) {
                             importSet.add(ftype);
                         }
@@ -301,25 +299,24 @@ public class GeneratorJava
 			            .iterator();
                     while (it.hasNext()) {
                         Object parameter = it.next();
-			ftype =
-			    generateImportType(Model.getFacade().getType(parameter),
-					       packagePath);
+			ftype = generateImportType(Model.getFacade()
+			        .getType(parameter), packagePath);
                         if (ftype != null) {
                             importSet.add(ftype);
                         }
                     }
 
 		    // check raised signals
-		    it = Model.getFacade().getRaisedSignals(mFeature).iterator();
+		    it = 
+		        Model.getFacade().getRaisedSignals(mFeature).iterator();
 		    while (it.hasNext()) {
 			Object signal = it.next();
 			if (!Model.getFacade().isAException(signal)) {
 			    continue;
 			}
 
-			ftype =
-			    generateImportType(Model.getFacade().getType(signal),
-					       packagePath);
+			ftype = generateImportType(Model.getFacade()
+			        .getType(signal), packagePath);
 			if (ftype != null) {
 			    importSet.add(ftype);
 			}
@@ -363,7 +360,8 @@ public class GeneratorJava
             // check association end types
             for (j = c.iterator(); j.hasNext();) {
                 Object associationEnd = /*(MAssociationEnd)*/ j.next();
-                Object association = Model.getFacade().getAssociation(associationEnd);
+                Object association = 
+                    Model.getFacade().getAssociation(associationEnd);
                 Iterator connEnum =
 		    Model.getFacade().getConnections(association).iterator();
                 while (connEnum.hasNext()) {
@@ -377,7 +375,8 @@ public class GeneratorJava
                         // association end found
                         Object multiplicity =
 			    Model.getFacade().getMultiplicity(associationEnd2);
-                        if (!Model.getMultiplicities().get11().equals(multiplicity)
+                        if (!Model.getMultiplicities().get11()
+                                .equals(multiplicity)
                                 && !Model.getMultiplicities().get01().equals(
                                         multiplicity)) {
                             importSet.add("java.util.Vector");
@@ -467,8 +466,8 @@ public class GeneratorJava
         if (stereo != null
                 && Model.getFacade().getName(stereo).equals("create")) {
             // constructor
-            nameStr =
-		generateName(Model.getFacade().getName(Model.getFacade().getOwner(op)));
+            nameStr = generateName(Model.getFacade().getName(
+                    Model.getFacade().getOwner(op)));
             constructor = true;
         } else {
             nameStr = generateName(Model.getFacade().getName(op));
@@ -673,7 +672,8 @@ public class GeneratorJava
         sb.append(generateVisibility(Model.getFacade().getVisibility(cls)));
 
         // Add other modifiers
-        if (Model.getFacade().isAbstract(cls) && !(Model.getFacade().isAInterface(cls))) {
+        if (Model.getFacade().isAbstract(cls) 
+                && !(Model.getFacade().isAInterface(cls))) {
             sb.append("abstract ");
         }
 
@@ -724,7 +724,8 @@ public class GeneratorJava
 
     private StringBuffer generateClassifierEnd(Object cls) {
         StringBuffer sb = new StringBuffer();
-        if (Model.getFacade().isAClass(cls) || Model.getFacade().isAInterface(cls)) {
+        if (Model.getFacade().isAClass(cls) 
+                || Model.getFacade().isAInterface(cls)) {
             if (verboseDocs) {
                 String classifierkeyword = null;
                 if (Model.getFacade().isAClass(cls)) {
@@ -795,7 +796,8 @@ public class GeneratorJava
      */
     private StringBuffer generateClassifierBody(Object cls) {
         StringBuffer sb = new StringBuffer();
-        if (Model.getFacade().isAClass(cls) || Model.getFacade().isAInterface(cls)) {
+        if (Model.getFacade().isAClass(cls) 
+                || Model.getFacade().isAInterface(cls)) {
             String tv = null; // helper for tagged values
 
             // add attributes
@@ -903,8 +905,10 @@ public class GeneratorJava
                     tv = generateTaggedValues(behavioralFeature);
 
                     if ((Model.getFacade().isAClass(cls))
-                            && (Model.getFacade().isAOperation(behavioralFeature))
-                            && (!Model.getFacade().isAbstract(behavioralFeature))) {
+                            && (Model.getFacade()
+                                    .isAOperation(behavioralFeature))
+                            && (!Model.getFacade()
+                                    .isAbstract(behavioralFeature))) {
                         if (lfBeforeCurly) {
                             sb.append(LINE_SEPARATOR).append(INDENT);
                         } else {
@@ -1405,7 +1409,8 @@ public class GeneratorJava
         Iterator it = generalizations.iterator();
         while (it.hasNext()) {
             Object generalization = /*(MGeneralization)*/ it.next();
-            Object generalizableElement = Model.getFacade().getParent(generalization);
+            Object generalizableElement = 
+                Model.getFacade().getParent(generalization);
             // assert ge != null
             if (generalizableElement != null)
                 classes.add(generalizableElement);
@@ -1676,7 +1681,8 @@ public class GeneratorJava
      * @see org.argouml.application.api.NotationProvider2#generateTransition(java.lang.Object)
      */
     public String generateTransition(Object m) {
-        StringBuffer sb = new StringBuffer(generate(Model.getFacade().getName(m)));
+        StringBuffer sb = 
+            new StringBuffer(generate(Model.getFacade().getName(m)));
         String t = generate(Model.getFacade().getTrigger(m));
         String g = generate(Model.getFacade().getGuard(m));
         String e = generate(Model.getFacade().getEffect(m));
@@ -1803,7 +1809,8 @@ public class GeneratorJava
             return "";
         }
         String packagePath = Model.getFacade().getName(namespace);
-        while ((namespace = Model.getFacade().getNamespace(namespace)) != null) {
+        while ((namespace = Model.getFacade().getNamespace(namespace)) 
+                != null) {
             // ommit root package name; it's the model's root
             if (Model.getFacade().getNamespace(namespace) != null) {
                 packagePath =
