@@ -277,21 +277,21 @@ implements IStatusBar, NavigationListener, ArgoModuleEventListener {
   }
 
   protected void initMenus() {
-    KeyStroke ctrlN = Localizer.getShortcut("CoreMenu","Shortcut_New");
-    KeyStroke ctrlO = Localizer.getShortcut("CoreMenu","Shortcut_Open");
-    KeyStroke ctrlS = Localizer.getShortcut("CoreMenu","Shortcut_Save");
-    KeyStroke ctrlP = Localizer.getShortcut("CoreMenu","Shortcut_Print");
-    KeyStroke ctrlA = Localizer.getShortcut("CoreMenu","Shortcut_Select_All");
-    KeyStroke ctrlC = Localizer.getShortcut("CoreMenu","Shortcut_Copy");
-    KeyStroke ctrlV = Localizer.getShortcut("CoreMenu","Shortcut_Paste");
-    KeyStroke ctrlX = Localizer.getShortcut("CoreMenu","Shortcut_Cut");
-    KeyStroke ctrlR = Localizer.getShortcut("CoreMenu","Shortcut_Remove_From_Diagram");
+    KeyStroke ctrlN = KeyStroke.getKeyStroke(KeyEvent.VK_N, KeyEvent.CTRL_MASK);
+    KeyStroke ctrlO = KeyStroke.getKeyStroke(KeyEvent.VK_O, KeyEvent.CTRL_MASK);
+    KeyStroke ctrlS = KeyStroke.getKeyStroke(KeyEvent.VK_S, KeyEvent.CTRL_MASK);
+    KeyStroke ctrlP = KeyStroke.getKeyStroke(KeyEvent.VK_P, KeyEvent.CTRL_MASK);
+    KeyStroke ctrlA = KeyStroke.getKeyStroke(KeyEvent.VK_A, KeyEvent.CTRL_MASK);
+    KeyStroke ctrlC = KeyStroke.getKeyStroke(KeyEvent.VK_C, KeyEvent.CTRL_MASK);
+    KeyStroke ctrlV = KeyStroke.getKeyStroke(KeyEvent.VK_V, KeyEvent.CTRL_MASK);
+    KeyStroke ctrlX = KeyStroke.getKeyStroke(KeyEvent.VK_X, KeyEvent.CTRL_MASK);
+    KeyStroke ctrlR = KeyStroke.getKeyStroke(KeyEvent.VK_R, KeyEvent.CTRL_MASK);
 
-    KeyStroke F3 = Localizer.getShortcut("CoreMenu","Shortcut_Find");
-    KeyStroke F7 = Localizer.getShortcut("CoreMenu","Shortcut_Generate_All");
-    KeyStroke altF4 = Localizer.getShortcut("CoreMenu","Shortcut_Exit");
+    KeyStroke F3 = KeyStroke.getKeyStroke(KeyEvent.VK_F3, 0);
+    KeyStroke F7 = KeyStroke.getKeyStroke(KeyEvent.VK_F7, 0);
+    KeyStroke altF4 = KeyStroke.getKeyStroke(KeyEvent.VK_F4, KeyEvent.ALT_MASK);
 
-    KeyStroke delKey = Localizer.getShortcut("CoreMenu","Shortcut_Delete");
+    KeyStroke delKey = KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, 0);
 
     JMenuItem mi;
     // File Menu
