@@ -59,7 +59,9 @@ public class UMLModelElementStereotypeComboBoxModel extends UMLComboBoxModel2 {
      * @see org.argouml.uml.ui.UMLComboBoxModel2#isValidPropertySet(ru.novosoft.uml.MElementEvent)
      */
     protected boolean isValidPropertySet(MElementEvent e) {
-        return e.getSource() == getTarget() && e.getName().equals("stereotype");
+        return (e.getSource() == getTarget() && e.getName().equals("stereotype") ||
+            (e.getSource() instanceof MStereotype && e.getName().equals("base")) ||
+            (e.getSource() instanceof MStereotype && e.getName().equals("name")));
     }
 
     /**
