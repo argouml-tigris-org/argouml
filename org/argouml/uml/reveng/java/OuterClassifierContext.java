@@ -64,6 +64,7 @@ class OuterClassifierContext extends Context
     }
 
     public MInterface getInterface(String name)
+	throws ClassifierNotFoundException
     {
         // Search in classifier
         MInterface mInterface =
@@ -113,6 +114,7 @@ class OuterClassifierContext extends Context
        @returns Found classifier.
     */
     public MClassifier get(String name)
+	throws ClassifierNotFoundException
     {
 	// Search in classifier
 	MClassifier iClassifier = 

@@ -48,6 +48,7 @@ class ClassifierContext extends Context
     }
 
     public MInterface getInterface(String name)
+	throws ClassifierNotFoundException
     {
 	// Check if it is this interface
 	if(name.equals(mClassifier.getName()) &&
@@ -72,6 +73,7 @@ class ClassifierContext extends Context
      * @return A classifier for the name.
      */
     public MClassifier get(String classifierName)
+	throws ClassifierNotFoundException
     {
 	// Check if it is this classifier
 	if(classifierName.equals(mClassifier.getName())) {

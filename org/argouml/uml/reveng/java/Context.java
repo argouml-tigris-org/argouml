@@ -56,9 +56,11 @@ abstract class Context
        @param className The name of the classifier to find.
        @returns Found classifier.
     */
-    abstract public MClassifier get(String name);
+    abstract public MClassifier get(String name)
+	throws ClassifierNotFoundException;
 
-    abstract public MInterface getInterface(String name);
+    abstract public MInterface getInterface(String name)
+	throws ClassifierNotFoundException;
 
     /**
        Get the complete java name for a package.

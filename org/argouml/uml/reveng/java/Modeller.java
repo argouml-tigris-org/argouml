@@ -57,6 +57,10 @@ public class Modeller
     /** Arrays will be modelled as unique datatypes. */
     private boolean arraysAsDatatype;
 
+    /** Pointer to exception caught during parsing, null if no
+        exception caught.*/
+    private Exception _exception; 
+
     /**
        Create a new modeller.
 
@@ -74,6 +78,7 @@ public class Modeller
 	parseState = new ParseState(model, getPackage("java.lang"));
 	parseStateStack = new Stack();
 	_diagram = diagram;
+	_exception = null;
     }
 
     /**
@@ -83,6 +88,15 @@ public class Modeller
      */
     private DiagramInterface getDiagram() {
 	return _diagram;
+    }
+
+    /**
+       Get the exception that was caught during parsing.
+
+       @return Exception, null if none was thrown.
+    */
+    public Exception getException() {
+	return _exception;
     }
 
     /**
@@ -166,30 +180,35 @@ public class Modeller
 	mClass.setLeaf((modifiers & JavaRecognizer.ACC_FINAL) > 0);
 	mClass.setRoot(false);
 
-	if(superclassName != null) {
-	    MClass parentClass = (MClass)getContext(superclassName)
-		.get(getClassifierName(superclassName));
-
-	    MGeneralization mGeneralization =
-		getGeneralization(currentPackage, parentClass, mClass);
-	    mGeneralization.setParent(parentClass);
-	    mGeneralization.setChild(mClass);
-	    mGeneralization.setNamespace(currentPackage);
-	}
-
-	for(Iterator i = interfaces.iterator(); i.hasNext(); ) {
-	    String interfaceName = (String)i.next();
-	    MInterface mInterface = getContext(interfaceName)
-		.getInterface(getClassifierName(interfaceName));
-
-	    MAbstraction mAbstraction =
-		getAbstraction(currentPackage, mInterface, mClass);
-	    if(mAbstraction.getSuppliers().size() == 0) {
-		mAbstraction.addSupplier(mInterface);
-		mAbstraction.addClient(mClass);
+	try {
+	    if(superclassName != null) {
+		MClass parentClass = (MClass)getContext(superclassName)
+		    .get(getClassifierName(superclassName));
+		
+		MGeneralization mGeneralization =
+		    getGeneralization(currentPackage, parentClass, mClass);
+		mGeneralization.setParent(parentClass);
+		mGeneralization.setChild(mClass);
+		mGeneralization.setNamespace(currentPackage);
 	    }
-	    mAbstraction.setNamespace(currentPackage);
-	    mAbstraction.setStereotype(getStereotype("realize"));
+	    
+	    for(Iterator i = interfaces.iterator(); i.hasNext(); ) {
+		String interfaceName = (String)i.next();
+		MInterface mInterface = getContext(interfaceName)
+		    .getInterface(getClassifierName(interfaceName));
+		
+		MAbstraction mAbstraction =
+		    getAbstraction(currentPackage, mInterface, mClass);
+		if(mAbstraction.getSuppliers().size() == 0) {
+		    mAbstraction.addSupplier(mInterface);
+		    mAbstraction.addClient(mClass);
+		}
+		mAbstraction.setNamespace(currentPackage);
+		mAbstraction.setStereotype(getStereotype("realize"));
+	    }
+	}
+	catch(ClassifierNotFoundException e) {
+	    _exception = e;
 	}
     }
 
@@ -200,15 +219,23 @@ public class Modeller
     */
     public void addAnonymousClass(String type)
     {
-	String name = parseState.anonymousClass();
-	MClassifier mClassifier =
-	    getContext(type).get(getClassifierName(type));
-	Vector interfaces = new Vector();
-	if(mClassifier instanceof MInterface) {
-	    interfaces.add(type);
+	try {
+	    String name = parseState.anonymousClass();
+	    MClassifier mClassifier =
+		getContext(type).get(getClassifierName(type));
+	    Vector interfaces = new Vector();
+	    if(mClassifier instanceof MInterface) {
+		interfaces.add(type);
+	    }
+	    addClass(name,
+		     (short)0,
+		     mClassifier instanceof MClass ? type : null,
+		     interfaces,
+		     "");
 	}
-	addClass(name, (short)0,
-		 mClassifier instanceof MClass ? type : null, interfaces, "");
+	catch(ClassifierNotFoundException e) {
+	    _exception = e;
+	}
     }
 
     /**
@@ -231,16 +258,23 @@ public class Modeller
 							  modifiers,
 							  javadoc);
 
-	for(Iterator i = interfaces.iterator(); i.hasNext(); ) {
-	    String interfaceName = (String)i.next();
-	    MInterface parentInterface = getContext(interfaceName)
-		.getInterface(getClassifierName(interfaceName));
-
-	    MGeneralization mGeneralization =
-		getGeneralization(currentPackage, parentInterface, mInterface);
-	    mGeneralization.setParent(parentInterface);
-	    mGeneralization.setChild(mInterface);
-	    mGeneralization.setNamespace(currentPackage);
+	try {
+	    for(Iterator i = interfaces.iterator(); i.hasNext(); ) {
+		String interfaceName = (String)i.next();
+		MInterface parentInterface = getContext(interfaceName)
+		    .getInterface(getClassifierName(interfaceName));
+		
+		MGeneralization mGeneralization =
+		    getGeneralization(currentPackage,
+				      parentInterface,
+				      mInterface);
+		mGeneralization.setParent(parentInterface);
+		mGeneralization.setChild(mInterface);
+		mGeneralization.setNamespace(currentPackage);
+	    }
+	}
+	catch(ClassifierNotFoundException e) {
+	    _exception = e;
 	}
     }
 
@@ -358,39 +392,45 @@ public class Modeller
 	    mOperation.removeParameter((MParameter)i.next());
 	}
 
-	MParameter mParameter;
-	String typeName;
-	MPackage mPackage;
-	MClassifier mClassifier;
-
-	if(returnType == null) {
-	    // Constructor
-	    mOperation.setStereotype(getStereotype("create"));
-	    setScope(mOperation, JavaRecognizer.ACC_STATIC);
+	try {
+	    MParameter mParameter;
+	    String typeName;
+	    MPackage mPackage;
+	    MClassifier mClassifier;
+	    
+	    if(returnType == null) {
+		// Constructor
+		mOperation.setStereotype(getStereotype("create"));
+		setScope(mOperation, JavaRecognizer.ACC_STATIC);
+	    }
+	    else {
+		mParameter = new MParameterImpl();
+		mParameter.setName("return");
+		mParameter.setKind(MParameterDirectionKind.RETURN);
+		mOperation.addParameter(mParameter);
+		
+		mClassifier =
+		    getContext(returnType).get(getClassifierName(returnType));
+		mParameter.setType(mClassifier);
+	    }
+	    
+	    for(Iterator i=parameters.iterator(); i.hasNext(); ) {
+		Vector parameter = (Vector)i.next();
+		mParameter = new MParameterImpl();
+		mParameter.setName((String)parameter.elementAt(2));
+		mParameter.setKind(MParameterDirectionKind.IN);
+		mOperation.addParameter(mParameter);
+		
+		typeName = (String)parameter.elementAt(1);
+		mClassifier =
+		    getContext(typeName).get(getClassifierName(typeName));
+		mParameter.setType(mClassifier);
+	    }
 	}
-	else {
-	    mParameter = new MParameterImpl();
-	    mParameter.setName("return");
-	    mParameter.setKind(MParameterDirectionKind.RETURN);
-	    mOperation.addParameter(mParameter);
-
-	    mClassifier =
-		getContext(returnType).get(getClassifierName(returnType));
-	    mParameter.setType(mClassifier);
+	catch(ClassifierNotFoundException e) {
+	    _exception = e;
 	}
 
-	for(Iterator i=parameters.iterator(); i.hasNext(); ) {
-	    Vector parameter = (Vector)i.next();
-	    mParameter = new MParameterImpl();
-	    mParameter.setName((String)parameter.elementAt(2));
-	    mParameter.setKind(MParameterDirectionKind.IN);
-	    mOperation.addParameter(mParameter);
-
-	    typeName = (String)parameter.elementAt(1);
-	    mClassifier =
-		getContext(typeName).get(getClassifierName(typeName));
-	    mParameter.setType(mClassifier);
-	}
 	return mOperation;
     }
 
@@ -438,63 +478,72 @@ public class Modeller
 	    multiplicity = MMultiplicity.M1_N;
 	}
 
-	MClassifier mClassifier =
-	    getContext(typeSpec).get(getClassifierName(typeSpec));
-	MAttribute mAttribute = getAttribute(name, initializer, mClassifier);
+	try {
+	    MClassifier mClassifier =
+		getContext(typeSpec).get(getClassifierName(typeSpec));
+	    MAttribute mAttribute =
+		getAttribute(name, initializer, mClassifier);
 
-	if(mAttribute != null) {
-	    parseState.feature(mAttribute);
-
-	    if((javadoc==null) || "".equals(javadoc)) {
-		javadoc = "/** */";
+	    if(mAttribute != null) {
+		parseState.feature(mAttribute);
+		
+		if((javadoc==null) || "".equals(javadoc)) {
+		    javadoc = "/** */";
+		}
+		getTaggedValue(mAttribute, "documentation").setValue(javadoc);
+		
+		setScope(mAttribute, modifiers);
+		setVisibility(mAttribute, modifiers);
+		mAttribute.setMultiplicity(multiplicity);
+		
+		mAttribute.setType(mClassifier);
+		
+		// Set the initial value for the attribute.
+		if(initializer != null) {
+		    mAttribute.setInitialValue(new MExpression("Java",
+							       initializer));
+		}
+		
+		if((modifiers & JavaRecognizer.ACC_FINAL) > 0) {
+		    mAttribute.setChangeability(MChangeableKind.FROZEN);
+		}
+		else if(mAttribute.getChangeability() ==
+			MChangeableKind.FROZEN ||
+			mAttribute.getChangeability() == null) {
+		    mAttribute.setChangeability(MChangeableKind.CHANGEABLE);
+		}
 	    }
-	    getTaggedValue(mAttribute, "documentation").setValue(javadoc);
-
-	    setScope(mAttribute, modifiers);
-	    setVisibility(mAttribute, modifiers);
-	    mAttribute.setMultiplicity(multiplicity);
-
-	    mAttribute.setType(mClassifier);
-
-	    // Set the initial value for the attribute.
-	    if(initializer != null) {
-		mAttribute.setInitialValue(new MExpression("Java",
-							   initializer));
-	    }
-
-	    if((modifiers & JavaRecognizer.ACC_FINAL) > 0) {
-		mAttribute.setChangeability(MChangeableKind.FROZEN);
-	    }
-	    else if(mAttribute.getChangeability() == MChangeableKind.FROZEN ||
-		    mAttribute.getChangeability() == null) {
-		mAttribute.setChangeability(MChangeableKind.CHANGEABLE);
+	    else {
+		MAssociationEnd mAssociationEnd =
+		    getAssociationEnd(name, mClassifier);
+		
+		if((javadoc==null) || "".equals(javadoc)) {
+		    javadoc = "/** */";
+		}
+		getTaggedValue(mAssociationEnd, "documentation")
+		    .setValue(javadoc);
+		
+		setScope(mAssociationEnd, modifiers);
+		setVisibility(mAssociationEnd, modifiers);
+		mAssociationEnd.setMultiplicity(multiplicity);
+		
+		mAssociationEnd.setType(mClassifier);
+		
+		if((modifiers & JavaRecognizer.ACC_FINAL) > 0) {
+		    mAssociationEnd.setChangeability(MChangeableKind.FROZEN);
+		}
+		else if(mAssociationEnd.getChangeability() ==
+			MChangeableKind.FROZEN ||
+			mAssociationEnd.getChangeability() == null) {
+		    mAssociationEnd
+			.setChangeability(MChangeableKind.CHANGEABLE);
+		}
+		
+		mAssociationEnd.setNavigable(true);
 	    }
 	}
-	else {
-	    MAssociationEnd mAssociationEnd =
-		getAssociationEnd(name, mClassifier);
-
-	    if((javadoc==null) || "".equals(javadoc)) {
-		javadoc = "/** */";
-	    }
-	    getTaggedValue(mAssociationEnd, "documentation").setValue(javadoc);
-
-	    setScope(mAssociationEnd, modifiers);
-	    setVisibility(mAssociationEnd, modifiers);
-	    mAssociationEnd.setMultiplicity(multiplicity);
-
-	    mAssociationEnd.setType(mClassifier);
-
-	    if((modifiers & JavaRecognizer.ACC_FINAL) > 0) {
-		mAssociationEnd.setChangeability(MChangeableKind.FROZEN);
-	    }
-	    else if(mAssociationEnd.getChangeability() ==
-		    MChangeableKind.FROZEN ||
-		    mAssociationEnd.getChangeability() == null) {
-		mAssociationEnd.setChangeability(MChangeableKind.CHANGEABLE);
-	    }
-
-	    mAssociationEnd.setNavigable(true);
+	catch(ClassifierNotFoundException e) {
+	    _exception = e;
 	}
     }
 
@@ -864,4 +913,5 @@ public class Modeller
 	return context;
     }
 
+    
 }

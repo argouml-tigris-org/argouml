@@ -117,6 +117,7 @@ public class Import {
 	    }
 	    catch(Exception e2) {
 		System.out.println("ERROR: " + e2.getMessage());
+		e2.printStackTrace();
 	    }
 	}
 

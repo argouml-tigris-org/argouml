@@ -164,6 +164,12 @@ public class JavaImport {
 	
 	// start parsing at the compilationUnit rule
 	parser.compilationUnit(modeller, lexer);
+
+	// Was there an exception thrown during modelling?
+	Exception e = modeller.getException();
+	if(e != null) {
+	    throw e;
+	}
     }
 }
 
