@@ -38,7 +38,11 @@ import org.argouml.uml.ui.UMLComboBox2;
  */
 public class ActionSetModelElementNamespace extends UMLChangeAction {
 
-    public static final ActionSetModelElementNamespace SINGLETON = new ActionSetModelElementNamespace();
+    /**
+     * <code>SINGLETON</code>
+     */
+    public static final ActionSetModelElementNamespace SINGLETON = 
+        new ActionSetModelElementNamespace();
 
     /**
      * Constructor for ActionSetModelElementNamespace.
