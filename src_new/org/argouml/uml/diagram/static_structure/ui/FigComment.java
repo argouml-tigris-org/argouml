@@ -46,6 +46,7 @@ import org.argouml.kernel.DelayedChangeNotify;
 import org.argouml.kernel.DelayedVChangeListener;
 import org.argouml.model.Model;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
+import org.tigris.gef.base.Selection;
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigPoly;
@@ -362,6 +363,13 @@ public class FigComment
 
     ////////////////////////////////////////////////////////////////
     // Fig accessors
+
+    /**
+     * @see org.tigris.gef.presentation.Fig#makeSelection()
+     */
+    public Selection makeSelection() {
+        return new SelectionComment(this);
+    }
 
     /**
      * @see org.tigris.gef.presentation.Fig#setLineColor(java.awt.Color)
