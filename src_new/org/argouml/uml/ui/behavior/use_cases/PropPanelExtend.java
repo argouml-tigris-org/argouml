@@ -71,7 +71,7 @@ public class PropPanelExtend extends PropPanelModelElement {
      */
 
     public PropPanelExtend() {
-        super("Extend", _extendIcon, ConfigLoader.getTabPropsOrientation());
+        super("Extend", ConfigLoader.getTabPropsOrientation());
 
         addField(Argo.localize("UMLMenu", "label.name"), new UMLTextField2(new UMLModelElementNameDocument()));
         addField(Argo.localize("UMLMenu", "label.stereotype"), 
@@ -102,6 +102,7 @@ public class PropPanelExtend extends PropPanelModelElement {
 
         JTextArea conditionArea = new UMLExpressionBodyField(conditionModel,
                                                             true);
+        conditionArea.setRows(5);
         JScrollPane conditionScroll =
             new JScrollPane(conditionArea);
 
