@@ -28,6 +28,10 @@ import java.util.Vector;
 import org.argouml.application.api.ArgoModule;
 
 
+/**
+ * This class serves as a template of modules external to ArgoUML.
+ *
+ */
 public abstract class ModuleHelper 
     implements ArgoModule
 {

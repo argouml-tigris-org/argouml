@@ -24,12 +24,6 @@
 
 package org.argouml.uml;
 
-import java.net.InetAddress;
-import java.util.Collection;
-import java.util.Iterator;
-import java.net.UnknownHostException;
-import java.rmi.server.UID;
-
 import org.apache.log4j.Logger;
 import org.argouml.model.ModelFacade;
 import org.argouml.uml.diagram.static_structure.ui.CommentEdge;
@@ -83,6 +77,9 @@ public class UUIDHelper {
         return ModelFacade.getUUID(base);
     }
     
+    /**
+     * @return a new UUID
+     */
     public String getNewUUID() {
         return org.argouml.model.UUIDManager.getInstance().getNewUUID();
     }

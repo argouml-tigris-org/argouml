@@ -94,10 +94,14 @@ public abstract class PropPanelEvent extends PropPanelModelElement {
      * Adds a parameter to the event and navigates towards it.
      */
     public void buttonAddParameter() {
-        Object model = ProjectManager.getManager().getCurrentProject().getModel();
-        Object voidType = ProjectManager.getManager().getCurrentProject().findType("void");
-        Collection propertyChangeListeners = ProjectManager.getManager().getCurrentProject().findFigsForMember(getTarget());
-        Object param = Model.getCoreFactory().buildParameter(getTarget(), model, voidType, propertyChangeListeners);
+        Object model = ProjectManager.getManager()
+            .getCurrentProject().getModel();
+        Object voidType = ProjectManager.getManager()
+            .getCurrentProject().findType("void");
+        Collection propertyChangeListeners = ProjectManager.getManager()
+            .getCurrentProject().findFigsForMember(getTarget());
+        Object param = Model.getCoreFactory().buildParameter(getTarget(), 
+                model, voidType, propertyChangeListeners);
         TargetManager.getInstance().setTarget(param);
     }
 

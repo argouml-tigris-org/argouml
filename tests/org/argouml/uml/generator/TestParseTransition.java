@@ -29,6 +29,7 @@ import java.util.Collection;
 
 import junit.framework.TestCase;
 
+import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
@@ -58,14 +59,15 @@ public class TestParseTransition extends TestCase {
      * @see junit.framework.TestCase#setUp()
      */
     protected void setUp() {
+        Project p = ProjectManager.getManager().getCurrentProject();
         Object model =
             Model.getUmlFactory().getModelManagement().createModel();
         aClass = Model.getUmlFactory().getCore().buildClass(model);
-        Collection propertyChangeListeners = ProjectManager.getManager().getCurrentProject().findFigsForMember(aClass);
-        Object mdl = ProjectManager.getManager().getCurrentProject().getModel();
-        Object voidType = ProjectManager.getManager().getCurrentProject().findType("void");
-        aOper = Model.getUmlFactory().getCore()
-            .buildOperation(aClass, mdl, voidType, "myOper", propertyChangeListeners);
+        Collection propertyChangeListeners = p.findFigsForMember(aClass);
+        Object mdl = p.getModel();
+        Object voidType = p.findType("void");
+        aOper = Model.getUmlFactory().getCore().buildOperation(aClass, mdl, 
+                voidType, "myOper", propertyChangeListeners);
         aStateMachine = Model.getUmlFactory().getStateMachines()
             .buildStateMachine(aClass);
         Object top = ModelFacade.getTop(aStateMachine);

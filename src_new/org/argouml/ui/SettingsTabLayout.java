@@ -36,17 +36,16 @@ import javax.swing.SwingConstants;
 import org.argouml.application.ArgoVersion;
 import org.argouml.application.api.Configuration;
 import org.argouml.application.api.ConfigurationKey;
-import org.argouml.application.api.SettingsTabPanel;
 import org.argouml.application.helpers.SettingsTabHelper;
 import org.argouml.cognitive.ui.TabToDo;
-import org.tigris.swidgets.Property;
-import org.tigris.swidgets.PropertyTable;
 import org.argouml.uml.ui.TabConstraints;
 import org.argouml.uml.ui.TabDocumentation;
 import org.argouml.uml.ui.TabProps;
 import org.argouml.uml.ui.TabSrc;
 import org.argouml.uml.ui.TabStyle;
 import org.argouml.uml.ui.TabTaggedValues;
+import org.tigris.swidgets.Property;
+import org.tigris.swidgets.PropertyTable;
 
 /**
  *  Settings dialog tab panel for layout options.

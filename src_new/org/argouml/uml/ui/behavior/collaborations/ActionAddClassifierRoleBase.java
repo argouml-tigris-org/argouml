@@ -29,7 +29,6 @@ import java.util.Vector;
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
-import org.argouml.model.uml.CollaborationsHelperImpl;
 import org.argouml.uml.ui.AbstractActionAddModelElement;
 
 /**

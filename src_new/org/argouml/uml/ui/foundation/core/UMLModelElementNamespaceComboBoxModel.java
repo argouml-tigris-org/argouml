@@ -63,9 +63,10 @@ public class UMLModelElementNamespaceComboBoxModel extends UMLComboBoxModel2 {
      * @see org.argouml.uml.ui.UMLComboBoxModel2#buildModelList()
      */
     protected void buildModelList() {
-        Object model = ProjectManager.getManager().getCurrentProject().getRoot();
-        setElements(Model.getCoreHelper()
-		    .getAllPossibleNamespaces(/*(MModelElement)*/ getTarget(), model));
+        Object model = ProjectManager.getManager()
+            .getCurrentProject().getRoot();
+        setElements(Model.getCoreHelper().getAllPossibleNamespaces(
+                /*(MModelElement)*/ getTarget(), model));
     }
     
     /**

@@ -32,6 +32,7 @@ import javax.swing.JList;
 import javax.swing.JScrollPane;
 
 import org.argouml.i18n.Translator;
+import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
@@ -88,11 +89,12 @@ public class PropPanelSubsystem extends PropPanelPackage {
         public void actionPerformed(ActionEvent e) {
             Object target = TargetManager.getInstance().getModelTarget();
             if (ModelFacade.isAClassifier(target)) {
-                Collection propertyChangeListeners = ProjectManager.getManager().getCurrentProject().findFigsForMember(target);
-                Object model = ProjectManager.getManager().getCurrentProject().getModel();
-                Object voidType = ProjectManager.getManager().getCurrentProject().findType("void");
+                Project p = ProjectManager.getManager().getCurrentProject();
+                Collection pCListeners = p.findFigsForMember(target);
+                Object model = p.getModel();
+                Object voidType = p.findType("void");
                 Object newOper = Model.getUmlFactory().getCore()
-                        .buildOperation(target, model, voidType, propertyChangeListeners);
+                    .buildOperation(target, model, voidType, pCListeners);
                 TargetManager.getInstance().setTarget(newOper);
                 super.actionPerformed(e);
             }

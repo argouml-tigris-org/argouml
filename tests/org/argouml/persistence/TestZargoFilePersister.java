@@ -32,9 +32,6 @@ import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
 import org.argouml.kernel.Project;
-import org.argouml.persistence.LastLoadInfo;
-import org.argouml.persistence.OpenException;
-import org.argouml.persistence.ZargoFilePersister;
 
 /**
  * Testcase to load projects without exception.

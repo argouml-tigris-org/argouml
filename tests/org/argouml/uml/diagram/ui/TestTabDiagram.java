@@ -145,10 +145,12 @@ public class TestTabDiagram extends TestCase {
                     MFactoryImpl.EVENT_POLICY_IMMEDIATE);
                 // real test
                 long currentTime = (new Date()).getTime();
-                Collection propertyChangeListeners = ProjectManager.getManager().getCurrentProject().findFigsForMember(clazz);
-                Object model = ProjectManager.getManager().getCurrentProject().getModel();
-                Object voidType = ProjectManager.getManager().getCurrentProject().findType("void");
-                Model.getUmlFactory().getCore().buildOperation(clazz, model, voidType, propertyChangeListeners);
+                Collection propertyChangeListeners = 
+                    project.findFigsForMember(clazz);
+                Object model = project.getModel();
+                Object voidType = project.findType("void");
+                Model.getUmlFactory().getCore().buildOperation(clazz, model, 
+                        voidType, propertyChangeListeners);
                 System.out.println(
                     "Time needed for adding operation: "
                         + ((new Date()).getTime() - currentTime));

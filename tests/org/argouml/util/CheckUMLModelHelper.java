@@ -297,9 +297,8 @@ public class CheckUMLModelHelper {
                             MInterface inter = 
                                 Model.getCoreFactory().createInterface();
                             MStereotype stereo3 = Model
-                                .getExtensionMechanismsFactory().buildStereotype(inter, 
-                                                              "test3", 
-                                                              ns);
+                                .getExtensionMechanismsFactory()
+                                .buildStereotype(inter, "test3", ns);
                             TestCase.assertTrue(
                                 "Unexpected invalid stereotype", 
                                 !Model.getExtensionMechanismsHelper()

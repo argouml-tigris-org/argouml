@@ -996,9 +996,11 @@ public class GUITestParserDisplay extends TestCase {
             assertTrue(
             	   text + " gave wrong stereotype "
             	   + (ModelFacade.getStereotypes(feature).size() > 0
-            	      ? ModelFacade.getName(ModelFacade.getStereotypes(feature).get(0))
+            	      ? ModelFacade.getName(ModelFacade.getStereotypes(feature)
+                              .get(0))
             	      : "(null)"),
-            	   (val == null && ModelFacade.getStereotypes(feature).size() == 0)
+            	   (val == null 
+                           && ModelFacade.getStereotypes(feature).size() == 0)
             	   || (val != null
             	       && ModelFacade.getStereotypes(feature).size() > 0
             	       && val.equals(ModelFacade.getName(
@@ -1012,7 +1014,8 @@ public class GUITestParserDisplay extends TestCase {
                       ? ModelFacade.getName(
                               ModelFacade.getStereotypes(feature).get(0))
                       : "(null)"),
-                   (val == null && ModelFacade.getStereotypes(feature).size() == 0)
+                   (val == null 
+                           && ModelFacade.getStereotypes(feature).size() == 0)
                    || (val != null
                        && ModelFacade.getStereotypes(feature).size() > 0
                        && val.equals(ModelFacade.getName(
