@@ -29,6 +29,8 @@
 
 // 23 Apr 2002: Jeremy Bennett (mail@jeremybennett.com). Added named constants
 // for the various event types.
+// 15 Juli 2002: Jaap Branderhorst (jaap.branderhorst@xs4all.nl). 
+// Removed double registration of MEventListeners
 
 
 package org.argouml.uml.ui;
@@ -219,9 +221,10 @@ public class UMLChangeDispatch implements Runnable, UMLUserInterfaceComponent {
            !((_container instanceof PropPanelObject) ||
             (_container instanceof PropPanelNodeInstance) ||
             (_container instanceof PropPanelComponentInstance))) {
-            PropPanel propPanel = (PropPanel) _container;
+           PropPanel propPanel = (PropPanel) _container;
             Object target = propPanel.getTarget();
             if(target instanceof MBase) {
+		propPanel.removeMElementListener((MBase) target);
                 propPanel.addMElementListener((MBase) target);
             }
         }
