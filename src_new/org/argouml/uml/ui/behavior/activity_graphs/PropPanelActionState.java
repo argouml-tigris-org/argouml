@@ -30,8 +30,6 @@
 package org.argouml.uml.ui.behavior.activity_graphs;
 
 import org.argouml.i18n.Translator;
-
-import org.argouml.uml.ui.UMLComboBoxNavigator;
 import org.argouml.uml.ui.behavior.state_machines.PropPanelState;
 import org.argouml.util.ConfigLoader;
 
