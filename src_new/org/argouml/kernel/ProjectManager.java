@@ -315,7 +315,7 @@ public final class ProjectManager {
             XMIReader xmiReader = null;
             try {
                 xmiReader = new org.argouml.xml.xmi.XMIReader();
-            } catch (SAXException se) { // duh, this must be _catched and handled
+            } catch (SAXException se) { // duh, this must be catched and handled
                 _cat.error(se);
                 throw se;
             } catch (ParserConfigurationException pc) {
