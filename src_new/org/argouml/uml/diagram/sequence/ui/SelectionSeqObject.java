@@ -209,8 +209,6 @@ public class SelectionSeqObject extends SelectionWButtons  {
 
 
   public void buttonClicked(int buttonCode) {
-   
-    super.buttonClicked(buttonCode);
     MObject newNode = UmlFactory.getFactory().getCommonBehavior().createObject();
     FigSeqObject fc = (FigSeqObject) _content;
     MObject cls = (MObject) fc.getOwner();
@@ -329,5 +327,14 @@ public class SelectionSeqObject extends SelectionWButtons  {
   }
 
 
+
+    /**
+     * Not used. Only implemented here since SelectionSeqObject does not comply to the 
+     * rest of the selection with buttons classes.
+     * @see org.argouml.uml.diagram.ui.SelectionWButtons#getNewNode()
+     */
+    protected Object getNewNode(int buttonCode) {
+        return null;
+    }
 
 } /* end class SelectionClass */

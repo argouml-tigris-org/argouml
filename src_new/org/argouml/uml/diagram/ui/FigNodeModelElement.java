@@ -700,6 +700,7 @@ public abstract class FigNodeModelElement
      */
     protected void updateNameText() {
         if (_readyToEdit) {
+            if (getOwner() == null) return;
             MModelElement owner = (MModelElement)getOwner();
             String nameStr =
                     Notation.generate(this, ((MModelElement) getOwner()).getName());
