@@ -2021,7 +2021,7 @@ components on lower levels.
 
     </sect1>
 
-    <sect1>
+    <sect1 id="layer0">
       <title>Layer 0 - Description of components</title>
       <para>
 Layer 0 contains some infrastructure components that
@@ -2042,6 +2042,12 @@ and then end up on file, on the output or not at all.
 
 	<listitem>
 	  <para>Internationalization</para>
+	  <indexterm>
+	    <primary>Internationalization</primary>
+	  </indexterm>
+	  <indexterm>
+	    <primary>I18n</primary>
+	  </indexterm>
 	  <para>
 This is the set of files that is a repository of localized strings.
 Every other module uses these strings in all communcations with
@@ -2051,6 +2057,9 @@ the user.
 
 	<listitem>
 	  <para>JRE with utils</para>
+	  <indexterm>
+	    <primary>JRE</primary>
+	  </indexterm>
 	  <para>
 Every other component can use the classes available with the JRE.
 </para>
@@ -2059,7 +2068,7 @@ Every other component can use the classes available with the JRE.
       </itemizedlist>
     </sect1>
 
-    <sect1>
+    <sect1 id="layer1">
       <title>Layer 1 - Description of components</title>
       <para>
 Layer 1 is the lowest layer.
@@ -2087,10 +2096,17 @@ and access methods for the information.
 Among other things, the information can be saved,
 loaded, examined, and observed.
 </para>
+	    <para>
+The Model is described in detail in 
+<xref linkend="model"></xref>.
+</para>
 	  </listitem>
 
 	  <listitem>
 	    <para>To do items</para>
+	    <indexterm>
+	      <primary>To do items</primary>
+	    </indexterm>
 	    <para>
 This is the To do items. They can be created, deleted and saved.
 </para>
@@ -2098,6 +2114,9 @@ This is the To do items. They can be created, deleted and saved.
 
 	  <listitem>
 	    <para>The GUI framework</para>
+	    <indexterm>
+	      <primary>GUI framework</primary>
+	    </indexterm>
 	    <para>
 This is the framework with menus, tabs, and panes
 available for the other
@@ -2107,6 +2126,9 @@ components to fill with actions and contents.
 
 	  <listitem>
 	    <para>Help system</para>
+	    <indexterm>
+	      <primary>Help system</primary>
+	    </indexterm>
 	    <para>
 Not yet implemented.
 </para>
@@ -2120,8 +2142,8 @@ to present some help for the user.
 </para>
     </sect1>
 
-    <sect1>
-      <title>Layer 2 - Description of components.</title>
+    <sect1 id="layer2">
+      <title>Layer 2 - Description of components</title>
       <para>
 These components rely on components of layer 1 in order to their
 work.
@@ -2131,6 +2153,9 @@ work.
         <itemizedlist>
 	  <listitem>
 	    <para>Diagrams</para>
+	    <indexterm>
+	      <primary>Diagrams</primary>
+	    </indexterm>
 	    <para>
 This is the diagram view of the model.
 </para>
@@ -2138,6 +2163,9 @@ This is the diagram view of the model.
 
 	  <listitem>
 	    <para>Property panels</para>
+	    <indexterm>
+	      <primary>Property panels</primary>
+	    </indexterm>
 	    <para>
 This is the prop panel view of the model.
 </para>
@@ -2145,6 +2173,9 @@ This is the prop panel view of the model.
 
 	  <listitem>
 	    <para>Navigator pane</para>
+	    <indexterm>
+	      <primary>Navigator pane</primary>
+	    </indexterm>
 	    <para>
 This is the navigator pane view of the model.
 </para>
@@ -2152,6 +2183,9 @@ This is the navigator pane view of the model.
 
 	  <listitem>
 	    <para>Pluggable interface</para>
+	    <indexterm>
+	      <primary>Pluggable interface</primary>
+	    </indexterm>
 	    <para>
 This is the interface where it is possible to plug in all other stuff
 into ArgoUML.
@@ -2161,8 +2195,8 @@ into ArgoUML.
 </para>
     </sect1>
 
-    <sect1>
-      <title>Layer 3 - Definitions of components</title>
+    <sect1 id="layer3">
+      <title>Layer 3 - Description of components</title>
       <para>
 These components are primarily connected through the 
 pluggable interfaces meaning that they can be
@@ -2174,25 +2208,41 @@ individually disabled.
 
 	  <listitem>
 	    <para>Code generation, Reverse engineering - Java</para>
+	    <indexterm>
+	      <primary>Code generation</primary>
+	    </indexterm>
+	    <indexterm>
+	      <primary>Reverse engineering</primary>
+	    </indexterm>
+	    <indexterm>
+	      <primary>Java</primary>
+	      <secondary>reverse engineering</secondary>
+	    </indexterm>
 	    <para>
 This is the ArgoUML connection to the java language.
 </para>
 	  </listitem>
 
 	  <listitem>
-	    <para>Critics and checklists</para>
-	    <para>
-This is the critics.
-</para>
-	  </listitem>
-
-	  <listitem>
-	    <para>Other languages</para>
+	    <para>Code generation, Reverse engineering - Other languages</para>
 	    <para>
 Languages are plugged into 
 the notation,
 the import, 
 and code generation.
+</para>
+	  </listitem>
+
+	  <listitem>
+	    <para>Critics and checklists</para>
+	    <indexterm>
+	      <primary>Critics</primary>
+	    </indexterm>
+	    <indexterm>
+	      <primary>checklists</primary>
+	    </indexterm>
+	    <para>
+This is the critics.
 </para>
 	  </listitem>
 
@@ -2810,6 +2860,9 @@ to the GEF diagrams that in a consistant way adds all ArgoUML-specifics
 at every object creation, modification, and deletion.
 </para>
       <para>
+The Model is a Layer 1 component. See <xref linkend="layer1"></xref>.
+</para>
+      <para>
 ArgoUML uses several factories and helperclasses to manipulate the NSUML
 model. 
 The NSUML model itself does not define enough 'business' logic
@@ -2937,44 +2990,6 @@ will probably find what you are searching for.
 The Model does not use much of the other parts of ArgoUML.
 It is provided for use of others.
 </para>
-	<sect3 id="comp-model-to-comp-diagrams">
-	  <title>Model uses Diagrams</title>
-	  <para>Not at all!</para>
-	</sect3>
-	<sect3 id="comp-model-to-comp-saveload">
-	  <title>Model uses Saving/Loading</title>
-	  <para>Not at all!</para>
-	</sect3>
-	<sect3 id="comp-model-to-comp-notation">
-	  <title>Model uses Notation</title>
-	  <para>Not at all!</para>
-	</sect3>
-	<sect3 id="comp-model-to-comp-codegenreveng">
-	  <title>Model uses Code Generation and Reverse Engineering</title>
-	  <para>Not at all!</para>
-	</sect3>
-	<sect3 id="comp-model-to-comp-critics">
-	  <title>Model uses the Cognitive stuff</title>
-	  <para>Not at all!</para>
-	</sect3>
-	<sect3 id="comp-model-to-comp-help">
-	  <title>Model uses Help System</title>
-	  <para>Not at all!</para>
-	</sect3>
-	<sect3 id="comp-model-to-comp-internationalization">
-	  <title>Model uses Internationalization</title>
-	  <para>Not at all!</para>
-	</sect3>
-	<sect3 id="comp-model-to-comp-plugins">
-	  <title>Model uses Plugin-Module API</title>
-	  <para>Not at all!</para>
-	</sect3>
-	<sect3 id="comp-model-to-comp-logging">
-	  <title>Model uses Logging</title>
-	  <para>
-Currently not.
-</para>
-	</sect3>
       </sect2>
 
       <sect2 id="howdoi_model">
