@@ -264,12 +264,14 @@ public abstract class Generator
     /**
      * Gets the path of the code base for a model element, otherwise null.
      * @param me The model element
-     * @return String
+     * @return String representation of "src_path" tagged value or null if empty or not existing
      */
     public static String getCodePath(Object me) {
-        String s =
-            ModelFacade.getValueOfTag(
-                ModelFacade.getTaggedValue(me, "src_path"));
+        if (me == null) return null;
+        Object taggedValue = ModelFacade.getTaggedValue(me,"src_path");
+        String s;
+        if (taggedValue == null) return null;
+        s =  ModelFacade.getValueOfTag(taggedValue);
         if (s != null)
             return s.trim();
         return null;
