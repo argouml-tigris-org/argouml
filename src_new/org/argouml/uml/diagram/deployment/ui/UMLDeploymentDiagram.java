@@ -209,10 +209,7 @@ public class UMLDeploymentDiagram extends UMLDiagram {
 	    actionMDependency,
 	    getAssociationActions(),
 	    actionMObject,
-	    actionMLink,
-	    null,
-	    actionComment,
-            actionCommentLink};
+	    actionMLink};
         return actions;
     }
 

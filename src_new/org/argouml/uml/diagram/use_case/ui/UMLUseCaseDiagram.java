@@ -276,10 +276,7 @@ public class UMLUseCaseDiagram extends UMLDiagram {
 	    actionExtend,
 	    actionInclude,
 	    null,
-	    ActionAddExtensionPoint.singleton(),
-	    null,
-	    actionComment,
-	    actionCommentLink
+	    ActionAddExtensionPoint.singleton()
 	};
         return actions;
     }
