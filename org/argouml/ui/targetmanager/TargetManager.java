@@ -43,20 +43,21 @@ import org.tigris.gef.base.Diagram;
 import org.tigris.gef.presentation.Fig;
 
 /**
- * The manager of the target of argouml. The target of argouml is the selected
- * element in the model. This can either be an instance of a meta-class (an
+ * The manager of the target of ArgoUML. 
+ * The target of ArgoUML is the element currently selected by the user. 
+ * This can either be an instance of a meta-class (an
  * Interface or a Class for example) but it can also be a diagram or a figure 
  * on a diagram.<p>
+ * 
+ * There can be multiple targets in case
+ * someone selected multiple modelelements or
+ * figs in the explorer or on the diagram .<p>
  * 
  * The purpose of the targetmanager is to have a central spot where we
  * manage the list of current targets.<p>
  * 
- * There can be multiple targets in case
- * someone selected in the explorer or on the diagram multiple modelelements or
- * figs.<p>
- * 
  * Via an event mechanism this manager makes sure that all objects interested 
- * in knowing wether the event changed are acknowledged. <p>
+ * in knowing wether the selection changed are acknowledged. <p>
  * 
  * Note in particular that null is an invalid target.
  * 
@@ -302,49 +303,49 @@ public final class TargetManager {
 
     }
     /**
-     * The log4j logger to log messages to
+     * The log4j logger to log messages to.
      */
     private static final Logger LOG = Logger.getLogger(TargetManager.class);
 
     /**
-     * The singleton instance
+     * The singleton instance.
      */
     private static TargetManager instance = new TargetManager();
 
     /**
-     * The targets
+     * The targets.
      */
     private List targets = new ArrayList();
 
     /** 
-     * Cache for the modeltarget. See getModelTarget
+     * Cache for the modeltarget. See getModelTarget.
      */
     private Object modelTarget = null;
 
     /**
-     * Cache for the figTarget. See getFigTarget
+     * Cache for the figTarget. See getFigTarget.
      */
     private Fig figTarget = null;
 
     /**
-     * The list with targetlisteners
+     * The list with targetlisteners.
      */
     private EventListenerList listenerList = new EventListenerList();
 
     /**
      * The history manager of argouml. Via the historymanager browser behaviour
-     * is emulated
+     * is emulated.
      */
     private HistoryManager historyManager = new HistoryManager();
 
     /**
-     * Flag to indicate that there is a setTarget method running
+     * Flag to indicate that there is a setTarget method running.
      */
     private boolean inTransaction = false;
 
     /**
-     * Singleton retrieval method
-     * @return The targetmanager
+     * Singleton retrieval method.
+     * @return the targetmanager
      */
     public static TargetManager getInstance() {
         return instance;
@@ -760,8 +761,7 @@ public final class TargetManager {
 
     /**
      * Cleans the history. Needed for the JUnit tests and when instantiating a 
-     * new project
-     *
+     * new project.
      */
     public void cleanHistory() {
         historyManager.clean();
