@@ -152,7 +152,7 @@ doesn't find it's own XML-libs. You need to set ANT_HOME in your shell.
     <property name="version.package" value="org/argouml/application"/>
 
     <property name="gef.jar" value="gef-0.9.6.jar"/>
-    <property name="classpath" value="${JAVA_HOME}/lib/tools.jar:${lib.dir}/saxon.jar:${lib.dir}/xerces.jar:${lib.dir}/nsuml.jar:${lib.dir}/ocl-argo.jar:${lib.dir}/${gef.jar}:${lib.dir}/antlrall.jar:${lib.dir}/log4j.jar:${lib.dir}/jh.jar:${lib.dir}/xalan.jar:${lib.dir}/jaxp.jar"/>
+    <property name="classpath" value="${JAVA_HOME}/lib/tools.jar:${lib.dir}/xerces.jar:${lib.dir}/nsuml.jar:${lib.dir}/ocl-argo.jar:${lib.dir}/${gef.jar}:${lib.dir}/antlrall.jar:${lib.dir}/log4j.jar:${lib.dir}/jh.jar:${lib.dir}/xalan.jar:${lib.dir}/saxon.jar:${lib.dir}/jaxp.jar"/>
 
     <property name="packages" value="org.argouml.*"/>
     <property name="manifest" value="${src.dir}/org/argouml.mf"/>
