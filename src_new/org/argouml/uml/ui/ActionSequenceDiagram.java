@@ -65,7 +65,7 @@ public class ActionSequenceDiagram extends ActionAddDiagram {
             throw new IllegalArgumentException(
                 "The argument " + handle + "is not a namespace.");
         }
-        MNamespace ns = (MNamespace) handle;
+        Object/*MNamespace*/ ns = (MNamespace) handle;
         Object collaboration = null;
         Object target = TargetManager.getInstance().getModelTarget();
         if (ModelFacade.isAOperation(target)) {
@@ -111,7 +111,7 @@ public class ActionSequenceDiagram extends ActionAddDiagram {
             throw new IllegalArgumentException(
                 "The argument " + handle + "is not a namespace.");
         }
-        MNamespace ns = (MNamespace) handle;
+        Object/*MNamespace*/ ns = (MNamespace) handle;
         return (
             org.argouml.model.ModelFacade.isACollaboration(ns)
                 || org.argouml.model.ModelFacade.isAClassifier(ns)

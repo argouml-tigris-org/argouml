@@ -39,23 +39,18 @@ import java.io.FileWriter;
 import java.util.Iterator;
 import java.util.Stack;
 import java.util.Vector;
-import ru.novosoft.uml.foundation.core.MNamespace;
-
-
 /**
    This class collects pieces of code when a source file is parsed,
    and then updates the file with new code from the model.
 */
-public class CodePieceCollector
-{
+public class CodePieceCollector {
     /** Code pieces the parser found. */
     private Vector codePieces;
 
     /**
        Constructor.
     */
-    public CodePieceCollector()
-    {
+    public CodePieceCollector() {
 	codePieces = new Vector();
     }
 
@@ -91,9 +86,7 @@ public class CodePieceCollector
     */
     public void filter(File source,
                        File destination,
-                       MNamespace mNamespace)
-	throws Exception
-    {
+                       Object/*MNamespace*/ mNamespace) throws Exception {
 	BufferedReader reader = new BufferedReader(new FileReader(source));
 	BufferedWriter writer = new BufferedWriter(new FileWriter(destination));
 	int line = 0;

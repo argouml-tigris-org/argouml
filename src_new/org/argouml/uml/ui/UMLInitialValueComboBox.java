@@ -92,12 +92,12 @@ public class UMLInitialValueComboBox extends JComboBox
                 String item = (String) getSelectedItem();
                 Object target = _container.getTarget();
                 if (org.argouml.model.ModelFacade.isAAttribute(target)) {
-                    MExpression itemExpr = UmlFactory.getFactory().getDataTypes().createExpression("Java", item);
+                    Object/*MExpression*/ itemExpr = UmlFactory.getFactory().getDataTypes().createExpression("Java", item);
                     ModelFacade.setInitialValue(target, itemExpr);
                     update();
                 }
                 else if (org.argouml.model.ModelFacade.isAParameter(target)) {
-                    MExpression itemExpr = UmlFactory.getFactory().getDataTypes().createExpression("Java", item);
+                    Object/*MExpression*/ itemExpr = UmlFactory.getFactory().getDataTypes().createExpression("Java", item);
                     ModelFacade.setDefaultValue(target, itemExpr);
                     update();
                 }
@@ -119,9 +119,9 @@ public class UMLInitialValueComboBox extends JComboBox
         Object target = _container.getTarget();
 	_isUpdating = true;
         if (org.argouml.model.ModelFacade.isAAttribute(target)) {
-            MExpression initExpr = (MExpression) ModelFacade.getInitialValue(target);
+            Object/*MExpression*/ initExpr = (MExpression) ModelFacade.getInitialValue(target);
             if (initExpr != null) {
-                String init = initExpr.getBody();
+                Object init = ModelFacade.getBody(initExpr);
                 setSelectedItem(init);
                 //update();
             }
@@ -130,9 +130,9 @@ public class UMLInitialValueComboBox extends JComboBox
             }
         } 
         else if (org.argouml.model.ModelFacade.isAParameter(target)) {
-            MExpression initExpr = (MExpression) ModelFacade.getDefaultValue(target);
+            Object/*MExpression*/ initExpr = (MExpression) ModelFacade.getDefaultValue(target);
             if (initExpr != null) {
-                String init = initExpr.getBody();
+                Object init = ModelFacade.getBody(initExpr);
                 setSelectedItem(init);
                 //update();
             }

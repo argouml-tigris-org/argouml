@@ -62,9 +62,6 @@ import org.argouml.uml.ProfileJava;
 import org.argouml.util.MyTokenizer;
 
 import ru.novosoft.uml.behavior.collaborations.MMessage;
-import ru.novosoft.uml.behavior.common_behavior.MObject;
-import ru.novosoft.uml.foundation.core.MAttribute;
-import ru.novosoft.uml.foundation.core.MModelElement;
 import ru.novosoft.uml.foundation.core.MOperation;
 import ru.novosoft.uml.foundation.data_types.MCallConcurrencyKind;
 import ru.novosoft.uml.foundation.data_types.MIterationExpression;
@@ -374,7 +371,7 @@ public class ParserDisplay extends Parser {
      * @throws java.text.ParseException when it detects an error in the
      *	attribute string. See also ParseError.getErrorOffset().
      */
-    public void parseModelElement(MModelElement me, String text)
+    public void parseModelElement(Object/*MModelElement*/ me, String text)
 	throws ParseException {
 	MyTokenizer st;
 
@@ -452,7 +449,7 @@ public class ParserDisplay extends Parser {
 
 	if (path != null) {
 	    Object nspe = ModelManagementHelper.getHelper()
-		.getElement(path, me.getModel());
+		.getElement(path, ModelFacade.getModel(me));
 
 	    if (nspe == null || !(ModelFacade.isANamespace(nspe)))
 		throw new ParseException("Unable to resolve namespace", 0);
@@ -1115,7 +1112,7 @@ public class ParserDisplay extends Parser {
      * @param s
      * @return String
      */
-    protected String parseOutMultiplicity(MAttribute f, String s) {
+    protected String parseOutMultiplicity(Object/*MAttribute*/ f, String s) {
 	s = s.trim();
 	String multiString = "";
 	int terminatorIndex = s.indexOf(':');
@@ -1139,7 +1136,7 @@ public class ParserDisplay extends Parser {
 	multiString = multiString.substring(multiStart, multiEnd).trim();
 
 	if (multiString.length() > 0)
-	    f.setMultiplicity(UmlFactory.getFactory().getDataTypes()
+	    ModelFacade.setMultiplicity(f, UmlFactory.getFactory().getDataTypes()
 			      .createMultiplicity(multiString));
 
 	return s;
@@ -1584,7 +1581,7 @@ public class ParserDisplay extends Parser {
      * @param s
      * @return String
      */
-    protected String parseOutProperties(MAttribute a, String s) {
+    protected String parseOutProperties(Object/*MAttribute*/ a, String s) {
 	s = s.trim();
 	if (s.indexOf("{") >= 0) {
 	    StringTokenizer tokenizer =
@@ -1628,27 +1625,26 @@ public class ParserDisplay extends Parser {
 	if (s.indexOf("{") >= 0) {
 	    StringTokenizer tokenizer =
 		new StringTokenizer(s.substring(s.indexOf("{") + 1,
-						s.indexOf("}")),
-				    ",");
+						s.indexOf("}")), ",");
 	    List properties = new ArrayList();
 	    while (tokenizer.hasMoreElements()) {
 		properties.add(tokenizer.nextToken().trim());
 	    }
 	    for (int i = 0; i < properties.size(); i++) {
 		if (properties.get(i).equals("query")) {
-		    op.setQuery(true);
+		    ModelFacade.setQuery(op, true);
 		} else {
 		    if (properties.get(i).equals("sequential") ||
 			properties.get(i).equals("concurrency=sequential")) {
-                        op.setConcurrency(MCallConcurrencyKind.SEQUENTIAL);
+                        ModelFacade.setConcurrency(op, MCallConcurrencyKind.SEQUENTIAL);
 		    } else {
 			if (properties.get(i).equals("guarded") ||
 			    properties.get(i).equals("concurrency=guarded")) {
-			    op.setConcurrency(MCallConcurrencyKind.GUARDED);
+			    ModelFacade.setConcurrency(op, MCallConcurrencyKind.GUARDED);
 			} else {
 			    if (properties.get(i).equals("concurrent") ||
 				properties.get(i).equals("concurrency=concurrent")) {
-                                op.setConcurrency(MCallConcurrencyKind.CONCURRENT);
+                                ModelFacade.setConcurrency(op, MCallConcurrencyKind.CONCURRENT);
 			    } else {
 				String propertyStr = (String) properties.get(i);
 				String tagStr = "";
@@ -1785,7 +1781,7 @@ public class ParserDisplay extends Parser {
      * @param s
      * @return String
      */
-    public String parseOutParams(MOperation op, String s) {
+    public String parseOutParams(Object/*MOperation*/ op, String s) {
 	s = s.trim();
 	String leftOver = s;
 	int end = s.lastIndexOf(")");
@@ -1823,12 +1819,12 @@ public class ParserDisplay extends Parser {
      * @param s
      * @return String
      */
-    public String parseOutName(MModelElement me, String s) {
+    public String parseOutName(Object/*MModelElement*/ me, String s) {
 	String delim = ": \t()[]{}=;";
 	s = s.trim();
 	if (s.equals("") || delim.indexOf(s.charAt(0)) >= 0) {
 	    //duh there is no name
-	    if (me.getName() == null || me.getName().equals("")) {
+	    if (ModelFacade.getName(me) == null || ModelFacade.getName(me).equals("")) {
 		ModelFacade.setName(me, "anno");
 	    }
 	    return s;
@@ -1857,7 +1853,7 @@ public class ParserDisplay extends Parser {
      * @param s
      * @return String
      */
-    public String parseOutType(MAttribute attr, String s) {
+    public String parseOutType(Object/*MAttribute*/ attr, String s) {
         s = s.trim();
         if (s.startsWith(":")) { // we got ourselves a type expression
             Object type = null;
@@ -1872,7 +1868,7 @@ public class ParserDisplay extends Parser {
 			UmlFactory.getFactory().getCore().buildClass(typeExpr);
 		}
 		if (ModelFacade.getNamespace(attr) != null) {
-		    ModelFacade.setNamespace(type, attr.getNamespace());
+		    ModelFacade.setNamespace(type, ModelFacade.getNamespace(attr));
 		}
 		ModelFacade.setType(attr, type);
 		s = s.substring(typeExpr.length(), s.length());
@@ -1888,7 +1884,7 @@ public class ParserDisplay extends Parser {
      * @param s
      * @return String
      */
-    protected String parseOutReturnType(MOperation op, String s) {
+    protected String parseOutReturnType(Object/*MOperation*/ op, String s) {
         s = s.trim();
         if (s.startsWith(":")) { // we got ourselves a type expression
             Object type = null;
@@ -1917,7 +1913,7 @@ public class ParserDisplay extends Parser {
     }
 
 
-    protected String parseOutInitValue(MAttribute attr, String s) {
+    protected String parseOutInitValue(Object/*MAttribute*/ attr, String s) {
         s = s.trim();
         int equalsIndex = s.indexOf("=");
         int braceIndex = s.indexOf("{");
@@ -3349,7 +3345,7 @@ public class ParserDisplay extends Parser {
     }
 
     /** Parse a line of the form: "name: base-class" */
-    public void parseObject(MObject obj, String s) {
+    public void parseObject(Object/*MObject*/ obj, String s) {
 	// strip any trailing semi-colons
 	s = s.trim();
 

@@ -1,4 +1,3 @@
-
 // $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -51,6 +50,7 @@ import org.argouml.ui.*;
 import org.tigris.gef.graph.MutableGraphModel;
 import org.argouml.application.api.Argo;
 import org.argouml.kernel.*;
+import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.foundation.core.CoreFactory;
 import org.argouml.model.uml.foundation.core.CoreHelper;
 import org.argouml.model.uml.modelmanagement.ModelManagementHelper;
@@ -90,10 +90,10 @@ public class UMLGeneralizationListModel
     /**
      * @see org.argouml.uml.ui.UMLBinaryRelationListModel#build(MModelElement, MModelElement)
      */
-    protected void build(MModelElement from, MModelElement to) {
-	if (org.argouml.model.ModelFacade.isAGeneralizableElement(from) 
-	    && org.argouml.model.ModelFacade.isAGeneralizableElement(to)) {
-	    CoreFactory.getFactory().buildGeneralization((MGeneralizableElement) from, (MGeneralizableElement) to);
+    protected void build(Object/*MModelElement*/ from, Object/*MModelElement*/ to) {
+	if (ModelFacade.isAGeneralizableElement(from) 
+	    && ModelFacade.isAGeneralizableElement(to)) {
+	    CoreFactory.getFactory().buildGeneralization(from, to);
 	}
 	else
 	    throw new IllegalArgumentException("In build of UMLGeneralizationListModel: either the arguments are null or not instanceof MGeneralizableElement");
@@ -104,8 +104,8 @@ public class UMLGeneralizationListModel
      * @see org.argouml.uml.ui.UMLBinaryRelationListModel#connect(MutableGraphModel, MModelElement, MModelElement)
      */
     protected void connect(MutableGraphModel gm,
-			   MModelElement from,
-			   MModelElement to) {
+			   Object/*MModelElement*/ from,
+			   Object/*MModelElement*/ to) {
 	gm.connect(from, to, MGeneralization.class);
     }
 

@@ -34,7 +34,7 @@ import ru.novosoft.uml.foundation.core.MModelElement;
  */
 public abstract class AbstractActionNewModelElement extends UMLChangeAction {
 
-    private MModelElement _target;
+    private Object/*MModelElement*/ _target;
     
     protected AbstractActionNewModelElement() {
         super(Argo.localize("CoreMenu", "action.new"), true, NO_ICON);
@@ -44,7 +44,7 @@ public abstract class AbstractActionNewModelElement extends UMLChangeAction {
      * Returns the target.
      * @return MModelElement
      */
-    public MModelElement getTarget() {
+    public Object/*MModelElement*/ getTarget() {
         return _target;
     }
 

@@ -3039,6 +3039,20 @@ public class ModelFacade {
         throw new IllegalArgumentException("Unrecognized object " + handle);
     }
     
+    public static Collection getStimuli2(Object handle) {
+        if (handle instanceof MInstance) {
+            return ((MInstance) handle).getStimuli2();
+        }
+        throw new IllegalArgumentException("Unrecognized object " + handle);
+    }
+    
+    public static Collection getStimuli3(Object handle) {
+        if (handle instanceof MInstance) {
+            return ((MInstance) handle).getStimuli3();
+        }
+        throw new IllegalArgumentException("Unrecognized object " + handle);
+    }
+    
     /**
      * Returns a collection with all subvertices belonging to the given
      * composite state.
@@ -3481,6 +3495,13 @@ public class ModelFacade {
         return null;
     }
 
+    public static Collection getTaggedValuesCollection(Object modelElement) {
+        if (modelElement != null && modelElement instanceof MModelElement) {
+            return ((MModelElement) modelElement).getTaggedValues();
+        }
+        throw new IllegalArgumentException("Unrecognized object " + modelElement);
+    }
+
     /**
      *  Return the tagged value with a specific tag.
      *
@@ -3864,6 +3885,12 @@ public class ModelFacade {
             && o instanceof MModelElement
             && dep instanceof MDependency) {
             ((MModelElement) o).removeClientDependency((MDependency) dep);
+        }
+    }
+
+    public static void removeConstraint(Object handle, Object cons) {
+        if (handle instanceof MModelElement && cons instanceof MConstraint) {
+            ((MModelElement)handle).removeConstraint((MConstraint)cons);
         }
     }
 
@@ -5238,6 +5265,15 @@ public class ModelFacade {
         }
     }
 
+    public static void setTaggedValues(Object target, Collection taggedValues) {
+        if (target instanceof MModelElement) {
+            ((MModelElement)target).setTaggedValues(taggedValues);
+            return;
+        }
+        throw new IllegalArgumentException("Unrecognized object " + target
+					   + " or " + taggedValues);
+    }
+    
     /**
      * Sets a value of some taggedValue.
      * @param taggedValue

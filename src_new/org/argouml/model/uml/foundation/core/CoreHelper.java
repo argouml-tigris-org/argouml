@@ -686,14 +686,14 @@ public class CoreHelper {
      * @param clazz
      * @return Collection
      */
-    public Collection getExtendingElements(MGeneralizableElement clazz) {
+    public Collection getExtendingElements(Object/*MGeneralizableElement*/ clazz) {
         if (clazz == null)
             return new ArrayList();
-        Iterator it = clazz.getSpecializations().iterator();
+        Iterator it = ModelFacade.getSpecializations(clazz).iterator();
         List list = new ArrayList();
         while (it.hasNext()) {
-            MGeneralization gen = (MGeneralization) it.next();
-            MGeneralizableElement client = gen.getChild();
+            Object/*MGeneralization*/ gen = it.next();
+            Object/*MGeneralizableElement*/ client = ModelFacade.getChild(gen);
             if (client != null) {
                 list.add(client);
             }

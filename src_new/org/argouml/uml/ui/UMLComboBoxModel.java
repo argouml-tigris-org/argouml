@@ -458,12 +458,12 @@ public class UMLComboBoxModel extends AbstractListModel implements
      *                   the same "short" (i.e. formatted) name.
      */
 
-    public void collectElements(MNamespace ns, Profile profile,
+    public void collectElements(Object/*MNamespace*/ ns, Profile profile,
                                 boolean isPhantom) {
 
         // Give up if there are no elements in the supplied namespace
 
-        Collection collection = ns.getOwnedElements();
+        Collection collection = ModelFacade.getOwnedElements(ns);
 
         if (collection == null) {
             return;
@@ -475,7 +475,7 @@ public class UMLComboBoxModel extends AbstractListModel implements
         Iterator iter = collection.iterator();
 
         while (iter.hasNext()) {
-            MModelElement element = (MModelElement) iter.next();
+            Object/*MModelElement*/ element = (MModelElement) iter.next();
 
             // If its passed by the filter, make a new combo box entry, and if
             // appropriate add to the set.
@@ -533,7 +533,7 @@ public class UMLComboBoxModel extends AbstractListModel implements
      *                 the drop down list, <code>false</code> otherwise.
      */
 
-    private boolean isAcceptible(MModelElement element) {
+    private boolean isAcceptible(Object/*MModelElement*/ element) {
 
         boolean isAcceptible = false;
 
@@ -591,8 +591,8 @@ public class UMLComboBoxModel extends AbstractListModel implements
         // Make sure we have a model as well. PJS comments that this needs more
         // work - it should never happen.
 
-        MModelElement element = (MModelElement) target;
-        MModel        model   = element.getModel();
+        Object/*MModelElement*/ element = target;
+        Object/*MModel*/        model   = ModelFacade.getModel(element);
 
         if (model == null) {
         	// extra attempt
@@ -635,7 +635,7 @@ public class UMLComboBoxModel extends AbstractListModel implements
         // Add elements from the model associated with the profile if allowed.
 
         if (_addElementsFromProfileModel) {
-            MModel profileModel = profile.getProfileModel();
+            Object/*MModel*/ profileModel = profile.getProfileModel();
 
             if (profileModel != null) {
                 collectElements(profileModel, profile, true);

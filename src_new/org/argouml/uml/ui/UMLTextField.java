@@ -49,7 +49,6 @@ import org.argouml.ui.ProjectBrowser;
 import org.tigris.gef.presentation.Fig;
 
 import ru.novosoft.uml.MElementEvent;
-import ru.novosoft.uml.foundation.core.MClassifier;
 /**
  *  This class handles the updating of text as it is typed into the text field on one
  *  of the many property panels. By catching the MElementEvent dispatched from NSUML it
@@ -104,7 +103,7 @@ public class UMLTextField
     }
 
     Object _target;
-    MClassifier _classifier;
+    Object/*MClassifier*/ _classifier;
     /** Creates new BooleanChangeListener */
     public UMLTextField(
         UMLUserInterfaceContainer container,

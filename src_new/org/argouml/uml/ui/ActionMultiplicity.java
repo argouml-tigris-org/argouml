@@ -36,7 +36,7 @@ import org.argouml.model.ModelFacade;
 
 public class ActionMultiplicity extends UMLAction {
     String str = "";
-    MMultiplicity mult = null;
+    Object/*MMultiplicity*/ mult = null;
 
 
     ////////////////////////////////////////////////////////////////
@@ -67,7 +67,7 @@ public class ActionMultiplicity extends UMLAction {
     ////////////////////////////////////////////////////////////////
     // constructors
 
-    protected ActionMultiplicity(MMultiplicity m, String s) {
+    protected ActionMultiplicity(Object/*MMultiplicity*/ m, String s) {
 	//super(m.getLower() + ".." + m.getUpper(), NO_ICON);
 	super(m.toString(), NO_ICON);
 	str = s;

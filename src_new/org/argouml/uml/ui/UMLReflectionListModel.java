@@ -137,7 +137,7 @@ public class UMLReflectionListModel extends UMLModelElementListModel   {
      *  @return corresponding model element
      */
     protected MModelElement getModelElementAt(int index) {
-        MModelElement element = null;
+        Object/*MModelElement*/ element = null;
         if (_getMethod != null) {
             try {
                 Object collection = _getMethod.invoke(getContainer(), _noArgs);
@@ -164,7 +164,7 @@ public class UMLReflectionListModel extends UMLModelElementListModel   {
                 cat.error(e.toString() + " in UMLReflectionListModel.getElementAt()", e);
             }
         }
-        return element;
+        return (MModelElement)element;
     }
 
 
@@ -297,5 +297,4 @@ public class UMLReflectionListModel extends UMLModelElementListModel   {
     }
 
 }
-
 

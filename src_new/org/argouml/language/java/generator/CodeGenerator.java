@@ -52,19 +52,19 @@ class CodeGenerator {
        @param mClass The class to generate code for.
        @param writer The writer to write to.
     */
-    public static void generateClass(MClass mClass,
+    public static void generateClass(Object/*MClass*/ mClass,
 				     BufferedReader reader,
 				     BufferedWriter writer)
             throws Exception {
-	ClassCodePiece ccp = new ClassCodePiece(null, mClass.getName());
+	ClassCodePiece ccp = new ClassCodePiece(null, ModelFacade.getName(mClass));
 	Stack parseStateStack = new Stack();
-	parseStateStack.push(new ParseState(mClass.getNamespace()));
+	parseStateStack.push(new ParseState(ModelFacade.getNamespace(mClass)));
 	ccp.write(reader, writer, parseStateStack);
 
 	writer.write("{\n");
 
 	// Features
-	Collection features = mClass.getFeatures();
+	Collection features = ModelFacade.getFeatures(mClass);
 	for (Iterator i = features.iterator(); i.hasNext(); ) {
 	    Object feature = /*(MFeature)*/ i.next();
 	    if (ModelFacade.isAOperation(feature)) {
@@ -76,7 +76,7 @@ class CodeGenerator {
 	}
 
 	// Inner classes
-	Collection elements = mClass.getOwnedElements();
+	Collection elements = ModelFacade.getOwnedElements(mClass);
 	for (Iterator i = elements.iterator(); i.hasNext(); ) {
 	    Object element = /*(MModelElement)*/ i.next();
 	    if (ModelFacade.isAClass(element)) {

@@ -171,7 +171,8 @@ public class ActionModifier extends UMLAction {
      * @param     trueValue      The enumerated value representing true
      * @param     falseValue     The enumerated value representing false
      */
-    public ActionModifier(String name, String propertyName,
+    public ActionModifier(String name,
+                          String propertyName,
 			  String getMethod,
 			  String setMethod,
 			  MInterface minterface,
@@ -309,7 +310,7 @@ public class ActionModifier extends UMLAction {
      */
 
     public ActionModifier(String name, String propertyName, String getMethod,
-                          String setMethod, MUseCase museCase, Class enumClass,
+                          String setMethod, Object/*MUseCase*/ museCase, Class enumClass,
                           Object trueValue, Object falseValue) {
         super(name, NO_ICON);
         this.object = museCase;

@@ -454,7 +454,7 @@ public class UMLExtendListModel extends UMLBinaryRelationListModel  {
     /**
      * @see org.argouml.uml.ui.UMLBinaryRelationListModel#build(MModelElement, MModelElement)
      */
-    protected void build(MModelElement from, MModelElement to) {
+    protected void build(Object/*MModelElement*/ from, Object/*MModelElement*/ to) {
         if (org.argouml.model.ModelFacade.isAUseCase(from) && org.argouml.model.ModelFacade.isAUseCase(to)) {
             UseCasesFactory.getFactory().buildExtend(/*(MUseCase)*/ to, /*(MUseCase)*/ from);
         } else
@@ -466,8 +466,8 @@ public class UMLExtendListModel extends UMLBinaryRelationListModel  {
      */
     protected void connect(
 			   MutableGraphModel gm,
-			   MModelElement from,
-			   MModelElement to) {
+			   Object/*MModelElement*/ from,
+			   Object/*MModelElement*/ to) {
 	gm.connect(from, to, MExtend.class);
     }
 

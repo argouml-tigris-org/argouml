@@ -1,5 +1,3 @@
-
-
 // $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -34,8 +32,6 @@ import org.argouml.model.uml.UmlFactory;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.ui.targetmanager.TargetManager;
 
-import ru.novosoft.uml.foundation.core.MAttribute;
-
 import ru.novosoft.uml.foundation.core.MClassifier;
 
 /** Action to add an attribute to a classifier.
@@ -64,8 +60,8 @@ public class ActionAddAttribute extends UMLChangeAction {
 	Project p = ProjectManager.getManager().getCurrentProject();
 	Object target = TargetManager.getInstance().getModelTarget();
 	if (!(org.argouml.model.ModelFacade.isAClassifier(target))) return;
-	MClassifier cls = (MClassifier) target;
-	MAttribute attr = UmlFactory.getFactory().getCore().buildAttribute(cls);
+	Object/*MClassifier*/ cls = (MClassifier) target;
+	Object/*MAttribute*/ attr = UmlFactory.getFactory().getCore().buildAttribute(cls);
 	TargetManager.getInstance().setTarget(attr);
 	super.actionPerformed(ae);
     }

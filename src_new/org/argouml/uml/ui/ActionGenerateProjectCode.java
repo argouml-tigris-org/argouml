@@ -30,6 +30,7 @@ import java.util.Iterator;
 import java.util.Vector;
 
 import org.argouml.kernel.ProjectManager;
+import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.modelmanagement.ModelManagementHelper;
 import org.argouml.ui.ArgoDiagram;
 import org.argouml.ui.ProjectBrowser;
@@ -74,10 +75,10 @@ public class ActionGenerateProjectCode extends UMLAction {
 	    ProjectManager.getManager().getCurrentProject().getActiveDiagram();
 	if (!(activeDiagram instanceof org.argouml.uml.diagram.ui.UMLDiagram))
 	    return;
-	ru.novosoft.uml.foundation.core.MNamespace ns =(MNamespace)
+	Object/*MNamespace*/ ns =(MNamespace)
 	    ((org.argouml.uml.diagram.ui.UMLDiagram) activeDiagram).getNamespace();
 	if (ns == null) return;
-	while (ns.getNamespace() != null) ns = ns.getNamespace();
+	while (ModelFacade.getNamespace(ns) != null) ns = ModelFacade.getNamespace(ns);
 	Collection elems =
 	    ModelManagementHelper.getHelper().getAllModelElementsOfKind(ns, MClassifier.class);
 	//Project p = ProjectManager.getManager().getCurrentProject();
@@ -85,7 +86,7 @@ public class ActionGenerateProjectCode extends UMLAction {
 	//ModelManagementHelper.getHelper().getAllModelElementsOfKind(MClassifier.class);
 	Iterator iter = elems.iterator();
 	while (iter.hasNext()) {
-	    MClassifier cls = (MClassifier) iter.next();
+	    Object/*MClassifier*/ cls = (MClassifier) iter.next();
 	    if (isCodeRelevantClassifier(cls)) {
 		classes.addElement(cls);
 	    }
@@ -101,22 +102,22 @@ public class ActionGenerateProjectCode extends UMLAction {
 	return super.shouldBeEnabled() && (activeDiagram instanceof UMLDiagram);
     }
 
-    private boolean isCodeRelevantClassifier(MClassifier cls) {
+    private boolean isCodeRelevantClassifier(Object/*MClassifier*/ cls) {
 	String path = Generator.getCodePath(cls);
-	String name = cls.getName();
+	String name = ModelFacade.getName(cls);
 	if (name == null || name.length() == 0 || Character.isDigit(name.charAt(0))) {
 	    return false;
 	}
 	if (path != null) {
 	    return (path.length() > 0);
 	}
-	MNamespace parent = cls.getNamespace();
+	Object/*MNamespace*/ parent = ModelFacade.getNamespace(cls);
 	while (parent != null) {
 	    path = Generator.getCodePath(parent);
 	    if (path != null) {
 		return (path.length() > 0);
 	    }
-	    parent = parent.getNamespace();
+	    parent = ModelFacade.getNamespace(parent);
 	}
 	return false;
     }

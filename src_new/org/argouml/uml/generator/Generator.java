@@ -174,8 +174,7 @@ public abstract class Generator
 
     public abstract String generateExtensionPoint(MExtensionPoint op);
     public abstract String generateOperation(MOperation op, boolean documented);
-    public abstract String generateAttribute(
-        MAttribute attr,
+    public abstract String generateAttribute(MAttribute attr,
         boolean documented);
     public abstract String generateParameter(MParameter param);
     public abstract String generatePackage(MPackage p);

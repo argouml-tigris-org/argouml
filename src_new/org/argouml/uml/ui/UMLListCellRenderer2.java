@@ -100,8 +100,8 @@ public class UMLListCellRenderer2 extends DefaultListCellRenderer {
     public String makeText(Object value) {
         String name = null;
         if (org.argouml.model.ModelFacade.isAModelElement(value)) {
-            MModelElement elem = (MModelElement) value;
-            name = elem.getName();
+            Object/*MModelElement*/ elem = (MModelElement) value;
+            name = ModelFacade.getName(elem);
             if (name == null || name.equals("")) {
                 name = "(anon " + makeTypeName(elem) + ")";
             }

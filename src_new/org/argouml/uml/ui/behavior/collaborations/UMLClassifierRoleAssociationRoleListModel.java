@@ -100,7 +100,7 @@ public class UMLClassifierRoleAssociationRoleListModel
      */
     protected void connect(
 			   MutableGraphModel gm,
-			   MModelElement from,
+			   Object/*MModelElement*/ from,
 			   MModelElement to) {
 	gm.connect(from, to, MAssociationRole.class);
     }
@@ -110,7 +110,7 @@ public class UMLClassifierRoleAssociationRoleListModel
      * org.argouml.uml.ui.UMLBinaryRelationListModel#build(MModelElement,
      * MModelElement)
      */
-    protected void build(MModelElement from, MModelElement to) {
+    protected void build(Object/*MModelElement*/ from, MModelElement to) {
 	if (from != null && to != null && ModelFacade.isAClassifierRole(from) && ModelFacade.isAClassifierRole(to)) { 
 	    CollaborationsFactory.getFactory().buildAssociationRole(from, to);
 	}

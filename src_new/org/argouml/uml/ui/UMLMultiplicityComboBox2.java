@@ -1,4 +1,3 @@
-
 // $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -55,7 +54,7 @@ public class UMLMultiplicityComboBox2 extends UMLSearchableComboBox {
      */
     protected void doOnEdit(Object item) {
         String text = (String) item;
-        MMultiplicity multi = null;
+        Object/*MMultiplicity*/ multi = null;
         try {
             multi = new MMultiplicity(text);
         }

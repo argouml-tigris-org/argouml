@@ -28,9 +28,8 @@ import java.awt.event.ActionEvent;
 
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
+import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.UmlFactory;
-import ru.novosoft.uml.model_management.MModel;
-
 /** @stereotype singleton
  */
 public class ActionAddTopLevelPackage extends UMLChangeAction {
@@ -57,9 +56,9 @@ public class ActionAddTopLevelPackage extends UMLChangeAction {
 	Project p = ProjectManager.getManager().getCurrentProject();	
         int numPacks = p.getUserDefinedModels().size();
         String nameStr = "package_" + (numPacks + 1);
-        MModel model =
+        Object/*MModel*/ model =
 	    UmlFactory.getFactory().getModelManagement().createModel();
-        model.setName(nameStr);
+        ModelFacade.setName(model, nameStr);
         p.addMember(model);
         super.actionPerformed(ae);
         ActionClassDiagram.SINGLETON.actionPerformed(ae);

@@ -43,7 +43,7 @@ public class UMLStimulusActionTextProperty  {
     
     
     public void setProperty(UMLUserInterfaceContainer container, String newValue) {
-	MStimulus  stimulus = (MStimulus) container.getTarget();
+	Object/*MStimulus*/  stimulus = (MStimulus) container.getTarget();
 	if (stimulus != null) {
 
 	    String oldValue = getProperty(container);
@@ -58,8 +58,8 @@ public class UMLStimulusActionTextProperty  {
 		    Object action = ModelFacade.getDispatchAction(stimulus);
 		    ModelFacade.setName(action, newValue);
 		    // to rupdate the diagram set the stimulus name again
-		    String dummyStr =  new String(stimulus.getName());
-		    stimulus.setName( dummyStr);
+		    String dummyStr =  new String(ModelFacade.getName(stimulus));
+		    ModelFacade.setName(stimulus, dummyStr);
 		    
 		 
 		    
@@ -70,7 +70,7 @@ public class UMLStimulusActionTextProperty  {
     
     public String getProperty(UMLUserInterfaceContainer container) {
         String value = null;       
-	MStimulus stimulus = (MStimulus) container.getTarget();
+	Object/*MStimulus*/ stimulus = (MStimulus) container.getTarget();
 	if (stimulus != null) {
 	    Object action = ModelFacade.getDispatchAction(stimulus);
 	    if (action != null) value = ModelFacade.getName(action);
@@ -88,5 +88,4 @@ public class UMLStimulusActionTextProperty  {
     void targetChanged() {
     }
 }
-
 

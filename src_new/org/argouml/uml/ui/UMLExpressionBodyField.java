@@ -29,6 +29,7 @@ import javax.swing.*;
 
 import org.apache.log4j.Logger;
 import java.lang.reflect.*;
+import org.argouml.model.ModelFacade;
 import ru.novosoft.uml.*;
 
 /**
@@ -77,13 +78,13 @@ public class UMLExpressionBodyField extends JTextArea implements DocumentListene
     
     private void update() {
         String oldText = getText();
-        String newText = _model.getBody();
+        Object newText = ModelFacade.getBody(_model);
 	cat.debug("UMLExpressionBodyField: update: " + oldText + " " + newText);
 
 	if (oldText == null || newText == null || !oldText.equals(newText)) {
             if (oldText != newText) {
 		cat.debug("setNewText!!");
-                setText(newText);
+                setText((String)newText);
             }
         }
     }

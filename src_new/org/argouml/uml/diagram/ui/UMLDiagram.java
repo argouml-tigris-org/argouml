@@ -327,7 +327,7 @@ public abstract class UMLDiagram
 	UmlModelEventPump pump = UmlModelEventPump.getPump();
 	while (enum.hasMoreElements()) {
 	    Object o = enum.nextElement();
-	    if (org.argouml.model.ModelFacade.isAElementListener(o)) {
+	    if (ModelFacade.isAElementListener(o)) {
 		MElementListener listener = (MElementListener) o;
 		Fig fig = (Fig) o;
 		pump.removeModelEventListener(listener,

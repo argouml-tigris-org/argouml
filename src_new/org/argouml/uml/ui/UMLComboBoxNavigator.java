@@ -36,8 +36,6 @@ import javax.swing.JPanel;
 import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.ui.targetmanager.TargetManager;
 
-import ru.novosoft.uml.foundation.core.MModelElement;
-
 /**
  *   This class implements a panel that adds a navigation button
  *   to the right of the combo box
@@ -79,7 +77,7 @@ public class UMLComboBoxNavigator extends JPanel implements ActionListener {
         if (item instanceof UMLComboBoxEntry) {
             UMLComboBoxEntry entry = (UMLComboBoxEntry) item;
             if (!entry.isPhantom()) {
-                MModelElement target = entry.getElement(null);
+                Object/*MModelElement*/ target = entry.getElement(null);
                 if (target != null) {
                     _button.setEnabled(true);
                 } else
@@ -102,7 +100,7 @@ public class UMLComboBoxNavigator extends JPanel implements ActionListener {
             if (item instanceof UMLComboBoxEntry) {
                 UMLComboBoxEntry entry = (UMLComboBoxEntry) item;
                 if (!entry.isPhantom()) {
-                    MModelElement target = entry.getElement(null);
+                    Object/*MModelElement*/ target = entry.getElement(null);
                     if (target != null) {
                         TargetManager.getInstance().setTarget(target);
                     }
@@ -115,7 +113,7 @@ public class UMLComboBoxNavigator extends JPanel implements ActionListener {
             if (item instanceof UMLComboBoxEntry) {
                 UMLComboBoxEntry entry = (UMLComboBoxEntry) item;
                 if (!entry.isPhantom()) {
-                    MModelElement target = entry.getElement(null);
+                    Object/*MModelElement*/ target = entry.getElement(null);
                     if (target != null) {
                         _button.setEnabled(true);
                     } else
