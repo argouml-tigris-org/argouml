@@ -446,13 +446,16 @@ public class FigSeqLink extends FigEdgeModelElement implements MElementListener{
       }
     }
     if (portObj != null) {
-
-      FigSeqObject fso = (FigSeqObject) portObj.getSourceFigNode();
-      FigRect port = (FigRect) portObj.getSourcePortFig();
-
-      if (port instanceof FigDynPort) {
+     
+      FigRect port = null;
+      //FigSeqObject fso = (FigSeqObject) portObj.getSourceFigNode();
+      if  (portObj.getSourcePortFig() != null && 
+           portObj.getSourcePortFig() instanceof FigRect) {
+        port = (FigRect) portObj.getSourcePortFig();
+      }
+      if (port != null && port instanceof FigDynPort) {
         FigDynPort fsp = (FigDynPort) port;
-         portNumber = fsp.getPosition()+1;
+        portNumber = fsp.getPosition()+1;
 
       }
     }
