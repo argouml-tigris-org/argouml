@@ -29,16 +29,12 @@ import junit.framework.TestCase;
 import org.argouml.model.Model;
 import org.argouml.uml.ui.UMLModelElementListModel2;
 
-import ru.novosoft.uml.MFactoryImpl;
-import ru.novosoft.uml.behavior.collaborations.MAssociationEndRole;
-
 /**
  * @since Oct 27, 2002
  * @author jaap.branderhorst@xs4all.nl
  */
 public class TestUMLAssociationEndRoleBaseListModel extends TestCase {
 
-    private int oldEventPolicy;
     private Object elem;
     private UMLModelElementListModel2 model;
     private Object baseAssoc;
@@ -67,21 +63,25 @@ public class TestUMLAssociationEndRoleBaseListModel extends TestCase {
 
         elem = Model.getCollaborationsFactory().createAssociationEndRole();
         baseEnd = Model.getCoreFactory().createAssociationEnd();
-        assocRole = Model.getCollaborationsFactory().createAssociationRole();
         baseAssoc = Model.getCoreFactory().createAssociation();
 
-        // Model.getCoreHelper().addOwnedElement(collaboration, elem);
         Model.getCoreHelper().addOwnedElement(collaboration, baseEnd);
-        Model.getCoreHelper().addOwnedElement(collaboration, assocRole);
         Model.getCoreHelper().addOwnedElement(collaboration, baseAssoc);
+
+        Object from =
+            Model.getCollaborationsFactory().buildClassifierRole(collaboration);
+        Object to =
+            Model.getCollaborationsFactory().buildClassifierRole(collaboration);
+
+        assocRole =
+            Model.getCollaborationsFactory().buildAssociationRole(from, to);
 
         Model.getCoreHelper().setName(assocRole, "TestAssocRole");
 
         Model.getCoreHelper().setAssociation(elem, assocRole);
         Model.getCollaborationsHelper().setBase(assocRole, baseAssoc);
-        Model.getCoreHelper().setAssociation(baseEnd, baseAssoc);
-        oldEventPolicy = MFactoryImpl.getEventPolicy();
-        MFactoryImpl.setEventPolicy(MFactoryImpl.EVENT_POLICY_IMMEDIATE);
+        // Model.getCoreHelper().setAssociation(baseEnd, baseAssoc);
+
         model = new UMLAssociationEndRoleBaseListModel();
         model.setTarget(elem);
     }
@@ -95,7 +95,6 @@ public class TestUMLAssociationEndRoleBaseListModel extends TestCase {
         Model.getUmlFactory().delete(assocRole);
         Model.getUmlFactory().delete(baseAssoc);
         Model.getUmlFactory().delete(baseEnd);
-        MFactoryImpl.setEventPolicy(oldEventPolicy);
         model = null;
     }
 
@@ -127,8 +126,7 @@ public class TestUMLAssociationEndRoleBaseListModel extends TestCase {
     public void testRemove() {
         Model.getCollaborationsHelper().setBase(elem, baseEnd);
 
-        // TODO: Find or create a ModelFacade method for this?
-        ((MAssociationEndRole) elem).setBase(null);
+        Model.getCollaborationsHelper().setBase(elem, baseEnd);
 
         assertEquals(0, model.getSize());
     }
