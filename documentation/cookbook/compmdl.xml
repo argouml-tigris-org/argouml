@@ -314,11 +314,11 @@ How do I register a listener for a certain type event
 	    <para>
 This is really very simple. Use the model
 <programlisting>
-addModelEventListener(MElementListener listener, MBase modelelement, String eventName)
+addModelEventListener(PropertyChangeListener listener, Object modelelement, String eventName)
 </programlisting>
 like this:
 <programlisting>
-UmlModelEventPump.getPump().addModelEventListener(this, modelelementIAmInterestedIn, "IamInterestedInThisEventnameType");
+Model.getPump().addModelEventListener(this, modelelementIAmInterestedIn, "IamInterestedInThisEventnameType");
 </programlisting>
 Now your object this gets only the <classname>Events</classname>
 fired by modelElementIAmInterestedIn that have the name
@@ -331,11 +331,11 @@ fired by modelElementIAmInterestedIn that have the name
 This is the opposite of registering a listener. It all works with the
 method
 <programlisting>
-removeModelEventListener(MElementListener listener, MBase modelElement, String eventName)
+removeModelEventListener(PropertyChangeListener listener, Object modelElement, String eventName)
 </programlisting>
-on <classname>UmlModelEventPump</classname> like this:
+on the <classname>ModelEventPump</classname> like this:
 <programlisting>
-UmlModelEventPump.getPump().removeModelEventListener(this, modelelementIAmInterestedIn, "IamInterestedInThisEventnameType");
+Model.getPump().removeModelEventListener(this, modelelementIAmInterestedIn, "IamInterestedInThisEventnameType");
 </programlisting>
 Now your object is not registered any more for this event type. 
 </para>
@@ -352,7 +352,7 @@ certain model elements.
 
 This works with the method:
 <programlisting>
-addModelEventListener(MElementListener listener, MBase modelelement)
+addModelEventListener(PropertyChangeListener listener, Object modelelement)
 </programlisting>
 As you can see no names of events you can register for here.
 </para>
@@ -367,7 +367,7 @@ more than once.
 
 It works via:
 <programlisting>
-addModelEventListener(MElementListener listener, MBase modelelement, String[] eventNames)
+addModelEventListener(PropertyChangeListener listener, Object modelelement, String[] eventNames)
 </programlisting>
 </para>
 	    <para>
@@ -384,7 +384,7 @@ Therefore use it with care.
 
 The method is:
 <programlisting>
-addClassModelEventListener(MElementListener listener, Class modelClass)
+addClassModelEventListener(PropertyChangeListener listener, Object modelClass)
 </programlisting>
 There are also methods that allow you to register only for one type of
 event fired by all model elements of a certain class and to register
@@ -587,8 +587,8 @@ Register for notification that a model element Object o has changed:
 ((MDRChangeSource) obj).addChangeListener(???)
 </entry>
 	    <entry>
-UmlEventPump.getPump().addModelEventListener((Object)MElementListener el,
-                                             Object o, String[] eventnames)
+Model.getPump().addModelEventListener((PropertyChangeListener) li,
+                                      Object o, String[] eventnames)
 </entry>
 	  </row>
 	  <row>
@@ -602,9 +602,9 @@ Not possible!
 ((MDRChangeSource) obj.refClass()).addChangeListener(???)
 </entry>
 	    <entry>
-UmlEventPump.getPump().addModelEventListener(MElementListener el,
-                                             Class M<replaceable>Type</replaceable>.class,
-                                             String[] eventnames)
+Model.getPump().addModelEventListener((PropertyChangeListener) li,
+                                      (Object) ModelFacade.getMODELELEMENTTYPE(),
+                                      String[] eventnames)
 </entry>
 	  </row>
 	  <row>
