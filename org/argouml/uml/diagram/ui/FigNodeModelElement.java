@@ -185,11 +185,11 @@ public abstract class FigNodeModelElement
 
     protected FigRect _bigPort;
     /**
-     * @deprecated 0.16 use getter/setter
+     * @deprecated 0.15.3 visibility will change use getter/setter
      */
     public FigText _name; // TODO - public!! Make private!
     /**
-     * @deprecated 0.16 use getter/setter
+     * @deprecated 0.15.3 visibility will change use getter/setter
      */
     public FigText _stereo; // TODO - public!! Make private!
     protected Vector _enclosedFigs = new Vector();
