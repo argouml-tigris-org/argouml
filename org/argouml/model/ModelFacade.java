@@ -264,12 +264,20 @@ public class ModelFacade {
     public static final Object COMPOSITE_AGGREGATIONKIND =
         MAggregationKind.COMPOSITE;
 
+    /** Singleton instance */        
+	private static ModelFacade singleton = new ModelFacade();
 
     /** Constructor that forbids instantiation.
      */
     private ModelFacade() {
     }
 
+	/**
+	 * @return
+	 */
+	public static ModelFacade getFacade() {
+		return singleton;
+	}
     ////////////////////////////////////////////////////////////////
     // Recognizer methods for the UML model (in alphabetic order)
 
@@ -291,14 +299,23 @@ public class ModelFacade {
         return handle instanceof MAction;
     }
 
-    /**
-     * Recognizer for ActionSequence
-     * @param handle
-     * @return
-     */
-    public static boolean isAActionSequence(Object handle) {
-        return handle instanceof MActionSequence;
-    }
+	/**
+	 * Recognizer for ActionExpression
+	 * @param handle
+	 * @return
+	 */
+	public static boolean isAActionExpression(Object handle) {
+		return handle instanceof MActionExpression;
+	}
+
+	/**
+	 * Recognizer for ActionSequence
+	 * @param handle
+	 * @return
+	 */
+	public static boolean isAActionSequence(Object handle) {
+		return handle instanceof MActionSequence;
+	}
 
     /**
      * Recognizer for Action state
@@ -4612,4 +4629,5 @@ public class ModelFacade {
     private static Collection emptyCollection() {
         return Collections.EMPTY_LIST;
     }
+
 }
