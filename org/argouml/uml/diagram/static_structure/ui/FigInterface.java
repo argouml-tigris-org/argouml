@@ -110,8 +110,7 @@ public class FigInterface extends FigNodeModelElement {
      *   diagram. Not clear why it is public, or even why it is an instance
      *   variable (rather than local to the method).</p>
      */
-    public MElementResidence resident =
-        UmlFactory.getFactory().getCore().createElementResidence();
+    public MElementResidence resident = UmlFactory.getFactory().getCore().createElementResidence();
 
     /**
      * <p>Text highlighted by mouse actions on the diagram.</p>
@@ -157,14 +156,7 @@ public class FigInterface extends FigNodeModelElement {
         _name.setFilled(true);
 
         // this rectangle marks the operation section; all operations are inside it:
-        _operBigPort =
-            new FigRect(
-                10,
-                31 + ROWHEIGHT,
-                60,
-                ROWHEIGHT + 2,
-                Color.black,
-                Color.white);
+        _operBigPort = new FigRect(10, 31 + ROWHEIGHT, 60, ROWHEIGHT + 2, Color.black, Color.white);
         _operBigPort.setFilled(true);
         _operBigPort.setLineWidth(1);
 
@@ -177,10 +169,7 @@ public class FigInterface extends FigNodeModelElement {
         // before, so it overlaps the name box, and the blanking takes out both
         // lines. Initially not set to be displayed, but this will be changed
         // when we try to render it, if we find we have a stereotype.
-        _stereo.setText(
-            NotationHelper.getLeftGuillemot()
-                + "Interface"
-                + NotationHelper.getRightGuillemot());
+        _stereo.setText(NotationHelper.getLeftGuillemot() + "Interface" + NotationHelper.getRightGuillemot());
         _stereo.setExpandOnly(true);
         _stereo.setFilled(true);
         _stereo.setLineWidth(1);
@@ -193,8 +182,7 @@ public class FigInterface extends FigNodeModelElement {
         // and name. This is just 2 pixels high, and we rely on the line
         // thickness, so the rectangle does not need to be filled. Whether to
         // display is linked to whether to display the stereotype.
-        _stereoLineBlinder =
-            new FigRect(11, 10 + STEREOHEIGHT, 58, 2, Color.white, Color.white);
+        _stereoLineBlinder = new FigRect(11, 10 + STEREOHEIGHT, 58, 2, Color.white, Color.white);
         _stereoLineBlinder.setLineWidth(1);
         _stereoLineBlinder.setDisplayed(true);
 
@@ -232,8 +220,7 @@ public class FigInterface extends FigNodeModelElement {
         this();
         setOwner(node);
         enableSizeChecking(true);
-        if (node instanceof MInterface
-            && (((MInterface) node).getName() != null))
+        if (node instanceof MInterface && (((MInterface) node).getName() != null))
             _name.setText(((MModelElement) node).getName());
     }
 
@@ -283,27 +270,10 @@ public class FigInterface extends FigNodeModelElement {
         MInterface mclass = (MInterface) getOwner();
         ArgoJMenu modifierMenu = new ArgoJMenu("Modifiers");
 
-        modifierMenu.addCheckItem(
-            new ActionModifier(
-                "Public",
-                "visibility",
-                "getVisibility",
-                "setVisibility",
-                mclass,
-                MVisibilityKind.class,
-                MVisibilityKind.PUBLIC,
-                null));
-        modifierMenu.addCheckItem(
-            new ActionModifier(
-                "Abstract",
-                "isAbstract",
-                "isAbstract",
-                "setAbstract",
-                mclass));
-        modifierMenu.addCheckItem(
-            new ActionModifier("Leaf", "isLeaf", "isLeaf", "setLeaf", mclass));
-        modifierMenu.addCheckItem(
-            new ActionModifier("Root", "isRoot", "isRoot", "setRoot", mclass));
+        modifierMenu.addCheckItem(new ActionModifier("Public", "visibility", "getVisibility", "setVisibility", mclass, MVisibilityKind.class, MVisibilityKind.PUBLIC, null));
+        modifierMenu.addCheckItem(new ActionModifier("Abstract", "isAbstract", "isAbstract", "setAbstract", mclass));
+        modifierMenu.addCheckItem(new ActionModifier("Leaf", "isLeaf", "isLeaf", "setLeaf", mclass));
+        modifierMenu.addCheckItem(new ActionModifier("Root", "isRoot", "isRoot", "setRoot", mclass));
 
         popUpActions.insertElementAt(modifierMenu, popUpActions.size() - 1);
         // end of block
@@ -325,12 +295,7 @@ public class FigInterface extends FigNodeModelElement {
 
     public void setOperationVisible(boolean isVisible) {
         Rectangle rect = getBounds();
-        int h =
-            checkSize
-                ? (ROWHEIGHT * Math.max(1, _operVec.getFigs().size() - 1) + 2)
-                    * rect.height
-                    / getMinimumSize().height
-                : 0;
+        int h = checkSize ? (ROWHEIGHT * Math.max(1, _operVec.getFigs().size() - 1) + 2) * rect.height / getMinimumSize().height : 0;
         if (_operVec.isDisplayed()) {
             if (!isVisible) {
                 damage();
@@ -394,13 +359,10 @@ public class FigInterface extends FigNodeModelElement {
             enum.nextElement(); // ignore
 
             while (enum.hasMoreElements()) {
-                int elemWidth =
-                    ((FigText) enum.nextElement()).getMinimumSize().width + 2;
+                int elemWidth = ((FigText) enum.nextElement()).getMinimumSize().width + 2;
                 aSize.width = Math.max(aSize.width, elemWidth);
             }
-            aSize.height += ROWHEIGHT
-                * Math.max(1, _operVec.getFigs().size() - 1)
-                + 1;
+            aSize.height += ROWHEIGHT * Math.max(1, _operVec.getFigs().size() - 1) + 1;
         }
 
         // we want to maintain a minimum width for Interfaces
@@ -446,10 +408,7 @@ public class FigInterface extends FigNodeModelElement {
         Fig f = hitFig(r);
         if (f == _operVec && _operVec.getHeight() > 0) {
             Vector v = _operVec.getFigs();
-            i =
-                (v.size() - 1)
-                    * (me.getY() - f.getY() - 3)
-                    / _operVec.getHeight();
+            i = (v.size() - 1) * (me.getY() - f.getY() - 3) / _operVec.getHeight();
             if (i >= 0 && i < v.size() - 1) {
                 targetIsSet = true;
                 me.consume();
@@ -478,9 +437,7 @@ public class FigInterface extends FigNodeModelElement {
                 int i = _operVec.getFigs().indexOf(ft);
                 if (i != -1) {
                     if (key == KeyEvent.VK_UP) {
-                        ft =
-                            (CompartmentFigText) getPreviousVisibleFeature(ft,
-                                i);
+                        ft = (CompartmentFigText) getPreviousVisibleFeature(ft, i);
                     } else {
                         ft = (CompartmentFigText) getNextVisibleFeature(ft, i);
                     }
@@ -510,22 +467,17 @@ public class FigInterface extends FigNodeModelElement {
 
         try {
             // If moved into an Package
-            if (encloser != null
-                && oldEncloser != encloser
-                && encloser.getOwner() instanceof MPackage) {
+            if (encloser != null && oldEncloser != encloser && encloser.getOwner() instanceof MPackage) {
                 me.setNamespace((MNamespace) encloser.getOwner());
             }
 
             // If default Namespace is not already set
-            if (me.getNamespace() == null
-                && pb.getTarget() instanceof UMLDiagram) {
+            if (me.getNamespace() == null && pb.getTarget() instanceof UMLDiagram) {
                 m = (MNamespace) ((UMLDiagram) pb.getTarget()).getNamespace();
                 me.setNamespace(m);
             }
         } catch (Exception e) {
-            cat.error(
-                "could not set package due to:" + e + "' at " + encloser,
-                e);
+            cat.error("could not set package due to:" + e + "' at " + encloser, e);
         }
 
         // The next if-clause is important for the Deployment-diagram
@@ -555,14 +507,10 @@ public class FigInterface extends FigNodeModelElement {
             highlightedFigText = (CompartmentFigText) ft;
             highlightedFigText.setHighlighted(true);
             try {
-                ParserDisplay.SINGLETON.parseOperationFig(
-                    cls,
-                    (MOperation) highlightedFigText.getOwner(),
-                    highlightedFigText.getText().trim());
+                ParserDisplay.SINGLETON.parseOperationFig(cls, (MOperation) highlightedFigText.getOwner(), highlightedFigText.getText().trim());
                 ProjectBrowser.TheInstance.getStatusBar().showStatus("");
             } catch (ParseException pe) {
-                ProjectBrowser.TheInstance.getStatusBar().showStatus(
-                    "Error: " + pe + " at " + pe.getErrorOffset());
+                ProjectBrowser.TheInstance.getStatusBar().showStatus("Error: " + pe + " at " + pe.getErrorOffset());
             }
             return;
         }
@@ -571,9 +519,7 @@ public class FigInterface extends FigNodeModelElement {
     protected FigText getPreviousVisibleFeature(FigText ft, int i) {
         FigText ft2 = null;
         Vector v = _operVec.getFigs();
-        if (i < 1
-            || i >= v.size()
-            || !((FigText) v.elementAt(i)).isDisplayed())
+        if (i < 1 || i >= v.size() || !((FigText) v.elementAt(i)).isDisplayed())
             return null;
         do {
             i--;
@@ -589,9 +535,7 @@ public class FigInterface extends FigNodeModelElement {
     protected FigText getNextVisibleFeature(FigText ft, int i) {
         FigText ft2 = null;
         Vector v = _operVec.getFigs();
-        if (i < 1
-            || i >= v.size()
-            || !((FigText) v.elementAt(i)).isDisplayed())
+        if (i < 1 || i >= v.size() || !((FigText) v.elementAt(i)).isDisplayed())
             return null;
         do {
             i++;
@@ -634,23 +578,22 @@ public class FigInterface extends FigNodeModelElement {
     }
 
     protected void modelChanged(MElementEvent mee) {
-        if (getOwner() == null) return;
+        if (getOwner() == null)
+            return;
         // operations
-        if (mee == null || mee.getSource() instanceof MOperation
-            || mee.getSource() instanceof MParameter || 
-            (mee.getSource() == getOwner() && mee.getName().equals("feature"))) {
+        if (mee == null || mee.getSource() instanceof MOperation || mee.getSource() instanceof MParameter || (mee.getSource() == getOwner() && mee.getName().equals("feature"))) {
             updateOperations();
             damage();
         }
         super.modelChanged(mee);
-        
+
     }
 
     public void renderingChanged() {
         super.renderingChanged();
-       
+
         updateOperations();
-        
+
     }
 
     /**
@@ -716,8 +659,7 @@ public class FigInterface extends FigNodeModelElement {
             // comparment if the result is rounded
 
             extra_each = (newH - aSize.height) / displayedFigs;
-            height_correction =
-                (newH - aSize.height) - (extra_each * displayedFigs);
+            height_correction = (newH - aSize.height) - (extra_each * displayedFigs);
         }
 
         // Now resize all sub-figs, including not displayed figs. Start by the
@@ -757,8 +699,7 @@ public class FigInterface extends FigNodeModelElement {
 
         // Finally update the bounds of the operations box
 
-        aSize =
-            getUpdatedSize(_operVec, x, currentY, newW, newH + y - currentY);
+        aSize = getUpdatedSize(_operVec, x, currentY, newW, newH + y - currentY);
 
         // set bounds of big box
 
@@ -772,7 +713,7 @@ public class FigInterface extends FigNodeModelElement {
         updateEdges();
         firePropChange("bounds", oldBounds, getBounds());
     }
-    
+
     /**
      * Updates the operations box. Called from modelchanged if there is 
      * a modelevent effecting the attributes and from renderingChanged in all 
@@ -780,63 +721,59 @@ public class FigInterface extends FigNodeModelElement {
      */
     protected void updateOperations() {
         MClassifier cls = (MClassifier) getOwner();
-        int xpos = _operBigPort.getX();
-        int ypos = _operBigPort.getY();
-        int ocounter = 1;
-        Collection behs = UmlHelper.getHelper().getCore().getOperations(cls);
-        if (behs != null) {
-            Iterator iter = behs.iterator();
-            Vector figs = _operVec.getFigs();
-            CompartmentFigText oper;
-            while (iter.hasNext()) {
-                MBehavioralFeature bf = (MBehavioralFeature) iter.next();
-                // update the listeners
-                UmlModelEventPump.getPump().removeModelEventListener(this, bf);
-                UmlModelEventPump.getPump().addModelEventListener(this, bf);
-                if (figs.size() <= ocounter) {
-                    oper =
-                        new FigFeature(
-                            xpos + 1,
-                            ypos + 1 + (ocounter - 1) * ROWHEIGHT,
-                            0,
-                            ROWHEIGHT - 2,
-                            _operBigPort);
-                    // bounds not relevant here
-                    oper.setFilled(false);
-                    oper.setLineWidth(0);
-                    oper.setFont(LABEL_FONT);
-                    oper.setTextColor(Color.black);
-                    oper.setJustification(FigText.JUSTIFY_LEFT);
-                    oper.setMultiLine(false);
-                    _operVec.addFig(oper);
-                } else {
-                    oper = (CompartmentFigText) figs.elementAt(ocounter);
+        if (cls != null) {
+
+            int xpos = _operBigPort.getX();
+            int ypos = _operBigPort.getY();
+            int ocounter = 1;
+            Collection behs = UmlHelper.getHelper().getCore().getOperations(cls);
+            if (behs != null) {
+                Iterator iter = behs.iterator();
+                Vector figs = _operVec.getFigs();
+                CompartmentFigText oper;
+                while (iter.hasNext()) {
+                    MBehavioralFeature bf = (MBehavioralFeature) iter.next();
+                    // update the listeners
+                    UmlModelEventPump.getPump().removeModelEventListener(this, bf);
+                    UmlModelEventPump.getPump().addModelEventListener(this, bf);
+                    if (figs.size() <= ocounter) {
+                        oper = new FigFeature(xpos + 1, ypos + 1 + (ocounter - 1) * ROWHEIGHT, 0, ROWHEIGHT - 2, _operBigPort);
+                        // bounds not relevant here
+                        oper.setFilled(false);
+                        oper.setLineWidth(0);
+                        oper.setFont(LABEL_FONT);
+                        oper.setTextColor(Color.black);
+                        oper.setJustification(FigText.JUSTIFY_LEFT);
+                        oper.setMultiLine(false);
+                        _operVec.addFig(oper);
+                    } else {
+                        oper = (CompartmentFigText) figs.elementAt(ocounter);
+                    }
+                    oper.setText(Notation.generate(this, bf));
+                    oper.setOwner(bf);
+                    // underline, if static
+                    oper.setUnderline(MScopeKind.CLASSIFIER.equals(bf.getOwnerScope()));
+                    // italics, if abstract
+                    //oper.setItalic(((MOperation)bf).isAbstract()); // does not properly work (GEF bug?)
+                    if (((MOperation) bf).isAbstract())
+                        oper.setFont(ITALIC_LABEL_FONT);
+                    else
+                        oper.setFont(LABEL_FONT);
+                    ocounter++;
                 }
-                oper.setText(Notation.generate(this, bf));
-                oper.setOwner(bf);
-                // underline, if static
-                oper.setUnderline(
-                    MScopeKind.CLASSIFIER.equals(bf.getOwnerScope()));
-                // italics, if abstract
-                //oper.setItalic(((MOperation)bf).isAbstract()); // does not properly work (GEF bug?)
-                if (((MOperation) bf).isAbstract())
-                    oper.setFont(ITALIC_LABEL_FONT);
-                else
-                    oper.setFont(LABEL_FONT);
-                ocounter++;
+                if (figs.size() > ocounter) {
+                    //cleanup of unused operation FigText's
+                    for (int i = figs.size() - 1; i >= ocounter; i--)
+                        _operVec.removeFig((Fig) figs.elementAt(i));
+                }
             }
-            if (figs.size() > ocounter) {
-                //cleanup of unused operation FigText's
-                for (int i = figs.size() - 1; i >= ocounter; i--)
-                    _operVec.removeFig((Fig) figs.elementAt(i));
-            }            
+            Rectangle rect = getBounds();
+            getUpdatedSize(_operVec, xpos, ypos, 0, 0);
+            // ouch ugly but that's for a next refactoring
+            // TODO make setBounds, calcBounds and updateBounds consistent
+            setBounds(rect.x, rect.y, rect.width, rect.height);
+            damage();
         }
-        Rectangle rect = getBounds();
-        getUpdatedSize(_operVec, xpos, ypos, 0, 0);
-        // ouch ugly but that's for a next refactoring
-        // TODO make setBounds, calcBounds and updateBounds consistent
-        setBounds(rect.x, rect.y, rect.width, rect.height);
-        damage();
     }
 
     /**
@@ -844,10 +781,7 @@ public class FigInterface extends FigNodeModelElement {
      */
     protected void updateStereotypeText() {
         Rectangle rect = getBounds();
-         _stereo.setText(
-            NotationHelper.getLeftGuillemot()
-                + "Interface"
-                + NotationHelper.getRightGuillemot());
+        _stereo.setText(NotationHelper.getLeftGuillemot() + "Interface" + NotationHelper.getRightGuillemot());
         setBounds(rect.x, rect.y, rect.width, rect.height);
     }
 
