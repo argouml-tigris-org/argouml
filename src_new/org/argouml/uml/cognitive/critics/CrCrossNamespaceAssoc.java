@@ -64,7 +64,7 @@ public class CrCrossNamespaceAssoc extends CrUML {
      * (MODULARITY) and a knowledge type (SYNTAX).
      */
     public CrCrossNamespaceAssoc() {
-        setResource("CrCrossNamespaceAssoc");
+        setupHeadAndDesc();
         addSupportedDecision(CrUML.DEC_MODULARITY);
         setKnowledgeTypes(Critic.KT_SYNTAX);
     }

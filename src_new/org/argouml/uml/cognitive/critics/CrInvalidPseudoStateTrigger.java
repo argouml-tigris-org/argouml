@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 2003-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -33,12 +34,19 @@ import org.argouml.model.Model;
  */
 public class CrInvalidPseudoStateTrigger extends CrUML {
 
+    /**
+     * The constructor.
+     */
     public CrInvalidPseudoStateTrigger() {
-        setHeadline("Remove Trigger from PseudoState's Outgoing Transition");
+        setupHeadAndDesc();
         addSupportedDecision(CrUML.DEC_STATE_MACHINES);
         addTrigger("trigger");
     }
 
+    /**
+     * @see org.argouml.uml.cognitive.critics.CrUML#predicate2(java.lang.Object,
+     * org.argouml.cognitive.Designer)
+     */
     public boolean predicate2(Object dm, Designer dsgr) {
         if (!(Model.getFacade().isATransition(dm))) return NO_PROBLEM;
         Object tr = /*(MTransition)*/ dm;

@@ -67,9 +67,7 @@ public class CrOperNameConflict extends CrUML {
      * and feature_name".<p>
      */
     public CrOperNameConflict() {
-
-        setResource("CrOperNameConflict");
-
+        setupHeadAndDesc();
         addSupportedDecision(CrUML.DEC_METHODS);
         addSupportedDecision(CrUML.DEC_NAMING);
 

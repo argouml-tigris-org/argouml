@@ -44,7 +44,7 @@ public class CrMissingStateName extends CrUML {
      * The constructor.
      */
     public CrMissingStateName() {
-	setHeadline("Choose a Name");
+        setupHeadAndDesc();
 	addSupportedDecision(CrUML.DEC_NAMING);
 	setKnowledgeTypes(Critic.KT_COMPLETENESS, Critic.KT_SYNTAX);
 	addTrigger("name");

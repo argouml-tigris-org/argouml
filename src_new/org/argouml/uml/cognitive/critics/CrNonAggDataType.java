@@ -40,7 +40,7 @@ public class CrNonAggDataType extends CrUML {
      *
      */
     public CrNonAggDataType() {
-	setHeadline("Wrap MDataType");
+        setupHeadAndDesc();
 	addSupportedDecision(CrUML.DEC_CONTAINMENT);
 	addSupportedDecision(CrUML.DEC_CLASS_SELECTION);
 	setKnowledgeTypes(Critic.KT_SYNTAX);

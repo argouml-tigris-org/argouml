@@ -39,10 +39,13 @@ import org.argouml.cognitive.critics.Critic;
 import org.argouml.model.Model;
 
 
-
 /**
- * This class represents the description for a wizard.
- *
+ * This class represents the first step of the wizard. 
+ * It contains the description of the
+ * wizard in case the selected target is a todo item. 
+ * An appropriate message is shown in case nothing is selected, or
+ * in case the user selected one of the branches (folders) in the
+ * tree in the todo panel.
  */
 public class WizDescription extends WizStep {
     /**

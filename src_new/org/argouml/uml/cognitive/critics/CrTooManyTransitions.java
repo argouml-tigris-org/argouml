@@ -29,17 +29,17 @@ import java.util.Collection;
 import org.argouml.cognitive.Designer;
 import org.argouml.model.Model;
 
-/** A critic to detect when a state has too many ingoing and
+/** 
+ * A critic to detect when a state has too many ingoing and
  * outgoing transitions.
  */
 public class CrTooManyTransitions extends AbstractCrTooMany {
 
     /**
      * The constructor.
-     *
      */
     public CrTooManyTransitions() {
-	setHeadline("Reduce Transitions on <ocl>self</ocl>");
+        setupHeadAndDesc();
 	addSupportedDecision(CrUML.DEC_STATE_MACHINES);
 	setThreshold(10);
 	addTrigger("incoming");

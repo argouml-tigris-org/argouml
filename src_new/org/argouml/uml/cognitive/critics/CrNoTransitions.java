@@ -41,7 +41,7 @@ public class CrNoTransitions extends CrUML {
      * Constructor.
      */
     public CrNoTransitions() {
-	setHeadline("Add Transitions to <ocl>self</ocl>");
+        setupHeadAndDesc();
 	addSupportedDecision(CrUML.DEC_STATE_MACHINES);
 	setKnowledgeTypes(Critic.KT_COMPLETENESS);
 	addTrigger("incoming");

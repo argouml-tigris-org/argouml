@@ -51,7 +51,7 @@ public class CrUnconventionalAttrName extends AbstractCrUnconventionalName {
      * The constructor.
      */
     public CrUnconventionalAttrName() {
-	setHeadline("Choose a Better MAttribute Name");
+        setupHeadAndDesc();
 	addSupportedDecision(CrUML.DEC_NAMING);
 	setKnowledgeTypes(Critic.KT_SYNTAX);
 	addTrigger("feature_name");

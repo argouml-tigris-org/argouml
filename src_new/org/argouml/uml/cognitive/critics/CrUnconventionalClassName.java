@@ -41,7 +41,7 @@ public class CrUnconventionalClassName extends AbstractCrUnconventionalName {
      * The constructor.
      */
     public CrUnconventionalClassName() {
-	setHeadline("Capitalize Class Name <ocl>self</ocl>");
+        setupHeadAndDesc();
 	addSupportedDecision(CrUML.DEC_NAMING);
 	setKnowledgeTypes(Critic.KT_SYNTAX);
 	addTrigger("name");

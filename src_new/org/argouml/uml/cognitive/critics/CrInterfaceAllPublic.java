@@ -42,10 +42,9 @@ public class CrInterfaceAllPublic extends CrUML {
 
     /**
      * The constructor.
-     *
      */
     public CrInterfaceAllPublic() {
-	setHeadline("Operations in Interfaces must be public");
+        setupHeadAndDesc();
 	addSupportedDecision(CrUML.DEC_PLANNED_EXTENSIONS);
 	setKnowledgeTypes(Critic.KT_SYNTAX);
 	addTrigger("behavioralFeature");

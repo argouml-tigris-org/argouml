@@ -38,7 +38,7 @@ import org.argouml.uml.diagram.deployment.ui.UMLDeploymentDiagram;
 
 /**
  * A critic to detect when there are component-instances that
- * are not inside a node-instance
+ * are not inside a node-instance.
  *
  * @author 5eichler
  */
@@ -46,10 +46,9 @@ public class CrComponentInstanceWithoutClassifier extends CrUML {
 
     /**
      * The constructor.
-     *
      */
     public CrComponentInstanceWithoutClassifier() {
-	setHeadline("Set ComponentInstance-classifier");
+        setupHeadAndDesc();
 	addSupportedDecision(CrUML.DEC_PATTERNS);
     }
 

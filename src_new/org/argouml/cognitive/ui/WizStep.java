@@ -46,13 +46,13 @@ import org.argouml.swingext.SpacerPanel;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.ui.cmd.ActionOpenBrowser;
 import org.argouml.ui.targetmanager.TargetEvent;
-import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.util.osdep.StartBrowser;
 
-/** Each Critic may provide a Wizard to help fix the problem it
- *  identifies.  The "Next>" button will advance through the steps of
- *  the wizard, and increase the blue progress bar on the ToDoItem
- *  "sticky note" icon in ToDo tree pane.
+/** 
+ * Each Critic may provide a Wizard to help fix the problem it
+ * identifies.  The "Next>" button will advance through the steps of
+ * the wizard, and increase the colored progress bar on the ToDoItem
+ * "sticky note" icon in ToDo tree pane.
  *
  * @see org.argouml.cognitive.critics.Critic
  * @see org.argouml.cognitive.ui.Wizard
@@ -164,7 +164,8 @@ public class WizStep extends JPanel
 
     /**
      * @deprecated since 0.15.3. The method in TabToDoTarget has been
-     * 		   deprecated and replaced by
+     * 		   deprecated, the visibility of this method will change 
+     *             to protected in the future, and replaced by
      * 		   {@link org.argouml.ui.targetmanager.TargetManager}.
      *
      * @param item the target item
@@ -198,22 +199,9 @@ public class WizStep extends JPanel
     }
 
     /**
-     * Returns the target of the TabToDo
-     *
-     * @deprecated As of ArgoUml version 0.13.5,
-     *             the visibility of this method will change in the future,
-     *             replaced by
-     *             {@link org.argouml.ui.targetmanager.TargetManager#getTarget()
-     *             TargetManager.getInstance().getTarget()}.
-     *             this method will be removed in a couple of releases
-     * @return The current target of the TabToDo
-     */
-    public Object getTarget() {
-	return TargetManager.getInstance().getTarget();
-    }
-
-    /**
      * Set the target anew.
+     * 
+     * TODO: This method is never used. What is its intention? Remove it?
      */
     public void refresh() { setTarget(target); }
 
@@ -319,6 +307,9 @@ public class WizStep extends JPanel
     public void changedUpdate(DocumentEvent e) {
 	// Apparently, this method is never called.
     }
+
+    ////////////////////////////////////////////////////////////////
+    // TargetListener implementation
 
     /**
      * @see org.argouml.ui.targetmanager.TargetListener#targetAdded(org.argouml.ui.targetmanager.TargetEvent)

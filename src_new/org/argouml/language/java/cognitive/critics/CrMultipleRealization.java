@@ -43,7 +43,7 @@ public class CrMultipleRealization extends CrUML {
      * The constructor.
      */
     public CrMultipleRealization() {
-	setHeadline("Interface cannot realize another interface");
+        setupHeadAndDesc();;
 	addSupportedDecision(CrUML.DEC_INHERITANCE);
 	addSupportedDecision(CrUML.DEC_CODE_GEN);
 	addTrigger("generalization");

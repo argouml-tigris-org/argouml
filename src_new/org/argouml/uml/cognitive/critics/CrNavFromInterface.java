@@ -56,12 +56,8 @@ public class CrNavFromInterface extends CrUML {
      * type (SYNTAX). Adds trigger "end_navigable".<p>
      */
     public CrNavFromInterface() {
-
-        // Set the resource label, which will get the headline and description
-        // appropriate for the locale
-
-        setResource("CrNavFromInterface");
-
+        setupHeadAndDesc();
+        
         // Specify design issue category and knowledge type
 
         addSupportedDecision(CrUML.DEC_RELATIONSHIPS);

@@ -40,7 +40,7 @@ public class CrNoIncomingTransitions extends CrUML {
      * Constructor.
      */
     public CrNoIncomingTransitions() {
-	setHeadline("Add Incoming Transitions to <ocl>self</ocl>");
+        setupHeadAndDesc();
 	addSupportedDecision(CrUML.DEC_STATE_MACHINES);
 	addTrigger("incoming");
     }

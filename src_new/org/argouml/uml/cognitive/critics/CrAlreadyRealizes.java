@@ -44,7 +44,7 @@ public class CrAlreadyRealizes extends CrUML {
      * Constructor.
      */
     public CrAlreadyRealizes() {
-	setHeadline("Remove Unneeded Realizes from <ocl>self</ocl>");
+        setupHeadAndDesc();
 	addSupportedDecision(CrUML.DEC_INHERITANCE);
 	setKnowledgeTypes(Critic.KT_SEMANTICS, Critic.KT_PRESENTATION);
 	addTrigger("genealization");

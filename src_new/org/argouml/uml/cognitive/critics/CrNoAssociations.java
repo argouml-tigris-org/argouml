@@ -42,7 +42,7 @@ public class CrNoAssociations extends CrUML {
      * Constructor.
      */
     public CrNoAssociations() {
-        setHeadline("Add Associations to <ocl>self</ocl>");
+        setupHeadAndDesc();
         addSupportedDecision(CrUML.DEC_RELATIONSHIPS);
         setKnowledgeTypes(Critic.KT_COMPLETENESS);
         addTrigger("associationEnd");

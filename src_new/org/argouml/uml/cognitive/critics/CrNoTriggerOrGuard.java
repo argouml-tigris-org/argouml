@@ -22,7 +22,7 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// $Id$
+
 package org.argouml.uml.cognitive.critics;
 
 import org.argouml.cognitive.Designer;
@@ -38,10 +38,9 @@ public class CrNoTriggerOrGuard extends CrUML {
 
     /**
      * The constructor.
-     *
      */
     public CrNoTriggerOrGuard() {
-	setHeadline("Add Trigger or Guard to Transistion");
+        setupHeadAndDesc();
 	addSupportedDecision(CrUML.DEC_STATE_MACHINES);
 	setKnowledgeTypes(Critic.KT_COMPLETENESS);
 	addTrigger("trigger");

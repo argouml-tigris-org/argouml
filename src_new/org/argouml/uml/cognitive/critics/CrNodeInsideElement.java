@@ -46,7 +46,7 @@ public class CrNodeInsideElement extends CrUML {
      *
      */
     public CrNodeInsideElement() {
-	setHeadline("Nodes normally have no enclosers");
+        setupHeadAndDesc();
 	addSupportedDecision(CrUML.DEC_PATTERNS);
     }
 

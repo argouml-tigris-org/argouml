@@ -46,10 +46,9 @@ public class CrWrongDepEnds extends CrUML {
 
     /**
      * The constructor.
-     *
      */
     public CrWrongDepEnds() {
-	setHeadline("Wrong location-types");
+        setupHeadAndDesc();
 	addSupportedDecision(CrUML.DEC_PATTERNS);
     }
 

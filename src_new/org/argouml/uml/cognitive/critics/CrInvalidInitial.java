@@ -41,10 +41,9 @@ public class CrInvalidInitial extends CrUML {
 
     /**
      * The constructor.
-     *
      */
     public CrInvalidInitial() {
-	setHeadline("Remove Extra Outgoing Transitions");
+        setupHeadAndDesc();
 	addSupportedDecision(CrUML.DEC_STATE_MACHINES);
 	addTrigger("outgoing");
     }

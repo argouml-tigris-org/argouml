@@ -43,7 +43,7 @@ public class CrNoInitialState extends CrUML {
      *
      */
     public CrNoInitialState() {
-	setHeadline("Place an Initial MState");
+        setupHeadAndDesc();
 	addSupportedDecision(CrUML.DEC_STATE_MACHINES);
 	addTrigger("substate");
     }

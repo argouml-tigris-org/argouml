@@ -36,8 +36,9 @@ import javax.swing.border.EtchedBorder;
 import org.argouml.swingext.SpacerPanel;
 
 
-/** A simple non-modal wizard step that shows instructions and prompts
- *  the user to enter a string.
+/** 
+ * A non-modal wizard step that shows instructions and prompts
+ * the user to enter a series of strings in textfields.
  *
  * @see org.argouml.cognitive.critics.Critic
  * @see org.argouml.cognitive.ui.Wizard

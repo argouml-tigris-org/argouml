@@ -42,7 +42,7 @@ public class CrMissingClassName extends CrUML {
      * The constructor.
      */
     public CrMissingClassName() {
-	setHeadline("Choose a Name");
+        setupHeadAndDesc();
 	addSupportedDecision(CrUML.DEC_NAMING);
 	setKnowledgeTypes(Critic.KT_COMPLETENESS, Critic.KT_SYNTAX);
 	addTrigger("name");

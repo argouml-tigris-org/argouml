@@ -40,8 +40,7 @@ public class CrCircularAssocClass extends CrUML {
      *
      */
     public CrCircularAssocClass() {
-	setHeadline("Circular MAssociation");
-
+        setupHeadAndDesc();
 	addSupportedDecision(CrUML.DEC_RELATIONSHIPS);
 	setKnowledgeTypes(Critic.KT_SEMANTICS);
     }

@@ -46,7 +46,7 @@ public class CrNodeInstanceWithoutClassifier extends CrUML {
      *
      */
     public CrNodeInstanceWithoutClassifier() {
-	setHeadline("Set NodeInstance-Classifier");
+        setupHeadAndDesc();
 	addSupportedDecision(CrUML.DEC_PATTERNS);
     }
 

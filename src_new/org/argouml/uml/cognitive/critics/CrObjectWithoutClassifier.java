@@ -45,10 +45,9 @@ public class CrObjectWithoutClassifier extends CrUML {
 
     /**
      * The constructor.
-     *
      */
     public CrObjectWithoutClassifier() {
-	setHeadline("Set Object-classifier");
+        setupHeadAndDesc();
 	addSupportedDecision(CrUML.DEC_PATTERNS);
     }
 

@@ -40,11 +40,12 @@ import org.argouml.model.Model;
  * @author jrobbins
  */
 public class CrUtilityViolated extends CrUML {
+
     /**
      * The constructor.
      */
     public CrUtilityViolated() {
-        setHeadline("Remove instance variables from Utility Class");
+        setupHeadAndDesc();
         addSupportedDecision(CrUML.DEC_STORAGE);
         addSupportedDecision(CrUML.DEC_STEREOTYPES);
         addSupportedDecision(CrUML.DEC_CLASS_SELECTION);

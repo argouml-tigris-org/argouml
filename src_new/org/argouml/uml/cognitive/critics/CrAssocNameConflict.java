@@ -46,7 +46,7 @@ public class CrAssocNameConflict extends CrUML {
      *
      */
     public CrAssocNameConflict() {
-	setHeadline("Resolve Association Name Conflict");
+        setupHeadAndDesc();
 	addSupportedDecision(CrUML.DEC_NAMING);
 	setKnowledgeTypes(Critic.KT_SYNTAX);
 	// no good trigger

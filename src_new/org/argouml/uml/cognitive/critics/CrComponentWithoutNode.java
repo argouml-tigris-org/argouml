@@ -38,7 +38,7 @@ import org.argouml.uml.diagram.deployment.ui.UMLDeploymentDiagram;
 
 /**
  * A critic to detect when there are components that
- * are not inside a node
+ * are not inside a node.
  *
  * @author 5eichler
  */
@@ -46,10 +46,9 @@ public class CrComponentWithoutNode extends CrUML {
 
     /**
      * The constructor.
-     *
      */
     public CrComponentWithoutNode() {
-	setHeadline("Components normally are inside nodes");
+        setupHeadAndDesc();
 	addSupportedDecision(CrUML.DEC_PATTERNS);
     }
 

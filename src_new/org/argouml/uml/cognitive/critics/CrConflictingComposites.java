@@ -44,7 +44,7 @@ public class CrConflictingComposites extends CrUML {
      *
      */
     public CrConflictingComposites() {
-	setHeadline("Remove Conflicting Composite Associations");
+        setupHeadAndDesc();
 
 	addSupportedDecision(CrUML.DEC_CONTAINMENT);
 	setKnowledgeTypes(Critic.KT_SEMANTICS);
