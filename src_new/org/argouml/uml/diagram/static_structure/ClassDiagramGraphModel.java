@@ -42,23 +42,6 @@ import org.argouml.model.uml.foundation.core.CoreHelper;
 
 import org.argouml.uml.diagram.UMLMutableGraphSupport;
 
-
-import ru.novosoft.uml.behavior.common_behavior.MLinkEnd;
-import ru.novosoft.uml.foundation.core.MAssociation;
-import ru.novosoft.uml.foundation.core.MAssociationEnd;
-
-import ru.novosoft.uml.foundation.core.MClassifier;
-import ru.novosoft.uml.foundation.core.MDependency;
-import ru.novosoft.uml.foundation.core.MGeneralization;
-
-import ru.novosoft.uml.foundation.core.MModelElement;
-import ru.novosoft.uml.foundation.core.MNamespace;
-import ru.novosoft.uml.foundation.core.MRelationship;
-
-import ru.novosoft.uml.model_management.MElementImport;
-
-
-
 /** This class defines a bridge between the UML meta-model
  *  representation of the design and the GraphModel interface used by
  *  GEF.  This class handles only UML Class digrams.  */
@@ -77,14 +60,14 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
      *  Also, elements from other models will have their FigNodes add a
      *  line to say what their model is. */
 
-    protected MNamespace _model;
+    protected Object _model;
 
     ////////////////////////////////////////////////////////////////
     // accessors
 
-    public MNamespace getNamespace() { return _model; }
-    public void setNamespace(MNamespace m) {
-	_model = m;
+    public Object getNamespace() { return _model; }
+    public void setNamespace(Object namespace) {
+	_model = namespace;
     }
 
     ////////////////////////////////////////////////////////////////
@@ -220,7 +203,7 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
     /** Return one end of an edge */
     public Object getSourcePort(Object edge) {
 	if (ModelFacade.isARelationship(edge)) {
-	    return CoreHelper.getHelper().getSource((MRelationship) edge);
+	    return CoreHelper.getHelper().getSource(/*(MRelationship)*/ edge);
 	}
 	cat.debug("TODO getSourcePort");
 	return null;
@@ -229,7 +212,7 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
     /** Return  the other end of an edge */
     public Object getDestPort(Object edge) {
 	if (ModelFacade.isARelationship(edge)) {
-	    return CoreHelper.getHelper().getDestination((MRelationship) edge);
+	    return CoreHelper.getHelper().getDestination(/*(MRelationship)*/edge);
 	}
 	cat.debug("TODO getSourcePort");
 	return null;
@@ -258,8 +241,8 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
 	Object end0 = null, end1 = null;
 	if (ModelFacade.isAAssociation(edge)) {
 	    Collection conns = ModelFacade.getConnections(edge);
-	    Iterator iter = conns.iterator();
 	    if (conns.size() < 2) return false;
+	    Iterator iter = conns.iterator();
 	    Object associationEnd0 = iter.next();
 	    Object associationEnd1 = iter.next();
 	    if (associationEnd0 == null || associationEnd1 == null) return false;
@@ -272,15 +255,17 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
 	    Collection clients = ModelFacade.getClients(edge);
 	    Collection suppliers = ModelFacade.getSuppliers(edge);
 	    if (clients == null || suppliers == null) return false;
-	    end0 = ((Object[]) clients.toArray())[0];
-	    end1 = ((Object[]) suppliers.toArray())[0];
+	    end0 = clients.iterator().next();
+	    end1 = suppliers.iterator().next();
 	} else if (ModelFacade.isALink(edge)) {
 	    Collection roles = ModelFacade.getConnections(edge);
-	    Object le0 = ((Object[]) roles.toArray())[0];
-	    Object le1 = ((Object[]) roles.toArray())[0]; // TODO should be 1????
-	    if (le0 == null || le1 == null) return false;
-	    end0 = ((MLinkEnd)le0).getInstance();
-	    end1 = ((MLinkEnd)le1).getInstance();
+	    if (roles.size() < 2) return false;
+	    Iterator iter = roles.iterator();
+	    Object linkEnd0 = iter.next();
+	    Object linkEnd1 = iter.next();
+	    if (linkEnd0 == null || linkEnd1 == null) return false;
+	    end0 = ModelFacade.getInstance(linkEnd0);
+	    end1 = ModelFacade.getInstance(linkEnd1);
 	}
 	if (end0 == null || end1 == null) return false;
 	if (!_nodes.contains(end0)) return false;
@@ -295,8 +280,8 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
 	if (!canAddNode(node)) return;
 	_nodes.addElement(node);
 	if (ModelFacade.isAModelElement(node) &&
-	    ModelFacade.getNamespace(node) == null) {
-	    _model.addOwnedElement((MModelElement) node);
+                ModelFacade.getNamespace(node) == null) {
+            ModelFacade.addOwnedElement(_model, node);
 	}
 
 	fireNodeAdded(node);
@@ -376,18 +361,19 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
 
 	if ("ownedElement".equals(pce.getPropertyName())) {
 	    Vector oldOwned = (Vector) pce.getOldValue();
-	    MElementImport eo = (MElementImport) pce.getNewValue();
-	    MModelElement me = eo.getModelElement();
-	    if (oldOwned.contains(eo)) {
-		cat.debug("model removed " + me);
-		if (ModelFacade.isAClassifier(me)) removeNode(me);
-		if (ModelFacade.isAPackage(me)) removeNode(me);
-		if (ModelFacade.isAAssociation(me)) removeEdge(me);
-		if (ModelFacade.isADependency(me)) removeEdge(me);
-		if (ModelFacade.isAGeneralization(me)) removeEdge(me);
+	    Object elementImport = /*(MElementImport)*/ pce.getNewValue();
+            Object modelElement = ModelFacade.getModelElement(elementImport);
+	    //MModelElement modelElement = elementImport.getModelElement();
+	    if (oldOwned.contains(elementImport)) {
+		cat.debug("model removed " + modelElement);
+		if (ModelFacade.isAClassifier(modelElement)) removeNode(modelElement);
+		if (ModelFacade.isAPackage(modelElement)) removeNode(modelElement);
+		if (ModelFacade.isAAssociation(modelElement)) removeEdge(modelElement);
+		if (ModelFacade.isADependency(modelElement)) removeEdge(modelElement);
+		if (ModelFacade.isAGeneralization(modelElement)) removeEdge(modelElement);
 	    }
 	    else {
-		cat.debug("model added " + me);
+		cat.debug("model added " + modelElement);
 	    }
 	}
     }
@@ -467,15 +453,15 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
 
 	// can't have a connection between 2 interfaces:
 	// get the 'other' end type
-	MModelElement otherNode = null;
+	Object /*MModelElement*/ otherNode = null;
 
 	if (isSource) {
 	    otherNode =
-		CoreHelper.getHelper().getDestination((MRelationship) edge);
+		CoreHelper.getHelper().getDestination(/*(MRelationship)*/ edge);
 	}
 	else {
 	    otherNode =
-		CoreHelper.getHelper().getSource((MRelationship) edge);
+		CoreHelper.getHelper().getSource(/*(MRelationship)*/ edge);
 	}
 
 	if ((ModelFacade.isAInterface(newNode)) &&
@@ -483,25 +469,20 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
 	    return;
 
         // cast the params
-	MAssociation edgeAssoc = (MAssociation) edge;
+	Object /*MAssociation*/ edgeAssoc = edge;
 
 	Object theEnd = null;
 	Object theOtherEnd = null;
-        // rerouting the source:
+        Collection connections = ModelFacade.getConnections(edgeAssoc);
+        Iterator iter = connections.iterator();
         if (isSource) {
-            theEnd =
-		((Object[])(edgeAssoc.getConnections()).toArray())[0];
-
-            theOtherEnd =
-		((Object[])(edgeAssoc.getConnections()).toArray())[1];
-        }
-        // rerouting the destination:
-        else {
-            theOtherEnd =
-		((Object[])(edgeAssoc.getConnections()).toArray())[0];
-
-            theEnd =
-		((Object[])(edgeAssoc.getConnections()).toArray())[1];
+            // rerouting the source:
+            theEnd = iter.next();
+            theOtherEnd = iter.next();
+        } else {
+            // rerouting the destination:
+            theOtherEnd = iter.next();
+            theEnd = iter.next();
         }
 
         // set the ends navigability see also Class ActionNavigability
