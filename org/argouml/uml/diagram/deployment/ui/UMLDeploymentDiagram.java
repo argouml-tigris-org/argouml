@@ -7,6 +7,7 @@ package org.argouml.uml.diagram.deployment.ui;
 import java.beans.PropertyVetoException;
 
 import javax.swing.Action;
+import javax.swing.JToolBar;
 
 import org.apache.log4j.Category;
 import org.argouml.kernel.ProjectManager;
@@ -98,41 +99,22 @@ public class UMLDeploymentDiagram extends UMLDiagram {
         lay.setGraphEdgeRenderer(rend);
     }
 
-    /** initialize the toolbar for this diagram type */
-    public void initToolBar() {
-        cat.debug("making deployment toolbar");
-        _toolBar = new ToolBar();
-        _toolBar.putClientProperty("JToolBar.isRollover", Boolean.TRUE);
-        //_toolBar.setLayout(new FlowLayout(FlowLayout.LEFT, 0, 0));
-
-        _toolBar.add(_actionSelect);
-        _toolBar.add(_actionBroom);
-        _toolBar.addSeparator();
-
-        _toolBar.add(_actionMNode);
-        _toolBar.add(_actionMNodeInstance);
-        _toolBar.add(_actionMComponent);
-        _toolBar.add(_actionMComponentInstance);
-        _toolBar.add(_actionMDependency);
-        _toolBar.add(_actionMAssociation);
-        _toolBar.add(_actionMObject);
-        _toolBar.add(_actionMLink);
+    /**
+     * <p>Initialize the toolbar with buttons required for a use case diagram.</p>
+     * @param toolBar The toolbar to which to add the buttons.
+     */
+    protected void initToolBar(JToolBar toolBar) {
+        toolBar.add(_actionMNode);
+        toolBar.add(_actionMNodeInstance);
+        toolBar.add(_actionMComponent);
+        toolBar.add(_actionMComponentInstance);
+        toolBar.add(_actionMDependency);
+        toolBar.add(_actionMAssociation);
+        toolBar.add(_actionMObject);
+        toolBar.add(_actionMLink);
         // other actions
-        _toolBar.addSeparator();
-        _toolBar.add(ActionAddNote.SINGLETON);
-        _toolBar.addSeparator();
-
-        _toolBar.add(_actionRectangle);
-        _toolBar.add(_actionRRectangle);
-        _toolBar.add(_actionCircle);
-        _toolBar.add(_actionLine);
-        _toolBar.add(_actionText);
-        _toolBar.add(_actionPoly);
-        _toolBar.add(_actionSpline);
-        _toolBar.add(_actionInk);
-        _toolBar.addSeparator();
-
-        _toolBar.add(_diagramName.getJComponent());
+        toolBar.addSeparator();
+        toolBar.add(ActionAddNote.SINGLETON);
     }
 
     static final long serialVersionUID = -375918274062198744L;
@@ -150,5 +132,4 @@ public class UMLDeploymentDiagram extends UMLDiagram {
         }
         return name;
     }
-
 } /* end class UMLDeploymentDiagram */

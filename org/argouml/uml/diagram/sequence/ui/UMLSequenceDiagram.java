@@ -34,6 +34,7 @@ import java.util.Iterator;
 import java.util.Vector;
 
 import javax.swing.Action;
+import javax.swing.JToolBar;
 
 import org.apache.log4j.Category;
 import org.argouml.kernel.ProjectManager;
@@ -123,40 +124,19 @@ public class UMLSequenceDiagram extends UMLDiagram {
     }
 
     /** initialize the toolbar for this diagram type */
-    public void initToolBar() {
-        _toolBar = new ToolBar();
-        _toolBar.putClientProperty("JToolBar.isRollover", Boolean.TRUE);
-        //_toolBar.setLayout(new FlowLayout(FlowLayout.LEFT, 0, 0));
+    protected void initToolBar(JToolBar toolBar) {
+        toolBar.add(_actionObject);
+        toolBar.addSeparator();
 
-        _toolBar.add(_actionSelect);
-        _toolBar.add(_actionBroom);
-        _toolBar.addSeparator();
-
-        _toolBar.add(_actionObject);
-        _toolBar.addSeparator();
-
-        _toolBar.add(_actionLinkWithStimulusCall);
-        _toolBar.add(_actionLinkWithStimulusCreate);
-        _toolBar.add(_actionLinkWithStimulusDestroy);
-        _toolBar.add(_actionLinkWithStimulusSend);
-        _toolBar.add(_actionLinkWithStimulusReturn);
+        toolBar.add(_actionLinkWithStimulusCall);
+        toolBar.add(_actionLinkWithStimulusCreate);
+        toolBar.add(_actionLinkWithStimulusDestroy);
+        toolBar.add(_actionLinkWithStimulusSend);
+        toolBar.add(_actionLinkWithStimulusReturn);
 
         // other actions
-        _toolBar.addSeparator();
-        _toolBar.add(ActionAddNote.SINGLETON);
-        _toolBar.addSeparator();
-
-        _toolBar.add(_actionRectangle);
-        _toolBar.add(_actionRRectangle);
-        _toolBar.add(_actionCircle);
-        _toolBar.add(_actionLine);
-        _toolBar.add(_actionText);
-        _toolBar.add(_actionPoly);
-        _toolBar.add(_actionSpline);
-        _toolBar.add(_actionInk);
-        _toolBar.addSeparator();
-
-        _toolBar.add(_diagramName.getJComponent());
+        toolBar.addSeparator();
+        toolBar.add(ActionAddNote.SINGLETON);
     }
 
     /** every stimulus has to become a path item of its link
@@ -217,5 +197,4 @@ public class UMLSequenceDiagram extends UMLDiagram {
         }
         return name;
     }
-
 } /* end class UMLSequenceDiagram */

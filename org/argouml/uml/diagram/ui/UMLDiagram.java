@@ -26,9 +26,11 @@ package org.argouml.uml.diagram.ui;
 import java.beans.PropertyVetoException;
 
 import javax.swing.Action;
+import javax.swing.JToolBar;
 
 import org.apache.log4j.Category;
 
+import org.argouml.swingext.PopupToolBoxButton;
 import org.argouml.ui.ArgoDiagram;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.kernel.ProjectManager;
@@ -174,20 +176,53 @@ public abstract class UMLDiagram
   
   static final long serialVersionUID = -401219134410459387L;
 
-  /**
-   */
-  public ToolBar getToolBar() {
-    //initToolBar();
-    return _toolBar;
-  }
+    /**
+     * Get the toolbar for the diagram
+     * @return the diagram toolbar
+     */
+    public ToolBar getToolBar() {
+        return _toolBar;
+    }
   
     /**
+     * This is a template method. It sets up the standard toolbar buttons
+     * required for all diagram toolbars calling the abstract method
+     * initToolBar(JToolBar) which should be implemented on the ancestor
+     * to populate the toolbar with diagram specific buttons.
      * @see org.tigris.gef.base.Diagram#initToolBar()
      */
     public void initToolBar() {
         super.initToolBar();
+        _toolBar = new ToolBar();
+        _toolBar.putClientProperty("JToolBar.isRollover", Boolean.TRUE);
+        _toolBar.add(_actionSelect);
+        _toolBar.add(_actionBroom);
+        _toolBar.addSeparator();
+        initToolBar(_toolBar);
+        _toolBar.addSeparator();
+        _toolBar.add(buildShapePopup());
+        _toolBar.addSeparator();
+        _toolBar.add(_diagramName.getJComponent());
     }
+    
+    /**
+     * Implement on the ancestor to populate the toolbar with diagram specific buttons.
+     * @param toolbar The toolbar to populate with buttons
+     */
+    abstract protected void initToolBar(JToolBar toolbar);
 
+    private PopupToolBoxButton buildShapePopup() {
+        PopupToolBoxButton toolBox = new PopupToolBoxButton(_actionRectangle, 0, 2);
+        toolBox.add(_actionRectangle);
+        toolBox.add(_actionRRectangle);
+        toolBox.add(_actionCircle);
+        toolBox.add(_actionLine);
+        toolBox.add(_actionText);
+        toolBox.add(_actionPoly);
+        toolBox.add(_actionSpline);
+        toolBox.add(_actionInk);
+        return toolBox;
+    }
   /**
    * This diagram listens to events from is namespace ModelElement;
    * When the modelelement is removed, we also want to delete this diagram too.
@@ -238,5 +273,6 @@ public abstract class UMLDiagram
   public void recovered(MElementEvent e){
       
   }
-
+  
+  
 } /* end class UMLDiagram */
