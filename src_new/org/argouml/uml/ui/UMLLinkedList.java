@@ -28,13 +28,14 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import javax.swing.JList;
 import javax.swing.ListSelectionModel;
+import javax.swing.SwingUtilities;
 import javax.swing.event.ListSelectionEvent;
 
 import ru.novosoft.uml.foundation.core.MModelElement;
 
 
 /**
- * An UMLList that implements 'jump' behaviour. As soon as the user clicks 
+ * An UMLList that implements 'jump' behaviour. As soon as the user doubleclicks 
  * on an element in the list, that element is selected in argouml.
  * @since Oct 2, 2002
  * @author jaap.branderhorst@xs4all.nl
@@ -65,7 +66,7 @@ public class UMLLinkedList extends UMLList2 implements MouseListener {
      */
     public void mouseClicked(MouseEvent e) {
         if (e.getSource() == this) {
-            if (e.getClickCount() >=2) {
+            if (e.getClickCount() >=2 && SwingUtilities.isLeftMouseButton(e)) {
                 Object o = getSelectedValue();
                 if (o instanceof MModelElement) {
                     getContainer().navigateTo(o);

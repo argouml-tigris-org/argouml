@@ -47,7 +47,7 @@ import org.argouml.ui.*;
 public class UMLAction extends AbstractAction {
     protected static Category cat = 
         Category.getInstance(UMLAction.class);
-
+    
   public static boolean HAS_ICON = true;
   public static boolean NO_ICON = false;
 
@@ -71,7 +71,6 @@ public class UMLAction extends AbstractAction {
   }
 
   /** Perform the work the action is supposed to do. */
-  // needs-more-work: should actions run in their own threads?
   public void actionPerformed(ActionEvent e) {
     cat.debug("pushed " + getValue(Action.NAME));
     StatusBar sb = ProjectBrowser.TheInstance.getStatusBar();
@@ -132,5 +131,15 @@ public class UMLAction extends AbstractAction {
     return Translator.localize("CoreMenu",key);
   }
 
+
+    /**
+     * @see javax.swing.Action#isEnabled()
+     */
+    public boolean isEnabled() {
+        if (!Actions.isGlobalAction(this)) {
+            return shouldBeEnabled();
+        }
+        return super.isEnabled();
+    }
 
 } /* end class UMLAction */

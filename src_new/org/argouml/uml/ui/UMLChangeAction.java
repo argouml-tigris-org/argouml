@@ -27,15 +27,19 @@ import org.argouml.ui.*;
 import java.awt.event.*;
 
 
-class UMLChangeAction extends UMLAction {
+public class UMLChangeAction extends UMLAction {
 
   public UMLChangeAction(String s) { super(s, HAS_ICON); }
   public UMLChangeAction(String s, boolean hasIcon) { super(s, hasIcon); }
+  protected UMLChangeAction(String s, boolean global, boolean hasIcon) { 
+        super(s, global, hasIcon);
+  }
 
   public void actionPerformed(ActionEvent e) {
     markNeedsSave();
     Actions.updateAllEnabled();
   }
+
 } /* end class UMLChangeAction */
 
 
