@@ -498,7 +498,7 @@ Cookbook (in <xref linkend="inside_subsystems"></xref>).
 </para>
       <para>
 Each subsystem can also have one or several plug-in interfaces.
-That is Facade objects where modules or plug-ins can connect themselves
+These are Facade objects where modules or plug-ins can connect themselves
 to modify or augment the behavior of that subsystem.
 </para>
       <para>
@@ -508,6 +508,7 @@ and called
 Example: 
 <classname>ModelPluginDiagram</classname>, 
 <classname>ModelPluginType</classname>.
+<!-- This latter example is very confusing! TODO: replace it. -->
 </para>
       <para>
 If the subsystem uses a callback-technique
