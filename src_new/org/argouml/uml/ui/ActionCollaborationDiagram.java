@@ -118,7 +118,7 @@ public class ActionCollaborationDiagram extends ActionAddDiagram {
 
         Object target = TargetManager.getInstance().getModelTarget();
         if (ModelFacade.isANamespace(target)) {
-            return isValidNamespace(target);
+            return super.shouldBeEnabled() && isValidNamespace(target);
         } else {
             return false;
         }
