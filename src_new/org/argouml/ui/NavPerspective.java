@@ -124,7 +124,6 @@ public class NavPerspective
 
         if (parent == child)
             throw new IllegalStateException("Parent cannot equal child");
-        rule.setCacheable(parent, true);
         if (rule.getChildCount(parent) == 0)
             return -1;
         else {
@@ -136,15 +135,13 @@ public class NavPerspective
                     Iterator it = rule.getChildren(parent).iterator();
                     while (it.hasNext()) {
                         index = getHelperIndex(rule, it.next(), child);
-                        if (index > -1) {
-                            rule.setCacheable(parent, false);                        
+                        if (index > -1) {                       
                             return counter + index;
                         }
                         counter++;
                     }
             }
         }
-        rule.setCacheable(parent, false);
         return -1;
     }
 

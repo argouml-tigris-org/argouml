@@ -26,10 +26,7 @@ public abstract class AbstractGoRule implements TreeModel {
 
     private static Category cat =
         Category.getInstance(org.argouml.ui.AbstractGoRule.class);
-
-    private boolean _cacheable = false;
-
-    private Map _cache = new HashMap();
+ 
 
     // ----------- TreeModel helpers -----------
 
@@ -39,7 +36,7 @@ public abstract class AbstractGoRule implements TreeModel {
     public Object getChild(Object parent, int index) {
 
         int count = 0;
-        Collection col = getCachedChildren(parent);
+        Collection col = getChildren(parent);
         if (col != null) {
             Iterator it = col.iterator();
             while (it.hasNext()) {
@@ -57,7 +54,7 @@ public abstract class AbstractGoRule implements TreeModel {
      * @see javax.swing.tree.TreeModel#getChildCount(Object)
      */
     public int getChildCount(Object parent) {
-        Collection c = getCachedChildren(parent);
+        Collection c = getChildren(parent);
 
         if (c == null)
             return 0;
@@ -79,7 +76,7 @@ public abstract class AbstractGoRule implements TreeModel {
     public int getIndexOfChild(Object parent, Object child) {
 
         int index = 0;
-        Collection col = getCachedChildren(parent);
+        Collection col = getChildren(parent);
         if (col != null) {
             Iterator it = col.iterator();
             while (it.hasNext()) {
@@ -113,35 +110,7 @@ public abstract class AbstractGoRule implements TreeModel {
         return getRuleName();
     }
 
-    /**
-     * Gets the cached children.
-     * @param parent The parent of which the children are wanted
-     * @return the children
-     */
-    private Collection getCachedChildren(Object parent) {
-        Collection children = null;
-        if (_cacheable) {
-            children = (Collection)_cache.get(parent);
-            if (children == null) {
-                children = getChildren(parent);
-                _cache.put(parent, children);
-            }
-        } else {
-            children = getChildren(parent);
-        }
-        return children;
-    }
-    
-    public void setCacheable(Object parent, boolean cacheable) {
-        if (!cacheable) {
-            _cache.remove(parent);
-        }
-        _cacheable = cacheable;
-    }
-    
-    public boolean isCacheable(Object parent) {
-        return _cacheable;
-    }
+   
 
     // ------------- not used TreeModel methods -------------
 
