@@ -173,7 +173,7 @@ class SrcPathTableModel extends DefaultTableModel {
     public SrcPathTableModel() {
         super(new Object[][] {
         }, new String[] {
-	    "", "Name", "Type", "Source path" 
+	    " ", "Name", "Type", "Source path" 
 	});
         Project p = ProjectManager.getManager().getCurrentProject();
         Collection elems =
