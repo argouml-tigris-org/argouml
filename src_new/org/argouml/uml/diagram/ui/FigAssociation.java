@@ -95,7 +95,7 @@ public class FigAssociation extends FigEdgeModelElement {
   ////////////////////////////////////////////////////////////////
   // constructors
 
-    private FigAssociation() {
+    protected FigAssociation() {
    
     
         // lets use groups to construct the different text sections at the association
