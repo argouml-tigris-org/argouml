@@ -183,7 +183,7 @@ public class UMLActivityDiagram extends UMLDiagram {
         lay.setGraphEdgeRenderer(rend);
     }
 
-    public MModelElement getOwner() {
+    public Object getOwner() {
         StateDiagramGraphModel gm = (StateDiagramGraphModel) getGraphModel();
         MStateMachine sm = gm.getMachine();
         if (sm != null)

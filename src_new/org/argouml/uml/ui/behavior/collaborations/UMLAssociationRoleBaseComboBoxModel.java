@@ -25,6 +25,7 @@
 // $header$
 package org.argouml.uml.ui.behavior.collaborations;
 
+import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.UmlModelEventPump;
 import org.argouml.model.uml.behavioralelements.collaborations.CollaborationsHelper;
 import org.argouml.uml.ui.UMLComboBoxModel2;
@@ -60,7 +61,7 @@ public class UMLAssociationRoleBaseComboBoxModel extends UMLComboBoxModel2 {
      */
     protected Object getSelectedModelElement() {
         if (getTarget() != null) {
-            return ((MAssociationRole) getTarget()).getBase();
+            return ModelFacade.getBase(getTarget());
         }
         return null;
     }

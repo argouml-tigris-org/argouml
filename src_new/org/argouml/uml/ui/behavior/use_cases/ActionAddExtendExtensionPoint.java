@@ -25,9 +25,11 @@
 // $Id$
 package org.argouml.uml.ui.behavior.use_cases;
 
+import java.util.Collection;
 import java.util.Vector;
 
 import org.argouml.application.api.Argo;
+import org.argouml.model.ModelFacade;
 import org.argouml.uml.ui.AbstractActionAddModelElement;
 import ru.novosoft.uml.behavior.use_cases.MExtend;
 
@@ -59,7 +61,9 @@ public class ActionAddExtendExtensionPoint extends AbstractActionAddModelElement
     protected Vector getChoices() {
         Vector ret = new Vector();
         if (getTarget() != null) {
-            ret.addAll(((MExtend) getTarget()).getBase().getExtensionPoints());
+            MExtend extend = (MExtend)getTarget();
+            Collection c = extend.getBase().getExtensionPoints();
+            ret.addAll(c);
         }
         return ret;
     }
