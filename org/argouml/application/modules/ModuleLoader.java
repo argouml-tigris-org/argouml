@@ -41,7 +41,7 @@ import org.apache.log4j.*;
 // Import the following classes fully qualified to ensure that
 // no one can short-circuit our intended inheritance.
 
-import org.argouml.application.security.ArgoClassLoader;
+import org.argouml.application.security.ArgoJarClassLoader;
 
 /**  Handles loading of modules and plugins for ArgoUML.
  *
@@ -238,18 +238,18 @@ public class ModuleLoader {
 	    for (int i = 0; i < file.length; i++) {
 		JarFile jarfile = null;
 		// Try-catch only the JarFile instantiation so we
-		// don't accidentally mask anything in ArgoClassLoader
+		// don't accidentally mask anything in ArgoJarClassLoader
 		// or processJarFile.
 		try {
 		    jarfile = new JarFile(file[i]);
+		    if (jarfile != null) {
+	                ClassLoader classloader = new ArgoJarClassLoader(file[i].toURL());
+	                // ClassLoader classloader = getClass().getClassLoader();
+	                processJarFile(classloader, file[i]);
+	                // processJarFile(getClass().getClassLoader(), file[i]);
+		    }
 		}
 		catch (IOException ioe) { }
-		if (jarfile != null) {
-	            ClassLoader classloader = new ArgoClassLoader(jarfile);
-	            // ClassLoader classloader = getClass().getClassLoader();
-	            processJarFile(classloader, file[i]);
-	            // processJarFile(getClass().getClassLoader(), file[i]);
-		}
 	    }
 	}
     }
