@@ -26,14 +26,9 @@ package org.argouml.model.uml;
 
 import java.io.IOException;
 import java.io.Writer;
-import java.util.Collection;
 import java.util.Iterator;
-import java.util.Map;
 
-import javax.xml.parsers.ParserConfigurationException;
 import org.apache.log4j.Logger;
-import org.argouml.kernel.SaveException;
-import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 import ru.novosoft.uml.model_management.MModel;
@@ -54,11 +49,12 @@ public class XmiWriter {
     /**
      * Constructor for XMIReader.
      * @throws SAXException when there is a XML problem
-     * @throws IOException on IO error
+     * @param model the UML model
+     * @param writer the writer
      */
     public XmiWriter(Object model, Writer writer) throws SAXException {
         try {
-            xmiWriter = new XMIWriter((MModel)model, writer);
+            xmiWriter = new XMIWriter((MModel) model, writer);
         } catch (IOException e) {
             throw new SAXException(e);
         }
@@ -66,7 +62,7 @@ public class XmiWriter {
 
     /**
      * Write XMI to registered writer
-     * @throws SAXException
+     * @throws SAXException if it goes wrong
      */
     public void write() throws SAXException {
         try {

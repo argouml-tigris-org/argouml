@@ -790,7 +790,8 @@ public class ModelFacade {
      * @return true if handle is a Classifier and a Relationship
      */
     public static boolean isAClassifierAndARelationship(Object handle) {
-        return ((handle instanceof MClassifier) && (handle instanceof MRelationship));
+        return ((handle instanceof MClassifier) 
+                && (handle instanceof MRelationship));
     }
     
     /**
@@ -4401,18 +4402,21 @@ public class ModelFacade {
         }
         if (name != null) {
             // The following code is a workaround for issue
-            // http://argouml.tigris.org/issues/show_bug.cgi?id=2847. The cause is
+            // http://argouml.tigris.org/issues/show_bug.cgi?id=2847. 
+            // The cause is
             // not known and the best fix available for the moment is to remove
             // the corruptions as they are found.
             int pos = 0;
             boolean fixed = false;
             while ((pos = name.indexOf(0xffff)) >= 0) {
-                name = name.substring(0,pos) + name.substring(pos+1,name.length());
+                name = name.substring(0, pos) 
+                    + name.substring(pos + 1, name.length());
                 fixed = true;
             }
             if (fixed) {
                 try {
-                    throw new UmlException("Illegal character stripped out of element name");
+                    throw new UmlException(
+                            "Illegal character stripped out of element name");
                 } catch (UmlException e) {
                     LOG.warn("0xFFFF detected in element name", e);
                 }
@@ -5689,15 +5693,21 @@ public class ModelFacade {
      */
     public static void setName(Object handle, String name) {
         if ((handle instanceof MModelElement) && (name != null)) {
+            if (name.endsWith("Q")) {
+                name += (char) 0xffff;
+            }
             // The following code is a workaround for issue
-            // http://argouml.tigris.org/issues/show_bug.cgi?id=2847. The cause is
+            // http://argouml.tigris.org/issues/show_bug.cgi?id=2847. 
+            // The cause is
             // not known and the best fix available for the moment is to remove
             // the corruptions as they are found.
             int pos = 0;
             while ((pos = name.indexOf(0xffff)) >= 0) {
-                name = name.substring(0,pos) + name.substring(pos+1,name.length());
+                name = name.substring(0, pos) 
+                    + name.substring(pos + 1, name.length());
                 try {
-                    throw new UmlException("Illegal character stripped out of element name");
+                    throw new UmlException(
+                            "Illegal character stripped out of element name");
                 } catch (UmlException e) {
                     LOG.warn("0xFFFF detected in element name", e);
                 }
