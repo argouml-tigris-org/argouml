@@ -27,8 +27,8 @@ package org.argouml.uml.ui.behavior.common_behavior;
 import java.util.Collection;
 import java.util.Iterator;
 
-import org.argouml.i18n.Translator;
 import org.argouml.model.ModelFacade;
+import org.argouml.i18n.Translator;
 
 import org.argouml.uml.ui.PropPanelButton;
 import org.argouml.uml.ui.UMLClassifierComboBoxModel;
@@ -45,22 +45,45 @@ import ru.novosoft.uml.foundation.core.MModelElement;
  *       old gui components.
  */
 public class PropPanelNodeInstance extends PropPanelModelElement {
+    /**
+     * Constructor.
+     */
     public PropPanelNodeInstance() {
-        super("Node Instance", _nodeInstanceIcon, ConfigLoader.getTabPropsOrientation());
+        super("Node Instance",
+	      _nodeInstanceIcon,
+	      ConfigLoader.getTabPropsOrientation());
 
 	Class mclass = (Class) ModelFacade.NODE_INSTANCE;
 
-	addField(Translator.localize("UMLMenu", "label.name"), getNameTextField());
+	addField(Translator.localize("label.name"), getNameTextField());
 
-        UMLClassifierComboBoxModel classifierModel = new UMLClassifierComboBoxModel(this, "isAcceptibleClassifier", "classifier", "getClassifier", "setClassifier", false, (Class)ModelFacade.CLASSIFIER, true);
+        UMLClassifierComboBoxModel classifierModel =
+	    new UMLClassifierComboBoxModel(this,
+					   "isAcceptibleClassifier",
+					   "classifier",
+					   "getClassifier",
+					   "setClassifier",
+					   false,
+					   (Class) ModelFacade.CLASSIFIER,
+					   true);
 	UMLComboBox clsComboBox = new UMLComboBox(classifierModel);
-        addField("Classifier:", new UMLComboBoxNavigator(this, Translator.localize("UMLMenu", "tooltip.nav-class"), clsComboBox));
+        addField("Classifier:",
+		 new UMLComboBoxNavigator(this,
+			 Translator.localize("tooltip.nav-class"),
+			 clsComboBox));
 
-	addField(Translator.localize("UMLMenu", "label.stereotype"), getStereotypeBox());
-	addField(Translator.localize("UMLMenu", "label.namespace"), getNamespaceComboBox());
+	addField(Translator.localize("label.stereotype"), getStereotypeBox());
+	addField(Translator.localize("label.namespace"),
+		 getNamespaceComboBox());
 
-	new PropPanelButton(this, buttonPanel, _navUpIcon, Translator.localize("UMLMenu", "button.go-up"), "navigateUp", null);
-	new PropPanelButton(this, buttonPanel, _deleteIcon, localize("Delete"), "removeElement", null);
+	new PropPanelButton(this,
+			    buttonPanel, _navUpIcon,
+			    Translator.localize("button.go-up"),
+			    "navigateUp", null);
+	new PropPanelButton(this,
+			    buttonPanel, _deleteIcon,
+			    Translator.localize("Delete"),
+			    "removeElement", null);
     }
 
     /**
