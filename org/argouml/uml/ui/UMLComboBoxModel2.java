@@ -241,6 +241,7 @@ public abstract class UMLComboBoxModel2
      * @see javax.swing.ListModel#getElementAt(int)
      */
     public Object getElementAt(int arg0) {
+        if (arg0 >= list.size()) return null;
         return list.get(arg0);
     }
 

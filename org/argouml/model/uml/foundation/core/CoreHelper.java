@@ -1081,11 +1081,19 @@ public class CoreHelper {
                 m instanceof MDataType ||
                 m instanceof MInterface)) return false;
         }
+        else
+        if (ns instanceof MClassifierRole) {
+            if (!(((MClassifierRole)ns).getAvailableContentses().contains(m) || 
+                ((MClassifierRole)ns).getAvailableFeatures().contains(m))) return false;
+        } else
         if (m instanceof MStructuralFeature) {
             if (!isValidNamespace((MStructuralFeature)m, ns)) return false;
         } else
         if (m instanceof MGeneralizableElement) {
             if (!isValidNamespace((MGeneralizableElement)m, ns)) return false;
+        } else
+        if (m instanceof MGeneralization) {
+            if (!isValidNamespace((MGeneralization)m , ns)) return false;
         }
         if (m instanceof MAssociation) {
             if (!isValidNamespace((MAssociation)m, ns)) return false;
@@ -1112,6 +1120,14 @@ public class CoreHelper {
             }
         }
         return true;
+    }
+    
+    private boolean isValidNamespace(MGeneralization gen, MNamespace ns) {
+        if (gen.getParent() == null || gen.getChild() == null) return true;
+        MNamespace ns1 = gen.getParent().getNamespace();
+        MNamespace ns2 = gen.getChild().getNamespace();
+        if (ns == getFirstSharedNamespace(ns1, ns2)) return true;
+        return false;
     }
             
     private boolean isValidNamespace(MStructuralFeature struc, MNamespace ns) {

@@ -113,13 +113,16 @@ abstract public class PropPanelModelElement extends PropPanel {
         nameField = new UMLTextField2(this, new UMLModelElementNameDocument(this));
         stereotypeBox = new UMLComboBox2(this, new UMLModelElementStereotypeComboBoxModel(this), ActionSetModelElementStereotype.SINGLETON);
         namespaceComboBox = new UMLComboBox2(this, new UMLModelElementNamespaceComboBoxModel(this), ActionSetModelElementNamespace.SINGLETON);
- 
+        namespaceList = new UMLLinkedList(this, new UMLModelElementNamespaceListModel(this));
+ /*
         namespaceList = new UMLList(new UMLNamespaceListModel(this),true);
         namespaceList.setBackground(getBackground());
         namespaceList.setForeground(Color.blue);
+        */
         namespaceList.setVisibleRowCount(1);
+        
 
-	namespaceScroll = new JScrollPane(namespaceList,JScrollPane.VERTICAL_SCROLLBAR_NEVER,JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+	namespaceScroll = new JScrollPane(namespaceList);
     
     }
     
@@ -133,12 +136,9 @@ abstract public class PropPanelModelElement extends PropPanel {
 
         namespaceComboBox = new UMLComboBox2(this, new UMLModelElementNamespaceComboBoxModel(this), ActionSetModelElementNamespace.SINGLETON);
         
-        namespaceList = new UMLList(new UMLNamespaceListModel(this),true);
-        namespaceList.setBackground(getBackground());
-        namespaceList.setForeground(Color.blue);
+        namespaceList = new UMLLinkedList(this, new UMLModelElementNamespaceListModel(this));
         namespaceList.setVisibleRowCount(1);
-
-	namespaceScroll = new JScrollPane(namespaceList,JScrollPane.VERTICAL_SCROLLBAR_NEVER,JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+	namespaceScroll = new JScrollPane(namespaceList);
     }
     
     public PropPanelModelElement() {

@@ -61,7 +61,7 @@ public class PropPanelCollaboration extends PropPanelNamespace {
         addField(Argo.localize("UMLMenu", "label.name"),nameField);
         addField(Argo.localize("UMLMenu", "label.stereotype"), 
             new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-stereo"),stereotypeBox));
-        addField(Argo.localize("UMLMenu", "label.namespace"),namespaceComboBox);
+        addField(Argo.localize("UMLMenu", "label.namespace"),namespaceScroll);
         
         UMLLinkedList classifierList = new UMLLinkedList(this, new UMLCollaborationRepresentedClassifierListModel(this));
         classifierList.setVisibleRowCount(1);   
@@ -87,16 +87,4 @@ public class PropPanelCollaboration extends PropPanelNamespace {
         // we do not add the ownedelements since they are not of real interest
             
     }
-
-    /**
-     * Used to determine which stereotypes are legal with a collaboration. At 
-     * the moment, only the stereotypes of namespace and generlizable elements
-     * are shown.
-     * @see org.argouml.uml.ui.PropPanel#isAcceptibleBaseMetaClass(String)
-     */
-    protected boolean isAcceptibleBaseMetaClass(String baseClass) {
-        return baseClass.equals("Namespace") || 
-            baseClass.equals("GeneralizableElement");
-    }
-
 }
