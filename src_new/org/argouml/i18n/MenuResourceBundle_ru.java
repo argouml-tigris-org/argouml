@@ -55,6 +55,7 @@ public class MenuResourceBundle_ru extends ListResourceBundle {
         {"Copy", "Копировать" },
         {"Paste", "Вставить" },
 	{"Settings...", "Установки..."},
+        {"Set Source Path...", "Set Source Path..." },
         {"Delete From Diagram", "Удалить из диаграммы" },
         {"Erase From Model", "Удалить из модели" },
         {"Empty Trash", "Уничтожить мусор" },

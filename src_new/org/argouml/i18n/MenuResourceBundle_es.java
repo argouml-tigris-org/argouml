@@ -71,6 +71,7 @@ public class MenuResourceBundle_es extends ListResourceBundle {
         {"Copy", "Copiar" },
         {"Paste", "Pegar" },
         {"Settings...", "Propiedades..."},
+        {"Set Source Path...", "Set Source Path..." },
         {"Delete From Diagram", "Quitar del diagrama" },
         {"Erase From Model", "Borrar del modelo" },
         {"Empty Trash", "Eliminar basura" },

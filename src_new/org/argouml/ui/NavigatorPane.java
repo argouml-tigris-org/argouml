@@ -56,6 +56,7 @@ import org.argouml.uml.diagram.sequence.ui.UMLSequenceDiagram;
 import org.argouml.uml.diagram.ui.ActionAddExistingEdge;
 import org.argouml.uml.diagram.ui.ActionAddExistingNode;
 import org.argouml.uml.ui.ActionRemoveFromModel;
+import org.argouml.uml.ui.ActionSetSourcePath;
 import org.argouml.uml.ui.UMLAction;
 import org.tigris.gef.base.Diagram;
 import org.tigris.gef.ui.PopupGenerator;
@@ -88,7 +89,7 @@ import ru.novosoft.uml.model_management.MPackage;
 public class NavigatorPane extends JPanel
 implements ItemListener, TreeSelectionListener, PropertyChangeListener, QuadrantPanel {
     protected static Category cat = Category.getInstance(NavigatorPane.class);
-        
+
   //, CellEditorListener
 
   ////////////////////////////////////////////////////////////////
@@ -142,14 +143,14 @@ implements ItemListener, TreeSelectionListener, PropertyChangeListener, Quadrant
     setPreferredSize(new Dimension(
                                   Configuration.getInteger(Argo.KEY_SCREEN_WEST_WIDTH, ProjectBrowser.DEFAULT_COMPONENTWIDTH),0
                                   ));
-    ProjectManager.getManager().addPropertyChangeListener(this); 
-    
+    ProjectManager.getManager().addPropertyChangeListener(this);
+
     if (doSplash) {
         SplashScreen splash = ProjectBrowser.TheInstance.getSplashScreen();
         splash.getStatusBar().showStatus("Making NavigatorPane: Setting Perspectives");
         splash.getStatusBar().showProgress(25);
-    }    
-    setPerspectives(NavPerspective.getRegisteredPerspectives());                             
+    }
+    setPerspectives(NavPerspective.getRegisteredPerspectives());
   }
 
   ////////////////////////////////////////////////////////////////
@@ -241,14 +242,14 @@ implements ItemListener, TreeSelectionListener, PropertyChangeListener, Quadrant
     //if (sel instanceof Diagram) {
       myDoubleClick(row, path);
       return;
-    
+
     }
     ProjectBrowser.TheInstance.select(sel);
     */
     mouseClick(row, path);
     _clicksInNavPane++;
   }
-  
+
   protected void mouseClick(int row, TreePath path) {
   	 Object sel = getSelectedObject();
      if (sel == null) return;
@@ -385,23 +386,26 @@ implements ItemListener, TreeSelectionListener, PropertyChangeListener, Quadrant
 	}
         else {
             if ((obj instanceof MClassifier && !(obj instanceof MDataType))
-                || ((obj instanceof MPackage) && (obj != ProjectManager.getManager().getCurrentProject().getModel())) 
-	        || obj instanceof MStateVertex 
+                || ((obj instanceof MPackage) && (obj != ProjectManager.getManager().getCurrentProject().getModel()))
+	        || obj instanceof MStateVertex
                 || (obj instanceof MInstance && !(obj instanceof MDataValue) && !(ProjectBrowser.TheInstance.getActiveDiagram() instanceof UMLSequenceDiagram))) {
                     UMLAction action = new ActionAddExistingNode(menuLocalize("menu.popup.add-to-diagram"),obj);
                     action.setEnabled(action.shouldBeEnabled());
 	       popup.add(action);
             }
-            if ((obj instanceof MRelationship && !(obj instanceof MFlow)) || 
+            if ((obj instanceof MRelationship && !(obj instanceof MFlow)) ||
                 ((obj instanceof MLink) && !(ProjectBrowser.TheInstance.getActiveDiagram() instanceof UMLSequenceDiagram)) ||
                 (obj instanceof MTransition)) {
                     UMLAction action = new ActionAddExistingEdge(menuLocalize("menu.popup.add-to-diagram"),obj);
-                    action.setEnabled(action.shouldBeEnabled());  
+                    action.setEnabled(action.shouldBeEnabled());
                 popup.add(action);
             }
-                
+
             if ((obj instanceof MModelElement && (obj != ProjectManager.getManager().getCurrentProject().getModel())) || obj instanceof Diagram ) {
 	        popup.add(ActionRemoveFromModel.SINGLETON);
+            }
+            if (obj instanceof MClassifier || obj instanceof MPackage) {
+	        popup.add(ActionSetSourcePath.SINGLETON);
             }
             popup.add(new ActionGoToDetails(menuLocalize("Properties")));
         }
@@ -438,15 +442,15 @@ implements ItemListener, TreeSelectionListener, PropertyChangeListener, Quadrant
   }
 
   public int getQuadrant() { return Q_TOP_LEFT; }
-  
 
-  
+
+
   public TreePath getParentPath() {
   	TreePath path = _tree.getSelectionPath();
   	if (path != null) return path.getParentPath();
   	return null;
   }
-  	
+
   /** Listen for configuration changes that could require repaint
    *  of the navigator pane.
    * Listens for changes of the project fired by projectmanager.
@@ -463,8 +467,8 @@ implements ItemListener, TreeSelectionListener, PropertyChangeListener, Quadrant
           Notation.KEY_SHOW_STEREOTYPES.isChangedProperty(pce)) {
           _tree.forceUpdate();
       }
-  } 
-  
-  
+  }
+
+
 
 } /* end class NavigatorPane */
