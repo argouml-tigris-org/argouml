@@ -51,11 +51,24 @@ import org.argouml.uml.diagram.use_case.ui.UMLUseCaseDiagram;
  * <p>In particular it makes decisions about the icons
  *  to use in order to display a Navigationpane artifact depending on the kind
  *  of object to be displayed.
+ *
+ * This class must be efficient as it is called many 1000's of times.
  */
 public class UMLTreeCellRenderer extends DefaultTreeCellRenderer {
 
     private static final String BUNDLE = "UMLMenu";
 
+    // get localised strings once only
+    private static String activity = Translator.localize(BUNDLE, "label.activity-diagram");
+    private static String sequence = Translator.localize(BUNDLE, "label.sequence-diagram");
+    private static String collaboration = Translator.localize(BUNDLE, "label.collaboration-diagram");
+    private static String deployment = Translator.localize(BUNDLE, "label.deployment-diagram");
+    private static String state = Translator.localize(BUNDLE, "label.state-chart-diagram");
+    private static String usecase = Translator.localize(BUNDLE, "label.usecase-diagram");
+    private static String classDiag = Translator.localize(BUNDLE, "label.class-diagram");
+    private static String name = Translator.localize(BUNDLE, "label.name");
+    private static String typeName = Translator.localize(BUNDLE, "label.type");
+    
     ////////////////////////////////////////////////////////////////
     // TreeCellRenderer implementation
 
@@ -71,12 +84,6 @@ public class UMLTreeCellRenderer extends DefaultTreeCellRenderer {
             if(value instanceof DefaultMutableTreeNode){
                 value = ((DefaultMutableTreeNode)value).getUserObject();
             }
-            
-//        if (TargetManager.getInstance().getTargets().contains(value)) {
-//            sel = true;           
-//        } else {
-//            sel = false;          
-//        }
         
         Component r =
             super.getTreeCellRendererComponent(
@@ -91,8 +98,6 @@ public class UMLTreeCellRenderer extends DefaultTreeCellRenderer {
         if (r instanceof JLabel) {
             JLabel lab = (JLabel) r;
             
-            
-            
             Icon icon =
                 ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIcon(
                     value);
@@ -106,30 +111,29 @@ public class UMLTreeCellRenderer extends DefaultTreeCellRenderer {
                 type = ModelFacade.getUMLClassName(value);
             } else if (value instanceof UMLDiagram) {
                 if (value instanceof UMLActivityDiagram)
-                    type = Translator.localize(BUNDLE, "label.activity-diagram");
+                    type = activity;
                 else if (value instanceof UMLSequenceDiagram)
-                    type = Translator.localize(BUNDLE, "label.sequence-diagram");
+                    type = sequence;
                 else if (value instanceof UMLCollaborationDiagram)
-                    type =
-                    Translator.localize(BUNDLE, "label.collaboration-diagram");
+                    type = collaboration;
                 else if (value instanceof UMLDeploymentDiagram)
-                    type = Translator.localize(BUNDLE, "label.deployment-diagram");
+                    type = deployment;
                 else if (value instanceof UMLStateDiagram)
-                    type = Translator.localize(BUNDLE, "label.state-chart-diagram");
+                    type = state;
                 else if (value instanceof UMLUseCaseDiagram)
-                    type = Translator.localize(BUNDLE, "label.usecase-diagram");
+                    type = usecase;
                 else if (value instanceof UMLClassDiagram)
-                    type = Translator.localize(BUNDLE, "label.class-diagram");
+                    type = classDiag;
             }
             
             if (type != null) {
                 StringBuffer buf = new StringBuffer();
                 buf.append("<html>");
-                buf.append(Translator.localize(BUNDLE, "label.name"));
+                buf.append(name);
                 buf.append(' ');
                 buf.append(lab.getText());
                 buf.append("<br>");
-                buf.append(Translator.localize(BUNDLE, "label.type"));
+                buf.append(typeName);
                 buf.append(' ');
                 buf.append(type);
                 lab.setToolTipText(buf.toString());
