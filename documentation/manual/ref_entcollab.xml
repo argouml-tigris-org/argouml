@@ -128,8 +128,9 @@ Argo/UML.
       level diagram to be distinguished from instances in an instance level
       diagram.</para>
 
-    <para>This distinction is not implemented in the current release of
-      ArgoUML.</para></caution>
+    <para>ArgoUML does show the slash, but there is no way to 
+      define the instances.
+    </para></caution>
 
     <!-- Classifier Role details tabs -->
 
@@ -168,10 +169,10 @@ Argo/UML.
           <listitem><para>Standard tab.</para></listitem>
         </varlistentry>
 
-        <!-- Entry for Style tab -->
+        <!-- Entry for Presentation tab -->
 
         <varlistentry>
-          <term><literal>Style</literal></term>
+          <term><literal>Presentation</literal></term>
 
           <listitem><para>Standard tab.</para></listitem>
         </varlistentry>
@@ -188,17 +189,6 @@ Argo/UML.
               mistake.
               <!-- TODO: See enhancement issue ... -->
             </para></caution>
-          </listitem>
-        </varlistentry>
-
-        <!-- Entry for Constraints tab -->
-
-        <varlistentry>
-          <term><literal>Constraints</literal></term>
-
-          <listitem>
-            <para>&constraintssupport;
-</para>
           </listitem>
         </varlistentry>
 
@@ -267,6 +257,57 @@ Argo/UML.
             structure.</para></listitem>
         </varlistentry>
 
+        <!-- Entry for New Reception button -->
+
+        <varlistentry>
+          <term>
+            <guiicon>
+              <inlinemediaobject>
+                <imageobject>
+                  <imagedata format="GIF" align="center"
+                             fileref="images/icons/reception.gif"/>
+                </imageobject>
+              </inlinemediaobject>
+            </guiicon>
+            <literal>New reception</literal>
+          </term>
+
+          <listitem>
+            <para>This creates a new reception, navigating immediately to
+              the properties tab for that reception.
+            </para>
+          </listitem>
+        </varlistentry>
+
+        <!-- Entry for New stereotype button -->
+
+        <varlistentry>
+          <term><guiicon><inlinemediaobject><imageobject><imagedata
+            format="GIF" align="center"
+            fileref="images/icons/stereotype.gif"/>
+            </imageobject></inlinemediaobject></guiicon> 
+	        <literal>New Stereotype</literal>
+        </term>
+          <listitem>
+            <indexterm>
+              <primary>Add Stereotype</primary>
+            </indexterm>
+            <indexterm>
+              <primary>New Stereotype</primary>
+            </indexterm>
+            <indexterm>
+              <primary>Create New</primary>
+              <secondary>Stereotype</secondary>
+            </indexterm>
+
+            <para>
+			  This creates a new Stereotype (see <xref
+              linkend="s1.ref.stereotype"/>) for the selected classifier role, 
+              navigating immediately to the properties tab
+              for that stereotype.</para>
+		  </listitem>
+        </varlistentry>
+
         <!-- Entry for Delete button -->
 
         <varlistentry>
@@ -319,7 +360,7 @@ Argo/UML.
             <para>Drop down selector. Classifier Role is
             provided by default with the UML standard stereotypes for
             a classifier (<literal>metaclass</literal>,
-            <literal>powerType</literal>, <literal>process</literal>,
+            <literal>powertype</literal>, <literal>process</literal>,
             <literal>thread</literal> and <literal>utility</literal>).
             </para>
           </listitem>
@@ -361,7 +402,7 @@ Argo/UML.
           <term><literal>Multiplicity</literal></term>
 
           <listitem>
-            <para>Drop down selector. The default value is 
+            <para>Editable drop down selector. The default value is 
               <literal>*</literal>, which means
               that there are any number of instances of this classifierrole 
               that play a role in the collaboration. The drop down provides
@@ -369,12 +410,10 @@ Argo/UML.
               mean that only one instance plays a role in this collaboration.
             </para>
 
-          <caution><para>ArgoUML restricts you to a number of predefined
-            ranges for multiplicity. There is no way to give a user defined
-            range: typing something different seems to work, 
-            but the entered value is not remembered.
-            <!-- TODO: See issue ... -->
-          </para></caution></listitem>
+            <para>ArgoUML does not restrict you to the predefined
+              ranges for multiplicity. You can edit this field freely.
+            </para>
+          </listitem>
         </varlistentry>
 
         <!-- Entry for Base -->
@@ -402,7 +441,15 @@ Argo/UML.
                        fileref="images/reference/signal_add_classifierrole_base.png"/>
                   </imageobject></mediaobject></screenshot>
                 </figure>
+              </listitem>
 
+              <listitem>
+                <para><literal>Remove</literal>. 
+                  Allows removeing 
+                  classifiers to the list, 
+                  without making use of 
+                  the dialog box.
+                </para>
               </listitem>
             </itemizedlist>
           </listitem>
@@ -428,8 +475,9 @@ Argo/UML.
         <varlistentry>
           <term><literal>Specializations</literal></term>
 
-          <listitem><para>Text box. Lists any specialized classifierrole (i.e. for
-            which this classifierrole is a generalization.</para>
+          <listitem><para>Text box. Lists any specialized classifierrole 
+            (i.e. for
+            which this classifierrole is a generalization).</para>
 
           <para>&button1; double click navigates to the generalization and opens
             its property tab.</para>
@@ -443,7 +491,7 @@ Argo/UML.
           <term><literal>Association End Role</literal></term>
 
           <listitem>
-            <para>Text area. Lists the association roles that are
+            <para>Text area. Lists the association-end roles that are
               linked to this classifier role.
             </para>
 
@@ -467,13 +515,13 @@ Argo/UML.
               its property tab.
             </para>
             
-            <caution>
+            <!--caution>
               <para>
                 ArgoUML V0.14 does not seem to provide a way to add anything 
                 in the list here.
-                <!-- TODO: See issue ... -->
               </para>
-            </caution>
+            </caution-->
+		    <!-- TODO: Is it? See issue ...  -->
 
           </listitem>
         </varlistentry>
@@ -492,13 +540,13 @@ Argo/UML.
               its property tab.
             </para>
             
-            <caution>
+            <!--caution>
               <para>
                 ArgoUML V0.14 does not seem to provide a way to add anything 
                 in the list here.
-                <!-- TODO: See issue ... -->
               </para>
-            </caution>
+            </caution-->
+			<!-- TODO: See issue ... -->
 
           </listitem>
         </varlistentry>
@@ -532,8 +580,8 @@ Argo/UML.
       <blockquote><para>/ AssociationRoleName : AssociationName</para></blockquote>
       in the same manner as
       a classifier role. The more generic syntax is:
-      <blockquote><para>O / R : C</para></blockquote>
-      which stands for an Instance named O 
+      <blockquote><para>I / R : C</para></blockquote>
+      which stands for an Instance named I 
       originating from the Classifier C
       playing the role R.
     </para>
@@ -576,15 +624,15 @@ Argo/UML.
           <listitem><para>Standard tab.</para></listitem>
         </varlistentry>
 
-        <!-- Entry for Style tab -->
+        <!-- Entry for Presentation tab -->
 
         <varlistentry>
-          <term><literal>Style</literal></term>
+          <term><literal>Presentation</literal></term>
 
           <listitem><para>Standard tab. The values for the bounds of the
-            association role notionally define the bounding box of the
-            association role. However if you change them it will have no
-            effect.</para></listitem>
+            association role are downlighted, 
+            since they are determined by what they connect.
+          </para></listitem>
         </varlistentry>
 
         <!-- Entry for Source tab -->
@@ -599,17 +647,6 @@ Argo/UML.
             mistake.
             <!-- TODO: get rid of it. See issue ... -->
           </para></caution></listitem>
-        </varlistentry>
-
-        <!-- Entry for Constraints tab -->
-
-        <varlistentry>
-          <term><literal>Constraints</literal></term>
-
-          <listitem>
-            <para>&constraintssupport;
-</para>
-          </listitem>
         </varlistentry>
 
         <!-- Entry for Tagged Values tab -->
@@ -647,6 +684,16 @@ Argo/UML.
               the <emphasis>documentation tab</emphasis> under
               ArgoUML</para></note></listitem>
         </varlistentry>
+        
+        <!-- Entry for Checklist tab -->
+
+        <varlistentry>
+          <term><literal>Checklist</literal></term>
+
+          <listitem><para>Standard tab for an Association Role. 
+          </para></listitem>
+        </varlistentry>
+
       </variablelist>
     </sect2>
 
@@ -705,8 +752,9 @@ Argo/UML.
         <varlistentry>
           <term><literal>Name</literal></term>
 
-          <listitem><para>Text box. The name of the association role. By
-            convention association role names start with a lower case
+          <listitem><para>Text box. The name of the association role, 
+            which is shown on the diagram.
+            By convention association role names start with a lower case
             letter and use bumpy caps to divide words within the
             name.</para>
 
@@ -740,11 +788,6 @@ Argo/UML.
               stereotype property panel (see <xref
                 linkend="s1.ref.stereotype_class"/>).
             </para>
-            <caution>
-              <para>
-                This button is missing from the V0.14 implementation.
-              </para>
-            </caution>
           </listitem>
         </varlistentry>
 
@@ -798,6 +841,7 @@ Argo/UML.
 
             <para>&Button1; double click on an association end role will navigate to
               that end. 
+              <!-- TODO: A navigation button would be handy. See issue ... -->
             </para>
           </listitem>
         </varlistentry>
@@ -844,7 +888,8 @@ Argo/UML.
       shown as a solid diamond (composite aggregation) or hollow diamond
       (shared aggregation).</para>
 
-    <note><para>ArgoUML does not currently (V0.14) support qualifiers, as described
+    <note><para>ArgoUML does not currently (V0.18) support 
+      showing qualifiers on the diagram, as described
       in the UML&nbsp;1.3 standard.
       <!-- TODO: See enhancement issue ... -->
     </para></note>
@@ -902,16 +947,6 @@ Argo/UML.
               for an association end role.
               <!-- TODO: So, let's get rid of it. See issue ... -->
             </para>
-          </listitem>
-        </varlistentry>
-
-        <!-- Entry for Constraints tab -->
-
-        <varlistentry>
-          <term><literal>Constraints</literal></term>
-
-          <listitem><para>&constraintssupport;
-</para>
           </listitem>
         </varlistentry>
 
@@ -976,12 +1011,100 @@ Argo/UML.
           <term><guiicon><inlinemediaobject><imageobject><imagedata
             format="GIF" align="center"
             fileref="images/icons/association_end_role.gif"/>
-          </imageobject></inlinemediaobject></guiicon> <literal>Go to other
-            end</literal></term>
+          </imageobject></inlinemediaobject></guiicon> <literal>Go Opposite
+          </literal></term>
 
           <listitem><para>This navigates to the other end of the
             association role.</para></listitem>
         </varlistentry>
+        
+        <!-- Entry for New Qualifier button -->
+
+        <varlistentry>
+          <term><guiicon><inlinemediaobject><imageobject><imagedata
+            format="GIF" align="center"
+            fileref="images/icons/attribute.gif"/>
+            </imageobject></inlinemediaobject></guiicon> 
+	        <literal>New Qualifier</literal>
+        </term>
+          <listitem>
+            <indexterm>
+              <primary>Add Qualifier</primary>
+            </indexterm>
+            <indexterm>
+              <primary>New Qualifier</primary>
+            </indexterm>
+            <indexterm>
+              <primary>Create New</primary>
+              <secondary>Qualifier</secondary>
+            </indexterm>
+
+            <para>
+			  This creates a new Qualifier for the selected 
+			  association-end role, 
+              navigating immediately to the properties tab
+              for that qualifier.</para>
+              
+            <warning><para>
+              Qualifiers are only partly supported in ArgoUML V0.18.
+              Hence, activating this button creates a qualifier in the model, 
+              which is not shown on the diagram. Also, the properties panel 
+              for a qualifier equals that of a regular attribute.
+            </para></warning>
+		  </listitem>
+        </varlistentry>
+        
+        <!-- Entry for New stereotype button -->
+
+        <varlistentry>
+          <term><guiicon><inlinemediaobject><imageobject><imagedata
+            format="GIF" align="center"
+            fileref="images/icons/stereotype.gif"/>
+            </imageobject></inlinemediaobject></guiicon> 
+	        <literal>New Stereotype</literal>
+        </term>
+          <listitem>
+            <indexterm>
+              <primary>Add Stereotype</primary>
+            </indexterm>
+            <indexterm>
+              <primary>New Stereotype</primary>
+            </indexterm>
+            <indexterm>
+              <primary>Create New</primary>
+              <secondary>Stereotype</secondary>
+            </indexterm>
+
+            <para>
+			  This creates a new Stereotype (see <xref
+              linkend="s1.ref.stereotype"/>) for the selected 
+              association-end role, 
+              navigating immediately to the properties tab
+              for that stereotype.</para>
+		  </listitem>
+        </varlistentry>
+                
+        <!-- Entry for Delete button -->
+
+        <varlistentry>
+          <term><guiicon><inlinemediaobject><imageobject><imagedata
+            format="GIF" align="center"
+            fileref="images/icons/property_delete.gif"/>
+          </imageobject></inlinemediaobject></guiicon>
+            <literal>Delete</literal></term>
+        
+          <listitem><para>This deletes the selected association-end from the
+            model.</para>
+
+            <note><para>
+              This button is downlighted for binary association roles, since
+              an association needs at least <emphasis>two</emphasis> ends. 
+              Only for N-ary associations, this button is accessable, 
+              and deletes just one end from the association. </para>
+	        </note>
+          </listitem>
+        </varlistentry>
+
       </variablelist>
     </sect2>
 
@@ -1080,30 +1203,12 @@ Argo/UML.
         <varlistentry>
           <term><literal>Multiplicity</literal></term>
 
-          <listitem><para>Drop down text entry. Allows to alter the multiplicity of this
+          <listitem><para>Editable drop down text entry. 
+            Allows to alter the multiplicity of this
             association end role (with respect to the other end), i.e. how many
             instances of this end may be associated with an instance of the
             other end. The multiplicity is shown on the diagram at that end of
             the association role.</para></listitem>
-        </varlistentry>
-
-        <!-- Entry for Navigable -->
-
-        <varlistentry>
-          <term><literal>Navigable</literal></term>
-
-          <listitem><para>Check box, with a single entry,
-            <literal>navigable</literal>. Indicates that this end can be
-            navigated to from the other end.</para>
-
-          <note><para>The UML 1.3 standard provides a number of options for
-            how navigation is displayed on an association end role. ArgoUML uses
-            option 3, which means that arrow heads are shown at the end of
-            an association role, when navigation is enabled at only one end, to
-            indicate the direction in which navigation is possible. This
-            means that the default, with both ends navigable has no
-            arrows. This is an appropriate representation for use
-            cases.</para></note></listitem>
         </varlistentry>
 
         <!-- All remaining Entries -->
@@ -1112,7 +1217,9 @@ Argo/UML.
           <term><literal>All remaining properties</literal></term>
 
           <listitem><para>See 
-              <xref linkend="s2.ref.association_end_property_fields"/>
+              <xref linkend="s2.ref.association_end_property_fields"/>.
+              Since these are completely equal to the fields of 
+              an association end, they are not repeated here.
             </para>
           </listitem>
         </varlistentry>
@@ -1205,23 +1312,24 @@ Argo/UML.
           <listitem><para>Standard tab.</para></listitem>
         </varlistentry>
 
-        <!-- Entry for Style tab -->
+        <!-- Entry for Presentation tab -->
 
         <varlistentry>
-          <term><literal>Style</literal></term>
+          <term><literal>Presentation</literal></term>
 
           <listitem><para>Standard tab. The values for the bounds of the
             message define the bounding box of the message. The
-            <literal>Fill</literal> field defines the fill color of the
-            arrow head, and the <literal>Line</literal> field defines the
-            arrow line. Altering the <literal>Shadow</literal> field has no
-            effect.</para>
+            <literal>Line</literal> field defines the
+            arrow color. Increasing the <literal>Shadow</literal> size 
+            has an esthetically questionable effect.</para>
+	<!-- TODO: The Arrow field does not function! See issue ... -->
 
-          <caution><para>In the V0.14 release of ArgoUML changing the
+          <caution><para>In the V0.18 release of ArgoUML changing the
             position of the message by editing the
             values of the <literal>Bounds</literal> field is possible, but
             will make only a temporary change to the position of the
-            message, as described above.</para></caution></listitem>
+            message, as described above.</para>
+          </caution></listitem>
         </varlistentry>
 
         <!-- Entry for Source tab -->
@@ -1233,28 +1341,11 @@ Argo/UML.
             expression separated by a colon (when UML 1.3 is selected in the
             drop-down).
             </para>
-
-          <!-- TODO: Selecting "Java" in the drop-down causes an exception.
-          java.lang.IllegalArgumentException: Unrecognized object null
-          at org.argouml.model.ModelFacade.getScript(ModelFacade.java:1624)
-          at org.argouml.language.java.generator.GeneratorJava.generateAction(GeneratorJava.java:1756)
-          See issue ... -->
         
           <caution><para>A message probably should not generated any code
             of itself. That should be left to the action and possibly
             stimulus associated with it. In any case changes to this tab
             are ignored.</para></caution></listitem>
-        </varlistentry>
-
-        <!-- Entry for Constraints tab -->
-
-        <varlistentry>
-          <term><literal>Constraints</literal></term>
-
-          <listitem>
-            <para>&constraintssupport;
-</para>
-          </listitem>
         </varlistentry>
 
         <!-- Entry for Tagged Values tab -->
@@ -1308,7 +1399,65 @@ Argo/UML.
           <listitem><para>Navigate up through the package
             structure.</para></listitem>
         </varlistentry>
+        
+        <!-- Entry for New Action button -->
 
+        <varlistentry>
+          <term><guiicon><inlinemediaobject><imageobject><imagedata
+            format="GIF" align="center"
+            fileref="images/icons/call_action.gif"/>
+            </imageobject></inlinemediaobject></guiicon> 
+	        <literal>New Action</literal>
+        </term>
+          <listitem>
+            <indexterm>
+              <primary>Add Action</primary>
+            </indexterm>
+            <indexterm>
+              <primary>New Action</primary>
+            </indexterm>
+            <indexterm>
+              <primary>Create New</primary>
+              <secondary>Action</secondary>
+            </indexterm>
+
+            <para>
+			  This creates a new Action (see <xref
+              linkend="s1.ref.action_state"/>) for the selected object, 
+              navigating immediately to the properties tab
+              for that action.</para>
+		  </listitem>
+        </varlistentry>        
+        
+        <!-- Entry for New stereotype button -->
+
+        <varlistentry>
+          <term><guiicon><inlinemediaobject><imageobject><imagedata
+            format="GIF" align="center"
+            fileref="images/icons/stereotype.gif"/>
+            </imageobject></inlinemediaobject></guiicon> 
+	        <literal>New Stereotype</literal>
+        </term>
+          <listitem>
+            <indexterm>
+              <primary>Add Stereotype</primary>
+            </indexterm>
+            <indexterm>
+              <primary>New Stereotype</primary>
+            </indexterm>
+            <indexterm>
+              <primary>Create New</primary>
+              <secondary>Stereotype</secondary>
+            </indexterm>
+
+            <para>
+			  This creates a new Stereotype (see <xref
+              linkend="s1.ref.stereotype"/>) for the selected message, 
+              navigating immediately to the properties tab
+              for that stereotype.</para>
+		  </listitem>
+        </varlistentry>
+        
         <!-- Entry for Delete button -->
 
         <varlistentry>
@@ -1412,7 +1561,7 @@ Argo/UML.
           <listitem><para>Text box. Identifies the classifier role which
             receives this message.</para>
 
-            <para>&Button1; click navigates to the receiver classifier role.
+            <para>&Button1; double click navigates to the receiver classifier role.
             </para>
           </listitem>
         </varlistentry>
@@ -1473,6 +1622,9 @@ Argo/UML.
                 See figure below.
               </para>
 
+              <para>This entry is grayed out 
+                when no messages exist.</para>
+              
               <figure id="fig.ref.message_add_predecessors" float="1">
                 <title>The <quote>add predecessors</quote> dialog box</title>
                 <screenshot><mediaobject><imageobject>
@@ -1482,8 +1634,6 @@ Argo/UML.
                  </mediaobject></screenshot>
                </figure>
 
-            <para>This entry is grayed out 
-              when no messages exist.</para>
             </listitem>
           </itemizedlist></listitem>
         </varlistentry>

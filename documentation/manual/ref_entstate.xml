@@ -992,6 +992,67 @@ Delete the selected state from the model.
 
   </sect1>
 
+  <!-- Stub State artifact -->
+
+  <sect1 id="s1.ref.submachine_state">
+    <title>Stub State</title>
+    
+    <para>
+      A stub state only appears on a submachine state.
+	</para>
+	
+    <para>
+	  A submachine state represents 
+	  the invocation of a state machine 
+	  defined elsewhere. 
+      In the general case, 
+      an invoked state machine can be entered 
+      at any of its substates or through
+      its default (initial) pseudostate. 
+      Similarly, it can be exited from 
+      any substate or as a result of the
+      invoked state machine reaching 
+      its final state.
+      The non-default entry and exits 
+      are specified through <emphasis>stub states</emphasis>.
+	  In the UML metamodel,
+	  StubState is a child of State.
+	</para>
+	
+	<para>
+      Every Stub State has a label on the diagram, 
+      which corresponds to the pathname represented by the
+	  <quote>Reference State</quote> attribute of the stub state.
+	</para>
+	
+	<para>
+	  The description of the details panels of 
+	  a stub state is almost identical to that of a
+	  pseudo state (see <xref linkend="s1.ref.pseudostate"/> 
+	  and so is not duplicated here. 
+	  The only difference is one additional field: 
+	</para>
+
+    <variablelist>
+    
+      <!-- Entry for Reference State field -->
+      
+      <varlistentry>
+        <term><literal>Reference State</literal></term>
+
+        <listitem>
+          <para>
+			Drop-down selector. 
+			Allows entering the path name of 
+			the reference state.
+          </para>
+
+        </listitem>
+      </varlistentry>
+    </variablelist>
+
+  </sect1>
+  
   <!-- Transition artifact. Has Call Event and Guard as sub-artifacts. -->
 
   <sect1 id="s1.ref.transition_state">
