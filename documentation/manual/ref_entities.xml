@@ -1577,6 +1577,9 @@ E.g. Link is not listed here, but implemented. -->
             or that artifact.</para></listitem>
         </varlistentry>
 
+        <!-- Entry for Icon -->
+        <!-- TODO: Missing feature from ArgoUML. See enhancement issue ... -->
+        
         <!-- Entry for Namespace -->
 
         <varlistentry>

@@ -4,14 +4,12 @@
 <!--
 
 Description of all the artifacts associated with Deployment Diagrams within
-Argo/UML.
+ArgoUML.
 
 -->
 
 <chapter id="ch.ref.entdeploy">
   <title>Deployment Diagram Artifact Reference</title>
-
-  &notupdatedfor014disclaimer;
 
   <sect1>
     <title>Introduction</title>
@@ -32,9 +30,16 @@ Argo/UML.
 
     <caution><para>Deployment diagrams are not fully developed yet in
       &argouml;. Some aspects are not fully implemented or may not behave as
-      expected. Notable omissions are a correct representation for interfaces
+      expected. Notable omissions are the possibility to draw interfaces
       and proper stereotyping of the various dependency
-      relationships.</para></caution>
+      relationships.
+      <!-- TODO: Interfaces can only be drawn by "Add to diagram". There should
+      be a toolbar button to create new ones. See issue ... -->
+      <!-- TODO: Classes can be added by "Add to diagram". Should not. See issue
+      ... -->
+      <!-- TODO: Interfaces still have the selction action button for creating an
+      implementing class by clicking on it. Should not. See issue ... -->
+    </para></caution>
 
     <!-- A diagram to show all things visible on the diagram. Need one for
          component and one for deployment. -->
@@ -46,7 +51,8 @@ Argo/UML.
 
     <figure id="fig.ref.component_diagram" float="1">
       <title>Possible artifacts on a component diagram.</title>
-
+      <!-- TODO: The diagram cuts of the 3D edges of the nodes. See issue ...
+      -->
       <screenshot><mediaobject>
         <imageobject>
           <imagedata format="GIF" align="center"
@@ -80,6 +86,11 @@ Argo/UML.
         a subset of the relationships that should be shown available, which
         restricts the ability to show dynamic behavior of deployed code.</para>
 
+      <para>It is not possible to create new interfaces directly on this
+        diagram; they can only be added if they are first created in the model (by
+        drawing them on a class diagram).
+      </para>
+      
       <para>It is an inconvenience that the alternative representation of an
         interface (as a small circle) is not supported.</para>
     </sect2>
@@ -150,7 +161,7 @@ Argo/UML.
 
           <para>Altering the <literal>Shadow</literal> entry has no
             effect.</para>
-            <!-- TODO: see issue ... -->
+            <!-- TODO: see issue ... Solved in PRE-0.15.2. -->
             </warning></listitem>
         </varlistentry>
 
@@ -162,18 +173,20 @@ Argo/UML.
           <listitem><para>Standard tab, but with no contents.</para>
 
           <caution><para>A node should not generate any code, so having
-            this tab active is probably a mistake.</para></caution></listitem>
+            this tab active is probably a mistake.
+            <!-- TODO: see issue ... -->
+          </para></caution></listitem>
         </varlistentry>
 
         <!-- Entry for Constraints tab -->
 
-        <varlistentry>
+        <!--varlistentry>
           <term><literal>Constraints</literal></term>
 
           <listitem><para>Standard tab. There are no standard constraints
-            defined for <literal>Node</literal> within the UML
+            defined for <literal>Node</literal> within the &argouml;
             metamodel.</para></listitem>
-        </varlistentry>
+        </varlistentry-->
 
         <!-- Entry for Tagged Values tab -->
 
@@ -286,13 +299,13 @@ Argo/UML.
           <listitem><para>Text area. Lists any node that
             <emphasis>generalizes</emphasis> this node.</para>
 
-            <!-- MVW: Version 0.14 of &argouml; does not seem to support this. 
-            How do I create a dependency between nodes? -->
+            <!-- TODO: MVW: Version 0.14 of &argouml; does not seem to support this. 
+            How do I create a dependency between nodes? See issue ... -->
             
           <para>&Button1; double click navigates to the generalization and opens
             its property tab.</para>
 
-          <para>&Button2; click yields a drop down menu with five
+          <!--para>&Button2; click yields a drop down menu with the following
             entries</para>
 
           <itemizedlist>
@@ -326,7 +339,8 @@ Argo/UML.
             <listitem><para><literal>Move Down</literal>. Only available where
               there are two or more generalizations listed, and the
               generalization selected is not at the bottom. It is moved down
-              one.</para></listitem> </itemizedlist></listitem>
+              one.</para></listitem> </itemizedlist-->
+          </listitem>
         </varlistentry>
 
         <!-- Entry for Stereotype -->
@@ -391,7 +405,7 @@ Argo/UML.
         <varlistentry>
           <term><literal>Namespace</literal></term>
 
-          <listitem><para>Text box. Records the namespace for the
+          <listitem><para>Drop down selector. Allows altering the namespace for the
             node. This is the package hierarchy.</para>
           </listitem>
         </varlistentry>
@@ -404,8 +418,8 @@ Argo/UML.
           <listitem><para>Text box. Lists any specialized node (i.e. for which
             this node is a generalization.</para>
 
-<!-- MVW: Version 0.14 of &argouml; does not seem to support this. 
-How do I create a generalisation between nodes? -->
+<!-- TODO: MVW: Version 0.14 of &argouml; does not seem to support this. 
+How do I create a generalisation between nodes? See issue ... -->
 
 <!--          <para>&button1; double click navigates to the generalization and opens
             its property tab.</para>
@@ -457,18 +471,23 @@ How do I create a generalisation between nodes? -->
             <xref linkend="s1.ref.component"/>) designed to be deployed on
             this type of node.</para>
 
-          <para>&Button1; click navigates to the selected entry, &button2;
-            gives a pop up menu with three entries.</para>
+          <para>&Button1; click navigates to the selected entry,
+            <!-- TODO: Should be a double-click, conform with most others! See
+            issue ... -->
+            &button2; gives a pop up menu with three entries.</para>
 
           <itemizedlist>
             <listitem><para><literal>Open</literal>. Navigate to the
+              <!-- TODO: Useless item, remove this! See issue ... -->
               selected component.</para></listitem>
 
             <listitem><para><literal>Move Up</literal>. Only available where
+              <!-- TODO: Useless item, remove this! See issue ... -->
               there are two or more components, and the component selected is
               not at the top. It is moved up one.</para></listitem>
 
             <listitem><para><literal>Move Down</literal>. Only available where
+              <!-- TODO: Useless item, remove this! See issue ... -->
               there are two or more components listed, and the component
               selected is not at the bottom. It is moved down
               one.</para></listitem> </itemizedlist></listitem>
@@ -546,10 +565,14 @@ How do I create a generalisation between nodes? -->
             bounding box just refers to the front face of the cube. This means
             that the three dimensional top and side may be ignored, for example
             when determining the limits of a diagram for saving
-            graphics.</para>
+            graphics.
+            <!-- TODO: See Node -->
+            </para>
 
           <para>Altering the <literal>Shadow</literal> entry has no
-            effect.</para></warning></listitem>
+            effect.
+            <!-- TODO: See Node -->
+          </para></warning></listitem>
         </varlistentry>
 
         <!-- Entry for Source tab -->
@@ -562,7 +585,9 @@ How do I create a generalisation between nodes? -->
 
           <caution><para>A node instance should not generate any code, so
             having this tab active is probably a
-            mistake.</para></caution></listitem>
+            mistake.
+            <!-- TODO: See Node -->
+          </para></caution></listitem>
         </varlistentry>
 
         <!-- Entry for Constraints tab -->
@@ -699,6 +724,8 @@ This tab is downlighted, since constraints are not defined for an
           lists many more items in the dropdown list 
           then solely Nodes. Beware to select Nodes only.
           <!-- TODO: see enhancement issue ... -->
+          <!-- TODO: The dropdown is empty in vPRE-0.15.2. It still was OK in
+          V0.15.1. To be re-checked when V0.15.2. will be released! -->
           </para></caution></listitem>
         </varlistentry>
 
@@ -745,10 +772,16 @@ This tab is downlighted, since constraints are not defined for an
   <sect1 id="s1.ref.component">
     <title>Component</title>
 
-    <para>A component is a physical part of the system (source code, object
-      code, database, library, documentation) that realizes a set of
-      interfaces. In the UML metamodel it is a sub-class of
-      <literal>Classifier</literal>.</para>
+    <para>A component type represents a distributable piece of 
+      implementation of a system, including
+      software code (source, binary, or executable) but also 
+      including business documents, etc., in a
+      human system. Components may be used to show dependencies, 
+      such as compiler and run-time
+      dependencies or information dependencies in a human organization.
+      In the UML metamodel it is a sub-class of
+      <literal>Classifier</literal>.
+    </para>
 
     <para>A component is represented on a class diagram as a box with two small
       rectangles protruding from its left side, labeled with its name.</para>
@@ -819,8 +852,8 @@ This tab is downlighted, since constraints are not defined for an
           <term><literal>Constraints</literal></term>
 
           <listitem><para>Standard tab. 
-This tab is downlighted, since constraints are not defined for an 
-<literal>Event</literal> within the &argouml; metamodel.
+            This tab is downlighted, since constraints are not defined for an 
+            <literal>Component</literal> within the &argouml; metamodel.
           </para></listitem>
         </varlistentry>
 
@@ -929,7 +962,9 @@ This tab is downlighted, since constraints are not defined for an
             <quote>bumpy caps</quote>.</para>
 
           <note><para>&argouml; does not enforce this naming
-            convention.</para></note></listitem>
+            convention.
+            <!-- TODO: See enhancement issue ... -->
+          </para></note></listitem>
         </varlistentry>
 
         <!-- Entry for Stereotype -->
@@ -970,7 +1005,8 @@ This tab is downlighted, since constraints are not defined for an
         <varlistentry>
           <term><literal>Namespace</literal></term>
 
-          <listitem><para>Drop down selector. Records the namespace for the
+          <listitem><para>Drop down selector. Records and allows altering 
+            the namespace for the
             component. This is the package hierarchy.</para>
           </listitem>
         </varlistentry>
@@ -981,21 +1017,23 @@ This tab is downlighted, since constraints are not defined for an
           <term><literal>Modifiers</literal></term>
 
           <listitem><para>Check box, with entries <literal>abstract</literal>,
-            <literal>final</literal> and <literal>root</literal>.</para>
+            <literal>leaf</literal> and <literal>root</literal>.</para>
 
           <itemizedlist>
-            <listitem><para><literal>abstract</literal> is used to declare
+            <listitem><para><literal>Abstract</literal> is used to declare
               that this component cannot be instantiated, but must always
               be specialized.</para></listitem>
 
-            <listitem><para><literal>leaf</literal> indicates that this
+            <listitem><para><literal>Leaf</literal> indicates that this
               component cannot be further specialized.</para></listitem>
 
-            <listitem><para><literal>root</literal> indicates the node can
+            <listitem><para><literal>Root</literal> indicates the node can
               have no generalization.</para></listitem>
-
-            <!-- MVW: there is also "active". What is the meaning? -->
-            <!-- TODO: see issue ... -->
+              
+            <listitem><para><literal>Active</literal>.
+            </para></listitem>
+            <!-- TODO: What is the meaning? -->
+            <!-- TODO: Remove this (?). See issue ... -->
           </itemizedlist></listitem>
         </varlistentry>
 
@@ -1071,7 +1109,9 @@ This tab is downlighted, since constraints are not defined for an
         <varlistentry>
           <term><literal>Client Dependencies</literal></term>
 
-          <listitem><para>Text area. Lists outgoing dependencies.
+          <listitem>
+            <para>Text area. Lists outgoing dependencies. 
+              &Button1; double click navigates to the dependency.
             </para>
           </listitem>
         </varlistentry>
@@ -1082,7 +1122,9 @@ This tab is downlighted, since constraints are not defined for an
         <varlistentry>
           <term><literal>Supplier Dependencies</literal></term>
 
-          <listitem><para>Text area. Lists incoming dependencies.
+          <listitem>
+            <para>Text area. Lists incoming dependencies.
+              &Button1; double click navigates to the dependency.
             </para>
           </listitem>
         </varlistentry>
@@ -1173,6 +1215,7 @@ This tab is downlighted, since constraints are not defined for an
 
           <caution><para>A component instance should not generate any code,
             so having this tab active is probably a
+            <!-- TODO: See enhancement issue ... -->
             mistake.</para></caution></listitem>
         </varlistentry>
 
@@ -1291,7 +1334,9 @@ This tab is downlighted, since constraints are not defined for an
             name.</para>
 
           <note><para>&argouml; does not enforce this naming
-            convention.</para></note>
+            convention.
+            <!-- TODO: See enhancement issue ... -->
+          </para></note>
 
           </listitem>
         </varlistentry>
@@ -1308,6 +1353,7 @@ This tab is downlighted, since constraints are not defined for an
           lists many more items in the dropdown list 
           then solely Components. Beware to select Components only.
           <!-- TODO: see enhancement issue ... -->
+          <!-- TODO: Broken in vPRE-0.15.2. Check! -->
           </para></caution></listitem>
         </varlistentry>
 
@@ -1341,7 +1387,8 @@ This tab is downlighted, since constraints are not defined for an
         <varlistentry>
           <term><literal>Namespace</literal></term>
 
-          <listitem><para>Drop down selector. Records the namespace for the
+          <listitem><para>Drop down selector. Records and allows to change 
+            the namespace for the
             component instance. This is the package hierarchy.</para>
           </listitem>
         </varlistentry>
@@ -1356,7 +1403,7 @@ This tab is downlighted, since constraints are not defined for an
 
     <para>A key part of any component or deployment diagram is to show
       dependencies. For details see
-      <xref linkend="s1.ref.dependency_class"/>.</para>
+      <xref linkend="s1.ref.dependency_use_case"/>.</para>
 
     <caution><para>UML relies on stereotyping of dependencies on component and
       deployment diagrams to characterize the types of relationship. In the
@@ -1375,6 +1422,13 @@ This tab is downlighted, since constraints are not defined for an
     <para>A component diagram may show the key internal structure of
       components, including classes within the component. For details see
       <xref linkend="s1.ref.class_class"/>.</para>
+      
+    <caution><para>
+      Classes can only be added to a component diagram if they already exist in
+      the model (by selecting them in the explorer and executing the "Add to
+      diagram" &button2; command). 
+      There is no way to create a new class on a component  diagram.
+    </para></caution>
   </sect1>
 
   <!-- Interface artifact -->
@@ -1389,15 +1443,19 @@ This tab is downlighted, since constraints are not defined for an
       instances which implement interfaces. For details see
       <xref linkend="s1.ref.interface_class"/>.</para>
 
-    <caution><para>The current release of &argouml; uses the same
+    <caution><para>The V0.14 release of &argouml; uses the same
       representation of an interface as a class diagram. The UML standard
       suggests that an interface on a component or deployment diagram should
       just be shown as a small open circle, connected to the component which
-      realizes that interface.</para></caution>
+      realizes that interface.
+      <!-- TODO: See enhancement issue ... -->
+    </para></caution>
 
     <warning><para>There is no way to show the linking of an interface to a
-      component or component instance in the current release of
-      &argouml;.</para></warning>
+      component or component instance in the V0.14 release of
+      &argouml;.
+      <!-- TODO: See issue ... -->
+    </para></warning>
   </sect1>
 
   <!-- Association artifact -->
@@ -1405,16 +1463,21 @@ This tab is downlighted, since constraints are not defined for an
   <sect1>
     <title>Association</title>
 
+    <para>Components may be associated to each other. For details 
+      about associations, see
+      <xref linkend="s1.ref.association_class"/>.
+    </para>
+
     <para>Where classes or interfaces are shown within components on component
-      diagrams, they may be shown linked by associations. For details see
-      <xref linkend="s1.ref.association_class"/>.</para>
+      diagrams, they may be shown linked by associations. 
+    </para>
   </sect1>
 
   <!-- Object artifact -->
 
   <sect1>
     <title>Object</title>
-<!-- TODO: What does the next sentence mean? Clarify! -->
+
     <para>Just as components may show the classifiers that make up their
       internal structure, component instances on deployment diagrams may show
       the classifier instances that make up their internal structure. In
@@ -1427,8 +1490,10 @@ This tab is downlighted, since constraints are not defined for an
   <sect1>
     <title>Link</title>
 
-    <para>Where objects are shown within component instances on deployment
-      diagrams, their inter-relationships may be shown as links (an instance of
+    <para>Where objects 
+      (Node Instances or Class Instances)
+      are shown within component instances on deployment
+      diagrams, their inter-relationships may be shown as links (instances of
       an association). See <xref linkend="s1.ref.link_sequence"/> for
       details.</para>
   </sect1>
