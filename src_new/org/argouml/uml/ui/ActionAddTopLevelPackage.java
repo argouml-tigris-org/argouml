@@ -52,16 +52,15 @@ public class ActionAddTopLevelPackage extends UMLChangeAction {
     // main methods
 
     public void actionPerformed(ActionEvent ae) {
-	Project p = Project.getCurrentProject();
-	try {
-	    int numPacks = p.getUserDefinedModels().size();
-	    String nameStr = "package_" + (numPacks + 1);
-	    MModel model = UmlFactory.getFactory().getModelManagement().createModel();
-	    model.setName(nameStr);
-	    p.addMember(model);
-	    super.actionPerformed(ae);
-	    ActionClassDiagram.SINGLETON.actionPerformed(ae);
-	}
-	catch (PropertyVetoException pve) { }
+	Project p = Project.getCurrentProject();	
+        int numPacks = p.getUserDefinedModels().size();
+        String nameStr = "package_" + (numPacks + 1);
+        MModel model = UmlFactory.getFactory().getModelManagement().createModel();
+        model.setName(nameStr);
+        p.addMember(model);
+        super.actionPerformed(ae);
+        ActionClassDiagram.SINGLETON.actionPerformed(ae);
+	
+	
     }
 } /* end class ActionAddTopLevelPackage */

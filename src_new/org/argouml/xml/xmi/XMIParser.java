@@ -121,15 +121,10 @@ public class XMIParser {
         }
         Argo.log.info("=======================================");
 
-        try {
+        
             _proj.addModel(
                 (ru.novosoft.uml.foundation.core.MNamespace) _curModel);
-        }
-        catch (PropertyVetoException ex) {
-            System.err.println(
-                "An error occurred adding the model to the project!");
-            ex.printStackTrace();
-        }
+        
 
         Collection ownedElements = _curModel.getOwnedElements();
         Iterator oeIterator = ownedElements.iterator();
