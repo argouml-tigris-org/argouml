@@ -31,7 +31,7 @@ import java.net.URL;
 import org.apache.log4j.Logger;
 
 public abstract class ProjectMember {
-    protected static Logger cat = 
+    private static Logger _cat = 
         Logger.getLogger(ProjectMember.class);
 
     ////////////////////////////////////////////////////////////////

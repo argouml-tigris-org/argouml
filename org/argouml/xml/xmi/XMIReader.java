@@ -50,10 +50,10 @@ import ru.novosoft.uml.model_management.MModel;
  * @see ru.novosoft.uml.xmi.XMIReader
  */
 public class XMIReader extends ru.novosoft.uml.xmi.XMIReader {
-    private Logger cat = Logger.getLogger(this.getClass());
+    private Logger _cat = Logger.getLogger(this.getClass());
     
-    private boolean errors = false;
-    private org.xml.sax.Parser parser = null;
+    private boolean _errors = false;
+    private org.xml.sax.Parser _parser = null;
 
     /**
      * Constructor for XMIReader.
@@ -109,13 +109,16 @@ public class XMIReader extends ru.novosoft.uml.xmi.XMIReader {
             getParser().parse(p_is);
             performLinking();
         } catch (IOException e) {            
-            cat.error("IOException while trying to read inputsource " + p_is.getSystemId(), e);
+            _cat.error("IOException while trying to read inputsource " 
+                + p_is.getSystemId(), e);
             throw e;
         } catch (SAXException e) {
-            cat.error("Parsing error while trying to parse inputsource " + p_is.getSystemId(), e);
+            _cat.error("Parsing error while trying to parse inputsource " 
+                + p_is.getSystemId(), e);
             throw e;
         } catch (ClassCastException e) {
-            cat.error("Parsing error while trying to parse inputsource " + p_is.getSystemId(), e);
+            _cat.error("Parsing error while trying to parse inputsource "
+                + p_is.getSystemId(), e);
             throw new SAXException(e);
         }
 
@@ -137,18 +140,18 @@ public class XMIReader extends ru.novosoft.uml.xmi.XMIReader {
     }
 
     public void setErrors(boolean errors) {
-        this.errors = errors;
+        _errors = errors;
     }
 
     public boolean getErrors() {
-        return errors;
+        return _errors;
     }
 
     public void setParser(org.xml.sax.Parser parser) {
-        this.parser = parser;
+        _parser = parser;
     }
 
     public org.xml.sax.Parser getParser() {
-        return parser;
+        return _parser;
     }
 }
