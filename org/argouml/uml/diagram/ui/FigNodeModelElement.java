@@ -121,7 +121,7 @@ public abstract class FigNodeModelElement
         NotationContext,
         ArgoNotationEventListener {            
 
-    private Logger cat = Logger.getLogger(this.getClass());
+    private final static Logger LOG = Logger.getLogger(FigNodeModelElement.class);
     ////////////////////////////////////////////////////////////////
     // constants
 
@@ -642,21 +642,21 @@ public abstract class FigNodeModelElement
     // event handlers
 
     public void vetoableChange(PropertyChangeEvent pce) {
-        cat.debug("in vetoableChange");
+        LOG.debug("in vetoableChange");
         Object src = pce.getSource();
         if (src == getOwner()) {
             DelayedChangeNotify delayedNotify =
                 new DelayedChangeNotify(this, pce);
             SwingUtilities.invokeLater(delayedNotify);
         } else {
-            cat.debug("FigNodeModelElement got vetoableChange"
+            LOG.debug("FigNodeModelElement got vetoableChange"
 		      + " from non-owner:"
 		      + src);
         }
     }
 
     public void delayedVetoableChange(PropertyChangeEvent pce) {
-        cat.debug("in delayedVetoableChange");
+        LOG.debug("in delayedVetoableChange");
         // TODO: the src variable is never used. Must check if getSource()
         // has any side effects before removing entire line
         Object src = pce.getSource();
@@ -681,7 +681,7 @@ public abstract class FigNodeModelElement
         String pName = pve.getPropertyName();
         if (pName.equals("editing")
                 && Boolean.FALSE.equals(pve.getNewValue())) {
-            cat.debug("finished editing");
+                    LOG.debug("finished editing");
             try {
                 //parse the text that was edited
                 textEdited((FigText) src);
@@ -693,7 +693,7 @@ public abstract class FigNodeModelElement
                 setBounds(bbox.x, bbox.y, bbox.width, bbox.height);
                 endTrans();
             } catch (PropertyVetoException ex) {
-                cat.error("could not parse the text entered. "
+                LOG.error("could not parse the text entered. "
 			  + "PropertyVetoException",
 			  ex);
             }
@@ -743,7 +743,7 @@ public abstract class FigNodeModelElement
                 ModelFacade.setName(getOwner(), "");
                 _readyToEdit = true;
             } else {
-                cat.debug("not ready to edit name");
+                LOG.debug("not ready to edit name");
                 return;
             }
         }
@@ -779,7 +779,7 @@ public abstract class FigNodeModelElement
                 ModelFacade.setName(getOwner(), "");
                 _readyToEdit = true;
             } else {
-                cat.debug("not ready to edit name");
+                LOG.debug("not ready to edit name");
                 return;
             }
         }
@@ -840,7 +840,7 @@ public abstract class FigNodeModelElement
         //if (_group != null) _group.recovered(mee);
     }
     public void removed(MElementEvent mee) {
-        cat.debug("deleting: " + this + mee);
+        LOG.debug("deleting: " + this + mee);
         Object o = mee.getSource();
         if (o == getOwner()) {
             delete();
@@ -936,9 +936,9 @@ public abstract class FigNodeModelElement
     protected void updateStereotypeText() {
         Object stereotype = null;
         if (getOwner() == null) {
-	    cat.warn("Owner of [" + this.toString() + "/"
+            LOG.warn("Owner of [" + this.toString() + "/"
 		     + this.getClass() + "] is null.");
-	    cat.warn("I return...");
+            LOG.warn("I return...");
 	    return;
         }
         if (ModelFacade.getStereotypes(getOwner()).size() > 0) {
