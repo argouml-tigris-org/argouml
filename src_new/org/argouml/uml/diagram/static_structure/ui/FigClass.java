@@ -759,26 +759,33 @@ public class FigClass extends FigNodeModelElement {
      * you need to update the whole fig, consider using renderingChanged.
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#modelChanged(MElementEvent)
      */
-    protected void modelChanged(MElementEvent mee) {        
+    protected void modelChanged(MElementEvent mee) {
         if (getOwner() == null)
             return;
         MClass cls = (MClass) getOwner();
         // attributes
-        if (mee == null || mee.getSource() instanceof MAttribute || 
-            (mee.getSource() == getOwner() && mee.getName().equals("feature"))) {
+        if (mee == null
+            || mee.getSource() instanceof MAttribute
+            || (mee.getSource() == getOwner()
+                && mee.getName().equals("feature"))) {
             updateAttributes();
             damage();
         }
         // operations
-        if (mee == null || mee.getSource() instanceof MOperation
-            || mee.getSource() instanceof MParameter || 
-            (mee.getSource() == getOwner() && mee.getName().equals("feature"))) {
+        if (mee == null
+            || mee.getSource() instanceof MOperation
+            || mee.getSource() instanceof MParameter
+            || (mee.getSource() == getOwner()
+                && mee.getName().equals("feature"))) {
             updateOperations();
+            damage();
+        }
+        if (mee == null || mee.getName().equals("isAbstract")) {
+            updateAbstract();
             damage();
         }
         // name updating
         super.modelChanged(mee);
-        
 
     }
 
@@ -1111,7 +1118,7 @@ public class FigClass extends FigNodeModelElement {
                 //cleanup of unused attribute FigText's
                 for (int i = figs.size() - 1; i >= acounter; i--)
                     _attrVec.removeFig((Fig) figs.elementAt(i));
-            }            
+            }
         }
         Rectangle rect = getBounds();
         getUpdatedSize(_attrVec, xpos, ypos, 0, 0);
@@ -1177,7 +1184,7 @@ public class FigClass extends FigNodeModelElement {
                 //cleanup of unused operation FigText's
                 for (int i = figs.size() - 1; i >= ocounter; i--)
                     _operVec.removeFig((Fig) figs.elementAt(i));
-            }            
+            }
         }
         Rectangle rect = getBounds();
         getUpdatedSize(_operVec, xpos, ypos, 0, 0);
@@ -1193,7 +1200,8 @@ public class FigClass extends FigNodeModelElement {
     public void renderingChanged() {
         updateAttributes();
         updateOperations();
-        super.renderingChanged();        
+        updateAbstract();
+        super.renderingChanged();
     }
 
     /**
@@ -1202,14 +1210,24 @@ public class FigClass extends FigNodeModelElement {
     protected void updateNameText() {
         Rectangle rect = getBounds();
         super.updateNameText();
-        if (getOwner() == null) return;
-        MClass cls = (MClass)getOwner();
+
+        setBounds(rect.x, rect.y, rect.width, rect.height);
+    }
+
+    /**
+     * Updates the name if modelchanged receives an "isAbstract" event
+     */
+    protected void updateAbstract() {
+        Rectangle rect = getBounds();
+        if (getOwner() == null)
+            return;
+        MClass cls = (MClass) getOwner();
         if (cls.isAbstract())
             _name.setFont(ITALIC_LABEL_FONT);
         else
             _name.setFont(LABEL_FONT);
-        setBounds(rect.x, rect.y, rect.width, rect.height);       
+        super.updateNameText();
+        setBounds(rect.x, rect.y, rect.width, rect.height);
     }
-
 
 } /* end class FigClass */
