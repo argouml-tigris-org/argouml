@@ -196,7 +196,6 @@ public abstract class FileImportSupport implements PluggableImport {
 			}
 		    } else if (e.getActionCommand().equals(JFileChooser.CANCEL_SELECTION)) {
 			_import.disposeDialog();
-                        ProjectBrowser.getInstance().setEnabled(true);
 		    }
 		}
 	    });
