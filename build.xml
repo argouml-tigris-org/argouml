@@ -115,6 +115,10 @@ the built process is not stopped.
 2) I see a lot of warnings starting like this: "Warning: file modified in the future:"
 Sometimes ant gives out this warnings, but the build is finished without any problems
 
+3) "ant run" doesn't work, XML classes are not found, what's wrong?
+Maybe you have hard-coded your ANT_HOME variable in the ant start-script. This way it
+doesn't find it's own XML-libs. You need to set ANT_HOME in your shell.
+
 
 ============================================================================ -->
 
@@ -141,7 +145,8 @@ Sometimes ant gives out this warnings, but the build is finished without any pro
 
     <property name="src.dir" value="../src_new"/>
     <property name="lib.dir" value="../lib"/>
-    <property name="classpath" value="${JAVA_HOME}/lib/tools.jar:${lib.dir}/nsuml.jar:${lib.dir}/ocl-argo.jar:${lib.dir}/xml4j.jar:${lib.dir}/gef.jar"/> 
+    <property name="classpath" value="${JAVA_HOME}/lib/tools.jar:${lib.dir}/nsuml.jar:${lib.dir}/ocl-argo.jar:${lib.dir}/gef.jar"/> 
+    <property name="ant.xml-libs" value="${ANT_HOME}/lib/jaxp.jar:${ANT_HOME}/lib/parser.jar"/>
 
     <property name="packages" value="org.argouml.*"/>
     <property name="manifest" value="${src.dir}/org/argouml.mf"/>
@@ -312,7 +317,7 @@ Sometimes ant gives out this warnings, but the build is finished without any pro
     <echo message="--- Executing ArgoUML ---"/>
     <java classname="org.argouml.application.Main"
           fork="yes"
-          classpath="${build.dest};${classpath}"/>
+          classpath="${build.dest};${classpath};${ant.xml-libs}"/>
   </target>
 
 </project>
