@@ -335,16 +335,11 @@ public class FigMessage extends FigNodeModelElement {
 		(FigAssociationRole) lay.presentationFor(associationRole);
 	    if (figAssocRole != null) {
 		figAssocRole.addMessage(this);
-		figAssocRole.updatePathItemLocations();
 		lay.bringToFront(this);
 	    }
 	}
     }
 
- 
-	
-
-	
 
     /**
      * @see org.tigris.gef.presentation.Fig#paint(Graphics)
