@@ -143,7 +143,7 @@ public class ModelManagementHelper {
                 Collection namespaces1 = getAllNamespaces(o);
                 // only add all if there are some to add.
                 if (namespaces1 != Collections.EMPTY_LIST
-		&& namespaces1.size() > 0) {
+                        && namespaces1.size() > 0) {
                     list.addAll(namespaces1);
                 }
             }

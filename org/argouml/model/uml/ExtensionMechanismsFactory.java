@@ -156,7 +156,7 @@ public class ExtensionMechanismsFactory extends AbstractUmlModelFactory {
             UmlFactory.getFactory().delete(stereo);
             return stereo2;
         }
-        ((MModel)model).addOwnedElement(stereo);
+        ((MModel) model).addOwnedElement(stereo);
         if (me != null)
             stereo.addExtendedElement(me);
         return stereo;

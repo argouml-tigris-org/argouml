@@ -894,7 +894,7 @@ public class CoreHelper {
     public Collection getAllClassifiers(Object namespace) {
         if (namespace == null)
             return new ArrayList();
-        MNamespace ns = (MNamespace)namespace;
+        MNamespace ns = (MNamespace) namespace;
         Iterator it = ns.getOwnedElements().iterator();
         List list = new ArrayList();
         while (it.hasNext()) {
@@ -1407,9 +1407,11 @@ public class CoreHelper {
      * isValidNamespace.<p>
      *
      * @param modelElement is the model element
+     * @param model the model to search
      * @return Collection
      */
-    public Collection getAllPossibleNamespaces(Object modelElement, Object model) {
+    public Collection getAllPossibleNamespaces(Object modelElement, 
+            Object model) {
         MModelElement m = (MModelElement) modelElement;
         List ret = new ArrayList();
         if (m == null)
