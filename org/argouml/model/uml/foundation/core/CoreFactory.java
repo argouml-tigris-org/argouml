@@ -426,6 +426,9 @@ public class CoreFactory extends AbstractUmlModelFactory {
      * @return MAssociationClass
      */
     public MAssociationClass buildAssociationClass(MClassifier end1, MClassifier end2) {
+    	if (end1 == null || end2 == null || end1 instanceof MAssociationClass || end2 instanceof MAssociationClass) 
+    		throw new IllegalArgumentException("In buildAssociationClass: either one of the arguments was null or " +
+    			"was instanceof MAssociationClass");
         return buildAssociatonClass(buildClass(), end1, end2);
     } 
     
@@ -518,6 +521,11 @@ public class CoreFactory extends AbstractUmlModelFactory {
         return end;
     }  
     
+    public MAssociationEnd buildAssociationEnd(MClassifier type, MAssociation assoc) {
+    	if (type == null || assoc == null) throw new IllegalArgumentException("In buildAssocationEnd: one of the arguments is null");
+    	return buildAssociationEnd(assoc, "", type, null, null, true, null, null, null, null, MVisibilityKind.PUBLIC);
+    }
+    
     /**
      * Builds an association class from a class and two classifiers that should
      * be associated. Both ends of the associationclass are navigable.
@@ -526,6 +534,9 @@ public class CoreFactory extends AbstractUmlModelFactory {
      * @return MAssociationClass
      */
     public MAssociationClass buildAssociatonClass(MClass cl, MClassifier end1, MClassifier end2) { 
+    	if (end1 == null || end2 == null || cl == null || end1 instanceof MAssociationClass || end2 instanceof MAssociationClass) 
+    		throw new IllegalArgumentException("In buildAssociationClass: either one of the arguments was null or " +
+    			"was instanceof MAssociationClass");
        MAssociationClass assoc = createAssociationClass();
        assoc.setName(cl.getName());
        assoc.setAbstract(cl.isAbstract());
@@ -575,7 +586,9 @@ public class CoreFactory extends AbstractUmlModelFactory {
         ProjectBrowser pb = ProjectBrowser.TheInstance;
         Project p = pb.getProject();
         MClassifier intType = p.findType("int");
-    
+        if (p.getModel() != intType.getNamespace() && !ModelManagementHelper.getHelper().getAllNamespaces(p.getModel()).contains(intType.getNamespace())) {
+        	intType.setNamespace(p.getModel());
+        }
         MAttribute attr = createAttribute();
         attr.setName("newAttr");
         attr.setMultiplicity(UmlFactory.getFactory().getDataTypes().createMultiplicity(1, 1));
@@ -635,15 +648,13 @@ public class CoreFactory extends AbstractUmlModelFactory {
     }
     
     /**
-     * Builds a default implementation for a class. The class is owned by the
-     * project model by default. Users should not forget to remove this 
-     * ownership if the class should be owned by another model.
+     * Builds a default implementation for a class. The class is not owned by 
+     * any model element by default. Users should not forget to add ownership
      * @return MClass
      */
     public MClass buildClass() {
         MClass cl = createClass();
         // cl.setNamespace(ProjectBrowser.TheInstance.getProject().getModel());
-        ProjectBrowser.TheInstance.getProject().getModel().addOwnedElement(cl);
         cl.setName("annon");
         cl.setStereotype(null);
         cl.setAbstract(false);
@@ -744,16 +755,18 @@ public class CoreFactory extends AbstractUmlModelFactory {
         return method;
     }   
     
+   
+    
     /**
-     * Builds a default operation.
+     * Builds an operation for classifier cls.
+     * @param cls
      * @return MOperation
      */
-    public MOperation buildOperation() {
-        //build the default operation
-        MOperation oper = createOperation();
+    public MOperation buildOperation(MClassifier cls) {
+    	MOperation oper = createOperation();
         oper.setName("newOperation");
         oper.setStereotype(null);
-        oper.setOwner(null);
+        oper.setOwner(cls);
         oper.setVisibility(MVisibilityKind.PUBLIC);
         oper.setAbstract(false);
         oper.setLeaf(false);
@@ -765,20 +778,6 @@ public class CoreFactory extends AbstractUmlModelFactory {
         MParameter returnParameter = buildParameter(oper);
         returnParameter.setKind(MParameterDirectionKind.RETURN);
         returnParameter.setName("return");
-    
-        return oper;
-    }
-    
-    /**
-     * Builds an operation for classifier cls.
-     * @param cls
-     * @return MOperation
-     */
-    public MOperation buildOperation(MClassifier cls) {
-        MOperation oper = buildOperation();
-    
-        cls.addFeature(oper);
-        oper.setOwner(cls);
         return oper;
     }
     
@@ -795,9 +794,6 @@ public class CoreFactory extends AbstractUmlModelFactory {
         ProjectBrowser pb = ProjectBrowser.TheInstance;
         Project p = pb.getProject();
         MClassifier voidType = p.findType("void");
-        if (voidType.getModel() != p.getModel()) {
-        	p.getModel().addOwnedElement(voidType);
-        }
         MParameter res = UmlFactory.getFactory().getCore().createParameter();
         res.setName(null);
         res.setStereotype(null);
@@ -817,10 +813,16 @@ public class CoreFactory extends AbstractUmlModelFactory {
      * @return      The newly created parameter.
      */
     public MParameter buildParameter(MBehavioralFeature oper) {
+    	if (oper == null || oper.getOwner() == null) throw new IllegalArgumentException("In buildParameter: operation is null or does not have an owner");
         MParameter res = buildParameter();
+        /*
+        if (!ModelManagementHelper.getHelper().getAllNamespaces(oper.getOwner().getNamespace()).contains(res.getNamespace())) {
+        	res.setNamespace(oper.getOwner().getNamespace());
+        }
+        */
     	String name = "arg";
     	int counter = 1;
-        if (oper != null) {
+       
         	Iterator it = oper.getParameters().iterator();
         	while (it.hasNext()) {
         		MParameter para = (MParameter)it.next();
@@ -829,7 +831,7 @@ public class CoreFactory extends AbstractUmlModelFactory {
         		} 
         	}
             oper.addParameter(res);
-        }
+       
         res.setName(name + counter);
         return res;
     }

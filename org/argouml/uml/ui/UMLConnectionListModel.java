@@ -87,62 +87,7 @@ public class UMLConnectionListModel extends UMLModelElementListModel  {
         if(assoc != null) {
             navigateTo(assoc);
         }
-    }
-
-    public void add(int index) {
-        Object target = getTarget();
-        if(target instanceof MClassifier) {
-            MClassifier classifier = (MClassifier) target;
-            MAssociationEnd newEnd = UmlFactory.getFactory().getCore().createAssociationEnd();
-            newEnd.setType(classifier);
-            classifier.addAssociationEnd(newEnd);
-
-            MAssociation newAssoc = UmlFactory.getFactory().getCore().createAssociation();
-            newAssoc.setNamespace(((MClassifier) target).getNamespace());
-            newEnd.setAssociation(newAssoc);
-            newAssoc.addConnection(newEnd);
-            MAssociationEnd otherEnd = UmlFactory.getFactory().getCore().createAssociationEnd();
-            newAssoc.addConnection(otherEnd);
-
-            // Having added an association, mark as needing saving
-
-            Project p = ProjectBrowser.TheInstance.getProject();
-            p.setNeedsSave(true);
-
-            fireIntervalAdded(this,index,index);
-            navigateTo(newAssoc);
-        }
-    }
-
-    public void moveUp(int index) {
-        Object target = getTarget();
-        if(target instanceof MClassifier) {
-            MClassifier classifier = (MClassifier) target;
-            classifier.setAssociationEnds(moveUpUtil(classifier.getAssociationEnds(),index));
-
-            // Having moved an association, mark as needing saving
-
-            Project p = ProjectBrowser.TheInstance.getProject();
-            p.setNeedsSave(true);
-
-            fireContentsChanged(this,index-1,index);
-        }
-    }
-
-    public void moveDown(int index) {
-        Object target = getTarget();
-        if(target instanceof MClassifier) {
-            MClassifier classifier = (MClassifier) target;
-            classifier.setAssociationEnds(moveDownUtil(classifier.getAssociationEnds(),index));
-
-            // Having moved an association, mark as needing saving
-
-            Project p = ProjectBrowser.TheInstance.getProject();
-            p.setNeedsSave(true);
-
-            fireContentsChanged(this,index,index+1);
-        }
-    }
+    }   
 
     public void roleAdded(final MElementEvent event) {
         super.roleAdded(event);

@@ -27,6 +27,8 @@ import java.util.*;
 
 import org.argouml.ui.*;
 import org.argouml.model.uml.UmlFactory;
+import org.argouml.model.uml.foundation.core.CoreFactory;
+import org.argouml.model.uml.foundation.core.CoreHelper;
 import org.argouml.ocl.OCLUtil;
 import org.argouml.uml.*;
 import org.argouml.uml.reveng.*;
@@ -746,9 +748,8 @@ public class Modeller
 	MOperation mOperation = (MOperation)parseState.getOperation(name);
 
 	if(mOperation == null) {
-	    mOperation = UmlFactory.getFactory().getCore().buildOperation();
+	    mOperation = UmlFactory.getFactory().getCore().buildOperation(parseState.getClassifier());
 	    mOperation.setName(name);
-	    parseState.getClassifier().addFeature(mOperation);
 	}
 	return mOperation;
     }
@@ -820,18 +821,9 @@ public class Modeller
 	}
 
 	if(mAssociationEnd == null && !noAssociations) {
-	    mAssociationEnd = UmlFactory.getFactory().getCore().createAssociationEnd();
-	    MAssociationEnd mAssociationEnd2 = UmlFactory.getFactory().getCore().createAssociationEnd();
-	    MAssociation mAssociation = UmlFactory.getFactory().getCore().createAssociation();
-	    mAssociation.addConnection(mAssociationEnd);
-	    mAssociation.addConnection(mAssociationEnd2);
-	    mAssociation.setNamespace(currentPackage);
-	    mAssociationEnd2.setType(parseState.getClassifier());
-	    mAssociationEnd2.setNavigable(false);
-	    mAssociationEnd2.setAggregation(MAggregationKind.NONE);
-	    mAssociationEnd.setName(name);
-	    mAssociationEnd.setType(mClassifier);
-	    mAssociationEnd.setAggregation(MAggregationKind.NONE);
+		MAssociation mAssociation = CoreFactory.getFactory().buildAssociation(mClassifier, true, parseState.getClassifier(), false);
+		mAssociationEnd = CoreHelper.getHelper().getAssociationEnd(mClassifier, mAssociation);
+		mAssociationEnd.setName(name);
 	}
 	return mAssociationEnd;
     }
