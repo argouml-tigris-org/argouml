@@ -36,9 +36,12 @@ import javax.swing.*;
 import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.foundation.data_types.*;
 import ru.novosoft.uml.model_management.*;
+import ru.novosoft.uml.behavior.state_machines.MStateVertex;
 
 import org.argouml.cognitive.*;
 
+/** A critic to detect whether a model element name is legally formed.
+ */
 public class CrIllegalName extends CrUML {
 
   public CrIllegalName() {
@@ -54,10 +57,14 @@ public class CrIllegalName extends CrUML {
     if (meName == null || meName.equals("")) return NO_PROBLEM;
     String nameStr = meName;
     int len = nameStr.length();
+
+    // normal model elements are not allowed to have spaces,
+    // but for States we make an exception
     for (int i = 0; i < len; i++) {
       char c = nameStr.charAt(i);
-      if (!Character.isLetterOrDigit(c) && c != '_')
-	return PROBLEM_FOUND;
+      if (!(Character.isLetterOrDigit(c) || c == '_' ||
+            (c == ' ' && me instanceof MStateVertex)))
+          return PROBLEM_FOUND;
     }
     return NO_PROBLEM;
   }
