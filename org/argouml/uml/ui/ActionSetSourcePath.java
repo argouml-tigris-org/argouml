@@ -39,9 +39,6 @@ import org.argouml.util.osdep.OsUtil;
 
 
 
-import ru.novosoft.uml.foundation.core.MModelElement;
-
-
 /** Action to choose and set source path for model elements
  * @stereotype singleton
  */
@@ -71,7 +68,7 @@ public class ActionSetSourcePath extends UMLAction {
 	if (f != null) {
 	    Object obj = NavigatorPane.getInstance().getSelectedObject();
 	    if (ModelFacade.isAModelElement(obj)) {
-		((MModelElement) obj).setTaggedValue("src_path", f.getPath());
+		ModelFacade.setTaggedValue(obj, "src_path",f.getPath());
 	    }
 	}
     }

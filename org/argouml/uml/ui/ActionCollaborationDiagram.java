@@ -33,7 +33,6 @@ import org.argouml.uml.diagram.ui.UMLDiagram;
 import ru.novosoft.uml.behavior.collaborations.MCollaboration;
 import ru.novosoft.uml.foundation.core.MClassifier;
 import ru.novosoft.uml.foundation.core.MNamespace;
-import ru.novosoft.uml.foundation.core.MOperation;
 import ru.novosoft.uml.model_management.MModel;
 
 /** Action to trigger creation of new collaboration diagram.
@@ -65,12 +64,12 @@ public class ActionCollaborationDiagram extends ActionAddDiagram {
             collaboration =
                 UmlFactory.getFactory().getCollaborations().buildCollaboration(
                     namespace);
-            ((MCollaboration)collaboration).setRepresentedOperation((MOperation) target);
+            ModelFacade.setRepresentedOperation(collaboration, target);
         } else if (ModelFacade.isAClassifier(target)) {
             collaboration =
                 UmlFactory.getFactory().getCollaborations().buildCollaboration(
                     (MClassifier) target);
-            ((MCollaboration)collaboration).setRepresentedClassifier((MClassifier) target);
+            ModelFacade.setRepresentedClassifier(collaboration, target);
         } else if (ModelFacade.isAModel(target)) {
             collaboration =
                 UmlFactory.getFactory().getCollaborations().buildCollaboration(

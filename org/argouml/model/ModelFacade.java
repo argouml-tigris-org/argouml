@@ -43,6 +43,7 @@ import ru.novosoft.uml.MElementListener;
 import ru.novosoft.uml.MFactory;
 import ru.novosoft.uml.behavior.activity_graphs.MActionState;
 import ru.novosoft.uml.behavior.activity_graphs.MActivityGraph;
+import ru.novosoft.uml.behavior.activity_graphs.MClassifierInState;
 import ru.novosoft.uml.behavior.activity_graphs.MObjectFlowState;
 import ru.novosoft.uml.behavior.activity_graphs.MPartition;
 import ru.novosoft.uml.behavior.collaborations.MAssociationEndRole;
@@ -124,6 +125,7 @@ import ru.novosoft.uml.foundation.data_types.MCallConcurrencyKind;
 import ru.novosoft.uml.foundation.data_types.MChangeableKind;
 import ru.novosoft.uml.foundation.data_types.MExpression;
 import ru.novosoft.uml.foundation.data_types.MMultiplicity;
+import ru.novosoft.uml.foundation.data_types.MObjectSetExpression;
 import ru.novosoft.uml.foundation.data_types.MOrderingKind;
 import ru.novosoft.uml.foundation.data_types.MParameterDirectionKind;
 import ru.novosoft.uml.foundation.data_types.MProcedureExpression;
@@ -3832,6 +3834,25 @@ public class ModelFacade {
 
     /**
      * Set the visibility of some modelelement.
+     * @param handle element
+     * @param visibility
+     */
+    public static void setVisibility(Object handle, Object visibility) {
+        if (visibility instanceof MVisibilityKind) {
+            if (handle instanceof MModelElement) {
+                ((MModelElement)handle).setVisibility((MVisibilityKind)visibility);
+            }
+            if (handle instanceof MElementResidence) {
+                ((MElementResidence)handle).setVisibility((MVisibilityKind)visibility);
+            }
+            if (handle instanceof MElementImport) {
+                ((MElementImport)handle).setVisibility((MVisibilityKind)visibility);
+            }
+        }
+    }
+
+    /**
+     * Set the visibility of some modelelement.
      * @param model element
      * @param visibility
      */
@@ -3886,6 +3907,44 @@ public class ModelFacade {
         }
         throw new IllegalArgumentException("Unrecognized object " + target
 					   + " or " + parameters);
+    }
+
+    /**
+     * Sets the target of some action or transition.
+     * @param handle the model element
+     * @param element the target of the model elemnet
+     */
+    public static void setTarget(Object handle, Object element) {
+        if (handle instanceof MAction && element instanceof MObjectSetExpression) {
+            ((MAction)handle).setTarget((MObjectSetExpression)element);
+            return;
+        }
+        if (handle instanceof MTransition && element instanceof MClassifierRole) {
+            ((MTransition)handle).setTarget((MStateVertex)element);
+            return;
+        }
+        throw new IllegalArgumentException("Unrecognized object " + handle
+					   + " or " + element);
+    }
+
+    /**
+     * Set the target scope of some association end or structural feature
+     * @param handle the model element
+     * @param scopeKind the target scope
+     */
+    public static void setTargetScope(Object handle, Object scopeKind) {
+        if (scopeKind instanceof MScopeKind) {
+            if (handle instanceof MStructuralFeature) {
+                ((MStructuralFeature)handle).setTargetScope((MScopeKind)scopeKind);
+                return;
+            }
+            if (handle instanceof MAssociationEnd) {
+                ((MAssociationEnd)handle).setTargetScope((MScopeKind)scopeKind);
+                return;
+            }
+        }
+        throw new IllegalArgumentException("Unrecognized object " + handle
+					   + " or " + scopeKind);
     }
 
     /**
@@ -4154,31 +4213,170 @@ public class ModelFacade {
     }
 
     /**
-     * Sets if of some model element is a leaf.
-     * @param classifier
+     * Sets if some model element is a leaf.
+     * @param target model element
      * @param flag
      */
-    public static void setLeaf(Object o, boolean flag) {
-        if (o instanceof MReception) {
-            ((MReception) o).setLeaf(flag);
+    public static void setLeaf(Object target, boolean flag) {
+        if (target instanceof MReception) {
+            ((MReception) target).setLeaf(flag);
+            return;
         }
-        if (o instanceof MOperation) {
-            ((MOperation) o).setLeaf(flag);
+        if (target instanceof MOperation) {
+            ((MOperation) target).setLeaf(flag);
+            return;
         }
-        if (o instanceof MGeneralizableElement) {
-            ((MGeneralizableElement) o).setLeaf(flag);
+        if (target instanceof MGeneralizableElement) {
+            ((MGeneralizableElement) target).setLeaf(flag);
+            return;
         }
+        throw new IllegalArgumentException("Unrecognized object " + target);
     }
 
     /**
-     * Sets if of some classifier is a root.
+     * Sets the raised signals of some behavioural feature.
+     * @param target the behavioural feature
+     * @param raisedSignals the raised signals
+     */
+    public static void setRaisedSignals(Object target, Collection raisedSignals) {
+        if (target instanceof MBehavioralFeature) {
+            ((MBehavioralFeature)target).setRaisedSignals(raisedSignals);
+            return;
+        }
+        throw new IllegalArgumentException("Unrecognized object " + target);
+    }
+
+    /**
+     * Sets the receiver of some model element.
+     * @param target model element
+     * @param receiver the receiver
+     */
+    public static void setReceiver(Object target, Object receiver) {
+        if (target instanceof MMessage && receiver instanceof MClassifierRole) {
+            ((MMessage)target).setReceiver((MClassifierRole)receiver);
+            return;
+        }
+        if (target instanceof MStimulus && receiver instanceof MInstance) {
+            ((MStimulus)target).setReceiver((MInstance)receiver);
+            return;
+        }
+        throw new IllegalArgumentException("Unrecognized object " + target
+					   + " or " + receiver);
+    }
+
+    /**
+     * Sets the represented classifier of some collaboration
+     * @param target the collaboration
      * @param classifier
+     */
+    public static void setRepresentedClassifier(Object target, Object classifier) {
+        if (target instanceof MCollaboration && classifier instanceof MClassifier) {
+            ((MCollaboration)target).setRepresentedClassifier((MClassifier)classifier);
+            return;
+        }
+        throw new IllegalArgumentException("Unrecognized object " + target
+					   + " or " + classifier);
+    }
+
+    /**
+     * Sets the represented operation of some collaboration
+     * @param target the collaboration
+     * @param operation
+     */
+    public static void setRepresentedOperation(Object target, Object operation) {
+        if (target instanceof MCollaboration && operation instanceof MOperation) {
+            ((MCollaboration)target).setRepresentedOperation((MOperation)operation);
+            return;
+        }
+        throw new IllegalArgumentException("Unrecognized object " + target
+					   + " or " + operation);
+    }
+
+    /**
+     * Sets the residents of some model element.
+     * @param target the model element
+     * @param residients collection
+     */
+    public static void setResidents(Object target, Collection residents) {
+        if (target instanceof MNodeInstance) {
+            ((MNodeInstance)target).setResidents(residents);
+            return;
+        }
+        if (target instanceof MComponentInstance) {
+            ((MComponentInstance)target).setResidents(residents);
+            return;
+        }
+        if (target instanceof MNode) {
+            ((MNode)target).setResidents(residents);
+            return;
+        }
+        throw new IllegalArgumentException("Unrecognized object " + target);
+    }
+
+    /**
+     * Sets if some model element is a root.
+     * @param target model element
      * @param flag
      */
-    public static void setRoot(Object o, boolean flag) {
-        if (o instanceof MClassifier) {
-            ((MClassifier) o).setRoot(flag);
+    public static void setRoot(Object target, boolean flag) {
+        if (target instanceof MReception) {
+            ((MReception)target).setRoot(flag);
+            return;
         }
+        if (target instanceof MOperation) {
+            ((MOperation)target).setRoot(flag);
+            return;
+        }
+        if (target instanceof MGeneralizableElement) {
+            ((MGeneralizableElement)target).setRoot(flag);
+            return;
+        }
+        throw new IllegalArgumentException("Unrecognized object " + target);
+    }
+
+    /**
+     * Sets the sender of some model element.
+     * @param target model element
+     * @param sender the sender
+     */
+    public static void setSender(Object target, Object sender) {
+        if (target instanceof MMessage && sender instanceof MClassifierRole) {
+            ((MMessage)target).setSender((MClassifierRole)sender);
+            return;
+        }
+        if (target instanceof MStimulus && sender instanceof MInstance) {
+            ((MStimulus)target).setSender((MInstance)sender);
+            return;
+        }
+        throw new IllegalArgumentException("Unrecognized object " + target
+					   + " or " + sender);
+    }
+
+    /**
+     * Sets the source state of some message.
+     * @param target the message
+     * @param state the source state
+     */
+    public static void setSource(Object target, Object state) {
+        if (target instanceof MMessage && state instanceof MClassifierRole) {
+            ((MTransition)target).setSource((MState)state);
+            return;
+        }
+        throw new IllegalArgumentException("Unrecognized object " + target
+					   + " or " + state);
+    }
+
+    /**
+     * Sets the specifications of some association end.
+     * @param target the association end
+     * @param specifications collection
+     */
+    public static void setSpecifications(Object target, Collection specifications) {
+        if (target instanceof MAssociationEnd) {
+            ((MAssociationEnd)target).setSpecifications(specifications);
+            return;
+        }
+        throw new IllegalArgumentException("Unrecognized object " + target);
     }
 
     /**
@@ -4270,12 +4468,16 @@ public class ModelFacade {
      */
     public static void setType(Object handle, Object type) {
         if (handle != null && (type == null || type instanceof MClassifier)) {
+            if (handle instanceof MObjectFlowState)
+		((MObjectFlowState)handle).setType((MClassifier) type);
+            if (handle instanceof MClassifierInState)
+		((MClassifierInState)handle).setType((MClassifier) type);
             if (handle instanceof MParameter)
 		((MParameter)handle).setType((MClassifier) type);
             else if (handle instanceof MAssociationEnd)
 		((MAssociationEnd)handle).setType((MClassifier) type);
-            else if (handle instanceof MAttribute)
-		((MAttribute)handle).setType((MClassifier) type);
+            else if (handle instanceof MStructuralFeature)
+		((MStructuralFeature)handle).setType((MClassifier) type);
         }
     }
 
@@ -4299,10 +4501,10 @@ public class ModelFacade {
      * @param tag
      * @param value
      */
-    public static void setTaggedValue(Object o, String tag, String value) {
-        if (o != null && o instanceof MModelElement) {
+    public static void setTaggedValue(Object target, String tag, String value) {
+        if (target instanceof MModelElement) {
             MTaggedValue tv = MFactory.getDefaultFactory().createTaggedValue();
-            tv.setModelElement((MModelElement) o);
+            tv.setModelElement((MModelElement)target);
             tv.setTag(tag);
             tv.setValue(value);
         }

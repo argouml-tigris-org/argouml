@@ -64,7 +64,6 @@ import ru.novosoft.uml.foundation.core.MClass;
 import ru.novosoft.uml.foundation.core.MClassifier;
 import ru.novosoft.uml.foundation.core.MComponent;
 import ru.novosoft.uml.foundation.core.MElementResidence;
-import ru.novosoft.uml.foundation.core.MFeature;
 import ru.novosoft.uml.foundation.core.MGeneralizableElement;
 import ru.novosoft.uml.foundation.core.MGeneralization;
 import ru.novosoft.uml.foundation.core.MModelElement;
@@ -232,7 +231,7 @@ class ColumnVisibility extends ColumnDescriptor {
 	if (!(ModelFacade.isAModelElement(target))
 	    || !(ModelFacade.isAVisibilityKind(value)))
 	    return;
-	((MModelElement) target).setVisibility((MVisibilityKind) value);
+	ModelFacade.setVisibility(target, value);
     }  
 } /* end class ColumnVisibility */
 
@@ -253,7 +252,7 @@ class ColumnFeatureVis extends ColumnDescriptor {
     public void setValueFor(Object target, Object value) {
 	if (!(ModelFacade.isAFeature(target))) return;
 	if (!(ModelFacade.isAVisibilityKind(value))) return;
-	((MFeature) target).setVisibility((MVisibilityKind) value);
+	ModelFacade.setVisibility(target, value);
     }  
 } /* end class ColumnFeatureVis */
 

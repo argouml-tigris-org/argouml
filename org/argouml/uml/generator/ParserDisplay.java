@@ -323,7 +323,7 @@ public class ParserDisplay extends Parser {
 			    if (value != null && value.equalsIgnoreCase("false"))
 				isRoot = false;
 			    if (ModelFacade.isAOperation(element))
-				((MOperation) element).setRoot(isRoot);
+				ModelFacade.setRoot(element, isRoot);
 			}
 		    });
 	_operationCustomSep = new Vector();

@@ -125,7 +125,7 @@ public class PropPanelStimulus extends PropPanelModelElement {
     public void setSender(MInstance element) {
         Object target = getTarget();
         if (org.argouml.model.ModelFacade.isAStimulus(target)) {
-            ((MStimulus) target).setSender(element);
+            ModelFacade.setSender(target, element);
         }
     }
 
@@ -142,7 +142,7 @@ public class PropPanelStimulus extends PropPanelModelElement {
     public void setReceiver(MInstance element) {
         Object target = getTarget();
         if (org.argouml.model.ModelFacade.isAStimulus(target)) {
-            ((MStimulus) target).setReceiver(element);
+            ModelFacade.setReceiver(target, element);
         }
     }
 
