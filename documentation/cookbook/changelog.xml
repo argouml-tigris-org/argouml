@@ -22,7 +22,7 @@
 
       <tbody valign="top">
         <row>
-          <entry>2004-01-01</entry>
+          <entry>2005-01-01</entry>
           <entry>
 Change to XXX.
 (See <xref linkend="xxx"/>).
@@ -31,6 +31,18 @@ Change to XXX.
         </row>
       </tbody>
       -->
+
+      <tbody valign="top">
+        <row>
+          <entry>2004-12-30</entry>
+          <entry>
+Change the default year in the copyright notices.
+Yes, I am a little early.
+(See <xref linkend="standards"/> and <xref linkend="eclipse3"/>).
+</entry>
+          <entry>Linus Tolke</entry>
+        </row>
+      </tbody>
 
       <tbody valign="top">
         <row>
