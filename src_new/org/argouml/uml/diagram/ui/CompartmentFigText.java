@@ -171,21 +171,6 @@ public class CompartmentFigText extends FigText {
         return refFig.getLineColor();
     }
 
-
-    /**
-     * @see org.tigris.gef.presentation.Fig#getLineWidth()
-     */
-    public int getLineWidth() {
-    	return 0;
-    }
-    
-    /**
-     * @see org.tigris.gef.presentation.Fig#setLineWidth(int)
-     */
-    public void setLineWidth(int w) {
-    	super.setLineWidth(0);
-    }
-    
     /**
      * Mark whether this item is to be highlighted.<p>
      *
