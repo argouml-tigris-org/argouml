@@ -29,6 +29,7 @@ import java.util.Iterator;
 import java.util.Map;
 
 import org.apache.log4j.Category;
+import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.behavioralelements.activitygraphs.ActivityGraphsFactory;
 import org.argouml.model.uml.behavioralelements.collaborations.CollaborationsFactory;
 import org.argouml.model.uml.behavioralelements.commonbehavior.CommonBehaviorFactory;
@@ -38,6 +39,7 @@ import org.argouml.model.uml.foundation.core.CoreFactory;
 import org.argouml.model.uml.foundation.datatypes.DataTypesFactory;
 import org.argouml.model.uml.foundation.extensionmechanisms.ExtensionMechanismsFactory;
 import org.argouml.model.uml.modelmanagement.ModelManagementFactory;
+
 import ru.novosoft.uml.MBase;
 import ru.novosoft.uml.behavior.activity_graphs.MActionState;
 import ru.novosoft.uml.behavior.activity_graphs.MActivityGraph;
@@ -149,31 +151,6 @@ public class UmlFactory extends AbstractUmlModelFactory {
      */
     private Category logger = Category.getInstance("org.argouml.model.uml.factory");
 
-    // Types of line
-    public static final Class GENERALIZATION   = MGeneralization.class;
-    public static final Class ASSOCIATION_ROLE = MAssociationRole.class;
-    public static final Class ASSOCIATION      = MAssociation.class;
-    public static final Class DEPENDENCY       = MDependency.class;
-    public static final Class ABSTRACTION      = MAbstraction.class;
-    public static final Class LINK             = MLink.class;
-    public static final Class EXTEND           = MExtend.class;
-    public static final Class INCLUDE          = MInclude.class;
-    public static final Class PERMISSION       = MPermission.class;
-    public static final Class USAGE            = MUsage.class;
-
-    // Types of node
-    public static final Class CLASSIFIER_ROLE    = MClassifierRole.class;
-    public static final Class CLASS              = MClass.class;
-    public static final Class INTERFACE          = MInterface.class;
-    public static final Class PACKAGE            = MPackage.class;
-    public static final Class NODE               = MNode.class;
-    public static final Class NODE_INSTANCE      = MNodeInstance.class;
-    public static final Class COMPONENT          = MComponent.class;
-    public static final Class COMPONENT_INSTANCE = MComponentInstance.class;
-    public static final Class OBJECT             = MObject.class;
-    public static final Class ACTOR              = MActor.class;
-    public static final Class USE_CASE           = MUseCase.class;
-
     /**
      * A map of valid connections keyed by the connection type.
      * The constructor builds this from the data in the validConnections array
@@ -193,47 +170,34 @@ public class UmlFactory extends AbstractUmlModelFactory {
      * direction only.
      */
     private static final Object[][] VALID_CONNECTIONS = {
-        {ASSOCIATION_ROLE, CLASSIFIER_ROLE},
-        {PERMISSION,       CLASS},
-        {PERMISSION,       INTERFACE},
-        {PERMISSION,       PACKAGE},
-        {PERMISSION,       CLASS,              PACKAGE},
-        {PERMISSION,       CLASS,              INTERFACE},
-        {PERMISSION,       INTERFACE,          PACKAGE},
-        {USAGE,            CLASS},
-        {USAGE,            INTERFACE},
-        {USAGE,            PACKAGE},
-        {USAGE,            CLASS,              PACKAGE},
-        {USAGE,            CLASS,              INTERFACE},
-        {USAGE,            INTERFACE,          PACKAGE},
-        {GENERALIZATION,   CLASSIFIER_ROLE},
-        {GENERALIZATION,   CLASS},
-        {GENERALIZATION,   INTERFACE},
-        {GENERALIZATION,   USE_CASE},
-        {GENERALIZATION,   ACTOR},
-        {DEPENDENCY,       PACKAGE},
-        {DEPENDENCY,       CLASS},
-        {DEPENDENCY,       INTERFACE},
-        {DEPENDENCY,       INTERFACE,          CLASS},
-        {DEPENDENCY,       USE_CASE},
-        {DEPENDENCY,       COMPONENT},
-        {DEPENDENCY,       COMPONENT_INSTANCE},
-        {DEPENDENCY,       OBJECT},
-        {DEPENDENCY,       COMPONENT,          NODE,               null},
-        {DEPENDENCY,       OBJECT,             COMPONENT,          null},
-        {DEPENDENCY,       COMPONENT_INSTANCE, NODE_INSTANCE,      null},
-        {DEPENDENCY,       OBJECT,             COMPONENT_INSTANCE, null},
-        {ABSTRACTION,      CLASS,              INTERFACE,          null},
-        {ASSOCIATION,      CLASS},
-        {ASSOCIATION,      CLASS,              INTERFACE},
-        {ASSOCIATION,      ACTOR},
-        {ASSOCIATION,      USE_CASE},
-        {ASSOCIATION,      ACTOR,              USE_CASE},
-        {ASSOCIATION,      NODE},
-        {EXTEND,           USE_CASE},
-        {INCLUDE,          USE_CASE},
-        {LINK,             NODE_INSTANCE},
-        {LINK,             OBJECT}
+        {ModelFacade.GENERALIZATION,   ModelFacade.CLASSIFIER_ROLE},
+        {ModelFacade.GENERALIZATION,   ModelFacade.CLASS},
+        {ModelFacade.GENERALIZATION,   ModelFacade.INTERFACE},
+        {ModelFacade.GENERALIZATION,   ModelFacade.USE_CASE},
+        {ModelFacade.GENERALIZATION,   ModelFacade.ACTOR},
+        {ModelFacade.DEPENDENCY,       ModelFacade.PACKAGE},
+        {ModelFacade.DEPENDENCY,       ModelFacade.CLASS},
+        {ModelFacade.DEPENDENCY,       ModelFacade.INTERFACE},
+        {ModelFacade.DEPENDENCY,       ModelFacade.INTERFACE,          ModelFacade.CLASS},
+        {ModelFacade.DEPENDENCY,       ModelFacade.USE_CASE},
+        {ModelFacade.DEPENDENCY,       ModelFacade.COMPONENT},
+        {ModelFacade.DEPENDENCY,       ModelFacade.COMPONENT_INSTANCE},
+        {ModelFacade.DEPENDENCY,       ModelFacade.OBJECT},
+        {ModelFacade.DEPENDENCY,       ModelFacade.COMPONENT,          ModelFacade.NODE,               null},
+        {ModelFacade.DEPENDENCY,       ModelFacade.OBJECT,             ModelFacade.COMPONENT,          null},
+        {ModelFacade.DEPENDENCY,       ModelFacade.COMPONENT_INSTANCE, ModelFacade.NODE_INSTANCE,      null},
+        {ModelFacade.DEPENDENCY,       ModelFacade.OBJECT,             ModelFacade.COMPONENT_INSTANCE, null},
+        {ModelFacade.ABSTRACTION,      ModelFacade.CLASS,              ModelFacade.INTERFACE,          null},
+        {ModelFacade.ASSOCIATION,      ModelFacade.CLASS},
+        {ModelFacade.ASSOCIATION,      ModelFacade.CLASS,              ModelFacade.INTERFACE},
+        {ModelFacade.ASSOCIATION,      ModelFacade.ACTOR},
+        {ModelFacade.ASSOCIATION,      ModelFacade.USE_CASE},
+        {ModelFacade.ASSOCIATION,      ModelFacade.ACTOR,              ModelFacade.USE_CASE},
+        {ModelFacade.ASSOCIATION,      ModelFacade.NODE},
+        {ModelFacade.EXTEND,           ModelFacade.USE_CASE},
+        {ModelFacade.INCLUDE,          ModelFacade.USE_CASE},
+        {ModelFacade.LINK,             ModelFacade.NODE_INSTANCE},
+        {ModelFacade.LINK,             ModelFacade.OBJECT}
     };
     
     /** Singleton instance.
@@ -310,39 +274,39 @@ public class UmlFactory extends AbstractUmlModelFactory {
         
         Object connection = null;
         
-        if (connectionType == ASSOCIATION) {
+        if (connectionType == ModelFacade.ASSOCIATION) {
             connection = getCore().buildAssociation(
                 (MClassifier)fromElement, 
                 (MAggregationKind)fromStyle, 
                 (MClassifier)toElement, 
                 (MAggregationKind)toStyle, 
                 (Boolean)unidirectional);
-        } else if (connectionType == ASSOCIATION_ROLE) {
+        } else if (connectionType == ModelFacade.ASSOCIATION_ROLE) {
             connection = getCollaborations().buildAssociationRole(
                 (MClassifierRole)fromElement, 
                 (MAggregationKind)fromStyle, 
                 (MClassifierRole)toElement,
                 (MAggregationKind)toStyle, 
                 (Boolean)unidirectional);
-        } else if (connectionType == GENERALIZATION) {
+        } else if (connectionType == ModelFacade.GENERALIZATION) {
             connection = getCore().buildGeneralization((MGeneralizableElement)fromElement, (MGeneralizableElement)toElement);
-        } else if (connectionType == PERMISSION) {
+        } else if (connectionType == ModelFacade.PERMISSION) {
             connection = getCore().buildPermission((MModelElement)fromElement, (MModelElement)toElement);
-        } else if (connectionType == USAGE) {
+        } else if (connectionType == ModelFacade.USAGE) {
             connection = getCore().buildUsage((MModelElement)fromElement, (MModelElement)toElement);
-        } else if (connectionType == GENERALIZATION) {
+        } else if (connectionType == ModelFacade.GENERALIZATION) {
             connection = getCore().buildGeneralization((MGeneralizableElement)fromElement, (MGeneralizableElement)toElement);
-        } else if (connectionType == DEPENDENCY) {
+        } else if (connectionType == ModelFacade.DEPENDENCY) {
             connection = getCore().buildDependency(fromElement, toElement);
-        } else if (connectionType == ABSTRACTION) {
+        } else if (connectionType == ModelFacade.ABSTRACTION) {
             connection = getCore().buildRealization((MModelElement)fromElement, (MModelElement)toElement);
-        } else if (connectionType == LINK) {
+        } else if (connectionType == ModelFacade.LINK) {
             connection = getCommonBehavior().buildLink((MInstance)fromElement, (MInstance)toElement);
-        } else if (connectionType == EXTEND) {
+        } else if (connectionType == ModelFacade.EXTEND) {
             // Extend, but only between two use cases. Remember we draw from the
             // extension port to the base port.
             connection = getUseCases().buildExtend((MUseCase)toElement, (MUseCase)fromElement);
-        } else if (connectionType == INCLUDE) {
+        } else if (connectionType == ModelFacade.INCLUDE) {
             connection = getUseCases().buildInclude((MUseCase)fromElement, (MUseCase)toElement);
         }
     
