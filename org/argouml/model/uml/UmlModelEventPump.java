@@ -173,7 +173,7 @@ public final class UmlModelEventPump implements MElementListener {
             listenerList = new HashSet();
             _listenerClassModelEventsMap.put(key, listenerList);
         }
-        listenerList.add(listener);
+        listenerList.add(listener);      
     }
     
     /**
