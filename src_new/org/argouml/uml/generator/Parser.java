@@ -49,7 +49,7 @@ import java.text.ParseException;
 public abstract class Parser {
 
   public abstract MExtensionPoint parseExtensionPoint(String s);
-  public abstract MOperation parseOperation(String s);
+  public abstract void parseOperation(String s, MOperation op) throws ParseException;
   public abstract void parseAttribute(String s, MAttribute attr) throws ParseException;
   public abstract MParameter parseParameter(String s);
 //   public abstract Package parsePackage(String s);

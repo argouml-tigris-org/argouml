@@ -65,6 +65,7 @@ import org.argouml.uml.diagram.deployment.*;
 import org.apache.log4j.Category;
 import org.argouml.application.api.*;
 import org.argouml.util.MyTokenizer;
+import org.argouml.model.uml.foundation.core.*;
 import org.argouml.model.uml.foundation.extensionmechanisms.*;
 
 /**
@@ -166,6 +167,15 @@ public class ParserDisplay extends Parser {
   /** The vector of CustomSeparators to use when tokenizing attributes */
   private Vector _attributeCustomSep;
 
+  /** The array of special properties for operations */
+  private PropertySpecialString _operationSpecialStrings[];
+
+  /** The vector of CustomSeparators to use when tokenizing attributes */
+  private Vector _operationCustomSep;
+
+  /** The vector of CustomSeparators to use when tokenizing parameters */
+  private Vector _parameterCustomSep;
+
   /** The character with a meaning as a visibility at the start of an attribute */   
   private final static String visibilityChars = "+#-";
 
@@ -190,7 +200,98 @@ public class ParserDisplay extends Parser {
     _attributeCustomSep = new Vector();
     _attributeCustomSep.add(MyTokenizer.SINGLE_QUOTED_SEPARATOR);
     _attributeCustomSep.add(MyTokenizer.DOUBLE_QUOTED_SEPARATOR);
-    _attributeCustomSep.add(MyTokenizer.PAREN_EXPR_SEPARATOR);
+    _attributeCustomSep.add(MyTokenizer.PAREN_EXPR_STRING_SEPARATOR);
+
+    _operationSpecialStrings = new PropertySpecialString[8];
+    _operationSpecialStrings[0] = new PropertySpecialString("sequential",
+	new PropertyOperation() {
+	    public void found(MModelElement element, String value) {
+		MCallConcurrencyKind kind = MCallConcurrencyKind.SEQUENTIAL;
+		if (element instanceof MOperation)
+		    ((MOperation)element).setConcurrency(kind);
+	    }
+	});
+    _operationSpecialStrings[1] = new PropertySpecialString("guarded",
+	new PropertyOperation() {
+	    public void found(MModelElement element, String value) {
+		MCallConcurrencyKind kind = MCallConcurrencyKind.GUARDED;
+		if (value != null && value.equalsIgnoreCase("false"))
+		    kind = MCallConcurrencyKind.SEQUENTIAL;
+		if (element instanceof MOperation)
+		    ((MOperation)element).setConcurrency(kind);
+	    }
+	});
+    _operationSpecialStrings[2] = new PropertySpecialString("concurrent",
+	new PropertyOperation() {
+	    public void found(MModelElement element, String value) {
+		MCallConcurrencyKind kind = MCallConcurrencyKind.CONCURRENT;
+		if (value != null && value.equalsIgnoreCase("false"))
+		    kind = MCallConcurrencyKind.SEQUENTIAL;
+		if (element instanceof MOperation)
+		    ((MOperation)element).setConcurrency(kind);
+	    }
+	});
+    _operationSpecialStrings[3] = new PropertySpecialString("concurrency",
+	new PropertyOperation() {
+	    public void found(MModelElement element, String value) {
+		MCallConcurrencyKind kind = MCallConcurrencyKind.SEQUENTIAL;
+		if ("guarded".equalsIgnoreCase(value))
+		    kind = MCallConcurrencyKind.GUARDED;
+		else if ("concurrent".equalsIgnoreCase(value))
+		    kind = MCallConcurrencyKind.CONCURRENT;
+		if (element instanceof MOperation)
+		    ((MOperation)element).setConcurrency(kind);
+	    }
+	});
+    _operationSpecialStrings[4] = new PropertySpecialString("abstract",
+	new PropertyOperation() {
+	    public void found(MModelElement element, String value) {
+		boolean isAbstract = true;
+		if (value != null && value.equalsIgnoreCase("false"))
+		    isAbstract = false;
+		if (element instanceof MOperation)
+		    ((MOperation)element).setAbstract(isAbstract);
+	    }
+	});
+    _operationSpecialStrings[5] = new PropertySpecialString("leaf",
+	new PropertyOperation() {
+	    public void found(MModelElement element, String value) {
+		boolean isLeaf = true;
+		if (value != null && value.equalsIgnoreCase("false"))
+		    isLeaf = false;
+		if (element instanceof MOperation)
+		    ((MOperation)element).setLeaf(isLeaf);
+	    }
+	});
+    _operationSpecialStrings[6] = new PropertySpecialString("query",
+	new PropertyOperation() {
+	    public void found(MModelElement element, String value) {
+		boolean isQuery = true;
+		if (value != null && value.equalsIgnoreCase("false"))
+		    isQuery = false;
+		if (element instanceof MBehavioralFeature)
+		    ((MBehavioralFeature)element).setQuery(isQuery);
+	    }
+	});
+    _operationSpecialStrings[7] = new PropertySpecialString("root",
+	new PropertyOperation() {
+	    public void found(MModelElement element, String value) {
+		boolean isRoot = true;
+		if (value != null && value.equalsIgnoreCase("false"))
+		    isRoot = false;
+		if (element instanceof MOperation)
+		    ((MOperation)element).setRoot(isRoot);
+	    }
+	});
+    _operationCustomSep = new Vector();
+    _operationCustomSep.add(MyTokenizer.SINGLE_QUOTED_SEPARATOR);
+    _operationCustomSep.add(MyTokenizer.DOUBLE_QUOTED_SEPARATOR);
+    _operationCustomSep.add(MyTokenizer.PAREN_EXPR_STRING_SEPARATOR);
+
+    _parameterCustomSep = new Vector();
+    _parameterCustomSep.add(MyTokenizer.SINGLE_QUOTED_SEPARATOR);
+    _parameterCustomSep.add(MyTokenizer.DOUBLE_QUOTED_SEPARATOR);
+    _parameterCustomSep.add(MyTokenizer.PAREN_EXPR_STRING_SEPARATOR);
   }
 
   ////////////////////////////////////////////////////////////////
@@ -271,7 +372,14 @@ public class ParserDisplay extends Parser {
   }
 */
 
-  public void parseOperationFig(MClassifier cls, MOperation op, String text) {
+  public void parseOperationFig(MClassifier cls, MOperation op, String text)
+		throws ParseException {
+    if (cls == null || op == null)
+	return;
+
+    parseOperation(text, op);
+  }
+/*
     if (cls == null || op == null)
       return;
     StringTokenizer st = new StringTokenizer(text,";");
@@ -322,7 +430,7 @@ public class ParserDisplay extends Parser {
         }
       }
     }
-  }
+*/
 
 /*
   // Seems to be obsolete
@@ -463,27 +571,354 @@ public class ParserDisplay extends Parser {
     }
 
 
-  /** Parse a line of the form:
-   *  visibility name (parameter list) : return-type-expression {property-string}
-   * Same as in UML 1.3 spec. 
+  /**
+   * Parse a line of text and aligns the MOperation to the specification
+   * given. The line should be on the following form:
+   *
+   * <br>visibility name (parameter list) : return-type-expression
+   *	{property-string}
+   *
+   * <p>All elements are optional and, if left unspecified, will preserve
+   *	their old values.
+   * <br>A <b>stereotype</b> can be given between any element in the line
+   *	on the form: &lt;&lt;stereotype&gt;&gt;
+   *
+   * <p>The following properties are recognized to have special meaning:
+   *	abstract, concurrency, concurrent, guarded, leaf, query, root and
+   *	sequential.
+   *
+   * <p>This syntax is compatible with the UML 1.3 spec.
+   *
+   * @param s The String to parse.
+   * @param op The MOperation to adjust to the spcification in s.
+   * @throws java.text.ParseException when it detects an error in the
+   *	attribute string. See also ParseError.getErrorOffset().
    */
-   /* (formerly: [visibility] [keywords] returntype name(params)[;] ) */
-  public MOperation parseOperation(String s) {
+   /* (formerly visibility name (parameter list) : return-type-expression
+    *	{property-string} ) */
+   /* (formerly 2nd: [visibility] [keywords] returntype name(params)[;] ) */
+  public void parseOperation(String s, MOperation op) throws ParseException {
+    MyTokenizer st;
+    boolean hasColon = false;
+    String name = null;
+    String parameterlist = null;
+    String stereotype = null;
+    String token;
+    String type = null;
+    String visibility = null;
+    Vector properties = null;
+    int paramOffset = 0;
+
     s = s.trim();
-    if (s.endsWith(";")) s = s.substring(0, s.length()-1);
-    MOperation res = UmlFactory.getFactory().getCore().buildOperation();
-    s = parseOutVisibility(res, s);
-    // s = parseOutKeywords(res, s);
-    s = parseOutName(res, s);
-    s = parseOutParams(res, s);
-    s = parseOutReturnType(res, s);
-    s = parseOutProperties(res, s);
-    s = s.trim();
-    if (s.length() > 2)
-      System.out.println("leftover in parseOperation=|" + s + "|");
-    return res;
+
+    if (s.length() > 0 && visibilityChars.indexOf(s.charAt(0)) >= 0) {
+	visibility = s.substring(0, 1);
+	s = s.substring(1);
+    }
+
+    try {
+	st = new MyTokenizer(s, " ,\t,<<,>>,:,=,{,},\\,", _operationCustomSep);
+	while (st.hasMoreTokens()) {
+	    token = st.nextToken();
+	    if (" ".equals(token) || "\t".equals(token) || ",".equals(token)) {
+		; // Do nothing
+	    } else if ("<<".equals(token)) {
+		if (stereotype != null)
+		    throw new ParseException("Operations cannot have two " +
+			    "stereotypes", st.getTokenIndex());
+		stereotype = "";
+		while (true) {
+		    token = st.nextToken();
+		    if (">>".equals(token))
+			break;
+		    stereotype += token;
+		}
+	    } else if ("{".equals(token)) {
+		String propname = "";
+		String propvalue = null;
+
+		if (properties == null)
+		    properties = new Vector();
+		while (true) {
+		    token = st.nextToken();
+		    if (",".equals(token) || "}".equals(token)) {
+			if (propname.length() > 0) {
+			    properties.add(propname);
+			    properties.add(propvalue);
+			}
+			propname = "";
+			propvalue = null;
+
+			if ("}".equals(token))
+			    break;
+		    } else if ("=".equals(token)) {
+			if (propvalue != null)
+			    throw new ParseException("Property " + propname +
+				    " cannot have two values",
+				    st.getTokenIndex());
+			propvalue = "";
+		    } else if (propvalue == null) {
+			propname += token;
+		    } else {
+			propvalue += token;
+		    }
+		}
+		if (propname.length() > 0) {
+		    properties.add(propname);
+		    properties.add(propvalue);
+		}
+	    } else if (":".equals(token)) {
+		hasColon = true;
+	    } else if ("=".equals(token)) {
+		throw new ParseException("Operations cannot have " +
+			"default values", st.getTokenIndex());
+	    } else if (token.charAt(0) == '(' && !hasColon) {
+		if (parameterlist != null)
+		    throw new ParseException("Operations cannot have two " +
+			    "parameter lists", st.getTokenIndex());
+
+		parameterlist = token;
+	    } else {
+		if (hasColon) {
+		    if (type != null)
+			throw new ParseException("Operations cannot have " +
+				"two types", st.getTokenIndex());
+
+		    if (token.length() > 0 && (token.charAt(0) == '\"' ||
+			token.charAt(0) == '\''))
+			throw new ParseException("Type cannot be quoted",
+				st.getTokenIndex());
+
+		    if (token.length() > 0 && token.charAt(0) == '(')
+			throw new ParseException("Type cannot be an " +
+				"expression", st.getTokenIndex());
+
+		    type = token;
+		} else {
+		    if (name != null && visibility != null)
+			throw new ParseException("Extra text in Operation",
+				st.getTokenIndex());
+
+		    if (token.length() > 0 && (token.charAt(0) == '\"' ||
+			token.charAt(0) == '\''))
+			throw new ParseException("Name or visibility cannot " +
+				"be quoted", st.getTokenIndex());
+
+		    if (token.length() > 0 && token.charAt(0) == '(')
+			throw new ParseException("Name or visibility cannot " +
+				"be an expression", st.getTokenIndex());
+
+		    if (name == null && visibility == null &&
+			    visibilityChars.indexOf(token.charAt(0)) >= 0) {
+			visibility = token.substring(0, 1);
+			token = token.substring(1);
+		    }
+
+		    if (name != null) {
+			visibility = name;
+			name = token;
+		    } else {
+			name = token;
+		    }
+		}
+	    }
+	}
+    } catch (NoSuchElementException nsee) {
+	throw new ParseException("Unexpected end of operation", s.length());
+    } catch (ParseException pre) {
+	System.out.println(pre);
+	throw pre;
+    }
+/*
+    System.out.println("ParseOperation [name: " + name + " visibility: " +
+	    visibility + " type: " + type + " stereo: " + stereotype);
+
+    if (properties != null) {
+	for (int i = 0; i + 1 < properties.size(); i += 2) {
+	    System.out.println("\tProperty [name: " + properties.get(i) +
+		    " = " + properties.get(i+1) + "]");
+	}
+    }
+*/
+    if (parameterlist != null) {
+	// parameterlist is guaranteed to contain at least "("
+	if (parameterlist.charAt(parameterlist.length()-1) != ')')
+	    throw new ParseException("The parameter list was incomplete",
+		    paramOffset + parameterlist.length() - 1);
+
+	paramOffset++;
+	parameterlist = parameterlist.substring(1,parameterlist.length()-1);
+	parseParamList(op, parameterlist, paramOffset);
+    }
+
+    if (visibility != null) {
+	MVisibilityKind vis = getVisibility(visibility.trim());
+	op.setVisibility(vis);
+    }
+
+    if (name != null)
+	op.setName(name.trim());
+    else if (op.getName() == null || "".equals(op.getName()))
+	op.setName("anonymous");
+
+    if (type != null) {
+	MClassifier mtype = getType(type.trim(), op.getNamespace());
+	MParameter param = UmlFactory.getFactory().getCore().buildParameter();
+	param.setType(mtype);
+	UmlHelper.getHelper().getCore().setReturnParameter(op,param);
+    }
+
+    if (properties != null)
+	setProperties(op, properties, _operationSpecialStrings);
+
+    if (stereotype != null) {
+	stereotype = stereotype.trim();
+	MStereotype stereo = getStereotype(op.getModel(), stereotype);
+	if (stereo != null)
+	    op.setStereotype(stereo);
+	else if ("".equals(stereotype))
+	    op.setStereotype(null);
+    }
   }
 
+  /**
+   * Parses a parameter list and aligns the parameter list in op to that
+   * specified in param. A parameter list generally has the following syntax:
+   *
+   * <br>param := [inout] [name] [: type] [= initial value]
+   * <br>list := [param] [, param]*
+   *
+   * <p><b>inout</b> is optional and if omitted the old value preserved.
+   *	If no value has been assigned, then <b>in</b> is assumed.
+   * <br><b>name</b>, <b>type</b> and <b>initial value</b> are optional
+   *	and if omitted the old value preserved.
+   * <br><b>type</b> and <b>initial value</b> can be given in any order.
+   * <br>Unspecified properties is carried over by position, so if a parameter
+   *	is inserted into the list, then it will inherit properties from the
+   *	parameter that was there before for unspecified properties.
+   *
+   * <p>This syntax is compatible with the UML 1.3 specification.
+   *
+   * @param op The MOperation the parameter list belongs to.
+   * @param param The parameter list, without enclosing parentheses.
+   * @param paramOffset The offset to the beginning of the parameter list.
+   *	Used for error reports.
+   * @throws java.text.ParseException when it detects an error in the
+   *	attribute string. See also ParseError.getErrorOffset().
+   */
+  private void parseParamList(MOperation op, String param, int paramOffset)
+		throws ParseException {
+    MyTokenizer st = new MyTokenizer(param, " ,\t,:,=,\\,", _parameterCustomSep);
+    List origParam = op.getParameters();
+
+    Iterator it = origParam.iterator();
+    while (st.hasMoreTokens()) {
+	String kind = null;
+	String name = null;
+	String tok;
+	String type = null;
+	String value = null;
+	MParameter p = null;
+	boolean hasColon = false;
+	boolean hasEq = false;
+
+	while (it.hasNext() && p == null) {
+	    p = (MParameter) it.next();
+	    if (p.getKind().equals(MParameterDirectionKind.RETURN))
+		p = null;
+	}
+
+	while (st.hasMoreTokens()) {
+	    tok = st.nextToken();
+
+	    if (",".equals(tok)) {
+		break;
+	    } else if (" ".equals(tok) || "\t".equals(tok)) {
+		if (hasEq)
+		    value += tok;
+	    } else if (":".equals(tok)) {
+		hasColon = true;
+		hasEq = false;
+	    } else if ("=".equals(tok)) {
+		if (value != null)
+		    throw new ParseException("Parameters cannot have two " +
+			"default values", paramOffset + st.getTokenIndex());
+		hasEq = true;
+		hasColon = false;
+		value = "";
+	    } else if (hasColon) {
+		if (type != null)
+		    throw new ParseException("Parameters cannot have two " +
+			"types", paramOffset + st.getTokenIndex());
+
+		if (tok.charAt(0) == '\'' || tok.charAt(0) == '\"')
+		    throw new ParseException("Parameter type cannot be " +
+			"quoted", paramOffset + st.getTokenIndex());
+
+		if (tok.charAt(0) == '(')
+		    throw new ParseException("Parameter type cannot be an " +
+			"expression", paramOffset + st.getTokenIndex());
+
+		type = tok;
+	    } else if (hasEq) {
+		value += tok;
+	    } else {
+		if (name != null && kind != null)
+		    throw new ParseException("Extra text in parameter",
+			paramOffset + st.getTokenIndex());
+
+		if (tok.charAt(0) == '\'' || tok.charAt(0) == '\"')
+		    throw new ParseException("Parameter name/kind cannot be" +
+			" quoted", paramOffset + st.getTokenIndex());
+
+		if (tok.charAt(0) == '(')
+		    throw new ParseException("Parameter name/kind cannot be" +
+			" an expression", paramOffset + st.getTokenIndex());
+
+		kind = name;
+		name = tok;
+	    }
+	}
+
+	if (p == null) {
+	    p = CoreFactory.getFactory().buildParameter();
+	    op.addParameter(p);
+	}
+
+	if (name != null)
+	    p.setName(name.trim());
+
+	if (kind != null)
+	    p.setKind(getParamKind(kind.trim()));
+
+	if (type != null)
+	    p.setType(getType(type.trim(), op.getNamespace()));
+
+	if (value != null) {
+	    MExpression initExpr =
+		UmlFactory.getFactory().getDataTypes().createExpression(
+			Notation.getDefaultNotation().toString(),
+			value.trim());
+	    p.setDefaultValue(initExpr);
+	}
+    }
+
+    while (it.hasNext()) {
+        MParameter p = (MParameter) it.next();
+	if (!p.getKind().equals(MParameterDirectionKind.RETURN))
+	    op.removeParameter(p);
+    }
+  }
+
+  private MParameterDirectionKind getParamKind(String s) {
+    MParameterDirectionKind kind = MParameterDirectionKind.IN;
+    if ("out".equalsIgnoreCase(s))
+	kind = MParameterDirectionKind.OUT;
+    else if ("inout".equalsIgnoreCase(s))
+	kind = MParameterDirectionKind.INOUT;
+
+    return kind;
+  }
 
 /**
  * Parses a string for multiplicity and sets the multiplicity with the given 
@@ -535,9 +970,13 @@ protected String parseOutMultiplicity(MAttribute f, String s) {
     * <li>Stereotype can be given between any element except after the
     *	initial-value and before the type or end (to allow java-style
     *   bit-shifts in the initial value). It must be given on form
-    *	<<stereotype>>.
+    *	&lt;&lt;stereotype&gt;&gt;.
     *</ul>
-    * <p>It is compatible with the UML 1.3 spec.
+    *
+    * <p>The following properties are recognized to have special meaning:
+    *	frozen.
+    *
+    * <p>This syntax is compatible with the UML 1.3 spec.
     *
     * @param s The String to parse.
     * @param attr The attribute to modify to comply with the instructions in s.
@@ -579,7 +1018,8 @@ protected String parseOutMultiplicity(MAttribute f, String s) {
 		    value += token;
 		} else {
 		    if (stereotype != null)
-			throw new ParseException("Attribute cannot have two stereotypes", st.getTokenIndex());
+			throw new ParseException("Attribute cannot have two " +
+				"stereotypes", st.getTokenIndex());
 		    stereotype = "";
 		    while (true) {
 			token = st.nextToken();
@@ -593,7 +1033,8 @@ protected String parseOutMultiplicity(MAttribute f, String s) {
 		    value += token;
 		} else {
 		    if (multiplicity != null)
-			throw new ParseException("Attribute cannot have two multiplicities", st.getTokenIndex());
+			throw new ParseException("Attribute cannot have two" +
+				" multiplicities", st.getTokenIndex());
 		    multiplicity = "";
 		    multindex = st.getTokenIndex() + 1;
 		    while (true) {
@@ -623,13 +1064,14 @@ protected String parseOutMultiplicity(MAttribute f, String s) {
 			    break;
 		    } else if ("=".equals(token)) {
 			if (propvalue != null)
-			    throw new ParseException("Property " + propname + " cannot have two values", st.getTokenIndex());
+			    throw new ParseException("Property " + propname +
+				    " cannot have two values",
+				    st.getTokenIndex());
 			propvalue = "";
+		    } else if (propvalue == null) {
+			propname += token;
 		    } else {
-			if (propvalue == null)
-			    propname += token;
-			else
-			    propvalue += token;
+			propvalue += token;
 		    }
 		}
 		if (propname.length() > 0) {
@@ -641,28 +1083,44 @@ protected String parseOutMultiplicity(MAttribute f, String s) {
 		hasEq = false;
 	    } else if ("=".equals(token)) {
 		if (value != null)
-		    throw new ParseException("Attribute cannot have two default values", st.getTokenIndex());
+		    throw new ParseException("Attribute cannot have two " +
+			    "default values", st.getTokenIndex());
 		value = "";
 		hasColon = false;
 		hasEq = true;
 	    } else {
 		if (hasColon) {
 		    if (type != null)
-			throw new ParseException("Attribute cannot have two types", st.getTokenIndex());
-		    if (token.length() > 0 && (token.charAt(0) == '\"' || token.charAt(0) == '\''))
-			throw new ParseException("Type cannot be quoted", st.getTokenIndex());
+			throw new ParseException("Attribute cannot have two" +
+				" types", st.getTokenIndex());
+		    if (token.length() > 0 && (token.charAt(0) == '\"' ||
+			token.charAt(0) == '\''))
+			throw new ParseException("Type cannot be quoted",
+				st.getTokenIndex());
 		    if (token.length() > 0 && token.charAt(0) == '(')
-			throw new ParseException("Type cannot be an expression", st.getTokenIndex());
+			throw new ParseException("Type cannot be an " +
+				"expression", st.getTokenIndex());
 		    type = token;
 		} else if (hasEq) {
 		    value += token;
 		} else {
 		    if (name != null && visibility != null)
-			throw new ParseException("Extra text in Attribute", st.getTokenIndex());
-		    if (token.length() > 0 && (token.charAt(0) == '\"' || token.charAt(0) == '\''))
-			throw new ParseException("Name or visibility cannot be quoted", st.getTokenIndex());
+			throw new ParseException("Extra text in Attribute",
+				st.getTokenIndex());
+		    if (token.length() > 0 && (token.charAt(0) == '\"' ||
+			token.charAt(0) == '\''))
+			throw new ParseException("Name or visibility cannot " +
+				"be quoted", st.getTokenIndex());
 		    if (token.length() > 0 && token.charAt(0) == '(')
-			throw new ParseException("Name or visibility cannot be an expression", st.getTokenIndex());
+			throw new ParseException("Name or visibility cannot " +
+				"be an expression", st.getTokenIndex());
+
+		    if (name == null && visibility == null &&
+			    visibilityChars.indexOf(token.charAt(0)) >= 0) {
+			visibility = token.substring(0, 1);
+			token = token.substring(1);
+		    }
+
 		    if (name != null) {
 			visibility = name;
 			name = token;
@@ -705,27 +1163,34 @@ protected String parseOutMultiplicity(MAttribute f, String s) {
 	attr.setType(getType(type.trim(), attr.getNamespace()));
 
     if (value != null) {
-	MExpression initExpr = UmlFactory.getFactory().getDataTypes().createExpression(Notation.getDefaultNotation().toString(), value.trim());
+	MExpression initExpr =
+		UmlFactory.getFactory().getDataTypes().createExpression(
+			Notation.getDefaultNotation().toString(),
+			value.trim());
 	attr.setInitialValue(initExpr);
     }
 
     if (multiplicity != null) {
 	try {
-	    attr.setMultiplicity(UmlFactory.getFactory().getDataTypes().createMultiplicity(multiplicity.trim()));
+	    attr.setMultiplicity(
+		    UmlFactory.getFactory().getDataTypes().createMultiplicity(
+			    multiplicity.trim()));
 	} catch (IllegalArgumentException iae) {
-	    throw new ParseException("Bad multiplicity (" + iae + ")", multindex);
+	    throw new ParseException("Bad multiplicity (" + iae + ")",
+		    multindex);
 	}
     }
 
-    // Properties
     if (properties != null)
 	setProperties(attr, properties, _attributeSpecialStrings);
 
-    // Stereotype
     if (stereotype != null) {
-	MStereotype stereo = getStereotype(attr.getModel(), stereotype.trim());
+	stereotype = stereotype.trim();
+	MStereotype stereo = getStereotype(attr.getModel(), stereotype);
 	if (stereo != null)
 	    attr.setStereotype(stereo);
+	else if ("".equals(stereotype))
+	    attr.setStereotype(null);
     }
   }
 

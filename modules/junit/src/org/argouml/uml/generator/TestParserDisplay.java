@@ -24,7 +24,9 @@
 package org.argouml.uml.generator;
 
 import java.text.ParseException;
+import java.util.*;
 
+import org.argouml.model.uml.UmlHelper;
 import org.argouml.model.uml.UmlFactory;
 
 import ru.novosoft.uml.foundation.core.*;
@@ -44,7 +46,7 @@ public class TestParserDisplay extends TestCase {
 	private final String attr08 = "  +name : String = \"a <<string>>\"";
 	private final String attr09 = "+name : String = (a * (b+c) - d)";
 	private final String attr10 = "+name << organization >> : String = 2 * (b+c) - 10";
-	private final String attr11 = "+ <<machine>> name : String = a[15]";
+	private final String attr11 = "<<machine>> +name : String = a[15]";
 	private final String attr12 = "+ name : String = a << 5";
 
 	private final String nattr01 = "too many string in an attribute";
@@ -60,6 +62,22 @@ public class TestParserDisplay extends TestCase {
 	private final String nattr11 = "(vis) name";
 	private final String nattr12 = "vis name : \"type\"";
 	private final String nattr13 = "vis name : (type)";
+
+	private final String oper01 = "name()";
+	private final String oper02 = "<<create>> -name(in foo: float = 0) {root, abstract = false} : int";
+	private final String oper03 = "<< destroy >> protected name2(out foo: double = 0., inout bar = \"\"some\"\":String) {leaf,query} : String";
+	private final String oper04 = "<<>> name2()";
+
+	private final String noper01 = "name(";
+	private final String noper02 = "\"name\"()";
+	private final String noper03 = "\"vis\" name()";
+	private final String noper04 = "\'name\'()";
+	private final String noper05 = "\'vis\' name()";
+	private final String noper06 = "(name)()";
+	private final String noper07 = "(vis) name()";
+	private final String noper08 = "name() : \"type\"";
+	private final String noper09 = "name() : \'type\'";
+	private final String noper10 = "name() : (type)";
 
 	public TestParserDisplay(String str) {
 		super(str);
@@ -87,16 +105,6 @@ public class TestParserDisplay extends TestCase {
 		checkName(attr, attr06, "name");
 	}
 
-	private void checkName(MAttribute attr, String text, String name) {
-		try {
-			ParserDisplay.SINGLETON.parseAttribute(text, attr);
-			assert(text + " gave wrong name: " + attr.getName(),
-				name.equals(attr.getName()));
-		} catch (Exception e) {
-			assert(text + " threw unexpectedly: " + e, false);
-		}
-	}
-
 	public void testAttributeType() {
 		MAttribute attr;
 
@@ -111,16 +119,6 @@ public class TestParserDisplay extends TestCase {
 
 		attr = UmlFactory.getFactory().getCore().buildAttribute();
 		checkType(attr, attr06, "int");
-	}
-
-	private void checkType(MAttribute attr, String text, String type) {
-		try {
-			ParserDisplay.SINGLETON.parseAttribute(text, attr);
-			assert(text + " gave wrong type: " + (attr.getType() == null ? "(null)" : attr.getType().getName()),
-				attr.getType() != null && type.equals(attr.getType().getName()));
-		} catch (Exception e) {
-			assert(text + " threw unexpectedly: " + e, false);
-		}
 	}
 
 	public void testAttributeVisibility() {
@@ -147,16 +145,6 @@ public class TestParserDisplay extends TestCase {
 		checkVisibility(attr, attr08, "public");
 	}
 
-	private void checkVisibility(MAttribute attr, String text, String vis) {
-		try {
-			ParserDisplay.SINGLETON.parseAttribute(text, attr);
-			assert(text + " gave wrong visibility: " + (attr.getVisibility() == null ? "(null)" : attr.getVisibility().getName()),
-				attr.getVisibility() != null && vis.equals(attr.getVisibility().getName()));
-		} catch (Exception e) {
-			assert(text + " threw unexpectedly: " + e, false);
-		}
-	}
-
 	public void testAttributeProperty() {
 		MAttribute attr;
 		String res1[] = {"a", "b"};
@@ -173,21 +161,6 @@ public class TestParserDisplay extends TestCase {
 		checkProperties(attr, attr06, res3);
 	}
 
-	private void checkProperties(MAttribute attr, String text, String props[]) {
-		int i;
-		try {
-			ParserDisplay.SINGLETON.parseAttribute(text, attr);
-			for (i = 0; i + 1 < props.length; i += 2) {
-				if (props[i+1] == null)
-					assert("TaggedValue " + props[i] + " exists!", attr.getTaggedValue(props[i]) == null);
-				else
-					assert("TaggedValue " + props[i] + " wrong!", props[i+1].equals(attr.getTaggedValue(props[i])));
-			}
-		} catch (Exception e) {
-			assert(text + " threw Exception " + e, false);
-		}
-	}
-
 	public void testAttributeMultiplicity() {
 		MAttribute attr;
 
@@ -201,18 +174,7 @@ public class TestParserDisplay extends TestCase {
 		checkMultiplicity(attr, attr06, new MMultiplicity("*..*"));
 	}
 
-	private void checkMultiplicity(MAttribute attr, String text, MMultiplicity mult) {
-		try {
-			ParserDisplay.SINGLETON.parseAttribute(text, attr);
-			assert(text + " gave wrong multiplicity: " + (attr.getMultiplicity() == null ? "(null)" : attr.getMultiplicity().toString()),
-				mult == null && attr.getMultiplicity() == null ||
-				mult != null && mult.equals(attr.getMultiplicity()));
-		} catch (Exception e) {
-			assert(text + " threw unexpectedly: " + e, false);
-		}
-	}
-
-	public void testParseExceptions() {
+	public void testAttributeParseExceptions() {
 		MAttribute attr;
 
 		attr = UmlFactory.getFactory().getCore().buildAttribute();
@@ -229,18 +191,6 @@ public class TestParserDisplay extends TestCase {
 		checkThrows(attr, nattr11, true, false, false);
 		checkThrows(attr, nattr12, true, false, false);
 		checkThrows(attr, nattr13, true, false, false);
-	}
-
-	private void checkThrows(MAttribute attr, String text, boolean prsEx,
-			boolean ex2, boolean ex3) {
-		try {
-			ParserDisplay.SINGLETON.parseAttribute(text, attr);
-			assert("didn't throw for " + text, false);
-		} catch (ParseException pe) {
-			assert(text + " threw ParseException " + pe, prsEx);
-		} catch (Exception e) {
-			assert(text + " threw Exception " + e, !prsEx);
-		}
 	}
 
 	public void testAttributeValue() {
@@ -270,18 +220,7 @@ public class TestParserDisplay extends TestCase {
 		checkValue(attr, attr12, "a << 5");
 	}
 
-	private void checkValue(MAttribute attr, String text, String val) {
-		try {
-			ParserDisplay.SINGLETON.parseAttribute(text, attr);
-			assert(text + " gave wrong visibility: " + (attr.getInitialValue() == null ? "(null)" : attr.getInitialValue().getBody()),
-				val == null && (attr.getInitialValue() == null || "".equals(attr.getInitialValue().getBody())) ||
-				val != null && attr.getInitialValue() != null && val.equals(attr.getInitialValue().getBody()));
-		} catch (Exception e) {
-			assert(text + " threw unexpectedly: " + e, false);
-		}
-	}
-
-	public void testStereotype() {
+	public void testAttributeStereotype() {
 		MAttribute attr;
 
 		attr = UmlFactory.getFactory().getCore().buildAttribute();
@@ -295,6 +234,294 @@ public class TestParserDisplay extends TestCase {
 		checkStereotype(attr, attr01, "machine");
 	}
 
+	public void testOperationName() {
+		MOperation op;
+
+		op = UmlFactory.getFactory().getCore().buildOperation();
+		checkName(op, oper01, "name");
+
+		op = UmlFactory.getFactory().getCore().buildOperation();
+		checkName(op, oper02, "name");
+
+		op = UmlFactory.getFactory().getCore().buildOperation();
+		checkName(op, oper03, "name2");
+	}
+
+	public void testOperationType() {
+		MOperation op;
+
+		op = UmlFactory.getFactory().getCore().buildOperation();
+		checkType(op, oper01, "void");
+
+		op = UmlFactory.getFactory().getCore().buildOperation();
+		checkType(op, oper02, "int");
+		checkType(op, oper01, "int");
+
+		op = UmlFactory.getFactory().getCore().buildOperation();
+		checkType(op, oper03, "String");
+	}
+
+	public void testOperationVisibility() {
+		MOperation op;
+
+		op = UmlFactory.getFactory().getCore().buildOperation();
+		checkVisibility(op, oper01, "public");
+
+		op = UmlFactory.getFactory().getCore().buildOperation();
+		checkVisibility(op, oper02, "private");
+
+		op = UmlFactory.getFactory().getCore().buildOperation();
+		checkVisibility(op, oper03, "protected");
+		checkVisibility(op, oper01, "protected");
+		checkVisibility(op, oper02, "private");
+	}
+
+	public void testOperationParameters() {
+		MOperation op;
+
+		String res1[] = {};
+		String res2[] = {"in", "foo", "float", "0"};
+		String res3[] = {"out", "foo", "double", "0.", "inout", "bar", "String", "\"\"some\"\""};
+
+		op = UmlFactory.getFactory().getCore().buildOperation();
+		checkParameters(op, oper01, res1);
+
+		op = UmlFactory.getFactory().getCore().buildOperation();
+		checkParameters(op, oper02, res2);
+
+		op = UmlFactory.getFactory().getCore().buildOperation();
+		checkParameters(op, oper03, res3);
+		checkParameters(op, oper01, res1);
+		checkParameters(op, oper02, res2);
+	}
+
+	public void testOperationProperties() {
+		MOperation op;
+
+		String res1[] = {"abstract", null, "concurrency", null,
+			"concurrent", null, "guarded", null, "leaf", null,
+			"query", null, "root", null, "sequential", null};
+
+		op = UmlFactory.getFactory().getCore().buildOperation();
+		checkProperties(op, oper01, res1);
+
+		op = UmlFactory.getFactory().getCore().buildOperation();
+		checkProperties(op, oper02, res1);
+
+		op = UmlFactory.getFactory().getCore().buildOperation();
+		checkProperties(op, oper03, res1);
+	}
+
+	public void testOperationStereotype() {
+		MOperation op;
+
+		op = UmlFactory.getFactory().getCore().buildOperation();
+		checkStereotype(op, oper01, null);
+
+		op = UmlFactory.getFactory().getCore().buildOperation();
+		checkStereotype(op, oper02, "create");
+
+		op = UmlFactory.getFactory().getCore().buildOperation();
+		checkStereotype(op, oper03, "destroy");
+		checkStereotype(op, oper01, "destroy");
+		checkStereotype(op, oper04, null);
+	}
+
+	public void testOperationParseExceptions() {
+		MOperation op;
+
+		op = UmlFactory.getFactory().getCore().buildOperation();
+		checkThrows(op, noper01, true, false, false);
+		checkThrows(op, noper02, true, false, false);
+		checkThrows(op, noper03, true, false, false);
+		checkThrows(op, noper04, true, false, false);
+		checkThrows(op, noper05, true, false, false);
+		checkThrows(op, noper06, true, false, false);
+		checkThrows(op, noper07, true, false, false);
+		checkThrows(op, noper08, true, false, false);
+		checkThrows(op, noper09, true, false, false);
+		checkThrows(op, noper10, true, false, false);
+	}
+
+	private void checkName(MAttribute attr, String text, String name) {
+		try {
+			ParserDisplay.SINGLETON.parseAttribute(text, attr);
+			assert(text + " gave wrong name: " + attr.getName(),
+				name.equals(attr.getName()));
+		} catch (Exception e) {
+			assert(text + " threw unexpectedly: " + e, false);
+		}
+	}
+
+	private void checkName(MOperation op, String text, String name) {
+		try {
+			ParserDisplay.SINGLETON.parseOperation(text, op);
+			assert(text + " gave wrong name: " + op.getName() + " != " + name,
+				name.equals(op.getName()));
+		} catch (Exception e) {
+			assert(text + " threw unexpectedly: " + e, false);
+		}
+	}
+
+	private void checkType(MAttribute attr, String text, String type) {
+		try {
+			ParserDisplay.SINGLETON.parseAttribute(text, attr);
+			assert(text + " gave wrong type: " + (attr.getType() == null ? "(null)" : attr.getType().getName()),
+				attr.getType() != null && type.equals(attr.getType().getName()));
+		} catch (Exception e) {
+			assert(text + " threw unexpectedly: " + e, false);
+		}
+	}
+
+	private void checkType(MOperation op, String text, String type) {
+		try {
+			ParserDisplay.SINGLETON.parseOperation(text, op);
+			Collection ret = UmlHelper.getHelper().getCore().getReturnParameters(op);
+			Iterator it = ret.iterator();
+			assert(text + " gave extra return value", !(type == null && it.hasNext()));
+			assert(text + " lacks return value", !(type != null && !it.hasNext()));
+			if (it.hasNext()) {
+				MParameter p = (MParameter) it.next();
+				assert(text + " gave wrong return",
+					(type == null && p.getType() == null) ||
+					(type != null && type.equals(p.getType().getName())));
+			}
+			assert(text + " gave extra return value", !it.hasNext());
+		} catch (Exception e) {
+			assert(text + " threw unexpectedly: " + e, false);
+		}
+	}
+
+	private void checkParameters(MOperation op, String text, String params[]) {
+		int i;
+
+		try {
+			ParserDisplay.SINGLETON.parseOperation(text, op);
+			Collection prm = op.getParameters();
+			Iterator it = prm.iterator();
+			assert(text + " lacks parameters", !(params.length > 0 && !it.hasNext()));
+			for (i = 0; i + 3 < params.length; i += 4) {
+				MParameter p;
+				do {
+					assert(text + " lacks parameters", it.hasNext());
+					p = (MParameter) it.next();
+				} while (p.getKind().equals(MParameterDirectionKind.RETURN));
+				assert(text + "gave wrong inout in parameter " + (i / 4),
+					params[i].equals(p.getKind().getName()));
+				assert(text + "gave wrong name in parameter " + (i / 4),
+					params[i+1].equals(p.getName()));
+				assert(text + "gave wrong type in parameter " + (i / 4),
+					params[i+2].equals(p.getType().getName()));
+				assert(text + "gave wrong default value in parameter " + (i / 4),
+					(params[i+3] == null && p.getDefaultValue() == null) ||
+					(params[i+3] != null && p.getDefaultValue() != null) &&
+					 params[i+3].equals(p.getDefaultValue().getBody()));
+			}
+			while (it.hasNext()) {
+				MParameter p = (MParameter) it.next();
+				assert(text + " gave extra parameters", p.getKind().equals(MParameterDirectionKind.RETURN));
+			}
+		} catch (Exception e) {
+			assert(text + " threw unexpectedly: " + e, false);
+		}
+	}
+
+	private void checkVisibility(MAttribute attr, String text, String vis) {
+		try {
+			ParserDisplay.SINGLETON.parseAttribute(text, attr);
+			assert(text + " gave wrong visibility: " + (attr.getVisibility() == null ? "(null)" : attr.getVisibility().getName()),
+				attr.getVisibility() != null && vis.equals(attr.getVisibility().getName()));
+		} catch (Exception e) {
+			assert(text + " threw unexpectedly: " + e, false);
+		}
+	}
+
+	private void checkVisibility(MOperation op, String text, String vis) {
+		try {
+			ParserDisplay.SINGLETON.parseOperation(text, op);
+			assert(text + " gave wrong visibility: " + (op.getVisibility() == null ? "(null)" : op.getVisibility().getName()),
+				op.getVisibility() != null && vis.equals(op.getVisibility().getName()));
+		} catch (Exception e) {
+			assert(text + " threw unexpectedly: " + e, false);
+		}
+	}
+
+	private void checkProperties(MAttribute attr, String text, String props[]) {
+		int i;
+		try {
+			ParserDisplay.SINGLETON.parseAttribute(text, attr);
+			for (i = 0; i + 1 < props.length; i += 2) {
+				if (props[i+1] == null)
+					assert("TaggedValue " + props[i] + " exists!", attr.getTaggedValue(props[i]) == null);
+				else
+					assert("TaggedValue " + props[i] + " wrong!", props[i+1].equals(attr.getTaggedValue(props[i])));
+			}
+		} catch (Exception e) {
+			assert(text + " threw Exception " + e, false);
+		}
+	}
+
+	private void checkProperties(MOperation op, String text, String props[]) {
+		int i;
+		try {
+			ParserDisplay.SINGLETON.parseOperation(text, op);
+			for (i = 0; i + 1 < props.length; i += 2) {
+				if (props[i+1] == null)
+					assert("TaggedValue " + props[i] + " exists!", op.getTaggedValue(props[i]) == null);
+				else
+					assert("TaggedValue " + props[i] + " wrong!", props[i+1].equals(op.getTaggedValue(props[i])));
+			}
+		} catch (Exception e) {
+			assert(text + " threw Exception " + e, false);
+		}
+	}
+
+	private void checkMultiplicity(MAttribute attr, String text, MMultiplicity mult) {
+		try {
+			ParserDisplay.SINGLETON.parseAttribute(text, attr);
+			assert(text + " gave wrong multiplicity: " + (attr.getMultiplicity() == null ? "(null)" : attr.getMultiplicity().toString()),
+				mult == null && attr.getMultiplicity() == null ||
+				mult != null && mult.equals(attr.getMultiplicity()));
+		} catch (Exception e) {
+			assert(text + " threw unexpectedly: " + e, false);
+		}
+	}
+
+	private void checkThrows(MAttribute attr, String text, boolean prsEx,
+			boolean ex2, boolean ex3) {
+		try {
+			ParserDisplay.SINGLETON.parseAttribute(text, attr);
+			assert("didn't throw for " + text, false);
+		} catch (ParseException pe) {
+			assert(text + " threw ParseException " + pe, prsEx);
+		} catch (Exception e) {
+			assert(text + " threw Exception " + e, !prsEx);
+		}
+	}
+
+	private void checkThrows(MOperation op, String text, boolean prsEx,
+			boolean ex2, boolean ex3) {
+		try {
+			ParserDisplay.SINGLETON.parseOperation(text, op);
+			assert("didn't throw for " + text, false);
+		} catch (ParseException pe) {
+			assert(text + " threw ParseException " + pe, prsEx);
+		} catch (Exception e) {
+			assert(text + " threw Exception " + e, !prsEx);
+		}
+	}
+
+	private void checkValue(MAttribute attr, String text, String val) {
+		try {
+			ParserDisplay.SINGLETON.parseAttribute(text, attr);
+			assert(text + " gave wrong visibility: " + (attr.getInitialValue() == null ? "(null)" : attr.getInitialValue().getBody()),
+				val == null && (attr.getInitialValue() == null || "".equals(attr.getInitialValue().getBody())) ||
+				val != null && attr.getInitialValue() != null && val.equals(attr.getInitialValue().getBody()));
+		} catch (Exception e) {
+			assert(text + " threw unexpectedly: " + e, false);
+		}
+	}
+
 	private void checkStereotype(MAttribute attr, String text,
 			String val) {
 		try {
@@ -306,6 +533,22 @@ public class TestParserDisplay extends TestCase {
 				(val != null &&
 				 attr.getStereotype() != null &&
 				 val.equals(attr.getStereotype().getName())));
+		} catch (Exception e) {
+			assert(text + " threw unexpectedly: " + e, false);
+		}
+	}
+
+	private void checkStereotype(MOperation op, String text,
+			String val) {
+		try {
+			ParserDisplay.SINGLETON.parseOperation(text, op);
+			assert(text + " gave wrong stereotype " +
+				(op.getStereotype() != null ?
+				 op.getStereotype().getName() : "(null)"),
+				(val == null && op.getStereotype() == null)||
+				(val != null &&
+				 op.getStereotype() != null &&
+				 val.equals(op.getStereotype().getName())));
 		} catch (Exception e) {
 			assert(text + " threw unexpectedly: " + e, false);
 		}
