@@ -122,5 +122,13 @@ public class ActionSequenceDiagram extends ActionAddDiagram {
                     == ProjectManager.getManager().getCurrentProject().getModel() ||
                     ns instanceof MPackage);
     }
+    
+    /**
+     * patch to disable SD's in 0.14.
+     * @see org.argouml.uml.ui.UMLAction#shouldBeEnabled()
+     */
+    public boolean shouldBeEnabled() {
 
+        return false;
+    }
 } /* end class ActionSequenceDiagram */

@@ -216,6 +216,35 @@ public class ModelManagementHelper {
     }
 
     /**
+     * Finds the absolute path of a ModelElement. Ie the name of each
+     * namespace starting at the root (the Model) and ending with the
+     * name of the element.
+     *
+     * <p>The returned Vector implicitly starts at the root (the model)
+     * and follows element's chain of owning namespaces back down to
+     * element. The first element will thus be the name of the top level
+     * namespace below the model, and the last element will be the name
+     * of element itself. Note thus that for the model the path will be
+     * empty.
+     *
+     * @param  element is the object to resolve the path for.
+     * @return A Vector as described above.
+     * @throws IllegalArgumentException if element isn't a ModelElement
+     *         properly owned by namespaces and a model.
+     */
+    public Vector getPath(Object element) {
+        Vector path;
+
+        if (ModelFacade.isAModel(element))
+            return new Vector();
+
+        path = getPath(ModelFacade.getNamespace(element));
+	path.add(ModelFacade.getName(element));
+
+	return path;
+    }
+
+    /**
      * Move a modelelement to a new namespace. The way this is currently
      * implemented this means that ALL modelelements that share the same
      * namespace as the element to be moved are moved.

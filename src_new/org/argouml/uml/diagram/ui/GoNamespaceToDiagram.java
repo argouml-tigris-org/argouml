@@ -34,6 +34,7 @@ import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.ui.AbstractGoRule;
 import org.argouml.uml.diagram.state.ui.UMLStateDiagram;
+import org.argouml.uml.diagram.sequence.ui.UMLSequenceDiagram;
 
 import ru.novosoft.uml.foundation.core.MBehavioralFeature;
 import ru.novosoft.uml.foundation.core.MNamespace;
@@ -62,6 +63,10 @@ public class GoNamespaceToDiagram extends AbstractGoRule {
                     UMLStateDiagram sd = (UMLStateDiagram) d;
                     if (sd.getStateMachine().getContext() instanceof MBehavioralFeature)
                     	continue;
+                }
+                // patch for 0.14 stability to disable SD's
+                if (d instanceof UMLSequenceDiagram) {
+                    continue;
                 }
                 if (d.getNamespace() == ns)
                 	returnList.add(d);                 

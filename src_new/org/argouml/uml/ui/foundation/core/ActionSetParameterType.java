@@ -75,7 +75,10 @@ public class ActionSetParameterType extends UMLChangeAction {
             }
         }
         if (newClassifier != null && newClassifier != oldClassifier && para != null) {
-            ModelManagementHelper.getHelper().moveElement(newClassifier, para.getModel());
+            newClassifier =
+		(MClassifier) ModelManagementHelper.getHelper().getCorrespondingElement(
+				      newClassifier,
+				      para.getModel());
             para.setType(newClassifier);
         }
         
