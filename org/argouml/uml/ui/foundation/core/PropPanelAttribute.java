@@ -1,4 +1,4 @@
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2001 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -62,14 +62,15 @@ public class PropPanelAttribute extends PropPanel {
         addCaption("Type:",1,0,0);
         UMLComboBoxModel typeModel = new UMLComboBoxModel(this,"isAcceptibleType",
             "type","getType","setType",false,MClassifier.class,true);
-        addField(new UMLComboBox(typeModel),1,0,0);
+        addField(new UMLComboBoxNavigator(this,"NavClass",
+            new UMLComboBox(typeModel)),1,0,0);
 
         addCaption("Multiplicity:",2,0,0);
         addField(new UMLMultiplicityComboBox(this,MAttribute.class),2,0,0);
 
         addCaption("Stereotype:",3,0,0);
         JComboBox stereotypeBox = new UMLStereotypeComboBox(this);
-        addField(stereotypeBox,3,0,0);
+        addField(new UMLComboBoxNavigator(this,"NavStereo",stereotypeBox),3,0,0);
 
         addCaption("Owner:",4,0,1);
         JList ownerList = new UMLList(new UMLReflectionListModel(this,"owner",false,"getOwner",null,null,null),true);
