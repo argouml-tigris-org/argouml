@@ -40,6 +40,7 @@ public class UMLExpressionLanguageField
 
     private UMLExpressionModel _model;
     private boolean _notifyModel;
+    private boolean _isUpdating;
 
     /**
      * Creates a new field that selects the language for an expression.
@@ -83,19 +84,32 @@ public class UMLExpressionLanguageField
     private void update() {
         String oldText = getText();
         String newText = _model.getLanguage();
-        if (oldText == null || newText == null || !oldText.equals(newText)) {
-            if (oldText != newText) {
+        if ((oldText == null || newText == null || !oldText.equals(newText))
+	    && oldText != newText) {
+	    try {
+		_isUpdating = true;
                 setText(newText);
-            }
+            } finally {
+		_isUpdating = false;
+	    }
         }
     }
+
     public void changedUpdate(final DocumentEvent p1) {
-        _model.setLanguage(getText());
+	if (!_isUpdating) {
+	    _model.setLanguage(getText());
+	}
     }
+
     public void removeUpdate(final DocumentEvent p1) {
-        _model.setLanguage(getText());
+	if (!_isUpdating) {
+	    _model.setLanguage(getText());
+	}
     }
+
     public void insertUpdate(final DocumentEvent p1) {
-        _model.setLanguage(getText());
+	if (!_isUpdating) {
+	    _model.setLanguage(getText());
+	}
     }
 }

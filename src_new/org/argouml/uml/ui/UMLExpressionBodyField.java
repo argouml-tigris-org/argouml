@@ -50,6 +50,7 @@ public class UMLExpressionBodyField
 
     private UMLExpressionModel _model;
     private boolean _notifyModel;
+    private boolean _isUpdating;
     
     public UMLExpressionBodyField(UMLExpressionModel model,
 				  boolean notifyModel) {
@@ -91,20 +92,32 @@ public class UMLExpressionBodyField
         Object newText = _model.getBody();
 	cat.debug("UMLExpressionBodyField: update: " + oldText + " " + newText);
 
-	if (oldText == null || newText == null || !oldText.equals(newText)) {
-            if (oldText != newText) {
-		cat.debug("setNewText!!");
+	if ((oldText == null || newText == null || !oldText.equals(newText))
+	    && oldText != newText) {
+	    try {
+		_isUpdating = true;
                 setText((String) newText);
-            }
+            } finally {
+		_isUpdating = false;
+	    }
         }
     }
+
     public void changedUpdate(final DocumentEvent p1) {
-        _model.setBody(getText());
+	if (!_isUpdating) {
+	    _model.setBody(getText());
+	}
     }
+
     public void removeUpdate(final DocumentEvent p1) {
-        _model.setBody(getText());
+	if (!_isUpdating) {
+	    _model.setBody(getText());
+	}
     }
+
     public void insertUpdate(final DocumentEvent p1) {
-        _model.setBody(getText());
+	if (!_isUpdating) {
+	    _model.setBody(getText());
+	}
     }
 }
