@@ -292,12 +292,12 @@ public class FindDialog extends ArgoDialog
                     + "information about it,\n" 
             + "     including a list of related objects.\n" 
             + "   + Double clicking on a result jumps to the " 
-                    + "selected diagram.\n\n"; 
-//            + "You can \"tear-off\" a results tab by double clicking " 
-//                    + "on the tab name.\n" 
-//            + "If you accumulate too many tabs, press \"Clear " 
-//                    + "Tabs\" to remove " 
-//            + "them all.";
+                    + "selected diagram.\n\n"
+            + "You can \"tear-off\" a results tab by double clicking " 
+                    + "on the tab name.\n" 
+            + "If you accumulate too many tabs, press \"Clear " 
+                    + "Tabs\" to remove " 
+            + "them all.";
         helpText.setText(s);
         helpText.setEditable(false);
         help.add(new JScrollPane(helpText), BorderLayout.CENTER);
@@ -329,7 +329,7 @@ public class FindDialog extends ArgoDialog
      * Init the modelelement types that we can look for.
      */
     public void initTypes() {
-        type.addItem(PredicateMType.create());
+        type.addItem(PredicateMType.create()); // Any type
 
         type.addItem(PredicateMType.create(ModelFacade.CLASS));
         type.addItem(PredicateMType.create(ModelFacade.INTERFACE));
@@ -343,7 +343,6 @@ public class FindDialog extends ArgoDialog
         type.addItem(PredicateMType.create(ModelFacade.INSTANCE));
         type.addItem(PredicateMType.create(ModelFacade.INTERFACE));
         type.addItem(PredicateMType.create(ModelFacade.LINK));
-        type.addItem(PredicateMType.create(ModelFacade.CLASS));
         type.addItem(PredicateMType.create(ModelFacade.PACKAGE));
         type.addItem(PredicateMType.create(ModelFacade.OPERATION));
         type.addItem(PredicateMType.create(ModelFacade.PSEUDOSTATE));
@@ -541,18 +540,18 @@ public class FindDialog extends ArgoDialog
     /**
      * React on a double-click on a given tab.
      * 
-     * TODO: Since spawning is disabled, we cannot do this....
-     * MVW: I commented out the code below since it leads to exceptions.
+     * MVW: This is the only place where spawning is still enabled.
      * 
      * @param tab the given tab
      */
     public void myDoubleClick(int tab) {
-//        JPanel t = (JPanel) resultTabs.elementAt(tab);
-//        if (t instanceof TabSpawnable) {
-//            ((TabSpawnable) t).spawn();
-//            resultTabs.removeElementAt(tab);
-//            location.removeItem("In Tab:" + ((TabSpawnable) t).getTitle());
-//        }
+        JPanel t = (JPanel) resultTabs.elementAt(tab);
+        if (t instanceof TabSpawnable) {
+            if (((TabSpawnable) t).spawn() != null) {
+                resultTabs.removeElementAt(tab);
+                location.removeItem("In Tab:" + ((TabSpawnable) t).getTitle());
+            }
+        }
     }
 
 } /* end class FindDialog */

@@ -310,8 +310,9 @@ public class MultiEditorPane
         //should register a listener
         LOG.debug("double: " + tabs.getComponentAt(tab).toString());
         JPanel t = (JPanel) tabPanels.elementAt(tab);
-        if (t instanceof TabSpawnable)
-             ((TabSpawnable) t).spawn();
+        // Currently this feature is disabled for ArgoUML.
+//        if (t instanceof TabSpawnable)
+//             ((TabSpawnable) t).spawn();
     }
 
     /**
