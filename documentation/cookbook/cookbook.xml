@@ -1574,17 +1574,37 @@ The Module loader is a Layer 2 component. See <xref linkend="layer2"></xref>.
 Currently the module loader is located in
 <classname>org.argouml.application.modules.ModuleLoader</classname>
 with interfaces in
-<classname>org.aroguml.application.api</classname>.
+<classname>org.argouml.application.api</classname>.
 </para>
       <para>
-This just handles the enabling and disabling of every module.
+This handles the enabling and disabling of every module.
+</para>
+      <para>
+An idea on how it could work:
 It is then the modules responsibility to connect and register to
 the component or components it is going to work with using that
 components Facade or Plugin interface.
 </para>
       <para>
-For details see <xref linkend="modules_and_plugins"></xref>.
+For details on how to build a module
+see <xref linkend="modules_and_plugins"></xref>.
 </para>
+      <sect2>
+        <title>What the ModuleLoader does</title>
+        <para>
+The ModuleLoader is looking for module jars.
+It actually scans through all jars available in the argo ext dir directory.
+See Edit Settings Environment tab.
+If you turn on logging on the debug level while running ArgoUML
+you should be able to see what jar files it finds and what it does with them.
+</para>
+        <para>
+A module jar contains the classes, resources and a manifest file.
+The manifest file points out the classes to be loaded.
+Also notice that the Specification-Title and Vendor must be specified
+correctly for this to work.
+</para>
+      </sect2>
     </sect1>
 
 
