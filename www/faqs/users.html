@@ -82,6 +82,9 @@ DT {
 <li><a href="#bunch_link">I've got a bunch of people working on the same diagrams. How do I track who is doing what on the diagram? How do I use ArgoUML with CVS?</a>
 <li><a href="#sanity_link">Is there a mechanism to do a sanity check in ArgoUML and enforce that sanity check?</a>
 <li><a href="#empty_zargo">I saved a project from ArgoUML, and then when I opened it later ArgoUML said it was empty. What can I do?</a>
+<li><a href="#strange_language">I started ArgoUML and it is in
+Russion/Spanish/French/German.
+Why? How can I configure it so it will be in English?</a> 
 </ul>
 
 <a name="project_related"><H4>Project-related questions</H4></a>
@@ -647,6 +650,36 @@ as long as he ignores (or turns of) the critics with suggestions.
 and then when I opened it later ArgoUML said it was empty. 
 What can I do?</a> 
 <DD>Often the problem is a null character or an accent. ArgoUML still doesn't deal very well with problems related to these characters. There is also some discussion of addressing this problem in a future version of ArgoUML.
+
+
+<DT><a name="strange_language">I started ArgoUML and it is in
+Russion/Spanish/French/German.
+Why? How can I configure it so it will be in English?</a> 
+<DD>ArgoUML attempts to detect the language settings from your
+environment and start with the language you prefer.
+<p>
+There are two known problems with this approach:<ul>
+<li>The quality of some of the translations is poor and
+ArgoUML will, because of that, present a mix between English and the
+configured language.
+<li>If you are borrowing someone else's computer or working in
+an foreign office you might not understand the GUI.
+</ul>
+There are two possible solutions:<ul>
+<li>Reconfigure the environment to work in your language (or English)
+and restart ArgoUML.
+<li>Force ArgoUML to use the language of your choice.
+For the upcoming 0.16 version of ArgoUML there will be one Java Web
+Start target for some of the languages.
+Then you can use the target for English.
+Until then you will have to install argouml locally and start it 
+with forcing the language.
+Like this:
+<pre>
+java -Duser.language=en -jar argouml.jar
+</pre>
+</ul>
+
 
 </DL>
 
