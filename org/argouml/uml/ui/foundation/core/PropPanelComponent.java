@@ -21,20 +21,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-
-// File: PropPanelComponent.java
-// Classes: PropPanelComponent
-// Original Author: 5eichler@informatik.uni-hamburg.de
-// $Id$
-
-// 21 Mar 2002: Jeremy Bennett (mail@jeremybennett.com). Changed to use the
-// labels "Generalizes:" and "Specializes:" for inheritance.
-
-// 4 Apr 2002: Jeremy Bennett (mail@jeremybennett.com). Labels corrected to
-// "Generalizations:" and "Specializations". Layout of prop panel balanced
-// better.
-
-
 package org.argouml.uml.ui.foundation.core;
 
 import java.awt.GridLayout;
@@ -45,43 +31,69 @@ import org.argouml.application.api.Argo;
 import org.argouml.uml.ui.PropPanelButton;
 import org.argouml.uml.ui.UMLCheckBox;
 import org.argouml.uml.ui.UMLReflectionBooleanProperty;
+import org.argouml.swingext.LabelledLayout;
+import org.argouml.util.ConfigLoader;
+import org.argouml.uml.ui.UMLComboBoxNavigator;
 
 import ru.novosoft.uml.foundation.core.MComponent;
 
-
+/**
+ * PropPanel for a UML component.
+ *
+ * <p>$Id$
+ *
+ * @author 5eichler@informatik.uni-hamburg.de
+ */
 public class PropPanelComponent extends PropPanelClassifier {
 
-  ////////////////////////////////////////////////////////////////
-  // contructors
   public PropPanelComponent() {
-    super("Component", _componentIcon, 2);
-
+    super("Component", ConfigLoader.getTabPropsOrientation());
     Class mclass = MComponent.class;
 
-    addCaption(Argo.localize("UMLMenu", "label.name"),1,0,0);
-    addField(getNameTextField(),1,0,0);
-
-    addCaption(Argo.localize("UMLMenu", "label.stereotype"),2,0,0);
-    addField(getStereotypeBox(),2,0,0);
-
-    addCaption(Argo.localize("UMLMenu", "label.namespace"),3,0,0);
-    addField(getNamespaceComboBox(),3,0,0);
-
-    addCaption(Argo.localize("UMLMenu", "label.modifiers"),4,0,1);
-    JPanel modifiersPanel = new JPanel(new GridLayout(0,3));
-    modifiersPanel.add(new UMLCheckBox(Argo.localize("UMLMenu", "checkbox.abstract-lc"),this,new UMLReflectionBooleanProperty("isAbstract",mclass,"isAbstract","setAbstract")));
-    modifiersPanel.add(new UMLCheckBox(Argo.localize("UMLMenu", "checkbox.final-lc"),this,new UMLReflectionBooleanProperty("isLeaf",mclass,"isLeaf","setLeaf")));
-    modifiersPanel.add(new UMLCheckBox(localize("root"),this,new UMLReflectionBooleanProperty("isRoot",mclass,"isRoot","setRoot")));
-    addField(modifiersPanel,4,0,0);
-
-    addCaption("Generalizations:",0,1,1);
-    addField(getGeneralizationScroll(),0,1,1);
-
-    addCaption("Specializations:",1,1,1);
-    addField(getSpecializationScroll(),1,1,1);
+    addField(Argo.localize("UMLMenu", "label.name"), getNameTextField());
+    addField(Argo.localize("UMLMenu", "label.stereotype"), new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-stereo"),getStereotypeBox()));
+    addField(Argo.localize("UMLMenu", "label.namespace"), getNamespaceComboBox());
+    _modifiersPanel.add(new UMLCheckBox(Argo.localize("UMLMenu", "checkbox.active-uc"),this,new UMLReflectionBooleanProperty("isActive",mclass,"isActive","setActive")));
+    addField(Argo.localize("UMLMenu", "label.modifiers"), _modifiersPanel);
+    
+    add(LabelledLayout.getSeperator());
+    
+    addField(Argo.localize("UMLMenu", "label.generalizations"), getGeneralizationScroll());
+    addField(Argo.localize("UMLMenu", "label.specializations"), getSpecializationScroll());
+    
+    add(LabelledLayout.getSeperator());
+     
+    addField(Argo.localize("UMLMenu", "label.clientdependency"), getClientDependencyScroll());
+    addField(Argo.localize("UMLMenu", "label.supplierdependency"), getSupplierDependencyScroll());
 
     new PropPanelButton(this,buttonPanel,_navUpIcon, Argo.localize("UMLMenu", "button.go-up"),"navigateUp",null);   
-    new PropPanelButton(this,buttonPanel,_deleteIcon,localize("Delete component"),"removeElement",null);
+    new PropPanelButton(this,buttonPanel,_deleteIcon, Argo.localize("UMLMenu", "button.delete-class"),"removeElement",null);
+
+    
+//    addCaption(Argo.localize("UMLMenu", "label.name"),1,0,0);
+//    addField(getNameTextField(),1,0,0);
+//
+//    addCaption(Argo.localize("UMLMenu", "label.stereotype"),2,0,0);
+//    addField(getStereotypeBox(),2,0,0);
+//
+//    addCaption(Argo.localize("UMLMenu", "label.namespace"),3,0,0);
+//    addField(getNamespaceComboBox(),3,0,0);
+//
+//    addCaption(Argo.localize("UMLMenu", "label.modifiers"),4,0,1);
+//    JPanel modifiersPanel = new JPanel(new GridLayout(0,3));
+//    modifiersPanel.add(new UMLCheckBox(Argo.localize("UMLMenu", "checkbox.abstract-lc"),this,new UMLReflectionBooleanProperty("isAbstract",mclass,"isAbstract","setAbstract")));
+//    modifiersPanel.add(new UMLCheckBox(Argo.localize("UMLMenu", "checkbox.final-lc"),this,new UMLReflectionBooleanProperty("isLeaf",mclass,"isLeaf","setLeaf")));
+//    modifiersPanel.add(new UMLCheckBox(localize("root"),this,new UMLReflectionBooleanProperty("isRoot",mclass,"isRoot","setRoot")));
+//    addField(modifiersPanel,4,0,0);
+//
+//    addCaption("Generalizations:",0,1,1);
+//    addField(getGeneralizationScroll(),0,1,1);
+//
+//    addCaption("Specializations:",1,1,1);
+//    addField(getSpecializationScroll(),1,1,1);
+//
+//    new PropPanelButton(this,buttonPanel,_navUpIcon, Argo.localize("UMLMenu", "button.go-up"),"navigateUp",null);   
+//    new PropPanelButton(this,buttonPanel,_deleteIcon,localize("Delete component"),"removeElement",null);
   }
 
     
