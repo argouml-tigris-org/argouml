@@ -22,20 +22,12 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-
-/*
- * ArgoModule.java
- *
- * Created on June 12, 2001, 6:47 AM
- */
-
 package org.argouml.application.api;
 
 import java.util.Vector;
 
-import org.apache.log4j.*;
-
-/** Interface that defines the characteristics of an external
+/**
+ * Interface that defines the characteristics of an external
  *  module usable by Argo.
  *
  * @author  Will Howery
@@ -43,56 +35,53 @@ import org.apache.log4j.*;
  * @since 0.9.4
  */
 public interface ArgoModule { 
-
-    /**
-     * Define a static log4j category variable for ArgoUML configuration.
-     *
-     * @deprecated by Linus Tolke as of 0.15.4. Use your own logger in your
-     * class. This will be removed.
-     */
-    public static final Logger cat = 
-	Logger.getLogger("org.argouml.application.modules");
-
     public static final String MODULEFILENAME = ".argo.modules";
     public static final String MODULEFILENAME_ALTERNATE = "argo.modules";
 
-    /** Method called when Argo is loading a module.
+    /** 
+     * Method called when Argo is loading a module.
      * 
      * @return true if the module initialized properly.
      */
     public boolean initializeModule();
     
-    /** Method called when Argo is unloading a module.
+    /** 
+     * Method called when Argo is unloading a module.
      * 
      * @return true if the module terminated properly.
      */
     public boolean shutdownModule();
 
-    /** Called to enable or disable a module programmatically.
+    /** 
+     * Called to enable or disable a module programmatically.
      * 
      * @param tf true to enable module, false to disable
      */
     public void setModuleEnabled(boolean tf);
     
-    /** Allows determination if a module is enabled or disabled
+    /** 
+     * Allows determination if a module is enabled or disabled
      * 
      * @return true if the module is enabled, otherwise false
      */
     public boolean isModuleEnabled(); // determines if enabled-disabled
 
-    /** Display name of the module.
+    /** 
+     * Display name of the module.
      *
      * @return the module name
      */
     public String getModuleName();
 
-    /** Textual description of the module.
+    /** 
+     * Textual description of the module.
      * 
      * @return the module description
      */
     public String getModuleDescription(); 
 
-    /** The module version.
+    /** 
+     * The module version.
      * 
      * There is no specified format.
      * 
@@ -100,7 +89,8 @@ public interface ArgoModule {
      */
     public String getModuleVersion(); 
     
-    /** The module author.
+    /** 
+     * The module author.
      * 
      * @return a string containing the module author
      */
@@ -114,7 +104,8 @@ public interface ArgoModule {
      */
     public Vector getModulePopUpActions(Vector popUpActions, Object context);
 
-    /** The module identifying key
+    /** 
+     * The module identifying key.
      * 
      * @return the string key the module uses to identify itself
      */

@@ -22,18 +22,20 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-/*
- * NewspaperLayout.java
- */
 package org.argouml.swingext;
 
-import java.awt.*;
-import javax.swing.*;
+import java.awt.Component;
+import java.awt.Container;
+import java.awt.Dimension;
+import java.awt.Insets;
+import java.awt.Rectangle;
+
+import javax.swing.JComponent;
 
 import org.apache.log4j.Logger;
 
 /**
- * Similar to <code>GridLayout2</code> but once the components fill
+ * Similar to {@link GridLayout2} but once the components fill
  * the height of the container they flow into another grid on the
  * right until the full width of the container is filled. Once the
  * containers width is full it flows to the right no more, the grid
@@ -43,19 +45,13 @@ import org.apache.log4j.Logger;
  * @author Bob Tarling
  */
 public class NewspaperLayout extends GridLayout2 {
-    /**
-     * @deprecated by Linus Tolke as of 0.16. Will be private.
-     */
-    protected static Logger cat = Logger.getLogger(NewspaperLayout.class);
+    private static final Logger LOG = Logger.getLogger(NewspaperLayout.class);
 
     private int gridGap = 0;
     private int preferredX;
     private int preferredY;
 
     private int gridWidth;
-
-    private boolean verticalScrollRequired;
-    private boolean horizontalScrollRequired;
 
     public NewspaperLayout() {
         this(1, 0, 0, 0, 0);
@@ -71,26 +67,38 @@ public class NewspaperLayout extends GridLayout2 {
         this.gridGap = gridGap;
     }
 
+    /**
+     * @see java.awt.LayoutManager#addLayoutComponent(java.lang.String, java.awt.Component)
+     */
     public void addLayoutComponent(String name, Component comp) {
     }
 
+    /**
+     * @see java.awt.LayoutManager#removeLayoutComponent(java.awt.Component)
+     */
     public void removeLayoutComponent(Component comp) {
     }
 
+    /**
+     * @see java.awt.LayoutManager#preferredLayoutSize(java.awt.Container)
+     */
     public Dimension preferredLayoutSize(Container parent) {
         JComponent comp = (JComponent) parent;
         Rectangle rect = comp.getVisibleRect();
         //preferredX = (int) rect.getWidth();
-        cat.debug("Visible width = " + preferredX);
-        cat.debug("Visible X = " + rect.getX() + " Width = " + preferredX);
+        LOG.debug("Visible width = " + preferredX);
+        LOG.debug("Visible X = " + rect.getX() + " Width = " + preferredX);
         Insets insets = parent.getInsets();
         layoutContainer(parent);
         if (preferredX < insets.right + gridWidth + insets.left)
 	    preferredX = insets.right + gridWidth + insets.left;
-        cat.debug("Preferred width = " + preferredX);
+        LOG.debug("Preferred width = " + preferredX);
         return new Dimension(preferredX, preferredY);
     }
 
+    /**
+     * @see java.awt.LayoutManager#minimumLayoutSize(java.awt.Container)
+     */
     public Dimension minimumLayoutSize(Container parent) {
         Insets insets = parent.getInsets();
         return new Dimension(insets.right + gridWidth + insets.left, 0);
@@ -100,6 +108,9 @@ public class NewspaperLayout extends GridLayout2 {
         return new Dimension(Integer.MAX_VALUE, Integer.MAX_VALUE);
     }
 
+    /**
+     * @see java.awt.LayoutManager#layoutContainer(java.awt.Container)
+     */
     public void layoutContainer(Container parent) {
         synchronized (parent.getTreeLock()) {
             int ncomponents = parent.getComponentCount();
@@ -235,12 +246,9 @@ public class NewspaperLayout extends GridLayout2 {
 					       int gridHeight,
 					       int nrows, int ncols,
 					       int maxGrids) {
-        JComponent parentComp = (JComponent) parent;
-        int visibleWidth = (int) parentComp.getVisibleRect().getWidth();
         int ncomponents = parent.getComponentCount();
         Insets insets = parent.getInsets();
         int newsColumn = 0;
-        int internalWidth = visibleWidth - (insets.right + insets.left);
         int targetHeight = gridHeight / maxGrids;
         int highestY = 0;
         int y = insets.top;
