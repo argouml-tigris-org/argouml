@@ -62,13 +62,13 @@ public class FigNote extends FigNodeModelElement {
      */
     public FigNote() {
 	Color handleColor = Globals.getPrefs().getHandleColor();
-	_bigPort = new FigRect(10, 10, 90, 20, handleColor, Color.lightGray);
+	setBigPort(new FigRect(10, 10, 90, 20, handleColor, Color.lightGray));
 	getNameFig().setExpandOnly(true);
 	getNameFig().setText("FigNote");
 	// initialize any other Figs here
 
 	// add Figs to the FigNode in back-to-front order
-	addFig(_bigPort);
+	addFig(getBigPort());
 	addFig(getNameFig());
 
 

@@ -135,7 +135,7 @@ public class ShadowComboBox extends JComboBox {
     private class ShadowFig extends FigNodeModelElement {
         public ShadowFig() {
             super();
-            addFig(_bigPort);
+            addFig(getBigPort());
             addFig(getNameFig());
         }
     }

@@ -123,20 +123,30 @@ public abstract class FigNodeModelElement
     // constants
 
     private NotationName currentNotationName;
-    public static Font LABEL_FONT;
-    public static Font ITALIC_LABEL_FONT;
-    public final int MARGIN = 2;
+    private static final Font LABEL_FONT;
+    private static final Font ITALIC_LABEL_FONT;
+    private static final int MARGIN = 2;
 
+    /**
+     * min. 17, used to calculate y pos of FigText items in a compartment
+     */
     protected static final int ROWHEIGHT = 17;
-    // min. 17, used to calculate y pos of FigText items in a compartment
+
+    /**
+     * min. 18, used to calculate y pos of stereotype FigText items 
+     * in a compartment
+     */
     protected static final int STEREOHEIGHT = 18;
+    
+    /**
+     * Needed for loading. Warning: if false, a too small size might look bad!
+     */
     protected boolean checkSize = true;
-    // Needed for loading. Warning: if false, a too small size might look bad!
     
     /**
      * Offset from the end of the set of popup actions at which new items
      * should be inserted by concrete figures.
-    **/
+     */
     protected static final int POPUP_ADD_OFFSET = 3;
     
     // Fields used in paint() for painting shadows
@@ -156,6 +166,9 @@ public abstract class FigNodeModelElement
     **/    
     protected static final int SHADOW_COLOR_ALPHA = 128;
     
+    /**
+     * Used for creating right-click pop-up menus 
+     */
     protected static final String BUNDLE = "UMLMenu";
 
     static {
@@ -183,13 +196,7 @@ public abstract class FigNodeModelElement
     ////////////////////////////////////////////////////////////////
     // instance variables
 
-    /**
-     * @deprecated 0.15.3 visibility will change use getter/setter.
-     * TODO: What is the name of the getter? What is the name of the setter?
-     * MVW: I created: protected FigRect getBigPort() and 
-     * protected void setBigPort(FigRect bp).
-     */
-    protected FigRect _bigPort;
+    private FigRect bigPort;
 
     /**
      * @deprecated 0.15.3 visibility will change use
@@ -236,13 +243,17 @@ public abstract class FigNodeModelElement
         Configuration.getInteger(Notation.KEY_DEFAULT_SHADOW_WIDTH, 1);
     private ItemUID itemUid;
 
+    /**
+     * The main constructor.
+     * 
+     */
     public FigNodeModelElement() {
         // this rectangle marks the whole interface figure; everything
         // is inside it:
-        _bigPort = new FigRect(10, 10, 0, 0, Color.cyan, Color.cyan);
+        bigPort = new FigRect(10, 10, 0, 0, Color.cyan, Color.cyan);
 
         _name = new FigText(10, 10, 90, 21, true);
-        _name.setFont(LABEL_FONT);
+        _name.setFont(getLabelFont());
         _name.setTextColor(Color.black);
         // _name.setFilled(false);
         _name.setMultiLine(false);
@@ -250,7 +261,7 @@ public abstract class FigNodeModelElement
         _name.setText(placeString());
 
         _stereo = new FigText(10, 10, 90, 15, true);
-        _stereo.setFont(LABEL_FONT);
+        _stereo.setFont(getLabelFont());
         _stereo.setTextColor(Color.black);
         _stereo.setFilled(false);
         _stereo.setLineWidth(0);
@@ -263,7 +274,11 @@ public abstract class FigNodeModelElement
 
     /** Partially construct a new FigNode.  This method creates the
      *  _name element that holds the name of the model element and adds
-     *  itself as a listener. */
+     *  itself as a listener. 
+     * 
+     * @param gm ignored
+     * @param node the owning UML element
+     */
     public FigNodeModelElement(GraphModel gm, Object node) {
         this();
         setOwner(node);
@@ -309,10 +324,16 @@ public abstract class FigNodeModelElement
     ////////////////////////////////////////////////////////////////
     // accessors
 
+    /**
+     * @param id
+     */
     public void setItemUID(ItemUID id) {
         itemUid = id;
     }
 
+    /**
+     * @return 
+     */
     public ItemUID getItemUID() {
         return itemUid;
     }
@@ -1001,7 +1022,7 @@ public abstract class FigNodeModelElement
             renderingChanged();
         }
         updateBounds();
-        bindPort(own, _bigPort);
+        bindPort(own, bigPort);
     }
 
     /**
@@ -1346,16 +1367,44 @@ public abstract class FigNodeModelElement
      * @return FigRect this rectangle marks the whole interface figure; 
      * everything is inside it
      */
-    protected FigRect getBigPort() {
+    /*protected FigRect getBigPort() {
         return _bigPort;
-    }
+    }*/
     
     /**
      * @param bp FigRect this rectangle marks the whole interface figure; 
      * everything is inside it
      */
-    protected void setBigPort(FigRect bp) {
+    /*protected void setBigPort(FigRect bp) {
         _bigPort = bp;
+    }*/
+
+    /**
+     * @return Returns the lABEL_FONT.
+     */
+    public static Font getLabelFont() {
+        return LABEL_FONT;
+    }
+
+    /**
+     * @return Returns the iTALIC_LABEL_FONT.
+     */
+    public static Font getItalicLabelFont() {
+        return ITALIC_LABEL_FONT;
+    }
+
+    /**
+     * @param _bigPort The _bigPort to set.
+     */
+    protected void setBigPort(FigRect _bigPort) {
+        this.bigPort = _bigPort;
+    }
+
+    /**
+     * @return Returns the _bigPort.
+     */
+    protected FigRect getBigPort() {
+        return bigPort;
     }
 } /* end class FigNodeModelElement */
 
