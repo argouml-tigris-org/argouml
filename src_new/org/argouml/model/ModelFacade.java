@@ -299,6 +299,15 @@ public class ModelFacade {
         return handle instanceof MStateVertex;
     }
 
+    /** Recognizer for Stereotype
+     *
+     * @param handle candidate
+     * @returns true if handle is a Stereotype
+     */
+    public static boolean isAStereotype(Object handle) {
+        return handle instanceof MStereotype;
+    }
+
     /** Recognizer for StructuralFeature
      *
      * @param handle candidate
@@ -1099,16 +1108,50 @@ public class ModelFacade {
         throw new IllegalArgumentException("Unrecognized object " + handle);
     }
 
+    /**
+       Return the tagged value with a specific tag.
+
+       @param element The tagged value belongs to this.
+       @param name The tag.
+       @return The found tag, null if not found
+     */
+    public static Object getTaggedValue(Object modelElement, String name) {
+        if (modelElement != null && modelElement instanceof MModelElement) {
+            for (Iterator i = ((MModelElement)modelElement).getTaggedValues().iterator(); i.hasNext(); ) {
+                MTaggedValue tv = (MTaggedValue)i.next();
+                if(tv.getTag().equals(name))
+                    return tv;
+            }
+        }
+        return null;
+    }
+
+    /**
+       Return the value of some tagged value.
+
+       @param tv The tagged value.
+       @param name The tag.
+       @return The found value, null if not found
+     */
+    public static String getValueOfTag(Object tv) {
+        if (tv != null && tv instanceof MTaggedValue) {
+            return ((MTaggedValue)tv).getValue();
+        }
+        return null;
+    }
+
     ////////////////////////////////////////////////////////////////
     // Other querying methods
 
     /**
-     * Returns the named model element in the namespace, null otherwise.
+     * Returns a named object in the given object by calling it's lookup method.
      * @param namespace
      * @param name of the model element
-     * @return model element
+     * @return found object, null otherwise
      */
-    public static Object lookupNamespaceFor(Object o, String name) {
+    public static Object lookupIn(Object o, String name) {
+        if (o instanceof MModel)
+            return ((MModel)o).lookup(name);
         if (o instanceof MNamespace)
             return ((MNamespace)o).lookup(name);
         return null;
@@ -1116,6 +1159,17 @@ public class ModelFacade {
 
     ////////////////////////////////////////////////////////////////
     // Model modifying methods
+
+    /**
+     * Adds a model element to some namespace.
+     * @param ns namespace
+     * @param me model element
+     */
+    public static void addOwnedElement(Object ns, Object me) {
+        if (ns != null && ns instanceof MNamespace && me != null && me instanceof MModelElement) {
+		    ((MNamespace)ns).addOwnedElement((MModelElement)me);
+        }
+    }
 
     /** This method removes a feature from a classifier.
      *
@@ -1143,6 +1197,44 @@ public class ModelFacade {
 		    tv.setModelElement((MModelElement)o);
 		    tv.setTag(tag);
 		    tv.setValue(value);
+        }
+    }
+
+    /**
+     * Sets a value of some taggedValue.
+     * @param taggedValue
+     * @param value
+     */
+    public static void setValueOfTag(Object tv, String value) {
+        if (tv != null && tv instanceof MTaggedValue) {
+		    ((MTaggedValue)tv).setValue(value);
+        }
+    }
+
+    /**
+     * Sets the stereotype of some modelelement. The method also copies a
+     * stereotype that is not a part of the current model to the current model.
+     * @param m model element
+     * @param stereo stereotype
+     */
+    public static void setStereotype(Object m, Object stereo) {
+        if (m != null && m instanceof MModelElement) {
+            if (stereo != null && stereo instanceof MStereotype
+                && ((MModelElement)m).getModel() != ((MStereotype)stereo).getModel()) {
+                ((MStereotype)stereo).setNamespace(((MModelElement)m).getModel());
+            }
+            ((MModelElement)m).setStereotype((MStereotype)stereo);
+        }
+    }
+
+    /**
+     * Adds a constraint to some model element.
+     * @param me model element
+     * @param mc constraint
+     */
+    public static void addConstraint(Object me, Object mc) {
+        if (me != null && me instanceof MModelElement && mc != null && mc instanceof MConstraint) {
+		    ((MModelElement)me).addConstraint((MConstraint)mc);
         }
     }
 

@@ -29,6 +29,7 @@ import org.argouml.ui.*;
 import org.apache.log4j.Category;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
+import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.UmlFactory;
 import org.argouml.model.uml.UmlModelEventPump;
 import org.argouml.model.uml.foundation.core.CoreFactory;
@@ -223,7 +224,7 @@ public class Modeller
 		    mAbstraction.addClient(mClass);
 		}
 		mAbstraction.setNamespace(currentPackage);
-		mAbstraction.setStereotype(getStereotype("realize"));
+		ModelFacade.setStereotype(mAbstraction,getStereotype("realize"));
 	    }
 	}
 	catch(ClassifierNotFoundException e) {
@@ -427,7 +428,7 @@ public class Modeller
 
           if(returnType == null) {
         // Constructor
-        mOperation.setStereotype(getStereotype("create"));
+        ModelFacade.setStereotype(mOperation,getStereotype("create"));
           }
           else {
 	      mParameter = UmlFactory.getFactory().getCore().buildParameter(mOperation);
@@ -837,14 +838,12 @@ public class Modeller
        @param name The name of the stereotype.
        @return The stereotype.
     */
-    private MStereotype getStereotype(String name)
+    private Object getStereotype(String name)
     {
-	MStereotype mStereotype = (MStereotype)model.lookup(name);
+	Object mStereotype = ModelFacade.lookupIn(model,name);
 
-	if(mStereotype == null) {
-	    mStereotype = UmlFactory.getFactory().getExtensionMechanisms().createStereotype();
-	    mStereotype.setName(name);
-	    mStereotype.setNamespace(model);
+	if(mStereotype == null || !ModelFacade.isAStereotype(mStereotype)) {
+	    mStereotype = UmlFactory.getFactory().getExtensionMechanisms().buildStereotype(name,model);
 	}
 
 	return mStereotype;
@@ -857,19 +856,13 @@ public class Modeller
        @param name The tag.
        @return The found tag. A new is created if not found.
      */
-    private MTaggedValue getTaggedValue(MModelElement element,
-                                        String name)
+    private Object getTaggedValue(Object element, String name)
     {
-	for(Iterator i = element.getTaggedValues().iterator(); i.hasNext(); ) {
-	    MTaggedValue tv = (MTaggedValue)i.next();
-	    if(tv.getTag().equals(name)) {
-		return tv;
-	    }
-	}
-	MTaggedValue tv = UmlFactory.getFactory().getExtensionMechanisms().createTaggedValue();
-	tv.setModelElement(element);
-	tv.setTag(name);
-	return tv;
+        Object tv = ModelFacade.getTaggedValue(element,name);
+        if (tv == null) {
+            tv = UmlFactory.getFactory().getExtensionMechanisms().buildTaggedValue(name,"");
+        }
+        return tv;
     }
 
     /**
@@ -1020,7 +1013,7 @@ public class Modeller
    * @sTagName the name of the javadoc tag
    * @sTagData the contents of the javadoc tag
    */
-  private void addJavadocTagContents (MModelElement me,
+  private void addJavadocTagContents (Object me,
                                       String sTagName,
                                       String sTagData) {
     if ((sTagName.equals ("invariant")) ||
@@ -1028,7 +1021,7 @@ public class Modeller
         (sTagName.equals ("post-condition"))) {
 
       // add as OCL constraint
-      String sContext = OCLUtil.getContextString (me);
+      String sContext = OCLUtil.getContextString(me);
 
       MConstraint mc = UmlFactory.getFactory().getCore().createConstraint();
       mc.setName (sTagData.substring (0, sTagData.indexOf (':')));
@@ -1063,19 +1056,16 @@ public class Modeller
           );
       }
 
-      me.addConstraint (mc);
-      if (me.getNamespace() != null) {
+      ModelFacade.addConstraint(me,mc);
+      if (ModelFacade.getNamespace(me) != null) {
         // Apparently namespace management is not supported for all model
         // elements. As this does not seem to cause problems, I'll just
         // leave it at that for the moment...
-        me.getNamespace().addOwnedElement (mc);
+        ModelFacade.addOwnedElement(ModelFacade.getNamespace(me),mc);
       }
     }
     else {
-      getTaggedValue (
-          me,
-          sTagName
-        ).setValue (sTagData);
+      ModelFacade.setValueOfTag(getTaggedValue(me,sTagName),sTagData);
     }
   }
 
@@ -1088,7 +1078,7 @@ public class Modeller
    * @param me the model element to which to add the documentation
    * @param sJavaDocs the documentation comment to add ("" or null if no java docs)
    */
-  private void addDocumentationTag (MModelElement me,
+  private void addDocumentationTag (Object modelElement,
                                     String sJavaDocs) {
     if ((sJavaDocs != null) &&
         (sJavaDocs.trim().length() >=5 )) {
@@ -1134,7 +1124,7 @@ public class Modeller
                 // start standard tag
                 // potentially add current tag to set of tagged values...
                 if (sCurrentTagName != null) {
-                  addJavadocTagContents (me, sCurrentTagName, sCurrentTagData);
+                  addJavadocTagContents (modelElement, sCurrentTagName, sCurrentTagData);
                 }
 
                 // open new tag
@@ -1232,7 +1222,7 @@ public class Modeller
         }
 
         // store tag
-        addJavadocTagContents (me, sCurrentTagName, sCurrentTagData);
+        addJavadocTagContents (modelElement, sCurrentTagName, sCurrentTagData);
       }
       else {
         sJavaDocs = sJavaDocs.substring (0, sJavaDocs.lastIndexOf ('/') - 1);
@@ -1248,13 +1238,13 @@ public class Modeller
       // Do special things:
 
       // Now store documentation text
-      getTaggedValue (me, "documentation").setValue (sJavaDocs);
+      ModelFacade.setValueOfTag(getTaggedValue(modelElement,"documentation"),sJavaDocs);
 
       // If there is a tagged value named stereotype, make it a real
       // stereotype
-      String stereo = me.getTaggedValue("stereotype");
+      String stereo = ModelFacade.getValueOfTag(ModelFacade.getTaggedValue(modelElement,"stereotype"));
       if (stereo != null && stereo.length() > 0) {
-	  me.setStereotype(getStereotype(stereo));
+	  ModelFacade.setStereotype(modelElement,getStereotype(stereo));
       }
     }
   }

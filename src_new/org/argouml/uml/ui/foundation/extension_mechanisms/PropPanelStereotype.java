@@ -43,6 +43,7 @@ import org.argouml.uml.ui.UMLReflectionBooleanProperty;
 import org.argouml.uml.ui.UMLSpecializationListModel;
 import org.argouml.uml.ui.foundation.core.PropPanelModelElement;
 
+import ru.novosoft.uml.foundation.core.MModelElement;
 import ru.novosoft.uml.foundation.extension_mechanisms.MStereotype;
 
 public class PropPanelStereotype extends PropPanelModelElement {
@@ -95,7 +96,7 @@ public class PropPanelStereotype extends PropPanelModelElement {
 
     public void newStereotype() {
         Object target = getTarget();
-        MStereotype newStereo = ExtensionMechanismsFactory.getFactory().buildStereotype(null, null);
+        MStereotype newStereo = ExtensionMechanismsFactory.getFactory().buildStereotype((MModelElement)null, (String)null);
         navigateTo(newStereo);
         /*
         if(target instanceof MStereotype) {

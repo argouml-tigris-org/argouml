@@ -56,7 +56,7 @@ class PackageContext extends Context
 	throws ClassifierNotFoundException
     {
         // Search in model
-        Object mInterface = ModelFacade.lookupNamespaceFor(mPackage,name);
+        Object mInterface = ModelFacade.lookupIn(mPackage,name);
 
         if(mInterface == null) {
 	    // Try to find it via the classpath
@@ -104,7 +104,7 @@ class PackageContext extends Context
 	throws ClassifierNotFoundException
     {
 	// Search in model
-	Object mClassifier = ModelFacade.lookupNamespaceFor(mPackage,name);
+	Object mClassifier = ModelFacade.lookupIn(mPackage,name);
 
 	if(mClassifier == null) {
 	    // Try to find it via the classpath
