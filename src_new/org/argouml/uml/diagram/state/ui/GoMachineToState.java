@@ -48,7 +48,11 @@ public class GoMachineToState extends AbstractGoRule {
     public Collection getChildren(Object parent) {
         if (parent instanceof MStateMachine) {
             Vector children = new Vector();
-            children.addAll(((MCompositeState)((MStateMachine) parent).getTop()).getSubvertices());
+            if ( ((MStateMachine)parent).getTop()!=null) { 
+                children.addAll(((MCompositeState)
+                                 ((MStateMachine) parent).getTop())
+                                .getSubvertices());
+            }
             return children;
         }
         return null;
