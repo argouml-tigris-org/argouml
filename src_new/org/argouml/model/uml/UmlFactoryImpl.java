@@ -473,9 +473,11 @@ public class UmlFactoryImpl extends AbstractUmlModelFactory implements UmlFactor
      * This only works for UML elements. If a diagram contains
      * elements of another type then it is the responsibility
      * of the diagram manage those items and not call this
-     * method.
+     * method. It also only works for UML model elements that
+     * are represented in diagrams by an edge, hence the
+     * requirement to state the connecting ends.
      *
-     * @param connectionType the UML object type of the connection
+     * @param elementType the UML object type of the connection
      * @param fromElement    the UML object for the "from" element
      * @param fromStyle      the aggregationkind for the connection
      *                       in case of an association
@@ -488,24 +490,24 @@ public class UmlFactoryImpl extends AbstractUmlModelFactory implements UmlFactor
      * @throws IllegalModelElementConnectionException if the connection is not
      *                                                a valid thing to do
      */
-    public Object buildConnection(Object connectionType,
+    public Object buildConnection(Object elementType,
                   Object fromElement, Object fromStyle,
                   Object toElement, Object toStyle,
                   Object unidirectional,
                   Object namespace)
         throws IllegalModelElementConnectionException {
 
-        if (!isConnectionValid(connectionType, fromElement, toElement)) {
+        if (!isConnectionValid(elementType, fromElement, toElement)) {
             throw new IllegalModelElementConnectionException(
                 "Cannot make a "
-            + connectionType.getClass().getName()
+            + elementType.getClass().getName()
             + " between a " + fromElement.getClass().getName()
             + " and a " + toElement.getClass().getName());
         }
 
         Object connection = null;
 
-        if (connectionType == ModelFacade.ASSOCIATION) {
+        if (elementType == ModelFacade.ASSOCIATION) {
             connection =
                 getCore().buildAssociation(
                        (MClassifier) fromElement,
@@ -513,7 +515,7 @@ public class UmlFactoryImpl extends AbstractUmlModelFactory implements UmlFactor
                        (MClassifier) toElement,
                        (MAggregationKind) toStyle,
                        (Boolean) unidirectional);
-        } else if (connectionType == ModelFacade.ASSOCIATION_END) {
+        } else if (elementType == ModelFacade.ASSOCIATION_END) {
             if (fromElement instanceof MAssociation) {
                 connection =
                     getCore().buildAssociationEnd(toElement, fromElement);
@@ -521,53 +523,113 @@ public class UmlFactoryImpl extends AbstractUmlModelFactory implements UmlFactor
                 connection =
                     getCore().buildAssociationEnd(fromElement, toElement);
             }
-        } else if (connectionType == ModelFacade.ASSOCIATION_CLASS) {
+        } else if (elementType == ModelFacade.ASSOCIATION_CLASS) {
             connection =
                 getCore().buildAssociationClass(fromElement, toElement);
-        } else if (connectionType == ModelFacade.ASSOCIATION_ROLE) {
+        } else if (elementType == ModelFacade.ASSOCIATION_ROLE) {
             connection =
                 getCollaborations()
                 	.buildAssociationRole(fromElement, fromStyle,
                 	        toElement, toStyle,
                 	        (Boolean) unidirectional);
-        } else if (connectionType == ModelFacade.GENERALIZATION) {
+        } else if (elementType == ModelFacade.GENERALIZATION) {
             connection =
                 getCore().buildGeneralization(fromElement, toElement);
-        } else if (connectionType == ModelFacade.PERMISSION) {
+        } else if (elementType == ModelFacade.PERMISSION) {
             connection = getCore().buildPermission(fromElement, toElement);
-        } else if (connectionType == ModelFacade.USAGE) {
+        } else if (elementType == ModelFacade.USAGE) {
             connection =
                 getCore().buildUsage(fromElement, toElement);
-        } else if (connectionType == ModelFacade.GENERALIZATION) {
+        } else if (elementType == ModelFacade.GENERALIZATION) {
             connection =
                 getCore().buildGeneralization(fromElement, toElement);
-        } else if (connectionType == ModelFacade.DEPENDENCY) {
+        } else if (elementType == ModelFacade.DEPENDENCY) {
             connection = getCore().buildDependency(fromElement, toElement);
-        } else if (connectionType == ModelFacade.ABSTRACTION) {
+        } else if (elementType == ModelFacade.ABSTRACTION) {
             connection =
                 getCore().buildRealization(
                         fromElement,
                         toElement,
                         namespace);
-        } else if (connectionType == ModelFacade.LINK) {
+        } else if (elementType == ModelFacade.LINK) {
             connection = getCommonBehavior().buildLink(fromElement, toElement);
-        } else if (connectionType == ModelFacade.EXTEND) {
+        } else if (elementType == ModelFacade.EXTEND) {
             // Extend, but only between two use cases. Remember we draw from the
             // extension port to the base port.
             connection = getUseCases().buildExtend(toElement, fromElement);
-        } else if (connectionType == ModelFacade.INCLUDE) {
+        } else if (elementType == ModelFacade.INCLUDE) {
             connection = getUseCases().buildInclude(fromElement, toElement);
         }
 
         if (connection == null) {
             throw new IllegalModelElementConnectionException(
             "Cannot make a "
-            + connectionType.getClass().getName()
+            + elementType.getClass().getName()
             + " between a " + fromElement.getClass().getName()
             + " and a " + toElement.getClass().getName());
         }
 
         return connection;
+    }
+    
+    /**
+     * Creates a UML model element of the given type.
+     * This only works for UML elements. If a diagram contains
+     * elements of another type then it is the responsibility
+     * of the diagram manage those items and not call this
+     * method. It also only works for UML model elements that
+     * are represented in diagrams by a node.
+     * @param elementType the type of model element to build
+     */
+    public Object buildNode(Object elementType) {
+        
+        Object modelElement = null;
+        if (elementType == ModelFacade.ACTOR) {
+            return getUseCases().createActor();
+        } else if (elementType == ModelFacade.USE_CASE) {
+            return getUseCases().createUseCase();
+        } else if (elementType == ModelFacade.CLASS) {
+            return getCore().buildClass();
+        } else if (elementType == ModelFacade.INTERFACE) {
+            return getCore().buildInterface();
+        } else if (elementType == ModelFacade.PACKAGE) {
+            return getModelManagement().createPackage();
+        } else if (elementType == ModelFacade.MODEL) {
+            return getModelManagement().createModel();
+        } else if (elementType == ModelFacade.INSTANCE) {
+            return getCommonBehavior().createInstance();
+        } else if (elementType == ModelFacade.SUBSYSTEM) {
+            return getModelManagement().createSubsystem();
+        } else if (elementType == ModelFacade.CALLSTATE) {
+            return getActivityGraphs().createCallState();
+        } else if (elementType == ModelFacade.FINALSTATE) {
+            return getStateMachines().createFinalState();
+        } else if (elementType == ModelFacade.PSEUDOSTATE) {
+            return getStateMachines().createPseudostate();
+        } else if (elementType == ModelFacade.OBJECTFLOWSTATE) {
+            return getActivityGraphs().createObjectFlowState();
+        } else if (elementType == ModelFacade.ACTION_STATE) {
+            return getActivityGraphs().createActionState();
+        } else if (elementType == ModelFacade.SUBACTIVITYSTATE) {
+            return getActivityGraphs().createSubactivityState();
+        } else if (elementType == ModelFacade.COMPOSITESTATE) {
+            return getStateMachines().createCompositeState();
+        } else if (elementType == ModelFacade.STATE) {
+            return getStateMachines().createState();
+        } else if (elementType == ModelFacade.CLASSIFIER_ROLE) {
+            return getCollaborations().createClassifierRole();
+        } else if (elementType == ModelFacade.COMPONENT) {
+            return getCore().createComponent();
+        } else if (elementType == ModelFacade.COMPONENT_INSTANCE) {
+            return getCommonBehavior().createComponentInstance();
+        } else if (elementType == ModelFacade.NODE) {
+            return getCore().createNode();
+        } else if (elementType == ModelFacade.NODE_INSTANCE) {
+            return getCommonBehavior().createNodeInstance();
+        } else if (elementType == ModelFacade.OBJECT) {
+            return getCommonBehavior().createObject();
+        }
+        return modelElement;
     }
 
     /**
