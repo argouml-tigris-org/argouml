@@ -165,10 +165,10 @@ an exit action and a Do activity are not permitted for action states.
           <listitem><para>Standard tab.</para></listitem>
         </varlistentry>
 
-        <!-- Entry for Style tab -->
+        <!-- Entry for Presentation tab -->
 
         <varlistentry>
-          <term><literal>Style</literal></term>
+          <term><literal>Presentation</literal></term>
 
           <listitem><para>Standard tab. The values for the bounds of the
             action state define the bounding box of the action
@@ -188,17 +188,6 @@ an exit action and a Do activity are not permitted for action states.
             implement the action state (code for actions will be associated
             with the particular actions). This is not implemented in the
             current release of ArgoUML.</para></note></listitem>
-        </varlistentry>
-
-        <!-- Entry for Constraints tab -->
-
-        <varlistentry>
-          <term><literal>Constraints</literal></term>
-
-          <listitem>
-            <para>&constraintssupport;
-</para>
-          </listitem>
         </varlistentry>
 
         <!-- Entry for Tagged Values tab -->
@@ -233,6 +222,15 @@ an exit action and a Do activity are not permitted for action states.
               the <emphasis>documentation tab</emphasis> under
               ArgoUML</para></note></listitem>
         </varlistentry>
+        
+        <!-- Entry for Checklist tab -->
+
+        <varlistentry>
+          <term><literal>Checklist</literal></term>
+
+          <listitem><para>Standard tab for a state. </para></listitem>
+        </varlistentry>
+
       </variablelist>
     </sect2>
 
@@ -256,6 +254,35 @@ an exit action and a Do activity are not permitted for action states.
             structure.</para></listitem>
         </varlistentry>
 
+        <!-- Entry for New stereotype button -->
+
+        <varlistentry>
+          <term><guiicon><inlinemediaobject><imageobject><imagedata
+            format="GIF" align="center"
+            fileref="images/icons/stereotype.gif"/>
+            </imageobject></inlinemediaobject></guiicon> 
+	        <literal>New Stereotype</literal>
+        </term>
+          <listitem>
+            <indexterm>
+              <primary>Add Stereotype</primary>
+            </indexterm>
+            <indexterm>
+              <primary>New Stereotype</primary>
+            </indexterm>
+            <indexterm>
+              <primary>Create New</primary>
+              <secondary>Stereotype</secondary>
+            </indexterm>
+
+            <para>
+			  This creates a new Stereotype (see <xref
+              linkend="s1.ref.stereotype"/>) for the selected action state, 
+              navigating immediately to the properties tab
+              for that stereotype.</para>
+		  </listitem>
+        </varlistentry>
+
         <!-- Entry for Delete button -->
 
         <varlistentry>
@@ -265,18 +292,22 @@ an exit action and a Do activity are not permitted for action states.
           </imageobject></inlinemediaobject></guiicon>
             <literal>Delete</literal></term>
 
-          <listitem><para>This deletes the action state from the model</para>
+          <listitem>
+            <para>This deletes the action state from the model</para>
 
-          <warning><para>This is a deletion from the model
-            <emphasis>not</emphasis> just the diagram. To delete an
-            action state from the diagram, but keep it within the model, use
-            the main menu <literal>Remove From Diagram</literal>
-            (or press the Delete key).</para>
-            <para>But beware!. Currently, ArgoUML does not show the 
-            <literal>Add to Diagram</literal> 
-            pop-up menu for action states.</para>
-            <!-- TODO: See issue ... -->
-            </warning></listitem>
+            <warning>
+              <para>This is a deletion from the model
+                <emphasis>not</emphasis> just the diagram. 
+                It is not possible to delete an
+                action state from the diagram, 
+                since that concept does not fit the UML standard.</para>
+
+              <para>Hence ArgoUML does also not show the 
+                <literal>Add to Diagram</literal> 
+                pop-up menu for action states.
+              </para>
+            </warning>
+          </listitem>
         </varlistentry>
       </variablelist>
     </sect2>
@@ -327,18 +358,6 @@ an exit action and a Do activity are not permitted for action states.
               <xref linkend="s1.ref.stereotype"/>).</para></listitem>
         </varlistentry>
 
-        <!-- Entry for Namespace -->
-
-        <varlistentry>
-          <term><literal>Namespace</literal></term>
-
-          <listitem>
-            <para>
-Text box.
-The namespace in which the action state is defined.
-            </para></listitem>
-        </varlistentry>
-
         <!-- Entry for Entry Action -->
 
         <varlistentry>
@@ -371,17 +390,6 @@ Delete the Entry-Action.
 
           </listitem>
         </varlistentry>
-
-        <!-- Entry for Exit Action -->
-<!-- MVW: This field is present in 0.14 ArgoUML, 
-but should not be according UML standard.
-TODO: See issue ...-->
-
-        <!-- Entry for Do-Activity -->
-<!-- MVW: This field is present in 0.14 ArgoUML, 
-but should not be according UML standard.
-TODO: See issue ...-->
-
 
         <!-- Entry for Modifiers -->
 <!-- TODO: MVW: Missing in ArgoUML: a modifier checkbox field for "Dynamic". 
@@ -427,10 +435,6 @@ See issue ... -->
           </listitem>
         </varlistentry>
 
-        <!-- Entry for Internal Transitions -->
-<!-- TODO: MVW: This field is present in 0.14 ArgoUML, 
-but should not be according UML standard. See issue ... -->
-
       </variablelist>
     </sect2>
   </sect1>
@@ -462,6 +466,11 @@ but should not be according UML standard. See issue ... -->
     <para>The current release of ArgoUML will not check that this constraint
       is met.</para></caution>
 <!-- TODO: See enhancement issue ... -->
+
+	<note><para>Transitions to and from an ObjectFlowState are dashed, 
+	  to distinguish <emphasis>object flow</emphasis> from 
+	  <emphasis>control flow</emphasis>.
+	</para></note>
   </sect1>
 
   <!-- Event artifacts (subsidiary of Transition) -->
@@ -494,7 +503,7 @@ but should not be according UML standard. See issue ... -->
   </sect1>
 
   <!-- Initial State. This is a pseudo state, which all have the same
-       property sheet. The pseudo states are Initial State, Junction, Branch, Fork,
+       property sheet. The pseudo states are Initial State, Junction, Choice, Fork,
        Join, Shallow History and Deep History but *NOT* Final State,
        which is a real state. Cross refer to Statechart Diagram -->
 
@@ -515,7 +524,7 @@ but should not be according UML standard. See issue ... -->
   </sect1>
 
   <!-- Junction. This is a pseudo state, which all have the same property
-       sheet. The pseudo states are Initial State, Junction, Branch, Fork, Join,
+       sheet. The pseudo states are Initial State, Junction, Choice, Fork, Join,
        Shallow History and Deep History but *NOT* Final State, which is a
        real state. Cross refer to Statechart Diagram -->
 
@@ -528,7 +537,7 @@ but should not be according UML standard. See issue ... -->
   </sect1>
 
   <!-- Fork. This is a pseudo state, which all have the same property
-       sheet. The pseudo states are Initial State, Branch, Fork, Join,
+       sheet. The pseudo states are Initial State, Choice, Fork, Join,
        Shallow History and Deep History but *NOT* Final State, which is a
        real state. Cross refer to Statechart Diagram -->
 
@@ -540,7 +549,7 @@ but should not be according UML standard. See issue ... -->
   </sect1>
 
   <!-- Join. This is a pseudo state, which all have the same property
-       sheet. The pseudo states are Initial State, Branch, Fork, Join,
+       sheet. The pseudo states are Initial State, Choice, Fork, Join,
        Shallow History and Deep History but *NOT* Final State, which is a
        real state. Cross refer to Statechart Diagram -->
 
@@ -550,6 +559,15 @@ but should not be according UML standard. See issue ... -->
     <para>This artifact is described in the context of statechart diagrams (see
       <xref linkend="s1.ref.join_state"/>).</para>
   </sect1>
+  
+  <!-- ObjectFlowState - ClassifierInState -->
+
+  <sect1>
+    <title>ObjectFlowState</title>
+
+    <para>(To Be Written)</para>
+  </sect1>  
+  
 </chapter>
 
 <!-- Local stuff for Emacs - please do not delete
