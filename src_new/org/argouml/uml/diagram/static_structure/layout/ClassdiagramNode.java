@@ -77,7 +77,16 @@ class ClassdiagramNode implements LayoutedNode {
      * @param newLocation represents the new location for this figure.
      */
     public void setLocation(Point newLocation) {
+        Point oldLocation = getFigure().getLocation();
+        
         getFigure().setLocation(newLocation);
+        int xTrans = newLocation.x - oldLocation.x;
+        int yTrans = newLocation.y - oldLocation.y;
+        Vector enclosingFigs = getFigure().getEnclosedFigs();
+        if (enclosingFigs != null) {
+            for (int i = 0; i < enclosingFigs.size(); i++)
+                ((Fig)(enclosingFigs.elementAt(i))).translate(xTrans,  yTrans);
+        }
     }
 
     /**
