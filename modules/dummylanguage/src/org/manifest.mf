@@ -11,4 +11,13 @@ Implementation-Vendor: Linus Tolke
 Implementation-Version: 0.9.9
 Implementation-Title: ArgoUML Dummy Language code generator plugin
 
+Name: org/argouml/language/dummylanguage/reveng/ImportDummy.class
+Extension-name: module.import.dummy-files
+Specification-Title: ArgoUML Dynamic Load Module
+Specification-Version: 0.9.9
+Specification-Vendor: University of California
+Implementation-Vendor: Alexander Lepekhine
+Implementation-Version: 0.1
+Implementation-Title: ArgoUML Dummy Import module
+
 
