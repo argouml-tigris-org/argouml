@@ -28,6 +28,7 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.FilterInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
@@ -45,7 +46,6 @@ import org.argouml.application.ArgoVersion;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectMember;
 import org.argouml.util.FileConstants;
-import org.argouml.util.SubInputStream;
 import org.tigris.gef.ocl.OCLExpander;
 import org.tigris.gef.ocl.TemplateReader;
 
@@ -98,7 +98,7 @@ public class ZargoFilePersister extends UmlFilePersister {
      * @throws SaveException when anything goes wrong
      *
      * @see org.argouml.persistence.ProjectFilePersister#save(
-     * org.argouml.kernel.Project, java.io.File)
+     *         org.argouml.kernel.Project, java.io.File)
      */
     public void doSave(Project project, File file)
         throws SaveException {
@@ -302,5 +302,41 @@ public class ZargoFilePersister extends UmlFilePersister {
             entry = zis.getNextEntry();
         }
         return zis;
+    }
+}
+
+
+/**
+ * A stream of input streams for reading the Zipped file.
+ */
+class SubInputStream extends FilterInputStream {
+    private ZipInputStream in;
+
+    /**
+     * The constructor.
+     *
+     * @param z the zip input stream
+     */
+    public SubInputStream(ZipInputStream z) {
+	super(z);
+	in = z;
+    }
+
+    /**
+     * @see java.io.InputStream#close()
+     */
+    public void close() throws IOException  {
+	in.closeEntry();
+    }
+
+    /**
+     * Reads the next ZIP file entry and positions stream at the beginning
+     * of the entry data.
+     *
+     * @return the ZipEntry just read
+     * @throws IOException if an I/O error has occurred
+     */
+    public ZipEntry getNextEntry() throws IOException {
+	return in.getNextEntry();
     }
 }
