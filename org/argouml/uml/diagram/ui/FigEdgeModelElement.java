@@ -406,7 +406,7 @@ implements VetoableChangeListener, DelayedVChangeListener, MouseListener, KeyLis
    *  changed. This method automatically updates the name FigText.
    *  Subclasses should override and update other parts. */
   protected void modelChanged(MElementEvent e) {
-      if (e == null || (e.getSource() == getOwner() && e.getName().equals("name")))
+      if (e == null || (e.getSource() == getOwner() && "name".equals(e.getName())))
         updateNameText();
     updateStereotypeText();
 
@@ -466,7 +466,7 @@ implements VetoableChangeListener, DelayedVChangeListener, MouseListener, KeyLis
         /*
 	    //if (_group != null) _group.propertySet(mee);
 	    if (mee.getOldValue() != mee.getNewValue()) {
-                if (mee.getName().equals("name")) {
+                if ("name".equals(mee.getName())) {
                     updateNameText();
                 } else
         	    	modelChanged(null);
@@ -734,7 +734,7 @@ implements VetoableChangeListener, DelayedVChangeListener, MouseListener, KeyLis
     */
   protected Object getDestination() {
     if (getOwner() != null) {
-        return (MClassifier)CoreHelper.getHelper().getDestination((MRelationship)getOwner());
+        return CoreHelper.getHelper().getDestination((MRelationship)getOwner());
     }
     return null;
   }
