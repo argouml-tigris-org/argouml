@@ -338,6 +338,7 @@ public class ProjectBrowser
         toolbarBoundry.add(
             _menuBar.getCreateDiagramToolbar(),
             BorderLayout.NORTH);
+        toolbarBoundry.add(_menuBar.getNavigateToolbar(), BorderLayout.NORTH);
         toolbarBoundry.add(_workarea, BorderLayout.CENTER);
 
         return toolbarBoundry;

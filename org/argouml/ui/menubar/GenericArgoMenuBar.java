@@ -47,6 +47,8 @@ import org.argouml.ui.ActionSettings;
 import org.argouml.ui.Actions;
 import org.argouml.ui.ArgoJMenu;
 import org.argouml.ui.cmd.CmdSetPreferredSize;
+import org.argouml.ui.targetmanager.NavigateTargetBackAction;
+import org.argouml.ui.targetmanager.NavigateTargetForwardAction;
 import org.argouml.uml.ui.ActionActivityDiagram;
 import org.argouml.uml.ui.ActionClassDiagram;
 import org.argouml.uml.ui.ActionCollaborationDiagram;
@@ -89,10 +91,12 @@ import org.tigris.gef.util.Localizer;
 public class GenericArgoMenuBar extends JMenuBar
     implements ArgoModuleEventListener {
 
-    public Toolbar _fileToolbar;
-    public Toolbar _editToolbar;
-    public Toolbar _viewToolbar;
-    public Toolbar _createDiagramToolbar;
+    private Toolbar _fileToolbar;
+    private Toolbar _editToolbar;
+    private Toolbar _viewToolbar;
+    private Toolbar _createDiagramToolbar;
+    
+    private Toolbar _navigateToolbar;
 
     //protected JMenu _import = null;
 
@@ -541,4 +545,20 @@ public class GenericArgoMenuBar extends JMenuBar
     public org.argouml.swingext.Toolbar getViewToolbar() {
         return _viewToolbar;
     }
+    
+    
+    /**
+     * Getter for the navigate toolbar, the toolbar via which users can browse
+     * through the targets.
+     * @return
+     */
+    public Toolbar getNavigateToolbar() {
+        if (_navigateToolbar == null) {
+            _navigateToolbar = new Toolbar("Navigation Toolbar");
+            _navigateToolbar.add(NavigateTargetBackAction.getInstance());
+            _navigateToolbar.add(NavigateTargetForwardAction.getInstance());
+        }
+        return _navigateToolbar;
+    }
+
 }
