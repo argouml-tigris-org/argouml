@@ -163,13 +163,22 @@ public class FigTransition extends FigEdgeModelElement {
         }
         for (int i = 0; i < transitions.size(); i++) {
             FigEdge fig = ((FigEdge)getLayer().presentationFor(transitions.get(i)));
-            if ((xs.equals(fig.getXs()) && ys.equals(fig.getYs())) || (xs.equals(flip(fig.getXs())) && ys.equals(flip(fig.getYs())))) {
-                Point startPoint = getFirstPoint();
-                Point endPoint = getLastPoint();
+            // next lines patch for loading old 0.10.1 projects in 0.11.1 and further
+            if (fig == null) {
+            	Iterator it = ProjectBrowser.TheInstance.getProject().findFigsForMember(transitions.get(i)).iterator();
+            	if (it.hasNext()) {
+            		fig = (FigEdge)it.next();
+            	}
+            }
+            if (fig != null) {
+            	if ((xs.equals(fig.getXs()) && ys.equals(fig.getYs())) || (xs.equals(flip(fig.getXs())) && ys.equals(flip(fig.getYs())))) {
+                	Point startPoint = getFirstPoint();
+                	Point endPoint = getLastPoint();
                  
-                int x = (int)Math.round(Math.abs((startPoint.getX()-endPoint.getX())/2) + Math.min(startPoint.getX(), endPoint.getX()));
-                int y = (int)Math.round(Math.abs((startPoint.getY()-endPoint.getY())/2) + Math.min(startPoint.getY(), endPoint.getY()));
-                insertPoint(1, x, y);
+	                int x = (int)Math.round(Math.abs((startPoint.getX()-endPoint.getX())/2) + Math.min(startPoint.getX(), endPoint.getX()));
+	                int y = (int)Math.round(Math.abs((startPoint.getY()-endPoint.getY())/2) + Math.min(startPoint.getY(), endPoint.getY()));
+	                insertPoint(1, x, y);
+	            }
             }
         }
     }
