@@ -22,13 +22,14 @@
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 package org.argouml.uml.ui;
-import ru.novosoft.uml.*;
-import javax.swing.*;
-import javax.swing.tree.*;
-import ru.novosoft.uml.foundation.core.*;
-import java.util.*;
-import java.awt.*;
-import javax.swing.event.*;
+import javax.swing.JPopupMenu;
+import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.TreePath;
+
+import org.argouml.ui.targetmanager.TargetManager;
+
+import ru.novosoft.uml.MElementEvent;
+import ru.novosoft.uml.foundation.core.MModelElement;
 
 /**
  *  This class is an abstract superclass for classes that provide a tree model
@@ -127,7 +128,7 @@ public class UMLTreeModel extends DefaultTreeModel
      *  @param modelElement model element to display
      */
     public void navigateTo(MModelElement modelElement) {
-        _container.navigateTo(modelElement);
+        TargetManager.getInstance().setTarget(modelElement);
     }
     
     

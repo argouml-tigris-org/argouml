@@ -39,6 +39,7 @@ import javax.swing.JScrollPane;
 import org.argouml.application.api.Argo;
 import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.model.uml.UmlFactory;
+import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.PropPanelButton;
 import org.argouml.uml.ui.UMLList;
 import org.argouml.uml.ui.UMLReflectionListModel;
@@ -119,7 +120,7 @@ public class PropPanelStimulus extends PropPanelModelElement {
             MModelElement elem = (MModelElement) target;
             MNamespace ns = elem.getNamespace();
             if(ns != null) {
-                navigateTo(ns);
+                TargetManager.getInstance().setTarget(ns);
             }
         }
     }
@@ -204,7 +205,7 @@ public class PropPanelStimulus extends PropPanelModelElement {
                 
        UmlFactory.getFactory().delete(target);
 		if(newTarget != null) { 
-			navigateTo(newTarget);
+            TargetManager.getInstance().setTarget(newTarget);
 		}
             
     }

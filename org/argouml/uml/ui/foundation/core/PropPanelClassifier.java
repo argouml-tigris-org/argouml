@@ -34,6 +34,7 @@ import org.argouml.model.uml.foundation.core.CoreFactory;
 import org.argouml.swingext.GridLayout2;
 import org.argouml.swingext.Orientation;
 import org.argouml.ui.ProjectBrowser;
+import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.UMLLinkedList;
 import org.argouml.uml.ui.UMLReflectionListModel;
 
@@ -152,7 +153,7 @@ abstract public class PropPanelClassifier extends PropPanelNamespace {
             MNamespace ns = (MNamespace) target;
             MModelElement ownedElem = CoreFactory.getFactory().createDataType();
             ns.addOwnedElement(ownedElem);
-            navigateTo(ownedElem);
+            TargetManager.getInstance().setTarget(ownedElem);
         }
     }
 

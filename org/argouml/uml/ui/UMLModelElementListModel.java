@@ -56,6 +56,7 @@ import javax.swing.JPopupMenu;
 import org.argouml.application.api.NotationContext;
 import org.argouml.application.api.NotationName;
 import org.argouml.ui.ProjectBrowser;
+import org.argouml.ui.targetmanager.TargetManager;
 
 import ru.novosoft.uml.MElementEvent;
 import ru.novosoft.uml.foundation.core.MModelElement;
@@ -360,7 +361,7 @@ abstract public class UMLModelElementListModel extends AbstractListModel impleme
      *  @param modelElement model element to display
      */
     public void navigateTo(MModelElement modelElement) {
-        _container.navigateTo(modelElement);
+        TargetManager.getInstance().setTarget(modelElement);
     }
 
     /**
@@ -577,7 +578,7 @@ abstract public class UMLModelElementListModel extends AbstractListModel impleme
      */
      public void delete(int index) {
         MModelElement modElem = getModelElementAt(index);
-        Object target = ProjectBrowser.getInstance().getTarget();
+        Object target = TargetManager.getInstance().getTarget();
         ProjectBrowser.getInstance().setTarget(modElem);
         ActionEvent event = new ActionEvent(this, 1, "delete");
         ActionRemoveFromModel.SINGLETON.actionPerformed(event);

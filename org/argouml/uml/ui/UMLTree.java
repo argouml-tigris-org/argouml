@@ -22,14 +22,22 @@
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 package org.argouml.uml.ui;
-import javax.swing.event.*;
-import javax.swing.*;
-import javax.swing.tree.*;
-import java.lang.reflect.*;
-import ru.novosoft.uml.*;
-import java.awt.event.*;
-import java.awt.*;
-import ru.novosoft.uml.foundation.core.*;
+import java.awt.Point;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+
+import javax.swing.JPopupMenu;
+import javax.swing.JTree;
+import javax.swing.event.TreeSelectionEvent;
+import javax.swing.event.TreeSelectionListener;
+import javax.swing.tree.TreeModel;
+import javax.swing.tree.TreePath;
+import javax.swing.tree.TreeSelectionModel;
+
+import org.argouml.ui.targetmanager.TargetManager;
+
+import ru.novosoft.uml.MElementEvent;
+import ru.novosoft.uml.foundation.core.MModelElement;
 
 public class UMLTree extends JTree implements UMLUserInterfaceComponent, 
       MouseListener, TreeSelectionListener {
@@ -143,7 +151,7 @@ public class UMLTree extends JTree implements UMLUserInterfaceComponent,
             if(last instanceof UMLModelElementTreeNode) {
                 MModelElement element = ((UMLModelElementTreeNode) last).getModelElement();
                 if(element != null) {
-                    _container.navigateTo(element);
+                    TargetManager.getInstance().setTarget(element);
                 }
             }
         }

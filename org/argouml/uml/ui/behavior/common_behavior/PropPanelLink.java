@@ -34,6 +34,7 @@ package org.argouml.uml.ui.behavior.common_behavior;
 
 import org.argouml.application.api.Argo;
 import org.argouml.model.uml.UmlFactory;
+import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.PropPanelButton;
 import org.argouml.uml.ui.foundation.core.PropPanelModelElement;
 
@@ -76,7 +77,7 @@ public class PropPanelLink extends PropPanelModelElement {
             MModelElement elem = (MModelElement) target;
             MNamespace ns = elem.getNamespace();
             if(ns != null) {
-                navigateTo(ns);
+                TargetManager.getInstance().setTarget(ns);
             }
         }
     }
@@ -86,7 +87,7 @@ public class PropPanelLink extends PropPanelModelElement {
 	MModelElement newTarget = (MModelElement) target.getNamespace();
                 
         UmlFactory.getFactory().delete(target);
-	if(newTarget != null) navigateTo(newTarget);
+	if(newTarget != null) TargetManager.getInstance().setTarget(newTarget);
     }
 
 

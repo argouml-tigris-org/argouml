@@ -36,6 +36,7 @@ import javax.swing.JScrollPane;
 import org.argouml.application.api.Argo;
 import org.argouml.model.uml.foundation.core.CoreFactory;
 import org.argouml.swingext.LabelledLayout;
+import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.PropPanelButton;
 import org.argouml.uml.ui.UMLCheckBox;
 import org.argouml.uml.ui.UMLComboBoxNavigator;
@@ -99,7 +100,7 @@ public class PropPanelClass extends PropPanelClassifier {
         if(target instanceof MClassifier) {
             MClassifier classifier = (MClassifier) target;
             MClass inner = CoreFactory.getFactory().buildClass(classifier);
-            navigateTo(inner);
+            TargetManager.getInstance().setTarget(inner);
         }
     }
 
@@ -110,7 +111,7 @@ public class PropPanelClass extends PropPanelClassifier {
             MNamespace ns = classifier.getNamespace();
             if(ns != null) {
                 MClassifier peer = CoreFactory.getFactory().buildClass(ns);
-                navigateTo(peer);
+                TargetManager.getInstance().setTarget(peer);
             }
         }
        

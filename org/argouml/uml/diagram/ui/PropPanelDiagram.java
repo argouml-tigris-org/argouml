@@ -30,6 +30,7 @@ import org.argouml.application.api.Argo;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.ui.ArgoDiagram;
+import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.PropPanel;
 import org.argouml.uml.ui.UMLTextField;
 import org.argouml.uml.ui.UMLTextProperty;
@@ -71,7 +72,7 @@ public class PropPanelDiagram extends PropPanel {
                 //
                 Object newTarget = project.getModel();
                 project.moveToTrash(diagram);
-                navigateTo(newTarget);
+                TargetManager.getInstance().setTarget(newTarget);
             } catch (Exception e) {
                 e.printStackTrace();
             }

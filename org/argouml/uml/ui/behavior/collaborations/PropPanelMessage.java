@@ -37,6 +37,7 @@ import javax.swing.JScrollPane;
 import org.argouml.application.api.Argo;
 import org.argouml.model.uml.behavioralelements.commonbehavior.CommonBehaviorFactory;
 import org.argouml.swingext.LabelledLayout;
+import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.PropPanelButton;
 import org.argouml.uml.ui.UMLLinkedList;
 import org.argouml.uml.ui.UMLMutableLinkedList;
@@ -121,7 +122,7 @@ public class PropPanelMessage extends PropPanelModelElement {
     public void navigateInteraction() {
     	Object target = getTarget();
         if(target instanceof MMessage) {
-            navigateTo(((MMessage)target).getInteraction());
+            TargetManager.getInstance().setTarget(((MMessage)target).getInteraction());
         }
     }
 

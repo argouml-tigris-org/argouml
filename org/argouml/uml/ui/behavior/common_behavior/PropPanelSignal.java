@@ -36,6 +36,7 @@ import org.argouml.application.api.Argo;
 import org.argouml.model.uml.behavioralelements.commonbehavior.CommonBehaviorFactory;
 import org.argouml.model.uml.foundation.core.CoreHelper;
 import org.argouml.ui.ProjectBrowser;
+import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.PropPanelButton;
 import org.argouml.uml.ui.UMLAddDialog;
 import org.argouml.uml.ui.UMLList;
@@ -103,7 +104,7 @@ public class PropPanelSignal extends PropPanelModelElement {
             if(ns != null) {
                 MSignal newSig = ns.getFactory().createSignal();
                 ns.addOwnedElement(newSig);
-                navigateTo(newSig);
+                TargetManager.getInstance().setTarget(newSig);
             }
         }
     }

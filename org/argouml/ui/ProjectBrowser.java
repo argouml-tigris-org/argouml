@@ -72,7 +72,7 @@ import org.workingfrog.i18n.swing.I18NJFrame;
 
 public class ProjectBrowser
     extends I18NJFrame
-    implements IStatusBar, NavigationListener, PropertyChangeListener {
+    implements IStatusBar, PropertyChangeListener {
 
     protected static Category cat = Category.getInstance(ProjectBrowser.class);
 
@@ -129,7 +129,6 @@ public class ProjectBrowser
     public Font defaultFont = new Font("Dialog", Font.PLAIN, 10);
 
     protected BorderSplitPane _workarea;
-    private NavigationHistory _history = new NavigationHistory();
 
     /**
      * The splash screen shown at startup
@@ -181,14 +180,11 @@ public class ProjectBrowser
         _menuBar = new GenericArgoMenuBar();
 
         _editorPane = new MultiEditorPane();
-        _editorPane.addNavigationListener(this);
         getContentPane().setFont(defaultFont);
         getContentPane().setLayout(new BorderLayout());
         getContentPane().add(_menuBar, BorderLayout.NORTH);
         getContentPane().add(createPanels(doSplash), BorderLayout.CENTER);
         getContentPane().add(_statusBar, BorderLayout.SOUTH);
-
-        getTabProps().addNavigationListener(this);
 
         setAppName(appName);
 
@@ -649,8 +645,7 @@ public class ProjectBrowser
     /**    Called by a user interface element when a request to
      *    navigate to a model element has been received.
      */
-    public void navigateTo(Object element) {
-        _history.navigateTo(element);
+    public void navigateTo(Object element) {  
         setTarget(element);
     }
 
@@ -660,36 +655,42 @@ public class ProjectBrowser
     public void open(Object element) {
     }
 
+    /**
+     * @deprecated replace by TargetManager.getInstance().navigateBack()
+     */
     public boolean navigateBack(boolean attempt) {
         boolean navigated = false;
-        if (attempt) {
-            Object target = _history.navigateBack(attempt);
-            if (target != null) {
-                navigated = true;
-                setTarget(target);
-            }
+        if (attempt && TargetManager.getInstance().navigateBackPossible()) {
+           TargetManager.getInstance().navigateBackward();
         }
         return navigated;
     }
 
+    /**
+     * @deprecated replaced by TargetManager.getInstance().navigateForward()
+     */
     public boolean navigateForward(boolean attempt) {
         boolean navigated = false;
         if (attempt) {
-            Object target = _history.navigateForward(attempt);
-            if (target != null) {
-                navigated = true;
-                setTarget(target);
-            }
+            if (attempt && TargetManager.getInstance().navigateForwardPossible()) {
+           TargetManager.getInstance().navigateForward();
+        }
         }
         return navigated;
     }
 
+    /**
+     * @deprecated replaced by TargetManager.getInstance().navigateBackPossible();
+     */
     public boolean isNavigateBackEnabled() {
-        return _history.isNavigateBackEnabled();
+        return TargetManager.getInstance().navigateBackPossible();
     }
 
+    /**
+     * @deprecated TargetManager.getInstance().navigateForwardPossible();
+     */
     public boolean isNavigateForwardEnabled() {
-        return _history.isNavigateForwardEnabled();
+        return TargetManager.getInstance().navigateForwardPossible();
     }
 
     /**

@@ -31,6 +31,7 @@ import javax.swing.JPopupMenu;
 
 import org.apache.log4j.Category;
 import org.argouml.ui.ProjectBrowser;
+import org.argouml.ui.targetmanager.TargetManager;
 
 import ru.novosoft.uml.foundation.core.MModelElement;
 
@@ -213,7 +214,7 @@ public class UMLReflectionListModel extends UMLModelElementListModel   {
             Object[] indexArg = { new Integer(index) };
             Object newTarget = _addMethod.invoke(getContainer(),indexArg);
             if(newTarget != null) {
-                getContainer().navigateTo(newTarget);
+                TargetManager.getInstance().setTarget(newTarget);
             }
         }
 	catch(InvocationTargetException ex) {

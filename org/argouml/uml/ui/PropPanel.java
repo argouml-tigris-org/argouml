@@ -47,7 +47,6 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.util.EventListener;
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 import java.util.Vector;
@@ -70,7 +69,6 @@ import org.argouml.swingext.GridLayout2;
 import org.argouml.swingext.LabelledLayout;
 import org.argouml.swingext.Orientation;
 import org.argouml.swingext.Vertical;
-import org.argouml.ui.NavigationListener;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.ui.TabSpawnable;
 import org.argouml.ui.targetmanager.TargetEvent;
@@ -105,7 +103,7 @@ abstract public class PropPanel extends TabSpawnable implements TabModelTarget, 
     private Object _target;
     private MModelElement _modelElement;
     private static Profile _profile;
-    private LinkedList _navListeners = new LinkedList();
+
     private ResourceBundle _bundle = null;
 
     private Vector _panels = new Vector();
@@ -130,8 +128,6 @@ abstract public class PropPanel extends TabSpawnable implements TabModelTarget, 
 
     private JPanel captionPanel = new JPanel();
 
-    protected static ImageIcon _navBackIcon = ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource("NavigateBack");
-    protected static ImageIcon _navForwardIcon = ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource("NavigateForward");
     protected static ImageIcon _deleteIcon = ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource("RedDelete");
     protected static ImageIcon _navUpIcon = ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource("NavigateUp");
 
@@ -570,65 +566,58 @@ abstract public class PropPanel extends TabSpawnable implements TabModelTarget, 
         return getProfile().formatCollection(iter, ns);
     }
 
+    /**
+     * @deprecated replaced by TargetManager.getInstance().setTarget(Object target)
+     */
     public void navigateTo(Object element) {
-        Iterator iter = _navListeners.iterator();
-        while (iter.hasNext()) {
-            ((NavigationListener) iter.next()).navigateTo(element);
-        }
-    }
-    public void open(Object element) {
-        Iterator iter = _navListeners.iterator();
-        while (iter.hasNext()) {
-            ((NavigationListener) iter.next()).open(element);
-        }
-    }
-
-    public boolean navigateBack(boolean attempt) {
-        boolean navigated = false;
-        Iterator iter = _navListeners.iterator();
-        while (iter.hasNext()) {
-            navigated = ((NavigationListener) iter.next()).navigateBack(attempt);
-            if (navigated)
-                attempt = false;
-        }
-        return navigated;
+        TargetManager.getInstance().setTarget(element);
     }
     
+   
+
+    /**
+     * @deprecated replaced by TargetManager.getInstance().navigateBack();
+     */
+    public boolean navigateBack(boolean attempt) {
+       TargetManager.getInstance().navigateBackward();
+       return true;
+    }
+    
+    /**
+     * @deprecated replaced by TargetManager.getInstance().navigateBack();
+     *
+     */
     public void navigateBackAction() {
         TargetManager.getInstance().navigateBackward();
     }
 
+    /**
+     * @deprecated replaced by TargetManager.getInstance().navigateForward()
+     */
     public boolean navigateForward(boolean attempt) {
-        boolean navigated = false;
-        Iterator iter = _navListeners.iterator();
-        while (iter.hasNext()) {
-            navigated = ((NavigationListener) iter.next()).navigateForward(attempt);
-            if (navigated)
-                attempt = false;
-        }
-        return navigated;
+        TargetManager.getInstance().navigateForward();
+        return true;
     }
 
+    /**
+     * @deprecated replaced by TargetManager.getInstance().navigateForward()
+     */
     public void navigateForwardAction() {
         TargetManager.getInstance().navigateForward();
     }
 
+    /**
+     * @deprecated replaced by TargetManager.getInstance().navigateForwardPossible();
+     */
     public boolean isNavigateForwardEnabled() {
         return TargetManager.getInstance().navigateForwardPossible();
     }
-
+    
+    /**
+     * @deprecated replaced by TargetManager.getInstance().navigateBackPossible();
+     */
     public boolean isNavigateBackEnabled() {
         return TargetManager.getInstance().navigateBackPossible();
-    }
-
-    /**    Registers a listener for navigation events.
-     */
-    public void addNavigationListener(NavigationListener navListener) {
-        _navListeners.add(navListener);
-    }
-
-    public void removeNavigationListener(NavigationListener navListener) {
-        _navListeners.remove(navListener);
     }
 
     /**

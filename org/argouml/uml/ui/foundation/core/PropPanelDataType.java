@@ -33,6 +33,7 @@ import javax.swing.JScrollPane;
 
 import org.argouml.application.api.Argo;
 import org.argouml.model.uml.foundation.core.CoreFactory;
+import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.PropPanelButton;
 import org.argouml.uml.ui.UMLAttributesListModel;
 import org.argouml.uml.ui.UMLComboBoxNavigator;
@@ -131,7 +132,7 @@ public class PropPanelDataType extends PropPanelClassifier {
             }
 
             MAttribute attr = CoreFactory.getFactory().buildAttribute(classifier);
-            navigateTo(attr);
+            TargetManager.getInstance().setTarget(attr);
         }
         
     }
@@ -143,7 +144,7 @@ public class PropPanelDataType extends PropPanelClassifier {
             MNamespace ns = dt.getNamespace();
             MDataType newDt = CoreFactory.getFactory().createDataType();
             ns.addOwnedElement(newDt);
-            navigateTo(newDt);
+            TargetManager.getInstance().setTarget(newDt);
         }
     }
 

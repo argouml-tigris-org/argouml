@@ -65,16 +65,6 @@ public interface UMLUserInterfaceContainer extends NavigationListener {
      *    Formats the model element as a namespace.  
      */
     public String formatNamespace(MNamespace ns);
-    
-    /**
-     *     Registers a listener for navigation events.
-     */
-    public void addNavigationListener(NavigationListener navListener);
-    
-    /**
-     *     Removes a listener for navigation events.
-     */
-    public void removeNavigationListener(NavigationListener navListener);
 
     /**
      *     Returns a localized string corresponding to the key

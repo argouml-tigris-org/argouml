@@ -34,8 +34,6 @@ import java.awt.BorderLayout;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.Hashtable;
-import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.ListIterator;
 
 import javax.swing.JPanel;
@@ -52,7 +50,6 @@ import org.argouml.model.ModelFacade;
 import org.argouml.swingext.Orientable;
 import org.argouml.swingext.Orientation;
 import org.argouml.ui.ArgoDiagram;
-import org.argouml.ui.NavigationListener;
 import org.argouml.ui.TabSpawnable;
 import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.ui.targetmanager.TargetListener;
@@ -101,7 +98,7 @@ import ru.novosoft.uml.foundation.core.MClassImpl;
  */
 public class TabProps
     extends TabSpawnable
-    implements TabModelTarget, NavigationListener, ArgoModuleEventListener {
+    implements TabModelTarget, ArgoModuleEventListener {
     protected static Category cat = Category.getInstance(TabProps.class);
     ////////////////////////////////////////////////////////////////
     // instance variables
@@ -110,7 +107,6 @@ public class TabProps
     protected Hashtable _panels = new Hashtable();
     protected JPanel _lastPanel = null;
     protected String _panelClassBaseName = "";
-    private LinkedList _navListeners = new LinkedList();
 
     private Object _target;
 
@@ -203,10 +199,7 @@ public class TabProps
         _panels.put(MUseCaseImpl.class, new PropPanelUseCase());
         //important: MStateImpl corresponds to PropPanelSimpleState not to PropPanelState!!
         //otherwise, spawing will not ne successful!!
-        _panels.put(MStateImpl.class, new PropPanelSimpleState());
-
-        org.argouml.application.Main.addPostLoadAction(
-            new InitPanelsLater(_panels, this, orientation));
+        _panels.put(MStateImpl.class, new PropPanelSimpleState());       
     }
 
     /** Adds a property panel to the internal list. This allows a plugin to
@@ -222,78 +215,7 @@ public class TabProps
         _panels.put(c, p);
     }
 
-    public void addNavigationListener(NavigationListener navListener) {
-        _navListeners.add(navListener);
-    }
-
-    public void removeNavigationListener(NavigationListener navListener) {
-        _navListeners.remove(navListener);
-    }
-
-    /**    Called by a user interface element when a request to
-     *    navigate to a model element has been received.
-     */
-    public void navigateTo(Object element) {
-        Iterator iter = _navListeners.iterator();
-        while (iter.hasNext()) {
-            ((NavigationListener) iter.next()).navigateTo(element);
-        }
-    }
-
-    /**   Called by a user interface element when a request to
-     *   open a model element in a new window has been recieved.
-     */
-    public void open(Object element) {
-        Iterator iter = _navListeners.iterator();
-        while (iter.hasNext()) {
-            ((NavigationListener) iter.next()).open(element);
-        }
-    }
-
-    public boolean navigateBack(boolean attempt) {
-        boolean navigated = false;
-        Iterator iter = _navListeners.iterator();
-        while (iter.hasNext()) {
-            navigated =
-                ((NavigationListener) iter.next()).navigateBack(attempt);
-            if (navigated)
-                attempt = false;
-        }
-        return navigated;
-    }
-
-    public boolean navigateForward(boolean attempt) {
-        boolean navigated = false;
-        Iterator iter = _navListeners.iterator();
-        while (iter.hasNext()) {
-            navigated =
-                ((NavigationListener) iter.next()).navigateForward(attempt);
-            if (navigated)
-                attempt = false;
-        }
-        return navigated;
-    }
-
-    public boolean isNavigateForwardEnabled() {
-        boolean enabled = false;
-        Iterator iter = _navListeners.iterator();
-        while (iter.hasNext() && !enabled) {
-            enabled =
-                ((NavigationListener) iter.next()).isNavigateForwardEnabled();
-        }
-        return enabled;
-    }
-
-    public boolean isNavigateBackEnabled() {
-        boolean enabled = false;
-        Iterator iter = _navListeners.iterator();
-        while (iter.hasNext() && !enabled) {
-            enabled =
-                ((NavigationListener) iter.next()).isNavigateBackEnabled();
-        }
-        return enabled;
-    }
-
+   
     ////////////////////////////////////////////////////////////////
     // accessors
     /**
@@ -449,14 +371,7 @@ public class TabProps
         if (event.getSource() instanceof PluggablePropertyPanel) {
             PluggablePropertyPanel p =
                 (PluggablePropertyPanel) event.getSource();
-            _panels.put(p.getClassForPanel(), p.getPropertyPanel());
-            if (p.getPropertyPanel() instanceof UMLUserInterfaceContainer) {
-                (
-                    (UMLUserInterfaceContainer) p
-                        .getPropertyPanel())
-                        .addNavigationListener(
-                    this);
-            }
+            _panels.put(p.getClassForPanel(), p.getPropertyPanel());            
 
         }
     }
@@ -554,114 +469,3 @@ public class TabProps
 
 } /* end class TabProps */
 
-class InitPanelsLater implements Runnable {
-    protected static Category cat = Category.getInstance(InitPanelsLater.class);
-    private Hashtable _panels = null;
-    private TabProps _tabProps;
-    private Orientation _orientation;
-    public InitPanelsLater(
-        Hashtable p,
-        TabProps tabProps,
-        Orientation orientation) {
-        _panels = p;
-        _tabProps = tabProps;
-        _orientation = orientation;
-    }
-
-    /** Load commonly used property panels, but not those that are
-     *  commonly used within a few seconds of the tool being launched. */
-    public void run() {
-        //   // preload commonly used property panels
-
-        //fill the Hashtable. alphabetical order please... ;-)
-        try {
-            /*
-            _panels.put(MActionStateImpl.class, new PropPanelActionState());
-            _panels.put(MActorImpl.class, new PropPanelActor());
-            _panels.put(MAssociationImpl.class, new PropPanelAssociation());
-            _panels.put(
-                MAssociationRoleImpl.class,
-                new PropPanelAssociationRole());
-            _panels.put(MAttributeImpl.class, new PropPanelAttribute());
-            // _panels.put(MClassImpl.class, new PropPanelClass());
-            _panels.put(MCollaborationImpl.class, new PropPanelCollaboration());
-            _panels.put(
-                MClassifierRoleImpl.class,
-                new PropPanelClassifierRole());
-            _panels.put(MDependencyImpl.class, new PropPanelDependency());
-            _panels.put(MExtendImpl.class, new PropPanelExtend());
-            _panels.put(
-                MExtensionPointImpl.class,
-                new PropPanelExtensionPoint());
-            //_panels.put(ArgoDiagram.class, new PropPanelDiagram());
-            _panels.put(
-                MGeneralizationImpl.class,
-                new PropPanelGeneralization());
-            _panels.put(MIncludeImpl.class, new PropPanelInclude());
-            _panels.put(MInstanceImpl.class, new PropPanelInstance());
-            _panels.put(
-                MComponentInstanceImpl.class,
-                new PropPanelComponentInstance());
-            _panels.put(MComponentImpl.class, new PropPanelComponent());
-            _panels.put(MNodeInstanceImpl.class, new PropPanelNodeInstance());
-            _panels.put(MNodeImpl.class, new PropPanelNode());
-            _panels.put(MObjectImpl.class, new PropPanelObject());
-            _panels.put(MInstanceImpl.class, new PropPanelInstance());
-            _panels.put(MInterfaceImpl.class, new PropPanelInterface());
-            _panels.put(MLinkImpl.class, new PropPanelLink());
-            _panels.put(MStimulusImpl.class, new PropPanelStimulus());
-            _panels.put(MMessageImpl.class, new PropPanelMessage());
-            //_panels.put(MModelImpl.class, new PropPanelModel());
-            
-            // how are Notes handled? Toby, nsuml
-            //_panels.put(MNoteImpl.class, new PropPanelNote());
-            _panels.put(MOperationImpl.class, new PropPanelOperation());
-            _panels.put(MPseudostateImpl.class, new PropPanelPseudostate());
-            //    _panels.put(Realization.class, new PropPanelRealization());
-            // Realization in nsuml!!!
-            _panels.put(UMLStateDiagram.class, new PropPanelUMLStateDiagram());
-            _panels.put(MStateImpl.class, new PropPanelSimpleState());
-            _panels.put(
-                MCompositeStateImpl.class,
-                new PropPanelCompositeState());
-            _panels.put(MFinalStateImpl.class, new PropPanelFinalState());
-            _panels.put(String.class, new PropPanelString());
-            _panels.put(MTransitionImpl.class, new PropPanelTransition());
-            //_panels.put(MUseCaseImpl.class, new PropPanelUseCase());
-            _panels.put(
-                MAssociationEndImpl.class,
-                new PropPanelAssociationEnd());
-            _panels.put(
-                MAssociationEndRoleImpl.class,
-                new PropPanelAssociationEndRole());
-            _panels.put(MParameterImpl.class, new PropPanelParameter());
-            _panels.put(MSignalImpl.class, new PropPanelSignal());
-            _panels.put(MStereotypeImpl.class, new PropPanelStereotype());
-            _panels.put(MDataTypeImpl.class, new PropPanelDataType());
-            // now a plugin
-            // _panels.put(MPackageImpl.class, new PropPanelPackage());
-            _panels.put(MAbstractionImpl.class, new PropPanelAbstraction());
-            _panels.put(MGuardImpl.class, new PropPanelGuard());
-            _panels.put(MCallEventImpl.class, new PropPanelCallEvent());
-            _panels.put(MCallActionImpl.class, new PropPanelCallAction());
-            _panels.put(MInteraction.class, new PropPanelInteraction());
-            _panels.put(MStateMachine.class, new PropPanelStateMachine());
-            */
-        } catch (Exception e) {
-            cat.error("Exception in InitPanelsLater.run()", e);
-
-        }
-
-        Iterator iter = _panels.values().iterator();
-        Object panel;
-        while (iter.hasNext()) {
-            panel = iter.next();
-            if (panel instanceof UMLUserInterfaceContainer) {
-                ((UMLUserInterfaceContainer) panel).addNavigationListener(
-                    _tabProps);
-            }
-        }
-
-        Argo.log.info("done preloading Property Panels");
-    }
-} /* end class InitPanelsLater */
