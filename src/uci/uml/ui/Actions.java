@@ -1312,7 +1312,7 @@ class ActionStateDiagram extends UMLChangeAction {
 		sm.setNamespace(cls);
 		sm.setTop(cs);
 		cls.addBehavior(sm);
-		UMLStateDiagram d = new UMLStateDiagram();
+		UMLStateDiagram d = new UMLStateDiagram(cls,sm);
 		p.addMember(d);
 		ProjectBrowser.TheInstance.getNavPane().addToHistory(d);
 		pb.setTarget(d);
