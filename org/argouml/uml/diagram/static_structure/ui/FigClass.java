@@ -275,9 +275,10 @@ public class FigClass extends FigNodeModelElement {
         this();
         enableSizeChecking(true);
         setOwner(node);
-        if ((org.argouml.model.ModelFacade.isAClassifier(node))
-	    && (org.argouml.model.ModelFacade.getName(node) != null))
+        if ((ModelFacade.isAClassifier(node))
+	        && (ModelFacade.getName(node) != null)) {
             _name.setText(org.argouml.model.ModelFacade.getName(node));
+        }
     }
 
     public String placeString() {
