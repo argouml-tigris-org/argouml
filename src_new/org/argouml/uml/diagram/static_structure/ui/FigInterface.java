@@ -48,7 +48,7 @@ import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.ui.CompartmentFigText;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
 import org.argouml.uml.diagram.ui.FigOperationsCompartment;
-import org.argouml.uml.diagram.ui.HasOperationsCompartment;
+import org.argouml.uml.diagram.ui.OperationsCompartmentContainer;
 import org.argouml.uml.diagram.ui.UMLDiagram;
 import org.argouml.uml.diagram.ui.ActionAddNote;
 import org.argouml.uml.generator.ParserDisplay;
@@ -70,7 +70,7 @@ import ru.novosoft.uml.MElementEvent;
  * 
  */
 public class FigInterface extends FigNodeModelElement 
-        implements HasOperationsCompartment {
+        implements OperationsCompartmentContainer {
     
     private static final Logger LOG = Logger.getLogger(FigInterface.class);
 
