@@ -90,6 +90,7 @@ public abstract class SAXParserBase extends HandlerBase {
     try {
       SAXParser parser = factory.newSAXParser();
       InputSource input = new InputSource(url.openStream());
+      input.setSystemId(url.toString());
       start = System.currentTimeMillis();
       parser.parse(input,this);
       end = System.currentTimeMillis();

@@ -67,7 +67,8 @@ public class AboutBox extends JFrame {
 //     _legal.setFont(ctrlFont);
 //     _contact.setFont(ctrlFont);
 
-    _version.setText("ArgoUML Version 0.9.0\n"+
+    StringBuffer versionBuf = new StringBuffer(
+        "ArgoUML Version 0.9.0\n"+
 		     "Built on 18/09/2000\n"+
 		     "\n"+
 		     "Needed:\n"+
@@ -76,16 +77,37 @@ public class AboutBox extends JFrame {
 		     "\n"+
 		     "Intended for use with:\n"+
 		     "  JDK 1.2 only plus\n"+
-		     "    IBM's XML4J 2.0.15 or higher\n"+
-		     "    Novosoft's NSUML 0.4.8 or higher (nsuml.sourceforge.net)\n"+
+		     "    A JAXP 1.0.1 compatible parser\n" +
+                     "       [Xerces-J 1.2.2 or later recommended, (xml.apache.org)]\n"+
+		     "    Novosoft's NSUML 0.4.17 or higher (nsuml.sourceforge.net)\n"+
 		     "    Frank Finger's (TU-Dresden) OCL-Compiler (dresden-ocl.sourceforge.net)\n"+
-		     "\n"+
-		     "\n"+
-		     "--- Generated version information: ---"+
-		     "\n"+
+		     "\n");
 
-		     getVersionInfo(packageList)
-		     );
+        try {
+            String factoryClass = javax.xml.parsers.SAXParserFactory.newInstance().getClass().getName();
+            if(factoryClass.indexOf("org.apache.") >= 0) {
+                versionBuf.append("This product includes software developed by the\n");
+                versionBuf.append("Apache Software Foundation (http://www.apache.org/).\n");
+            }
+        }
+        catch(Exception e) {}
+
+    versionBuf.append("\n--- Generated version information: ---\n");
+    versionBuf.append(getVersionInfo(packageList));
+
+      String saxFactory = System.getProperty("javax.xml.parsers.SAXParserFactory");
+      if(saxFactory != null) {
+        versionBuf.append("SAX Parser Factory " + saxFactory+ " specified using system property\n");
+      }
+      try {
+        versionBuf.append("SAX Parser Factory " +
+            javax.xml.parsers.SAXParserFactory.newInstance().getClass().getName() + " will be used.\n");
+      }
+      catch(Exception ex) {
+        versionBuf.append("Error determining SAX Parser Factory\n.");
+      }
+
+    _version.setText(versionBuf.toString());
 
     _credits.setText("ArgoUML was developed by the following:\n"+
 		     "Project Lead:\n"+
@@ -172,7 +194,6 @@ public class AboutBox extends JFrame {
     s+="PROVIDED HEREUNDER IS ON AN ''AS IS'' BASIS, AND THE UNIVERSITY OF\n";
     s+="CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,\n";
     s+="UPDATES, ENHANCEMENTS, OR MODIFICATIONS.\n";
-
     _legal.setText(s);
 
     _tabs.addTab("Splash", _splashButton);
@@ -229,7 +250,7 @@ public class AboutBox extends JFrame {
 	    }
 	return sb.toString();
     }
-    
+
   protected static ImageIcon loadIconResource(String imgName, String desc) {
     ImageIcon res = null;
     try {

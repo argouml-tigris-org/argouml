@@ -21,53 +21,21 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.argouml.uml.cognitive.checklist;
-
+package org.argouml.ocl;
+import org.tigris.gef.ocl.*;
 import java.util.*;
 
-import ru.novosoft.uml.foundation.core.*;
-import ru.novosoft.uml.foundation.data_types.*;
+public class OCLExpander extends org.tigris.gef.ocl.OCLExpander {
 
-import org.tigris.gef.util.*;
-
-import org.argouml.cognitive.checklist.*;
-//
-//  slightly different from its GEF counterpart
-//
-import org.argouml.ocl.OCLEvaluator;
-
-/** A special kind of CheckItem that can replace OCL expressions with
- *  their values in the generated advice.
- *
- * @see org.argouml.ocl.OCLEvaluator */
-
-public class UMLCheckItem extends CheckItem {
-
-  public UMLCheckItem(String c, String d) { super(c, d); }
-
-  public UMLCheckItem(String c, String d, String m, Predicate p) {
-    super(c, d, m, p);
+  public OCLExpander(Map templates) {
+    super(templates);
   }
 
-
-  public String expand(String res, Object dm) {
-    int searchPos = 0;
-    int matchPos = res.indexOf(OCLEvaluator.OCL_START, searchPos);
-
-    // replace all occurances of OFFENDER with the name of the first offender
-    while (matchPos != -1) {
-      int endExpr = res.indexOf(OCLEvaluator.OCL_END, matchPos + 1);
-      String expr = res.substring(matchPos + OCLEvaluator.OCL_START.length(),
-				  endExpr);
-      String evalStr = OCLEvaluator.SINGLETON.evalToString(dm, expr);
-      //System.out.println("expr='" + expr + "' = '" + evalStr + "'");
-      res = res.substring(0, matchPos) +
-	evalStr +
-	res.substring(endExpr + OCLEvaluator.OCL_END.length());
-      searchPos = endExpr + 1;
-      matchPos = res.indexOf(OCLEvaluator.OCL_START, searchPos);
+    //
+    //   the only difference between Argo's expander
+    //       and GEF's is which evaluator they use
+    protected List evaluate(Map bindings,String expr) {
+        return org.argouml.ocl.OCLEvaluator.SINGLETON.eval(bindings,expr);
     }
-    return res;
-  }
 
-} /* end class UMLCheckItem */
+} /* end class OCLExpander */

@@ -102,7 +102,7 @@ public class Main {
 	    }
 	return sb.toString();
     }
-    
+
   ////////////////////////////////////////////////////////////////
   // main
 
@@ -112,8 +112,18 @@ public class Main {
       try{
 	  System.out.println(getVersionInfo(packageList));
       } catch (Exception e) { System.out.println("Couldn't generate version info, please check AboutBox!");}
- 
-      
+
+      String saxFactory = System.getProperty("javax.xml.parsers.SAXParserFactory");
+      if(saxFactory != null) {
+        System.out.println("SAX Parser Factory " + saxFactory+ " specified using system property\n");
+      }
+      try {
+        System.out.println("SAX Parser Factory " +
+            javax.xml.parsers.SAXParserFactory.newInstance().getClass().getName() + " will be used.\n");
+      }
+      catch(Exception ex) {
+        System.out.println("Error determining SAX Parser Factory\n.");
+      }
 
     boolean doSplash = true;
     boolean useEDEM = true;
@@ -126,7 +136,7 @@ public class Main {
     URL urlToOpen = null;
 
     long start, phase0, phase1, phase2, phase3, phase4, phase5, now;
-	
+
 	/* set properties for application behaviour */
 	System.setProperty("gef.imageLocation","/org/argouml/Images");
 
