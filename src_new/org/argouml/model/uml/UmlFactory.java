@@ -41,8 +41,6 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import ru.novosoft.uml.MBase;
 import ru.novosoft.uml.model_management.MModel;
-import ru.novosoft.uml.xmi.XMIReader;
-import ru.novosoft.uml.xmi.XMIWriter;
 
 import org.apache.log4j.Category;
 
