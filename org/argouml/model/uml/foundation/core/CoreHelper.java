@@ -422,7 +422,7 @@ public class CoreHelper {
 	}
 	
 	/**
-	 * Returns all behavioralfeatures found in this element and its children
+	 * Returns all interfaces found in this namespace and in its children
 	 * @return Collection
 	 */
 	public Collection getAllInterfaces(MNamespace ns) {
@@ -442,11 +442,40 @@ public class CoreHelper {
 	}
 	
 	/**
+	 * Returns all classes found in the projectbrowser model
+	 * @return Collection
+	 */
+	public Collection getAllClasses() {
+		MNamespace model = ProjectBrowser.TheInstance.getProject().getModel();
+		return getAllClasses(model);
+	}
+	
+	/**
+	 * Returns all classes found in this namespace and in its children
+	 * @return Collection
+	 */
+	public Collection getAllClasses(MNamespace ns) {
+		Iterator it = ns.getOwnedElements().iterator();
+		List list = new ArrayList();
+		while (it.hasNext()) {
+			Object o = it.next();
+			if (o instanceof MNamespace) {
+				list.addAll(getAllClasses((MNamespace)o));
+			} 
+			if (o instanceof MClass) {
+				list.add(o);
+			}
+			
+		}
+		return list;
+	}
+	
+	/**
 	 * Return all interfaces the given class realizes.
 	 * @param clazz
 	 * @return Collection
 	 */
-	public Collection getRealizedInterfaces(MClass clazz) {
+	public Collection getRealizedInterfaces(MClassifier clazz) {
 		if (clazz == null) return new ArrayList();
 		Iterator it = clazz.getClientDependencies().iterator();
 		List list = new ArrayList();
@@ -475,7 +504,7 @@ public class CoreHelper {
 	 * @param clazz
 	 * @return MAbstraction
 	 */
-	public MAbstraction getRealization(MInterface source, MClass clazz) {
+	public MAbstraction getRealization(MInterface source, MClassifier clazz) {
 		if (source == null || clazz == null) return null;
 		Iterator it = clazz.getClientDependencies().iterator();
 		MNamespace model = ProjectBrowser.TheInstance.getProject().getModel();
@@ -496,8 +525,63 @@ public class CoreHelper {
 		return null;
 	}
 				
+	/**
+	 * Returns all classes some class clazz extends.
+	 * @param clazz
+	 * @return Collection
+	 */
+	public Collection getExtendedClasses(MClassifier clazz) {
+		if (clazz == null) return new ArrayList();
+		Iterator it = clazz.getGeneralizations().iterator();
+		List list = new ArrayList();
+		while (it.hasNext()) {
+			MGeneralization gen = (MGeneralization)it.next();
+			MGeneralizableElement parent = gen.getParent();
+			if (parent instanceof MClass) {
+				list.add(parent);
+			}
+		}
+		return list;
+	}
+	
+	/**
+	 * Gets the generalization between two generalizable elements. Returns null
+	 * if there is none.
+	 * @param child
+	 * @param parent
+	 * @return MGeneralization
+	 */
+	public MGeneralization getGeneralization(MGeneralizableElement child, MGeneralizableElement parent) {
+		if (child == null || parent == null) return null;
+		Iterator it = child.getGeneralizations().iterator();
+		while (it.hasNext()) {
+			MGeneralization gen = (MGeneralization)it.next();
+			if (gen.getParent() == parent) {
+				return gen;
+			}
+		}
+		return null;
+	}
 		
-		
+	/**
+	 * Returns all classes that extend some class clazz.
+	 * @param clazz
+	 * @return Collection
+	 */
+	public Collection getExtendingClasses(MClassifier clazz) {
+		if (clazz == null) return new ArrayList();
+		Iterator it = clazz.getSpecializations().iterator();
+		List list = new ArrayList();
+		while (it.hasNext()) {
+			MGeneralization gen = (MGeneralization)it.next();
+			MGeneralizableElement client = gen.getChild();
+			if (client instanceof MClass) {
+				list.add(client);
+			}
+		}
+		return list;
+	}
+	
 	
 }
 
