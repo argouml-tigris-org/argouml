@@ -43,7 +43,7 @@ public class UMLModelElementStereotypeComboBoxModel extends UMLComboBoxModel2 {
      * @param container
      */
     public UMLModelElementStereotypeComboBoxModel(UMLUserInterfaceContainer container) {
-        super(container);
+        super(container, true);
     }
 
     /**
@@ -68,12 +68,16 @@ public class UMLModelElementStereotypeComboBoxModel extends UMLComboBoxModel2 {
     protected void buildModelList() {
         MModelElement elem = (MModelElement)getTarget();
         setElements(ExtensionMechanismsHelper.getHelper().getAllPossibleStereotypes(elem));
-        if (elem != null && elem.getStereotype() != null) {
-            setSelectedItem(elem.getStereotype());
-        } else
-            setSelectedItem("");
+    }   
+
+    /**
+     * @see org.argouml.uml.ui.UMLComboBoxModel2#getSelectedModelElement()
+     */
+    protected Object getSelectedModelElement() {
+        if (getTarget() != null) {
+            return ((MModelElement)getTarget()).getStereotype();
+        }
+        return null;
     }
-    
-    
 
 }

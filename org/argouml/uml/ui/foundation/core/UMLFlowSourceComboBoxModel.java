@@ -41,7 +41,7 @@ public class UMLFlowSourceComboBoxModel extends UMLComboBoxModel2 {
      * @param container
      */
     public UMLFlowSourceComboBoxModel(UMLUserInterfaceContainer container) {
-        super(container);
+        super(container, false);
     }
 
     /**
@@ -49,7 +49,7 @@ public class UMLFlowSourceComboBoxModel extends UMLComboBoxModel2 {
      */
     protected boolean isValidRoleAdded(MElementEvent e) {
         Object o = getChangedElement(e);
-        return o instanceof MModelElement && !((MFlow)getTarget()).getSources().contains(o)
+        return o instanceof MModelElement
             && !((MFlow)getTarget()).getTargets().contains(o);
     }
 
@@ -66,9 +66,16 @@ public class UMLFlowSourceComboBoxModel extends UMLComboBoxModel2 {
     protected void buildModelList() {
         setElements(((MFlow)getTarget()).getSources());
         MFlow flow = (MFlow)getTarget();
-        if (!flow.getSources().isEmpty()) {
-            setSelectedItem(flow.getSources().toArray()[0]);
+    }
+
+    /**
+     * @see org.argouml.uml.ui.UMLComboBoxModel2#getSelectedModelElement()
+     */
+    protected Object getSelectedModelElement() {
+        if (getTarget() != null && !((MFlow)getTarget()).getSources().isEmpty()) {
+            return ((MFlow)getTarget()).getSources().toArray()[0];
         }
+        return null;
     }
 
 }

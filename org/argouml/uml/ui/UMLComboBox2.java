@@ -100,7 +100,7 @@ public class UMLComboBox2
      * @see ru.novosoft.uml.MElementListener#listRoleItemSet(MElementEvent)
      */
     public void listRoleItemSet(MElementEvent e) {
-        ((UMLComboBoxModel2)getModel()).listRoleItemSet(e);
+       // ((UMLComboBoxModel2)getModel()).listRoleItemSet(e);
     }
 
     /**
@@ -109,35 +109,35 @@ public class UMLComboBox2
     public void propertySet(MElementEvent e) {
         // same as itemstatechanged because they happen at the same moment
         // therefore no action here
-        ((UMLComboBoxModel2)getModel()).propertySet(e);
+        // ((UMLComboBoxModel2)getModel()).propertySet(e);
     }
 
     /**
      * @see ru.novosoft.uml.MElementListener#recovered(MElementEvent)
      */
     public void recovered(MElementEvent e) {
-        ((UMLComboBoxModel2)getModel()).recovered(e);
+        // ((UMLComboBoxModel2)getModel()).recovered(e);
     }
 
     /**
      * @see ru.novosoft.uml.MElementListener#removed(MElementEvent)
      */
     public void removed(MElementEvent e) {
-        ((UMLComboBoxModel2)getModel()).removed(e);
+        // ((UMLComboBoxModel2)getModel()).removed(e);
     }
 
     /**
      * @see ru.novosoft.uml.MElementListener#roleAdded(MElementEvent)
      */
     public void roleAdded(MElementEvent e) {
-        ((UMLComboBoxModel2)getModel()).roleAdded(e);
+        // ((UMLComboBoxModel2)getModel()).roleAdded(e);
     }
 
     /**
      * @see ru.novosoft.uml.MElementListener#roleRemoved(MElementEvent)
      */
     public void roleRemoved(MElementEvent e) {
-        ((UMLComboBoxModel2)getModel()).roleRemoved(e);
+        // ((UMLComboBoxModel2)getModel()).roleRemoved(e);
     }
 
     /**

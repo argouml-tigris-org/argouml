@@ -47,7 +47,7 @@ public class UMLIncludeBaseComboBoxModel extends UMLComboBoxModel2 {
      * @param container
      */
     public UMLIncludeBaseComboBoxModel(UMLUserInterfaceContainer container) {
-        super(container);
+        super(container, false);
     }
 
     /**
@@ -77,10 +77,16 @@ public class UMLIncludeBaseComboBoxModel extends UMLComboBoxModel2 {
         list.addAll(ModelManagementHelper.getHelper().getAllModelElementsOfKind(ns, MUseCase.class));
         list.remove(inc.getAddition());
         addAll(list);
-        if (inc.getBase() != null) {
-            setSelectedItem(inc.getBase());
-        } else
-            setSelectedItem("");
+    }
+
+    /**
+     * @see org.argouml.uml.ui.UMLComboBoxModel2#getSelectedModelElement()
+     */
+    protected Object getSelectedModelElement() {
+        if (getTarget() != null) {
+            return ((MInclude)getTarget()).getBase();
+        }
+        return null;
     }
 
 }

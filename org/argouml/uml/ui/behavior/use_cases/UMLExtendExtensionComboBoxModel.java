@@ -44,7 +44,7 @@ public class UMLExtendExtensionComboBoxModel extends UMLComboBoxModel2 {
      * @param container
      */
     public UMLExtendExtensionComboBoxModel(UMLUserInterfaceContainer container) {
-        super(container);
+        super(container, false);
     }
 
     /**
@@ -72,11 +72,16 @@ public class UMLExtendExtensionComboBoxModel extends UMLComboBoxModel2 {
         MNamespace ns = extend.getNamespace();
         addAll(ModelManagementHelper.getHelper().getAllModelElementsOfKind(ns, MUseCase.class));
         removeElement(extend.getBase());
-        if (extend.getExtension() != null) {
-            setSelectedItem(extend.getExtension());
-        } else {
-            setSelectedItem("");
-        }   
+    }
+
+    /**
+     * @see org.argouml.uml.ui.UMLComboBoxModel2#getSelectedModelElement()
+     */
+    protected Object getSelectedModelElement() {
+        if (getTarget() != null) {
+            return ((MExtend)getTarget()).getExtension();
+        }
+        return null;
     }
 
 }

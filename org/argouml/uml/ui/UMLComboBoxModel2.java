@@ -36,6 +36,7 @@ import javax.swing.DefaultComboBoxModel;
 import org.apache.log4j.Category;
 
 
+import ru.novosoft.uml.MBase;
 import ru.novosoft.uml.MElementEvent;
 import ru.novosoft.uml.foundation.core.MModelElement;
 
@@ -49,29 +50,34 @@ public abstract class UMLComboBoxModel2
     extends DefaultComboBoxModel
     implements UMLUserInterfaceComponent {
         
-       protected static Category cat = 
-        Category.getInstance(UMLComboBoxModel2.class);
+    private static Category log = 
+        Category.getInstance("org.argouml.uml.ui.UMLComboBoxModel2");
         
-    protected UMLUserInterfaceContainer container = null;
-    protected int selectedIndex = -1;
-    protected List list = new ArrayList();
+    private UMLUserInterfaceContainer _container = null;
+    private Object _target = null;
+    private int selectedIndex = -1;
+    private List list = new ArrayList();
+    
+    private boolean _clearable = false;
     
 	
     /**
      * Constructs a model for a combobox. The container given is used to retreive
-     * the target that is manipulated through this combobox. The propertyname
-     * must equal the name of the NSUML event thrown when the property is set.
+     * the target that is manipulated through this combobox. If clearable is true,
+     * the user can select null in the combobox and thereby clear the attribute
+     * in the model.
      * @param container
      * @param propertySetName
      * @param roleAddedName
      * @throws IllegalArgumentException if one of the arguments is null
      */
-    public UMLComboBoxModel2(UMLUserInterfaceContainer container) {
+    public UMLComboBoxModel2(UMLUserInterfaceContainer container, boolean clearable) {
         super();
         if (container == null) throw new IllegalArgumentException("In UMLComboBoxModel2: one of the arguments is null");
         // it would be better that we don't need the container to get the target
         // this constructor can be without parameters as soon as we improve
         // targetChanged
+        _clearable = clearable;
         setContainer(container);
         targetChanged();
     }
@@ -82,7 +88,6 @@ public abstract class UMLComboBoxModel2
      * @see ru.novosoft.uml.MElementListener#listRoleItemSet(MElementEvent)
      */
     public void listRoleItemSet(MElementEvent e) {
-        cat.debug("listRoleItemSet");
     }
 
     /**
@@ -107,14 +112,12 @@ public abstract class UMLComboBoxModel2
      * @see ru.novosoft.uml.MElementListener#recovered(MElementEvent)
      */
     public void recovered(MElementEvent e) {
-         cat.debug("recovered");
     }
 
     /**
      * @see ru.novosoft.uml.MElementListener#removed(MElementEvent)
      */
     public void removed(MElementEvent e) {
-        cat.debug("removed");
         Object o = getChangedElement(e);
         if (getIndexOf(o) >= 0) {
             removeElement(o);
@@ -132,6 +135,7 @@ public abstract class UMLComboBoxModel2
             } else {
                 addElement(o);
             }      
+            setSelectedItem(getSelectedModelElement());
         }
     }
 
@@ -154,7 +158,7 @@ public abstract class UMLComboBoxModel2
      * @return UMLUserInterfaceContainer
      */
     protected UMLUserInterfaceContainer getContainer() {
-        return container;
+        return _container;
     }
 
     /**
@@ -162,7 +166,7 @@ public abstract class UMLComboBoxModel2
      * @param container The container to set
      */
     protected void setContainer(UMLUserInterfaceContainer container) {
-        this.container = container;
+        _container = container;
     }
 
     /**
@@ -173,9 +177,13 @@ public abstract class UMLComboBoxModel2
         // the change (the actual old and new target)
         // this must be implemented in the whole of argo one time or another
         // to improve performance and reduce errors
+        setTarget(getContainer().getTarget());
         removeAllElements();
-        addElement("");
         buildModelList();
+        setSelectedItem(getSelectedModelElement());
+        if (getSelectedItem() != null && _clearable) {
+            addElement(""); // makes sure we can select 'none'
+        }
     }
 
     /**
@@ -315,6 +323,7 @@ public abstract class UMLComboBoxModel2
      * @see javax.swing.ComboBoxModel#setSelectedItem(Object)
      */
     public void setSelectedItem(Object arg0) {
+        /*
         if (arg0 instanceof Collection) {
             Iterator it = ((Collection)arg0).iterator();
             if (it.hasNext()) {
@@ -322,6 +331,7 @@ public abstract class UMLComboBoxModel2
             } else
                 return;
         }
+        */
         int index = getIndexOf(arg0);
         if (index == -1) {
             addElement(arg0);
@@ -348,12 +358,15 @@ public abstract class UMLComboBoxModel2
     }
     
     /**
-     * Utility method to get the target of the container
-     * @return Object
+     * Utility method to get the target. Sets the _target if the _target is null
+     * via the method setTarget().
+     * @return MModelElement
      */
-    public Object getTarget() {
-        if (getContainer() != null) return getContainer().getTarget();
-        return null;
+    protected Object getTarget() {
+        if (_target == null) {
+            setTarget(getContainer().getTarget());
+        }
+        return _target;
     }
     
     /**
@@ -391,5 +404,24 @@ public abstract class UMLComboBoxModel2
         if (e.getNewValue() != null) return e.getNewValue();
         return null;
     }
+    
+    /**
+     * Sets the target. If the old target is instanceof MBase, it also removes
+     * the model from the element listener list of the target. If the new target
+     * is instanceof MBase, the model is added as element listener to the new 
+     * target.
+     * @param target
+     */
+    protected void setTarget(Object target) {
+        if (_target instanceof MBase) {
+            ((MBase)_target).removeMElementListener(this);
+        }
+        _target = target;
+        if (target instanceof MBase) {
+            ((MBase)_target).addMElementListener(this);
+        }
+    }
+    
+    protected abstract Object getSelectedModelElement();
 
 }

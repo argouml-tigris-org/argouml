@@ -54,7 +54,7 @@ public class UMLMessageActivatorComboBoxModel extends UMLComboBoxModel2 {
      * @param container
      */
     public UMLMessageActivatorComboBoxModel(UMLUserInterfaceContainer container) {
-        super(container);
+        super(container, false);
     }
 
     /**
@@ -67,7 +67,6 @@ public class UMLMessageActivatorComboBoxModel extends UMLComboBoxModel2 {
             removeAllElements();
             // fill the list with items
             setElements(CollaborationsHelper.getHelper().getAllPossibleActivators(mes));
-            setSelectedItem(mes.getActivator());
         }
     }
     
@@ -87,6 +86,16 @@ public class UMLMessageActivatorComboBoxModel extends UMLComboBoxModel2 {
             m != getContainer().getTarget() && 
             !((MMessage)(getContainer().getTarget())).getPredecessors().contains(m) &&
             ((MMessage)m).getInteraction() == ((MMessage)(getContainer().getTarget())).getInteraction());
+    }
+
+    /**
+     * @see org.argouml.uml.ui.UMLComboBoxModel2#getSelectedModelElement()
+     */
+    protected Object getSelectedModelElement() {
+        if (getTarget() != null) {
+            return ((MMessage)getTarget()).getActivator();
+        }
+        return null;
     }
 
 }

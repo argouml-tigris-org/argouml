@@ -54,7 +54,7 @@ public class UMLAssociationRoleBaseComboBoxModel extends UMLComboBoxModel2 {
      */
     public UMLAssociationRoleBaseComboBoxModel(
         UMLUserInterfaceContainer container) {
-        super(container);
+        super(container, true);
         if (container instanceof PropPanel) {
             Object [] eventsToWatch = { MClassifierRole.class, "base"};
             ((PropPanel) container).addThirdPartyEventListening(eventsToWatch);
@@ -91,6 +91,16 @@ public class UMLAssociationRoleBaseComboBoxModel extends UMLComboBoxModel2 {
              (e.getSource() instanceof MNamespace && e.getName().equals("ownedElement") &&
                 CollaborationsHelper.getHelper().getAllPossibleBases(role).contains(m));
         
+    }
+
+    /**
+     * @see org.argouml.uml.ui.UMLComboBoxModel2#getSelectedModelElement()
+     */
+    protected Object getSelectedModelElement() {
+        if (getTarget() != null) {
+            return ((MAssociationRole)getTarget()).getBase();
+        }
+        return null;
     }
 
 }

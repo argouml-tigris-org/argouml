@@ -44,7 +44,7 @@ public class UMLIncludeAdditionComboBoxModel extends UMLComboBoxModel2 {
      * @param container
      */
     public UMLIncludeAdditionComboBoxModel(UMLUserInterfaceContainer container) {
-        super(container);
+        super(container, false);
     }
 
     /**
@@ -72,11 +72,16 @@ public class UMLIncludeAdditionComboBoxModel extends UMLComboBoxModel2 {
         MNamespace ns = inc.getNamespace();
         addAll(ModelManagementHelper.getHelper().getAllModelElementsOfKind(ns, MUseCase.class));
         removeElement(inc.getBase());
-        if (inc.getAddition() != null) {
-            setSelectedItem(inc.getAddition());
-        } else {
-            setSelectedItem("");
-        }   
+    }
+
+    /**
+     * @see org.argouml.uml.ui.UMLComboBoxModel2#getSelectedModelElement()
+     */
+    protected Object getSelectedModelElement() {
+        if (getTarget() != null) {
+            return ((MInclude)getTarget()).getAddition();
+        }
+        return null;
     }
 
 }
