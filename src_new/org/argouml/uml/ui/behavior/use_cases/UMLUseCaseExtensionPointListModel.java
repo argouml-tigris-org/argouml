@@ -24,15 +24,18 @@
 
 package org.argouml.uml.ui.behavior.use_cases;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.argouml.model.ModelFacade;
-import org.argouml.uml.ui.UMLModelElementListModel2;
+import org.argouml.uml.ui.UMLModelElementOrderedListModel2;
 
 /**
  * @since Oct 7, 2002
  * @author jaap.branderhorst@xs4all.nl
  */
 public class UMLUseCaseExtensionPointListModel
-    extends UMLModelElementListModel2 {
+    extends UMLModelElementOrderedListModel2 {
 
     /**
      * Constructor for UMLUseCaseExtensionPointListModel.
@@ -55,4 +58,21 @@ public class UMLUseCaseExtensionPointListModel
         return ModelFacade.getExtensionPoints(getTarget()).contains(o);
     }
 
+    /**
+     * @see org.argouml.uml.ui.UMLModelElementOrderedListModel2#swap(int, int)
+     */
+    public void swap(int index1, int index2) {
+        Object usecase = getTarget();
+        List c = new ArrayList(ModelFacade.getExtensionPoints(usecase));
+        Object mem1 = c.get(index1);
+        Object mem2 = c.get(index2);
+        List cc = new ArrayList(c);
+        cc.remove(mem1);
+        cc.remove(mem2);
+        ModelFacade.setExtensionPoints(usecase, cc);
+        c.set(index1, mem2);
+        c.set(index2, mem1);
+        ModelFacade.setExtensionPoints(usecase, c);
+        buildModelList();
+    }
 }
