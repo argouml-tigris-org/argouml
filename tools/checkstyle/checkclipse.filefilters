@@ -7,3 +7,9 @@
 /argouml/src_new/org/argouml/uml/reveng/java/JavaLexer.java
 /argouml/src_new/org/argouml/uml/reveng/java/JavaRecognizer.java
 /argouml/src_new/org/argouml/uml/reveng/java/JavaTokenTypes.java
+
+/argouml/modules/classfile/src/org/argouml/uml/reveng/classfile/ClassfileParser.java
+/argouml/modules/classfile/src/org/argouml/uml/reveng/classfile/ClassfileParserTokenTypes.java
+/argouml/modules/classfile/src/org/argouml/uml/reveng/classfile/ClassfileTokenTypes.java
+/argouml/modules/classfile/src/org/argouml/uml/reveng/classfile/ClassfileTreeParser.java
+/argouml/modules/classfile/src/org/argouml/uml/reveng/classfile/ClassfileTreeParserTokenTypes.java
