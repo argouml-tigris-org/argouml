@@ -75,15 +75,12 @@ public class TestModelFacade2 extends TestCase {
     public void testSetName() {
         Object ob = CoreFactory.getFactory().buildClass("initial");
         ModelFacade.setName(ob, "correct");
-	try {
-	    ModelFacade.setName(ob, new String(new char[] {
-	        'i', 'n', 'c', 'o', 'r', 'r', 'e', 'c', 't', ':',
-	        Character.MAX_VALUE,
-	    }));
-	    assertTrue("Error was not thrown", false);
-	} catch (IllegalArgumentException e) {
-	    // We expected an error to be thrown.
-	}
+        ModelFacade.setName(ob, new String(new char[] {
+            'i', 'n', 'c', 'o', 'r', 'r', 'e', 'c', 't', ':',
+            Character.MAX_VALUE,
+        }));
+        assertTrue("0xFFFF is not filtered out of the name of a modelelement", 
+                ModelFacade.getName(ob).indexOf(0xffff) == -1);
     }
     
    
