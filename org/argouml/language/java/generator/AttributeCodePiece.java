@@ -141,7 +141,7 @@ public class AttributeCodePiece extends NamedCodePiece
 		    parseState.newFeature(mFeature);
 		    MAttribute mAttribute = (MAttribute)mFeature;
 
-		    String docComment = GeneratorJava.generateConstraintEnrichedDocComment(mAttribute);
+		    String docComment = GeneratorJava.generateConstraintEnrichedDocComment(mAttribute,false,GeneratorJava.INDENT);
 		    if(docComment != null) {
               writer.write (docComment);
               writer.write ("\n");
