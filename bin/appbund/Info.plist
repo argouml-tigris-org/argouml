@@ -34,6 +34,7 @@
 			<array>
 			<string>$JAVAROOT/antlrall.jar</string>
 			<string>$JAVAROOT/argouml.jar</string>
+			<string>$JAVAROOT/argouml-model.jar</string>
 			<string>$JAVAROOT/gef.jar</string>
 			<string>$JAVAROOT/i18n.jar</string>
 			<string>$JAVAROOT/jh.jar</string>

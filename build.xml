@@ -172,8 +172,9 @@ Property files to be searched:
       <pathelement location="${log4j.jar.path}"/>
       <pathelement location="${swidgets.jar.path}"/>
       <pathelement location="${toolbar.jar.path}"/>
-      <pathelement location="${commons-logging.jar.path}"/>
+      <pathelement location="${commons-logging.jar.path}"/>      
       <path refid="antlr.runtime.classpath"/>
+      <pathelement location="${argo.build.dir}/argouml-model.jar"/>
     </path>
 
     <path id="argo.compile.classpath.without.nsuml">
@@ -189,6 +190,7 @@ Property files to be searched:
       <pathelement location="${toolbar.jar.path}"/>
       <pathelement location="${commons-logging.jar.path}"/>
       <path refid="antlr.runtime.classpath"/>
+      <pathelement location="${argo.build.dir}/argouml-model.jar"/>
     </path>
 
     <path id="argo.runtime.classpath">
@@ -567,6 +569,9 @@ Property files to be searched:
 
     <!-- create directories -->
     <mkdir dir="${argo.build.classes}"/>
+  	
+  	<!-- compile Model subsystem -->
+    <ant dir="../src/model" inheritAll="false" target="install"/>  	
 
     <!-- remove obsolete classes before compiling -->
     <delete file="${argo.build.classes}/org/argouml/model/uml/ModelListener.class"/>
@@ -599,7 +604,7 @@ Property files to be searched:
   <!-- =================================================================== -->
   <target name="package" depends="jar"
           description="Prepare all jar files, both built and just delivered.">
-    <property name="names.of.all.included.libs" value="antlrall.jar gef.jar i18n.jar log4j.jar nsuml.jar ocl-argo.jar toolbar.jar xml-apis.jar xercesImpl.jar xalan.jar jmi.jar swidgets.jar commons-logging.jar"/>
+    <property name="names.of.all.included.libs" value="antlrall.jar gef.jar i18n.jar log4j.jar nsuml.jar ocl-argo.jar toolbar.jar xml-apis.jar xercesImpl.jar xalan.jar jmi.jar swidgets.jar commons-logging.jar argouml-model.jar"/>
     <copy file="${antlrall.jar.path}" tofile="${argo.build.dir}/antlrall.jar"/>
     <copy file="${gef.jar.path}" tofile="${argo.build.dir}/gef.jar"/>
     <copy file="${i18n.jar.path}" tofile="${argo.build.dir}/i18n.jar"/>
@@ -724,6 +729,7 @@ Property files to be searched:
   <target name="clean" depends="init"
           description="Clean out all built files.">
 
+    <ant dir="../src/model" inheritAll="false" target="clean"/>
     <delete dir="${argo.build.dir}/tests"/>
     <delete dir="${argo.build.dir}/src_new"/>
     <delete dir="${argo.build.dir}/classes"/>
@@ -1385,6 +1391,7 @@ you will have to resurrect them using cvs update.
     <!-- keystore on your machine. This is done with the command:        -->
     <!--   keytool -genkey -alias argouml -storepass secret              -->
     <signjar jar="${jwsdir}/argouml.jar"         alias="argouml" storepass="secret"/>
+    <signjar jar="${jwsdir}/argouml-model.jar"   alias="argouml" storepass="secret"/>
     <signjar jar="${jwsdir}/antlrall.jar"        alias="argouml" storepass="secret"/>
     <signjar jar="${jwsdir}/gef.jar"             alias="argouml" storepass="secret"/>
     <signjar jar="${jwsdir}/i18n.jar"            alias="argouml" storepass="secret"/>
