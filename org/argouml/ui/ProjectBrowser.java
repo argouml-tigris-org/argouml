@@ -384,10 +384,10 @@ implements IStatusBar, NavigationListener, ArgoModuleEventListener {
     // needs-more-work: confusing name change
     JMenuItem deleteItem = _edit.add(ActionDeleteFromDiagram.SINGLETON);
     setMnemonic(deleteItem,"RemoveFromDiagram",'R');
-    setAccelerator(deleteItem,ctrlR);
+    setAccelerator(deleteItem,delKey);
     JMenuItem removeItem = _edit.add(ActionRemoveFromModel.SINGLETON);
     setMnemonic(removeItem,"DeleteFromModel",'D');
-    setAccelerator(removeItem,delKey);
+    setAccelerator(removeItem,ctrlR);
     JMenuItem emptyItem = _edit.add(ActionEmptyTrash.SINGLETON);
     _edit.addSeparator();
     _edit.add(ActionSettings.getInstance());
