@@ -77,7 +77,7 @@ public class UMLExtendExtensionComboBoxModel extends UMLComboBoxModel2 {
     /**
      * @see org.argouml.uml.ui.UMLComboBoxModel2#isValidElement(ru.novosoft.uml.MBase)
      */
-    protected boolean isValidElement(MBase element) {
+    protected boolean isValidElement(Object element) {
         return element instanceof MUseCase;
     }
 

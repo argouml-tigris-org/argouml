@@ -21,53 +21,48 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// $header$
-package org.argouml.uml.ui.foundation.core;
+// $Id$
+package org.argouml.uml.ui;
 
-import org.argouml.model.uml.UmlModelEventPump;
-import org.argouml.model.uml.modelmanagement.ModelManagementHelper;
-import org.argouml.uml.ui.UMLComboBoxModel2;
+import java.awt.event.ActionEvent;
 
-import ru.novosoft.uml.foundation.core.MClassifier;
-import ru.novosoft.uml.foundation.core.MFeature;
-import ru.novosoft.uml.foundation.core.MNamespace;
+import org.argouml.application.api.Argo;
 
 /**
- * @since Nov 6, 2002
- * @author jaap.branderhorst@xs4all.nl
+ * Framework action to set the multiplicity of some modelelement.
+ * @author jaap.branderhorst@xs4all.nl	
+ * @since Jan 6, 2003
  */
-public class UMLFeatureOwnerComboBoxModel extends UMLComboBoxModel2 {
+public abstract class ActionSetMultiplicity extends UMLChangeAction {
 
     /**
-     * Constructor for UMLFeatureOwnerComboBoxModel.
-     * @param container
-     * @param propertySetName
-     * @param clearable
+     * Constructor for ActionSetMultiplicity.
+     * @param s
      */
-    public UMLFeatureOwnerComboBoxModel() {
-        super("owner", false);
-        UmlModelEventPump.getPump().addClassModelEventListener(this, MNamespace.class, "ownedElement");
+    protected ActionSetMultiplicity() {
+        super(Argo.localize("CoreMenu", "Set"), true, NO_ICON);
     }
-
+            
     /**
-     * @see org.argouml.uml.ui.UMLComboBoxModel2#isValidElement(ru.novosoft.uml.MBase)
+     * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
-    protected boolean isValidElement(Object element) {
-        return element instanceof MClassifier;
+    public void actionPerformed(ActionEvent e) {
+        super.actionPerformed(e);
+        Object source = e.getSource();
+        if (source instanceof UMLComboBox2) {
+            Object selected = ((UMLComboBox2)source).getSelectedItem();
+            Object target = ((UMLComboBox2)source).getTarget();
+            setSelectedItem(selected, target);
+        }
     }
-
+    
     /**
-     * @see org.argouml.uml.ui.UMLComboBoxModel2#buildModelList()
+     * The user should implement this method to set the multiplicity (the given
+     * item) for the target of the comboboxmodel (target
+     * @param item The multiplicity that should be set
+     * @param target The target of the comboboxmodel (the modelelement that
+     * should have its multiplicity set).
      */
-    protected void buildModelList() {
-        setElements(ModelManagementHelper.getHelper().getAllModelElementsOfKind(MClassifier.class));
-    }
-
-    /**
-     * @see org.argouml.uml.ui.UMLComboBoxModel2#getSelectedModelElement()
-     */
-    protected Object getSelectedModelElement() {
-        return ((MFeature)getTarget()).getOwner();
-    }
+    public abstract void setSelectedItem(Object item, Object target);
 
 }

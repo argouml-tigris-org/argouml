@@ -68,7 +68,7 @@ public class UMLAssociationRoleBaseComboBoxModel extends UMLComboBoxModel2 {
     /**
      * @see org.argouml.uml.ui.UMLComboBoxModel2#isValidElement(ru.novosoft.uml.MBase)
      */
-    protected boolean isValidElement(MBase element) {
+    protected boolean isValidElement(Object element) {
         return CollaborationsHelper.getHelper().getAllPossibleBases((MAssociationRole)getTarget()).contains(element);
     }
 

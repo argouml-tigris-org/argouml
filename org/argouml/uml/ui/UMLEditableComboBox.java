@@ -252,7 +252,7 @@ public abstract class UMLEditableComboBox extends UMLComboBox2 {
             Object oldValue = getSelectedItem();
             ComboBoxEditor editor = getEditor();
             Object item = editor.getItem();
-            doIt(item);
+            doOnEdit(item);
             // next statement is necessary to update the textfield if the selection is equal to what was allready
             // selected
             if (oldValue == getSelectedItem())
@@ -267,6 +267,6 @@ public abstract class UMLEditableComboBox extends UMLComboBox2 {
      * @param item The item in the comboboxeditor. In this case it's the text of
      * the editable textfield.
      */
-    protected abstract void doIt(Object item);
+    protected abstract void doOnEdit(Object item);
 
 }

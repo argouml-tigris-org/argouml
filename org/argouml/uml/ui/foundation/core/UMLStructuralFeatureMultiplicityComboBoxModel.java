@@ -1,4 +1,4 @@
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -21,53 +21,34 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// $header$
+// $Id$
 package org.argouml.uml.ui.foundation.core;
 
-import org.argouml.model.uml.UmlModelEventPump;
-import org.argouml.model.uml.foundation.core.CoreHelper;
-import org.argouml.uml.ui.UMLComboBoxModel2;
+import org.argouml.uml.ui.UMLMultiplicityComboBoxModel;
 
-import ru.novosoft.uml.foundation.core.MModelElement;
-import ru.novosoft.uml.foundation.core.MNamespace;
-
+import ru.novosoft.uml.foundation.core.MStructuralFeature;
 
 /**
- * @since Oct 10, 2002
- * @author jaap.branderhorst@xs4all.nl
+ * 
+ * @author jaap.branderhorst@xs4all.nl	
+ * @since Jan 6, 2003
  */
-public class UMLModelElementNamespaceComboBoxModel extends UMLComboBoxModel2 {
+public class UMLStructuralFeatureMultiplicityComboBoxModel extends UMLMultiplicityComboBoxModel {
 
     /**
-     * Constructor for UMLModelElementNamespaceComboBoxModel.
-     * @param container
+     * Constructor for UMLStructuralFeatureMultiplicityComboBoxModel.
+     * @param propertySetName
      */
-    public UMLModelElementNamespaceComboBoxModel() {
-        super("namespace", false);
-        UmlModelEventPump.getPump().addClassModelEventListener(this, MNamespace.class, "ownedElement");
-    }
-    
-    /**
-     * @see org.argouml.uml.ui.UMLComboBoxModel2#isValidElement(ru.novosoft.uml.MBase)
-     */
-    protected boolean isValidElement(Object o) {
-        return o instanceof MNamespace && CoreHelper.getHelper().isValidNamespace((MModelElement)getTarget(), (MNamespace)o);
-    }
-
-    /**
-     * @see org.argouml.uml.ui.UMLComboBoxModel2#buildModelList()
-     */
-    protected void buildModelList() {
-        setElements(CoreHelper.getHelper().getAllPossibleNamespaces((MModelElement)getTarget()));
+    public UMLStructuralFeatureMultiplicityComboBoxModel() {
+        super("multiplicity");
     }
 
     /**
      * @see org.argouml.uml.ui.UMLComboBoxModel2#getSelectedModelElement()
      */
     protected Object getSelectedModelElement() {
-        if (getTarget() != null) {
-            return ((MModelElement)getTarget()).getNamespace();
-        }
+        if (getTarget() != null && (getTarget() instanceof MStructuralFeature)) 
+            return ((MStructuralFeature)getTarget()).getMultiplicity();
         return null;
     }
 

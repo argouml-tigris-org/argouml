@@ -25,26 +25,40 @@
 package org.argouml.uml.ui.foundation.core;
 
 
-import java.awt.*;
-import java.awt.event.*;
-import javax.swing.*;
-import java.util.*;
+import java.awt.Color;
+import java.awt.GridLayout;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
 
-import ru.novosoft.uml.foundation.core.*;
-import ru.novosoft.uml.foundation.data_types.*;
-import ru.novosoft.uml.foundation.extension_mechanisms.MStereotype;
-import ru.novosoft.uml.model_management.*;
-import ru.novosoft.uml.MElementListener;
-import ru.novosoft.uml.behavior.common_behavior.*;
+import javax.swing.ButtonGroup;
+import javax.swing.JList;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 
-import org.argouml.application.api.*;
-import org.argouml.uml.ui.*;
-import org.argouml.kernel.Project;
+import org.argouml.application.api.Argo;
 import org.argouml.model.uml.UmlFactory;
-import org.argouml.model.uml.behavioralelements.commonbehavior.CommonBehaviorFactory;
 import org.argouml.model.uml.foundation.core.CoreFactory;
-import org.argouml.ui.ProjectBrowser;
-import org.argouml.uml.MMUtil;
+import org.argouml.uml.ui.PropPanelButton;
+import org.argouml.uml.ui.UMLCheckBox;
+import org.argouml.uml.ui.UMLComboBoxNavigator;
+import org.argouml.uml.ui.UMLEnumerationBooleanProperty;
+import org.argouml.uml.ui.UMLList;
+import org.argouml.uml.ui.UMLRadioButton;
+import org.argouml.uml.ui.UMLReflectionBooleanProperty;
+import org.argouml.uml.ui.UMLReflectionListModel;
+import org.argouml.uml.ui.UMLVisibilityPanel;
+
+import ru.novosoft.uml.behavior.common_behavior.MSignal;
+import ru.novosoft.uml.foundation.core.MAttribute;
+import ru.novosoft.uml.foundation.core.MClassifier;
+import ru.novosoft.uml.foundation.core.MNamespace;
+import ru.novosoft.uml.foundation.core.MOperation;
+import ru.novosoft.uml.foundation.core.MParameter;
+import ru.novosoft.uml.foundation.data_types.MCallConcurrencyKind;
+import ru.novosoft.uml.foundation.data_types.MParameterDirectionKind;
+import ru.novosoft.uml.foundation.data_types.MScopeKind;
+import ru.novosoft.uml.foundation.extension_mechanisms.MStereotype;
 
 public class PropPanelOperation extends PropPanelModelElement {
 

@@ -170,7 +170,7 @@ public abstract class UMLComboBoxModel2
      * list of elements.
      * @param element
      */
-    protected abstract boolean isValidElement(MBase element);
+    protected abstract boolean isValidElement(Object element);
     
     /**
      * Builds the list of elements and sets the selectedIndex to the currently 
