@@ -28,32 +28,30 @@
 
 package org.argouml.uml.diagram.activity.ui;
 
-import java.util.*;
-import java.awt.*;
-import java.beans.*;
-import javax.swing.*;
+import java.beans.PropertyVetoException;
 
-import ru.novosoft.uml.model_management.*;
-import ru.novosoft.uml.foundation.core.*;
-import ru.novosoft.uml.foundation.data_types.*;
-import ru.novosoft.uml.behavior.state_machines.*;
-import ru.novosoft.uml.behavior.activity_graphs.*;
+import javax.swing.Action;
 
+import org.apache.log4j.Category;
+import org.argouml.ui.CmdCreateNode;
+import org.argouml.uml.diagram.state.StateDiagramGraphModel;
+import org.argouml.uml.diagram.state.ui.ActionCreatePseudostate;
+import org.argouml.uml.diagram.state.ui.StateDiagramRenderer;
+import org.argouml.uml.diagram.ui.UMLDiagram;
+import org.argouml.uml.ui.ActionAddNote;
 import org.tigris.gef.base.CmdSetMode;
 import org.tigris.gef.base.LayerPerspective;
 import org.tigris.gef.base.LayerPerspectiveMutable;
 import org.tigris.gef.base.ModeCreatePolyEdge;
-import org.tigris.gef.ui.*;
-
-import org.argouml.uml.diagram.ui.*;
-import org.apache.log4j.Category;
-import org.argouml.ui.CmdCreateNode;
-import org.argouml.uml.diagram.state.*;
-import org.argouml.uml.diagram.state.ui.*;
-
-// get the note from the class diagram
-import org.argouml.uml.ui.*;
-import org.argouml.uml.diagram.static_structure.ui.FigComment;
+import org.tigris.gef.ui.ToolBar;
+import ru.novosoft.uml.behavior.activity_graphs.MActionState;
+import ru.novosoft.uml.behavior.activity_graphs.MActivityGraph;
+import ru.novosoft.uml.behavior.state_machines.MFinalState;
+import ru.novosoft.uml.behavior.state_machines.MStateMachine;
+import ru.novosoft.uml.behavior.state_machines.MTransition;
+import ru.novosoft.uml.foundation.core.MModelElement;
+import ru.novosoft.uml.foundation.core.MNamespace;
+import ru.novosoft.uml.foundation.data_types.MPseudostateKind;
 
 /** Enabling an activity diagram connected to an
  * actor has been requested as a feature.
@@ -224,14 +222,9 @@ public class UMLActivityDiagram extends UMLDiagram {
   }
   
   protected static String getNewDiagramName() {
-  	String name = null;
-  	Object[] args = {name};
-  	do {
-        name = "activity diagram " + _ActivityDiagramSerial;
-        _ActivityDiagramSerial++;
-        args[0] = name;
-    }
-    while (TheInstance.vetoCheck("name", args));
+    String name = null;
+    name = "activity diagram " + _ActivityDiagramSerial;
+    _ActivityDiagramSerial++;
     return name;
   }
 

@@ -84,7 +84,7 @@ public class PropPanelMessage extends PropPanelModelElement {
    
     add(LabelledLayout.getSeperator());
 
-    addField(Argo.localize("UMLMenu", "label.activator"), new UMLMessageActivatorComboBox(this, new UMLMessageActivatorComboBoxModel(this)));
+    addField(Argo.localize("UMLMenu", "label.activator"), new UMLMessageActivatorComboBox(this, new UMLMessageActivatorComboBoxModel()));
 
     JList actionList = new UMLMutableLinkedList(this, new UMLMessageActionListModel(this), null, ActionNewAction.SINGLETON);
     actionList.setVisibleRowCount(1);

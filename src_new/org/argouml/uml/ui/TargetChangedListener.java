@@ -1,4 +1,4 @@
-// Copyright (c) 1996-2001 The Regents of the University of California. All
+// Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -21,19 +21,41 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.argouml.i18n;
-import junit.framework.*;
+// $header$
+package org.argouml.uml.ui;
 
-import org.argouml.util.*;
+/**
+ * Classes implementing this interface are interested in changes of the
+ * target. Target changes occur when the user or argouml itself (programmatically)
+ * select another modelelement. 
+ *<p>
+ * This listener is introduced to remove the very close dependency between
+ * property panel and GUI elements. More specifically to support the need to
+ * implement GUI elements as singletons which is not possible with the implementation
+ * that uses UMLUserInterfaceComponent as the interface.
+ * </p>
+ * <p>
+ * The methods are called at the moment via UMLChangeDispatch. In the future
+ * an eventpump will come into place that does not call the components on a 
+ * property panel but that will call the interested instances (GUI elements) 
+ * directly.
+ * </p>
+ * @since Nov 8, 2002
+ * @author jaap.branderhorst@xs4all.nl
+ */
+public interface TargetChangedListener {
+    
+    /**
+     * This method is called when a new target is selected, either by the
+     * program or by the user.
+     * @param newTarget
+     */
+    public void targetChanged(Object newTarget);
+    
+    /**
+     * This method is called when the navigation history is updated.
+     * @param newTarget
+     */
+    public void targetReasserted(Object newTarget);
 
-
-public class TestUMLResourceBundle extends TestCase {
-    public TestUMLResourceBundle(String name) {
-	super(name);
-    }
-
-    public void testMain() {
-	CheckResourceBundle.checkResourceBundle(this, 
-						"org.argouml.i18n.UMLResourceBundle");
-    }
 }

@@ -37,6 +37,8 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
 import org.argouml.application.api.Argo;
+import org.argouml.kernel.Project;
+import org.argouml.kernel.ProjectManager;
 import org.argouml.model.uml.AbstractWellformednessRule;
 import org.argouml.model.uml.UmlFactory;
 import org.argouml.model.uml.foundation.core.AssociationEndAggregationWellformednessRule;
@@ -101,7 +103,7 @@ public class PropPanelAssociationEnd extends PropPanelModelElement {
         "type","getType","setType",false,MClassifier.class,true);
     UMLComboBox box = new UMLComboBox(model);
     box.setToolTipText("Warning: Do not use this to change an end that is already in a diagram.");
-    addField(Argo.localize("UMLMenu", "label.type"),new UMLComboBox2(this, new UMLAssociationEndTypeComboBoxModel(this), ActionSetAssociationEndType.SINGLETON));
+    addField(Argo.localize("UMLMenu", "label.type"),new UMLComboBox2(new UMLAssociationEndTypeComboBoxModel(), ActionSetAssociationEndType.SINGLETON));
 
     addField(Argo.localize("UMLMenu", "label.multiplicity"),new UMLMultiplicityComboBox(this,mclass));
 
@@ -317,15 +319,16 @@ public class PropPanelAssociationEnd extends PropPanelModelElement {
     	MAssociation assoc = end.getAssociation();
     	Collection ends = assoc.getConnections();
     	if (ends.size() > 2) {   		
-    		Iterator it = ProjectBrowser.TheInstance.getProject().findFigsForMember(end.getAssociation()).iterator();
+    		Iterator it = ProjectManager.getManager().getCurrentProject().findFigsForMember(end.getAssociation()).iterator();
     		while (it.hasNext()) {
     			// should do here something if the association end is shown
     		}
     		UmlFactory.getFactory().delete(end);
     		navigateTo(assoc);
-    	} else {
-    		ProjectBrowser.TheInstance.setDetailsTarget(assoc);
-    		ActionRemoveFromModel.SINGLETON.actionPerformed(new ActionEvent(this, 0, null));
+    	} else {            
+            ProjectBrowser.TheInstance.setTarget(assoc);
+    	    ActionRemoveFromModel.SINGLETON.actionPerformed(new ActionEvent(this, 0, null));
+            ProjectBrowser.TheInstance.setTarget(ProjectBrowser.TheInstance.getActiveDiagram());
     	}
     		
     }

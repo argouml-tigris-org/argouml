@@ -97,18 +97,21 @@ abstract public class PropPanelModelElement extends PropPanel {
     protected static ImageIcon _messageIcon = ResourceLoader.lookupIconResource("Message");
     protected static ImageIcon _flowIcon = ResourceLoader.lookupIconResource("Flow");
 
-    protected static JScrollPane namespaceScroll;
-    protected static JComboBox namespaceComboBox;
-    protected static JTextField nameField;
-    protected static JComboBox stereotypeBox;    
-    protected static JScrollPane supplierDependencyScroll;
-    protected static JScrollPane clientDependencyScroll;
-    protected static JScrollPane targetFlowScroll;
-    protected static JScrollPane sourceFlowScroll;
-    protected static JScrollPane constraintScroll;
-    protected static JPanel namespaceVisibilityPanel;
-    protected static JCheckBox specializationCheckBox;
-    protected static JScrollPane elementResidenceScroll;
+    protected JScrollPane namespaceScroll;
+    protected JComboBox namespaceComboBox;
+    protected JTextField nameField;
+    protected JComboBox stereotypeBox;    
+    protected JScrollPane supplierDependencyScroll;
+    protected JScrollPane clientDependencyScroll;
+    protected JScrollPane targetFlowScroll;
+    protected JScrollPane sourceFlowScroll;
+    protected JScrollPane constraintScroll;
+    protected JPanel namespaceVisibilityPanel;
+    protected JCheckBox specializationCheckBox;
+    protected JScrollPane elementResidenceScroll;
+    
+    private UMLModelElementNamespaceComboBoxModel namespaceComboBoxModel = new UMLModelElementNamespaceComboBoxModel();
+    private UMLModelElementStereotypeComboBoxModel stereotypeComboBoxModel = new UMLModelElementStereotypeComboBoxModel();
     
     ////////////////////////////////////////////////////////////////
     // constructors
@@ -196,8 +199,8 @@ abstract public class PropPanelModelElement extends PropPanel {
      */
     private void initialize() {
         nameField = new UMLTextField2(this, new UMLModelElementNameDocument(this));
-        stereotypeBox = new UMLComboBox2(this, new UMLModelElementStereotypeComboBoxModel(this), ActionSetModelElementStereotype.SINGLETON);
-        namespaceComboBox = new UMLComboBox2(this, new UMLModelElementNamespaceComboBoxModel(this), ActionSetModelElementNamespace.SINGLETON);
+        stereotypeBox = new UMLComboBox2(stereotypeComboBoxModel, ActionSetModelElementStereotype.SINGLETON);
+        namespaceComboBox = new UMLComboBox2(namespaceComboBoxModel, ActionSetModelElementNamespace.SINGLETON);
         JList namespaceList = new UMLLinkedList(this, new UMLModelElementNamespaceListModel(this));
         namespaceList.setVisibleRowCount(1);
         namespaceScroll = new JScrollPane(namespaceList);

@@ -74,7 +74,7 @@ public class ActionOpenProject extends UMLAction {
      */
   public void actionPerformed (ActionEvent e) {
     ProjectBrowser pb = ProjectBrowser.TheInstance;
-    Project p = pb.getProject();
+    Project p = ProjectManager.getManager().getCurrentProject();
     
     if (p != null && p.needsSave()) {
       String t = MessageFormat.format (
@@ -129,10 +129,7 @@ public class ActionOpenProject extends UMLAction {
         	// changed the loading of the projectfiles to solve hanging 
         	// of argouml if a project is corrupted. Issue 913
         	// made it possible to return to the old project if loading went wrong
-        	Project oldProject = pb.getProject();
-        	if (oldProject == null) {
-        		oldProject = Project.makeEmptyProject();
-        	}
+        	Project oldProject = ProjectManager.getManager().getCurrentProject();
             // This is actually a hack! Some diagram types
             // (like the state diagrams) access the current
             // diagram to get some info. This might cause 
@@ -148,7 +145,7 @@ public class ActionOpenProject extends UMLAction {
             // pb.setProject(Project.makeEmptyProject());
             
             // new code:
-            pb.setProject(oldProject);
+            
             // 2002-07-18
         	// Jaap Branderhorst
         	// changed the loading of the projectfiles to solve hanging 
@@ -156,7 +153,7 @@ public class ActionOpenProject extends UMLAction {
         	// try catch block added
             try {
             	p = Project.loadProject (url);
-            	pb.setProject (p);
+            	ProjectManager.getManager().setCurrentProject(p);
             	pb.showStatus (MessageFormat.format (
                 Argo.localize ("Actions", "template.open_project.status_read"),
                 	new Object[] {url.toString()}
@@ -169,7 +166,7 @@ public class ActionOpenProject extends UMLAction {
    					"Error",
     				JOptionPane.ERROR_MESSAGE);
                // restore old state of the project browser
-               pb.setProject(oldProject);
+               ProjectManager.getManager().setCurrentProject(oldProject);
 	       return;
             }
             catch (IOException io) {
@@ -181,7 +178,7 @@ public class ActionOpenProject extends UMLAction {
                     " the corrupted project file.",
                     "Error",
                     JOptionPane.ERROR_MESSAGE);
-                pb.setProject(oldProject);
+                ProjectManager.getManager().setCurrentProject(oldProject);
 		return;
             }
             catch (Exception ex) {
@@ -194,7 +191,7 @@ public class ActionOpenProject extends UMLAction {
     				JOptionPane.ERROR_MESSAGE);
 
             	// lets restore the state of the projectbrowser
-            	pb.setProject(oldProject);
+            	ProjectManager.getManager().setCurrentProject(oldProject);
 		return;
             }
 	    if (ArgoParser.SINGLETON.getLastLoadStatus() != true) {

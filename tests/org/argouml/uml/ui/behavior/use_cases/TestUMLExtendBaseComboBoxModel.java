@@ -24,17 +24,18 @@
 // $header$
 package org.argouml.uml.ui.behavior.use_cases;
 
+import junit.framework.TestCase;
+
+import org.argouml.application.security.ArgoSecurityManager;
+import org.argouml.kernel.Project;
+import org.argouml.kernel.ProjectManager;
 import org.argouml.model.uml.UmlFactory;
 import org.argouml.model.uml.behavioralelements.usecases.UseCasesFactory;
 import org.argouml.model.uml.modelmanagement.ModelManagementFactory;
-import org.argouml.uml.ui.MockUMLUserInterfaceContainer;
-
 import ru.novosoft.uml.MFactoryImpl;
 import ru.novosoft.uml.behavior.use_cases.MExtend;
 import ru.novosoft.uml.behavior.use_cases.MUseCase;
 import ru.novosoft.uml.model_management.MModel;
-
-import junit.framework.TestCase;
 
 /**
  * @since Oct 31, 2002
@@ -60,18 +61,19 @@ public class TestUMLExtendBaseComboBoxModel extends TestCase {
      */
     protected void setUp() throws Exception {
         super.setUp();
+        ArgoSecurityManager.getInstance().setAllowExit(true);
         elem = UseCasesFactory.getFactory().createExtend();
         oldEventPolicy = MFactoryImpl.getEventPolicy();
         MFactoryImpl.setEventPolicy(MFactoryImpl.EVENT_POLICY_IMMEDIATE);
-        MockUMLUserInterfaceContainer cont = new MockUMLUserInterfaceContainer();
-        cont.setTarget(elem);
-        model = new UMLExtendBaseComboBoxModel(cont);
+        model = new UMLExtendBaseComboBoxModel();
         bases = new MUseCase[10];
         MModel m = ModelManagementFactory.getFactory().createModel();
+        ProjectManager.getManager().getCurrentProject().setRoot(m);
         for (int i = 0 ; i < 10; i++) {
             bases[i] = UseCasesFactory.getFactory().createUseCase();
             m.addOwnedElement(bases[i]);
         }
+        model.targetChanged(elem);
     }
 
     /**

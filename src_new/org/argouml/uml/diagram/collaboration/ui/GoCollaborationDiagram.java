@@ -33,6 +33,7 @@ import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.behavior.collaborations.MCollaboration;
 
 import org.argouml.kernel.Project;
+import org.argouml.kernel.ProjectManager;
 import org.argouml.ui.*;
 
 public class GoCollaborationDiagram extends AbstractGoRule {
@@ -64,7 +65,7 @@ public class GoCollaborationDiagram extends AbstractGoRule {
   }
 
   public Collection getChildren(Object parent) {
-    Project p = ProjectBrowser.TheInstance.getProject();
+    Project p = ProjectManager.getManager().getCurrentProject();
     if (p == null) return null;
     if (!(parent instanceof MCollaboration)) return null;
     Vector res = new Vector();

@@ -46,8 +46,8 @@ public class UMLIncludeAdditionComboBoxModel extends UMLComboBoxModel2 {
      * Constructor for UMLIncludeAdditionComboBoxModel.
      * @param container
      */
-    public UMLIncludeAdditionComboBoxModel(UMLUserInterfaceContainer container) {
-        super(container, "addition", false);
+    public UMLIncludeAdditionComboBoxModel() {
+        super("addition", false);
         UmlModelEventPump.getPump().addClassModelEventListener(this, MNamespace.class, "ownedElement");
     }
 

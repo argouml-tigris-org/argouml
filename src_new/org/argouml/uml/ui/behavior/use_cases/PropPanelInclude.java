@@ -81,10 +81,10 @@ public class PropPanelInclude extends PropPanelModelElement {
             new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-stereo"),stereotypeBox));
         addField(Argo.localize("UMLMenu", "label.namespace"), namespaceScroll);
     
-    JComboBox baseBox = new UMLComboBox2(this, new UMLIncludeBaseComboBoxModel(this), ActionSetIncludeBase.SINGLETON);
+    JComboBox baseBox = new UMLComboBox2(new UMLIncludeBaseComboBoxModel(), ActionSetIncludeBase.SINGLETON);
     addField(Argo.localize("UMLMenu", "label.usecase-base"), baseBox);
     
-    JComboBox additionBox = new UMLComboBox2(this, new UMLIncludeAdditionComboBoxModel(this), ActionSetIncludeAddition.SINGLETON);
+    JComboBox additionBox = new UMLComboBox2(new UMLIncludeAdditionComboBoxModel(), ActionSetIncludeAddition.SINGLETON);
     addField(Argo.localize("UMLMenu", "label.addition"), additionBox);
     
     add(LabelledLayout.getSeperator());

@@ -25,7 +25,6 @@
 // Classes: StateDiagramGraphModel
 // Original Author: your email address here
 // $Id$
-
 package org.argouml.uml.diagram.state;
 
 import org.apache.log4j.Category;

@@ -61,7 +61,7 @@ public class ActionExit extends UMLAction {
   
   public void actionPerformed (ActionEvent ae) {
     ProjectBrowser pb = ProjectBrowser.TheInstance;
-    Project p = pb.getProject();
+    Project p = ProjectManager.getManager().getCurrentProject();
     
     if (p != null && p.needsSave() && !active) {
       active = true;

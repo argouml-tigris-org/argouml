@@ -123,7 +123,7 @@ public class PropPanelAssociation extends PropPanelModelElement {
     //   this will cause the components on this page to be notified
     //      anytime a stereotype, namespace, operation, etc
     //      has its name changed or is removed anywhere in the model
-    Class[] namesToWatch = { MStereotype.class,MNamespace.class,MClassifier.class };
+    Class[] namesToWatch = { MStereotype.class,MNamespace.class,MClassifier.class, MAssociationEnd.class };
     setNameEventListening(namesToWatch);
 
     addField(Argo.localize("UMLMenu", "label.name"), nameField);

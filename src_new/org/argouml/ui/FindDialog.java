@@ -40,6 +40,8 @@ import ru.novosoft.uml.model_management.*;
 import org.tigris.gef.util.*;
 
 import org.argouml.application.api.*;
+import org.argouml.kernel.Project;
+import org.argouml.kernel.ProjectManager;
 import org.argouml.uml.*;
 import org.argouml.uml.cognitive.*;
 
@@ -347,7 +349,7 @@ implements ActionListener, MouseListener {
 
     ChildGenFind gen = ChildGenFind.SINGLETON;
     ProjectBrowser pb = ProjectBrowser.TheInstance;
-    Object root = pb.getProject();
+    Object root = ProjectManager.getManager().getCurrentProject();
 
     TabResults newResults = new TabResults();
     newResults.setTitle(name);

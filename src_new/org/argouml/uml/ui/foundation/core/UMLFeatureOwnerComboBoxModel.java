@@ -45,9 +45,8 @@ public class UMLFeatureOwnerComboBoxModel extends UMLComboBoxModel2 {
      * @param propertySetName
      * @param clearable
      */
-    public UMLFeatureOwnerComboBoxModel(
-        UMLUserInterfaceContainer container) {
-        super(container, "owner", false);
+    public UMLFeatureOwnerComboBoxModel() {
+        super("owner", false);
         UmlModelEventPump.getPump().addClassModelEventListener(this, MNamespace.class, "ownedElement");
     }
 

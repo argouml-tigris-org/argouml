@@ -26,6 +26,7 @@
 // Original Author: jrobbins
 // $Id$
 
+
 package org.argouml.uml.cognitive;
 
 import java.util.*;

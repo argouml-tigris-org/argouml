@@ -64,7 +64,7 @@ public class ActionStoreModelToDB extends UMLAction {
 
 	if (writer.hasConnection()) {
 	    ProjectBrowser pb = ProjectBrowser.TheInstance;
-	    Project p =  pb.getProject();
+	    Project p =  ProjectManager.getManager().getCurrentProject();
 
 	    MNamespace nm = p.getCurrentNamespace();
 	    if (!(nm instanceof MModel)) {

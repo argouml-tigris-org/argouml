@@ -45,7 +45,7 @@ public class UMLReceptionSignalComboBox extends UMLComboBox2 {
     public UMLReceptionSignalComboBox(
         UMLUserInterfaceContainer container,
         UMLComboBoxModel2 arg0) {
-        super(container, arg0);
+        super(arg0);
     }
 
     /**
@@ -54,7 +54,7 @@ public class UMLReceptionSignalComboBox extends UMLComboBox2 {
     protected void doIt(ActionEvent event) {
         Object o = getModel().getElementAt(getSelectedIndex());
         MSignal signal = (MSignal)o;
-        MReception reception = (MReception)getContainer().getTarget();
+        MReception reception = (MReception)getTarget();
         if (signal != reception.getSignal()) {
             reception.setSignal(signal);
         }

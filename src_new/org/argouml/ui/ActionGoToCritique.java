@@ -29,11 +29,11 @@
 
 package org.argouml.ui;
 
-import java.util.*;
-import java.awt.event.*;
+import java.awt.event.ActionEvent;
 
-import org.argouml.cognitive.*;
-import org.argouml.uml.ui.*;
+import org.argouml.cognitive.ToDoItem;
+import org.argouml.cognitive.ui.ToDoPane;
+import org.argouml.uml.ui.UMLAction;
 
 public class ActionGoToCritique extends UMLAction {
   ToDoItem _item = null;
@@ -44,7 +44,7 @@ public class ActionGoToCritique extends UMLAction {
   }
 
   public void actionPerformed(ActionEvent ae) {
-    ProjectBrowser.TheInstance.getToDoPane().selectItem(_item);
+    ProjectBrowser.TheInstance.getTodoPane().selectItem(_item);
   }
 
   public boolean shouldBeEnabled() { return true; }

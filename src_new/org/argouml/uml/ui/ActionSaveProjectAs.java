@@ -29,6 +29,8 @@ import org.argouml.ui.*;
 import org.argouml.util.*;
 import org.argouml.util.osdep.*;
 import org.tigris.gef.ocl.*;
+import sun.security.action.GetPropertyAction;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -71,14 +73,14 @@ public class ActionSaveProjectAs extends ActionSaveProject {
 	  return false;
 	boolean success = trySave(overwrite,f);
 	if (success) {
-	    ProjectBrowser.TheInstance.updateTitle();
+	    ProjectBrowser.TheInstance.setTitle(ProjectManager.getManager().getCurrentProject().getName());
 	}
 	return success;
   }
 
     protected File getNewFile() {
 	ProjectBrowser pb = ProjectBrowser.TheInstance;
-	Project p = pb.getProject();
+	Project p = ProjectManager.getManager().getCurrentProject();
 
         JFileChooser chooser = null;
 	URL url = p.getURL();

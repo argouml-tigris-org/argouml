@@ -199,6 +199,10 @@ public abstract class UMLPlainTextDocument extends PlainDocument
     protected abstract String getProperty();
     
     private final void setFiring(boolean firing) {
+        if (firing)
+            UmlModelEventPump.getPump().addModelEventListener(this, (MBase)_target, _eventName);
+        else
+            UmlModelEventPump.getPump().removeModelEventListener(this, (MBase)_target, _eventName);
         _firing = firing;
     }
     

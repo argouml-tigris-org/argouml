@@ -139,8 +139,8 @@ implements TabModelTarget, GraphSelectionListener, ModeChangeListener {
     Vector sels = gse.getSelections();
     ProjectBrowser pb = ProjectBrowser.TheInstance;
 
-    if (sels.size() == 1) pb.setDetailsTarget(sels.elementAt(0));
-    else pb.setDetailsTarget(null);
+    if (sels.size() == 1) pb.setTarget(sels.elementAt(0));
+    else pb.setTarget(null);
   }
 
   public void removeGraphSelectionListener(GraphSelectionListener listener) {

@@ -23,10 +23,14 @@
 
 package org.argouml.model.uml;
 
+import java.util.Iterator;
+import java.util.Set;
+
 import ru.novosoft.uml.MBase;
 
 import org.apache.log4j.Category;
 import org.argouml.uml.UUIDManager;
+
 
 /**
  * Abstract Class that every model package factory should implement
@@ -57,6 +61,13 @@ public abstract class AbstractUmlModelFactory {
             // to all modelevents.
             ((MBase)o).addMElementListener(UmlModelEventPump.getPump());
             ((MBase)o).addMElementListener(UmlModelListener.getInstance());
+            Set couples = UmlModelEventPump.getPump().getInterestedListeners(o.getClass());
+            Iterator it = couples.iterator();
+            while (it.hasNext()) {
+                UmlModelEventPump.ListenerEventName couple = (UmlModelEventPump.ListenerEventName)it.next();
+                UmlModelEventPump.getPump().addModelEventListener(couple.getListener(), (MBase)o, couple.getEventName());
+            }
+            
        }
     }
 

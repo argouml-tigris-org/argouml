@@ -30,6 +30,9 @@ import java.util.Set;
 
 import junit.framework.TestCase;
 
+import org.argouml.application.security.ArgoSecurityManager;
+import org.argouml.kernel.Project;
+import org.argouml.kernel.ProjectManager;
 import org.argouml.model.uml.behavioralelements.statemachines.StateMachinesFactory;
 import org.argouml.model.uml.foundation.core.CoreFactory;
 import ru.novosoft.uml.MElementEvent;
@@ -47,6 +50,11 @@ import ru.novosoft.uml.foundation.core.MParameterImpl;
  * @author jaap.branderhorst@xs4all.nl
  */
 public class TestUmlModelEventPump extends TestCase {
+    
+    private MClass elem;
+    private MockModelEventListener listener;
+    private boolean eventcalled;
+    private TestListener listener2;
 
     
     private class TestListener implements MElementListener {
@@ -95,10 +103,7 @@ public class TestUmlModelEventPump extends TestCase {
 
     }
     
-    private MClass elem;
-    private MockModelEventListener listener;
-    private boolean eventcalled;
-    private TestListener listener2;
+    
     
     /**
      * Constructor for TestUmlModelEventPump.
@@ -112,9 +117,11 @@ public class TestUmlModelEventPump extends TestCase {
      * @see junit.framework.TestCase#setUp()
      */
     protected void setUp() throws Exception {
-        super.setUp();
+        super.setUp(); 
+        ArgoSecurityManager.getInstance().setAllowExit(true);
         MFactoryImpl.setEventPolicy(MFactoryImpl.EVENT_POLICY_IMMEDIATE);
         elem = CoreFactory.getFactory().createClass();
+        ProjectManager.getManager().getCurrentProject().getRoot().addOwnedElement(elem);
         listener = new MockModelEventListener();
         eventcalled = false;
         listener2 = new TestListener();
@@ -143,7 +150,6 @@ public class TestUmlModelEventPump extends TestCase {
         assert(!UmlModelEventPump.getPump().getListenerClassModelEventsMap().isEmpty());
         assert(!UmlModelEventPump.getPump().getListenerModelEventsMap().isEmpty());
         assert(UmlModelEventPump.getPump().getListenerModelEventsMap().get(elem.hashCode() + "name") instanceof Collection);
-        assert(((Collection)UmlModelEventPump.getPump().getListenerClassModelEventsMap().get(UmlModelEventPump.getPump().getKey(elem.getClass(), "name"))).contains(listener));
         assert(((Collection)UmlModelEventPump.getPump().getListenerModelEventsMap().get(elem.hashCode() + "name")).contains(listener));
     }
    
@@ -204,7 +210,7 @@ public class TestUmlModelEventPump extends TestCase {
         UmlModelEventPump.getPump().addClassModelEventListener(listener, elem.getClass(), new String[] {"name"});
         UmlModelEventPump.getPump().addClassModelEventListener(listener, elem.getClass(), new String[] {"name"});
         assertEquals(1, UmlModelEventPump.getPump().getListenerClassModelEventsMap().size());
-        assertEquals(1, ((Set)UmlModelEventPump.getPump().getListenerClassModelEventsMap().get(UmlModelEventPump.getPump().getKey(elem.getClass(), "name"))).size());
+        assertEquals(1, ((Set)UmlModelEventPump.getPump().getListenerClassModelEventsMap().get(elem.getClass())).size());
     }
     
     /**
@@ -222,9 +228,9 @@ public class TestUmlModelEventPump extends TestCase {
      * Tests if a listener that registred for a ListRoleItemSet event on the class level really
      * received the event.
      */
-    public void testListRoleItemSetClass() {        
-        elem.addFeature(new MOperationImpl());
-        UmlModelEventPump.getPump().addClassModelEventListener(listener2, elem.getClass(), new String[] {"feature"});
+    public void testListRoleItemSetClass() {   
+        UmlModelEventPump.getPump().addClassModelEventListener(listener2, elem.getClass(), new String[] {"feature"});     
+        elem.addFeature(new MOperationImpl());        
         elem.setFeature(0, new MOperationImpl());
         assertTrue(eventcalled);
     }
@@ -273,7 +279,7 @@ public class TestUmlModelEventPump extends TestCase {
      * received the event.
      */
     public void testRoleRemovedSetClass() {  
-        MParameter param = new MParameterImpl()      ;
+        MParameter param = new MParameterImpl();
         elem.addParameter(param);
         UmlModelEventPump.getPump().addClassModelEventListener(listener2, elem.getClass(), new String[] {"parameter"});
         elem.removeParameter(param);
@@ -327,7 +333,7 @@ public class TestUmlModelEventPump extends TestCase {
      * received the event.
      */
     public void testRemoved() {        
-        UmlModelEventPump.getPump().addModelEventListener(listener2, elem, new String[] {"remove"});
+        UmlModelEventPump.getPump().addModelEventListener(listener2, elem, new String[] {UmlModelEventPump.REMOVE});
         elem.remove();
         assertTrue(eventcalled);
     }
@@ -398,6 +404,11 @@ public class TestUmlModelEventPump extends TestCase {
         assertTrue(!UmlModelEventPump.getPump().getListenerModelEventsMap().isEmpty());
     }
     
+    // the behavior that a registred class not only listens to its own events 
+    // (for instance a MModelelement listens to name events and to events fired by MElement)
+    // is much too powerfull and will cost a lot of performance. Therefore I removed
+    // this feature
+    /*
     public void testListensDependencyToSuperClass() {
         MDependency dep = CoreFactory.getFactory().createDependency();
         UmlModelEventPump.getPump().addClassModelEventListener(listener2, dep.getClass(), "behavior");
@@ -411,7 +422,7 @@ public class TestUmlModelEventPump extends TestCase {
         dep.addBehavior(StateMachinesFactory.getFactory().createStateMachine());
         assertTrue(eventcalled);
     }
-    
+    */
     /**
      * Tests if a listener that registered for all events for some modelClass
      * receives all events

@@ -24,17 +24,18 @@
 // $header$
 package org.argouml.uml.ui.foundation.core;
 
+import junit.framework.TestCase;
+
+import org.argouml.application.security.ArgoSecurityManager;
+import org.argouml.kernel.Project;
+import org.argouml.kernel.ProjectManager;
 import org.argouml.model.uml.UmlFactory;
 import org.argouml.model.uml.foundation.core.CoreFactory;
 import org.argouml.model.uml.modelmanagement.ModelManagementFactory;
-import org.argouml.uml.ui.MockUMLUserInterfaceContainer;
-
 import ru.novosoft.uml.MFactoryImpl;
 import ru.novosoft.uml.foundation.core.MClassifier;
 import ru.novosoft.uml.foundation.core.MFeature;
 import ru.novosoft.uml.model_management.MModel;
-
-import junit.framework.TestCase;
 
 /**
  * @since Nov 6, 2002
@@ -60,15 +61,15 @@ public class TestUMLFeatureOwnerComboBoxModel extends TestCase {
      */
     protected void setUp() throws Exception {
         super.setUp();
+        ArgoSecurityManager.getInstance().setAllowExit(true);
         elem = CoreFactory.getFactory().createAttribute();
         oldEventPolicy = MFactoryImpl.getEventPolicy();
         MFactoryImpl.setEventPolicy(MFactoryImpl.EVENT_POLICY_IMMEDIATE);
-        MockUMLUserInterfaceContainer cont = new MockUMLUserInterfaceContainer();
-        cont.setTarget(elem);
-        model = new UMLFeatureOwnerComboBoxModel(cont);
+        model = new UMLFeatureOwnerComboBoxModel();
+        model.targetChanged(elem);
         types = new MClassifier[10];
         MModel m = ModelManagementFactory.getFactory().createModel();
-        elem.setNamespace(m);
+         ProjectManager.getManager().getCurrentProject().setRoot(m);
         for (int i = 0 ; i < 10; i++) {
             types[i] = CoreFactory.getFactory().createClassifier();
             m.addOwnedElement(types[i]);
@@ -86,6 +87,7 @@ public class TestUMLFeatureOwnerComboBoxModel extends TestCase {
         }
         MFactoryImpl.setEventPolicy(oldEventPolicy);
         model = null;
+        // ArgoSecurityManager.getInstance().setAllowExit(false);
     }
     
     public void testSetUp() {
@@ -95,17 +97,17 @@ public class TestUMLFeatureOwnerComboBoxModel extends TestCase {
         assertTrue(model.contains(types[9]));
     }
     
-    public void testSetPowertype() {
+    public void testSetOwner() {
         elem.setOwner(types[0]);
         assertTrue(model.getSelectedItem() == types[0]);
     }
     
-    public void testSetPowertypeToNull() {
+    public void testSetOwnerToNull() {
         elem.setOwner(null);
         assertNull(model.getSelectedItem());
     }
     
-    public void testRemovePowertype() {
+    public void testRemoveType() {
         UmlFactory.getFactory().delete(types[9]);
         assertEquals(9, model.getSize());
         assertTrue(!model.contains(types[9]));

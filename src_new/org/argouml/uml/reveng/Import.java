@@ -48,6 +48,7 @@ import org.argouml.util.logging.*;
  *
  * $Revision$
  * $Date$
+
  *
  * @author Andreas Rueckert <a_rueckert@gmx.net>
  */
@@ -372,7 +373,7 @@ class ImportRun implements Runnable {
 	    _project.setNeedsSave(true);
 	}
 
-	pb.setProject(_project);
+	ProjectManager.getManager().setCurrentProject(_project);
 	pb.showStatus("Import done");
 
 	// Layout the modified diagrams.

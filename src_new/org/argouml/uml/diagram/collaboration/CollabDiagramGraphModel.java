@@ -27,6 +27,7 @@
 // Original Author: agauthie@ics.uci.edu
 // $Id$
 
+
 package org.argouml.uml.diagram.collaboration;
 
 import org.apache.log4j.Category;

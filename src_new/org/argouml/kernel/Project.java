@@ -125,11 +125,22 @@ public class Project implements java.io.Serializable {
     public Vector _diagrams = new Vector(); // instances of LayerDiagram
     protected MModel _defaultModel = null;
     public boolean _needsSave = false;
-    protected MNamespace _curModel = null;
-    public Hashtable _definedTypes = new Hashtable(80);
+    protected MNamespace _currentNamespace = null;
     public HashMap _UUIDRefs = null;
     public GenerationPreferences _cgPrefs = new GenerationPreferences();
     public transient VetoableChangeSupport _vetoSupport = null;
+    
+    
+    /**
+     * True if we are in the proces of making a project, otherwise false
+     */
+    private static boolean _creatingProject;
+    
+    /**
+     * The root of the modeltree the user is working on. (The untitled_model in
+     * the navpane).
+     */
+    private MModel _root;
    
     protected static Category cat = 
         Category.getInstance(org.argouml.kernel.Project.class);
@@ -149,55 +160,40 @@ public class Project implements java.io.Serializable {
 
     public Project() {
         _saveRegistry = new UMLChangeRegistry();
+         Argo.log.info("making empty project with empty model");
          // Jaap Branderhorst 2002-12-09
         // load the default model
         // this is NOT the way how it should be since this makes argo depend on Java even more.
-       setDefaultModel(ProfileJava.loadProfileModel());
+       setDefaultModel(ProfileJava.loadProfileModel());       
+       addSearchPath("PROJECT_DIR");      
+       setNeedsSave(false);
+       
+    }
+    
+    /**
+     * Makes a just created project to an untitled project with a class diagram and 
+     * a usecase diagram and an untitled model.
+     */
+    public void makeUntitledProject() {
+        if (getRoot() != null) throw new IllegalStateException("Tried to make a non-empty project to an untitled project");
+        MModel model = UmlFactory.getFactory().getModelManagement().createModel();
+        model.setName("untitledModel");
+        setRoot(model);
+        setCurrentNamespace(model);
+        addMember(new UMLClassDiagram("class diagram 1", model));
+        addMember(new UMLUseCaseDiagram("use case diagram 1", model));
     }
 
-    public Project (MModel model) {
+    public Project(MModel model) {
     	this();
         Argo.log.info("making empty project with model: "+model.getName());
-        _saveRegistry = new UMLChangeRegistry();
-		/*
-        defineType(JavaUML.VOID_TYPE);     //J.101
-        defineType(JavaUML.CHAR_TYPE);     //J.102
-        defineType(JavaUML.INT_TYPE);      //J.103
-        defineType(JavaUML.BOOLEAN_TYPE);  //J.104
-        defineType(JavaUML.BYTE_TYPE);     //J.105
-        defineType(JavaUML.LONG_TYPE);     //J.106
-        defineType(JavaUML.FLOAT_TYPE);    //J.107
-        defineType(JavaUML.DOUBLE_TYPE);   //J.108
-        defineType(JavaUML.STRING_CLASS);  //J.109
-        defineType(JavaUML.CHAR_CLASS);    //J.110
-        defineType(JavaUML.INT_CLASS);     //J.111
-        defineType(JavaUML.BOOLEAN_CLASS); //J.112
-        defineType(JavaUML.BYTE_CLASS);    //J.113
-        defineType(JavaUML.LONG_CLASS);    //J.114
-        defineType(JavaUML.FLOAT_CLASS);   //J.115
-        defineType(JavaUML.DOUBLE_CLASS);  //J.116
-
-        defineType(JavaUML.RECTANGLE_CLASS); //J.201
-        defineType(JavaUML.POINT_CLASS);     //J.202
-        defineType(JavaUML.COLOR_CLASS);     //J.203
-
-        defineType(JavaUML.VECTOR_CLASS);    //J.301
-        defineType(JavaUML.HASHTABLE_CLASS); //J.302
-        defineType(JavaUML.STACK_CLASS);     //J.303
-		*/
-        addSearchPath("PROJECT_DIR");
-
-        try {
-            addMember(new UMLClassDiagram(model));
-            addMember(new UMLUseCaseDiagram(model));
-            addMember(model);
-            setNeedsSave(false);
-        }
-        catch (PropertyVetoException pve) { }
-
+        setRoot(model);
+        setCurrentNamespace(model);
+        setNeedsSave(false);
+        /*
         Runnable resetStatsLater = new ResetStatsLater();
         org.argouml.application.Main.addPostLoadAction(resetStatsLater);
-        setCurrentNamespace(model);
+        */
         
     }
 
@@ -228,12 +224,9 @@ public class Project implements java.io.Serializable {
             XMIParser.SINGLETON.readModels(p,url);
             MModel model = XMIParser.SINGLETON.getCurModel();
             UmlHelper.getHelper().addListenersToModel(model);
-            p._UUIDRefs = XMIParser.SINGLETON.getUUIDRefs();
-            try {
-                p.addMember(model);
-                p.setNeedsSave(false);
-            }
-            catch (PropertyVetoException pve) { }
+            p._UUIDRefs = XMIParser.SINGLETON.getUUIDRefs();        
+            p.addMember(model);
+            p.setNeedsSave(false);            
             org.argouml.application.Main.addPostLoadAction(new ResetStatsLater());
         }
 	
@@ -344,14 +337,10 @@ public class Project implements java.io.Serializable {
         UmlHelper.getHelper().addListenersToModel(mmodel);
 
         // if (mmodel != null && !xmiReader.getErrors()) {
-            try {
+            
                 addMember(mmodel);
-            }
-            catch (PropertyVetoException pv) {
-                throw new IOException("The model from XMI file" + 
-                    url.toString() +
-                    "could not be added to the project.");
-            }
+            
+            
 	    //}
 	    //        else {
             //throw new IOException("XMI file " + url.toString() + 
@@ -411,21 +400,6 @@ public class Project implements java.io.Serializable {
         }
     }
 
-    public static Project makeEmptyProject() {
-        Argo.log.info("making empty project");
-
-        MModel m1 = UmlFactory.getFactory().getModelManagement().createModel();
-        m1.setName("untitledModel");
-        Project p = new Project(m1);
-
-
-        p.addSearchPath("PROJECT_DIR");
-
-       
-
-        return p;
-    }
-
     ////////////////////////////////////////////////////////////////
     // accessors
     // TODO
@@ -462,11 +436,10 @@ public class Project implements java.io.Serializable {
 
     public URL getURL() { return _url; }
 
-    public void setURL(URL url) throws PropertyVetoException {
+    public void setURL(URL url) {
         if (url != null) {
             url = Util.fixURLExtension(url, COMPRESSED_FILE_EXT);
         }
-        getVetoSupport().fireVetoableChange("url", _url, url);
 
         cat.debug ("Setting project URL from \"" + _url + "\" to \"" + url + "\".");
     
@@ -481,10 +454,9 @@ public class Project implements java.io.Serializable {
     //     _url = url;
     //   }
 
-    public void setFile(File file) throws PropertyVetoException {
+    public void setFile(File file) {
         try {
             URL url = Util.fileToURL(file);
-            getVetoSupport().fireVetoableChange("url", _url, url);
       
             cat.debug ("Setting project file name from \"" + _url + "\" to \"" + url + "\".");
       
@@ -540,14 +512,14 @@ public class Project implements java.io.Serializable {
         //}
     }
 
-    public void addMember(ArgoDiagram d) throws PropertyVetoException {
+    public void addMember(ArgoDiagram d) {
         ProjectMember pm = new ProjectMemberDiagram(d, this);
         addDiagram(d);
         // if diagram added successfully, add the member too
         _members.addElement(pm);
     }
 
-    public void addMember(MModel m) throws PropertyVetoException {
+    public void addMember(MModel m) {
         Iterator iter = _members.iterator();
         Object currentMember = null;
         boolean memberFound = false;
@@ -571,9 +543,8 @@ public class Project implements java.io.Serializable {
         }
     }
 
-    public void addModel(MNamespace m) throws PropertyVetoException {
+    public void addModel(MNamespace m) {
         // fire indeterminate change to avoid copying vector
-        getVetoSupport().fireVetoableChange("Models", _models, null);
         if (! _models.contains(m)) _models.addElement(m);
         setCurrentNamespace(m);
         setNeedsSave(true);
@@ -585,9 +556,9 @@ public class Project implements java.io.Serializable {
      */
 
     protected void removeProjectMemberDiagram(ArgoDiagram d) {
-    	try {
-        	removeDiagram(d);
-    	} catch (PropertyVetoException ve) {}
+    	
+        removeDiagram(d);
+    	
         // should remove the corresponding ProjectMemberDiagram not the ArgoDiagram from the members
         
         // _members.removeElement(d);
@@ -739,9 +710,9 @@ public class Project implements java.io.Serializable {
     
         postSave();
 
-        try {
-            setFile(file);
-        } catch (PropertyVetoException ex) {}
+       
+        setFile(file);
+       
     }
 
     public String getAuthorname() { return _authorname; }
@@ -788,17 +759,29 @@ public class Project implements java.io.Serializable {
     //     _needsSave = true;
     //   }
 
-    public Vector getDefinedTypesVector() { return new Vector(_definedTypes.values()); }
-    public Hashtable getDefinedTypes() { return _definedTypes; }
-    public void setDefinedTypes(Hashtable h) { _definedTypes = h; }
-    public void defineType(MClassifier cls) {
-        //TODO: should take namespaces into account!
-        // this is a hack because names are not always being assigned under argo-nsuml branch - JH
-        String name = cls.getName();
-        if (name == null) name = "anon";
-        _definedTypes.put(name,  cls);
-    }
+    
+
+    
+    
+    /**
+     * Searches for a type/classifier with name s. If the type is not found,
+     * a new type is created and added to the current namespace.
+     * @param s
+     * @return MClassifier
+     */
     public MClassifier findType(String s) {
+        return findType(s, true);
+    }
+    
+    /**
+     * Searches for a type/classifier with name s. If defineNew is true, 
+     * a new type is defined if the type/classifier is not found. The newly created
+     * type is added to the currentNamespace and given the name s.
+     * @param s
+     * @param defineNew
+     * @return MClassifier
+     */
+    public MClassifier findType(String s, boolean defineNew) {
         if (s != null) s = s.trim();
         if (s == null || s.length()==0) return null;
         MClassifier cls = null;
@@ -808,15 +791,12 @@ public class Project implements java.io.Serializable {
             if (cls != null) return cls;
         }
         cls = findTypeInModel(s, _defaultModel);
-        if (cls != null ) return cls;
-        cls = (MClassifier) _definedTypes.get(s);
-        if (cls == null) {
+        
+        if (cls == null && defineNew) {
             cat.debug("new Type defined!");
-            cls = UmlFactory.getFactory().getCore().buildClass();
+            cls = UmlFactory.getFactory().getCore().buildClass(getCurrentNamespace());
             cls.setName(s);
         }
-        if (cls.getNamespace() == null)
-            cls.setNamespace(getCurrentNamespace());
         return cls;
     }
     
@@ -852,13 +832,12 @@ public class Project implements java.io.Serializable {
 		return null;
 	}
 
-    public void setCurrentNamespace(MNamespace m) { _curModel = m; }
-    public MNamespace getCurrentNamespace() { return _curModel; }
+    public void setCurrentNamespace(MNamespace m) { _currentNamespace = m; }
+    public MNamespace getCurrentNamespace() { return _currentNamespace; }
 
     public Vector getDiagrams() { return _diagrams; }
-    public void addDiagram(ArgoDiagram d) throws PropertyVetoException {
+    public void addDiagram(ArgoDiagram d)  {
         // send indeterminate new value instead of making copy of vector
-        getVetoSupport().fireVetoableChange("Diagrams", _diagrams, null);
         _diagrams.addElement(d);
         d.addChangeRegistryAsListener( _saveRegistry );
         setNeedsSave(true);
@@ -872,8 +851,7 @@ public class Project implements java.io.Serializable {
      * @param d
      * @throws PropertyVetoException
      */
-    protected void removeDiagram(ArgoDiagram d) throws PropertyVetoException {
-        getVetoSupport().fireVetoableChange("Diagrams", _diagrams, null);
+    protected void removeDiagram(ArgoDiagram d) {
         _diagrams.removeElement(d);
         d.removeChangeRegistryAsListener( _saveRegistry );
         setNeedsSave(true);
@@ -900,15 +878,6 @@ public class Project implements java.io.Serializable {
 
     ////////////////////////////////////////////////////////////////
     // event handling
-
-    public void addVetoableChangeListener(VetoableChangeListener l) {
-        getVetoSupport().removeVetoableChangeListener(l);
-        getVetoSupport().addVetoableChangeListener(l);
-    }
-
-    public void removeVetoableChangeListener(VetoableChangeListener l) {
-        getVetoSupport().removeVetoableChangeListener(l);
-    }
 
     public VetoableChangeSupport getVetoSupport() {
         if (_vetoSupport == null) _vetoSupport = new VetoableChangeSupport(this);
@@ -1144,6 +1113,47 @@ public class Project implements java.io.Serializable {
     }
 
     static final long serialVersionUID = 1399111233978692444L;
+
+    /**
+     * Sets the currentProject.
+     * @param currentProject The currentProject to set
+     */
+    public static void setCurrentProject(Project currentProject) {
+        ProjectManager.getManager().setCurrentProject(currentProject);
+        /*
+        // update the graphics
+        ProjectBrowser pb = ProjectBrowser.TheInstance;
+        if (pb != null) {
+            pb.setProject(currentProject);
+        }
+        _currentProject = currentProject;
+        */
+    }
+    
+    
+
+    /**
+     * Returns the root.
+     * @return MModel
+     */
+    public MModel getRoot() {
+        return _root;
+    }
+
+    /**
+     * Sets the root.
+     * @param root The root to set
+     */
+    public void setRoot(MModel root) {
+        if (_root != null) {
+            _members.remove(_root);
+            _models.remove(_root);
+        }
+        _root = root;
+        addMember(root);
+        addModel(root);
+        
+    }
 
 } /* end class Project */
 

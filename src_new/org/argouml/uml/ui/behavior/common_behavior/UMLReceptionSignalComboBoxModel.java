@@ -46,8 +46,8 @@ public class UMLReceptionSignalComboBoxModel extends UMLComboBoxModel2 {
      * Constructor for UMLReceptionSignalComboBoxModel.
      * @param container
      */
-    public UMLReceptionSignalComboBoxModel(UMLUserInterfaceContainer container) {
-        super(container,"signal", false);
+    public UMLReceptionSignalComboBoxModel() {
+        super("signal", false);
         UmlModelEventPump.getPump().addClassModelEventListener(this, MNamespace.class, "ownedElement");
     }
 
@@ -55,7 +55,7 @@ public class UMLReceptionSignalComboBoxModel extends UMLComboBoxModel2 {
      * @see org.argouml.uml.ui.UMLComboBoxModel2#buildModelList()
      */
     protected void buildModelList() {
-        Object target = getContainer().getTarget();
+        Object target = getTarget();
         if (target instanceof MReception) {
             MReception rec = (MReception)target;
             removeAllElements();

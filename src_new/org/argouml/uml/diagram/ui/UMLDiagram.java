@@ -23,17 +23,25 @@
 
 package org.argouml.uml.diagram.ui;
 
-import java.util.*;
-import java.awt.*;
-import java.beans.*;
-import javax.swing.*;
+import java.beans.PropertyVetoException;
 
-import ru.novosoft.uml.foundation.core.*;
-
-import org.tigris.gef.base.*;
+import javax.swing.Action;
 
 import org.apache.log4j.Category;
-import org.argouml.ui.*;
+import org.argouml.ui.ArgoDiagram;
+import org.tigris.gef.base.CmdSetMode;
+import org.tigris.gef.base.ModeBroom;
+import org.tigris.gef.base.ModeCreateFigCircle;
+import org.tigris.gef.base.ModeCreateFigInk;
+import org.tigris.gef.base.ModeCreateFigLine;
+import org.tigris.gef.base.ModeCreateFigPoly;
+import org.tigris.gef.base.ModeCreateFigRRect;
+import org.tigris.gef.base.ModeCreateFigRect;
+import org.tigris.gef.base.ModeCreateFigSpline;
+import org.tigris.gef.base.ModeCreateFigText;
+import org.tigris.gef.base.ModeSelect;
+import ru.novosoft.uml.foundation.core.MModelElement;
+import ru.novosoft.uml.foundation.core.MNamespace;
 
 public class UMLDiagram extends ArgoDiagram {
     
@@ -96,7 +104,9 @@ public class UMLDiagram extends ArgoDiagram {
   public UMLDiagram(String diagramName, MNamespace ns) {
   	this(ns);
     try { setName(diagramName); }
-    catch (PropertyVetoException pve) { }
+    catch (PropertyVetoException pve) { 
+        cat.fatal("Name not allowed in construction of diagram");
+    }
   }
 
   public void initialize(Object owner) {

@@ -71,7 +71,7 @@ public class PropPanelParameter extends PropPanelModelElement {
         
 	UMLComboBox typeComboBox=new UMLComboBox(typeModel);
         */
-        addField(new UMLComboBox2(this, new UMLParameterTypeComboBoxModel(this), ActionSetParameterType.SINGLETON),0,1,0);
+        addField(new UMLComboBox2(new UMLParameterTypeComboBoxModel(), ActionSetParameterType.SINGLETON),0,1,0);
 
         addCaption("Initial Value:",1,1,0);
         addField(new UMLInitialValueComboBox(this),1,1,0);

@@ -29,22 +29,28 @@
 
 package org.argouml.uml.ui.behavior.common_behavior;
 
-import java.awt.*;
-import java.awt.event.*;
-import java.util.*;
-import javax.swing.*;
+import java.awt.Color;
+import java.util.Collection;
+import java.util.Vector;
 
-import org.argouml.application.api.*;
+import javax.swing.JList;
+import javax.swing.JOptionPane;
+import javax.swing.JScrollPane;
+
+import org.argouml.application.api.Argo;
 import org.argouml.model.uml.behavioralelements.commonbehavior.CommonBehaviorFactory;
 import org.argouml.model.uml.foundation.core.CoreHelper;
 import org.argouml.ui.ProjectBrowser;
-import org.argouml.uml.ui.*;
-import org.argouml.uml.ui.foundation.core.*;
-
-import ru.novosoft.uml.foundation.core.*;
-import ru.novosoft.uml.foundation.data_types.*;
-import ru.novosoft.uml.behavior.common_behavior.*;
-import ru.novosoft.uml.model_management.*;
+import org.argouml.uml.ui.PropPanelButton;
+import org.argouml.uml.ui.UMLAddDialog;
+import org.argouml.uml.ui.UMLList;
+import org.argouml.uml.ui.UMLModelElementListModel;
+import org.argouml.uml.ui.UMLReflectionListModel;
+import org.argouml.uml.ui.foundation.core.PropPanelModelElement;
+import ru.novosoft.uml.behavior.common_behavior.MReception;
+import ru.novosoft.uml.behavior.common_behavior.MSignal;
+import ru.novosoft.uml.foundation.core.MBehavioralFeature;
+import ru.novosoft.uml.foundation.core.MNamespace;
 
 public class PropPanelSignal extends PropPanelModelElement {
 
@@ -57,7 +63,7 @@ public class PropPanelSignal extends PropPanelModelElement {
         Class mclass = MSignal.class;
 
         addCaption(Argo.localize("UMLMenu", "label.name"),1,0,0);
-        addField(new UMLTextField(this,new UMLTextProperty(mclass,"name","getName","setName")),1,0,0);
+        addField(nameField,1,0,0);
 
 
         addCaption(Argo.localize("UMLMenu", "label.stereotype"),2,0,0);

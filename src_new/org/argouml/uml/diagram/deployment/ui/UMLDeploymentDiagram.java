@@ -4,26 +4,31 @@
 
 package org.argouml.uml.diagram.deployment.ui;
 
-import java.util.*;
-import java.awt.*;
-import java.beans.*;
-import javax.swing.*;
+import java.beans.PropertyVetoException;
 
-import ru.novosoft.uml.model_management.*;
-import ru.novosoft.uml.foundation.core.*;
-import ru.novosoft.uml.behavior.common_behavior.*;
+import javax.swing.Action;
 
+import org.apache.log4j.Category;
+import org.argouml.ui.CmdCreateNode;
+import org.argouml.uml.diagram.deployment.DeploymentDiagramGraphModel;
+import org.argouml.uml.diagram.ui.UMLDiagram;
+import org.argouml.uml.ui.ActionAddNote;
 import org.tigris.gef.base.CmdSetMode;
 import org.tigris.gef.base.LayerPerspective;
 import org.tigris.gef.base.LayerPerspectiveMutable;
 import org.tigris.gef.base.ModeCreatePolyEdge;
-import org.tigris.gef.ui.*;
-
-import org.argouml.uml.diagram.ui.*;
-import org.argouml.uml.ui.ActionAddNote;
-import org.apache.log4j.Category;
-import org.argouml.ui.CmdCreateNode;
-import org.argouml.uml.diagram.deployment.*;
+import org.tigris.gef.ui.ToolBar;
+import ru.novosoft.uml.behavior.common_behavior.MComponentInstance;
+import ru.novosoft.uml.behavior.common_behavior.MLink;
+import ru.novosoft.uml.behavior.common_behavior.MNodeInstance;
+import ru.novosoft.uml.behavior.common_behavior.MObject;
+import ru.novosoft.uml.foundation.core.MAssociation;
+import ru.novosoft.uml.foundation.core.MClass;
+import ru.novosoft.uml.foundation.core.MComponent;
+import ru.novosoft.uml.foundation.core.MDependency;
+import ru.novosoft.uml.foundation.core.MInterface;
+import ru.novosoft.uml.foundation.core.MNamespace;
+import ru.novosoft.uml.foundation.core.MNode;
 
 public class UMLDeploymentDiagram extends UMLDiagram {
     protected static Category cat = 
@@ -152,14 +157,10 @@ public class UMLDeploymentDiagram extends UMLDiagram {
   
   protected static String getNewDiagramName() {
   	String name = null;
-  	Object[] args = {name};
-  	do {
         name = "deployment diagram " + _DeploymentDiagramSerial;
         _DeploymentDiagramSerial++;
-        args[0] = name;
-    }
-    while (TheInstance.vetoCheck("name", args));
-    return name;
+        return name;
+
   }
 
 } /* end class UMLDeploymentDiagram */

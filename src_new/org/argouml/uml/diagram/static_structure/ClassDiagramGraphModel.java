@@ -26,6 +26,7 @@
 // Original Author: jrobbins@ics.uci.edu
 // $Id$
 
+
 package org.argouml.uml.diagram.static_structure;
 
 import java.util.*;

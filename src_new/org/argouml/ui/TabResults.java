@@ -180,7 +180,7 @@ implements Runnable, MouseListener, ActionListener, ListSelectionListener {
     cat.debug("go " + sel + " in " + d.getName());
     ProjectBrowser pb = ProjectBrowser.TheInstance;
     if (d != null) pb.setTarget(d);
-    pb.select(sel);
+    pb.setTarget(sel);
   }
 
   ////////////////////////////////////////////////////////////////

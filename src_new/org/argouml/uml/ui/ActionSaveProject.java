@@ -62,8 +62,8 @@ public class ActionSaveProject extends UMLAction {
   // main methods
 
   public void actionPerformed(ActionEvent e) {
-    URL url = ProjectBrowser.TheInstance.getProject() != null ?
-        ProjectBrowser.TheInstance.getProject().getURL() : null;
+    URL url = ProjectManager.getManager().getCurrentProject() != null ?
+        ProjectManager.getManager().getCurrentProject().getURL() : null;
     if (url == null) { 
         ActionSaveProjectAs.SINGLETON.actionPerformed(e);
     } else {
@@ -72,13 +72,13 @@ public class ActionSaveProject extends UMLAction {
   }
 
   public boolean trySave (boolean overwrite) {
-    URL url = ProjectBrowser.TheInstance.getProject().getURL();
+    URL url = ProjectManager.getManager().getCurrentProject().getURL();
     return trySave(overwrite, new File(url.getFile()));
   }
 
   public boolean trySave(boolean overwrite, File file) {
     ProjectBrowser pb = ProjectBrowser.TheInstance;
-    Project p = pb.getProject();
+    Project p = ProjectManager.getManager().getCurrentProject();
 
     try {
 

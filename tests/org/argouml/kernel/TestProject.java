@@ -1,4 +1,4 @@
-// Copyright (c) 1996-2001 The Regents of the University of California. All
+// Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -21,19 +21,31 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.argouml.i18n;
-import junit.framework.*;
+// $header$
+package org.argouml.kernel;
 
-import org.argouml.util.*;
+import junit.framework.TestCase;
 
+/**
+ * @since Nov 17, 2002
+ * @author jaap.branderhorst@xs4all.nl
+ */
+public class TestProject extends TestCase {
 
-public class TestMenuResourceBundle extends TestCase {
-    public TestMenuResourceBundle(String name) {
-	super(name);
+    /**
+     * Constructor for TestProject.
+     * @param arg0
+     */
+    public TestProject(String arg0) {
+        super(arg0);
+    }
+    
+    public void testMakeUntitledProject() {
+        Project p = ProjectManager.getManager().getCurrentProject();
+        assertEquals(2, p.getDiagrams().size());
+        assertEquals("untitledModel", p.getModel().getName());
+        // maybe next test is going to change in future
+        assertEquals(p.getRoot(), p.getModel());
     }
 
-    public void testMain() {
-	CheckResourceBundle.checkResourceBundle(this, 
-						"org.argouml.i18n.MenuResourceBundle");
-    }
 }

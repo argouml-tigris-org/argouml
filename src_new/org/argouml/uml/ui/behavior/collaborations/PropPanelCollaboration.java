@@ -23,20 +23,14 @@
 
 package org.argouml.uml.ui.behavior.collaborations;
 
-import javax.swing.ImageIcon;
 import javax.swing.JScrollPane;
 
 import org.argouml.application.api.Argo;
 import org.argouml.swingext.LabelledLayout;
-import org.argouml.uml.ui.*;
-import org.argouml.uml.ui.PropPanel;
 import org.argouml.uml.ui.UMLComboBoxNavigator;
-import org.argouml.uml.ui.UMLTextField;
-import org.argouml.uml.ui.UMLTextProperty;
+import org.argouml.uml.ui.UMLLinkedList;
 import org.argouml.uml.ui.foundation.core.PropPanelNamespace;
 import org.argouml.util.ConfigLoader;
-
-import ru.novosoft.uml.behavior.collaborations.MCollaboration;
 
 /**
  * Property panel for collaborations. This panel is not totally finished yet.

@@ -23,30 +23,63 @@
 
 package org.argouml.uml;
 
-import java.util.*;
-import java.beans.*;
-
-import ru.novosoft.uml.*;
-import ru.novosoft.uml.foundation.core.*;
-import ru.novosoft.uml.foundation.data_types.*;
-import ru.novosoft.uml.foundation.extension_mechanisms.*;
-import ru.novosoft.uml.model_management.*;
-import ru.novosoft.uml.behavior.common_behavior.*;
-import ru.novosoft.uml.behavior.state_machines.*;
-import ru.novosoft.uml.behavior.use_cases.*;
-import ru.novosoft.uml.behavior.collaborations.*;
-
-import org.tigris.gef.base.*;
-import org.tigris.gef.graph.*;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.Vector;
 
 import org.apache.log4j.Category;
 import org.argouml.kernel.Project;
+import org.argouml.kernel.ProjectManager;
 import org.argouml.model.uml.UmlFactory;
 import org.argouml.model.uml.UmlHelper;
-import org.argouml.ui.ProjectBrowser;
-import org.argouml.uml.generator.*;
-import org.argouml.uml.diagram.static_structure.*;
-import org.argouml.uml.diagram.deployment.*;
+import org.argouml.uml.diagram.deployment.DeploymentDiagramGraphModel;
+import org.argouml.uml.diagram.static_structure.ClassDiagramGraphModel;
+import org.argouml.uml.diagram.static_structure.MMClassKeyword;
+import org.argouml.uml.diagram.static_structure.MMClassVisibility;
+import org.argouml.uml.generator.GeneratorDisplay;
+import org.argouml.uml.generator.ParserDisplay;
+import org.tigris.gef.base.Diagram;
+import org.tigris.gef.graph.GraphModel;
+import ru.novosoft.uml.behavior.common_behavior.MAction;
+import ru.novosoft.uml.behavior.common_behavior.MCallAction;
+import ru.novosoft.uml.behavior.common_behavior.MComponentInstance;
+import ru.novosoft.uml.behavior.common_behavior.MCreateAction;
+import ru.novosoft.uml.behavior.common_behavior.MDestroyAction;
+import ru.novosoft.uml.behavior.common_behavior.MInstance;
+import ru.novosoft.uml.behavior.common_behavior.MLink;
+import ru.novosoft.uml.behavior.common_behavior.MLinkEnd;
+import ru.novosoft.uml.behavior.common_behavior.MNodeInstance;
+import ru.novosoft.uml.behavior.common_behavior.MObject;
+import ru.novosoft.uml.behavior.common_behavior.MReturnAction;
+import ru.novosoft.uml.behavior.common_behavior.MSendAction;
+import ru.novosoft.uml.behavior.common_behavior.MStimulus;
+import ru.novosoft.uml.behavior.state_machines.MCompositeState;
+import ru.novosoft.uml.behavior.state_machines.MEvent;
+import ru.novosoft.uml.behavior.state_machines.MGuard;
+import ru.novosoft.uml.behavior.state_machines.MPseudostate;
+import ru.novosoft.uml.behavior.state_machines.MState;
+import ru.novosoft.uml.behavior.state_machines.MStateVertex;
+import ru.novosoft.uml.behavior.state_machines.MTransition;
+import ru.novosoft.uml.foundation.core.MAssociation;
+import ru.novosoft.uml.foundation.core.MAssociationEnd;
+import ru.novosoft.uml.foundation.core.MAttribute;
+import ru.novosoft.uml.foundation.core.MClass;
+import ru.novosoft.uml.foundation.core.MClassifier;
+import ru.novosoft.uml.foundation.core.MComponent;
+import ru.novosoft.uml.foundation.core.MDependency;
+import ru.novosoft.uml.foundation.core.MElement;
+import ru.novosoft.uml.foundation.core.MElementResidence;
+import ru.novosoft.uml.foundation.core.MFeature;
+import ru.novosoft.uml.foundation.core.MGeneralizableElement;
+import ru.novosoft.uml.foundation.core.MGeneralization;
+import ru.novosoft.uml.foundation.core.MModelElement;
+import ru.novosoft.uml.foundation.core.MNode;
+import ru.novosoft.uml.foundation.core.MOperation;
+import ru.novosoft.uml.foundation.core.MParameter;
+import ru.novosoft.uml.foundation.data_types.MMultiplicity;
+import ru.novosoft.uml.foundation.data_types.MVisibilityKind;
+import ru.novosoft.uml.foundation.extension_mechanisms.MStereotype;
+import ru.novosoft.uml.model_management.MModel;
 
 public abstract class ColumnDescriptor {
 
@@ -889,8 +922,7 @@ class ColumnReturn extends ColumnDescriptor {
     if (!(value instanceof String)) return;
     MOperation op = (MOperation) target;
     String s = (String) value;
-    ProjectBrowser pb = ProjectBrowser.TheInstance;
-    Project p = pb.getProject();
+    Project p = ProjectManager.getManager().getCurrentProject();
     MClassifier rt = p.findType(s);
     ParserDisplay pd = ParserDisplay.SINGLETON;
 	MParameter rp = UmlFactory.getFactory().getCore().buildParameter(op);
@@ -959,8 +991,7 @@ class ColumnType extends ColumnDescriptor {
     if (!(value instanceof String)) return;
     MAttribute op = (MAttribute) target;
     String s = (String) value;
-    ProjectBrowser pb = ProjectBrowser.TheInstance;
-    Project p = pb.getProject();
+    Project p = ProjectManager.getManager().getCurrentProject();
     MClassifier t = p.findType(s);
     if (t == null) {
       cat.warn("attribute type not found");
@@ -1137,7 +1168,7 @@ class ColumnBaseForObject extends ColumnDescriptor {
       } 
     } 
 
-    Vector diagrams = ProjectBrowser.TheInstance.getProject().getDiagrams();
+    Vector diagrams = ProjectManager.getManager().getCurrentProject().getDiagrams();
     GraphModel model = null;
     Vector v = new Vector();
     int size = diagrams.size();
@@ -1211,7 +1242,7 @@ class ColumnBaseForComponentInstance extends ColumnDescriptor {
       } 
     } 
 
-    Vector diagrams = ProjectBrowser.TheInstance.getProject().getDiagrams();
+    Vector diagrams = ProjectManager.getManager().getCurrentProject().getDiagrams();
     GraphModel model = null;
     Vector v = new Vector();
     int size = diagrams.size();
@@ -1286,7 +1317,7 @@ class ColumnBaseForNodeInstance extends ColumnDescriptor {
       } 
     } 
 
-    Vector diagrams = ProjectBrowser.TheInstance.getProject().getDiagrams();
+    Vector diagrams = ProjectManager.getManager().getCurrentProject().getDiagrams();
     GraphModel model = null;
     Vector v = new Vector();
     int size = diagrams.size();

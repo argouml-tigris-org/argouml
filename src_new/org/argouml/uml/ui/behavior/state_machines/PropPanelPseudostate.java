@@ -30,16 +30,16 @@
 
 package org.argouml.uml.ui.behavior.state_machines;
 
-import java.awt.*;
-import java.util.*;
-import javax.swing.*;
+import java.awt.GridLayout;
 
-import org.argouml.application.api.*;
-import org.argouml.uml.ui.*;
+import javax.swing.ButtonGroup;
+import javax.swing.JPanel;
 
-import ru.novosoft.uml.behavior.state_machines.*;
-import ru.novosoft.uml.foundation.core.*;
-import ru.novosoft.uml.foundation.data_types.*;
+import org.argouml.application.api.Argo;
+import org.argouml.uml.ui.UMLEnumerationBooleanProperty;
+import org.argouml.uml.ui.UMLRadioButton;
+import ru.novosoft.uml.behavior.state_machines.MPseudostate;
+import ru.novosoft.uml.foundation.data_types.MPseudostateKind;
 
 public class PropPanelPseudostate extends PropPanelStateVertex {
 
@@ -51,7 +51,7 @@ public class PropPanelPseudostate extends PropPanelStateVertex {
     Class mclass = MPseudostate.class;
 
     addCaption(Argo.localize("UMLMenu", "label.name"),1,0,0);
-    addField(new UMLTextField(this,new UMLTextProperty(mclass,"name","getName","setName")),1,0,0);
+    addField(nameField,1,0,0);
 
     addCaption("Kind:",2,0,1);
 

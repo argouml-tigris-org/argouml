@@ -38,8 +38,8 @@ public class UMLAssociationEndTypeComboBoxModel
      * Constructor for UMLAssociationEndTypeComboBoxModel.
      * @param container
      */
-    public UMLAssociationEndTypeComboBoxModel(UMLUserInterfaceContainer container) {
-        super(container);
+    public UMLAssociationEndTypeComboBoxModel() {
+        super();
     }
 
     /**

@@ -24,22 +24,22 @@
 // $header$
 package org.argouml.uml.ui.behavior.collaborations;
 
+import junit.framework.TestCase;
+
+import org.argouml.application.security.ArgoSecurityManager;
+import org.argouml.kernel.Project;
+import org.argouml.kernel.ProjectManager;
 import org.argouml.model.uml.UmlFactory;
 import org.argouml.model.uml.behavioralelements.collaborations.CollaborationsFactory;
 import org.argouml.model.uml.foundation.core.CoreFactory;
 import org.argouml.model.uml.modelmanagement.ModelManagementFactory;
-import org.argouml.uml.ui.MockUMLUserInterfaceContainer;
-
 import ru.novosoft.uml.MFactoryImpl;
-import ru.novosoft.uml.behavior.collaborations.MAssociationEndRole;
 import ru.novosoft.uml.behavior.collaborations.MAssociationRole;
 import ru.novosoft.uml.behavior.collaborations.MClassifierRole;
 import ru.novosoft.uml.behavior.collaborations.MCollaboration;
 import ru.novosoft.uml.foundation.core.MAssociation;
 import ru.novosoft.uml.foundation.core.MClass;
 import ru.novosoft.uml.model_management.MModel;
-
-import junit.framework.TestCase;
 
 /**
  * @since Oct 30, 2002
@@ -65,9 +65,13 @@ public class TestUMLAssociationRoleBaseComboBoxModel extends TestCase {
      */
     protected void setUp() throws Exception {
         super.setUp();
+        ArgoSecurityManager.getInstance().setAllowExit(true);
+        Project p = ProjectManager.getManager().getCurrentProject();
+        model = new UMLAssociationRoleBaseComboBoxModel();
         MClass class1 = CoreFactory.getFactory().createClass();
         MClass class2 = CoreFactory.getFactory().createClass();
         MModel m = ModelManagementFactory.getFactory().createModel();
+        p.setRoot(m);
         class1.setNamespace(m);
         class2.setNamespace(m);
         bases = new MAssociation[10];
@@ -83,10 +87,8 @@ public class TestUMLAssociationRoleBaseComboBoxModel extends TestCase {
         role2.setNamespace(col);
         elem = CollaborationsFactory.getFactory().buildAssociationRole(role1, role2);
         oldEventPolicy = MFactoryImpl.getEventPolicy();
-        MFactoryImpl.setEventPolicy(MFactoryImpl.EVENT_POLICY_IMMEDIATE);
-        MockUMLUserInterfaceContainer cont = new MockUMLUserInterfaceContainer();
-        cont.setTarget(elem);
-        model = new UMLAssociationRoleBaseComboBoxModel(cont);
+        MFactoryImpl.setEventPolicy(MFactoryImpl.EVENT_POLICY_IMMEDIATE);   
+        model.targetChanged(elem);
     }
     
     /**

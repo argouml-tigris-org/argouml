@@ -58,7 +58,7 @@ public class PropPanelDataType extends PropPanelClassifier {
     Class mclass = MDataType.class;
 
     addCaption(Argo.localize("UMLMenu", "label.name"),1,0,0);
-    addField(new UMLTextField(this,new UMLTextProperty(mclass,"name","getName","setName")),1,0,0);
+    addField(nameField,1,0,0);
 
 
     addCaption(Argo.localize("UMLMenu", "label.stereotype"),2,0,0);

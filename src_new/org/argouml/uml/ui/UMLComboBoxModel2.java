@@ -26,23 +26,17 @@ package org.argouml.uml.ui;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
-import java.util.Vector;
 
 import javax.swing.AbstractListModel;
 import javax.swing.ComboBoxModel;
-import javax.swing.DefaultComboBoxModel;
 
 import org.apache.log4j.Category;
 import org.argouml.model.uml.UmlModelEventPump;
-
-
 import ru.novosoft.uml.MBase;
 import ru.novosoft.uml.MElementEvent;
-import ru.novosoft.uml.foundation.core.MModelElement;
+import ru.novosoft.uml.MElementListener;
 
 /**
  * ComboBoxmodel for UML modelelements. This implementation does not use 
@@ -52,12 +46,11 @@ import ru.novosoft.uml.foundation.core.MModelElement;
  */
 public abstract class UMLComboBoxModel2
     extends AbstractListModel
-    implements UMLUserInterfaceComponent, ComboBoxModel {
+    implements MElementListener, ComboBoxModel {
         
     private static Category log = 
         Category.getInstance("org.argouml.uml.ui.UMLComboBoxModel2");
         
-    private UMLUserInterfaceContainer _container = null;
     private Object _target = null;
     
     private List _objects = Collections.synchronizedList(new ArrayList());
@@ -77,15 +70,14 @@ public abstract class UMLComboBoxModel2
      * the selected item programmatically (via setting the NSUML model)
      * @throws IllegalArgumentException if one of the arguments is null
      */
-    public UMLComboBoxModel2(UMLUserInterfaceContainer container, String propertySetName, boolean clearable) {
+    public UMLComboBoxModel2(String propertySetName, boolean clearable) {
         super();
-        if (container == null || propertySetName == null || propertySetName.equals("")) throw new IllegalArgumentException("In UMLComboBoxModel2: one of the arguments is null");
+        if (propertySetName == null || propertySetName.equals("")) throw new IllegalArgumentException("In UMLComboBoxModel2: one of the arguments is null");
         // it would be better that we don't need the container to get the target
         // this constructor can be without parameters as soon as we improve
         // targetChanged
         _clearable = clearable;
         _propertySetName = propertySetName;
-        setContainer(container);
     }
     
     
@@ -105,7 +97,7 @@ public abstract class UMLComboBoxModel2
     public void propertySet(MElementEvent e) {
         if (e.getName().equals(_propertySetName) 
             && e.getSource() == getTarget() && 
-            contains(getChangedElement(e))) {
+            (contains(getChangedElement(e)) || getChangedElement(e) == null)) {
                 setSelectedItem(getChangedElement(e));
         }
     }
@@ -164,45 +156,13 @@ public abstract class UMLComboBoxModel2
             }      
         }
     }
-
-    /**
-     * Returns the container.
-     * @return UMLUserInterfaceContainer
-     */
-    protected UMLUserInterfaceContainer getContainer() {
-        return _container;
+    
+    public void targetChanged(Object newTarget) {
+        setTarget(newTarget);
     }
 
-    /**
-     * Sets the container.
-     * @param container The container to set
-     */
-    protected void setContainer(UMLUserInterfaceContainer container) {
-        _container = container;
-        setTarget(_container.getTarget());
-    }
-
-    /**
-     * @see org.argouml.uml.ui.UMLUserInterfaceComponent#targetChanged()
-     */
-    public void targetChanged() {
-        // targetchanged should actually propagate an event with the source of
-        // the change (the actual old and new target)
-        // this must be implemented in the whole of argo one time or another
-        // to improve performance and reduce errors
-        
-        setTarget(getContainer().getTarget());  
-       
-       
-    }
-
-    /**
-     * @see org.argouml.uml.ui.UMLUserInterfaceComponent#targetReasserted()
-     */
-    public void targetReasserted() {
-        // in the current implementation of argouml, history is not implemented
-        // this event is for future releases
-        targetChanged();
+    public void targetReasserted(Object newTarget) {
+        setTarget(newTarget);
     }
     
     /**

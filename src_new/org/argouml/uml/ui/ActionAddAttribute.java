@@ -26,7 +26,9 @@ package org.argouml.uml.ui;
 import java.awt.event.ActionEvent;
 
 import org.argouml.kernel.Project;
+import org.argouml.kernel.ProjectManager;
 import org.argouml.model.uml.UmlFactory;
+import org.argouml.ui.NavigatorPane;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
 
@@ -58,12 +60,12 @@ public class ActionAddAttribute extends UMLChangeAction {
 
     public void actionPerformed(ActionEvent ae) {
 	ProjectBrowser pb = ProjectBrowser.TheInstance;
-	Project p = pb.getProject();
+	Project p = ProjectManager.getManager().getCurrentProject();
 	Object target = pb.getDetailsTarget();
 	if (!(target instanceof MClassifier)) return;
 	MClassifier cls = (MClassifier) target;
 	MAttribute attr = UmlFactory.getFactory().getCore().buildAttribute(cls);
-	pb.getNavPane().addToHistory(attr);
+	pb.getNavigatorPane().addToHistory(attr);
 	pb.setTarget(attr);
 	super.actionPerformed(ae);
     }

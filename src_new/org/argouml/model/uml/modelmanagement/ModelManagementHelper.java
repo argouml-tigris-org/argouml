@@ -30,6 +30,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import org.argouml.kernel.Project;
+import org.argouml.kernel.ProjectManager;
 import org.argouml.ui.ProjectBrowser;
 
 import ru.novosoft.uml.foundation.core.MModelElement;
@@ -69,7 +71,7 @@ public class ModelManagementHelper {
 	 * @return Collection
 	 */
 	public Collection getAllSubSystems() {
-		MNamespace model = ProjectBrowser.TheInstance.getProject().getModel();
+		MNamespace model = ProjectManager.getManager().getCurrentProject().getModel();
 		return getAllSubSystems(model);
 	}
 	
@@ -99,7 +101,7 @@ public class ModelManagementHelper {
 	 * @return Collection
 	 */
 	public Collection getAllNamespaces() {
-		MNamespace model = ProjectBrowser.TheInstance.getProject().getModel();
+		MNamespace model = ProjectManager.getManager().getCurrentProject().getModel();
 		return getAllNamespaces(model);
 	}
 	
@@ -128,7 +130,8 @@ public class ModelManagementHelper {
 	 */
 	public Collection getAllModelElementsOfKind(Class kind) {
 		if (kind == null) return new ArrayList();
-		MNamespace model = ProjectBrowser.TheInstance.getProject().getModel();
+                Project p = ProjectManager.getManager().getCurrentProject();
+		MNamespace model = p.getRoot();
 		return getAllModelElementsOfKind(model, kind);
 	}
 	

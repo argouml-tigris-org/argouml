@@ -153,6 +153,9 @@ implements PluggableMenu {
     public String getModuleVersion() { return "0.9.4"; }
     public String getModuleKey() { return "module.menu.tools.junit"; }
 
+    /** 
+     * @deprecated Use @link #getMenuItem(Object[])
+     */
     public JMenuItem getMenuItem(JMenuItem mi, String s) {
         return getMenuItem(buildContext(mi, s));
     }

@@ -44,15 +44,15 @@ public class UMLMessageActivatorComboBoxModel extends UMLComboBoxModel2 {
      * Constructor for UMLMessageActivatorComboBoxModel.
      * @param container
      */
-    public UMLMessageActivatorComboBoxModel(UMLUserInterfaceContainer container) {
-        super(container, "activator", false);
+    public UMLMessageActivatorComboBoxModel() {
+        super("activator", false);
     }
 
     /**
      * @see org.argouml.uml.ui.UMLComboBoxModel2#buildModelList()
      */
     protected void buildModelList() {
-        Object target = getContainer().getTarget();
+        Object target = getTarget();
         if (target instanceof MMessage) {
             MMessage mes = (MMessage)target;
             removeAllElements();

@@ -190,7 +190,7 @@ public class ClassGenerationDialog extends JDialog implements ActionListener {
     setLocation(pbBox.x + (pbBox.width - this.getWidth())/2,
     		pbBox.y + (pbBox.height - this.getHeight())/2);
 
-    Project p = pb.getProject();
+    Project p = ProjectManager.getManager().getCurrentProject();
     _outputDirectoryComboBox.getModel().setSelectedItem(p.getGenerationPrefs().getOutputDir());
 
     getRootPane().setDefaultButton(_generateButton);
@@ -230,8 +230,7 @@ public class ClassGenerationDialog extends JDialog implements ActionListener {
       if (e.getSource() == _generateButton) {
       String path = ((String)_outputDirectoryComboBox.getModel().getSelectedItem()).trim();
 
-      ProjectBrowser pb = ProjectBrowser.TheInstance;
-      Project p = pb.getProject();
+      Project p = ProjectManager.getManager().getCurrentProject();
       p.getGenerationPrefs().setOutputDir(path);
       Vector[] fileNames = new Vector[_languages.size()];
       for (int i = 0; i < _languages.size(); i++) {

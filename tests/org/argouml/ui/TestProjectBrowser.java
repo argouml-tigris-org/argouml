@@ -1,4 +1,4 @@
-// Copyright (c) 1996-2001 The Regents of the University of California. All
+// Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -21,19 +21,50 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.argouml.i18n;
-import junit.framework.*;
+// $header$
+package org.argouml.ui;
 
-import org.argouml.util.*;
+import org.argouml.application.security.ArgoSecurityManager;
 
+import junit.framework.TestCase;
 
-public class TestUMLCognitiveResourceBundle extends TestCase {
-    public TestUMLCognitiveResourceBundle(String name) {
-	super(name);
+/**
+ * @since Nov 23, 2002
+ * @author jaap.branderhorst@xs4all.nl
+ */
+public class TestProjectBrowser extends TestCase {
+
+    /**
+     * Constructor for TestProjectBrowser.
+     * @param arg0
+     */
+    public TestProjectBrowser(String arg0) {
+        super(arg0);
+    }
+    
+    
+    /**
+     * Tests wether it is possible to construct a standalone projectbrowser
+     */
+    public void testConstruction() {
+        ProjectBrowser pb = new ProjectBrowser("test", false);
+        assertNotNull(pb.TheInstance);
+    }
+    
+    /**
+     * Tests the construction of the splashscreen
+     */
+    public void testSplashScreen() {
+        ProjectBrowser pb = new ProjectBrowser("test", true);
+        assertNotNull(pb.TheInstance.getSplashScreen());
     }
 
-    public void testMain() {
-	CheckResourceBundle.checkResourceBundle(this, 
-						"org.argouml.i18n.UMLCognitiveResourceBundle");
+    /**
+     * @see junit.framework.TestCase#setUp()
+     */
+    protected void setUp() throws Exception {
+        super.setUp();
+        ArgoSecurityManager.getInstance().setAllowExit(true);
     }
+
 }

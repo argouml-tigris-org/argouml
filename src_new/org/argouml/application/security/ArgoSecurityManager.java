@@ -94,7 +94,7 @@ public final class ArgoSecurityManager extends SecurityManager
             // Uncomment for more information about what happens...
 	    cat.debug("RuntimePermission: " + rp.getName() + " - '" + rp.getActions()+ "'");
 	    if ("exitVM".equals(rp.getName())) {
-		if (! _allowExit) {
+		if (!getInstance().getAllowExit()) {
 		    throw new ArgoSecurityException(true);
 		}
 	    }

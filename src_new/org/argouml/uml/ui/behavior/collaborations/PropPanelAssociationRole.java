@@ -66,7 +66,7 @@ public class PropPanelAssociationRole extends PropPanelModelElement {
     // commented out next line since changing namespace is not allowed
     addField(Argo.localize("UMLMenu", "label.namespace"), namespaceScroll);
 
-    JComboBox baseComboBox = new UMLComboBox2(this, new UMLAssociationRoleBaseComboBoxModel(this), ActionSetAssociationRoleBase.SINGLETON);
+    JComboBox baseComboBox = new UMLComboBox2(new UMLAssociationRoleBaseComboBoxModel(), ActionSetAssociationRoleBase.SINGLETON);
     addField(Argo.localize("UMLMenu", "label.base"), baseComboBox);
     
     add(LabelledLayout.getSeperator());

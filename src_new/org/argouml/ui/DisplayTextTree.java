@@ -26,6 +26,11 @@
 // Original Author:
 // $Id$
 
+
+// 26 Apr 2002: Jeremy Bennett (mail@jeremybennett.com). Patch to give a better
+// naming for extension points in convertValueToText.
+
+
 package org.argouml.ui;
 
 import java.util.*;
@@ -54,7 +59,7 @@ import org.argouml.uml.generator.*;
 import org.argouml.uml.ui.*;
 
 public class DisplayTextTree extends JTree
-implements MElementListener, VetoableChangeListener {
+implements MElementListener {
     
     protected static Category cat = Category.getInstance(DisplayTextTree.class);
 
@@ -150,15 +155,6 @@ implements MElementListener, VetoableChangeListener {
         // UmlModelEventPump.getPump().removeModelEventListener(this, ((MBase)node));
         UmlModelEventPump.getPump().addModelEventListener(this, ((MBase)node)); 
     }
-    if (node instanceof Project) {
-        ((Project)node).removeVetoableChangeListener(this);  
-      ((Project)node).addVetoableChangeListener(this);
-    }
-    if (node instanceof Diagram) {
-        ((Diagram)node).removeVetoableChangeListener(this);
-        ((Diagram)node).addVetoableChangeListener(this);
-    }
-
     TreeModel tm = getModel();
     int childCount = tm.getChildCount(node);
     for (int i = 0; i < childCount; i++) {
@@ -167,10 +163,6 @@ implements MElementListener, VetoableChangeListener {
             UmlModelEventPump.getPump().removeModelEventListener(this, ((MBase)child));
             UmlModelEventPump.getPump().addModelEventListener(this, ((MBase)child));
        
-      }
-      if (child instanceof Diagram) {
-        ((Diagram)child).removeVetoableChangeListener(this);
-	((Diagram)child).addVetoableChangeListener(this);
       }
     }
   }
@@ -190,10 +182,6 @@ implements MElementListener, VetoableChangeListener {
       // UmlModelEventPump.getPump().removeModelEventListener(this, (MBase)r);
       UmlModelEventPump.getPump().addModelEventListener(this, (MBase)r);
     }
-    if (r instanceof Project)
-      ((Project)r).addVetoableChangeListener(this);
-    if (r instanceof Diagram)
-      ((Diagram)r).addVetoableChangeListener(this);
 
     int childCount = newModel.getChildCount(r);
     for (int i = 0; i < childCount; i++) {
@@ -202,17 +190,9 @@ implements MElementListener, VetoableChangeListener {
 	// UmlModelEventPump.getPump().removeModelEventListener(this, (MBase)child);
         UmlModelEventPump.getPump().addModelEventListener(this, (MBase)child);
       }
-      if (child instanceof Diagram)
-	((Diagram)child).addVetoableChangeListener(this);
     }
     reexpand();
   }
-
-	public void vetoableChange(PropertyChangeEvent e) {
-		cat.debug("DisplayTextTree vetoableChange: " + e.getPropertyName());
-		_doit.onceMore();
-	}
-
 
 
 
@@ -290,7 +270,7 @@ implements MElementListener, VetoableChangeListener {
       tme = new TreeModelEvent(this, path, null, null);
       treeModelListener.treeStructureChanged(tme);
       expandPath(path);
-      addListenerToPath(path);
+      // addListenerToPath(path);
     }
     _reexpanding = false;
 
