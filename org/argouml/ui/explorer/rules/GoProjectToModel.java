@@ -31,8 +31,7 @@ import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
 
 /**
- * Rule for Project->Package.
- * TODO: Or is it Project->Model ???
+ * Rule for Project->Model.
  *
  */
 public class GoProjectToModel extends AbstractPerspectiveRule {
@@ -41,7 +40,7 @@ public class GoProjectToModel extends AbstractPerspectiveRule {
      * @see org.argouml.ui.explorer.rules.PerspectiveRule#getRuleName()
      */
     public String getRuleName() {
-	return Translator.localize ("misc.project.package");
+	return Translator.localize ("misc.project.model");
     }
  
     /**
