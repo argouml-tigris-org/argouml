@@ -312,7 +312,6 @@ public class FigObject extends FigNodeModelElement implements MouseListener {
             int newH =
                 (_h == 0)
                     ? 0
-
                     : (int) (((float) f.getHeight()) * ((float) h / (float) _h));
 
             f.setBounds(newX, newY, newW, newH);
@@ -362,13 +361,12 @@ public class FigObject extends FigNodeModelElement implements MouseListener {
         ActivationNode startActivationNode = null;
         ActivationNode endActivationNode = null;
         int x = _lifeLine.getX() - WIDTH / 2;
-        for (int i = 1; i < _linkPositions.size(); i++) {
+        for (int i = 0; i < _linkPositions.size(); i++) {
             Node node = (Node) _linkPositions.get(i);
             if (node instanceof ActivationNode
                 && ((ActivationNode) node).isStart()) {
                 startActivationNode = (ActivationNode) node;
                 endActivationNode = null;
-                continue;
             }
             if (node instanceof ActivationNode
                 && ((ActivationNode) node).isEnd()) {
@@ -376,19 +374,12 @@ public class FigObject extends FigNodeModelElement implements MouseListener {
                     throw new IllegalStateException("End activation node without start activation node");
                 }
                 endActivationNode = (ActivationNode) node;
-                int startPos = getYCoordinate(startActivationNode);
-                int endPos = getYCoordinate(endActivationNode);
-                if (!startActivationNode.isCutOffTop()) {
-                    startPos =
-                        startPos - SequenceDiagramLayout.LINK_DISTANCE / 2;
-                }
-                if (!endActivationNode.isCutOffBottom()) {
-                    endPos = endPos + SequenceDiagramLayout.LINK_DISTANCE / 2;
-                }
+                int startPos = getYCoordinateForActivationBox(startActivationNode);
+                int endPos = getYCoordinateForActivationBox(endActivationNode);                
                 FigRect activation =
                     new FigRect(
                         x,
-                        startPos + getY(),
+                        startPos,
                         WIDTH,
                         endPos - startPos,
                         _outerBox.getLineColor(),
@@ -586,7 +577,7 @@ public class FigObject extends FigNodeModelElement implements MouseListener {
      */
     public Object deepHitPort(int x, int y) {
         Object port = null;
-        Rectangle rect = new Rectangle(x - 16, y - 16, 32, 32);
+        Rectangle rect = new Rectangle(getX(), y - 16, getWidth(), 32);
         Node foundNode = null;
         if (_lifeLine.intersects(rect)) {
             for (int i = 1; i < _linkPositions.size(); i++) {
@@ -647,6 +638,26 @@ public class FigObject extends FigNodeModelElement implements MouseListener {
                 (index - 1) * SequenceDiagramLayout.LINK_DISTANCE
                     + getY()
                     + _outerBox.getHeight();
+        }
+        return y;
+    }
+
+    private int getYCoordinateForActivationBox(Node node) {
+        int y = getYCoordinate(node);
+        if (node instanceof ActivationNode) {
+            if (node instanceof ObjectNode) {
+                y = y + _outerBox.getHalfHeight();
+            } else {
+                ActivationNode activationNode = (ActivationNode) node;
+                if (activationNode.isEnd()
+                    && !activationNode.isCutOffBottom()) {
+                    y += SequenceDiagramLayout.LINK_DISTANCE / 2;
+                } else if (
+                    activationNode.isStart()
+                        && !activationNode.isCutOffTop()) {
+                    y -= SequenceDiagramLayout.LINK_DISTANCE / 2;
+                }
+            }
         }
         return y;
     }
@@ -837,14 +848,14 @@ public class FigObject extends FigNodeModelElement implements MouseListener {
     public void setNode(int index, Node node) {
         _linkPositions.set(index, node);
     }
-    
+
     public ObjectNode getObjectNode() {
-    	for (int i = 0; i < _linkPositions.size(); i++) {
-    		if (_linkPositions.get(i) instanceof ObjectNode) {
-    			return (ObjectNode)_linkPositions.get(i);
-    		}
-    	}
-    	return null;
+        for (int i = 0; i < _linkPositions.size(); i++) {
+            if (_linkPositions.get(i) instanceof ObjectNode) {
+                return (ObjectNode) _linkPositions.get(i);
+            }
+        }
+        return null;
     }
 
 }
