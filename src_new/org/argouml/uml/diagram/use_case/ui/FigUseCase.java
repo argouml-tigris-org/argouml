@@ -263,6 +263,8 @@ public class FigUseCase extends FigNodeModelElement {
         Dimension nameSize = _name.getMinimumSize();
 
         _name.setBounds((ellipse.width - nameSize.width) / 2, _MIN_VERT_PADDING, nameSize.width, nameSize.height);
+        
+        _stereo.setBounds(0, 0, 0, 0);
 
         // The separator. We cheat here. Since the name and extension points
         // rectangles are the same size at this stage, this must be at the
@@ -283,6 +285,7 @@ public class FigUseCase extends FigNodeModelElement {
         addFig(_bigPort);
         addFig(_cover);
         addFig(_name);
+        addFig(_stereo);
         addFig(_epSep);
         addFig(_epVec);
 
@@ -1371,6 +1374,19 @@ public class FigUseCase extends FigNodeModelElement {
             ret.add(point);
         }
         return ret;
+    }
+
+    /**
+     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#updateStereotypeText()
+     */
+    protected void updateStereotypeText() {
+        super.updateStereotypeText();
+        if (!(_stereo.getText() == null || _stereo.getText().equals(""))) {
+            _stereo.setBounds(_bigPort.getX() + _bigPort.getWidth()/2 - _stereo.getWidth()/2, _bigPort.getY() + _bigPort.getHeight() + _MIN_VERT_PADDING, _stereo.getWidth(), _stereo.getHeight());
+        } else {
+            _stereo.setBounds(0, 0, 0, 0);     
+        }
+        damage();
     }
 
 } /* end class FigUseCase */
