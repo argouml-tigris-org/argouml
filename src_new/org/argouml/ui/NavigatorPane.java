@@ -411,17 +411,6 @@ public class NavigatorPane
         }
     }
     
-    /**
-     * Locale a popup menu item in the navigator pane.
-     *
-     * @param key The key for the string to localize.
-     * @return The localized string.
-     */
-    final private String menuLocalize(String key) {
-        return Argo.localize("Tree", key);
-    }
-    
-    
     /** QuadrantPanel implementation */
     public int getQuadrant() {
         return Q_TOP_LEFT;
@@ -470,7 +459,7 @@ public class NavigatorPane
         public void mousePressed(MouseEvent me) {
             
             if (me.isPopupTrigger()) {
-                //me.consume();
+                
                 showPopupMenu(me);
             }
         }
@@ -542,6 +531,17 @@ public class NavigatorPane
             }
             popup.show(_tree, me.getX(), me.getY());
         }
+        
+        /**
+         * Locale a popup menu item in the navigator pane.
+         *
+         * @param key The key for the string to localize.
+         * @return The localized string.
+         */
+        final private String menuLocalize(String key) {
+            return Argo.localize("Tree", key);
+        }
+
     } /* end class NavigatorMouseListener */
     
     /**
