@@ -100,7 +100,9 @@ public class FigComponent extends FigNodeModelElement {
   public FigComponent(GraphModel gm, Object node) {
     this();
     setOwner(node);
-    _name.setText(placeString());
+    if (node instanceof MClassifier && (((MClassifier)node).getName() != null))
+	_name.setText(((MModelElement)node).getName());
+//     _name.setText(placeString());
     updateBounds();					
   }
 

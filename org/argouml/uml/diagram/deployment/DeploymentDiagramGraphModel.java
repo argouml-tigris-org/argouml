@@ -192,12 +192,12 @@ implements MutableGraphModel, VetoableChangeListener, MElementListener {
       Collection suppliers = ((MDependency)edge).getSuppliers();
       if (clients == null || suppliers == null) return false;
       end0 = ((Object[])clients.toArray())[0];
-      end1 = ((Object[])suppliers.toArray())[1];
+      end1 = ((Object[])suppliers.toArray())[0];
     }
     else if (edge instanceof MLink) {
       Collection roles = ((MLink)edge).getConnections();
       MLinkEnd le0 = (MLinkEnd)((Object[]) roles.toArray())[0];
-      MLinkEnd le1 = (MLinkEnd)((Object[]) roles.toArray())[0];
+      MLinkEnd le1 = (MLinkEnd)((Object[]) roles.toArray())[1];
       if (le0 == null || le1 == null) return false;
       end0 = le0.getInstance();
       end1 = le1.getInstance();

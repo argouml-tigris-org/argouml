@@ -32,6 +32,7 @@ import javax.swing.tree.*;
 
 import ru.novosoft.uml.model_management.*;
 import ru.novosoft.uml.foundation.core.*;
+import ru.novosoft.uml.behavior.common_behavior.*;
 import ru.novosoft.uml.behavior.use_cases.*;
 import ru.novosoft.uml.behavior.state_machines.*;
 
@@ -312,7 +313,7 @@ implements ItemListener, TreeSelectionListener {
 		}
         else if (obj instanceof MClassifier || obj instanceof MUseCase
 		 || obj instanceof MActor || obj instanceof MPackage 
-		 || obj instanceof MStateVertex) {
+		 || obj instanceof MStateVertex || obj instanceof MInstance) {
 			popup.add(new ActionGoToDetails("Properties"));
 			popup.add(new ActionAddExistingNode("Add to Diagram",obj));
 			popup.add(Actions.RemoveFromModel);
