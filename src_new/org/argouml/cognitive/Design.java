@@ -107,7 +107,6 @@ public class Design extends DesignMaterial {
     while (cur.hasMoreElements()) {
       DesignMaterial dm = (DesignMaterial) cur.nextElement();
       dm.critique(d);
-      Thread.yield();
     }
   }
 
