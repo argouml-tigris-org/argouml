@@ -236,6 +236,11 @@ public class ModeCreateEdgeAndNode extends ModeCreate {
       // If its a FigNode, then check within the  
       // FigNode to see if a port exists 
       Object foundPort = destFigNode.deepHitPort(x, y);
+      if (foundPort == null) {
+	Vector portFigs = destFigNode.getPortFigs();
+	if (portFigs.size() > 0)
+	  foundPort = ((Fig)portFigs.elementAt(0)).getOwner();
+      }
 
       FigPoly p = (FigPoly) _newItem;
       _editor.damaged(p);
