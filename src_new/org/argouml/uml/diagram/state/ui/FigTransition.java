@@ -26,12 +26,14 @@ package org.argouml.uml.diagram.state.ui;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.text.ParseException;
 
 import org.argouml.application.api.Notation;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.StateMachinesHelper;
 import org.argouml.model.uml.UmlModelEventPump;
+import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.diagram.ui.FigEdgeModelElement;
 import org.argouml.uml.generator.ParserDisplay;
 
@@ -133,7 +135,13 @@ public class FigTransition extends FigEdgeModelElement {
         if (t == null)
             return;
         String s = ft.getText();
-        ParserDisplay.SINGLETON.parseTransition(/* (MTransition) */t, s);
+        try {
+            ParserDisplay.SINGLETON.parseTransition(t, s);
+        } catch (ParseException pe) {
+            ProjectBrowser.getInstance().getStatusBar().showStatus(
+                    "Error: " + pe + " at " + pe.getErrorOffset());
+            // TODO: i18n
+        }
     }
 
     /**

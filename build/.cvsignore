@@ -2,9 +2,3 @@ build.properties
 *.log
 test.zargo
 junit*.properties
-classes
-ext
-tests
-documentation
-api
-javadocs

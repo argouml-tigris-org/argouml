@@ -32,8 +32,10 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.beans.PropertyVetoException;
+import java.text.ParseException;
 import java.util.Iterator;
 
+import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.generator.ParserDisplay;
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.FigLine;
@@ -230,7 +232,13 @@ public class FigSimpleState extends FigState {
 	    Object state = getOwner();
 	    if (state == null) return;
 	    String s = ft.getText();
-	    ParserDisplay.SINGLETON.parseStateBody(/*(MState)*/state, s);
+	    try {
+	        ParserDisplay.SINGLETON.parseStateBody(state, s);
+	    } catch (ParseException pe) {
+	        ProjectBrowser.getInstance().getStatusBar().showStatus(
+	                "Error: " + pe + " at " + pe.getErrorOffset());
+                // TODO: i18n
+	    }
 	}
     }
    
