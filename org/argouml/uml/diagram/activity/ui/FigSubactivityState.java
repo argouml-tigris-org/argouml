@@ -161,14 +161,6 @@ public class FigSubactivityState extends FigStateVertex {
     // Fig accessors
 
     /**
-     * @see org.tigris.gef.presentation.Fig#setOwner(java.lang.Object)
-     */
-    public void setOwner(Object node) {
-        super.setOwner(node);
-        bindPort(node, getBigPort());
-    }
-    
-    /**
      * @see org.tigris.gef.presentation.Fig#getMinimumSize()
      */
     public Dimension getMinimumSize() {

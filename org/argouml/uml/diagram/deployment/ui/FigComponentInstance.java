@@ -56,11 +56,11 @@ import org.tigris.gef.presentation.FigText;
  * Class to display graphics for a UML ComponentInstance in a diagram.
  */
 public class FigComponentInstance extends FigNodeModelElement {
-    public static int OVERLAP = 4;
+    private static final int OVERLAP = 4;
 
-    protected FigRect _cover;
-    protected FigRect _upperRect;
-    protected FigRect _lowerRect;
+    private FigRect cover;
+    private FigRect upperRect;
+    private FigRect lowerRect;
 
     ////////////////////////////////////////////////////////////////
     // constructors
@@ -69,22 +69,27 @@ public class FigComponentInstance extends FigNodeModelElement {
      * Constructor.
      */
     public FigComponentInstance() {
-        _cover = new FigRect(10, 10, 120, 80, Color.black, Color.white);
-        _upperRect = new FigRect(0, 20, 20, 10, Color.black, Color.white);
-        _lowerRect = new FigRect(0, 40, 20, 10, Color.black, Color.white);
+        cover = new FigRect(10, 10, 120, 80, Color.black, Color.white);
+        upperRect = new FigRect(0, 20, 20, 10, Color.black, Color.white);
+        lowerRect = new FigRect(0, 40, 20, 10, Color.black, Color.white);
 
         getNameFig().setLineWidth(0);
         getNameFig().setFilled(false);
         getNameFig().setUnderline(true);
 
         addFig(getBigPort());
-        addFig(_cover);
+        addFig(cover);
         addFig(getStereotypeFig());
         addFig(getNameFig());
-        addFig(_upperRect);
-        addFig(_lowerRect);
+        addFig(upperRect);
+        addFig(lowerRect);
     }
 
+    /**
+     * Constructor that hooks the Fig into an existing UML element
+     * @param gm ignored
+     * @param node the UML element
+     */
     public FigComponentInstance(GraphModel gm, Object node) {
         this();
         setOwner(node);
@@ -109,11 +114,11 @@ public class FigComponentInstance extends FigNodeModelElement {
         FigComponentInstance figClone = (FigComponentInstance) super.clone();
         Iterator it = figClone.getFigs(null).iterator();
         figClone.setBigPort((FigRect) it.next());
-        figClone._cover = (FigRect) it.next();
+        figClone.cover = (FigRect) it.next();
         figClone.setStereotypeFig((FigText) it.next());
         figClone.setNameFig((FigText) it.next());
-        figClone._upperRect = (FigRect) it.next();
-        figClone._lowerRect = (FigRect) it.next();
+        figClone.upperRect = (FigRect) it.next();
+        figClone.lowerRect = (FigRect) it.next();
 
         return figClone;
     }
@@ -126,13 +131,13 @@ public class FigComponentInstance extends FigNodeModelElement {
      */
     public void setLineColor(Color c) {
         //     super.setLineColor(c);
-        _cover.setLineColor(c);
+        cover.setLineColor(c);
         getStereotypeFig().setFilled(false);
         getStereotypeFig().setLineWidth(0);
         getNameFig().setFilled(false);
         getNameFig().setLineWidth(0);
-        _upperRect.setLineColor(c);
-        _lowerRect.setLineColor(c);
+        upperRect.setLineColor(c);
+        lowerRect.setLineColor(c);
     }
 
     /**
@@ -164,17 +169,17 @@ public class FigComponentInstance extends FigNodeModelElement {
 
         Rectangle oldBounds = getBounds();
         getBigPort().setBounds(x, y, w, h);
-        _cover.setBounds(x, y, w, h);
+        cover.setBounds(x, y, w, h);
 
         Dimension stereoDim = getStereotypeFig().getMinimumSize();
         Dimension nameDim = getNameFig().getMinimumSize();
 
         if (h < 50) {
-            _upperRect.setBounds(x - 10, y + h / 6, 20, 10);
-            _lowerRect.setBounds(x - 10, y + 3 * h / 6, 20, 10);
+            upperRect.setBounds(x - 10, y + h / 6, 20, 10);
+            lowerRect.setBounds(x - 10, y + 3 * h / 6, 20, 10);
         } else {
-            _upperRect.setBounds(x - 10, y + 13, 20, 10);
-            _lowerRect.setBounds(x - 10, y + 39, 20, 10);
+            upperRect.setBounds(x - 10, y + 13, 20, 10);
+            lowerRect.setBounds(x - 10, y + 39, 20, 10);
         }
 
         getStereotypeFig().setBounds(x + 1, y + 1, w - 2, stereoDim.height);
@@ -243,7 +248,8 @@ public class FigComponentInstance extends FigNodeModelElement {
                 }
                 Iterator bringToFrontIter = bringToFrontList.iterator();
                 while (bringToFrontIter.hasNext()) {
-                    FigEdgeModelElement figEdge = (FigEdgeModelElement) bringToFrontIter.next();
+                    FigEdgeModelElement figEdge = 
+                        (FigEdgeModelElement) bringToFrontIter.next();
                     figEdge.getLayer().bringToFront(figEdge);
                 }
             }
@@ -306,6 +312,10 @@ public class FigComponentInstance extends FigNodeModelElement {
         */
     }
 
+    /**
+     * TODO: This is not used anywhere. Can we remove it?
+     * @param figures ?
+     */
     public void setNode(Vector figures) {
         int size = figures.size();
         if (figures != null && (size > 0)) {

@@ -103,14 +103,6 @@ public class FigObjectFlowState extends FigNodeModelElement {
     // Fig accessors
 
     /**
-     * @see org.tigris.gef.presentation.Fig#setOwner(java.lang.Object)
-     */
-    public void setOwner(Object node) {
-        super.setOwner(node);
-        bindPort(node, getBigPort());
-    }
-
-    /**
      * @see org.tigris.gef.presentation.Fig#setLineColor(java.awt.Color)
      */
     public void setLineColor(Color col) { cover.setLineColor(col); }

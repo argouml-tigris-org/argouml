@@ -529,22 +529,6 @@ public class FigUseCase extends FigNodeModelElement {
     }
 
     /**
-     * Associate this fig with a particular NSUML object.<p>
-     *
-     * Associates the node with the "bigPort" that is the whole of this
-     *   object.<p>
-     *
-     * Must be public, since called directly, e.g. by the load routines.<p>
-     *
-     * @param node  The NSUML object to associate with this fig.
-     */
-
-    public void setOwner(Object node) {
-        super.setOwner(node);
-        bindPort(node, bigPort);
-    }
-
-    /**
      * Compute the minimum acceptable size of the use case.<p>
      *
      * We work out the minimum size of the text box, and from that the radii

@@ -101,14 +101,6 @@ public class FigJoinState extends FigStateVertex {
     ////////////////////////////////////////////////////////////////
     // Fig accessors
 
-    /**
-     * @see org.tigris.gef.presentation.Fig#setOwner(java.lang.Object)
-     */
-    public void setOwner(Object node) {
-        super.setOwner(node);
-        bindPort(node, getBigPort());
-    }
-
     /** 
      * Override setBounds to keep shapes looking right 
      * @see org.tigris.gef.presentation.Fig#setBounds(int, int, int, int)
