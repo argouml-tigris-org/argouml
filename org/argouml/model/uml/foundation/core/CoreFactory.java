@@ -85,6 +85,7 @@ import ru.novosoft.uml.foundation.core.MStructuralFeature;
 import ru.novosoft.uml.foundation.core.MTemplateParameter;
 import ru.novosoft.uml.foundation.core.MUsage;
 import ru.novosoft.uml.foundation.data_types.MAggregationKind;
+import ru.novosoft.uml.foundation.data_types.MBooleanExpression;
 import ru.novosoft.uml.foundation.data_types.MCallConcurrencyKind;
 import ru.novosoft.uml.foundation.data_types.MChangeableKind;
 import ru.novosoft.uml.foundation.data_types.MMultiplicity;
@@ -1386,6 +1387,22 @@ public class CoreFactory extends AbstractUmlModelFactory {
 		MConstraint con = createConstraint();
 		con.addConstrainedElement(constrainedElement);
 		con.setNamespace(constrainedElement.getNamespace());
+		return con;
+	}
+
+	/**
+	 * Builds a constraint with a given name and boolean expression.
+	 * @param name
+	 * @param boolean expression
+	 * @return constraint
+	 */
+	public Object buildConstraint(String name, Object bexpr) {
+		if (bexpr == null || !(bexpr instanceof MBooleanExpression))
+			throw new IllegalArgumentException("In buildConstraint: invalid boolean expression.");
+		MConstraint con = createConstraint();
+		if (name != null)
+			con.setName(name);
+		con.setBody((MBooleanExpression)bexpr);
 		return con;
 	}
 
