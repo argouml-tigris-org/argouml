@@ -266,6 +266,20 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
 	if (containsNode(node)) {
 	    return false;
 	}
+        if (ModelFacade.isANaryAssociation(node)) {
+            Collection ends = ModelFacade.getConnections(node);
+            Iterator iter = ends.iterator();
+            boolean canAdd = true;
+            while (iter.hasNext()) {
+                Object classifier = ModelFacade.getClassifier(iter.next());
+                if (!containsNode(classifier)) {
+                    canAdd =false;
+                    break;
+                }
+            }
+            return canAdd;
+        }
+
         // TODO: This logic may well be worth moving into the model component.
         // Provide a similar grid to the connectionsGrid
 	return ModelFacade.isAClass(node) 
@@ -301,6 +315,9 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
 	    }
 	    end0 = ModelFacade.getType(associationEnd0);
 	    end1 = ModelFacade.getType(associationEnd1);
+    } else if (ModelFacade.isAAssociationEnd(edge)) {
+        end0 = ModelFacade.getAssociation(edge);
+        end1 = ModelFacade.getType(edge);
 	} else if (ModelFacade.isAGeneralization(edge)) {
 	    end0 = ModelFacade.getChild(edge);
 	    end1 = ModelFacade.getParent(edge);
@@ -332,10 +349,10 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
 	if (end0 == null || end1 == null) {
 	    return false;	
 	}
-	if (!containsNode(end0)) {
+        if (ModelFacade.isANode(end0) && !containsNode(end0)) {
 	    return false;
 	}
-	if (!containsNode(end1)) {
+        if (ModelFacade.isANode(end1) && !containsNode(end1)) {
 	    return false;	
 	}
         
@@ -393,7 +410,8 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
         
         // TODO: assumes public
         if (ModelFacade.isAModelElement(edge) 
-                && ModelFacade.getNamespace(edge) == null) {
+                && ModelFacade.getNamespace(edge) == null
+                && !ModelFacade.isAAssociationEnd(edge)) {
     	    ModelFacade.addOwnedElement(model, edge);
         }
         fireEdgeAdded(edge);
@@ -411,7 +429,8 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
             Iterator iter = ends.iterator();
             while (iter.hasNext()) {
                 Object associationEnd = iter.next();
-                if (canAddEdge(ModelFacade.getAssociation(associationEnd))) {
+                if (!ModelFacade.isANaryAssociation(ModelFacade.getAssociation(associationEnd))
+                        && canAddEdge(ModelFacade.getAssociation(associationEnd))) {
                     addEdge(ModelFacade.getAssociation(associationEnd));
                 }
             }
@@ -446,6 +465,16 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
         	if (canAddEdge(dependency)) {
         	    addEdge(dependency);
         	    // return;
+                }
+            }
+        }
+        if (ModelFacade.isAAssociation(node) ) {
+            Collection ends = ModelFacade.getConnections(node);
+            Iterator iter = ends.iterator();
+            while (iter.hasNext()) {
+                Object associationEnd = iter.next();
+                if (canAddEdge(associationEnd)) {
+                    addEdge(associationEnd);
         	}
             }
         }

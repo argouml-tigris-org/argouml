@@ -61,6 +61,13 @@ import ru.novosoft.uml.foundation.core.MRelationship;
 import ru.novosoft.uml.foundation.core.MStructuralFeature;
 import ru.novosoft.uml.foundation.core.MTemplateParameter;
 import ru.novosoft.uml.foundation.core.MUsage;
+import ru.novosoft.uml.foundation.data_types.MAggregationKind;
+import ru.novosoft.uml.foundation.data_types.MChangeableKind;
+import ru.novosoft.uml.foundation.data_types.MMultiplicity;
+import ru.novosoft.uml.foundation.data_types.MOrderingKind;
+import ru.novosoft.uml.foundation.data_types.MScopeKind;
+import ru.novosoft.uml.foundation.data_types.MVisibilityKind;
+import ru.novosoft.uml.foundation.extension_mechanisms.MStereotype;
 
 /**
  * The interface to the factory for the Core.<p>
@@ -312,6 +319,47 @@ public interface CoreFactory {
     MAssociationClass buildAssociationClass(MClassifier end1, MClassifier end2);
 
     /**
+     * Builds a fully configurable association end. All variables for
+     * an associationend can be given as parameter.
+     * @param assoc The associaton this end will be part of
+     * @param name The name of the association end
+     * @param type The type (classifier) the end will connect. The end
+     * is a connection piece between an association and a classifier
+     * @param multi The multiplicity
+     * @param stereo The stereotype
+     * @param navigable The navigability. True if this association end
+     *                  can be 'passed' from the other classifier.
+     * @param order Ordering of the association
+     * @param aggregation the aggregationkind
+     * @param scope the scope kind
+     * @param changeable the changeablekind
+     * @param visibility the visibilitykind
+     * @return MAssociationEnd
+     */
+    MAssociationEnd buildAssociationEnd(
+        MAssociation assoc,
+        String name,
+        MClassifier type,
+        MMultiplicity multi,
+        MStereotype stereo,
+        boolean navigable,
+        MOrderingKind order,
+        MAggregationKind aggregation,
+        MScopeKind scope,
+        MChangeableKind changeable,
+        MVisibilityKind visibility);
+
+    /**
+     * Builds a simply configured association end
+     * @param type the given classifier
+     * @param assoc the given association
+     * @return the newly build associationend
+     */
+    MAssociationEnd buildAssociationEnd(
+        MClassifier type,
+        MAssociation assoc);
+
+            /**
      * Builds a default attribute.
      *
      * @param model The model the attribute belongs to.

@@ -102,6 +102,8 @@ public class ExplorerPopup extends JPopupMenu {
                 ModelFacade.isAModelElement(selectedItem);
 
             if (modelElementSelected) {
+                final boolean nAryAssociationSelected =
+                        ModelFacade.isANaryAssociation(selectedItem);
                 final boolean classifierAndRelationShipSelected =
                     ModelFacade.isAClassifierAndARelationship(selectedItem);
                 final boolean classifierSelected = 
@@ -149,7 +151,8 @@ public class ExplorerPopup extends JPopupMenu {
                         || (stateVertexSelected && stateDiagramActive
                             && diagramStateMachine == selectedStateMachine)
                         || (instanceSelected && !dataValueSelected 
-                            && !sequenceDiagramActive)) {
+                            && !sequenceDiagramActive)
+                        || nAryAssociationSelected) {
                     UMLAction action =
                         new ActionAddExistingNode(
                             menuLocalize("menu.popup.add-to-diagram"),
@@ -158,7 +161,7 @@ public class ExplorerPopup extends JPopupMenu {
                     this.add(action);
                 }
     
-                if ((relationshipSelected && !flowSelected)
+                if ((relationshipSelected && !flowSelected && !nAryAssociationSelected)
                         || (linkSelected && !sequenceDiagramActive)
                         || transitionSelected) {
                     UMLAction action = new ActionAddExistingEdge(

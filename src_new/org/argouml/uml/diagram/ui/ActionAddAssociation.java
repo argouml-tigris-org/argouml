@@ -33,8 +33,6 @@ package org.argouml.uml.diagram.ui;
 import org.argouml.model.ModelFacade;
 import org.argouml.ui.CmdSetMode;
 
-import org.tigris.gef.base.ModeCreatePolyEdge;
-
 /** 
  * The ActionAddAssociation class is for creating a dummy link with a
  * stimulus and a given action type. This is done in one step when a
@@ -55,7 +53,7 @@ public class ActionAddAssociation extends CmdSetMode {
      */
     public ActionAddAssociation(Object aggregationKind, boolean unidirectional,
 				String name) {
-        super(ModeCreatePolyEdge.class, "edgeClass",
+        super(ModeCreateAssociation.class, "edgeClass",
 	      ModelFacade.ASSOCIATION, name);
         _modeArgs.put("aggregation", aggregationKind);
         _modeArgs.put("unidirectional", new Boolean(unidirectional));

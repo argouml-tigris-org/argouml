@@ -1043,7 +1043,8 @@ class CoreHelperImpl implements CoreHelper {
      */
     public Object getSource(Object relationship) {
         if (!(relationship instanceof MRelationship)
-	    && !(ModelFacade.isALink(relationship))) {
+	    && !(ModelFacade.isALink(relationship))
+        && !(ModelFacade.isAAssociationEnd(relationship))) {
 
 
             throw new IllegalArgumentException("Argument "
@@ -1100,6 +1101,9 @@ class CoreHelperImpl implements CoreHelper {
         if (relationship instanceof CommentEdge) {
             return ((CommentEdge) relationship).getSource();
         }
+        if (relationship instanceof MAssociationEnd) {
+            return ((MAssociationEnd) relationship).getAssociation();
+        }
         return null;
     }
 
@@ -1126,7 +1130,8 @@ class CoreHelperImpl implements CoreHelper {
 
 	if (!(relationship instanceof MRelationship)
 	    && !(ModelFacade.isALink(relationship))
-	    && !(relationship instanceof CommentEdge)) {
+	    && !(relationship instanceof CommentEdge)
+        && !(ModelFacade.isAAssociationEnd(relationship))) {
 
 	    throw new IllegalArgumentException("Argument is not "
 					       + "a relationship");
@@ -1184,6 +1189,9 @@ class CoreHelperImpl implements CoreHelper {
         }
         if (relationship instanceof CommentEdge) {
             return ((CommentEdge) relationship).getDestination();
+        }
+        if (relationship instanceof MAssociationEnd) {
+            return ((MAssociationEnd) relationship).getType();
         }
         return null;
     }

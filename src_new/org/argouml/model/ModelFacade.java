@@ -1518,6 +1518,20 @@ public class ModelFacade {
     }
 
     /**
+     * Recognizer for N-ary Association.
+     *
+     * @param handle candidate
+     * @return true if handle is an Association
+     */
+    public static boolean isANaryAssociation(Object handle) {
+        if (handle instanceof MAssociation) {
+            return (getConnections(handle).size() > 2);
+        }
+        return false;
+    }
+
+
+    /**
      * Recognizer for a Node.
      *
      * @param handle candidate
@@ -2620,6 +2634,20 @@ public class ModelFacade {
         }
 	return illegalArgumentCollection(handle);
     }
+
+    /**
+     * Get the classifier of an Association End
+     *
+     * @param handle
+     * @return the classifier of the association end
+     */
+    public static Object getClassifier(Object handle) {
+        if (isAAssociationEnd(handle)) {
+            return ((MAssociationEnd) handle).getType();
+        }
+        return illegalArgumentObject(handle);
+    }
+
 
     /**
      * Gets the classifierss of some instance.

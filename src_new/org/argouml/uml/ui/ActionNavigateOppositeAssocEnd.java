@@ -47,5 +47,9 @@ public class ActionNavigateOppositeAssocEnd extends AbstractActionNavigate {
     protected Object navigateTo(Object source) {
         return ModelFacade.getOppositeEnd(source);
     }
+    
+    public boolean isEnabled() {
+        return false;
+    }
 
 }
