@@ -74,7 +74,6 @@ public class UMLMetaClassComboBoxModel extends UMLComboBoxModel2 {
      * @see org.argouml.uml.ui.UMLComboBoxModel2#buildModelList()
      */
     protected void buildModelList() {
-        System.out.println("Modelelements: " + metaClasses.size());
         setElements(metaClasses);
     }
 
