@@ -242,6 +242,7 @@ doesn't find it's own XML-libs. You need to set ANT_HOME in your shell.
             <fileset dir="${argo.build.dir}">
             	<include name="xerces.jar" />
                 <include name="argouml.jar" />
+                <include name="argouml-model.jar" />
                 <include name="nsuml.jar" />
                 <include name="ocl-argo.jar" />
                 <include name="antlrall.jar" />
@@ -281,9 +282,10 @@ doesn't find it's own XML-libs. You need to set ANT_HOME in your shell.
         <classpath>
             <fileset dir="${module.build.dir}">
                 <include name="${module.jarfile.name}" />
-	    </fileset>
+            </fileset>
             <fileset dir="${argo.build.dir}">
                 <include name="argouml.jar" />
+                <include name="argouml-model.jar" />
                 <include name="nsuml.jar" />
                 <include name="ocl-argo.jar" />
                 <include name="antlrall.jar" />

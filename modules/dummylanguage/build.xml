@@ -155,7 +155,6 @@ doesn't find it's own XML-libs. You need to set ANT_HOME in your shell.
 
     <property name="module.src.dir" value="${module.root}/src"/>
     <property name="module.lib.dir" value="${module.root}/lib"/>
-    <property name="classpath" value="${argo.build.dir}/nsuml.jar:${argo.build.dir}/ocl-argo.jar:${argo.build.dir}/gef.jar:${argo.build.dir}/antlrall.jar:${argo.build.dir}/log4j.jar:${argo.build.dir}/argouml.jar"/>
     <property name="ant.xml-libs" value="${ANT_HOME}/lib/jaxp.jar:${ANT_HOME}/lib/parser.jar"/>
 
     <property name="packages" value="org.argouml.*"/>
@@ -240,6 +239,7 @@ doesn't find it's own XML-libs. You need to set ANT_HOME in your shell.
         <classpath>
             <fileset dir="${argo.build.dir}">
                 <include name="argouml.jar" />
+                <include name="argouml-model.jar" />
                 <include name="nsuml.jar" />
                 <include name="ocl-argo.jar" />
                 <include name="antlrall.jar" />
@@ -277,6 +277,7 @@ doesn't find it's own XML-libs. You need to set ANT_HOME in your shell.
 	    </fileset>
             <fileset dir="${argo.build.dir}">
                 <include name="argouml.jar" />
+            	<include name="argouml-model.jar" />
                 <include name="nsuml.jar" />
                 <include name="ocl-argo.jar" />
                 <include name="antlrall.jar" />

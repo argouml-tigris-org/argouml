@@ -152,7 +152,7 @@ doesn't find it's own XML-libs. You need to set ANT_HOME in your shell.
     <property name="module.src.dir" value="${module.root}/src"/>
     <property name="argo.lib.dir" value="${argo.root}/lib"/>
     <property name="module.lib.dir" value="${module.root}/lib"/>
-    <property name="classpath" value="${argo.lib.dir}/nsuml-0.4.20_modified.jar:${argo.lib.dir}/gef-0.10.11.jar:${argo.lib.dir}/antlrall-2.7.2.jar:${argo.lib.dir}/log4j-1.2.6.jar:${argo.lib.dir}/argouml.jar"/>
+    <property name="antlr.classpath" value="${argo.lib.dir}/antlrall-2.7.2.jar"/>
     <property name="ant.xml-libs" value="${ANT_HOME}/lib/jaxp.jar:${ANT_HOME}/lib/parser.jar"/>
 
     <property name="packages" value="org.argouml.*"/>
@@ -226,10 +226,10 @@ doesn't find it's own XML-libs. You need to set ANT_HOME in your shell.
   <target name="generateparser" depends="prepare">
     <echo message="Generate parsers"/>
 
-    <java fork="yes" classname="antlr.Tool" classpath="${classpath}">
+    <java fork="yes" classname="antlr.Tool" classpath="${antlr.classpath}">
           <arg line="-o ${module.build.src}/org/argouml/uml/reveng/classfile  ${module.build.src}/org/argouml/uml/reveng/classfile/classfile.g"/>
     </java>
-    <java fork="yes" classname="antlr.Tool" classpath="${classpath}">
+    <java fork="yes" classname="antlr.Tool" classpath="${antlr.classpath}">
           <arg line="-o ${module.build.src}/org/argouml/uml/reveng/classfile  ${module.build.src}/org/argouml/uml/reveng/classfile/classfile.tree.g"/>
     </java>
 
@@ -255,7 +255,7 @@ doesn't find it's own XML-libs. You need to set ANT_HOME in your shell.
            optimize="${optimize}">
         <classpath>
             <fileset dir="${argo.build.dir}">
-                <include name="argouml.jar" />
+                <include name="argouml.jar argouml-model.jar" />
             </fileset>
             <fileset dir="${argo.lib.dir}">
                 <include name="nsuml-0.4.20_modified.jar" />
@@ -294,6 +294,7 @@ doesn't find it's own XML-libs. You need to set ANT_HOME in your shell.
 	    </fileset>
             <fileset dir="${argo.build.dir}">
                 <include name="argouml.jar" />
+                <include name="argouml-model.jar" />
                 <include name="antlrall.jar" />
                 <include name="gef.jar" />
                 <include name="i18n.jar" />

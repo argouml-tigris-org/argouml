@@ -142,6 +142,7 @@ round-trip engineering for C++ projects.
     <path id="module.compile.classpath">
       <fileset dir="${argo.build.dir}">
           <include name="argouml.jar" />
+          <include name="argouml-model.jar" />
           <include name="nsuml.jar" />
           <include name="ocl-argo.jar" />
           <include name="antlrall.jar" />

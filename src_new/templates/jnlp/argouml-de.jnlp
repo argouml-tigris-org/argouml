@@ -21,6 +21,7 @@
   <resources>
     <j2se version="1.4+" max-heap-size="256m"/>
     <jar href="argouml.jar" main="true" download="eager"/>
+    <jar href="argouml-model.jar"/>
     <jar href="antlrall.jar"/>
     <jar href="xercesImpl.jar"/>
     <jar href="xml-apis.jar"/>
