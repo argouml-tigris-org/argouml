@@ -788,8 +788,14 @@ and it takes you up to where you can start ArgoUML from the source.
       <orderedlist>
 	<listitem>
 	  <para>
-CVS Repository.
+Set up the CVS Repository.
 </para>
+	  <para>
+Change to the CVS Repository perspective and select 
+Add CVS Repository.
+Then enter the following information.
+</para>
+
 	  <itemizedlist>
 	    <listitem>
 	      <para>Host:
@@ -814,10 +820,11 @@ cvs.tigris.org
 	    <listitem>
 	      <para>Connection type:
 pserver
+(default)
 </para>
 	    </listitem>
 	    <listitem>
-	      <para>Use Default Port.</para>
+	      <para>Use Default Port. (default)</para>
 	    </listitem>
 	  </itemizedlist>
 	</listitem>
@@ -827,8 +834,11 @@ pserver
 Check out.
 </para>
 	  <para>
-      In the CVS Repository Exploring perspective,
-unfold the CVS Repository and within it, HEAD.
+In the CVS Repository Exploring perspective,
+unfold the newly created repository 
+(called something like
+:pserver:<replaceable>yourname</replaceable>@cvs.tigris.org:/cvs)
+and within it, HEAD.
 </para>
 	  <para>
 Select the argouml project, right-click on it, and do Check Out As.
@@ -838,9 +848,11 @@ Select Java Project, and press Next.
 Type the new project name: argouml, and press Next.
 Ignore the build path settings. We will come back to them later.
 Press Finish, which starts the checking out process.
+You are probably directed to the Java Perspective with a question if
+you want or not. At this point it doesn't matter. Just press Yes or No!
 </para>
 	  <para>
-This takes a while, since the download is around 60Meg.
+The download takes a while, since the download is around 60Meg.
 </para>
 	  <para>
 Remark: 
@@ -933,20 +945,28 @@ Currently (July 2004) some of the modules don't compile.
 Under Libraries:
 Press the Add JARs... button and add
 all files in <filename class="directory">argouml/lib</filename>.
+Press the Add JARs... button and add
+the file <filename>argouml/tools/ant-1.4.1/lib/xerces-1.2.3.jar</filename>.
+Press the Add JARs... button and add
+the file <filename>argouml/tools/junit-3.7/junit.jar</filename>.
 Every time any of these jars is updated in the project you will have to 
 update this in your environment by entering this dialog and
 adding the new ones.
-Press the Add JARs... button and add
-the file <filename>argouml/tools/ant-1.4.1/lib/xerces-1.2.3.jar</filename>.
 </para>
 	  <para>
       Set the Default output folder to 
 <filename class="directory">argouml/bin</filename>.
 This will not confuse it with any of the ant-built things.
     </para>
-	  <para> Press OK.
+	  <para>
+Press OK.
+You will be asked to accept that all resources previously built can
+be removed. Press Yes.
 Eclipse shall rebuild.
 Verify that there are no errors, just warnings left among the problems.
+If there are errors in some of the modules you will be able to 
+continue your work in spite of that but it is then perhaps best to
+remove those modules again from the Source list in the Java Build Path.
 </para>
 	</listitem>
 
@@ -995,7 +1015,8 @@ This instruction is to set up Eclipse to work according to
 the ArgoUML Coding standards.
 If this is not done correctly you will most likely find that you will have to
 do a lot of manual edits every time Eclipse has
-touched the code you have your tool working against you instead of for you.
+touched the code.
+You have your tool working against you instead of for you.
 On the other hand, these settings affect your Eclipse Workspace rather than
 the ArgoUML project settings so if you have other projects in
 the same Eclipse Workspace there might be conflicts.
