@@ -50,4 +50,12 @@ public class FigCreateActionLink extends FigLink {
         // TODO Auto-generated constructor stub
     }
 
+    /* (non-Javadoc)
+     * @see org.argouml.uml.diagram.sequence.ui.FigLink#layoutActivations()
+     */
+    protected void layoutActivations() {
+        // TODO Auto-generated method stub
+
+    }
+
 }
