@@ -323,7 +323,7 @@ public class Init {
       Agency.register(crUnconventionalOperName, operCls);
       Agency.register(crUnconventionalAttrName, attrCls);
       Agency.register(crUnconventionalClassName, classCls);
-      Agency.register(crUnconventionalPackName, modelCls);
+      Agency.register(crUnconventionalPackName, packageCls);
 
       Agency.register(crConsiderSingleton, classCls);
       Agency.register(crSingletonViolatedMSA, classCls);
