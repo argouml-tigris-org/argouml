@@ -6,7 +6,7 @@ that you stick to that.
 There are people known to build from JBuilder or Netbeans, but always
 make sure that your work compile with the plain vanilla build process.
      </p><p>
-Ant is a tool written in java developed for Apache that reads an xml-file
+Ant is a tool written in java developed for Apache that reads an XML-file
 with rules telling what to compile to what result and what files to include
 in what jar-file.
 </p><a class="indexterm" name="d0e505"></a><p>
@@ -39,7 +39,7 @@ of the directories that contain a <tt class="filename">build.xml</tt> file.
 These two scripts run the equivalence of the above paths.
 </p><p>
 By setting JAVA_HOME to different values you can at different times
-build with different versions of jdk and java.
+build with different versions of JDK and java.
 </p><p>
 To use different versions of ANT,
 you are responsible for installing your own version.
@@ -59,7 +59,7 @@ Change the current directory to the directory you are building
 </p><p>
 <b class="command">cd <i class="replaceable"><tt>/your/checked/out/copy/of/argouml/src_new</tt></i></b>
 </p></li><li><p>Start ant using <b class="command">./build.sh</b></p><p>This gives you a list of targets with descriptions</p></li><li><p>
-Compile and run Argouml using <b class="command">./build.sh run</b>
+Compile and run ArgoUML using <b class="command">./build.sh run</b>
 </p><p>
 You can do this over and over again when you have modified something
 or want to compile and run again.
@@ -70,7 +70,7 @@ Change the current directory to the directory you are building
 </p><p>
 <b class="command">chdir <i class="replaceable"><tt>\your\checked\out\copy\of\argouml\src_new</tt></i></b>
 </p></li><li><p>Start ant using <b class="command">build</b></p><p>This gives you a list of targets with descriptions</p></li><li><p>
-Compile and run Argouml using <b class="command">build run</b>
+Compile and run ArgoUML using <b class="command">build run</b>
 </p><p>
 You can do this over and over again when you have modified something
 or want to compile and run again.
@@ -105,7 +105,7 @@ the javadoc documentation is generated and put into
 </p></div><div class="sect3" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="d0e752"></a>2.3.1.5.&nbsp;Building one of the modules</h4></div></div><div></div></div><p>
 If you want to run ArgoUML with modules enabled the 
 <tt class="filename">build.xml</tt>s are set up to do this in two ways:
-            </p><div class="orderedlist"><ol type="1"><li><p>Test just one module</p><div class="orderedlist"><ol type="a"><li><p>Build argouml, the package</p><p>
+            </p><div class="orderedlist"><ol type="1"><li><p>Test just one module</p><div class="orderedlist"><ol type="a"><li><p>Build ArgoUML, the package</p><p>
 This is done with <b class="command">ant package</b>
 in the <tt class="filename">argouml/src_new</tt>-directory.
 </p></li><li><p>Run the module</p><p>
@@ -114,7 +114,7 @@ in the
 <tt class="filename">
 argouml/modules/<i class="replaceable"><tt>whatever</tt></i>
 </tt>-directory.
-</p></li></ol></div></li><li><p>Test several modules together</p><div class="orderedlist"><ol type="a"><li><p>Build argouml, the package</p><p>
+</p></li></ol></div></li><li><p>Test several modules together</p><div class="orderedlist"><ol type="a"><li><p>Build ArgoUML, the package</p><p>
 This is done with <b class="command">ant package</b>
 in the <tt class="filename">argouml/src_new</tt>-directory.
 </p></li><li><p>Compile and install the modules</p><p>
@@ -123,7 +123,7 @@ in each of the
 <tt class="filename">
 argouml/modules/<i class="replaceable"><tt>whatever</tt></i>
 </tt>-directories.
-</p></li><li><p>Start argouml</p><p>
+</p></li><li><p>Start ArgoUML</p><p>
 This is done with <b class="command">ant run</b>
 in the <tt class="filename">argouml/src_new</tt>-directory.
 </p></li></ol></div><p>
@@ -134,7 +134,7 @@ This describes how the documentation arrives on the web site.
 </p><div class="sect3" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="how_the_web_site_works"></a>2.3.2.1.&nbsp;How the ArgoUML web site works</h4></div></div><div></div></div><a class="indexterm" name="d0e841"></a><p>
 Tigris provides the ArgoUML site to be edited through CVS. Everything
 that is checked in under <tt class="filename">argouml/www</tt>
-becomes immediatly available at the url 
+becomes immediately available at the URL 
 <a href="http://argouml.tigris.org/" target="_top">http://argouml.tigris.org/</a>
 with some added decorations.
 </p><p>
@@ -144,13 +144,13 @@ available at
 </p><p>
 This is the way the site is maintained and updated.
 </p></div><div class="sect3" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="d0e864"></a>2.3.2.2.&nbsp;The ArgoUML documentation</h4></div></div><div></div></div><a class="indexterm" name="d0e867"></a><a class="indexterm" name="d0e870"></a><p>
-For the ArgoUML project the same documenation shall be available in both
-html, pdf and javahelp. To this end the documentation is written in
-docbook xml and generated into two versions of html 
+For the ArgoUML project the same documentation shall be available in both
+HTML, PDF and javahelp. To this end the documentation is written in
+docbook XML and generated into two versions of HTML 
 (one page per chapter and one page for the whole book),
-pdf and javahelp.
+PDF and javahelp.
 </p><p>
-We have tools that does the conversion from docbook xml to html and pdf.
+We have tools that does the conversion from docbook XML to HTML and PDF.
 The conversion is done whenever you need to look at the result or when 
 you want to present the final result on the web site.
 </p><p>
@@ -189,7 +189,7 @@ All the old files are removed from the checked out copy of
 <tt class="filename">argouml/www/documentation/defaulthtml/<i class="replaceable"><tt>book</tt></i></tt>, 
 <tt class="filename">argouml/www/documentation/printablehtml/<i class="replaceable"><tt>book</tt></i></tt>.
 </p></li><li><p>
-New files are copied into the checked out copy of www
+New files are copied into the checked out copy of <tt class="filename">www</tt>
 on top of the previous files there replacing them.
 </p><p>
 All the files are copied from
@@ -221,17 +221,17 @@ Commit the changes thus publishing it on the web site.
 </p><p>
 <b class="command">cvs commit -m'New version of the documentation published'</b>
 </p></li><li><p>
-The pdf book is uploaded to the download page.
-</p></li></ol></div></div><div class="sect3" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="d0e1002"></a>2.3.2.3.&nbsp;How developers work with documentation</h4></div></div><div></div></div><a class="indexterm" name="d0e1005"></a><p>
+The PDF book is uploaded to the download page.
+</p></li></ol></div></div><div class="sect3" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="d0e1005"></a>2.3.2.3.&nbsp;How developers work with documentation</h4></div></div><div></div></div><a class="indexterm" name="d0e1008"></a><p>
 Developers that work with the documentation or with the tools 
 to generate the documentation (or anyone else interested in this)
 can generate the documentation like described above and examine
 the result in
 <tt class="filename">argouml/build</tt>.
-It is only the last part about checking in and upploading the result
+It is only the last part about checking in and uploading the result
 under
 <tt class="filename">argouml/www/documentation</tt>
-that requires write access in the CVS and synchronisation with the
+that requires write access in the CVS and synchronization with the
 rest of the project.
 </p><p>
 In order to do this you need to check out the whole of the
@@ -251,12 +251,12 @@ The subdirectory
 <tt class="filename">docbook-setup</tt>
 contains two things. 
 It contains the configuration files that control how the generation is done.
-It contains the xsl rules for all the generation.
+It contains the XSL rules for all the generation.
 The subdirectory
 <tt class="filename">images</tt>
 contains all the required pictures for all the books.
-</p></div></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e1049"></a>2.3.3.&nbsp;Troubleshooting the development build</h3></div></div><div></div></div><a class="indexterm" name="d0e1052"></a><div class="sect3" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="d0e1057"></a>2.3.3.1.&nbsp;Compiling failed. Any suggestions?</h4></div></div><div></div></div><p>
-It might be that some other developer has made a misstake in checking
+</p></div></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e1052"></a>2.3.3.&nbsp;Troubleshooting the development build</h3></div></div><div></div></div><a class="indexterm" name="d0e1055"></a><div class="sect3" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="d0e1060"></a>2.3.3.1.&nbsp;Compiling failed. Any suggestions?</h4></div></div><div></div></div><p>
+It might be that some other developer has made a mistake in checking
 in things that contain errors, or forgotten to check in some files
 in a change.
 Look at the last couple of hours on the
@@ -281,7 +281,7 @@ and that is doing something. If in doubt, remove those files.
 </p><p>
 If nothing helps, ask the 
 <a href="mailto:dev@argouml.tigris.org" target="_top">developers mailing list</a>!
-</p></div><div class="sect3" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="d0e1086"></a>2.3.3.2.&nbsp;Can't commit my changes?</h4></div></div><div></div></div><a class="indexterm" name="d0e1089"></a><p>
+</p></div><div class="sect3" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="d0e1089"></a>2.3.3.2.&nbsp;Can't commit my changes?</h4></div></div><div></div></div><a class="indexterm" name="d0e1092"></a><p>
 You need to have a developer role in the ArgoUML project.
 If you don't then you cannot do commit yourself.
 Discuss what you have done and how best to test it on the
@@ -289,7 +289,7 @@ Discuss what you have done and how best to test it on the
 Eventually someone will commit it for you.
 </p><p>
 Furthermore the checkout of your copy needs to be done with your
-tigris id that has the Developer role.
+Tigris id that has the Developer role.
 If you for some reason have earlier checked out
 a copy as guest and then made modifications, changed the CVSROOT
 variable you still cannot commit changes done in the repository since the
@@ -297,7 +297,7 @@ checked out copy contains information on who checked out.
 For this reason, it is best to apply for an Observer role in 
 the project if you are going to work with the source at all.
 The Observer role is probably granted within a couple of days
-(we welcome everybody!) and then you can check out with your tigris id.
+(we welcome everybody!) and then you can check out with your Tigris id.
 This means that when you eventually are granted a Developer role you
 can continue working with the same checked out copy.
 </p></div></div></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch02s02.html">Prev</a>&nbsp;</td><td width="20%" align="center"><a accesskey="u" href="ch02.html">Up</a></td><td width="40%" align="right">&nbsp;<a accesskey="n" href="ch02s04.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">2.2.&nbsp;Download from the CVS repository&nbsp;</td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top">&nbsp;2.4.&nbsp;The JUnit test cases</td></tr></table></div></body></html>

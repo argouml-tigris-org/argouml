@@ -1,6 +1,6 @@
 <html><head>
       <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-   <title>Chapter&nbsp;9.&nbsp;Standards for coding in ArgoUML</title><link rel="stylesheet" href="look-and-feel.css" type="text/css"><meta name="generator" content="DocBook XSL Stylesheets V1.60.1"><link rel="home" href="index.html" title="Cookbook for Developers of ArgoUML"><link rel="up" href="index.html" title="Cookbook for Developers of ArgoUML"><link rel="previous" href="ch08s04.html" title="8.4.&nbsp;CVS repository contents"><link rel="next" href="ch09s02.html" title="9.2.&nbsp;Rules for the building process"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">Chapter&nbsp;9.&nbsp;Standards for coding in ArgoUML</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch08s04.html">Prev</a>&nbsp;</td><th width="60%" align="center">&nbsp;</th><td width="20%" align="right">&nbsp;<a accesskey="n" href="ch09s02.html">Next</a></td></tr></table><hr></div><div class="chapter" lang="en"><div class="titlepage"><div><div><h2 class="title"><a name="standards"></a>Chapter&nbsp;9.&nbsp;Standards for coding in ArgoUML</h2></div></div><div></div></div><div class="toc"><p><b>Table of Contents</b></p><dl><dt>9.1. <a href="ch09.html#d0e7763">Rules for writing Java code</a></dt><dt>9.2. <a href="ch09s02.html">Rules for the building process</a></dt><dt>9.3. <a href="ch09s03.html">Settings for Eclipse</a></dt><dt>9.4. <a href="ch09s04.html">Settings for NetBeans</a></dt><dt>9.5. <a href="ch09s05.html">Settings for Emacs</a></dt></dl></div><a class="indexterm" name="d0e7755"></a><a class="indexterm" name="d0e7758"></a><div class="sect1" lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="d0e7763"></a>9.1.&nbsp;Rules for writing Java code</h2></div></div><div></div></div><p>
+   <title>Chapter&nbsp;9.&nbsp;Standards for coding in ArgoUML</title><link rel="stylesheet" href="look-and-feel.css" type="text/css"><meta name="generator" content="DocBook XSL Stylesheets V1.60.1"><link rel="home" href="index.html" title="Cookbook for Developers of ArgoUML"><link rel="up" href="index.html" title="Cookbook for Developers of ArgoUML"><link rel="previous" href="ch08s04.html" title="8.4.&nbsp;CVS repository contents"><link rel="next" href="ch09s02.html" title="9.2.&nbsp;Rules for the building process"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">Chapter&nbsp;9.&nbsp;Standards for coding in ArgoUML</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch08s04.html">Prev</a>&nbsp;</td><th width="60%" align="center">&nbsp;</th><td width="20%" align="right">&nbsp;<a accesskey="n" href="ch09s02.html">Next</a></td></tr></table><hr></div><div class="chapter" lang="en"><div class="titlepage"><div><div><h2 class="title"><a name="standards"></a>Chapter&nbsp;9.&nbsp;Standards for coding in ArgoUML</h2></div></div><div></div></div><div class="toc"><p><b>Table of Contents</b></p><dl><dt>9.1. <a href="ch09.html#d0e8140">Rules for writing Java code</a></dt><dt>9.2. <a href="ch09s02.html">Rules for the building process</a></dt><dt>9.3. <a href="ch09s03.html">Settings for Eclipse</a></dt><dt>9.4. <a href="ch09s04.html">Settings for NetBeans</a></dt><dt>9.5. <a href="ch09s05.html">Settings for Emacs</a></dt></dl></div><a class="indexterm" name="d0e8132"></a><a class="indexterm" name="d0e8135"></a><div class="sect1" lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="d0e8140"></a>9.1.&nbsp;Rules for writing Java code</h2></div></div><div></div></div><p>
 The coding style for ArgoUML is the following
 </p><div class="itemizedlist"><ul type="disc"><li><p>
 Each file starts with some header info: 
@@ -12,64 +12,59 @@ original author (if you want).
 Like this:
 </p><pre class="programlisting">
 // $Id$
-// Copyright (c) 2003 The Regents of the University of California. All
+// Copyright (c) 2004 The Regents of the University of California. All
 // ...
 
 // Classes: blabla, blabla (all classes of interest in this file)
 // Original Author: who ever
 </pre><p>
-        </p></li><li><p>
-All instance variables are private and their names begin with an underscore.
-If the variable should be accessible then add public or protected
-accessor methods with the same name as the variable without the
-underscore with "get" or "set" prepended.
-For example:
-<tt class="varname">_lineWidth</tt>, 
-<tt class="methodname">setLineWidth()</tt>, and 
-<tt class="methodname">getLineWidth()</tt>.
+        </p><p>
+This is in violation with the Sun Code Conventions that 
+requires the initial comment to be a c-style comment.
+</p><p>
+This is checked by checkstyle.
 </p></li><li><p>
-In general, write short code.
-If a method will fit comfortably on one line, then put it on one line.
+All instance variables are private.
+</p><p>
+This is not required by the Sun Code Conventions but
+an additional requirement for ArgoUML.
+</p><p>
+This is checked by checkstyle.
 </p></li><li><p>
 Use javadoc for each class, instance variable, and method. 
 In general do not put comments in the body of a method. 
 If you are doing something complex enough to need a comment, consider
 breaking it out into its own private commented method.
+</p><p>
+This is not required by the Sun Code Conventions but
+an additional requirement for ArgoUML.
+</p><p>
+This is partly checked by checkstyle.
+Checkstyle does currently only warn if a javadoc comment is omitted for
+a public, protected or default visibility variable or method.
 </p></li><li><p>
 Indicate places of future modifications with 
 </p><pre class="programlisting">
 // TODO: reason
 </pre><p>
-        </p></li><li><p>
-Name all classes with an initial uppercase letter, and all variables
-and methods with a lowercase one. 
-I use the <tt class="varname">allTogetherWithCaps</tt> naming style.
-Name static variables with an underscore and an inital capital letter,
-e.g., <tt class="varname">_PossibleLanguages</tt>.
-Name constants with all upper case and underscores, e.g., 
-<tt class="constant">GRIP_MARGIN</tt>.
-</p></li><li><p>
-To emphasize clusters of classes we are using what we call the binomial
-naming style (I am sure others have thought of this also): 
-The root class of the cluster has a short name (e.g., Layer), 
-other members of the cluster use that name as a prefix (e.g., LayerGrid).
-This makes many of the class name longer than they might be normally (e.g., Grid would be shorter).
-But this provides a lot of context without
-having to look at a class inheritance diagram.
-It is also very nice when you have to look at an alphabetical list
-of classes. I try to name class clusters so that they are not lexigraphically close others (e.g., the Net cluster
-used to be named Model, but that lexigraphically overlapped the Mode cluster).
+        </p><p>
+This is in violation with the Sun Code Conventions that 
+uses either XXX or FIXME depending on if it works or not.
 </p></li><li><p>
 Four spaces should be used as the unit of indentation.
 Tabs must be set exactly every 8 spaces (not 4) and represent 2 indents.
 </p><p>
 This is exactly as it is stated in the Sun Code Conventions.
 It is here just for the emphasis.
+</p><p>
+This is checked by checkstyle.
 </p></li><li><p>
 If possible use lines shorter than 80 characters wide.
 </p><p>
 This is exactly as it is stated in the Sun Code Conventions.
 It is here just for the emphasis.
+</p><p>
+This is checked by checkstyle.
 </p></li><li><p>
 Open brace on same line (at end).
 Both for if/while/for and for class and functions definitions.
@@ -77,23 +72,29 @@ Both for if/while/for and for class and functions definitions.
 This is exactly as it is stated in the Sun Code Conventions.
 It is here just for the emphasis.
 </p></li><li><p>
-Use deprecation when removing public methods.
+Use deprecation when removing public and protected
+classes, 
+methods and
+attributes.
 </p><p>
-Whenever you have a public method in a class or a public class 
+Whenever you have a public or protected method or attribute in a class or
+a public class 
 that you want to 
 remove,
 change the signature in an incompatible way, or 
 make change visibility for
 you shall always deprecate it first.
-After the next stable release you (or someone else) can remove 
-that method.
+After the next stable release you (or someone else) can remove it.
 </p><p>
-In the future, when the components are well defined and it is clear
-what public methods and classes that are part of a certain component's
+In the future, when the subsystems are well defined and it is clear
+what public or protected 
+methods, attributes or classes 
+that are part of a certain subsystem's
 exported interface 
-we can allow an exception to this rule for public methods and classes 
+we can allow an exception to this rule for 
+methods, attributes and classes 
 that are not.
-(See <a href="ch04s02.html" title="4.2.&nbsp;Relationship of the components">Section&nbsp;4.2, &#8220;Relationship of the components&#8221;</a>.)
+(See <a href="ch04s02.html" title="4.2.&nbsp;Relationship of the subsystems">Section&nbsp;4.2, &#8220;Relationship of the subsystems&#8221;</a>.)
 </p><p>
 Rationale:
 This is part of the "Do Simple Things"-development approach that we
@@ -137,15 +138,17 @@ If this work is too slow it makes it impossible to upgrade to new
 versions of different subtools. 
 This problem is seen by "the person responsible for sourceing of the subtool"
 when actually trying to upgrade the subtool.
-(See <a href="ch11s08.html" title="11.8.&nbsp;How to relate issues to problems in subproducts">Section&nbsp;11.8, &#8220;How to relate issues to problems in subproducts&#8221;</a>.)
+(See <a href="ch12s08.html" title="12.8.&nbsp;How to relate issues to problems in subproducts">Section&nbsp;12.8, &#8220;How to relate issues to problems in subproducts&#8221;</a>.)
 </p></li><li><p>
 For everything else follow
 <a href="http://java.sun.com/docs/codeconv/html/CodeConvTOC.doc.html" target="_top">
 Code Conventions for the Java Programming Language
-</a>!
+</a>
+(called Sun Code Conventions)!
 </p></li></ul></div><p>
-Some of these rules are checked by a tool named checkstyle.
-Checkstyle is available with the ArgoUML development environment
+Some of these rules are marked with a comment that they are 
+checked by a checkstyle.
+Checkstyle is a tool available with the ArgoUML development environment
 preconfigured for these rules.
 The current configuration can be found in
 <tt class="filename">argouml/tools/checkstyle/checkstyle_argouml.xml</tt>.
@@ -161,4 +164,10 @@ This requires you to have checked out the directories
 </p><p>
 The last couple of checkstyle result are also available in 
 the Xenofarm result.
+</p><p>
+Checkstyle will also check some of the rules from the
+Sun Code Conventions that are not stated here.
+Furthermore checkstyle nags about when the order of modifiers does
+not conform to the suggestions in the
+Java Language Specification, Section 8.1.1, 8.3.1, 8.4.3.
 </p></div></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch08s04.html">Prev</a>&nbsp;</td><td width="20%" align="center"><a accesskey="u" href="index.html">Up</a></td><td width="40%" align="right">&nbsp;<a accesskey="n" href="ch09s02.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">8.4.&nbsp;CVS repository contents&nbsp;</td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top">&nbsp;9.2.&nbsp;Rules for the building process</td></tr></table></div></body></html>

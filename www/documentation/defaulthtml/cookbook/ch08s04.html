@@ -1,6 +1,6 @@
 <html><head>
       <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-   <title>8.4.&nbsp;CVS repository contents</title><link rel="stylesheet" href="look-and-feel.css" type="text/css"><meta name="generator" content="DocBook XSL Stylesheets V1.60.1"><link rel="home" href="index.html" title="Cookbook for Developers of ArgoUML"><link rel="up" href="ch08.html" title="Chapter&nbsp;8.&nbsp;CVS in the ArgoUML project"><link rel="previous" href="ch08s03.html" title="8.3.&nbsp;Other CVS comments"><link rel="next" href="ch09.html" title="Chapter&nbsp;9.&nbsp;Standards for coding in ArgoUML"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">8.4.&nbsp;CVS repository contents</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch08s03.html">Prev</a>&nbsp;</td><th width="60%" align="center">Chapter&nbsp;8.&nbsp;CVS in the ArgoUML project</th><td width="20%" align="right">&nbsp;<a accesskey="n" href="ch09.html">Next</a></td></tr></table><hr></div><div class="sect1" lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="d0e7569"></a>8.4.&nbsp;CVS repository contents</h2></div></div><div></div></div><a class="indexterm" name="d0e7572"></a><a class="indexterm" name="d0e7575"></a><a class="indexterm" name="d0e7578"></a><p>
+   <title>8.4.&nbsp;CVS repository contents</title><link rel="stylesheet" href="look-and-feel.css" type="text/css"><meta name="generator" content="DocBook XSL Stylesheets V1.60.1"><link rel="home" href="index.html" title="Cookbook for Developers of ArgoUML"><link rel="up" href="ch08.html" title="Chapter&nbsp;8.&nbsp;CVS in the ArgoUML project"><link rel="previous" href="ch08s03.html" title="8.3.&nbsp;Other CVS comments"><link rel="next" href="ch09.html" title="Chapter&nbsp;9.&nbsp;Standards for coding in ArgoUML"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">8.4.&nbsp;CVS repository contents</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch08s03.html">Prev</a>&nbsp;</td><th width="60%" align="center">Chapter&nbsp;8.&nbsp;CVS in the ArgoUML project</th><td width="20%" align="right">&nbsp;<a accesskey="n" href="ch09.html">Next</a></td></tr></table><hr></div><div class="sect1" lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="d0e7939"></a>8.4.&nbsp;CVS repository contents</h2></div></div><div></div></div><a class="indexterm" name="d0e7942"></a><a class="indexterm" name="d0e7945"></a><a class="indexterm" name="d0e7948"></a><p>
 This chapter describes what parts of the CVS repository is used for
 what purpose.
 This is a rather terse collection.
@@ -18,9 +18,9 @@ the documentation from the XML-source to HTML and PDF.
 </p></li><li><p><tt class="filename">images</tt></p><p>Pictures for all documents are collected here.</p></li><li><p><tt class="filename">javahelp</tt></p><p>Not used. Empty.</p></li><li><p><tt class="filename">manual</tt></p><p>XML-source code for the User Manual.</p></li><li><p><tt class="filename">quick-guide</tt></p><p>XML-source code for the Quick Guide.</p></li></ul></div></li><li><p><tt class="filename">extra</tt></p><p>Not used. Empty.</p></li><li><p><tt class="filename">lib</tt></p><p>A set of jar files.</p><p>
 This directory contains the jar files of products used
 by the ArgoUML
-(such as log4j, nsuml).
+(such as log4j, NSUML).
 </p><p>
-These are distributed with argouml and have licenses that allow this.
+These are distributed with ArgoUML and have licenses that allow this.
 For clarity the README files and licenses and other distribution
 details of each used jar will also be stored in this directory.
 (Quick summary: BSD License, Apache License, LGPL are OK, GPL is not.)
@@ -30,12 +30,12 @@ to appear when starting ArgoUML and in the About box.
 Take care also to make the versions of these libraries explicit,
 so as to allow people building from sources to figure out
 exact dependencies. Easiest way is to rename the files to
-include versioning informations, the same way as shared
+include version informations, the same way as shared
 libraries in Unix world: foo-x.y.z.jar, bar-x.y.z.jar,
 etc...
 </p></li><li><p><tt class="filename">modules</tt></p><p>Contains source level modules of ArgoUML.</p><p>
 Source level modules are modules that can be compiled and deployed
-independantly (after) the rest of ArgoUML.
+independently (after) the rest of ArgoUML.
 Each module is located in its own subdirectory.
 This is the list as it looks now (March 2003).
 </p><div class="itemizedlist"><ul type="circle"><li><p><tt class="filename">jscheme</tt></p><p>
@@ -45,7 +45,7 @@ Old directory with JUnit tests.
 These should be migrated to and all new JUnit tests should be created in
 the directory <tt class="filename">tests</tt>.
 </p></li><li><p><tt class="filename">menutest</tt></p><p>
-Test module that tests the plugin interface for the menus.
+Test module that tests the plug-in interface for the menus.
 </p></li><li><p><tt class="filename">php</tt></p><p>
 Language generating, Notation and reverse engineering for PHP.
 </p></li><li><p><tt class="filename">cpp</tt></p><p>
@@ -55,10 +55,14 @@ Code generation for C#.
 </p></li></ul></div></li><li><p><tt class="filename">src</tt></p><p>
 Source code.
 </p><p>
-This will contain one directory for each component within
+This will contain one directory for each subsystem within
 ArgoUML.
 They will all compile and be tested with controlled dependencies
-to other components.
+to other subsystems.
+</p><p>
+The upcoming structure is used for the different language part of the
+internationalization subsystem under
+<tt class="filename">i18n/<i class="replaceable"><tt>language</tt></i></tt>.
 </p></li><li><p><tt class="filename">src_new</tt></p><p>
 All source code for ArgoUML including pictures of icons.
 </p></li><li><p><tt class="filename">tests</tt></p><p>
@@ -72,8 +76,8 @@ Tools also have the readme files, licenses and other distribution files
 stored in this directory in much the same way as the libraries in
 <tt class="filename">lib</tt>.
 However the requirement on the license is different.
-The tools are never distributed with argouml but merely used in the
-development of argouml so it is enough to have a license that does not
+The tools are never distributed with ArgoUML but merely used in the
+development of ArgoUML so it is enough to have a license that does not
 allow distribution.
 (Quick summary: BSD License, Apache license, LGPL, GPL, Freeware are OK.)
 </p></li><li><p><tt class="filename">www</tt></p><p>

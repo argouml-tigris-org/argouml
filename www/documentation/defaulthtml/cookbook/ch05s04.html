@@ -1,13 +1,13 @@
 <html><head>
       <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-   <title>5.4.&nbsp;Property panels</title><link rel="stylesheet" href="look-and-feel.css" type="text/css"><meta name="generator" content="DocBook XSL Stylesheets V1.60.1"><link rel="home" href="index.html" title="Cookbook for Developers of ArgoUML"><link rel="up" href="ch05.html" title="Chapter&nbsp;5.&nbsp;Inside the components"><link rel="previous" href="ch05s03.html" title="5.3.&nbsp;Diagrams"><link rel="next" href="ch05s05.html" title="5.5.&nbsp;Reverse Engineering Component"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">5.4.&nbsp;Property panels</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch05s03.html">Prev</a>&nbsp;</td><th width="60%" align="center">Chapter&nbsp;5.&nbsp;Inside the components</th><td width="20%" align="right">&nbsp;<a accesskey="n" href="ch05s05.html">Next</a></td></tr></table><hr></div><div class="sect1" lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="propertypanels"></a>5.4.&nbsp;Property panels</h2></div></div><div></div></div><p>
+   <title>5.4.&nbsp;Property panels</title><link rel="stylesheet" href="look-and-feel.css" type="text/css"><meta name="generator" content="DocBook XSL Stylesheets V1.60.1"><link rel="home" href="index.html" title="Cookbook for Developers of ArgoUML"><link rel="up" href="ch05.html" title="Chapter&nbsp;5.&nbsp;Inside the subsystems"><link rel="previous" href="ch05s03.html" title="5.3.&nbsp;Diagrams"><link rel="next" href="ch05s05.html" title="5.5.&nbsp;Reverse Engineering Subsystem"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">5.4.&nbsp;Property panels</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch05s03.html">Prev</a>&nbsp;</td><th width="60%" align="center">Chapter&nbsp;5.&nbsp;Inside the subsystems</th><td width="20%" align="right">&nbsp;<a accesskey="n" href="ch05s05.html">Next</a></td></tr></table><hr></div><div class="sect1" lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="propertypanels"></a>5.4.&nbsp;Property panels</h2></div></div><div></div></div><p>
 Purpose - to provide a form view of the diagrams and objects in the model.
-The contents of the model is modifyable.
+The contents of the model is modifiable.
 </p><p>
 The Property panels will be located in
 <tt class="classname">org.argouml.?</tt>.
 </p><p>
-The Property panels is a Layer 2 component. See <a href="ch04s06.html" title="4.6.&nbsp;Layer 2 - Description of components">Section&nbsp;4.6, &#8220;Layer 2 - Description of components&#8221;</a>.
+The Property panels is a Layer 2 subsystem. See <a href="ch04s06.html" title="4.6.&nbsp;Layer 2 - Description of subsystems">Section&nbsp;4.6, &#8220;Layer 2 - Description of subsystems&#8221;</a>.
 </p><p>
 Currently the PropPanels for the diagrams are in
 <tt class="classname">org.argouml.uml.diagram.ui</tt>
@@ -19,9 +19,12 @@ fundamental changes since it was written.
 It would be good if someone that knows how it works now could write
 a description on how it works now.
 </p></td></tr></table></div><p>
-Property Panels are found as class PropPanelXXX.java, where XXX is the
-UML metaclass. They are in sub-packages of org.argouml.uml.ui
-corresponding to the XXX NSUML packages, which in turn correspond to
+Property Panels are found as class 
+<tt class="filename">PropPanel<i class="replaceable"><tt>XXX</tt></i>.java</tt>, 
+where <i class="replaceable"><tt>XXX</tt></i> is the
+UML meta-class. They are in sub-packages of org.argouml.uml.ui
+corresponding to the <i class="replaceable"><tt>XXX</tt></i> NSUML packages, 
+which in turn correspond to
 their section in the chapter 2 of the UML 1.3 spec. This packaging is
 essential for their lookup through Java reflection.
 </p><p>
@@ -80,7 +83,7 @@ class.
 A drop down box of options that can be selected, with an icon to the
 right allowing navigation to the property panel for the currently
 selected item. For example the Stereotype field. Supported in general
-by the <tt class="literal">UMLComboBox</tt> class and more speficically by
+by the <tt class="literal">UMLComboBox</tt> class and more specifically by
 its subclass for stereotypes,
 <tt class="literal">UMLStereotypeComboBox</tt>.
 </p></li><li><p>
@@ -88,7 +91,7 @@ A non-editable text box, with a pop-up menu that allows opening,
 addition, deletion, moving up and moving down of entries. For example
 the Generalizations field. Supported by the <tt class="literal">UMLList</tt>
 class. The list model is usually provided by a sub-class of
-<tt class="literal">UMLModelElementListModel</tt>. There is a varient
+<tt class="literal">UMLModelElementListModel</tt>. There is a variant
 <tt class="literal">UMLModelElementListLinkModel</tt> which adds a link
 option to the pop-up menu, allowing connection to existing model
 elements (used for the Extension Points field for
@@ -96,7 +99,7 @@ example).
 </p></li><li><p>
 A set of check boxes for modifiers. Supported by the
 <tt class="literal">PropPanelModifiers</tt> class.
-</p></li></ul></div><p>Examples of these in more detail now follow.</p><div class="sect3" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="d0e3771"></a>5.4.1.1.&nbsp;Adding a simple list field</h4></div></div><div></div></div><p>
+</p></li></ul></div><p>Examples of these in more detail now follow.</p><div class="sect3" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="d0e3889"></a>5.4.1.1.&nbsp;Adding a simple list field</h4></div></div><div></div></div><p>
 For example we need to add a field to the use case property panel for
 the extends relationships that derive from this use case.
 </p><p>
@@ -118,7 +121,7 @@ The list model should be a subclass of
 <tt class="literal">UMLModelElementListModel</tt>, a subclass of the Swing
 <tt class="literal">AbstractListModel</tt> that implements the NSUML
 <tt class="literal">ElementListener</tt> interface.
-</p><div class="sect4" lang="en"><div class="titlepage"><div><div><h5 class="title"><a name="d0e3814"></a>5.4.1.1.1.&nbsp;The list model</h5></div></div><div></div></div><p>
+</p><div class="sect4" lang="en"><div class="titlepage"><div><div><h5 class="title"><a name="d0e3932"></a>5.4.1.1.1.&nbsp;The list model</h5></div></div><div></div></div><p>
 In our example we create UMLExtendListModel. Its constructor should
 take three arguments:
 </p><div class="orderedlist"><ol type="1"><li><p>
@@ -131,7 +134,9 @@ A string naming an NSUML event that should force a refresh of the list
 model. A null value will cause all events to trigger a refresh. The
 best way to identify the event you want to use is to look at the NSUML
 source for the container object (<tt class="literal">MUseCaseImpl</tt> in
-our example) for calls to <tt class="literal">fireXXX()</tt>. The first
+our example) for calls to 
+<tt class="literal">fire<i class="replaceable"><tt>XXX</tt></i>()</tt>. 
+The first
 argument is the name of the event (in our case
 <tt class="literal">extend</tt>). There is no definitive list, but from the
 NSUML source, these are all the names of events that are used:
@@ -192,7 +197,7 @@ In this routine you may create a new NSUML entity.
 There seem to be three ways to do this, in order of preference 1) use
 a utility from the <tt class="literal">MMUtil</tt> class, 2) use the NSUML
 Factory class to create what you want 3) use new on a
-<tt class="literal">MXXXImpl</tt> class.
+<tt class="literal">M<i class="replaceable"><tt>XXX</tt></i>Impl</tt> class.
 Whilst 1) is best, most of the <tt class="literal">MMUtil</tt> routines are
 not yet general enough.
 </p><p>
@@ -358,7 +363,7 @@ elementAtUtil(Collection collection, int index, Class requiredClass)</tt>
 helps in writing the <tt class="literal">getElementAt()</tt>.
 Finds the element at a specific index.
 The last argument is ignored!
-</p></dd></dl></div></div></div><div class="sect3" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="d0e4782"></a>5.4.1.2.&nbsp;Building the field</h4></div></div><div></div></div><p>
+</p></dd></dl></div></div></div><div class="sect3" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="d0e4906"></a>5.4.1.2.&nbsp;Building the field</h4></div></div><div></div></div><p>
 By convention the background of the list is set to the same as the
 background of the PropPanel and the foreground to Color.blue.
 </p><p>
@@ -372,7 +377,7 @@ helpful to permit at least a vertical scrollbar where needed
 </p><p>
 Finally the inherited method <tt class="literal">addCaption()</tt> is used
 to add the label for the field and <tt class="literal">addField()</tt> to
-add the associated scrollpane.
+add the associated scroll pane.
 </p><p>
 The second argument of each of these identifies the index of the
 caption/field pair in the vertical column of the grid for this
@@ -383,7 +388,7 @@ value for all fields and corresponding captions that can have multiple
 entries, so they expand equally. If none of the fields should expand,
 the caption only of the last field in each column should be given a
 non-zero value.
-</p></div><div class="sect3" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="d0e4814"></a>5.4.1.3.&nbsp;Adding Property Tab Toolbar Buttons</h4></div></div><div></div></div><p>
+</p></div><div class="sect3" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="d0e4938"></a>5.4.1.3.&nbsp;Adding Property Tab Tool-bar Buttons</h4></div></div><div></div></div><p>
 These are added by creating new instances of
 <tt class="literal">PropPanelButton</tt> (you don't need to assign them to
 anything&#8212;just creating will do).
@@ -416,7 +421,7 @@ In our example, the extend property panel has a &#8220;<span class="quote">add e
 point</span>&#8221; button, with a method
 <tt class="literal">newExtensionPoint</tt> that we provide to create a new
 use case.
-</p></div><div class="sect3" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="d0e4867"></a>5.4.1.4.&nbsp;Support for stereotypes</h4></div></div><div></div></div><p>
+</p></div><div class="sect3" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="d0e4991"></a>5.4.1.4.&nbsp;Support for stereotypes</h4></div></div><div></div></div><p>
 The PropPanel should override the following (note the spelling of the
 method name).
 </p><p>
@@ -427,7 +432,7 @@ the target in the <tt class="literal">PropPanel</tt>.
 </p><p>
 This is used to determine what stereotypes may be shown for this
 property panel.
-</p></div><div class="sect3" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="d0e4885"></a>5.4.1.5.&nbsp;Other sorts of fields</h4></div></div><div></div></div><p>
+</p></div><div class="sect3" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="d0e5009"></a>5.4.1.5.&nbsp;Other sorts of fields</h4></div></div><div></div></div><p>
 Another sort of field that may be useful is the ComboBox.
 This is useful to allow users to select from a pre-defined list of
 alongside a navigation arrow to go to the selected entry.
@@ -437,8 +442,8 @@ extension use cases of an Extend relationship in
 PropPanelExtend.
 </p><p>
 The model behind the drop down is created by using
-<tt class="literal">UMLCombBoxModel</tt>:
-<tt class="literal">UMLCombBoxModel(container, predicate, event, getter, setter,
+<tt class="literal">UMLComboBoxModel</tt>:
+<tt class="literal">UMLComboBoxModel(container, predicate, event, getter, setter,
 allowVoid, baseClass, useModel)</tt>.
 </p><p>
 The container is the <tt class="literal">PropPanel</tt> where we are setting
@@ -447,12 +452,12 @@ PropPanel that, given a model element, determines if it should be in
 the drop down, the event is the NSUML <tt class="literal">MElementEvent</tt>
 name we are looking for (see earlier for the list),
 <tt class="literal">getter</tt> is the name of a public method in the
-PropPanel that yields the current entry in the comboBox (of type
+PropPanel that yields the current entry in the combo Box (of type
 <tt class="literal">baseClass</tt>), <tt class="literal">setter</tt> (with a
 single argument of type <tt class="literal">baseClass</tt>) sets that entry,
 <tt class="literal">allowVoid</tt> if <tt class="literal">true</tt> will allow an
 empty entry for the box, <tt class="literal">baseClass</tt> is the NSUML
-metaclass from which all entries must descend,
+meta-class from which all entries must descend,
 <tt class="literal">useModel</tt> is <tt class="literal">true</tt> to consider all
 the elements in the standard profile model for inclusion (so the Java
 types, standard stereotypes etc.).
@@ -466,7 +471,7 @@ routine the call for the &#8220;<span class="quote">base</span>&#8221; field is:
 and we define the methods <tt class="literal">isAcceptableUseCase</tt>,
 <tt class="literal">getBase</tt> and <tt class="literal">setBase</tt> in
 <tt class="literal">PropPanelExtend</tt>.
-</p></div><div class="sect3" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="d0e4962"></a>5.4.1.6.&nbsp;How UMLTextField works</h4></div></div><div></div></div><p>
+</p></div><div class="sect3" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="d0e5086"></a>5.4.1.6.&nbsp;How UMLTextField works</h4></div></div><div></div></div><p>
 This information is provided by Jaap Branderhorst (September 2002).
 </p><p>
 <tt class="classname">UMLTextField</tt> implements several kinds of 
@@ -477,7 +482,7 @@ Furthermore it is a <tt class="classname">UMLUserInterfaceComponent</tt>.
 Since it is an <tt class="classname">UMLUserInterfaceComponent</tt>
 it must implement <tt class="methodname">targetChanged</tt> and
 <tt class="methodname">targetReasserted</tt>.
-<tt class="methodname">TargetChanged</tt> is called everytime the 
+<tt class="methodname">TargetChanged</tt> is called every time the 
 <tt class="classname">UMLTextField</tt> is selected. 
 <tt class="methodname">targetReasserted</tt> is of no interest for 
 <tt class="classname">UMLTextField</tt>.
@@ -505,7 +510,7 @@ to <tt class="classname">UMLChangeDispatch</tt>.
 these events to all containers implementing
 <tt class="interfacename">UMLUserInterfaceComponents</tt>
 interested in this event, including <tt class="classname">UMLTextField</tt>.
-It will also dispatch the event to all childs of an interested container
+It will also dispatch the event to all children of an interested container
 implementing
 <tt class="interfacename">UMLUserInterfaceComponent</tt>.
 By this it is only necessary to register a 
@@ -517,7 +522,7 @@ dispatch the event to the <tt class="classname">UMLTextField</tt> too.
 knows several methods of which only one is of interest to
 <tt class="classname">UMLTextField</tt>s:
 </p><div class="itemizedlist"><ul type="disc"><li><p>propertySet</p><p>
-Called everytime a property in a 
+Called every time a property in a 
 <tt class="classname">MModelElement</tt> is set. 
 This method calls 
 <tt class="methodname">update</tt> too if the 
@@ -537,7 +542,7 @@ The methods <tt class="methodname">insertUpdate</tt>
 and <tt class="methodname">removeUpdate</tt> are respectively called when a
 character is added to the document 
 <tt class="classname">UMLTextField</tt> contains or removed. 
-Since both methods are called when there is true userinput 
+Since both methods are called when there is true user input 
 and when the contents of the document are changed programmatically,
 the methods distinguish between them.
 <tt class="methodname">InsertUpdate</tt> and 
@@ -546,20 +551,20 @@ are both handled via the protected method
 <tt class="methodname">handleEvent</tt>.
 <tt class="methodname">HandleEvent</tt> updates the property in 
 <tt class="classname">UMLTextProperty</tt> if it is really changed.
-If the update comes via userinput, it is checked if it is valid input. 
+If the update comes via user input, it is checked if it is valid input. 
 If it is not, a <tt class="classname">JOptionPane</tt> is shown with '
-a warning and the change is not commited into the model.
-If it is not via userinput, the input is not checked and the
+a warning and the change is not committed into the model.
+If it is not via user input, the input is not checked and the
 property is set. If the property is set, the update method is called.
 </p><p>
 The implementation of <tt class="interfacename">FocusListener</tt>
-makes sure that the checking of userinput only happens when focus is lost.
+makes sure that the checking of user input only happens when focus is lost.
 Otherwise, it would not be possible to enter 'intermediate' values 
 that are not legal. 
 For instance, say the value class is not legal. 
 Without the implementation of <tt class="interfacename">FocusListener</tt>,
-it would not be possible to enter classdiagram since
-handleEvent would popup a warning messagebox.
+it would not be possible to enter class diagram since
+handleEvent would pop-up a warning message box.
 </p><p>
 The method <tt class="methodname">update</tt> updates both the actual
 <tt class="classname">JTextfield</tt> as the diagram as soon
@@ -567,4 +572,4 @@ as some property is set.
 The updating of the diagram is done by calling the
 <tt class="methodname">damage</tt> method of the figs that
 represent the property on the diagram.
-</p></div></div></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch05s03.html">Prev</a>&nbsp;</td><td width="20%" align="center"><a accesskey="u" href="ch05.html">Up</a></td><td width="40%" align="right">&nbsp;<a accesskey="n" href="ch05s05.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">5.3.&nbsp;Diagrams&nbsp;</td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top">&nbsp;5.5.&nbsp;Reverse Engineering Component</td></tr></table></div></body></html>
+</p></div></div></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch05s03.html">Prev</a>&nbsp;</td><td width="20%" align="center"><a accesskey="u" href="ch05.html">Up</a></td><td width="40%" align="right">&nbsp;<a accesskey="n" href="ch05s05.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">5.3.&nbsp;Diagrams&nbsp;</td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top">&nbsp;5.5.&nbsp;Reverse Engineering Subsystem</td></tr></table></div></body></html>

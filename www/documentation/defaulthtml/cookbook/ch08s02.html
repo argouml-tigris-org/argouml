@@ -1,6 +1,6 @@
 <html><head>
       <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-   <title>8.2.&nbsp;Creating and using branches</title><link rel="stylesheet" href="look-and-feel.css" type="text/css"><meta name="generator" content="DocBook XSL Stylesheets V1.60.1"><link rel="home" href="index.html" title="Cookbook for Developers of ArgoUML"><link rel="up" href="ch08.html" title="Chapter&nbsp;8.&nbsp;CVS in the ArgoUML project"><link rel="previous" href="ch08.html" title="Chapter&nbsp;8.&nbsp;CVS in the ArgoUML project"><link rel="next" href="ch08s03.html" title="8.3.&nbsp;Other CVS comments"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">8.2.&nbsp;Creating and using branches</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch08.html">Prev</a>&nbsp;</td><th width="60%" align="center">Chapter&nbsp;8.&nbsp;CVS in the ArgoUML project</th><td width="20%" align="right">&nbsp;<a accesskey="n" href="ch08s03.html">Next</a></td></tr></table><hr></div><div class="sect1" lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="branches"></a>8.2.&nbsp;Creating and using branches</h2></div></div><div></div></div><a class="indexterm" name="d0e7277"></a><p>We use the following standards in ArgoUML:
+   <title>8.2.&nbsp;Creating and using branches</title><link rel="stylesheet" href="look-and-feel.css" type="text/css"><meta name="generator" content="DocBook XSL Stylesheets V1.60.1"><link rel="home" href="index.html" title="Cookbook for Developers of ArgoUML"><link rel="up" href="ch08.html" title="Chapter&nbsp;8.&nbsp;CVS in the ArgoUML project"><link rel="previous" href="ch08.html" title="Chapter&nbsp;8.&nbsp;CVS in the ArgoUML project"><link rel="next" href="ch08s03.html" title="8.3.&nbsp;Other CVS comments"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">8.2.&nbsp;Creating and using branches</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch08.html">Prev</a>&nbsp;</td><th width="60%" align="center">Chapter&nbsp;8.&nbsp;CVS in the ArgoUML project</th><td width="20%" align="right">&nbsp;<a accesskey="n" href="ch08s03.html">Next</a></td></tr></table><hr></div><div class="sect1" lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="branches"></a>8.2.&nbsp;Creating and using branches</h2></div></div><div></div></div><a class="indexterm" name="d0e7647"></a><p>We use the following standards in ArgoUML:
 </p><div class="itemizedlist"><ul type="disc"><li><p>Released versions get the tag <span class="emphasis"><em>VERSION_X_X_X</em></span></p></li><li><p>
 Developers working on code, with an unspecified due date are requested
 to put the code into a branch if it is deemed useful that the code can
@@ -12,7 +12,7 @@ propertypanel, cppcodegeneration
 </p></li><li><p>
 <i class="replaceable"><tt>owner</tt></i> is a self explaining code for the
 owner of the branch, 
-e.g. tlach (Thierry Lach) or mklink (Markus Klink).
+e.g. tlach (Thierry Lach) or mkl (Markus Klink).
 </p></li></ul></div><p>
 </p></li></ul></div><p>
 </p><p>Merging branches together is causing some work. So please use them sparingly and announce your intentions before on the mailing list.
@@ -59,8 +59,10 @@ interesting.
 	      </p></li><li><p>
 ...create a branch for my work on <i class="replaceable"><tt>xxxyyy</tt></i> 
 and start work on that branch?</p><p>
-This assumes that you have a checked out copy of argouml
-	      </p><div class="orderedlist"><ol type="1"><li><p>Change directory to the directory where argouml is checked out.</p></li><li><p>
+This assumes that you have a checked out copy of ArgoUML
+	      </p><div class="orderedlist"><ol type="1"><li><p>
+Change directory to the directory where ArgoUML is checked out.
+</p></li><li><p>
 Enter the argouml directory:
 <b class="command">cd argouml</b> or <b class="command">chdir argouml</b>
 		  </p></li><li><p>
@@ -79,11 +81,11 @@ Check in your changes in the branch:
 This is done when your work with the feature xxxyyy is finished and you have
 decided/received clearance to enter it in the main branch.
 	      </p><div class="orderedlist"><ol type="1"><li><p>
-Change directory to the directory where argouml is checked out.
+Change directory to the directory where ArgoUML is checked out.
 		  </p><p>
 If you are just working on one feature at a time this is the place where you
 have a checked out copy on the branch in question. If not, this could be any
-checked out copy of the source that does not contain any uncommited changes.
+checked out copy of the source that does not contain any uncommitted changes.
 		  </p></li><li><p>
 Enter the argouml directory:
 <b class="command">cd argouml</b> or <b class="command">chdir argouml</b>
@@ -114,15 +116,17 @@ You need the name of the branch, i.e. the
 	      </p><p>
 There are two alternatives:
 		</p><div class="itemizedlist"><ul type="circle"><li><p>
-Check out argouml or part of it on that branch:
+Check out ArgoUML or part of it on that branch:
 <b class="command">cvs co -r <i class="replaceable"><tt>work_xxxyyy_hisname</tt></i> argouml</b>
 		    </p></li><li><p>
-Update your copy of argouml to be on that branch:
+Update your copy of ArgoUML to be on that branch:
 <b class="command">cvs update -r <i class="replaceable"><tt>work_xxxyyy_hisname</tt></i></b>
 		    </p><p>
-Make sure that your copy does not have any uncommited code or else your
-uncommited code will be present in your checked out copy on the branch.
-This could, on the other hand, be useful if you want to test if your uncommited
+Make sure that your copy does not have any uncommitted code or else your
+uncommitted code will be present in your checked out copy on the branch.
+This could, 
+on the other hand, 
+be useful if you want to test if your uncommitted
 code works also with the additions on that branch.
 		    </p></li></ul></div><p>
 	      </p></li></ul></div><p>
