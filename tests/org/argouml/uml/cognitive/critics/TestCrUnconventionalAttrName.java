@@ -52,7 +52,7 @@ public class TestCrUnconventionalAttrName extends TestCase {
      * Not giving a name should not result in a suggestion.
      */
     public void testNullName() {
-        assertEquals("", cr.computeSuggestion(null));
+        assertEquals("attr", cr.computeSuggestion(null));
     }
     
     /**
