@@ -119,7 +119,7 @@ public class ActionDeleteFromDiagram extends UMLChangeAction {
             size = figs.size();
             for (int i = 0; i < size; i++) {
                 Fig f = (Fig) figs.elementAt(i);                
-                f.delete();
+                f.removeFromDiagram();
                 TargetManager.getInstance().removeHistoryElement(f);
             }
         } catch (Exception ex) {

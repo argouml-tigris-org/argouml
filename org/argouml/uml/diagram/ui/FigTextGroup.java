@@ -113,25 +113,25 @@ public class FigTextGroup extends FigGroup implements MouseListener {
     }   
 
     /**
-     * @see org.tigris.gef.presentation.Fig#delete()
+     * @see org.tigris.gef.presentation.Fig#removeFromDiagram()
      */
-    public void delete() {
+    public void removeFromDiagram() {
         Iterator it = getFigs(null).iterator();
         while (it.hasNext()) {
-            ((Fig) it.next()).delete();
+            ((Fig) it.next()).removeFromDiagram();
         }
-        super.delete();
+        super.removeFromDiagram();
     }
 
     /**
-     * @see org.tigris.gef.presentation.Fig#dispose()
+     * @see org.tigris.gef.presentation.Fig#deleteFromModel()
      */
-    public void dispose() {
+    public void deleteFromModel() {
         Iterator it = getFigs(null).iterator();
         while (it.hasNext()) {
-            ((Fig) it.next()).dispose();
+            ((Fig) it.next()).deleteFromModel();
         }
-        super.dispose();
+        super.deleteFromModel();
     }
 
     ////////////////////////////////////////////////////////////////

@@ -162,7 +162,7 @@ public class FigGeneralization extends FigEdgeModelElement {
 	    // happen that there is a generalization without a child
 	    // or parent.
 	    if (subType == null || superType == null) {
-		delete();
+	        removeFromDiagram();
 		return;
 	    }
 	    FigNode subTypeFN = (FigNode) getLayer().presentationFor(subType);

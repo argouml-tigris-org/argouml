@@ -665,7 +665,7 @@ public abstract class FigEdgeModelElement
         
         LOG.debug("deleting: " + this + mee);
         if (mee.getSource() == getOwner())
-            this.delete();
+            this.removeFromDiagram();
         else {
             modelChanged(mee);
             damage();
@@ -692,9 +692,9 @@ public abstract class FigEdgeModelElement
     }
 
     /**
-     * @see org.tigris.gef.presentation.Fig#dispose()
+     * @see org.tigris.gef.presentation.Fig#deleteFromModel()
      */
-    public void dispose() {
+    public void deleteFromModel() {
         Object own = getOwner();
         if (own != null) {
             Trash.SINGLETON.addItemFrom(getOwner(), null);
@@ -704,9 +704,9 @@ public abstract class FigEdgeModelElement
         }
         Iterator it = getPathItemFigs().iterator();
         while (it.hasNext()) {
-            ((Fig) it.next()).dispose();
+            ((Fig) it.next()).deleteFromModel();
         }
-        super.dispose();
+        super.deleteFromModel();
     }
 
     /**
@@ -786,9 +786,9 @@ public abstract class FigEdgeModelElement
 
 
     /**
-     * @see org.tigris.gef.presentation.Fig#delete()
+     * @see org.tigris.gef.presentation.Fig#removeFromDiagram()
      */
-    public void delete() {
+    public void removeFromDiagram() {
         Object o = getOwner();
         if (ModelFacade.isABase(o)) {
             UmlModelEventPump.getPump().removeModelEventListener(this, o);
@@ -800,7 +800,7 @@ public abstract class FigEdgeModelElement
         Iterator it = getPathItemFigs().iterator();
         while (it.hasNext()) {
             Fig fig = (Fig) it.next();
-            fig.delete();
+            fig.removeFromDiagram();
         }
 
         // GEF does not take into account the multiple diagrams we have
@@ -813,7 +813,7 @@ public abstract class FigEdgeModelElement
             ArgoDiagram diagram = (ArgoDiagram) it.next();
             diagram.damage();
         }
-        super.delete();
+        super.removeFromDiagram();
     }
 
     /**
@@ -855,7 +855,7 @@ public abstract class FigEdgeModelElement
             if (newDest != null)
                 newDestFig = getLayer().presentationFor(newDest);
             if (newSourceFig == null || newDestFig == null) {
-                delete();
+                removeFromDiagram();
                 return false;
             }
             if (newSourceFig != null && newSourceFig != currentSourceFig) {
