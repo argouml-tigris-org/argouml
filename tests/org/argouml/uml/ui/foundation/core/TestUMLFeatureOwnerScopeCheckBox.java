@@ -65,7 +65,9 @@ public class TestUMLFeatureOwnerScopeCheckBox extends TestCase {
 	// If so, all tests are inconclusive.
 	try {
 	    box = new UMLFeatureOwnerScopeCheckBox(mockcomp);
-	} catch (java.lang.InternalError e) {
+	} catch (java.lang.InternalError e1) {
+	    return;
+	} catch (java.lang.NoClassDefFoundError e2) {
 	    return;
 	}
     }
