@@ -356,22 +356,67 @@ public class ParserDisplay extends Parser {
     }
 
 
+  // checks for ';' in Strings or chars in ';' separated tokens in order to
+  // return an index to the next attribute or operation substring, -1 otherwise
+  // (a ';' inside a String or char delimiters is ignored)
+  private int indexOfNextCheckedSemicolon(String s, int start) {
+    //System.out.println("indexOfNextCheckedSemicolon("+s+','+start+')');
+    if (s == null || start < 0 || start >= s.length())
+      return -1;
+    int end;
+    boolean inside = false;
+    boolean backslashed = false;
+    char c;
+    for (end = start; end < s.length(); end++) {
+      c = s.charAt(end);
+      if (!inside && c == ';') {
+        //System.out.println("returns "+end);
+        return end;
+      } else if (!backslashed && (c == '\'' || c == '\"')) {
+        inside = !inside;
+      }
+      backslashed = (!backslashed && c == '\\');
+    }
+    //System.out.println("returns "+end+" (which is s.length())");
+    return end;
+  }
+
+    /**
+     * Parse a string representing one ore more ';' separated operations.
+     * The case that a String or char contains a ';' (e.g. in an initializer)
+     * is handled, but not other occurences of ';'.
+     *
+     * @param text  The classifier the operation(s) belong to
+     * @param text  The operation on which the editing happened
+     * @param text  The string to parse
+     */
   public void parseOperationFig(MClassifier cls, MOperation op, String text)
-		throws ParseException {
+              throws ParseException {
     if (cls == null || op == null)
       return;
-    //parseOperation(text, op);
     ParseException pex = null;
-    StringTokenizer st = new StringTokenizer(text,";");
-    String s = st.hasMoreTokens() ? st.nextToken().trim() : null;
-    if (s != null && s.length() > 0) {
-      parseOperation(s,op);
+    int start = 0;
+    int end = indexOfNextCheckedSemicolon(text,start);
+    if (end == -1) {
+      //no text? remove op!
+      cls.removeFeature(op);
+      return;
     }
-    // more operations entered:
+    String s = text.substring(start,end).trim();
+    if (s == null || s.length() == 0) {
+      //no non-whitechars in text? remove op!
+      cls.removeFeature(op);
+      return;
+    }
+    parseOperation(s,op);
     int i = cls.getFeatures().indexOf(op);
-    while (st.hasMoreTokens()) {
-      s = st.nextToken().trim();
+    // check for more operations (';' separated):
+    start = end+1;
+    end = indexOfNextCheckedSemicolon(text,start);
+    while (end > start && end <= text.length()) {
+      s = text.substring(start,end).trim();
       if (s != null && s.length() > 0) {
+        // yes, there are more:
         MOperation newOp = UmlFactory.getFactory().getCore().buildOperation(cls);
         if (newOp != null) {
           try {
@@ -389,26 +434,50 @@ public class ParserDisplay extends Parser {
           }
         }
       }
+      start = end+1;
+      end = indexOfNextCheckedSemicolon(text,start);
     }
     if (pex != null)
       throw pex;
   }
 
 
-  public void parseAttributeFig(MClassifier cls, MAttribute at, String text) throws ParseException {
+    /**
+     * Parse a string representing one ore more ';' separated attributes.
+     * The case that a String or char contains a ';' (e.g. in an initializer)
+     * is handled, but not other occurences of ';'.
+     *
+     * @param text  The classifier the attribute(s) belong to
+     * @param text  The attribute on which the editing happened
+     * @param text  The string to parse
+     */
+  public void parseAttributeFig(MClassifier cls, MAttribute at, String text)
+              throws ParseException {
     if (cls == null || at == null)
       return;
     ParseException pex = null;
-    StringTokenizer st = new StringTokenizer(text,";");
-    String s = st.hasMoreTokens() ? st.nextToken().trim() : null;
-    if (s != null && s.length() > 0) {
-      parseAttribute(s,at);
+    int start = 0;
+    int end = indexOfNextCheckedSemicolon(text,start);
+    if (end == -1) {
+      //no text? remove attr!
+      cls.removeFeature(at);
+      return;
     }
-    // more attributes entered:
+    String s = text.substring(start,end).trim();
+    if (s == null || s.length() == 0) {
+      //no non-whitechars in text? remove attr!
+      cls.removeFeature(at);
+      return;
+    }
+    parseAttribute(s,at);
     int i = cls.getFeatures().indexOf(at);
-    while (st.hasMoreTokens()) {
-      s = st.nextToken().trim();
+    // check for more attributes (';' separated):
+    start = end+1;
+    end = indexOfNextCheckedSemicolon(text,start);
+    while (end > start && end <= text.length()) {
+      s = text.substring(start,end).trim();
       if (s != null && s.length() > 0) {
+        // yes, there are more:
         MAttribute newAt = UmlFactory.getFactory().getCore().buildAttribute();
         if (newAt != null) {
           try {
@@ -426,6 +495,8 @@ public class ParserDisplay extends Parser {
           }
         }
       }
+      start = end+1;
+      end = indexOfNextCheckedSemicolon(text,start);
     }
     if (pex != null)
       throw pex;
