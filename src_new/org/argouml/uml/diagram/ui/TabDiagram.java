@@ -137,7 +137,9 @@ implements TabModelTarget, GraphSelectionListener, ModeChangeListener {
     public void setTarget(Object t) {
         if (!(t instanceof UMLDiagram)) {
             _shouldBeEnabled = false;
-            cat.warn("target is null in set target or not an instance of UMLDiagram");
+	    // This is perfectly normal and happens among other things
+	    // within the call to setDiagram (below).
+            cat.debug("target is null in set target or not an instance of UMLDiagram");
             return;
         }
         UMLDiagram target = (UMLDiagram)t;
