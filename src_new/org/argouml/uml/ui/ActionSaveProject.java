@@ -69,6 +69,9 @@ public class ActionSaveProject extends ActionFileOperations {
     ////////////////////////////////////////////////////////////////
     // constructors
 
+    /**
+     * @return the singleton
+     */
     public static ActionSaveProject getInstance() {
         return INSTANCE;
     }
@@ -171,9 +174,9 @@ public class ActionSaveProject extends ActionFileOperations {
 	    LOG.debug ("setting most recent project file to "
 		       + file.getCanonicalPath());
             
-        /* 
-         * notification of menu bar
-         */
+	    /* 
+	     * notification of menu bar
+	     */
 	    GenericArgoMenuBar menuBar = (GenericArgoMenuBar) pb.getJMenuBar();
 	    menuBar.addFileSaved( file.getCanonicalPath());
             
