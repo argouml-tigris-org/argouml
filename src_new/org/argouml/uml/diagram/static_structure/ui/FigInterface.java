@@ -417,7 +417,7 @@ public class FigInterface extends FigNodeModelElement {
 
     public void mouseClicked(MouseEvent me) {
         super.mouseClicked(me);
-	if ((me.getModifiersEx() & MouseEvent.SHIFT_DOWN_MASK) != 0
+	if (me.isShiftDown()
 	    && TargetManager.getInstance().getTargets().size() > 0)
 	    return;
 
