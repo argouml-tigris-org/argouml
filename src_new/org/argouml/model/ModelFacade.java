@@ -1832,6 +1832,13 @@ public class ModelFacade {
         throw new IllegalArgumentException("Unrecognized object " + handle);
     }
 
+    /** Determine if the passed parameter has a RETURN direction kind
+     */
+    public static boolean hasReturnParameterDirectionKind(Object o) {
+        MParameter parameter = (MParameter)o;
+        return (parameter.getKind().equals(MParameterDirectionKind.RETURN));
+    }
+        
     /** Get a parameter of a behavioral feature.
      *
      * @param handle behavioral feature to retrieve from
