@@ -46,7 +46,6 @@ import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.ui.ArgoDiagram;
 import org.argouml.ui.ArgoJMenu;
-import org.argouml.ui.ProjectBrowser;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
 import org.argouml.uml.diagram.ui.UMLDiagram;
@@ -180,7 +179,6 @@ public class FigPackage extends FigNodeModelElement {
 			if (lPkg != null) {
 			    MNamespace lNS = lPkg;
 
-			    ProjectBrowser lPB = ProjectBrowser.getInstance();
 			    Project lP =
 				ProjectManager.getManager().getCurrentProject();
 
