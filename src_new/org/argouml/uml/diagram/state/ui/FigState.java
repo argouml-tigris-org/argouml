@@ -132,6 +132,7 @@ public abstract class FigState extends FigStateVertex {
      */
     protected void updateListeners(Object newOwner) {
         super.updateListeners(newOwner);
+        Object oldOwner = getOwner();
         if (newOwner != null) {
             // register for events from all internal transitions
             Object state = newOwner;
@@ -153,7 +154,8 @@ public abstract class FigState extends FigStateVertex {
                 Model.getPump().addModelEventListener(this,
                         Model.getFacade().getExit(state));
             }
-        } else {
+        } 
+        if (oldOwner != null) {
             // lets remove all registrations since this is called
             // BEFORE the owner is changed (I hope nobody is going to
             // change that...) the owner is the oldOwner
