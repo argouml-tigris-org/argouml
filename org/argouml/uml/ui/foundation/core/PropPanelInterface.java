@@ -62,13 +62,13 @@ public class PropPanelInterface extends PropPanelClassifier {
     
     add(LabelledLayout.getSeperator());
     
-    addField(Argo.localize("UMLMenu", "label.generalizations"), extendsScroll);
-    addField(Argo.localize("UMLMenu", "label.specializations"), derivedScroll);
+    addField(Argo.localize("UMLMenu", "label.generalizations"), getGeneralizationScroll());
+    addField(Argo.localize("UMLMenu", "label.specializations"), getSpecializationScroll());
     
     add(LabelledLayout.getSeperator());
     
-    addField(Argo.localize("UMLMenu", "label.associations"), connectScroll);
-    addField(Argo.localize("UMLMenu", "label.operations"), opsScroll);
+    addField(Argo.localize("UMLMenu", "label.association-ends"), getAssociationEndScroll());
+    addField(Argo.localize("UMLMenu", "label.operations"), getFeatureScroll());
 
     new PropPanelButton(this,buttonPanel,_navUpIcon, Argo.localize("UMLMenu", "button.go-up"),"navigateNamespace",null);
     new PropPanelButton(this,buttonPanel,_navBackIcon, Argo.localize("UMLMenu", "button.go-back"),"navigateBackAction","isNavigateBackEnabled");

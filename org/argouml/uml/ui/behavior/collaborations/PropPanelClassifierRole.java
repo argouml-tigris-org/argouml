@@ -68,12 +68,12 @@ public class PropPanelClassifierRole extends PropPanelClassifier {
 
     add(LabelledLayout.getSeperator());
 	
-    addField(Argo.localize("UMLMenu", "label.generalizations"), extendsScroll);
-    addField(Argo.localize("UMLMenu", "label.specializations"), derivedScroll);	
+    addField(Argo.localize("UMLMenu", "label.generalizations"), getGeneralizationScroll());
+    addField(Argo.localize("UMLMenu", "label.specializations"), getSpecializationScroll());
 	
     JList connectList = new UMLList(new UMLClassifierRoleAssociationRoleListModel(this,null,true),true);
-    addField(Argo.localize("UMLMenu", "label.association-roles"), 
-        new JScrollPane(connectList));
+    addField(Argo.localize("UMLMenu", "label.associationrole-ends"), 
+        getAssociationEndScroll());
     
     add(LabelledLayout.getSeperator());
      
@@ -84,11 +84,7 @@ public class PropPanelClassifierRole extends PropPanelClassifier {
     JList availableFeaturesList = new UMLLinkedList(new UMLClassifierRoleAvailableFeaturesListModel());
     addField(Argo.localize("UMLMenu", "label.available-features"), 
         new JScrollPane(availableFeaturesList));   
-    /* 
-    JList attributesList = new UMLList(new UMLAttributesClassifierRoleListModel(this, "attributes", true), true);
-    addField(Argo.localize("UMLMenu", "label.attributes"), 
-        new JScrollPane(attributesList));
-    */
+    
     new PropPanelButton(this,buttonPanel,_navUpIcon, Argo.localize("UMLMenu", "button.go-up"),"navigateNamespace",null);
     new PropPanelButton(this,buttonPanel,_navBackIcon, Argo.localize("UMLMenu", "button.go-back"),"navigateBackAction","isNavigateBackEnabled");
     new PropPanelButton(this,buttonPanel,_navForwardIcon, Argo.localize("UMLMenu", "button.go-forward"),"navigateForwardAction","isNavigateForwardEnabled");

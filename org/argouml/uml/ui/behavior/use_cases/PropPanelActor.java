@@ -37,19 +37,13 @@
 
 package org.argouml.uml.ui.behavior.use_cases;
 
-import javax.swing.JList;
-import javax.swing.JScrollPane;
-
 import org.argouml.application.api.Argo;
 import org.argouml.model.uml.behavioralelements.usecases.UseCasesFactory;
 import org.argouml.swingext.LabelledLayout;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.ui.PropPanelButton;
 import org.argouml.uml.ui.UMLComboBoxNavigator;
-import org.argouml.uml.ui.UMLList;
-import org.argouml.uml.ui.UMLTextField2;
 import org.argouml.uml.ui.foundation.core.PropPanelClassifier;
-import org.argouml.uml.ui.foundation.core.UMLModelElementNameDocument;
 import org.argouml.util.ConfigLoader;
 
 
@@ -82,14 +76,13 @@ public class PropPanelActor extends PropPanelClassifier {
     	
     	add(LabelledLayout.getSeperator());
     	
-    	addField(Argo.localize("UMLMenu", "label.generalizations"), extendsScroll);
-    	addField(Argo.localize("UMLMenu", "label.specializations"), derivedScroll);
+    	addField(Argo.localize("UMLMenu", "label.generalizations"), getGeneralizationScroll());
+    	addField(Argo.localize("UMLMenu", "label.specializations"), getSpecializationScroll());
     	
     	add(LabelledLayout.getSeperator());
-    	
-    	JList connectList = new UMLList(new UMLActorAssociationListModel(this,null,true),true);    	
-    	addField(Argo.localize("UMLMenu", "label.associations"), 
-            new JScrollPane(connectList));
+    	    	 	
+    	addField(Argo.localize("UMLMenu", "label.association-ends"), 
+            getAssociationEndScroll());
         // The toolbar buttons that go at the top.
 
         new PropPanelButton(this, buttonPanel, _navUpIcon,
