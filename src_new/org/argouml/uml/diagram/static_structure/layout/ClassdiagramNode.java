@@ -198,44 +198,77 @@ class ClassdiagramNode implements LayoutedNode {
      */
     public void setFigure(FigNode new_figure) { _figure = new_figure; }
 
+    /**
+     * Return the weight of this node.
+     *
+     * @return The weight of this node.
+     */
+    public float getWeight() { return _weight; }
+
+    /**
+     * Set a new weight for this node.
+     *
+     * @param weight The new weight of this node.
+     */
+    public void setWeight( float weight) { _weight = weight; }
+
 
     // Attributes
 
     /**
-     * Attribute NORANK represents ...
+     * Constant to be used as an initializer when this node has
+     * no rank assigned yet.
      */
     public static int NORANK = -1;
 
     /**
-     * Attribute _rank represents ...
+     * Attribute _rank represents the current rank of this node.
      */
     private int _rank = NORANK;
 
     /**
-     * Attribute NOCOLUMN represents ...
+     * Constant to be used as an initializer when this node is
+     * not placed at an column.
      */
     public int NOCOLUMN = -1;
 
     /**
-     * Attribute _column represents ...
+     * Attribute _column represents the current column of this node.
      */
     private int _column = NOCOLUMN;
 
     /**
-     * Attribute _uplinks represents ...
+     * Attribute _uplinks represents the links I consider as
+     * an 'uplink'. An uplink is a link going to a superclass or
+     * a interface that this class implements. Figures that are 
+     * usually placed above this figure.
      */
     private Vector _uplinks = new Vector();
 
     /**
-     * Attribute _downlinks represents ...
+     * Attribute _downlinks represents the links I consider as
+     * an 'downlink'. The opposite of an uplink. See explanation
+     * above.
      */
     private Vector _downlinks = new Vector();
 
     /**
-     * Attribute _figure represents ...
+     * Attribute _figure represents the figure, that this
+     * ClassdiagramNode represents during the layout process.
      */
     private FigNode _figure = null;
 
+    /**
+     * This attributes stores the 'weight' of this node.
+     * This is a computed attribute that is used during the horizontal
+     * placement process. It's based on the position of the 'uplinked'
+     * objects. The actual purpose is to minimize the number of link
+     * crossings in the diagram. Since we don't compute the actual number
+     * of link crossings, we look where our uplinked objects are, and then
+     * try to place our object in a way, that we can expect to have a
+     * minimal number of crossings.
+     */
+    private float _weight = 1;
 }
 
 

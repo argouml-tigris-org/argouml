@@ -29,6 +29,7 @@ import org.argouml.uml.diagram.layout.*;
 import org.argouml.uml.diagram.ui.*;
 import org.tigris.gef.presentation.*;
 import ru.novosoft.uml.foundation.core.*;
+import ru.novosoft.uml.foundation.extension_mechanisms.*;
 
 
 /**
@@ -49,8 +50,6 @@ public class ClassdiagramLayouter implements Layouter {
 	// and add them to the layouter.
 	for(int i=0; i < nodes.size(); i++) {
 	    if(nodes.elementAt(i) instanceof FigNode) {
-		ClassdiagramNode c =
-		    new ClassdiagramNode((FigNode)(nodes.elementAt(i)));
 		add(new ClassdiagramNode((FigNode)(nodes.elementAt(i))));
 	    }
 	}
@@ -129,11 +128,67 @@ public class ClassdiagramLayouter implements Layouter {
 	    
 	    if(!classdiagramNode.isPackage()) {
 		Object node = classdiagramNode.getFigure().getOwner(); 
-		
+
+		if ( node instanceof MModelElement ) {
+		    Vector specs = new Vector(((MModelElement)node).getClientDependencies());
+		    specs.addAll(((MModelElement)node).getSupplierDependencies());
+		    for( Iterator iter = specs.iterator(); iter.hasNext(); ) {
+
+			// Realizations are stored as MAbstractions with a stereotype 'realize'.
+			// MAbstraction is a subclass of MDependency, so get all the dependencies
+			// for this node to get the abstractions, too.
+			MDependency dep = (MDependency) iter.next();
+			if( dep instanceof MAbstraction) {   // Is this a abstraction?
+			    MAbstraction abstr = (MAbstraction)dep;
+			    MStereotype stereotype = abstr.getStereotype();  // With a stereotype 'realize' ?
+			    if( (stereotype != null) && "realize".equals( stereotype.getName())) {
+
+				// Is this node the class, that implements the interface?
+				Collection clients = abstr.getClients();
+				for( Iterator iter2 = clients.iterator(); iter2.hasNext(); ) {
+				    MModelElement me = (MModelElement)iter2.next();
+				    if(node == me) {
+					Collection suppliers = abstr.getSuppliers();
+					for( Iterator iter3 = suppliers.iterator(); iter3.hasNext(); ) {
+					    MModelElement me2 = (MModelElement)iter3.next();
+					    if(me2 instanceof MClassifier) {
+						ClassdiagramNode superNode = getClassdiagramNode4owner((MClassifier)me2);
+
+						if(superNode != null) {
+						    classdiagramNode.addUplink(superNode);
+						}
+					    }
+					}
+				    }
+				}
+
+				// Or the implemented interface?
+				Collection suppliers = abstr.getSuppliers();
+				for( Iterator iter2 = suppliers.iterator(); iter2.hasNext(); ) {
+				    MModelElement me = (MModelElement)iter2.next();
+				    if(node == me) {
+					clients = abstr.getClients();
+					for( Iterator iter3 = clients.iterator(); iter3.hasNext(); ) {
+					    MModelElement me2 = (MModelElement)iter3.next();
+					    if(me2 instanceof MClassifier) {
+						ClassdiagramNode subNode = getClassdiagramNode4owner((MClassifier)me2);   
+
+						if(subNode != null) {
+						    classdiagramNode.addDownlink(subNode);
+						}
+					    }
+					}
+				    }
+				}
+			    }
+			}
+		    }
+		}      
+
 		if ( node instanceof MGeneralizableElement ) {
+
 		    Collection gn = ((MClassifier)node).getGeneralizations();
-		    Iterator iter = gn.iterator();
-		    while (iter.hasNext()) {
+		    for( Iterator iter = gn.iterator(); iter.hasNext(); ) {
 			MGeneralization g = (MGeneralization) iter.next();
 			ClassdiagramNode superNode = getClassdiagramNode4owner((MClassifier)(g.getParent()));
 
@@ -141,9 +196,9 @@ public class ClassdiagramLayouter implements Layouter {
 			    classdiagramNode.addUplink(superNode);
 			}
 		    }
+
 		    Collection sp = ((MClassifier)node).getSpecializations();
-		    iter = sp.iterator();
-		    while (iter.hasNext()) {
+		    for( Iterator iter = sp.iterator(); iter.hasNext(); ) {
 			MGeneralization s = (MGeneralization)iter.next();
 			ClassdiagramNode subNode = getClassdiagramNode4owner((MClassifier)(s.getChild()));
 			
@@ -179,30 +234,123 @@ public class ClassdiagramLayouter implements Layouter {
 	    }
 	}
 	maxPackageRank++;
+
+	// Move the classes down below the rows containing
+	// the packages.
 	for(int i=0; i < _layoutedObjects.size(); i++) {
 	    if(!getClassdiagramNode(i).isPackage())
 		getClassdiagramNode(i).addRank(maxPackageRank);
 	}
 
-	// Now move the figures to the places in their rows
+	/*
+	 * Markus Klink's code to limit the number of nodes in a row.
+	 * I leave it outcommented until the layout works.
+	int currentColumnPosition = 0;
+	for(int i=0; i < _layoutedObjects.size(); i++) {
+	    if(!getClassdiagramNode(i).isPackage()) {
+		if (currentColumnPosition < _vMax) {
+		    currentColumnPosition++;
+		    getClassdiagramNode(i).addRank(maxPackageRank);
+		    System.err.println("MaxPackageRank: "+maxPackageRank+" Column: "+currentColumnPosition);
+		}
+		else {
+		    currentColumnPosition = 0;
+		    maxPackageRank++;
+		    getClassdiagramNode(i).addRank(maxPackageRank);
+		    System.err.println("MaxPackageRank: "+maxPackageRank+" Column: "+currentColumnPosition);
+		}
+	    }   
+	}
+	*/
+
+
+	// It might help to add pseudo notes here to improve layout, but for 
+	// the moment I'll try to do without. They should be inserted, when
+	// a link spans more than 1 row.
+
+	// Compute a weight for every ClassdiagramNode, that is supposed
+	// to be used later when the nodes are sorted within their row.
 	int xPos, yPos = getVGap() / 2;
 	int rows = getRows();
-	for(int curRow=0; curRow < rows; curRow++) {
+	for( int curRow=maxPackageRank; curRow < rows; curRow++) {  // Do not include packages in this process
+
+	    // The placement for the leftmost figure on the screen.
 	    xPos = getHGap() / 2;
 
 	    // Get all the objects for this row
 	    ClassdiagramNode [] rowObject = getObjectsInRow(curRow);
 
-	    // Sort objects in row here!!!
-	    // NOT IMPLEMENTED YET!!!
-	    
-	    for(int column=0; column < rowObject.length; column++) {
-		rowObject[column].setLocation(new Point(xPos, yPos));
+	    // Go through this row.
+	    for(int i=0; i < rowObject.length; i++) {
+		
+		if(curRow == maxPackageRank) {
+		    // Since we cannot use any uplinks at row 0, I simply use the 
+		    // number of downlinks to place the nodes. If a node has
+		    // many objects linked to it, I'll place it more to the left.
+		    // Another strategy would be to start with middle, but if there
+		    // are several nodes with many links, they shouldn't be near
+		    // to each other, so this would cause another problem.
 
-		xPos += rowObject[column].getSize().getWidth() + getHGap();
+		    // Get the number of downlinks of this object.
+		    int nDownlinks = rowObject[i].getDownlinks().size();
+
+		    rowObject[i].setWeight( (nDownlinks > 0) ? (1/nDownlinks) : 2);
+		} else {
+		    
+		    // Get the uplinks for this node
+		    Vector uplinks = rowObject[i].getUplinks();
+
+		    int nUplinks = uplinks.size();
+		    if(nUplinks > 0) {
+			
+			// Find the average of all the columns of the uplinked
+			// objects.
+			float average_col = 0;
+			for(int j=0; j < uplinks.size(); j++) {
+			    average_col += ((ClassdiagramNode)(uplinks.elementAt(j))).getColumn();
+			}
+			average_col /= nUplinks;
+			rowObject[i].setWeight(average_col);
+		    } else {  // Just place this node at the right side.
+			rowObject[i].setWeight(1000);
+		    }
+		}
 	    }
 
-	    yPos += getRowHeight(curRow) + getVGap();
+	    // At this point all the nodes in the current row have a weight assigned.
+	    // Sort the nodes according to this weight and assign them a column.
+	    int [] pos = new int[rowObject.length];  // Array to hold the current column of the objects.
+	    for(int i=0; i < pos.length; i++) { pos[i] = i; }  // Init the array.
+
+	    // Now just do a very simple bubblesort on the array (slow, but the array should be small...)
+	    boolean swapped = true;
+	    while(swapped) {
+		swapped = false;
+		for(int i=0; i < pos.length - 1; i++) {
+		    if(rowObject[pos[i]].getWeight() > rowObject[pos[i+1]].getWeight()) {
+			int temp = pos[i];
+			pos[i] = pos[i+1];
+			pos[i+1] = temp;
+			swapped = true;
+		    }
+		}
+	    }
+
+	    // Now all the elements in this row are sorted and we can place them within the column.
+	    for(int i=0; i < pos.length; i++) {
+
+		rowObject[pos[i]].setColumn(i);  // Required to sort the next rows.
+
+		// Now set the position within the diagram.
+		rowObject[pos[i]].setLocation(new Point(xPos, yPos));
+		
+		// Advance the horizontal position by the width of this figure.
+		xPos += rowObject[pos[i]].getSize().getWidth() + getHGap();
+	    }
+
+	    // Advance the vertical position by the height of that row 
+	    // (which is the max. height of the figures in that row).
+	    yPos += getRowHeight(curRow) + getVGap(); 
 	}
     }
 	
@@ -336,6 +484,11 @@ public class ClassdiagramLayouter implements Layouter {
      * The vertical gap between nodes.
      */
     private int _vGap = 80;
+
+    /**
+     * The maximum of elements in a particular row
+     */
+    private int _vMax = 5;
 }
 
 
