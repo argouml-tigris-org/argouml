@@ -40,7 +40,8 @@
 			<string>$JAVAROOT/log4j.jar</string>
 			<string>$JAVAROOT/nsuml.jar</string>
 			<string>$JAVAROOT/ocl-argo.jar</string>
-			<string>$JAVAROOT/xerces.jar</string>
+			<string>$JAVAROOT/xercesImpl.jar</string>
+			<string>$JAVAROOT/xml-apis.jar</string>
 			</array>
 		<key>Properties</key>
 		<dict>

@@ -31,7 +31,7 @@ import javax.swing.JDialog;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
-import javax.swing.JPanel; 
+import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import org.argouml.application.api.AboutTabPanel;
@@ -41,7 +41,7 @@ import org.argouml.i18n.Translator;
 import org.argouml.util.Tools;
 
 /** This is what you see after you activate the "Help->About ArgoUML" menu-item.
- * 
+ *
  */
 public class AboutBox extends JDialog {
 
@@ -90,12 +90,12 @@ public class AboutBox extends JDialog {
 	return new JScrollPane(a);
     }
 
-    /** 
+    /**
     * Class constructor.
-    * 
+    *
     * @param owner      the frame from which the dialog is displayed
-    * @param modal      true for a modal dialog, false for one that allows 
-    *                   other windows to be active at the same time 
+    * @param modal      true for a modal dialog, false for one that allows
+    *                   other windows to be active at the same time
     */
     public AboutBox(Frame owner, boolean modal) {
 	super(owner, modal);
@@ -115,9 +115,9 @@ public class AboutBox extends JDialog {
 	versionBuf.append(localize("aboutbox.used-tools-header"));
 	// Not localized:
 	versionBuf.append("* GEF (gef.tigris.org)\n");
-	versionBuf.append("* Xerces-J 1.2.3\n");
+	versionBuf.append("* Xerces-J 2.6.2\n");
 	versionBuf.append("* NSUML (nsuml.sourceforge.net)\n");
-	versionBuf.append("* TU-Dresden OCL-Compiler " 
+	versionBuf.append("* TU-Dresden OCL-Compiler "
 	        	  + "(dresden-ocl.sourceforge.net)\n");
 	versionBuf.append("* ANTLR 2.7.2 (www.antlr.org)\n");
 	// Library maintainers! Add and update information here above!
@@ -129,26 +129,26 @@ public class AboutBox extends JDialog {
 
         /* MVW: Added the inset JPanel, so that the image width is also
         applied to the "ArgoUML Vx.xx.x" part */
-        JPanel myInsetPanel = new JPanel(); 
+        JPanel myInsetPanel = new JPanel();
         /* top, left, bottom, right */
         myInsetPanel.setBorder(new EmptyBorder(30, 40, 40, 40));
-        /* This gives some more space to the row of tabs, 
+        /* This gives some more space to the row of tabs,
            so that there will not be 2 rows of tabs
            See issue 2365, remark 3 from Jeremy.         */
-        imgWidth  += 40 + 40; 
+        imgWidth  += 40 + 40;
         /* It looks better if the height increases, too */
-        imgHeight += 40 + 40; 
-        myInsetPanel.add(splashPanel); 
-        tabs.addTab("Splash", myInsetPanel); 
+        imgHeight += 40 + 40;
+        myInsetPanel.add(splashPanel);
+        tabs.addTab("Splash", myInsetPanel);
 
 	tabs.addTab("Version", createPane(versionBuf.toString()));
-	tabs.addTab("Credits", 
+	tabs.addTab("Credits",
 		     createPane(localize("aboutbox.credits")));
-	tabs.addTab("Contact Info", 
+	tabs.addTab("Contact Info",
 		     createPane(localize("aboutbox.contacts")));
-	tabs.addTab("Report bugs", 
+	tabs.addTab("Report bugs",
 		     createPane(localize("aboutbox.bugreport")));
-	tabs.addTab("Legal", 
+	tabs.addTab("Legal",
 		     createPane(localize("aboutbox.legal")));
 
 	// Add the About tabs from the modules.
@@ -157,7 +157,7 @@ public class AboutBox extends JDialog {
 	while (iterator.hasNext()) {
 	    Object o = iterator.next();
 	    AboutTabPanel atp = ((PluggableAboutTab) o).getAboutTabPanel();
-	
+
 	    tabs.addTab(Translator.localize(atp.getTabResourceBundleKey(),
 				       atp.getTabKey()),
 			 atp.getTabPanel());

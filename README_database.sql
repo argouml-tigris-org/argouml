@@ -110,7 +110,7 @@ Please replace all entries with the appropriate values. The driver is the classn
 
 Now it comes to starting ArgoUML. It is most easy when you put all jars into one directory, and the db.ini file into the same directory. You can either set your CLASSPATH environment variable to find all jars, or use the -cp parameter when you start ArgoUML. Then you need to tell ArgoUML where to find the db.ini file, which you do by passing a -D parameter with the name "argo.dbconfig" and the value of where the db.ini file is located. In case all files are in the same directory, switch to that and enter the following command:
 
-# java -cp argouml09.jar:ocl-argo.jar:nsuml.jar:gef.jar:xerces.jar:mysql_comp.jar -Dargo.dbconfig=db.ini org.argouml.application.Main
+# java -cp argouml09.jar:ocl-argo.jar:nsuml.jar:gef.jar:xercesImpl.jar:xml-apis.jar:mysql_comp.jar -Dargo.dbconfig=db.ini org.argouml.application.Main
 
 If you are using ArgoUML < 0.9 you have to use uci.uml.Main instead of org.argouml.application.Main
 
