@@ -25,21 +25,9 @@ package org.argouml.uml.ui;
 
 import org.apache.log4j.Category;
 import org.argouml.model.ModelFacade;
-import org
-    .argouml
-    .model
-    .uml
-    .behavioralelements
-    .statemachines
-    .StateMachinesFactory;
-import org
-    .argouml
-    .model
-    .uml
-    .behavioralelements
-    .statemachines
-    .StateMachinesHelper;
-import org.argouml.ui.ProjectBrowser;
+import org.argouml.model.uml.behavioralelements.statemachines.StateMachinesFactory;
+import org.argouml.model.uml.behavioralelements.statemachines.StateMachinesHelper;
+import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.state.ui.UMLStateDiagram;
 import org.argouml.uml.diagram.ui.UMLDiagram;
 
@@ -78,7 +66,7 @@ public class ActionStateDiagram extends ActionAddDiagram {
      */
     public boolean shouldBeEnabled() {
         return StateMachinesHelper.getHelper().isAddingStatemachineAllowed(
-            ProjectBrowser.getInstance().getTarget());
+            TargetManager.getInstance().getModelTarget());
     }
 
     /**
@@ -92,7 +80,7 @@ public class ActionStateDiagram extends ActionAddDiagram {
                 "The argument " + handle + "is not a namespace.");
         }
         MNamespace ns = (MNamespace)handle;
-        Object target = ProjectBrowser.getInstance().getTarget();
+        Object target = TargetManager.getInstance().getModelTarget();
         // TODO: get rid of the parameter ns
         MStateMachine machine =
             StateMachinesFactory.getFactory().buildStateMachine(
