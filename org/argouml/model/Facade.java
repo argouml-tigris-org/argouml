@@ -1160,6 +1160,14 @@ public interface Facade {
     boolean isUtility(Object handle);
 
     ////////////////////////////////////////////////////////////////
+    
+    /**
+     * Returns the association connected to an association end or
+     * the association belonging to the given link.
+     *
+     * @param handle is the link
+     * @return association end
+     */
     Object getAssociation(Object handle);
 
     /**
@@ -1346,6 +1354,13 @@ public interface Facade {
     Object getConcurrency(Object handle);
 
     //    public short getConcurrency(Object handle) {
+    
+    /**
+     * The list of connections to an association or link.
+     *
+     * @param handle to the association or link
+     * @return a Collection with all connections.
+     */
     Collection getConnections(Object handle);
 
     /**
@@ -2434,6 +2449,13 @@ public interface Facade {
     Collection getAssociatedClasses(Object handle);
 
     ////////////////////////////////////////////////////////////////
+    
+    /**
+     * The name of a model element or some diagram part.
+     *
+     * @param handle that points out the object.
+     * @return the name
+     */
     String getName(Object handle);
 
     /**
@@ -2546,21 +2568,25 @@ public interface Facade {
      */
     public String getReferenceState(Object o);
 
-    /**
-     * Returns all states that can be recursively contained by the given State.
-     * To decouple ArgoUML as much as possible from
-     * the NSUML model, the parameter of the method is of type Object.
-     * @param oState The Composite state we are searching the
-     * states for.
-     * @return Collection The collection with found states.
-     */
-
-    public Collection getAllPossibleSubvertices(Object oState);
-
     ////////////////////////////////////////////////////////////////
+    
+    /**
+     * Returns a named object in the given object by calling it's lookup method.
+     *
+     * @param handle the object that we search through
+     * @param name of the model element
+     * @return found object, null otherwise
+     */
     Object lookupIn(Object handle, String name);
 
     ////////////////////////////////////////////////////////////////
+
+    /**
+     * Gets the language attribute of an Expression.
+     *
+     * @param handle is the Expression of which the language is retrieved
+     * @return String the language
+     */
     String getLanguage(Object handle);
 
     /**

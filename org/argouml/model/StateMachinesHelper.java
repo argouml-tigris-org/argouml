@@ -108,6 +108,15 @@ public interface StateMachinesHelper {
             Object oSubmachineState);
 
     /**
+     * Returns all states that can be recursively contained by the given State.
+     * 
+     * @param oState the Composite state we are searching the states for
+     * 
+     * @return Collection the collection with found states
+     */
+    public Collection getAllPossibleSubvertices(Object oState);
+    
+    /**
      * Connects a given statemachine to a submachinestate as being the
      * statemachine the submachinestate represents. To decouple ArgoUML as much
      * as possible from the NSUML model, the parameters of the method are of
