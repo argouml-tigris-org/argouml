@@ -28,13 +28,13 @@ import org.argouml.kernel.*;
 import org.argouml.uml.reveng.java.*;
 import org.argouml.uml.diagram.ui.*;
 import org.argouml.uml.diagram.static_structure.layout.*;
+import org.argouml.uml.diagram.static_structure.ClassDiagramGraphModel;
 import org.tigris.gef.base.*;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.util.*;
-import java.lang.*;
 
 import org.argouml.ui.*;
 import org.argouml.application.api.*;
@@ -60,8 +60,7 @@ import org.apache.log4j.Category;
 public class Import {
 
     // Create a interface to the current diagram
-    static DiagramInterface _diagram =
-	new DiagramInterface(Globals.curEditor());
+    static DiagramInterface _diagram;
 
     private static JComponent configPanel = null;
     private static JCheckBox descend;
@@ -72,10 +71,11 @@ public class Import {
 	// Imported directory
 	private static String src_path;
 	
+	static private JCheckBox create_diagrams;
+
     // log4j logging
     private static Category cat = Category.getInstance(org.argouml.uml.reveng.Import.class);
 
-    
     /**
      * Get the panel that lets the user set reverse engineering
      * parameters.
@@ -92,12 +92,23 @@ public class Import {
 			new GridBagConstraints(GridBagConstraints.RELATIVE,
 					       GridBagConstraints.RELATIVE,
 					       GridBagConstraints.REMAINDER,
-					       GridBagConstraints.REMAINDER,
-					       1.0, 1.0,
+					       1,
+					       0.0, 0.0,
 					       GridBagConstraints.NORTHWEST,
 					       GridBagConstraints.NONE,
-					       new Insets(5, 5, 5, 5),
+					       new Insets(5, 5, 0, 5),
 					       0, 0));
+		create_diagrams = new JCheckBox("Create diagrams from imported code", true);
+		general.add(create_diagrams,
+		  new GridBagConstraints(GridBagConstraints.RELATIVE,
+					 GridBagConstraints.RELATIVE,
+					 GridBagConstraints.REMAINDER,
+					 GridBagConstraints.REMAINDER,
+					 0.0, 1.0,
+					 GridBagConstraints.NORTHWEST,
+					 GridBagConstraints.NONE,
+					 new Insets(0, 5, 0, 5),
+					 0, 0));
 
 	    JTabbedPane tab = new JTabbedPane();
 	    tab.add(general, "General");
@@ -121,7 +132,7 @@ public class Import {
      */
     public static void doFile(Project p, File f) {
 	Vector files = listDirectoryRecursively(f);
-
+	_diagram = getCurrentDiagram();
 	if (f.isDirectory()) src_path = f.getAbsolutePath();
 	else src_path = null;
 	
@@ -312,6 +323,14 @@ public class Import {
 	}
     }
 
+	/**
+	 * Check, if "Create diagrams from imported code" is selected.
+	 * @return true, if "Create diagrams from imported code" is selected
+	 */
+	public static boolean isCreateDiagramsChecked() {
+		return create_diagrams.isSelected();
+	}
+	
     /**
      * Tells if the file is (Java) parseable or not.
      * Must match with files that are actually parseable.
@@ -341,6 +360,19 @@ public class Import {
     public static boolean needsSave() {
 	return (_diagram.getModifiedDiagrams().size() > 0);
     }
+
+	/** Set target diagram.
+	 * @return selected diagram, if it is class diagram,
+	 * else return null.
+	 *
+	 */
+	private static DiagramInterface getCurrentDiagram() {
+		DiagramInterface result = null;
+		if (Globals.curEditor().getGraphModel() instanceof ClassDiagramGraphModel) {
+			result =  new DiagramInterface(Globals.curEditor());
+		}
+		return result;
+	}
 }
 
 /**
@@ -408,7 +440,7 @@ class ImportRun implements Runnable {
 
 		int tot;
 		_iss.setMaximum(tot = _countFiles
-				+ _diagram.getModifiedDiagrams().size()/10);
+				+ (_diagram == null ? 0 : _diagram.getModifiedDiagrams().size()/10));
 		int act;
 		_iss.setValue(act = _countFiles
 			      - _filesLeft.size() - _nextPassFiles.size());
@@ -448,7 +480,7 @@ class ImportRun implements Runnable {
 
 	// Check if any diagrams where modified and the project
 	// should be saved before exiting.
-	if(Import.needsSave()) {
+	if(_diagram != null && Import.needsSave()) {
 	    _project.setNeedsSave(true);
 	}
 
@@ -457,15 +489,17 @@ class ImportRun implements Runnable {
 
 	// Layout the modified diagrams.
 	_st.mark("layout");
-	for(int i=0; i < _diagram.getModifiedDiagrams().size(); i++) {
-	    ClassdiagramLayouter layouter =
-		new ClassdiagramLayouter((UMLDiagram)
+	if (_diagram != null) {
+		for(int i=0; i < _diagram.getModifiedDiagrams().size(); i++) {
+	    	ClassdiagramLayouter layouter =
+			new ClassdiagramLayouter((UMLDiagram)
 					 (_diagram.getModifiedDiagrams()
 					  .elementAt(i)));
-	    layouter.layout();
+	    	layouter.layout();
 
-	    // Resize the diagram???
-	    _iss.setValue(_countFiles + (i + 1)/10);
+	    	// Resize the diagram???
+	    	_iss.setValue(_countFiles +(i + 1)/10);
+		}
 	}
 
 	_iss.done();
@@ -527,4 +561,5 @@ class ImportStatusScreen extends JDialog {
     }
 
     public void done() { hide(); dispose(); }
+
 }
