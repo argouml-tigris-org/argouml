@@ -617,12 +617,12 @@ abstract public class UMLModelElementListModel
     public void delete(int index) {
         Object/*MModelElement*/ modElem = getModelElementAt(index);
         Object target = TargetManager.getInstance().getTarget();
-        ProjectBrowser.getInstance().setTarget(modElem);
+        TargetManager.getInstance().setTarget(modElem);
         ActionEvent event = new ActionEvent(this, 1, "delete");
         ActionRemoveFromModel.SINGLETON.actionPerformed(event);
         fireIntervalRemoved(this, index, index);
         if (!target.equals(modElem)) {
-            ProjectBrowser.getInstance().setTarget(target);
+            TargetManager.getInstance().setTarget(target);
         }
     }
 }
