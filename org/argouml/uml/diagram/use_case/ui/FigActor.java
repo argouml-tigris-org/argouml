@@ -68,7 +68,8 @@ public class FigActor extends FigNodeModelElement {
         // Put this rectangle behind the rest, so it goes first
         FigRect bigPort = new FigRect(10, 30, 15, 60);
         bigPort.setVisible(false);
-        FigCircle head = new FigCircle(10, 30, 15, 15, Color.black, Color.white);
+        FigCircle head = 
+            new FigCircle(10, 30, 15, 15, Color.black, Color.white);
         FigLine body = new FigLine(20, 45, 20, 60, Color.black);
         FigLine arms = new FigLine(10, 50, 30, 50, Color.black);
         FigLine leftLeg = new FigLine(20, 60, 15, 75, Color.black);
@@ -144,12 +145,15 @@ public class FigActor extends FigNodeModelElement {
         int middle = w / 2;
         h = _h;
         Rectangle oldBounds = getBounds();
-        getBigPort().setLocation(x + middle - getBigPort().getWidth() / 2,
-                                 y + h - 65);
-        getFigAt(HEAD_POSN).setLocation(x + middle - getFigAt(HEAD_POSN).getWidth() / 2, y + h - 65);
+        getBigPort().setLocation(
+                x + middle - getBigPort().getWidth() / 2, y + h - 65);
+        getFigAt(HEAD_POSN).setLocation(
+                x + middle - getFigAt(HEAD_POSN).getWidth() / 2, y + h - 65);
         getFigAt(BODY_POSN).setLocation(x + middle, y + h - 50);
-        getFigAt(ARMS_POSN).setLocation(x + middle - getFigAt(ARMS_POSN).getWidth() / 2, y + h - 45);
-        getFigAt(LEFT_LEG_POSN).setLocation(x + middle - getFigAt(LEFT_LEG_POSN).getWidth(), y + h - 35);
+        getFigAt(ARMS_POSN).setLocation(
+                x + middle - getFigAt(ARMS_POSN).getWidth() / 2, y + h - 45);
+        getFigAt(LEFT_LEG_POSN).setLocation(
+                x + middle - getFigAt(LEFT_LEG_POSN).getWidth(), y + h - 35);
         getFigAt(RIGHT_LEG_POSN).setLocation(x + middle, y + h - 35);
 
         Dimension minTextSize = getNameFig().getMinimumSize();
@@ -198,20 +202,20 @@ public class FigActor extends FigNodeModelElement {
         }
         ret.add(new Point(getFigAt(BODY_POSN).getX(),
                           getFigAt(BODY_POSN).getY()));
-        ret.add(new Point(((FigLine)getFigAt(BODY_POSN)).getX1(),
-                          ((FigLine)getFigAt(BODY_POSN)).getY1()));
+        ret.add(new Point(((FigLine) getFigAt(BODY_POSN)).getX1(),
+                          ((FigLine) getFigAt(BODY_POSN)).getY1()));
         ret.add(new Point(getFigAt(LEFT_LEG_POSN).getX(),
                           getFigAt(LEFT_LEG_POSN).getY()));
-        ret.add(new Point(((FigLine)getFigAt(LEFT_LEG_POSN)).getX1(),
-                          ((FigLine)getFigAt(LEFT_LEG_POSN)).getY1()));
+        ret.add(new Point(((FigLine) getFigAt(LEFT_LEG_POSN)).getX1(),
+                          ((FigLine) getFigAt(LEFT_LEG_POSN)).getY1()));
         ret.add(new Point(getFigAt(RIGHT_LEG_POSN).getX(),
                           getFigAt(RIGHT_LEG_POSN).getY()));
-        ret.add(new Point(((FigLine)getFigAt(RIGHT_LEG_POSN)).getX1(),
-                          ((FigLine)getFigAt(RIGHT_LEG_POSN)).getY1()));
+        ret.add(new Point(((FigLine) getFigAt(RIGHT_LEG_POSN)).getX1(),
+                          ((FigLine) getFigAt(RIGHT_LEG_POSN)).getY1()));
         ret.add(new Point(getFigAt(ARMS_POSN).getX(),
                           getFigAt(ARMS_POSN).getY()));
-        ret.add(new Point(((FigLine)getFigAt(ARMS_POSN)).getX1(),
-                          ((FigLine)getFigAt(ARMS_POSN)).getY1()));
+        ret.add(new Point(((FigLine) getFigAt(ARMS_POSN)).getX1(),
+                          ((FigLine) getFigAt(ARMS_POSN)).getY1()));
         return ret;
     }
 

@@ -50,12 +50,6 @@ import org.tigris.gef.presentation.Handle;
  * @author jrobbins@ics.uci.edu
  */
 public class SelectionActor extends SelectionWButtons {
-    /**
-     * @deprecated by Linus Tolke as of 0.15.7. Will be removed.
-     *             Use your own Logger!
-     */
-    protected static Logger cat = 
-        Logger.getLogger(SelectionActor.class);
 
     private static final Logger LOG = Logger.getLogger(SelectionActor.class);
     ////////////////////////////////////////////////////////////////
@@ -76,6 +70,10 @@ public class SelectionActor extends SelectionWButtons {
      */
     public SelectionActor(Fig f) { super(f); }
 
+    /**
+     * @see org.tigris.gef.base.Selection#hitHandle(java.awt.Rectangle, 
+     * org.tigris.gef.presentation.Handle)
+     */
     public void hitHandle(Rectangle r, Handle h) {
 	super.hitHandle(r, h);
 	if (h.index != -1) return;
@@ -119,6 +117,10 @@ public class SelectionActor extends SelectionWButtons {
     }
 
 
+    /**
+     * @see org.tigris.gef.base.Selection#dragHandle(int, int, int, int, 
+     * org.tigris.gef.presentation.Handle)
+     */
     public void dragHandle(int mX, int mY, int anX, int anY, Handle hand) {
 	if (hand.index < 10) {
 	    setPaintButtons(false);
