@@ -1195,6 +1195,7 @@ public class CoreHelper {
         List ret = new ArrayList();
         if (m == null) return ret;
         MNamespace model = ProjectBrowser.TheInstance.getProject().getModel();
+        if (isValidNamespace(m, model)) ret.add(model);
         Iterator it = ModelManagementHelper.getHelper().getAllModelElementsOfKind(model, MNamespace.class).iterator();
         while (it.hasNext()) {
             MNamespace ns = (MNamespace)it.next();

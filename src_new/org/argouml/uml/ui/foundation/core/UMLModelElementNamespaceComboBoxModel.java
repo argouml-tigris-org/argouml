@@ -24,12 +24,14 @@
 // $header$
 package org.argouml.uml.ui.foundation.core;
 
+import org.argouml.model.uml.UmlModelEventPump;
 import org.argouml.model.uml.foundation.core.CoreHelper;
 import org.argouml.uml.ui.UMLComboBoxModel2;
 import org.argouml.uml.ui.UMLUserInterfaceContainer;
 import ru.novosoft.uml.MElementEvent;
 import ru.novosoft.uml.foundation.core.MModelElement;
 import ru.novosoft.uml.foundation.core.MNamespace;
+
 
 /**
  * @since Oct 10, 2002
@@ -43,6 +45,7 @@ public class UMLModelElementNamespaceComboBoxModel extends UMLComboBoxModel2 {
      */
     public UMLModelElementNamespaceComboBoxModel(UMLUserInterfaceContainer container) {
         super(container, false);
+        UmlModelEventPump.getPump().addClassModelEventListener(this, MNamespace.class, "ownedElement");
     }
 
     /**
