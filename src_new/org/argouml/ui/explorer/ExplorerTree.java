@@ -309,7 +309,6 @@ extends DisplayTextTree
                     this.addSelectionRow(j);
                 }
             }
-            
         }
     }
     
@@ -328,12 +327,28 @@ extends DisplayTextTree
                 List targets = new ArrayList();
                 if (paths != null) {
                     for (int i = 0; i < paths.length; i++) {
-                        if (e.isAddedPath(paths[i]))
-                            targets.add(
-                                ((DefaultMutableTreeNode)paths[i]
-                                    .getLastPathComponent())
-                                        .getUserObject()
-                                );
+                        if (e.isAddedPath(paths[i])){
+                            
+                            Object element = ((DefaultMutableTreeNode)paths[i]
+                                                .getLastPathComponent())
+                                                    .getUserObject();
+                            
+                            // add a new target for notifying the other views
+                            targets.add(element);
+                            
+                            // scan the visible rows for duplicates of this elem
+                            int rows = getRowCount();
+                            for (int row = 0; row < rows; row++) {
+                                Object rowItem =
+                                ((DefaultMutableTreeNode)getPathForRow(row)
+                                .getLastPathComponent())
+                                .getUserObject();
+                                if (rowItem == element && 
+                                    !(isRowSelected(row)) ) {
+                                    addSelectionRow(row);
+                                }
+                            }
+                        }
                     }
                 }
                 TargetManager.getInstance().setTargets(targets);
