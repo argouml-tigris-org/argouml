@@ -30,6 +30,7 @@ import org.argouml.uml.diagram.ui.FigNodeModelElement;
 import org.tigris.gef.presentation.FigNode;
 import org.argouml.ui.*;
 import ru.novosoft.uml.*;
+import ru.novosoft.uml.behavior.common_behavior.MSignal;
 import ru.novosoft.uml.foundation.core.*;
 import java.awt.event.*;
 import java.util.Iterator;
@@ -77,6 +78,6 @@ public class ActionAddOperation extends UMLChangeAction {
     public boolean shouldBeEnabled() {
 	ProjectBrowser pb = ProjectBrowser.TheInstance;
 	Object target = pb.getDetailsTarget();
-	return super.shouldBeEnabled() && target instanceof MClassifier;
+	return super.shouldBeEnabled() && target instanceof MClassifier && !(target instanceof MSignal);
     }
 } /* end class ActionAddOperation */
