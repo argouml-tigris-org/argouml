@@ -126,12 +126,26 @@ public class Actions implements TargetListener {
 	Iterator actions = _allActions.iterator();
 	while (actions.hasNext()) {
 	    UMLAction a = (UMLAction) actions.next();
-	    a.updateEnabled(e.getNewTargets()[0]);
+	    a.updateEnabled(e.getNewTargets());
 	}
     }
 
+    /**
+     * @deprecated Only UMLActions are allowed as globalactions (must implement
+     * shouldbeEnabled)
+     * @param newAction
+     */
     public static void addAction(AbstractAction newAction) {
 	_allActions.addElement(newAction);
+    }
+    
+    /**
+     * Add a new global action. A global action is an action whose enabled property 
+     * is updated when updateAllEnabled is called.
+     * @param newAction the action to add.
+     */
+    public static void addAction(UMLAction newAction) {
+        _allActions.addElement(newAction);
     }
     
     public static boolean isGlobalAction(AbstractAction action) {
@@ -350,10 +364,18 @@ class ActionShowRapidButtons extends UMLAction {
 
 class ActionCreateMultiple extends UMLAction {
     public ActionCreateMultiple() { super("action.create-multiple", NO_ICON); }
+    /**
+     * @deprecated
+     * @see org.argouml.uml.ui.UMLAction#shouldBeEnabled()
+     */
     public boolean shouldBeEnabled() {
 	//Project p = ProjectBrowser.TheInstance.getProject();
 	//return super.shouldBeEnabled() && p != null;
 	return false;
+    }
+    
+    public boolean shouldBeEnabled(Object[] targets) {
+        return false;
     }
 } /* end class ActionCreateMultiple */
 
@@ -515,8 +537,7 @@ class ActionSystemInfo extends UMLAction {
 	}
 	sysInfoDialog.setLocationRelativeTo(jFrame);
 	sysInfoDialog.show();
-    }
-    public boolean shouldBeEnabled() { return true; }
+    }   
 } /* end class ActionSystemInfo */
 
 /**
@@ -531,5 +552,4 @@ class ActionAboutArgoUML extends UMLAction {
 	box.setLocationRelativeTo(jFrame);
 	box.show();
     }
-    public boolean shouldBeEnabled() { return true; }
 } /* end class ActionAboutArgoUML */

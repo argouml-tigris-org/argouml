@@ -98,13 +98,33 @@ public class UMLAction extends AbstractAction {
         p.setNeedsSave(true);
     }
 
+    /**
+     * Updates the enabled status of this action based on the target given.
+     * @deprecated use updateEnabled(Object[] targets) now
+     * @param target
+     */
     public void updateEnabled(Object target) {
-        setEnabled(shouldBeEnabled());
+        setEnabled(shouldBeEnabled(new Object[] {target}));
     }
 
+    /**
+     * Updates the enabled status of this action.
+     * @deprecated use updateEnabled(Object[] targets) now
+     */
     public void updateEnabled() {
         boolean b = shouldBeEnabled();
         setEnabled(b);
+    }
+    
+    /**
+     * Updates the enabled status of this action. The enabled status is determined 
+     * via a call to shouldBeEnabled(Object[] targets) and then set accordingly
+     * via a call to setEnabled(boolean enabled).
+     * @param targets the targets that should be taken into account when updating
+     * this action.
+     */
+    public void updateEnabled(Object[] targets) {
+        setEnabled(shouldBeEnabled(targets));
     }
 
     /** return true if this action should be available to the user. This
@@ -112,6 +132,18 @@ public class UMLAction extends AbstractAction {
      *  implementations of this method should always call
      *  super.shouldBeEnabled first. */
     public boolean shouldBeEnabled() {
+        return true;
+    }
+    
+    /**
+     * Tests if the action should be enabled with the targets that are given as
+     * parameters to the method. Returns true if the action should be enabled,
+     * otherwise false.
+     * @param targets The targets for which should be determined wether the 
+     * action should be enabled or not.
+     * @return true if the action should be enabled otherwise false.
+     */
+    public boolean shouldBeEnabled(Object[] targets) {
         return true;
     }
 

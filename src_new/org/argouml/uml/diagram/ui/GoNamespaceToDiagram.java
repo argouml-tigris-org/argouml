@@ -32,11 +32,11 @@ import java.util.List;
 import org.argouml.application.api.Argo;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
+import org.argouml.model.ModelFacade;
 import org.argouml.ui.AbstractGoRule;
 import org.argouml.uml.diagram.state.ui.UMLStateDiagram;
 import org.argouml.uml.diagram.sequence.ui.UMLSequenceDiagram;
 
-import ru.novosoft.uml.foundation.core.MBehavioralFeature;
 import ru.novosoft.uml.foundation.core.MNamespace;
 
 /**
@@ -60,8 +60,11 @@ public class GoNamespaceToDiagram extends AbstractGoRule {
             while (it.hasNext()) {
                 UMLDiagram d = (UMLDiagram) it.next();
                 if (d instanceof UMLStateDiagram) {
-                    UMLStateDiagram sd = (UMLStateDiagram) d;
-                    if (sd.getStateMachine().getContext() instanceof MBehavioralFeature)
+                    UMLStateDiagram sd = (UMLStateDiagram)d;
+                    Object context = ModelFacade.getContext(sd.getStateMachine());
+                    if (ModelFacade.isABehavioralFeature(context))
+
+
                     	continue;
                 }
                 // patch for 0.14 stability to disable SD's

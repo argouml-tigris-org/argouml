@@ -82,7 +82,7 @@ public class WizStep extends JPanel
     /**
      * The current target
      */
-    private Object _target;
+    Object _target;
 
     protected static final void setMnemonic(JButton b, String key) {
 	String m = Argo.localize(BUNDLE, key);

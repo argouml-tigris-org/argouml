@@ -1159,13 +1159,13 @@ public class Modeller
             ModelFacade.setTaggedValue(element, "src_modifiers", "static");
 	}
 	if ((modifiers & JavaRecognizer.ACC_PRIVATE) > 0) {
-	    ModelFacade.setVisibility(element, ModelFacade.ACC_PRIVATE);
+	    ModelFacade.setVisibility(element, ModelFacade.PRIVATE_VISIBILITYKIND);
 	}
 	else if ((modifiers & JavaRecognizer.ACC_PROTECTED) > 0) {
-	    ModelFacade.setVisibility(element, ModelFacade.ACC_PROTECTED);
+	    ModelFacade.setVisibility(element, ModelFacade.PROTECTED_VISIBILITYKIND);
 	}
 	else if ((modifiers & JavaRecognizer.ACC_PUBLIC) > 0) {
-	    ModelFacade.setVisibility(element, ModelFacade.ACC_PUBLIC);
+	    ModelFacade.setVisibility(element, ModelFacade.PUBLIC_VISIBILITYKIND);
 	} else {
             ModelFacade.setTaggedValue(element, "src_visibility", "default");
 	}

@@ -915,6 +915,22 @@ public class CoreHelper {
         }
         return list;
     }
+    
+    /**
+    * Adds a method to some operation and copies the op's attributes to the method.
+    * @param operation
+    * @param method
+    */
+   public static void addMethod(Object o, Object m) {
+       if (
+           ModelFacade.isAOperation(o)
+           && ModelFacade.isAMethod(m)) {
+               Object visibility = ModelFacade.getVisibility(o);
+               Object ownerScope = ModelFacade.getOwnerScope(o);
+               ModelFacade.setVisibility(m, visibility);
+               ModelFacade.setOwnerScope(m, ownerScope);          
+       }
+   }
     /**
      * Returns all attributes of some classifier clazz and of its parents
      * @param clazz

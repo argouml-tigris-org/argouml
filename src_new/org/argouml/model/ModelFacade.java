@@ -129,8 +129,8 @@ public class ModelFacade {
     public static final short ACC_PRIVATE = 2;
     public static final short ACC_PROTECTED = 3;
 
-    public static final short CLASSIFIER_SCOPE = 1;
-    public static final short INSTANCE_SCOPE = 2;
+    public static final Object CLASSIFIER_SCOPE = MScopeKind.CLASSIFIER;
+    public static final Object INSTANCE_SCOPE = MScopeKind.INSTANCE;
 
     public static final short GUARDED = 1;
     public static final short SEQUENTIAL = 2;
@@ -320,10 +320,18 @@ public class ModelFacade {
      *  an element in the model. MBase in Novosoft terms.
      *
      * @param handle candidate
-     * @returns true if handle is abstract.
+     * @returns true if handle is a base.
      */
     public static boolean isABase(Object handle) {
         return handle instanceof MBase;
+    }
+    
+    /** Recognizer for behavioral features
+     * @param handle candidate
+     * @returns true if handle is a behavioral feature.
+     */
+    public static boolean isABehavioralFeature(Object handle) {
+        return handle instanceof MBehavioralFeature;
     }
 
     /** Recognizer for Class
@@ -1901,6 +1909,18 @@ public class ModelFacade {
         }
         throw new IllegalArgumentException("Unrecognized object " + f);
     }
+    
+    /**
+     * Returns the owner scope of a feature
+     * @param handle
+     * @return
+     */
+    public static Object getOwnerScope(Object handle) {
+        if (handle instanceof MFeature) {
+            return ((MFeature)handle).getOwnerScope();
+        }
+        throw new IllegalArgumentException("Unrecognized object " + handle);
+    }
 
     /**
        Return the tagged values iterator of a model element.
@@ -1952,7 +1972,7 @@ public class ModelFacade {
 
     /**
        Return the value of some tagged value.
-    
+           
        @param tv The tagged value.
        @return The found value, null if not found
     */
@@ -1961,6 +1981,18 @@ public class ModelFacade {
             return ((MTaggedValue) tv).getValue();
         }
         return null;
+    }
+
+    /**
+     * Return the visibility of a modelelement
+     * @param handle
+     * @return
+     */
+    public static Object getVisibility(Object handle) {
+        if (handle instanceof MModelElement) {
+            return ((MOperation)handle).getVisibility();
+        }
+        throw new IllegalArgumentException("Unrecognized object " + handle);
     }
 
 
@@ -2252,16 +2284,18 @@ public class ModelFacade {
      * @param model element
      * @param visibility
      */
-    public static void setVisibility(Object o, short v) {
+    public static void setVisibility(Object o, Object v) {
         if (o != null && o instanceof MModelElement) {
-            if (v == ACC_PRIVATE) {
+            if (v == null) {
+                ((MModelElement)o).setVisibility(null);
+            } else if (v.equals(PRIVATE_VISIBILITYKIND)) {
                 ((MModelElement) o).setVisibility(MVisibilityKind.PRIVATE);
-            } else if (v == ACC_PROTECTED) {
+            } else if (v.equals(PROTECTED_VISIBILITYKIND)) {
                 ((MModelElement) o).setVisibility(MVisibilityKind.PROTECTED);
-            } else if (v == ACC_PUBLIC) {
+            } else if (v.equals(PUBLIC_VISIBILITYKIND)) {
                 ((MModelElement) o).setVisibility(MVisibilityKind.PUBLIC);
             }
-        }
+        } 
     }
 
     /**
@@ -2269,11 +2303,13 @@ public class ModelFacade {
      * @param feature
      * @param owner scope
      */
-    public static void setOwnerScope(Object f, short os) {
+    public static void setOwnerScope(Object f, Object os) {
         if (f != null && f instanceof MFeature) {
-            if (os == CLASSIFIER_SCOPE) {
+            if (os == null) {
+                ((MFeature) f).setOwnerScope(null);
+            } else if (os.equals(CLASSIFIER_SCOPE)) {
                 ((MFeature) f).setOwnerScope(MScopeKind.CLASSIFIER);
-            } else if (os == INSTANCE_SCOPE) {
+            } else if (os.equals(INSTANCE_SCOPE)) {
                 ((MFeature) f).setOwnerScope(MScopeKind.INSTANCE);
             }
         }
@@ -2284,11 +2320,14 @@ public class ModelFacade {
      * @param association end
      * @param target scope
      */
-    public static void setTargetScope(Object ae, short ts) {
+    public static void setTargetScope(Object ae, Object ts) {
         if (ae != null && ae instanceof MAssociationEnd) {
-            if (ts == CLASSIFIER_SCOPE) {
+            if (ts == null) {
+                ((MAssociationEnd)ae).setTargetScope(null);
+            } else
+            if (ts.equals(CLASSIFIER_SCOPE)) {
                 ((MAssociationEnd) ae).setTargetScope(MScopeKind.CLASSIFIER);
-            } else if (ts == INSTANCE_SCOPE) {
+            } else if (ts.equals(INSTANCE_SCOPE)) {
                 ((MAssociationEnd) ae).setTargetScope(MScopeKind.INSTANCE);
             }
         }

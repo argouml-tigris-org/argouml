@@ -156,12 +156,12 @@ public abstract class UMLDiagram
     public String getClassAndModelID() {
         String s = super.getClassAndModelID();
         if (getOwner() == null) return s;
-        String id = (String) (getOwner().getUUID());
+        String id = ModelFacade.getUUID(getOwner());
         return s + "|" + id;
     }
 
     // TODO: should be overwritten by each subclass of UMLDiagram
-    public MModelElement getOwner() {
+    public Object getOwner() {
         return _namespace;
     }
     

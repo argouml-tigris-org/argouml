@@ -1438,7 +1438,7 @@ public class Project implements java.io.Serializable, TargetListener {
      * the target has changed.
      * @param target
      */
-    private void setTarget(Object target) {
+     private void setTarget(Object target) {
         Object currentNamespace = null;
         if (target instanceof UMLDiagram) {
             currentNamespace = ((UMLDiagram) target).getNamespace();

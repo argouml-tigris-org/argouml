@@ -24,32 +24,32 @@
 
 package org.argouml.uml.ui;
 
+import java.awt.event.ActionEvent;
+
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
-import org.argouml.ui.*;
-import java.awt.event.*;
-
 
 public class UMLChangeAction extends UMLAction {
 
-    public UMLChangeAction(String s) { super(s, HAS_ICON); }
-    public UMLChangeAction(String s, boolean hasIcon) { super(s, hasIcon); }
-    protected UMLChangeAction(String s, boolean global, boolean hasIcon) { 
+    public UMLChangeAction(String s) {
+        super(s, HAS_ICON);
+    }
+    public UMLChangeAction(String s, boolean hasIcon) {
+        super(s, hasIcon);
+    }
+    protected UMLChangeAction(String s, boolean global, boolean hasIcon) {
         super(s, global, hasIcon);
     }
 
     public void actionPerformed(ActionEvent e) {
-	Project p = ProjectManager.getManager().getCurrentProject();
-	if (p != null) {      
-	    markNeedsSave();
-	    // next line commented out to prevent unnecessary updates of actions
-	    // 10-6-2003 Jaap Branderhorst
-	    // Actions.updateAllEnabled();
-	}
-    
+        Project p = ProjectManager.getManager().getCurrentProject();
+        if (p != null) {
+            markNeedsSave();
+            // next line commented out to prevent unnecessary updates of actions
+            // 10-6-2003 Jaap Branderhorst
+            // Actions.updateAllEnabled();
+        }
+
     }
 
 } /* end class UMLChangeAction */
-
-
-

@@ -156,7 +156,7 @@ public class UMLStateDiagram extends UMLDiagram {
     /**
      * The owner of a statediagram is the statediagram it's showing.
      */
-    public MModelElement getOwner() {
+    public Object getOwner() {
         StateDiagramGraphModel gm = (StateDiagramGraphModel) getGraphModel();
         return gm.getMachine();
     }

@@ -26,10 +26,14 @@ package org.argouml.ui.targetmanager;
 import java.util.EventListener;
 
 /**
- * @author gebruiker
- *
- * To change the template for this generated type comment go to
- * Window>Preferences>Java>Code Generation>Code and Comments
+ * A class that implements targetlistener is interested in targetevents. There
+ * are 3 types of targetevents:<br/>
+ * <ul>
+ * <li>targetSet, target is changed
+ * <li>targetRemoved, a (number of) targets is removed from the target list
+ * <li>targetAdded, a (number of) targets is added to the target list.
+ * </ul>
+ * @author jaap.branderhorst@xs4all.nl 
  */
 public interface TargetListener extends EventListener {
     

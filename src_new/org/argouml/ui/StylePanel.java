@@ -87,7 +87,12 @@ public class StylePanel
 
     ////////////////////////////////////////////////////////////////
     // accessors
-
+    
+    /**     
+     * @deprecated settarget will change visibility in the near future (from version 0.14). 
+     * Implementation will change since the way a Fig is selected is very dangerous (can easily 
+     * select the wrong fig)
+     */
     public void setTarget(Object t) {
         if (!(t instanceof Fig)) {
             if (ModelFacade.isABase(t)) {
@@ -108,6 +113,10 @@ public class StylePanel
         refresh();
     }
 
+    /**
+     * @deprecated will be replaced by targetmanager.gettarget
+     * @see org.argouml.ui.TabTarget#getTarget()
+     */
     public Object getTarget() {
         return _target;
     }
@@ -166,14 +175,14 @@ public class StylePanel
         //if (src == _config) doConfig();
     }
 
-    /* (non-Javadoc)
+    /**
      * @see
      * org.argouml.ui.targetmanager.TargetListener#targetAdded(org.argouml.ui.targetmanager.TargetEvent)
      */
     public void targetAdded(TargetEvent e) {
     }
 
-    /* (non-Javadoc)
+    /**
      * @see
      * org.argouml.ui.targetmanager.TargetListener#targetRemoved(org.argouml.ui.targetmanager.TargetEvent)
      */
@@ -182,13 +191,13 @@ public class StylePanel
 
     }
 
-    /* (non-Javadoc)
+    /**
+     * Postcondition: the panel should be refreshed (refresh should be called) if the panel should be enabled.
      * @see
      * org.argouml.ui.targetmanager.TargetListener#targetSet(org.argouml.ui.targetmanager.TargetEvent)
      */
     public void targetSet(TargetEvent e) {
         setTarget(e.getNewTargets()[0]);
-
     }
 
 } /* end class StylePanel */

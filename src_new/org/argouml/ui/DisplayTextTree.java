@@ -375,6 +375,9 @@ public class DisplayTextTree extends JTree implements TargetListener {
      * a worker thread perhaps?
      *
      * @param target a selected Fig or Model element.
+     * @deprecated replaced by targetSet. Do not use any more as the target management
+     * is done centrally via TargetManager! This method will be removed within a 
+     * few releases!
      */
     public void setTarget(Object target) {
 
@@ -404,8 +407,9 @@ public class DisplayTextTree extends JTree implements TargetListener {
             }
         }
     }
+    
     private void setTargets(Object[] targets) {
-        if (getModel() instanceof NavPerspective) {
+        // if (getModel() instanceof NavPerspective) {
             clearSelection();
             int rowToSelect = 0;
             for (int i = 0; i < targets.length; i++) {
@@ -425,7 +429,7 @@ public class DisplayTextTree extends JTree implements TargetListener {
                 
             }
             scrollRowToVisible(rowToSelect);
-        }
+        // }
     }
 
     /**
