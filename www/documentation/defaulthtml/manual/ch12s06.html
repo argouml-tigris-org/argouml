@@ -1,0 +1,66 @@
+<html><head><title>12.6. The Create Diagram Menu</title><link href="look-and-feel.css" rel="stylesheet" type="text/css"><meta content="DocBook XSL Stylesheets V1.37" name="generator"><link href="index.html" rel="home" title="ArgoUML User Manual"><link href="ch12.html" rel="up" title="Chapter 12. The Menu bar"><link href="ch12s05.html" rel="previous" title="12.5. The View Menu"><link href="ch12s07.html" rel="next" title="12.7. The Arrange Menu"></head><body alink="#0000FF" bgcolor="white" link="#0000FF" text="black" vlink="#840084"><div class="navheader"><table summary="Navigation header" width="100%"><tr><th align="center" colspan="3">12.6. The Create Diagram Menu</th></tr><tr><td align="left" width="20%"><a href="ch12s05.html">Prev</a>&nbsp;</td><th align="center" width="60%">Chapter 12. The Menu bar</th><td align="right" width="20%">&nbsp;<a href="ch12s07.html">Next</a></td></tr></table><hr></div><div class="sect1"><a name="s1.ref.create.diagram.menu"></a><div class="titlepage"><div><h2 class="title" style="clear: all"><a name="s1.ref.create.diagram.menu"></a>12.6. The Create Diagram Menu</h2></div></div><p>This menu provides for creating the various types of UML diagrams
+      supported by ArgoUML.</p><div class="sect2"><a name="N486e"></a><div class="titlepage"><div><h3 class="title"><a name="N486e"></a>12.6.1. <span class="inlinemediaobject"><img align="center" src="images/icons/class_diagram.gif"></span> Class
+        Diagram</h3></div></div><p>This menu entry creates a blank class diagram, and selects that
+        diagram in the editing pane. If a package is currently selected, the
+        class diagram will be created within that package, it will be shown
+        within the package on the navigation pane hierarchy (under
+        Package-centric view) and artifacts created on the diagram will have
+        the namespace of the package.</p><div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td align="center" rowspan="2" valign="top" width="25"><img src="images/tip.png"></td><th><a name="N4883"></a>Tip</th></tr><tr><td align="left" colspan="2" valign="top"><p>This does not prevent artifacts from other
+        namespaces/packages appearing on the diagram. They can added from the
+        navigation pane using <tt>Add to Diagram</tt> from the
+        button&nbsp;2 pop-up menu.</p></td></tr></table></div></div><div class="sect2"><a name="N488f"></a><div class="titlepage"><div><h3 class="title"><a name="N488f"></a>12.6.2. <span class="inlinemediaobject"><img align="center" src="images/icons/use_case_diagram.gif"></span> Use Case
+        Diagram</h3></div></div><p>This menu entry creates a blank use case diagram, and selects that
+        diagram in the editing pane. If a package is currently selected, the
+        use case diagram will be created within that package, it will be shown
+        within the package on the navigation pane hierarchy (under
+        Package-centric view) and artifacts created on the diagram will have
+        the namespace of the package.</p><div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td align="center" rowspan="2" valign="top" width="25"><img src="images/tip.png"></td><th><a name="N48a4"></a>Tip</th></tr><tr><td align="left" colspan="2" valign="top"><p>This does not prevent artifacts from other
+        namespaces/packages appearing on the diagram. They can added from the
+        navigation pane using <tt>Add to Diagram</tt> from the
+        button&nbsp;2 pop-up menu.</p></td></tr></table></div></div><div class="sect2"><a name="N48b0"></a><div class="titlepage"><div><h3 class="title"><a name="N48b0"></a>12.6.3. <span class="inlinemediaobject"><img align="center" src="images/icons/state_diagram.gif"></span> State
+        Diagram</h3></div></div><p>This menu entry creates a blank state diagram associated with the
+        currently selected class, and selects that diagram in the editing
+        pane. Artifacts created on the diagram will have the namespace of the
+        owning class.</p><div class="caution" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td align="center" rowspan="2" valign="top" width="25"><img src="images/caution.png"></td><th><a name="N48c5"></a>Caution</th></tr><tr><td align="left" colspan="2" valign="top"><p>State diagrams <i>must</i> be associated
+        with a class. In the current version of ArgoUML the <tt>State
+        Diagram</tt> menu entry is not grayed out if a class is not
+        selected. However invoking the menu entry will have no
+        effect.</p></td></tr></table></div></div><div class="sect2"><a name="N48d4"></a><div class="titlepage"><div><h3 class="title"><a name="N48d4"></a>12.6.4. <span class="inlinemediaobject"><img align="center" src="images/icons/activity_diagram.gif"></span> Activity
+        Diagram</h3></div></div><p>This menu entry creates a blank activity diagram associated with
+        the currently selected class, and selects that diagram in the editing
+        pane. Artifacts created on the diagram will have the namespace of the
+        owning class.</p><div class="caution" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td align="center" rowspan="2" valign="top" width="25"><img src="images/caution.png"></td><th><a name="N48e9"></a>Caution</th></tr><tr><td align="left" colspan="2" valign="top"><p>Activity diagrams <i>must</i> be associated
+        with a class. In the current version of ArgoUML the <tt>Activity
+        Diagram</tt> menu entry is not grayed out if a class is not
+        selected. However invoking the menu entry will have no
+        effect.</p></td></tr></table></div></div><div class="sect2"><a name="N48f8"></a><div class="titlepage"><div><h3 class="title"><a name="N48f8"></a>12.6.5. <span class="inlinemediaobject"><img align="center" src="images/icons/collaboration_diagram.gif"></span> Collaboration
+        Diagram</h3></div></div><p>This menu entry creates a blank collaboration diagram, and selects
+        that. Within the package hierarchy, collaboration diagrams are always
+        created within a <tt>Collaboration</tt>, within the package
+        or model, rather than within the package or model directly itself. If a
+        package is current selected, the collaboration diagram will be created
+        within a collaboration within that package, it will be shown within the
+        collaboration within the package on the navigation pane hierarchy
+        (under Package-centric view) and artifacts created on the diagram will
+        have the namespace of the collaboration within the package.</p><div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td align="center" rowspan="2" valign="top" width="25"><img src="images/tip.png"></td><th><a name="N4912"></a>Tip</th></tr><tr><td align="left" colspan="2" valign="top"><p>This does not prevent artifacts from other
+        namespaces/packages appearing on the diagram. They can added from the
+        navigation pane using <tt>Add to Diagram</tt> from the
+        button&nbsp;2 pop-up menu.</p></td></tr></table></div></div><div class="sect2"><a name="N491e"></a><div class="titlepage"><div><h3 class="title"><a name="N491e"></a>12.6.6. <span class="inlinemediaobject"><img align="center" src="images/icons/deployment_diagram.gif"></span> Deployment
+        Diagram</h3></div></div><p>This menu entry creates a blank deployment diagram, and selects
+        that diagram in the editing pane. If a package is current selected, the
+        deployment diagram will be created within that package, it will be
+        shown within the package on the navigation pane hierarchy (under
+        Package-centric view) and artifacts created on the diagram will have
+        the namespace of the package.</p><div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td align="center" rowspan="2" valign="top" width="25"><img src="images/tip.png"></td><th><a name="N4933"></a>Tip</th></tr><tr><td align="left" colspan="2" valign="top"><p>This does not prevent artifacts from other
+        namespaces/packages appearing on the diagram. They can added from the
+        navigation pane using <tt>Add to Diagram</tt> from the
+        button&nbsp;2 pop-up menu.</p></td></tr></table></div></div><div class="sect2"><a name="N493f"></a><div class="titlepage"><div><h3 class="title"><a name="N493f"></a>12.6.7. <span class="inlinemediaobject"><img align="center" src="images/icons/sequence_diagram.gif"></span> Sequence
+        Diagram</h3></div></div><p>This menu entry creates a blank sequence diagram, and selects that
+        diagram in the editing pane. If a package is current selected, the
+        sequence diagram will be created within that package, it will be shown
+        within the package on the navigation pane hierarchy (under
+        Package-centric view) and artifacts created on the diagram will have
+        the namespace of the package.</p><div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td align="center" rowspan="2" valign="top" width="25"><img src="images/tip.png"></td><th><a name="N4954"></a>Tip</th></tr><tr><td align="left" colspan="2" valign="top"><p>This does not prevent artifacts from other
+        namespaces/packages appearing on the diagram. They can added from the
+        navigation pane using <tt>Add to Diagram</tt> from the
+        button&nbsp;2 pop-up menu.</p></td></tr></table></div></div></div><div class="navfooter"><hr><table summary="Navigation footer" width="100%"><tr><td align="left" width="40%"><a href="ch12s05.html">Prev</a>&nbsp;</td><td align="center" width="20%"><a href="index.html">Home</a></td><td align="right" width="40%">&nbsp;<a href="ch12s07.html">Next</a></td></tr><tr><td align="left" width="40%">12.5. The View Menu&nbsp;</td><td align="center" width="20%"><a href="ch12.html">Up</a></td><td align="right" width="40%">&nbsp;12.7. The Arrange Menu</td></tr></table></div></body></html>

@@ -1,0 +1,214 @@
+<html><head><title>15.3. Use Case</title><link href="look-and-feel.css" rel="stylesheet" type="text/css"><meta content="DocBook XSL Stylesheets V1.37" name="generator"><link href="index.html" rel="home" title="ArgoUML User Manual"><link href="ch15.html" rel="up" title="Chapter 15. ArgoUML Use Case Diagram Artifact Reference"><link href="ch15s02.html" rel="previous" title="15.2. Actor"><link href="ch15s04.html" rel="next" title="15.4. Association"></head><body alink="#0000FF" bgcolor="white" link="#0000FF" text="black" vlink="#840084"><div class="navheader"><table summary="Navigation header" width="100%"><tr><th align="center" colspan="3">15.3. Use Case</th></tr><tr><td align="left" width="20%"><a href="ch15s02.html">Prev</a>&nbsp;</td><th align="center" width="60%">Chapter 15. ArgoUML Use Case Diagram Artifact Reference</th><td align="right" width="20%">&nbsp;<a href="ch15s04.html">Next</a></td></tr></table><hr></div><div class="sect1"><a name="s1.ref.use_case"></a><div class="titlepage"><div><h2 class="title" style="clear: all"><a name="s1.ref.use_case"></a>15.3. Use Case</h2></div></div><p>A use case represents a complete meaningful &#8220;chunk&#8221; of
+      activity by the system in relation to its external users (actors), human
+      or machine. It represents the primary route through which requirements
+      are captured for the system under construction</p><p>Within the UML metamodel, use case is a sub-class of
+     <tt>classifier</tt>.</p><p>The use case icon is an oval (see <a href="ch15.html#fig.ref.use_case_diagram" title="Figure 15.1. Possible artifacts on a use case diagram.">Figure 15.1. Possible artifacts on a use case diagram.</a>).</p><div class="sect2"><a name="N6dd4"></a><div class="titlepage"><div><h3 class="title"><a name="N6dd4"></a>15.3.1. Use Case Details Tabs</h3></div></div><p>The details tabs that are active for use cases are described in
+        <a href="ch15s03.html#tab.ref.use_case_details_tabs" title="Table 15.4. Details tabs for use case">Table 15.4. Details tabs for use case</a>.</p><div class="table"><p><a name="tab.ref.use_case_details_tabs"></a><b>Table 15.4. Details tabs for use case</b></p><table border="1" summary="Details tabs for use case" width="100%"><colgroup><col align="left"><col align="left"></colgroup><thead><tr><th align="left">Tab</th><th align="left">Meaning</th></tr></thead><tbody valign="top"><tr><td>ToDoItem</td><td><p>Standard tab.</p></td></tr><tr><td>Properties</td><td><p>See <a href="ch15s03.html#tab.ref.use_case_property_toolbar" title="Table 15.5. Property tool bar for diagram">Table 15.5. Property tool bar for diagram</a> and <a href="ch15s03.html#tab.ref.use_case_property_fields" title="Table 15.6. Property fields for use case">Table 15.6. Property fields for use case</a>
+                below.</p></td></tr><tr><td>Documentation</td><td><p>Standard tab.</p></td></tr><tr><td>Style</td><td><p>Standard tab. Fill color is used for the use case
+                oval.</p></td></tr><tr><td>Source</td><td><p>Standard tab. It would not be usual to provide any
+                code for a use case, since it is primarily a vehicle for
+                capturing requirements about the system under construction, not
+                creating the solution.</p></td></tr><tr><td>Constraints</td><td><p>Standard tab. There are no standard constraints
+                defined for <tt>UseCase</tt> within the UML
+                metamodel.</p></td></tr><tr><td>Tagged Values</td><td><p>Standard tab. In the UML metamodel,
+                <tt>UseCase</tt> has the following standard tagged
+                values defined.</p><div class="itemizedlist"><ul><li><p><a name="N6e80"></a><tt>persistence</tt> (from the
+                    superclass, <tt>Classifier</tt>). Values
+                    <tt>transitory</tt>, indicating state is
+                    destroyed when an instance is destroyed or
+                    <tt>persistent</tt>, marking state is
+                    preserved when an instance is destroyed.</p><div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td align="center" rowspan="2" valign="top" width="25"><img src="images/tip.png"></td><th><a name="N6e97"></a>Tip</th></tr><tr><td align="left" colspan="2" valign="top"><p>In general the instantiation of use cases is not a
+                    major aspect of any design method (they are mostly
+                    concerned with requirements capture. For most OOA&amp;D
+                    methodologies, this tag can safely be
+                    ignored.</p></td></tr></table></div></li><li><p><a name="N6e9b"></a><tt>semantics</tt> (from the
+                    superclass, <tt>Classifier</tt>). The value is a
+                    specification of the semantics of the
+                    use case.</p></li><li><p><a name="N6ea8"></a><tt>derived</tt> (from the
+                    superclass, <tt>ModelElement</tt>). Values
+                    <tt>true</tt>, meaning the use case is
+                    redundant&#8212;it can be formally derived from other
+                    elements, or <tt>false</tt> meaning it
+                    cannot.</p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td align="center" rowspan="2" valign="top" width="25"><img src="images/note.png"></td><th><a name="N6ebf"></a>Note</th></tr><tr><td align="left" colspan="2" valign="top"><p>Derived use cases still have their value in
+                    analysis to introduce useful names or
+                    concepts.</p></td></tr></table></div></li></ul></div><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td align="center" rowspan="2" valign="top" width="25"><img src="images/note.png"></td><th><a name="N6ec4"></a>Note</th></tr><tr><td align="left" colspan="2" valign="top"><p>The UML <tt>Element</tt> metaclass from
+                  which all other artifacts are derived includes the tagged
+                  element <tt>documentation</tt> which is handled by
+                  the <i>documentation tab</i> under
+                  ArgoUML</p></td></tr></table></div></td></tr></tbody></table></div></div><div class="sect2"><a name="N6edc"></a><div class="titlepage"><div><h3 class="title"><a name="N6edc"></a>15.3.2. Use Case Properties</h3></div></div><p>The property tab tool bar for use cases is described in <a href="ch15s03.html#tab.ref.use_case_property_toolbar" title="Table 15.5. Property tool bar for diagram">Table 15.5. Property tool bar for diagram</a>.</p><div class="table"><p><a name="tab.ref.use_case_property_toolbar"></a><b>Table 15.5. Property tool bar for diagram</b></p><table border="1" summary="Property tool bar for diagram" width="100%"><colgroup><col align="left"><col align="center"><col align="left"></colgroup><thead><tr><th align="left">Button</th><th align="center">Icon</th><th align="left">Meaning</th></tr></thead><tbody valign="top"><tr><td>Go up</td><td><span class="inlinemediaobject"><img align="center" src="images/icons/navigate_up.gif"></span></td><td><p>Navigate up through the package structure of the
+                model.</p></td></tr><tr><td>Go back</td><td><span class="inlinemediaobject"><img align="center" src="images/icons/navigate_back.gif"></span></td><td><p>Navigate back to the previous
+                artifact.</p><div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td align="center" rowspan="2" valign="top" width="25"><img src="images/warning.png"></td><th><a name="N6f61"></a>Warning</th></tr><tr><td align="left" colspan="2" valign="top"><p>This feature is currently broken within ArgoUML
+                and there is no guarantee where (if anywhere) this button will
+                take you.</p></td></tr></table></div></td></tr><tr><td>Go forward</td><td><span class="inlinemediaobject"><img align="center" src="images/icons/navigate_forward.gif"></span></td><td><p>Navigate forward to the next
+                artifact.</p><div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td align="center" rowspan="2" valign="top" width="25"><img src="images/warning.png"></td><th><a name="N6f80"></a>Warning</th></tr><tr><td align="left" colspan="2" valign="top"><p>This feature is currently broken within ArgoUML
+                and there is no guarantee where (if anywhere) this button will
+                take you.</p></td></tr></table></div></td></tr><tr><td>New use case</td><td><span class="inlinemediaobject"><img align="center" src="images/icons/use_case.gif"></span></td><td><p>This creates a new use case within the model, (but
+                not within the diagram), navigating immediately to the
+                properties tab for that use case.</p><div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td align="center" rowspan="2" valign="top" width="25"><img src="images/tip.png"></td><th><a name="N6f9f"></a>Tip</th></tr><tr><td align="left" colspan="2" valign="top"><p>This method of creating new use cases can be
+                confusing. Much better to create them within diagrams where you
+                want them.</p></td></tr></table></div></td></tr><tr><td>Delete</td><td><span class="inlinemediaobject"><img align="center" src="images/icons/property_delete.gif"></span></td><td><p>This deletes the selected use case from the
+                model.</p><div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td align="center" rowspan="2" valign="top" width="25"><img src="images/warning.png"></td><th><a name="N6fbe"></a>Warning</th></tr><tr><td align="left" colspan="2" valign="top"><p>This is a deletion from the model
+                <i>not</i> just the diagram. To delete a use case
+                from the diagram, but keep it within the model, use the main
+                menu <tt>Edit/Remove From Diagram</tt>
+                (Ctrl-R).</p></td></tr></table></div></td></tr></tbody></table></div><p>The fields on the property tab for use cases are described in
+        <a href="ch15s03.html#tab.ref.use_case_property_fields" title="Table 15.6. Property fields for use case">Table 15.6. Property fields for use case</a>.</p><div class="table"><p><a name="tab.ref.use_case_property_fields"></a><b>Table 15.6. Property fields for use case</b></p><table border="1" summary="Property fields for use case" width="100%"><colgroup><col align="left"><col align="left"></colgroup><thead><tr><th align="left">Field</th><th align="left">Meaning</th></tr></thead><tbody valign="top"><tr><td>Name</td><td><p>Text box. The name of the use case. Since a use case
+                is a classifier, it would be conventional to Capitalize the
+                first letter (and initial letters of any component words),
+                e.g. <tt>RemoteSensor</tt>.</p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td align="center" rowspan="2" valign="top" width="25"><img src="images/note.png"></td><th><a name="N7020"></a>Note</th></tr><tr><td align="left" colspan="2" valign="top"><p>ArgoUML does not enforce any naming convention for
+                use cases</p></td></tr></table></div></td></tr><tr><td>Stereotype</td><td><p>Drop down selector. Use case is provided by default
+                with the UML standard stereotypes
+                (<tt>metaclass</tt>, <tt>powertype</tt>,
+                <tt>process</tt>, <tt>thread</tt>,
+                <tt>utility</tt>) for classifiers. ArgoUML also
+                provides the additional stereotypes,
+                <tt>machine</tt>, <tt>organization</tt> and
+                <tt>person</tt>. Stereotyping can be useful when
+                creating use cases in the problem domain (requirements capture)
+                and solution domain (analysis), but none of the pre-defined
+                stereotypes are well suited to this.</p><div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td align="center" rowspan="2" valign="top" width="25"><img src="images/warning.png"></td><th><a name="N7058"></a>Warning</th></tr><tr><td align="left" colspan="2" valign="top"><p>If a stereotype is selected in ArgoUML it will
+                not be displayed in the diagram.</p></td></tr></table></div></td></tr><tr><td>Navigate Stereotype</td><td><p><span class="inlinemediaobject"><img align="center" src="images/icons/navigate_stereotype.gif"></span> icon. If a
+                  stereotype has been selected, this will navigate you to the
+                  stereotype property panel (see <a href="ch14s04.html" title="14.4. Stereotypes">Section 14.4</a>).</p></td></tr><tr><td>Namespace</td><td><p>Text box. Records the namespace for the
+                use case. This is the package hierarchy.</p><p>Button&nbsp;1 click on the entry will take you to the package
+                defining this namespace (or the model for the top level
+                namespace).</p></td></tr><tr><td>Modifiers</td><td><p>Check box, with entries <tt>Abstract</tt>,
+                <tt>Final</tt> and <tt>Root</tt>.</p><div class="itemizedlist"><ul><li><p><a name="N70a5"></a><tt>abstract</tt> is used to declare
+                  that this use case cannot be instantiated, but must always be
+                  specialized.</p><div class="caution" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td align="center" rowspan="2" valign="top" width="25"><img src="images/caution.png"></td><th><a name="N70ad"></a>Caution</th></tr><tr><td align="left" colspan="2" valign="top"><p>Whilst use cases can be specialized and
+                  generalized, it is not clear that an abstract use case has
+                  any meaning. Perhaps it might be used to indicate an use case
+                  that does not itself interact with an actor, but whose
+                  children do.</p></td></tr></table></div></li><li><p><a name="N70b1"></a><tt>final</tt> indicates that this
+                  use case can have no further children, while
+                  <tt>root</tt> indicates it is a top level
+                  use case with no parent.</p></li></ul></div></td></tr><tr><td><a name="ref.use_case_generalization"></a>Generalizations
+              </td><td><p>Text area. Lists use cases which are generalizations
+                of this one. Will be set whenever a generalization is created
+                on the diagram. Button&nbsp;1 click on a generalization will
+                navigate to that generalization. Button&nbsp;2 click gives a pop
+                up menu with five options.</p><div class="itemizedlist"><ul><li><p><a name="N70d0"></a><tt>Open</tt>. Where a generalization
+                  exists, navigate to it.</p></li><li><p><a name="N70d8"></a><tt>Add</tt>. Add a new
+                  generalization. Note that the new association is added to the
+                  model, but not the diagram. You will need to find it in the
+                  navigation pane and add it from there.</p><div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td align="center" rowspan="2" valign="top" width="25"><img src="images/tip.png"></td><th><a name="N70e0"></a>Tip</th></tr><tr><td align="left" colspan="2" valign="top"><p>It is far easier to add generalizations by drawing
+                  them on the relevant diagram in the editing
+                  pane.</p></td></tr></table></div><div class="caution" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td align="center" rowspan="2" valign="top" width="25"><img src="images/caution.png"></td><th><a name="N70e4"></a>Caution</th></tr><tr><td align="left" colspan="2" valign="top"><p>It is possible to add multiple
+                  generalizations. However is is hard to see a sensible meaning
+                  for this. In addition the size of the text area makes this
+                  very inconvenient in ArgoUML.</p></td></tr></table></div></li><li><p><a name="N70e8"></a><tt>Delete</tt>. Where a
+                  generalization exists linking to this use case, this removes
+                  the link to this use case.</p><div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td align="center" rowspan="2" valign="top" width="25"><img src="images/tip.png"></td><th><a name="N70f0"></a>Tip</th></tr><tr><td align="left" colspan="2" valign="top"><p>This <i>does not</i> remove the
+                  generalization from the model or the diagram, leading to
+                  potentially very confusing diagrams. It is usually far easier
+                  to remove generalizations from the editing
+                  pane.</p></td></tr></table></div></li><li><p><a name="N70f7"></a><tt>Move Up</tt>. Only available
+                  where there are two or more generalizations listed (see
+                  <i>caution</i> above), and the generalization
+                  selected is not at the top. It is moved one up the
+                  list.</p></li><li><p><a name="N7102"></a><tt>Move Down</tt>. Only available
+                  where there are two or more generalizations listed (see
+                  <i>caution</i> above), and the generalization
+                  selected is not at the bottom. It is moved one down the
+                  list.</p></li></ul></div></td></tr><tr><td>Extends</td><td><p>Text box. Lists any class that is extended by this
+                use case. In ArgoUML at present extension on a use case
+                diagram is through stereotyping a dependency relationship, which
+                will not show in this box.</p><p>Where an extends relationship has been created (see below),
+                button&nbsp;1 click will navigate to that
+                relationship. Button&nbsp;2 gives a pop up menu through which
+                an <i>anonymous</i> extends relationship can be
+                created.</p><div class="itemizedlist"><ul><li><p><a name="N7122"></a><tt>Open</tt>. Where an extends
+                  relationship has been created, navigate to
+                  it.</p></li><li><p><a name="N712a"></a><tt>Add</tt>. Add a new anonymous
+                  extends relationship. This is just a documentation artifact,
+                  not a true relationship, where you can record details of the
+                  extension.</p><div class="caution" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td align="center" rowspan="2" valign="top" width="25"><img src="images/caution.png"></td><th><a name="N7132"></a>Caution</th></tr><tr><td align="left" colspan="2" valign="top"><p>It is possible to add multiple extends
+                  relationships. However is is hard to see a sensible meaning
+                  for this. In addition the size of the text area, and the lack
+                  of move up/move down options on the pop up menu, make all but
+                  the top entry inaccessible in
+                  ArgoUML.</p></td></tr></table></div></li><li><p><a name="N7136"></a><tt>Delete</tt>. Where an extends
+                  relationship has been created through use of
+                  <tt>Add</tt> pop up menu, this removes
+                  it.</p></li></ul></div></td></tr><tr><td>Includes</td><td><p>Text box. Lists any class that this use case
+                includes. In ArgoUML at present inclusion on a use case
+                diagram is through stereotyping a dependency relationship, which
+                will not show in this box.</p><p>Where an includes relationship has been created (see
+                below), button&nbsp;1 click will navigate to that
+                relationship. Button&nbsp;2 gives a pop up menu through which
+                an <i>anonymous</i> includes relationship can be
+                created.</p><div class="itemizedlist"><ul><li><p><a name="N7158"></a><tt>Open</tt>. Where an includes
+                  relationship has been created, navigate to
+                  it.</p></li><li><p><a name="N7160"></a><tt>Add</tt>. Add a new anonymous
+                  includes relationship. This is just a documentation artifact,
+                  not a true relationship, where you can record details of the
+                  extension.</p><div class="caution" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td align="center" rowspan="2" valign="top" width="25"><img src="images/caution.png"></td><th><a name="N7168"></a>Caution</th></tr><tr><td align="left" colspan="2" valign="top"><p>It is possible to add multiple includes
+                  relationships. However is is hard to see a sensible meaning
+                  for this. In addition the size of the text area, and the lack
+                  of move up/move down options on the pop up menu, make all but
+                  the top entry inaccessible in
+                  ArgoUML.</p></td></tr></table></div></li><li><p><a name="N716c"></a><tt>Delete</tt>. Where an includes
+                  relationship has been created through use of
+                  <tt>Add</tt> pop up menu, this removes
+                  it.</p></li></ul></div></td></tr><tr><td>Extension Points</td><td><p>Text box. If this use case is, or can be extended,
+                this field is used to document the points at which such
+                extensions can occur.</p><p>Where an extension point has been created (see
+                below), button&nbsp;1 click will navigate to that
+                relationship. Button&nbsp;2 gives a pop up menu through which
+                an <i>anonymous</i> extension points can be
+                created.</p><div class="itemizedlist"><ul><li><p><a name="N718e"></a><tt>Open</tt>. Where an extension
+                  point has been created, navigate to it.</p></li><li><p><a name="N7196"></a><tt>Add</tt>. Add a new anonymous
+                  extension point. This is a documentation artifact, where you
+                  can record details of the extension point.</p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td align="center" rowspan="2" valign="top" width="25"><img src="images/note.png"></td><th><a name="N719e"></a>Note</th></tr><tr><td align="left" colspan="2" valign="top"><p>At present there is no way to give a name to an
+                  extension point in ArgoUML.</p></td></tr></table></div></li><li><p><a name="N71a2"></a><tt>Delete</tt>. Where an extension
+                  point has been created through use of <tt>Add</tt>
+                  pop up menu, this removes it.</p></li></ul></div></td></tr><tr><td>Associations</td><td><p>Text area. Lists any associations connected to the
+                use case. Button&nbsp;1 click on an association will navigate
+                to that association. Button&nbsp;2 click gives a pop up menu with
+                five options.</p><div class="itemizedlist"><ul><li><p><a name="N71be"></a><tt>Open</tt>. Navigate to the
+                  association.</p></li><li><p><a name="N71c6"></a><tt>Add</tt>. Add a new
+                  association. Note that the new association is added to the
+                  model, but not the diagram. You will need to find it in the
+                  navigation pane and add it from there.</p><div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td align="center" rowspan="2" valign="top" width="25"><img src="images/tip.png"></td><th><a name="N71ce"></a>Tip</th></tr><tr><td align="left" colspan="2" valign="top"><p>It is far easier to add associations by drawing them
+                  on the relevant diagram in the editing
+                  pane.</p></td></tr></table></div></li><li><p><a name="N71d2"></a><tt>Delete</tt>. Where an association
+                  is linked to a use case, this removes the link to the use
+                  case.</p><div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td align="center" rowspan="2" valign="top" width="25"><img src="images/tip.png"></td><th><a name="N71da"></a>Tip</th></tr><tr><td align="left" colspan="2" valign="top"><p>This <i>does not</i> remove the
+                  association from the model or the diagram, leading to
+                  potentially very confusing diagrams. It is usually far easier
+                  to remove associations from the editing
+                  pane.</p></td></tr></table></div></li><li><p><a name="N71e1"></a><tt>Move Up</tt>. Only available
+                 where there are two or more associations listed, and the
+                 association selected is not at the top. It is moved one up the
+                 list.</p></li><li><p><a name="N71e9"></a><tt>Move Down</tt>. Only available
+                 where there are two or more associations listed, and the
+                 association selected is not at the bottom. It is moved one
+                 down the list.</p></li></ul></div></td></tr><tr><td>Operations</td><td><p>Text area. Listing the operations that are available
+                on this use case. As a sub-class of the UML classifier
+                metaclass, a use case has many of the properties of a
+                class (see <a href="ch16s05.html" title="16.5. Class">Section 16.5</a>).</p><p>In some OOA&amp;D processes it might be useful to treat use
+                cases as classes as well, and give them operations and
+                attributes. This is of very limited in ArgoUML, since it is
+                not possible to take a use case and add it to a class diagram,
+                so all class relationships must be shown with the notation of a
+                use case diagram.</p><p>Should you wish to add operations to a use case,
+                button&nbsp;1 click allows you to navigate to them and
+                button&nbsp;2 click gives a pop up menu with options to
+                <tt>Open</tt>, <tt>Add</tt>,
+                <tt>Delete</tt>, <tt>Move&nbsp;Up</tt> and
+                <tt>Move&nbsp;Down</tt> (see <a href="ch15s03.html#ref.use_case_generalization">Generalizations</a>
+                for examples of how these operations are used).</p></td></tr><tr><td>Attributes</td><td><p>Text area. Listing the attributes that are available
+                on this use case. As a sub-class of the UML classifier
+                metaclass, a use case has many of the properties of a
+                class (see <a href="ch16s05.html" title="16.5. Class">Section 16.5</a>).</p><p>In some OOA&amp;D processes it might be useful to treat use
+                cases as classes as well, and give them operations and
+                attributes. This is of very limited in ArgoUML, since it is
+                not possible to take a use case and add it to a class diagram,
+                so all class relationships must be shown with the notation of a
+                use case diagram.</p><p>Should you wish to add attributes to a use case,
+                button&nbsp;1 click allows you to navigate to them and
+                button&nbsp;2 click gives a pop up menu with options to
+                <tt>Open</tt>, <tt>Add</tt>,
+                <tt>Delete</tt>, <tt>Move&nbsp;Up</tt> and
+                <tt>Move&nbsp;Down</tt> (see <a href="ch15s03.html#ref.use_case_generalization">Generalizations</a>
+                for examples of how these operations are used).</p></td></tr></tbody></table></div></div></div><div class="navfooter"><hr><table summary="Navigation footer" width="100%"><tr><td align="left" width="40%"><a href="ch15s02.html">Prev</a>&nbsp;</td><td align="center" width="20%"><a href="index.html">Home</a></td><td align="right" width="40%">&nbsp;<a href="ch15s04.html">Next</a></td></tr><tr><td align="left" width="40%">15.2. Actor&nbsp;</td><td align="center" width="20%"><a href="ch15.html">Up</a></td><td align="right" width="40%">&nbsp;15.4. Association</td></tr></table></div></body></html>

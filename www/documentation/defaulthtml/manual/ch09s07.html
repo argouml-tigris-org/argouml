@@ -1,0 +1,86 @@
+<html><head><title>9.7. Pop-Up Menus</title><link href="look-and-feel.css" rel="stylesheet" type="text/css"><meta content="DocBook XSL Stylesheets V1.37" name="generator"><link href="index.html" rel="home" title="ArgoUML User Manual"><link href="ch09.html" rel="up" title="Chapter 9. The Editing Pane"><link href="ch09s06.html" rel="previous" title="9.6. The Diagram Tab"><link href="ch10.html" rel="next" title="Chapter 10. The Details Pane"></head><body alink="#0000FF" bgcolor="white" link="#0000FF" text="black" vlink="#840084"><div class="navheader"><table summary="Navigation header" width="100%"><tr><th align="center" colspan="3">9.7. Pop-Up Menus</th></tr><tr><td align="left" width="20%"><a href="ch09s06.html">Prev</a>&nbsp;</td><th align="center" width="60%">Chapter 9. The Editing Pane</th><td align="right" width="20%">&nbsp;<a href="ch10.html">Next</a></td></tr></table><hr></div><div class="sect1"><a name="s1.ref.edit_pane_pop_up"></a><div class="titlepage"><div><h2 class="title" style="clear: all"><a name="s1.ref.edit_pane_pop_up"></a>9.7. Pop-Up Menus</h2></div></div><p>Within the editing pane, button&nbsp;2 click over an artifact will bring
+      up a pop-up menu with up to five main entries, each with a
+      sub-menu.</p><div class="sect2"><a name="N3015"></a><div class="titlepage"><div><h3 class="title"><a name="N3015"></a>9.7.1. Critiques</h3></div></div><p>This sub-menu gives list of all the critics that have triggered for
+        this artifact. Selection of a menu entry causes that entry to be
+        highlighted in the to-do pane and its detailed explanation to be placed
+        in the <tt>ToDoItem</tt> tab of the details pane.</p></div><div class="sect2"><a name="N3025"></a><div class="titlepage"><div><h3 class="title"><a name="N3025"></a>9.7.2. Ordering</h3></div></div><p>This menu controls the ordering of overlapping artifacts on the
+        diagram. It is equivalent to the <tt>Reorder</tt> sub-menu of
+        the <tt>Arrange</tt> menu (see
+        <a href="ch12s07.html#s2.ref.menu_reorder" title="12.7.3. The Reorder Sub-Menu">Section 12.7.3</a>). There are four entries.</p><div class="itemizedlist"><ul><li><p><a name="N303d"></a><span class="inlinemediaobject"><img align="center" src="images/icons/forward.gif"></span>
+          <tt>Forward</tt>. The selected artifacts are moved one
+          step forward in the ordering hierarchy with respect to 
+          other artifacts they overlap.</p></li><li><p><a name="N3053"></a><span class="inlinemediaobject"><img align="center" src="images/icons/backward.gif"></span>
+          <tt>Backward</tt>. The selected artifacts are moved one
+          step back in the ordering hierarchy with respect to 
+          other artifacts they overlap.</p></li><li><p><a name="N3069"></a><span class="inlinemediaobject"><img align="center" src="images/icons/to_front.gif"></span> <tt>To
+          Front</tt>. The selected artifacts are moved to the front of
+          any other artifacts they overlap.</p></li><li><p><a name="N307f"></a><span class="inlinemediaobject"><img align="center" src="images/icons/to_back.gif"></span> <tt>To
+          Back</tt>. The selected artifacts are moved to the back of any
+          other artifacts they overlap.</p></li></ul></div></div><div class="sect2"><a name="N3099"></a><div class="titlepage"><div><h3 class="title"><a name="N3099"></a>9.7.3. Add</h3></div></div><p>This sub-menu only appears for artifacts that can have notes
+        attached (class, interface, object, state, pseudostate) or have
+        operations or attributes added (class, interface). There are at most
+        three entries.</p><div class="itemizedlist"><ul><li><p><a name="N30a3"></a><span class="inlinemediaobject"><img align="center" src="images/icons/attribute.gif"></span>
+          <tt>Add Attribute</tt>. Only appears where the selected
+            artifact is a class or interface. Adds an attribute to the
+            artifact</p></li><li><p><a name="N30b9"></a><span class="inlinemediaobject"><img align="center" src="images/icons/operation.gif"></span>
+          <tt>Add Operation</tt>. Only appears where the selected
+            artifact is a class or interface. Adds an operation to the
+            artifact</p></li><li><p><a name="N30cf"></a><span class="inlinemediaobject"><img align="center" src="images/icons/note.gif"></span>
+          <tt>Note</tt>. Attaches a note to the selected
+          artifact.</p></li></ul></div></div><div class="sect2"><a name="N30e9"></a><div class="titlepage"><div><h3 class="title"><a name="N30e9"></a>9.7.4. Show</h3></div></div><p>This sub-menu only appears with class or object artifacts. It is
+        used to control whether the attribute and operation compartments of the
+        artifact are displayed. There are six possible entries, but at most
+        three show at any one time.</p><div class="itemizedlist"><ul><li><p><a name="N30f3"></a><tt>Hide All Compartments</tt>. Only appears
+          when both attribute and operation compartments are displayed. Hides
+          both compartments.</p></li><li><p><a name="N30fb"></a><tt>Show All Compartments</tt>. Only appears
+          when both attribute and operation compartments are hidden. Displays
+          both compartments.</p></li><li><p><a name="N3103"></a><tt>Hide Attribute Compartment</tt>. Only
+          appears when the attribute compartment is displayed. Hides the
+          compartment.</p></li><li><p><a name="N310b"></a><tt>Show Attribute Compartment</tt>. Only
+          appears when the attribute compartment is hidden. Displays the
+          compartment.</p></li><li><p><a name="N3113"></a><tt>Hide Operation Compartment</tt>. Only
+          appears when the operation compartment is displayed. Hides the
+          compartment.</p></li><li><p><a name="N311b"></a><tt>Show Operation Compartment</tt>. Only
+          appears when the operation compartment is hidden. Displays the
+          compartment.</p></li></ul></div></div><div class="sect2"><a name="N3127"></a><div class="titlepage"><div><h3 class="title"><a name="N3127"></a>9.7.5. Multiplicity</h3></div></div><p>This sub-menu only appears with association artifacts. It is
+        used to control the multiplicity at the end of the association nearest
+        the mouse click point. There are only four entries, a sub-set of the
+        range of multiplicities that are available through the property sheet
+        of a association end (see
+        <a href="ch15s05.html" title="15.5. Association End">Section 15.5</a>).</p><div class="itemizedlist"><ul><li><p><a name="N3135"></a><tt>1</tt></p></li><li><p><a name="N313c"></a><tt>0..1</tt></p></li><li><p><a name="N3143"></a><tt>1..*</tt></p></li><li><p><a name="N314a"></a><tt>0..*</tt></p></li></ul></div></div><div class="sect2"><a name="N3155"></a><div class="titlepage"><div><h3 class="title"><a name="N3155"></a>9.7.6. Aggregation</h3></div></div><p>This sub-menu only appears with association artifacts. It is
+        used to control the aggregation at the end of the association nearest
+        the mouse click point. There are three entries.</p><div class="itemizedlist"><ul><li><p><a name="N315f"></a><tt>none</tt>. Remove any
+          aggregation.</p></li><li><p><a name="N3167"></a><tt>aggregate</tt>. Make this end a shared
+          aggregation (loosely known as an
+          &#8220;aggregation&#8221;).</p></li><li><p><a name="N3172"></a><tt>composite</tt>. Make this end a composite
+          aggregation (loosely known as a
+          &#8220;composition&#8221;).</p></li></ul></div><div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td align="center" rowspan="2" valign="top" width="25"><img src="images/warning.png"></td><th><a name="N317e"></a>Warning</th></tr><tr><td align="left" colspan="2" valign="top"><p>UML requires that at most one end of an association has
+        any aggregation relationship. The current release of ArgoUML has a
+        known problem where it believes any end whose aggregation has not been
+        explicity set is in some form of aggregation (although this is not
+        shown on the diagram or property sheet). This will trigger a
+        critic. The solution is to change the aggregation to one of the
+        aggregate forms and then back to none to explicitly set no
+        aggregation.</p></td></tr></table></div><div class="caution" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td align="center" rowspan="2" valign="top" width="25"><img src="images/caution.png"></td><th><a name="N3182"></a>Caution</th></tr><tr><td align="left" colspan="2" valign="top"><p>UML requires that an end with a composition relationship
+        must have a multiplicity of 1 (the default).</p></td></tr></table></div></div><div class="sect2"><a name="N3189"></a><div class="titlepage"><div><h3 class="title"><a name="N3189"></a>9.7.7. Navigability</h3></div></div><p>This sub-menu only appears with association artifacts. It is used
+        to control the navigability of the association. There are three
+        entries.</p><div class="itemizedlist"><ul><li><p><a name="N3193"></a><tt>bidirectional</tt>. Make the association
+          navigable in both directions.</p></li><li><p><a name="N319b"></a><tt>&lt;class1&gt; to
+          &lt;class2&gt;</tt>. Make the association navigable
+          only from &lt;class1&gt; to
+          &lt;class2&gt;. In other words
+          &lt;class1&gt; can reference &lt;class2&gt;
+          but not the other way round.</p></li><li><p><a name="N31a3"></a><tt>&lt;class2&gt; to
+          &lt;class1&gt;</tt>. Make the association navigable
+          only from &lt;class2&gt; to
+          &lt;class1&gt;. In other words
+          &lt;class2&gt; can reference &lt;class1&gt;
+          but not the other way round.</p></li></ul></div><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td align="center" rowspan="2" valign="top" width="25"><img src="images/note.png"></td><th><a name="N31ac"></a>Note</th></tr><tr><td align="left" colspan="2" valign="top"><p>UML does permit an association to be non-navigable in both
+        directions. If you want this, you will have to set each of the
+        association ends navigation property, reached from the property tab of
+        the association.</p><p>This is considered bad design practice (it will trigger a critic in
+        ArgoUML), so is only of theorertical interest.</p></td></tr></table></div><div class="caution" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td align="center" rowspan="2" valign="top" width="25"><img src="images/caution.png"></td><th><a name="N31b3"></a>Caution</th></tr><tr><td align="left" colspan="2" valign="top"><p>UML does not permit navigability from an interface to a
+        class. However this drop down will allow you to set this up (and then
+        trigger a critic to complain).</p></td></tr></table></div></div><div class="sect2"><a name="N31ba"></a><div class="titlepage"><div><h3 class="title"><a name="N31ba"></a>9.7.8. Properties</h3></div></div><p>This entry has no sub-menu. Selecting the entry will cause the
+        property tab for the selected artifact to be displayed in the details
+        pane.</p></div></div><div class="navfooter"><hr><table summary="Navigation footer" width="100%"><tr><td align="left" width="40%"><a href="ch09s06.html">Prev</a>&nbsp;</td><td align="center" width="20%"><a href="index.html">Home</a></td><td align="right" width="40%">&nbsp;<a href="ch10.html">Next</a></td></tr><tr><td align="left" width="40%">9.6. The Diagram Tab&nbsp;</td><td align="center" width="20%"><a href="ch09.html">Up</a></td><td align="right" width="40%">&nbsp;Chapter 10. The Details Pane</td></tr></table></div></body></html>

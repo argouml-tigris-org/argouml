@@ -1,0 +1,44 @@
+<html><head><title>7.3. General Mouse Behavior in ArgoUML</title><link href="look-and-feel.css" rel="stylesheet" type="text/css"><meta content="DocBook XSL Stylesheets V1.37" name="generator"><link href="index.html" rel="home" title="ArgoUML User Manual"><link href="ch07.html" rel="up" title="Chapter 7. User Interface Reference"><link href="ch07s02.html" rel="previous" title="7.2. Overview of the Window"><link href="ch07s04.html" rel="next" title="7.4. General Information About Panes"></head><body alink="#0000FF" bgcolor="white" link="#0000FF" text="black" vlink="#840084"><div class="navheader"><table summary="Navigation header" width="100%"><tr><th align="center" colspan="3">7.3. General Mouse Behavior in ArgoUML</th></tr><tr><td align="left" width="20%"><a href="ch07s02.html">Prev</a>&nbsp;</td><th align="center" width="60%">Chapter 7. User Interface Reference</th><td align="right" width="20%">&nbsp;<a href="ch07s04.html">Next</a></td></tr></table><hr></div><div class="sect1"><a name="s1.ref.mouse"></a><div class="titlepage"><div><h2 class="title" style="clear: all"><a name="s1.ref.mouse"></a>7.3. General Mouse Behavior in ArgoUML</h2></div></div><p>Mouse behaviour that is specific to the various panes of ArgoUML
+      (see <a href="ch07s04.html" title="7.4. General Information About Panes">Section 7.4</a>) or the menu bar, is discussed in the
+      chapters covering those panes and the menu bar. In this section we cover
+      behaviour that is general across all of ArgoUML.</p><p>In a number of places in ArgoUML text may be directly edited
+      (for example the constraint editor&#8212;see
+      <a href="ch10s08.html#s2.ref.details_constraint_editor" title="10.8.1. The Constraint Editor">Section 10.8.1</a>). The behaviour of the
+      mouse when handling text is discussed in the sections that follow.</p><div class="sect2"><a name="N22bb"></a><div class="titlepage"><div><h3 class="title"><a name="N22bb"></a>7.3.1. Mouse Button Terminology</h3></div></div><p>ArgoUML assumes a two button mouse. We will refer to the buttons
+        as &#8220;button&nbsp;1&#8221; and &#8220;button&nbsp;2&#8221;. Button&nbsp;1 is
+        the leftmost button on a right-handed mouse, and sometimes referred to
+        as the <i>select</i> button. Button&nbsp;2 is the rightmost
+        button on a right-handed mouse, and is sometimes referred to as the
+        <i>adjust</i> button.</p><p>A single depress and release of a mouse button whilst the mouse
+        is still is referred to as a <i>click</i>. Two clicks in
+        quick succession is referred to as a <i>double
+        click</i>. Moving the mouse while holding a button down is
+        referred to as <i>button motion</i> with the starting
+        point being at <i>button down</i> and the end point at
+        <i>button up</i>.</p></div><div class="sect2"><a name="N22e4"></a><div class="titlepage"><div><h3 class="title"><a name="N22e4"></a>7.3.2. Button&nbsp;1 Click</h3></div></div><p>This action is generally used to select an item for subsequent
+        operations. If the item is an artifact in the navigation pane or the
+        editing pane it will be highlighted.</p><div class="sect3"><a name="N22ee"></a><div class="titlepage"><div><h4 class="title"><a name="N22ee"></a>7.3.2.1. General Behaviour When Editing Text</h4></div></div><p>Here button&nbsp;1 is used to select the point within the text at
+          which operations (text entry and deletion) will take place.</p></div></div><div class="sect2"><a name="N22fa"></a><div class="titlepage"><div><h3 class="title"><a name="N22fa"></a>7.3.3. Button&nbsp;1 Double Click</h3></div></div><p>The behaviour of button&nbsp;1 double click varies betweens panes and
+        is discussed in their chapters.</p><div class="sect3"><a name="N2304"></a><div class="titlepage"><div><h4 class="title"><a name="N2304"></a>7.3.3.1. General Behaviour When Editing Text</h4></div></div><p>Here button&nbsp;1 double click is used to select a complete word, or
+          other syntactic unit within the text. Subsequent operations (text
+          entry and deletion) will replace the selected text.</p></div></div><div class="sect2"><a name="N2310"></a><div class="titlepage"><div><h3 class="title"><a name="N2310"></a>7.3.4. Button&nbsp;1 Motion</h3></div></div><div class="sect3"><a name="N2315"></a><div class="titlepage"><div><h4 class="title"><a name="N2315"></a>7.3.4.1. General Behaviour When Editing Text</h4></div></div><p>Here button&nbsp;1 motion is used to select a range of
+          text. Subsequent operations (text entry and deletion) will replace
+          the selected text.</p></div></div><div class="sect2"><a name="N2321"></a><div class="titlepage"><div><h3 class="title"><a name="N2321"></a>7.3.5. Shift and Control with Button&nbsp;1</h3></div></div><div class="sect3"><a name="N2328"></a><div class="titlepage"><div><h4 class="title"><a name="N2328"></a>7.3.5.1. Within Lists</h4></div></div><p>This behavior applies where there is a list of things that may
+          be selected. This includes various dialog boxes, and the to-do pane,
+          where there is a list of to-do items to be selected.</p><p>Where selections are to be made, the SHIFT key is used to with
+          button&nbsp;1 to <i>extend</i> from the original button&nbsp;1
+          selection to the current position.</p><p>Similarly the CONTROL key with button&nbsp;1 is used to add
+          individual items to the current selection. Where Ctrl-button&nbsp;1 is
+          used on an item already selected, that item is removed from the
+          selection.</p><div class="caution" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td align="center" rowspan="2" valign="top" width="25"><img src="images/caution.png"></td><th><a name="N2339"></a>Caution</th></tr><tr><td align="left" colspan="2" valign="top"><p>Users of Microsoft Windows will be familiar with the use
+          SHIFT and CONTROL together to add sub-lists to an existing
+          selection. ArgoUML does not support this. SHIFT-CONTROL will behave
+          as CONTROL.</p></td></tr></table></div></div><div class="sect3"><a name="N2340"></a><div class="titlepage"><div><h4 class="title"><a name="N2340"></a>7.3.5.2. General Behaviour When Editing Text</h4></div></div><p>In a number of places in ArgoUML text may be directly edited
+          (for example the constraint editor&#8212;see
+          <a href="ch10s08.html#s2.ref.details_constraint_editor" title="10.8.1. The Constraint Editor">Section 10.8.1</a>). Here SHIFT
+          button&nbsp;1 is used to select a range of text from the previously
+          selected point. Subsequent operations (text entry and deletion) will
+          replace the selected text.</p></div></div><div class="sect2"><a name="N2350"></a><div class="titlepage"><div><h3 class="title"><a name="N2350"></a>7.3.6. Button&nbsp;2 Actions</h3></div></div><p>Button&nbsp;2 actions are all dependent on the pane or menu bar, and
+        discussed in their various chapters.</p></div><div class="sect2"><a name="N235b"></a><div class="titlepage"><div><h3 class="title"><a name="N235b"></a>7.3.7. Button&nbsp;2 Double Click</h3></div></div><p>Button&nbsp;2 actions are all dependent on the pane or menu bar, and
+        discussed in their various chapters.</p></div><div class="sect2"><a name="N2366"></a><div class="titlepage"><div><h3 class="title"><a name="N2366"></a>7.3.8. Button&nbsp;2 Motion</h3></div></div><p>Button&nbsp;2 actions are all dependent on the pane or menu bar, and
+        discussed in their various chapters.</p></div></div><div class="navfooter"><hr><table summary="Navigation footer" width="100%"><tr><td align="left" width="40%"><a href="ch07s02.html">Prev</a>&nbsp;</td><td align="center" width="20%"><a href="index.html">Home</a></td><td align="right" width="40%">&nbsp;<a href="ch07s04.html">Next</a></td></tr><tr><td align="left" width="40%">7.2. Overview of the Window&nbsp;</td><td align="center" width="20%"><a href="ch07.html">Up</a></td><td align="right" width="40%">&nbsp;7.4. General Information About Panes</td></tr></table></div></body></html>

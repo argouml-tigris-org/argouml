@@ -1,0 +1,173 @@
+<html><head><title>14.2. The Model</title><link href="look-and-feel.css" rel="stylesheet" type="text/css"><meta content="DocBook XSL Stylesheets V1.37" name="generator"><link href="index.html" rel="home" title="ArgoUML User Manual"><link href="ch14.html" rel="up" title="Chapter 14. ArgoUML Top Level Artifact Reference"><link href="ch14.html" rel="previous" title="Chapter 14. ArgoUML Top Level Artifact Reference"><link href="ch14s03.html" rel="next" title="14.3. Datatype"></head><body alink="#0000FF" bgcolor="white" link="#0000FF" text="black" vlink="#840084"><div class="navheader"><table summary="Navigation header" width="100%"><tr><th align="center" colspan="3">14.2. The Model</th></tr><tr><td align="left" width="20%"><a href="ch14.html">Prev</a>&nbsp;</td><th align="center" width="60%">Chapter 14. ArgoUML Top Level Artifact Reference</th><td align="right" width="20%">&nbsp;<a href="ch14s03.html">Next</a></td></tr></table><hr></div><div class="sect1"><a name="s1.ref.model"></a><div class="titlepage"><div><h2 class="title" style="clear: all"><a name="s1.ref.model"></a>14.2. The Model</h2></div></div><p>The model is the top level artifact within ArgoUML. In the UML
+      meta-model it is a sub-class of package. In many respects within ArgoUML
+      it behaves similarly to a package (see <a href="ch16s02.html" title="16.2. Package">Section 16.2</a>).</p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td align="center" rowspan="2" valign="top" width="25"><img src="images/note.png"></td><th><a name="N5a92"></a>Note</th></tr><tr><td align="left" colspan="2" valign="top"><p>ArgoUML is restricted to one model within the
+      tool.</p></td></tr></table></div><div class="caution" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td align="center" rowspan="2" valign="top" width="25"><img src="images/caution.png"></td><th><a name="N5a96"></a>Caution</th></tr><tr><td align="left" colspan="2" valign="top"><p>In principle you can add a model to a class diagram using
+      the context sensitive (button&nbsp;2) pop up menu <tt>Add To
+      Diagram</tt>from the navigation pane. However this is very demanding
+      of memory and may cause a problem with ArgoUML running out of
+      memory.</p></td></tr></table></div><p>Where standard data types, classes and packages are loaded (the
+      default, see <a href="ch22.html" title="Chapter 22. ArgoUML Built In DataTypes, Classes, Intefaces and
+    Stereotypes">Chapter 22. ArgoUML Built In DataTypes, Classes, Intefaces and
+    Stereotypes</a>), these are sub-packages
+      of the model.</p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td align="center" rowspan="2" valign="top" width="25"><img src="images/note.png"></td><th><a name="N5aa6"></a>Note</th></tr><tr><td align="left" colspan="2" valign="top"><p>In version 0.9.6 of ArgoUML these sub-packages are not
+      initially visible from the model property pane as owned
+      packages. However if you use the data type navigator from a suitable
+      pane, you can navigate up to the model, and thereafter that data type's
+      sub-packages will appear.</p></td></tr></table></div><div class="sect2"><a name="N5aac"></a><div class="titlepage"><div><h3 class="title"><a name="N5aac"></a>14.2.1. Model Details Tabs</h3></div></div><p>The details tabs that are active for the model are described in
+        <a href="ch14s02.html#tab.ref.model_details_tabs" title="Table 14.1. Details tabs for the model">Table 14.1. Details tabs for the model</a>.</p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td align="center" rowspan="2" valign="top" width="25"><img src="images/note.png"></td><th><a name="N5ab8"></a>Note</th></tr><tr><td align="left" colspan="2" valign="top"><p>The <tt>Style</tt> tab is grayed out, since the
+        model typically has no representation on a diagram (see the caution
+        above).</p></td></tr></table></div><div class="table"><p><a name="tab.ref.model_details_tabs"></a><b>Table 14.1. Details tabs for the model</b></p><table border="1" summary="Details tabs for the model" width="100%"><colgroup><col align="left"><col align="left"></colgroup><thead><tr><th align="left">Tab</th><th align="left">Meaning</th></tr></thead><tbody valign="top"><tr><td>ToDoItem</td><td><p>Standard tab.</p></td></tr><tr><td>Properties</td><td><p>See <a href="ch14s02.html#tab.ref.model_property_toolbar" title="Table 14.2. Property tool bar for the model">Table 14.2. Property tool bar for the model</a> and <a href="ch14s02.html#tab.ref.model_property_fields" title="Table 14.3. Property fields for the model">Table 14.3. Property fields for the model</a>
+                below.</p></td></tr><tr><td>Documentation</td><td><p>Standard tab.</p></td></tr><tr><td>Source</td><td><p>Standard tab. This contains a template package
+                declaration appropriate to the entire model. In the future this
+                would be part of the code generation activity.</p></td></tr><tr><td>Constraints</td><td><p>Standard tab. There are no standard constraints
+                defined for <tt>Model</tt> within the UML
+                meta-model.</p></td></tr><tr><td>Tagged Values</td><td><p>Standard tab. In the UML meta-model,
+                <tt>Model</tt> has the following standard tagged
+                values defined.</p><div class="itemizedlist"><ul><li><p><a name="N5b55"></a><tt>derived</tt> (from the
+                    superclass, <tt>ModelElement</tt>). Values
+                    <tt>true</tt>, meaning the class is
+                    redundant&#8212;it can be formally derived from other
+                    elements, or <tt>false</tt> meaning it
+                    cannot.</p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td align="center" rowspan="2" valign="top" width="25"><img src="images/note.png"></td><th><a name="N5b6c"></a>Note</th></tr><tr><td align="left" colspan="2" valign="top"><p>Derived models still have their value in
+                    analysis to introduce useful names or concepts, and in
+                    design to avoid re-computation.</p></td></tr></table></div></li></ul></div><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td align="center" rowspan="2" valign="top" width="25"><img src="images/note.png"></td><th><a name="N5b71"></a>Note</th></tr><tr><td align="left" colspan="2" valign="top"><p>The UML <tt>Element</tt> metaclass from
+                  which all other artifacts are derived includes the tagged
+                  element <tt>documentation</tt> which is handled by
+                  the <i>documentation tab</i> under
+                  ArgoUML</p></td></tr></table></div></td></tr></tbody></table></div></div><div class="sect2"><a name="N5b89"></a><div class="titlepage"><div><h3 class="title"><a name="N5b89"></a>14.2.2. Model Properties</h3></div></div><p>The property tab tool bar for the model is described in <a href="ch14s02.html#tab.ref.model_property_toolbar" title="Table 14.2. Property tool bar for the model">Table 14.2. Property tool bar for the model</a>.</p><div class="table"><p><a name="tab.ref.model_property_toolbar"></a><b>Table 14.2. Property tool bar for the model</b></p><table border="1" summary="Property tool bar for the model" width="100%"><colgroup><col align="left"><col align="center"><col align="left"></colgroup><thead><tr><th align="left">Button</th><th align="center">Icon</th><th align="left">Meaning</th></tr></thead><tbody valign="top"><tr><td>Go up</td><td><span class="inlinemediaobject"><img align="center" src="images/icons/navigate_up.gif"></span></td><td><p>Navigate up through the package structure of the
+                model.</p></td></tr><tr><td>Go back</td><td><span class="inlinemediaobject"><img align="center" src="images/icons/navigate_back.gif"></span></td><td><p>Navigate back to the previous
+                artifact.</p><div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td align="center" rowspan="2" valign="top" width="25"><img src="images/warning.png"></td><th><a name="N5c0e"></a>Warning</th></tr><tr><td align="left" colspan="2" valign="top"><p>This feature is currently broken within ArgoUML
+                and there is no guarantee where (if anywhere) this button will
+                take you.</p></td></tr></table></div></td></tr><tr><td>Go forward</td><td><span class="inlinemediaobject"><img align="center" src="images/icons/navigate_forward.gif"></span></td><td><p>Navigate forward to the next
+                artifact.</p><div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td align="center" rowspan="2" valign="top" width="25"><img src="images/warning.png"></td><th><a name="N5c2d"></a>Warning</th></tr><tr><td align="left" colspan="2" valign="top"><p>This feature is currently broken within ArgoUML
+                and there is no guarantee where (if anywhere) this button will
+                take you.</p></td></tr></table></div></td></tr><tr><td>Add class</td><td><span class="inlinemediaobject"><img align="center" src="images/icons/class.gif"></span></td><td><p>This creates a new class (see <a href="ch16s05.html" title="16.5. Class">Section 16.5</a>) within the model (which
+                  appears on no diagram), navigating immediately to the
+                  properties tab for that class.</p><div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td align="center" rowspan="2" valign="top" width="25"><img src="images/tip.png"></td><th><a name="N5c50"></a>Tip</th></tr><tr><td align="left" colspan="2" valign="top"><p>Whilst it can make sense to create classes this way,
+                it is usually a lot clearer to  create them within diagrams
+                where you want them.</p></td></tr></table></div></td></tr><tr><td>Add interface</td><td><span class="inlinemediaobject"><img align="center" src="images/icons/interface.gif"></span></td><td><p>This creates a new interface (see <a href="ch16s14.html" title="16.14. Interface">Section 16.14</a>) within the model (which
+                  appears on no diagram), navigating immediately to the
+                  properties tab for that interface.</p><div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td align="center" rowspan="2" valign="top" width="25"><img src="images/tip.png"></td><th><a name="N5c73"></a>Tip</th></tr><tr><td align="left" colspan="2" valign="top"><p>Whilst it can make sense to create interfaces this
+                way, it is usually a lot clearer to create them within diagrams
+                where you want them.</p></td></tr></table></div></td></tr><tr><td>Add datatype</td><td><span class="inlinemediaobject"><img align="center" src="images/icons/datatype.gif"></span></td><td><p>This creates a new data type (see <a href="ch14s03.html" title="14.3. Datatype">Section 14.3</a>) within the model (which appears
+                on no diagram), navigating immediately to the properties tab
+                for that datatype.</p></td></tr><tr><td>Add stereotype</td><td><span class="inlinemediaobject"><img align="center" src="images/icons/stereotype.gif"></span></td><td><p>This creates a new stereotype (see <a href="ch14s04.html" title="14.4. Stereotypes">Section 14.4</a>) within the model, navigating
+                immediately to the properties tab for that
+                stereotype.</p></td></tr><tr><td>Add actor</td><td><span class="inlinemediaobject"><img align="center" src="images/icons/actor.gif"></span></td><td><p>This creates a new actor (see <a href="ch15s02.html" title="15.2. Actor">Section 15.2</a>) within the model (which appears
+                on no diagram), navigating immediately to the properties tab
+                for that actor.</p><div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td align="center" rowspan="2" valign="top" width="25"><img src="images/tip.png"></td><th><a name="N5cd4"></a>Tip</th></tr><tr><td align="left" colspan="2" valign="top"><p>Whilst it can make sense to create actors this
+                way, it is usually a lot clearer to create them within diagrams
+                where you want them.</p></td></tr></table></div></td></tr><tr><td>Add use case</td><td><span class="inlinemediaobject"><img align="center" src="images/icons/use_case.gif"></span></td><td><p>This creates a new use case (see <a href="ch15s03.html" title="15.3. Use Case">Section 15.3</a>) within the model (which appears
+                on no diagram), navigating immediately to the properties tab
+                for that use case.</p><div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td align="center" rowspan="2" valign="top" width="25"><img src="images/tip.png"></td><th><a name="N5cf7"></a>Tip</th></tr><tr><td align="left" colspan="2" valign="top"><p>Whilst it can make sense to create use cases this
+                way, it is usually a lot clearer to create them within diagrams
+                where you want them.</p></td></tr></table></div></td></tr><tr><td>Add subpackage</td><td><span class="inlinemediaobject"><img align="center" src="images/icons/package.gif"></span></td><td><p>This creates a new sub-package (see <a href="ch16s02.html" title="16.2. Package">Section 16.2</a>) within the model (which appears
+                on no diagram), navigating immediately to the properties tab
+                for that package.</p><div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td align="center" rowspan="2" valign="top" width="25"><img src="images/tip.png"></td><th><a name="N5d1a"></a>Tip</th></tr><tr><td align="left" colspan="2" valign="top"><p>Whilst it can make sense to create sub-packages of the
+                model this way, it is usually a lot clearer to create them
+                within diagrams where you want them.</p></td></tr></table></div></td></tr><tr><td>Add generalization</td><td><span class="inlinemediaobject"><img align="center" src="images/icons/generalization.gif"></span></td><td><p>This creates a new generalization (see <a href="ch15s06.html" title="15.6. Generalization">Section 15.6</a> and <a href="ch16s13.html" title="16.13. Generalization">Section 16.13</a>) within the model
+                  (which appears on no diagram), navigating immediately to the
+                  properties tab for that generalization.</p><div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td align="center" rowspan="2" valign="top" width="25"><img src="images/tip.png"></td><th><a name="N5d41"></a>Tip</th></tr><tr><td align="left" colspan="2" valign="top"><p>Whilst it can make sense to create generalizations
+                this way, it is usually a lot clearer to create them within
+                diagrams where you want them.</p></td></tr></table></div></td></tr><tr><td>Add realization</td><td><span class="inlinemediaobject"><img align="center" src="images/icons/realization.gif"></span></td><td><p>This should create a new realization (i.e. an
+                abstraction with stereotype
+                <tt>realize</tt>&#8212;see <a href="ch16s15.html" title="16.15. Abstraction">Section 16.15</a>) within the model (which
+                appears on no diagram).</p><div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td align="center" rowspan="2" valign="top" width="25"><img src="images/warning.png"></td><th><a name="N5d69"></a>Warning</th></tr><tr><td align="left" colspan="2" valign="top"><p>This appears to be broken in the current release
+                of ArgoUML. Even if it did work, it would be of limited
+                value, since the abstraction property sheet has no mechanism
+                for adding supplier and client
+                artifacts.</p></td></tr></table></div></td></tr><tr><td>Delete</td><td><span class="inlinemediaobject"><img align="center" src="images/icons/property_delete.gif"></span></td><td><p>This has no effect&#8212;it is meaningless to delete
+                the model!</p></td></tr></tbody></table></div><p>The fields on the property tab for models are described in
+        <a href="ch14s02.html#tab.ref.model_property_fields" title="Table 14.3. Property fields for the model">Table 14.3. Property fields for the model</a>.</p><div class="table"><p><a name="tab.ref.model_property_fields"></a><b>Table 14.3. Property fields for the model</b></p><table border="1" summary="Property fields for the model" width="100%"><colgroup><col align="left"><col align="left"></colgroup><thead><tr><th align="left">Field</th><th align="left">Meaning</th></tr></thead><tbody valign="top"><tr><td>Name</td><td><p>Text box. The name of the model. The name of a
+                model, like all packages, is by convention all lower
+                case.</p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td align="center" rowspan="2" valign="top" width="25"><img src="images/note.png"></td><th><a name="N5dd9"></a>Note</th></tr><tr><td align="left" colspan="2" valign="top"><p>The default name supplied to a new model by
+                ArgoUML, <tt>untitledModel</tt>, is thus erroneous
+                and guarantees that ArgoUML always starts up with at least
+                one problem being reported by the design
+                critics.</p></td></tr></table></div></td></tr><tr><td>Stereotype</td><td><p>Drop down selector. Model is provided by default
+                with the UML standard stereotypes for model
+                (<tt>systemModel</tt> and
+                <tt>metamodel</tt>) and package
+                (<tt>facade</tt>, <tt>framework</tt>,
+                <tt>stub</tt>), as well as the stereotypes for models
+                and packages in the UML standard profiles for
+                <i>software development process</i>
+                (<tt>use-case&nbsp;model</tt>,
+                <tt>analysis&nbsp;model</tt>,
+                <tt>design&nbsp;model</tt>,
+                <tt>implementation&nbsp;model</tt>,
+                <tt>use&nbsp;case&nbsp;package</tt> and
+                <tt>analysis&nbsp;service&nbsp;package</tt>).
+                ArgoUML also provides the additional stereotypes,
+                <tt>machine</tt>, <tt>organization</tt> and
+                <tt>person</tt>.</p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td align="center" rowspan="2" valign="top" width="25"><img src="images/note.png"></td><th><a name="N5e37"></a>Note</th></tr><tr><td align="left" colspan="2" valign="top"><p>A number of standard stereotypes are currently
+                missing from ArgoUML: <tt>topLevel</tt> (from
+                package), <tt>use&nbsp;case&nbsp;system</tt>,
+                <tt>analysis&nbsp;system</tt>,
+                <tt>analysis&nbsp;package</tt> (all three from the
+                <i>software development process</i>
+                profile).</p></td></tr></table></div><div class="caution" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td align="center" rowspan="2" valign="top" width="25"><img src="images/caution.png"></td><th><a name="N5e52"></a>Caution</th></tr><tr><td align="left" colspan="2" valign="top"><p>ArgoUML provides the stereotype
+                <tt>realize</tt> for models and packages. This
+                appears to be an error, since this stereotype properly belongs
+                to the <tt>Association</tt>
+                metaclass.</p></td></tr></table></div><p>Stereotyping models is a useful thing, although it is of
+                limited value in ArgoUML where you have only a single
+                model.</p></td></tr><tr><td>Navigate Stereotype</td><td><p><span class="inlinemediaobject"><img align="center" src="images/icons/navigate_stereotype.gif"></span> icon. If a
+                  stereotype has been selected, this will navigate you to the
+                  stereotype property panel (see <a href="ch14s04.html" title="14.4. Stereotypes">Section 14.4</a>).</p></td></tr><tr><td>Namespace</td><td><p>Text box. Records the namespace for the model. This
+                is the package hierarchy. However since the model is at the top
+                of the hierarchy in ArgoUML, this box is always
+                empty.</p></td></tr><tr><td>Modifiers</td><td><p>Check box, with entries <tt>Abstract</tt>,
+                <tt>Final</tt> and <tt>Root</tt>.</p><div class="itemizedlist"><ul><li><p><a name="N5ea9"></a><tt>abstract</tt> is used to declare
+                  that this model cannot be instantiated, but must always be
+                  specialized.</p><div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td align="center" rowspan="2" valign="top" width="25"><img src="images/tip.png"></td><th><a name="N5eb1"></a>Tip</th></tr><tr><td align="left" colspan="2" valign="top"><p>The meaning of <tt>abstract</tt> applied
+                  to a model is not that clear. It might mean that the model
+                  contains interfaces or abstract classes without
+                  realizations. Since ArgoUML only permits one model, this is
+                  not a meaningful box to check.</p></td></tr></table></div></li><li><p><a name="N5eba"></a><tt>final</tt> indicates that this
+                  model can have no further subpackages, while
+                  <tt>root</tt> indicates it is the top level
+                  model.</p><div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td align="center" rowspan="2" valign="top" width="25"><img src="images/tip.png"></td><th><a name="N5ec7"></a>Tip</th></tr><tr><td align="left" colspan="2" valign="top"><p>Within ArgoUML <tt>root</tt> only
+                  meaningfully applies to the Model, since all packages sit
+                  within the model. In the absence of the
+                  <tt>topLevel</tt> stereotype, this could be used to
+                  emphasize that the Model is at the top
+                  level.</p></td></tr></table></div></li></ul></div></td></tr><tr><td>Derived</td><td><p>Text box. Lists any derived class. Meaningless for
+                a model.</p></td></tr><tr><td>Extends</td><td><p>Text box. Lists any use case that is extended by
+                this model. Meaningless for a model.</p></td></tr><tr><td>Implements</td><td><p>Text area. Lists any models for which this model is
+                the realization. Of little value within ArgoUML, since
+                multiple models are not permitted.</p><p>It is possible to add realizations from this menu, although
+                since there is no way to add a model to the other end of the
+                abstraction, it is meaningless. Button&nbsp;1 click allows you
+                to navigate to them and button&nbsp;2 click gives a pop up menu
+                with options to <tt>Open</tt>,
+                <tt>Add</tt>, <tt>Delete</tt>,
+                <tt>Move&nbsp;Up</tt> and
+                <tt>Move&nbsp;Down</tt> (see <a href="ch15s03.html#ref.use_case_generalization">Generalizations</a>
+                for examples of how these operations are used).</p></td></tr><tr><td>Owned Elements
+              </td><td><p>Text area. A hierarchical listing of the packages,
+                classes, interfaces, datatypes, actors, use cases,
+                associations, generalizations and stereotypes within the
+                model. For each of these types of artifact, where there is at
+                least one example in the model, a folder icon is
+                shown.</p><p>Button&nbsp;1 double click on the folder icon
+                (<span class="inlinemediaobject"><img align="center" src="images/icons/folder.gif"></span>) opens the folder
+                to reveal the artifacts owned under that category.</p><p>Button&nbsp;1 click on any of the revealed artifacts yields
+                navigates to that artifact.</p><p>Button&nbsp;1 double click on an open folder (with
+                artifacts displayed) will close the folder and hide the
+                artifacts.</p><p>Alternatively, Button&nbsp;2 double click on any item gives
+                a pop up menu.</p><div class="itemizedlist"><ul><li><p><a name="N5f43"></a><tt>Add</tt>. This option creates a
+                  new artifact of the specified type within the model, and
+                  navigates to that item.</p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td align="center" rowspan="2" valign="top" width="25"><img src="images/note.png"></td><th><a name="N5f4b"></a>Note</th></tr><tr><td align="left" colspan="2" valign="top"><p>The item is placed under its relevant folder,
+                  irrespective of where the pop up menu is revealed. So
+                  button&nbsp;2 lick on <tt>Actor</tt> folder and
+                  selection of <tt>Add/Package</tt> will place the
+                  new package under the <tt>Package</tt> folder, not
+                  the <tt>Actor</tt> folder.</p></td></tr></table></div><p>This is the only menu option actually available to the
+                  model (the others apply to packages within the model, see
+                  <a href="ch16s02.html" title="16.2. Package">Section 16.2</a>).</p><div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td align="center" rowspan="2" valign="top" width="25"><img src="images/tip.png"></td><th><a name="N5f6a"></a>Tip</th></tr><tr><td align="left" colspan="2" valign="top"><p>It is often far easier to add artifacts by drawing
+                  them on the relevant diagram in the editing
+                  pane.</p></td></tr></table></div></li><li><p><a name="N5f6e"></a><tt>Delete</tt>. This is always
+                  grayed out for a model.</p></li><li><p><a name="N5f76"></a><tt>Go</tt>. This is always
+                  grayed out for a model.</p></li><li><p><a name="N5f7e"></a><tt>Open</tt>. This is always
+                  grayed out for a model.</p></li></ul></div></td></tr></tbody></table></div></div></div><div class="navfooter"><hr><table summary="Navigation footer" width="100%"><tr><td align="left" width="40%"><a href="ch14.html">Prev</a>&nbsp;</td><td align="center" width="20%"><a href="index.html">Home</a></td><td align="right" width="40%">&nbsp;<a href="ch14s03.html">Next</a></td></tr><tr><td align="left" width="40%">Chapter 14. ArgoUML Top Level Artifact Reference&nbsp;</td><td align="center" width="20%"><a href="ch14.html">Up</a></td><td align="right" width="40%">&nbsp;14.3. Datatype</td></tr></table></div></body></html>

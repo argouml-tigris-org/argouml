@@ -1,0 +1,103 @@
+<html><head><title>12.4. The Edit Menu</title><link href="look-and-feel.css" rel="stylesheet" type="text/css"><meta content="DocBook XSL Stylesheets V1.37" name="generator"><link href="index.html" rel="home" title="ArgoUML User Manual"><link href="ch12.html" rel="up" title="Chapter 12. The Menu bar"><link href="ch12s03.html" rel="previous" title="12.3. The File Menu"><link href="ch12s05.html" rel="next" title="12.5. The View Menu"></head><body alink="#0000FF" bgcolor="white" link="#0000FF" text="black" vlink="#840084"><div class="navheader"><table summary="Navigation header" width="100%"><tr><th align="center" colspan="3">12.4. The Edit Menu</th></tr><tr><td align="left" width="20%"><a href="ch12s03.html">Prev</a>&nbsp;</td><th align="center" width="60%">Chapter 12. The Menu bar</th><td align="right" width="20%">&nbsp;<a href="ch12s05.html">Next</a></td></tr></table><hr></div><div class="sect1"><a name="N4132"></a><div class="titlepage"><div><h2 class="title" style="clear: all"><a name="N4132"></a>12.4. The Edit Menu</h2></div></div><p>This menu provides support for selecting artifacts on the editing
+      pane; an undo/redo function; cut, copy and paste functions; removal of
+      artifacts from diagrams and the model; and control of user
+      settings.</p><div class="sect2"><a name="N413c"></a><div class="titlepage"><div><h3 class="title"><a name="N413c"></a>12.4.1. The Select Sub-Menu</h3></div></div><p>This sub-menu provides for selection of items on the editing
+        menu. It has four entries.</p><div class="itemizedlist"><ul><li><p><a name="N4146"></a><tt>Select All</tt> (shortcut
+          Ctrl-A). Selects all artifacts on the editing pane.</p></li><li><p><a name="N414e"></a><tt>Select Previous</tt>. ArgoUML has a
+          concept of the ordering of artifacts on a diagram. This
+          selects the item prior to the currently selected item in that
+          ordering.</p><div class="caution" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td align="center" rowspan="2" valign="top" width="25"><img src="images/caution.png"></td><th><a name="N4156"></a>Caution</th></tr><tr><td align="left" colspan="2" valign="top"><p>The behavior of this menu function can be very
+          strange, selecting items that do not appear to be on any
+          diagram. It is probably best avoided.</p></td></tr></table></div></li><li><p><a name="N415a"></a><tt>Select Next</tt>. Similarly this
+          selects the item following the currently selected item in that
+          ordering.</p><div class="caution" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td align="center" rowspan="2" valign="top" width="25"><img src="images/caution.png"></td><th><a name="N4162"></a>Caution</th></tr><tr><td align="left" colspan="2" valign="top"><p>Again the behavior of this menu function can be very
+          strange, selecting items that do not appear to be on any diagram. It
+          is probably best avoided.</p></td></tr></table></div></li><li><p><a name="N4166"></a><tt>Invert Selection</tt>. This inverts the
+          current selection (i.e. everything that was selected is de-selected
+          and everything that was not selected is selected).</p></li></ul></div></div><div class="sect2"><a name="N4172"></a><div class="titlepage"><div><h3 class="title"><a name="N4172"></a>12.4.2. <span class="inlinemediaobject"><img align="center" src="images/icons/undo.gif"></span> Undo</h3></div></div><p>This is intended to undo editing actions.</p><div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td align="center" rowspan="2" valign="top" width="25"><img src="images/warning.png"></td><th><a name="N4187"></a>Warning</th></tr><tr><td align="left" colspan="2" valign="top"><p>In the current implementation of ArgoUML this function
+        is not available and is permanently grayed out.</p></td></tr></table></div></div><div class="sect2"><a name="N418e"></a><div class="titlepage"><div><h3 class="title"><a name="N418e"></a>12.4.3. <span class="inlinemediaobject"><img align="center" src="images/icons/redo.gif"></span> Redo</h3></div></div><p>This is intended to redo editing actions&#8212;that is to reverse
+        the effect of the Undo function.</p><div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td align="center" rowspan="2" valign="top" width="25"><img src="images/warning.png"></td><th><a name="N41a3"></a>Warning</th></tr><tr><td align="left" colspan="2" valign="top"><p>In the current implementation of ArgoUML this function
+        is not available and is permanently grayed out.</p></td></tr></table></div></div><div class="sect2"><a name="s2.ref.menu_cut"></a><div class="titlepage"><div><h3 class="title"><a name="s2.ref.menu_cut"></a>12.4.4. <span class="inlinemediaobject"><img align="center" src="images/icons/cut.gif"></span> Cut</h3></div></div><p>Shortcut Ctrl-X.</p><p>This should take the currently selected items, remove them from the
+        diagram, and place them on the clipboard for subsequent pasting.</p><div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td align="center" rowspan="2" valign="top" width="25"><img src="images/warning.png"></td><th><a name="N41c4"></a>Warning</th></tr><tr><td align="left" colspan="2" valign="top"><p>In the current implementation of ArgoUML there are
+        some difficulties with clipboard based functions. This menu option is
+        permanently grayed out.</p></td></tr></table></div></div><div class="sect2"><a name="s2.ref.menu_copy"></a><div class="titlepage"><div><h3 class="title"><a name="s2.ref.menu_copy"></a>12.4.5. <span class="inlinemediaobject"><img align="center" src="images/icons/copy.gif"></span> Copy</h3></div></div><p>Shortcut Ctrl-C.</p><p>This should take the currently selected items and make a copy of
+        them on the clipboard for subsequent pasting.</p><div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td align="center" rowspan="2" valign="top" width="25"><img src="images/warning.png"></td><th><a name="N41e5"></a>Warning</th></tr><tr><td align="left" colspan="2" valign="top"><p>If the original item is deleted from the model or removed
+        from the diagram, subsequent pasting will produce a copy that has no
+        namespace, and cannot be properly saved.</p><p>In addition pasting back to the diagram from which the copy was
+        made will replace the original, rather than duplicating it.</p><p>In the light of this, the copy function is best
+        avoided.</p></td></tr></table></div></div><div class="sect2"><a name="s2.ref.menu_paste"></a><div class="titlepage"><div><h3 class="title"><a name="s2.ref.menu_paste"></a>12.4.6. <span class="inlinemediaobject"><img align="center" src="images/icons/paste.gif"></span> Paste</h3></div></div><p>Shortcut Ctrl-V.</p><p>This should paste the item(s) last cut or copied to the clipboard
+        on to the currently diagram in the drawing pane.</p><div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td align="center" rowspan="2" valign="top" width="25"><img src="images/warning.png"></td><th><a name="N420c"></a>Warning</th></tr><tr><td align="left" colspan="2" valign="top"><p>If the original item has since been deleted from the model
+        or removed from the diagram, pasting will produce a copy that has no
+        namespace, and cannot be properly saved.</p><p>In addition pasting back to the diagram from which the copy was
+        made will replace the original, rather than duplicating it.</p><p>In the light of this, the paste function is best
+        avoided.</p></td></tr></table></div></div><div class="sect2"><a name="s2.menu_edit_remove_from_diagram"></a><div class="titlepage"><div><h3 class="title"><a name="s2.menu_edit_remove_from_diagram"></a>12.4.7. Remove From Diagram</h3></div></div><p>Shortcut Ctrl-R.</p><p>This removes the currently selected item(s) from the diagram, but
+        not from the model.</p><div class="caution" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td align="center" rowspan="2" valign="top" width="25"><img src="images/caution.png"></td><th><a name="N4226"></a>Caution</th></tr><tr><td align="left" colspan="2" valign="top"><p>In previous versions of ArgoUML there was a problem
+        where, in some circumstances, the item(s) were deleted from the model
+        completely, not just from the diagram.</p><p><i>This is now believed to be fixed, but you should consider
+        saving your model prior to using this
+        function.</i></p></td></tr></table></div></div><div class="sect2"><a name="N4231"></a><div class="titlepage"><div><h3 class="title"><a name="N4231"></a>12.4.8. Delete From Model</h3></div></div><p>Shortcut Delete.</p><p>This function deletes the selected item(s) from the model
+        completely.</p><div class="caution" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td align="center" rowspan="2" valign="top" width="25"><img src="images/caution.png"></td><th><a name="N423c"></a>Caution</th></tr><tr><td align="left" colspan="2" valign="top"><p>In the current version of ArgoUML the item(s) may not
+        disappear from diagrams other than the current one. However the copies
+        on other diagrams will have no associated properties. They should be
+        deleted, or will disappear after the model is saved and
+        reloaded.</p></td></tr></table></div></div><div class="sect2"><a name="N4243"></a><div class="titlepage"><div><h3 class="title"><a name="N4243"></a>12.4.9. Empty trash</h3></div></div><p>This menu function has no discernible effect. It is believed to
+        invoke a garbage collection in the Java system.</p></div><div class="sect2"><a name="s2.ref.menu_settings"></a><div class="titlepage"><div><h3 class="title"><a name="s2.ref.menu_settings"></a>12.4.10. Settings&#8230;</h3></div></div><p>This menu entry brings up a dialog box, which allows the user to
+        set various options that control the behavior of ArgoUML (see
+        <a href="ch12s04.html#fig.ref.menu_settings" title="Figure 12.3. The dialog for Settings.">Figure 12.3. The dialog for <tt>Settings</tt>.</a>).</p><div class="figure"><p><a name="fig.ref.menu_settings"></a><b>Figure 12.3. The dialog for <tt>Settings</tt>.</b></p><div class="screenshot"><div class="mediaobject"><img align="center" src="images/reference/menu_settings.png"></div></div></div><p>The options that can be set up on the various tabs are described in
+        the following sections. For each tab there are three buttons at the
+        bottom of the dialog box.</p><div class="itemizedlist"><ul><li><p><a name="N42aa"></a><tt>OK</tt>. Selecting this button (button&nbsp;1
+          click) applies the chosen settings and exits the
+          dialog.</p></li><li><p><a name="N42b2"></a><tt>Cancel</tt>. Selecting this button
+          (button&nbsp;1 click) exits the dialog without applying any settings
+          changed since the last <tt>Apply</tt> (or since the dialog
+          started if <tt>Apply</tt> has not been
+          used).</p></li><li><p><a name="N42c4"></a><tt>Apply</tt>. Selecting this button
+          (button&nbsp;1 click) applies the chosen settings and remains in the
+          dialog.</p></li></ul></div><p>These settings can be saved for use by subsequent ArgoUML
+        sessions (see <a href="ch12s03.html#s2.ref.menu_save_config" title="12.3.10. Save Configuration">Section 12.3.10</a>).</p><div class="sect3"><a name="N42d6"></a><div class="titlepage"><div><h4 class="title"><a name="N42d6"></a>12.4.10.1. Preferences Tab</h4></div></div><p>Selecting the <tt>Preferences</tt> tab (button&nbsp;1 click
+          on the tab) gives four options as check boxes.</p><div class="itemizedlist"><ul><li><p><a name="N42e5"></a><tt>Show Splash Panel</tt> (set by
+            default). If enabled ArgoUML will show a small panel with a
+            picture while loading.</p><div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td align="center" rowspan="2" valign="top" width="25"><img src="images/tip.png"></td><th><a name="N42ed"></a>Tip</th></tr><tr><td align="left" colspan="2" valign="top"><p>The splash panel can be seen by using the Help menu (see
+            <a href="ch12s11.html#s2.ref.menu_help_about" title="12.11.1. About Argo/UML">Section 12.11.1</a>).</p></td></tr></table></div></li><li><p><a name="N42f5"></a><tt>Preload Common Classes</tt> (set by
+            default). If enabled ArgoUML creates class objects of a number of
+            classes internally during start up so that instantiation is quicker
+            when they are needed.</p></li><li><p><a name="N42fd"></a><tt>Report Usage Statistics</tt> (set by
+            default). If enabled usage statistics are reported on the
+            console.</p><div class="caution" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td align="center" rowspan="2" valign="top" width="25"><img src="images/caution.png"></td><th><a name="N4305"></a>Caution</th></tr><tr><td align="left" colspan="2" valign="top"><p>In the current version of ArgoUML there is only a
+            very small amount of information, which may be missed amongst the
+            other console output.</p></td></tr></table></div></li><li><p><a name="N4309"></a><tt>Report on Load Times</tt> (clear by
+            default). If enabled load times at start up for the various phases
+            of initialization are reported.</p><div class="caution" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td align="center" rowspan="2" valign="top" width="25"><img src="images/caution.png"></td><th><a name="N4311"></a>Caution</th></tr><tr><td align="left" colspan="2" valign="top"><p>These times are only of use to developers&#8212;they
+            have no meaning to the ordinary user.</p></td></tr></table></div></li></ul></div></div><div class="sect3"><a name="N4319"></a><div class="titlepage"><div><h4 class="title"><a name="N4319"></a>12.4.10.2. Environment Tab</h4></div></div><p>Selecting the <tt>Environment</tt> tab (button&nbsp;1 click
+          on the tab) lists seven environmental items. Note that none of these
+          can be set&#8212;this tab is just a matter of record.</p><div class="itemizedlist"><ul><li><p><a name="N4328"></a><tt>${argo.root}</tt>. The directory
+            holding the top level argo class definitions. By default the
+            <tt>classes</tt> sub-directory of the ArgoUML build
+            directory.</p></li><li><p><a name="N4335"></a><tt>${argo.home}</tt>. The ArgoUML build
+            directory.</p></li><li><p><a name="N433d"></a><tt>${argo.ext.dir}</tt>. The directory
+            holding ArgoUML extensions&#8212;by default the
+            <tt>ext</tt> sub-directory of the ArgoUML build
+            directory.</p></li><li><p><a name="N434a"></a><tt>${java.home}</tt>. The home directory
+            of the Java Runtime Environment (JRE).</p></li><li><p><a name="N4352"></a><tt>${user.home}</tt>. The user's home
+            directory.</p></li><li><p><a name="N435a"></a><tt>${user.dir}</tt>. The directory from
+            which ArgoUML was started.</p></li><li><p><a name="N4362"></a><tt>startup directory</tt>. The directory
+            in which ArgoUML starts file searches etc.</p></li></ul></div></div><div class="sect3"><a name="N436e"></a><div class="titlepage"><div><h4 class="title"><a name="N436e"></a>12.4.10.3. User Tab</h4></div></div><p>This tab allows the user to record additional information of use
+          to the system. There are two text boxes provided.</p><div class="itemizedlist"><ul><li><p><a name="N4378"></a><tt>Full Name:</tt>. Allows the user to
+          record their full name.</p></li><li><p><a name="N4380"></a><tt>Email Address:</tt>. Allows the user to
+          record their Email address.</p></li></ul></div><p>This information is used when requesting to-do help by
+          Email.</p></div><div class="sect3"><a name="s3.ref.menu_settings_notation"></a><div class="titlepage"><div><h4 class="title"><a name="s3.ref.menu_settings_notation"></a>12.4.10.4. Notation Tab</h4></div></div><p>This tab allows the user to specify certain notation
+          settings. It comprises two check boxes.</p><div class="itemizedlist"><ul><li><p><a name="N439b"></a><tt>Only allow strict UML notation
+            text</tt> (clear by default). This feature is for future use.
+            One possibility is that a designer may create a diagram and indicate
+            that the notation of the diagram is Java. Someone viewing the
+            diagram with strict UML notation checked will
+            <i>only</i> see UML notation in the classes no matter
+            what notation the designer has used. See also <a href="ch12s05.html#s2.ref.menu_notation" title="12.5.10. The Notation Sub-Menu">Section 12.5.10</a>).</p><div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td align="center" rowspan="2" valign="top" width="25"><img src="images/warning.png"></td><th><a name="N43aa"></a>Warning</th></tr><tr><td align="left" colspan="2" valign="top"><p>This is not currently supported and is not a
+            commitment to the feature of assigning a notation to a diagram
+            either.</p></td></tr></table></div></li><li><p><a name="N43ae"></a><tt>Use guillemots (&laquo; &raquo;) for
+            stereotypes</tt> (clear by default). By default ArgoUML uses
+            pairs of &#8220;less than&#8221; and &#8220;greater than&#8221;
+            (&lt;&lt; &gt;&gt;) characters for stereotypes If this box is
+            checked stereotypes on diagrams are shown between true guillemots
+            (&laquo; &raquo;).</p><div class="caution" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td align="center" rowspan="2" valign="top" width="25"><img src="images/caution.png"></td><th><a name="N43bc"></a>Caution</th></tr><tr><td align="left" colspan="2" valign="top"><p>This feature is not fully implemented in the current
+            version of ArgoUML.</p></td></tr></table></div></li></ul></div></div></div></div><div class="navfooter"><hr><table summary="Navigation footer" width="100%"><tr><td align="left" width="40%"><a href="ch12s03.html">Prev</a>&nbsp;</td><td align="center" width="20%"><a href="index.html">Home</a></td><td align="right" width="40%">&nbsp;<a href="ch12s05.html">Next</a></td></tr><tr><td align="left" width="40%">12.3. The File Menu&nbsp;</td><td align="center" width="20%"><a href="ch12.html">Up</a></td><td align="right" width="40%">&nbsp;12.5. The View Menu</td></tr></table></div></body></html>

@@ -1,0 +1,468 @@
+<html><head><title>2.5. ArgoUML Basics</title><link href="look-and-feel.css" rel="stylesheet" type="text/css"><meta content="DocBook XSL Stylesheets V1.37" name="generator"><link href="index.html" rel="home" title="ArgoUML User Manual"><link href="ch02.html" rel="up" title="Chapter 2. UML Based OOA&amp;D"><link href="ch02s04.html" rel="previous" title="2.4. Why ArgoUML is Different"><link href="ch02s06.html" rel="next" title="2.6. The Case Study"></head><body alink="#0000FF" bgcolor="white" link="#0000FF" text="black" vlink="#840084"><div class="navheader"><table summary="Navigation header" width="100%"><tr><th align="center" colspan="3">2.5. ArgoUML Basics</th></tr><tr><td align="left" width="20%"><a href="ch02s04.html">Prev</a>&nbsp;</td><th align="center" width="60%">Chapter 2. UML Based OOA&amp;D</th><td align="right" width="20%">&nbsp;<a href="ch02s06.html">Next</a></td></tr></table><hr></div><div class="sect1"><a name="N1085"></a><div class="titlepage"><div><h2 class="title" style="clear: all"><a name="N1085"></a>2.5. ArgoUML Basics</h2></div></div><p>The aim of this section is to get you up and running with
+      ArgoUML. It takes you through obtaining the code and getting it
+      running.</p><div class="sect2"><a name="N108d"></a><div class="titlepage"><div><h3 class="title"><a name="N108d"></a>2.5.1. Getting Started</h3></div></div><p>You have three options for obtaining ArgoUML.</p><div class="orderedlist"><ol type="1"><li><p><a name="N109b"></a>Run ArgoUML directly from the Web Site using Java
+          WebStart (JWS). This is the easiest option.</p></li><li><p><a name="N109f"></a>Download the binary code. This is the right option if
+          you intend using ArgoUML regularly and is not that
+          difficult.</p></li><li><p><a name="N10a3"></a>Download the source code using CVS and build your own
+          version. Choose this option if you want to look at the internal
+          workings of ArgoUML, or want to join in as a
+          developer.</p></li></ol></div><p>All three options are freely available through the project web
+        site,
+        <a href="http://argouml.tigris.org" target="_top">argouml.tigris.org</a>.
+      </p><p>If you choose to download binary, you will have a choice of
+        downloading the latest stable version of the code (which will be more
+        reliable, but not have all the latest features), or the current version
+        (which will be less reliable, but have more features). Choose according
+        to your own situation</p><p>If you are intending using ArgoUML for a commercial product, you
+        may want greater support than is guaranteed under an open source
+        project. There is a commercial version of ArgoUML,
+        <i>Poseidon</i> developed by Gentleware. It can be
+        obtained from their website,
+        <a href="http://www.gentleware.com" target="_top">www.gentleware.com</a>.
+      </p><p>This documentation was produced using ArgoUML 0.9.6, which at the
+        time of writing was the latest stable version.</p><div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td align="center" rowspan="2" valign="top" width="25"><img src="images/warning.png"></td><th><a name="N10c1"></a>Warning</th></tr><tr><td align="left" colspan="2" valign="top"><p>The previous paragraph is a statement of
+        &#8220;anticipation&#8221;. The preparation of 0.9.6 and the writing
+        of this edition of the User Manual are running in
+        parallel. So this manual really reflects the current (unstable) 0.9.5
+        development today!</p></td></tr></table></div><div class="sect3"><a name="N10ca"></a><div class="titlepage"><div><h4 class="title"><a name="N10ca"></a>2.5.1.1. ArgoUML using JWS</h4></div></div><p>There are two steps to this.</p><div class="orderedlist"><ol type="1"><li><p><a name="N10d8"></a>Install JavaWebStart (JWS) on your machine. This is
+            available from <a href="http://java.sun.com/products/javawebstart" target="_top">
+            java.sun.com/products/javawebstart</a>, or via the
+            <tt>JavaWebStart</tt> link on the ArgoUML <a href="http://argouml.tigris.org" target="_top">home
+            page</a>.</p></li><li><p><a name="N10eb"></a>Click on the
+            <tt>Launch&nbsp;ArgoUML&nbsp;0.9.5</tt> link on the
+            ArgoUML <a href="http://argouml.tigris.org" target="_top">home
+            page</a>.</p></li></ol></div><p>JWS will download ArgoUML, cache it and start it the first time,
+          then on subsequent starts, check if ArgoUML is updated and only
+          download any updated parts and then start it. The ArgoUML
+          <a href="http://argouml.tigris.org" target="_top">home page</a> also
+          provides details on starting ArgoUML from the JWS console.
+        </p></div><div class="sect3"><a name="N1105"></a><div class="titlepage"><div><h4 class="title"><a name="N1105"></a>2.5.1.2. Downloading ArgoUML</h4></div></div><p>Since ArgoUML is written in 100% pure Java, it should run on
+          any machine with a Java Engine. Java2, version 1.2 or later is
+          needed. You may have this in place, but if not it can be downloaded
+          free from Sun MicroSystems
+          (<a href="http://www.sun.com" target="_top">www.sun.com</a>). Note that you
+          only need the Java Runtime Environment (JRE), there is no need to
+          download the whole Java Development Kit (JDK).</p><p>ArgoUML needs a reasonable amount of computing resource. A PC
+          with 300MHz processor, 64Mb RAM and 10Mb of disk should be
+          adequate. Download the code from Download section of the project
+          website
+          <a href="http://argouml.tigris.org" target="_top">argouml.tigris.org</a>.
+          Choose the version that suits your needs as described in the section
+          above.</p><p>ArgoUML comes in <tt>.zip</tt> or
+          <tt>tar.gz</tt> flavors. Choose the former if you are a
+          Microsoft Windows user, and the latter if you are running some
+          flavor of Unix. Unpacking is as follows.</p><div class="itemizedlist"><ul><li><p><a name="N1129"></a>On Windows. Unzip the <tt>.zip</tt> file
+            with WinZip, or on later versions of Windows (ME, XP) copy the
+            files out of the compressed folder and put them into a directory of
+            your choosing.</p></li><li><p><a name="N1132"></a>Use GNU tar to unzip and break out the files to a
+            directory of your choice
+            <tt>tar&nbsp;zxvf&nbsp;&lt;file&gt;.tar.gz</tt>. If you
+            have an older version of tar, the <tt>z</tt> option may
+            not be available, so use
+            <tt>gunzip&nbsp;&lt;&nbsp;file.tar.gz&nbsp;|&nbsp;tar&nbsp;xvf&nbsp;-</tt>.
+          </p></li></ul></div><p>You should have a directory containing the following files:
+          <tt>antlrall.jar</tt>, <tt>gef.jar</tt>,
+          <tt>nsuml.jar</tt>, <tt>README.txt</tt>,
+          <tt>argouml.jar</tt>, <tt>log4j.jar</tt>,
+          <tt>ocl-argo.jar</tt> and
+          <tt>xerces.jar</tt>. To run ArgoUML depends on whether
+          you are a Microsoft Windows or Unix user.</p><div class="itemizedlist"><ul><li><p><a name="N1173"></a>On Windows. Start a MSDOS shell window. Use Start/Run
+            with the default &#8220;command&#8221;. In the window change to
+            the directory holding your ArgoUML files and type
+            <tt>java&nbsp;-jar&nbsp;argouml.jar</tt>
+          </p></li><li><p><a name="N117f"></a>Start a shell window and type
+            <tt>java&nbsp;-jar&nbsp;argouml.jar</tt>
+          </p></li></ul></div><div class="sect4"><a name="s4.probsolving"></a><div class="titlepage"><div><h5 class="title"><a name="s4.probsolving"></a>2.5.1.2.1. Problems Downloading</h5></div></div><p>If you get completely stuck and you have no local assistance,
+          try the web site, particularly the
+          <a href="http://argouml.tigris.org/documentation/defaulthtml/faq/" target="_top">
+            FAQ</a>. If this still doesn't solve the problem, try the
+          ArgoUML users' mailing list.</p><p>You can subscribe through the mailing lists section of the
+            project web site
+            <a href="http://argouml.tigris.org" target="_top">argouml.tigris.org</a>,
+            or send an empty message to
+            <a href="mailto:users@argouml.org" target="_top">users@argouml.org</a>
+            with the subject line <tt>subscribe</tt>.</p><p>You can then send your problem to 
+            <a href="mailto:users@argouml.org" target="_top">users@argouml.org</a> and
+            see how other users are able to help.</p><p>The users' mailing list is an excellent introduction to the
+            live activity of the project. If you want to get further involved
+            there are additional mailing lists that cover the development of
+            the product and issues in the current and future releases.</p></div><div class="sect4"><a name="N11ba"></a><div class="titlepage"><div><h5 class="title"><a name="N11ba"></a>2.5.1.2.2. Problems Running ArgoUML</h5></div></div><p>It's unusual to encounter problems if you have made a
+            successful download. Most common issue is not having a new enough
+            Java Runtime Environment (it must be 1.2 or later).</p><p>If you can' solve the problem. Try the users' mailing list (see
+            <a href="ch02s05.html#s4.probsolving" title="2.5.1.2.1. Problems Downloading">Section 2.5.1.2.1</a></p></div></div></div><div class="sect2"><a name="N11cd"></a><div class="titlepage"><div><h3 class="title"><a name="N11cd"></a>2.5.2. The ArgoUML User Interface</h3></div></div><p><a href="ch02s05.html#fig.tut.guioverview" title="Figure 2.4. Overview of the ArgoUML window">Figure 2.4. Overview of the ArgoUML window</a> shows the main ArgoUML
+        window.</p><div class="figure"><p><a name="fig.tut.guioverview"></a><b>Figure 2.4. Overview of the ArgoUML window</b></p><div class="screenshot"><div class="mediaobject"><img align="center" src="images/tutorial/guioverview.gif"></div></div></div><p>At the top of screen is a <i>menu bar</i>. The bulk
+        of the window comprises four sub-windows or
+        <i>Panes</i>. Clockwise from top left these are the
+        <i>Navigator Pane</i>, <i>Editing
+        Pane</i>, <i>Details Pane</i> and
+        <i>To-Do Pane</i>. At the top of the details Pane is a
+        <i>tool bar</i>. Finally at the bottom of the window is
+        a <i>status bar</i>.</p><div class="sect3"><a name="N1216"></a><div class="titlepage"><div><h4 class="title"><a name="N1216"></a>2.5.2.1. The Navigator Pane</h4></div></div><p><a href="ch02s05.html#fig.tut.navoverview" title="Figure 2.5. Overview of the Navigator Pane">Figure 2.5. Overview of the Navigator Pane</a> shows the Navigator
+          Pane.</p><div class="figure"><p><a name="fig.tut.navoverview"></a><b>Figure 2.5. Overview of the Navigator Pane</b></p><div class="screenshot"><div class="mediaobject"><img align="center" src="images/tutorial/navoverview.gif"></div></div></div><p>This is the navigator pane, where you can navigate through your
+          model. This pane list all the classes, interfaces and data types of
+          your model as a tree view.</p></div><div class="sect3"><a name="N125a"></a><div class="titlepage"><div><h4 class="title"><a name="N125a"></a>2.5.2.2. The Editing Pane</h4></div></div><p><a href="ch02s05.html#fig.tut.editoverview" title="Figure 2.6. Overview of the Editing Pane">Figure 2.6. Overview of the Editing Pane</a> shows the Editing
+          Pane.</p><div class="figure"><p><a name="fig.tut.editoverview"></a><b>Figure 2.6. Overview of the Editing Pane</b></p><div class="screenshot"><div class="mediaobject"><img align="center" src="images/tutorial/editoverview.gif"></div></div></div><p>This is the Editing Pane, where you can edit your
+          diagram. This pane lets the user edit her diagram in a graphical
+          way.</p></div><div class="sect3"><a name="N128f"></a><div class="titlepage"><div><h4 class="title"><a name="N128f"></a>2.5.2.3. The Details Pane</h4></div></div><p><a href="ch02s05.html#fig.tut.detailsoverview" title="Figure 2.7. Overview of the Details Pane">Figure 2.7. Overview of the Details Pane</a> shows the Details
+          Pane.</p><div class="figure"><p><a name="fig.tut.detailsoverview"></a><b>Figure 2.7. Overview of the Details Pane</b></p><div class="screenshot"><div class="mediaobject"><img align="center" src="images/tutorial/detailsoverview.gif"></div></div></div><p>This is the Details Pane, that allows you to edit various details
+          of your model. The Details Pane lets the user edit various details of
+          the model.</p></div><div class="sect3"><a name="N12e7"></a><div class="titlepage"><div><h4 class="title"><a name="N12e7"></a>2.5.2.4. The To-Do Pane</h4></div></div><p><a href="ch02s05.html#fig.tut.todooverview" title="Figure 2.8. Overview of the To-Do Pane">Figure 2.8. Overview of the To-Do Pane</a> shows the To-Do
+          Pane.</p><div class="figure"><p><a name="fig.tut.todooverview"></a><b>Figure 2.8. Overview of the To-Do Pane</b></p><div class="screenshot"><div class="mediaobject"><img align="center" src="images/tutorial/todooverview.gif"></div></div></div><p>This is the to-do pane, that shows all the items on your to-do
+          list. The to-do pane list the items on the users to-do list.</p></div><div class="sect3"><a name="N131c"></a><div class="titlepage"><div><h4 class="title"><a name="N131c"></a>2.5.2.5. The Menu Bar</h4></div></div><p>The menu bar gives access to all the main features of
+          ArgoUML. As is conventional, menu options that are not available
+          are grayed out and menu items that invoke a dialog box are followed
+          by an ellipsis (&#8230;).</p><div class="itemizedlist"><ul><li><p><a name="N1326"></a><i>File</i> menu. This allows you to
+            create a new project, save and open projects, import sources from
+            elsewhere, load and save the model to and from a database, print
+            the model, save the graphics of the model, save the configuration
+            of the model and exit ArgoUML</p></li><li><p><a name="N132c"></a><i>Edit</i> menu. This allows you to
+            select one or more UML items on a diagram, undo and redo edits,
+            remove items from diagrams or the whole model, empty the trash and
+            change settings.</p></li><li><p><a name="N1332"></a><i>View</i> menu. This allows you to
+            switch between diagrams, find artifacts in the model, zoom in a
+            diagram, select a particular diagram representation (although at
+            present there is only one), select a particular tab in the details
+            menu, adjust the grid, view buttons on a selection, and switch
+            between UML and Java notation.</p></li><li><p><a name="N1338"></a><i>Create Diagram</i> menu. This allows
+            you to create any one of the seven UML diagram types (class, use
+            case, state, activity, collaboration, deployment and sequence)
+            supported by ArgoUML.</p><div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td align="center" rowspan="2" valign="top" width="25"><img src="images/warning.png"></td><th><a name="N133e"></a>Warning</th></tr><tr><td align="left" colspan="2" valign="top"><p>State and activity diagrams can only be created when
+            a class or actor is selected, even though the relevant menu entries
+            are <i>not</i> grayed out if this has not been done
+            (nothing will happen under this
+            circumstance).</p></td></tr></table></div></li><li><p><a name="N1345"></a><i>Arrange</i> menu. This allows you to
+            align, distribute, reorder and nudge artifacts on a diagram and set
+            the layout strategy for the diagram.</p></li><li><p><a name="N134b"></a><i>Generation</i> menu. This allows you
+            to generate Java code for selected classes or all
+            classes.</p></li><li><p><a name="N1351"></a><i>Critique</i> menu. This allows you
+            to toggle the auto-critique on and off, set the level of importance
+            of design issues and design goals and browse the critics
+            available.</p></li><li><p><a name="N1357"></a><i>Tools</i> menu. This menu appears to
+            be permanently grayed out.</p></li><li><p><a name="N135d"></a><i>Help</i> menu. This menu gives
+            access to details of those who authored the system, and where
+            additional help may be found.</p></li></ul></div></div><div class="sect3"><a name="s3.tut.mouse"></a><div class="titlepage"><div><h4 class="title"><a name="s3.tut.mouse"></a>2.5.2.6. The Mouse</h4></div></div><p>The mouse and mouse buttons (or their equivalent with alternative
+          tracking devices) are used in a wide variety of ways. In this section
+          we look at the common modes of use. </p><p>ArgoUML assumes a two button mouse. We will refer to the
+          buttons as &#8220;button&nbsp;1&#8221; and &#8220;button
+          2&#8221;. Button&nbsp;1 is the leftmost button on a right-handed
+          mouse, and sometimes referred to as the &#8220;select&#8221;
+          button. Button&nbsp;2 is sometimes referred to as the
+          &#8220;adjust&#8221; button.</p><div class="orderedlist"><ol type="1"><li><p><a name="N1386"></a><i>Button&nbsp;1 click</i>. This action
+            is generally used to select an item for subsequent operations. If
+            the item is an artifact in the navigation pane or the editing pane it
+            will be highlighted.</p><p>In the case of the tool bar of the editing pane, that artifact is
+            selected as the next to be added to the diagram (but only
+            once&#8212;see double clicking for adding multiple artifacts). The
+            adding to the diagram is achieved by moving the mouse to the
+            editing area and clicking again.</p></li><li><p><a name="N138f"></a><i>Button&nbsp;1 double click</i>. This
+            action is identical to a single click <i>except</i>,
+            when it is used with the editing pane tool bar. Under these
+            circumstances the selected artifact will be added multiple times to
+            the drawing area, once for each further button click, until the
+            tool is again selected or another tool chosen.</p></li><li><p><a name="N1398"></a><i>Button&nbsp;2 click</i>. When used
+            over text items in the the navigation or details panes, or
+            graphical artifacts in the editing pane, this will display a context
+            dependent drop-down menu.</p><p>If the item has not yet been selected it will also be
+            selected.</p></li><li><p><a name="N13a1"></a><i>Button&nbsp;1 motion</i>. Where
+            button&nbsp;1 click has been used to pull down a menu from the menu
+            bar, button&nbsp;1 motion is used to select items on that
+            menu.</p><p>Button&nbsp;1 motion also has an effect in the editing
+            pane. Over graphical artifacts it will move the artifact to a new
+            position. Graphical artifacts that are selected show handles, and
+            these can be used for re-sizing.</p><p>Where the artifact is some form of connector between other items,
+            button&nbsp;1 motion other than at a handle will cause a new handle
+            to be created, allowing the connector to be articulated at that
+            point. Such new handles can be removed by moving them to the end of
+            the connector.</p></li><li><p><a name="N13ad"></a><i>Button&nbsp;2 motion</i>. This is
+            used to select items in a context sensitive menu popped up by use
+            of button&nbsp;2 click.</p></li></ol></div><p>There are other more specific behaviors that will be encountered
+          under the specific cases where they are used.</p></div><div class="sect3"><a name="N13ba"></a><div class="titlepage"><div><h4 class="title"><a name="N13ba"></a>2.5.2.7. Drawing Diagrams</h4></div></div><p>In general diagrams are drawn by using the editing pane tool bar
+          to select the artifact desired and clicking in the diagram at the
+          position required as described in <a href="ch02s05.html#s3.tut.mouse" title="2.5.2.6. The Mouse">Section 2.5.2.6</a>. That
+          section also explains the use of the mouse for re-sizing
+          artifacts.</p><p>Artifacts that are already in the model, but not on a diagram, may
+          be added to a diagram by selecting the artifact in the navigation pane,
+          using <tt>Add&nbsp;to&nbsp;Diagram</tt> from the drop down
+          menu (button&nbsp;2) over that artifact, and then clicking
+          button&nbsp;1 at the desired location on the diagram.</p><p>As well as UML artifacts, the tool bar provides for general drawing
+          artifacts (rectangles, circles, lines, polygons, curves, text) to
+          provide supplementary information on diagrams.</p><div class="sect4"><a name="N13d3"></a><div class="titlepage"><div><h5 class="title"><a name="N13d3"></a>2.5.2.7.1. Moving Diagram Elements</h5></div></div><p>There are several ways to move diagram elements.</p><div class="sect5"><a name="N13dd"></a><div class="titlepage"><div><h6 class="title"><a name="N13dd"></a>2.5.2.7.1.1. Using the Mouse Keys</h6></div></div><p>Select the elements you want to move. By holding down the
+              control key you can select several.</p><p>Now hit your arrow keys. Your elements move a little with
+              every key stroke.</p><p>If you also hold down the shift key, they move a bit
+              faster.</p></div><div class="sect5"><a name="N13ee"></a><div class="titlepage"><div><h6 class="title"><a name="N13ee"></a>2.5.2.7.1.2. Using the Tool bar</h6></div></div><p>Click on the broom button on the tool bar. Move your mouse to
+             the diagram pane, right click and hold. Now moving your mouse will
+             align elements.</p></div></div><div class="sect4"><a name="N13fa"></a><div class="titlepage"><div><h5 class="title"><a name="N13fa"></a>2.5.2.7.2. Arranging Elements</h5></div></div><p>The menu item <tt>Arrange</tt> allows you to align,
+            group, or nudge elements.</p></div></div><div class="sect3"><a name="N1409"></a><div class="titlepage"><div><h4 class="title"><a name="N1409"></a>2.5.2.8. Working with Projects</h4></div></div><div class="sect4"><a name="N1410"></a><div class="titlepage"><div><h5 class="title"><a name="N1410"></a>2.5.2.8.1. The Start-up Window</h5></div></div><p><a href="ch02s05.html#fig.tut.startup" title="Figure 2.9. ArgoUML window at start-up">Figure 2.9. ArgoUML window at start-up</a> shows the ArgoUML main window
+            as it appears as right after start-up</p><div class="figure"><p><a name="fig.tut.startup"></a><b>Figure 2.9. ArgoUML window at start-up</b></p><div class="screenshot"><div class="mediaobject"><img align="center" src="images/tutorial/startup.gif"></div></div></div><p>The main window's client area, below the menu bar, is
+            subdivided into four panes. Starting at the leftmost top pane, and
+            working around the clock, you can see the Navigation Pane, showing
+            an explorer-like tree view of your UML model, the Editing Pane with
+            its tool bar, two scroll bars and gray drawing area, the Details
+            Pane with the ToDoItem tab selected, and the To-Do Pane with a tree
+            view of the to do items, ranked into three priority levels (High,
+            Medium and Low).</p><p>Notice that the title bar says
+            <tt>ArgoUML&nbsp;-&nbsp;Untitled</tt>. The
+            &#8220;Untitled&#8221; means that the current project has not yet
+            been saved. After saving the current project, the
+            &#8220;Untitled&#8221; will be replaced by the file name of the
+            current project.</p><p>Each time ArgoUML is started up without a project file as an
+            argument, a new blank project is created. This project contains a
+            model called <tt>untitledModel</tt>. This model contains
+            a blank Class Diagram, called
+            <tt>class&nbsp;diagram&nbsp;1</tt>, and a blank Use 
+            Case Diagram called
+            <tt>use&nbsp;case&nbsp;diagram&nbsp;1</tt>.</p><p>The model and both empty diagrams can be seen in the Navigation
+            Pane, which is the main tool for you to navigate through your
+            model.</p><p>Let's assume for a moment that this is the point where you want
+            to start modeling a new purchasing system. You want to give the
+            name &#8220;purchasingmodel&#8221; to your model, and you want to
+            store it in a file called <tt>FirstProject</tt>.</p></div><div class="sect4"><a name="N146e"></a><div class="titlepage"><div><h5 class="title"><a name="N146e"></a>2.5.2.8.2. Saving a project - the file menu </h5></div></div><p>First, let's save the model in it's current (empty and unnamed)
+            state. On the menu bar, click on <tt>File</tt>, then on
+            <tt>Save&nbsp;Project&nbsp;As&#8230;</tt> as shown in
+            <a href="ch02s05.html#fig.tut.saveas" title="Figure 2.10. Invoking
+              Save&nbsp;Project&nbsp;As&#8230;">Figure 2.10. Invoking
+              <tt>Save&nbsp;Project&nbsp;As&#8230;</tt></a>.</p><div class="figure"><p><a name="fig.tut.saveas"></a><b>Figure 2.10. Invoking
+              <tt>Save&nbsp;Project&nbsp;As&#8230;</tt></b></p><div class="screenshot"><div class="mediaobject"><img align="center" src="images/tutorial/saveas.gif"></div></div></div><p>Please notice that the File menu contains the usual options for
+            creating a new project, for opening an existing project, for saving
+            a project under a new name, for printing the currently displayed
+            diagram (which of course is empty at this moment), for saving the
+            currently displayed diagram as a file, and for program Exit.</p><p>Some of these menu commands can be invoked by pressing key
+            combinations, as indicated on the drop-down menu. For instance,
+            holding down the &#8220;Ctrl&#8221; key, and pressing
+            &#8220;N&#8221;, will create a new project.</p><p>In the current version, ArgoUML can only contain one active
+            project at a time. In addition, a project can only contain one UML
+            model. Since an UML model can contain an unlimited number of
+            elements and diagrams, this should not present any serious
+            limitations, even for modeling quite large and complex
+            systems.</p><p>Also take notice of a number of disabled commands, grayed out
+            on the drop-down menu. First, the
+            <tt>Save&nbsp;Project</tt> command (Ctrl-S), which
+            obviously cannot be executed since we haven't entered a file name
+            yet to store our project. Second, you can see the two commands
+            <tt>Load&nbsp;model&nbsp;from&nbsp;DB</tt> and
+            <tt>Store&nbsp;model&nbsp;to&nbsp;DB</tt>. This is a
+            unique feature of ArgoUML that allows you to save and retrieve
+            your model into a relational database. Currently, the only database
+            supported is MySQL, but support for other database engines will
+            undoubtedly be introduced in the future.</p></div><div class="sect4"><a name="N14d7"></a><div class="titlepage"><div><h5 class="title"><a name="N14d7"></a>2.5.2.8.3. The File Chooser Dialog</h5></div></div><p>But let's go back to saving our project. After clicking on the
+            <tt>Save&nbsp;Project&nbsp;As&#8230;</tt> menu command,
+            we get the file chooser dialog to enter the file name we wish to
+            use as shown in <a href="ch02s05.html#fig.tut.filechoose" title="Figure 2.11. File chooser dialog">Figure 2.11. File chooser dialog</a>.</p><div class="figure"><p><a name="fig.tut.filechoose"></a><b>Figure 2.11. File chooser dialog</b></p><div class="screenshot"><div class="mediaobject"><img align="center" src="images/tutorial/filechoose.gif"></div></div></div><p>This is a standard Java FileChooser. Let's go over it in some
+            detail.</p><p>The main, outstanding feature, is the scrollable folders list
+            in the center of the dialog. By using the scroll bar on the right,
+            you can move up and down in the list of folders contained inside
+            the currently selected folder.</p><p>Double-clicking on one of the displayed folders navigates you
+            into that folder, allowing you to quickly navigate down into the
+            folders hierarchy on your hard disk.</p><p>Notice that only folder names, and no file names are displayed
+            in the scrollable area. Indeed, the dialog is currently set up in
+            order to show only ArgoUML project files with an extension of
+            <tt>.argo</tt>, as can be seen on the lower drop-down
+            control labeled <tt>Files&nbsp;of&nbsp;type:</tt>.</p><p>Also notice that the currently selected folder's name is
+            displayed in the upper drop-down control labeled
+            <tt>Look&nbsp;in:</tt>. A single click on a folder inside
+            the scrollable area does select that folder on screen but does not
+            select the folder for saving.</p><p>At the top of the dialog, above the scrollable folder chooser
+          area, there are a few more folder navigation tools.</p><div class="itemizedlist"><ul><li><p><a name="N152c"></a>
+              
+                <img src="images/tutorial/guifolderdropdown.gif">
+               The Folder drop-down control. Clicking on the
+              down-arrow displays a tree view of the folder hierarchy,
+              allowing you to navigate quickly up the hierarchy, and at
+              the same time to quickly determine where in the hierarchy
+              you are currently positioned.</p></li><li><p><a name="N153b"></a>
+              
+                <img src="images/tutorial/guifolderupicon.gif">
+               The Folder-Up icon. Clicking on this icon will bring
+              you to the parent folder of the current folder.</p></li><li><p><a name="N154a"></a>
+              
+                <img src="images/tutorial/guihomefoldericon.gif">
+               The Home Folder icon. Clicking on this icon will bring
+              you to your home directory</p></li><li><p><a name="N1559"></a>
+              
+                <img src="images/tutorial/guinewfoldericon.gif">
+               The New Folder icon. Clicking on this icon will create
+                a new folder called "New Folder" under the current folder. (I
+                haven't been able to create a folder with a specific name,
+                using this button. This forces me to use my file manager to
+                rename the newly created folder. Any suggestions on how this
+                can be done would be welcome)</p></li><li><p><a name="N1568"></a>
+              
+                <img src="images/tutorial/guifolderspresentationicon.gif">
+                 The Folders Presentation Icon. This button is not
+                functional at this time.</p></li></ul></div><p>OK, now navigate to the directory where you want to save your
+            ArgoUML project, fill in the <tt>File&nbsp;name:</tt>
+            with an appropriate name, such as &#8220;FirstProject&#8221; and
+            click on the <tt>Save</tt> button.</p></div><div class="sect4"><a name="N158b"></a><div class="titlepage"><div><h5 class="title"><a name="N158b"></a>2.5.2.8.4. File formats used by ArgoUML</h5></div></div><p>Notice that the file name of your project
+            (<tt>FirstProject.argo</tt>) is now reflected in the
+            title bar of ArgoUML. If you select the java console, you will
+            notice that three files have been written to the hard disk.</p><div class="itemizedlist"><ul><li><p><a name="N159a"></a>A file <tt>FirstProject.xmi</tt>. This is
+            a representation of your (still empty) model in <i>XML
+            Metadata Interchange (XMI)</i> format. If you want to know
+            more about XMI, you can start at the following
+            <a href="http://www.oasis-open.org/cover/xmi.html" target="_top">rather
+              extensive XMI page</a>. In short, XMI allows your models
+            created with ArgoUML to be used by other applications. That is,
+            only the contents of your model, without the graphic representation
+            of the diagrams.</p></li><li><p><a name="N15ab"></a>A file
+              <tt>FirstProject_classdiagram1.pgml</tt>, containing
+              the graphical representation of the (still empty) class diagram
+              <tt>classdiagram1</tt> in Precision Graphics Markup
+              Language (PGML) format. PGML is probably the first proposal for
+              sending vector graphics over the Web. You can find more
+              information at the
+              <a href="http://www.w3.org/TR/1998/NOTE-PGML" target="_top">PGML
+                specification page</a>.</p></li><li><p><a name="N15be"></a>A file
+              <tt>FirstProject_usecasediagram1.pgml</tt>, containing
+              a graphical representation of the (still empty) use case diagram
+              <tt>usecasediagram1</tt>.</p></li></ul></div><p>You have now an active project called
+            <tt>FirstProject</tt>, connected to the file
+            <tt>FirstProject.argo</tt>.</p></div></div></div><div class="sect2"><a name="N15df"></a><div class="titlepage"><div><h3 class="title"><a name="N15df"></a>2.5.3. Output</h3></div></div><div class="sect3"><a name="s3.tut.loadsave"></a><div class="titlepage"><div><h4 class="title"><a name="s3.tut.loadsave"></a>2.5.3.1. Loading and Saving</h4></div></div><div class="sect4"><a name="N15ef"></a><div class="titlepage"><div><h5 class="title"><a name="N15ef"></a>2.5.3.1.1. Saving XMI files in ArgoUML</h5></div></div><p>ArgoUML saves the diagram information in a PGML file (with
+            extension <tt>.pgml</tt>, the model information in an XMI
+            file (with extension <tt>.xmi</tt> and information about
+            the project in a file with extension <tt>.argo</tt>. See
+            <a href="ch02s05.html#s4.tut.pgml" title="2.5.3.2.2. Precision Graphics Markup Language (PGML)">Section 2.5.3.2.2</a> and <a href="ch02s05.html#s3.tut.xmi" title="2.5.3.3. XMI">Section 2.5.3.3</a> for more
+            about PGML and XMI respectively.</p><p>All of these are then zipped to a file with extension
+            <tt>.zargo</tt>. You can easily extract the
+            <tt>.xmi</tt> file from the <tt>.zargo</tt>
+            file using any old generic ZIP
+            application. Give it a try and look into the magic of Argo.</p><div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td align="center" rowspan="2" valign="top" width="25"><img src="images/warning.png"></td><th><a name="N1625"></a>Warning</th></tr><tr><td align="left" colspan="2" valign="top"><p>Be aware that double clicking will launch a
+            <tt>ZIP utility</tt>, if one is installed, and NOT
+            Argo.</p></td></tr></table></div></div></div><div class="sect3"><a name="N1632"></a><div class="titlepage"><div><h4 class="title"><a name="N1632"></a>2.5.3.2. Graphics and Printing</h4></div></div><div class="sect4"><a name="N1639"></a><div class="titlepage"><div><h5 class="title"><a name="N1639"></a>2.5.3.2.1. The Graph Editing Framework (GEF)</h5></div></div><p>GEF, the thing which is hidden in gef.jar, is responsible for
+            displaying the graphs and which gives you the the ability to move
+            things around. GEF used to be closely interwoven with Argo, but is
+            now more or less separate. The sources are also available via
+            <a href="http://www.tigris.org" target="_top">www.tigris.org</a>.</p></div><div class="sect4"><a name="s4.tut.pgml"></a><div class="titlepage"><div><h5 class="title"><a name="s4.tut.pgml"></a>2.5.3.2.2. Precision Graphics Markup Language (PGML)</h5></div></div><p>PGML is the saving format for diagram information used in
+            ArgoUML. Although this is outdated a little, it shows why we
+            chose PGML in the first place. In the future, PGML will be replaced
+            by an extended XMI format which will include graphical
+            representation.</p><p>In April 1998 Adobe Systems proposed a new Standard for Vector
+            Graphics to the World Wide Web Consortium (W3C), which should
+            facilitate the creation and usage of image material in the World
+            Wide Web. It will be replaced by SVG. We will support SVG by
+            generating it from the XMI in the future.</p></div><div class="sect4"><a name="N1659"></a><div class="titlepage"><div><h5 class="title"><a name="N1659"></a>2.5.3.2.3. Applications Which Open PGML</h5></div></div><p>PGML is a predecessor of SVG (see
+            <a href="ch02s05.html#s4.tut.svg" title="2.5.3.2.5. Standard Vector Graphics (SVG)">Section 2.5.3.2.5</a>. It was dropped by the W3C
+            Consortium.</p><p>Currently there are no other tools that we know of working on
+            PGML. We will move to SVG soon. And <i>that</i> will
+            be read by many tools.</p></div><div class="sect4"><a name="N166e"></a><div class="titlepage"><div><h5 class="title"><a name="N166e"></a>2.5.3.2.4. Printing Diagrams</h5></div></div><p>Select a diagram, then go to
+          <tt>File</tt>&#8594;<tt>Export&nbsp;Diagrams</tt>.
+            You can generate GIF, PostScript, Encapsulated PostScript or SVG
+            format.</p></div><div class="sect4"><a name="s4.tut.svg"></a><div class="titlepage"><div><h5 class="title"><a name="s4.tut.svg"></a>2.5.3.2.5. Standard Vector Graphics (SVG)</h5></div></div><p>A super cool vector graphics format (like MM Flash) that is
+            totally open and is gaining enormous ground in the graphics
+            world. Find out more at
+            <a href="http://www.w3c.org" target="_top">www.w3c.org</a>.</p><p>As well visit
+            <a href="http://www.adobe.com" target="_top">adobe.com</a> for the plugin
+            for Netscape Navigator and Internet Explorer.</p></div><div class="sect4"><a name="N169d"></a><div class="titlepage"><div><h5 class="title"><a name="N169d"></a>2.5.3.2.6. Saving Diagrams as SVG</h5></div></div><div class="orderedlist"><ol type="1"><li><p><a name="N16a8"></a>Select <tt>.svg</tt> as the file
+              type.</p></li><li><p><a name="N16b1"></a>Type the name of the file as you like with the
+              <tt>.svg</tt> tag at the end. Example
+              <tt>myumldiagram.svg</tt></p><div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td align="center" rowspan="2" valign="top" width="25"><img src="images/warning.png"></td><th><a name="N16be"></a>Warning</th></tr><tr><td align="left" colspan="2" valign="top"><p>ArgoUML does not do this automatically. See the
+                to-do list in <a href="ch14.html" title="Chapter 14. ArgoUML Top Level Artifact Reference">Chapter 14. ArgoUML Top Level Artifact Reference</a>.
+            </p></td></tr></table></div></li></ol></div><p> Et viola! SVG! Give it a try and zoom around a little&#8230;
+            They are not pretty though, so if you know anything about rendering
+            beautiful SVG let us know!</p><p>Oh, and by the way, you'll need a browser that can read
+            SVG. See <a href="http://www.adobe.com" target="_top">adobe.com</a> for
+            the plugin for Netscape Navigator and Internet Explorer</p><p>There are a few browsers that read SVG natively:
+            Amaya,
+            X-Smiles, and a rudimentary version of
+            Mozilla.</p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td align="center" rowspan="2" valign="top" width="25"><img src="images/note.png"></td><th><a name="N16e3"></a>Note</th></tr><tr><td align="left" colspan="2" valign="top"><p>You will not have scroll bars for your SVG unless it is
+            embedded into an HTML! Good luck and let us know what you
+            find!</p></td></tr></table></div></div></div><div class="sect3"><a name="s3.tut.xmi"></a><div class="titlepage"><div><h4 class="title"><a name="s3.tut.xmi"></a>2.5.3.3. XMI</h4></div></div><div class="sect4"><a name="N16f4"></a><div class="titlepage"><div><h5 class="title"><a name="N16f4"></a>2.5.3.3.1. Using XMI from Rational Rose</h5></div></div><p>It is probably not possible to take a model generated by
+            Rational Rose in XMI format and put it into ArgoUML</p><p>If you want to take on the task of writing an XSLT that
+          transposes the Rose XMI to ArgoUML XMI you'd make a lot of friends
+          in a hurry!</p></div><div class="sect4"><a name="N1702"></a><div class="titlepage"><div><h5 class="title"><a name="N1702"></a>2.5.3.3.2. XMI Interchangeability between ArgoUML 0.8.1a and
+            0.9.x</h5></div></div><p>This depends on the version of NSUML (the UML engine underling
+            ArgoUML) you are using. You can find out about this i your
+            start-up messages on console). Using version 0.4.19 is OK, should
+            be interchangeable.</p></div><div class="sect4"><a name="N170d"></a><div class="titlepage"><div><h5 class="title"><a name="N170d"></a>2.5.3.3.3. Importing Other XMI Formats into ArgoUML</h5></div></div><p>Because of the variety of XMI formats being generated you will
+            encounter problems using XMI files generated from other
+            applications.  ArgoUML's native storage format is another
+            implementation of XMI (Curt Arnold believes that it has been hacked
+            so it can also read the Unisys variant).  He recommends that if you
+            are comfortable with XSLT, you can typically transform one variant
+            of UML and XMI to another, plus MetaIntegrations
+            <a href="http://www.metaintegrations.net" target="_top">www.metaintegrations.net
+              </a> makes a version of their
+            Bridge product available to transform
+            between XMI flavors.</p></div><div class="sect4"><a name="N1722"></a><div class="titlepage"><div><h5 class="title"><a name="N1722"></a>2.5.3.3.4. Generating XMI Format</h5></div></div><p>Unzip the <tt>.zargo</tt> file. Open it and Viola!
+            It's tucked inside.</p></div></div><div class="sect3"><a name="N1733"></a><div class="titlepage"><div><h4 class="title"><a name="N1733"></a>2.5.3.4. Code Generation</h4></div></div><div class="sect4"><a name="N173a"></a><div class="titlepage"><div><h5 class="title"><a name="N173a"></a>2.5.3.4.1. Code generated by ArgoUML</h5></div></div><p>It is possible to compile your generated code with ArgoUML,
+            you still need to implement method bodies, though, to get usable
+            results.</p></div><div class="sect4"><a name="N1745"></a><div class="titlepage"><div><h5 class="title"><a name="N1745"></a>2.5.3.4.2. Generating Code for Methods</h5></div></div><p>At the moment you cannot write code for methods (operations)
+            within ArgoUML. The source pane is editable, but the changes are
+            ignored.  ArgoUML is a pure design tool for now, no IDE
+            functionality but the desire is there. You might consider using
+            Forte and ArgoUML together&#8212;it's a good work around!</p><p>You can help us out there if you'd like!</p></div></div></div><div class="sect2"><a name="N1755"></a><div class="titlepage"><div><h3 class="title"><a name="N1755"></a>2.5.4. Working With Design Critics</h3></div></div><div class="sect3"><a name="N175a"></a><div class="titlepage"><div><h4 class="title"><a name="N175a"></a>2.5.4.1. The To-Do Pane&#8212;Messages From the Design Critics</h4></div></div><p>Where do we stand now? A new project has been created, and is
+          connected to the file <tt>FirstProject.argo</tt>.
+          <a href="ch02s05.html#fig.tut.critstart" title="Figure 2.12. ArgoUML window having save
+            FirstProject.argo">Figure 2.12. ArgoUML window having save
+            <tt>FirstProject.argo</tt></a> shows how your ArgoUML window
+          should look at this stage.</p><div class="figure"><p><a name="fig.tut.critstart"></a><b>Figure 2.12. ArgoUML window having save
+            <tt>FirstProject.argo</tt></b></p><div class="screenshot"><div class="mediaobject"><img align="center" src="images/tutorial/critstart.gif"></div></div></div><p>The project filename is displayed in the title bar, the project
+          contains a top-level package, called
+          <tt>untitledModel</tt>, which contains a class diagram and
+          a use case diagram.</p><p>If we look carefully at the screen, we can see that the "Medium"
+          folder in the To Do pane (the lower left pane) must contain some
+          items, since its activation icon
+          <img src="images/tutorial/guitreefoldercloseicon.gif"> is
+          displayed.</p><p>Clicking on this icon will open the "Medium" folder. An open
+          folder is indicated by the
+          <img src="images/tutorial/guitreefolderopenicon.gif">
+          icon.</p><p>But what is this &#8220;To-Do&#8221; Pane anyway. You haven't
+        recorded anything yet that has to be done, so where do these to do
+        items originate.</p><p>The answer is simple, and is at the same time one of the strong
+          points of ArgoUML. While you are working on your UML model, your
+          work is monitored continuously and invisibly by a piece of code
+          called a <i>design critic</i>. This is like a personal
+          mentor that watches over your shoulder and notifies you each time he
+          sees something questionable in your design.</p><p>Critics are quite unobtrusive. They give you a friendly warning,
+          but they do not force you into design principles that you don't want
+          or like to follow.  Let us take a look at what the critics are
+          telling us. Click on the
+            <img src="images/tutorial/guitreefoldercloseicon.gif">
+          icon next to the <tt>Medium</tt> folder, and click on the
+          <tt>Revise&nbsp;Package&nbsp;Name&nbsp;UntitledModel</tt>
+          item.</p><p><a href="ch02s05.html#fig.tut.critrevname" title="Figure 2.13. ArgoUML window showing the critic item
+            Revise&nbsp;Package&nbsp;Name&nbsp;UntitledModel
+          ">Figure 2.13. ArgoUML window showing the critic item
+            <tt>Revise&nbsp;Package&nbsp;Name&nbsp;UntitledModel</tt>
+          </a> shows how your screen should
+          now look.</p><div class="figure"><p><a name="fig.tut.critrevname"></a><b>Figure 2.13. ArgoUML window showing the critic item
+            <tt>Revise&nbsp;Package&nbsp;Name&nbsp;UntitledModel</tt>
+          </b></p><div class="screenshot"><div class="mediaobject"><img align="center" src="images/tutorial/critrevname.gif"></div></div></div><p>Notice that your selection is highlighted in red in the To-Do
+          Pane, and that a full explanation appears now in the Details Pane
+          (the lower right pane). You may have to re-size your Details Pane or
+          to scroll down in order to see the full message as displayed in our
+          example.</p><p>What ArgoUML is trying to tell you is that usually, package
+          names are written in lower cases. The default top level package
+          created by ArgoUML is called <tt>untitledModel</tt> and
+          therefore violates a sound design principle. (Actually, this could be
+          considered as a bug within ArgoUML, but it comes in handy to
+          demonstrate the working of critics).</p><p>At this point, you can choose to change the package name
+          manually, to impose silence on the design critic for some time or
+          permanently, or to request a more comprehensive explanation by Email
+          from an expert.</p><p>We will do nothing of this (we'll come back to it when we talk
+          about the design critics in more detail) but we'll use another handy
+          feature of ArgoUML&#8212;an auto-correct feature.</p><p>In order to do that, just click on the <tt>Next</tt>
+          button on the Details Pane. This will cause a renaming wizard to be
+          displayed inside the properties panel, proposing to use the name
+          <tt>untitledmodel</tt> (all in lower case).</p></div><div class="sect3"><a name="N1833"></a><div class="titlepage"><div><h4 class="title"><a name="N1833"></a>2.5.4.2. Design Critics at Work: The Rename Package Wizard</h4></div></div><p>Replace the name <tt>untitledmodel</tt> with
+          <tt>purchasingmodel</tt>, and click on the
+          <tt>Finish</tt> button. <a href="ch02s05.html#fig.tut.critwiz" title="Figure 2.14. ArgoUML window showing the critic wizard to rename the
+            package">Figure 2.14. ArgoUML window showing the critic wizard to rename the
+            package</a>
+          shows how the ArgoUML window will now look.</p><div class="figure"><p><a name="fig.tut.critwiz"></a><b>Figure 2.14. ArgoUML window showing the critic wizard to rename the
+            package</b></p><div class="screenshot"><div class="mediaobject"><img align="center" src="images/tutorial/critwiz.gif"></div></div></div><p>Watch now how the design critic note in the To Do panel
+          disappears, leaving only the
+          <tt>Add&nbsp;Elements&nbsp;to&nbsp;Package&nbsp;purchasingmodel
+          </tt> note in the To-Do list.</p><p>If this doesn't happen at once, wait for a few seconds. ArgoUML
+          makes heavy use of several threads of execution that execute in
+          parallel. This can cause delays of a few seconds before the
+          information gets updated on the screen.</p><p>Normally, the package name change should also be reflected in the
+          navigation pane, in the top left corner of your ArgoUML
+          window.</p><p>Actually, that doesn't happen until you click on one of the items
+          in the navigator pane. This is also a small bug in ArgoUML that
+          will need to be fixed in following versions.</p><p>Don't let this discourage you, but remember that ArgoUML is
+          still pretty much &#8220;work in progress&#8221;, and that still
+          quite a bit can be done to improve the user interface.</p><p>We are now ready to create our first UML diagram, a Use Case
+        diagram, but first let's save what we've done so far.</p><p>Click on the <tt>File</tt> menu item, and select
+          <tt>Save&nbsp;Project</tt>. You can now safely exit
+          ArgoUML without losing your work so far, or go on creating your
+          first diagram.</p></div></div></div><div class="navfooter"><hr><table summary="Navigation footer" width="100%"><tr><td align="left" width="40%"><a href="ch02s04.html">Prev</a>&nbsp;</td><td align="center" width="20%"><a href="index.html">Home</a></td><td align="right" width="40%">&nbsp;<a href="ch02s06.html">Next</a></td></tr><tr><td align="left" width="40%">2.4. Why ArgoUML is Different&nbsp;</td><td align="center" width="20%"><a href="ch02.html">Up</a></td><td align="right" width="40%">&nbsp;2.6. The Case Study</td></tr></table></div></body></html>

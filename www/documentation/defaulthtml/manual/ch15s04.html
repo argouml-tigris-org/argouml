@@ -1,0 +1,125 @@
+<html><head><title>15.4. Association</title><link href="look-and-feel.css" rel="stylesheet" type="text/css"><meta content="DocBook XSL Stylesheets V1.37" name="generator"><link href="index.html" rel="home" title="ArgoUML User Manual"><link href="ch15.html" rel="up" title="Chapter 15. ArgoUML Use Case Diagram Artifact Reference"><link href="ch15s03.html" rel="previous" title="15.3. Use Case"><link href="ch15s05.html" rel="next" title="15.5. Association End"></head><body alink="#0000FF" bgcolor="white" link="#0000FF" text="black" vlink="#840084"><div class="navheader"><table summary="Navigation header" width="100%"><tr><th align="center" colspan="3">15.4. Association</th></tr><tr><td align="left" width="20%"><a href="ch15s03.html">Prev</a>&nbsp;</td><th align="center" width="60%">Chapter 15. ArgoUML Use Case Diagram Artifact Reference</th><td align="right" width="20%">&nbsp;<a href="ch15s05.html">Next</a></td></tr></table><hr></div><div class="sect1"><a name="s1.ref.association_use_case"></a><div class="titlepage"><div><h2 class="title" style="clear: all"><a name="s1.ref.association_use_case"></a>15.4. Association</h2></div></div><p>An association on a use case diagram represents is a relationship
+      between an actor and a use case showing that actor's involvement in the
+      use case. The invocation of the use case will involve some (significant)
+      change perceived by the actor.</p><p>Within the UML metamodel, <tt>Association</tt> is a
+      sub-class of both <tt>Relationship</tt> and
+      <tt>GeneralizableElement</tt>.</p><p>The association is represented as a line connecting actor and use
+      case (see <a href="ch15.html#fig.ref.use_case_diagram" title="Figure 15.1. Possible artifacts on a use case diagram.">Figure 15.1. Possible artifacts on a use case diagram.</a>). The name of the
+      association appears above the line and any stereotype above that.</p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td align="center" rowspan="2" valign="top" width="25"><img src="images/note.png"></td><th><a name="N7285"></a>Note</th></tr><tr><td align="left" colspan="2" valign="top"><p>ArgoUML provides no specific way of showing the direction of
+      the association as described in the UML 1.3 standard. The naming should
+      attempt to make this clear.</p></td></tr></table></div><p>The association contains two ends, which may be navigated to via the
+      association property sheet. See <a href="ch15s05.html" title="15.5. Association End">Section 15.5</a> for more
+      information.</p><div class="sect2"><a name="N7292"></a><div class="titlepage"><div><h3 class="title"><a name="N7292"></a>15.4.1. Association Details Tabs</h3></div></div><p>The details tabs that are active for associations are described in
+        <a href="ch15s04.html#tab.ref.association_details_tabs" title="Table 15.7. Details tabs for association">Table 15.7. Details tabs for association</a>.</p><div class="table"><p><a name="tab.ref.association_details_tabs"></a><b>Table 15.7. Details tabs for association</b></p><table border="1" summary="Details tabs for association" width="100%"><colgroup><col align="left"><col align="left"></colgroup><thead><tr><th align="left">Tab</th><th align="left">Meaning</th></tr></thead><tbody valign="top"><tr><td>ToDoItem</td><td><p>Standard tab.</p></td></tr><tr><td>Properties</td><td><p>See <a href="ch15s04.html#tab.ref.association_property_toolbar" title="Table 15.8. Property tool bar for diagram">Table 15.8. Property tool bar for diagram</a> and <a href="ch15s04.html#tab.ref.association_property_fields" title="Table 15.9. Property fields for association">Table 15.9. Property fields for association</a>
+                below.</p></td></tr><tr><td>Documentation</td><td><p>Standard tab.</p></td></tr><tr><td>Style</td><td><p>Standard tab. Fill color is used for the use case
+                oval.</p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td align="center" rowspan="2" valign="top" width="25"><img src="images/note.png"></td><th><a name="N730e"></a>Note</th></tr><tr><td align="left" colspan="2" valign="top"><p>The values for the bounds of the Association appear
+                to have no meaning. Changing them has no effect on the
+                diagram. This is sensible behavior, given the association is
+                tied to a particular actor and use case.</p></td></tr></table></div></td></tr><tr><td>Source</td><td><p>Standard tab. You would not expect to generate any
+                code for an association, and any code entered here is ignored
+                (it will have disappeared when you come back to the
+                association.</p></td></tr><tr><td>Constraints</td><td><p>Standard tab. In the UML metamodel,
+                <tt>Association</tt> has the following standard
+                constraints defined.</p><div class="itemizedlist"><ul><li><p><a name="N7331"></a><tt>xor</tt>. Applied to a set of
+                    associations, indicating that over that set, exactly one
+                    association is manifest for any particular association
+                    instance.</p></li></ul></div></td></tr><tr><td>Tagged Values</td><td><p>Standard tab. In the UML metamodel,
+                <tt>Association</tt> has the following standard
+                tagged values defined.</p><div class="itemizedlist"><ul><li><p><a name="N734d"></a><tt>persistence</tt>. Values
+                    <tt>transitory</tt>, indicating state is
+                    destroyed when an instance is destroyed or
+                    <tt>persistent</tt>, marking state is
+                    preserved when an instance is destroyed.</p></li><li><p><a name="N735f"></a><tt>derived</tt> (from the
+                    superclass, <tt>ModelElement</tt>). Values
+                    <tt>true</tt>, meaning the association is
+                    redundant&#8212;it can be formally derived from other
+                    elements, or <tt>false</tt> meaning it
+                    cannot.</p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td align="center" rowspan="2" valign="top" width="25"><img src="images/note.png"></td><th><a name="N7376"></a>Note</th></tr><tr><td align="left" colspan="2" valign="top"><p>Derived associations still have their value in
+                    analysis to introduce useful names or concepts, and in
+                    design to avoid re-computation.</p></td></tr></table></div></li></ul></div><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td align="center" rowspan="2" valign="top" width="25"><img src="images/note.png"></td><th><a name="N737b"></a>Note</th></tr><tr><td align="left" colspan="2" valign="top"><p>The UML <tt>Element</tt> metaclass from
+                  which all other artifacts are derived includes the tagged
+                  element <tt>documentation</tt> which is handled by
+                  the <i>documentation tab</i> under
+                  ArgoUML</p></td></tr></table></div></td></tr></tbody></table></div></div><div class="sect2"><a name="N7393"></a><div class="titlepage"><div><h3 class="title"><a name="N7393"></a>15.4.2. Association Properties</h3></div></div><p>The property tab tool bar for associations is described in <a href="ch15s04.html#tab.ref.association_property_toolbar" title="Table 15.8. Property tool bar for diagram">Table 15.8. Property tool bar for diagram</a>.</p><div class="table"><p><a name="tab.ref.association_property_toolbar"></a><b>Table 15.8. Property tool bar for diagram</b></p><table border="1" summary="Property tool bar for diagram" width="100%"><colgroup><col align="left"><col align="center"><col align="left"></colgroup><thead><tr><th align="left">Button</th><th align="center">Icon</th><th align="left">Meaning</th></tr></thead><tbody valign="top"><tr><td>Go up</td><td><span class="inlinemediaobject"><img align="center" src="images/icons/navigate_up.gif"></span></td><td><p>Navigate up through the package structure of the
+                model. For an association this will be the package containing
+                the association.</p></td></tr><tr><td>Go back</td><td><span class="inlinemediaobject"><img align="center" src="images/icons/navigate_back.gif"></span></td><td><p>Navigate back to the previous
+                artifact.</p><div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td align="center" rowspan="2" valign="top" width="25"><img src="images/warning.png"></td><th><a name="N7418"></a>Warning</th></tr><tr><td align="left" colspan="2" valign="top"><p>This feature is currently broken within ArgoUML
+                and there is no guarantee where (if anywhere) this button will
+                take you.</p></td></tr></table></div></td></tr><tr><td>Go forward</td><td><span class="inlinemediaobject"><img align="center" src="images/icons/navigate_forward.gif"></span></td><td><p>Navigate forward to the next
+                artifact.</p><div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td align="center" rowspan="2" valign="top" width="25"><img src="images/warning.png"></td><th><a name="N7437"></a>Warning</th></tr><tr><td align="left" colspan="2" valign="top"><p>This feature is currently broken within ArgoUML
+                and there is no guarantee where (if anywhere) this button will
+                take you.</p></td></tr></table></div></td></tr><tr><td>Delete</td><td><span class="inlinemediaobject"><img align="center" src="images/icons/property_delete.gif"></span></td><td><p>This deletes the selected association from the
+                model.</p><div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td align="center" rowspan="2" valign="top" width="25"><img src="images/warning.png"></td><th><a name="N7456"></a>Warning</th></tr><tr><td align="left" colspan="2" valign="top"><p>This is a deletion from the model
+                <i>not</i> just the diagram. To delete an
+                association from the diagram, but keep it within the model, use
+                the main menu <tt>Edit/Remove From Diagram</tt>
+                (Ctrl-R).</p></td></tr></table></div></td></tr></tbody></table></div><p>The fields on the property tab for associations are described in
+        <a href="ch15s04.html#tab.ref.association_property_fields" title="Table 15.9. Property fields for association">Table 15.9. Property fields for association</a>.</p><div class="table"><p><a name="tab.ref.association_property_fields"></a><b>Table 15.9. Property fields for association</b></p><table border="1" summary="Property fields for association" width="100%"><colgroup><col align="left"><col align="left"></colgroup><thead><tr><th align="left">Field</th><th align="left">Meaning</th></tr></thead><tbody valign="top"><tr><td>Name</td><td><p>Text box. The name of the association. By convention
+                association names start with a lower case letter, with
+                &#8220;bumpy caps&#8221; used to indicate words within the
+                name, thus: <tt>salesHandling</tt>.</p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td align="center" rowspan="2" valign="top" width="25"><img src="images/note.png"></td><th><a name="N74bb"></a>Note</th></tr><tr><td align="left" colspan="2" valign="top"><p>ArgoUML does not enforce any naming convention for
+                associations.</p></td></tr></table></div><div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td align="center" rowspan="2" valign="top" width="25"><img src="images/tip.png"></td><th><a name="N74bf"></a>Tip</th></tr><tr><td align="left" colspan="2" valign="top"><p>Although the design critics will advise otherwise, it
+                is perfectly normal not to name associations on a use case,
+                since the relationship is obvious from the actor and use case
+                name.</p></td></tr></table></div></td></tr><tr><td>Stereotype</td><td><p>Drop down selector. Association is provided by
+                default with the UML standard stereotype for Association
+                ((<tt>implicit)</tt>) and the additional Association
+                stereotypes for the Software Engineering Process and Business
+                Modeling in the UML standard (<tt>communicate</tt>
+                and <tt>subscribe</tt>). ArgoUML also provides the
+                additional stereotypes, <tt>machine</tt>,
+                <tt>organization</tt> and <tt>person</tt>
+                and four additional stereotypes suggested by some writers using
+                patterns (<tt>offstage actor</tt>, <tt>primary
+                actor</tt>, <tt>stakeholder</tt> and
+                <tt>supporting actor</tt>).</p><p>Stereotyping can be useful when creating use cases in the
+                problem domain (requirements capture) and solution domain
+                (analysis), as well as for processes based on patterns.</p><p>The stereotype is shown between &laquo; and &raquo; above
+                the name of the association on the diagram.</p><div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td align="center" rowspan="2" valign="top" width="25"><img src="images/warning.png"></td><th><a name="N7507"></a>Warning</th></tr><tr><td align="left" colspan="2" valign="top"><p>The provision of <tt>offstage
+                actor</tt>, <tt>primary actor</tt>,
+                <tt>stakeholder</tt> and <tt>supporting
+                actor</tt> by ArgoUML as stereotypes of
+                <tt>Association</tt> appears to be erroneous. They
+                should be stereotypes of <tt>Actor</tt> (or arguably
+                <tt>Classifier</tt>).</p></td></tr></table></div></td></tr><tr><td>Navigate Stereotype</td><td><p><span class="inlinemediaobject"><img align="center" src="images/icons/navigate_stereotype.gif"></span> icon. If a
+                  stereotype has been selected, this will navigate you to the
+                  stereotype property panel (see <a href="ch14s04.html" title="14.4. Stereotypes">Section 14.4</a>).</p></td></tr><tr><td>Namespace</td><td><p>Text box. Records the namespace for the
+                association. This is the package hierarchy.</p><p>Button&nbsp;1 click on the entry will take you to the package
+                defining this namespace (or the model for the top level
+                namespace).</p></td></tr><tr><td>Modifiers</td><td><p>Check box, with entries <tt>Abstract</tt>,
+                <tt>Final</tt> and <tt>Root</tt>. No known
+                use.</p><div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td align="center" rowspan="2" valign="top" width="25"><img src="images/tip.png"></td><th><a name="N7575"></a>Tip</th></tr><tr><td align="left" colspan="2" valign="top"><p>Whilst attributes are generalizable elements, marking
+                them as with these modifiers is of limited
+                value with binary associations (the only support that ArgoUML
+                supports properly.</p></td></tr></table></div></td></tr><tr><td>Association Ends</td><td><p>Text area. Lists the ends of this association. An
+                association can have any number of ends, but for use cases, two
+                is the only useful number (associative classes can led to a
+                third end on class diagrams, but this is not supported by
+                ArgoUML). For more on association ends see <a href="ch15s05.html" title="15.5. Association End">Section 15.5</a>.</p><p>The names are listed, unless the association end has no
+                name (the case when it is first created), in which case the
+                artifact at that end, and its multiplicity, is shown.</p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td align="center" rowspan="2" valign="top" width="25"><img src="images/note.png"></td><th><a name="N758c"></a>Note</th></tr><tr><td align="left" colspan="2" valign="top"><p>The only representation of association ends on a
+                diagram is that their name appears at the relevant end of the
+                corresponding association. There is no way to access them from
+                the diagram.</p></td></tr></table></div><p>Button&nbsp;1 click on an association end will navigate to that
+                end. Button&nbsp;2 click gives a pop up menu with five
+                options.</p><div class="itemizedlist"><ul><li><p><a name="N7595"></a><tt>Open</tt>. Where an association
+                  end exists, navigate to it.</p></li><li><p><a name="N759d"></a><tt>Add</tt>. Add a new association
+                  end and navigate to its property tab.</p><div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td align="center" rowspan="2" valign="top" width="25"><img src="images/tip.png"></td><th><a name="N75a5"></a>Tip</th></tr><tr><td align="left" colspan="2" valign="top"><p>Whilst adding new ends is possible, the value of
+                  this is limited for Use Case diagrams where the standard two
+                  ends is all that is every needed.</p></td></tr></table></div></li><li><p><a name="N75a9"></a><tt>Delete</tt>. Where an association
+                  end this removes it completely from the
+                  model.</p></li><li><p><a name="N75b1"></a><tt>Move Up</tt>. Only available
+                  where there are two or more association ends, and the
+                  association end selected is not at the top. It is moved one
+                  up the list.</p></li><li><p><a name="N75b9"></a><tt>Move Down</tt>. Only available
+                  where there are two or more association ends listed, and the
+                  association end selected is not at the bottom. It is moved
+                  one down the list.</p></li></ul></div></td></tr><tr><td>Extends</td><td><p>Text box. These are the associations for which this
+                association is a specialization. It is possible to create
+                generalizations using the pop-up menu from here, but there is
+                no way within ArgoUML to give them a parent, so the entry has
+                no use</p><div class="caution" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td align="center" rowspan="2" valign="top" width="25"><img src="images/caution.png"></td><th><a name="N75ce"></a>Caution</th></tr><tr><td align="left" colspan="2" valign="top"><p>This entry should properly be called
+                <tt>Generalizations</tt>.</p></td></tr></table></div></td></tr><tr><td>Derived</td><td><p>Text box. These are the associations for which this
+                association is a generalization. The drop down menu is always
+                grayed out.</p><div class="caution" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td align="center" rowspan="2" valign="top" width="25"><img src="images/caution.png"></td><th><a name="N75e3"></a>Caution</th></tr><tr><td align="left" colspan="2" valign="top"><p>This entry should properly be called
+                <tt>Specializations</tt>.</p></td></tr></table></div></td></tr></tbody></table></div></div></div><div class="navfooter"><hr><table summary="Navigation footer" width="100%"><tr><td align="left" width="40%"><a href="ch15s03.html">Prev</a>&nbsp;</td><td align="center" width="20%"><a href="index.html">Home</a></td><td align="right" width="40%">&nbsp;<a href="ch15s05.html">Next</a></td></tr><tr><td align="left" width="40%">15.3. Use Case&nbsp;</td><td align="center" width="20%"><a href="ch15.html">Up</a></td><td align="right" width="40%">&nbsp;15.5. Association End</td></tr></table></div></body></html>

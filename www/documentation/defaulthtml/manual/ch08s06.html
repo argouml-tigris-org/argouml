@@ -1,0 +1,32 @@
+<html><head><title>8.6. Context Sensitive Menu</title><link href="look-and-feel.css" rel="stylesheet" type="text/css"><meta content="DocBook XSL Stylesheets V1.37" name="generator"><link href="index.html" rel="home" title="ArgoUML User Manual"><link href="ch08.html" rel="up" title="Chapter 8. The Navigation Pane"><link href="ch08s05.html" rel="previous" title="8.5. Configuring Perspectives"><link href="ch09.html" rel="next" title="Chapter 9. The Editing Pane"></head><body alink="#0000FF" bgcolor="white" link="#0000FF" text="black" vlink="#840084"><div class="navheader"><table summary="Navigation header" width="100%"><tr><th align="center" colspan="3">8.6. Context Sensitive Menu</th></tr><tr><td align="left" width="20%"><a href="ch08s05.html">Prev</a>&nbsp;</td><th align="center" width="60%">Chapter 8. The Navigation Pane</th><td align="right" width="20%">&nbsp;<a href="ch09.html">Next</a></td></tr></table><hr></div><div class="sect1"><a name="N2713"></a><div class="titlepage"><div><h2 class="title" style="clear: all"><a name="N2713"></a>8.6. Context Sensitive Menu</h2></div></div><p>Button&nbsp;2 Click over any selected artifact in the main area of the
+      navigation pane will cause a pop-up menu to appear.</p><div class="sect2"><a name="N271d"></a><div class="titlepage"><div><h3 class="title"><a name="N271d"></a>8.6.1. Properties Pop-Up</h3></div></div><p>This entry on the pop-up menu causes the properties tab of the
+        selected artifact or diagram to be displayed in the details
+        pane.</p></div><div class="sect2"><a name="N2728"></a><div class="titlepage"><div><h3 class="title"><a name="N2728"></a>8.6.2. Add to Diagram</h3></div></div><p>This entry on the pop-up menu appears for any artifact that could
+        be added to a diagram in the editing
+        pane. This could be the diagram currently displayed in editing pane, or
+        it could be a diagram in a &#8220;spawned&#8221; window (see
+        <a href="ch09s02.html#s2.ref.edit_button1_double_click" title="9.2.2. Button&nbsp;1 Double Click">Section 9.2.2</a> for an explantion of
+        how to do this).</p><p>The item can be placed in a diagram by moving the cursor to the
+        editing pane or a spawned editing pane window (where it will appear as
+        a cross) and clicking button&nbsp;1.</p><div class="caution" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td align="center" rowspan="2" valign="top" width="25"><img src="images/caution.png"></td><th><a name="N273a"></a>Caution</th></tr><tr><td align="left" colspan="2" valign="top"><p>This menu entry appears and is not grayed out, even for
+        some artifacts that can not be placed on the currently selected diagram
+        in the editing pane.</p><p>This is because there may be separate spawned editing pane windows
+        on which the artifact can validly be placed. ArgoUML cannot track
+        which windows are available, and can only know if an artifact can be
+        validly placed, until a window is selected with the cursor
+        <i>after</i> the
+        <tt>Add&nbsp;to&nbsp;Diagram</tt> is chosen.</p><p>The only way to find out if an artifact can be placed in a
+        particular window is to try the operation and see if the artifact is
+        placed.</p></td></tr></table></div><div class="caution" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td align="center" rowspan="2" valign="top" width="25"><img src="images/caution.png"></td><th><a name="N274c"></a>Caution</th></tr><tr><td align="left" colspan="2" valign="top"><p>A separate known limitation is that the current release of
+        ArgoUML will not let you place more than one copy of any particular
+        artifact on a diagram.</p></td></tr></table></div></div><div class="sect2"><a name="N2753"></a><div class="titlepage"><div><h3 class="title"><a name="N2753"></a>8.6.3. Delete From Model</h3></div></div><p>This entry on the pop-up menu appears for any artifact that could
+        be deleted from the model.</p><div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td align="center" rowspan="2" valign="top" width="25"><img src="images/warning.png"></td><th><a name="N275b"></a>Warning</th></tr><tr><td align="left" colspan="2" valign="top"><p>This deletes the artifact from the model completely, not
+        just from the diagram. To remove just from the diagram use the edit
+        menu (see
+        <a href="ch12s04.html#s2.menu_edit_remove_from_diagram" title="12.4.7. Remove From Diagram">Section 12.4.7</a>).</p></td></tr></table></div><div class="caution" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td align="center" rowspan="2" valign="top" width="25"><img src="images/caution.png"></td><th><a name="N2763"></a>Caution</th></tr><tr><td align="left" colspan="2" valign="top"><p>You cannot delete a diagram from the model. This function
+        will just delete all the items on the diagram.</p><p>The only way to delete a diagram is to remove it from the saved
+        project file (a project file with the suffix <tt>.zargo</tt>
+        is just a ZIP archive of all the files that describe the project. There
+        is one <tt>.pgml</tt> file for each diagram that must be
+        removed from the archive to delete the diagram. Use this technique with
+        caution!</p></td></tr></table></div></div></div><div class="navfooter"><hr><table summary="Navigation footer" width="100%"><tr><td align="left" width="40%"><a href="ch08s05.html">Prev</a>&nbsp;</td><td align="center" width="20%"><a href="index.html">Home</a></td><td align="right" width="40%">&nbsp;<a href="ch09.html">Next</a></td></tr><tr><td align="left" width="40%">8.5. Configuring Perspectives&nbsp;</td><td align="center" width="20%"><a href="ch08.html">Up</a></td><td align="right" width="40%">&nbsp;Chapter 9. The Editing Pane</td></tr></table></div></body></html>

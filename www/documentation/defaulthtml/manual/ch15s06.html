@@ -1,0 +1,123 @@
+<html><head><title>15.6. Generalization</title><link href="look-and-feel.css" rel="stylesheet" type="text/css"><meta content="DocBook XSL Stylesheets V1.37" name="generator"><link href="index.html" rel="home" title="ArgoUML User Manual"><link href="ch15.html" rel="up" title="Chapter 15. ArgoUML Use Case Diagram Artifact Reference"><link href="ch15s05.html" rel="previous" title="15.5. Association End"><link href="ch15s07.html" rel="next" title="15.7. Dependency"></head><body alink="#0000FF" bgcolor="white" link="#0000FF" text="black" vlink="#840084"><div class="navheader"><table summary="Navigation header" width="100%"><tr><th align="center" colspan="3">15.6. Generalization</th></tr><tr><td align="left" width="20%"><a href="ch15s05.html">Prev</a>&nbsp;</td><th align="center" width="60%">Chapter 15. ArgoUML Use Case Diagram Artifact Reference</th><td align="right" width="20%">&nbsp;<a href="ch15s07.html">Next</a></td></tr></table><hr></div><div class="sect1"><a name="s1.ref.generalization_use_case"></a><div class="titlepage"><div><h2 class="title" style="clear: all"><a name="s1.ref.generalization_use_case"></a>15.6. Generalization</h2></div></div><p>Generalization is a relationship between two use cases or two
+     actors. Where A is a generalization of B, it means A describes more
+     general behavior and B a more specific version of that
+     behavior.</p><p>Examples for a travel agent sales system might be the use case
+     for making a booking as a generalization of the use case for making a
+     flight booking and a salesman actor being a generalization of a supervisor
+     actor (since supervisors can also act as salesmen, but not vice
+     versa).</p><p>Generalization is analogous to class inheritance within OO
+      programming.</p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td align="center" rowspan="2" valign="top" width="25"><img src="images/note.png"></td><th><a name="N79b6"></a>Note</th></tr><tr><td align="left" colspan="2" valign="top"><p>It is easy to confuse <i>extends</i>
+      relationships between use cases with generalization. However extends is
+      about augmenting a use case's behavior at a specific
+      point. Generalization is about specializing the behavior throughout the
+      use case.</p></td></tr></table></div><p>Within the UML metamodel, <tt>Generalization</tt> is a
+      sub-class of <tt>Relationship</tt>.</p><p>Generalization is represented as an arrow with white filled head from
+      the specialized use case or actor to the generalized use case or actor
+      (see <a href="ch15.html#fig.ref.use_case_diagram" title="Figure 15.1. Possible artifacts on a use case diagram.">Figure 15.1. Possible artifacts on a use case diagram.</a>).</p><div class="sect2"><a name="N79d3"></a><div class="titlepage"><div><h3 class="title"><a name="N79d3"></a>15.6.1. Generalization Details Tabs</h3></div></div><p>The details tabs that are active for associations are described in
+        <a href="ch15s06.html#tab.ref.generalization_details_tabs" title="Table 15.13. Details tabs for generalization">Table 15.13. Details tabs for generalization</a>.</p><div class="table"><p><a name="tab.ref.generalization_details_tabs"></a><b>Table 15.13. Details tabs for generalization</b></p><table border="1" summary="Details tabs for generalization" width="100%"><colgroup><col align="left"><col align="left"></colgroup><thead><tr><th align="left">Tab</th><th align="left">Meaning</th></tr></thead><tbody valign="top"><tr><td>ToDoItem</td><td><p>Standard tab.</p></td></tr><tr><td>Properties</td><td><p>See <a href="ch15s06.html#tab.ref.generalization_property_toolbar" title="Table 15.14. Property tool bar for diagram">Table 15.14. Property tool bar for diagram</a> and <a href="ch15s06.html#tab.ref.generalization_property_fields" title="Table 15.15. Property fields for generalization">Table 15.15. Property fields for generalization</a>
+                below.</p></td></tr><tr><td>Documentation</td><td><p>Standard tab.</p></td></tr><tr><td>Style</td><td><p>Standard tab</p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td align="center" rowspan="2" valign="top" width="25"><img src="images/note.png"></td><th><a name="N7a4f"></a>Note</th></tr><tr><td align="left" colspan="2" valign="top"><p>The values for the bounds of the generalization
+                appear to have no meaning. Changing them has no effect on the
+                diagram. This is sensible behavior, given the generalization
+                is tied to a particular actor and use
+                case.</p></td></tr></table></div></td></tr><tr><td>Source</td><td><p>Standard tab. You would not expect to generate any
+                code for an association end, but this tab contains the name of
+                the generalization.</p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td align="center" rowspan="2" valign="top" width="25"><img src="images/note.png"></td><th><a name="N7a5f"></a>Note</th></tr><tr><td align="left" colspan="2" valign="top"><p>This is probably not the correct thing to do for good
+                code generation, and will need to be changed in future versions
+                of ArgoUML.</p></td></tr></table></div></td></tr><tr><td>Constraints</td><td><p>Standard tab. In the UML metamodel,
+                <tt>Generalization</tt> has the following standard
+                constraints defined.</p><div class="itemizedlist"><ul><li><p><a name="N7a76"></a><tt>complete</tt>. Applied to a set
+                    of generalizations with the same discriminator (see <a href="ch16s13.html" title="16.13. Generalization">Section 16.13</a>) and same parent,
+                    indicating that an instance of the parent must be an
+                    instance of one of those children.</p><p>Where there is only one discriminator, this implies the
+                    parent must be abstract.</p><div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td align="center" rowspan="2" valign="top" width="25"><img src="images/tip.png"></td><th><a name="N7a85"></a>Tip</th></tr><tr><td align="left" colspan="2" valign="top"><p>The point of this constraint is to indicate that
+                    within the design, no more children are expected to be
+                    created for this parent. If more are created, the
+                    implication is that there will be significant rework
+                    required within the design.</p></td></tr></table></div></li><li><p><a name="N7a89"></a><tt>disjoint</tt>. Applied to a set
+                    of generalizations indicates and instance of the parent
+                    must be an instance of no more than one of the children
+                    within the set.</p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td align="center" rowspan="2" valign="top" width="25"><img src="images/note.png"></td><th><a name="N7a91"></a>Note</th></tr><tr><td align="left" colspan="2" valign="top"><p>This is the default semantics of
+                    generalization</p></td></tr></table></div></li><li><p><a name="N7a95"></a><tt>incomplete</tt>. The converse
+                    of <tt>complete</tt> indicating that within a set
+                    of generalizations of the same parent sharing the same
+                    discriminator, an instance of the parent need not be an
+                    instance of a child within the set (there is no guarantee
+                    such an instance exists)</p><p>This implies the parent must be concrete.</p><div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td align="center" rowspan="2" valign="top" width="25"><img src="images/tip.png"></td><th><a name="N7aa5"></a>Tip</th></tr><tr><td align="left" colspan="2" valign="top"><p>The point of this constraint is to indicate that
+                    within the design, more children may be created for this
+                    parent. If more are created, the implication is that there
+                    should be no significant rework required within the
+                    design.</p></td></tr></table></div></li><li><p><a name="N7aa9"></a><tt>overlapping</tt>. The inverse f
+                    <tt>disjoint</tt>. Applied to a set of
+                    generalizations indicates an instance of one child in the
+                    set may simultaneously be an instance of another child
+                    within the set (although this is not
+                    guaranteed).</p></li></ul></div></td></tr><tr><td>Tagged Values</td><td><p>Standard tab. In the UML metamodel,
+                <tt>Generalization</tt> has the following standard
+                tagged values defined.</p><div class="itemizedlist"><ul><li><p><a name="N7aca"></a><tt>derived</tt> (from the
+                    superclass, <tt>ModelElement</tt>). Values
+                    <tt>true</tt>, meaning the generalization is
+                    redundant&#8212;it can be formally derived from other
+                    elements, or <tt>false</tt> meaning it
+                    cannot.</p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td align="center" rowspan="2" valign="top" width="25"><img src="images/note.png"></td><th><a name="N7ae1"></a>Note</th></tr><tr><td align="left" colspan="2" valign="top"><p>Derived generalizations still have their value in
+                    analysis to introduce useful names or concepts, and in
+                    design to avoid re-computation.</p></td></tr></table></div></li></ul></div><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td align="center" rowspan="2" valign="top" width="25"><img src="images/note.png"></td><th><a name="N7ae6"></a>Note</th></tr><tr><td align="left" colspan="2" valign="top"><p>The UML <tt>Element</tt> metaclass from
+                  which all other artifacts are derived includes the tagged
+                  element <tt>documentation</tt> which is handled by
+                  the <i>documentation tab</i> under
+                  ArgoUML</p></td></tr></table></div></td></tr></tbody></table></div></div><div class="sect2"><a name="N7afe"></a><div class="titlepage"><div><h3 class="title"><a name="N7afe"></a>15.6.2. Generalization Properties</h3></div></div><p>The property tab tool bar for associations is described in <a href="ch15s06.html#tab.ref.generalization_property_toolbar" title="Table 15.14. Property tool bar for diagram">Table 15.14. Property tool bar for diagram</a>.</p><div class="table"><p><a name="tab.ref.generalization_property_toolbar"></a><b>Table 15.14. Property tool bar for diagram</b></p><table border="1" summary="Property tool bar for diagram" width="100%"><colgroup><col align="left"><col align="center"><col align="left"></colgroup><thead><tr><th align="left">Button</th><th align="center">Icon</th><th align="left">Meaning</th></tr></thead><tbody valign="top"><tr><td>Go up</td><td><span class="inlinemediaobject"><img align="center" src="images/icons/navigate_up.gif"></span></td><td><p>Navigate up through the package structure of the
+                model. For a generalization this will be the package containing
+                the generalization.</p></td></tr><tr><td>Go back</td><td><span class="inlinemediaobject"><img align="center" src="images/icons/navigate_back.gif"></span></td><td><p>Navigate back to the previous
+                artifact.</p><div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td align="center" rowspan="2" valign="top" width="25"><img src="images/warning.png"></td><th><a name="N7b83"></a>Warning</th></tr><tr><td align="left" colspan="2" valign="top"><p>This feature is currently broken within ArgoUML
+                and there is no guarantee where (if anywhere) this button will
+                take you.</p></td></tr></table></div></td></tr><tr><td>Go forward</td><td><span class="inlinemediaobject"><img align="center" src="images/icons/navigate_forward.gif"></span></td><td><p>Navigate forward to the next
+                artifact.</p><div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td align="center" rowspan="2" valign="top" width="25"><img src="images/warning.png"></td><th><a name="N7ba2"></a>Warning</th></tr><tr><td align="left" colspan="2" valign="top"><p>This feature is currently broken within ArgoUML
+                and there is no guarantee where (if anywhere) this button will
+                take you.</p></td></tr></table></div></td></tr><tr><td>Delete</td><td><span class="inlinemediaobject"><img align="center" src="images/icons/property_delete.gif"></span></td><td><p>This deletes the selected generalization from the
+                model.</p><div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td align="center" rowspan="2" valign="top" width="25"><img src="images/warning.png"></td><th><a name="N7bc1"></a>Warning</th></tr><tr><td align="left" colspan="2" valign="top"><p>This is a deletion from the model
+                <i>not</i> just the diagram. To delete a
+                generalization from the diagram, but keep it within the model,
+                use the main menu <tt>Edit/Remove From Diagram</tt>
+                (Ctrl-R).</p></td></tr></table></div></td></tr></tbody></table></div><p>The fields on the property tab for generalizations are described in
+        <a href="ch15s06.html#tab.ref.generalization_property_fields" title="Table 15.15. Property fields for generalization">Table 15.15. Property fields for generalization</a>.</p><div class="table"><p><a name="tab.ref.generalization_property_fields"></a><b>Table 15.15. Property fields for generalization</b></p><table border="1" summary="Property fields for generalization" width="100%"><colgroup><col align="left"><col align="left"></colgroup><thead><tr><th align="left">Field</th><th align="left">Meaning</th></tr></thead><tbody valign="top"><tr><td>Name</td><td><p>Text box. The name of the generalization.</p><div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td align="center" rowspan="2" valign="top" width="25"><img src="images/tip.png"></td><th><a name="N7c1e"></a>Tip</th></tr><tr><td align="left" colspan="2" valign="top"><p>It is quite common to leave generalizations
+                unnamed in use case analysis.</p></td></tr></table></div><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td align="center" rowspan="2" valign="top" width="25"><img src="images/note.png"></td><th><a name="N7c22"></a>Note</th></tr><tr><td align="left" colspan="2" valign="top"><p>ArgoUML does not enforce any naming convention for
+                associations.</p></td></tr></table></div><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td align="center" rowspan="2" valign="top" width="25"><img src="images/note.png"></td><th><a name="N7c26"></a>Note</th></tr><tr><td align="left" colspan="2" valign="top"><p>There is no representation of the stereotype of a
+                generalization on the diagram.</p></td></tr></table></div></td></tr><tr><td>Stereotype</td><td><p>Drop down selector. Generalization is provided by
+                default with the UML standard stereotype,
+                (<tt>implementation</tt>. ArgoUML also provides the
+                additional stereotypes, <tt>machine</tt>,
+                <tt>organization</tt> and
+                <tt>person</tt>. The stereotype is shown between
+                &laquo; and &raquo; above or across the generalization.</p><div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td align="center" rowspan="2" valign="top" width="25"><img src="images/tip.png"></td><th><a name="N7c4a"></a>Tip</th></tr><tr><td align="left" colspan="2" valign="top"><p>Stereotyping generalization does not have great value
+                on a use case diagram. The standard stereotype is about
+                implementation, and suited to the use of generalization on
+                class diagrams.</p></td></tr></table></div></td></tr><tr><td>Navigate Stereotype</td><td><p><span class="inlinemediaobject"><img align="center" src="images/icons/navigate_stereotype.gif"></span> icon. If a
+                  stereotype has been selected, this will navigate you to the
+                  stereotype property panel (see <a href="ch14s04.html" title="14.4. Stereotypes">Section 14.4</a>).</p></td></tr><tr><td>Discriminator</td><td><p>Text box. The name of a discriminator for the
+                specialization. UML&nbsp;1.3 allows grouping of specializations
+                into a number of sets, on the basis of this value.</p><div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td align="center" rowspan="2" valign="top" width="25"><img src="images/tip.png"></td><th><a name="N7c77"></a>Tip</th></tr><tr><td align="left" colspan="2" valign="top"><p>The empty string &#8220;&#8221; is a valid entry (and
+                the default) for this field. The discriminator is only of
+                practical use in cases of multiple inheritance. An example is
+                discussed in the section covering generalization on class
+                diagrams (see <a href="ch16s13.html" title="16.13. Generalization">Section 16.13</a>). There is little point
+                in use this with a use case diagram.</p></td></tr></table></div></td></tr><tr><td>Namespace</td><td><p>Text box. Records the namespace for the
+                generalization. This is the package hierarchy.</p><p>Button&nbsp;1 click on the entry will take you to the package
+                defining this namespace (or the model for the top level
+                namespace).</p></td></tr><tr><td>Parent</td><td><p>Text box. Records the use case or actor that is the
+                <i>parent</i> in this relationship, i.e. the more
+                general end of the relationship. Button&nbsp;1 click
+                on this entry will take you to that use case or
+                actor. Button&nbsp;2 click will give a pop up menu, with a single
+                entry, <tt>Open</tt> which will also navigate to that
+                use case or actor.</p></td></tr><tr><td>Child</td><td><p>Text box. Records the use case or actor that is the
+                <i>child</i> in this relationship, i.e. the more
+                specific end of the relationship. Button&nbsp;1 click
+                on this entry will take you to that use case or
+                actor. Button&nbsp;2 click will give a pop up menu, with a single
+                entry, <tt>Open</tt> which will also navigate to that
+                use case or actor.</p></td></tr><tr><td>Powertype</td><td><p>Drop down selector providing access to all standard
+                UML types provided by ArgoUML and all new classes created
+                within the current model.</p><p>This is the type of the child entity of the
+                generalization.</p><div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td align="center" rowspan="2" valign="top" width="25"><img src="images/tip.png"></td><th><a name="N7cc7"></a>Tip</th></tr><tr><td align="left" colspan="2" valign="top"><p>This can be ignored for use case analysis. The only
+                sensible value to put in would be the child use case type (as a
+                classifier, this appears in the drop down
+                list.</p></td></tr></table></div></td></tr></tbody></table></div><div class="figure"><p><a name="fig.discriminator_example"></a><b>Figure 15.2. Example use of a discriminator with generalization</b></p><div class="screenshot"><div class="mediaobject"><img align="center" src="images/reference/discriminator_example.gif"></div></div></div></div></div><div class="navfooter"><hr><table summary="Navigation footer" width="100%"><tr><td align="left" width="40%"><a href="ch15s05.html">Prev</a>&nbsp;</td><td align="center" width="20%"><a href="index.html">Home</a></td><td align="right" width="40%">&nbsp;<a href="ch15s07.html">Next</a></td></tr><tr><td align="left" width="40%">15.5. Association End&nbsp;</td><td align="center" width="20%"><a href="ch15.html">Up</a></td><td align="right" width="40%">&nbsp;15.7. Dependency</td></tr></table></div></body></html>

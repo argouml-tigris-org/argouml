@@ -1,0 +1,291 @@
+<html><head><title>9.3. The tool bar</title><link href="look-and-feel.css" rel="stylesheet" type="text/css"><meta content="DocBook XSL Stylesheets V1.37" name="generator"><link href="index.html" rel="home" title="ArgoUML User Manual"><link href="ch09.html" rel="up" title="Chapter 9. The Editing Pane"><link href="ch09s02.html" rel="previous" title="9.2. Mouse Behavior in the Editing Pane"><link href="ch09s04.html" rel="next" title="9.4. Clarifiers"></head><body alink="#0000FF" bgcolor="white" link="#0000FF" text="black" vlink="#840084"><div class="navheader"><table summary="Navigation header" width="100%"><tr><th align="center" colspan="3">9.3. The tool bar</th></tr><tr><td align="left" width="20%"><a href="ch09s02.html">Prev</a>&nbsp;</td><th align="center" width="60%">Chapter 9. The Editing Pane</th><td align="right" width="20%">&nbsp;<a href="ch09s04.html">Next</a></td></tr></table><hr></div><div class="sect1"><a name="s1.ref.edit_pane_tool_bar"></a><div class="titlepage"><div><h2 class="title" style="clear: all"><a name="s1.ref.edit_pane_tool_bar"></a>9.3. The tool bar</h2></div></div><p>The toolbar at the top of the editing pane provides the main
+      functions of the pane. The default tool is the <tt>Select</tt>
+      tool (<span class="inlinemediaobject"><img align="center" src="images/icons/select.gif"></span>. In general button&nbsp;1 on any
+      tool click selects a tool for one use, before reverting to the default
+      tool, button&nbsp;1 double click selects a tool for repeat use until another
+      tool is selected.</p><p>The tools fall into four categories.</p><div class="itemizedlist"><ul><li><p><a name="N288c"></a><i>Layout tools.</i> Provide assistance in
+        laying out artifacts on the diagram.</p></li><li><p><a name="N2892"></a><i>Annotation tools.</i> Used to annotate
+        artifacts on the diagram.</p></li><li><p><a name="N2898"></a><i>Drawing tools.</i> Used to add general
+        graphics artifacts to diagrams.</p></li><li><p><a name="N289e"></a><i>Diagram specific tools.</i> Used to add
+        UML artifacts specific to a particular diagram type to the
+        diagram.</p></li></ul></div><div class="sect2"><a name="s2.ref.edit_layout"></a><div class="titlepage"><div><h3 class="title"><a name="s2.ref.edit_layout"></a>9.3.1. Layout Tools</h3></div></div><p>Two tools are provided in all diagrams in this category.</p><div class="itemizedlist"><ul><li><p><a name="N28b3"></a><span class="inlinemediaobject"><img align="center" src="images/icons/select.gif"></span>
+          <tt>Select</tt>. This tool provides for general selection
+          of artifacts on the diagram. Button&nbsp;1 click will select an
+          artifact. SHIFT with button&nbsp;1 can be used to select (or deselect
+          multiple artifacts. Button&nbsp;1 motion will move selected 2D items or
+          add and move a new control point on a link. Button&nbsp;1 motion on a
+          selected component's control point will stretch that component's
+          shape.</p></li><li><p><a name="N28ca"></a><span class="inlinemediaobject"><img align="center" src="images/icons/broom.gif"></span>
+          <i>Broom</i>. Button&nbsp;1 motion with this tool provide a
+          &#8220;broom&#8221; which will sweep all artifacts along. This is
+          very shortcut way of lining things up.</p><p>Broom can also be invoked by using CONTROL with button&nbsp;1 motion
+          when the <tt>Select</tt> tool is in use.</p></li></ul></div><div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td align="center" rowspan="2" valign="top" width="25"><img src="images/tip.png"></td><th><a name="N28ed"></a>Tip</th></tr><tr><td align="left" colspan="2" valign="top"><p>Additional control of artifact layout is provided through the
+        <tt>Arrange</tt> menu (see
+        <a href="ch12s07.html" title="12.7. The Arrange Menu">Section 12.7</a>).</p></td></tr></table></div></div><div class="sect2"><a name="N28fd"></a><div class="titlepage"><div><h3 class="title"><a name="N28fd"></a>9.3.2. Annotation Tools</h3></div></div><p>Only one annotation tool is provide, <tt>Note</tt>
+        (<span class="inlinemediaobject"><img align="center" src="images/icons/note.gif"></span>). This is used to add a
+        note to a selected UML artifact.</p><div class="caution" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td align="center" rowspan="2" valign="top" width="25"><img src="images/caution.png"></td><th><a name="N2918"></a>Caution</th></tr><tr><td align="left" colspan="2" valign="top"><p>Unlike most other tools you use the
+        <tt>Select</tt> tool to select an artifact, and then
+        button&nbsp;1 click on <tt>Note</tt> to create the
+        note.</p></td></tr></table></div><p>The note is created alongside the selected artifact, with the
+        default contents <tt>New note</tt>. This text can be selected
+        with button&nbsp;1 and edited from the keyboard.</p><div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td align="center" rowspan="2" valign="top" width="25"><img src="images/warning.png"></td><th><a name="N292e"></a>Warning</th></tr><tr><td align="left" colspan="2" valign="top"><p>The UML standard allows notes to be attached to any
+        artifact. However in the current version of ArgoUML there is only a
+        partial implementation. <tt>Note</tt> is only provided on
+        class and state diagrams, and can only be attached to classes,
+        interfaces, states and pseudostates.</p></td></tr></table></div><div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td align="center" rowspan="2" valign="top" width="25"><img src="images/tip.png"></td><th><a name="N2937"></a>Tip</th></tr><tr><td align="left" colspan="2" valign="top"><p>You can add a note also to an object in a deployment diagram
+        by using its context sensitive <tt>Add</tt> pop-up menu (see
+        <a href="ch09s07.html" title="9.7. Pop-Up Menus">Section 9.7</a>).</p></td></tr></table></div><div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td align="center" rowspan="2" valign="top" width="25"><img src="images/tip.png"></td><th><a name="N2944"></a>Tip</th></tr><tr><td align="left" colspan="2" valign="top"><p>If you need to add a note to some other artifact, try using
+        a text box from the graphics drawing tools (see
+        <a href="ch09s03.html#s2.ref.edit_pane_drawing_tools" title="9.3.3. Drawing Tools">Section 9.3.3</a>).</p></td></tr></table></div></div><div class="sect2"><a name="s2.ref.edit_pane_drawing_tools"></a><div class="titlepage"><div><h3 class="title"><a name="s2.ref.edit_pane_drawing_tools"></a>9.3.3. Drawing Tools</h3></div></div><p>These are a series of tools for providing graphical additions to
+        diagrams. Although they are not UML artifacts, the UML standard
+        provides for such decoration to improve the readability of
+        diagrams.</p><div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td align="center" rowspan="2" valign="top" width="25"><img src="images/tip.png"></td><th><a name="N2959"></a>Tip</th></tr><tr><td align="left" colspan="2" valign="top"><p>These drawing tools provide a useful way to partially support
+        some of the UML features (such as general purpose notes) that are
+        missing from the current release of ArgoUML.</p></td></tr></table></div><p>Eight tools are provided. button&nbsp;1 click on the diagram will place
+        an instance of the graphical item of the same size as the last one
+        placed. The size can be controlled by button&nbsp;1 motion during
+        placement. One side or end of the element will be at button&nbsp;1 down,
+        the other side or end at button&nbsp;1 up. In general after they are placed
+        on the diagram, graphical elements can be moved with the
+        <tt>Select</tt> tool and button&nbsp;1 and re-sized by button&nbsp;1
+        motion on the handles after they have been selected.</p><div class="itemizedlist"><ul><li><p><a name="N2967"></a><span class="inlinemediaobject"><img align="center" src="images/icons/rectangle.gif"></span>
+          <tt>Rectangle</tt>. Provides a rectangle.</p></li><li><p><a name="N297e"></a><span class="inlinemediaobject"><img align="center" src="images/icons/rounded_rectangle.gif"></span>
+          <tt>Rounded Rectangle</tt>. Provides a rectangle with
+          rounded corners. There is no control over the degree of
+          rounding.</p></li><li><p><a name="N2995"></a><span class="inlinemediaobject"><img align="center" src="images/icons/circle.gif"></span>
+          <tt>Circle</tt>. Provides a circle.</p></li><li><p><a name="N29ac"></a><span class="inlinemediaobject"><img align="center" src="images/icons/line.gif"></span>
+          <tt>Line</tt>. Provides a line.</p></li><li><p><a name="N29c3"></a><span class="inlinemediaobject"><img align="center" src="images/icons/text.gif"></span>
+          <tt>Text</tt>. Provides a text box. The text is entered by
+          selecting the box and typing. Text is in blue and centered and
+          after typing, the box will shrink to the size of the text. However it
+          can be re-sized by dragging on the corners.</p></li><li><p><a name="N29da"></a><span class="inlinemediaobject"><img align="center" src="images/icons/polygon.gif"></span>
+          <tt>Polygon</tt>. Provides a polygon. The points of the
+          polygon are selected by button&nbsp;1 click and the polygon closed with
+          button&nbsp;1 double click (which will link the final point to the first
+          point).</p></li><li><p><a name="N29f1"></a><span class="inlinemediaobject"><img align="center" src="images/icons/spline.gif"></span>
+          <tt>Spline</tt>. Provide an open spline. The control points
+          of the spline are selected with button&nbsp;1 and the last point selected
+          with button&nbsp;1 double click.</p></li><li><p><a name="N2a08"></a><span class="inlinemediaobject"><img align="center" src="images/icons/ink.gif"></span>
+          <tt>Ink</tt>. Provide a polyline. The points are provided
+          by button&nbsp;1 motion.</p></li></ul></div></div><div class="sect2"><a name="N2a23"></a><div class="titlepage"><div><h3 class="title"><a name="N2a23"></a>9.3.4. Use Case Diagram Specific Tools</h3></div></div><p>Five tools are provided specific to UML artifacts on use case
+        diagrams. The detailed properties of these artifacts are described in
+        the section on use case diagram artifacts (see
+        <a href="ch15.html" title="Chapter 15. ArgoUML Use Case Diagram Artifact Reference">Chapter 15. ArgoUML Use Case Diagram Artifact Reference</a>).</p><div class="itemizedlist"><ul><li><p><a name="N2a31"></a><span class="inlinemediaobject"><img align="center" src="images/icons/actor.gif"></span>
+          <tt>Actor</tt>. Add an actor to the
+          diagram. For convenience, when the mouse is over a selected actor it
+          displays two handles to left and right which may be dragged to form
+          association relationships.</p></li><li><p><a name="N2a48"></a><span class="inlinemediaobject"><img align="center" src="images/icons/use_case.gif"></span>
+          <tt>Use Case</tt>. Add a use case to the
+          diagram. For convenience, when the mouse is over a selected use case
+          it displays two handles to left and right which may be dragged to
+          form association relationships and two handles top and bottom which
+          may be dragged to form generalization and specialization
+          relationships respectively.</p></li><li><p><a name="N2a5f"></a><span class="inlinemediaobject"><img align="center" src="images/icons/association.gif"></span>
+          <tt>Association</tt>. Add an association between two
+          artifacts selected using button&nbsp;1 motion (for the first artifact to
+          the second).</p></li><li><p><a name="N2a76"></a><span class="inlinemediaobject"><img align="center" src="images/icons/generalization.gif"></span>
+          <tt>Generalization</tt>. Add a generalization between two
+          artifacts selected using button&nbsp;1 motion (from the child to the
+          parent).</p></li><li><p><a name="N2a8d"></a><span class="inlinemediaobject"><img align="center" src="images/icons/dependency.gif"></span>
+          <tt>Dependency</tt>. Add a dependency between two artifacts
+          selected using button&nbsp;1 motion (from the dependent artifact).</p><div class="caution" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td align="center" rowspan="2" valign="top" width="25"><img src="images/caution.png"></td><th><a name="N2aa4"></a>Caution</th></tr><tr><td align="left" colspan="2" valign="top"><p>ArgoUML incorrectly uses stereotyped dependencies to
+          represent UML <tt>extends</tt> and
+          <tt>includes</tt>
+          relationships.</p></td></tr></table></div></li></ul></div></div><div class="sect2"><a name="N2ab6"></a><div class="titlepage"><div><h3 class="title"><a name="N2ab6"></a>9.3.5. Class Diagram Specific Tools</h3></div></div><p>Nine tools are provided specific to UML artifacts on class
+        diagrams. The detailed properties of these artifacts are described in
+        the section on class diagram artifacts (see
+        <a href="ch16.html" title="Chapter 16. ArgoUML Class Diagram Artifact Reference">Chapter 16. ArgoUML Class Diagram Artifact Reference</a>).</p><div class="itemizedlist"><ul><li><p><a name="N2ac4"></a><span class="inlinemediaobject"><img align="center" src="images/icons/package.gif"></span>
+          <tt>Package</tt>. Add a package to the
+          diagram.</p></li><li><p><a name="N2adb"></a><span class="inlinemediaobject"><img align="center" src="images/icons/class.gif"></span>
+          <tt>Class</tt>. Add a class to the
+          diagram. For convenience, when the mouse is over a selected class it
+          displays two handles to left and right which may be dragged to form
+          association relationships and two handles top and bottom which may be
+          dragged to form generalization and specialization relationships
+          respectively.</p></li><li><p><a name="N2af2"></a><span class="inlinemediaobject"><img align="center" src="images/icons/association.gif"></span>
+          <tt>Association</tt>. Add an association between two
+          artifacts selected using button&nbsp;1 motion (from the first artifact
+          to the second artifact).</p></li><li><p><a name="N2b09"></a><span class="inlinemediaobject"><img align="center" src="images/icons/dependency.gif"></span>
+          <tt>Dependency</tt>. Add a dependency between two artifacts
+          selected using button&nbsp;1 motion (from the dependent
+          artifact).</p></li><li><p><a name="N2b20"></a><span class="inlinemediaobject"><img align="center" src="images/icons/generalization.gif"></span>
+          <tt>Generalization</tt>. Add a generalization between two
+          artifacts selected using button&nbsp;1 (from the child to the
+          parent).</p></li><li><p><a name="N2b37"></a><span class="inlinemediaobject"><img align="center" src="images/icons/interface.gif"></span>
+          <tt>Interface</tt>. Add an interface to the
+          diagram. For convenience, when the mouse is over a selected interface
+          it displays a handle at the bottom which may be dragged to form a
+          realization relationship (the target being the realizing
+          class).</p></li><li><p><a name="N2b4e"></a><span class="inlinemediaobject"><img align="center" src="images/icons/realization.gif"></span>
+          <tt>Realization</tt>. Add a realization between a class and
+          an interface selected using button&nbsp;1 motion (from the realizing
+          class to the realized interface).</p></li><li><p><a name="N2b65"></a><span class="inlinemediaobject"><img align="center" src="images/icons/attribute.gif"></span>
+          <tt>Add Attribute</tt>. Add an attribute to the
+          currently selected class. The attribute is given the default name
+          <tt>newAttr</tt> of type <tt>int</tt> and may be
+          edited by button&nbsp;1 double click and using the keyboard, or by
+          selecting with button&nbsp;1 click (after the class has been selected)
+          and using the property tab.</p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td align="center" rowspan="2" valign="top" width="25"><img src="images/note.png"></td><th><a name="N2b86"></a>Note</th></tr><tr><td align="left" colspan="2" valign="top"><p>This tool is grayed out except when a class or interface is
+          selected.</p></td></tr></table></div><div class="caution" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td align="center" rowspan="2" valign="top" width="25"><img src="images/caution.png"></td><th><a name="N2b8a"></a>Caution</th></tr><tr><td align="left" colspan="2" valign="top"><p>In the current release of ArgoUML this tool is not
+          grayed out for intefaces as it should be (attributes are not
+          permitted for interfaces in the UML 1.3 standard). However the tool
+          has no effect if selected for an
+          interface.</p></td></tr></table></div></li><li><p><a name="N2b8e"></a><span class="inlinemediaobject"><img align="center" src="images/icons/operation.gif"></span>
+          <tt>Add Operation</tt>. Add an operation to the
+          currently selected class or interface. The operation is given the
+          default name <tt>newOperation</tt> with no arguments and
+          return type <tt>void</tt> and may be edited by button&nbsp;1
+          double click and using the keyboard, or by selecting with button&nbsp;1
+          click (after the class has been selected) and using the property
+          tab.</p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td align="center" rowspan="2" valign="top" width="25"><img src="images/note.png"></td><th><a name="N2baf"></a>Note</th></tr><tr><td align="left" colspan="2" valign="top"><p>This tool is grayed out except when a class or interface is
+          selected.</p></td></tr></table></div></li></ul></div></div><div class="sect2"><a name="N2bb7"></a><div class="titlepage"><div><h3 class="title"><a name="N2bb7"></a>9.3.6. Sequence Diagram Specific Tools</h3></div></div><p>Six tools are provided specific to UML artifacts on sequence
+        diagrams. The detailed properties of these artifacts are described in
+        the section on sequence diagram artifacts (see
+        <a href="ch17.html" title="Chapter 17. ArgoUML Sequence Diagram Artifact Reference">Chapter 17. ArgoUML Sequence Diagram Artifact Reference</a>).</p><div class="itemizedlist"><ul><li><p><a name="N2bc5"></a><span class="inlinemediaobject"><img align="center" src="images/icons/object.gif"></span>
+          <tt>Object</tt>. Add an object to the
+          diagram.</p></li><li><p><a name="N2bdc"></a><span class="inlinemediaobject"><img align="center" src="images/icons/stimulus_call.gif"></span>
+          <tt>Stimulus Call</tt>. Add a call stimulus between two
+          objects selected using button&nbsp;1 motion (from the originating object
+          to the receiving object).</p></li><li><p><a name="N2bf3"></a><span class="inlinemediaobject"><img align="center" src="images/icons/stimulus_create.gif"></span>
+          <tt>Stimulus Create</tt>. Add a create stimulus between two
+          objects selected using button&nbsp;1 motion (from the originating object
+          to the receiving object).</p></li><li><p><a name="N2c0a"></a><span class="inlinemediaobject"><img align="center" src="images/icons/stimulus_destroy.gif"></span>
+          <tt>Stimulus Destroy</tt>. Add a destroy stimulus between
+          two objects selected using button&nbsp;1 motion (from the originating
+          object to the receiving object).</p></li><li><p><a name="N2c21"></a><span class="inlinemediaobject"><img align="center" src="images/icons/stimulus_send.gif"></span>
+          <tt>Stimulus Send</tt>. Add a send stimulus between two
+          objects selected using button&nbsp;1 motion (from the originating object
+          to the receiving object).</p></li><li><p><a name="N2c38"></a><span class="inlinemediaobject"><img align="center" src="images/icons/stimulus_return.gif"></span>
+          <tt>Stimulus Return</tt>. Add a return stimulus between two
+          objects selected using button&nbsp;1 motion (from the originating object
+          to the receiving object).</p></li></ul></div></div><div class="sect2"><a name="N2c53"></a><div class="titlepage"><div><h3 class="title"><a name="N2c53"></a>9.3.7. State Diagram Specific Tools</h3></div></div><p>Ten tools are provided specific to UML artifacts on state
+        diagrams. The detailed properties of these artifacts are described in
+        the section on state diagram artifacts (see
+        <a href="ch18.html" title="Chapter 18. ArgoUML State Diagram Artifact Reference">Chapter 18. ArgoUML State Diagram Artifact Reference</a>).</p><div class="itemizedlist"><ul><li><p><a name="N2c61"></a><span class="inlinemediaobject"><img align="center" src="images/icons/state.gif"></span>
+          <tt>State</tt>. Add a state to the
+          diagram.</p></li><li><p><a name="N2c78"></a><span class="inlinemediaobject"><img align="center" src="images/icons/composite_state.gif"></span>
+          <tt>Composite State</tt>. Add a composite state to the
+          diagram. All artifacts that are subsequently placed on the diagram on
+          top of the composite state will form part of that composite
+          state.</p></li><li><p><a name="N2c8f"></a><span class="inlinemediaobject"><img align="center" src="images/icons/transition.gif"></span>
+          <tt>Transition</tt>. Add a transition between two states
+          selected using button&nbsp;1 motion (from the originating state to the
+          receiving state).</p></li><li><p><a name="N2ca6"></a><span class="inlinemediaobject"><img align="center" src="images/icons/initial_state.gif"></span>
+          <tt>Initial</tt>. Add an initial pseudostate to the
+          diagram.</p><div class="caution" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td align="center" rowspan="2" valign="top" width="25"><img src="images/caution.png"></td><th><a name="N2cbd"></a>Caution</th></tr><tr><td align="left" colspan="2" valign="top"><p>There is nothing to stop you adding more than one
+          initial state to a diagram or composite state. However to do so is
+          meaningless, and one of the critics will
+          complain.</p></td></tr></table></div></li><li><p><a name="N2cc1"></a><span class="inlinemediaobject"><img align="center" src="images/icons/final_state.gif"></span>
+          <tt>Final State</tt>. Add a final state to the
+          diagram.</p></li><li><p><a name="N2cd8"></a><span class="inlinemediaobject"><img align="center" src="images/icons/branch.gif"></span>
+          <tt>Branch</tt>. Add a branch pseudostate to the
+          diagram.</p><div class="caution" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td align="center" rowspan="2" valign="top" width="25"><img src="images/caution.png"></td><th><a name="N2cef"></a>Caution</th></tr><tr><td align="left" colspan="2" valign="top"><p>A well formed branch should have one incoming transition
+          and two or more outgoing. ArgoUML does not enforce this, but an
+          ArgoUML critic will complain about any branch that does not follow
+          this rule.</p></td></tr></table></div></li><li><p><a name="N2cf3"></a><span class="inlinemediaobject"><img align="center" src="images/icons/fork.gif"></span>
+          <tt>Fork</tt>. Add a fork pseudostate to the
+          diagram.</p><div class="caution" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td align="center" rowspan="2" valign="top" width="25"><img src="images/caution.png"></td><th><a name="N2d0a"></a>Caution</th></tr><tr><td align="left" colspan="2" valign="top"><p>A well formed fork should have one incoming transition
+          and two or more outgoing. ArgoUML does not enforce this, but an
+          ArgoUML critic will complain about any fork that does not follow
+          this rule.</p></td></tr></table></div></li><li><p><a name="N2d0e"></a><span class="inlinemediaobject"><img align="center" src="images/icons/join.gif"></span>
+          <tt>Join</tt>. Add a join pseudostate to the
+          diagram.</p><div class="caution" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td align="center" rowspan="2" valign="top" width="25"><img src="images/caution.png"></td><th><a name="N2d25"></a>Caution</th></tr><tr><td align="left" colspan="2" valign="top"><p>A well formed join should have one outgoing transition
+          and two or more incoming. ArgoUML does not enforce this, but an
+          ArgoUML critic will complain about any join that does not follow
+          this rule.</p></td></tr></table></div></li><li><p><a name="N2d29"></a><span class="inlinemediaobject"><img align="center" src="images/icons/shallow_history.gif"></span>
+          <tt>Shallow History</tt>. Add a shallow history pseudostate
+          to the diagram.</p></li><li><p><a name="N2d40"></a><span class="inlinemediaobject"><img align="center" src="images/icons/deep_history.gif"></span>
+          <tt>Deep History</tt>. Add a deep history pseudostate
+          to the diagram.</p></li></ul></div></div><div class="sect2"><a name="N2d5b"></a><div class="titlepage"><div><h3 class="title"><a name="N2d5b"></a>9.3.8. Collaboration Diagram Specific Tools</h3></div></div><p>Three tools are provided specific to UML artifacts on collaboration
+        diagrams. The detailed properties of these artifacts are described in
+        the section on collaboration diagram artifacts (see
+        <a href="ch19.html" title="Chapter 19. ArgoUML Collaboration Diagram Artifact Reference">Chapter 19. ArgoUML Collaboration Diagram Artifact Reference</a>).</p><div class="itemizedlist"><ul><li><p><a name="N2d69"></a><span class="inlinemediaobject"><img align="center" src="images/icons/classifier_role.gif"></span>
+          <tt>Classifier Role</tt>. Add a classifier role to the
+          diagram.</p></li><li><p><a name="N2d80"></a><span class="inlinemediaobject"><img align="center" src="images/icons/association_role.gif"></span>
+          <tt>Association Role</tt>. Add an association role between
+          two classifier roles selected using button&nbsp;1 motion (from the
+          originating classifier role to the receiving classifier
+          role).</p></li><li><p><a name="N2d97"></a><span class="inlinemediaobject"><img align="center" src="images/icons/message.gif"></span>
+          <tt>Add Message</tt>. Add a message to the selected
+          association role.</p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td align="center" rowspan="2" valign="top" width="25"><img src="images/note.png"></td><th><a name="N2dae"></a>Note</th></tr><tr><td align="left" colspan="2" valign="top"><p>This tool is grayed out except when an association role is
+          selected.</p></td></tr></table></div></li></ul></div></div><div class="sect2"><a name="N2db6"></a><div class="titlepage"><div><h3 class="title"><a name="N2db6"></a>9.3.9. Activity Diagram Specific Tools</h3></div></div><p>Seven tools are provided specific to UML artifacts on activity
+        diagrams. The detailed properties of these artifacts are described in
+        the section on activity diagram artifacts (see
+        <a href="ch20.html" title="Chapter 20. ArgoUML Activity Diagram Artifact Reference">Chapter 20. ArgoUML Activity Diagram Artifact Reference</a>).</p><div class="itemizedlist"><ul><li><p><a name="N2dc4"></a><span class="inlinemediaobject"><img align="center" src="images/icons/action_state.gif"></span>
+          <tt>Action State</tt>. Add an action state to the
+          diagram.</p></li><li><p><a name="N2ddb"></a><span class="inlinemediaobject"><img align="center" src="images/icons/transition.gif"></span>
+          <tt>Transition</tt>. Add a transition between two action
+          states selected using button&nbsp;1 motion (from the originating action
+          state to the receiving action state).</p></li><li><p><a name="N2df2"></a><span class="inlinemediaobject"><img align="center" src="images/icons/initial_state.gif"></span>
+          <tt>Initial</tt>. Add an initial pseudostate to the
+          diagram.</p><div class="caution" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td align="center" rowspan="2" valign="top" width="25"><img src="images/caution.png"></td><th><a name="N2e09"></a>Caution</th></tr><tr><td align="left" colspan="2" valign="top"><p>There is nothing to stop you adding more than one
+          initial state to a diagram. However to do so is meaningless, and one
+          of the critics will complain.</p></td></tr></table></div></li><li><p><a name="N2e0d"></a><span class="inlinemediaobject"><img align="center" src="images/icons/final_state.gif"></span>
+          <tt>Final State</tt>. Add a final state to the
+          diagram.</p></li><li><p><a name="N2e24"></a><span class="inlinemediaobject"><img align="center" src="images/icons/branch.gif"></span>
+          <tt>Branch</tt>. Add a branch pseudostate to the
+          diagram.</p><div class="caution" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td align="center" rowspan="2" valign="top" width="25"><img src="images/caution.png"></td><th><a name="N2e3b"></a>Caution</th></tr><tr><td align="left" colspan="2" valign="top"><p>A well formed branch should have one incoming transition
+          and two or more outgoing. ArgoUML does not enforce this, but an
+          ArgoUML critic will complain about any branch that does not follow
+          this rule.</p></td></tr></table></div></li><li><p><a name="N2e3f"></a><span class="inlinemediaobject"><img align="center" src="images/icons/fork.gif"></span>
+          <tt>Fork</tt>. Add a fork pseudostate to the
+          diagram.</p><div class="caution" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td align="center" rowspan="2" valign="top" width="25"><img src="images/caution.png"></td><th><a name="N2e56"></a>Caution</th></tr><tr><td align="left" colspan="2" valign="top"><p>A well formed fork should have one incoming transition
+          and two or more outgoing. ArgoUML does not enforce this, but an
+          ArgoUML critic will complain about any fork that does not follow
+          this rule.</p></td></tr></table></div></li><li><p><a name="N2e5a"></a><span class="inlinemediaobject"><img align="center" src="images/icons/join.gif"></span>
+          <tt>Join</tt>. Add a join pseudostate to the
+          diagram.</p><div class="caution" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td align="center" rowspan="2" valign="top" width="25"><img src="images/caution.png"></td><th><a name="N2e71"></a>Caution</th></tr><tr><td align="left" colspan="2" valign="top"><p>A well formed join should have one outgoing transition
+          and two or more incoming. ArgoUML does not enforce this, but an
+          ArgoUML critic will complain about any join that does not follow
+          this rule.</p></td></tr></table></div></li></ul></div></div><div class="sect2"><a name="N2e79"></a><div class="titlepage"><div><h3 class="title"><a name="N2e79"></a>9.3.10. Deployment Diagram Specific Tools</h3></div></div><p>Ten tools are provided specific to UML artifacts on deployment
+        diagrams. The detailed properties of these artifacts are described in
+        the section on deployment diagram artifacts (see
+        <a href="ch21.html" title="Chapter 21. ArgoUML Deployment Diagram Artifact Reference">Chapter 21. ArgoUML Deployment Diagram Artifact Reference</a>).</p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td align="center" rowspan="2" valign="top" width="25"><img src="images/note.png"></td><th><a name="N2e85"></a>Note</th></tr><tr><td align="left" colspan="2" valign="top"><p>Remember that ArgoUML's deployment diagrams are also used
+        for component diagrams.</p></td></tr></table></div><div class="itemizedlist"><ul><li><p><a name="N2e8b"></a><span class="inlinemediaobject"><img align="center" src="images/icons/node.gif"></span>
+          <tt>Node</tt>. Add a node to the
+          diagram. For convenience, when the mouse is over a selected node it
+          displays four handles to left, right, top and bottom which may be
+          dragged to form association relationships.</p></li><li><p><a name="N2ea2"></a><span class="inlinemediaobject"><img align="center" src="images/icons/node_instance.gif"></span>
+          <tt>Node Instance</tt>. Add a node instance to the
+          diagram. For convenience, when the mouse is over a selected node
+          instance it displays four handles to left, right, top and bottom
+          which may be dragged to form link relationships.</p></li><li><p><a name="N2eb9"></a><span class="inlinemediaobject"><img align="center" src="images/icons/component.gif"></span>
+          <tt>Component</tt>. Add a component to the
+          diagram. For convenience, when the mouse is over a selected component
+          it displays four handles to left, right, top and bottom which may be
+          dragged to form dependency relationships.</p></li><li><p><a name="N2ed0"></a><span class="inlinemediaobject"><img align="center" src="images/icons/component_instance.gif"></span>
+          <tt>Component Instance</tt>. Add a component instance to
+          the diagram. For convenience, when the mouse is over a selected
+          component instance it displays four handles to left, right, top and
+          bottom which may be dragged to form dependency
+          relationships.</p></li><li><p><a name="N2ee7"></a><span class="inlinemediaobject"><img align="center" src="images/icons/dependency.gif"></span>
+          <tt>Dependency</tt>. Add a dependency between two artifacts
+          selected using button&nbsp;1 motion (from the dependent
+          artifact).</p></li><li><p><a name="N2efe"></a><span class="inlinemediaobject"><img align="center" src="images/icons/class.gif"></span>
+          <tt>Class</tt>. Add a class to the diagram. For
+          convenience, when the mouse is over a selected class it displays two
+          handles to left and right which may be dragged to form association
+          relationships.</p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td align="center" rowspan="2" valign="top" width="25"><img src="images/note.png"></td><th><a name="N2f15"></a>Note</th></tr><tr><td align="left" colspan="2" valign="top"><p>Unlike a class diagram, two handles top and bottom which
+          may be dragged to form generalization and specialization
+          relationships are not shown. Such relationships may not be described
+          on a deployment or component diagram.</p></td></tr></table></div></li><li><p><a name="N2f19"></a><span class="inlinemediaobject"><img align="center" src="images/icons/interface.gif"></span>
+          <tt>Interface</tt>. Add an interface to the diagram.</p><div class="caution" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td align="center" rowspan="2" valign="top" width="25"><img src="images/caution.png"></td><th><a name="N2f30"></a>Caution</th></tr><tr><td align="left" colspan="2" valign="top"><p>In the current release of ArgoUML, when the mouse is
+          over a selected interface it displays a handle at the bottom.  This
+          suggests this may be dragged to form a realization relationship as in
+          a class diagram. Such relationships may not be displayed on a
+          deployment or component diagram, and this handle has no
+          effect.</p></td></tr></table></div></li><li><p><a name="N2f34"></a><span class="inlinemediaobject"><img align="center" src="images/icons/association.gif"></span>
+          <tt>Association</tt>. Add an association between two
+          artifacts (node, component, class or interface) selected using
+          button&nbsp;1 motion (from the first artifact to the second
+          artifact).</p><div class="caution" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td align="center" rowspan="2" valign="top" width="25"><img src="images/caution.png"></td><th><a name="N2f4b"></a>Caution</th></tr><tr><td align="left" colspan="2" valign="top"><p>The constraint that associations between classes and
+          interfaces must not be navigable <i>from</i> the
+          interface still applies on deployment
+          diagrams.</p></td></tr></table></div></li><li><p><a name="N2f52"></a><span class="inlinemediaobject"><img align="center" src="images/icons/object.gif"></span>
+          <tt>Class</tt>. Add an object to the diagram. For
+          convenience, when the mouse is over a selected class it displays four
+          handles to left, right, top and bottom, which may be dragged to form
+          link relationships.</p></li><li><p><a name="N2f69"></a><span class="inlinemediaobject"><img align="center" src="images/icons/link.gif"></span>
+          <tt>Link</tt>. Add a link between two artifacts
+          (node instance, component instance or object) selected using
+          button&nbsp;1 motion.</p></li></ul></div></div></div><div class="navfooter"><hr><table summary="Navigation footer" width="100%"><tr><td align="left" width="40%"><a href="ch09s02.html">Prev</a>&nbsp;</td><td align="center" width="20%"><a href="index.html">Home</a></td><td align="right" width="40%">&nbsp;<a href="ch09s04.html">Next</a></td></tr><tr><td align="left" width="40%">9.2. Mouse Behavior in the Editing Pane&nbsp;</td><td align="center" width="20%"><a href="ch09.html">Up</a></td><td align="right" width="40%">&nbsp;9.4. Clarifiers</td></tr></table></div></body></html>

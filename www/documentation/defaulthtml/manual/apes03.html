@@ -1,0 +1,51 @@
+<html><head><title>E.3. DocBook Conventions</title><link href="look-and-feel.css" rel="stylesheet" type="text/css"><meta content="DocBook XSL Stylesheets V1.37" name="generator"><link href="index.html" rel="home" title="ArgoUML User Manual"><link href="ape.html" rel="up" title="Appendix E. Documentation Standards for the User Manual"><link href="apes02.html" rel="previous" title="E.2. Document Conventions"><link href="apes04.html" rel="next" title="E.4. For emacs Users"></head><body alink="#0000FF" bgcolor="white" link="#0000FF" text="black" vlink="#840084"><div class="navheader"><table summary="Navigation header" width="100%"><tr><th align="center" colspan="3">E.3. DocBook Conventions</th></tr><tr><td align="left" width="20%"><a href="apes02.html">Prev</a>&nbsp;</td><th align="center" width="60%">Appendix E. Documentation Standards for the User Manual</th><td align="right" width="20%">&nbsp;<a href="apes04.html">Next</a></td></tr></table><hr></div><div class="sect1"><a name="Ne338"></a><div class="titlepage"><div><h2 class="title" style="clear: all"><a name="Ne338"></a>E.3. DocBook Conventions</h2></div></div><div class="itemizedlist"><ul><li><p><a name="Ne343"></a>The top level document is argouml.xml. Each chapter (or
+        preface, glossary, appendix etc) is a separate file, defined as a
+        system entity and included from this top level
+        file.</p></li><li><p><a name="Ne347"></a>There are some useful entities defined for common terms
+        at the top of argouml.xml. Of these, use of
+        <tt>argouml</tt> will ensure consistent naming of the
+        project (Argo/UML) and allow us to change it later (to ArgoUML,
+        Argouml or whatever).</p></li><li><p><a name="Ne34e"></a>XML comments are used throughout to explain what various
+        sections are trying to achieve.</p></li><li><p><a name="Ne352"></a>Cross-referencing requires use of <tt>id.</tt>
+        attributes. To avoid confusion, use a prefix of <tt>ch.</tt>
+        for <tt>chapter</tt>, <tt>app.</tt> for
+        <tt>appendix</tt>, <tt>s1.</tt> through
+        <tt>s5.</tt> for <tt>sect1</tt> through
+        <tt>sect5</tt>, <tt>fig.</tt> for
+        <tt>figure</tt>, <tt>tab.</tt> for
+        <tt>table</tt> and <tt>gl</tt> for
+        <tt>glossentry</tt>.</p><p>A second prefix of <tt>tut.</tt> or
+          <tt>ref.</tt> is used to distinguish tutorial and reference
+          material. The remainder of the tag should be descriptive, but concise
+          with words separate by underscore. Where a graphic is involved this
+          remainder should correspond to the file name. For example
+          <tt>fig.ref.navigation_pane</tt> for a figure showing the
+          navigation pane, with the diagram in
+          <tt>navigation_pane.gif</tt></p></li><li><p><a name="Ne3a9"></a>Only use <tt>glossterm</tt> (for the term
+        <i>or</i> its abbreviation/acronym),
+        <tt>glossdef</tt> and <tt>glossseealso</tt>
+        within <tt>glossentry</tt>. Other entries are not
+        implemented in the style sheets and so do not appear in the
+        glossary!</p></li><li><p><a name="Ne3bc"></a>Use spaces (2 per level) rather than tabs. Tabs are
+        generally set so large the text moves over to the right of the page,
+        and are not set the same everywhere (emacs uses 8 spaces, some MS
+        editors use 6 spaces), making documents unreadable between
+        users.</p></li><li><p><a name="Ne3c0"></a>All block graphics should be encapsulated within
+        <tt>figure</tt>, allowing reference from around the
+        text. Set attribute <tt>float</tt> to 1 to allow the figure
+        to float (makes life easier for printed version).</p></li><li><p><a name="Ne3ca"></a>All block graphics should be provided through
+        <tt>mediaobject</tt> and provided with both an
+        <tt>imageobject</tt> and comprehensive description in a
+        <tt>textobject</tt>. This gives the potential of meaningful
+        content where a diagram cannot be displayed for any
+        reason. Where appropriate the <tt>mediaobject</tt> should be
+        wrapped by <tt>screenshot</tt>.</p></li><li><p><a name="Ne3dd"></a>Inline graphics can be done through
+        <tt>inlinegraphic</tt>, rather
+        <tt>inlinemediaobject</tt>. A textual alternative is of
+        little value in these circumstances. Where appropriate the
+        <tt>mediaobject</tt> should be wrapped by
+        <tt>guiicon</tt></p></li><li><p><a name="Ne3ec"></a>In general use <tt>literal</tt> for computer
+        related text (input and output). There are a huge number of possible
+        specialist tags, but I suggest restriction to the following list:
+        <tt>filename</tt> and <tt>application</tt>.
+      </p></li></ul></div></div><div class="navfooter"><hr><table summary="Navigation footer" width="100%"><tr><td align="left" width="40%"><a href="apes02.html">Prev</a>&nbsp;</td><td align="center" width="20%"><a href="index.html">Home</a></td><td align="right" width="40%">&nbsp;<a href="apes04.html">Next</a></td></tr><tr><td align="left" width="40%">E.2. Document Conventions&nbsp;</td><td align="center" width="20%"><a href="ape.html">Up</a></td><td align="right" width="40%">&nbsp;E.4. For emacs Users</td></tr></table></div></body></html>
