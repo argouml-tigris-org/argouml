@@ -32,8 +32,6 @@ import org.tigris.gef.base.Editor;
 import org.tigris.gef.base.Globals;
 import org.tigris.gef.graph.GraphModel;
 
-import ru.novosoft.uml.behavior.common_behavior.MObject;
-
 /**
  * Action to add an object to a sequence diagram.
  *
@@ -47,7 +45,7 @@ public class ActionAddObject extends CmdCreateNode {
      * 
      */
     public ActionAddObject() {
-        super(MObject.class, false, "Object");
+        super(ModelFacade.OBJECT, false, "Object");
     }
 
     /**
