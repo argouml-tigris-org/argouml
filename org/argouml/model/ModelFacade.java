@@ -42,12 +42,14 @@ import ru.novosoft.uml.MFactory;
 import ru.novosoft.uml.behavior.activity_graphs.MActionState;
 import ru.novosoft.uml.behavior.collaborations.MAssociationRole;
 import ru.novosoft.uml.behavior.collaborations.MClassifierRole;
+import ru.novosoft.uml.behavior.collaborations.MCollaboration;
 import ru.novosoft.uml.behavior.collaborations.MInteraction;
 import ru.novosoft.uml.behavior.collaborations.MMessage;
 import ru.novosoft.uml.behavior.common_behavior.MAction;
 import ru.novosoft.uml.behavior.common_behavior.MActionSequence;
 import ru.novosoft.uml.behavior.common_behavior.MCallAction;
 import ru.novosoft.uml.behavior.common_behavior.MComponentInstance;
+import ru.novosoft.uml.behavior.common_behavior.MDataValue;
 import ru.novosoft.uml.behavior.common_behavior.MInstance;
 import ru.novosoft.uml.behavior.common_behavior.MLink;
 import ru.novosoft.uml.behavior.common_behavior.MNodeInstance;
@@ -133,7 +135,9 @@ public class ModelFacade {
     // Types of line
     public static final Object ABSTRACTION      = MAbstraction.class;
     public static final Object ASSOCIATION      = MAssociation.class;
+    public static final Object ASSOCIATION_CLASS= MAssociationClass.class;
     public static final Object ASSOCIATION_ROLE = MAssociationRole.class;
+    public static final Object COLLABORATION    = MCollaboration.class;
     public static final Object DEPENDENCY       = MDependency.class;
     public static final Object EXTEND           = MExtend.class;
     public static final Object GENERALIZATION   = MGeneralization.class;
@@ -265,6 +269,15 @@ public class ModelFacade {
         return handle instanceof MAssociationRole;
     }
     
+    /** Recognizer for Attribute
+     *
+     * @param handle candidate
+     * @returns true if handle is an Attribute
+     */
+    public static boolean isAAttribute(Object handle) {
+        return handle instanceof MAttribute;
+    }
+
     /**
      * Recognizer for asynchronisity of an action
      * @param handle
@@ -356,6 +369,15 @@ public class ModelFacade {
     public static boolean isADataType(Object handle) {
         return handle instanceof MDataType;
     }
+    
+    /** Recognizer for DataValue
+     *
+     * @param handle candidate
+     * @returns true if handle is a DataValue
+     */
+    public static boolean isADataValue(Object handle) {
+        return handle instanceof MDataValue;
+    }
 
     /** Recognizer for Dependency
      *
@@ -410,6 +432,15 @@ public class ModelFacade {
      */
     public static boolean isAFeature(Object handle) {
         return handle instanceof MFeature;
+    }
+
+    /** Recognizer for Flow
+     *
+     * @param handle candidate
+     * @returns true if handle is a Flow
+     */
+    public static boolean isAFlow(Object handle) {
+        return handle instanceof MFlow;
     }
 
     /** Recognizer for GeneralizableElement
@@ -584,6 +615,7 @@ public class ModelFacade {
         }
         throw new IllegalArgumentException("Unrecognized handle " + handle);
     }
+
 
     /** check whether two pseudostatekinds are equal/of the same type.
      */
