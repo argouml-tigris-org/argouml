@@ -27,7 +27,6 @@ package org.argouml.language.cpp.generator;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-
 import junit.framework.Test;
 import junit.framework.TestSuite;
 
@@ -74,14 +73,31 @@ public class TestCppFileGeneration extends BaseTestGeneratorCpp {
         junit.textui.TestRunner.run(suite());
     }
 
-    /** system temporary directory property name */
+    /** 
+     * System temporary directory property name.
+     */
     static final String SYSPROPNAME_TMPDIR = "java.io.tmpdir";
 
-    /** path of the temporary directory in the system */
+    /** 
+     * Path of the temporary directory in the system.
+     */
     private File tmpDir;
 
-    /** directory to be deleted on tearDown if not null */
+    /** 
+     * Directory to be deleted on tearDown if not null.
+     */
     private File genDir;
+
+    /**
+     * The otherPack package model element used in some tests.
+     */
+    private Object otherPack;
+
+    /**
+     * The OtherClass class, contained in otherPack, also used in some of the 
+     * tests.
+     */
+    private Object otherClass;
 
     /**
      * @see junit.framework.TestCase#setUp()
@@ -161,14 +177,61 @@ public class TestCppFileGeneration extends BaseTestGeneratorCpp {
 
     /**
      * Test that the model isn't used as a namespace - issue #2963.
-     * @throws IOException
+     * 
+     * @throws IOException some unexpected file access problem occurred
      */
     public void testModelIsNotNamespace() throws IOException {
         final String testName = "testModelIsNotNamespace";
-        genDir = setUpDirectory4Test(testName);
-        ModelFacade.setName(getModel(), testName);
-        ModelFacade.setNamespace(getPack(), getModel());
+        setUpNamespaces(testName);
 
+        String generated = generateAClassFile(testName);
+        String modelNs = "namespace " + ModelFacade.getName(getModel()) + " {";
+        assertTrue(generated.indexOf(modelNs) == -1);
+        String packNs = "namespace " + ModelFacade.getName(getPack()) + " {";
+        assertTrue(generated.indexOf(packNs) != -1);
+    }
+    
+    /**
+     * The model name shouldn't be used as namespace for types of arguments, 
+     * return values or attributes.
+     * 
+     * @throws IOException when file access goes wrong
+     */
+    public void testModelNameNotUsedForTypeNamespace() throws IOException {
+        final String testName = "testModelNameNotUsedForTypeNamespace";
+        
+        setUpNamespaces(testName);
+        setUpOtherClassInOtherPackage();
+        createAClassOperationWithOtherClassAsParamAndReturn();
+        
+        String generatedCpp = generateAClassFile(testName);
+        
+        String correctName = ModelFacade.getName(otherPack) + "::" 
+            + ModelFacade.getName(otherClass);
+        assertTrue(generatedCpp.indexOf(correctName) != -1);
+        String wrongName = ModelFacade.getName(getModel()) + "::" 
+            + correctName;
+        assertTrue(generatedCpp.indexOf(wrongName) == -1);
+    }
+
+    /**
+     * Create an operation of AClass. 
+     */
+    private void createAClassOperationWithOtherClassAsParamAndReturn() {
+        Object gee = buildOperation(getAClass(), otherClass, "gee");
+        getFactory().buildParameter(gee, getModel(), otherClass, 
+                getPropertyChangeListeners(gee));
+    }
+
+    /**
+     * Generate the source file (cpp) for the AClass class and return it as 
+     * String.
+     * @param testName name of the test calling this method
+     * @return the generated cpp file as String
+     * @throws IOException if something goes wrong with file access
+     */
+    private String generateAClassFile(String testName) throws IOException {
+        genDir = setUpDirectory4Test(testName);
         String filePath = getGenerator().generateFile2(
                 getAClass(), genDir.getPath());
         assertNotNull(filePath);
@@ -177,10 +240,27 @@ public class TestCppFileGeneration extends BaseTestGeneratorCpp {
         String encoding = getEncoding(genFile);
         String generated = FileUtils.readFileToString(
             genFile, encoding);
-        String modelNs = "namespace " + ModelFacade.getName(getModel()) + " {";
-        assertTrue(generated.indexOf(modelNs) == -1);
-        String packNs = "namespace " + ModelFacade.getName(getPack()) + " {";
-        assertTrue(generated.indexOf(packNs) != -1);
+        return generated;
+    }
+
+    /**
+     * Create OtherClass class in otherpack package.
+     */
+    private void setUpOtherClassInOtherPackage() {
+        otherPack = Model.getModelManagementFactory().buildPackage(
+                        "otherpack", UUIDManager.getInstance().getNewUUID());
+        ModelFacade.setNamespace(otherPack, getModel());
+        otherClass = getFactory().buildClass("OtherClass", otherPack);
+    }
+
+    /**
+     * Setup the namespaces, giving a name to the model and assigning the 
+     * model as the namespace of the pack package.
+     * @param modelName name to give to the model
+     */
+    private void setUpNamespaces(String modelName) {
+        ModelFacade.setName(getModel(), modelName);
+        ModelFacade.setNamespace(getPack(), getModel());
     }
 
     /**

@@ -691,19 +691,8 @@ public class GeneratorCpp extends Generator2
         return sb.toString();
     }
 
-    private String removeModelFromPackage(String packageName) {
-        int firstDot = packageName.indexOf('.');
-        if (firstDot == -1) {
-            packageName = "";
-        } else {
-            packageName = packageName.substring(firstDot);
-        }
-        return packageName;
-    }
-
     private String generateHeaderPackageStartSingle(Object pkg) {
         StringBuffer sb = new StringBuffer(30);
-//        String packageName = removeModelFromPackage(ModelFacade.getName(pkg));
         String packageName = ModelFacade.getName(pkg);
         StringTokenizer st = new StringTokenizer(packageName, ".");
         String token = "";
@@ -719,7 +708,6 @@ public class GeneratorCpp extends Generator2
 
     private String generateHeaderPackageEndSingle(Object pkg) {
         StringBuffer sb = new StringBuffer(30);
-//        String packageName = removeModelFromPackage(ModelFacade.getName(pkg));
         String packageName = ModelFacade.getName(pkg);
         StringTokenizer st = new StringTokenizer(packageName, ".");
         String token = "";
@@ -743,12 +731,11 @@ public class GeneratorCpp extends Generator2
     }
 
     private String generatePackageAbsoluteName(Object pkg) {
-        // cat.info("generatePackageAbsoluteName: " + pkg.getName());
         StringBuffer sb = new StringBuffer(30);
         String token = "";
         for (Object actual = pkg;
              actual != null;
-             actual = ModelFacade.getNamespace(actual)) {
+             actual = getNamespaceWithoutModel(actual)) {
             StringTokenizer st =
                 new StringTokenizer(ModelFacade.getName(actual), ".");
             StringBuffer tempBuf = new StringBuffer(20);
@@ -767,10 +754,8 @@ public class GeneratorCpp extends Generator2
 
     private String generateNameWithPkgSelection(Object item, Object localPkg) {
         if (item == null) {
-            // cat.info("generateNameWithPkgSelection: zu void");
             return "void ";
         }
-        // cat.info("generateNameWithPkgSelection: " + item.getName());
         Object pkg = null;
         if (ModelFacade.isADataType(item)) {
             return generateName(ModelFacade.getName(item));
@@ -778,7 +763,7 @@ public class GeneratorCpp extends Generator2
                    || ModelFacade.isAAttribute(item)
                    || ModelFacade.isAAssociationEnd(item)
                    || ModelFacade.isAClassifier(item)) {
-            pkg = ModelFacade.getNamespace(item);
+            pkg = getNamespaceWithoutModel(item);
         }
 
         if (pkg == null) {
@@ -790,19 +775,13 @@ public class GeneratorCpp extends Generator2
 
         String localPkgName = generatePackageAbsoluteName(localPkg);
         String targetPkgName = generatePackageAbsoluteName(pkg);
-        // cat.info("targetNamespace:" + targetPkgName + ":");
-        // cat.info("localNamespace:" + localPkgName + ":");
+
         int localPkgNameLen = localPkgName.length();
         int targetPkgNameLen = targetPkgName.length();
         if (localPkgName.equals(targetPkgName)) {
             return generateName(ModelFacade.getName(item));
         } else {
             if (targetPkgName.indexOf(localPkgName) != -1) {
-                /*
-                  cat.info("target is subpackage of local with |" +
-                  targetPkgName.substring(localPkgNameLen,
-                  localPkgNameLen+2) + "|");
-                */
                 if (targetPkgName.substring(localPkgNameLen,
                                 localPkgNameLen + 2)
                     .equals("::")) {
@@ -872,7 +851,8 @@ public class GeneratorCpp extends Generator2
      */
     private Object getNamespaceWithoutModel(Object me) {
         Object parent = ModelFacade.getNamespace(me);
-        if (ModelFacade.getNamespace(parent) != null) return parent;
+        if (parent != null && ModelFacade.getNamespace(parent) != null) 
+            return parent;
         return null;
     }
 
