@@ -163,6 +163,7 @@ Property files to be searched:
     <path id="argo.compile.classpath">
       <pathelement location="${xerces.jar.path}"/>
       <pathelement location="${nsuml.jar.path}"/>
+      <pathelement location="${jmi.jar.path}"/>
       <pathelement location="${ocl-argo.jar.path}"/>
       <pathelement location="${gef.jar.path}"/>
       <pathelement location="${i18n.jar.path}"/>
@@ -175,6 +176,7 @@ Property files to be searched:
 
     <path id="argo.compile.classpath.without.nsuml">
       <pathelement location="${xerces.jar.path}"/>
+      <pathelement location="${jmi.jar.path}"/>
       <pathelement location="${ocl-argo.jar.path}"/>
       <pathelement location="${gef.jar.path}"/>
       <pathelement location="${i18n.jar.path}"/>
@@ -495,12 +497,13 @@ Most useful targets are:
   <!-- names in build and manifest.mf!                                     -->
   <!-- =================================================================== -->
   <target name="package" depends="jar">
-    <property name="names.of.all.included.libs" value="antlrall.jar gef.jar i18n.jar log4j.jar nsuml.jar ocl-argo.jar toolbar.jar toolbutton.jar xerces.jar"/>
+    <property name="names.of.all.included.libs" value="antlrall.jar gef.jar i18n.jar log4j.jar nsuml.jar ocl-argo.jar toolbar.jar toolbutton.jar xerces.jar jmi.jar"/>
     <copy file="${antlrall.jar.path}" tofile="${argo.build.dir}/antlrall.jar"/>
     <copy file="${gef.jar.path}" tofile="${argo.build.dir}/gef.jar"/>
     <copy file="${i18n.jar.path}" tofile="${argo.build.dir}/i18n.jar"/>
     <copy file="${log4j.jar.path}" tofile="${argo.build.dir}/log4j.jar"/>
     <copy file="${nsuml.jar.path}" tofile="${argo.build.dir}/nsuml.jar"/>
+    <copy file="${jmi.jar.path}" tofile="${argo.build.dir}/jmi.jar"/>
     <copy file="${toolbutton.jar.path}" tofile="${argo.build.dir}/toolbutton.jar"/>
     <copy file="${toolbar.jar.path}" tofile="${argo.build.dir}/toolbar.jar"/>
     <copy file="${ocl-argo.jar.path}" tofile="${argo.build.dir}/ocl-argo.jar"/>
