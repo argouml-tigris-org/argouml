@@ -56,10 +56,12 @@ public interface ModelManagementHelper {
     /**
      * Returns all modelelements of the given kind.
      *
+     * @param model
      * @param type is the class kind
+     * 
      * @return Collection
      */
-    Collection getAllModelElementsOfKind(Object type);
+    Collection getAllModelElementsOfKindWithModel(Object model, Object type);
 
     /**
      * Returns all modelelements found in this namespace and its children

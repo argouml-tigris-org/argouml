@@ -24,10 +24,15 @@
 
 package org.argouml.uml.ui.behavior.use_cases;
 
+import org.argouml.kernel.Project;
+import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.UmlModelEventPump;
 import org.argouml.uml.ui.UMLComboBoxModel2;
+
+import ru.novosoft.uml.foundation.core.MNamespace;
+import ru.novosoft.uml.model_management.MModel;
 
 /**
  * @since Oct 5, 2002
@@ -54,8 +59,10 @@ public class UMLExtendBaseComboBoxModel extends UMLComboBoxModel2 {
     protected void buildModelList() {
         Object extend = /*(MExtend)*/ getTarget();
         if (extend == null) return;
+        Project p = ProjectManager.getManager().getCurrentProject();
+        MNamespace model = (MModel) p.getRoot();
         setElements(Model.getModelManagementHelper()
-                .getAllModelElementsOfKind((Class) ModelFacade.USE_CASE));
+                .getAllModelElementsOfKindWithModel(model, ModelFacade.USE_CASE));
         if (ModelFacade.getExtension(extend) != null) {
             removeElement(ModelFacade.getExtension(extend));
         }

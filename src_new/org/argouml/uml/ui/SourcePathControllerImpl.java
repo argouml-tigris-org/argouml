@@ -29,6 +29,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 
+import org.argouml.kernel.Project;
+import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
 
@@ -106,9 +108,11 @@ public class SourcePathControllerImpl implements SourcePathController {
      * @see org.argouml.uml.ui.SourcePathController#getAllModelElementsWithSourcePath()
      */
     public Collection getAllModelElementsWithSourcePath() {
+        Project p = ProjectManager.getManager().getCurrentProject();
+        Object model = p.getRoot();
         Collection elems =
-            Model.getModelManagementHelper().getAllModelElementsOfKind(
-                ModelFacade.MODELELEMENT);
+            Model.getModelManagementHelper().getAllModelElementsOfKindWithModel(
+                model, ModelFacade.MODELELEMENT);
 
         ArrayList mElemsWithSrcPath = new ArrayList();
 
