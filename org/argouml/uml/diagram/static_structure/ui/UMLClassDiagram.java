@@ -60,7 +60,7 @@ public class UMLClassDiagram extends UMLDiagram {
     private Action actionInterface = new RadioAction(
         new CmdCreateNode(ModelFacade.INTERFACE, "Interface"));
 
-    private Action actionDepend = new RadioAction(
+    private Action actionDependency = new RadioAction(
         new CmdSetMode(ModeCreatePolyEdge.class, "edgeClass",
                     ModelFacade.DEPENDENCY, "Dependency"));
 
@@ -124,10 +124,10 @@ public class UMLClassDiagram extends UMLDiagram {
     /**
      * constructor
      * @param name the name for the new diagram 
-     * @param m the namespace for the new diagram
+     * @param namespace the namespace for the new diagram
      */
-    public UMLClassDiagram(String name, Object m) {
-        super(name, /*(MNamespace)*/ m);
+    public UMLClassDiagram(String name, Object namespace) {
+        super(name, namespace);
     }
 
     /**
@@ -168,14 +168,19 @@ public class UMLClassDiagram extends UMLDiagram {
      * @see org.argouml.uml.diagram.ui.UMLDiagram#getUmlActions()
      */
     protected Object[] getUmlActions() {
+        // This calls the getters to fetch actions even though the
+        // action variables are defined is instances of this class.
+        // This is because any number of action getters could have
+        // been overridden in a descendent and it is the action from
+        // that overridden method that should be returned in the array.
         Object actions[] = {
-            actionPackage,
-            actionClass,
+            getActionPackage(),
+            getActionClass(),
             getAssociationActions(),
-            actionGeneralize, 
+            getActionGeneralize(),
             null,
-            actionInterface,
-            actionRealize, 
+            getActionInterface(),
+            getActionRealize(), 
             null,
             getDependencyActions(), 
             null,
@@ -189,6 +194,11 @@ public class UMLClassDiagram extends UMLDiagram {
     // remove the comment marks to enable models and subsystems.
     // also replace _actionPackage with getPackageActions() in getUmlActions().
     private Object[] getPackageActions() {
+        // This calls the getters to fetch actions even though the
+        // action variables are defined is instances of this class.
+        // This is because any number of action getters could have
+        // been overridden in a descendent and it is the action from
+        // that overridden method that should be returned in the array.
         /* subsystem, model enabled 
 	   Object actions[] = 
 	   { _actionPackage , 
@@ -197,7 +207,7 @@ public class UMLClassDiagram extends UMLDiagram {
         */
         /* subsystem. model disabled */
         Object actions[] = {
-            actionPackage 
+            getActionPackage() 
         };
        
         return actions;
@@ -207,10 +217,15 @@ public class UMLClassDiagram extends UMLDiagram {
      * pattern of which to build a popup toolbutton
      */
     private Object[] getDependencyActions() {
+        // This calls the getters to fetch actions even though the
+        // action variables are defined is instances of this class.
+        // This is because any number of action getters could have
+        // been overridden in a descendent and it is the action from
+        // that overridden method that should be returned in the array.
         Object actions[][] = {
-            {actionDepend},
-            {actionPermission},
-            {actionUsage}
+            {getActionDependency()},
+            {getActionPermission()},
+            {getActionUsage()}
         };
 
         return actions;
@@ -221,10 +236,15 @@ public class UMLClassDiagram extends UMLDiagram {
      * pattern of which to build a popup toolbutton
      */
     private Object[] getAssociationActions() {
+        // This calls the getters to fetch actions even though the
+        // action variables are defined is instances of this class.
+        // This is because any number of action getters could have
+        // been overridden in a descendent and it is the action from
+        // that overridden method that should be returned in the array.
         Object actions[][] = {
-            {actionAssociation, actionUniAssociation},
-            {actionAggregation, actionUniAggregation},
-            {actionComposition, actionUniComposition}
+            {getActionAssociation(), getActionUniAssociation()},
+            {getActionAggregation(), getActionUniAggregation()},
+            {getActionComposition(), getActionUniComposition()}
         };
 
         return actions;
@@ -274,8 +294,8 @@ public class UMLClassDiagram extends UMLDiagram {
     /**
      * @return Returns the actionDepend.
      */
-    protected Action getActionDepend() {
-        return actionDepend;
+    protected Action getActionDependency() {
+        return actionDependency;
     }
     /**
      * @return Returns the actionGeneralize.
