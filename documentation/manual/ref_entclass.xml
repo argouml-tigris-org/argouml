@@ -262,10 +262,10 @@ See <xref linkend="s2.ref.documentation_tab"/>.
 
           <listitem>
 	    <para>
-This creates a new package (see <xref
-              linkend="s1.ref.package"/>) within the package (which appears
-            on no diagram), navigating immediately to the properties tab
-            for that package.</para></listitem>
+        This creates a new package 
+        within the package (which appears
+        on no diagram), navigating immediately to the properties tab
+        for that package.</para></listitem>
         </varlistentry>
 
         <!-- Entry for Delete button -->
@@ -317,12 +317,17 @@ This creates a new package (see <xref
 The name of the package.
 The name of a
             package, like all packages, is by convention all lower
-            case, with periods seperating the components of the package
-            hierarchy.</para>
+            case,<!-- with periods seperating the components of the package
+            hierarchy--> not containing any periods.
+            <!-- TODO: Why allowing periods here? 
+            It would be a bad idea to name a package with a name 
+            that contains a period, isn't it? -->
+      </para>
 
-          <note><para>The default name supplied to a new package by
-            &argouml; is the empty string <quote></quote>. The package will
-            appear with the name <literal>anon</literal> in the exporer.
+          <note><para>By default a new package has no name defined. 
+            The package will
+            appear with the name <literal>(anon Package)</literal> 
+            in the exporer.
           </para></note></listitem>
         </varlistentry>
 
@@ -349,8 +354,9 @@ Package is provided by default
 
 	    <note>
 	      <!-- Issue: 1596 -->
+        <!-- TODO: Check this issue -->
 	      <para>
-A number of standard stereotypes are currently
+A number of standard stereotypes are currently (V0.14)
             missing from &argouml;: <literal>topLevel</literal> (from
             package), <literal>use&nbsp;case&nbsp;system</literal>,
             <literal>analysis&nbsp;system</literal>,
@@ -389,13 +395,25 @@ A number of standard stereotypes are currently
               <secondary>of Package</secondary>
             </indexterm>
 
-	    <para>Text box.
+	    <para>Drop down selector.
 Records the namespace for the
             package. This is the package hierarchy.</para>
 
-	  </listitem>
+          </listitem>
         </varlistentry>
 
+        <!-- Entry for Visibility -->
+
+        <varlistentry>
+          <term><literal>Visibility</literal></term>
+
+          <listitem><para>Radio box, with three entries
+            <literal>public</literal>, <literal>protected</literal> and
+            <literal>private</literal>. Indicates whether the package is visible 
+            outside the package.
+          </para></listitem>
+        </varlistentry>        
+        
         <!-- Entry for Modifiers -->
 
         <varlistentry>
@@ -410,19 +428,19 @@ Records the namespace for the
               <secondary>of Package</secondary>
             </indexterm>
 
-	    <para>
+          <para>
 Check box, with entries
 <literal>abstract</literal>,
 <literal>leaf</literal> and
 <literal>root</literal>.
-</para>
+          </para>
 
           <itemizedlist>
-            <listitem><para><literal>abstract</literal> is used to declare
+            <listitem><para><literal>Abstract</literal> is used to declare
               that this package cannot be instantiated, but must always be
               specialized.</para>
 
-            <tip><para>The meaning of <literal>abstract</literal> applied
+              <tip><para>The meaning of <literal>abstract</literal> applied
               to a package if not that clear. It might mean that the
               package contains interfaces or abstract classes without
               realizations. This is probably better handled through
@@ -430,77 +448,32 @@ Check box, with entries
               <literal>&laquo;facade&raquo;</literal>).
             </para></tip></listitem>
 
-	      <listitem>
-		<para>
-<literal>leaf</literal> indicates that this
-              package can have no further subpackages, while
-              <literal>root</literal> indicates it is the top level
-              package.</para>
-
-            <tip><para>Within &argouml; <literal>root</literal> only
-              meaningfully applies to the Model, since all packages sit
-              within the model. In the absence of the
-              <literal>topLevel</literal> stereotype, this could be used to
-              emphasize that the Model is at the top
-              level.</para></tip></listitem>
+            <listitem>
+              <para>
+                <literal>Leaf</literal> indicates that this
+                package can have no further subpackages.
+              </para>
+            </listitem>
+              
+            <listitem>
+              <para>
+                <literal>Root</literal> indicates that it is the top level
+                package.
+              </para>
+              
+              <tip>
+                <para>
+                  Within &argouml; <literal>Root</literal> only
+                  meaningfully applies to the Model, since all packages sit
+                  within the model. In the absence of the
+                  <literal>topLevel</literal> stereotype, this could be used to
+                  emphasize that the Model is at the top
+                  level.
+                </para>
+              </tip>
+              
+            </listitem>
           </itemizedlist></listitem>
-        </varlistentry>
-
-        <!-- Entry for Specializations -->
-
-        <varlistentry>
-          <term><literal>Specializations</literal></term>
-
-          <listitem>
-            <indexterm>
-              <primary>Package Specializations</primary>
-            </indexterm>
-            <indexterm>
-              <primary>Specializations</primary>
-              <secondary>of Package</secondary>
-            </indexterm>
-
-	    <para>Text box.
-Lists any specialized package (i.e. for
-            which this package is a generalization.</para>
-
-          <para>&button1; click navigates to the generalization and opens
-            its property tab.</para>
-
-          <para>&Button2; click yields a drop down menu with five
-            entries</para>
-
-          <itemizedlist>
-            <listitem><para><literal>Open</literal>. Navigate to the
-              selected generalization.</para></listitem>
-
-            <listitem><para><literal>Add</literal>. Add a new
-              generalization. Note that the new generalization is added to
-              the model, but not the diagram.</para>
-
-            <tip><para>It is far easier to add generalizations by drawing
-              them on the relevant diagram in the editing
-              pane.</para></tip></listitem>
-
-            <listitem><para><literal>Delete</literal>. The link from the
-              generalization to the package (<emphasis>but not the
-              generalization itself</emphasis>) is removed.</para>
-
-            <tip><para>This <emphasis>does not</emphasis> remove the
-              generalization from the model or the diagram, leading to
-              potentially very confusing diagrams. It is usually far easier
-              to remove generalizations from the editing
-              pane.</para></tip></listitem>
-
-            <listitem><para><literal>Move Up</literal>. Only available where
-              there are two or more specializations listed, and the
-              specialization selected is not at the top. It is moved up
-              one.</para></listitem>
-
-            <listitem><para><literal>Move Down</literal>. Only available where
-              there are two or more specializations listed, and the
-              specialization selected is not at the bottom. It is moved down
-              one.</para></listitem> </itemizedlist></listitem>
         </varlistentry>
 
         <!-- Entry for Generalizations -->
@@ -521,44 +494,34 @@ Lists any specialized package (i.e. for
 Lists any package that
             <emphasis>generalizes</emphasis> this package.</para>
 
-          <para>&Button1; click navigates to the generalization and opens
+          <para>&Button1; double click navigates to the generalization and opens
             its property tab.</para>
 
-          <para>&Button2; click yields a drop down menu with five
-            entries</para>
+          </listitem>
+        </varlistentry>
 
-          <itemizedlist>
-            <listitem><para><literal>Open</literal>. Navigate to the
-              selected generalization.</para></listitem>
+        <!-- Entry for Specializations -->
 
-            <listitem><para><literal>Add</literal>. Add a new
-              generalization. Note that the new generalization is added to
-              the model, but not the diagram. You will need to find it in
-              the explorer and add it from there.</para>
+        <varlistentry>
+          <term><literal>Specializations</literal></term>
 
-            <tip><para>It is far easier to add generalizations by drawing
-              them on the relevant diagram in the editing
-              pane.</para></tip></listitem>
+          <listitem>
+            <indexterm>
+              <primary>Package Specializations</primary>
+            </indexterm>
+            <indexterm>
+              <primary>Specializations</primary>
+              <secondary>of Package</secondary>
+            </indexterm>
 
-            <listitem><para><literal>Delete</literal>. The link from the
-              generalization to the package (<emphasis>but not the
-              generalization itself</emphasis>) is removed.</para>
+	    <para>Text box.
+Lists any specialized package (i.e. for
+            which this package is a generalization.</para>
 
-            <tip><para>This <emphasis>does not</emphasis> remove the
-              generalization from the model or the diagram, leading to
-              potentially very confusing diagrams. It is usually far easier
-              to remove generalizations from the editing
-              pane.</para></tip></listitem>
+          <para>&button1; double click navigates to the generalization and opens
+            its property tab.</para>
 
-            <listitem><para><literal>Move Up</literal>. Only available where
-              there are two or more generalizations listed, and the
-              generalization selected is not at the top. It is moved up
-              one.</para></listitem>
-
-            <listitem><para><literal>Move Down</literal>. Only available where
-              there are two or more generalizations listed, and the
-              generalization selected is not at the bottom. It is moved down
-              one.</para></listitem> </itemizedlist></listitem>
+          </listitem>
         </varlistentry>
 
         <!-- Entry for Owned Elements -->
@@ -576,60 +539,18 @@ Lists any package that
               <secondary>of Package</secondary>
             </indexterm>
 
-	    <para>Text area.
-A hierarchical listing of the packages,
-            classes, interfaces, datatypes, actors, use cases,
-            associations, generalizations and stereotypes within the
-            package. For each of these types of artifact, where there is at
-            least one example in the package, a folder icon is
-            shown.</para>
+            <para>Text area.
+              A listing of all the packages,
+              classes, interfaces, datatypes, actors, use cases,
+              associations, generalizations and stereotypes within the
+              package. 
+            </para>
 
-          <para>&Button1; double click on the folder icon
-            (<guiicon><inlinemediaobject><imageobject><imagedata
-              format="GIF" align="center"
-              fileref="images/icons/folder.gif"/> 
-            </imageobject></inlinemediaobject></guiicon>) opens the folder
-            to reveal the artifacts owned under that category.</para>
+            <para>&Button1; double click on any item listed here
+              navigates to that artifact.
+            </para>
 
-          <para>&Button1; click on any of the revealed artifacts yields
-            navigates to that artifact.</para>
-
-          <para>&Button1; double click on an open folder (with
-            artifacts displayed) will close the folder and hide the
-            artifacts.</para>
-
-          <para>Alternatively, &Button2; double click on any item gives
-            a pop up menu.</para>
-
-          <itemizedlist>
-            <listitem><para><literal>Add</literal>. This option creates a
-              new artifact of the specified type within the package, and
-              navigates to that item.</para>
-
-            <note><para>The item is placed under its relevant folder,
-              irrespective of where the pop up menu is revealed. So
-              &button2; click on <literal>Actor</literal> folder and
-              selection of <literal>Add/Package</literal> will place the
-              new package under the <literal>Package</literal> folder, not
-              the <literal>Actor</literal> folder.</para></note>
-
-            <para>This is the only menu option actually available to the
-              package (the others apply to packages within the package, see
-              <xref linkend="s1.ref.package"/>).</para>
-
-            <tip><para>It is often far easier to add artifacts by drawing
-              them on the relevant diagram in the editing
-              pane.</para></tip></listitem>
-
-            <listitem><para><literal>Delete</literal>. This is always
-              grayed out for a package.</para></listitem>
-
-            <listitem><para><literal>Go</literal>. This is always
-              grayed out for a package.</para></listitem>
-
-            <listitem><para><literal>Open</literal>. This is always
-              grayed out for a package.</para></listitem>
-          </itemizedlist></listitem>
+          </listitem>
         </varlistentry>
       </variablelist>
     </sect2>
@@ -728,7 +649,8 @@ A hierarchical listing of the packages,
           <term><literal>Source</literal></term>
 
           <listitem><para>Standard tab. This contains a template for the class
-            declaration (with JavaDoc header) and declarations of
+            declaration 
+            and declarations of
             associated classes.</para></listitem>
         </varlistentry>
 
@@ -835,25 +757,6 @@ A hierarchical listing of the packages,
               operation.</para></listitem>
         </varlistentry>
 
-        <!-- Entry for Add interface button -->
-
-        <varlistentry>
-          <term><guiicon><inlinemediaobject><imageobject><imagedata
-            format="GIF" align="center"
-            fileref="images/icons/interface.gif"/>
-          </imageobject></inlinemediaobject></guiicon> <literal>Add
-            interface</literal></term>
-
-          <listitem><para>This creates a new interface (see <xref
-              linkend="s1.ref.interface_class"/>) within the package (which
-              appears on no diagram), navigating immediately to the
-              properties tab for that interface.</para>
-
-          <tip><para>While it can make sense to create interfaces this
-            way, it can be clearer to create them within diagrams where you
-            want them.</para></tip></listitem>
-        </varlistentry>
-
         <!-- Entry for Add inner class button -->
 
         <varlistentry>
@@ -874,6 +777,23 @@ A hierarchical listing of the packages,
               a convenient shorthand for creating a class that is
               restricted to the namespace of its owning
               class.</para></note></listitem>
+        </varlistentry>
+
+        <!-- Entry for New class button -->
+
+        <varlistentry>
+          <term><guiicon><inlinemediaobject><imageobject><imagedata
+            format="GIF" align="center"
+            fileref="images/icons/class.gif"/>
+          </imageobject></inlinemediaobject></guiicon> <literal>New
+            class</literal></term>
+
+          <listitem>
+            <para>This creates a new class (which appears on no
+              diagram) within the same namespace as the current
+              class. 
+            </para>
+          </listitem>
         </varlistentry>
 
         <!-- Entry for Delete button -->
@@ -930,7 +850,8 @@ A hierarchical listing of the packages,
             <literal>type</literal>) and for <literal>Classifier</literal>
             (<literal>metaclass</literal>, <literal>powerType</literal>,
             <literal>process</literal>, <literal>thread</literal> and
-            <literal>utility</literal>), as well as the stereotypes for classes
+            <literal>utility</literal>)<!--,
+            as well as the stereotypes for classes
             in the UML standard profiles for <emphasis>software development
             process</emphasis> (<literal>boundary</literal>,
             <literal>entity</literal> and <literal>control</literal>) and
@@ -942,13 +863,10 @@ A hierarchical listing of the packages,
             <literal>organization</literal>, <literal>person</literal> and
             <literal>singleton</literal>, and rather strangely
             <literal>realize</literal> (a stereotype of
-            <literal>Abstraction</literal>).</para>
-
-          <caution><para>&argouml; provides the stereotype
-            <literal>realize</literal> for classes. This appears to be an
-            error, since this stereotype properly belongs to the
-            <literal>Abstraction</literal>
-            metaclass.</para></caution>
+            <literal>Abstraction</literal>)-->.
+            
+            <!-- TODO: See issue ... -->
+            </para>
 
           <tip><para>One stereotype that is not part of the UML standard,
             but is widely used is <literal>Singleton</literal>, used to
@@ -978,12 +896,99 @@ A hierarchical listing of the packages,
         <varlistentry>
           <term><literal>Namespace</literal></term>
 
-          <listitem><para>Text box. Records the namespace for the
-            class. This is the package hierarchy.</para>
+          <listitem>
+            <para>Drop down selector. Records 
+              and allows setting of the namespace for the
+              class. This is the package hierarchy.
+            </para>
 
-          <para>&Button1; click on the entry will navigate to the package
-            defining this namespace (or the model for the top level
-            namespace).</para></listitem>
+            <para>&Button1; click on the entry will move the class to the 
+              selected namespace.
+             </para>
+          </listitem>
+        </varlistentry>
+
+        <!-- Entry for Modifiers -->
+
+        <varlistentry>
+          <term><literal>Modifiers</literal></term>
+
+          <listitem><para>Check box, with entries
+            <literal>Abstract</literal>, 
+            <literal>Leaf</literal>, <literal>Root</literal> and
+            <literal>Active</literal>.</para>
+
+          <itemizedlist>
+            <listitem><para><literal>Abstract</literal> is used to declare
+              that this class cannot be instantiated, but must always be
+              subclassed. The name of an abstract class is displayed in
+              italics on the diagram.</para>
+
+            <caution><para>If a class has any abstract operations, then it
+              should be declared abstract. &argouml; will not enforce
+              this.
+              <!-- TODO: Enter an enhancement issue. -->
+              </para></caution></listitem>
+
+            <listitem><para><literal>Leaf</literal> indicates that this
+              class cannot be further subclassed, while
+              <literal>Root</literal> indicates it can have no
+              superclass. It is possible for a class to be both Abstract
+              and Leaf, since its static operations may still be
+              referenced.</para></listitem>
+
+            <listitem><para><literal>Active</literal> indicates that this
+              class exhibits dynamic behavior (and is thus associated with
+              a state or activity diagram).</para></listitem>
+          </itemizedlist></listitem>
+        </varlistentry>
+
+        <!-- Entry for Visibility -->
+
+        <varlistentry>
+          <term><literal>Visibility</literal></term>
+
+          <listitem><para>Radio box, with three entries
+            <literal>public</literal>, <literal>protected</literal> and
+            <literal>private</literal>. Indicates whether the class is visible 
+            outside the namespace.
+          </para></listitem>
+        </varlistentry>        
+
+        <!-- Entry for Client Dependencies -->
+        
+        <varlistentry>
+          <term><literal>Client Dependencies</literal></term>
+
+          <listitem>
+            <para>
+              Text area. Lists the <quote>depending</quote> ends of the 
+              relationship, i.e. the end that makes use of the other end.
+            </para>
+
+            <para>&Button1; double click navigates to the dependency and opens
+              its property tab.
+            </para>
+
+          </listitem>
+        </varlistentry>
+
+        <!-- Entry for Supplier Dependencies -->
+        
+        <varlistentry>
+          <term><literal>Supplier Dependencies</literal></term>
+
+          <listitem>
+            <para>Text area. Lists the <quote>supplying</quote> ends of 
+              the relationship, i.e. the end supplying what is needed 
+              by the other end.
+            </para>
+
+            <para>&Button1; double click navigates to the dependency and opens
+              its property tab.
+            </para>
+
+          </listitem>
         </varlistentry>
 
         <!-- Entry for Generalizations -->
@@ -994,165 +999,11 @@ A hierarchical listing of the packages,
           <listitem><para>Text area. Lists any class that
             <emphasis>generalizes</emphasis> this class.</para>
 
-          <para>&Button1; click navigates to the generalization and opens
-            its property tab.</para>
+            <para>&Button1; double click navigates to the generalization and opens
+              its property tab.
+            </para>
 
-          <para>&Button2; click yields a drop down menu with five
-            entries</para>
-
-          <itemizedlist>
-            <listitem><para><literal>Open</literal>. Navigate to the
-              selected generalization.</para></listitem>
-
-            <listitem><para><literal>Add</literal>. Add a new
-              generalization. Note that the new generalization is added to
-              the model, but not the diagram. You will need to find it in
-              the explorer and add it from there.</para>
-
-            <tip><para>It is far easier to add generalizations by drawing
-              them on the relevant diagram in the editing
-              pane.</para></tip></listitem>
-
-            <listitem><para><literal>Delete</literal>. The link from the
-              generalization to the class (<emphasis>but not the
-              generalization itself</emphasis>) is removed.</para>
-
-            <tip><para>This <emphasis>does not</emphasis> remove the
-              generalization from the model or the diagram, leading to
-              potentially very confusing diagrams. It is usually far easier
-              to remove generalizations from the editing
-              pane.</para></tip></listitem>
-
-            <listitem><para><literal>Move Up</literal>. Only available where
-              there are two or more generalizations listed, and the
-              generalization selected is not at the top. It is moved up
-              one.</para></listitem>
-
-            <listitem><para><literal>Move Down</literal>. Only available where
-              there are two or more generalizations listed, and the
-              generalization selected is not at the bottom. It is moved down
-              one.</para></listitem> </itemizedlist></listitem>
-        </varlistentry>
-
-        <!-- Entry for Modifiers -->
-
-        <varlistentry>
-          <term><literal>Modifiers</literal></term>
-
-          <listitem><para>Check box, with entries <literal>public</literal>,
-            <literal>abstract</literal>, 
-            <literal>final</literal>, <literal>root</literal> and
-            <literal>active</literal>.</para>
-
-          <itemizedlist>
-            <listitem><para><literal>public</literal> has identical meaning
-              to the <literal>public</literal> declaration in Java. It
-              indicated whether this class is restricted to use in its own
-              package (the default) or can be used by
-              anyone.</para></listitem>
-
-            <listitem><para><literal>abstract</literal> is used to declare
-              that this class cannot be instantiated, but must always be
-              subclassed. The name of an abstract class is displayed in
-              italics on the diagram.</para>
-
-            <caution><para>If a class has any abstract operations, then it
-              should be declared abstract. &argouml; will not enforce
-              this.</para></caution></listitem>
-
-            <listitem><para><literal>final</literal> indicates that this
-              class cannot be further subclassed, while
-              <literal>root</literal> indicates it can have no
-              superclass. It is possible for a class to be both abstract
-              and final, since its static operations may still be
-              referenced.</para></listitem>
-
-            <listitem><para><literal>active</literal> indicates that this
-              class exhibits dynamic behavior (and is thus associated with
-              a state or activity diagram).</para></listitem>
-          </itemizedlist></listitem>
-        </varlistentry>
-
-        <!-- Entry for Associations -->
-
-        <varlistentry>
-          <term><literal>Associations</literal></term>
-
-          <listitem><para>Text box. Lists any associations (see <xref
-              linkend="s1.ref.association_class"/>) connected to this
-            class.</para>
-
-          <para>&Button1; click navigates to the selected entry, &button2;
-            gives a pop up menu with five entries.</para>
-
-          <itemizedlist>
-            <listitem><para><literal>Open</literal>. Navigate to the
-              selected association.</para></listitem>
-
-            <listitem><para><literal>Add</literal>. Add a new
-              association.</para>
-
-            <tip><para>New associations can usually more easily be added
-              from the class diagram.</para></tip></listitem>
-
-            <listitem><para><literal>Delete</literal>. Removes the link to
-              the selected association.</para>
-
-            <note><para>This only removes the link to the
-              association. To remove the association from the model
-              you must navigate to it (or select it on the diagram or
-              explorer) and then delete it.</para></note></listitem>
-
-            <listitem><para><literal>Move Up</literal>. Only available where
-              there are two or more associations, and the association selected
-              is not at the top. It is moved up one.</para></listitem>
-
-            <listitem><para><literal>Move Down</literal>. Only available where
-              there are two or more associations listed, and the association
-              selected is not at the bottom. It is moved down
-              one.</para></listitem> </itemizedlist></listitem>
-        </varlistentry>
-
-        <!-- Entry for Implements -->
-
-        <varlistentry>
-          <term><literal>Implements</literal></term>
-
-          <listitem><para>Text box. Lists any classes or interfaces (see <xref
-              linkend="s1.ref.association_class"/>) which are an
-              abstraction of this class (i.e. which this class
-              realizes).</para>
-
-          <para>&Button1; click navigates to the abstraction for the
-            selected entry, &button2; 
-            gives a pop up menu with five entries.</para>
-
-          <itemizedlist>
-            <listitem><para><literal>Open</literal>. Navigate to the
-              selected abstraction.</para></listitem>
-
-            <listitem><para><literal>Add</literal>. Add a new
-              abstraction.</para>
-
-            <tip><para>New abstractions can usually more easily be added
-              from the class diagram.</para></tip></listitem>
-
-            <listitem><para><literal>Delete</literal>. Removes the link to
-              the selected abstraction.</para>
-
-            <note><para>This only removes the link to the
-              abstraction. To remove the abstraction from the model
-              you must navigate to it (or select it on the diagram or
-              explorer) and then delete it.</para></note></listitem>
-
-            <listitem><para><literal>Move Up</literal>. Only available where
-              there are two or more abstractions, and the abstraction selected
-              is not at the top. It is moved up one.</para></listitem>
-
-            <listitem><para><literal>Move Down</literal>. Only available where
-              there are two or more abstractions listed, and the abstraction
-              selected is not at the bottom. It is moved down
-              one.</para></listitem> </itemizedlist></listitem>
+          </listitem>
         </varlistentry>
 
         <!-- Entry for Specializations -->
@@ -1163,61 +1014,43 @@ A hierarchical listing of the packages,
           <listitem><para>Text box. Lists any specialized class (i.e. for
             which this class is a generalization.</para>
 
-          <para>&button1; click navigates to the generalization and opens
-            its property tab.</para>
+            <para>&button1; double click navigates to the generalization and opens
+              its property tab.
+            </para>
 
-          <para>&Button2; click yields a drop down menu with five
-            entries</para>
-
-          <itemizedlist>
-            <listitem><para><literal>Open</literal>. Navigate to the
-              selected generalization.</para></listitem>
-
-            <listitem><para><literal>Add</literal>. Add a new
-              generalization. Note that the new generalization is added to
-              the model, but not the diagram.</para>
-
-            <tip><para>It is far easier to add generalizations by drawing
-              them on the relevant diagram in the editing
-              pane.</para></tip></listitem>
-
-            <listitem><para><literal>Delete</literal>. The link from the
-              generalization to the class (<emphasis>but not the
-              generalization itself</emphasis>) is removed.</para>
-
-            <tip><para>This <emphasis>does not</emphasis> remove the
-              generalization from the model or the diagram, leading to
-              potentially very confusing diagrams. It is usually far easier
-              to remove generalizations from the editing
-              pane.</para></tip></listitem>
-
-            <listitem><para><literal>Move Up</literal>. Only available where
-              there are two or more specializations listed, and the
-              specialization selected is not at the top. It is moved up
-              one.</para></listitem>
-
-            <listitem><para><literal>Move Down</literal>. Only available where
-              there are two or more specializations listed, and the
-              specialization selected is not at the bottom. It is moved down
-              one.</para></listitem> </itemizedlist></listitem>
+          </listitem>
         </varlistentry>
 
-        <!-- Entry for Derived -->
+        <!-- Entry for Attributes -->
 
         <varlistentry>
-          <term><literal>Derived</literal></term>
+          <term><literal>Attributes</literal></term>
 
-          <listitem><para>Text area. Lists any derived classes, i.e those for
-            which this class is a generalization.</para>
+          <listitem>
+            <para>Text area. Lists all the attributes (see <xref
+              linkend="s1.ref.attribute"/>) defined for this
+              class. &Button1; double click navigates to the selected attribute.
+            </para>
+          </listitem>
+        </varlistentry>
 
-          <para>&Button1; click navigates to the generalization for the
-            selected entry, &button2; gives a pop up menu with a single
-            entry, which also navigates to the generalization.</para>
+        <!-- Entry for Association Ends -->
 
-          <caution><para>You may potentially have a large number of entries
-            here, and the pop up menu makes access very difficult. The work
-            around is to go to the parent classes on the diagram or the
-            explorer.</para></caution></listitem>
+        <varlistentry>
+          <term><literal>Association Ends</literal></term>
+
+          <listitem><para>Text box. Lists any association ends 
+              (see <xref linkend="s1.ref.association_class"/>) 
+              <!-- TODO: Is this link still correct? -->
+              of associations 
+              connected to this class.
+            </para>
+
+            <para>
+              &Button1; double click navigates to the selected entry.
+            </para>
+
+          </listitem>
         </varlistentry>
 
         <!-- Entry for Operations -->
@@ -1225,61 +1058,12 @@ A hierarchical listing of the packages,
         <varlistentry>
           <term><literal>Operations</literal></term>
 
-          <listitem><para>Text area. Lists all the operations (see <xref
+          <listitem>
+            <para>Text area. Lists all the operations (see <xref
               linkend="s1.ref.operation"/>) defined on this
-              class. &Button1; click navigates to the selected operation,
-              &button2; click brings up a pop up menu with five
-              entries.</para>
-
-          <itemizedlist>
-            <listitem><para><literal>Open</literal>. Navigate to the
-              selected operation.</para></listitem>
-
-            <listitem><para><literal>Add</literal>. Add a new
-              operation and navigate to it.</para></listitem>
-
-            <listitem><para><literal>Delete</literal>. Removes the selected
-              operation from the model.</para></listitem>
-
-            <listitem><para><literal>Move Up</literal>. Only available where
-              there are two or more operations, and the operation selected is
-              not at the top. It is moved up one.</para></listitem>
-
-            <listitem><para><literal>Move Down</literal>. Only available where
-              there are two or more operations listed, and the operation
-              selected is not at the bottom. It is moved down
-              one.</para></listitem> </itemizedlist></listitem>
-        </varlistentry>
-
-        <!-- Entry for attributes -->
-
-        <varlistentry>
-          <term><literal>Attributes</literal></term>
-
-          <listitem><para>Text area. Lists all the attributes (see <xref
-              linkend="s1.ref.attribute"/>) defined for this
-            class. &Button1; click navigates to the selected attribute,
-            &button2; click brings up a pop up menu with five
-            entries.</para>
-
-          <itemizedlist>
-            <listitem><para><literal>Open</literal>. Navigate to the
-              selected attribute.</para></listitem>
-
-            <listitem><para><literal>Add</literal>. Add a new
-              attribute and navigate to it.</para></listitem>
-
-            <listitem><para><literal>Delete</literal>. Removes the selected
-              attribute from the model.</para></listitem>
-
-            <listitem><para><literal>Move Up</literal>. Only available where
-              there are two or more attributes, and the attribute selected is
-              not at the top. It is moved up one.</para></listitem>
-
-            <listitem><para><literal>Move Down</literal>. Only available where
-              there are two or more attributes listed, and the attribute
-              selected is not at the bottom. It is moved down
-              one.</para></listitem> </itemizedlist></listitem>
+              class. &Button1; click navigates to the selected operation.
+            </para>
+          </listitem>
         </varlistentry>
 
         <!-- Entry for Owned Elements -->
@@ -1288,53 +1072,25 @@ A hierarchical listing of the packages,
           <term><literal>Owned Elements
           </literal></term>
 
-          <listitem><para>Text area. A listing of artifacts contained within
-            the classes' namespace. This is where any inner class (see
-            <xref linkend="s2.ref.class_property_toolbar"/>) will
-            appear</para>
+          <listitem>
+            <para>Text area. A listing of artifacts contained within
+              the classes' namespace. This is where any inner class (see
+              <xref linkend="s2.ref.class_property_toolbar"/>) will
+              appear
+            </para>
 
-          <para>&Button1; click on any of the artifacts
-            navigates to that artifact. &button2; click brings up a pop up
-            menu with five entries.</para>
-
-          <itemizedlist>
-            <listitem><para><literal>Open</literal>. Navigate to the
-              selected artifact.</para></listitem>
-
-            <listitem><para><literal>Add</literal>. Point to a sub-menu
-              with seven options: <literal>Add_Menu_Actor</literal>;
-              <literal>Add_Menu_Class</literal>;
-              <literal>Add_Menu_Datatype</literal>;
-              <literal>Add_Menu_Exception</literal>;
-              <literal>Add_Menu_Interface</literal>;
-              <literal>Add_Menu_Signal</literal> and
-              <literal>Add_Menu_UseCase</literal>. Selecting any one will
-              create an artifact of that type within the namespace of the
-              class (but not on any diagram) and navigate to
-              it.</para>
-
-            <note><para><literal>Add_Menu_Exception</literal> is identical
-              to <literal>Add_Menu_Signal</literal>. Both add a
-              signal.</para></note>
+            <para>&Button1; double click on any of the artifacts
+              navigates to that artifact. 
+            </para>
 
             <tip><para>Most namespace hierarchies should be managed
               through the package mechanism. Namespace hierarchies through
               classes are best restricted to inner classes. Conceivable
               datatypes, signals and interfaces could also appear here, but
               actors and use cases would seem of no
-              value.</para></tip></listitem>
-
-            <listitem><para><literal>Delete</literal>. Removes the selected
-              artifact from the model.</para></listitem>
-
-            <listitem><para><literal>Move Up</literal>. Only available where
-              there are two or more artifacts, and the artifact selected is not
-              at the top. It is moved up one.</para></listitem>
-
-            <listitem><para><literal>Move Down</literal>. Only available where
-              there are two or more artifacts listed, and the artifact selected
-              is not at the bottom. It is moved down one.</para></listitem>
-              </itemizedlist></listitem>
+              value.</para>
+            </tip>
+          </listitem>
         </varlistentry>
       </variablelist>
     </sect2>
@@ -1346,7 +1102,7 @@ A hierarchical listing of the packages,
     <title>Attribute</title>
 
     <para>Attribute is a named slot within a class (or other
-      <literal>Classifier</literal> describing a range of values that may be
+      <literal>Classifier</literal>) describing a range of values that may be
       held by instances of the class. In the UML metamodel it is a sub-class of
       <literal>StructuralFeature</literal> which is itself a sub-class of
       <literal>Feature</literal>.</para>
@@ -1355,7 +1111,7 @@ A hierarchical listing of the packages,
       compartment of the class. Its syntax is as follows:</para>
 
     <blockquote><para><emphasis>visibility</emphasis>
-      [<literal>static</literal>] [<literal>final</literal>]
+      <!--[<literal>static</literal>] [<literal>final</literal>]-->
       <emphasis>attributeName</emphasis> <literal>:</literal>
       <emphasis>type</emphasis> [<literal>=</literal>
       <emphasis>initialValue</emphasis>]</para></blockquote>
@@ -1365,8 +1121,8 @@ A hierarchical listing of the packages,
       <literal>public</literal>, <literal>protected</literal> or
       <literal>private</literal> visibility respectively.</para>
 
-    <para><literal>static</literal> and <literal>final</literal> optionally
-      appear if the attribute has those modifiers</para>
+    <!--para><literal>static</literal> and <literal>final</literal> optionally
+      appear if the attribute has those modifiers</para-->
 
     <para>In addition any attribute declared static will have its whole entry
       underlined on the diagram.</para>
@@ -1419,18 +1175,7 @@ A hierarchical listing of the packages,
         </varlistentry>
 
         <!-- Entry for Style tab -->
-
-        <varlistentry>
-          <term><literal>Style</literal></term>
-
-          <listitem><para>Standard tab, but relating to the owning class,
-            rather than the attribute. The tick boxes,
-            <literal>Attributes</literal> and <literal>Operations</literal>
-            allow the attributes and operations compartments of the class
-            to be shown (the default) or hidden. The
-            <literal>Bounds:</literal> field defines the bounding box for
-            the package on the diagram.</para></listitem>
-        </varlistentry>
+        <!-- Always downlighted. -->
 
         <!-- Entry for Source tab -->
 
@@ -1440,10 +1185,11 @@ A hierarchical listing of the packages,
           <listitem><para>Standard tab. This contains a declaration for the
             attribute.</para>
 
-          <warning><para>The declaration for attributes with multiplicity
+          <!--warning><para>The declaration for attributes with multiplicity
             (see <xref linkend="s2.ref.attribute_property_fields"/>) is
             not syntactically correct Java at
-            present.</para></warning></listitem>
+            present.</para></warning-->
+          </listitem>
         </varlistentry>
 
         <!-- Entry for Constraints tab -->
@@ -1464,9 +1210,22 @@ A hierarchical listing of the packages,
           <listitem><para>Standard tab. In the UML metamodel,
             <literal>Attribute</literal> has the following standard tagged
             values defined.</para>
-
+            
+            <!-- TODO: Explain the presence of "transient" and "volatile". 
+            The standard only describes "persistence" -->
             <itemizedlist>
-              <listitem><para><literal>persistence</literal>. Values
+              <listitem><para><literal>transient</literal>. 
+                </para>
+              </listitem>
+              <listitem>
+                <para><literal>volatile</literal>.
+                  This is an &argouml; extension to the UML 1.3 standard 
+                  to indicate that this attribute is realized in 
+                  some volatile form 
+                  (for example it will be a memory mapped control register).
+                </para>
+              </listitem>
+              <!--listitem><para><literal>persistence</literal>. Values
                 <literal>transitory</literal>, indicating state is
                 destroyed when an instance is destroyed or
                 <literal>persistent</literal>, marking state is
@@ -1481,7 +1240,7 @@ A hierarchical listing of the packages,
 
               <note><para>Derived attributes still have their value in
                 analysis to introduce useful names or concepts, and in
-                design to avoid re-computation.</para></note></listitem>
+                design to avoid re-computation.</para></note></listitem-->
             </itemizedlist>
 
             <note><para>The UML <literal>Element</literal> metaclass from
@@ -1543,10 +1302,8 @@ A hierarchical listing of the packages,
           <listitem><para>This deletes the attribute from the model</para>
 
           <warning><para>This is a deletion from the model
-            <emphasis>not</emphasis> just the diagram. Since attributes
-            have no meaning independent of their owning class, it makes no
-sense to delete them just from the diagram. 
-If desired the whole
+            <emphasis>not</emphasis> just the diagram. 
+            If desired the whole
             attribute compartment can be hidden on the diagram using the
             <emphasis>style</emphasis> tab (see <xref
               linkend="s2.ref.attribute_property_toolbar"/>) or the
@@ -1577,6 +1334,46 @@ If desired the whole
             lower case letter.</para></note></listitem>
         </varlistentry>
 
+        <!-- Entry for Stereotype -->
+
+        <varlistentry>
+          <term><literal>Stereotype</literal></term>
+
+          <listitem>
+            <para>Drop down selector. There are no UML standard
+              stereotypes for <literal>Attribute</literal>. 
+            </para>
+          </listitem>
+        </varlistentry>
+
+        <!-- Entry for NavStereo -->
+
+        <varlistentry>
+          <term><literal>Navigate Stereotype</literal></term>
+
+          <listitem><para><guiicon><inlinemediaobject><imageobject><imagedata
+              format="GIF" align="center"
+              fileref="images/icons/navigate_stereotype.gif"/>
+            </imageobject></inlinemediaobject></guiicon> icon. If a
+              stereotype has been selected, this will navigate to the
+              stereotype property panel (see <xref
+                linkend="s1.ref.stereotype"/>).</para></listitem>
+        </varlistentry>
+
+        <!-- Entry for Owner -->
+
+        <varlistentry>
+          <term><literal>Owner</literal></term>
+
+          <listitem><para>Text box. Records the class which contains this
+            attribute.</para>
+
+            <para>&Button1; double click on the entry will navigate to the
+              class. 
+            </para>
+          </listitem>
+        </varlistentry>
+
         <!-- Entry for multiplicity -->
 
         <varlistentry>
@@ -1594,55 +1391,9 @@ If desired the whole
 
           <caution><para>&argouml; restricts you to a number of predefined
             ranges for multiplicity. There is no way to give a user defined
-            range.</para></caution></listitem>
-        </varlistentry>
-
-        <!-- Entry for Stereotype -->
-
-        <varlistentry>
-          <term><literal>Stereotype</literal></term>
-
-          <listitem><para>Drop down selector. There are no UML standard
-            stereotypes for <literal>Attribute</literal>. &argouml;
-            provides the additional stereotypes,
-            <literal>machine</literal>, <literal>organization</literal> and
-            <literal>person</literal>, and rather strangely
-            <literal>realize</literal> (a stereotype of
-            <literal>Abstraction</literal>).</para>
-
-          <caution><para>&argouml; provides the stereotype
-            <literal>realize</literal> for attributes. This appears to be
-            an error, since this stereotype properly belongs to the
-            <literal>Abstraction</literal>
-            metaclass.</para></caution></listitem>
-        </varlistentry>
-
-        <!-- Entry for NavStereo -->
-
-        <varlistentry>
-          <term><literal>Navigate Stereotype</literal></term>
-
-          <listitem><para><guiicon><inlinemediaobject><imageobject><imagedata
-              format="GIF" align="center"
-              fileref="images/icons/navigate_stereotype.gif"/>
-            </imageobject></inlinemediaobject></guiicon> icon. If a
-              stereotype has been selected, this will navigate to the
-              stereotype property panel (see <xref
-                linkend="s1.ref.stereotype_class"/>).</para></listitem>
-        </varlistentry>
-
-        <!-- Entry for Owner -->
-
-        <varlistentry>
-          <term><literal>Owner</literal></term>
-
-          <listitem><para>Text box. Records the class which contains this
-            attribute.</para>
-
-          <para>&Button1; click on the entry will navigate to the
-            class. &Button2; click provides a pop up menu with a single
-            entry, <literal>Open</literal>, which will also navigate to the
-            class.</para></listitem>
+            range.
+            <!-- TODO: See issue ... -->
+          </para></caution></listitem>
         </varlistentry>
 
         <!-- Entry for Type -->
@@ -1687,8 +1438,21 @@ If desired the whole
             values <literal>0</literal>, <literal>1</literal>,
             <literal>2</literal> and <literal>null</literal>.</para>
 
-          <caution><para>Any constructor operation may ignore this initial
-            value.</para></caution></listitem>
+            <caution><para>Any constructor operation may ignore this initial
+              value.</para></caution>
+              
+            <warning>
+              <para>
+                This function is broken in V0.14 of &argouml;. The textbox is
+                not editable, and if an initial value is given in the diagram
+                (by editing the attribute definition string), then something 
+                like: 
+                <quote>ru.novosoft.uml.foundation.data_types.MExpression@1b6484c</quote>
+                appears.
+                <!-- TODO: See issue ... -->
+              </para>
+            </warning>
+          </listitem>
         </varlistentry>
 
         <!-- Entry for Visibility -->
@@ -1705,63 +1469,63 @@ If desired the whole
               available to any artifact that can see the owning
               class.</para></listitem>
 
+            <listitem><para><literal>private</literal>. The attribute is
+              available only to the owning class (and any inner
+              classes).</para></listitem>
+            
             <listitem><para><literal>protected</literal>. The attribute is
               available only to the owning class, or artifacts that are
               subclasses of the owning class.</para></listitem>
 
-            <listitem><para><literal>private</literal>. The attribute is
-              available only to the owning class (and any inner
-              classes).</para></listitem>
           </itemizedlist></listitem>
         </varlistentry>
 
-        <!-- Entry for Modifiers -->
+        <!-- Entry for Changability -->
 
         <varlistentry>
-          <term><literal>Modifiers</literal></term>
+          <term><literal>Changability</literal></term>
 
-          <listitem><para>Check box, with entries <literal>static</literal>,
-            <literal>final</literal>, <literal>transient</literal> and
-            <literal>volatile</literal>.</para>
+          <listitem><para>Radio box, with entries <literal>changeable</literal>,
+            <literal>add only</literal> and
+            <literal>frozen</literal>.</para>
 
           <itemizedlist>
-            <listitem><para><literal>static</literal>. There is only one
-              instance of this attribute associated with the class (as
-              opposed to one for each instance of the class). This is the
-              <literal>OwnerScope</literal> attribute of a
-              <literal>Feature</literal> metaclass within UML. Any
-              attribute declared static is shown underlined on the class
-              diagram.</para></listitem>
+            <listitem><para><literal>changeable</literal>. 
+              There are no restrictions of modification.
+            </para></listitem>
 
-            <listitem><para><literal>final</literal>The value of this
-              attribute may not be changed after it has been
-              instantiated.</para>
+            <listitem><para><literal>add only</literal>. 
+              Meaningful only if the multiplicity is not fixed to a
+              single value. Additional values may be added to the set of
+              values, but once created a value may not be removed or altered.
+            </para></listitem>
+            
+            <listitem><para><literal>frozen</literal>. 
+              Also named <quote>immutable</quote>.
+              The value of the 
+              attribute may not change during the lifetime of the owner class.
+              The value must be set at object creation, and may never change
+              after that. This implies that there is usually an argument for
+              this value in a constructor and that there is no operation that
+              updates this value. 
+            </para></listitem>
 
-            <caution><para>This corresponds to the
-              <literal>Changeability</literal> attribute of the
-              <literal>Attribute</literal> metaclass within the UML
-              standard. &argouml; has no mechanism for indicating the
-              <literal>addOnly</literal> value of this
-              attribute.</para></caution></listitem>
-
-            <listitem><para><literal>transient</literal>. This corresponds
-              to the <literal>permanence</literal> tagged value (see <xref
-                linkend="s2.ref.attribute_details_tabs"/>), and should 
-              not really be on the property sheet.</para>
-
-            <tip><para>UML Purists should not use this check box, but enter
-              a permanence tagged value on the tagged value
-              tab.</para></tip></listitem>
-
-            <listitem><para><literal>volatile</literal>. This is an
-              &argouml; extension to the UML&nbsp;1.3 standard to indicate
-              that this attribute is realized in some volatile form (for
-              example it will be a memory mapped control register).</para>
-
-            <tip><para>The proper place for this extension is as a tagged
-              value (or stereotype). UML purists may choose to adopt either
-              of these mechanisms.</para></tip></listitem>
           </itemizedlist></listitem>
+        </varlistentry>
+
+        <!-- Entry for Static -->
+
+        <varlistentry>
+          <term><literal>Static</literal></term>
+
+          <listitem>
+            <para>Check box for <literal>static</literal>. 
+              If unchecked (the defaults) then the attribute has <quote>instance
+              scope</quote>. If checked, then the attribute is static, i.e. it
+              has <quote>class scope</quote>. Static attributes are indicated on
+              the diagram by underlining.
+            </para>
+          </listitem>
         </varlistentry>
       </variablelist>
     </sect2>
@@ -1784,8 +1548,8 @@ If desired the whole
     <blockquote><para><emphasis>visibility</emphasis>
       [<literal>static</literal>] [<literal>final</literal>]
       <emphasis>operationName</emphasis> <literal>(</literal>
-      [<emphasis>argumentDeclaration</emphasis> [,
-      <emphasis>argumentDeclaration</emphasis>]*] <literal>:</literal>
+      [<emphasis>argumentDeclaration</emphasis> 
+      [,&nbsp;<emphasis>argumentDeclaration</emphasis>]*] ) <literal>:</literal>
       <emphasis>returnType</emphasis></para></blockquote>
 
     <para><emphasis>visibility</emphasis> is <literal>+</literal>,
@@ -1853,10 +1617,8 @@ If desired the whole
         </varlistentry>
 
         <!-- Entry for Style tab -->
-
-        <varlistentry>
+        <!--varlistentry>
           <term><literal>Style</literal></term>
-
           <listitem><para>Standard tab, but relating to the owning class,
             rather than the operation. The tick boxes,
             <literal>Attributes</literal> and <literal>Operations</literal>
@@ -1864,7 +1626,7 @@ If desired the whole
             to be shown (the default) or hidden. The
             <literal>Bounds:</literal> field defines the bounding box for
             the package on the diagram.</para></listitem>
-        </varlistentry>
+        </varlistentry-->
 
         <!-- Entry for Source tab -->
 
@@ -1873,10 +1635,7 @@ If desired the whole
 
           <listitem><para>Standard tab. This contains a declaration for the
             operation.</para>
-
-          <warning><para>The <literal>final</literal> modifier is ignored
-            and will not appear in the source
-            declaration.</para></warning></listitem>
+          </listitem>
         </varlistentry>
 
         <!-- Entry for Constraints tab -->
@@ -1976,6 +1735,20 @@ If desired the whole
             parameter.</para></listitem>
         </varlistentry>
 
+        <!-- Entry for Add raised signal -->
+
+        <varlistentry>
+          <term><guiicon><inlinemediaobject><imageobject><imagedata
+            format="GIF" align="center"
+            fileref="images/icons/signal.gif"/>
+          </imageobject></inlinemediaobject></guiicon> <literal>Add
+            raised signal</literal></term>
+
+          <listitem><para>This creates a new raised signal for the operation,
+            navigating immediately to the properties tab for that
+            raised signal.</para></listitem>
+        </varlistentry>
+
         <!-- Entry for Delete button -->
 
         <varlistentry>
@@ -1988,10 +1761,8 @@ If desired the whole
           <listitem><para>This deletes the operation from the model</para>
 
           <warning><para>This is a deletion from the model
-            <emphasis>not</emphasis> just the diagram. Since operations
-            have no meaning independent of their owning class, it makes no
-sense to delete them just from the diagram.
-If desired the whole
+            <emphasis>not</emphasis> just the diagram. 
+            If desired the whole
             operation compartment can be hidden on the diagram using the
             <emphasis>style</emphasis> tab (see <xref
               linkend="s2.ref.operation_property_toolbar"/>) or the
@@ -2023,8 +1794,9 @@ If desired the whole
 
           <tip><para>If you wish to follow the Java convention of
             constructors having the same name as the class, you will
-            violate this rule. Remove the critic using the to-do tab (see
-            <xref linkend="s1.ref.to_do"/>).</para></tip></listitem>
+            violate this rule. Silence the critic by setting the stereotype
+            <literal>create</literal> for the constructor operation. 
+            </para></tip></listitem>
         </varlistentry>
 
         <!-- Entry for Stereotype -->
@@ -2036,21 +1808,21 @@ If desired the whole
             stereotypes for <literal>Operation</literal> (from the parent
             metaclass, <literal>BehavioralFeature</literal>),
             <literal>create</literal> and
-            <literal>destroy</literal>. &argouml; provides the additional
+            <literal>destroy</literal>. 
+            <!--&argouml; provides the additional
             stereotypes, <literal>machine</literal>,
             <literal>organization</literal> and <literal>person</literal>,
             and rather strangely <literal>realize</literal> (a stereotype
-            of <literal>Abstraction</literal>).</para>
+            of <literal>Abstraction</literal>).-->
+            </para>
 
-          <tip><para>You should use <literal>create</literal> as the
-            stereotype for constructors, and <literal>destroy</literal> for
-            destructors (or finalize methods under Java).</para></tip>
-
-          <caution><para>&argouml; provides the stereotype
-            <literal>realize</literal> for operations. This appears to be
-            an error, since this stereotype properly belongs to the
-            <literal>Abstraction</literal>
-            metaclass.</para></caution></listitem>
+            <tip><para>You should use <literal>create</literal> as the
+              stereotype for constructors, and <literal>destroy</literal> for
+              destructors (which are called <quote>finalize</quote> methods 
+              under Java).
+              </para>
+            </tip>
+          </listitem>
         </varlistentry>
 
         <!-- Entry for NavStereo -->
@@ -2062,7 +1834,8 @@ If desired the whole
               format="GIF" align="center"
               fileref="images/icons/navigate_stereotype.gif"/>
             </imageobject></inlinemediaobject></guiicon> icon. If a
-              stereotype has been selected, this will navigate to the
+              stereotype has been selected, clicking &button1; 
+              will navigate to the
               stereotype property panel (see <xref
                 linkend="s1.ref.stereotype_class"/>).</para></listitem>
         </varlistentry>
@@ -2075,10 +1848,10 @@ If desired the whole
           <listitem><para>Text box. Records the class which contains this
             operation.</para>
 
-          <para>&Button1; click on the entry will navigate to the
-            class. &Button2; click provides a pop up menu with a single
-            entry, <literal>Open</literal>, which will also navigate to the
-            class.</para></listitem>
+            <para>&Button1; double click on the entry will navigate to the
+              class. 
+            </para>
+          </listitem>
         </varlistentry>
 
         <!-- Entry for Visibility -->
@@ -2111,7 +1884,7 @@ If desired the whole
           <term><literal>Modifiers</literal></term>
 
           <listitem><para>Check box, with entries <literal>abstract</literal>,
-            <literal>final</literal>, <literal>root</literal>,
+            <literal>leaf</literal>, <literal>root</literal>,
             <literal>query</literal> and <literal>static</literal>.</para>
 
           <itemizedlist>
@@ -2122,7 +1895,7 @@ If desired the whole
             <important><para>Any class with an abstract operation must
               itself be declared abstract.</para></important></listitem>
 
-            <listitem><para><literal>final</literal>The implementation of
+            <listitem><para><literal>leaf</literal>The implementation of
               this operation must not be overridden by any
               subclass.</para></listitem>
 
@@ -2164,16 +1937,24 @@ If desired the whole
               guarantee of behavior if the system violates this
               rule.</para></listitem>
 
-            <listitem><para><literal>synchronized</literal>. Multiple calls
-              to one instance are allowed, but only one may execute at a
-              time. The others are blocked. In the UML&nbsp;1.3 standard
-              this form of concurrency is known as
-              <literal>guarded</literal>.</para>
+            <listitem>
+              <para><literal>guarded</literal>. Multiple calls
+                from concurrent threads may occur simultanously
+                to one instance (on any guarded operation), but only one 
+                is alloed to commence.
+                The others are blocked until the performance of the first 
+                operation is comlete. 
+              </para>
 
-            <caution><para>It is up to the system designer to ensure
-              deadlock cannot occur. It is the responsibility of the
-              operation to implement the blocking behavior (as opposed to
-              the system).</para></caution></listitem>
+              <caution>
+                <para>
+                  It is up to the system designer to ensure that
+                  deadlock cannot occur. It is the responsibility of the
+                  operation to implement the blocking behavior (as opposed to
+                  the system).
+                  </para>
+                </caution>
+              </listitem>
 
             <listitem><para><literal>concurrent</literal>. Multiple calls
               to one instance may execute at the same time. The operation
@@ -2194,8 +1975,9 @@ If desired the whole
             <literal>return</literal> to define the return type of the
             operation.</para>
 
-          <para>&Button1; click on any of the parameters
-            navigates to that parameter. &button2; click brings up a pop up
+          <para>&Button1; double click on any of the parameters
+            <!-- TODO: Sometimes it is a single click... See issue ... -->
+            navigates to that parameter. &Button2; click brings up a pop up
             menu with four entries.</para>
 
           <itemizedlist>
@@ -2207,12 +1989,19 @@ If desired the whole
 
             <listitem><para><literal>Move Up</literal>. Only available where
               there are two or more parameters, and the parameter selected is
-              not at the top. It is moved up one.</para></listitem>
+              not at the top. It is moved up one.
+              <!-- TODO: As a result, everything is deselected. So you'll have
+              to reselect the parameter! This is very annoying! 
+              See issue ... -->
+            </para></listitem>
 
             <listitem><para><literal>Move Down</literal>. Only available where
               there are two or more parameters listed, and the parameter
               selected is not at the bottom. It is moved down
-              one.</para></listitem> </itemizedlist></listitem>
+              one.
+              <!-- TODO: Idem. See issue ... -->
+            </para></listitem> 
+          </itemizedlist></listitem>
         </varlistentry>
 
         <!-- Entry for Raised Signals -->
@@ -2224,12 +2013,14 @@ If desired the whole
             <xref linkend="s1.ref.signal"/>) that can be raised by the
             operation.</para>
 
-          <caution><para>&argouml; at present has limited support for
+          <caution><para>&argouml; at present (V0.14) has limited support for
             signals. In particular they are not linked to signal events
             that could drive state machines.</para></caution>
 
-          <para>&Button1; click on any of the parameters
-            navigates to that parameter. &button2; click brings up a pop up
+          <para>&Button1; click on any of the signals
+            <!-- TODO: Should in fact only select. Not navigate! 
+            See issue ... -->
+            navigates to that parameter. &Button2; click brings up a pop up
             menu with four entries.</para>
 
           <itemizedlist>
@@ -2241,12 +2032,19 @@ If desired the whole
 
             <listitem><para><literal>Move Up</literal>. Only available where
               there are two or more signals, and the signal selected is not at
-              the top. It is moved up one.</para></listitem>
+              the top. It is moved up one.
+              <!-- TODO: As a result, everything is deselected. So you'll have
+              to reselect the parameter! This is very annoying! 
+              See issue ... -->
+              </para></listitem>
 
             <listitem><para><literal>Move Down</literal>. Only available where
               there are two or more signals listed, and the signal selected is
-              not at the bottom. It is moved down one.</para></listitem>
-              </itemizedlist></listitem>
+              not at the bottom. It is moved down one.
+              <!-- TODO: Idem. See issue ... -->
+              </para></listitem>
+            </itemizedlist>
+          </listitem>
         </varlistentry>
       </variablelist>
     </sect2>
@@ -2312,10 +2110,8 @@ If desired the whole
         </varlistentry>
 
         <!-- Entry for Style tab -->
-
-        <varlistentry>
+        <!--varlistentry>
           <term><literal>Style</literal></term>
-
           <listitem><para>Standard tab, but relating to the owning class,
             rather than the parameter. The tick boxes,
             <literal>Attributes</literal> and <literal>Operations</literal>
@@ -2323,7 +2119,7 @@ If desired the whole
             to be shown (the default) or hidden. The
             <literal>Bounds:</literal> field defines the bounding box for
             the package on the diagram.</para></listitem>
-        </varlistentry>
+        </varlistentry-->
 
         <!-- Entry for Source tab -->
 
@@ -2335,14 +2131,12 @@ If desired the whole
         </varlistentry>
 
         <!-- Entry for Constraints tab -->
-
-        <varlistentry>
+        <!--varlistentry>
           <term><literal>Constraints</literal></term>
-
           <listitem><para>Standard tab. There are no standard constraints
             defined for <literal>Parameter</literal> within the UML
             metamodel.</para></listitem>
-        </varlistentry>
+        </varlistentry-->
 
         <!-- Entry for Tagged Values tab -->
 
@@ -2423,13 +2217,10 @@ If desired the whole
           <listitem><para>This deletes the parameter from the model</para>
 
           <warning><para>This is a deletion from the model
-            <emphasis>not</emphasis> just the diagram. Since parameters
-            have no meaning independent of their owning operation, it makes
-no sense to delete them just from the diagram.
-If desired the
+            <emphasis>not</emphasis> just the diagram. 
+            If desired the
             whole operation compartment can be hidden on the diagram using
-            the <emphasis>style</emphasis> tab (see <xref
-            linkend="s2.ref.parameter_property_toolbar"/>) or the
+            the <emphasis>style</emphasis> tab or the
             &button2; pop up menu for the class on the
             diagram.</para></warning></listitem>
         </varlistentry>
@@ -2462,18 +2253,11 @@ If desired the
         <varlistentry>
           <term><literal>Stereotype</literal></term>
 
-          <listitem><para>Drop down selector. There are no UML standard
-            stereotypes for <literal>Parameter</literal>. &argouml;
-            provides the stereotypes, <literal>machine</literal>,
-            <literal>organization</literal> and <literal>person</literal>,
-            and rather strangely <literal>realize</literal> (a stereotype
-            of <literal>Abstraction</literal>).</para>
-
-          <caution><para>&argouml; provides the stereotype
-            <literal>realize</literal> for parameters. This appears to be
-            an error, since this stereotype properly belongs to the
-            <literal>Abstraction</literal>
-            metaclass.</para></caution></listitem>
+          <listitem>
+            <para>Drop down selector. There are no UML standard
+              stereotypes for <literal>Parameter</literal>. 
+            </para>
+          </listitem>
         </varlistentry>
 
         <!-- Entry for NavStereo -->
@@ -2487,7 +2271,7 @@ If desired the
             </imageobject></inlinemediaobject></guiicon> icon. If a
               stereotype has been selected, this will navigate to the
               stereotype property panel (see <xref
-                linkend="s1.ref.stereotype_class"/>).</para></listitem>
+                linkend="s1.ref.stereotype"/>).</para></listitem>
         </varlistentry>
 
         <!-- Entry for Owner -->
@@ -2499,9 +2283,12 @@ If desired the
             parameter.</para>
 
           <para>&Button1; click on the entry will navigate to the
+            <!-- TODO: Should be a double-click. See issue ...  -->
             operation. &Button2; click provides a pop up menu with a single
             entry, <literal>Open</literal>, which will also navigate to the
-            operation.</para></listitem>
+            operation.
+            <!-- TODO: Remove this useless pop-up. See issue ... -->
+          </para></listitem>
         </varlistentry>
 
         <!-- Entry for Type -->
@@ -2524,10 +2311,8 @@ If desired the
         </varlistentry>
 
         <!-- Entry for NavClass -->
-
-        <varlistentry>
+        <!--varlistentry>
           <term><literal>Navigate Type</literal></term>
-
           <listitem><para><guiicon><inlinemediaobject><imageobject><imagedata
               format="GIF" align="center"
               fileref="images/icons/navigate_type.gif"/>
@@ -2536,7 +2321,7 @@ If desired the
             type. (see <xref linkend="s1.ref.class_class"/>, <xref
               linkend="s1.ref.datatype_class"/> and <xref
               linkend="s1.ref.interface_class"/>).</para></listitem>
-        </varlistentry>
+        </varlistentry-->
 
         <!-- Entry for Initial Value -->
 
@@ -2583,9 +2368,10 @@ If desired the
 
             <note><para>There is nothing to stop you declaring more than
               one return parameter (some programming languages support this
-              concept), but all except the first appear in the list of
-              parameters passed in on the diagram, which is
-              confusing.</para></note>
+              concept). 
+              <!-- TODO: They even appear on the diagram. Is that
+              described? -->
+            </para></note>
 
             <tip><para>The name of the return parameter does not appear on
               the diagram, but it is convenient to give it an appropriate
@@ -2598,7 +2384,7 @@ If desired the
     </sect2>
   </sect1>
 
-  <!-- Signal artifact (subsidiary of Operation). Also relevant to state
+  <!-- Signal artifact (subsidiary of Operation). Also relevant to statechart
        diagrams. -->
 
   <sect1 id="s1.ref.signal">
@@ -2658,20 +2444,6 @@ If desired the
           <listitem><para>Standard tab.</para></listitem>
         </varlistentry>
 
-        <!-- Entry for Style tab -->
-
-        <varlistentry>
-          <term><literal>Style</literal></term>
-
-          <listitem><para>Standard tab, but relating to the owning class,
-            rather than the signal. The tick boxes,
-            <literal>Attributes</literal> and <literal>Operations</literal>
-            allow the attributes and operations compartments of the class
-            to be shown (the default) or hidden. The
-            <literal>Bounds:</literal> field defines the bounding box for
-            the package on the diagram.</para></listitem>
-        </varlistentry>
-
         <!-- Entry for Source tab -->
 
         <varlistentry>
@@ -2679,16 +2451,6 @@ If desired the
 
           <listitem><para>Standard tab. There is nothing generated for a
             signal.</para></listitem>
-        </varlistentry>
-
-        <!-- Entry for Constraints tab -->
-
-        <varlistentry>
-          <term><literal>Constraints</literal></term>
-
-          <listitem><para>Standard tab. There are no standard constraints
-            defined for <literal>Signal</literal> within the UML
-            metamodel.</para></listitem>
         </varlistentry>
 
         <!-- Entry for Tagged Values tab -->
@@ -2754,43 +2516,6 @@ If desired the
             structure.</para></listitem>
         </varlistentry>
 
-        <!-- Entry for Add operation button -->
-
-        <varlistentry>
-          <term><guiicon><inlinemediaobject><imageobject><imagedata
-            format="GIF" align="center"
-            fileref="images/icons/operation.gif"/>
-          </imageobject></inlinemediaobject></guiicon> <literal>Add
-            operation</literal></term>
-
-          <listitem><para>This creates a new operation (see <xref
-              linkend="s1.ref.operation"/>) for the signal, navigating
-              immediately to the properties tab for that
-              operation.</para>
-
-          <caution><para>Although signals are very similar to classes, it
-            makes little sense to define operations for
-            them.</para></caution></listitem>
-        </varlistentry>
-
-        <!-- Entry for Add attribute -->
-
-        <varlistentry>
-          <term><guiicon><inlinemediaobject><imageobject><imagedata
-            format="GIF" align="center"
-            fileref="images/icons/attribute.gif"/>
-          </imageobject></inlinemediaobject></guiicon> <literal>Add
-            attribute</literal></term>
-
-          <listitem><para>This creates a new attribute (see <xref
-              linkend="s1.ref.attribute"/>)  for the signal, navigating
-            immediately to the properties tab for that
-            attribute.</para>
-
-          <note><para>The attributes are effectively the parameters of the
-            signal.</para></note></listitem>
-        </varlistentry>
-
         <!-- Entry for New signal -->
 
         <varlistentry>
@@ -2803,12 +2528,27 @@ If desired the
           <listitem><para>This creates a new signal, navigating immediately to
             the properties tab for that signal.</para>
 
-          <note><para>&argouml; uses the icon for a class for this button,
-            rather than the icon for a signal.</para></note>
-
           <caution><para>The signal is not associated with the same
             operation as the original signal, so there appears no way to
-            use it in the model.</para></caution></listitem>
+            use it in the model.
+            <!-- TODO: Check this out! -->
+            </para></caution></listitem>
+        </varlistentry>
+
+        <!-- Entry for Add recepption -->
+
+        <varlistentry>
+          <term><guiicon><inlinemediaobject><imageobject><imagedata
+            format="GIF" align="center"
+            fileref="images/icons/reception.gif"/>
+          </imageobject></inlinemediaobject></guiicon> <literal>
+            Add recepption</literal></term>
+
+          <listitem>
+            <para>This creates a new reception, navigating immediately to
+              the properties tab for that reception.
+            </para>
+          </listitem>
         </varlistentry>
 
         <!-- Entry for Delete button -->
@@ -2822,10 +2562,9 @@ If desired the
 
           <listitem><para>This deletes the signal from the model</para>
 
-          <warning><para>This is a deletion from the model. &argouml; at
-            present has no way of referencing signals independently of
-            their owning operation, and so once deleted they can not be
-            accessed.</para></warning></listitem>
+            <warning><para>This is a deletion from the model. 
+            </para></warning>
+          </listitem>
         </varlistentry>
       </variablelist>
     </sect2>
@@ -2863,22 +2602,14 @@ If desired the
             (<literal>metaclass</literal>, <literal>powerType</literal>,
             <literal>process</literal>, <literal>thread</literal> and
             <literal>utility</literal>).
-            &argouml; also provides the additional stereotypes,
-            <literal>machine</literal>, <literal>organization</literal> and
-            <literal>person</literal>, and rather strangely
-            <literal>realize</literal> (a stereotype of
-            <literal>Abstraction</literal>).</para>
-
-          <caution><para>&argouml; provides the stereotype
-            <literal>realize</literal> for parameters. This appears to be
-            an error, since this stereotype properly belongs to the
-            <literal>Abstraction</literal>
-            metaclass.</para></caution></listitem>
+            </para>
+          </listitem>
         </varlistentry>
 
         <!-- Entry for NavStereo -->
-
-        <varlistentry>
+        <!-- TODO: This one is missing here. Strange, it is present everywhere
+        else! See issue ... -->
+        <!--varlistentry>
           <term><literal>Navigate Stereotype</literal></term>
 
           <listitem><para><guiicon><inlinemediaobject><imageobject><imagedata
@@ -2887,12 +2618,12 @@ If desired the
             </imageobject></inlinemediaobject></guiicon> icon. If a
               stereotype has been selected, this will navigate to the
               stereotype property panel (see <xref
-                linkend="s1.ref.stereotype_class"/>).</para></listitem>
-        </varlistentry>
+                linkend="s1.ref.stereotype"/>).</para></listitem>
+        </varlistentry-->
 
         <!-- Entry for Extends -->
 
-        <varlistentry>
+        <!--varlistentry>
           <term><literal>Extends</literal></term>
 
           <listitem><para>Text box. Lists any class that generalizes this
@@ -2946,11 +2677,11 @@ If desired the
           <tip><para>To specify detailed properties of signals define them
             as classes with the stereotype
             <literal>&laquo;signal&raquo;</literal>.</para></tip></listitem>
-        </varlistentry>
+        </varlistentry-->
 
         <!-- Entry for Implements -->
 
-        <varlistentry>
+        <!--varlistentry>
           <term><literal>Implements</literal></term>
 
           <listitem><para>Text box. Lists any class or interface that is
@@ -3000,11 +2731,11 @@ If desired the
             not to specify suppliers, so they are of no use at all. Since
             signals should not have operations or attributes, abstraction
             seems a meaningless concept.</para></caution></listitem>
-        </varlistentry>
+        </varlistentry-->
 
         <!-- Entry for Modifiers -->
 
-        <varlistentry>
+        <!--varlistentry>
           <term><literal>Modifiers</literal></term>
 
           <listitem><para>Check box, with entries <literal>public</literal>,
@@ -3039,25 +2770,22 @@ If desired the
               both <literal>final</literal> and
               <literal>root.</literal></para></caution></listitem>
           </itemizedlist></listitem>
-        </varlistentry>
+        </varlistentry-->
 
         <!-- Entry for Namespace -->
 
         <varlistentry>
           <term><literal>Namespace</literal></term>
 
-          <listitem><para>Text box. Records the namespace for the
-            class. This is the package hierarchy of the class which owns
-            the operation which owns this signal.</para>
-
-          <para>&Button1; click on the entry will navigate to the package
-            defining this namespace (or the model for the top level
-            namespace).</para></listitem>
+          <listitem><para>Drop down selector. Records and allows changing 
+            the namespace for the
+            signal. This is the package hierarchy of the signal.</para>
+          </listitem>
         </varlistentry>
 
         <!-- Entry for Derived -->
 
-        <varlistentry>
+        <!--varlistentry>
           <term><literal>Derived</literal></term>
 
           <listitem><para>Text area. Lists any derived signals, i.e those for
@@ -3069,11 +2797,11 @@ If desired the
 
           <note><para>This field has no use for a
             signal.</para></note></listitem>
-        </varlistentry>
+        </varlistentry-->
 
         <!-- Entry for Operations -->
 
-        <varlistentry>
+        <!--varlistentry>
           <term><literal>Operations</literal></term>
 
           <listitem><para>Text area. Lists all the operations (see <xref
@@ -3104,11 +2832,11 @@ If desired the
 
           <caution><para>Signals should not have any
             operations.</para></caution></listitem>
-        </varlistentry>
+        </varlistentry-->
 
         <!-- Entry for Attributes -->
 
-        <varlistentry>
+        <!--varlistentry>
           <term><literal>Attributes</literal></term>
 
           <listitem><para>Text area. Lists all the attributes (see <xref
@@ -3135,11 +2863,11 @@ If desired the
               there are two or more attributes listed, and the attribute
               selected is not at the bottom. It is moved down
               one.</para></listitem> </itemizedlist></listitem>
-        </varlistentry>
+        </varlistentry-->
 
         <!-- Entry for Associations -->
 
-        <varlistentry>
+        <!--varlistentry>
           <term><literal>Associations</literal></term>
 
           <listitem><para>Text area. Lists all the associations (see <xref
@@ -3171,11 +2899,86 @@ If desired the
           <caution><para>Signals should not have any
             associations&mdash;the concept is
             meaningless.</para></caution></listitem>
+        </varlistentry-->
+        
+        <!-- Entry for Contexts -->
+
+        <varlistentry>
+          <term><literal>Contexts</literal></term>
+
+          <listitem><para>Text area. Lists all the contexts defined for this
+              signal. &Button1; click navigates to the selected context,
+              <!-- TODO: Should be a double click! See issue ... -->
+              &button2; click brings up a pop up menu with
+              three entries.</para>
+
+          <itemizedlist>
+            <listitem><para><literal>Open</literal>. Navigate to the
+              selected context.</para></listitem>
+
+            <listitem><para><literal>Delete</literal>. Removes the selected
+              context from the signal.</para></listitem>
+              
+            <listitem><para><literal>Add</literal>. Add a new
+              context. This opens the <emphasis>Add context</emphasis>
+              dialog box (see figure below), 
+              which allows chosing between all possible operations,
+              and adding them to the selected list.
+              </para>
+
+              <figure id="fig.ref.signal_add_context" float="1">
+                <title>The <quote>add context</quote> dialog box</title>
+                <screenshot><mediaobject><imageobject>
+                  <imagedata format="PNG" align="center"
+                     fileref="images/reference/signal_add_context.png"/>
+                   </imageobject>
+                 </mediaobject></screenshot>
+               </figure>
+
+            </listitem>
+          </itemizedlist>
+
+          </listitem>
         </varlistentry>
+        
+        <!-- Entry for Receptions -->
+
+        <varlistentry>
+          <term><literal>Receptions</literal></term>
+
+          <listitem><para>Text area. Lists all the receptions defined for this
+              signal. &Button1; click navigates to the selected reception,
+              <!-- TODO: Should be a double click!  See issue ... -->
+              &button2; click brings up a pop up menu with
+              three entries.</para>
+
+          <itemizedlist>
+            <listitem><para><literal>Open</literal>. Navigate to the
+              selected reception.</para></listitem>
+
+            <listitem><para><literal>Delete</literal>. Removes the selected
+              reception from the model.</para></listitem>
+              
+            <listitem>
+              <para><literal>Add</literal>. 
+                Add a new
+                reception and selects it, 
+                so that its property panel becomes
+                visible. 
+              </para>
+            </listitem>
+          </itemizedlist>
+
+          </listitem>
+        </varlistentry>
+        
       </variablelist>
     </sect2>
   </sect1>
 
+  <!-- TODO: Where are the Receptions discussed? -->
+  
+  
   <!-- Association artifact. Has Association End as sub-artifact. Reference
        back to Use Case -->
 
@@ -3191,8 +2994,8 @@ If desired the
 
     <para>The association is represented as a line connecting actor and class
       or interface (see <xref linkend="fig.ref.class_diagram"/>). The name of
-      the association appears above the line and any stereotype above
-      that.</para>
+      the association and any stereotype appear above the line.
+    </para>
 
     <caution><para>&argouml; is restricted to binary associations at
       present. See <xref linkend="s2.ref.association_multiway"/> for more on
@@ -3209,12 +3012,17 @@ If desired the
 
     <note><para>&argouml; provides no specific way of showing the direction of
       the association as described in the UML 1.3 standard. The naming should
-      attempt to make this clear.</para></note>
+      attempt to make this clear.
+      <!-- TODO: We would be better than RRose if we would have this!
+      See enhancement issue ... -->
+      </para>
+    </note>
 
     <para>The association contains two ends, which may be navigated to via the
       association property sheet. See <xref
-        linkend="s1.ref.association_end_use_case"/> for more
-      information.</para>
+      linkend="s1.ref.association_end_class"/> for more
+      information.
+    </para>
 
     <!-- A bit about multiway associations -->
 
@@ -3268,13 +3076,17 @@ If desired the
         <varlistentry>
           <term><literal>Style</literal></term>
 
-          <listitem><para>Standard tab. Fill color is used for the use case
-            oval.</para>
+          <listitem><para>Standard tab. 
+            </para>
 
-          <note><para>The values for the bounds of the Association appear
-            to have no meaning. Changing them has no effect on the
-            diagram. This is sensible behavior, given the association is
-            tied to a particular actor and use case.</para></note></listitem>
+            <note><para>The values for the bounds of the Association appear
+              to have no meaning. Changing them has no effect on the
+              diagram. This is sensible behavior, given the association is
+              tied to a particular actor and use case.
+              <!-- TODO: Yeah, but wouldn't they better be downlighted then? 
+              See issue ... -->
+          </para></note>
+          </listitem>
         </varlistentry>
 
         <!-- Entry for Source tab -->
@@ -3295,14 +3107,23 @@ If desired the
 
           <listitem><para>Standard tab. In the UML metamodel,
             <literal>Association</literal> has the following standard
-            constraints defined.</para>
+            constraint defined.</para>
 
             <itemizedlist>
               <listitem><para><literal>xor</literal>. Applied to a set of
                 associations, indicating that over that set, exactly one
                 association is manifest for any particular association
                 instance.</para></listitem>
-            </itemizedlist></listitem>
+            </itemizedlist>
+            <warning>
+              <para>
+                &argouml; does not have the <quote>Constraints</quote> tab
+                enabled for associations for implementation reasons.
+                <!-- TODO: See cookbook chapter ... 
+                See enhancement issue ... -->
+              </para>
+            </warning>
+          </listitem>
         </varlistentry>
 
         <!-- Entry for Tagged Values tab -->
@@ -3420,7 +3241,7 @@ If desired the
 
           <listitem><para>Drop down selector. Association is provided by
             default with the UML standard stereotype for Association
-            ((<literal>implicit)</literal>) and the additional Association
+            ((<literal>implicit)</literal>)<!-- and the additional Association
             stereotypes for the Software Engineering Process and Business
             Modeling in the UML standard (<literal>communicate</literal>
             and <literal>subscribe</literal>). &argouml; also provides the
@@ -3429,22 +3250,19 @@ If desired the
             and four additional stereotypes suggested by some writers using
             patterns (<literal>offstage actor</literal>, <literal>primary
             actor</literal>, <literal>stakeholder</literal> and
-            <literal>supporting actor</literal>).</para>
+            <literal>supporting actor</literal>)-->.
+            </para>
 
-          <para>Stereotyping can be useful when creating use cases in the
-            problem domain (requirements capture) and solution domain
-            (analysis), as well as for processes based on patterns.</para>
+            <para>Stereotyping can be useful when creating associations in the
+              problem domain (requirements capture) and solution domain
+              (analysis), as well as for processes based on patterns.
+            </para>
 
-          <para>The stereotype is shown between &laquo; and &raquo; above
-            the name of the association on the diagram.</para>
+            <para>The stereotype is shown between &laquo; and &raquo; below
+              the name of the association on the diagram.
+            </para>
 
-          <warning><para>The provision of <literal>offstage
-            actor</literal>, <literal>primary actor</literal>,
-            <literal>stakeholder</literal> and <literal>supporting
-            actor</literal> by &argouml; as stereotypes of
-            <literal>Association</literal> appears to be erroneous. They
-            should be stereotypes of <literal>Actor</literal> (or arguably
-            <literal>Classifier</literal>).</para></warning></listitem>
+          </listitem>
         </varlistentry>
 
         <!-- Entry for NavStereo -->
@@ -3466,27 +3284,11 @@ If desired the
         <varlistentry>
           <term><literal>Namespace</literal></term>
 
-          <listitem><para>Text box. Records the namespace for the
-            association. This is the package hierarchy.</para>
-
-          <para>&Button1; click on the entry will navigate to the package
-            defining this namespace (or the model for the top level
-            namespace).</para></listitem>
-        </varlistentry>
-
-        <!-- Entry for Modifiers -->
-
-        <varlistentry>
-          <term><literal>Modifiers</literal></term>
-
-          <listitem><para>Check box, with entries <literal>Abstract</literal>,
-            <literal>Final</literal> and <literal>Root</literal>. No known
-            use&mdash;they are a consequence of associations being
-            generalizable elements.</para>
-
-          <tip><para>While associations are generalizable elements, marking
-            them with these modifiers is of limited
-            value.</para></tip></listitem>
+          <listitem><para>Drop down selector. Records and allows changing
+            the namespace for the
+            association. This is the package hierarchy.
+            </para>
+          </listitem>
         </varlistentry>
 
         <!-- Entry for Association Ends -->
@@ -3501,47 +3303,29 @@ If desired the
             &argouml;). For more on association ends see <xref
             linkend="s1.ref.association_end_class"/>.</para>
 
-          <para>The names are listed, unless the association end has no
-            name (the case when it is first created), in which case the
-            artifact at that end, and its multiplicity, is shown.</para>
+          <para>The names of the association ends are listed, 
+            unless the association end has no
+            name (the case when it is first created), in which case
+            <literal>(anon AssociationEnd)</literal> is shown.</para>
 
           <note><para>The only representation of association ends on a
             diagram is that their name appears at the relevant end of the
-            corresponding association. There is no way to access them from
-            the diagram.</para></note>
+            corresponding association. 
+            <!--There is no way to access them from  the diagram.-->
+            <!-- MVW: Yes, there is: by button2 click! -->
+            </para></note>
 
-          <para>&Button1; click on an association end will navigate to that
-            end. &Button2; click gives a pop up menu with five
-            options.</para>
+          <para>
+            &Button1; double click on an association end will navigate to that
+            end. 
+          </para>
 
-          <itemizedlist>
-            <listitem><para><literal>Open</literal>. Where an association
-              end exists, navigate to it.</para></listitem>
-
-            <listitem><para><literal>Add</literal>. Add a new association
-              end and navigate to its property tab.</para>
-
-            <tip><para>While adding new ends is possible, the value of
-              this is limited, since &argouml; provides no support for more
-              than two ends.</para></tip></listitem>
-
-            <listitem><para><literal>Delete</literal>. Where an association
-              end exists, this removes it completely from the
-              model.</para></listitem>
-
-            <listitem><para><literal>Move Up</literal>. Only available where
-              there are two or more association ends, and the association end
-              selected is not at the top. It is moved up one.</para></listitem>
-
-            <listitem><para><literal>Move Down</literal>. Only available where
-              there are two or more association ends listed, and the
-              association end selected is not at the bottom. It is moved down
-              one.</para></listitem> </itemizedlist></listitem>
+          </listitem>
         </varlistentry>
 
         <!-- Entry for Generalizations -->
 
-        <varlistentry>
+        <!--varlistentry>
           <term><literal>Generalizations</literal></term>
 
           <listitem><para>Text area. Lists any association that
@@ -3589,11 +3373,11 @@ If desired the
               there are two or more generalizations listed, and the
               generalization selected is not at the bottom. It is moved down
               one.</para></listitem> </itemizedlist></listitem>
-        </varlistentry>
+        </varlistentry-->
 
         <!-- Entry for Specializations -->
 
-        <varlistentry>
+        <!--varlistentry>
           <term><literal>Specializations</literal></term>
 
           <listitem><para>Text box. Lists any specialized association (i.e. for
@@ -3640,8 +3424,15 @@ If desired the
               there are two or more specializations listed, and the
               specialization selected is not at the bottom. It is moved down
               one.</para></listitem> </itemizedlist></listitem>
-        </varlistentry>
-      </variablelist>
+        </varlistentry-->
+
+        <!-- Entry for Association Roles -->
+        <!-- TODO: To be completed. -->
+
+        <!-- Entry for Links -->
+        <!-- TODO: To be completed. -->
+
+        </variablelist>
     </sect2>
   </sect1>
 
@@ -3653,7 +3444,7 @@ If desired the
 
     <para>Two or more association ends are associated with each association
       (see <xref linkend="s1.ref.association_use_case"/>), although for
-      &argouml;, the number of ends can only usefully be two.</para>
+      &argouml;, the number of ends can only be two.</para>
 
     <para>Within the UML metamodel, <literal>AssociationEnd</literal> is a
       sub-class of <literal>ModelElement</literal>.</para>
@@ -3673,7 +3464,10 @@ If desired the
       multiplicity.</para></tip>
 
     <note><para>&argouml; does not currently support qualifiers, as described
-      in the UML&nbsp;1.3 standard.</para></note>
+        in the UML&nbsp;1.3 standard.
+        <!-- TODO: See enhancement issue ... -->
+      </para>
+    </note>
 
     <!-- The details tabs -->
 
@@ -3712,38 +3506,16 @@ If desired the
           <listitem><para>Standard tab.</para></listitem>
         </varlistentry>
 
-        <!-- Entry for Style tab -->
-
-        <varlistentry>
-          <term><literal>Style</literal></term>
-
-          <listitem><para>Standard tab, but with no meaning, since the only
-            representation is via the parent association.</para></listitem>
-        </varlistentry>
-
         <!-- Entry for Source tab -->
 
         <varlistentry>
           <term><literal>Source</literal></term>
 
-          <listitem><para>Standard tab. You would not expect to generate any
-            code for an association end, but this tab contains a
+          <listitem><para>Standard tab. This tab contains a
             declaration for the association end as an instance of the
-            actor or use case artifact to which it is connected.</para>
-
-          <note><para>This is probably not the correct thing to do for good
-            code generation, and will need to be changed in future versions
-            of &argouml;.</para></note></listitem>
-        </varlistentry>
-
-        <!-- Entry for Constraints tab -->
-
-        <varlistentry>
-          <term><literal>Constraints</literal></term>
-
-          <listitem><para>Standard tab. There are no standard constraints
-            defined for <literal>AssociationEnd</literal> within the UML
-            metamodel.</para></listitem>
+            artifact to which it is connected.
+            </para>
+          </listitem>
         </varlistentry>
 
         <!-- Entry for Tagged Values tab -->
@@ -3811,6 +3583,9 @@ If desired the
           <listitem><para>This navigates to the other end of the
             association.</para></listitem>
         </varlistentry>
+        
+        <!-- TODO: In the V0.14 - V0.15.1 implementation, there is also a downlighted
+        "Delete" icon. This should be removed. See enhancement issue ... -->
       </variablelist>
     </sect2>
 
@@ -3832,6 +3607,10 @@ If desired the
             implementation context, provides a name by which the source end of
             an association can reference the target end.</para>
 
+          <!-- TODO: This thing doesn't work in the vPRE-0.15.2 version. 
+          It is the association that gets named, not the associationend.
+          Test this when V0.15.2 will be released. See issue ... -->
+
           <note><para>&argouml; does not enforce any naming convention for
             association ends.</para></note></listitem>
         </varlistentry>
@@ -3845,16 +3624,12 @@ If desired the
             default with the UML standard stereotypes for AssociationEnd
             (<literal>association</literal>, <literal>global</literal>,
             <literal>local</literal>, <literal>parameter</literal>,
-            <literal>self</literal>). &argouml; also provides the
-            additional stereotypes, <literal>machine</literal>,
-            <literal>organization</literal> and
-            <literal>person</literal>.</para>
-
-          <para>Stereotyping association ends can be very useful in class
-            diagrams. However it is of limited use in use case diagrams,
-            although the default stereotype of
-            <literal>association</literal> can be used to emphasis
-            this.</para></listitem>
+            <literal>self</literal>). 
+            However &argouml; does not provide any of these by default. 
+            Only the stereotype <literal>implicit</literal> is present.
+            <!-- TODO: See enhancement issue ... -->
+            </para>
+          </listitem>
         </varlistentry>
 
         <!-- Entry for NavStereo -->
@@ -3871,6 +3646,18 @@ If desired the
                 linkend="s1.ref.stereotype"/>).</para></listitem>
         </varlistentry>
 
+        <!-- Entry for Association -->
+
+        <varlistentry>
+          <term><literal>Association</literal></term>
+
+          <listitem><para>Text box. Records the parent association for this
+            association end. &Button1; double click on
+            this entry will navigate to that association. 
+            </para>
+          </listitem>
+        </varlistentry>
+
         <!-- Entry for Type -->
 
         <varlistentry>
@@ -3880,30 +3667,20 @@ If desired the
             UML types provided by &argouml; and all new classes created
             within the current model.</para>
 
-          <para>This is the type of the entity attached to this end of the
-            association.</para>
+            <para>This is the type of the entity attached to this end of the
+              association.</para>
 
-          <tip><para>By default &argouml; will select the class of the
-            artifact to which the linkend is connected. There is little
-            point in altering this when working with use case
-            diagrams.</para></tip></listitem>
-        </varlistentry>
-
-        <!-- Entry for NavClass (note the icon is identical to
-             Navstereo) -->
-
-        <varlistentry>
-          <term><literal>Navigate Class</literal></term>
-
-          <listitem><para><guiicon><inlinemediaobject><imageobject><imagedata
-              format="GIF" align="center"
-              fileref="images/icons/navigate_stereotype.gif"/>
-              </imageobject></inlinemediaobject></guiicon> icon. If a
-              datatype, interface or class has been selected, this will
-              navigate to its property sheet, (see <xref
-                linkend="s1.ref.datatype"/>, <xref
-                linkend="s1.ref.interface_class"/> and <xref
-               linkend="s1.ref.class_class"/>) .</para></listitem>
+            <tip>
+              <para>
+                By default &argouml; will select the class of the
+                artifact to which the linkend is connected. 
+                However, an association can be moved to another class 
+                by selecting another entry here.
+              </para>
+            </tip>
+          </listitem>
+          <!-- TODO: This thing is empty in the vPRE-0.15.2 version. 
+          Test this when V0.15.2 will be released. See issue ... -->
         </varlistentry>
 
         <!-- Entry for Multiplicity -->
@@ -3911,60 +3688,117 @@ If desired the
         <varlistentry>
           <term><literal>Multiplicity</literal></term>
 
-          <listitem><para>Drop down menu. Records the multiplicity of this
+          <listitem><para>Drop down menu with edit box. 
+            The value can be chosen from the drop down box, or a new one can be 
+            edited in the text box.
+            Records the multiplicity of this
             association end (with respect to the other end), i.e. how many
             instances of this end may be associated with an instance of the
             other end. The multiplicity is shown on the diagram at that end of
-            the association.</para></listitem>
+            the association.</para>
+          </listitem>
         </varlistentry>
 
-        <!-- Entry for Association -->
+        <!-- Entry for Modifiers -->
 
         <varlistentry>
-          <term><literal>Association</literal></term>
+          <term><literal>Modifiers</literal></term>
 
-          <listitem><para>Text box. Records the parent association for this
-            association end. &Button1; click on
-            this entry will navigate to that association. &Button2; click
-            will invoke a pop-up menu, with a single entry,
-            <literal>Open</literal> that will also navigate to that
-            association.</para></listitem>
+          <listitem>
+            <para>
+              There are 3 modifiers: <literal>navigable</literal>,
+              <literal>ordered</literal> and <literal>static</literal>. All 3 are
+              checkboxes.
+            </para>
+          
+            <itemizedlist>
+              <listitem>
+                <para>
+                  <literal>navigable</literal>. Indicates that this end can be
+                  navigated to from the other end.
+                </para>
+
+                <note>
+                  <para>
+                    The UML 1.3 standard provides a number of options for
+                    how navigation is displayed on an association end. ArgoUML uses
+                    <!-- TODO: Check if this is true, and if it is good. -->
+                    option 3, which means that arrow heads are shown at the end of
+                    an association, when navigation is enabled at only one end, to
+                    indicate the direction in which navigation is possible. This
+                    means that the default, with both ends navigable has no
+                    arrows. 
+                  </para>
+                </note>
+              </listitem>
+
+              <listitem>
+                <para><literal>ordered</literal>
+                  When placed on one end, specifies whether the set of links
+                  from the other instance to this instance is ordered. 
+                  The ordering must be determined and maintained by Operations that
+                  add links. It represents additional information not inherent in the
+                  objects or links themselves. Possibilities for the checkbox are:
+                  Unchecked - The links form a set with no inherent ordering.
+                  Checked - A set of ordered links can be scanned in order.
+                </para>
+              </listitem>
+            
+            
+              <listitem>
+                <para><literal>Static</literal> 
+                  (To be written)
+                  <!-- TODO: to be written and checked. -->
+                </para>
+              </listitem>
+            </itemizedlist>  
+          </listitem>
         </varlistentry>
 
-        <!-- Entry for Navigable -->
+        <!-- Entry for Specification -->
 
         <varlistentry>
-          <term><literal>Navigable</literal></term>
+          <term><literal>Specification</literal></term>
 
-          <listitem><para>Check box, with a single entry,
-            <literal>navigable</literal>. Indicates that this end can be
-            navigated to from the other end.</para>
+          <listitem>
+            <para>
+              List. Designates zero or more Classifiers that specify the 
+              Operations that may be applied to an Instance accessed by the
+              AssociationEnd across the Association. These determine the
+              minimum interface that must be realized by the actual Classifier
+              attached to the end to support the intent of the Association. May
+              be an Interface or another Classifier. The type of classifier is
+              indicated by an icon.
+            </para>
+            <para>
+              &Button1; double click navigates to the selected classifier,
+              &button2; click brings a pop up menu with
+              one entry.
+            </para>
+            <itemizedlist>
+              <listitem>
+                <para>
+                  <literal>Add</literal>. 
+                  <!-- TODO: This would better be named Add/Remove. See issue ... -->
+                  Add a new
+                  specification classifier. 
+                  This opens the <emphasis>Add/Remove Specifications</emphasis>
+                  dialog box (see figure below), 
+                  which allows chosing between all possible classifiers,
+                  and adding or removing them to the selected list.
+                </para>
 
-          <tip><para>This means little to a use case diagram. It is useful
-            for associations on class diagrams.</para></tip>
+                <figure id="fig.ref.signal_add_specification" float="1">
+                  <title>The <quote>Add/Remove Specifications</quote> dialog box</title>
+                  <screenshot><mediaobject><imageobject>
+                    <imagedata format="PNG" align="center"
+                     fileref="images/reference/signal_add_specification.png"/>
+                  </imageobject></mediaobject></screenshot>
+                </figure>
 
-          <note><para>The UML 1.3 standard provides a number of options for
-            how navigation is displayed on an association end. ArgoUML uses
-            option 3, which means that arrow heads are shown at the end of
-            an association, when navigation is enabled at only one end, to
-            indicate the direction in which navigation is possible. This
-            means that the default, with both ends navigable has no
-            arrows. This is an appropriate representation for use
-            cases.</para></note></listitem>
-        </varlistentry>
-
-        <!-- Entry for Ordering -->
-
-        <varlistentry>
-          <term><literal>Ordering</literal></term>
-
-          <listitem><para>Radio box, with three entries
-            <literal>unordered</literal>, <literal>ordered</literal> and
-            <literal>sorted</literal>. Where there are multiple instances
-            indicates the nature of any ordering.</para>
-
-          <note><para><literal>sorted</literal> represents an extension to
-            UML&nbsp;1.3.</para></note></listitem>
+              </listitem>            
+            </itemizedlist>
+          </listitem>
         </varlistentry>
 
         <!-- Entry for Aggregation -->
@@ -3972,32 +3806,31 @@ If desired the
         <varlistentry>
           <term><literal>Aggregation</literal></term>
 
-          <listitem><para>Radio box, with three entries
-            <literal>none</literal>, <literal>aggregation</literal> and
-            <literal>composite</literal>. Indicates whether the
-            relationship with the far end represents some type of loose
-            whole-part relationship (<literal>aggregation</literal>) or tight
-            whole-part relationship (<literal>composite</literal>.</para> 
+          <listitem>
+            <para>Radio box, with three entries
+              <literal>composite</literal>, <literal>none</literal> and
+              <literal>aggregate</literal>. Indicates whether the
+              relationship with the far end represents some type of loose
+              whole-part relationship (<literal>aggregation</literal>) or tight
+              whole-part relationship (<literal>composite</literal>).</para> 
 
-          <para>Shared aggregation is shown by a hollow diamond at the
-            <quote>whole</quote> end of the association. Composite aggregation
-            is shown by a solid diamond.</para>
+            <para>Shared aggregation is shown by a hollow diamond at the
+              <quote>whole</quote> end of the association. Composite aggregation
+              is shown by a solid diamond.
+            </para>
 
-          <note><para>You may not have aggregation at both ends of an
-            association. The <quote>whole</quote> end of a composite
-            aggregation should have a multiplicity of
-            one.</para></note></listitem>
-        </varlistentry>
-
-        <!-- Entry for Classifier -->
-
-        <varlistentry>
-          <term><literal>Classifier</literal></term>
-
-          <listitem><para>Check box, with a single entry,
-            <literal>classifier</literal>. Indicates that this end relates
-            to a class rather than an instance of a class (the
-            default).</para></listitem>
+            <note>
+              <para>
+                You may not have aggregation at both ends of an
+                association. &argouml; does not enforce this constraint.
+              </para>
+              <para>
+                The <quote>whole</quote> end of a composite
+                aggregation should have a multiplicity of
+                one. &argouml; does not enforce this constraint.
+              </para>
+            </note>
+          </listitem>
         </varlistentry>
 
         <!-- Entry for Changeability -->
@@ -4006,13 +3839,16 @@ If desired the
           <term><literal>Changeability</literal></term>
 
           <listitem><para>Radio box, with three entries
-            <literal>changeable</literal>, <literal>frozen</literal> and
-            <literal>add only</literal>. Indicates whether instances of
+            <literal>changeable</literal>, <literal>add only</literal> and
+            <literal>frozen</literal>. Indicates whether instances of
             this end of the attributed may be: i) created and deleted by
-            the source after the target instance is created; ii) not
+            the source after the target instance is created; 
+            ii) created but not deleted after the target
+            instance is created; or iii) not
             created or deleted by the source after the target instance is
-            created; or iii) created but not deleted after the target
-            instance is created.</para></listitem>
+            created.
+            </para>
+          </listitem>
         </varlistentry>
 
         <!-- Entry for Visibility -->
@@ -4021,11 +3857,11 @@ If desired the
           <term><literal>Visibility</literal></term>
 
           <listitem><para>Radio box, with three entries
-            <literal>public</literal>, <literal>protected</literal> and
-            <literal>private</literal>. Indicates whether navigation to
-            this end may be by: i) any classifier; ii) only the source
-            classifier and its children; or iii) only by the source
-            classifier.</para></listitem>
+            <literal>public</literal>, <literal>private</literal> and
+            <literal>protected</literal>. Indicates whether navigation to
+            this end may be by: i) any classifier; ii) only by the source
+            classifier; or iii) only the source
+            classifier and its children.</para></listitem>
         </varlistentry>
       </variablelist>
     </sect2>
@@ -4033,6 +3869,7 @@ If desired the
 
   <!-- Dependency artifact. Reference back to Use Case -->
 
+  <!-- TODO: Move the description from the use-case chapter over here. -->
   <sect1 id="s1.ref.dependency_class">
     <title>Dependency</title>
 
@@ -4042,6 +3879,7 @@ If desired the
 
   <!-- Generalization artifact. Reference back to Use Case -->
 
+  <!-- TODO: Move the description from the use-case chapter over here. -->
   <sect1 id="s1.ref.generalization_class">
     <title>Generalization</title>
 
@@ -4065,11 +3903,13 @@ In the UML metamodel it is a sub-class of
       <literal>Classifier</literal> and through that
       <literal>GeneralizableElement</literal>.</para>
 
-    <para>A class is represented on a class diagram as a rectangle with two
+    <para>
+      An interface is represented on a class diagram as a rectangle with two
       horizontal compartments. The top compartment displays the interface name
       (and above it <literal>&laquo;interface&raquo;</literal>) and the second
-      any operations. Unlike a class, the operations compartment may not be
-      hidden.</para>
+      any operations. 
+      Just like a class, the operations compartment can be hidden.
+    </para>
 
     <!-- Interface details tabs -->
 
@@ -4128,18 +3968,8 @@ In the UML metamodel it is a sub-class of
           <term><literal>Source</literal></term>
 
           <listitem><para>Standard tab. This contains a template for the
-            interface declaration (with JavaDoc header) and declarations of
+            interface declaration and declarations of
             associated interfaces.</para></listitem>
-        </varlistentry>
-
-        <!-- Entry for Constraints tab -->
-
-        <varlistentry>
-          <term><literal>Constraints</literal></term>
-
-          <listitem><para>Standard tab. There are no standard constraints
-            defined for <literal>Interface</literal> within the UML
-            metamodel.</para></listitem>
         </varlistentry>
 
         <!-- Entry for Tagged Values tab -->
@@ -4147,6 +3977,7 @@ In the UML metamodel it is a sub-class of
         <varlistentry>
           <term><literal>Tagged Values</literal></term>
 
+          <!-- TODO: Check all this. -->
           <listitem><para>Standard tab. In the UML metamodel,
             <literal>Interface</literal> has the following standard tagged
             values defined.</para>
@@ -4266,7 +4097,9 @@ In the UML metamodel it is a sub-class of
 
           <note><para>Unlike classes, the &argouml; critics will not
             complain about interface names that do not have an initial
-            capital.</para></note></listitem>
+            capital.
+            <!-- TODO: See enhancement issue ... -->
+          </para></note></listitem>
         </varlistentry>
 
         <!-- Entry for Stereotype -->
@@ -4274,22 +4107,14 @@ In the UML metamodel it is a sub-class of
         <varlistentry>
           <term><literal>Stereotype</literal></term>
 
-          <listitem><para>Drop down selector. Interface is provided by default
-            with the UML standard stereotypes for the parent meta-class,
-            <literal>Classifier</literal> (<literal>metaclass</literal>,
-            <literal>powerType</literal>, <literal>process</literal>,
-            <literal>thread</literal> and <literal>utility</literal>).
-            &argouml; also provides the additional stereotypes,
-            <literal>machine</literal>, <literal>organization</literal>,
-            <literal>person</literal> and <literal>singleton</literal>, and
-            rather strangely <literal>realize</literal> (a stereotype of
-            <literal>Abstraction</literal>).</para>
-
-          <caution><para>&argouml; provides the stereotype
-            <literal>realize</literal> for interfaces. This appears to be
-            an error, since this stereotype properly belongs to the
-            <literal>Abstraction</literal>
-            metaclass.</para></caution></listitem>
+          <listitem>
+            <para>Drop down selector. Interface is provided by default
+              with the UML standard stereotypes for the parent meta-class,
+              <literal>Classifier</literal> (<literal>metaclass</literal>,
+              <literal>powertype</literal>, <literal>process</literal>,
+              <literal>thread</literal> and <literal>utility</literal>).
+            </para>
+          </listitem>
         </varlistentry>
 
         <!-- Entry for NavStereo -->
@@ -4303,7 +4128,7 @@ In the UML metamodel it is a sub-class of
             </imageobject></inlinemediaobject></guiicon> icon. If a
               stereotype has been selected, this will navigate to the
               stereotype property panel (see <xref
-                linkend="s1.ref.stereotype_class"/>).</para></listitem>
+                linkend="s1.ref.stereotype"/>).</para></listitem>
         </varlistentry>
 
         <!-- Entry for Namespace -->
@@ -4311,12 +4136,52 @@ In the UML metamodel it is a sub-class of
         <varlistentry>
           <term><literal>Namespace</literal></term>
 
-          <listitem><para>Text box. Records the namespace for the
-            interface. This is the package hierarchy.</para>
+          <listitem>
+            <para>
+              Drop down selector. Records and allows changing
+              the namespace for the
+              interface. This is the package hierarchy.
+            </para>
+          </listitem>
+        </varlistentry>
 
-          <para>&Button1; click on the entry will navigate to the package
-            defining this namespace (or the model for the top level
-            namespace).</para></listitem>
+        <!-- Entry for Modifiers -->
+
+        <varlistentry>
+          <term><literal>Modifiers</literal></term>
+
+          <listitem><para>Check box, with entries 
+            <literal>Abstract</literal>, <literal>Leaf</literal> and
+            <literal>Root</literal>.</para>
+
+          <itemizedlist>
+            <listitem><para><literal>Abstract</literal> is used to declare
+              that this interface cannot be instantiated, but must always
+              be specialized. The name of an abstract interface is
+              displayed in italics on the diagram.</para>
+
+            <caution><para>This is meaningless, since by definition an
+              interface is an abstract entity. The UML&nbsp;1.3 standard
+              offers no clarification.</para></caution></listitem>
+
+            <listitem><para><literal>Leaf</literal> indicates that this
+              interface cannot be further specialized, while
+              <literal>Root</literal> indicates it can have no
+              generalizations.</para></listitem>
+          </itemizedlist></listitem>
+        </varlistentry>
+
+        <!-- Entry for Visibility -->
+
+        <varlistentry>
+          <term><literal>Visibility</literal></term>
+
+          <listitem><para>Radio box, with three entries
+            <literal>public</literal>, <literal>protected</literal> and
+            <literal>private</literal>. Indicates whether navigation to
+            this end may be by: i) any classifier; ii) only the source
+            classifier and its children; or iii) only by the source
+            classifier.</para></listitem>
         </varlistentry>
 
         <!-- Entry for Generalizations -->
@@ -4327,145 +4192,11 @@ In the UML metamodel it is a sub-class of
           <listitem><para>Text area. Lists any interface that
             <emphasis>generalizes</emphasis> this interface.</para>
 
-          <para>&Button1; click navigates to the generalization and opens
-            its property tab.</para>
+            <para>&Button1; double click navigates to the generalization and opens
+              its property tab.
+            </para>
 
-          <para>&Button2; click yields a drop down menu with five
-            entries</para>
-
-          <itemizedlist>
-            <listitem><para><literal>Open</literal>. Navigate to the
-              selected generalization.</para></listitem>
-
-            <listitem><para><literal>Add</literal>. Add a new
-              generalization. Note that the new generalization is added to
-              the model, but not the diagram. You will need to find it in
-              the explorer and add it from there.</para>
-
-            <tip><para>It is far easier to add generalizations by drawing
-              them on the relevant diagram in the editing
-              pane.</para></tip></listitem>
-
-            <listitem><para><literal>Delete</literal>. The link from the
-              generalization to the interface (<emphasis>but not the
-              generalization itself</emphasis>) is removed.</para>
-
-            <tip><para>This <emphasis>does not</emphasis> remove the
-              generalization from the model or the diagram, leading to
-              potentially very confusing diagrams. It is usually far easier
-              to remove generalizations from the editing
-              pane.</para></tip></listitem>
-
-            <listitem><para><literal>Move Up</literal>. Only available where
-              there are two or more generalizations listed, and the
-              generalization selected is not at the top. It is moved up
-              one.</para></listitem>
-
-            <listitem><para><literal>Move Down</literal>. Only available where
-              there are two or more generalizations listed, and the
-              generalization selected is not at the bottom. It is moved down
-              one.</para></listitem> </itemizedlist></listitem>
-        </varlistentry>
-
-        <!-- Entry for Modifiers -->
-
-        <varlistentry>
-          <term><literal>Modifiers</literal></term>
-
-          <listitem><para>Check box, with entries <literal>public</literal>,
-            <literal>abstract</literal>, <literal>final</literal> and
-            <literal>root</literal>.</para>
-
-          <itemizedlist>
-            <listitem><para><literal>public</literal> has identical meaning
-              to the <literal>public</literal> declaration in Java. It
-              indicated whether this interface is restricted to use in its
-              own package (the default) or can be used by
-              anyone.</para></listitem>
-
-            <listitem><para><literal>abstract</literal> is used to declare
-              that this interface cannot be instantiated, but must always
-              be specialized. The name of an abstract interface is
-              displayed in italics on the diagram.</para>
-
-            <caution><para>This is meaningless, since by definition an
-              interface is an abstract entity. The UML&nbsp;1.3 standard
-              offers no clarification.</para></caution></listitem>
-
-            <listitem><para><literal>final</literal> indicates that this
-              interface cannot be further specialized, while
-              <literal>root</literal> indicates it can have no
-              generalizations.</para></listitem>
-          </itemizedlist></listitem>
-        </varlistentry>
-
-        <!-- Entry for Associations -->
-
-        <varlistentry>
-          <term><literal>Associations</literal></term>
-
-          <listitem><para>Text box. Lists any associations (see <xref
-              linkend="s1.ref.association_class"/>) connected to this
-            interface.</para>
-
-          <note><para>Associations between classes and interfaces
-            <emphasis>must</emphasis> be navigable
-            <emphasis>only</emphasis> from the class to the
-            interface. &argouml; will create associations between classes
-            and interfaces with the correct navigability.</para></note>
-
-          <para>&Button1; click navigates to the selected entry, &button2;
-            gives a pop up menu with five entries.</para>
-
-          <itemizedlist>
-            <listitem><para><literal>Open</literal>. Navigate to the
-              selected association.</para></listitem>
-
-            <listitem><para><literal>Add</literal>. Add a new
-              association.</para>
-
-            <tip><para>New associations can usually more easily be added
-              from the interface diagram.</para></tip></listitem>
-
-            <listitem><para><literal>Delete</literal>. Removes the link to
-              the selected association.</para>
-
-            <note><para>This only removes the link to the
-              association. To remove the association from the model
-              you must navigate to it (or select it on the diagram or
-              explorer) and then delete it.</para></note></listitem>
-
-            <listitem><para><literal>Move Up</literal>. Only available where
-              there are two or more associations, and the association selected
-              is not at the top. It is moved up one.</para></listitem>
-
-            <listitem><para><literal>Move Down</literal>. Only available where
-              there are two or more associations listed, and the association
-              selected is not at the bottom. It is moved down
-              one.</para></listitem> </itemizedlist></listitem>
-        </varlistentry>
-
-        <!-- Entry for Implements -->
-
-        <varlistentry>
-          <term><literal>Implementations</literal></term>
-
-          <listitem><para>Text box. Lists any classes or interfaces (see <xref
-              linkend="s1.ref.association_class"/>) which are an abstraction
-              of this interface (i.e. which this interface
-              realizes).</para>
-
-          <note><para>This field should probably be correctly labeled
-            <literal>Implements</literal></para></note>
-
-          <warning><para>Although the UML&nbsp;1.3 standard does not appear
-            to forbid this, &argouml; does not support abstraction of
-            interfaces.</para></warning>
-
-          <para>This entry is always shown as
-            <literal>none</literal>. &Button1; click has no effect, and
-            &button2; gives a pop up menu with five entries all grayed
-            out.</para></listitem>
+          </listitem>
         </varlistentry>
 
         <!-- Entry for Specializations -->
@@ -4476,43 +4207,35 @@ In the UML metamodel it is a sub-class of
           <listitem><para>Text box. Lists any specialized interface (i.e. for
             which this interface is a generalization.</para>
 
-          <para>&button1; click navigates to the generalization and opens
+          <para>&button1; double click navigates to the generalization and opens
             its property tab.</para>
 
-          <para>&Button2; click yields a drop down menu with five
-            entries</para>
+          </listitem>
+        </varlistentry>
 
-          <itemizedlist>
-            <listitem><para><literal>Open</literal>. Navigate to the
-              selected generalization.</para></listitem>
+        <!-- Entry for AssociationEnds -->
 
-            <listitem><para><literal>Add</literal>. Add a new
-              generalization. Note that the new generalization is added to
-              the model, but not the diagram.</para>
+        <varlistentry>
+          <term><literal>AssociationEnds</literal></term>
 
-            <tip><para>It is far easier to add generalizations by drawing
-              them on the relevant diagram in the editing
-              pane.</para></tip></listitem>
+          <listitem>
+            <para>Text box. Lists any associationends (see <xref
+              linkend="s1.ref.association_end_class"/>) connected to this
+              interface.
+            </para>
 
-            <listitem><para><literal>Delete</literal>. The link from the
-              generalization to the interface (<emphasis>but not the
-              generalization itself</emphasis>) is removed.</para>
+            <note><para>Associations between classes and interfaces
+              <emphasis>must</emphasis> be navigable
+              <emphasis>only</emphasis> from the class to the
+              interface. &argouml; will create associations between classes
+              and interfaces with the correct navigability, 
+              but does not prevent the user from altering this.
+            </para></note>
 
-            <tip><para>This <emphasis>does not</emphasis> remove the
-              generalization from the model or the diagram, leading to
-              potentially very confusing diagrams. It is usually far easier
-              to remove generalizations from the editing
-              pane.</para></tip></listitem>
-
-            <listitem><para><literal>Move Up</literal>. Only available where
-              there are two or more specializations listed, and the
-              specialization selected is not at the top. It is moved up
-              one.</para></listitem>
-
-            <listitem><para><literal>Move Down</literal>. Only available where
-              there are two or more specializations listed, and the
-              specialization selected is not at the bottom. It is moved down
-              one.</para></listitem> </itemizedlist></listitem>
+            <para>
+              &Button1; double click navigates to the selected entry.
+            </para>
+          </listitem>
         </varlistentry>
 
         <!-- Entry for Operations -->
@@ -4520,35 +4243,21 @@ In the UML metamodel it is a sub-class of
         <varlistentry>
           <term><literal>Operations</literal></term>
 
-          <listitem><para>Text area. Lists all the operations (see <xref
+          <listitem>
+            <para>
+              Text area. Lists all the operations (see <xref
               linkend="s1.ref.operation"/>) defined on this
-              interface. &Button1; click navigates to the selected
-              operation, &button2; click brings up a pop up menu with five
-              entries.</para>
+              interface. &Button1; double click navigates to the selected
+              operation.
+            </para>
 
-          <itemizedlist>
-            <listitem><para><literal>Open</literal>. Navigate to the
-              selected operation.</para></listitem>
-
-            <listitem><para><literal>Add</literal>. Add a new
-              operation and navigate to it.</para></listitem>
-
-            <listitem><para><literal>Delete</literal>. Removes the selected
-              operation from the model.</para></listitem>
-
-            <listitem><para><literal>Move Up</literal>. Only available where
-              there are two or more operations, and the operation selected is
-              not at the top. It is moved up one.</para></listitem>
-
-            <listitem><para><literal>Move Down</literal>. Only available where
-              there are two or more operations listed, and the operation
-              selected is not at the bottom. It is moved down
-              one.</para></listitem>
-          </itemizedlist>
-
-          <caution><para>All operations on an interface
-            <emphasis>must</emphasis> be public. The &argouml; critics will
-            complain if this is not the case.</para></caution></listitem>
+            <caution>
+              <para>All operations on an interface
+                <emphasis>must</emphasis> be public. The &argouml; critics will
+                complain if this is not the case.
+              </para>
+            </caution>
+          </listitem>
         </varlistentry>
       </variablelist>
     </sect2>
@@ -4635,21 +4344,12 @@ In the UML metamodel it is a sub-class of
         <varlistentry>
           <term><literal>Source</literal></term>
 
-          <listitem><para>Standard tab. This contains the single word
-            <literal>realizes</literal>.</para>
-
-            <caution><para>An abstraction should not generate any code, so
-              this entry is probably a mistake.</para></caution></listitem>
-        </varlistentry>
-
-        <!-- Entry for Constraints tab -->
-
-        <varlistentry>
-          <term><literal>Constraints</literal></term>
-
-          <listitem><para>Standard tab. There are no standard constraints
-            defined for <literal>Abstraction</literal> within the UML
-            metamodel.</para></listitem>
+          <listitem>
+            <para>Standard tab. This contains the single 
+              downlighted text 
+              <literal>N/A</literal>.
+            </para>
+          </listitem>
         </varlistentry>
 
         <!-- Entry for Tagged Values tab -->
@@ -4752,16 +4452,16 @@ In the UML metamodel it is a sub-class of
             default with the UML standard stereotypes
             <literal>derive</literal>, <literal>realize</literal>,
             <literal>refine</literal> and <literal>trace</literal>.
-            &argouml; also provides the additional stereotypes,
-            <literal>machine</literal>, <literal>organization</literal> and
-            <literal>person</literal>.</para>
+            </para>
 
           <caution><para>&argouml; automatically selects the stereotype
             realize when an abstraction is created. The user is free to
             change the stereotype to use the abstraction to indicate for
             example a <literal>trace</literal> relationship. However
             &argouml; will not alter the representation on the diagram
-            accordingly.</para></caution></listitem>
+            accordingly.
+            <!-- TODO: See enhancement issue ... -->
+          </para></caution></listitem>
         </varlistentry>
 
         <!-- Entry for NavStereo -->
@@ -4775,7 +4475,7 @@ In the UML metamodel it is a sub-class of
             </imageobject></inlinemediaobject></guiicon> icon. If a
               stereotype has been selected, this will navigate to the
               stereotype property panel (see <xref
-                linkend="s1.ref.stereotype_class"/>).</para></listitem>
+                linkend="s1.ref.stereotype"/>).</para></listitem>
         </varlistentry>
 
         <!-- Entry for Namespace -->
@@ -4783,12 +4483,15 @@ In the UML metamodel it is a sub-class of
         <varlistentry>
           <term><literal>Namespace</literal></term>
 
-          <listitem><para>Text box. Records the namespace for the
-            abstraction. This is the package hierarchy.</para>
-
-          <para>&Button1; click on the entry will navigate to the package
-            defining this namespace (or the model for the top level
-            namespace).</para></listitem>
+          <listitem>
+            <para>
+              Drop down selector. Records and allows changing
+              the namespace for the
+              abstraction. This is the package hierarchy.
+            </para>
+            <!-- TODO: Yes, you can alter the namespace. Is that usefull? Why do
+            we have this feature? Investigate. -->
+          </listitem>
         </varlistentry>
 
         <!-- Entry for Suppliers -->
@@ -4800,24 +4503,12 @@ In the UML metamodel it is a sub-class of
             end of this abstraction (for a realization this is the end
             providing the implementation).</para>
 
-          <note><para> Although this is a text area there is no mechanism
-            for adding more than one supplier.</para></note>
+            <note><para> Although this is a text area there is no mechanism
+              for adding more than one supplier.</para></note>
 
-          <para>&Button1; click navigates to the selected entry, &button2;
-            gives a pop up menu with three entries.</para>
-
-          <itemizedlist>
-            <listitem><para><literal>Open</literal>. Navigate to the
-              selected artifact.</para></listitem>
-
-            <listitem><para><literal>Move Up</literal>. Since there is only
-              ever one supplier this is always grayed
-              out.</para></listitem>
-
-            <listitem><para><literal>Move Down</literal>. Since there is
-              only ever one supplier this is always grayed
-              out.</para></listitem>
-          </itemizedlist></listitem>
+            <para>&Button1; double click navigates to the selected entry.
+            </para>
+          </listitem>
         </varlistentry>
 
         <!-- Entry for Clients -->
@@ -4829,24 +4520,13 @@ In the UML metamodel it is a sub-class of
             end of this abstraction (for a realization this is the end
             providing the specification).</para>
 
-          <note><para> Although this is a text area there is no mechanism
-            for adding more than one client.</para></note>
+            <note><para> Although this is a text area there is no mechanism
+              for adding more than one client.</para></note>
 
-          <para>&Button1; click navigates to the selected entry, &button2;
-            gives a pop up menu with three entries.</para>
+            <para>&Button1; double click navigates to the selected entry.
+            </para>
 
-          <itemizedlist>
-            <listitem><para><literal>Open</literal>. Navigate to the
-              selected artifact.</para></listitem>
-
-            <listitem><para><literal>Move Up</literal>. Since there is only
-              ever one client this is always grayed
-              out.</para></listitem>
-
-            <listitem><para><literal>Move Down</literal>. Since there is
-              only ever one client this is always grayed
-              out.</para></listitem>
-          </itemizedlist></listitem>
+          </listitem>
         </varlistentry>
       </variablelist>
     </sect2>

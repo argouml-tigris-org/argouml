@@ -1882,8 +1882,8 @@ Lists the <quote>depending</quote> ends
 
             <para>Text area.
 Lists the <quote>depending</quote> ends
-            of the relationship, i.e. the end supplying what is needed by
-            the other end.</para>
+            of the relationship, i.e. the end that makes use of the other end.
+            </para>
 
             <para>
 &Button1; Double Click on a client will navigate to that use case.
