@@ -24,6 +24,10 @@
 // $header$
 package org.argouml.uml.ui;
 
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import javax.swing.JList;
+import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 
 import ru.novosoft.uml.foundation.core.MModelElement;
@@ -35,7 +39,7 @@ import ru.novosoft.uml.foundation.core.MModelElement;
  * @since Oct 2, 2002
  * @author jaap.branderhorst@xs4all.nl
  */
-public class UMLLinkedList extends UMLList2 {
+public class UMLLinkedList extends UMLList2 implements MouseListener {
 
     /**
      * Constructor for UMLLinkedList.
@@ -46,17 +50,53 @@ public class UMLLinkedList extends UMLList2 {
         UMLUserInterfaceContainer container,
         UMLModelElementListModel2 dataModel) {
         super(container, dataModel);
+        setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        addMouseListener(this);
     }
 
     /**
      * @see org.argouml.uml.ui.UMLList2#doIt(javax.swing.event.ListSelectionEvent)
      */
     protected void doIt(ListSelectionEvent e) {
-        // on selection we should 'jump' to the selected element
-        Object o = getModel().getElementAt(e.getFirstIndex());
-        if (o instanceof MModelElement) {
-            getContainer().navigateTo(getModel().getElementAt(e.getFirstIndex()));
+    }
+
+    /**
+     * @see java.awt.event.MouseListener#mouseClicked(java.awt.event.MouseEvent)
+     */
+    public void mouseClicked(MouseEvent e) {
+        if (e.getSource() == this) {
+            if (e.getClickCount() >=2) {
+                Object o = getSelectedValue();
+                if (o instanceof MModelElement) {
+                    getContainer().navigateTo(o);
+                }
+            }
+            e.consume();
         }
+    }
+
+    /**
+     * @see java.awt.event.MouseListener#mouseEntered(java.awt.event.MouseEvent)
+     */
+    public void mouseEntered(MouseEvent e) {
+    }
+
+    /**
+     * @see java.awt.event.MouseListener#mouseExited(java.awt.event.MouseEvent)
+     */
+    public void mouseExited(MouseEvent e) {
+    }
+
+    /**
+     * @see java.awt.event.MouseListener#mousePressed(java.awt.event.MouseEvent)
+     */
+    public void mousePressed(MouseEvent e) {
+    }
+
+    /**
+     * @see java.awt.event.MouseListener#mouseReleased(java.awt.event.MouseEvent)
+     */
+    public void mouseReleased(MouseEvent e) {
     }
 
 }
