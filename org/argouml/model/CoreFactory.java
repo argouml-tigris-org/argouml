@@ -326,6 +326,9 @@ public interface CoreFactory {
      * this method it is.<p>
      *
      * @param handle the given classifier
+     * @param model the enclosing model
+     * @param intType the type
+     * @param propertyChangeListeners the listeners
      * @return the newly build attribute
      */
     Object buildAttribute(Object handle, Object model, Object intType,
@@ -484,7 +487,7 @@ public interface CoreFactory {
      * @param classifier is the given classifier
      * @param model is the model to which the class belongs
      * @param voidType the type of the return parameter
-     * @param propertyChangeListeners
+     * @param propertyChangeListeners the listeners
      * @return the operation
      */
     Object buildOperation(Object classifier, Object model, Object voidType,
@@ -497,7 +500,7 @@ public interface CoreFactory {
      * @param model is the model that contains the class
      * @param voidType the type of the return parameter
      * @param name the given name for the operation
-     * @param propertyChangeListeners
+     * @param propertyChangeListeners the listeners
      * @return the operation
      */
     Object buildOperation(Object cls, Object model, Object voidType,
@@ -510,7 +513,7 @@ public interface CoreFactory {
      * @param o an event or behavioral feature
      * @param model the model to which the event or behavioral feature belongs
      * @param voidType the type of the return parameter
-     * @param propertyChangeListeners
+     * @param propertyChangeListeners the listeners
      * @return the parameter
      */
     MParameter buildParameter(Object o, Object model, Object voidType,

@@ -24,14 +24,13 @@
 
 package org.argouml.moduleloader;
 
-import java.util.Iterator;
-import java.util.Map;
-
 import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.LayoutManager;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Iterator;
+import java.util.Map;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -42,7 +41,6 @@ import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.table.AbstractTableModel;
 
-import org.argouml.application.api.SettingsTabPanel;
 import org.argouml.application.helpers.SettingsTabHelper;
 
 /**
