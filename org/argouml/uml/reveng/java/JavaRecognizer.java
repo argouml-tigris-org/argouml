@@ -164,6 +164,10 @@ public class JavaRecognizer extends antlr.LLkParser
 
 	void setModeller(Modeller modeller) {
 	    _modeller = modeller;
+            Object levelObj = _modeller.getAttribute("level");
+            if(levelObj instanceof Integer){
+                this.level = ((Integer)levelObj).intValue();
+            }
         }
 	
         // A reference to the last added MOperation (here: method)

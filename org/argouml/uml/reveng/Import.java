@@ -533,6 +533,7 @@ public class Import {
 			    (UMLDiagram) _diagram.getModifiedDiagrams().elementAt(i);
                         ClassdiagramLayouter layouter =
 			    module.getLayout(diagram);
+                            
                         layouter.layout();
                         
                         // Resize the diagram???
