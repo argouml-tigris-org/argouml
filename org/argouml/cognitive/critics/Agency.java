@@ -77,7 +77,7 @@ public class Agency extends Observable { //implements java.io.Serialization
      * be active.
      */
     private ControlMech controlMech;
-    public static int _numCriticsApplied = 0;
+    private static int numCriticsApplied = 0;
     private static Hashtable singletonCritics = new Hashtable(40);
     ////////////////////////////////////////////////////////////////
     // constructor and singleton methdos
@@ -86,6 +86,8 @@ public class Agency extends Observable { //implements java.io.Serialization
      * Contruct a new Agency instance with the given ControlMech as the
      * main control mechanism for determining which critics should be
      * active.
+     *
+     * @param cm the given controlMech
      */
     public Agency(ControlMech cm) {
         controlMech = cm;
@@ -126,13 +128,18 @@ public class Agency extends Observable { //implements java.io.Serialization
         return criticRegistry;
     }
     
+    /**
+     * @return the critics
+     */
     public static Vector getCritics() {
         return critics;
     }
     
-    //   public static void setHot(boolean b) { _hot = b; }
     ////////////////////////////////////////////////////////////////
     // critic registration
+    /**
+     * @param cr the critic to add/register
+     */
     protected static void addCritic(Critic cr) {
         if (critics.contains(cr)) {
             return;
@@ -149,6 +156,10 @@ public class Agency extends Observable { //implements java.io.Serialization
         }
     }
     
+    /**
+     * @param crClassName the critic class name
+     * @param dmClassName the design material class name
+     */
     public static void register(String crClassName, String dmClassName) {
         Class dmClass;
         try {
@@ -186,7 +197,10 @@ public class Agency extends Observable { //implements java.io.Serialization
      * loaded. Critics are associated with one or more design material
      * classes. One way to do registration is in a static initializer of
      * the design material class. But additional (after-market) critics
-     * could added thorugh a menu command in some control panel...
+     * could added through a menu command in some control panel...
+     *
+     * @param cr the critic to register
+     * @param clazz the design material class that is to be criticized
      */
     public static void register(Critic cr, Class clazz) {
         Vector theCritics = (Vector) getCriticRegistry().get(clazz);
@@ -197,18 +211,21 @@ public class Agency extends Observable { //implements java.io.Serialization
         theCritics.addElement(cr);
         notifyStaticObservers(cr);
         LOG.debug("Registered: " + theCritics.toString());
-        _cachedCritics.remove(clazz);
+        cachedCritics.remove(clazz);
         addCritic(cr);
     }
     
-    protected static Hashtable _cachedCritics = new Hashtable();
+    private static Hashtable cachedCritics = new Hashtable();
     
     /**
-     * Return a Vector of all critics that can be applied to the
+     * Return a collection of all critics that can be applied to the
      * design material subclass, including inherited critics.
+     *
+     * @param clazz the design material to criticize
+     * @return the collection of critics
      */
     public static Collection criticsForClass(Class clazz) {
-        Collection col = (Collection) _cachedCritics.get(clazz);
+        Collection col = (Collection) cachedCritics.get(clazz);
         if (col == null) {
             col = new ArrayList();
 	    col.addAll(criticsForSpecificClass(clazz));
@@ -223,7 +240,7 @@ public class Agency extends Observable { //implements java.io.Serialization
 	    while (it.hasNext()) {
 		col.addAll(criticsForClass((Class) it.next()));
 	    }
-	    _cachedCritics.put(clazz, col);
+	    cachedCritics.put(clazz, col);
         }
                 return col;
         
@@ -235,7 +252,8 @@ public class Agency extends Observable { //implements java.io.Serialization
      *
      * If there aren't any an empty Vector is returned.
      *
-     * @return Vector
+     * @param clazz the design material
+     * @return the critics
      */
     protected static Vector criticsForSpecificClass(Class clazz) {
         Vector theCritics = (Vector) getCriticRegistry().get(clazz);
@@ -256,29 +274,43 @@ public class Agency extends Observable { //implements java.io.Serialization
      *
      * I would call this critique, but it causes a compilation error
      * because it conflicts with the instance method critique!
+     *
+     * @param dm the design material
+     * @param d the designer
+     * @param reasonCode the reason 
      */
     public static void applyAllCritics(
         Object dm,
         Designer d,
         long reasonCode) {
         Class dmClazz = dm.getClass();
-        Collection critics = criticsForClass(dmClazz);
-        applyCritics(dm, d, critics, reasonCode);
+        Collection c = criticsForClass(dmClazz);
+        applyCritics(dm, d, c, reasonCode);
     }
     
+    /**
+     * @param dm the design material
+     * @param d the designer
+     */
     public static void applyAllCritics(Object dm, Designer d) {
         Class dmClazz = dm.getClass();
-        Collection critics = criticsForClass(dmClazz);
-        applyCritics(dm, d, critics, -1L);
+        Collection c = criticsForClass(dmClazz);
+        applyCritics(dm, d, c, -1L);
     }
     
+    /**
+     * @param dm the design material
+     * @param d the designer
+     * @param theCritics the critics
+     * @param reasonCode the reason
+     */
     public static void applyCritics(
         Object dm,
         Designer d,
-        Collection critics,
+        Collection theCritics,
         long reasonCode) {
 
-        Iterator it = critics.iterator();
+        Iterator it = theCritics.iterator();
         while (it.hasNext()) {                  
             Critic c = (Critic) it.next();
             if (c.isActive() && c.matchReason(reasonCode)) {
@@ -301,8 +333,11 @@ public class Agency extends Observable { //implements java.io.Serialization
      * TODO: I am setting global data, the
      * isEnabled bit in each critic, based on the needs of one designer.
      * I don't really support more than one Designer.
+     * 
+     * TODO: should loop over simpler vector of critics, not CompoundCritics
+     *
+     * @param d the designer
      */
-    // TODO: should loop over simpler vector of critics, not CompoundCritics
     public void determineActiveCritics(Designer d) {
         //     Enumeration clazzEnum = getCriticRegistry().keys();
         //     while (clazzEnum.hasMoreElements()) {
@@ -363,6 +398,8 @@ public class Agency extends Observable { //implements java.io.Serialization
      * Let some object recieve notifications when the Agency changes
      * state.  Static observers are normal Observers on the singleton
      * instance of this class.
+     *
+     * @param obs the notified object
      */
     public static void addStaticObserver(Observer obs) {
         Agency a = theAgency();
@@ -375,6 +412,8 @@ public class Agency extends Observable { //implements java.io.Serialization
     
     /**
      * When the agency changes, notify observers.
+     *
+     * @param o the notified object
      */
     public static void notifyStaticObservers(Object o) {
         if (theAgency() != null) {
