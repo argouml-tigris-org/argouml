@@ -75,6 +75,15 @@ public class Main {
 
     private static Vector postLoadActions = new Vector();
 
+    /**
+     * Splashscreen to be shown on startup. Null if splashscreen not wanted
+     */
+    private static SplashScreen splash;
+    
+    public static SplashScreen getSplashScreen() {
+        return splash;
+    }
+    
     ////////////////////////////////////////////////////////////////
     // main
 
@@ -241,11 +250,13 @@ public class Main {
         Translator.init();
 
 	st.mark("splash");
-        SplashScreen splash = new SplashScreen("Loading ArgoUML...", "Splash");
+    if (doSplash) {
+        splash = new SplashScreen("Loading ArgoUML...", "Splash");
         splash.getStatusBar().showStatus("Making Project Browser");
         splash.getStatusBar().showProgress(10);
 
-        splash.setVisible(doSplash);
+        splash.setVisible(true);
+    }
 
 	st.mark("projectbrowser");
 
@@ -253,9 +264,23 @@ public class Main {
         Object dgd = org.argouml.uml.generator.GeneratorDisplay.getInstance();
 
         MFactoryImpl.setEventPolicy(MFactoryImpl.EVENT_POLICY_IMMEDIATE);
-        ProjectBrowser pb = new ProjectBrowser("ArgoUML", splash.getStatusBar(),
+        ProjectBrowser pb = new ProjectBrowser("ArgoUML",
         themeMemory);
+        
+        // create the navpane
+        if (doSplash) {
+            splash.getStatusBar().showStatus("Making Project Browser: Navigator Pane");
+            splash.getStatusBar().incProgress(5);
+        }
+        NavigatorPane.getNavigatorPane();
 
+        // create the todopane
+        if (doSplash) {
+            splash.getStatusBar().showStatus("Making Project Browser: To Do Pane");
+            splash.getStatusBar().incProgress(5);
+        }
+        ToDoPane.getToDoPane();    
+        
         JOptionPane.setRootFrame(pb);
 
         // Set the screen layout to what the user left it before, or

@@ -111,26 +111,21 @@ public class ProjectBrowser extends JFrame
 
    
 
-    public ProjectBrowser(String appName, StatusBar sb, int theme) {
+    public ProjectBrowser(String appName, int theme) {
         super(appName);
         LookAndFeelMgr.SINGLETON.setCurrentTheme(theme);
         _menuBar = new GenericArgoMenuBar();
-        sb.showStatus("Making Project Browser: Navigator Pane");
-        sb.incProgress(5);
-        NavigatorPane.getNavigatorPane();
-        sb.showStatus("Making Project Browser: To Do Pane");
-        sb.incProgress(5);
-        // init todopane
-        ToDoPane.getToDoPane();        
-        _editorPane = new MultiEditorPane(sb);
+        
+            
+        _editorPane = new MultiEditorPane();
         _editorPane.addNavigationListener(this);
         
-        _eastPane      = makeDetailsPane(sb, BorderSplitPane.EAST.toLowerCase(), Vertical.getInstance());
-        _southPane     = makeDetailsPane(sb, BorderSplitPane.SOUTH. toLowerCase(), Horizontal.getInstance());
-        _southEastPane = makeDetailsPane(sb, BorderSplitPane.SOUTHEAST.toLowerCase(), Horizontal.getInstance());
-        _northWestPane = makeDetailsPane(sb, BorderSplitPane.NORTHWEST.toLowerCase(), Horizontal.getInstance());
-        _northPane     = makeDetailsPane(sb, BorderSplitPane.NORTH.toLowerCase(), Horizontal.getInstance());
-        _northEastPane = makeDetailsPane(sb, BorderSplitPane.NORTHEAST.toLowerCase(), Horizontal.getInstance());
+        _eastPane      = makeDetailsPane(BorderSplitPane.EAST.toLowerCase(), Vertical.getInstance());
+        _southPane     = makeDetailsPane(BorderSplitPane.SOUTH. toLowerCase(), Horizontal.getInstance());
+        _southEastPane = makeDetailsPane(BorderSplitPane.SOUTHEAST.toLowerCase(), Horizontal.getInstance());
+        _northWestPane = makeDetailsPane(BorderSplitPane.NORTHWEST.toLowerCase(), Horizontal.getInstance());
+        _northPane     = makeDetailsPane(BorderSplitPane.NORTH.toLowerCase(), Horizontal.getInstance());
+        _northEastPane = makeDetailsPane(BorderSplitPane.NORTHEAST.toLowerCase(), Horizontal.getInstance());
 
         if (_southPane != null) detailsPanesByCompassPoint.put(BorderSplitPane.SOUTH, _southPane);
         if (_southEastPane != null) detailsPanesByCompassPoint.put(BorderSplitPane.SOUTHEAST, _southEastPane);
@@ -356,12 +351,7 @@ public class ProjectBrowser extends JFrame
     }
 
     public Object getDetailsTarget() {
-        Iterator it = detailsPanesByCompassPoint.values().iterator();
-        if (it.hasNext()) {
-            DetailsPane detailsPane = (DetailsPane)it.next();
-            return detailsPane.getTarget();
-        }
-        return null; // TODO Bob Tarling - Should probably throw exception here
+        return getDetailsPane().getTarget();
     }
     
     /**
@@ -376,7 +366,7 @@ public class ProjectBrowser extends JFrame
             DetailsPane detailsPane = (DetailsPane)it.next();
             return detailsPane;
         }
-        throw new IllegalStateException("No detailspane in ArgoUML");
+        return null;
     }
 
     public StatusBar getStatusBar() { return _statusBar; }
@@ -562,8 +552,8 @@ public class ProjectBrowser extends JFrame
      * @return the details pane or null if none is required for the given
      *         compass point.
      */
-    private DetailsPane makeDetailsPane(StatusBar sb, String compassPoint, Orientation orientation) {
-        DetailsPane detailsPane = new DetailsPane(sb, compassPoint, orientation);
+    private DetailsPane makeDetailsPane(String compassPoint, Orientation orientation) {
+        DetailsPane detailsPane = new DetailsPane(compassPoint, orientation);
         if (detailsPane.getTabCount() == 0) return null;
         return detailsPane;
     }

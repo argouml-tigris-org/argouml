@@ -83,10 +83,10 @@ implements ChangeListener, MouseListener, QuadrantPanel, Orientable {
   ////////////////////////////////////////////////////////////////
   // constructors
 
-  public DetailsPane(StatusBar sb, String pane, Orientation orientation) {
+  public DetailsPane(String pane, Orientation orientation) {
     Argo.log.info("making DetailsPane("+pane+")");
     orientation = orientation;
-    ConfigLoader.loadTabs(_tabPanels, pane, sb, orientation);
+    ConfigLoader.loadTabs(_tabPanels, pane, orientation);
 
 
 //     _tabPanels.addElement(new TabToDo());
