@@ -26,6 +26,7 @@ package org.argouml.model.uml;
 import ru.novosoft.uml.MBase;
 
 import org.apache.log4j.Category;
+import org.argouml.uml.UUIDManager;
 
 /**
  * Abstract Class that every model package factory should implement
@@ -47,10 +48,11 @@ public abstract class AbstractUmlModelFactory {
     }
 
     protected void initialize(Object o) {
-        logger.debug("initialize(" + o + ")");
-	if (o instanceof MBase) {
+       logger.debug("initialize(" + o + ")");
+	   if (o instanceof MBase) {
             ((MBase)o).addMElementListener(UmlModelListener.getInstance());
-	}
+            ((MBase)o).setUUID(UUIDManager.SINGLETON.getNewUUID());
+	   }
     }
 
 }
