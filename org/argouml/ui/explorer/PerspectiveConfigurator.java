@@ -24,6 +24,7 @@
 
 package org.argouml.ui.explorer;
 
+import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.Frame;
 import java.awt.GridBagConstraints;
@@ -44,7 +45,10 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
@@ -78,6 +82,7 @@ public class PerspectiveConfigurator extends ArgoDialog {
     // instance variables
     
     private JPanel  configPanel;
+    private JTextField renameTextField;
     private JList   perspectiveList;
     private JList   perspectiveRulesList;
     private JList   ruleLibraryList;
@@ -169,12 +174,18 @@ public class PerspectiveConfigurator extends ArgoDialog {
         moveDownButton.setEnabled(false);
         addRuleButton.setEnabled(false);
         removeRuleButton.setEnabled(false);
+        renameTextField.setEnabled(false);
     }
     
     /**
      * Add action listeners to the buttons and lists.
      */
     private void makeActionListeners() {
+        renameTextField.addActionListener(new RenameListener());
+        renameTextField.getDocument().addDocumentListener(
+                new RenameDocumentListener());
+
+        
         newPerspectiveButton.addActionListener(new NewPerspectiveListener());
         removePerspectiveButton.addActionListener(
                 new RemovePerspectiveListener());
@@ -213,14 +224,18 @@ public class PerspectiveConfigurator extends ArgoDialog {
         gb.setConstraints(persLabel, c);
         configPanel.add(persLabel);
         
+        JPanel persPanel = new JPanel(new BorderLayout());
         JScrollPane persScroll = new JScrollPane(perspectiveList,
 			    JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
 			    JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        persPanel.add(renameTextField, BorderLayout.PAGE_START);
+        persPanel.add(persScroll, BorderLayout.CENTER);
         c.gridx = 0;	  c.gridy = 1;
         c.gridwidth = 4;
         c.weightx = 1.0;  c.weighty = 1.0;
-        gb.setConstraints(persScroll, c);
-        configPanel.add(persScroll);
+        gb.setConstraints(persPanel, c);
+        configPanel.add(persPanel);
+        
         
         JPanel persButtons = new JPanel(new GridLayout(5, 1, 0, 5));
         persButtons.add(newPerspectiveButton);
@@ -317,6 +332,8 @@ public class PerspectiveConfigurator extends ArgoDialog {
      * Make the lists on the dialog box and fill them.
      */
     private void makeLists() {
+        renameTextField = new JTextField();
+        
         perspectiveListModel = new DefaultListModel();
         perspectiveList = new JList(perspectiveListModel);
         perspectiveRulesListModel = new DefaultListModel();
@@ -481,12 +498,52 @@ public class PerspectiveConfigurator extends ArgoDialog {
         }
     }
     
+    class RenameListener implements ActionListener {
+        public void actionPerformed(ActionEvent e) {
+            int sel = perspectiveList.getSelectedIndex();
+            Object selPers = perspectiveList.getSelectedValue();
+            String newName = renameTextField.getText();
+            if (sel >= 0 && newName.length() > 0) {
+                ((ExplorerPerspective) selPers).setName(newName);
+                perspectiveListModel.set(sel, selPers);
+                /* TODO: Replace the functioncall in the next line 
+                 * by .requestFocusInWindow() once
+                 * we do not support Java 1.3 any more.
+                 */
+                perspectiveList.requestFocus();
+            }
+        }
+    }
+    
+    class RenameDocumentListener implements DocumentListener {
+        public void insertUpdate(DocumentEvent e) {
+            update();
+        }
+        public void removeUpdate(DocumentEvent e) {
+            update();
+        }
+        public void changedUpdate(DocumentEvent e) {
+            update();
+        }
+        private void update() {
+            int sel = perspectiveList.getSelectedIndex();
+            Object selPers = perspectiveList.getSelectedValue();
+            String newName = renameTextField.getText();
+            if (sel >= 0 && newName.length() > 0) {
+                ((ExplorerPerspective) selPers).setName(newName);
+                perspectiveListModel.set(sel, selPers);
+            }
+        }
+
+    }
+    
     class PerspectiveListSelectionListener implements ListSelectionListener {
         public void valueChanged(ListSelectionEvent lse) {
             if (lse.getValueIsAdjusting()) return;
             
             Object selPers = perspectiveList.getSelectedValue();
             Object selRule = ruleLibraryList.getSelectedValue();
+            renameTextField.setEnabled(selPers != null);
             removePerspectiveButton.setEnabled(selPers != null);
             duplicatePerspectiveButton.setEnabled(selPers != null);
             moveUpButton.setEnabled(perspectiveList.getSelectedIndex() > 0);
@@ -495,6 +552,7 @@ public class PerspectiveConfigurator extends ArgoDialog {
                             < (perspectiveList.getModel().getSize() - 1)));
             
             if (selPers == null) return;
+            renameTextField.setText(selPers.toString());
             
             ExplorerPerspective pers = (ExplorerPerspective) selPers;
             perspectiveRulesListModel.clear();
