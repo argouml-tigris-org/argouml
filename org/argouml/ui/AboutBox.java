@@ -77,7 +77,7 @@ public class AboutBox extends JDialog {
     versionBuf.append(
 		     "\n"+
 		     "Intended for use with:\n"+
-		     "  JDK 1.2 only plus\n"+
+		     "  JDK 1.2 or higher plus\n"+
 		     "    GEF Graph Editing Framework (gef.tigris.org)\n"+
 		     "      including GIF generation code from www.acme.com\n"+
 		     "    A JAXP 1.0.1 compatible parser\n" +
