@@ -37,6 +37,7 @@ import ru.novosoft.uml.foundation.data_types.*;
 import ru.novosoft.uml.behavior.collaborations.*;
 
 import org.argouml.application.api.*;
+import org.argouml.model.uml.behavioralelements.collaborations.CollaborationsHelper;
 import org.argouml.uml.ui.*;
 import org.argouml.uml.ui.foundation.core.PropPanelClassifier;
 
@@ -109,6 +110,15 @@ public class PropPanelClassifierRole extends PropPanelClassifier {
                 baseClass.equals("GeneralizableElement") ||
                 baseClass.equals("Classifier"));
     }
+    
+    /**
+	 * @see org.argouml.uml.ui.foundation.core.PropPanelClassifier#getGeneralizationChoices()
+	 */
+	protected Vector getGeneralizationChoices() {
+		Vector choices = new Vector();
+		choices.addAll(CollaborationsHelper.getHelper().getAllClassifierRoles());
+		return choices;
+	}
 
 
 } /* end class PropPanelClassifierRole */

@@ -23,9 +23,17 @@
 
 package org.argouml.model.uml.behavioralelements.usecases;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
 
+import org.argouml.ui.ProjectBrowser;
+
+import ru.novosoft.uml.behavior.use_cases.MActor;
 import ru.novosoft.uml.behavior.use_cases.MUseCase;
+import ru.novosoft.uml.foundation.core.MModelElement;
+import ru.novosoft.uml.foundation.core.MNamespace;
 
 /**
  * Helper class for UML BehavioralElements::UseCases Package.
@@ -69,5 +77,64 @@ public class UseCasesHelper {
 
         return useCase.getExtensionPoints();
     }
+    
+	/**
+	 * Returns all usecases in the current project model.
+	 * @return Collection
+	 */
+    public Collection getAllUseCases() {
+    	MNamespace model = ProjectBrowser.TheInstance.getProject().getModel();
+		return getAllUseCases(model);
+	}
+	
+	/**
+	 * Returns all usecases in some namespace ns.
+	 * @return Collection
+	 */
+	public Collection getAllUseCases(MNamespace ns) {
+		Iterator it = ns.getOwnedElements().iterator();
+		List list = new ArrayList();
+		while (it.hasNext()) {
+			Object o = it.next();
+			if (o instanceof MNamespace) {
+				list.addAll(getAllUseCases((MNamespace)o));
+			} 
+			if (o instanceof MUseCase) {
+				list.add(o);
+			}
+			
+		}
+		return list;
+	}
+	
+	/**
+	 * Returns all actors in the current project model.
+	 * @return Collection
+	 */
+	public Collection getAllActors() {
+    	MNamespace model = ProjectBrowser.TheInstance.getProject().getModel();
+		return getAllActors(model);
+	}
+	
+	/**
+	 * Returns all actors in some namespace ns.
+	 * @return Collection
+	 */
+	public Collection getAllActors(MNamespace ns) {
+		Iterator it = ns.getOwnedElements().iterator();
+		List list = new ArrayList();
+		while (it.hasNext()) {
+			Object o = it.next();
+			if (o instanceof MNamespace) {
+				list.addAll(getAllActors((MNamespace)o));
+			} 
+			if (o instanceof MActor) {
+				list.add(o);
+			}
+			
+		}
+		return list;
+	}
+    	
 }
 

@@ -42,6 +42,7 @@ import ru.novosoft.uml.foundation.core.MAssociationEnd;
 import ru.novosoft.uml.foundation.core.MAttribute;
 import ru.novosoft.uml.foundation.core.MClass;
 import ru.novosoft.uml.foundation.core.MClassifier;
+import ru.novosoft.uml.foundation.core.MComponent;
 import ru.novosoft.uml.foundation.core.MDataType;
 import ru.novosoft.uml.foundation.core.MDependency;
 import ru.novosoft.uml.foundation.core.MFeature;
@@ -50,6 +51,7 @@ import ru.novosoft.uml.foundation.core.MGeneralization;
 import ru.novosoft.uml.foundation.core.MInterface;
 import ru.novosoft.uml.foundation.core.MModelElement;
 import ru.novosoft.uml.foundation.core.MNamespace;
+import ru.novosoft.uml.foundation.core.MNode;
 import ru.novosoft.uml.foundation.core.MOperation;
 import ru.novosoft.uml.foundation.core.MParameter;
 import ru.novosoft.uml.foundation.core.MStructuralFeature;
@@ -582,6 +584,92 @@ public class CoreHelper {
 		return list;
 	}
 	
+	/**
+	 * Returns all components found in the projectbrowser model
+	 * @return Collection
+	 */
+	public Collection getAllComponents() {
+		MNamespace model = ProjectBrowser.TheInstance.getProject().getModel();
+		return getAllComponents(model);
+	}
+	
+	/**
+	 * Returns all components found in this namespace and in its children
+	 * @return Collection
+	 */
+	public Collection getAllComponents(MNamespace ns) {
+		Iterator it = ns.getOwnedElements().iterator();
+		List list = new ArrayList();
+		while (it.hasNext()) {
+			Object o = it.next();
+			if (o instanceof MNamespace) {
+				list.addAll(getAllComponents((MNamespace)o));
+			} 
+			if (o instanceof MComponent) {
+				list.add(o);
+			}
+			
+		}
+		return list;
+	}
+	
+	/**
+	 * Returns all datatypes found in the projectbrowser model
+	 * @return Collection
+	 */
+	public Collection getAllDataTypes() {
+		MNamespace model = ProjectBrowser.TheInstance.getProject().getModel();
+		return getAllDataTypes(model);
+	}
+	
+	/**
+	 * Returns all components found in this namespace and in its children
+	 * @return Collection
+	 */
+	public Collection getAllDataTypes(MNamespace ns) {
+		Iterator it = ns.getOwnedElements().iterator();
+		List list = new ArrayList();
+		while (it.hasNext()) {
+			Object o = it.next();
+			if (o instanceof MNamespace) {
+				list.addAll(getAllDataTypes((MNamespace)o));
+			} 
+			if (o instanceof MDataType) {
+				list.add(o);
+			}
+			
+		}
+		return list;
+	}
+	
+	/**
+	 * Returns all nodes found in the projectbrowser model
+	 * @return Collection
+	 */
+	public Collection getAllNodes() {
+		MNamespace model = ProjectBrowser.TheInstance.getProject().getModel();
+		return getAllNodes(model);
+	}
+	
+	/**
+	 * Returns all components found in this namespace and in its children
+	 * @return Collection
+	 */
+	public Collection getAllNodes(MNamespace ns) {
+		Iterator it = ns.getOwnedElements().iterator();
+		List list = new ArrayList();
+		while (it.hasNext()) {
+			Object o = it.next();
+			if (o instanceof MNamespace) {
+				list.addAll(getAllNodes((MNamespace)o));
+			} 
+			if (o instanceof MNode) {
+				list.add(o);
+			}
+			
+		}
+		return list;
+	}
 	
 }
 

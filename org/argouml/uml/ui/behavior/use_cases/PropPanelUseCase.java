@@ -38,12 +38,15 @@
 package org.argouml.uml.ui.behavior.use_cases;
 
 import org.argouml.application.api.*;
+import org.argouml.model.uml.behavioralelements.usecases.UseCasesHelper;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.ui.*;
 import org.argouml.uml.ui.foundation.core.*;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.util.Vector;
+
 import javax.swing.*;
 
 import ru.novosoft.uml.foundation.core.*;
@@ -298,6 +301,15 @@ public class PropPanelUseCase extends PropPanelClassifier {
             baseClass.equals("GeneralizableElement") ||
             baseClass.equals("Namespace");
     }
+    
+    /**
+	 * @see org.argouml.uml.ui.foundation.core.PropPanelClassifier#getGeneralizationChoices()
+	 */
+	protected Vector getGeneralizationChoices() {
+		Vector choices = new Vector();
+		choices.addAll(UseCasesHelper.getHelper().getAllUseCases());
+		return choices;
+	}
 
 
 } /* end class PropPanelUseCase */

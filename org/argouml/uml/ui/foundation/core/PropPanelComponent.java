@@ -38,10 +38,13 @@
 package org.argouml.uml.ui.foundation.core;
 
 import java.awt.*;
+import java.util.Vector;
+
 import javax.swing.*;
 import ru.novosoft.uml.foundation.core.*;
 
 import org.argouml.application.api.*;
+import org.argouml.model.uml.foundation.core.CoreHelper;
 import org.argouml.uml.ui.*;
 
 
@@ -90,6 +93,15 @@ public class PropPanelComponent extends PropPanelClassifier {
                 );
     }
 
+
+	/**
+	 * @see org.argouml.uml.ui.foundation.core.PropPanelClassifier#getGeneralizationChoices()
+	 */
+	protected Vector getGeneralizationChoices() {
+		Vector choices = new Vector();
+		choices.addAll(CoreHelper.getHelper().getAllComponents());
+		return choices;
+	}
 
 } /* end class PropPanelComponent */
 

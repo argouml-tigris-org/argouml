@@ -23,6 +23,16 @@
 
 package org.argouml.model.uml.behavioralelements.collaborations;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
+
+import org.argouml.ui.ProjectBrowser;
+
+import ru.novosoft.uml.behavior.collaborations.MClassifierRole;
+import ru.novosoft.uml.foundation.core.MNamespace;
+
 /**
  * Helper class for UML BehavioralElements::Collaborations Package.
  *
@@ -49,5 +59,34 @@ public class CollaborationsHelper {
     public static CollaborationsHelper getHelper() {
         return SINGLETON;
     }
+    
+    /**
+	 * Returns all classifierroles found in the projectbrowser model
+	 * @return Collection
+	 */
+	public Collection getAllClassifierRoles() {
+		MNamespace model = ProjectBrowser.TheInstance.getProject().getModel();
+		return getAllClassifierRoles(model);
+	}
+	
+	/**
+	 * Returns all classifierroles found in this namespace and in its children
+	 * @return Collection
+	 */
+	public Collection getAllClassifierRoles(MNamespace ns) {
+		Iterator it = ns.getOwnedElements().iterator();
+		List list = new ArrayList();
+		while (it.hasNext()) {
+			Object o = it.next();
+			if (o instanceof MNamespace) {
+				list.addAll(getAllClassifierRoles((MNamespace)o));
+			} 
+			if (o instanceof MClassifierRole) {
+				list.add(o);
+			}
+			
+		}
+		return list;
+	}
 }
 
