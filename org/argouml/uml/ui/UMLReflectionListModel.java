@@ -187,7 +187,6 @@ public class UMLReflectionListModel extends UMLModelElementListModel   {
             if(upper > 0 && size >= upper) {
                 add.setEnabled(false);
             }
-	    else
             popup.add(add);
         }
 
