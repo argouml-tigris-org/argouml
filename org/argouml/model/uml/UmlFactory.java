@@ -173,6 +173,7 @@ public class UmlFactory extends AbstractUmlModelFactory {
         {ModelFacade.GENERALIZATION,   ModelFacade.CLASSIFIER_ROLE},
         {ModelFacade.GENERALIZATION,   ModelFacade.CLASS},
         {ModelFacade.GENERALIZATION,   ModelFacade.INTERFACE},
+        {ModelFacade.GENERALIZATION,   ModelFacade.PACKAGE},
         {ModelFacade.GENERALIZATION,   ModelFacade.USE_CASE},
         {ModelFacade.GENERALIZATION,   ModelFacade.ACTOR},
         {ModelFacade.DEPENDENCY,       ModelFacade.PACKAGE},
