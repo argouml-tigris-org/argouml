@@ -142,7 +142,7 @@ doesn't find it's own XML-libs. You need to set ANT_HOME in your shell.
 
     <property name="Name" value="ArgoUML"/>
     <property name="name" value="argouml"/>
-    <property name="version" value="0.9.2"/>
+    <property name="version" value="0.9.3"/>
     <property name="year" value="2001"/>
 
     <echo message="------------------- ${Name} ${version} [${year}] ----------------"/>
@@ -164,6 +164,7 @@ doesn't find it's own XML-libs. You need to set ANT_HOME in your shell.
     <property name="build.dest" value="${build.dir}/classes"/>
     <property name="dist.dir" value="${build.dir}/dist"/>
     <property name="docs.dir" value="${build.dir}/doc"/>
+    <property name="snapshot.dir" value="../www/snapshots"/>
 
     <exec executable="set user.home=C:\" os="windows" />
     <property file="${user.home}/.ant.properties"/>
@@ -266,7 +267,6 @@ doesn't find it's own XML-libs. You need to set ANT_HOME in your shell.
   <!-- Creates the class package                                           -->
   <!-- =================================================================== -->
   <target name="package" depends="compile">
-    <echo message="Creating the jar file ${build.dir}/${name}.jar"/>
     <filter token="version" value="${version}"/>
     <copy file="${manifest}" tofile="${build.dest}/${manifest}" filtering="on" />
     <jar jarfile="${build.dir}/${name}.jar"
@@ -277,6 +277,21 @@ doesn't find it's own XML-libs. You need to set ANT_HOME in your shell.
     <copy todir="${build.dir}">
       <fileset dir="${lib.dir}" />
     </copy>
+  </target>
+
+  <!-- =================================================================== -->
+  <!-- Creates a snapshot                                                  -->
+  <!-- =================================================================== -->
+  <target name="snapshot" depends="compile">
+    <!-- create directories -->
+    <mkdir dir="${snapshot.dir}"/>
+    <filter token="version" value="${version}"/>
+    <copy file="${manifest}" tofile="${build.dest}/${manifest}" filtering="on" />
+    <jar jarfile="${snapshot.dir}/${name}-snapshot-${DSTAMP}.jar"
+         basedir="${build.dest}"
+         includes="org/argouml/**"
+         excludes="*.txt,*.bat,*.xml,*.sh,${manifest}"
+         manifest="${build.dest}/${manifest}"/>
   </target>
 
   <!-- =================================================================== -->
@@ -295,8 +310,8 @@ doesn't find it's own XML-libs. You need to set ANT_HOME in your shell.
   <!-- =================================================================== -->
   <target name="dist" depends="package">
     <echo message="Building the distribution files (zip,tar)"/>
-    <zip zipfile="../${Name}-${version}.zip" basedir="${build.dir}" includes="gef.jar nsuml.jar xerces.jar ocl-argo.jar antlrall.jar argouml.jar"/>
-    <tar tarfile="../${Name}-${version}.tar" basedir="${build.dir}" includes="gef.jar nsuml.jar xerces.jar ocl-argo.jar antlrall.jar argouml.jar"/>
+    <zip zipfile="../${Name}-${version}.zip" basedir="${build.dir}" includes="gef.jar nsuml.jar xerces.jar ocl-argo.jar antlrall.jar argouml.jar ${src.dir}/README.txt"/>
+    <tar tarfile="../${Name}-${version}.tar" basedir="${build.dir}" includes="gef.jar nsuml.jar xerces.jar ocl-argo.jar antlrall.jar argouml.jar ${src.dir}/README.txt"/>
     <gzip zipfile="../${Name}-${version}.tar.gz" src="../${Name}-${version}.tar" />
     <delete file="../${Name}-${version}.tar"/>
   </target>

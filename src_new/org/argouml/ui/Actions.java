@@ -364,6 +364,9 @@ class ActionSaveProject extends UMLAction {
   public ActionSaveProject() {
     super("Save Project");
   }
+  public ActionSaveProject(String title, boolean icon) {
+    super(title, icon);
+  }
 
   public void actionPerformed(ActionEvent e) {
     trySave(true);
@@ -371,13 +374,6 @@ class ActionSaveProject extends UMLAction {
 
   public boolean trySave(boolean overwrite) {
 
-      StringBuffer msg = new StringBuffer();
-      msg.append("This is a developer release of ArgoUML. You should not use it \n");
-      msg.append("for production use, it's only for testing. You may save your models,\n");
-      msg.append("but do not expect future releases of ArgoUML to be able to read them.\n");
-      msg.append("If you want to use a \"stable\" release, please go to www.argouml.org\n");
-      msg.append("and get one there. Thank you.");
-      JOptionPane.showMessageDialog(null, msg.toString(), "Warning", JOptionPane.WARNING_MESSAGE);
     try {
       if (expander == null) {
 	java.util.Hashtable templates = TemplateReader.readFile(ARGO_TEE);
@@ -385,13 +381,10 @@ class ActionSaveProject extends UMLAction {
       }
       ProjectBrowser pb = ProjectBrowser.TheInstance;
       Project p =  pb.getProject();
-      //       String name = p.getFilename();
-      //       String path = p.getPathname();
-      System.out.println("ActionSaveProject at " + p.getURL());
-      //       System.out.println("ActionSaveProject name = " + name);
+
       String fullpath = "Untitled.zargo";
       if (p.getURL() != null) fullpath = p.getURL().getFile();
-      System.out.println("filename is " + fullpath);
+
       if (fullpath.charAt(0) == '/' && fullpath.charAt(2) == ':')
 	fullpath = fullpath.substring(1); // for Windows /D: -> D:
       File f = new File(fullpath);
@@ -401,12 +394,13 @@ class ActionSaveProject extends UMLAction {
       }
 
       ZipOutputStream zos = new ZipOutputStream(new FileOutputStream(f));
-      ZipEntry zipEntry = new ZipEntry(p.getName());
+      ZipEntry zipEntry = new ZipEntry(p.getBaseName()+".argo");
       zos.putNextEntry(zipEntry);
       OutputStreamWriter fw = new OutputStreamWriter(zos);
       p.preSave();
       expander.expand(fw, p, "", "");
-      zos.flush();
+      fw.flush();
+      // zos.flush();
       zos.closeEntry();
       String parentDirName = fullpath.substring(0, fullpath.lastIndexOf("/"));
       System.out.println("Dir ==" + parentDirName);
@@ -438,7 +432,7 @@ class ActionSaveProject extends UMLAction {
 
 } /* end class ActionSaveProject */
 
-class ActionSaveProjectAs extends UMLAction {
+class ActionSaveProjectAs extends ActionSaveProject {
   public static final String separator = "/"; //System.getProperty("file.separator");
 
   protected static OCLExpander expander = null;
@@ -489,7 +483,6 @@ class ActionSaveProjectAs extends UMLAction {
       if(retval == 0) {
 	File theFile = chooser.getSelectedFile();
 	if (theFile != null) {
-	  //String pathname = chooser.getSelectedFile().getAbsolutePath();
 	  String path = chooser.getSelectedFile().getParent();
 	  String name = chooser.getSelectedFile().getName();
 	  if (!name.endsWith(".zargo")) name += ".zargo";
@@ -499,33 +492,8 @@ class ActionSaveProjectAs extends UMLAction {
 	  //p.setPathname(path);
 	  File f = new File(path + name);
 	  p.setURL(Util.fileToURL(f));
-	  if (f.exists() && !overwrite) {
-	    System.out.println("Are you sure you want to overwrite " +
-			       name + "?");
-	  }
 
-	  ZipOutputStream zos = new ZipOutputStream(new FileOutputStream(f));
-	  ZipEntry zipEntry = new ZipEntry(p.getName());
-	  zos.putNextEntry(zipEntry);
-	  OutputStreamWriter fw = new OutputStreamWriter(zos);
-	  p.preSave();
-	  expander.expand(fw, p, "", "");
-	  fw.flush();
-	  zos.closeEntry();
-// 	  String parentDirName = fullpath.substring(0, fullpath.lastIndexOf("/"));
-// 	  System.out.println("Dir ==" + parentDirName);
-	  p.saveAllMembers(path, overwrite, fw, zos);
-// 	  FileWriter fw = new FileWriter(f);
-// 	  p.preSave();
-// 	  expander.expand(fw, p, "", "");
-// 	  p.saveAllMembers(path, overwrite);
-// 	  //needs-more-work: in future allow indendent saving
-	  p.postSave();
-	  fw.close();
-	  //	  zos.close();
-	  pb.showStatus("Wrote " + path + name);
-	  pb.updateTitle();
-	  return true;
+	  return super.trySave(false);
 	}
       }
     }
@@ -535,18 +503,16 @@ class ActionSaveProjectAs extends UMLAction {
     catch (PropertyVetoException ignore) {
       System.out.println("got an PropertyVetoException in SaveAs");
     }
-//     catch (PropertyVetoException ignore) {
-//       System.out.println("got an PropertyVetoException");
-//     }
-    //    catch (java.lang.ClassMismatchException ignore) {
-    //      System.out.println("got an ClassMismatchException");
-    //    }
     catch (IOException ignore) {
       System.out.println("got an IOException");
       ignore.printStackTrace();
     }
     return false;
   }
+  public boolean shouldBeEnabled() {
+      return true;
+  }
+
 } /* end class ActionSaveProjectAs */
 
 

@@ -67,7 +67,7 @@ public class Project implements java.io.Serializable {
   ////////////////////////////////////////////////////////////////
   // constants
   public static final String SEPARATOR = "/";
-  public final static String FILE_EXT = ".argo";
+  public final static String FILE_EXT = ".zargo";
   public final static String TEMPLATES = "/org/argouml/templates/";
   //public final static String EMPTY_PROJ = "EmptyProject" + FILE_EXT;
   public final static String UNTITLED_FILE = "Untitled";
