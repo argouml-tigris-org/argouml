@@ -176,7 +176,7 @@ tokens {
 	 * set last method body
 	 */
 	void setBody(String body) {
-	    _methodBody = body;
+	    _methodBody = body + '\n';
         }
 
 	// A flag to indicate if we track the tokens for a expression.
@@ -451,13 +451,16 @@ implementsClause returns [Vector names=new Vector()]
 //   for example), and if this grammar were used for a compiler there would
 //   need to be some semantic checks to make sure we're doing the right thing...
 field
-{short mods=0; String t=null; Vector param=null; String a=null;}
+{short mods=0; String t=null; Vector param=null; String a=null;
+ boolean isOutestCompStat = !isInCompoundStatement();}
 	:	// method, constructor, or variable declaration
 		mods=modifiers
 		(	ctorHead[mods] compoundStatement // constructor
-			{getModeller().addBodyToOperation(getMethod(),getBody());
-			 setMethod(null);
-			 setBody(null);}
+			{if (isOutestCompStat) {
+			   getModeller().addBodyToOperation(getMethod(),getBody());
+			   setMethod(null);
+			   setBody(null);
+			}}
 		|	classDefinition["", mods]       // inner class
 		|	interfaceDefinition["", mods]   // inner interface
 		|	t=typeSpec         // method or variable declaration(s)
@@ -473,10 +476,12 @@ field
 				  (throwsClause)?
 
 				  (compoundStatement | SEMI)
-				) {setMethod(getModeller().addOperation(mods, t, name.getText(), param, getJavadocComment()));
-				   getModeller().addBodyToOperation(getMethod(),getBody());
-				   setMethod(null);
-				   setBody(null);}
+				) {if (isOutestCompStat) {
+				     setMethod(getModeller().addOperation(mods, t, name.getText(), param, getJavadocComment()));
+				     getModeller().addBodyToOperation(getMethod(),getBody());
+				     setMethod(null);
+				     setBody(null);
+				  }}
 			|	classVariableDefinitions[getJavadocComment(), mods, t] SEMI
 			)
 		)
@@ -571,15 +576,17 @@ initializer
 //   for the method.
 //   This also watches for a list of exception classes in a "throws" clause.
 ctorHead[ short mods]
-	{Vector param = null;}
+	{Vector param = null;
+	 boolean isOutestCompStat = !isInCompoundStatement();}
 	:	name:IDENT  // the name of the method
 
 		// parse the formal parameter declarations.
 		LPAREN param=parameterDeclarationList RPAREN
 
-		{ setMethod(getModeller().addOperation(mods, null, 
-			name.getText(), param, getJavadocComment())); }
-
+		{if (isOutestCompStat) {
+		   setMethod(getModeller().addOperation(mods, null, 
+			name.getText(), param, getJavadocComment()));
+		 }}
 		// get the list of exceptions that this method is
 		// declared to throw
 		(throwsClause)?
