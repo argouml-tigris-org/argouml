@@ -264,6 +264,9 @@ implements IStatusBar {
     JMenuItem saveProjectAsItem = file.add(Actions.SaveProjectAs);
     saveProjectAsItem.setMnemonic('A');
     file.addSeparator();
+    JMenuItem loadModelFromDBItem = file.add(Actions.LoadModelFromDB);
+    JMenuItem storeProjectToDBItem = file.add(Actions.StoreProjectToDB);
+    file.addSeparator();
     JMenuItem printItem = file.add(Actions.Print);
     printItem.setMnemonic('P');
     printItem.setAccelerator(ctrlP);

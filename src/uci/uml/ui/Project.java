@@ -97,6 +97,48 @@ public class Project implements java.io.Serializable {
 
   public Project() { }
 
+  public Project (MModel model) {
+    System.out.println("making empty project with model: "+model.getName());
+
+    defineType(JavaUML.VOID_TYPE);     //J.101
+    defineType(JavaUML.CHAR_TYPE);     //J.102
+    defineType(JavaUML.INT_TYPE);      //J.103
+    defineType(JavaUML.BOOLEAN_TYPE);  //J.104
+    defineType(JavaUML.BYTE_TYPE);     //J.105
+    defineType(JavaUML.LONG_TYPE);     //J.106
+    defineType(JavaUML.FLOAT_TYPE);    //J.107
+    defineType(JavaUML.DOUBLE_TYPE);   //J.108
+    defineType(JavaUML.STRING_CLASS);  //J.109
+    defineType(JavaUML.CHAR_CLASS);    //J.110
+    defineType(JavaUML.INT_CLASS);     //J.111
+    defineType(JavaUML.BOOLEAN_CLASS); //J.112
+    defineType(JavaUML.BYTE_CLASS);    //J.113
+    defineType(JavaUML.LONG_CLASS);    //J.114
+    defineType(JavaUML.FLOAT_CLASS);   //J.115
+    defineType(JavaUML.DOUBLE_CLASS);  //J.116
+
+    defineType(JavaUML.RECTANGLE_CLASS); //J.201
+    defineType(JavaUML.POINT_CLASS);     //J.202
+    defineType(JavaUML.COLOR_CLASS);     //J.203
+
+    defineType(JavaUML.VECTOR_CLASS);    //J.301
+    defineType(JavaUML.HASHTABLE_CLASS); //J.302
+    defineType(JavaUML.STACK_CLASS);     //J.303
+
+    addSearchPath("PROJECT_DIR");
+
+    try {
+      addMember(new UMLClassDiagram(model));
+      addMember(new UMLUseCaseDiagram(model));
+      addMember(model);
+      setNeedsSave(false);
+    }
+    catch (PropertyVetoException pve) { }
+
+    Runnable resetStatsLater = new ResetStatsLater();
+    uci.uml.Main.addPostLoadAction(resetStatsLater);
+  }
+
 
   public static Project makeEmptyProject() {
     System.out.println("making empty project");

@@ -60,6 +60,7 @@ import uci.uml.visual.*;
 import uci.uml.generate.*;
 import uci.xml.argo.ArgoParser;
 import uci.uml.ocl.*;
+import uci.sql.*;
 
 public class Actions {
 
@@ -73,6 +74,8 @@ public class Actions {
   //public static UMLAction SaveAsXMI = new ActionSaveAsXMI();
   public static UMLAction OpenProject = new ActionOpenProject();
   public static UMLAction SaveProject = new ActionSaveProject();
+  public static UMLAction LoadModelFromDB = new ActionLoadModelFromDB();
+  public static UMLAction StoreProjectToDB = new ActionStoreProjectToDB();
   public static UMLAction SaveProjectAs = new ActionSaveProjectAs();
   //public static UMLAction AddToProj = new ActionAddToProj();
   public static UMLAction Print = new ActionPrint();
@@ -263,141 +266,6 @@ class ActionNew extends UMLAction {
   }
 } /* end class ActionNew */
 
-// class ActionOpen extends UMLAction {
-//   public ActionOpen() { super("Open..."); }
-//   public void actionPerformed(ActionEvent e) {
-//     ProjectBrowser pb = ProjectBrowser.TheInstance;
-//     Project p = pb.getProject();
-//     if (p != null) { // && p.getNeedsSave()) {
-//       String t = "Save changes to " + p.getName();
-//       int response =
-// 	JOptionPane.showConfirmDialog(pb, t, t,
-// 				      JOptionPane.YES_NO_CANCEL_OPTION);
-//       if (response == JOptionPane.CANCEL_OPTION) return;
-//       if (response == JOptionPane.YES_OPTION)
-// 	if (!((ActionSave)Actions.Save).trySave()) return;
-//     }
-
-//     Hashtable stats;
-
-//     try {
-//       JFileChooser chooser;
-//       if (p != null && p.getPathname() != null && p.getPathname().length()>0) {
-// 	System.out.println("open initial path=" + p.getPathname());
-// 	chooser = new JFileChooser(p.getPathname());
-//       }
-//       else chooser = new JFileChooser();
-
-//       chooser.setDialogTitle("Open Project...");
-//       FileFilter filter = FileFilters.ArgoFilter;
-//       chooser.addChoosableFileFilter(filter);
-//       chooser.setFileFilter(filter);
-//       int retval = chooser.showOpenDialog(pb);
-//       if(retval == 0) {
-// 	File theFile = chooser.getSelectedFile();
-// 	if(theFile != null) {
-// 	  String pathname = chooser.getSelectedFile().getAbsolutePath();
-//     	pb.showStatus("Reading " + pathname + "...");
-//     	FileInputStream fis = new FileInputStream(pathname);
-//     	ObjectInput s = new ObjectInputStream(fis);
-// 	stats = (Hashtable) s.readObject();
-//     	p = (Project) s.readObject();
-// 	p.postLoad();
-// 	DocumentationManager._docs = (Hashtable) s.readObject();
-// 	if (fis != null) fis.close();
-//     	pb.showStatus("Read " + pathname);
-// 	pb.setProject(p);
-// 	return;
-// 	}
-//       }
-//     }
-// //     try {
-// //       JFileChooser chooser = new JFileChooser();
-// //       ArgoFileFilter filter = new ArgoFileFilter();
-// //       chooser.addChoosableFileFilter(filter);
-// //       chooser.setFileFilter(filter);
-// //       int retval = chooser.showOpenDialog(pb);
-// //       if(retval == 0) {
-// // 	File theFile = chooser.getSelectedFile();
-// // 	if(theFile != null) {
-// // 	  String pathname = chooser.getSelectedFile().getAbsolutePath();
-// //     	pb.showStatus("Reading " + pathname + "...");
-// //     	FileInputStream fis = new FileInputStream(pathname);
-// //     	ObjectInput s = new ObjectInputStream(fis);
-// //     	Project p = (Project) s.readObject();
-// // 	p.postLoad();
-// // 	if (fis != null) fis.close();
-// //     	pb.showStatus("Read " + pathname);
-// // 	pb.setProject(p);
-// // 	return;
-// // 	}
-// //       }
-// //     }
-//     catch (FileNotFoundException ignore) {
-//       System.out.println("got an FileNotFoundException");
-//      }
-//     catch (java.lang.ClassNotFoundException ignore) {
-//       System.out.println("got an ClassNotFoundException");
-//      }
-//     catch (IOException ignore) {
-//       System.out.println("got an IOException");
-//     }
-//   }
-// } /* end class ActionOpen */
-
-// class ActionOpenXMI extends UMLAction {
-//   public ActionOpenXMI() { super("Open XMI..."); }
-//   public void actionPerformed(ActionEvent e) {
-//     ProjectBrowser pb = ProjectBrowser.TheInstance;
-//     Project p = pb.getProject();
-//     if (p != null) { // && p.getNeedsSave()) {
-//       String t = "Save changes to " + p.getName();
-//       int response =
-// 	JOptionPane.showConfirmDialog(pb, t, t,
-// 				      JOptionPane.YES_NO_CANCEL_OPTION);
-//       if (response == JOptionPane.CANCEL_OPTION) return;
-//       if (response == JOptionPane.YES_OPTION)
-// 	if (!((ActionSave)Actions.Save).trySave()) return;
-//     }
-
-//     //    try {
-//       JFileChooser chooser;
-//       if (p != null && p.getPathname() != null && p.getPathname().length()>0) {
-// 	System.out.println("open initial path=" + p.getPathname());
-// 	chooser = new JFileChooser(p.getPathname());
-//       }
-//       else chooser = new JFileChooser();
-
-//       chooser.setDialogTitle("Open Project...");
-//       FileFilter filter = FileFilters.XMIFilter;
-//       chooser.addChoosableFileFilter(filter);
-//       chooser.setFileFilter(filter);
-//       int retval = chooser.showOpenDialog(pb);
-//       if(retval == 0) {
-// 	File theFile = chooser.getSelectedFile();
-// 	if(theFile != null) {
-// 	  String pathname = chooser.getSelectedFile().getAbsolutePath();
-//     	System.out.println("Reading " + pathname + "...");
-// 	pb.showStatus("Reading " + pathname + "...");
-// 	XMIParserIBM.SINGLETON.readModels("", pathname);
-// 	//p.postLoad();
-//     	pb.showStatus("Read " + pathname);
-// 	return;
-// 	}
-//       }
-// //     }
-// //     catch (FileNotFoundException ignore) {
-// //       System.out.println("got an FileNotFoundException");
-// //      }
-// //     catch (java.lang.ClassNotFoundException ignore) {
-// //       System.out.println("got an ClassNotFoundException");
-// //      }
-// //     catch (IOException ignore) {
-// //       System.out.println("got an IOException");
-// //     }
-//   }
-// } /* end class ActionOpenXMI */
-
 class ActionOpenProject extends UMLAction {
   public static final String separator = "/"; //System.getProperty("file.separator");
   public ActionOpenProject() { super("Open Project..."); }
@@ -472,187 +340,6 @@ class ActionOpenProject extends UMLAction {
   }
 } /* end class ActionOpenProject */
 
-
-// class ActionSave extends UMLAction {
-//   protected static Hashtable _templates = new Hashtable();
-
-//   static {
-//     _templates = TemplateReader.readFile("/uci/dtd/XMI.tee");
-//   }
-
-//   public ActionSave() { super("Save"); }
-//   public void actionPerformed(ActionEvent ae) {
-//     // needs-more-work: should just save
-//     trySave();
-//   }
-//   public boolean trySave() {
-//     // needs-more-work: should just save
-//     return ((ActionSaveAs)Actions.SaveAs).trySave();
-//   }
-// } /* end class ActionSave */
-
-// class ActionSaveAs extends UMLAction {
-//   public ActionSaveAs() { super("Save As..."); }
-
-//   public void actionPerformed(ActionEvent ae) {
-//     trySave();
-//   }
-
-//   public boolean trySave() {
-//     ProjectBrowser pb = ProjectBrowser.TheInstance;
-//     Project p =  pb.getProject();
-//     try {
-//       JFileChooser chooser;
-//       if (p != null && p.getPathname() != null && p.getPathname().length()>0) {
-// 	chooser  = new JFileChooser(p.getPathname());
-//       }
-//       else chooser = new JFileChooser();
-
-//       chooser.setDialogTitle("Save " + p.getName());
-//       FileFilter filter = FileFilters.ArgoFilter;
-//       chooser.addChoosableFileFilter(filter);
-//       chooser.setFileFilter(filter);
-
-//       int retval = chooser.showSaveDialog(pb);
-//       if(retval == 0) {
-// 	File theFile = chooser.getSelectedFile();
-// 	if (theFile != null) {
-// 	  String pathname = chooser.getSelectedFile().getAbsolutePath();
-// 	  pb.showStatus("Writing " + pathname + "...");
-// 	  p.setPathname(chooser.getSelectedFile().getParent());
-// 	  String name = chooser.getSelectedFile().getName();
-// 	  if (!name.endsWith(".argo")) name += ".argo";
-// 	  if (!pathname.endsWith(".argo")) pathname += ".argo";
-// 	  p.setName(name);
-// 	  FileOutputStream fos = new FileOutputStream(pathname);
-// 	  ObjectOutput oo = new ObjectOutputStream(fos);
-// 	  p.preSave();
-// 	  oo.writeObject(stats);
-// 	  oo.writeObject(p);
-// 	  oo.writeObject(DocumentationManager._docs);
-// 	  p.postSave();
-// 	  if (fos != null) fos.close();
-// 	  pb.showStatus("Wrote " + pathname);
-// 	  pb.updateTitle();
-// 	  return true;
-// 	}
-//       }
-//     }
-// //     try {
-// //       JFileChooser chooser = new JFileChooser();
-// //       ArgoFileFilter filter = new ArgoFileFilter();
-// //       chooser.addChoosableFileFilter(filter);
-// //       chooser.setFileFilter(filter);
-// //       int retval = chooser.showSaveDialog(pb);
-// //       if(retval == 0) {
-// // 	File theFile = chooser.getSelectedFile();
-// // 	if (theFile != null) {
-// // 	  String pathname = chooser.getSelectedFile().getAbsolutePath();
-// // 	  pb.showStatus("Writing " + pathname + "...");
-// // 	  FileOutputStream fos = new FileOutputStream(pathname);
-// // 	  ObjectOutput oo = new ObjectOutputStream(fos);
-// // 	  p.preSave();
-// // 	  oo.writeObject(p);
-// // 	  p.postSave();
-// // 	  if (fos != null) fos.close();
-// // 	  pb.showStatus("Wrote " + pathname);
-// // 	  return true;
-// // 	}
-// //       }
-// //     }
-//     catch (FileNotFoundException ignore) {
-//       System.out.println("got an FileNotFoundException");
-//     }
-//     catch (PropertyVetoException ignore) {
-//       System.out.println("got an PropertyVetoException in SaveAs");
-//     }
-// //     catch (PropertyVetoException ignore) {
-// //       System.out.println("got an PropertyVetoException");
-// //     }
-//     //    catch (java.lang.ClassMismatchException ignore) {
-//     //      System.out.println("got an ClassMismatchException");
-//     //    }
-//     catch (IOException ignore) {
-//       System.out.println("got an IOException");
-//       ignore.printStackTrace();
-//     }
-//     return false;
-//   }
-// } /* end class ActionSaveAS */
-
-// class ActionSaveAsXMI extends UMLAction {
-//   protected static OCLExpander expander = null;
-//   public ActionSaveAsXMI() {
-//     super("Save As XMI");
-//     Hashtable templates = TemplateReader.readFile("/uci/dtd/XMI.tee");
-//     expander = new OCLExpander(templates);
-//   }
-
-//   public void actionPerformed(ActionEvent e) {
-//     trySave();
-//   }
-
-//   public boolean trySave() {
-//     //@@@: just for rapid edig-compile-debug 
-//     Hashtable templates = TemplateReader.readFile("/uci/dtd/XMI.tee");
-//     expander = new OCLExpander(templates);
-
-//     ProjectBrowser pb = ProjectBrowser.TheInstance;
-//     Project p =  pb.getProject();
-//     try {
-//       JFileChooser chooser;
-//       if (p != null && p.getPathname() != null && p.getPathname().length()>0) {
-// 	chooser  = new JFileChooser(p.getPathname());
-//       }
-//       else chooser = new JFileChooser();
-
-//       chooser.setDialogTitle("Save " + p.getName());
-//       FileFilter filter = FileFilters.XMIFilter;
-//       chooser.addChoosableFileFilter(filter);
-//       chooser.setFileFilter(filter);
-
-//       int retval = chooser.showSaveDialog(pb);
-//       if(retval == 0) {
-// 	File theFile = chooser.getSelectedFile();
-// 	if (theFile != null) {
-// 	  String pathname = chooser.getSelectedFile().getAbsolutePath();
-// 	  pb.showStatus("Writing " + pathname + "...");
-// 	  p.setPathname(chooser.getSelectedFile().getParent());
-// 	  String name = chooser.getSelectedFile().getName();
-// 	  if (!name.endsWith(".xmi")) name += ".xmi";
-// 	  if (!pathname.endsWith(".xmi")) pathname += ".xmi";
-// 	  p.setName(name);
-// 	  FileWriter fw = new FileWriter(pathname);
-// 	  p.preSave();
-// 	  expander.expand(fw, p, "", "");
-// 	  p.postSave();
-// 	  fw.close();
-// 	  pb.showStatus("Wrote " + pathname);
-// 	  pb.updateTitle();
-// 	  return true;
-// 	}
-//       }
-//     }
-//     catch (FileNotFoundException ignore) {
-//       System.out.println("got an FileNotFoundException");
-//     }
-//     catch (PropertyVetoException ignore) {
-//       System.out.println("got an PropertyVetoException in SaveAs");
-//     }
-// //     catch (PropertyVetoException ignore) {
-// //       System.out.println("got an PropertyVetoException");
-// //     }
-//     //    catch (java.lang.ClassMismatchException ignore) {
-//     //      System.out.println("got an ClassMismatchException");
-//     //    }
-//     catch (IOException ignore) {
-//       System.out.println("got an IOException");
-//       ignore.printStackTrace();
-//     }
-//     return false;
-//   }
-// } /* end class ActionSaveAsXMI */
-
 class ActionSaveProject extends UMLAction {
   protected static OCLExpander expander = null;
   public static String ARGO_TEE = "/uci/xml/dtd/argo.tee";
@@ -717,7 +404,6 @@ class ActionSaveProject extends UMLAction {
   }
 
 } /* end class ActionSaveProject */
-
 
 class ActionSaveProjectAs extends UMLAction {
   public static final String separator = "/"; //System.getProperty("file.separator");
@@ -808,6 +494,61 @@ class ActionSaveProjectAs extends UMLAction {
   }
 } /* end class ActionSaveProjectAs */
 
+
+/* class ActionLoadModelFromDB */
+class ActionLoadModelFromDB extends UMLAction {
+  public ActionLoadModelFromDB() {
+    super("Load model from DB", NO_ICON);
+  }
+
+  public void actionPerformed(ActionEvent e) {
+   	  
+	  String modelName = JOptionPane.showInputDialog("What is the name of the model?");
+	  if ((modelName == null)|| (modelName.equals(""))) return;
+	  DBLoader loader = new DBLoader();
+	  
+	  MModel newModel = loader.read(modelName);
+	  ProjectBrowser.TheInstance.setProject(new Project(newModel));
+	  
+  }
+  public boolean shouldBeEnabled() {
+	  return true;
+  }
+
+} /* end class ActionLoadModelFromDB */
+
+
+/* class ActionStoreProjectToDB */
+class ActionStoreProjectToDB extends UMLAction {
+  public ActionStoreProjectToDB() {
+    super("Store model to DB", NO_ICON);
+  }
+
+  public void actionPerformed(ActionEvent e) {
+	  DBWriter writer = new DBWriter();
+	  
+      ProjectBrowser pb = ProjectBrowser.TheInstance;
+      Project p =  pb.getProject();
+	  
+	  MNamespace nm = p.getCurrentNamespace();
+	  if (!(nm instanceof MModel)) {
+		  JOptionPane.showMessageDialog(null, "Error", "Current Namespace is not a Model", JOptionPane.ERROR_MESSAGE);
+		  return;
+	  }
+
+	  writer.store((MModel)p.getCurrentNamespace());
+// 	  Vector models = p.getModels();
+// 	  for (int i = 0; i< models.size(); i++) {
+// 		  writer.store((MModel)models.elementAt(i));
+// 		  pb.showStatus("Wrote " + ((MModel)models.elementAt(i)).getName());
+// 	  }
+  }
+  public boolean shouldBeEnabled() {
+	  // this is always true, because there is no way for Argo to be without a model
+	  return true;
+  }
+
+} /* end class ActionStoreProjectToDB */
 
 class ActionPrint extends UMLAction {
   public ActionPrint() { super("Print..."); }

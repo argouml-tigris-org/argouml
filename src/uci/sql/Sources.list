@@ -1,0 +1,3 @@
+SOURCES= \
+	DBWriter.java \
+	DBLoader.java

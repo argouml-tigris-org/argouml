@@ -101,6 +101,7 @@ ARGOUML_DIRS= argo/kernel        \
 	uml/visual               \
 	xml/xmi                  \
 	xml/argo                 \
+	sql			 \
 	uml                      
 
 #	uml/ui/colorize       
