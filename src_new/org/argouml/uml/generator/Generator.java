@@ -1,4 +1,4 @@
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2001 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -22,6 +22,8 @@
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 package org.argouml.uml.generator;
+import org.argouml.application.api.*;
+import org.argouml.language.helpers.*;
 
 import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.foundation.data_types.*;
@@ -43,7 +45,8 @@ import java.util.*;
  * pattern</a> in "Design Patterns", and the <a href=
  * "http://www.ccs.neu.edu/research/demeter/"> Demeter project</a>. */
 
-public abstract class Generator {
+public abstract class Generator
+implements NotationProvider {
 
   public String generate(Object o) {
     if (o == null)
@@ -100,7 +103,6 @@ public abstract class Generator {
   public abstract String generateParameter(MParameter param);
   public abstract String generatePackage(MPackage p);
   public abstract String generateClassifier(MClassifier cls);
-  public abstract String generateStereotype(MStereotype s);
   public abstract String generateTaggedValue(MTaggedValue s);
   public abstract String generateAssociation(MAssociation a);
   public abstract String generateAssociationEnd(MAssociationEnd ae);
@@ -133,6 +135,14 @@ public abstract class Generator {
   public String generateClassifierRef(MClassifier cls) {
     if (cls == null) return "";
     return cls.getName();
+  }
+
+  public String generateStereotype(MStereotype st) {
+    if (st == null) return "";
+    if (st.getName().length() == 0) return "";
+    return NotationHelper.getLeftGuillemot() +
+           generateName(st.getName()) +
+	   NotationHelper.getRightGuillemot();
   }
 
 } /* end class Generator */
