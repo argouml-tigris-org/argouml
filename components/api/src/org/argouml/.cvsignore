@@ -1,0 +1,5 @@
+# Including this directory in .cvsignore is temporary,
+# until the Repository interface is more stable.
+# At that point, the classes will be put into CVS so that
+# it will not be necessary to run IDLJ against the idl files
+mof
