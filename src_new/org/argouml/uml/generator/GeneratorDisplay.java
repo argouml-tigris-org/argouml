@@ -1092,8 +1092,7 @@ public class GeneratorDisplay extends Generator2 {
         } else if (ModelFacade.isASignalEvent(m)) {
             event.append(generateName(ModelFacade.getName(m)));
         } else if (ModelFacade.isACallEvent(m)) {
-            event.append(generateName(ModelFacade.getName(
-                    ModelFacade.getOperation(m))));
+            event.append(generateName(ModelFacade.getName(m)));
             event.append(generateParameterList(m));
         }
         return event.toString();
