@@ -385,7 +385,7 @@ public class ProjectBrowser
                             m);
                 }
             }
-
+            getNavigatorPane().getTree().setTarget(o);
             Actions.updateAllEnabled();
         }
     }

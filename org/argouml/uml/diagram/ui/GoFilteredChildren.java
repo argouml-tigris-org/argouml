@@ -21,20 +21,20 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
+// $Id$
+
 package org.argouml.uml.diagram.ui;
 
-import java.util.*;
-import javax.swing.*;
-import javax.swing.event.*;
-import javax.swing.tree.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
-import ru.novosoft.uml.model_management.*;
-import ru.novosoft.uml.foundation.core.*;
-
-import org.tigris.gef.util.*;
+import javax.swing.tree.TreeModel;
 
 import org.argouml.application.api.Argo;
-import org.argouml.ui.*;
+import org.argouml.ui.AbstractGoRule;
+import org.tigris.gef.util.Predicate;
+import org.tigris.gef.util.PredicateTrue;
 
 public class GoFilteredChildren extends AbstractGoRule {
 
@@ -79,8 +79,11 @@ public class GoFilteredChildren extends AbstractGoRule {
   }
 
   public Collection getChildren(Object parent) { 
-      throw
-          new UnsupportedOperationException("getChildren should not be called");
+      List list = new ArrayList();
+      for (int i = 0; i < getChildCount(parent); i++) {
+          list.add(getChild(parent, i));
+      }    
+      return list;            
   }
   
   public int getChildCount(Object parent) {
@@ -114,10 +117,6 @@ public class GoFilteredChildren extends AbstractGoRule {
     }
     return -1;
   }
-  
-  public void valueForPathChanged(TreePath path, Object newValue) { }
-  public void addTreeModelListener(TreeModelListener l) { }
-  public void removeTreeModelListener(TreeModelListener l) { }
   
   public boolean isLeaf(Object node) {
     return !hasChildren(node);

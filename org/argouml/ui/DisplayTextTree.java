@@ -26,184 +26,201 @@
 // Original Author:
 // $Id$
 
-
 // 26 Apr 2002: Jeremy Bennett (mail@jeremybennett.com). Patch to give a better
 // naming for extension points in convertValueToText.
 
-
 package org.argouml.ui;
 
-import java.util.*;
-import java.beans.*;
-import javax.swing.*;
-import javax.swing.event.*;
-import javax.swing.tree.*;
-import javax.swing.plaf.basic.*;
+import java.util.Hashtable;
+import java.util.Vector;
 
-import ru.novosoft.uml.foundation.core.*;
-import ru.novosoft.uml.*;
-import ru.novosoft.uml.behavior.state_machines.*;
-import ru.novosoft.uml.behavior.use_cases.*;
-import ru.novosoft.uml.foundation.extension_mechanisms.MTaggedValue;
-import ru.novosoft.uml.foundation.extension_mechanisms.MStereotype;
-
-import org.tigris.gef.base.*;
+import javax.swing.JTree;
+import javax.swing.SwingUtilities;
+import javax.swing.event.TreeModelEvent;
+import javax.swing.tree.TreeModel;
+import javax.swing.tree.TreePath;
 
 import org.apache.log4j.Category;
 import org.argouml.application.api.Configuration;
 import org.argouml.application.api.Notation;
-import org.argouml.kernel.*;
+import org.argouml.cognitive.ToDoItem;
+import org.argouml.cognitive.ToDoList;
 import org.argouml.model.uml.UmlModelEventPump;
-import org.argouml.cognitive.*;
-import org.argouml.uml.generator.*;
-import org.argouml.uml.ui.*;
+import org.argouml.uml.generator.GeneratorDisplay;
+import org.argouml.uml.ui.UMLTreeCellRenderer;
+import org.tigris.gef.base.Diagram;
+import org.tigris.gef.presentation.Fig;
 
-public class DisplayTextTree extends JTree
-implements MElementListener {
-    
+import ru.novosoft.uml.MBase;
+import ru.novosoft.uml.MElementEvent;
+import ru.novosoft.uml.MElementListener;
+import ru.novosoft.uml.behavior.state_machines.MTransition;
+import ru.novosoft.uml.behavior.use_cases.MExtensionPoint;
+import ru.novosoft.uml.foundation.core.MElement;
+import ru.novosoft.uml.foundation.core.MModelElement;
+import ru.novosoft.uml.foundation.extension_mechanisms.MStereotype;
+import ru.novosoft.uml.foundation.extension_mechanisms.MTaggedValue;
+
+public class DisplayTextTree extends JTree implements MElementListener {
+
     protected static Category cat = Category.getInstance(DisplayTextTree.class);
 
-  Hashtable _expandedPathsInModel = new Hashtable();
-  boolean _reexpanding = false;
+    Hashtable _expandedPathsInModel = new Hashtable();
+    boolean _reexpanding = false;
 
-  public DisplayTextTree() {
-    setCellRenderer(new UMLTreeCellRenderer());
-    putClientProperty("JTree.lineStyle", "Angled");
-    //setEditable(true);
-  }
-
-  public String convertValueToText(Object value, boolean selected,
-				   boolean expanded, boolean leaf, int row,
-				   boolean hasFocus) {
-    if (value == null) return "(null)";
-    if (value instanceof ToDoItem) {
-      return ((ToDoItem)value).getHeadline();
-    }
-    if (value instanceof ToDoList) {
-	return "ToDoList";
-    }
-    if (value instanceof MTaggedValue) {
-        String tagName = ((MTaggedValue)value).getTag();
-        if (tagName == null || tagName.equals("")) tagName = "(anon)";
-        return("1-" + tagName);
-    }
-    if ((value instanceof MElement)&&(!(value instanceof MTaggedValue))) {
-      // original
-      MElement e = (MElement) value;
-      String ocl = "";
-      if (e instanceof MModelElement)
-	ocl = ((MModelElement)e).getUMLClassName();
-        String name = ((MModelElement)e).getName();
-      if (e instanceof MTransition) {
-		  name = GeneratorDisplay.Generate((MTransition)e);
-      }
-      if (e instanceof MExtensionPoint) {  // Jeremy Bennett patch
-          name = GeneratorDisplay.Generate((MExtensionPoint) e);
-      }
-      if (name == null || name.equals("")) name = "(anon " + ocl + ")";
-
-      // Look for stereotype
-      if (Configuration.getBoolean(Notation.KEY_SHOW_STEREOTYPES, false)) {
-          if (e instanceof MModelElement) {
-              MStereotype st = ((MModelElement)e).getStereotype();
-	      if (st != null) {
-		  name += " " + GeneratorDisplay.Generate(st);
-	      }
-          }
-      }
-      return name;
-    }
-    if (value instanceof Diagram) {
-      return ((Diagram)value).getName();
-    }
-    return value.toString();
-  }
-
-
-  protected Vector getExpandedPaths() {
-    TreeModel tm = getModel();
-    Vector res = (Vector) _expandedPathsInModel.get(tm);
-    if (res == null) {
-      res = new Vector();
-      _expandedPathsInModel.put(tm, res);
-    }
-    return res;
-  }
-
-  /**
-   * Tree MModel Expansion notification.
-   *
-   * @param e  a Tree node insertion event
-   */
-  public void fireTreeExpanded(TreePath path) {
-    super.fireTreeExpanded(path);
-    if (_reexpanding) return;
-    if (path == null || _expandedPathsInModel == null) return;
-    Vector expanded = getExpandedPaths();
-    expanded.removeElement(path);
-    expanded.addElement(path);
-    addListenerToPath(path);
-  }
-
-  protected void addListenerToPath(TreePath path) {
-    Object node = path.getLastPathComponent();
-    addListenerToNode(node);
-  }
-
-  protected void addListenerToNode(Object node) {
-    if (node instanceof MBase) {
-        // UmlModelEventPump.getPump().removeModelEventListener(this, ((MBase)node));
-        UmlModelEventPump.getPump().addModelEventListener(this, ((MBase)node)); 
-    }
-    TreeModel tm = getModel();
-    int childCount = tm.getChildCount(node);
-    for (int i = 0; i < childCount; i++) {
-      Object child = tm.getChild(node, i);
-      if (child instanceof MBase) {
-            UmlModelEventPump.getPump().removeModelEventListener(this, ((MBase)child));
-            UmlModelEventPump.getPump().addModelEventListener(this, ((MBase)child));
-       
-      }
-    }
-  }
-
-  public void fireTreeCollapsed(TreePath path) {
-    super.fireTreeCollapsed(path);
-    if (path == null || _expandedPathsInModel == null) return;
-    Vector expanded = getExpandedPaths();
-    expanded.removeElement(path);
-  }
-
-
-  public void setModel(TreeModel newModel) {
-    Object r = newModel.getRoot();
-    if (r != null)
-        super.setModel(newModel);
-    
-    if (r instanceof MBase) {
-      // UmlModelEventPump.getPump().removeModelEventListener(this, (MBase)r);
-      UmlModelEventPump.getPump().addModelEventListener(this, (MBase)r);
+    public DisplayTextTree() {
+        setCellRenderer(new UMLTreeCellRenderer());
+        putClientProperty("JTree.lineStyle", "Angled");
+        //setEditable(true);
     }
 
-    int childCount = newModel.getChildCount(r);
-    for (int i = 0; i < childCount; i++) {
-      Object child = newModel.getChild(r, i);
-      if (child instanceof MBase) {
-	// UmlModelEventPump.getPump().removeModelEventListener(this, (MBase)child);
-        UmlModelEventPump.getPump().addModelEventListener(this, (MBase)child);
-      }
+    public String convertValueToText(
+        Object value,
+        boolean selected,
+        boolean expanded,
+        boolean leaf,
+        int row,
+        boolean hasFocus) {
+        if (value == null)
+            return "(null)";
+        if (value instanceof ToDoItem) {
+            return ((ToDoItem) value).getHeadline();
+        }
+        if (value instanceof ToDoList) {
+            return "ToDoList";
+        }
+        if (value instanceof MTaggedValue) {
+            String tagName = ((MTaggedValue) value).getTag();
+            if (tagName == null || tagName.equals(""))
+                tagName = "(anon)";
+            return ("1-" + tagName);
+        }
+        if ((value instanceof MElement)
+            && (!(value instanceof MTaggedValue))) {
+            // original
+            MElement e = (MElement) value;
+            String ocl = "";
+            if (e instanceof MModelElement)
+                ocl = ((MModelElement) e).getUMLClassName();
+            String name = ((MModelElement) e).getName();
+            if (e instanceof MTransition) {
+                name = GeneratorDisplay.Generate((MTransition) e);
+            }
+            if (e instanceof MExtensionPoint) { // Jeremy Bennett patch
+                name = GeneratorDisplay.Generate((MExtensionPoint) e);
+            }
+            if (name == null || name.equals(""))
+                name = "(anon " + ocl + ")";
+
+            // Look for stereotype
+            if (Configuration
+                .getBoolean(Notation.KEY_SHOW_STEREOTYPES, false)) {
+                if (e instanceof MModelElement) {
+                    MStereotype st = ((MModelElement) e).getStereotype();
+                    if (st != null) {
+                        name += " " + GeneratorDisplay.Generate(st);
+                    }
+                }
+            }
+            return name;
+        }
+        if (value instanceof Diagram) {
+            return ((Diagram) value).getName();
+        }
+        return value.toString();
     }
-    reexpand();
-  }
 
+    protected Vector getExpandedPaths() {
+        TreeModel tm = getModel();
+        Vector res = (Vector) _expandedPathsInModel.get(tm);
+        if (res == null) {
+            res = new Vector();
+            _expandedPathsInModel.put(tm, res);
+        }
+        return res;
+    }
 
+    /**
+     * Tree MModel Expansion notification.
+     *
+     * @param e  a Tree node insertion event
+     */
+    public void fireTreeExpanded(TreePath path) {
+        super.fireTreeExpanded(path);
+        if (_reexpanding)
+            return;
+        if (path == null || _expandedPathsInModel == null)
+            return;
+        Vector expanded = getExpandedPaths();
+        expanded.removeElement(path);
+        expanded.addElement(path);
+        addListenerToPath(path);
+    }
 
+    protected void addListenerToPath(TreePath path) {
+        Object node = path.getLastPathComponent();
+        addListenerToNode(node);
+    }
 
-  public static final int DEPTH_LIMIT = 10;
-  public static final int CHANGE = 1;
-  public static final int ADD = 2;
-  public static final int REMOVE = 3;
-  //public static Object path[] = new Object[DEPTH_LIMIT];
+    protected void addListenerToNode(Object node) {
+        if (node instanceof MBase) {
+            // UmlModelEventPump.getPump().removeModelEventListener(this, ((MBase)node));
+            UmlModelEventPump.getPump().addModelEventListener(
+                this,
+                ((MBase) node));
+        }
+        TreeModel tm = getModel();
+        int childCount = tm.getChildCount(node);
+        for (int i = 0; i < childCount; i++) {
+            Object child = tm.getChild(node, i);
+            if (child instanceof MBase) {
+                UmlModelEventPump.getPump().removeModelEventListener(
+                    this,
+                    ((MBase) child));
+                UmlModelEventPump.getPump().addModelEventListener(
+                    this,
+                    ((MBase) child));
+
+            }
+        }
+    }
+
+    public void fireTreeCollapsed(TreePath path) {
+        super.fireTreeCollapsed(path);
+        if (path == null || _expandedPathsInModel == null)
+            return;
+        Vector expanded = getExpandedPaths();
+        expanded.removeElement(path);
+    }
+
+    public void setModel(TreeModel newModel) {
+        Object r = newModel.getRoot();
+        if (r != null)
+            super.setModel(newModel);
+
+        if (r instanceof MBase) {
+            // UmlModelEventPump.getPump().removeModelEventListener(this, (MBase)r);
+            UmlModelEventPump.getPump().addModelEventListener(this, (MBase) r);
+        }
+
+        int childCount = newModel.getChildCount(r);
+        for (int i = 0; i < childCount; i++) {
+            Object child = newModel.getChild(r, i);
+            if (child instanceof MBase) {
+                // UmlModelEventPump.getPump().removeModelEventListener(this, (MBase)child);
+                UmlModelEventPump.getPump().addModelEventListener(
+                    this,
+                    (MBase) child);
+            }
+        }
+        reexpand();
+    }
+
+    public static final int DEPTH_LIMIT = 10;
+    public static final int CHANGE = 1;
+    public static final int ADD = 2;
+    public static final int REMOVE = 3;
+    //public static Object path[] = new Object[DEPTH_LIMIT];
 
     private DisplayTextTreeRun _doit = new DisplayTextTreeRun(cat, this);
 
@@ -219,7 +236,7 @@ implements MElementListener {
      * updates but it is probably far from every file.
      */
     public void forceUpdate() {
-	_doit.onceMore();
+        _doit.onceMore();
     }
 
     /**
@@ -230,67 +247,85 @@ implements MElementListener {
      *
      * @since 0.13.1
      */
-  public void doForceUpdate() {
-    Object rootArray[] = new Object[1];
-    rootArray[0] = getModel().getRoot();
-    Object noChildren[] = null;
-    int noIndexes[] = null;
-    TreeModelEvent tme = new TreeModelEvent(this, new TreePath(rootArray));
-    treeModelListener.treeStructureChanged(tme);
-    TreeModel tm = getModel();
-    if (tm instanceof NavPerspective) {
-      NavPerspective np = (NavPerspective) tm;
-      np.fireTreeStructureChanged(this, rootArray, noIndexes, noChildren);
+    public void doForceUpdate() {
+        Object rootArray[] = new Object[1];
+        rootArray[0] = getModel().getRoot();
+        Object noChildren[] = null;
+        int noIndexes[] = null;
+        TreeModelEvent tme = new TreeModelEvent(this, new TreePath(rootArray));
+        treeModelListener.treeStructureChanged(tme);
+        TreeModel tm = getModel();
+        if (tm instanceof NavPerspective) {
+            NavPerspective np = (NavPerspective) tm;
+            np.fireTreeStructureChanged(this, rootArray, noIndexes, noChildren);
+        }
+        reexpand();
     }
-    reexpand();
-  }
 
-//   public void forceUpdate_old() {
-//     int n = 0;
-//     ProjectBrowser pb = ProjectBrowser.TheInstance;
-//     Vector pers = pb.getNavPane().getPerspectives();
-//     NavPerspective curPerspective = pb.getNavPane().getCurPerspective();
-//     if (curPerspective == null) return;
-//     n = (pers.indexOf(curPerspective) + 1) % pers.size();
-//     NavPerspective otherPerspective = (NavPerspective) pers.elementAt(n);
-//     pb.getNavPane().setCurPerspective(otherPerspective);
-//     pb.getNavPane().setCurPerspective(curPerspective);
-//   }
+    //   public void forceUpdate_old() {
+    //     int n = 0;
+    //     ProjectBrowser pb = ProjectBrowser.TheInstance;
+    //     Vector pers = pb.getNavPane().getPerspectives();
+    //     NavPerspective curPerspective = pb.getNavPane().getCurPerspective();
+    //     if (curPerspective == null) return;
+    //     n = (pers.indexOf(curPerspective) + 1) % pers.size();
+    //     NavPerspective otherPerspective = (NavPerspective) pers.elementAt(n);
+    //     pb.getNavPane().setCurPerspective(otherPerspective);
+    //     pb.getNavPane().setCurPerspective(curPerspective);
+    //   }
 
-  public void reexpand() {
-    if (_expandedPathsInModel == null) return;
-    _reexpanding = true;
-    Object[] path2 = new Object[1];
-    path2[0] = getModel().getRoot();
-    TreeModelEvent tme = new TreeModelEvent(this, path2, null, null);
-    treeModelListener.treeStructureChanged(tme);
-    treeDidChange();
+    public void reexpand() {
+        if (_expandedPathsInModel == null)
+            return;
+        _reexpanding = true;
+        Object[] path2 = new Object[1];
+        path2[0] = getModel().getRoot();
+        TreeModelEvent tme = new TreeModelEvent(this, path2, null, null);
+        treeModelListener.treeStructureChanged(tme);
+        treeDidChange();
 
-    java.util.Enumeration enum = getExpandedPaths().elements();
-    while (enum.hasMoreElements()) {
-      TreePath path = (TreePath) enum.nextElement();
-      tme = new TreeModelEvent(this, path, null, null);
-      treeModelListener.treeStructureChanged(tme);
-      expandPath(path);
-      // addListenerToPath(path);
+        java.util.Enumeration enum = getExpandedPaths().elements();
+        while (enum.hasMoreElements()) {
+            TreePath path = (TreePath) enum.nextElement();
+            tme = new TreeModelEvent(this, path, null, null);
+            treeModelListener.treeStructureChanged(tme);
+            expandPath(path);
+            // addListenerToPath(path);
+        }
+        _reexpanding = false;
+
     }
-    _reexpanding = false;
 
-  }
+    public void propertySet(MElementEvent mee) {
+    }
+    public void listRoleItemSet(MElementEvent mee) {
+    }
+    public void recovered(MElementEvent mee) {
+    }
+    public void removed(MElementEvent mee) {
+    }
+    public void roleAdded(MElementEvent mee) {
+    }
+    public void roleRemoved(MElementEvent mee) {
+    }
 
-	public void propertySet(MElementEvent mee) {
-	}
-	public void listRoleItemSet(MElementEvent mee) {
-	}
-	public void recovered(MElementEvent mee) {
-	}
-	public void removed(MElementEvent mee) {
-	}
-	public void roleAdded(MElementEvent mee) {
-	}
-	public void roleRemoved(MElementEvent mee) {
-	}
-
+    /** 
+     * This methods sets the target of the treemodel to the given object. It's
+     * a means to set the target programmatically from within the setTarget
+     * method in the ProjectBrowser.
+     * @param target
+     */
+    public void setTarget(Object target) {
+        if (getModel() instanceof NavPerspective) {
+            if (target instanceof Fig) {
+                target = ((Fig)target).getOwner();
+            }
+            int index =
+                getModel().getIndexOfChild(getModel().getRoot(), target);
+            if (index > -1)
+                setSelectionRow(index);
+        }
+    }
 
 } /* end class DisplayTextTree */
 
@@ -308,32 +343,32 @@ class DisplayTextTreeRun implements Runnable {
     boolean _queued = false;
 
     public DisplayTextTreeRun(Category c, DisplayTextTree t) {
-	cat = c;
-	_tree = t;
+        cat = c;
+        _tree = t;
     }
 
     public synchronized void onceMore() {
-	if (!_queued) {
-	    _queued = true;
-	    SwingUtilities.invokeLater(this);
-	}
-	_timesToRun++;
+        if (!_queued) {
+            _queued = true;
+            SwingUtilities.invokeLater(this);
+        }
+        _timesToRun++;
     }
 
     public synchronized void run() {
-	if (_timesToRun > 100)
-	    cat.debug("" + _timesToRun + " forceUpdates encountered.");
+        if (_timesToRun > 100)
+            cat.debug("" + _timesToRun + " forceUpdates encountered.");
 
-	if (_timesToRun > 0) {
-	    // another forceUpdate was seen, wait again
-	    _queued = true;
-	    SwingUtilities.invokeLater(this);
-	    _timesToRun = 0;
-	} else if (_queued) {
-	    _queued = false;
-	    SwingUtilities.invokeLater(this);
-	} else {
-	    _tree.doForceUpdate();
-	}
+        if (_timesToRun > 0) {
+            // another forceUpdate was seen, wait again
+            _queued = true;
+            SwingUtilities.invokeLater(this);
+            _timesToRun = 0;
+        } else if (_queued) {
+            _queued = false;
+            SwingUtilities.invokeLater(this);
+        } else {
+            _tree.doForceUpdate();
+        }
     }
 }

@@ -22,8 +22,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-
-
 package org.argouml.uml.ui.behavior.common_behavior;
 
 import javax.swing.JScrollPane;
@@ -46,25 +44,65 @@ public class PropPanelCallAction extends PropPanelModelElement {
     ////////////////////////////////////////////////////////////////
     // contructors
     public PropPanelCallAction() {
-        super("Action", _callActionIcon,2);
+        super("Action", _callActionIcon, 2);
 
         Class mclass = MCallAction.class;
 
-	addCaption(Argo.localize("UMLMenu", "label.name"),1,0,0);
-        addField(new UMLTextField2(new UMLModelElementNameDocument()),1,0,0);
+        addCaption(Argo.localize("UMLMenu", "label.name"), 1, 0, 0);
+        addField(new UMLTextField2(new UMLModelElementNameDocument()), 1, 0, 0);
 
-        UMLExpressionModel expressionModel = new UMLExpressionModel(this,MAction.class,"script",
-            MActionExpression.class,"getScript","setScript");
+        UMLExpressionModel expressionModel =
+            new UMLExpressionModel(
+                this,
+                MAction.class,
+                "script",
+                MActionExpression.class,
+                "getScript",
+                "setScript");
 
-        addCaption(Argo.localize("UMLMenu", "label.expression"),2,0,0);
-        addField(new JScrollPane(new UMLExpressionBodyField(expressionModel,true)),2,0,0);
+        addCaption(Argo.localize("UMLMenu", "label.expression"), 2, 0, 0);
+        addField(
+            new JScrollPane(new UMLExpressionBodyField(expressionModel, true)),
+            2,
+            0,
+            0);
 
-        addCaption(Argo.localize("UMLMenu", "label.language"),3,0,1);
-        addField(new UMLExpressionLanguageField(expressionModel,true),3,0,0);
+        addCaption(Argo.localize("UMLMenu", "label.language"), 3, 0, 1);
+        addField(
+            new UMLExpressionLanguageField(expressionModel, true),
+            3,
+            0,
+            0);
 
-	new PropPanelButton(this,buttonPanel,_navBackIcon, Argo.localize("UMLMenu", "button.go-back"),"navigateBackAction","isNavigateBackEnabled");
-	new PropPanelButton(this,buttonPanel,_navForwardIcon, Argo.localize("UMLMenu", "button.go-forward"),"navigateForwardAction","isNavigateForwardEnabled");
+        new PropPanelButton(
+            this,
+            buttonPanel,
+            _navUpIcon,
+            Argo.localize("UMLMenu", "button.go-up"),
+            "navigateNamespace",
+            null);
+        new PropPanelButton(
+            this,
+            buttonPanel,
+            _navBackIcon,
+            Argo.localize("UMLMenu", "button.go-back"),
+            "navigateBackAction",
+            "isNavigateBackEnabled");
+        new PropPanelButton(
+            this,
+            buttonPanel,
+            _navForwardIcon,
+            Argo.localize("UMLMenu", "button.go-forward"),
+            "navigateForwardAction",
+            "isNavigateForwardEnabled");
+
+        new PropPanelButton(
+            this,
+            buttonPanel,
+            _deleteIcon,
+            localize("Delete"),
+            "removeElement",
+            null);
     }
 
 } /* end class PropPanelCallAction */
-

@@ -31,6 +31,7 @@ package org.argouml.uml.diagram.ui;
 import java.awt.*;
 import java.beans.*;
 
+import ru.novosoft.uml.MElementEvent;
 import ru.novosoft.uml.foundation.core.*;
 
 import org.tigris.gef.base.*;
@@ -56,8 +57,8 @@ public class FigUsage extends FigDependency {
         super(edge,lay);
     }
         
-    protected void modelChanged() {
-	super.modelChanged();
+    protected void modelChanged(MElementEvent e) {
+	super.modelChanged(e);
 	
 	String stereoTypeStr = _stereo.getText();
 

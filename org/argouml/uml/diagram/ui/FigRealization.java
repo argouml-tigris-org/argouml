@@ -28,13 +28,14 @@
 
 package org.argouml.uml.diagram.ui;
 
-import java.awt.*;
-import java.beans.*;
+import java.awt.Color;
+import java.awt.Graphics;
 
-import ru.novosoft.uml.foundation.core.*;
+import org.tigris.gef.base.PathConvPercent;
+import org.tigris.gef.presentation.ArrowHeadTriangle;
+import org.tigris.gef.presentation.Fig;
 
-import org.tigris.gef.base.*;
-import org.tigris.gef.presentation.*;
+import ru.novosoft.uml.MElementEvent;
 
 public class FigRealization extends FigEdgeModelElement {
 
@@ -71,7 +72,7 @@ public class FigRealization extends FigEdgeModelElement {
   /** This is called aftern any part of the UML MModelElement has
    *  changed. This method automatically updates the name FigText.
    *  Subclasses should override and update other parts. */
-  protected void modelChanged() {
+  protected void modelChanged(MElementEvent e) {
     // do not set _name
       //updateStereotypeText();
   }

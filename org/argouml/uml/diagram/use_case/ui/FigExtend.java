@@ -222,7 +222,7 @@ public class FigExtend extends FigEdgeModelElement {
      *    the redrawing right.</p>
      */
 
-    protected void modelChanged() {
+    protected void modelChanged(MElementEvent e) {
 
         // Give up if we have no owner
 
@@ -235,7 +235,7 @@ public class FigExtend extends FigEdgeModelElement {
         // Let the superclass sort itself out, and then tell GEF we are going
         // to start something
 
-        super.modelChanged();
+        super.modelChanged(e);
         startTrans();
 
         // Now sort out the condition text. Use the null string if there is no

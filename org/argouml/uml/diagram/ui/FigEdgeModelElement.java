@@ -312,7 +312,7 @@ implements VetoableChangeListener, DelayedVChangeListener, MouseListener, KeyLis
     Object src = pce.getSource();
     startTrans();
     // update any text, colors, fonts, etc.
-    modelChanged();
+    modelChanged(null);
     // update the relative sizes and positions of internel Figs
     Rectangle bbox = getBounds();
     setBounds(bbox.x, bbox.y, bbox.width, bbox.height);
@@ -395,8 +395,9 @@ implements VetoableChangeListener, DelayedVChangeListener, MouseListener, KeyLis
   /** This is called aftern any part of the UML MModelElement has
    *  changed. This method automatically updates the name FigText.
    *  Subclasses should override and update other parts. */
-  protected void modelChanged() {
-    updateNameText();
+  protected void modelChanged(MElementEvent e) {
+      if (e == null || (e.getSource() == getOwner() && e.getName().equals("name")))
+        updateNameText();
     updateStereotypeText();
 
     if (ActionAutoResize.isAutoResizable()) {
@@ -445,43 +446,55 @@ implements VetoableChangeListener, DelayedVChangeListener, MouseListener, KeyLis
 		if ( me.getUUID() == null) 
 		    me.setUUID(UUIDManager.SINGLETON.getNewUUID());
 	    }
-	    modelChanged();
+	    modelChanged(null);
   	}
   		
   }
 
 
 	public void propertySet(MElementEvent mee) {
+        /*
 	    //if (_group != null) _group.propertySet(mee);
 	    if (mee.getOldValue() != mee.getNewValue()) {
                 if (mee.getName().equals("name")) {
                     updateNameText();
                 } else
-        	    	modelChanged();
+        	    	modelChanged(null);
 	    	damage();
 	    }
+        */
+        modelChanged(mee);
+        damage();
 	}
 	public void listRoleItemSet(MElementEvent mee) {
 	    //if (_group != null) _group.listRoleItemSet(mee);
-	    modelChanged();
+	    modelChanged(mee);
 	    damage();
 	}
 	public void recovered(MElementEvent mee) {
 	    //if (_group != null) _group.recovered(mee);
+        modelChanged(mee);
+        damage();
 	}
 	public void removed(MElementEvent mee) {
 		cat.debug("deleting: "+this + mee);
 	    //if (_group != null) _group.removed(mee);
-	    this.delete();
+        if (mee.getSource() == getOwner())
+	       this.delete();
+        else {
+            modelChanged(mee);
+            damage();
+        }
+            
 	}
 	public void roleAdded(MElementEvent mee) {
 	    //if (_group != null) _group.roleAdded(mee);
-	    modelChanged();
+	    modelChanged(mee);
 	    damage();
 	}
 	public void roleRemoved(MElementEvent mee) {
 	    //if (_group != null) _group.roleRemoved(mee);
-	    modelChanged();
+	    modelChanged(mee);
 	    damage();
 	}
 

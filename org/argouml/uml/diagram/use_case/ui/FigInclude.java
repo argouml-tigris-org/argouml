@@ -166,7 +166,7 @@ public class FigInclude extends FigEdgeModelElement {
      * <p>This implementation does nothing.</p>
      */
 
-    protected void modelChanged() { }
+    protected void modelChanged(MElementEvent e) { }
 
 
 } /* end class FigInclude */
