@@ -55,11 +55,11 @@ public class ModuleLoader {
 
     // String mModulePropertyFile=null;
     private static ModuleLoader SINGLETON = null;
-    
+
     private ArrayList mModuleClasses = null;
     private Vector mMenuActionList = null;
     private static Hashtable _singletons = null;
-    private static String argoRoot = null; 
+    private static String argoRoot = null;
     private static String argoHome = null;
 
     /** Make sure the module loader cannot be instantiated from outside.
@@ -67,7 +67,7 @@ public class ModuleLoader {
     private ModuleLoader() {
         _singletons = new Hashtable();
         mModuleClasses= new ArrayList();
-        mMenuActionList=new Vector(); 
+        mMenuActionList=new Vector();
 
 	// Use a little trick to find out where Argo is being loaded from.
         String extForm = org.argouml.application.Main.class.getResource(Argo.ARGOINI).toExternalForm();
@@ -91,7 +91,7 @@ public class ModuleLoader {
 	    ArgoModule.cat.info("argoHome is " + argoHome);
 	}
     }
-    
+
     public static ModuleLoader getInstance(){
         if (SINGLETON == null){
             SINGLETON = new ModuleLoader();
@@ -100,7 +100,7 @@ public class ModuleLoader {
     }
 
     /** Load the internal modules.
-     */ 
+     */
     public void initialize() {
 	loadInternalModules(getClass(), "standard.modules");
 	loadModulesFromExtensionDir();
@@ -116,7 +116,7 @@ public class ModuleLoader {
      *  ${user.dir}
      *  ${user.home}
      *  ${java.home}/lib
-     */ 
+     */
     public void loadModulesFromPredefinedLists() {
         String fs = System.getProperty("file.separator");
 
@@ -182,12 +182,12 @@ public class ModuleLoader {
 		    Attributes atrs = manifest.getAttributes(cname);
 		    String s1 = atrs.getValue(Attributes.Name.SPECIFICATION_TITLE);
 		    String s2 = atrs.getValue(Attributes.Name.SPECIFICATION_VENDOR);
-    
+
 		    // needs-more-work:  If we are in jdk1.3 or above, check
 		    // EXTENSION_NAME.  Otherwise pass the class name.  It's not
 		    // as good of a check (we might get duplicate modules with
 		    // the same key), but it's better than nothing.
-    
+
 		    // String key = atrs.getValue(Attributes.Name.EXTENSION_NAME);
 		    String key = cname;
 	            if (Pluggable.PLUGIN_TITLE.equals(s1) &&
@@ -195,7 +195,7 @@ public class ModuleLoader {
 		        key != null &&
 		        cname.endsWith(CLASS_SUFFIX)) {
 		        // This load is not secure.
-                        loadClassFromLoader(classloader, key, 
+                        loadClassFromLoader(classloader, key,
 	        cname.substring(0, cname.length()-CLASS_SUFFIX.length()), false);
 	            }
 	        }
@@ -210,7 +210,7 @@ public class ModuleLoader {
 
     /** Search for and load modules from classpath, and from
      *  other places.
-     */ 
+     */
     public void loadModulesFromExtensionDir() {
 	if (argoHome != null) {
 	    if (argoHome.startsWith("file:")) {
@@ -243,8 +243,8 @@ public class ModuleLoader {
 		if (jarfile != null) {
 	            ClassLoader classloader = new ArgoClassLoader(jarfile);
 	            // ClassLoader classloader = getClass().getClassLoader();
-	            processJarFile(classloader, file[i]); 
-	            // processJarFile(getClass().getClassLoader(), file[i]); 
+	            processJarFile(classloader, file[i]);
+	            // processJarFile(getClass().getClassLoader(), file[i]);
 		}
 	    }
 	}
@@ -273,7 +273,7 @@ public class ModuleLoader {
     }
 
     /** Load modules listed in Argo resources.
-     */ 
+     */
     public boolean loadInternalModules(Class fromClass, String rsrcName) {
 	ArgoModule.cat.info("Loading modules from " + rsrcName);
 	// Load the internal modules
@@ -355,6 +355,7 @@ public class ModuleLoader {
 	        String realLine = lnr.readLine();
 		if (realLine == null) return true;
 		String line = realLine.trim();
+		if (line.length() == 0) continue;
 		if (line.charAt(0) == '#') continue;
 		if (line.charAt(0) == '!') continue;
 		String sKey = "";
@@ -405,7 +406,7 @@ public class ModuleLoader {
             Argo.log.warn("ModuleLoader.shutdown Error processing Module shutdown:"+e);
             e.printStackTrace();
         }
-        
+
     }
 
     public void addModuleAction(Vector popUpActions, Object context){
@@ -506,21 +507,21 @@ public class ModuleLoader {
       //  Make sure that we are only looking at real extensions
       if (! (pluginType.getName().startsWith(Pluggable.PLUGIN_PREFIX))) {
           Argo.log.warn ("Class " + pluginType.getName() +
-	                      " is not a core Argo pluggable type."); 
+	                      " is not a core Argo pluggable type.");
           return null;
       }
 
       // // Check to see that the class implements Pluggable
       // if (! (pluginType.isAssignableFrom(Pluggable.class))) {
           // System.out.println ("Class " + pluginType.getName() +
-	                      // " does not extend Pluggable."); 
+	                      // " does not extend Pluggable.");
           // return null;
       // }
 
       // Check to see that the class is not Pluggable itself
       if (pluginType.equals(Pluggable.class)) {
           Argo.log.warn ("This is " + pluginType.getName() +
-	                      ", it cannot be used here."); 
+	                      ", it cannot be used here.");
           return null;
       }
 
@@ -533,7 +534,7 @@ public class ModuleLoader {
 	  // if (module.getClass().isAssignableFrom(pluginType))
 	  if (classImplements(module, pluginType)) {
 	      Pluggable pluggable = (Pluggable)module;
-	  // if (pluggable.isModuleType(pluginType)) 
+	  // if (pluggable.isModuleType(pluginType))
 	      if (context == null) {
 	          return pluggable;
 	      }
@@ -560,28 +561,28 @@ public class ModuleLoader {
    *  @return A plug-in class which extends the type of class passed
    *          as the argument.
    *
-   *  
+   *
    */
   public boolean hasPlugin (Class pluginType,
                                   Object[] context) {
       //  Make sure that we are only looking at real extensions
       if (! (pluginType.getName().startsWith(Pluggable.PLUGIN_PREFIX))) {
           Argo.log.warn ("Class " + pluginType.getName() +
-	                      " is not a core Argo pluggable type."); 
+	                      " is not a core Argo pluggable type.");
           return false;
       }
 
       // Check to see that the class implements Pluggable
       if (! (pluginType.isAssignableFrom(Pluggable.class))) {
           Argo.log.warn ("Class " + pluginType.getName() +
-	                      " does not extend Pluggable."); 
+	                      " does not extend Pluggable.");
           return false;
       }
 
       // Check to see that the class is not Pluggable itself
       if (pluginType.equals(Pluggable.class)) {
           Argo.log.warn ("Class " + pluginType.getName() +
-	                      " does not extend Pluggable."); 
+	                      " does not extend Pluggable.");
           return false;
       }
 
@@ -626,21 +627,21 @@ public class ModuleLoader {
 
       if (! (pluginType.getName().startsWith(Pluggable.PLUGIN_PREFIX))) {
           Argo.log.warn ("Class " + pluginType.getName() +
-	                      " is not a core Argo pluggable type."); 
+	                      " is not a core Argo pluggable type.");
           return null;
       }
 
       // // Check to see that the class implements Pluggable
       // if (! (pluginType.isAssignableFrom(Pluggable.class))) {
           // System.out.println ("Class " + pluginType.getName() +
-	                      // " does not extend Pluggable."); 
+	                      // " does not extend Pluggable.");
           // return null;
       // }
 
       // Check to see that the class is not Pluggable itself
       if (pluginType.equals(Pluggable.class)) {
           Argo.log.warn ("This is " + pluginType.getName() +
-	                      ", it cannot be used here."); 
+	                      ", it cannot be used here.");
           return null;
       }
 
@@ -653,7 +654,7 @@ public class ModuleLoader {
           Object module = iterator.next();
 	  try {
 	      Pluggable pluggable = (Pluggable)module;
-	      // if (pluggable.isModuleType(pluginType)) 
+	      // if (pluggable.isModuleType(pluginType))
 	      // if (pluggable.getClass().isAssignableFrom(pluginType))
 	      if (classImplements(module, pluginType)) {
 	           if (context == null) {
@@ -699,6 +700,6 @@ public class ModuleLoader {
                                                                 module));
   }
 
-} /* end class ModuleLoader */ 
+} /* end class ModuleLoader */
 
 
