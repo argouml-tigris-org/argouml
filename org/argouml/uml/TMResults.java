@@ -130,8 +130,8 @@ public class TMResults extends AbstractTableModel {
 		return "N/A";
 	    case 3 :
 		//GraphModel gm = d.getGraphModel();
-		int numNodes = d.getNodes().size();
-		int numEdges = d.getEdges().size();
+		int numNodes = d.getNodes(null).size();
+		int numEdges = d.getEdges(null).size();
 		return numNodes + " nodes and " + numEdges + " edges";
             }
         }

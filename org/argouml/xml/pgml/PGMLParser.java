@@ -409,14 +409,14 @@ public class PGMLParser extends org.tigris.gef.xml.pgml.PGMLParser {
         switch (_elementState) {
 	case NODE_STATE: 
 	    Object own = _currentNode.getOwner();
-	    if (!_diagram.getNodes().contains(own)) {
-		_diagram.getNodes().addElement(own);
+	    if (!_diagram.getNodes(null).contains(own)) {
+		_diagram.getNodes(null).add(own);
 	    }
 	    break;
 	case EDGE_STATE:
 	    own = _currentEdge.getOwner();
-	    if (!_diagram.getEdges().contains(own)) {
-		_diagram.getEdges().addElement(own);
+	    if (!_diagram.getEdges(null).contains(own)) {
+		_diagram.getEdges(null).add(own);
 	    }
 	    break;
         }

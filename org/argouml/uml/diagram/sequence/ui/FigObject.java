@@ -748,7 +748,7 @@ public class FigObject extends FigNodeModelElement implements MouseListener {
      * @return
      */
     public FigLink getFigLink(FigLinkPort portFig) {
-        Iterator it = getFigEdges().iterator();
+        Iterator it = getFigEdges(null).iterator();
         while (it.hasNext()) {
             FigEdge figEdge = (FigEdge) it.next();
             if (figEdge instanceof FigLink

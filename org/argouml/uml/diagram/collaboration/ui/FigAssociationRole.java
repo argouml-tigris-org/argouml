@@ -24,7 +24,9 @@
 
 package org.argouml.uml.diagram.collaboration.ui;
 
+import java.util.Collection;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Vector;
 
 import org.argouml.application.api.Notation;
@@ -93,6 +95,7 @@ public class FigAssociationRole extends FigAssociation {
 
 } /* end class FigAssociationRole */
 
+//TODO Should this be in its own source file?
 class FigMessageGroup extends FigGroup {
 	
     /**
@@ -105,28 +108,37 @@ class FigMessageGroup extends FigGroup {
     /**
      * Constructor for FigMessageGroup.
      * @param figs
+     * @deprecated 0.16 in favour of FigMessageGroup(List)
      */
     public FigMessageGroup(Vector figs) {
 	super(figs);
     }
 
-	
+    /**
+     * Constructor for FigMessageGroup.
+     * @param figs
+     */
+    public FigMessageGroup(List figs) {
+        super(figs);
+    }
+
     protected void updateFigPositions() {
-    	Vector figs = getFigs();
+    	Collection figs = getFigs(null);
+        Iterator it = figs.iterator();
     	if (!figs.isEmpty()) {
-	    FigMessage first = (FigMessage) figs.get(0);
-	    for (int i = 0; i < figs.size(); i++) {
-		FigMessage fig = (FigMessage) figs.get(i);
-		fig.startTrans();
+            FigMessage previousFig = null;
+	    for (int i = 0; it.hasNext(); i++) {
+		FigMessage fig = (FigMessage) it.next();
 		fig.setX(getX());
 		if (i != 0) {
-		    fig.setY(((FigMessage) figs.get(i - 1)).getY()
-			     + ((FigMessage) figs.get(i - 1)).getHeight()
+		    fig.setY(previousFig.getY()
+			     + previousFig.getHeight()
 			     + 5);
 		} else {
 		    fig.setY(getY());
 		}
 		fig.endTrans();
+                previousFig = fig;
 	    }
     	}
     }

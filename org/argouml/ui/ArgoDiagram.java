@@ -25,6 +25,7 @@
 package org.argouml.ui;
 
 import java.beans.PropertyVetoException;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.Vector;
 
@@ -137,8 +138,8 @@ public class ArgoDiagram extends Diagram {
     }
     
     public void damage() {
-        if (getLayer() != null && getLayer().getEditors() != null) {
-            Iterator it = getLayer().getEditors().iterator();
+        if (getLayer() != null && getLayer().getEditors(null) != null) {
+            Iterator it = getLayer().getEditors(null).iterator();
             while (it.hasNext()) {
                 ((Editor) it.next()).damageAll();
             }
@@ -146,7 +147,7 @@ public class ArgoDiagram extends Diagram {
     }
 
     /**
-     * @see org.tigris.gef.base.Diagram#getEdges()
+     * @deprecated in favour of getEdges(Collection)
      */
     public Vector getEdges() {
         if (getGraphModel() != null) {
@@ -156,13 +157,33 @@ public class ArgoDiagram extends Diagram {
     }
 
     /**
-     * @see org.tigris.gef.base.Diagram#getNodes()
+     * @see org.tigris.gef.base.Diagram#getEdges()
+     */
+    public Collection getEdges(Collection c) {
+        if (getGraphModel() != null) {
+            return getGraphModel().getEdges();
+        }
+        return super.getEdges(null);
+    }
+
+    /**
+     * @deprecated 0.16 in favour of getNodes(Collection)
      */
     public Vector getNodes() {
         if (getGraphModel() != null) {
             return getGraphModel().getNodes();
         }
         return super.getNodes();
+    }
+    
+    /**
+     * @see org.tigris.gef.base.Diagram#getNodes()
+     */
+    public Collection getNodes(Collection c) {
+        if (getGraphModel() != null) {
+            return getGraphModel().getNodes();
+        }
+        return super.getNodes(c);
     }
     
     public String toString() {
