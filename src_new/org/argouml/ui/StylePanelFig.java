@@ -1,4 +1,5 @@
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// $Id$
+// Copyright (c) 1996-2003 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -23,14 +24,6 @@
 
 // File: FigStylePanelFig.java
 // Classes: FigStylePanelFig
-// Original Author: your email address here
-// $Id$
-
-// 13 Apr 2002: Jeremy Bennett (mail@jeremybennett.com). Problem with cursor
-// jumping around in the boundary box fixed (a problem with double refreshing
-// causing rewriting). XXXXUpdate methods, setTargetBBox() and refresh()
-// recoded to fix.
-
 
 package org.argouml.ui;
 
@@ -383,10 +376,6 @@ implements ItemListener, FocusListener, KeyListener {
                 return res;
             }
             res.height = Integer.parseInt(st.nextToken());
-            if ((res.height + res.y) > 1000) {
-                res.height = 1000;
-                changed = true;
-            }
             if ((res.height + res.y) > 6000) {
                 res.height = 6000 - res.y;
                 changed = true;
