@@ -50,6 +50,11 @@ public abstract class FigEdge extends Fig {
   protected FigNode _destFigNode;
   /** Fig that presents the NetEdge. */
   protected Fig _fig;
+  /** The ArrowHead at the start of the line */
+  ArrowHead ArrowHeadStart = new ArrowHeadTriangle();
+  /** The ArrowHead at the end of the line */
+  ArrowHead ArrowHeadEnd = new ArrowHeadTriangle();
+
 
   ////////////////////////////////////////////////////////////////
   // constructors
@@ -87,6 +92,16 @@ public abstract class FigEdge extends Fig {
       ((NetEdge)own).addPersistantObserver(this);
     }
     super.setOwner(own);
+  }
+
+  public void setSourceArrowHead(ArrowHead newArrow)
+  {
+    ArrowHeadStart = newArrow;
+  }
+
+  public void setDestArrowHead(ArrowHead newArrow)
+  {
+    ArrowHeadEnd = newArrow;
   }
 
 
@@ -166,6 +181,14 @@ public abstract class FigEdge extends Fig {
   ////////////////////////////////////////////////////////////////
   // display methods
 
+  protected void drawArrowHead(Graphics g) {
+    ArrowHeadStart.setFillColor(Color.white);
+    System.out.println("p0= " + pointAlongPerimeter(0) + " len= " + getPerimeterLength() + " pE= " + pointAlongPerimeter(getPerimeterLength()));
+    ArrowHeadStart.paint(g, pointAlongPerimeter(20), pointAlongPerimeter(0));
+    ArrowHeadEnd.paint(g, pointAlongPerimeter(getPerimeterLength() - 21), pointAlongPerimeter(getPerimeterLength() - 1));
+  }
+
+
   PathConvPercent[] labelPos = {
     new PathConvPercent(this, (float) .2, 0),
     new PathConvPercent(this, (float) .5, 0),
@@ -175,10 +198,21 @@ public abstract class FigEdge extends Fig {
     new FigText(0, 0, 100, 10, Color.black, "TimesRoman", 8),
     new FigText(0, 0, 100, 10, Color.black, "TimesRoman", 8), };
 
+  boolean initedFigs = false;
+
   /** Paint this object. */
   public void paint(Graphics g) {
     computeRoute();
     _fig.paint(g);
+    drawArrowHead(g);
+
+    if (!initedFigs)
+    {
+      getLayer().add(labelText[0]);
+      getLayer().add(labelText[1]);
+      getLayer().add(labelText[2]);
+      initedFigs = true;
+    }
 
     labelText[0].setText("x= " + labelPos[0].getPoint().x + " y= " + labelPos[0].getPoint().y);
     labelText[1].setText("x= " + labelPos[1].getPoint().x + " y= " + labelPos[1].getPoint().y);
@@ -188,10 +222,10 @@ public abstract class FigEdge extends Fig {
     labelText[1].setLocation(labelPos[1].getPoint().x, labelPos[1].getPoint().y);
     labelText[2].setLocation(labelPos[2].getPoint().x, labelPos[2].getPoint().y);
 
-	labelText[0].paint(g);
-	labelText[1].paint(g);
-	labelText[2].paint(g);
-   }
+    labelText[0].paint(g);
+    labelText[1].paint(g);
+    labelText[2].paint(g);
+  }
 
   ////////////////////////////////////////////////////////////////
   // notifications and updates

@@ -97,6 +97,7 @@ public class FigText extends Fig {
     PropCategoryManager.categorizeProperty("Text", "botMargin");
     PropCategoryManager.categorizeProperty("Text", "leftMargin");
     PropCategoryManager.categorizeProperty("Text", "rightMargin");
+    PropCategoryManager.categorizeProperty("Text", "text");
     PropCategoryManager.categorizeProperty("Style", "alignment");
     PropCategoryManager.categorizeProperty("Style", "textFilled");
     PropCategoryManager.categorizeProperty("Style", "textFillColor");
