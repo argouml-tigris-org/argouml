@@ -32,8 +32,6 @@
 package org.argouml.uml.ui.behavior.state_machines;
 
 import org.argouml.i18n.Translator;
-
-import org.argouml.uml.ui.UMLComboBoxNavigator;
 import org.argouml.util.ConfigLoader;
 
 public class PropPanelSimpleState extends PropPanelState {

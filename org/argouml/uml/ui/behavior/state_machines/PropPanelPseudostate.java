@@ -31,7 +31,6 @@ package org.argouml.uml.ui.behavior.state_machines;
 
 import org.argouml.i18n.Translator;
 import org.argouml.model.ModelFacade;
-import org.argouml.uml.ui.UMLComboBoxNavigator;
 import org.argouml.util.ConfigLoader;
 import org.tigris.gef.presentation.Fig;
 
