@@ -204,6 +204,9 @@ implements PluggableNotation, FileGenerator {
         return null;
     }
 
+  public String generateAssociationRole(MAssociationRole m) {
+      return "";
+  }
 
   public String generateOperation (MOperation op, boolean documented) {
     StringBuffer sb = new StringBuffer(80);
