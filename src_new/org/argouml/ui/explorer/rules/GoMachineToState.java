@@ -32,7 +32,7 @@ import java.util.Collection;
 import org.argouml.ui.AbstractGoRule;
 
 /**
- * Navigation rule for navperspective to navigate from statemachine to
+ * PerspectiveRule to navigate from statemachine to
  * its top state.
  * 
  * @author jaap.branderhorst@xs4all.nl

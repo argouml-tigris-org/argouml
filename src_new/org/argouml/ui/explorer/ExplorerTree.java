@@ -50,7 +50,6 @@ import org.argouml.application.api.Notation;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.ModelFacade;
 import org.argouml.ui.DisplayTextTree;
-import org.argouml.ui.NavPerspective;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.generator.GeneratorDisplay;
 import org.argouml.ui.targetmanager.TargetEvent;
@@ -193,7 +192,7 @@ extends DisplayTextTree
             // changing the label in case of comments
             // this is necessary since the name of the comment is the same as
             // the content of the comment causing the total comment to be
-            // displayed in the navperspective
+            // displayed in the perspective
             else if (ModelFacade.isAComment(value)) {
                 name = ModelFacade.getName(value);
                 if (name != null && name.length() > 10) {
