@@ -172,8 +172,10 @@ public class FigAssociationEnd extends FigEdgeModelElement {
         Object stereo = null;
         if (Model.getFacade().isNavigable(owner)
                 && (Model.getFacade().isAClass(Model.getFacade().getType(owner))
-                || Model.getFacade().isAInterface(Model.getFacade().getType(owner)))) {
-            visi = Notation.generate(this, Model.getFacade().getVisibility(owner));
+                || Model.getFacade().isAInterface(Model.getFacade()
+                        .getType(owner)))) {
+            visi = 
+                Notation.generate(this, Model.getFacade().getVisibility(owner));
         }
         if (Model.getFacade().getStereotypes(owner).size() > 0) {
             stereo = Model.getFacade().getStereotypes(owner).iterator().next();
