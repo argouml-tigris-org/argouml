@@ -29,6 +29,7 @@ import java.beans.VetoableChangeListener;
 import java.util.*;
 import org.argouml.model.ModelFacade;
 import org.argouml.uml.diagram.UMLMutableGraphSupport;
+import org.argouml.uml.diagram.static_structure.ui.CommentEdge;
 
 import org.argouml.model.uml.foundation.core.CoreHelper;
 import org.argouml.model.uml.behavioralelements.commonbehavior.CommonBehaviorHelper;
@@ -196,7 +197,8 @@ public class DeploymentDiagramGraphModel extends UMLMutableGraphSupport
 	    (ModelFacade.isAInterface(node)) ||
 	    (ModelFacade.isAObject(node)) ||
 	    (ModelFacade.isANodeInstance(node)) || 
-	    (ModelFacade.isAComponentInstance(node));
+	    (ModelFacade.isAComponentInstance(node) ||
+	            (ModelFacade.isAComment(node)));
     }
 
     /** Return true if the given object is a valid edge in this graph */
@@ -212,6 +214,9 @@ public class DeploymentDiagramGraphModel extends UMLMutableGraphSupport
 	    end0 = CommonBehaviorHelper.getHelper().getSource(/*(MLink)*/ edge);
 	    end1 =
 		CommonBehaviorHelper.getHelper().getDestination(/*(MLink)*/ edge);
+	} else if (edge instanceof CommentEdge) {
+	    end0 = ((CommentEdge)edge).getSource();
+	    end1 = ((CommentEdge)edge).getDestination();
 	}
 	if (end0 == null || end1 == null) return false;
 	if (!_nodes.contains(end0)) return false;

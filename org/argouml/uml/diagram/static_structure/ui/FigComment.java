@@ -181,7 +181,8 @@ public class FigComment
 
     /**
      * Create a note for a given model element.
-     *
+     * @deprecated as of 0.17.1 nobody should use this constructor since it not only constructs
+     * the fig but also the model behind it. That should not be done by a fig which is only a view to the model
      * @param element The annotated model element.
      */
     public FigComment(Object element) {

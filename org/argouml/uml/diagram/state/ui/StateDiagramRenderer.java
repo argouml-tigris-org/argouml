@@ -33,6 +33,11 @@ import org.apache.log4j.Logger;
 import org.argouml.model.ModelFacade;
 import org.argouml.uml.diagram.activity.ui.FigActionState;
 
+import org.argouml.uml.diagram.static_structure.ui.CommentEdge;
+import org.argouml.uml.diagram.static_structure.ui.FigComment;
+import org.argouml.uml.diagram.static_structure.ui.FigEdgeNote;
+
+
 import org.tigris.gef.base.Layer;
 import org.tigris.gef.graph.GraphEdgeRenderer;
 import org.tigris.gef.graph.GraphModel;
@@ -90,6 +95,9 @@ public class StateDiagramRenderer
         else if (org.argouml.model.ModelFacade.isAState(node)) {
             return new FigSimpleState(gm, node);
         }
+        else if (ModelFacade.isAComment(node)) {
+            return new FigComment(gm, node);
+        }      
         else if (org.argouml.model.ModelFacade.isAPseudostate(node)) {
             Object pState = node;
             Object kind = ModelFacade.getKind(pState);
@@ -131,9 +139,11 @@ public class StateDiagramRenderer
     public FigEdge getFigEdgeFor(GraphModel gm, Layer lay, Object edge) {
 	LOG.debug("making figedge for " + edge);
 	if (org.argouml.model.ModelFacade.isATransition(edge)) {
-	    FigTransition trFig = new FigTransition(edge, lay);
-	    return trFig;
-	}
+            FigTransition trFig = new FigTransition(edge, lay);
+            return trFig;
+        } else if (edge instanceof CommentEdge) {
+            return new FigEdgeNote(edge, lay);
+        }
 
 	LOG.debug("TODO: StateDiagramRenderer getFigEdgeFor");
 	return null;

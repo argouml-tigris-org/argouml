@@ -42,6 +42,9 @@ import org.argouml.model.uml.UmlModelEventPump;
 import org.argouml.model.uml.foundation.datatypes.DataTypesHelper;
 import org.argouml.model.uml.foundation.extensionmechanisms.ExtensionMechanismsFactory;
 import org.argouml.model.uml.modelmanagement.ModelManagementHelper;
+import org.argouml.ui.ArgoDiagram;
+import org.argouml.uml.diagram.UMLMutableGraphSupport;
+import org.argouml.uml.diagram.static_structure.ui.CommentEdge;
 
 import ru.novosoft.uml.MElementListener;
 import ru.novosoft.uml.MFactory;
@@ -1533,6 +1536,49 @@ public class CoreFactory extends AbstractUmlModelFactory {
 				 .getCurrentProject().getModel());
 
 	return comment;
+    }
+    
+    /**
+     * Builds a comment owned by the namespace of the active diagram or by the model if the active diagram
+     * does not have a namespace.
+     * @return The comment build
+     */
+    public MComment buildComment() {
+        MComment comment = createComment();
+        Object ns = null;
+        ArgoDiagram diagram = ProjectManager.getManager().getCurrentProject().getActiveDiagram();
+        ns = ((UMLMutableGraphSupport)diagram.getGraphModel()).getNamespace();
+        if (ns == null || !ModelFacade.isANamespace(ns)) {
+            ns = ProjectManager.getManager().getCurrentProject().getModel();
+        }
+        ModelFacade.setNamespace(comment, ns);
+        return comment;
+    }
+    
+    /**
+     * Builds the model behind a connection between a comment and the annotated modelelement.
+     * @param from the comment or annotated element
+     * @param to the comment or annotated element
+     * @return a commentEdge representing the model behind the connection between a comment and an annotated modelelement
+     */
+    public CommentEdge buildCommentConnection(Object from, Object to) {
+        if (from == null || to == null) {
+            throw new IllegalArgumentException("Either fromNode == null or toNode == null");
+        }
+        Object comment = null;
+        Object annotatedElement = null;
+        if (ModelFacade.isAComment(from)) {
+            comment = from;
+            annotatedElement = to;
+        } else {
+            comment = to;
+            annotatedElement = from;
+        }
+        
+        CommentEdge connection = new CommentEdge(from, to);
+        ModelFacade.addAnnotatedElement(comment, annotatedElement);
+        return connection;
+        
     }
 
     /**

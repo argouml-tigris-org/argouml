@@ -36,6 +36,7 @@ import java.util.Vector;
 import org.argouml.model.uml.UmlFactory;
 import org.argouml.model.uml.foundation.core.CoreHelper;
 import org.argouml.model.uml.foundation.extensionmechanisms.ExtensionMechanismsHelper;
+import org.argouml.uml.diagram.static_structure.ui.CommentEdge;
 import org.tigris.gef.base.Diagram;
 
 import ru.novosoft.uml.MBase;
@@ -221,6 +222,7 @@ public class ModelFacade {
     public static final Object CLASS = MClass.class;
     public static final Object CLASSIFIER = MClassifier.class;
     public static final Object CLASSIFIER_ROLE = MClassifierRole.class;
+    public static final Object COMMENT = MComment.class;
     public static final Object COMPONENT = MComponent.class;
     public static final Object COMPONENT_INSTANCE = MComponentInstance.class;
     public static final Object EXCEPTION = MException.class;
@@ -4176,6 +4178,9 @@ public class ModelFacade {
         if (isABase(base)) {
             return ((MBase) base).getUUID();
         }
+        if (base instanceof CommentEdge) {
+            return (String)((CommentEdge)base).getUUID();
+        }
         //
 	illegalArgument(base);
 	return "";
@@ -4445,12 +4450,30 @@ public class ModelFacade {
 	illegalArgument(supplier, dependency);
     }
 
+    /**
+     * Adds an actual argument to an action
+     * @param handle the action
+     * @param argument the argument
+     */
     public static void addActualArgument(Object handle, Object argument) {
         if (handle instanceof MAction && argument instanceof MArgument) {
             ((MAction) handle).addActualArgument((MArgument) argument);
             return;
         }
 	illegalArgument(handle, argument);
+    }
+    
+    /**
+     * Adds an annotated element to a comment.
+     * @param comment The comment to which the element is annotated
+     * @param annotatedElement The element to annotate
+     */
+    public static void addAnnotatedElement(Object comment, Object annotatedElement) {
+        if (comment instanceof MComment && annotatedElement instanceof MModelElement) {
+            ((MComment)comment).addAnnotatedElement(((MModelElement)annotatedElement));
+            return;
+        }
+        illegalArgument(comment, annotatedElement);
     }
 
     /**
