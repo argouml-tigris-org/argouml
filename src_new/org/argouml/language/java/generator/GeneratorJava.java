@@ -1492,14 +1492,14 @@ implements PluggableNotation, FileGenerator {
 
   public String generateAction(MAction m) {
       // return m.getName();
-      if ((m.getScript() != null) && (m.getScript().getBody() != null))
+      if (m != null && (m.getScript() != null) && (m.getScript().getBody() != null))
 	  return m.getScript().getBody();
       return "";
   }
 
   public String generateGuard(MGuard m) {
       //return generateExpression(m.getExpression());
-      if (m.getExpression() != null)
+      if (m != null && m.getExpression() != null)
 	  return generateExpression(m.getExpression());
       return "";
   }
