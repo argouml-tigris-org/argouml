@@ -66,6 +66,9 @@ public class UMLListCellRenderer2 extends DefaultListCellRenderer {
      * @see javax.swing.ListCellRenderer#getListCellRendererComponent(javax.swing.JList, java.lang.Object, int, boolean, boolean)
      */
     public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+        if (value == null || value.equals("")) {
+            return new JLabel(" ");
+        }
         JLabel label = (JLabel) super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
 
         if (value instanceof MBase) {
@@ -81,6 +84,7 @@ public class UMLListCellRenderer2 extends DefaultListCellRenderer {
             }
 
         }
+        
 
         return label;
     }
