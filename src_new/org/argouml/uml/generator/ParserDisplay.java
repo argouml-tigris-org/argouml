@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2003 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -1608,7 +1608,8 @@ public class ParserDisplay extends Parser {
      * @return String
      * @deprecated Since 0.15.1, was probably part of the old parsing strategy
      *		   which arguably wasn't a strategy and using it is a bad idea.
-     *		   It is not used within core ArgoUML.
+     *		   It is not used within core ArgoUML. Not removed since 
+     *		   deprecated code still depends on it.
      *		   d00mst.
      */
     private String parseOutAttributeProperties(Object a, String s) {
@@ -1636,7 +1637,8 @@ public class ParserDisplay extends Parser {
     /**
      * @deprecated Since 0.15.1, was probably part of the old parsing strategy
      *		   which arguably wasn't a strategy and using it is a bad idea.
-     *		   It is not used within core ArgoUML.
+     *		   It is not used within core ArgoUML. Not removed since
+     *		   deprecated code still depends on it.
      *		   d00mst.
      */
     private String parseOutOperationProperties(Object op, String s) {
@@ -1674,6 +1676,11 @@ public class ParserDisplay extends Parser {
      * Create a new tagged value and add it to the target element.
      * @param target the element on which to place the tagged value
      * @param property the tag value pair in the form "tag=value"
+     * @deprecated Since 0.15.4, was probably part of the old parsing strategy
+     *		   which arguably wasn't a strategy and using it is a bad idea.
+     *		   Not removed since used by deprecated methods.
+     *		   Use ModelFacade.setTaggedValue instead.
+     *		   d00mst.
      */
     private void addTaggedValue(Object target, String property) {
         String tagStr = "";
