@@ -42,6 +42,9 @@ public class TestParserDisplay extends TestCase {
 	private final String attr06 = "private name {a=b, c = d } [*..*] : int = 15 {frozen}";
 	private final String attr07 = "+name : String = \'val[15] \'";
 	private final String attr08 = "  +name : String = \"a <<string>>\"";
+	private final String attr09 = "+name : String = (a * (b+c) - d)";
+	private final String attr10 = "+name : String = 2 * (b+c) - 10";
+	private final String attr11 = "+name : String = a[15]";
 
 	private final String nattr01 = "too many string in an attribute";
 	private final String nattr02 = "+vis name";
@@ -50,6 +53,12 @@ public class TestParserDisplay extends TestCase {
 	private final String nattr05 = "vis name [1..1] [1..1]";
 	private final String nattr06 = "vis name [1..1";
 	private final String nattr07 = "vis name { a = b, cv = ";
+	private final String nattr08 = "vis \"name\"";
+	private final String nattr09 = "\"vis\" name";
+	private final String nattr10 = "vis (name)";
+	private final String nattr11 = "(vis) name";
+	private final String nattr12 = "vis name : \"type\"";
+	private final String nattr13 = "vis name : (type)";
 
 	public TestParserDisplay(String str) {
 		super(str);
@@ -213,6 +222,12 @@ public class TestParserDisplay extends TestCase {
 		checkThrows(attr, nattr05, true, false, false);
 		checkThrows(attr, nattr06, true, false, false);
 		checkThrows(attr, nattr07, true, false, false);
+		checkThrows(attr, nattr08, true, false, false);
+		checkThrows(attr, nattr09, true, false, false);
+		checkThrows(attr, nattr10, true, false, false);
+		checkThrows(attr, nattr11, true, false, false);
+		checkThrows(attr, nattr12, true, false, false);
+		checkThrows(attr, nattr13, true, false, false);
 	}
 
 	private void checkThrows(MAttribute attr, String text, boolean prsEx,
@@ -240,6 +255,15 @@ public class TestParserDisplay extends TestCase {
 
 		attr = UmlFactory.getFactory().getCore().buildAttribute();
 		checkValue(attr, attr08, "\"a <<string>>\"");
+
+		attr = UmlFactory.getFactory().getCore().buildAttribute();
+		checkValue(attr, attr09, "(a * (b+c) - d)");
+
+		attr = UmlFactory.getFactory().getCore().buildAttribute();
+		checkValue(attr, attr10, "2 * (b+c) - 10");
+
+		attr = UmlFactory.getFactory().getCore().buildAttribute();
+		checkValue(attr, attr11, "a[15]");
 	}
 
 	private void checkValue(MAttribute attr, String text, String val) {
