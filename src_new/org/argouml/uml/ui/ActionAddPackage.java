@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2002 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -59,7 +59,7 @@ public class ActionAddPackage  extends UMLAction {
      */
     public void actionPerformed(ActionEvent e) {
         Object namespace =
-	    TargetManager.getInstance().getTarget();
+	    TargetManager.getInstance().getModelTarget();
         ModelFacade.addOwnedElement(namespace,
             UmlFactory.getFactory().getModelManagement().createPackage());
     }
