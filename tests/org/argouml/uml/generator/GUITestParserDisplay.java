@@ -168,13 +168,9 @@ public class GUITestParserDisplay extends TestCase {
     public void testAttributeType() throws ParseException {
         Object attr;
 
-        Object ns = null;
-        Object intType = null;
         Project project = ProjectManager.getManager().getCurrentProject();
-        if (project != null) {
-            ns = project.getModel();
-            intType = project.findType("int");
-        }
+        Object ns = project.getModel();
+        Object intType = project.findType("int");
         
         attr = UmlFactory.getFactory().getCore().buildAttribute(ns, intType);
         ModelFacade.setNamespace(attr, ns);
@@ -205,13 +201,9 @@ public class GUITestParserDisplay extends TestCase {
     public void testAttributeVisibility() throws ParseException {
         Object attr;
 
-        Object ns = null;
-        Object intType = null;
         Project project = ProjectManager.getManager().getCurrentProject();
-        if (project != null) {
-            ns = project.getModel();
-            intType = project.findType("int");
-        }
+        Object ns = project.getModel();
+        Object intType = project.findType("int");
 
         attr = UmlFactory.getFactory().getCore().buildAttribute(ns, intType);
         ModelFacade.setNamespace(attr, ns);
