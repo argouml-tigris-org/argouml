@@ -37,15 +37,16 @@ import javax.swing.JOptionPane;
 
 import org.apache.log4j.Logger;
 import org.argouml.application.api.Notation;
+import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.ModelFacade;
 import org.argouml.ui.ArgoDiagram;
 import org.argouml.ui.ArgoJMenu;
 import org.argouml.ui.targetmanager.TargetManager;
+import org.argouml.uml.diagram.ui.ActionModifier;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
 import org.argouml.uml.diagram.ui.UMLDiagram;
-import org.argouml.uml.diagram.ui.ActionModifier;
 import org.argouml.uml.ui.UMLAction;
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.FigRect;
@@ -479,27 +480,12 @@ public class FigPackage extends FigNodeModelElement {
         Vector popUpActions = super.getPopUpActions(me);
         Object mpackage = /*(MPackage)*/ getOwner();
 
-        ArgoJMenu modifierMenu = new ArgoJMenu("menu.popup.modifiers");
-
-        modifierMenu.addCheckItem(new ActionModifier("Abstract",
-						     "isAbstract",
-						     "isAbstract",
-						     "setAbstract",
-						     mpackage));
-        modifierMenu.addCheckItem(new ActionModifier("Leaf",
-						     "isLeaf", "isLeaf",
-						     "setLeaf", mpackage));
-        modifierMenu.addCheckItem(new ActionModifier("Root",
-						     "isRoot", "isRoot",
-						     "setRoot", mpackage));
-
-        popUpActions.insertElementAt(modifierMenu,
-            popUpActions.size() - POPUP_ADD_OFFSET);
-
+        // Show ...
         ArgoJMenu showMenu = new ArgoJMenu("menu.popup.show");
-
         if (!showStereotype) {
-            showMenu.add(new UMLAction("Show Stereotype", UMLAction.NO_ICON)
+            showMenu.add(new UMLAction(
+                    Translator.localize("menu.popup.show.show-stereotype"), 
+                    UMLAction.NO_ICON)
 	    {
 		/**
 		 * @see java.awt.event.ActionListener#actionPerformed(
@@ -512,7 +498,9 @@ public class FigPackage extends FigNodeModelElement {
 		}
 	    });
         } else {
-            showMenu.add(new UMLAction("Hide Stereotype", UMLAction.NO_ICON)
+            showMenu.add(new UMLAction(
+                    Translator.localize("menu.popup.show.hide-stereotype"), 
+                    UMLAction.NO_ICON)
 	    {
 		/**
 		 * @see java.awt.event.ActionListener#actionPerformed(
@@ -525,9 +513,16 @@ public class FigPackage extends FigNodeModelElement {
 		}
 	    });
         }
-
         popUpActions.insertElementAt(showMenu,
             popUpActions.size() - POPUP_ADD_OFFSET);
+
+        // Modifier ...
+        popUpActions.insertElementAt(buildModifierPopUp(ABSTRACT | LEAF | ROOT),
+                popUpActions.size() - POPUP_ADD_OFFSET);
+        
+        // Visibility ...
+        popUpActions.insertElementAt(buildVisibilityPopUp(),
+                popUpActions.size() - POPUP_ADD_OFFSET);
 
         return popUpActions;
     }

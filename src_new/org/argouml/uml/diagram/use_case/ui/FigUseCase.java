@@ -404,31 +404,9 @@ public class FigUseCase extends FigNodeModelElement {
 
         // Modifier menu. Placed one before last, so the "Properties" entry is
         // always last.
-
-        ArgoJMenu modifierMenu = new ArgoJMenu("menu.popup.modifiers");
-
-        Object useCase = /*(MUseCase)*/ getOwner();
-
-        modifierMenu.addCheckItem(new ActionModifier("Abstract",
-						     "isAbstract",
-						     "isAbstract",
-						     "setAbstract",
-						     useCase));
-
-        modifierMenu.addCheckItem(new ActionModifier("Leaf",
-						     "isLeaf",
-						     "isLeaf",
-						     "setLeaf",
-						     useCase));
-
-        modifierMenu.addCheckItem(new ActionModifier("Root",
-						     "isRoot",
-						     "isRoot",
-						     "setRoot",
-						     useCase));
-
-        popUpActions.insertElementAt(modifierMenu,
-            popUpActions.size() - POPUP_ADD_OFFSET);
+        popUpActions.insertElementAt(
+                buildModifierPopUp(LEAF | ROOT),
+                popUpActions.size() - POPUP_ADD_OFFSET);
 
         return popUpActions;
     }

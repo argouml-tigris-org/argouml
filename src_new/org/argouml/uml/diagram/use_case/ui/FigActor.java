@@ -33,6 +33,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.awt.event.MouseEvent;
 import java.util.Vector;
 
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
@@ -142,6 +143,23 @@ public class FigActor extends FigNodeModelElement {
     public Selection makeSelection() {
         return new SelectionActor(this);
     }
+    
+    /**
+     * Build a collection of menu items relevant for a right-click popup menu.
+     *
+     * @param     me     a mouse event
+     * @return           a collection of menu items
+     *
+     * @see org.tigris.gef.ui.PopupGenerator#getPopUpActions(java.awt.event.MouseEvent)
+     */
+    public Vector getPopUpActions(MouseEvent me) {
+        Vector popUpActions = super.getPopUpActions(me);
+        // Modifiers ...
+        popUpActions.insertElementAt(
+                buildModifierPopUp(ABSTRACT | LEAF | ROOT),
+                popUpActions.size() - POPUP_ADD_OFFSET);
+        return popUpActions;
+    }    
 
     /** Returns true if this Fig can be resized by the user. 
      * @see org.tigris.gef.presentation.Fig#isResizable()

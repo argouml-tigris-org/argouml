@@ -67,6 +67,7 @@ import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.ItemUID;
 import org.argouml.cognitive.ToDoItem;
 import org.argouml.cognitive.ToDoList;
+import org.argouml.i18n.Translator;
 import org.argouml.kernel.DelayedChangeNotify;
 import org.argouml.kernel.DelayedVChangeListener;
 import org.argouml.kernel.Project;
@@ -146,6 +147,7 @@ public abstract class FigNodeModelElement
     /**
      * Offset from the end of the set of popup actions at which new items
      * should be inserted by concrete figures.
+     * See #getPopUpActions()
      */
     protected static final int POPUP_ADD_OFFSET = 3;
     
@@ -188,6 +190,15 @@ public abstract class FigNodeModelElement
         SHADOW_CONVOLVE_OP = new ConvolveOp(new Kernel(3, 3, blur));            
     }
 
+    /** Used for #buildModifierPopUp() */
+    protected static final int ROOT = 1;
+    /** Used for #buildModifierPopUp() */
+    protected static final int ABSTRACT = 2;
+    /** Used for #buildModifierPopUp() */
+    protected static final int LEAF = 4;
+    /** Used for #buildModifierPopUp() */
+    protected static final int ACTIVE = 8;
+    
     ////////////////////////////////////////////////////////////////
     // instance variables
 
@@ -400,6 +411,74 @@ public abstract class FigNodeModelElement
         return popUpActions;
     }
 
+    /**
+     * @return the pop-up menu item for Visibility
+     */
+    protected Object buildVisibilityPopUp() {
+        ArgoJMenu visibilityMenu = new ArgoJMenu("menu.popup.visibility");
+
+        ActionModifier a = new ActionModifier(
+                Translator.localize("checkbox.visibility.public-uc"),
+                "visibility", "getVisibility", "setVisibility",
+                getOwner(),
+                (Class) ModelFacade.VISIBILITYKIND,
+                ModelFacade.PUBLIC_VISIBILITYKIND,
+                null);
+        /*MVW: Strange, but doing this for this one item, 
+         * makes the other 2 default correctly... */
+        a.putValue("SELECTED", new Boolean(ModelFacade.PUBLIC_VISIBILITYKIND
+                .equals(ModelFacade.getVisibility(getOwner()))));
+        visibilityMenu.addCheckItem(a);
+
+        visibilityMenu.addCheckItem( new ActionModifier(
+                Translator.localize("checkbox.visibility.protected-uc"),
+                "visibility", "getVisibility", "setVisibility",
+                getOwner(),
+                (Class) ModelFacade.VISIBILITYKIND,
+                ModelFacade.PROTECTED_VISIBILITYKIND,
+                null)); 
+        visibilityMenu.addCheckItem( new ActionModifier(
+                Translator.localize("checkbox.visibility.private-uc"),
+                "visibility", "getVisibility", "setVisibility",
+                getOwner(),
+                (Class) ModelFacade.VISIBILITYKIND,
+                ModelFacade.PRIVATE_VISIBILITYKIND,
+                null)); 
+        return visibilityMenu;
+    }
+    
+    /**
+     * Build a pop-up menu item for the various modifiers.<p>
+     * 
+     * This function is designed to be easily extendable with new items.
+     * 
+     * @param items bitwise OR of the items: ROOT, ABSTRACT, LEAF, ACTIVE.
+     * @return the menu item
+     */
+    protected Object buildModifierPopUp(int items) {
+        ArgoJMenu modifierMenu = new ArgoJMenu("menu.popup.modifiers");
+
+        if ((items & ABSTRACT) > 0) 
+            modifierMenu.addCheckItem( new ActionModifier(
+                    Translator.localize("checkbox.abstract-uc"),
+                    "isAbstract", "isAbstract", "setAbstract",
+                    getOwner()));
+        if ((items & LEAF) > 0)
+            modifierMenu.addCheckItem( new ActionModifier(
+                    Translator.localize("checkbox.final-uc"),
+                    "isLeaf", "isLeaf", "setLeaf", getOwner()));
+        if ((items & ROOT) > 0)
+            modifierMenu.addCheckItem(  new ActionModifier(
+                    Translator.localize("checkbox.root-uc"),
+                    "isRoot", "isRoot", "setRoot", getOwner()));
+        if ((items & ACTIVE) > 0)
+            modifierMenu.addCheckItem(  new ActionModifier(
+                    Translator.localize("checkbox.active-uc"),
+                    "isActive", "isActive", "setActive",
+                    getOwner()));
+        return modifierMenu;
+    }
+    
     ////////////////////////////////////////////////////////////////
     // Fig API
 
