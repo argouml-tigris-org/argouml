@@ -196,7 +196,7 @@ public class ProjectBrowser
             ResourceLoaderWrapper
                 .getResourceLoaderWrapper()
                 .lookupIconResource(
-                "Model");
+                "ArgoIcon");
         this.setIconImage(argoImage.getImage());
         // 
 
