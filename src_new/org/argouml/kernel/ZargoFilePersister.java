@@ -1,25 +1,26 @@
-//Copyright (c) 1996-2004 The Regents of the University of California. All
-//Rights Reserved. Permission to use, copy, modify, and distribute this
-//software and its documentation without fee, and without a written
-//agreement is hereby granted, provided that the above copyright notice
-//and this paragraph appear in all copies.  This software program and
-//documentation are copyrighted by The Regents of the University of
-//California. The software program and documentation are supplied "AS
-//IS", without any accompanying services from The Regents. The Regents
-//does not warrant that the operation of the program will be
-//uninterrupted or error-free. The end-user understands that the program
-//was developed for research purposes and is advised not to rely
-//exclusively on the program for any reason.  IN NO EVENT SHALL THE
-//UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
-//SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
-//ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-//THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-//SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
-//WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-//MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-//PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-//CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
-//UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+// $Id$
+// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied "AS
+// IS", without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 package org.argouml.kernel;
 
 import java.io.BufferedWriter;
@@ -55,6 +56,10 @@ public class ZargoFilePersister extends AbstractFilePersister {
     private static final Logger LOG = 
         Logger.getLogger(ZargoFilePersister.class);
     
+    /**
+     * The constructor.
+     * Sets the extensionname and the description. 
+     */
     public ZargoFilePersister() {
         extension = "zargo";
         desc = "Argo compressed project file";
@@ -65,13 +70,16 @@ public class ZargoFilePersister extends AbstractFilePersister {
      * xmi's from individuals diagrams to make
      * it easier to modularize the output of Argo.
      * 
-     * @param overwrite <tt>true</tt> if we are allowed to replace a file.
      * @param file The file to write.
-     * @throws Exception if anything goes wrong.
-     * TODO: Replace the general Exception with specific Exceptions.
+     * @param project the project to save
+     * @throws SaveException when anything goes wrong
+     *
+     * @see org.argouml.kernel.ProjectFilePersister#save(
+     * org.argouml.kernel.Project, java.io.File)
      */
     public void save(Project project, File file)
-            throws SaveException {
+        
+        throws SaveException {
         
         project.setFile(file);
         project.setVersion(ArgoVersion.getVersion());
@@ -102,7 +110,8 @@ public class ZargoFilePersister extends AbstractFilePersister {
                 new BufferedWriter(new OutputStreamWriter(stream, "UTF-8"));
     
             ZipEntry zipEntry =
-                new ZipEntry(project.getBaseName() + FileConstants.UNCOMPRESSED_FILE_EXT);
+                new ZipEntry(project.getBaseName() 
+                        + FileConstants.UNCOMPRESSED_FILE_EXT);
             stream.putNextEntry(zipEntry);
             expander.expand(writer, project, "", "");
             writer.flush();
@@ -121,7 +130,8 @@ public class ZargoFilePersister extends AbstractFilePersister {
             Collection names = new ArrayList();
             int counter = 0;  
             for (int i = 0; i < size; i++) {
-                ProjectMember projectMember = (ProjectMember) project.getMembers().elementAt(i);
+                ProjectMember projectMember = 
+                    (ProjectMember) project.getMembers().elementAt(i);
                 if (!(projectMember.getType().equalsIgnoreCase("xmi"))) {
                     if (LOG.isInfoEnabled()) {
                         LOG.info("Saving member of type: "
@@ -171,7 +181,7 @@ public class ZargoFilePersister extends AbstractFilePersister {
             LOG.error("Exception occured during save attempt", e);
             try {
                 writer.close();
-            } catch (IOException ex) {}
+            } catch (IOException ex) { }
             
             // frank: in case of exception 
             // delete name and mv name+"#" back to name if name+"#" exists
@@ -189,6 +199,9 @@ public class ZargoFilePersister extends AbstractFilePersister {
         }
     }
     
+    /**
+     * @see org.argouml.kernel.ProjectFilePersister#loadProject(java.net.URL)
+     */
     public Project loadProject(URL url) throws OpenException {
         try {
             Project p = null;
@@ -232,7 +245,7 @@ public class ZargoFilePersister extends AbstractFilePersister {
      * @return the zip stream positioned at the required location.
      */
     private ZipInputStream openZipStreamAt(URL url, String ext)
-            throws IOException{
+        throws IOException {
         ZipInputStream zis = new ZipInputStream(url.openStream());
         ZipEntry entry = zis.getNextEntry();
         while (entry != null
