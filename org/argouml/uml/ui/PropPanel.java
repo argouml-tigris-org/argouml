@@ -379,7 +379,7 @@ public abstract class PropPanel
 		    registrateTargetListeners((Container) components[i]);
                 Object[] objects = list2.getListenerList();
                 for (int j = 1; j < objects.length; j += 2) {
-                    list.add(TargetListener.class, (EventListener) objects[j]);
+                    list.add(TargetListener.class, (TargetListener) objects[j]);
                 }
             }
         }
