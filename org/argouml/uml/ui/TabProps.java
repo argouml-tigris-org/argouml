@@ -86,7 +86,6 @@ implements TabModelTarget, NavigationListener, ArgoModuleEventListener {
     ArgoEventPump.addListener(ArgoEventTypes.ANY_MODULE_EVENT, this);
 
     initPanels();
-    initPanels();
   }
 
   public void finalize() {
