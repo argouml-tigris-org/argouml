@@ -56,52 +56,52 @@ public class CrUML extends Critic {
     protected static Category cat = Category.getInstance(CrUML.class);
     
   public static final Decision decINHERITANCE = new
-  Decision("decision.inheritance", 5);
+  Decision("decision.inheritance", 1);
 
   public static final Decision decCONTAINMENT = new
-  Decision("decision.containment", 5);
+  Decision("decision.containment", 1);
 
   public static final Decision decPATTERNS = new
-  Decision("decision.design-patterns", 5); //??
+  Decision("decision.design-patterns", 1); //??
 
   public static final Decision decRELATIONSHIPS = new
-  Decision("decision.relationships", 5);
+  Decision("decision.relationships", 1);
 
   public static final Decision decSTORAGE = new
-  Decision("decision.storage", 5);
+  Decision("decision.storage", 1);
 
   public static final Decision decBEHAVIOR = new
-  Decision("decision.behavior", 5);
+  Decision("decision.behavior", 1);
 
   public static final Decision decINSTANCIATION = new
-  Decision("decision.instantiation", 5);
+  Decision("decision.instantiation", 1);
 
   public static final Decision decNAMING = new
-  Decision("decision.naming", 5);
+  Decision("decision.naming", 1);
 
   public static final Decision decMODULARITY = new
-  Decision("decision.modularity", 5);
+  Decision("decision.modularity", 1);
 
   public static final Decision decCLASS_SELECTION = new
-  Decision("decision.class-selection", 5);
+  Decision("decision.class-selection", 1);
 
   public static final Decision decEXPECTED_USAGE = new
-  Decision("decision.expected-usage", 5);
+  Decision("decision.expected-usage", 1);
 
   public static final Decision decMETHODS = new
-  Decision("decision.methods", 5); //??
+  Decision("decision.methods", 1); //??
 
   public static final Decision decCODE_GEN = new
-  Decision("decision.code-generation", 5); //??
+  Decision("decision.code-generation", 1); //??
 
   public static final Decision decPLANNED_EXTENSIONS = new
-  Decision("decision.planned-extensions", 5);
+  Decision("decision.planned-extensions", 1);
 
   public static final Decision decSTEREOTYPES = new
-  Decision("decision.stereotypes", 5);
+  Decision("decision.stereotypes", 1);
 
   public static final Decision decSTATE_MACHINES = new
-  Decision("decision.mstate-machines", 5);
+  Decision("decision.mstate-machines", 1);
 
   public static final String CRITICS_SITE = "http://www.ics.uci.edu/pub/arch/uml/critics/";
 
