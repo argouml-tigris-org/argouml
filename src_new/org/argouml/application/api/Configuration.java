@@ -149,7 +149,19 @@ public class Configuration {
    * @return true if the save is successful, otherwise false
    */
   public static final boolean save() {
-      return _config.saveDefault();
+      return Configuration.save(false);
+  }
+
+  /** Save the configuration to the default location.
+   *
+   *  Implementations do not have to handle this method.
+   *  If the method is not allowed or it fails, the implementation
+   *  must return false.
+   *
+   * @return true if the save is successful, otherwise false
+   */
+  public static final boolean save(boolean force) {
+      return _config.saveDefault(force);
   }
 
   /** Returns the string value of a configuration property.
