@@ -58,7 +58,7 @@ import uci.uml.generate.*;
  *  PropPanelClass. */
 
 public class PropPanelClassifierRole extends PropPanel
-implements ItemListener, DocumentListener {
+implements ItemListener {
 
   ////////////////////////////////////////////////////////////////
   // constants
@@ -69,7 +69,8 @@ implements ItemListener, DocumentListener {
   SpacerPanel _spacer = new SpacerPanel();
   SpacerPanel _placeHolder = new SpacerPanel();
 
-  JTextField _baseField = new JTextField();
+  //JTextField _baseField = new JTextField();
+  JComboBox _baseField = new JComboBox();
 
   ////////////////////////////////////////////////////////////////
   // contructors
@@ -97,8 +98,12 @@ implements ItemListener, DocumentListener {
     _baseField.setMinimumSize(new Dimension(120, 20));
     gb.setConstraints(_baseField, c);
     add(_baseField);
-    _baseField.getDocument().addDocumentListener(this);
+    //_baseField.getDocument().addDocumentListener(this);
+    _baseField.addItemListener(this);
     _baseField.setFont(_stereoField.getFont());
+    _baseField.setEditable(true);
+    _baseField.getEditor().getEditorComponent().setBackground(Color.white);
+
 
     c.gridx = 2;
     c.gridwidth = 1;
@@ -127,12 +132,16 @@ implements ItemListener, DocumentListener {
     MClassifierRole cr = (MClassifierRole) t;
     if (cr.getBases() != null) {
 		Vector bases = new Vector(cr.getBases());
+		Component ed = _baseField.getEditor().getEditorComponent();
 		if (bases.size() == 1)
-			_baseField.setText(((MClassifier)bases.elementAt(0)).getName());
+		   ((JTextField)ed).setText(((MClassifier)bases.elementAt(0)).getName());
+		
 		else if (bases.size() == 0)
-			_baseField.setText("(anon)");
+		   ((JTextField)ed).setText("(anon)");
+		
 		else
-			_baseField.setText("(multiple bases)");
+		   ((JTextField)ed).setText("(multiple bases)");
+		
 	}
     // set the values to be shown in all widgets based on model
 
@@ -147,7 +156,7 @@ implements ItemListener, DocumentListener {
 
 
   /** The user typed some text */
-  public void insertUpdate(DocumentEvent e) {
+ /* public void insertUpdate(DocumentEvent e) {
     super.insertUpdate(e);
     if (e.getDocument() == _baseField.getDocument()) {
       setTargetBaseString(_baseField.getText().trim());
@@ -161,17 +170,39 @@ implements ItemListener, DocumentListener {
   public void changedUpdate(DocumentEvent e) {
     // Apparently, this method is never called.
   }
+  
+  */
 
   /** The user modified one of the widgets */
   public void itemStateChanged(ItemEvent e) {
-    Object src = e.getSource();
     // check for each widget, and update the model with new value
+    if (e.getStateChange() == ItemEvent.SELECTED) {
+		  Object src = e.getSource();
+		  
+		  if (src == _namespaceField) {
+			  System.out.println("namespacefield event");
+			  // what to do here?
+			  //setTargetInternal();
+		  }
+		  else if (src == _stereoField) {
+			  System.out.println("stereofield event");
+			  setTargetStereotype();
+		  }
+		  else if (src == _baseField) {
+			  System.out.println("baseField event");
+			  	Component ed = _baseField.getEditor().getEditorComponent();
+				String baseName = ((JTextField)ed).getText();
+	
+			  setTargetBaseString(baseName.trim());
+		  }
+	  }
   }
 
   protected void setTargetBaseString(String s) {
 	  if (_target == null) return;
-	  MClassifierRole cr = (MClassifierRole) _target;
 	  if (_inChange) return;
+	  	  MClassifierRole cr = (MClassifierRole) _target;
+
 	  Project p = ProjectBrowser.TheInstance.getProject();
 	  MClassifier type = p.findType(s);
 	  if (type != null) {
@@ -180,7 +211,8 @@ implements ItemListener, DocumentListener {
 	  }
 	  else {
 		  // generate critic here? (Toby)
-		  _baseField.setText("(no such type)");
+		  Component ed = _baseField.getEditor().getEditorComponent();
+		  ((JTextField)ed).setText("(no such type)");
 	  }
   }
 			
