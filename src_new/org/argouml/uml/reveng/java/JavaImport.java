@@ -49,7 +49,7 @@ public class JavaImport {
      * @param f The input file for the parser.
      * @exception Parser exception.
      */
-    public static void parseFile( Project p, File f) throws Exception {
+    public static void parseFile( Project p, File f, DiagramInterface diagram) throws Exception {
 	try {
 	    // Create a scanner that reads from the input stream passed to us
 	    JavaLexer lexer = new JavaLexer( new FileInputStream( f));
@@ -59,9 +59,6 @@ public class JavaImport {
 
 	    // Create a parser that reads from the scanner
 	    JavaRecognizer parser = new JavaRecognizer( lexer);
-
-	    // Create a interface to the current diagram
-	    DiagramInterface diagram = new DiagramInterface(Globals.curEditor());
 
 	    // Create a modeller for the parser
 	    Modeller modeller = new Modeller((MModel)p.getModel(), diagram);   
