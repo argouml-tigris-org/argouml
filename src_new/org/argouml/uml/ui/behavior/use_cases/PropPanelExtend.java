@@ -39,7 +39,6 @@ import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.AbstractActionNewModelElement;
 import org.argouml.uml.ui.ActionNavigateNamespace;
 import org.argouml.uml.ui.ActionRemoveFromModel;
-import org.argouml.uml.ui.PropPanelButton;
 import org.argouml.uml.ui.PropPanelButton2;
 import org.argouml.uml.ui.UMLComboBox2;
 import org.argouml.uml.ui.UMLConditionExpressionModel;
@@ -85,7 +84,6 @@ public class PropPanelExtend extends PropPanelModelElement {
 
         // Link to the two ends. This is done as a drop down. First for the
         // base use case.
-
         addField(Translator.localize("label.usecase-base"),
 		 new UMLComboBox2(new UMLExtendBaseComboBoxModel(),
 				  ActionSetExtendBase.getInstance()));
@@ -103,13 +101,6 @@ public class PropPanelExtend extends PropPanelModelElement {
 
         addSeperator();
 
-//        UMLExpressionModel conditionModel =
-//            new UMLExpressionModel(this, 
-//                                   (Class) ModelFacade.EXTEND,
-//                                   "condition",
-//				   (Class) ModelFacade.BOOLEAN_EXPRESSION,
-//                                   "getCondition", 
-//                                   "setCondition");
         UMLExpressionModel2 conditionModel =
             new UMLConditionExpressionModel(this, "condition");
 
@@ -121,16 +112,12 @@ public class PropPanelExtend extends PropPanelModelElement {
 
         addField("Condition:", conditionScroll);
 
-        // Add the toolbar.
-
-        addButton(new PropPanelButton2(this, 
-                new ActionNavigateNamespace()));
-        new PropPanelButton(this,
-                lookupIcon("ExtensionPoint"),
-                Translator.localize("button.new-extension-point"),
-                new ActionNewExtensionPoint());
-        new PropPanelButton(this, lookupIcon("Delete"), Translator.localize(
-            "action.delete-from-model"), new ActionRemoveFromModel());
+        // Add the toolbar buttons:
+        addButton(new PropPanelButton2(new ActionNavigateNamespace()));
+        addButton(new PropPanelButton2(new ActionNewExtensionPoint(), 
+                lookupIcon("ExtensionPoint")));
+        addButton(new PropPanelButton2(new ActionRemoveFromModel(), 
+                lookupIcon("Delete")));
     }
 
 

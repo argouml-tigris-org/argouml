@@ -37,7 +37,6 @@ import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.AbstractActionNewModelElement;
 import org.argouml.uml.ui.ActionNavigateContainerElement;
 import org.argouml.uml.ui.ActionRemoveFromModel;
-import org.argouml.uml.ui.PropPanelButton;
 import org.argouml.uml.ui.PropPanelButton2;
 import org.argouml.uml.ui.UMLLinkedList;
 import org.argouml.uml.ui.UMLMutableLinkedList;
@@ -109,15 +108,11 @@ public class PropPanelMessage extends PropPanelModelElement {
 	addField(Translator.localize("label.predecessor"),
 		 predecessorScroll);
 
-        addButton(new PropPanelButton2(this, 
-                new ActionNavigateContainerElement()));
-
-        new PropPanelButton(this, lookupIcon("CallAction"),
-                Translator.localize("button.new-action"),
-                new ActionToolNewAction());
-        
-        new PropPanelButton(this, lookupIcon("Delete"), Translator.localize(
-            "action.delete-from-model"), new ActionRemoveFromModel());    
+        addButton(new PropPanelButton2(new ActionNavigateContainerElement()));
+        addButton(new PropPanelButton2(new ActionToolNewAction(), 
+                lookupIcon("CallAction")));
+        addButton(new PropPanelButton2(new ActionRemoveFromModel(), 
+                lookupIcon("Delete")));    
     }
 
     private class ActionToolNewAction extends AbstractActionNewModelElement {

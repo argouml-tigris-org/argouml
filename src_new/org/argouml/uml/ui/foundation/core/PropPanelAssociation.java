@@ -30,14 +30,13 @@ import javax.swing.JScrollPane;
 import javax.swing.border.TitledBorder;
 
 import org.argouml.i18n.Translator;
-import org.tigris.swidgets.GridLayout2;
-import org.tigris.swidgets.Orientation;
 import org.argouml.uml.ui.ActionNavigateContainerElement;
 import org.argouml.uml.ui.ActionRemoveFromModel;
-import org.argouml.uml.ui.PropPanelButton;
 import org.argouml.uml.ui.PropPanelButton2;
 import org.argouml.uml.ui.UMLLinkedList;
 import org.argouml.util.ConfigLoader;
+import org.tigris.swidgets.GridLayout2;
+import org.tigris.swidgets.Orientation;
 
 /**
  * Theproperties panel for a Association.
@@ -92,10 +91,9 @@ public class PropPanelAssociation extends PropPanelRelationship {
         addField(Translator.localize("label.association-links"),
                 linksScroll);
 
-        addButton(new PropPanelButton2(this,
-                new ActionNavigateContainerElement()));
-        new PropPanelButton(this, lookupIcon("Delete"), Translator.localize(
-            "action.delete-from-model"), new ActionRemoveFromModel());
+        addButton(new PropPanelButton2(new ActionNavigateContainerElement()));
+        addButton(new PropPanelButton2(new ActionRemoveFromModel(), 
+                lookupIcon("Delete")));
 
     }
 

@@ -38,7 +38,6 @@ import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.AbstractActionNewModelElement;
 import org.argouml.uml.ui.ActionNavigateContainerElement;
 import org.argouml.uml.ui.ActionRemoveFromModel;
-import org.argouml.uml.ui.PropPanelButton;
 import org.argouml.uml.ui.PropPanelButton2;
 import org.argouml.uml.ui.UMLLinkedList;
 import org.argouml.uml.ui.UMLTextField2;
@@ -98,16 +97,11 @@ public class PropPanelExtensionPoint extends PropPanelModelElement {
                 new JScrollPane(extendList));
 
         
-        addButton(new PropPanelButton2(this,
-                new ActionNavigateContainerElement()));
-        
-        new PropPanelButton(this, 
-                lookupIcon("ExtensionPoint"),
-                Translator.localize("button.new-extension-point"),
-                new ActionNewExtensionPoint());
-
-        new PropPanelButton(this, lookupIcon("Delete"), Translator.localize(
-            "action.delete-from-model"), new ActionRemoveFromModel());
+        addButton(new PropPanelButton2(new ActionNavigateContainerElement()));
+        addButton(new PropPanelButton2(new ActionNewExtensionPoint(), 
+                lookupIcon("ExtensionPoint")));
+        addButton(new PropPanelButton2(new ActionRemoveFromModel(), 
+                lookupIcon("Delete")));
     }
 
     /**

@@ -30,7 +30,6 @@ import org.argouml.i18n.Translator;
 import org.argouml.model.ModelFacade;
 import org.argouml.uml.ui.ActionNavigateNamespace;
 import org.argouml.uml.ui.ActionRemoveFromModel;
-import org.argouml.uml.ui.PropPanelButton;
 import org.argouml.uml.ui.PropPanelButton2;
 import org.argouml.uml.ui.UMLComboBox2;
 import org.argouml.uml.ui.foundation.core.PropPanelModelElement;
@@ -74,32 +73,10 @@ public class PropPanelInclude extends PropPanelModelElement {
         addField(Translator.localize("label.addition"),
 		 additionBox);
 
-   /*
-        // TODO:
-        // FIXME - Why is this code commented out - 
-        // is there work to do here - Bob Tarling
-    *
-        // The addition use case (reuse earlier variables). Note that because
-        // of the NSUML bug we look for the "base" event, rather than the
-        // "addition" event" here.
-
-        addSeperator();
-
-        model = new UMLComboBoxModel(this, "isAcceptableUseCase",
-                                     "base", "getAddition",
-                                     "setAddition", true, MUseCase.class,
-                                     true);
-        box   = new UMLComboBox(model);
-        nav   = new UMLComboBoxNavigator(this, "NavUseCase", box);
-
-        addCaption("Addition:", 1, 1, 0);
-        addField(nav, 1, 1, 0);
-*/
-        // Add the toolbar. Just the four basic buttons for now.
-
-        addButton(new PropPanelButton2(this, new ActionNavigateNamespace()));
-        new PropPanelButton(this, lookupIcon("Delete"), Translator.localize(
-            "action.delete-from-model"), new ActionRemoveFromModel());
+        // Add the toolbar buttons:
+        addButton(new PropPanelButton2(new ActionNavigateNamespace()));
+        addButton(new PropPanelButton2(new ActionRemoveFromModel(), 
+                lookupIcon("Delete")));;
     }
 
 

@@ -40,7 +40,6 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 
 import org.apache.log4j.Logger;
-import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.i18n.Translator;
 import org.argouml.model.uml.ExtensionMechanismsFactory;
 import org.argouml.model.uml.UmlHelper;
@@ -433,15 +432,4 @@ public abstract class PropPanelModelElement extends PropPanel {
         return nameDocument;
     }
 
-    /**
-     * Look up an icon.
-     * 
-     * @param name
-     *            the resource name.
-     * @return an ImageIcon corresponding to the given resource name.
-     */
-    protected static ImageIcon lookupIcon(String name) {
-        return ResourceLoaderWrapper
-                .lookupIconResource(name);
-    }
 }

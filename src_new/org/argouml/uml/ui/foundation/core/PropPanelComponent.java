@@ -27,7 +27,6 @@ package org.argouml.uml.ui.foundation.core;
 import org.argouml.i18n.Translator;
 import org.argouml.uml.ui.ActionNavigateNamespace;
 import org.argouml.uml.ui.ActionRemoveFromModel;
-import org.argouml.uml.ui.PropPanelButton;
 import org.argouml.uml.ui.PropPanelButton2;
 import org.argouml.util.ConfigLoader;
 
@@ -69,13 +68,11 @@ public class PropPanelComponent extends PropPanelClassifier {
 	addField(Translator.localize("label.supplier-dependencies"), 
             getSupplierDependencyScroll());
 
-        addButton(new PropPanelButton2(this, 
-                new ActionNavigateNamespace()));
-	new PropPanelButton(this, lookupIcon("Reception"), 
-            Translator.localize("button.new-reception"), 
-            getActionNewReception());
-	new PropPanelButton(this, lookupIcon("Delete"), Translator.localize(
-	    "action.delete-from-model"), new ActionRemoveFromModel());
+        addButton(new PropPanelButton2(new ActionNavigateNamespace()));
+	addButton(new PropPanelButton2(getActionNewReception(), 
+                lookupIcon("Reception")));
+	addButton(new PropPanelButton2(new ActionRemoveFromModel(), 
+                lookupIcon("Delete")));
 
 	//    addCaption(Translator.localize("label.name"),1,0,0);
 	//    addField(getNameTextField(),1,0,0);

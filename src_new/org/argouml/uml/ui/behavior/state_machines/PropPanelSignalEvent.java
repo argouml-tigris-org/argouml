@@ -28,9 +28,8 @@
 
 package org.argouml.uml.ui.behavior.state_machines;
 
-import org.argouml.i18n.Translator;
 import org.argouml.uml.ui.ActionRemoveFromModel;
-import org.argouml.uml.ui.PropPanelButton;
+import org.argouml.uml.ui.PropPanelButton2;
 import org.argouml.uml.ui.foundation.core.ActionNewParameter;
 import org.argouml.util.ConfigLoader;
 
@@ -55,11 +54,10 @@ public class PropPanelSignalEvent extends PropPanelEvent {
     public void initialize() {
         super.initialize();
         
-        new PropPanelButton(this, lookupIcon("Parameter"), 
-                Translator.localize("button.new-parameter"),
-                new ActionNewParameter());
-        new PropPanelButton(this, lookupIcon("Delete"), Translator.localize(
-            "action.delete-from-model"), new ActionRemoveFromModel());
+        addButton(new PropPanelButton2(new ActionNewParameter(), 
+                lookupIcon("Parameter")));
+        addButton(new PropPanelButton2(new ActionRemoveFromModel(), 
+                lookupIcon("Delete")));
     }
 
 } 

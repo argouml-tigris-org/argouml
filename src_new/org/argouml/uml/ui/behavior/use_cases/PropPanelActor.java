@@ -27,7 +27,6 @@ package org.argouml.uml.ui.behavior.use_cases;
 import org.argouml.i18n.Translator;
 import org.argouml.uml.ui.ActionNavigateContainerElement;
 import org.argouml.uml.ui.ActionRemoveFromModel;
-import org.argouml.uml.ui.PropPanelButton;
 import org.argouml.uml.ui.PropPanelButton2;
 import org.argouml.uml.ui.foundation.core.PropPanelClassifier;
 import org.argouml.util.ConfigLoader;
@@ -73,17 +72,15 @@ public class PropPanelActor extends PropPanelClassifier {
 
     	addField(Translator.localize("label.association-ends"),
             getAssociationEndScroll());
-        // The toolbar buttons that go at the top.
-
-        addButton(new PropPanelButton2(this, 
-                new ActionNavigateContainerElement()));
-        new PropPanelButton(this, lookupIcon("Actor"),
-                Translator.localize("button.new-actor"), new ActionNewActor());
-        new PropPanelButton(this, lookupIcon("Reception"), 
-                Translator.localize("button.new-reception"), 
-                getActionNewReception());
-        new PropPanelButton(this, lookupIcon("Delete"), Translator.localize(
-            "action.delete-from-model"), new ActionRemoveFromModel());
+        
+        // The toolbar buttons that go at the top:
+        addButton(new PropPanelButton2(new ActionNavigateContainerElement()));
+        addButton(new PropPanelButton2(new ActionNewActor(), 
+                lookupIcon("Actor")));
+        addButton(new PropPanelButton2(getActionNewReception(), 
+                lookupIcon("Reception")));
+        addButton(new PropPanelButton2(new ActionRemoveFromModel(), 
+                lookupIcon("Delete")));
     }
 
 } /* end class PropActor */

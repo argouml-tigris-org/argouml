@@ -69,8 +69,7 @@ public abstract class PropPanelEvent extends PropPanelModelElement {
 
         paramScroll = getParameterScroll();
         
-        addButton(new PropPanelButton2(this,
-                new ActionNavigateContainerElement()));
+        addButton(new PropPanelButton2(new ActionNavigateContainerElement()));
 
         addField(Translator.localize("label.name"),
                 getNameTextField());

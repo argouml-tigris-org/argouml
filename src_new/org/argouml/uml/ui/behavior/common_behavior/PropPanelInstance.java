@@ -75,8 +75,7 @@ public class PropPanelInstance extends PropPanelModelElement {
         addField(Translator.localize("label.namespace"),
                 getNamespaceComboBox());
 
-        addButton(new PropPanelButton2(this,
-                new ActionNavigateNamespace()));
+        addButton(new PropPanelButton2(new ActionNavigateNamespace()));
     }
 
     /**
