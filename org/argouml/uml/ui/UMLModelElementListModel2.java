@@ -28,18 +28,21 @@ import java.util.Collection;
 import java.util.Iterator;
 
 import javax.swing.DefaultListModel;
-import javax.swing.JComboBox;
 
+import ru.novosoft.uml.MBase;
 import ru.novosoft.uml.MElementEvent;
-import ru.novosoft.uml.foundation.core.MModelElement;
 
 /**
+ * The model for a list that Mbases contains. The state of the MBase is still 
+ * kept in the Mbase itself. This list is only to be used as the model for some 
+ * GUI element like UMLLinkedList 
  * @since Oct 2, 2002
  * @author jaap.branderhorst@xs4all.nl
  */
 public abstract class UMLModelElementListModel2 extends DefaultListModel implements UMLUserInterfaceComponent{
 
     private UMLUserInterfaceContainer _container = null;
+    private Object _target = null;
     
     /**
      * Constructor for UMLModelElementListModel2.
@@ -56,6 +59,8 @@ public abstract class UMLModelElementListModel2 extends DefaultListModel impleme
         // we must build a new list here
         // we delegate that to the abstract method buildModelList to give
         // the user of this library class some influence
+        
+        setTarget(getContainer().getTarget());
         removeAllElements();
         buildModelList();
     }
@@ -64,14 +69,15 @@ public abstract class UMLModelElementListModel2 extends DefaultListModel impleme
      * @see org.argouml.uml.ui.UMLUserInterfaceComponent#targetReasserted()
      */
     public void targetReasserted() {
-        // nothing happens here yet, so implementation is empty
+        setTarget(getContainer().getTarget());
+        removeAllElements();
+        buildModelList();
     }
 
     /**
      * @see ru.novosoft.uml.MElementListener#listRoleItemSet(ru.novosoft.uml.MElementEvent)
      */
     public void listRoleItemSet(MElementEvent e) {
-        System.out.println();
     }
 
     /**
@@ -79,24 +85,8 @@ public abstract class UMLModelElementListModel2 extends DefaultListModel impleme
      */
     public void propertySet(MElementEvent e) {
         if (isValidPropertySet(e)) {
+            removeAllElements();
             buildModelList();
-            /*
-        Object o = getChangedElement(e);
-        if (o instanceof Collection) {
-            Iterator it = ((Collection)o).iterator();
-            while(it.hasNext()) {
-                int index = indexOf(it.next());
-                if (index >= 0) {
-                   fireContentsChanged(this, index, index);
-                }
-            }
-        } else {
-            int index = indexOf(o);
-            if (index >= 0) {
-               fireContentsChanged(this, index, index); 
-            }
-        }
-        */
         }
     }
 
@@ -121,7 +111,10 @@ public abstract class UMLModelElementListModel2 extends DefaultListModel impleme
             if (o instanceof Collection) {
                 Iterator it = ((Collection)o).iterator();
                 while(it.hasNext()) {
-                    addElement(it.next());
+                    Object o2 = it.next();
+                    if (!contains(o2)) {
+                        addElement(it.next());
+                    }
                 }
             } else {
                 addElement(o);
@@ -150,7 +143,7 @@ public abstract class UMLModelElementListModel2 extends DefaultListModel impleme
      * Returns the container.
      * @return UMLUserInterfaceContainer
      */
-    public UMLUserInterfaceContainer getContainer() {
+    protected UMLUserInterfaceContainer getContainer() {
         return _container;
     }
 
@@ -158,7 +151,7 @@ public abstract class UMLModelElementListModel2 extends DefaultListModel impleme
      * Sets the container.
      * @param container The container to set
      */
-    public void setContainer(UMLUserInterfaceContainer container) {
+    protected void setContainer(UMLUserInterfaceContainer container) {
         _container = container;
     }
     
@@ -184,7 +177,7 @@ public abstract class UMLModelElementListModel2 extends DefaultListModel impleme
      * element list.
      * @param col
      */
-    protected void addAll(Collection col) {
+    private void addAll(Collection col) {
         Iterator it = col.iterator();
         while (it.hasNext()) {
             addElement(it.next());
@@ -192,14 +185,15 @@ public abstract class UMLModelElementListModel2 extends DefaultListModel impleme
     }
     
     /**
-     * Utility method to get the target.
+     * Utility method to get the target. Sets the _target if the _target is null
+     * via the method setTarget().
      * @return MModelElement
      */
-    protected MModelElement getTarget() {
-        if (getContainer() != null) {
-            return (MModelElement)getContainer().getTarget();
+    protected Object getTarget() {
+        if (_target == null) {
+            setTarget(getContainer().getTarget());
         }
-        return null;
+        return _target;
     }
     
     /**
@@ -264,6 +258,23 @@ public abstract class UMLModelElementListModel2 extends DefaultListModel impleme
             }
         }
         return false;
+    }
+    
+    /**
+     * Sets the target. If the old target is instanceof MBase, it also removes
+     * the model from the element listener list of the target. If the new target
+     * is instanceof MBase, the model is added as element listener to the new 
+     * target.
+     * @param target
+     */
+    protected void setTarget(Object target) {
+        if (_target instanceof MBase) {
+            ((MBase)_target).removeMElementListener(this);
+        }
+        _target = target;
+        if (target instanceof MBase) {
+            ((MBase)_target).addMElementListener(this);
+        }
     }
     
 
