@@ -50,23 +50,15 @@ import org.tigris.gef.presentation.Handle;
  * @author jrobbins@ics.uci.edu
  */
 public class SelectionUseCase extends SelectionWButtons {
-    /**
-     * @deprecated by Linus Tolke as of 0.15.7. Will be removed.
-     *             Use your own Logger!
-     */
-    protected static Logger cat =
-        Logger.getLogger(SelectionUseCase.class);
 
     private static final Logger LOG =
         Logger.getLogger(SelectionUseCase.class);
     ////////////////////////////////////////////////////////////////
     // constants
-    public static Icon inherit =
-        ResourceLoaderWrapper.getResourceLoaderWrapper()
-	    .lookupIconResource("Generalization");
-    public static Icon assoc =
-        ResourceLoaderWrapper.getResourceLoaderWrapper()
-	    .lookupIconResource("Association");
+    private static Icon inherit =
+        ResourceLoaderWrapper.lookupIconResource("Generalization");
+    private static Icon assoc =
+        ResourceLoaderWrapper.lookupIconResource("Association");
 
     ////////////////////////////////////////////////////////////////
     // constructors
@@ -90,6 +82,9 @@ public class SelectionUseCase extends SelectionWButtons {
      *   |               |
      *   5-------6-------7
      * </pre>
+     *
+     * @see org.tigris.gef.base.Selection#hitHandle(java.awt.Rectangle, 
+     * org.tigris.gef.presentation.Handle)
      */
     public void hitHandle(Rectangle r, Handle h) {
         super.hitHandle(r, h);
@@ -144,6 +139,10 @@ public class SelectionUseCase extends SelectionWButtons {
         paintButtonRight(assoc, g, cx, cy + ch / 2, 13);
     }
 
+    /**
+     * @see org.tigris.gef.base.Selection#dragHandle(int, int, int, int, 
+     * org.tigris.gef.presentation.Handle)
+     */
     public void dragHandle(int mX, int mY, int anX, int anY, Handle hand) {
         if (hand.index < 10) {
             _paintButtons = false;
