@@ -436,22 +436,16 @@ public class FigPackage extends FigNodeModelElement {
     MModelElement me = (MModelElement) getOwner();
     MNamespace m = null;
     ProjectBrowser pb = ProjectBrowser.TheInstance;
-    if (encloser != null && (encloser.getOwner() instanceof MPackage)) {
-      m = (MNamespace) encloser.getOwner();
-    }
-    else {
-      if (pb.getTarget() instanceof UMLDiagram) {
-	m = (MNamespace) ((UMLDiagram)pb.getTarget()).getNamespace();
-      }
-    }
     try {
        // If moved into an Package
-        if (encloser.getOwner() instanceof MPackage) {
-             me.setNamespace(m);
+        if (encloser != null && encloser.getOwner() instanceof MPackage) {
+             me.setNamespace((MNamespace) encloser.getOwner());
         }
 
         // If default Namespace is not already set
-        if (me.getNamespace() == null) {
+        if (me.getNamespace() == null &&
+	    pb.getTarget() instanceof UMLDiagram) {
+	  m = (MNamespace) ((UMLDiagram)pb.getTarget()).getNamespace();
           me.setNamespace(m);
         }
     }
