@@ -26,6 +26,8 @@ package org.argouml.uml.ui;
 import org.argouml.kernel.*;
 import org.argouml.ui.*;
 import org.argouml.uml.diagram.use_case.ui.*;
+
+import ru.novosoft.uml.behavior.collaborations.MCollaboration;
 import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.model_management.*;
 import java.awt.event.*;
@@ -53,7 +55,11 @@ public class ActionUseCaseDiagram extends UMLChangeAction {
 	//_cmdCreateNode.doIt();
 	Project p = ProjectBrowser.TheInstance.getProject();
 	try {
-	    ArgoDiagram d  = new UMLUseCaseDiagram( p.getModel());
+		MNamespace ns = p.getCurrentNamespace();
+		Object target = ProjectBrowser.TheInstance.getDetailsTarget();
+		if (target instanceof MPackage && !(target instanceof MCollaboration)) ns = ((MPackage)target);
+		if (ns instanceof MCollaboration) ns = p.getModel(); // no collabs allowed
+	    ArgoDiagram d  = new UMLUseCaseDiagram(ns);
 	    p.addMember(d);
 	    ProjectBrowser.TheInstance.getNavPane().addToHistory(d);
 	    ProjectBrowser.TheInstance.setTarget(d);
@@ -62,5 +68,12 @@ public class ActionUseCaseDiagram extends UMLChangeAction {
 	super.actionPerformed(ae);
     }
 	
+
+	/**
+	 * @see org.argouml.uml.ui.UMLAction#shouldBeEnabled()
+	 */
+	public boolean shouldBeEnabled() {
+		return !(ProjectBrowser.TheInstance.getProject().getCurrentNamespace() instanceof MCollaboration);
+	}
 
 } /* end class ActionUseCaseDiagram */
