@@ -203,7 +203,7 @@ public class NavigatorPane
     
     class ActionPerspectiveConfig extends UMLAction {
         
-        public ActionPerspectiveConfig() { super("action.nav-config"); }
+        public ActionPerspectiveConfig() { super("action.configure-perspectives"); }
         
         public void actionPerformed(ActionEvent ae) {
             
