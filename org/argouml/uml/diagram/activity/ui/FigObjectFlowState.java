@@ -38,8 +38,8 @@ import java.util.Iterator;
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.FigRect;
 import org.tigris.gef.presentation.FigText;
-import org.argouml.application.api.Notation;
-import org.argouml.model.ModelFacade;
+import org.argouml.application.events.ArgoEvent;
+import org.argouml.application.events.ArgoEventPump;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
 import org.argouml.uml.generator.ParserDisplay;
@@ -47,11 +47,11 @@ import org.argouml.uml.generator.ParserDisplay;
 
 /** Class to display graphics for a UML ObjectFlowState in a diagram. 
  * 
- * The NameFig of this class may either contain the Class name, or
+ * The Fig of this modelelement may either contain the Classifier name, or
  * it contains the name of the ClassifierInState AND its state.
  * In the examples in the UML standard, this is written like 
- * PurchaseOrder
- * [approved]
+ *      PurchaseOrder
+ *       [approved]
  * i.e. in 2 lines. The first line is underlined, 
  * to indicate that it is an instance (object).
  */
@@ -59,11 +59,12 @@ public class FigObjectFlowState extends FigNodeModelElement {
    
     private static final int PADDING = 8;
     private static final int OFFSET = 10;
-    private static final int WIDTH = 90;
-    private static final int HEIGHT = 50;
+    private static final int WIDTH = 70;
+    private static final int HEIGHT = 40;
     
     private FigRect cover;
-    private FigText state;
+    private FigText classifier; // the classifier(instate) name
+    private FigText state;      // the state name
 
     ////////////////////////////////////////////////////////////////
     // constructors
@@ -76,10 +77,15 @@ public class FigObjectFlowState extends FigNodeModelElement {
                 Color.cyan, Color.cyan));
         cover = new FigRect(OFFSET, OFFSET, WIDTH, HEIGHT, 
                 Color.black, Color.white);
-        getNameFig().setLineWidth(0);
-        getNameFig().setFilled(false);
-        getNameFig().setUnderline(true);
-        getNameFig().setMultiLine(false);
+                                                // values don't care
+        classifier = new FigText(OFFSET, WIDTH - OFFSET, WIDTH, 21); 
+        classifier.setFont(getLabelFont());
+        classifier.setTextColor(Color.black);
+        classifier.setMultiLine(false);
+        classifier.setAllowsTab(false);
+        classifier.setLineWidth(0);
+        classifier.setFilled(false);
+        classifier.setUnderline(true);
         
         state = new FigText(OFFSET, OFFSET, WIDTH, 21); // values don't care
         state.setFont(getLabelFont());
@@ -92,11 +98,14 @@ public class FigObjectFlowState extends FigNodeModelElement {
         // add Figs to the FigNode in back-to-front order
         addFig(getBigPort());
         addFig(cover);
-        addFig(getNameFig());
+        addFig(classifier);
         addFig(state);
         
+        setReadyToEdit(false);
         Rectangle r = getBounds();
         setBounds(r.x, r.y, r.width, r.height);
+        
+        ArgoEventPump.addListener(ArgoEvent.ANY_NOTATION_EVENT, this);
     }
     
     /**
@@ -125,7 +134,7 @@ public class FigObjectFlowState extends FigNodeModelElement {
         Iterator it = figClone.getFigs(null).iterator();
         figClone.setBigPort((FigRect) it.next());
         figClone.cover = (FigRect) it.next();
-        figClone.setNameFig((FigText) it.next());
+        figClone.classifier = (FigText) it.next();
         return figClone;
     }
 
@@ -135,7 +144,7 @@ public class FigObjectFlowState extends FigNodeModelElement {
      * @see org.tigris.gef.presentation.Fig#getMinimumSize()
      */
     public Dimension getMinimumSize() {
-        Dimension tempDim = getNameFig().getMinimumSize();
+        Dimension tempDim = classifier.getMinimumSize();
         int w = tempDim.width + PADDING * 2;
         int h = tempDim.height + PADDING;
         tempDim = state.getMinimumSize();
@@ -156,19 +165,19 @@ public class FigObjectFlowState extends FigNodeModelElement {
      * @see org.tigris.gef.presentation.Fig#setBounds(int, int, int, int)
      */
     public void setBounds(int x, int y, int w, int h) {
-        if (getNameFig() == null) return;
+        //if (getNameFig() == null) return;
         Rectangle oldBounds = getBounds();
         
-        Dimension nameDim = getNameFig().getMinimumSize();
+        Dimension classDim = classifier.getMinimumSize();
         Dimension stateDim = state.getMinimumSize();
         /* the height of the blank space above and below the text figs: */
-        int blank = (h - PADDING - nameDim.height - stateDim.height) / 2;
-        getNameFig().setBounds(x + PADDING, 
+        int blank = (h - PADDING - classDim.height - stateDim.height) / 2;
+        classifier.setBounds(x + PADDING, 
                 y + blank, 
                 w - PADDING * 2, 
-                nameDim.height);
+                classDim.height);
         state.setBounds(x + PADDING,
-                y + blank + nameDim.height + PADDING,
+                y + blank + classDim.height + PADDING,
                 w - PADDING * 2, 
                 stateDim.height);
         
@@ -239,11 +248,11 @@ public class FigObjectFlowState extends FigNodeModelElement {
      */
     protected void textEdited(FigText ft) throws PropertyVetoException {
         try {
-            if (ft == getNameFig() && this.getOwner() != null) { 
+            if (ft == classifier && this.getOwner() != null) { 
                 ParserDisplay.SINGLETON.parseObjectFlowState1(ft.getText(), 
                     this.getOwner());
             } else if (ft == state && this.getOwner() != null) {  
-                ParserDisplay.SINGLETON.parseObjectFlowState2(state.getText(), 
+                ParserDisplay.SINGLETON.parseObjectFlowState2(ft.getText(), 
                         this.getOwner());
             }
             ProjectBrowser.getInstance().getStatusBar().showStatus("");
