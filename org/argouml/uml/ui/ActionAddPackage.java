@@ -27,8 +27,8 @@ package org.argouml.uml.ui;
 import java.awt.event.ActionEvent;
 
 import org.argouml.model.uml.UmlFactory;
-import org.argouml.ui.NavigatorPane;
-import ru.novosoft.uml.foundation.core.MNamespace;
+import org.argouml.model.ModelFacade;
+import org.argouml.ui.targetmanager.TargetManager;
 
 /** 
  * Action to add a package to the selected model element in the
@@ -58,9 +58,9 @@ public class ActionAddPackage  extends UMLAction {
      * adds a package to the selected object in the nav pane.
      */
     public void actionPerformed(ActionEvent e) {
-        MNamespace namespace =
-	    (MNamespace) NavigatorPane.getInstance().getSelectedObject();
-        namespace.addOwnedElement(
+        Object namespace =
+	    TargetManager.getInstance().getTarget();
+        ModelFacade.addOwnedElement(namespace,
             UmlFactory.getFactory().getModelManagement().createPackage());
     }
     

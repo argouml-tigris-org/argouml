@@ -33,10 +33,9 @@ import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.ModelFacade;
-import org.argouml.ui.NavigatorPane;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.util.osdep.OsUtil;
-
+import org.argouml.ui.targetmanager.TargetManager;
 
 
 /** Action to choose and set source path for model elements
@@ -66,7 +65,7 @@ public class ActionSetSourcePath extends UMLAction {
     public void actionPerformed(ActionEvent e) {
 	File f = getNewDirectory();
 	if (f != null) {
-	    Object obj = NavigatorPane.getInstance().getSelectedObject();
+	    Object obj = TargetManager.getInstance().getTarget();
 	    if (ModelFacade.isAModelElement(obj)) {
 		ModelFacade.setTaggedValue(obj, "src_path",f.getPath());
 	    }
@@ -75,7 +74,7 @@ public class ActionSetSourcePath extends UMLAction {
 
     protected File getNewDirectory() {
 	Project p = ProjectManager.getManager().getCurrentProject();
-	Object obj = NavigatorPane.getInstance().getSelectedObject();
+	Object obj = TargetManager.getInstance().getTarget();
 	String name = null;
 	String type = null;
 	String path = null;
