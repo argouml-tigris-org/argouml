@@ -237,12 +237,17 @@ public abstract class UMLMutableGraphSupport extends MutableGraphSupport {
      * @see org.tigris.gef.graph.MutableGraphModel#canAddEdge(java.lang.Object)
      */
     public boolean canAddEdge(Object edge) {
-        if (edge == null) {
-            return false;
+        if (edge instanceof CommentEdge) {
+            CommentEdge ce = (CommentEdge)edge;
+            return isConnectionValid(CommentEdge.class,
+                    ce.getSource(),
+                    ce.getDestination());
+        } else if (edge != null) {
+            return isConnectionValid(edge.getClass(),
+                Model.getUmlHelper().getSource(edge),
+                Model.getUmlHelper().getDestination(edge));
         }
-       return isConnectionValid(edge.getClass(),
-               Model.getUmlHelper().getSource(edge),
-               Model.getUmlHelper().getDestination(edge));
+        return false;
     }
     
     /**

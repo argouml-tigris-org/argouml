@@ -217,12 +217,22 @@ public class ClassDiagramRenderer
                     + edge.getClass().getName());
         } else {
             if (newEdge.getSourcePortFig() == null) {
-                setSourcePort(newEdge, (FigNode) lay.presentationFor(
-                        Model.getUmlHelper().getSource(edge)));
+                Object source;
+                if (edge instanceof CommentEdge) {
+                    source = ((CommentEdge)edge).getSource();
+                } else {
+                    source = Model.getUmlHelper().getSource(edge);
+                }
+                setSourcePort(newEdge, (FigNode) lay.presentationFor(source));
             }
             if (newEdge.getDestPortFig() == null) {
-                setDestPort(newEdge, (FigNode) lay.presentationFor(
-                        Model.getUmlHelper().getDestination(edge)));
+                Object dest;
+                if (edge instanceof CommentEdge) {
+                    dest = ((CommentEdge)edge).getDestination();
+                } else {
+                    dest = Model.getUmlHelper().getDestination(edge);
+                }
+                setDestPort(newEdge, (FigNode) lay.presentationFor(dest));
             }
             if (newEdge.getSourcePortFig() == null 
                     || newEdge.getDestPortFig() == null ) {
