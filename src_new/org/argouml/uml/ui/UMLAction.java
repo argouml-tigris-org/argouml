@@ -141,7 +141,9 @@ public class UMLAction extends AbstractAction {
     }
 
     /** 
-     * Perform the work the action is supposed to do.
+     * Perform the work the action is supposed to do. 
+     * This method needs to be overridden by all actions, 
+     * since it only shows a fake progressbar...
      * 
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
