@@ -5,7 +5,7 @@
 // agreement is hereby granted, provided that the above copyright notice
 // and this paragraph appear in all copies.  This software program and
 // documentation are copyrighted by The Regents of the University of
-// California. The software program and documentation are supplied "AS
+// California. The software program andhandle documentation are supplied "AS
 // IS", without any accompanying services from The Regents. The Regents
 // does not warrant that the operation of the program will be
 // uninterrupted or error-free. The end-user understands that the program
@@ -496,7 +496,8 @@ public class ModelFacade {
         if (handle instanceof MAction) {
             return ((MAction)handle).isAsynchronous();
         }
-        throw new IllegalArgumentException("Unrecognized object " + handle);
+        throw new IllegalArgumentException("Unrecognized object " + 
+					   getClassNull(handle));
     }
 
     /** Recognizer for abstract classes and operations.
@@ -510,7 +511,8 @@ public class ModelFacade {
         if (handle instanceof MGeneralizableElement)
             return ((MGeneralizableElement)handle).isAbstract();
         // ...
-        throw new IllegalArgumentException("Unrecognized object " + handle);
+        throw new IllegalArgumentException("Unrecognized object " + 
+					   getClassNull(handle));
     }
     
     
@@ -647,7 +649,8 @@ public class ModelFacade {
         if (handle instanceof MClass) {
             return ((MClass)handle).isActive();
         }
-        throw new IllegalArgumentException("Unrecognized object " + handle);
+        throw new IllegalArgumentException("Unrecognized object " + 
+					   getClassNull(handle));
     }
 
     /** Recognizer for DataType
@@ -1009,7 +1012,8 @@ public class ModelFacade {
         if (handle instanceof MPseudostate) {
             return ((MPseudostate)handle).getKind();
         }
-        throw new IllegalArgumentException("Unrecognized handle " + handle);
+        throw new IllegalArgumentException("Unrecognized handle " + 
+					   getClassNull(handle));
     }
 
     /**
@@ -1024,7 +1028,8 @@ public class ModelFacade {
         if (handle instanceof MMessage) {
             return ((MMessage)handle).getReceiver();
         }
-        throw new IllegalArgumentException("Unrecognized object " + handle);
+        throw new IllegalArgumentException("Unrecognized object " + 
+					   getClassNull(handle));
     }
 
     public static Object getKind(Object handle) {
@@ -1034,14 +1039,16 @@ public class ModelFacade {
         if (handle instanceof MParameter) {
             return ((MParameter)handle).getKind();
         }
-        throw new IllegalArgumentException("Unrecognized handle " + handle);
+        throw new IllegalArgumentException("Unrecognized handle " + 
+					   getClassNull(handle));
     }
 
     public static Object getLink(Object handle) {
         if (handle instanceof MLinkEnd) {
             return ((MLinkEnd)handle).getLink();
         }
-        throw new IllegalArgumentException("Unrecognized handle " + handle);
+        throw new IllegalArgumentException("Unrecognized handle " + 
+					   getClassNull(handle));
     }
 
     /** check whether two pseudostatekinds are equal/of the same type.
@@ -1220,7 +1227,8 @@ public class ModelFacade {
             return MChangeableKind.CHANGEABLE.equals(changeability);
         }
         // ...
-        throw new IllegalArgumentException("Unrecognized object " + handle);
+        throw new IllegalArgumentException("Unrecognized object " + 
+					   getClassNull(handle));
     }
 
     /** Recognizer for attributes with classifier scope.
@@ -1234,7 +1242,8 @@ public class ModelFacade {
             return MScopeKind.CLASSIFIER.equals(a.getOwnerScope());
         }
         // ...
-        throw new IllegalArgumentException("Unrecognized object " + handle);
+        throw new IllegalArgumentException("Unrecognized object " + 
+					   getClassNull(handle));
     }
 
     /** Recognizer for concurent composite state.
@@ -1246,7 +1255,8 @@ public class ModelFacade {
         if (handle instanceof MCompositeState) {
             return ((MCompositeState)handle).isConcurent();
         }
-        throw new IllegalArgumentException("Unrecognized object " + handle);
+        throw new IllegalArgumentException("Unrecognized object " + 
+					   getClassNull(handle));
     }
 
     /** Recognizer for constructor.
@@ -1287,7 +1297,8 @@ public class ModelFacade {
             MChangeableKind ck = (MChangeableKind)handle;
             return MChangeableKind.FROZEN.equals(ck);
         }
-        throw new IllegalArgumentException("Unrecognized object " + handle);
+        throw new IllegalArgumentException("Unrecognized object " + 
+					   getClassNull(handle));
     }
 
     /**
@@ -1304,7 +1315,8 @@ public class ModelFacade {
                 composite = true;
             return composite;
         }
-        throw new IllegalArgumentException("Unrecognized object " + handle);
+        throw new IllegalArgumentException("Unrecognized object " + 
+					   getClassNull(handle));
     }
 
     /**
@@ -1321,7 +1333,8 @@ public class ModelFacade {
                 composite = true;
             return composite;
         }
-        throw new IllegalArgumentException("Unrecognized object " + handle);
+        throw new IllegalArgumentException("Unrecognized object " + 
+					   getClassNull(handle));
     }
 
     /** Recognizer for attributes that are initialized.
@@ -1341,7 +1354,8 @@ public class ModelFacade {
         }
 
         // ...
-        throw new IllegalArgumentException("Unrecognized object " + handle);
+        throw new IllegalArgumentException("Unrecognized object " + 
+					   getClassNull(handle));
     }
 
     /** Recognizer for attributes with instance scope.
@@ -1355,7 +1369,8 @@ public class ModelFacade {
             return MScopeKind.INSTANCE.equals(a.getOwnerScope());
         }
         // ...
-        throw new IllegalArgumentException("Unrecognized object " + handle);
+        throw new IllegalArgumentException("Unrecognized object " + 
+					   getClassNull(handle));
     }
 
     /** Recognizer for leafs
@@ -1374,7 +1389,8 @@ public class ModelFacade {
         if (handle instanceof MReception) {
             return ((MReception)handle).isLeaf();
         }
-        throw new IllegalArgumentException("Unrecognized object " + handle);
+        throw new IllegalArgumentException("Unrecognized object " + 
+					   getClassNull(handle));
     }
 
     /** Recognizer for roots
@@ -1393,7 +1409,8 @@ public class ModelFacade {
         if (handle instanceof MReception) {
             return ((MReception)handle).isRoot();
         }
-        throw new IllegalArgumentException("Unrecognized object " + handle);
+        throw new IllegalArgumentException("Unrecognized object " + 
+					   getClassNull(handle));
     }
 
     /** Recognizer for specifications
@@ -1406,7 +1423,8 @@ public class ModelFacade {
         if (handle instanceof MModelElement) {
             return ((MModelElement)handle).isSpecification();
         }
-        throw new IllegalArgumentException("Unrecognized object " + handle);
+        throw new IllegalArgumentException("Unrecognized object " + 
+					   getClassNull(handle));
     }
 
     /** Recognizer for Navigable elements
@@ -1420,7 +1438,8 @@ public class ModelFacade {
         }
 
         // ...
-        throw new IllegalArgumentException("Unrecognized object " + handle);
+        throw new IllegalArgumentException("Unrecognized object " + 
+					   getClassNull(handle));
     }
 
     /** Recognizer for primary objects.
@@ -1445,7 +1464,8 @@ public class ModelFacade {
             return true;
         }
         // ...
-        throw new IllegalArgumentException("Unrecognized object " + handle);
+        throw new IllegalArgumentException("Unrecognized object " + 
+					   getClassNull(handle));
     }
 
     /** Recognizer for attributes with private
@@ -1459,7 +1479,8 @@ public class ModelFacade {
             return MVisibilityKind.PRIVATE.equals(element.getVisibility());
         }
         // ...
-        throw new IllegalArgumentException("Unrecognized object " + handle);
+        throw new IllegalArgumentException("Unrecognized object " + 
+					   getClassNull(handle));
     }
 
     /** Recognizer for attributes with public
@@ -1473,7 +1494,8 @@ public class ModelFacade {
             return MVisibilityKind.PUBLIC.equals(element.getVisibility());
         }
         // ...
-        throw new IllegalArgumentException("Unrecognized object " + handle);
+        throw new IllegalArgumentException("Unrecognized object " + 
+					   getClassNull(handle));
     }
 
     /**
@@ -1485,7 +1507,8 @@ public class ModelFacade {
     public static boolean isQuery(Object handle) {
 
         if (!(handle instanceof MBehavioralFeature)) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("Unrecognized object " +
+					       getClassNull(handle));
         }
 
         return ((MBehavioralFeature)handle).isQuery();
@@ -1502,7 +1525,8 @@ public class ModelFacade {
             return MVisibilityKind.PROTECTED.equals(element.getVisibility());
         }
         // ...
-        throw new IllegalArgumentException("Unrecognized object " + handle);
+        throw new IllegalArgumentException("Unrecognized object " + 
+					   getClassNull(handle));
     }
 
     /** Recognizer for realize
@@ -1526,7 +1550,8 @@ public class ModelFacade {
 
         }
         // ...
-        throw new IllegalArgumentException("Unrecognized object " + handle);
+        throw new IllegalArgumentException("Unrecognized object " +
+					   getClassNull(handle));
     }
 
     /** Recognizer for singleton.
@@ -1566,7 +1591,8 @@ public class ModelFacade {
         }
 
         // ...
-        throw new IllegalArgumentException("Unrecognized object " + handle);
+        throw new IllegalArgumentException("Unrecognized object " + 
+					   getClassNull(handle));
     }
 
     public static boolean isTop(Object handle) {
@@ -1618,7 +1644,8 @@ public class ModelFacade {
         if (end instanceof MAssociationEnd) {
             return ((MAssociationEnd)end).getAssociation();
         }
-        throw new IllegalArgumentException("Unrecognized object " + end);
+        throw new IllegalArgumentException("Unrecognized object " + 
+					   getClassNull(end));
     }
 
     /**
@@ -1654,7 +1681,8 @@ public class ModelFacade {
         }
 
         //...
-        throw new IllegalArgumentException("Unrecognized object " + handle);
+        throw new IllegalArgumentException("Unrecognized object " + 
+					   getClassNull(handle));
     }
 
     /** The list of association roles
@@ -1666,7 +1694,8 @@ public class ModelFacade {
         if (handle instanceof MAssociation) {
             return ((MAssociation)handle).getAssociationRoles();
         }
-        throw new IllegalArgumentException("Unrecognized object " + handle);
+        throw new IllegalArgumentException("Unrecognized object " + 
+					   getClassNull(handle));
     }
 
     /** The list of Attributes.
@@ -1685,7 +1714,8 @@ public class ModelFacade {
         }
 
         // ...
-        throw new IllegalArgumentException("Unrecognized object " + handle);
+        throw new IllegalArgumentException("Unrecognized object " + 
+					   getClassNull(handle));
     }
 
     /**
@@ -1697,7 +1727,8 @@ public class ModelFacade {
         if (isAStereotype(handle)) {
             return ((MStereotype)handle).getBaseClass();
         }
-        throw new IllegalArgumentException("Unrecognized object " + handle);
+        throw new IllegalArgumentException("Unrecognized object " + 
+					   getClassNull(handle));
     }
 
     /**
@@ -1715,7 +1746,8 @@ public class ModelFacade {
         } else if (handle instanceof MInclude) {
             return ((MInclude)handle).getBase();
         }
-        throw new IllegalArgumentException("Unrecognized object " + handle);
+        throw new IllegalArgumentException("Unrecognized object " + 
+					   getClassNull(handle));
     }
 
     /** Get the bases of a classifier role.
@@ -1727,7 +1759,8 @@ public class ModelFacade {
     public static Collection getBases(Object handle) {
         if (handle instanceof MClassifierRole)
             return ((MClassifierRole)handle).getBases();
-        throw new IllegalArgumentException("Unrecognized object " + handle);
+        throw new IllegalArgumentException("Unrecognized object " + 
+					   getClassNull(handle));
     }
 
     /** Get the behaviors of a Modelelement.
@@ -1739,7 +1772,8 @@ public class ModelFacade {
     public static Collection getBehaviors(Object handle) {
         if (isAModelElement(handle))
             return ((MModelElement)handle).getBehaviors();
-        throw new IllegalArgumentException("Unrecognized object " + handle);
+        throw new IllegalArgumentException("Unrecognized object " + 
+					   getClassNull(handle));
     }
 
     /** Get the behavioral feature of an parameter.
@@ -1750,7 +1784,7 @@ public class ModelFacade {
     public static Object getBehavioralFeature(Object handle) {
         if (handle instanceof MParameter)
             return ((MParameter)handle).getBehavioralFeature();
-        throw new IllegalArgumentException("Unrecognized object " + handle);
+        throw new IllegalArgumentException("Unrecognized object " + getClassNull(handle));
     }
 
     /** Get the body of an method/constraint/expression.
@@ -1766,14 +1800,16 @@ public class ModelFacade {
             return ((MConstraint)handle).getBody();
         if (handle instanceof MExpression)
             return ((MExpression)handle).getBody();
-        throw new IllegalArgumentException("Unrecognized object " + handle);
+        throw new IllegalArgumentException("Unrecognized object " + 
+					   getClassNull(handle));
     }
 
     public static Object getChangeability(Object handle) {
         if (handle instanceof MStructuralFeature) {
             return ((MStructuralFeature)handle).getChangeability();
         }
-        throw new IllegalArgumentException("Unrecognized object " + handle);
+        throw new IllegalArgumentException("Unrecognized object " + 
+					   getClassNull(handle));
     }
 
     /** Get the child of a generalization.
@@ -1787,7 +1823,8 @@ public class ModelFacade {
         }
 
         // ...
-        throw new IllegalArgumentException("Unrecognized object " + handle);
+        throw new IllegalArgumentException("Unrecognized object " + 
+					   getClassNull(handle));
     }
 
     /**
@@ -1800,7 +1837,8 @@ public class ModelFacade {
         if (isAGeneralizableElement(handle)) {
             return ((MGeneralizableElement)handle).getChildren();
         }
-        throw new IllegalArgumentException("Unrecognized object " + handle);
+        throw new IllegalArgumentException("Unrecognized object " + 
+					   getClassNull(handle));
     }
 
     /**
@@ -1815,7 +1853,8 @@ public class ModelFacade {
         if (handle instanceof MClassifier) {
             return ((MClassifier)handle).getClassifierRoles();
         }       
-        throw new IllegalArgumentException("Unrecognized object " + handle);
+        throw new IllegalArgumentException("Unrecognized object " + 
+					   getClassNull(handle));
     }
 
     /**
@@ -1827,7 +1866,8 @@ public class ModelFacade {
         if (handle instanceof MInstance) {
             return ((MInstance)handle).getClassifiers();
         }
-        throw new IllegalArgumentException("Unrecognized object " + handle);
+        throw new IllegalArgumentException("Unrecognized object " + 
+					   getClassNull(handle));
     }
 
     /**
@@ -1842,7 +1882,8 @@ public class ModelFacade {
         if (handle instanceof MState) {
             return ((MState)handle).getClassifiersInState();
         }
-        throw new IllegalArgumentException("Unrecognized object " + handle);
+        throw new IllegalArgumentException("Unrecognized object " + 
+					   getClassNull(handle));
     }
 
     /**
@@ -1854,7 +1895,8 @@ public class ModelFacade {
         if (isADependency(handle)) {
             return ((MDependency)handle).getClients();
         }
-        throw new IllegalArgumentException("Unrecognized object " + handle);
+        throw new IllegalArgumentException("Unrecognized object " + 
+					   getClassNull(handle));
     }
 
     /**
@@ -1868,7 +1910,8 @@ public class ModelFacade {
             Collection c = ((MModelElement)handle).getClientDependencies();
             return c;
         }
-        throw new IllegalArgumentException("Unrecognized object " + handle);
+        throw new IllegalArgumentException("Unrecognized object " + 
+					   getClassNull(handle));
     }
 
     /** Get the condition of an extend.
@@ -1880,7 +1923,8 @@ public class ModelFacade {
         if (o != null && o instanceof MExtend) {
             return ((MExtend)o).getCondition();
         }
-        throw new IllegalArgumentException("Unrecognized object " + o);
+        throw new IllegalArgumentException("Unrecognized object " + 
+					   getClassNull(o));
     }
 
     /** Get the concurrency of an operation.
@@ -1892,7 +1936,8 @@ public class ModelFacade {
         if (o != null && o instanceof MOperation) {
             return ((MOperation)o).getConcurrency();
         }
-        throw new IllegalArgumentException("Unrecognized object " + o);
+        throw new IllegalArgumentException("Unrecognized object " + 
+					   getClassNull(o));
     }
 
     //    public static short getConcurrency(Object o) {
@@ -1917,7 +1962,8 @@ public class ModelFacade {
         if (handle instanceof MLink) {
             return ((MLink)handle).getConnections();
         }
-        throw new IllegalArgumentException("Unrecognized object " + handle);
+        throw new IllegalArgumentException("Unrecognized object " + 
+					   getClassNull(handle));
     }
 
     /** Determine if a model element contains a connection
@@ -1932,7 +1978,7 @@ public class ModelFacade {
         }
 
         // ...
-        throw new IllegalArgumentException("Unrecognized object " + element);
+        throw new IllegalArgumentException("Unrecognized object " + getClassNull(element));
     }
 
     /** Count the number of Connections or AssociationEnds to an Association.
@@ -1946,7 +1992,7 @@ public class ModelFacade {
         }
 
         // ...
-        throw new IllegalArgumentException("Unrecognized object " + handle);
+        throw new IllegalArgumentException("Unrecognized object " + getClassNull(handle));
     }
 
     /**
@@ -1958,7 +2004,7 @@ public class ModelFacade {
         if (handle instanceof MTransition) {
             return ((MTransition)handle).getEffect();
         }
-        throw new IllegalArgumentException("Unrecognized object " + handle);
+        throw new IllegalArgumentException("Unrecognized object " + getClassNull(handle));
     }
 
     /** Get the residences of an element.
@@ -1970,14 +2016,16 @@ public class ModelFacade {
         if (handle instanceof MModelElement)
             return ((MModelElement)handle).getElementResidences();
         // ...
-        throw new IllegalArgumentException("Unrecognized object " + handle);
+        throw new IllegalArgumentException("Unrecognized object " + 
+					   getClassNull(handle));
     }
 
     public static Collection getElementImports2(Object handle) {
         if (handle instanceof MModelElement) {
             return ((MModelElement)handle).getElementImports2();
         }
-        throw new IllegalArgumentException("Unrecognized object " + handle);
+        throw new IllegalArgumentException("Unrecognized object " + 
+					   getClassNull(handle));
     }
 
     /**
@@ -1989,7 +2037,8 @@ public class ModelFacade {
         if (handle instanceof MState) {
             return ((MState)handle).getEntry();
         }
-        throw new IllegalArgumentException("Unrecognized object " + handle);
+        throw new IllegalArgumentException("Unrecognized object " + 
+					   getClassNull(handle));
     }
 
     /**
@@ -2001,7 +2050,8 @@ public class ModelFacade {
         if (handle instanceof MState) {
             return ((MState)handle).getExit();
         }
-        throw new IllegalArgumentException("Unrecognized object " + handle);
+        throw new IllegalArgumentException("Unrecognized object " + 
+					   getClassNull(handle));
     }
 
     public static Object getExpression(Object handle) {
@@ -2022,7 +2072,8 @@ public class ModelFacade {
         if (handle instanceof MExtensionPoint) {
             return ((MExtensionPoint)handle).getExtends();
         }
-        throw new IllegalArgumentException("Unrecognized object " + handle);
+        throw new IllegalArgumentException("Unrecognized object " + 
+					   getClassNull(handle));
     }
 
     /**
@@ -2034,7 +2085,8 @@ public class ModelFacade {
         if (handle instanceof MUseCase) {
             return ((MUseCase)handle).getExtends2();
         }
-        throw new IllegalArgumentException("Unrecognized object " + handle);
+        throw new IllegalArgumentException("Unrecognized object " + 
+					   getClassNull(handle));
     }
 
     /**
@@ -2052,7 +2104,8 @@ public class ModelFacade {
         if (handle instanceof MExtend) {
             return ((MExtend)handle).getExtensionPoint(index);
         }
-        throw new IllegalArgumentException("Unrecognized object " + handle);
+        throw new IllegalArgumentException("Unrecognized object " + 
+					   getClassNull(handle));
     }
 
     /**
@@ -2067,7 +2120,8 @@ public class ModelFacade {
         if (handle instanceof MExtend) {
             return ((MExtend)handle).getExtensionPoints();
         }
-        throw new IllegalArgumentException("Unrecognized object " + handle);
+        throw new IllegalArgumentException("Unrecognized object " + 
+					   getClassNull(handle));
     }
 
     /** The list of Features from a Classifier.
@@ -2114,7 +2168,8 @@ public class ModelFacade {
             MGeneralizableElement ge = (MGeneralizableElement)handle;
             return ge.getGeneralizations();
         }
-        throw new IllegalArgumentException("Unrecognized object " + handle);
+        throw new IllegalArgumentException("Unrecognized object " + 
+					   getClassNull(handle));
     }
 
     /**
@@ -2126,14 +2181,16 @@ public class ModelFacade {
         if (isATransition(handle)) {
             return ((MTransition)handle).getGuard();
         }
-        throw new IllegalArgumentException("Unrecognized object " + handle);
+        throw new IllegalArgumentException("Unrecognized object " + 
+					   getClassNull(handle));
     }
 
     public static Object getIcon(Object handle) {
         if (handle instanceof MStereotype) {
             return ((MStereotype)handle).getIcon();
         }
-        throw new IllegalArgumentException("Unrecognized object " + handle);
+        throw new IllegalArgumentException("Unrecognized object " + 
+					   getClassNull(handle));
     }
 
     /**
@@ -2145,7 +2202,8 @@ public class ModelFacade {
         if (handle instanceof MElementResidence) {
             return ((MElementResidence)handle).getImplementationLocation();
         }
-        throw new IllegalArgumentException("Unrecognized object " + handle);
+        throw new IllegalArgumentException("Unrecognized object " + 
+					   getClassNull(handle));
     }
 
     /**
@@ -2157,7 +2215,8 @@ public class ModelFacade {
         if (handle instanceof MUseCase) {
             return ((MUseCase)handle).getIncludes();
         }
-        throw new IllegalArgumentException("Unrecognized object " + handle);
+        throw new IllegalArgumentException("Unrecognized object " + 
+					   getClassNull(handle));
     }
 
     /**
@@ -2169,7 +2228,8 @@ public class ModelFacade {
         if (handle instanceof MUseCase) {
             return ((MUseCase)handle).getIncludes();
         }
-        throw new IllegalArgumentException("Unrecognized object " + handle);
+        throw new IllegalArgumentException("Unrecognized object " + 
+					   getClassNull(handle));
     }
 
     /**
@@ -2181,7 +2241,8 @@ public class ModelFacade {
         if (isAStateVertex(handle)) {
             return ((MStateVertex)handle).getIncomings();
         }
-        throw new IllegalArgumentException("Unrecognized object " + handle);
+        throw new IllegalArgumentException("Unrecognized object " + 
+					   getClassNull(handle));
     }
 
     /**
@@ -2193,7 +2254,8 @@ public class ModelFacade {
         if (handle instanceof MAttribute) {
             return ((MAttribute)handle).getInitialValue();
         }
-        throw new IllegalArgumentException("Unrecognized object " + handle);
+        throw new IllegalArgumentException("Unrecognized object " + 
+					   getClassNull(handle));
     }
 
     /**
@@ -2208,7 +2270,8 @@ public class ModelFacade {
         if (handle instanceof MLinkEnd) {
             return ((MLinkEnd)handle).getInstance();
         }
-        throw new IllegalArgumentException("Unrecognized object " + handle);
+        throw new IllegalArgumentException("Unrecognized object " + 
+					   getClassNull(handle));
     }
 
     /**
@@ -2220,7 +2283,8 @@ public class ModelFacade {
         if (handle instanceof MClassifier) {
             return ((MClassifier)handle).getInstances();
         }
-        throw new IllegalArgumentException("Unrecognized object " + handle);
+        throw new IllegalArgumentException("Unrecognized object " + 
+					   getClassNull(handle));
     }
 
     /**
@@ -2232,7 +2296,8 @@ public class ModelFacade {
         if (handle instanceof MMessage) {
             return ((MMessage)handle).getInteraction();
         }
-        throw new IllegalArgumentException("Unrecognized object " + handle);
+        throw new IllegalArgumentException("Unrecognized object " + 
+					   getClassNull(handle));
     }
 
     /**
@@ -2244,7 +2309,8 @@ public class ModelFacade {
         if (handle instanceof MCollaboration) {
             return ((MCollaboration)handle).getInteractions();
         }
-        throw new IllegalArgumentException("Unrecognized object " + handle);
+        throw new IllegalArgumentException("Unrecognized object " + 
+					   getClassNull(handle));
     }
 
     /**
@@ -2256,7 +2322,8 @@ public class ModelFacade {
         if (handle instanceof MState) {
             return ((MState)handle).getInternalTransitions();
         }
-        throw new IllegalArgumentException("Unrecognized object " + handle);
+        throw new IllegalArgumentException("Unrecognized object " + 
+					   getClassNull(handle));
     }
 
     /**
@@ -2274,7 +2341,8 @@ public class ModelFacade {
         if (handle instanceof MAction) {
             return ((MAction)handle).getMessages();
         }
-        throw new IllegalArgumentException("Unrecognized object " + handle);
+        throw new IllegalArgumentException("Unrecognized object " + 
+					   getClassNull(handle));
     }
 
     /**
@@ -2286,14 +2354,16 @@ public class ModelFacade {
         if (handle instanceof MMessage) {
             return ((MMessage)handle).getMessages3();
         }
-        throw new IllegalArgumentException("Unrecognized object " + handle);
+        throw new IllegalArgumentException("Unrecognized object " + 
+					   getClassNull(handle));
     }
 
     public static Collection getMessages4(Object handle) {
         if (handle instanceof MMessage) {
             return ((MMessage)handle).getMessages4();
         }
-        throw new IllegalArgumentException("Unrecognized object " + handle);
+        throw new IllegalArgumentException("Unrecognized object " + 
+					   getClassNull(handle));
     }
 
     /**
@@ -2305,14 +2375,16 @@ public class ModelFacade {
         if (handle instanceof MClassifierRole) {
             return ((MClassifierRole)handle).getMessages1();
         }
-        throw new IllegalArgumentException("Unrecognized object " + handle);
+        throw new IllegalArgumentException("Unrecognized object " + 
+					   getClassNull(handle));
     }
 
     public static Collection getMessages2(Object handle) {
         if (handle instanceof MClassifierRole) {
             return ((MClassifierRole)handle).getMessages2();
         }
-        throw new IllegalArgumentException("Unrecognized object " + handle);
+        throw new IllegalArgumentException("Unrecognized object " + 
+					   getClassNull(handle));
     }
 
     /**
@@ -2326,7 +2398,8 @@ public class ModelFacade {
             MModel m = ((MModelElement)handle).getModel();
             return m;
         }
-        throw new IllegalArgumentException("Unrecognized object " + handle);
+        throw new IllegalArgumentException("Unrecognized object " + 
+					   getClassNull(handle));
     }
 
     /**
@@ -2334,7 +2407,8 @@ public class ModelFacade {
      */
     public static Object getModelElement(Object elemImport) {
         if (!(elemImport instanceof MElementImport))
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("Unrecognized object " +
+					       getClassNull(elemImport));
 
         return ((MElementImport)elemImport).getModelElement();
     }
@@ -2353,7 +2427,8 @@ public class ModelFacade {
             return ((MClassifierRole)handle).getMultiplicity();
         if ((handle instanceof MStructuralFeature))
             return ((MStructuralFeature)handle).getMultiplicity();
-        throw new IllegalArgumentException("Unrecognized object " + handle);
+        throw new IllegalArgumentException("Unrecognized object " + 
+					   getClassNull(handle));
     }
 
     /** Get the comments of an element.
@@ -2365,7 +2440,8 @@ public class ModelFacade {
         if (handle instanceof MModelElement)
             return ((MModelElement)handle).getComments();
         // ...
-        throw new IllegalArgumentException("Unrecognized object " + handle);
+        throw new IllegalArgumentException("Unrecognized object " +
+					   getClassNull(handle));
     }
 
     /** Get the communication connection of an message.
@@ -2377,7 +2453,8 @@ public class ModelFacade {
         if (handle instanceof MMessage)
             return ((MMessage)handle).getCommunicationConnection();
         // ...
-        throw new IllegalArgumentException("Unrecognized object " + handle);
+        throw new IllegalArgumentException("Unrecognized object " + 
+					   getClassNull(handle));
     }
 
     /** Get the communication link of a stimulus.
@@ -2389,7 +2466,8 @@ public class ModelFacade {
         if (handle instanceof MStimulus)
             return ((MStimulus)handle).getCommunicationLink();
         // ...
-        throw new IllegalArgumentException("Unrecognized object " + handle);
+        throw new IllegalArgumentException("Unrecognized object " + 
+					   getClassNull(handle));
     }
 
     /** Get the collaborations of an element.
@@ -2403,7 +2481,8 @@ public class ModelFacade {
         if (handle instanceof MClassifier)
             return ((MClassifier)handle).getCollaborations();
         // ...
-        throw new IllegalArgumentException("Unrecognized object " + handle);
+        throw new IllegalArgumentException("Unrecognized object " + 
+					   getClassNull(handle));
     }
 
     /**
@@ -2415,7 +2494,8 @@ public class ModelFacade {
         if (element instanceof MModelElement && comment instanceof MComment) {
             ((MModelElement)element).addComment((MComment)comment);
         }
-        throw new IllegalArgumentException("Unrecognized object " + element);
+        throw new IllegalArgumentException("Unrecognized object " + 
+					   getClassNull(element));
     }
 
     /** Get the component instance of an instance
@@ -2427,21 +2507,24 @@ public class ModelFacade {
         if (handle instanceof MInstance)
             return ((MInstance)handle).getComponentInstance();
         // ...
-        throw new IllegalArgumentException("Unrecognized object " + handle);
+        throw new IllegalArgumentException("Unrecognized object " + 
+					   getClassNull(handle));
     }
 
     public static Collection getConstrainingElements(Object handle) {
         if (handle instanceof MCollaboration) {
             return ((MCollaboration)handle).getConstrainingElements();
         }
-        throw new IllegalArgumentException("Unrecognized object " + handle);
+        throw new IllegalArgumentException("Unrecognized object " + 
+					   getClassNull(handle));
     }
 
     public static Collection getConstraints(Object handle) {
         if (handle instanceof MModelElement) {
             return ((MModelElement)handle).getConstraints();
         }
-        throw new IllegalArgumentException("Unrecognized object " + handle);
+        throw new IllegalArgumentException("Unrecognized object " + 
+					   getClassNull(handle));
     }
 
     /**
@@ -2458,14 +2541,16 @@ public class ModelFacade {
         if (handle instanceof MBase) {
             return ((MBase)handle).getModelElementContainer();
         }
-        throw new IllegalArgumentException("Unrecognized object " + handle);
+        throw new IllegalArgumentException("Unrecognized object " + 
+					   getClassNull(handle));
     }
 
     public static Object getContainer(Object handle) {
         if (handle instanceof MStateVertex) {
             return ((MStateVertex)handle).getContainer();
         }
-        throw new IllegalArgumentException("Unrecognized object " + handle);
+        throw new IllegalArgumentException("Unrecognized object " + 
+					   getClassNull(handle));
     }
 
     /**
@@ -2482,21 +2567,24 @@ public class ModelFacade {
         if (isAInteraction(handle)) {
             return ((MInteraction)handle).getContext();
         }
-        throw new IllegalArgumentException("Unrecognized object " + handle);
+        throw new IllegalArgumentException("Unrecognized object " + 
+					   getClassNull(handle));
     }
 
     public static Collection getContexts(Object handle) {
         if (handle instanceof MSignal) {
             return ((MSignal)handle).getContexts();
         }
-        throw new IllegalArgumentException("Unrecognized object " + handle);
+        throw new IllegalArgumentException("Unrecognized object " + 
+					   getClassNull(handle));
     }
 
     public static Collection getCreateActions(Object handle) {
         if (handle instanceof MClassifier) {
             return ((MClassifier)handle).getCreateActions();
         }
-        throw new IllegalArgumentException("Unrecognized object " + handle);
+        throw new IllegalArgumentException("Unrecognized object " + 
+					   getClassNull(handle));
     }
 
     /** Get the default value of a parameter
@@ -2508,7 +2596,8 @@ public class ModelFacade {
         if (handle instanceof MParameter) {
             return ((MParameter)handle).getDefaultValue();
         }
-        throw new IllegalArgumentException("Unrecognized object " + handle);
+        throw new IllegalArgumentException("Unrecognized object " + 
+					   getClassNull(handle));
     }
 
     /** Get deferrable events of a state
@@ -2520,7 +2609,8 @@ public class ModelFacade {
         if (handle instanceof MState) {
             return ((MState)handle).getDeferrableEvents();
         }
-        throw new IllegalArgumentException("Unrecognized object " + handle);
+        throw new IllegalArgumentException("Unrecognized object " + 
+					   getClassNull(handle));
     }
 
     /**
@@ -2534,7 +2624,8 @@ public class ModelFacade {
         if (isAComponent(handle)) {
             return ((MComponent)handle).getDeploymentLocations();
         }
-        throw new IllegalArgumentException("Unrecognized object " + handle);
+        throw new IllegalArgumentException("Unrecognized object " + 
+					   getClassNull(handle));
     }
 
     /** Get the discriminator.
@@ -2546,7 +2637,8 @@ public class ModelFacade {
         if (handle instanceof MGeneralization) {
             return ((MGeneralization)handle).getDiscriminator();
         }
-        throw new IllegalArgumentException("Unrecognized object " + handle);
+        throw new IllegalArgumentException("Unrecognized object " + 
+					   getClassNull(handle));
     }
 
     /** Get the dispatchaction of a stimulus.
@@ -2558,7 +2650,8 @@ public class ModelFacade {
         if (handle instanceof MStimulus) {
             return ((MStimulus)handle).getDispatchAction();
         }
-        throw new IllegalArgumentException("Unrecognized object " + handle);
+        throw new IllegalArgumentException("Unrecognized object " + 
+					   getClassNull(handle));
     }
 
     /**
@@ -2570,14 +2663,16 @@ public class ModelFacade {
         if (handle instanceof MState) {
             return ((MState)handle).getDoActivity();
         }
-        throw new IllegalArgumentException("Unrecognized object " + handle);
+        throw new IllegalArgumentException("Unrecognized object " + 
+					   getClassNull(handle));
     }
 
     public static Collection getLinks(Object handle) {
         if (handle instanceof MAssociation) {
             return ((MAssociation)handle).getLinks();
         }
-        throw new IllegalArgumentException("Unrecognized object " + handle);
+        throw new IllegalArgumentException("Unrecognized object " + 
+					   getClassNull(handle));
     }
 
     public static Collection getLinkEnds(Object handle) {
@@ -2587,7 +2682,8 @@ public class ModelFacade {
         if (handle instanceof MAssociationEnd) {
             return ((MAssociationEnd)handle).getLinkEnds();
         }
-        throw new IllegalArgumentException("Unrecognized object " + handle);
+        throw new IllegalArgumentException("Unrecognized object " + 
+					   getClassNull(handle));
     }
 
     /**
@@ -2599,7 +2695,8 @@ public class ModelFacade {
         if (handle instanceof MExtensionPoint) {
             return ((MExtensionPoint)handle).getLocation();
         }
-        throw new IllegalArgumentException("Unrecognized object " + handle);
+        throw new IllegalArgumentException("Unrecognized object " + 
+					   getClassNull(handle));
     }
 
     /** Get the namespace of an element.
@@ -2611,7 +2708,8 @@ public class ModelFacade {
         if (handle instanceof MModelElement)
             return ((MModelElement)handle).getNamespace();
         // ...
-        throw new IllegalArgumentException("Unrecognized object " + handle);
+        throw new IllegalArgumentException("Unrecognized object " + 
+					   getClassNull(handle));
     }
 
     /** Get the node instance of a component instance.
@@ -2623,7 +2721,8 @@ public class ModelFacade {
         if (handle instanceof MComponentInstance)
             return ((MComponentInstance)handle).getNodeInstance();
         // ...
-        throw new IllegalArgumentException("Unrecognized object " + handle);
+        throw new IllegalArgumentException("Unrecognized object " + 
+					   getClassNull(handle));
     }
 
     /** The collection of object flow states
@@ -2635,7 +2734,8 @@ public class ModelFacade {
         if (handle instanceof MClassifier) {
             return ((MClassifier)handle).getObjectFlowStates();
         }
-        throw new IllegalArgumentException("Unrecognized object " + handle);
+        throw new IllegalArgumentException("Unrecognized object " +
+					   getClassNull(handle));
     }
 
     /** Get the operation of a Call Action or Call Event.
@@ -2651,7 +2751,8 @@ public class ModelFacade {
             return ((MCallEvent)handle).getOperation();
         }
         // ...
-        throw new IllegalArgumentException("Unrecognized object " + handle);
+        throw new IllegalArgumentException("Unrecognized object " +
+					   getClassNull(handle));
     }
 
     /** The list of operations
@@ -2666,7 +2767,8 @@ public class ModelFacade {
         }
 
         // ...
-        throw new IllegalArgumentException("Unrecognized object " + handle);
+        throw new IllegalArgumentException("Unrecognized object " + 
+					   getClassNull(handle));
     }
 
     /** The list of Operations of this classifier and all inherited.
@@ -2684,7 +2786,8 @@ public class ModelFacade {
         }
 
         // ...
-        throw new IllegalArgumentException("Unrecognized object " + handle);
+        throw new IllegalArgumentException("Unrecognized object " + 
+					   getClassNull(handle));
     }
 
     /**
@@ -2696,7 +2799,8 @@ public class ModelFacade {
         if (handle instanceof MAssociationEnd) {
             return ((MAssociationEnd)handle).getOppositeEnd();
         }
-        throw new IllegalArgumentException("Unrecognized object " + handle);
+        throw new IllegalArgumentException("Unrecognized object " + 
+					   getClassNull(handle));
     }
 
     /** Get ordering of an association end
@@ -2709,7 +2813,8 @@ public class ModelFacade {
             return ((MAssociationEnd)handle).getOrdering();
 
         // ...
-        throw new IllegalArgumentException("Unrecognized object " + handle);
+        throw new IllegalArgumentException("Unrecognized object " + 
+					   getClassNull(handle));
     }
 
     /** Returns the list of Transitions outgoing from the given stateVertex.
@@ -2721,7 +2826,8 @@ public class ModelFacade {
         if (ModelFacade.isAStateVertex(handle)) {
             return ((MStateVertex)handle).getOutgoings();
         }
-        throw new IllegalArgumentException("Unrecognized object " + handle);
+        throw new IllegalArgumentException("Unrecognized object " + 
+					   getClassNull(handle));
     }
 
     /** The list of Associations Ends connected to this association end
@@ -2748,7 +2854,8 @@ public class ModelFacade {
         }
 
         // ...
-        throw new IllegalArgumentException("Unrecognized object " + handle);
+        throw new IllegalArgumentException("Unrecognized object " + 
+					   getClassNull(handle));
     }
 
     /** The list of owned elements of the the package.
@@ -2762,7 +2869,8 @@ public class ModelFacade {
         }
 
         // ...
-        throw new IllegalArgumentException("Unrecognized object " + handle);
+        throw new IllegalArgumentException("Unrecognized object " + 
+					   getClassNull(handle));
     }
 
     /** Get the owner scope of a feature
@@ -2774,7 +2882,8 @@ public class ModelFacade {
         if (handle instanceof MFeature) {
             return ((MFeature)handle).getOwnerScope();
         }
-        throw new IllegalArgumentException("Unrecognized object " + handle);
+        throw new IllegalArgumentException("Unrecognized object " + 
+					   getClassNull(handle));
     }
 
     /** Get the powertype of a generalization
@@ -2786,7 +2895,8 @@ public class ModelFacade {
         if (handle instanceof MGeneralization) {
             return ((MGeneralization)handle).getPowertype();
         }
-        throw new IllegalArgumentException("Unrecognized object " + handle);
+        throw new IllegalArgumentException("Unrecognized object " + 
+					   getClassNull(handle));
     }
 
     /** Get the powertype ranges of a classifier.
@@ -2798,7 +2908,8 @@ public class ModelFacade {
         if (handle instanceof MClassifier) {
             return ((MClassifier)handle).getPowertypeRanges();
         }
-        throw new IllegalArgumentException("Unrecognized object " + handle);
+        throw new IllegalArgumentException("Unrecognized object " + 
+					   getClassNull(handle));
     }
 
     /** Get the predecessors of a message.
@@ -2810,7 +2921,8 @@ public class ModelFacade {
         if (handle instanceof MMessage) {
             return ((MMessage)handle).getPredecessors();
         }
-        throw new IllegalArgumentException("Unrecognized object " + handle);
+        throw new IllegalArgumentException("Unrecognized object " + 
+					   getClassNull(handle));
     }
 
     /** Determine if the passed parameter has a RETURN direction kind
@@ -2824,7 +2936,8 @@ public class ModelFacade {
         if (handle instanceof MElementImport) {
             return ((MElementImport)handle).getPackage();
         }
-        throw new IllegalArgumentException("Unrecognized object " + handle);
+        throw new IllegalArgumentException("Unrecognized object " + 
+					   getClassNull(handle));
     }
 
     /** Get a parameter of a behavioral feature.
@@ -2838,7 +2951,8 @@ public class ModelFacade {
             return ((MBehavioralFeature)handle).getParameter(n);
 
         // ...
-        throw new IllegalArgumentException("Unrecognized object " + handle);
+        throw new IllegalArgumentException("Unrecognized object " + 
+					   getClassNull(handle));
     }
 
     /** Get the parameters of a behavioral feature.
@@ -2859,7 +2973,8 @@ public class ModelFacade {
         if (handle instanceof MClassifier) {
             return ((MClassifier)handle).getParameters();
         }
-        throw new IllegalArgumentException("Unrecognized object " + handle);
+        throw new IllegalArgumentException("Unrecognized object " +
+					   getClassNull(handle));
     }
 
     /** Get the parent of a generalization.
@@ -2875,7 +2990,8 @@ public class ModelFacade {
         }
 
         // ...
-        throw new IllegalArgumentException("Unrecognized object " + handle);
+        throw new IllegalArgumentException("Unrecognized object " + 
+					   getClassNull(handle));
     }
 
     /** returns the raised signals of an operation
@@ -2886,7 +3002,8 @@ public class ModelFacade {
         if (handle instanceof MOperation) {
             return ((MOperation)handle).getRaisedSignals();
         }
-        throw new IllegalArgumentException("Unrecognized handle: + handle");
+        throw new IllegalArgumentException("Unrecognized handle: " + 
+					   getClassNull(handle));
     }
 
     /** returns the receptions of a signal
@@ -2897,7 +3014,8 @@ public class ModelFacade {
         if (handle instanceof MSignal) {
             return ((MSignal)handle).getReceptions();
         }
-        throw new IllegalArgumentException("Unrecognized handle: + handle");
+        throw new IllegalArgumentException("Unrecognized handle: " + 
+					   getClassNull(handle));
     }
 
     /**
@@ -2909,7 +3027,8 @@ public class ModelFacade {
         if (handle instanceof MAction) {
             return ((MAction)handle).getRecurrence();
         }
-        throw new IllegalArgumentException("Unrecognized object " + handle);
+        throw new IllegalArgumentException("Unrecognized object " + 
+					   getClassNull(handle));
     }
 
     /**
@@ -2921,7 +3040,8 @@ public class ModelFacade {
         if (handle instanceof MCollaboration) {
             return ((MCollaboration)handle).getRepresentedClassifier();
         }
-        throw new IllegalArgumentException("Unrecognized object " + handle);
+        throw new IllegalArgumentException("Unrecognized object " + 
+					   getClassNull(handle));
     }
 
     /**
@@ -2933,7 +3053,8 @@ public class ModelFacade {
         if (handle instanceof MCollaboration) {
             return ((MCollaboration)handle).getRepresentedOperation();
         }
-        throw new IllegalArgumentException("Unrecognized object " + handle);
+        throw new IllegalArgumentException("Unrecognized object " + 
+					   getClassNull(handle));
     }
 
     /**
@@ -2945,7 +3066,8 @@ public class ModelFacade {
         if (handle instanceof MAction) {
             return ((MAction)handle).getScript();
         }
-        throw new IllegalArgumentException("Unrecognized object " + handle);
+        throw new IllegalArgumentException("Unrecognized object " + 
+					   getClassNull(handle));
     }
 
     /**
@@ -2960,7 +3082,8 @@ public class ModelFacade {
         if (handle instanceof MMessage) {
             return ((MMessage)handle).getSender();
         }
-        throw new IllegalArgumentException("Unrecognized object " + handle);
+        throw new IllegalArgumentException("Unrecognized object " + 
+					   getClassNull(handle));
     }
 
     /**
@@ -2978,7 +3101,8 @@ public class ModelFacade {
         if (handle instanceof MReception) {
             return ((MReception)handle).getSignal();
         }
-        throw new IllegalArgumentException("Unrecognized object " + handle);
+        throw new IllegalArgumentException("Unrecognized object " +
+					   getClassNull(handle));
     }
 
     /**
@@ -2990,14 +3114,16 @@ public class ModelFacade {
         if (handle instanceof MElementResidence) {
             return ((MElementResidence)handle).getResident();
         }
-        throw new IllegalArgumentException("Unrecognized object " + handle);
+        throw new IllegalArgumentException("Unrecognized object " +
+					   getClassNull(handle));
     }
 
     public static Collection getResidentElements(Object handle) {
         if (handle instanceof MComponent) {
             return ((MComponent)handle).getResidentElements();
         }
-        throw new IllegalArgumentException("Unrecognized object " + handle);
+        throw new IllegalArgumentException("Unrecognized object " + 
+					   getClassNull(handle));
     }
 
     /**
@@ -3010,7 +3136,8 @@ public class ModelFacade {
         if (isANode(handle)) {
             return ((MNode)handle).getResidents();
         }
-        throw new IllegalArgumentException("Unrecognized object " + handle);
+        throw new IllegalArgumentException("Unrecognized object " + 
+					   getClassNull(handle));
     }
 
     /**
@@ -3022,14 +3149,16 @@ public class ModelFacade {
         if (isATransition(handle)) {
             return ((MTransition)handle).getSource();
         }
-        throw new IllegalArgumentException("Unrecognized object " + handle);
+        throw new IllegalArgumentException("Unrecognized object " +
+					   getClassNull(handle));
     }
 
     public static Collection getSources(Object handle) {
         if (handle instanceof MFlow) {
             return ((MFlow)handle).getSources();
         }
-        throw new IllegalArgumentException("Unrecognized object " + handle);
+        throw new IllegalArgumentException("Unrecognized object " + 
+					   getClassNull(handle));
     }
 
     /**
@@ -3041,7 +3170,8 @@ public class ModelFacade {
         if (handle instanceof MModelElement) {
             return ((MModelElement)handle).getSourceFlows();
         }
-        throw new IllegalArgumentException("Unrecognized object " + handle);
+        throw new IllegalArgumentException("Unrecognized object " + 
+					   getClassNull(handle));
     }
 
     /** The list of Specializations from a GeneralizableElement.
@@ -3056,7 +3186,8 @@ public class ModelFacade {
         }
 
         // ...
-        throw new IllegalArgumentException("Unrecognized object " + handle);
+        throw new IllegalArgumentException("Unrecognized object " + 
+					   getClassNull(handle));
     }
 
     /**
@@ -3071,7 +3202,8 @@ public class ModelFacade {
         if (handle instanceof MTransition) {
             return ((MTransition)handle).getStateMachine();
         }
-        throw new IllegalArgumentException("Unrecognized object " + handle);
+        throw new IllegalArgumentException("Unrecognized object " + 
+					   getClassNull(handle));
     }
 
     /**
@@ -3083,7 +3215,8 @@ public class ModelFacade {
         if (handle instanceof MTransition) {
             return ((MTransition)handle).getState();
         }
-        throw new IllegalArgumentException("Unrecognized object " + handle);
+        throw new IllegalArgumentException("Unrecognized object " + 
+					   getClassNull(handle));
     }
 
     /**
@@ -3097,7 +3230,8 @@ public class ModelFacade {
         if (isAModelElement(handle)) {
             return ((MModelElement)handle).getStereotype();
         }
-        throw new IllegalArgumentException("Unrecognized object " + handle);
+        throw new IllegalArgumentException("Unrecognized object " +
+					   getClassNull(handle));
     }
 
     /**
@@ -3113,7 +3247,8 @@ public class ModelFacade {
             list.add(((MModelElement)handle).getStereotype());
             return list;
         }
-        throw new IllegalArgumentException("Unrecognized object " + handle);
+        throw new IllegalArgumentException("Unrecognized object " + 
+					   getClassNull(handle));
     }
 
     /**
@@ -3125,21 +3260,24 @@ public class ModelFacade {
         if (isALink(handle)) {
             return ((MLink)handle).getStimuli();
         }
-        throw new IllegalArgumentException("Unrecognized object " + handle);
+        throw new IllegalArgumentException("Unrecognized object " + 
+					   getClassNull(handle));
     }
 
     public static Collection getStimuli2(Object handle) {
         if (handle instanceof MInstance) {
             return ((MInstance)handle).getStimuli2();
         }
-        throw new IllegalArgumentException("Unrecognized object " + handle);
+        throw new IllegalArgumentException("Unrecognized object " + 
+					   getClassNull(handle));
     }
 
     public static Collection getStimuli3(Object handle) {
         if (handle instanceof MInstance) {
             return ((MInstance)handle).getStimuli3();
         }
-        throw new IllegalArgumentException("Unrecognized object " + handle);
+        throw new IllegalArgumentException("Unrecognized object " + 
+					   getClassNull(handle));
     }
 
     /**
@@ -3152,7 +3290,8 @@ public class ModelFacade {
         if (isACompositeState(handle)) {
             return ((MCompositeState)handle).getSubvertices();
         }
-        throw new IllegalArgumentException("Unrecognized object " + handle);
+        throw new IllegalArgumentException("Unrecognized object " + 
+					   getClassNull(handle));
     }
 
     /**
@@ -3164,7 +3303,8 @@ public class ModelFacade {
         if (handle instanceof MSubmachineState) {
             return ((MSubmachineState)handle).getStateMachine();
         }
-        throw new IllegalArgumentException("Unrecognized object " + handle);
+        throw new IllegalArgumentException("Unrecognized object " +
+					   getClassNull(handle));
     }
 
     /**
@@ -3176,7 +3316,8 @@ public class ModelFacade {
         if (handle instanceof MStateMachine) {
             return ((MStateMachine)handle).getSubmachineStates();
         }
-        throw new IllegalArgumentException("Unrecognized object " + handle);
+        throw new IllegalArgumentException("Unrecognized object " + 
+					   getClassNull(handle));
     }
 
     /** The list of SupplierDependencies from a ModelElement.
@@ -3191,7 +3332,8 @@ public class ModelFacade {
         }
 
         // ...
-        throw new IllegalArgumentException("Unrecognized object " + handle);
+        throw new IllegalArgumentException("Unrecognized object " +
+					   getClassNull(handle));
     }
 
     /** The top of a state machine
@@ -3205,7 +3347,8 @@ public class ModelFacade {
         }
 
         // ...
-        throw new IllegalArgumentException("Unrecognized object " + handle);
+        throw new IllegalArgumentException("Unrecognized object " + 
+					   getClassNull(handle));
     }
 
     /** Get the transition of a guard or action
@@ -3220,7 +3363,8 @@ public class ModelFacade {
         if (handle instanceof MAction) {
             return ((MAction)handle).getTransition();
         }
-        throw new IllegalArgumentException("Unrecognized object " + handle);
+        throw new IllegalArgumentException("Unrecognized object " + 
+					   getClassNull(handle));
     }
 
     /** Get the trigger of a transition
@@ -3232,7 +3376,8 @@ public class ModelFacade {
         if (handle instanceof MTransition) {
             return ((MTransition)handle).getTrigger();
         }
-        throw new IllegalArgumentException("Unrecognized object " + handle);
+        throw new IllegalArgumentException("Unrecognized object " + 
+					   getClassNull(handle));
     }
 
     /** The type of an attribute
@@ -3252,7 +3397,8 @@ public class ModelFacade {
         }
 
         // ...
-        throw new IllegalArgumentException("Unrecognized object " + handle);
+        throw new IllegalArgumentException("Unrecognized object " + 
+					   getClassNull(handle));
     }
 
     /**
@@ -3264,7 +3410,8 @@ public class ModelFacade {
         if (isATransition(handle)) {
             return ((MTransition)handle).getTarget();
         }
-        throw new IllegalArgumentException("Unrecognized object " + handle);
+        throw new IllegalArgumentException("Unrecognized object " + 
+					   getClassNull(handle));
     }
 
     /**
@@ -3279,7 +3426,8 @@ public class ModelFacade {
         if (handle instanceof MAssociationEnd) {
             return ((MAssociationEnd)handle).getTargetScope();
         }
-        throw new IllegalArgumentException("Unrecognized object " + handle);
+        throw new IllegalArgumentException("Unrecognized object " + 
+					   getClassNull(handle));
     }
 
     /**
@@ -3291,7 +3439,8 @@ public class ModelFacade {
         if (handle instanceof MModelElement) {
             return ((MModelElement)handle).getTargetFlows();
         }
-        throw new IllegalArgumentException("Unrecognized object " + handle);
+        throw new IllegalArgumentException("Unrecognized object " +
+					   getClassNull(handle));
     }
 
     /**
@@ -3312,7 +3461,8 @@ public class ModelFacade {
 	    MMultiplicity up = (MMultiplicity)handle;
 	    return up.getUpper();
 	}
-        throw new IllegalArgumentException("Unrecognized object " + handle);
+        throw new IllegalArgumentException("Unrecognized object " + 
+					   getClassNull(handle));
     }
 
     /**
@@ -3324,7 +3474,8 @@ public class ModelFacade {
         if (handle instanceof MExtensionPoint) {
             return ((MExtensionPoint)handle).getUseCase();
         }
-        throw new IllegalArgumentException("Unrecognized object " + handle);
+        throw new IllegalArgumentException("Unrecognized object " + 
+					   getClassNull(handle));
     }
 
     /**
@@ -3345,7 +3496,8 @@ public class ModelFacade {
 	    MMultiplicity low = (MMultiplicity) handle;
 	    return low.getLower();
 	}
-        throw new IllegalArgumentException("Unrecognized object " + handle.getClass());
+        throw new IllegalArgumentException("Unrecognized object " + 
+					   getClassNull(handle));
     }
 
     /**
@@ -3363,7 +3515,8 @@ public class ModelFacade {
         } else if (isACompositeState(handle)) {
             return ((MCompositeState)handle).getInternalTransitions();
         }
-        throw new IllegalArgumentException("Unrecognized object " + handle);
+        throw new IllegalArgumentException("Unrecognized object " +
+					   getClassNull(handle));
     }
 
     /** This method returns all attributes of a given Classifier.
@@ -3438,7 +3591,8 @@ public class ModelFacade {
         if (handle instanceof MDependency) {
             return ((MDependency)handle).getSuppliers();
         }
-        throw new IllegalArgumentException("Unrecognized object " + handle);
+        throw new IllegalArgumentException("Unrecognized object " + 
+					   getClassNull(handle));
     }
 
     /**
@@ -3450,7 +3604,8 @@ public class ModelFacade {
         if (handle instanceof MMessage) {
             return ((MMessage)handle).getAction();
         }
-        throw new IllegalArgumentException("Unrecognized object " + handle);
+        throw new IllegalArgumentException("Unrecognized object " + 
+					   getClassNull(handle));
     }
 
     /**
@@ -3462,7 +3617,8 @@ public class ModelFacade {
         if (handle instanceof MMessage) {
             return ((MMessage)handle).getActivator();
         }
-        throw new IllegalArgumentException("Unrecognized object " + handle);
+        throw new IllegalArgumentException("Unrecognized object " + 
+					   getClassNull(handle));
     }
 
     /**
@@ -3474,7 +3630,8 @@ public class ModelFacade {
         if (handle instanceof MAction) {
             return ((MAction)handle).getActualArguments();
         }
-        throw new IllegalArgumentException("Unrecognized object " + handle);
+        throw new IllegalArgumentException("Unrecognized object " + 
+					   getClassNull(handle));
     }
 
     /**
@@ -3486,14 +3643,16 @@ public class ModelFacade {
         if (handle instanceof MInclude) {
             return ((MInclude)handle).getAddition();
         }
-        throw new IllegalArgumentException("Unrecognized object " + handle);
+        throw new IllegalArgumentException("Unrecognized object " + 
+					   getClassNull(handle));
     }
 
     public static Object getAggregation(Object handle) {
         if (handle instanceof MAssociationEnd) {
             return ((MAssociationEnd)handle).getAggregation();
         }
-        throw new IllegalArgumentException("Unrecognized object " + handle);
+        throw new IllegalArgumentException("Unrecognized object " + 
+					   getClassNull(handle));
     }
 
     /**
@@ -3550,7 +3709,8 @@ public class ModelFacade {
         if (handle instanceof MAggregationKind) {
             return ((MAggregationKind)handle).getName();
         }
-        throw new IllegalArgumentException("Unrecognized object " + handle);
+        throw new IllegalArgumentException("Unrecognized object " + 
+					   getClassNull(handle));
     }
 
     /**
@@ -3562,7 +3722,8 @@ public class ModelFacade {
         if (f != null && f instanceof MFeature) {
             return ((MFeature)f).getOwner();
         }
-        throw new IllegalArgumentException("Unrecognized object " + f);
+        throw new IllegalArgumentException("Unrecognized object " + 
+					   getClassNull(f));
     }
 
     /**
@@ -3576,7 +3737,8 @@ public class ModelFacade {
         if (handle instanceof MTaggedValue) {
             return ((MTaggedValue)handle).getTag();
         }
-        throw new IllegalArgumentException("Unrecognized object " + handle);
+        throw new IllegalArgumentException("Unrecognized object " + 
+					   getClassNull(handle));
     }
 
     /**
@@ -3597,7 +3759,7 @@ public class ModelFacade {
             return ((MModelElement)modelElement).getTaggedValues();
         }
         throw new IllegalArgumentException(
-            "Unrecognized object " + modelElement);
+            "Unrecognized object " + getClassNull(modelElement));
     }
 
     /**
@@ -3674,7 +3836,8 @@ public class ModelFacade {
         if (handle instanceof MCallConcurrencyKind) {
             return new Integer(((MCallConcurrencyKind)handle).getValue());
         }
-        throw new IllegalArgumentException("Unrecognized object " + handle);
+        throw new IllegalArgumentException("Unrecognized object " + 
+					   getClassNull(handle));
     }
 
     /**
@@ -3700,7 +3863,8 @@ public class ModelFacade {
             return ((MBase)base).getUUID();
         }
         //
-        throw new IllegalArgumentException("Unrecognized object " + base);
+        throw new IllegalArgumentException("Unrecognized object " + 
+					   getClassNull(base));
     }
 
     /**
@@ -3713,7 +3877,8 @@ public class ModelFacade {
             return ((MModelElement)element).getVisibility();
         }
         //
-        throw new IllegalArgumentException("Unrecognized object " + element);
+        throw new IllegalArgumentException("Unrecognized object " + 
+					   getClassNull(element));
     }
 
     ////////////////////////////////////////////////////////////////
@@ -3759,7 +3924,8 @@ public class ModelFacade {
     		((MClassifierRole)classifierRole).addInstance((MInstance)instance);
     		return;
     	}
-		throw new IllegalArgumentException("Unrecognized object " + classifierRole + " or " + instance);
+		throw new IllegalArgumentException("Unrecognized object " + 
+                    getClassNull(classifierRole) + " or " + getClassNull(instance));
     }
 
 
@@ -3780,7 +3946,8 @@ public class ModelFacade {
             ((MMessage)handle).addMessage3((MMessage)mess);
             return;
         }
-        throw new IllegalArgumentException("Unrecognized object " + handle);
+        throw new IllegalArgumentException("Unrecognized object " + 
+					   getClassNull(handle));
     }
 
     /**
@@ -3811,7 +3978,7 @@ public class ModelFacade {
             return;
         }
         throw new IllegalArgumentException(
-            "Unrecognized object " + ns + " or " + me);
+            "Unrecognized object " + getClassNull(ns) + " or " + getClassNull(me));
     }
 
     public static void addParameter(Object target, Object parameter) {
@@ -3835,7 +4002,8 @@ public class ModelFacade {
             }
         }
         throw new IllegalArgumentException(
-            "Unrecognized object " + target + " or " + parameter);
+            "Unrecognized object " + getClassNull(target) + " or " + 
+	    getClassNull(parameter));
     }
 
     public static void addParameter(
@@ -3855,7 +4023,8 @@ public class ModelFacade {
             }
         }
         throw new IllegalArgumentException(
-            "Unrecognized object " + target + " or " + parameter);
+            "Unrecognized object " + getClassNull(target) + " or " + 
+	    getClassNull(parameter));
     }
 
     /**
@@ -3872,7 +4041,8 @@ public class ModelFacade {
             return;
         }
         throw new IllegalArgumentException(
-            "Unrecognized object " + target + " or " + predecessor);
+            "Unrecognized object " + getClassNull(target) + " or " + 
+	    getClassNull(predecessor));
     }
 
     public static void addRaisedSignal(Object target, Object sig) {
@@ -3881,7 +4051,8 @@ public class ModelFacade {
             return;
         }
         throw new IllegalArgumentException(
-            "Unrecognized object " + target + " or " + sig);
+            "Unrecognized object " + getClassNull(target) + " or " + 
+	    getClassNull(sig));
     }
 
     /**
@@ -3903,7 +4074,8 @@ public class ModelFacade {
             }
         }
         throw new IllegalArgumentException(
-            "Unrecognized object " + target + " or " + stimulus);
+            "Unrecognized object " + getClassNull(target) + " or " + 
+	    getClassNull(stimulus));
     }
 
     public static void addSubvertex(Object handle, Object subvertex) {
@@ -3912,7 +4084,9 @@ public class ModelFacade {
             ((MCompositeState)handle).addSubvertex((MStateVertex)subvertex);
             return;
         }
-        throw new IllegalArgumentException("Unrecognized object " + handle);
+        throw new IllegalArgumentException("Unrecognized object " + 
+					   getClassNull(handle) + " or " +
+					   getClassNull(subvertex));
     }
 
     /**
@@ -4004,7 +4178,8 @@ public class ModelFacade {
             return;
         }
         throw new IllegalArgumentException(
-            "Unrecognized object " + target + " or " + taggedValue);
+            "Unrecognized object " + getClassNull(target) + " or " + 
+	    getClassNull(taggedValue));
     }
 
     public static void removeActualArgument(Object handle, Object argument) {
@@ -4065,7 +4240,8 @@ public class ModelFacade {
             return;
         }
         throw new IllegalArgumentException(
-            "Unrecognized object " + handle + " or " + classifier);
+            "Unrecognized object " + getClassNull(handle) + " or " +
+	    getClassNull(classifier));
     }
 
     /** This method removes a feature from a classifier.
@@ -4101,7 +4277,8 @@ public class ModelFacade {
             ((MMessage)handle).removeMessage3((MMessage)mess);
             return;
         }
-        throw new IllegalArgumentException("Unrecognized object " + handle);
+        throw new IllegalArgumentException("Unrecognized object " + 
+					   getClassNull(handle));
     }
 
     /**
@@ -4117,7 +4294,8 @@ public class ModelFacade {
             ((MNamespace)handle).removeOwnedElement((MModelElement)value);
         }
         throw new IllegalArgumentException(
-            "Unrecognized object " + handle + " or " + value);
+            "Unrecognized object " + getClassNull(handle) + " or " + 
+	    getClassNull(value));
     }
 
     /** This method removes a parameter from an operation.
@@ -4145,7 +4323,8 @@ public class ModelFacade {
             ((MSignal)handle).removeReception((MReception)reception);
         }
         throw new IllegalArgumentException(
-            "Unrecognized object " + handle + " or " + reception);
+            "Unrecognized object " + getClassNull(handle) + " or " + 
+	    getClassNull(reception));
     }
 
     /**
@@ -4173,7 +4352,8 @@ public class ModelFacade {
             return;
         }
         throw new IllegalArgumentException(
-            "Unrecognized object " + target + " or " + base);
+            "Unrecognized object " + getClassNull(target) + " or " + 
+	    getClassNull(base));
     }
 
     /**
@@ -4186,7 +4366,8 @@ public class ModelFacade {
             ((MStereotype)handle).setBaseClass((String)baseClass);
             return;
         }
-        throw new IllegalArgumentException("Unrecognized object " + handle);
+        throw new IllegalArgumentException("Unrecognized object " + 
+					   getClassNull(handle));
     }
 
     /**
@@ -4284,7 +4465,8 @@ public class ModelFacade {
             return;
         }
         throw new IllegalArgumentException(
-            "Unrecognized object " + target + " or " + includes);
+            "Unrecognized object " + getClassNull(target) + " or " + 
+	    getClassNull(includes));
     }
 
     /**
@@ -4297,6 +4479,9 @@ public class ModelFacade {
             && (expr == null || expr instanceof MExpression)) {
             ((MAttribute)at).setInitialValue((MExpression)expr);
         }
+        throw new IllegalArgumentException(
+            "Unrecognized object " + getClassNull(at) + " or " + 
+	    getClassNull(expr));
     }
 
     public static void setInstance(Object handle, Object inst) {
@@ -4309,7 +4494,8 @@ public class ModelFacade {
             }
         }
         throw new IllegalArgumentException(
-            "Unrecognized object " + handle + " or " + inst);
+            "Unrecognized object " + getClassNull(handle) + " or " + 
+	    getClassNull(inst));
     }
 
     public static void setInternalTransitions(
@@ -4320,7 +4506,8 @@ public class ModelFacade {
             return;
         }
         throw new IllegalArgumentException(
-            "Unrecognized object " + target + " or " + intTrans);
+            "Unrecognized object " + getClassNull(target) + " or " + 
+	    getClassNull(intTrans));
     }
 
     public static void setMessages3(Object handle, Collection messages) {
@@ -4328,7 +4515,8 @@ public class ModelFacade {
             ((MMessage)handle).setMessages3(messages);
             return;
         }
-        throw new IllegalArgumentException("Unrecognized object " + handle);
+        throw new IllegalArgumentException("Unrecognized object " +
+					   getClassNull(handle));
     }
 
     /**
@@ -4477,7 +4665,8 @@ public class ModelFacade {
             return;
         }
         throw new IllegalArgumentException(
-            "Unrecognized object " + target + " or " + mult);
+            "Unrecognized object " + getClassNull(target) + " or " + 
+	    getClassNull(mult));
     }
 
     /**
@@ -4514,7 +4703,8 @@ public class ModelFacade {
             return;
         }
         throw new IllegalArgumentException(
-            "Unrecognized object " + handle + " or " + ns);
+            "Unrecognized object " + getClassNull(handle) + " or " + 
+	    getClassNull(ns));
     }
 
     /**
@@ -4597,7 +4787,8 @@ public class ModelFacade {
             return;
         }
         throw new IllegalArgumentException(
-            "Unrecognized object " + handle + " or " + owner);
+            "Unrecognized object " + getClassNull(handle) + " or " + 
+	    getClassNull(owner));
     }
 
     public static void setOperation(Object handle, Object operation) {
@@ -4610,7 +4801,8 @@ public class ModelFacade {
             return;
         }
         throw new IllegalArgumentException(
-            "Unrecognized object " + handle + " or " + operation);
+            "Unrecognized object " + getClassNull(handle) + " or " + 
+	    getClassNull(operation));
     }
 
     public static void setOrdering(Object handle, Object ok) {
@@ -4619,7 +4811,8 @@ public class ModelFacade {
             return;
         }
         throw new IllegalArgumentException(
-            "Unrecognized object " + handle + " or " + ok);
+            "Unrecognized object " + getClassNull(handle) + " or " + 
+	    getClassNull(ok));
     }
 
     /**
@@ -4644,7 +4837,8 @@ public class ModelFacade {
             return;
         }
         throw new IllegalArgumentException(
-            "Unrecognized object " + f + " or " + os);
+            "Unrecognized object " + getClassNull(f) + " or " + 
+	    getClassNull(os));
     }
 
     /**
@@ -4671,7 +4865,8 @@ public class ModelFacade {
             return;
         }
         throw new IllegalArgumentException(
-            "Unrecognized object " + target + " or " + parameters);
+            "Unrecognized object " + getClassNull(target) + " or " + 
+	    getClassNull(parameters));
     }
 
     /**
@@ -4691,7 +4886,8 @@ public class ModelFacade {
             return;
         }
         throw new IllegalArgumentException(
-            "Unrecognized object " + handle + " or " + element);
+            "Unrecognized object " + getClassNull(handle) + " or " + 
+	    getClassNull(element));
     }
 
     /**
@@ -4712,7 +4908,8 @@ public class ModelFacade {
             }
         }
         throw new IllegalArgumentException(
-            "Unrecognized object " + handle + " or " + scopeKind);
+            "Unrecognized object " + getClassNull(handle) + " or " + 
+	    getClassNull(scopeKind));
     }
 
     /**
@@ -4773,7 +4970,8 @@ public class ModelFacade {
             return;
         }
         throw new IllegalArgumentException(
-            "Unrecognized object " + operation + " or " + concurrencyKind);
+            "Unrecognized object " + getClassNull(operation) + " or " + 
+	    getClassNull(concurrencyKind));
     }
 
     public static void setConcurent(Object handle, boolean concurrent) {
@@ -4781,7 +4979,8 @@ public class ModelFacade {
             ((MCompositeState)handle).setConcurent(concurrent);
             return;
         }
-        throw new IllegalArgumentException("Unrecognized object " + handle);
+        throw new IllegalArgumentException("Unrecognized object " + 
+					   getClassNull(handle));
     }
 
     /**
@@ -4797,7 +4996,8 @@ public class ModelFacade {
             return;
         }
         throw new IllegalArgumentException(
-            "Unrecognized object " + extend + " or " + booleanExpression);
+            "Unrecognized object " + getClassNull(extend) + " or " + 
+	    getClassNull(booleanExpression));
     }
 
     /**
@@ -4813,7 +5013,8 @@ public class ModelFacade {
             return;
         }
         throw new IllegalArgumentException(
-            "Unrecognized object " + handle + " or " + compositeState);
+            "Unrecognized object " + getClassNull(handle) + " or " + 
+	    getClassNull(compositeState));
     }
 
     public static void setContexts(Object handle, Collection c) {
@@ -4834,7 +5035,8 @@ public class ModelFacade {
             return;
         }
         throw new IllegalArgumentException(
-            "Unrecognized object " + handle + " or " + value);
+            "Unrecognized object " + getClassNull(handle) + " or " + 
+	    getClassNull(value));
     }
 
     /**
@@ -4849,7 +5051,8 @@ public class ModelFacade {
             return;
         }
         throw new IllegalArgumentException(
-            "Unrecognized object " + handle + " or " + value);
+            "Unrecognized object " + getClassNull(handle) + " or " + 
+	    getClassNull(value));
     }
 
     /**
@@ -4864,7 +5067,8 @@ public class ModelFacade {
             return;
         }
         throw new IllegalArgumentException(
-            "Unrecognized object " + handle + " or " + value);
+            "Unrecognized object " + getClassNull(handle) + " or " + 
+	    getClassNull(value));
     }
 
     /**
@@ -4879,7 +5083,8 @@ public class ModelFacade {
             return;
         }
         throw new IllegalArgumentException(
-            "Unrecognized object " + handle + " or " + value);
+            "Unrecognized object " + getClassNull(handle) + " or " + 
+	    getClassNull(value));
     }
 
     /**
@@ -4894,7 +5099,8 @@ public class ModelFacade {
             return;
         }
         throw new IllegalArgumentException(
-            "Unrecognized object " + handle + " or " + value);
+            "Unrecognized object " + getClassNull(handle) + " or " + 
+	    getClassNull(value));
     }
 
     public static void setExpression(Object handle, Object value) {
@@ -4904,7 +5110,8 @@ public class ModelFacade {
             return;
         }
         throw new IllegalArgumentException(
-            "Unrecognized object " + handle + " or " + value);
+            "Unrecognized object " + getClassNull(handle) + " or " + 
+	    getClassNull(value));
     }
 
     public static void setExtension(Object handle, Object ext) {
@@ -4914,7 +5121,8 @@ public class ModelFacade {
             return;
         }
         throw new IllegalArgumentException(
-            "Unrecognized object " + handle + " or " + ext);
+            "Unrecognized object " + getClassNull(handle) + " or " + 
+	    getClassNull(ext));
     }
 
     /**
@@ -4930,7 +5138,8 @@ public class ModelFacade {
             return;
         }
         throw new IllegalArgumentException(
-            "Unrecognized object " + target + " or " + extensionPoints);
+            "Unrecognized object " + getClassNull(target) + " or " + 
+	    getClassNull(extensionPoints));
     }
 
     /**
@@ -4990,7 +5199,8 @@ public class ModelFacade {
             }
         }
         throw new IllegalArgumentException(
-            "Unrecognized object " + o + " or " + ck);
+            "Unrecognized object " + getClassNull(o) + " or " + 
+	    getClassNull(ck));
     }
 
     /**
@@ -5023,7 +5233,8 @@ public class ModelFacade {
             ((MGeneralization)target).setChild((MGeneralizableElement)child);
         }
         throw new IllegalArgumentException(
-            "Unrecognized object " + target + " or " + child);
+            "Unrecognized object " + getClassNull(target) + " or " + 
+	    getClassNull(child));
     }
 
     /**
@@ -5060,7 +5271,8 @@ public class ModelFacade {
             return;
         }
         throw new IllegalArgumentException(
-            "Unrecognized object " + message + " or " + action);
+            "Unrecognized object " + getClassNull(message) + " or " + 
+	    getClassNull(action));
     }
 
     public static void setActivator(Object handle, Object message) {
@@ -5070,7 +5282,8 @@ public class ModelFacade {
             return;
         }
         throw new IllegalArgumentException(
-            "Unrecognized object " + handle + " or " + message);
+            "Unrecognized object " + getClassNull(handle) + " or " + 
+	    getClassNull(message));
     }
 
     public static void setActive(Object handle, boolean active) {
@@ -5078,7 +5291,8 @@ public class ModelFacade {
             ((MClass)handle).setActive(active);
             return;
         }
-        throw new IllegalArgumentException("Unrecognized object " + handle);
+        throw new IllegalArgumentException("Unrecognized object " + 
+					   getClassNull(handle));
     }
 
     /**
@@ -5091,7 +5305,8 @@ public class ModelFacade {
             ((MAction)handle).setAsynchronous(value);
             return;
         }
-        throw new IllegalArgumentException("Unrecognized object " + handle);
+        throw new IllegalArgumentException("Unrecognized object " + 
+					   getClassNull(handle));
     }
 
     /**
@@ -5112,7 +5327,8 @@ public class ModelFacade {
             ((MGeneralizableElement)target).setLeaf(flag);
             return;
         }
-        throw new IllegalArgumentException("Unrecognized object " + target);
+        throw new IllegalArgumentException("Unrecognized object " +
+					   getClassNull(target));
     }
 
     /**
@@ -5127,7 +5343,8 @@ public class ModelFacade {
             ((MBehavioralFeature)target).setRaisedSignals(raisedSignals);
             return;
         }
-        throw new IllegalArgumentException("Unrecognized object " + target);
+        throw new IllegalArgumentException("Unrecognized object " + 
+					   getClassNull(target));
     }
 
     /**
@@ -5146,7 +5363,8 @@ public class ModelFacade {
             return;
         }
         throw new IllegalArgumentException(
-            "Unrecognized object " + target + " or " + receiver);
+            "Unrecognized object " + getClassNull(target) + " or " + 
+	    getClassNull(receiver));
     }
 
     public static void setRecurrence(Object target, Object expr) {
@@ -5156,7 +5374,8 @@ public class ModelFacade {
             return;
         }
         throw new IllegalArgumentException(
-            "Unrecognized object " + target + " or " + expr);
+            "Unrecognized object " + getClassNull(target) + " or " + 
+	    getClassNull(expr));
     }
 
     /**
@@ -5174,7 +5393,8 @@ public class ModelFacade {
             return;
         }
         throw new IllegalArgumentException(
-            "Unrecognized object " + target + " or " + classifier);
+            "Unrecognized object " + getClassNull(target) + " or " + 
+	    getClassNull(classifier));
     }
 
     /**
@@ -5192,7 +5412,8 @@ public class ModelFacade {
             return;
         }
         throw new IllegalArgumentException(
-            "Unrecognized object " + target + " or " + operation);
+            "Unrecognized object " + getClassNull(target) + " or " + 
+	    getClassNull(operation));
     }
 
     public static void setResident(Object handle, Object resident) {
@@ -5202,7 +5423,8 @@ public class ModelFacade {
             return;
         }
         throw new IllegalArgumentException(
-            "Unrecognized object " + handle + " or " + resident);
+            "Unrecognized object " + getClassNull(handle) + " or " + 
+	    getClassNull(resident));
     }
 
     /**
@@ -5223,7 +5445,8 @@ public class ModelFacade {
             ((MNode)target).setResidents(residents);
             return;
         }
-        throw new IllegalArgumentException("Unrecognized object " + target);
+        throw new IllegalArgumentException("Unrecognized object " + 
+					   getClassNull(target));
     }
 
     /**
@@ -5244,7 +5467,8 @@ public class ModelFacade {
             ((MGeneralizableElement)target).setRoot(flag);
             return;
         }
-        throw new IllegalArgumentException("Unrecognized object " + target);
+        throw new IllegalArgumentException("Unrecognized object " + 
+					   getClassNull(target));
     }
 
     public static void setScript(Object target, Object expr) {
@@ -5254,7 +5478,8 @@ public class ModelFacade {
             return;
         }
         throw new IllegalArgumentException(
-            "Unrecognized object " + target + " or " + expr);
+            "Unrecognized object " + getClassNull(target) + " or " + 
+	    getClassNull(expr));
     }
     /**
      * Sets the sender of some model element.
@@ -5271,7 +5496,8 @@ public class ModelFacade {
             return;
         }
         throw new IllegalArgumentException(
-            "Unrecognized object " + target + " or " + sender);
+            "Unrecognized object " + getClassNull(target) + " or " + 
+	    getClassNull(sender));
     }
 
     public static void setSignal(Object target, Object signal) {
@@ -5290,7 +5516,8 @@ public class ModelFacade {
             }
         }
         throw new IllegalArgumentException(
-            "Unrecognized object " + target + " or " + signal);
+            "Unrecognized object " + getClassNull(target) + " or " + 
+	    getClassNull(signal));
     }
 
     /**
@@ -5304,7 +5531,8 @@ public class ModelFacade {
             return;
         }
         throw new IllegalArgumentException(
-            "Unrecognized object " + target + " or " + state);
+            "Unrecognized object " + getClassNull(target) + " or " + 
+	    getClassNull(state));
     }
 
     public static void setSources(Object target, Collection specifications) {
@@ -5312,7 +5540,8 @@ public class ModelFacade {
             ((MFlow)target).setSources(specifications);
             return;
         }
-        throw new IllegalArgumentException("Unrecognized object " + target);
+        throw new IllegalArgumentException("Unrecognized object " + 
+					   getClassNull(target));
     }
 
     public static void setSpecification(Object target, boolean specification) {
@@ -5320,7 +5549,8 @@ public class ModelFacade {
             ((MModelElement)target).setSpecification(specification);
             return;
         }
-        throw new IllegalArgumentException("Unrecognized object " + target);
+        throw new IllegalArgumentException("Unrecognized object " + 
+					   getClassNull(target));
     }
 
     /**
@@ -5335,7 +5565,8 @@ public class ModelFacade {
             ((MAssociationEnd)target).setSpecifications(specifications);
             return;
         }
-        throw new IllegalArgumentException("Unrecognized object " + target);
+        throw new IllegalArgumentException("Unrecognized object " + 
+					   getClassNull(target));
     }
 
     /**
@@ -5354,7 +5585,8 @@ public class ModelFacade {
             return;
         }
         throw new IllegalArgumentException(
-            "Unrecognized object " + target + " or " + kind);
+            "Unrecognized object " + getClassNull(target) + " or " + 
+	    getClassNull(kind));
     }
 
     /**
@@ -5409,7 +5641,8 @@ public class ModelFacade {
             return;
         }
         throw new IllegalArgumentException(
-            "Unrecognized object " + target + " or " + parent);
+            "Unrecognized object " + getClassNull(target) + " or " + 
+	    getClassNull(parent));
     }
 
     public static void setPowertype(Object target, Object pt) {
@@ -5418,7 +5651,9 @@ public class ModelFacade {
             return;
         }
         throw new IllegalArgumentException(
-            "Unrecognized object " + target + " or " + pt);
+            "Unrecognized object " + 
+	    getClassNull(target) + " or " + 
+	    getClassNull(pt));
     }
 
     public static void setPredecessors(
@@ -5429,7 +5664,8 @@ public class ModelFacade {
             return;
         }
         throw new IllegalArgumentException(
-            "Unrecognized object " + target + " or " + predecessors);
+            "Unrecognized object " + getClassNull(target) + " or " + 
+	    getClassNull(predecessors));
     }
 
     /**
@@ -5472,7 +5708,8 @@ public class ModelFacade {
         if (isABase(base)) {
             ((MBase)base).setUUID(uuid);
         } else {
-            throw new IllegalArgumentException("Unrecognized object " + base);
+            throw new IllegalArgumentException("Unrecognized object " + 
+					       getClassNull(base));
         }
     }
 
@@ -5482,7 +5719,8 @@ public class ModelFacade {
             return;
         }
         throw new IllegalArgumentException(
-            "Unrecognized object " + target + " or " + tag);
+            "Unrecognized object " + getClassNull(target) + " or " + 
+	    getClassNull(tag));
     }
 
     /**
@@ -5511,7 +5749,8 @@ public class ModelFacade {
             return;
         }
         throw new IllegalArgumentException(
-            "Unrecognized object " + target + " or " + taggedValues);
+            "Unrecognized object " + getClassNull(target) + " or " + 
+	    getClassNull(taggedValues));
     }
 
     /**
@@ -5569,7 +5808,8 @@ public class ModelFacade {
             return;
         }
         throw new IllegalArgumentException(
-            "Unrecognized object " + handle + " or " + connection);
+            "Unrecognized object " + getClassNull(handle) + " or " + 
+	    getClassNull(connection));
     }
 
     /**
@@ -5582,7 +5822,8 @@ public class ModelFacade {
             ((MModelElement)me).addConstraint((MConstraint)mc);
         }
         throw new IllegalArgumentException(
-            "Unrecognized object " + me + " or " + mc);
+            "Unrecognized object " + getClassNull(me) + " or " + 
+	    getClassNull(mc));
     }
 
     public static void addDeploymentLocation(Object handle, Object node) {
@@ -5590,7 +5831,8 @@ public class ModelFacade {
             ((MComponent)handle).addDeploymentLocation((MNode)node);
         }
         throw new IllegalArgumentException(
-            "Unrecognized object " + handle + " or " + node);
+            "Unrecognized object " + getClassNull(handle) + " or " + 
+	    getClassNull(node));
     }
 
     public static void addExtendedElement(
@@ -5603,7 +5845,8 @@ public class ModelFacade {
             return;
         }
         throw new IllegalArgumentException(
-            "Unrecognized object " + target + " or " + extendedElement);
+            "Unrecognized object " + getClassNull(target) + " or " + 
+	    getClassNull(extendedElement));
     }
 
     /**
@@ -5629,7 +5872,8 @@ public class ModelFacade {
             }
         }
         throw new IllegalArgumentException(
-            "Unrecognized object " + target + " or " + extensionPoint);
+            "Unrecognized object " + getClassNull(target) + " or " + 
+	    getClassNull(extensionPoint));
     }
 
     /** getUMLClassName returns the name of the UML Model class, e.g. it
@@ -5659,4 +5903,11 @@ public class ModelFacade {
         return Collections.EMPTY_LIST;
     }
 
+    protected static String getClassNull(Object handle) {
+            if (handle == null) {
+                    return "[null]";
+            } else {
+                    return "[" + handle + "/" + getClassNull(handle) + "]";
+            }
+    }
 }
