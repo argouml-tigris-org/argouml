@@ -51,29 +51,30 @@ public class ActionGenerateAll extends UMLAction {
     // main methods
 
     public void actionPerformed(ActionEvent ae) {
-	ProjectBrowser pb = ProjectBrowser.TheInstance;
-	Object target = pb.getTarget();
-	if (!(target instanceof UMLClassDiagram)) return;
-	UMLClassDiagram d = (UMLClassDiagram) target;
-	Vector classes = new Vector();
-	Vector nodes = d.getNodes();
-	java.util.Enumeration enum = nodes.elements();
-	while (enum.hasMoreElements()) {
-	    Object owner = enum.nextElement();
-	    if (!(owner instanceof MClass) && !(owner instanceof MInterface))
-		continue;
-	    MClassifier cls = (MClassifier) owner;
-	    String name = cls.getName();
-	    if (name == null || name.length() == 0) continue;
-	    classes.addElement(cls);
-	}
-	ClassGenerationDialog cgd = new ClassGenerationDialog(classes);
-	cgd.show();
+      ProjectBrowser pb = ProjectBrowser.TheInstance;
+      ArgoDiagram activeDiagram = pb.getActiveDiagram();
+      if (!(activeDiagram instanceof UMLClassDiagram)) return;
+      
+      UMLClassDiagram d = (UMLClassDiagram) activeDiagram;
+      Vector classes = new Vector();
+      Vector nodes = d.getNodes();
+      java.util.Enumeration enum = nodes.elements();
+      while (enum.hasMoreElements()) {
+          Object owner = enum.nextElement();
+          if (!(owner instanceof MClass) && !(owner instanceof MInterface))
+            continue;
+          MClassifier cls = (MClassifier) owner;
+          String name = cls.getName();
+          if (name == null || name.length() == 0) continue;
+          classes.addElement(cls);
+      }
+      ClassGenerationDialog cgd = new ClassGenerationDialog(classes);
+      cgd.show();
     }
 
     public boolean shouldBeEnabled() {
-	ProjectBrowser pb = ProjectBrowser.TheInstance;
-	Object target = pb.getTarget();
-	return super.shouldBeEnabled() && target instanceof UMLClassDiagram;
+      ProjectBrowser pb = ProjectBrowser.TheInstance;
+      ArgoDiagram activeDiagram = pb.getActiveDiagram();
+      return super.shouldBeEnabled() && (activeDiagram instanceof UMLClassDiagram);
     }
 } /* end class ActionGenerateAll */

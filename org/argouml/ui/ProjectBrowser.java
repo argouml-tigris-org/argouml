@@ -113,7 +113,12 @@ implements IStatusBar, NavigationListener, ArgoModuleEventListener {
 
   private NavigationHistory _history = new NavigationHistory();
 
-
+  /**
+   * The diagram which the user is currently working on.
+   */
+  private ArgoDiagram _activeDiagram;
+  
+  
   ////////////////////////////////////////////////////////////////
   // constructors
 
@@ -534,6 +539,9 @@ implements IStatusBar, NavigationListener, ArgoModuleEventListener {
 		  MNamespace m = ((UMLDiagram)o).getNamespace();
 		  if (m != null) _project.setCurrentNamespace(m);
 	  }
+    if (o instanceof ArgoDiagram) {
+      setActiveDiagram ((ArgoDiagram) o);
+    }
 	  if (o instanceof MModelElement) {
 		  MModelElement eo = (MModelElement)o;
 		  if (eo == null) { System.out.println("no path to model"); return; }
@@ -547,6 +555,22 @@ implements IStatusBar, NavigationListener, ArgoModuleEventListener {
     return _multiPane.getTarget();
   }
 
+  /**
+   * Set the diagram on which the user is currently working. This is called from
+   * {@link #setTarget}.
+   */
+  protected void setActiveDiagram (ArgoDiagram ad) {
+    _activeDiagram = ad;
+    System.out.println ("Active diagram set to " + ad.getName());
+  }
+  
+  /**
+   * Return the diagram, the user is currently working on.
+   */
+  public ArgoDiagram getActiveDiagram() {
+    return _activeDiagram;
+  }
+  
   public void setToDoItem(Object o) {
     _detailsPane.setToDoItem(o);
   }
