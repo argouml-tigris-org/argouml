@@ -713,9 +713,11 @@ public class CoreFactory extends AbstractUmlModelFactory {
         }
         if (type instanceof MDataType || type instanceof MInterface) {
             if (!navigable) {
-                throw new IllegalArgumentException("type is either datatype "
-						   + "or interface and is "
-						   + "navigable to");
+                throw new IllegalArgumentException(
+                        "Wellformedness rule 2.5.3.3 [1] is broken. "
+                        + "The Classifier of an AssociationEnd cannot be an "
+                        + "Interface or a DataType if the association is "
+                        + "navigable away from that end.");
             }
             List ends = new ArrayList();
             ends.addAll(assoc.getConnections());
