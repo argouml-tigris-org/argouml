@@ -216,7 +216,9 @@ public class UMLChangeDispatch implements Runnable, UMLUserInterfaceComponent {
         //      add a listener to our new target
         //
         if(_eventType == -1 && _container instanceof PropPanel &&
-           !(_container instanceof PropPanelObject)) {
+           !((_container instanceof PropPanelObject) ||
+            (_container instanceof PropPanelNodeInstance) ||
+            (_container instanceof PropPanelComponentInstance))) {
             PropPanel propPanel = (PropPanel) _container;
             Object target = propPanel.getTarget();
             if(target instanceof MBase) {
