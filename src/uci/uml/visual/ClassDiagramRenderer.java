@@ -51,6 +51,7 @@ import uci.uml.Foundation.Core.*;
  *  Generalization  ---  FigGeneralization
  *  Realization     ---  FigGeneralization (needs-more-work)
  *  Association     ---  FigAssociation
+ *  Dependency      ---  FigDependency
  *  </pre>
  */
 
@@ -97,6 +98,22 @@ implements GraphNodeRenderer, GraphEdgeRenderer {
       genFig.destPortFig(superTypeFN);
       genFig.destFigNode(superTypeFN);
       return genFig;
+    }
+    if (edge instanceof Dependency) {
+      Dependency dep = (Dependency) edge;
+      FigDependency depFig = new FigDependency(dep);
+
+      ModelElement supplier = (ModelElement)(dep.getSupplier().elementAt(0));
+      ModelElement client = (ModelElement)(dep.getClient().elementAt(0));
+
+      FigNode supFN = (FigNode) lay.presentationFor(supplier);
+      FigNode cliFN = (FigNode) lay.presentationFor(client);
+
+      depFig.sourcePortFig(supFN);
+      depFig.sourceFigNode(supFN);
+      depFig.destPortFig(cliFN);
+      depFig.destFigNode(cliFN);
+      return depFig;
     }
     // what about realizations? They are not distince objects in my UML model
     // maybe they should be, just as an implementation issue, dont

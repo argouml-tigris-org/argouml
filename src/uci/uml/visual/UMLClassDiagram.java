@@ -60,6 +60,11 @@ public class UMLClassDiagram extends UMLDiagram {
   protected static Action _actionInterface =
   new CmdCreateNode(Interface.class, "Interface");
 
+  protected static Action _actionDepend =
+  new CmdSetMode(ModeCreateEdge.class,
+		 "edgeClass", Dependency.class,
+		 "Dependency");
+
   protected static Action _actionAssoc =
   new CmdSetMode(ModeCreateEdge.class,
 		 "edgeClass", Association.class,
@@ -121,6 +126,7 @@ public class UMLClassDiagram extends UMLDiagram {
 
     _toolBar.add(_actionClass);
     _toolBar.add(_actionAssoc);
+    _toolBar.add(_actionDepend);
     _toolBar.add(_actionGeneralize);
     _toolBar.addSeparator();
 

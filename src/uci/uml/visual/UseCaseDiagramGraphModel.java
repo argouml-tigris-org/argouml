@@ -23,12 +23,10 @@
 // ENHANCEMENTS, OR MODIFICATIONS.
 
 
-
 // File: UseCaseDiagramGraphModel.java
 // Classes: UseCaseDiagramGraphModel
 // Original Author: your email address here
 // $Id$
-
 
 package uci.uml.visual;
 
@@ -96,10 +94,24 @@ implements MutableGraphModel, VetoableChangeListener {
   public Vector getInEdges(Object port) {
     Vector res = new Vector(); //wasteful!
     if (port instanceof Actor) {
-      // needs-more-work
+      Actor act = (Actor) port;
+      Vector ends = act.getAssociationEnd();
+      if (ends == null) return res; // empty Vector
+      java.util.Enumeration endEnum = ends.elements();
+      while (endEnum.hasMoreElements()) {
+	AssociationEnd ae = (AssociationEnd) endEnum.nextElement();
+	res.addElement(ae.getAssociation());
+      }
     }
     if (port instanceof UseCase) {
-      // needs-more-work
+      UseCase use = (UseCase) port;
+      Vector ends = use.getAssociationEnd();
+      if (ends == null) return res; // empty Vector
+      java.util.Enumeration endEnum = ends.elements();
+      while (endEnum.hasMoreElements()) {
+	AssociationEnd ae = (AssociationEnd) endEnum.nextElement();
+	res.addElement(ae.getAssociation());
+      }
     }
     return res;
   }
@@ -111,12 +123,22 @@ implements MutableGraphModel, VetoableChangeListener {
 
   /** Return one end of an edge */
   public Object getSourcePort(Object edge) {
+    if (edge instanceof IAssociation) {
+      IAssociation assoc = (IAssociation) edge;
+      Vector conns = assoc.getConnection();
+      return conns.elementAt(0);
+    }
     System.out.println("needs-more-work getSourcePort");
     return null;
   }
 
   /** Return  the other end of an edge */
   public Object getDestPort(Object edge) {
+    if (edge instanceof IAssociation) {
+      IAssociation assoc = (IAssociation) edge;
+      Vector conns = assoc.getConnection();
+      return conns.elementAt(1);
+    }
     System.out.println("needs-more-work getDestPort");
     return null;
   }
@@ -132,8 +154,7 @@ implements MutableGraphModel, VetoableChangeListener {
 
   /** Return true if the given object is a valid edge in this graph */
   public boolean canAddEdge(Object edge)  {
-    return true;
-    //needs-more-work 
+    return (edge instanceof Association) || (edge instanceof Generalization);
   }
 
   /** Remove the given node from the graph. */
@@ -145,16 +166,13 @@ implements MutableGraphModel, VetoableChangeListener {
 
   /** Add the given node to the graph, if valid. */
   public void addNode(Object node) {
-    System.out.println("adding use case node!!");
+    System.out.println("adding usecase node!!");
     if (_nodes.contains(node)) return;
     _nodes.addElement(node);
     // needs-more-work: assumes public, user pref for default visibility?
     try {
-      if (node instanceof Actor) {
-	_model.addPublicOwnedElement((Actor) node);
-      }
-      else if (node instanceof UseCase) {
-	_model.addPublicOwnedElement((UseCase) node);
+      if (node instanceof Classifier) {
+	_model.addPublicOwnedElement((Classifier) node);
       }
     }
     catch (PropertyVetoException pve) {
@@ -165,10 +183,21 @@ implements MutableGraphModel, VetoableChangeListener {
 
   /** Add the given edge to the graph, if valid. */
   public void addEdge(Object edge) {
-    System.out.println("adding use case edge!!!!!!");
+    System.out.println("adding class edge!!!!!!");
     if (_edges.contains(edge)) return;
     _edges.addElement(edge);
-    // needs-more-work
+    // needs-more-work: assumes public
+    try {
+      if (edge instanceof Generalization) {
+	_model.addPublicOwnedElement((Generalization) edge);
+      }
+      if (edge instanceof Association) {
+	_model.addPublicOwnedElement((Association) edge);
+      }
+    }
+    catch (PropertyVetoException pve) {
+      System.out.println("got a PropertyVetoException");
+    }
     fireEdgeAdded(edge);
   }
 
@@ -193,7 +222,23 @@ implements MutableGraphModel, VetoableChangeListener {
   /** Contruct and add a new edge of the given kind */
   public Object connect(Object fromPort, Object toPort,
 			java.lang.Class edgeClass) {
-    // needs-more-work, see ClassDiagramGraphModel
+  try {
+	     if (edgeClass == Association.class){
+	        Association asc = new Association((Classifier) fromPort, (Classifier) toPort);
+	        addEdge(asc);
+	        return asc;
+	     }
+		   else if (edgeClass == Generalization.class) {
+	         Generalization gen = new Generalization((Classifier) fromPort, (Classifier) toPort);
+	         addEdge(gen);
+	         return gen;
+	     }
+       else {
+	         System.out.println("Incorrect edge");
+	         return null;
+	     }
+  }
+    catch (java.beans.PropertyVetoException ex) { }
     System.out.println("should not enter here! connect3");
     return null;
   }
@@ -211,9 +256,9 @@ implements MutableGraphModel, VetoableChangeListener {
       ModelElement me = eo.getModelElement();
       if (oldOwned.contains(eo)) {
 	System.out.println("model removed " + me);
-	if (me instanceof Actor) removeNode(me);
-	if (me instanceof UseCase) removeNode(me);
-	//if (me instanceof Transition) removeEdge(me);
+	if (me instanceof Classifier) removeNode(me);
+	if (me instanceof Association) removeEdge(me);
+	if (me instanceof Generalization) removeEdge(me);
       }
       else {
 	System.out.println("model added " + me);

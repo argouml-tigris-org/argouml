@@ -38,7 +38,7 @@ import uci.gef.*;
 import uci.uml.ui.*;
 import uci.uml.Foundation.Core.*;
 
-public class FigDependency extends FigEdgeLine {
+public class FigDependency extends FigEdgeLineDotted {
 
   public FigDependency(Object edge) {
     super();
@@ -47,7 +47,7 @@ public class FigDependency extends FigEdgeLine {
     // set whatever arrow heads and colors are appropriate
     _fig.setLineColor(Color.red);
 
-    ArrowHeadTriangle endArrow = new ArrowHeadTriangle();
+    ArrowHeadGreater endArrow = new ArrowHeadGreater();
     endArrow.setFillColor(Color.red);
     setDestArrowHead(endArrow);
     setBetweenNearestPoints(true);

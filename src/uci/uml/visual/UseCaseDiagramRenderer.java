@@ -49,7 +49,6 @@ import uci.uml.Behavioral_Elements.Use_Cases.*;
  *  ---------------------------------------
  *  Actor           ---  FigActor
  *  UseCase         ---  FigUseCase
- *  more...
  *  </pre>
  */
 
@@ -64,13 +63,47 @@ implements GraphNodeRenderer, GraphEdgeRenderer {
     return null;
   }
 
+
   /** Return a Fig that can be used to represent the given edge */
   public FigEdge getFigEdgeFor(GraphModel gm, Layer lay, Object edge) {
     System.out.println("making figedge for " + edge);
+    if (edge instanceof Association) {
+      Association asc = (Association) edge;
+      FigAssociation ascFig = new FigAssociation(asc);
+      Vector connections = asc.getConnection();
+      if (connections == null) System.out.println("null connections....");
+      AssociationEnd fromEnd = (AssociationEnd) connections.elementAt(0);
+      Classifier fromCls = (Classifier) fromEnd.getType();
+      AssociationEnd toEnd = (AssociationEnd) connections.elementAt(1);
+      Classifier toCls = (Classifier) toEnd.getType();
+      FigNode fromFN = (FigNode) lay.presentationFor(fromCls);
+      FigNode toFN = (FigNode) lay.presentationFor(toCls);
+      ascFig.sourcePortFig(fromFN);
+      ascFig.sourceFigNode(fromFN);
+      ascFig.destPortFig(toFN);
+      ascFig.destFigNode(toFN);
+      return ascFig;
+    }
+    if (edge instanceof Generalization) {
+      Generalization gen = (Generalization) edge;
+      FigGeneralization genFig = new FigGeneralization(gen);
+      GeneralizableElement subType = gen.getSubtype();
+      GeneralizableElement superType = gen.getSupertype();
+      FigNode subTypeFN = (FigNode) lay.presentationFor(subType);
+      FigNode superTypeFN = (FigNode) lay.presentationFor(superType);
+      genFig.sourcePortFig(subTypeFN);
+      genFig.sourceFigNode(subTypeFN);
+      genFig.destPortFig(superTypeFN);
+      genFig.destFigNode(superTypeFN);
+      return genFig;
+    }
+   
+    // what about realizations? They are not distince objects in my UML model
+    // maybe they should be, just as an implementation issue, dont
+    // remove any of the methods that are there now.
 
     System.out.println("needs-more-work UseCaseDiagramRenderer getFigEdgeFor");
     return null;
   }
-
 
 } /* end class UseCaseDiagramRenderer */

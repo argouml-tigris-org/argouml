@@ -60,6 +60,16 @@ public class UMLUseCaseDiagram extends UMLDiagram {
   protected static Action _actionUseCase = 
   new CmdCreateNode(UseCase.class, "UseCase");
 
+  protected static Action _actionAssoc =
+  new CmdSetMode(ModeCreateEdge.class,
+		 "edgeClass", Association.class,
+		 "Association");
+
+  protected static Action _actionGeneralize =
+  new CmdSetMode(ModeCreateEdge.class,
+		 "edgeClass", Generalization.class,
+		 "Generalization");
+
   // other icons?
 
 
@@ -117,6 +127,8 @@ public class UMLUseCaseDiagram extends UMLDiagram {
 
     _toolBar.add(_actionActor);
     _toolBar.add(_actionUseCase);
+    _toolBar.add(_actionAssoc);
+    _toolBar.add(_actionGeneralize);
     // other actions
     _toolBar.addSeparator();
 

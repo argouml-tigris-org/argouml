@@ -22,11 +22,9 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 // ENHANCEMENTS, OR MODIFICATIONS.
 
-
-
 // File: FigActor.java
 // Classes: FigActor
-// Original Author: your email address here
+// Original Author: abonner@ics.uci.edu
 // $Id$
 
 package uci.uml.visual;
@@ -61,9 +59,15 @@ implements VetoableChangeListener, DelayedVetoableChangeListener {
   
   /** UML does not really use ports, so just define one big one so
    *  that users can drag edges to or from any point in the icon. */
-  
   FigRect _bigPort;
-  
+
+  /* Put in the things for the "person" in the FigActor */
+  FigCircle _head;
+  FigLine _body;
+  FigLine _arms;
+  FigLine _leftLeg;
+  FigLine _rightLeg;
+    
   // add other Figs here aes needed
 
 
@@ -77,24 +81,42 @@ implements VetoableChangeListener, DelayedVetoableChangeListener {
       ((ElementImpl)node).addVetoableChangeListener(this);
 
     Color handleColor = Globals.getPrefs().getHandleColor();
-    _bigPort = new FigRect(10, 10, 90, 20, handleColor, Color.lightGray);
-    _name = new FigText(10,10,90,20, Color.blue, "Times", 10);
+    _bigPort = new FigRect(5, 5, 30, 85, handleColor, Color.gray);
+    _head = new FigCircle(10, 10, 20, 30, handleColor, Color.white);
+    _body = new FigLine(20, 40, 20, 60, handleColor);
+    _arms = new FigLine(10, 50, 30, 50, handleColor);
+    _leftLeg = new FigLine(20, 60, 15, 75, handleColor );
+    _rightLeg = new FigLine(20, 60, 25, 75, handleColor );
+    _name = new FigText(5, 75, 35, 20, Color.blue, "Times", 10);
     _name.setExpandOnly(true);
-    _name.setText("FigActor");
+    _name.setText("Actor");
+    _name.setTextFilled(false);
+    _name.setFilled(false);
+    _name.setLineWidth(0);
     // initialize any other Figs here
 
     // add Figs to the FigNode in back-to-front order
     addFig(_bigPort);
+    addFig(_head);
+    addFig(_body);
+    addFig(_arms);
+    addFig(_leftLeg);
+    addFig(_rightLeg);
     addFig(_name);
 
 
     Object onlyPort = node;
     bindPort(onlyPort, _bigPort);
-    setBlinkPorts(true); //make port invisble unless mouse enters
+    setBlinkPorts(true); //make port invisble unless mouse enters*/
     Rectangle r = getBounds();
   }
 
 
+  /** Returns true if this Fig can be resized by the user. */
+  public boolean isResizable() { return false; }
+  
+
+  
   /** If the UML meta-model object changes state. Update the Fig.  But
    *  we need to do it as a "DelayedVetoableChangeListener", so that
    *  model changes complete before we update the screen. */
@@ -133,7 +155,6 @@ implements VetoableChangeListener, DelayedVetoableChangeListener {
     endTrans();
   }
 
-  
 
   public void dispose() {
     if (!(getOwner() instanceof Element)) return;
@@ -142,7 +163,6 @@ implements VetoableChangeListener, DelayedVetoableChangeListener {
     p.moveToTrash(elmt);
     super.dispose();
   }
-
 
 
 } /* end class FigActor */

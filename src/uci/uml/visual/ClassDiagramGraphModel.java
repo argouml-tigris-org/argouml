@@ -182,11 +182,8 @@ implements MutableGraphModel, VetoableChangeListener {
     _edges.addElement(edge);
     // needs-more-work: assumes public
     try {
-      if (edge instanceof Generalization) {
-	_model.addPublicOwnedElement((Generalization) edge);
-      }
-      if (edge instanceof Association) {
-	_model.addPublicOwnedElement((Association) edge);
+      if (edge instanceof ModelElement) {
+	       _model.addPublicOwnedElement((ModelElement) edge);
       }
     }
     catch (PropertyVetoException pve) {
@@ -220,6 +217,7 @@ implements MutableGraphModel, VetoableChangeListener {
       if ((fromPort instanceof MMClass) && (toPort instanceof MMClass)) {
 	MMClass fromCls = (MMClass) fromPort;
 	MMClass toCls = (MMClass) toPort;
+
 	if (edgeClass == Generalization.class) {
 	  Generalization gen = new Generalization(fromCls, toCls);
 	  addEdge(gen);
@@ -229,6 +227,11 @@ implements MutableGraphModel, VetoableChangeListener {
 	  Association asc = new Association(fromCls, toCls);
 	  addEdge(asc);
 	  return asc;
+	}
+  else if (edgeClass == Dependency.class) {
+	  Dependency dep = new Dependency(fromCls, toCls);
+	  addEdge(dep);
+	  return dep;
 	}
 	else {
 	  System.out.println("asdwwads");
@@ -256,6 +259,7 @@ implements MutableGraphModel, VetoableChangeListener {
 	System.out.println("model removed " + me);
 	if (me instanceof Classifier) removeNode(me);
 	if (me instanceof Association) removeEdge(me);
+	if (me instanceof Dependency) removeEdge(me);
 	if (me instanceof Generalization) removeEdge(me);
 	//if (me instanceof Realization) removeEdge(me);
       }

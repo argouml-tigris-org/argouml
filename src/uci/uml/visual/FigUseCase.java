@@ -52,6 +52,14 @@ implements VetoableChangeListener, DelayedVetoableChangeListener {
   // constants
   
   public final int MARGIN = 2;
+  public int x = 10;
+  public int y = 10;
+  public int width = 100;
+  public int height = 60;
+  public int textH = 20;
+  public Point pos;
+  public Dimension dim;
+  protected int _radius = 20;
 
   ////////////////////////////////////////////////////////////////
   // instance variables
@@ -67,6 +75,7 @@ implements VetoableChangeListener, DelayedVetoableChangeListener {
   // add other Figs here aes needed
 
 
+  FigCircle _useCase;
   ////////////////////////////////////////////////////////////////
   // constructors
   
@@ -77,20 +86,24 @@ implements VetoableChangeListener, DelayedVetoableChangeListener {
       ((ElementImpl)node).addVetoableChangeListener(this);
 
     Color handleColor = Globals.getPrefs().getHandleColor();
-    _bigPort = new FigRect(10, 10, 90, 20, handleColor, Color.lightGray);
-    _name = new FigText(10,10,90,20, Color.blue, "Times", 10);
+    _bigPort = new FigRect(x, y, width, height, handleColor, Color.lightGray);
+    _name = new FigText(x,y+height-textH,width,textH, Color.black, "Times", 10);
+    _useCase = new FigCircle(x, y, width, height-textH, handleColor, Color.white);
     _name.setExpandOnly(true);
+    _name.setTextFilled(false);
+    _name.setFillColor(null);
     _name.setText("FigUseCase");
     // initialize any other Figs here
 
     // add Figs to the FigNode in back-to-front order
     addFig(_bigPort);
+    addFig(_useCase);
     addFig(_name);
 
 
     Object onlyPort = node;
     bindPort(onlyPort, _bigPort);
-    setBlinkPorts(true); //make port invisble unless mouse enters
+    setBlinkPorts(false); //make port invisble unless mouse enters
     Rectangle r = getBounds();
   }
 
