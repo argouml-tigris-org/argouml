@@ -24,9 +24,11 @@
 
 package org.argouml.uml.ui.foundation.core;
 
+import java.awt.event.ActionEvent;
 import java.util.Collection;
 import java.util.Iterator;
 
+import javax.swing.Action;
 import javax.swing.JList;
 import javax.swing.JScrollPane;
 
@@ -35,6 +37,7 @@ import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.CoreFactory;
 import org.argouml.model.uml.UmlFactory;
 import org.argouml.ui.targetmanager.TargetManager;
+import org.argouml.uml.ui.AbstractActionNewModelElement;
 import org.argouml.uml.ui.ActionNavigateContainerElement;
 import org.argouml.uml.ui.ActionRemoveFromModel;
 import org.argouml.uml.ui.PropPanelButton;
@@ -98,84 +101,109 @@ public class PropPanelDataType extends PropPanelClassifier {
                 new ActionNavigateContainerElement()));
         new PropPanelButton(this, lookupIcon("DataType"), 
                 Translator.localize("button.new-datatype"), 
-                "newDataType", null);
+                new ActionAddDataTypeToDataType());
         new PropPanelButton(this, lookupIcon("NewAttribute"), 
             Translator.localize("button.new-enumeration-literal"),
-            "addAttribute", null);
+            new ActionAddAttributeToDataType());
 
         new PropPanelButton(this, lookupIcon("NewOperation"), 
-                Translator.localize(
-                "button.new-operation"), "addOperation", null);
+                Translator.localize("button.new-operation"), 
+                new ActionAddQueryOperation());
         addButton(new PropPanelButton2(this, new ActionRemoveFromModel()));
     }
 
-    /**
-     * @see org.argouml.uml.ui.foundation.core.PropPanelClassifier#addAttribute()
-     */
-    public void addAttribute() {
-        Object target = getTarget();
-        if (org.argouml.model.ModelFacade.isAClassifier(target)) {
-            Object classifier = /* (MClassifier) */target;
-            Object stereo = null;
-            if (ModelFacade.getStereotypes(classifier).size() > 0) {
-                stereo = ModelFacade.getStereotypes(classifier).iterator()
-                        .next();
-            }
-            if (stereo == null) {
-                //
-                //  if there is not an enumeration stereotype as
-                //     an immediate child of the model, add one
-                Object model = ModelFacade.getModel(classifier);
-                Object ownedElement;
-                boolean match = false;
-                if (model != null) {
-                    Collection ownedElements = ModelFacade
-                            .getOwnedElements(model);
-                    if (ownedElements != null) {
-                        Iterator iter = ownedElements.iterator();
-                        while (iter.hasNext()) {
-                            ownedElement = iter.next();
-                            if (org.argouml.model.ModelFacade
-                                    .isAStereotype(ownedElement)) {
-                                stereo = /* (MStereotype) */ownedElement;
-                                String stereoName = ModelFacade.getName(stereo);
-                                if (stereoName != null
-                                        && stereoName.equals("enumeration")) {
-                                    match = true;
-                                    break;
-                                }
-                            }
-                        }
-                        if (!match) {
-                            stereo = UmlFactory.getFactory()
-                                    .getExtensionMechanisms()
-                                    .createStereotype();
-                            ModelFacade.setName(stereo, "enumeration");
-                            ModelFacade.addOwnedElement(model, stereo);
-                        }
-                        ModelFacade.setStereotype(classifier, stereo);
-                    }
-                }
-            }
+    private class ActionAddQueryOperation 
+        extends AbstractActionNewModelElement {
 
-            Object attr = CoreFactory.getFactory().buildAttribute(classifier);
-            ModelFacade.setChangeable(attr, false);
-            TargetManager.getInstance().setTarget(attr);
+        /**
+         * The constructor.
+         */
+        public ActionAddQueryOperation() {
+            super("button.new-operation");
+            putValue(Action.NAME, Translator.localize("button.new-operation"));
         }
 
+        /**
+         * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+         */
+        public void actionPerformed(ActionEvent e) {
+            Object target = TargetManager.getInstance().getModelTarget();
+            if (org.argouml.model.ModelFacade.isAClassifier(target)) {
+                Object newOper = 
+                    UmlFactory.getFactory().getCore().buildOperation(target);
+                // due to Well Defined rule [2.5.3.12/1]
+                ModelFacade.setQuery(newOper, true);
+                TargetManager.getInstance().setTarget(newOper);
+                super.actionPerformed(e);
+            }
+        }
     }
-
-    /**
-     * @see org.argouml.uml.ui.foundation.core.PropPanelClassifier#addOperation()
-     */
-    public void addOperation() {
-        Object target = getTarget();
-        if (org.argouml.model.ModelFacade.isAClassifier(target)) {
-            Object newOper = UmlFactory.getFactory().getCore().buildOperation(
-            /* (MClassifier) */target);
-            // due to Well Defined rule [2.5.3.12/1]
-            ModelFacade.setQuery(newOper, true);
-            TargetManager.getInstance().setTarget(newOper);
+    
+    private class ActionAddAttributeToDataType 
+        extends AbstractActionNewModelElement {
+        
+        /**
+         * The constructor.
+         */
+        public ActionAddAttributeToDataType() {
+            super("button.new-enumeration-literal");
+            putValue(Action.NAME, Translator.localize(
+                "button.new-enumeration-literal"));
+        }
+        
+        /**
+         * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+         */
+        public void actionPerformed(ActionEvent e) {
+            Object target = TargetManager.getInstance().getModelTarget();
+            if (org.argouml.model.ModelFacade.isAClassifier(target)) {
+                Object stereo = null;
+                if (ModelFacade.getStereotypes(target).size() > 0) {
+                    stereo = ModelFacade.getStereotypes(target)
+                        .iterator().next();
+                }
+                if (stereo == null) {
+                    //  if there is not an enumeration stereotype as
+                    //     an immediate child of the model, add one
+                    Object model = ModelFacade.getModel(target);
+                    Object ownedElement;
+                    boolean match = false;
+                    if (model != null) {
+                        Collection ownedElements = ModelFacade
+                        .getOwnedElements(model);
+                        if (ownedElements != null) {
+                            Iterator iter = ownedElements.iterator();
+                            while (iter.hasNext()) {
+                                ownedElement = iter.next();
+                                if (org.argouml.model.ModelFacade
+                                        .isAStereotype(ownedElement)) {
+                                    stereo = /* (MStereotype) */ownedElement;
+                                    String stereoName = 
+                                        ModelFacade.getName(stereo);
+                                    if (stereoName != null 
+                                        && stereoName.equals("enumeration")) {
+                                        match = true;
+                                        break;
+                                    }
+                                }
+                            }
+                            if (!match) {
+                                stereo = UmlFactory.getFactory()
+                                    .getExtensionMechanisms()
+                                        .createStereotype();
+                                ModelFacade.setName(stereo, "enumeration");
+                                ModelFacade.addOwnedElement(model, stereo);
+                            }
+                            ModelFacade.setStereotype(target, stereo);
+                        }
+                    }
+                }
+                
+                Object attr = CoreFactory.getFactory().buildAttribute(target);
+                ModelFacade.setChangeable(attr, false);
+                TargetManager.getInstance().setTarget(attr);
+                super.actionPerformed(e);
+            }
         }
     }
 
@@ -205,17 +233,30 @@ public class PropPanelDataType extends PropPanelClassifier {
         return attributeScroll;
     }
 
-    /**
-     * Create a new datatype.
-     */
-    public void newDataType() {
-        Object target = getTarget();
-        if (ModelFacade.isADataType(target)) {
-            Object dt = /* (MDataType) */target;
-            Object ns = ModelFacade.getNamespace(dt);
-            Object newDt = CoreFactory.getFactory().createDataType();
-            ModelFacade.addOwnedElement(ns, newDt);
-            TargetManager.getInstance().setTarget(newDt);
+    private class ActionAddDataTypeToDataType 
+        extends AbstractActionNewModelElement {
+        
+        /**
+         * The constructor.
+         */
+        public ActionAddDataTypeToDataType() {
+            super("button.new-datatype");
+            putValue(Action.NAME, Translator.localize(
+                "button.new-datatype"));
+        }
+        
+        /**
+         * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+         */
+        public void actionPerformed(ActionEvent e) {
+            Object target = TargetManager.getInstance().getModelTarget();
+            if (ModelFacade.isADataType(target)) {
+                Object ns = ModelFacade.getNamespace(target);
+                Object newDt = CoreFactory.getFactory().createDataType();
+                ModelFacade.addOwnedElement(ns, newDt);
+                TargetManager.getInstance().setTarget(newDt);
+                super.actionPerformed(e);
+            }
         }
     }
 

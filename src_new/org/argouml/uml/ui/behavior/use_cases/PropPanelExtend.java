@@ -24,6 +24,9 @@
 
 package org.argouml.uml.ui.behavior.use_cases;
 
+import java.awt.event.ActionEvent;
+
+import javax.swing.Action;
 import javax.swing.JList;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
@@ -32,6 +35,8 @@ import org.argouml.i18n.Translator;
 import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.UmlFactory;
 import org.argouml.model.uml.UseCasesFactory;
+import org.argouml.ui.targetmanager.TargetManager;
+import org.argouml.uml.ui.AbstractActionNewModelElement;
 import org.argouml.uml.ui.ActionNavigateNamespace;
 import org.argouml.uml.ui.ActionRemoveFromModel;
 import org.argouml.uml.ui.PropPanelButton;
@@ -122,9 +127,8 @@ public class PropPanelExtend extends PropPanelModelElement {
                 new ActionNavigateNamespace()));
         new PropPanelButton(this,
                 lookupIcon("ExtensionPoint"),
-                localize("New Extension Point"),
-                "newExtensionPoint",
-                null);
+                Translator.localize("button.new-extension-point"),
+                new ActionNewExtensionPoint());
         addButton(new PropPanelButton2(this, new ActionRemoveFromModel()));
     }
 
@@ -195,23 +199,34 @@ public class PropPanelExtend extends PropPanelModelElement {
      * This code uses getFactory and adds the extension point to
      *   the current extend relationship.<p>
      */
-    public void newExtensionPoint() {
-        Object target = getTarget();
-
-        if (org.argouml.model.ModelFacade.isAExtend(target)) {
-            Object    extend    = /*(MExtend)*/ target;
-            Object ns = ModelFacade.getNamespace(extend);
-
-            if (ns != null) {
-                if (ModelFacade.getBase(extend) != null) {
-
-		    Object extensionPoint =
-			UseCasesFactory.getFactory()
-			    .buildExtensionPoint(ModelFacade.getBase(extend));
-
-		    ModelFacade.addExtensionPoint(extend, extensionPoint);
+    private class ActionNewExtensionPoint 
+        extends AbstractActionNewModelElement {
+        
+        /**
+         * The constructor.
+         */
+        public ActionNewExtensionPoint() {
+            super("button.new-extension-point");
+            putValue(Action.NAME, 
+                    Translator.localize("button.new-extension-point"));
+        }
+        
+        /**
+         * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+         */
+        public void actionPerformed(ActionEvent e) {
+            Object target = TargetManager.getInstance().getModelTarget();
+            if (org.argouml.model.ModelFacade.isAExtend(target)) {
+                Object ns = ModelFacade.getNamespace(target);
+                if (ns != null) {
+                    if (ModelFacade.getBase(target) != null) {
+                        Object extensionPoint = UseCasesFactory.getFactory()
+                            .buildExtensionPoint(ModelFacade.getBase(target));
+                        ModelFacade.addExtensionPoint(target, extensionPoint);
+                        TargetManager.getInstance().setTarget(extensionPoint);
+                        super.actionPerformed(e);
+                    }
                 }
-
             }
         }
     }
