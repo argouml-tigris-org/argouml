@@ -258,18 +258,18 @@ public class UmlFilePersister extends AbstractFilePersister {
     }
 
     /**
-     * @see org.argouml.persistence.ProjectFilePersister#doLoad(java.net.URL,
+     * @see org.argouml.persistence.ProjectFilePersister#doLoad(java.io.File,
      * javax.swing.JProgressBar, javax.swing.text.JTextComponent progressText)
      */
-    public Project doLoad(URL url, JProgressBar progressBar, JTextComponent progressText) throws OpenException {
+    public Project doLoad(File file, JProgressBar progressBar, JTextComponent progressText) throws OpenException {
         try {
-            Project p = new Project(url);
+            Project p = new Project(file.toURL());
 
             // Run through any stylesheet upgrades
-            url = upgrade(url);
+            file = upgrade(file);
 
             XmlInputStream inputStream =
-                        new XmlInputStream(url.openStream(), "argo");
+                        new XmlInputStream(file.toURL().openStream(), "argo");
 
             ArgoParser parser = new ArgoParser();
             parser.readProject(p, inputStream);
@@ -304,17 +304,17 @@ public class UmlFilePersister extends AbstractFilePersister {
         }
     }
 
-    private URL upgrade(URL url) throws OpenException {
+    private File upgrade(File file) throws OpenException {
         try {
-            int versionFromFile = Integer.parseInt(getVersion(url));
+            int versionFromFile = Integer.parseInt(getVersion(file));
 
             LOG.info("Loading uml file of version " + versionFromFile);
             while (versionFromFile < PERSISTENCE_VERSION) {
                 ++versionFromFile;
                 LOG.info("Upgrading to version " + versionFromFile);
-                url = transform(url, versionFromFile);
+                file = transform(file, versionFromFile);
             }
-            return url;
+            return file;
         } catch (IOException e) {
             throw new OpenException(e);
         }
@@ -323,13 +323,13 @@ public class UmlFilePersister extends AbstractFilePersister {
     /**
      * Transform a string of XML data according to the service required.
      *
-     * @param url The URL of the XML to be transformed
+     * @param file The XML file to be transformed
      * @param version the version of the persistence format
      *                the XML is to be transformed to.
-     * @return the URL of the transformed XML
+     * @return the transformed XML file
      * @throws OpenException on XSLT transformation error or file read
      */
-    public final URL transform(URL url, int version)
+    public final File transform(File file, int version)
         throws OpenException {
 
         try {
@@ -350,21 +350,21 @@ public class UmlFilePersister extends AbstractFilePersister {
             TransformerFactory factory = TransformerFactory.newInstance();
             Transformer transformer = factory.newTransformer(xsltStreamSource);
 
-            File file = File.createTempFile("upgrade_" + version + "_", ".uml");
-            file.deleteOnExit();
+            File transformedFile = File.createTempFile("upgrade_" + version + "_", ".uml");
+            transformedFile.deleteOnExit();
 
             String encoding = "UTF-8";
             FileOutputStream stream =
-                new FileOutputStream(file);
+                new FileOutputStream(transformedFile);
             Writer writer = new BufferedWriter(new OutputStreamWriter(
                     stream, encoding));
             Result result = new StreamResult(writer);
 
-            StreamSource inputStreamSource = new StreamSource(url.openStream());
+            StreamSource inputStreamSource = new StreamSource(file);
             transformer.transform(inputStreamSource, result);
 
             writer.close();
-            return file.toURL();
+            return transformedFile;
         } catch (IOException e) {
             throw new OpenException(e);
         } catch (TransformerException e) {
@@ -375,13 +375,13 @@ public class UmlFilePersister extends AbstractFilePersister {
     /**
      * Read an XML file at the given URL and extracts the version number
      * from the root tag.
-     * @param url the URL of the XML file
+     * @param file the XML file
      * @return The version number
      * @throws IOException
      */
-    private String getVersion(URL url) throws IOException {
+    private String getVersion(File file) throws IOException {
         BufferedInputStream inputStream =
-            new BufferedInputStream(url.openStream());
+            new BufferedInputStream(file.toURL().openStream());
         BufferedReader reader =
             new BufferedReader(new InputStreamReader(inputStream));
         String rootLine = reader.readLine();

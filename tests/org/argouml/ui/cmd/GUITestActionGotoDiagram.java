@@ -50,13 +50,13 @@ public class GUITestActionGotoDiagram extends TestCase {
      * Test dumping a named diagram from a project with contents.
      */
     public void testProjectWithContents() {
-        URL url =
+        File file =
 	    CheckMain.getTestModel("testmodels/GUITestPropertyPanels.zargo");
 
         CheckMain.callMain(new String[] {
             "-nosplash",
             "-command",
-            "org.argouml.uml.ui.ActionOpenProject=" + url,
+            "org.argouml.uml.ui.ActionOpenProject=" + file.toString(),
             "-command",
             "org.argouml.uml.ui.ActionSaveGraphics=" + OUTPUT_FILE1,
             "-command",

@@ -136,8 +136,9 @@ public class GUITestPropertyPanels extends TestCase {
 			  + "for all known model elements");
 
         p = ProjectManager.getManager().makeEmptyProject();
-        File testfile =
-	    new File(projectFile);
+        File testfile = new File(projectFile);
+        System.err.println("GUITestPropertyPanels file = " + projectFile);
+        System.err.println("GUITestPropertyPanels file exists = " + testfile.exists());
 
         ZargoFilePersister persister = new ZargoFilePersister();
         p = persister.doLoad(testfile, null, null);

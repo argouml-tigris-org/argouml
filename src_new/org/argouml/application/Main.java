@@ -284,7 +284,14 @@ public class Main {
         Project p = null;
 
         if (urlToOpen != null) {
-            new ActionOpenProject().loadProject(urlToOpen);
+            String filename = urlToOpen.getFile();
+            File file = new File(filename);
+            System.err.println("The url of the file to open is " + urlToOpen);
+            System.err.println("The filename is " + filename);
+            System.err.println("The file is " + file);
+            System.err.println("File.exists = " + file.exists());
+            
+            new ActionOpenProject().loadProject(file);
         }
         p = ProjectManager.getManager().getCurrentProject();
 

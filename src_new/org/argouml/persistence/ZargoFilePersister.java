@@ -250,19 +250,19 @@ public class ZargoFilePersister extends UmlFilePersister {
     }
 
     /**
-     * @see org.argouml.persistence.ProjectFilePersister#doLoad(java.net.URL,
+     * @see org.argouml.persistence.ProjectFilePersister#doLoad(java.io.File,
      * javax.swing.JProgressBar, javax.swing.text.JTextComponent)
      */
-    public Project doLoad(URL url, JProgressBar progressBar, JTextComponent progressText) throws OpenException {
+    public Project doLoad(File file, JProgressBar progressBar, JTextComponent progressText) throws OpenException {
         try {
-            File file = File.createTempFile("combinedzargo_", ".uml");
+            File combinedFile = File.createTempFile("combinedzargo_", ".uml");
             LOG.info(
                 "Combining old style zargo sub files into new style uml file "
-                    + file.getAbsolutePath());
-            file.deleteOnExit();
+                    + combinedFile.getAbsolutePath());
+            combinedFile.deleteOnExit();
 
             String encoding = "UTF-8";
-            FileOutputStream stream = new FileOutputStream(file);
+            FileOutputStream stream = new FileOutputStream(combinedFile);
             PrintWriter writer = new PrintWriter(new BufferedWriter(
                     new OutputStreamWriter(stream, encoding)));
 
@@ -274,7 +274,7 @@ public class ZargoFilePersister extends UmlFilePersister {
             String line;
             BufferedReader reader;
 
-            zis = openZipStreamAt(url, FileConstants.PROJECT_FILE_EXT);
+            zis = openZipStreamAt(file.toURL(), FileConstants.PROJECT_FILE_EXT);
             reader = new BufferedReader(new InputStreamReader(zis, encoding));
             // Keep reading till we hit the <argo> tag
             String rootLine;
@@ -295,7 +295,7 @@ public class ZargoFilePersister extends UmlFilePersister {
             reader.close();
 
             // then the xmi
-            zis = openZipStreamAt(url, ".xmi");
+            zis = openZipStreamAt(file.toURL(), ".xmi");
             reader = new BufferedReader(new InputStreamReader(zis, encoding));
             // Skip 1 lines
             reader.readLine();
@@ -306,7 +306,7 @@ public class ZargoFilePersister extends UmlFilePersister {
             reader.close();
 
             // Loop round loading the diagrams
-            zis = new ZipInputStream(url.openStream());
+            zis = new ZipInputStream(file.toURL().openStream());
             SubInputStream sub = new SubInputStream(zis);
 
             ZipEntry currentEntry = null;
@@ -329,8 +329,9 @@ public class ZargoFilePersister extends UmlFilePersister {
             writer.println("</uml>");
             writer.close();
             LOG.info("Complated combining files");
-            Project p = super.doLoad(file.toURL(), progressBar, progressText);
-            p.setURL(url);
+            Project p = 
+                super.doLoad(combinedFile, progressBar, progressText);
+            p.setURL(file.toURL());
             return p;
         } catch (IOException e) {
             throw new OpenException(e);

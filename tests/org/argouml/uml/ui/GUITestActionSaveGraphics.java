@@ -51,15 +51,15 @@ public class GUITestActionSaveGraphics extends TestCase {
      * Test dumping a diagram from a project with contents.
      */
     public void testProjectWithContents() {
-        URL url =
-	    CheckMain.getTestModel("testmodels/GUITestPropertyPanels.zargo");
+        File file =
+            CheckMain.getTestModel("testmodels/GUITestPropertyPanels.zargo");
 
         new File(OUTPUT_FILE).delete();
 
         CheckMain.callMain(new String[] {
             "-nosplash",
             "-command",
-            "org.argouml.uml.ui.ActionOpenProject=" + url,
+            "org.argouml.uml.ui.ActionOpenProject=" + file.getAbsolutePath(),
             "-command",
             "org.argouml.uml.ui.ActionSaveGraphics=" + OUTPUT_FILE,
         });

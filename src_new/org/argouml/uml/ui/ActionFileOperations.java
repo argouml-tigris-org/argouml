@@ -119,10 +119,10 @@ public abstract class ActionFileOperations extends AbstractAction {
      * if it doesn't work for some reason. In those cases it preserves
      * the old project.
      *
-     * @param url the url to open.
+     * @param file the file to open.
      * @return true if the file was successfully opened
      */
-    public boolean loadProject(URL url) {
+    public boolean loadProject(File file) {
         LOG.info("Loading project");
         PersistenceManager pm = PersistenceManager.getInstance();
         Project oldProject = ProjectManager.getManager().getCurrentProject();
@@ -140,33 +140,34 @@ public abstract class ActionFileOperations extends AbstractAction {
         Designer.clearCritiquing();
         Project p = null;
 
-        if (!(new File(url.getFile()).canRead())) {
-            showErrorPane("File not found " + url.toString() + ".");
+        if (!(file.canRead())) {
+            showErrorPane("File not found " + file + ".");
             Designer.enableCritiquing();
             success = false;
         } else {
             try {
                 ProjectFilePersister persister =
-                    pm.getPersisterFromFileName(url.getFile());
+                    pm.getPersisterFromFileName(file.getName());
                 if (persister == null) {
                     success = false;
-                    throw new IllegalStateException("Filename " + url.getFile()
+                    throw new IllegalStateException("Filename "
+                            + file.getName()
                             + " is not of a known file type");
                 }
-                p = persister.doLoad(url, null, null);
+                p = persister.doLoad(file, null, null);
 
                 ProjectBrowser.getInstance().showStatus(
-                        MessageFormat.format(Translator.localize(
+                    MessageFormat.format(Translator.localize(
                         "label.open-project-status-read"),
                         new Object[] {
-			    url.toString(),
-                        }));
+                        file.getName(),
+                    }));
             } catch (OpenException ex) {
                 LOG.error("Exception while loading project", ex);
                 success = false;
                 showErrorPane(
                         "Could not load the project "
-                        + url.toString()
+                        + file.getName()
                         + " due to parser configuration errors.\n"
                         + "Please read the instructions at www.argouml.org "
                         + "on the "
@@ -178,7 +179,7 @@ public abstract class ActionFileOperations extends AbstractAction {
                     success = false;
                     showErrorPane(
                             "Problem in loading the project "
-                            + url.toString()
+                            + file.getName()
                             + "\n"
                             + "Project file probably corrupt from "
                             + "an earlier version or ArgoUML.\n"

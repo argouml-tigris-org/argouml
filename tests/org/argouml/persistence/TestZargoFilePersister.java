@@ -72,7 +72,7 @@ public class TestZargoFilePersister extends TestCase {
             throws OpenException {
         URL url = TestZargoFilePersister.class.getResource(filename);
         ZargoFilePersister persister = new ZargoFilePersister();
-        Project p = persister.doLoad(url, null, null);
+        Project p = persister.doLoad(new File(url.getFile()), null, null);
         assertTrue("Load Status for " + filename + ".",
                LastLoadInfo.getInstance().getLastLoadStatus());
         return p;

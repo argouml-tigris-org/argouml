@@ -78,13 +78,8 @@ public class ActionReopenProject extends ActionFileOperations {
         if (!askConfirmationAndSave()) return;
 
         File toOpen = new File(filename);;
-        try {
-            // load of the new project
-            // just reuse of the ActionOpen object
-            loadProject(toOpen.toURL());
-        }
-        catch (java.net.MalformedURLException ex) {
-            LOG.error("got an URLException in ActionReopenProject", ex);
-        }
+        // load of the new project
+        // just reuse of the ActionOpen object
+        loadProject(toOpen);
     }
 }
