@@ -69,13 +69,15 @@ public class CommonBehaviorFactory extends AbstractUmlModelFactory {
 
     /** Singleton instance.
      */
-    private static CommonBehaviorFactory SINGLETON =
+    private static CommonBehaviorFactory singleton =
         new CommonBehaviorFactory();
 
     /** Singleton instance access method.
+     *
+     * @return the singleton
      */
     public static CommonBehaviorFactory getFactory() {
-        return SINGLETON;
+        return singleton;
     }
 
     /** Don't allow instantiation
@@ -329,13 +331,13 @@ public class CommonBehaviorFactory extends AbstractUmlModelFactory {
     }
 
     /**
-     * Builds a Callaction belonging to operation oper with a given name. 
+     * Builds a CallAction belonging to operation oper with a given name. 
      * Ownership of this modelelement is not set! It is unwise to build a 
      * callaction without an operation since the multiplicity according to the
      * UML spec 1.3 is 1..1. Therefore precondition is that there is an 
      * operation.
-     * @param oper
-     * @param name
+     * @param oper the given operation
+     * @param name the name for the CallAction
      * @return MCallAction
      */
     public Object /*MCallAction*/
@@ -353,8 +355,9 @@ public class CommonBehaviorFactory extends AbstractUmlModelFactory {
     /**
      * Builds a new uninterpreted action. If the argument is an action state,
      * the new action is set as the entry action.
-     * @param actionState
-     * @return
+     * 
+     * @param actionState the given action state or null
+     * @return the newly build UninterpretedAction
      */
     public Object buildUninterpretedAction(Object actionState) {
         Object action = createUninterpretedAction();
@@ -366,6 +369,10 @@ public class CommonBehaviorFactory extends AbstractUmlModelFactory {
 
     /** 
      * Builds a Link between two Instances
+     *
+     * @param fromInstance the first given instance
+     * @param toInstance   the second given instance
+     * @return the newly build link
      */
     public Object buildLink(Object fromInstance, Object toInstance) {
         Object link = UmlFactory.getFactory().getCommonBehavior().createLink();
@@ -381,7 +388,10 @@ public class CommonBehaviorFactory extends AbstractUmlModelFactory {
     }
 
     /**
-     * Builds an action (actually an uninterpretedaction) for some message
+     * Builds an action (actually an CallAction) for some message
+     *
+     * @param message the given message
+     * @return the newly build callAction
      */
     public Object buildAction(Object message) {
         Object action = createCallAction();
@@ -404,6 +414,9 @@ public class CommonBehaviorFactory extends AbstractUmlModelFactory {
 
     /**
      * Builds a signal belonging to some behavioralfeature
+     *
+     * @param feature the given behaviouralfeature
+     * @return the newly build Signal
      */
     public MSignal buildSignal(MBehavioralFeature feature) {
         if (feature == null)
@@ -444,6 +457,9 @@ public class CommonBehaviorFactory extends AbstractUmlModelFactory {
 
     /**
      * Builds a reception belonging to some classifier
+     *
+     * @param aClassifier the given classifier (or null)
+     * @return the newly created reception
      */
     public Object buildReception(Object aClassifier) {
         Object reception = createReception();
@@ -453,33 +469,63 @@ public class CommonBehaviorFactory extends AbstractUmlModelFactory {
         return reception;        
     }
 
+    /**
+     * @param elem the Action to be deleted
+     */
     public void deleteAction(Object elem) {
     }
 
+    /**
+     * @param elem the ActionSequence to be deleted
+     */
     public void deleteActionSequence(Object elem) {
     }
 
+    /**
+     * @param elem the element to be deleted
+     */
     public void deleteArgument(MArgument elem) {
     }
 
+    /**
+     * @param elem the element to be deleted
+     */
     public void deleteAttributeLink(MAttributeLink elem) {
     }
 
+    /**
+     * @param elem the element to be deleted
+     */
     public void deleteCallAction(MCallAction elem) {
     }
 
+    /**
+     * @param elem the element to be deleted
+     */
     public void deleteComponentInstance(MComponentInstance elem) {
     }
 
+    /**
+     * @param elem the element to be deleted
+     */
     public void deleteCreateAction(MCreateAction elem) {
     }
 
+    /**
+     * @param elem the element to be deleted
+     */
     public void deleteDataValue(MDataValue elem) {
     }
 
+    /**
+     * @param elem the element to be deleted
+     */
     public void deleteDestroyAction(MDestroyAction elem) {
     }
 
+    /**
+     * @param elem the element to be deleted
+     */
     public void deleteException(MException elem) {
     }
 
@@ -487,6 +533,8 @@ public class CommonBehaviorFactory extends AbstractUmlModelFactory {
      * when an instance is deleted,
      * delete its linkend's.
      * similar to deleting a classifier in the CoreFactory.
+     *
+     * @param elem the element to be deleted
      */
     public void deleteInstance(MInstance elem) {
 
@@ -499,12 +547,17 @@ public class CommonBehaviorFactory extends AbstractUmlModelFactory {
         }
     }
 
+    /**
+     * @param elem the element to be deleted
+     */
     public void deleteLink(MLink elem) {
     }
 
     /**
      * when a linkend is deleted,
      * delete its Links
+     *
+     * @param elem the element to be deleted
      */
     public void deleteLinkEnd(MLinkEnd elem) {
 
@@ -516,33 +569,63 @@ public class CommonBehaviorFactory extends AbstractUmlModelFactory {
         }
     }
 
+    /**
+     * @param elem the element to be deleted
+     */
     public void deleteLinkObject(MLinkObject elem) {
     }
 
+    /**
+     * @param elem the element to be deleted
+     */
     public void deleteNodeInstance(MNodeInstance elem) {
     }
 
+    /**
+     * @param elem the element to be deleted
+     */
     public void deleteObject(MObject elem) {
     }
 
+    /**
+     * @param elem the element to be deleted
+     */
     public void deleteReception(MReception elem) {
     }
 
+    /**
+     * @param elem the element to be deleted
+     */
     public void deleteReturnAction(MReturnAction elem) {
     }
 
+    /**
+     * @param elem the element to be deleted
+     */
     public void deleteSendAction(MSendAction elem) {
     }
 
+    /**
+     * @param elem the element to be deleted
+     */
     public void deleteSignal(MSignal elem) {
     }
 
+    /**
+     * @param elem the element to be deleted
+     */
     public void deleteStimulus(MStimulus elem) {
     }
 
+    /**
+     * @param elem the element to be deleted
+     */
     public void deleteTerminateAction(MTerminateAction elem) {
     }
 
+    /**
+     * @param elem the element to be deleted
+     */
     public void deleteUninterpretedAction(MUninterpretedAction elem) {
     }
 }
