@@ -35,126 +35,104 @@ public class TestFigClonable extends TestCase {
     /** try to clone FigClass in package diagram.static_structure.ui.
      */
     public void testClassClonable() {
-        try {
+
             FigClass fig = new FigClass();
             FigClass figclone;
              
             figclone = (FigClass) fig.clone();
-            assertTrue("FigClass cloned", true);
-        }
-        catch(Exception e) {
-            assertTrue("FigClass not clonable", false);
-        }
+
     }
 
     /** try to clone FigEdgeNote in package diagram.static_structure.ui.
      */
     public void testEdgeNoteClonable() {
-        try {
+
             FigEdgeNote fig = new FigEdgeNote();
             FigEdgeNote figclone;
              
             figclone = (FigEdgeNote) fig.clone();
-            assertTrue("FigEdgeNote cloned", true);
-        }
-        catch(Exception e) {
-            assertTrue("FigEdgeNote not clonable", false);
-        }
+
     }
 
     /** try to clone FigInstance in package diagram.static_structure.ui.
      */
     public void testInstanceClonable() {
-        try {
+
             FigInstance fig = new FigInstance();
             FigInstance figclone;
              
             figclone = (FigInstance) fig.clone();
-            assertTrue("FigInstance cloned", true);
-        }
-        catch(Exception e) {
-            assertTrue("FigInstance not clonable", false);
-        }
+
     }
 
     /** try to clone FigInterface in package diagram.static_structure.ui.
      */
     public void testInterfaceClonable() {
-        try {
+
             FigInterface fig = new FigInterface();
             FigInterface figclone;
              
             figclone = (FigInterface) fig.clone();
-            assertTrue("FigInterface cloned", true);
-        }
-        catch(Exception e) {
-            assertTrue("FigInterface not clonable", false);
-        }
+
     }
 
     /** try to clone FigLink in package diagram.static_structure.ui.
      */
     public void testLinkClonable() {
-        try {
+
             FigLink fig = new FigLink();
             FigLink figclone;
              
             figclone = (FigLink) fig.clone();
-            assertTrue("FigLink cloned", true);
-        }
-        catch(Exception e) {
-            assertTrue("FigLink not clonable", false);
-        }
+
     }
 
 
     /** try to clone FigModel in package diagram.static_structure.ui.
      */
-    /*
     public void testModelClonable() {
-        try {
+
             FigModel fig = new FigModel();
             FigModel figclone;
              
             figclone = (FigModel) fig.clone();
-            assertTrue("FigModel cloned", true);
-        }
-        catch(Exception e) {
-            e.printStackTrace(System.err);
-            assertTrue("FigModel not clonable", false);
-        }
+
     }
-    */
+
+    /** try to clone FigSubsystem in package diagram.static_structure.ui.
+     */
+    public void testSubsystemClonable() {
+
+            FigSubsystem fig = new FigSubsystem();
+            FigSubsystem figclone;
+             
+            figclone = (FigSubsystem) fig.clone();
+
+    }
+    
+    
 
     /** try to clone FigComment in package diagram.static_structure.ui.
      */
     public void testNoteClonable() {
-        try {
+
             FigComment fig = new FigComment();
             FigComment figclone;
              
             figclone = (FigComment) fig.clone();
-            assertTrue("FigComment cloned", true);
-        }
-        catch(Exception e) {
-            assertTrue("FigComment not clonable", false);
-        }
+
     }
 
 
     /** try to clone FigPackage in package diagram.static_structure.ui.
      */
     public void testPackageClonable() {
-        try {
+
             FigPackage fig = new FigPackage();
             FigPackage figclone;
              
             figclone = (FigPackage) fig.clone();
-            assertTrue("FigPackage cloned", true);
-        }
-        catch(Exception e) {
-            assertTrue("FigPackage not clonable", false);
-        }
+
     }
 
 
