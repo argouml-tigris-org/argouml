@@ -33,17 +33,22 @@ import java.util.*;
 
 public class PropPanelAssociationEnd extends PropPanelModelElement {
 
-   public PropPanelAssociationEnd() {
+  public PropPanelAssociationEnd(String name, ImageIcon icon, int columns) {
+    super(name,icon,columns);
+  }
+
+  public PropPanelAssociationEnd() {
     super("AssociationEnd", _assocEndIcon,3);
-
     Class mclass = MAssociationEnd.class;
+    makeFields(mclass);
+  }
 
+  protected void makeFields(Class mclass) {
     addCaption("Name:",1,0,0);
     addField(nameField,1,0,0);
 
     addCaption("Stereotype:",2,0,0);
     addField(new UMLComboBoxNavigator(this,"NavStereo",stereotypeBox),2,0,0);
-
 
     addCaption("Type:",3,0,0);
     UMLComboBoxModel model = new UMLComboBoxModel(this,"isAcceptibleType",
@@ -53,11 +58,10 @@ public class PropPanelAssociationEnd extends PropPanelModelElement {
     addField(new UMLComboBoxNavigator(this,"NavClass",box),3,0,0);
 
     addCaption("Multiplicity:",4,0,0);
-    addField(new UMLMultiplicityComboBox(this,MAssociationEnd.class),4,0,0);
+    addField(new UMLMultiplicityComboBox(this,mclass),4,0,0);
 
     addCaption("Association:",5,0,1);
-    JList namespaceList = new UMLList(
-				      new UMLReflectionListModel(this,"association",false,"getAssociation",null,null,null),true);
+    JList namespaceList = new UMLList(new UMLReflectionListModel(this,"association",false,"getAssociation",null,null,null),true);
     namespaceList.setBackground(getBackground());
     namespaceList.setForeground(Color.blue);
     namespaceList.setVisibleRowCount(1);
@@ -67,7 +71,6 @@ public class PropPanelAssociationEnd extends PropPanelModelElement {
     addField(new UMLCheckBox(localize("navigable"),this,
       new UMLReflectionBooleanProperty("navigable",mclass,
         "isNavigable","setNavigable")),0,1,0);
-
 
     addCaption("Ordering:",1,1,0);
     JPanel orderingPanel = new JPanel(new GridLayout(0,1));
@@ -116,7 +119,6 @@ public class PropPanelAssociationEnd extends PropPanelModelElement {
     UMLRadioButton composite = new UMLRadioButton(localize("composite"),this,
       new UMLEnumerationBooleanProperty("aggregation",mclass,"getAggregation",
         "setAggregation",MAggregationKind.class,MAggregationKind.COMPOSITE,null));
-
     aggregationGroup.add(composite);
     aggregationPanel.add(composite);
     addField(aggregationPanel,2,1,0);
@@ -156,7 +158,7 @@ public class PropPanelAssociationEnd extends PropPanelModelElement {
 
     addCaption("Visibility:",2,2,1);
     addField(new UMLVisibilityPanel(this,mclass,1,false),2,2,0);
-    
+
     //does this make sense?? new PropPanelButton(this,buttonPanel,_classIcon,localize("New class"),"newClass",null);
     new PropPanelButton(this,buttonPanel,_navUpIcon,localize("Go up"),"navigateUp",null);
     //does this amke sense?? new PropPanelButton(this,buttonPanel,_interfaceIcon,localize("New interface"),"newInterface",null);
@@ -165,6 +167,9 @@ public class PropPanelAssociationEnd extends PropPanelModelElement {
     new PropPanelButton(this,buttonPanel,_assocEndIcon,localize("Go to other end"),"gotoOther",null);
 
   }
+
+  /*
+    // This isn't called any more. Do we still need it? Bob Tarling 8th Apr 2002
 
     public void newClass() {
         Object target = getTarget();
@@ -211,6 +216,8 @@ public class PropPanelAssociationEnd extends PropPanelModelElement {
             }
         }
     }
+
+*/
 
     public Object getAssociation() {
         Object assoc = null;
@@ -266,32 +273,27 @@ public class PropPanelAssociationEnd extends PropPanelModelElement {
             //
             //    always go to the one before match or to end
             //
-            boolean didNav = false;
             while(iter.hasNext()) {
                 item = iter.next();
                 if(item == end) {
-                   if(other != null) {
-                      didNav = true;
-                      navigateTo(other);
-                      break;
+                    if(other != null) {
+                        navigateTo(other);
+                        return;
                     }
                 }
                 else {
-                  other = item;
+                    other = item;
                 }
-              }
-              //
-              //   if previous end was the first, then navigate to the last
-              if(!didNav) {
-                navigateTo(other);
-              }
+            }
+            //
+            //   if previous end was the first, then navigate to the last
+            navigateTo(other);
         }
     }
 
     protected boolean isAcceptibleBaseMetaClass(String baseClass) {
         return baseClass.equals("AssociationEnd");
     }
-
 
     protected MNamespace getDisplayNamespace(Object target) {
         MNamespace ns = null;
@@ -304,7 +306,6 @@ public class PropPanelAssociationEnd extends PropPanelModelElement {
         }
         return ns;
     }
-
 
 
 } /* end class PropPanelAssociationEnd */
