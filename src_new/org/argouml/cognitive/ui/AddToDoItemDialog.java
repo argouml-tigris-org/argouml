@@ -23,43 +23,34 @@
 
 package org.argouml.cognitive.ui;
 
-import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Insets;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
-import javax.swing.BorderFactory;
+import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
-import javax.swing.SwingConstants;
 
 import org.argouml.application.api.Argo;
 import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.ToDoItem;
-import org.argouml.swingext.Horizontal;
 import org.argouml.swingext.LabelledLayout;
-import org.argouml.swingext.SerialLayout;
 import org.argouml.ui.ArgoDialog;
 import org.argouml.ui.ProjectBrowser;
-import org.tigris.gef.util.VectorSet;
 
 public class AddToDoItemDialog extends ArgoDialog {
 
     ////////////////////////////////////////////////////////////////
-    // constants
+    // constants    
     private static final String PRIORITIES[] = {
         Argo.localize(BUNDLE, "level.high"),
         Argo.localize(BUNDLE, "level.medium"),
         Argo.localize(BUNDLE, "level.low")
     };
+    private static final int TEXT_ROWS = 8;
+    private static final int TEXT_COLUMNS = 30;
 
     ////////////////////////////////////////////////////////////////
     // instance variables
@@ -73,20 +64,18 @@ public class AddToDoItemDialog extends ArgoDialog {
      */
     public AddToDoItemDialog() {
         super(ProjectBrowser.getInstance(), Argo.localize(BUNDLE, "dialog.title.add-todo-item"), true);
-    }
-
-    protected JPanel addComponents() {
-        _headline = new JTextField(30);
+        
+        _headline = new JTextField(TEXT_COLUMNS);
         _priority = new JComboBox(PRIORITIES);
-        _moreinfo = new JTextField(30);
-        _description = new JTextArea(10, 30);
-    
+        _moreinfo = new JTextField(TEXT_COLUMNS);
+        _description = new JTextArea(TEXT_ROWS, TEXT_COLUMNS);
+
         JLabel headlineLabel = new JLabel(Argo.localize(BUNDLE, "label.headline"));
         JLabel priorityLabel = new JLabel(Argo.localize(BUNDLE, "label.priority"));
         JLabel moreInfoLabel = new JLabel(Argo.localize(BUNDLE, "label.more-info-url"));
    
         _priority.setSelectedItem(PRIORITIES[0]);
-    
+
         JPanel panel = new JPanel(new LabelledLayout(labelGap, componentGap));
 
         headlineLabel.setLabelFor(_headline);
@@ -106,31 +95,32 @@ public class AddToDoItemDialog extends ArgoDialog {
         descriptionScroller.setPreferredSize(_description.getPreferredSize());
         panel.add(descriptionScroller);
         
-        return panel;
+        setContent(panel);
+        setButtons(new JButton[] { getOkButton(), getCancelButton() }, getOkButton());
     }
     
     ////////////////////////////////////////////////////////////////
     // event handlers
     public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == _okButton) {
-            Designer designer = Designer.TheDesigner;
-            String headline = _headline.getText();
-            int priority = ToDoItem.HIGH_PRIORITY;
-            switch (_priority.getSelectedIndex()) {
-                case 0: priority = ToDoItem.HIGH_PRIORITY; break;
-                case 1: priority = ToDoItem.MED_PRIORITY; break;
-                case 2: priority = ToDoItem.LOW_PRIORITY; break;
-            }
-            String desc = _description.getText();
-            String moreInfoURL = _moreinfo.getText();
-            ToDoItem item = new ToDoItem(designer, headline, priority, desc, moreInfoURL);
-            designer.getToDoList().addElement(item); //? inform()
-            setVisible(false);
-            dispose();
-        } else if (e.getSource() == _cancelButton) {
-            hide();
-            dispose();
+        super.actionPerformed(e);      
+        if (e.getSource() == getOkButton()) {
+            doAdd();
         }
+    }
+    
+    private void doAdd() {
+        Designer designer = Designer.TheDesigner;
+        String headline = _headline.getText();
+        int priority = ToDoItem.HIGH_PRIORITY;
+        switch (_priority.getSelectedIndex()) {
+            case 0: priority = ToDoItem.HIGH_PRIORITY; break;
+            case 1: priority = ToDoItem.MED_PRIORITY; break;
+            case 2: priority = ToDoItem.LOW_PRIORITY; break;
+        }
+        String desc = _description.getText();
+        String moreInfoURL = _moreinfo.getText();
+        ToDoItem item = new ToDoItem(designer, headline, priority, desc, moreInfoURL);
+        designer.getToDoList().addElement(item); //? inform()
     }
 
 } /* end class AddToDoItemDialog */
