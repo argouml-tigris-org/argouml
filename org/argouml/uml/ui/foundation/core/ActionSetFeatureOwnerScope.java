@@ -1,3 +1,4 @@
+
 // $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -57,7 +58,7 @@ public class ActionSetFeatureOwnerScope extends UMLChangeAction {
         if (e.getSource() instanceof UMLCheckBox2) {
             UMLCheckBox2 source = (UMLCheckBox2) e.getSource();
             Object target = source.getTarget();
-            if (target instanceof MFeature) {
+            if (org.argouml.model.ModelFacade.isAFeature(target)) {
                 MFeature m = (MFeature) target;
                 if (source.isSelected()) {
                     m.setOwnerScope(MScopeKind.CLASSIFIER);

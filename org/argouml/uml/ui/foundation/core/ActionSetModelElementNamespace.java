@@ -1,3 +1,4 @@
+
 // $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -65,12 +66,12 @@ public class ActionSetModelElementNamespace extends UMLChangeAction {
         if (source instanceof UMLComboBox2) {
             UMLComboBox2 box = (UMLComboBox2) source;
             Object o = box.getTarget();
-            if (o instanceof MModelElement) {
+            if (org.argouml.model.ModelFacade.isAModelElement(o)) {
                 m = (MModelElement) o;
                 oldNamespace = m.getNamespace();
             }
             o = box.getSelectedItem();
-            if (o instanceof MNamespace) {
+            if (org.argouml.model.ModelFacade.isANamespace(o)) {
                 newNamespace = (MNamespace) o;
             }
         }

@@ -1,3 +1,4 @@
+
 // $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -48,7 +49,7 @@ public class UMLStructuralFeatureMultiplicityComboBoxModel extends UMLMultiplici
      * @see org.argouml.uml.ui.UMLComboBoxModel2#getSelectedModelElement()
      */
     protected Object getSelectedModelElement() {
-        if (getTarget() != null && (getTarget() instanceof MStructuralFeature)) 
+        if (getTarget() != null && (org.argouml.model.ModelFacade.isAStructuralFeature(getTarget()))) 
             return ((MStructuralFeature) getTarget()).getMultiplicity();
         return null;
     }

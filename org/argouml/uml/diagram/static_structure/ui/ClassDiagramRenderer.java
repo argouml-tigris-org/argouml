@@ -1,3 +1,4 @@
+
 // $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -68,13 +69,13 @@ public class ClassDiagramRenderer
 
     /** Return a Fig that can be used to represent the given node */
     public FigNode getFigNodeFor(GraphModel gm, Layer lay, Object node) {
-        if (node instanceof MClass) return new FigClass(gm, node);
-        else if (node instanceof MInterface) return new FigInterface(gm, node);
-        else if (node instanceof MInstance) return new FigInstance(gm, node);
-        else if (node instanceof MModel) return new FigModel(gm, node);
-        else if (node instanceof MSubsystem) return new FigSubsystem(gm, node);
-        else if (node instanceof MPackage) return new FigPackage(gm, node);
-        else if (node instanceof MModel) return new FigPackage(gm, node);
+        if (org.argouml.model.ModelFacade.isAClass(node)) return new FigClass(gm, node);
+        else if (org.argouml.model.ModelFacade.isAInterface(node)) return new FigInterface(gm, node);
+        else if (org.argouml.model.ModelFacade.isAInstance(node)) return new FigInstance(gm, node);
+        else if (org.argouml.model.ModelFacade.isAModel(node)) return new FigModel(gm, node);
+        else if (org.argouml.model.ModelFacade.isASubsystem(node)) return new FigSubsystem(gm, node);
+        else if (org.argouml.model.ModelFacade.isAPackage(node)) return new FigPackage(gm, node);
+        else if (org.argouml.model.ModelFacade.isAModel(node)) return new FigPackage(gm, node);
         cat.debug("TODO ClassDiagramRenderer getFigNodeFor " + node);
         return null;
     }
@@ -82,12 +83,12 @@ public class ClassDiagramRenderer
     /** Return a Fig that can be used to represent the given edge */
     public FigEdge getFigEdgeFor(GraphModel gm, Layer lay, Object edge) {
         cat.debug("making figedge for " + edge);
-        if (edge instanceof MAssociation) {
+        if (org.argouml.model.ModelFacade.isAAssociation(edge)) {
             MAssociation asc = (MAssociation) edge;
             FigAssociation ascFig = new FigAssociation(asc, lay);
             return ascFig;
         }
-        if (edge instanceof MLink) {
+        if (org.argouml.model.ModelFacade.isALink(edge)) {
             MLink lnk = (MLink) edge;
             FigLink lnkFig = new FigLink(lnk);
             Collection linkEnds = lnk.getConnections();
@@ -106,22 +107,22 @@ public class ClassDiagramRenderer
             lnkFig.getFig().setLayer(lay);
             return lnkFig;
         }
-        if (edge instanceof MGeneralization) {
+        if (org.argouml.model.ModelFacade.isAGeneralization(edge)) {
             MGeneralization gen = (MGeneralization) edge;
             FigGeneralization genFig = new FigGeneralization(gen, lay);
             return genFig;
         }
-        if (edge instanceof MPermission) {
+        if (org.argouml.model.ModelFacade.isAPermission(edge)) {
             MPermission per = (MPermission) edge;
             FigPermission perFig = new FigPermission(per, lay);
             return perFig;
         }
-        if (edge instanceof MUsage) {
+        if (org.argouml.model.ModelFacade.isAUsage(edge)) {
             MUsage usage = (MUsage) edge;
             FigUsage usageFig = new FigUsage(usage, lay);
             return usageFig;
         }
-        if (edge instanceof MDependency) {
+        if (org.argouml.model.ModelFacade.isADependency(edge)) {
             cat.debug("get fig for " + edge);
             MDependency dep = (MDependency) edge;
             cat.debug("stereo " + dep.getStereotype());

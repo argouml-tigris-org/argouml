@@ -1,3 +1,4 @@
+
 // $Id$
 // Copyright (c) 2003 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -42,7 +43,7 @@ public class GoStateToEntry extends AbstractGoRule {
      * @see org.argouml.ui.AbstractGoRule#getChildren(java.lang.Object)
      */
     public Collection getChildren(Object parent) {
-        if (parent instanceof MState && ((MState) parent).getEntry() != null) {
+        if (org.argouml.model.ModelFacade.isAState(parent) && ((MState) parent).getEntry() != null) {
             Vector children = new Vector();
             children.add(((MState) parent).getEntry());
             return children;

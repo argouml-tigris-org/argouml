@@ -1,3 +1,6 @@
+
+
+
 // $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -128,9 +131,9 @@ public class UMLStateDiagram extends UMLDiagram {
         this();
         if (sm != null && m == null) {
             MModelElement context = sm.getContext();
-            if (context instanceof MClassifier) {
+            if (org.argouml.model.ModelFacade.isAClassifier(context)) {
                 m = (MNamespace) context;
-            } else if (context instanceof MBehavioralFeature) {
+            } else if (org.argouml.model.ModelFacade.isABehavioralFeature(context)) {
                 m = ((MBehavioralFeature) context).getOwner();
             }
         }
@@ -168,13 +171,13 @@ public class UMLStateDiagram extends UMLDiagram {
      * @see org.tigris.gef.base.Diagram#initialize(Object)
      */
     public void initialize(Object o) {
-        if (o instanceof MStateMachine) {
+        if (org.argouml.model.ModelFacade.isAStateMachine(o)) {
             MStateMachine sm = (MStateMachine) o;
             MModelElement context = sm.getContext();
             MNamespace contextNamespace = null;
-            if (context instanceof MClassifier) {
+            if (org.argouml.model.ModelFacade.isAClassifier(context)) {
                 contextNamespace = (MClassifier) context;
-            } else if (context instanceof MBehavioralFeature) {
+            } else if (org.argouml.model.ModelFacade.isABehavioralFeature(context)) {
                 contextNamespace =
                     ((MBehavioralFeature) context).getOwner().getNamespace();
             }

@@ -1,3 +1,4 @@
+
 // $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -42,7 +43,7 @@ public class GenDescendantClasses implements ChildGenerator {
 
     public Enumeration gen(Object o) {
 	Vector res = new Vector();
-	if (!(o instanceof MGeneralizableElement)) return res.elements();
+	if (!(org.argouml.model.ModelFacade.isAGeneralizableElement(o))) return res.elements();
 
 	MGeneralizableElement cls = (MGeneralizableElement) o;
 	Collection gens = cls.getSpecializations();
@@ -66,4 +67,3 @@ public class GenDescendantClasses implements ChildGenerator {
 	}
     }
 } /* end class GenDescendantClasses */
-

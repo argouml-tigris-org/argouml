@@ -1,3 +1,4 @@
+
 // $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -90,9 +91,8 @@ public class CrObjectWithoutComponent extends CrUML {
 	    if (!(obj instanceof FigObject)) continue;
 	    FigObject fo = (FigObject) obj;
 	    if (fo.getEnclosingFig() == null ||
-		(!((fo.getEnclosingFig().getOwner() instanceof MComponent)
-		   || (fo.getEnclosingFig().getOwner()
-		       instanceof MComponentInstance))))
+		(!((org.argouml.model.ModelFacade.isAComponent(fo.getEnclosingFig().getOwner()))
+		   || (org.argouml.model.ModelFacade.isAComponentInstance(fo.getEnclosingFig().getOwner())))))
 	    {
 		if (offs == null) {
 		    offs = new VectorSet();
@@ -105,4 +105,3 @@ public class CrObjectWithoutComponent extends CrUML {
     } 
  
 } /* end class CrObjectWithoutComponent.java */
-

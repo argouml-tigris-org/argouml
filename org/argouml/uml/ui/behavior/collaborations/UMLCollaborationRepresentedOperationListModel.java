@@ -1,3 +1,4 @@
+
 // $Id$
 // Copyright (c) 2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -52,7 +53,7 @@ public class UMLCollaborationRepresentedOperationListModel
      */
     protected void buildModelList() {
         Object target = getTarget();
-        if (target instanceof MCollaboration) {
+        if (org.argouml.model.ModelFacade.isACollaboration(target)) {
             MCollaboration col = (MCollaboration) target;
             removeAllElements();
             if (col.getRepresentedOperation() != null)
@@ -64,7 +65,7 @@ public class UMLCollaborationRepresentedOperationListModel
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(MBase)
      */
     protected boolean isValidElement(MBase elem) {
-        return elem instanceof MOperation && 
+        return org.argouml.model.ModelFacade.isAOperation(elem) && 
             ((MCollaboration) getTarget()).getRepresentedOperation() == elem;
     }
 

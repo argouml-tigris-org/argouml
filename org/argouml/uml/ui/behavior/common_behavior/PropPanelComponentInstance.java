@@ -1,3 +1,4 @@
+
 // $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -78,13 +79,13 @@ public class PropPanelComponentInstance extends PropPanelModelElement {
     }
 
     public boolean isAcceptibleClassifier(MModelElement classifier) {
-        return classifier instanceof MClassifier;
+        return org.argouml.model.ModelFacade.isAClassifier(classifier);
     }
 
     public void setClassifier(MClassifier element) {
         Object target = getTarget();
 
-        if (target instanceof MInstance) {
+        if (org.argouml.model.ModelFacade.isAInstance(target)) {
 	    MInstance inst = (MInstance) target;
 //            ((MInstance) target).setClassifier((MClassifier) element);
 
@@ -106,7 +107,7 @@ public class PropPanelComponentInstance extends PropPanelModelElement {
     public MClassifier getClassifier() {
         MClassifier classifier = null;
         Object target = getTarget();
-        if (target instanceof MInstance) {
+        if (org.argouml.model.ModelFacade.isAInstance(target)) {
             // at the moment , we only deal with one classifier
             Collection col = ((MInstance) target).getClassifiers();
             if (col != null) {

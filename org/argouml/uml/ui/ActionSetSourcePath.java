@@ -1,3 +1,4 @@
+
 // $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -69,7 +70,7 @@ public class ActionSetSourcePath extends UMLAction {
 	if (f != null) {
 	    ProjectBrowser pb = ProjectBrowser.getInstance();
 	    Object obj = pb.getNavigatorPane().getSelectedObject();
-	    if (obj instanceof MModelElement) {
+	    if (org.argouml.model.ModelFacade.isAModelElement(obj)) {
 		((MModelElement) obj).setTaggedValue("src_path", f.getPath());
 	    }
 	}
@@ -82,14 +83,14 @@ public class ActionSetSourcePath extends UMLAction {
 	String name = null;
 	String type = null;
 	String path = null;
-	if (obj instanceof MModelElement) {
+	if (org.argouml.model.ModelFacade.isAModelElement(obj)) {
 	    name = ((MModelElement) obj).getName();
 	    path = ((MModelElement) obj).getTaggedValue("src_path");
-	    if (obj instanceof MPackage)
+	    if (org.argouml.model.ModelFacade.isAPackage(obj))
 		type = "Package";
-	    else if (obj instanceof MClass)
+	    else if (org.argouml.model.ModelFacade.isAClass(obj))
 		type = "Class";
-	    if (obj instanceof MInterface)
+	    if (org.argouml.model.ModelFacade.isAInterface(obj))
 		type = "Interface";
 	} else {
 	    return null;

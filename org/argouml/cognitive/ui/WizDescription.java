@@ -1,3 +1,4 @@
+
 // $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -94,7 +95,7 @@ public class WizDescription extends WizStep {
 
 	    return;
 	}
-	else if (target instanceof MModelElement) {
+	else if (org.argouml.model.ModelFacade.isAModelElement(target)) {
 	    message = MessageFormat. 
                 format(localize("message.branch-model"),
                        new Object [] {

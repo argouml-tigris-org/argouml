@@ -1,3 +1,4 @@
+
 // $Id$
 // Copyright (c) 1996-2003 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -64,7 +65,7 @@ public class ActionSetStructuralFeatureChangeability extends UMLChangeAction {
 	    JRadioButton source = (JRadioButton) e.getSource();
 	    String actionCommand = source.getActionCommand();
 	    Object target = ((UMLRadioButtonPanel) source.getParent()).getTarget();
-	    if (target instanceof MStructuralFeature) {
+	    if (org.argouml.model.ModelFacade.isAStructuralFeature(target)) {
 		MStructuralFeature m = (MStructuralFeature) target;
 		MChangeableKind kind = null;
 		if (actionCommand.equals(ADDONLY_COMMAND)) {

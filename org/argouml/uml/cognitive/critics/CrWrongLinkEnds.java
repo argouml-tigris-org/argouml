@@ -1,3 +1,4 @@
+
 // $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -92,7 +93,7 @@ public class CrWrongLinkEnds extends CrUML {
 	    Object obj = figs.elementAt(i);
 	    if (!(obj instanceof FigLink)) continue;
 	    FigLink fl = (FigLink) obj;
-	    if (!(fl.getOwner() instanceof MLink)) continue;
+	    if (!(org.argouml.model.ModelFacade.isALink(fl.getOwner()))) continue;
 	    MLink link = (MLink) fl.getOwner();
 	    Collection ends = link.getConnections();
 	    if (ends != null && (ends.size() > 0)) {
@@ -121,4 +122,3 @@ public class CrWrongLinkEnds extends CrUML {
     } 
 
 } /* end class CrWrongLinkEnds.java */
-

@@ -1,3 +1,5 @@
+
+
 // $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -133,7 +135,7 @@ public class FigGeneralization extends FigEdgeModelElement {
      */
     public void setOwner(Object own) {
 	super.setOwner(own);
-	if (own instanceof MGeneralization) {
+	if (org.argouml.model.ModelFacade.isAGeneralization(own)) {
 	    MGeneralization gen = (MGeneralization) own;
 	    MGeneralizableElement subType = gen.getChild();
 	    MGeneralizableElement superType = gen.getParent();
@@ -176,12 +178,11 @@ public class FigGeneralization extends FigEdgeModelElement {
         Fig destFig = getDestFigNode();
         Object source = sourceFig.getOwner();
         Object dest = destFig.getOwner();
-        if (source instanceof MGeneralizableElement
-	    && dest instanceof MGeneralizableElement)
+        if (org.argouml.model.ModelFacade.isAGeneralizableElement(source)
+	    && org.argouml.model.ModelFacade.isAGeneralizableElement(dest))
 	{
             setOwner(CoreFactory.getFactory().buildGeneralization((MGeneralizableElement) source,
 								  (MGeneralizableElement) dest));
         }
     }
 } /* end class FigGeneralization */
-

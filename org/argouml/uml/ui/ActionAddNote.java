@@ -1,3 +1,5 @@
+
+
 // $Id$
 // Copyright (c) 1996-2001 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -87,7 +89,7 @@ public class ActionAddNote extends UMLChangeAction {
     public void actionPerformed(ActionEvent ae) {
         Object target = TargetManager.getInstance().getModelTarget();
 
-        if (target == null || !(target instanceof MModelElement))
+        if (target == null || !(org.argouml.model.ModelFacade.isAModelElement(target)))
             return;
         MModelElement elem = (MModelElement) target;
         MComment comment = CoreFactory.getFactory().buildComment(elem);
@@ -154,8 +156,8 @@ public class ActionAddNote extends UMLChangeAction {
             == null)
             return false;
         return super.shouldBeEnabled()
-            && (target instanceof MModelElement)
-            && (!(target instanceof MComment))
+            && (org.argouml.model.ModelFacade.isAModelElement(target))
+            && (!(org.argouml.model.ModelFacade.isAComment(target)))
             && (ProjectManager
                 .getManager()
                 .getCurrentProject()

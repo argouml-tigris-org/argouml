@@ -1,3 +1,4 @@
+
 // $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -138,7 +139,7 @@ public class PropPanelExtend extends PropPanelModelElement {
         String condBody = null;
         Object target   = getTarget();
 
-        if (target instanceof MExtend) {
+        if (org.argouml.model.ModelFacade.isAExtend(target)) {
             MBooleanExpression condition = ((MExtend) target).getCondition();
 
             if (condition != null) {
@@ -167,7 +168,7 @@ public class PropPanelExtend extends PropPanelModelElement {
 
         Object target = getTarget();
 
-        if (!(target instanceof MExtend)) {
+        if (!(org.argouml.model.ModelFacade.isAExtend(target))) {
             return;
         }
 
@@ -188,7 +189,7 @@ public class PropPanelExtend extends PropPanelModelElement {
     public void newExtensionPoint() {
         Object target = getTarget();
 
-        if (target instanceof MExtend) {
+        if (org.argouml.model.ModelFacade.isAExtend(target)) {
             MExtend    extend    = (MExtend) target;
             MNamespace ns        = extend.getNamespace();
 

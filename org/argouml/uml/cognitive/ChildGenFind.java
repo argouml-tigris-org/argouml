@@ -1,3 +1,4 @@
+
 // $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -83,7 +84,7 @@ public class ChildGenFind implements ChildGenerator {
 
 	//     // TODO: associationclasses fit both of the next 2 cases
 
-	if (o instanceof MClassifier) {
+	if (org.argouml.model.ModelFacade.isAClassifier(o)) {
 	    MClassifier cls = (MClassifier) o;
 	    //      EnumerationComposite res = new EnumerationComposite();
 	    Vector res = new Vector(cls.getFeatures());
@@ -91,7 +92,7 @@ public class ChildGenFind implements ChildGenerator {
 	    return res.elements();
 	}
 
-	if (o instanceof MAssociation) {
+	if (org.argouml.model.ModelFacade.isAAssociation(o)) {
 	    MAssociation asc = (MAssociation) o;
 	    return new Vector(asc.getConnections()).elements();
 	    //      Vector assocEnds = asc.getConnections();
@@ -131,14 +132,14 @@ public class ChildGenFind implements ChildGenerator {
 	    //d.getGraphModel().getEdges().elements());
 	}
 
-	if (o instanceof MState) {
+	if (org.argouml.model.ModelFacade.isAState(o)) {
 	    MState s = (MState) o;
 	    //Vector interns = s.getInternalTransition();
 	    //if (interns != null) return interns.elements();
 	    return new Vector(s.getInternalTransitions()).elements();
 	}
 
-	if (o instanceof MTransition) {
+	if (org.argouml.model.ModelFacade.isATransition(o)) {
 	    MTransition tr = (MTransition) o;
 	    Vector res = new Vector();
 	    res.add(tr.getTrigger());
@@ -157,4 +158,3 @@ public class ChildGenFind implements ChildGenerator {
 	return new Vector().elements();
     }
 } /* end class ChildGenFind */
-

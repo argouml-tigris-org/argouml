@@ -1,3 +1,5 @@
+
+
 // $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -112,7 +114,7 @@ public class TabChecklist extends TabSpawnable
     ////////////////////////////////////////////////////////////////
     // accessors
     public void setTarget(Object t) {
-	if (!(t instanceof MModelElement)) {
+	if (!(org.argouml.model.ModelFacade.isAModelElement(t))) {
 	    _target = null;
 	    _shouldBeEnabled = false;
 	    return;
@@ -146,7 +148,7 @@ public class TabChecklist extends TabSpawnable
 
     public boolean shouldBeEnabled(Object target) {
   
-	if (!(target instanceof MModelElement)) {
+	if (!(org.argouml.model.ModelFacade.isAModelElement(target))) {
 	    _shouldBeEnabled = false;
 	    return _shouldBeEnabled;
 	}
@@ -226,10 +228,10 @@ class TableModelChecklist extends AbstractTableModel
     }
 
     public void setTarget(MModelElement t) {
-	if (_target instanceof MElement)
+	if (org.argouml.model.ModelFacade.isAElement(_target))
 	    getPump().removeModelEventListener(this, (MElement) _target);
 	_target = t;
-	if (_target instanceof MElement)
+	if (org.argouml.model.ModelFacade.isAElement(_target))
 	    getPump().addModelEventListener(this, (MElement) _target);
 	fireTableStructureChanged();
     }
@@ -318,4 +320,3 @@ class TableModelChecklist extends AbstractTableModel
     }
 
 } /* end class TableModelChecklist */
-

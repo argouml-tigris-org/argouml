@@ -1,3 +1,4 @@
+
 // $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -113,7 +114,7 @@ public class PropPanelStereotype extends PropPanelModelElement {
     public String getBaseClass() {
 	String baseClass = "ModelElement";
 	Object target = getTarget();
-	if (target instanceof MStereotype) {
+	if (org.argouml.model.ModelFacade.isAStereotype(target)) {
 	    baseClass = ((MStereotype) target).getBaseClass();
 	}
 	return baseClass;
@@ -121,7 +122,7 @@ public class PropPanelStereotype extends PropPanelModelElement {
 
     public void setBaseClass(String baseClass) {
 	Object target = getTarget();
-	if (target instanceof MStereotype) {
+	if (org.argouml.model.ModelFacade.isAStereotype(target)) {
 	    ((MStereotype) target).setBaseClass(baseClass);
 	}
     }

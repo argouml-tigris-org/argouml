@@ -1,3 +1,4 @@
+
 // $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -42,7 +43,7 @@ public class GoMachineDiagram extends AbstractGoRule {
 
     public Collection getChildren(Object parent) {
         
-        if (!(parent instanceof MStateMachine))
+        if (!(org.argouml.model.ModelFacade.isAStateMachine(parent)))
             return null;
         Project p = ProjectManager.getManager().getCurrentProject();
         if (p == null)

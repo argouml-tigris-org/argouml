@@ -1,3 +1,5 @@
+
+
 // $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -141,11 +143,11 @@ public class UMLActivityDiagram extends UMLDiagram {
     }
 
     public void initialize(Object o) {
-        if (!(o instanceof MActivityGraph))
+        if (!(org.argouml.model.ModelFacade.isAActivityGraph(o)))
             return;
         MActivityGraph sm = (MActivityGraph) o;
         MModelElement context = sm.getContext();
-        if (context != null && context instanceof MNamespace)
+        if (context != null && org.argouml.model.ModelFacade.isANamespace(context))
             setup((MNamespace) context, sm);
         else
             cat.debug("ActivityGraph without context not yet possible :-(");

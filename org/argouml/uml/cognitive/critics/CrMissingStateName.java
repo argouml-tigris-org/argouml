@@ -1,3 +1,4 @@
+
 // $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -70,7 +71,7 @@ public class CrMissingStateName extends CrUML {
 	    MModelElement me = (MModelElement) item.getOffenders().elementAt(0);
 	    String ins = "Set the name of this state.";
 	    String sug = "StateName";
-	    if (me instanceof MStateVertex) {
+	    if (org.argouml.model.ModelFacade.isAStateVertex(me)) {
 		MStateVertex sv = (MStateVertex) me;
 		int count = 1;
 		if (sv.getContainer() != null)
@@ -84,4 +85,3 @@ public class CrMissingStateName extends CrUML {
     public Class getWizardClass(ToDoItem item) { return WizMEName.class; }
 								   
 } /* end class CrMissingStateName.java */
-

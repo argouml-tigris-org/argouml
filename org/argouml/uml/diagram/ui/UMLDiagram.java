@@ -1,3 +1,5 @@
+
+
 // $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -131,7 +133,7 @@ public abstract class UMLDiagram
 
     public void initialize(Object owner) {
 	super.initialize(owner);
-	if (owner instanceof MNamespace) setNamespace((MNamespace) owner);
+	if (org.argouml.model.ModelFacade.isANamespace(owner)) setNamespace((MNamespace) owner);
 	else cat.debug("unknown object in UMLDiagram initialize:"
 		       + owner);
     }
@@ -331,7 +333,7 @@ public abstract class UMLDiagram
 	UmlModelEventPump pump = UmlModelEventPump.getPump();
 	while (enum.hasMoreElements()) {
 	    Object o = enum.nextElement();
-	    if (o instanceof MElementListener) {
+	    if (org.argouml.model.ModelFacade.isAElementListener(o)) {
 		MElementListener listener = (MElementListener) o;
 		Fig fig = (Fig) o;
 		pump.removeModelEventListener(listener,
@@ -353,7 +355,7 @@ public abstract class UMLDiagram
 	UmlModelEventPump pump = UmlModelEventPump.getPump();
 	while (enum.hasMoreElements()) {
 	    Fig fig = (Fig) enum.nextElement();
-	    if (fig instanceof MElementListener) {
+	    if (org.argouml.model.ModelFacade.isAElementListener(fig)) {
 		Object owner = fig.getOwner();
 		// pump.addModelEventListener((MElementListener)fig, owner);
 		// this will make sure all the correct event listeners are set. 

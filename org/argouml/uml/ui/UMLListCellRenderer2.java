@@ -1,3 +1,5 @@
+
+
 // $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -69,7 +71,7 @@ public class UMLListCellRenderer2 extends DefaultListCellRenderer {
     public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {       
         JLabel label = (JLabel) super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
 
-        if (value instanceof MBase) {
+        if (org.argouml.model.ModelFacade.isABase(value)) {
             String text = makeText((MBase) value);            
             label.setText(text);
             if (_showIcon) {
@@ -98,14 +100,14 @@ public class UMLListCellRenderer2 extends DefaultListCellRenderer {
      */
     public String makeText(Object value) {
         String name = null;
-        if (value instanceof MModelElement) {
+        if (org.argouml.model.ModelFacade.isAModelElement(value)) {
             MModelElement elem = (MModelElement) value;
             name = elem.getName();
             if (name == null || name.equals("")) {
                 name = "(anon " + makeTypeName(elem) + ")";
             }
         } else 
-	    if (value instanceof MMultiplicity) {
+	    if (org.argouml.model.ModelFacade.isAMultiplicity(value)) {
 		name = value.toString();
 	    } else {                    
 		name = makeTypeName(value);
@@ -115,7 +117,7 @@ public class UMLListCellRenderer2 extends DefaultListCellRenderer {
     }
 
     private String makeTypeName(Object elem) {
-        if (elem instanceof MBase) {
+        if (org.argouml.model.ModelFacade.isABase(elem)) {
             return ((MBase) elem).getUMLClassName();
         }
         return null;

@@ -1,3 +1,4 @@
+
 // $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -51,12 +52,12 @@ public class CrNoTriggerOrGuard extends CrUML {
     }
 
     public boolean predicate2(Object dm, Designer dsgr) {
-	if (!(dm instanceof MTransition)) return NO_PROBLEM;
+	if (!(org.argouml.model.ModelFacade.isATransition(dm))) return NO_PROBLEM;
 	MTransition tr = (MTransition) dm;
 	MEvent t = tr.getTrigger();
 	MGuard g = tr.getGuard();
 	MStateVertex sv = tr.getSource();
-	if (!(sv instanceof MState)) return NO_PROBLEM;
+	if (!(org.argouml.model.ModelFacade.isAState(sv))) return NO_PROBLEM;
 	if (((MState) sv).getDoActivity() != null) return NO_PROBLEM;
 	boolean hasTrigger =
 	    (t != null && t.getName() != null && t.getName().length() > 0);
@@ -70,4 +71,3 @@ public class CrNoTriggerOrGuard extends CrUML {
     }
 
 } /* end class CrNoTriggerOrGuard */
-

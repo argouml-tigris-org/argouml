@@ -1,3 +1,4 @@
+
 // $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -127,7 +128,7 @@ public class ItemUID
      */
     protected static String readObjectID(Object obj)
     {
-	if (obj instanceof MBase)
+	if (org.argouml.model.ModelFacade.isABase(obj))
 	    return ((MBase) obj).getUUID();
 
 	/*
@@ -202,7 +203,7 @@ public class ItemUID
      */
     protected static String createObjectID(Object obj)
     {
-	if (obj instanceof MBase)
+	if (org.argouml.model.ModelFacade.isABase(obj))
 	    return null;
 	/*
 	// Want to use the "built in" UID of the MXxx instances
@@ -263,4 +264,3 @@ public class ItemUID
 	return mparam[0].toString();
     }
 }
-

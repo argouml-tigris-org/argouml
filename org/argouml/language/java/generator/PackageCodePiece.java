@@ -1,3 +1,4 @@
+
 // $Id$
 // Copyright (c) 1996-2001 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -103,7 +104,7 @@ public class PackageCodePiece extends NamedCodePiece
 	ParseState parseState = (ParseState) parseStateStack.peek();
 	MNamespace mNamespace = parseState.getNamespace();
 
-	if (!(mNamespace instanceof MModel)) {
+	if (!(org.argouml.model.ModelFacade.isAModel(mNamespace))) {
 	    writer.write("package ");
 	    writer.write(GeneratorJava.getInstance()
 			 .getPackageName(mNamespace));

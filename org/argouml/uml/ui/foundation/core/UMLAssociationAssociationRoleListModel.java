@@ -1,3 +1,4 @@
+
 // $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -58,6 +59,6 @@ public class UMLAssociationAssociationRoleListModel extends UMLModelElementListM
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(MBase)
      */
     protected boolean isValidElement(MBase o) {  
-        return o instanceof MAssociationRole && ((MAssociation) getTarget()).getAssociationRoles().contains(o);
+        return org.argouml.model.ModelFacade.isAAssociationRole(o) && ((MAssociation) getTarget()).getAssociationRoles().contains(o);
     }
 }

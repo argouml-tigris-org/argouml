@@ -1,3 +1,5 @@
+
+
 // $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -229,7 +231,7 @@ public class FigInterface extends FigNodeModelElement {
         this();
         setOwner(node);
         enableSizeChecking(true);
-        if (node instanceof MInterface
+        if (org.argouml.model.ModelFacade.isAInterface(node)
 	    && (((MInterface) node).getName() != null))
             _name.setText(((MModelElement) node).getName());
     }
@@ -497,7 +499,7 @@ public class FigInterface extends FigNodeModelElement {
     public void setEnclosingFig(Fig encloser) {
         Fig oldEncloser = getEnclosingFig();
         super.setEnclosingFig(encloser);
-        if (!(getOwner() instanceof MModelElement))
+        if (!(org.argouml.model.ModelFacade.isAModelElement(getOwner())))
             return;
         MModelElement me = (MModelElement) getOwner();
         MNamespace m = null;
@@ -507,7 +509,7 @@ public class FigInterface extends FigNodeModelElement {
             // If moved into an Package
             if (encloser != null
 		&& oldEncloser != encloser
-		&& encloser.getOwner() instanceof MPackage)
+		&& org.argouml.model.ModelFacade.isAPackage(encloser.getOwner()))
 	    {
                 me.setNamespace((MNamespace) encloser.getOwner());
             }
@@ -530,7 +532,7 @@ public class FigInterface extends FigNodeModelElement {
         // The next if-clause is important for the Deployment-diagram
         // it detects if the enclosing fig is a component, in this case
         // the ImplementationLocation will be set for the owning MInterface
-        if (encloser != null && (encloser.getOwner() instanceof MComponent)) {
+        if (encloser != null && (org.argouml.model.ModelFacade.isAComponent(encloser.getOwner()))) {
             MComponent component = (MComponent) encloser.getOwner();
             MInterface in = (MInterface) getOwner();
             resident.setImplementationLocation(component);
@@ -634,8 +636,8 @@ public class FigInterface extends FigNodeModelElement {
             return;
         // operations
         if (mee == null
-	    || mee.getSource() instanceof MOperation
-	    || mee.getSource() instanceof MParameter
+	    || org.argouml.model.ModelFacade.isAOperation(mee.getSource())
+	    || org.argouml.model.ModelFacade.isAParameter(mee.getSource())
 	    || (mee.getSource() == getOwner()
 		&& mee.getName().equals("feature")))
 	{

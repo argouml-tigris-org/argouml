@@ -1,3 +1,4 @@
+
 // $Id$
 // Copyright (c) 1996-2001 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -110,7 +111,7 @@ public class UMLSpecializationListModel extends UMLBinaryRelationListModel {
      * @see org.argouml.uml.ui.UMLBinaryRelationListModel#getChoices()
      */
     protected Collection getChoices() {
-	if (getTarget() instanceof MGeneralizableElement) {
+	if (org.argouml.model.ModelFacade.isAGeneralizableElement(getTarget())) {
 	    MGeneralizableElement target = (MGeneralizableElement) getTarget();
 	    if (target.isLeaf()) return new ArrayList();
 	    Collection genElem = ModelManagementHelper.getHelper().getAllModelElementsOfKind(getTarget().getClass());

@@ -1,3 +1,4 @@
+
 // $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -53,8 +54,8 @@ public class TableModelObjectByProps extends TableModelComposite {
 
     public Vector rowObjectsFor(Object t) {
 	if (!(t instanceof UMLDeploymentDiagram
-	      || t instanceof MComponentInstance
-	      || t instanceof MComponent))
+	      || org.argouml.model.ModelFacade.isAComponentInstance(t)
+	      || org.argouml.model.ModelFacade.isAComponent(t)))
 	    return new Vector();
 	if (t instanceof UMLDeploymentDiagram) {
 	    UMLDeploymentDiagram d = (UMLDeploymentDiagram) t;
@@ -63,18 +64,18 @@ public class TableModelObjectByProps extends TableModelComposite {
 	    int size = nodes.size();
 	    for (int i = 0; i < size; i++) {
 		Object node = nodes.elementAt(i);
-		if (node instanceof MObject) res.addElement(node);
+		if (org.argouml.model.ModelFacade.isAObject(node)) res.addElement(node);
 	    }
 	    return res;
 	}
-	else if (t instanceof MComponentInstance) {
+	else if (org.argouml.model.ModelFacade.isAComponentInstance(t)) {
 	    MComponentInstance d = (MComponentInstance) t;
 	    Vector res = new Vector();
 	    Collection residences = d.getResidents();
 	    Iterator it = residences.iterator();
 	    while (it.hasNext()) {
 		MInstance inst = (MInstance) it.next();
-		if (inst instanceof MObject) res.addElement(inst);
+		if (org.argouml.model.ModelFacade.isAObject(inst)) res.addElement(inst);
 
 	    }
 	    return res;
@@ -87,7 +88,7 @@ public class TableModelObjectByProps extends TableModelComposite {
 	    while (it.hasNext()) {
 		MElementResidence residence = (MElementResidence) it.next();
 		MModelElement node = (MModelElement) residence.getResident();
-		if (node instanceof MObject) res.addElement(node);
+		if (org.argouml.model.ModelFacade.isAObject(node)) res.addElement(node);
 
 	    }
 	    return res;
@@ -97,4 +98,3 @@ public class TableModelObjectByProps extends TableModelComposite {
 
     public String toString() { return "Objects vs. Properties"; }
 } /* end class TableModelObjectByProps */
-

@@ -1,3 +1,4 @@
+
 // $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -39,7 +40,7 @@ public class GoCollaborationDiagram extends AbstractGoRule {
 
     public Collection getChildren(Object parent) {
     
-	if (!(parent instanceof MCollaboration)) return null;
+	if (!(org.argouml.model.ModelFacade.isACollaboration(parent))) return null;
 	Project p = ProjectManager.getManager().getCurrentProject();
 	if (p == null) return null;
     

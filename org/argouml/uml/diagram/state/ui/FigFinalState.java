@@ -1,3 +1,4 @@
+
 // $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -132,8 +133,7 @@ public class FigFinalState extends FigStateVertex {
 	Selection sel = null;
 	if (getOwner() != null) {
 	    pstate = (MFinalState) getOwner();
-	    if (pstate.getContainer().getStateMachine()
-		instanceof MActivityGraph) {
+	    if (org.argouml.model.ModelFacade.isAActivityGraph(pstate.getContainer().getStateMachine())) {
 		sel = new SelectionActionState(this);
 		((SelectionActionState) sel).setOutgoingButtonEnabled(false);
 	    } else {

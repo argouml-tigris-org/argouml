@@ -1,3 +1,4 @@
+
 // $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -75,7 +76,7 @@ public class ProfileJava extends Profile {
 	    //   if element is an AssociationEnd use
 	    //      the namespace of containing association
 	    //
-	    if (element instanceof MAssociationEnd) {
+	    if (org.argouml.model.ModelFacade.isAAssociationEnd(element)) {
 		MAssociation assoc =
 		    ((MAssociationEnd) element).getAssociation();
 		if (assoc != null) {
@@ -151,13 +152,13 @@ public class ProfileJava extends Profile {
 
     protected String defaultName(MModelElement element, MNamespace namespace) {
 	String name = null;
-	if (element instanceof MAssociationEnd) {
+	if (org.argouml.model.ModelFacade.isAAssociationEnd(element)) {
 	    name = defaultAssocEndName((MAssociationEnd) element, namespace);
 	} else {
-	    if (element instanceof MAssociation) {
+	    if (org.argouml.model.ModelFacade.isAAssociation(element)) {
 		name = defaultAssocName((MAssociation) element, namespace);
 	    }
-	    if (element instanceof MGeneralization) {
+	    if (org.argouml.model.ModelFacade.isAGeneralization(element)) {
 		name =
 		    defaultGeneralizationName(
 					      (MGeneralization) element,
@@ -210,7 +211,7 @@ public class ProfileJava extends Profile {
 		    buffer.append(elementSep);
 		}
 		obj = iter.next();
-		if (obj instanceof MModelElement) {
+		if (org.argouml.model.ModelFacade.isAModelElement(obj)) {
 		    buffer.append(
 				  formatElement((MModelElement) obj,
 						namespace));

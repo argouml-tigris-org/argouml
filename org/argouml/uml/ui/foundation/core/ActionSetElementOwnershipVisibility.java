@@ -1,3 +1,4 @@
+
 // $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -65,7 +66,7 @@ public class ActionSetElementOwnershipVisibility extends AbstractAction {
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() instanceof JRadioButton) {
             Object target = _group.getTarget();
-            if (target instanceof MModelElement) {
+            if (org.argouml.model.ModelFacade.isAModelElement(target)) {
                 MModelElement m = (MModelElement) target;
                 String command = e.getActionCommand();
                 if (command.equals(PUBLIC_ACTION_COMMAND)) {

@@ -1,3 +1,4 @@
+
 // $Id$
 // Copyright (c) 1996-2001 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -147,7 +148,7 @@ public class AttributeCodePiece extends NamedCodePiece
 	    // now find the matching feature
 	    for (j = features.iterator(); j.hasNext();) {
 		MFeature mFeature = (MFeature) j.next();
-		if (mFeature instanceof MAttribute
+		if (org.argouml.model.ModelFacade.isAAttribute(mFeature)
 		    && mFeature.getName().equals(name)) {
 		    // feature found, so it's an attribute (and no
 		    // association end)

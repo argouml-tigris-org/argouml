@@ -1,3 +1,5 @@
+
+
 // $Id$
 // Copyright (c) 1996-2001 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -497,9 +499,9 @@ public abstract class FigEdgeModelElement
         if (own != null) {
             Object oldOwner = getOwner();
 
-            if (oldOwner instanceof MModelElement)
+            if (org.argouml.model.ModelFacade.isAModelElement(oldOwner))
 		((MModelElement) oldOwner).removeMElementListener(this);
-            if (own instanceof MModelElement) {
+            if (org.argouml.model.ModelFacade.isAModelElement(own)) {
                 MModelElement me = (MModelElement) own;
                 // UmlModelEventPump.getPump().removeModelEventListener(this,
                 // me);
@@ -565,7 +567,7 @@ public abstract class FigEdgeModelElement
         Object own = getOwner();
         if (own != null) {
             Trash.SINGLETON.addItemFrom(getOwner(), null);
-            if (own instanceof MModelElement) {
+            if (org.argouml.model.ModelFacade.isAModelElement(own)) {
                 UmlFactory.getFactory().delete((MModelElement) own);
             }
         }
@@ -656,7 +658,7 @@ public abstract class FigEdgeModelElement
      */
     public void delete() {
         Object o = getOwner();
-        if (o instanceof MBase) {
+        if (org.argouml.model.ModelFacade.isABase(o)) {
             UmlModelEventPump.getPump().removeModelEventListener(
 								 this,
 								 (MBase) o);

@@ -1,3 +1,4 @@
+
 // $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -314,14 +315,14 @@ public abstract class UMLComboBoxModel2
     protected void setTarget(Object target) {
         target = target instanceof Fig ? ((Fig) target).getOwner() : target;
         if (ModelFacade.isABase(target) || ModelFacade.isADiagram(target)) {
-            if (_target instanceof MBase) {
+            if (org.argouml.model.ModelFacade.isABase(_target)) {
                 UmlModelEventPump.getPump().removeModelEventListener(
 								     this,
 								     (MBase) _target,
 								     _propertySetName);
             }
 
-            if (target instanceof MBase) {
+            if (org.argouml.model.ModelFacade.isABase(target)) {
                 _target = target;
                 // UmlModelEventPump.getPump().removeModelEventListener(this, (MBase)_target, _propertySetName);
                 UmlModelEventPump.getPump().addModelEventListener(

@@ -1,3 +1,4 @@
+
 // $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -153,7 +154,7 @@ public class TabConstraints extends TabSpawnable implements TabModelTarget {
      */
     public void setTarget(Object oTarget) {
         oTarget = (oTarget instanceof Fig) ? ((Fig) oTarget).getOwner() : oTarget;
-        if (!(oTarget instanceof MModelElement)) {
+        if (!(org.argouml.model.ModelFacade.isAModelElement(oTarget))) {
             m_mmeiTarget = null;
             return;
         }
@@ -251,7 +252,7 @@ public class TabConstraints extends TabSpawnable implements TabModelTarget {
             // sz9: I think this should read mmeContext = OclUtil.getInnerMostEnclosingNamespace (m_mmeiTarget);
             MModelElement mmeContext = m_mmeiTarget;
 
-            while (!(mmeContext instanceof MClassifier) && 
+            while (!(org.argouml.model.ModelFacade.isAClassifier(mmeContext)) && 
                    (mmeContext != null)) {
                 mmeContext = mmeContext.getModelElementContainer();
             }
@@ -360,7 +361,7 @@ public class TabConstraints extends TabSpawnable implements TabModelTarget {
                 MModelElement mmeContext = m_mmeiTarget;
 
                 try {
-                    while (!(mmeContext instanceof MClassifier)) {
+                    while (!(org.argouml.model.ModelFacade.isAClassifier(mmeContext))) {
                         mmeContext = mmeContext.getModelElementContainer();
                     }
 
@@ -535,7 +536,7 @@ public class TabConstraints extends TabSpawnable implements TabModelTarget {
                         OclTree tree = null;
 
                         MModelElement mmeContext = m_mmeiTarget;
-                        while (!(mmeContext instanceof MClassifier)) {
+                        while (!(org.argouml.model.ModelFacade.isAClassifier(mmeContext))) {
                             mmeContext = mmeContext.getModelElementContainer();
                         }
 

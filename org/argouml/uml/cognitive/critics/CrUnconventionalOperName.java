@@ -1,3 +1,4 @@
+
 // $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -54,7 +55,7 @@ public class CrUnconventionalOperName extends CrUML {
     }
 
     public boolean predicate2(Object dm, Designer dsgr) {
-	if (!(dm instanceof MOperation)) return NO_PROBLEM;
+	if (!(org.argouml.model.ModelFacade.isAOperation(dm))) return NO_PROBLEM;
 	MOperation oper = (MOperation) dm;
 	String myName = oper.getName();
 	if (myName == null || myName.equals("")) return NO_PROBLEM;
@@ -97,7 +98,7 @@ public class CrUnconventionalOperName extends CrUML {
      * possible where we are suggested to make the operation a constructor.
      */
     protected boolean candidateForConstructor(MModelElement me) {
-	if (!(me instanceof MOperation)) return false;
+	if (!(org.argouml.model.ModelFacade.isAOperation(me))) return false;
 	MOperation oper = (MOperation) me;
 	String myName = oper.getName();
 	if (myName == null || myName.equals("")) return false;
@@ -129,4 +130,3 @@ public class CrUnconventionalOperName extends CrUML {
     public Class getWizardClass(ToDoItem item) { return WizOperName.class; }
 
 } /* end class CrUnconventionalOperName */
-

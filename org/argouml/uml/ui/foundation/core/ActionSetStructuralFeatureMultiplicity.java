@@ -1,3 +1,5 @@
+
+
 // $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -52,8 +54,8 @@ public class ActionSetStructuralFeatureMultiplicity
      * @see org.argouml.uml.ui.ActionSetMultiplicity#setSelectedItem(java.lang.Object, java.lang.Object)
      */
     public void setSelectedItem(Object item, Object target) {
-        if (target != null && target instanceof MStructuralFeature) {
-            if (item instanceof MMultiplicity) {
+        if (target != null && org.argouml.model.ModelFacade.isAStructuralFeature(target)) {
+            if (org.argouml.model.ModelFacade.isAMultiplicity(item)) {
                 ((MStructuralFeature) target).setMultiplicity(
                     (MMultiplicity) item);
             } else

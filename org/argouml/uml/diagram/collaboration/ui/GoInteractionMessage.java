@@ -1,3 +1,4 @@
+
 // $Id$
 // Copyright (c) 2003 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -46,7 +47,7 @@ public class GoInteractionMessage extends AbstractGoRule {
      * @see org.argouml.ui.AbstractGoRule#getChildren(Object)
      */
     public Collection getChildren(Object parent) {
-	if (parent instanceof MInteraction)
+	if (org.argouml.model.ModelFacade.isAInteraction(parent))
 	    return ((MInteraction) parent).getMessages();
 	return null;
     }

@@ -1,3 +1,4 @@
+
 // $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -65,7 +66,7 @@ public class GoUseCaseToExtensionPoint extends AbstractGoRule {
     }
 
     public Collection getChildren(Object parent) { 
-        if (parent instanceof MUseCase) {
+        if (org.argouml.model.ModelFacade.isAUseCase(parent)) {
             return ((MUseCase) parent).getExtensionPoints();
         }
         return null;

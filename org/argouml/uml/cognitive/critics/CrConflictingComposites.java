@@ -1,3 +1,4 @@
+
 // $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -53,7 +54,7 @@ public class CrConflictingComposites extends CrUML {
     }
 
     public boolean predicate2(Object dm, Designer dsgr) {
-	if (!(dm instanceof MClassifier)) return NO_PROBLEM;
+	if (!(org.argouml.model.ModelFacade.isAClassifier(dm))) return NO_PROBLEM;
 	MClassifier cls = (MClassifier) dm;
 	Collection conns = cls.getAssociationEnds();
 	if (conns == null) return NO_PROBLEM;
@@ -84,4 +85,3 @@ public class CrConflictingComposites extends CrUML {
     };
 
 } /* end class CrConflictingComposites.java */
-

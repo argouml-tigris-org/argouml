@@ -1,3 +1,4 @@
+
 // $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -38,7 +39,7 @@ public class GoStateToInternalTrans extends AbstractGoRule {
      * @see org.argouml.ui.AbstractGoRule#getChildren(Object)
      */
     public Collection getChildren(Object parent) {
-	if (parent instanceof MState) {
+	if (org.argouml.model.ModelFacade.isAState(parent)) {
 	    return ((MState) parent).getInternalTransitions();
 	}
 	return null;

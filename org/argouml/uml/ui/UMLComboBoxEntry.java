@@ -1,3 +1,4 @@
+
 // $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -136,7 +137,7 @@ public class UMLComboBoxEntry implements Comparable {
                     ownedElement = (MModelElement) iter.next();
                     targetName = ownedElement.getName();
                     if (targetName != null && phantomName.equals(targetName)) {
-                        if (ownedElement instanceof MPackage) {
+                        if (org.argouml.model.ModelFacade.isAPackage(ownedElement)) {
                             ns = (MPackage) ownedElement;
                             break;
                         }
@@ -164,7 +165,7 @@ public class UMLComboBoxEntry implements Comparable {
                 clone = (MModelElement) _element.getClass().getConstructor(new Class[] {}).newInstance(new Object[] {});
                 clone.setName(_element.getName());
                 clone.setStereotype(_element.getStereotype());
-                if (clone instanceof MStereotype) {
+                if (org.argouml.model.ModelFacade.isAStereotype(clone)) {
                     ((MStereotype) clone).setBaseClass(((MStereotype) _element).getBaseClass());
                 }
                 targetNS.addOwnedElement(clone);
@@ -234,5 +235,4 @@ public class UMLComboBoxEntry implements Comparable {
         return _isPhantom;
     }
 }
-
 

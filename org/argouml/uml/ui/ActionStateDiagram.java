@@ -1,3 +1,4 @@
+
 // $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -101,7 +102,7 @@ public class ActionStateDiagram extends ActionAddDiagram {
                 "The argument " + handle + "is not a namespace.");
         }
         MNamespace ns = (MNamespace) handle;
-        if (ns instanceof MClassifier)
+        if (org.argouml.model.ModelFacade.isAClassifier(ns))
             return true;
         return false;
     }

@@ -1,3 +1,4 @@
+
 // $Id$
 // Copyright (c) 1996-2001 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -455,7 +456,7 @@ public class UMLExtendListModel extends UMLBinaryRelationListModel  {
      * @see org.argouml.uml.ui.UMLBinaryRelationListModel#build(MModelElement, MModelElement)
      */
     protected void build(MModelElement from, MModelElement to) {
-        if (from instanceof MUseCase && to instanceof MUseCase) {
+        if (org.argouml.model.ModelFacade.isAUseCase(from) && org.argouml.model.ModelFacade.isAUseCase(to)) {
             UseCasesFactory.getFactory().buildExtend((MUseCase) to, (MUseCase) from);
         } else
             throw new IllegalArgumentException("In build of UMLExtendListModel: either the arguments are null or not instanceof MUseCase");
@@ -496,7 +497,7 @@ public class UMLExtendListModel extends UMLBinaryRelationListModel  {
      * @see org.argouml.uml.ui.UMLBinaryRelationListModel#getSelected()
      */
     protected Collection getSelected() {
-        if (getTarget() instanceof MUseCase) {
+        if (org.argouml.model.ModelFacade.isAUseCase(getTarget())) {
             return UseCasesHelper.getHelper().getExtendedUseCases((MUseCase) getTarget());
         } else
             throw new IllegalStateException("In getSelected of UMLExtendListModel: target is not an instanceof MUseCase");

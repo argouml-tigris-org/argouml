@@ -1,3 +1,4 @@
+
 // $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -63,7 +64,7 @@ public class ActionSetAssociationRoleBase extends UMLChangeAction {
         if (e.getSource() instanceof UMLComboBox2) {
             UMLComboBox2 source = (UMLComboBox2) e.getSource();
             selected = source.getSelectedItem();
-            if (selected instanceof MAssociation && source.getTarget() instanceof MAssociationRole) {
+            if (org.argouml.model.ModelFacade.isAAssociation(selected) && org.argouml.model.ModelFacade.isAAssociationRole(source.getTarget())) {
                 CollaborationsHelper.getHelper().setBase((MAssociationRole) source.getTarget(), (MAssociation) selected);
             }
         }

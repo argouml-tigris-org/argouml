@@ -1,3 +1,4 @@
+
 // $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -59,7 +60,7 @@ public class CrNameConfusion extends CrUML {
     }
 
     public boolean predicate2(Object dm, Designer dsgr) {
-	if (!(dm instanceof MModelElement)) return NO_PROBLEM;
+	if (!(org.argouml.model.ModelFacade.isAModelElement(dm))) return NO_PROBLEM;
 	MModelElement me = (MModelElement) dm;
 	VectorSet offs = computeOffenders(me);
 	if (offs.size() > 1) return PROBLEM_FOUND;
@@ -159,4 +160,3 @@ public class CrNameConfusion extends CrUML {
     }
 
 } /* end class CrNameConfusion.java */
-

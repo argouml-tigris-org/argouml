@@ -1,3 +1,4 @@
+
 // $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -61,7 +62,7 @@ public class ActionAddAttribute extends UMLChangeAction {
     public void actionPerformed(ActionEvent ae) {	
 	Project p = ProjectManager.getManager().getCurrentProject();
 	Object target = TargetManager.getInstance().getModelTarget();
-	if (!(target instanceof MClassifier)) return;
+	if (!(org.argouml.model.ModelFacade.isAClassifier(target))) return;
 	MClassifier cls = (MClassifier) target;
 	MAttribute attr = UmlFactory.getFactory().getCore().buildAttribute(cls);
 	TargetManager.getInstance().setTarget(attr);
@@ -76,6 +77,6 @@ public class ActionAddAttribute extends UMLChangeAction {
 		return Notation.getDefaultNotation().getName().equals("Java");
 	}
 	*/
-	return target instanceof MClass;		
+	return org.argouml.model.ModelFacade.isAClass(target);		
     }
 } /* end class ActionAddAttribute */

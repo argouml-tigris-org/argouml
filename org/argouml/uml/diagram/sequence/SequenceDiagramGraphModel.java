@@ -1,3 +1,5 @@
+
+
 // $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -97,7 +99,7 @@ public class SequenceDiagramGraphModel extends UMLMutableGraphSupport
     /** Return all ports on node or edge */
     public Vector getPorts(Object nodeOrEdge) {
 	Vector res = new Vector();  //wasteful!
-	if (nodeOrEdge instanceof MObject) res.addElement(nodeOrEdge);
+	if (org.argouml.model.ModelFacade.isAObject(nodeOrEdge)) res.addElement(nodeOrEdge);
 	return res;
     }
 
@@ -109,7 +111,7 @@ public class SequenceDiagramGraphModel extends UMLMutableGraphSupport
     /** Return all edges going to given port */
     public Vector getInEdges(Object port) {
 	Vector res = new Vector(); //wasteful!
-	if (port instanceof MObject) {
+	if (org.argouml.model.ModelFacade.isAObject(port)) {
 	    MObject mo = (MObject) port;
 	    Collection ends = mo.getLinkEnds();
 	    if (ends == null) return res; // empty Vector
@@ -129,7 +131,7 @@ public class SequenceDiagramGraphModel extends UMLMutableGraphSupport
 
     /** Return one end of an edge */
     public Object getSourcePort(Object edge) {
-	if (edge instanceof MLink) {
+	if (org.argouml.model.ModelFacade.isALink(edge)) {
 	    return CommonBehaviorHelper.getHelper().getSource((MLink) edge);
 	}
 	cat.debug("TODO getSourcePort");
@@ -138,7 +140,7 @@ public class SequenceDiagramGraphModel extends UMLMutableGraphSupport
 
     /** Return  the other end of an edge */
     public Object getDestPort(Object edge) {
-	if (edge instanceof MLink) {
+	if (org.argouml.model.ModelFacade.isALink(edge)) {
 	    return CommonBehaviorHelper.getHelper()
 		.getDestination((MLink) edge);
 	}
@@ -154,7 +156,7 @@ public class SequenceDiagramGraphModel extends UMLMutableGraphSupport
     public boolean canAddNode(Object node) {
 	if (node == null) return false;
 	if (_nodes.contains(node)) return false;
-	return (node instanceof MObject || node instanceof MStimulus);
+	return (org.argouml.model.ModelFacade.isAObject(node) || org.argouml.model.ModelFacade.isAStimulus(node));
     }
 
     /** Return true if the given object is a valid edge in this graph */
@@ -162,7 +164,7 @@ public class SequenceDiagramGraphModel extends UMLMutableGraphSupport
 	if (edge == null) return false;
 	Object end0 = null;
 	Object end1 = null;
-	if (edge instanceof MLink) {
+	if (org.argouml.model.ModelFacade.isALink(edge)) {
 	    end0 = CommonBehaviorHelper.getHelper().getSource((MLink) edge);
 	    end1 =
 		CommonBehaviorHelper.getHelper().getDestination((MLink) edge);
@@ -180,7 +182,7 @@ public class SequenceDiagramGraphModel extends UMLMutableGraphSupport
 	if (!canAddNode(node)) return;
 	_nodes.addElement(node);
 	// TODO: assumes public, user pref for default visibility?
-	if (node instanceof MModelElement) {
+	if (org.argouml.model.ModelFacade.isAModelElement(node)) {
 	    _Sequence.addOwnedElement((MModelElement) node);
 	    // ((MClassifier)node).setNamespace(_Sequence.getNamespace());
 	}
@@ -193,7 +195,7 @@ public class SequenceDiagramGraphModel extends UMLMutableGraphSupport
 	if (!canAddEdge(edge)) return;
 	_edges.addElement(edge);
 	// TODO: assumes public
-	if (edge instanceof MModelElement) {
+	if (org.argouml.model.ModelFacade.isAModelElement(edge)) {
 	    _Sequence.addOwnedElement((MModelElement) edge);
 	}
 	fireEdgeAdded(edge);
@@ -201,7 +203,7 @@ public class SequenceDiagramGraphModel extends UMLMutableGraphSupport
     }
 
     public void addNodeRelatedEdges(Object node) {
-	if ( node instanceof MInstance ) {
+	if ( org.argouml.model.ModelFacade.isAInstance(node) ) {
 	    Collection ends = ((MInstance) node).getLinkEnds();
 	    Iterator iter = ends.iterator();
 	    while (iter.hasNext()) {
@@ -217,7 +219,7 @@ public class SequenceDiagramGraphModel extends UMLMutableGraphSupport
     /** Return true if the two given ports can be connected by a
      * kind of edge to be determined by the ports. */
     public boolean canConnect(Object fromP, Object toP) {
-	if ((fromP instanceof MObject) && (toP instanceof MObject)) return true;
+	if ((org.argouml.model.ModelFacade.isAObject(fromP)) && (org.argouml.model.ModelFacade.isAObject(toP))) return true;
 	return false;
     }
 
@@ -227,7 +229,7 @@ public class SequenceDiagramGraphModel extends UMLMutableGraphSupport
 			  java.lang.Class edgeClass)
     {
         if (edgeClass == MLink.class
-	    && (fromPort instanceof MObject && toPort instanceof MObject))
+	    && (org.argouml.model.ModelFacade.isAObject(fromPort) && org.argouml.model.ModelFacade.isAObject(toPort)))
 	{
             MLink ml = UmlFactory.getFactory().getCommonBehavior().createLink();
             MLinkEnd le0 =
@@ -334,9 +336,9 @@ public class SequenceDiagramGraphModel extends UMLMutableGraphSupport
 	    MModelElement me = eo.getModelElement();
 	    if (oldOwned.contains(eo)) {
 		cat.debug("model removed " + me);
-		if (me instanceof MObject) removeNode(me);
-		if (me instanceof MStimulus) removeNode(me);
-		if (me instanceof MAssociation) removeEdge(me);
+		if (org.argouml.model.ModelFacade.isAObject(me)) removeNode(me);
+		if (org.argouml.model.ModelFacade.isAStimulus(me)) removeNode(me);
+		if (org.argouml.model.ModelFacade.isAAssociation(me)) removeEdge(me);
 	    }
 	    else {
 		cat.debug("model added " + me);
@@ -345,4 +347,3 @@ public class SequenceDiagramGraphModel extends UMLMutableGraphSupport
     }
 
 } /* end class SequenceDiagramGraphModel */
-

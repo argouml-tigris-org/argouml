@@ -1,3 +1,4 @@
+
 // $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -38,7 +39,7 @@ public class GoModelToElements extends AbstractGoRule {
     }
 
     public Collection getChildren(Object parent) { 
-	if (parent instanceof MNamespace) {
+	if (org.argouml.model.ModelFacade.isANamespace(parent)) {
 	    return ((MNamespace) parent).getOwnedElements();
 	}
 	return null;

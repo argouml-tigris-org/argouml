@@ -1,3 +1,4 @@
+
 // $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -53,7 +54,7 @@ public class CrDisambigStateName extends CrUML {
     }
 
     public boolean predicate2(Object dm, Designer dsgr) {
-	if (!(dm instanceof MState)) return NO_PROBLEM;
+	if (!(org.argouml.model.ModelFacade.isAState(dm))) return NO_PROBLEM;
 	MState s = (MState) dm;
 	String myName = s.getName();
 	// TODO: should define a CompoundCritic
@@ -72,7 +73,7 @@ public class CrDisambigStateName extends CrUML {
 	    while (enum.hasNext()) {
 		MElementImport eo = (MElementImport) enum.next();
 		MModelElement me = (MModelElement) eo.getModelElement();
-		if (!(me instanceof MClassifier)) continue;
+		if (!(org.argouml.model.ModelFacade.isAClassifier(me))) continue;
 		if (me == s) continue;
 		String meName = me.getName();
 		if (meName == null || meName.equals("")) continue;
@@ -87,4 +88,3 @@ public class CrDisambigStateName extends CrUML {
     }
 
 } /* end class CrDisambigStateName */
-

@@ -1,3 +1,4 @@
+
 // $Id$
 // Copyright (c) 1996-2003 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -59,7 +60,7 @@ public class ActionSetStructuralFeatureTargetScope extends UMLChangeAction {
 	if (e.getSource() instanceof UMLCheckBox2) {
 	    UMLCheckBox2 source = (UMLCheckBox2) e.getSource();
 	    Object target = source.getTarget();
-	    if (target instanceof MStructuralFeature) {
+	    if (org.argouml.model.ModelFacade.isAStructuralFeature(target)) {
                 MStructuralFeature m = (MStructuralFeature) target;
 		m.setTargetScope(source.isSelected() ? MScopeKind.CLASSIFIER : MScopeKind.INSTANCE);
 	    }

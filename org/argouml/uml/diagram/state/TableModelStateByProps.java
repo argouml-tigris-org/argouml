@@ -1,3 +1,4 @@
+
 // $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -57,11 +58,10 @@ public class TableModelStateByProps extends TableModelComposite {
 	int size = nodes.size();
 	for (int i = 0; i < size; i++) {
 	    Object node = nodes.elementAt(i);
-	    if (node instanceof MStateVertex) res.addElement(node);
+	    if (org.argouml.model.ModelFacade.isAStateVertex(node)) res.addElement(node);
 	}
 	return res;
     }
 
     public String toString() { return "States vs. Properties"; }
 } /* end class TableModelStateByProps */
-

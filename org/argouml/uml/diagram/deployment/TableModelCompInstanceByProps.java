@@ -1,3 +1,4 @@
+
 // $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -53,7 +54,7 @@ public class TableModelCompInstanceByProps extends TableModelComposite {
     }
 
     public Vector rowObjectsFor(Object t) {
-	if (!(t instanceof UMLDeploymentDiagram || t instanceof MNodeInstance))
+	if (!(t instanceof UMLDeploymentDiagram || org.argouml.model.ModelFacade.isANodeInstance(t)))
 	    return new Vector();
 	if (t instanceof UMLDeploymentDiagram) {
 	    UMLDeploymentDiagram d = (UMLDeploymentDiagram) t;
@@ -62,7 +63,7 @@ public class TableModelCompInstanceByProps extends TableModelComposite {
 	    int size = nodes.size();
 	    for (int i = 0; i < size; i++) {
 		Object node = nodes.elementAt(i);
-		if (node instanceof MComponentInstance) res.addElement(node);
+		if (org.argouml.model.ModelFacade.isAComponentInstance(node)) res.addElement(node);
 	    }
 	    return res;
 	}
@@ -73,7 +74,7 @@ public class TableModelCompInstanceByProps extends TableModelComposite {
 	    Iterator it = residences.iterator();
 	    while (it.hasNext()) {
 		MInstance inst = (MInstance) it.next();
-		if (inst instanceof MComponentInstance) res.addElement(inst);
+		if (org.argouml.model.ModelFacade.isAComponentInstance(inst)) res.addElement(inst);
 	    }
 	    return res;
 	}
@@ -81,4 +82,3 @@ public class TableModelCompInstanceByProps extends TableModelComposite {
 
     public String toString() { return "ComponentInstances vs. Properties"; }
 } /* end class TableModelCompInstanceByProps */
-

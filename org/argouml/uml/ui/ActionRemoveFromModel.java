@@ -1,3 +1,4 @@
+
 // $Id$
 // Copyright (c) 1996-2001 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -104,7 +105,7 @@ public class ActionRemoveFromModel extends UMLChangeAction {
                 .size()
                 > 1;
         }
-        if (target instanceof MModel
+        if (org.argouml.model.ModelFacade.isAModel(target)
             && // we cannot delete the model itself
 	    target.equals(
 			  ProjectManager.getManager().getCurrentProject().getModel())) {
@@ -183,7 +184,7 @@ public class ActionRemoveFromModel extends UMLChangeAction {
         // usage of other sureRemove method is legacy. They should be
         // integrated.
         boolean sure = false;
-        if (target instanceof MModelElement) {
+        if (org.argouml.model.ModelFacade.isAModelElement(target)) {
             sure = sureRemove((MModelElement) target);
         } else if (target instanceof UMLDiagram) {
             // lets see if this diagram has some figs on it
@@ -215,7 +216,7 @@ public class ActionRemoveFromModel extends UMLChangeAction {
             }
         } else if (target instanceof Fig) {
             // we can delete figs like figrects now too
-            if (((Fig) target).getOwner() instanceof MModelElement) {
+            if (org.argouml.model.ModelFacade.isAModelElement(((Fig) target).getOwner())) {
                 sure = sureRemove((MModelElement) ((Fig) target).getOwner());
             } else
                 sure = true;

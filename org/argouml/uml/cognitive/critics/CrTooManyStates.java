@@ -1,3 +1,4 @@
+
 // $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -59,7 +60,7 @@ public class CrTooManyStates extends CrUML {
     ////////////////////////////////////////////////////////////////
     // critiquing API
     public boolean predicate2(Object dm, Designer dsgr) {
-	if (!(dm instanceof MCompositeState)) return NO_PROBLEM;
+	if (!(org.argouml.model.ModelFacade.isACompositeState(dm))) return NO_PROBLEM;
 	MCompositeState cs = (MCompositeState) dm;
 
 	int threshold = ((Integer) getArg(THRESHOLD)).intValue();
@@ -69,4 +70,3 @@ public class CrTooManyStates extends CrUML {
     }
 
 } /* end class CrTooManyStates */
-

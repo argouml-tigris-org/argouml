@@ -1,3 +1,4 @@
+
 // $Id$
 // Copyright (c) 1996-2003 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -1329,7 +1330,7 @@ public class FigUseCase extends FigNodeModelElement {
         super.modelChanged(mee);
         if (mee == null
 	    || mee.getName().equals("extensionPoint")
-	    || mee.getSource() instanceof MExtensionPoint)
+	    || org.argouml.model.ModelFacade.isAExtensionPoint(mee.getSource()))
 	{
             updateExtensionPoint();
             return;

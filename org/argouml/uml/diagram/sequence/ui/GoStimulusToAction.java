@@ -1,3 +1,4 @@
+
 // $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -38,7 +39,7 @@ import ru.novosoft.uml.behavior.common_behavior.MStimulus;
 public class GoStimulusToAction extends AbstractGoRule {
 
     public Collection getChildren(Object parent) {
-        if (!(parent instanceof MStimulus))
+        if (!(org.argouml.model.ModelFacade.isAStimulus(parent)))
             return null;
         MStimulus ms = (MStimulus) parent;
         Object action = ModelFacade.getDispatchAction(ms);

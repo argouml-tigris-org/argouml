@@ -1,3 +1,4 @@
+
 // $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -44,7 +45,7 @@ public class GenCompositeClasses implements ChildGenerator {
 
     public Enumeration gen(Object o) {
 	Vector res = new Vector();
-	if (!(o instanceof MClassifier)) return res.elements();
+	if (!(org.argouml.model.ModelFacade.isAClassifier(o))) return res.elements();
 	MClassifier cls = (MClassifier) o;
 	Vector ends = new Vector(cls.getAssociationEnds());
 	if (ends == null) return res.elements();

@@ -1,3 +1,4 @@
+
 // $Id$
 // Copyright (c) 1996-2001 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -131,7 +132,7 @@ public final class ActionAddExtensionPoint extends UMLChangeAction {
 
 	Object         target = TargetManager.getInstance().getModelTarget();
 
-	if (!(target instanceof MUseCase)) {
+	if (!(org.argouml.model.ModelFacade.isAUseCase(target))) {
             return;
         }
 
@@ -157,7 +158,7 @@ public final class ActionAddExtensionPoint extends UMLChangeAction {
     public boolean shouldBeEnabled() {
 	Object         target = TargetManager.getInstance().getModelTarget();
 
-	return super.shouldBeEnabled() && (target instanceof MUseCase);
+	return super.shouldBeEnabled() && (org.argouml.model.ModelFacade.isAUseCase(target));
     }
 
 } /* end class ActionAddExtensionPoint */

@@ -1,3 +1,4 @@
+
 // $Id$
 // Copyright (c) 1996-2001 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -47,7 +48,7 @@ public class GoStateToDoActivity extends AbstractGoRule {
      * @see org.argouml.ui.AbstractGoRule#getChildren(java.lang.Object)
      */
     public Collection getChildren(Object parent) {
-        if (parent instanceof MState
+        if (org.argouml.model.ModelFacade.isAState(parent)
 	    && ((MState) parent).getDoActivity() != null)
 	{
             Vector children = new Vector();

@@ -1,3 +1,4 @@
+
 // $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -78,7 +79,7 @@ public class UMLAttributesListModel extends UMLModelElementCachedListModel  {
      *   @return true if object is appropriate for this list.
      */
     public boolean isProperClass(Object obj) {
-        return obj instanceof MAttribute;
+        return org.argouml.model.ModelFacade.isAAttribute(obj);
     }
     /**
      *   returns the raw underlying collection from the current target
@@ -89,7 +90,7 @@ public class UMLAttributesListModel extends UMLModelElementCachedListModel  {
     public Collection getRawCollection() {
         Collection raw = null;
         Object target = getTarget();
-        if (target instanceof MClassifier) {
+        if (org.argouml.model.ModelFacade.isAClassifier(target)) {
             raw = ((MClassifier) target).getFeatures();
         }
         return raw;
@@ -115,7 +116,7 @@ public class UMLAttributesListModel extends UMLModelElementCachedListModel  {
   */
     public void add(int index) {
         Object target = getTarget();
-        if (target instanceof MClassifier) {
+        if (org.argouml.model.ModelFacade.isAClassifier(target)) {
             MClassifier classifier = (MClassifier) target;
             Collection oldFeatures = classifier.getFeatures();
             MAttribute newAttr = UmlFactory.getFactory().getCore().buildAttribute(classifier);
@@ -133,7 +134,7 @@ public class UMLAttributesListModel extends UMLModelElementCachedListModel  {
      */
     public void delete(int index) {
         Object target = getTarget();
-        if (target instanceof MClassifier && _attributes != null) {
+        if (org.argouml.model.ModelFacade.isAClassifier(target) && _attributes != null) {
             Object attribute = _attributes.get(index);
             if (attribute != null) {
 		if (_attributes != null) {
@@ -154,7 +155,7 @@ public class UMLAttributesListModel extends UMLModelElementCachedListModel  {
      */
     public void moveUp(int index) {
         Object target = getTarget();
-        if (target instanceof MClassifier) {
+        if (org.argouml.model.ModelFacade.isAClassifier(target)) {
             MClassifier classifier = (MClassifier) target;
             Collection oldFeatures = classifier.getFeatures();
             classifier.setFeatures(swap(oldFeatures, index - 1, _attributes.get(index - 1), _attributes.get(index)));
@@ -168,7 +169,7 @@ public class UMLAttributesListModel extends UMLModelElementCachedListModel  {
      */
     public void moveDown(int index) {
         Object target = getTarget();
-        if (target instanceof MClassifier) {
+        if (org.argouml.model.ModelFacade.isAClassifier(target)) {
             MClassifier classifier = (MClassifier) target;
             Collection oldFeatures = classifier.getFeatures();
             classifier.setFeatures(swap(oldFeatures, index, _attributes.get(index), _attributes.get(index + 1)));
@@ -210,7 +211,6 @@ public class UMLAttributesListModel extends UMLModelElementCachedListModel  {
         return true;
     }
 }
-
 
 
 

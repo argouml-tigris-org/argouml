@@ -1,3 +1,4 @@
+
 // $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -204,7 +205,7 @@ public class PropPanelAssociationEnd extends PropPanelModelElement {
      */
     public void navigateUp() {
         Object target = getTarget();
-        if (target instanceof MAssociationEnd) {
+        if (org.argouml.model.ModelFacade.isAAssociationEnd(target)) {
             MAssociation assoc = ((MAssociationEnd) target).getAssociation();
             if (assoc != null) {
                 TargetManager.getInstance().setTarget(assoc);

@@ -1,3 +1,4 @@
+
 // $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -107,7 +108,7 @@ abstract public class PropPanelClassifier extends PropPanelNamespace {
 
     public void addOperation() {
         Object target = getTarget();
-        if (target instanceof MClassifier) {
+        if (org.argouml.model.ModelFacade.isAClassifier(target)) {
             MOperation newOper =
                 UmlFactory.getFactory().getCore().buildOperation(
                     (MClassifier) target);
@@ -117,7 +118,7 @@ abstract public class PropPanelClassifier extends PropPanelNamespace {
 
     public void addAttribute() {
         Object target = getTarget();
-        if (target instanceof MClassifier) {
+        if (org.argouml.model.ModelFacade.isAClassifier(target)) {
             MClassifier cls = (MClassifier) target;
             MAttribute attr =
                 UmlFactory.getFactory().getCore().buildAttribute(cls);
@@ -140,7 +141,7 @@ abstract public class PropPanelClassifier extends PropPanelNamespace {
 
     public void addDataType() {
         Object target = getTarget();
-        if (target instanceof MNamespace) {
+        if (org.argouml.model.ModelFacade.isANamespace(target)) {
             MNamespace ns = (MNamespace) target;
             MModelElement ownedElem = CoreFactory.getFactory().createDataType();
             ns.addOwnedElement(ownedElem);

@@ -1,3 +1,4 @@
+
 // $Id$
 // Copyright (c) 1996-2003 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -66,9 +67,9 @@ public class ActionSetModelElementStereotype extends UMLChangeAction {
         MModelElement target = null;
         if (source instanceof UMLComboBox2) {
             UMLComboBox2 combo = (UMLComboBox2) source;
-            if (combo.getSelectedItem() instanceof MStereotype) 
+            if (org.argouml.model.ModelFacade.isAStereotype(combo.getSelectedItem())) 
                 newStereo = (MStereotype) combo.getSelectedItem();                                
-            if (combo.getTarget() instanceof MModelElement) {
+            if (org.argouml.model.ModelFacade.isAModelElement(combo.getTarget())) {
                 target = (MModelElement) combo.getTarget();
                 oldStereo = target.getStereotype();
             }

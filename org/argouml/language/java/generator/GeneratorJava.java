@@ -1,3 +1,5 @@
+
+
 // $Id$
 // Copyright (c) 1996-2001 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -258,7 +260,7 @@ public class GeneratorJava
             // now check packages of all feature types
             for (j = c.iterator(); j.hasNext();) {
                 MFeature mFeature = (MFeature) j.next();
-                if (mFeature instanceof MAttribute) {
+                if (org.argouml.model.ModelFacade.isAAttribute(mFeature)) {
                     if ((ftype =
 			 generateImportType(
 					    ((MAttribute) mFeature).getType(),
@@ -266,7 +268,7 @@ public class GeneratorJava
                         != null) {
                         importSet.add(ftype);
                     }
-                } else if (mFeature instanceof MOperation) {
+                } else if (org.argouml.model.ModelFacade.isAOperation(mFeature)) {
                     // check the parameter types
                     Iterator it =
                         ((MOperation) mFeature).getParameters().iterator();
@@ -486,7 +488,7 @@ public class GeneratorJava
         if (type != null && multi != null) {
             if (multi.equals(MMultiplicity.M1_1)) {
                 sb.append(generateClassifierRef(type)).append(' ');
-            } else if (type instanceof MDataType) {
+            } else if (org.argouml.model.ModelFacade.isADataType(type)) {
                 sb.append(generateClassifierRef(type)).append("[] ");
             } else
                 sb.append("java.util.Vector ");
@@ -546,9 +548,9 @@ public class GeneratorJava
      */
     StringBuffer generateClassifierStart(MClassifier cls) {
         String sClassifierKeyword;
-        if (cls instanceof MClass)
+        if (org.argouml.model.ModelFacade.isAClass(cls))
             sClassifierKeyword = "class";
-        else if (cls instanceof MInterface)
+        else if (org.argouml.model.ModelFacade.isAInterface(cls))
             sClassifierKeyword = "interface";
         else
             return null; // actors, use cases etc.
@@ -567,7 +569,7 @@ public class GeneratorJava
         sb.append(generateVisibility(cls.getVisibility()));
 
         // Add other modifiers
-        if (cls.isAbstract() && !(cls instanceof MInterface)) {
+        if (cls.isAbstract() && !(org.argouml.model.ModelFacade.isAInterface(cls))) {
             sb.append("abstract ");
         }
 
@@ -591,7 +593,7 @@ public class GeneratorJava
 
         // add implemented interfaces, if needed
         // nsuml: realizations!
-        if (cls instanceof MClass) {
+        if (org.argouml.model.ModelFacade.isAClass(cls)) {
             String interfaces = generateSpecification((MClass) cls);
             if (!interfaces.equals("")) {
                 sb.append(" ").append("implements ").append(interfaces);
@@ -612,10 +614,10 @@ public class GeneratorJava
 
     protected StringBuffer generateClassifierEnd(MClassifier cls) {
         StringBuffer sb = new StringBuffer();
-        if (cls instanceof MClass || cls instanceof MInterface) {
+        if (org.argouml.model.ModelFacade.isAClass(cls) || org.argouml.model.ModelFacade.isAInterface(cls)) {
             if (_verboseDocs) {
                 String classifierkeyword = null;
-                if (cls instanceof MClass) {
+                if (org.argouml.model.ModelFacade.isAClass(cls)) {
                     classifierkeyword = "class";
                 } else {
                     classifierkeyword = "interface";
@@ -859,7 +861,7 @@ public class GeneratorJava
      */
     protected StringBuffer generateClassifierBody(MClassifier cls) {
         StringBuffer sb = new StringBuffer();
-        if (cls instanceof MClass || cls instanceof MInterface) {
+        if (org.argouml.model.ModelFacade.isAClass(cls) || org.argouml.model.ModelFacade.isAInterface(cls)) {
             String tv = null; // helper for tagged values
 
             // add attributes
@@ -875,7 +877,7 @@ public class GeneratorJava
             //
             if (!strs.isEmpty()) {
                 sb.append(LINE_SEPARATOR);
-                if (_verboseDocs && cls instanceof MClass) {
+                if (_verboseDocs && org.argouml.model.ModelFacade.isAClass(cls)) {
                     sb.append(INDENT).append("// Attributes");
 		    sb.append(LINE_SEPARATOR);
                 }
@@ -903,7 +905,7 @@ public class GeneratorJava
             // new code:
             if (!ends.isEmpty()) {
                 sb.append(LINE_SEPARATOR);
-                if (_verboseDocs && cls instanceof MClass) {
+                if (_verboseDocs && org.argouml.model.ModelFacade.isAClass(cls)) {
                     sb.append(INDENT).append("// Associations");
 		    sb.append(LINE_SEPARATOR);
                 }
@@ -926,8 +928,8 @@ public class GeneratorJava
             Collection elements = cls.getOwnedElements();
             for (Iterator i = elements.iterator(); i.hasNext(); ) {
                 MModelElement element = (MModelElement) i.next();
-                if (element instanceof MClass
-		    || element instanceof MInterface) 
+                if (org.argouml.model.ModelFacade.isAClass(element)
+		    || org.argouml.model.ModelFacade.isAInterface(element)) 
 		{
                     sb.append(generateClassifier((MClass) element));
                 }
@@ -960,8 +962,8 @@ public class GeneratorJava
 
                     tv = generateTaggedValues((MModelElement) bf);
 
-                    if ((cls instanceof MClass)
-                        && (bf instanceof MOperation)
+                    if ((org.argouml.model.ModelFacade.isAClass(cls))
+                        && (org.argouml.model.ModelFacade.isAOperation(bf))
                         && (!((MOperation) bf).isAbstract())) {
                         if (_lfBeforeCurly)
                             sb.append(LINE_SEPARATOR).append(INDENT);

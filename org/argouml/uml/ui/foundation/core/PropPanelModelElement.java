@@ -1,3 +1,4 @@
+
 // $Id$
 // Copyright (c) 1996-2001 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -190,7 +191,7 @@ abstract public class PropPanelModelElement extends PropPanel {
 
     public void navigateNamespace() {
         Object target = getTarget();
-        if (target instanceof MModelElement) {
+        if (org.argouml.model.ModelFacade.isAModelElement(target)) {
             MModelElement elem = (MModelElement) target;
             MNamespace ns = elem.getNamespace();
             if (ns != null) {

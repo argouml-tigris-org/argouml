@@ -1,3 +1,4 @@
+
 // $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -80,7 +81,7 @@ public class FigMNode extends FigNodeModelElement {
     public FigMNode(GraphModel gm, Object node) {
 	this();
 	setOwner(node);
-	if (node instanceof MClassifier
+	if (org.argouml.model.ModelFacade.isAClassifier(node)
 	    && (((MClassifier) node).getName() != null))
 	    _name.setText(((MModelElement) node).getName());
     }
@@ -187,4 +188,3 @@ public class FigMNode extends FigNodeModelElement {
     static final long serialVersionUID = 8822005566372687713L;
 
 } /* end class FigMNode */
-

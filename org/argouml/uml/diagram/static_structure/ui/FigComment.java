@@ -1,3 +1,4 @@
+
 // $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -197,7 +198,7 @@ public class FigComment
         // the nodes in them don't necessary have a namespace, where
         // we could add the note. So I added this hack... :-(
         // Andreas Rueckert <a_rueckert@gmx.net>
-        if (element instanceof MStateVertex) {
+        if (org.argouml.model.ModelFacade.isAStateVertex(element)) {
 
 	    // If the current target is a state diagram, we have to
 	    // check, if we are editing the diagram.
@@ -256,7 +257,7 @@ public class FigComment
      *  initiate direct text editing. */
     public void mouseClicked(MouseEvent me) {
         if (!_readyToEdit) {
-            if (getOwner() instanceof MModelElement) {
+            if (org.argouml.model.ModelFacade.isAModelElement(getOwner())) {
                 MModelElement own = (MModelElement) getOwner();
                 _readyToEdit = true;
             } else {
@@ -326,7 +327,7 @@ public class FigComment
 
     public void keyPressed(KeyEvent ke) {
         if (!_readyToEdit) {
-            if (getOwner() instanceof MModelElement) {
+            if (org.argouml.model.ModelFacade.isAModelElement(getOwner())) {
                 storeNote("");
                 _readyToEdit = true;
             } else {

@@ -1,3 +1,4 @@
+
 // $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -97,7 +98,7 @@ public class UMLEnumerationBooleanProperty extends UMLBooleanProperty {
     
     public void setProperty(Object element, boolean newState) throws PropertyVetoException {
     
-    	if (_wellformednessRules != null && element instanceof MBase) {
+    	if (_wellformednessRules != null && org.argouml.model.ModelFacade.isABase(element)) {
 	    Object helper = UmlHelper.getHelper().getHelper(element);  
 	    if (helper != null) {
 		for (int i = 0; i < _wellformednessRules.length; i++) {
@@ -157,5 +158,4 @@ public class UMLEnumerationBooleanProperty extends UMLBooleanProperty {
     }
     
 }
-
 

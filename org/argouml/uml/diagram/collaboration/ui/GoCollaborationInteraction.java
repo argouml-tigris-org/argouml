@@ -1,3 +1,4 @@
+
 // $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -35,7 +36,7 @@ public class GoCollaborationInteraction extends AbstractGoRule {
     public String getRuleName() { return "Collaboration->Interaction"; }
 
     public Collection getChildren(Object parent) {
-	if (!(parent instanceof MCollaboration)) return null;
+	if (!(org.argouml.model.ModelFacade.isACollaboration(parent))) return null;
 	return ((MCollaboration) parent).getInteractions();
     }
 

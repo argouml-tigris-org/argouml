@@ -1,3 +1,4 @@
+
 // $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -76,7 +77,7 @@ public class FigDependency extends FigEdgeModelElement {
         Object oldOwner = getOwner();
         super.setOwner(own);
 
-        if (own instanceof MDependency) {
+        if (org.argouml.model.ModelFacade.isADependency(own)) {
             MDependency newDep = (MDependency) own;
             UmlModelEventPump pump = UmlModelEventPump.getPump();
             Iterator it = newDep.getSuppliers().iterator();

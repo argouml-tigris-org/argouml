@@ -1,3 +1,6 @@
+
+
+
 // $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -97,10 +100,10 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
     /** Return all ports on node or edge */
     public Vector getPorts(Object nodeOrEdge) {
 	Vector res = new Vector();  //wasteful!
-	if (nodeOrEdge instanceof MClass) res.addElement(nodeOrEdge);
-	if (nodeOrEdge instanceof MInterface) res.addElement(nodeOrEdge);
-	if (nodeOrEdge instanceof MInstance) res.addElement(nodeOrEdge);
-	if (nodeOrEdge instanceof MModel) res.addElement(nodeOrEdge);
+	if (org.argouml.model.ModelFacade.isAClass(nodeOrEdge)) res.addElement(nodeOrEdge);
+	if (org.argouml.model.ModelFacade.isAInterface(nodeOrEdge)) res.addElement(nodeOrEdge);
+	if (org.argouml.model.ModelFacade.isAInstance(nodeOrEdge)) res.addElement(nodeOrEdge);
+	if (org.argouml.model.ModelFacade.isAModel(nodeOrEdge)) res.addElement(nodeOrEdge);
 	return res;
     }
 
@@ -228,7 +231,7 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
 
     /** Return one end of an edge */
     public Object getSourcePort(Object edge) {
-	if (edge instanceof MRelationship) {
+	if (org.argouml.model.ModelFacade.isARelationship(edge)) {
 	    return CoreHelper.getHelper().getSource((MRelationship) edge);
 	}
 	cat.debug("TODO getSourcePort");
@@ -237,7 +240,7 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
 
     /** Return  the other end of an edge */
     public Object getDestPort(Object edge) {
-	if (edge instanceof MRelationship) {
+	if (org.argouml.model.ModelFacade.isARelationship(edge)) {
 	    return CoreHelper.getHelper().getDestination((MRelationship) edge);
 	}
 	cat.debug("TODO getSourcePort");
@@ -251,11 +254,11 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
     /** Return true if the given object is a valid node in this graph */
     public boolean canAddNode(Object node) {
 	if (_nodes.contains(node)) return false;
-	return (node instanceof MClass) ||
-	    (node instanceof MInterface) ||
-	    (node instanceof MModel)    ||
-	    (node instanceof MPackage)  ||
-	    (node instanceof MInstance);
+	return (org.argouml.model.ModelFacade.isAClass(node)) ||
+	    (org.argouml.model.ModelFacade.isAInterface(node)) ||
+	    (org.argouml.model.ModelFacade.isAModel(node))    ||
+	    (org.argouml.model.ModelFacade.isAPackage(node))  ||
+	    (org.argouml.model.ModelFacade.isAInstance(node));
     }
 
     /** Return true if the given object is a valid edge in this graph */
@@ -263,7 +266,7 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
 	if (edge == null) return false;
 	if (_edges.contains(edge)) return false;
 	Object end0 = null, end1 = null;
-	if (edge instanceof MAssociation) {
+	if (org.argouml.model.ModelFacade.isAAssociation(edge)) {
 	    List conns = ((MAssociation) edge).getConnections();
 	    if (conns.size() < 2) return false;
 	    MAssociationEnd ae0 = (MAssociationEnd) conns.get(0);
@@ -272,18 +275,18 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
 	    end0 = ae0.getType();
 	    end1 = ae1.getType();
 	}
-	else if (edge instanceof MGeneralization) {
+	else if (org.argouml.model.ModelFacade.isAGeneralization(edge)) {
 	    end0 = ((MGeneralization) edge).getChild();
 	    end1 = ((MGeneralization) edge).getParent();
 	}
-	else if (edge instanceof MDependency) {
+	else if (org.argouml.model.ModelFacade.isADependency(edge)) {
 	    Collection clients = ((MDependency) edge).getClients();
 	    Collection suppliers = ((MDependency) edge).getSuppliers();
 	    if (clients == null || suppliers == null) return false;
 	    end0 = ((Object[]) clients.toArray())[0];
 	    end1 = ((Object[]) suppliers.toArray())[0];
 	}
-	else if (edge instanceof MLink) {
+	else if (org.argouml.model.ModelFacade.isALink(edge)) {
 	    Collection roles = ((MLink) edge).getConnections();
 	    MLinkEnd le0 = (MLinkEnd) ((Object[]) roles.toArray())[0];
 	    MLinkEnd le1 = (MLinkEnd) ((Object[]) roles.toArray())[0];
@@ -303,7 +306,7 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
 	cat.debug("adding class node!!");
 	if (!canAddNode(node)) return;
 	_nodes.addElement(node);
-	if (node instanceof MModelElement &&
+	if (org.argouml.model.ModelFacade.isAModelElement(node) &&
 	    ((MModelElement) node).getNamespace() == null) {
 	    _model.addOwnedElement((MModelElement) node);
 	}
@@ -318,7 +321,7 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
         if (!canAddEdge(edge)) return;
         _edges.addElement(edge);
         // TODO: assumes public
-        if (edge instanceof MModelElement
+        if (org.argouml.model.ModelFacade.isAModelElement(edge)
 	    && ((MModelElement) edge).getNamespace() == null)
 	{
 	    _model.addOwnedElement((MModelElement) edge);
@@ -332,7 +335,7 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
      * @see org.tigris.gef.graph.MutableGraphModel#addNodeRelatedEdges(Object)
      */
     public void addNodeRelatedEdges(Object node) {
-	if ( node instanceof MClassifier ) {
+	if ( org.argouml.model.ModelFacade.isAClassifier(node) ) {
 	    Collection ends = ((MClassifier) node).getAssociationEnds();
 	    Iterator iter = ends.iterator();
 	    while (iter.hasNext()) {
@@ -343,7 +346,7 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
 		}
 	    }
 	}
-	if ( node instanceof MGeneralizableElement ) {
+	if ( org.argouml.model.ModelFacade.isAGeneralizableElement(node) ) {
 	    Collection gn = ((MGeneralizableElement) node).getGeneralizations();
 	    Iterator iter = gn.iterator();
 	    while (iter.hasNext()) {
@@ -363,7 +366,7 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
 		}
 	    }
 	}
-	if ( node instanceof MModelElement ) {
+	if ( org.argouml.model.ModelFacade.isAModelElement(node) ) {
 	    Vector specs =
 		new Vector(((MModelElement) node).getClientDependencies());
 	    specs.addAll(((MModelElement) node).getSupplierDependencies());
@@ -390,11 +393,11 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
 	    MModelElement me = eo.getModelElement();
 	    if (oldOwned.contains(eo)) {
 		cat.debug("model removed " + me);
-		if (me instanceof MClassifier) removeNode(me);
-		if (me instanceof MPackage) removeNode(me);
-		if (me instanceof MAssociation) removeEdge(me);
-		if (me instanceof MDependency) removeEdge(me);
-		if (me instanceof MGeneralization) removeEdge(me);
+		if (org.argouml.model.ModelFacade.isAClassifier(me)) removeNode(me);
+		if (org.argouml.model.ModelFacade.isAPackage(me)) removeNode(me);
+		if (org.argouml.model.ModelFacade.isAAssociation(me)) removeEdge(me);
+		if (org.argouml.model.ModelFacade.isADependency(me)) removeEdge(me);
+		if (org.argouml.model.ModelFacade.isAGeneralization(me)) removeEdge(me);
 	    }
 	    else {
 		cat.debug("model added " + me);
@@ -428,9 +431,9 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
 	    return false;
 
 	// check parameter types:
-	if ( !(newNode instanceof MClass ||
-	       oldNode instanceof MClass ||
-	       edge instanceof MAssociation ) )
+	if ( !(org.argouml.model.ModelFacade.isAClass(newNode) ||
+	       org.argouml.model.ModelFacade.isAClass(oldNode) ||
+	       org.argouml.model.ModelFacade.isAAssociation(edge) ) )
 	{
 	    return false;
 	}
@@ -453,13 +456,13 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
     public void changeConnectedNode(Object newNode, Object oldNode,
 				    Object edge, boolean isSource)
     {
-	if (edge instanceof MAssociation)
+	if (org.argouml.model.ModelFacade.isAAssociation(edge))
 	    rerouteAssociation(newNode,  oldNode,  edge,  isSource);
-	else if (edge instanceof MGeneralization)
+	else if (org.argouml.model.ModelFacade.isAGeneralization(edge))
 	    rerouteGeneralization(newNode,  oldNode,  edge,  isSource);
-	else if (edge instanceof MDependency)
+	else if (org.argouml.model.ModelFacade.isADependency(edge))
 	    rerouteDependency(newNode,  oldNode,  edge,  isSource);
-	else if (edge instanceof MLink)
+	else if (org.argouml.model.ModelFacade.isALink(edge))
 	    rerouteLink(newNode,  oldNode,  edge,  isSource);
     }
 
@@ -471,8 +474,8 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
     {
 	// check param types: only some connections are legal uml connections:
 
-	if (!(newNode instanceof MClassifier)
-	    || !(oldNode instanceof MClassifier))
+	if (!(org.argouml.model.ModelFacade.isAClassifier(newNode))
+	    || !(org.argouml.model.ModelFacade.isAClassifier(oldNode)))
 	    return;
 
 	// can't have a connection between 2 interfaces:
@@ -488,8 +491,8 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
 		CoreHelper.getHelper().getSource((MRelationship) edge);
 	}
 
-	if ((newNode instanceof MInterface) &&
-	    (otherNode instanceof MInterface) )
+	if ((org.argouml.model.ModelFacade.isAInterface(newNode)) &&
+	    (org.argouml.model.ModelFacade.isAInterface(otherNode)) )
 	    return;
 
         // cast the params
@@ -524,12 +527,12 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
         }
 
         // set the ends navigability see also Class ActionNavigability
-        if ( newNode instanceof MInterface) {
+        if ( org.argouml.model.ModelFacade.isAInterface(newNode)) {
             theEnd.setNavigable(true);
             theOtherEnd.setNavigable(false);
         }
 
-        if ( otherNode instanceof MInterface) {
+        if ( org.argouml.model.ModelFacade.isAInterface(otherNode)) {
             theOtherEnd.setNavigable(true);
             theEnd.setNavigable(false);
         }

@@ -1,3 +1,5 @@
+
+
 // $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -198,7 +200,7 @@ public class FigSeqLink
 		FigSeqObject dest = (FigSeqObject) getDestFigNode();
 		FigSeqObject source = (FigSeqObject) getSourceFigNode();
 		if (dest != null && source != null) {
-		    if (action instanceof MCallAction) {
+		    if (org.argouml.model.ModelFacade.isACallAction(action)) {
 			if (ModelFacade.isAsynchronous(action)) {
 			    setDestArrowHead(new ArrowHeadHalfTriangle());
 			    setSourceArrowHead(new ArrowHeadNone());
@@ -212,7 +214,7 @@ public class FigSeqLink
 			dest.setForDestroy(this, "Dest", false);
 			//source.concatActivation(this, contents);
 		    }
-		    if (action instanceof MSendAction) {
+		    if (org.argouml.model.ModelFacade.isASendAction(action)) {
 			setDestArrowHead(new ArrowHeadHalfTriangle());
 			setSourceArrowHead(new ArrowHeadNone());
 			setDashed(false);
@@ -220,7 +222,7 @@ public class FigSeqLink
 			dest.setForDestroy(this, "Dest", false);
 			//source.concatActivation(this, contents);
 		    }
-		    if (action instanceof MCreateAction) {
+		    if (org.argouml.model.ModelFacade.isACreateAction(action)) {
 			if (ModelFacade.isAsynchronous(action)) {
 			    setDestArrowHead(new ArrowHeadHalfTriangle());
 			    setSourceArrowHead(new ArrowHeadNone());
@@ -237,7 +239,7 @@ public class FigSeqLink
 			dest.setForDestroy(this, "Dest", false);
 			//source.concatActivation(this, contents);
 		    }
-		    if (action instanceof MReturnAction) {
+		    if (org.argouml.model.ModelFacade.isAReturnAction(action)) {
 			setDestArrowHead(new ArrowHeadGreater());
 			setSourceArrowHead(new ArrowHeadNone());
 			setDashed(true);
@@ -245,7 +247,7 @@ public class FigSeqLink
 			dest.setForDestroy(this, "Dest", false);
 			//source.breakActivation(this, contents);
 		    }
-		    if (action instanceof MDestroyAction) {
+		    if (org.argouml.model.ModelFacade.isADestroyAction(action)) {
 			setDestArrowHead(new ArrowHeadGreater());
 			//setDestArrowHead(new ArrowHeadX());
 			setDashed(false);
@@ -841,7 +843,7 @@ public class FigSeqLink
 	    Iterator iterator = elements.iterator();
 	    while (iterator.hasNext()) {
 		MModelElement moe = (MModelElement) iterator.next();
-		if (moe instanceof MAction) {
+		if (org.argouml.model.ModelFacade.isAAction(moe)) {
 		    if (moe == ma) {
 			ModelFacade.removeOwnedElement(ns, ma);
 		    }
@@ -1037,4 +1039,3 @@ public class FigSeqLink
     }
 
 } /* end class FigSeqLink */
-

@@ -1,3 +1,4 @@
+
 // $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -65,10 +66,10 @@ public class ActionSetExtendBase extends UMLChangeAction {
             UMLComboBox2 combo = (UMLComboBox2) source;
             newBase = (MUseCase) combo.getSelectedItem();
             Object o = combo.getTarget();
-            if (o instanceof MExtend) {
+            if (org.argouml.model.ModelFacade.isAExtend(o)) {
                 extend = (MExtend) o;
                 o = combo.getSelectedItem();
-                if (o instanceof MUseCase) {
+                if (org.argouml.model.ModelFacade.isAUseCase(o)) {
                     newBase = (MUseCase) o;
                     oldBase = extend.getBase();
                     if (newBase != oldBase) {

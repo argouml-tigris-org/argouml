@@ -1,3 +1,4 @@
+
 // $Id$
 // Copyright (c) 1996-2001 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -147,14 +148,14 @@ public class UMLReflectionListModel extends UMLModelElementListModel   {
                         Iterator iter = ((Collection) collection).iterator();
                         for (int i = 0; iter.hasNext(); i++) {
                             obj = iter.next();
-                            if (i == index && obj instanceof MModelElement) {
+                            if (i == index && org.argouml.model.ModelFacade.isAModelElement(obj)) {
                                 element = (MModelElement) obj;
                                 break;
                             }
                         }
                     }
                     else {
-                        if (index == 0 && collection instanceof MModelElement) {
+                        if (index == 0 && org.argouml.model.ModelFacade.isAModelElement(collection)) {
                             element = (MModelElement) collection;
                         }
                     }
@@ -297,7 +298,6 @@ public class UMLReflectionListModel extends UMLModelElementListModel   {
     }
 
 }
-
 
 
 

@@ -1,3 +1,4 @@
+
 // $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -119,7 +120,7 @@ public class CrMultipleAgg extends CrUML {
 
         // Only for associations
 
-        if (!(dm instanceof MAssociation)) {
+        if (!(org.argouml.model.ModelFacade.isAAssociation(dm))) {
             return NO_PROBLEM;
         }
 
@@ -129,7 +130,7 @@ public class CrMultipleAgg extends CrUML {
 
         MAssociation asc = (MAssociation) dm;
 
-        if (asc instanceof MAssociationRole) {
+        if (org.argouml.model.ModelFacade.isAAssociationRole(asc)) {
             return NO_PROBLEM;
         }
 
@@ -178,4 +179,3 @@ public class CrMultipleAgg extends CrUML {
     }
 
 } /* end class CrMultipleAgg.java */
-

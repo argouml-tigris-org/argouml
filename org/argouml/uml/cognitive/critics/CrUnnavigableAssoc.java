@@ -1,3 +1,4 @@
+
 // $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -52,10 +53,10 @@ public class CrUnnavigableAssoc extends CrUML {
     }
 
     public boolean predicate2(Object dm, Designer dsgr) {
-	if (!(dm instanceof MAssociation)) return NO_PROBLEM;
+	if (!(org.argouml.model.ModelFacade.isAAssociation(dm))) return NO_PROBLEM;
 	MAssociation asc = (MAssociation) dm;
 	Collection conn = asc.getConnections();
-	if (asc instanceof MAssociationRole)
+	if (org.argouml.model.ModelFacade.isAAssociationRole(asc))
 	    conn = ((MAssociationRole) asc).getConnections();
 	for (Iterator iter = conn.iterator(); iter.hasNext();) {
 	    MAssociationEnd ae = (MAssociationEnd) iter.next();
@@ -67,4 +68,3 @@ public class CrUnnavigableAssoc extends CrUML {
     public Class getWizardClass(ToDoItem item) { return WizNavigable.class; }
 
 } /* end class CrUnnavigableAssoc */
-

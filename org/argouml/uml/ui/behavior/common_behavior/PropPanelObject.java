@@ -1,3 +1,4 @@
+
 // $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -97,7 +98,7 @@ public class PropPanelObject extends PropPanelModelElement {
 
     public void navigateNamespace() {
         Object target = getTarget();
-        if (target instanceof MModelElement) {
+        if (org.argouml.model.ModelFacade.isAModelElement(target)) {
             MModelElement elem = (MModelElement) target;
             MNamespace ns = elem.getNamespace();
             if (ns != null) {
@@ -109,13 +110,13 @@ public class PropPanelObject extends PropPanelModelElement {
 
 
     public boolean isAcceptibleClassifier(MModelElement classifier) {
-        return classifier instanceof MClassifier;
+        return org.argouml.model.ModelFacade.isAClassifier(classifier);
     }
 
     public MClassifier getClassifier() {
         MClassifier classifier = null;
         Object target = getTarget();
-        if (target instanceof MInstance) {
+        if (org.argouml.model.ModelFacade.isAInstance(target)) {
 	    //    UML 1.3 apparently has this a 0..n multiplicity
 	    //    I'll have to figure out what that means
 	    //            classifier = ((MInstance) target).getClassifier();
@@ -133,7 +134,7 @@ public class PropPanelObject extends PropPanelModelElement {
     public void setClassifier(MClassifier element) {
         Object target = getTarget();
 
-        if (target instanceof MInstance) {
+        if (org.argouml.model.ModelFacade.isAInstance(target)) {
 	    MInstance inst = (MInstance) target;
 	    Vector classifiers = new Vector();
 	    if (element != null) {

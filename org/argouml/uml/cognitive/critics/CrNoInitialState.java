@@ -1,3 +1,4 @@
+
 // $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -50,7 +51,7 @@ public class CrNoInitialState extends CrUML {
     }
 
     public boolean predicate2(Object dm, Designer dsgr) {
-	if (!(dm instanceof MCompositeState)) return NO_PROBLEM;
+	if (!(org.argouml.model.ModelFacade.isACompositeState(dm))) return NO_PROBLEM;
 	MCompositeState cs = (MCompositeState) dm;
     
 	// if this composite state is not attached to a statemachine
@@ -62,7 +63,7 @@ public class CrNoInitialState extends CrUML {
 	int size = peers.size();
 	for (Iterator iter = peers.iterator(); iter.hasNext();) {
 	    Object sv = iter.next();
-	    if (sv instanceof MPseudostate 
+	    if (org.argouml.model.ModelFacade.isAPseudostate(sv) 
 		&& (MPseudostateKind.INITIAL.equals(((MPseudostate) sv)
 						    .getKind())))
 		initialStateCount++;
@@ -72,4 +73,3 @@ public class CrNoInitialState extends CrUML {
     }
 
 } /* end class CrNoInitialState */
-

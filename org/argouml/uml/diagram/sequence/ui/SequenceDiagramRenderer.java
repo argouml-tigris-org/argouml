@@ -1,3 +1,5 @@
+
+
 // $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -52,8 +54,8 @@ public class SequenceDiagramRenderer
 						     
     /** Return a Fig that can be used to represent the given node */
     public FigNode getFigNodeFor(GraphModel gm, Layer lay, Object node) {
-	if (node instanceof MObject) return new FigSeqObject(gm, node);
-	if (node instanceof MStimulus) return new FigSeqStimulus(gm, node);
+	if (org.argouml.model.ModelFacade.isAObject(node)) return new FigSeqObject(gm, node);
+	if (org.argouml.model.ModelFacade.isAStimulus(node)) return new FigSeqStimulus(gm, node);
 	cat.debug("TODO SequenceDiagramRenderer getFigNodeFor");
 	return null;
     }
@@ -62,7 +64,7 @@ public class SequenceDiagramRenderer
     /** Generally the same code as for the ClassDiagram, since its
 	very related to it. */
     public FigEdge getFigEdgeFor(GraphModel gm, Layer lay, Object edge) {
-	if (edge instanceof MLink) {
+	if (org.argouml.model.ModelFacade.isALink(edge)) {
 	    MLink ml = (MLink) edge;
 	    FigSeqLink mlFig = new FigSeqLink(ml);
 	    Collection connections = ml.getConnections();

@@ -1,3 +1,4 @@
+
 // $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -66,7 +67,7 @@ public class ActionSetAssociationEndAggregation extends UMLChangeAction {
             JRadioButton source = (JRadioButton) e.getSource();
             String actionCommand = source.getActionCommand();
             Object target = ((UMLRadioButtonPanel) source.getParent()).getTarget();
-            if (target instanceof MAssociationEnd) {
+            if (org.argouml.model.ModelFacade.isAAssociationEnd(target)) {
                 MAssociationEnd m = (MAssociationEnd) target;
                 MAggregationKind kind = null;
                 if (actionCommand.equals(AGGREGATE_COMMAND)) {

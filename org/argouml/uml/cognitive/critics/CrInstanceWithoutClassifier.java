@@ -1,3 +1,4 @@
+
 // $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -90,7 +91,7 @@ public class CrInstanceWithoutClassifier extends CrUML {
 	    Object obj = figs.elementAt(i);
 	    if (!(obj instanceof FigNodeModelElement)) continue;
 	    FigNodeModelElement fn = (FigNodeModelElement) obj;
-	    if (fn != null && (fn.getOwner() instanceof MInstance)) {
+	    if (fn != null && (org.argouml.model.ModelFacade.isAInstance(fn.getOwner()))) {
 		MInstance minst = (MInstance) fn.getOwner();
 		if (minst != null) {
 		    Collection col = minst.getClassifiers();
@@ -107,4 +108,3 @@ public class CrInstanceWithoutClassifier extends CrUML {
     } 
  
 } /* end class CrInstanceWithoutClassifier.java */
-

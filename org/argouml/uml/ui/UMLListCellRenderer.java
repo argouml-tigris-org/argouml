@@ -1,3 +1,4 @@
+
 // $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -76,7 +77,7 @@ public class UMLListCellRenderer extends DefaultListCellRenderer {
             lab.setText("\"\"");
             return lab;
         }
-        if (!(value instanceof MModelElement))
+        if (!(org.argouml.model.ModelFacade.isAModelElement(value)))
             return lab;
         String name = ((MModelElement) value).getName();
         if (name == null) {

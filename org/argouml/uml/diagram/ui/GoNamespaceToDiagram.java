@@ -1,3 +1,5 @@
+
+
 // $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -52,7 +54,7 @@ public class GoNamespaceToDiagram extends AbstractGoRule {
     }
 
     public Collection getChildren(Object parent) {
-        if (parent instanceof MNamespace) {
+        if (org.argouml.model.ModelFacade.isANamespace(parent)) {
             List returnList = new ArrayList();
             MNamespace ns = (MNamespace) parent;
             Project proj = ProjectManager.getManager().getCurrentProject();
@@ -61,7 +63,7 @@ public class GoNamespaceToDiagram extends AbstractGoRule {
                 UMLDiagram d = (UMLDiagram) it.next();
                 if (d instanceof UMLStateDiagram) {
                     UMLStateDiagram sd = (UMLStateDiagram) d;
-                    if (sd.getStateMachine().getContext() instanceof MBehavioralFeature)
+                    if (org.argouml.model.ModelFacade.isABehavioralFeature(sd.getStateMachine().getContext()))
                     	continue;
                 }
                 // patch for 0.14 stability to disable SD's

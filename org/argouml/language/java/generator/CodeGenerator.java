@@ -1,3 +1,4 @@
+
 // $Id$
 // Copyright (c) 1996-2001 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -65,10 +66,10 @@ class CodeGenerator
 	Collection features = mClass.getFeatures();
 	for (Iterator i = features.iterator(); i.hasNext(); ) {
 	    MFeature feature = (MFeature) i.next();
-	    if (feature instanceof MOperation) {
+	    if (org.argouml.model.ModelFacade.isAOperation(feature)) {
 		generateOperation((MOperation) feature, mClass, reader, writer);
 	    }
-	    if (feature instanceof MAttribute) {
+	    if (org.argouml.model.ModelFacade.isAAttribute(feature)) {
 		generateAttribute((MAttribute) feature, mClass, reader, writer);
 	    }
 	}
@@ -77,10 +78,10 @@ class CodeGenerator
 	Collection elements = mClass.getOwnedElements();
 	for (Iterator i = elements.iterator(); i.hasNext(); ) {
 	    MModelElement element = (MModelElement) i.next();
-	    if (element instanceof MClass) {
+	    if (org.argouml.model.ModelFacade.isAClass(element)) {
 		generateClass((MClass) element, reader, writer);
 	    }
-	    else if (element instanceof MInterface) {
+	    else if (org.argouml.model.ModelFacade.isAInterface(element)) {
 		generateInterface((MInterface) element, reader, writer);
 	    }
 	}
@@ -111,11 +112,11 @@ class CodeGenerator
 	Collection features = mInterface.getFeatures();
 	for (Iterator i = features.iterator(); i.hasNext(); ) {
 	    MFeature feature = (MFeature) i.next();
-	    if (feature instanceof MOperation) {
+	    if (org.argouml.model.ModelFacade.isAOperation(feature)) {
 		generateOperation((MOperation) feature,
 				  mInterface, reader, writer);
 	    }
-	    if (feature instanceof MAttribute) {
+	    if (org.argouml.model.ModelFacade.isAAttribute(feature)) {
 		generateAttribute((MAttribute) feature,
 				  mInterface, reader, writer);
 	    }
@@ -125,10 +126,10 @@ class CodeGenerator
 	Collection elements = mInterface.getOwnedElements();
 	for (Iterator i = elements.iterator(); i.hasNext(); ) {
 	    MModelElement element = (MModelElement) i.next();
-	    if (element instanceof MClass) {
+	    if (org.argouml.model.ModelFacade.isAClass(element)) {
 		generateClass((MClass) element, reader, writer);
 	    }
-	    else if (element instanceof MInterface) {
+	    else if (org.argouml.model.ModelFacade.isAInterface(element)) {
 		generateInterface((MInterface) element, reader, writer);
 	    }
 	}
@@ -159,7 +160,7 @@ class CodeGenerator
 	parseStateStack.push(new ParseState(mClassifier));
 	ocp.write(reader, writer, parseStateStack);
 
-	if (mOperation.isAbstract() || mClassifier instanceof MInterface) {
+	if (mOperation.isAbstract() || org.argouml.model.ModelFacade.isAInterface(mClassifier)) {
 	    writer.write(";\n");
 	}
 	else {

@@ -1,3 +1,6 @@
+
+
+
 // $Id$
 // Copyright (c) 1996-2001 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -107,27 +110,27 @@ public abstract class Generator
     public String generate(Object o) {
         if (o == null)
             return "";
-        if (o instanceof MExtensionPoint)
+        if (org.argouml.model.ModelFacade.isAExtensionPoint(o))
             return generateExtensionPoint((MExtensionPoint) o);
-        if (o instanceof MOperation)
+        if (org.argouml.model.ModelFacade.isAOperation(o))
             return generateOperation((MOperation) o, false);
-        if (o instanceof MAttribute)
+        if (org.argouml.model.ModelFacade.isAAttribute(o))
             return generateAttribute((MAttribute) o, false);
-        if (o instanceof MParameter)
+        if (org.argouml.model.ModelFacade.isAParameter(o))
             return generateParameter((MParameter) o);
-        if (o instanceof MPackage)
+        if (org.argouml.model.ModelFacade.isAPackage(o))
             return generatePackage((MPackage) o);
-        if (o instanceof MClassifier)
+        if (org.argouml.model.ModelFacade.isAClassifier(o))
             return generateClassifier((MClassifier) o);
-        if (o instanceof MExpression)
+        if (org.argouml.model.ModelFacade.isAExpression(o))
             return generateExpression((MExpression) o);
         if (o instanceof String)
             return generateName((String) o);
         if (o instanceof String)
             return generateUninterpreted((String) o);
-        if (o instanceof MStereotype)
+        if (org.argouml.model.ModelFacade.isAStereotype(o))
             return generateStereotype((MStereotype) o);
-        if (o instanceof MTaggedValue) {
+        if (org.argouml.model.ModelFacade.isATaggedValue(o)) {
             /*
              * 2002-11-07 Jaap Branderhorst Added the if statement to
              * test for the testtag. Did it here and not in (for
@@ -145,26 +148,26 @@ public abstract class Generator
             }
             return generateTaggedValue((MTaggedValue) o);
         }
-        if (o instanceof MAssociation)
+        if (org.argouml.model.ModelFacade.isAAssociation(o))
             return generateAssociation((MAssociation) o);
-        if (o instanceof MAssociationEnd)
+        if (org.argouml.model.ModelFacade.isAAssociationEnd(o))
             return generateAssociationEnd((MAssociationEnd) o);
-        if (o instanceof MMultiplicity)
+        if (org.argouml.model.ModelFacade.isAMultiplicity(o))
             return generateMultiplicity((MMultiplicity) o);
-        if (o instanceof MState)
+        if (org.argouml.model.ModelFacade.isAState(o))
             return generateState((MState) o);
-        if (o instanceof MTransition)
+        if (org.argouml.model.ModelFacade.isATransition(o))
             return generateTransition((MTransition) o);
         if (ModelFacade.isAAction(o))
             return generateAction(o);
-        if (o instanceof MCallAction)
+        if (org.argouml.model.ModelFacade.isACallAction(o))
             return generateAction(o);
-        if (o instanceof MGuard)
+        if (org.argouml.model.ModelFacade.isAGuard(o))
             return generateGuard((MGuard) o);
-        if (o instanceof MMessage)
+        if (org.argouml.model.ModelFacade.isAMessage(o))
             return generateMessage((MMessage) o);
 
-        if (o instanceof MModelElement)
+        if (org.argouml.model.ModelFacade.isAModelElement(o))
             return generateName(((MModelElement) o).getName());
 
         if (o == null)

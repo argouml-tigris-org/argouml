@@ -1,3 +1,4 @@
+
 // $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -61,7 +62,7 @@ public class CrTooManyTransitions extends CrUML {
     ////////////////////////////////////////////////////////////////
     // critiquing API
     public boolean predicate2(Object dm, Designer dsgr) {
-	if (!(dm instanceof MStateVertex)) return NO_PROBLEM;
+	if (!(org.argouml.model.ModelFacade.isAStateVertex(dm))) return NO_PROBLEM;
 	MStateVertex sv = (MStateVertex) dm;
 
 	int threshold = ((Integer) getArg(THRESHOLD)).intValue();
@@ -74,4 +75,3 @@ public class CrTooManyTransitions extends CrUML {
     }
 
 } /* end class CrTooManyTransitions */
-

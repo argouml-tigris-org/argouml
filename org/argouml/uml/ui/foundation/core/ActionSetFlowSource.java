@@ -1,3 +1,4 @@
+
 // $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -60,7 +61,7 @@ public class ActionSetFlowSource extends UMLChangeAction {
         if (e.getSource() instanceof UMLComboBox2) {
             UMLComboBox2 source = (UMLComboBox2) e.getSource();
             Object target = source.getTarget();
-            if (target instanceof MFlow) {
+            if (org.argouml.model.ModelFacade.isAFlow(target)) {
                 MFlow flow = (MFlow) target;
                 MModelElement old = null;
                 if (!flow.getSources().isEmpty()) {

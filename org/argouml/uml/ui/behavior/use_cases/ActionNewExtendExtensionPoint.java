@@ -1,3 +1,4 @@
+
 // $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -55,7 +56,7 @@ public class ActionNewExtendExtensionPoint
      */
     public void actionPerformed(ActionEvent e) {
         super.actionPerformed(e);
-        if (getTarget() instanceof MExtend) {
+        if (org.argouml.model.ModelFacade.isAExtend(getTarget())) {
             MExtensionPoint point = UseCasesFactory.getFactory().buildExtensionPoint(((MExtend) getTarget()).getBase());
             ((MExtend) getTarget()).addExtensionPoint(point);
         }

@@ -1,3 +1,4 @@
+
 // $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -56,7 +57,7 @@ public class CrDisambigClassName extends CrUML {
     }
 
     public boolean predicate2(Object dm, Designer dsgr) {
-	if (!(dm instanceof MClassifier)) return NO_PROBLEM;
+	if (!(org.argouml.model.ModelFacade.isAClassifier(dm))) return NO_PROBLEM;
 	MClassifier cls = (MClassifier) dm;
 	String myName = cls.getName();
 	//@ if (myName.equals(Name.UNSPEC)) return NO_PROBLEM;
@@ -76,7 +77,7 @@ public class CrDisambigClassName extends CrUML {
 	    while (enum.hasNext()) {
 		MElementImport eo = (MElementImport) enum.next();
 		MModelElement me = (MModelElement) eo.getModelElement();
-		if (!(me instanceof MClassifier)) continue;
+		if (!(org.argouml.model.ModelFacade.isAClassifier(me))) continue;
 		if (me == cls) continue;
 		String meName = me.getName();
 		if (meName == null || meName.equals("")) continue;
@@ -105,4 +106,3 @@ public class CrDisambigClassName extends CrUML {
 
 
 } /* end class CrDisambigClassName.java */
-

@@ -1,3 +1,5 @@
+
+
 // $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -331,7 +333,7 @@ abstract public class PropPanel
                 _listenerList = registrateTargetListeners(this); 
             }
 
-            if (_target instanceof MModelElement) {
+            if (org.argouml.model.ModelFacade.isAModelElement(_target)) {
                 _modelElement = (MModelElement) _target;
             }
 
@@ -443,7 +445,7 @@ abstract public class PropPanel
     protected MNamespace getDisplayNamespace() {
         MNamespace ns = null;
         Object target = getTarget();
-        if (target instanceof MModelElement) {
+        if (org.argouml.model.ModelFacade.isAModelElement(target)) {
             ns = ((MModelElement) target).getNamespace();
         }
         return ns;
@@ -589,7 +591,7 @@ abstract public class PropPanel
 
     public void removeElement() {
         Object target = getTarget();
-        if (target instanceof MBase) {
+        if (org.argouml.model.ModelFacade.isABase(target)) {
             MModelElement newTarget = ((MModelElement) target).getModelElementContainer();
             MBase base = (MBase) target;
             TargetManager.getInstance().setTarget(base);

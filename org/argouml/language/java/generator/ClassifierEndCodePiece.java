@@ -1,3 +1,4 @@
+
 // $Id$
 // Copyright (c) 1996-2001 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -109,11 +110,11 @@ public class ClassifierEndCodePiece extends NamedCodePiece
         // Insert new features
         for (Iterator i = newFeatures.iterator(); i.hasNext(); ) {
             MFeature mFeature = (MFeature) i.next();
-            if (mFeature instanceof MOperation) {
+            if (org.argouml.model.ModelFacade.isAOperation(mFeature)) {
                 CodeGenerator.generateOperation((MOperation) mFeature,
 						mClassifier, reader, writer);
             }
-            else if (mFeature instanceof MAttribute) {
+            else if (org.argouml.model.ModelFacade.isAAttribute(mFeature)) {
                 CodeGenerator.generateAttribute((MAttribute) mFeature,
 						mClassifier, reader, writer);
             }
@@ -122,10 +123,10 @@ public class ClassifierEndCodePiece extends NamedCodePiece
         // Insert new inner classes
         for (Iterator i = newInnerClasses.iterator(); i.hasNext(); ) {
             MModelElement element = (MModelElement) i.next();
-            if (element instanceof MClass) {
+            if (org.argouml.model.ModelFacade.isAClass(element)) {
                 CodeGenerator.generateClass((MClass) element, reader, writer);
             }
-            else if (element instanceof MInterface) {
+            else if (org.argouml.model.ModelFacade.isAInterface(element)) {
 		CodeGenerator.generateInterface((MInterface) element,
 						reader, writer);
             }

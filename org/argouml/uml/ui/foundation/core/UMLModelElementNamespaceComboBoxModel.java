@@ -1,3 +1,4 @@
+
 // $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -55,7 +56,7 @@ public class UMLModelElementNamespaceComboBoxModel extends UMLComboBoxModel2 {
      * @see org.argouml.uml.ui.UMLComboBoxModel2#isValidElement(ru.novosoft.uml.MBase)
      */
     protected boolean isValidElement(Object o) {
-        return o instanceof MNamespace && CoreHelper.getHelper().isValidNamespace((MModelElement) getTarget(), (MNamespace) o);
+        return org.argouml.model.ModelFacade.isANamespace(o) && CoreHelper.getHelper().isValidNamespace((MModelElement) getTarget(), (MNamespace) o);
     }
     
     /**  

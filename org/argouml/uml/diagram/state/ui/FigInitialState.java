@@ -1,3 +1,4 @@
+
 // $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -102,8 +103,7 @@ public class FigInitialState extends FigStateVertex {
         if (getOwner() != null) {
             pstate = (MPseudostate) getOwner();
             if (pstate == null) return sel;
-            if (pstate.getContainer().getStateMachine() 
-                instanceof MActivityGraph) {
+            if (org.argouml.model.ModelFacade.isAActivityGraph(pstate.getContainer().getStateMachine())) {
                 sel = new SelectionActionState(this);
                 ((SelectionActionState) sel).setIncomingButtonEnabled(false);
                 Collection outs = ((MStateVertex) getOwner()).getOutgoings();

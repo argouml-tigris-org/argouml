@@ -1,3 +1,4 @@
+
 // $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -116,7 +117,7 @@ public class TabTaggedValues extends TabSpawnable
         }
 
         Object t = (target instanceof Fig) ? ((Fig) target).getOwner() : target;
-        if (!(t instanceof MModelElement)) {
+        if (!(org.argouml.model.ModelFacade.isAModelElement(t))) {
             _target = null;
             _shouldBeEnabled = false;
             return;
@@ -153,7 +154,7 @@ public class TabTaggedValues extends TabSpawnable
 
     public boolean shouldBeEnabled(Object target) {
         Object t = (target instanceof Fig) ? ((Fig) target).getOwner() : target;
-        if (!(t instanceof MModelElement)) {
+        if (!(org.argouml.model.ModelFacade.isAModelElement(t))) {
             _shouldBeEnabled = false;
             return _shouldBeEnabled;
         }
@@ -324,4 +325,3 @@ class TableModelTaggedValues extends AbstractTableModel
     }
 
 } /* end class TableModelTaggedValues */
-
