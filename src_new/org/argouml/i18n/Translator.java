@@ -58,7 +58,7 @@ public class Translator {
     public static void init () {
 
         Locale.setDefault(new Locale(System.getProperty("user.language", "en"),
-            System.getProperty("user.country", "CA")));
+            System.getProperty("user.country", "")));
 
         org.workingfrog.i18n.util.Translator.setDefaultLocale(
             new Locale("en", ""));
