@@ -34,6 +34,7 @@ import javax.swing.JTextField;
 
 import org.argouml.application.api.Argo;
 import org.argouml.swingext.LabelledLayout;
+import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.ui.PropPanelButton;
 import org.argouml.uml.ui.UMLComboBoxNavigator;
 import org.argouml.uml.ui.UMLLinkedList;
@@ -144,7 +145,7 @@ public class PropPanelExtensionPoint extends PropPanelModelElement {
         MUseCase owner = ((MExtensionPoint) target).getUseCase();
 
         if(owner != null) {
-            navigateTo(owner);
+            ProjectBrowser.TheInstance.setTarget(owner);
         }
     }
 
