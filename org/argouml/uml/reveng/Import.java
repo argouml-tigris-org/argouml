@@ -363,6 +363,18 @@ class ImportRun implements Runnable {
 	    return;
 	}
 	    
+	// Do post load processings.
+	_st.mark("postprocessings");
+
+	// Check if any diagrams where modified and the project
+	// should be saved before exiting.
+	if(Import.needsSave()) {
+	    _project.setNeedsSave(true);
+	}
+
+	pb.setProject(_project);
+	pb.showStatus("Import done");
+
 	// Layout the modified diagrams.
 	_st.mark("layout");
 	for(int i=0; i < _diagram.getModifiedDiagrams().size(); i++) {

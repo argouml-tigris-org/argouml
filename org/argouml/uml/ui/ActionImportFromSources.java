@@ -91,25 +91,10 @@ public class ActionImportFromSources extends UMLAction {
                     String path = chooser.getSelectedFile().getParent();
                     String filename = chooser.getSelectedFile().getName();
                     filename = path + separator + filename;
-                    //    if (!filename.endsWith(Project.FILE_EXT)) {
-                    //  filename += Project.FILE_EXT;
-                    //  theFile = new File(filename);
-                    //}
                     Globals.setLastDirectory(path);
                     if (filename != null) {
-                        pb.showStatus("Parsing " + path + filename + "...");
-                        //p = ArgoParser.SINGLETON.getProject();
+                        pb.showStatus("Parsing " + filename + "...");
                         Import.doFile(p, theFile);
-                        p.postLoad();
-
-			// Check if any diagrams where modified and the project
-			// should be saved before exiting.
-			if(Import.needsSave()) {
-			    p.setNeedsSave(true);
-			}
-
-                        pb.setProject(p);
-                        pb.showStatus("Parsed " + filename);
                         return;
                     }
                 }
