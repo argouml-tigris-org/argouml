@@ -29,10 +29,14 @@ import java.awt.event.ActionEvent;
 import javax.swing.Action;
 
 import org.argouml.i18n.Translator;
+import org.argouml.kernel.ProjectManager;
 import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.UseCasesFactory;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.AbstractActionNewModelElement;
+
+import ru.novosoft.uml.foundation.core.MNamespace;
+import ru.novosoft.uml.model_management.MModel;
 
 
 /**
@@ -56,8 +60,10 @@ class ActionNewActor extends AbstractActionNewModelElement {
     public void actionPerformed(ActionEvent e) {
         Object target = TargetManager.getInstance().getModelTarget();
         if (ModelFacade.isAActor(target)) {
+            Object model =
+                ProjectManager.getManager().getCurrentProject().getModel();
             TargetManager.getInstance().setTarget(
-                    UseCasesFactory.getFactory().buildActor(target));
+                    UseCasesFactory.getFactory().buildActor(target, model));
             super.actionPerformed(e);
         }
     }
