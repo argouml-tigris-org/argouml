@@ -26,9 +26,9 @@
     <property file="default.properties"/>
   
     <path id="component.compile.classpath">
-      <pathelement location="${log4j.jar.path}" />
       <pathelement location="${jmi.jar.path}" />
-      <pathelement location="${nsuml.jar.path}" />
+      <pathelement location="${jndi.jar.path}" />
+      <pathelement location="${jndi.jar.path}" />
     </path>
 
     <!-- In order to use ant optional tasks which use jars that are not -->
@@ -86,11 +86,28 @@
     
     <property name="packages" value="org.argouml.*"/>
 
-    <available classname="org.apache.log4j.Category"
+    <!-- available classname="org.apache.log4j.Category"
 	       classpathref="component.compile.classpath"
-               property="has.log4j" />
+               property="has.log4j" /-->
 
+  </target>
 
+  <!-- =================================================================== -->
+  <!-- Check to see if non-local required sources have been downloaded     -->
+  <!-- =================================================================== -->
+  <target name="check-external-dependencies" depends="init">
+
+    <available file="idl/Reflective.idl" property="reflective.idl.available"/>
+    <available file="idl/Model.idl" property="model.idl.available"/>
+    <available file="idl/PrimitiveTypes.idl" property="primitivetypes.idl.available"/>
+
+  </target>
+
+  <!-- =================================================================== -->
+  <!-- Only active if ant is running within the eclipse IDE                -->
+  <!-- =================================================================== -->
+  <target name="refresh" if="eclipse.running">
+      <eclipse.refreshLocal resource="."/>
   </target>
 
   <!-- Note this file can only make Ant display values set in the
@@ -146,7 +163,7 @@ ${component.Name} Build file
   <target name="check.log4j"
           depends="prepare"
 	  unless="has.log4j">
-    <fail message="log4j library does not appear to be in the classpath."/>
+    <!--fail message="log4j library does not appear to be in the classpath."/-->
   </target>
 
   <!-- =================================================================== -->
@@ -180,6 +197,137 @@ ${component.Name} Build file
       <antcall target="depend" inheritall="true"/>
   </target>
   
+  <!-- =================================================================== -->
+  <!-- Get the mof 1.4 reflective idl if necessary                         -->
+  <!-- =================================================================== -->
+  <target name="get-reflective-idl"
+          depends="check-external-dependencies"
+          unless="reflective.idl.available">
+
+    <get src="http://www.omg.org/cgi-bin/apps/doc?ptc/01-08-13.idl"
+         dest="idl/Reflective.idl"
+	 usetimestamp="true"
+	 verbose="false"
+	 ignoreerrors="true"/>
+
+     <!-- Check availability again - if the get worked, it will be there. -->
+     <available file="idl/Reflective.idl" property="reflective.idl.available"/>
+
+     <!-- The Reflective idl as provided does not protect against         -->
+     <!-- multiple inclusions.  This corrects that problem.               -->
+     <replace file="idl/Reflective.idl"
+              summary="true">
+          <replacetoken><![CDATA[//
+// The MOF 1.4 Reflective module
+//
+]]></replacetoken>
+          <replacevalue><![CDATA[#ifndef REFLECTIVE_INCLUDED
+#define REFLECTIVE_INCLUDED
+//
+// The MOF 1.4 Reflective module
+// With recursion protection added
+//
+]]></replacevalue>
+     </replace>
+     <replace file="idl/Reflective.idl"
+              summary="true">
+          <replacetoken><![CDATA[
+}; // end of Reflective module
+]]></replacetoken>
+          <replacevalue><![CDATA[
+}; // (modified) end of Reflective module
+#endif
+]]></replacevalue>
+     </replace>
+
+
+
+  </target>
+
+  <!-- =================================================================== -->
+  <!-- Get the mof 1.4 model idl if necessary                              -->
+  <!-- =================================================================== -->
+  <target name="get-model-idl"
+          depends="check-external-dependencies"
+          unless="model.idl.available">
+
+    <get src="http://www.omg.org/cgi-bin/apps/doc?ptc/01-08-10.idl"
+         dest="idl/Model.idl"
+	 usetimestamp="true"
+	 verbose="false"
+	 ignoreerrors="true"/>
+
+     <!-- Check availability again - if the get worked, it will be there. -->
+     <available file="idl/Model.idl" property="model.idl.available"/>
+
+  </target>
+
+  <!-- =================================================================== -->
+  <!-- Get the mof 1.4 primitivetypes idl if necessary                     -->
+  <!-- =================================================================== -->
+  <target name="get-primitivetypes-idl"
+          depends="check-external-dependencies"
+          unless="primitivetypes.idl.available">
+
+    <get src="http://www.omg.org/cgi-bin/apps/doc?ptc/01-08-11.idl"
+         dest="idl/PrimitiveTypes.idl"
+	 usetimestamp="true"
+	 verbose="false"
+	 ignoreerrors="true"/>
+
+     <!-- Check availability again - if the get worked, it will be there. -->
+     <available file="idl/PrimitiveTypes.idl" property="primitivetypes.idl.available"/>
+
+  </target>
+
+  <!-- =================================================================== -->
+  <!-- Get any external dependencies                                       -->
+  <!-- =================================================================== -->
+  <target name="get-external-dependencies"
+          depends="get-model-idl, get-reflective-idl, get-primitivetypes-idl">
+      <antcall target="refresh"/>
+  </target>
+
+  <target name="run.idlj">
+      <java classname="com.sun.tools.corba.se.idl.toJavaPortable.Compile"
+            fork="true">
+            <classpath>
+                <pathelement location="d:/j2sdk1.4.1_02/lib/tools.jar"/>
+           </classpath>
+           <arg value="-fclient"/>
+           <arg value="-keep"/>
+           <arg value="-nowarn"/>
+           <arg line="-td src"/>
+           <arg line="-pkgPrefix Reflective org.omg.mof"/>
+           <arg line="-pkgPrefix Model org.omg.mof"/>
+           <arg line="-pkgPrefix PrimitiveTypes org.omg.mof"/>
+           <arg line="-pkgPrefix Repository org.argouml.mof"/>
+           <arg value="-oldImplBase"/>
+           <arg line="-i idl"/>
+           <arg value="idl/${idl.name}.idl"/>
+      </java>
+  </target>
+  
+  <!-- =================================================================== -->
+  <!-- Generate the sources from idl                                       -->
+  <!-- =================================================================== -->
+  <target name="generate-idl-sources"
+          depends="get-external-dependencies">
+      <delete dir="src/org/argouml/mof"/>
+      <antcall target="run.idlj">
+           <param name="idl.name" value="Reflective"/>
+      </antcall>
+      <antcall target="run.idlj">
+           <param name="idl.name" value="Repository"/>
+      </antcall>
+      <antcall target="run.idlj">
+           <param name="idl.name" value="PrimitiveTypes"/>
+      </antcall>
+      <antcall target="run.idlj">
+           <param name="idl.name" value="Model"/>
+      </antcall>
+      <antcall target="refresh"/>
+  </target>
   
   <!-- =================================================================== -->
   <!-- Compiles the source directory                                       -->
@@ -195,7 +343,7 @@ ${component.Name} Build file
 
     <javac srcdir="${component.src.dir}"
            destdir="${component.build.classes}"
-	       includes="org/argouml/**/*.java"
+	       includes="org/argouml/**/*.java,org/omg/**/*.java"
            debug="${debug}"
            deprecation="${deprecation}"
            optimize="${optimize}">
@@ -217,7 +365,7 @@ ${component.Name} Build file
           overwrite="on" />
     <jar jarfile="${component.build.dir}/${component.name}.jar"
          basedir="${component.build.classes}"
-         includes="org/argouml/**"
+         includes="org/argouml/**,org/omg/**"
          excludes="*.txt,*.bat,*.xml,*.sh"
          manifest="${component.build.dir}/manifest.mf"/>
     <copy file="${component.build.dir}/${component.name}.jar"
@@ -316,7 +464,7 @@ ${component.Name} Build file
           depends="junit-init"
           unless="011202.xml.available">
 
-    <get src="http://cgi.omg.org/docs/ad/01-12-02.xml"
+    <get src="http://www.omg.org/docs/ptc/01-08-13.idl"
          dest="${011202.xml}"
 	 usetimestamp="true"
 	 verbose="false"
