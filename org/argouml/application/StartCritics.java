@@ -27,6 +27,8 @@ package org.argouml.application;
 import java.util.Locale;
 
 import org.apache.log4j.Logger;
+
+import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.cognitive.Designer;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
@@ -48,6 +50,9 @@ public class StartCritics implements Runnable {
         org.argouml.uml.cognitive.critics.Init.init();
         org.argouml.uml.cognitive.checklist.Init.init(Locale.getDefault());
         Project p = ProjectManager.getManager().getCurrentProject();
+        // set the icon for this poster
+        dsgr.setClarifier(ResourceLoaderWrapper.getResourceLoaderWrapper().
+            lookupIconResource("PostItD0"));
         dsgr.spawnCritiquer(p);
         dsgr.setChildGenerator(new ChildGenUML());
         java.util.Enumeration models = (p.getUserDefinedModels()).elements();
