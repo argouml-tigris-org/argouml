@@ -268,8 +268,8 @@ public abstract class FigEdgeModelElement
         }
         // POPUP_ADD_OFFSET should be equal to the number of items added here:
         popUpActions.addElement(new JSeparator());
-        popUpActions.addElement(ActionProperties.SINGLETON);
-        popUpActions.addElement(ActionDeleteFromDiagram.SINGLETON);
+        popUpActions.addElement(ActionProperties.getSingleton());
+        popUpActions.addElement(ActionDeleteFromDiagram.getSingleton());
         return popUpActions;
     }
 
