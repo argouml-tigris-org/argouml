@@ -125,7 +125,7 @@ implements TabModelTarget {
 
   public TabModelTarget findPanelFor(Class targetClass) {
     TabModelTarget p = (TabModelTarget) _panels.get(targetClass);
-    System.out.println("Getting prop panel for:" + targetClass+", found"+p);
+    // System.out.println("Getting prop panel for:" + targetClass+", found"+p);
     if (p == null) {
       Class panelClass = panelClassFor(targetClass);
       if (panelClass == null) return null;

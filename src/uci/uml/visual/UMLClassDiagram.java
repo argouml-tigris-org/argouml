@@ -88,7 +88,7 @@ public class UMLClassDiagram extends UMLDiagram {
 					   "Realization");
    
 	protected static Action _actionPackage =
-		new CmdCreateNode(MModelImpl.class, "Package");
+		new CmdCreateNode(MPackageImpl.class, "Package");
 
 
   ////////////////////////////////////////////////////////////////

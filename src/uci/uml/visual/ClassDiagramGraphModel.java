@@ -173,7 +173,7 @@ implements MutableGraphModel, VetoableChangeListener, MElementListener {
   public boolean canAddNode(Object node) {
     if (_nodes.contains(node)) return false;
     return (node instanceof MClass) || (node instanceof MInterface)
-    || (node instanceof MModel) || (node instanceof MInstance);
+    || (node instanceof MModel)  || (node instanceof MPackage) || (node instanceof MInstance);
   }
 
   /** Return true if the given object is a valid edge in this graph */
@@ -231,6 +231,7 @@ implements MutableGraphModel, VetoableChangeListener, MElementListener {
 	_model.addOwnedElement((MModelElement) node);
     }
     fireNodeAdded(node);
+    // System.out.println("adding "+node+" OK");
   }
 
   /** Add the given edge to the graph, if valid. */
@@ -326,9 +327,9 @@ implements MutableGraphModel, VetoableChangeListener, MElementListener {
 	      return null;
 	    }
       }
-      else if ((fromPort instanceof MModel) && (toPort instanceof MModel)) {
-		  MModel fromPack = (MModel) fromPort;
-		  MModel toPack = (MModel) toPort;
+      else if ((fromPort instanceof MPackage) && (toPort instanceof MPackage)) {
+		  MPackage fromPack = (MPackage) fromPort;
+		  MPackage toPack = (MPackage) toPort;
     // needs-more-work: assumes public, user pref for default visibility?
 	//do I have to check the namespace here? (Toby)
 		  if (edgeClass == MDependencyImpl.class) {
@@ -453,7 +454,7 @@ implements MutableGraphModel, VetoableChangeListener, MElementListener {
       if (oldOwned.contains(eo)) {
 	//System.out.println("model removed " + me);
 	if (me instanceof MClassifier) removeNode(me);	
-	if (me instanceof MModel) removeNode(me);
+	if (me instanceof MPackage) removeNode(me);
 	if (me instanceof MAssociation) removeEdge(me);
 	if (me instanceof MDependency) removeEdge(me);
 	if (me instanceof MGeneralization) removeEdge(me);

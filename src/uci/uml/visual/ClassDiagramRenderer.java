@@ -66,6 +66,7 @@ implements GraphNodeRenderer, GraphEdgeRenderer {
     if (node instanceof MClass) return new FigClass(gm, node);
     else if (node instanceof MInterface) return new FigInterface(gm, node);
     else if (node instanceof MInstance) return new FigInstance(gm, node);
+    else if (node instanceof MPackage) return new FigPackage(gm, node);
     else if (node instanceof MModel) return new FigPackage(gm, node);
     System.out.println("needs-more-work ClassDiagramRenderer getFigNodeFor "+node);
     return null;

@@ -91,7 +91,7 @@ implements Serializable, TreeModel, Cloneable {
     GoFilteredChildren modelToPackages =
       new GoFilteredChildren("Package->Subpackages",
 			     new GoModelToElements(),
-			     new PredInstanceOf(MModel.class));
+			     new PredInstanceOf(MPackage.class));
     GoFilteredChildren modelToClassifiers =
       new GoFilteredChildren("Package->Classifiers",
 			     new GoModelToElements(),
@@ -109,7 +109,7 @@ implements Serializable, TreeModel, Cloneable {
 			     new GoModelToElements(),
 			     new PredInstanceOf(MLink.class));
     GoFilteredChildren modelToCollaboration =
-      new GoFilteredChildren("Package->Subpackages",
+      new GoFilteredChildren("Package->Collaborations",
 			     new GoModelToElements(),
 			     new PredInstanceOf(MCollaboration.class));
 
