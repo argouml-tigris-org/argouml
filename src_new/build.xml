@@ -1196,6 +1196,7 @@ For details see http://www.clarkware.com/software/JDepend.html.
   <target name="checkstyle" depends="init">
     <java classname="com.puppycrawl.tools.checkstyle.Main"
           fork="true"
+	  maxmemory="32M"
           failonerror="false">
       <sysproperty key="checkstyle.header.file" 
 	           value="${argo.tools.dir}/checkstyle/java.header"/>
