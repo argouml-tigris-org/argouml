@@ -57,13 +57,13 @@ public class UMLClassDiagram extends UMLDiagram {
 
 
 	protected static Action _actionClass =
-		new CmdCreateNode(MClassImpl.class, "Class");
+		new CmdCreateNode(MClass.class, "Class");
 
 	protected static Action _actionObject =
-		new CmdCreateNode(MInstanceImpl.class, "Instance");
+		new CmdCreateNode(MInstance.class, "Instance");
 
 	protected static Action _actionInterface =
-		new CmdCreateNode(MInterfaceImpl.class, "Interface");
+		new CmdCreateNode(MInterface.class, "Interface");
 
 	protected static Action _actionDepend =
 		new CmdSetMode(ModeCreatePolyEdge.class,
@@ -92,7 +92,7 @@ public class UMLClassDiagram extends UMLDiagram {
 					   "Realization");
    
 	protected static Action _actionPackage =
-		new CmdCreateNode(MPackageImpl.class, "Package");
+		new CmdCreateNode(MPackage.class, "Package");
 
 
   ////////////////////////////////////////////////////////////////

@@ -57,17 +57,17 @@ public class UMLStateDiagram extends UMLDiagram {
   // actions for toolbar
 
   protected static Action _actionState =
-  new CmdCreateNode(MStateImpl.class, "State");
+  new CmdCreateNode(MState.class, "State");
 
   protected static Action _actionCompositeState =
-  new CmdCreateNode(MCompositeStateImpl.class, "CompositeState");
+  new CmdCreateNode(MCompositeState.class, "CompositeState");
 
   // start state, end state, forks, joins, etc.
   protected static Action _actionStartPseudoState =
   new ActionCreatePseudostate(MPseudostateKind.INITIAL, "Initial");
 
   protected static Action _actionFinalPseudoState =
-  new CmdCreateNode(MFinalStateImpl.class, "FinalState");
+  new CmdCreateNode(MFinalState.class, "FinalState");
 
   protected static Action _actionBranchPseudoState =
   new ActionCreatePseudostate(MPseudostateKind.BRANCH, "Branch");

@@ -59,7 +59,7 @@ public class UMLSequenceDiagram extends UMLDiagram {
 
 
   protected static Action _actionObject =
-  new CmdCreateNode(MObjectImpl.class, "Object");
+  new CmdCreateNode(MObject.class, "Object");
 
   protected static Action _actionLinkWithStimulusCall =
   new ActionAddLink(MCallActionImpl.class, "StimulusCall");
