@@ -752,7 +752,8 @@ public class Modeller
     {
         Object tv = ModelFacade.getTaggedValue(element,name);
         if (tv == null) {
-            tv = UmlFactory.getFactory().getExtensionMechanisms().buildTaggedValue(name,"");
+            ModelFacade.setTaggedValue(element,name,"");
+            tv = ModelFacade.getTaggedValue(element,name);
         }
         return tv;
     }
