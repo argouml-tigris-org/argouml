@@ -25,6 +25,7 @@
 package org.argouml.uml.diagram.use_case.ui;
 
 import org.apache.log4j.Logger;
+import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
 import org.argouml.uml.diagram.static_structure.ui.CommentEdge;
 import org.argouml.uml.diagram.static_structure.ui.FigComment;
@@ -126,28 +127,29 @@ public class UseCaseDiagramRenderer
      */
     public FigEdge getFigEdgeFor(GraphModel gm, Layer lay, Object edge) {
 
-        LOG.debug("making figedge for " + edge);
-
-        // If the edge is an association, we'll need a FigAssociation
-
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("making figedge for " + edge);
+        }
+        
+        if (edge == null) {
+            throw new IllegalArgumentException("A model edge must be supplied");
+        }
+        
+        FigEdge newEdge = null;
+        
         if (org.argouml.model.ModelFacade.isAAssociation(edge)) {
+            // If the edge is an association, we'll need a FigAssociation
             Object   asc         = /*(MAssociation)*/ edge;
             FigAssociation ascFig      = new FigAssociation(asc, lay);
 
-            return ascFig;
-        }
-
-        // Generalization needs a FigGeneralization
-
-        else if (org.argouml.model.ModelFacade.isAGeneralization(edge)) {
+            newEdge = ascFig;
+        } else if (org.argouml.model.ModelFacade.isAGeneralization(edge)) {
+            // Generalization needs a FigGeneralization
             Object   gen    = /*(MGeneralization)*/ edge;
             FigGeneralization genFig = new FigGeneralization(gen, lay);
-            return genFig;
-        }
-
-        // Extend relationship
-
-        else if (org.argouml.model.ModelFacade.isAExtend(edge)) {
+            newEdge = genFig;
+        } else if (org.argouml.model.ModelFacade.isAExtend(edge)) {
+            // Extend relationship
             Object   ext    = /*(MExtend)*/ edge;
             FigExtend extFig = new FigExtend(ext);
 
@@ -170,13 +172,10 @@ public class UseCaseDiagramRenderer
             extFig.setDestPortFig(baseFN);
             extFig.setDestFigNode(baseFN);
 
-            return extFig;
-        }
-
-        // Include relationship is very like extend. Watch out for the NSUML
-        // bug here.
-
-        else if (org.argouml.model.ModelFacade.isAInclude(edge)) {
+            newEdge = extFig;
+        } else if (org.argouml.model.ModelFacade.isAInclude(edge)) {
+            // Include relationship is very like extend. Watch out for the NSUML
+            // bug here.
             Object   inc    = /*(MInclude)*/ edge;
             FigInclude incFig = new FigInclude(inc);
 
@@ -196,12 +195,9 @@ public class UseCaseDiagramRenderer
             incFig.setDestPortFig(additionFN);
             incFig.setDestFigNode(additionFN);
 
-            return incFig;
-        }
-
-        // Dependency needs a FigDependency
-
-        else if (org.argouml.model.ModelFacade.isADependency(edge)) {
+            newEdge = incFig;
+        } else if (org.argouml.model.ModelFacade.isADependency(edge)) {
+            // Dependency needs a FigDependency
             Object   dep    = /*(MDependency)*/ edge;
             FigDependency depFig = new FigDependency(dep);
 
@@ -227,24 +223,52 @@ public class UseCaseDiagramRenderer
             depFig.setDestPortFig(supplierFN);
             depFig.setDestFigNode(supplierFN);
 
-            return depFig;
-        } else
-            if (edge instanceof CommentEdge) {
-                return new FigEdgeNote(edge, lay);
+            newEdge = depFig;
+        } else if (edge instanceof CommentEdge) {
+            newEdge = new FigEdgeNote(edge, lay);
+        }
+
+        if (newEdge == null) {
+            throw new IllegalArgumentException(
+                    "Don't know how to create FigEdge for model type "
+                    + edge.getClass().getName());
+        } else {
+            if (newEdge.getSourcePortFig() == null) {
+                Object source;
+                if (edge instanceof CommentEdge) {
+                    source = ((CommentEdge) edge).getSource();
+                } else {
+                    source = Model.getUmlHelper().getSource(edge);
+                }
+                setSourcePort(newEdge, (FigNode) lay.presentationFor(source));
             }
+            if (newEdge.getDestPortFig() == null) {
+                Object dest;
+                if (edge instanceof CommentEdge) {
+                    dest = ((CommentEdge) edge).getDestination();
+                } else {
+                    dest = Model.getUmlHelper().getDestination(edge);
+                }
+                setDestPort(newEdge, (FigNode) lay.presentationFor(dest));
+            }
+            if (newEdge.getSourcePortFig() == null
+                    || newEdge.getDestPortFig() == null) {
+                throw new IllegalStateException("Edge of type "
+                    + newEdge.getClass().getName()
+                    + " created with no source or destination port");
+            }
+        }
+        return newEdge;
+    }
+    
+    private void setSourcePort(FigEdge edge, FigNode source) {
+        edge.setSourcePortFig(source);
+        edge.setSourceFigNode(source);
+    }
 
-
-        // If we get here, we can't handle this sort of edge.
-
-        // What about realizations? They are not distinct objects in my UML
-        // model maybe they should be, just as an implementation issue, dont
-        // remove any of the methods that are there now.
-
-        LOG.error(this.getClass().toString()
-		  + ": getFigEdgeFor(" + gm.toString() + ", "
-		  + lay.toString() + ", " + edge.toString()
-		  + ") - needs more work to handle this sort of edge");
-        return null;
+    private void setDestPort(FigEdge edge, FigNode dest) {
+        edge.setDestPortFig(dest);
+        edge.setDestFigNode(dest);
     }
 
     static final long serialVersionUID = 2217410137377934879L;
