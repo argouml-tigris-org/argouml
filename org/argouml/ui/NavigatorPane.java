@@ -63,9 +63,9 @@ public class NavigatorPane
     private static final String BUNDLE = "statusmsg";
     
     /** for collecting user statistics */
-    public static int _clicksInNavPane = 0;
+    private static int clicksInNavPane = 0;
     /** for collecting user statistics */
-    public static int _navPerspectivesChanged = 0;
+    private static int navPerspectivesChanged = 0;
     
     ////////////////////////////////////////////////////////////////
     // constructors
