@@ -66,8 +66,8 @@ public class PropPanelInstance extends PropPanelModelElement {
      * 
      */
     public PropPanelInstance() {
-        super("Instance Properties", instanceIcon, ConfigLoader
-                .getTabPropsOrientation());
+        super("Instance Properties", lookupIcon("Instance"), 
+                ConfigLoader.getTabPropsOrientation());
         Class mclass = (Class) ModelFacade.INSTANCE;
 
         addField(Translator.localize("UMLMenu", "label.name"),

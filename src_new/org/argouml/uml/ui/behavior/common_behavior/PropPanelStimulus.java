@@ -29,11 +29,9 @@
 
 package org.argouml.uml.ui.behavior.common_behavior;
 
-import javax.swing.ImageIcon;
 import javax.swing.JList;
 import javax.swing.JScrollPane;
 
-import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.i18n.Translator;
 import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.UmlFactory;
@@ -56,14 +54,12 @@ import ru.novosoft.uml.MElementEvent;
  */
 public class PropPanelStimulus extends PropPanelModelElement {
 
-    private static ImageIcon stimulusIcon = lookupIcon("Stimulus");
-
     /**
      * The constructor.
      * 
      */
     public PropPanelStimulus() {
-        super("Stimulus Properties", stimulusIcon, 
+        super("Stimulus Properties", lookupIcon("Stimulus"), 
                 ConfigLoader.getTabPropsOrientation());
 
         Class[] namesToWatch = {
@@ -102,6 +98,9 @@ public class PropPanelStimulus extends PropPanelModelElement {
     }
 
 
+    /**
+     * @see ru.novosoft.uml.MElementListener#removed(ru.novosoft.uml.MElementEvent)
+     */
     public void removed(MElementEvent mee) {
     }
 

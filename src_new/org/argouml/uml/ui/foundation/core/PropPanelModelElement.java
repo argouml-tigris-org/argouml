@@ -65,122 +65,6 @@ public abstract class PropPanelModelElement extends PropPanel {
     private static final Logger LOG = Logger
             .getLogger(PropPanelModelElement.class);
 
-    /*
-     * TODO: (MVW) What is the use of having these icons here? Since we are in 
-     * an abstract class, why should we prepare for all siblings? 
-     * Let e.g. a Partition take care of its own icon, by writing  
-     *      lookupIcon("Partition")
-     * instead of 
-     *      partitionIcon
-     * The former is not less convenient, and much simpeler.  
-     */
-    protected static ImageIcon partitionIcon = lookupIcon("Partition");
-
-    protected static ImageIcon objectIcon = lookupIcon("Object");
-
-    protected static ImageIcon componentInstanceIcon =
-	lookupIcon("ComponentInstance");
-
-    protected static ImageIcon nodeInstanceIcon = lookupIcon("NodeInstance");
-
-    protected static ImageIcon instanceIcon = lookupIcon("Instance");
-
-    protected static ImageIcon linkIcon = lookupIcon("Link");
-
-    protected static ImageIcon stimulusIcon = lookupIcon("Stimulus");
-
-    protected static ImageIcon associationIcon = lookupIcon("Association");
-
-    protected static ImageIcon assocEndIcon = lookupIcon("AssociationEnd");
-
-    protected static ImageIcon assocEndRoleIcon =
-	lookupIcon("AssociationEndRole");
-
-    protected static ImageIcon generalizationIcon =
-	lookupIcon("Generalization");
-
-    protected static ImageIcon realizationIcon = lookupIcon("Realization");
-
-    protected static ImageIcon classIcon = lookupIcon("Class");
-
-    protected static ImageIcon collaborationIcon = lookupIcon("Collaboration");
-
-    protected static ImageIcon interfaceIcon = lookupIcon("Interface");
-
-    protected static ImageIcon addOpIcon = lookupIcon("NewOperation");
-
-    protected static ImageIcon addAttrIcon = lookupIcon("NewAttribute");
-
-    protected static ImageIcon addAssocIcon = lookupIcon("Association");
-
-    protected static ImageIcon packageIcon = lookupIcon("Package");
-
-    protected static ImageIcon modelIcon = lookupIcon("Model");
-    
-    protected static ImageIcon subsystemIcon = lookupIcon("Subsystem");
-
-    protected static ImageIcon innerClassIcon = lookupIcon("InnerClass");
-
-    protected static ImageIcon nodeIcon = lookupIcon("Node");
-
-    protected static ImageIcon componentIcon = lookupIcon("Component");
-
-    protected static ImageIcon dataTypeIcon = lookupIcon("DataType");
-
-    protected static ImageIcon actorIcon = lookupIcon("Actor");
-
-    protected static ImageIcon useCaseIcon = lookupIcon("UseCase");
-
-    protected static ImageIcon extendIcon = lookupIcon("Extend");
-
-    protected static ImageIcon extensionPointIcon =
-	lookupIcon("ExtensionPoint");
-
-    protected static ImageIcon includeIcon = lookupIcon("Include");
-
-    protected static ImageIcon dependencyIcon = lookupIcon("Dependency");
-
-    protected static ImageIcon permissionIcon = lookupIcon("Permission");
-
-    protected static ImageIcon usageIcon = lookupIcon("Usage");
-
-    protected static ImageIcon parameterIcon = lookupIcon("Parameter");
-
-    protected static ImageIcon operationIcon = lookupIcon("Operation");
-
-    protected static ImageIcon signalIcon = lookupIcon("SignalSending");
-
-    protected static ImageIcon stereotypeIcon = lookupIcon("Stereotype");
-
-    protected static ImageIcon guardIcon = lookupIcon("Guard");
-
-    protected static ImageIcon transitionIcon = lookupIcon("Transition");
-
-    protected static ImageIcon classifierRoleIcon =
-	lookupIcon("ClassifierRole");
-
-    protected static ImageIcon associationRoleIcon =
-	lookupIcon("AssociationRole");
-
-    protected static ImageIcon callActionIcon = lookupIcon("CallAction");
-
-    protected static ImageIcon eventIcon = lookupIcon("Event");
-
-    protected static ImageIcon interactionIcon = lookupIcon("Interaction");
-
-    // added next one so someone can change the icon independant of callaction
-    protected static ImageIcon actionIcon = lookupIcon("CallAction");
-
-    protected static ImageIcon receptionIcon = lookupIcon("Reception");
-
-    protected static ImageIcon commentIcon = lookupIcon("Note");
-
-    protected static ImageIcon messageIcon = lookupIcon("Message");
-
-    protected static ImageIcon flowIcon = lookupIcon("Flow");
-
-    protected static ImageIcon stateMachineIcon = lookupIcon("StateMachine");
-
     private JScrollPane namespaceScroll;
 
     private JComboBox namespaceComboBox;
@@ -412,7 +296,7 @@ public abstract class PropPanelModelElement extends PropPanel {
                     .localize("UMLMenu", "tooltip.nav-stereo"),
                     getStereotypeComboBox()));
             JButton stereoTypeButton = new JButton(new AbstractAction(null,
-                    stereotypeIcon) {
+                    lookupIcon("Stereotype")) {
 
                 public void actionPerformed(ActionEvent e) {
                     Object newTarget = ExtensionMechanismsFactory.getFactory()

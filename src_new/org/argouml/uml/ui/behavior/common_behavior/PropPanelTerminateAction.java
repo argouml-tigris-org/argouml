@@ -38,7 +38,7 @@ public class PropPanelTerminateAction extends PropPanelAction {
      * 
      */
     public PropPanelTerminateAction() {
-        super("TerminateAction", callActionIcon);
+        super("TerminateAction", lookupIcon("TerminateAction"));
     }
 
 } 

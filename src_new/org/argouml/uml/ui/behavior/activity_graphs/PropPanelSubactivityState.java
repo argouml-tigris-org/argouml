@@ -39,7 +39,7 @@ public class PropPanelSubactivityState extends PropPanelSubmachineState {
   * Constructor
   */
     public PropPanelSubactivityState() { 
-        super("SubactivityState", subactivityStateIcon, ConfigLoader
-             .getTabPropsOrientation());    
+        super("SubactivityState", lookupIcon("SubactivityState"), 
+                ConfigLoader.getTabPropsOrientation());    
     }
 }

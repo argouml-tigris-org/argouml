@@ -38,7 +38,7 @@ public class PropPanelCreateAction extends PropPanelAction {
      * 
      */
     public PropPanelCreateAction() {
-        super("CreateAction", callActionIcon);
+        super("CreateAction", lookupIcon("CreateAction"));
     }
 
 } 

@@ -46,7 +46,8 @@ public class PropPanelLinkEnd extends PropPanelModelElement {
      * 
      */
     public PropPanelLinkEnd() {
-        super("Linkend", assocEndIcon, ConfigLoader.getTabPropsOrientation());
+        super("Linkend", lookupIcon("AssociationEnd"), 
+                ConfigLoader.getTabPropsOrientation());
         addField(Translator.localize("UMLMenu", "label.name"),
                 getNameTextField());
         

@@ -58,7 +58,7 @@ public class PropPanelSubmachineState extends PropPanelCompositeState {
      * Constructor for PropPanelSubmachineState.
      */
     public PropPanelSubmachineState() {
-        super("Submachine State", compositeStateIcon, 
+        super("Submachine State", lookupIcon("SubmachineState"), 
                 ConfigLoader.getTabPropsOrientation());
         addField(Translator.localize("UMLMenu", "label.name"), 
                 getNameTextField());

@@ -48,7 +48,6 @@ public class PropPanelAssociationEndRole extends PropPanelAssociationEnd {
         super("AssociationEndRole", ConfigLoader.getTabPropsOrientation());
         setAssociationLabel(Translator.localize("UMLMenu", 
                 "label.association-role"));
-        assocEndorRoleIcon = assocEndRoleIcon;
         createControls((Class) ModelFacade.ASSOCIATION_END_ROLE);
         positionStandardControls();
         positionControls();

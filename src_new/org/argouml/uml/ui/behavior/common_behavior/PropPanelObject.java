@@ -62,7 +62,8 @@ public class PropPanelObject extends PropPanelInstance {
      * Constructor.
      */
     public PropPanelObject() {
-	super("Object", objectIcon, ConfigLoader.getTabPropsOrientation());
+	super("Object", lookupIcon("Object"), 
+            ConfigLoader.getTabPropsOrientation());
 
 	Class mclass = (Class) ModelFacade.OBJECT;
 

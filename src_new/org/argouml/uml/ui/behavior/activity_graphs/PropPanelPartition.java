@@ -31,6 +31,7 @@ import org.argouml.util.ConfigLoader;
 
 
 /**
+ * The properties panel for a Partition (Swimlane).
  * 
  * @author mkl
  *
@@ -43,7 +44,7 @@ public class PropPanelPartition extends PropPanelModelElement {
      * constructor.
      */
     public PropPanelPartition() {
-        super("Swimlane",  partitionIcon,
+        super("Swimlane",  lookupIcon("Partition"),
       	      ConfigLoader.getTabPropsOrientation());
 
         addField(Translator.localize("label.name"), getNameTextField());

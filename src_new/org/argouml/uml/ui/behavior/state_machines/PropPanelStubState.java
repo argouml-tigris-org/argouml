@@ -39,7 +39,8 @@ public class PropPanelStubState extends PropPanelStateVertex {
      */
     public PropPanelStubState() {
         // TODO: give the stubstate it's own icon
-        super("Stub State", stateIcon, ConfigLoader.getTabPropsOrientation());
+        super("Stub State", lookupIcon("State"), 
+                ConfigLoader.getTabPropsOrientation());
 
         addField(Translator.localize("UMLMenu", "label.name"), 
                 getNameTextField());

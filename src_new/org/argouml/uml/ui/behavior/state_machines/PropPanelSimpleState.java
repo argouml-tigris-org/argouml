@@ -45,7 +45,8 @@ public class PropPanelSimpleState extends PropPanelState {
      * Constructor
      */
     public PropPanelSimpleState() {
-        this("Simple State", stateIcon, ConfigLoader.getTabPropsOrientation());
+        this("Simple State", lookupIcon("SimpleState"), 
+                ConfigLoader.getTabPropsOrientation());
     }
 
     /**
@@ -57,7 +58,7 @@ public class PropPanelSimpleState extends PropPanelState {
      */
     public PropPanelSimpleState(String name, ImageIcon icon,
             Orientation orientation) {
-        super(name, stateIcon, ConfigLoader.getTabPropsOrientation());
+        super(name, icon, ConfigLoader.getTabPropsOrientation());
 
         addField(Translator.localize("UMLMenu", "label.name"),
                 getNameTextField());
@@ -65,9 +66,12 @@ public class PropPanelSimpleState extends PropPanelState {
                 getStereotypeBox());
         addField(Translator.localize("UMLMenu", "label.container"),
                 getContainerScroll());
-        addField(Translator.localize("UMLMenu", "label.entry"), getEntryScroll());
-        addField(Translator.localize("UMLMenu", "label.exit"), getExitScroll());
-        addField(Translator.localize("UMLMenu", "label.do-activity"), getDoScroll());
+        addField(Translator.localize("UMLMenu", "label.entry"), 
+                getEntryScroll());
+        addField(Translator.localize("UMLMenu", "label.exit"), 
+                getExitScroll());
+        addField(Translator.localize("UMLMenu", "label.do-activity"), 
+                getDoScroll());
 
         addSeperator();
 

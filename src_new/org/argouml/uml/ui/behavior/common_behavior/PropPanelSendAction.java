@@ -38,7 +38,7 @@ public class PropPanelSendAction extends PropPanelAction {
      * 
      */
     public PropPanelSendAction() {
-        super("SendAction", callActionIcon);
+        super("SendAction", lookupIcon("SendAction"));
     }
 
 } 
