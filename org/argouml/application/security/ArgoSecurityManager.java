@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2001 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -58,7 +58,18 @@ public final class ArgoSecurityManager extends SecurityManager
 {
     protected static Logger cat =
 	Logger.getLogger(ArgoSecurityManager.class);
-    private boolean _allowExit = false;
+
+    /**
+     * true if we are allowed to exit.<p>
+     *
+     * This is set to false from main() just before we start the ball rolling
+     * for the GUI.<p>
+     *
+     * This means that all applications that doesn't start from main i.e.
+     * when running JUnit test cases and batch commands, are allowed to
+     * exit immediatly.
+     */
+    private boolean _allowExit = true;
 
     /** The only allowed instance. */
     private static final ArgoSecurityManager SINGLETON =

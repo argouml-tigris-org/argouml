@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2003 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -112,7 +112,6 @@ public class Main {
             
                 System.err.println("You are using Java "+javaVersion+", "+
                     "Please use Java 1.3 or later with ArgoUml");
-                ArgoSecurityManager.getInstance().setAllowExit(true);
                 System.exit(0);
         }
         
@@ -208,7 +207,6 @@ public class Main {
                         "  -Dforce.nativelaf  [force ArgoUML to use "
 			+ "the native look and feel. UNSUPPORTED]");
                     System.err.println("\n\n");
-                    ArgoSecurityManager.getInstance().setAllowExit(true);
                     System.exit(0);
                 } else if (args[i].equalsIgnoreCase("-nosplash")) {
                     doSplash = false;
@@ -298,6 +296,9 @@ public class Main {
 	    ActionExit.SINGLETON.actionPerformed(null);
 	    return;
 	}
+
+	// From here on, we are not allowed to exit unpredictably.
+	ArgoSecurityManager.getInstance().setAllowExit(false);
 
         if (doSplash) {
             SplashScreen splash = SplashScreen.getInstance();
