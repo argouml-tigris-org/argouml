@@ -95,7 +95,8 @@ public class ParserDisplay extends Parser {
   protected static final Category _cat = 
     Category.getInstance(ParserDisplay.class);
 
-  PropertySpecialString _attributeSpecialStrings[];
+  private PropertySpecialString _attributeSpecialStrings[];
+  private Vector _attributeCustomSep;
 
   private ParserDisplay() {
     _attributeSpecialStrings = new PropertySpecialString[1];
@@ -109,6 +110,9 @@ public class ParserDisplay extends Parser {
 		    ((MStructuralFeature)element).setChangeability(kind);
 	    }
 	});
+    _attributeCustomSep = new Vector();
+    _attributeCustomSep.add(MyTokenizer.SINGLE_QUOTED_SEPARATOR);
+    _attributeCustomSep.add(MyTokenizer.DOUBLE_QUOTED_SEPARATOR);
   }
 
   ////////////////////////////////////////////////////////////////
@@ -467,7 +471,7 @@ protected String parseOutMultiplicity(MAttribute f, String s) {
     }
 
     try {
-	st = new MyTokenizer(s, " ,\t,<<,>>,[,],:,=,{,},\\,");
+	st = new MyTokenizer(s, " ,\t,<<,>>,[,],:,=,{,},\\,", _attributeCustomSep);
 	while (st.hasMoreTokens()) {
 	    token = st.nextToken();
 	    if (" ".equals(token) || "\t".equals(token) || ",".equals(token)) {
