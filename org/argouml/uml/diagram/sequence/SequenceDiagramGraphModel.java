@@ -67,62 +67,62 @@ public class SequenceDiagramGraphModel
         Logger.getLogger(SequenceDiagramGraphModel.class);
     
     private abstract class CanConnectCmd {
-        private Object _srcPort;
-        private Object _destPort;
-        private Object _srcObject;
-        private Object _destObject;
-        private FigObject _srcFigObject;
-        private FigObject _destFigObject;
-        private Fig _srcFigPort;
-        private Fig _destFigPort;       
+        private Object srcPort;
+        private Object destPort;
+        private Object srcObject;
+        private Object destObject;
+        private FigObject srcFigObject;
+        private FigObject destFigObject;
+        private Fig srcFigPort;
+        private Fig destFigPort;       
 
         public CanConnectCmd(Object fromPort, Object toPort) {
             Editor curEditor = Globals.curEditor();
-            _srcPort = fromPort;
-            _destPort = toPort;
-            if (_srcPort instanceof LinkPort) {
-                _srcObject = ((LinkPort) _srcPort).getObject();
+            srcPort = fromPort;
+            destPort = toPort;
+            if (srcPort instanceof LinkPort) {
+                srcObject = ((LinkPort) srcPort).getObject();
             } 
-            if (_destPort instanceof LinkPort) {
-                _destObject = ((LinkPort) _destPort).getObject();
+            if (destPort instanceof LinkPort) {
+                destObject = ((LinkPort) destPort).getObject();
             } 
 
-            _srcFigObject =
+            srcFigObject =
                 (FigObject) curEditor.getLayerManager().getActiveLayer()
-		    .presentationFor(_srcObject);
-            _destFigObject =
+		    .presentationFor(srcObject);
+            destFigObject =
                 (FigObject) curEditor.getLayerManager().getActiveLayer()
-                    .presentationFor(_destObject);
-            _srcFigPort = _srcFigObject.getPortFig(_srcPort);
-            _destFigPort = _destFigObject.getPortFig(_destPort);            
+                    .presentationFor(destObject);
+            srcFigPort = srcFigObject.getPortFig(srcPort);
+            destFigPort = destFigObject.getPortFig(destPort);            
         }
        
         /**
          * @return
          */
         public FigObject getDestFigObject() {
-            return _destFigObject;
+            return destFigObject;
         }
 
         /**
          * @return
          */
         public Fig getDestFigPort() {
-            return _destFigPort;
+            return destFigPort;
         }
 
         /**
          * @return
          */
         public Object getDestObject() {
-            return _destObject;
+            return destObject;
         }
 
         /**
          * @return
          */
         public Object getDestPort() {
-            return _destPort;
+            return destPort;
         }
 
        
@@ -131,28 +131,28 @@ public class SequenceDiagramGraphModel
          * @return
          */
         public FigObject getSrcFigObject() {
-            return _srcFigObject;
+            return srcFigObject;
         }
 
         /**
          * @return
          */
         public Fig getSrcFigPort() {
-            return _srcFigPort;
+            return srcFigPort;
         }
 
         /**
          * @return
          */
         public Object getSrcObject() {
-            return _srcObject;
+            return srcObject;
         }
 
         /**
          * @return
          */
         public Object getSrcPort() {
-            return _srcPort;
+            return srcPort;
         }
 
        
@@ -161,56 +161,56 @@ public class SequenceDiagramGraphModel
          * @param object
          */
         public void setDestFigObject(FigObject object) {
-            _destFigObject = object;
+            destFigObject = object;
         }
 
         /**
          * @param fig
          */
         public void setDestFigPort(Fig fig) {
-            _destFigPort = fig;
+            destFigPort = fig;
         }
 
         /**
          * @param object
          */
         public void setDestObject(Object object) {
-            _destObject = object;
+            destObject = object;
         }
 
         /**
          * @param object
          */
         public void setDestPort(Object object) {
-            _destPort = object;
+            destPort = object;
         }
        
         /**
          * @param object
          */
         public void setSrcFigObject(FigObject object) {
-            _srcFigObject = object;
+            srcFigObject = object;
         }
 
         /**
          * @param fig
          */
         public void setSrcFigPort(Fig fig) {
-            _srcFigPort = fig;
+            srcFigPort = fig;
         }
 
         /**
          * @param object
          */
         public void setSrcObject(Object object) {
-            _srcObject = object;
+            srcObject = object;
         }
 
         /**
          * @param object
          */
         public void setSrcPort(Object object) {
-            _srcPort = object;
+            srcPort = object;
         }
 
         /**
@@ -377,20 +377,24 @@ public class SequenceDiagramGraphModel
     /**
      * The collaboration this sequence diagram belongs too.
      */
-    private Object _collaboration;
+    private Object collaboration;
 
     /**
      * The interaction that is shown on the sequence diagram
      */
-    private Object _interaction;
+    private Object interaction;
 
     ////////////////////////////////////////////////////////////////
     // GraphModel implementation
 
-    /** Return all nodes in the graph */
+    /** 
+     * Return all nodes in the graph.
+     * 
+     * @see org.tigris.gef.graph.GraphModel#getNodes()
+     */
     public Vector getNodes() {
         Vector allNodes = new Vector();
-        Collection elements = ModelFacade.getOwnedElements(_collaboration);
+        Collection elements = ModelFacade.getOwnedElements(collaboration);
         Iterator it = elements.iterator();
         Collection classifierRoles = new ArrayList();
         while (it.hasNext()) {
@@ -415,17 +419,23 @@ public class SequenceDiagramGraphModel
     /**
      * Default constructor. Constructs a model and a collaboration in
      * the root of the current project.
+     *
+     * @param c the collaboration
      */
-    public SequenceDiagramGraphModel(Object collaboration) {
-        _collaboration = collaboration;
-        _interaction =
-            CollaborationsFactory.getFactory().buildInteraction(collaboration);
+    public SequenceDiagramGraphModel(Object c) {
+        collaboration = c;
+        interaction =
+            CollaborationsFactory.getFactory().buildInteraction(c);
     }
 
-    /** Return all edges in the graph */
+    /** 
+     * Return all edges in the graph.
+     * 
+     * @see org.tigris.gef.graph.GraphModel#getEdges()
+     */
     public Vector getEdges() {
         Vector allEdges = new Vector();
-        Iterator it = ModelFacade.getOwnedElements(_collaboration).iterator();
+        Iterator it = ModelFacade.getOwnedElements(collaboration).iterator();
         while (it.hasNext()) {
             Object o = it.next();
             if (ModelFacade.isAAssociationRole(o)) {
@@ -441,7 +451,11 @@ public class SequenceDiagramGraphModel
         return allEdges;
     }
 
-    /** Return all ports on node or edge */
+    /** 
+     * Return all ports on node or edge.
+     * 
+     * @see org.tigris.gef.graph.GraphModel#getPorts(java.lang.Object)
+     */
     public Vector getPorts(Object nodeOrEdge) {
         Vector ports = new Vector();
         if (ModelFacade.isAObject(nodeOrEdge)) {
@@ -452,7 +466,11 @@ public class SequenceDiagramGraphModel
         return ports;
     }
 
-    /** Return the node or edge that owns the given port */
+    /** 
+     * Return the node or edge that owns the given port.
+     * 
+     * @see org.tigris.gef.graph.BaseGraphModel#getOwner(java.lang.Object)
+     */
     public Object getOwner(Object port) {
         Object owner = null;
         if (ModelFacade.isALinkEnd(port)) {
@@ -471,7 +489,11 @@ public class SequenceDiagramGraphModel
         return owner;
     }
 
-    /** Return all edges going to given port */
+    /** 
+     * Return all edges going to given port.
+     * 
+     * @see org.tigris.gef.graph.GraphModel#getInEdges(java.lang.Object)
+     */
     public Vector getInEdges(Object port) {
         Vector res = new Vector();
         if (ModelFacade.isAObject(port)) {
@@ -491,7 +513,11 @@ public class SequenceDiagramGraphModel
         return res;
     }
 
-    /** Return all edges going from given port */
+    /** 
+     * Return all edges going from given port.
+     * 
+     * @see org.tigris.gef.graph.GraphModel#getOutEdges(java.lang.Object)
+     */
     public Vector getOutEdges(Object port) {
         Vector res = new Vector();
         if (ModelFacade.isAObject(port)) {
@@ -511,7 +537,11 @@ public class SequenceDiagramGraphModel
         return res;
     }
 
-    /** Return one end of an edge */
+    /** 
+     * Return one end of an edge.
+     * 
+     * @see org.tigris.gef.graph.BaseGraphModel#getSourcePort(java.lang.Object)
+     */
     public Object getSourcePort(Object edge) {
         Object res = null;
         if (ModelFacade.isALink(edge)) {
@@ -520,7 +550,11 @@ public class SequenceDiagramGraphModel
         return res;
     }
 
-    /** Return  the other end of an edge */
+    /** 
+     * Return  the other end of an edge.
+     * 
+     * @see org.tigris.gef.graph.BaseGraphModel#getDestPort(java.lang.Object)
+     */
     public Object getDestPort(Object edge) {
         Object res = null;
         if (ModelFacade.isALink(edge)) {
@@ -532,7 +566,11 @@ public class SequenceDiagramGraphModel
     ////////////////////////////////////////////////////////////////
     // MutableGraphModel implementation
 
-    /** Return true if the given object is a valid node in this graph */
+    /** 
+     * Return true if the given object is a valid node in this graph.
+     * 
+     * @see org.tigris.gef.graph.MutableGraphModel#canAddNode(java.lang.Object)
+     */
     public boolean canAddNode(Object node) {
         if (node == null)
             return false;
@@ -541,7 +579,11 @@ public class SequenceDiagramGraphModel
         return ModelFacade.isAObject(node);
     }
 
-    /** Return true if the given object is a valid edge in this graph */
+    /** 
+     * Return true if the given object is a valid edge in this graph.
+     * 
+     * @see org.tigris.gef.graph.MutableGraphModel#canAddEdge(java.lang.Object)
+     */
     public boolean canAddEdge(Object edge) {
         if (edge == null)
             return false;
@@ -567,12 +609,16 @@ public class SequenceDiagramGraphModel
 
     }
 
-    /** Add the given node to the graph, if valid. */
+    /** 
+     * Add the given node to the graph, if valid.
+     * 
+     * @see org.tigris.gef.graph.MutableGraphModel#addNode(java.lang.Object)
+     */
     public void addNode(Object node) {
         if (canAddNode(node)) {
             Object clasrole =
                 CollaborationsFactory.getFactory().buildClassifierRole(
-                    _collaboration);
+                    collaboration);
             ModelFacade.addInstance(clasrole, node);
             fireNodeAdded(node);
         }
@@ -591,6 +637,9 @@ public class SequenceDiagramGraphModel
         // }
     }
 
+    /**
+     * @see org.tigris.gef.graph.MutableGraphModel#addNodeRelatedEdges(java.lang.Object)
+     */
     public void addNodeRelatedEdges(Object node) {
         if (ModelFacade.isAInstance(node)) {
             Collection ends = ModelFacade.getLinkEnds(node);
@@ -604,8 +653,12 @@ public class SequenceDiagramGraphModel
         }
     }
 
-    /** Return true if the two given ports can be connected by a
+    /** 
+     * Return true if the two given ports can be connected by a
      * kind of edge to be determined by the ports. 
+     *
+     * @see org.tigris.gef.graph.MutableGraphModel#canConnect(
+     * java.lang.Object, java.lang.Object)
      */
     public boolean canConnect(Object fromP, Object toP) {
         Editor curEditor = Globals.curEditor();
@@ -692,9 +745,9 @@ public class SequenceDiagramGraphModel
                             .createDestroyAction();
                 }
             } else if (actionClass == ModelFacade.SEND_ACTION) {
-                // no implementation, not of importance to sequence diagrams
+                ;// no implementation, not of importance to sequence diagrams
             } else if (actionClass == ModelFacade.TERMINATE_ACTION) {
-                // not implemented yet
+                ;// not implemented yet
             }
         }
         if (fromObject != null && toObject != null && action != null) {
@@ -760,6 +813,9 @@ public class SequenceDiagramGraphModel
     ////////////////////////////////////////////////////////////////
     // VetoableChangeListener implementation
 
+    /**
+     * @see java.beans.VetoableChangeListener#vetoableChange(java.beans.PropertyChangeEvent)
+     */
     public void vetoableChange(PropertyChangeEvent pce) {
         //throws PropertyVetoException
 
@@ -785,28 +841,28 @@ public class SequenceDiagramGraphModel
      * @return the collaboration of the diagram.
      */
     public Object getCollaboration() {
-        return _collaboration;
+        return collaboration;
     }
 
     /**
      * Sets the collaboration that is shown at the sequence diagram.
      *
-     * @param collaboration
+     * @param c the collaboration
      */
-    public void setCollaboration(Object collaboration) {
+    public void setCollaboration(Object c) {
         // TODO: when the collaboration is set, the whole sequence diagram
         // should be reset (all figs removed) and figs that are a view onto
         // the modelelements in the new collaboration must be shown
-        _collaboration = collaboration;
+        collaboration = c;
     }
 
     private Object getInteraction() {
-        if (_interaction == null) {
-            _interaction =
+        if (interaction == null) {
+            interaction =
                 CollaborationsFactory.getFactory().buildInteraction(
-                    _collaboration);
+                    collaboration);
         }
-        return _interaction;
+        return interaction;
     }
     
     
@@ -815,6 +871,6 @@ public class SequenceDiagramGraphModel
      * @see org.argouml.uml.diagram.UMLMutableGraphSupport#getNamespace()
      */
     public Object getNamespace() {
-        return _collaboration;
+        return collaboration;
     }
 }

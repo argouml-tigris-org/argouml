@@ -68,7 +68,7 @@ public class UMLCollaborationDiagram extends UMLDiagram {
     ////////////////
     // actions for toolbar
 
-    protected static Action _actionClassifierRole = new RadioAction(
+    private static Action _actionClassifierRole = new RadioAction(
         new CmdCreateNode(ModelFacade.CLASSIFIER_ROLE, "ClassifierRole"));
 
     protected static Action _actionAssoc = new RadioAction(

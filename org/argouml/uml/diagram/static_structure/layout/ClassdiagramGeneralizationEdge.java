@@ -35,12 +35,20 @@ public class ClassdiagramGeneralizationEdge
 {
     
     
+    /**
+     * The constructor.
+     * 
+     * @param edge the fig edge
+     */
     public ClassdiagramGeneralizationEdge(FigEdge edge) {
         super(edge);
     }
     
+    /**
+     * @see org.argouml.uml.diagram.static_structure.layout.ClassdiagramInheritanceEdge#getVerticalOffset()
+     */
     public int getVerticalOffset() {
-        return (int) (_vGap * 0.4);
+        return (int) (getVGap() * 0.4);
     }
         
 

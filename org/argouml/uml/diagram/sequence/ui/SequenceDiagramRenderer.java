@@ -42,20 +42,28 @@ import org.tigris.gef.presentation.FigNode;
 
 public class SequenceDiagramRenderer
 	implements GraphNodeRenderer, GraphEdgeRenderer {
-    protected static Logger log =
+    private static final Logger LOG =
 	Logger.getLogger(SequenceDiagramRenderer.class);
 
-    /** Return a Fig that can be used to represent the given node */
+    /** 
+     * Return a Fig that can be used to represent the given node.
+     * 
+     * @see org.tigris.gef.graph.GraphNodeRenderer#getFigNodeFor(org.tigris.gef.graph.GraphModel, org.tigris.gef.base.Layer, java.lang.Object)
+     */
     public FigNode getFigNodeFor(GraphModel gm, Layer lay, Object node) {
 	if (ModelFacade.isAObject(node))
 	    return new FigObject(node);
 	// if (node instanceof MStimulus) return new FigSeqStimulus(gm, node);
 	// TODO: Something here.
-	log.debug("SequenceDiagramRenderer getFigNodeFor");
+	LOG.debug("SequenceDiagramRenderer getFigNodeFor");
 	return null;
     }
 
-    /** Return a Fig that can be used to represent the given edge */	
+    /** 
+     * Return a Fig that can be used to represent the given edge.
+     * 
+     * @see org.tigris.gef.graph.GraphEdgeRenderer#getFigEdgeFor(org.tigris.gef.graph.GraphModel, org.tigris.gef.base.Layer, java.lang.Object)
+     */
     public FigEdge getFigEdgeFor(GraphModel gm, Layer lay, Object edge) {
 	if (ModelFacade.isALink(edge)) {
 	    Object stimulus = ModelFacade.getStimuli(edge).iterator().next();
@@ -74,7 +82,7 @@ public class SequenceDiagramRenderer
 			}
 	}		
 	// TODO: Something here.
-	log.debug("SequenceDiagramRenderer getFigEdgeFor");
+	LOG.debug("SequenceDiagramRenderer getFigEdgeFor");
 	return null;
     }
 

@@ -73,13 +73,19 @@ public class SequenceDiagramLayout extends LayerPerspectiveMutable {
     /**
      * Linked list with all fig objects sorted by x coordinate in it
      */
-    private LinkedList _figObjectsX = new LinkedList();
+    private LinkedList figObjectsX = new LinkedList();
 
     /**
      * The heighest height of the outer box of a figobject.
      */
-    private int _heighestObjectHeight = 0;
+    private int heighestObjectHeight = 0;
 
+    /**
+     * The constructor.
+     * 
+     * @param name the name
+     * @param gm the graph model
+     */
     public SequenceDiagramLayout(String name, MutableGraphModel gm) {
         super(name, gm);
 
@@ -103,29 +109,29 @@ public class SequenceDiagramLayout extends LayerPerspectiveMutable {
      * @param f
      */
     private void distributeFigObjects(Fig f) {
-        int listPosition = _figObjectsX.indexOf(f);
+        int listPosition = figObjectsX.indexOf(f);
         if (listPosition < 0)
             return;
-        if (listPosition < _figObjectsX.size() - 1) {
-            Fig next = (Fig) _figObjectsX.get(listPosition + 1);
+        if (listPosition < figObjectsX.size() - 1) {
+            Fig next = (Fig) figObjectsX.get(listPosition + 1);
             if (next.getX() < f.getX()) {
                 reshuffelFigObjectsX(f);
-                listPosition = _figObjectsX.indexOf(f);
+                listPosition = figObjectsX.indexOf(f);
             }
         } else if (listPosition > 0) {
-            Fig previous = (Fig) _figObjectsX.get(listPosition - 1);
+            Fig previous = (Fig) figObjectsX.get(listPosition - 1);
             if (previous.getX() > f.getX()) {
                 reshuffelFigObjectsX(f);
-                listPosition = _figObjectsX.indexOf(f);
+                listPosition = figObjectsX.indexOf(f);
             }
         }
         Iterator it =
-            _figObjectsX.subList(listPosition, _figObjectsX.size()).iterator();
+            figObjectsX.subList(listPosition, figObjectsX.size()).iterator();
         int positionX =
             listPosition == 0
                 ? DIAGRAM_LEFT_MARGE
-                : (((Fig) _figObjectsX.get(listPosition - 1)).getX()
-                    + ((Fig) _figObjectsX.get(listPosition - 1)).getWidth()
+                : (((Fig) figObjectsX.get(listPosition - 1)).getX()
+                    + ((Fig) figObjectsX.get(listPosition - 1)).getWidth()
                     + OBJECT_DISTANCE);
         while (it.hasNext()) {
             Fig fig = (Fig) it.next();
@@ -136,17 +142,17 @@ public class SequenceDiagramLayout extends LayerPerspectiveMutable {
             ((FigObject) fig).updateEdges();
             positionX += (fig.getWidth() + OBJECT_DISTANCE);
         }
-        if (_heighestObjectHeight < f.getHeight()) {
-            _heighestObjectHeight = f.getHeight();
-            it = _figObjectsX.iterator();
+        if (heighestObjectHeight < f.getHeight()) {
+            heighestObjectHeight = f.getHeight();
+            it = figObjectsX.iterator();
             while (it.hasNext()) {
                 Fig fig = (Fig) it.next();
                 fig.setY(
-                    DIAGRAM_TOP_MARGE + _heighestObjectHeight - f.getHeight());
+                    DIAGRAM_TOP_MARGE + heighestObjectHeight - f.getHeight());
                 fig.damage();
             }
         } else {
-            f.setY(DIAGRAM_TOP_MARGE + _heighestObjectHeight - f.getHeight());
+            f.setY(DIAGRAM_TOP_MARGE + heighestObjectHeight - f.getHeight());
             f.damage();
         }
     }
@@ -169,39 +175,39 @@ public class SequenceDiagramLayout extends LayerPerspectiveMutable {
         super.add(f);
         if (f instanceof FigObject) {
             SortedMap x = new TreeMap();
-            if (!_figObjectsX.isEmpty()) {
-                Iterator it = _figObjectsX.iterator();
+            if (!figObjectsX.isEmpty()) {
+                Iterator it = figObjectsX.iterator();
                 while (it.hasNext()) {
                     Fig fig = (Fig) it.next();
                     x.put(new Integer(fig.getX()), fig);
                 }
                 Object o = x.get(x.headMap(new Integer(f.getX())).lastKey());
-                _figObjectsX.add(_figObjectsX.indexOf(o) + 1, f);
+                figObjectsX.add(figObjectsX.indexOf(o) + 1, f);
             } else
-                _figObjectsX.add(f);
-            _heighestObjectHeight =
-                Math.max(_heighestObjectHeight, f.getHeight());
+                figObjectsX.add(f);
+            heighestObjectHeight =
+                Math.max(heighestObjectHeight, f.getHeight());
         }
     }
 
     private void reshuffelFigObjectsX(Fig f) {
-        _figObjectsX.remove(f);
+        figObjectsX.remove(f);
         int x = f.getX();
         int newPosition = 0;
-        for (int i = 0; i < _figObjectsX.size(); i++) {
-            Fig fig = (Fig) _figObjectsX.get(i);
+        for (int i = 0; i < figObjectsX.size(); i++) {
+            Fig fig = (Fig) figObjectsX.get(i);
             if (fig.getX() < x) {
-                if (i != (_figObjectsX.size() - 1)
-                    && ((Fig) _figObjectsX.get(i + 1)).getX() > x) {
+                if (i != (figObjectsX.size() - 1)
+                    && ((Fig) figObjectsX.get(i + 1)).getX() > x) {
                     newPosition = i + 1;
                     break;
                 }
-                if (i == (_figObjectsX.size() - 1)) {
+                if (i == (figObjectsX.size() - 1)) {
                     newPosition = i;
                 }
             }
         }
-        _figObjectsX.add(newPosition, f);
+        figObjectsX.add(newPosition, f);
 
     }
 
@@ -210,18 +216,18 @@ public class SequenceDiagramLayout extends LayerPerspectiveMutable {
      */
     public void deleted(Fig f) {
         super.deleted(f);
-        _figObjectsX.remove(f);
-        if (f.getHeight() == _heighestObjectHeight) {
-            Iterator it = _figObjectsX.iterator();
+        figObjectsX.remove(f);
+        if (f.getHeight() == heighestObjectHeight) {
+            Iterator it = figObjectsX.iterator();
             while (it.hasNext()) {
-                _heighestObjectHeight =
+                heighestObjectHeight =
                     Math.max(
-                        _heighestObjectHeight,
+                        heighestObjectHeight,
                         ((Fig) it.next()).getHeight());
             }
         }
-        if (!_figObjectsX.isEmpty()) {
-            putInPosition((Fig) _figObjectsX.get(0));
+        if (!figObjectsX.isEmpty()) {
+            putInPosition((Fig) figObjectsX.get(0));
         }
     }
 
@@ -261,6 +267,10 @@ public class SequenceDiagramLayout extends LayerPerspectiveMutable {
 
     }
 
+    /**
+     * @param position the position for the node
+     * @param node the node to be added
+     */
     public void addNode(int position, Node node) {
         Iterator it = getContentsNoEdges().iterator();
         while (it.hasNext()) {

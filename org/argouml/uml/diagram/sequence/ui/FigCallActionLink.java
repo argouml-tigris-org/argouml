@@ -40,7 +40,7 @@ import org.tigris.gef.presentation.ArrowHeadTriangle;
 public class FigCallActionLink extends FigLink {
 
     /**
-     * @param owner
+     * @param owner the owner object
      */
     public FigCallActionLink(Object owner) {
         super(owner);
@@ -78,7 +78,7 @@ public class FigCallActionLink extends FigLink {
                 ((ActivationNode) getSrcLinkPort()).setCutOffBottom(false);
                 ((ActivationNode) getSrcLinkPort()).setCutOffTop(false);
             } else {
-            	
+            	;
             }
         }
         getDestFigObject().makeActivation(

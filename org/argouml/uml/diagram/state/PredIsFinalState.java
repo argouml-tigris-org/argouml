@@ -28,10 +28,16 @@ import org.tigris.gef.util.Predicate;
 
 public class PredIsFinalState implements Predicate {
 
-    public static PredIsFinalState TheInstance = new PredIsFinalState();
+    /**
+     * TheInstance is the singleton.
+     */
+    public static PredIsFinalState theInstance = new PredIsFinalState();
 
     private PredIsFinalState() { }
 
+    /**
+     * @see org.tigris.gef.util.Predicate#predicate(java.lang.Object)
+     */
     public boolean predicate(Object obj) {
 	return (org.argouml.model.ModelFacade.isAFinalState(obj));
     }

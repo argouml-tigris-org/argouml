@@ -33,13 +33,19 @@ import java.awt.*;
  * @author  mkl
  */
 public class ClassdiagramAssociationEdge extends ClassdiagramEdge {
-
     
+    /**
+     * The constructor.
+     * 
+     * @param edge the fig of the edge
+     */
     public ClassdiagramAssociationEdge(FigEdge edge) {
         super(edge);
     }
-    
 
+    /**
+     * @see org.argouml.uml.diagram.layout.LayoutedEdge#layout()
+     */
     public void layout() {
         // self associations are special cases. No need to let the maze
         // runner find the way.
@@ -60,7 +66,7 @@ public class ClassdiagramAssociationEdge extends ClassdiagramEdge {
             currentEdge.setFig(underlyingFig);  
         }
         else {
-            // brute force rectangular layout
+            ;// brute force rectangular layout
             /*
             Point centerSource = sourceFigNode.center();
             Point centerDest   = destFigNode.center();

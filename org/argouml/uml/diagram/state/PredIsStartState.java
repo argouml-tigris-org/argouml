@@ -30,13 +30,20 @@ import org.argouml.model.ModelFacade;
 
 public class PredIsStartState implements Predicate {
 
-    public static PredIsStartState TheInstance = new PredIsStartState();
+    /**
+     * theInstance is the singleton
+     */
+    public static PredIsStartState theInstance = new PredIsStartState();
 
     private PredIsStartState() { }
 
+    /**
+     * @see org.tigris.gef.util.Predicate#predicate(java.lang.Object)
+     */
     public boolean predicate(Object obj) {
-	return (org.argouml.model.ModelFacade.isAPseudostate(obj)) &&
-	    (ModelFacade.INITIAL_PSEUDOSTATEKIND.equals(ModelFacade.getKind(obj)));
+	return (org.argouml.model.ModelFacade.isAPseudostate(obj)) 
+	    && (ModelFacade.INITIAL_PSEUDOSTATEKIND.equals(
+                ModelFacade.getKind(obj)));
     }
   
 } /* end class PredIsStartpackage */

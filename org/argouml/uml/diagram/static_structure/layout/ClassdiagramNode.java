@@ -42,12 +42,12 @@ class ClassdiagramNode implements LayoutedNode {
     /**
      * Operation ClassdiagramNode creates a new ClassdiagramNode.
      * 
-     * @param figure
+     * @param f
      *            represents the figure in the diagram, that peers this layout
      *            node.
      */
-    public ClassdiagramNode(FigNode figure) {
-        setFigure(figure);
+    public ClassdiagramNode(FigNode f) {
+        setFigure(f);
     }
 
     /**
@@ -100,7 +100,7 @@ class ClassdiagramNode implements LayoutedNode {
     }
 
     public int getRealRank() {
-        return _rank;
+        return rank;
     }
 
     /**
@@ -110,25 +110,25 @@ class ClassdiagramNode implements LayoutedNode {
      */
     public int getRank() {
 
-        if (_rank == NORANK) {
+        if (rank == NORANK) {
             // If the rank was not computed yet, compute it now.
             if (getUplinks().size() == 0) { // If there are no uplinks,
-                _rank = 0; // place the node in the 1st row.
+                rank = 0; // place the node in the 1st row.
             } else { // Otherwise compute the max rank of the uplinks + 1
                 for (int i = 0; i < getUplinks().size(); i++) {
 
                     // avoid recursing, causing stack overflow error, if the
                     // uplinks are cyclic.
-                    if (getUplink(i) == this) { return _rank; }
+                    if (getUplink(i) == this) { return rank; }
 
-                    if (getUplink(i).getRank() + 1 > _rank) {
+                    if (getUplink(i).getRank() + 1 > rank) {
 
-                        _rank = getUplink(i).getRank() + 1;
+                        rank = getUplink(i).getRank() + 1;
                     }
                 }
             }
         }
-        return _rank;
+        return rank;
     }
 
     /**
@@ -138,7 +138,7 @@ class ClassdiagramNode implements LayoutedNode {
      *            represents the new value of _rank.
      */
     public void setRank(int newRank) {
-        _rank = newRank;
+        rank = newRank;
     }
 
     /**
@@ -157,7 +157,7 @@ class ClassdiagramNode implements LayoutedNode {
      * @return The value of the attribute _column.
      */
     public int getColumn() {
-        return _column;
+        return column;
     }
 
     /**
@@ -167,7 +167,7 @@ class ClassdiagramNode implements LayoutedNode {
      *            represents the new value of _column.
      */
     public void setColumn(int newColumn) {
-        _column = newColumn;
+        column = newColumn;
     }
 
     /**
@@ -176,7 +176,7 @@ class ClassdiagramNode implements LayoutedNode {
      * @return The value of the attribute _uplinks.
      */
     public Vector getUplinks() {
-        return _uplinks;
+        return uplinks;
     }
 
     /**
@@ -186,7 +186,7 @@ class ClassdiagramNode implements LayoutedNode {
      * @return The ClassdiagramNode for this uplink.
      */
     public ClassdiagramNode getUplink(int i) {
-        return (ClassdiagramNode) (_uplinks.elementAt(i));
+        return (ClassdiagramNode) (uplinks.elementAt(i));
     }
 
     /**
@@ -196,7 +196,7 @@ class ClassdiagramNode implements LayoutedNode {
      *            represents the new uplinks.
      */
     public void addUplink(ClassdiagramNode newUplink) {
-        _uplinks.add(newUplink);
+        uplinks.add(newUplink);
     }
 
     /**
@@ -205,7 +205,7 @@ class ClassdiagramNode implements LayoutedNode {
      * @return The value of the attribute _downlinks.
      */
     public Vector getDownlinks() {
-        return _downlinks;
+        return downlinks;
     }
 
     /**
@@ -215,7 +215,7 @@ class ClassdiagramNode implements LayoutedNode {
      * @return The ClassdiagramNode of this downlink.
      */
     public ClassdiagramNode getDownlink(int i) {
-        return (ClassdiagramNode) (_downlinks.elementAt(i));
+        return (ClassdiagramNode) (downlinks.elementAt(i));
     }
 
     /**
@@ -224,7 +224,7 @@ class ClassdiagramNode implements LayoutedNode {
      * @param newDownlink Represents the new value of _downlinks.
      */
     public void addDownlink(ClassdiagramNode newDownlink) {
-        _downlinks.add(newDownlink);
+        downlinks.add(newDownlink);
     }
 
     /**
@@ -233,7 +233,7 @@ class ClassdiagramNode implements LayoutedNode {
      * @return The value of the attribute _figure.
      */
     public FigNode getFigure() {
-        return _figure;
+        return figure;
     }
 
     /**
@@ -243,7 +243,7 @@ class ClassdiagramNode implements LayoutedNode {
      *            represents the new value of _figure.
      */
     public void setFigure(FigNode newFigure) {
-        _figure = newFigure;
+        figure = newFigure;
     }
 
     /**
@@ -252,17 +252,17 @@ class ClassdiagramNode implements LayoutedNode {
      * @return The weight of this node.
      */
     public float getWeight() {
-        return _weight;
+        return weight;
     }
 
     /**
      * Set a new weight for this node.
      * 
-     * @param weight
+     * @param w
      *            The new weight of this node.
      */
-    public void setWeight(float weight) {
-        _weight = weight;
+    public void setWeight(float w) {
+        weight = w;
     }
 
     /**
@@ -271,7 +271,7 @@ class ClassdiagramNode implements LayoutedNode {
      * @return whether the node is movable
      */
     public boolean isMovable() {
-        return (_downlinks.size() == 0 && _uplinks.size() == 0);
+        return (downlinks.size() == 0 && uplinks.size() == 0);
     }
 
     /**
@@ -302,7 +302,7 @@ class ClassdiagramNode implements LayoutedNode {
     /**
      * Attribute _rank represents the current rank of this node.
      */
-    private int _rank = NORANK;
+    private int rank = NORANK;
 
     /**
      * Constant to be used as an initializer when this node is not placed at an
@@ -313,26 +313,26 @@ class ClassdiagramNode implements LayoutedNode {
     /**
      * Attribute _column represents the current column of this node.
      */
-    private int _column = NOCOLUMN;
+    private int column = NOCOLUMN;
 
     /**
      * Attribute _uplinks represents the links I consider as an 'uplink'. An
      * uplink is a link going to a superclass or a interface that this class
      * implements. Figures that are usually placed above this figure.
      */
-    private Vector _uplinks = new Vector();
+    private Vector uplinks = new Vector();
 
     /**
      * Attribute _downlinks represents the links I consider as an 'downlink'.
      * The opposite of an uplink. See explanation above.
      */
-    private Vector _downlinks = new Vector();
+    private Vector downlinks = new Vector();
 
     /**
      * Attribute _figure represents the figure, that this ClassdiagramNode
      * represents during the layout process.
      */
-    private FigNode _figure = null;
+    private FigNode figure = null;
 
     /**
      * This attributes stores the 'weight' of this node. This is a computed
@@ -343,7 +343,7 @@ class ClassdiagramNode implements LayoutedNode {
      * objects are, and then try to place our object in a way, that we can
      * expect to have a minimal number of crossings.
      */
-    private float _weight = 1;
+    private float weight = 1;
 
     /**
      * a Node is movable when it has associations and no up- or downlinks. The
@@ -351,7 +351,7 @@ class ClassdiagramNode implements LayoutedNode {
      * during the rankking process to a position where they are as close as
      * possible to the respective(s) nodes they share an association to
      */
-    private boolean _movable = false;
+    private boolean movable = false;
 
     private int placementHint = -1;
 

@@ -28,17 +28,28 @@ import org.argouml.uml.diagram.sequence.ui.FigLinkPort;
 
 
 public class ObjectNode extends ActivationNode implements LinkPort {
-    private FigLinkPort _figLinkPort;
-    private Object _owner;
+    private FigLinkPort figLinkPort;
+    private Object ownerObject;
 
-    public ObjectNode(Object owner, FigLinkPort figLinkPort) {
+    /**
+     * The constructor.
+     * 
+     * @param owner the owner object
+     * @param flp the figlinkport
+     */
+    public ObjectNode(Object owner, FigLinkPort flp) {
         super();
-        this._figLinkPort = figLinkPort;
-        if (figLinkPort != null)
-        	figLinkPort.setOwner(this);     
+        this.figLinkPort = flp;
+        if (flp != null)
+        	flp.setOwner(this);     
         setStart(true);       
     }
 
+    /**
+     * The constructor.
+     * 
+     * @param owner the owner object
+     */
     public ObjectNode(Object owner) {
         this(owner, null);
     }
@@ -47,22 +58,28 @@ public class ObjectNode extends ActivationNode implements LinkPort {
      * @see LinkPort#getFigLinkPort()
      */
     public FigLinkPort getFigLinkPort() {
-        return _figLinkPort;
+        return figLinkPort;
     }
 
     /** 
      * @see LinkPort#setFigLinkPort(FigLinkPort)
      */
-    public void setFigLinkPort(FigLinkPort figLinkPort) {
-        _figLinkPort = figLinkPort;
+    public void setFigLinkPort(FigLinkPort flp) {
+        figLinkPort = flp;
     }   
     
+    /**
+     * @see org.argouml.uml.diagram.sequence.LinkPort#getObject()
+     */
     public Object getObject() {
-    	return _owner;
+    	return ownerObject;
     }
     
+    /**
+     * @param object the owner object
+     */
     public void setObject(Object object) {
-    	_owner = object;
+    	ownerObject = object;
     }
 
 }

@@ -53,25 +53,38 @@ public class ModeCreateLink extends ModeCreate {
 	Logger.getLogger(ModeCreateLink.class);
 
     /** The NetPort where the arc is paintn from */
-    private Object _startPort;
+    private Object startPort;
 
     /** The Fig that presents the starting NetPort */
-    private Fig _startPortFig;
+    private Fig startPortFig;
 
     /** The FigNode on the NetNode that owns the start port */
-    private FigNode _sourceFigNode;
+    private FigNode sourceFigNode;
 
     /** The new NetEdge that is being created */
-    private Object _newEdge;
+    private Object newEdge;
 
+    /**
+     * The constructor.
+     * 
+     */
     public ModeCreateLink() {
         super();
     }
 
+    /**
+     * The constructor.
+     * 
+     * @param par the editor
+     */
     public ModeCreateLink(Editor par) {
         super(par);
     }
 
+    /**
+     * @see org.tigris.gef.base.ModeCreate#createNewItem(
+     * java.awt.event.MouseEvent, int, int)
+     */
     public Fig createNewItem(MouseEvent me, int snapX, int snapY) {
         return new FigLine(
             snapX,
@@ -81,12 +94,19 @@ public class ModeCreateLink extends ModeCreate {
             Globals.getPrefs().getRubberbandColor());
     }
 
+    /**
+     * @see org.tigris.gef.base.FigModifyingMode#instructions()
+     */
     public String instructions() {
         return "Drag to define a link to another port";
     }
 
-    /** On mousePressed determine what port the user is dragging from.
-     *  The mousePressed event is sent via ModeSelect. */
+    /** 
+     * On mousePressed determine what port the user is dragging from.
+     * The mousePressed event is sent via ModeSelect.
+     * 
+     * @see java.awt.event.MouseListener#mousePressed(java.awt.event.MouseEvent)
+     */
     public void mousePressed(MouseEvent me) {
         if (me.isConsumed())
             return;
@@ -106,20 +126,20 @@ public class ModeCreateLink extends ModeCreate {
             me.consume();
             return;
         }
-        _sourceFigNode = (FigNode) underMouse;
-        _startPort = _sourceFigNode.deepHitPort(x, y);
-        if (_startPort == null) {
+        sourceFigNode = (FigNode) underMouse;
+        startPort = sourceFigNode.deepHitPort(x, y);
+        if (startPort == null) {
             done();
             me.consume();
             return;
         }
-        _startPortFig = _sourceFigNode.getPortFig(_startPort);
+        startPortFig = sourceFigNode.getPortFig(startPort);
         start();
         Point snapPt = new Point();
         synchronized (snapPt) {
             snapPt.setLocation(
-                _startPortFig.getX() + FigObject.WIDTH / 2,
-                _startPortFig.getY());
+                startPortFig.getX() + FigObject.WIDTH / 2,
+                startPortFig.getY());
             editor.snap(snapPt);
             anchorX = snapPt.x;
             anchorY = snapPt.y;
@@ -135,11 +155,13 @@ public class ModeCreateLink extends ModeCreate {
      * to connect the two ports.  If that connection is allowed, then
      * construct a new FigEdge and add it to the Layer and send it to
      * the back.
+     *
+     * @see java.awt.event.MouseListener#mouseReleased(java.awt.event.MouseEvent)
      */
     public void mouseReleased(MouseEvent me) {
         if (me.isConsumed())
             return;
-        if (_sourceFigNode == null) {
+        if (sourceFigNode == null) {
             done();
             me.consume();
             return;
@@ -157,7 +179,7 @@ public class ModeCreateLink extends ModeCreate {
             f = null;
         MutableGraphModel mgm = (MutableGraphModel) gm;
         // TODO: potential class cast exception
-        if (f == _sourceFigNode) {
+        if (f == sourceFigNode) {
             done();
             me.consume();
             return;
@@ -167,42 +189,42 @@ public class ModeCreateLink extends ModeCreate {
             // If its a FigNode, then check within the  
             // FigNode to see if a port exists 
             Object foundPort = null;
-            if (destFigNode != _sourceFigNode) {            	
-                y = _startPortFig.getY();
+            if (destFigNode != sourceFigNode) {            	
+                y = startPortFig.getY();
                 foundPort = destFigNode.deepHitPort(x, y);
             } else {
                 foundPort = destFigNode.deepHitPort(x, y);
             }
 
-            if (foundPort != null && foundPort != _startPort) {
+            if (foundPort != null && foundPort != startPort) {
                 Fig destPortFig = destFigNode.getPortFig(foundPort);
                 Class edgeClass = (Class) getArg("edgeClass");
                 if (edgeClass != null)
-                    _newEdge = mgm.connect(_startPort, foundPort, edgeClass);
+                    newEdge = mgm.connect(startPort, foundPort, edgeClass);
                 else
-                    _newEdge = mgm.connect(_startPort, foundPort);
+                    newEdge = mgm.connect(startPort, foundPort);
 
                 // Calling connect() will add the edge to the GraphModel and
                 // any LayerPersectives on that GraphModel will get a
                 // edgeAdded event and will add an appropriate FigEdge
                 // (determined by the GraphEdgeRenderer).
 
-                if (null != _newEdge) {
+                if (null != newEdge) {
                     LayerManager lm = ce.getLayerManager();
                     ce.damaged(_newItem);
-                    _sourceFigNode.damage();
+                    sourceFigNode.damage();
                     destFigNode.damage();
                     _newItem = null;
                     FigLink fe =
                         (FigLink) ce.getLayerManager()
-                            .getActiveLayer().presentationFor(_newEdge);
-                    fe.setSourcePortFig(_startPortFig);
-                    fe.setSourceFigNode(_sourceFigNode);
+                            .getActiveLayer().presentationFor(newEdge);
+                    fe.setSourcePortFig(startPortFig);
+                    fe.setSourceFigNode(sourceFigNode);
                     fe.setDestPortFig(destPortFig);
                     fe.setDestFigNode(destFigNode);
 				// set the new edge in place
-                    if (_sourceFigNode != null)
-                        _sourceFigNode.updateEdges();
+                    if (sourceFigNode != null)
+                        sourceFigNode.updateEdges();
                     if (destFigNode != null)
                         destFigNode.updateEdges();
                     if (fe != null)
@@ -214,22 +236,25 @@ public class ModeCreateLink extends ModeCreate {
                     LOG.debug("connection return null");
             }
         }
-        _sourceFigNode.damage();
+        sourceFigNode.damage();
         ce.damaged(_newItem);
         _newItem = null;
         done();
         me.consume();
     }
 
+    /**
+     * @see java.awt.event.MouseMotionListener#mouseDragged(java.awt.event.MouseEvent)
+     */
     public void mouseDragged(MouseEvent me) {
         if (me.isConsumed())
             return;
         if (_newItem != null) {
             editor.damaged(_newItem);
-            creationDrag(me.getX(), _startPortFig.getY());
+            creationDrag(me.getX(), startPortFig.getY());
             editor.damaged(_newItem);
         }
-        editor.scrollToShow(me.getX(), _startPortFig.getY());
+        editor.scrollToShow(me.getX(), startPortFig.getY());
         me.consume();
     }
 } /* end class ModeCreateEdge */
