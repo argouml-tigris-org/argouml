@@ -253,7 +253,6 @@ implements ChangeListener, MouseListener, QuadrantPanel, Orientable {
 
         int index = getIndexOfNamedTab(tabName);
         if (index != -1) {
-            pb.setDetailsPaneVisible(true);
             _tabs.setSelectedIndex(index);
             return true;
         }
