@@ -161,6 +161,8 @@ public class UmlFactory extends AbstractUmlModelFactory {
      */
     private Map validConnectionMap = new HashMap();
 
+    private boolean jmiProxyCreated = false;
+
     /*
      * An array of valid connections, the combination of connecting class
      * and node classes must exist as a row in this list to be considered
@@ -461,6 +463,20 @@ public class UmlFactory extends AbstractUmlModelFactory {
 
 		// NSUML cannot instantiate a State Vertex object
 		// elements.put(Uml.STATE_VERTEX, new NsumlObjectInfo(factory,MStateVertex.class, "createStateVertex"));
+	}
+
+	/**
+	 * @return boolean to indicate if the JMI Reflective Proxy over NSUML is created.
+	 */
+	public boolean isJmiProxyCreated() {
+		return jmiProxyCreated;
+	}
+
+	/**
+	 * @param jmiProxyCreated true to cause the JMI Reflective proxy over NSUML to be used.
+	 */
+	public void setJmiProxyCreated(boolean arg) {
+		this.jmiProxyCreated = arg;
 	}
     
     /** Create a new connection model element (a relationship or link)
@@ -1111,18 +1127,18 @@ public class UmlFactory extends AbstractUmlModelFactory {
 			obj = method.invoke(oi.getFactory(), new Object[] {} );
 		}
 		catch (Exception e) {
-			return null;
 			// TODO decide if we want to throw an exception instead
 			// throw new InvalidObjectRequestException("Cannot execute creator method", entity, e);
+			return null;
 		}
-		// TODO Figure out how to put in a generic callback to initialize
-		// AbstractUmlModelFactory.initialize(expression);
+		UmlFactory.getFactory().initialize(obj);
+		
+		// Allow for testing of the proxy capability
+		if (this.jmiProxyCreated) {
+			return RefBaseObjectProxy.newInstance(obj);
+		}
 		return obj;
-		// return RefBaseObjectProxy.newInstance(obj);
 	}
-
-
-
 
 }
 
