@@ -355,7 +355,7 @@ public class Modeller
     public void popClassifier()
     {
         // now create diagram if it doesn't exists in project
-	if (getDiagram() != null) {
+	if (getDiagram() != null && currentPackageName != null) {
            getDiagram().selectClassDiagram(currentPackage, currentPackageName);
         }
         // add the current classifier to the diagram.
