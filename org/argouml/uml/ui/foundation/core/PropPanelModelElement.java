@@ -38,7 +38,7 @@ import ru.novosoft.uml.foundation.extension_mechanisms.*;
 import org.argouml.application.api.*;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.ui.*;
-
+import org.argouml.swingext.*;
 import org.tigris.gef.util.*;
 import java.util.*;
 
@@ -100,6 +100,22 @@ abstract public class PropPanelModelElement extends PropPanel {
         this(name,null,columns);
     }
 
+    public PropPanelModelElement(String name, ImageIcon icon, Orientation orientation) {
+        super(name, icon, orientation);
+
+        Class mclass = MModelElement.class;
+
+        nameField=new UMLTextField(this,new UMLTextProperty(mclass,"name","getName","setName"));
+
+        stereotypeBox = new UMLStereotypeComboBox(this);
+
+        namespaceList = new UMLList(new UMLNamespaceListModel(this),true);
+        namespaceList.setBackground(getBackground());
+        namespaceList.setForeground(Color.blue);
+
+	namespaceScroll = new JScrollPane(namespaceList,JScrollPane.VERTICAL_SCROLLBAR_NEVER,JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+    }
+    
     public PropPanelModelElement(String name, ImageIcon icon, int columns) {
         super(name,icon,columns);
 

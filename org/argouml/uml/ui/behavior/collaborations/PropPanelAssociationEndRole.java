@@ -34,49 +34,27 @@ import org.argouml.application.api.*;
 import org.argouml.uml.ui.*;
 import org.argouml.uml.ui.foundation.core.*;
 import org.argouml.uml.MMUtil;
+import org.argouml.util.*;
 
 import java.awt.*;
 import java.util.*;
 
-
 public class PropPanelAssociationEndRole extends PropPanelAssociationEnd {
 
-  public PropPanelAssociationEndRole() {
-    super("AssociationEndRole", _assocEndRoleIcon,3);
-    Class mclass = MAssociationEndRole.class;
-    makeFields(mclass);
-  }
+    public PropPanelAssociationEndRole() {
+        super("AssociationEndRole", _assocEndRoleIcon, ConfigLoader.getTabPropsOrientation());
+        Class mclass = MAssociationEndRole.class;
+        makeFields(mclass);
+    }
 
-protected void makeFields(Class mclass) {
-    super.makeFields(mclass);
-/*
-    addCaption(Argo.localize("UMLMenu", "label.type"),3,0,0);
-    UMLComboBoxModel model = new UMLComboBoxModel(this,"isAcceptibleType",
-        "type","getType","setType",false,MClassifier.class,true);
-    UMLComboBox box = new UMLComboBox(model);
-    box.setToolTipText("Warning: Do not use this to change an end that is already in a diagram.");
-    addField(new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-class"),box),3,0,0);
-*/
-    addCaption("AssociationRole:",5,0,1);
-/*
-    JList namespaceList = new UMLList(
-				      new UMLReflectionListModel(this,"association",false,"getAssociation",null,null,null),true);
-    namespaceList.setBackground(getBackground());
-    namespaceList.setForeground(Color.blue);
-    namespaceList.setVisibleRowCount(1);
-    addField(new JScrollPane(namespaceList,JScrollPane.VERTICAL_SCROLLBAR_NEVER,JScrollPane.HORIZONTAL_SCROLLBAR_NEVER),5,0,0);
+    protected void makeFields(Class mclass) {
+        super.makeFields(mclass);
+        associationsLabel.setText("AssociationRole:");
+    }
 
-    addCaption(Argo.localize("UMLMenu", "label.attributes"),1,1,0.4);
-    JList attrList = new UMLList(new UMLAttributesListModel(this,"feature",true),true);
-    attrList.setForeground(Color.blue);
-    attrList.setVisibleRowCount(1);
-    addField(new JScrollPane(attrList),1,1,0.4);
-*/
-  }
-
-  protected boolean isAcceptibleBaseMetaClass(String baseClass) {
-      return baseClass.equals("AssociationEndRole");
-  }
+    protected boolean isAcceptibleBaseMetaClass(String baseClass) {
+        return baseClass.equals("AssociationEndRole");
+    }
 
 } /* end class PropPanelAssociationEndRole */
 

@@ -17,9 +17,6 @@ import java.util.*;
  * @author Bob Tarling
  */
 public class SerialLayout extends LineLayout {
-    public final static Orientation VERTICAL = Vertical.getInstance();
-    public final static Orientation HORIZONTAL = Horizontal.getInstance();
-
     public final static int LEFTTORIGHT = 10;
     public final static int TOPTOBOTTOM = 10;
     public final static int RIGHTTOLEFT = 11;
@@ -44,6 +41,9 @@ public class SerialLayout extends LineLayout {
     int direction = LEFTTORIGHT;
     int alignment = TOP;
 
+    public SerialLayout() {
+        this(Horizontal.getInstance(), WEST, LEFTTORIGHT, TOP);
+    }
     public SerialLayout(Orientation orientation) {
         this(orientation, WEST, LEFTTORIGHT, TOP);
     }

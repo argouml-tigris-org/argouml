@@ -30,12 +30,10 @@ import java.lang.reflect.Method;
 import java.util.Collection;
 import java.util.Iterator;
 
-import javax.swing.ButtonGroup;
-import javax.swing.ImageIcon;
-import javax.swing.JList;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
+import javax.swing.*;
 
+import org.argouml.swingext.*;
+import org.argouml.util.*;
 import org.argouml.application.api.Argo;
 import org.argouml.model.uml.AbstractWellformednessRule;
 import org.argouml.model.uml.foundation.core.AssociationEndAggregationWellformednessRule;
@@ -69,16 +67,23 @@ import ru.novosoft.uml.foundation.data_types.MScopeKind;
 
 public class PropPanelAssociationEnd extends PropPanelModelElement {
 
-  public PropPanelAssociationEnd(String name, ImageIcon icon, int columns) {
-    super(name,icon,columns);
-  }
+    protected JLabel associationsLabel;
 
-  public PropPanelAssociationEnd() {
-    super("AssociationEnd", _assocEndIcon,3);
-    Class mclass = MAssociationEnd.class;
-    makeFields(mclass);
-  }
+    public PropPanelAssociationEnd(String name, ImageIcon icon, int columns) {
+        super(name,icon,columns);
+    }
 
+    public PropPanelAssociationEnd(String name, ImageIcon icon, Orientation orientation) {
+        super(name, icon, orientation);
+    }
+    
+    public PropPanelAssociationEnd() {
+      super("AssociationEnd",_assocEndIcon, ConfigLoader.getTabPropsOrientation());
+      Class mclass = MAssociationEnd.class;
+      makeFields(mclass);
+    }
+
+  /*
   protected void makeFields(Class mclass) {
     addCaption(Argo.localize("UMLMenu", "label.name"),1,0,0);
     addField(nameField,1,0,0);
@@ -197,6 +202,129 @@ public class PropPanelAssociationEnd extends PropPanelModelElement {
 
     addCaption(Argo.localize("UMLMenu", "label.visibility"),2,2,1);
     addField(new UMLVisibilityPanel(this,mclass,1,false),2,2,0);
+
+    //does this make sense?? new PropPanelButton(this,buttonPanel,_classIcon, Argo.localize("UMLMenu", "button.add-new-class"),"newClass",null);
+    new PropPanelButton(this,buttonPanel,_navUpIcon, Argo.localize("UMLMenu", "button.go-up"),"navigateUp",null);
+    //does this make sense?? new PropPanelButton(this,buttonPanel,_interfaceIcon, Argo.localize("UMLMenu", "button.add-new-interface"),"newInterface",null);
+    new PropPanelButton(this,buttonPanel,_navBackIcon, Argo.localize("UMLMenu", "button.go-back"),"navigateBackAction","isNavigateBackEnabled");
+    new PropPanelButton(this,buttonPanel,_navForwardIcon, Argo.localize("UMLMenu", "button.go-forward"),"navigateForwardAction","isNavigateForwardEnabled");
+    new PropPanelButton(this,buttonPanel,_assocEndIcon,localize("Go to other end"),"gotoOther",null);
+    new PropPanelButton(this,buttonPanel,_deleteIcon, Argo.localize("UMLMenu", "button.delete-association-end"), "removeElement", null);
+
+  }
+*/
+  protected void makeFields(Class mclass) {
+
+    addField(Argo.localize("UMLMenu", "label.name"), nameField);
+    addField(Argo.localize("UMLMenu", "label.stereotype"), new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-stereo"),stereotypeBox));
+
+    UMLComboBoxModel model = new UMLComboBoxModel(this,"isAcceptibleType",
+        "type","getType","setType",false,MClassifier.class,true);
+    UMLComboBox box = new UMLComboBox(model);
+    box.setToolTipText("Warning: Do not use this to change an end that is already in a diagram.");
+    addField(Argo.localize("UMLMenu", "label.type"),new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-class"),box));
+
+    addField(Argo.localize("UMLMenu", "label.multiplicity"),new UMLMultiplicityComboBox(this,mclass));
+
+    JList associationList = new UMLList(new UMLReflectionListModel(this,"association",false,"getAssociation",null,null,null),true);
+    associationList.setBackground(getBackground());
+    associationList.setForeground(Color.blue);
+    associationList.setVisibleRowCount(1);
+    associationsLabel = addField(Argo.localize("UMLMenu", "label.association"),new JScrollPane(namespaceList,JScrollPane.VERTICAL_SCROLLBAR_NEVER,JScrollPane.HORIZONTAL_SCROLLBAR_NEVER));
+
+    add(LabelledLayout.getSeperator());
+    
+    addField("Navigable:", new UMLCheckBox(localize("navigable"),this,
+      new UMLReflectionBooleanProperty("navigable",mclass,
+        "isNavigable","setNavigable")));
+
+    // Build order radio buttons
+    JPanel orderingPanel = new JPanel(new GridLayout(0,1));
+    ButtonGroup orderingGroup = new ButtonGroup();
+
+    UMLRadioButton unordered = new UMLRadioButton(localize("unordered"),this,
+      new UMLEnumerationBooleanProperty("ordering",mclass,
+        "getOrdering","setOrdering",MOrderingKind.class,MOrderingKind.UNORDERED,null),true);
+
+    orderingGroup.add(unordered);
+    orderingPanel.add(unordered);
+
+    UMLRadioButton ordered = new UMLRadioButton(localize("ordered"),this,
+      new UMLEnumerationBooleanProperty("ordering",mclass,"getOrdering",
+      "setOrdering",MOrderingKind.class,MOrderingKind.ORDERED,null));
+
+    orderingGroup.add(ordered);
+    orderingPanel.add(ordered);
+
+    UMLRadioButton sorted = new UMLRadioButton(Argo.localize("UMLMenu", "button.sorted"),this,
+      new UMLEnumerationBooleanProperty("ordering",mclass,"getOrdering",
+      "setOrdering",MOrderingKind.class,MOrderingKind.SORTED,null));
+
+    orderingGroup.add(sorted);
+    orderingPanel.add(sorted);
+    addField(Argo.localize("UMLMenu", "label.ordering"), orderingPanel);
+
+    AbstractWellformednessRule[] wellformednessrules = new AbstractWellformednessRule[] {new AssociationEndAggregationWellformednessRule()};
+   
+    // Build aggregation radio buttons
+    JPanel aggregationPanel = new JPanel(new GridLayout(0,1));
+    ButtonGroup aggregationGroup = new ButtonGroup();
+
+    UMLRadioButton none = new UMLRadioButton(localize("none"),this,
+      new UMLEnumerationBooleanProperty("aggregation",mclass,"getAggregation",
+        "setAggregation",MAggregationKind.class,MAggregationKind.NONE,null,wellformednessrules),true);
+
+    aggregationGroup.add(none);
+    aggregationPanel.add(none);
+
+    UMLRadioButton aggregation = new UMLRadioButton(localize("aggregation"),this,
+      new UMLEnumerationBooleanProperty("aggregation",mclass,"getAggregation",
+        "setAggregation",MAggregationKind.class,MAggregationKind.AGGREGATE,null, wellformednessrules));
+    aggregationGroup.add(aggregation);
+    aggregationPanel.add(aggregation);
+
+    UMLRadioButton composite = new UMLRadioButton(localize("composite"),this,
+      new UMLEnumerationBooleanProperty("aggregation",mclass,"getAggregation",
+        "setAggregation",MAggregationKind.class,MAggregationKind.COMPOSITE,null, wellformednessrules));
+    aggregationGroup.add(composite);
+    aggregationPanel.add(composite);
+    addField("Aggregation:",aggregationPanel);
+
+    add(LabelledLayout.getSeperator());
+    
+    //
+    addField("Scope:",new UMLCheckBox(localize("classifier"),this,
+      new UMLEnumerationBooleanProperty("targetScope",mclass,"getTargetScope",
+        "setTargetScope",MScopeKind.class,MScopeKind.CLASSIFIER,MScopeKind.INSTANCE)));
+
+    // Build changability radio buttons
+    ButtonGroup changeabilityGroup = new ButtonGroup();
+    JPanel changeabilityPanel = new JPanel(new GridLayout(0,1));
+
+    UMLRadioButton changeable = new UMLRadioButton(Argo.localize("UMLMenu", "radiobutton.changeable"),this,
+      new UMLEnumerationBooleanProperty("changeability",mclass,"getChangeability",
+        "setChangeability",MChangeableKind.class,MChangeableKind.CHANGEABLE,null), true);
+
+    changeabilityGroup.add(changeable);
+    changeabilityPanel.add(changeable);
+
+    UMLRadioButton frozen = new UMLRadioButton(localize("frozen"),this,
+      new UMLEnumerationBooleanProperty("changeability",mclass,"getChangeability",
+        "setChangeability",MChangeableKind.class,MChangeableKind.FROZEN,null));
+    changeabilityGroup.add(frozen);
+    changeabilityPanel.add(frozen);
+
+
+    UMLRadioButton addOnly = new UMLRadioButton(localize("add only"),this,
+      new UMLEnumerationBooleanProperty("changeability",mclass,"getChangeability",
+        "setChangeability",MChangeableKind.class,MChangeableKind.ADD_ONLY,null));
+
+    changeabilityGroup.add(addOnly);
+    changeabilityPanel.add(addOnly);
+    addField("Changeability:", changeabilityPanel);
+
+    //
+    addField(Argo.localize("UMLMenu", "label.visibility"),new UMLVisibilityPanel(this,mclass,1,false));
 
     //does this make sense?? new PropPanelButton(this,buttonPanel,_classIcon, Argo.localize("UMLMenu", "button.add-new-class"),"newClass",null);
     new PropPanelButton(this,buttonPanel,_navUpIcon, Argo.localize("UMLMenu", "button.go-up"),"navigateUp",null);

@@ -33,6 +33,8 @@ package org.argouml.uml.ui.foundation.core;
 import java.awt.*;
 import java.util.*;
 import javax.swing.*;
+import org.argouml.swingext.*;
+import org.argouml.util.*;
 
 import ru.novosoft.uml.*;
 import ru.novosoft.uml.foundation.core.*;
@@ -49,6 +51,7 @@ public class PropPanelAssociation extends PropPanelModelElement {
 
   ////////////////////////////////////////////////////////////////
   // contructors
+    /*
   public PropPanelAssociation() {
     super("Association",_associationIcon,2);
 
@@ -61,6 +64,9 @@ public class PropPanelAssociation extends PropPanelModelElement {
     Class[] namesToWatch = { MStereotype.class,MNamespace.class,MClassifier.class };
     setNameEventListening(namesToWatch);
 
+    addField(Argo.localize("UMLMenu", "label.name"), nameField);
+    
+    add(Argo.localize("UMLMenu", "label.name"), nameField);
     addCaption(Argo.localize("UMLMenu", "label.name"),1,0,0);
     addField(nameField,1,0,0);
 
@@ -97,6 +103,57 @@ public class PropPanelAssociation extends PropPanelModelElement {
     derivedList.setFont(smallFont);
     JScrollPane derivedScroll=new JScrollPane(derivedList,JScrollPane.VERTICAL_SCROLLBAR_NEVER,JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
     addField(derivedScroll,2,1,0);
+
+    new PropPanelButton(this,buttonPanel,_navUpIcon, Argo.localize("UMLMenu", "button.go-up"),"navigateNamespace",null);
+    new PropPanelButton(this,buttonPanel,_navBackIcon, Argo.localize("UMLMenu", "button.go-back"),"navigateBackAction","isNavigateBackEnabled");
+    new PropPanelButton(this,buttonPanel,_navForwardIcon, Argo.localize("UMLMenu", "button.go-forward"),"navigateForwardAction","isNavigateForwardEnabled");
+    new PropPanelButton(this,buttonPanel,_deleteIcon, Argo.localize("UMLMenu", "button.delete-association"),"removeElement",null);
+    //does this make sense??new PropPanelButton(this,buttonPanel,_generalizationIcon, Argo.localize("UMLMenu", "button.add-generalization"),"addGeneralization",null);
+    //does this make sense??new PropPanelButton(this,buttonPanel,_realizationIcon, Argo.localize("UMLMenu", "button.add-realization"),"addRealization",null);
+    //does this make sense??new PropPanelButton(this,buttonPanel,_associationIcon, Argo.localize("UMLMenu", "button.add-association"),"newAssociation",null);
+
+  }
+*/
+  public PropPanelAssociation() {
+    super("Association",_associationIcon, ConfigLoader.getTabPropsOrientation());
+
+    Class mclass = MAssociation.class;
+
+    //
+    //   this will cause the components on this page to be notified
+    //      anytime a stereotype, namespace, operation, etc
+    //      has its name changed or is removed anywhere in the model
+    Class[] namesToWatch = { MStereotype.class,MNamespace.class,MClassifier.class };
+    setNameEventListening(namesToWatch);
+
+    addField(Argo.localize("UMLMenu", "label.name"), nameField);
+    addField(Argo.localize("UMLMenu", "label.stereotype"), new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-stereo"),stereotypeBox));
+    
+    addField(Argo.localize("UMLMenu", "label.namespace"),namespaceScroll);
+
+    JPanel modifiersPanel = new JPanel(new GridLayout2(0,3,GridLayout2.ROWCOLPREFERRED));
+    modifiersPanel.add(new UMLCheckBox(Argo.localize("UMLMenu", "checkbox.abstract-uc"),this,new UMLReflectionBooleanProperty("isAbstract",mclass,"isAbstract","setAbstract")));
+    modifiersPanel.add(new UMLCheckBox(Argo.localize("UMLMenu", "checkbox.final-uc"),this,new UMLReflectionBooleanProperty("isLeaf",mclass,"isLeaf","setLeaf")));
+    modifiersPanel.add(new UMLCheckBox(localize("Root"),this,new UMLReflectionBooleanProperty("isRoot",mclass,"isRoot","setRoot")));
+    addField(Argo.localize("UMLMenu", "label.modifiers"),modifiersPanel);
+
+    add(LabelledLayout.getSeperator());
+    
+    JList assocEndList = new UMLList(new UMLAssociationEndListModel(this,"connection",true),true);
+    assocEndList.setBackground(getBackground());
+    assocEndList.setForeground(Color.blue);
+    addField(Argo.localize("UMLMenu", "label.association-ends"),new JScrollPane(assocEndList));
+
+    JList extendsList = new UMLList(new UMLGeneralizationListModel(this,"generalization",true),true);
+    JScrollPane extendsScroll=new JScrollPane(extendsList,JScrollPane.VERTICAL_SCROLLBAR_NEVER,JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+    addLinkField("Generalizations:", extendsScroll);
+
+    JList derivedList = new UMLList(new UMLSpecializationListModel(this,null,true),true);
+    derivedList.setForeground(Color.blue);
+    derivedList.setVisibleRowCount(1);
+    derivedList.setFont(smallFont);
+    JScrollPane derivedScroll=new JScrollPane(derivedList,JScrollPane.VERTICAL_SCROLLBAR_NEVER,JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+    addField("Specializations:",derivedScroll);
 
     new PropPanelButton(this,buttonPanel,_navUpIcon, Argo.localize("UMLMenu", "button.go-up"),"navigateNamespace",null);
     new PropPanelButton(this,buttonPanel,_navBackIcon, Argo.localize("UMLMenu", "button.go-back"),"navigateBackAction","isNavigateBackEnabled");
