@@ -79,8 +79,8 @@ implements NotationProvider {
   public String generate(Object o) {
     if (o == null)
       return "";
-    if (o instanceof MExtensionPoint)
-      return generateExtensionPoint((MExtensionPoint) o);
+    //    if (o instanceof MExtensionPoint)
+    //      return generateExtensionPoint((MExtensionPoint) o);
     if (o instanceof MOperation)
       return generateOperation((MOperation) o, false);
     if (o instanceof MAttribute)
@@ -128,7 +128,7 @@ implements NotationProvider {
     return o.toString();
   }
 
-  public abstract String generateExtensionPoint(MExtensionPoint op);
+  //public abstract String generateExtensionPoint(MExtensionPoint op);
   public abstract String generateOperation(MOperation op, boolean documented);
   public abstract String generateAttribute(MAttribute attr, boolean documented);
   public abstract String generateParameter(MParameter param);
