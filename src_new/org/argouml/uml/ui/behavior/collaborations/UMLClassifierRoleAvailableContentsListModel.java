@@ -3,10 +3,12 @@ package org.argouml.uml.ui.behavior.collaborations;
 import java.util.Collection;
 import java.util.Iterator;
 
+import org.argouml.model.uml.UmlModelEventPump;
 import org.argouml.model.uml.behavioralelements.collaborations.CollaborationsHelper;
 import org.argouml.uml.ui.UMLModelElementListModel2;
 import org.argouml.uml.ui.UMLUserInterfaceContainer;
 
+import ru.novosoft.uml.MBase;
 import ru.novosoft.uml.MElementEvent;
 import ru.novosoft.uml.behavior.collaborations.MClassifierRole;
 import ru.novosoft.uml.foundation.core.MClassifier;
@@ -40,42 +42,45 @@ public class UMLClassifierRoleAvailableContentsListModel
      * @see ru.novosoft.uml.MElementListener#roleAdded(ru.novosoft.uml.MElementEvent)
      */
     public void roleAdded(MElementEvent e) {
-        if (isValidRoleAdded(e)) {
-            MClassifier clazz = (MClassifier)e.getAddedValue();
-            Iterator it = clazz.getOwnedElements().iterator();
-            while (it.hasNext()) {
-                addElement(it.next());
-            }
+        super.roleAdded(e);
+        if (e.getName().equals("base") && e.getSource() == getTarget()) {
+            MClassifier clazz = (MClassifier)getChangedElement(e);
+            addAll(clazz.getOwnedElements());
         }
     }
-
+    
     /**
-     * @see ru.novosoft.uml.MElementListener#roleRemoved(ru.novosoft.uml.MElementEvent)
+     * @see org.argouml.uml.ui.UMLModelElementListModel2#setTarget(java.lang.Object)
      */
-    public void roleRemoved(MElementEvent e) {
-        if (isValidRoleRemoved(e)) {
-            MClassifier clazz = (MClassifier)e.getRemovedValue();
-            Iterator it = clazz.getOwnedElements().iterator();
+    protected void setTarget(Object target) {
+        if (_target != null) {
+            Collection bases = ((MClassifierRole)getTarget()).getBases();
+            Iterator it = bases.iterator();
             while (it.hasNext()) {
-                removeElement(it.next());
+                MBase base = (MBase)it.next();
+                UmlModelEventPump.getPump().removeModelEventListener(this, base, "ownedElement");
             }
+            UmlModelEventPump.getPump().removeModelEventListener(this, (MBase)getTarget(), "base");
         }
+        _target = target;
+        if (_target != null) {
+            Collection bases = ((MClassifierRole)_target).getBases();
+            Iterator it = bases.iterator();
+            while (it.hasNext()) {
+                MBase base = (MBase)it.next();
+                UmlModelEventPump.getPump().addModelEventListener(this, base, "ownedElement");
+            }
+            // make sure we know it when a classifier is added as a base
+            UmlModelEventPump.getPump().addModelEventListener(this, (MBase)_target, "base");
+        }            
+        super.setTarget(target);
     }
 
     /**
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidRoleAdded(ru.novosoft.uml.MElementEvent)
      */
     protected boolean isValidRoleAdded(MElementEvent e) {
-        Object elem = getChangedElement(e);
-        if (elem instanceof MClassifier) {
-            Collection availableContents = CollaborationsHelper.getHelper().allAvailableContents((MClassifierRole)getTarget());
-            Iterator it = ((MClassifier)elem).getOwnedElements().iterator();
-            while (it.hasNext()) {
-                MModelElement me = (MModelElement)it.next();
-                if (availableContents.contains(me)) return true;
-            }
-        }
-        return false;
+        return ((MClassifierRole)getTarget()).getBases().contains(e.getSource()) && e.getName().equals("ownedElement") && !contains(getChangedElement(e));
     }
 
 }
