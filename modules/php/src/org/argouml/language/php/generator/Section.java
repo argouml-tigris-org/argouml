@@ -14,16 +14,10 @@ package org.argouml.language.php.generator;
 
 import java.util.*;
 import java.io.*;
-import java.lang.String;
+import org.argouml.uml.generator.AbstractSection;
 
 
-public class Section {
-    private Map m_ary;
-    /** Creates a new instance of Section */
-    public Section() {
-        m_ary = new HashMap();
-        m_ary.clear();
-    }
+public class Section extends AbstractSection {
 
     public static String generate(String id, String INDENT){
         String s = "";
@@ -31,113 +25,4 @@ public class Section {
         s += INDENT + "// section " + id + " end\n";
         return s;
     }
-
-    // write todo:
-    // check if sections are not used within the file and put them as comments
-    // at the end of the file.
-    // hint: use a second Map to compare with the used keys
-    // =======================================================================
-
-    public void write(String filename, String INDENT) {
-        try{
-            System.out.println("Start reading");
-            FileReader f = new FileReader(filename);
-            BufferedReader fr = new BufferedReader(f);
-            FileWriter fw = new FileWriter(filename + ".out");
-            System.out.println("Total size of Map: " + m_ary.size());
-            String line = "";
-            while (line != null){
-                line = fr.readLine();
-                if (line != null){
-                    String section_id = get_sect_id(line);
-                    if (section_id != null){
-                        String content = (String)m_ary.get(section_id);
-                        fw.write(line + "\n");
-                        if (content != null){
-                            fw.write(content);
-                            // System.out.println(line);
-                            // System.out.print(content);
-                        }
-                        line = fr.readLine(); // read end section;
-                        m_ary.remove(section_id);
-                    }
-                    fw.write(line + "\n");
-                    // System.out.println(line);
-                }
-            }
-            if (m_ary.isEmpty() != true){
-                fw.write("/* lost code following: \n");
-                Set map_entries = m_ary.entrySet();
-                Iterator itr = map_entries.iterator();
-                while (itr.hasNext()){
-                    Map.Entry entry = (Map.Entry)itr.next();
-                    fw.write(INDENT + "// section " + entry.getKey() + " begin\n");
-                    fw.write((String)entry.getValue());
-                    fw.write(INDENT + "// section " + entry.getKey() + " end\n");
-                }
-            }
-
-            fr.close();
-            fw.close();
-        } catch (IOException e){
-            System.out.println("Error: " + e.toString());
-        }
-    }
-
-    public void read(String filename) {
-        try{
-            System.out.println("Start reading");
-            FileReader f = new FileReader(filename);
-            BufferedReader fr = new BufferedReader(f);
-
-            String line = "";
-            String content = "";
-            boolean in_section = false;
-            while (line != null){
-                line = fr.readLine();
-                if (line != null) {
-                    if (in_section){
-                        String section_id = get_sect_id(line);
-                        if (section_id != null){
-                            in_section = false;
-                            m_ary.put(section_id, content);
-                            content = "";
-                        } else{
-                            content += line + "\n";
-                        }
-                    } else {
-                        String section_id = get_sect_id(line);
-                        if (section_id != null){
-                            in_section = true;
-                        }
-                    }
-                }
-            }
-            fr.close();
-
-        } catch (IOException e){
-            System.out.println("Error: " + e.toString());
-        }
-
-
-
-    }
-
-    public static String get_sect_id(String line){
-        final String BEGIN = "// section ";
-        final String END1 = " begin";
-        final String END2 = " end";
-        int first = line.indexOf(BEGIN);
-        int second = line.indexOf(END1);
-        if (second < 0){
-            second = line.indexOf(END2);
-        }
-        String s = null;
-        if ( (first > 0) && (second > 0) ){
-            first = first + new String(BEGIN).length();
-            s = line.substring(first, second);
-        }
-        return s;
-    }
-
 }

@@ -139,7 +139,7 @@ implements PluggableNotation, FileGenerator {
 	  }
     }
 
-    sect.write(pathname, INDENT);
+    sect.write(pathname, INDENT, true);
     System.out.println("written: " + pathname);
 
 
@@ -401,7 +401,7 @@ implements PluggableNotation, FileGenerator {
     //needs-more-work: initial value
 
     MExpression default_val = param.getDefaultValue();
-    if ( (default_val != null) && (default_val.getBody() != null) && 
+    if ( (default_val != null) && (default_val.getBody() != null) &&
          (default_val.getBody().trim().length() > 0)) {
         s += " = " + default_val.getBody().trim();
     }
@@ -932,7 +932,7 @@ implements PluggableNotation, FileGenerator {
 
   public String generateAssociationRole(MAssociationRole m) {
       return "";
-  }      
+  }
 
   public String generateAssociationEnd(MAssociationEnd ae) {
     if (!ae.isNavigable()) return "";
@@ -1001,8 +1001,8 @@ implements PluggableNotation, FileGenerator {
   // internal methods?
 
 
-  public Collection 
-      generateGeneralzationCollection(Collection generalizations) 
+  public Collection
+      generateGeneralzationCollection(Collection generalizations)
   {
     if (generalizations == null) return null;
     Collection classes = new ArrayList();
@@ -1017,12 +1017,12 @@ implements PluggableNotation, FileGenerator {
   }
 
   public String generateGeneralzation(Collection generalizations) {
-      return 
+      return
           generateClassList(generateGeneralzationCollection(generalizations));
   }
 
     public String generateRequireStatements(Collection generalizations) {
-        return 
+        return
             generateRequireStatementList(generateGeneralzationCollection(generalizations));
     }
 
@@ -1057,7 +1057,7 @@ implements PluggableNotation, FileGenerator {
 		Iterator clsEnum = classifiers.iterator();
 		while (clsEnum.hasNext()) {
 			s += "require_once \""+generateClassifierRef((MClassifier)clsEnum.next())+".php\";\n";
-		
+
 		}
 		return s;
 	}
