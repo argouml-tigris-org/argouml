@@ -21,35 +21,46 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
+
+
 package org.argouml.language.ui;
-import org.argouml.application.api.*;
-import org.argouml.application.helpers.*;
-import org.argouml.kernel.*;
-import org.argouml.uml.ui.UMLAction;
-import org.argouml.ui.*;
-import java.awt.*;
-import java.awt.event.*;
-import java.beans.*;
-import javax.swing.*;
-import java.util.*;
-import org.tigris.gef.util.*;
+
+import java.awt.BorderLayout;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
+
+import javax.swing.JCheckBox;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+
+import org.argouml.application.api.Configuration;
+import org.argouml.application.api.Notation;
+import org.argouml.application.api.SettingsTabPanel;
+import org.argouml.application.helpers.SettingsTabHelper;
 
 /** Action object for handling Argo settings
  *
  *  @author Thierry Lach
  *  @since  0.9.4
  */
+
 public class SettingsTabNotation extends SettingsTabHelper
+
 implements SettingsTabPanel {
 
     JCheckBox _allowNotations = null;
     JCheckBox _useGuillemots = null;
+    JCheckBox _showVisibility = null;
+    JCheckBox _showMultiplicity = null;
+    JCheckBox _showInitialValue = null;
+    JCheckBox _showProperties = null;
 
     public SettingsTabNotation() {
-        super();
-        setLayout(new BorderLayout());
+    super();
+    setLayout(new BorderLayout());
 	JPanel top = new JPanel();
-    	top.setLayout(new GridBagLayout()); 
+    top.setLayout(new GridBagLayout()); 
 
 	GridBagConstraints checkConstraints = new GridBagConstraints();
 	checkConstraints.anchor = GridBagConstraints.WEST;
@@ -90,30 +101,64 @@ implements SettingsTabPanel {
 	fieldConstraints.gridy = 1;
         _useGuillemots = createCheckBox("label.use-guillemots");
 	top.add(_useGuillemots, checkConstraints);
+    
+    // 2002-07-31
+    // Jaap Branderhorst
+    // from here made visibility etc. configurable
+    top.add(new JLabel(""), labelConstraints);
+    top.add(new JLabel(""), fieldConstraints);
+    
+    checkConstraints.gridy = 2;
+    labelConstraints.gridy = 2;
+    fieldConstraints.gridy = 2;
+    _showVisibility = createCheckBox("label.show-visibility");
+    top.add(_showVisibility, checkConstraints);
+    top.add(new JLabel(""), labelConstraints);
+    top.add(new JLabel(""), fieldConstraints);
+    
+    checkConstraints.gridy = 3;
+    labelConstraints.gridy = 3;
+    fieldConstraints.gridy = 3;
+    _showMultiplicity = createCheckBox("label.show-multiplicity");
+    top.add(_showMultiplicity, checkConstraints);
+    top.add(new JLabel(""), labelConstraints);
+    top.add(new JLabel(""), fieldConstraints);
 
-	// checkConstraints.gridy = 1;
-        // _preload = createCheckBox("label.preload");
- 	// top.add(_preload, checkConstraints);
-
-	// checkConstraints.gridy = 2;
-        // _edem = createCheckBox("label.edem");
- 	// top.add(_edem, checkConstraints);
-
-	// checkConstraints.gridy = 3;
-        // _profile = createCheckBox("label.profile");
- 	// top.add(_profile, checkConstraints);
-
+    checkConstraints.gridy = 4;
+    labelConstraints.gridy = 4;
+    fieldConstraints.gridy = 4;
+    _showInitialValue = createCheckBox("label.show-initialvalue");
+    top.add(_showInitialValue, checkConstraints);
+    top.add(new JLabel(""), labelConstraints);
+    top.add(new JLabel(""), fieldConstraints);
+    
+    checkConstraints.gridy = 5;
+    labelConstraints.gridy = 5;
+    fieldConstraints.gridy = 5;
+    _showProperties = createCheckBox("label.show-properties");
+    top.add(_showProperties, checkConstraints);
+    top.add(new JLabel(""), labelConstraints);
+    top.add(new JLabel(""), fieldConstraints);
+	
 	add(top, BorderLayout.NORTH);
     }
 
     public void handleSettingsTabRefresh() {
         _useGuillemots.setSelected(Notation.getUseGuillemots());
         _allowNotations.setSelected(Configuration.getBoolean(Notation.KEY_UML_NOTATION_ONLY, false));
+        _showVisibility.setSelected(Configuration.getBoolean(Notation.KEY_SHOW_VISIBILITY, false));
+        _showInitialValue.setSelected(Configuration.getBoolean(Notation.KEY_SHOW_INITIAL_VALUE, false));
+        _showProperties.setSelected(Configuration.getBoolean(Notation.KEY_SHOW_PROPERTIES, false));
+        _showMultiplicity.setSelected(Configuration.getBoolean(Notation.KEY_SHOW_MULTIPLICITY, false));
     }
 
     public void handleSettingsTabSave() {
         Notation.setUseGuillemots(_useGuillemots.isSelected());
         Configuration.setBoolean(Notation.KEY_UML_NOTATION_ONLY, _allowNotations.isSelected());
+        Configuration.setBoolean(Notation.KEY_SHOW_VISIBILITY, _showVisibility.isSelected());
+        Configuration.setBoolean(Notation.KEY_SHOW_MULTIPLICITY, _showMultiplicity.isSelected());
+        Configuration.setBoolean(Notation.KEY_SHOW_PROPERTIES, _showProperties.isSelected());
+        Configuration.setBoolean(Notation.KEY_SHOW_INITIAL_VALUE, _showInitialValue.isSelected());
     }
 
     public void handleSettingsTabCancel() {
@@ -128,5 +173,9 @@ implements SettingsTabPanel {
   public String getTabKey() { return "tab.notation"; }
   public String getTabResourceBundleKey() { return "CoreSettings"; }
 
+
+
 }
+
+
 
