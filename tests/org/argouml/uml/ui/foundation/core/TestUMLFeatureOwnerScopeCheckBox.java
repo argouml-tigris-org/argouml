@@ -24,14 +24,14 @@
 
 package org.argouml.uml.ui.foundation.core;
 
+import junit.framework.TestCase;
+
+import org.argouml.application.security.ArgoSecurityManager;
 import org.argouml.model.uml.foundation.core.CoreFactory;
-import org.argouml.uml.ui.MockUMLUserInterfaceContainer;
 
 import ru.novosoft.uml.MFactoryImpl;
 import ru.novosoft.uml.foundation.core.MFeature;
 import ru.novosoft.uml.foundation.data_types.MScopeKind;
-
-import junit.framework.TestCase;
 
 /**
  * @since Nov 6, 2002
@@ -55,6 +55,7 @@ public class TestUMLFeatureOwnerScopeCheckBox extends TestCase {
      */
     protected void setUp() throws Exception {
         super.setUp();
+        ArgoSecurityManager.getInstance().setAllowExit(true);
         MFactoryImpl.setEventPolicy(MFactoryImpl.EVENT_POLICY_IMMEDIATE);
         elem = CoreFactory.getFactory().createAttribute();       
 	

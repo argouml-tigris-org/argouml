@@ -24,96 +24,76 @@
 package org.argouml.cognitive;
 
 // Diagrams
-import org.argouml.uml.diagram.activity.ui.UMLActivityDiagram;
-import org.argouml.uml.diagram.collaboration.ui.UMLCollaborationDiagram;
-import org.argouml.uml.diagram.deployment.ui.UMLDeploymentDiagram;
-import org.argouml.uml.diagram.sequence.ui.UMLSequenceDiagram;
-import org.argouml.uml.diagram.state.ui.UMLStateDiagram;
-import org.argouml.uml.diagram.static_structure.ui.UMLClassDiagram;
-import org.argouml.uml.diagram.use_case.ui.UMLUseCaseDiagram;
+import junit.framework.TestCase;
 
-// Figures
+import org.argouml.application.security.ArgoSecurityManager;
+import org.argouml.model.uml.foundation.core.CoreFactory;
 import org.argouml.uml.diagram.activity.ui.FigActionState;
-import org.argouml.uml.diagram.collaboration.ui.FigAssociationRole;
+import org.argouml.uml.diagram.activity.ui.UMLActivityDiagram;
 import org.argouml.uml.diagram.collaboration.ui.FigClassifierRole;
+import org.argouml.uml.diagram.collaboration.ui.UMLCollaborationDiagram;
 import org.argouml.uml.diagram.deployment.ui.FigComponent;
 import org.argouml.uml.diagram.deployment.ui.FigComponentInstance;
 import org.argouml.uml.diagram.deployment.ui.FigMNode;
 import org.argouml.uml.diagram.deployment.ui.FigMNodeInstance;
 import org.argouml.uml.diagram.deployment.ui.FigObject;
+import org.argouml.uml.diagram.deployment.ui.UMLDeploymentDiagram;
 import org.argouml.uml.diagram.sequence.ui.FigSeqLink;
 import org.argouml.uml.diagram.sequence.ui.FigSeqObject;
 import org.argouml.uml.diagram.sequence.ui.FigSeqStimulus;
-import org.argouml.uml.diagram.state.ui.FigBranchState;
-import org.argouml.uml.diagram.state.ui.FigCompositeState;
-import org.argouml.uml.diagram.state.ui.FigDeepHistoryState;
-import org.argouml.uml.diagram.state.ui.FigFinalState;
-import org.argouml.uml.diagram.state.ui.FigForkState;
-import org.argouml.uml.diagram.state.ui.FigHistoryState;
-import org.argouml.uml.diagram.state.ui.FigInitialState;
-import org.argouml.uml.diagram.state.ui.FigJoinState;
-import org.argouml.uml.diagram.state.ui.FigShallowHistoryState;
-import org.argouml.uml.diagram.state.ui.FigState;
-import org.argouml.uml.diagram.state.ui.FigTransition;
+import org.argouml.uml.diagram.sequence.ui.UMLSequenceDiagram;
+import org.argouml.uml.diagram.state.ui.*;
 import org.argouml.uml.diagram.static_structure.ui.FigClass;
 import org.argouml.uml.diagram.static_structure.ui.FigEdgeNote;
 import org.argouml.uml.diagram.static_structure.ui.FigInstance;
 import org.argouml.uml.diagram.static_structure.ui.FigInterface;
 import org.argouml.uml.diagram.static_structure.ui.FigLink;
 import org.argouml.uml.diagram.static_structure.ui.FigPackage;
+import org.argouml.uml.diagram.static_structure.ui.UMLClassDiagram;
 import org.argouml.uml.diagram.use_case.ui.FigActor;
 import org.argouml.uml.diagram.use_case.ui.FigExtend;
 import org.argouml.uml.diagram.use_case.ui.FigInclude;
 import org.argouml.uml.diagram.use_case.ui.FigUseCase;
-
-// Other
-import org.argouml.model.uml.foundation.core.CoreFactory;
+import org.argouml.uml.diagram.use_case.ui.UMLUseCaseDiagram;
 
 import ru.novosoft.uml.foundation.core.MClass;
 
-import junit.framework.*;
-
-public class TestItemUID extends TestCase
-{
-	public TestItemUID(String name)
-	{
+public class TestItemUID extends TestCase {
+	public TestItemUID(String name) {
 		super(name);
 	}
 
-	public void testConstructors()
-	{
-		String strs[] = {"a", "b", "c", "d", "e"};
+	public void testConstructors() {
+		String strs[] = { "a", "b", "c", "d", "e" };
 		ItemUID uids[] = new ItemUID[10];
 		ItemUID uids2[] = new ItemUID[strs.length];
 		int i, j;
 
-		for (i = 0; i < uids.length; i++)
-		{
+		for (i = 0; i < uids.length; i++) {
 			uids[i] = new ItemUID();
-			for (j = 0; j < i; j++)
-			{
-				assertTrue("ItemUID() does not generate unique UIDs",
+			for (j = 0; j < i; j++) {
+				assertTrue(
+					"ItemUID() does not generate unique UIDs",
 					!uids[j].toString().equals(uids[i].toString()));
 			}
 		}
 
-		for (i = 0; i < strs.length; i++)
-		{
+		for (i = 0; i < strs.length; i++) {
 			uids2[i] = new ItemUID(strs[i]);
 
-			assertTrue("ItemUID(sss) does not preserve UIDs",
+			assertTrue(
+				"ItemUID(sss) does not preserve UIDs",
 				strs[i].equals(uids2[i].toString()));
 
-			for (j = 0; j < i; j++)
-			{
-				assertTrue("ItemUID(sss) does not generate unique UIDs",
+			for (j = 0; j < i; j++) {
+				assertTrue(
+					"ItemUID(sss) does not generate unique UIDs",
 					!uids2[j].toString().equals(uids2[i].toString()));
 			}
 		}
 	}
 
-	public void testAssignIDsToObjects()
-	{
+	public void testAssignIDsToObjects() {
 		MClass testmc = CoreFactory.getFactory().buildClass();
 		UMLActivityDiagram actdiag = new UMLActivityDiagram();
 		UMLClassDiagram classdiag = new UMLClassDiagram();
@@ -125,7 +105,7 @@ public class TestItemUID extends TestCase
 
 		FigActionState figactionstate = new FigActionState();
 
-//		FigAssociationRole figassociationrole = new FigAssociationRole();
+		//		FigAssociationRole figassociationrole = new FigAssociationRole();
 		FigClassifierRole figclassifierrole = new FigClassifierRole();
 
 		FigComponent figcomponent = new FigComponent();
@@ -146,7 +126,8 @@ public class TestItemUID extends TestCase
 		FigHistoryState fighistorystate = new FigHistoryState();
 		FigInitialState figinitialstate = new FigInitialState();
 		FigJoinState figjoinstate = new FigJoinState();
-		FigShallowHistoryState figshallowhistorystate = new FigShallowHistoryState();
+		FigShallowHistoryState figshallowhistorystate =
+			new FigShallowHistoryState();
 		//FigState figstate = new FigState();
 		FigTransition figtransition = new FigTransition();
 
@@ -211,19 +192,32 @@ public class TestItemUID extends TestCase
 		checkAssignIDToObject(figusecase, true, true);
 	}
 
-	private void checkAssignIDToObject(Object obj, boolean canCreate,
-					   boolean willSucceed)
-	{
+	private void checkAssignIDToObject(
+		Object obj,
+		boolean canCreate,
+		boolean willSucceed) {
 		String uid, uid2;
 		uid = ItemUID.getIDOfObject(obj, canCreate);
 		uid2 = ItemUID.getIDOfObject(obj, false);
-		assertTrue("Assign ID to object " + obj.getClass().getName() + " " +
-			(willSucceed ? "failed" : "succeeded") + " unexpectedly",
+		assertTrue(
+			"Assign ID to object "
+				+ obj.getClass().getName()
+				+ " "
+				+ (willSucceed ? "failed" : "succeeded")
+				+ " unexpectedly",
 			(uid != null) == willSucceed);
-		assertTrue("Assign ID to object " + obj.getClass().getName() + 
-			" yielded different results",
-			(uid == null && uid2 == null) ||
-			(uid != null && uid2 != null && uid.equals(uid2)));
+		assertTrue(
+			"Assign ID to object "
+				+ obj.getClass().getName()
+				+ " yielded different results",
+			(uid == null && uid2 == null)
+				|| (uid != null && uid2 != null && uid.equals(uid2)));
+	}
+	/* (non-Javadoc)
+	     * @see junit.framework.TestCase#setUp()
+	     */
+	protected void setUp() throws Exception {
+		super.setUp();
+		ArgoSecurityManager.getInstance().setAllowExit(true);
 	}
 }
-

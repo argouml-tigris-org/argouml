@@ -42,68 +42,54 @@
 
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-
-
 package org.argouml.model.uml.foundation.extensionmechanisms;
 
-import junit.framework.*;
+import junit.framework.TestCase;
 
-
-
-import org.argouml.util.*;
-
-
+import org.argouml.application.security.ArgoSecurityManager;
+import org.argouml.util.CheckUMLModelHelper;
 
 public class TestExtensionMechanismsFactory extends TestCase {
-    
-    static String[] allModelElements = {
-        "Stereotype",
-        "TaggedValue"
-    }; 
 
-    public TestExtensionMechanismsFactory(String n) { super(n); }
+	static String[] allModelElements = { "Stereotype", "TaggedValue" };
 
+	public TestExtensionMechanismsFactory(String n) {
+		super(n);
+	}
 
+	public void testSingleton() {
 
-    public void testSingleton() {
+		Object o1 = ExtensionMechanismsFactory.getFactory();
 
-	Object o1 = ExtensionMechanismsFactory.getFactory();
+		Object o2 = ExtensionMechanismsFactory.getFactory();
 
-	Object o2 = ExtensionMechanismsFactory.getFactory();
+		assertTrue("Different singletons", o1 == o2);
 
-	assertTrue("Different singletons", o1 == o2);
+	}
 
-    }
+	public void testCreates() {
 
+		String[] objs = { "Stereotype", "TaggedValue", null };
 
+		CheckUMLModelHelper.createAndRelease(
+			this,
+			ExtensionMechanismsFactory.getFactory(),
+			objs);
 
-    public void testCreates() {
+	}
 
-	String [] objs = {
+	public void testDeleteComplete() {
+		CheckUMLModelHelper.deleteComplete(
+			this,
+			ExtensionMechanismsFactory.getFactory(),
+			allModelElements);
+	}
 
-	    "Stereotype",
-
-	    "TaggedValue",
-
-	    null
-
-	};
-
-
-
-	CheckUMLModelHelper.createAndRelease(this, 
-
-	    ExtensionMechanismsFactory.getFactory(),
-
-	    objs);
-
-    }
-    
-    public void testDeleteComplete() {
-        CheckUMLModelHelper.deleteComplete(this, 
-        ExtensionMechanismsFactory.getFactory(), 
-        allModelElements);
-    }
-    
+	/* (non-Javadoc)
+	     * @see junit.framework.TestCase#setUp()
+	     */
+	protected void setUp() throws Exception {
+		super.setUp();
+		ArgoSecurityManager.getInstance().setAllowExit(true);
+	}
 }
-

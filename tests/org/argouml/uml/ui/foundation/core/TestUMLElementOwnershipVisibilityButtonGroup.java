@@ -26,14 +26,15 @@ package org.argouml.uml.ui.foundation.core;
 
 import javax.swing.JRadioButton;
 
+import junit.framework.TestCase;
+
+import org.argouml.application.security.ArgoSecurityManager;
 import org.argouml.uml.ui.MockUMLUserInterfaceContainer;
 
 import ru.novosoft.uml.MFactoryImpl;
 import ru.novosoft.uml.foundation.core.MClassImpl;
 import ru.novosoft.uml.foundation.core.MModelElement;
 import ru.novosoft.uml.foundation.data_types.MVisibilityKind;
-
-import junit.framework.TestCase;
 
 /**
  * @since Oct 12, 2002
@@ -99,6 +100,7 @@ public class TestUMLElementOwnershipVisibilityButtonGroup extends TestCase {
      */
     protected void setUp() throws Exception {
         super.setUp();
+        ArgoSecurityManager.getInstance().setAllowExit(true);
         elem = new MClassImpl();
         MFactoryImpl.setEventPolicy(MFactoryImpl.EVENT_POLICY_IMMEDIATE);
         MockUMLUserInterfaceContainer cont = new MockUMLUserInterfaceContainer();

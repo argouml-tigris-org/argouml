@@ -25,8 +25,8 @@
 package org.argouml.model.uml;
 
 import java.lang.ref.WeakReference;
-import java.util.Collection;
-import java.util.Set;
+import java.util.Arrays;
+import java.util.Date;
 
 import junit.framework.TestCase;
 
@@ -38,6 +38,8 @@ import ru.novosoft.uml.MElementEvent;
 import ru.novosoft.uml.MElementListener;
 import ru.novosoft.uml.MFactoryImpl;
 import ru.novosoft.uml.foundation.core.MClass;
+import ru.novosoft.uml.foundation.core.MClassImpl;
+import ru.novosoft.uml.foundation.core.MModelElement;
 import ru.novosoft.uml.foundation.core.MOperationImpl;
 import ru.novosoft.uml.foundation.core.MParameter;
 import ru.novosoft.uml.foundation.core.MParameterImpl;
@@ -52,6 +54,9 @@ public class TestUmlModelEventPump extends TestCase {
     private MockModelEventListener listener;
     private boolean eventcalled;
     private TestListener listener2;
+    
+    public final static boolean TEST_PERFORMANCE = false;
+    public final static int PERFORMANCE_TEST_SIZE = 500;
 
     
     private class TestListener implements MElementListener {
@@ -141,14 +146,16 @@ public class TestUmlModelEventPump extends TestCase {
      */
     public void testAddLegalListener() {
         UmlModelEventPump.getPump().cleanUp();
-        assertTrue(UmlModelEventPump.getPump().getListenerClassModelEventsMap().isEmpty());
-        assertEquals(UmlModelEventPump.getPump().getListenerModelEventsMap().size(), 0);
+        assertTrue(UmlModelEventPump.getPump().getEventListenerMap().isEmpty());
+        // assertTrue(UmlModelEventPump.getPump().getClassListenerMap().isEmpty());
         UmlModelEventPump.getPump().addClassModelEventListener(listener, elem.getClass(), new String[] {"name"});
         UmlModelEventPump.getPump().addModelEventListener(listener, elem, new String[] {"name"});
-        assertTrue(!UmlModelEventPump.getPump().getListenerClassModelEventsMap().isEmpty());
-        assertTrue(!UmlModelEventPump.getPump().getListenerModelEventsMap().isEmpty());
-        assertTrue(UmlModelEventPump.getPump().getListenerModelEventsMap().get(elem.hashCode() + "name") instanceof Collection);
-        assertTrue(((Collection)UmlModelEventPump.getPump().getListenerModelEventsMap().get(elem.hashCode() + "name")).contains(listener));
+        assertTrue(!UmlModelEventPump.getPump().getClassListenerMap().isEmpty());
+        assertTrue(!UmlModelEventPump.getPump().getEventListenerMap().isEmpty());
+        // assertTrue(UmlModelEventPump.getPump().getClassListenerMap().getListenerList(elem.getClass()).getListenerCount() > 0);
+        MElementListener[] list = UmlModelEventPump.getPump().getEventListenerMap().getListeners(elem, new EventKey(2, "name"));
+        assertTrue(list.length > 0);  
+        assertTrue( Arrays.asList(list).contains(listener));
     }
    
     /**
@@ -199,40 +206,7 @@ public class TestUmlModelEventPump extends TestCase {
             setUp(); // to avoid NP's during teardown
         } catch (Exception ex) {}
     }
-    
-    /**
-     * Tests if it is possible to add a listener twice to the same subclass of
-     * MBase. Adding a listener twice, should result in only 1 such element in the listenerlist.
-     */
-    public void testDoubleClassAdd() {
-        UmlModelEventPump.getPump().addClassModelEventListener(listener, elem.getClass(), new String[] {"name"});
-        UmlModelEventPump.getPump().addClassModelEventListener(listener, elem.getClass(), new String[] {"name"});
-        assertEquals(1, UmlModelEventPump.getPump().getListenerClassModelEventsMap().size());
-        assertEquals(1, ((Set)UmlModelEventPump.getPump().getListenerClassModelEventsMap().get(elem.getClass())).size());
-    }
-    
-    /**
-     * Tests if it is possible to add a listener twice to the same modelelement.
-     * Adding a listener twice, should result in only 1 such element in the listenerlist.
-     */
-    public void testDoubleObjectAdd() {
-        UmlModelEventPump.getPump().addModelEventListener(listener, elem, new String[] {"name"});
-        UmlModelEventPump.getPump().addModelEventListener(listener, elem, new String[] {"name"});
-        assertEquals(1, UmlModelEventPump.getPump().getListenerModelEventsMap().size());
-        assertEquals(1, ((Set)UmlModelEventPump.getPump().getListenerModelEventsMap().get(UmlModelEventPump.getPump().getKey(elem, "name"))).size());
-    } 
-    
-    /**
-     * Tests if a listener that registred for a ListRoleItemSet event on the class level really
-     * received the event.
-     */
-    public void testListRoleItemSetClass() {   
-        UmlModelEventPump.getPump().addClassModelEventListener(listener2, elem.getClass(), new String[] {"feature"});     
-        elem.addFeature(new MOperationImpl());        
-        elem.setFeature(0, new MOperationImpl());
-        assertTrue(eventcalled);
-    }
-    
+  
     /**
      * Tests if a listener that registred for a PropertySet event on the class level really
      * received the event.
@@ -364,7 +338,7 @@ public class TestUmlModelEventPump extends TestCase {
     public void testRemoveLegalClassListener() {
         UmlModelEventPump.getPump().addClassModelEventListener(listener2, elem.getClass(), new String[] {"isRoot"});
         UmlModelEventPump.getPump().removeClassModelEventListener(listener2, elem.getClass(), new String[] {"isRoot"});
-        assertTrue(UmlModelEventPump.getPump().getListenerClassModelEventsMap().isEmpty());
+        assertEquals(0, UmlModelEventPump.getPump().getClassListenerMap().getListeners(elem.getClass(), new EventKey(2, "isRoot")).length);
         elem.addParameter(new MParameterImpl());
         assertTrue(!eventcalled);
     }
@@ -375,7 +349,7 @@ public class TestUmlModelEventPump extends TestCase {
     public void testRemoveLegalListener() {
         UmlModelEventPump.getPump().addModelEventListener(listener2, elem, new String[] {"isRoot"});
         UmlModelEventPump.getPump().removeModelEventListener(listener2, elem, new String[] {"isRoot"});
-        assertTrue(UmlModelEventPump.getPump().getListenerModelEventsMap().isEmpty());
+        assertEquals(0, UmlModelEventPump.getPump().getEventListenerMap().getListeners(elem, new EventKey(2, "isRoot")).length);
         elem.addParameter(new MParameterImpl());
         assertTrue(!eventcalled);
     }
@@ -388,7 +362,7 @@ public class TestUmlModelEventPump extends TestCase {
         UmlModelEventPump.getPump().addClassModelEventListener(listener2, elem.getClass(), new String[] {"isRoot"});
         UmlModelEventPump.getPump().addClassModelEventListener(listener, elem.getClass(), new String[] {"isRoot"});
         UmlModelEventPump.getPump().removeClassModelEventListener(listener, elem.getClass(), new String[] {"isRoot"});
-        assertTrue(!UmlModelEventPump.getPump().getListenerClassModelEventsMap().isEmpty());
+        assertTrue(UmlModelEventPump.getPump().getEventListenerMap().getListeners(elem, new EventKey(2, "isRoot")).length > 0);
     }    
         
     /**
@@ -399,7 +373,7 @@ public class TestUmlModelEventPump extends TestCase {
         UmlModelEventPump.getPump().addModelEventListener(listener2, elem, new String[] {"isRoot"});
         UmlModelEventPump.getPump().addModelEventListener(listener, elem, new String[] {"isRoot"});
         UmlModelEventPump.getPump().removeModelEventListener(listener, elem, new String[] {"isRoot"});
-        assertTrue(!UmlModelEventPump.getPump().getListenerModelEventsMap().isEmpty());
+        assertTrue(UmlModelEventPump.getPump().getEventListenerMap().getListeners(elem, new EventKey(2, "isRoot")).length > 0);
     }
     
     // the behavior that a registred class not only listens to its own events 
@@ -421,26 +395,9 @@ public class TestUmlModelEventPump extends TestCase {
         assertTrue(eventcalled);
     }
     */
-    /**
-     * Tests if a listener that registered for all events for some modelClass
-     * receives all events
-     */
-    public void testPropertySetClass2() {        
-        UmlModelEventPump.getPump().addClassModelEventListener(listener2, elem.getClass());
-        elem.setRoot(true);
-        assertTrue(eventcalled);
-    }
+   
     
-    /**
-     * Tests if a listener that registered for all events for some modelClass
-     * receives all events
-     */
-    public void testListRoleItemSetClass2() {        
-        elem.addFeature(new MOperationImpl());
-        UmlModelEventPump.getPump().addClassModelEventListener(listener2, elem.getClass());
-        elem.setFeature(0, new MOperationImpl());
-        assertTrue(eventcalled);
-    }
+   
     
     /**
      * Tests if a listener that registered for all events for some modelClass
@@ -451,40 +408,77 @@ public class TestUmlModelEventPump extends TestCase {
         // therefore no implementation possible
     }
     
+   
+    
+   
+    
+    
+    
     /**
-     * Tests if a listener that registered for all events for some modelClass
-     * receives all events
+     * Performance test for adding listeners, only run when TEST_PERFORMANCE ==
+     * true
      */
-    public void testRemovedClass2() {        
-        UmlModelEventPump.getPump().addClassModelEventListener(listener2, elem.getClass());
-        elem.remove();
-        assertTrue(eventcalled);
+    public void testAddingListenersPerformance() {
+        if (TEST_PERFORMANCE) {
+            Date currentTime = new Date();            
+            MModelElement element = new MParameterImpl();
+            for (int i = 0; i < PERFORMANCE_TEST_SIZE; i++) {
+                UmlModelEventPump.getPump().addModelEventListener(new TestListener(), element, "state");
+            }
+            long timeElapsed = (new Date()).getTime() - currentTime.getTime();
+            System.out.println("Time elapsed while adding listeners: " + timeElapsed);
+        }
     }
     
     /**
-     * Tests if a listener that registered for all events for some modelClass
-     * receives all events
+     * Performance test for removing listeners, only run when TEST_PERFORMANCE
+     * == true
      */
-    public void testRoleAddedSetClass2() {        
-        UmlModelEventPump.getPump().addClassModelEventListener(listener2, elem.getClass());
-        elem.addParameter(new MParameterImpl());
-        assertTrue(eventcalled);
+    public void testRemoveListenersPerformance() {
+        if (TEST_PERFORMANCE) {                    
+            MModelElement element = new MParameterImpl();
+            TestListener[] listeners = new TestListener[PERFORMANCE_TEST_SIZE];
+            for (int i = 0; i < PERFORMANCE_TEST_SIZE; i++) {
+                listeners[i] = new TestListener();
+                UmlModelEventPump.getPump().addModelEventListener(listeners[i], element, "state");
+            }
+            Date currentTime = new Date();   
+            for (int i = 0; i < PERFORMANCE_TEST_SIZE; i++) {
+                UmlModelEventPump.getPump().removeModelEventListener(listeners[i], element, "state");
+            }
+            long timeElapsed = (new Date()).getTime() - currentTime.getTime();
+            System.out.println("Time elapsed while removing listeners: " + timeElapsed);
+        }
     }
     
     /**
-     * Tests if a listener that registered for all events for some modelClass
-     * receives all events
+     * Tests the performance of firing roleremoved events to a single listener
+     * from a single source.
      */
-    public void testRoleRemovedSetClass2() {  
-        MParameter param = new MParameterImpl()      ;
-        elem.addParameter(param);
-        UmlModelEventPump.getPump().addClassModelEventListener(listener2, elem.getClass());
-        elem.removeParameter(param);
-        assertTrue(eventcalled);
+
+    public void testRoleRemovedPerfomance() {
+        if (TEST_PERFORMANCE) {
+            MClass clazz = new MClassImpl();
+            MParameter[] parameters = new MParameter[PERFORMANCE_TEST_SIZE];
+            MFactoryImpl.setEventPolicy(MFactoryImpl.EVENT_POLICY_DISABLED);
+            for (int i = 0; i < PERFORMANCE_TEST_SIZE; i++) {
+                parameters[i] = new MParameterImpl();
+                
+                clazz.addParameter(parameters[i]);
+                UmlModelEventPump.getPump().addModelEventListener(listener2, clazz, new String[] {"parameter"});
+            }
+            MFactoryImpl.setEventPolicy(MFactoryImpl.EVENT_POLICY_IMMEDIATE);
+            Date currentTime = new Date();   
+           for (int i = 0; i < PERFORMANCE_TEST_SIZE; i++) {
+               clazz.removeParameter(parameters[i]);
+           }
+           long timeElapsed = (new Date()).getTime() - currentTime.getTime();
+           System.out.println("Time elapsed while firing " + PERFORMANCE_TEST_SIZE + " RoleRemoved events: " + timeElapsed);
+        }
     }
-    
-    
+       
 }
+
 
 
 

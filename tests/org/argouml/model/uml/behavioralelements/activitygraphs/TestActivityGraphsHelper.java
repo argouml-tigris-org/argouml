@@ -24,9 +24,10 @@
 // $header$
 package org.argouml.model.uml.behavioralelements.activitygraphs;
 
-import org.argouml.util.CheckUMLModelHelper;
-
 import junit.framework.TestCase;
+
+import org.argouml.application.security.ArgoSecurityManager;
+import org.argouml.util.CheckUMLModelHelper;
 
 /**
  * @since Oct 10, 2002
@@ -34,22 +35,33 @@ import junit.framework.TestCase;
  */
 public class TestActivityGraphsHelper extends TestCase {
 
-    /**
-     * Constructor for TestActivityGraphsHelper.
-     * @param arg0
-     */
-    public TestActivityGraphsHelper(String arg0) {
-        super(arg0);
-    }
-    
-    public void testGetMetaModelName() {
-        CheckUMLModelHelper.metaModelNameCorrect(this, ActivityGraphsFactory.getFactory(),
-            TestActivityGraphsFactory.allModelElements);
-    }
-    
-    public void testIsValidStereoType() {
-        CheckUMLModelHelper.isValidStereoType(this, ActivityGraphsFactory.getFactory(),
-            TestActivityGraphsFactory.allModelElements);
-    }
+	/**
+	 * Constructor for TestActivityGraphsHelper.
+	 * @param arg0
+	 */
+	public TestActivityGraphsHelper(String arg0) {
+		super(arg0);
+	}
+
+	public void testGetMetaModelName() {
+		CheckUMLModelHelper.metaModelNameCorrect(
+			this,
+			ActivityGraphsFactory.getFactory(),
+			TestActivityGraphsFactory.allModelElements);
+	}
+
+	public void testIsValidStereoType() {
+		CheckUMLModelHelper.isValidStereoType(
+			this,
+			ActivityGraphsFactory.getFactory(),
+			TestActivityGraphsFactory.allModelElements);
+	}
+	/* (non-Javadoc)
+	     * @see junit.framework.TestCase#setUp()
+	     */
+	protected void setUp() throws Exception {
+		super.setUp();
+		ArgoSecurityManager.getInstance().setAllowExit(true);
+	}
 
 }

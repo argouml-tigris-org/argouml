@@ -42,119 +42,96 @@
 
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-
-
 package org.argouml.model.uml.behavioralelements.statemachines;
 
-import junit.framework.*;
+import junit.framework.TestCase;
 
-
-
-import org.argouml.util.*;
-
-
+import org.argouml.application.security.ArgoSecurityManager;
+import org.argouml.util.CheckUMLModelHelper;
 
 public class TestStateMachinesFactory extends TestCase {
-    
-    static String[] allModelElements = {
-        "CallEvent",
-        "ChangeEvent",
-        "CompositeState",
-        "Event",
-        "FinalState",
-        "Guard",
-        "Pseudostate",
-        "SignalEvent",
-        "SimpleState",
-        "State",
-        "StateMachine",
-        "StateVertex",
-        "StubState",
-        "SubmachineState",
-        "SynchState",
-        "TimeEvent",
-        "Transition",
-    }; 
 
-    public TestStateMachinesFactory(String n) { super(n); }
+	static String[] allModelElements =
+		{
+			"CallEvent",
+			"ChangeEvent",
+			"CompositeState",
+			"Event",
+			"FinalState",
+			"Guard",
+			"Pseudostate",
+			"SignalEvent",
+			"SimpleState",
+			"State",
+			"StateMachine",
+			"StateVertex",
+			"StubState",
+			"SubmachineState",
+			"SynchState",
+			"TimeEvent",
+			"Transition",
+			};
 
+	public TestStateMachinesFactory(String n) {
+		super(n);
+	}
 
+	public void testSingleton() {
 
-    public void testSingleton() {
+		Object o1 = StateMachinesFactory.getFactory();
 
-	Object o1 = StateMachinesFactory.getFactory();
+		Object o2 = StateMachinesFactory.getFactory();
 
-	Object o2 = StateMachinesFactory.getFactory();
+		assertTrue("Different singletons", o1 == o2);
 
-	assertTrue("Different singletons", o1 == o2);
+	}
 
-    }
+	public void testCreates() {
 
+		// Do not test Event or StateVertex.
 
+		// These are abstract.
 
-    public void testCreates() {
+		String[] objs = { "CallEvent", "ChangeEvent", "CompositeState",
 
+			// "Event",
 
+			"FinalState",
+				"Guard",
+				"Pseudostate",
+				"SignalEvent",
+				"SimpleState",
+				"State",
+				"StateMachine",
 
-        // Do not test Event or StateVertex.
+			// "StateVertex",
 
-        // These are abstract.
+			"StubState",
+				"SubmachineState",
+				"SynchState",
+				"TimeEvent",
+				"Transition",
+				null };
 
+		CheckUMLModelHelper.createAndRelease(
+			this,
+			StateMachinesFactory.getFactory(),
+			objs);
 
+	}
 
-	String [] objs = {
+	public void testDeleteComplete() {
+		CheckUMLModelHelper.deleteComplete(
+			this,
+			StateMachinesFactory.getFactory(),
+			allModelElements);
+	}
+	/* (non-Javadoc)
+	     * @see junit.framework.TestCase#setUp()
+	     */
+	protected void setUp() throws Exception {
+		super.setUp();
+		ArgoSecurityManager.getInstance().setAllowExit(true);
+	}
 
-	    "CallEvent",
-
-	    "ChangeEvent",
-
-	    "CompositeState",
-
-	    // "Event",
-
-	    "FinalState",
-
-	    "Guard",
-
-	    "Pseudostate",
-
-	    "SignalEvent",
-
-	    "SimpleState",
-
-	    "State",
-
-	    "StateMachine",
-
-	    // "StateVertex",
-
-	    "StubState",
-
-	    "SubmachineState",
-
-	    "SynchState",
-
-	    "TimeEvent",
-
-	    "Transition",
-
-	    null
-
-	};
-
-
-
-	CheckUMLModelHelper.createAndRelease(this, 
-
-	    StateMachinesFactory.getFactory(), objs);
-
-    }
-    
-    public void testDeleteComplete() {
-        CheckUMLModelHelper.deleteComplete(this, 
-            StateMachinesFactory.getFactory(), 
-            allModelElements);
-    }
-    
 }
-

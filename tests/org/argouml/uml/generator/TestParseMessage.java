@@ -24,18 +24,18 @@
 package org.argouml.uml.generator;
 
 import java.text.ParseException;
-import java.util.*;
+import java.util.Iterator;
 
-import org.argouml.model.uml.UmlHelper;
+import junit.framework.TestCase;
+
+import org.argouml.application.security.ArgoSecurityManager;
 import org.argouml.model.uml.UmlFactory;
-import org.argouml.ui.ProjectBrowser;
 
-import ru.novosoft.uml.foundation.core.*;
-import ru.novosoft.uml.foundation.data_types.*;
-import ru.novosoft.uml.foundation.extension_mechanisms.*;
-import ru.novosoft.uml.behavior.collaborations.*;
-
-import junit.framework.*;
+import ru.novosoft.uml.behavior.collaborations.MAssociationRole;
+import ru.novosoft.uml.behavior.collaborations.MClassifierRole;
+import ru.novosoft.uml.behavior.collaborations.MCollaboration;
+import ru.novosoft.uml.behavior.collaborations.MInteraction;
+import ru.novosoft.uml.behavior.collaborations.MMessage;
 
 public class TestParseMessage extends TestCase {
 	public TestParseMessage(String str) {
@@ -46,68 +46,87 @@ public class TestParseMessage extends TestCase {
 		MMessage m;
 		Iterator it;
 
-		MCollaboration coll = UmlFactory.getFactory()
-			.getCollaborations().createCollaboration();
-		MInteraction inter = UmlFactory.getFactory()
-			.getCollaborations().buildInteraction(coll);
+		MCollaboration coll =
+			UmlFactory.getFactory().getCollaborations().createCollaboration();
+		MInteraction inter =
+			UmlFactory.getFactory().getCollaborations().buildInteraction(coll);
 
-		MClassifierRole cl1 = UmlFactory.getFactory()
-			.getCollaborations().createClassifierRole();
-		MClassifierRole cl2 = UmlFactory.getFactory()
-			.getCollaborations().createClassifierRole();
-		MClassifierRole cl3 = UmlFactory.getFactory()
-			.getCollaborations().createClassifierRole();
-		MClassifierRole cl4 = UmlFactory.getFactory()
-			.getCollaborations().createClassifierRole();
-		MClassifierRole cl5 = UmlFactory.getFactory()
-			.getCollaborations().createClassifierRole();
+		MClassifierRole cl1 =
+			UmlFactory.getFactory().getCollaborations().createClassifierRole();
+		MClassifierRole cl2 =
+			UmlFactory.getFactory().getCollaborations().createClassifierRole();
+		MClassifierRole cl3 =
+			UmlFactory.getFactory().getCollaborations().createClassifierRole();
+		MClassifierRole cl4 =
+			UmlFactory.getFactory().getCollaborations().createClassifierRole();
+		MClassifierRole cl5 =
+			UmlFactory.getFactory().getCollaborations().createClassifierRole();
 		cl1.setNamespace(coll);
 		cl2.setNamespace(coll);
 		cl3.setNamespace(coll);
 		cl4.setNamespace(coll);
 		cl5.setNamespace(coll);
 
-		MAssociationRole r1_2 = UmlFactory.getFactory()
-			.getCollaborations().buildAssociationRole(cl1, cl2);
-		MAssociationRole r2_3 = UmlFactory.getFactory()
-			.getCollaborations().buildAssociationRole(cl2, cl3);
-		MAssociationRole r3_4 = UmlFactory.getFactory()
-			.getCollaborations().buildAssociationRole(cl3, cl4);
-		MAssociationRole r4_5 = UmlFactory.getFactory()
-			.getCollaborations().buildAssociationRole(cl4, cl5);
-		MAssociationRole r3_1 = UmlFactory.getFactory()
-			.getCollaborations().buildAssociationRole(cl3, cl1);
-		MAssociationRole r5_3 = UmlFactory.getFactory()
-			.getCollaborations().buildAssociationRole(cl5, cl3);
+		MAssociationRole r1_2 =
+			UmlFactory.getFactory().getCollaborations().buildAssociationRole(
+				cl1,
+				cl2);
+		MAssociationRole r2_3 =
+			UmlFactory.getFactory().getCollaborations().buildAssociationRole(
+				cl2,
+				cl3);
+		MAssociationRole r3_4 =
+			UmlFactory.getFactory().getCollaborations().buildAssociationRole(
+				cl3,
+				cl4);
+		MAssociationRole r4_5 =
+			UmlFactory.getFactory().getCollaborations().buildAssociationRole(
+				cl4,
+				cl5);
+		MAssociationRole r3_1 =
+			UmlFactory.getFactory().getCollaborations().buildAssociationRole(
+				cl3,
+				cl1);
+		MAssociationRole r5_3 =
+			UmlFactory.getFactory().getCollaborations().buildAssociationRole(
+				cl5,
+				cl3);
 
 		/* START TESTING STUFF */
 
-		MMessage m1 = UmlFactory.getFactory()
-			.getCollaborations().buildMessage(inter, r1_2);
+		MMessage m1 =
+			UmlFactory.getFactory().getCollaborations().buildMessage(
+				inter,
+				r1_2);
 		assertTrue(m1.getSender() == cl1);
 		assertTrue(m1.getReceiver() == cl2);
 		assertTrue(m1.getInteraction() == inter);
 		assertTrue(m1.getActivator() == null);
-		assertTrue(m1.getAction() == null ||
-			m1.getAction().getRecurrence() == null);
+		assertTrue(
+			m1.getAction() == null || m1.getAction().getRecurrence() == null);
 		assertTrue(m1.getPredecessors().size() == 0);
 		m1.setName("m1");
 
-		MMessage m2 = UmlFactory.getFactory()
-			.getCollaborations().buildMessage(inter, r2_3);
+		MMessage m2 =
+			UmlFactory.getFactory().getCollaborations().buildMessage(
+				inter,
+				r2_3);
 		assertTrue(m2.getSender() == cl2);
 		assertTrue(m2.getReceiver() == cl3);
 		assertTrue(m2.getActivator() == m1);
-		assertTrue(m2.getAction() == null ||
-			m2.getAction().getRecurrence() == null);
+		assertTrue(
+			m2.getAction() == null || m2.getAction().getRecurrence() == null);
 		assertTrue(m2.getPredecessors().size() == 0);
 		m2.setName("m2");
 
-		MMessage m3 = UmlFactory.getFactory()
-			.getCollaborations().buildMessage(inter, r2_3);
+		MMessage m3 =
+			UmlFactory.getFactory().getCollaborations().buildMessage(
+				inter,
+				r2_3);
 		assertTrue(m3.getActivator() == m1);
-		assertTrue(m3.getPredecessors().iterator().next() == m2 &&
-			m3.getPredecessors().size() == 1);
+		assertTrue(
+			m3.getPredecessors().iterator().next() == m2
+				&& m3.getPredecessors().size() == 1);
 		m3.setName("m3");
 
 		/* TRY MOVING IN A SIMPLE MANER */
@@ -115,20 +134,22 @@ public class TestParseMessage extends TestCase {
 		parseMessage(m3, " \t1.1 : ");
 		assertTrue(m3.getActivator() == m1);
 		assertTrue(m3.getPredecessors().size() == 0);
-		assertTrue(m2.getPredecessors().iterator().next() == m3 &&
-			m2.getPredecessors().size() == 1);
+		assertTrue(
+			m2.getPredecessors().iterator().next() == m3
+				&& m2.getPredecessors().size() == 1);
 
 		parseMessage(m3, " / 1.2\t: ");
 		assertTrue(m3.getActivator() == m1);
 		assertTrue(m2.getPredecessors().size() == 0);
-		assertTrue(m3.getPredecessors().iterator().next() == m2 &&
-			m3.getPredecessors().size() == 1);
+		assertTrue(
+			m3.getPredecessors().iterator().next() == m2
+				&& m3.getPredecessors().size() == 1);
 
 		/* TRY SOME ERRORS */
 
 		checkParseException(m3, " 2.1 : ");
-		checkParseException(m3,	" 1.2 : 1.2 :");
-		checkParseException(m3,	" / / 1.2 : ");
+		checkParseException(m3, " 1.2 : 1.2 :");
+		checkParseException(m3, " / / 1.2 : ");
 
 		/* TRY SOME MORE COMPLEX MOVING */
 
@@ -139,12 +160,14 @@ public class TestParseMessage extends TestCase {
 		parseMessage(m3, " / 1..2 : ");
 		assertTrue(m3.getActivator() == m1);
 		assertTrue(m2.getPredecessors().size() == 0);
-		assertTrue(m3.getPredecessors().iterator().next() == m2 &&
-			m3.getPredecessors().size() == 1);
+		assertTrue(
+			m3.getPredecessors().iterator().next() == m2
+				&& m3.getPredecessors().size() == 1);
 		parseMessage(m3, "");
 		assertTrue(m3.getActivator() == m1);
-		assertTrue(m3.getPredecessors().iterator().next() == m2 &&
-			m3.getPredecessors().size() == 1);
+		assertTrue(
+			m3.getPredecessors().iterator().next() == m2
+				&& m3.getPredecessors().size() == 1);
 
 		/* TRY SOME MORE ERRORS */
 
@@ -154,102 +177,106 @@ public class TestParseMessage extends TestCase {
 		/* TRY GUARD/ITERATOR SYNTAX */
 
 		parseMessage(m3, " 1.2 [ x < 5 ] : ");
-		assertTrue(m3.getAction() != null &&
-			m3.getAction().getRecurrence() != null);
-		assertTrue("[x < 5]".equals(
-				m3.getAction().getRecurrence().getBody()));
+		assertTrue(
+			m3.getAction() != null && m3.getAction().getRecurrence() != null);
+		assertTrue("[x < 5]".equals(m3.getAction().getRecurrence().getBody()));
 
 		parseMessage(m3, " 1.2 * [ i = 1..10 ] : ");
-		assertTrue("*[i = 1..10]".equals(
-				m3.getAction().getRecurrence().getBody()));
+		assertTrue(
+			"*[i = 1..10]".equals(m3.getAction().getRecurrence().getBody()));
 		parseMessage(m3, " 1.2 *// : ");
-		assertTrue("*[i = 1..10]".equals(
-				m3.getAction().getRecurrence().getBody()));
+		assertTrue(
+			"*[i = 1..10]".equals(m3.getAction().getRecurrence().getBody()));
 
 		parseMessage(m3, " * // [i=1..] 1.2 : ");
-		assertTrue("*//[i=1..]".equals(
-				m3.getAction().getRecurrence().getBody()));
+		assertTrue(
+			"*//[i=1..]".equals(m3.getAction().getRecurrence().getBody()));
 		parseMessage(m3, " 1.2 : ");
-		assertTrue("*//[i=1..]".equals(
-				m3.getAction().getRecurrence().getBody()));
+		assertTrue(
+			"*//[i=1..]".equals(m3.getAction().getRecurrence().getBody()));
 
 		/* TRY SOME GUARD/ITERATOR ERRORS */
 
-		checkParseException(m3,	" [x < 5] 1.2 [x > 6] : ");
-		checkParseException(m3,	" 1 [x < 5] / 1.2 : ");
+		checkParseException(m3, " [x < 5] 1.2 [x > 6] : ");
+		checkParseException(m3, " 1 [x < 5] / 1.2 : ");
 		checkParseException(m3, " 1 * / 1.2 : ");
 		checkParseException(m3, " 1 // / 1.2 : ");
-		checkParseException(m3,	" 1 , 2 [x < 5] / 1.2 : ");
-		checkParseException(m3,	" 1 , 2 * / 1.2 : ");
-		checkParseException(m3,	" 1 , 2 // / 1.2 : ");
-		checkParseException(m3,	"/ 1.2 , 2 : ");
+		checkParseException(m3, " 1 , 2 [x < 5] / 1.2 : ");
+		checkParseException(m3, " 1 , 2 * / 1.2 : ");
+		checkParseException(m3, " 1 , 2 // / 1.2 : ");
+		checkParseException(m3, "/ 1.2 , 2 : ");
 		checkParseException(m3, "/1.2,2:");
 
 		/* TRY THE ACTIONS */
 
 		parseMessage(m3, " 1.2 : func() ");
-		assertTrue("func".equals(
-				m3.getAction().getScript().getBody()));
+		assertTrue("func".equals(m3.getAction().getScript().getBody()));
 		parseMessage(m3, " 1.2 ");
-		assertTrue("func".equals(
-				m3.getAction().getScript().getBody()));
+		assertTrue("func".equals(m3.getAction().getScript().getBody()));
 		parseMessage(m3, " 1.2 : ");
-		assertTrue("".equals(
-				m3.getAction().getScript().getBody()));
+		assertTrue("".equals(m3.getAction().getScript().getBody()));
 
 		parseMessage(m3, " 1.2 : var := func() ");
-		assertTrue("var := func".equals(
-				m3.getAction().getScript().getBody()));
+		assertTrue("var := func".equals(m3.getAction().getScript().getBody()));
 
 		parseMessage(m3, " 1.2 : var = func() ");
-		assertTrue("var := func".equals(
-				m3.getAction().getScript().getBody()));
+		assertTrue("var := func".equals(m3.getAction().getScript().getBody()));
 
 		parseMessage(m3, "1.2:var2:=func2()");
-		assertTrue("var2 := func2".equals(
-				m3.getAction().getScript().getBody()));
+		assertTrue(
+			"var2 := func2".equals(m3.getAction().getScript().getBody()));
 
 		parseMessage(m3, " 1.2 : var, var2, var3 := func() ");
-		assertTrue("var, var2, var3 := func".equals(
+		assertTrue(
+			"var, var2, var3 := func".equals(
 				m3.getAction().getScript().getBody()));
 
 		parseMessage(m3, "1.2 : load_the_accumulating_taxes");
 
 		/* TRY SOME ACTION ERRORS */
 
-		checkParseException(m3,	"1.2 : func() ()");
-		checkParseException(m3,	"1.2 : func() foo()");
-		checkParseException(m3,	"1.2 : func(), foo()");
-		checkParseException(m3,	"1.2 : var() = func()");
-		checkParseException(m3,	"1.2 : var = func(), foo()");
-		checkParseException(m3,	"1.2 : func() foo()");
-		checkParseException(m3,	"1.2 : var = ()");
-		checkParseException(m3,	"1.2 : var = () foo");
-		checkParseException(m3,	"1.2 : var = (foo(), bar())");
-		checkParseException(m3,	"1.2 : func(");
-		checkParseException(m3,	"1.2 : func(a, b");
+		checkParseException(m3, "1.2 : func() ()");
+		checkParseException(m3, "1.2 : func() foo()");
+		checkParseException(m3, "1.2 : func(), foo()");
+		checkParseException(m3, "1.2 : var() = func()");
+		checkParseException(m3, "1.2 : var = func(), foo()");
+		checkParseException(m3, "1.2 : func() foo()");
+		checkParseException(m3, "1.2 : var = ()");
+		checkParseException(m3, "1.2 : var = () foo");
+		checkParseException(m3, "1.2 : var = (foo(), bar())");
+		checkParseException(m3, "1.2 : func(");
+		checkParseException(m3, "1.2 : func(a, b");
 
 		/* TRY THE PREDECESSORS */
 
-		checkParseException(m3,	"1.2.1 / 1.2 :");
+		checkParseException(m3, "1.2.1 / 1.2 :");
 
-		MMessage m4 = UmlFactory.getFactory()
-			.getCollaborations().buildMessage(inter, r3_4);
-		MMessage m5 = UmlFactory.getFactory()
-			.getCollaborations().buildMessage(inter, r4_5);
-		MMessage m6 = UmlFactory.getFactory()
-			.getCollaborations().buildMessage(inter, r5_3);
-		MMessage m7 = UmlFactory.getFactory()
-			.getCollaborations().buildMessage(inter, r3_1);
+		MMessage m4 =
+			UmlFactory.getFactory().getCollaborations().buildMessage(
+				inter,
+				r3_4);
+		MMessage m5 =
+			UmlFactory.getFactory().getCollaborations().buildMessage(
+				inter,
+				r4_5);
+		MMessage m6 =
+			UmlFactory.getFactory().getCollaborations().buildMessage(
+				inter,
+				r5_3);
+		MMessage m7 =
+			UmlFactory.getFactory().getCollaborations().buildMessage(
+				inter,
+				r3_1);
 
-		checkParseException(m6,	"1.2.2 :");
+		checkParseException(m6, "1.2.2 :");
 
 		parseMessage(m7, "2:");
 		assertTrue(m7.getSender() == cl1);
 		assertTrue(m7.getReceiver() == cl3);
 		assertTrue(m7.getActivator() == null);
-		assertTrue(m7.getPredecessors().iterator().next() == m1 &&
-			m7.getPredecessors().size() == 1);
+		assertTrue(
+			m7.getPredecessors().iterator().next() == m1
+				&& m7.getPredecessors().size() == 1);
 
 		parseMessage(m7, "1.2.1.1.1.1:");
 		assertTrue(m7.getSender() == cl3);
@@ -265,8 +292,9 @@ public class TestParseMessage extends TestCase {
 		assertTrue(m3.getPredecessors().size() == 1);
 
 		parseMessage(m7, "1.2.1 / 1.2.1.1.1.1:");
-		assertTrue(m7.getPredecessors().iterator().next() == m4 &&
-			m7.getPredecessors().size() == 1);
+		assertTrue(
+			m7.getPredecessors().iterator().next() == m4
+				&& m7.getPredecessors().size() == 1);
 
 		parseMessage(m7, "1.2.1, 1.2.1.1 / 1.2.1.1.1.1:");
 		boolean pre1 = false;
@@ -289,9 +317,9 @@ public class TestParseMessage extends TestCase {
 		assertTrue(pre1 && pre2 && !it.hasNext());
 
 		/* TRY SOME PREDECESSOR ERRORS */
-		checkParseException(m2,	"1.2 / 1.1 :");
-		checkParseException(m2,	"1.2.1 / 1.1 :");
-		checkParseException(m3,	"1.2.1 / 1.2 :");
+		checkParseException(m2, "1.2 / 1.1 :");
+		checkParseException(m2, "1.2.1 / 1.1 :");
+		checkParseException(m3, "1.2.1 / 1.2 :");
 	}
 
 	private void parseMessage(MMessage m, String s) {
@@ -305,13 +333,18 @@ public class TestParseMessage extends TestCase {
 	private void checkParseException(MMessage m, String s) {
 		try {
 			ParserDisplay.SINGLETON.parseMessage(m, s);
-			assertTrue("Didn't throw for \"" + s + "\" in " + m,
-				false);
+			assertTrue("Didn't throw for \"" + s + "\" in " + m, false);
 		} catch (ParseException pe) {
 			assertTrue("Did throw", true);
 		} catch (Exception e) {
 			assertTrue("Unexpected throw " + e, false);
 		}
 	}
+	/* (non-Javadoc)
+	     * @see junit.framework.TestCase#setUp()
+	     */
+	protected void setUp() throws Exception {
+		super.setUp();
+		ArgoSecurityManager.getInstance().setAllowExit(true);
+	}
 }
-

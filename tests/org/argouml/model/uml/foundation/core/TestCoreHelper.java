@@ -24,6 +24,7 @@
 // $header$
 package org.argouml.model.uml.foundation.core;
 
+import org.argouml.application.security.ArgoSecurityManager;
 import org.argouml.util.CheckUMLModelHelper;
 
 import ru.novosoft.uml.foundation.core.*;
@@ -36,50 +37,62 @@ import junit.framework.TestCase;
  */
 public class TestCoreHelper extends TestCase {
 
-    /**
-     * Constructor for TestCoreHelper.
-     * @param arg0
-     */
-    public TestCoreHelper(String arg0) {
-        super(arg0);
-    }
-    
-    public void testGetMetaModelName() {
-        CheckUMLModelHelper.metaModelNameCorrect(this, CoreFactory.getFactory(),
-            TestCoreFactory.allModelElements);
-    }
-    
-    public void testIsValidStereoType() {
-        CheckUMLModelHelper.isValidStereoType(this, CoreFactory.getFactory(),
-            TestCoreFactory.allModelElements);
-    }
+	/**
+	 * Constructor for TestCoreHelper.
+	 * @param arg0
+	 */
+	public TestCoreHelper(String arg0) {
+		super(arg0);
+	}
 
-    public void testGetChildren() {
-	// Create an element with an element without children.
-	MGeneralizableElement ge = new MClassifierImpl();
+	public void testGetMetaModelName() {
+		CheckUMLModelHelper.metaModelNameCorrect(
+			this,
+			CoreFactory.getFactory(),
+			TestCoreFactory.allModelElements);
+	}
 
-	assertTrue(CoreHelper.getHelper().getChildren(ge).size() == 0);
+	public void testIsValidStereoType() {
+		CheckUMLModelHelper.isValidStereoType(
+			this,
+			CoreFactory.getFactory(),
+			TestCoreFactory.allModelElements);
+	}
 
-	// Add one child.
-	MGeneralization g1 = new MGeneralizationImpl();
-	g1.setParent(ge);
-	g1.setChild(new MClassifierImpl());
+	public void testGetChildren() {
+		// Create an element with an element without children.
+		MGeneralizableElement ge = new MClassifierImpl();
 
-	assertTrue(CoreHelper.getHelper().getChildren(ge).size() == 1);
-	
-	// Add another child.
-	MGeneralization g2 = new MGeneralizationImpl();
-	g2.setParent(ge);
-	MGeneralizableElement ge2 = new MClassifierImpl();
-	g2.setChild(ge2);
+		assertTrue(CoreHelper.getHelper().getChildren(ge).size() == 0);
 
-	assertTrue(CoreHelper.getHelper().getChildren(ge).size() == 2);
+		// Add one child.
+		MGeneralization g1 = new MGeneralizationImpl();
+		g1.setParent(ge);
+		g1.setChild(new MClassifierImpl());
 
-	// Add grandchild.
-	MGeneralization g3 = new MGeneralizationImpl();
-	g3.setParent(ge2);
-	g3.setChild(new MClassifierImpl());
+		assertTrue(CoreHelper.getHelper().getChildren(ge).size() == 1);
 
-	assertTrue(CoreHelper.getHelper().getChildren(ge).size() == 3);
-    }
+		// Add another child.
+		MGeneralization g2 = new MGeneralizationImpl();
+		g2.setParent(ge);
+		MGeneralizableElement ge2 = new MClassifierImpl();
+		g2.setChild(ge2);
+
+		assertTrue(CoreHelper.getHelper().getChildren(ge).size() == 2);
+
+		// Add grandchild.
+		MGeneralization g3 = new MGeneralizationImpl();
+		g3.setParent(ge2);
+		g3.setChild(new MClassifierImpl());
+
+		assertTrue(CoreHelper.getHelper().getChildren(ge).size() == 3);
+	}
+
+	/* (non-Javadoc)
+	     * @see junit.framework.TestCase#setUp()
+	     */
+	protected void setUp() throws Exception {
+		super.setUp();
+		ArgoSecurityManager.getInstance().setAllowExit(true);
+	}
 }

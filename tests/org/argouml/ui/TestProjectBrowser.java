@@ -68,8 +68,8 @@ public class TestProjectBrowser extends TestCase {
             // Some problem caused by the lack of display system.
             // The test is inconclusive
         }
-
     }
+    
 
     /**
      * @see junit.framework.TestCase#setUp()

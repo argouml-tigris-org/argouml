@@ -1,34 +1,26 @@
 package org.argouml.uml.diagram.ui;
 
 
-import java.util.Iterator;
-import java.util.List;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
 
 import junit.framework.TestCase;
 
 import org.argouml.application.security.ArgoSecurityManager;
-import org.argouml.ui.ProjectBrowser;
 import org.argouml.kernel.ProjectManager;
-import org.argouml.uml.diagram.UMLMutableGraphSupport;
-import org.argouml.uml.diagram.ui.UMLDiagram;
-import org.argouml.uml.diagram.ui.SelectionRerouteEdge;
-import org.argouml.model.uml.foundation.core.CoreFactory;
 import org.argouml.model.uml.UmlFactory;
+import org.argouml.model.uml.foundation.core.CoreFactory;
+import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.diagram.static_structure.ui.FigClass;
-
 import org.argouml.uml.reveng.DiagramInterface;
+import org.tigris.gef.base.Globals;
+import org.tigris.gef.base.LayerPerspective;
 
-import org.tigris.gef.base.*;
-import org.tigris.gef.presentation.*;
-
-import ru.novosoft.uml.foundation.core.MNamespace;
-import ru.novosoft.uml.model_management.MPackage;
-import ru.novosoft.uml.foundation.core.MClass;
 import ru.novosoft.uml.foundation.core.MAssociation;
-import ru.novosoft.uml.foundation.core.MClassifier;
 import ru.novosoft.uml.foundation.core.MAssociationEnd;
+import ru.novosoft.uml.foundation.core.MClass;
+import ru.novosoft.uml.foundation.core.MClassifier;
+import ru.novosoft.uml.model_management.MPackage;
 
 /**
  * A JUnit testcase that tests whether, having dragged an edge to
@@ -67,7 +59,7 @@ public class TestRerouteEdge extends TestCase {
         
         // create a project browser
         ArgoSecurityManager.getInstance().setAllowExit(true);
-        new ProjectBrowser();
+        ProjectManager.getManager().getCurrentProject();
         
         // create a DiagramInterface, that Java RE uses to create
         // diagrams.

@@ -26,24 +26,33 @@ package org.argouml.kernel;
 
 import junit.framework.TestCase;
 
+import org.argouml.application.security.ArgoSecurityManager;
+
 /**
  * @since Nov 22, 2002
  * @author jaap.branderhorst@xs4all.nl
  */
 public class TestProjectManager extends TestCase {
 
-    /**
-     * Constructor for TestProjectManager.
-     * @param arg0
-     */
-    public TestProjectManager(String arg0) {
-        super(arg0);
-    }
-    
-    public void testMakeEmptyProject() {
-        Project p = ProjectManager.getManager().makeEmptyProject();
-        assertEquals(2, p.getDiagrams().size());
-        assertEquals("untitledModel", p.getModel().getName());
-    }
+	/**
+	 * Constructor for TestProjectManager.
+	 * @param arg0
+	 */
+	public TestProjectManager(String arg0) {
+		super(arg0);
+	}
+
+	public void testMakeEmptyProject() {
+		Project p = ProjectManager.getManager().makeEmptyProject();
+		assertEquals(2, p.getDiagrams().size());
+		assertEquals("untitledModel", p.getModel().getName());
+	}
+	/* (non-Javadoc)
+	     * @see junit.framework.TestCase#setUp()
+	     */
+	protected void setUp() throws Exception {
+		super.setUp();
+		ArgoSecurityManager.getInstance().setAllowExit(true);
+	}
 
 }

@@ -44,8 +44,15 @@ import ru.novosoft.uml.foundation.extension_mechanisms.MTaggedValue;
 import ru.novosoft.uml.model_management.MModel;
 import ru.novosoft.uml.model_management.MPackage;
 
+import org.argouml.application.security.ArgoSecurityManager;
 import org.argouml.model.uml.foundation.core.CoreFactory;
-import org.argouml.model.uml.foundation.extensionmechanisms.ExtensionMechanismsFactory;
+import org
+	.argouml
+	.model
+	.uml
+	.foundation
+	.extensionmechanisms
+	.ExtensionMechanismsFactory;
 import org.argouml.model.uml.modelmanagement.ModelManagementFactory;
 
 public class TestCopyHelper extends TestCase {
@@ -343,8 +350,9 @@ public class TestCopyHelper extends TestCase {
 		checkBaseCopy(e1, e2);
 	}
 
-	private void checkGeneralizableElementCopy(MGeneralizableElement e1,
-						   MGeneralizableElement e2) {
+	private void checkGeneralizableElementCopy(
+		MGeneralizableElement e1,
+		MGeneralizableElement e2) {
 		checkModelElementCopy(e1, e2);
 
 		assertTrue(e1.isAbstract() == e2.isAbstract());
@@ -358,8 +366,11 @@ public class TestCopyHelper extends TestCase {
 
 	private void checkModelElementCopy(MModelElement e1, MModelElement e2) {
 		checkElementCopy(e1, e2);
-		assertTrue(e1.getName() == null && e2.getName() == null ||
-			e1.getName() != null && e1.getName().equals(e2.getName()));
+		assertTrue(
+			e1.getName() == null
+				&& e2.getName() == null
+				|| e1.getName() != null
+				&& e1.getName().equals(e2.getName()));
 		assertTrue(e1.getVisibility() == e2.getVisibility());
 		assertTrue(e1.isSpecification() == e2.isSpecification());
 
@@ -367,17 +378,19 @@ public class TestCopyHelper extends TestCase {
 		Iterator it = e1.getTaggedValues().iterator();
 		while (it.hasNext()) {
 			MTaggedValue tv = (MTaggedValue) it.next();
-			assertTrue(tv.getValue() == null &&
-				   e2.getTaggedValue(tv.getTag()) == null ||
-				   tv.getValue() != null &&
-				   tv.getValue().equals(e2.getTaggedValue(tv.getTag())));
+			assertTrue(
+				tv.getValue() == null
+					&& e2.getTaggedValue(tv.getTag()) == null
+					|| tv.getValue() != null
+					&& tv.getValue().equals(e2.getTaggedValue(tv.getTag())));
 		}
 
 		if (e1.getStereotype() != null) {
 			assertTrue(e2.getStereotype() != null);
 			assertTrue(e2.getStereotype().getName() != null);
-			assertTrue(e1.getStereotype().getName().equals(
-						e2.getStereotype().getName()));
+			assertTrue(
+				e1.getStereotype().getName().equals(
+					e2.getStereotype().getName()));
 		} else {
 			assertTrue(e2.getStereotype() == null);
 		}
@@ -393,14 +406,25 @@ public class TestCopyHelper extends TestCase {
 
 	private void checkStereotypeCopy(MStereotype s1, MStereotype s2) {
 		checkGeneralizableElementCopy(s1, s2);
-		assertTrue(s1.getBaseClass() == null && s2.getBaseClass() == null ||
-			s1.getBaseClass() != null &&
-			s1.getBaseClass().equals(s2.getBaseClass()));
-		assertTrue(s1.getIcon() == null && s2.getIcon() == null ||
-			s1.getIcon() != null &&
-			s1.getIcon().equals(s2.getIcon()));
+		assertTrue(
+			s1.getBaseClass() == null
+				&& s2.getBaseClass() == null
+				|| s1.getBaseClass() != null
+				&& s1.getBaseClass().equals(s2.getBaseClass()));
+		assertTrue(
+			s1.getIcon() == null
+				&& s2.getIcon() == null
+				|| s1.getIcon() != null
+				&& s1.getIcon().equals(s2.getIcon()));
 		// TODO: constraints
 		// TODO: reuired tags
 	}
-}
 
+	/* (non-Javadoc)
+	     * @see junit.framework.TestCase#setUp()
+	     */
+	protected void setUp() throws Exception {
+		super.setUp();
+		ArgoSecurityManager.getInstance().setAllowExit(true);
+	}
+}

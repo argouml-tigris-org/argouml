@@ -55,6 +55,11 @@ public class TestXMIReader extends TestCase {
     public TestXMIReader(String arg0) {
         super(arg0);
     }
+    
+    protected void setUp() {
+        
+           ArgoSecurityManager.getInstance().setAllowExit(true); 
+       }
 
     /**
      * This is a regression test for issue 1504. Unfortunately this test does
@@ -85,7 +90,7 @@ public class TestXMIReader extends TestCase {
         p = ProjectManager.getManager().makeEmptyProject();
         try {
             URL url = file.toURL();
-            Project.loadProject(url);
+            ProjectManager.getManager().loadProject(url);
         } catch (IOException io) {
             fail(io.getMessage());
         } catch (Exception ex) {
