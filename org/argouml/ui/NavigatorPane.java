@@ -25,6 +25,8 @@ package org.argouml.ui;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.*;
 import javax.swing.*;
 import javax.swing.event.*;
@@ -59,7 +61,7 @@ import org.argouml.uml.diagram.ui.*;
 
 
 public class NavigatorPane extends JPanel
-implements ItemListener, TreeSelectionListener, QuadrantPanel {
+implements ItemListener, TreeSelectionListener, PropertyChangeListener, QuadrantPanel {
   //, CellEditorListener
 
   ////////////////////////////////////////////////////////////////
@@ -108,6 +110,8 @@ implements ItemListener, TreeSelectionListener, QuadrantPanel {
     //_tree.addActionListener(new NavigatorActionListener());
     //_tree.setEditable(true);
     //_tree.getCellEditor().addCellEditorListener(this);
+    Configuration.addListener(Notation.KEY_USE_GUILLEMOTS, this);
+    Configuration.addListener(Notation.KEY_SHOW_STEREOTYPES, this);
   }
 
   ////////////////////////////////////////////////////////////////
@@ -383,5 +387,16 @@ implements ItemListener, TreeSelectionListener, QuadrantPanel {
   	return null;
   }
   	
+  /** Listen for configuration changes that could require repaint
+   *  of the navigator pane.
+   *
+   *  @since ARGO0.11.2
+   */
+  public void propertyChange(PropertyChangeEvent pce) {
+      if (Notation.KEY_USE_GUILLEMOTS.isChangedProperty(pce) ||
+          Notation.KEY_SHOW_STEREOTYPES.isChangedProperty(pce)) {
+          _tree.forceUpdate();
+      }
+  }
 
 } /* end class NavigatorPane */
