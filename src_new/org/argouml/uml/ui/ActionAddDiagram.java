@@ -30,12 +30,8 @@ import java.awt.event.ActionEvent;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.ModelFacade;
-import org.argouml.ui.ArgoDiagram;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.diagram.ui.UMLDiagram;
-
-import ru.novosoft.uml.MBase;
-import ru.novosoft.uml.foundation.core.MNamespace;
 
 /**
  * Abstract class that is the parent of all actions adding diagrams to ArgoUML.
@@ -62,19 +58,25 @@ public abstract class ActionAddDiagram extends UMLChangeAction {
         Project p = ProjectManager.getManager().getCurrentProject();
         // find the right namespace for the diagram
         Object target = pb.getTarget();
+        Object ns = null;
         if (target == null) {
             target = p.getRoot();
+            ns = target;
         }
+        if (ModelFacade.isANamespace(target)) {
+            ns = target;
+        } else {
+        
         Object owner = null;
         if (ModelFacade.isABase(target)) {        
             owner = ModelFacade.getContainer(target);
-            if (owner == null
-                && p.getRoot() == target) { // if the target is the root model
-                owner = p.getRoot();
+            if (owner != null && ModelFacade.isANamespace(owner)) {
+                ns = owner;
             }
         }
-        if (ModelFacade.isANamespace(owner) && isValidNamespace(owner)) {
-            UMLDiagram diagram = createDiagram(owner);
+        }
+        if (isValidNamespace(ns)) {
+            UMLDiagram diagram = createDiagram(ns);
             p.addMember(diagram);
             ProjectBrowser.TheInstance.getNavigatorPane().addToHistory(diagram);
             ProjectBrowser.TheInstance.setTarget(diagram);
