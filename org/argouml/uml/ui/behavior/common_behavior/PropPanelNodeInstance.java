@@ -29,6 +29,7 @@
 package org.argouml.uml.ui.behavior.common_behavior;
 
 import java.awt.*;
+import java.util.*;
 import javax.swing.*;
 
 import ru.novosoft.uml.foundation.core.*;
@@ -47,13 +48,18 @@ public class PropPanelNodeInstance extends PropPanelModelElement {
 	addCaption("Name:",1,0,0);
 	addField(nameField,1,0,0);
 
+    addCaption("Classifier:",2,0,0);
+    UMLClassifierComboBoxModel classifierModel = new UMLClassifierComboBoxModel(this,"isAcceptibleClassifier","classifier","getClassifier","setClassifier",false,MClassifier.class,true);
+	UMLComboBox clsComboBox = new UMLComboBox(classifierModel);
+   	addField(new UMLComboBoxNavigator(this,"NavClass",clsComboBox),2,0,0);
 
-	addCaption("Stereotype:",2,0,0);
-	addField(stereotypeBox,2,0,0);
+
+	addCaption("Stereotype:",3,0,0);
+	addField(stereotypeBox,3,0,0);
 
 
-	addCaption("Namespace:",3,0,1);
-	addField(namespaceScroll,3,0,0);
+	addCaption("Namespace:",4,0,1);
+	addField(namespaceScroll,4,0,0);
 
 
 	new PropPanelButton(this,buttonPanel,_navUpIcon,localize("Go up"),"navigateUp",null);
@@ -67,6 +73,49 @@ public class PropPanelNodeInstance extends PropPanelModelElement {
     public boolean isAcceptibleBaseMetaClass(String baseClass) {
         return baseClass.equals("NodeInstance") ||
             baseClass.equals("Instance");
+    }
+
+    public boolean isAcceptibleClassifier(MModelElement classifier) {
+        return classifier instanceof MClassifier;
+    }
+
+
+    public void setClassifier(MClassifier element) {
+        Object target = getTarget();
+	
+        if(target instanceof MInstance) {
+	    MInstance inst = (MInstance)target;
+
+	    // delete all classifiers
+	    Collection col = inst.getClassifiers();
+	    if (col != null) {
+		Iterator iter = col.iterator();
+		if (iter != null && iter.hasNext()) {
+		    MClassifier classifier = (MClassifier)iter.next();
+		    inst.removeClassifier(classifier);
+		}
+	    }
+	    // add classifier
+	    inst.addClassifier( element);
+
+        }
+    }
+
+    public MClassifier getClassifier() {
+        MClassifier classifier = null;
+        Object target = getTarget();
+        if(target instanceof MInstance) {
+            // at the moment , we only deal with one classifier
+            Collection col = ((MInstance)target).getClassifiers();
+            if (col != null) {
+                Iterator iter = col.iterator();
+                if (iter != null && iter.hasNext()) {
+                    classifier = (MClassifier)iter.next();
+                }
+            }
+		    
+        }
+        return classifier;
     }
 
 
