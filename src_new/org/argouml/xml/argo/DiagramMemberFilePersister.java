@@ -26,10 +26,10 @@ package org.argouml.xml.argo;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URL;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
+import org.argouml.kernel.OpenException;
 import org.argouml.kernel.Project;
 import org.argouml.ui.ArgoDiagram;
 import org.argouml.xml.pgml.PGMLParser;
@@ -48,8 +48,9 @@ public class DiagramMemberFilePersister extends MemberFilePersister {
     private InputStream inputStream;
     
     private Project project;
-    private URL url;
     private Map attributes;
+    
+    private static final String ROOT_TAG = "pgml";
     
     /**
      * The constructor.
@@ -59,19 +60,17 @@ public class DiagramMemberFilePersister extends MemberFilePersister {
      * @param theProject the project to persist
      * @throws SAXException when SAX finds a problem
      */
-    public DiagramMemberFilePersister(URL theUrl, Project theProject)
-        throws SAXException {
-        this.url = theUrl;
+    public DiagramMemberFilePersister(Project theProject,
+                                      InputStream inputStream) {
         this.project = theProject;
+        this.inputStream = inputStream;
     }
         
     /**
      * @see org.argouml.xml.argo.MemberFilePersister#load(java.util.Map)
      */
-    public void load(int instance) throws SAXException {
+    public void load() throws OpenException {
         try {
-            inputStream =
-                new XmlInputStream(url.openStream(), "pgml", instance);
             PGMLParser parser = new PGMLParser();
             parser.setOwnerRegistry(project.getUUIDRefs());
             ArgoDiagram d =
@@ -86,7 +85,14 @@ public class DiagramMemberFilePersister extends MemberFilePersister {
                 LOG.error("An error occurred while loading PGML");
             }
         } catch (IOException e) {
-            throw new SAXException(e);
+            throw new OpenException(e);
         }
+    }
+    
+    /**
+     * @see org.argouml.xml.argo.MemberFilePersister#getTag()
+     */
+    public String getTag() {
+        return ROOT_TAG;
     }
 }

@@ -24,11 +24,10 @@
 
 package org.argouml.xml.argo;
 
-import java.io.IOException;
 import java.io.InputStream;
-import java.net.URL;
 
 import org.apache.log4j.Logger;
+import org.argouml.kernel.OpenException;
 import org.argouml.kernel.Project;
 import org.argouml.xml.todo.TodoParser;
 import org.xml.sax.SAXException;
@@ -39,10 +38,12 @@ import org.xml.sax.SAXException;
  */
 public class TodoListMemberFilePersister extends MemberFilePersister {
     
-    private URL url;
+    private InputStream inputStream;
 
     private static final Logger LOG =
         Logger.getLogger(TodoListMemberFilePersister.class);
+    
+    private static final String ROOT_TAG = "todo";
     
     /**
      * The constructor.
@@ -52,9 +53,9 @@ public class TodoListMemberFilePersister extends MemberFilePersister {
      * @param theProject the project to persist
      * @throws SAXException when SAX finds a problem
      */
-    public TodoListMemberFilePersister(URL theUrl, Project theProject)
-            throws SAXException {
-        url = theUrl;
+    public TodoListMemberFilePersister(Project theProject,
+                                       InputStream inputStream) {
+        this.inputStream = inputStream;
     }
     
     /**
@@ -63,15 +64,15 @@ public class TodoListMemberFilePersister extends MemberFilePersister {
      *
      * @see org.argouml.xml.argo.MemberFilePersister#load(java.util.Map)
      */
-    public void load(int instance) throws SAXException {
-        try {
-            InputStream inputStream =
-                    new XmlInputStream(url.openStream(), "todo");
-            TodoParser parser = new TodoParser();
-            parser.readTodoList(inputStream, true);
-        } catch (IOException e) {
-            LOG.error("IOException caught", e);
-            throw new SAXException(e);
-        }
+    public void load() throws OpenException {
+        TodoParser parser = new TodoParser();
+        parser.readTodoList(inputStream, true);
+    }
+    
+    /**
+     * @see org.argouml.xml.argo.MemberFilePersister#getTag()
+     */
+    public final String getTag() {
+        return ROOT_TAG;
     }
 }

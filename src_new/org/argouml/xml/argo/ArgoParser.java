@@ -315,13 +315,13 @@ public class ArgoParser extends SAXParserBase {
         
         if (type.equals("xmi")) {
             LOG.info("Creating XML loader");
-            memberParser = new ModelMemberFilePersister(url, project);
+            //memberParser = new ModelMemberFilePersister(url, project);
         } else if (type.equals("pgml")) {
             LOG.info("Creating PGML loader");
-            memberParser = new DiagramMemberFilePersister(url, project);
+            //memberParser = new DiagramMemberFilePersister(url, project);
         } else if (type.equals("todo")) {
             LOG.info("Creating todo loader");
-            memberParser = new TodoListMemberFilePersister(url, project);
+            //memberParser = new TodoListMemberFilePersister(url, project);
         }
         LOG.info("Loading member");
         //memberParser.load(attributeMap);
