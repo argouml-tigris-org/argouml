@@ -151,6 +151,11 @@ public class NotationNameImpl
         return "{NotationNameImpl:" + _name + " version " + _version + "}";
     }*/
 
+    /**
+     * @param k1 first part of the given name
+     * @param k2 2nd part of the given name
+     * @return the notation name string
+     */
     public static String getNotationNameString(String k1, String k2) {
         if (k2 == null) return k1;
         if (k2.equals("")) return k1;
@@ -161,8 +166,13 @@ public class NotationNameImpl
 	ArgoEventPump.fireEvent(new ArgoNotationEvent(eventType, nn));
     }
 
-    /** Create a NotationName with or without a version.
+    /** 
+     * Create a NotationName with or without a version.
      * The NotationName is only created if there is no such notation before.
+     *
+     * @param k1 the 1st part of the notation name
+     * @param k2 the 2nd part of the notation name
+     * @param icon the icon for the notation
      * @return the newly created or the old NotationName
      */
     public static NotationName makeNotation(String k1, String k2, Icon icon) {
@@ -215,13 +225,21 @@ public class NotationNameImpl
 
     /** Finds a NotationName matching the language with no version.
      *  Returns null if no match.
+     *
+     * @param k1 the notation name string
+     * @return the notation name
      */
     public static NotationName getNotation(String k1) {
         return findNotation(getNotationNameString(k1, null));
     }
 
-    /** Finds a NotationName matching the language and version.
-     *  Returns null if no match.
+    /** 
+     * Finds a NotationName matching the language and version.
+     * Returns null if no match.
+     *
+     * @param k1 the 1st part of the notation name
+     * @param k2 the 2nd part of the notation name
+     * @return the notation name
      */
     public static NotationName getNotation(String k1, String k2) {
         return findNotation(getNotationNameString(k1, k2));
