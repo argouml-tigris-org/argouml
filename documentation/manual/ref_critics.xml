@@ -344,7 +344,7 @@ you change that class at the same time (and think through the deployment).
 
       <caution><para>Following the Java and C++ convention most designers
         give their constructors the same name as the class, which begins
-        with an upper case character. In V0.14 ArgoUML, this
+        with an upper case character. In ArgoUML, this
         will trigger this critic, unless the constructor is stereotyped
         <literal>&laquo;create&raquo;</literal>.</para>
 
@@ -503,12 +503,7 @@ you change that class at the same time (and think through the deployment).
 
     <para>Critics concerning state machines.</para>
 
-    <!-- What is this about? Why was the title "MState machines"? -->
-    <!--note><para>The correct title for this category should be
-      <literal>State&nbsp;Machines</literal>. This is raised as an issue to be
-      fixed in a future version of ArgoUML</para></note-->
-
-    <para>The current version of ArgoUML has the following critics in this
+    <para>ArgoUML has the following critics in this
       category.</para>
 
     <sect2 id="critics.CrTooManyTransitions">
@@ -619,6 +614,26 @@ you change that class at the same time (and think through the deployment).
         abstraction is so short it may be missed. Move the connected artifacts
         apart to make the edge more visible.</para>
     </sect2>
+    
+    <sect2 id="critics.CrMultiComposite">
+      <title>Composite Association End with Multiplicity > 1</title>
+
+      <para>An instance may not belong by composition 
+        to more than one composite instance. 
+        You must change the multiplicity at the composite end 
+        of the association to either 0..1 or 1..1 (1) 
+        for your model to make sense.</para>
+
+	  <para>Remember that composition is 
+	    the stronger aggregation kind and 
+	    aggregation is the weaker. 
+	    The problem can be compared to a model 
+	    where a finger can be an integral part 
+	    of several hands at the same time.</para>
+
+	  <para>This is the second well-formedness rule 
+	    on AssociationEnd in UML 1.3.</para>
+    </sect2>    
   </sect1>
 
   <!-- Design Patterns (in the GOF sense) and stuff associated with
