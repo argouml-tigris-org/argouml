@@ -302,7 +302,9 @@ public abstract class UMLComboBoxModel2
         }
         removeAllElements();
         buildModelList();
-        setSelectedItem(getSelectedModelElement());
+        if (_target != null) {
+            setSelectedItem(getSelectedModelElement());
+        }
         if (getSelectedItem() != null && _clearable) {
             addElement(""); // makes sure we can select 'none'
         }

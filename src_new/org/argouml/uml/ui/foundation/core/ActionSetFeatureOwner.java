@@ -24,64 +24,58 @@
 // $header$
 package org.argouml.uml.ui.foundation.core;
 
-import javax.swing.ImageIcon;
+import java.awt.event.ActionEvent;
 
-import org.argouml.swingext.Orientation;
+import org.argouml.application.api.Argo;
+import org.argouml.uml.ui.UMLChangeAction;
 import org.argouml.uml.ui.UMLComboBox2;
-import org.argouml.uml.ui.UMLVisibilityPanel;
+
+import ru.novosoft.uml.foundation.core.MClassifier;
+import ru.novosoft.uml.foundation.core.MFeature;
 
 /**
  * @since Nov 6, 2002
  * @author jaap.branderhorst@xs4all.nl
  */
-public class PropPanelFeature extends PropPanelModelElement {
+public class ActionSetFeatureOwner extends UMLChangeAction {
 
-    private UMLFeatureOwnerScopeCheckBox ownerScopeCheckbox;
-    private UMLComboBox2 ownerComboBox;
-
-    /**
-     * Constructor for PropPanelFeature.
-     * @param name
-     * @param columns
-     */
-    public PropPanelFeature(String name, int columns) {
-        super(name, columns);
-        initialize();
-    }
-
-    /**
-     * Constructor for PropPanelFeature.
-     * @param name
-     * @param icon
-     * @param orientation
-     */
-    public PropPanelFeature(
-        String name,
-        ImageIcon icon,
-        Orientation orientation) {
-        super(name, icon, orientation);
-        initialize();
-    }
-
-    /**
-     * Constructor for PropPanelFeature.
-     * @param name
-     * @param icon
-     * @param columns
-     */
-    public PropPanelFeature(String name, ImageIcon icon, int columns) {
-        super(name, icon, columns);
-        initialize();
-    }
+      public static final ActionSetFeatureOwner SINGLETON = new ActionSetFeatureOwner();
     
-    private void initialize() {
-        ownerScopeCheckbox = new UMLFeatureOwnerScopeCheckBox(this);
-        // according to the UML spec we need an attribute visibility here
-        // but it seems that NSUML thinks that elementownership visibility
-        // and feature visibility are the same
-        ownerComboBox = new UMLComboBox2(this, new UMLFeatureOwnerComboBoxModel(this), ActionSetFeatureOwner.SINGLETON); 
+    /**
+     * Constructor for ActionSetAttributeType.
+     * @param s
+     */
+    protected ActionSetFeatureOwner() {
+        super(Argo.localize("CoreMenu", "Set"), true, NO_ICON);
     }
 
+    
 
+    /**
+     * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+     */
+    public void actionPerformed(ActionEvent e) {
+        super.actionPerformed(e);
+        Object source = e.getSource();
+        MClassifier oldClassifier = null;
+        MClassifier newClassifier = null;
+        MFeature feature = null;
+        if (source instanceof UMLComboBox2) {
+            UMLComboBox2 box = (UMLComboBox2)source;
+            Object o = box.getTarget();
+            if (o instanceof MFeature) {
+                feature = (MFeature)o;
+                oldClassifier = feature.getOwner();
+            }
+            o = box.getSelectedItem();
+            if (o instanceof MClassifier) {
+                newClassifier = (MClassifier)o;
+            }
+        }
+        if (newClassifier != oldClassifier && feature != null && newClassifier != null) {
+            feature.setOwner(newClassifier);
+        }
+        
+    }
 
 }

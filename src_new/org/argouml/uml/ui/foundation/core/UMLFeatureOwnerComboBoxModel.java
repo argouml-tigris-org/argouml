@@ -24,64 +24,52 @@
 // $header$
 package org.argouml.uml.ui.foundation.core;
 
-import javax.swing.ImageIcon;
-
-import org.argouml.swingext.Orientation;
-import org.argouml.uml.ui.UMLComboBox2;
-import org.argouml.uml.ui.UMLVisibilityPanel;
+import org.argouml.model.uml.UmlModelEventPump;
+import org.argouml.model.uml.modelmanagement.ModelManagementHelper;
+import org.argouml.uml.ui.UMLComboBoxModel2;
+import org.argouml.uml.ui.UMLUserInterfaceContainer;
+import ru.novosoft.uml.MBase;
+import ru.novosoft.uml.foundation.core.MClassifier;
+import ru.novosoft.uml.foundation.core.MFeature;
+import ru.novosoft.uml.foundation.core.MNamespace;
 
 /**
  * @since Nov 6, 2002
  * @author jaap.branderhorst@xs4all.nl
  */
-public class PropPanelFeature extends PropPanelModelElement {
-
-    private UMLFeatureOwnerScopeCheckBox ownerScopeCheckbox;
-    private UMLComboBox2 ownerComboBox;
+public class UMLFeatureOwnerComboBoxModel extends UMLComboBoxModel2 {
 
     /**
-     * Constructor for PropPanelFeature.
-     * @param name
-     * @param columns
+     * Constructor for UMLFeatureOwnerComboBoxModel.
+     * @param container
+     * @param propertySetName
+     * @param clearable
      */
-    public PropPanelFeature(String name, int columns) {
-        super(name, columns);
-        initialize();
-    }
-
-    /**
-     * Constructor for PropPanelFeature.
-     * @param name
-     * @param icon
-     * @param orientation
-     */
-    public PropPanelFeature(
-        String name,
-        ImageIcon icon,
-        Orientation orientation) {
-        super(name, icon, orientation);
-        initialize();
+    public UMLFeatureOwnerComboBoxModel(
+        UMLUserInterfaceContainer container) {
+        super(container, "owner", false);
+        UmlModelEventPump.getPump().addClassModelEventListener(this, MNamespace.class, "ownedElement");
     }
 
     /**
-     * Constructor for PropPanelFeature.
-     * @param name
-     * @param icon
-     * @param columns
+     * @see org.argouml.uml.ui.UMLComboBoxModel2#isValidElement(ru.novosoft.uml.MBase)
      */
-    public PropPanelFeature(String name, ImageIcon icon, int columns) {
-        super(name, icon, columns);
-        initialize();
-    }
-    
-    private void initialize() {
-        ownerScopeCheckbox = new UMLFeatureOwnerScopeCheckBox(this);
-        // according to the UML spec we need an attribute visibility here
-        // but it seems that NSUML thinks that elementownership visibility
-        // and feature visibility are the same
-        ownerComboBox = new UMLComboBox2(this, new UMLFeatureOwnerComboBoxModel(this), ActionSetFeatureOwner.SINGLETON); 
+    protected boolean isValidElement(MBase element) {
+        return element instanceof MClassifier;
     }
 
+    /**
+     * @see org.argouml.uml.ui.UMLComboBoxModel2#buildModelList()
+     */
+    protected void buildModelList() {
+        setElements(ModelManagementHelper.getHelper().getAllModelElementsOfKind(MClassifier.class));
+    }
 
+    /**
+     * @see org.argouml.uml.ui.UMLComboBoxModel2#getSelectedModelElement()
+     */
+    protected Object getSelectedModelElement() {
+        return ((MFeature)getTarget()).getOwner();
+    }
 
 }
