@@ -921,7 +921,7 @@ public class CoreFactory extends AbstractUmlModelFactory {
 	public MClass buildClass() {
 		MClass cl = createClass();
 		// cl.setNamespace(ProjectBrowser.TheInstance.getProject().getModel());
-		cl.setName("anon");
+		cl.setName("");
 		cl.setStereotype(null);
 		cl.setAbstract(false);
 		cl.setActive(false);
@@ -980,7 +980,7 @@ public class CoreFactory extends AbstractUmlModelFactory {
 	public Object buildInterface() {
 		MInterface cl = createInterface();
 		// cl.setNamespace(ProjectBrowser.TheInstance.getProject().getModel());
-		cl.setName("annon");
+		cl.setName("");
 		cl.setStereotype(null);
 		cl.setAbstract(false);
 		cl.setRoot(false);
@@ -1281,7 +1281,7 @@ public class CoreFactory extends AbstractUmlModelFactory {
 			voidType.setNamespace(p.getModel());
 		}
 		MParameter res = UmlFactory.getFactory().getCore().createParameter();
-		res.setName(null);
+		res.setName("");
 		res.setStereotype(null);
 		res.setType(voidType);
 		res.setKind(MParameterDirectionKind.IN);
@@ -1351,7 +1351,7 @@ public class CoreFactory extends AbstractUmlModelFactory {
 	/**
 	 * Adds a parameter initialized to default values to a given event
 	 * or behavioral feature
-	 * @param oper
+	 * @param o an event or behavioral feature
 	 * @return MParameter
 	 */
 	public MParameter buildParameter(Object o) {
@@ -1360,7 +1360,7 @@ public class CoreFactory extends AbstractUmlModelFactory {
 			MParameter res = buildParameter();
 			res.setKind(MParameterDirectionKind.INOUT);
 			res.setNamespace(event.getNamespace());
-			event.addParameter(res);
+            event.addParameter(res);
 			return res;
 		} else if (o instanceof MBehavioralFeature) {
 			return buildParameter((MBehavioralFeature)o);
