@@ -25,77 +25,54 @@
 package org.argouml.ui.explorer;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Iterator;
+import java.util.List;
 
-import org.argouml.kernel.PredAND;
-import org.argouml.kernel.PredInstanceOf;
-import org.argouml.kernel.PredNotInstanceOf;
-import org.argouml.kernel.PredOR;
-import org.argouml.kernel.ProjectManager;
-import org.argouml.model.ModelFacade;
-import org.argouml.ui.NavPerspective;
-import org.argouml.uml.diagram.collaboration.ui.GoAssocRoleMessages;
 import org.argouml.uml.diagram.collaboration.ui.GoClassifierToCollaboration;
-import org.argouml.uml.diagram.collaboration.ui.GoCollaborationDiagram;
 import org.argouml.uml.diagram.collaboration.ui.GoCollaborationInteraction;
 import org.argouml.uml.diagram.collaboration.ui.GoInteractionMessage;
 import org.argouml.uml.diagram.collaboration.ui.GoMessageAction;
 import org.argouml.uml.diagram.collaboration.ui.GoModelToCollaboration;
 import org.argouml.uml.diagram.collaboration.ui.GoOperationToCollaboration;
-import org.argouml.uml.diagram.collaboration.ui.GoProjectToCollaboration;
-import org.argouml.uml.diagram.deployment.ui.GoDiagramToNode;
+
 import org.argouml.uml.diagram.sequence.ui.GoLinkStimuli;
 import org.argouml.uml.diagram.sequence.ui.GoStimulusToAction;
-import org.argouml.uml.diagram.state.PredIsFinalState;
-import org.argouml.uml.diagram.state.PredIsStartState;
+
 import org.argouml.uml.diagram.state.ui.GoCompositeStateToSubvertex;
-import org.argouml.uml.diagram.state.ui.GoMachineDiagram;
 import org.argouml.uml.diagram.state.ui.GoMachineToState;
-import org.argouml.uml.diagram.state.ui.GoMachineToTrans;
-import org.argouml.uml.diagram.state.ui.GoProjectToStateMachine;
 import org.argouml.uml.diagram.state.ui.GoStateMachineToTransition;
 import org.argouml.uml.diagram.state.ui.GoStateToDoActivity;
-import org.argouml.uml.diagram.state.ui.GoStateToDownstream;
 import org.argouml.uml.diagram.state.ui.GoStateToEntry;
 import org.argouml.uml.diagram.state.ui.GoStateToExit;
-import org.argouml.uml.diagram.state.ui.GoStateToIncomingTrans;
 import org.argouml.uml.diagram.state.ui.GoStateToInternalTrans;
-import org.argouml.uml.diagram.state.ui.GoStateToOutgoingTrans;
-import org.argouml.uml.diagram.state.ui.GoTransitionToSource;
-import org.argouml.uml.diagram.state.ui.GoTransitionToTarget;
-import org.argouml.uml.diagram.static_structure.ui.GoClassToAssociatedClass;
-import org.argouml.uml.diagram.static_structure.ui.GoClassToNavigableClass;
+
 import org.argouml.uml.diagram.static_structure.ui.GoClassToSummary;
-import org.argouml.uml.diagram.static_structure.ui.GoModelToClass;
 import org.argouml.uml.diagram.static_structure.ui.GoSummaryToAssociation;
 import org.argouml.uml.diagram.static_structure.ui.GoSummaryToAttribute;
 import org.argouml.uml.diagram.static_structure.ui.GoSummaryToIncomingDependency;
 import org.argouml.uml.diagram.static_structure.ui.GoSummaryToInheritance;
 import org.argouml.uml.diagram.static_structure.ui.GoSummaryToOperation;
 import org.argouml.uml.diagram.static_structure.ui.GoSummaryToOutgoingDependency;
+
 import org.argouml.uml.diagram.ui.GoBehavioralFeatureToStateDiagram;
 import org.argouml.uml.diagram.ui.GoBehavioralFeatureToStateMachine;
 import org.argouml.uml.diagram.ui.GoClassifierToBeh;
 import org.argouml.uml.diagram.ui.GoClassifierToStateMachine;
 import org.argouml.uml.diagram.ui.GoClassifierToStructuralFeature;
-import org.argouml.uml.diagram.ui.GoDiagramToEdge;
-import org.argouml.uml.diagram.ui.GoFilteredChildren;
-import org.argouml.uml.diagram.ui.GoGenElementToDerived;
-import org.argouml.uml.diagram.ui.GoInteractionMessages;
-import org.argouml.uml.diagram.ui.GoModelToBaseElements;
-import org.argouml.uml.diagram.ui.GoModelToElements;
 import org.argouml.uml.diagram.ui.GoNamespaceToDiagram;
 import org.argouml.uml.diagram.ui.GoOperationToCollaborationDiagram;
-import org.argouml.uml.diagram.ui.GoProjectToDiagram;
 import org.argouml.uml.diagram.ui.GoProjectToModel;
+
 import org.argouml.uml.diagram.use_case.ui.GoUseCaseToExtensionPoint;
+
 import org.argouml.uml.ui.behavior.common_behavior.GoSignalToReception;
-import org.argouml.uml.ui.foundation.core.GoModelElementToComment;
 
 /**
+ * Provides a model and event management for perspectives(views) of the
+ * Explorer.
  *
  * @author  alexb
+ * @since 0.15.2
  */
 public class PerspectiveManager {
     
@@ -162,46 +139,46 @@ public class PerspectiveManager {
     
     public void loadDefaultPerspectives(){
         
-        List rules = new ArrayList();
-        rules.add(new GoNamespaceToOwnedElements());
-        rules.add(new GoNamespaceToDiagram());
-        rules.add(new GoClassToSummary());
-        rules.add(new GoSummaryToAssociation());
-        rules.add(new GoSummaryToAttribute());
-        rules.add(new GoSummaryToOperation());
-        rules.add(new GoSummaryToInheritance());
-        rules.add(new GoSummaryToIncomingDependency());
-        rules.add(new GoSummaryToOutgoingDependency());
+        ExplorerPerspective classPerspective = new ExplorerPerspective("Class centric");
+        classPerspective.addRule(new GoNamespaceToClassifierAndPackage());
+        classPerspective.addRule(new GoNamespaceToDiagram());
+        classPerspective.addRule(new GoClassToSummary());
+        classPerspective.addRule(new GoSummaryToAssociation());
+        classPerspective.addRule(new GoSummaryToAttribute());
+        classPerspective.addRule(new GoSummaryToOperation());
+        classPerspective.addRule(new GoSummaryToInheritance());
+        classPerspective.addRule(new GoSummaryToIncomingDependency());
+        classPerspective.addRule(new GoSummaryToOutgoingDependency());
         
-        List rules2 = new ArrayList();
-        rules2.add(new GoProjectToModel());
-        rules2.add(new GoNamespaceToOwnedElements());
-        rules2.add(new GoNamespaceToDiagram());
-        rules2.add(new GoModelToCollaboration());
-        rules2.add(new GoUseCaseToExtensionPoint());
-        rules2.add(new GoClassifierToStructuralFeature());
-        rules2.add(new GoClassifierToBeh());
-        rules2.add(new GoCollaborationInteraction());
-        rules2.add(new GoInteractionMessage());
-        rules2.add(new GoMessageAction());
-        rules2.add(new GoSignalToReception());
-        rules2.add(new GoLinkStimuli());
-        rules2.add(new GoStimulusToAction());
-        rules2.add(new GoClassifierToCollaboration());
-        rules2.add(new GoOperationToCollaboration());
-        rules2.add(new GoOperationToCollaborationDiagram());
-        rules2.add(new GoBehavioralFeatureToStateMachine());
-        rules2.add(new GoBehavioralFeatureToStateDiagram());
-        rules2.add(new GoClassifierToStateMachine());
-        rules2.add(new GoMachineToState());
-        rules2.add(new GoCompositeStateToSubvertex());
-        rules2.add(new GoStateToInternalTrans());
-        rules2.add(new GoStateMachineToTransition());
-        rules2.add(new GoStateToDoActivity());
-        rules2.add(new GoStateToEntry());
-        rules2.add(new GoStateToExit());
+        ExplorerPerspective packagePerspective = new ExplorerPerspective("Package centric");
+        packagePerspective.addRule(new GoProjectToModel());
+        packagePerspective.addRule(new GoNamespaceToOwnedElements());
+        packagePerspective.addRule(new GoNamespaceToDiagram());
+        packagePerspective.addRule(new GoModelToCollaboration());
+        packagePerspective.addRule(new GoUseCaseToExtensionPoint());
+        packagePerspective.addRule(new GoClassifierToStructuralFeature());
+        packagePerspective.addRule(new GoClassifierToBeh());
+        packagePerspective.addRule(new GoCollaborationInteraction());
+        packagePerspective.addRule(new GoInteractionMessage());
+        packagePerspective.addRule(new GoMessageAction());
+        packagePerspective.addRule(new GoSignalToReception());
+        packagePerspective.addRule(new GoLinkStimuli());
+        packagePerspective.addRule(new GoStimulusToAction());
+        packagePerspective.addRule(new GoClassifierToCollaboration());
+        packagePerspective.addRule(new GoOperationToCollaboration());
+        packagePerspective.addRule(new GoOperationToCollaborationDiagram());
+        packagePerspective.addRule(new GoBehavioralFeatureToStateMachine());
+        packagePerspective.addRule(new GoBehavioralFeatureToStateDiagram());
+        packagePerspective.addRule(new GoClassifierToStateMachine());
+        packagePerspective.addRule(new GoMachineToState());
+        packagePerspective.addRule(new GoCompositeStateToSubvertex());
+        packagePerspective.addRule(new GoStateToInternalTrans());
+        packagePerspective.addRule(new GoStateMachineToTransition());
+        packagePerspective.addRule(new GoStateToDoActivity());
+        packagePerspective.addRule(new GoStateToEntry());
+        packagePerspective.addRule(new GoStateToExit());
         
-        addPerspective(rules.toArray());
-        addPerspective(rules2.toArray());
+        addPerspective(classPerspective);
+        addPerspective(packagePerspective);
     }
 }

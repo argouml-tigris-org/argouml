@@ -40,6 +40,8 @@ import org.argouml.ui.explorer.ExplorerTree;
 import org.argouml.ui.explorer.PerspectiveComboBox;
 import org.argouml.ui.explorer.PerspectiveManager;
 import org.argouml.ui.explorer.ExplorerTreeModel;
+import org.argouml.ui.explorer.NameOrder;
+import org.argouml.ui.explorer.TypeThenNameOrder;
 
 import org.tigris.toolbar.ToolBar;
 
@@ -48,11 +50,6 @@ import org.tigris.toolbar.ToolBar;
  * of the UML model.
  *
  * <p>The model can be viewed from different tree "Perspectives".
- *
- * <p>The public interface of this class provides the following:
- * <ol>
- *  <li>model changed notification via forceUpdate()</li>
- * </ol>
  *
  * <p>Perspectives are now built in the Perspective Manager.
  *
@@ -132,6 +129,7 @@ public class NavigatorPane
     public NavigatorPane(boolean doSplash) {
         
         JComboBox combo = new PerspectiveComboBox();
+        JComboBox orderByCombo = new JComboBox();
         tree = new DnDNavigatorTree();
         ToolBar toolbar = new ToolBar();
         
@@ -139,10 +137,22 @@ public class NavigatorPane
         toolbar.setFloatable(false);
         toolbar.add(combo);
         
-        combo.addItemListener((ExplorerTreeModel)tree.getModel());
+        ToolBar toolbar2 = new ToolBar();
+        
+        toolbar2.putClientProperty("JToolBar.isRollover",  Boolean.TRUE);
+        toolbar2.setFloatable(false);
+        toolbar2.add(orderByCombo);
+        
+        orderByCombo.addItem(new TypeThenNameOrder());
+        orderByCombo.addItem(new NameOrder());
 
+        JPanel toolbarpanel = new JPanel();
+        toolbarpanel.setLayout(new BorderLayout());
+        toolbarpanel.add(toolbar, BorderLayout.NORTH);
+        toolbarpanel.add(toolbar2, BorderLayout.SOUTH);
+        
         setLayout(new BorderLayout());
-        add(toolbar, BorderLayout.NORTH);
+        add(toolbarpanel, BorderLayout.NORTH);
         add(new JScrollPane(tree), BorderLayout.CENTER);
 
         if (doSplash) {
@@ -152,7 +162,9 @@ public class NavigatorPane
 		    "statusmsg.bar.making-navigator-pane-perspectives"));
             splash.getStatusBar().showProgress(25);
         }
-
+        
+        combo.addItemListener((ExplorerTreeModel)tree.getModel());
+        orderByCombo.addItemListener((ExplorerTreeModel)tree.getModel());
         PerspectiveManager.getInstance().loadDefaultPerspectives();
     }
 

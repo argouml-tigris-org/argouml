@@ -32,6 +32,7 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 /**
+ * Event adaptor for the explorer to decouple the explorer from the nsuml model.
  *
  * @author  alexb
  */
@@ -56,6 +57,8 @@ implements MElementListener{
     }
     
     /**
+     * fires a umlModelStructureChanged event.
+     *
      * If a element changes, this will be catched by this method and reflected
      * in the tree.
      * @see
@@ -72,6 +75,9 @@ implements MElementListener{
     }
 
     /**
+     *
+     * fires a modelElementChanged event.
+     *
      * If a element changes, this will be catched by this method and reflected
      * in the tree.
      * @see
@@ -82,15 +88,15 @@ implements MElementListener{
             || e.getRemovedValue() != null
             || (e.getNewValue() != null
                 && !e.getNewValue().equals(e.getOldValue()))) {
-            if ("namespace".equals(e.getName()))
-            firePropertyChanged("structureChanged", e.getSource());
-            else
-            firePropertyChanged("modelElementChanged", e.getSource());
+            
+                    firePropertyChanged("modelElementChanged", e.getSource());
         }
 
     }
 
     /**
+     * fires a modelElementAdded event.
+     *
      * If a element changes, this will be catched by this method and reflected
      * in the tree.
      * @see
@@ -107,6 +113,8 @@ implements MElementListener{
     }
 
     /**
+     * Not used.
+     *
      * If a element changes, this will be catched by this method and reflected
      * in the tree.
      * @see
@@ -117,12 +125,14 @@ implements MElementListener{
             || e.getRemovedValue() != null
             || (e.getNewValue() != null
                 && !e.getNewValue().equals(e.getOldValue()))) {
-            firePropertyChanged("modelElementRemoved", e.getSource());
+            //firePropertyChanged("modelElementRemoved", e.getRemovedValue());
         }
 
     }
 
     /**
+     * fires a modelElementAdded event.
+     *
      * If a element changes, this will be catched by this method and reflected
      * in the tree.
      * @see
@@ -139,6 +149,9 @@ implements MElementListener{
     }
 
     /**
+     * fires a modelElementRemoved event. removed value translates to
+     * the new value.
+     *
      * If a element changes, this will be catched by this method and reflected
      * in the tree.
      * @see
@@ -149,7 +162,7 @@ implements MElementListener{
             || e.getRemovedValue() != null
             || (e.getNewValue() != null
                 && !e.getNewValue().equals(e.getOldValue()))) {
-            firePropertyChanged("modelElementRemoved", e.getSource());
+            firePropertyChanged("modelElementRemoved", e.getRemovedValue());
         }
 
     }

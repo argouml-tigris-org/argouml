@@ -36,7 +36,9 @@ import org.argouml.model.uml.ExplorerNSUMLEventAdaptor;
 /**
  * All events going to the Explorer must pass through here first!
  *
- * @since Created on 16 September 2003, 23:13
+ * <p>Most will come from the uml model via ExplorerNSUMLEventAdaptor
+ *
+ * @since 0.15.2, Created on 16 September 2003, 23:13
  * @author  alexb
  */
 public class ExplorerEventAdaptor 
@@ -44,7 +46,10 @@ implements PropertyChangeListener{
     
     private static ExplorerEventAdaptor instance;
     
-    private TreeModelUMLEventListener tree;
+    /**
+     * the tree model to update
+     */
+    private TreeModelUMLEventListener treeModel;
     
     public static ExplorerEventAdaptor getInstance(){
         
@@ -63,30 +68,44 @@ implements PropertyChangeListener{
         ExplorerNSUMLEventAdaptor.getInstance().addPropertyChangeListener(this);
     }
     
+    /**
+     * forwards this event to the tree model.
+     */
     public void structureChanged(){
-        tree.structureChanged();
-    }
-    
-    public void modelElementRemoved(Object source){
-        tree.modelElementRemoved(source);
-    }
-    
-    public void modelElementAdded(Object source){
-        tree.modelElementAdded(source);
-    }
-    
-    public void modelElementChanged(Object source){
-        tree.modelElementChanged(source);
-    }
-    
-    public void setTreeModelUMLEventListener(TreeModelUMLEventListener newTree){
-        tree = newTree;
+        treeModel.structureChanged();
     }
     
     /**
-     * Listen for configuration changes that could require repaint
-     *  of the navigator pane, calls forceUpdate(),
-     * Listens for changes of the project fired by projectmanager.
+     * forwards this event to the tree model.
+     */
+    public void modelElementRemoved(Object source){
+        treeModel.modelElementRemoved(source);
+    }
+    
+    /**
+     * forwards this event to the tree model.
+     */
+    public void modelElementAdded(Object source){
+        treeModel.modelElementAdded(source);
+    }
+    
+    /**
+     * forwards this event to the tree model.
+     */
+    public void modelElementChanged(Object source){
+        treeModel.modelElementChanged(source);
+    }
+    
+    /**
+     * sets the tree model that will receive events.
+     */
+    public void setTreeModelUMLEventListener(TreeModelUMLEventListener newTreeModel){
+        treeModel = newTreeModel;
+    }
+    
+    /**
+     * Listens to events coming from the project manager, config manager, and
+     * uml model, passes those events on to the explorer model.
      *
      *  @since ARGO0.11.2
      */
@@ -96,35 +115,35 @@ implements PropertyChangeListener{
         if (pce.getPropertyName()
                 .equals(ProjectManager.CURRENT_PROJECT_PROPERTY_NAME)) 
 	{
-            tree.structureChanged();
+            treeModel.structureChanged();
             return;
         }
         
         // notation events
         if (Notation.KEY_USE_GUILLEMOTS.isChangedProperty(pce)
             || Notation.KEY_SHOW_STEREOTYPES.isChangedProperty(pce)) {
-            tree.structureChanged();
+            treeModel.structureChanged();
         }
         
         // uml model events
         if (pce.getPropertyName()
                 .equals("umlModelStructureChanged")) {
-            tree.structureChanged();
+            treeModel.structureChanged();
         }
         
         if (pce.getPropertyName()
                 .equals("modelElementRemoved")) {
-            tree.modelElementRemoved(pce.getNewValue());
+            treeModel.modelElementRemoved(pce.getNewValue());
         }
         
         if (pce.getPropertyName()
                 .equals("modelElementAdded")) {
-            tree.modelElementAdded(pce.getNewValue());
+            treeModel.modelElementAdded(pce.getNewValue());
         }
         
         if (pce.getPropertyName()
                 .equals("modelElementChanged")) {
-            tree.modelElementChanged(pce.getNewValue());
+            treeModel.modelElementChanged(pce.getNewValue());
         }
     }
     

@@ -53,14 +53,19 @@ import org.tigris.gef.base.Diagram;
 import org.tigris.gef.presentation.Fig;
 
 /**
+ * This class takes a lot of the responsibility from the NavigatorPane.
+ *
+ * Provides:
+ *  - selection/target management
+ *  - generate a name for all nodes
+ *  - mouse listener for the pop up
  *
  * @author  alexb
+ * @since 0.15.2
  */
 public class ExplorerTree
 extends DisplayTextTree
-implements TreeModelUMLEventListener,
-TargetListener {
-    
+implements TargetListener {
     
     /** holds state info about whether to display stereotypes in the nav pane.*/
     private boolean showStereotype;
@@ -77,30 +82,6 @@ TargetListener {
         
         showStereotype =
         Configuration.getBoolean(Notation.KEY_SHOW_STEREOTYPES, false);
-    }
-    
-    public void modelElementAdded(Object node) {
-        this.forceUpdate(node);
-    }
-    
-    public void modelElementChanged(Object node) {
-        this.forceUpdate(node);
-    }
-    
-    public void modelElementRemoved(Object node) {
-        this.forceUpdate(node);
-    }
-    
-    public void structureChanged() {
-        this.forceUpdate();
-    }
-    
-    public void setRoot(Object root) {
-        if(!(getModel() instanceof NavPerspective))
-            return;
-        
-        ((NavPerspective)this.getModel()).setRoot(root);
-        this.setModel(this.getModel());
     }
     
     /** Listens to mouse events coming from the *JTree*,

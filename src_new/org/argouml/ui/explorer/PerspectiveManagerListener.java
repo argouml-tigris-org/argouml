@@ -26,8 +26,11 @@ package org.argouml.ui.explorer;
 
 import org.argouml.ui.NavPerspective;
 /**
+ * An interface to decouple the perspective manager
+ * from interested ui components.
  *
  * @author  alexb
+ * @since 0.15.2
  */
 public interface PerspectiveManagerListener {
     

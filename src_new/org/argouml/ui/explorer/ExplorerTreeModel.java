@@ -40,8 +40,14 @@ import org.argouml.ui.NavPerspective;
 import org.argouml.ui.AbstractGoRule;
 
 /**
+ * The model for the Explorer tree view of the uml model.
+ *
+ * provides:
+ *  - receives events from the uml model and updates itself and the tree ui.
+ *  - responds to changes in perspetive and ordering.
  *
  * @author  alexb
+ * @since 0.15.2
  */
 public class ExplorerTreeModel
 extends DefaultTreeModel
@@ -52,14 +58,18 @@ ItemListener{
     
     Map modelElementMap;
     
+    Comparator order;
+    
     /** Creates a new instance of ExplorerTreeModel */
     public ExplorerTreeModel(Object root) {
-        super(new DefaultMutableTreeNode(root));
+        super(new ExplorerTreeNode(root));
         this.setAsksAllowsChildren(true);
         modelElementMap = new HashMap();
         
         ExplorerEventAdaptor.getInstance()
-        .setTreeModelUMLEventListener(this);
+            .setTreeModelUMLEventListener(this);
+        
+        order = new TypeThenNameOrder();
     }
     
     public void modelElementChanged(Object node) {
@@ -68,9 +78,8 @@ ItemListener{
         while(nodesIt.hasNext()){
             
             DefaultMutableTreeNode changeNode = (DefaultMutableTreeNode)nodesIt.next();
-            changeNode.removeAllChildren();
-            addAllChildren(new TreePath(this.getPathToRoot(changeNode)));
-            this.nodeStructureChanged(changeNode);
+            changeNode = (DefaultMutableTreeNode)changeNode.getParent();
+            this.nodeChanged(changeNode);
         }
         
         
@@ -80,62 +89,56 @@ ItemListener{
         
         Iterator nodesIt = this.findNodes(node).iterator();
         while(nodesIt.hasNext()){
-            
+
             DefaultMutableTreeNode changeNode = (DefaultMutableTreeNode)nodesIt.next();
             changeNode.removeAllChildren();
             addAllChildren(new TreePath(this.getPathToRoot(changeNode)));
-            this.nodeStructureChanged(changeNode);
         }
     }
     
     public void modelElementRemoved(Object node) {
         
-        Iterator nodesIt = this.findNodes(node).iterator();
-        while(nodesIt.hasNext()){
-            
-            DefaultMutableTreeNode changeNode = (DefaultMutableTreeNode)nodesIt.next();
-            changeNode.removeAllChildren();
-            addAllChildren(new TreePath(this.getPathToRoot(changeNode)));
-            this.nodeStructureChanged(changeNode);
-        }
+        Collection nodes = this.findNodes(node);
+        Object[] nodesArray = this.findNodes(node).toArray();
+        
+            for(int x=0;x<nodesArray.length;x++){
+                
+                ExplorerTreeNode changeNode = (ExplorerTreeNode)nodesArray[x];
+                
+//                ExplorerTreeNode parent = (ExplorerTreeNode)changeNode.getParent();
+//                int index = parent.getIndex(changeNode);
+                
+//                parent.remove(changeNode);
+//                nodes.remove(changeNode);
+                this.removeNodeFromParent(changeNode);
+//                this.nodesWereRemoved(parent, new int[]{index},new ExplorerTreeNode[]{changeNode});
+                
+//            changeNode.removeAllChildren();
+//            addAllChildren(new TreePath(this.getPathToRoot(changeNode)));
+            }
     }
     
     public void structureChanged() {
         
         Project proj = ProjectManager.getManager().getCurrentProject();
-        DefaultMutableTreeNode rootNode = new DefaultMutableTreeNode(proj);
-        DefaultMutableTreeNode displayRoot =
-        new DefaultMutableTreeNode(proj.getModel());
+        ExplorerTreeNode rootNode = new ExplorerTreeNode(proj);
+        rootNode.setOrder(order);
+        ExplorerTreeNode displayRoot =
+        new ExplorerTreeNode(proj.getModel());
+        displayRoot.setOrder(order);
         rootNode.add(displayRoot);
         super.setRoot(rootNode);
         this.nodeStructureChanged(rootNode);
         
+        modelElementMap = new HashMap();
         this.addToMap(proj, rootNode);
         this.addToMap(proj.getModel(), displayRoot);
     }
     
-//    public void setRoot(Object root) {
-//        
-//        DefaultMutableTreeNode rootNode = new DefaultMutableTreeNode(root);
-//        DefaultMutableTreeNode displayRoot =
-//        new DefaultMutableTreeNode(((Project)root).getModel());
-//        rootNode.add(displayRoot);
-//        super.setRoot(rootNode);
-//        this.nodeStructureChanged(rootNode);
-//        
-//        this.addToMap(root, rootNode);
-//        this.addToMap(((Project)root).getModel(), displayRoot);
-//    }
-    
-    public void addRules(Object[] newRules){
-        
-        rules = newRules;
-    }
-    
     public void addAllChildren(TreePath path){
         
-        DefaultMutableTreeNode node =
-        (DefaultMutableTreeNode)path.getLastPathComponent();
+        ExplorerTreeNode node =
+        (ExplorerTreeNode)path.getLastPathComponent();
         
         // if the node has children,
         // then it has been expanded meaning we do not need to add the nodes
@@ -153,14 +156,19 @@ ItemListener{
                 
                 while(childrenIt.hasNext()){
                     Object child = childrenIt.next();
-                    DefaultMutableTreeNode newNode = new DefaultMutableTreeNode(child);
+                    ExplorerTreeNode newNode = new ExplorerTreeNode(child);
+                    newNode.setOrder(order);
                     this.addToMap(child, newNode);
                     
-                    this.insertNodeInto(newNode,
-                    node,
-                    node.getChildCount());
+                    //                    this.insertNodeInto(newNode,
+                    //                        node,
+                    //                        node.getChildCount());
+                    node.add(newNode);
                 }
+                node.orderChildren();
+                this.nodeStructureChanged(node);
             }
+            
         }
     }
     
@@ -183,29 +191,20 @@ ItemListener{
         return (Set)modelElementMap.get(modelElement);
     }
     
-    /** called when the user selects a perspective from the perspective
-     *  combo. */
+    /**
+     * Updates the explorer for new perspectives / orderings.
+     */
     public void itemStateChanged(ItemEvent e) {
         
-        rules = (Object[])e.getItem();
-        Object currentRoot = null;
+        if(e.getSource() instanceof PerspectiveComboBox){
+        
+            rules = ((ExplorerPerspective)e.getItem()).getRulesArray();
+        }
+        else{
+            
+            order = (Comparator)e.getItem();
+        }
         
         structureChanged();
-        
-        // root must be checked each time
-
-//            currentRoot = getRoot();
-//            currentRoot = ((DefaultMutableTreeNode)currentRoot).getUserObject();
-//            
-//            Object newRoot=null;
-//            
-//                newRoot = getRoot();
-//                newRoot = ((DefaultMutableTreeNode)newRoot).getUserObject();
-//                if(currentRoot != newRoot)
-//                    setRoot(currentRoot);
-    }
-    
-    public String toString(){
-        return "Test perspective";
     }
 }

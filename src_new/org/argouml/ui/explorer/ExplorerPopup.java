@@ -49,8 +49,10 @@ import org.tigris.gef.base.Diagram;
 import org.tigris.gef.ui.PopupGenerator;
 
 /**
+ * PopUp for extra functionality for the Explorer.
  *
  * @author  alexb
+ * @since 0.15.2
  */
 public class ExplorerPopup extends JPopupMenu{
     

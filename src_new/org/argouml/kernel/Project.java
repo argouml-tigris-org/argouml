@@ -57,6 +57,7 @@ import org.argouml.model.uml.modelmanagement.ModelManagementHelper;
 import org.argouml.ui.ArgoDiagram;
 import org.argouml.ui.NavigatorPane;
 import org.argouml.ui.ProjectBrowser;
+import org.argouml.ui.explorer.ExplorerEventAdaptor;
 import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.ui.targetmanager.TargetListener;
 import org.argouml.ui.targetmanager.TargetManager;
@@ -1045,13 +1046,18 @@ public class Project implements java.io.Serializable, TargetListener {
             if (obj instanceof ArgoDiagram) {
                 removeProjectMemberDiagram((ArgoDiagram) obj);
                 needSave = true;
+                //obj = ((UMLDiagram) obj).getNamespace();
+                // only need to manually delete diagrams because they
+                // don't have a decent event system set up.
+                ExplorerEventAdaptor.getInstance().modelElementRemoved(obj);
             }
             if (obj instanceof Fig) {
                 ((Fig) obj).dispose();
                 needSave = true;
+                // for explorer deletion:
+                obj = ((Fig) obj).getOwner();
             }
         }        
-        NavigatorPane.getInstance().forceUpdate();
         setNeedsSave(needSave);
     }
 

@@ -32,7 +32,7 @@ import org.apache.log4j.Logger;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.ModelFacade;
-import org.argouml.ui.NavigatorPane;
+import org.argouml.ui.explorer.ExplorerEventAdaptor;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.ui.UMLDiagram;
 
@@ -83,7 +83,7 @@ public abstract class ActionAddDiagram extends UMLChangeAction {
             TargetManager.getInstance().setTarget(diagram);
             //TODO make the explorer listen to project member property
             //changes...  to eliminate coupling on gui.
-            NavigatorPane.getInstance().forceUpdate();
+            ExplorerEventAdaptor.getInstance().modelElementAdded(ns);
             super.actionPerformed(e);
         } else {
             log.error("No valid namespace found");

@@ -25,8 +25,10 @@
 package org.argouml.ui.explorer;
 
 /**
+ * An interface to decouple Explorer event adaptors from interested models.
  *
  * @author  alexb
+ * @since 0.15.2
  */
 public interface TreeModelUMLEventListener {
     
