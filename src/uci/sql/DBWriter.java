@@ -12,19 +12,31 @@ import uci.uml.util.*;
 import ru.novosoft.uml.model_management.*;
 import ru.novosoft.uml.foundation.core.*;
 
+/**
+ * This class contains the functionality to write a model into a
+ * mysql database. At the moment the DB must have the name "uml",
+ * otherwise it won't work.
+ *
+ * @author Toby Baier <Toby.Baier at gmx.net>
+ * @version 0.1
+ */
 public class DBWriter
 {
     String DBUrl = "jdbc:mysql://";
     String DBName = "";
     String configFile = null;
+	String stmtString = "";
     Properties props = null;
     static Connection Conn = null;
 
-    //  default constructor, reads config file and connects to db.
+    /**
+	 * The default constructor reads the config file (db.ini) and connects to the db.
+	 */
+
     public DBWriter ()
     {
 	props = new Properties();
-	configFile =  System.getProperty("argo.dbconfig", "/uci/sql/db.ini");
+	configFile =  System.getProperty("argo.dbconfig", "/db.ini");
 	try {
 	    InputStream is = DBWriter.class.getResourceAsStream(configFile);
 	    props.load(is);
@@ -56,6 +68,11 @@ public class DBWriter
 	}
     }
 
+	/**
+	 * This method is called from uci.uml.ui.ActionStoreProjectToDb to store the current namespace (which should be a MModel) into the database.
+	 *
+	 * @param model This is the MModel which wil be stored.
+	 */
     public void store(MModel model) {
 	
 	Statement stmt = null;
@@ -86,14 +103,29 @@ public class DBWriter
     }
 
 	private void store(MModel model, Statement stmt) throws SQLException {
-		stmt.executeUpdate("REPLACE INTO tModel (uuid) VALUES ('" +model.getUUID()+ "')");
-		stmt.executeUpdate("REPLACE INTO tModelElement (uuid, name) VALUES ('" +model.getUUID()+ "','"+model.getName()+"')");
+		stmtString = "REPLACE INTO tModel (uuid) VALUES ('";
+		stmtString += model.getUUID()+ "')";
+		stmt.executeUpdate(stmtString);
+		stmtString = "REPLACE INTO tModelElement (uuid, name) VALUES ('";
+		stmtString += model.getUUID() + "','";
+		stmtString += model.getName() + "')";
+		stmt.executeUpdate(stmtString);
+
+		Iterator ownedElements = model.getOwnedElements().iterator();
+		while (ownedElements.hasNext()) {
+			MModelElement me = (MModelElement)ownedElements.next();
+		}
+			
 	}
 		
 
-    public void storeClass(MClass cls) throws SQLException {
+    private void store(MClass cls, Statement stmt) throws SQLException {
+		stmt.executeUpdate("REPLACE INTO tClass (uuid) VALUES ('" +cls.getUUID()+ "')");
     }
 
+	/**
+	 * only for testing, do not use main!
+	 */
     public static void main(String[] Args) throws Exception {
 	MModel mymodel = new MModelImpl();
 	DBWriter writer = new DBWriter();

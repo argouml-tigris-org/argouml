@@ -71,7 +71,7 @@ public class XMIParser {
         System.out.println("=======================================");
         System.out.println("== READING MODEL " + url);
         try {
-            XMIReaderSAX reader = new XMIReaderSAX();
+            XMIReader reader = new XMIReader();
             _curModel = reader.parse(new InputSource(url.openStream()));
             _UUIDRefs = reader.getUUIDRefs();
             

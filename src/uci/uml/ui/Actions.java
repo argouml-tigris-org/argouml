@@ -75,7 +75,7 @@ public class Actions {
   public static UMLAction OpenProject = new ActionOpenProject();
   public static UMLAction SaveProject = new ActionSaveProject();
   public static UMLAction LoadModelFromDB = new ActionLoadModelFromDB();
-  public static UMLAction StoreProjectToDB = new ActionStoreProjectToDB();
+  public static UMLAction StoreModelToDB = new ActionStoreModelToDB();
   public static UMLAction SaveProjectAs = new ActionSaveProjectAs();
   //public static UMLAction AddToProj = new ActionAddToProj();
   public static UMLAction Print = new ActionPrint();
@@ -523,9 +523,9 @@ class ActionLoadModelFromDB extends UMLAction {
 } /* end class ActionLoadModelFromDB */
 
 
-/* class ActionStoreProjectToDB */
-class ActionStoreProjectToDB extends UMLAction {
-  public ActionStoreProjectToDB() {
+/* class ActionStoreModelToDB */
+class ActionStoreModelToDB extends UMLAction {
+  public ActionStoreModelToDB() {
     super("Store model to DB", NO_ICON);
   }
 
@@ -557,7 +557,7 @@ class ActionStoreProjectToDB extends UMLAction {
 	  return true;
   }
 
-} /* end class ActionStoreProjectToDB */
+} /* end class ActionStoreModelToDB */
 
 class ActionPrint extends UMLAction {
   public ActionPrint() { super("Print..."); }

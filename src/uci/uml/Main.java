@@ -42,7 +42,7 @@ import uci.uml.ui.todo.*;
 import uci.uml.visual.*;
 import uci.uml.critics.*;
 import ru.novosoft.uml.model_management.MModel;
-import ru.novosoft.uml.MFactory;
+import ru.novosoft.uml.*;
 import uci.uml.test.omg.*;
 
 import uci.argo.kernel.*;
@@ -146,7 +146,7 @@ public class Main {
     phase0 = System.currentTimeMillis();
 
 
-	MFactory.setEventPolicy(MFactory.EVENT_POLICY_IMMEDIATE);
+	MFactoryImpl.setEventPolicy(MFactoryImpl.EVENT_POLICY_IMMEDIATE);
     ProjectBrowser pb = new ProjectBrowser("Argo/UML", splash.getStatusBar());
     phase1 = System.currentTimeMillis();
 
