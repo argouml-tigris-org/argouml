@@ -39,8 +39,13 @@ import ru.novosoft.uml.foundation.extension_mechanisms.*;
 import org.argouml.cognitive.*;
 import org.argouml.cognitive.critics.*;
 
+/** Critic to detect whether a class implements unneedded realizations through
+ *  inheritance.
+ */
 public class CrAlreadyRealizes extends CrUML {
 
+  /** Constructor
+   */
   public CrAlreadyRealizes() {
     setHeadline("Remove Unneeded Realizes from <ocl>self</ocl>");
     addSupportedDecision(CrUML.decINHERITANCE);
@@ -65,7 +70,8 @@ public class CrAlreadyRealizes extends CrUML {
     return NO_PROBLEM;
   }
 
-
+  /** find all indirect realizations of the given classifier.
+   */
   public Vector findIndirectRealizations(MClassifier cls) {
     Vector res = new Vector();
     Collection interfaces = getSpecifications(cls);
@@ -80,18 +86,23 @@ public class CrAlreadyRealizes extends CrUML {
   }
 
   public void accumIndirect(MGeneralizableElement intf, Vector res) {
-    Collection gens = intf.getGeneralizations();
-    for (Iterator iter = gens.iterator(); iter.hasNext(); ) {
-      MGeneralization g = (MGeneralization) iter.next();
-      MGeneralizableElement sup = g.getParent();
-      //System.out.println("sup = " + sup);
-      if (!res.contains(sup)) {
-	res.addElement(sup);
-	accumIndirect(sup, res);
+    if (intf == null) return;
+      Collection gens = intf.getGeneralizations();
+      for (Iterator iter = gens.iterator(); iter.hasNext(); ) {
+  
+        MGeneralization g = (MGeneralization) iter.next();
+        MGeneralizableElement sup = g.getParent();
+  
+        if (!res.contains(sup)) {
+            res.addElement(sup);
+            accumIndirect(sup, res);
+        }
       }
-    }
   }
 
+  /** get all the direct dependencies of the Classifier.
+   *  @param cls the Classifier to inspect.
+   */
   private Collection getSpecifications(MClassifier cls)
   {
      Vector res = new Vector();
