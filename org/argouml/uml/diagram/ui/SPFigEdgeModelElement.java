@@ -38,7 +38,8 @@ import org.tigris.gef.ui.ColorRenderer;
 public class SPFigEdgeModelElement extends StylePanelFig implements
         ItemListener {
 
-    private static final Logger LOG = Logger.getLogger(SPFigEdgeModelElement.class);
+    private static final Logger LOG = 
+        Logger.getLogger(SPFigEdgeModelElement.class);
 
     SpacerPanel _spacer = new SpacerPanel();
 
@@ -46,6 +47,10 @@ public class SPFigEdgeModelElement extends StylePanelFig implements
 
     SpacerPanel _spacer3 = new SpacerPanel();
 
+    /**
+     * The constructor.
+     * 
+     */
     public SPFigEdgeModelElement() {
         super("Edge Appearance");
         initChoices();
@@ -55,23 +60,23 @@ public class SPFigEdgeModelElement extends StylePanelFig implements
         c.ipadx = 0;
         c.ipady = 0;
 
-        Document bboxDoc = _bboxField.getDocument();
+        Document bboxDoc = getBBoxField().getDocument();
         bboxDoc.addDocumentListener(this);
-        _lineField.addItemListener(this);
+        getLineField().addItemListener(this);
         //_dashedField.addItemListener(this);
 
-        _lineField.setRenderer(new ColorRenderer());
+        getLineField().setRenderer(new ColorRenderer());
         //_dashedField.setRenderer(DashRenderer.SINGLETON);
 
         c.gridx = 0;
         c.gridwidth = 1;
         c.gridy = 1;
         c.weightx = 0.0;
-        gb.setConstraints(_bboxLabel, c);
-        add(_bboxLabel);
+        gb.setConstraints(getBBoxLabel(), c);
+        add(getBBoxLabel());
         c.gridy = 2;
-        gb.setConstraints(_lineLabel, c);
-        add(_lineLabel);
+        gb.setConstraints(getLineLabel(), c);
+        add(getLineLabel());
         //c.gridy = 3;
         //gb.setConstraints(_dashedLabel, c);
         //add(_dashedLabel);
@@ -80,11 +85,11 @@ public class SPFigEdgeModelElement extends StylePanelFig implements
         c.gridx = 1;
         //c.gridwidth = GridBagConstraints.REMAINDER;
         c.gridy = 1;
-        gb.setConstraints(_bboxField, c);
-        add(_bboxField);
+        gb.setConstraints(getBBoxField(), c);
+        add(getBBoxField());
         c.gridy = 2;
-        gb.setConstraints(_lineField, c);
-        add(_lineField);
+        gb.setConstraints(getLineField(), c);
+        add(getLineField());
         //c.gridy = 3;
         //gb.setConstraints(_dashedField, c);
         //add(_dashedField);

@@ -45,6 +45,10 @@ import org.argouml.model.ModelFacade;
 import org.argouml.ui.targetmanager.TargetEvent;
 import org.tigris.gef.presentation.Fig;
 
+/**
+ * The style panel.
+ *
+ */
 public class StylePanel extends TabSpawnable implements TabFigTarget,
                 ItemListener, DocumentListener, ListSelectionListener,
                 ActionListener {

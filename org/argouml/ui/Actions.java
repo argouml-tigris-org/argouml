@@ -744,7 +744,7 @@ class ActionSnooze extends ToDoItemAction {
 	ToDoItem item = (ToDoItem) getRememberedTarget();
 	Poster p = item.getPoster();
 	p.snooze();
-	TabToDo._numHushes++;
+	TabToDo.incrementNumHushes();
     }
 } /* end class ActionSnooze */
 
