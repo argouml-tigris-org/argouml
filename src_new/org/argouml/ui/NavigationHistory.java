@@ -25,7 +25,8 @@ package org.argouml.ui;
 
 import java.util.*;
 import java.lang.ref.*;
-import ru.novosoft.uml.foundation.core.*;
+
+import org.argouml.model.ModelFacade;
 
 /**
 *    This class implements a navigation history
@@ -122,14 +123,14 @@ public class NavigationHistory {
                         //
                         //   these check for phantom model elements
                         //       those still alive but not attached to anything
-                        if(target instanceof MFeature) {
-                            if(((MFeature) target).getOwner() == null) {
+                        if(ModelFacade.isAFeature(target)) {
+                            if(ModelFacade.getOwner(target) == null) {
                                 target = null;
                             }
                         }
                         else {
-                            if(target instanceof MModelElement) {
-                                if(((MModelElement) target).getNamespace() == null) {
+                            if(ModelFacade.isAModelElement(target)) {
+                                if(ModelFacade.getNamespace(target) == null) {
                                     target = null;
                                 }
                             }
@@ -198,14 +199,15 @@ public class NavigationHistory {
                             //
                             //   these check for phantom model elements
                             //       those still alive but not attached to anything
-                            if(target instanceof MFeature) {
-                                if(((MFeature) target).getOwner() == null) {
+                            if(ModelFacade.isAFeature(target)) {
+                                if(ModelFacade.getOwner(target) == null) {
                                     target = null;
                                 }
                             }
                             else {
-                                if(target instanceof MModelElement) {
-                                    if(((MModelElement) target).getNamespace() == null) {
+                                if(ModelFacade.isAModelElement(target)) {
+                                    if(ModelFacade.getNamespace(target) == 
+                                       null) {
                                         target = null;
                                     }
                                 }
