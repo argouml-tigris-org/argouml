@@ -85,7 +85,7 @@ public class SnoozeOrder implements java.io.Serializable {
     long now = (new Date()).getTime();
     _snoozeUntil.setTime(now + _interval);
     _snoozeAgain.setTime(now + _interval + _initialIntervalMS);
-    System.out.println("Setting snooze order to: " +
+    Critic.cat.info("Setting snooze order to: " +
 		       _snoozeUntil.toString());
   }
 
