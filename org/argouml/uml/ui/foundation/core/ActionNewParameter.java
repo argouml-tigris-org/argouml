@@ -27,6 +27,7 @@ package org.argouml.uml.ui.foundation.core;
 import java.awt.event.ActionEvent;
 
 import org.argouml.model.uml.CoreFactory;
+import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.AbstractActionNewModelElement;
 
 /**
@@ -55,7 +56,10 @@ public class ActionNewParameter extends AbstractActionNewModelElement {
      */
     public void actionPerformed(ActionEvent e) {
         super.actionPerformed(e);
-        CoreFactory.getFactory().buildParameter(getTarget());
+        //Object target =  getTarget(); // it is not set anywhere, pity...
+        Object target =  TargetManager.getInstance().getModelTarget();
+        Object param = CoreFactory.getFactory().buildParameter(target);
+        TargetManager.getInstance().setTarget(param);
     }
 
     /**
