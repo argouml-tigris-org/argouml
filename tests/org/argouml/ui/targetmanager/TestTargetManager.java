@@ -65,7 +65,7 @@ public class TestTargetManager extends TestCase {
     private class TestTargetListener implements TargetListener {
 
 	/**
-	 * @see org.argouml.ui.targetmanager.TargetListener#targetAdded(org.argouml.ui.targetmanager.TargetEvent)
+	 * @see TargetListener#targetAdded(TargetEvent)
 	 */
 	public void targetAdded(TargetEvent e) {
 	    targetAddedCalled = true;
@@ -77,7 +77,7 @@ public class TestTargetManager extends TestCase {
 	}
 
 	/**
-	 * @see org.argouml.ui.targetmanager.TargetListener#targetRemoved(org.argouml.ui.targetmanager.TargetEvent)
+	 * @see TargetListener#targetRemoved(TargetEvent)
 	 */
 	public void targetRemoved(TargetEvent e) {
 	    targetRemovedCalled = true;
@@ -89,7 +89,7 @@ public class TestTargetManager extends TestCase {
 	}
 
 	/**
-	 * @see org.argouml.ui.targetmanager.TargetListener#targetSet(org.argouml.ui.targetmanager.TargetEvent)
+	 * @see TargetListener#targetSet(TargetEvent)
 	 */
 	public void targetSet(TargetEvent e) {
 	    targetSetCalled = true;
@@ -132,7 +132,7 @@ public class TestTargetManager extends TestCase {
 	    } catch (InterruptedException e) {
 	    }
 	}
-	assertTrue(TargetManager.getInstance() instanceof TargetManager);
+	assertTrue(TargetManager.getInstance() != null);
     }
 
     public void testSetTarget() {
@@ -331,7 +331,8 @@ public class TestTargetManager extends TestCase {
 	assertTrue(TargetManager.getInstance()
 		   .getTargets().contains(testObject));
 	TargetManager.getInstance().addTarget(null);
-	assertTrue(TargetManager.getInstance().getTargets().contains(testObject));
+	assertTrue(TargetManager.getInstance()
+	        .getTargets().contains(testObject));
 	assertTrue(!TargetManager.getInstance().getTargets().contains(null));
 
 	TargetListener listener = new TestTargetListener();
@@ -611,13 +612,22 @@ public class TestTargetManager extends TestCase {
 	TargetManager.getInstance().removeTargetListener(listener);
     }
 
+    /**
+     * Testing to {@link TargetManager#addTarget(Object) add}, 
+     * {@link TargetManager#setTarget(Object) set}, and
+     * {@link TargetManager#removeTarget(Object) remove}
+     * a target from within the {@link TargetListener} calls 
+     * ({@link TargetListener#targetAdded(TargetEvent)},
+     * {@link TargetListener#targetRemoved(TargetEvent)}, and
+     * {@link TargetListener#targetSet(TargetEvent)}).
+     */
     public void testTransaction() {
 	class Listener implements TargetListener {
 	    int counter = 0;
 	    List list = new ArrayList();
 
 	    /**
-	     * @see org.argouml.ui.targetmanager.TargetListener#targetAdded(org.argouml.ui.targetmanager.TargetEvent)
+	     * @see TargetListener#targetAdded(TargetEvent)
 	     */
 	    public void targetAdded(TargetEvent e) {
 		counter++;
@@ -626,11 +636,10 @@ public class TestTargetManager extends TestCase {
 		list.add(new Object());
 		TargetManager.getInstance().setTargets(list);
 		TargetManager.getInstance().removeTarget(e.getNewTarget());
-
 	    }
 
 	    /**
-	     * @see org.argouml.ui.targetmanager.TargetListener#targetRemoved(org.argouml.ui.targetmanager.TargetEvent)
+	     * @see TargetListener#targetRemoved(TargetEvent)
 	     */
 	    public void targetRemoved(TargetEvent e) {
 		counter++;
@@ -639,11 +648,10 @@ public class TestTargetManager extends TestCase {
 		list.add(new Object());
 		TargetManager.getInstance().setTargets(list);
 		TargetManager.getInstance().removeTarget(e.getNewTarget());
-
 	    }
 
 	    /**
-	     * @see org.argouml.ui.targetmanager.TargetListener#targetSet(org.argouml.ui.targetmanager.TargetEvent)
+	     * @see TargetListener#targetSet(TargetEvent)
 	     */
 	    public void targetSet(TargetEvent e) {
 		counter++;
@@ -652,19 +660,20 @@ public class TestTargetManager extends TestCase {
 		list.add(new Object());
 		TargetManager.getInstance().setTargets(list);
 		TargetManager.getInstance().removeTarget(e.getNewTarget());
-
 	    }
-
 	}
+
 	Listener listener = new Listener();
 	TargetManager.getInstance().addTargetListener(listener);
 	TargetManager.getInstance().addTarget(new Object());
 	assertEquals(1, listener.counter);
 	assertEquals(1, listener.counter);
+
 	listener = new Listener();
 	TargetManager.getInstance().addTargetListener(listener);
 	TargetManager.getInstance().setTarget(new Object());
 	assertEquals(1, listener.counter);
+
 	listener = new Listener();
 	List list = new ArrayList();
 	list.add(new Object());
@@ -672,6 +681,7 @@ public class TestTargetManager extends TestCase {
 	TargetManager.getInstance().setTargets(list);
 	list.add(new Object());
 	assertEquals(1, listener.counter);
+
 	listener = new Listener();
 	TargetManager.getInstance().addTargetListener(listener);
 	TargetManager.getInstance().removeTarget(list.get(0));
