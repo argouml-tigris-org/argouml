@@ -53,10 +53,22 @@ extends DefaultTreeModel
 implements TreeModelUMLEventListener,
 ItemListener{
     
+    /**
+     * an array of 
+     * {@link org.argouml.ui.explorer.rules.PerspectiveRule PerspectiveRules},
+     * that determine the tree view.
+     */
     Object rules[];
     
+    /**
+     * a map used to resolve model elements to tree nodes when determining
+     * what effect a model event will have on the tree.
+     */
     Map modelElementMap;
     
+    /**
+     * the global order for siblings in the tree.
+     */
     Comparator order;
     
     /** Creates a new instance of ExplorerTreeModel */
@@ -71,18 +83,27 @@ ItemListener{
         order = new TypeThenNameOrder();
     }
     
+    /**
+     * a model element has changed in some way.
+     */
     public void modelElementChanged(Object node) {
         
-        Iterator nodesIt = this.findNodes(node).iterator();
-        while(nodesIt.hasNext()){
+        Object[] nodesArray = this.findNodes(node).toArray();
+        
+        for(int x=0;x<nodesArray.length;x++){
             
-            ExplorerTreeNode changeNode = (ExplorerTreeNode)nodesIt.next();
+            ExplorerTreeNode changeNode = (ExplorerTreeNode)nodesArray[x];
             this.nodeChanged(changeNode);
+            
+            ExplorerTreeNode parentNode = (ExplorerTreeNode)changeNode.getParent();
+            parentNode.orderChildren();
+            this.nodeStructureChanged(parentNode);
         }
-        
-        
     }
     
+    /**
+     * a model element has been added to the model.
+     */
     public void modelElementAdded(Object node) {
         
         Iterator nodesIt = this.findNodes(node).iterator();
@@ -94,28 +115,30 @@ ItemListener{
         }
     }
     
+    /**
+     * a model element has been removed from the model.
+     */
     public void modelElementRemoved(Object node) {
         
         Collection nodes = this.findNodes(node);
         Object[] nodesArray = this.findNodes(node).toArray();
         
-            for(int x=0;x<nodesArray.length;x++){
-                
-                ExplorerTreeNode changeNode = (ExplorerTreeNode)nodesArray[x];
-                
-//                ExplorerTreeNode parent = (ExplorerTreeNode)changeNode.getParent();
-//                int index = parent.getIndex(changeNode);
-                
-//                parent.remove(changeNode);
-//                nodes.remove(changeNode);
+        for(int x=0;x<nodesArray.length;x++){
+            
+            ExplorerTreeNode changeNode = (ExplorerTreeNode)nodesArray[x];
+            
+            if(changeNode.getParent() != null){
                 this.removeNodeFromParent(changeNode);
-//                this.nodesWereRemoved(parent, new int[]{index},new ExplorerTreeNode[]{changeNode});
-                
-//            changeNode.removeAllChildren();
-//            addAllChildren(new TreePath(this.getPathToRoot(changeNode)));
             }
+            else{
+                nodes.remove(changeNode);
+            }
+        }
     }
     
+    /**
+     * the model structure has changed, eg a new project.
+     */
     public void structureChanged() {
         
         Project proj = ProjectManager.getManager().getCurrentProject();
@@ -133,6 +156,9 @@ ItemListener{
         this.addToMap(proj.getModel(), displayRoot);
     }
     
+    /**
+     * builds the next level of the explorer tree for a given tree path.
+     */
     public void addAllChildren(TreePath path){
         
         ExplorerTreeNode node =
@@ -158,9 +184,6 @@ ItemListener{
                     newNode.setOrder(order);
                     this.addToMap(child, newNode);
                     
-                    //                    this.insertNodeInto(newNode,
-                    //                        node,
-                    //                        node.getChildCount());
                     node.add(newNode);
                 }
                 node.orderChildren();
@@ -170,6 +193,11 @@ ItemListener{
         }
     }
     
+    /**
+     * adds a new tree node and model element to the map.
+     * nodes are removed from the map when a {@link #modelElementRemoved(Object)
+     * modelElementRemoved} event is received.
+     */
     private void addToMap(Object modelElement, TreeNode node){
         
         Object value = modelElementMap.get(modelElement);
@@ -184,6 +212,9 @@ ItemListener{
         }
     }
     
+    /**
+     * node lookup for a given model element.
+     */
     private Collection findNodes(Object modelElement){
         
         return (Set)modelElementMap.get(modelElement);
