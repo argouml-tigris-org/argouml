@@ -205,10 +205,6 @@ public class DiagramInterface {
 	    // The diagram already exists in this project. Select it as the current target.
 	    if(m instanceof ProjectMemberDiagram) {
 		setCurrentDiagram(((ProjectMemberDiagram)m).getDiagram());
-                
-		// This is sorta hack, since we don't know yet if anything will
-		// be added later.
-		markDiagramAsModified(((ProjectMemberDiagram)m).getDiagram());
 	    }
 
 	} else {  // Otherwise
@@ -230,10 +226,6 @@ public class DiagramInterface {
 	    d.setName(getDiagramName(name));
             p.addMember(d);
 	    setCurrentDiagram(d);
-
-	    // This is sorta hack, since we don't know yet if anything will
-	    // be added later.
-	    markDiagramAsModified(d);
 	}
 	catch (PropertyVetoException pve) { }
     }
@@ -243,7 +235,7 @@ public class DiagramInterface {
      *
      * @param newClass The new class to add to the editor.
      */
-    public void addClass(Object newClass) {
+    public void addClass(Object newClass, boolean minimise) {
         
         FigClass newClassFig = new FigClass( currentGM, newClass);
         if (currentGM.canAddNode(newClass)){
@@ -251,6 +243,9 @@ public class DiagramInterface {
             currentGM.addNode(newClass);
             currentLayer.putInPosition( (Fig)newClassFig);
             currentGM.addNodeRelatedEdges( newClass);
+            
+            newClassFig.setAttributeVisible(!minimise);
+            newClassFig.setOperationVisible(!minimise);
         }
     }
 
@@ -259,7 +254,7 @@ public class DiagramInterface {
      *
      * @param newInterface The interface to add.
      */
-    public void addInterface(Object newInterface) {
+    public void addInterface(Object newInterface, boolean minimise) {
         
         FigInterface     newInterfaceFig = new FigInterface( currentGM, newInterface);
         
@@ -268,6 +263,8 @@ public class DiagramInterface {
             currentGM.addNode(newInterface);
             currentLayer.putInPosition( (Fig)newInterfaceFig);
             currentGM.addNodeRelatedEdges( newInterface);
+            
+            newInterfaceFig.setOperationVisible(!minimise);
         }
     }
 
@@ -316,6 +313,8 @@ public class DiagramInterface {
         currentGM = (ClassDiagramGraphModel)diagram.getGraphModel();
         currentLayer = diagram.getLayer();
         currentDiagram = diagram;
+        
+        markDiagramAsModified(diagram);
     }
 }
 
