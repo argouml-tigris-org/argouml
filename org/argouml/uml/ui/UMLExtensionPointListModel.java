@@ -180,6 +180,8 @@ public class UMLExtensionPointListModel extends UMLModelElementListLinkModel  {
      */
 
     public Object formatElement(MModelElement element) {
+    	return element.getName();
+    	/*
 
         Object value = _nullLocation;
 	StringBuffer sb = new StringBuffer(20);
@@ -208,8 +210,8 @@ public class UMLExtensionPointListModel extends UMLModelElementListLinkModel  {
                                    element.getClass().toString());
             }
         }
-
-        return value;
+		*/
+       
     }
 
 
@@ -610,5 +612,72 @@ public class UMLExtensionPointListModel extends UMLModelElementListLinkModel  {
 
         return SYNTACTIC_ENTRY;
     }
+
+	/**
+	 * @see org.argouml.uml.ui.UMLModelElementListModel#buildPopup(JPopupMenu, int)
+	 */
+	public boolean buildPopup(JPopupMenu popup, int index) {
+		UMLUserInterfaceContainer container = getContainer();
+        Object                    target    = getTarget();
+
+        // Each entry in turn. First "Open"
+
+        UMLListMenuItem open =
+            new UMLListMenuItem(container.localize("Open"), this,
+                                "open", index);
+
+		
+        if (getModelElementSize() <= 0) {
+            open.setEnabled(false);
+        }
+        
+		
+		
+        popup.add(open);
+
+        // "Add"
+
+        UMLListMenuItem add =
+            new UMLListMenuItem(container.localize("New"), this,
+                                "add", index);
+
+        if ((_upper >= 0) && (getModelElementSize() >= _upper)) {
+            add.setEnabled(false);
+        }
+
+        popup.add(add);
+
+        // "Link". Create a new sub-menu if the flag is set.
+
+        if (useLink()) {
+            JMenu link = new JMenu(container.localize("Link"));
+
+            // Grey out if we didn't have anything on the sub-popup
+
+            if (!buildSubPopup(link, index)) {
+                link.setEnabled(false);
+            }
+
+            popup.add(link);
+        }
+
+        // "Delete"
+
+        UMLListMenuItem delete =
+            new UMLListMenuItem(container.localize("Delete"), this,
+                                "delete", index);
+
+        if (getModelElementSize() <= 0) {
+            delete.setEnabled(false);
+        }
+
+        popup.add(delete);
+
+        
+
+        
+
+        return true;
+	}
 
 } /* End of class UMLExtensionPointListModel */

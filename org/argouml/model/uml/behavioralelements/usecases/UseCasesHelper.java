@@ -31,6 +31,7 @@ import java.util.List;
 import org.argouml.ui.ProjectBrowser;
 
 import ru.novosoft.uml.behavior.use_cases.MActor;
+import ru.novosoft.uml.behavior.use_cases.MExtend;
 import ru.novosoft.uml.behavior.use_cases.MUseCase;
 import ru.novosoft.uml.foundation.core.MModelElement;
 import ru.novosoft.uml.foundation.core.MNamespace;
@@ -134,6 +135,42 @@ public class UseCasesHelper {
 			
 		}
 		return list;
+	}
+	
+	/**
+	 * Returns all usecases this usecase extends
+	 * @param clazz
+	 * @return Collection
+	 */
+	public Collection getExtendedUseCases(MUseCase usecase) {
+		if (usecase == null) return new ArrayList();
+		Iterator it = usecase.getExtends().iterator();
+		List list = new ArrayList();
+		while (it.hasNext()) {
+			MExtend extend = (MExtend)it.next();
+			MUseCase base = extend.getBase();
+			list.add(base);
+		}
+		return list;
+	}
+	
+	/**
+	 * Returns the extend relation between two usecases base and extension. If there is none
+	 * null is returned.
+	 * @param base
+	 * @param extension
+	 * @return MExtend
+	 */
+	public MExtend getExtends(MUseCase base, MUseCase extension) {
+		if (base == null || extension == null) return null;
+		Iterator it = extension.getExtends().iterator();
+		while (it.hasNext()) {
+			MExtend extend = (MExtend)it.next();
+			if (extend.getBase() == base) {
+				return extend;
+			}
+		}
+		return null;
 	}
     	
 }

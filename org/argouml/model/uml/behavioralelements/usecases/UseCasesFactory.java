@@ -152,6 +152,9 @@ public class UseCasesFactory extends AbstractUmlModelFactory {
          else if (extension.getNamespace() != null) {
              extend.setNamespace(extension.getNamespace());
          }
+         
+         // build an extensionpoint in the base
+         extend.addExtensionPoint(buildExtensionPoint(base));
 
          return extend;
      }
