@@ -98,6 +98,15 @@ public class FigPackage extends FigNodeModelElement {
   public FigPackage(GraphModel gm, Object node) {
     this();
     setOwner(node);
+
+    // If this figure is created for an existing package node in the 
+    // metamodel, set the figure's name according to this node. This is
+    // used when the user click's on 'add to diagram' in the navpane.
+    // Don't know if this should rather be done in one of the super
+    // classes, since similar code is used in FigClass.java etc.
+    // Andreas Rueckert <a_rueckert@gmx.net>
+    if (node instanceof MPackage && (((MPackage)node).getName() != null))
+        _name.setText(((MModelElement)node).getName());         
   }
 
   public String placeString() { return "new Package"; }
