@@ -85,15 +85,8 @@ public class UMLSequenceDiagram extends UMLDiagram {
 
 
   public UMLSequenceDiagram() {
-  	String name = null;
-  	Object[] args = {name};
-  	do {
-        name = "Sequence diagram " + _SequenceDiagramSerial;
-        _SequenceDiagramSerial++;
-        args[0] = name;
-    }
-    while (vetoCheck("name", args));
-    try { setName(name); }
+  	
+    try { setName(getNewDiagramName()); }
     catch (PropertyVetoException pve) { }
   }
 
@@ -217,10 +210,22 @@ public class UMLSequenceDiagram extends UMLDiagram {
         }
       }
     }
+    
+  
    
   }
 
- 
+   protected static String getNewDiagramName() {
+  	String name = null;
+  	Object[] args = {name};
+  	do {
+        name = "sequence diagram " + _SequenceDiagramSerial;
+        _SequenceDiagramSerial++;
+        args[0] = name;
+    }
+    while (TheInstance.vetoCheck("name", args));
+    return name;
+  }
 
 
 
