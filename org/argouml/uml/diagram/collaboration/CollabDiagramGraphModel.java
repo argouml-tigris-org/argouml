@@ -162,6 +162,13 @@ implements VetoableChangeListener {
         end0 = gen.getParent();
         end1 = gen.getChild();
     }
+    if (edge instanceof MDependency) {
+        Collection clients = ((MDependency)edge).getClients();
+        Collection suppliers = ((MDependency)edge).getSuppliers();
+        if (clients == null || suppliers == null) return false;
+        end0 = ((Object[])clients.toArray())[0];
+        end1 = ((Object[])suppliers.toArray())[0];
+    }
     if (end0 == null || end1 == null) return false;
     if (!_nodes.contains(end0)) return false;
     if (!_nodes.contains(end1)) return false;
