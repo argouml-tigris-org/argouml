@@ -1,6 +1,5 @@
-
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -35,7 +34,8 @@ public class DocumentationManager {
         return getDocs(o, indent, "/** ", " *  ", " */");
     }
 
-    public static String getDocs(Object o, String indent, String header, String prefix, String footer) {
+    public static String getDocs(Object o, String indent, String header,
+				 String prefix, String footer) {
         String sResult = defaultFor(o, indent);
 
         if (ModelFacade.isAModelElement(o)) {
@@ -89,24 +89,26 @@ public class DocumentationManager {
      * Added 2001-10-05 STEFFEN ZSCHALER for use by
      * org.argouml.language.java.generator.CodeGenerator
      *
+     * @param o The given element.
+     * @return true if the given element has docs.
      */
-    public static boolean hasDocs (Object o) {
-    if (ModelFacade.isAModelElement(o)) {
-        Iterator i = ModelFacade.getTaggedValues(o);
+    public static boolean hasDocs(Object o) {
+	if (ModelFacade.isAModelElement(o)) {
+	    Iterator i = ModelFacade.getTaggedValues(o);
 
-        if (i != null) {
-            while (i.hasNext()) {
-                Object tv = i.next();
-                String tag = ModelFacade.getTagOfTag(tv);
-                String value = ModelFacade.getValueOfTag(tv);
-                if ((tag.equals("documentation") || tag.equals("javadocs"))
-                    && value != null && value.trim().length() > 0) {
-                    return true;
-                }
-            }
-        }
-    }
-    return false;
+	    if (i != null) {
+		while (i.hasNext()) {
+		    Object tv = i.next();
+		    String tag = ModelFacade.getTagOfTag(tv);
+		    String value = ModelFacade.getValueOfTag(tv);
+		    if ((tag.equals("documentation") || tag.equals("javadocs"))
+			&& value != null && value.trim().length() > 0) {
+			return true;
+		    }
+		}
+	    }
+	}
+	return false;
     }
 
     ////////////////////////////////////////////////////////////////
@@ -127,9 +129,9 @@ public class DocumentationManager {
 	     " * /";
 	     *
 	     */
-	    return " A class that represents ...\n\n" +
-		indent + " @see OtherClasses\n" +
-		indent + " @author your_name_here";
+	    return " A class that represents ...\n\n"
+		+ indent + " @see OtherClasses\n"
+		+ indent + " @author your_name_here";
 	}
 	if (ModelFacade.isAAttribute(o)) {
 	    /*
@@ -158,8 +160,8 @@ public class DocumentationManager {
 	     " * /";
 	     *
 	     */
-	    return " An operation that does...\n\n" +
-		indent + " @param firstParam a description of this parameter";
+	    return " An operation that does...\n\n"
+		+ indent + " @param firstParam a description of this parameter";
 	}
 	if (ModelFacade.isAInterface(o)) {
 	    /*
@@ -175,9 +177,9 @@ public class DocumentationManager {
 	     " * /";
 	     *
 	     */
-	    return " A interface defining operations expected of ...\n\n" +
-		indent + " @see OtherClasses\n" +
-		indent + " @author your_name_here";
+	    return " A interface defining operations expected of ...\n\n"
+		+ indent + " @see OtherClasses\n"
+		+ indent + " @author your_name_here";
 	}
 	if (ModelFacade.isAModelElement(o)) {
 	    /*
@@ -209,7 +211,12 @@ public class DocumentationManager {
     // comments
 
     /**
-     * Get the comments (the notes in a diagram) for a modelelement.
+     * Get the comments (the notes in a diagram) for a modelelement.<p>
+     *
+     * This returns a c-style comments.
+     *
+     * @param o The modelelement.
+     * @return a String.
      */
     public static String getComments(Object o) {
         return getComments(o, "/*", " * ", " */");
@@ -217,55 +224,66 @@ public class DocumentationManager {
 
     /**
      * Get the comments (the notes in a diagram) for a modelelement.
+     *
+     * @return a string with the comments.
+     * @param o The given modelelement.
+     * @param header is the comment header.
+     * @param prefix is the comment prefix (on every line).
+     * @param footer is the comment footer.
      */
-    public static String getComments(Object o, String header, String prefix, String footer) {
-    StringBuffer result = new StringBuffer();
-    if (header != null) {
-        result.append(header).append('\n');
-    }
-    if (prefix != null) {
-        result.append(prefix);
-    }
-
-    if (ModelFacade.isAModelElement(o)) {
-        Collection comments = ModelFacade.getComments(o);
-        if (!comments.isEmpty()) {
-            for (Iterator iter = comments.iterator(); iter.hasNext(); ) {
-                Object c = iter.next();
-                String s =(ModelFacade.getName(c) != null) ? ModelFacade.getName(c).trim() : null;
-                if (s != null && s.length() > 0) {
-                    if (result.length() > 0) {
-                        result.append('\n');
-                    }
-                    result.append(s);
-                }
-            }
-        }
-    }
-
-    // If there are no comments, just return an empty string.
-    if (result.length() == 0)
-        return "";
-
-    // Let every line start with a prefix.
-    if (prefix != null) {
-        for (int i = 0; i < result.length() - 1; i++) {
-            if (result.charAt(i) == '\n') {
-                result.insert(i + 1, prefix);
-            }
-        }
-    }
-
-    // I add a CR before the end of the comment, so I remove a CR at the
-    // end of the last note.
-    if (result.charAt(result.length() - 1) != '\n') {
-        result.append('\n');
-    }
-
-    if (footer != null) {
-		result.append(footer).append('\n');
+    public static String getComments(Object o,
+				     String header, String prefix,
+				     String footer) {
+	StringBuffer result = new StringBuffer();
+	if (header != null) {
+	    result.append(header).append('\n');
 	}
-    return result.toString();
+	if (prefix != null) {
+	    result.append(prefix);
+	}
+
+	if (ModelFacade.isAModelElement(o)) {
+	    Collection comments = ModelFacade.getComments(o);
+	    if (!comments.isEmpty()) {
+		for (Iterator iter = comments.iterator(); iter.hasNext(); ) {
+		    Object c = iter.next();
+		    String s =
+			(ModelFacade.getName(c) != null)
+			? ModelFacade.getName(c).trim()
+			: null;
+		    if (s != null && s.length() > 0) {
+			if (result.length() > 0) {
+			    result.append('\n');
+			}
+			result.append(s);
+		    }
+		}
+	    }
+	}
+
+	// If there are no comments, just return an empty string.
+	if (result.length() == 0)
+	    return "";
+
+	// Let every line start with a prefix.
+	if (prefix != null) {
+	    for (int i = 0; i < result.length() - 1; i++) {
+		if (result.charAt(i) == '\n') {
+		    result.insert(i + 1, prefix);
+		}
+	    }
+	}
+
+	// I add a CR before the end of the comment, so I remove a CR at the
+	// end of the last note.
+	if (result.charAt(result.length() - 1) != '\n') {
+	    result.append('\n');
+	}
+
+	if (footer != null) {
+	    result.append(footer).append('\n');
+	}
+	return result.toString();
     }
 
 } /* end class DocumentationManager */
