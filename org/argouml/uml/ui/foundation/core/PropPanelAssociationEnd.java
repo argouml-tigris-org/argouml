@@ -24,6 +24,7 @@
 package org.argouml.uml.ui.foundation.core;
 
 import java.awt.*;
+import java.awt.event.ActionEvent;
 import java.util.*;
 import javax.swing.*;
 
@@ -32,6 +33,7 @@ import ru.novosoft.uml.foundation.data_types.*;
 import ru.novosoft.uml.model_management.*;
 
 import org.argouml.application.api.*;
+import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.ui.*;
 
 public class PropPanelAssociationEnd extends PropPanelModelElement {
@@ -168,6 +170,7 @@ public class PropPanelAssociationEnd extends PropPanelModelElement {
     new PropPanelButton(this,buttonPanel,_navBackIcon, Argo.localize("UMLMenu", "button.go-back"),"navigateBackAction","isNavigateBackEnabled");
     new PropPanelButton(this,buttonPanel,_navForwardIcon, Argo.localize("UMLMenu", "button.go-forward"),"navigateForwardAction","isNavigateForwardEnabled");
     new PropPanelButton(this,buttonPanel,_assocEndIcon,localize("Go to other end"),"gotoOther",null);
+    new PropPanelButton(this,buttonPanel,_deleteIcon, Argo.localize("UMLMenu", "button.delete-association-end"), "removeElement", null);
 
   }
 
@@ -309,6 +312,30 @@ public class PropPanelAssociationEnd extends PropPanelModelElement {
         }
         return ns;
     }
+    
+	/**
+	 * Deletes the association end. If the associationend's owner (the association)
+	 * has one associationend left after this delete, it is also deleted.
+	 */
+    public void removeElement() {
+    	MAssociationEnd end = (MAssociationEnd)getTarget();
+    	MAssociation assoc = end.getAssociation();
+    	Collection ends = assoc.getConnections();
+    	if (ends.size() > 2) {   		
+    		Iterator it = ProjectBrowser.TheInstance.getProject().findFigsForMember(end.getAssociation()).iterator();
+    		while (it.hasNext()) {
+    			// should do here something if the association end is shown
+    		}
+    		end.remove();
+    		navigateTo(assoc);
+    	} else {
+    		ProjectBrowser.TheInstance.setDetailsTarget(assoc);
+    		ActionRemoveFromModel.SINGLETON.actionPerformed(new ActionEvent(this, 0, null));
+    	}
+    		
+    }
+    
+    
 
 
 } /* end class PropPanelAssociationEnd */
