@@ -271,6 +271,10 @@ public JavaRecognizer(ParserSharedInputState state) {
 		
 		setModeller(modeller);
 		setLexer(lexer);
+                
+                if ( inputState.guessing==0 ) {
+				getModeller().addComponent();
+		}
 		
 		{
 		switch ( LA(1)) {
