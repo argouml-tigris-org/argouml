@@ -41,6 +41,7 @@ import org.argouml.application.api.Argo;
 import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.cognitive.ToDoItem;
 import org.argouml.kernel.Wizard;
+import org.argouml.ui.ProjectBrowser;
 import org.argouml.ui.SpacerPanel;
 import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.ui.targetmanager.TargetManager;
@@ -201,8 +202,7 @@ implements TabToDoTarget, ActionListener, DocumentListener {
   }
 
   protected void updateTabToDo() {
-    // awkward: relying on getParent() is fragile.
-    TabToDo ttd = (TabToDo) getParent(); //???
+    TabToDo ttd = (TabToDo)ProjectBrowser.getInstance().getTab(TabToDo.class);
     JPanel ws = getWizard().getCurrentPanel();
     if (ws instanceof WizStep) ((WizStep)ws).setTarget(_target);
     ttd.showStep(ws);

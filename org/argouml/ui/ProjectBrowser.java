@@ -51,6 +51,7 @@ import org.argouml.application.api.PluggableMenu;
 import org.argouml.application.events.ArgoModuleEvent;
 import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.cognitive.Designer;
+import org.argouml.cognitive.ui.TabToDo;
 import org.argouml.cognitive.ui.ToDoPane;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
@@ -59,6 +60,7 @@ import org.argouml.swingext.DockLayout;
 import org.argouml.swingext.Horizontal;
 import org.argouml.swingext.Orientation;
 import org.argouml.swingext.Vertical;
+import org.argouml.ui.TabSpawnable;
 import org.argouml.ui.menubar.GenericArgoMenuBar;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.ActionExit;
@@ -308,7 +310,10 @@ public class ProjectBrowser
             _workarea.add((Component)entry.getValue(), position);
         }
         _workarea.add(_navPane, BorderSplitPane.WEST);
-        _workarea.add(_todoPane, BorderSplitPane.SOUTHWEST);
+        
+        TabToDo todo = (TabToDo)getTab(TabToDo.class);
+        todo.setTree(_todoPane);
+        //_workarea.add(_todoPane, BorderSplitPane.SOUTHWEST);
         _workarea.add(_editorPane);
         // Toolbar boundry is the area between the menu and the status bar. It contains
         // the workarea at centre and the toolbar position north, south, east or west.
@@ -344,30 +349,30 @@ public class ProjectBrowser
             _navPane.setPreferredSize(
                 new Dimension(Configuration.getInteger(Argo.KEY_SCREEN_WEST_WIDTH, DEFAULT_COMPONENTHEIGHT), 0));
         }
-        if (_northWestPane != null) {
-            _northWestPane.setPreferredSize(new Dimension(
-                Configuration.getInteger(Argo.KEY_SCREEN_NORTHWEST_WIDTH, DEFAULT_COMPONENTWIDTH),
-                Configuration.getInteger(Argo.KEY_SCREEN_NORTH_HEIGHT, DEFAULT_COMPONENTHEIGHT)
-            ));
-        }
-        if (_todoPane != null && _southPane != null) {
-            _todoPane.setPreferredSize(new Dimension(
-                Configuration.getInteger(Argo.KEY_SCREEN_SOUTHWEST_WIDTH, DEFAULT_COMPONENTWIDTH),
-                Configuration.getInteger(Argo.KEY_SCREEN_SOUTH_HEIGHT, DEFAULT_COMPONENTHEIGHT)
-            ));
-        }
-        if (_northEastPane != null) {
-            _northEastPane.setPreferredSize(new Dimension(
-                Configuration.getInteger(Argo.KEY_SCREEN_NORTHEAST_WIDTH, DEFAULT_COMPONENTWIDTH),
-                Configuration.getInteger(Argo.KEY_SCREEN_NORTH_HEIGHT, DEFAULT_COMPONENTHEIGHT)
-            ));
-        }
-        if (_southEastPane != null) {
-            _southEastPane.setPreferredSize(new Dimension(
-                Configuration.getInteger(Argo.KEY_SCREEN_SOUTHEAST_WIDTH, DEFAULT_COMPONENTWIDTH),
-                Configuration.getInteger(Argo.KEY_SCREEN_SOUTH_HEIGHT, DEFAULT_COMPONENTHEIGHT)
-            ));
-        }
+//        if (_northWestPane != null) {
+//            _northWestPane.setPreferredSize(new Dimension(
+//                Configuration.getInteger(Argo.KEY_SCREEN_NORTHWEST_WIDTH, DEFAULT_COMPONENTWIDTH),
+//                Configuration.getInteger(Argo.KEY_SCREEN_NORTH_HEIGHT, DEFAULT_COMPONENTHEIGHT)
+//            ));
+//        }
+//        if (_todoPane != null) {
+//            _todoPane.setPreferredSize(new Dimension(
+//                Configuration.getInteger(Argo.KEY_SCREEN_SOUTHWEST_WIDTH, DEFAULT_COMPONENTWIDTH),
+//                Configuration.getInteger(Argo.KEY_SCREEN_SOUTH_HEIGHT, DEFAULT_COMPONENTHEIGHT)
+//            ));
+//        }
+//        if (_northEastPane != null) {
+//            _northEastPane.setPreferredSize(new Dimension(
+//                Configuration.getInteger(Argo.KEY_SCREEN_NORTHEAST_WIDTH, DEFAULT_COMPONENTWIDTH),
+//                Configuration.getInteger(Argo.KEY_SCREEN_NORTH_HEIGHT, DEFAULT_COMPONENTHEIGHT)
+//            ));
+//        }
+//        if (_southEastPane != null) {
+//            _southEastPane.setPreferredSize(new Dimension(
+//                Configuration.getInteger(Argo.KEY_SCREEN_SOUTHEAST_WIDTH, DEFAULT_COMPONENTWIDTH),
+//                Configuration.getInteger(Argo.KEY_SCREEN_SOUTH_HEIGHT, DEFAULT_COMPONENTHEIGHT)
+//            ));
+//        }
     }
     ////////////////////////////////////////////////////////////////
     // accessors
@@ -572,6 +577,25 @@ public class ProjectBrowser
         throw new IllegalStateException("No properties tab found");
     }
 
+    /**
+     * Get the tab page instance of the given class
+     * @return the tabpage
+     */
+    public TabSpawnable getTab(Class tabClass) {
+        // In theory there can be multiple details pane (work in
+        // progress). It must first be determined which details
+        // page contains the properties tab. Bob Tarling 7 Dec 2002
+        Iterator it = detailsPanesByCompassPoint.values().iterator();
+        while (it.hasNext()) {
+            DetailsPane detailsPane = (DetailsPane) it.next();
+            TabSpawnable tab = detailsPane.getTab(tabClass);
+            if (tab != null) {
+                return tab;
+            }
+        }
+        throw new IllegalStateException("No " + tabClass.getName() + " tab found");
+    }
+
     public StatusBar getStatusBar() {
         return _statusBar;
     }
@@ -751,12 +775,12 @@ public class ProjectBrowser
     public void saveScreenConfiguration() {
         if (_navPane != null) Configuration.setInteger(Argo.KEY_SCREEN_WEST_WIDTH, _navPane.getWidth());
         if (_eastPane != null) Configuration.setInteger(Argo.KEY_SCREEN_EAST_WIDTH, _eastPane.getWidth());
-        if (_todoPane != null) Configuration.setInteger(Argo.KEY_SCREEN_SOUTHWEST_WIDTH, _todoPane.getWidth());
-        if (_southEastPane != null) Configuration.setInteger(Argo.KEY_SCREEN_SOUTHEAST_WIDTH, _southEastPane.getWidth());
-        if (_northWestPane != null) Configuration.setInteger(Argo.KEY_SCREEN_NORTHWEST_WIDTH, _northWestPane.getWidth());
-        if (_northEastPane != null) Configuration.setInteger(Argo.KEY_SCREEN_NORTHEAST_WIDTH, _northEastPane.getWidth());
         if (_northPane != null) Configuration.setInteger(Argo.KEY_SCREEN_NORTH_HEIGHT, _northPane.getHeight());
         if (_southPane != null) Configuration.setInteger(Argo.KEY_SCREEN_SOUTH_HEIGHT, _southPane.getHeight());
+//        if (_todoPane != null) Configuration.setInteger(Argo.KEY_SCREEN_SOUTHWEST_WIDTH, _todoPane.getWidth());
+//        if (_southEastPane != null) Configuration.setInteger(Argo.KEY_SCREEN_SOUTHEAST_WIDTH, _southEastPane.getWidth());
+//        if (_northWestPane != null) Configuration.setInteger(Argo.KEY_SCREEN_NORTHWEST_WIDTH, _northWestPane.getWidth());
+//        if (_northEastPane != null) Configuration.setInteger(Argo.KEY_SCREEN_NORTHEAST_WIDTH, _northEastPane.getWidth());
         Configuration.setInteger(Argo.KEY_SCREEN_WIDTH, getWidth());
         Configuration.setInteger(Argo.KEY_SCREEN_HEIGHT, getHeight());
         Configuration.setInteger(Argo.KEY_SCREEN_LEFT_X, getX());
