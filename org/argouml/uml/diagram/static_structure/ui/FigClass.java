@@ -625,7 +625,12 @@ public class FigClass extends FigNodeModelElement {
 	if (i != -1) {
 	  highlightedFigText = (CompartmentFigText)ft;
 	  highlightedFigText.setHighlighted(true);
-	  ParserDisplay.SINGLETON.parseOperationFig(cls,(MOperation)highlightedFigText.getOwner(),highlightedFigText.getText().trim());
+	  try {
+	    ParserDisplay.SINGLETON.parseOperationFig(cls,(MOperation)highlightedFigText.getOwner(),highlightedFigText.getText().trim());
+	    ProjectBrowser.TheInstance.getStatusBar().showStatus("");
+	  } catch (ParseException pe) {
+	    ProjectBrowser.TheInstance.getStatusBar().showStatus("Error: " + pe + " at " + pe.getErrorOffset());
+	  }
 	  return;
 	}
   }
