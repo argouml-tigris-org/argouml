@@ -1,4 +1,3 @@
-
 // $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -41,8 +40,6 @@ import javax.swing.*;
 
 import ru.novosoft.uml.MElementListener;
 import ru.novosoft.uml.MElementEvent;
-import ru.novosoft.uml.foundation.core.MModelElement;
-
 import org.apache.log4j.Category;
 
 /** This class models the designer who is building a complex design in

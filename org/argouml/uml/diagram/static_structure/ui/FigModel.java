@@ -1,5 +1,3 @@
-
-
 // $Id$
 // Copyright (c) 1996-2003 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -35,9 +33,6 @@ import java.awt.Polygon;
 import org.apache.log4j.Category;
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.FigPoly;
-
-import ru.novosoft.uml.foundation.core.MModelElement;
-import ru.novosoft.uml.model_management.MModel;
 
 /** Class to display graphics for a UML model in a class diagram. */
 

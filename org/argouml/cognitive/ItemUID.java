@@ -1,5 +1,3 @@
-
-
 // $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -30,8 +28,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 import org.apache.log4j.Category;
-
-import ru.novosoft.uml.MBase;
 
 /**
  * Instances of this class is supposed to be attached to other instances
