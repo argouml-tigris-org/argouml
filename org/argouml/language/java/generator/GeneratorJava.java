@@ -88,7 +88,7 @@ public class GeneratorJava extends Generator implements PluggableNotation {
       File f = new File (path);
       if (!f.isDirectory()) {
 		    if (!f.mkdir()) {
-			    System.out.println(" could not make directory "+path);
+			    Argo.log.error(" could not make directory "+path);
 			    return null;
 		    }
       }
@@ -105,7 +105,7 @@ public class GeneratorJava extends Generator implements PluggableNotation {
 	  } while (true);
 
     String pathname = path + filename;
-	  System.out.println("-----" + pathname + "-----");
+	//Argo.log.info("-----" + pathname + "-----");
 
     //now decide wether file exist and need an update or is to be newly generated
     File f = new File(pathname);
@@ -114,16 +114,16 @@ public class GeneratorJava extends Generator implements PluggableNotation {
         update (cls, f);
       }
       catch (Exception exp) {
-        System.out.println ("FAILED: " + f.getPath());
+        Argo.log.error("FAILED: " + f.getPath());
       }
 
-      System.out.println ("----- end generating -----");
+      //Argo.log.info("----- end generating -----");
 	    return pathname;
 	  }
 
     //String pathname = path + filename;
     // needs-more-work: package, project basepath, tagged values to configure
-	  System.out.println ("Generating (new) " + f.getPath());
+	Argo.log.info("Generating (new) " + f.getPath());
     String header = SINGLETON.generateHeader (cls, pathname, packagePath);
     String src = SINGLETON.generate (cls);
     BufferedWriter fos = null;
@@ -138,11 +138,11 @@ public class GeneratorJava extends Generator implements PluggableNotation {
         if (fos != null) fos.close();
       }
       catch (IOException exp) {
-		    System.out.println("FAILED: " + f.getPath());
-	    }
+		Argo.log.error("FAILED: " + f.getPath());
+	  }
     }
 
-	  System.out.println("----- end updating -----");
+	//Argo.log.info("----- end updating -----");
     return pathname;
   }
 
@@ -513,20 +513,16 @@ public class GeneratorJava extends Generator implements PluggableNotation {
    * be generated.
    */
   public String generateMethodBody (MOperation op) {
-    //System.out.print("generateMethodBody");
+    //Argo.log.info("generateMethodBody");
     if (op != null) {
       Collection methods = op.getMethods();
       Iterator i = methods.iterator();
       MMethod m = null;
 
-      //System.out.print(", op!=null, size="+methods.size());
       while (i != null && i.hasNext()) {
-        //System.out.print(", i!= null");
         m = (MMethod) i.next();
 
         if (m != null) {
-          //System.out.println(", BODY of "+m.getName());
-          //System.out.println("|"+m.getBody().getBody()+"|");
           if (m.getBody() != null)
             return m.getBody().getBody();
           else
@@ -809,7 +805,7 @@ public class GeneratorJava extends Generator implements PluggableNotation {
     String s = INDENT + "// constraints\n";
     int size = cs.size();
     // MConstraint[] csarray = (MConstraint[])cs.toArray();
-    // System.out.println("Got " + csarray.size() + " constraints.");
+    // Argo.log.debug("Got " + csarray.size() + " constraints.");
     for (Iterator i = cs.iterator(); i.hasNext();) {
       MConstraint c = (MConstraint) i.next();
       String constrStr = generateConstraint(c);
@@ -1069,7 +1065,7 @@ public class GeneratorJava extends Generator implements PluggableNotation {
   }
 
   public String generateStateBody(MState m) {
-      System.out.println("GeneratorJava: generating state body");
+    Argo.log.info("GeneratorJava: generating state body");
     String s = "";
     MAction entry = m.getEntry();
     MAction exit = m.getExit();
@@ -1162,21 +1158,25 @@ public class GeneratorJava extends Generator implements PluggableNotation {
                         File file)
 	throws Exception
     {
-	System.out.println("Parsing " + file.getPath());
+	Argo.log.info("Parsing " + file.getPath());
 
-	JavaLexer lexer =
-	    new JavaLexer(new BufferedReader(new FileReader(file)));
+	BufferedReader in = new BufferedReader(new FileReader(file));
+	JavaLexer lexer = new JavaLexer(in);
 	JavaRecognizer parser = new JavaRecognizer(lexer);
 	CodePieceCollector cpc = new CodePieceCollector();
 	parser.compilationUnit(cpc);
+	in.close();
 
 	File origFile = new File(file.getAbsolutePath());
 	File newFile = new File(file.getAbsolutePath()+".updated");
-	System.out.println("Generating " + newFile.getPath());
+	File backupFile = new File(file.getAbsolutePath()+".backup");
+	if (backupFile.exists())
+	  backupFile.delete();
+	//Argo.log.info("Generating " + newFile.getPath());
 	cpc.filter(file, newFile, mClassifier.getNamespace());
-	System.out.println("Backing up " + file.getPath());
-	file.renameTo(new File(file.getAbsolutePath()+".backup"));
-	System.out.println("Updating " + file.getPath());
+	//Argo.log.info("Backing up " + file.getPath());
+	file.renameTo(backupFile);
+	Argo.log.info("Updating " + file.getPath());
 	newFile.renameTo(origFile);
     }
 
