@@ -27,9 +27,10 @@ package org.argouml.uml.cognitive.critics;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Graphics;
+
 import org.argouml.cognitive.ToDoItem;
 import org.argouml.ui.Clarifier;
-import org.argouml.uml.diagram.static_structure.ui.FigClass;
+import org.argouml.uml.diagram.ui.OperationsCompartmentContainer;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigGroup;
 
@@ -70,8 +71,8 @@ public class ClOperationCompartment implements Clarifier {
      * int, int)
      */
     public void paintIcon(Component c, Graphics g, int x, int y) {
-	if (fig instanceof FigClass) {
-	    FigClass fc = (FigClass) fig;
+	if (fig instanceof OperationsCompartmentContainer) {
+	    OperationsCompartmentContainer fc = (OperationsCompartmentContainer) fig;
 
 	    // added by Eric Lefevre 13 Mar 1999: we must check if the
 	    // FigText for operations is drawn before drawing things
@@ -121,8 +122,8 @@ public class ClOperationCompartment implements Clarifier {
      * @see org.argouml.ui.Clarifier#hit(int, int)
      */
     public boolean hit(int x, int y) {
-	if (!(fig instanceof FigClass)) return false;
-	FigClass fc = (FigClass) fig;
+	if (!(fig instanceof OperationsCompartmentContainer)) return false;
+	OperationsCompartmentContainer fc = (OperationsCompartmentContainer) fig;
 	FigGroup fg = fc.getOperationsFig();
 	boolean res = fg.contains(x, y);
 	fig = null;
