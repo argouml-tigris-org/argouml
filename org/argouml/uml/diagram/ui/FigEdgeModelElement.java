@@ -377,11 +377,11 @@ implements VetoableChangeListener, DelayedVChangeListener, MouseListener, KeyLis
   public void updateStereotypeText() {
     MModelElement me = (MModelElement) getOwner();
     if (me == null) return;
-    // MStereotype stereos = me.getStereotype();
-    // if (stereos == null) {
-      // _stereo.setText("");
-      // return;
-    // }
+    MStereotype stereos = me.getStereotype();
+    if (stereos == null) {
+      _stereo.setText("");
+      return;
+    }
     // String stereoStr = stereos.getName();
     // if (stereoStr.length() == 0) _stereo.setText("");
     // else _stereo.setText("<<" + stereoStr + ">>");
