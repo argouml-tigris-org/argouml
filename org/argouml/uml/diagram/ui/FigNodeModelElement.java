@@ -333,6 +333,8 @@ implements VetoableChangeListener, DelayedVChangeListener, MouseListener, KeyLis
   }
 
   protected void updateBounds() {
+    if (!checkSize)
+      return;
     Rectangle bbox = getBounds();
     Dimension minSize = getMinimumSize();
     bbox.width = Math.max(bbox.width, minSize.width);
@@ -584,8 +586,10 @@ implements VetoableChangeListener, DelayedVChangeListener, MouseListener, KeyLis
 	while (figs.hasMoreElements()) {
 	  fi = (Fig)figs.nextElement();
 	  fw = fi.getMinimumSize().width;
+	  if (!checkSize && fw > newW-2)
+	      fw = newW-2;
 	  fi.setBounds(x+1,yy+1,fw,Math.min(ROWHEIGHT,step)-2);
-	  if (newW < fw+2)
+	  if (checkSize && newW < fw+2)
 	      newW = fw+2;
 	  yy += step;
 	}
