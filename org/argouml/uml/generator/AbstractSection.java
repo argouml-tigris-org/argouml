@@ -57,7 +57,7 @@ public abstract class AbstractSection
     /**
      * @param id the string to generate
      * @param indent the current indentation
-     * @return
+     * @return the generated string
      */
     public static String generate(String id, String indent) {
         return "";
@@ -153,6 +153,10 @@ public abstract class AbstractSection
         }
     }
 
+    /**
+     * @param line the given line
+     * @return the section identifier
+     */
     public static String getSectId(String line) {
         final String begin = "// section ";
         final String end1 = " begin";

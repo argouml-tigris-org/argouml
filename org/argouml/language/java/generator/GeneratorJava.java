@@ -134,10 +134,10 @@ public class GeneratorJava
      * Returns the full path name of the the generated file or
      * null if no file can be generated.
      *
-     * @see org.argouml.uml.generator.FileGenerator#GenerateFile(
+     * @see org.argouml.uml.generator.FileGenerator#generateFile2(
      * java.lang.Object, java.lang.String)
      */
-    public String GenerateFile(Object modelElement, String path) {
+    public String generateFile2(Object modelElement, String path) {
         String name = ModelFacade.getName(modelElement);
         if (name == null || name.length() == 0)
             return null;
