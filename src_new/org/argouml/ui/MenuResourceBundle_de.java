@@ -27,6 +27,14 @@ import org.argouml.util.*;
 import javax.swing.*;
 import java.awt.event.*;
 
+/** Deutsch
+ * This is hardcoded. This class should be
+ * modified to use something similar to the about
+ * box. Ideally this class would call on a
+ * xml file for all the languages and allow the users
+ * to specify which language through a GUI
+ * dialog.
+ */
 public class MenuResourceBundle_de extends ListResourceBundle {
 
    static final Object[][] _contents = {

@@ -42,6 +42,11 @@ import org.tigris.gef.util.*;
 import org.argouml.uml.*;
 import org.argouml.uml.cognitive.*;
 
+/** this one of the few classes in Argo that is
+ * self running.
+ *
+ * The search is buggy and needs work.
+ */
 public class FindDialog extends JFrame
 implements ActionListener, MouseListener {
 
