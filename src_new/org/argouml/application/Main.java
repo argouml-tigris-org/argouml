@@ -229,10 +229,10 @@ public class Main {
 
 	ProjectBrowser pb = ProjectBrowser.getInstance();
 
-	performCommands(commands);
-	commands = null;
-
 	if (batch) {
+	    performCommands(commands);
+	    commands = null;
+
 	    System.out.println("Exiting because we are running in batch.");
 	    ActionExit.SINGLETON.actionPerformed(null);
 	    return;
@@ -319,6 +319,9 @@ public class Main {
             splash.dispose();
             splash = null;
         }
+
+        performCommands(commands);
+        commands = null;
 
         st.mark("start critics");
         Runnable startCritics = new StartCritics();
