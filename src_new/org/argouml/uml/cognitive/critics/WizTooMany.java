@@ -38,7 +38,9 @@ import org.argouml.cognitive.ui.WizStepTextField;
  */
 public class WizTooMany extends UMLWizard {
 
-    private String instructions = "Please adjust the threshold according to your needs. This lets you adjust when the critic creates a particular ToDoItem.";
+    private String instructions = 
+        "Please adjust the threshold according to your needs. " 
+        + "This lets you adjust when the critic creates a particular ToDoItem.";
 
     private WizStepTextField step1;
 
@@ -47,7 +49,7 @@ public class WizTooMany extends UMLWizard {
      */
     public WizTooMany() {
         super();
-        // TODO Auto-generated constructor stub
+        // TODO: Auto-generated constructor stub
     }
 
     /**
