@@ -72,10 +72,9 @@ public class DisplayTextTree extends JTree{
     /** needs documenting */
     private boolean _reexpanding;
 
-    /** Runnable to help avoid too many tree updates. */
-//    private DisplayTextTreeRun _doit;
-
-    /** needs documenting */
+    /** Sets the label renderer, line style angled, enable tooltips,
+     *  sets row hieght to 18 pixels.
+     */
     public DisplayTextTree() {
 
         super();
@@ -90,7 +89,6 @@ public class DisplayTextTree extends JTree{
 
         _expandedPathsInModel = new Hashtable();
         _reexpanding = false;
-//        _doit = new DisplayTextTreeRun(cat, this);
     }
 
     // ------------ methods that override JTree methods ---------
@@ -181,103 +179,6 @@ public class DisplayTextTree extends JTree{
         return res;
     }
 
-    /** Signals to the tree that something has changed and it is best
-     * to update the tree.
-     *
-     * <p>specific to the Navigator tree
-     *
-     * <P>
-     * For complex operations such as import(?) and add attribute(8), that
-     * does several calls to this it is better if we defer the actual update
-     * until later and if it is not performed don't do an extra.
-     * Since import is done from invokeLater() we try to move this down
-     * in priority by not running until the second invokeLater().
-     * Depending on the queue order in invokeLater() this might result in
-     * updates but it is probably far from every file.
-     *
-     * @see org.argouml.uml.ui.ActionRemoveFromModel
-     * @see org.argouml.uml.ui.ActionAddDiagram
-     * @see org.argouml.ui.NavigatorPane
-     * @see org.argouml.uml.ui.foundation.core.PropPanelGeneralization
-     * @see org.argouml.uml.ui.UMLReflectionListModel
-     */
-//    public void forceUpdate() {
-//
-//        cat.debug("forceUpdate");
-//        _doit.onceMore();
-//    }
-
-    /**
-     * Countpart to forceUpdate() that only updates viewable
-     * rows, instead of rebuilding the whole tree; a vast improvement
-     * in performance.
-     *
-     * <p>specific to the Navigator tree
-     *
-     * @see org.argouml.model.uml.UmlModelListener
-     */
-//    public void forceUpdate(Object changed) {
-//
-//        NavPerspective model = (NavPerspective) getModel();
-//        if (model instanceof NavPerspective) {
-//
-//            // Special case for the 'top' state of a state machine (it
-//            // is never displayed in the tree(package parspective)),
-//            // therefore this method will not work unless we get its
-//            // statemachine and set that as the 'changed' object.
-//            if (ModelFacade.isAStateVertex(changed)) {
-//                changed = UmlHelper.getHelper().getStateMachines().getStateMachine(changed);
-//            }
-//            
-//            //if the changed object is added to the model
-//            //in a path that was previously expanded, but is no longer
-//            // then we need to clear the cache to prevent a model corruption.
-//            this.clearToggledPaths();
-//
-//            // update any relevant rows
-//            int rows = this.getRowCount();
-//            for (int row = 0; row < rows; row++) {
-//
-//                TreePath path = this.getPathForRow(row);
-//                Object rowItem = path.getLastPathComponent();
-//
-//                if (rowItem == changed) {
-//
-//                    model.fireTreeStructureChanged(changed, path.getPath());
-//                }
-//            }
-//
-//        }
-//        reexpand();
-//    }
-
-    /**
-     * This is the real update function. It won't return until the tree
-     * really is updated.
-     * <P>
-     * Never call this one from any code, it is package private.
-     *
-     *  <p>specific to the Navigator tree
-     *
-     * @since 0.13.1
-     */
-//    void doForceUpdate() {
-//
-//        cat.debug("doForceUpdate");
-//        Object rootArray[] = new Object[1];
-//        rootArray[0] = getModel().getRoot();
-//        Object noChildren[] = null;
-//        int noIndexes[] = null;
-//        TreeModelEvent tme = new TreeModelEvent(this, new TreePath(rootArray));
-//        treeModelListener.treeStructureChanged(tme);
-//        TreeModel tm = getModel();
-//        if (tm instanceof NavPerspective) {
-//            NavPerspective np = (NavPerspective) tm;
-//            np.fireTreeStructureChanged(this, rootArray, noIndexes, noChildren);
-//        }
-//        reexpand();
-//    }
-
     /** 
      * we re-expand the ones
      * that were open before to maintain the same viewable tree.
@@ -300,75 +201,4 @@ public class DisplayTextTree extends JTree{
         _reexpanding = false;
     }
 
-} /* end class DisplayTextTree */
-
-/**
- * Because there <strong>may</strong> be many calls from Argo to
- * update the tree view in a very short space of time (eg. during some
- * automatic processing) , this class will discard all update calls
- * except one in order to improve the <strong>performance</strong> of
- * Argo.
- *
- * <p>This class is used to defer the actual update until "late"
- * in the invokeLater()-call chain.
- *
- * <P>The real update will hopefully take place at the end of whatever long
- * chain of forceUpdate:s that will be performed.
- */
-//class DisplayTextTreeRun implements Runnable {
-//
-//    /** needs documenting */
-//    //protected Logger cat;
-//    protected static Logger cat =
-//        Logger.getLogger(DisplayTextTreeRun.class);
-//
-//    /** needs documenting */
-//    private DisplayTextTree _tree;
-//
-//    /** needs documenting */
-//    int _timesToRun;
-//
-//    /** needs documenting */
-//    boolean _queued;
-//
-//    /** needs documenting */
-//    public DisplayTextTreeRun(Logger c, DisplayTextTree t) {
-//
-//        cat.debug("DisplayTextTreeRun constructor");
-//        //cat = c;
-//        _tree = t;
-//        _timesToRun = 0;
-//        _queued = false;
-//    }
-//
-//    /** needs documenting */
-//    public synchronized void onceMore() {
-//
-//        cat.debug("onceMore");
-//        if (!_queued) {
-//            _queued = true;
-//            SwingUtilities.invokeLater(this);
-//        }
-//        _timesToRun++;
-//    }
-//
-//    /** needs documenting */
-//    public synchronized void run() {
-//
-//        cat.debug("run");
-//        if (_timesToRun > 100)
-//            cat.debug("" + _timesToRun + " forceUpdates encountered.");
-//
-//        if (_timesToRun > 0) {
-//            // another forceUpdate was seen, wait again
-//            _queued = true;
-//            SwingUtilities.invokeLater(this);
-//            _timesToRun = 0;
-//        } else if (_queued) {
-//            _queued = false;
-//            SwingUtilities.invokeLater(this);
-//        } else {
-//            _tree.doForceUpdate();
-//        }
-//    }
-//}
+}
