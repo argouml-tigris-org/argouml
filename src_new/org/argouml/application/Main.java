@@ -39,6 +39,7 @@ import javax.swing.ToolTipManager;
 
 import org.apache.log4j.Category;
 import org.apache.log4j.PropertyConfigurator;
+import org.argouml.api.FacadeManager;
 import org.argouml.application.api.Argo;
 import org.argouml.application.api.Configuration;
 import org.argouml.application.security.ArgoAwtExceptionHandler;
@@ -47,6 +48,8 @@ import org.argouml.cognitive.Designer;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
+import org.argouml.model.diagram.GefDiagramFacade;
+import org.argouml.model.uml.NsumlModelFacade;
 import org.argouml.ui.Actions;
 import org.argouml.ui.LookAndFeelMgr;
 import org.argouml.ui.ProjectBrowser;
@@ -79,6 +82,12 @@ public class Main {
     // main
 
     public static void main(String args[]) {        
+
+		System.setProperty(FacadeManager.DIAGRAM_FACADE_PROPERTY,
+						   GefDiagramFacade.class.getName());
+		System.setProperty(FacadeManager.UML_MODEL_FACADE_PROPERTY,
+						   NsumlModelFacade.class.getName());
+
 
         // Force the configuration to load
         Configuration.load();
