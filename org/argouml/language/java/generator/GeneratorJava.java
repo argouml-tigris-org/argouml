@@ -36,6 +36,7 @@ import ru.novosoft.uml.behavior.state_machines.*;
 import ru.novosoft.uml.model_management.*;
 import org.argouml.uml.MMUtil;
 
+import org.argouml.application.api.*;
 import org.argouml.uml.DocumentationManager;
 import org.argouml.uml.generator.*;
 
@@ -1009,4 +1010,18 @@ public class GeneratorJava extends Generator {
 	System.out.println("Updating " + file.getPath());
 	newFile.renameTo(origFile);
     }
+
+    public NotationName getNotation() {
+        return Notation.makeNotation("Java");
+    }
+
+    public boolean canParse() {
+        return true;
+    }
+
+    public boolean canParse(Object o) {
+        return true;
+    }
+
+
 } /* end class GeneratorJava */
