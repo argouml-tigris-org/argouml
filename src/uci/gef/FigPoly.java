@@ -328,6 +328,7 @@ public class FigPoly extends Fig {
     if (_lineWidth > 0  && _lineColor != null) {
       g.setColor(_lineColor);
       g.drawPolyline(_xpoints, _ypoints, _npoints);
+      drawArrowHead(g);
     }
   }
 
@@ -397,10 +398,14 @@ public class FigPoly extends Fig {
       int dy = _ypoints[i+1] - _ypoints[i];
       int segLen = (int)Math.sqrt(dx*dx + dy*dy);
       if (dist < segLen)
-	return new Point(_xpoints[i] + (dx * dist) / segLen,
-			 _ypoints[i] + (dy * dist) / segLen);
+	  {
+        if (segLen != 0)
+		  return new Point(_xpoints[i] + (dx * dist) / segLen, _ypoints[i] + (dy * dist) / segLen);
+		else
+		  return new Point(_xpoints[i], _ypoints[i]);
+      }
       else
-	dist -= segLen;
+        dist -= segLen;
     }
     // what if there are 0 points?
     return new Point(_xpoints[0], _ypoints[0]);
@@ -433,6 +438,16 @@ public class FigPoly extends Fig {
     _w = polyBounds.width;
     _h = polyBounds.height;
   }
+
+  ArrowHead ArrowHeadStart = new ArrowHeadTriangle();
+  ArrowHead ArrowHeadEnd = new ArrowHeadTriangle();
+
+	protected void drawArrowHead(Graphics g) {
+		ArrowHeadStart.setFillColor(Color.white);
+		System.out.println("pointalongat0 = " + pointAlongPerimeter(0) + " pointAtEnd = " + getPerimeterLength() + " pointatEnd = " + pointAlongPerimeter(20));
+		ArrowHeadStart.paint(g, pointAlongPerimeter(20), pointAlongPerimeter(0));
+		ArrowHeadEnd.paint(g, pointAlongPerimeter(getPerimeterLength() - 21), pointAlongPerimeter(getPerimeterLength() - 1));
+	}
 
 } /* end class FigPoly */
 
