@@ -48,16 +48,11 @@ public class ActionSaveProjectAs extends ActionSaveProject {
 
     public static final String separator = "/"; //System.getProperty("file.separator");
 
-    protected static OCLExpander expander = null;
-
-
     ////////////////////////////////////////////////////////////////
     // constructors
 
     protected ActionSaveProjectAs() {
 	super("Save Project As...", NO_ICON);
-	java.util.Hashtable templates = TemplateReader.readFile("/org/argouml/xml/dtd/argo.tee");
-	expander = new OCLExpander(templates);
     }
 
 
@@ -69,76 +64,44 @@ public class ActionSaveProjectAs extends ActionSaveProject {
     }
 
   public boolean trySave(boolean overwrite) {
-    ProjectBrowser pb = ProjectBrowser.TheInstance;
-    
-    Project p =  pb.getProject();
-    
-    try {
-      JFileChooser chooser = null;
-      try {
-        if (p != null && p.getURL() != null &&
-            p.getURL().getFile().length()>0) {
-          String filename = p.getURL().getFile();
-          
-          if (!filename.startsWith("/FILE1/+/")) {
-            chooser  = OsUtil.getFileChooser (p.getURL().getFile());
-          }
-        }
-      }
-	    catch (Exception ex) {
-		    System.out.println ("exception in opening JFileChooser");
-        ex.printStackTrace();
-      }
-      
-      if (chooser == null) chooser = OsUtil.getFileChooser();
-      
-      String sChooserTitle = Localizer.localize ("Actions", "text.save_as_project.chooser_title");
-      chooser.setDialogTitle (sChooserTitle + p.getName());
-      FileFilter filter = FileFilters.CompressedFileFilter;
-      chooser.addChoosableFileFilter (filter);
-      chooser.setFileFilter (filter);
-      
-      int retval = chooser.showSaveDialog (pb);
-      if(retval == 0) {
-        File theFile = chooser.getSelectedFile();
-        
-        if (theFile != null) {
-          String path = chooser.getSelectedFile().getParent();
-          String name = chooser.getSelectedFile().getName();
-          if (!name.endsWith (Project.COMPRESSED_FILE_EXT)) name += Project.COMPRESSED_FILE_EXT;
-          if (!path.endsWith (separator)) path += separator;
-          
-          URL oldURL = p.getURL();
-          p.setFile (chooser.getSelectedFile());
-          //p.setPathname(path);
-          File f = new File (path + name);
-          p.setURL (Util.fileToURL (f));
-          pb.updateTitle();
-          
-          boolean fResult = super.trySave(false);
-          
-          if (! fResult) {
-            p.setURL (oldURL);
-            pb.updateTitle();
-          }
-          
-          return fResult;
-        }
-      }
-    }
-    catch (FileNotFoundException ignore) {
-      System.out.println("got an FileNotFoundException");
-    }
-    catch (PropertyVetoException ignore) {
-      System.out.println("got an PropertyVetoException in SaveAs");
-    }
-    catch (IOException ignore) {
-      System.out.println("got an IOException");
-      ignore.printStackTrace();
-    }
-    
-    return false;
+	boolean success = trySave(overwrite, getNewFile());
+	if (success) {
+	    ProjectBrowser.TheInstance.updateTitle();
+	}
+	return success;
   }
+
+    protected File getNewFile() {
+	ProjectBrowser pb = ProjectBrowser.TheInstance;
+	Project p = pb.getProject();
+
+	JFileChooser chooser  = OsUtil.getFileChooser (p.getURL().getFile());
+	URL url = p.getURL();
+	if (url != null) {
+	    chooser.setSelectedFile(new File(url.getFile()));
+	}
+
+	String sChooserTitle = 
+	    Localizer.localize("Actions", 
+			       "text.save_as_project.chooser_title");
+	chooser.setDialogTitle(sChooserTitle + p.getName());
+	chooser.setFileFilter(FileFilters.CompressedFileFilter);
+
+	int retval = chooser.showSaveDialog(pb);
+	if (retval == JFileChooser.APPROVE_OPTION) {
+	    File file = chooser.getSelectedFile();
+	    if (file != null) {
+		String name = file.getName();
+		if (! name.endsWith(Project.COMPRESSED_FILE_EXT)) {
+		    file = new File(file.getParent(), 
+				    name + Project.COMPRESSED_FILE_EXT);
+		}
+	    }
+	    return file;
+	} else {
+	    return null;
+	}
+    }
 
     public boolean shouldBeEnabled() {
 	return true;
