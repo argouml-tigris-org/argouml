@@ -32,7 +32,7 @@ If you are in a hurry:
 <programlisting>
 C:\Work&gt;set CVSROOT=:pserver:guest@cvs.tigris.org:/cvs
 C:\Work&gt;cvs login   (use guest as password)
-C:\Work&gt;cvs checkout argouml/src_new argouml/tools argouml/lib
+C:\Work&gt;cvs checkout argouml/src argouml/src_new argouml/tools argouml/lib
 C:\Work&gt;set JAVA_HOME=<replaceable>C:\Programs\jdkwhatever</replaceable>
 C:\Work&gt;cd argouml\src_new
 C:\Work\argouml\src_new&gt;build run
@@ -351,6 +351,7 @@ The CVS repository directories you need to check out to work with ArgoUML are
 <filename class="directory">argouml/lib</filename>,
 <filename class="directory">argouml/tools</filename>,
 <filename class="directory">argouml/src_new</filename>,
+<filename class="directory">argouml/src</filename>,
 and
 <filename class="directory">argouml/tests</filename>.
 </para>
@@ -408,6 +409,7 @@ in what jar-file.
 The rule file is named <filename>build.xml</filename>.
 There is one of those in every separate build directory
 (<filename class="directory">src_new</filename>,
+<filename class="directory">src/<replaceable>whatever</replaceable></filename>,
 <filename class="directory">documentation</filename>, and
 <filename class="directory">modules/<replaceable>whatever</replaceable></filename>).
 </para>
