@@ -34,14 +34,15 @@ import org.argouml.model.uml.behavioralelements.statemachines.StateMachinesFacto
  */
 public class ActionNewChangeEvent extends ActionNewEvent {
 
-    public static ActionNewChangeEvent SINGLETON = new ActionNewChangeEvent();
+    private static ActionNewChangeEvent singleton = new ActionNewChangeEvent();
 
     /**
      * Constructor for ActionNewChangeEvent.
      */
     protected ActionNewChangeEvent() {
         super();
-        putValue(NAME, Translator.localize("UMLMenu", "button.new-changeevent"));
+        putValue(NAME, Translator.localize("UMLMenu", 
+                                            "button.new-changeevent"));
     }
 
     /**
@@ -49,6 +50,13 @@ public class ActionNewChangeEvent extends ActionNewEvent {
      */
     protected Object createEvent() {
         return StateMachinesFactory.getFactory().buildChangeEvent();
+    }
+
+    /**
+     * @return Returns the singleton.
+     */
+    public static ActionNewChangeEvent getSingleton() {
+        return singleton;
     }
 
 }
