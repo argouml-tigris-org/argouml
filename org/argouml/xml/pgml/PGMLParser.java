@@ -155,18 +155,5 @@ public class PGMLParser extends org.tigris.gef.xml.pgml.PGMLParser {
   protected String[] getEntityPaths() {
     return _entityPaths;
   }
-  
-  /**
-   * Just temporary for debugging...
-   */
-  public synchronized org.tigris.gef.base.Diagram readDiagram(java.io.InputStream is, boolean closeStream) {
-    System.out.println ("org.argouml.xml.pgml.PGMLParser.readDiagram called. _nestedGroups = " + _nestedGroups);
-    
-    org.tigris.gef.base.Diagram dResult = super.readDiagram (is, closeStream);
-    
-    System.out.println ("Returning from org.argouml.xml.pgml.PGMLParser.readDiagram call. _nestedGroups = " + _nestedGroups);
-    
-    return dResult;
-  }
 } /* end class PGMLParser */
 
