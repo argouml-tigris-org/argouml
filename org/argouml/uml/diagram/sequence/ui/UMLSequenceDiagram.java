@@ -27,183 +27,141 @@
 // Original Author: 5eichler@informatik.uni-hamburg.de
 // $Id$
 
+
 package org.argouml.uml.diagram.sequence.ui;
 
 import java.beans.PropertyVetoException;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.Vector;
-
-import javax.swing.Action;
 
 import org.apache.log4j.Logger;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.ModelFacade;
+import org.argouml.model.uml.UmlFactory;
 import org.argouml.ui.CmdCreateNode;
 import org.argouml.uml.diagram.sequence.SequenceDiagramGraphModel;
 import org.argouml.uml.diagram.ui.UMLDiagram;
-import org.argouml.uml.ui.ActionAddNote;
-import org.tigris.gef.base.Layer;
-import org.tigris.gef.base.LayerPerspective;
-import org.tigris.gef.presentation.Fig;
+
+/**
+ * The diagram for sequence diagrams. 
+ * Totally rewritten for release 0.16
+ * @author jaap.branderhorst@xs4all.nl
+ * Aug 3, 2003
+ */
 public class UMLSequenceDiagram extends UMLDiagram {
-    protected static Logger cat =
-        Logger.getLogger(UMLSequenceDiagram.class);
 
-    ////////////////
-    // actions for toolbar
+	protected static int _SequenceDiagramSerial = 1;
+    
+	private Logger _log = Logger.getLogger(this.getClass());
+    
+	private Object[] _actions;
+    
+	/**
+	 * Flag to indicate if this sequence diagram was derived from some collaboration
+	 * or not.
+	 */
+	private boolean _isDerivedFromCollaboration = false;
 
-    protected static Action _actionObject =
-        new CmdCreateNode(ModelFacade.OBJECT, "Object");
+	/**
+	 * Constructs a new sequence diagram with a default name and NO namespace.
+	 * namespaces are used to determine the 'owner' of the diagram for diagrams
+	 * but that's plain misuse.
+	 */
+	public UMLSequenceDiagram() {
+		try {
+			setName(getNewDiagramName());
+		} catch (PropertyVetoException pve) {
+		}
+		// Dirty hack to remove the trash the Diagram constructor leaves
+		SequenceDiagramGraphModel gm = new SequenceDiagramGraphModel();
+		SequenceDiagramLayout lay = new SequenceDiagramLayout(this.getName(), gm);
+		SequenceDiagramRenderer rend = new SequenceDiagramRenderer();
+		lay.setGraphEdgeRenderer(rend);
+		lay.setGraphNodeRenderer(rend);    
+		setLayer(lay);        
+		setGraphModel(gm);       
+                   
+	}
+    
+	/**
+	 * Returns the owner of this diagram. In the case of sequencediagrams it's 
+	 * allways the root model. 
+	 *
+	 * @see org.argouml.uml.diagram.ui.UMLDiagram#getOwner()
+	 */
+	public Object getOwner() {
+		// TODO in the future (when there are multiple models) this should be changeable
+		return ProjectManager.getManager().getCurrentProject().getRoot();
+	}
 
-    protected static Action _actionLinkWithStimulusCall =
-        new ActionAddLink((Class)ModelFacade.CALL_ACTION, "StimulusCall");
+	/**
+	 * Creates a new diagramname.
+	 * @return String
+	 */
+	protected static String getNewDiagramName() {
+		String name = null;
+		name = "Sequence Diagram " + _SequenceDiagramSerial;
+		_SequenceDiagramSerial++;
+		if (!ProjectManager.getManager().getCurrentProject()
+				.isValidDiagramName(name)) {
+			name = getNewDiagramName();
+		}
+		return name;
+	}
+    
+    
+	/**
+	 * <p>Must return an array of actions via which the model can be manipulated. To
+	 * use the 'nested actions' feature (like the different association types on
+	 * UMLClassDiagram) these nested actions must be in an array of their own.</p>
+	 * <p>In case of the sequence diagram this method must return the following 
+	 * actions</p>
+	 * <ul>
+	 * <li>Action to create an object
+	 * <li>Action to add a procedural link
+	 * <li>Action to add a create link
+	 * <li>Action to add a asynchronous link
+	 * <li>Action to add a synchronous link
+	 * <li>Action to add a return link
+	 * </ul>
+	 * @see org.argouml.uml.diagram.ui.UMLDiagram#getUmlActions()
+	 */
+	protected Object[] getUmlActions() {
+		if (_actions == null) {
+			_actions = new Object[1];
+			_actions[0] = new CmdCreateNode(ModelFacade.OBJECT, false, "Object");
+		}
+	   return _actions;
+	}
+    
+    
 
-    protected static Action _actionLinkWithStimulusCreate =
-        new ActionAddLink((Class)ModelFacade.CREATE_ACTION, "StimulusCreate");
+	/**
+	 * 
+	 * @see org.argouml.uml.diagram.ui.UMLDiagram#getNamespace()
+	 */
+	public Object getNamespace() {
+	   return ModelFacade.getNamespace(((SequenceDiagramGraphModel)getGraphModel() ).getCollaboration());
+	}
 
-    protected static Action _actionLinkWithStimulusDestroy =
-        new ActionAddLink((Class)ModelFacade.DESTROY_ACTION, "StimulusDestroy");
+	/**
+	 * UMLSequencediagram does not have a namespace. This method throws therefore
+	 * an UnsupportedOperationException
+	 * @see org.argouml.uml.diagram.ui.UMLDiagram#setNamespace(java.lang.Object)
+	 */
+	public void setNamespace(Object ns) throws UnsupportedOperationException {
+		throw new UnsupportedOperationException("Sequence diagram does not have a namespace");
+	}
+    
+	/**
+	 * Method called by Project.removeDiagram to cleanUp the mess in this diagram 
+	 * when the diagram is removed.
+	 */
+	public void cleanUp() {   
+		Object collab = ((SequenceDiagramGraphModel)getGraphModel()).getCollaboration();
+		UmlFactory.getFactory().delete(collab);           
+	}
+       
+    
+    
+    
 
-    protected static Action _actionLinkWithStimulusSend =
-        new ActionAddLink((Class)ModelFacade.SEND_ACTION, "StimulusSend");
-
-    protected static Action _actionLinkWithStimulusReturn =
-        new ActionAddLink((Class)ModelFacade.RETURN_ACTION, "StimulusReturn");
-
-    ////////////////////////////////////////////////////////////////
-    // contructors
-    protected static int _SequenceDiagramSerial = 1;
-
-    public UMLSequenceDiagram() {
-
-        try {
-            setName(getNewDiagramName());
-        } catch (PropertyVetoException pve) {
-        }
-    }
-
-    public UMLSequenceDiagram(Object/*MNamespace*/ m) {
-        this();
-        setNamespace(m);
-    }
-
-    public int getNumStimuluss() {
-        Layer lay = getLayer();
-        Vector figs = lay.getContents();
-        int res = 0;
-        int size = figs.size();
-        for (int i = 0; i < size; i++) {
-            Fig f = (Fig) figs.elementAt(i);
-            if (org.argouml.model.ModelFacade.isAStimulus(f.getOwner()))
-                res++;
-        }
-        return res;
-    }
-
-    public void setNamespace(Object handle) {
-        if (!ModelFacade.isANamespace(handle)) {
-            cat.error(
-		      "Illegal argument. Object " + handle + " is not a namespace");
-            throw new IllegalArgumentException(
-					       "Illegal argument. Object " + handle + " is not a namespace");
-        }
-        Object m = /*(MNamespace)*/ handle;
-        super.setNamespace(m);
-        SequenceDiagramGraphModel gm = new SequenceDiagramGraphModel();
-        gm.setNamespace(m);
-        setGraphModel(gm);
-
-        LayerPerspective lay;
-        if (m == null) {
-            cat.error(
-		      "SEVERE WARNING: Sequence diagram was created "
-		      + "without a valid namesspace. "
-		      + "Setting namespace to empty.");
-            lay = new SequenceDiagramLayout("", gm);
-        } else
-            lay = new SequenceDiagramLayout(ModelFacade.getName(m), gm);
-        setLayer(lay);
-        SequenceDiagramRenderer rend = new SequenceDiagramRenderer();
-        // singleton
-        lay.setGraphNodeRenderer(rend);
-        lay.setGraphEdgeRenderer(rend);
-    }
-
-    /**
-     * Get the actions from which to create a toolbar or equivilent graphic trigger
-     */
-    protected Object[] getUmlActions() {
-        Object actions[] = {
-            _actionObject, null,
-            _actionLinkWithStimulusCall,
-            _actionLinkWithStimulusCreate,
-            _actionLinkWithStimulusDestroy,
-            _actionLinkWithStimulusSend,
-            _actionLinkWithStimulusReturn, null,
-            ActionAddNote.SINGLETON
-        };
-        return actions;
-    }
-
-    /** every stimulus has to become a path item of its link
-     * to have a graphical connections between stimulus and link */
-    public void postLoad() {
-
-        super.postLoad();
-
-        Collection stimuli;
-        Iterator stimuliIterator;
-        Iterator oeIterator = null;
-        Collection ownedElements = null;
-        if (getNamespace() != null)
-            ownedElements = ModelFacade.getOwnedElements(getNamespace());
-        if (ownedElements != null)
-            oeIterator = ownedElements.iterator();
-        Layer lay = getLayer();
-        if (oeIterator != null && lay != null) {
-            Vector contents = new Vector();
-            boolean objFound = false;
-            FigSeqObject figSeqObj = null;
-            FigSeqLink figLink = null;
-            FigSeqStimulus figStim = null;
-
-            Vector createdObjs = new Vector();
-            Vector createLinks = new Vector();
-            FigSeqObject dest = null;
-
-            while (oeIterator.hasNext()) {
-                Object me = /*(MModelElement)*/ oeIterator.next();
-
-                if (org.argouml.model.ModelFacade.isALink(me)) {
-                    stimuli = ModelFacade.getStimuli(me);
-                    stimuliIterator = stimuli.iterator();
-                    while (stimuliIterator.hasNext()) {
-                        Object stimulus = /*(MStimulus)*/ stimuliIterator.next();
-                        FigSeqStimulus figStimulus =
-                            (FigSeqStimulus) lay.presentationFor(stimulus);
-                        if (figStimulus != null) {
-                            figStimulus.addPathItemToLink(lay);
-                        }
-                    }
-                }
-            }
-        }
-
-    }
-
-    /**
-     * Creates a new diagramname.
-     * @return String
-     */
-    protected static String getNewDiagramName() {
-        String name = null;
-        name = "Sequence Diagram " + _SequenceDiagramSerial;
-        _SequenceDiagramSerial++;
-        if (!ProjectManager.getManager().getCurrentProject()
-                .isValidDiagramName(name)) {
-            name = getNewDiagramName();
-        }
-        return name;
-    }
 } /* end class UMLSequenceDiagram */

@@ -46,7 +46,6 @@ import java.beans.VetoableChangeListener;
 import java.util.Vector;
 
 import javax.swing.SwingUtilities;
-import javax.swing.plaf.metal.MetalLookAndFeel;
 
 import org.apache.log4j.Logger;
 import org.argouml.kernel.DelayedChangeNotify;
@@ -55,6 +54,7 @@ import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.UmlFactory;
 import org.argouml.ui.LookAndFeelMgr;
 import org.argouml.ui.ProjectBrowser;
+import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.state.StateDiagramGraphModel;
 import org.argouml.uml.diagram.state.ui.UMLStateDiagram;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
@@ -63,6 +63,7 @@ import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigPoly;
 import org.tigris.gef.presentation.FigRect;
 import org.tigris.gef.presentation.FigText;
+
 import ru.novosoft.uml.MElementEvent;
 
 /**
@@ -205,11 +206,11 @@ public class FigComment
 
 	    // If the current target is a state diagram, we have to
 	    // check, if we are editing the diagram.
-            ProjectBrowser pb = ProjectBrowser.getInstance();
-            if (pb.getTarget() instanceof UMLStateDiagram) {
+            ProjectBrowser pb = ProjectBrowser.getInstance(); 
+            if (TargetManager.getInstance().getTarget() instanceof UMLStateDiagram) { 
                 StateDiagramGraphModel gm =
 		    (StateDiagramGraphModel)
-		    (((UMLStateDiagram) pb.getTarget()).getGraphModel());
+		    (((UMLStateDiagram) TargetManager.getInstance().getTarget()).getGraphModel());
 		// We are editing, so we set the Namespace directly.
                 ModelFacade.setNamespace(comment, gm.getNamespace());
             }

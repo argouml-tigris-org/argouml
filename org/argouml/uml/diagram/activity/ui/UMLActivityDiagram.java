@@ -1,5 +1,3 @@
-
-
 // $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -28,6 +26,7 @@
 // Classes: UMLActivityDiagram
 // Original Author: your email here
 // $Id$
+
 
 package org.argouml.uml.diagram.activity.ui;
 

@@ -351,8 +351,8 @@ public class CommonBehaviorFactory extends AbstractUmlModelFactory {
     /** 
      * Builds a Link between two Instances
      */
-    public MLink buildLink(MInstance fromInstance, MInstance toInstance) {
-        MLink link = UmlFactory.getFactory().getCommonBehavior().createLink();
+    public Object buildLink(Object fromInstance, Object toInstance) {    
+        Object link = UmlFactory.getFactory().getCommonBehavior().createLink();
         Object/*MLinkEnd*/ le0 =
             UmlFactory.getFactory().getCommonBehavior().createLinkEnd();
         ModelFacade.setInstance(le0, fromInstance);
@@ -393,7 +393,7 @@ public class CommonBehaviorFactory extends AbstractUmlModelFactory {
         MSignal signal = createSignal();
         signal.addContext(feature);
         return signal;
-    }
+    }        
 
     /**
      * Builds a reception belonging to some signal

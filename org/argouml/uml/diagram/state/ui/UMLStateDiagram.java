@@ -25,7 +25,9 @@
 // File: UMLStateDiagram.java
 // Classes: UMLStateDiagram
 // Original Author: your email here
+
 // $Id$
+
 
 package org.argouml.uml.diagram.state.ui;
 
@@ -281,4 +283,6 @@ public class UMLStateDiagram extends UMLDiagram {
 							     theStateMachine);
         super.removed(e);
     }
+
 } /* end class UMLStateDiagram */
+

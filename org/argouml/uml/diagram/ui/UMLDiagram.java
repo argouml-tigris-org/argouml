@@ -38,7 +38,17 @@ import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.UmlModelEventPump;
 import org.argouml.ui.ArgoDiagram;
 import org.argouml.ui.targetmanager.TargetManager;
-import org.tigris.gef.base.*;
+import org.tigris.gef.base.CmdSetMode;
+import org.tigris.gef.base.ModeBroom;
+import org.tigris.gef.base.ModeCreateFigCircle;
+import org.tigris.gef.base.ModeCreateFigInk;
+import org.tigris.gef.base.ModeCreateFigLine;
+import org.tigris.gef.base.ModeCreateFigPoly;
+import org.tigris.gef.base.ModeCreateFigRRect;
+import org.tigris.gef.base.ModeCreateFigRect;
+import org.tigris.gef.base.ModeCreateFigSpline;
+import org.tigris.gef.base.ModeCreateFigText;
+import org.tigris.gef.base.ModeSelect;
 import org.tigris.gef.presentation.Fig;
 
 import org.tigris.toolbar.ToolBarFactory;
@@ -58,10 +68,9 @@ import ru.novosoft.uml.MElementListener;
 public abstract class UMLDiagram
     extends ArgoDiagram
     implements MElementListener {
-    
 
     protected static Logger cat = Logger.getLogger(UMLDiagram.class);
-  
+
     ////////////////////////////////////////////////////////////////
     // actions for toolbar
 
@@ -71,74 +80,77 @@ public abstract class UMLDiagram
     protected static Action _actionBroom =
         new CmdSetMode(ModeBroom.class, "Broom");
 
-    protected static Action _actionRectangle = new RadioAction(
-        new CmdSetMode(ModeCreateFigRect.class, "Rectangle"));
+    protected static Action _actionRectangle =
+        new RadioAction(new CmdSetMode(ModeCreateFigRect.class, "Rectangle"));
 
-    protected static Action _actionRRectangle = new RadioAction(
-        new CmdSetMode(ModeCreateFigRRect.class, "RRect"));
+    protected static Action _actionRRectangle =
+        new RadioAction(new CmdSetMode(ModeCreateFigRRect.class, "RRect"));
 
-    protected static Action _actionCircle = new RadioAction(
-        new CmdSetMode(ModeCreateFigCircle.class, "Circle"));
+    protected static Action _actionCircle =
+        new RadioAction(new CmdSetMode(ModeCreateFigCircle.class, "Circle"));
 
-    protected static Action _actionLine = new RadioAction(
-        new CmdSetMode(ModeCreateFigLine.class, "Line"));
+    protected static Action _actionLine =
+        new RadioAction(new CmdSetMode(ModeCreateFigLine.class, "Line"));
 
-    protected static Action _actionText = new RadioAction(
-        new CmdSetMode(ModeCreateFigText.class, "Text"));
+    protected static Action _actionText =
+        new RadioAction(new CmdSetMode(ModeCreateFigText.class, "Text"));
 
-    protected static Action _actionPoly = new RadioAction(
-        new CmdSetMode(ModeCreateFigPoly.class, "Polygon"));
+    protected static Action _actionPoly =
+        new RadioAction(new CmdSetMode(ModeCreateFigPoly.class, "Polygon"));
 
-    protected static Action _actionSpline = new RadioAction(
-        new CmdSetMode(ModeCreateFigSpline.class, "Spline"));
+    protected static Action _actionSpline =
+        new RadioAction(new CmdSetMode(ModeCreateFigSpline.class, "Spline"));
 
-    protected static Action _actionInk = new RadioAction(
-        new CmdSetMode(ModeCreateFigInk.class, "Ink"));
-    
+    protected static Action _actionInk =
+        new RadioAction(new CmdSetMode(ModeCreateFigInk.class, "Ink"));
+
     ////////////////////////////////////////////////////////////////
     // instance variables
-    protected Object  _namespace;
+    protected Object _namespace;
     protected DiagramInfo _diagramName = new DiagramInfo(this);
 
     private JToolBar toolBar;
-    
+
     ////////////////////////////////////////////////////////////////
     // constructors
 
-    public UMLDiagram() { 
-  	super();
+    public UMLDiagram() {
+        super();
     }
-  
+
     public UMLDiagram(Object ns) {
         this();
-        
-        if(!ModelFacade.isANamespace(ns))
+
+        if (!ModelFacade.isANamespace(ns))
             throw new IllegalArgumentException();
-        
+
         setNamespace(ns);
     }
-  
+
     public UMLDiagram(String diagramName, Object ns) {
         this(ns);
-        try { setName(diagramName); }
-        catch (PropertyVetoException pve) { 
+        try {
+            setName(diagramName);
+        } catch (PropertyVetoException pve) {
             cat.fatal("Name not allowed in construction of diagram");
         }
     }
 
     public void initialize(Object owner) {
-	super.initialize(owner);
-	if (org.argouml.model.ModelFacade.isANamespace(owner)) setNamespace(owner);
-	else cat.debug("unknown object in UMLDiagram initialize:"
-		       + owner);
+        super.initialize(owner);
+        if (org.argouml.model.ModelFacade.isANamespace(owner))
+            setNamespace(owner);
+        else
+            cat.debug("unknown object in UMLDiagram initialize:" + owner);
     }
-
 
     ////////////////////////////////////////////////////////////////
     // accessors
 
-    public Object getNamespace() { return _namespace; }
-  
+    public Object getNamespace() {
+        return _namespace;
+    }
+
     /**
      * sets the namespace of the Diagram, and
      * adds the diagram as a listener of its namspace in the UML model.
@@ -153,29 +165,31 @@ public abstract class UMLDiagram
         _namespace = ns;
         // add the diagram as a listener to the namspace so
         // that when the namespace is remove()d the diagram is deleted also.
-        UmlModelEventPump.getPump().addModelEventListener(this,
-							  _namespace,
-							  UmlModelEventPump.REMOVE);
+        UmlModelEventPump.getPump().addModelEventListener(
+            this,
+            _namespace,
+            UmlModelEventPump.REMOVE);
     }
-  
+
     public String getClassAndModelID() {
         String s = super.getClassAndModelID();
-        if (getOwner() == null) return s;
+        if (getOwner() == null)
+            return s;
         String id = ModelFacade.getUUID(getOwner());
-        //String id = (String) (getOwner().getUUID());
         return s + "|" + id;
     }
 
     // TODO: should be overwritten by each subclass of UMLDiagram
+
     public Object getOwner() {
-        return _namespace;
+        return getNamespace();
     }
-    
+
     public void setName(String n) throws PropertyVetoException {
         super.setName(n);
         _diagramName.updateName();
     }
-  
+
     static final long serialVersionUID = -401219134410459387L;
 
     /**
@@ -188,18 +202,18 @@ public abstract class UMLDiagram
         }
         return toolBar;
     }
-  
+
     /**
      * Create the toolbar based on actions for the spcific diagram
      * subclass.
      * @see org.tigris.gef.base.Diagram#initToolBar()
      */
     public void initToolBar() {
-        toolBar = ToolBarFactory.createToolBar(true/*rollover*/,
-                                               getActions(),
-                                               false/*floating*/);
+        toolBar = ToolBarFactory.createToolBar(true /*rollover*/
+        , getActions(), false
+        /*floating*/
+        );
     }
-    
 
     /**
      * Return actions available for building toolbar or similar.
@@ -210,58 +224,55 @@ public abstract class UMLDiagram
         Object umlActions[] = getUmlActions();
         Object shapeActions[] = getShapeActions();
 
-        Object actions[] = new Object[manipulateActions.length
-				      + umlActions.length
-				      + shapeActions.length];
+        Object actions[] =
+            new Object[manipulateActions.length
+                + umlActions.length
+                + shapeActions.length];
 
         int posn = 0;
-        System.arraycopy(manipulateActions,
-			 0,
-			 actions,
-			 posn,
-			 manipulateActions.length);
+        System.arraycopy(
+            manipulateActions,
+            0,
+            actions,
+            posn,
+            manipulateActions.length);
         posn += manipulateActions.length;
         System.arraycopy(umlActions, 0, actions, posn, umlActions.length);
         posn += umlActions.length;
         System.arraycopy(shapeActions, 0, actions, posn, shapeActions.length);
-        
+
         return actions;
     }
-    
+
     /**
      * Implement on the ancestor to get actions to populate toolbar.
      */
     protected abstract Object[] getUmlActions();
 
     private Object[] getManipulateActions() {
-        Object actions[] = {
-            new RadioAction(_actionSelect),
-            new RadioAction(_actionBroom),
-            null
-        };
+        Object actions[] =
+            {
+                new RadioAction(_actionSelect),
+                new RadioAction(_actionBroom),
+                null };
         return actions;
     }
-    
+
     private Object[] getShapeActions() {
-        Object actions[] = {
-            null,
-            getShapePopupActions()
-        };
+        Object actions[] = { null, getShapePopupActions()};
         return actions;
     }
-    
+
     private Object[] getShapePopupActions() {
-        Object actions[][] = {
-        {_actionRectangle, _actionRRectangle},
-	{_actionCircle,    _actionLine},
-	{_actionText,      _actionPoly},
-	{_actionSpline,    _actionInk}
+        Object actions[][] = { { _actionRectangle, _actionRRectangle }, {
+                _actionCircle, _actionLine }, {
+                _actionText, _actionPoly }, {
+                _actionSpline, _actionInk }
         };
 
         return actions;
     }
-    
-    
+
     /**
      * This diagram listens to events from is namespace ModelElement;
      * When the modelelement is removed, we also want to delete this
@@ -270,52 +281,43 @@ public abstract class UMLDiagram
      * it has been deleted. so we need to deselect this diagram.
      */
     public void removed(MElementEvent e) {
-	Object newTarget =
-	    ProjectManager.getManager().getCurrentProject().getDiagrams().get(0);
-	TargetManager.getInstance().setTarget(newTarget);
-	UmlModelEventPump.getPump().removeModelEventListener(this,
-							     _namespace,
-							     UmlModelEventPump.REMOVE);
-	ProjectManager.getManager().getCurrentProject().moveToTrash(this);      
-      
-      
+        Object newTarget =
+            ProjectManager.getManager().getCurrentProject().getDiagrams().get(
+                0);
+        TargetManager.getInstance().setTarget(newTarget);
+        UmlModelEventPump.getPump().removeModelEventListener(
+            this,
+            _namespace,
+            UmlModelEventPump.REMOVE);
+        ProjectManager.getManager().getCurrentProject().moveToTrash(this);
+
     }
-  
+
     /**
      * not used the UMLDiagram is only interested in the removed() event.
      */
-    public void propertySet(MElementEvent e) {
-      
-    }
-  
+    public void propertySet(MElementEvent e) {}
+
     /**
      * not used the UMLDiagram is only interested in the removed() event.
      */
-    public void roleAdded(MElementEvent e) {
-      
-    }
-  
+    public void roleAdded(MElementEvent e) {}
+
     /**
      * not used the UMLDiagram is only interested in the removed() event.
      */
-    public void roleRemoved(MElementEvent e) {
-      
-    }
-  
+    public void roleRemoved(MElementEvent e) {}
+
     /**
      * not used the UMLDiagram is only interested in the removed() event.
      */
-    public void listRoleItemSet(MElementEvent e) {
-      
-    }
-  
+    public void listRoleItemSet(MElementEvent e) {}
+
     /**
      * not used the UMLDiagram is only interested in the removed() event.
      */
-    public void recovered(MElementEvent e) {
-      
-    }
-  
+    public void recovered(MElementEvent e) {}
+
     /**
      * Removes the UMLDiagram and all the figs on it as listener to 
      * UmlModelEventPump. Is called by setTarget in TabDiagram to improve 
@@ -323,21 +325,20 @@ public abstract class UMLDiagram
      *
      */
     public void removeAsTarget() {
-	Enumeration enum = elements();
-	UmlModelEventPump pump = UmlModelEventPump.getPump();
-	while (enum.hasMoreElements()) {
-	    Object o = enum.nextElement();
-	    if (ModelFacade.isAElementListener(o)) {
-		MElementListener listener = (MElementListener) o;
-		Fig fig = (Fig) o;
-		pump.removeModelEventListener(listener,
-					      fig.getOwner()); 
-	    }
-	}
-	pump.removeModelEventListener(this, getNamespace());
-      
+        Enumeration enum = elements();
+        UmlModelEventPump pump = UmlModelEventPump.getPump();
+        while (enum.hasMoreElements()) {
+            Object o = enum.nextElement();
+            if (ModelFacade.isAElementListener(o)) {
+                MElementListener listener = (MElementListener)o;
+                Fig fig = (Fig)o;
+                pump.removeModelEventListener(listener, fig.getOwner());
+            }
+        }
+        pump.removeModelEventListener(this, getNamespace());
+
     }
-  
+
     /**
      * Adds the UMLDiagram and all the figs on it as listener to
      * UmlModelEventPump.  Together with removeAsModelListener this is
@@ -345,18 +346,18 @@ public abstract class UMLDiagram
      *
      */
     public void setAsTarget() {
-	Enumeration enum = elements();
-	UmlModelEventPump pump = UmlModelEventPump.getPump();
-	while (enum.hasMoreElements()) {
-	    Fig fig = (Fig) enum.nextElement();
-	    if (org.argouml.model.ModelFacade.isAElementListener(fig)) {
-		Object owner = fig.getOwner();
-		// pump.addModelEventListener((MElementListener)fig, owner);
-		// this will make sure all the correct event listeners are set. 
-		fig.setOwner(null); 
-		fig.setOwner(owner);
-	    }
-	}    
+        Enumeration enum = elements();
+        UmlModelEventPump pump = UmlModelEventPump.getPump();
+        while (enum.hasMoreElements()) {
+            Fig fig = (Fig)enum.nextElement();
+            if (org.argouml.model.ModelFacade.isAElementListener(fig)) {
+                Object owner = fig.getOwner();
+                // pump.addModelEventListener((MElementListener)fig, owner);
+                // this will make sure all the correct event listeners are set. 
+                fig.setOwner(null);
+                fig.setOwner(owner);
+            }
+        }
     }
 
     /**
@@ -365,8 +366,8 @@ public abstract class UMLDiagram
      */
     public void deselectOtherTools(Action otherThanAction) {
         //System.out.println("Looking for action " + otherThanAction);
-        int toolCount=toolBar.getComponentCount();
-        for (int i=0; i<toolCount; ++i) {
+        int toolCount = toolBar.getComponentCount();
+        for (int i = 0; i < toolCount; ++i) {
             Component c = toolBar.getComponent(i);
             if (c instanceof ToolButton) {
                 ToolButton tb = (ToolButton)c;
@@ -397,14 +398,14 @@ public abstract class UMLDiagram
             }
         }
     }
-    
+
     /**
      * Set all toolbar buttons to unselected other then the toolbar button
      * with the supplied action.
      */
     public void deselectAllTools() {
-        int toolCount=toolBar.getComponentCount();
-        for (int i=0; i<toolCount; ++i) {
+        int toolCount = toolBar.getComponentCount();
+        for (int i = 0; i < toolCount; ++i) {
             Component c = toolBar.getComponent(i);
             if (c instanceof ToolButton) {
                 ToolButton tb = (ToolButton)c;
@@ -423,3 +424,4 @@ public abstract class UMLDiagram
         }
     }
 } /* end class UMLDiagram */
+
