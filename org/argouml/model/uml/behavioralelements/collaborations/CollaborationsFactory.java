@@ -129,61 +129,6 @@ public class CollaborationsFactory extends AbstractUmlModelFactory {
     }
     
     /**
-     * Builds a message with an empty string as sequence number.
-     * @param ar
-     * @return MMessage
-     */
-    public MMessage buildMessage(MAssociationRole ar){
-    return buildMessage(ar, "");
-    }
-    
-    /**
-     * Builds a message with a given sequencenumber for a given associationrole.
-     * @param ar
-     * @param sequenceNumber
-     * @return MMessage
-     */
-    public MMessage buildMessage(MAssociationRole ar,String sequenceNumber){
-	
-	    MMessage msg = UmlFactory.getFactory().getCollaborations().createMessage();
-	    msg.setName(sequenceNumber);
-	    Collection ascEnds = ar.getConnections();
-	
-	    // next line poses a problem. N-array associations are not supported in this
-	    // way
-	    // TODO implement this for N-array associations.
-	    if (ascEnds.size() != 2 ) return null;
-	    Iterator iter = ascEnds.iterator();
-	    MAssociationEndRole aer1 = (MAssociationEndRole)iter.next();
-	    MAssociationEndRole aer2 = (MAssociationEndRole)iter.next();
-	    
-	    // by default the "first" Classifierrole is the Sender,
-	    // should be configurable in PropPanelMessage!
-	    MClassifierRole crSrc = (MClassifierRole)aer1.getType();
-	    MClassifierRole crDst = (MClassifierRole)aer2.getType();
-	    msg.setSender(crSrc);
-	    msg.setReceiver(crDst);
-	
-	    // TODO: correct the creation of the CallAction. This is probably the wrong 
-	    // element.
-	    MCallAction action = UmlFactory.getFactory().getCommonBehavior().createCallAction();
-	    action.setNamespace(ProjectBrowser.TheInstance.getProject().getModel());
-	    action.setName("action"+sequenceNumber);
-	    msg.setAction(action);
-	
-	    ar.addMessage(msg);
-	    MCollaboration collab = (MCollaboration) ar.getNamespace();
-	    // collab.addOwnedElement(msg);
-	    Collection interactions = collab.getInteractions();
-	    // at the moment there can be only one Interaction per Collaboration
-	    Iterator iter2 = interactions.iterator();
-	    ((MInteraction)iter2.next()).addMessage(msg);
-	    
-    	return msg;
-    }
-    
-    
-    /**
      * Builds a default collaboration not attached to a classifier
      */
     public MCollaboration buildCollaboration(MNamespace namespace) {
@@ -288,6 +233,8 @@ public class CollaborationsFactory extends AbstractUmlModelFactory {
     	MInteraction inter = null;
     	if (collab.getInteractions().size() == 0) {
     		inter = buildInteraction(collab);
+    	} else {
+    		inter = (MInteraction)(collab.getInteractions().toArray())[0];
     	}
     	return buildMessage(inter, role);
     }

@@ -25,6 +25,8 @@ package org.argouml.uml.ui;
 
 import org.argouml.uml.*;
 import org.argouml.uml.diagram.collaboration.ui.*;
+import org.argouml.uml.diagram.ui.FigEdgeModelElement;
+import org.argouml.uml.diagram.ui.FigNodeModelElement;
 import org.argouml.model.uml.UmlFactory;
 import org.argouml.ui.*;
 import org.tigris.gef.base.*;
@@ -59,21 +61,27 @@ public class ActionAddMessage extends UMLChangeAction {
 	Object d = pb.getTarget();
 	
 	if (!(target instanceof MAssociationRole) && ((MAssociationRole)target).getNamespace() instanceof MCollaboration) return;
-	MAssociationRole ar = (MAssociationRole) target;
-	MCollaboration collab = (MCollaboration)ar.getNamespace();
-	// TODO find out how collabs and several interactions collaborate together
-	MMessage msg = UmlFactory.getFactory().getCollaborations().buildMessage(collab, ar);
-	String nextStr = "" + ((MInteraction)(collab.getInteractions().toArray())[0]).getMessages().size();
+		MAssociationRole ar = (MAssociationRole) target;
+		MCollaboration collab = (MCollaboration)ar.getNamespace();
+		// TODO find out how collabs and several interactions collaborate together
+		MMessage msg = UmlFactory.getFactory().getCollaborations().buildMessage(collab, ar);
+		String nextStr = "" + ((MInteraction)(collab.getInteractions().toArray())[0]).getMessages().size();
+		
+		Editor e = Globals.curEditor();
+		GraphModel gm = e.getGraphModel();
+		Layer lay = e.getLayerManager().getActiveLayer();
+		GraphNodeRenderer gr = e.getGraphNodeRenderer();
+		FigNode figMsg = gr.getFigNodeFor(gm, lay, msg);
+		lay.add(figMsg);
+		
+		FigEdge figRole = (FigEdge)lay.presentationFor(target);
+		figRole.addPathItem(figMsg, new PathConvPercent(figRole, 50, 10));
+		figRole.updatePathItemLocations();
+		
+		e.damageAll();
+		/*
 	
-/*
-	String nextStr="";
-	if (d instanceof UMLCollaborationDiagram){
-	    UMLCollaborationDiagram cd = (UMLCollaborationDiagram) d;
-	    nextStr = "" + (cd.getNumMessages() + 1);
-	}
-	    
-	MMessage msg=UmlFactory.getFactory().getCollaborations().buildMessage(ar,nextStr);
-*/
+
 	Editor ce = Globals.curEditor();
 	GraphModel gm = ce.getGraphModel();
 	GraphNodeRenderer renderer = ce.getGraphNodeRenderer();
@@ -93,11 +101,14 @@ public class ActionAddMessage extends UMLChangeAction {
 	curFig.updatePathItemLocations();
 	lay.add(pers);
 	super.actionPerformed(ae);
+	*/
     }
+    
 
     public boolean shouldBeEnabled() {
 	ProjectBrowser pb = ProjectBrowser.TheInstance;
 	Object target = pb.getDetailsTarget();
 	return super.shouldBeEnabled() && target instanceof MAssociationRole;
     }
+    
 }  /* end class ActionAddMessage */

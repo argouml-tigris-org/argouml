@@ -124,6 +124,7 @@ public class PropPanelAssociationRole extends PropPanelModelElement {
         }
     }
 
+/*
     public Object addMessage(Integer index) {
 	//needs-more-work: a fig must be generated
 
@@ -134,6 +135,7 @@ public class PropPanelAssociationRole extends PropPanelModelElement {
         }
         return newMessage;
     }
+*/
 
     protected boolean isAcceptibleBaseMetaClass(String baseClass) {
         return (baseClass.equals("AssociationRole") || 

@@ -218,19 +218,7 @@ public class FigMessage extends FigNodeModelElement {
     super.modelChanged();
     MMessage mes = (MMessage) getOwner();
     if (mes == null) return;
-    String nameStr = Notation.generate(this, mes.getName()).trim();
-	String actionString = "new Action";
-	if (mes.getAction() != null && mes.getAction().getScript() != null 
-		&&  mes.getAction().getScript().getBody() != null)
-		actionString = (((MActionExpression)((MAction)mes.getAction()).getScript()).getBody()).trim();
-
-//     System.out.println("nameStr = " + nameStr);
-//     System.out.println("name = " + _name);
-//     System.out.println("actionString = " + actionString);
-    if( nameStr.equals("") && actionString.equals("") )
-      _name.setText("");
-    else
-      _name.setText(nameStr.trim() + " : " + actionString);
+    _name.setText(Notation.generate(this, mes));
   }
 
   public void dispose() {
