@@ -171,7 +171,7 @@ public abstract class UMLDiagram
 
     // TODO: should be overwritten by each subclass of UMLDiagram
     public Object getOwner() {
-        return _namespace;
+        return getNamespace();
     }
     
     public void setName(String n) throws PropertyVetoException {

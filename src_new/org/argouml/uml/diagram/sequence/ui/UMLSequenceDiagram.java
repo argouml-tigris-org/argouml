@@ -30,31 +30,23 @@
 package org.argouml.uml.diagram.sequence.ui;
 
 import java.beans.PropertyVetoException;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.Vector;
 
 import javax.swing.Action;
 
 import org.apache.log4j.Category;
 import org.argouml.kernel.ProjectManager;
-import org.argouml.model.ModelFacade;
 import org.argouml.ui.CmdCreateNode;
 import org.argouml.uml.diagram.sequence.SequenceDiagramGraphModel;
 import org.argouml.uml.diagram.ui.UMLDiagram;
-import org.argouml.uml.ui.ActionAddNote;
-import org.tigris.gef.base.Layer;
 import org.tigris.gef.base.LayerPerspective;
-import org.tigris.gef.presentation.Fig;
+import org.tigris.gef.base.LayerPerspectiveMutable;
+
 import ru.novosoft.uml.behavior.common_behavior.MCallAction;
 import ru.novosoft.uml.behavior.common_behavior.MCreateAction;
 import ru.novosoft.uml.behavior.common_behavior.MDestroyAction;
-import ru.novosoft.uml.behavior.common_behavior.MLink;
 import ru.novosoft.uml.behavior.common_behavior.MObject;
 import ru.novosoft.uml.behavior.common_behavior.MReturnAction;
 import ru.novosoft.uml.behavior.common_behavior.MSendAction;
-import ru.novosoft.uml.behavior.common_behavior.MStimulus;
-import ru.novosoft.uml.foundation.core.MModelElement;
 import ru.novosoft.uml.foundation.core.MNamespace;
 
 public class UMLSequenceDiagram extends UMLDiagram {
@@ -86,121 +78,34 @@ public class UMLSequenceDiagram extends UMLDiagram {
     // contructors
     protected static int _SequenceDiagramSerial = 1;
 
+    /**
+     * Constructs a new sequence diagram with a default name and NO namespace.
+     * namespaces are used to determine the 'owner' of the diagram for diagrams
+     * but that's plain misuse.
+     */
     public UMLSequenceDiagram() {
-
         try {
             setName(getNewDiagramName());
         } catch (PropertyVetoException pve) {
         }
-    }
-
-    public UMLSequenceDiagram(MNamespace m) {
-        this();
-        setNamespace(m);
-    }
-
-    public int getNumStimuluss() {
-        Layer lay = getLayer();
-        Vector figs = lay.getContents();
-        int res = 0;
-        int size = figs.size();
-        for (int i = 0; i < size; i++) {
-            Fig f = (Fig) figs.elementAt(i);
-            if (f.getOwner() instanceof MStimulus)
-                res++;
-        }
-        return res;
-    }
-
-    public void setNamespace(Object handle) {
-        if (!ModelFacade.isANamespace(handle)) {
-            cat.error(
-		      "Illegal argument. Object " + handle + " is not a namespace");
-            throw new IllegalArgumentException(
-					       "Illegal argument. Object " + handle + " is not a namespace");
-        }
-        MNamespace m = (MNamespace) handle;
-        super.setNamespace(m);
         SequenceDiagramGraphModel gm = new SequenceDiagramGraphModel();
-        gm.setNamespace(m);
         setGraphModel(gm);
-
-        LayerPerspective lay;
-        if (m == null) {
-            cat.error(
-		      "SEVERE WARNING: Sequence diagram was created "
-		      + "without a valid namesspace. "
-		      + "Setting namespace to empty.");
-            lay = new SequenceDiagramLayout("", gm);
-        } else
-            lay = new SequenceDiagramLayout(m.getName(), gm);
+        LayerPerspective lay = new LayerPerspectiveMutable(this.getName(), gm);
         setLayer(lay);
         SequenceDiagramRenderer rend = new SequenceDiagramRenderer();
-        // singleton
-        lay.setGraphNodeRenderer(rend);
         lay.setGraphEdgeRenderer(rend);
+        lay.setGraphNodeRenderer(rend);        
     }
-
+    
     /**
-     * Get the actions from which to create a toolbar or equivilent graphic trigger
+     * Returns the owner of this diagram. In the case of sequencediagrams it's 
+     * allways the root model. 
+     *
+     * @see org.argouml.uml.diagram.ui.UMLDiagram#getOwner()
      */
-    protected Object[] getUmlActions() {
-        Object actions[] = {
-            _actionObject, null,
-            _actionLinkWithStimulusCall,
-            _actionLinkWithStimulusCreate,
-            _actionLinkWithStimulusDestroy,
-            _actionLinkWithStimulusSend,
-            _actionLinkWithStimulusReturn, null,
-            ActionAddNote.SINGLETON
-        };
-        return actions;
-    }
-
-    /** every stimulus has to become a path item of its link
-     * to have a graphical connections between stimulus and link */
-    public void postLoad() {
-
-        super.postLoad();
-
-        Collection stimuli;
-        Iterator stimuliIterator;
-        Iterator oeIterator = null;
-        Collection ownedElements = null;
-        if (getNamespace() != null)
-            ownedElements = getNamespace().getOwnedElements();
-        if (ownedElements != null)
-            oeIterator = ownedElements.iterator();
-        Layer lay = getLayer();
-        if (oeIterator != null && lay != null) {
-            Vector contents = new Vector();
-            boolean objFound = false;
-            FigSeqObject figSeqObj = null;
-            FigSeqLink figLink = null;
-            FigSeqStimulus figStim = null;
-
-            Vector createdObjs = new Vector();
-            Vector createLinks = new Vector();
-            FigSeqObject dest = null;
-
-            while (oeIterator.hasNext()) {
-                MModelElement me = (MModelElement) oeIterator.next();
-
-                if (me instanceof MLink) {
-                    stimuli = ((MLink) me).getStimuli();
-                    stimuliIterator = stimuli.iterator();
-                    while (stimuliIterator.hasNext()) {
-                        MStimulus stimulus = (MStimulus) stimuliIterator.next();
-                        FigSeqStimulus figStimulus =
-                            (FigSeqStimulus) lay.presentationFor(stimulus);
-                        if (figStimulus != null) {
-                            figStimulus.addPathItemToLink(lay);
-                        }
-                    }
-                }
-            }
-        }
-
+    public Object getOwner() {
+        // TODO in the future (when there are multiple models) this should be changeable
+        return ProjectManager.getManager().getCurrentProject().getRoot();
     }
 
     /**
@@ -217,4 +122,46 @@ public class UMLSequenceDiagram extends UMLDiagram {
         }
         return name;
     }
+    
+    
+    /**
+     * <p>Must return an array of actions via which the model can be manipulated. To
+     * use the 'nested actions' feature (like the different association types on
+     * UMLClassDiagram) these nested actions must be in an array of their own.</p>
+     * <p>In case of the sequence diagram this method must return the following 
+     * actions</p>
+     * <ul>
+     * <li>Action to create an object
+     * <li>Action to add a procedural link
+     * <li>Action to add a create link
+     * <li>Action to add a asynchronous link
+     * <li>Action to add a synchronous link
+     * <li>Action to add a return link
+     * </ul>
+     * @see org.argouml.uml.diagram.ui.UMLDiagram#getUmlActions()
+     */
+    protected Object[] getUmlActions() {
+       return new Object[0];
+    }
+    
+    
+
+    /**
+     * UMLSequencediagram does not have a namespace. This method throws therefore
+     * an UnsupportedOperationException
+     * @see org.argouml.uml.diagram.ui.UMLDiagram#getNamespace()
+     */
+    public MNamespace getNamespace() throws UnsupportedOperationException {
+        throw new UnsupportedOperationException("Sequence diagram does not have a namespace");
+    }
+
+    /**
+     * UMLSequencediagram does not have a namespace. This method throws therefore
+     * an UnsupportedOperationException
+     * @see org.argouml.uml.diagram.ui.UMLDiagram#setNamespace(java.lang.Object)
+     */
+    public void setNamespace(Object ns) throws UnsupportedOperationException {
+        throw new UnsupportedOperationException("Sequence diagram does not have a namespace");
+    }
+
 } /* end class UMLSequenceDiagram */
