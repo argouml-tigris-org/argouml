@@ -244,7 +244,8 @@ public class CoreHelper {
         return (o instanceof MMethod);
     }
 
-    /** This method returns if the object is an operation.
+    /** 
+     * This method returns if the object is an operation.
      *
      * @param o object
      * @return true if it's an operation, false if not
@@ -252,7 +253,9 @@ public class CoreHelper {
     public boolean isOperation(Object o) {
         return (o instanceof MOperation);
     }
-    /** This method returns all operations of a given Classifier
+    
+    /** 
+     * This method returns all operations of a given Classifier
      *
      * @param classifier the classifier you want to have the operations for
      * @return a collection of the operations
@@ -269,9 +272,32 @@ public class CoreHelper {
             }
         }
         return result;
-    }    
+    }
+    
+    /**
+     * This method replaces all operations of the given classifier 
+     * by the given collection of operations.
+     * 
+     * @param classifier the given classifier
+     * @param operations the new operations
+     */
+    public void setOperations(Object classifier, Collection operations) {
+        if (ModelFacade.isAClassifier(classifier)) {
+            MClassifier mclassifier = (MClassifier) classifier;
+            List result = new ArrayList(mclassifier.getFeatures());
+            Iterator features = mclassifier.getFeatures().iterator();
+            while (features.hasNext()) {
+                MFeature feature = (MFeature) features.next();
+                if (ModelFacade.isAOperation(feature))
+                    result.remove(feature);
+            }
+            result.addAll(operations);
+            mclassifier.setFeatures(result);
+        }
+    }
 
-    /** This method returns all attributes of a given Classifier.
+    /** 
+     * This method returns all attributes of a given Classifier.
      *
      * @param classifier the classifier you want to have the attributes for
      * @return a collection of the attributes
@@ -287,8 +313,31 @@ public class CoreHelper {
 	return result;
     }  
 
-    /** This method returns all attributes of a given Classifier,
-     * including inherited
+    /**
+     * This method replaces all attributes of the given classifier 
+     * by the given collection of attributes.
+     * @param classifier the classifier
+     * @param attributes the new attributes
+     */
+    public void setAttributes(Object classifier, Collection attributes) {
+        if (ModelFacade.isAClassifier(classifier)) {
+            MClassifier mclassifier = (MClassifier) classifier;
+            List result = new ArrayList(mclassifier.getFeatures());
+            Iterator features = mclassifier.getFeatures().iterator();
+            while (features.hasNext()) {
+                MFeature feature = (MFeature) features.next();
+                if (ModelFacade.isAAttribute(feature))
+                    result.remove(feature);
+            }
+            result.addAll(attributes);
+            mclassifier.setFeatures(result);
+        }
+    }
+
+    
+    /** 
+     * This method returns all attributes of a given Classifier,
+     * including inherited.
      *
      * @param classifier the classifier you want to have the attributes for
      * @return a collection of the attributes
@@ -309,8 +358,9 @@ public class CoreHelper {
         return result;
     }
 
-    /** This method returns all operations of a given Classifier,
-     * including inherited
+    /** 
+     * This method returns all operations of a given Classifier,
+     * including inherited.
      *
      * @param classifier the classifier you want to have the operations for
      * @return a collection of the operations
