@@ -34,18 +34,28 @@ package org.argouml.cognitive.checklist;
 import java.io.Serializable;
 import java.util.Hashtable;
 
-/** The CheckManager keeps track of whcih Checklists should be
+/** The CheckManager keeps track of which Checklists should be
  *  presented for a given design material.  CheckManager also keeps
  *  track of which CheckItem's are checked off for a given design
- *  element.  */
-
+ *  element.
+ */
 public class CheckManager implements Serializable {
 
     ////////////////////////////////////////////////////////////////
     // static variables
 
-    protected static Hashtable _lists = new Hashtable();
-    protected static Hashtable _stats = new Hashtable();
+    /** List of checklists.
+     *
+     * Indexed on the object type of the element that this checklist is
+     * appropriate for.
+     */
+    private static Hashtable _lists = new Hashtable();
+    
+    /** List of partly filled checklists.
+     *
+     * Indexed on the model element itself.
+     */
+    private static Hashtable _stats = new Hashtable();
 
     ////////////////////////////////////////////////////////////////
     // constructor
@@ -54,9 +64,15 @@ public class CheckManager implements Serializable {
     ////////////////////////////////////////////////////////////////
     // static accessors
 
+    /** Gets the checklist for an element.
+     *
+     * @param dm is the element
+     * @returns a checklist
+     */
     public static Checklist getChecklistFor(Object dm) {
 	Checklist cl = (Checklist) _lists.get(dm);
 	if (cl != null) return cl;
+        
 	java.lang.Class cls = dm.getClass();
 	while (cls != null) {
 	    cl = (Checklist) _lists.get(cls);

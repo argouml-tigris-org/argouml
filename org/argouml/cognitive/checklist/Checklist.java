@@ -39,7 +39,7 @@ import java.util.Vector;
  *  some convience functions for adding trivial CheckItems (ones that
  *  have no predicate).
  *
- *  In Argo/UML, Checklists are shown in the TabChecklist panel.
+ *  In ArgoUML, Checklists are shown in the TabChecklist panel.
  *
  *  @see org.argouml.cognitive.checklist.ui.TabChecklist
  */
@@ -50,7 +50,7 @@ public class Checklist implements Serializable {
     // instance variables
 
     /** Pending CheckItems for the designer to consider. */
-    protected Vector _items = new Vector(100);
+    protected Vector _items = new Vector();
 
     protected String _nextCategory = "General";
 
@@ -94,22 +94,7 @@ public class Checklist implements Serializable {
     }
 
     public void setNextCategory(String cat) { _nextCategory = cat; }
-
-  
-    ////////////////////////////////////////////////////////////////
-    // internal methods
-  
-    /** Sort the items by priority.
-     *
-     *  TODO: not done yet.  It has been pointed out that
-     *  sorting and priorities will probably be pretty arbitrary and hard
-     *  to match with the Designer's (tacit) feelings about the
-     *  importance of various items.  We are thinking about a
-     *  sort-by-category user interface that would be part of a complete
-     *  java PIM (personal information manager, AKA, a daily planner).  */
-    private synchronized void sort() {
-	// do some sorting?
-    }
+    
 
     public String toString() {
 	String res;
