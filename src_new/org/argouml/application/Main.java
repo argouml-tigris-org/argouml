@@ -45,6 +45,7 @@ import org.argouml.cognitive.ui.*;
 import org.argouml.uml.cognitive.critics.*;
 import org.argouml.xml.argo.ArgoParser;
 import org.argouml.uml.ui.UMLAction;
+import org.argouml.application.security.ArgoSecurityManager;
 
 public class Main {
   ////////////////////////////////////////////////////////////////
@@ -62,6 +63,8 @@ public class Main {
   // main
 
   public static void main(String args[]) {
+
+    System.setSecurityManager(ArgoSecurityManager.getInstance());
 
     // Force the configuration to load
     Configuration.load();

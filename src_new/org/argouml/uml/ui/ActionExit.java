@@ -1,4 +1,4 @@
-// Copyright (c) 1996-01 The Regents of the University of California. All
+// Copyright (c) 1996-2001 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -24,6 +24,7 @@
 package org.argouml.uml.ui;
 
 import org.argouml.application.api.*;
+import org.argouml.application.security.*;
 import org.argouml.kernel.*;
 import org.argouml.ui.*;
 
@@ -71,6 +72,7 @@ public class ActionExit extends UMLAction {
 	    }
 	}
 	Configuration.save();
+	ArgoSecurityManager.getInstance().setAllowExit(true);
 	System.exit(0);
     }
 } /* end class ActionExit */
