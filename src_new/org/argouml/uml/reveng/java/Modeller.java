@@ -348,6 +348,8 @@ public class Modeller
 
 	if(returnType == null) {
 	    // Constructor
+	    mOperation.setStereotype(getStereotype("create"));
+	    setScope(mOperation, JavaRecognizer.ACC_STATIC);	    
 	}
 	else {
 	    mParameter = new MParameterImpl();
