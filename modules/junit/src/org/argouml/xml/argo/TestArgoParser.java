@@ -39,8 +39,11 @@ public class TestArgoParser extends TestCase {
 
     /**
      * Tests that a project is loadable.
+     *
+     * @param filename of the project file to load
+     * @throws Exception if something goes wrong.
      */
-    private void loadProject(String filename) {
+    private void loadProject(String filename) throws Exception {
 	URL url;
 	try {
 	    url = new URL(filename);
@@ -50,16 +53,13 @@ public class TestArgoParser extends TestCase {
 	} catch (java.net.MalformedURLException e) {
 	    assertTrue("Incorrect test case, malformed filename: " 
 		       + filename + ".", false);
-	} catch (Exception io) {
-	    fail("Projectfile corrupted: " + filename);
-	}
-	
+	}	
     }
 
-    public void testLoadProject1() { 
+    public void testLoadProject1() throws Exception { 
 	loadProject("file:testmodels/Empty.zargo");
     }
-    public void testLoadProject2() {
+    public void testLoadProject2() throws Exception {
 	loadProject("file:testmodels/Alittlebitofeverything.zargo");
     }
 
