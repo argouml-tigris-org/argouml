@@ -40,6 +40,7 @@ import ru.novosoft.uml.behavior.collaborations.*;
 import uci.uml.generate.*;
 import uci.uml.ui.ProjectBrowser;
 import uci.uml.ui.Project;
+import uci.uml.util.MMUtil;
 
 public abstract class ColumnDescriptor {
 
@@ -880,8 +881,9 @@ class ColumnReturn extends ColumnDescriptor {
   public Object getValueFor(Object target) {
     if (!(target instanceof MOperation)) return "";
     MOperation op = (MOperation) target;
-	if (op.getReturnParameter() != null && op.getReturnParameter().getType() != null) {
-		MClassifier returnType = (op.getReturnParameter()).getType();
+	MParameter rp = MMUtil.SINGLETON.getReturnParameter(op);
+	if (rp != null && rp.getType() != null) {
+		MClassifier returnType = rp.getType();
 		GeneratorDisplay gd = GeneratorDisplay.SINGLETON;
 		return gd.generateClassifierRef(returnType);
 	}
@@ -899,7 +901,7 @@ class ColumnReturn extends ColumnDescriptor {
     ParserDisplay pd = ParserDisplay.SINGLETON;
 	MParameter rp = new MParameterImpl();
 	rp.setType(rt);
-	op.setReturnParameter(rp);
+	MMUtil.SINGLETON.setReturnParameter(op, rp);
   }
 } /* end class ColumnReturn */
 
