@@ -173,6 +173,20 @@ public class CompartmentFigText extends FigText {
 
 
     /**
+     * @see org.tigris.gef.presentation.Fig#getLineWidth()
+     */
+    public int getLineWidth() {
+    	return 0;
+    }
+    
+    /**
+     * @see org.tigris.gef.presentation.Fig#setLineWidth(int)
+     */
+    public void setLineWidth(int w) {
+    	super.setLineWidth(0);
+    }
+    
+    /**
      * Mark whether this item is to be highlighted.<p>
      *
      * If it is highlighted, make the superclass line width 1 rather
