@@ -1232,7 +1232,11 @@ public class CoreFactory extends AbstractUmlModelFactory {
 		oper.setRoot(false);
 		oper.setQuery(false);
 		oper.setOwnerScope(MScopeKind.INSTANCE);
-        oper.setNamespace(cls);
+        // Jaap Branderhorst 6-4-2003
+        // commented out next line since an operation cannot have two owners.
+        // the owner must be the owning classifier which must be set via the setOwner
+        // method, not via the namespace.
+        // oper.setNamespace(cls);
 		oper.setConcurrency(MCallConcurrencyKind.SEQUENTIAL);
 
 		MParameter returnParameter = buildParameter(oper);
