@@ -92,9 +92,9 @@ public class ActionOpenProject extends UMLAction {
       if (chooser == null) chooser = new JFileChooser();
       
       chooser.setDialogTitle (Localizer.localize ("Actions", "text.open_project.chooser_title"));
-      SuffixFilter filter = FileFilters.ZArgoFilter;
+      SuffixFilter filter = FileFilters.CompressedFileFilter;
       chooser.addChoosableFileFilter (filter);
-      chooser.addChoosableFileFilter (FileFilters.ArgoFilter);
+      chooser.addChoosableFileFilter (FileFilters.UncompressedFileFilter);
       chooser.addChoosableFileFilter (FileFilters.XMIFilter);
       chooser.setFileFilter (filter);
       

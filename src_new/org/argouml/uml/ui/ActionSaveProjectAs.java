@@ -93,7 +93,7 @@ public class ActionSaveProjectAs extends ActionSaveProject {
       
       String sChooserTitle = Localizer.localize ("Actions", "text.save_as_project.chooser_title");
       chooser.setDialogTitle (sChooserTitle + p.getName());
-      FileFilter filter = FileFilters.ZArgoFilter;
+      FileFilter filter = FileFilters.CompressedFileFilter;
       chooser.addChoosableFileFilter (filter);
       chooser.setFileFilter (filter);
       
@@ -104,7 +104,7 @@ public class ActionSaveProjectAs extends ActionSaveProject {
         if (theFile != null) {
           String path = chooser.getSelectedFile().getParent();
           String name = chooser.getSelectedFile().getName();
-          if (!name.endsWith (".zargo")) name += ".zargo";
+          if (!name.endsWith (Project.COMPRESSED_FILE_EXT)) name += Project.COMPRESSED_FILE_EXT;
           if (!path.endsWith (separator)) path += separator;
           
           URL oldURL = p.getURL();

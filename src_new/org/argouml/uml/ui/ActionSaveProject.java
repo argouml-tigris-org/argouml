@@ -66,6 +66,15 @@ public class ActionSaveProject extends UMLAction {
     trySave(true);
   }
 
+  /**
+   * There are known issues with saving, particularly
+   * losing the xmi at save time. see issue
+   * http://argouml.tigris.org/issues/show_bug.cgi?id=410
+   *
+   * It is also being considered to save out individual
+   * xmi's from individuals diagrams to make
+   * it easier to modularize the output of Argo.
+   */
   public boolean trySave (boolean overwrite) {
     ProjectBrowser pb = ProjectBrowser.TheInstance;
     
@@ -77,7 +86,7 @@ public class ActionSaveProject extends UMLAction {
       
       Project p =  pb.getProject();
       
-      String fullpath = "Untitled.zargo";
+      String fullpath = "Untitled" + Project.COMPRESSED_FILE_EXT;
       if (p.getURL() != null) fullpath = p.getURL().getFile();
       
       if (fullpath.charAt (0) == '/' && fullpath.charAt (2) == ':') {
@@ -112,7 +121,7 @@ public class ActionSaveProject extends UMLAction {
       pb.showStatus (sStatus);
       {
         ZipOutputStream zos = new ZipOutputStream (new FileOutputStream (f));
-        ZipEntry zipEntry = new ZipEntry (p.getBaseName() + ".argo");
+        ZipEntry zipEntry = new ZipEntry (p.getBaseName() + Project.PROJECT_FILE_EXT);
         zos.putNextEntry (zipEntry);
         OutputStreamWriter fw = new OutputStreamWriter (zos, "UTF-8");
         p.preSave();

@@ -23,6 +23,7 @@
 
 package org.argouml.util;
 
+import org.argouml.kernel.Project;
 /** This class handles the the various file extensions.
  * It's not clear whether all of these are supported
  * for input or output or a mixture of both.
@@ -35,36 +36,24 @@ public class FileFilters {
   ////////////////////////////////////////////////////////////////
   // constants
 
-    /** this is for .argo files
-     * this is a very simple xml file used to tell
-     * Argo how to read the contents of the project
-     * folder.
-     */    
-  public static final SuffixFilter ArgoFilter = new
-  SuffixFilter("argo", "Argo project file");
-
-  /** zargo. a zipped file with myproject.argo/myproject.pgml
-   * and myproject.xmi
-   *
-   * There are known issues with saving, particularly
-   * losing the xmi at save time.
-   * see issue
-   * http://argouml.tigris.org/issues/show_bug.cgi?id=410
-   */  
-  public static final SuffixFilter ZArgoFilter = new
-  SuffixFilter("zargo", "Zipped Argo Project");
-
-  /** see
-   * http://argouml.tigris.org/issues/show_bug.cgi?id=410
-   * there are known problems with saving the xmi
-   *
-   * It is also being considered to save out individual
-   * xmi's from individuals diagrams to make
-   * it easier to modularize the output of Argo.
-   */  
+  /**
+   * This is a filter for uncompressed project format.
+   */
+  public static final SuffixFilter UncompressedFileFilter = new
+  SuffixFilter(Project.UNCOMPRESSED_FILE_EXT.substring(1), "Argo uncompressed project file");
+  
+  /**
+   * This is a filter for compressed project format.
+   */
+  public static final SuffixFilter CompressedFileFilter = new
+  SuffixFilter(Project.COMPRESSED_FILE_EXT.substring(1), "Argo compressed project file");
+  
+  /**
+   * This is a filter for xmi files.
+   */
   public static final SuffixFilter XMIFilter = new
   SuffixFilter("xmi", "XML Metadata Interchange");
-
+  
   /** This is for Precision Graphics Markup Language
    * a very old and now mostly dead standard.
    * see W3C.org for more info
