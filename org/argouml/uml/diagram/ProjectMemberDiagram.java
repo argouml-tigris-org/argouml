@@ -43,78 +43,94 @@ import ru.novosoft.uml.foundation.core.MModelElement;
 
 public class ProjectMemberDiagram extends ProjectMember {
 
-  ////////////////////////////////////////////////////////////////
-  // constants
+    ////////////////////////////////////////////////////////////////
+    // constants
 
-  public static final String MEMBER_TYPE = "pgml";
-  public static final String FILE_EXT = "." + MEMBER_TYPE;
-  public static final String PGML_TEE = "/org/argouml/xml/dtd/PGML.tee";
+    public static final String MEMBER_TYPE = "pgml";
+    public static final String FILE_EXT = "." + MEMBER_TYPE;
+    public static final String PGML_TEE = "/org/argouml/xml/dtd/PGML.tee";
 
+    ////////////////////////////////////////////////////////////////
+    // static variables
 
-  ////////////////////////////////////////////////////////////////
-  // static variables
+    public static OCLExpander expander = null;
+    private Logger _cat = Logger.getLogger(this.getClass());
 
-  public static OCLExpander expander = null;
-    private Logger _cat = 
-        Logger.getLogger(this.getClass());
+    ////////////////////////////////////////////////////////////////
+    // instance variables
 
-  ////////////////////////////////////////////////////////////////
-  // instance variables
+    private ArgoDiagram _diagram;
 
-  private ArgoDiagram _diagram;
+    ////////////////////////////////////////////////////////////////
+    // constructors
 
-  ////////////////////////////////////////////////////////////////
-  // constructors
-
-  public ProjectMemberDiagram(String name, Project p) { super(name, p); }
-
-  public ProjectMemberDiagram(ArgoDiagram d, Project p) {
-    super(null, p);
-    String s = Util.stripJunk(d.getName());
-    //if (!(s.startsWith(_project.getBaseName() + "_")))
-    //  s = _project.getBaseName() + "_" + s;
-    setName(s);
-    setDiagram(d);
-    // Make sure that the namespace has an UUID, otherwise we will not
-    // be able to match them after a save-load cycle.
-    if (d instanceof UMLDiagram) {
-	UMLDiagram u = (UMLDiagram)d;
-	if (u.getNamespace() instanceof MModelElement) {
-	    MModelElement me = (MModelElement)u.getNamespace();
-	    // if (me.getUUID() == null)
-		//   me.setUUID(UUIDManager.SINGLETON.getNewUUID());
-	}
+    public ProjectMemberDiagram(String name, Project p) {
+        super(name, p);
     }
-  }
 
-  ////////////////////////////////////////////////////////////////
-  // accessors
+    public ProjectMemberDiagram(ArgoDiagram d, Project p) {
+        super(null, p);
+        String s = Util.stripJunk(d.getName());
+        //if (!(s.startsWith(_project.getBaseName() + "_")))
+        //  s = _project.getBaseName() + "_" + s;
+        setName(s);
+        setDiagram(d);
+        // Make sure that the namespace has an UUID, otherwise we will not
+        // be able to match them after a save-load cycle.
+        if (d instanceof UMLDiagram) {
+            UMLDiagram u = (UMLDiagram)d;
+            if (u.getNamespace() instanceof MModelElement) {
+                MModelElement me = (MModelElement)u.getNamespace();
+                // if (me.getUUID() == null)
+                //   me.setUUID(UUIDManager.SINGLETON.getNewUUID());
+            }
+        }
+    }
 
-  public ArgoDiagram getDiagram() { return _diagram; }
-  public String getType() { return MEMBER_TYPE; }
-  public String getFileExtension() { return FILE_EXT; }
+    ////////////////////////////////////////////////////////////////
+    // accessors
 
-  public void load() {
-    cat.debug("Reading " + getURL());
-    PGMLParser.SINGLETON.setOwnerRegistry(getProject().getUUIDRefs());
-    ArgoDiagram d = (ArgoDiagram)PGMLParser.SINGLETON.readDiagram(getURL());
-    setDiagram(d);
-    getProject().addDiagram(d);
-    
-  }
+    public ArgoDiagram getDiagram() {
+        return _diagram;
+    }
+    public String getType() {
+        return MEMBER_TYPE;
+    }
+    public String getFileExtension() {
+        return FILE_EXT;
+    }
 
-  public void save(String path, boolean overwrite) {
-      save(path, overwrite, null);
-  }
+    public void load() {
+        cat.debug("Reading " + getURL());
+        PGMLParser.SINGLETON.setOwnerRegistry(getProject().getUUIDRefs());
+        ArgoDiagram d = (ArgoDiagram)PGMLParser.SINGLETON.readDiagram(getURL());
+        setDiagram(d);
+        getProject().addDiagram(d);
 
-  public void save(String path, boolean overwrite, Writer writer) {
-    if (expander == null)
-      expander = new OCLExpander(TemplateReader.readFile(PGML_TEE));
-      expander.expand(writer, _diagram, "", "");
-  }
+    }
 
-  protected void setDiagram(ArgoDiagram diagram) {
-    _diagram = diagram;
-  }
+    public void save(String path, boolean overwrite) {
+        save(path, overwrite, null);
+    }
+
+    public void save(String path, boolean overwrite, Writer writer) {
+        if (expander == null)
+            expander = new OCLExpander(TemplateReader.readFile(PGML_TEE));
+        expander.expand(writer, _diagram, "", "");
+    }
+
+    /**
+     * Write the diagram to the given writer.
+     * @see org.argouml.kernel.ProjectMember#save(java.io.Writer)
+     */
+    public void save(Writer writer) {
+        if (expander == null)
+            expander = new OCLExpander(TemplateReader.readFile(PGML_TEE));
+        expander.expand(writer, _diagram, "", "");
+    }
+
+    protected void setDiagram(ArgoDiagram diagram) {
+        _diagram = diagram;
+    }
 
 } /* end class ProjectMemberDiagram */

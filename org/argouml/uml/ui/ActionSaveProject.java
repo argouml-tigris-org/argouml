@@ -32,6 +32,7 @@ import java.text.MessageFormat;
 
 import javax.swing.JOptionPane;
 
+import org.apache.log4j.Logger;
 import org.argouml.application.api.Argo;
 import org.argouml.application.api.Configuration;
 import org.argouml.kernel.Project;
@@ -45,6 +46,7 @@ import org.argouml.ui.ProjectBrowser;
  * @stereotype singleton
  */
 public class ActionSaveProject extends UMLAction {
+    private Logger log = Logger.getLogger(this.getClass());
   
   ////////////////////////////////////////////////////////////////
   // static variables
@@ -141,7 +143,7 @@ public class ActionSaveProject extends UMLAction {
           JOptionPane.ERROR_MESSAGE
         );
       
-      fnfe.printStackTrace();
+     log.error(sMessage, fnfe);
     }
     catch (IOException ioe) {
       String sMessage = MessageFormat.format (
@@ -156,7 +158,7 @@ public class ActionSaveProject extends UMLAction {
           JOptionPane.ERROR_MESSAGE
         );
       
-      ioe.printStackTrace();
+        log.error(sMessage, ioe);
     }
     catch (Exception ex) {
     	String sMessage = MessageFormat.format (
@@ -171,7 +173,7 @@ public class ActionSaveProject extends UMLAction {
           JOptionPane.ERROR_MESSAGE
         );
       
-      ex.printStackTrace();
+        log.error(sMessage, ex);
     }
     
     return false;

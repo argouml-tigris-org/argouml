@@ -65,10 +65,7 @@ public class UMLListCellRenderer2 extends DefaultListCellRenderer {
     /**
      * @see javax.swing.ListCellRenderer#getListCellRendererComponent(javax.swing.JList, java.lang.Object, int, boolean, boolean)
      */
-    public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-        if (value == null || value.equals("")) {
-            return new JLabel(" ");
-        }
+    public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {       
         JLabel label = (JLabel) super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
 
         if (value instanceof MBase) {
@@ -76,13 +73,17 @@ public class UMLListCellRenderer2 extends DefaultListCellRenderer {
             label.setText(text);
             if (_showIcon) {
                 Icon icon = ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIcon(value);
-                if (icon != null)
+                // if (icon != null)
                     label.setIcon(icon);
             } else {
                 // hack to make sure that the right hight is applied when no icon is used.
                 label = (JLabel) super.getListCellRendererComponent(list, text, index, isSelected, cellHasFocus);
             }
 
+        } else
+        if (value == null || value.equals("")) {      
+            label = new JLabel(" ");      
+            label.setIcon(null);
         }
         
 

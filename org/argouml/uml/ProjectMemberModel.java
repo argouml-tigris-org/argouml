@@ -23,118 +23,146 @@
 
 package org.argouml.uml;
 
+import java.io.Writer;
+import java.util.Iterator;
+
 import org.apache.log4j.Category;
-import org.argouml.kernel.*;
-import org.argouml.model.uml.UmlFactory;
-import org.argouml.ui.*;
+import org.argouml.kernel.Project;
+import org.argouml.kernel.ProjectMember;
 import org.argouml.xml.xmi.XMIParser;
 
-import java.net.URL;
-import java.util.Iterator;
-import java.io.*;
-import java.util.zip.*;
-import javax.swing.*;
-
 import ru.novosoft.uml.model_management.MModel;
-import ru.novosoft.uml.foundation.core.MNamespace;
-import ru.novosoft.uml.xmi.*;
-
+import ru.novosoft.uml.xmi.IncompleteXMIException;
+import ru.novosoft.uml.xmi.XMIWriter;
 
 /**
  * @author Piotr Kaminski
  */
 
-
 /** This file updated by Jim Holt 1/17/00 for nsuml support **/
 
-
 public class ProjectMemberModel extends ProjectMember {
-	
-	private static Category cat = Category.getInstance(org.argouml.uml.ProjectMemberModel.class);
 
-  ////////////////////////////////////////////////////////////////
-  // constants
+    private static Category cat =
+        Category.getInstance(org.argouml.uml.ProjectMemberModel.class);
 
-  public static final String MEMBER_TYPE = "xmi";
-  public static final String FILE_EXT = "." + MEMBER_TYPE;
+    ////////////////////////////////////////////////////////////////
+    // constants
 
-  ////////////////////////////////////////////////////////////////
-  // instance variables
+    public static final String MEMBER_TYPE = "xmi";
+    public static final String FILE_EXT = "." + MEMBER_TYPE;
 
-  private MModel _model;
+    ////////////////////////////////////////////////////////////////
+    // instance variables
 
-  ////////////////////////////////////////////////////////////////
-  // constructors
+    private MModel _model;
 
-  public ProjectMemberModel(String name, Project p) { super(name, p); }
+    ////////////////////////////////////////////////////////////////
+    // constructors
 
-  public ProjectMemberModel(MModel m, Project p) {
-    super(p.getBaseName() + FILE_EXT, p);
-    setModel(m);
-  }
-
-  ////////////////////////////////////////////////////////////////
-  // accessors
-
-  public MModel getModel() { return _model; }
-  protected void setModel(MModel model) { _model = model; }
-
-  public String getType() { return MEMBER_TYPE; }
-  public String getFileExtension() { return FILE_EXT; }
-
-
-  ////////////////////////////////////////////////////////////////
-  // actions
-
-  public void load() throws java.io.IOException, org.xml.sax.SAXException {
-    cat.info("Reading " + getURL());
-    XMIParser.SINGLETON.readModels(_project,getURL());
-    _model = XMIParser.SINGLETON.getCurModel();
-    _project.setUUIDRefs(XMIParser.SINGLETON.getUUIDRefs());
-    cat.info("Done reading " + getURL());
-  }
-
-  public void save(String path, boolean overwrite) throws Exception {
-      save(path, overwrite, null);
-  }
-
-  public void save(String path, boolean overwrite, Writer writer) throws Exception{
-
-      if (writer == null) {
-	  	throw new IllegalArgumentException("No Writer specified!");
-      }
-
-
-      //if (!path.endsWith("/")) path += "/";
-      //String fullpath = path + getName();
-
-    XMIWriter xmiwriter = null;
-
-    try {    
-
-      xmiwriter = new XMIWriter(_model,writer);
-      xmiwriter.gen();
+    public ProjectMemberModel(String name, Project p) {
+        super(name, p);
     }
-    catch (Exception ex) {
-      logNotContainedElements(xmiwriter);
-      throw ex;
-    }
-    finally {
-    	if (xmiwriter != null) {
-    		if (!xmiwriter.getNotContainedElements().isEmpty()) {
-    			logNotContainedElements(xmiwriter);
-    			throw new IncompleteXMIException();
-    		}
-    	}
-    }
-  }
 
-	private void logNotContainedElements(XMIWriter xmiwriter) {
-		if (xmiwriter != null) {
-			Iterator it = xmiwriter.getNotContainedElements().iterator();
-			while (it.hasNext())
-	  			cat.error("Not contained in XMI: " + it.next());
-      	}
-	}
+    public ProjectMemberModel(MModel m, Project p) {
+        super(p.getBaseName() + FILE_EXT, p);
+        setModel(m);
+    }
+
+    ////////////////////////////////////////////////////////////////
+    // accessors
+
+    public MModel getModel() {
+        return _model;
+    }
+    protected void setModel(MModel model) {
+        _model = model;
+    }
+
+    public String getType() {
+        return MEMBER_TYPE;
+    }
+    public String getFileExtension() {
+        return FILE_EXT;
+    }
+
+    ////////////////////////////////////////////////////////////////
+    // actions
+
+    public void load() throws java.io.IOException, org.xml.sax.SAXException {
+        cat.info("Reading " + getURL());
+        XMIParser.SINGLETON.readModels(_project, getURL());
+        _model = XMIParser.SINGLETON.getCurModel();
+        _project.setUUIDRefs(XMIParser.SINGLETON.getUUIDRefs());
+        cat.info("Done reading " + getURL());
+    }
+
+    public void save(String path, boolean overwrite) throws Exception {
+        save(path, overwrite, null);
+    }
+
+    public void save(String path, boolean overwrite, Writer writer)
+        throws Exception {
+
+        if (writer == null) {
+            throw new IllegalArgumentException("No Writer specified!");
+        }
+
+        //if (!path.endsWith("/")) path += "/";
+        //String fullpath = path + getName();
+
+        XMIWriter xmiwriter = null;
+
+        try {
+
+            xmiwriter = new XMIWriter(_model, writer);
+            xmiwriter.gen();
+        } catch (Exception ex) {
+            logNotContainedElements(xmiwriter);
+            throw ex;
+        } finally {
+            if (xmiwriter != null) {
+                if (!xmiwriter.getNotContainedElements().isEmpty()) {
+                    logNotContainedElements(xmiwriter);
+                    throw new IncompleteXMIException();
+                }
+            }
+        }
+    }
+
+    /**
+     * Save the project model to XMI.
+     * @see org.argouml.kernel.ProjectMember#save(java.io.Writer)
+     */
+    public void save(Writer writer) throws Exception {
+        if (writer == null) {
+            throw new IllegalArgumentException("No Writer specified!");
+        }
+        XMIWriter xmiwriter = null;
+
+        try {
+
+            xmiwriter = new XMIWriter(_model, writer);
+            xmiwriter.gen();
+        } catch (Exception ex) {
+            logNotContainedElements(xmiwriter);
+            throw ex;
+        } finally {
+            if (xmiwriter != null) {
+                if (!xmiwriter.getNotContainedElements().isEmpty()) {
+                    logNotContainedElements(xmiwriter);
+                    throw new IncompleteXMIException();
+                }
+            }
+        }
+    }
+
+    private void logNotContainedElements(XMIWriter xmiwriter) {
+        if (xmiwriter != null) {
+            Iterator it = xmiwriter.getNotContainedElements().iterator();
+            while (it.hasNext())
+                cat.error("Not contained in XMI: " + it.next());
+        }
+    }
 
 } /* end class ProjectMemberModel */
