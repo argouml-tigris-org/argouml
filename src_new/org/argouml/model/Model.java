@@ -24,9 +24,6 @@
 
 package org.argouml.model;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.argouml.model.uml.NSUMLModelImplementation;
 
 /**

@@ -450,8 +450,8 @@ public class PGMLParser extends org.tigris.gef.xml.pgml.PGMLParser {
 
 	case PRIVATE_EDGE_STATE:
 	    if (_currentEdge instanceof FigEdgeModelElement) {
-            ((FigEdgeModelElement) _currentEdge)
-                .setItemUID(new ItemUID(id));
+	        ((FigEdgeModelElement) _currentEdge)
+                    .setItemUID(new ItemUID(id));
 	    }
 	    //cat.debug("SetUID: edge: " + _currentEdge);
 	    break;
@@ -582,7 +582,7 @@ public class PGMLParser extends org.tigris.gef.xml.pgml.PGMLParser {
      *         java.lang.String, java.lang.String, java.lang.String)
      */
     public void endElement(String uri, String localname, String name)
-            throws SAXException {
+        throws SAXException {
 
         if ("private".equals(name)) {
             if (privateTextDepth == 1) {
@@ -598,7 +598,8 @@ public class PGMLParser extends org.tigris.gef.xml.pgml.PGMLParser {
                             LOG.debug("Private Element: \"" + nval.getName()
                                       + "\" \"" + nval.getValue() + "\"");
                         }
-                        if ("ItemUID".equals(nval.getName()) && nval.getValue().length() > 0) {
+                        if ("ItemUID".equals(nval.getName()) 
+                                && nval.getValue().length() > 0) {
                             setElementItemUID(nval.getValue());
                         }
                     }
@@ -629,7 +630,7 @@ public class PGMLParser extends org.tigris.gef.xml.pgml.PGMLParser {
                     && _currentPoly != null
                     && _currentPoly.getPointsList().size() == 1) {
                 LOG.warn("An edge has been detected with only one point");
-                _currentPoly.addPoint(0,0);
+                _currentPoly.addPoint(0, 0);
             }
             break;
         }
@@ -712,6 +713,9 @@ public class PGMLParser extends org.tigris.gef.xml.pgml.PGMLParser {
         return f;
     }
     
+    /**
+     * @see org.tigris.gef.xml.pgml.PGMLParser#handlePGML(org.xml.sax.Attributes)
+     */
     protected void handlePGML(Attributes attrList) {
         super.handlePGML(attrList);
         LOG.info("Diagram name is " + _diagram.getName());

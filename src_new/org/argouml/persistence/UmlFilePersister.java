@@ -167,7 +167,7 @@ public class UmlFilePersister extends AbstractFilePersister {
      * @throws SaveException If something goes wrong.
      */
     void writeProject(Project project, OutputStream stream)
-        	throws SaveException {
+        throws SaveException {
         OutputStreamWriter outputStreamWriter;
         try {
             outputStreamWriter = new OutputStreamWriter(stream, "UTF-8");
@@ -371,7 +371,7 @@ public class UmlFilePersister extends AbstractFilePersister {
 
     /**
      * Get the version attribute value from a string of XML.
-     * @param rootLine
+     * @param rootLine the line
      * @return the version
      */
     protected String getVersion(String rootLine) {

@@ -88,14 +88,11 @@ import ru.novosoft.uml.model_management.MModel;
 
 /**
  * Factory to create UML classes for the UML
- * Foundation::Core package.
+ * Foundation::Core package. <p>
  *
- * Feature, StructuralFeature, and PresentationElement
- * do not have a create methods since
- * it is called an "abstract metaclass" in the
+ * Feature, StructuralFeature, and PresentationElement do not have a 
+ * create method since it is called an "abstract metaclass" in the
  * UML specifications.
- *
- * TODO: Change visibility to package after reflection problem solved.
  *
  * @since ARGO0.11.2
  * @author Thierry Lach
@@ -132,8 +129,7 @@ public class CoreFactoryImpl
      * @param supplier the supplier of the abstraction
      * @param client the client of the abstraction
      */
-    public Object buildAbstraction(String name,
-            Object supplier,
+    public Object buildAbstraction(String name, Object supplier,
             Object client) {
         if (!(client instanceof MClassifier)
                 || !(supplier instanceof MClassifier)) {
@@ -769,8 +765,7 @@ public class CoreFactoryImpl
      * @return MAssociationClass
      */
     private MAssociationClass buildAssociationClass(MClass cl,
-						  MClassifier end1,
-						  MClassifier end2) {
+            MClassifier end1, MClassifier end2) {
         if (end1 == null
                 || end2 == null
                 || cl == null
@@ -813,8 +808,7 @@ public class CoreFactoryImpl
         assoc.setStructuralFeatures(cl.getStructuralFeatures());
         assoc.setTaggedValues(cl.getTaggedValues());
         assoc.setVisibility(cl.getVisibility());
-        buildAssociationEnd(
-        		    assoc,
+        buildAssociationEnd(assoc,
         		    null,
         		    end1,
         		    null,
@@ -825,8 +819,7 @@ public class CoreFactoryImpl
         		    null,
         		    null,
         		    null);
-        buildAssociationEnd(
-        		    assoc,
+        buildAssociationEnd(assoc,
         		    null,
         		    end2,
         		    null,
@@ -842,7 +835,9 @@ public class CoreFactoryImpl
 
     /**
      * Builds a default attribute.
-     * @return MAttribute
+     *
+     * @see org.argouml.model.CoreFactory#buildAttribute(java.lang.Object, 
+     * java.lang.Object)
      */
     public Object buildAttribute(Object model, Object theIntType) {
         //build the default attribute
@@ -878,10 +873,10 @@ public class CoreFactoryImpl
     /**
      * Builds an attribute owned by some classifier cls. I don't know
      * if this is legal for an interface (purely UML speaking). In
-     * this method it is.<p>
-     *
-     * @param handle the given classifier
-     * @return the newly build attribute
+     * this method it is.
+     * 
+     * @see org.argouml.model.CoreFactory#buildAttribute(java.lang.Object, 
+     * java.lang.Object, java.lang.Object, java.util.Collection)
      */
     public Object buildAttribute(Object handle, Object model, Object intType,
             			 Collection propertyChangeListeners) {
@@ -1206,9 +1201,7 @@ public class CoreFactoryImpl
      * @param body The actual body of the method
      * @return MMethod
      */
-    public MMethod buildMethod(
-			       MOperation op,
-			       NotationName notation,
+    public MMethod buildMethod(MOperation op, NotationName notation,
 			       String body) {
 	MMethod method = createMethod();
 	if (op != null) {
@@ -1219,13 +1212,8 @@ public class CoreFactoryImpl
 	    }
 	}
 	if (notation != null && notation.getName() != null) {
-	    method.setBody(
-			   Model
-			   .getUmlFactory()
-			   .getDataTypes()
-			   .createProcedureExpression(
-						      notation.getName(),
-						      body));
+	    method.setBody(Model.getUmlFactory().getDataTypes()
+		.createProcedureExpression(notation.getName(), body));
 	}
 	return method;
     }
@@ -1250,7 +1238,7 @@ public class CoreFactoryImpl
      * @param classifier is the given classifier
      * @param model is the model to which the class belongs
      * @param voidType the type of the return parameter
-     * @param propertyChangeListeners
+     * @param propertyChangeListeners the listeners
      * @return the operation
      */
     public Object buildOperation(Object classifier, Object model,
@@ -1303,7 +1291,7 @@ public class CoreFactoryImpl
      * @param model is the model that contains the class
      * @param voidType the type of the return parameter
      * @param name the given name for the operation
-     * @param propertyChangeListeners
+     * @param propertyChangeListeners the listeners
      * @return the operation
      */
     public Object buildOperation(Object cls, Object model, Object voidType,
@@ -1344,7 +1332,7 @@ public class CoreFactoryImpl
      * @param o an event or behavioral feature
      * @param model the model to which the event or behavioral feature belongs
      * @param voidType the type of the return parameter
-     * @param propertyChangeListeners
+     * @param propertyChangeListeners the listeners
      * @return the parameter
      */
     public MParameter buildParameter(Object o, Object model, Object voidType,
@@ -1468,7 +1456,7 @@ public class CoreFactoryImpl
      * Builds a comment inluding a reference to the given modelelement
      * to comment.  If the element is null, the comment is still build
      * since it is not mandatory to have an annotated element in the
-     * comment.<p>
+     * comment.
      *
      * @param element is the model element
      * @param model the namespace for the comment

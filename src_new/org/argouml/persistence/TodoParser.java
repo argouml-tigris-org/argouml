@@ -398,7 +398,7 @@ public class TodoParser extends SAXParserBase {
                 }
                 for (i1 = ++i2; i2 < str.length(); i2++) {
                     if (str.charAt(i2) == ';') {
-                		break;
+                        break;
                     }
                 }
                 if (i2 >= str.length()) {
@@ -409,7 +409,7 @@ public class TodoParser extends SAXParserBase {
                 if (i2 > i1) {
                     String ent = str.substring(i1, i2);
                     if ("proc".equals(ent)) {
-                		sb.append('%');
+                        sb.append('%');
                     } else {
                         try {
                             sb.append((char) Integer.parseInt(ent));
