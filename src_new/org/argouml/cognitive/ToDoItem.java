@@ -33,6 +33,7 @@ package org.argouml.cognitive;
 
 import java.io.Serializable;
 import java.util.Enumeration;
+import java.util.Collection;
 import javax.swing.Icon;
 import org.argouml.cognitive.critics.Critic;
 import org.argouml.kernel.Wizard;
@@ -198,6 +199,11 @@ public class ToDoItem implements Serializable {
     /** Reply a Set of design material's that are the subject of this
      * ToDoItem. */
     public VectorSet getOffenders() { return _offenders; }
+    
+    /** Set the designmatial that is subject of this ToDoItem */
+    public void setOffenders(VectorSet offenders) {
+        _offenders = offenders;
+    }
 
     /** Reply the Critic or Designer that posted this ToDoItem. */
     public Poster getPoster() { return _poster; }
@@ -206,7 +212,8 @@ public class ToDoItem implements Serializable {
     public String getExpertEmail() { return _poster.getExpertEmail(); }
 
     /** Return a clarifier object that can graphical highlight this
-     *  error in a design diagram. By default return a DefaultClarifier
+     *  error in a design diagram. Return a clarifier for this todoitem, if not found
+     *  by the poster, or null.
      *
      * @return an Icon or null if none found.
      */
