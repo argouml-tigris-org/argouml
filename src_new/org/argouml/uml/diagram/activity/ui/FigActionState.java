@@ -30,7 +30,6 @@ package org.argouml.uml.diagram.activity.ui;
 
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.util.Vector;
 

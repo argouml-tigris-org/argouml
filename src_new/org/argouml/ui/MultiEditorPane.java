@@ -41,7 +41,6 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import org.apache.log4j.Logger;
-import org.argouml.application.api.Argo;
 import org.argouml.application.api.QuadrantPanel;
 import org.argouml.swingext.Horizontal;
 import org.argouml.ui.targetmanager.TargetEvent;
@@ -62,7 +61,9 @@ import org.tigris.gef.presentation.Fig;
 public class MultiEditorPane
     extends JPanel
     implements ChangeListener, MouseListener, QuadrantPanel, TargetListener {
-    protected static Logger cat = Logger.getLogger(MultiEditorPane.class);
+	/** logger */
+	private static Logger cat = Logger.getLogger(MultiEditorPane.class);
+//    protected static Logger cat = Logger.getLogger(MultiEditorPane.class);
 
     ////////////////////////////////////////////////////////////////
     // instance variables
@@ -85,7 +86,7 @@ public class MultiEditorPane
      * can be edited.
      */
     public MultiEditorPane() {
-        Argo.log.info("making MultiEditorPane");
+        cat.info("making MultiEditorPane");
         ConfigLoader.loadTabs(_tabPanels, "multi", Horizontal.getInstance());
 
         setLayout(new BorderLayout());
@@ -317,7 +318,6 @@ public class MultiEditorPane
             Component comp = _tabs.getComponentAt(i);
             if (comp instanceof TabDiagram) {
                 TabDiagram tabDia = (TabDiagram) comp;
-                Object oldDia = tabDia.getTarget();
                 Iterator it = diagrams.iterator();
                 while (it.hasNext()) {
                     Diagram diagram = (Diagram) it.next();
@@ -345,8 +345,6 @@ public class MultiEditorPane
         for (int i = 0; i < _tabs.getComponentCount(); i++) {
             Component comp = _tabs.getComponentAt(i);
             if (comp instanceof TabDiagram) {
-                TabDiagram tabDia = (TabDiagram) comp;
-                Object oldDia = tabDia.getTarget();
                 Iterator it = diagrams.iterator();
                 while (it.hasNext()) {
                     Diagram diagram = (Diagram) it.next();

@@ -51,7 +51,7 @@ public class UMLVisibilityPanel extends JPanel {
 						      mclass,
 						      "getVisibility",
 						      "setVisibility",
-						      (Class)ModelFacade.VISIBILITYKIND,
+						      ModelFacade.VISIBILITYKIND,
 						      ModelFacade.PUBLIC_VISIBILITYKIND,
 						      null));
 	publicButton.setSelected(true);
@@ -64,7 +64,7 @@ public class UMLVisibilityPanel extends JPanel {
 						      mclass,
 						      "getVisibility",
 						      "setVisibility",
-						      (Class)ModelFacade.VISIBILITYKIND,
+						      ModelFacade.VISIBILITYKIND,
 						      ModelFacade.PROTECTED_VISIBILITYKIND,
 						      null));
 	add(protectedButton);
@@ -76,7 +76,7 @@ public class UMLVisibilityPanel extends JPanel {
 						      mclass,
 						      "getVisibility",
 						      "setVisibility",
-						      (Class)ModelFacade.VISIBILITYKIND,
+						      ModelFacade.VISIBILITYKIND,
 						      ModelFacade.PRIVATE_VISIBILITYKIND,
 						      null));
 	add(privateButton);

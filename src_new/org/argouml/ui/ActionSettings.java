@@ -33,6 +33,7 @@ import javax.swing.JButton;
 import javax.swing.JMenuItem;
 import javax.swing.JTabbedPane;
 
+import org.apache.log4j.Logger;
 import org.argouml.i18n.Translator;
 import org.argouml.application.api.Argo;
 import org.argouml.application.api.PluggableSettingsTab;
@@ -54,7 +55,10 @@ public class ActionSettings extends UMLAction
     ////////////////////////////////////////////////////////////////
     // static variables
 
-    /** One and only instance.
+    /** logger */
+    private static Logger cat = Logger.getLogger(Translator.class);
+
+	/** One and only instance.
      */
     private static ActionSettings SINGLETON = new ActionSettings();
 
@@ -71,7 +75,7 @@ public class ActionSettings extends UMLAction
     protected ArgoDialog dlg = null;
 
     protected ActionSettings() {
-        super(Translator.localize("action.settings"), HAS_ICON);
+        super("action.settings", HAS_ICON);
     }
 
     /** Helper for localization.
@@ -147,7 +151,7 @@ public class ActionSettings extends UMLAction
                     dlg.setContent(tabs);        
                 }
                 catch (Exception exception) {
-                    Argo.log.error("got an Exception in ActionSettings", exception);
+                    cat.error("got an Exception in ActionSettings", exception);
                 }
             }
             

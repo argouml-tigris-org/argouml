@@ -26,7 +26,6 @@
 package org.argouml.uml.ui.foundation.core;
 
 import java.awt.event.ActionEvent;
-import java.util.Collection;
 import java.util.Vector;
 
 import org.argouml.i18n.Translator;
@@ -68,7 +67,7 @@ public class ActionSetFlowSource extends UMLChangeAction {
                     if (source.getSelectedItem() != null) {
                         Vector sources = new Vector();
                         sources.add(source.getSelectedItem());
-                        ModelFacade.setSources(flow, (Collection) sources);
+                        ModelFacade.setSources(flow, sources);
                     }
                 }
             }

@@ -52,7 +52,7 @@ public class ActionAddAssociationRole extends CmdSetMode {
                                     String name) {
         super(ModeCreatePolyEdge.class,
               "edgeClass",
-              (Class)ModelFacade.ASSOCIATION_ROLE,
+              ModelFacade.ASSOCIATION_ROLE,
               name);
         _modeArgs.put("aggregation", aggregationKind);
         _modeArgs.put("unidirectional", new Boolean(unidirectional));

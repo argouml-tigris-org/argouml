@@ -26,8 +26,6 @@ package org.argouml.ui.explorer;
 
 import java.util.*;
 
-import javax.swing.tree.DefaultMutableTreeNode;
-
 import org.argouml.model.ModelFacade;
 
 /**

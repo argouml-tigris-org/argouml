@@ -24,9 +24,6 @@
 
 package org.argouml.uml.generator;
 
-import java.util.*;
-import java.io.*;
-
 /** Stores preference information entered by the user. */
 
 public class GenerationPreferences implements java.io.Serializable {

@@ -82,7 +82,6 @@ public class ActionRemoveFromModel extends UMLChangeAction {
      * @see org.argouml.uml.ui.UMLAction#shouldBeEnabled()
      */
     public boolean shouldBeEnabled() {
-        boolean enabled = false;
         super.shouldBeEnabled();
         int size = 0;
         try {
@@ -131,8 +130,6 @@ public class ActionRemoveFromModel extends UMLChangeAction {
         for (int i = 0; i < targets.length; i++) {
             target = targets[i];
             if (sureRemove(target)) {
-                // Argo.log.info("deleting "+target+"+
-                // "+(((MModelElement)target).getMElementListeners()).size());
                 // remove from the model
                 if (target instanceof Fig) {
                     target = ((Fig) target).getOwner();

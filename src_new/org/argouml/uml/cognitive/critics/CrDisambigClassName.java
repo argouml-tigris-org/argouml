@@ -79,7 +79,7 @@ public class CrDisambigClassName extends CrUML {
 		if (meName == null || meName.equals("")) continue;
 		if (meName.equals(myNameString)) return PROBLEM_FOUND;
 	    }
-	};
+	}
 	return NO_PROBLEM;
     }
 

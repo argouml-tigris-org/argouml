@@ -28,18 +28,14 @@
 
 package org.argouml.uml.ui;
 
-import javax.swing.*;
 import java.util.*;
-import java.awt.*;
 
 import org.argouml.model.uml.foundation.core.CoreFactory;
 import org.argouml.model.uml.foundation.core.CoreHelper;
 import org.argouml.model.uml.modelmanagement.ModelManagementHelper;
-import org.argouml.ui.*;
-import org.tigris.gef.graph.MutableGraphModel;
 import org.argouml.application.api.Argo;
-import org.argouml.kernel.*;
 import org.argouml.model.ModelFacade;
+import org.tigris.gef.graph.MutableGraphModel;
 
 /**
  * @deprecated as of ArgoUml 0.13.5 (10-may-2003),

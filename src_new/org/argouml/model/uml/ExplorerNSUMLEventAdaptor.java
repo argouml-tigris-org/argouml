@@ -29,8 +29,8 @@ import ru.novosoft.uml.MElementEvent;
 import ru.novosoft.uml.MElementListener;
 
 import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
+
 /**
  * Event adaptor for the explorer to decouple the explorer from the nsuml model.
  *

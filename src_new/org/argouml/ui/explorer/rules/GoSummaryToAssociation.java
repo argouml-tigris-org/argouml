@@ -28,7 +28,6 @@ import java.util.Collection;
 
 import org.argouml.application.api.Argo;
 import org.argouml.model.uml.UmlHelper;
-import org.argouml.ui.AbstractGoRule;
 
 /**
  * This class is a Go Rule for the "Class - centric" Navigation perspective.

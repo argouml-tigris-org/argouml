@@ -346,7 +346,6 @@ public abstract class UMLDiagram
      */
     public void setAsTarget() {
         Enumeration enum = elements();
-        UmlModelEventPump pump = UmlModelEventPump.getPump();
         while (enum.hasMoreElements()) {
             Fig fig = (Fig)enum.nextElement();
             if (org.argouml.model.ModelFacade.isAElementListener(fig)) {
@@ -370,7 +369,7 @@ public abstract class UMLDiagram
             Component c = toolBar.getComponent(i);
             if (c instanceof ToolButton) {
                 ToolButton tb = (ToolButton)c;
-                Action action = (Action)tb.getRealAction();
+                Action action = tb.getRealAction();
                 if (action instanceof RadioAction) {
                     action = ((RadioAction)action).getAction();
                 }
@@ -408,7 +407,7 @@ public abstract class UMLDiagram
             Component c = toolBar.getComponent(i);
             if (c instanceof ToolButton) {
                 ToolButton tb = (ToolButton)c;
-                Action action = (Action)tb.getRealAction();
+                Action action = tb.getRealAction();
                 if (action instanceof RadioAction) {
                     action = ((RadioAction)action).getAction();
                 }

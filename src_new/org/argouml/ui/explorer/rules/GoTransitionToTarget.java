@@ -28,7 +28,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import org.argouml.model.ModelFacade;
-import org.argouml.ui.AbstractGoRule;
 
 public class GoTransitionToTarget implements PerspectiveRule {
 

@@ -31,7 +31,6 @@ import java.util.Iterator;
 import org.argouml.kernel.Project;
 import org.argouml.model.uml.modelmanagement.ModelManagementHelper;
 import org.argouml.model.ModelFacade;
-import org.argouml.ui.AbstractGoRule;
 
 public class GoProjectToCollaboration implements PerspectiveRule {
 

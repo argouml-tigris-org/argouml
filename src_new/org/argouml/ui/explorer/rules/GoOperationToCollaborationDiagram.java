@@ -33,7 +33,6 @@ import java.util.Vector;
 import org.argouml.model.ModelFacade;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
-import org.argouml.ui.AbstractGoRule;
 import org.argouml.ui.ArgoDiagram;
 import org.argouml.uml.diagram.collaboration.ui.UMLCollaborationDiagram;
 

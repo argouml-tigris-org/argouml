@@ -37,8 +37,6 @@ import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.Vector;
 
-import javax.swing.JMenu;
-
 import org.apache.log4j.Logger;
 import org.argouml.application.api.Notation;
 import org.argouml.language.helpers.NotationHelper;
@@ -280,14 +278,11 @@ public class FigInterface extends FigNodeModelElement {
 				   null));
         modifierMenu.addCheckItem(
 		new ActionModifier("Abstract",
-				   "isAbstract", "isAbstract", "setAbstract",
-				   (MInterface)minterface));
+				   "isAbstract", "isAbstract", "setAbstract", minterface));
         modifierMenu.addCheckItem(
-		new ActionModifier("Leaf", "isLeaf", "isLeaf", "setLeaf",
-				   (MInterface)minterface));
+		new ActionModifier("Leaf", "isLeaf", "isLeaf", "setLeaf", minterface));
         modifierMenu.addCheckItem(
-		new ActionModifier("Root",
-				   "isRoot", "isRoot", "setRoot", (MInterface)minterface));
+		new ActionModifier("Root", "isRoot", "isRoot", "setRoot", minterface));
 
         popUpActions.insertElementAt(modifierMenu, popUpActions.size() - 2);
         // end of block

@@ -30,7 +30,6 @@ import org.argouml.model.uml.UmlFactory;
 import java.lang.reflect.*;
 import java.awt.event.*;
 
-import javax.swing.event.*;
 import javax.swing.*;
 import org.argouml.model.ModelFacade;
 import ru.novosoft.uml.MElementEvent;

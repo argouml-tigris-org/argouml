@@ -39,7 +39,6 @@ import org.argouml.uml.diagram.static_structure.ui.FigPackage;
 import org.argouml.uml.diagram.static_structure.ui.UMLClassDiagram;
 import org.tigris.gef.base.Editor;
 import org.tigris.gef.base.LayerPerspective;
-import org.tigris.gef.presentation.Fig;
 import org.argouml.model.ModelFacade;
 
 /**
@@ -139,7 +138,7 @@ public class DiagramInterface {
                 
                 currentGM.addNode(newPackage);
                 currentLayer.add(newPackageFig);
-                currentLayer.putInPosition((Fig) newPackageFig);
+                currentLayer.putInPosition(newPackageFig);
             }
         }
     }
@@ -245,7 +244,7 @@ public class DiagramInterface {
         if (currentGM.canAddNode(newClass)) {
             currentLayer.add( newClassFig);
             currentGM.addNode(newClass);
-            currentLayer.putInPosition( (Fig) newClassFig);
+            currentLayer.putInPosition(newClassFig);
             currentGM.addNodeRelatedEdges( newClass);
             
             newClassFig.setAttributeVisible(!minimise);
@@ -268,7 +267,7 @@ public class DiagramInterface {
         if (currentGM.canAddNode(newInterface)) {
             currentLayer.add( newInterfaceFig);
             currentGM.addNode(newInterface);
-            currentLayer.putInPosition( (Fig) newInterfaceFig);
+            currentLayer.putInPosition(newInterfaceFig);
             currentGM.addNodeRelatedEdges( newInterface);
             
             newInterfaceFig.setOperationVisible(!minimise);

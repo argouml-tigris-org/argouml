@@ -27,7 +27,6 @@ package org.argouml.uml.ui.behavior.common_behavior;
 import javax.swing.JMenu;
 import javax.swing.JPopupMenu;
 
-import org.argouml.application.api.Argo;
 import org.argouml.i18n.Translator;
 import org.argouml.uml.ui.ActionRemoveModelElement;
 import org.argouml.uml.ui.UMLMutableLinkedList;

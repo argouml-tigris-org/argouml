@@ -31,7 +31,6 @@ import java.util.Vector;
 
 import org.argouml.application.api.Argo;
 import org.argouml.model.ModelFacade;
-import org.argouml.ui.AbstractGoRule;
 
 public class GoStimulusToAction implements PerspectiveRule {
 

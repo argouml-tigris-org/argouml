@@ -47,7 +47,7 @@ public class ActionCreatePseudostate extends CmdCreateNode {
         if(!ModelFacade.isAPseudostateKind(kind))
             throw new IllegalArgumentException();
         
-	setArg("className", (Class)ModelFacade.PSEUDOSTATE);
+	setArg("className", ModelFacade.PSEUDOSTATE);
 	setArg("kind", kind);
     }
 

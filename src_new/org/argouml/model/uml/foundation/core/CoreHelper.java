@@ -127,7 +127,7 @@ public class CoreHelper {
                 MGeneralizableElement next =
                     (MGeneralizableElement) addIter.next();
                 if (next instanceof MClassifier) {
-                    newAdd.addAll(getSupertypes((MClassifier) next));
+                    newAdd.addAll(getSupertypes(next));
                 }
             }
             result.addAll(add);
@@ -196,7 +196,7 @@ public class CoreHelper {
         result.addAll(getAssociateEnds(classifier));
         Iterator parents = classifier.getParents().iterator();
         while (parents.hasNext()) {
-            result.addAll(getAssociateEndsInh((MClassifier) parents.next()));
+            result.addAll(getAssociateEndsInh(parents.next()));
         }
         return result;
     }
@@ -475,7 +475,7 @@ public class CoreHelper {
         MStereotype stereo =
             ExtensionMechanismsFactory.getFactory()
 	    .buildStereotype(dep, "support",
-			     (MModel)ProjectManager.getManager()
+			     ProjectManager.getManager()
 			     .getCurrentProject().getModel());
         return dep;
     }
@@ -1127,17 +1127,10 @@ public class CoreHelper {
         ret.addAll(getDependencies(dest, source));
         if (source instanceof MGeneralizableElement
             && dest instanceof MGeneralizableElement) {
-            ret.add(
-		    getGeneralization(
-				      (MGeneralizableElement) source,
-				      (MGeneralizableElement) dest));
-            ret.add(
-		    getGeneralization(
-				      (MGeneralizableElement) dest,
-				      (MGeneralizableElement) source));
+            ret.add(getGeneralization(source, dest));
+            ret.add(getGeneralization(dest, source));
             if (source instanceof MClassifier && dest instanceof MClassifier) {
-                ret.addAll(getAssociations((MClassifier) source,
-					   (MClassifier) dest));
+                ret.addAll(getAssociations(source, dest));
             }
         }
         return ret;
@@ -1484,7 +1477,7 @@ public class CoreHelper {
 	    MAssociationEnd end = (MAssociationEnd) iter.next();
 	    if (end.getAggregation() == MAggregationKind.COMPOSITE)
 		return true;
-	};
+	}
 	return false;
     }
     

@@ -101,7 +101,6 @@ import org.tigris.gef.presentation.FigText;
 
 import ru.novosoft.uml.MElementEvent;
 import ru.novosoft.uml.MElementListener;
-import ru.novosoft.uml.foundation.core.MModelElement;
 
 /** Abstract class to display diagram icons for UML ModelElements that
  *  look like nodes and that have editiable names and can be
@@ -604,8 +603,7 @@ public abstract class FigNodeModelElement
                 return;
             try {
                 ParserDisplay.SINGLETON.parseModelElement(
-							  (MModelElement)getOwner(),
-							  ft.getText().trim());
+							  getOwner(), ft.getText().trim());
                 ProjectBrowser.getInstance().getStatusBar().showStatus("");
                 updateNameText();
             } catch (ParseException pe) {

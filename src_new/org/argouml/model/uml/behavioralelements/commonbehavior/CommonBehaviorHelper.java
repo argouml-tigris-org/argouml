@@ -66,7 +66,7 @@ public class CommonBehaviorHelper {
     public MInstance getSource(Object link) {
         Collection con = ModelFacade.getConnections(link);
         if (con.isEmpty()) return null;
-        MLinkEnd le0 = (MLinkEnd) ((Object[]) con.toArray())[0];
+        MLinkEnd le0 = (MLinkEnd) (con.toArray())[0];
         return le0.getInstance();
     }
 
@@ -80,7 +80,7 @@ public class CommonBehaviorHelper {
     public MInstance getDestination(Object link) {
         Collection con = ModelFacade.getConnections(link);
         if (con.size() <= 1) return null;
-        MLinkEnd le0 = (MLinkEnd) ((Object[]) con.toArray())[1];
+        MLinkEnd le0 = (MLinkEnd) (con.toArray())[1];
         return le0.getInstance();
     }
 

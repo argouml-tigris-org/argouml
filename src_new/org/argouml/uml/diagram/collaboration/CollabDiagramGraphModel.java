@@ -162,8 +162,8 @@ public class CollabDiagramGraphModel extends UMLMutableGraphSupport
 	    Collection clients = ModelFacade.getClients(edge);
 	    Collection suppliers = ModelFacade.getSuppliers(edge);
 	    if (clients == null || suppliers == null) return false;
-	    end0 = ((Object[]) clients.toArray())[0];
-	    end1 = ((Object[]) suppliers.toArray())[0];
+	    end0 = (clients.toArray())[0];
+	    end1 = (suppliers.toArray())[0];
 	}
 	if (end0 == null || end1 == null) return false;
 	if (!_nodes.contains(end0)) return false;

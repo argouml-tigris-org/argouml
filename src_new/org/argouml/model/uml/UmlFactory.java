@@ -31,7 +31,6 @@ import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.Map;
 
-import org.apache.log4j.Logger;
 import org.argouml.model.ModelFacade;
 import org.argouml.model.UmlModelEntity;
 import org.argouml.model.uml.behavioralelements.activitygraphs.ActivityGraphsFactory;
@@ -150,11 +149,6 @@ import ru.novosoft.uml.model_management.MSubsystem;
  * @stereotype singleton
  */
 public class UmlFactory extends AbstractUmlModelFactory {
-
-    /** Log4j logging category.
-     */
-    private Logger _logger =
-    Logger.getLogger("org.argouml.model.uml.factory");
 
     /**
      * A map of valid connections keyed by the connection type.
@@ -494,34 +488,28 @@ public class UmlFactory extends AbstractUmlModelFactory {
                       (Boolean) unidirectional);
         } else if (connectionType == ModelFacade.GENERALIZATION) {
             connection = getCore()
-                .buildGeneralization((MGeneralizableElement) fromElement,
-                     (MGeneralizableElement) toElement);
+                .buildGeneralization(fromElement, toElement);
         } else if (connectionType == ModelFacade.PERMISSION) {
-            connection = getCore().buildPermission((MModelElement) fromElement,
-                      (MModelElement) toElement);
+            connection = getCore().buildPermission(fromElement, toElement);
         } else if (connectionType == ModelFacade.USAGE) {
             connection = getCore().buildUsage((MModelElement) fromElement,
                      (MModelElement) toElement);
         } else if (connectionType == ModelFacade.GENERALIZATION) {
             connection = getCore()
-                .buildGeneralization((MGeneralizableElement) fromElement,
-                     (MGeneralizableElement) toElement);
+                .buildGeneralization(fromElement, toElement);
         } else if (connectionType == ModelFacade.DEPENDENCY) {
             connection = getCore().buildDependency(fromElement, toElement);
         } else if (connectionType == ModelFacade.ABSTRACTION) {
             connection = getCore().buildRealization((MModelElement) fromElement,
                 (MModelElement) toElement);
         } else if (connectionType == ModelFacade.LINK) {
-            connection = getCommonBehavior().buildLink((MInstance) fromElement,
-                               (MInstance) toElement);
+            connection = getCommonBehavior().buildLink(fromElement, toElement);
         } else if (connectionType == ModelFacade.EXTEND) {
             // Extend, but only between two use cases. Remember we draw from the
             // extension port to the base port.
-            connection = getUseCases().buildExtend((MUseCase) toElement,
-                           (MUseCase) fromElement);
+            connection = getUseCases().buildExtend(toElement, fromElement);
         } else if (connectionType == ModelFacade.INCLUDE) {
-            connection = getUseCases().buildInclude((MUseCase) fromElement,
-                            (MUseCase) toElement);
+            connection = getUseCases().buildInclude(fromElement, toElement);
         }
     
         if (connection == null) {
@@ -805,7 +793,7 @@ public class UmlFactory extends AbstractUmlModelFactory {
     private void deleteNamespace(MNamespace elem) {
         getCore().deleteNamespace(elem);
         if (elem instanceof MClassifier) {
-            getCore().deleteClassifier((MClassifier) elem);
+            getCore().deleteClassifier(elem);
             if (elem instanceof MClass) {
                 getCore().deleteClass((MClass) elem);
                 if (elem instanceof MAssociationClass) {

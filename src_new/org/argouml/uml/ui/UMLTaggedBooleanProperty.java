@@ -26,7 +26,6 @@ package org.argouml.uml.ui;
 
 import org.argouml.model.uml.UmlFactory;
 
-import java.lang.reflect.*;
 import java.util.*;
 import org.argouml.model.ModelFacade;
 

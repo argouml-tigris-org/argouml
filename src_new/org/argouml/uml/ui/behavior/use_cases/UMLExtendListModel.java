@@ -29,15 +29,15 @@ package org.argouml.uml.ui.behavior.use_cases;
 
 import java.util.*;
 
-import javax.swing.*;
+//import javax.swing.*;
 
-import org.argouml.ui.*;
+//import org.argouml.ui.*;
 import org.argouml.uml.ui.UMLBinaryRelationListModel;
 import org.argouml.uml.ui.UMLUserInterfaceContainer;
 import org.tigris.gef.graph.MutableGraphModel;
 import org.apache.log4j.Logger;
 import org.argouml.application.api.Argo;
-import org.argouml.kernel.*;
+//import org.argouml.kernel.*;
 import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.behavioralelements.usecases.UseCasesFactory;
 import org.argouml.model.uml.behavioralelements.usecases.UseCasesHelper;
@@ -68,7 +68,7 @@ public class UMLExtendListModel extends UMLBinaryRelationListModel  {
      *   relationship.</p>
      */
  
-    final private static String _nullLabel = "(anon)";
+//    final private static String _nullLabel = "(anon)";
 
 
     /**

@@ -28,7 +28,6 @@
 
 package org.argouml.uml.cognitive.critics;
 
-import java.util.Iterator;
 import java.util.Collection;
 import org.apache.log4j.Logger;
 

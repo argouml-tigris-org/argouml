@@ -31,7 +31,6 @@ import java.util.Iterator;
 
 import org.argouml.application.api.Argo;
 import org.argouml.model.ModelFacade;
-import org.argouml.ui.AbstractGoRule;
 
 /**
  * This class is a Go Rule for the "Class - centric" Navigation perspective.

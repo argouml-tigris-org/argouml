@@ -146,9 +146,8 @@ public class ActionAddNote extends UMLChangeAction {
     }
 
     public boolean shouldBeEnabled() {
-        ProjectBrowser pb = ProjectBrowser.getInstance();
         Object target = TargetManager.getInstance().getModelTarget();
-        ;
+
         if (ProjectManager.getManager().getCurrentProject().getActiveDiagram()
             == null)
             return false;

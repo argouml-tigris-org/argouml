@@ -391,7 +391,7 @@ public class CollaborationsHelper {
         }
         it = bases.iterator();
         while (it.hasNext()) {
-            addBase(role, (MClassifier) it.next());
+            addBase(role, it.next());
         }
     }
     

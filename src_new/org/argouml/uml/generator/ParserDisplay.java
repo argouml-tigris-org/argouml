@@ -752,7 +752,7 @@ public class ParserDisplay extends Parser {
 		    || "\t".equals(token)
 		    || ",".equals(token))
 		{
-		    ; // Do nothing
+		    // Do nothing
 		} else if ("<<".equals(token)) {
 		    if (stereotype != null)
 			throw new ParseException("Operations cannot have two " +
@@ -2141,7 +2141,7 @@ public class ParserDisplay extends Parser {
 	    while (st.hasMoreTokens()) {
 		token = st.nextToken();
 		if (" ".equals(token) || "\t".equals(token)) {
-		    ; // Do nothing
+		    // Do nothing
 		} else if ("/".equals(token)) {
 		    hasSlash = true;
 		    hasColon = false;
@@ -2758,7 +2758,7 @@ public class ParserDisplay extends Parser {
 		swapRoles = true;
 
 	    if (compareMsgNumbers(mname, gname)) {
-		; // Do nothing
+		    // Do nothing
 	    } else if (isMsgNumberStartOf(gname, mname)) {
 		throw new ParseException("Cannot move a message into the " +
 					 "subtree rooted at self", 0);

@@ -51,7 +51,6 @@ import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigRect;
 import org.tigris.gef.presentation.FigText;
-import ru.novosoft.uml.foundation.extension_mechanisms.MStereotype;
 
 /** Class to display graphics for a UML ComponentInstance in a diagram. */
 
@@ -320,7 +319,7 @@ public class FigComponentInstance extends FigNodeModelElement {
             || ModelFacade.getName(stereo).length() == 0)
             _stereo.setText("");
         else {
-            _stereo.setText(Notation.generateStereotype(this, (MStereotype)stereo));
+            _stereo.setText(Notation.generateStereotype(this, stereo));
         }
     }
 

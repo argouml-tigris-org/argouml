@@ -37,7 +37,6 @@ import java.util.Collection;
 import java.util.Vector;
 
 import org.argouml.uml.diagram.activity.ui.SelectionActionState;
-import org.argouml.model.ModelFacade;
 
 import org.tigris.gef.base.Selection;
 import org.tigris.gef.graph.GraphModel;

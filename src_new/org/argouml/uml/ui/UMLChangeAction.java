@@ -26,7 +26,6 @@ package org.argouml.uml.ui;
 
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
-import org.argouml.ui.*;
 import java.awt.event.*;
 
 

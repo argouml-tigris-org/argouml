@@ -25,9 +25,7 @@
 package org.argouml.uml.ui;
 
 import org.apache.log4j.Logger;
-import org.argouml.application.api.Argo;
 import org.argouml.kernel.*;
-import org.argouml.ui.*;
 import java.lang.reflect.*;
 import ru.novosoft.uml.MElementEvent;
 
@@ -38,7 +36,9 @@ import ru.novosoft.uml.MElementEvent;
  *             that used reflection a lot.
  */
 public class UMLTextProperty  {
-    protected static Logger cat = Logger.getLogger(UMLTextProperty.class);
+
+    /** logger */
+    private static Logger cat = Logger.getLogger(UMLTextProperty.class);
            
     private Method _getMethod;
     private Method _setMethod;
@@ -109,8 +109,8 @@ public class UMLTextProperty  {
 			}
 			catch (InvocationTargetException inv) {
 			    Throwable targetException = inv.getTargetException();
-			    Argo.log.error(inv);
-			    Argo.log.error(targetException);
+			    cat.error(inv);
+			    cat.error(targetException);
 			    if (targetException instanceof Exception) {
 				throw (Exception) targetException;
 			    }

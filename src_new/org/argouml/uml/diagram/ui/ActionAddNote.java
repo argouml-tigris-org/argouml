@@ -28,7 +28,6 @@ import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 
 import org.argouml.kernel.ProjectManager;
-import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.UmlFactory;
 import org.argouml.model.uml.foundation.core.CoreFactory;
 import org.argouml.ui.ArgoDiagram;
@@ -36,7 +35,6 @@ import org.argouml.ui.ProjectBrowser;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.static_structure.ui.FigComment;
 import org.argouml.uml.diagram.static_structure.ui.FigEdgeNote;
-import org.argouml.uml.ui.UMLAction;
 import org.argouml.uml.ui.UMLChangeAction;
 import org.tigris.gef.base.Layer;
 import org.tigris.gef.presentation.Fig;

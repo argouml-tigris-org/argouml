@@ -97,7 +97,7 @@ public class DataTypesFactory extends AbstractUmlModelFactory {
      */
     public Object/*MBooleanExpression*/ createBooleanExpression(String language,
 						      String body) {
-        MBooleanExpression expression = new MBooleanExpression(language, (String)body);
+        MBooleanExpression expression = new MBooleanExpression(language, body);
 	super.initialize(expression);
 	return expression;
     }

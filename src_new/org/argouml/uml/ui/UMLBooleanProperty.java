@@ -24,7 +24,6 @@
 
 package org.argouml.uml.ui;
 import java.beans.PropertyVetoException;
-import java.lang.reflect.*;
 
 import org.apache.log4j.Logger;
 import ru.novosoft.uml.MElementEvent;

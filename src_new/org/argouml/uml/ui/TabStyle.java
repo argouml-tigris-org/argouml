@@ -209,9 +209,9 @@ public class TabStyle
                 addTargetListener(_stylePanel);
             } else
                 _stylePanel.setTarget(_target);
-            add((JPanel) _stylePanel, BorderLayout.NORTH);
+            add(_stylePanel, BorderLayout.NORTH);
             _shouldBeEnabled = true;
-            _lastPanel = (JPanel) _stylePanel;
+            _lastPanel = _stylePanel;
         } else {
             add(_blankPanel, BorderLayout.NORTH);
             _shouldBeEnabled = false;

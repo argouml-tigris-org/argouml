@@ -28,7 +28,6 @@ import java.util.Collection;
 import java.util.ArrayList;
 
 import org.argouml.model.ModelFacade;
-import org.argouml.ui.AbstractGoRule;
 
 public class GoStateMachineToTop implements PerspectiveRule {
 

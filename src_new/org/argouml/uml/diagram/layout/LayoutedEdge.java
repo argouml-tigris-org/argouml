@@ -24,9 +24,6 @@
 
 package org.argouml.uml.diagram.layout;
 
-import org.argouml.uml.diagram.ui.*;
-import org.tigris.gef.presentation.*;
-
 /**
  * This is a layouted edge in a diagram.
  */

@@ -30,8 +30,6 @@ import java.util.List;
 import java.util.Iterator;
 import org.argouml.model.ModelFacade;
 
-import org.argouml.ui.AbstractGoRule;
-
 /**
  * Generates only package and classifier children from a namespace parent.
  *

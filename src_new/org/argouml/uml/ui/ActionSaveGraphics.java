@@ -48,7 +48,6 @@ import org.tigris.gef.base.CmdSavePS;
 import org.tigris.gef.base.CmdSaveSVG;
 import org.tigris.gef.base.Diagram;
 import org.tigris.gef.util.Util;
-import java.util.*;
 import java.io.*;
 import java.awt.Rectangle;
 import org.tigris.gef.base.*;
@@ -151,7 +150,7 @@ public class ActionSaveGraphics extends UMLAction {
 			      (extension.equals(FileFilters.SVGFilter._suffix))
 			      )) {
 			    // add the selected filter extension
-			    FileFilter filter = (FileFilter) chooser.getFileFilter();
+			    FileFilter filter = chooser.getFileFilter();
 			    extension = FileFilters.getSuffix(filter);  
 			    theFile =
 				new File(theFile.getParentFile(),

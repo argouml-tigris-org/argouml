@@ -41,8 +41,7 @@ import org.tigris.gef.util.Localizer;
  */
 public class Translator {
     /** logger */
-    private static Logger cat = 
-        Logger.getLogger(Translator.class);
+    private static Logger cat = Logger.getLogger(Translator.class);
 
     /** Binding between new key names and old ones needed by gef. */
     private static Properties images = null;
@@ -59,6 +58,7 @@ public class Translator {
 				     System.getProperty("user.country", "")));
 
         /** bundle default Locale, different from user default Locale */
+        org.workingfrog.i18n.util.Translator.init();
         org.workingfrog.i18n.util.Translator.setDefaultLocale(
 							      new Locale("en", ""));
         org.workingfrog.i18n.util.Translator.setBundlesPath("org.argouml.i18n");
@@ -143,11 +143,8 @@ public class Translator {
      * @return the translation
      */
     public static String localize(String bundle, String key) {
-        if (org.workingfrog.i18n.util.Translator.isValidBundle(key)) {
-            return org.workingfrog.i18n.util.Translator.localize(key, bundle);
-        } else {
-            return org.tigris.gef.util.Localizer.localize(bundle, key);
-        }
+        String gefValue = org.tigris.gef.util.Localizer.localize(bundle, key);
+        return org.workingfrog.i18n.util.Translator.localize(key, gefValue);
     }
 
     /**

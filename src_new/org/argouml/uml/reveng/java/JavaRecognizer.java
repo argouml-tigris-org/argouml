@@ -1700,7 +1700,7 @@ public JavaRecognizer(ParserSharedInputState state) {
 	}
 	
 	public final short  parameterModifier() throws RecognitionException, TokenStreamException {
-		short mods=0;;
+		short mods=0;
 		
 		
 		{
@@ -3242,7 +3242,7 @@ public JavaRecognizer(ParserSharedInputState state) {
 	}
 	
 	public final String  primaryExpression() throws RecognitionException, TokenStreamException {
-		String name = "UNHANDLED PRIMARY EXPRESSION";;
+		String name = "UNHANDLED PRIMARY EXPRESSION";
 		
 		Token  id = null;
 		

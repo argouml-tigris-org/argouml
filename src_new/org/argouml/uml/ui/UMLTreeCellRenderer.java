@@ -32,11 +32,9 @@ import javax.swing.JTree;
 import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.DefaultMutableTreeNode;
 
-import org.apache.log4j.Logger;
 import org.argouml.application.api.Argo;
 import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.model.ModelFacade;
-import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.activity.ui.UMLActivityDiagram;
 import org.argouml.uml.diagram.collaboration.ui.UMLCollaborationDiagram;
 import org.argouml.uml.diagram.deployment.ui.UMLDeploymentDiagram;
@@ -56,8 +54,6 @@ import org.argouml.uml.diagram.use_case.ui.UMLUseCaseDiagram;
  */
 public class UMLTreeCellRenderer extends DefaultTreeCellRenderer {
 
-    private Logger cat = Logger.getLogger(this.getClass());
-    
     private static final String BUNDLE = "UMLMenu";
 
     ////////////////////////////////////////////////////////////////

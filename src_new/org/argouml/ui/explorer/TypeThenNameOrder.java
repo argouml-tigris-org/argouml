@@ -24,12 +24,6 @@
 
 package org.argouml.ui.explorer;
 
-import java.util.*;
-
-import javax.swing.tree.DefaultMutableTreeNode;
-
-import org.argouml.model.ModelFacade;
-
 /**
  * Sorts by user object type,
  * diagrams first,

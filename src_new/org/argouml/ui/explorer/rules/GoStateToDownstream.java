@@ -28,7 +28,6 @@ import java.util.Collection;
 
 import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.behavioralelements.statemachines.StateMachinesHelper;
-import org.argouml.ui.AbstractGoRule;
 
 public class GoStateToDownstream implements PerspectiveRule {
 

@@ -75,7 +75,6 @@ import org.argouml.uml.ui.ActionSaveProjectAs;
 import org.argouml.uml.ui.ActionSequenceDiagram;
 import org.argouml.uml.ui.ActionStateDiagram;
 import org.argouml.uml.ui.ActionUseCaseDiagram;
-import org.argouml.uml.ui.UMLAction;
 import org.tigris.gef.base.CmdAdjustGrid;
 import org.tigris.gef.base.CmdAdjustGuide;
 import org.tigris.gef.base.CmdAdjustPageBreaks;
@@ -364,7 +363,7 @@ public class GenericArgoMenuBar extends JMenuBar
 
 	// ------------------------------------- Edit Menu
 		
-        _edit = (JMenu) add(new JMenu(menuLocalize("Edit")));
+        _edit = add(new JMenu(menuLocalize("Edit")));
         setMnemonic(_edit, "Edit", 'E');
 
         _select = new JMenu(menuLocalize("Select"));
@@ -498,8 +497,7 @@ public class GenericArgoMenuBar extends JMenuBar
 
 	// ------------------------------------- Create Menu
 		
-        _createDiagrams =
-	    (JMenu) add(new JMenu(menuLocalize("Create Diagram")));
+        _createDiagrams = add(new JMenu(menuLocalize("Create Diagram")));
         setMnemonic(_createDiagrams, "Create Diagram", 'C');
         _createDiagramToolbar = new ToolBar("Create Toolbar");
         _createDiagramToolbar.putClientProperty("JToolBar.isRollover",  Boolean.TRUE);
@@ -550,7 +548,7 @@ public class GenericArgoMenuBar extends JMenuBar
         setMnemonic(preferredSize, "Preferred Size", 'P');
 
         JMenuItem autoResize = 
-        _arrange.addCheckItem((UMLAction) new ActionAutoResize());
+        _arrange.addCheckItem(new ActionAutoResize());
 	setMnemonic(autoResize, "Toggle Auto Resize", 'Z');
 		
         JMenu layout = (JMenu) _arrange.add(new JMenu(menuLocalize("Layout")));
@@ -566,7 +564,7 @@ public class GenericArgoMenuBar extends JMenuBar
 
 	// ------------------------------------- Generation Menu
 		
-        _generate = (JMenu) add(new JMenu(menuLocalize("Generation")));
+        _generate = add(new JMenu(menuLocalize("Generation")));
         setMnemonic(_generate, "Generation", 'G');
         JMenuItem genOne = _generate.add(ActionGenerateOne.SINGLETON);
         setMnemonic(genOne, "Generate Selected Classes", 'S');

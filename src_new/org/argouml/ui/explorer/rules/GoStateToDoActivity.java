@@ -30,8 +30,6 @@ import java.util.Collection;
 import java.util.Vector;
 import org.argouml.model.ModelFacade;
 
-import org.argouml.ui.AbstractGoRule;
-
 /**
  * Go rule to navigate from a state to it's doactivity. Used in the package
  * perspective.

@@ -40,7 +40,7 @@ import org.tigris.gef.base.ModeCreatePolyEdge;
 
 public class ActionAddLink extends CmdSetMode {
     public ActionAddLink(Class actionClass, String name) {
-	super(ModeCreatePolyEdge.class, "edgeClass", (Class)ModelFacade.LINK, name);
+	super(ModeCreatePolyEdge.class, "edgeClass", ModelFacade.LINK, name);
 	_modeArgs.put("action", actionClass);
     }
 }

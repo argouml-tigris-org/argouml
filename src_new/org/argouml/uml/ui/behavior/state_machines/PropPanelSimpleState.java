@@ -45,7 +45,7 @@ public class PropPanelSimpleState extends PropPanelState {
         addField(Argo.localize("UMLMenu", "label.stereotype"), new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-stereo"), getStereotypeBox()));
         addField(Argo.localize("UMLMenu", "label.container"), containerScroll);
         addField(Argo.localize("UMLMenu", "label.entry"), entryScroll);
-        addField(Argo.localize("UMLMenu", "label.exit"), exitScroll);;
+        addField(Argo.localize("UMLMenu", "label.exit"), exitScroll);
         addField(Argo.localize("UMLMenu", "label.do-activity"), doScroll);
 
         addSeperator();

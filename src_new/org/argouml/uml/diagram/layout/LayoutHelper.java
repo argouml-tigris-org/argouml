@@ -54,7 +54,7 @@ public class LayoutHelper {
 					    double xOff, double yOff)
     {
         double x = 0;
-        double y = 0;;
+        double y = 0;
         if (direction == NORTH || direction == NORTHEAST || 
             direction == NORTHWEST) { y = rect.getY(); }
         if (direction == SOUTH || direction == SOUTHWEST ||

@@ -33,7 +33,8 @@ import javax.swing.JDialog;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
-import javax.swing.plaf.metal.MetalLookAndFeel;
+
+import org.apache.log4j.Logger;
 import org.argouml.application.api.AboutTabPanel;
 import org.argouml.application.api.Argo;
 import org.argouml.application.api.PluggableAboutTab;
@@ -43,6 +44,9 @@ import org.argouml.util.Tools;
  * button in the toolbar.
  */
 public class AboutBox extends JDialog {
+
+    /** logger */
+    private static Logger cat = Logger.getLogger(AboutBox.class);
 
     ////////////////////////////////////////////////////////////////
     // instance variables
@@ -73,8 +77,6 @@ public class AboutBox extends JDialog {
 		    scrSize.height / 2 - imgHeight / 2);
 	getContentPane().setLayout(new BorderLayout(0, 0));
 
-	Font ctrlFont = MetalLookAndFeel.getControlTextFont();
-
 	StringBuffer versionBuf = new StringBuffer();
 	versionBuf.append("\n--- Generated version information: ---\n");
 	versionBuf.append(Tools.getVersionInfo());
@@ -104,8 +106,6 @@ public class AboutBox extends JDialog {
 			  + "work!\n");
 	versionBuf.append("\n");
 
-	InputStreamReader isr = null;
-
 	_tabs.addTab("Splash", _splashPanel);
 
 	try {
@@ -115,7 +115,7 @@ public class AboutBox extends JDialog {
 	    _tabs.addTab("Version", new JScrollPane(a));
 	}
 	catch (Exception e) {
-	    Argo.log.error("Unable to read version information", e);
+	    cat.error("Unable to read version information", e);
 	}
 
 	try {
@@ -128,7 +128,7 @@ public class AboutBox extends JDialog {
 	    _tabs.addTab("Credits", new JScrollPane(a));
 	}
 	catch (Exception e) {
-	    Argo.log.error("Unable to read 'credits.about'", e);
+	    cat.error("Unable to read 'credits.about'", e);
 	}
 
 	try {
@@ -141,7 +141,7 @@ public class AboutBox extends JDialog {
 	    _tabs.addTab("Contact Info", new JScrollPane(a));
 	}
 	catch (Exception e) {
-	    Argo.log.error("Unable to read 'contacts.about'", e);
+	    cat.error("Unable to read 'contacts.about'", e);
 	}
 
 
@@ -155,7 +155,7 @@ public class AboutBox extends JDialog {
 	    _tabs.addTab("Report bugs", new JScrollPane(a));
 	}
 	catch (Exception e) {
-	    Argo.log.error("Unable to read 'bugreport.about'", e);
+	    cat.error("Unable to read 'bugreport.about'", e);
 	}
 
 
@@ -169,7 +169,7 @@ public class AboutBox extends JDialog {
 	    _tabs.addTab("Legal", new JScrollPane(a));
 	}
 	catch (Exception e) {
-	    Argo.log.error("Unable to read 'legal.about'", e);
+	    cat.error("Unable to read 'legal.about'", e);
 	}
 
 	// Add the about tabs from the modules.

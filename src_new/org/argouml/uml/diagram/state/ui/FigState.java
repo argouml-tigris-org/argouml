@@ -36,7 +36,6 @@ import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.FigText;
 
 import ru.novosoft.uml.MElementEvent;
-import ru.novosoft.uml.behavior.state_machines.MState;
 
 /**
  * The fig hierarchy should comply as much as possible to the hierarchy of the
@@ -190,7 +189,7 @@ public abstract class FigState extends FigStateVertex {
         Object state = getOwner();
         if (state == null)
             return;
-        String newText = Notation.generateStateBody(this, (MState) state);
+        String newText = Notation.generateStateBody(this, state);
         _internal.setText(newText);
 
         calcBounds();

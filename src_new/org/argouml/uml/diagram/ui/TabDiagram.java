@@ -249,9 +249,9 @@ public class TabDiagram
     public void modeChange(ModeChangeEvent mce) {
         cat.debug("TabDiagram got mode change event");
         if (!Globals.getSticky() && Globals.mode() instanceof ModeSelect) {
-            if (_target instanceof UMLDiagram) {
+//            if (_target instanceof UMLDiagram) {
                 _target.deselectAllTools();
-            }
+//            }
         }
     }
 

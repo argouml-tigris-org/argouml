@@ -72,7 +72,6 @@ import org.argouml.uml.diagram.ui.PropPanelUMLStateDiagram;
 import org.argouml.uml.diagram.ui.PropPanelUMLUseCaseDiagram;
 import org.argouml.uml.diagram.use_case.ui.UMLUseCaseDiagram;
 import org.argouml.uml.ui.behavior.state_machines.PropPanelSimpleState;
-import org.argouml.uml.ui.behavior.use_cases.PropPanelUseCase;
 import org.argouml.uml.ui.foundation.core.PropPanelClass;
 import org.argouml.util.ConfigLoader;
 import org.tigris.gef.presentation.Fig;
@@ -164,7 +163,7 @@ public class TabProps
      *  few seconds after the tool is launched. */
     protected void initPanels() {
 
-        _panels.put((Class)ModelFacade.CLASS/*MClassImpl.class*/, new PropPanelClass());
+        _panels.put(ModelFacade.CLASS/*MClassImpl.class*/, new PropPanelClass());
         _panels.put(ArgoDiagram.class, new PropPanelDiagram());
 
         // Put all the diagram PropPanels here explicitly. They would eventually
@@ -188,7 +187,7 @@ public class TabProps
         //_panels.put((Class)ModelFacade.USE_CASE/*MUseCaseImpl.class*/, new PropPanelUseCase());
         //important: MStateImpl corresponds to PropPanelSimpleState not to PropPanelState!!
         //otherwise, spawing will not ne successful!!
-        _panels.put((Class)ModelFacade.STATEIMPL/*MStateImpl.class*/, new PropPanelSimpleState());       
+        _panels.put(ModelFacade.STATEIMPL/*MStateImpl.class*/, new PropPanelSimpleState());       
     }
 
     /** Adds a property panel to the internal list. This allows a plugin to
