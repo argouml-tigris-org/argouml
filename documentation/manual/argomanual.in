@@ -129,16 +129,6 @@ Modifications
     &refentbuiltin;
   </part>
 
-  <!-- The index
-  The result is not so good yet.
-  <chapter>
-    <title>Index</title>
-    <para></para>
-    <index>
-    </index>
-  </chapter>
-  -->
-
   <!-- The glossary -->
 
   &glossary;
@@ -152,6 +142,16 @@ Modifications
   &appdocplan;
   &appdocstand;
   &applegal;
+
+  <index>
+    <warning>
+      <para>
+The use of the index in the document is done a little at random
+and cannot be trusted.
+Please help in suggesting new index entries!
+</para>
+    </warning>
+  </index>
 
 </book>
 
