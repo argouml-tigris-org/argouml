@@ -247,7 +247,10 @@ public class TabConstraints extends TabSpawnable implements TabModelTarget {
         public void addConstraint() {
 
             // check ocl parsing constraints
-            // sz9: I think this should read mmeContext = OclUtil.getInnerMostEnclosingNamespace (m_mmeiTarget);
+            /*
+             * TODO: sz9: I think this should read 
+             * mmeContext = OclUtil.getInnerMostEnclosingNamespace (m_mmeiTarget);
+             */
             Object/*MModelElement*/ mmeContext = m_mmeiTarget;
 
             while (!(ModelFacade.isAClassifier(mmeContext)) && mmeContext != null) {
@@ -256,11 +259,13 @@ public class TabConstraints extends TabSpawnable implements TabModelTarget {
 
             String contextName = ModelFacade.getName(mmeContext);
             String targetName = ModelFacade.getName(m_mmeiTarget);
-            if (contextName == null ||
-                    targetName == null ||
-                    !Character.isUpperCase(contextName.charAt(0)) ||
-                    (ModelFacade.isAClass (m_mmeiTarget) && !Character.isUpperCase(targetName.charAt(0))) ||
-                    (ModelFacade.isAFeature(m_mmeiTarget) && !Character.isLowerCase(targetName.charAt(0)))) {
+            if ((contextName == null ||
+                 contextName.equals ("")) ||  // this is to fix issue #2056
+                (targetName == null ||
+                 targetName.equals ("")) ||   // this is to fix issue #2056
+                !Character.isUpperCase(contextName.charAt(0)) ||
+                (ModelFacade.isAClass (m_mmeiTarget) && !Character.isUpperCase(targetName.charAt(0))) ||
+                (ModelFacade.isAFeature(m_mmeiTarget) && !Character.isLowerCase(targetName.charAt(0)))) {
                 // TODO I18n
                 JOptionPane.showMessageDialog(null,
                     "The OCL Toolkit requires that:\n\n" +
