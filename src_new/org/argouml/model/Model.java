@@ -231,7 +231,7 @@ public final class Model {
      * @return the helper
      */
     public static UmlHelper getUmlHelper() {
-        return impl.getUmlHelper();;
+        return impl.getUmlHelper();
     }
 
     /**
