@@ -467,6 +467,11 @@ By running ant again using <command>build prepare-docs</command>
 the javadoc documentation is generated and put into
 <filename class="directory">argouml/build/javadocs</filename>.
 </para>
+	  <para>
+Notice that you need to be connected to the Internet to do this since
+the javadoc wants to test the availability of other javadoc sites in 
+order to link to them. This is probably a problem with ANT 1.3.
+</para>
 	</sect3>
       </sect2>
       <sect2>
