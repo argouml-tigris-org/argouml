@@ -1,0 +1,238 @@
+<?xml version = "1.0" encoding = "ISO-8859-1" ?>
+<!DOCTYPE XMI SYSTEM "uml.dtd" >
+<XMI>
+  <XMI.header>
+    <XMI.metamodel name="uml" version="1.1"/>
+  </XMI.header>
+  <XMI.content>
+    <Model XMI.id="J.100">
+      <name>java.lang</name>
+      <visibility XMI.value = "public"/>
+      <isAbstract XMI.value="false"/>
+      <isLeaf XMI.value="false"/>
+      <isRoot XMI.value="false"/>
+      <ownedElement>
+        <DataType XMI.id="J.101">
+          <name>void</name>
+          <visibility XMI.value="public"/>
+          <isAbstract XMI.value="false"/>
+          <isLeaf XMI.value="false"/>
+          <isRoot XMI.value="false"/>
+        </DataType>
+      </ownedElement>
+      <ownedElement>
+        <DataType XMI.id="J.102">
+          <name>char</name>
+          <visibility XMI.value="public"/>
+          <isAbstract XMI.value="false"/>
+          <isLeaf XMI.value="false"/>
+          <isRoot XMI.value="false"/>
+        </DataType>
+      </ownedElement>
+      <ownedElement>
+        <DataType XMI.id="J.103">
+          <name>int</name>
+          <visibility XMI.value="public"/>
+          <isAbstract XMI.value="false"/>
+          <isLeaf XMI.value="false"/>
+          <isRoot XMI.value="false"/>
+        </DataType>
+      </ownedElement>
+      <ownedElement>
+        <DataType XMI.id="J.104">
+          <name>boolean</name>
+          <visibility XMI.value="public"/>
+          <isAbstract XMI.value="false"/>
+          <isLeaf XMI.value="false"/>
+          <isRoot XMI.value="false"/>
+        </DataType>
+      </ownedElement>
+      <ownedElement>
+        <DataType XMI.id="J.105">
+          <name>byte</name>
+          <visibility XMI.value="public"/>
+          <isAbstract XMI.value="false"/>
+          <isLeaf XMI.value="false"/>
+          <isRoot XMI.value="false"/>
+        </DataType>
+      </ownedElement>
+      <ownedElement>
+        <DataType XMI.id="J.106">
+          <name>long</name>
+          <visibility XMI.value="public"/>
+          <isAbstract XMI.value="false"/>
+          <isLeaf XMI.value="false"/>
+          <isRoot XMI.value="false"/>
+        </DataType>
+      </ownedElement>
+      <ownedElement>
+        <DataType XMI.id="J.107">
+          <name>float</name>
+          <visibility XMI.value="public"/>
+          <isAbstract XMI.value="false"/>
+          <isLeaf XMI.value="false"/>
+          <isRoot XMI.value="false"/>
+        </DataType>
+      </ownedElement>
+      <ownedElement>
+        <DataType XMI.id="J.108">
+          <name>double</name>
+          <visibility XMI.value="public"/>
+          <isAbstract XMI.value="false"/>
+          <isLeaf XMI.value="false"/>
+          <isRoot XMI.value="false"/>
+        </DataType>
+      </ownedElement>
+    
+      <ownedElement>
+        <Class XMI.id="J.109">
+          <name>String</name>
+          <visibility XMI.value="public"/>
+          <isAbstract XMI.value="false"/>
+          <isLeaf XMI.value="false"/>
+          <isRoot XMI.value="false"/>
+        </Class>
+      </ownedElement>
+      <ownedElement>
+        <Class XMI.id="J.110">
+          <name>Character</name>
+          <visibility XMI.value="public"/>
+          <isAbstract XMI.value="false"/>
+          <isLeaf XMI.value="false"/>
+          <isRoot XMI.value="false"/>
+        </Class>
+      </ownedElement>
+      <ownedElement>
+        <Class XMI.id="J.111">
+          <name>Integer</name>
+          <visibility XMI.value="public"/>
+          <isAbstract XMI.value="false"/>
+          <isLeaf XMI.value="false"/>
+          <isRoot XMI.value="false"/>
+        </Class>
+      </ownedElement>
+      <ownedElement>
+        <Class XMI.id="J.112">
+          <name>Boolean</name>
+          <visibility XMI.value="public"/>
+          <isAbstract XMI.value="false"/>
+          <isLeaf XMI.value="false"/>
+          <isRoot XMI.value="false"/>
+        </Class>
+      </ownedElement>
+      <ownedElement>
+        <Class XMI.id="J.113">
+          <name>Byte</name>
+          <visibility XMI.value="public"/>
+          <isAbstract XMI.value="false"/>
+          <isLeaf XMI.value="false"/>
+          <isRoot XMI.value="false"/>
+        </Class>
+      </ownedElement>
+      <ownedElement>
+        <Class XMI.id="J.114">
+          <name>Long</name>
+          <visibility XMI.value="public"/>
+          <isAbstract XMI.value="false"/>
+          <isLeaf XMI.value="false"/>
+          <isRoot XMI.value="false"/>
+        </Class>
+      </ownedElement>
+      <ownedElement>
+        <Class XMI.id="J.115">
+          <name>Float</name>
+          <visibility XMI.value="public"/>
+          <isAbstract XMI.value="false"/>
+          <isLeaf XMI.value="false"/>
+          <isRoot XMI.value="false"/>
+        </Class>
+      </ownedElement>
+      <ownedElement>
+        <Class XMI.id="J.116">
+          <name>Double</name>
+          <visibility XMI.value="public"/>
+          <isAbstract XMI.value="false"/>
+        <isLeaf XMI.value="false"/>
+        <isRoot XMI.value="false"/>
+        </Class>
+      </ownedElement>
+    </Model>
+      
+    <Model XMI.id="J.200">
+      <name>java.awt</name>
+      <visibility XMI.value = "public"/>
+      <isAbstract XMI.value="false"/>
+      <isLeaf XMI.value="false"/>
+      <isRoot XMI.value="false"/>
+      <ownedElement>
+        <Class XMI.id="J.201">
+          <name>Rectangle</name>
+          <visibility XMI.value="public"/>
+          <isAbstract XMI.value="false"/>
+          <isLeaf XMI.value="false"/>
+          <isRoot XMI.value="false"/>
+        </Class>
+      </ownedElement>
+      <ownedElement>
+        <Class XMI.id="J.202">
+          <name>Point</name>
+          <visibility XMI.value="public"/>
+          <isAbstract XMI.value="false"/>
+          <isLeaf XMI.value="false"/>
+          <isRoot XMI.value="false"/>
+        </Class>
+      </ownedElement>
+      <ownedElement>
+        <Class XMI.id="J.203">
+          <name>Color</name>
+          <visibility XMI.value="public"/>
+          <isAbstract XMI.value="false"/>
+          <isLeaf XMI.value="false"/>
+          <isRoot XMI.value="false"/>
+        </Class>
+      </ownedElement>
+    </Model>
+    
+    <Model XMI.id="J.300">
+      <name>java.util</name>
+      <visibility XMI.value = "public"/>
+      <isAbstract XMI.value="false"/>
+      <isLeaf XMI.value="false"/>
+      <isRoot XMI.value="false"/>
+      <ownedElement>
+        <Class XMI.id="J.301">
+          <name>Vector</name>
+          <visibility XMI.value="public"/>
+          <isAbstract XMI.value="false"/>
+          <isLeaf XMI.value="false"/>
+          <isRoot XMI.value="false"/>
+        </Class>
+      </ownedElement>
+      <ownedElement>
+        <Class XMI.id="J.302">
+          <name>Hashtable</name>
+          <visibility XMI.value="public"/>
+          <isAbstract XMI.value="false"/>
+          <isLeaf XMI.value="false"/>
+          <isRoot XMI.value="false"/>
+        </Class>
+      </ownedElement>
+      <ownedElement>
+        <Class XMI.id="J.303">
+          <name>Stack</name>
+          <visibility XMI.value="public"/>
+          <isAbstract XMI.value="false"/>
+          <isLeaf XMI.value="false"/>
+          <isRoot XMI.value="false"/>
+        </Class>
+      </ownedElement>
+    </Model>
+    <Model XMI.id="E.1001">
+      <name>untitledpackage</name>
+      <visibility XMI.value = "public"/>
+      <isAbstract XMI.value="false"/>
+      <isLeaf XMI.value="false"/>
+      <isRoot XMI.value="false"/>
+    </Model>
+  </XMI.content>
+</XMI>
