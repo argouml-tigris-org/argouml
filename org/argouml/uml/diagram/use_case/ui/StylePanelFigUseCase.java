@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -22,14 +22,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// File: StylePanelFigUseCase.java
-// Classes: StylePanelFigUseCase
-// Original Author: mail@jeremybennett.com
-// $Id$
-
-// 12 Apr 2002: Jeremy Bennett (mail@jeremybennett.com). Created to support
-// optional display of extension points.
-
 package org.argouml.uml.diagram.use_case.ui;
 
 import java.awt.FlowLayout;
@@ -45,21 +37,17 @@ import org.argouml.kernel.ProjectManager;
 import org.argouml.ui.StylePanelFigNodeModelElement;
 
 /**
- * <p>
- * A class to provide a style panel for use cases.
- * </p>
+ * A class to provide a style panel for use cases.<p>
  * 
- * <p>
  * This adds a check box to control the display of he extension point
  * compartment.
- * </p>
+ *
+ * @author Jeremy Bennett
  */
 public class StylePanelFigUseCase extends StylePanelFigNodeModelElement {
 
     /**
-     * <p>
      * The check box for extension points.
-     * </p>
      */
     private JCheckBox epCheckBox = new JCheckBox("Extension Points");
 
@@ -74,9 +62,7 @@ public class StylePanelFigUseCase extends StylePanelFigNodeModelElement {
     private boolean refreshTransaction = false;
 
     /**
-     * <p>
      * Build a style panel. Just layout the relevant boxes.
-     * </p>
      */
     public StylePanelFigUseCase() {
 
@@ -127,10 +113,8 @@ public class StylePanelFigUseCase extends StylePanelFigNodeModelElement {
     }
 
     /**
-     * <p>
      * Refresh the display. This means setting the check box from the target use
      * case fig.
-     * </p>
      */
     public void refresh() {
 
@@ -148,9 +132,7 @@ public class StylePanelFigUseCase extends StylePanelFigNodeModelElement {
     }
 
     /**
-     * <p>
-     * Something has changed, check if its the check box.
-     * </p>
+     * Something has changed, check if its the check box.<p>
      * 
      * @param e
      *            The event that triggeed us.
