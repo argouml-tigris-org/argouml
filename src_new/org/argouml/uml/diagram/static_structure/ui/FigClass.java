@@ -467,6 +467,9 @@ public class FigClass extends FigNodeModelElement {
       aSize.height += ROWHEIGHT * Math.max(1, _operVec.getFigs().size() - 1) + 1;
     }
 
+    // we want to maintain a minimum width for the class
+    aSize.width = Math.max(60, aSize.width);
+
     // And now aSize has the answer
 
     return aSize;
